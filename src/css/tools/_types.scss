@@ -1,0 +1,154 @@
+/**MODIFIERS*/
+//Generate positions
+@for $i from 1 through 100 {
+  .font-size-#{$i} {
+    font-size: 0px + $i !important;
+  }
+
+  .font-size-#{$i}-rem {
+    font-size: (0 + $i)#{"rem"} !important;
+  }
+}
+
+.align-center {
+  text-align: center;
+}
+
+.no-text-decoration {
+  text-decoration: none;
+}
+
+.overflow-hidden {
+  overflow: hidden !important;
+}
+
+.truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-all;
+}
+
+.lowercase {
+  text-transform: lowercase !important;
+}
+
+.uppercase {
+  text-transform: uppercase !important;
+}
+
+.capitalize {
+  text-transform: capitalize !important;
+}
+
+.no-bold {
+  font-weight: normal !important;
+}
+
+.line-height-normal {
+  line-height: normal !important;
+}
+
+.bold {
+  font-weight: bold !important;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+/**BORDER*/
+
+.border-dashed {
+  border-style: dashed !important;
+}
+
+/**FONT STYLE*/
+
+.font-type-base {
+  font-family: $font-family-base;
+}
+
+.font-type-titles {
+  font-family: $font-family-titles;
+}
+
+.font-type-content {
+  font-family: $font-family-content;
+}
+
+.font-size-vw-large {
+  font-size: get-vw($font-size-large);
+}
+
+.font-size-vw-middle {
+  font-size: get-vw($font-size-middle);
+}
+
+.font-size-vw-base {
+  font-size: get-vw($font-size-base);
+}
+
+.font-size-vw-small {
+  font-size: get-vw($font-size-small);
+}
+
+.font-size-vw-tiny {
+  font-size: get-vw($font-size-tiny);
+}
+
+.font-size-large {
+  font-size: $font-size-large !important;
+}
+
+.font-size-middle {
+  font-size: $font-size-middle !important;
+}
+
+.font-size-base {
+  font-size: $font-size-base !important;
+}
+
+.font-size-small {
+  font-size: $font-size-small !important;
+}
+
+.font-size-tiny {
+  font-size: $font-size-tiny !important;
+}
+
+.font-size-responsive {
+  font-size: $font-size-base;
+
+  @include media-small {
+    font-size: $font-size-small;
+  }
+
+  /* Medium devices (desktops, 992px and up) */
+  @include media-middle {
+    font-size: $font-size-middle;
+  }
+
+  /* Large devices (large desktops, 1200px and up) */
+  @include media-large {
+    font-size: $font-size-large;
+  }
+}
+
+
+// Alignment
+.text-left {
+  text-align: left;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-justify {
+  text-align: justify;
+}

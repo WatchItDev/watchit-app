@@ -1,0 +1,16 @@
+.dropdown {
+  margin-right: 5px;
+  margin-left: 1px;
+  background-color: rgba(0, 0, 0, 0.4); }
+  .dropdown .dropdown-content {
+    width: auto !important;
+    min-width: 180px;
+    max-width: 50%;
+    min-height: 60px; }
+    .dropdown .dropdown-content .flag-wrapper {
+      width: 33px !important;
+      clear: none !important;
+      float: left !important;
+      display: inline-block !important; }
+
+/*# sourceMappingURL=index.css.map */

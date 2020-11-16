@@ -1,0 +1,196 @@
+//Autor: Geolffrey Mena
+//Mixins
+
+/***** ANIMATION MIXINS *******/
+@mixin keyframes($name) {
+  @-webkit-keyframes #{$name} {
+    @content;
+  }
+  @-moz-keyframes #{$name} {
+    @content;
+  }
+  @-ms-keyframes #{$name} {
+    @content;
+  }
+  @keyframes #{$name} {
+    @content;
+  }
+}
+
+@mixin animation($animate...) {
+  -webkit-animation: $animate; /* Safari, Chrome and Opera > 12.1 */
+  -moz-animation: $animate; /* Firefox < 16 */
+  -ms-animation: $animate; /* Internet Explorer */
+  -o-animation: $animate; /* Opera < 12.1 */
+  animation: $animate;
+}
+
+@mixin transform($action...) {
+  -webkit-transform: $action;
+  -moz-transform: $action;
+  -o-transform: $action;
+  transform: $action;
+}
+
+@mixin transition($transition...) {
+  -webkit-transition: $transition;
+  -moz-transition: $transition;
+  -o-transition: $transition;
+  -ms-transition: $transition;
+  transition: $transition;
+}
+
+/*** FALLBACKS ***/
+@mixin box-shadow($shadow...) {
+  -moz-box-shadow: $shadow;
+  -webkit-box-shadow: $shadow; // iOS <4.3 & Android <4.1
+  box-shadow: $shadow;
+}
+
+/*** FALLBACKS ***/
+@mixin border-radius($border...) {
+  -webkit-border-radius: $border;
+  -moz-border-radius: $border;
+  border-radius: $border;
+}
+
+@mixin opacity($opacity) {
+  opacity: $opacity;
+  // IE8 filter
+  $opacity-ie: ($opacity * 100);
+  filter: #{alpha(opacity=$opacity-ie)};
+}
+
+// Box sizing
+@mixin box-sizing($boxmodel) {
+  -webkit-box-sizing: $boxmodel;
+  -moz-box-sizing: $boxmodel;
+  box-sizing: $boxmodel;
+}
+
+@mixin filter($filter...) {
+  & {
+    filter: $filter;
+    -webkit-filter: $filter;
+    -moz-filter: $filter;
+    -o-filter: $filter;
+    -ms-filter: $filter;
+  }
+}
+
+@mixin gradients($grad...) {
+  background: -webkit-linear-gradient($grad);
+  background: -o-linear-gradient($grad);
+  background: -moz-linear-gradient($grad);
+  background: linear-gradient($grad);
+}
+
+//Calculate
+@mixin calc($key, $value) {
+  #{$key}: -webkit-calc(#{$value});
+  #{$key}: -moz-calc(#{$value});
+  #{$key}: calc(#{$value});
+}
+
+/**HELPERS**/
+@mixin popup($width:0.1px, $height: 0.1px) {
+  @include calc(left, 50vw - #{($width /2)});
+  @include calc(top, 50vh - #{($height /2)});
+  min-width: $width;
+  min-height: $height;
+  position: fixed;
+}
+
+@mixin placeholder($color, $font-type: normal, $family: ('Open Sans', sans-serif)) {
+
+  &::-webkit-input-placeholder {
+    color: $color;
+    font-style: $font-type;
+    font-family: $family;
+  }
+  &:-moz-placeholder {
+    /* Firefox 18- */
+    color: $color;
+    font-style: $font-type;
+    font-family: $family;
+  }
+  &::-moz-placeholder {
+    /* Firefox 19+ */
+    color: $color;
+    font-style: $font-type;
+    font-family: $family;
+  }
+  &:-ms-input-placeholder {
+    color: $color;
+    font-style: $font-type;
+    font-family: $family;
+  }
+}
+
+/**RESPONSIVE TOOLS*/
+
+//Util
+@mixin media-small() {
+  @media (min-width: $screen-sm-min) {
+    @content;
+  }
+}
+
+@mixin media-middle() {
+  /* Medium devices (desktops, 992px and up) */
+  @media (min-width: $screen-md-min) {
+    @content
+  }
+}
+
+@mixin media-large() {
+  /* Large devices (large desktops, 1200px and up) */
+  @media (min-width: $screen-lg-min) {
+    @content;
+  }
+
+}
+
+@mixin clearfix {
+  &:before,
+  &:after {
+    content: " "; // 1
+    display: table; // 2
+  }
+  &:after {
+    clear: both;
+  }
+}
+
+//Responsive
+@mixin make-flex-parent() {
+  display: -webkit-box; /* OLD - iOS 6-, Safari 3.1-6 */
+  display: -moz-box; /* OLD - Firefox 19- (buggy but mostly works) */
+  display: -ms-flexbox; /* TWEENER - IE 10 */
+  display: -webkit-flex; /* NEW - Chrome */
+  display: flex;
+
+  flex-flow: row wrap;
+  -webkit-flex-flow: row wrap;
+  justify-content: space-around;
+  -webkit-justify-content: space-around;
+  align-content: stretch;
+  -webkit-align-content: stretch;
+
+}
+
+@mixin make-flex-child($order, $grow) {
+  -webkit-box-ordinal-group: $order;
+  -moz-box-ordinal-group: $order;
+  -ms-flex-order: $order;
+  -webkit-order: $order;
+  order: $order;
+
+  flex-grow: $grow;
+  -webkit-flex-grow: $grow;
+}
+
+
+
+
+

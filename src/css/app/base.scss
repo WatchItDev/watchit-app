@@ -1,0 +1,194 @@
+
+html, body {
+  font-family: $font-family-base;
+  box-sizing: border-box;
+  -webkit-user-select: none;
+
+}
+
+a {
+  text-decoration: none;
+  color: $link-color;
+}
+
+ul {
+  margin: 0;
+}
+
+h1 {
+  line-height: 130%;
+
+}
+
+body {
+  font-size: 100%;
+  overflow: hidden;
+  margin: 0;
+  //background-size: cover;
+}
+
+
+@-webkit-keyframes autofill {
+  to {
+    color: #fff;
+    background: transparent !important;
+  }
+}
+
+//Clean autocomplete colors
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+textarea:-webkit-autofill:active,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus,
+select:-webkit-autofill:active,
+select:-webkit-autofill:focus {
+  -webkit-transition: background-color 2s ease-out;
+  -webkit-transition-delay: 9999s;
+  //-webkit-box-shadow:0 0 0 50px rgba(0,0,0,0.4) inset; /* Change the color to your own background color */
+  -webkit-text-fill-color: #fff;
+}
+
+input[type=number]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  cursor: pointer;
+  display: block;
+  width: 8px;
+  color: #fff;
+  text-align: center;
+  position: relative;
+}
+
+input[type=number]::-webkit-inner-spin-button:before,
+input[type=number]::-webkit-inner-spin-button:after {
+  content: "^";
+  font-weight: bold;
+  position: absolute;
+  right: 0;
+  font-family: monospace;
+  line-height: 0;
+}
+
+input[type=number]::-webkit-inner-spin-button:before {
+  top: 15px;
+}
+
+input[type=number]::-webkit-inner-spin-button:after {
+  bottom: 15px;
+  -webkit-transform: rotate(180deg);
+}
+
+input[type=file] {
+  display: none;
+
+  & + label {
+    @extend .btn;
+    padding: 0 10px;
+  }
+}
+
+//Video conf
+video::-webkit-media-text-track-container {
+  // Style the container
+}
+
+video::-webkit-media-text-track-background {
+  // Style the text background
+}
+
+:root {
+  --plyr-font-size-large: 3.5vw;
+  --plyr-font-size-base: 3.5vw;
+  --plyr-captions-background: rgba(0, 0, 0, 0);
+}
+
+.plyr__captions {
+  bottom: 4rem !important;
+
+  .plyr__caption {
+    color: #fff;
+    font-family: $font-family-titles;
+    font-size: 1rem !important;
+    display: block;
+    line-height: 1.2;
+    font-style: normal !important;
+    font-weight: bold !important;
+    text-shadow: 0px 0px 10px #000, -2px -2px 1px #000, 2px -2px 1px #000, -2px 2px 1px #000, 2px 2px 1px #000;
+  }
+}
+
+@media (min-width: 500px) {
+  .plyr__captions {
+    .plyr__caption {
+      font-size: 1.5rem !important;
+    }
+  }
+}
+
+@media (min-width: 768px) {
+  .plyr__captions {
+    .plyr__caption {
+      font-size: 2rem !important;
+    }
+  }
+}
+
+@media (min-width: 992px) {
+  .plyr__captions {
+    .plyr__caption {
+      font-size: 2.5rem !important;
+    }
+  }
+}
+
+@media (min-width: 1200px) {
+  .plyr__captions {
+    .plyr__caption {
+      font-size: 3rem !important;
+    }
+  }
+}
+
+@media (min-width: 2000px) {
+  .plyr__captions {
+    .plyr__caption {
+      font-size: 3.5rem !important;
+    }
+  }
+}
+
+
+video::-webkit-media-text-track-display {
+  -moz-transform: translateY(-3rem) !important;
+  -ms-transform: translateY(-3rem) !important;
+  -o-transform: translateY(-3rem) !important;
+  -webkit-transform: translateY(-3rem) !important;
+  transform: translateY(-3rem) !important;
+
+}
+
+video::-webkit-media-text-track-display, video::cue {
+  color: #fff;
+  //font-family: $font-family-titles;
+  font-size: 3.2vw !important;
+  font-style: normal !important;
+  font-weight: bold !important;
+  text-align: center;
+  text-shadow: 0px 0px 10px #000, -2px -2px 1px #000, 2px -2px 1px #000, -2px 2px 1px #000, 2px 2px 1px #000;
+  pointer-events: auto !important;
+  background-color: transparent !important;
+
+}
+//
+//::-webkit-scrollbar {
+//  min-width: 1px;
+//  min-height: 1px;
+//}

@@ -1,0 +1,15 @@
+.image-background-cover {
+  background-size: cover !important;
+}
+
+.image-container {
+  @include clearfix;
+  height: auto;
+}
+
+.responsive-img {
+  @extend .responsive-img;
+  width: 100%;
+  max-width: 100%;
+  position: relative;
+}

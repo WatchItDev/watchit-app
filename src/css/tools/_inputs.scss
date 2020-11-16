@@ -1,0 +1,22 @@
+/**INPUTS*/
+.input-field-black {
+  @extend .input-field;
+  @include border-radius(5px);
+  background-color: rgba(0, 0, 0, 0.5) !important;
+  padding-left: 1.3rem !important;
+
+  input {
+    //@include transform();
+    @include placeholder(#fff);
+    background-color: transparent !important;
+    float: left;
+    border: none !important;
+    margin: 0 0 2px 0 !important;
+
+    &:focus {
+      border: none !important;
+      outline: none !important;
+      box-shadow: none !important;
+    }
+  }
+}

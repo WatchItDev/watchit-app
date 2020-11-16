@@ -1,0 +1,8 @@
+.gradient-horizontal-gray {
+  @include gradients(to right, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.0))
+}
+
+
+.gradient-vertical-gray{
+  @include gradients(top, transparentize($brand-primary, 0.8), transparentize($brand-primary, 0.6), transparentize($brand-primary, 0.4), transparentize($brand-primary, 0.2), transparentize($brand-primary, 0))
+}

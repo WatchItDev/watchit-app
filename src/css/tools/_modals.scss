@@ -1,0 +1,41 @@
+/*MODALS*/
+.modal-box {
+  @include clearfix();
+  @include border-radius(5px 5px);
+  position: relative;
+  background-color: rgba(0, 0, 0, 0.9);
+  width: 300px;
+  height: auto;
+  min-height: 60px;
+
+  .close-modal {
+    position: absolute;
+    right: -10px;
+    top: -10px;
+  }
+}
+
+.modal-trailer-box {
+  @extend .modal-box;
+  width: 800px;
+  height: 500px;
+  iframe {
+    //border: 3px solid #fff;
+    overflow: hidden;
+    position: relative;
+    width: 800px;
+    height: 500px;
+  }
+}
+
+.modal-fb {
+  @extend .modal-box;
+  width: 800px;
+  height: 450px;
+  iframe {
+    //border: 3px solid #fff;
+    position: relative;
+    width: 800px;
+    height: 450px;
+  }
+}

@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<!-- saved from url=(0046)http://127.0.0.1:8000/delivery/assign/routing/ -->
+<html lang="es" class="" style="height: 100%;"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+    
+    
+        <link rel="stylesheet" type="text/css" href="./routing_files/ini.css">
+        <link rel="stylesheet" href="./routing_files/jquery-ui.css">
+        <link rel="stylesheet" type="text/css" href="./routing_files/jquery.fancybox.css">
+        <link rel="stylesheet" type="text/css" href="./routing_files/jBox.css">
+        
+        <link rel="stylesheet" type="text/css" href="./routing_files/bootstrap-switch.css">
+    
+<link type="text/css" rel="stylesheet" charset="UTF-8" href="./routing_files/translateelement.css"><script type="text/javascript" charset="UTF-8" src="./routing_files/main_es.js"></script><style type="text/css">.fancybox-margin{margin-right:15px;}</style><script type="text/javascript" charset="UTF-8" src="./routing_files/element_main.js"></script></head>
+<body style="position: relative; min-height: 100%; top: 0px;">
+
+
+<main class="container-fluid">
+    <div id="overlay" class="background-1"></div>
+
+    
+    <header class="row" id="header-box">
+        <div class="col-lg-1 col-md-2 col-sm-2 col-xs-3">
+            <a href="http://127.0.0.1:8000/dashboard/">
+                <figure id="global_js_data" class="logo">
+                    <img src="./routing_files/envioslogo_big.png" alt="">
+                </figure>
+            </a>
+        </div>
+
+        
+        <div class="col-lg-5 col-md-4 col-sm-7 col-xs-7 vcenter search-box">
+            <form action="http://127.0.0.1:8000/delivery/assign/routing/" id="form-global-search" role="form" method="post" data-result="#global-search-result" data-url="/search/get/">
+                <input type="hidden" name="csrfmiddlewaretoken" value="G0pkPpyL5efHY1eygffGkBzl3Wp5V8Ky">
+                <div class="col-lg-10 col-md-9 col-xs-12 col-sm-12">
+                    <input type="text" name="search_query" autocomplete="off" id="input-search" placeholder="Write your search .." class="blur-box form-control" data-result="#global-search-result">
+
+                    
+                    <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 no-padding">
+                        <div class="search-result" id="global-search-result"></div>
+                    </div>
+                </div>
+
+                <div class="col-lg-2 col-md-2 visible-lg visible-md no-padding">
+                    <button type="submit" class="btn btn-success">
+                        Search
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        
+        <div class="col-lg-4 col-md-4 vcenter visible-md visible-lg">
+            <ul class="list-unstyled no-margin list-inline">
+                
+                
+                    
+                        <a href="http://127.0.0.1:8000/user/watch/1/" class="btn btn-default alert-warning no-text-decoration-hover">
+                            <li class="bold">
+                                <i class="icon-squared-minus normalize-icon"></i>$ 965.00
+                            </li>
+                        </a>
+                    
+                
+
+                
+                
+                    <a href="http://127.0.0.1:8000/notifications/view/" class="btn btn-default no-text-decoration-hover">
+                        <li class="gray bold" id="notify_number">
+                            
+                                <i class="icon-new money normalize-icon"></i>
+                                <span class="money"><strong>17</strong></span>
+                            
+                        </li>
+                    </a>
+                
+
+                
+                
+
+                
+                
+
+                <li class="white bold">
+                    <button type="button" id="track-qr" class="btn btn-success tooltip-trigger">
+                        <i class="icon-popup"></i>
+                    </button>
+                </li>
+            </ul>
+        </div>
+
+        
+        <div class="col-xs-2 col-sm-2 col-sm-offset-1 vcenter  visible-sm visible-xs">
+            <a href="http://127.0.0.1:8000/delivery/assign/routing/#menu-mb-content" id="mobile-menu" class="white fancy-trigger no-text-decoration-hover clearfix">
+                <i class="icon-list blue font-size-big" style="font-size: 30px"></i>
+            </a>
+        </div>
+
+        <div id="menu-mb-content" style="display: none">
+            <ul class="list-group">
+                <li class="list-group-item list-group-item-success">
+                    <i class="icon-popup"></i>
+                    <strong>Read Qr</strong>
+                </li>
+                
+                    <a href="http://127.0.0.1:8000/user/watch/1/" class="no-text-decoration-hover">
+                        <li class="list-group-item">
+                            <span class="badge">965.00</span>
+                            <strong>$</strong>
+                        </li>
+                    </a>
+                
+                
+                
+                    <a href="http://127.0.0.1:8000/notifications/view/" class="no-text-decoration-hover">
+                        <li class="list-group-item" id="notify_number">
+                            
+                                <span class="badge"><strong>17</strong></span>
+                                <i class="icon-new money normalize-icon"></i>
+                            
+                        </li>
+                    </a>
+                
+
+                
+                
+
+                
+                
+
+                
+                    <a href="http://127.0.0.1:8000/admin/" class="no-text-decoration-hover">
+                        <li class="list-group-item">
+                            <i class="icon-switch normalize-icon"></i>
+                            <strong>Settings</strong>
+                        </li>
+                    </a>
+                
+
+                <a href="http://127.0.0.1:8000/user/logout" class="white no-text-decoration-hover">
+                    <li class="list-group-item list-group-item-danger">
+                        <i class="icon-log-out normalize-icon"></i>
+                        <strong>Logout</strong>
+                    </li>
+                </a>
+
+
+            </ul>
+        </div>
+
+        
+        <div class="col-lg-2 col-md-2 vcenter visible-md visible-lg profile-top-btn">
+            <div class="col-lg-12 col-md-12 btn btn-primary visible-lg visible-md">
+                <div>
+                    <a href="http://127.0.0.1:8000/user/watch/1/" class="white no-text-decoration-hover">
+                        <i class="icon-arrow-down normalize-icon"></i>
+                        <span>fortega</span>
+                    </a>
+                </div>
+                <div class="sub-menu-box">
+                    <ul class="list-unstyled no-margin">
+                        
+                            <a href="http://127.0.0.1:8000/admin/" class="white no-text-decoration-hover">
+                                <li><i class="icon-switch normalize-icon"></i>Settings</li>
+                            </a>
+                        
+                        <a href="http://127.0.0.1:8000/user/logout" class="white no-text-decoration-hover">
+                            <li><i class="icon-logout normalize-icon"></i>Logout</li>
+                        </a>
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    
+    <section class="row dashboard">
+        
+        <aside class="col-lg-2 col-md-2 col-sm-1 col-xs-2 main-menu">
+            <a href="http://127.0.0.1:8000/dashboard/">
+                <div class="row border-color-gray">
+                    <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 main-menu-icon">
+                        <i class="icon-info normalize-icon no-margin"></i>
+                    </div>
+                    <div class="col-lg-9 col-md-9 visible-lg visible-md main-menu-title">
+                        <span class="bold">DASHBOARD</span>
+                    </div>
+                </div>
+            </a>
+
+            
+                <a href="http://127.0.0.1:8000/user/view/">
+                    <div class="row border-color-blue">
+                        <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 main-menu-icon">
+                            <i class="icon-user normalize-icon no-margin"></i>
+                        </div>
+                        <div class="col-lg-9 col-md-9 visible-lg visible-md main-menu-title">
+                            <span class="bold">USERS</span>
+                        </div>
+                    </div>
+                </a>
+            
+
+            
+                <a href="http://127.0.0.1:8000/customers/view/">
+                    <div class="row border-color-blue">
+                        <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 main-menu-icon">
+                            <i class="icon-users normalize-icon no-margin"></i>
+                        </div>
+                        <div class="col-lg-9 col-md-9 visible-lg visible-md main-menu-title">
+                            <span class="bold">CUSTOMERS</span>
+                        </div>
+                    </div>
+                </a>
+            
+
+            
+                <a href="http://127.0.0.1:8000/agency/view/list/">
+                    <div class="row border-color-green">
+                        <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 main-menu-icon">
+                            <i class="icon-home normalize-icon no-margin"></i>
+                        </div>
+                        <div class="col-lg-9 col-md-9 visible-lg visible-md main-menu-title">
+                            <span class="bold">AGENCIES</span>
+                        </div>
+                    </div>
+                </a>
+            
+
+            
+                <a href="http://127.0.0.1:8000/countries/view/">
+                    <div class="row border-color-green">
+                        <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 main-menu-icon">
+                            <i class="icon-map normalize-icon no-margin"></i>
+                        </div>
+                        <div class="col-lg-9 col-md-9 visible-lg visible-md main-menu-title">
+                            <span class="bold">COUNTRIES</span>
+                        </div>
+                    </div>
+                </a>
+            
+
+            
+                <a href="http://127.0.0.1:8000/cities/view/">
+                    <div class="row border-color-green">
+                        <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 main-menu-icon">
+                            <i class="icon-location normalize-icon no-margin"></i>
+                        </div>
+                        <div class="col-lg-9 col-md-9 visible-lg visible-md main-menu-title">
+                            <span class="bold">CITIES</span>
+                        </div>
+                    </div>
+                </a>
+            
+
+            
+            
+                <a href="http://127.0.0.1:8000/shipping/view/">
+                    <div class="row border-color-orange">
+                        <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 main-menu-icon">
+                            <i class="icon-forward normalize-icon no-margin"></i>
+                        </div>
+                        <div class="col-lg-9 col-md-9 visible-lg visible-md main-menu-title">
+                            <span class="bold">SHIPPING</span>
+                        </div>
+                    </div>
+                </a>
+            
+
+            
+            
+                <a href="http://127.0.0.1:8000/delivery/view/">
+                    <div class="row border-color-orange">
+                        <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 main-menu-icon">
+                            <i class="icon-truck normalize-icon no-margin"></i>
+                        </div>
+                        <div class="col-lg-9 col-md-9 visible-lg visible-md main-menu-title">
+                            <span class="bold">DELIVERY</span>
+                        </div>
+                    </div>
+                </a>
+            
+
+            
+            
+                <a href="http://127.0.0.1:8000/package/box/view/">
+                    <div class="row border-color-orange">
+                        <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 main-menu-icon">
+                            <i class="icon-box normalize-icon no-margin"></i>
+                        </div>
+                        <div class="col-lg-9 col-md-9 visible-lg visible-md main-menu-title">
+                            <span class="bold">PACKAGES</span>
+                        </div>
+                    </div>
+                </a>
+            
+
+            
+                <a href="http://127.0.0.1:8000/flights/view/flight/">
+                    <div class="row border-color-orange">
+                        <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 main-menu-icon">
+                            <i class="icon-aircraft normalize-icon no-margin"></i>
+                        </div>
+                        <div class="col-lg-9 col-md-9 visible-lg visible-md main-menu-title">
+                            <span class="bold">FLIGHTS</span>
+                        </div>
+                    </div>
+                </a>
+            
+
+            
+            
+                <a href="http://127.0.0.1:8000/orders/view/">
+                    <div class="row border-color-orange">
+                        <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 main-menu-icon">
+                            <i class="icon-shopping-cart normalize-icon no-margin"></i>
+                        </div>
+                        <div class="col-lg-9 col-md-9 visible-lg visible-md main-menu-title">
+                            <span class="bold">ORDERS</span>
+                        </div>
+                    </div>
+                </a>
+            
+            
+            
+                <a href="http://127.0.0.1:8000/services/view/">
+                    <div class="row border-color-orange">
+                        <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 main-menu-icon">
+                            <i class="icon-suitcase normalize-icon no-margin"></i>
+                        </div>
+                        <div class="col-lg-9 col-md-9 visible-lg visible-md main-menu-title">
+                            <span class="bold">SERVICES</span>
+                        </div>
+                    </div>
+                </a>
+            
+
+            
+            
+                <a href="http://127.0.0.1:8000/money/view/list/">
+                    <div class="row border-color-orange">
+                        <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 main-menu-icon">
+                            <i class="icon-wallet normalize-icon no-margin"></i>
+                        </div>
+                        <div class="col-lg-9 col-md-9 visible-lg visible-md main-menu-title">
+                            <span class="bold">MONEY</span>
+                        </div>
+                    </div>
+                </a>
+            
+
+            
+            
+                <a href="http://127.0.0.1:8000/reports/index">
+                    <div class="row border-color-gray">
+                        <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 main-menu-icon">
+                            <i class="icon-rss normalize-icon no-margin"></i>
+                        </div>
+                        <div class="col-lg-9 col-md-9 visible-lg visible-md main-menu-title">
+                            <span class="bold">REPORTS</span>
+                        </div>
+                    </div>
+                </a>
+            
+        </aside>
+
+        
+        <section class="col-lg-10 col-md-10 col-sm-11 col-xs-10">
+            
+    <section class="row general-box">
+        <header class="col-lg-12 col-md-12 col-xs-12 col-sm-12 middle-title">
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                <i class="icon-truck normalize-icon blue float-left"></i>
+                <h2 class="normalize-heading blue bold">
+                    
+    Delivery
+
+                </h2>
+            </div>
+            <div class="col-lg-4 col-md-4 col-md-pull-1 col-lg-pull-1 col-sm-12 col-xs-12 vcenter ">
+                <div class="row">
+                    
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 heading-submit no-padding">
+        <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-6">
+            <input type="submit" form="form-create" class="btn btn-primary col-lg-12 col-md-12 col-sm-12 col-xs-12" value="Assign">
+        </div>
+        <div class="form-group col-lg-6 col-md-6 col-sm-6 col-xs-6 no-padding">
+            <input type="reset" form="form-create" class="btn btn-danger col-lg-12 col-md-12 col-sm-12 col-xs-12" value="Clean">
+        </div>
+    </div>
+
+                </div>
+            </div>
+        </header>
+
+        
+        <section class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
+            
+
+    
+    
+
+    
+    
+
+    
+
+    <form action="http://127.0.0.1:8000/delivery/assign/routing/" method="post" role="form" id="form-create" class="form-box">
+        <input type="hidden" name="csrfmiddlewaretoken" value="G0pkPpyL5efHY1eygffGkBzl3Wp5V8Ky">
+        <div class="panel panel-default">
+            <header class="panel-heading">
+                <strong class="gray">Routing Add</strong>
+            </header>
+            <div class="panel-body">
+
+                <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12 no-padding">
+                    <div class="form-group col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                        
+                        <label class="soft-gray" for="id_route">Route</label>
+                        <select class="form-control" id="id_route" name="route">
+<option value="" selected="selected">---------</option>
+<option value="3">Managua | CFR</option>
+</select>
+
+                        <div class="font-size-xs soft-gray margin-top3">
+                            Routes list for your city
+                        </div>
+
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                        
+                        <label class="soft-gray" for="id_user">Agent*</label>
+                        <select class="form-control" id="id_user" name="user">
+<option value="" selected="selected">---------</option>
+<option value="9">delivery2</option>
+</select>
+
+                        <div class="font-size-xs soft-gray margin-top3">
+                            Delivery Agents list for your city
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+
+
+        </section>
+
+        <aside class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+            <nav class="panel panel-info module-menu">
+                <header class="panel-heading">
+                    <strong>Menu</strong>
+                </header>
+                
+    <ul class="list-unstyled panel-body">
+        <li class="bold">
+            <i class="icon-list blue normalize-icon"></i>
+            <a href="http://127.0.0.1:8000/delivery/view/">
+                Routes
+            </a>
+        </li>
+        
+            <li class="bold">
+                <i class="icon-plus blue normalize-icon"></i>
+                <a href="http://127.0.0.1:8000/delivery/add/">
+                    New Route
+                </a>
+            </li>
+        
+        <hr>
+
+        
+            <li class="bold">
+                <i class="icon-list blue normalize-icon"></i>
+                <a href="http://127.0.0.1:8000/delivery/list/routing/">
+                    Routing
+                </a>
+            </li>
+        
+
+        
+            <li class="bold">
+                <i class="icon-plus blue normalize-icon"></i>
+                <a href="http://127.0.0.1:8000/delivery/assign/routing/">
+                    New Routing
+                </a>
+            </li>
+        
+    </ul>
+
+            </nav>
+        </aside>
+        
+        
+    </section>
+
+        </section>
+    </section>
+
+
+    
+    <div class="the_notify_pop_box"></div>
+    <template id="new_notify"></template>
+    
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    
+    <template id="loader"></template>
+    
+
+</main>
+
+<script src="./routing_files/jquery-2.1.4.min.js"></script>
+<script src="./routing_files/jquery.fancybox.min.js"></script>
+
+<script src="./routing_files/jBox.min.js"></script>
+
+<script src="./routing_files/bootstrap-switch.min.js"></script>
+<script src="./routing_files/Syrup.min.js"></script>
+<script src="./routing_files/Search.min.js"></script>
+<script src="./routing_files/Image.min.js"></script>
+<script src="./routing_files/Repository.min.js"></script>
+<script src="./routing_files/WebSocket.min.js"></script>
+<script src="./routing_files/SocketHelper.min.js"></script>
+<script src="./routing_files/FilterHelper.min.js"></script>
+
+<script type="text/javascript" src="./routing_files/grid.js"></script>
+<script type="text/javascript" src="./routing_files/version.js"></script>
+<script type="text/javascript" src="./routing_files/detector.js"></script>
+<script type="text/javascript" src="./routing_files/formatinf.js"></script>
+<script type="text/javascript" src="./routing_files/errorlevel.js"></script>
+<script type="text/javascript" src="./routing_files/bitmat.js"></script>
+<script type="text/javascript" src="./routing_files/datablock.js"></script>
+<script type="text/javascript" src="./routing_files/bmparser.js"></script>
+<script type="text/javascript" src="./routing_files/datamask.js"></script>
+<script type="text/javascript" src="./routing_files/rsdecoder.js"></script>
+<script type="text/javascript" src="./routing_files/gf256poly.js"></script>
+<script type="text/javascript" src="./routing_files/gf256.js"></script>
+<script type="text/javascript" src="./routing_files/decoder.js"></script>
+<script type="text/javascript" src="./routing_files/qrcode.js"></script>
+<script type="text/javascript" src="./routing_files/findpat.js"></script>
+<script type="text/javascript" src="./routing_files/alignpat.js"></script>
+<script type="text/javascript" src="./routing_files/databr.js"></script>
+
+
+
+
+
+    
+
+
+
+
+    <script src="./routing_files/js"></script>
+    <script src="./routing_files/Map.min.js"></script>
+
+    <script>
+        _$(function () {
+            var _map = new GoogleMap,
+                    _input_lt_ln = JSON.parse(""),
+                    _labels = JSON.parse(""),
+                    _map_box = _$('#map-box'),
+                    _map_selected_point = _$('#selected-point'),
+                    _input = _$('#id_latlong'),
+                    _input_color = _$('#id_color');
+
+
+            // The map container
+            _map.setMapContainer(_map_box);
+            _map.setMapPosition({
+                latitude: ,
+                longitude: 
+            });
+
+
+            _$('#close-poligon').addListener('click', function () {
+                if (_map.getCoords().length > 0) {
+                    _map.appendCoord(_map.coordsCollection[0]);
+                    _map.drawRoute({strokeColor: _input_color.val()});
+                    _map.createInfoLabel(_$('#id_code').val() || 'Zone', {
+                        position: _map.makePosition(_map.getCoordsCenterPoint())
+                    }).open(_map.mapa);
+                }
+            });
+
+            function appendRouteDom(e, _ltln) {
+                var _div = _$('<div>'),
+                        _hr = '<hr>',
+                        _new_val = (_input.val() || "") + _.jsonToString(_ltln) + ';';
+
+                _div.addClass('font-size-xs');
+                _div.text(e.city + ': ' + _ltln.latitude + ', ' + _ltln.longitude);
+
+                _input.val(_new_val);
+
+                _map_selected_point.append(_hr);
+                _map_selected_point.append(_div);
+            }
+
+
+            
+            
+            
+            
+
+            _$('#clear-poligon').addListener('click', function () {
+                _input.val('');
+                _map_selected_point.empty();
+                _map.clearInfoLabels();
+                _map.cleanCoords();
+                _map.clearMarkers();
+                _map.clearRoutes()
+            });
+
+            //_map.setMapType('satellite');
+            _map.createMap({zoom: 10}, function (map) {
+
+                //Callback, after create
+                $.each(_input_lt_ln, function (color, points) {
+                    //For each point collection
+                    if (points.length > 0) {
+
+                        $.each(points[0], function (i, lat_long) {
+                            var _local_point = JSON.parse(lat_long),
+                                    _make_position = _map.makePosition(_local_point);
+
+                            //Append locations
+                            _map.appendCoord(_make_position);
+                        });
+
+                        _map.appendCoord(_map.coordsCollection[0]);
+                        _map.drawRoute({strokeColor: color}, function () {
+                            _map.createInfoLabel(_labels[color].toString(), {
+                                position: _map.makePosition(_map.getCoordsCenterPoint())
+                            }).open(_map.mapa);
+                        });
+
+
+                        //Reset points
+                        if (_map.coordsCollection.length == points[0].length + 1) {
+                            _map.coordsCollection.length = 0;
+                        }
+                    }
+
+                });
+
+                _map.on('click', function (e) {
+                    var _ltln = _map.parseLatLngEvent(e);
+                    _map.setMarker(_ltln, {});
+                    _map.drawRoute({strokeColor: _input_color.val()});
+                    _map.getLocationInfo(_ltln, function (e) {
+                        appendRouteDom(e, _ltln);
+                    });
+
+                })
+            });
+        })
+    </script>
+
+<script type="text/javascript">
+    function googleTranslateElementInit() {
+        new google.translate.TranslateElement({
+            pageLanguage: 'en',
+            layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+        }, 'google_translate_element');
+    }
+</script>
+<script type="text/javascript" src="./routing_files/element.js"></script>
+<!--GLOBAL EVENTS-->
+<script>
+
+    $(function () {
+
+        var _body = $('body'),
+                _global_phone_formats = JSON.parse("{\u00221\u0022: \u00220000\u002D0000\u0022, \u00222\u0022: \u0022000\u002D000\u002D0000\u0022}"),
+                _agencies_phone_formats = JSON.parse("{\u00228\u0022: 1, \u00221\u0022: 1, \u00227\u0022: 2, \u00229\u0022: 1}");
+
+        //### Switcher
+        $.fn.bootstrapSwitch.defaults.size = 'small';
+        $('.switch-trigger').bootstrapSwitch();
+
+        //### The Tooltip ###
+        $('.tooltip-trigger').jBox('Tooltip');
+
+        //THE POPUPS
+        //The new customer iframe
+        var _fancy_box = $('.fancy-trigger');
+        _fancy_box.fancybox({
+            maxWidth: 800,
+            autoSize: true,
+            closeBtn: true,
+            fullScreen : true,
+            touch : true,
+            afterClose: function () {
+                if (_fancy_box.data('reload-on-close'))
+                    location.reload()
+            },
+            iframe: {
+                scrolling: 'no',
+                preload: true
+            },
+            openEffect: 'elastic',
+            helpers: {
+                overlay: {
+                    css: {
+                        'background': 'rgba(0, 0, 0, 0.5)'
+                    }
+                }
+            }
+        });
+
+        //###Date Pickers ###
+        
+
+        //### SEARCH ###
+        var search = new Search;
+        _body.on('submit', '#form-global-search', function (e) {
+            search.formProcess(e)
+
+        }).on('input paste, keyup', '#input-search', function (e) {
+            if (e.which == 9) return false;
+            if (search.cleanResult($(e.target))) {
+                search.setTime(function () {
+                    $('#form-global-search').trigger('submit');
+                });
+            }
+
+            //BLUR HANDLING
+        }).on('blur', '.blur-box', function (e) {
+            //Blur event for dropdown boxes, just add .blu-box class for all box
+            if (!$(e.relatedTarget).is('.result-no-blur')) {
+                $($(e.target).data('result')).hide();
+            }
+        }).on('input paste, keyup, focus', '.blur-box', function (e) {
+            $($(e.target).data('result')).hide();
+        });
+        //### End Search Top ###
+
+        //PHONES
+        //### Validating Phones in forms
+        _body.on('change', '#phone-check-from', function () {
+            var _obj = $(this),
+                    _get_result = {
+                        'country': +_obj.val() in _global_phone_formats && _global_phone_formats[+_obj.val()],
+                        'agency': +_obj.val() in _agencies_phone_formats && _global_phone_formats[_agencies_phone_formats[+_obj.val()]]
+                    }[_obj.data('type')];
+
+            if (_get_result) {
+                $('#phone-check').attr('placeholder', _get_result);
+                $('#the_pattern_phone_info').text('Use the pattern "' + _get_result + '"')
+            }
+
+        });
+        //### End Validating Phones in forms
+
+        //### WEBSOCKETS ###
+        //Wait connections
+        var _sock = new Socket(),
+                _conf = {
+                    host: '52.10.41.104',
+                    port: 9500,
+                    user: "fortega"
+                };
+
+
+        _sock.set(_conf);
+        _sock.on('open', function () {
+            _sock.send({
+                type: 'new_connection',
+                param: 1,
+                content: "Francisco Ortega",
+                url: "/user/watch/1/",
+                all: true
+            });
+        });
+
+        _sock.on('message', function (e) {
+            var _res = JSON.parse(e.data);
+
+            if (MessageHandler[_res.type]) {
+                MessageHandler[_res.type](_res);
+            }
+        });
+
+        _sock.on('close', function () {
+            setTimeout(function () {
+                _sock.set(_conf);
+            }, 5000)
+
+        });
+        //### End The Websocket ###
+
+
+        //### Image Handler ###
+        //Global image handler
+        var image = new Images;
+        _body.on('click', '#select_file', function () {
+            var _obj = $(this),
+                    _target = $(_obj.data('input')),
+                    _result = _obj.data('result'),
+                    _error = _obj.data('error');
+
+            _target.trigger('click');
+            _target.data('result', _result);
+            _target.data('error', _error);
+
+        }).on('change', '.image-input', function (e) {
+            var _obj = $(this),
+                    _result = $(_obj.data('result')),
+                    _error = $(_obj.data('error')),
+                    _img = image.getImage(e);
+
+            if (image.validateImage(_img)) {
+                _error.hide();
+                image.requestResult(_img, _result);
+            } else {
+                _error.text('A image format file is needed');
+                _error.show();
+            }
+        });
+        //### End Image ##
+
+        //### The Filter Process ###
+        //Global filter table component
+        var filter_custom = new Search,
+                filter_repo = new Repository;
+
+        // Clear the localstorage
+        filter_repo.clear('inherit_filter');
+
+        // Filter Events
+        //TODO improve with data tables plugin..
+        _body.on('click', '.filter-order-trigger', function (e) {
+            e.preventDefault();
+            var _obj = $(this),
+                    _conf = $.extend({}, _obj.data('conf'),
+                            {'type': 'order_by', 'get': _obj.data('param')});
+
+            //Keep Filter
+            filter_repo.set('inherit_filter', _conf);
+
+            //The Ajax Request
+            FilterHelper.request(_conf, _obj, function (_res) {
+                _obj.parents('.filter-tool').html(_res)
+            });
+
+        }).on('keydown', '.filter-custom-trigger', function (e) {
+            filter_custom.setTime(function () {
+                var _obj = $(e.target),
+                        _conf = $.extend({}, _obj.data('conf'),
+                                {'type': 'custom', 'get': $(e.target).val()});
+
+                //Keep Filter
+                filter_repo.set('inherit_filter', _conf);
+
+                //The Ajax Request
+                FilterHelper.request(_conf, _obj, function (_res) {
+                    _obj.replaceWith(_res)
+                });
+
+            }, 800);
+
+        }).on('click', '#reset-custom-filter', function () {
+            $('.filter-custom-trigger').trigger('keydown');
+
+        }).on('click', '.filter-pagination-trigger', function (e) {
+            e.preventDefault();
+            var _obj = $(e.target),
+                    _param = +_obj.data('param'), _old_params,
+                    _conf = $.extend({}, _obj.data('conf'),
+                            {'type': 'order_by', range: {'min': 0, 'max': 0}});
+
+            _conf['range']['max'] = _param > 1
+                    ? (_param * 10) : 10;
+
+            _conf['range']['min'] = _param > 1
+                    ? (_conf['range']['max'] - 10) : 0;
+
+            //Hold params
+            if ((_old_params = filter_repo.get('inherit_filter'))) {
+                //Extend params to hold the config in pagination
+                _conf = _.extend(_conf, _old_params, true);
+            }
+
+            //The Ajax Request
+            FilterHelper.request(_conf, _obj, function (_res) {
+                _obj.parents('.pagination').find('li').removeClass('active');
+                _obj.parent('li').addClass('active');
+            });
+
+        });
+        //### End The Filter Process ###
+
+    });
+
+
+</script><div id="goog-gt-tt" class="skiptranslate" dir="ltr"><div style="padding: 8px;"><div><div class="logo"><img src="./routing_files/translate_24dp.png" width="20" height="20" alt="Google Traductor de Google"></div></div></div><div class="top" style="padding: 8px; float: left; width: 100%;"><h1 class="title gray">Texto original</h1></div><div class="middle" style="padding: 8px;"><div class="original-text"></div></div><div class="bottom" style="padding: 8px;"><div class="activity-links"><span class="activity-link">Sugiere una traducción mejor</span><span class="activity-link"></span></div><div class="started-activity-container"><hr style="color: #CCC; background-color: #CCC; height: 1px; border: none;"><div class="activity-root"></div></div></div><div class="status-message" style="display: none;"></div></div>
+
+<div class="goog-te-spinner-pos"><div class="goog-te-spinner-animation"><svg xmlns="http://www.w3.org/2000/svg" class="goog-te-spinner" width="96px" height="96px" viewBox="0 0 66 66"><circle class="goog-te-spinner-path" fill="none" stroke-width="6" stroke-linecap="round" cx="33" cy="33" r="30"></circle></svg></div></div></body></html>
