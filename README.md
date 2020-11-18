@@ -3,8 +3,8 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Setup
-Please run to install dependencies:
-`npm i`
+Please run `npm i` to install dependencies
+
 
 ## Available Scripts
 
@@ -50,7 +50,7 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 
 ### `npm run package-{os}`
 
-Build app to choosen OS.
+Build app to choosen OS. Depending on packaging OS will need pack in respective OS.
 
 ## Deploy
 
