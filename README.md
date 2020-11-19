@@ -1,4 +1,10 @@
+[![Gitter](https://badges.gitter.im/watchit-app/community.svg)](https://gitter.im/watchit-app/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+## Setup
+Please run `npm i` to install dependencies
+
 
 ## Available Scripts
 
@@ -44,7 +50,7 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 
 ### `npm run package-{os}`
 
-Build app to choosen OS.
+Build app to choosen OS. Depending on packaging OS will need pack in respective OS.
 
 ## Deploy
 
