@@ -30,7 +30,6 @@ module.exports = (ipcMain, rootDir, inDev) => {
         if (inDev) { // Create stats interval if dev
             if (interval || !isInstance) clearInterval(interval);
             interval = setInterval(async () => {
-
                 const id = await isInstance.id()
                 const swap = await isInstance.bitswap.stat()
                 const peers = await isInstance.swarm.peers()
@@ -55,7 +54,6 @@ module.exports = (ipcMain, rootDir, inDev) => {
 
     class Orbit {
         constructor() {
-            this.c = null;
             this.timeout = null;
             this.seedMode = false;
             this.found = false;
@@ -92,9 +90,9 @@ module.exports = (ipcMain, rootDir, inDev) => {
             }
         }
 
-        open(address, db, settings = {}) {
+        open(address, settings = {}) {
             return this.orbit.open(
-                `/orbitdb/${address}/${db}`, {
+                `${address}/`, {
                     ...{
                         overwrite: true, replicate: true
                     }, ...settings
@@ -104,10 +102,6 @@ module.exports = (ipcMain, rootDir, inDev) => {
 
         setInSeedMode(isRunningSeed = false) {
             this.seedMode = isRunningSeed
-        }
-
-        get privateKey() {
-            return Auth.getPrivateKey()
         }
 
         get publicKey() {
@@ -131,7 +125,7 @@ module.exports = (ipcMain, rootDir, inDev) => {
 
         async run(key, res) {
             console.log('Starting movies db..');
-            this.db = await this.open(key, `wt.movies.db`);
+            this.db = await this.open(key);
             this.db.events.on('peer', (p) => {
                 console.log('Peer:', p);
                 if (!this.peers.includes(p)) {
@@ -141,7 +135,6 @@ module.exports = (ipcMain, rootDir, inDev) => {
             });
 
             console.log(`Ready in orbit ${key}`);
-            Auth.addToStorage({'ingest': key});
             this._loopEvent('ready');
             this.ready = true;
 
@@ -165,56 +158,38 @@ module.exports = (ipcMain, rootDir, inDev) => {
             await this.close(true);
             ipcMain.emit('party');
             this._loopEvent('bc', msg)
+            clearInterval(interval);
         }
 
-        async caCheck(pv, res, progress, total, emit) {
-            let validationHash = this.c.get(pv);
-            this.holdKill(); // Not kill the buddy!!
+        async cA(pathQuery, res, holdKill = 0) {
+            // Await for hash ready
+            let [root, chain] = pathQuery
+            this.whenKill(holdKill); // When u need to be fuck it up!!
 
-            if (validationHash) {
-                console.log('Closing Auth');
-                this.found = true;
-                this.c.drop();
-                // Stop, we found u!
-                return res(validationHash.key)
-            }
-
-            // Emit process %
-            let _per = +((progress / total) * 100).toFixed(0);
-            if (emit) this._loopEvent('ba', _per);
-
-            // If end and nothing found!!!
-            if (Object.is(_per, 100)) {
+            try {
+                let ingestRaw = await this.node.dag.get(root, {path: chain})
+                Auth.addToStorage({'ingest': ingestRaw.value.key});
+                res(this.ingestKey) // Send new ingest key
+                this.holdKill(); // Not kill the buddy!!
+            } catch (e) {
                 console.log('Killing all');
                 await this.party();
             }
-        }
-
-        async cA(dbAddress, res, emit = true, holdKill = 0) {
-            // Await for hash ready
-            let private_ = this.privateKey;
-            this.c = await this.open(dbAddress, `wt.c.db`);
-            this.whenKill(holdKill); // When u need to be fuck it up!!
-
-            console.log('CA loaded');
-            this.c.events.on('replicate.progress', async (address, hash, entry, progress, total) => {
-                if (!this.found) // Check for cA
-                    await this.caCheck(private_, res, progress, total, emit)
-            })
 
         }
 
-        async nodeReady(dbAddress, res) {
+        async nodeReady(pathQuery, res) {
             // Create OrbitDB instance
             console.log('Node ready');
             console.log('Loading db..');
             this.orbit = await this.instanceOB();
-            if (this.hasValidCache) return await this.run(
-                this.ingestKey, res
-            );
+            if (this.hasValidCache)
+                return await this.run(
+                    this.ingestKey, res
+                );
 
             // Start run auth
-            await this.cA(dbAddress, (key) => {
+            await this.cA(pathQuery, (key) => {
                 this.run(key, res)
             })
         }
@@ -258,13 +233,13 @@ module.exports = (ipcMain, rootDir, inDev) => {
             })
         }
 
-        start(dbAddress = this.publicKey) {
+        start(pathQuery = Auth.chain) {
             if (this.ready) return Promise.resolve(this.db);
             return new Promise(async (res) => {
                 console.log(`Running ipfs node`);
                 // Create IPFS instance
                 this.node = await this.instanceNode();
-                await this.nodeReady(dbAddress, res)
+                await this.nodeReady(pathQuery, res)
             })
         }
 
@@ -294,7 +269,7 @@ module.exports = (ipcMain, rootDir, inDev) => {
                     console.log('All good');
                     this.ready = true;
                     res(key)
-                }, false, 60 * 5)
+                }, 60 * 5)
             })
         }
 
@@ -307,7 +282,6 @@ module.exports = (ipcMain, rootDir, inDev) => {
                     if (!this.hasValidCache || forceDrop) {
                         console.log('Drop DB;Index');
                         if (this.db) this.db.drop()
-                        if (this.c) this.c.drop();
                         for (const k of ['total', 'ingest', 'limit'])
                             Auth.removeFromStorage(k)
                     }

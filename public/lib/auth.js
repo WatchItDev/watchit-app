@@ -1,14 +1,26 @@
 const fs = require('fs-extra');
 const path = require('path');
-const orbit = require('orbit-db');
+const crypto = require("crypto");
 const {ROOT_STORE} = require(__dirname + '/settings/conf')
 
 module.exports = class Auth {
+
     static get db() {
         return path.join(
             ROOT_STORE, 'w_source', 'linvo'
         )
     }
+
+    static get sanitizedPublic() {
+        let pub = Auth.getPubKey();
+        return pub.split('.')
+    }
+
+    static get chain() {
+        const [root, id, hash] = Auth.sanitizedPublic
+        return [root, `links/${hash}/keys/${id}/`]
+    }
+
 
     static get init() {
         fs.ensureDirSync(this.db)
@@ -27,18 +39,9 @@ module.exports = class Auth {
         return this.addToStorage(data)
     }
 
-    static validate(hash) {
-        console.log(`Validating hash ${hash}`);
-        return orbit.isValidAddress(`/orbitdb/${hash}/wt.movies.db`)
-    }
 
     static isLogged() {
-        const file = Auth.read();
-        if (!file) return false
-        return Auth.validate(
-            Auth.getPubKey()
-        );
-
+        return !!Auth.read();
     }
 
     static readFromStorage() {
@@ -76,14 +79,27 @@ module.exports = class Auth {
 
     static getIngestKey() {
         let fileCollection = Auth.readFromStorage()
-        return fileCollection && 'ingest' in fileCollection
+        let ingestKey = fileCollection && 'ingest' in fileCollection
             ? fileCollection.ingest.trim() : null
+
+        if (!ingestKey) return false;
+        return crypto.privateDecrypt(
+            Auth.getPrivateKey(),
+            Buffer.from(ingestKey, 'base64')
+        ).toString("utf8");
+    }
+
+    static convertToPem(string) {
+        return `-----BEGIN RSA PRIVATE KEY-----\n${string}\n-----END RSA PRIVATE KEY-----\n`;
     }
 
     static getPrivateKey() {
         let fileCollection = Auth.readFromStorage()
-        return fileCollection && 'private' in fileCollection
-            ? fileCollection.private.trim() : null
+        let privateKey = fileCollection && 'private' in fileCollection
+            ? fileCollection.private.trim().replace(/\s/g, '') : null
+
+        if (!privateKey) return false
+        return Auth.convertToPem(privateKey)
     }
 
     static write(data, file = Auth.keyFile) {

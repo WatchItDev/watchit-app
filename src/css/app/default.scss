@@ -181,12 +181,21 @@
   //float: right;
   //top: 0.5rem;
 
-  input {
+  input, textarea {
     @include placeholder($gray);
   }
 
-  input, i {
-    font-size: 1.2rem;
+  textarea {
+    height: 20rem;
+    border: none;
+    outline: none;
+    padding: 10px 0 0 0;
+    resize: none;
+    overflow: hidden;
+  }
+
+  input, textarea, i {
+    font-size: 1rem;
   }
 
   .points-loader {

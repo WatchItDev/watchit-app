@@ -3,7 +3,6 @@
  */
 
 const FORMS = {
-
     login_user: {
         inputs: [{
             type: 'text',
@@ -12,13 +11,14 @@ const FORMS = {
             name: "public",
             size: 'm12 l12',
             required: true
-        }, {
-            type: 'text',
+        }],
+        textarea: [{
             placeholder: "Private Key",
             autoComplete: 'nope',
             name: "private",
             size: 'm12 l12',
-            required: true
+            required: true,
+            height: 300
         }],
         buttons: [{
             type: 'submit',
