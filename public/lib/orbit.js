@@ -377,7 +377,7 @@ module.exports = (ipcMain, rootDir, inDev) => {
             e.reply('orbit-replicated', cleanedContent, sliced, tmp.toFixed(1));
             if (!hasValidCache) e.reply('orbit-db-ready'); // Ready to show!!!
             Auth.addToStorage({'chunk': sliced, 'tmp': tmp, 'lastHash': lastHash, 'total': total});
-            if (sliced >= total) Auth.addToStorage({'cached': true, 'hash': []})
+            if (sliced >= total) Auth.addToStorage({'cached': true, 'hash': [], 'lastHash': null})
             asyncLock = false; // Avoid overhead release lock
             console.log('Release Lock')
         }
