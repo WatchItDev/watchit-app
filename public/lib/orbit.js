@@ -419,7 +419,8 @@ module.exports = (ipcMain, rootDir, inDev) => {
             .on('ready', () => e.reply('orbit-ready'))
             .on('error', (m) => e.reply('orbit-error', m))
             .on('peer', (peerSize) => e.reply('orbit-peer', peerSize))
-            .on('progress', (_, hash) => orbit.queue = hash); // FIFO
+            .on('progress', (_, hash) => orbit.queue = hash) // FIFO
+
         console.log('Start orbit..');
         await orbit.start();
     });
