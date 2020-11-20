@@ -321,27 +321,20 @@ module.exports = (ipcMain, rootDir, inDev) => {
             })
         }
 
+
         set queue(hash) {
             console.log('Storing hash in queue');
             let cache = Auth.readFromStorage();
             let cacheList = cache.hash || []
             let newHash = cacheList.concat(hash)
             Auth.addToStorage({ // Restore list cleaned
-                'hash': this.removeDuplicates(newHash)
+                hash: this.removeDuplicates(newHash)
             })
         }
 
         get queue() {
             let cache = Auth.readFromStorage();
-            return cache.hash || []
-        }
-
-        clearInQueue(hash) {
-            let currentQueue = this.queue
-            let index = currentQueue.indexOf(hash)
-            console.log('Removing index', index)
-            currentQueue.splice(index, 1) // Remove index
-            Auth.addToStorage({'hash': currentQueue})
+            return cache['hash'] || []
         }
 
     }
@@ -384,7 +377,7 @@ module.exports = (ipcMain, rootDir, inDev) => {
             e.reply('orbit-replicated', cleanedContent, sliced, tmp.toFixed(1));
             if (!hasValidCache) e.reply('orbit-db-ready'); // Ready to show!!!
             Auth.addToStorage({'chunk': sliced, 'tmp': tmp, 'lastHash': lastHash, 'total': total});
-            if (sliced >= total) Auth.addToStorage({'cached': true})
+            if (sliced >= total) Auth.addToStorage({'cached': true, 'hash': []})
             asyncLock = false; // Avoid overhead release lock
             console.log('Release Lock')
         }
@@ -395,13 +388,15 @@ module.exports = (ipcMain, rootDir, inDev) => {
 
             const [_, cache] = orbit.cache;
             const currentQueue = orbit.queue
+            const lastHash = cache.lastHash ?? 0;
+
             if (!currentQueue.length) return false;
-            let hash = currentQueue.shift()
+            let indexLastHash = currentQueue.indexOf(lastHash)
+            let hash = currentQueue[indexLastHash + 1]
 
             console.log(`Processing hash ${hash}`);
             asyncLock = true; // Lock process
             await partialSave(e, hash)
-            orbit.clearInQueue(hash)
 
             if (cache.cached && queueInterval)
                 return clearInterval(queueInterval)
@@ -412,14 +407,15 @@ module.exports = (ipcMain, rootDir, inDev) => {
     ipcMain.on('start-orbit', async (e) => {
         // More listeners
         orbit.stopEvents();
-        queueProcessor(e);
-
         orbit.on('ba', (p) => e.reply('party-progress', p))
             .on('bc', (m) => e.reply('party-rock', m))
-            .on('ready', () => e.reply('orbit-ready'))
             .on('error', (m) => e.reply('orbit-error', m))
             .on('peer', (peerSize) => e.reply('orbit-peer', peerSize))
             .on('progress', (_, hash) => orbit.queue = hash) // FIFO
+            .on('ready', () => {
+                queueProcessor(e);
+                e.reply('orbit-ready');
+            })
 
         console.log('Start orbit..');
         await orbit.start();
