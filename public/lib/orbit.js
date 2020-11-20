@@ -326,7 +326,9 @@ module.exports = (ipcMain, rootDir, inDev) => {
             let cache = Auth.readFromStorage();
             let cacheList = cache.hash || []
             let newHash = cacheList.concat(hash)
-            Auth.addToStorage({'hash': this.removeDuplicates(newHash)})
+            Auth.addToStorage({ // Restore list cleaned
+                'hash': this.removeDuplicates(newHash)
+            })
         }
 
         get queue() {
