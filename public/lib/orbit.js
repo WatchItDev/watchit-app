@@ -12,7 +12,6 @@ const msgpack = require('msgpack-lite');
 
 
 module.exports = (ipcMain, rootDir, inDev) => {
-    const MAX_RELAY = 1;
     const MAX_RETRIES = 30;
     const MAX_TIMEOUT = 60 * 1000;
 
@@ -141,6 +140,9 @@ module.exports = (ipcMain, rootDir, inDev) => {
             this.db.events.on('ready', () => this._loopEvent('loaded'))
             this.db.events.on('replicated', (address, t) => {
                 this._loopEvent('replicated', address, t)
+            });
+            this.db.events.on('replicate.progress', (address, hash, entry, progress, have) => {
+                this._loopEvent('progress', address, hash, entry, progress, have)
             });
 
             res(this.db)
@@ -307,53 +309,68 @@ module.exports = (ipcMain, rootDir, inDev) => {
             isInstance = null;
         }
 
-        iterable(params = {limit: -1}) {
-            return this.db.iterator(params)
+        get(hash) {
+            return this.db.get(
+                hash // Process incoming hash
+            ).payload.value
         }
 
-        * collect(params = {limit: -1}) {
-            for (const e of this.iterable(params))
-                yield {cid: e.payload.value, hash: e.hash}
+        removeDuplicates(hashList) {
+            return hashList.filter((value, index, self) => {
+                return self.indexOf(value) === index
+            })
+        }
+
+        set queue(hash) {
+            console.log('Storing hash in queue');
+            let cache = Auth.readFromStorage();
+            let cacheList = cache.hash || []
+            let newHash = cacheList.concat(hash)
+            Auth.addToStorage({'hash': this.removeDuplicates(newHash)})
+        }
+
+        get queue() {
+            let cache = Auth.readFromStorage();
+            return cache.hash || []
+        }
+
+        clearInQueue(hash) {
+            let currentQueue = this.queue
+            let index = currentQueue.indexOf(hash)
+            console.log('Removing index', index)
+            currentQueue.splice(index, 1) // Remove index
+            Auth.addToStorage({'hash': currentQueue})
         }
 
     }
 
     const orbit = new Orbit();
-    const [validC, cache] = orbit.cache;
-    let cacheLimit = validC && cache.limit || 0;
     let asyncLock = false;
+    let queueInterval = null;
 
-    const catIPFS = (cidCollection) => {
-        return bluebird.map(cidCollection, async (c) => {
-            for await (const file of orbit.node.get(c.cid)) {
-                if (!file.content) continue;
+    const catIPFS = async (cid) => {
+        for await (const file of orbit.node.get(cid)) {
+            if (!file.content) continue;
 
-                // console.log(`Processing ${c.cid}`);
-                const content = new BufferList()
-                for await (const chunk of file.content) content.append(chunk)
-                return {...c, ...{'content': msgpack.decode(content.slice())}};
-            }
-        })
-    }, partialSave = async (e) => {
+            // console.log(`Processing ${c.cid}`);
+            const content = new BufferList()
+            for await (const chunk of file.content) content.append(chunk)
+            return {'content': msgpack.decode(content.slice())};
+        }
+    }, partialSave = async (e, hash) => {
         console.log('Going take chunks');
         let storage = Auth.readFromStorage();
         let slice = 'chunk' in storage && storage.chunk || 0;
-        let hash = 'hash' in storage && storage.hash || null
-        let filters = {...!hash && {limit: -1} || {lt: hash, limit: -1}}
         const hasValidCache = orbit.hasValidCache
-
         if (!hasValidCache) e.reply('orbit-partial-progress', 'Starting');
-        let collectionFromIPFS = await catIPFS(orbit.collect(filters))
-        let collectionSize = collectionFromIPFS.length;
+        let collectionFromIPFS = await catIPFS(orbit.get(hash))
 
-        if (collectionSize > 0) { // If has data
-            let cleanedContent = collectionFromIPFS.reduce((o, n) => {
-                return [...o, ...n['content']]
-            }, [])
-
+        if (collectionFromIPFS) { // If has data
+            let cleanedContent = collectionFromIPFS['content']
             let slicedSize = cleanedContent.length
+
+            let lastHash = hash;
             let total = parseInt(cleanedContent[0]['total'])
-            let lastHash = collectionFromIPFS[0]['hash'];
             let sliced = slice + slicedSize
             let tmp = (sliced / total) * 100;
 
@@ -364,63 +381,43 @@ module.exports = (ipcMain, rootDir, inDev) => {
 
             e.reply('orbit-replicated', cleanedContent, sliced, tmp.toFixed(1));
             if (!hasValidCache) e.reply('orbit-db-ready'); // Ready to show!!!
-            Auth.addToStorage({'chunk': sliced, 'tmp': tmp, 'hash': lastHash, 'total': total});
+            Auth.addToStorage({'chunk': sliced, 'tmp': tmp, 'lastHash': lastHash, 'total': total});
             if (sliced >= total) Auth.addToStorage({'cached': true})
             asyncLock = false; // Avoid overhead release lock
             console.log('Release Lock')
         }
 
-    }
+    }, queueProcessor = (e) => {
+        queueInterval = setInterval(async () => {
+            if (asyncLock) return false;
+
+            const [_, cache] = orbit.cache;
+            const currentQueue = orbit.queue
+            if (!currentQueue.length) return false;
+            let hash = currentQueue.shift()
+
+            console.log(`Processing hash ${hash}`);
+            asyncLock = true; // Lock process
+            await partialSave(e, hash)
+            orbit.clearInQueue(hash)
+
+            if (cache.cached && queueInterval)
+                return clearInterval(queueInterval)
+        }, 1000)
+
+    };
 
     ipcMain.on('start-orbit', async (e) => {
         // More listeners
         orbit.stopEvents();
+        queueProcessor(e);
+
         orbit.on('ba', (p) => e.reply('party-progress', p))
             .on('bc', (m) => e.reply('party-rock', m))
             .on('ready', () => e.reply('orbit-ready'))
             .on('error', (m) => e.reply('orbit-error', m))
             .on('peer', (peerSize) => e.reply('orbit-peer', peerSize))
-            .on('loaded', async () => {
-                let storage = Auth.readFromStorage();
-                console.log(storage);
-                if ('cached' in storage) return;
-                await partialSave(e)
-            })
-            .on('replicated', async () => {
-                let limit = 1;
-                const total = orbit.db.replicationStatus.max;
-                const preload = orbit.db.replicationStatus.progress;
-
-                if (inDev) { // Show stats
-                    console.log('Memory:', (process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2), 'Mb');
-                    console.log('Current Preload:', preload);
-                    console.log('Current Limit:', limit);
-                }
-
-                if (cacheLimit) {
-                    limit = +cacheLimit;
-                    limit = limit < preload ? preload : limit;
-                    limit = limit > total ? total : limit;
-                } else {
-                    // Notify renderer that is in sync process
-                    e.reply('orbit-partial-progress', 'Synchronizing');
-                }
-
-                // Avoid last iterator skip
-                cacheLimit = limit += MAX_RELAY
-                if (asyncLock) return false;
-                if (Object.is(preload, limit)) {
-                    console.log('\n')
-                    console.log('Acquire Lock')
-                    asyncLock = true; // Acquire lock
-                    console.log('Saving preloaded:', preload);
-                    Auth.addToStorage({'limit': limit})
-                    await partialSave(e)
-                    console.log('Saved!\n');
-                }
-
-            })
-
+            .on('progress', (_, hash) => orbit.queue = hash); // FIFO
         console.log('Start orbit..');
         await orbit.start();
     });
