@@ -263,11 +263,10 @@ module.exports = (ipcMain, rootDir, inDev) => {
 
         ping() {
             return new Promise(async (res) => {
-                this.found = false;
                 this.node = await this.instanceNode();
                 this.orbit = await this.instanceOB();
                 // Start timer to wait for response
-                return this.cA(this.publicKey, (key) => {
+                return this.cA(Auth.chain, (key) => {
                     console.log('All good');
                     this.ready = true;
                     res(key)
@@ -325,7 +324,7 @@ module.exports = (ipcMain, rootDir, inDev) => {
         set queue(hash) {
             console.log('Storing hash in queue');
             let cache = Auth.readFromStorage();
-            let cacheList = cache.hash || []
+            let cacheList = cache.hash ?? []
             let newHash = cacheList.concat(hash)
             Auth.addToStorage({ // Restore list cleaned
                 hash: this.removeDuplicates(newHash)
@@ -334,7 +333,7 @@ module.exports = (ipcMain, rootDir, inDev) => {
 
         get queue() {
             let cache = Auth.readFromStorage();
-            return cache['hash'] || []
+            return cache.hash ?? []
         }
 
     }
