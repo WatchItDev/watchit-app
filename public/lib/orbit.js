@@ -369,7 +369,7 @@ module.exports = (ipcMain, rootDir, inDev) => {
             let tmp = (sliced / total) * 100;
 
             console.log('Total:', total)
-            console.log('Processed:', total - sliced)
+            console.log('Pending:', total - sliced)
             console.log('Load collection size:', slicedSize);
             console.log('Last hash:', lastHash);
 
