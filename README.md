@@ -1,6 +1,10 @@
 [![Gitter](https://badges.gitter.im/watchit-app/community.svg)](https://gitter.im/watchit-app/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Getting started
+* Cross-platform desktop apps [ElectronJs](https://www.electronjs.org/)
+* Decentralized DB [OrbitDB](https://orbitdb.org/)
+* IPFS implementation in JavaScript[JS-IPFS](https://github.com/ipfs/js-ipfs)
+* Bootstrap React App tool[Create React App](https://github.com/facebook/create-react-app).
 
 ## Setup
 Please run `npm i` to install dependencies
