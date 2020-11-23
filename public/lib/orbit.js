@@ -6,7 +6,7 @@ const IPFS = require('ipfs');
 const Auth = require('./auth');
 const P2P = require('./p2p');
 const OrbitDB = require('orbit-db');
-const bluebird = require("bluebird");
+// const bluebird = require("bluebird");
 const BufferList = require('bl/BufferList')
 const msgpack = require('msgpack-lite');
 
