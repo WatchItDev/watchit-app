@@ -6,6 +6,8 @@
 * IPFS implementation in JavaScript [JS-IPFS](https://github.com/ipfs/js-ipfs)
 * Bootstrap React App tool [Create React App](https://github.com/facebook/create-react-app).
 
+[![homepage](./src/media/img/layout/watchit-screen?raw=true)]()
+
 ## Setup
 Please run `npm i` to install dependencies
 
