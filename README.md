@@ -60,4 +60,4 @@ Build app to choosen OS. Depending on packaging OS will need pack in respective 
 
 ## Deploy
 
-Try running your own gateway https://github.com/ZorrillosDev/watchit-gateway
+Try running your [own gateway](https://github.com/ZorrillosDev/watchit-gateway)
