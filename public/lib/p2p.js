@@ -14,21 +14,23 @@ const {NOISE} = require('libp2p-noise')
 const {FaultTolerance} = require('libp2p/src/transport-manager');
 const Settings = require('./settings/orbit')
 
-const ADDRESS_LIST = [
+const AL_LIST = [
     '/ip4/0.0.0.0/tcp/4003',
     '/ip4/0.0.0.0/tcp/4004/ws'
 ]
 
 module.exports = (opts) => {
     const peerId = opts.peerId;
+    const bootstrapList = opts.config.Bootstrap
+    
     // Build and return our libp2p node
     return new Libp2p({
         peerId,
         addresses: {
-            announce: ADDRESS_LIST,
+            announce: AL_LIST,
             listen: [
-                ...ADDRESS_LIST,
-                ...Settings.BOOTSTRAP_LISTEN
+                ...AL_LIST,
+                ...Settings.SWARM_LISTEN
             ]
         },
         dialer: {
@@ -72,13 +74,8 @@ module.exports = (opts) => {
                 bootstrap: {
                     enabled: true,
                     list: [
-                        // Default bootstraps
-                        `/ip4/${Settings.BOOTSTRAP_IP}/tcp/4001/p2p/${Settings.BOOTSTRAP_HASH}`,
-                        `/ip4/${Settings.BOOTSTRAP_IP}/tcp/4002/ws/p2p/${Settings.BOOTSTRAP_HASH}`,
-                        '/dns4/node0.preload.ipfs.io/tcp/443/wss/p2p/QmZMxNdpMkewiVZLMRxaNxUeZpDUb34pWjZ1kZvsd16Zic',
-                        '/dns4/node1.preload.ipfs.io/tcp/443/wss/p2p/Qmbut9Ywz9YEDrz8ySBSgWyJk41Uvm2QJPhwDJzJyGFsD6',
-                        '/dns4/node2.preload.ipfs.io/tcp/443/wss/p2p/QmV7gnbW5VTcJ3oyM2Xk1rdFBJ3kTkvxc87UFGsun29STS',
-                        '/dns4/node3.preload.ipfs.io/tcp/443/wss/p2p/QmY7JB6MQXhxHvq7dBDh4HpbH29v4yE9JRadAVpndvzySN'
+                        ...Settings.BOOTSTRAP_LIST, 
+                        ...bootstrapList
                     ]
                 }
             },
