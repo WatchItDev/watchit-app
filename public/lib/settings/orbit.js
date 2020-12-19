@@ -1,5 +1,5 @@
 module.exports = {
-    GATEWAYS: ['ipfs.io'].
+    GATEWAYS: ['ipfs.io'],
     BOOTSTRAP_LIST: [
         '/ip4/127.0.0.1/tcp/4001/p2p/QmYye19FqWHncUTqzAHs9uQBeJmCQeVAJdekWwzihy8Su7',
         '/ip4/127.0.0.1/tcp/4002/ws/p2p/QmYye19FqWHncUTqzAHs9uQBeJmCQeVAJdekWwzihy8Su7'
