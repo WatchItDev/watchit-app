@@ -7,7 +7,7 @@ import BtnClose from 'js/front/components/generic/util-btn-close/index'
 import Movie from 'js/resources/data/movies'
 import cryptHelper from 'js/resources/helpers/cryptHelper'
 import utilHelper from 'js/resources/helpers/utilHelper'
-import setting from 'js/backend/settings';
+import setting from 'js/settings'
 
 //Movie player view class
 export default class MoviePlayer extends React.Component {

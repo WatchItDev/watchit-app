@@ -3,7 +3,7 @@ import uid from "shortid";
 import AppMoviesListRow from 'js/front/components/views/movie-index-components/app-main-movies-list-row/'
 import InfiniteLoader from "react-window-infinite-loader";
 import {FixedSizeList as List} from "react-window";
-import setting from 'js/backend/settings'
+import setting from 'js/settings'
 
 export default class AppMoviesList extends React.Component {
 	constructor(props) {

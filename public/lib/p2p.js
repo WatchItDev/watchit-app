@@ -12,7 +12,7 @@ const KadDHT = require('libp2p-kad-dht')
 const MPLEX = require('libp2p-mplex')
 const {NOISE} = require('libp2p-noise')
 const {FaultTolerance} = require('libp2p/src/transport-manager');
-const Settings = require('./settings/orbit')
+const Settings = require('./settings/ipfs')
 
 const AL_LIST = [
     '/ip4/0.0.0.0/tcp/4003',

@@ -7,7 +7,7 @@ var os = os = require('os'),
     path = require('path'),
     http = require('http'),
     request = require('request'),
-    setting = require(path.resolve() + '/js/backend/settings');
+    setting = require(path.resolve() + '/js/backend');
 
 ////Caching requests
 //request = require('cached-request')(request);

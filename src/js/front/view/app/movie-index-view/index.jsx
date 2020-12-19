@@ -6,11 +6,11 @@ import AppLoader from 'js/front/components/views/movie-player-components/app-mai
 import AppMovieDetails from 'js/front/components/views/movie-details-components/app-movie-details'
 import AppUpdater from 'js/front/components/views/movie-index-components/app-main-movies-updater'
 import StatsValue from "js/front/components/generic/util-stats";
-import setting from 'js/backend/settings'
 import storageHelper from 'js/resources/helpers/storageHelper';
 import logHelper from 'js/resources/helpers/logHelper'
 import BoxLoader from 'js/front/components/generic/util-box-loader/index.jsx'
 import Movie from 'js/resources/data/movies'
+import setting from 'js/settings'
 
 const DEFAULT_INIT_LOAD = 100;
 //Login view class
