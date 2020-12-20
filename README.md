@@ -6,6 +6,9 @@
 * IPFS implementation in JavaScript [JS-IPFS](https://github.com/ipfs/js-ipfs)
 * Bootstrap React App tool [Create React App](https://github.com/facebook/create-react-app).
 
+# About us
+Read our post in [Dev.to](https://dev.to/geolffreym/watchit-2b88)
+
 [![screenshot](./src/media/img/layout/watchit-screen.png?raw=true)]()
 
 ## Setup
