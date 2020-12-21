@@ -19,13 +19,13 @@ Please run `npm i` to install dependencies
 
 In the project directory, you can run:
 
-### `npm start && npm run dev`
+### `npm run dev`
 
 Runs the app in the development mode.<br />
 Open to view it in electron.
 
 
-### `npm run start && npm run inspect`
+### `npm run inspect`
 
 Runs the app in the development mode.<br />
 Open to view it in electron with inspect mode to connect to chrome-inspector.
