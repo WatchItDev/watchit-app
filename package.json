@@ -119,6 +119,8 @@
     "publish-mac": "npm run package-mac --publish always",
     "publish-linux": "npm run package-linux --publish always",
     "publish-win": "npm run package-win --publish always",
+    "package": "npm run package-win && npm run package-linux && npm run package-mac",
+    "publish": "npm run publish-win && npm run publish-linux && npm run publish-mac",
     "postinstall": "bash ./scripts/fix.sh"
   },
   "eslintConfig": {
