@@ -2,7 +2,7 @@
  * Created by gmena on 05-03-17.
  */
 //Storage manifest
-import manifest from 'js/backend/storage'
+import manifest from 'js/settings/storage'
 
 let Storage = {
     __toObj: {},
