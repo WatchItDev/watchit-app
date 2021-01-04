@@ -113,9 +113,12 @@
     "eject": "react-scripts eject",
     "inspect": "npm run start && LOG=debug IPFS_FD_MAX=10000 ENV=dev $(npm bin)/electron . --inspect=5858 watchit",
     "dev": "npm run start && LOG=debug IPFS_FD_MAX=10000 ENV=dev $(npm bin)/electron .",
-    "package-mac": "npm run build && electron-builder build --mac --publish always",
-    "package-linux": "npm run build && electron-builder build --linux --publish always",
-    "package-win": "npm run build && electron-builder build --win --x64 --ia32 --publish always",
+    "package-mac": "npm run build && electron-builder build --mac",
+    "package-linux": "npm run build && electron-builder build --linux",
+    "package-win": "npm run build && electron-builder build --win --x64 --ia32",
+    "publish-mac": "npm run package-mac --publish always",
+    "publish-linux": "npm run package-linux --publish always",
+    "publish-win": "npm run package-win --publish always",
     "postinstall": "bash ./scripts/fix.sh"
   },
   "eslintConfig": {
