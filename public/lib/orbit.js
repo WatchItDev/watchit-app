@@ -2,54 +2,19 @@
  * IPFS movies interface
  */
 const path = require('path');
-const IPFS = require('ipfs');
 const Auth = require('./auth');
-const P2P = require('./p2p');
 const OrbitDB = require('orbit-db');
 // const bluebird = require("bluebird");
 const BufferList = require('bl/BufferList')
 const msgpack = require('msgpack-lite');
+const getIsInstance = require('./ipfs')
 
 
 module.exports = (ipcMain, rootDir, inDev) => {
     const MAX_RETRIES = 30;
     const MAX_TIMEOUT = 60 * 1000;
-
-    const CONF = {
-        libp2p: P2P,
-        repo: path.join(rootDir, '/w_source/ipfs'),
-    };
-
-    let isInstance = null;
-    let orbitInstance = null;
-    let interval = null;
-
-    const getIsInstance = async () => {
-        isInstance = await IPFS.create(CONF)
-        if (inDev) { // Create stats interval if dev
-            if (interval || !isInstance) clearInterval(interval);
-            interval = setInterval(async () => {
-                const id = await isInstance.id()
-                const swap = await isInstance.bitswap.stat()
-                const peers = await isInstance.swarm.peers()
-                console.log('\nMyPeer: ', id.id);
-                console.log('PeersConnected: ', peers.map((d) => d.peer));
-                console.log('PeersSharing: ', swap.peers);
-                console.log('WantList: ', swap.wantlist);
-                console.log('BlocksReceived: ', swap.blocksReceived.toNumber());
-                console.log('Data Received: ', swap.dataReceived.toNumber())
-                console.log('Data Sent: ', swap.dataSent.toNumber())
-                console.log('Block Sent: ', swap.blocksSent.toNumber(), '\n')
-            }, 30 * 1000)
-        }
-        return isInstance
-    }
-
-    const getOrbitInstance = (node) => {
-        let dir = path.join(rootDir, '/w_source/orbit')
-        orbitInstance = OrbitDB.createInstance(node, {directory: dir});
-        return orbitInstance
-    }
+    const ipfsRepo = path.join(rootDir, '/w_source/ipfs')
+    const orbitRepo = path.join(rootDir, '/w_source/orbit')
 
     class Orbit {
         constructor() {
@@ -157,10 +122,10 @@ module.exports = (ipcMain, rootDir, inDev) => {
 
         async party(msg = 'Invalid Key') {
             console.log('Party rock');
+            clearInterval(this.node.interval);
             await this.close(true);
             ipcMain.emit('party');
             this._loopEvent('bc', msg)
-            clearInterval(interval);
         }
 
         async cA(pathQuery, res, holdKill = 0) {
@@ -198,7 +163,7 @@ module.exports = (ipcMain, rootDir, inDev) => {
 
         instanceOB() {
             return this.orbit && Promise.resolve(this.orbit)
-                || getOrbitInstance(this.node)
+                || OrbitDB.createInstance(this.node, {directory: orbitRepo});
         }
 
         instanceNode() {
@@ -212,7 +177,7 @@ module.exports = (ipcMain, rootDir, inDev) => {
 
                 try {
                     console.log('Setting up node..');
-                    this.node = this.node || await getIsInstance();
+                    this.node = this.node || await getIsInstance(inDev, ipfsRepo);
                     res(this.node)
                 } catch (e) {
                     console.log(e.toString())
@@ -304,8 +269,6 @@ module.exports = (ipcMain, rootDir, inDev) => {
             this.node = null;
             this.db = null;
             this.ready = false;
-            orbitInstance = null;
-            isInstance = null;
         }
 
         get(hash) {

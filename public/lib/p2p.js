@@ -14,7 +14,7 @@ const MPLEX = require('libp2p-mplex')
 const {NOISE} = require('libp2p-noise')
 const {FaultTolerance} = require('libp2p/src/transport-manager');
 const uint8ArrayToString = require('uint8arrays/to-string')
-const Settings = require('./settings/ipfs')
+const Settings = require('./settings/libp2p')
 
 const ipnsUtils = {
     encodeBase32: (buf) => uint8ArrayToString(buf, 'base32upper'),
@@ -30,10 +30,9 @@ const AL_LIST = [
 ]
 
 module.exports = (opts) => {
-    const {peerId, libp2pOptions, config} = opts
-
+    const {peerId, config} = opts
     // Build and return our libp2p node
-    return new Libp2p(Object.assign({
+    return new Libp2p(peerId, {
         addresses: {
             announce: AL_LIST,
             listen: [...AL_LIST, ...Settings.SWARM_LISTEN]
@@ -110,5 +109,5 @@ module.exports = (opts) => {
                 }
             }
         }
-    }), {peerId}, {...libp2pOptions})
+    })
 }
