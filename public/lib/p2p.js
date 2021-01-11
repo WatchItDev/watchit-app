@@ -1,8 +1,9 @@
 'use strict'
 
+const wrtc = require('wrtc')
+const ipns = require('ipns')
 const Libp2p = require('libp2p')
 const TCP = require('libp2p-tcp')
-const wrtc = require('wrtc')
 const Websockets = require('libp2p-websockets')
 const WebrtcStar = require('libp2p-webrtc-star')
 const Bootstrap = require('libp2p-bootstrap')
@@ -12,7 +13,16 @@ const KadDHT = require('libp2p-kad-dht')
 const MPLEX = require('libp2p-mplex')
 const {NOISE} = require('libp2p-noise')
 const {FaultTolerance} = require('libp2p/src/transport-manager');
+const uint8ArrayToString = require('uint8arrays/to-string')
 const Settings = require('./settings/ipfs')
+
+const ipnsUtils = {
+    encodeBase32: (buf) => uint8ArrayToString(buf, 'base32upper'),
+    selector: (_k, records) => ipns.validator.select(records[0], records[1]),
+    validator: {
+        func: (key, record, cb) => ipns.validator.validate(record, key, cb)
+    }
+}
 
 const AL_LIST = [
     '/ip4/0.0.0.0/tcp/4003',
@@ -20,18 +30,13 @@ const AL_LIST = [
 ]
 
 module.exports = (opts) => {
-    const peerId = opts.peerId;
-    const bootstrapList = opts.config.Bootstrap
-    
+    const {peerId, libp2pOptions, config} = opts
+
     // Build and return our libp2p node
-    return new Libp2p({
-        peerId,
+    return new Libp2p(Object.assign({
         addresses: {
             announce: AL_LIST,
-            listen: [
-                ...AL_LIST,
-                ...Settings.SWARM_LISTEN
-            ]
+            listen: [...AL_LIST, ...Settings.SWARM_LISTEN]
         },
         dialer: {
             maxParallelDials: 150, // 150 total parallel multiaddr dials
@@ -74,8 +79,8 @@ module.exports = (opts) => {
                 bootstrap: {
                     enabled: true,
                     list: [
-                        ...Settings.BOOTSTRAP_LIST, 
-                        ...bootstrapList
+                        ...Settings.BOOTSTRAP_LIST,
+                        ...config.Bootstrap
                     ]
                 }
             },
@@ -96,8 +101,14 @@ module.exports = (opts) => {
                 clientMode: true,
                 randomWalk: {
                     enabled: false
+                },
+                validators: {
+                    ipns: ipnsUtils.validator
+                },
+                selectors: {
+                    ipns: ipnsUtils.selector
                 }
             }
         }
-    })
+    }), {peerId}, {...libp2pOptions})
 }
