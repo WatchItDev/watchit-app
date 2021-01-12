@@ -35,8 +35,8 @@ export default class AppMovieDetailMenu extends React.PureComponent {
 			
 			return {
 				default: (i++ === 0),
-				label: isTorrent && v.quality || (v[0].toUpperCase() + v.slice(1)),
-				action: isTorrent && v.hash || v,
+				label: (isTorrent && v.quality) || (v[0].toUpperCase() + v.slice(1)),
+				action: (isTorrent && v.hash) || v,
 				health: isTorrent ? v.health : Number.NaN
 			};
 		});

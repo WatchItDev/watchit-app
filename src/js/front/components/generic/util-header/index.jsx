@@ -1,14 +1,11 @@
 import React from 'react'
 
 export default class MainHeader extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-    
+
     shouldComponentUpdate() {
         return false
     }
-    
+
     static get defaultProps() {
         return {
             action: '#/app/movies'
@@ -21,7 +18,8 @@ export default class MainHeader extends React.Component {
                 <div className="col l6 m6">
                     <h5 className="white-text bold">
                         {
-                            this.props.icon && <i className={`${this.props.icon} margin-right-1-rem normalize-small-icon`}/>
+                            this.props.icon &&
+                            <i className={`${this.props.icon} margin-right-1-rem normalize-small-icon`}/>
                         }
                         {this.props.text}
                     </h5>

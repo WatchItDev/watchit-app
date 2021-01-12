@@ -40,7 +40,7 @@ export default class MovieIndex extends React.Component {
     _index(i) {
         // Else try get from key file and save
         let _storage = window.Auth.readFromStorage() || {}
-        return i in _storage && _storage[i] || 0
+        return i in (_storage && _storage[i]) || 0
     }
 
     get loaded() {
@@ -282,10 +282,11 @@ export default class MovieIndex extends React.Component {
                 }
 
                 {
-                    !this.state.ready &&
-                    <div className={`movie-player full-width full-height loading`}>
-                        <AppLoader stateText={this.state.state} statePercent={this.state.percent}/>
-                    </div> ||
+                    (!this.state.ready &&
+                        <div className={`movie-player full-width full-height loading`}>
+                            <AppLoader stateText={this.state.state} statePercent={this.state.percent}/>
+                        </div>
+                    ) ||
                     <div className="relative full-height main-view">
                         {/*Top main nav*/}
                         <section className="row full-height">
@@ -299,7 +300,7 @@ export default class MovieIndex extends React.Component {
                                     <div className="top-right-small-menu">
                                         <strong className={'white-text right'}>
                                             <StatsValue handler={this._index}/>
-                                            <a onClick={this.signOut} className="logout" href="#">
+                                            <a onClick={this.signOut} className="logout" href={'/'}>
                                                 <i className="icon-log-out font-size-1-rem white-text"/>
                                             </a>
                                         </strong>
@@ -317,13 +318,13 @@ export default class MovieIndex extends React.Component {
                                 {/* Movies section lists */}
                                 <section className="row movies-box clearfix">
                                     {
-                                        !this.state.loading &&
-                                        <AppMovies
-                                            movies={this.state.movies} loadOrder={this.loadOrder}
-                                            count={this.state.count} loading={this.state.scrolling}
-                                            end={this.state.finishLoad} chunkSize={this.state.chunkSize}
-                                            onClick={this.onClickMovie}
-                                        /> || <BoxLoader size={100}/>
+                                        (!this.state.loading &&
+                                            <AppMovies
+                                                movies={this.state.movies} loadOrder={this.loadOrder}
+                                                count={this.state.count} loading={this.state.scrolling}
+                                                end={this.state.finishLoad} chunkSize={this.state.chunkSize}
+                                                onClick={this.onClickMovie}
+                                            />) || <BoxLoader size={100}/>
                                     }
                                 </section>
                             </div>

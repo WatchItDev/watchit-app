@@ -267,7 +267,7 @@ export default class AppMoviesPlayer extends React.Component {
 	}
 	
 	render() {
-		return <div className={this.state.canPlay && "left relative full-height full-width" || "invisible"}>
+		return <div className={(this.state.canPlay && "left relative full-height full-width") || "invisible"}>
 			<AppMoviesPlayerShare devices={this.state.devices} onChange={this.onSelectDevice}/>
 			<AppMoviesPlayerVideo src={this.state.url} ref={this.getVideoRef}/>
 		</div>

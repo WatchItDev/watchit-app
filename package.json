@@ -111,16 +111,17 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "inspect": "npm run start && LOG=debug IPFS_FD_MAX=10000 ENV=dev $(npm bin)/electron . --inspect=5858 watchit",
-    "dev": "npm run start && LOG=debug IPFS_FD_MAX=10000 ENV=dev $(npm bin)/electron .",
+    "up": "LOG=debug IPFS_FD_MAX=10000 ENV=dev $(npm bin)/electron .",
+    "dev": "npm-run-all -s start up",
+    "inspect": "npm run dev --inspect=5858 watchit",
     "package-mac": "npm run build && electron-builder build --mac",
     "package-linux": "npm run build && electron-builder build --linux",
     "package-win": "npm run build && electron-builder build --win --x64 --ia32",
     "publish-mac": "npm run package-mac --publish always",
     "publish-linux": "npm run package-linux --publish always",
     "publish-win": "npm run package-win --publish always",
-    "package": "npm run package-win && npm run package-linux && npm run package-mac",
-    "publish": "npm run publish-win && npm run publish-linux && npm run publish-mac",
+    "package": "npm-run-all -p package-win package-linux package-mac",
+    "publish": "npm-run-all -p publish-win publish-linux publish-mac",
     "postinstall": "bash ./scripts/fix.sh"
   },
   "eslintConfig": {
@@ -128,7 +129,8 @@
   },
   "devDependencies": {
     "electron": "^9.1.0",
-    "electron-builder": "^22.7.0"
+    "electron-builder": "^22.7.0",
+    "npm-run-all": "^4.1.5"
   },
   "browserslist": {
     "production": [

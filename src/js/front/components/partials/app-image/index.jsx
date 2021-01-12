@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import PulseLoader from 'js/front/components/generic/util-pulse-loader/index.jsx'
+import PulseLoader from 'js/front/components/generic/util-pulse-loader'
 
 export default class BoxImage extends React.PureComponent {
 
@@ -47,9 +47,8 @@ export default class BoxImage extends React.PureComponent {
                      onError={this.handleImageError}
                      className={this.state.status < 0 &&
                      this.props.preload ? "hidden" : (
-                         (this.state.loaded || !this.props.preload) &&
-                         "loaded-img responsive-img" ||
-                         "locked-img invisible"
+                         this.state.loaded || (!this.props.preload &&
+                             "loaded-img responsive-img") || "locked-img invisible"
                      )}
                 />
             </figure>

@@ -1,5 +1,5 @@
 import React from 'react'
-import BoxImage from 'js/front/components/forms/app-image/index.jsx'
+import BoxImage from 'js/front/components/partials/app-image/index.jsx'
 import PulseLoader from 'js/front/components/generic/util-pulse-loader/index.jsx'
 
 export default class AppMoviesListPoster extends React.Component {

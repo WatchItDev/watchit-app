@@ -1,10 +1,7 @@
 import React from 'react'
 
 export default class FlowText extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-    
+
     shouldComponentUpdate() {
         return false
     }

@@ -2,6 +2,7 @@
 # Install and settings  for windows
 # npm config set script-shell "C:\\Program Files\\Git\\bin\\bash.exe" --userconfig ./.npmrc
 # npm config set script-shell powershell [--global]
+# TODO improve to multiple OS
 
 # Run to fix warning sandbox
 sudo chown root.root node_modules/electron/dist/chrome-sandbox -R

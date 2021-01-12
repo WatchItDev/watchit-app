@@ -6,14 +6,14 @@ import manifest from 'js/settings/storage'
 
 let Storage = {
     __toObj: {},
-    __getObj: (man, cb)=> {
+    __getObj: (man, cb) => {
         //The manifest keys
         let _keys = Object.keys(man);
 
         //Reduce object
-        return _keys.reduce((b, n)=> {
+        return _keys.reduce((b, n) => {
             //Set function by index
-            b[n] = ()=> {
+            b[n] = () => {
                 return cb(man[n]);
             };
 
@@ -21,27 +21,27 @@ let Storage = {
             return b;
         }, Storage.__toObj);
     },
-    get: (parse = true, man = manifest)=> {
+    get: (parse = true, man = manifest) => {
         return {
             from: Storage.__getObj(
                 man, function (key) {
                     return localStorage.getItem(key) ?
-                    parse && JSON.parse(localStorage.getItem(key)) || localStorage.getItem(key)
-                        : null;
+                        (parse && JSON.parse(localStorage.getItem(key)))
+                        || localStorage.getItem(key) : null;
                 }
             )
         }
     },
-    add: (data, serialize = true, man = manifest)=> {
+    add: (data, serialize = true, man = manifest) => {
         return {
             to: Storage.__getObj(
                 man, function (key) {
-                    localStorage.setItem(key, serialize && JSON.stringify(data) || data)
+                    localStorage.setItem(key, (serialize && JSON.stringify(data)) || data)
                 }
             )
         }
     },
-    remove: (man = manifest)=> {
+    remove: (man = manifest) => {
         return Storage.__getObj(
             man, function (key) {
                 //Remove item from localStorage
@@ -57,7 +57,7 @@ let Storage = {
 
 
     },
-    flush: ()=> {
+    flush: () => {
         //Flush all localstorage
         //!Warning
         localStorage.clear();

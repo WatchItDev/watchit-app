@@ -76,7 +76,7 @@ export default class NavBarMenu extends React.Component {
 				{/*Check for valid list of subs*/}
 				{
 					this.props.list.length > 0 && <li>
-						<a className="dropdown-button" onClick={this.preventDefault}>
+						<a className="dropdown-button" onClick={this.preventDefault} href={'/'}>
 							<i className={`${this.props.icon || "icon-triangle-down"} white-text nav-var-icon normalize-small-icon left margin-right-4`}/>
 							<span className="white-text">{this.props.btnText}</span>
 							{
@@ -105,7 +105,7 @@ export default class NavBarMenu extends React.Component {
 									this.props.list.map((i) => {
 										return (
 											<li key={uid.generate()}>
-												<a onClick={this.onClick} className="drop-item"
+												<a onClick={this.onClick} className="drop-item" href={'/'}
 												   data-action={i.action} data-label={i.label}>
 													<span className={'pointer-events-none'}>{i.label}</span>
 													{!isNaN(i.health) && this.getHealth(+i.health)}
