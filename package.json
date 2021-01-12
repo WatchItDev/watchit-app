@@ -111,8 +111,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "up": "LOG=debug IPFS_FD_MAX=10000 ENV=dev $(npm bin)/electron .",
-    "dev": "npm-run-all -p start up",
+    "electron": "LOG=debug IPFS_FD_MAX=10000 ENV=dev $(npm bin)/electron .",
+    "dev": "concurrently \"npm run start\" \"npm run electron\"",
     "inspect": "npm run dev --inspect=5858 watchit",
     "package-mac": "npm run build && electron-builder build --mac",
     "package-linux": "npm run build && electron-builder build --linux",
@@ -128,6 +128,7 @@
     "extends": "react-app"
   },
   "devDependencies": {
+    "concurrently": "^5.3.0",
     "electron": "^9.1.0",
     "electron-builder": "^22.7.0",
     "npm-run-all": "^4.1.5"
