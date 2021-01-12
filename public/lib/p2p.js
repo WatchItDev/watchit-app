@@ -14,7 +14,6 @@ const MPLEX = require('libp2p-mplex')
 const {NOISE} = require('libp2p-noise')
 const {FaultTolerance} = require('libp2p/src/transport-manager');
 const uint8ArrayToString = require('uint8arrays/to-string')
-const Settings = require('./settings/libp2p')
 
 const ipnsUtils = {
     encodeBase32: (buf) => uint8ArrayToString(buf, 'base32upper'),
@@ -24,19 +23,11 @@ const ipnsUtils = {
     }
 }
 
-const AL_LIST = [
-    '/ip4/0.0.0.0/tcp/4003',
-    '/ip4/0.0.0.0/tcp/4004/ws'
-]
 
 module.exports = (opts) => {
-    const {peerId, config} = opts
+    const {peerId, libp2pOptions, options} = opts
     // Build and return our libp2p node
-    return new Libp2p(peerId, {
-        addresses: {
-            announce: AL_LIST,
-            listen: [...AL_LIST, ...Settings.SWARM_LISTEN]
-        },
+    return new Libp2p(Object.assign({
         dialer: {
             maxParallelDials: 150, // 150 total parallel multiaddr dials
             maxDialsPerPeer: 4, // Allow 4 multiaddrs to be dialed per peer in parallel
@@ -68,19 +59,11 @@ module.exports = (opts) => {
                 websocketStar: {
                     enabled: false
                 },
-                [MulticastDNS.tag]: {
-                    interval: 1000,
-                    enabled: true
-                },
-                [WebrtcStar.tag]: {
+                webRTCStar: {
                     enabled: true
                 },
                 bootstrap: {
-                    enabled: true,
-                    list: [
-                        ...Settings.BOOTSTRAP_LIST,
-                        ...config.Bootstrap
-                    ]
+                    enabled: true
                 }
             },
             relay: {
@@ -109,5 +92,9 @@ module.exports = (opts) => {
                 }
             }
         }
-    })
+    }, {...libp2pOptions}, {
+        peerId, addresses: {
+            listen: options.Addresses.Swarm
+        },
+    }))
 }
