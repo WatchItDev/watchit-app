@@ -93,7 +93,9 @@ module.exports = (opts) => {
             }
         }
     }, {...libp2pOptions}, {
-        peerId, addresses: {
+        peerId,
+        addresses: {
+            announce: options.Addresses.Announce,
             listen: options.Addresses.Swarm
         },
     }))
