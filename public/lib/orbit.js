@@ -13,7 +13,6 @@ const getIsInstance = require('./ipfs')
 module.exports = (ipcMain, rootDir, inDev) => {
     const MAX_RETRIES = 30;
     const MAX_TIMEOUT = 60 * 1000;
-    const ipfsRepo = path.join(rootDir, '/w_source/ipfs')
     const orbitRepo = path.join(rootDir, '/w_source/orbit')
 
     class Orbit {
@@ -66,10 +65,6 @@ module.exports = (ipcMain, rootDir, inDev) => {
 
         setInSeedMode(isRunningSeed = false) {
             this.seedMode = isRunningSeed
-        }
-
-        get publicKey() {
-            return Auth.getPubKey()
         }
 
         get ingestKey() {
@@ -162,7 +157,7 @@ module.exports = (ipcMain, rootDir, inDev) => {
         }
 
         instanceOB() {
-            return this.orbit && Promise.resolve(this.orbit)
+            return (this.orbit && Promise.resolve(this.orbit))
                 || OrbitDB.createInstance(this.node, {directory: orbitRepo});
         }
 
@@ -177,7 +172,7 @@ module.exports = (ipcMain, rootDir, inDev) => {
 
                 try {
                     console.log('Setting up node..');
-                    this.node = this.node || await getIsInstance(inDev, ipfsRepo);
+                    this.node = this.node || await getIsInstance(inDev);
                     res(this.node)
                 } catch (e) {
                     console.log(e.toString())
@@ -272,6 +267,7 @@ module.exports = (ipcMain, rootDir, inDev) => {
         }
 
         get(hash) {
+            console.log(this.db.get(hash));
             return this.db.get(
                 hash // Process incoming hash
             ).payload.value
@@ -317,7 +313,7 @@ module.exports = (ipcMain, rootDir, inDev) => {
     }, partialSave = async (e, hash) => {
         console.log('Going take chunks');
         let storage = Auth.readFromStorage();
-        let slice = 'chunk' in storage && storage.chunk || 0;
+        let slice = ('chunk' in storage && storage.chunk) || 0;
         const hasValidCache = orbit.hasValidCache
         if (!hasValidCache) e.reply('orbit-partial-progress', 'Starting');
         let collectionFromIPFS = await catIPFS(orbit.get(hash))

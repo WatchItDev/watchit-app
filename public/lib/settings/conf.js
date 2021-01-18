@@ -3,8 +3,8 @@ const path = require('path')
 const fs = require('fs')
 
 const ROOT_DIR = os.tmpdir();
-const ROOT_URI = 'https://yts.mx';
-const ROOT_URI_TORRENT = `${ROOT_URI}/torrent/download/`;
+const ROOT_URI = 'http://localhost:9090/ipfs/';
+const ROOT_URI_TORRENT = `${ROOT_URI}`;
 const ROOT_STORE = process.env.appPath;
 const ROOT_APP = fs.realpathSync(process.cwd());
 const ROOT_TMP_FOLDER = path.join(ROOT_DIR, 'wtmp');

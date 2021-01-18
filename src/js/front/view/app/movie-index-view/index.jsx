@@ -40,7 +40,7 @@ export default class MovieIndex extends React.Component {
     _index(i) {
         // Else try get from key file and save
         let _storage = window.Auth.readFromStorage() || {}
-        return i in (_storage && _storage[i]) || 0
+        return (i in _storage && _storage[i]) || 0
     }
 
     get loaded() {

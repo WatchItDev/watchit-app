@@ -54,7 +54,7 @@ export default class MovieDetails extends React.PureComponent {
                                     {/*Poster*/}
                                     <BoxImage
                                         className="full-width"
-                                        src={this.state.movies.large_cover_image}
+                                        src={`${this.state.movies.hash}/large_cover_image.jpg`}
                                         preload={true}
                                     />
                                 </aside>

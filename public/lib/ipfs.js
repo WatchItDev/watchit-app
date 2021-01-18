@@ -1,20 +1,27 @@
-const IPFS = require('ipfs');
-const libp2p = require('./p2p');
+const Ctl = require('ipfsd-ctl')
 const ipfsConf = require('./settings/ipfs');
 let interval = null;
 
 
-module.exports = async (inDev, repo) => {
-    const CONF = Object.assign({libp2p}, {repo}, ipfsConf);
-    const isInstance = await IPFS.create(CONF)
+module.exports = async (inDev) => {
+    const isInstance = await Ctl.createController({
+        ipfsHttpModule: require('ipfs-http-client'),
+        ipfsBin: require('go-ipfs').path(),
+        ipfsOptions: {config: ipfsConf()},
+        args: ['--enable-pubsub-experiment'],
+        remote: false, type: 'go'
+    })
+
+    const ipfsApi = isInstance.api
+    const id = await ipfsApi.id()
+    console.log('Running ipfs id', id.id)
 
     if (inDev) { // Create stats interval if dev
         if (interval || !isInstance) clearInterval(interval);
         interval = setInterval(async () => {
-            const id = await isInstance.id()
-            const swap = await isInstance.bitswap.stat()
-            const peers = await isInstance.swarm.peers()
-            console.log('\nMyPeer: ', id.id);
+            const swap = await ipfsApi.bitswap.stat()
+            const peers = await ipfsApi.swarm.peers()
+
             console.log('PeersConnected: ', peers.map((d) => d.peer));
             console.log('PeersSharing: ', swap.peers);
             console.log('WantList: ', swap.wantlist);
@@ -24,7 +31,8 @@ module.exports = async (inDev, repo) => {
             console.log('Block Sent: ', swap.blocksSent.toNumber(), '\n')
         }, 30 * 1000)
     }
-    isInstance.interval = interval
-    return isInstance
+
+    ipfsApi.interval = interval
+    return ipfsApi
 }
 
