@@ -66,24 +66,6 @@ module.exports = class Ingest {
         );
     }
 
-    startPing() {
-        //Auth object
-        console.log('Run Ping');
-        if (this.ping) clearTimeout(this.ping)
-        this.ping = setTimeout(() => {
-            ipcRenderer.send('orbit-ping')
-        }, 5000)
-
-        this.stopIpcEvents(['orbit-pong', 'party-rock'])
-        ipcRenderer.on('orbit-pong', () => {
-            console.log('PONG');
-        }).on('party-rock', (e, m) => {
-            this._loopEvent('bc', m)
-        })
-
-        return this;
-    }
-
     stopIpcEvents(ipcListeners = []) {
         (ipcListeners || IPC_LISTENERS).forEach((l) => {
             console.log('Cleaning:', l);

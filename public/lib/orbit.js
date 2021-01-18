@@ -12,7 +12,6 @@ const getIsInstance = require('./ipfs')
 
 module.exports = (ipcMain, rootDir, inDev) => {
     const MAX_RETRIES = 30;
-    const MAX_TIMEOUT = 60 * 1000;
     const orbitRepo = path.join(rootDir, '/w_source/orbit')
 
     class Orbit {
@@ -54,11 +53,9 @@ module.exports = (ipcMain, rootDir, inDev) => {
         }
 
         open(address, settings = {}) {
-            return this.orbit.open(
-                `${address}`, {
-                    ...{
-                        overwrite: true, replicate: true
-                    }, ...settings
+            return this.orbit.open(address, {
+                    ...{overwrite: true, replicate: true},
+                    ...settings
                 }
             )
         }
@@ -83,7 +80,7 @@ module.exports = (ipcMain, rootDir, inDev) => {
         }
 
         async run(key, res) {
-            console.log('Starting movies db..');
+            console.log('Starting movies db:', key);
             this.db = await this.open(key);
             this.db.events.on('peer', (p) => {
                 console.log('Peer:', p);
@@ -184,14 +181,6 @@ module.exports = (ipcMain, rootDir, inDev) => {
             })
         }
 
-        holdKill() {
-            if (this.timeout) {
-                console.log('Relax buddy');
-                clearTimeout(this.timeout);
-                this.timeout = null;
-            }
-        }
-
 
         async close(forceDrop = false) {
             try {
@@ -226,9 +215,11 @@ module.exports = (ipcMain, rootDir, inDev) => {
         }
 
         get(hash) {
+            console.log('Processing hash:', hash)
+            console.log(this.db);
             return this.db.get(
                 hash // Process incoming hash
-            ).payload.value
+            ).map(e => e.payload.value)
         }
 
         removeDuplicates(hashList) {

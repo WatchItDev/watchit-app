@@ -69,7 +69,7 @@ export default class MovieIndex extends React.Component {
             this.ingest.stopEvents().stopIpcEvents().on('bc', (m) => {
                 this.setState({percent: 0, state: m, ready: false});
                 setTimeout(() => window.location.href = '#/', 3000)
-            }).startSeed().startPing();
+            }).startSeed()
             return this.startRunning();
         }
 

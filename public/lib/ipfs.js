@@ -8,6 +8,7 @@ module.exports = async (inDev) => {
         ipfsHttpModule: require('ipfs-http-client'),
         ipfsBin: require('go-ipfs').path(),
         ipfsOptions: {config: ipfsConf()},
+        disposable: true,
         args: ['--enable-pubsub-experiment'],
         remote: false, type: 'go'
     })
