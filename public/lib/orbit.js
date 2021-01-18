@@ -215,11 +215,9 @@ module.exports = (ipcMain, rootDir, inDev) => {
         }
 
         get(hash) {
-            console.log('Processing hash:', hash)
-            console.log(this.db);
-            return this.db.get(
-                hash // Process incoming hash
-            ).map(e => e.payload.value)
+            const oplog = (this.db.oplog || this.db._oplog)
+            const result = oplog.values.find(v => v.hash === hash)
+            return result.payload.value
         }
 
         removeDuplicates(hashList) {

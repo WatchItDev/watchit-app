@@ -14,6 +14,12 @@ module.exports = () => {
                 "/dns4/node3.delegate.ipfs.io/tcp/443/https"
             ]
         },
+        "Discovery":{
+          "MDNS": {
+              "Enabled": true,
+              "Interval": 5
+          }
+        },
         "Peering": {
             "Peers": [
                 {
