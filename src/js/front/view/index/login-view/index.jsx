@@ -25,14 +25,18 @@ export default class LoginForm extends React.PureComponent {
             submitted: true
         });
 
-        let [pub, pvt] = [
-            fields.get('public'),
-            fields.get('private')
-        ];
+        const pb =  fields.get('public')
+        // Check if stored key its valid
+        if (!window.Auth.isValidKey(pb)) {
+            return this.setState({
+                error: ['Invalid Key'],
+                submitted: false
+            })
+        }
 
-        // Write key
+        // Write public key
         window.Auth.generateKey({
-            public: pub, private: pvt
+            ingest: fields.get('public')
         });
 
         setTimeout(() => {
@@ -51,7 +55,6 @@ export default class LoginForm extends React.PureComponent {
                             action={this.handleRequest}
                             input={Forms.login_user.inputs} // Make inputs
                             buttons={Forms.login_user.buttons} // Make buttons
-                            textarea={Forms.login_user.textarea} // Make buttons
                             error={this.state.error}
                             submitted={this.state.submitted}
                         />

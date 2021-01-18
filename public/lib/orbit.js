@@ -123,37 +123,16 @@ module.exports = (ipcMain, rootDir, inDev) => {
             this._loopEvent('bc', msg)
         }
 
-        async cA(pathQuery, res, holdKill = 0) {
-            // Await for hash ready
-            let [root, chain] = pathQuery
-            this.whenKill(holdKill); // When u need to be fuck it up!!
 
-            try {
-                let ingestRaw = await this.node.dag.get(root, {path: chain})
-                Auth.addToStorage({'ingest': ingestRaw.value.key});
-                res(this.ingestKey) // Send new ingest key
-                this.holdKill(); // Not kill the buddy!!
-            } catch (e) {
-                console.log('Killing all');
-                await this.party();
-            }
-
-        }
-
-        async nodeReady(pathQuery, res) {
+        async nodeReady(res) {
             // Create OrbitDB instance
             console.log('Node ready');
             console.log('Loading db..');
             this.orbit = await this.instanceOB();
-            if (this.hasValidCache)
-                return await this.run(
-                    this.ingestKey, res
-                );
+            return await this.run(
+                this.ingestKey, res
+            );
 
-            // Start run auth
-            await this.cA(pathQuery, (key) => {
-                this.run(key, res)
-            })
         }
 
         instanceOB() {
@@ -195,13 +174,13 @@ module.exports = (ipcMain, rootDir, inDev) => {
             })
         }
 
-        start(pathQuery = Auth.chain) {
+        start() {
             if (this.ready) return Promise.resolve(this.db);
             return new Promise(async (res) => {
                 console.log(`Running ipfs node`);
                 // Create IPFS instance
                 this.node = await this.instanceNode();
-                await this.nodeReady(pathQuery, res)
+                await this.nodeReady(res)
             })
         }
 
@@ -221,18 +200,6 @@ module.exports = (ipcMain, rootDir, inDev) => {
             }
         }
 
-        ping() {
-            return new Promise(async (res) => {
-                this.node = await this.instanceNode();
-                this.orbit = await this.instanceOB();
-                // Start timer to wait for response
-                return this.cA(Auth.chain, (key) => {
-                    console.log('All good');
-                    this.ready = true;
-                    res(key)
-                }, 60 * 5)
-            })
-        }
 
         async close(forceDrop = false) {
             try {
@@ -248,7 +215,7 @@ module.exports = (ipcMain, rootDir, inDev) => {
                     }
                 }
 
-                if (this.node && this.node.isOnline()) {
+                if (this.node) {
                     console.log('Killing Nodes');
                     await this.node.stop().catch(err => console.error(err));
                 }
@@ -267,7 +234,6 @@ module.exports = (ipcMain, rootDir, inDev) => {
         }
 
         get(hash) {
-            console.log(this.db.get(hash));
             return this.db.get(
                 hash // Process incoming hash
             ).payload.value
@@ -386,11 +352,6 @@ module.exports = (ipcMain, rootDir, inDev) => {
         await orbit.start()
     });
 
-    ipcMain.on('orbit-ping', async (e) => {
-        console.log('PING');
-        await orbit.ping()
-        e.reply('orbit-pong')
-    });
 
     ipcMain.on('online-status-changed', async (e, isOnline) => {
         console.log('Going ' + (isOnline ? 'online' : 'offline'))

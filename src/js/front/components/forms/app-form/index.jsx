@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import uid from "shortid";
 import BoxAlert from 'js/front/components/forms/app-alerts/index.jsx'
-import BoxInput, {BoxTextArea} from 'js/front/components/forms/app-inputs/index.jsx'
+import BoxInput from 'js/front/components/forms/app-inputs/index.jsx'
 import BoxButton from 'js/front/components/forms/app-buttons/index.jsx'
 
 export default class FormBox extends React.Component {
@@ -25,7 +25,6 @@ export default class FormBox extends React.Component {
         return {
             input: PropTypes.array.isRequired,
             buttons: PropTypes.array.isRequired,
-            textarea: PropTypes.array.isRequired,
             action: PropTypes.func.isRequired,
             submitted: PropTypes.bool.isRequired
         }
@@ -76,15 +75,6 @@ export default class FormBox extends React.Component {
                             )
                         })
 
-                    }
-                    {
-                        this.props.textarea.map((i, k) => {
-                            return (
-                                <div key={k} className={"input-field-black col " + i.size}>
-                                    <BoxTextArea {...i} onChange={this.setValue}/>
-                                </div>
-                            )
-                        })
                     }
                 </div>
 

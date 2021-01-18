@@ -12,14 +12,6 @@ const FORMS = {
             size: 'm12 l12',
             required: true
         }],
-        textarea: [{
-            placeholder: "Private Key",
-            autoComplete: 'nope',
-            name: "private",
-            size: 'm12 l12',
-            required: true,
-            height: 300
-        }],
         buttons: [{
             type: 'submit',
             text: 'login',
