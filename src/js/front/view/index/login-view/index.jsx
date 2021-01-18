@@ -25,7 +25,7 @@ export default class LoginForm extends React.PureComponent {
             submitted: true
         });
 
-        const pb =  fields.get('public')
+        const pb = fields.get('public')
         // Check if stored key its valid
         if (!window.Auth.isValidKey(pb)) {
             return this.setState({
@@ -35,10 +35,7 @@ export default class LoginForm extends React.PureComponent {
         }
 
         // Write public key
-        window.Auth.generateKey({
-            ingest: fields.get('public')
-        });
-
+        window.Auth.generateKey({ingest: pb});
         setTimeout(() => {
             //Set first state
             window.location.href = '#/app/movies'

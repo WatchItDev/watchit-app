@@ -55,7 +55,7 @@ module.exports = (ipcMain, rootDir, inDev) => {
 
         open(address, settings = {}) {
             return this.orbit.open(
-                `${address}/`, {
+                `${address}`, {
                     ...{
                         overwrite: true, replicate: true
                     }, ...settings
@@ -182,14 +182,6 @@ module.exports = (ipcMain, rootDir, inDev) => {
                 this.node = await this.instanceNode();
                 await this.nodeReady(res)
             })
-        }
-
-        whenKill(waitMore = 0) {
-            console.log('Starting timer')
-            if (this.timeout) clearTimeout(this.timeout)
-            this.timeout = setTimeout(async () => {
-                await this.party();
-            }, MAX_TIMEOUT + (waitMore * 1000))
         }
 
         holdKill() {

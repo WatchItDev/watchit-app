@@ -30,8 +30,12 @@ module.exports = class Auth {
 
     static isValidKey(key) {
         return orbit.isValidAddress(
-            `/orbitdb/${key}/wt.movies.db`
+            this.sanitizedKey(key)
         )
+    }
+
+    static sanitizedKey(key = Auth.getIngestKey()) {
+        return `/orbitdb/${key}/wt.movies.db`
     }
 
     static isLogged() {
@@ -74,10 +78,9 @@ module.exports = class Auth {
     static getIngestKey() {
         let fileCollection = Auth.readFromStorage()
         return fileCollection && 'ingest' in fileCollection
-            ? fileCollection.ingest.trim() : null
+            ? Auth.sanitizedKey(fileCollection.ingest.trim()) : null
 
     }
-
 
     static write(data, file = Auth.keyFile) {
         fs.writeFileSync(file, JSON.stringify(data));
