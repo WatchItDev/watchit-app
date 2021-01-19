@@ -210,10 +210,10 @@ module.exports = (ipcMain, rootDir, inDev) => {
                     }
                 }
 
-                // if (this.node) {
-                //     console.log('Killing Nodes');
-                //     await this.node.stop().catch(err => console.error(err));
-                // }
+                if (this.node) {
+                    console.log('Killing Nodes');
+                    await this.node.stop().catch(err => console.error(err));
+                }
                 console.log('System closed');
             } catch (e) {
                 console.log('Fails in system close');
