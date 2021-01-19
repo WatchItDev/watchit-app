@@ -34,7 +34,7 @@ module.exports = class Auth {
         )
     }
 
-    static sanitizedKey(key = Auth.getIngestKey()) {
+    static sanitizedKey(key) {
         return `/orbitdb/${key}/wt.movies.db`
     }
 
@@ -78,7 +78,7 @@ module.exports = class Auth {
     static getIngestKey() {
         let fileCollection = Auth.readFromStorage()
         return fileCollection && 'ingest' in fileCollection
-            ? Auth.sanitizedKey(fileCollection.ingest.trim()) : null
+            ? fileCollection.ingest.trim() : null
 
     }
 
