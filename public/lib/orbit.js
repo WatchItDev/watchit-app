@@ -88,7 +88,11 @@ module.exports = (ipcMain, rootDir, inDev) => {
 
         async run(key, res) {
             console.log('Starting movies db:', key);
-            this.db = await this.open(key);
+            this.db = await this.open(key).catch(async () => {
+                // If db cannot be opened then just kill
+                await this.party('Cannot find peers')
+            });
+
             this.db.events.on('peer', (p) => {
                 console.log('Peer:', p);
                 if (!this.peers.includes(p)) {
@@ -110,6 +114,7 @@ module.exports = (ipcMain, rootDir, inDev) => {
             });
 
             res(this.db)
+
         }
 
         stopEvents() {
@@ -228,10 +233,16 @@ module.exports = (ipcMain, rootDir, inDev) => {
             this.ready = false;
         }
 
-        get(hash) {
-            return this.db.get(
-                hash // Process incoming hash
-            ).payload.value
+        async get(hash) {
+            const oplog = (this.db.oplog || this.db._oplog)
+            const result = oplog.values.find(v => v.hash === hash)
+            // Pin for further usages ;)
+            await this.node.pin.add(hash)
+            return result.payload.value
+
+            // return this.db.get(
+            //     hash // Process incoming hash
+            // ).payload.value
         }
 
         removeDuplicates(hashList) {
@@ -277,7 +288,9 @@ module.exports = (ipcMain, rootDir, inDev) => {
         let slice = ('chunk' in storage && storage.chunk) || 0;
         const hasValidCache = orbit.hasValidCache
         if (!hasValidCache) e.reply('orbit-partial-progress', 'Starting');
-        let collectionFromIPFS = await catIPFS(orbit.get(hash))
+
+        let hashContent = await orbit.get(hash)
+        let collectionFromIPFS = await catIPFS(hashContent)
 
         if (collectionFromIPFS) { // If has data
             let cleanedContent = collectionFromIPFS['content']
