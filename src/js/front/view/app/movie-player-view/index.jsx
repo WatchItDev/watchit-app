@@ -44,10 +44,11 @@ export default class MoviePlayer extends React.Component {
 			_movieInfo.id,
 		).then((res) => {
 			//Set new subs
+			let selectedSub = this.props.match.params?.sub
 			this.setState({
 				movieInfo: _movieInfo,
 				movieSubs: this.subs(res),
-				movieSelectedSub: this.props.match.params.sub
+				movieSelectedSub: selectedSub
 			});
 			
 		}).catch((e) => {
@@ -70,6 +71,7 @@ export default class MoviePlayer extends React.Component {
 	subs(res) {
 		let subs = {}
 		let s = res.subtitles
+		if (!s) return subs
 		this.preSubs(s, subs);
 		
 		// Filter and get better sub rate
