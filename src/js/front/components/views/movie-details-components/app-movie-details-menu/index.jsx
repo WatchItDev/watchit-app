@@ -136,9 +136,9 @@ export default class AppMovieDetailMenu extends React.PureComponent {
                         />
                     }
 
-                    {/*The subs menu*/}
+                    The subs menu
                     {
-                        Object.keys(this.props.movie.subtitles).length > 0 &&
+                        Object.keys(this.props.movie?.subtitles) &&
                         <NavBarMenu
                             btnText="" onChange={this.setMenuChange}
                             getInitialItem={this.setMenuInitial}

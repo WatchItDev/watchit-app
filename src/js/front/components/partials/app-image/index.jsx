@@ -45,11 +45,10 @@ export default class BoxImage extends React.PureComponent {
                 <img alt={''} src={this.fullUri}
                      onLoad={this.handleImageLoaded}
                      onError={this.handleImageError}
-                     className={this.state.status < 0 &&
-                     this.props.preload ? "hidden" : (
-                         this.state.loaded || (!this.props.preload &&
-                             "loaded-img responsive-img") || "locked-img invisible"
-                     )}
+                     className={this.state.status < 0 && this.props.preload ? "hidden" :
+                         (this.state.loaded || !this.props.preload) ?
+                         "loaded-img responsive-img" : "locked-img invisible"
+                     }
                 />
             </figure>
         )

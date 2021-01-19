@@ -204,16 +204,16 @@ module.exports = (ipcMain, rootDir, inDev) => {
 
                     if (!this.hasValidCache || forceDrop) {
                         console.log('Drop DB;Index');
-                        if (this.db) this.db.drop()
+                        // if (this.db) this.db.drop()
                         for (const k of ['total', 'ingest', 'limit'])
                             Auth.removeFromStorage(k)
                     }
                 }
 
-                if (this.node) {
-                    console.log('Killing Nodes');
-                    await this.node.stop().catch(err => console.error(err));
-                }
+                // if (this.node) {
+                //     console.log('Killing Nodes');
+                //     await this.node.stop().catch(err => console.error(err));
+                // }
                 console.log('System closed');
             } catch (e) {
                 console.log('Fails in system close');
