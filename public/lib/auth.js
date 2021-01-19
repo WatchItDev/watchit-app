@@ -1,6 +1,6 @@
 const fs = require('fs-extra');
 const path = require('path');
-const crypto = require("crypto");
+const orbit = require('orbit-db')
 const {ROOT_STORE} = require(__dirname + '/settings/conf')
 
 module.exports = class Auth {
@@ -10,17 +10,6 @@ module.exports = class Auth {
             ROOT_STORE, 'w_source', 'linvo'
         )
     }
-
-    static get sanitizedPublic() {
-        let pub = Auth.getPubKey();
-        return pub.split('.')
-    }
-
-    static get chain() {
-        const [root, id, hash] = Auth.sanitizedPublic
-        return [root, `links/${hash}/keys/${id}/`]
-    }
-
 
     static get init() {
         fs.ensureDirSync(this.db)
@@ -39,6 +28,15 @@ module.exports = class Auth {
         return this.addToStorage(data)
     }
 
+    static isValidKey(key) {
+        return orbit.isValidAddress(
+            this.sanitizedKey(key)
+        )
+    }
+
+    static sanitizedKey(key) {
+        return `/orbitdb/${key}/wt.movies.db`
+    }
 
     static isLogged() {
         return !!Auth.read();
@@ -79,27 +77,9 @@ module.exports = class Auth {
 
     static getIngestKey() {
         let fileCollection = Auth.readFromStorage()
-        let ingestKey = fileCollection && 'ingest' in fileCollection
+        return fileCollection && 'ingest' in fileCollection
             ? fileCollection.ingest.trim() : null
 
-        if (!ingestKey) return false;
-        return crypto.privateDecrypt(
-            Auth.getPrivateKey(),
-            Buffer.from(ingestKey, 'base64')
-        ).toString("utf8");
-    }
-
-    static convertToPem(string) {
-        return `-----BEGIN RSA PRIVATE KEY-----\n${string}\n-----END RSA PRIVATE KEY-----\n`;
-    }
-
-    static getPrivateKey() {
-        let fileCollection = Auth.readFromStorage()
-        let privateKey = fileCollection && 'private' in fileCollection
-            ? fileCollection.private.trim().replace(/\s/g, '') : null
-
-        if (!privateKey) return false
-        return Auth.convertToPem(privateKey)
     }
 
     static write(data, file = Auth.keyFile) {

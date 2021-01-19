@@ -8,12 +8,11 @@ const OrbitDB = require('orbit-db');
 const BufferList = require('bl/BufferList')
 const msgpack = require('msgpack-lite');
 const getIsInstance = require('./ipfs')
+const connectProvs = require('./provs')
 
 
 module.exports = (ipcMain, rootDir, inDev) => {
     const MAX_RETRIES = 30;
-    const MAX_TIMEOUT = 60 * 1000;
-    const ipfsRepo = path.join(rootDir, '/w_source/ipfs')
     const orbitRepo = path.join(rootDir, '/w_source/orbit')
 
     class Orbit {
@@ -55,11 +54,9 @@ module.exports = (ipcMain, rootDir, inDev) => {
         }
 
         open(address, settings = {}) {
-            return this.orbit.open(
-                `${address}/`, {
-                    ...{
-                        overwrite: true, replicate: true
-                    }, ...settings
+            return this.orbit.open(address, {
+                    ...{overwrite: true, replicate: true},
+                    ...settings
                 }
             )
         }
@@ -68,11 +65,13 @@ module.exports = (ipcMain, rootDir, inDev) => {
             this.seedMode = isRunningSeed
         }
 
-        get publicKey() {
-            return Auth.getPubKey()
+        get ingestKey() {
+            return Auth.sanitizedKey(
+                this.rawIngestKey
+            )
         }
 
-        get ingestKey() {
+        get rawIngestKey() {
             return Auth.getIngestKey()
         }
 
@@ -88,7 +87,7 @@ module.exports = (ipcMain, rootDir, inDev) => {
         }
 
         async run(key, res) {
-            console.log('Starting movies db..');
+            console.log('Starting movies db:', key);
             this.db = await this.open(key);
             this.db.events.on('peer', (p) => {
                 console.log('Peer:', p);
@@ -128,41 +127,27 @@ module.exports = (ipcMain, rootDir, inDev) => {
             this._loopEvent('bc', msg)
         }
 
-        async cA(pathQuery, res, holdKill = 0) {
-            // Await for hash ready
-            let [root, chain] = pathQuery
-            this.whenKill(holdKill); // When u need to be fuck it up!!
 
-            try {
-                let ingestRaw = await this.node.dag.get(root, {path: chain})
-                Auth.addToStorage({'ingest': ingestRaw.value.key});
-                res(this.ingestKey) // Send new ingest key
-                this.holdKill(); // Not kill the buddy!!
-            } catch (e) {
-                console.log('Killing all');
-                await this.party();
-            }
-
-        }
-
-        async nodeReady(pathQuery, res) {
-            // Create OrbitDB instance
+        async nodeReady(res) {
+            /***
+             * Get orbit node ready
+             * this method start orbit instance
+             * and get providers for db
+             */
             console.log('Node ready');
             console.log('Loading db..');
-            this.orbit = await this.instanceOB();
-            if (this.hasValidCache)
-                return await this.run(
-                    this.ingestKey, res
-                );
+            const address = this.ingestKey;
+            const rawAddress = this.rawIngestKey
 
-            // Start run auth
-            await this.cA(pathQuery, (key) => {
-                this.run(key, res)
-            })
+            // Get orbit instance and next line connect providers
+            this.orbit = await this.instanceOB();
+            await connectProvs(this.node, rawAddress);
+            return await this.run(address, res);
+
         }
 
         instanceOB() {
-            return this.orbit && Promise.resolve(this.orbit)
+            return (this.orbit && Promise.resolve(this.orbit))
                 || OrbitDB.createInstance(this.node, {directory: orbitRepo});
         }
 
@@ -177,7 +162,7 @@ module.exports = (ipcMain, rootDir, inDev) => {
 
                 try {
                     console.log('Setting up node..');
-                    this.node = this.node || await getIsInstance(inDev, ipfsRepo);
+                    this.node = this.node || await getIsInstance(inDev);
                     res(this.node)
                 } catch (e) {
                     console.log(e.toString())
@@ -200,44 +185,16 @@ module.exports = (ipcMain, rootDir, inDev) => {
             })
         }
 
-        start(pathQuery = Auth.chain) {
+        start() {
             if (this.ready) return Promise.resolve(this.db);
             return new Promise(async (res) => {
                 console.log(`Running ipfs node`);
                 // Create IPFS instance
                 this.node = await this.instanceNode();
-                await this.nodeReady(pathQuery, res)
+                await this.nodeReady(res)
             })
         }
 
-        whenKill(waitMore = 0) {
-            console.log('Starting timer')
-            if (this.timeout) clearTimeout(this.timeout)
-            this.timeout = setTimeout(async () => {
-                await this.party();
-            }, MAX_TIMEOUT + (waitMore * 1000))
-        }
-
-        holdKill() {
-            if (this.timeout) {
-                console.log('Relax buddy');
-                clearTimeout(this.timeout);
-                this.timeout = null;
-            }
-        }
-
-        ping() {
-            return new Promise(async (res) => {
-                this.node = await this.instanceNode();
-                this.orbit = await this.instanceOB();
-                // Start timer to wait for response
-                return this.cA(Auth.chain, (key) => {
-                    console.log('All good');
-                    this.ready = true;
-                    res(key)
-                }, 60 * 5)
-            })
-        }
 
         async close(forceDrop = false) {
             try {
@@ -247,13 +204,13 @@ module.exports = (ipcMain, rootDir, inDev) => {
 
                     if (!this.hasValidCache || forceDrop) {
                         console.log('Drop DB;Index');
-                        if (this.db) this.db.drop()
+                        // if (this.db) this.db.drop()
                         for (const k of ['total', 'ingest', 'limit'])
                             Auth.removeFromStorage(k)
                     }
                 }
 
-                if (this.node && this.node.isOnline()) {
+                if (this.node) {
                     console.log('Killing Nodes');
                     await this.node.stop().catch(err => console.error(err));
                 }
@@ -317,7 +274,7 @@ module.exports = (ipcMain, rootDir, inDev) => {
     }, partialSave = async (e, hash) => {
         console.log('Going take chunks');
         let storage = Auth.readFromStorage();
-        let slice = 'chunk' in storage && storage.chunk || 0;
+        let slice = ('chunk' in storage && storage.chunk) || 0;
         const hasValidCache = orbit.hasValidCache
         if (!hasValidCache) e.reply('orbit-partial-progress', 'Starting');
         let collectionFromIPFS = await catIPFS(orbit.get(hash))
@@ -390,11 +347,6 @@ module.exports = (ipcMain, rootDir, inDev) => {
         await orbit.start()
     });
 
-    ipcMain.on('orbit-ping', async (e) => {
-        console.log('PING');
-        await orbit.ping()
-        e.reply('orbit-pong')
-    });
 
     ipcMain.on('online-status-changed', async (e, isOnline) => {
         console.log('Going ' + (isOnline ? 'online' : 'offline'))

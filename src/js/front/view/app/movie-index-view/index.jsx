@@ -20,7 +20,7 @@ export default class MovieIndex extends React.Component {
 
         //Default state
         this.state = {
-            state: 'Authenticating', percent: 0, peers: this.peers, count: DEFAULT_INIT_LOAD,
+            state: 'Connecting', percent: 0, peers: this.peers, count: DEFAULT_INIT_LOAD,
             ready: false, loading: true, movies: [], chunkSize: setting.defaults.chunkSize,
             scrolling: false, finishLoad: false, showDetailsFor: false
         };
@@ -40,7 +40,7 @@ export default class MovieIndex extends React.Component {
     _index(i) {
         // Else try get from key file and save
         let _storage = window.Auth.readFromStorage() || {}
-        return i in (_storage && _storage[i]) || 0
+        return (i in _storage && _storage[i]) || 0
     }
 
     get loaded() {
@@ -69,7 +69,7 @@ export default class MovieIndex extends React.Component {
             this.ingest.stopEvents().stopIpcEvents().on('bc', (m) => {
                 this.setState({percent: 0, state: m, ready: false});
                 setTimeout(() => window.location.href = '#/', 3000)
-            }).startSeed().startPing();
+            }).startSeed()
             return this.startRunning();
         }
 
