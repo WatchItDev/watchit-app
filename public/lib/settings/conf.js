@@ -3,7 +3,7 @@ const path = require('path')
 const fs = require('fs')
 
 const ROOT_DIR = os.tmpdir();
-const ROOT_URI = 'http://gateway.ipfs.io/ipfs/';
+const ROOT_URI = 'http://ipfs.io/ipfs/';
 const ROOT_URI_TORRENT = `${ROOT_URI}`;
 const ROOT_STORE = process.env.appPath;
 const ROOT_APP = fs.realpathSync(process.cwd());

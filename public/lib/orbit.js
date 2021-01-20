@@ -8,7 +8,7 @@ const OrbitDB = require('orbit-db');
 const BufferList = require('bl/BufferList')
 const msgpack = require('msgpack-lite');
 const getIsInstance = require('./ipfs')
-const connectProvs = require('./provs')
+const {findProv} = require('./provs')
 
 
 module.exports = (ipcMain, rootDir, inDev) => {
@@ -145,8 +145,9 @@ module.exports = (ipcMain, rootDir, inDev) => {
             const rawAddress = this.rawIngestKey
 
             // Get orbit instance and next line connect providers
+            // Serve as provider too :)
             this.orbit = await this.instanceOB();
-            await connectProvs(this.node, rawAddress);
+            await findProv(this.node, rawAddress);
             return await this.run(address, res);
 
         }
@@ -234,15 +235,13 @@ module.exports = (ipcMain, rootDir, inDev) => {
         }
 
         async get(hash) {
-            const oplog = (this.db.oplog || this.db._oplog)
-            const result = oplog.values.find(v => v.hash === hash)
-            // Pin for further usages ;)
-            await this.node.pin.add(hash)
-            return result.payload.value
+            // const oplog = (this.db.oplog || this.db._oplog)
+            // const result = oplog.values.find(v => v.hash === hash)
+            // return result.payload.value
 
-            // return this.db.get(
-            //     hash // Process incoming hash
-            // ).payload.value
+            return this.db.get(
+                hash // Process incoming hash
+            ).payload.value
         }
 
         removeDuplicates(hashList) {

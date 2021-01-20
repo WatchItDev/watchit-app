@@ -1,4 +1,6 @@
-module.exports = async (ipfs, key) => {
+const {consume} = require('streaming-iterables')
+
+const findProv = async (ipfs, key) => {
     /***
      * This module find provs to orbit address and connect with them
      * @param ipfs
@@ -20,3 +22,21 @@ module.exports = async (ipfs, key) => {
         }
     }
 }
+
+const provide = async (ipfs, key) => {
+    /***
+     * This module provides key to dht
+     * @param ipfs
+     * @param key
+     * @return {Promise<void>}
+     */
+    console.info('Providing address', key);
+    await consume(ipfs.dht.provide(key))
+    console.info('Provided done')
+}
+
+
+module.exports.findProv = findProv
+module.exports.provide = provide
+
+
