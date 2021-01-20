@@ -102,7 +102,7 @@ export default class MoviePlayer extends React.Component {
     onReady = (url, flix) => {
         //Change state
         this.setState({
-            state: 'Fetching Subtitles',
+            state: 'Starting',
             flix: flix,
             percent: 100
         })
