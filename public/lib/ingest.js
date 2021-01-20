@@ -18,7 +18,6 @@ const MOVIES_SCHEMA = {
 
 const IPC_LISTENERS = [
     'orbit-partial-progress',
-    'party-progress',
     'party-rock',
     'orbit-peer',
     'orbit-error',
@@ -33,7 +32,6 @@ module.exports = class Ingest {
     constructor() {
         this.p = new LinvoDB(DB, MOVIES_SCHEMA)
         // Search Indexer Movie
-        this.ping = null;
         this.events = {
             start: null, peer: null, ready: null, done: null,
             loading: null, progress: null, replicated: null,
@@ -94,9 +92,6 @@ module.exports = class Ingest {
         ipcRenderer.send('start-orbit');
         ipcRenderer.on('orbit-partial-progress', (e, c, p) => {
             this._loopEvent('progress', c, p)
-
-        }).on('party-progress', (c, e) => {
-            this._loopEvent('ba', e)
 
         }).on('party-rock', (e, m) => {
             this._loopEvent('bc', m)

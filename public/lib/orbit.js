@@ -29,7 +29,7 @@ module.exports = (ipcMain, rootDir, inDev) => {
             this.events = {
                 ready: null, peer: null, loaded: null,
                 loading: null, progress: null, bc: null,
-                error: null, ba: null, replicated: null
+                error: null,  replicated: null
             }
         }
 
@@ -123,6 +123,9 @@ module.exports = (ipcMain, rootDir, inDev) => {
         }
 
         async party(msg = 'Invalid Key') {
+            /***
+             * Kill all - party all
+             */
             console.log('Party rock');
             clearInterval(this.node.interval);
             await this.close(true);
@@ -151,11 +154,19 @@ module.exports = (ipcMain, rootDir, inDev) => {
         }
 
         instanceOB() {
+            /***
+             * Orbit db factory
+             */
             return (this.orbit && Promise.resolve(this.orbit))
                 || OrbitDB.createInstance(this.node, {directory: orbitRepo});
         }
 
         instanceNode() {
+            /***
+             * Ipfs factory handler
+             * try keep node alive if cannot do it after MAX_RETRIES
+             * app get killed :(
+             */
             return new Promise(async (res) => {
                 // If fail to much.. get fuck out
                 if (this.retry > MAX_RETRIES && !this.hasValidCache) {
@@ -331,16 +342,23 @@ module.exports = (ipcMain, rootDir, inDev) => {
                 return clearInterval(queueInterval)
         }, 1000)
 
+    }, initEvents = (e) => {
+        /***
+         * Initialize events for orbit
+         */
+        // More listeners
+        orbit.stopEvents();
+        orbit.on('bc', (m) => e.reply('party-rock', m))
+            .on('error', (m) => e.reply('orbit-error', m))
+            .on('peer', (peerSize) => e.reply('orbit-peer', peerSize))
+
     };
 
     ipcMain.on('start-orbit', async (e) => {
         // More listeners
-        orbit.stopEvents();
-        orbit.on('ba', (p) => e.reply('party-progress', p))
-            .on('bc', (m) => e.reply('party-rock', m))
-            .on('error', (m) => e.reply('orbit-error', m))
-            .on('peer', (peerSize) => e.reply('orbit-peer', peerSize))
-            .on('progress', (_, hash) => orbit.queue = hash) // FIFO
+        initEvents(e);
+        // FIFO queue
+        orbit.on('progress', (_, hash) => orbit.queue = hash)
             .on('ready', () => {
                 queueProcessor(e);
                 e.reply('orbit-ready');
@@ -352,9 +370,8 @@ module.exports = (ipcMain, rootDir, inDev) => {
 
     ipcMain.on('orbit-seed', async (e) => {
         console.log('Starting seed');
+        initEvents(e)
         orbit.setInSeedMode(true);
-        orbit.on('bc', (m) => e.reply('party-rock', m))
-        orbit.on('peer', (peerSize) => e.reply('orbit-peer', peerSize))
         await orbit.start()
     });
 
