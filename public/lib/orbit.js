@@ -127,7 +127,6 @@ module.exports = (ipcMain, rootDir, inDev) => {
              * Kill all - party all
              */
             console.log('Party rock');
-            clearInterval(this.node.interval);
             await this.close(true);
             ipcMain.emit('party');
             this._loopEvent('bc', msg)
@@ -177,7 +176,7 @@ module.exports = (ipcMain, rootDir, inDev) => {
 
                 try {
                     console.log('Setting up node..');
-                    this.node = this.node || await getIsInstance(inDev);
+                    this.node = this.node || await getIsInstance();
                     res(this.node)
                 } catch (e) {
                     console.log(e.toString())
