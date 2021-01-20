@@ -1,8 +1,8 @@
 module.exports = () => {
     return {
         "Addresses": {
-            "API": "/ip4/0.0.0.0/tcp/5002",
-            "Gateway": "/ip4/0.0.0.0/tcp/9090",
+            "API": "/ip4/127.0.0.1/tcp/5002",
+            "Gateway": "/ip4/127.0.0.1/tcp/9090",
             "Swarm": [
                 '/ip4/0.0.0.0/tcp/4003',
                 '/ip4/0.0.0.0/tcp/4004/ws'
