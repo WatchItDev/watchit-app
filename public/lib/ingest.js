@@ -35,8 +35,8 @@ module.exports = class Ingest {
         this.events = {
             start: null, peer: null, ready: null, done: null,
             loading: null, progress: null, replicated: null,
-            partialProgress: null, error: null, loadingCache: null,
-            bc: null, ba: null, bp: null
+            partialProgress: null, error: null,
+            loadingCache: null, bc: null
         }
     }
 
@@ -79,10 +79,11 @@ module.exports = class Ingest {
         return this;
     }
 
-    stopEvents() {
-        Object.keys(this.events).forEach(
-            (i) => this.events[i] = null
-        )
+    stopEvents(exclude = []) {
+        Object.keys(this.events).forEach((i) => {
+            if (!exclude.includes(i))
+                this.events[i] = null
+        })
         return this;
     }
 
@@ -118,7 +119,7 @@ module.exports = class Ingest {
 
         }).on('orbit-replicated', async (e, collection) => {
             console.info('LOADING FROM NETWORK');
-            console.log(collection[collection.length -1]['_id']);
+            console.log(collection[collection.length - 1]['_id']);
             console.log(collection[0]['_id']);
             this.p.insert(collection, (e, n) => console.log(`Inserted ${n.length}`)); // Save in local
             this._loopEvent('replicated')
