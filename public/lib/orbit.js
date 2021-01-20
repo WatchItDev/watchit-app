@@ -95,10 +95,8 @@ module.exports = (ipcMain, rootDir, inDev) => {
 
             this.db.events.on('peer', (p) => {
                 console.log('Peer:', p);
-                if (!this.peers.includes(p)) {
-                    this.peers.push(p); // Add new peer to list
-                    this._loopEvent('peer', this.peers.length)
-                }
+                this.peers.push(p); // Add new peer to list
+                this._loopEvent('peer', this.peers.length)
             });
 
             console.log(`Ready in orbit ${key}`);
@@ -356,6 +354,7 @@ module.exports = (ipcMain, rootDir, inDev) => {
         console.log('Starting seed');
         orbit.setInSeedMode(true);
         orbit.on('bc', (m) => e.reply('party-rock', m))
+        orbit.on('peer', (peerSize) => e.reply('orbit-peer', peerSize))
         await orbit.start()
     });
 
