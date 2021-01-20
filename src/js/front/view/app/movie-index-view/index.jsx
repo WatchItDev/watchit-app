@@ -66,8 +66,9 @@ export default class MovieIndex extends React.Component {
         // Start ingest if not
         if (this.cached) {
             console.log('Running Cache');
-            this.ingest.stopEvents(['orbit-peer'])
-            this.ingest.stopIpcEvents()
+            this.ingest.stopEvents();
+            this.ingest.stopIpcEvents();
+            this.ingest.listenForNewPeer();
             this.ingest.on('bc', (m) => {
                 this.setState({percent: 0, state: m, ready: false});
                 setTimeout(() => window.location.href = '#/', 3000)

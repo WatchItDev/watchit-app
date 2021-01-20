@@ -57,7 +57,7 @@ module.exports = class Ingest {
 
     flush() {
         /**
-         * Kill all this shit
+         * Kill all this shit XD
          * */
         ipcRenderer.send(
             'orbit-flush'
@@ -65,6 +65,10 @@ module.exports = class Ingest {
     }
 
     stopIpcEvents(ipcListeners = []) {
+        /***
+         * Clear ipc electron events to avoid
+         * over declarative events
+         */
         (ipcListeners || IPC_LISTENERS).forEach((l) => {
             console.log('Cleaning:', l);
             ipcRenderer.removeAllListeners(l)
@@ -74,55 +78,143 @@ module.exports = class Ingest {
     }
 
     startSeed() {
+        /***
+         * Run app as seed mode
+         */
         console.log('Run Seed');
         ipcRenderer.send('orbit-seed')
         return this;
     }
 
-    stopEvents(exclude = []) {
-        Object.keys(this.events).forEach((i) => {
-            if (!exclude.includes(i))
-                this.events[i] = null
-        })
+    emitStart() {
+        /***
+         * Init signal to start node running
+         */
+        ipcRenderer.send('start-orbit');
         return this;
     }
 
-    load() {
-        // Clean old listeners first
-        this.stopIpcEvents();
-        ipcRenderer.send('start-orbit');
-        ipcRenderer.on('orbit-partial-progress', (e, c, p) => {
-            this._loopEvent('progress', c, p)
+    stopEvents() {
+        /***
+         * Remove all events assigned to ipc
+         */
+        Object.keys(this.events).forEach(
+            (i) => this.events[i] = null
+        )
+        return this;
+    }
 
-        }).on('party-rock', (e, m) => {
-            this._loopEvent('bc', m)
-
-        }).on('orbit-peer', (e, p) => {
+    listenForNewPeer() {
+        /***
+         * New peers interception and caching for stats
+         */
+        ipcRenderer.on('orbit-peer', (e, p) => {
             console.log('New peer', p);
             Auth.addToStorage({'peers': p});
             this._loopEvent('peer', p)
 
-        }).on('orbit-error', (e, m) => {
-            this._loopEvent('error', m)
+        })
+    }
 
-        }).on('orbit-ready', (e, c) => {
+    listenForPartialProgress() {
+        /***
+         * Partial replication progress %
+         */
+        ipcRenderer.on('orbit-partial-progress', (e, c, p) => {
+            this._loopEvent('progress', c, p)
+        })
+    }
+
+    listenForPartyRock() {
+        /***
+         * Cannot connect or any invalid key provided
+         */
+        ipcRenderer.on('party-rock', (e, m) => {
+            this._loopEvent('bc', m)
+        })
+    }
+
+    listenForError() {
+        /***
+         * Any error in node
+         */
+        ipcRenderer.on('party-rock', (e, m) => {
+            this._loopEvent('bc', m)
+
+        })
+    }
+
+    listenForReady() {
+        /**
+         * Trigger event before node get ready tu run
+         * could be used to clear storage or data previous to run app
+         */
+        ipcRenderer.on('orbit-ready', (e, c) => {
             this._loopEvent('start', c)
 
-        }).on('orbit-db-ready', (e, c) => {
+        })
+    }
+
+    listenForStartRunning() {
+        /***
+         * Trigger event when the node is ready to launch app
+         * this event goes after ready event
+         */
+        ipcRenderer.on('orbit-db-ready', (e, c) => {
             this._loopEvent('ready', c)
 
-        }).on('orbit-db-loaded', (e, c) => {
+        })
+    }
+
+    listenForDbLoaded() {
+        /***
+         * Trigger event when all db are synced
+         */
+        ipcRenderer.on('orbit-db-loaded', (e, c) => {
             this._loopEvent('done', c)
 
-        }).on('orbit-progress', (e, total) => {
+        })
+    }
+
+    listenForReplicaProgress() {
+        /***
+         * Replicate process event
+         */
+        ipcRenderer.on('orbit-progress', (e, total) => {
             this._loopEvent('progress', total)
 
-        }).on('orbit-replicated', async (e, collection) => {
+        })
+    }
+
+    listerForReplicatedData() {
+        /***
+         * Trigger event when new data its replicated
+         */
+        ipcRenderer.on('orbit-replicated', async (e, collection) => {
             console.info('LOADING FROM NETWORK');
             console.log(collection[collection.length - 1]['_id']);
             console.log(collection[0]['_id']);
             this.p.insert(collection, (e, n) => console.log(`Inserted ${n.length}`)); // Save in local
             this._loopEvent('replicated')
         })
+    }
+
+    load() {
+        /***
+         * This method add method to electron ipcRender
+         * and serve as intermediary between render and main process
+         */
+        // Clean old listeners first
+        this.stopIpcEvents();
+        this.emitStart();
+        this.listenForPartialProgress();
+        this.listenForPartyRock();
+        this.listenForNewPeer();
+        this.listenForError();
+        this.listenForReady()
+        this.listenForStartRunning();
+        this.listenForDbLoaded();
+        this.listenForReplicaProgress();
+        this.listerForReplicatedData();
     }
 }
