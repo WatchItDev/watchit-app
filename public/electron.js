@@ -299,7 +299,7 @@ app.whenReady().then(() => {
 	createMain(inDev);
 	
 	//Main tools
-	Orbit(ipcMain, appPath, inDev);
+	Orbit(ipcMain);
 	
 	// Window event
 	ipcMain.on('rmrf', (dir) => {

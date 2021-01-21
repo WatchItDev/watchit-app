@@ -1,19 +1,17 @@
 /**
  * IPFS movies interface
  */
-const path = require('path');
 const Auth = require('./auth');
 const OrbitDB = require('orbit-db');
-// const bluebird = require("bluebird");
 const BufferList = require('bl/BufferList')
 const msgpack = require('msgpack-lite');
 const getIsInstance = require('./ipfs')
 const {findProv} = require('./provs')
+const {ROOT_ORBIT_DIR} = require('./settings/conf')
 
 
-module.exports = (ipcMain, rootDir, inDev) => {
+module.exports = (ipcMain) => {
     const MAX_RETRIES = 30;
-    const orbitRepo = path.join(rootDir, '/w_source/orbit')
 
     class Orbit {
         constructor() {
@@ -29,7 +27,7 @@ module.exports = (ipcMain, rootDir, inDev) => {
             this.events = {
                 ready: null, peer: null, loaded: null,
                 loading: null, progress: null, bc: null,
-                error: null,  replicated: null
+                error: null, replicated: null
             }
         }
 
@@ -128,6 +126,7 @@ module.exports = (ipcMain, rootDir, inDev) => {
              */
             console.log('Party rock');
             await this.close(true);
+            await this.node.cleanup();
             ipcMain.emit('party');
             this._loopEvent('bc', msg)
         }
@@ -157,7 +156,7 @@ module.exports = (ipcMain, rootDir, inDev) => {
              * Orbit db factory
              */
             return (this.orbit && Promise.resolve(this.orbit))
-                || OrbitDB.createInstance(this.node, {directory: orbitRepo});
+                || OrbitDB.createInstance(this.node, {directory: ROOT_ORBIT_DIR});
         }
 
         instanceNode() {
@@ -179,15 +178,8 @@ module.exports = (ipcMain, rootDir, inDev) => {
                     this.node = this.node || await getIsInstance();
                     res(this.node)
                 } catch (e) {
-                    console.log(e.toString())
-                    console.log(e.code || 'Error on listen')
+                    console.log('Fail starting node', e)
                     this._loopEvent('error')
-                    try {
-                        console.log('Trying stop');
-                        await this.node.stop()
-                    } catch (e) {
-                        console.log('Already stop node');
-                    }
                     // Any other .. just retry
                     setTimeout(async () => {
                         console.log('Retrying ' + this.retry);
