@@ -212,7 +212,7 @@ module.exports = (ipcMain) => {
                     if (!this.hasValidCache || forceDrop) {
                         console.log('Drop DB;Index');
                         // if (this.db) this.db.drop()
-                        for (const k of ['total', 'ingest', 'limit'])
+                        for (const k of ['total', 'limit'])
                             Auth.removeFromStorage(k)
                     }
                 }
@@ -274,14 +274,19 @@ module.exports = (ipcMain) => {
     let queueInterval = null;
 
     const catIPFS = async (cid) => {
-        for await (const file of orbit.node.get(cid)) {
-            if (!file.content) continue;
+        try {
+            for await (const file of orbit.node.get(cid)) {
+                if (!file.content) continue;
 
-            // console.log(`Processing ${c.cid}`);
-            const content = new BufferList()
-            for await (const chunk of file.content) content.append(chunk)
-            return {'content': msgpack.decode(content.slice())};
+                // console.log(`Processing ${c.cid}`);
+                const content = new BufferList()
+                for await (const chunk of file.content) content.append(chunk)
+                return {'content': msgpack.decode(content.slice())};
+            }
+        } catch (e) {
+            console.log('Error trying fetch CID', cid, 'from network')
         }
+
     }, partialSave = async (e, hash) => {
         console.log('Going take chunks');
         let storage = Auth.readFromStorage();
