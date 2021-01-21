@@ -125,10 +125,14 @@
     "publish-win": "npm run package-win --publish always",
     "package": "npm-run-all -p package-win package-linux package-mac",
     "publish": "npm-run-all -p publish-win publish-linux publish-mac",
-    "postinstall": "bash ./scripts/fix.sh"
+    "postinstall": "node scripts/entrypoint.js"
   },
   "eslintConfig": {
     "extends": "react-app"
+  },
+  "peerDependencies": {
+    "go-ipfs": "^0.6.0",
+    "windows-elevate": "^1.0.1"
   },
   "devDependencies": {
     "concurrently": "^5.3.0",
