@@ -1,6 +1,6 @@
 const os = require('os');
 const isWin = os.type() === 'Windows_NT'
-const execPassthru = require('util')
+const {execPassthru} = require('util')
 
 if (isWin) execPassthru('npm i windows-elevate')
 const {exec} = require(isWin ? 'windows-elevate' : 'child_process')
