@@ -24,6 +24,7 @@ module.exports = async () => {
     const id = await ipfsApi.id()
     console.log('Running ipfs id', id.id)
     ipfsApi.cleanup = isInstance.cleanup
+    ipfsApi.stop = isInstance.stop
     return ipfsApi
 }
 

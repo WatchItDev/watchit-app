@@ -13,7 +13,7 @@ const ROOT_PUBLIC = path.join(ROOT_APP, 'public');
 const ROOT_RUNNING_TIME = path.join(ROOT_STORE, 'w_alloc')
 const ROOT_DB_DIR = path.join(ROOT_RUNNING_TIME, 'linvo')
 const ROOT_ORBIT_DIR = path.join(ROOT_RUNNING_TIME, 'orbit')
-const ROOT_IPFS_DIR = path.join(ROOT_RUNNING_TIME, 'ipfs')
+const ROOT_IPFS_DIR = path.join(ROOT_RUNNING_TIME, 'daemon')
 
 module.exports = {
     ROOT_APP,

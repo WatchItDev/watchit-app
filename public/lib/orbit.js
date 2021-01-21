@@ -1,13 +1,14 @@
 /**
  * IPFS movies interface
  */
-const Auth = require('./auth');
+
 const OrbitDB = require('orbit-db');
 const BufferList = require('bl/BufferList')
 const msgpack = require('msgpack-lite');
+const {ROOT_ORBIT_DIR} = require('./settings/conf')
+const Auth = require('./auth');
 const getIsInstance = require('./ipfs')
 const {findProv} = require('./provs')
-const {ROOT_ORBIT_DIR} = require('./settings/conf')
 
 
 module.exports = (ipcMain) => {
