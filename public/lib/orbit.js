@@ -237,10 +237,8 @@ module.exports = (ipcMain) => {
             // const oplog = (this.db.oplog || this.db._oplog)
             // const result = oplog.values.find(v => v.hash === hash)
             // return result.payload.value
-
-            return this.db.get(
-                hash // Process incoming hash
-            ).payload.value
+            console.log('Request hash', hash);
+            return this.db.get(hash).payload.value
         }
 
         removeDuplicates(hashList) {
@@ -272,6 +270,7 @@ module.exports = (ipcMain) => {
     let queueInterval = null;
 
     const catIPFS = async (cid) => {
+        console.log('Fetching cid', cid);
         try {
             for await (const file of orbit.node.get(cid)) {
                 if (!file.content) continue;
