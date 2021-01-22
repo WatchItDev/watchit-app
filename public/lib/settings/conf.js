@@ -13,7 +13,6 @@ const ROOT_PUBLIC = path.join(ROOT_APP, 'public');
 const ROOT_RUNNING_DB = path.join(ROOT_STORE, 'w_alloc')
 const ROOT_DB_DIR = path.join(ROOT_RUNNING_DB, 'linvo')
 const ROOT_ORBIT_DIR = path.join(ROOT_RUNNING_DB, 'orbit')
-
 const ROOT_IPFS_DAEMON = path.join(ROOT_STORE, 'w_daemon')
 const ROOT_IPFS_DIR = path.join(ROOT_IPFS_DAEMON, 'daemon')
 
