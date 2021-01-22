@@ -216,7 +216,7 @@ module.exports = (ipcMain) => {
                 if (this.node) {
                     console.log('Killing Nodes');
                     await this.node.stop().catch(
-                        err => console.error(err)
+                        err => console.error(err.message)
                     );
                 }
                 console.log('System closed');
