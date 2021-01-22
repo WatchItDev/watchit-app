@@ -4,13 +4,12 @@ const isWin = osType === 'windows_nt' || osType === 'win32'
 const isLinux = osType === 'linux'
 const {execPassthru} = require('./util')
 
-console.log(osType);
 if (isWin) execPassthru('npm i windows-elevate')
 const {exec} = require(isWin ? 'windows-elevate' : 'child_process')
 
 if (isLinux) {
     // Fix The SUID sandbox helper binary was found
-    execPassthru('sudo chown root.root node_modules/electron/dist/chrome-sandbox -R', exec)
+    // execPassthru('sudo chown root.root node_modules/electron/dist/chrome-sandbox -R', exec)
     execPassthru('sudo chmod 4755 -R node_modules/electron/dist/chrome-sandbox', exec)
 }
 
