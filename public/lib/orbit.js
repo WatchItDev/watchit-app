@@ -234,11 +234,11 @@ module.exports = (ipcMain) => {
         }
 
         async get(hash) {
-            // const oplog = (this.db.oplog || this.db._oplog)
-            // const result = oplog.values.find(v => v.hash === hash)
-            // return result.payload.value
-            console.log('Request hash', hash);
-            return this.db.get(hash).payload.value
+            const oplog = (this.db.oplog || this.db._oplog)
+            const result = oplog.values.find(v => v.hash === hash)
+            return result.payload.value
+            // console.log('Request hash', hash);
+            // return this.db.get(hash).payload.value
         }
 
         removeDuplicates(hashList) {
@@ -283,6 +283,7 @@ module.exports = (ipcMain) => {
         } catch (e) {
             console.log('Error trying fetch CID', cid, 'from network')
         }
+
 
     }, partialSave = async (e, hash) => {
         console.log('Going take chunks');
