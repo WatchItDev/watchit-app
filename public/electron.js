@@ -60,7 +60,6 @@ let removeFiles = (dirOrFIle, options) => {
         removeFiles(path.join(appPath, file))
     });
 }, wipeInvalidSync = () => {
-    app.releaseSingleInstanceLock()
     Auth.removeFromStorage('peers')
     let cache = Auth.readFromStorage();
     if (cache && !('tmp' in cache)) {
@@ -274,6 +273,7 @@ app.on('before-quit', ()=>{
 
 app.on('will-quit', () => {
     console.log('Will quit');
+    app.releaseSingleInstanceLock()
     ipcMain.emit('orbit-close')
 })
 
