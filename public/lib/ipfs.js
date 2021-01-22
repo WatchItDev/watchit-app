@@ -1,12 +1,10 @@
-const fs = require('fs-extra');
 const Ctl = require('ipfsd-ctl')
 const ipfsConf = require('./settings/ipfs');
-const {ROOT_IPFS_DAEMON, ROOT_IPFS_DIR} = require('./settings/conf')
 
 
 module.exports = async () => {
     const isInstance = await Ctl.createController({
-        ipfsOptions: {config: ipfsConf(), repo: ROOT_IPFS_DIR},
+        ipfsOptions: {config: ipfsConf()},
         ipfsHttpModule: require('ipfs-http-client'),
         ipfsBin: require('go-ipfs').path(),
         disposable: false, forceKillTimeout: 2000,
@@ -15,7 +13,6 @@ module.exports = async () => {
     })
 
     // Check if running time dir exists
-    fs.ensureDirSync(ROOT_IPFS_DAEMON)
     console.log('Starting node');
     await isInstance.init()
     await isInstance.start();
