@@ -1,7 +1,7 @@
 const fs = require('fs-extra');
 const Ctl = require('ipfsd-ctl')
 const ipfsConf = require('./settings/ipfs');
-const {ROOT_RUNNING_TIME, ROOT_IPFS_DIR} = require('./settings/conf')
+const {ROOT_IPFS_DAEMON, ROOT_IPFS_DIR} = require('./settings/conf')
 
 
 module.exports = async () => {
@@ -15,7 +15,7 @@ module.exports = async () => {
     })
 
     // Check if running time dir exists
-    fs.ensureDirSync(ROOT_RUNNING_TIME)
+    fs.ensureDirSync(ROOT_IPFS_DAEMON)
     console.log('Starting node');
     await isInstance.init()
     await isInstance.start();

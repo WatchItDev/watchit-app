@@ -10,10 +10,12 @@ const ROOT_STORE = process.env.appPath;
 const ROOT_APP = fs.realpathSync(process.cwd());
 const ROOT_TMP_FOLDER = path.join(ROOT_DIR, 'wtmp');
 const ROOT_PUBLIC = path.join(ROOT_APP, 'public');
-const ROOT_RUNNING_TIME = path.join(ROOT_STORE, 'w_alloc')
-const ROOT_DB_DIR = path.join(ROOT_RUNNING_TIME, 'linvo')
-const ROOT_ORBIT_DIR = path.join(ROOT_RUNNING_TIME, 'orbit')
-const ROOT_IPFS_DIR = path.join(ROOT_RUNNING_TIME, 'daemon')
+const ROOT_RUNNING_DB = path.join(ROOT_STORE, 'w_alloc')
+const ROOT_DB_DIR = path.join(ROOT_RUNNING_DB, 'linvo')
+const ROOT_ORBIT_DIR = path.join(ROOT_RUNNING_DB, 'orbit')
+
+const ROOT_IPFS_DAEMON = path.join(ROOT_STORE, 'w_daemon')
+const ROOT_IPFS_DIR = path.join(ROOT_IPFS_DAEMON, 'daemon')
 
 module.exports = {
     ROOT_APP,
@@ -24,8 +26,9 @@ module.exports = {
     ROOT_DB_DIR,
     ROOT_IPFS_DIR,
     ROOT_ORBIT_DIR,
+    ROOT_RUNNING_DB,
     ROOT_TMP_FOLDER,
     ROOT_URI_TORRENT,
-    READ_TIMEOUT_FILE,
-    ROOT_RUNNING_TIME
+    ROOT_IPFS_DAEMON,
+    READ_TIMEOUT_FILE
 };
