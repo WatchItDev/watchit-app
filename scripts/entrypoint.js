@@ -1,9 +1,11 @@
 const os = require('os');
 const isWin = os.type() === 'Windows_NT'
+const fs = require('fs')
 const {execPassthru} = require('./util')
 
 if (isWin) execPassthru('npm i windows-elevate')
 const {exec} = require(isWin ? 'windows-elevate' : 'child_process')
+
 
 execPassthru('npm install go-ipfs@0.6.0', exec)
 execPassthru('electron-builder install-app-deps', exec)
