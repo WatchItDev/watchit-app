@@ -127,7 +127,6 @@ module.exports = (ipcMain) => {
              */
             console.log('Party rock');
             await this.close(true);
-            await this.node.cleanup();
             ipcMain.emit('party');
             this._loopEvent('bc', msg)
         }
