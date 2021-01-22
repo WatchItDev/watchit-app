@@ -207,10 +207,7 @@ module.exports = (ipcMain) => {
                 if (this.orbit) {
                     console.log('Killing Store');
                     await this.orbit.disconnect()
-
                     if (!this.hasValidCache || forceDrop) {
-                        console.log('Drop DB;Index');
-                        // if (this.db) this.db.drop()
                         for (const k of ['total', 'limit'])
                             Auth.removeFromStorage(k)
                     }

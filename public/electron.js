@@ -267,12 +267,14 @@ app.on('window-all-closed', () => {
     if (!isDarwin) app.quit();
 });
 
-app.on('will-quit', () => {
-    console.log('Will quit');
-    //Remove subs
-    ipcMain.emit('orbit-close')
+app.on('before-quit', ()=>{
     wipeTmpSubs();
     wipeInvalidSync();
+})
+
+app.on('will-quit', () => {
+    console.log('Will quit');
+    ipcMain.emit('orbit-close')
 })
 
 app.on('ready', () => {
