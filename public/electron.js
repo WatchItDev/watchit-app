@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const mime = require('mime');
 const rimarf = require('rimraf');
+const log = require('electron-log');
 const {
     autoUpdater
 } = require('electron-updater');
@@ -200,6 +201,8 @@ const removeFiles = (dirOrFIle, options) => {
 }
 
 //Auto update setup
+autoUpdater.logger = log;
+autoUpdater.logger.transports.file.level = 'info';
 autoUpdater.autoDownload = false
 autoUpdater.setFeedURL({
     provider: 'github', repo: 'watchit-desktop',
