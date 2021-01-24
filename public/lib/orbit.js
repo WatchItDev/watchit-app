@@ -86,6 +86,11 @@ module.exports = (ipcMain) => {
         }
 
         async run(key, res) {
+            /***
+             * Start running orbit and set events listeners
+             * @param key: orbit address
+             * @param res: callback
+             */
             console.log('Starting movies db:', key);
             this.db = await this.open(key).catch(async () => {
                 // If db cannot be opened then just kill
@@ -136,6 +141,7 @@ module.exports = (ipcMain) => {
              * Get orbit node ready
              * this method start orbit instance
              * and get providers for db
+             * @param res: callback
              */
             console.log('Node ready');
             console.log('Loading db..');
@@ -146,7 +152,7 @@ module.exports = (ipcMain) => {
             // Serve as provider too :)
             this.orbit = await this.instanceOB();
             await findProv(this.node, rawAddress);
-            return await this.run(address, res);
+            await this.run(address, res);
 
         }
 
