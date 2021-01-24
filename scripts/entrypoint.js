@@ -4,7 +4,7 @@ const isWin = osType === 'windows_nt' || osType === 'win32'
 const isLinux = osType === 'linux'
 const {execPassthru} = require('./util')
 
-if (isWin) execPassthru('npm i windows-elevate')
+if (isWin) execPassthru('npm i windows-elevate', require('child_process').exec)
 const {exec} = require(isWin ? 'windows-elevate' : 'child_process')
 
 if (isLinux) {
