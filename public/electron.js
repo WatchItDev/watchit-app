@@ -207,7 +207,9 @@ autoUpdater.autoDownload = false
 autoUpdater.on('update-available', async () => {
     console.log('New Update');
     win.webContents.send('update_available');
-    await autoUpdater.downloadUpdate()
+    await autoUpdater.downloadUpdate().catch(() => {
+        console.log('Download update failed');
+    });
 });
 
 autoUpdater.on('error', () => console.log('Error trying update app'))
@@ -318,7 +320,9 @@ app.whenReady().then(() => {
     ipcMain.on('check_update', async () => {
         if (inDev) return;
         console.log('Check for update');
-        await autoUpdater.checkForUpdates()
+        await autoUpdater.checkForUpdates().catch(() => {
+            console.log('No updates available');
+        })
     });
 
 })
