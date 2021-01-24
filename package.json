@@ -63,8 +63,7 @@
       {
         "provider": "github",
         "owner": "ZorrillosDev",
-        "repo": "watchit-desktop",
-        "private": true
+        "repo": "watchit-desktop"
       }
     ],
     "files": [
