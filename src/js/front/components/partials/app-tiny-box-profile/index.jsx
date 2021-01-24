@@ -11,11 +11,11 @@ export default class AppTinyProfile extends React.Component {
             logout: false
         }
     }
-    
+
     render() {
         return (
             (
-                !this.state.logout && this.props.user && <div className="clearfix">
+                (!this.state.logout && this.props.user && <div className="clearfix">
                     {/*Small avatar*/}
                     <AppTinyProfileAvatar photo={this.props.user.photoURL}/>
                     {/*Content info*/}
@@ -26,8 +26,7 @@ export default class AppTinyProfile extends React.Component {
                     </div>
 
 
-                </div>
-                || <BarLoader />
+                </div>) || <BarLoader/>
             )
         )
     }
