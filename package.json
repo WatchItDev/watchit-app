@@ -23,6 +23,7 @@
     "fs-extra": "^9.0.1",
     "iconv-lite": "^0.5.1",
     "ip": "^1.1.5",
+    "go-ipfs": "^0.6.0",
     "ipfs-http-client": "^47.0.1",
     "ipfsd-ctl": "^7.2.0",
     "jschardet": "^2.1.1",
@@ -131,7 +132,6 @@
     "extends": "react-app"
   },
   "peerDependencies": {
-    "go-ipfs": "^0.6.0",
     "windows-elevate": "^1.0.1"
   },
   "husky": {
