@@ -42,7 +42,7 @@ export default class AppMoviesPlayer extends React.Component {
 	
 	static get propTypes() {
 		return {
-			movie: PropTypes.object.isRequired
+			movies: PropTypes.object.isRequired
 		}
 	}
 	
