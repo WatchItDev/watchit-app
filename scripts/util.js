@@ -8,7 +8,6 @@ module.exports.execPassthru = (execCmd, exec) => {
             }
             if (stderr) {
                 console.log(`stderr: ${stderr}`);
-                resolve()
             }
             console.log(`stdout: ${stdout}`);
             resolve()
