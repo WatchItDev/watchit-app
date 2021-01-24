@@ -11,7 +11,7 @@ export default class AppMainSearchResultBoxItem extends React.PureComponent {
         return (
             <li className="transparent collection-item padding-5 no-border d-flex pointer" onClick={this.onClick}>
                 <div className="result-search-box-img">
-                    <BoxImage src={this.props.small_cover_image} placeholder={{w: 60, h: 90}}/>
+                    <BoxImage src={this.props.image} placeholder={{w: 60, h: 90}}/>
                 </div>
                 <div className="result-search-box-content flex-grow-1">
                     <div className="search-result-box-title">

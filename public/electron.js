@@ -41,7 +41,7 @@ dialog.showErrorBox = (title, content) => {
     console.log(`${title}\n${content}`);
 };
 
-let removeFiles = (dirOrFIle, options) => {
+const removeFiles = (dirOrFIle, options) => {
     rimarf(dirOrFIle, {
         ...{
             disableGlob: true,
@@ -202,8 +202,9 @@ let removeFiles = (dirOrFIle, options) => {
 //Auto update setup
 autoUpdater.autoDownload = false
 autoUpdater.setFeedURL({
-    provider: 'github', token: 'b151ff02025d34ad80d8cf637f6f96ee3bae70ca',
-    owner: 'ZorrillosDev', repo: 'watchit-desktop', releaseType: 'release'
+    provider: 'github', repo: 'watchit-desktop',
+    releaseType: 'release',
+    owner: 'ZorrillosDev',
 })
 
 autoUpdater.on('error', async (error) => {

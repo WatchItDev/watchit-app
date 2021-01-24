@@ -1,21 +1,26 @@
 import React from 'react'
-import Search from "js/resources/data/search";
 import AppMainTopInput from 'js/front/components/views/movie-index-components/app-main-movies-top-inputs/index'
 import AppSearch from 'js/front/components/views/movie-index-components/app-main-movies-top-search-result/index'
 import utilHelper from "js/resources/helpers/utilHelper";
+import PropTypes from "prop-types";
 
 export default class AppMainTopInputs extends React.PureComponent {
     constructor(props) {
         super(props);
 
         this.ingest = window.Ingest;
-        this.search = new Search(this.ingest.p);
         this.search_timeout = null;
         this.searchRef = null;
 
         this.state = {
             searching: false,
             searchResult: false,
+        }
+    }
+
+    static get propTypes() {
+        return {
+            movies: PropTypes.object.isRequired
         }
     }
 
@@ -48,7 +53,7 @@ export default class AppMainTopInputs extends React.PureComponent {
             //Check invalid
             if (!_invalid_input)
                 //Get movies by search
-                this.search.find(
+                this.props.movies.search(
                     _target_value
                 ).then((res) => {
                     this.setState({

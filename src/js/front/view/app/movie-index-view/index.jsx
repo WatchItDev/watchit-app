@@ -298,7 +298,7 @@ export default class MovieIndex extends React.Component {
                                 <header
                                     className="no-margin vertical-padding transparent z-depth-1 d-flex align-items-center justify-content-between header_search">
                                     <div className="col l6 m6 relative input-black-box">
-                                        <AppSearch onClick={this.onClickMovie}/>
+                                        <AppSearch movies={this.movie} onClick={this.onClickMovie}/>
                                     </div>
 
                                     <div className="top-right-small-menu">
