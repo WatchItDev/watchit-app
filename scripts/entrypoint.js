@@ -20,7 +20,6 @@ const executePostInstall = async () => {
     }
 
     await execPassthru('cd node_modules/unzip/node_modules/fstream/ && npm i graceful-fs@4.2.4 --save')
-    await execPassthru('npm install go-ipfs@0.6.0')
     await execPassthru('electron-builder install-app-deps')
     await execPassthru('npm rebuild ursa-optional')
 }
