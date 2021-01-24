@@ -1,7 +1,7 @@
 {
   "name": "watchit",
   "author": "ZorrillosDev",
-  "version": "0.6.0",
+  "version": "0.0.0",
   "private": true,
   "main": "public/electron.js",
   "description": "Watch movies everywhere",
@@ -63,7 +63,8 @@
       {
         "provider": "github",
         "owner": "ZorrillosDev",
-        "repo": "watchit-desktop"
+        "repo": "watchit-desktop",
+        "private": false
       }
     ],
     "files": [
