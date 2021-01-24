@@ -20,7 +20,7 @@ export default class AppMainUpdater extends React.PureComponent {
 		ipcRenderer.removeAllListeners('update_available');
 		ipcRenderer.send('check_update'); // Check for update
 		ipcRenderer.on('update_available', () => {
-			this.mRef.innerText = 'A new update is available. The app is being updated and will restart on completion...';
+			this.mRef.innerText = 'A new update is available. The app it is being updated and will restart on completion...';
 			this.nRef.classList.remove('hidden');
 		});
 		
