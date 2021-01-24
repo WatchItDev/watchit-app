@@ -19,7 +19,7 @@ const executePostInstall = async () => {
         console.error(err)
     }
 
-    await execPassthru('cd node_modules/unzip/node_modules/fstream/ && npm i graceful-fs@4.2.4 --save')
+    await execPassthru('cd node_modules/unzip/node_modules/fstream/ && npm i graceful-fs@4.2.4 --no-save')
     await execPassthru('electron-builder install-app-deps')
     await execPassthru('npm rebuild ursa-optional')
 }
