@@ -92,7 +92,7 @@ module.exports = (ipcMain) => {
                 await this.party('Cannot find peers')
             });
 
-            this.db.events.on('peer', (p) => {
+            this.db?.events?.on('peer', (p) => {
                 console.log('Peer:', p);
                 this.peers.push(p); // Add new peer to list
                 this._loopEvent('peer', this.peers.length)
@@ -102,16 +102,15 @@ module.exports = (ipcMain) => {
             this._loopEvent('ready');
             this.ready = true;
 
-            this.db.events.on('ready', () => this._loopEvent('loaded'))
-            this.db.events.on('replicated', (address, t) => {
+            this.db?.events?.on('ready', () => this._loopEvent('loaded'))
+            this.db?.events?.on('replicated', (address, t) => {
                 this._loopEvent('replicated', address, t)
             });
-            this.db.events.on('replicate.progress', (address, hash, entry, progress, have) => {
+            this.db?.events?.on('replicate.progress', (address, hash, entry, progress, have) => {
                 this._loopEvent('progress', address, hash, entry, progress, have)
             });
 
             res(this.db)
-
         }
 
         stopEvents() {
