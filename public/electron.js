@@ -203,8 +203,8 @@ const removeFiles = (dirOrFIle, options) => {
 autoUpdater.autoDownload = false
 autoUpdater.setFeedURL({
     provider: 'github', repo: 'watchit-desktop',
-    releaseType: 'release',
-    owner: 'ZorrillosDev',
+    releaseType: 'release', owner: 'ZorrillosDev',
+    private: false
 })
 
 autoUpdater.on('error', async (error) => {
@@ -218,7 +218,9 @@ autoUpdater.on('error', async (error) => {
 autoUpdater.on('update-available', async () => {
     console.log('New Update');
     win.webContents.send('update_available');
-    await autoUpdater.downloadUpdate();
+    await autoUpdater.downloadUpdate().catch(() => {
+        console.log('Download update failed');
+    });
 });
 
 autoUpdater.on('update-downloaded', async () => {
@@ -267,7 +269,7 @@ app.on('window-all-closed', () => {
     if (!isDarwin) app.quit();
 });
 
-app.on('before-quit', ()=>{
+app.on('before-quit', () => {
     wipeTmpSubs();
     wipeInvalidSync();
 })
@@ -328,7 +330,9 @@ app.whenReady().then(() => {
     ipcMain.on('check_update', async () => {
         if (inDev) return;
         console.log('Check for update');
-        await autoUpdater.checkForUpdates()
+        await autoUpdater.checkForUpdates().catch(() => {
+            console.log('No updates available');
+        })
     });
 
 })

@@ -1,7 +1,7 @@
 {
   "name": "watchit",
   "author": "ZorrillosDev",
-  "version": "0.6.0",
+  "version": "0.0.0",
   "private": true,
   "main": "public/electron.js",
   "description": "Watch movies everywhere",
@@ -63,7 +63,8 @@
       {
         "provider": "github",
         "owner": "ZorrillosDev",
-        "repo": "watchit-desktop"
+        "repo": "watchit-desktop",
+        "private": false
       }
     ],
     "files": [
@@ -116,14 +117,12 @@
     "electron": "LOG=debug IPFS_FD_MAX=10000 ENV=dev $(npm bin)/electron .",
     "dev": "concurrently \"npm run start\" \"npm run electron\"",
     "inspect": "npm run dev --inspect=5858 watchit",
-    "package-mac": "npm run build && electron-builder build --mac",
-    "package-linux": "npm run build && electron-builder build --linux",
-    "package-win": "npm run build && electron-builder build --win --x64 --ia32",
-    "publish-mac": "npm run package-mac --publish always",
-    "publish-linux": "npm run package-linux --publish always",
-    "publish-win": "npm run package-win --publish always",
-    "package": "npm-run-all -p package-win package-linux package-mac",
-    "publish": "npm-run-all -p publish-win publish-linux publish-mac",
+    "package": "npm run build && electron-builder build",
+    "package:linux": "npm run package -- --linux",
+    "package:win": "npm run package -- --win --x64 --ia32",
+    "publish:mac": "npm run package:mac -- --publish always",
+    "publish:linux": "npm run package:linux -- --publish always",
+    "publish:win": "npm run package:win -- --publish always",
     "postinstall": "node scripts/entrypoint.js"
   },
   "eslintConfig": {

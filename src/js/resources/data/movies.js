@@ -15,7 +15,6 @@ export default class Movies extends Manager {
 
             // Find data in collection
             const re = new RegExp(`${textToSearch}`, 'gi')
-            console.log(re)
             this.db.find({title: {$regex: re}}).exec((e, r) => {
                 res(r)
             })
