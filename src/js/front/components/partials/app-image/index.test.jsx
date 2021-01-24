@@ -32,7 +32,7 @@ describe("Image component", () => {
         });
 
         expect(container.querySelector("img").src).toBe(
-            "http://localhost/test/large_cover_image.jg"
+            "http://localhost/test/large_cover_image.jpg"
         );
     });
 });

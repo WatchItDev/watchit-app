@@ -112,7 +112,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test -u -watchAll=false",
+    "test": "react-scripts test  --watchAll=false",
     "eject": "react-scripts eject",
     "electron": "LOG=debug IPFS_FD_MAX=10000 ENV=dev $(npm bin)/electron .",
     "dev": "concurrently \"npm run start\" \"npm run electron\"",
@@ -134,7 +134,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run test"
+      "pre-commit": "npm test"
     }
   },
   "devDependencies": {
