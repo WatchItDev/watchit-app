@@ -4,7 +4,7 @@ const ipfsConf = require('./settings/ipfs');
 
 module.exports = async () => {
     const isInstance = await Ctl.createController({
-        ipfsOptions: {config: ipfsConf(), repo: '~/.ipfs01'},
+        ipfsOptions: {config: ipfsConf()},
         ipfsHttpModule: require('ipfs-http-client'),
         ipfsBin: require('go-ipfs').path(),
         disposable: false, forceKillTimeout: 2000,
