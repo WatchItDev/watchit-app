@@ -4,7 +4,7 @@ const isWin = osType === 'windows_nt' || osType === 'win32'
 const isLinux = osType === 'linux'
 const {execPassthru} = require('./util')
 
-(async ()=>{
+async function execute(){
     if (isWin) await execPassthru('npm i windows-elevate', require('child_process').exec)
     const {exec} = require(isWin ? 'windows-elevate' : 'child_process')
 
@@ -18,6 +18,10 @@ const {execPassthru} = require('./util')
     await execPassthru('npm install go-ipfs@0.6.0', exec)
     await execPassthru('electron-builder install-app-deps', exec)
     await execPassthru('npm rebuild ursa-optional', exec)
-})()
+}
+
+execute();
+
+
 
 
