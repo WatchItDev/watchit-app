@@ -1,17 +1,21 @@
 const Ctl = require('ipfsd-ctl')
 const ipfsConf = require('./settings/ipfs');
-let interval = null;
 
 
 module.exports = async () => {
     const isInstance = await Ctl.createController({
+        ipfsOptions: {config: ipfsConf()},
         ipfsHttpModule: require('ipfs-http-client'),
         ipfsBin: require('go-ipfs').path(),
-        ipfsOptions: {config: ipfsConf()},
-        disposable: true, forceKillTimeout: 2000,
+        disposable: false, forceKillTimeout: 2000,
         args: ['--enable-pubsub-experiment'],
         remote: false, type: 'go'
     })
+
+    // Check if running time dir exists
+    console.log('Starting node');
+    await isInstance.init()
+    await isInstance.start();
 
     const ipfsApi = isInstance.api
     const id = await ipfsApi.id()

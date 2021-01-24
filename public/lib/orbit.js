@@ -1,19 +1,18 @@
 /**
  * IPFS movies interface
  */
-const path = require('path');
-const Auth = require('./auth');
+
 const OrbitDB = require('orbit-db');
-// const bluebird = require("bluebird");
 const BufferList = require('bl/BufferList')
 const msgpack = require('msgpack-lite');
+const {ROOT_ORBIT_DIR} = require('./settings/conf')
+const Auth = require('./auth');
 const getIsInstance = require('./ipfs')
 const {findProv} = require('./provs')
 
 
-module.exports = (ipcMain, rootDir, inDev) => {
+module.exports = (ipcMain) => {
     const MAX_RETRIES = 30;
-    const orbitRepo = path.join(rootDir, '/w_source/orbit')
 
     class Orbit {
         constructor() {
@@ -29,7 +28,7 @@ module.exports = (ipcMain, rootDir, inDev) => {
             this.events = {
                 ready: null, peer: null, loaded: null,
                 loading: null, progress: null, bc: null,
-                error: null,  replicated: null
+                error: null, replicated: null
             }
         }
 
@@ -157,7 +156,7 @@ module.exports = (ipcMain, rootDir, inDev) => {
              * Orbit db factory
              */
             return (this.orbit && Promise.resolve(this.orbit))
-                || OrbitDB.createInstance(this.node, {directory: orbitRepo});
+                || OrbitDB.createInstance(this.node, {directory: ROOT_ORBIT_DIR});
         }
 
         instanceNode() {
@@ -179,15 +178,8 @@ module.exports = (ipcMain, rootDir, inDev) => {
                     this.node = this.node || await getIsInstance();
                     res(this.node)
                 } catch (e) {
-                    console.log(e.toString())
-                    console.log(e.code || 'Error on listen')
+                    console.log('Fail starting node', e)
                     this._loopEvent('error')
-                    try {
-                        console.log('Trying stop');
-                        await this.node.stop()
-                    } catch (e) {
-                        console.log('Already stop node');
-                    }
                     // Any other .. just retry
                     setTimeout(async () => {
                         console.log('Retrying ' + this.retry);
@@ -215,18 +207,17 @@ module.exports = (ipcMain, rootDir, inDev) => {
                 if (this.orbit) {
                     console.log('Killing Store');
                     await this.orbit.disconnect()
-
                     if (!this.hasValidCache || forceDrop) {
-                        console.log('Drop DB;Index');
-                        // if (this.db) this.db.drop()
-                        for (const k of ['total', 'ingest', 'limit'])
+                        for (const k of ['total', 'limit'])
                             Auth.removeFromStorage(k)
                     }
                 }
 
                 if (this.node) {
                     console.log('Killing Nodes');
-                    await this.node.stop().catch(err => console.error(err));
+                    await this.node.stop().catch(
+                        err => console.error(err.message)
+                    );
                 }
                 console.log('System closed');
             } catch (e) {
@@ -243,13 +234,11 @@ module.exports = (ipcMain, rootDir, inDev) => {
         }
 
         async get(hash) {
-            // const oplog = (this.db.oplog || this.db._oplog)
-            // const result = oplog.values.find(v => v.hash === hash)
-            // return result.payload.value
-
-            return this.db.get(
-                hash // Process incoming hash
-            ).payload.value
+            const oplog = (this.db.oplog || this.db._oplog)
+            const result = oplog.values.find(v => v.hash === hash)
+            return result.payload.value
+            // console.log('Request hash', hash);
+            // return this.db.get(hash).payload.value
         }
 
         removeDuplicates(hashList) {
@@ -281,14 +270,21 @@ module.exports = (ipcMain, rootDir, inDev) => {
     let queueInterval = null;
 
     const catIPFS = async (cid) => {
-        for await (const file of orbit.node.get(cid)) {
-            if (!file.content) continue;
+        console.log('Fetching cid', cid);
+        try {
+            for await (const file of orbit.node.get(cid)) {
+                if (!file.content) continue;
 
-            // console.log(`Processing ${c.cid}`);
-            const content = new BufferList()
-            for await (const chunk of file.content) content.append(chunk)
-            return {'content': msgpack.decode(content.slice())};
+                // console.log(`Processing ${c.cid}`);
+                const content = new BufferList()
+                for await (const chunk of file.content) content.append(chunk)
+                return {'content': msgpack.decode(content.slice())};
+            }
+        } catch (e) {
+            console.log('Error trying fetch CID', cid, 'from network')
         }
+
+
     }, partialSave = async (e, hash) => {
         console.log('Going take chunks');
         let storage = Auth.readFromStorage();

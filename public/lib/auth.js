@@ -1,14 +1,12 @@
 const fs = require('fs-extra');
 const path = require('path');
 const orbit = require('orbit-db')
-const {ROOT_STORE} = require(__dirname + '/settings/conf')
+const {ROOT_DB_DIR, ROOT_STORE} = require('./settings/conf')
 
 module.exports = class Auth {
 
     static get db() {
-        return path.join(
-            ROOT_STORE, 'w_source', 'linvo'
-        )
+        return ROOT_DB_DIR
     }
 
     static get init() {
