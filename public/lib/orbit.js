@@ -87,7 +87,7 @@ module.exports = (ipcMain) => {
 
         async run(key, res) {
             /***
-             * Start running orbit and set events listeners
+             * Opem orbit address and set events listeners
              * @param key: orbit address
              * @param res: callback
              */
