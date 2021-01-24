@@ -75,7 +75,7 @@ module.exports = (ipcMain) => {
         }
 
         get hasValidCache() {
-            const [validCache, _] = this.cache;
+            const [validCache] = this.cache;
             return validCache
         }
 
@@ -326,7 +326,7 @@ module.exports = (ipcMain) => {
         queueInterval = setInterval(async () => {
             if (asyncLock) return false;
 
-            const [_, cache] = orbit.cache;
+            const [validCache, cache] = orbit.cache;
             const currentQueue = orbit.queue
             const lastHash = cache.lastHash ?? 0;
 
@@ -335,6 +335,7 @@ module.exports = (ipcMain) => {
             let hash = currentQueue[indexLastHash + 1]
 
             console.log(`Processing hash ${hash}`);
+            console.log(`Processing with`, validCache ? 'valid cache' : 'no cache')
             asyncLock = true; // Lock process
             await partialSave(e, hash)
 
