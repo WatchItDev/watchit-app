@@ -218,7 +218,9 @@ autoUpdater.on('error', async (error) => {
 autoUpdater.on('update-available', async () => {
     console.log('New Update');
     win.webContents.send('update_available');
-    await autoUpdater.downloadUpdate();
+    await autoUpdater.downloadUpdate().catch(() => {
+        console.log('Download update failed');
+    });
 });
 
 autoUpdater.on('update-downloaded', async () => {
