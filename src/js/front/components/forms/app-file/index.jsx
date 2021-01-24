@@ -1,12 +1,8 @@
 import React from 'react'
-//import PropTypes from 'prop-types'
 import BoxButton from 'front/components/forms/app-buttons/index.jsx'
 import Input from 'front/components/forms/app-inputs/index.jsx'
 
 export default class BoxInput extends React.Component {
-    constructor(props) {
-        super(props);
-    }
 
     static get defaultProps() {
         return {

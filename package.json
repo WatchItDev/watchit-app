@@ -118,7 +118,7 @@
     "dev": "concurrently \"npm run start\" \"npm run electron\"",
     "eslint": "eslint --ext js,jsx,ts,tsx",
     "lint": "npm run eslint -- src",
-    "lint:fix": "npm run eslint -- --fix src",
+    "lint:fix": "npm run eslint -- --fix",
     "inspect": "npm run dev --inspect=5858 watchit",
     "package": "npm run build && electron-builder build",
     "package:linux": "npm run package -- --linux",
