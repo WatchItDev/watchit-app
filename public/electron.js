@@ -41,7 +41,7 @@ dialog.showErrorBox = (title, content) => {
     console.log(`${title}\n${content}`);
 };
 
-let removeFiles = (dirOrFIle, options) => {
+const removeFiles = (dirOrFIle, options) => {
     rimarf(dirOrFIle, {
         ...{
             disableGlob: true,
