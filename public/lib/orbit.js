@@ -260,7 +260,7 @@ module.exports = (ipcMain) => {
 
         get queue() {
             let cache = Auth.readFromStorage();
-            return cache.hash ?? []
+            return cache?.hash ?? []
         }
 
     }
