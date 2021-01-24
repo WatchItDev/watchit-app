@@ -1,10 +1,6 @@
 import React from 'react';
 
 export default class ProgressBar extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
     render() {
         return (
             <div className="absolute full-height full-width loading-box has-main-background valign-wrapper">

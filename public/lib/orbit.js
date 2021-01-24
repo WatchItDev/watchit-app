@@ -75,7 +75,7 @@ module.exports = (ipcMain) => {
         }
 
         get hasValidCache() {
-            const [validCache, _] = this.cache;
+            const [validCache] = this.cache;
             return validCache
         }
 
@@ -86,13 +86,18 @@ module.exports = (ipcMain) => {
         }
 
         async run(key, res) {
+            /***
+             * Opem orbit address and set events listeners
+             * @param key: orbit address
+             * @param res: callback
+             */
             console.log('Starting movies db:', key);
             this.db = await this.open(key).catch(async () => {
                 // If db cannot be opened then just kill
                 await this.party('Cannot find peers')
             });
 
-            this.db.events.on('peer', (p) => {
+            this.db?.events?.on('peer', (p) => {
                 console.log('Peer:', p);
                 this.peers.push(p); // Add new peer to list
                 this._loopEvent('peer', this.peers.length)
@@ -102,16 +107,15 @@ module.exports = (ipcMain) => {
             this._loopEvent('ready');
             this.ready = true;
 
-            this.db.events.on('ready', () => this._loopEvent('loaded'))
-            this.db.events.on('replicated', (address, t) => {
+            this.db?.events?.on('ready', () => this._loopEvent('loaded'))
+            this.db?.events?.on('replicated', (address, t) => {
                 this._loopEvent('replicated', address, t)
             });
-            this.db.events.on('replicate.progress', (address, hash, entry, progress, have) => {
+            this.db?.events?.on('replicate.progress', (address, hash, entry, progress, have) => {
                 this._loopEvent('progress', address, hash, entry, progress, have)
             });
 
             res(this.db)
-
         }
 
         stopEvents() {
@@ -137,6 +141,7 @@ module.exports = (ipcMain) => {
              * Get orbit node ready
              * this method start orbit instance
              * and get providers for db
+             * @param res: callback
              */
             console.log('Node ready');
             console.log('Loading db..');
@@ -147,7 +152,7 @@ module.exports = (ipcMain) => {
             // Serve as provider too :)
             this.orbit = await this.instanceOB();
             await findProv(this.node, rawAddress);
-            return await this.run(address, res);
+            await this.run(address, res);
 
         }
 
@@ -260,7 +265,7 @@ module.exports = (ipcMain) => {
 
         get queue() {
             let cache = Auth.readFromStorage();
-            return cache.hash ?? []
+            return cache?.hash ?? []
         }
 
     }
@@ -321,7 +326,7 @@ module.exports = (ipcMain) => {
         queueInterval = setInterval(async () => {
             if (asyncLock) return false;
 
-            const [_, cache] = orbit.cache;
+            const [validCache, cache] = orbit.cache;
             const currentQueue = orbit.queue
             const lastHash = cache.lastHash ?? 0;
 
@@ -330,6 +335,7 @@ module.exports = (ipcMain) => {
             let hash = currentQueue[indexLastHash + 1]
 
             console.log(`Processing hash ${hash}`);
+            console.log(`Processing with`, validCache ? 'valid cache' : 'no cache')
             asyncLock = true; // Lock process
             await partialSave(e, hash)
 

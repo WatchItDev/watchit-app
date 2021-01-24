@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const mime = require('mime');
 const rimarf = require('rimraf');
+const log = require('electron-log');
 const {
     autoUpdater
 } = require('electron-updater');
@@ -200,21 +201,9 @@ const removeFiles = (dirOrFIle, options) => {
 }
 
 //Auto update setup
+autoUpdater.logger = log;
+autoUpdater.logger.transports.file.level = 'info';
 autoUpdater.autoDownload = false
-autoUpdater.setFeedURL({
-    provider: 'github', repo: 'watchit-desktop',
-    releaseType: 'release', owner: 'ZorrillosDev',
-    private: false
-})
-
-autoUpdater.on('error', async (error) => {
-    await dialog.showMessageBox({
-        title: 'Error updating',
-        message: error == null ? "unknown" :
-            (error.stack || error).toString()
-    })
-})
-
 autoUpdater.on('update-available', async () => {
     console.log('New Update');
     win.webContents.send('update_available');
@@ -223,11 +212,12 @@ autoUpdater.on('update-available', async () => {
     });
 });
 
+autoUpdater.on('error', () => console.log('Error trying update app'))
 autoUpdater.on('update-downloaded', async () => {
     console.log('Update Downloaded');
     setImmediate(() => autoUpdater.quitAndInstall())
 });
-
+// End auto update setup
 
 // Behaviour on second instance for parent process- Pretty much optional
 if (isDarwin) Menu.setApplicationMenu(

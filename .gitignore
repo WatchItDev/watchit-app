@@ -22,7 +22,9 @@ release
 build
 .env
 .idea
-
+__snapshots__
+key.json
+w_alloc
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
