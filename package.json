@@ -112,7 +112,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "react-scripts test -u",
     "eject": "react-scripts eject",
     "electron": "LOG=debug IPFS_FD_MAX=10000 ENV=dev $(npm bin)/electron .",
     "dev": "concurrently \"npm run start\" \"npm run electron\"",
@@ -132,12 +132,20 @@
     "go-ipfs": "^0.6.0",
     "windows-elevate": "^1.0.1"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm test"
+    }
+  },
   "devDependencies": {
     "concurrently": "^5.3.0",
     "electron": "^9.1.0",
     "electron-builder": "^22.7.0",
+    "husky": "^4.3.8",
     "jest": "^24.9.0",
-    "npm-run-all": "^4.1.5"
+    "npm-run-all": "^4.1.5",
+    "prettier": "^2.2.1",
+    "pretty": "^2.0.0"
   },
   "browserslist": {
     "production": [
