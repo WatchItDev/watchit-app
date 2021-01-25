@@ -1,4 +1,5 @@
 const os = require('os');
+const log = require('electron-log')
 const osType = os.type().toLowerCase()
 const isWin = osType === 'windows_nt' || osType === 'win32'
 const isLinux = osType === 'linux'
@@ -23,12 +24,12 @@ const execPassthru = async (execCmd, exec_= exec) => {
      * @param exec_
      * @return <Promise>
      */
-    console.log('Running', execCmd);
+    log.info('Running', execCmd);
     return new Promise((resolve, reject) => {
         exec_(execCmd, (error, stdout, stderr) => {
-            if (error) return console.error(`error: ${error.message}`) && reject();
-            if (stderr) console.log(`stderr: ${stderr}`);
-            console.log(`stdout: ${stdout}`);
+            if (error) return log.error(`error: ${error.message}`) && reject();
+            if (stderr) log.warn(`stderr: ${stderr}`);
+            log.info(`stdout: ${stdout}`);
             resolve()
         })
     })
