@@ -132,7 +132,8 @@
     "extends": "react-app"
   },
   "peerDependencies": {
-    "windows-elevate": "^1.0.1"
+    "windows-elevate": "^1.0.1",
+    "go-ipfs": "^0.6.0"
   },
   "husky": {
     "hooks": {

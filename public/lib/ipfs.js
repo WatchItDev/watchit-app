@@ -1,4 +1,5 @@
 const fs = require('fs')
+const log = require('electron-log')
 const path = require('path')
 const Ctl = require('ipfsd-ctl')
 const ipfsConf = require('./settings/ipfs');
@@ -24,24 +25,25 @@ const resolveIpfsPaths = () => {
     }
 }
 
-module.exports = async () => {
+module.exports = async (ipc) => {
     const isInstance = await Ctl.createController({
         ipfsOptions: {config: ipfsConf()},
         ipfsHttpModule: require('ipfs-http-client'),
-        ipfsBin: resolveIpfsPaths(),
+        ipfsBin: resolveIpfsPaths(ipc),
         disposable: false, forceKillTimeout: 2000,
         args: ['--enable-pubsub-experiment'],
         remote: false, type: 'go'
     })
 
     // Check if running time dir exists
-    console.log('Starting node');
+    log.warn('Starting node');
+    ipc.reply('orbit-progress', 'Connecting')
     await isInstance.init()
     await isInstance.start();
 
     const ipfsApi = isInstance.api
     const id = await ipfsApi.id()
-    console.log('Running ipfs id', id.id)
+    log.info('Running ipfs id', id.id)
     return ipfsApi
 }
 

@@ -39,7 +39,7 @@ if (!gotTheLock) return app.quit();
 // Override errors
 process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = true;
 dialog.showErrorBox = (title, content) => {
-    console.log(`${title}\n${content}`);
+    log.info(`${title}\n${content}`);
 };
 
 const removeFiles = (dirOrFIle, options) => {
@@ -50,14 +50,14 @@ const removeFiles = (dirOrFIle, options) => {
             emfileWait: 10 * 1000
         }, ...options
     }, () => {
-        console.log('Delete file ' + dirOrFIle);
+       log.warn('Delete file ' + dirOrFIle);
     });
 }, removeCacheDirs = () => {
     //Auth.removeFromStorage('tmp')
     fs.readdirSync(appPath).filter(
         fn => fn.startsWith('w_alloc') || fn.startsWith('w_source')
     ).forEach((file) => {
-        console.log('Removing ' + file);
+        log.warn('Removing ' + file);
         removeFiles(path.join(appPath, file))
     });
 }, wipeInvalidSync = () => {
@@ -95,7 +95,7 @@ const removeFiles = (dirOrFIle, options) => {
 
         // fade in the splash screen
         fadeWindowIn(loadingScreen, 0.1, 30, () => {
-            console.log("fade in splash done");
+            log.info("Fade in splash done");
         });
     });
 }, createMain = (inDev) => {
@@ -131,7 +131,7 @@ const removeFiles = (dirOrFIle, options) => {
 
             //fade out the splash screen
             fadeWindowOut(loadingScreen, 0.1, 10, () => {
-                console.log("fade out splash done!")
+                log.info("Fade out splash done!")
                 loadingScreen.close();
             });
 
@@ -144,7 +144,7 @@ const removeFiles = (dirOrFIle, options) => {
             setTimeout(() => {
                 // make a fade in once passed the time
                 fadeWindowIn(win, 0.1, 30, () => {
-                    console.log("fade in window done");
+                    log.info("Fade in window done");
                 });
             }, 1500)
         }
@@ -212,9 +212,9 @@ autoUpdater.on('update-available', async () => {
     });
 });
 
-autoUpdater.on('error', () => console.log('Error trying update app'))
+autoUpdater.on('error', () => log.error('Error trying update app'))
 autoUpdater.on('update-downloaded', async () => {
-    console.log('Update Downloaded');
+    log.info('Update Downloaded');
     setImmediate(() => autoUpdater.quitAndInstall())
 });
 // End auto update setup
@@ -265,7 +265,7 @@ app.on('before-quit', () => {
 })
 
 app.on('will-quit', () => {
-    console.log('Will quit');
+    log.warn('Will quit');
     app.releaseSingleInstanceLock()
     ipcMain.emit('orbit-close')
 })
@@ -319,9 +319,9 @@ app.whenReady().then(() => {
 
     ipcMain.on('check_update', async () => {
         if (inDev) return;
-        console.log('Check for update');
+        log.info('Check for update');
         await autoUpdater.checkForUpdates().catch(() => {
-            console.log('No updates available');
+            log.warn('No updates available');
         })
     });
 
