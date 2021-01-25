@@ -1,6 +1,7 @@
 const Auth = require('./auth');
 const ipcRenderer = require('electron').ipcRenderer;
 const LinvoDB = require("linvodb3");
+const log = require('electron-log')
 LinvoDB.defaults.store = {db: require("leveldown")};
 LinvoDB.defaults.autoIndexing = false;
 LinvoDB.dbPath = Auth.init.db
@@ -70,7 +71,7 @@ module.exports = class Ingest {
          * over declarative events
          */
         (ipcListeners || IPC_LISTENERS).forEach((l) => {
-            console.log('Cleaning:', l);
+            log.info('Cleaning:', l);
             ipcRenderer.removeAllListeners(l)
         })
 
@@ -81,7 +82,7 @@ module.exports = class Ingest {
         /***
          * Run app as seed mode
          */
-        console.log('Run Seed');
+        log.info('Run Seed');
         ipcRenderer.send('orbit-seed')
         return this;
     }
@@ -109,7 +110,7 @@ module.exports = class Ingest {
          * New peers interception and caching for stats
          */
         ipcRenderer.on('orbit-peer', (e, p) => {
-            console.log('New peer', p);
+            log.info('New peer', p);
             Auth.addToStorage({'peers': p});
             this._loopEvent('peer', p)
 
@@ -191,9 +192,9 @@ module.exports = class Ingest {
          * Trigger event when new data its replicated
          */
         ipcRenderer.on('orbit-replicated', async (e, collection) => {
-            console.info('LOADING FROM NETWORK');
-            console.log(collection[collection.length - 1]['_id']);
-            console.log(collection[0]['_id']);
+            log.info('LOADING FROM NETWORK');
+            log.info(collection[collection.length - 1]['_id']);
+            log.info(collection[0]['_id']);
             this.p.insert(collection, (e, n) => console.log(`Inserted ${n.length}`)); // Save in local
             this._loopEvent('replicated')
         })

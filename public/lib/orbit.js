@@ -86,11 +86,12 @@ module.exports = (ipcMain) => {
             return [validCache, cache]
         }
 
-        async run(key, res) {
+        async run(key, res, ipc) {
             /***
              * Opem orbit address and set events listeners
              * @param key: orbit address
              * @param res: callback
+             * @param ipc: ipcMain
              */
             log.info('Starting movies db:', key);
             this.db = await this.open(key).catch(async () => {
@@ -105,6 +106,7 @@ module.exports = (ipcMain) => {
             });
 
             log.info(`Ready in orbit ${key}`);
+            ipc.reply('orbit-progress', 'Replicating')
             this._loopEvent('ready');
             this.ready = true;
 
@@ -154,7 +156,7 @@ module.exports = (ipcMain) => {
             this.orbit = await this.instanceOB();
             ipc.reply('orbit-progress', 'Waiting for Network')
             await findProv(this.node, rawAddress);
-            await this.run(address, res);
+            await this.run(address, res, ipc);
 
         }
 
