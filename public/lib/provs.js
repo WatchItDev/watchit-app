@@ -1,3 +1,4 @@
+const log = require('electron-log')
 const {consume} = require('streaming-iterables')
 
 const findProv = async (ipfs, key) => {
@@ -15,9 +16,9 @@ const findProv = async (ipfs, key) => {
         for (const m of mAddr) {
             try {
                 await ipfs.swarm.connect(m, {timeout: 1000})
-                console.log(`Connected to`, m);
+                log.info(`Connected to`, m);
             } catch (e) {
-                console.log(`Cannot connect to`, m);
+                log.error(`Cannot connect to`, m);
             }
         }
     }
@@ -30,9 +31,9 @@ const provide = async (ipfs, key) => {
      * @param key
      * @return {Promise<void>}
      */
-    console.info('Providing address', key);
+    log.info('Providing address', key);
     await consume(ipfs.dht.provide(key))
-    console.info('Provided done')
+    log.info('Provided done')
 }
 
 
