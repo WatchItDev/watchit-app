@@ -9,6 +9,7 @@ const {ROOT_ORBIT_DIR} = require('./settings/conf')
 const Auth = require('./auth');
 const getIsInstance = require('./ipfs')
 const {findProv} = require('./provs')
+const log = require('electron-log')
 
 
 module.exports = (ipcMain) => {
@@ -85,25 +86,27 @@ module.exports = (ipcMain) => {
             return [validCache, cache]
         }
 
-        async run(key, res) {
+        async run(key, res, ipc) {
             /***
              * Opem orbit address and set events listeners
              * @param key: orbit address
              * @param res: callback
+             * @param ipc: ipcMain
              */
-            console.log('Starting movies db:', key);
+            log.info('Starting movies db:', key);
             this.db = await this.open(key).catch(async () => {
                 // If db cannot be opened then just kill
                 await this.party('Cannot find peers')
             });
 
             this.db?.events?.on('peer', (p) => {
-                console.log('Peer:', p);
+                log.info('Peer:', p);
                 this.peers.push(p); // Add new peer to list
                 this._loopEvent('peer', this.peers.length)
             });
 
-            console.log(`Ready in orbit ${key}`);
+            log.info(`Ready in orbit ${key}`);
+            ipc.reply('orbit-progress', 'Replicating')
             this._loopEvent('ready');
             this.ready = true;
 
@@ -129,30 +132,31 @@ module.exports = (ipcMain) => {
             /***
              * Kill all - party all
              */
-            console.log('Party rock');
+            log.warn('Party rock');
             await this.close(true);
             ipcMain.emit('party');
             this._loopEvent('bc', msg)
         }
 
 
-        async nodeReady(res) {
+        async nodeReady(res, ipc) {
             /***
              * Get orbit node ready
              * this method start orbit instance
              * and get providers for db
              * @param res: callback
              */
-            console.log('Node ready');
-            console.log('Loading db..');
+            log.info('Node ready');
+            log.info('Loading db..');
             const address = this.ingestKey;
             const rawAddress = this.rawIngestKey
 
             // Get orbit instance and next line connect providers
             // Serve as provider too :)
             this.orbit = await this.instanceOB();
+            ipc.reply('orbit-progress', 'Waiting for Network')
             await findProv(this.node, rawAddress);
-            await this.run(address, res);
+            await this.run(address, res, ipc);
 
         }
 
@@ -164,7 +168,7 @@ module.exports = (ipcMain) => {
                 || OrbitDB.createInstance(this.node, {directory: ROOT_ORBIT_DIR});
         }
 
-        instanceNode() {
+        instanceNode(ipc) {
             /***
              * Ipfs factory handler
              * try keep node alive if cannot do it after MAX_RETRIES
@@ -179,30 +183,30 @@ module.exports = (ipcMain) => {
                 }
 
                 try {
-                    console.log('Setting up node..');
-                    this.node = this.node || await getIsInstance();
+                    log.info('Setting up node..');
+                    this.node = this.node || await getIsInstance(ipc);
                     res(this.node)
                 } catch (e) {
-                    console.log('Fail starting node', e)
+                    log.error('Fail starting node', e)
                     this._loopEvent('error')
                     // Any other .. just retry
                     setTimeout(async () => {
-                        console.log('Retrying ' + this.retry);
+                        log.warn('Retrying ' + this.retry);
                         this.node = null;
                         this.retry++;
-                        res(await this.instanceNode())
+                        res(await this.instanceNode(ipc))
                     }, 10 * 1000)
                 }
             })
         }
 
-        start() {
+        start(ipc) {
             if (this.ready) return Promise.resolve(this.db);
             return new Promise(async (res) => {
-                console.log(`Running ipfs node`);
+                log.info(`Running ipfs node`);
                 // Create IPFS instance
-                this.node = await this.instanceNode();
-                await this.nodeReady(res)
+                this.node = await this.instanceNode(ipc);
+                await this.nodeReady(res, ipc)
             })
         }
 
@@ -210,7 +214,7 @@ module.exports = (ipcMain) => {
         async close(forceDrop = false) {
             try {
                 if (this.orbit) {
-                    console.log('Killing Store');
+                    log.warn('Killing Store');
                     await this.orbit.disconnect()
                     if (!this.hasValidCache || forceDrop) {
                         for (const k of ['total', 'limit'])
@@ -219,16 +223,15 @@ module.exports = (ipcMain) => {
                 }
 
                 if (this.node) {
-                    console.log('Killing Nodes');
+                    log.warn('Killing Nodes');
                     await this.node.stop().catch(
                         err => console.error(err.message)
                     );
                 }
-                console.log('System closed');
+                log.info('System closed');
             } catch (e) {
-                console.log('Fails in system close');
-                console.log(e.toString());
-                console.log(e.code);
+                log.error('Fails in system close');
+                log.error(e.toString());
             }
 
             this.peers = [];
@@ -254,7 +257,7 @@ module.exports = (ipcMain) => {
 
 
         set queue(hash) {
-            console.log('Storing hash in queue');
+            log.info('Storing hash in queue');
             let cache = Auth.readFromStorage();
             let cacheList = cache.hash ?? []
             let newHash = cacheList.concat(hash)
@@ -275,23 +278,23 @@ module.exports = (ipcMain) => {
     let queueInterval = null;
 
     const catIPFS = async (cid) => {
-        console.log('Fetching cid', cid);
+        log.info('Fetching cid', cid);
         try {
             for await (const file of orbit.node.get(cid)) {
                 if (!file.content) continue;
 
-                // console.log(`Processing ${c.cid}`);
+                // log.info(`Processing ${c.cid}`);
                 const content = new BufferList()
                 for await (const chunk of file.content) content.append(chunk)
                 return {'content': msgpack.decode(content.slice())};
             }
         } catch (e) {
-            console.log('Error trying fetch CID', cid, 'from network')
+            log.error('Error trying fetch CID', cid, 'from network')
         }
 
 
     }, partialSave = async (e, hash) => {
-        console.log('Going take chunks');
+        log.info('Going take chunks');
         let storage = Auth.readFromStorage();
         let slice = ('chunk' in storage && storage.chunk) || 0;
         const hasValidCache = orbit.hasValidCache
@@ -309,17 +312,17 @@ module.exports = (ipcMain) => {
             let sliced = slice + slicedSize
             let tmp = (sliced / total) * 100;
 
-            console.log('Total:', total)
-            console.log('Pending:', total - sliced)
-            console.log('Load collection size:', slicedSize);
-            console.log('Last hash:', lastHash);
+            log.info('Total:', total)
+            log.info('Pending:', total - sliced)
+            log.info('Load collection size:', slicedSize);
+            log.info('Last hash:', lastHash);
 
             e.reply('orbit-replicated', cleanedContent, sliced, tmp.toFixed(1));
             if (!hasValidCache) e.reply('orbit-db-ready'); // Ready to show!!!
             Auth.addToStorage({'chunk': sliced, 'tmp': tmp, 'lastHash': lastHash, 'total': total});
             if (sliced >= total) Auth.addToStorage({'cached': true, 'hash': [], 'lastHash': null})
             asyncLock = false; // Avoid overhead release lock
-            console.log('Release Lock')
+            log.info('Release Lock')
         }
 
     }, queueProcessor = (e) => {
@@ -334,8 +337,8 @@ module.exports = (ipcMain) => {
             let indexLastHash = currentQueue.indexOf(lastHash)
             let hash = currentQueue[indexLastHash + 1]
 
-            console.log(`Processing hash ${hash}`);
-            console.log(`Processing with`, validCache ? 'valid cache' : 'no cache')
+            log.info(`Processing hash ${hash}`);
+            log.info(`Processing with`, validCache ? 'valid cache' : 'no cache')
             asyncLock = true; // Lock process
             await partialSave(e, hash)
 
@@ -364,32 +367,31 @@ module.exports = (ipcMain) => {
                 queueProcessor(e);
                 e.reply('orbit-ready');
             })
-
-        console.log('Start orbit..');
-        await orbit.start();
+        log.info('Start orbit..');
+        await orbit.start(e);
     });
 
     ipcMain.on('orbit-seed', async (e) => {
-        console.log('Starting seed');
+        log.info('Starting seed');
         initEvents(e)
         orbit.setInSeedMode(true);
-        await orbit.start()
+        await orbit.start(e)
     });
 
 
     ipcMain.on('online-status-changed', async (e, isOnline) => {
-        console.log('Going ' + (isOnline ? 'online' : 'offline'))
+        log.info('Going ' + (isOnline ? 'online' : 'offline'))
         if (!isOnline) await orbit.close();
         if (isOnline) await orbit.start();
     })
 
     ipcMain.on('orbit-close', async () => {
-        console.log('Closing orbit');
+        log.warn('Closing orbit');
         await orbit.close();
     });
 
     ipcMain.on('orbit-flush', async () => {
-        console.log('Flushing orbit');
+        log.warn('Flushing orbit');
         await orbit.party()
     });
 
