@@ -71,6 +71,7 @@
     "files": [
       "build/**/*",
       "node_modules/**/*",
+      "src/media/icons/*",
       "package.json"
     ],
     "dmg": {
