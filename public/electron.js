@@ -205,7 +205,7 @@ autoUpdater.logger = log;
 autoUpdater.logger.transports.file.level = 'info';
 autoUpdater.autoDownload = false
 autoUpdater.on('update-available', async () => {
-    console.log('New Update');
+    log.info('New Update');
     win.webContents.send('update_available');
     await autoUpdater.downloadUpdate().catch(() => {
         console.log('Download update failed');
