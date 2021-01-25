@@ -1,7 +1,7 @@
 [![Gitter](https://badges.gitter.im/watchit-app/community.svg)](https://gitter.im/watchit-app/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 # Getting started
-* Decentralized [Orbit](https://orbitdb.org/)DB 
+* Decentralized [OrbitDB](https://orbitdb.org/)
 * Golang [IPFS](https://github.com/ipfs/go-ipfs) implementation 
 * Cross-platform [ElectronJs](https://www.electronjs.org/) apps builder 
 * Bootstrap React App tool [Create React App](https://github.com/facebook/create-react-app).
