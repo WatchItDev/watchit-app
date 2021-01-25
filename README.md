@@ -2,7 +2,7 @@
 
 # Getting started
 * Decentralized DB [OrbitDB](https://orbitdb.org/)
-* Golang IPFS implementation  [go-ipfs](https://github.com/ipfs/go-ipfs)
+* Golang IPFS implementation [IPFS](https://github.com/ipfs/go-ipfs)
 * Cross-platform desktop apps [ElectronJs](https://www.electronjs.org/)
 * Bootstrap React App tool [Create React App](https://github.com/facebook/create-react-app).
 
