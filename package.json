@@ -122,6 +122,7 @@
     "lint:fix": "npm run lint -s -- --fix src ",
     "inspect": "npm run dev --inspect=5858 watchit",
     "package": "npm run build && electron-builder build",
+    "package:mac": "npm run package -- --mac",
     "package:linux": "npm run package -- --linux",
     "package:win": "npm run package -- --win --x64 --ia32",
     "publish:mac": "npm run package:mac -- --publish always",
