@@ -29,7 +29,7 @@ module.exports = async (ipc) => {
     const isInstance = await Ctl.createController({
         ipfsOptions: {config: ipfsConf()},
         ipfsHttpModule: require('ipfs-http-client'),
-        ipfsBin: resolveIpfsPaths(ipc),
+        ipfsBin: resolveIpfsPaths(),
         disposable: false, forceKillTimeout: 2000,
         args: ['--enable-pubsub-experiment'],
         remote: false, type: 'go'
