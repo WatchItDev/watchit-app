@@ -3,6 +3,7 @@
  * @author gmena
  */
 const path = require('path')
+const log = require('electron-log')
 const peerflix = require('peerflix');
 const readTorrent = require('read-torrent');
 const parseTorrent = require('parse-torrent');
@@ -24,7 +25,7 @@ module.exports = class TorrentStreamer {
 		 * */
 		//Loading timeout stop
 		if (this.loadedTimeout) {
-			console.log('Removed stream timeout');
+			log.warn('Removed stream timeout');
 			clearTimeout(this.loadedTimeout)
 		}
 		
@@ -33,7 +34,7 @@ module.exports = class TorrentStreamer {
 			//Destroy peers
 			this.flix.destroy();
 			this.flix.server.close(function () {
-				console.log('Flix destroyed');
+				log.warn('Flix destroyed');
 				delete this.flix;
 			}.bind(this));
 		}
@@ -111,7 +112,7 @@ module.exports = class TorrentStreamer {
 			
 			//Don't connect, if stop was triggered
 			if (this.stopped) {
-				//console.log('stopped');
+				log.info('Stream stopped');
 				return;
 			}
 			

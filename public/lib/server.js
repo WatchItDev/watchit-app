@@ -1,10 +1,11 @@
 const {ROOT_TMP_FOLDER} = require(__dirname + '/settings/conf');
+const log = require('electron-log')
 const http = require('http');
 const fs = require('fs');
 const PORT = 9990;
 
 module.exports = (localIp) => {
-	console.log('Starting server');
+	log.info('Starting server');
 	const server = http.createServer((request, response) => {
 		let fileSub = request.url.split('/').slice(-1)[0];
 		let readStream = fs.createReadStream(`${ROOT_TMP_FOLDER}/${fileSub}`);
@@ -20,7 +21,7 @@ module.exports = (localIp) => {
 	// Check if in use and try to listen again
 	server.on('error', (e) => {
 		if (e.code === 'EADDRINUSE') {
-			console.log('Address in use, retrying...');
+			log.error('Address in use, retrying...');
 			setTimeout(() => {
 				server.close();
 				server.listen(PORT, localIp);
@@ -29,7 +30,7 @@ module.exports = (localIp) => {
 	})
 	
 	server.on('close', () =>
-		console.log('Server closed')
+		log.warn('Server closed')
 	)
 	
 	return server
