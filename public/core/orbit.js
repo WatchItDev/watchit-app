@@ -337,18 +337,24 @@ module.exports = (ipcMain) => {
             const [validCache, cache] = orbit.cache;
             const currentQueue = orbit.queue
             const lastHash = cache.lastHash ?? 0;
+            const queueLength = currentQueue.length
 
-            if (!currentQueue.length) return false;
+            if (!queueLength) return false;
             let indexLastHash = currentQueue.indexOf(lastHash)
-            let hash = currentQueue[indexLastHash + 1]
 
-            log.info(`Processing hash ${hash}`);
-            log.info(`Processing with`, validCache ? 'valid cache' : 'no cache')
-            asyncLock = true; // Lock process
-            await partialSave(e, hash)
+            // Avoid if array overflow
+            if (indexLastHash <= queueLength) {
+                let hash = currentQueue[indexLastHash + 1]
+                log.info(`Processing hash ${hash}`);
+                log.info(`Processing with`, validCache ? 'valid cache' : 'no cache')
+                asyncLock = true; // Lock process
+                await partialSave(e, hash)
+            }
 
-            if (cache.cached && queueInterval)
+            if (cache.cached && queueInterval){
+                info.warn('Cleaning queue interval')
                 return clearInterval(queueInterval)
+            }
         }, 1000)
 
     }, initEvents = (e) => {
