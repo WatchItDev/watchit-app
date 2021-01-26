@@ -8,8 +8,8 @@ const peerflix = require('peerflix');
 const readTorrent = require('read-torrent');
 const parseTorrent = require('parse-torrent');
 const webtorrentHealth = require('webtorrent-health')
-const TorrentConf = require(__dirname + '/settings/torrent');
-const {ROOT_TMP_FOLDER} = require(__dirname + '/settings/conf')
+const TorrentConf = require(`${__dirname}/settings/torrent`);
+const {ROOT_TMP_FOLDER} = require(`${__dirname}/settings/`)
 
 
 module.exports = class TorrentStreamer {

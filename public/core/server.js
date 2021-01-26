@@ -1,4 +1,4 @@
-const {ROOT_TMP_FOLDER} = require(__dirname + '/settings/conf');
+const {ROOT_TMP_FOLDER} = require(__dirname + '/settings/');
 const log = require('electron-log')
 const http = require('http');
 const fs = require('fs');

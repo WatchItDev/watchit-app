@@ -37,7 +37,7 @@ module.exports = async (ipc) => {
 
     // Check if running time dir exists
     log.warn('Starting node');
-    ipc.reply('orbit-progress', 'Connecting')
+    ipc.reply('orbit-progress', 'Booting')
     await isInstance.init()
     await isInstance.start();
 

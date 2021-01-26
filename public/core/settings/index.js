@@ -3,7 +3,6 @@ const path = require('path')
 const fs = require('fs')
 
 const ROOT_DIR = os.tmpdir();
-const READ_TIMEOUT_FILE = 500
 const ROOT_URI = 'https://vps1.phillm.net/ipfs/';
 const ROOT_URI_TORRENT = `${ROOT_URI}`;
 const ROOT_STORE = process.env.appPath;
@@ -24,6 +23,5 @@ module.exports = {
     ROOT_ORBIT_DIR,
     ROOT_RUNNING_DB,
     ROOT_TMP_FOLDER,
-    ROOT_URI_TORRENT,
-    READ_TIMEOUT_FILE
+    ROOT_URI_TORRENT
 };

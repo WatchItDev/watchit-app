@@ -5,7 +5,7 @@
 const OrbitDB = require('orbit-db');
 const BufferList = require('bl/BufferList')
 const msgpack = require('msgpack-lite');
-const {ROOT_ORBIT_DIR} = require('./settings/conf')
+const {ROOT_ORBIT_DIR} = require('./settings')
 const Auth = require('./auth');
 const getIsInstance = require('./ipfs')
 const {findProv} = require('./provs')
@@ -154,7 +154,7 @@ module.exports = (ipcMain) => {
             // Get orbit instance and next line connect providers
             // Serve as provider too :)
             this.orbit = await this.instanceOB();
-            ipc.reply('orbit-progress', 'Waiting for Network')
+            ipc.reply('orbit-progress', 'Connecting')
             await findProv(this.node, rawAddress);
             await this.run(address, res, ipc);
 
@@ -187,7 +187,7 @@ module.exports = (ipcMain) => {
                     this.node = this.node || await getIsInstance(ipc);
                     res(this.node)
                 } catch (e) {
-                    log.error('Fail starting node', e)
+                    log.error('Fail starting node', e.message)
                     this._loopEvent('error')
                     // Any other .. just retry
                     setTimeout(async () => {
@@ -225,7 +225,7 @@ module.exports = (ipcMain) => {
                 if (this.node) {
                     log.warn('Killing Nodes');
                     await this.node.stop().catch(
-                        err => console.error(err.message)
+                        err => log.error(err.message)
                     );
                 }
                 log.info('System closed');
@@ -244,6 +244,7 @@ module.exports = (ipcMain) => {
         async get(hash) {
             const oplog = (this.db.oplog || this.db._oplog)
             const result = oplog.values.find(v => v.hash === hash)
+            if (!result || !hash) return false;
             return result.payload.value
             // console.log('Request hash', hash);
             // return this.db.get(hash).payload.value
@@ -292,7 +293,6 @@ module.exports = (ipcMain) => {
             log.error('Error trying fetch CID', cid, 'from network')
         }
 
-
     }, partialSave = async (e, hash) => {
         log.info('Going take chunks');
         let storage = Auth.readFromStorage();
@@ -300,9 +300,16 @@ module.exports = (ipcMain) => {
         const hasValidCache = orbit.hasValidCache
         if (!hasValidCache) e.reply('orbit-partial-progress', 'Starting');
 
+        // Check if hash exists in log
         let hashContent = await orbit.get(hash)
-        let collectionFromIPFS = await catIPFS(hashContent)
+        if (!hashContent) {
+            log.error('Hash cannot be found in op-log:', hash)
+            log.info('Release Lock')
+            asyncLock = false;
+            return;
+        }
 
+        let collectionFromIPFS = await catIPFS(hashContent)
         if (collectionFromIPFS) { // If has data
             let cleanedContent = collectionFromIPFS['content']
             let slicedSize = cleanedContent.length
@@ -327,23 +334,32 @@ module.exports = (ipcMain) => {
 
     }, queueProcessor = (e) => {
         queueInterval = setInterval(async () => {
+            log.info('Processing queue', asyncLock ? 'locked' : 'free')
             if (asyncLock) return false;
 
             const [validCache, cache] = orbit.cache;
             const currentQueue = orbit.queue
             const lastHash = cache.lastHash ?? 0;
+            const queueLength = currentQueue.length
 
-            if (!currentQueue.length) return false;
-            let indexLastHash = currentQueue.indexOf(lastHash)
-            let hash = currentQueue[indexLastHash + 1]
-
-            log.info(`Processing hash ${hash}`);
-            log.info(`Processing with`, validCache ? 'valid cache' : 'no cache')
-            asyncLock = true; // Lock process
-            await partialSave(e, hash)
-
-            if (cache.cached && queueInterval)
+            if (cache.cached && queueInterval) {
+                log.warn('Cleaning queue interval')
                 return clearInterval(queueInterval)
+            }
+
+            if (!queueLength) return false;
+            let indexLastHash = currentQueue.indexOf(lastHash)
+            let nextHash = indexLastHash + 1
+
+            // Avoid array overflow
+            if (nextHash <= queueLength) {
+                let hash = currentQueue[nextHash]
+                log.info(`Processing hash ${hash}`);
+                log.info(`Processing with`, validCache ? 'valid cache' : 'no cache')
+                asyncLock = true; // Lock process
+                await partialSave(e, hash)
+            }
+
         }, 1000)
 
     }, initEvents = (e) => {
