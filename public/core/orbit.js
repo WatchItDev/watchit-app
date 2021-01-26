@@ -299,12 +299,14 @@ module.exports = (ipcMain) => {
         let slice = ('chunk' in storage && storage.chunk) || 0;
         const hasValidCache = orbit.hasValidCache
         if (!hasValidCache) e.reply('orbit-partial-progress', 'Starting');
+
         // Check if hash exists in log
         let hashContent = await orbit.get(hash)
         if (!hashContent) {
             log.error('Hash cannot be found in op-log:', hash)
             log.info('Release Lock')
-            return asyncLock = false;
+            asyncLock = false;
+            return;
         }
 
         let collectionFromIPFS = await catIPFS(hashContent)
@@ -332,6 +334,7 @@ module.exports = (ipcMain) => {
 
     }, queueProcessor = (e) => {
         queueInterval = setInterval(async () => {
+            log.info('Processing queue', asyncLock ? 'locked' : 'free')
             if (asyncLock) return false;
 
             const [validCache, cache] = orbit.cache;
@@ -339,22 +342,24 @@ module.exports = (ipcMain) => {
             const lastHash = cache.lastHash ?? 0;
             const queueLength = currentQueue.length
 
+            if (cache.cached && queueInterval) {
+                info.warn('Cleaning queue interval')
+                return clearInterval(queueInterval)
+            }
+
             if (!queueLength) return false;
             let indexLastHash = currentQueue.indexOf(lastHash)
+            let nextHash = indexLastHash + 1
 
-            // Avoid if array overflow
-            if (indexLastHash <= queueLength) {
-                let hash = currentQueue[indexLastHash + 1]
+            // Avoid array overflow
+            if (nextHash <= queueLength) {
+                let hash = currentQueue[nextHash]
                 log.info(`Processing hash ${hash}`);
                 log.info(`Processing with`, validCache ? 'valid cache' : 'no cache')
                 asyncLock = true; // Lock process
                 await partialSave(e, hash)
             }
 
-            if (cache.cached && queueInterval){
-                info.warn('Cleaning queue interval')
-                return clearInterval(queueInterval)
-            }
         }, 1000)
 
     }, initEvents = (e) => {
