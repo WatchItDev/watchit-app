@@ -303,6 +303,7 @@ module.exports = (ipcMain) => {
         let hashContent = await orbit.get(hash)
         if (!hashContent) {
             log.error('Hash cannot be found in op-log:', hash)
+            log.info('Release Lock')
             return asyncLock = false;
         }
 
