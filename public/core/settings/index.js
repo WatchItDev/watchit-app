@@ -3,6 +3,7 @@ const path = require('path')
 const fs = require('fs')
 
 const ROOT_DIR = os.tmpdir();
+const ROOT_HOME = os.homedir();
 const ROOT_URI = 'https://vps1.phillm.net/ipfs/';
 const ROOT_URI_TORRENT = `${ROOT_URI}`;
 const ROOT_STORE = process.env.appPath;
@@ -17,6 +18,7 @@ module.exports = {
     ROOT_APP,
     ROOT_URI,
     ROOT_DIR,
+    ROOT_HOME,
     ROOT_STORE,
     ROOT_PUBLIC,
     ROOT_DB_DIR,
