@@ -334,7 +334,7 @@ module.exports = (ipcMain) => {
 
     }, queueProcessor = (e) => {
         queueInterval = setInterval(async () => {
-            log.info('Processing queue', asyncLock ? 'locked' : 'free')
+            log.warn('Processing queue', asyncLock ? 'locked' : 'free')
             if (asyncLock) return false;
 
             const [validCache, cache] = orbit.cache;
