@@ -2,6 +2,7 @@ const fs = require('fs')
 const log = require('electron-log')
 const path = require('path')
 const Ctl = require('ipfsd-ctl')
+const settings = require('./settings')
 const ipfsConf = require('./settings/ipfs');
 
 const inDev = Object.is(process.env.ENV, 'dev')
@@ -27,7 +28,7 @@ const resolveIpfsPaths = () => {
 
 module.exports = async (ipc) => {
     const isInstance = await Ctl.createController({
-        ipfsOptions: {config: ipfsConf()},
+        ipfsOptions: {config: ipfsConf(), repo: path.join(settings.ROOT_HOME, '.ipfs_w')},
         ipfsHttpModule: require('ipfs-http-client'),
         ipfsBin: resolveIpfsPaths(),
         disposable: false, forceKillTimeout: 2000,
