@@ -9,7 +9,7 @@ const request = require('https');
 const charsetDetect = require('jschardet');
 const unzip = require('unzip');
 const subtitle = require('subtitle');
-const {ROOT_TMP_FOLDER} = require(__dirname + '/settings/conf')
+const {ROOT_TMP_FOLDER} = require(`${__dirname}/settings`)
 
 module.exports = class Sub {
 	

@@ -22,9 +22,9 @@ let win, loadingScreen,
 
 // Dont move appPath from this line
 process.env.appPath = appPath;
-const {ROOT_TMP_FOLDER} = require(__dirname + '/lib/settings/conf');
-const Orbit = require(__dirname + '/lib/orbit');
-const Auth = require(__dirname + '/lib/auth');
+const {ROOT_TMP_FOLDER} = require(`${__dirname}/core/settings/`);
+const Orbit = require(`${__dirname}/core/orbit`);
+const Auth = require(`${__dirname}/core/auth`);
 const gotTheLock = app.requestSingleInstanceLock();
 if (!gotTheLock) return app.quit();
 

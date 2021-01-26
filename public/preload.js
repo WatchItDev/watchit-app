@@ -1,13 +1,13 @@
-window.env = require(__dirname + '/lib/settings/conf');
-window.Auth = require(__dirname + '/lib/auth');
-window.Sub = require(__dirname + '/lib/subs');
+window.env = require(`${__dirname}/core/settings`);
+window.Auth = require(`${__dirname}/core/auth`);
+window.Sub = require(`${__dirname}/core/subs`);
 
-const TorrentStreamer = require(__dirname + '/lib/streamer');
+const TorrentStreamer = require(`${__dirname}/core/streamer`);
 window.Streamer = new TorrentStreamer();
 
-const IngestDb = require(__dirname + '/lib/ingest');
+const IngestDb = require(`${__dirname}/core/ingest`);
 window.Ingest = new IngestDb();
 
-const CastDnla = require(__dirname + '/lib/dlna')
-window.Cast = new CastDnla();
+const CastDNLA = require(`${__dirname}/core/dlna`)
+window.Cast = new CastDNLA();
 
