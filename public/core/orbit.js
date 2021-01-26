@@ -187,7 +187,7 @@ module.exports = (ipcMain) => {
                     this.node = this.node || await getIsInstance(ipc);
                     res(this.node)
                 } catch (e) {
-                    log.error('Fail starting node')
+                    log.error('Fail starting node', e.message)
                     this._loopEvent('error')
                     // Any other .. just retry
                     setTimeout(async () => {
