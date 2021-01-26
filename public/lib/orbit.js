@@ -154,7 +154,7 @@ module.exports = (ipcMain) => {
             // Get orbit instance and next line connect providers
             // Serve as provider too :)
             this.orbit = await this.instanceOB();
-            ipc.reply('orbit-progress', 'Waiting for Network')
+            ipc.reply('orbit-progress', 'Connecting')
             await findProv(this.node, rawAddress);
             await this.run(address, res, ipc);
 
