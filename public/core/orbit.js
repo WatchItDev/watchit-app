@@ -343,7 +343,7 @@ module.exports = (ipcMain) => {
             const queueLength = currentQueue.length
 
             if (cache.cached && queueInterval) {
-                info.warn('Cleaning queue interval')
+                log.warn('Cleaning queue interval')
                 return clearInterval(queueInterval)
             }
 
