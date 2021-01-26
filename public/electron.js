@@ -28,14 +28,6 @@ const Auth = require(`${__dirname}/core/auth`);
 const gotTheLock = app.requestSingleInstanceLock();
 if (!gotTheLock) return app.quit();
 
-// Initialize path
-// crashReporter.start({
-// 	productName: 'WatchIt',
-// 	companyName: 'ZorrillosDev',
-// 	ignoreSystemCrashHandler: true,
-// 	submitURL: 'https://o122489.ingest.sentry.io/api/5262067/minidump/?sentry_key=f5c2bd81a0fb490cbf4d48dacb5308e5',
-// });
-
 // Override errors
 process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = true;
 dialog.showErrorBox = (title, content) => {
