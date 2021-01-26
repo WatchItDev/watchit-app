@@ -128,7 +128,7 @@
     "publish:mac": "npm run package:mac -- --publish always",
     "publish:linux": "npm run package:linux -- --publish always",
     "publish:win": "npm run package:win -- --publish always",
-    "preinstall": "node scripts/preinstall.js",
+    "preinstall": "bash -c \"npm install electron-log && node scripts/preinstall.js\"",
     "postinstall": "node scripts/postinstall.js"
   },
   "eslintConfig": {
