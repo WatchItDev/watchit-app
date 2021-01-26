@@ -187,7 +187,7 @@ module.exports = (ipcMain) => {
                     this.node = this.node || await getIsInstance(ipc);
                     res(this.node)
                 } catch (e) {
-                    log.error('Fail starting node', e)
+                    log.error('Fail starting node')
                     this._loopEvent('error')
                     // Any other .. just retry
                     setTimeout(async () => {
@@ -225,7 +225,7 @@ module.exports = (ipcMain) => {
                 if (this.node) {
                     log.warn('Killing Nodes');
                     await this.node.stop().catch(
-                        err => console.error(err.message)
+                        err => log.error(err.message)
                     );
                 }
                 log.info('System closed');
