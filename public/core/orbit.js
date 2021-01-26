@@ -244,6 +244,7 @@ module.exports = (ipcMain) => {
         async get(hash) {
             const oplog = (this.db.oplog || this.db._oplog)
             const result = oplog.values.find(v => v.hash === hash)
+            if (!result || !hash) return false;
             return result.payload.value
             // console.log('Request hash', hash);
             // return this.db.get(hash).payload.value
@@ -292,17 +293,20 @@ module.exports = (ipcMain) => {
             log.error('Error trying fetch CID', cid, 'from network')
         }
 
-
     }, partialSave = async (e, hash) => {
         log.info('Going take chunks');
         let storage = Auth.readFromStorage();
         let slice = ('chunk' in storage && storage.chunk) || 0;
         const hasValidCache = orbit.hasValidCache
         if (!hasValidCache) e.reply('orbit-partial-progress', 'Starting');
-
+        // Check if hash exists in log
         let hashContent = await orbit.get(hash)
-        let collectionFromIPFS = await catIPFS(hashContent)
+        if (!hashContent) {
+            log.error('Hash cannot be found in op-log:', hash)
+            return asyncLock = false;
+        }
 
+        let collectionFromIPFS = await catIPFS(hashContent)
         if (collectionFromIPFS) { // If has data
             let cleanedContent = collectionFromIPFS['content']
             let slicedSize = cleanedContent.length
