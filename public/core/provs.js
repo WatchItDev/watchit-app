@@ -9,7 +9,7 @@ const findProv = async (ipfs, key) => {
      * @return {Promise<void>}
      */
 
-    for await (const cid of ipfs.dht.findProvs(key)) {
+    for await (const cid of ipfs.dht.findProvs(key, {numProviders: 10})) {
         log.info('Connecting to:', cid.id)
         const mAddr = cid.addrs.map((m) => `${m.toString()}/p2p/${cid.id}`)
 
