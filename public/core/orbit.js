@@ -55,7 +55,7 @@ module.exports = (ipcMain) => {
 
         open(address, settings = {}) {
             return this.orbit.open(address, {
-                    ...{overwrite: true, replicate: true},
+                    ...{replicate: true},
                     ...settings
                 }
             )
@@ -165,7 +165,7 @@ module.exports = (ipcMain) => {
              * Orbit db factory
              */
             return (this.orbit && Promise.resolve(this.orbit))
-                || OrbitDB.createInstance(this.node, {directory: ROOT_ORBIT_DIR});
+                || OrbitDB.createInstance(this.node);
         }
 
         instanceNode(ipc) {

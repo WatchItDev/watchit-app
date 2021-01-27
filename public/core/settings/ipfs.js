@@ -14,6 +14,16 @@ module.exports = () => {
                 "/dns4/node3.delegate.ipfs.io/tcp/443/https"
             ]
         },
+        "Swarm": {
+            "ConnMgr": {
+                "GracePeriod": "20s",
+                "HighWater": 1500,
+                "LowWater": 450,
+                "Type": "basic"
+            },
+            "EnableAutoRelay": true,
+            "EnableRelayHop": false
+        },
         "Discovery": {"MDNS": {"Enabled": true, "Interval": 10}},
         "Peering": {
             "Peers": [
