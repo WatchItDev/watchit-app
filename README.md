@@ -59,6 +59,3 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 
 Build app to choosen OS. Depending on packaging OS will need pack in respective OS.
 
-## Deploy
-
-Try running your [own gateway](https://github.com/ZorrillosDev/watchit-gateway)
