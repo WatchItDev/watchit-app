@@ -9,7 +9,7 @@
 # About us
 Read our post in [Dev.to](https://dev.to/geolffreym/watchit-2b88)
 
-[![screenshot](./src/media/img/layout/watchit-screen.png?raw=true)]()
+[![screenshot](src/media/img/layout/screen.png?raw=true)]()
 
 ## Setup
 Please run `npm i` to install dependencies and add `.env` file variables:
