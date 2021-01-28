@@ -4,7 +4,7 @@ const fs = require('fs')
 
 const ROOT_DIR = os.tmpdir();
 const ROOT_HOME = os.homedir();
-const ROOT_URI = 'https://vps1.phillm.net/ipfs/';
+const ROOT_URI = 'https://localhost:9090ipfs/';
 const ROOT_URI_TORRENT = `${ROOT_URI}`;
 const ROOT_STORE = process.env.appPath;
 const ROOT_APP = fs.realpathSync(process.cwd());
@@ -13,6 +13,7 @@ const ROOT_PUBLIC = path.join(ROOT_APP, 'public');
 const ROOT_RUNNING_DB = path.join(ROOT_STORE, 'w_alloc')
 const ROOT_DB_DIR = path.join(ROOT_RUNNING_DB, 'linvo')
 const ROOT_ORBIT_DIR = path.join(ROOT_RUNNING_DB, 'orbit')
+const ROOT_IPFS_DIR = path.join(ROOT_HOME, '.ipfs_w')
 
 module.exports = {
     ROOT_APP,
@@ -22,6 +23,7 @@ module.exports = {
     ROOT_STORE,
     ROOT_PUBLIC,
     ROOT_DB_DIR,
+    ROOT_IPFS_DIR,
     ROOT_ORBIT_DIR,
     ROOT_RUNNING_DB,
     ROOT_TMP_FOLDER,

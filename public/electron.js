@@ -1,7 +1,6 @@
 const fs = require('fs');
 const path = require('path');
 const mime = require('mime');
-const rimarf = require('rimraf');
 const log = require('electron-log');
 const {
     autoUpdater
@@ -23,6 +22,7 @@ let win, loadingScreen,
 // Dont move appPath from this line
 process.env.appPath = appPath;
 const {ROOT_TMP_FOLDER} = require(`${__dirname}/core/settings/`);
+const {removeFiles} = require(`${__dirname}/core/utils`);
 const Orbit = require(`${__dirname}/core/orbit`);
 const Auth = require(`${__dirname}/core/auth`);
 const gotTheLock = app.requestSingleInstanceLock();
@@ -34,17 +34,7 @@ dialog.showErrorBox = (title, content) => {
     log.info(`${title}\n${content}`);
 };
 
-const removeFiles = (dirOrFIle, options) => {
-    rimarf(dirOrFIle, {
-        ...{
-            disableGlob: true,
-            maxBusyTries: 20,
-            emfileWait: 10 * 1000
-        }, ...options
-    }, () => {
-       log.warn('Delete file ' + dirOrFIle);
-    });
-}, removeCacheDirs = () => {
+const removeCacheDirs = () => {
     //Auth.removeFromStorage('tmp')
     fs.readdirSync(appPath).filter(
         fn => fn.startsWith('w_alloc') || fn.startsWith('w_source')
