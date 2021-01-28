@@ -38,9 +38,9 @@ const removeCacheDirs = () => {
     //Auth.removeFromStorage('tmp')
     fs.readdirSync(appPath).filter(
         fn => fn.startsWith('w_alloc') || fn.startsWith('w_source')
-    ).forEach((file) => {
+    ).forEach(async (file) => {
         log.warn('Removing ' + file);
-        removeFiles(path.join(appPath, file))
+        await removeFiles(path.join(appPath, file))
     });
 }, wipeInvalidSync = () => {
     Auth.removeFromStorage('peers')
@@ -50,11 +50,11 @@ const removeCacheDirs = () => {
     }
 }, wipeTmpSubs = () => {
     //Loop over files in dir
-    fs.readdir(ROOT_TMP_FOLDER, (err, files) => {
+    fs.readdir(ROOT_TMP_FOLDER, async (err, files) => {
         if (!files || !files.length) return false;
         for (const file of files) {
             if (/(srt|vtt|zip)$/g.test(file)) {
-                removeFiles(path.join(ROOT_TMP_FOLDER, file));
+                await removeFiles(path.join(ROOT_TMP_FOLDER, file));
             }
         }
     })
@@ -279,13 +279,12 @@ app.whenReady().then(() => {
     Orbit(ipcMain);
 
     // Window event
-    ipcMain.on('rmrf', (dir) => {
-        removeFiles(dir)
-    })
+
 
     ipcMain.on('close', () => app.quit())
-    ipcMain.on('party', () => {
-        if (Auth.existKey) removeFiles(Auth.keyFile)
+    ipcMain.on('party', async () => {
+        if (Auth.existKey)
+            await removeFiles(Auth.keyFile)
         removeCacheDirs();
     })
 

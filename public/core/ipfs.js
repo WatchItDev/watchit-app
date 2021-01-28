@@ -42,7 +42,7 @@ module.exports = async (ipc) => {
     const apiLockFile = path.join(settings.ROOT_IPFS_DIR, 'api')
     if (fs.existsSync(apiLockFile)) {
         log.warn('Removing old `api` file');
-        removeFiles(apiLockFile)
+        await removeFiles(apiLockFile)
     }
 
     // Check if running time dir exists
