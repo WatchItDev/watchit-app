@@ -250,21 +250,13 @@ module.exports = (ipcMain) => {
             // return this.db.get(hash).payload.value
         }
 
-        removeDuplicates(hashList) {
-            return hashList.filter((value, index, self) => {
-                return self.indexOf(value) === index
-            })
-        }
-
-
         set queue(hash) {
             log.info('Storing hash in queue');
             let cache = Auth.readFromStorage();
             let cacheList = cache.hash ?? []
-            let newHash = cacheList.concat(hash)
-            Auth.addToStorage({ // Restore list cleaned
-                hash: this.removeDuplicates(newHash)
-            })
+            // Deduplication with sets
+            let newHash = [...new Set([...cacheList, ...[hash]])]
+            Auth.addToStorage({hash: newHash})
         }
 
         get queue() {
@@ -303,7 +295,7 @@ module.exports = (ipcMain) => {
         // Check if hash exists in log
         let hashContent = await orbit.get(hash)
         if (!hashContent) {
-            log.error('Hash cannot be found in op-log:', hash)
+            log.info('Hash cannot be found in op-log:', hash)
             log.info('Release Lock')
             asyncLock = false;
             return;
