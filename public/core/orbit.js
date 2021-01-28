@@ -55,7 +55,7 @@ module.exports = (ipcMain) => {
 
         open(address, settings = {}) {
             return this.orbit.open(address, {
-                    ...{overwrite: true, replicate: true},
+                    ...{replicate: true, overwrite: true},
                     ...settings
                 }
             )

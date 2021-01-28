@@ -1,7 +1,6 @@
 const fs = require('fs');
 const path = require('path');
 const mime = require('mime');
-const rimarf = require('rimraf');
 const log = require('electron-log');
 const {
     autoUpdater
@@ -23,6 +22,7 @@ let win, loadingScreen,
 // Dont move appPath from this line
 process.env.appPath = appPath;
 const {ROOT_TMP_FOLDER} = require(`${__dirname}/core/settings/`);
+const {removeFiles} = require(`${__dirname}/core/utils`);
 const Orbit = require(`${__dirname}/core/orbit`);
 const Auth = require(`${__dirname}/core/auth`);
 const gotTheLock = app.requestSingleInstanceLock();
@@ -34,23 +34,13 @@ dialog.showErrorBox = (title, content) => {
     log.info(`${title}\n${content}`);
 };
 
-const removeFiles = (dirOrFIle, options) => {
-    rimarf(dirOrFIle, {
-        ...{
-            disableGlob: true,
-            maxBusyTries: 20,
-            emfileWait: 10 * 1000
-        }, ...options
-    }, () => {
-       log.warn('Delete file ' + dirOrFIle);
-    });
-}, removeCacheDirs = () => {
+const removeCacheDirs = () => {
     //Auth.removeFromStorage('tmp')
     fs.readdirSync(appPath).filter(
         fn => fn.startsWith('w_alloc') || fn.startsWith('w_source')
-    ).forEach((file) => {
+    ).forEach(async (file) => {
         log.warn('Removing ' + file);
-        removeFiles(path.join(appPath, file))
+        await removeFiles(path.join(appPath, file))
     });
 }, wipeInvalidSync = () => {
     Auth.removeFromStorage('peers')
@@ -60,11 +50,11 @@ const removeFiles = (dirOrFIle, options) => {
     }
 }, wipeTmpSubs = () => {
     //Loop over files in dir
-    fs.readdir(ROOT_TMP_FOLDER, (err, files) => {
+    fs.readdir(ROOT_TMP_FOLDER, async (err, files) => {
         if (!files || !files.length) return false;
         for (const file of files) {
             if (/(srt|vtt|zip)$/g.test(file)) {
-                removeFiles(path.join(ROOT_TMP_FOLDER, file));
+                await removeFiles(path.join(ROOT_TMP_FOLDER, file));
             }
         }
     })
@@ -289,13 +279,12 @@ app.whenReady().then(() => {
     Orbit(ipcMain);
 
     // Window event
-    ipcMain.on('rmrf', (dir) => {
-        removeFiles(dir)
-    })
+
 
     ipcMain.on('close', () => app.quit())
-    ipcMain.on('party', () => {
-        if (Auth.existKey) removeFiles(Auth.keyFile)
+    ipcMain.on('party', async () => {
+        if (Auth.existKey)
+            await removeFiles(Auth.keyFile)
         removeCacheDirs();
     })
 
