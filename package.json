@@ -21,7 +21,7 @@
     "electron-reload": "^1.5.0",
     "electron-updater": "^4.3.5",
     "fs-extra": "^9.0.1",
-    "go-ipfs": "^0.6.0",
+    "go-ipfs": "^0.7.0",
     "iconv-lite": "^0.5.1",
     "ip": "^1.1.5",
     "ipfs-http-client": "^47.0.1",
@@ -136,7 +136,7 @@
   },
   "peerDependencies": {
     "windows-elevate": "^1.0.1",
-    "go-ipfs": "^0.6.0"
+    "go-ipfs": "^0.7.0"
   },
   "husky": {
     "hooks": {
