@@ -344,15 +344,14 @@ module.exports = (ipcMain) => {
             let nextHash = indexLastHash + 1
 
             // Avoid array overflow
-            if (nextHash <= queueLength) {
-                let hash = currentQueue[nextHash]
-                log.info(`Processing hash ${hash}`);
-                log.info(`Processing with`, validCache ? 'valid cache' : 'no cache')
-                asyncLock = true; // Lock process
-                await partialSave(e, hash)
-            }
+            let hash = currentQueue[nextHash]
+            log.info(`Processing hash ${hash}`);
+            log.info(`Processing with`, validCache ? 'valid cache' : 'no cache')
+            asyncLock = true; // Lock process
+            await partialSave(e, hash)
 
-        }, 1000)
+
+        }, 2000)
 
     }, initEvents = (e) => {
         /***
