@@ -330,16 +330,16 @@ module.exports = (ipcMain) => {
 
     }, queueProcessor = (e) => {
         queueInterval = setInterval(async () => {
-            log.warn('Processing queue', asyncLock ? 'locked' : 'free')
-            if (asyncLock) return false;
+            if (asyncLock || Object.is(orbit.db.replicationStatus.max, 0))
+                return false; // Skip if locked or no data received
 
             const [validCache, cache] = orbit.cache;
             const currentQueue = orbit.queue
             const lastHash = cache.lastHash ?? 0;
             const queueLength = currentQueue.length
 
-            if (cache.cached) return cleanInterval();
             if (!queueLength) return false; // Skip if not data in queue
+            if (cache.cached) return cleanInterval();
             let indexLastHash = currentQueue.indexOf(lastHash) // Get index of last hash
             let nextHash = indexLastHash + 1 // Point cursor to next entry in queue
             if (nextHash > queueLength) return cleanInterval(); // Clear interval on cursor overflow
