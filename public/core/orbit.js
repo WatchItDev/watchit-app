@@ -270,7 +270,11 @@ module.exports = (ipcMain) => {
     let asyncLock = false;
     let queueInterval = null;
 
-    const catIPFS = async (cid) => {
+    const cleanInterval = () => {
+        if (!queueInterval) return;
+        log.warn('Cleaning queue interval')
+        return clearInterval(queueInterval)
+    }, catIPFS = async (cid) => {
         log.info('Fetching cid', cid);
         try {
             for await (const file of orbit.node.get(cid)) {
@@ -295,7 +299,7 @@ module.exports = (ipcMain) => {
         // Check if hash exists in log
         let hashContent = await orbit.get(hash)
         if (!hashContent) {
-            log.info('Hash cannot be found in op-log:', hash)
+            log.info('Hash cannot be found in op-log')
             log.info('Release Lock')
             asyncLock = false;
             return;
@@ -334,14 +338,11 @@ module.exports = (ipcMain) => {
             const lastHash = cache.lastHash ?? 0;
             const queueLength = currentQueue.length
 
-            if (cache.cached && queueInterval) {
-                log.warn('Cleaning queue interval')
-                return clearInterval(queueInterval)
-            }
-
-            if (!queueLength) return false;
-            let indexLastHash = currentQueue.indexOf(lastHash)
-            let nextHash = indexLastHash + 1
+            if (cache.cached) return cleanInterval();
+            if (!queueLength) return false; // Skip if not data in queue
+            let indexLastHash = currentQueue.indexOf(lastHash) // Get index of last hash
+            let nextHash = indexLastHash + 1 // Point cursor to next entry in queue
+            if (nextHash > queueLength) return cleanInterval(); // Clear interval on cursor overflow
 
             // Avoid array overflow
             let hash = currentQueue[nextHash]
@@ -349,9 +350,7 @@ module.exports = (ipcMain) => {
             log.info(`Processing with`, validCache ? 'valid cache' : 'no cache')
             asyncLock = true; // Lock process
             await partialSave(e, hash)
-
-
-        }, 2000)
+        }, 3000)
 
     }, initEvents = (e) => {
         /***
@@ -369,11 +368,12 @@ module.exports = (ipcMain) => {
         // More listeners
         initEvents(e);
         // FIFO queue
-        orbit.on('progress', (_, hash) => orbit.queue = hash)
-            .on('ready', () => {
-                queueProcessor(e);
-                e.reply('orbit-ready');
-            })
+        orbit.on('progress', (_, hash) => {
+            setImmediate(() => orbit.queue = hash)
+        }).on('ready', () => {
+            queueProcessor(e);
+            e.reply('orbit-ready');
+        })
         log.info('Start orbit..');
         await orbit.start(e);
     });
