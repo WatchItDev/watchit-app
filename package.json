@@ -116,7 +116,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test  --watchAll=false",
     "eject": "react-scripts eject",
-    "electron": "LOG=debug IPFS_FD_MAX=10000 ENV=dev $(npm bin)/electron .",
+    "electron": "cross-env LOG=debug IPFS_FD_MAX=10000 ENV=dev $(npm bin)/electron .",
     "dev": "concurrently \"npm run start\" \"npm run electron\"",
     "lint": "eslint --ext js,jsx",
     "lint:fix": "npm run lint -s -- --fix src ",
@@ -155,6 +155,7 @@
   },
   "devDependencies": {
     "concurrently": "^5.3.0",
+    "cross-env": "^7.0.3",
     "electron": "^9.1.0",
     "electron-builder": "^22.7.0",
     "eslint": "^6.6.0",
