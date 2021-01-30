@@ -4,7 +4,7 @@ const fs = require('fs')
 
 const ROOT_DIR = os.tmpdir();
 const ROOT_HOME = os.homedir();
-const ROOT_URI = 'https://localhost:9090ipfs/';
+const ROOT_URI = 'https://vps1.phillm.net/ipfs/';
 const ROOT_URI_TORRENT = `${ROOT_URI}`;
 const ROOT_STORE = process.env.appPath;
 const ROOT_APP = fs.realpathSync(process.cwd());

@@ -91,7 +91,7 @@ export default class MovieDetails extends React.PureComponent {
                                             universal={true}>
                                             <FlowText>
                                             <span>
-                                                {this.state.movies.description_full}
+                                                {this.state.movies.synopsis}
                                             </span>
                                             </FlowText>
                                         </CustomScrollbars>

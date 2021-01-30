@@ -250,21 +250,13 @@ module.exports = (ipcMain) => {
             // return this.db.get(hash).payload.value
         }
 
-        removeDuplicates(hashList) {
-            return hashList.filter((value, index, self) => {
-                return self.indexOf(value) === index
-            })
-        }
-
-
         set queue(hash) {
             log.info('Storing hash in queue');
             let cache = Auth.readFromStorage();
             let cacheList = cache.hash ?? []
-            let newHash = cacheList.concat(hash)
-            Auth.addToStorage({ // Restore list cleaned
-                hash: this.removeDuplicates(newHash)
-            })
+            // Deduplication with sets
+            let newHash = [...new Set([...cacheList, ...[hash]])]
+            Auth.addToStorage({hash: newHash})
         }
 
         get queue() {
@@ -278,7 +270,11 @@ module.exports = (ipcMain) => {
     let asyncLock = false;
     let queueInterval = null;
 
-    const catIPFS = async (cid) => {
+    const cleanInterval = () => {
+        if (!queueInterval) return;
+        log.warn('Cleaning queue interval')
+        return clearInterval(queueInterval)
+    }, catIPFS = async (cid) => {
         log.info('Fetching cid', cid);
         try {
             for await (const file of orbit.node.get(cid)) {
@@ -303,7 +299,7 @@ module.exports = (ipcMain) => {
         // Check if hash exists in log
         let hashContent = await orbit.get(hash)
         if (!hashContent) {
-            log.error('Hash cannot be found in op-log:', hash)
+            log.info('Hash cannot be found in op-log')
             log.info('Release Lock')
             asyncLock = false;
             return;
@@ -334,33 +330,30 @@ module.exports = (ipcMain) => {
 
     }, queueProcessor = (e) => {
         queueInterval = setInterval(async () => {
-            log.warn('Processing queue', asyncLock ? 'locked' : 'free')
-            if (asyncLock) return false;
+            const maxToReplicate = orbit.db?.replicationStatus?.max || 0
+            if (asyncLock || Object.is(maxToReplicate, 0)) {
+                log.info('Skip process queue')
+                return false; // Skip if locked or no data received
+            }
 
             const [validCache, cache] = orbit.cache;
             const currentQueue = orbit.queue
             const lastHash = cache.lastHash ?? 0;
             const queueLength = currentQueue.length
 
-            if (cache.cached && queueInterval) {
-                log.warn('Cleaning queue interval')
-                return clearInterval(queueInterval)
-            }
-
-            if (!queueLength) return false;
-            let indexLastHash = currentQueue.indexOf(lastHash)
-            let nextHash = indexLastHash + 1
+            if (!queueLength) return false; // Skip if not data in queue
+            if (cache.cached) return cleanInterval();
+            let indexLastHash = currentQueue.indexOf(lastHash) // Get index of last hash
+            let nextHash = indexLastHash + 1 // Point cursor to next entry in queue
+            if (nextHash > maxToReplicate) return cleanInterval(); // Clear interval on cursor overflow
 
             // Avoid array overflow
-            if (nextHash <= queueLength) {
-                let hash = currentQueue[nextHash]
-                log.info(`Processing hash ${hash}`);
-                log.info(`Processing with`, validCache ? 'valid cache' : 'no cache')
-                asyncLock = true; // Lock process
-                await partialSave(e, hash)
-            }
-
-        }, 1000)
+            let hash = currentQueue[nextHash]
+            log.info(`Processing hash ${hash}`);
+            log.info(`Processing with`, validCache ? 'valid cache' : 'no cache')
+            asyncLock = true; // Lock process
+            await partialSave(e, hash)
+        }, 3000)
 
     }, initEvents = (e) => {
         /***
@@ -378,11 +371,12 @@ module.exports = (ipcMain) => {
         // More listeners
         initEvents(e);
         // FIFO queue
-        orbit.on('progress', (_, hash) => orbit.queue = hash)
-            .on('ready', () => {
-                queueProcessor(e);
-                e.reply('orbit-ready');
-            })
+        orbit.on('progress', (_, hash) => {
+            setImmediate(() => orbit.queue = hash)
+        }).on('ready', () => {
+            queueProcessor(e);
+            e.reply('orbit-ready');
+        })
         log.info('Start orbit..');
         await orbit.start(e);
     });
