@@ -330,7 +330,7 @@ module.exports = (ipcMain) => {
 
     }, queueProcessor = (e) => {
         queueInterval = setInterval(async () => {
-            const maxToReplicate = orbit.db.replicationStatus.max
+            const maxToReplicate = orbit.db?.replicationStatus?.max || 0
             if (asyncLock || Object.is(maxToReplicate, 0)) {
                 log.info('Skip process queue')
                 return false; // Skip if locked or no data received
