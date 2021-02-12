@@ -1,9 +1,9 @@
 [![Gitter](https://badges.gitter.im/watchit-app/community.svg)](https://gitter.im/watchit-app/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 # Getting started
-* Cross-platform desktop apps [ElectronJs](https://www.electronjs.org/)
-* Decentralized DB [OrbitDB](https://orbitdb.org/)
-* IPFS implementation in JavaScript [JS-IPFS](https://github.com/ipfs/js-ipfs)
+* Decentralized [OrbitDB](https://orbitdb.org/)
+* Golang [IPFS](https://github.com/ipfs/go-ipfs) implementation 
+* Cross-platform [ElectronJs](https://www.electronjs.org/) apps builder 
 * Bootstrap React App tool [Create React App](https://github.com/facebook/create-react-app).
 
 # About us
@@ -59,6 +59,3 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 
 Build app to choosen OS. Depending on packaging OS will need pack in respective OS.
 
-## Deploy
-
-Try running your [own gateway](https://github.com/ZorrillosDev/watchit-gateway)
