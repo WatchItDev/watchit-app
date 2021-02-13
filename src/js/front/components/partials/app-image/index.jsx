@@ -6,6 +6,7 @@ export default class BoxImage extends React.PureComponent {
 
     constructor(props) {
         super(props);
+        this.gateway = window.Gateway
         this.state = {
             status: 0,
             loaded: false
@@ -13,7 +14,9 @@ export default class BoxImage extends React.PureComponent {
     }
 
     get fullUri() {
-        return `${window.env.ROOT_URI}${this.props.src}`
+        return this.gateway.parse(
+            this.props.src
+        )
     }
 
 
@@ -47,7 +50,7 @@ export default class BoxImage extends React.PureComponent {
                      onError={this.handleImageError}
                      className={this.state.status < 0 && this.props.preload ? "hidden" :
                          (this.state.loaded || !this.props.preload) ?
-                         "loaded-img responsive-img" : "locked-img invisible"
+                             "loaded-img responsive-img" : "locked-img invisible"
                      }
                 />
             </figure>

@@ -37,13 +37,13 @@ module.exports = async (ipc) => {
         remote: false, type: 'go'
     })
 
-    // If api file exists on node setup ipfs-daemon.js line:183 doest spawn process
-    // Be sure this lock 'api' file doesnt exists before node boot..
-    // const apiLockFile = path.join(settings.ROOT_IPFS_DIR, 'api')
-    // if (fs.existsSync(apiLockFile)) {
-    //     log.warn('Removing old `api` file');
-    //     await removeFiles(apiLockFile)
-    // }
+    //If api file exists on node setup ipfs-daemon.js line:183 doest spawn process
+    //Be sure this lock 'api' file doesnt exists before node boot..
+    const apiLockFile = path.join(settings.ROOT_IPFS_DIR, 'api')
+    if (fs.existsSync(apiLockFile)) {
+        log.warn('Removing old `api` file');
+        await removeFiles(apiLockFile)
+    }
 
     // Check if running time dir exists
     log.warn('Starting node');

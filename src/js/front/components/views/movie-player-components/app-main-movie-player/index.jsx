@@ -11,6 +11,7 @@ export default class AppMoviesPlayer extends React.Component {
 		super(props);
 		
 		this.streamer = window.Streamer
+		this.gateway = window.Gateway
 		this.cast = window.Cast
 		this.subs = {};
 		this.v = null;
@@ -219,7 +220,7 @@ export default class AppMoviesPlayer extends React.Component {
 		//Start streamer
 		logHelper.ok('STREAMING MOVIE: ' + this.props.movie.title.toUpperCase());
 		this.streamer.playTorrent(
-			`${window.env.ROOT_URI_TORRENT}${this.props.movie.torrent}`,
+			`${this.gateway.parse(this.props.movie.torrent)}`,
 			this.onReady, this.onProgress, this.onError
 		);
 		

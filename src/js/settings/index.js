@@ -10,7 +10,6 @@ let {width, height, chunkSize, chunkHeight} = util.calcScreenSize()
 //Resource Settings//
 /////////////////////
 //Avoid bad indexing
-//WatchIt API
 Settings.defaults = {
 	width: width,
 	height: height,
@@ -42,11 +41,6 @@ Settings.resolutions = {
 	]
 };
 
-//Default user settings
-Settings.user = {
-	timezone: 'America/Managua',
-	max_old_chats: 50
-};
 
 //Errors codes
 Settings.errorCodes = {
