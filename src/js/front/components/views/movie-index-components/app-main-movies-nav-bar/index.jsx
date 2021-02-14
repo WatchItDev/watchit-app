@@ -83,11 +83,17 @@ export default class AppMoviesNavBar extends React.Component {
                 'label': 'Romance',
                 'action': 'Romance'
             }, {
+                'label': 'Reality-TV',
+                'action': 'Reality-TV'
+            }, {
                 'label': 'Sci-Fi',
                 'action': 'Sci-Fi'
             }, {
                 'label': 'Sport',
                 'action': 'Sport'
+            }, {
+                'label': 'Talk-Show',
+                'action': 'Talk-Show'
             }, {
                 'label': 'Thriller',
                 'action': 'Thriller'
