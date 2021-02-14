@@ -12,6 +12,7 @@
     "url": "https://github.com/ZorrillosDev/watchit-desktop.git"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.15.2",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
@@ -41,6 +42,7 @@
     "react-custom-scrollbars": "^4.2.1",
     "react-dom": "^16.13.1",
     "react-modal": "^3.11.2",
+    "react-particles-js": "^3.4.1",
     "react-player": "^2.1.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",
