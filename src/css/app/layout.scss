@@ -228,7 +228,7 @@
 
   .loading_progress {
     position: absolute;
-    bottom: 20%;
+    bottom: 30%;
     width: 100%;
     z-index: 2;
 
@@ -264,6 +264,45 @@
       height: auto;
       clip-path: url(#clip-00);
     }
+  }
+}
+
+.main-login-box {
+  .particles_container {
+    position: absolute;
+    left: 0;
+    top: 0;
+
+    .logo,.slogan {
+      display: none;
+    }
+  }
+}
+
+.particles_container {
+  height: 100%;
+  width: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .logo {
+    position: absolute;
+    transform: scale(3) translateY(- 2.7rem);
+    letter-spacing: 2px;
+
+    img {
+      margin-right: -3px;
+    }
+  }
+
+  .slogan {
+    position: absolute;
+    color: white;
+    transform: translateY(-2rem);
+    letter-spacing: 2px;
+    font-size: 2rem;
   }
 }
 
