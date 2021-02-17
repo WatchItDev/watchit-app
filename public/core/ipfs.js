@@ -32,14 +32,6 @@ const initIpfsNode = async (isInstance, ipc) => {
     // Check if running time dir exists
     log.warn('Starting node');
     ipc.reply('orbit-progress', 'Booting')
-    const repoLockDir = `${settings.ROOT_IPFS_DIR}/repo.lock`
-    const alreadyLock = fs.existsSync(repoLockDir)
-
-    if (alreadyLock){
-        log.warn('Release locked node')
-        await isInstance.stop()
-        await removeFiles(repoLockDir)
-    }
 
     setTimeout(async () => {
         if (!isInstance.started) {
