@@ -61,6 +61,9 @@ export default class AppMoviesNavBar extends React.Component {
                 'label': 'Film-Noir',
                 'action': 'Film-Noir'
             }, {
+                'label': 'Game-Show',
+                'action': 'Game-Show'
+            }, {
                 'label': 'History',
                 'action': 'History'
             }, {
