@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import AppLoaderVideos from 'js/front/components/views/movie-player-components/app-main-movie-player-loader-videos/'
+import AppLoaderBackground from 'js/front/components/views/movie-player-components/app-main-movie-player-loader-background/'
 import AppLoaderBar from 'js/front/components/views/movie-player-components/app-main-movie-player-loader-bar/'
 
 export default class AppMoviesPlayerLoader extends React.PureComponent {
@@ -15,7 +15,7 @@ export default class AppMoviesPlayerLoader extends React.PureComponent {
 		return (
 			<div className="output-process valign-wrapper full-width full-height">
 				<div className="app_loader">
-					<AppLoaderVideos/>
+					<AppLoaderBackground/>
 					<AppLoaderBar
 						stateText={this.props.stateText}
 						statePercent={this.props.statePercent}
