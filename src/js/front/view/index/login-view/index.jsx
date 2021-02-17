@@ -1,7 +1,7 @@
 //Basic
 import React from 'react'
-import FormBox from 'js/front/components/forms/app-form/index.jsx'
 import Forms from './forms.js'
+import FormBox from 'js/front/components/forms/app-form/index.jsx'
 import AppLoaderBackground from 'js/front/components/views/movie-player-components/app-main-movie-player-loader-background/'
 
 //Login view class

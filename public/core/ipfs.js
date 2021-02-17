@@ -6,6 +6,7 @@ const settings = require('./settings')
 const ipfsConf = require('./settings/ipfs');
 const {removeFiles} = require('./utils');
 
+const RETRY_GRACE = 3
 const inDev = Object.is(process.env.ENV, 'dev')
 const resolveIpfsPaths = () => {
     /***
@@ -27,6 +28,14 @@ const resolveIpfsPaths = () => {
     }
 }
 
+const initIpfsNode = async (isInstance, ipc) => {
+    // Check if running time dir exists
+    log.warn('Starting node');
+    ipc.reply('orbit-progress', 'Booting')
+    await isInstance.init()
+    await isInstance.start();
+}
+
 module.exports = async (ipc) => {
     const isInstance = await Ctl.createController({
         ipfsOptions: {config: ipfsConf(), repo: settings.ROOT_IPFS_DIR},
@@ -45,14 +54,17 @@ module.exports = async (ipc) => {
         await removeFiles(apiLockFile)
     }
 
-    // Check if running time dir exists
-    log.warn('Starting node');
-    ipc.reply('orbit-progress', 'Booting')
-    await isInstance.init()
-    await isInstance.start();
+    setTimeout(async () => {
+        if (!isInstance.started) {
+            isInstance.stop() // Force init
+            await initIpfsNode(isInstance, ipc)
+        }
+    }, RETRY_GRACE * 1000)
 
+    await initIpfsNode(isInstance, ipc)
     const ipfsApi = isInstance.api
     const id = await ipfsApi.id()
+    log.info(`Started ${isInstance.started}`)
     log.info('Running ipfs id', id.id)
     return ipfsApi
 }
