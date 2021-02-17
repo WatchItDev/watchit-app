@@ -33,13 +33,6 @@ const initIpfsNode = async (isInstance, ipc) => {
     log.warn('Starting node');
     ipc.reply('orbit-progress', 'Booting')
 
-    setTimeout(async () => {
-        if (!isInstance.started) {
-            await isInstance.stop() // Force init
-            await initIpfsNode(isInstance, ipc)
-        }
-    }, RETRY_GRACE * 1000)
-
     await isInstance.init()
     await isInstance.start();
 
@@ -62,6 +55,13 @@ module.exports = async (ipc) => {
         log.warn('Removing old `api` file');
         await removeFiles(apiLockFile)
     }
+
+    setTimeout(async () => {
+        if (!isInstance.started) {
+            await isInstance.stop() // Force init
+            await initIpfsNode(isInstance, ipc)
+        }
+    }, RETRY_GRACE * 1000)
 
     await initIpfsNode(isInstance, ipc)
     const ipfsApi = isInstance.api
