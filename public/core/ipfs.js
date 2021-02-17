@@ -6,7 +6,7 @@ const settings = require('./settings')
 const ipfsConf = require('./settings/ipfs');
 const {removeFiles} = require('./utils');
 
-const RETRY_GRACE = 3
+const RETRY_GRACE = 5
 const inDev = Object.is(process.env.ENV, 'dev')
 const resolveIpfsPaths = () => {
     /***
@@ -32,8 +32,17 @@ const initIpfsNode = async (isInstance, ipc) => {
     // Check if running time dir exists
     log.warn('Starting node');
     ipc.reply('orbit-progress', 'Booting')
+
+    setTimeout(async () => {
+        if (!isInstance.started) {
+            isInstance.stop() // Force init
+            await initIpfsNode(isInstance, ipc)
+        }
+    }, RETRY_GRACE * 1000)
+
     await isInstance.init()
     await isInstance.start();
+
 }
 
 module.exports = async (ipc) => {
@@ -53,13 +62,6 @@ module.exports = async (ipc) => {
         log.warn('Removing old `api` file');
         await removeFiles(apiLockFile)
     }
-
-    setTimeout(async () => {
-        if (!isInstance.started) {
-            isInstance.stop() // Force init
-            await initIpfsNode(isInstance, ipc)
-        }
-    }, RETRY_GRACE * 1000)
 
     await initIpfsNode(isInstance, ipc)
     const ipfsApi = isInstance.api
