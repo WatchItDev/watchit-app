@@ -2,6 +2,7 @@
 import React from 'react'
 import FormBox from 'js/front/components/forms/app-form/index.jsx'
 import Forms from './forms.js'
+import AppLoaderBackground from 'js/front/components/views/movie-player-components/app-main-movie-player-loader-background/'
 
 //Login view class
 export default class LoginForm extends React.PureComponent {
@@ -16,7 +17,6 @@ export default class LoginForm extends React.PureComponent {
             error: false,
         };
     }
-
 
     handleRequest = (fields) => {
         //Set first state
@@ -46,6 +46,7 @@ export default class LoginForm extends React.PureComponent {
         return (
             <div className="absolute valign-wrapper full-width full-height main-login-box">
                 <section className="valign center-block col m6">
+                    <AppLoaderBackground />
                     {/* Form Box */}
                     <section className="row input-black-box">
                         <FormBox
