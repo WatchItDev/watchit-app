@@ -10,9 +10,6 @@ window.env = require(`${__dirname}/core/settings`);
 window.Auth = require(`${__dirname}/core/auth`);
 window.Sub = require(`${__dirname}/core/subs`);
 
-// Interface to bypass gateway check
-const Gateway = require(`${__dirname}/core/gateways`)
-window.Gateway = new Gateway();
 // Interface to streamer access from windows object
 const TorrentStreamer = require(`${__dirname}/core/streamer`);
 window.Streamer = new TorrentStreamer();

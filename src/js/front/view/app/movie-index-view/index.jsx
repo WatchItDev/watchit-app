@@ -1,4 +1,5 @@
 import React from 'react'
+
 import AppNav from 'js/front/components/views/movie-index-components/app-main-movies-nav-bar/'
 import AppMovies from 'js/front/components/views/movie-index-components/app-main-movies-list/'
 import AppSearch from 'js/front/components/views/movie-index-components/app-main-movies-search/'
@@ -7,10 +8,11 @@ import AppMovieDetails from 'js/front/components/views/movie-details-components/
 import AppUpdater from 'js/front/components/views/movie-index-components/app-main-movies-updater'
 import StatsValue from "js/front/components/generic/util-stats";
 import storageHelper from 'js/resources/helpers/storageHelper';
-import logHelper from 'js/resources/helpers/logHelper'
 import BoxLoader from 'js/front/components/generic/util-box-loader/index.jsx'
 import Movie from 'js/resources/data/movies'
 import setting from 'js/settings'
+
+const log = window.require("electron-log");
 
 const DEFAULT_INIT_LOAD = 100;
 //Login view class
@@ -65,7 +67,7 @@ export default class MovieIndex extends React.Component {
     componentDidMount() {
         // Start ingest if not
         if (this.cached) {
-            console.log('Running Cache');
+            log.info('Running Cache');
             this.ingest.stopEvents();
             this.ingest.stopIpcEvents();
             this.ingest.listenForNewPeer();
@@ -107,14 +109,14 @@ export default class MovieIndex extends React.Component {
             this.setState({state: state, percent: 0})
         }).on('start', async () => {
             console.clear();
-            logHelper.info('STARTING');
+            log.info('STARTING');
             if (!this.loaded) {
                 localStorage.clear();
                 // await this.movie.setupIndex();
             }
         }).on('ready', () => {
             //Start filtering set cache synced movies
-            logHelper.info('LOADED FROM LOCAL');
+            log.info('LOADED FROM LOCAL');
             this.startRunning()
         }).on('ba', (p) => {
             this.setState({percent: p})
@@ -125,7 +127,7 @@ export default class MovieIndex extends React.Component {
             if (this.state.ready) return;
             this.setState({percent: 0, state: msg});
         }).on('done', () => {
-            logHelper.info('LOAD DONE')
+            log.info('LOAD DONE')
         }).load()
 
     }
@@ -149,8 +151,8 @@ export default class MovieIndex extends React.Component {
         if ('to' in filter && 'start' in filter) {
             filter.limit = filter.to - filter.start;
             filter.skip = filter.start;
-            console.log('Skip:', filter.skip);
-            console.log('Chunk:', filter.limit);
+            log.info('Skip:', filter.skip);
+            log.info('Chunk:', filter.limit);
         }
 
         //Get movies
@@ -185,7 +187,7 @@ export default class MovieIndex extends React.Component {
             setTimeout(() => {
                 this.filterMovies({...{start, to}, ...this.sort},
                     false, false, (state) => {
-                        console.log('Movies loaded');
+                        log.info('Movies loaded');
                         resolve(state)
                     }
                 )
@@ -253,7 +255,7 @@ export default class MovieIndex extends React.Component {
 
         //Set new state
         //Reset limit
-        logHelper.warn('RESET OFFSET AND ENABLED INFINITE SCROLL');
+        log.warn('RESET OFFSET AND ENABLED INFINITE SCROLL');
         this.setState({loading: true});
 
         //Set cache filters

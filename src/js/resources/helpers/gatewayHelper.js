@@ -1,16 +1,31 @@
-const log = require('electron-log')
-const gateways = require('./settings/gateways')
+import settings from 'js/settings'
+
 const HASH_TO_TEST = 'bafybeifx7yeb55armcsxwwitkymga5xf53dxiarykms3ygqic223w5sk3m'
 const HASH_STRING = 'Hello from IPFS Gateway Checker';
+const log = window.require("electron-log");
 
-module.exports = class Gateways {
+export default {
 
-    parse(uri) {
-        return `${this.addr()}${uri}`
-    }
+    _builtPath(resource) {
+        let builtPath = resource.cid
+        if ('index' in resource)
+            builtPath = `${builtPath}/${resource.index}`
+        return builtPath
+    },
+
+    parse(resource) {
+        const builtPath = this._builtPath(resource)
+        return `${this.addr()}${builtPath}`
+    },
+
+    dummyParse(resource) {
+        const builtPath = this._builtPath(resource)
+        const random = Math.floor(Math.random() * settings.gateways.length);
+        return `${settings.gateways[random]}/${builtPath}`
+    },
 
     async addr() {
-        for (const gateway of gateways) {
+        for (const gateway of settings.gateways) {
             log.warn(`Health checking ${gateway}`)
             const gatewayAndHash = `${gateway}${HASH_TO_TEST}`
             const currentGateway = await this.healthCheck(gatewayAndHash)
@@ -19,7 +34,7 @@ module.exports = class Gateways {
                 return currentGateway
             }
         }
-    }
+    },
 
     healthCheck(gateway) {
         return new Promise((res) => {
@@ -35,6 +50,4 @@ module.exports = class Gateways {
             })
         })
     }
-
-
 }

@@ -23,7 +23,7 @@ export default class AppMoviesListRow extends React.Component {
                     return <AppMoviesListPoster
                         key={i._id || uid.generate()} id={i._id}
                         title={i.title} rating={i.rating}
-                        year={i.year} image={`${i.hash}/medium_cover_image.jpg`}
+                        year={i.year} image={i.medium_image}
                         placeHolder={this.props.placeHolder}
                         onClick={this.props.onClick}
                     />

@@ -1,12 +1,12 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import PulseLoader from 'js/front/components/generic/util-pulse-loader'
+import gatewayHelper from 'js/resources/helpers/gatewayHelper'
 
 export default class BoxImage extends React.PureComponent {
 
     constructor(props) {
         super(props);
-        this.gateway = window.Gateway
         this.state = {
             status: 0,
             loaded: false
@@ -14,7 +14,7 @@ export default class BoxImage extends React.PureComponent {
     }
 
     get fullUri() {
-        return this.gateway.parse(
+        return gatewayHelper.dummyParse(
             this.props.src
         )
     }
@@ -22,7 +22,7 @@ export default class BoxImage extends React.PureComponent {
 
     static get propTypes() {
         return {
-            src: PropTypes.string.isRequired
+            src: PropTypes.object.isRequired
         }
     }
 

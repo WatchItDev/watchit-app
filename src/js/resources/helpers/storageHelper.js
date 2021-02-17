@@ -4,7 +4,7 @@
 //Storage manifest
 import manifest from 'js/settings/storage'
 
-let Storage = {
+export default {
     __toObj: {},
     __getObj: (man, cb) => {
         //The manifest keys
@@ -63,7 +63,3 @@ let Storage = {
         localStorage.clear();
     }
 };
-
-
-//Export
-export default Storage;
