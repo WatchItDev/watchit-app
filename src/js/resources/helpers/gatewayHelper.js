@@ -15,13 +15,13 @@ export default {
 
     parse(resource) {
         const builtPath = this._builtPath(resource)
-        return `${this.addr()}${builtPath}`
+        return `${this.addr()}/ipfs/${builtPath}`
     },
 
     dummyParse(resource) {
         const builtPath = this._builtPath(resource)
         const random = Math.floor(Math.random() * settings.gateways.length);
-        return `${settings.gateways[random]}/${builtPath}`
+        return `${settings.gateways[random]}/ipfs/${builtPath}`
     },
 
     async addr() {
