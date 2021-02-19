@@ -6,7 +6,7 @@ import manifest from 'js/settings/storage'
 
 const Storage = {
     __toObj: {},
-    __getObj: (man, cb) => {
+    __getObj(man, cb) {
         //The manifest keys
         let _keys = Object.keys(man);
 
@@ -19,11 +19,11 @@ const Storage = {
 
             //Return object
             return b;
-        }, Storage.__toObj);
+        }, this.__toObj);
     },
-    get: (parse = true, man = manifest) => {
+    get(parse = true, man = manifest) {
         return {
-            from: Storage.__getObj(
+            from: this.__getObj(
                 man, function (key) {
                     return localStorage.getItem(key) ?
                         (parse && JSON.parse(localStorage.getItem(key)))
@@ -32,17 +32,19 @@ const Storage = {
             )
         }
     },
-    add: (data, serialize = true, man = manifest) => {
+    add(data, serialize = true, man = manifest) {
         return {
-            to: Storage.__getObj(
+            to: this.__getObj(
                 man, function (key) {
-                    localStorage.setItem(key, (serialize && JSON.stringify(data)) || data)
+                    localStorage.setItem(
+                        key, (serialize && JSON.stringify(data)) || data
+                    )
                 }
             )
         }
     },
-    remove: (man = manifest) => {
-        return Storage.__getObj(
+    remove(man = manifest) {
+        return this.__getObj(
             man, function (key) {
                 //Remove item from localStorage
                 if (localStorage.getItem(key)) {
@@ -57,7 +59,7 @@ const Storage = {
 
 
     },
-    flush: () => {
+    flush() {
         //Flush all localstorage
         //!Warning
         localStorage.clear();

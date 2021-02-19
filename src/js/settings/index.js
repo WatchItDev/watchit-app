@@ -47,7 +47,7 @@ Settings.gateways = [
     'https://vps2.phillm.net',
     'https://gateway.ipfs.io',
     'https://gateway.pinata.cloud',
-    '//localhost:8080'
+    '//localhost:9090'
 ]
 
 

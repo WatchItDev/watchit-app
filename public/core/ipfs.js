@@ -29,16 +29,25 @@ const resolveIpfsPaths = () => {
 }
 
 const initIpfsNode = async (isInstance, ipc) => {
-    // Check if running time dir exists
-    log.warn('Starting node');
-    ipc.reply('orbit-progress', 'Booting')
+    try {
+        // Check if running time dir exists
+        log.warn('Starting node');
+        ipc.reply('orbit-progress', 'Booting')
 
-    await isInstance.init()
-    await isInstance.start();
+        await isInstance.init();
+        await isInstance.start();
+    } catch (e) {
+        // Gateway stop
+        log.info(e.message)
+        if (isInstance.subprocess)
+            return await isInstance.stop();
+        await isInstance.api.stop();
+    }
 
 }
 
 module.exports = async (ipc) => {
+
     const isInstance = await Ctl.createController({
         ipfsOptions: {config: ipfsConf(), repo: settings.ROOT_IPFS_DIR},
         ipfsHttpModule: require('ipfs-http-client'),
