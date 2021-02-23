@@ -1,19 +1,39 @@
 import utilHelper from "./utilHelper";
+import settings from 'js/settings'
 
 export default {
 
-    torrent(resource) {
-        return Promise.all(resource.map((t, i) => this.streamer.getHealth(t.hash, i))).then((v) => {
-            v.forEach((h) => resource[h.index]['health'] = utilHelper.calcHealth(h));
-            this.setState({movies: r});
-        })
-    },
-    hls() {
-
+    async torrent(resource) {
+        const resCheck = await window.Streamer.getHealth(resource.index)
+        resource['health'] = utilHelper.calcHealth(resCheck)
+        return resource
     },
 
-    switchResource(resources, type) {
+    async hls(resource) {
+        // Fill schema definition with `health` prop
+        resource['health'] = 1
+        return resource
+    },
 
+    _switch(resource, type) {
+        /***
+         * Return switched resource type
+         * @type {{torrent: default.torrent, hls: default.hls}}
+         * @return <object>: {...object, {health:int}}
+         */
+
+        const types = {
+            'hls': this.hls,
+            'torrent': this.torrent
+        }
+
+        if (type in types && settings.allowedResource.includes(type))
+            return types[type](resource)
+    },
+    async * match(resources) {
+        for (const resource of resources) {
+            yield await this._switch(resource, resource.type)
+        }
     }
 
 }

@@ -239,12 +239,12 @@ export default class MovieIndex extends React.Component {
             this.sort = Object.assign(
                 {}, this.sort,
                 storageHelper.get().from.mainNavFilters(),
-                {[sort]: by}
+                {[sort]: by.action}
             );
         } else {
-            if (by) {
+            if (by.action) {
                 this.sort = Object.assign(
-                    {}, this.sort, {[sort]: by}
+                    {}, this.sort, {[sort]: by.action}
                 );
             } else {
                 if (sort in this.sort) {
@@ -256,6 +256,7 @@ export default class MovieIndex extends React.Component {
         //Set new state
         //Reset limit
         log.warn('RESET OFFSET AND ENABLED INFINITE SCROLL');
+        log.warn(`SORTING BY ${by.action}`)
         this.setState({loading: true});
 
         //Set cache filters

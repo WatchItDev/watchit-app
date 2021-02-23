@@ -32,7 +32,7 @@ ReactDOM.render(
 			<Route name="movies" exact path="/app/movies"
 				   render={(n) => (DragBarHOC(MovieIndex, n))}/>
 			<Route name="player"
-				   path="/play/:torrent/:sub"
+				   path="/play/:resource/:sub"
 				   render={(n) => (DragBarHOC(MoviePlayer, n))}/>
 		</Switch>
 	</HashRouter>,

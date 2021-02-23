@@ -1,7 +1,5 @@
 import React from 'react'
-import AppMoviePlayer from 'js/front/components/views/movie-player-components/app-main-movie-player/index'
-import AppMoviePlayerLoader from 'js/front/components/views/movie-player-components/app-main-movie-player-loader/index'
-import AppMoviesPlayerSwarm from 'js/front/components/views/movie-player-components/app-main-movie-player-swarm/index'
+import AppMoviesPlayerTorrent from "js/front/components/views/movie-player-components/app-main-movie-player-torrent";
 import MainLoader from 'js/front/components/generic/util-main-loader/index'
 import BtnClose from 'js/front/components/generic/util-btn-close/index'
 import Movie from 'js/resources/data/movies'
@@ -20,10 +18,6 @@ export default class MoviePlayer extends React.Component {
 
         //Decode string and pass to json object
         this.state = {
-            state: 'Connecting',
-            percent: 0,
-            flix: null,
-            canPlay: false,
             stopped: false,
             toggle_screen: false
         };
@@ -35,12 +29,12 @@ export default class MoviePlayer extends React.Component {
         //Decode param
         let _movieInfo = JSON.parse(
             cryptHelper.fromBase64(
-                this.props.match.params.torrent
+                this.props.match.params.resource
             )
         );
 
         //Set subs from movie if exists
-        this.movie.get(_movieInfo.id,).then((res) => {
+        this.movie.get(_movieInfo.id).then((res) => {
             //Set new subs
             let selectedSub = this.props.match.params?.sub
             this.setState({
@@ -55,6 +49,7 @@ export default class MoviePlayer extends React.Component {
         })
     }
 
+
     preSubs(subs, collection = {}) {
         Object.values(subs).forEach((el) => {
             Object.keys(el).reduce((o, i) => {
@@ -68,7 +63,7 @@ export default class MoviePlayer extends React.Component {
 
     subs(res) {
         let subs = {}
-        let s = res.subtitles
+        let s = res?.subtitles
         if (!s) return subs
         this.preSubs(s, subs);
 
@@ -91,81 +86,31 @@ export default class MoviePlayer extends React.Component {
         }).slice(-1)[0];
     }
 
-    onProgress = (percent, state) => {
-        //Change state
-        this.setState({
-            state: state,
-            percent: percent
-        })
-    }
 
-    onReady = (url, flix) => {
-        //Change state
-        this.setState({
-            state: 'Starting',
-            flix: flix,
-            percent: 100
-        })
-    }
+    switchPlayer = (type) => {
+        const types = {
+            'torrent': AppMoviesPlayerTorrent,
+            'hls': null
+        }
 
-    onCanPlay = () => {
-        this.setState({
-            canPlay: true
-        })
+        if (type in types)
+            return types[type]
     }
 
     render() {
         return (
             <div className="movie-player full-width full-height">
                 <BtnClose action={`#/app/movies`}/>
-                {
-                    (
-                        !this.state.canPlay &&
-                        <div className="absolute full-width full-height player-overlay-loader">
-                            <AppMoviePlayerLoader
-                                stateText={this.state.state}
-                                statePercent={this.state.percent}
-                            />
-                        </div>
-                    )
-                }
 
                 {
                     (
-                        this.state.movieInfo &&
-                        <section className={`absolute full-height clearfix video-stream`}>
-                            {/* Movie torrent info */}
-                            {
-                                (
-                                    this.state.flix && this.state.canPlay &&
-                                    <header className="row absolute z-index-100 top-2-vh left-2-vw clearfix">
-                                        <div className="row">
-                                            <h4 className="white-text bold font-type-titles">
-                                                {this.state.movieInfo.title}
-                                            </h4>
-                                        </div>
-                                        <div>
-                                            <AppMoviesPlayerSwarm
-                                                flix={this.state.flix}
-                                            />
-                                        </div>
-                                    </header>
-                                )
+                        this.state.movieInfo && React.createElement(
+                            this.switchPlayer(this.state.movieInfo.type), {
+                                movie: this.state.movieInfo,
+                                subs: this.state.movieSubs,
+                                selectedSub: this.state.movieSelectedSub
                             }
-
-                            {/* Main player */}
-                            <div className="full-height movie-box">
-                                <AppMoviePlayer
-                                    movie={this.state.movieInfo}
-                                    subs={this.state.movieSubs}
-                                    subSelected={this.state.movieSelectedSub}
-                                    onProgress={this.onProgress}
-                                    onReady={this.onReady}
-                                    onCanPlay={this.onCanPlay}
-                                />
-                            </div>
-                        </section>
-
+                        )
                     )
                 }
                 {/*Loader box*/}

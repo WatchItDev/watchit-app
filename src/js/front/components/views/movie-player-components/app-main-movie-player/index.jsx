@@ -5,6 +5,7 @@ import PropTypes from 'prop-types'
 import setting from 'js/settings'
 import AppMoviesPlayerShare from 'js/front/components/views/movie-player-components/app-main-movie-player-share'
 import AppMoviesPlayerVideo from 'js/front/components/views/movie-player-components/app-main-movie-player-video'
+import gatewayHelper from "js/resources/helpers/gatewayHelper";
 const log = window.require("electron-log");
 
 export default class AppMoviesPlayer extends React.Component {
@@ -12,7 +13,6 @@ export default class AppMoviesPlayer extends React.Component {
         super(props);
 
         this.streamer = window.Streamer
-        this.gateway = window.Gateway
         this.cast = window.Cast
         this.subs = {};
         this.v = null;
@@ -44,7 +44,7 @@ export default class AppMoviesPlayer extends React.Component {
 
     static get propTypes() {
         return {
-            movies: PropTypes.object.isRequired
+            movie: PropTypes.object.isRequired
         }
     }
 
@@ -117,9 +117,9 @@ export default class AppMoviesPlayer extends React.Component {
         this.cast.createServer(
             // Create asset server
         ).requestUpdate().on('status', (status) => {
-            console.log('Status:', status);
+            log.info('Status:' + status);
         }).on('device', () => {
-            console.log('New device');
+            log.info('New device');
             this.setState({devices: this.players})
         });
 
@@ -220,8 +220,9 @@ export default class AppMoviesPlayer extends React.Component {
 
         //Start streamer
         log.info('STREAMING MOVIE: ' + this.props.movie.title.toUpperCase());
+        log.warn(gatewayHelper.dummyParse(this.props.movie));
         this.streamer.playTorrent(
-            `${this.gateway.parse(this.props.movie.torrent)}`,
+            `${gatewayHelper.dummyParse(this.props.movie)}`,
             this.onReady, this.onProgress, this.onError
         );
 
@@ -229,8 +230,8 @@ export default class AppMoviesPlayer extends React.Component {
 
     componentDidCatch(error, info) {
         console.dir("Component Did Catch Error");
-        console.log(error);
-        console.log(info);
+        log.error(error);
+        log.info(info);
     }
 
     // destroy player on unmount

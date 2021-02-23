@@ -41,13 +41,19 @@ Settings.resolutions = {
     ]
 };
 
+Settings.allowedResource = ['hls', 'torrent']
 Settings.gateways = [
     'https://ipfs.io',
     'https://vps1.phillm.net',
     'https://vps2.phillm.net',
     'https://gateway.ipfs.io',
     'https://gateway.pinata.cloud',
-    '//localhost:9090'
+    'http://localhost:9090',
+    'https://ipfs.infura.io',
+    'https://cloudflare-ipfs.com',
+    'https://astyanax.io',
+    'https://cf-ipfs.com',
+    'https://dweb.link'
 ]
 
 

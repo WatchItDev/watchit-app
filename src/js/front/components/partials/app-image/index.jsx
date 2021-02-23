@@ -1,7 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import PulseLoader from 'js/front/components/generic/util-pulse-loader'
-import gatewayHelper from 'js/resources/helpers/gatewayHelper'
 
 export default class BoxImage extends React.PureComponent {
 
@@ -13,16 +12,10 @@ export default class BoxImage extends React.PureComponent {
         };
     }
 
-    get fullUri() {
-        return gatewayHelper.dummyParse(
-            this.props.src
-        )
-    }
-
 
     static get propTypes() {
         return {
-            src: PropTypes.object.isRequired
+            src: PropTypes.string.isRequired
         }
     }
 
@@ -45,7 +38,7 @@ export default class BoxImage extends React.PureComponent {
                     this.props.preload && <PulseLoader style={{top: '20rem'}}/>
                 }
 
-                <img alt={''} src={this.fullUri}
+                <img alt={''} src={this.props.src}
                      onLoad={this.handleImageLoaded}
                      onError={this.handleImageError}
                      className={this.state.status < 0 && this.props.preload ? "hidden" :

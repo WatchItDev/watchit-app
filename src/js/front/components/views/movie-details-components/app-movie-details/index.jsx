@@ -1,4 +1,5 @@
 import React from 'react'
+import all from 'it-all'
 import BoxLoader from 'js/front/components/generic/util-box-loader/index.jsx'
 import MainHeader from 'js/front/components/generic/util-header/index.jsx'
 import BoxImage from 'js/front/components/partials/app-image/index.jsx'
@@ -7,8 +8,9 @@ import AppMovieDetailMenu from 'js/front/components/views/movie-details-componen
 import FlowText from 'js/front/components/generic/util-flow-text/index.jsx'
 import CustomScrollbars from 'js/front/components/generic/util-scroller/index.jsx';
 import ListCommaSplit from 'js/front/components/generic/util-list-comma-split/index.jsx'
-import utilHelper from 'js/resources/helpers/utilHelper'
 import Movie from 'js/resources/data/movies'
+import gatewayHelper from 'js/resources/helpers/gatewayHelper'
+import resourceHelper from "js/resources/helpers/resourceHelper";
 
 //Login view class
 export default class MovieDetails extends React.PureComponent {
@@ -21,23 +23,22 @@ export default class MovieDetails extends React.PureComponent {
         this.state = {movies: null};
     }
 
-    componentDidMount() {
-        //Movie details
-        this.movie.get(
-            this.props.id,
-        ).then((r) => {
-            // Await all get done
-            // logHelper.info(`METADATA LOADED:`);
-            Promise.all(r.torrents.map((t, i) => this.streamer.getHealth(t.hash, i))).then((v) => {
-                v.forEach((h) => r.torrents[h.index]['health'] = utilHelper.calcHealth(h));
-                this.setState({movies: r});
-            })
-        })
+    async componentDidMount() {
+        // Movie details
+        const movies = await this.movie.get(this.props.id)
+        const resource = await all(resourceHelper.match(movies.resource))
+        this.setState({movies: {...movies, ...{resource}}});
     }
 
-    componentWillUnmount() {
-        console.log('Unmounted Details');
+
+    parseUriImage = (image) => {
+        if (image) {
+            // While load chunk of movies image = undefined
+            // Check if valid param before
+            return gatewayHelper.dummyParse(image)
+        }
     }
+
 
     render() {
         return (
@@ -54,7 +55,7 @@ export default class MovieDetails extends React.PureComponent {
                                     {/*Poster*/}
                                     <BoxImage
                                         className="full-width"
-                                        src={this.state.movies.large_image}
+                                        src={this.parseUriImage(this.state.movies.large_image)}
                                         preload={true}
                                     />
                                 </aside>

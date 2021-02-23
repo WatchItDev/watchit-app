@@ -2,12 +2,22 @@ import React from 'react'
 import uid from "shortid";
 import PropTypes from "prop-types";
 import AppMoviesListPoster from 'js/front/components/views/movie-index-components/app-main-movies-list-poster'
+import gatewayHelper from 'js/resources/helpers/gatewayHelper'
 
 export default class AppMoviesListRow extends React.Component {
 
     static get propTypes() {
         return {
             chunk: PropTypes.array.isRequired
+        }
+    }
+
+
+    parseUriImage = (image) => {
+        if (image) {
+            // While load chunk of movies image = undefined
+            // Check if valid param before
+            return gatewayHelper.dummyParse(image)
         }
     }
 
@@ -23,7 +33,7 @@ export default class AppMoviesListRow extends React.Component {
                     return <AppMoviesListPoster
                         key={i._id || uid.generate()} id={i._id}
                         title={i.title} rating={i.rating}
-                        year={i.year} image={i.medium_image}
+                        year={i.year} image={this.parseUriImage(i.medium_image)}
                         placeHolder={this.props.placeHolder}
                         onClick={this.props.onClick}
                     />

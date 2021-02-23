@@ -6,13 +6,15 @@ import cryptHelper from 'js/resources/helpers/cryptHelper'
 import TrailerPop from 'js/front/components/views/movie-details-components/app-movie-details-trailer'
 import util from 'js/resources/helpers/utilHelper'
 import settings from 'js/settings'
+import gatewayHelper from "js/resources/helpers/gatewayHelper";
 
 export default class AppMovieDetailMenu extends React.PureComponent {
     constructor(props) {
         super(props);
         //Default state
         this.state = {
-            torrent: null, sub: 'invalid',
+            resource: null,
+            sub: 'invalid',
             modalOpen: false
         };
     }
@@ -23,43 +25,59 @@ export default class AppMovieDetailMenu extends React.PureComponent {
         }
     }
 
-    prepareMenu(items, type = 'torrent') {
+
+    isMovieResource(resourceType) {
+        return settings.allowedResource.includes(
+            resourceType
+        )
+    }
+
+
+    parseResource = (resource) => {
+        if (resource) {
+            return gatewayHelper._builtPath(
+                resource
+            )
+        }
+    }
+
+    getHealth(rate) {
+        rate = rate < 1 ? 'red-text' :
+            rate >= 1 && rate <= 2 ?
+                'yellow-text' : 'green-text';
+        return <i className={`icon-heart pointer-events-none ${rate}`}/>
+    }
+
+    prepareMenu(items) {
         let i = 0;
         //Prepare for menu structure
         return items.map((v) => {
             // If type of items is torrent
-            let isTorrent = Object.is(type, 'torrent');
-            if (isTorrent) //If not found in available resolutions list... Skip !!
+            let resourceType = v?.type
+            let isMovieResource = this.isMovieResource(resourceType);
+            if (isMovieResource) //If not found in available resolutions list... Skip !!
                 if (!(~(settings.resolutions.available.indexOf(v.quality))))
                     return false;
 
             return {
-                default: (i++ === 0),
-                label: (isTorrent && v.quality) || (v[0].toUpperCase() + v.slice(1)),
-                action: (isTorrent && `${this.props.movie.hash}/${v.quality}/${v.hash}`) || v,
-                health: isTorrent ? v.health : Number.NaN
+                default: (i++ === 0), type: v.type,
+                label: isMovieResource ? v.quality : (v[0].toUpperCase() + v.slice(1)),
+                action: isMovieResource ? this.parseResource(v) : v,
+                icon: isMovieResource ? this.getHealth(v.health) : null,
             };
         });
     }
 
-    setMenuItem(def, type = 'torrent') {
-        this.prepareDataToPlayer(
-            def, type
-        )
-    }
 
-    setTorrent = (t) => this.setMenuItem(t)
-    setInitial = (t) => this.setMenuItem(t.action)
-    setMenuChange = (t) => this.setMenuItem(t, 'sub')
-    setMenuInitial = (t) => this.setMenuItem(t.action, 'sub')
+    onMenuChange = (t) => this.prepareDataToPlayer(t.action, t.type)
 
-    prepareDataToPlayer(data, type = 'torrent') {
+    prepareDataToPlayer(resource, type) {
         //Handle type of menu
-        if (type === 'torrent') {
+        if (this.isMovieResource(type)) {
             this.setState({
-                torrent: cryptHelper.toBase64(
+                resource: cryptHelper.toBase64(
                     JSON.stringify({
-                        torrent: data,
+                        type, cid: resource,
                         id: this.props.movie._id,
                         title: this.props.movie.title
                     })
@@ -67,7 +85,7 @@ export default class AppMovieDetailMenu extends React.PureComponent {
             })
         } else {
             this.setState({
-                sub: data
+                sub: resource
             })
         }
     }
@@ -85,8 +103,8 @@ export default class AppMovieDetailMenu extends React.PureComponent {
         })
     }
 
-    selectBestQuality(torrents) {
-        const groupedQualities = util.groupBy(torrents, 'quality');
+    selectBestQuality(resources) {
+        const groupedQualities = util.groupBy(resources, 'quality');
         return Object.keys(groupedQualities).map((key) => {
             return groupedQualities[key].reduce((old, curr) => {
                 let bestOne = (old.health || 0) > curr.health;
@@ -118,19 +136,19 @@ export default class AppMovieDetailMenu extends React.PureComponent {
                     {/*Play*/}
                     <NavBarButton
                         text={'Play'} icon={'icon-controller-play'}
-                        link={{href: `#/play/${this.state.torrent}/${this.state.sub}`}}
+                        link={{href: `#/play/${this.state.resource}/${this.state.sub}`}}
                     />
 
                     {/*The resolution menu*/}
                     {
-                        Object.keys(this.props.movie.torrents).length > 0 &&
+                        Object.keys(this.props.movie.resource).length > 0 &&
                         <NavBarMenu
                             btnText="HD"
-                            onChange={this.setTorrent}
-                            getInitialItem={this.setInitial}
+                            onChange={this.onMenuChange}
+                            getInitialItem={this.onMenuChange}
                             list={this.prepareMenu(
                                 this.selectBestQuality(
-                                    this.props.movie.torrents
+                                    this.props.movie.resource
                                 )
                             )}
                         />
@@ -140,10 +158,10 @@ export default class AppMovieDetailMenu extends React.PureComponent {
                         'subtitles' in this.props.movie &&
                         Object.keys(this.props.movie.subtitles).length > 0 &&
                         <NavBarMenu
-                            btnText="" onChange={this.setMenuChange}
-                            getInitialItem={this.setMenuInitial}
+                            btnText="" onChange={this.onMenuChange}
+                            getInitialItem={this.onMenuChange}
                             list={this.prepareMenu(
-                                this.selectAvailableSubs(), 'sub'
+                                this.selectAvailableSubs()
                             )}
                         />
                     }
