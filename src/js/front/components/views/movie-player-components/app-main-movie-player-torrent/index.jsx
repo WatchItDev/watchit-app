@@ -66,7 +66,7 @@ export default class AppMoviesPlayerTorrent extends React.PureComponent {
                     {
                         (
                             this.state.flix && this.state.canPlay &&
-                            <AppMoviesPlayerHeader title={this.state.movieInfo.title}>
+                            <AppMoviesPlayerHeader title={this.props.movie.title}>
                                 <AppMoviesPlayerSwarm
                                     flix={this.state.flix}
                                 />
