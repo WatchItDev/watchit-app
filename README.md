@@ -6,18 +6,21 @@
 * Cross-platform [ElectronJs](https://www.electronjs.org/) apps builder 
 * Bootstrap React App tool [Create React App](https://github.com/facebook/create-react-app).
 
+## Build your network
+Migrate your own content and share it with community. Watchit gateway provides simple tools for the generation and fetching of content. 
+Please look at our [gateway](https://github.com/ZorrillosDev/watchit-gateway) readme.
+
 # About us
-Visit our site [watchitapp.site](http://watchitapp.site) and read our post in [dev.to](https://dev.to/geolffreym/watchit-2b88)
+Visit our site [watchitapp.site](http://watchitapp.site) or read our post in [dev.to](https://dev.to/geolffreym/watchit-2b88)
 
 
 [![screenshot](src/media/img/layout/screen.png?raw=true)]()
 
-## Setup
+# Setup
 Please run `npm i` to install dependencies and add `.env` file variables:
 ```js
 BROWSER=none
 ```
-
 
 ## Available Scripts
 
