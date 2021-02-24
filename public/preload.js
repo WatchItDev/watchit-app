@@ -11,8 +11,12 @@ window.Auth = require(`${__dirname}/core/auth`);
 window.Sub = require(`${__dirname}/core/subs`);
 
 // Interface to streamer access from windows object
-const TorrentStreamer = require(`${__dirname}/core/streamer`);
-window.Streamer = new TorrentStreamer();
+const Torrent = require(`${__dirname}/core/torrent`);
+window.Torrent = new Torrent();
+
+const HLS = require(`${__dirname}/core/hls`);
+window.HLS = new HLS();
+
 // Interface to ingest access from windows object
 const IngestDb = require(`${__dirname}/core/ingest`);
 window.Ingest = new IngestDb();

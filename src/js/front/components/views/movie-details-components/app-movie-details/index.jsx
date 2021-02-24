@@ -18,10 +18,10 @@ export default class MovieDetails extends React.PureComponent {
         super(props);
         //Auth object
         this.ingest = window.Ingest;
-        this.streamer = window.Streamer;
         this.movie = new Movie(this.ingest.p);
         this.state = {movies: null};
     }
+
 
     async componentDidMount() {
         // Movie details

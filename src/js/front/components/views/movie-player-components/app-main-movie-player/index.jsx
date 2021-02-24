@@ -6,27 +6,28 @@ import setting from 'js/settings'
 import AppMoviesPlayerShare from 'js/front/components/views/movie-player-components/app-main-movie-player-share'
 import AppMoviesPlayerVideo from 'js/front/components/views/movie-player-components/app-main-movie-player-video'
 import gatewayHelper from "js/resources/helpers/gatewayHelper";
+import resourceHelper from "js/resources/helpers/resourceHelper";
+
 const log = window.require("electron-log");
 
 export default class AppMoviesPlayer extends React.Component {
     constructor(props) {
         super(props);
 
-        this.streamer = window.Streamer
         this.cast = window.Cast
         this.subs = {};
         this.v = null;
 
         //Initial State
         this.state = {
-            canPlay: false, flix: null, url: null,
+            url: null,
             devices: this.players || []
         }
     }
 
 
     shouldComponentUpdate(nextProps, nextState, nextContext) {
-        return nextState.canPlay
+        return nextProps.canPlay || nextState.url;
     }
 
     get players() {
@@ -44,7 +45,8 @@ export default class AppMoviesPlayer extends React.Component {
 
     static get propTypes() {
         return {
-            movie: PropTypes.object.isRequired
+            movie: PropTypes.object.isRequired,
+            canPlay: PropTypes.bool.isRequired
         }
     }
 
@@ -112,7 +114,7 @@ export default class AppMoviesPlayer extends React.Component {
         })
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         //Cast init
         this.cast.createServer(
             // Create asset server
@@ -162,12 +164,10 @@ export default class AppMoviesPlayer extends React.Component {
         // On ready to play
         this.v.video.addEventListener('canplay', () => {
             log.info('PLAYING MOVIE ON SERVER: ' + this.state.url);
-            this.setState({canPlay: true});
             //Handle ready
             if (this.props.onCanPlay) {
                 this.props.onCanPlay(
-                    this.state.url,
-                    this.state.flix
+                    this.state.url
                 );
             }
         })
@@ -218,14 +218,32 @@ export default class AppMoviesPlayer extends React.Component {
             //if (Object.is(keyCode, 83)) this.syncSubs();
         });
 
-        //Start streamer
-        log.info('STREAMING MOVIE: ' + this.props.movie.title.toUpperCase());
-        log.warn(gatewayHelper.dummyParse(this.props.movie));
-        this.streamer.playTorrent(
-            `${gatewayHelper.dummyParse(this.props.movie)}`,
-            this.onReady, this.onProgress, this.onError
-        );
+        // Lets run
+        this.startStreaming();
+    }
 
+    startStreaming() {
+        //Start streamer
+        const uriToStream = `${gatewayHelper.dummyParse(this.props.movie)}`
+        log.info('STREAMING MOVIE: ' + this.props.movie.title.toUpperCase());
+        log.warn(uriToStream);
+        this.streamer.play(uriToStream, {
+            videoRef: this.v,
+            onReady: this.onReady,
+            onProgress: this.onProgress,
+            onError: this.onError
+        });
+    }
+
+    stopStreaming() {
+        this.streamer.stop();
+        this.cast.stop();
+    }
+
+
+    get streamer() {
+        const movie = this.props.movie
+        return resourceHelper[`${movie.type}Streamer`](this.v);
     }
 
     componentDidCatch(error, info) {
@@ -237,25 +255,22 @@ export default class AppMoviesPlayer extends React.Component {
     // destroy player on unmount
     componentWillUnmount() {
         log.warn('STREAMING STOPPED BY USER');
-        this.streamer.stopTorrent();
-        this.cast.stop();
+        this.stopStreaming()
     }
 
-    onReady = (url, flix) => {
+    onReady = (url) => {
         log.info('READY TO PLAY MOVIE: ' + url);
-        this.setState({url: url, flix: flix});
+        this.setState({url: url});
         this.forceUpdate(() => {
             this.props.onReady &&
-            this.props.onReady(url, flix);
+            this.props.onReady(url);
         })
     }
 
-    onProgress = (flix, percent, state) => {
+    onProgress = (...args) => {
         //Handle progress
         if (this.props.onProgress) {
-            this.props.onProgress(
-                parseInt(percent), state, flix
-            );
+            this.props.onProgress(...args);
         }
     }
 
@@ -270,9 +285,9 @@ export default class AppMoviesPlayer extends React.Component {
     }
 
     render() {
-        return <div className={(this.state.canPlay && "left relative full-height full-width") || "invisible"}>
+        return <div className={(this.props.canPlay && "left relative full-height full-width") || "invisible"}>
             <AppMoviesPlayerShare devices={this.state.devices} onChange={this.onSelectDevice}/>
-            <AppMoviesPlayerVideo src={this.state.url} ref={this.getVideoRef}/>
+            {this.state.url && <AppMoviesPlayerVideo src={this.state.url} ref={this.getVideoRef}/>}
         </div>
     }
 }

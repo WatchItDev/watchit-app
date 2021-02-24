@@ -19,7 +19,7 @@ module.exports = class TorrentStreamer {
         this.stopped = false;
     }
 
-    stopTorrent(callback) {
+    stop(cb) {
         /**Stop torrent streaming
          * @param {function} callback
          * */
@@ -41,17 +41,17 @@ module.exports = class TorrentStreamer {
 
         //Stopped
         this.stopped = true;
-        typeof callback === 'function'
-        && callback.call(this);
+        typeof cb === 'function'
+        && cb.call(this);
 
     }
 
-    checkLoadingProgress(flix, callback, progressCallback) {
+    checkLoadingProgress(flix, {onReady, onProgress}) {
         /**Check for progress in torrent download
          * @param {object} flix
          * @param {string} href
-         * @param {function} callback
-         * @param {function} progressCallback
+         * @param {function} onReady
+         * @param {function} onProgress
          * @return void
          * */
         const total = flix.fileSize;
@@ -63,12 +63,12 @@ module.exports = class TorrentStreamer {
         const targetLoadedSize = TorrentConf.MIN_SIZE_LOADED > total ? total : TorrentConf.MIN_SIZE_LOADED;
         const targetLoadedPercent = TorrentConf.MIN_PERCENTAGE_LOADED * total / 100.0;
         const targetLoaded = Math.max(targetLoadedPercent, targetLoadedSize);
-        const percent = downloaded / targetLoaded * 100.0;
+        const percent = (downloaded / targetLoaded * 100.0).toFixed(0);
 
         if ((downloaded > TorrentConf.MIN_SIZE_LOADED || swarm.cachedDownload > TorrentConf.MIN_SIZE_LOADED)
         ) {
-            if (typeof callback === 'function') {
-                callback.call(this, flix.href, flix);
+            if (typeof onReady === 'function') {
+                onReady.call(this, flix.href, flix);
             }
         } else {
             if (downloaded || swarm.piecesGot > 0) {
@@ -77,9 +77,9 @@ module.exports = class TorrentStreamer {
                 state = 'Starting Download';
             }
 
-            typeof progressCallback === 'function' ? progressCallback.call(this, flix, percent, state) : null;
+            typeof onProgress === 'function' ? onProgress.call(this, flix, percent, state) : null;
             this.loadedTimeout = setTimeout(function () {
-                this.checkLoadingProgress(flix, callback, progressCallback)
+                this.checkLoadingProgress(flix, onReady, onProgress)
             }.bind(this), 500);
         }
 
@@ -94,11 +94,12 @@ module.exports = class TorrentStreamer {
         return {peers, seeds, index: i}
     }
 
-    playTorrent(torrent, callback, progressCallback, errorCallback) {
+    play(torrent, {onReady, onProgress, onError}) {
         /** Start playing torrent
          * @param {string} torrent
-         * @param {function} callback
-         * @param {function} progressCallback
+         * @param {function} onReady
+         * @param {function} onProgress
+         * @param {function} onError
          * @return object
          * * */
         //Reset stopped on each new play
@@ -108,7 +109,7 @@ module.exports = class TorrentStreamer {
             timeout: TORRENT_FILE_READ_TIMEOUT
         }, (err, torrent) => {
             if (err || !torrent) {
-                errorCallback(err);
+                onError(err);
                 return;
             }
 
@@ -120,9 +121,7 @@ module.exports = class TorrentStreamer {
 
             // Streamer
             // Create a unique file to cache the video (with a microtimestamp) to prevent read conflicts
-            let tmpFilename = torrent.infoHash;
-            let tmpFile;
-
+            let tmpFile, tmpFilename = torrent.infoHash;
             tmpFilename = tmpFilename.replace(/([^a-zA-Z0-9-_])/g, '_');
             tmpFile = path.join(ROOT_TMP_FOLDER, tmpFilename);
 
@@ -170,7 +169,7 @@ module.exports = class TorrentStreamer {
 
                     //Clear old timeout
                     this.loadedTimeout ? clearTimeout(this.loadedTimeout) : null;
-                    this.checkLoadingProgress(this.flix, callback, progressCallback);
+                    this.checkLoadingProgress(this.flix, {onReady, onProgress});
                 }
             });
 

@@ -22,11 +22,11 @@ export default class AppMoviesPlayerTorrent extends React.PureComponent {
         }
     }
 
-    onProgress = (percent, state) => {
+    onProgress = (_, percent, state) => {
         //Change state
         this.setState({
             state: state,
-            percent: percent
+            percent: parseInt(percent)
         })
     }
 
@@ -81,6 +81,7 @@ export default class AppMoviesPlayerTorrent extends React.PureComponent {
                             movie={this.props.movie}
                             subs={this.props.subs}
                             subSelected={this.props.selectedSub}
+                            canPlay={this.state.canPlay}
                             onProgress={this.onProgress}
                             onReady={this.onReady}
                             onCanPlay={this.onCanPlay}

@@ -5,8 +5,8 @@ import NavBarButton from 'js/front/components/partials/app-nav-bar-button/'
 import cryptHelper from 'js/resources/helpers/cryptHelper'
 import TrailerPop from 'js/front/components/views/movie-details-components/app-movie-details-trailer'
 import util from 'js/resources/helpers/utilHelper'
-import settings from 'js/settings'
 import gatewayHelper from "js/resources/helpers/gatewayHelper";
+import settings from 'js/settings'
 
 export default class AppMovieDetailMenu extends React.PureComponent {
     constructor(props) {

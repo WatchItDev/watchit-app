@@ -3,9 +3,16 @@ import settings from 'js/settings'
 
 export default {
 
+    torrentStreamer: window.Torrent,
+    hlsStreamer: window.HLS,
+
     async torrent(resource) {
-        const resCheck = await window.Streamer.getHealth(resource.index)
-        resource['health'] = utilHelper.calcHealth(resCheck)
+        const streamer = window.Torrent;
+        resource['health'] = 0;
+        if ('index' in resource) {
+            const resCheck = await streamer.getHealth(resource.index)
+            resource['health'] = utilHelper.calcHealth(resCheck)
+        }
         return resource
     },
 
@@ -30,9 +37,9 @@ export default {
         if (type in types && settings.allowedResource.includes(type))
             return types[type](resource)
     },
-    async * match(resources) {
+    * match(resources) {
         for (const resource of resources) {
-            yield await this._switch(resource, resource.type)
+            yield this._switch(resource, resource.type)
         }
     }
 
