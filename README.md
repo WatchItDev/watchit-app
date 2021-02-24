@@ -7,7 +7,7 @@
 * Bootstrap React App tool [Create React App](https://github.com/facebook/create-react-app).
 
 # About us
-Visit our site [watchitapp.site](http://watchitapp.site) and read our post in [Dev.to](https://dev.to/geolffreym/watchit-2b88)
+Visit our site [watchitapp.site](http://watchitapp.site) and read our post in [dev.to](https://dev.to/geolffreym/watchit-2b88)
 
 
 [![screenshot](src/media/img/layout/screen.png?raw=true)]()
