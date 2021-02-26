@@ -7,26 +7,8 @@ const ipfsConf = require('./settings/ipfs');
 const {removeFiles} = require('./utils');
 
 const RETRY_GRACE = 5
-const inDev = Object.is(process.env.ENV, 'dev')
-const resolveIpfsPaths = () => {
-    /***
-     * Check for relative path for go-ipfs in prod env
-     * @type {string}
-     */
-    if (inDev) return require('go-ipfs').path()
-    const runtimeDir = path.dirname(path.resolve(__dirname, '..'))
-    const rootUnpacked = path.join(`${runtimeDir}.unpacked`, 'node_modules', 'go-ipfs')
-    const paths = [
-        path.join(rootUnpacked, 'go-ipfs', 'ipfs'),
-        path.join(rootUnpacked, 'go-ipfs', 'ipfs.exe'),
-    ]
-
-    for (const bin of paths) {
-        if (fs.existsSync(bin)) {
-            return bin
-        }
-    }
-}
+const resolveIpfsPaths = () => require('go-ipfs').path()
+    .replace('app.asar', 'app.asar.unpacked')
 
 const initIpfsNode = async (isInstance, ipc) => {
     try {

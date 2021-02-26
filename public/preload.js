@@ -7,7 +7,7 @@
 
 // Global windows.env vars
 window.env = require(`${__dirname}/core/settings`);
-window.Auth = require(`${__dirname}/core/auth`);
+window.Broker = require(`${__dirname}/core/broker`);
 window.Sub = require(`${__dirname}/core/subs`);
 
 // Interface to streamer access from windows object

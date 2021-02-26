@@ -2,6 +2,7 @@
  * IPFS movies interface
  */
 
+const EventEmitter = require('events')
 const OrbitDB = require('orbit-db');
 const BufferList = require('bl/BufferList')
 const msgpack = require('msgpack-lite');
@@ -15,22 +16,17 @@ const log = require('electron-log')
 module.exports = (ipcMain) => {
     const MAX_RETRIES = 30;
 
-    class Node {
+    class Node extends EventEmitter {
         constructor() {
+            super();
             this.timeout = null;
             this.seedMode = false;
-            this.found = false;
             this.peers = [];
             this.retry = 0;
             this.ready = false;
             this.orbit = null;
             this.node = null;
             this.db = null;
-            this.events = {
-                ready: null, peer: null, loaded: null,
-                loading: null, progress: null, bc: null,
-                error: null, replicated: null
-            }
         }
 
 
@@ -38,20 +34,6 @@ module.exports = (ipcMain) => {
             return 'OrbitWatch'
         }
 
-        on(event, fn) {
-            //Events dict
-            if (event in this.events) {
-                this.events[event] = fn
-            }
-
-            return this;
-        }
-
-        _loopEvent(e, ...params) {
-            if (e in this.events && this.events[e]) {
-                this.events[e](...params)
-            }
-        }
 
         open(address, settings = {}) {
             return this.orbit.open(address, {
@@ -102,20 +84,20 @@ module.exports = (ipcMain) => {
             this.db?.events?.on('peer', (p) => {
                 log.info('Peer:', p);
                 this.peers.push(p); // Add new peer to list
-                this._loopEvent('peer', this.peers.length)
+                this.emit('peer', this.peers.length)
             });
 
             log.info(`Ready in orbit ${key}`);
             ipc.reply('orbit-progress', 'Replicating')
-            this._loopEvent('ready');
+            this.emit('ready');
             this.ready = true;
 
-            this.db?.events?.on('ready', () => this._loopEvent('loaded'))
+            this.db?.events?.on('ready', () => this.emit('loaded'))
             this.db?.events?.on('replicated', (address, t) => {
-                this._loopEvent('replicated', address, t)
+                this.emit('replicated', address, t)
             });
             this.db?.events?.on('replicate.progress', (address, hash, entry, progress, have) => {
-                this._loopEvent('progress', address, hash, entry, progress, have)
+                this.emit('progress', address, hash, entry, progress, have)
             });
 
             res(this.db)
@@ -135,7 +117,7 @@ module.exports = (ipcMain) => {
             log.warn('Party rock');
             await this.close(true);
             ipcMain.emit('party');
-            this._loopEvent('bc', msg)
+            this.emit('bc', msg)
         }
 
 
@@ -188,7 +170,7 @@ module.exports = (ipcMain) => {
                     res(this.node)
                 } catch (e) {
                     log.error('Fail starting node', e.message)
-                    this._loopEvent('error')
+                    this.emit('error')
                     // Any other .. just retry
                     setTimeout(async () => {
                         log.warn('Retrying ' + this.retry);

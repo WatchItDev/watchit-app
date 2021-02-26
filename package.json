@@ -3,7 +3,7 @@
   "author": "ZorrillosDev",
   "version": "0.1.0-beta.2",
   "private": true,
-  "main": "public/electron.js",
+  "main": "./public/main.js",
   "description": "Watch movies everywhere",
   "email": "support@zorrillos.com",
   "homepage": "./",
@@ -58,6 +58,7 @@
     "streaming-iterables": "^5.0.4",
     "subtitle": "^2.0.3",
     "unzip": "^0.1.11",
+    "v8-compile-cache": "^2.2.0",
     "webtorrent-health": "^1.1.2"
   },
   "build": {

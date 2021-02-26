@@ -1,14 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Login from 'js/front/view/index/login-view/index';
-import MovieIndex from 'js/front/view/app/movie-index-view/index';
-import MoviePlayer from 'js/front/view/app/movie-player-view/index';
-import DragBar from 'js/front/view/global/drag-bar/index'
+import Login from 'src/core/app/layout/login-view/index';
+import MovieIndex from 'src/core/app/layout/index-view';
+import MoviePlayer from 'src/core/app/layout/player-view';
+import DragBar from 'src/core/app/components/app-drag-bar/index'
 import * as serviceWorker from './serviceWorker';
 import {createBrowserHistory} from 'history';
 import {HashRouter, Switch, Route, Redirect} from "react-router-dom";
 import './index.sass';
 import 'plyr/dist/plyr.css';
+import 'v8-compile-cache'
+const { remote } = require('electron')
 
 const hist = createBrowserHistory({
 	basename: "/", // The base URL of the app (see below)
@@ -27,7 +29,7 @@ ReactDOM.render(
 	<HashRouter history={hist}>
 		<Switch>
 			<Route name="login" exact path="/"
-				   render={(n) => !window.Auth.isLogged()
+				   render={(n) => !window.Broker.isLogged()
 					   ? DragBarHOC(Login, n) : (<Redirect to="/app/movies"/>)}/>
 			<Route name="movies" exact path="/app/movies"
 				   render={(n) => (DragBarHOC(MovieIndex, n))}/>
