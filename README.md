@@ -1,6 +1,6 @@
 [![Gitter](https://badges.gitter.im/watchit-app/community.svg)](https://gitter.im/watchit-app/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
-# Getting started
+# Watchit App
 * Decentralized [OrbitDB](https://orbitdb.org/)
 * Golang [IPFS](https://github.com/ipfs/go-ipfs) implementation 
 * Cross-platform [ElectronJs](https://www.electronjs.org/) apps builder 
@@ -14,7 +14,7 @@
 Migrate your own content and share it with community. Watchit gateway provides simple tools for the generation and fetching of content. 
 Please look at our [gateway](https://github.com/ZorrillosDev/watchit-gateway) readme.
 
-# More info
+##  More info
 * Visit our site [watchitapp.site](http://watchitapp.site).
 * Read our post in [dev.to](https://dev.to/geolffreym/watchit-2b88).
 * Check out [the roadmap](https://github.com/ZorrillosDev/watchit-desktop/projects/1) to future features.
@@ -62,10 +62,5 @@ Instead, it will copy all the configuration files and the transitive dependencie
 
 You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-## Packaging
-
-### `npm run package-{os}`
-
-Build app to choosen OS. Depending on packaging OS will need pack in respective OS.
 <details/>
 
