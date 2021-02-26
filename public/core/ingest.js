@@ -26,8 +26,7 @@ const IPC_LISTENERS = [
     'node-db-ready',
     'node-db-loaded',
     'node-progress',
-    'node-replicated',
-    'node-partial-progress'
+    'node-replicated'
 ]
 
 module.exports = class Ingest extends EventEmitter {
@@ -85,26 +84,18 @@ module.exports = class Ingest extends EventEmitter {
         ipcRenderer.on('node-peer', (e, p) => {
             log.info('New peer', p);
             Auth.addToStorage({'peers': p});
-            this._loopEvent('peer', p)
+            this.emit('peer', p)
 
         })
     }
 
-    listenForPartialProgress() {
-        /***
-         * Partial replication progress %
-         */
-        ipcRenderer.on('node-partial-progress', (e, c, p) => {
-            this._loopEvent('progress', c, p)
-        })
-    }
 
     listenForPartyRock() {
         /***
          * Cannot connect or any invalid key provided
          */
         ipcRenderer.on('node-chaos', (e, m) => {
-            this._loopEvent('bc', m)
+            this.emit('bc', m)
         })
     }
 
@@ -181,7 +172,6 @@ module.exports = class Ingest extends EventEmitter {
         // Clean old listeners first
         this.stopIpcEvents();
         this.emitStart();
-        this.listenForPartialProgress();
         this.listenForPartyRock();
         this.listenForNewPeer();
         this.listenForError();

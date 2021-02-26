@@ -23,7 +23,7 @@ module.exports = class Node extends EventEmitter {
 
 
     get [Symbol.toStringTag]() {
-        return 'OrbitWatch'
+        return 'Node'
     }
 
 
@@ -121,8 +121,8 @@ module.exports = class Node extends EventEmitter {
         // Serve as provider too :)
         this.orbit = await this.instanceOB();
         this.emit('node-step', 'Connecting')
-        await findProv(this.node, rawAddress);
         await this.run(address, res);
+        await findProv(this.node, rawAddress);
 
     }
 
@@ -153,7 +153,7 @@ module.exports = class Node extends EventEmitter {
                 this.node = this.node || await getIsInstance();
                 res(this.node)
             } catch (e) {
-                log.error('Fail starting node', e.message)
+                log.error('Fail starting node')
                 this.emit('node-error')
                 // Any other .. just retry
                 setTimeout(async () => {

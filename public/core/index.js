@@ -40,7 +40,7 @@ module.exports = (ipcMain) => {
         let storage = broker.readFromStorage();
         let slice = ('chunk' in storage && storage.chunk) || 0;
         const hasValidCache = orbit.hasValidCache
-        if (!hasValidCache) e.reply('node-partial-progress', 'Starting');
+        if (!hasValidCache) e.reply('node-step', 'Starting');
 
         // Check if hash exists in log
         let hashContent = await orbit.get(hash)
@@ -110,8 +110,8 @@ module.exports = (ipcMain) => {
         orbit.on('node-error', (m) => e.reply('node-error', m))
             .on('node-peer', (peerSize) => e.reply('node-peer', peerSize))
             .on('node-chaos', (m) => {
-                ipcMain.emit('party');
                 e.reply('node-chaos', m)
+                ipcMain.emit('party');
             })
 
     };
