@@ -2,10 +2,10 @@ import React from 'react'
 import AppMoviesPlayerTorrent from "components/app-main-movie-player-torrent";
 import MainLoader from 'components/util-main-loader'
 import BtnClose from 'components/util-btn-close'
-import Movie from 'core/resources/data/movies'
-import cryptHelper from 'core/resources/helpers/cryptHelper'
-import utilHelper from 'core/resources/helpers/utilHelper'
-import setting from 'core/settings'
+import Movie from 'resource/data/movies'
+import cryptHelper from 'resource/helpers/cryptHelper'
+import utilHelper from 'resource/helpers/utilHelper'
+import setting from 'settings'
 
 // Access to main process bridge prop
 const log = window.require("electron-log");
