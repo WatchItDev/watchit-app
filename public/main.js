@@ -96,9 +96,10 @@ const removeCacheDirs = () => {
             transparent: false,
             webPreferences: {
                 spellCheck: false,
-                enableRemoteModule: true,
+                enableRemoteModule: false,
                 nodeIntegration: true,
-                webSecurity: false
+                webSecurity: false,
+                preload: __dirname + '/preload.js'
             }
         }
     });
@@ -251,7 +252,7 @@ app.on('before-quit', () => {
 app.on('will-quit', () => {
     log.warn('Will quit');
     app.releaseSingleInstanceLock()
-    ipcMain.emit('orbit-close')
+    ipcMain.emit('node-close')
 })
 
 app.on('ready', () => {

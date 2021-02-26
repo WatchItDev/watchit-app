@@ -1,7 +1,7 @@
 import React from 'react'
 import Particles from 'react-particles-js';
 import config from './particleConfig'
-import Logo from 'core/app/components/util-header-logo'
+import Logo from 'components/util-header-logo'
 
 export default class AppLoaderBackground extends React.Component {
 

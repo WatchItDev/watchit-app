@@ -1,21 +1,24 @@
 import React from 'react'
 
-import AppMovies from 'src/core/app/pages/app-main-movies-list/'
-import AppMovieDetails from 'core/app/pages/app-movie-details/'
+import AppMovies from 'pages/app-main-movies-list/'
+import AppMovieDetails from 'pages/app-movie-details/'
 
-import AppNav from 'src/core/app/components/app-main-movies-nav-bar/'
-import AppSearch from 'src/core/app/components/app-main-movies-search/'
-import AppLoader from 'core/app/components/app-main-movie-player-loader'
-import AppUpdater from 'core/app/components/app-main-movies-updater'
-import StatsValue from "core/app/components/util-stats";
-import storageHelper from 'core/resources/helpers/storageHelper';
-import BoxLoader from 'core/app/components/util-box-loader'
-import Movie from 'core/resources/data/movies'
-import setting from 'core/settings'
+import AppNav from 'components/app-main-movies-nav-bar/'
+import AppSearch from 'components/app-main-movies-search/'
+import AppLoader from 'components/app-main-movie-player-loader'
+import AppUpdater from 'components/app-main-movies-updater'
+import StatsValue from "components/util-stats";
+import storageHelper from 'resource/helpers/storageHelper';
+import BoxLoader from 'components/util-box-loader'
+import Movie from 'resource/data/movies'
+import setting from 'settings'
 
+// Access to main process bridge prop
 const log = window.require("electron-log");
-
+const broker = window.bridge.Broker
+const ingest = window.bridge.Ingest
 const DEFAULT_INIT_LOAD = 100;
+
 //Login layout class
 export default class MovieIndex extends React.Component {
     constructor(props) {
@@ -28,9 +31,7 @@ export default class MovieIndex extends React.Component {
             scrolling: false, finishLoad: false, showDetailsFor: false
         };
 
-        this.ingest = window.Ingest;
-        this.movie = new Movie(this.ingest.p);
-
+        this.movie = new Movie(ingest.p);
         //Max movies for initial request
         this.limit = setting.defaults.limit;
         this.sort = {
@@ -42,7 +43,7 @@ export default class MovieIndex extends React.Component {
 
     _index(i) {
         // Else try get from key file and save
-        let _storage = window.Broker.readFromStorage() || {}
+        let _storage = broker.readFromStorage() || {}
         return (i in _storage && _storage[i]) || 0
     }
 
@@ -62,17 +63,17 @@ export default class MovieIndex extends React.Component {
     }
 
     componentWillUnmount() {
-        this.ingest.stopEvents();
+        ingest.stopEvents();
     }
 
     componentDidMount() {
         // Start ingest if not
         if (this.cached) {
             log.info('Running Cache');
-            this.ingest.stopEvents();
-            this.ingest.stopIpcEvents();
-            this.ingest.listenForNewPeer();
-            this.ingest.on('bc', (m) => {
+            ingest.stopEvents();
+            ingest.stopIpcEvents();
+            ingest.listenForNewPeer();
+            ingest.on('bc', (m) => {
                 this.setState({percent: 0, state: m, ready: false});
                 setTimeout(() => window.location.href = '#/', 3000)
             }).startSeed()
@@ -106,7 +107,7 @@ export default class MovieIndex extends React.Component {
 
     runIngest() {
         // Init ingest
-        this.ingest.stopEvents().on('progress', (state) => {
+        ingest.stopEvents().on('progress', (state) => {
             this.setState({state: state, percent: 0})
         }).on('start', async () => {
             console.clear();
@@ -268,7 +269,7 @@ export default class MovieIndex extends React.Component {
     signOut = (event) => {
         event.preventDefault();
         localStorage.clear();
-        this.ingest.flush();
+        ingest.flush();
         window.location.href = '#/'
     }
 

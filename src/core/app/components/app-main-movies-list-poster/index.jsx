@@ -1,6 +1,6 @@
 import React from 'react'
-import BoxImage from 'core/app/components/app-image'
-import PulseLoader from 'core/app/components/util-pulse-loader'
+import BoxImage from 'components/app-image'
+import PulseLoader from 'components/util-pulse-loader'
 
 export default class AppMoviesListPoster extends React.Component {
 	

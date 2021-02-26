@@ -1,14 +1,14 @@
 import React from 'react'
-import AppMainTopInput from 'core/app/components/app-main-movies-top-inputs'
-import AppSearch from 'core/app/components/app-main-movies-top-search-result'
+import AppMainTopInput from 'components/app-main-movies-top-inputs'
+import AppSearch from 'components/app-main-movies-top-search-result'
 import utilHelper from "core/resources/helpers/utilHelper";
 import PropTypes from "prop-types";
+
 
 export default class AppMainTopInputs extends React.PureComponent {
     constructor(props) {
         super(props);
 
-        this.ingest = window.Ingest;
         this.search_timeout = null;
         this.searchRef = null;
 

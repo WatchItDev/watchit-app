@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import PulseLoader from 'core/app/components/util-pulse-loader'
+import PulseLoader from 'components/util-pulse-loader'
 
 export default class BoxImage extends React.PureComponent {
 

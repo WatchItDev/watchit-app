@@ -1,16 +1,18 @@
 import utilHelper from "./utilHelper";
-import settings from 'src/core/settings'
+import settings from 'settings'
+
+const torrent = window.bridge.Torrent
+const hls = window.bridge.Hls
 
 export default {
 
-    torrentStreamer: window.Torrent,
-    hlsStreamer: window.HLS,
+    torrentStreamer: torrent,
+    hlsStreamer: hls,
 
     async torrent(resource) {
-        const streamer = window.Torrent;
         resource['health'] = 0;
         if ('index' in resource) {
-            const resCheck = await streamer.getHealth(resource.index)
+            const resCheck = await torrent.getHealth(resource.index)
             resource['health'] = utilHelper.calcHealth(resCheck)
         }
         return resource

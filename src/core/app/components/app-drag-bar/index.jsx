@@ -1,5 +1,5 @@
 import React from 'react';
-import Logo from 'core/app/components/util-header-logo'
+import Logo from 'components/util-header-logo'
 
 const electron = window.require('electron');
 const ipcRenderer = electron.ipcRenderer;

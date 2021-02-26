@@ -1,6 +1,6 @@
 import React from 'react'
 import uid from "shortid";
-import AppMoviesListRow from 'src/core/app/components/app-main-movies-list-row/'
+import AppMoviesListRow from 'components/app-main-movies-list-row/'
 import InfiniteLoader from "react-window-infinite-loader";
 import {FixedSizeList as List} from "react-window";
 import setting from 'core/settings'

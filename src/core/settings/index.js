@@ -1,7 +1,7 @@
 /**
  * Handle global settings
  * **/
-import util from 'src/core/resources/helpers/utilHelper'
+import util from 'resource/helpers/utilHelper'
 
 const Settings = {};
 let {width, height, chunkSize, chunkHeight} = util.calcScreenSize()

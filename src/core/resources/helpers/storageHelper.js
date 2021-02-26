@@ -2,7 +2,7 @@
  * Created by gmena on 05-03-17.
  */
 //Storage manifest
-import manifest from 'src/core/settings/storage'
+import manifest from 'settings/storage'
 
 const Storage = {
     __toObj: {},

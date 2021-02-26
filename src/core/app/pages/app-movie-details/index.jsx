@@ -1,24 +1,25 @@
 import React from 'react'
 import all from 'it-all'
-import BoxLoader from 'core/app/components/util-box-loader'
-import MainHeader from 'core/app/components/util-header'
-import BoxImage from 'core/app/components/app-image'
-import AppMovieDetailInfo from 'core/app/components/app-movie-details-info'
-import AppMovieDetailMenu from 'core/app/components/app-movie-details-menu'
-import FlowText from 'core/app/components/util-flow-text'
-import CustomScrollbars from 'core/app/components/util-scroller';
-import ListCommaSplit from 'core/app/components/util-list-comma-split'
+import BoxLoader from 'components/util-box-loader'
+import MainHeader from 'components/util-header'
+import BoxImage from 'components/app-image'
+import AppMovieDetailInfo from 'components/app-movie-details-info'
+import AppMovieDetailMenu from 'components/app-movie-details-menu'
+import FlowText from 'components/util-flow-text'
+import CustomScrollbars from 'components/util-scroller';
+import ListCommaSplit from 'components/util-list-comma-split'
 import Movie from 'core/resources/data/movies'
 import gatewayHelper from 'core/resources/helpers/gatewayHelper'
 import resourceHelper from "core/resources/helpers/resourceHelper";
+// Access to main process bridge prop
+const ingest = window.bridge.Ingest
 
 //Login layout class
 export default class MovieDetails extends React.PureComponent {
     constructor(props) {
         super(props);
         //Auth object
-        this.ingest = window.Ingest;
-        this.movie = new Movie(this.ingest.p);
+        this.movie = new Movie(ingest);
         this.state = {movies: null};
     }
 

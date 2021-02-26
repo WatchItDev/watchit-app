@@ -1,7 +1,7 @@
 import React from 'react'
-import AppMainResultBox from 'src/core/app/components/app-main-movies-top-search-result-box/'
-import PointsLoader from 'core/app/components/util-points-loader'
-import CustomScrollbars from 'core/app/components/util-scroller';
+import AppMainResultBox from 'components/app-main-movies-top-search-result-box/'
+import PointsLoader from 'components/util-points-loader'
+import CustomScrollbars from 'components/util-scroller';
 
 export default class AppMainSearchResult extends React.Component {
 

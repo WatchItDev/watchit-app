@@ -5,22 +5,18 @@
  * https://www.electronjs.org/docs/api/browser-window
  */
 
-// Global windows.env vars
-window.env = require(`${__dirname}/core/settings`);
-window.Broker = require(`${__dirname}/core/broker`);
-window.Sub = require(`${__dirname}/core/subs`);
+// Bridge
+const Broker = require(`./core/broker`);
+const DLNA = require(`./core/dlna`);
+const HLS = require(`./core/hls`);
+const Torrent = require(`./core/torrent`);
+const Ingest = require(`./core/ingest`);
 
-// Interface to streamer access from windows object
-const Torrent = require(`${__dirname}/core/torrent`);
-window.Torrent = new Torrent();
-
-const HLS = require(`${__dirname}/core/hls`);
-window.HLS = new HLS();
-
-// Interface to ingest access from windows object
-const IngestDb = require(`${__dirname}/core/ingest`);
-window.Ingest = new IngestDb();
-// Interface to cast DNLA access from windows object
-const CastDNLA = require(`${__dirname}/core/dlna`)
-window.Cast = new CastDNLA();
+window.bridge = {
+    Broker: Broker,
+    DLNA: new DLNA(),
+    Torrent: new Torrent(),
+    HLA: new HLS(),
+    Ingest: new Ingest()
+}
 

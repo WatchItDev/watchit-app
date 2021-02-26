@@ -1,9 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import uid from "shortid";
-import BoxAlert from 'core/app/components/app-alerts'
-import BoxInput from 'core/app/components/app-inputs'
-import BoxButton from 'core/app/components/app-buttons'
+import BoxAlert from 'components/app-alerts'
+import BoxInput from 'components/app-inputs'
+import BoxButton from 'components/app-buttons'
 
 export default class FormBox extends React.Component {
 

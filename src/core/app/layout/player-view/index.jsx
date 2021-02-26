@@ -1,21 +1,23 @@
 import React from 'react'
-import AppMoviesPlayerTorrent from "core/app/components/app-main-movie-player-torrent";
-import MainLoader from 'core/app/components/util-main-loader'
-import BtnClose from 'core/app/components/util-btn-close'
+import AppMoviesPlayerTorrent from "components/app-main-movie-player-torrent";
+import MainLoader from 'components/util-main-loader'
+import BtnClose from 'components/util-btn-close'
 import Movie from 'core/resources/data/movies'
 import cryptHelper from 'core/resources/helpers/cryptHelper'
 import utilHelper from 'core/resources/helpers/utilHelper'
 import setting from 'core/settings'
+
+// Access to main process bridge prop
+const log = window.require("electron-log");
+const ingest = window.bridge.Ingest
 
 //Movie player layout class
 export default class MoviePlayer extends React.Component {
     constructor(props) {
         super(props);
 
-        //Movie
-        this.ingest = window.Ingest;
-        this.movie = new Movie(this.ingest.p);
-
+        //Movie init local db
+        this.movie = new Movie(ingest.p);
         //Decode string and pass to json object
         this.state = {
             stopped: false,
@@ -44,8 +46,7 @@ export default class MoviePlayer extends React.Component {
             });
 
         }).catch((e) => {
-            console.log(e);
-            console.log('Error in movie get')
+            log.error('Error in movie get', e)
         })
     }
 

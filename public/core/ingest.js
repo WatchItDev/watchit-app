@@ -18,15 +18,15 @@ const MOVIES_SCHEMA = {
 }
 
 const IPC_LISTENERS = [
-    'orbit-partial-progress',
-    'party-rock',
-    'orbit-peer',
-    'orbit-error',
-    'orbit-ready',
-    'orbit-db-ready',
-    'orbit-db-loaded',
-    'orbit-progress',
-    'orbit-replicated'
+    'node-chaos',
+    'node-peer',
+    'node-error',
+    'node-ready',
+    'node-db-ready',
+    'node-db-loaded',
+    'node-progress',
+    'node-replicated',
+    'node-partial-progress'
 ]
 
 module.exports = class Ingest {
@@ -61,7 +61,7 @@ module.exports = class Ingest {
          * Kill all this shit XD
          * */
         ipcRenderer.send(
-            'orbit-flush'
+            'node-flush'
         );
     }
 
@@ -83,7 +83,7 @@ module.exports = class Ingest {
          * Run app as seed mode
          */
         log.info('Run Seed');
-        ipcRenderer.send('orbit-seed')
+        ipcRenderer.send('node-close')
         return this;
     }
 
@@ -91,7 +91,7 @@ module.exports = class Ingest {
         /***
          * Init signal to start node running
          */
-        ipcRenderer.send('start-orbit');
+        ipcRenderer.send('node-start');
         return this;
     }
 
@@ -109,7 +109,7 @@ module.exports = class Ingest {
         /***
          * New peers interception and caching for stats
          */
-        ipcRenderer.on('orbit-peer', (e, p) => {
+        ipcRenderer.on('node-peer', (e, p) => {
             log.info('New peer', p);
             Auth.addToStorage({'peers': p});
             this._loopEvent('peer', p)
@@ -121,7 +121,7 @@ module.exports = class Ingest {
         /***
          * Partial replication progress %
          */
-        ipcRenderer.on('orbit-partial-progress', (e, c, p) => {
+        ipcRenderer.on('node-partial-progress', (e, c, p) => {
             this._loopEvent('progress', c, p)
         })
     }
@@ -130,7 +130,7 @@ module.exports = class Ingest {
         /***
          * Cannot connect or any invalid key provided
          */
-        ipcRenderer.on('party-rock', (e, m) => {
+        ipcRenderer.on('node-chaos', (e, m) => {
             this._loopEvent('bc', m)
         })
     }
@@ -139,7 +139,7 @@ module.exports = class Ingest {
         /***
          * Any error in node
          */
-        ipcRenderer.on('party-rock', (e, m) => {
+        ipcRenderer.on('node-error', (e, m) => {
             this._loopEvent('bc', m)
 
         })
@@ -150,7 +150,7 @@ module.exports = class Ingest {
          * Trigger event before node get ready tu run
          * could be used to clear storage or data previous to run app
          */
-        ipcRenderer.on('orbit-ready', (e, c) => {
+        ipcRenderer.on('node-ready', (e, c) => {
             this._loopEvent('start', c)
 
         })
@@ -161,7 +161,7 @@ module.exports = class Ingest {
          * Trigger event when the node is ready to launch app
          * this event goes after ready event
          */
-        ipcRenderer.on('orbit-db-ready', (e, c) => {
+        ipcRenderer.on('node-db-ready', (e, c) => {
             this._loopEvent('ready', c)
 
         })
@@ -171,7 +171,7 @@ module.exports = class Ingest {
         /***
          * Trigger event when all db are synced
          */
-        ipcRenderer.on('orbit-db-loaded', (e, c) => {
+        ipcRenderer.on('node-db-loaded', (e, c) => {
             this._loopEvent('done', c)
 
         })
@@ -181,7 +181,7 @@ module.exports = class Ingest {
         /***
          * Replicate process event
          */
-        ipcRenderer.on('orbit-progress', (e, total) => {
+        ipcRenderer.on('node-progress', (e, total) => {
             this._loopEvent('progress', total)
 
         })
@@ -191,7 +191,7 @@ module.exports = class Ingest {
         /***
          * Trigger event when new data its replicated
          */
-        ipcRenderer.on('orbit-replicated', async (e, collection) => {
+        ipcRenderer.on('node-replicated', async (e, collection) => {
             log.info('LOADING FROM NETWORK');
             log.info(collection[collection.length - 1]['_id']);
             log.info(collection[0]['_id']);

@@ -1,22 +1,23 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Login from 'src/core/app/layout/login-view/index';
-import MovieIndex from 'src/core/app/layout/index-view';
-import MoviePlayer from 'src/core/app/layout/player-view';
-import DragBar from 'src/core/app/components/app-drag-bar/index'
+import Login from 'layout/login-view/index';
+import MovieIndex from 'layout/index-view';
+import MoviePlayer from 'layout/player-view';
+import DragBar from 'components/app-drag-bar/index'
+
 import * as serviceWorker from './serviceWorker';
 import {createBrowserHistory} from 'history';
 import {HashRouter, Switch, Route, Redirect} from "react-router-dom";
 import './index.sass';
 import 'plyr/dist/plyr.css';
-import 'v8-compile-cache'
-const { remote } = require('electron')
 
+const broker = window.bridge.Broker
 const hist = createBrowserHistory({
 	basename: "/", // The base URL of the app (see below)
 	forceRefresh: false, // Set true to force full page refreshes
 	hashType: 'slash'
 });
+
 
 //Require logged
 function DragBarHOC(Component, navigate) {
@@ -29,7 +30,7 @@ ReactDOM.render(
 	<HashRouter history={hist}>
 		<Switch>
 			<Route name="login" exact path="/"
-				   render={(n) => !window.Broker.isLogged()
+				   render={(n) => !broker.isLogged()
 					   ? DragBarHOC(Login, n) : (<Redirect to="/app/movies"/>)}/>
 			<Route name="movies" exact path="/app/movies"
 				   render={(n) => (DragBarHOC(MovieIndex, n))}/>

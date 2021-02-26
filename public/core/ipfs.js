@@ -14,7 +14,7 @@ const initIpfsNode = async (isInstance, ipc) => {
     try {
         // Check if running time dir exists
         log.warn('Starting node');
-        ipc.reply('orbit-progress', 'Booting')
+        ipc.reply('node-progress', 'Booting')
 
         await isInstance.init();
         await isInstance.start();

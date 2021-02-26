@@ -1,11 +1,10 @@
 import React from 'react'
 // import PropTypes from 'prop-types'
-import BoxLoader from 'core/app/components/util-box-loader'
+import BoxLoader from 'components/util-box-loader'
 import ReactPlayer from 'react-player';
 import ReactModal from 'react-modal';
 
 ReactModal.setAppElement('#root');
-window.YTConfig = {host: 'https://www.youtube.com'}
 export default class AppMovieDetailTrailer extends React.PureComponent {
 	
 	constructor(props) {

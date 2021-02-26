@@ -1,5 +1,5 @@
 import React from 'react'
-import BoxImage from 'core/app/components/app-image'
+import BoxImage from 'components/app-image'
 
 export default class AppMainSearchResultBoxItem extends React.PureComponent {
 

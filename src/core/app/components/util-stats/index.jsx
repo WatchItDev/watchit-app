@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import StatsValue from "core/app/components/util-stats-value";
+import StatsValue from "components/util-stats-value";
 
 export default class Stats extends React.PureComponent {
 	constructor(props) {

@@ -1,5 +1,5 @@
 import React from 'react'
-import NavBarMenu from 'src/core/app/components/app-nav-bar-menu/'
+import NavBarMenu from 'components/app-nav-bar-menu/'
 
 export default class AppMoviesPlayerShare extends React.Component {
 	
