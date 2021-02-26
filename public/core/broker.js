@@ -3,7 +3,7 @@ const path = require('path');
 const orbit = require('orbit-db')
 const {ROOT_DB_DIR, ROOT_STORE} = require('./settings')
 
-module.exports = class Auth {
+module.exports = class Broker {
 
     static get db() {
         return ROOT_DB_DIR
@@ -15,7 +15,7 @@ module.exports = class Auth {
     }
 
     static get existKey() {
-        return fs.existsSync(Auth.keyFile)
+        return fs.existsSync(Broker.keyFile)
     }
 
     static get keyFile() {
@@ -37,13 +37,13 @@ module.exports = class Auth {
     }
 
     static isLogged() {
-        return !!Auth.read();
+        return !!Broker.read();
     }
 
     static readFromStorage() {
         try {
             return JSON.parse(
-                Auth.read()
+                Broker.read()
             );
         } catch (e) {
             console.log('Invalid JSON');
@@ -53,40 +53,40 @@ module.exports = class Auth {
     }
 
     static removeFromStorage(index) {
-        let currentData = Auth.readFromStorage()
+        let currentData = Broker.readFromStorage()
         if (currentData && index in currentData) {
             delete currentData[index]
-            Auth.write(currentData)
+            Broker.write(currentData)
         }
     }
 
     static addToStorage(data = {}) {
-        let currentData = Auth.readFromStorage()
+        let currentData = Broker.readFromStorage()
         let extendedData = Object.assign({}, currentData, data)
-        Auth.write(extendedData)
+        Broker.write(extendedData)
     }
 
     static getPubKey() {
-        let fileCollection = Auth.readFromStorage()
+        let fileCollection = Broker.readFromStorage()
         return fileCollection && 'public' in fileCollection
             ? fileCollection.public.trim() : null
     }
 
 
     static getIngestKey() {
-        let fileCollection = Auth.readFromStorage()
+        let fileCollection = Broker.readFromStorage()
         return fileCollection && 'ingest' in fileCollection
             ? fileCollection.ingest.trim() : null
 
     }
 
-    static write(data, file = Auth.keyFile) {
+    static write(data, file = Broker.keyFile) {
         fs.writeFileSync(file, JSON.stringify(data));
     }
 
     static read() {
         return this.existKey ?
-            fs.readFileSync(Auth.keyFile) : null
+            fs.readFileSync(Broker.keyFile) : null
     }
 };
 

@@ -23,8 +23,9 @@ let win, loadingScreen,
 process.env.appPath = appPath;
 const {ROOT_TMP_FOLDER} = require(`${__dirname}/core/settings/`);
 const {removeFiles} = require(`${__dirname}/core/utils`);
-const Orbit = require(`${__dirname}/core/orbit`);
-const Auth = require(`${__dirname}/core/auth`);
+const broker = require(`${__dirname}/core/auth`);
+const node = require(`${__dirname}/core`);
+
 const gotTheLock = app.requestSingleInstanceLock();
 if (!gotTheLock) return app.quit();
 
@@ -43,8 +44,8 @@ const removeCacheDirs = () => {
         await removeFiles(path.join(appPath, file))
     });
 }, wipeInvalidSync = () => {
-    Auth.removeFromStorage('peers')
-    let cache = Auth.readFromStorage();
+    broker.removeFromStorage('peers')
+    let cache = broker.readFromStorage();
     if (cache && !('tmp' in cache)) {
         removeCacheDirs()
     }
@@ -253,7 +254,7 @@ app.on('will-quit', () => {
 })
 
 app.on('ready', () => {
-    if (!Auth.existKey)
+    if (!broker.existKey)
         removeCacheDirs();
 })
 
@@ -276,15 +277,12 @@ app.whenReady().then(() => {
     createMain(inDev);
 
     //Main tools
-    Orbit(ipcMain);
-
-    // Window event
-
+    node(ipcMain);
 
     ipcMain.on('close', () => app.quit())
     ipcMain.on('party', async () => {
-        if (Auth.existKey)
-            await removeFiles(Auth.keyFile)
+        if (broker.existKey)
+            await removeFiles(broker.keyFile)
         removeCacheDirs();
     })
 

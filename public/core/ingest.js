@@ -1,4 +1,4 @@
-const Auth = require('./auth');
+const Auth = require('./broker');
 const ipcRenderer = require('electron').ipcRenderer;
 const LinvoDB = require("linvodb3");
 const log = require('electron-log')

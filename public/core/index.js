@@ -6,16 +6,16 @@ const OrbitDB = require('orbit-db');
 const BufferList = require('bl/BufferList')
 const msgpack = require('msgpack-lite');
 const {ROOT_ORBIT_DIR} = require('./settings')
-const Auth = require('./auth');
 const getIsInstance = require('./ipfs')
 const {findProv} = require('./provs')
+const broker = require('./broker');
 const log = require('electron-log')
 
 
 module.exports = (ipcMain) => {
     const MAX_RETRIES = 30;
 
-    class Orbit {
+    class Node {
         constructor() {
             this.timeout = null;
             this.seedMode = false;
@@ -66,13 +66,13 @@ module.exports = (ipcMain) => {
         }
 
         get ingestKey() {
-            return Auth.sanitizedKey(
+            return broker.sanitizedKey(
                 this.rawIngestKey
             )
         }
 
         get rawIngestKey() {
-            return Auth.getIngestKey()
+            return broker.getIngestKey()
         }
 
         get hasValidCache() {
@@ -81,7 +81,7 @@ module.exports = (ipcMain) => {
         }
 
         get cache() {
-            let cache = Auth.readFromStorage();
+            let cache = broker.readFromStorage();
             let validCache = cache && 'tmp' in cache;
             return [validCache, cache]
         }
@@ -218,7 +218,7 @@ module.exports = (ipcMain) => {
                     await this.orbit.disconnect()
                     if (!this.hasValidCache || forceDrop) {
                         for (const k of ['total', 'limit'])
-                            Auth.removeFromStorage(k)
+                            broker.removeFromStorage(k)
                     }
                 }
 
@@ -252,21 +252,21 @@ module.exports = (ipcMain) => {
 
         set queue(hash) {
             log.info('Storing hash in queue');
-            let cache = Auth.readFromStorage();
+            let cache = broker.readFromStorage();
             let cacheList = cache.hash ?? []
             // Deduplication with sets
             let newHash = [...new Set([...cacheList, ...[hash]])]
-            Auth.addToStorage({hash: newHash})
+            broker.addToStorage({hash: newHash})
         }
 
         get queue() {
-            let cache = Auth.readFromStorage();
+            let cache = broker.readFromStorage();
             return cache?.hash ?? []
         }
 
     }
 
-    const orbit = new Orbit();
+    const orbit = new Node();
     let asyncLock = false;
     let queueInterval = null;
 
@@ -291,7 +291,7 @@ module.exports = (ipcMain) => {
 
     }, partialSave = async (e, hash) => {
         log.info('Going take chunks');
-        let storage = Auth.readFromStorage();
+        let storage = broker.readFromStorage();
         let slice = ('chunk' in storage && storage.chunk) || 0;
         const hasValidCache = orbit.hasValidCache
         if (!hasValidCache) e.reply('orbit-partial-progress', 'Starting');
@@ -322,8 +322,8 @@ module.exports = (ipcMain) => {
 
             e.reply('orbit-replicated', cleanedContent, sliced, tmp.toFixed(1));
             if (!hasValidCache) e.reply('orbit-db-ready'); // Ready to show!!!
-            Auth.addToStorage({'chunk': sliced, 'tmp': tmp, 'lastHash': lastHash, 'total': total});
-            if (sliced >= total) Auth.addToStorage({'cached': true, 'hash': [], 'lastHash': null})
+            broker.addToStorage({'chunk': sliced, 'tmp': tmp, 'lastHash': lastHash, 'total': total});
+            if (sliced >= total) broker.addToStorage({'cached': true, 'hash': [], 'lastHash': null})
             asyncLock = false; // Avoid overhead release lock
             log.info('Release Lock')
         }
