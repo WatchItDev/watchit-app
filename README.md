@@ -6,17 +6,22 @@
 * Cross-platform [ElectronJs](https://www.electronjs.org/) apps builder 
 * Bootstrap React App tool [Create React App](https://github.com/facebook/create-react-app).
 
+
+[![screenshot](src/media/img/layout/screen.png?raw=true)]()
+
+
 ## Build your network
 Migrate your own content and share it with community. Watchit gateway provides simple tools for the generation and fetching of content. 
 Please look at our [gateway](https://github.com/ZorrillosDev/watchit-gateway) readme.
 
-# About us
-Visit our site [watchitapp.site](http://watchitapp.site) or read our post in [dev.to](https://dev.to/geolffreym/watchit-2b88)
+# More info
+* Visit our site [watchitapp.site](http://watchitapp.site).
+* Read our post in [dev.to](https://dev.to/geolffreym/watchit-2b88).
+* Check out [the roadmap](https://github.com/ZorrillosDev/watchit-desktop/projects/1) to future features.
 
+<details>
+  <summary>Usage for developers</summary>
 
-[![screenshot](src/media/img/layout/screen.png?raw=true)]()
-
-# Setup
 Please run `npm i` to install dependencies and add `.env` file variables:
 ```js
 BROWSER=none
@@ -62,4 +67,5 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 ### `npm run package-{os}`
 
 Build app to choosen OS. Depending on packaging OS will need pack in respective OS.
+<details/>
 
