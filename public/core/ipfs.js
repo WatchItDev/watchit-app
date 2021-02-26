@@ -10,12 +10,10 @@ const RETRY_GRACE = 5
 const resolveIpfsPaths = () => require('go-ipfs').path()
     .replace('app.asar', 'app.asar.unpacked')
 
-const initIpfsNode = async (isInstance, ipc) => {
+const initIpfsNode = async (isInstance) => {
     try {
         // Check if running time dir exists
         log.warn('Starting node');
-        ipc.reply('node-progress', 'Booting')
-
         await isInstance.init();
         await isInstance.start();
     } catch (e) {
@@ -28,7 +26,7 @@ const initIpfsNode = async (isInstance, ipc) => {
 
 }
 
-module.exports = async (ipc) => {
+module.exports = async () => {
 
     const isInstance = await Ctl.createController({
         ipfsOptions: {config: ipfsConf(), repo: settings.ROOT_IPFS_DIR},
@@ -50,11 +48,11 @@ module.exports = async (ipc) => {
     setTimeout(async () => {
         if (!isInstance.started) {
             await isInstance.stop() // Force init
-            await initIpfsNode(isInstance, ipc)
+            await initIpfsNode(isInstance)
         }
     }, RETRY_GRACE * 1000)
 
-    await initIpfsNode(isInstance, ipc)
+    await initIpfsNode(isInstance)
     const ipfsApi = isInstance.api
     const id = await ipfsApi.id()
     log.info(`Started ${isInstance.started}`)

@@ -107,9 +107,12 @@ module.exports = (ipcMain) => {
          */
         // More listeners
         orbit.removeAllListeners();
-        orbit.on('bc', (m) => e.reply('node-chaos', m))
-            .on('error', (m) => e.reply('node-error', m))
-            .on('peer', (peerSize) => e.reply('node-peer', peerSize))
+        orbit.on('node-error', (m) => e.reply('node-error', m))
+            .on('node-peer', (peerSize) => e.reply('node-peer', peerSize))
+            .on('node-chaos', (m) => {
+                ipcMain.emit('party');
+                e.reply('node-chaos', m)
+            })
 
     };
 
@@ -117,17 +120,18 @@ module.exports = (ipcMain) => {
         // More listeners
         initEvents(e);
         // FIFO queue
-        orbit.on('progress', (_, hash) => {
-            setImmediate(() => orbit.queue = hash)
-        }).on('ready', () => {
-            queueProcessor(e);
-            e.reply('node-ready');
-        })
+        orbit.on('node-progress', (_, hash) => setImmediate(() => orbit.queue = hash))
+            .on('node-step', (step) => e.reply('node-step', step))
+            .on('node-ready', () => {
+                queueProcessor(e);
+                e.reply('node-ready');
+            })
+
         log.info('Start orbit..');
         await orbit.start(e);
     });
 
-    ipcMain.on('node-close', async (e) => {
+    ipcMain.on('node-seed', async (e) => {
         log.info('Starting seed');
         initEvents(e)
         orbit.setInSeedMode(true);

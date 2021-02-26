@@ -60,54 +60,52 @@ module.exports = class Node extends EventEmitter {
         return [validCache, cache]
     }
 
-    async run(key, res, ipc) {
+    async run(key, res) {
         /***
          * Opem orbit address and set events listeners
          * @param key: orbit address
          * @param res: callback
-         * @param ipc: ipcMain
          */
         log.info('Starting movies db:', key);
         this.db = await this.open(key).catch(async () => {
             // If db cannot be opened then just kill
-            await this.party(ipc, 'Cannot find peers')
+            await this.party('Cannot find peers')
         });
 
         this.db?.events?.on('peer', (p) => {
             log.info('Peer:', p);
             this.peers.push(p); // Add new peer to list
-            this.emit('peer', this.peers.length)
+            this.emit('node-peer', this.peers.length)
         });
 
         log.info(`Ready in orbit ${key}`);
-        ipc.reply('node-progress', 'Replicating')
-        this.emit('ready');
+        this.emit('node-step', 'Replicating')
+        this.emit('node-ready');
         this.ready = true;
 
         this.db?.events?.on('ready', () => this.emit('loaded'))
         this.db?.events?.on('replicated', (address, t) => {
-            this.emit('replicated', address, t)
+            this.emit('node-replicated', address, t)
         });
         this.db?.events?.on('replicate.progress', (address, hash, entry, progress, have) => {
-            this.emit('progress', address, hash, entry, progress, have)
+            this.emit('node-progress', address, hash, entry, progress, have)
         });
 
         res(this.db)
     }
 
 
-    async party(ipc, msg = 'Invalid Key') {
+    async party(msg = 'Invalid Key') {
         /***
          * Kill all - party all
          */
         log.warn('Party rock');
         await this.close(true);
-        ipc.emit('party');
-        this.emit('bc', msg)
+        this.emit('node-chaos', msg)
     }
 
 
-    async nodeReady(res, ipc) {
+    async nodeReady(res) {
         /***
          * Get orbit node ready
          * this method start orbit instance
@@ -122,9 +120,9 @@ module.exports = class Node extends EventEmitter {
         // Get orbit instance and next line connect providers
         // Serve as provider too :)
         this.orbit = await this.instanceOB();
-        ipc.reply('node-progress', 'Connecting')
+        this.emit('node-step', 'Connecting')
         await findProv(this.node, rawAddress);
-        await this.run(address, res, ipc);
+        await this.run(address, res);
 
     }
 
@@ -136,7 +134,7 @@ module.exports = class Node extends EventEmitter {
             || OrbitDB.createInstance(this.node, {directory: ROOT_ORBIT_DIR});
     }
 
-    instanceNode(ipc) {
+    instanceNode() {
         /***
          * Ipfs factory handler
          * try keep node alive if cannot do it after MAX_RETRIES
@@ -147,34 +145,34 @@ module.exports = class Node extends EventEmitter {
             if (this.retry > MAX_RETRIES && !this.hasValidCache) {
                 this.retry = 0; // Avoid remove if in seed mode
                 if (!this.seedMode) // If not seed mode
-                    return await this.party(ipc, 'Aborting')
+                    return await this.party('Aborting')
             }
 
             try {
                 log.info('Setting up node..');
-                this.node = this.node || await getIsInstance(ipc);
+                this.node = this.node || await getIsInstance();
                 res(this.node)
             } catch (e) {
                 log.error('Fail starting node', e.message)
-                this.emit('error')
+                this.emit('node-error')
                 // Any other .. just retry
                 setTimeout(async () => {
                     log.warn('Retrying ' + this.retry);
                     this.node = null;
                     this.retry++;
-                    res(await this.instanceNode(ipc))
+                    res(await this.instanceNode())
                 }, 10 * 1000)
             }
         })
     }
 
-    start(ipc) {
+    start() {
         if (this.ready) return Promise.resolve(this.db);
         return new Promise(async (res) => {
             log.info(`Running ipfs node`);
             // Create IPFS instance
-            this.node = await this.instanceNode(ipc);
-            await this.nodeReady(res, ipc)
+            this.node = await this.instanceNode();
+            await this.nodeReady(res)
         })
     }
 

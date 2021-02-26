@@ -1,3 +1,4 @@
+const EventEmitter = require('events')
 const Auth = require('./broker');
 const ipcRenderer = require('electron').ipcRenderer;
 const LinvoDB = require("linvodb3");
@@ -29,31 +30,12 @@ const IPC_LISTENERS = [
     'node-partial-progress'
 ]
 
-module.exports = class Ingest {
+module.exports = class Ingest extends EventEmitter {
     constructor() {
-        this.p = new LinvoDB(DB, MOVIES_SCHEMA)
-        // Search Indexer Movie
-        this.events = {
-            start: null, peer: null, ready: null, done: null,
-            loading: null, progress: null, replicated: null,
-            partialProgress: null, error: null,
-            loadingCache: null, bc: null
-        }
-    }
-
-    on(event, fn) {
-        //Events dict
-        if (event in this.events) {
-            this.events[event] = fn
-        }
-
-        return this;
-    }
-
-    _loopEvent(e, ...params) {
-        if (e in this.events && this.events[e]) {
-            this.events[e](...params)
-        }
+        super()
+        this.p = new LinvoDB(
+            DB, MOVIES_SCHEMA
+        )
     }
 
     flush() {
@@ -83,7 +65,7 @@ module.exports = class Ingest {
          * Run app as seed mode
          */
         log.info('Run Seed');
-        ipcRenderer.send('node-close')
+        ipcRenderer.send('node-seed')
         return this;
     }
 
@@ -95,15 +77,6 @@ module.exports = class Ingest {
         return this;
     }
 
-    stopEvents() {
-        /***
-         * Remove all events assigned to ipc
-         */
-        Object.keys(this.events).forEach(
-            (i) => this.events[i] = null
-        )
-        return this;
-    }
 
     listenForNewPeer() {
         /***
@@ -140,7 +113,7 @@ module.exports = class Ingest {
          * Any error in node
          */
         ipcRenderer.on('node-error', (e, m) => {
-            this._loopEvent('bc', m)
+            this.emit('bc', m)
 
         })
     }
@@ -151,7 +124,7 @@ module.exports = class Ingest {
          * could be used to clear storage or data previous to run app
          */
         ipcRenderer.on('node-ready', (e, c) => {
-            this._loopEvent('start', c)
+            this.emit('start', c)
 
         })
     }
@@ -162,7 +135,7 @@ module.exports = class Ingest {
          * this event goes after ready event
          */
         ipcRenderer.on('node-db-ready', (e, c) => {
-            this._loopEvent('ready', c)
+            this.emit('ready', c)
 
         })
     }
@@ -172,7 +145,7 @@ module.exports = class Ingest {
          * Trigger event when all db are synced
          */
         ipcRenderer.on('node-db-loaded', (e, c) => {
-            this._loopEvent('done', c)
+            this.emit('done', c)
 
         })
     }
@@ -181,8 +154,8 @@ module.exports = class Ingest {
         /***
          * Replicate process event
          */
-        ipcRenderer.on('node-progress', (e, total) => {
-            this._loopEvent('progress', total)
+        ipcRenderer.on('node-step', (e, step) => {
+            this.emit('progress', step)
 
         })
     }
@@ -196,7 +169,7 @@ module.exports = class Ingest {
             log.info(collection[collection.length - 1]['_id']);
             log.info(collection[0]['_id']);
             this.p.insert(collection, (e, n) => console.log(`Inserted ${n.length}`)); // Save in local
-            this._loopEvent('replicated')
+            this.emit('replicated')
         })
     }
 

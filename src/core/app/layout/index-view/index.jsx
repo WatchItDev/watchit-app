@@ -63,14 +63,14 @@ export default class MovieIndex extends React.Component {
     }
 
     componentWillUnmount() {
-        ingest.stopEvents();
+        ingest.removeAllListeners();;
     }
 
     componentDidMount() {
         // Start ingest if not
         if (this.cached) {
             log.info('Running Cache');
-            ingest.stopEvents();
+            ingest.removeAllListeners();
             ingest.stopIpcEvents();
             ingest.listenForNewPeer();
             ingest.on('bc', (m) => {
@@ -107,8 +107,8 @@ export default class MovieIndex extends React.Component {
 
     runIngest() {
         // Init ingest
-        ingest.stopEvents().on('progress', (state) => {
-            this.setState({state: state, percent: 0})
+        ingest.removeAllListeners().on('progress', (state) => {
+            this.setState({state: state})
         }).on('start', async () => {
             console.clear();
             log.info('STARTING');
@@ -120,14 +120,12 @@ export default class MovieIndex extends React.Component {
             //Start filtering set cache synced movies
             log.info('LOADED FROM LOCAL');
             this.startRunning()
-        }).on('ba', (p) => {
-            this.setState({percent: p})
         }).on('bc', (m) => {
-            this.setState({percent: 0, state: m});
+            this.setState({state: m});
             setTimeout(() => window.location.href = '#/', 2000)
         }).on('error', (msg = 'Waiting Network') => {
             if (this.state.ready) return;
-            this.setState({percent: 0, state: msg});
+            this.setState({state: msg});
         }).on('done', () => {
             log.info('LOAD DONE')
         }).load()
