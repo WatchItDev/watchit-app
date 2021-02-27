@@ -2,7 +2,7 @@
 import React from 'react'
 import Forms from './forms.js'
 import FormBox from 'components/app-form'
-import AppLoaderBackground from 'components/app-main-movie-player-loader-background/'
+import AppLoaderBackground from 'components/app-movie-player-loader-background/'
 
 //Login pages class
 const key = window.bridge.Key

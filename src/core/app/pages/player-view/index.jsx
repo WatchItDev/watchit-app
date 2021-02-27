@@ -1,5 +1,5 @@
 import React from 'react'
-import AppMoviesPlayerTorrent from "components/app-main-movie-player-torrent";
+import AppMoviesPlayerTorrent from "components/app-movie-player-torrent";
 import MainLoader from 'components/util-main-loader'
 import BtnClose from 'components/util-btn-close'
 import Movie from 'resource/data/movies'

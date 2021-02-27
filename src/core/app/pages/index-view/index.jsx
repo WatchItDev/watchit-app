@@ -1,12 +1,12 @@
 import React from 'react'
 
-import AppMovies from 'layout/app-main-movies-list/'
+import AppMovies from 'layout/app-movies-list/'
 import AppMovieDetails from 'layout/app-movie-details/'
 
-import AppNav from 'components/app-main-movies-nav-bar/'
-import AppSearch from 'components/app-main-movies-search/'
-import AppLoader from 'components/app-main-movie-player-loader'
-import AppUpdater from 'components/app-main-movies-updater'
+import AppNav from 'components/app-movies-nav-bar/'
+import AppSearch from 'components/app-movies-search/'
+import AppLoader from 'components/app-movie-player-loader'
+import AppUpdater from 'components/app-movies-updater'
 import StatsValue from "components/util-stats";
 import storageHelper from 'resource/helpers/storageHelper';
 import BoxLoader from 'components/util-box-loader'

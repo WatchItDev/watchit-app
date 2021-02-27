@@ -3,8 +3,8 @@ import React from 'react'
 
 import PropTypes from 'prop-types'
 import setting from 'core/settings'
-import AppMoviesPlayerShare from 'components/app-main-movie-player-share'
-import AppMoviesPlayerVideo from 'components/app-main-movie-player-video'
+import AppMoviesPlayerShare from 'components/app-movie-player-share'
+import AppMoviesPlayerVideo from 'components/app-movie-player-video'
 import gatewayHelper from "core/resources/helpers/gatewayHelper";
 import resourceHelper from "core/resources/helpers/resourceHelper";
 

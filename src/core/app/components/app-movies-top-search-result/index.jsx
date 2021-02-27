@@ -1,5 +1,5 @@
 import React from 'react'
-import AppMainResultBox from 'components/app-main-movies-top-search-result-box/'
+import AppMainResultBox from 'components/app-movies-top-search-result-box/'
 import PointsLoader from 'components/util-points-loader'
 import CustomScrollbars from 'components/util-scroller';
 

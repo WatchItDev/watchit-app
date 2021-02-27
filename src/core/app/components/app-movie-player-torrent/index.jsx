@@ -1,9 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import AppMoviePlayer from "../app-main-movie-player";
-import AppMoviesPlayerSwarm from "../app-main-movie-player-swarm";
-import AppMoviesPlayerHeader from "../app-main-movie-player-header";
-import AppMoviePlayerLoader from "../app-main-movie-player-loader";
+import AppMoviePlayer from "../app-movie-player";
+import AppMoviesPlayerSwarm from "../app-movie-player-swarm";
+import AppMoviesPlayerHeader from "../app-movie-player-header";
+import AppMoviePlayerLoader from "../app-movie-player-loader";
 
 export default class AppMoviesPlayerTorrent extends React.PureComponent {
     constructor(props) {
