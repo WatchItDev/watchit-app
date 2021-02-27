@@ -1,24 +1,32 @@
 [![Gitter](https://badges.gitter.im/watchit-app/community.svg)](https://gitter.im/watchit-app/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 # WatchIt App
-WatchIt is an application that decentralizes the way you watch movies. 
-Using tools such as [IPFS](https://github.com/ipfs/go-ipfs) to store movies and
-[OrbitDB](https://orbitdb.org/) to keep movie metadata in constant sync.
 
-In short, Watchit allows you to watch movies and share them with other people on the web. 
-In other words, it is a "collective entertainment methodology" in which each user consumes 
-movies from the network and at the same time shares movies with other users.
-It is also possible that watchit consumes different movie resources with the contribution of 
-content [resolvers](https://github.com/ZorrillosDev/watchit-gateway) and so you can synchronize 
-through different channels.
+
+WatchIt decentralizes the way you watch your movies. In short, it is a "collective entertainment methodology" in which each user co movies from 
+the network and at the same time shares movies with other users.
+
+Well, in order to decentralize our movies so that everyone can have access to them, we resorted to incredible tools such as [IPFS](https://github.com/ipfs/go-ipfs)
+and [OrbitDB](https://orbitdb.org/), which allowed us to have created a DAPP (Decentralized App). In simple words, 
+Watchit is an application that does not require external resources, but rather everyone helps everyone to make it work.
+
+It is also possible that WatchIt can be synchronized through different channels opening the possibilities to infinite resources throughout the network.
+
+Indeed, Watchit is a movie playback system, in its most basic form it allows you to filter, search, play movies.
 
 
 [![screenshot](src/media/img/layout/screen.png?raw=true)]()
 
 
 ## Build your network
-Migrate your own content and share it with community. Watchit gateway provides simple tools for the generation and fetching of content. 
-Please look at our [gateway](https://github.com/ZorrillosDev/watchit-gateway) readme.
+Migrate your own content and share it with community. WatchIt gateway provides simple tools for the generation and fetching of content. 
+Please look at our [gateway](https://github.com/ZorrillosDev/watchit-gateway) 's readme.
+
+## Stack
+* [OrbitDB](https://orbitdb.org/) it keep us synced.
+* [IPFS](https://github.com/ipfs/go-ipfs) makes us decentralized.
+* [ElectronJs](https://www.electronjs.org/) app bundler.
+* [Create React App](https://github.com/facebook/create-react-app) boilerplate.
 
 ##  More info
 * Visit our site [watchitapp.site](http://watchitapp.site).
@@ -27,7 +35,7 @@ Please look at our [gateway](https://github.com/ZorrillosDev/watchit-gateway) re
 
 
 <details>
-  <summary>Usage for developers</summary>
+  <summary>Devs Usage</summary>
 
 Please run `npm i` to install dependencies and add `.env` file variables:
 ```js
