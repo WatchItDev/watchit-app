@@ -21,12 +21,6 @@ It is also possible that WatchIt can be synchronized through different movie cha
 Migrate your own content and share it with community. WatchIt gateway provides simple tools for the generation and fetching of content. 
 Please look at our [gateway](https://github.com/ZorrillosDev/watchit-gateway) 's readme.
 
-## Stack
-* [OrbitDB](https://orbitdb.org/) it keep us synced.
-* [IPFS](https://github.com/ipfs/go-ipfs) makes us decentralized.
-* [ElectronJs](https://www.electronjs.org/) app bundler.
-* [Create React App](https://github.com/facebook/create-react-app) boilerplate.
-
 ##  More info
 * Visit our site [watchitapp.site](http://watchitapp.site).
 * Read our post in [dev.to](https://dev.to/geolffreym/watchit-2b88).
