@@ -3,16 +3,15 @@
 # WatchIt App
 
 
-WatchIt decentralizes the way you watch your movies. In short, it is a "collective entertainment methodology" in which each user co movies from 
+WatchIt decentralizes the way you watch your movies. In short, it is a "collective entertainment methodology" in which each user consumes movies from 
 the network and at the same time shares movies with other users.
 
+Indeed, Watchit is a movie playback system, in its most basic form it allows you to filter, search, play movies.
 Well, in order to decentralize our movies so that everyone can have access to them, we resorted to incredible tools such as [IPFS](https://github.com/ipfs/go-ipfs)
 and [OrbitDB](https://orbitdb.org/), which allowed us to have created a DAPP (Decentralized App). In simple words, 
 Watchit is an application that does not require external resources, but rather everyone helps everyone to make it work.
 
-It is also possible that WatchIt can be synchronized through different channels opening the possibilities to infinite resources throughout the network.
-
-Indeed, Watchit is a movie playback system, in its most basic form it allows you to filter, search, play movies.
+It is also possible that WatchIt can be synchronized through different movie channels opening the possibility to many libraries with different content across the network.
 
 
 [![screenshot](src/media/img/layout/screen.png?raw=true)]()
