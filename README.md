@@ -1,10 +1,16 @@
 [![Gitter](https://badges.gitter.im/watchit-app/community.svg)](https://gitter.im/watchit-app/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
-# Watchit App
-* Decentralized [OrbitDB](https://orbitdb.org/)
-* Golang [IPFS](https://github.com/ipfs/go-ipfs) implementation 
-* Cross-platform [ElectronJs](https://www.electronjs.org/) apps builder 
-* Bootstrap React App tool [Create React App](https://github.com/facebook/create-react-app).
+# WatchIt App
+WatchIt is an application that decentralizes the way you watch movies. 
+Using tools such as [IPFS](https://github.com/ipfs/go-ipfs) to store movies and
+[OrbitDB](https://orbitdb.org/) to keep movie metadata in constant sync.
+
+In short, Watchit allows you to watch movies and share them with other people on the web. 
+In other words, it is a "collective entertainment methodology" in which each user consumes 
+movies from the network and at the same time shares movies with other users.
+It is also possible that watchit consumes different movie resources with the contribution of 
+content [resolvers](https://github.com/ZorrillosDev/watchit-gateway) and so you can synchronize 
+through different channels.
 
 
 [![screenshot](src/media/img/layout/screen.png?raw=true)]()
@@ -18,6 +24,7 @@ Please look at our [gateway](https://github.com/ZorrillosDev/watchit-gateway) re
 * Visit our site [watchitapp.site](http://watchitapp.site).
 * Read our post in [dev.to](https://dev.to/geolffreym/watchit-2b88).
 * Check out [the roadmap](https://github.com/ZorrillosDev/watchit-desktop/projects/1) to future features.
+
 
 <details>
   <summary>Usage for developers</summary>

@@ -6,28 +6,28 @@ const settings = require('./settings')
 const ipfsConf = require('./settings/ipfs');
 const {removeFiles} = require('./utils');
 
-const inDev = Object.is(process.env.ENV, 'dev')
-const resolveIpfsPaths = () => {
-    /***
-     * Check for relative path for go-ipfs in prod env
-     * @type {string}
-     */
-    if (inDev) return require('go-ipfs').path()
-    const runtimeDir = path.dirname(path.resolve(__dirname, '..'))
-    const rootUnpacked = path.join(`${runtimeDir}.unpacked`, 'node_modules', 'go-ipfs')
-    const paths = [
-        path.join(rootUnpacked, 'go-ipfs', 'ipfs'),
-        path.join(rootUnpacked, 'go-ipfs', 'ipfs.exe'),
-    ]
+const RETRY_GRACE = 5
+const resolveIpfsPaths = () => require('go-ipfs').path()
+    .replace('app.asar', 'app.asar.unpacked')
 
-    for (const bin of paths) {
-        if (fs.existsSync(bin)) {
-            return bin
-        }
+const initIpfsNode = async (isInstance) => {
+    try {
+        // Check if running time dir exists
+        log.warn('Starting node');
+        await isInstance.init();
+        await isInstance.start();
+    } catch (e) {
+        // Gateway stop
+        log.info(e.message)
+        if (isInstance.subprocess)
+            return await isInstance.stop();
+        await isInstance.api.stop();
     }
+
 }
 
-module.exports = async (ipc) => {
+module.exports = async () => {
+
     const isInstance = await Ctl.createController({
         ipfsOptions: {config: ipfsConf(), repo: settings.ROOT_IPFS_DIR},
         ipfsHttpModule: require('ipfs-http-client'),
@@ -37,22 +37,25 @@ module.exports = async (ipc) => {
         remote: false, type: 'go'
     })
 
-    // If api file exists on node setup ipfs-daemon.js line:183 doest spawn process
-    // Be sure this lock 'api' file doesnt exists before node boot..
-    // const apiLockFile = path.join(settings.ROOT_IPFS_DIR, 'api')
-    // if (fs.existsSync(apiLockFile)) {
-    //     log.warn('Removing old `api` file');
-    //     await removeFiles(apiLockFile)
-    // }
+    //If api file exists on node setup ipfs-daemon.js line:183 doest spawn process
+    //Be sure this lock 'api' file doesnt exists before node boot..
+    const apiLockFile = path.join(settings.ROOT_IPFS_DIR, 'api')
+    if (fs.existsSync(apiLockFile)) {
+        log.warn('Removing old `api` file');
+        await removeFiles(apiLockFile)
+    }
 
-    // Check if running time dir exists
-    log.warn('Starting node');
-    ipc.reply('orbit-progress', 'Booting')
-    await isInstance.init()
-    await isInstance.start();
+    setTimeout(async () => {
+        if (!isInstance.started) {
+            await isInstance.stop() // Force init
+            await initIpfsNode(isInstance)
+        }
+    }, RETRY_GRACE * 1000)
 
+    await initIpfsNode(isInstance)
     const ipfsApi = isInstance.api
     const id = await ipfsApi.id()
+    log.info(`Started ${isInstance.started}`)
     log.info('Running ipfs id', id.id)
     return ipfsApi
 }

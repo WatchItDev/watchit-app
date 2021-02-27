@@ -110,6 +110,10 @@ video::-webkit-media-text-track-background {
   --plyr-captions-background: rgba(0, 0, 0, 0);
 }
 
+.plyr {
+  height: 100% !important;
+}
+
 .plyr__captions {
   bottom: 4rem !important;
 
@@ -187,6 +191,7 @@ video::-webkit-media-text-track-display, video::cue {
   background-color: transparent !important;
 
 }
+
 //
 //::-webkit-scrollbar {
 //  min-width: 1px;

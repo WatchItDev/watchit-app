@@ -1,20 +1,23 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Login from 'js/front/view/index/login-view/index';
-import MovieIndex from 'js/front/view/app/movie-index-view/index';
-import MoviePlayer from 'js/front/view/app/movie-player-view/index';
-import DragBar from 'js/front/view/global/drag-bar/index'
+import Login from 'pages/login-view/index';
+import MovieIndex from 'pages/index-view';
+import MoviePlayer from 'pages/player-view';
+import DragBar from 'components/app-drag-bar/index'
+
 import * as serviceWorker from './serviceWorker';
 import {createBrowserHistory} from 'history';
 import {HashRouter, Switch, Route, Redirect} from "react-router-dom";
 import './index.sass';
 import 'plyr/dist/plyr.css';
 
+const key = window.bridge.Key
 const hist = createBrowserHistory({
 	basename: "/", // The base URL of the app (see below)
 	forceRefresh: false, // Set true to force full page refreshes
 	hashType: 'slash'
 });
+
 
 //Require logged
 function DragBarHOC(Component, navigate) {
@@ -27,12 +30,12 @@ ReactDOM.render(
 	<HashRouter history={hist}>
 		<Switch>
 			<Route name="login" exact path="/"
-				   render={(n) => !window.Auth.isLogged()
+				   render={(n) => !key.isLogged()
 					   ? DragBarHOC(Login, n) : (<Redirect to="/app/movies"/>)}/>
 			<Route name="movies" exact path="/app/movies"
 				   render={(n) => (DragBarHOC(MovieIndex, n))}/>
 			<Route name="player"
-				   path="/play/:torrent/:sub"
+				   path="/play/:resource/:sub"
 				   render={(n) => (DragBarHOC(MoviePlayer, n))}/>
 		</Switch>
 	</HashRouter>,
