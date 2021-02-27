@@ -1,5 +1,6 @@
 import React from 'react'
 import PointsLoader from 'components/util-points-loader'
+import styled from 'styled-components';
 
 export default class BoxButton extends React.Component {
 	static get defaultProps() {
@@ -8,20 +9,32 @@ export default class BoxButton extends React.Component {
 			type: 'button'
 		}
 	}
-	
+
 	render() {
 		return (
-			<button
-				type={this.props.type}
-				className={"lowercase full-width waves-effect waves-light btn " + this.props.className}
-				onClick={this.props.onClick}
-			>
+			<Button type={this.props.type} onClick={this.props.onClick}>
 				{
-					/*If click*/
+					/*show loader on submit*/
 					((Object.is(this.props.type, "submit") || this.props.forceLoader)
-					&& this.props.clicked && <PointsLoader/>) || this.props.children
+						&& this.props.clicked && <PointsLoader/>) || this.props.children
 				}
-			</button>
+			</Button>
 		)
 	}
 }
+
+const Button = styled.button`
+	width: 100%;
+	text-decoration: none;
+	color: #fff;
+	background-color: #26a69a;
+	text-align: center;
+	letter-spacing: .5px;
+	border: none;
+	border-radius: 2px;
+	height: 36px;
+	cursor: pointer;
+	line-height: 36px;
+	outline: 0;
+	padding: 0 2rem;
+`;

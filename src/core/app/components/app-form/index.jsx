@@ -4,6 +4,7 @@ import uid from "shortid";
 import BoxAlert from 'components/app-alerts'
 import BoxInput from 'components/app-inputs'
 import BoxButton from 'components/app-buttons'
+import styled from "styled-components";
 
 export default class FormBox extends React.Component {
 
@@ -11,7 +12,6 @@ export default class FormBox extends React.Component {
         super(props);
         this.fields = new FormData();
     }
-
 
     static get defaultProps() {
         return {
@@ -58,45 +58,39 @@ export default class FormBox extends React.Component {
         );
     }
 
-
     render() {
         //Render
         return (
             <form onSubmit={this.handleSubmit} autoComplete="new-password">
                 {/*Inputs*/}
-                <div className="row">
+                <FormRow>
                     {
-                        /* Generate inputs */
                         this.props.input.map((i, k) => {
                             return (
-                                <div key={k} className={"input-field-black col " + i.size}>
-                                    <BoxInput {...i} onChange={this.setValue}/>
-                                </div>
+                                <BoxInput {...i} onChange={this.setValue} key={k}/>
                             )
                         })
-
                     }
-                </div>
+                </FormRow>
 
                 {/*Buttons*/}
-                <div className="row">
+                <FormRow>
                     {
-                        /* Generate buttons */
                         this.props.buttons.map((i) => {
                             return (
                                 <BoxButton key={uid.generate()} clicked={this.props.submitted}
-                                           className={i.color} type={i.type}>
+                                           className={i.color} type={i.type} >
                                     <span>{i.text}</span>
                                 </BoxButton>
                             )
                         })
                     }
-                </div>
+                </FormRow>
 
                 {/* Alert */}
                 {
                     this.props.error && this.props.error.length > 0 &&
-                    <div className="row">
+                    <FormRow>
                         {
                             this.props.error.map((i) => {
                                 return (
@@ -106,14 +100,21 @@ export default class FormBox extends React.Component {
                                 )
                             })
                         }
-                    </div>
+                    </FormRow>
                 }
 
                 {/* Success message */}
-                {this.props.success && <BoxAlert label="success-label">
-                    {this.props.success}
-                </BoxAlert>}
+                {
+                    this.props.success &&
+                    <BoxAlert type="success">
+                        {this.props.success}
+                    </BoxAlert>
+                }
             </form>
         )
     }
 }
+
+const FormRow = styled.div`
+  margin-bottom: 20px;
+`;
