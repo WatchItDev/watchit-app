@@ -4,7 +4,8 @@ import Forms from './forms.js'
 import FormBox from 'components/app-form'
 import AppLoaderBackground from 'components/app-main-movie-player-loader-background/'
 
-//Login layout class
+//Login pages class
+const key = window.bridge.Key
 export default class LoginForm extends React.PureComponent {
 
     constructor(props) {
@@ -27,7 +28,7 @@ export default class LoginForm extends React.PureComponent {
 
         const pb = fields.get('public')
         // Check if stored key its valid
-        if (!window.bridge.Broker.isValidKey(pb)) {
+        if (!key.isValidKey(pb)) {
             return this.setState({
                 error: ['Invalid Key'],
                 submitted: false
@@ -35,7 +36,7 @@ export default class LoginForm extends React.PureComponent {
         }
 
         // Write public key
-        window.bridge.Broker.generateKey({ingest: pb});
+        key.generateKey({ingest: pb});
         setTimeout(() => {
             //Set first state
             window.location.href = '#/app/movies'

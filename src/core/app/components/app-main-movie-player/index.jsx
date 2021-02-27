@@ -9,12 +9,13 @@ import gatewayHelper from "core/resources/helpers/gatewayHelper";
 import resourceHelper from "core/resources/helpers/resourceHelper";
 
 const log = window.require("electron-log");
+const subs = window.bridge.Subs
+const cast =  window.bridge.DLNA
 
 export default class AppMoviesPlayer extends React.Component {
     constructor(props) {
         super(props);
 
-        this.cast = window.Cast
         this.subs = {};
         this.v = null;
 
@@ -31,7 +32,7 @@ export default class AppMoviesPlayer extends React.Component {
     }
 
     get players() {
-        return this.cast.players.map((d, i) => {
+        return cast.players.map((d, i) => {
             return d.name
         })
     }
@@ -51,8 +52,8 @@ export default class AppMoviesPlayer extends React.Component {
     }
 
     onSelectDevice = (index) => {
-        this.cast.setPlayer(index);
-        this.cast.play(this.props.movie.title, this.state.url);
+        cast.setPlayer(index);
+        cast.play(this.props.movie.title, this.state.url);
         this.player.pause();
     }
 
@@ -96,7 +97,7 @@ export default class AppMoviesPlayer extends React.Component {
 
     addOffset(offset) {
         if (!this.currentSub || !this.v) return;
-        window.Sub.reSync(this.srtSub, offset * 1000).then(() => {
+        subs.reSync(this.srtSub, offset * 1000).then(() => {
             for (const cue of this.interCues(this.v.video)) {
                 cue.startTime += offset || 0.5;
                 cue.endTime += offset || 0.5;
@@ -106,7 +107,7 @@ export default class AppMoviesPlayer extends React.Component {
 
     removeOffset(offset) {
         if (!this.currentSub || !this.v) return;
-        window.Sub.reSync(this.srtSub, (offset * -1) * 1000).then(() => {
+        subs.reSync(this.srtSub, (offset * -1) * 1000).then(() => {
             for (const cue of this.interCues(this.v.video)) {
                 cue.startTime -= offset || 0.5;
                 cue.endTime -= offset || 0.5;
@@ -116,7 +117,7 @@ export default class AppMoviesPlayer extends React.Component {
 
     async componentDidMount() {
         //Cast init
-        this.cast.createServer(
+        cast.createServer(
             // Create asset server
         ).requestUpdate().on('status', (status) => {
             log.info('Status:' + status);
@@ -158,7 +159,7 @@ export default class AppMoviesPlayer extends React.Component {
         //On player change subtitles
         this.player.on('languagechange', () => {
             if (!this.currentSub) return;
-            this.cast.setSub(this.currentSub)
+            cast.setSub(this.currentSub)
         })
 
         // On ready to play
@@ -187,14 +188,14 @@ export default class AppMoviesPlayer extends React.Component {
                     continue;
 
                 // Transform subs
-                window.Sub.urlSrt2VttFile(
+                subs.urlSrt2VttFile(
                     this.props.subs[subtitle].link
                 ).then(({vtt, raw}) => {
                     // If selected sub match
                     log.info('ADDING ' + subtitle.toUpperCase() + ' SUBTITLE: ' + vtt);
                     let _elem = document.createElement('track');
                     let selectedSub = Object.is(subtitle, this.props.subSelected)
-                    if (selectedSub) this.cast.setSub(raw);
+                    if (selectedSub) cast.setSub(raw);
                     this.subs[subtitle] = raw;
 
                     // Add captions
@@ -237,7 +238,7 @@ export default class AppMoviesPlayer extends React.Component {
 
     stopStreaming() {
         this.streamer.stop();
-        this.cast.stop();
+        cast.stop();
     }
 
 

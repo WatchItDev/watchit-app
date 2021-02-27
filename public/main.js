@@ -25,7 +25,7 @@ let win, loadingScreen,
 process.env.appPath = appPath;
 const {ROOT_TMP_FOLDER} = require(`${__dirname}/core/settings/`);
 const {removeFiles} = require(`${__dirname}/core/utils`);
-const broker = require(`${__dirname}/core/broker`);
+const key = require(`${__dirname}/core/key`);
 const node = require(`${__dirname}/core`);
 
 const gotTheLock = app.requestSingleInstanceLock();
@@ -46,8 +46,8 @@ const removeCacheDirs = () => {
         await removeFiles(path.join(appPath, file))
     });
 }, wipeInvalidSync = () => {
-    broker.removeFromStorage('peers')
-    let cache = broker.readFromStorage();
+    key.removeFromStorage('peers')
+    let cache = key.readFromStorage();
     if (cache && !('tmp' in cache)) {
         removeCacheDirs()
     }
@@ -256,7 +256,7 @@ app.on('will-quit', () => {
 })
 
 app.on('ready', () => {
-    if (!broker.existKey)
+    if (!key.existKey)
         removeCacheDirs();
 })
 
@@ -283,8 +283,8 @@ app.whenReady().then(() => {
 
     ipcMain.on('close', () => app.quit())
     ipcMain.on('party', async () => {
-        if (broker.existKey)
-            await removeFiles(broker.keyFile)
+        if (key.existKey)
+            await removeFiles(key.keyFile)
         removeCacheDirs();
     })
 

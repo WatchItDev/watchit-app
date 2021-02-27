@@ -11,7 +11,7 @@ import setting from 'settings'
 const log = window.require("electron-log");
 const ingest = window.bridge.Ingest
 
-//Movie player layout class
+//Movie player pages class
 export default class MoviePlayer extends React.Component {
     constructor(props) {
         super(props);

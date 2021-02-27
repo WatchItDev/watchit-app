@@ -1,10 +1,10 @@
-const broker = require('./broker');
 const log = require('electron-log')
 const EventEmitter = require('events')
 const OrbitDB = require('orbit-db');
 const {ROOT_ORBIT_DIR} = require('./settings')
 const getIsInstance = require('./ipfs')
 const {findProv} = require('./provs')
+const key = require('./key');
 const MAX_RETRIES = 30;
 
 
@@ -40,13 +40,13 @@ module.exports = class Node extends EventEmitter {
     }
 
     get ingestKey() {
-        return broker.sanitizedKey(
+        return key.sanitizedKey(
             this.rawIngestKey
         )
     }
 
     get rawIngestKey() {
-        return broker.getIngestKey()
+        return key.getIngestKey()
     }
 
     get hasValidCache() {
@@ -55,7 +55,7 @@ module.exports = class Node extends EventEmitter {
     }
 
     get cache() {
-        let cache = broker.readFromStorage();
+        let cache = key.readFromStorage();
         let validCache = cache && 'tmp' in cache;
         return [validCache, cache]
     }
@@ -184,7 +184,7 @@ module.exports = class Node extends EventEmitter {
                 await this.orbit.disconnect()
                 if (!this.hasValidCache || forceDrop) {
                     for (const k of ['total', 'limit'])
-                        broker.removeFromStorage(k)
+                        key.removeFromStorage(k)
                 }
             }
 
@@ -218,15 +218,15 @@ module.exports = class Node extends EventEmitter {
 
     set queue(hash) {
         log.info('Storing hash in queue');
-        let cache = broker.readFromStorage();
+        let cache = key.readFromStorage();
         let cacheList = cache.hash ?? []
         // Deduplication with sets
         let newHash = [...new Set([...cacheList, ...[hash]])]
-        broker.addToStorage({hash: newHash})
+        key.addToStorage({hash: newHash})
     }
 
     get queue() {
-        let cache = broker.readFromStorage();
+        let cache = key.readFromStorage();
         return cache?.hash ?? []
     }
 

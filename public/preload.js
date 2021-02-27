@@ -6,17 +6,19 @@
  */
 
 // Bridge
-const Broker = require(`./core/broker`);
+const Key = require(`./core/key`);
 const DLNA = require(`./core/dlna`);
 const HLS = require(`./core/hls`);
 const Torrent = require(`./core/torrent`);
-const Ingest = require(`./core/ingest`);
+const Broker = require(`./core/broker`);
+const Subs = require('./core/subs')
 
 window.bridge = {
-    Broker: Broker,
+    Key: Key,
+    Subs: Subs,
     DLNA: new DLNA(),
-    Torrent: new Torrent(),
     HLA: new HLS(),
-    Ingest: new Ingest()
+    Torrent: new Torrent(),
+    Broker: new Broker()
 }
 

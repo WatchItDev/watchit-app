@@ -5,8 +5,8 @@
 
 const BufferList = require('bl/BufferList')
 const msgpack = require('msgpack-lite');
-const broker = require('./broker');
 const log = require('electron-log')
+const key = require('./key');
 const Node = require('./node')
 
 
@@ -37,7 +37,7 @@ module.exports = (ipcMain) => {
 
     }, partialSave = async (e, hash) => {
         log.info('Going take chunks');
-        let storage = broker.readFromStorage();
+        let storage = key.readFromStorage();
         let slice = ('chunk' in storage && storage.chunk) || 0;
         const hasValidCache = orbit.hasValidCache
         if (!hasValidCache) e.reply('node-step', 'Starting');
@@ -68,8 +68,8 @@ module.exports = (ipcMain) => {
 
             e.reply('node-replicated', cleanedContent, sliced, tmp.toFixed(1));
             if (!hasValidCache) e.reply('node-db-ready'); // Ready to show!!!
-            broker.addToStorage({'chunk': sliced, 'tmp': tmp, 'lastHash': lastHash, 'total': total});
-            if (sliced >= total) broker.addToStorage({'cached': true, 'hash': [], 'lastHash': null})
+            key.addToStorage({'chunk': sliced, 'tmp': tmp, 'lastHash': lastHash, 'total': total});
+            if (sliced >= total) key.addToStorage({'cached': true, 'hash': [], 'lastHash': null})
             asyncLock = false; // Avoid overhead release lock
             log.info('Release Lock')
         }

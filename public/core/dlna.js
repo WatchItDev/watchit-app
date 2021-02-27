@@ -1,11 +1,12 @@
 const ip = require('ip');
 const server = require(`./server.js`)
 const log = require('electron-log')
+const EventEmitter = require('events')
 
-module.exports = class Cast {
+module.exports = class Cast extends EventEmitter {
     constructor() {
+        super()
         this.dnla = require('dlnacasts2')()
-        this.events = {device: null, status: null}
 
         this.subs = []
         this.players = []
@@ -15,11 +16,11 @@ module.exports = class Cast {
         this.dnla.on('update', (player) => {
             this.players = this.dnla.players
             this.player = this.players[0]
-            this._loopEvent('device', player)
+            this.emit('device', player)
         })
 
         this.dnla.on('status', (status) => {
-            this._loopEvent('status', status)
+            this.emit('status', status)
         })
     }
 
@@ -52,20 +53,6 @@ module.exports = class Cast {
         this.server = null;
     }
 
-    on(event, fn) {
-        //Events dict
-        if (event in this.events) {
-            this.events[event] = fn
-        }
-
-        return this;
-    }
-
-    _loopEvent(e, ...params) {
-        if (e in this.events && this.events[e]) {
-            this.events[e](...params)
-        }
-    }
 
     get localIp() {
         return ip.address()

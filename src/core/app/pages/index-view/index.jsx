@@ -1,7 +1,7 @@
 import React from 'react'
 
-import AppMovies from 'pages/app-main-movies-list/'
-import AppMovieDetails from 'pages/app-movie-details/'
+import AppMovies from 'layout/app-main-movies-list/'
+import AppMovieDetails from 'layout/app-movie-details/'
 
 import AppNav from 'components/app-main-movies-nav-bar/'
 import AppSearch from 'components/app-main-movies-search/'
@@ -15,11 +15,11 @@ import setting from 'settings'
 
 // Access to main process bridge prop
 const log = window.require("electron-log");
-const broker = window.bridge.Broker
-const ingest = window.bridge.Ingest
+const key = window.bridge.Key
+const ingest = window.bridge.Broker
 const DEFAULT_INIT_LOAD = 100;
 
-//Login layout class
+//Login pages class
 export default class MovieIndex extends React.Component {
     constructor(props) {
         super(props);
@@ -43,7 +43,7 @@ export default class MovieIndex extends React.Component {
 
     _index(i) {
         // Else try get from key file and save
-        let _storage = broker.readFromStorage() || {}
+        let _storage = key.readFromStorage() || {}
         return (i in _storage && _storage[i]) || 0
     }
 
@@ -63,7 +63,7 @@ export default class MovieIndex extends React.Component {
     }
 
     componentWillUnmount() {
-        ingest.removeAllListeners();;
+        ingest.removeAllListeners();
     }
 
     componentDidMount() {
@@ -73,10 +73,11 @@ export default class MovieIndex extends React.Component {
             ingest.removeAllListeners();
             ingest.stopIpcEvents();
             ingest.listenForNewPeer();
+            ingest.startSeed()
             ingest.on('bc', (m) => {
-                this.setState({percent: 0, state: m, ready: false});
+                this.setState({state: m, ready: false});
                 setTimeout(() => window.location.href = '#/', 3000)
-            }).startSeed()
+            })
             // Start running node
             return this.startRunning();
         }
@@ -112,20 +113,22 @@ export default class MovieIndex extends React.Component {
         }).on('start', async () => {
             console.clear();
             log.info('STARTING');
-            if (!this.loaded) {
-                localStorage.clear();
-                // await this.movie.setupIndex();
-            }
+            if (!this.loaded) localStorage.clear();
+
         }).on('ready', () => {
             //Start filtering set cache synced movies
             log.info('LOADED FROM LOCAL');
             this.startRunning()
+            
         }).on('bc', (m) => {
+            // Kill node and restart login
             this.setState({state: m});
             setTimeout(() => window.location.href = '#/', 2000)
+            
         }).on('error', (msg = 'Waiting Network') => {
             if (this.state.ready) return;
             this.setState({state: msg});
+            
         }).on('done', () => {
             log.info('LOAD DONE')
         }).load()

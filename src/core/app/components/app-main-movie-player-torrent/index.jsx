@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import AppMoviePlayer from "../app-main-movie-player";
 import AppMoviesPlayerSwarm from "../app-main-movie-player-swarm";
-import AppMoviePlayer from "../../pages/app-main-movie-player";
 import AppMoviesPlayerHeader from "../app-main-movie-player-header";
 import AppMoviePlayerLoader from "../app-main-movie-player-loader";
 

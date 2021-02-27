@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Login from 'layout/login-view/index';
-import MovieIndex from 'layout/index-view';
-import MoviePlayer from 'layout/player-view';
+import Login from 'pages/login-view/index';
+import MovieIndex from 'pages/index-view';
+import MoviePlayer from 'pages/player-view';
 import DragBar from 'components/app-drag-bar/index'
 
 import * as serviceWorker from './serviceWorker';
@@ -11,7 +11,7 @@ import {HashRouter, Switch, Route, Redirect} from "react-router-dom";
 import './index.sass';
 import 'plyr/dist/plyr.css';
 
-const broker = window.bridge.Broker
+const key = window.bridge.Key
 const hist = createBrowserHistory({
 	basename: "/", // The base URL of the app (see below)
 	forceRefresh: false, // Set true to force full page refreshes
@@ -30,7 +30,7 @@ ReactDOM.render(
 	<HashRouter history={hist}>
 		<Switch>
 			<Route name="login" exact path="/"
-				   render={(n) => !broker.isLogged()
+				   render={(n) => !key.isLogged()
 					   ? DragBarHOC(Login, n) : (<Redirect to="/app/movies"/>)}/>
 			<Route name="movies" exact path="/app/movies"
 				   render={(n) => (DragBarHOC(MovieIndex, n))}/>
