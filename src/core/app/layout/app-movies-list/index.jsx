@@ -1,9 +1,9 @@
 import React from 'react'
 import uid from "shortid";
+import setting from 'settings'
 import AppMoviesListRow from 'components/app-movies-list-row/'
 import InfiniteLoader from "react-window-infinite-loader";
 import {FixedSizeList as List} from "react-window";
-import setting from 'core/settings'
 
 export default class AppMoviesList extends React.Component {
     constructor(props) {
