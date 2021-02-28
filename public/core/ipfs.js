@@ -18,7 +18,7 @@ const initIpfsNode = async (isInstance) => {
         await isInstance.start();
     } catch (e) {
         // Gateway stop
-        log.info(e.message)
+        log.info('Forcing stop')
         if (isInstance.subprocess)
             return await isInstance.stop();
         await isInstance.api.stop();
