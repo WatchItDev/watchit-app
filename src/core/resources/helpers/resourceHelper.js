@@ -6,9 +6,6 @@ const hls = window.bridge.HLS
 
 export default {
 
-    torrentStreamer: torrent,
-    hlsStreamer: hls,
-
     async torrent(resource) {
         resource['health'] = 0;
         if ('index' in resource) {
@@ -24,24 +21,40 @@ export default {
         return resource
     },
 
-    _switch(resource, type) {
+    streamer(type) {
+        /***
+         * Return switched streamer type
+         * @type {{torrent: default.torrent, hls: default.hls}}
+         * @return <object>: Streamer
+         */
+        if (!settings.allowedResource.includes(type))
+            return false;
+
+        return {
+            'hls': hls,
+            'torrent': torrent,
+        }[type]
+    },
+    resource(resource, type) {
         /***
          * Return switched resource type
          * @type {{torrent: default.torrent, hls: default.hls}}
          * @return <object>: {...object, {health:int}}
          */
 
-        const types = {
+        if (!settings.allowedResource.includes(type))
+            return false;
+
+        return {
             'hls': this.hls,
             'torrent': this.torrent
-        }
-
-        if (type in types && settings.allowedResource.includes(type))
-            return types[type](resource)
+        }[type](resource)
     },
     * match(resources) {
         for (const resource of resources) {
-            yield this._switch(resource, resource.type)
+            yield this.resource(
+                resource, resource.type
+            )
         }
     }
 
