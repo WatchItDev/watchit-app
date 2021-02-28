@@ -16,7 +16,7 @@ import setting from 'settings'
 // Access to main process bridge prop
 const log = window.require("electron-log");
 const key = window.bridge.Key
-const ingest = window.bridge.Broker
+const broker = window.bridge.Broker
 const DEFAULT_INIT_LOAD = 100;
 
 //Login pages class
@@ -31,7 +31,7 @@ export default class MovieIndex extends React.Component {
             scrolling: false, finishLoad: false, showDetailsFor: false
         };
 
-        this.movie = new Movie(ingest.p);
+        this.movie = new Movie(broker);
         //Max movies for initial request
         this.limit = setting.defaults.limit;
         this.sort = {
@@ -63,18 +63,18 @@ export default class MovieIndex extends React.Component {
     }
 
     componentWillUnmount() {
-        ingest.removeAllListeners();
+        broker.removeAllListeners();
     }
 
     componentDidMount() {
         // Start ingest if not
         if (this.cached) {
             log.info('Running Cache');
-            ingest.removeAllListeners();
-            ingest.stopIpcEvents();
-            ingest.listenForNewPeer();
-            ingest.startSeed()
-            ingest.on('bc', (m) => {
+            broker.removeAllListeners();
+            broker.stopIpcEvents();
+            broker.listenForNewPeer();
+            broker.startSeed()
+            broker.on('bc', (m) => {
                 this.setState({state: m, ready: false});
                 setTimeout(() => window.location.href = '#/', 3000)
             })
@@ -108,7 +108,7 @@ export default class MovieIndex extends React.Component {
 
     runIngest() {
         // Init ingest
-        ingest.removeAllListeners().on('progress', (state) => {
+        broker.removeAllListeners().on('progress', (state) => {
             this.setState({state: state})
         }).on('start', async () => {
             console.clear();
@@ -270,7 +270,7 @@ export default class MovieIndex extends React.Component {
     signOut = (event) => {
         event.preventDefault();
         localStorage.clear();
-        ingest.flush();
+        broker.flush();
         window.location.href = '#/'
     }
 
