@@ -29,7 +29,6 @@ export default class MovieDetails extends React.PureComponent {
         // Movie details
         const movies = await this.movie.get(this.props.id)
         const resource = await all(resourceHelper.match(movies.resource))
-        console.log(resource);
         this.setState({movies: {...movies, ...{resource}}});
     }
 
