@@ -9,7 +9,7 @@ import setting from 'settings'
 
 // Access to main process bridge prop
 const log = window.require("electron-log");
-const broker = window.bridge.Ingest
+const broker = window.bridge.Broker;
 
 //Movie player pages class
 export default class MoviePlayer extends React.Component {
