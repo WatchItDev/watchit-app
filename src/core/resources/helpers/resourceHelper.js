@@ -2,7 +2,7 @@ import utilHelper from "./utilHelper";
 import settings from 'settings'
 
 const torrent = window.bridge.Torrent
-const hls = window.bridge.Hls
+const hls = window.bridge.HLS
 
 export default {
 

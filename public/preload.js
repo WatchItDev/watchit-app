@@ -17,7 +17,7 @@ window.bridge = {
     Key: Key,
     Subs: Subs,
     DLNA: new DLNA(),
-    HLA: new HLS(),
+    HLS: new HLS(),
     Torrent: new Torrent(),
     Broker: new Broker()
 }

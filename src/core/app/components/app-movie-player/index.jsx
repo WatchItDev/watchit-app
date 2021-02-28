@@ -244,7 +244,7 @@ export default class AppMoviesPlayer extends React.Component {
 
     get streamer() {
         const movie = this.props.movie
-        return resourceHelper[`${movie.type}Streamer`](this.v);
+        return resourceHelper[`${movie.type}Streamer`];
     }
 
     componentDidCatch(error, info) {
@@ -288,7 +288,7 @@ export default class AppMoviesPlayer extends React.Component {
     render() {
         return <div className={(this.props.canPlay && "left relative full-height full-width") || "invisible"}>
             <AppMoviesPlayerShare devices={this.state.devices} onChange={this.onSelectDevice}/>
-            {this.state.url && <AppMoviesPlayerVideo src={this.state.url} ref={this.getVideoRef}/>}
+            <AppMoviesPlayerVideo src={this.state.url} ref={this.getVideoRef}/>
         </div>
     }
 }
