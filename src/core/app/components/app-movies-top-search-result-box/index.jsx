@@ -1,5 +1,6 @@
 import React from 'react'
 import BoxImage from 'components/app-image'
+import gatewayHelper from "resource/helpers/gatewayHelper";
 
 export default class AppMainSearchResultBoxItem extends React.PureComponent {
 
@@ -7,11 +8,19 @@ export default class AppMainSearchResultBoxItem extends React.PureComponent {
         this.props.onClick && this.props.onClick(this.props._id);
     };
 
+    parseUriImage = (image) => {
+        if (image) {
+            // While load chunk of movies image = undefined
+            // Check if valid param before
+            return gatewayHelper.dummyParse(image)
+        }
+    }
+
     render() {
         return (
             <li className="transparent collection-item padding-5 no-border d-flex pointer" onClick={this.onClick}>
                 <div className="result-search-box-img">
-                    <BoxImage src={this.props.image} placeholder={{w: 60, h: 90}}/>
+                    <BoxImage src={this.parseUriImage(this.props.image)} placeholder={{w: 60, h: 90}}/>
                 </div>
                 <div className="result-search-box-content flex-grow-1">
                     <div className="search-result-box-title">
