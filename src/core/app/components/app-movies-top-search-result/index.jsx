@@ -35,7 +35,7 @@ export default class AppMainSearchResult extends React.Component {
                                             this.props.result.map((i) => {
                                                 return (
                                                     <AppMainResultBox
-                                                        key={i._id} {...Object.assign(i, {image: `${i.small_image}`})}
+                                                        key={i._id} {...Object.assign(i, {image: i.small_image})}
                                                         onClick={this.props.onClick}
                                                     />
                                                 )
