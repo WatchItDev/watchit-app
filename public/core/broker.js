@@ -32,10 +32,11 @@ const IPC_LISTENERS = [
 module.exports = class Broker extends EventEmitter {
     constructor() {
         super()
-        this.p = new LinvoDB(
+        this.db = new LinvoDB(
             DB, MOVIES_SCHEMA
         )
     }
+
 
     flush() {
         /**
@@ -159,7 +160,7 @@ module.exports = class Broker extends EventEmitter {
             log.info('LOADING FROM NETWORK');
             log.info(collection[collection.length - 1]['_id']);
             log.info(collection[0]['_id']);
-            this.p.insert(collection, (e, n) => console.log(`Inserted ${n.length}`)); // Save in local
+            this.db.insert(collection, (e, n) => console.log(`Inserted ${n.length}`)); // Save in local
             this.emit('replicated')
         })
     }

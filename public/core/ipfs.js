@@ -6,7 +6,7 @@ const settings = require('./settings')
 const ipfsConf = require('./settings/ipfs');
 const {removeFiles} = require('./utils');
 
-const RETRY_GRACE = 5
+const RETRY_GRACE = 10
 const resolveIpfsPaths = () => require('go-ipfs').path()
     .replace('app.asar', 'app.asar.unpacked')
 

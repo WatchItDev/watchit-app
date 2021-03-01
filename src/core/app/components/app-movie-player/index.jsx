@@ -10,7 +10,7 @@ import resourceHelper from "core/resources/helpers/resourceHelper";
 
 const log = window.require("electron-log");
 const subs = window.bridge.Subs
-const cast =  window.bridge.DLNA
+const cast = window.bridge.DLNA
 
 export default class AppMoviesPlayer extends React.Component {
     constructor(props) {
@@ -243,8 +243,9 @@ export default class AppMoviesPlayer extends React.Component {
 
 
     get streamer() {
-        const movie = this.props.movie
-        return resourceHelper[`${movie.type}Streamer`](this.v);
+        return resourceHelper.streamer(
+            this.props.movie.type
+        );
     }
 
     componentDidCatch(error, info) {
@@ -288,7 +289,7 @@ export default class AppMoviesPlayer extends React.Component {
     render() {
         return <div className={(this.props.canPlay && "left relative full-height full-width") || "invisible"}>
             <AppMoviesPlayerShare devices={this.state.devices} onChange={this.onSelectDevice}/>
-            {this.state.url && <AppMoviesPlayerVideo src={this.state.url} ref={this.getVideoRef}/>}
+            <AppMoviesPlayerVideo src={this.state.url} ref={this.getVideoRef}/>
         </div>
     }
 }
