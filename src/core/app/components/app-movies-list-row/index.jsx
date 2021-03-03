@@ -32,8 +32,8 @@ export default class AppMoviesListRow extends React.Component {
                 this.props.chunk.map((i) => {
                     return <AppMoviesListPoster
                         key={i._id || uid.generate()} id={i._id}
-                        title={i.title} rating={i.rating}
-                        year={i.year} image={this.parseUriImage(i.medium_image)}
+                        title={i.title} rating={i.rating} year={i.year}
+                        image={this.parseUriImage(i.resource.images.medium_image)}
                         placeHolder={this.props.placeHolder}
                         onClick={this.props.onClick}
                     />
