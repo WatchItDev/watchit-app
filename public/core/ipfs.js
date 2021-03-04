@@ -45,7 +45,7 @@ module.exports = async () => {
     const alreadyLock = fs.existsSync(repoLockDir)
     if (alreadyLock) {
         log.warn('Releasing locked node')
-        await forKill(isInstance)
+        return await forKill(isInstance)
     }
 
     //If api file exists on node setup ipfs-daemon.js line:183 doest spawn process
