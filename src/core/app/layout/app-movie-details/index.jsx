@@ -1,5 +1,6 @@
 import React from 'react'
 import all from 'it-all'
+
 import BoxLoader from 'components/util-box-loader'
 import MainHeader from 'components/util-header'
 import BoxImage from 'components/app-image'
@@ -8,18 +9,18 @@ import AppMovieDetailMenu from 'components/app-movie-details-menu'
 import FlowText from 'components/util-flow-text'
 import CustomScrollbars from 'components/util-scroller';
 import ListCommaSplit from 'components/util-list-comma-split'
-import Movie from 'core/resources/data/movies'
-import gatewayHelper from 'core/resources/helpers/gatewayHelper'
-import resourceHelper from "core/resources/helpers/resourceHelper";
-// Access to main process bridge prop
-const ingest = window.bridge.Ingest
 
-//Login layout class
+import Movie from 'resource/data/movies'
+import gatewayHelper from 'resource/helpers/gatewayHelper'
+import resourceHelper from "resource/helpers/resourceHelper";
+
+// Access to main process bridge prop
+const broker = window.bridge.Broker
 export default class MovieDetails extends React.PureComponent {
     constructor(props) {
         super(props);
         //Auth object
-        this.movie = new Movie(ingest);
+        this.movie = new Movie(broker);
         this.state = {movies: null};
     }
 
@@ -27,7 +28,7 @@ export default class MovieDetails extends React.PureComponent {
     async componentDidMount() {
         // Movie details
         const movies = await this.movie.get(this.props.id)
-        const resource = await all(resourceHelper.match(movies.resource))
+        const resource = await all(resourceHelper.match(movies.resource.videos))
         this.setState({movies: {...movies, ...{resource}}});
     }
 
@@ -56,8 +57,10 @@ export default class MovieDetails extends React.PureComponent {
                                     {/*Poster*/}
                                     <BoxImage
                                         className="full-width"
-                                        src={this.parseUriImage(this.state.movies.large_image)}
                                         preload={true}
+                                        src={this.parseUriImage(
+                                            this.state.movies.resource.images.large_image
+                                        )}
                                     />
                                 </aside>
 

@@ -1,5 +1,9 @@
 export default class Manager {
-    constructor(db) {
-        this.db = db
+    constructor(broker) {
+        /**
+         * Set db attr
+         * @param {Broker} Broker class object
+         */
+        this.db = broker.db
     }
 }

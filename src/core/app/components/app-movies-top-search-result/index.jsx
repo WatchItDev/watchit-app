@@ -1,5 +1,5 @@
 import React from 'react'
-import AppMainResultBox from 'components/app-main-movies-top-search-result-box/'
+import AppMainResultBox from 'components/app-movies-top-search-result-box/'
 import PointsLoader from 'components/util-points-loader'
 import CustomScrollbars from 'components/util-scroller';
 
@@ -35,7 +35,7 @@ export default class AppMainSearchResult extends React.Component {
                                             this.props.result.map((i) => {
                                                 return (
                                                     <AppMainResultBox
-                                                        key={i._id} {...Object.assign(i, {image: `${i.hash}/small_cover_image.jpg`})}
+                                                        key={i._id} {...Object.assign(i, {image: i.resource.images.small_image})}
                                                         onClick={this.props.onClick}
                                                     />
                                                 )

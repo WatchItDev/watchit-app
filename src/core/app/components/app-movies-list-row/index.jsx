@@ -1,7 +1,7 @@
 import React from 'react'
 import uid from "shortid";
 import PropTypes from "prop-types";
-import AppMoviesListPoster from 'components/app-main-movies-list-poster'
+import AppMoviesListPoster from 'components/app-movies-list-poster'
 import gatewayHelper from 'core/resources/helpers/gatewayHelper'
 
 export default class AppMoviesListRow extends React.Component {
@@ -32,8 +32,8 @@ export default class AppMoviesListRow extends React.Component {
                 this.props.chunk.map((i) => {
                     return <AppMoviesListPoster
                         key={i._id || uid.generate()} id={i._id}
-                        title={i.title} rating={i.rating}
-                        year={i.year} image={this.parseUriImage(i.medium_image)}
+                        title={i.title} rating={i.rating} year={i.year}
+                        image={this.parseUriImage(i.resource.images.medium_image)}
                         placeHolder={this.props.placeHolder}
                         onClick={this.props.onClick}
                     />
