@@ -67,9 +67,9 @@ module.exports = class Node extends EventEmitter {
          * @param res: callback
          */
         log.info('Starting movies db:', key);
-        this.db = await this.open(key).catch(async () => {
+        this.db = await this.open(key).catch(async (e) => {
             // If db cannot be opened then just kill
-            await this.party('Cannot find peers')
+            log.error(e)
         });
 
         this.db?.events?.on('peer', (p) => {
@@ -100,8 +100,8 @@ module.exports = class Node extends EventEmitter {
          * Kill all - party all
          */
         log.warn('Party rock');
-        await this.close(true);
         this.emit('node-chaos', msg)
+        await this.close(true);
     }
 
 
