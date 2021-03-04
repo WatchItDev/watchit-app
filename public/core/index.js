@@ -110,6 +110,8 @@ module.exports = (ipcMain) => {
         orbit.on('node-error', (m) => e.reply('node-error', m))
             .on('node-peer', (peerSize) => e.reply('node-peer', peerSize))
             .on('node-chaos', (m) => {
+                // Stop queue processor
+                queueInterval && cleanInterval(queueInterval)
                 e.reply('node-chaos', m)
                 ipcMain.emit('party');
             })
@@ -152,7 +154,7 @@ module.exports = (ipcMain) => {
 
     ipcMain.on('node-flush', async () => {
         log.warn('Flushing orbit');
-        await orbit.party(ipcMain)
+        await orbit.party()
     });
 
 };

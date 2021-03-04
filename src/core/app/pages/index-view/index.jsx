@@ -74,7 +74,7 @@ export default class MovieIndex extends React.Component {
             broker.stopIpcEvents();
             broker.listenForNewPeer();
             broker.startSeed()
-            broker.on('bc', (m) => {
+            broker.on('chaos', (m) => {
                 this.setState({state: m, ready: false});
                 setTimeout(() => window.location.href = '#/', 3000)
             })
@@ -120,7 +120,7 @@ export default class MovieIndex extends React.Component {
             log.info('LOADED FROM LOCAL');
             this.startRunning()
             
-        }).on('bc', (m) => {
+        }).on('chaos', (m) => {
             // Kill node and restart login
             this.setState({state: m});
             setTimeout(() => window.location.href = '#/', 2000)
