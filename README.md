@@ -31,7 +31,7 @@ Please look at our [gateway](https://github.com/ZorrillosDev/watchit-gateway) 's
 <details>
   <summary>Installation & Usage</summary>
   
-##Install
+## Install
 
 Please run `npm i` to install dependencies and add `.env` file variables:
 
