@@ -1,4 +1,5 @@
 import React from 'react'
+import styled from 'styled-components'
 import NavBarMenu from 'components/app-nav-bar-menu'
 
 export default class AppMoviesNavBar extends React.Component {
@@ -79,7 +80,6 @@ export default class AppMoviesNavBar extends React.Component {
                 'label': 'News',
                 'action': 'News'
             }, {
-
                 'label': 'Mystery',
                 'action': 'Mystery'
             }, {
@@ -155,7 +155,7 @@ export default class AppMoviesNavBar extends React.Component {
 
     render() {
         return (
-            <div className="nav-wrapper main-nav-filter-movies">
+            <Container>
                 <NavBarMenu
                     btnText="Sort By" list={this.state.sort}
                     onChange={this.sortBy}
@@ -165,7 +165,15 @@ export default class AppMoviesNavBar extends React.Component {
                     btnText="Genre" list={this.state.genres}
                     onChange={this.genres}
                 />
-            </div>
+            </Container>
         )
     }
 }
+
+const Container = styled.div`
+  height: 64px;
+  line-height: 64px;
+  background-color: transparent;
+  width: 100%;
+  position: relative;
+`;

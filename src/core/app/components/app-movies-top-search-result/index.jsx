@@ -2,6 +2,7 @@ import React from 'react'
 import AppMainResultBox from 'components/app-movies-top-search-result-box/'
 import PointsLoader from 'components/util-points-loader'
 import CustomScrollbars from 'components/util-scroller';
+import styled from 'styled-components';
 
 export default class AppMainSearchResult extends React.Component {
 
@@ -12,12 +13,12 @@ export default class AppMainSearchResult extends React.Component {
 
     render() {
         return (
-            <section className="absolute full-width search-result-box left-0 top-100-p z-index-100">
+            <Container>
                 {
                     (this.props.searching &&
-                        <div className="col l12 m12 result-search-box text-center padding-10">
+                        <LoaderContainer>
                             <PointsLoader/>
-                        </div>
+                        </LoaderContainer>
                     ) ||
                     <CustomScrollbars
                         autoHide
@@ -29,32 +30,68 @@ export default class AppMainSearchResult extends React.Component {
                         universal={true}>
                         {
                             (this.props.result.length > 0 &&
-                                <div className="col l12 m12 result-search-box">
-                                    <ul className="collection no-border">
+                                <ResultsContainer>
+                                    <ResultsList>
                                         {(
                                             this.props.result.map((i) => {
                                                 return (
                                                     <AppMainResultBox
-                                                        key={i._id} {...Object.assign(i, {image: `${i.hash}/small_cover_image.jpg`})}
+                                                        key={i._id} {...Object.assign(i, {image: i.small_image})}
                                                         onClick={this.props.onClick}
                                                     />
                                                 )
                                             })
                                         )}
-                                    </ul>
-                                </div>) || <div className="col l12 m12 result-search-box text-center padding-10">
-                                <span className="white-text bold">No results were found</span>
-                            </div>
-
+                                    </ResultsList>
+                                </ResultsContainer>) || <NotFound>No results were found</NotFound>
                         }
                     </CustomScrollbars>
                 }
-            </section>
+            </Container>
         )
     }
 }
 
+const Container = styled.div`
+  position: absolute;
+  width: 100%;
+  z-index: 100;
+  top: 100%;
+  left: 0;
+`;
 
+const LoaderContainer = styled.div`
+  width: 100%;
+  border-radius: 5px;
+  background-color: rgba(0, 0, 0, 0.9);
+  text-align: center;
+  padding: 10px;
+`;
+
+const ResultsContainer = styled.div`
+  width: 100%;
+  padding: 0 0.75rem;
+  border-radius: 5px;
+  background-color: rgba(0, 0, 0, 0.9);
+`;
+
+const ResultsList = styled.ul`
+  margin: 0 0 1rem 0;
+  border-radius: 2px;
+  overflow: hidden;
+  position: relative;
+  border: none;
+  padding: 0;
+  list-style: none;
+`;
+
+const NotFound = styled.span`
+  width: 100%;
+  border-radius: 5px;
+  background-color: rgba(0, 0, 0, 0.9);
+  text-align: center;
+  padding: 10px;
+`;
 
 
 

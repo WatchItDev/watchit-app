@@ -8,12 +8,6 @@ export default class AppMainTopInputs extends React.Component {
 		this.input = null;
 	}
 	
-	static get defaultProps() {
-		return {
-			size: 'm6 l6'
-		}
-	}
-	
 	shouldComponentUpdate() {
 		return false;
 	}
@@ -34,15 +28,11 @@ export default class AppMainTopInputs extends React.Component {
 	
 	render() {
 		return (
-			<div className="clearfix">
-				<form onSubmit={this.preventDefault} action="#">
-					<div className={"input-field-black margin-top-0 col " + this.props.size}>
-						<BoxInput
-							icon="icon-tv" onInput={this.onInput} required={true} ref={this.getRef}
-							autoComplete="off" type="text" placeholder="Search..." name="search"/>
-					</div>
-				</form>
-			</div>
+			<form onSubmit={this.preventDefault} action="#">
+				<BoxInput
+					icon="icon-tv" onInput={this.onInput} required={true} ref={this.getRef}
+					autoComplete="off" type="text" placeholder="Search..." name="search"/>
+			</form>
 		)
 	}
 }

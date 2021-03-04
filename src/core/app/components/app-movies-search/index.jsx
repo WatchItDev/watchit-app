@@ -1,9 +1,9 @@
 import React from 'react'
 import AppMainTopInput from 'components/app-movies-top-inputs'
 import AppSearch from 'components/app-movies-top-search-result'
-import utilHelper from "core/resources/helpers/utilHelper";
-import PropTypes from "prop-types";
-
+import utilHelper from 'core/resources/helpers/utilHelper';
+import PropTypes from 'prop-types';
+import styled from 'styled-components';
 
 export default class AppMainTopInputs extends React.PureComponent {
     constructor(props) {
@@ -82,11 +82,12 @@ export default class AppMainTopInputs extends React.PureComponent {
 
     render() {
         return (
-            <>
+            <SearchContainer>
                 {/*Search result box*/}
                 <AppMainTopInput
-                    onInput={this.onSearch} size="m12 l12"
+                    onInput={this.onSearch}
                     ref={this.getRef}/>
+
                 {
                     (this.state.searching || this.state.searchResult) &&
                     <AppSearch
@@ -94,8 +95,12 @@ export default class AppMainTopInputs extends React.PureComponent {
                         result={this.state.searchResult}
                         onClick={this.onResultCLick}/>
                 }
-
-            </>
+            </SearchContainer>
         )
     }
 }
+
+const SearchContainer = styled.div`
+  position: relative;
+  width: 40%;
+`;

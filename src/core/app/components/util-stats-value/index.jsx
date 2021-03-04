@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import styled from 'styled-components'
 
 export default class StatsValue extends React.PureComponent {
 
@@ -16,9 +17,12 @@ export default class StatsValue extends React.PureComponent {
     }
 
     render() {
-        return <span>
+        return <Text>
             {this.props.type}: {this.props.value}
-        </span>
-
+        </Text>
     }
 }
+
+const Text = styled.span`
+  color: #fff;
+`;

@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import styled from 'styled-components'
 import StatsValue from "components/util-stats-value";
 
 export default class Stats extends React.PureComponent {
@@ -72,14 +73,18 @@ export default class Stats extends React.PureComponent {
 	
 	render() {
 		return <>
-			<span className="icon-traffic-cone icon" />
+			<Icon className="icon-traffic-cone" />
 			<StatsValue value={`${this.tmp}%`} type={`Sync`}/>
-			<span className="icon-book icon" />
+			<Icon className="icon-book" />
 			<StatsValue value={`${this.chunk}/${this.total}`} type={`Movies`}/>
-			<span className="icon-user icon" />
+			<Icon className="icon-user" />
 			<StatsValue value={`${this.peers}`} type={`Peers`}/>
 		</>
-		
-		
 	}
 }
+
+const Icon = styled.span`
+	margin: 0 0.5rem 0 1.2rem;
+	transform: translateY(1px);
+	display: inline-block;
+`;

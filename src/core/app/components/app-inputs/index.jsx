@@ -56,7 +56,7 @@ export default class BoxInput extends React.PureComponent {
     render() {
         return (
             <InputContainer>
-                {this.props.icon && <i className={this.props.icon + " gray-text"}/>}
+                {this.props.icon && <Icon className={this.props.icon}/>}
                 <Input {...this.props}
                        onInput={this.onInput}
                        onChange={this.onChange}
@@ -103,6 +103,13 @@ const Input = styled.input`
   &::placeholder {
     color: #999;
   }
+`;
+
+const Icon = styled.i`
+  position: absolute !important;
+  top: 1rem;
+  right: 1.3rem;
+  color: #555555;
 `;
 
 

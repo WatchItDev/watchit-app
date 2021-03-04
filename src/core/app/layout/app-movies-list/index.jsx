@@ -3,6 +3,7 @@ import uid from "shortid";
 import setting from 'settings'
 import AppMoviesListRow from 'components/app-movies-list-row/'
 import InfiniteLoader from "react-window-infinite-loader";
+import styled from "styled-components";
 import {FixedSizeList as List} from "react-window";
 
 export default class AppMoviesList extends React.Component {
@@ -61,15 +62,14 @@ export default class AppMoviesList extends React.Component {
     }
 
     render() {
-        return <div className="movie-list-posters">
+        return <Container>
             <InfiniteLoader
                 isItemLoaded={this.alreadyLoaded}
                 loadMoreItems={this.onScrollUpdate}
                 itemCount={this.state.count}
             >
                 {({onItemsRendered, ref}) => (
-                    <List className="row-list"
-                          height={setting.defaults.height}
+                    <List height={setting.defaults.height}
                           itemCount={this.state.count}
                           itemSize={setting.defaults.chunkHeight}
                           onItemsRendered={onItemsRendered}
@@ -80,6 +80,16 @@ export default class AppMoviesList extends React.Component {
                     </List>
                 )}
             </InfiniteLoader>
-        </div>
+        </Container>
     }
 }
+
+const Container = styled.div`
+  height: calc(100% - 15rem);
+  width: 100%;
+  overflow: hidden;
+  
+  & > div {
+    height: 100% !important;
+  }
+`;

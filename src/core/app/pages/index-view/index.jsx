@@ -12,6 +12,7 @@ import storageHelper from 'resource/helpers/storageHelper';
 import BoxLoader from 'components/util-box-loader'
 import Movie from 'resource/data/movies'
 import setting from 'settings'
+import styled from 'styled-components'
 
 // Access to main process bridge prop
 const log = window.require("electron-log");
@@ -301,42 +302,33 @@ export default class MovieIndex extends React.Component {
                         {/*Top main nav*/}
                         <section className="row full-height">
                             <div className="clearfix full-height">
-                                <header
-                                    className="no-margin vertical-padding transparent z-depth-1 d-flex align-items-center justify-content-between header_search">
-                                    <div className="col l6 m6 relative input-black-box">
-                                        <AppSearch movies={this.movie} onClick={this.onClickMovie}/>
-                                    </div>
+                                <MainHeader>
+                                    <AppSearch movies={this.movie} onClick={this.onClickMovie}/>
 
-                                    <div className="top-right-small-menu">
-                                        <strong className={'white-text right'}>
-                                            <StatsValue handler={this._index}/>
-                                            <a onClick={this.signOut} className="logout" href={'/'}>
-                                                <i className="icon-log-out font-size-1-rem white-text"/>
-                                            </a>
-                                        </strong>
-                                    </div>
-                                </header>
+                                    <StatsContainer>
+                                        <StatsValue handler={this._index}/>
+                                        <LogOut onClick={this.signOut} href={'/'}>
+                                            <LogOutIcon className="icon-log-out"/>
+                                        </LogOut>
+                                    </StatsContainer>
+                                </MainHeader>
 
                                 {/*Top main nav*/}
-                                <nav className="col l12 m12 transparent z-depth-0">
-                                    <AppNav
-                                        onChange={this.onChange}
-                                        setInitialNavVar={this.initialNavVar}
-                                    />
-                                </nav>
+                                <AppNav
+                                    onChange={this.onChange}
+                                    setInitialNavVar={this.initialNavVar}
+                                />
 
                                 {/* Movies section lists */}
-                                <section className="row movies-box clearfix">
-                                    {
-                                        (!this.state.loading &&
-                                            <AppMovies
-                                                movies={this.state.movies} loadOrder={this.loadOrder}
-                                                count={this.state.count} loading={this.state.scrolling}
-                                                end={this.state.finishLoad} chunkSize={this.state.chunkSize}
-                                                onClick={this.onClickMovie}
-                                            />) || <BoxLoader size={100}/>
-                                    }
-                                </section>
+                                {
+                                    (!this.state.loading &&
+                                        <AppMovies
+                                            movies={this.state.movies} loadOrder={this.loadOrder}
+                                            count={this.state.count} loading={this.state.scrolling}
+                                            end={this.state.finishLoad} chunkSize={this.state.chunkSize}
+                                            onClick={this.onClickMovie}
+                                        />) || <BoxLoader size={100}/>
+                                }
                             </div>
                         </section>
                     </div>
@@ -345,3 +337,28 @@ export default class MovieIndex extends React.Component {
         )
     }
 }
+
+const MainHeader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: transparent;
+  padding: 1rem;
+  margin: 0;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+`;
+
+const StatsContainer = styled.div`
+  color: #fff;
+`;
+
+const LogOut = styled.a`
+  padding: 0 1rem 0 2rem;
+  cursor: pointer;
+  text-decoration: none;
+`;
+
+const LogOutIcon = styled.i`
+  font-size: 1rem;
+  color: #fff;
+`;

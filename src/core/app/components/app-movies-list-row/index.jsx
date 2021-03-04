@@ -1,6 +1,7 @@
 import React from 'react'
 import uid from "shortid";
 import PropTypes from "prop-types";
+import styled from "styled-components";
 import AppMoviesListPoster from 'components/app-movies-list-poster'
 import gatewayHelper from 'core/resources/helpers/gatewayHelper'
 
@@ -27,7 +28,7 @@ export default class AppMoviesListRow extends React.Component {
     }
 
     render() {
-        return <div className={'clearfix row-img'} style={this.props.style}>
+        return <RowImage style={this.props.style}>
             {
                 this.props.chunk.map((i) => {
                     return <AppMoviesListPoster
@@ -45,6 +46,12 @@ export default class AppMoviesListRow extends React.Component {
                     return <AppMoviesListPoster key={uid.generate()} empty={true}/>
                 })
             }
-        </div>
+        </RowImage>
     }
 }
+
+const RowImage = styled.div`
+  display: flex;
+  border-collapse: collapse;
+  width: 100%;
+`;

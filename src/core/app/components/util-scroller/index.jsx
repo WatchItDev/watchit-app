@@ -21,7 +21,7 @@ export default class CustomScrollbars extends React.PureComponent {
 			<div
 				style={{...style, ...thumbStyle}}
 				{...props}
-			></div>
+			/>
 		);
 	}
 	
@@ -41,7 +41,7 @@ export default class CustomScrollbars extends React.PureComponent {
 			<div
 				style={{...style, ...thumbStyle}}
 				{...props}
-			></div>
+			/>
 		);
 	}
 	

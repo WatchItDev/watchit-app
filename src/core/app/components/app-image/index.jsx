@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import PulseLoader from 'components/util-pulse-loader/'
+import styled from "styled-components";
 
 export default class BoxImage extends React.PureComponent {
 
@@ -11,7 +12,6 @@ export default class BoxImage extends React.PureComponent {
             loaded: false
         };
     }
-
 
     static get propTypes() {
         return {
@@ -30,7 +30,7 @@ export default class BoxImage extends React.PureComponent {
 
     render() {
         return (
-            <figure className="image-container no-margin">
+            <ImageContainer>
 
                 {
                     /*Spinner loader*/
@@ -38,7 +38,7 @@ export default class BoxImage extends React.PureComponent {
                     this.props.preload && <PulseLoader style={{top: '20rem'}}/>
                 }
 
-                <img alt={''} src={this.props.src}
+                <Image alt={''} src={this.props.src}
                      onLoad={this.handleImageLoaded}
                      onError={this.handleImageError}
                      className={this.state.status < 0 && this.props.preload ? "hidden" :
@@ -46,7 +46,22 @@ export default class BoxImage extends React.PureComponent {
                              "loaded-img responsive-img" : "locked-img invisible"
                      }
                 />
-            </figure>
+            </ImageContainer>
         )
     }
 }
+
+const ImageContainer = styled.figure`
+  margin: 0;
+  width: 100%;
+  height: auto;
+`;
+
+const Image = styled.img`
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  position: relative;
+  border: 0;
+  border-radius: 0.5rem;
+`;

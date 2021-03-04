@@ -1,6 +1,7 @@
 import React from 'react'
 import BoxImage from 'components/app-image'
 import PulseLoader from 'components/util-pulse-loader'
+import styled from 'styled-components'
 
 export default class AppMoviesListPoster extends React.Component {
 	
@@ -16,34 +17,107 @@ export default class AppMoviesListPoster extends React.Component {
 	
 	render() {
 		return (
-			<div className={`col relative movies-poster padding-left-2 padding-right-2 item`}>
+			<Poster>
 				{
 					!this.props.empty && <PulseLoader/>
 				}
 				{
 					(!this.props.placeHolder && !this.props.empty) &&
-					<a href={`/#`} onClick={this.onClick}>
+					<PosterLink href={`/#`} onClick={this.onClick}>
 						{/* Image Box */}
 						<BoxImage src={this.props.image}/>
 						{/* Label Box */}
-						<div className="hover-poster-box full-width full-height">
-							<div className="hover-info absolute bottom-1-rem">
-								<strong className="white-text truncate">
-									{this.props.title}
-								</strong>
-								<span className="green-text">
-                                <i className="icon-calendar margin-right-3-p"/>
+						<PosterInfo>
+							<PosterInfoTitle>
+								{this.props.title}
+							</PosterInfoTitle>
+							<PosterInfoContent>
+								<PosterInfoItem color="success">
+									<PosterInfoItemIcon className="icon-calendar"/>
 									{this.props.year}
-                            </span>
-								<span className="orange-text margin-left-5-p">
-                                <i className="icon-star margin-right-2-p"/>
+								</PosterInfoItem>
+								<PosterInfoItem color="warning">
+									<PosterInfoItemIcon className="icon-star"/>
 									{this.props.rating}
-                            </span>
-							</div>
-						</div>
-					</a>
+								</PosterInfoItem>
+							</PosterInfoContent>
+						</PosterInfo>
+					</PosterLink>
 				}
-			</div>
+			</Poster>
 		)
 	}
 }
+
+const Poster = styled.div`
+	width: 14.26667%;
+	flex: 1 1;
+	padding: 0;
+	margin: 0.5rem;
+	position: relative;
+	
+	&:hover > a > div {
+		opacity: 1;
+	}
+`;
+
+const PosterLink = styled.a`
+	text-decoration: none;
+	background-color: transparent;
+`;
+
+const PosterInfo = styled.div`
+	position: absolute;
+	opacity: 0;
+	bottom: 1rem;
+	left: 0;
+	border-radius: 0 5px 5px 0;
+	padding: 0.5rem;
+	background-color: rgba(0, 0, 0, 0.8);
+	max-width: 90%;
+	min-width: 90%;
+	transition: all 0.3s ease-in-out;
+`;
+
+const PosterInfoTitle = styled.strong`
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	word-break: break-all;
+	font-weight: 500;
+	color: #fff;
+	display: block;
+`;
+
+const PosterInfoContent = styled.strong`
+	display: flex;
+	flex-wrap: wrap;
+`;
+
+const handleColorType = color => {
+	switch (color) {
+		case "primary":
+			return "#03a9f3";
+		case "danger":
+			return "#F44336";
+		case "success":
+			return "#4CAF50";
+		case "warning":
+			return "#ff9800";
+		default:
+			return "#fff";
+	}
+};
+
+const PosterInfoItem = styled.div`
+    margin-right: 1rem;
+	color: ${({color}) => handleColorType(color)};
+    display: flex;
+    align-items: center;
+    justify-content: center;
+`;
+
+const PosterInfoItemIcon = styled.div`
+    margin-right: 0.2rem;
+    font-size: 1rem;
+`;
