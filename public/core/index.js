@@ -154,7 +154,7 @@ module.exports = (ipcMain) => {
 
     ipcMain.on('node-flush', async () => {
         log.warn('Flushing orbit');
-        await orbit.party()
+        await orbit.party('Logout')
     });
 
 };
