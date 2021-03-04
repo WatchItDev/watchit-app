@@ -9,7 +9,7 @@ export default class AppMainTopInputs extends React.PureComponent {
     constructor(props) {
         super(props);
 
-        this.search_timeout = null;
+        this.searchTimeout = null;
         this.searchRef = null;
 
         this.state = {
@@ -31,8 +31,8 @@ export default class AppMainTopInputs extends React.PureComponent {
         let _invalid_input = utilHelper.invalidString(_target_value);
 
         //Remove old timeout
-        if (this.search_timeout) {
-            clearTimeout(this.search_timeout);
+        if (this.searchTimeout) {
+            clearTimeout(this.searchTimeout);
         }
 
         //Empty write
@@ -49,7 +49,7 @@ export default class AppMainTopInputs extends React.PureComponent {
         }
 
         //Set time out
-        this.search_timeout = setTimeout(() => {
+        this.searchTimeout = setTimeout(() => {
             //Check invalid
             if (!_invalid_input)
                 //Get movies by search

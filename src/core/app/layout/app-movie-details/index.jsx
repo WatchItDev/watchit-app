@@ -28,7 +28,8 @@ export default class MovieDetails extends React.PureComponent {
     async componentDidMount() {
         // Movie details
         const movies = await this.movie.get(this.props.id)
-        const resource = await all(resourceHelper.match(movies.resource))
+        const videos = await all(resourceHelper.match(movies.resource.videos))
+        const resource = Object.assign({}, movies.resource, {videos: videos})
         this.setState({movies: {...movies, ...{resource}}});
     }
 
@@ -57,8 +58,10 @@ export default class MovieDetails extends React.PureComponent {
                                     {/*Poster*/}
                                     <BoxImage
                                         className="full-width"
-                                        src={this.parseUriImage(this.state.movies.large_image)}
                                         preload={true}
+                                        src={this.parseUriImage(
+                                            this.state.movies.resource.images.large_image
+                                        )}
                                     />
                                 </aside>
 

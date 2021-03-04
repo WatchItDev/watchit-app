@@ -141,14 +141,13 @@ export default class AppMovieDetailMenu extends React.PureComponent {
 
                     {/*The resolution menu*/}
                     {
-                        Object.keys(this.props.movie.resource).length > 0 &&
                         <NavBarMenu
                             btnText="HD"
                             onChange={this.onMenuChange}
                             getInitialItem={this.onMenuChange}
                             list={this.prepareMenu(
                                 this.selectBestQuality(
-                                    this.props.movie.resource
+                                    this.props.movie.resource.videos
                                 )
                             )}
                         />

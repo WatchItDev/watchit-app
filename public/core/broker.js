@@ -96,7 +96,7 @@ module.exports = class Broker extends EventEmitter {
          * Cannot connect or any invalid key provided
          */
         ipcRenderer.on('node-chaos', (e, m) => {
-            this.emit('bc', m)
+            this.emit('chaos', m)
         })
     }
 
@@ -105,7 +105,7 @@ module.exports = class Broker extends EventEmitter {
          * Any error in node
          */
         ipcRenderer.on('node-error', (e, m) => {
-            this.emit('bc', m)
+            this.emit('error', m)
 
         })
     }
