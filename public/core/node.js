@@ -69,7 +69,7 @@ module.exports = class Node extends EventEmitter {
         log.info('Starting movies db:', key);
         this.db = await this.open(key).catch(async (e) => {
             // If db cannot be opened then just kill
-            log.error(e)
+            log.error(`Cannot find peers ${e}`)
         });
 
         this.db?.events?.on('peer', (p) => {
@@ -100,8 +100,8 @@ module.exports = class Node extends EventEmitter {
          * Kill all - party all
          */
         log.warn('Party rock');
-        this.emit('node-chaos', msg)
         await this.close(true);
+        this.emit('node-chaos', msg)
     }
 
 
@@ -120,8 +120,8 @@ module.exports = class Node extends EventEmitter {
         // Get orbit instance and next line connect providers
         // Serve as provider too :)
         this.orbit = await this.instanceOB();
-        await this.run(address, res);
         this.emit('node-step', 'Connecting')
+        await this.run(address, res);
         await findProv(this.node, rawAddress);
 
     }
