@@ -60,7 +60,7 @@ export default class MovieDetails extends React.PureComponent {
                                         className="full-width"
                                         preload={true}
                                         src={this.parseUriImage(
-                                            this.state.movies.resource.images.large_image
+                                            this.state.movies.resource.images.large
                                         )}
                                     />
                                 </aside>
