@@ -120,8 +120,8 @@ module.exports = class Node extends EventEmitter {
         // Get orbit instance and next line connect providers
         // Serve as provider too :)
         this.orbit = await this.instanceOB();
-        this.emit('node-step', 'Connecting')
         await this.run(address, res);
+        this.emit('node-step', 'Connecting')
         await findProv(this.node, rawAddress);
 
     }
