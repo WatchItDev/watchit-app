@@ -6,11 +6,17 @@ const settings = require('./settings')
 const ipfsConf = require('./settings/ipfs');
 const {removeFiles} = require('./utils');
 
-const RETRY_GRACE = 5
+const RETRY_GRACE = 10
 const resolveIpfsPaths = () => require('go-ipfs').path()
     .replace('app.asar', 'app.asar.unpacked')
 
-const initIpfsNode = async (isInstance) => {
+
+const forKill = async (isInstance) => {
+    log.info('Forcing stop')
+    if (isInstance.subprocess)
+        return await isInstance.stop();
+    await isInstance.api.stop();
+}, initIpfsNode = async (isInstance) => {
     try {
         // Check if running time dir exists
         log.warn('Starting node');
@@ -18,10 +24,7 @@ const initIpfsNode = async (isInstance) => {
         await isInstance.start();
     } catch (e) {
         // Gateway stop
-        log.info(e.message)
-        if (isInstance.subprocess)
-            return await isInstance.stop();
-        await isInstance.api.stop();
+        await forKill(isInstance)
     }
 
 }
@@ -36,6 +39,14 @@ module.exports = async () => {
         args: ['--enable-pubsub-experiment'],
         remote: false, type: 'go'
     })
+
+    //If locked node try to release lock using API
+    const repoLockDir = `${settings.ROOT_IPFS_DIR}/repo.lock`
+    const alreadyLock = fs.existsSync(repoLockDir)
+    if (alreadyLock) {
+        log.warn('Releasing locked node')
+        return await forKill(isInstance)
+    }
 
     //If api file exists on node setup ipfs-daemon.js line:183 doest spawn process
     //Be sure this lock 'api' file doesnt exists before node boot..

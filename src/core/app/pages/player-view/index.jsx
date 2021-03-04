@@ -1,5 +1,5 @@
 import React from 'react'
-import AppMoviesPlayerTorrent from "components/app-main-movie-player-torrent";
+import AppMoviesPlayerTorrent from "components/app-movie-player-torrent";
 import MainLoader from 'components/util-main-loader'
 import BtnClose from 'components/util-btn-close'
 import Movie from 'resource/data/movies'
@@ -9,7 +9,7 @@ import setting from 'settings'
 
 // Access to main process bridge prop
 const log = window.require("electron-log");
-const ingest = window.bridge.Ingest
+const broker = window.bridge.Broker;
 
 //Movie player pages class
 export default class MoviePlayer extends React.Component {
@@ -17,7 +17,7 @@ export default class MoviePlayer extends React.Component {
         super(props);
 
         //Movie init local db
-        this.movie = new Movie(ingest.p);
+        this.movie = new Movie(broker);
         //Decode string and pass to json object
         this.state = {
             stopped: false,

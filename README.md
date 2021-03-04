@@ -21,27 +21,25 @@ It is also possible that WatchIt can be synchronized through different movie cha
 Migrate your own content and share it with community. WatchIt gateway provides simple tools for the generation and fetching of content. 
 Please look at our [gateway](https://github.com/ZorrillosDev/watchit-gateway) 's readme.
 
-## Stack
-* [OrbitDB](https://orbitdb.org/) it keep us synced.
-* [IPFS](https://github.com/ipfs/go-ipfs) makes us decentralized.
-* [ElectronJs](https://www.electronjs.org/) app bundler.
-* [Create React App](https://github.com/facebook/create-react-app) boilerplate.
-
 ##  More info
 * Visit our site [watchitapp.site](http://watchitapp.site).
 * Read our post in [dev.to](https://dev.to/geolffreym/watchit-2b88).
 * Check out [the roadmap](https://github.com/ZorrillosDev/watchit-desktop/projects/1) to future features.
+* Get in touch with us in [gitter](https://gitter.im/watchit-app/community).
 
 
 <details>
-  <summary>Devs Usage</summary>
+  <summary>Installation and Usage</summary>
+  
+### Install
 
 Please run `npm i` to install dependencies and add `.env` file variables:
+
 ```js
 BROWSER=none
 ```
 
-## Available Scripts
+### Usage
 
 In the project directory, you can run:
 
@@ -76,5 +74,5 @@ Instead, it will copy all the configuration files and the transitive dependencie
 
 You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-<details/>
+</details>
 

@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import AppLoaderBackground from 'components/app-main-movie-player-loader-background/'
-import AppLoaderBar from 'components/app-main-movie-player-loader-bar/'
+import AppLoaderBackground from 'components/app-movie-player-loader-background/'
+import AppLoaderBar from 'components/app-movie-player-loader-bar/'
 
 export default class AppMoviesPlayerLoader extends React.PureComponent {
 	static get propTypes() {
