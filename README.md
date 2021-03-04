@@ -30,13 +30,16 @@ Please look at our [gateway](https://github.com/ZorrillosDev/watchit-gateway) 's
 
 <details>
   <summary>Installation and Usage</summary>
+  
+###Install
 
 Please run `npm i` to install dependencies and add `.env` file variables:
+
 ```js
 BROWSER=none
 ```
 
-## Available Scripts
+### Usage
 
 In the project directory, you can run:
 
