@@ -43,7 +43,6 @@ Settings.resolutions = {
 
 Settings.allowedResource = ['hls', 'torrent']
 Settings.gateways = [
-    'https://ipfs.io',
     'https://vps1.phillm.net',
     'https://vps2.phillm.net',
     'https://gateway.ipfs.io',
