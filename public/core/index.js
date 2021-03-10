@@ -8,7 +8,7 @@ const msgpack = require('msgpack-lite');
 const log = require('electron-log')
 const key = require('./key');
 const Node = require('./node')
-const QUEUE_SLEEP = 5000
+const QUEUE_SLEEP = 8000
 
 module.exports = (ipcMain) => {
 
@@ -155,6 +155,7 @@ module.exports = (ipcMain) => {
     ipcMain.on('node-flush', async () => {
         log.warn('Flushing orbit');
         await orbit.party('Logout')
+
     });
 
 };
