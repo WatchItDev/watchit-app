@@ -19,7 +19,7 @@ afterEach(() => {
 
 test("Temporary Test",() => {
     // Dummy test
-    expect(2 + 2).toBe(4)
+    expect(2 + 2).toBe(4);
 });
 
 /* describe("Image component", () => {
