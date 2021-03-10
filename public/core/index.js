@@ -8,7 +8,7 @@ const msgpack = require('msgpack-lite');
 const log = require('electron-log')
 const key = require('./key');
 const Node = require('./node')
-
+const QUEUE_SLEEP = 5000
 
 module.exports = (ipcMain) => {
 
@@ -99,7 +99,7 @@ module.exports = (ipcMain) => {
             log.info(`Processing with`, validCache ? 'valid cache' : 'no cache')
             asyncLock = true; // Lock process
             await partialSave(e, hash)
-        }, 3000)
+        }, QUEUE_SLEEP)
 
     }, initEvents = (e) => {
         /***
