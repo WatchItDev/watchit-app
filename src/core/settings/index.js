@@ -50,9 +50,7 @@ Settings.gateways = [
     'http://localhost:9090',
     'https://ipfs.infura.io',
     'https://cloudflare-ipfs.com',
-    'https://astyanax.io',
-    'https://cf-ipfs.com',
-    'https://dweb.link'
+    'https://cf-ipfs.com'
 ]
 
 
