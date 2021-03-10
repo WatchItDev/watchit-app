@@ -7,6 +7,7 @@
   "description": "Watch movies everywhere",
   "email": "support@zorrillos.com",
   "homepage": "./",
+  "license": "LICENSE.md",
   "repository": {
     "type": "git",
     "url": "https://github.com/ZorrillosDev/watchit-desktop.git"
