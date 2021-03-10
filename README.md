@@ -49,11 +49,6 @@ Runs the app in the development mode.<br />
 Open to view it in electron.
 
 
-### `npm run inspect`
-
-Runs the app in the development mode.<br />
-Open to view it in electron with inspect mode to connect to chrome-inspector.
-
 ### `npm run build`
 
 Builds the app for production to the `build` folder.<br />
