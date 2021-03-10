@@ -102,6 +102,7 @@
     "subtitle": "^2.0.3",
     "terser-webpack-plugin": "2.3.5",
     "ts-pnp": "1.1.6",
+    "tsparticles": "^1.19.2",
     "unzip": "^0.1.11",
     "url-loader": "2.3.0",
     "v8-compile-cache": "^2.2.0",
