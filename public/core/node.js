@@ -1,9 +1,11 @@
+const {CID} = require('ipfs-http-client')
 const log = require('electron-log')
 const EventEmitter = require('events')
 const OrbitDB = require('orbit-db');
 const {ROOT_ORBIT_DIR} = require('./settings')
 const getIsInstance = require('./ipfs')
 const {findProv} = require('./provs')
+const last = require('it-last')
 const key = require('./key');
 const MAX_RETRIES = 30;
 
@@ -39,10 +41,10 @@ module.exports = class Node extends EventEmitter {
         this.seedMode = isRunningSeed
     }
 
-    get ingestKey() {
-        return key.sanitizedKey(
-            this.rawIngestKey
-        )
+    async getIngestKey() {
+        const rawAddress = this.rawIngestKey
+        const resolveKey = await this.resolveKey(rawAddress)
+        return key.sanitizedKey(resolveKey)
     }
 
     get rawIngestKey() {
@@ -60,12 +62,27 @@ module.exports = class Node extends EventEmitter {
         return [validCache, cache]
     }
 
+    async resolveKey(ipns) {
+        /**
+         * Resolve ipns key if needed
+         * @param ipns {string} IPNS hash
+         * @return {string} Orbit address resolver key from ipns
+         */
+        if (~ipns.indexOf('zd')) return ipns
+        this.emit('node-step', 'Resolving')
+        const cid = await last(this.node.name.resolve(ipns))
+        const cleanedCID = cid.split('/').pop()
+        const newCID = new CID(cleanedCID)
+        return newCID.toBaseEncodedString('base58btc')
+    }
+
     async run(key, res) {
         /***
          * Opem orbit address and set events listeners
          * @param key: orbit address
          * @param res: callback
          */
+
         log.info('Starting movies db:', key);
         this.db = await this.open(key).catch(async (e) => {
             // If db cannot be opened then just kill
@@ -114,7 +131,7 @@ module.exports = class Node extends EventEmitter {
          */
         log.info('Node ready');
         log.info('Loading db..');
-        const address = this.ingestKey;
+        const address = await this.getIngestKey();
         const rawAddress = this.rawIngestKey
 
         // Get orbit instance and next line connect providers

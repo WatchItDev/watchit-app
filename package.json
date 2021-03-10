@@ -52,6 +52,7 @@
     "ipfs-http-client": "^47.0.1",
     "ipfsd-ctl": "^7.2.0",
     "it-all": "^1.0.5",
+    "it-last": "^1.0.5",
     "it-reduce": "^1.0.5",
     "jest": "24.9.0",
     "jest-environment-jsdom-fourteen": "1.0.1",
