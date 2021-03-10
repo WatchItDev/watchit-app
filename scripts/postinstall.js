@@ -1,5 +1,4 @@
-const log = require('electron-log')
-const {execPassthru, getElevateExec, isLinux, osType} = require('./util')
+const {execPassthru, isLinux} = require('./util')
 
 
 const executePostInstall = async () => {
