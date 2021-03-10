@@ -1,11 +1,11 @@
 const EventEmitter = require('events')
-const Auth = require('./key');
+const Key = require('./key');
 const ipcRenderer = require('electron').ipcRenderer;
 const LinvoDB = require("linvodb3");
 const log = require('electron-log')
 LinvoDB.defaults.store = {db: require("leveldown")};
 LinvoDB.defaults.autoIndexing = false;
-LinvoDB.dbPath = Auth.init.db
+LinvoDB.dbPath = Key.init.db
 
 // ipcRender listeners
 const DB = 'wt'
@@ -84,7 +84,7 @@ module.exports = class Broker extends EventEmitter {
          */
         ipcRenderer.on('node-peer', (e, p) => {
             log.info('New peer', p);
-            Auth.addToStorage({'peers': p});
+            Key.addToStorage({'peers': p});
             this.emit('peer', p)
 
         })
