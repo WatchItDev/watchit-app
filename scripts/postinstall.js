@@ -7,7 +7,7 @@ const executePostInstall = async () => {
      */
     if (isLinux) {
         // Fix The SUID sandbox helper binary was found
-        // execPassthru('sudo chown root.root node_modules/electron/dist/chrome-sandbox -R', exec)
+        await execPassthru('sudo chown root.root node_modules/electron/dist/chrome-sandbox -R', exec)
         await execPassthru('sudo chmod 4755 -R node_modules/electron/dist/chrome-sandbox')
     }
 
