@@ -119,16 +119,16 @@ export default class MovieIndex extends React.Component {
             //Start filtering set cache synced movies
             log.info('LOADED FROM LOCAL');
             this.startRunning()
-            
+
         }).on('chaos', (m) => {
             // Kill node and restart login
             this.setState({state: m});
             setTimeout(() => window.location.href = '#/', 2000)
-            
+
         }).on('error', (msg = 'Waiting Network') => {
             if (this.state.ready) return;
             this.setState({state: msg});
-            
+
         }).on('done', () => {
             log.info('LOAD DONE')
         }).load()
@@ -271,7 +271,10 @@ export default class MovieIndex extends React.Component {
         event.preventDefault();
         localStorage.clear();
         broker.flush();
-        window.location.href = '#/'
+        this.setState({
+            ready: false,
+            state: 'Please Wait'
+        })
     }
 
 
