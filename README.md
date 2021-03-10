@@ -43,7 +43,7 @@ BROWSER=none
 
 In the project directory, you can run:
 
-### `npm run dev`
+### `npm run start`
 
 Runs the app in the development mode.<br />
 Open to view it in electron.
