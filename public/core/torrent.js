@@ -79,7 +79,7 @@ module.exports = class TorrentStreamer {
 
             typeof onProgress === 'function' ? onProgress.call(this, flix, percent, state) : null;
             this.loadedTimeout = setTimeout(function () {
-                this.checkLoadingProgress(flix, onReady, onProgress)
+                this.checkLoadingProgress(flix, {onReady, onProgress})
             }.bind(this), 500);
         }
 
