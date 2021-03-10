@@ -4,7 +4,7 @@ const ipcRenderer = require('electron').ipcRenderer;
 const LinvoDB = require("linvodb3");
 const log = require('electron-log')
 LinvoDB.defaults.store = {db: require("leveldown")};
-LinvoDB.defaults.autoIndexing = false;
+LinvoDB.defaults.autoIndexing = true
 LinvoDB.dbPath = Key.init.db
 
 // ipcRender listeners
