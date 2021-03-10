@@ -126,6 +126,7 @@
       }
     ],
     "files": [
+      "public/**/*",
       "build/**/*",
       "node_modules/**/*",
       "src/media/icons/*",
