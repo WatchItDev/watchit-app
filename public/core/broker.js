@@ -160,7 +160,7 @@ module.exports = class Broker extends EventEmitter {
             log.info('LOADING FROM NETWORK');
             log.info(collection[collection.length - 1]['_id']);
             log.info(collection[0]['_id']);
-            this.db.insert(collection, (e, n) => console.log(`Inserted ${n.length}`)); // Save in local
+            this.db.insert(collection, (e, n) => log.info(`Inserted ${n.length}`)); // Save in local
             this.emit('replicated')
         })
     }
