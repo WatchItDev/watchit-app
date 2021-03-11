@@ -1,7 +1,7 @@
 
 <img src="/src/media/icons/icon.png" width="100px"/>
 
-#WatchIT
+# WatchIT
 
 ## Frequently Asked Questions
 

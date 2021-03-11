@@ -26,6 +26,7 @@ Please look at our [gateway](https://github.com/ZorrillosDev/watchit-gateway) 's
 * Read our post in [dev.to](https://dev.to/geolffreym/watchit-2b88).
 * Check out [the roadmap](https://github.com/ZorrillosDev/watchit-desktop/projects/1) to future features.
 * Get in touch with us in [gitter](https://gitter.im/watchit-app/community).
+* Frequently Asked Questions [FAQ](faq.md)
 
 
 <details>
