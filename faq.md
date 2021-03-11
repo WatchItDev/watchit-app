@@ -1,11 +1,9 @@
-<p style="text-align:center;">
+
 <img src="/src/media/icons/icon.png" width="100px"/>
-</p>
-<h1 style="text-align:center; margin-top:0; padding:0" >WatchIT</h1>
+
+#WatchIT
 
 ## Frequently Asked Questions
-
----
 
 ### Is this illegal? What about copyright infringement?
 
@@ -33,4 +31,4 @@ You wll recived the stream data from somebody that is already watching the movie
 
 To avoid copyright infringement You can only search for movies that are available for the public domain. we hope in the future we can work with partners to bring you a more up to date database of movie. so please be patience this is just the begining.
 
-<span style="font-size:10px; font-style:italic;">we are going to be updating this file to answer the most common questions and also to explain a little bit more about how to app works.</span>
+*we are going to be updating this file to answer the most common questions and also to explain a little bit more about how to app works.*
