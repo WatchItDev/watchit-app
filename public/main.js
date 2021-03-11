@@ -8,13 +8,13 @@ const {
 } = require('electron-updater');
 const {
     app, BrowserWindow, ipcMain,
-    protocol, Menu, dialog
+    protocol, Menu, dialog, session
 } = require('electron');
 
 const ROOT_APP = process.cwd();
 const ROOT_STORE = app.getPath('appData');
 const ENV = process.env.ENV || 'prod';
-const inDev = Object.is(ENV, 'dev');
+const inDev = Object.is(ENV, 'development');
 let win, loadingScreen,
     isDarwin = Object.is(process.platform, 'darwin'),
     appIcon = path.join(ROOT_APP, '/src/media/icons/icon.png'),
@@ -37,7 +37,28 @@ dialog.showErrorBox = (title, content) => {
     log.info(`${title}\n${content}`);
 };
 
-const removeCacheDirs = () => {
+/*******************
+ * FUNCTIONS
+ *******************/
+const registerMiddleware = () => {
+    // Register "proxy" middleware for global requests
+    // TODO Retry connection if fail!!
+    session.defaultSession.webRequest.onHeadersReceived(
+        {urls: []},
+        (details, callback) => {
+            callback({
+                responseHeaders: details.responseHeaders
+            })
+        }
+    )
+
+    //Register "file" protocol to use locally
+    protocol.registerFileProtocol('file', (r, cb) => {
+        let file = r.url.substr(7)
+        let headers = {'Content-Type': mime.getType(file)}
+        cb({path: file, headers: headers})
+    })
+}, removeCacheDirs = () => {
     //Auth.removeFromStorage('tmp')
     fs.readdirSync(appPath).filter(
         fn => fn.startsWith('w_alloc') || fn.startsWith('w_source')
@@ -185,6 +206,13 @@ const removeCacheDirs = () => {
     return interval;
 }
 
+/*******************
+ * END FUNCTIONS
+ *******************/
+
+/*******************
+ * LISTENERS
+ *******************/
 //Auto update setup
 autoUpdater.logger = log;
 autoUpdater.logger.transports.file.level = 'info';
@@ -266,27 +294,10 @@ app.commandLine.appendSwitch('ignore-certificate-errors');
 app.commandLine.appendSwitch('disable-features', 'OutOfBlinkCors');
 app.whenReady().then(() => {
 
-    // Modify the user agent for all requests to the following urls.
-    // const filter = {
-    //     urls: ['https://*.github.com/*', '*://electron.github.io']
-    // }
-    //
-    // // session.defaultSession.webRequest.onBeforeSendHeaders(filter, (details, callback) => {
-    // //
-    // //     details.requestHeaders['User-Agent'] = 'MyAgent'
-    // //     callback({ requestHeaders: details.requestHeaders })
-    // // })
-
-    //Register
-    protocol.registerFileProtocol('file', (r, cb) => {
-        let file = r.url.substr(7)
-        let headers = {'Content-Type': mime.getType(file)}
-        cb({path: file, headers: headers})
-    })
-
     // Load the dist build or connect to webpack-dev-server
     createLoadingScreen(inDev);
     createMain(inDev);
+    registerMiddleware();
 
     //TODO doc
     node(ipcMain);
@@ -317,3 +328,7 @@ app.whenReady().then(() => {
     });
 
 })
+
+/*******************
+ * END LISTENERS
+ *******************/
