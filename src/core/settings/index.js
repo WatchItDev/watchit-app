@@ -43,24 +43,15 @@ Settings.resolutions = {
 
 Settings.allowedResource = ['hls', 'torrent']
 Settings.gateways = [
-    'https://vps1.phillm.net',
-    'https://vps2.phillm.net',
-    'https://gateway.ipfs.io',
-    'https://gateway.pinata.cloud',
+    // 'https://vps1.phillm.net',
+    // 'https://vps2.phillm.net',
+    // 'https://gateway.ipfs.io',
+    // 'https://gateway.pinata.cloud',
     'http://localhost:9090',
-    'https://ipfs.infura.io',
-    'https://cloudflare-ipfs.com',
-    'https://cf-ipfs.com'
+    // 'https://ipfs.infura.io',
+    // 'https://cloudflare-ipfs.com',
+    // 'https://cf-ipfs.com'
 ]
-
-
-//Errors codes
-Settings.errorCodes = {
-    ERROR_IMAGE_BROKEN_LINK: 300,
-    ERROR_BAD_TORRENT: 301,
-    ERROR_MOVIE_PLAYER: 302,
-    ERROR_BAD_SUBTITLE: 303
-};
 
 export default Settings;
 

@@ -265,7 +265,17 @@ app.commandLine.appendSwitch('js-flags', '--max-old-space-size=512')
 app.commandLine.appendSwitch('ignore-certificate-errors');
 app.commandLine.appendSwitch('disable-features', 'OutOfBlinkCors');
 app.whenReady().then(() => {
-    global.isElectron = true
+
+    // Modify the user agent for all requests to the following urls.
+    // const filter = {
+    //     urls: ['https://*.github.com/*', '*://electron.github.io']
+    // }
+    //
+    // // session.defaultSession.webRequest.onBeforeSendHeaders(filter, (details, callback) => {
+    // //
+    // //     details.requestHeaders['User-Agent'] = 'MyAgent'
+    // //     callback({ requestHeaders: details.requestHeaders })
+    // // })
 
     //Register
     protocol.registerFileProtocol('file', (r, cb) => {
@@ -278,7 +288,7 @@ app.whenReady().then(() => {
     createLoadingScreen(inDev);
     createMain(inDev);
 
-    //Main tools
+    //TODO doc
     node(ipcMain);
 
     ipcMain.on('close', () => app.quit())
