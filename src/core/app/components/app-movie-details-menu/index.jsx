@@ -27,7 +27,7 @@ export default class AppMovieDetailMenu extends React.PureComponent {
 
 
     isMovieResource(resourceType) {
-        return settings.allowedResource.includes(
+        return settings.streaming.includes(
             resourceType
         )
     }

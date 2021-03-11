@@ -27,7 +27,7 @@ export default {
          * @type {{torrent: default.torrent, hls: default.hls}}
          * @return <object>: Streamer
          */
-        if (!settings.allowedResource.includes(type))
+        if (!settings.streaming.includes(type))
             return false;
 
         return {
@@ -42,7 +42,7 @@ export default {
          * @return <object>: {...object, {health:int}}
          */
 
-        if (!settings.allowedResource.includes(type))
+        if (!settings.streaming.includes(type))
             return false;
 
         return {

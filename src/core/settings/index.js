@@ -41,16 +41,16 @@ Settings.resolutions = {
     ]
 };
 
-Settings.allowedResource = ['hls', 'torrent']
+Settings.streaming = ['hls', 'torrent']
 Settings.gateways = [
-    // 'https://vps1.phillm.net',
-    // 'https://vps2.phillm.net',
-    // 'https://gateway.ipfs.io',
-    // 'https://gateway.pinata.cloud',
+    'https://vps1.phillm.net',
+    'https://vps2.phillm.net',
+    'https://gateway.ipfs.io',
+    'https://gateway.pinata.cloud',
     'http://localhost:9090',
-    // 'https://ipfs.infura.io',
-    // 'https://cloudflare-ipfs.com',
-    // 'https://cf-ipfs.com'
+    'https://ipfs.infura.io',
+    'https://cloudflare-ipfs.com',
+    'https://cf-ipfs.com'
 ]
 
 export default Settings;
