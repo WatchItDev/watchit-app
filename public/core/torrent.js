@@ -10,7 +10,7 @@ const parseTorrent = require('parse-torrent');
 const webtorrentHealth = require('webtorrent-health')
 const TorrentConf = require(`${__dirname}/settings/torrent`);
 const {ROOT_TMP_FOLDER} = require(`${__dirname}/settings/`)
-const TORRENT_FILE_READ_TIMEOUT = 30 * 1000
+const TORRENT_FILE_READ_TIMEOUT = 60 * 1000
 
 module.exports = class TorrentStreamer {
     constructor() {
