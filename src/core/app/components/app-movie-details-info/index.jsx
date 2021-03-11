@@ -1,33 +1,30 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import styled from "styled-components";
 
 export default class AppMovieDetailInfo extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			year: {
-				color: 'red',
-				align: 'left',
+				color: 'danger',
 				icon: 'calendar'
 			},
 			rating: {
-				color: 'green',
-				align: 'center',
+				color: 'success',
 				icon: 'star'
 			},
 			runtime: {
-				color: 'blue',
-				align: 'right',
+				color: 'primary',
 				icon: 'back-in-time'
 			},
 			rate: {
-				color: 'orange',
-				align: 'right',
+				color: 'warning',
 				icon: 'bell'
 			}
 		}
 	}
-	
+
 	static get propTypes() {
 		return {
 			title: PropTypes.string.isRequired,
@@ -39,27 +36,69 @@ export default class AppMovieDetailInfo extends React.Component {
 		return (
 			<>
 				{/*Title*/}
-				<div className="col l12 m12 s12 width-55-vw">
-					<h1 className="white-text margin-top-0 font-type-titles truncate">
-						{this.props.title}
-					</h1>
-				</div>
-				<div className="col l12 m12 s12">
+				<MainTitle>
+					{this.props.title}
+				</MainTitle>
+				<RatingContainer>
 					{
 						Object.entries(this.props.info).filter(([k, v]) => v ? k : false).map(([char, val], idx) => {
 							return (
-								<div className={"col " + (Object.is(idx, 0) && 'padding-left-0')} key={char}>
-									<strong
-										className={this.state[char]['color'] + "-text flow-text " + this.state[char]['align'] + "-align"}>
-										<i className={"normalize-medium-icon left margin-right-8 icon-" + this.state[char]['icon']}/>
-										{val}
-									</strong>
-								</div>
+								<RatingItem color={this.state[char]['color']} key={val}>
+									<RatingIcon className={`icon-${this.state[char]['icon']}`}/>
+									<span>{val}</span>
+								</RatingItem>
 							)
 						})
 					}
-				</div>
+				</RatingContainer>
 			</>
 		)
 	}
 }
+
+
+const MainTitle = styled.h1`
+	margin: 0 0 20px 0;
+	width: 100%;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	font-weight: 300;
+	word-break: break-all;
+	padding: 0 0.75rem;
+	color: #fff;
+`;
+
+const RatingContainer = styled.div`
+	width: 100%;
+	display: flex;
+	padding: 0 0.75rem;
+`;
+
+const handleColorType = color => {
+	switch (color) {
+		case "primary":
+			return "#03a9f3";
+		case "danger":
+			return "#F44336";
+		case "success":
+			return "#4CAF50";
+		case "warning":
+			return "#ff9800";
+		default:
+			return "#fff";
+	}
+};
+
+const RatingItem = styled.strong`
+	margin-right: 1.5rem;
+	font-size: 1.8rem;
+	font-weight: 300;
+	display: flex;
+	align-items: center;
+	color: ${({color}) => handleColorType(color)};
+`;
+
+const RatingIcon = styled.i`
+	margin-right: 0.5rem;
+`;

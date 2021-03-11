@@ -1,6 +1,7 @@
 import React from 'react';
 import Logo from 'components/util-header-logo'
 import styled from 'styled-components';
+import background from 'media/img/layout/background.jpg';
 
 const electron = window.require('electron');
 const ipcRenderer = electron.ipcRenderer;
@@ -58,6 +59,8 @@ const Container = styled.div`
   position: absolute;
   height: 100%;
   width: 100%;
+  background: url(${background}) no-repeat center center fixed;
+  background-size: cover;
 `;
 
 const Header = styled.header`

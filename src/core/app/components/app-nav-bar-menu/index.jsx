@@ -137,7 +137,7 @@ const Item = styled.li`
 
     & > div {
       display: inline-flex;
-      top: 100%;
+      top: 3.5rem;
       position: absolute;
       opacity: 1;
     }
@@ -151,25 +151,28 @@ const ItemButton = styled.a`
   font-size: 1.2rem;
   width: fit-content;
   cursor: pointer;
+  height: 3rem;
+  align-items: center;
 `;
 
 const ItemIcon = styled.div`
   top: 0.1rem;
   position: relative;
   margin-right: 4px;
-  height: 64px;
-  line-height: 64px;
+  line-height: 1.2rem;
   display: block;
   font-size: 1.2rem
 `;
 
 const ItemTitle = styled.div`
   font-size: 1.2rem;
+  line-height: 1.2rem;
   color: #fff;
 `;
 
 const ItemSecondTitle = styled.div`
   font-size: 1.2rem;
+  line-height: 1.2rem;
   margin-left: 5px;
   color: #2196F3;
 `;

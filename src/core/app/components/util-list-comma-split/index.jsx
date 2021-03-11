@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import uid from "shortid";
+import styled from "styled-components";
 
 export default class ListCommaSplit extends React.Component {
 	shouldComponentUpdate() {
@@ -15,17 +16,31 @@ export default class ListCommaSplit extends React.Component {
 	
 	render() {
 		return (
-			<div className="col l12 m12 s12 truncate flow-text blue-grey-text">
+			<SecondaryTitleContainer>
 				{
 					this.props.list.map((splitter) => {
 						return (
-							<span className="separated-comma" key={uid.generate()}>
+							<span key={uid.generate()}>
                                 {splitter}
                             </span>
 						)
 					})
 				}
-			</div>
+			</SecondaryTitleContainer>
 		)
 	}
 }
+
+
+const SecondaryTitleContainer = styled.div`
+	margin: 20px 0;
+	font-size: 1.8rem;
+	width: 100%;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	font-weight: 300;
+	word-break: break-all;
+	padding: 0 0.75rem;
+	color: #607d8b;
+`;

@@ -298,45 +298,45 @@ export default class MovieIndex extends React.Component {
                             <AppLoader stateText={this.state.state} statePercent={this.state.percent}/>
                         </div>
                     ) ||
-                    <div className="relative full-height main-view">
+                    <MainContainer className="main ">
+                        <MainHeader>
+                            <AppSearch movies={this.movie} onClick={this.onClickMovie}/>
+
+                            <StatsContainer>
+                                <StatsValue handler={this._index}/>
+                                <LogOut onClick={this.signOut} href={'/'}>
+                                    <LogOutIcon className="icon-log-out"/>
+                                </LogOut>
+                            </StatsContainer>
+                        </MainHeader>
+
                         {/*Top main nav*/}
-                        <section className="row full-height">
-                            <div className="clearfix full-height">
-                                <MainHeader>
-                                    <AppSearch movies={this.movie} onClick={this.onClickMovie}/>
+                        <AppNav
+                            onChange={this.onChange}
+                            setInitialNavVar={this.initialNavVar}
+                        />
 
-                                    <StatsContainer>
-                                        <StatsValue handler={this._index}/>
-                                        <LogOut onClick={this.signOut} href={'/'}>
-                                            <LogOutIcon className="icon-log-out"/>
-                                        </LogOut>
-                                    </StatsContainer>
-                                </MainHeader>
-
-                                {/*Top main nav*/}
-                                <AppNav
-                                    onChange={this.onChange}
-                                    setInitialNavVar={this.initialNavVar}
-                                />
-
-                                {/* Movies section lists */}
-                                {
-                                    (!this.state.loading &&
-                                        <AppMovies
-                                            movies={this.state.movies} loadOrder={this.loadOrder}
-                                            count={this.state.count} loading={this.state.scrolling}
-                                            end={this.state.finishLoad} chunkSize={this.state.chunkSize}
-                                            onClick={this.onClickMovie}
-                                        />) || <BoxLoader size={100}/>
-                                }
-                            </div>
-                        </section>
-                    </div>
+                        {/* Movies section lists */}
+                        {
+                            (!this.state.loading &&
+                                <AppMovies
+                                    movies={this.state.movies} loadOrder={this.loadOrder}
+                                    count={this.state.count} loading={this.state.scrolling}
+                                    end={this.state.finishLoad} chunkSize={this.state.chunkSize}
+                                    onClick={this.onClickMovie}
+                                />) || <BoxLoader size={100}/>
+                        }
+                    </MainContainer>
                 }
             </>
         )
     }
 }
+
+const MainContainer = styled.div`
+  position: relative;
+  height: 100%;
+`;
 
 const MainHeader = styled.div`
   display: flex;

@@ -7,6 +7,7 @@ import cryptHelper from 'core/resources/helpers/cryptHelper'
 import TrailerPop from 'components/app-movie-details-trailer'
 import util from 'resource/helpers/utilHelper'
 import gatewayHelper from "resource/helpers/gatewayHelper";
+import styled from "styled-components";
 
 export default class AppMovieDetailMenu extends React.PureComponent {
     constructor(props) {
@@ -42,10 +43,10 @@ export default class AppMovieDetailMenu extends React.PureComponent {
     }
 
     getHealth(rate) {
-        rate = rate < 1 ? 'red-text' :
+        rate = rate < 1 ? 'danger' :
             rate >= 1 && rate <= 2 ?
-                'yellow-text' : 'green-text';
-        return <i className={`icon-heart pointer-events-none ${rate}`}/>
+                'warning' : 'success';
+        return <Icon className={`icon-heart`} color={rate}/>
     }
 
     prepareMenu(items) {
@@ -67,7 +68,6 @@ export default class AppMovieDetailMenu extends React.PureComponent {
             };
         });
     }
-
 
     onMenuChange = (t) => this.prepareDataToPlayer(t.action, t.type)
 
@@ -122,58 +122,91 @@ export default class AppMovieDetailMenu extends React.PureComponent {
 
     render() {
         return (
-            <nav className="col l12 m12 transparent z-depth-0">
-                <div className="nav-wrapper">
-
-                    {
-                        this.state.modalOpen &&
-                        <TrailerPop
-                            trailer={this.props.movie.trailer_code}
-                            onClose={this.closeTrailer}
-                        />
-                    }
-
-                    {/*Play*/}
-                    <NavBarButton
-                        text={'Play'} icon={'icon-controller-play'}
-                        link={{href: `#/play/${this.state.resource}/${this.state.sub}`}}
+            <NavWrapper>
+                {
+                    this.state.modalOpen &&
+                    <TrailerPop
+                        trailer={this.props.movie.trailer_code}
+                        onClose={this.closeTrailer}
                     />
+                }
 
-                    {/*The resolution menu*/}
-                    {
-                        <NavBarMenu
-                            btnText="HD"
-                            onChange={this.onMenuChange}
-                            getInitialItem={this.onMenuChange}
-                            list={this.prepareMenu(
-                                this.selectBestQuality(
-                                    this.props.movie.resource.videos
-                                )
-                            )}
-                        />
-                    }
+                {/*Play*/}
+                <NavBarButton
+                    text={'Play'} icon={'icon-controller-play'}
+                    link={{href: `#/play/${this.state.resource}/${this.state.sub}`}}
+                />
 
-                    {
-                        'subtitles' in this.props.movie &&
-                        Object.keys(this.props.movie.subtitles).length > 0 &&
-                        <NavBarMenu
-                            btnText="" onChange={this.onMenuChange}
-                            getInitialItem={this.onMenuChange}
-                            list={this.prepareMenu(
-                                this.selectAvailableSubs()
-                            )}
-                        />
-                    }
+                {/*The resolution menu*/}
+                {
+                    <NavBarMenu
+                        btnText="HD"
+                        onChange={this.onMenuChange}
+                        getInitialItem={this.onMenuChange}
+                        list={this.prepareMenu(
+                            this.selectBestQuality(
+                                this.props.movie.resource.videos
+                            )
+                        )}
+                    />
+                }
 
-                    {
-                        this.props.movie.trailer_code &&
-                        <NavBarButton
-                            text={'Trailer'} icon={'icon-video'} mrb={7}
-                            link={{onClick: this.openTrailer, href: '#'}}
-                        />
-                    }
-                </div>
-            </nav>
+                {
+                    'subtitles' in this.props.movie &&
+                    Object.keys(this.props.movie.subtitles).length > 0 &&
+                    <NavBarMenu
+                        btnText="" onChange={this.onMenuChange}
+                        getInitialItem={this.onMenuChange}
+                        list={this.prepareMenu(
+                            this.selectAvailableSubs()
+                        )}
+                    />
+                }
+
+                {
+                    this.props.movie.trailer_code &&
+                    <NavBarButton
+                        text={'Trailer'} icon={'icon-video'} mrb={7}
+                        link={{onClick: this.openTrailer, href: '#'}}
+                    />
+                }
+            </NavWrapper>
         )
     }
 }
+
+const handleColorType = color => {
+    switch (color) {
+        case "primary":
+            return "#03a9f3";
+        case "danger":
+            return "#F44336";
+        case "success":
+            return "#4CAF50";
+        case "warning":
+            return "#ff9800";
+        default:
+            return "#fff";
+    }
+};
+
+const Icon = styled.i`
+  margin-left: 0.5rem;
+  color: ${({color}) => handleColorType(color)};
+`;
+
+const NavWrapper = styled.div`
+  position: relative;
+  width: 100%;
+  height: 56px;
+  line-height: 56px;
+  padding: 0 0.75rem;
+  box-shadow: none;
+  background-color: transparent;
+  display: flex;
+  
+  & > ul {
+    display: flex;
+    align-items: center;
+  }
+`;

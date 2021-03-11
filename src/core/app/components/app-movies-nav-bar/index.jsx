@@ -176,4 +176,7 @@ const Container = styled.div`
   background-color: transparent;
   width: 100%;
   position: relative;
+  padding: 0 1rem;
+  display: flex;
+  align-items: center;
 `;

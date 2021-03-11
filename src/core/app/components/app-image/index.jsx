@@ -41,9 +41,9 @@ export default class BoxImage extends React.PureComponent {
                 <Image alt={''} src={this.props.src}
                      onLoad={this.handleImageLoaded}
                      onError={this.handleImageError}
-                     className={this.state.status < 0 && this.props.preload ? "hidden" :
-                         (this.state.loaded || !this.props.preload) ?
-                             "loaded-img responsive-img" : "locked-img invisible"
+                     loaded={
+                         !(this.state.status < 0 && this.props.preload)
+                         && (this.state.loaded || !this.props.preload)
                      }
                 />
             </ImageContainer>
@@ -64,4 +64,6 @@ const Image = styled.img`
   position: relative;
   border: 0;
   border-radius: 0.5rem;
+  transition: all 1.5s ease-in-out;
+  opacity: ${props => props.loaded ? 1 : 0};
 `;

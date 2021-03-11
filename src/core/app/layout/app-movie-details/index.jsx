@@ -6,13 +6,13 @@ import MainHeader from 'components/util-header'
 import BoxImage from 'components/app-image'
 import AppMovieDetailInfo from 'components/app-movie-details-info'
 import AppMovieDetailMenu from 'components/app-movie-details-menu'
-import FlowText from 'components/util-flow-text'
 import CustomScrollbars from 'components/util-scroller';
 import ListCommaSplit from 'components/util-list-comma-split'
 
 import Movie from 'resource/data/movies'
 import gatewayHelper from 'resource/helpers/gatewayHelper'
 import resourceHelper from "resource/helpers/resourceHelper";
+import styled from "styled-components";
 
 // Access to main process bridge prop
 const broker = window.bridge.Broker
@@ -45,76 +45,181 @@ export default class MovieDetails extends React.PureComponent {
 
     render() {
         return (
-            <div className="absolute full-height movie-details">
+            <DetailsContainer>
                 {/*Close button*/}
                 <MainHeader text="Movie" icon="icon-tv" onClick={this.props.onClick}/>
-                <section className="row clearfix full-height margin-top-5-vh padding-left-2-vw">
-                    {/*Main Loader or Movie details*/}
-                    {
-                        (this.state.movies
-                            && <div className="d-flex">
-                                {/*Aside*/}
-                                <aside className="col l4 m4 movie-details-poster relative">
-                                    {/*Poster*/}
-                                    <BoxImage
-                                        className="full-width"
-                                        preload={true}
-                                        src={this.parseUriImage(
-                                            this.state.movies.resource.images.large
-                                        )}
+                {/*Main Loader or Movie details*/}
+                {
+                    (this.state.movies
+                        && <SectionsContainer>
+                            {/*Aside*/}
+                            <LeftSection>
+                                {/*Poster*/}
+                                <BoxImage
+                                    className="full-width"
+                                    preload={true}
+                                    src={this.parseUriImage(
+                                        this.state.movies.resource.images.large
+                                    )}
+                                />
+                            </LeftSection>
+
+                            {/*Main Section*/}
+                            <RightSection>
+                                <Header>
+                                    {/*Movie Info*/}
+                                    <AppMovieDetailInfo
+                                        title={this.state.movies.title}
+                                        info={{
+                                            year: this.state.movies.year,
+                                            rating: this.state.movies.rating,
+                                            runtime: this.state.movies.runtime,
+                                            rate: this.state.movies.mpa_rating
+                                        }}
                                     />
-                                </aside>
+                                </Header>
 
-                                {/*Main Section*/}
-                                <section className="col l8 m8">
-                                    <header className="row">
-                                        {/*Movie Info*/}
-                                        <AppMovieDetailInfo
-                                            title={this.state.movies.title}
-                                            info={{
-                                                year: this.state.movies.year,
-                                                rating: this.state.movies.rating,
-                                                runtime: this.state.movies.runtime,
-                                                rate: this.state.movies.mpa_rating
-                                            }}
-                                        />
-                                    </header>
+                                {/*Genres*/}
+                                <ListCommaSplit
+                                    list={this.state.movies.genres}
+                                />
 
-                                    {/*Genres*/}
-                                    <section className="row">
-                                        <ListCommaSplit
-                                            list={this.state.movies.genres}
-                                        />
-                                    </section>
-
-                                    {/*Description*/}
-                                    <section className="row movie-details-description clearfix">
-                                        <CustomScrollbars
-                                            autoHide
-                                            autoHideTimeout={1000}
-                                            autoHideDuration={200}
-                                            thumbMinSize={30}
-                                            universal={true}>
-                                            <FlowText>
-                                            <span>
+                                {/*Description*/}
+                                <MovieDescription>
+                                    <CustomScrollbars
+                                        autoHide
+                                        autoHideTimeout={1000}
+                                        autoHideDuration={200}
+                                        thumbMinSize={30}
+                                        universal={true}>
+                                        <MovieDescriptionContent>
+                                            <MovieDescriptionText>
                                                 {this.state.movies.synopsis}
-                                            </span>
-                                            </FlowText>
-                                        </CustomScrollbars>
-                                    </section>
+                                            </MovieDescriptionText>
+                                        </MovieDescriptionContent>
+                                    </CustomScrollbars>
+                                </MovieDescription>
 
-                                    {/*Footer*/}
-                                    <footer className="row nav-bar-movie-details">
-                                        <AppMovieDetailMenu
-                                            movie={this.state.movies}
-                                        />
-                                    </footer>
-                                </section>
-                            </div>
-                        ) || <BoxLoader size="100"/>
-                    }
-                </section>
-            </div>
+                                {/*Footer*/}
+                                <Footer>
+                                    <AppMovieDetailMenu
+                                        movie={this.state.movies}
+                                    />
+                                </Footer>
+                            </RightSection>
+                        </SectionsContainer>
+                    ) || <BoxLoader size="100"/>
+                }
+            </DetailsContainer>
         )
     }
 }
+
+const DetailsContainer = styled.div`
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: 10;
+  background-color: rgba(0, 0, 0, 0.95);
+`;
+
+const MovieDescriptionContent = styled.div`
+  padding: 1rem;
+  color: #9e9e9e;
+  font-weight: 300;
+`;
+
+const MovieDescriptionText = styled.div`
+  @media only screen and (min-width: 360px) {
+    font-size: 1.2rem; 
+  }
+  @media only screen and (min-width: 420px) {
+    font-size: 1.248rem; 
+  }
+  @media only screen and (min-width: 480px) {
+    font-size: 1.296rem; 
+  }
+  @media only screen and (min-width: 510px) {
+    font-size: 1.32rem; 
+  }
+  @media only screen and (min-width: 570px) {
+    font-size: 1.368rem; 
+  }
+  @media only screen and (min-width: 630px) {
+    font-size: 1.416rem; 
+  }
+  @media only screen and (min-width: 690px) {
+    font-size: 1.464rem; 
+  }
+  @media only screen and (min-width: 750px) {
+    font-size: 1.512rem; 
+  }
+  @media only screen and (min-width: 810px) {
+    font-size: 1.56rem; 
+  }
+  @media only screen and (min-width: 870px) {
+    font-size: 1.608rem; 
+  }
+  @media only screen and (min-width: 930px) {
+    font-size: 1.656rem; 
+  }
+`;
+
+const MovieDescription = styled.div`
+  margin-bottom: 20px;
+  
+  @media (min-height: 601px) {
+    height: 20vh;
+  }
+  
+  @media (min-height: 701px) {
+    height: 22vh;
+  }
+
+  @media (min-height: 768px) {
+    height: 20vh;
+  }
+
+  @media (min-height: 800px) {
+    height: 15vh;
+  }
+
+  @media (min-height: 850px) {
+    height: 26vh;
+  }
+
+  @media (min-height: 1027px) {
+    height: 28vh;
+  }
+
+  @media (min-height: 1080px) {
+    height: 30vh;
+  }
+`;
+
+const Footer = styled.footer`
+  margin-bottom: 20px;
+`;
+
+const Header = styled.header`
+  margin-bottom: 20px;
+`;
+
+const RightSection = styled.section`
+  width: 66.66667%;
+  padding: 0 0.75rem;
+`;
+
+const LeftSection = styled.section`
+  width: 33.33333%;
+  padding: 0 0.75rem;
+  position: relative;
+`;
+
+const SectionsContainer = styled.section`
+  display: flex;
+  height: 100%;
+  margin-top: 5vh;
+  padding: 0 1vw;
+  margin-bottom: 20px;
+`;

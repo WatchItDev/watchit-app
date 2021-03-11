@@ -3,6 +3,7 @@ import React from 'react'
 import BoxLoader from 'components/util-box-loader'
 import ReactPlayer from 'react-player';
 import ReactModal from 'react-modal';
+import styled from 'styled-components';
 
 ReactModal.setAppElement('#root');
 export default class AppMovieDetailTrailer extends React.PureComponent {
@@ -49,17 +50,14 @@ export default class AppMovieDetailTrailer extends React.PureComponent {
 	render() {
 		return <ReactModal isOpen={true} style={this.modalStyle}>
 			{
-				<button
-					className="btn btn-small btn-floating top-0 right-5 absolute white"
+				<Button
 					onClick={this.onClose}>
-					<i className="icon-cross black-text"/>
-				</button>
+					<ButtonIcon className="icon-cross"/>
+				</Button>
 			}
 			{
 				!this.state.ready_to_play &&
-				<div className="full-width full-height black">
-					<BoxLoader size={100}/>
-				</div>
+				<BoxLoader size={100}/>
 			}
 			
 			<ReactPlayer
@@ -71,3 +69,34 @@ export default class AppMovieDetailTrailer extends React.PureComponent {
 	}
 	
 }
+
+const Button = styled.button`
+	border: none;
+	position: absolute;
+	right: 5px;
+	top: 0;
+	display: inline-block;
+	color: #fff;
+	overflow: hidden;
+	z-index: 1;
+	width: 37px;
+	height: 37px;
+	line-height: 37px;
+	padding: 0;
+	border-radius: 50%;
+	cursor: pointer;
+	vertical-align: middle;
+	text-decoration: none;
+	outline: 0;
+	text-transform: uppercase;
+	text-align: center;
+	letter-spacing: .5px;
+	transition: 0.2s ease-out;
+	background-color: #FFFFFF;
+`;
+
+const ButtonIcon = styled.i`
+	font-size: 1.6rem;
+	line-height: inherit;
+	color: #000000;
+`;

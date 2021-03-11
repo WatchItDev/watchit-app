@@ -1,4 +1,5 @@
 import React from 'react'
+import styled from 'styled-components'
 
 export default class MainHeader extends React.Component {
 
@@ -14,20 +15,42 @@ export default class MainHeader extends React.Component {
 
     render() {
         return (
-            <header className="row vertical-padding horizontal-padding transparent z-depth-1 clearfix">
-                <div className="col l6 m6">
-                    <h5 className="white-text bold">
-                        {
-                            this.props.icon &&
-                            <i className={`${this.props.icon} margin-right-1-rem normalize-small-icon`}/>
-                        }
-                        {this.props.text}
-                    </h5>
-                </div>
-                <a href={this.props.action} onClick={this.props.onClick} className="top-0 right">
-                    <i className="icon-cross font-size-45 white-text"/>
+            <Header>
+                <HeaderTitle>
+                    {
+                        this.props.icon &&
+                        <HeaderTitleIcon className={`${this.props.icon}`}/>
+                    }
+                    <span>{this.props.text}</span>
+                </HeaderTitle>
+                <a href={this.props.action} onClick={this.props.onClick}>
+                    <HeaderLinkIcon className="icon-cross"/>
                 </a>
-            </header>
+            </Header>
         )
     }
 }
+
+const Header = styled.header`
+  padding: 1rem 1.5rem;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+const HeaderTitle = styled.h5`
+  font-weight: bold;
+  color: white;
+  display: flex;
+  align-items: center;
+`;
+
+const HeaderTitleIcon = styled.i`
+  margin-right: 1rem
+`;
+
+const HeaderLinkIcon = styled.i`
+  font-size: 45px;
+  color: white;
+`;

@@ -1,4 +1,5 @@
 import React from 'react'
+import styled from 'styled-components'
 
 const electron = window.require('electron');
 const ipcRenderer = electron.ipcRenderer;
@@ -9,6 +10,9 @@ export default class AppMainUpdater extends React.PureComponent {
 		super(props);
 		this.nRef = null;
 		this.mRef = null;
+		this.state = {
+			show: false
+		};
 	}
 	
 	componentDidMount() {
@@ -21,7 +25,7 @@ export default class AppMainUpdater extends React.PureComponent {
 		ipcRenderer.send('check_update'); // Check for update
 		ipcRenderer.on('update_available', () => {
 			this.mRef.innerText = 'A new update is available. The app it is being updated and will restart on completion...';
-			this.nRef.classList.remove('hidden');
+			this.setState({show:true})
 		});
 		
 	}
@@ -36,8 +40,21 @@ export default class AppMainUpdater extends React.PureComponent {
 	}
 	
 	render() {
-		return <div id="notification" ref={this.getNRef} className="hidden">
+		return <UpdateContainer ref={this.getNRef} show={this.state.show}>
 			<p ref={this.getMRef}>Checking updates..</p>
-		</div>
+		</UpdateContainer>
 	}
 }
+
+const UpdateContainer = styled.div`
+	position: fixed;
+	bottom: 20px;
+	left: 20px;
+	width: auto;
+	padding: 20px;
+	border-radius: 5px;
+	background-color: white;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+	z-index: 10000;
+	display: ${props => props.show ? 'block' : 'none'};
+`;
