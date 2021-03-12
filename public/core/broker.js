@@ -152,7 +152,7 @@ module.exports = class Broker extends EventEmitter {
         })
     }
 
-    listerForReplicatedData() {
+    listenForReplicatedData() {
         /***
          * Trigger event when new data its replicated
          */
@@ -160,7 +160,7 @@ module.exports = class Broker extends EventEmitter {
             log.info('LOADING FROM NETWORK');
             log.info(collection[collection.length - 1]['_id']);
             log.info(collection[0]['_id']);
-            this.db.insert(collection, (e, n) => log.info(`Inserted ${n.length}`)); // Save in local
+            this.db.insert(collection, (e, n) => log.info(`Inserted ${n?.length || 0}`)); // Save in local
             this.emit('replicated')
         })
     }
@@ -180,6 +180,6 @@ module.exports = class Broker extends EventEmitter {
         this.listenForStartRunning();
         this.listenForDbLoaded();
         this.listenForReplicaProgress();
-        this.listerForReplicatedData();
+        this.listenForReplicatedData();
     }
 }
