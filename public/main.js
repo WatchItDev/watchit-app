@@ -3,9 +3,11 @@ const fs = require('fs');
 const path = require('path');
 const mime = require('mime');
 const log = require('electron-log');
-const {
-    autoUpdater
-} = require('electron-updater');
+
+const {mainMenu} = require('./helpers/menu')
+const {fadeWindowOut, fadeWindowIn} = require('./helpers/screen')
+
+const {autoUpdater} = require('electron-updater');
 const {
     app, BrowserWindow, ipcMain,
     protocol, Menu, dialog, session
@@ -168,42 +170,6 @@ const registerMiddleware = () => {
         win = null; // Win close
     });
 
-}, fadeWindowOut = (
-    _window,
-    step = 0.1,
-    fadeEveryXSeconds = 10,
-    cb = () => {
-    }
-) => {
-    let opacity = _window ? _window.getOpacity() : 1;
-    let interval = setInterval(() => {
-        if (opacity <= 0) {
-            clearInterval(interval);
-            cb();
-        }
-        !_window.isDestroyed() &&
-        _window.setOpacity(opacity);
-        opacity -= step;
-    }, fadeEveryXSeconds);
-    return interval;
-}, fadeWindowIn = (
-    _window,
-    step = 0.1,
-    fadeEveryXSeconds = 10,
-    cb = () => {
-    }
-) => {
-    let opacity = _window ? _window.getOpacity() : 1;
-    let interval = setInterval(() => {
-        if (opacity >= 1) {
-            clearInterval(interval);
-            cb();
-        }
-        !_window.isDestroyed() &&
-        _window.setOpacity(opacity);
-        opacity += step;
-    }, fadeEveryXSeconds);
-    return interval;
 }
 
 /*******************
@@ -233,32 +199,7 @@ autoUpdater.on('update-downloaded', async () => {
 // End auto update setup
 
 // Behaviour on second instance for parent process- Pretty much optional
-if (isDarwin) Menu.setApplicationMenu(
-    Menu.buildFromTemplate([{
-        label: "Application",
-        submenu: [
-            {label: "About Application", selector: "orderFrontStandardAboutPanel:"},
-            {type: "separator"},
-            {
-                label: "Quit", accelerator: "Command+Q", click: () => {
-                    app.quit();
-                }
-            }
-        ]
-    }, {
-        label: "Edit",
-        submenu: [
-            {label: "Undo", accelerator: "CmdOrCtrl+Z", selector: "undo:"},
-            {label: "Redo", accelerator: "Shift+CmdOrCtrl+Z", selector: "redo:"},
-            {type: "separator"},
-            {label: "Cut", accelerator: "CmdOrCtrl+X", selector: "cut:"},
-            {label: "Copy", accelerator: "CmdOrCtrl+C", selector: "copy:"},
-            {label: "Paste", accelerator: "CmdOrCtrl+V", selector: "paste:"}
-        ]
-    }
-    ])
-);
-
+if (isDarwin) mainMenu(Menu, app);
 //app.disableHardwareAcceleration();
 app.setPath('crashDumps', path.join(appPath, 'crashes'));
 app.on('second-instance', () => {
@@ -280,7 +221,6 @@ app.on('before-quit', () => {
 app.on('will-quit', () => {
     log.warn('Will quit');
     app.releaseSingleInstanceLock()
-    ipcMain.emit('node-close')
 })
 
 app.on('ready', () => {
@@ -299,10 +239,11 @@ app.whenReady().then(() => {
     createMain(inDev);
     registerMiddleware();
 
-    //TODO doc
-    node(ipcMain);
-
-    ipcMain.on('close', () => app.quit())
+    const orbitNode = node(ipcMain);
+    ipcMain.on('close', async () => {
+        await orbitNode.close()
+        app.quit()
+    })
     ipcMain.on('party', async () => {
         if (key.existKey)
             await removeFiles(key.keyFile)
