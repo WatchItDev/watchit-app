@@ -278,8 +278,9 @@ export default class AppMoviesPlayer extends React.Component {
 
     onError = (e) => {
         //Handle error
-        log.error(`ERROR WHILE STREAMING: ${JSON.stringify(e)}`);
         this.props.onError && this.props.onError(e);
+        log.error(`Error while streaming: ${JSON.stringify(e)}`);
+        log.warn(`Retrying...`);
         this.stopStreaming();
         this.startStreaming();
     }
