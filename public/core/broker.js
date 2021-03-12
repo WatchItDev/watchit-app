@@ -1,5 +1,5 @@
-const EventEmitter = require('events')
 const Key = require('./key');
+const EventEmitter = require('events')
 const ipcRenderer = require('electron').ipcRenderer;
 const LinvoDB = require("linvodb3");
 const log = require('electron-log')

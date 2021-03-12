@@ -8,7 +8,7 @@ const msgpack = require('msgpack-lite');
 const log = require('electron-log')
 const key = require('./key');
 const Node = require('./node')
-const QUEUE_SLEEP = 5000
+const QUEUE_SLEEP = 7000
 
 module.exports = (ipcMain) => {
 
