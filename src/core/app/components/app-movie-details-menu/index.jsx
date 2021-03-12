@@ -3,10 +3,10 @@ import settings from 'settings'
 import PropTypes from 'prop-types'
 import NavBarMenu from 'components/app-nav-bar-menu/'
 import NavBarButton from 'components/app-nav-bar-button/'
-import cryptHelper from 'core/resources/helpers/cryptHelper'
+import cryptHelper from 'core/resources/helpers/crypt'
 import TrailerPop from 'components/app-movie-details-trailer'
-import util from 'resource/helpers/utilHelper'
-import gatewayHelper from "resource/helpers/gatewayHelper";
+import gatewayHelper from "resource/helpers/gateway";
+import util from 'resource/helpers/util'
 
 export default class AppMovieDetailMenu extends React.PureComponent {
     constructor(props) {

@@ -11,8 +11,8 @@ import CustomScrollbars from 'components/util-scroller';
 import ListCommaSplit from 'components/util-list-comma-split'
 
 import Movie from 'resource/data/movies'
-import gatewayHelper from 'resource/helpers/gatewayHelper'
-import resourceHelper from "resource/helpers/resourceHelper";
+import gatewayHelper from 'resource/helpers/gateway'
+import resourceHelper from "resource/helpers/streaming";
 
 // Access to main process bridge prop
 const broker = window.bridge.Broker

@@ -8,7 +8,7 @@ import AppSearch from 'components/app-movies-search/'
 import AppLoader from 'components/app-movie-player-loader'
 import AppUpdater from 'components/app-movies-updater'
 import StatsValue from "components/util-stats";
-import storageHelper from 'resource/helpers/storageHelper';
+import storageHelper from 'resource/helpers/storage';
 import BoxLoader from 'components/util-box-loader'
 import Movie from 'resource/data/movies'
 import setting from 'settings'

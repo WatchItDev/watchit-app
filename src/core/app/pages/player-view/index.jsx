@@ -3,8 +3,8 @@ import AppMoviesPlayerTorrent from "components/app-movie-player-torrent";
 import MainLoader from 'components/util-main-loader'
 import BtnClose from 'components/util-btn-close'
 import Movie from 'resource/data/movies'
-import cryptHelper from 'resource/helpers/cryptHelper'
-import utilHelper from 'resource/helpers/utilHelper'
+import cryptHelper from 'resource/helpers/crypt'
+import utilHelper from 'resource/helpers/util'
 import setting from 'settings'
 
 // Access to main process bridge prop

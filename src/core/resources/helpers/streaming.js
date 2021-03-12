@@ -1,4 +1,4 @@
-import utilHelper from "./utilHelper";
+import utilHelper from "./util";
 import settings from 'settings'
 
 const torrent = window.bridge.Torrent

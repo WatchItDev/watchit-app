@@ -1,6 +1,6 @@
 import React from 'react'
 import BoxImage from 'components/app-image'
-import gatewayHelper from "resource/helpers/gatewayHelper";
+import gatewayHelper from "resource/helpers/gateway";
 
 export default class AppMainSearchResultBoxItem extends React.PureComponent {
 

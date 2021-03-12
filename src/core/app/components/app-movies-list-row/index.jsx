@@ -2,7 +2,7 @@ import React from 'react'
 import uid from "shortid";
 import PropTypes from "prop-types";
 import AppMoviesListPoster from 'components/app-movies-list-poster'
-import gatewayHelper from 'core/resources/helpers/gatewayHelper'
+import gatewayHelper from 'core/resources/helpers/gateway'
 
 export default class AppMoviesListRow extends React.Component {
 
