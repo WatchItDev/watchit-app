@@ -158,4 +158,6 @@ module.exports = (ipcMain) => {
 
     });
 
+    return orbit
+
 };
