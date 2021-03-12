@@ -155,9 +155,15 @@ module.exports = (ipcMain) => {
     ipcMain.on('node-flush', async () => {
         log.warn('Flushing orbit');
         await orbit.party('Logout')
-
     });
 
-    return orbit
+    return {
+        closed: () => orbit.closed,
+        close: async (win) => {
+            win?.webContents && win.webContents.send('node-step', 'Closing')
+            queueInterval && cleanInterval(queueInterval)
+            await orbit.close()
+        }
+    }
 
 };

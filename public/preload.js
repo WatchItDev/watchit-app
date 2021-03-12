@@ -12,10 +12,10 @@ const HLS = require(`./core/hls`);
 const Torrent = require(`./core/torrent`);
 const Broker = require(`./core/broker`);
 const Subs = require('./core/subs')
+const Net = require('./core/proxy')
 
 window.bridge = {
-    Key: Key,
-    Subs: Subs,
+    Key, Net, Subs,
     DLNA: new DLNA(),
     HLS: new HLS(),
     Torrent: new Torrent(),

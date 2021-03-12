@@ -18,6 +18,7 @@ module.exports = class Node extends EventEmitter {
         this.peers = [];
         this.retry = 0;
         this.ready = false;
+        this.closed = false;
         this.orbit = null;
         this.node = null;
         this.db = null;
@@ -217,11 +218,12 @@ module.exports = class Node extends EventEmitter {
             log.error(e.toString());
         }
 
+        this.db = null;
         this.peers = [];
         this.orbit = null;
         this.node = null;
-        this.db = null;
         this.ready = false;
+        this.closed = true;
     }
 
     async get(hash) {

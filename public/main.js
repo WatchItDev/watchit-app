@@ -43,17 +43,6 @@ dialog.showErrorBox = (title, content) => {
  * FUNCTIONS
  *******************/
 const registerMiddleware = () => {
-    // Register "proxy" middleware for global requests
-    // TODO Retry connection if fail!!
-    session.defaultSession.webRequest.onHeadersReceived(
-        {urls: []},
-        (details, callback) => {
-            callback({
-                responseHeaders: details.responseHeaders
-            })
-        }
-    )
-
     //Register "file" protocol to use locally
     protocol.registerFileProtocol('file', (r, cb) => {
         let file = r.url.substr(7)
@@ -218,11 +207,6 @@ app.on('before-quit', () => {
     wipeInvalidSync();
 })
 
-app.on('will-quit', () => {
-    log.warn('Will quit');
-    app.releaseSingleInstanceLock()
-})
-
 app.on('ready', () => {
     if (!key.existKey)
         removeCacheDirs();
@@ -239,11 +223,20 @@ app.whenReady().then(() => {
     createMain(inDev);
     registerMiddleware();
 
-    const orbitNode = node(ipcMain);
-    ipcMain.on('close', async () => {
-        await orbitNode.close()
-        app.quit()
+    const orbitProcess = node(ipcMain);
+    app.on('will-quit', async (e) => {
+        log.warn('Closing');
+        await orbitProcess.close(win)
+        app.releaseSingleInstanceLock()
+
+        if (!orbitProcess.closed()) {
+            // Force loop quit if orbit fail closing!!
+            log.warn('Quiting');
+            e.preventDefault() && app.quit();
+        }
     })
+
+    ipcMain.on('close', async () => app.quit())
     ipcMain.on('party', async () => {
         if (key.existKey)
             await removeFiles(key.keyFile)
