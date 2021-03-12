@@ -111,8 +111,8 @@ module.exports = (ipcMain) => {
             .on('node-peer', (peerSize) => e.reply('node-peer', peerSize))
             .on('node-chaos', (m) => {
                 // Stop queue processor
-                queueInterval && cleanInterval(queueInterval)
                 e.reply('node-chaos', m)
+                queueInterval && cleanInterval(queueInterval)
                 ipcMain.emit('party');
             })
 
