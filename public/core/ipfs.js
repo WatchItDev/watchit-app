@@ -45,6 +45,7 @@ module.exports = async () => {
     const alreadyLock = fs.existsSync(repoLockDir)
     if (alreadyLock) {
         log.warn('Releasing locked node')
+        await removeFiles(repoLockDir)
         return await forKill(isInstance)
     }
 
