@@ -11,7 +11,6 @@ import CustomScrollbars from 'components/util-scroller';
 import ListCommaSplit from 'components/util-list-comma-split'
 
 import Movie from 'resource/data/movies'
-import gatewayHelper from 'resource/helpers/gateway'
 import resourceHelper from "resource/helpers/streaming";
 
 // Access to main process bridge prop
@@ -34,15 +33,6 @@ export default class MovieDetails extends React.PureComponent {
     }
 
 
-    parseUriImage = (image) => {
-        if (image) {
-            // While load chunk of movies image = undefined
-            // Check if valid param before
-            return gatewayHelper.dummyParse(image)
-        }
-    }
-
-
     render() {
         return (
             <div className="absolute full-height movie-details">
@@ -57,11 +47,8 @@ export default class MovieDetails extends React.PureComponent {
                                 <aside className="col l4 m4 movie-details-poster relative">
                                     {/*Poster*/}
                                     <BoxImage
-                                        className="full-width"
-                                        preload={true}
-                                        src={this.parseUriImage(
-                                            this.state.movies.resource.images.large
-                                        )}
+                                        className="full-width" preload={true}
+                                        src={this.state.movies.resource.images.large}
                                     />
                                 </aside>
 

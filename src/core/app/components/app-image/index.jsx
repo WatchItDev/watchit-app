@@ -1,21 +1,39 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import PulseLoader from 'components/util-pulse-loader'
+import gatewayHelper from 'core/resources/helpers/gateway'
 
+const log = window.require("electron-log");
 export default class BoxImage extends React.PureComponent {
 
     constructor(props) {
         super(props);
         this.state = {
             status: 0,
-            loaded: false
+            loaded: false,
+            src: null
         };
+    }
+
+
+    static getDerivedStateFromProps(props) {
+        return {
+            src: props.src
+        }
+    }
+
+    parseUriImage = (image) => {
+        if (image) {
+            // While load chunk of movies image = undefined
+            // Check if valid param before
+            return gatewayHelper.dummyParse(image)
+        }
     }
 
 
     static get propTypes() {
         return {
-            src: PropTypes.string.isRequired
+            src: PropTypes.object.isRequired
         }
     }
 
@@ -26,7 +44,11 @@ export default class BoxImage extends React.PureComponent {
     }
 
     handleImageLoaded = (e, status = 1) => this.setState({status: status, loaded: true})
-    handleImageError = () => this.setState({status: -1})
+    handleImageError = () => {
+        log.warn('Fail image request')
+        log.warn('Retrying...')
+        this.forceUpdate()
+    }
 
     render() {
         return (
@@ -38,7 +60,7 @@ export default class BoxImage extends React.PureComponent {
                     this.props.preload && <PulseLoader style={{top: '20rem'}}/>
                 }
 
-                <img alt={''} src={this.props.src}
+                <img alt={''} src={this.parseUriImage(this.state.src)}
                      onLoad={this.handleImageLoaded}
                      onError={this.handleImageError}
                      className={this.state.status < 0 && this.props.preload ? "hidden" :
