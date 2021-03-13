@@ -3,6 +3,7 @@ import React from 'react'
 const electron = window.require('electron');
 const ipcRenderer = electron.ipcRenderer;
 const webFrame = electron.webFrame;
+const log = require('electron-log')
 
 export default class AppMainUpdater extends React.PureComponent {
 	constructor(props) {
@@ -16,7 +17,7 @@ export default class AppMainUpdater extends React.PureComponent {
 		// Restart listeners
 		// Check for updates
 		webFrame.clearCache();
-		console.log('Requesting update');
+		log.info('Requesting update');
 		ipcRenderer.removeAllListeners('update_available');
 		ipcRenderer.send('check_update'); // Check for update
 		ipcRenderer.on('update_available', () => {
