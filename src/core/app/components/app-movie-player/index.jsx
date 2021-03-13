@@ -260,12 +260,12 @@ export default class AppMoviesPlayer extends React.Component {
         this.stopStreaming()
     }
 
-    onReady = (url) => {
+    onReady = (url, ...rest) => {
         log.info('READY TO PLAY MOVIE: ' + url);
         this.setState({url: url});
         this.forceUpdate(() => {
             this.props.onReady &&
-            this.props.onReady(url);
+            this.props.onReady(url, ...rest);
         })
     }
 
