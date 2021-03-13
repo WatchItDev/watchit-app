@@ -1,8 +1,8 @@
 import React from "react";
-import {render, unmountComponentAtNode} from "react-dom";
-import {act} from "react-dom/test-utils";
+import {unmountComponentAtNode} from "react-dom";
+// import {act} from "react-dom/test-utils";
 //import BoxImage from "./index";
-import pretty from "pretty";
+// import pretty from "pretty";
 
 let container = null;
 beforeEach(() => {
