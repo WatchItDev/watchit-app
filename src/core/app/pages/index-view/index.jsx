@@ -297,7 +297,7 @@ export default class MovieIndex extends React.Component {
                 {
                     (!this.state.ready &&
                         <div className={`movie-player full-width full-height loading`}>
-                            <AppLoader stateText={this.state.state} statePercent={this.state.percent}/>
+                            <AppLoader stateText={this.state.state} statePercent={this.state.percent} signOut={this.signOut}/>
                         </div>
                     ) ||
                     <div className="relative full-height main-view">
