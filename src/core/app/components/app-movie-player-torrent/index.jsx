@@ -46,6 +46,10 @@ export default class AppMoviesPlayerTorrent extends React.PureComponent {
         })
     }
 
+    onClose = (e) => {
+        e.preventDefault() // Aviod default click
+        setImmediate(() => window.location.href = `#/app/movies`)
+    }
 
     render() {
         return (
@@ -57,6 +61,7 @@ export default class AppMoviesPlayerTorrent extends React.PureComponent {
                             <AppMoviePlayerLoader
                                 stateText={this.state.state}
                                 statePercent={this.state.percent}
+                                onClose={this.onClose}/>
                             />
                         </div>
                     )

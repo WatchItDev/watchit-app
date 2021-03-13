@@ -1,7 +1,6 @@
 import React from 'react'
 import AppMoviesPlayerTorrent from "components/app-movie-player-torrent";
 import MainLoader from 'components/util-main-loader'
-import BtnClose from 'components/util-btn-close'
 import Movie from 'resource/data/movies'
 import cryptHelper from 'resource/helpers/crypt'
 import utilHelper from 'resource/helpers/util'
@@ -101,8 +100,6 @@ export default class MoviePlayer extends React.Component {
     render() {
         return (
             <div className="movie-player full-width full-height">
-                <BtnClose action={`#/app/movies`}/>
-
                 {
                     (
                         this.state.movieInfo && React.createElement(

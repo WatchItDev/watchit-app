@@ -43,10 +43,15 @@ export default class BoxImage extends React.PureComponent {
         }
     }
 
-    handleImageLoaded = (e, status = 1) => this.setState({status: status, loaded: true})
+    handleImageLoaded = (e, status = 1) => {
+        this.setState({status: status, loaded: true})
+
+    }
+
     handleImageError = () => {
         log.warn('Fail image request')
         log.warn('Retrying...')
+        this.setState({loaded: false})
         this.forceUpdate()
     }
 
