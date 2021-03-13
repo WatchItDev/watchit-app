@@ -111,9 +111,9 @@ module.exports = (ipcMain) => {
             .on('node-peer', (peerSize) => e.reply('node-peer', peerSize))
             .on('node-chaos', (m) => {
                 // Stop queue processor
-                e.reply('node-chaos', m)
-                queueInterval && cleanInterval(queueInterval)
                 ipcMain.emit('party');
+                e.reply('node-chaos', m)
+                cleanInterval(queueInterval)
             })
 
     };
@@ -161,7 +161,7 @@ module.exports = (ipcMain) => {
         closed: () => orbit.closed,
         close: async (win) => {
             win?.webContents && win.webContents.send('node-step', 'Closing')
-            queueInterval && cleanInterval(queueInterval)
+            cleanInterval(queueInterval)
             await orbit.close()
         }
     }

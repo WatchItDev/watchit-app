@@ -122,12 +122,12 @@ export default class MovieIndex extends React.Component {
 
         }).on('chaos', (m) => {
             // Kill node and restart login
-            this.setState({state: m});
+            this.setState({state: m, ready: false});
             setTimeout(() => window.location.href = '#/', 1000)
 
         }).on('error', (msg = 'Waiting Network') => {
             if (this.state.ready) return;
-            this.setState({state: msg});
+            this.setState({state: msg, ready: false});
 
         }).on('done', () => {
             log.info('LOAD DONE')
