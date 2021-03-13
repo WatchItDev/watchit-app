@@ -172,7 +172,7 @@
   "scripts": {
     "start": "BROWSER=none node scripts/start.js",
     "build": "node scripts/build.js",
-    "test": "node scripts/test.js  --watchAll=false",
+    "test": "node scripts/test.js  --watchAll=false -u",
     "electron": "cross-env LOG=debug IPFS_FD_MAX=10000 ENV=development $(npm bin)/electron .",
     "lint": "eslint --ext js,jsx",
     "lint:fix": "npm run lint -s -- --fix src ",

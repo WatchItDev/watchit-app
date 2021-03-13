@@ -15,6 +15,9 @@ export default class AppMoviesPlayerLoader extends React.PureComponent {
 		return (
 			<div className="output-process valign-wrapper full-width full-height">
 				<div className="app_loader">
+					<a href="#" className="btn-close clearfix font-size-45" onClick={this.props.signOut}>
+						<i className="icon-cross white-text" />
+					</a>
 					<AppLoaderBackground/>
 					<AppLoaderBar
 						stateText={this.props.stateText}
