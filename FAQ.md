@@ -24,7 +24,6 @@ If you log back in to the app you will acquire the metadata again like is the fi
 
 ### What happens when I try to play a movie?
 
-*We use a process to turn the downloaded bits of the metadata for the movie and turn it into video.*
 
 You will receive the stream data from somebody that is already watching the movie, 
 or you will become the primary node sharing (`seeding`) the metadata of the movie, this will help you and other 
@@ -34,7 +33,7 @@ to download the stream faster while helping other.
 
 **Never**. You only get data that you request, and you will only keep data that you have chosen to stream.
 
-### Can I find any move I like?
+### Can I find any movie I like?
 
 To avoid copyright infringement you can only search for movies that are available for the public domain.
  We hope in the future we can work with partners to bring you a more up to date database of movie. so please be patience 
