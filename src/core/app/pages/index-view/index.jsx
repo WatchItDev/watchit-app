@@ -28,7 +28,7 @@ export default class MovieIndex extends React.Component {
         this.state = {
             state: 'Initializing', percent: 0, peers: this.peers, count: DEFAULT_INIT_LOAD,
             ready: false, loading: true, movies: [], chunkSize: setting.defaults.chunkSize,
-            scrolling: false, finishLoad: false, showDetailsFor: false
+            scrolling: false, finishLoad: false, showDetailsFor: false, logout: false
         };
 
         this.movie = new Movie(broker);
@@ -272,7 +272,7 @@ export default class MovieIndex extends React.Component {
         localStorage.clear();
         broker.flush();
         this.setState({
-            ready: false,
+            ready: false, logout: true,
             state: 'Please Wait'
         })
     }
@@ -300,7 +300,7 @@ export default class MovieIndex extends React.Component {
                             <AppLoader
                                 stateText={this.state.state}
                                 statePercent={this.state.percent}
-                                onClose={this.signOut}
+                                onClose={!this.state.logout && this.signOut}
                             />
                         </div>
                     ) ||
