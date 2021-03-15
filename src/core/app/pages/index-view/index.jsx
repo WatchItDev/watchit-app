@@ -2,7 +2,7 @@ import React from 'react'
 
 import AppMovies from 'layout/app-movies-list/'
 import AppMovieDetails from 'layout/app-movie-details/'
-
+import util from 'resource/helpers/util'
 import AppNav from 'components/app-movies-nav-bar/'
 import AppSearch from 'components/app-movies-search/'
 import AppLoader from 'components/app-movie-player-loader'
@@ -27,13 +27,13 @@ export default class MovieIndex extends React.Component {
         //Default state
         this.state = {
             state: 'Initializing', percent: 0, peers: this.peers, count: DEFAULT_INIT_LOAD,
-            ready: false, loading: true, movies: [], chunkSize: setting.defaults.chunkSize,
+            ready: false, loading: true, movies: [], settings: setting,
             scrolling: false, finishLoad: false, showDetailsFor: false, logout: false
         };
 
         this.movie = new Movie(broker);
         //Max movies for initial request
-        this.limit = setting.defaults.limit;
+        this.limit = this.state.settings.defaults.limit;
         this.sort = {
             sort_by: 'year',
             order: 'desc'
@@ -62,11 +62,30 @@ export default class MovieIndex extends React.Component {
         }, cb)
     }
 
+    handleResize = () => {
+        console.log("handle resize");
+        console.log('height');
+        console.log(window.innerHeight);
+        console.log('width');
+        console.log(window.innerWidth);
+        console.log(util.calcScreenSize(200, 20, window.innerWidth, window.innerHeight));
+
+        this.setState({
+            settings: {
+                defaults: util.calcScreenSize(200, 20, window.innerWidth, window.innerHeight)
+            }
+        })
+        this.onChange("genres",{action: "All", label: "All"})
+    }
+
     componentWillUnmount() {
+        window.removeEventListener('resize', this.handleResize);
         broker.removeAllListeners();
     }
 
     componentDidMount() {
+        window.addEventListener('resize', this.handleResize);
+
         // Start ingest if not
         if (this.cached) {
             log.info('Running Cache');
@@ -161,7 +180,7 @@ export default class MovieIndex extends React.Component {
         //Get movies
         this.movie.filter(filter).then((movies) => {
             //Chunk and concat movies
-            let _chunk = chunks || this.state.chunkSize;
+            let _chunk = chunks || this.state.settings.defaults.chunkSize;
             let _movies = this.moviesToRow(movies, _chunk);
 
             // Handle sizes
@@ -170,7 +189,7 @@ export default class MovieIndex extends React.Component {
             let _current = _new_movies.length;
 
             this.setState({
-                scrolling: false, loading: false, chunkSize: _chunk,
+                scrolling: false, loading: false,
                 count: !_size ? _current : (_current + 10),
                 finishLoad: !clear ? !_size : false,
                 movies: clear ? _movies : _new_movies,
@@ -181,7 +200,7 @@ export default class MovieIndex extends React.Component {
         })
     }
 
-    loadOrder = (start, to, size = this.state.chunkSize) => {
+    loadOrder = (start, to, size = this.state.settings.defaults.chunkSize) => {
         start = start * size;
         to = to * size;
         this.setState({scrolling: true});
@@ -237,6 +256,9 @@ export default class MovieIndex extends React.Component {
     }
 
     onChange = (sort, by) => {
+        console.log("on change")
+        console.log(sort);
+        console.log(by);
         //If by?
         if ((storageHelper.get().from.mainNavFilters())) {
             this.sort = Object.assign(
@@ -339,8 +361,8 @@ export default class MovieIndex extends React.Component {
                                             <AppMovies
                                                 movies={this.state.movies} loadOrder={this.loadOrder}
                                                 count={this.state.count} loading={this.state.scrolling}
-                                                end={this.state.finishLoad} chunkSize={this.state.chunkSize}
-                                                onClick={this.onClickMovie}
+                                                end={this.state.finishLoad} chunkSize={this.state.settings.defaults.chunkSize}
+                                                onClick={this.onClickMovie} settings={this.state.settings}
                                             />) || <BoxLoader size={100}/>
                                     }
                                 </section>

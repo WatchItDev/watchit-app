@@ -1,6 +1,5 @@
 import React from 'react'
 import uid from "shortid";
-import setting from 'settings'
 import AppMoviesListRow from 'components/app-movies-list-row/'
 import InfiniteLoader from "react-window-infinite-loader";
 import {FixedSizeList as List} from "react-window";
@@ -10,7 +9,8 @@ export default class AppMoviesList extends React.Component {
         super(props);
         this.state = {
             movies: [], loading: false,
-            end: false, chunkSize: 0, count: 0
+            end: false, chunkSize: 0, count: 0,
+            settings: {}
         }
     }
 
@@ -27,7 +27,8 @@ export default class AppMoviesList extends React.Component {
         let loading = nextProps.loading;
         let end = nextProps.end;
         let chunkSize = nextProps.chunkSize;
-        return {count, movies, loading, end, chunkSize};
+        let settings = nextProps.settings;
+        return {count, movies, loading, end, chunkSize,settings};
     }
 
     renderRow = ({index, style}) => {
@@ -69,11 +70,11 @@ export default class AppMoviesList extends React.Component {
             >
                 {({onItemsRendered, ref}) => (
                     <List className="row-list"
-                          height={setting.defaults.height}
+                          height={this.state.settings.defaults.height}
                           itemCount={this.state.count}
-                          itemSize={setting.defaults.chunkHeight}
+                          itemSize={this.state.settings.defaults.chunkHeight}
                           onItemsRendered={onItemsRendered}
-                          width={setting.defaults.width}
+                          width={this.state.settings.defaults.width}
                           ref={ref}
                     >
                         {this.renderRow}
