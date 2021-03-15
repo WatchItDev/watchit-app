@@ -14,7 +14,7 @@ That decision is finally left up to each person. Our goal is to limit infringeme
 
 ### What happens when I access the app?
 
-You will replicate and maintain a copy of the metadata, not the actual database, once somebody else connects to the network 
+You will replicate and maintain a copy of the metadata, not the files or assets, once somebody else connects to the network 
 they are going to get a copy of the metadata from the nearest node.
 
 ### What happens when I sign out?
