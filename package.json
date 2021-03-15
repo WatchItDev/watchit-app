@@ -4,7 +4,7 @@
   "version": "0.1.0-beta.4",
   "private": true,
   "main": "./public/main.js",
-  "description": "Watch movies everywhere",
+  "description": "Open movies everywhere",
   "email": "support@zorrillos.com",
   "homepage": "./",
   "license": "LICENSE.md",
