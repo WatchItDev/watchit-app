@@ -74,7 +74,7 @@ export default class MovieIndex extends React.Component {
             settings: {
                 defaults: util.calcScreenSize(200, 20, window.innerWidth, window.innerHeight)
             },
-            loading: true, scrolling: true, movies: [], count: DEFAULT_INIT_LOAD
+            loading: true
         })
         this.filterMovies(this.sort, false);
     }
