@@ -25,7 +25,7 @@ export default class MovieIndex extends React.Component {
         //Default state
         this.state = {
             state: 'Initializing', percent: 0, peers: this.peers, count: DEFAULT_INIT_LOAD,
-            ready: false, loading: true, movies: [], chunkSize: util.calcScreenSize(),
+            ready: false, loading: true, movies: [], screen: util.calcScreenSize(),
             lock: false, // Avoid re-render movies list
             finishLoad: false, showDetailsFor: false, logout: false
         };
@@ -83,14 +83,14 @@ export default class MovieIndex extends React.Component {
                 loading: true
             })
 
-            setTimeout(()=>{
+            setTimeout(() => {
                 this.setState({
                     loading: false,
                     count: moviesNewStructure.length + 10,
                     movies: moviesNewStructure,
                     screen: defaults,
                 })
-            },500);
+            }, 500);
         }
     }
 
