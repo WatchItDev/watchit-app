@@ -71,19 +71,15 @@ export default class MovieIndex extends React.Component {
         };
     }
 
-    updateScreen = () => {
-        let defaults = util.calcScreenSize(200, 20, window.innerWidth, window.innerHeight);
-        this.setState({
-            screen: defaults
-        })
-        return defaults;
+    getScreen = () => {
+        return util.calcScreenSize(200, 20, window.innerWidth, window.innerHeight);
     }
 
     handleResize = () => {
         if (this.state.movies.length) {
             let moviesArrays = this.state.movies;
             let movies = moviesArrays.flat(1);
-            let defaults = this.updateScreen();
+            let defaults = this.getScreen();
             let moviesNewStructure = this.moviesToRow(movies, defaults.chunkSize);
 
             this.setState({
@@ -94,7 +90,8 @@ export default class MovieIndex extends React.Component {
                 this.setState({
                     loading: false,
                     count: moviesNewStructure.length + 10,
-                    movies: moviesNewStructure
+                    movies: moviesNewStructure,
+                    screen: defaults,
                 })
             },500);
         }
@@ -108,7 +105,9 @@ export default class MovieIndex extends React.Component {
     }
 
     componentDidMount() {
-        this.updateScreen();
+        this.setState({
+            screen: this.getScreen()
+        })
         window.addEventListener('resize', this.debounceResize);
 
         // Start ingest if not
