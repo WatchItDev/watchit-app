@@ -227,9 +227,9 @@ export default class AppMoviesPlayer extends React.Component {
         //Start streamer
         const uriToStream = `${gatewayHelper.dummyParse(this.props.movie)}`
         log.info('STREAMING MOVIE: ' + this.props.movie.title.toUpperCase());
-        log.warn(uriToStream);
         this.streamer.play(uriToStream, {
-            videoRef: this.v,
+            videoRef: this.v.video,
+            player: this.player,
             onReady: this.onReady,
             onProgress: this.onProgress,
             onError: this.onError

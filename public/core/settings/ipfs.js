@@ -36,7 +36,7 @@ module.exports = () => {
             "/ip4/209.222.98.165/tcp/4001/p2p/12D3KooWAH9FypmaduofuBTtubSHVJghxW35aykce23vDHjfhiAd"
         ],
         "Addresses": {
-            "API": "/ip4/127.0.0.1/tcp/5002",
+            "API": "/ip4/127.0.0.1/tcp/6002",
             "Gateway": "/ip4/127.0.0.1/tcp/9090",
             "Announce": [],
             "NoAnnounce": [],

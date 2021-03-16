@@ -1,5 +1,6 @@
 import React from 'react'
 import AppMoviesPlayerTorrent from "components/app-movie-player-torrent";
+import AppMoviesPlayerHLS from "components/app-movie-player-hls";
 import MainLoader from 'components/util-main-loader'
 import BtnClose from 'components/util-btn-close'
 import Movie from 'resource/data/movies'
@@ -91,7 +92,7 @@ export default class MoviePlayer extends React.Component {
     switchPlayer = (type) => {
         const types = {
             'torrent': AppMoviesPlayerTorrent,
-            'hls': null
+            'hls': AppMoviesPlayerHLS
         }
 
         if (type in types)
