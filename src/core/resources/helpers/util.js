@@ -29,11 +29,13 @@ export default ({
         return ((weightedTotal * 3) / 100) | 0;
     },
 
-    calcScreenSize: (imageSize = 200, mp = 20, width = window.screen.width, height = window.screen.height) => {
+    calcScreenSize: (imageSize = 200, mp = 20) => {
         /**
          * Calculate screen size and pics using screen dim
          * @type {HTMLElement}
          */
+        let width =  window.innerWidth;
+        let height = window.innerHeight;
 
         // Avoid full fill row
         imageSize = width > 1800 ? Math.floor(width / 10) : imageSize;

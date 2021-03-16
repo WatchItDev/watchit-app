@@ -10,7 +10,6 @@ import StatsValue from "components/util-stats";
 import storageHelper from 'resource/helpers/storage';
 import BoxLoader from 'components/util-box-loader'
 import Movie from 'resource/data/movies'
-import setting from 'settings'
 
 // Access to main process bridge prop
 const log = window.require("electron-log");
@@ -26,7 +25,7 @@ export default class MovieIndex extends React.Component {
         //Default state
         this.state = {
             state: 'Initializing', percent: 0, peers: this.peers, count: DEFAULT_INIT_LOAD,
-            ready: false, loading: true, movies: [], screen: setting.defaults,
+            ready: false, loading: true, movies: [], screen: util.calcScreenSize(),
             scrolling: false, finishLoad: false, showDetailsFor: false, logout: false
         };
 
@@ -71,15 +70,11 @@ export default class MovieIndex extends React.Component {
         };
     }
 
-    getScreen = () => {
-        return util.calcScreenSize(200, 20, window.innerWidth, window.innerHeight);
-    }
-
     handleResize = () => {
         if (this.state.movies.length) {
             let moviesArrays = this.state.movies;
             let movies = moviesArrays.flat(1);
-            let defaults = this.getScreen();
+            let defaults = util.calcScreenSize();
             let moviesNewStructure = this.moviesToRow(movies, defaults.chunkSize);
 
             this.setState({
@@ -105,9 +100,6 @@ export default class MovieIndex extends React.Component {
     }
 
     componentDidMount() {
-        this.setState({
-            screen: this.getScreen()
-        })
         window.addEventListener('resize', this.debounceResize);
 
         // Start ingest if not
@@ -227,7 +219,7 @@ export default class MovieIndex extends React.Component {
     loadOrder = (start, to, size = this.state.screen.chunkSize) => {
         start = start * size;
         to = to * size;
-        this.setState({scrolling: true});
+        // this.setState({scrolling: true});
         return new Promise((resolve) => {
             //Throttling
             setTimeout(() => {
