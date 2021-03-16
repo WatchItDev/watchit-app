@@ -14,7 +14,7 @@ export default class AppLoaderBackground extends React.Component {
 			<div className="particles_container">
 				<Particles width="100%" height="100%" params={config}/>
 				<Logo />
-				<span className="slogan">watch movies for free</span>
+				<span className="slogan">open movies everywhere</span>
 			</div>
 		)
 	}
