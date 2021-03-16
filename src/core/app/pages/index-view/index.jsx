@@ -11,7 +11,6 @@ import storageHelper from 'resource/helpers/storage';
 import BoxLoader from 'components/util-box-loader'
 import Movie from 'resource/data/movies'
 import setting from 'settings'
-import Settings from "../../../settings";
 
 // Access to main process bridge prop
 const log = window.require("electron-log");
