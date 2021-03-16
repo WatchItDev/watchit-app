@@ -70,11 +70,11 @@ export default class AppMoviesList extends React.Component {
             >
                 {({onItemsRendered, ref}) => (
                     <List className="row-list"
-                          height={this.state.settings.defaults.height}
+                          height={this.state.settings.height}
                           itemCount={this.state.count}
-                          itemSize={this.state.settings.defaults.chunkHeight}
+                          itemSize={this.state.settings.chunkHeight}
                           onItemsRendered={onItemsRendered}
-                          width={this.state.settings.defaults.width}
+                          width={this.state.settings.width}
                           ref={ref}
                     >
                         {this.renderRow}
