@@ -28,12 +28,14 @@ export default class MovieIndex extends React.Component {
         this.state = {
             state: 'Initializing', percent: 0, peers: this.peers, count: DEFAULT_INIT_LOAD,
             ready: false, loading: true, movies: [], chunkSize: setting.defaults.chunkSize,
-            fetching: false, finishLoad: false, showDetailsFor: false, logout: false
+            lock: false, // Avoid re-render movies list
+            finishLoad: false, showDetailsFor: false, logout: false
         };
 
         this.movie = new Movie(broker);
         //Max movies for initial request
         this.limit = setting.defaults.limit;
+        this.renderTimeout = null;
         this.sort = {
             sort_by: 'year',
             order: 'desc'
@@ -74,10 +76,7 @@ export default class MovieIndex extends React.Component {
             broker.stopIpcEvents();
             broker.listenForNewPeer();
             broker.startSeed()
-            broker.on('chaos', (m) => {
-                this.setState({state: m, ready: false});
-                setTimeout(() => window.location.href = '#/', 3000)
-            })
+            broker.on('chaos', this.chaos)
             // Start running node
             return this.startRunning();
         }
@@ -95,7 +94,7 @@ export default class MovieIndex extends React.Component {
     onClickMovie = (id) => {
         this.setState({
             showDetailsFor: id,
-            fetching: true
+            lock: true
         })
     }
 
@@ -104,6 +103,11 @@ export default class MovieIndex extends React.Component {
         this.setState({
             showDetailsFor: false
         })
+    }
+
+    chaos = (m) => {
+        this.setState({state: m, ready: false});
+        setTimeout(() => window.location.href = '#/', 1000)
     }
 
     runIngest() {
@@ -120,18 +124,13 @@ export default class MovieIndex extends React.Component {
             log.info('LOADED FROM LOCAL');
             this.startRunning()
 
-        }).on('chaos', (m) => {
-            // Kill node and restart login
-            this.setState({state: m, ready: false});
-            setTimeout(() => window.location.href = '#/', 1000)
-
         }).on('error', (msg = 'Waiting Network') => {
             if (this.state.ready) return;
             this.setState({state: msg, ready: false});
 
         }).on('done', () => {
             log.info('LOAD DONE')
-        }).load()
+        }).on('chaos', this.chaos).load()
 
     }
 
@@ -170,7 +169,7 @@ export default class MovieIndex extends React.Component {
             let _current = _new_movies.length;
 
             this.setState({
-                fetching: false, loading: false, chunkSize: _chunk,
+                lock: false, loading: false, chunkSize: _chunk,
                 count: !_size ? _current : (_current + 10),
                 finishLoad: !clear ? !_size : false,
                 movies: clear ? _movies : _new_movies,
@@ -184,10 +183,11 @@ export default class MovieIndex extends React.Component {
     loadOrder = (start, to, size = this.state.chunkSize) => {
         start = start * size;
         to = to * size;
-        this.setState({fetching: true});
+
         return new Promise((resolve) => {
             //Throttling
-            setTimeout(() => {
+            this.renderTimeout && clearTimeout(this.renderTimeout)
+            this.renderTimeout = setTimeout(() => {
                 this.filterMovies({...{start, to}, ...this.sort},
                     false, false, (state) => {
                         log.info('Movies loaded');
@@ -338,7 +338,7 @@ export default class MovieIndex extends React.Component {
                                         (!this.state.loading &&
                                             <AppMovies
                                                 movies={this.state.movies} loadOrder={this.loadOrder}
-                                                count={this.state.count} loading={this.state.fetching}
+                                                count={this.state.count} loading={this.state.lock}
                                                 end={this.state.finishLoad} chunkSize={this.state.chunkSize}
                                                 onClick={this.onClickMovie}
                                             />) || <BoxLoader size={100}/>
