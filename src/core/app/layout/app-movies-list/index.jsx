@@ -10,7 +10,7 @@ export default class AppMoviesList extends React.Component {
         this.state = {
             movies: [], loading: false,
             end: false, chunkSize: 0, count: 0,
-            settings: {}
+            screen: {}
         }
     }
 
@@ -27,8 +27,8 @@ export default class AppMoviesList extends React.Component {
         let loading = nextProps.loading;
         let end = nextProps.end;
         let chunkSize = nextProps.chunkSize;
-        let settings = nextProps.settings;
-        return {count, movies, loading, end, chunkSize,settings};
+        let screen = nextProps.screen;
+        return {count, movies, loading, end, chunkSize,screen};
     }
 
     renderRow = ({index, style}) => {
@@ -70,11 +70,11 @@ export default class AppMoviesList extends React.Component {
             >
                 {({onItemsRendered, ref}) => (
                     <List className="row-list"
-                          height={this.state.settings.height}
+                          height={this.state.screen.height}
                           itemCount={this.state.count}
-                          itemSize={this.state.settings.chunkHeight}
+                          itemSize={this.state.screen.chunkHeight}
                           onItemsRendered={onItemsRendered}
-                          width={this.state.settings.width}
+                          width={this.state.screen.width}
                           ref={ref}
                     >
                         {this.renderRow}

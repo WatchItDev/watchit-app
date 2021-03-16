@@ -26,13 +26,13 @@ export default class MovieIndex extends React.Component {
         //Default state
         this.state = {
             state: 'Initializing', percent: 0, peers: this.peers, count: DEFAULT_INIT_LOAD,
-            ready: false, loading: true, movies: [], settings: setting.defaults,
+            ready: false, loading: true, movies: [], screen: setting.defaults,
             scrolling: false, finishLoad: false, showDetailsFor: false, logout: false
         };
 
         this.movie = new Movie(broker);
         //Max movies for initial request
-        this.limit = this.state.settings.limit;
+        this.limit = this.state.screen.limit;
         this.sort = {
             sort_by: 'year',
             order: 'desc'
@@ -72,10 +72,10 @@ export default class MovieIndex extends React.Component {
         };
     }
 
-    updateSettings = () => {
+    updateScreen = () => {
         let defaults = util.calcScreenSize(200, 20, window.innerWidth, window.innerHeight);
         this.setState({
-            settings: defaults
+            screen: defaults
         })
         return defaults;
     }
@@ -84,7 +84,7 @@ export default class MovieIndex extends React.Component {
         if (this.state.movies.length) {
             let moviesArrays = this.state.movies;
             let movies = moviesArrays.flat(1);
-            let defaults = this.updateSettings();
+            let defaults = this.updateScreen();
             let moviesNewStructure = this.moviesToRow(movies, defaults.chunkSize);
 
             this.setState({
@@ -109,7 +109,7 @@ export default class MovieIndex extends React.Component {
     }
 
     componentDidMount() {
-        this.updateSettings();
+        this.updateScreen();
         window.addEventListener('resize', this.debounceResize);
 
         // Start ingest if not
@@ -206,7 +206,7 @@ export default class MovieIndex extends React.Component {
         //Get movies
         this.movie.filter(filter).then((movies) => {
             //Chunk and concat movies
-            let _chunk = chunks || this.state.settings.chunkSize;
+            let _chunk = chunks || this.state.screen.chunkSize;
             let _movies = this.moviesToRow(movies, _chunk);
 
             // Handle sizes
@@ -226,7 +226,7 @@ export default class MovieIndex extends React.Component {
         })
     }
 
-    loadOrder = (start, to, size = this.state.settings.chunkSize) => {
+    loadOrder = (start, to, size = this.state.screen.chunkSize) => {
         start = start * size;
         to = to * size;
         this.setState({scrolling: true});
@@ -384,8 +384,8 @@ export default class MovieIndex extends React.Component {
                                             <AppMovies
                                                 movies={this.state.movies} loadOrder={this.loadOrder}
                                                 count={this.state.count} loading={this.state.scrolling}
-                                                end={this.state.finishLoad} chunkSize={this.state.settings.chunkSize}
-                                                onClick={this.onClickMovie} settings={this.state.settings}
+                                                end={this.state.finishLoad} chunkSize={this.state.screen.chunkSize}
+                                                onClick={this.onClickMovie} screen={this.state.screen}
                                             />) || <BoxLoader size={100}/>
                                     }
                                 </section>
