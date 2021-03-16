@@ -28,7 +28,7 @@ export default class MovieIndex extends React.Component {
         this.state = {
             state: 'Initializing', percent: 0, peers: this.peers, count: DEFAULT_INIT_LOAD,
             ready: false, loading: true, movies: [], chunkSize: setting.defaults.chunkSize,
-            scrolling: false, finishLoad: false, showDetailsFor: false, logout: false
+            fetching: false, finishLoad: false, showDetailsFor: false, logout: false
         };
 
         this.movie = new Movie(broker);
@@ -95,7 +95,7 @@ export default class MovieIndex extends React.Component {
     onClickMovie = (id) => {
         this.setState({
             showDetailsFor: id,
-            scrolling: true
+            fetching: true
         })
     }
 
@@ -170,7 +170,7 @@ export default class MovieIndex extends React.Component {
             let _current = _new_movies.length;
 
             this.setState({
-                scrolling: false, loading: false, chunkSize: _chunk,
+                fetching: false, loading: false, chunkSize: _chunk,
                 count: !_size ? _current : (_current + 10),
                 finishLoad: !clear ? !_size : false,
                 movies: clear ? _movies : _new_movies,
@@ -184,7 +184,7 @@ export default class MovieIndex extends React.Component {
     loadOrder = (start, to, size = this.state.chunkSize) => {
         start = start * size;
         to = to * size;
-        this.setState({scrolling: true});
+        this.setState({fetching: true});
         return new Promise((resolve) => {
             //Throttling
             setTimeout(() => {
@@ -338,7 +338,7 @@ export default class MovieIndex extends React.Component {
                                         (!this.state.loading &&
                                             <AppMovies
                                                 movies={this.state.movies} loadOrder={this.loadOrder}
-                                                count={this.state.count} loading={this.state.scrolling}
+                                                count={this.state.count} loading={this.state.fetching}
                                                 end={this.state.finishLoad} chunkSize={this.state.chunkSize}
                                                 onClick={this.onClickMovie}
                                             />) || <BoxLoader size={100}/>

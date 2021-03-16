@@ -9,8 +9,10 @@ export default class AppMoviesList extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            movies: [], loading: false,
-            end: false, chunkSize: 0, count: 0
+            movies: [],
+            end: false,
+            chunkSize: 0,
+            count: 0
         }
     }
 
@@ -24,10 +26,9 @@ export default class AppMoviesList extends React.Component {
 
         let movies = nextProps.movies;
         let count = nextProps.count;
-        let loading = nextProps.loading;
         let end = nextProps.end;
         let chunkSize = nextProps.chunkSize;
-        return {count, movies, loading, end, chunkSize};
+        return {count, movies, end, chunkSize};
     }
 
     renderRow = ({index, style}) => {
