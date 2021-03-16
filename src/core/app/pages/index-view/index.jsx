@@ -25,14 +25,15 @@ export default class MovieIndex extends React.Component {
         //Default state
         this.state = {
             state: 'Initializing', percent: 0, peers: this.peers, count: DEFAULT_INIT_LOAD,
-            ready: false, loading: true, movies: [], screen: util.calcScreenSize(),
-            lock: false, finishLoad: false, showDetailsFor: false, logout: false
+            ready: false, loading: true, movies: [], chunkSize: util.calcScreenSize(),
+            lock: false, // Avoid re-render movies list
+            finishLoad: false, showDetailsFor: false, logout: false
         };
 
         this.movie = new Movie(broker);
         //Max movies for initial request
-        this.limit = this.state.screen.limit;
         this.renderTimeout = null;
+        this.limit = this.state.screen.limit;
         this.sort = {
             sort_by: 'year',
             order: 'desc'
@@ -372,7 +373,7 @@ export default class MovieIndex extends React.Component {
                                         (!this.state.loading &&
                                             <AppMovies
                                                 movies={this.state.movies} loadOrder={this.loadOrder}
-                                                count={this.state.count} loading={this.state.scrolling}
+                                                count={this.state.count} loading={this.state.lock}
                                                 end={this.state.finishLoad} chunkSize={this.state.screen.chunkSize}
                                                 onClick={this.onClickMovie} screen={this.state.screen}
                                             />) || <BoxLoader size={100}/>
