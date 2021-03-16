@@ -1,5 +1,4 @@
 import React from 'react'
-
 import AppMovies from 'layout/app-movies-list/'
 import AppMovieDetails from 'layout/app-movie-details/'
 import util from 'resource/helpers/util'
@@ -62,30 +61,58 @@ export default class MovieIndex extends React.Component {
         }, cb)
     }
 
-    handleResize = () => {
-        console.log("handle resize");
-        console.log('height');
-        console.log(window.innerHeight);
-        console.log('width');
-        console.log(window.innerWidth);
-        console.log(util.calcScreenSize(200, 20, window.innerWidth, window.innerHeight));
-
-        this.setState({
-            settings: {
-                defaults: util.calcScreenSize(200, 20, window.innerWidth, window.innerHeight)
-            },
-            loading: true
-        })
-        this.filterMovies(this.sort, false);
+    resizeTimeout = (fn, ms) => {
+        let timer
+        return _ => {
+            clearTimeout(timer)
+            timer = setTimeout(_ => {
+                timer = null;
+                fn();
+            }, ms)
+        };
     }
 
+    updateSettings = () => {
+        let defaults = util.calcScreenSize(200, 20, window.innerWidth, window.innerHeight);
+        this.setState({
+            settings: {
+                defaults: defaults
+            }
+        })
+        return defaults;
+    }
+
+    handleResize = () => {
+        if (this.state.movies.length) {
+            let moviesArrays = this.state.movies;
+            let movies = moviesArrays.flat(1);
+            let defaults = this.updateSettings();
+            let moviesNewStructure = this.moviesToRow(movies, defaults.chunkSize);
+
+            this.setState({
+                scrolling: true, loading: true,
+            })
+
+            setTimeout(()=>{
+                this.setState({
+                    scrolling: false, loading: false,
+                    count: moviesNewStructure.length + 10,
+                    movies: moviesNewStructure
+                })
+            },500);
+        }
+    }
+
+    debounceResize = this.resizeTimeout(this.handleResize, 1000)
+
     componentWillUnmount() {
-        window.removeEventListener('resize', this.handleResize);
+        window.removeEventListener('resize', this.debounceResize);
         broker.removeAllListeners();
     }
 
     componentDidMount() {
-        window.addEventListener('resize', this.handleResize);
+        this.updateSettings();
+        window.addEventListener('resize', this.debounceResize);
 
         // Start ingest if not
         if (this.cached) {
