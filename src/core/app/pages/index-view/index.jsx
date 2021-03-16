@@ -55,7 +55,7 @@ export default class MovieIndex extends React.Component {
         return this._index('cached')
     }
 
-    startRunning(cb = null) {
+    startRunning = (cb = null) => {
         this.setState({
             ready: true,
             loading: false
