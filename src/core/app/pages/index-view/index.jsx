@@ -25,7 +25,7 @@ export default class MovieIndex extends React.Component {
         //Default state
         this.state = {
             state: 'Initializing', percent: 0, peers: this.peers, count: DEFAULT_INIT_LOAD,
-            ready: false, loading: true, movies: [], chunkSize: setting.defaults.chunkSize,
+            ready: false, loading: true, movies: [], chunkSize: util.calcScreenSize(),
             lock: false, // Avoid re-render movies list
             finishLoad: false, showDetailsFor: false, logout: false
         };
