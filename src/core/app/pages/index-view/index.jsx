@@ -219,7 +219,7 @@ export default class MovieIndex extends React.Component {
     loadOrder = (start, to, size = this.state.screen.chunkSize) => {
         start = start * size;
         to = to * size;
-        // this.setState({scrolling: true});
+        this.setState({scrolling: true});
         return new Promise((resolve) => {
             //Throttling
             setTimeout(() => {
