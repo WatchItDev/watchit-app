@@ -64,9 +64,8 @@ export default class MovieIndex extends React.Component {
     resizeTimeout = (fn, ms) => {
         let timer
         return _ => {
-            clearTimeout(timer)
+            timer && clearTimeout(timer);
             timer = setTimeout(_ => {
-                timer = null;
                 fn();
             }, ms)
         };
@@ -88,12 +87,12 @@ export default class MovieIndex extends React.Component {
             let moviesNewStructure = this.moviesToRow(movies, defaults.chunkSize);
 
             this.setState({
-                scrolling: true, loading: true,
+                loading: true
             })
 
             setTimeout(()=>{
                 this.setState({
-                    scrolling: false, loading: false,
+                    loading: false,
                     count: moviesNewStructure.length + 10,
                     movies: moviesNewStructure
                 })
