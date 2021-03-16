@@ -284,9 +284,6 @@ export default class MovieIndex extends React.Component {
     }
 
     onChange = (sort, by) => {
-        console.log("on change")
-        console.log(sort);
-        console.log(by);
         //If by?
         if ((storageHelper.get().from.mainNavFilters())) {
             this.sort = Object.assign(
