@@ -94,8 +94,7 @@ export default class MovieIndex extends React.Component {
         }
     }
 
-    debounceResize = this.resizeTimeout(this.handleResize, 1000)
-
+    debounceResize = () => this.resizeTimeout(this.handleResize, 1000)
     componentWillUnmount() {
         window.removeEventListener('resize', this.debounceResize);
         broker.removeAllListeners();
