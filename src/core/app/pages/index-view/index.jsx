@@ -17,6 +17,7 @@ const key = window.bridge.Key
 const broker = window.bridge.Broker
 const DEFAULT_INIT_LOAD = 100;
 
+
 //Login pages class
 export default class MovieIndex extends React.Component {
     constructor(props) {
@@ -30,16 +31,17 @@ export default class MovieIndex extends React.Component {
             finishLoad: false, showDetailsFor: false, logout: false
         };
 
-        this.movie = new Movie(broker);
         //Max movies for initial request
+        this.movie = new Movie(broker);
         this.renderTimeout = null;
-        this.limit = this.state.screen.limit;
+        this.resizeTimeout = null;
         this.sort = {
             sort_by: 'year',
             order: 'desc'
         };
 
     }
+
 
     _index(i) {
         // Else try get from key file and save
@@ -62,47 +64,38 @@ export default class MovieIndex extends React.Component {
         }, cb)
     }
 
-    resizeTimeout = (fn, ms) => {
-        let timer
-        return _ => {
-            timer && clearTimeout(timer);
-            timer = setTimeout(_ => {
-                fn();
-            }, ms)
-        };
-    }
 
     handleResize = () => {
-        if (this.state.movies.length) {
+        if (!this.state.movies.length) return;
+        this.resizeTimeout && clearTimeout(this.resizeTimeout)
+        this.resizeTimeout = setTimeout(() => {
+            log.warn('Resized window..')
+            const width = window.innerWidth
+            const height = window.innerHeight
+
             let moviesArrays = this.state.movies;
             let movies = moviesArrays.flat(1);
-            let defaults = util.calcScreenSize();
+            let defaults = util.calcScreenSize({width, height})
             let moviesNewStructure = this.moviesToRow(movies, defaults.chunkSize);
 
             this.setState({
-                loading: true
+                lock: false,
+                count: moviesNewStructure.length + 10,
+                movies: moviesNewStructure,
+                screen: defaults,
             })
 
-            setTimeout(() => {
-                this.setState({
-                    loading: false,
-                    count: moviesNewStructure.length + 10,
-                    movies: moviesNewStructure,
-                    screen: defaults,
-                })
-            }, 500);
-        }
+        }, 100)
     }
 
-    debounceResize = () => this.resizeTimeout(this.handleResize, 1000)
-
     componentWillUnmount() {
-        window.removeEventListener('resize', this.debounceResize());
+        window.removeEventListener('resize', this.handleResize);
         broker.removeAllListeners();
     }
 
     componentDidMount() {
-        window.addEventListener('resize', this.debounceResize());
+        // Set initial screen
+        window.addEventListener('resize', this.handleResize);
 
         // Start ingest if not
         if (this.cached) {
@@ -150,7 +143,6 @@ export default class MovieIndex extends React.Component {
         broker.removeAllListeners().on('progress', (state) => {
             this.setState({state: state})
         }).on('start', async () => {
-            console.clear();
             log.info('STARTING');
             if (!this.loaded) localStorage.clear();
 
@@ -184,7 +176,7 @@ export default class MovieIndex extends React.Component {
         }
 
         // Add limit to filters
-        filter = {...{limit: this.limit}, ...filter};
+        filter = {...{limit: this.state.screen.limit}, ...filter};
         if ('to' in filter && 'start' in filter) {
             filter.limit = filter.to - filter.start;
             filter.skip = filter.start;
