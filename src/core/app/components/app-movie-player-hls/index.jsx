@@ -56,7 +56,6 @@ export default class AppMoviesPlayerHLS extends React.PureComponent {
                         <AppMoviePlayer
                             movie={this.props.movie}
                             subs={this.props.subs}
-                            subSelected={this.props.selectedSub}
                             canPlay={this.state.canPlay}
                             onProgress={this.onProgress}
                             onReady={this.onReady}
