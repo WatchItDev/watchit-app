@@ -120,7 +120,7 @@ export default class AppMovieDetailMenu extends React.PureComponent {
                         />
                     }
 
-                    {/*Play*/}
+                    {/* Play */}
                     <NavBarButton
                         text={'Play'} icon={'icon-controller-play'}
                         link={{href: `#/play/${this.state.resource}`}}

@@ -9,10 +9,8 @@ export default class AppMoviesPlayerTorrent extends React.PureComponent {
     constructor(props) {
         super(props);
         this.state = {
-            flix: null,
-            canPlay: false,
-            state: 'Connecting',
-            percent: 0
+            flix: null, canPlay: false,
+            state: 'Connecting', percent: 0
         }
     }
 
@@ -31,12 +29,11 @@ export default class AppMoviesPlayerTorrent extends React.PureComponent {
     }
 
     onReady = (url, ...rest) => {
-        const [flix] = rest
+        const [, flix] = rest
         //Change state
         this.setState({
             state: 'Starting',
-            flix: flix,
-            percent: 100
+            flix: flix, percent: 100
         })
     }
 
