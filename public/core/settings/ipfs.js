@@ -41,10 +41,10 @@ module.exports = () => {
             "Announce": [],
             "NoAnnounce": [],
             "Swarm": [
-                '/ip4/0.0.0.0/tcp/4003',
-                '/ip4/0.0.0.0/tcp/4004/ws',
-                "/ip6/::/tcp/4001",
-                "/ip6/::/udp/4001/quic"
+                '/ip4/0.0.0.0/tcp/4010',
+                '/ip4/0.0.0.0/tcp/4011/ws',
+                "/ip6/::/tcp/4003",
+                "/ip6/::/udp/4003/quic"
             ],
             "Delegates": [
                 "/dns4/node0.delegate.ipfs.io/tcp/443/https",
