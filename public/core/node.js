@@ -13,7 +13,6 @@ const MAX_RETRIES = 30;
 module.exports = class Node extends EventEmitter {
     constructor() {
         super();
-        this.timeout = null;
         this.seedMode = false;
         this.peers = [];
         this.retry = 0;

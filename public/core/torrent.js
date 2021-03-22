@@ -5,18 +5,26 @@
 const path = require('path')
 const log = require('electron-log')
 const peerflix = require('peerflix');
+const EventEmitter = require('events')
 const readTorrent = require('read-torrent');
 const parseTorrent = require('parse-torrent');
 const webtorrentHealth = require('webtorrent-health')
-const TorrentConf = require(`${__dirname}/settings/torrent`);
-const {ROOT_TMP_FOLDER} = require(`${__dirname}/settings/`)
+const {ROOT_TMP_FOLDER} = require(`./settings/`)
 const TORRENT_FILE_READ_TIMEOUT = 30 * 1000
+const {
+    MIN_SIZE_LOADED,
+    MIN_PERCENTAGE_LOADED,
+    TORRENT_TRACKERS,
+    MAX_NUM_CONNECTIONS
+} = require(`./settings/torrent`);
 
-module.exports = class TorrentStreamer {
-    constructor() {
+module.exports = class TorrentStreamer extends EventEmitter {
+    constructor(props) {
+        super(props)
         this.flix = null;
         this.loadedTimeout = null;
         this.stopped = false;
+        this.mime = "video/mp4"
     }
 
     stop(cb) {
@@ -33,10 +41,10 @@ module.exports = class TorrentStreamer {
         if (this.flix) {
             //Destroy peers
             this.flix.destroy();
-            this.flix.server.close(function () {
+            this.flix.server.close(() => {
                 log.warn('Flix destroyed');
                 delete this.flix;
-            }.bind(this));
+            });
         }
 
         //Stopped
@@ -46,12 +54,10 @@ module.exports = class TorrentStreamer {
 
     }
 
-    checkLoadingProgress(flix, {onReady, onProgress}) {
+    checkLoadingProgress(flix) {
         /**Check for progress in torrent download
          * @param {object} flix
          * @param {string} href
-         * @param {function} onReady
-         * @param {function} onProgress
          * @return void
          * */
         const total = flix.fileSize;
@@ -60,16 +66,15 @@ module.exports = class TorrentStreamer {
         let state = 'Connecting';
 
         // There's a minimum size before we start playing the video.
-        const targetLoadedSize = TorrentConf.MIN_SIZE_LOADED > total ? total : TorrentConf.MIN_SIZE_LOADED;
-        const targetLoadedPercent = TorrentConf.MIN_PERCENTAGE_LOADED * total / 100.0;
+        const targetLoadedSize = MIN_SIZE_LOADED > total ? total : MIN_SIZE_LOADED;
+        const targetLoadedPercent = MIN_PERCENTAGE_LOADED * total / 100.0;
         const targetLoaded = Math.max(targetLoadedPercent, targetLoadedSize);
         const percent = (downloaded / targetLoaded * 100.0).toFixed(0);
 
-        if ((downloaded > TorrentConf.MIN_SIZE_LOADED || swarm.cachedDownload > TorrentConf.MIN_SIZE_LOADED)
+        if ((downloaded > MIN_SIZE_LOADED || swarm.cachedDownload > MIN_SIZE_LOADED)
         ) {
-            if (typeof onReady === 'function') {
-                onReady.call(this, flix.href, flix);
-            }
+            this.emit('ready', flix.href, this.mime, flix);
+            this.emit('start', {});
         } else {
             if (downloaded || swarm.piecesGot > 0) {
                 state = 'Downloading';
@@ -77,10 +82,10 @@ module.exports = class TorrentStreamer {
                 state = 'Starting Download';
             }
 
-            typeof onProgress === 'function' ? onProgress.call(this, flix, percent, state) : null;
-            this.loadedTimeout = setTimeout(function () {
-                this.checkLoadingProgress(flix, {onReady, onProgress})
-            }.bind(this), 500);
+            this.emit('progress', flix, percent, state);
+            this.loadedTimeout = setTimeout(() => {
+                this.checkLoadingProgress(flix)
+            }, 500);
         }
 
     }
@@ -88,18 +93,15 @@ module.exports = class TorrentStreamer {
     async getHealth(hash, i) {
         let {peers, seeds} = await webtorrentHealth(
             parseTorrent.toMagnetURI({infoHash: hash.toLowerCase()}),
-            {trackers: TorrentConf.TORRENT_TRACKERS}
+            {trackers: TORRENT_TRACKERS}
         )
 
         return {peers, seeds, index: i}
     }
 
-    play(torrent, {onReady, onProgress, onError}) {
+    play(torrent) {
         /** Start playing torrent
          * @param {string} torrent
-         * @param {function} onReady
-         * @param {function} onProgress
-         * @param {function} onError
          * @return object
          * * */
         //Reset stopped on each new play
@@ -109,7 +111,7 @@ module.exports = class TorrentStreamer {
             timeout: TORRENT_FILE_READ_TIMEOUT
         }, (err, torrent) => {
             if (err || !torrent) {
-                onError(err);
+                this.emit('error', err);
                 return;
             }
 
@@ -130,16 +132,13 @@ module.exports = class TorrentStreamer {
             //Streamer!!
             this.flix = peerflix(torrent, {
                 // Set the custom temp file
-                path: tmpFile,
-                dht: true,
-                tracker: true,
-                verify: true,
-                //port: 554,
-                trackers: TorrentConf.TORRENT_TRACKERS,
+                path: tmpFile, dht: true,
+                tracker: true, verify: true,
+                trackers: TORRENT_TRACKERS,
                 buffer: (1.5 * 1024 * 1024).toString(),
                 tmp: ROOT_TMP_FOLDER,
                 name: torrent.infoHash,
-                connections: TorrentConf.MAX_NUM_CONNECTIONS
+                connections: MAX_NUM_CONNECTIONS
             });
 
             this.flix.swarm.piecesGot = 0;
@@ -169,7 +168,7 @@ module.exports = class TorrentStreamer {
 
                     //Clear old timeout
                     this.loadedTimeout ? clearTimeout(this.loadedTimeout) : null;
-                    this.checkLoadingProgress(this.flix, {onReady, onProgress});
+                    this.checkLoadingProgress(this.flix);
                 }
             });
 

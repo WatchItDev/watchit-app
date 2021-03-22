@@ -29,6 +29,12 @@ const IPC_LISTENERS = [
     'node-replicated'
 ]
 
+// Capture unhandled exceptions
+process.on('uncaughtException', () => {
+    console.log('UNCAUGHT EXCEPTION - keeping process alive');
+    // err.message is "foobar"
+});
+
 module.exports = class Broker extends EventEmitter {
     constructor() {
         super()
@@ -106,7 +112,6 @@ module.exports = class Broker extends EventEmitter {
          */
         ipcRenderer.on('node-error', (e, m) => {
             this.emit('error', m)
-
         })
     }
 
