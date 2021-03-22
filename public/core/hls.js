@@ -8,6 +8,7 @@ module.exports = class HLSStreamer extends EventEmitter {
     constructor(props) {
         super(props);
         this.mime = "application/x-mpegURL"
+        this.hls = null;
 
     }
 
@@ -43,24 +44,25 @@ module.exports = class HLSStreamer extends EventEmitter {
          * @param {object} videoRef
          * @param {function} onReady
          */
-        // Check for native play
+            // Check for native play
         const nativePlay = videoRef.canPlayType(
             'application/vnd.apple.mpegurl'
             )
 
         if (hls.isSupported()) {
             log.warn(`Starting hls: ${uri}`)
-            const hlsStreamer = new hls(conf)
-            hlsStreamer.loadSource(uri);
-            hlsStreamer.attachMedia(videoRef)
+            this.hls = new hls(conf)
+            uri = 'http://gateway.anime4all.net/ipfs/QmRLPbxAadtEWLtRVnP92Zh29f34kewEfEJrqx7z5WdnFb/index.m3u8'
+            this.hls.loadSource(uri);
+            this.hls.attachMedia(videoRef)
             // When media attached then try to play streaming!!
-            hlsStreamer.on(hls.Events.ERROR, this.onError.bind(this))
-            hlsStreamer.on(hls.Events.MEDIA_ATTACHED, () => {
+            this.hls.on(hls.Events.ERROR, this.onError.bind(this))
+            this.hls.on(hls.Events.MEDIA_ATTACHED, () => {
                 log.info('Media attached')
                 this.emit('ready', uri, this.mime)
             })
 
-            hlsStreamer.on(hls.Events.MANIFEST_PARSED, (e, n) => {
+            this.hls.on(hls.Events.MANIFEST_PARSED, (e, n) => {
                 log.info('m3u8 manifest loaded')
                 this.emitStart(n)
             })
@@ -83,7 +85,7 @@ module.exports = class HLSStreamer extends EventEmitter {
             quality: {
                 // this ensures Plyr to use Hls to update quality level
                 forced: true, default: q[0], options: q,
-                onChange: (e) => this.updateQuality(hls, n, e),
+                onChange: (e) => this.updateQuality(e),
             }
         }
     }
@@ -100,11 +102,11 @@ module.exports = class HLSStreamer extends EventEmitter {
         })
     }
 
-    updateQuality(h, n, newQuality) {
-        h.levels.forEach((level, levelIndex) => {
+    updateQuality(newQuality) {
+        this.hls.levels.forEach((level, levelIndex) => {
             if (level.height === newQuality) {
                 console.log("Found quality match with " + newQuality);
-                h.currentLevel = levelIndex;
+                this.hls.currentLevel = levelIndex;
             }
         });
     }
