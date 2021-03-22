@@ -43,7 +43,7 @@ module.exports = class HLSStreamer extends EventEmitter {
          * @param {object} videoRef
          * @param {function} onReady
          */
-            // Check for native play
+        // Check for native play
         const nativePlay = videoRef.canPlayType(
             'application/vnd.apple.mpegurl'
             )
@@ -52,16 +52,16 @@ module.exports = class HLSStreamer extends EventEmitter {
             log.warn(`Starting hls: ${uri}`)
             const hlsStreamer = new hls(conf)
             hlsStreamer.loadSource(uri);
+            hlsStreamer.attachMedia(videoRef)
             // When media attached then try to play streaming!!
             hlsStreamer.on(hls.Events.ERROR, this.onError.bind(this))
             hlsStreamer.on(hls.Events.MEDIA_ATTACHED, () => {
                 log.info('Media attached')
-                // this.emit('ready', uri, this.mime)
+                this.emit('ready', uri, this.mime)
             })
 
             hlsStreamer.on(hls.Events.MANIFEST_PARSED, (e, n) => {
                 log.info('m3u8 manifest loaded')
-                hlsStreamer.attachMedia(videoRef)
                 this.emitStart(n)
             })
 
