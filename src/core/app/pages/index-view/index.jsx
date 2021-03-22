@@ -65,15 +65,14 @@ export default class MovieIndex extends React.Component {
     }
 
     recalculateScreen = () => {
-        const width = window.innerWidth
-        const height = window.innerHeight
+        const width = window.innerWidth,
+            height = window.innerHeight,
+            moviesArrays = this.state.movies,
+            movies = moviesArrays.flat(1),
+            defaults = util.calcScreenSize({width, height}),
+            moviesNewStructure = this.moviesToRow(movies, defaults.chunkSize);
 
         log.warn(`Resized window.. W:${width}, H:${height}`);
-
-        let moviesArrays = this.state.movies;
-        let movies = moviesArrays.flat(1);
-        let defaults = util.calcScreenSize({width, height})
-        let moviesNewStructure = this.moviesToRow(movies, defaults.chunkSize);
 
         this.setState({
             loading: true
