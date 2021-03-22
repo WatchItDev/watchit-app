@@ -64,28 +64,32 @@ export default class MovieIndex extends React.Component {
         }, cb)
     }
 
+    recalculateScreen = () => {
+        const width = window.innerWidth
+        const height = window.innerHeight
 
-    handleResize = () => {
-        if (!this.state.movies.length) return;
-        this.resizeTimeout && clearTimeout(this.resizeTimeout)
-        this.resizeTimeout = setTimeout(() => {
-            log.warn('Resized window..')
-            const width = window.innerWidth
-            const height = window.innerHeight
+        log.warn(`Resized window.. W:${width}, H:${height}`);
 
-            let moviesArrays = this.state.movies;
-            let movies = moviesArrays.flat(1);
-            let defaults = util.calcScreenSize({width, height})
-            let moviesNewStructure = this.moviesToRow(movies, defaults.chunkSize);
+        let moviesArrays = this.state.movies;
+        let movies = moviesArrays.flat(1);
+        let defaults = util.calcScreenSize({width, height})
+        let moviesNewStructure = this.moviesToRow(movies, defaults.chunkSize);
 
+        this.setState({
+            loading: true
+        },()=>{
             this.setState({
-                lock: false,
+                loading: false,lock: false,
                 count: moviesNewStructure.length + 10,
                 movies: moviesNewStructure,
                 screen: defaults,
             })
+        })
+    }
 
-        }, 100)
+    handleResize = () => {
+        this.resizeTimeout && clearTimeout(this.resizeTimeout)
+        this.resizeTimeout = setTimeout(this.recalculateScreen, 500);
     }
 
     componentWillUnmount() {
@@ -94,6 +98,7 @@ export default class MovieIndex extends React.Component {
     }
 
     componentDidMount() {
+        this.recalculateScreen();
         // Set initial screen
         window.addEventListener('resize', this.handleResize);
 
