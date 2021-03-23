@@ -196,7 +196,6 @@ export default class AppMoviesPlayer extends React.Component {
     stopStreaming() {
         this.streamer.stop();
         this.streamer.removeAllListeners();
-        cast.stop();
     }
 
 
@@ -216,6 +215,7 @@ export default class AppMoviesPlayer extends React.Component {
     componentWillUnmount() {
         log.warn('STREAMING STOPPED BY USER');
         this.stopStreaming()
+        cast.stop();
     }
 
     onReady = (url, ...rest) => {
