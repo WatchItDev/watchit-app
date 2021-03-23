@@ -3,14 +3,32 @@ import React from 'react'
 
 import PropTypes from 'prop-types'
 import setting from 'core/settings'
-import AppMoviesPlayerShare from 'components/app-movie-player-share'
-import AppMoviesPlayerVideo from 'components/app-movie-player-video'
+import AppMoviesPlayerShare from '../app-movie-player-share'
+import AppMoviesPlayerVideo from '../app-movie-player-video'
 import gatewayHelper from "core/resources/helpers/gateway";
 import resourceHelper from "core/resources/helpers/streaming";
 
 const log = window.require("electron-log");
 const subs = window.bridge.Subs
 const cast = window.bridge.DLNA
+
+const DEFAULT_PLAYER_CONTROLS = [
+    'play-large', // The large play button in the center
+    'restart', // Restart playback
+    'rewind', // Rewind by the seek time (default 10 seconds)
+    'play', // Play/pause playback
+    'fast-forward', // Fast forward by the seek time (default 10 seconds)
+    'progress', // The progress bar and scrubber for playback and buffering
+    'current-time', // The current time of playback
+    'duration', // The full duration of the media
+    'mute', // Toggle mute
+    'quality', // Quality control
+    'volume', // Volume control
+    'captions', // Toggle captions
+    'settings', // Settings menu
+    'fullscreen', // Toggle fullscreen
+]
+
 
 export default class AppMoviesPlayer extends React.Component {
     constructor(props) {
@@ -21,7 +39,7 @@ export default class AppMoviesPlayer extends React.Component {
 
         //Initial State
         this.state = {
-            url: null,
+            url: '', // Empty uri on start
             devices: this.players || []
         }
     }
@@ -39,8 +57,7 @@ export default class AppMoviesPlayer extends React.Component {
 
     static get defaultProps() {
         return {
-            subs: {},
-            subSelected: 'spanish'
+            subs: {}
         }
     }
 
@@ -58,7 +75,7 @@ export default class AppMoviesPlayer extends React.Component {
     }
 
     get currentLang() {
-        return this.player.language &&
+        return this.player?.language &&
             setting.subs.revHash[this.player.language]
     }
 
@@ -81,19 +98,6 @@ export default class AppMoviesPlayer extends React.Component {
         }
     }
 
-    // syncSubs() {
-    // 	console.log('y');
-    // 	for (const cue of this.interCues(this.v.video)) {
-    // 		let cTime = this.player.currentTime;
-    // 		let sTime = cue.startTime;
-    //
-    // 		if (sTime > cTime) {
-    // 			let diff = cTime - sTime;
-    // 			return diff < 0 ? this.removeOffset(diff * -1) :
-    // 				this.addOffset(diff)
-    // 		}
-    // 	}
-    // }
 
     addOffset(offset) {
         if (!this.currentSub || !this.v) return;
@@ -115,6 +119,7 @@ export default class AppMoviesPlayer extends React.Component {
         })
     }
 
+
     async componentDidMount() {
         //Cast init
         cast.createServer(
@@ -126,92 +131,6 @@ export default class AppMoviesPlayer extends React.Component {
             this.setState({devices: this.players})
         });
 
-        // Prepare player
-        let selectedSub = this.props.subSelected && {
-            language: setting.subs.hash[this.props.subSelected]
-        };
-
-        // Init player
-        this.player = new Plyr(this.v.video, {
-            autoplay: true, quality: false,
-            settings: ['captions', 'speed'],
-            controls: [
-                'play-large', // The large play button in the center
-                'restart', // Restart playback
-                'rewind', // Rewind by the seek time (default 10 seconds)
-                'play', // Play/pause playback
-                'fast-forward', // Fast forward by the seek time (default 10 seconds)
-                'progress', // The progress bar and scrubber for playback and buffering
-                'current-time', // The current time of playback
-                'duration', // The full duration of the media
-                'mute', // Toggle mute
-                'volume', // Volume control
-                'captions', // Toggle captions
-                'settings', // Settings menu
-                'fullscreen', // Toggle fullscreen
-            ],
-            captions: {
-                ...{active: true, update: true},
-                ...selectedSub
-            },
-        })
-
-        //On player change subtitles
-        this.player.on('languagechange', () => {
-            if (!this.currentSub) return;
-            cast.setSub(this.currentSub)
-        })
-
-        // On ready to play
-        this.v.video.addEventListener('canplay', () => {
-            log.info('PLAYING MOVIE ON SERVER: ' + this.state.url);
-            //Handle ready
-            if (this.props.onCanPlay) {
-                this.props.onCanPlay(
-                    this.state.url
-                );
-            }
-        })
-
-        // On error
-        this.v.video.addEventListener('error', (e) => {
-            log.error(`ERROR WHILE PLAYING MOVIE: ${JSON.stringify(e)}`);
-        })
-
-        //When player load
-        this.v.video.addEventListener('loadedmetadata', () => {
-            log.info('PLAYER METADATA LOADED');
-
-            // Convert to vtt
-            for (let subtitle of Object.keys(this.props.subs)) {
-                if (!setting.subs.available.includes(subtitle))
-                    continue;
-
-                // Transform subs
-                subs.urlSrt2VttFile(
-                    this.props.subs[subtitle].link
-                ).then(({vtt, raw}) => {
-                    // If selected sub match
-                    log.info('ADDING ' + subtitle.toUpperCase() + ' SUBTITLE: ' + vtt);
-                    let _elem = document.createElement('track');
-                    let selectedSub = Object.is(subtitle, this.props.subSelected)
-                    if (selectedSub) cast.setSub(raw);
-                    this.subs[subtitle] = raw;
-
-                    // Add captions
-                    _elem.src = vtt;
-                    _elem.kind = "captions";
-                    _elem.label = subtitle;
-                    _elem.mode = 'showing';
-                    _elem.srclang = setting.subs.hash[subtitle];
-                    _elem.default = selectedSub;
-                    this.player.media.appendChild(_elem);
-                }).catch((e) => {
-                    log.error(`ERROR PARSING SUBS: ${JSON.stringify(e)}`);
-                })
-            }
-        });
-
         window.addEventListener("keyup", (e) => {
             let keyCode = e.which || e.keyCode;
             if (Object.is(keyCode, 71)) this.addOffset(0.5); //G
@@ -221,19 +140,57 @@ export default class AppMoviesPlayer extends React.Component {
 
         // Lets run
         this.startStreaming();
+
+    }
+
+    getPlayer(options = {}) {
+        const playerSettings = {
+            ...{
+                autoplay: true,
+                settings: ['captions', 'speed', 'quality'],
+                controls: DEFAULT_PLAYER_CONTROLS,
+            }, ...options
+        }
+
+        // Init player
+        this.player = new Plyr(this.v.video, playerSettings)
+        //On player change subtitles
+        this.player.on('languagechange', () => {
+            if (!this.currentSub) return;
+            cast.setSub(this.currentSub)
+        })
+
+        // On ready to play
+        this.v.video.addEventListener('canplay', () => {
+            log.info('Playing movie');
+            //Handle ready
+            if (this.props.onCanPlay) {
+                this.props.onCanPlay(
+                    this.state.url
+                );
+            }
+        })
+
+        // On error
+        this.v.video.addEventListener('error', (e) =>
+            log.error(`Error while playing movie: ${JSON.stringify(e)}`)
+        )
+
+        //When player load
+        this.v.video.addEventListener('loadedmetadata', () =>
+            log.warn('Player metadata loaded')
+        );
     }
 
     startStreaming() {
         //Start streamer
-        const uriToStream = `${gatewayHelper.dummyParse(this.props.movie)}`
         log.info('STREAMING MOVIE: ' + this.props.movie.title.toUpperCase());
-        this.streamer.play(uriToStream, {
-            videoRef: this.v.video,
-            player: this.player,
-            onReady: this.onReady,
-            onProgress: this.onProgress,
-            onError: this.onError
-        });
+        const uriToStream = `${gatewayHelper.dummyParse(this.props.movie)}`
+        const streamer = this.streamer.play(uriToStream, {videoRef: this.v.video});
+        streamer.on('ready', this.onReady)
+        streamer.on('progress', this.onProgress)
+        streamer.on('error', this.onError)
+        streamer.on('start', (op) => this.getPlayer(op))
     }
 
     stopStreaming() {
@@ -249,7 +206,7 @@ export default class AppMoviesPlayer extends React.Component {
     }
 
     componentDidCatch(error, info) {
-        console.dir("Component Did Catch Error");
+        log.error("Component Did Catch Error");
         log.error(error);
         log.info(info);
     }
@@ -261,12 +218,14 @@ export default class AppMoviesPlayer extends React.Component {
     }
 
     onReady = (url, ...rest) => {
-        log.info('READY TO PLAY MOVIE: ' + url);
-        this.setState({url: url});
-        this.forceUpdate(() => {
-            this.props.onReady &&
-            this.props.onReady(url, ...rest);
-        })
+        log.info('Ready to play movie: ' + url);
+        if (url) { // Force update with url if passed
+            const [mime] = rest // Default streaming type
+            this.setState({url: url, type: mime}, () => {
+                this.props.onReady &&
+                this.props.onReady(url, ...rest);
+            });
+        }
     }
 
     onProgress = (...args) => {
@@ -292,7 +251,7 @@ export default class AppMoviesPlayer extends React.Component {
     render() {
         return <div className={(this.props.canPlay && "left relative full-height full-width") || "invisible"}>
             <AppMoviesPlayerShare devices={this.state.devices} onChange={this.onSelectDevice}/>
-            <AppMoviesPlayerVideo src={this.state.url} ref={this.getVideoRef}/>
+            <AppMoviesPlayerVideo src={this.state.url} type={this.state.type} ref={this.getVideoRef}/>
         </div>
     }
 }

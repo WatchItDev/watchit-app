@@ -39,11 +39,9 @@ export default class MoviePlayer extends React.Component {
         //Set subs from movie if exists
         this.movie.get(_movieInfo.id).then((res) => {
             //Set new subs
-            let selectedSub = this.props.match.params?.sub
             this.setState({
                 movieInfo: _movieInfo,
-                movieSubs: this.subs(res),
-                movieSelectedSub: selectedSub
+                movieSubs: this.subs(res)
             });
 
         }).catch((e) => {
@@ -109,8 +107,7 @@ export default class MoviePlayer extends React.Component {
                         this.state.movieInfo && React.createElement(
                             this.switchPlayer(this.state.movieInfo.type), {
                                 movie: this.state.movieInfo,
-                                subs: this.state.movieSubs,
-                                selectedSub: this.state.movieSelectedSub
+                                subs: this.state.movieSubs
                             }
                         )
                     )

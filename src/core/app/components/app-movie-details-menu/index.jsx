@@ -14,7 +14,6 @@ export default class AppMovieDetailMenu extends React.PureComponent {
         //Default state
         this.state = {
             resource: null,
-            sub: 'invalid',
             modalOpen: false
         };
     }
@@ -73,21 +72,16 @@ export default class AppMovieDetailMenu extends React.PureComponent {
 
     prepareDataToPlayer(resource, type) {
         //Handle type of menu
-        if (this.isMovieResource(type)) {
-            this.setState({
-                resource: cryptHelper.toBase64(
-                    JSON.stringify({
-                        type, cid: resource,
-                        id: this.props.movie._id,
-                        title: this.props.movie.title
-                    })
-                )
-            })
-        } else {
-            this.setState({
-                sub: resource
-            })
-        }
+        this.setState({
+            resource: cryptHelper.toBase64(
+                JSON.stringify({
+                    type, cid: resource,
+                    id: this.props.movie._id,
+                    title: this.props.movie.title
+                })
+            )
+        })
+
     }
 
     closeTrailer = () => {
@@ -113,13 +107,6 @@ export default class AppMovieDetailMenu extends React.PureComponent {
         });
     }
 
-    selectAvailableSubs() {
-        // Get best sub from lists
-        return [...new Set(Object.values(this.props.movie.subtitles).reduce(
-            (o, n) => [...o, ...Object.keys(n)], []
-        ).filter((k) => settings.subs.available.includes(k)))]
-    }
-
     render() {
         return (
             <nav className="col l12 m12 transparent z-depth-0">
@@ -133,10 +120,10 @@ export default class AppMovieDetailMenu extends React.PureComponent {
                         />
                     }
 
-                    {/*Play*/}
+                    {/* Play */}
                     <NavBarButton
                         text={'Play'} icon={'icon-controller-play'}
-                        link={{href: `#/play/${this.state.resource}/${this.state.sub}`}}
+                        link={{href: `#/play/${this.state.resource}`}}
                     />
 
                     {/*The resolution menu*/}
@@ -149,18 +136,6 @@ export default class AppMovieDetailMenu extends React.PureComponent {
                                 this.selectBestQuality(
                                     this.props.movie.resource.videos
                                 )
-                            )}
-                        />
-                    }
-
-                    {
-                        'subtitles' in this.props.movie &&
-                        Object.keys(this.props.movie.subtitles).length > 0 &&
-                        <NavBarMenu
-                            btnText="" onChange={this.onMenuChange}
-                            getInitialItem={this.onMenuChange}
-                            list={this.prepareMenu(
-                                this.selectAvailableSubs()
                             )}
                         />
                     }
