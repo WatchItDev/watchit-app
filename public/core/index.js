@@ -2,7 +2,6 @@
  * IPFS movies interface
  */
 
-
 const BufferList = require('bl/BufferList')
 const msgpack = require('msgpack-lite');
 const log = require('electron-log')
