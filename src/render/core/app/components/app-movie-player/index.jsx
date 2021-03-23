@@ -145,7 +145,7 @@ export default class AppMoviesPlayer extends React.Component {
 
     }
 
-    get isHLSStreaming(){
+    get isHLSStreaming() {
         // Check object type for streaming lib
         return Object.is(this.streamer.toString(), 'object[HLSStreaming]')
     }
@@ -221,6 +221,8 @@ export default class AppMoviesPlayer extends React.Component {
     // destroy player on unmount
     componentWillUnmount() {
         log.warn('STREAMING STOPPED BY USER');
+        if (this.player)
+            this.player.destroy()
         this.stopStreaming()
         cast.stop();
     }
