@@ -26,7 +26,7 @@ export default class MovieIndex extends React.Component {
         //Default state
         this.state = {
             state: 'Initializing', percent: 0, peers: this.peers, count: DEFAULT_INIT_LOAD,
-            ready: false, loading: true, movies: [], screen: util.calcScreenSize(),
+            ready: false, loading: true, movies: [], screen: this.getRecalculatedScreen(),
             lock: false, // Avoid re-render movies list
             finishLoad: false, showDetailsFor: false, logout: false
         };
@@ -64,15 +64,23 @@ export default class MovieIndex extends React.Component {
         }, cb)
     }
 
+    getRecalculatedScreen = () => {
+        const width = Math.min(window.innerWidth,window.screen.width),
+            height = Math.min(window.innerHeight,window.screen.height),
+            defaults = util.calcScreenSize({width, height});
+        console.log(`Recalculating Screen W:${width}, H:${height}`);
+        return defaults
+    }
+
     recalculateScreen = () => {
-        const width = window.innerWidth,
-            height = window.innerHeight,
+        if (!this.state.movies.length) return;
+
+        const defaults =  this.getRecalculatedScreen(),
             moviesArrays = this.state.movies,
             movies = moviesArrays.flat(1),
-            defaults = util.calcScreenSize({width, height}),
             moviesNewStructure = this.moviesToRow(movies, defaults.chunkSize);
 
-        log.warn(`Resized window.. W:${width}, H:${height}`);
+        log.warn(`Resized window.. W:${defaults.width}, H:${defaults.height}`);
 
         this.setState({
             loading: true
@@ -97,7 +105,6 @@ export default class MovieIndex extends React.Component {
     }
 
     componentDidMount() {
-        this.recalculateScreen();
         // Set initial screen
         window.addEventListener('resize', this.handleResize);
 
