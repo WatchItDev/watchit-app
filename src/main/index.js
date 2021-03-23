@@ -249,8 +249,16 @@ app.whenReady().then(() => {
     })
 
     ipcMain.on('maximize', (e) => {
-        if (!isDarwin) win.setFullScreen(!win.isFullScreen());
-        if (isDarwin) win.setSimpleFullScreen(!win.isSimpleFullScreen());
+        let bounds = win.getNormalBounds();
+        let {width} = win.getBounds();
+
+        !isDarwin
+                ? win.setFullScreen(!win.isFullScreen())
+                : win.setSimpleFullScreen(!win.isSimpleFullScreen());
+
+        if (isDarwin && !win.isSimpleFullScreen())
+            win.setBounds(Object.assign(bounds,{width}));
+
     })
 
     ipcMain.on('check_update', async () => {

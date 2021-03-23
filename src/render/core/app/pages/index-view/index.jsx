@@ -1,8 +1,7 @@
 import React from 'react'
-
 import AppMovies from 'layout/app-movies-list/'
 import AppMovieDetails from 'layout/app-movie-details/'
-
+import util from 'resource/helpers/util'
 import AppNav from 'components/app-movies-nav-bar/'
 import AppSearch from 'components/app-movies-search/'
 import AppLoader from 'components/app-movie-player-loader'
@@ -11,13 +10,13 @@ import StatsValue from "components/util-stats";
 import storageHelper from 'resource/helpers/storage';
 import BoxLoader from 'components/util-box-loader'
 import Movie from 'resource/data/movies'
-import setting from 'settings'
 
 // Access to main process bridge prop
 const log = window.require("electron-log");
 const key = window.bridge.Key
 const broker = window.bridge.Broker
 const DEFAULT_INIT_LOAD = 100;
+
 
 //Login pages class
 export default class MovieIndex extends React.Component {
@@ -27,21 +26,22 @@ export default class MovieIndex extends React.Component {
         //Default state
         this.state = {
             state: 'Initializing', percent: 0, peers: this.peers, count: DEFAULT_INIT_LOAD,
-            ready: false, loading: true, movies: [], chunkSize: setting.defaults.chunkSize,
+            ready: false, loading: true, movies: [], screen: this.getRecalculatedScreen(),
             lock: false, // Avoid re-render movies list
             finishLoad: false, showDetailsFor: false, logout: false
         };
 
-        this.movie = new Movie(broker);
         //Max movies for initial request
-        this.limit = setting.defaults.limit;
+        this.movie = new Movie(broker);
         this.renderTimeout = null;
+        this.resizeTimeout = null;
         this.sort = {
             sort_by: 'year',
             order: 'desc'
         };
 
     }
+
 
     _index(i) {
         // Else try get from key file and save
@@ -64,11 +64,50 @@ export default class MovieIndex extends React.Component {
         }, cb)
     }
 
+    getRecalculatedScreen = () => {
+        const width = Math.min(window.innerWidth,window.screen.width),
+            height = Math.min(window.innerHeight,window.screen.height),
+            defaults = util.calcScreenSize({width, height});
+        console.log(`Recalculating Screen W:${width}, H:${height}`);
+        return defaults
+    }
+
+    recalculateScreen = () => {
+        if (!this.state.movies.length) return;
+
+        const defaults =  this.getRecalculatedScreen(),
+            moviesArrays = this.state.movies,
+            movies = moviesArrays.flat(1),
+            moviesNewStructure = this.moviesToRow(movies, defaults.chunkSize);
+
+        log.warn(`Resized window.. W:${defaults.width}, H:${defaults.height}`);
+
+        this.setState({
+            loading: true
+        },()=>{
+            this.setState({
+                loading: false,lock: false,
+                count: moviesNewStructure.length + 10,
+                movies: moviesNewStructure,
+                screen: defaults,
+            })
+        })
+    }
+
+    handleResize = () => {
+        this.resizeTimeout && clearTimeout(this.resizeTimeout)
+        this.resizeTimeout = setTimeout(this.recalculateScreen, 500);
+    }
+
     componentWillUnmount() {
+        window.removeEventListener('resize', this.handleResize);
         broker.removeAllListeners();
     }
 
     componentDidMount() {
+        // Set initial screen
+        window.addEventListener('resize', this.handleResize);
+
         // Start ingest if not
         if (this.cached) {
             log.info('Running Cache');
@@ -115,7 +154,6 @@ export default class MovieIndex extends React.Component {
         broker.removeAllListeners().on('progress', (state) => {
             this.setState({state: state})
         }).on('start', async () => {
-            console.clear();
             log.info('STARTING');
             if (!this.loaded) localStorage.clear();
 
@@ -149,7 +187,7 @@ export default class MovieIndex extends React.Component {
         }
 
         // Add limit to filters
-        filter = {...{limit: this.limit}, ...filter};
+        filter = {...{limit: this.state.screen.limit}, ...filter};
         if ('to' in filter && 'start' in filter) {
             filter.limit = filter.to - filter.start;
             filter.skip = filter.start;
@@ -160,7 +198,7 @@ export default class MovieIndex extends React.Component {
         //Get movies
         this.movie.filter(filter).then((movies) => {
             //Chunk and concat movies
-            let _chunk = chunks || this.state.chunkSize;
+            let _chunk = chunks || this.state.screen.chunkSize;
             let _movies = this.moviesToRow(movies, _chunk);
 
             // Handle sizes
@@ -169,7 +207,7 @@ export default class MovieIndex extends React.Component {
             let _current = _new_movies.length;
 
             this.setState({
-                lock: false, loading: false, chunkSize: _chunk,
+                scrolling: false, loading: false,
                 count: !_size ? _current : (_current + 10),
                 finishLoad: !clear ? !_size : false,
                 movies: clear ? _movies : _new_movies,
@@ -180,7 +218,7 @@ export default class MovieIndex extends React.Component {
         })
     }
 
-    loadOrder = (start, to, size = this.state.chunkSize) => {
+    loadOrder = (start, to, size = this.state.screen.chunkSize) => {
         start = start * size;
         to = to * size;
 
@@ -339,8 +377,8 @@ export default class MovieIndex extends React.Component {
                                             <AppMovies
                                                 movies={this.state.movies} loadOrder={this.loadOrder}
                                                 count={this.state.count} loading={this.state.lock}
-                                                end={this.state.finishLoad} chunkSize={this.state.chunkSize}
-                                                onClick={this.onClickMovie}
+                                                end={this.state.finishLoad} chunkSize={this.state.screen.chunkSize}
+                                                onClick={this.onClickMovie} screen={this.state.screen}
                                             />) || <BoxLoader size={100}/>
                                     }
                                 </section>

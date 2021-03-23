@@ -2,7 +2,6 @@
  * Created by gmena on 04-20-17.
  */
 
-
 export default ({
     getMemoryLogWebFrame(webFrame) {
         // `console.log` omitted  (pads + limits to 15 characters for the output)
@@ -29,14 +28,17 @@ export default ({
         return ((weightedTotal * 3) / 100) | 0;
     },
 
-    calcScreenSize: (imageSize = 200, mp = 20) => {
+    calcScreenSize: (
+        {
+            width = window.screen.width,
+            height = window.screen.height,
+            imageSize = 200, mp = 20
+        } = {}
+    ) => {
         /**
          * Calculate screen size and pics using screen dim
          * @type {HTMLElement}
          */
-
-        let width = window.screen.width
-        let height = window.screen.height
 
         // Avoid full fill row
         imageSize = width > 1800 ? Math.floor(width / 10) : imageSize;
