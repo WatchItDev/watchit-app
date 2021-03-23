@@ -83,19 +83,16 @@ export default class MovieIndex extends React.Component {
         log.warn(`Resized window.. W:${defaults.width}, H:${defaults.height}`);
 
         this.setState({
-            loading: true
-        },()=>{
-            this.setState({
-                loading: false,lock: false,
-                count: moviesNewStructure.length + 10,
-                movies: moviesNewStructure,
-                screen: defaults,
-            })
-        })
+            loading: false, lock: false,
+            count: moviesNewStructure.length + 10,
+            movies: moviesNewStructure,
+            screen: defaults,
+        });
     }
 
     handleResize = () => {
-        this.resizeTimeout && clearTimeout(this.resizeTimeout)
+        if (!this.state.loading) this.setState({loading: true});
+        this.resizeTimeout && clearTimeout(this.resizeTimeout);
         this.resizeTimeout = setTimeout(this.recalculateScreen, 500);
     }
 
