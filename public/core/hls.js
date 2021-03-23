@@ -12,6 +12,10 @@ module.exports = class HLSStreamer extends EventEmitter {
 
     }
 
+    get [Symbol.toStringTag]() {
+        return 'HLSStreaming'
+    }
+
     onError(event, data) {
         /***
          * Handle error on HLS streaming

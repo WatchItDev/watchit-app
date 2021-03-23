@@ -27,6 +27,10 @@ module.exports = class TorrentStreamer extends EventEmitter {
         this.mime = "video/mp4"
     }
 
+    get [Symbol.toStringTag]() {
+        return 'TorrentStreaming'
+    }
+
     stop(cb) {
         /**Stop torrent streaming
          * @param {function} callback
