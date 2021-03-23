@@ -101,11 +101,11 @@ const registerMiddleware = () => {
         ...inDev && {icon: appIcon},
         ...{
             title: 'WatchIt',
-            width: 1920, height: 1080,
+            width: 1280, height: 800,
             minWidth: 1280, minHeight: 800,
             backgroundColor: '#12191f',
             center: true, frame: false,
-            transparent: false,
+            show: false, transparent: false,
             webPreferences: {
                 spellCheck: false,
                 enableRemoteModule: false,
@@ -123,27 +123,15 @@ const registerMiddleware = () => {
     win.loadURL(indexUrl);
     win.once('ready-to-show', async () => {
         if (loadingScreen) {
-            let loadingScreenBounds = loadingScreen.getBounds();
-            win.setBounds(loadingScreenBounds);
-
             //fade out the splash screen
             fadeWindowOut(loadingScreen, 0.1, 10, () => {
                 log.info("Fade out splash done!")
                 loadingScreen.close();
+                // isDarwin ? win.setSimpleFullScreen(true)
+                //     : win.setFullScreen(true);
+                win.setOpacity(0);
+                win.show();
             });
-
-            isDarwin ? win.setSimpleFullScreen(true)
-                : win.setFullScreen(true);
-            win.setOpacity(0);
-            win.show();
-
-            // a time put for let the app load on the screen
-            setTimeout(() => {
-                // make a fade in once passed the time
-                fadeWindowIn(win, 0.1, 30, () => {
-                    log.info("Fade in window done");
-                });
-            }, 1500)
         }
     });
 
@@ -249,16 +237,8 @@ app.whenReady().then(() => {
     })
 
     ipcMain.on('maximize', (e) => {
-        let bounds = win.getNormalBounds();
-        let {width} = win.getBounds();
-
-        !isDarwin
-                ? win.setFullScreen(!win.isFullScreen())
-                : win.setSimpleFullScreen(!win.isSimpleFullScreen());
-
-        if (isDarwin && !win.isSimpleFullScreen())
-            win.setBounds(Object.assign(bounds,{width}));
-
+        if (!isDarwin) win.setFullScreen(!win.isFullScreen());
+        if (isDarwin) win.setSimpleFullScreen(!win.isSimpleFullScreen());
     })
 
     ipcMain.on('check_update', async () => {

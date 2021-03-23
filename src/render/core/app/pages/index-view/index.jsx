@@ -68,7 +68,7 @@ export default class MovieIndex extends React.Component {
         const width = Math.min(window.innerWidth,window.screen.width),
             height = Math.min(window.innerHeight,window.screen.height),
             defaults = util.calcScreenSize({width, height});
-        console.log(`Recalculating Screen W:${width}, H:${height}`);
+        log.info(`Recalculating Screen W:${width}, H:${height}`);
         return defaults
     }
 
