@@ -80,19 +80,16 @@ export default class MovieIndex extends React.Component {
             moviesNewStructure = this.moviesToRow(movies, defaults.chunkSize);
 
         this.setState({
-            loading: true
-        },()=>{
-            this.setState({
-                loading: false,lock: false,
-                count: moviesNewStructure.length + 10,
-                movies: moviesNewStructure,
-                screen: defaults,
-            })
-        })
+            loading: false, lock: false,
+            count: moviesNewStructure.length + 10,
+            movies: moviesNewStructure,
+            screen: defaults,
+        });
     }
 
     handleResize = () => {
-        this.resizeTimeout && clearTimeout(this.resizeTimeout)
+        if (!this.state.loading) this.setState({loading: true});
+        this.resizeTimeout && clearTimeout(this.resizeTimeout);
         this.resizeTimeout = setTimeout(this.recalculateScreen, 500);
     }
 
