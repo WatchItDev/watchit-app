@@ -89,6 +89,7 @@ module.exports = class Node extends EventEmitter {
         this.db = await this.open(key).catch(async (e) => {
             // If db cannot be opened then just kill
             log.error(`Cannot find peers ${e}`)
+            this.emit('node-step', 'Please Wait')
         });
 
         this.db?.events?.on('peer', (p) => {
@@ -134,6 +135,7 @@ module.exports = class Node extends EventEmitter {
         log.info('Node ready');
         log.info('Loading db..');
         const address = await this.getIngestKey();
+        if (!address) return  // Avoid move forward
         const rawAddress = this.rawIngestKey
 
         // Get orbit instance and next line connect providers
