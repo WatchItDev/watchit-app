@@ -129,7 +129,7 @@ const registerMiddleware = () => {
                 loadingScreen.close();
                 // isDarwin ? win.setSimpleFullScreen(true)
                 //     : win.setFullScreen(true);
-                win.setOpacity(0);
+                // win.setOpacity(0);
                 win.show();
             });
         }

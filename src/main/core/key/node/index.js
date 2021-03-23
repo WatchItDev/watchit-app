@@ -1,7 +1,10 @@
 const fs = require('fs-extra');
 const path = require('path');
 const orbit = require('orbit-db')
-const {ROOT_DB_DIR, ROOT_STORE} = require('./settings')
+const {
+    ROOT_DB_DIR,
+    ROOT_STORE
+} = require('../../settings')
 
 module.exports = class Key {
 
