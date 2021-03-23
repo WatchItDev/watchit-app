@@ -1,33 +1,24 @@
-const fs = require('fs-extra');
-const path = require('path');
 const orbit = require('orbit-db')
-const {
-    ROOT_DB_DIR,
-    ROOT_STORE
-} = require('../../settings')
+
 
 module.exports = class Key {
 
-    static get engine() {
-        return 'leveldown'
+    static get db() {
+        return 'w_db'
     }
 
-    static get db() {
-        return ROOT_DB_DIR
+    static get engine() {
+        return 'level-js'
     }
 
     static get init() {
-        fs.ensureDirSync(this.db)
         return this
     }
 
     static get existKey() {
-        return fs.existsSync(Key.keyFile)
+        return Key.isLogged()
     }
 
-    static get keyFile() {
-        return path.join(ROOT_STORE, 'key.json')
-    }
 
     static generateKey(data) {
         return this.addToStorage(data)
@@ -80,13 +71,12 @@ module.exports = class Key {
 
     }
 
-    static write(data, file = Key.keyFile) {
-        fs.writeFileSync(file, JSON.stringify(data));
+    static write(data) {
+        localStorage.setItem('key', JSON.stringify(data))
     }
 
     static read() {
-        return this.existKey ?
-            fs.readFileSync(Key.keyFile) : null
+        return localStorage.getItem('key')
     }
 };
 
