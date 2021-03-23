@@ -7,12 +7,14 @@ const getIsInstance = require('./ipfs')
 const {findProv} = require('./provs')
 const last = require('it-last')
 const key = require('./key');
-const MAX_RETRIES = 30;
+const MAX_RETRIES = 10;
+const DEFAULT_HOLD = 10 * 1000
 
 
 module.exports = class Node extends EventEmitter {
     constructor() {
         super();
+        this.holdby = DEFAULT_HOLD
         this.seedMode = false;
         this.peers = [];
         this.retry = 0;
@@ -161,12 +163,14 @@ module.exports = class Node extends EventEmitter {
             // If fail to much.. get fuck out
             if (this.retry > MAX_RETRIES && !this.hasValidCache) {
                 this.retry = 0; // Avoid remove if in seed mode
+                this.holdby *= 2; // Keep growing until daemon stop
                 if (!this.seedMode) // If not seed mode
                     return await this.party('Aborting')
             }
 
             try {
                 log.info('Setting up node..');
+                this.holdby = DEFAULT_HOLD; // Restore holdby
                 this.node = this.node || await getIsInstance();
                 res(this.node)
             } catch (e) {
@@ -178,7 +182,7 @@ module.exports = class Node extends EventEmitter {
                     this.node = null;
                     this.retry++;
                     res(await this.instanceNode())
-                }, 10 * 1000)
+                }, this.holdby)
             }
         })
     }
