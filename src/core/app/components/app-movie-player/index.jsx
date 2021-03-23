@@ -121,15 +121,17 @@ export default class AppMoviesPlayer extends React.Component {
 
 
     async componentDidMount() {
-        //Cast init
-        cast.createServer(
-            // Create asset server
-        ).requestUpdate().on('status', (status) => {
-            log.info('Status:' + status);
-        }).on('device', () => {
-            log.info('New device');
-            this.setState({devices: this.players})
-        });
+        if (!this.isHLSStreaming) {
+            //Cast init
+            cast.createServer(
+                // Create asset server
+            ).requestUpdate().on('status', (status) => {
+                log.info('Status:' + status);
+            }).on('device', () => {
+                log.info('New device');
+                this.setState({devices: this.players})
+            });
+        }
 
         window.addEventListener("keyup", (e) => {
             let keyCode = e.which || e.keyCode;
@@ -141,6 +143,11 @@ export default class AppMoviesPlayer extends React.Component {
         // Lets run
         this.startStreaming();
 
+    }
+
+    get isHLSStreaming(){
+        // Check object type for streaming lib
+        return Object.is(this.streamer.toString(), 'object[HLSStreaming]')
     }
 
     getPlayer(options = {}) {
