@@ -8,10 +8,8 @@ export default class AppMoviesList extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            movies: [],
-            end: false,
-            chunkSize: 0,
-            count: 0,
+            movies: [], end: false,
+            chunkSize: 0, count: 0,
             screen: {}
         }
     }
