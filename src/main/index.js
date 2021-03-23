@@ -149,7 +149,7 @@ const registerMiddleware = () => {
 
 
     // Open the DevTools.
-    if (inDev) win.webContents.openDevTools();
+    if (inDev) win.webContents.openDevTools({mode: 'detach'});
     //win.webContents.openDevTools()
     // Emitted when the window is closed.
     win.on('closed', () => {
