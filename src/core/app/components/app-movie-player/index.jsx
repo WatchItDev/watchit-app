@@ -124,9 +124,7 @@ export default class AppMoviesPlayer extends React.Component {
         //Cast init
         cast.createServer(
             // Create asset server
-        ).requestUpdate().removeAllListeners(
-            // Clean any previous listener
-        ).on('status', (status) => {
+        ).requestUpdate().on('status', (status) => {
             log.info('Status:' + status);
         }).on('device', () => {
             log.info('New device');
