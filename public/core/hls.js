@@ -52,7 +52,7 @@ module.exports = class HLSStreamer extends EventEmitter {
         if (hls.isSupported()) {
             log.warn(`Starting hls: ${uri}`)
             this.hls = new hls(conf)
-            uri = 'http://gateway.anime4all.net/ipfs/QmRLPbxAadtEWLtRVnP92Zh29f34kewEfEJrqx7z5WdnFb/index.m3u8'
+            // uri = 'http://gateway.anime4all.net/ipfs/QmRLPbxAadtEWLtRVnP92Zh29f34kewEfEJrqx7z5WdnFb/index.m3u8'
             this.hls.loadSource(uri);
             this.hls.attachMedia(videoRef)
             // When media attached then try to play streaming!!
