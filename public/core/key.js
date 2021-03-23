@@ -66,13 +66,6 @@ module.exports = class Key {
         Key.write(extendedData)
     }
 
-    static getPubKey() {
-        let fileCollection = Key.readFromStorage()
-        return fileCollection && 'public' in fileCollection
-            ? fileCollection.public.trim() : null
-    }
-
-
     static getIngestKey() {
         let fileCollection = Key.readFromStorage()
         return fileCollection && 'ingest' in fileCollection
