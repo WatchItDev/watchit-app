@@ -74,8 +74,8 @@ const registerMiddleware = () => {
         }
     })
 }, createLoadingScreen = (inDev) => {
-    const indexUrl = inDev ? 'http://localhost:3000/loading.html'
-        : 'file://' + path.join(__dirname, '../build/loading.html')
+    const indexUrl = inDev ? 'http://localhost:3000/splash.png'
+        : 'file://' + path.join(__dirname, '../build/splash.png')
 
     loadingScreen = new BrowserWindow({
         ...windowParams, ...{
