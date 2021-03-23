@@ -3,7 +3,7 @@
   "author": "ZorrillosDev",
   "version": "0.1.0-beta.4",
   "private": true,
-  "main": "./public/main.js",
+  "main": "src/main/index.js",
   "description": "Open movies everywhere",
   "email": "support@zorrillos.com",
   "homepage": "./",
@@ -129,7 +129,7 @@
       "public/**/*",
       "build/**/*",
       "node_modules/**/*",
-      "src/media/icons/*",
+      "src/render/media/icons/*",
       "package.json"
     ],
     "dmg": {
@@ -165,7 +165,7 @@
       "maintainer": "ZorrillosDev"
     },
     "directories": {
-      "buildResources": "src/media/icons",
+      "buildResources": "src/render/media/icons",
       "output": "release"
     }
   },

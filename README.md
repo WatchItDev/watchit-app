@@ -14,7 +14,7 @@ Watchit is an application that does not require external resources, but rather e
 It is also possible that WatchIt can be synchronized through different movie channels opening the possibility to many libraries with different content across the network.
 
 
-[![screenshot](src/media/img/layout/screen.png?raw=true)]()
+[![screenshot](src/render/media/img/layout/screen.png?raw=true)]()
 
 
 ## Build your network
