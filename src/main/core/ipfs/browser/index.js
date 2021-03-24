@@ -1,8 +1,7 @@
 const fs = require('fs')
 const log = require('electron-log')
 const IPFS = require('ipfs');
-const settings = require('./settings')
-const ipfsConf = require('./settings/ipfs');
+const ipfsConf = require('./p2p');
 
 export default async (repo) => {
     const CONF = Object.assign({libp2p}, {repo}, ipfsConf);
