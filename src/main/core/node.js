@@ -46,6 +46,7 @@ module.exports = class Node extends EventEmitter {
     async getIngestKey() {
         const rawAddress = this.rawIngestKey
         const resolveKey = await this.resolveKey(rawAddress)
+        if (!resolveKey) return false;
         return key.sanitizedKey(resolveKey)
     }
 
@@ -142,7 +143,7 @@ module.exports = class Node extends EventEmitter {
         log.info('Node ready');
         log.info('Loading db..');
         const address = await this.getIngestKey();
-        if (!address) return  // Avoid move forward
+        if (!address) return false // Avoid move forward
         const rawAddress = this.rawIngestKey
 
         // Get orbit instance and next line connect providers
