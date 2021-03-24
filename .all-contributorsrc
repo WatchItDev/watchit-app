@@ -59,6 +59,15 @@
         "code",
         "infra"
       ]
+    },
+    {
+      "login": "vasa-develop",
+      "name": "vasa",
+      "avatar_url": "https://avatars.githubusercontent.com/u/28847087?v=4",
+      "profile": "https://vaibhavsaini.com/",
+      "contributions": [
+        "review"
+      ]
     }
   ],
   "contributorsPerLine": 7,
