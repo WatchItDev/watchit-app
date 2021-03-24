@@ -46,6 +46,19 @@
         "userTesting",
         "talk"
       ]
+    },
+    {
+      "login": "phillmac",
+      "name": "phillmac",
+      "avatar_url": "https://avatars.githubusercontent.com/u/4534835?v=4",
+      "profile": "https://github.com/phillmac",
+      "contributions": [
+        "ideas",
+        "userTesting",
+        "talk",
+        "code",
+        "infra"
+      ]
     }
   ],
   "contributorsPerLine": 7,
