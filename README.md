@@ -81,7 +81,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <!-- markdownlint-disable -->
 <table>
   <tr>
-    <td align="center"><a href="https://github.com/xirapo"><img src="https://avatars.githubusercontent.com/u/12839111?v=4?s=100" width="100px;" alt=""/><br /><sub><b>FranciscoGarcia</b></sub></a><br /><a href="https://github.com/ZorrillosDev/watchit-desktop/commits?author=xirapo" title="Documentation">📖</a></td>
+    <td align="center"><a href="https://github.com/xirapo"><img src="https://avatars.githubusercontent.com/u/12839111?v=4?s=100" width="100px;" alt=""/><br /><sub><b>FranciscoGarcia</b></sub></a><br /><a href="https://github.com/ZorrillosDev/watchit-desktop/commits?author=xirapo" title="Documentation">📖</a> <a href="https://github.com/ZorrillosDev/watchit-desktop/commits?author=xirapo" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/Jadapema"><img src="https://avatars.githubusercontent.com/u/14361925?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Jacob Peralta</b></sub></a><br /><a href="https://github.com/ZorrillosDev/watchit-desktop/commits?author=jadapema" title="Code">💻</a> <a href="#design-jadapema" title="Design">🎨</a> <a href="#blog-jadapema" title="Blogposts">📝</a> <a href="#ideas-jadapema" title="Ideas, Planning, & Feedback">🤔</a></td>
   </tr>
 </table>
