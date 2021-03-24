@@ -71,11 +71,18 @@ module.exports = class Node extends EventEmitter {
          * @return {string} Orbit address resolver key from ipns
          */
         if (~ipns.indexOf('zd')) return ipns
-        this.emit('node-step', 'Resolving')
-        const cid = await last(this.node.name.resolve(ipns))
-        const cleanedCID = cid.split('/').pop()
-        const newCID = new CID(cleanedCID)
-        return newCID.toBaseEncodedString('base58btc')
+        try {
+            this.emit('node-step', 'Resolving')
+            const cid = await last(this.node.name.resolve(ipns))
+            const cleanedCID = cid.split('/').pop()
+            const newCID = new CID(cleanedCID)
+            return newCID.toBaseEncodedString('base58btc')
+        } catch (e) {
+            // Avoid using invalid keys
+            await this.party()
+            return false;
+        }
+
     }
 
     async run(key, res) {
