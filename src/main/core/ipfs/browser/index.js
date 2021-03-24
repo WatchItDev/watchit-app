@@ -1,6 +1,6 @@
 const fs = require('fs')
 const log = require('electron-log')
-const IPFS = require('public/core/ipfs/node');
+const IPFS = require('ipfs');
 const settings = require('./settings')
 const ipfsConf = require('./settings/ipfs');
 
