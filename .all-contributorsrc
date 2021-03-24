@@ -24,7 +24,8 @@
         "code",
         "design",
         "blog",
-        "ideas"
+        "ideas",
+        "userTesting",
       ]
     },
     {
@@ -33,7 +34,10 @@
       "avatar_url": "https://avatars.githubusercontent.com/u/106148?v=4",
       "profile": "http://mrh.io",
       "contributions": [
-        "mentoring"
+        "mentoring",
+        "code",
+        "review",
+        "userTesting"
       ]
     },
     {
