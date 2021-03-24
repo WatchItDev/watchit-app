@@ -35,6 +35,17 @@
       "contributions": [
         "mentoring"
       ]
+    },
+    {
+      "login": "vaultec81",
+      "name": "vaultec",
+      "avatar_url": "https://avatars.githubusercontent.com/u/47548474?v=4",
+      "profile": "https://github.com/vaultec81",
+      "contributions": [
+        "ideas",
+        "userTesting",
+        "talk"
+      ]
     }
   ],
   "contributorsPerLine": 7,
