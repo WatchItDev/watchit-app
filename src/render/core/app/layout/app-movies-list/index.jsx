@@ -27,7 +27,8 @@ export default class AppMoviesList extends React.Component {
         let end = nextProps.end;
         let chunkSize = nextProps.chunkSize;
         let screen = nextProps.screen;
-        return {count, movies, end, chunkSize, screen};
+        let rowLoaded = nextProps.rowLoaded;
+        return {count, movies, end, chunkSize, screen, rowLoaded};
     }
 
     renderRow = ({index, style}) => {
@@ -50,7 +51,9 @@ export default class AppMoviesList extends React.Component {
 
 
     alreadyLoaded = (index) => {
-        return !!this.state.movies[index]
+        return (Object.is(this.state.rowLoaded,index))
+            ? false
+            : !!this.state.movies[index]
     }
 
     onScrollUpdate = (...params) => {

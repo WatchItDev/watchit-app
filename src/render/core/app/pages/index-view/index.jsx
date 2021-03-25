@@ -28,7 +28,7 @@ export default class MovieIndex extends React.Component {
             state: 'Initializing', percent: 0, peers: this.peers, count: DEFAULT_INIT_LOAD,
             ready: false, loading: true, movies: [], screen: this.getRecalculatedScreen(),
             lock: false, // Avoid re-render movies list
-            finishLoad: false, showDetailsFor: false, logout: false
+            finishLoad: false, showDetailsFor: false, logout: false, rowLoaded: false
         };
 
         //Max movies for initial request
@@ -72,16 +72,32 @@ export default class MovieIndex extends React.Component {
         return defaults
     }
 
+    removeExtraRow = (movies,chunk) => {
+        console.log("movies");
+        console.log(movies);
+        console.log("chunk");
+        console.log(chunk);
+        const limit = Math.floor(movies.length/chunk) * chunk;
+        console.log("limit");
+        console.log(limit);
+        console.log("filtered")
+        console.log(movies.filter((_,i) => i < limit))
+        return movies.filter((_,i) => i < limit);
+    }
+
     recalculateScreen = () => {
         if (!this.state.movies.length) return;
         const defaults =  this.getRecalculatedScreen(),
             moviesArrays = this.state.movies,
             movies = moviesArrays.flat(1),
-            moviesNewStructure = this.moviesToRow(movies, defaults.chunkSize);
+            isExceed = Number.isInteger(movies.length/defaults.chunkSize),
+            cleanedMovies = isExceed ? movies : this.removeExtraRow(movies,defaults.chunkSize),
+            moviesNewStructure = this.moviesToRow(cleanedMovies, defaults.chunkSize);
 
         this.setState({
             loading: false, lock: false,
             count: moviesNewStructure.length + 10,
+            rowLoaded: !isExceed ? moviesNewStructure.length : false,
             movies: moviesNewStructure,
             screen: defaults,
         });
@@ -205,6 +221,7 @@ export default class MovieIndex extends React.Component {
                 count: !_size ? _current : (_current + 10),
                 finishLoad: !clear ? !_size : false,
                 movies: clear ? _movies : _new_movies,
+                rowLoaded: false
             });
 
             // Send state in cb
@@ -373,6 +390,7 @@ export default class MovieIndex extends React.Component {
                                                 count={this.state.count} loading={this.state.lock}
                                                 end={this.state.finishLoad} chunkSize={this.state.screen.chunkSize}
                                                 onClick={this.onClickMovie} screen={this.state.screen}
+                                                rowLoaded={this.state.rowLoaded}
                                             />) || <BoxLoader size={100}/>
                                     }
                                 </section>
