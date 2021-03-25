@@ -40,9 +40,11 @@ export default ({
          * @type {HTMLElement}
          */
 
-        // Avoid full fill row
+        // Avoid full fill row with small images
         imageSize = width > 1800 ? Math.floor(width / 10) : imageSize;
-        let chunkSize = Math.floor(width / imageSize);
+        // chunkSize = how many movies reach in each row
+        let chunkSize = Math.ceil(width / imageSize);
+        // Formula to get the height of rows based on chunkSizes
         let chunkHeight = ((width - (chunkSize * mp)) / chunkSize) * 1.66;
         return {width, height, chunkSize, chunkHeight}
     },
