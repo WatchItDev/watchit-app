@@ -65,8 +65,8 @@ export default class MovieIndex extends React.Component {
     }
 
     getRecalculatedScreen = () => {
-        const width = Math.min(window.innerWidth,window.screen.width),
-            height = Math.min(window.innerHeight,window.screen.height),
+        const width = Math.min(window.innerWidth, window.screen.width),
+            height = Math.min(window.innerHeight, window.screen.height),
             defaults = util.calcScreenSize({width, height});
         log.info(`Recalculating Screen W:${width}, H:${height}`);
         return defaults
@@ -74,14 +74,15 @@ export default class MovieIndex extends React.Component {
 
     recalculateScreen = () => {
         if (!this.state.movies.length) return;
-        const defaults =  this.getRecalculatedScreen(),
+        const defaults = this.getRecalculatedScreen(),
             moviesArrays = this.state.movies,
             movies = moviesArrays.flat(1),
-            moviesNewStructure = this.moviesToRow(movies, defaults.chunkSize);
+            moviesNewStructure = this.moviesToRow(
+                movies, defaults.chunkSize
+            );
 
         this.setState({
             loading: false, lock: false,
-            count: moviesNewStructure.length + 10,
             movies: moviesNewStructure,
             screen: defaults,
         });

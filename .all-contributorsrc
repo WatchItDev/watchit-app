@@ -1,0 +1,50 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "xirapo",
+      "name": "FranciscoGarcia",
+      "avatar_url": "https://avatars.githubusercontent.com/u/12839111?v=4",
+      "profile": "https://github.com/xirapo",
+      "contributions": [
+        "doc",
+        "code"
+      ]
+    },
+    {
+      "login": "jadapema",
+      "name": "Jacob Peralta",
+      "avatar_url": "https://avatars.githubusercontent.com/u/14361925?v=4",
+      "profile": "https://github.com/Jadapema",
+      "contributions": [
+        "code",
+        "design",
+        "blog",
+        "ideas"
+      ]
+    },
+    {
+      "login": "aphelionz",
+      "name": "Mark Robert Henderson",
+      "avatar_url": "https://avatars.githubusercontent.com/u/106148?v=4",
+      "profile": "http://mrh.io",
+      "contributions": [
+        "mentoring",
+        "ideas",
+        "code",
+        "review",
+        "userTesting"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "watchit-desktop",
+  "projectOwner": "ZorrillosDev",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "skipCi": true
+}

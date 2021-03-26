@@ -10,7 +10,7 @@ export default class AppMoviesList extends React.Component {
         this.state = {
             movies: [], end: false,
             chunkSize: 0, count: 0,
-            screen: {}
+            screen: {}, min: 0
         }
     }
 
@@ -22,13 +22,15 @@ export default class AppMoviesList extends React.Component {
         if (!nextProps.movies)
             return null;
 
-        let movies = nextProps.movies;
-        let count = nextProps.count;
-        let end = nextProps.end;
-        let chunkSize = nextProps.chunkSize;
-        let screen = nextProps.screen;
-        return {count, movies, end, chunkSize, screen};
+        const movies = nextProps.movies; // [[5],[5],->X[3]] = [[5], [5]]
+        const count = nextProps.count;
+        const end = nextProps.end;
+        const chunkSize = nextProps.chunkSize;
+        const screen = nextProps.screen;
+        const min = Math.min(...movies.map(e => e.length))
+        return {count, movies, end, chunkSize, screen, min};
     }
+
 
     renderRow = ({index, style}) => {
         if (!this.state.movies[index])
@@ -50,7 +52,8 @@ export default class AppMoviesList extends React.Component {
 
 
     alreadyLoaded = (index) => {
-        return !!this.state.movies[index]
+        const currentRow = this.state.movies[index]
+        return !!currentRow // && currentRow.length > this.state.min
     }
 
     onScrollUpdate = (...params) => {
@@ -65,6 +68,7 @@ export default class AppMoviesList extends React.Component {
             <InfiniteLoader
                 isItemLoaded={this.alreadyLoaded}
                 loadMoreItems={this.onScrollUpdate}
+                threshold={8}
                 itemCount={this.state.count}
             >
                 {({onItemsRendered, ref}) => (

@@ -6,7 +6,9 @@ If you want to generate your own content please visit the repository of our [gat
 
 ### Is this illegal? What about copyright infringement?
 
-Like many things, it depends on **`how you use it`**.
+Like many things, it depends on **`how you use it`**. 
+> "A baseball bat can be used to kill somebody, or it can be used to play baseball. we just make bats" - @aphelions.
+
 There is currently no mechanism to detect or prevent copyright infringement on the network. 
 We are using public domain movies for our platform. 
 However, there will never be a way to prevent someone from committing copyright infringement that wants to do so. 
