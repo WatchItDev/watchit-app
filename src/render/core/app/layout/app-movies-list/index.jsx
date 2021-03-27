@@ -22,10 +22,21 @@ export default class AppMoviesList extends React.Component {
         if (!nextProps.movies)
             return null;
 
-        const movies = nextProps.movies; // [[5],[5],->X[3]] = [[5], [5]]
+        const chunkSize = nextProps.chunkSize;
+        console.log("ingresan movies");
+        console.log(nextProps.movies);
+        const movies = nextProps.movies.filter(el => {
+            if (!Object.is(chunkSize,el.length)){
+                console.log("deleted");
+                console.log(el);
+            }
+            return Object.is(chunkSize,el.length)
+        });
+        // [[5],[5],->X[3]] = [[5], [5]]
+        console.log("cleaned movies");
+        console.log(movies);
         const count = nextProps.count;
         const end = nextProps.end;
-        const chunkSize = nextProps.chunkSize;
         const screen = nextProps.screen;
         const min = Math.min(...movies.map(e => e.length))
         return {count, movies, end, chunkSize, screen, min};
