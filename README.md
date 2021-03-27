@@ -40,7 +40,7 @@ Please look at our [gateway](https://github.com/ZorrillosDev/watchit-gateway) 's
 | Seed Content | x       | x      |        |
 | Watch Movies |         | x      | x      |
 
-[![screenshot](src/render/media/img/layout/w_nodes_types.png?raw=true)]()
+[![screenshot](src/render/media/img/layout/w_node_types.png?raw=true)]()
 
 <details>
   <summary>Installation & Usage</summary>
