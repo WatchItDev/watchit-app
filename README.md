@@ -32,15 +32,6 @@ Please look at our [gateway](https://github.com/ZorrillosDev/watchit-gateway) 's
 * See our [FAQ](FAQ.md) for frequently asked questions.
 * For help or bugs please [create an issue](https://github.com/ZorrillosDev/watchit-desktop/issues).
 
-## Node Types and Capabilities
-
-
-| Capability   | Gateway | Worker | Client |
-| ------------ | ------- | ------ | ------ |
-| Seed Content | x       | x      |        |
-| Watch Movies |         | x      | x      |
-
-[![screenshot](src/render/media/img/layout/w_nodes_types.png?raw=true)]()
 
 <details>
   <summary>Installation & Usage</summary>
