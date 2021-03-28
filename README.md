@@ -23,14 +23,6 @@ It is also possible that WatchIt can be synchronized through different movie cha
 Migrate your own content and share it with community. WatchIt gateway provides simple tools for the generation and fetching of content. 
 Please look at our [gateway](https://github.com/ZorrillosDev/watchit-gateway) 's readme.
 
-##  More info
-* Visit our site [watchitapp.site](http://watchitapp.site).
-* Read our post in [dev.to](https://dev.to/geolffreym/watchit-2b88).
-* Check out [the roadmap](https://github.com/ZorrillosDev/watchit-desktop/projects/1) to future features.
-* Get in touch with us in [gitter](https://gitter.im/watchit-app/community).
-* See our [FAQ](FAQ.md) for frequently asked questions.
-* For help or bugs please [create an issue](https://github.com/ZorrillosDev/watchit-desktop/issues).
-
 ## Node Types and Capabilities
 
 
@@ -41,7 +33,14 @@ Please look at our [gateway](https://github.com/ZorrillosDev/watchit-gateway) 's
 
 [![screenshot](src/render/media/img/layout/nodes.png?raw=true)]()
 
-## Development
+##  More info
+* Visit our site [watchitapp.site](http://watchitapp.site).
+* Read our post in [dev.to](https://dev.to/geolffreym/watchit-2b88).
+* Check out [the roadmap](https://github.com/ZorrillosDev/watchit-desktop/projects/1) to future features.
+* Get in touch with us in [gitter](https://gitter.im/watchit-app/community).
+* See our [FAQ](FAQ.md) for frequently asked questions.
+* For help or bugs please [create an issue](https://github.com/ZorrillosDev/watchit-desktop/issues).
+
 
 <details>
   <summary>Installation & Usage</summary>
