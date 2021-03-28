@@ -61,7 +61,7 @@ module.exports = class Cast extends EventEmitter {
 
     setPlayer(i) {
         this.player = this.players[i];
-        log.info(`${this.player.name} set`);
+        if (this.player) log.info(`${this.player.name} set`);
     }
 
     setSub(sub) {
