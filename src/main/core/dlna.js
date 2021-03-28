@@ -3,6 +3,8 @@ const server = require(`./server.js`)
 const log = require('electron-log')
 const EventEmitter = require('events')
 
+const DLNA_MAX_RETRIES = 10
+const DLNA_TIMEOUT = 5
 module.exports = class Cast extends EventEmitter {
     constructor() {
         super()
@@ -12,6 +14,8 @@ module.exports = class Cast extends EventEmitter {
         this.players = []
         this.player = null;
         this.server = null;
+        this.dlnaTimeout = null;
+        this.dlnaRetry = DLNA_MAX_RETRIES
 
         this.dnla.on('update', (player) => {
             this.players = this.dnla.players
@@ -40,6 +44,13 @@ module.exports = class Cast extends EventEmitter {
     requestUpdate() {
         log.warn('Request dnla');
         this.dnla.update();
+        this.dlnaTimeout && clearTimeout(this.dlnaTimeout);
+        // Try until retry exhausted and not found devices
+        if (this.dlnaRetry > 0 && this.players.length === 0)
+            this.dlnaTimeout = setTimeout(() => {
+                log.warn(`Retrying DLNA # ${this.dlnaRetry--}`)
+                this.requestUpdate()
+            }, DLNA_TIMEOUT)
         return this;
     }
 
