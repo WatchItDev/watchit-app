@@ -9,18 +9,10 @@ export default class BoxImage extends React.PureComponent {
     constructor(props) {
         super(props);
         this.state = {
-            status: 0,
-            loaded: false,
-            src: null
+            loaded: false
         };
     }
 
-
-    static getDerivedStateFromProps(props) {
-        return {
-            src: props.src
-        }
-    }
 
     parseUriImage = (image) => {
         if (image) {
@@ -43,34 +35,28 @@ export default class BoxImage extends React.PureComponent {
         }
     }
 
-    handleImageLoaded = (e, status = 1) => {
-        this.setState({status: status, loaded: true})
+    handleImageLoaded = () => {
+        this.setState({loaded: true})
 
     }
 
     handleImageError = () => {
         log.warn('Fail image request')
         log.warn('Retrying...')
+        if (!this.state.loaded) return this.forceUpdate()
         this.setState({loaded: false})
-        this.forceUpdate()
+
     }
 
     render() {
         return (
             <figure className="image-container no-margin">
-
-                {
-                    /*Spinner loader*/
-                    !this.state.loaded &&
-                    this.props.preload && <PulseLoader style={{top: '20rem'}}/>
-                }
-
-                <img alt={''} src={this.parseUriImage(this.state.src)}
+                {!this.state.loaded && this.props.preload && <PulseLoader style={{top: '20rem'}}/>}
+                <img alt={''} src={this.parseUriImage(this.props.src)}
                      onLoad={this.handleImageLoaded}
                      onError={this.handleImageError}
-                     className={this.state.status < 0 && this.props.preload ? "hidden" :
-                         (this.state.loaded || !this.props.preload) ?
-                             "loaded-img responsive-img" : "locked-img invisible"
+                     className={(this.state.loaded || !this.props.preload) ?
+                         "loaded-img responsive-img" : "locked-img invisible"
                      }
                 />
             </figure>
