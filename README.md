@@ -5,7 +5,6 @@
 
 # WatchIt App
 
-
 WatchIt decentralizes the way you watch your movies. In short, it is a "collective entertainment methodology" in which each user consumes movies from 
 the network and at the same time shares movies with other users.
 
@@ -41,6 +40,8 @@ Please look at our [gateway](https://github.com/ZorrillosDev/watchit-gateway) 's
 | Watch Movies |         | x      | x      |
 
 [![screenshot](src/render/media/img/layout/w_node_types.png?raw=true)]()
+
+## Development
 
 <details>
   <summary>Installation & Usage</summary>
