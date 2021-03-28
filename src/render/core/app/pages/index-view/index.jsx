@@ -28,7 +28,7 @@ export default class MovieIndex extends React.Component {
             state: 'Initializing', percent: 0, peers: this.peers, count: DEFAULT_INIT_LOAD,
             ready: false, loading: true, movies: [], screen: this.getRecalculatedScreen(),
             lock: false, // Avoid re-render movies list
-            finishLoad: false, showDetailsFor: false, logout: false, rowLoaded: false
+            finishLoad: false, showDetailsFor: false, logout: false
         };
 
         //Max movies for initial request
@@ -90,7 +90,6 @@ export default class MovieIndex extends React.Component {
 
         this.setState({
             loading: false, lock: false,
-            rowLoaded: !isExceed ? moviesNewStructure.length : false,
             movies: moviesNewStructure,
             screen: defaults,
         });
@@ -214,7 +213,6 @@ export default class MovieIndex extends React.Component {
                 count: !_size ? _current : (_current + 10),
                 finishLoad: !clear ? !_size : false,
                 movies: clear ? _movies : _new_movies,
-                rowLoaded: false
             });
 
             // Send state in cb
@@ -383,7 +381,6 @@ export default class MovieIndex extends React.Component {
                                                 count={this.state.count} loading={this.state.lock}
                                                 end={this.state.finishLoad} chunkSize={this.state.screen.chunkSize}
                                                 onClick={this.onClickMovie} screen={this.state.screen}
-                                                rowLoaded={this.state.rowLoaded}
                                             />) || <BoxLoader size={100}/>
                                     }
                                 </section>
