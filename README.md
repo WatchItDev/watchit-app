@@ -25,12 +25,6 @@ Please look at our [gateway](https://github.com/ZorrillosDev/watchit-gateway) 's
 
 ## Node Types and Capabilities
 
-
-| Capability   | Gateway | Worker | Client |
-| ------------ | ------- | ------ | ------ |
-| Seed Content | x       | x      |        |
-| Watch Movies |         | x      | x      |
-
 [![screenshot](src/render/media/img/layout/nodes.png?raw=true)]()
 
 ##  More info
