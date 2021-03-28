@@ -73,15 +73,7 @@ export default class MovieIndex extends React.Component {
     }
 
     removeExtraRow = (movies,chunk) => {
-        console.log("movies");
-        console.log(movies);
-        console.log("chunk");
-        console.log(chunk);
         const limit = Math.floor(movies.length/chunk) * chunk;
-        console.log("limit");
-        console.log(limit);
-        console.log("filtered")
-        console.log(movies.filter((_,i) => i < limit))
         return movies.filter((_,i) => i < limit);
     }
 
