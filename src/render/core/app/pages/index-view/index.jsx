@@ -72,13 +72,20 @@ export default class MovieIndex extends React.Component {
         return defaults
     }
 
+    removeExtraRow = (movies,chunk) => {
+        const limit = Math.floor(movies.length/chunk) * chunk;
+        return movies.filter((_,i) => i < limit);
+    }
+
     recalculateScreen = () => {
         if (!this.state.movies.length) return;
         const defaults = this.getRecalculatedScreen(),
             moviesArrays = this.state.movies,
             movies = moviesArrays.flat(1),
+            isExceed = Number.isInteger(movies.length/defaults.chunkSize),
+            cleanedMovies = isExceed ? movies : this.removeExtraRow(movies,defaults.chunkSize),
             moviesNewStructure = this.moviesToRow(
-                movies, defaults.chunkSize
+                cleanedMovies, defaults.chunkSize
             );
 
         this.setState({
