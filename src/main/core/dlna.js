@@ -62,6 +62,7 @@ module.exports = class Cast extends EventEmitter {
         // Clear attrs
         this.subs = [];
         this.server = null;
+        this.dlnaRetry = DLNA_MAX_RETRIES;
         log.info('DLNA stopped');
     }
 
