@@ -2,9 +2,11 @@ const fs = require('fs')
 const log = require('electron-log')
 const path = require('path')
 const Ctl = require('ipfsd-ctl')
-const ipfsConf = require('./ipfs');
-const {ROOT_IPFS_DIR} = require('../../settings')
+const defaultConf = require('../settings');
+
+// Path settings and util helper lib
 const {removeFiles} = require('../../utils');
+const {ROOT_IPFS_DIR} = require('../../settings')
 
 const RETRY_GRACE = 10
 const resolveIpfsPaths = () => require('go-ipfs').path()
@@ -32,7 +34,7 @@ const forKill = async (isInstance) => {
 module.exports = async () => {
 
     const isInstance = await Ctl.createController({
-        ipfsOptions: {config: ipfsConf(), repo: ROOT_IPFS_DIR},
+        ipfsOptions: {config: defaultConf(), repo: ROOT_IPFS_DIR},
         ipfsHttpModule: require('ipfs-http-client'),
         ipfsBin: resolveIpfsPaths(),
         disposable: false, forceKillTimeout: 2000,

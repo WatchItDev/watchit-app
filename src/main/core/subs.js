@@ -7,7 +7,7 @@ const srt2vtt = require('srt2vtt');
 const iconv = require('iconv-lite');
 const request = require('https');
 const charsetDetect = require('jschardet');
-const unzip = require('unzip');
+const unzip = require('unzipper');
 const subtitle = require('subtitle');
 const {ROOT_TMP_FOLDER} = require(`${__dirname}/settings`)
 
