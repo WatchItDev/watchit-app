@@ -29,9 +29,7 @@ const forKill = async (isInstance) => {
         await forKill(isInstance)
     }
 
-}
-
-module.exports = async () => {
+}, startRunning = async () => {
 
     const isInstance = await Ctl.createController({
         ipfsOptions: {config: defaultConf(), repo: ROOT_IPFS_DIR},
@@ -72,5 +70,10 @@ module.exports = async () => {
     log.info(`Started ${isInstance.started}`)
     log.info('Running ipfs id', id.id)
     return ipfsApi
+}
+
+
+module.exports = {
+    start: startRunning
 }
 
