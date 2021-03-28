@@ -8,10 +8,13 @@ const log = require('electron-log')
 const key = require('./key');
 const Node = require('./node')
 const QUEUE_SLEEP = 7000
+const {ROOT_ORBIT_DIR} = require('./settings')
 
 module.exports = (ipcMain) => {
+    const orbit = new Node({
+        rootPath: ROOT_ORBIT_DIR
+    });
 
-    const orbit = new Node();
     let asyncLock = false;
     let queueInterval = null;
 
