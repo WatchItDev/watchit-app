@@ -10,7 +10,7 @@ export default class AppMoviesList extends React.Component {
         this.state = {
             movies: [], end: false,
             chunkSize: 0, count: 0,
-            screen: {}
+            screen: {}, rowLoaded:false
         }
     }
 
@@ -51,9 +51,10 @@ export default class AppMoviesList extends React.Component {
 
 
     alreadyLoaded = (index) => {
-        return (Object.is(this.state.rowLoaded,index))
-            ? false
-            : !!this.state.movies[index]
+        let condition = (Object.is(this.state.rowLoaded,index));
+        let isLoaded = condition ? false : !!this.state.movies[index];
+        if (condition) this.setState({rowLoaded: false})
+        return isLoaded
     }
 
     onScrollUpdate = (...params) => {
