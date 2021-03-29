@@ -15,8 +15,8 @@
   "dependencies": {
     "dlnacasts2": "^0.2.0",
     "electron-log": "^4.3.2",
-    "electron-updater": "^4.3.5",
-    "fs-extra": "^8.1.0",
+    "electron-updater": "^4.3.7",
+    "fs-extra": "^9.0.1",
     "go-ipfs": "^0.6.0",
     "hls.js": "^0.14.17",
     "iconv-lite": "^0.5.1",
@@ -106,7 +106,7 @@
     "start": "BROWSER=none node scripts/start.js",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js  --watchAll=false -u",
-    "electron": "cross-env LOG=debug IPFS_FD_MAX=10000 ENV=development $(npm bin)/electron .",
+    "electron": "cross-env LOG=debug IPFS_FD_MAX=10000 ENV=development $(npm bin)/electron . --trace-warnings",
     "lint": "eslint --ext js,jsx",
     "lint:fix": "npm run lint -s -- --fix src ",
     "package": "npm run build && electron-builder build",
@@ -120,7 +120,17 @@
     "postinstall": "bash -c \"node scripts/postinstall.js && node-prune\""
   },
   "eslintConfig": {
-    "extends": "react-app"
+    "extends": "react-app",
+    "overrides": [
+      {
+        "files": [
+          "src/**/*.js"
+        ],
+        "rules": {
+          "import/no-anonymous-default-export": "off"
+        }
+      }
+    ]
   },
   "peerDependencies": {
     "windows-elevate": "^1.0.1",
@@ -150,7 +160,7 @@
     "css-loader": "4.3.0",
     "dotenv": "8.2.0",
     "dotenv-expand": "5.1.0",
-    "electron": "^10.0.0",
+    "electron": "^12.0.2",
     "electron-builder": "^22.10.5",
     "electron-reload": "^1.5.0",
     "eslint": "^7.11.0",
@@ -164,7 +174,6 @@
     "eslint-plugin-testing-library": "^3.9.2",
     "eslint-webpack-plugin": "^2.5.2",
     "file-loader": "6.1.1",
-    "fs-extra": "^9.0.1",
     "html-webpack-plugin": "4.5.0",
     "husky": "^4.3.8",
     "jest": "26.6.0",
