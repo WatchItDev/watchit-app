@@ -27,13 +27,20 @@ module.exports = class Providers {
          * @return {Promise<void>}
          */
 
-        if (!node.dht) return;
-        for await (const cid of this.getProvidersFromKey(node, key)) {
-            log.info('Connecting to:', cid.id)
-            // Sanitize addresses to valid multi address format
-            const mAddr = cid.addrs.map((m) => `${m.toString()}/p2p/${cid.id}`)
-            await Providers.connect(node, mAddr)
+        if (!node.dht)
+            return;
+
+        try {
+            for await (const cid of this.getProvidersFromKey(node, key)) {
+                log.info('Connecting to:', cid.id)
+                // Sanitize addresses to valid multi address format
+                const mAddr = cid.addrs.map((m) => `${m.toString()}/p2p/${cid.id}`)
+                await Providers.connect(node, mAddr)
+            }
+        } catch (e) {
+            // pass
         }
+
     }
 
 }
