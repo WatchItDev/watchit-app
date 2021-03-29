@@ -162,9 +162,14 @@ module.exports = (ipcMain) => {
     return {
         closed: () => orbit.closed,
         close: async (win) => {
-            win?.webContents && win.webContents.send('node-step', 'Closing')
-            cleanInterval(queueInterval)
-            await orbit.close()
+            try {
+                win?.webContents && win.webContents.send('node-step', 'Closing')
+                cleanInterval(queueInterval)
+                await orbit.close()
+            } catch (e) {
+                log.error('Error trying close node')
+            }
+
         }
     }
 
