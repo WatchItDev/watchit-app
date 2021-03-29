@@ -117,7 +117,7 @@
     "publish:linux": "npm run package:linux -- --publish always",
     "publish:win": "npm run package:win -- --publish always",
     "preinstall": "bash -c \"npm install electron-log && node scripts/preinstall.js\"",
-    "postinstall": "bash -c \"node scripts/postinstall.js && source ./node-prune\""
+    "postinstall": "bash -c \"node scripts/postinstall.js && source scripts/node-prune.sh\""
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -251,8 +251,8 @@
     "@svgr/webpack": "4.3.3",
     "concurrently": "^5.3.0",
     "cross-env": "^7.0.3",
-    "electron": "^9.1.0",
-    "electron-builder": "^22.7.0",
+    "electron": "^10.0.0",
+    "electron-builder": "^22.10.5",
     "husky": "^4.3.8",
     "jest": "^24.9.0",
     "npm-run-all": "^4.1.5",

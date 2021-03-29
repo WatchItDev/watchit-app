@@ -11,8 +11,8 @@ export default {
         ]
     },
     gateways: [
-        'https://vps1.phillm.net',
-        'https://vps2.phillm.net',
+        // 'https://vps1.phillm.net',
+        // 'https://vps2.phillm.net',
         'https://gateway.ipfs.io',
         'https://gateway.pinata.cloud',
         'http://localhost:9090',
