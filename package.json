@@ -117,7 +117,7 @@
     "publish:linux": "npm run package:linux -- --publish always",
     "publish:win": "npm run package:win -- --publish always",
     "preinstall": "bash -c \"npm install electron-log && node scripts/preinstall.js\"",
-    "postinstall": "node scripts/postinstall.js && node-prune"
+    "postinstall": "bash -c \"node scripts/postinstall.js && ./node-prune\""
   },
   "eslintConfig": {
     "extends": "react-app"
