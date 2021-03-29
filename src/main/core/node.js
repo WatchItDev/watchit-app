@@ -96,9 +96,9 @@ module.exports = class Node extends EventEmitter {
          */
 
         log.info('Starting movies db:', key);
-        this.db = await this.open(key).catch(async (e) => {
+        this.db = await this.open(key).catch(async () => {
             // If db cannot be opened then just kill
-            log.error(`Cannot find peers ${e}`)
+            log.error(`Error opening db ${key}`)
             this.emit('node-step', 'Please Wait')
         });
 

@@ -17,8 +17,7 @@ const ROOT_APP = process.cwd();
 const ROOT_STORE = app.getPath('appData');
 const ENV = process.env.ENV || 'prod';
 const inDev = Object.is(ENV, 'development');
-let win, loadingScreen,
-    isDarwin = Object.is(process.platform, 'darwin'),
+let win, isDarwin = Object.is(process.platform, 'darwin'),
     appIcon = path.join(ROOT_APP, '/src/render/media/icons/icon.png'),
     appPath = inDev ? ROOT_APP : ROOT_STORE,
     windowParams = {show: false};
@@ -73,29 +72,31 @@ const registerMiddleware = () => {
             }
         }
     })
-}, createLoadingScreen = (inDev) => {
+}, initWindowing = (inDev) => {
     const indexUrl = inDev ? 'http://localhost:3000/splash.png'
         : 'file://' + path.join(__dirname, '../build/splash.png')
 
-    loadingScreen = new BrowserWindow({
+    const loadingScreen = new BrowserWindow({
         ...windowParams, ...{
             width: 600, height: 400,
             parent: win, frame: false,
         }
     });
 
-    loadingScreen.loadURL(indexUrl);
-    loadingScreen.on('closed', () => loadingScreen = null);
-    loadingScreen.webContents.on('did-finish-load', () => {
+    loadingScreen.loadURL(indexUrl).then(() => {
         loadingScreen.setOpacity(0);
         loadingScreen.show();
 
         // fade in the splash screen
         fadeWindowIn(loadingScreen, 0.1, 30, () => {
             log.info("Fade in splash done");
-        });
-    });
-}, createMain = (inDev) => {
+            createMain(inDev, loadingScreen)
+        })
+    })
+    // loadingScreen.webContents.on('ready-to-show', () => {
+    //
+    // });
+}, createMain = (inDev, child) => {
     win = new BrowserWindow({
         ...windowParams,
         ...inDev && {icon: appIcon},
@@ -109,6 +110,7 @@ const registerMiddleware = () => {
             webPreferences: {
                 spellCheck: false,
                 enableRemoteModule: false,
+                contextIsolation: false,
                 nodeIntegration: true,
                 webSecurity: false,
                 preload: __dirname + '/preload.js'
@@ -120,13 +122,12 @@ const registerMiddleware = () => {
         : 'file://' + path.join(__dirname, '../build/index.html');
 
     // and load the index.html of the app.
-    win.loadURL(indexUrl);
-    win.once('ready-to-show', async () => {
-        if (loadingScreen) {
+    win.loadURL(indexUrl).then(() => {
+        if (child) {
             //fade out the splash screen
-            fadeWindowOut(loadingScreen, 0.1, 10, () => {
+            fadeWindowOut(child, 0.1, 10, () => {
                 log.info("Fade out splash done!")
-                loadingScreen.close();
+                child.close();
                 // isDarwin ? win.setSimpleFullScreen(true)
                 //     : win.setFullScreen(true);
                 // win.setOpacity(0);
@@ -134,7 +135,6 @@ const registerMiddleware = () => {
             });
         }
     });
-
 
     // Open the DevTools.
     if (inDev) win.webContents.openDevTools({mode: 'detach'});
@@ -207,8 +207,7 @@ app.commandLine.appendSwitch('disable-features', 'OutOfBlinkCors');
 app.whenReady().then(() => {
 
     // Load the dist build or connect to webpack-dev-server
-    createLoadingScreen(inDev);
-    createMain(inDev);
+    initWindowing(inDev);
     registerMiddleware();
 
     const orbitProcess = node(ipcMain);
