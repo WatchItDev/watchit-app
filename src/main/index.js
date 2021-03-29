@@ -105,6 +105,7 @@ const registerMiddleware = () => {
             width: 1280, height: 800,
             minWidth: 1280, minHeight: 800,
             backgroundColor: '#12191f',
+            backgroundThrottling: false,
             center: true, frame: false,
             show: false, transparent: false,
             webPreferences: {
@@ -177,7 +178,8 @@ autoUpdater.on('update-downloaded', async () => {
 
 // Behaviour on second instance for parent process- Pretty much optional
 if (isDarwin) mainMenu(Menu, app);
-//app.disableHardwareAcceleration();
+//https://www.electronjs.org/docs/tutorial/offscreen-rendering
+app.disableHardwareAcceleration();
 app.setPath('crashDumps', path.join(appPath, 'crashes'));
 app.on('second-instance', () => {
     if (win) {
