@@ -36,7 +36,6 @@ export default class AppMoviesList extends React.Component {
                 key={uid.generate()} style={style}
                 chunk={Array(this.state.chunkSize).fill(0)}
                 chunkSize={this.state.chunkSize}
-                placeHolder={true}
             />;
 
         return <AppMoviesListRow
@@ -44,6 +43,7 @@ export default class AppMoviesList extends React.Component {
             chunk={this.state.movies[index]}
             chunkSize={this.state.chunkSize}
             onClick={this.props.onClick}
+            empty={false} preload={true}
         />
 
     }

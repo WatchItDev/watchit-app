@@ -32,26 +32,31 @@ export default class BoxImage extends React.PureComponent {
     static get defaultProps() {
         return {
             preload: false,
+            pulseStyle: null
         }
     }
 
     handleImageLoaded = () => {
         this.setState({loaded: true})
-
     }
 
     handleImageError = () => {
         log.warn('Fail image request')
         log.warn('Retrying...')
-        if (!this.state.loaded) return this.forceUpdate()
         this.setState({loaded: false})
+        this.forceUpdate()
 
     }
 
     render() {
         return (
             <figure className="image-container no-margin">
-                {!this.state.loaded && this.props.preload && <PulseLoader style={{top: '20rem'}}/>}
+                {
+                    // Pulse loader
+                    !this.state.loaded &&
+                    this.props.preload &&
+                    <PulseLoader style={this.props.pulseStyle}/>
+                }
                 <img alt={''} src={this.parseUriImage(this.props.src)}
                      onLoad={this.handleImageLoaded}
                      onError={this.handleImageError}
