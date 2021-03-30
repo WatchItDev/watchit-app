@@ -49,7 +49,7 @@ export default class AppMoviesPlayerTorrent extends React.PureComponent {
             <>
                 {
                     (
-                        !this.state.canPlay &&
+                        !this.state.canPlay && !this.state.flix &&
                         <div className="absolute full-width full-height player-overlay-loader">
                             <AppMoviePlayerLoader
                                 stateText={this.state.state}
