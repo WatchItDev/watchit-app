@@ -1,47 +1,24 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Login from 'pages/login-view/index';
-import MovieIndex from 'pages/index-view';
-import MoviePlayer from 'pages/player-view';
-import DragBar from 'components/app-drag-bar/index'
+import App from './core/app'
 
 import 'normalize.css'
 import './index.sass';
 import 'plyr/dist/plyr.css';
 
-import {createBrowserHistory} from 'history';
-import {HashRouter, Switch, Route, Redirect} from "react-router-dom";
+import * as serviceWorker from './serviceWorker';
 
-const key = window.bridge.Key
-const hist = createBrowserHistory({
-    basename: "/", // The base URL of the app (see below)
-    forceRefresh: false, // Set true to force full page refreshes
-    hashType: 'slash'
-});
-
-
-//Require logged
-function DragBarHOC(Component, navigate) {
-    return <DragBar>
-        <Component {...navigate}/>
-    </DragBar>
+const root = document.getElementById('root')
+if (root.hasChildNodes()) {
+    ReactDOM.hydrate(<App/>, root);
+} else {
+    ReactDOM.render(<App/>, root);
 }
 
-ReactDOM.render(
-    <HashRouter history={hist}>
-        <Switch>
-            <Route name="login" exact path="/"
-                   render={(n) => !key.isLogged()
-                       ? DragBarHOC(Login, n) : (<Redirect to="/app/movies"/>)}/>
-            <Route name="movies" exact path="/app/movies"
-                   render={(n) => (DragBarHOC(MovieIndex, n))}/>
-            <Route name="player"
-                   path="/play/:resource"
-                   render={(n) => (DragBarHOC(MoviePlayer, n))}/>
-        </Switch>
-    </HashRouter>,
-    document.getElementById('root')
-);
+// If you want your app to work offline and load faster, you can change
+// unregister() to register() below. Note this comes with some pitfalls.
+// Learn more about service workers: https://bit.ly/CRA-PWA
+serviceWorker.register();
 
 //LISTENERS
 const preventDefault = (e) => e.preventDefault()
