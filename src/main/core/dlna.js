@@ -84,10 +84,6 @@ module.exports = class Cast extends EventEmitter {
         return `http://${this.localIp}:9990${sub.replace('.vtt', '.srt')}`
     }
 
-    addSub(sub) {
-        this.subs.push(this.sanitizeSub(sub))
-    }
-
     play(title, stream) {
         // Use local lan address
         // Try start stream
