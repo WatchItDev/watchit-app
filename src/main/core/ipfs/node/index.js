@@ -65,9 +65,11 @@ const forceKill = async (isInstance) => {
     await initIpfsNode(isInstance)
     const ipfsApi = isInstance?.api
 
-    const id = await ipfsApi.id()
-    log.info(`Started ${isInstance.started}`)
-    log.info('Running ipfs id', id?.id)
+    if (ipfsApi) { // Avoid error 'id' from undefined
+        const id = await ipfsApi.id()
+        log.info(`Started ${isInstance.started}`)
+        log.info('Running ipfs id', id?.id)
+    }
 
     return ipfsApi
 }
