@@ -7,7 +7,7 @@ export default {
     streaming: ['hls', 'torrent'],
     resolutions: {
         available: [
-            '720p', '1080p', '2160p'
+            '720p', '1080p', '2160p', 'HLS'
         ]
     },
     gateways: [
