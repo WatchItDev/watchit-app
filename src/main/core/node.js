@@ -73,6 +73,7 @@ module.exports = class Node extends EventEmitter {
          * @param ipns {string} IPNS hash
          * @return {string} Orbit address resolver key from ipns
          */
+        if (!ipns) return false;
         if (~ipns.indexOf('zd')) return ipns
         try {
             this.emit('node-step', 'Resolving')
