@@ -191,7 +191,6 @@ module.exports = class Node extends EventEmitter {
                 this.node = this.node || await ipfs.start();
                 res(this.node)
             } catch (e) {
-                console.log(e);
                 log.error('Fail starting node')
                 this.emit('node-error')
                 // Any other .. just retry
