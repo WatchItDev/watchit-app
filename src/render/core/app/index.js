@@ -6,7 +6,7 @@ import Login from 'pages/login-view/index';
 import MovieIndex from 'pages/index-view';
 import MoviePlayer from 'pages/player-view';
 
-const key = window.bridge.Key()
+const key = window.bridge.Key
 const hist = createBrowserHistory({
     basename: "/", // The base URL of the app (see below)
     forceRefresh: false, // Set true to force full page refreshes
