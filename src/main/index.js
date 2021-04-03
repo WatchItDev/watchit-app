@@ -19,8 +19,7 @@ const ENV = process.env.ENV || 'prod';
 const inDev = Object.is(ENV, 'development');
 let win, isDarwin = Object.is(process.platform, 'darwin'),
     appIcon = path.join(ROOT_APP, '/src/render/media/icons/icon.png'),
-    appPath = inDev ? ROOT_APP : ROOT_STORE,
-    windowParams = {show: false};
+    appPath = inDev ? ROOT_APP : ROOT_STORE;
 
 // Dont move appPath from this line
 process.env.appPath = appPath;
@@ -77,10 +76,8 @@ const registerMiddleware = () => {
         : 'file://' + path.join(__dirname, '../build/splash.png')
 
     const loadingScreen = new BrowserWindow({
-        ...windowParams, ...{
-            width: 600, height: 400,
-            parent: win, frame: false,
-        }
+        width: 600, height: 400,
+        frame: false, show: false
     });
 
     loadingScreen.loadURL(indexUrl).then(() => {
@@ -93,12 +90,9 @@ const registerMiddleware = () => {
             createMain(inDev, loadingScreen)
         })
     })
-    // loadingScreen.webContents.on('ready-to-show', () => {
-    //
-    // });
+
 }, createMain = (inDev, child) => {
     win = new BrowserWindow({
-        ...windowParams,
         ...inDev && {icon: appIcon},
         ...{
             title: 'WatchIt',
@@ -206,6 +200,8 @@ app.on('ready', () => {
 app.commandLine.appendSwitch('js-flags', '--max-old-space-size=512')
 app.commandLine.appendSwitch('ignore-certificate-errors');
 app.commandLine.appendSwitch('disable-features', 'OutOfBlinkCors');
+
+// On app ready open windows
 app.whenReady().then(() => {
 
     // Load the dist build or connect to webpack-dev-server

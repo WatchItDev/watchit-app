@@ -5,6 +5,12 @@ const fadeWindowOut = (
     cb = () => {
     }
 ) => {
+    /**
+     * Fade out browser window
+     * @param {object} _window BrowserWindow
+     * @param {float} step Interval
+     * @param {function} cb After finish cb
+     */
     let opacity = _window ? _window.getOpacity() : 1;
     let interval = setInterval(() => {
         if (opacity <= 0) {
@@ -25,6 +31,12 @@ const fadeWindowIn = (
     cb = () => {
     }
 ) => {
+    /**
+     * Fade in browser window
+     * @param {object} _window BrowserWindow
+     * @param {float} step Interval
+     * @param {function} cb After finish cb
+     */
     let opacity = _window ? _window.getOpacity() : 1;
     let interval = setInterval(() => {
         if (opacity >= 1) {
