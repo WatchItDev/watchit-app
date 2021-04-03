@@ -40,12 +40,13 @@ module.exports = (ipcMain) => {
     };
 
     ipcMain.on('node-start', async (e) => {
-        // More listeners
-        initEvents(e);
-        // FIFO queue
+        initEvents(e);  // Init listener on node ready
+        // Node events to handle progress and ready state
+        // "node-step" handle event to keep tracking states of node
         orbit.on('node-progress', (_, hash) => setImmediate(() => orbit.queue = hash))
             .on('node-step', (step) => e.reply('node-step', step))
             .on('node-ready', () => {
+                // FIFO queue processing
                 ingest.queueProcessor();
                 e.reply('node-ready');
             })
