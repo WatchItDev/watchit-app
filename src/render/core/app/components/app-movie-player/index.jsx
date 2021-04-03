@@ -50,6 +50,7 @@ export default class AppMoviesPlayer extends React.Component {
     }
 
     get players() {
+        if (this.isHLSStreaming) return [];
         return cast.players.map((d, i) => {
             return d.name
         })
