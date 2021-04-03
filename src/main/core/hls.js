@@ -16,30 +16,14 @@ module.exports = class HLSStreamer extends EventEmitter {
         return 'HLSStreaming'
     }
 
-    onError(event, data) {
+    onError() {
         /***
          * Handle error on HLS streaming
          * @param {object} event
          * @param {object} data
          */
-        if (data.fatal) {
-            switch (data.type) {
-                case this.ErrorTypes.NETWORK_ERROR:
-                    // try to recover network error
-                    log.warn('fatal network error encountered, try to recover');
-                    this.startLoad();
-                    break;
-                case this.ErrorTypes.MEDIA_ERROR:
-                    log.warn('fatal media error encountered, try to recover');
-                    this.recoverMediaError();
-                    break;
-                default:
-                    // cannot recover
-                    this.destroy();
-                    this.emit('error')
-                    break;
-            }
-        }
+        this.destroy();
+        this.emit('error')
     }
 
     play(uri, {videoRef}) {
@@ -116,7 +100,7 @@ module.exports = class HLSStreamer extends EventEmitter {
     }
 
     stop() {
-        //Dummy stop
+        this?.hls?.destroy()
     }
 
 }
