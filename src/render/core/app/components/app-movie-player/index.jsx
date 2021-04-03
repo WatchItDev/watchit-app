@@ -148,7 +148,7 @@ export default class AppMoviesPlayer extends React.Component {
 
     get isHLSStreaming() {
         // Check object type for streaming lib
-        return Object.is(this.streamer.toString(), 'object[HLSStreaming]')
+        return Object.is(this.streamer.toString(), '[object HLSStreaming]')
     }
 
     getPlayer(options = {}) {
