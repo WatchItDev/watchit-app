@@ -35,7 +35,7 @@ module.exports = class HLSStreamer extends EventEmitter {
             this.hls.loadSource(uri);
             this.hls.attachMedia(videoRef)
             // When media attached then try to play streaming!!
-            this.hls.on(hls.Events.ERROR, () => this.emitError())
+            this.hls.on(hls.Events.ERROR, (e, d) => this.emitError(d))
             this.hls.on(hls.Events.MEDIA_ATTACHED, () => this.emitMediaAttached(uri))
             this.hls.on(hls.Events.MANIFEST_PARSED, (e, n) => this.emitStart(n))
 
@@ -66,7 +66,7 @@ module.exports = class HLSStreamer extends EventEmitter {
         return {}
     }
 
-    emitError() {
+    emitError(e) {
         /***
          * Handle error on HLS streaming
          * @param {object} event
@@ -74,7 +74,7 @@ module.exports = class HLSStreamer extends EventEmitter {
          */
         log.info('Fail trying play movie')
         this.hls.destroy();
-        this.emit('error')
+        this.emit('error', e)
 
     }
 
