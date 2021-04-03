@@ -75,6 +75,7 @@ module.exports = class Node extends EventEmitter {
          */
         if (!ipns) return false;
         if (~ipns.indexOf('zd')) return ipns
+
         try {
             this.emit('node-step', 'Resolving')
             const cid = await last(this.node.name.resolve(ipns))
@@ -83,7 +84,8 @@ module.exports = class Node extends EventEmitter {
             return newCID.toBaseEncodedString('base58btc')
         } catch (e) {
             // Avoid using invalid keys
-            await this.party()
+            if (!this.seedMode)
+                await this.party()
             return false;
         }
 
