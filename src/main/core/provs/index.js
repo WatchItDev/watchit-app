@@ -14,30 +14,25 @@ module.exports = class Providers {
         }
     }
 
-    static getProvidersFromKey(node, key) {
-        return node.dht.findProvs(
-            key, {numProviders: 10}
-        )
-    }
-
     static async findProv(node, key) {
         /***
-         * This module find provs to orbit address and connect with them
+         * This module find providers to orbit address
+         * and connect with them
          * @param key
          * @return {Promise<void>}
          */
 
-        if (!node.dht)
-            return;
-
         try {
-            for await (const cid of this.getProvidersFromKey(node, key)) {
+            for await (const cid of node.dht.findProvs(
+                key, {numProviders: 10}
+            )) {
                 log.info('Connecting to:', cid.id)
                 // Sanitize addresses to valid multi address format
                 const mAddr = cid.addrs.map((m) => `${m.toString()}/p2p/${cid.id}`)
                 await Providers.connect(node, mAddr)
             }
         } catch (e) {
+            log.error(e)
             // pass
         }
 
