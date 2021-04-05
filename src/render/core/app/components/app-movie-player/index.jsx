@@ -50,6 +50,7 @@ export default class AppMoviesPlayer extends React.Component {
     }
 
     get players() {
+        if (this.isHLSStreaming) return [];
         return cast.players.map((d, i) => {
             return d.name
         })
@@ -69,7 +70,7 @@ export default class AppMoviesPlayer extends React.Component {
     }
 
     onSelectDevice = (index) => {
-        cast.setPlayer(index);
+        cast.setPlayer(index.action);
         cast.play(this.props.movie.title, this.state.url);
         this.player.pause();
     }
@@ -127,8 +128,8 @@ export default class AppMoviesPlayer extends React.Component {
                 // Create asset server
             ).requestUpdate().on('status', (status) => {
                 log.info('Status:' + status);
-            }).on('device', () => {
-                log.info('New device');
+            }).on('device', (device) => {
+                log.warn(`New device ${device}`);
                 this.setState({devices: this.players})
             });
         }
@@ -147,7 +148,7 @@ export default class AppMoviesPlayer extends React.Component {
 
     get isHLSStreaming() {
         // Check object type for streaming lib
-        return Object.is(this.streamer.toString(), 'object[HLSStreaming]')
+        return Object.is(this.streamer.toString(), '[object HLSStreaming]')
     }
 
     getPlayer(options = {}) {

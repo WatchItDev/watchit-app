@@ -7,12 +7,12 @@ export default {
     streaming: ['hls', 'torrent'],
     resolutions: {
         available: [
-            '720p', '1080p', '2160p'
+            '720p', '1080p', '2160p', 'HLS'
         ]
     },
     gateways: [
-        'https://vps1.phillm.net',
-        'https://vps2.phillm.net',
+        // 'https://vps1.phillm.net',
+        // 'https://vps2.phillm.net',
         'https://gateway.ipfs.io',
         'https://gateway.pinata.cloud',
         'http://localhost:9090',

@@ -70,6 +70,7 @@ module.exports = class TorrentStreamer extends EventEmitter {
         let state = 'Connecting';
 
         // There's a minimum size before we start playing the video.
+        if (this.stopped) return; // Avoid keep loading timeout
         const targetLoadedSize = MIN_SIZE_LOADED > total ? total : MIN_SIZE_LOADED;
         const targetLoadedPercent = MIN_PERCENTAGE_LOADED * total / 100.0;
         const targetLoaded = Math.max(targetLoadedPercent, targetLoadedSize);
@@ -171,7 +172,7 @@ module.exports = class TorrentStreamer extends EventEmitter {
                     this.flix.href = 'http://127.0.0.1:' + this.flix.server.address().port + '/';
 
                     //Clear old timeout
-                    this.loadedTimeout ? clearTimeout(this.loadedTimeout) : null;
+                    this.loadedTimeout && clearTimeout(this.loadedTimeout);
                     this.checkLoadingProgress(this.flix);
                 }
             });

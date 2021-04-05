@@ -2,19 +2,21 @@ const {CID} = require('ipfs-http-client')
 const log = require('electron-log')
 const EventEmitter = require('events')
 const OrbitDB = require('orbit-db');
-const {ROOT_ORBIT_DIR} = require('./settings')
-const getIsInstance = require('./ipfs')
-const {findProv} = require('./provs')
 const last = require('it-last')
+
+const provider = require('./provs')
+const ipfs = require('./ipfs')
 const key = require('./key');
+
 const MAX_RETRIES = 10;
 const DEFAULT_HOLD = 10 * 1000
 
 
 module.exports = class Node extends EventEmitter {
-    constructor() {
+    constructor({rootPath}) {
         super();
         this.holdby = DEFAULT_HOLD
+        this.rootPath = rootPath;
         this.seedMode = false;
         this.peers = [];
         this.retry = 0;
@@ -44,10 +46,13 @@ module.exports = class Node extends EventEmitter {
     }
 
     async getIngestKey() {
-        const rawAddress = this.rawIngestKey
-        const resolveKey = await this.resolveKey(rawAddress)
-        if (!resolveKey) return false;
-        return key.sanitizedKey(resolveKey)
+        return await this.resolveKey(
+            this.rawIngestKey
+        )
+    }
+
+    sanitizeKey(address) {
+        return key.sanitizedKey(address)
     }
 
     get rawIngestKey() {
@@ -71,7 +76,9 @@ module.exports = class Node extends EventEmitter {
          * @param ipns {string} IPNS hash
          * @return {string} Orbit address resolver key from ipns
          */
+        if (!ipns) return false;
         if (~ipns.indexOf('zd')) return ipns
+
         try {
             this.emit('node-step', 'Resolving')
             const cid = await last(this.node.name.resolve(ipns))
@@ -80,7 +87,8 @@ module.exports = class Node extends EventEmitter {
             return newCID.toBaseEncodedString('base58btc')
         } catch (e) {
             // Avoid using invalid keys
-            await this.party()
+            if (!this.seedMode)
+                await this.party()
             return false;
         }
 
@@ -94,9 +102,9 @@ module.exports = class Node extends EventEmitter {
          */
 
         log.info('Starting movies db:', key);
-        this.db = await this.open(key).catch(async (e) => {
+        this.db = await this.open(key).catch(async () => {
             // If db cannot be opened then just kill
-            log.error(`Cannot find peers ${e}`)
+            log.error(`Error opening db ${key}`)
             this.emit('node-step', 'Please Wait')
         });
 
@@ -142,16 +150,15 @@ module.exports = class Node extends EventEmitter {
          */
         log.info('Node ready');
         log.info('Loading db..');
-        const address = await this.getIngestKey();
-        if (!address) return false // Avoid move forward
-        const rawAddress = this.rawIngestKey
-
+        const raw = await this.getIngestKey();
+        if (!raw) return false // Avoid move forward
+        const address = this.sanitizeKey(raw)
         // Get orbit instance and next line connect providers
         // Serve as provider too :)
         this.orbit = await this.instanceOB();
         this.emit('node-step', 'Connecting')
         await this.run(address, res);
-        await findProv(this.node, rawAddress);
+        await provider.findProv(this.node, raw);
 
     }
 
@@ -160,7 +167,9 @@ module.exports = class Node extends EventEmitter {
          * Orbit db factory
          */
         return (this.orbit && Promise.resolve(this.orbit))
-            || OrbitDB.createInstance(this.node, {directory: ROOT_ORBIT_DIR});
+            || OrbitDB.createInstance(this.node, {
+                directory: this.rootPath
+            });
     }
 
     instanceNode() {
@@ -181,7 +190,7 @@ module.exports = class Node extends EventEmitter {
             try {
                 log.info('Setting up node..');
                 this.holdby = DEFAULT_HOLD; // Restore holdby
-                this.node = this.node || await getIsInstance();
+                this.node = this.node || await ipfs.start();
                 res(this.node)
             } catch (e) {
                 log.error('Fail starting node')

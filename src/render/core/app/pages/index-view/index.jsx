@@ -72,18 +72,22 @@ export default class MovieIndex extends React.Component {
         return defaults
     }
 
+    removeExtraRow = (movies, chunk) => {
+        return movies.filter((i) => Object.is(i.length, chunk));
+    }
+
     recalculateScreen = () => {
         if (!this.state.movies.length) return;
         const defaults = this.getRecalculatedScreen(),
+            chunkSize = defaults.chunkSize,
             moviesArrays = this.state.movies,
             movies = moviesArrays.flat(1),
-            moviesNewStructure = this.moviesToRow(
-                movies, defaults.chunkSize
-            );
+            moviesNewStructure = this.moviesToRow(movies, chunkSize),
+            cleanedMovies = this.removeExtraRow(moviesNewStructure, chunkSize);
 
         this.setState({
             loading: false, lock: false,
-            movies: moviesNewStructure,
+            movies: cleanedMovies,
             screen: defaults,
         });
     }

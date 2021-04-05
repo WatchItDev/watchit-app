@@ -17,7 +17,7 @@ export default {
 
     async hls(resource) {
         // Fill schema definition with `health` prop
-        resource['health'] = 1
+        resource['health'] = 10
         return resource
     },
 

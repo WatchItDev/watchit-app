@@ -13,11 +13,9 @@ const resolveIpfsPaths = () => require('go-ipfs').path()
     .replace('app.asar', 'app.asar.unpacked')
 
 
-const forKill = async (isInstance) => {
+const forceKill = async (isInstance) => {
     log.info('Forcing stop')
-    if (isInstance.subprocess)
-        return await isInstance.stop();
-    await isInstance.api.stop();
+    return await isInstance.stop();
 }, initIpfsNode = async (isInstance) => {
     try {
         // Check if running time dir exists
@@ -26,12 +24,11 @@ const forKill = async (isInstance) => {
         await isInstance.start();
     } catch (e) {
         // Gateway stop
-        await forKill(isInstance)
+        await forceKill(isInstance)
+        throw new Error('Fail starting node')
     }
 
-}
-
-module.exports = async () => {
+}, startRunning = async () => {
 
     const isInstance = await Ctl.createController({
         ipfsOptions: {config: defaultConf(), repo: ROOT_IPFS_DIR},
@@ -48,7 +45,7 @@ module.exports = async () => {
     if (alreadyLock) {
         log.warn('Releasing locked node')
         await removeFiles(repoLockDir)
-        return await forKill(isInstance)
+        return await forceKill(isInstance)
     }
 
     //If api file exists on node setup ipfs-daemon.js line:183 doest spawn process
@@ -61,16 +58,23 @@ module.exports = async () => {
 
     setTimeout(async () => {
         if (!isInstance.started) {
-            await isInstance.stop() // Force init
+            await forceKill(isInstance) // Force init
             await initIpfsNode(isInstance)
         }
     }, RETRY_GRACE * 1000)
 
     await initIpfsNode(isInstance)
-    const ipfsApi = isInstance.api
+    const ipfsApi = isInstance?.api
+
     const id = await ipfsApi.id()
     log.info(`Started ${isInstance.started}`)
-    log.info('Running ipfs id', id.id)
+    log.info('Running ipfs id', id?.id)
+
     return ipfsApi
+}
+
+
+module.exports = {
+    start: startRunning
 }
 

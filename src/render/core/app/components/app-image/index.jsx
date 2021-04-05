@@ -9,18 +9,10 @@ export default class BoxImage extends React.PureComponent {
     constructor(props) {
         super(props);
         this.state = {
-            status: 0,
-            loaded: false,
-            src: null
+            loaded: false
         };
     }
 
-
-    static getDerivedStateFromProps(props) {
-        return {
-            src: props.src
-        }
-    }
 
     parseUriImage = (image) => {
         if (image) {
@@ -40,12 +32,12 @@ export default class BoxImage extends React.PureComponent {
     static get defaultProps() {
         return {
             preload: false,
+            pulseStyle: null
         }
     }
 
-    handleImageLoaded = (e, status = 1) => {
-        this.setState({status: status, loaded: true})
-
+    handleImageLoaded = () => {
+        this.setState({loaded: true})
     }
 
     handleImageError = () => {
@@ -53,24 +45,23 @@ export default class BoxImage extends React.PureComponent {
         log.warn('Retrying...')
         this.setState({loaded: false})
         this.forceUpdate()
+
     }
 
     render() {
         return (
             <figure className="image-container no-margin">
-
                 {
-                    /*Spinner loader*/
+                    // Pulse loader
                     !this.state.loaded &&
-                    this.props.preload && <PulseLoader style={{top: '20rem'}}/>
+                    this.props.preload &&
+                    <PulseLoader style={this.props.pulseStyle}/>
                 }
-
-                <img alt={''} src={this.parseUriImage(this.state.src)}
+                <img alt={''} src={this.parseUriImage(this.props.src)}
                      onLoad={this.handleImageLoaded}
                      onError={this.handleImageError}
-                     className={this.state.status < 0 && this.props.preload ? "hidden" :
-                         (this.state.loaded || !this.props.preload) ?
-                             "loaded-img responsive-img" : "locked-img invisible"
+                     className={(this.state.loaded || !this.props.preload) ?
+                         "loaded-img responsive-img" : "locked-img invisible"
                      }
                 />
             </figure>

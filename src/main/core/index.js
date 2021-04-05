@@ -2,129 +2,52 @@
  * IPFS movies interface
  */
 
-const BufferList = require('bl/BufferList')
-const msgpack = require('msgpack-lite');
 const log = require('electron-log')
-const key = require('./key');
 const Node = require('./node')
-const QUEUE_SLEEP = 7000
+const Ingest = require('./ingest')
+
+const {ROOT_ORBIT_DIR} = require('./settings')
 
 module.exports = (ipcMain) => {
 
-    const orbit = new Node();
-    let asyncLock = false;
-    let queueInterval = null;
+    const orbit = new Node({rootPath: ROOT_ORBIT_DIR});
+    const ingest = new Ingest(orbit)
 
-    const cleanInterval = () => {
-        if (!queueInterval) return;
-        log.warn('Cleaning queue interval')
-        return clearInterval(queueInterval)
-    }, catIPFS = async (cid) => {
-        log.info('Fetching cid', cid);
-        try {
-            for await (const file of orbit.node.get(cid)) {
-                if (!file.content) continue;
-
-                // log.info(`Processing ${c.cid}`);
-                const content = new BufferList()
-                for await (const chunk of file.content) content.append(chunk)
-                return {'content': msgpack.decode(content.slice())};
-            }
-        } catch (e) {
-            log.error('Error trying fetch CID', cid, 'from network')
-        }
-
-    }, partialSave = async (e, hash) => {
-        log.info('Going take chunks');
-        let storage = key.readFromStorage();
-        let slice = ('chunk' in storage && storage.chunk) || 0;
-        const hasValidCache = orbit.hasValidCache
-        if (!hasValidCache) e.reply('node-step', 'Starting');
-
-        // Check if hash exists in log
-        let hashContent = await orbit.get(hash)
-        if (!hashContent) {
-            log.info('Hash cannot be found in op-log')
-            log.info('Release Lock')
-            asyncLock = false;
-            return;
-        }
-
-        let collectionFromIPFS = await catIPFS(hashContent)
-        if (collectionFromIPFS) { // If has data
-            let cleanedContent = collectionFromIPFS['content']
-            let slicedSize = cleanedContent.length
-
-            let lastHash = hash;
-            let total = parseInt(cleanedContent[0]['total'])
-            let sliced = slice + slicedSize
-            let tmp = (sliced / total) * 100;
-
-            log.info('Total:', total)
-            log.info('Pending:', total - sliced)
-            log.info('Load collection size:', slicedSize);
-            log.info('Last hash:', lastHash);
-
-            e.reply('node-replicated', cleanedContent, sliced, tmp.toFixed(1));
-            if (!hasValidCache) e.reply('node-db-ready'); // Ready to show!!!
-            key.addToStorage({'chunk': sliced, 'tmp': tmp, 'lastHash': lastHash, 'total': total});
-            if (sliced >= total) key.addToStorage({'cached': true, 'hash': [], 'lastHash': null})
-            asyncLock = false; // Avoid overhead release lock
-            log.info('Release Lock')
-        }
-
-    }, queueProcessor = (e) => {
-        queueInterval = setInterval(async () => {
-            const maxToReplicate = orbit.db?.replicationStatus?.max || 0
-            if (asyncLock || Object.is(maxToReplicate, 0)) {
-                log.info('Skip process queue')
-                return false; // Skip if locked or no data received
-            }
-
-            const [validCache, cache] = orbit.cache;
-            const currentQueue = orbit.queue
-            const lastHash = cache.lastHash ?? 0;
-            const queueLength = currentQueue.length
-
-            if (!queueLength) return false; // Skip if not data in queue
-            if (cache.cached) return cleanInterval();
-            let indexLastHash = currentQueue.indexOf(lastHash) // Get index of last hash
-            let nextHash = indexLastHash + 1 // Point cursor to next entry in queue
-            if (nextHash > maxToReplicate) return cleanInterval(); // Clear interval on cursor overflow
-
-            // Avoid array overflow
-            let hash = currentQueue[nextHash]
-            log.info(`Processing hash ${hash}`);
-            log.info(`Processing with`, validCache ? 'valid cache' : 'no cache')
-            asyncLock = true; // Lock process
-            await partialSave(e, hash)
-        }, QUEUE_SLEEP)
-
-    }, initEvents = (e) => {
+    const initEvents = (e) => {
         /***
-         * Initialize events for orbit
+         * Initialize events for orbit and ingesting process
+         * @param {object} e ipcMain
          */
-        // More listeners
+        // Remove listener before add new
         orbit.removeAllListeners();
+        ingest.removeAllListeners();
+
+        // Orbit node listeners
         orbit.on('node-error', (m) => e.reply('node-error', m))
-            .on('node-peer', (peerSize) => e.reply('node-peer', peerSize))
-            .on('node-chaos', (m) => {
-                // Stop queue processor
-                ipcMain.emit('party');
-                e.reply('node-chaos', m)
-                cleanInterval(queueInterval)
-            })
+        orbit.on('node-peer', (peerSize) => e.reply('node-peer', peerSize))
+        orbit.on('node-chaos', (m) => {
+            // Stop queue processor
+            ipcMain.emit('party');
+            e.reply('node-chaos', m);
+            ingest.cleanInterval();
+        })
+
+        // Ingest process listener
+        ingest.on('ingest-step', (step) => e.reply('node-step', step))
+        ingest.on('ingest-replicated', (c, s, t) => e.reply('node-replicated', c, s, t))
+        ingest.on('ingest-ready', () => e.reply('node-db-ready'))
 
     };
 
     ipcMain.on('node-start', async (e) => {
-        // More listeners
-        initEvents(e);
-        // FIFO queue
+        initEvents(e);  // Init listener on node ready
+        // Node events to handle progress and ready state
+        // "node-step" handle event to keep tracking states of node
         orbit.on('node-progress', (_, hash) => setImmediate(() => orbit.queue = hash))
             .on('node-step', (step) => e.reply('node-step', step))
             .on('node-ready', () => {
-                queueProcessor(e);
+                // FIFO queue processing
+                ingest.queueProcessor();
                 e.reply('node-ready');
             })
 
@@ -159,9 +82,14 @@ module.exports = (ipcMain) => {
     return {
         closed: () => orbit.closed,
         close: async (win) => {
-            win?.webContents && win.webContents.send('node-step', 'Closing')
-            cleanInterval(queueInterval)
-            await orbit.close()
+            try {
+                win?.webContents && win.webContents.send('node-step', 'Closing')
+                ingest.cleanInterval();
+                await orbit.close()
+            } catch (e) {
+                log.error('Error trying close node')
+            }
+
         }
     }
 

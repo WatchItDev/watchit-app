@@ -24,8 +24,7 @@ export default class AppMoviesListRow extends React.Component {
                         key={i._id || uid.generate()} id={i._id}
                         title={i.title} rating={i.rating} year={i.year}
                         image={i?.resource?.images?.medium}
-                        placeHolder={this.props.placeHolder}
-                        onClick={this.props.onClick}
+                        {...this.props}
                     />
                 })
             }

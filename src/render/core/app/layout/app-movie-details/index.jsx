@@ -49,6 +49,7 @@ export default class MovieDetails extends React.PureComponent {
                                     <BoxImage
                                         className="full-width" preload={true}
                                         src={this.state.movies.resource.images.large}
+                                        pulseStyle={{top: '20rem'}}
                                     />
                                 </aside>
 

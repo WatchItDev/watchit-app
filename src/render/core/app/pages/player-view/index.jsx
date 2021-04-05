@@ -40,7 +40,7 @@ export default class MoviePlayer extends React.Component {
         this.movie.get(_movieInfo.id).then((res) => {
             //Set new subs
             this.setState({
-                movieInfo: _movieInfo,
+                movieInfo: {..._movieInfo, ...{title:res.title}},
                 movieSubs: this.subs(res)
             });
 
