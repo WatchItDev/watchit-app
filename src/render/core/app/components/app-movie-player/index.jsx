@@ -50,8 +50,8 @@ export default class AppMoviesPlayer extends React.Component {
     }
 
     get players() {
-        if (this.isHLSStreaming) return [];
-        return cast.players.map((d, i) => {
+        if (this.isHLSStreaming || !cast) return [];
+        return cast.players.map((d) => {
             return d.name
         })
     }
@@ -70,6 +70,7 @@ export default class AppMoviesPlayer extends React.Component {
     }
 
     onSelectDevice = (index) => {
+        if (!cast) return;
         cast.setPlayer(index.action);
         cast.play(this.props.movie.title, this.state.url);
         this.player.pause();
@@ -122,17 +123,8 @@ export default class AppMoviesPlayer extends React.Component {
 
 
     async componentDidMount() {
-        if (!this.isHLSStreaming) {
-            //Cast init
-            cast.createServer(
-                // Create asset server
-            ).requestUpdate().on('status', (status) => {
-                log.info('Status:' + status);
-            }).on('device', (device) => {
-                log.warn(`New device ${device}`);
-                this.setState({devices: this.players})
-            });
-        }
+        if (!this.isHLSStreaming)
+            this.initCast();
 
         window.addEventListener("keyup", (e) => {
             let keyCode = e.which || e.keyCode;
@@ -151,6 +143,18 @@ export default class AppMoviesPlayer extends React.Component {
         return Object.is(this.streamer.toString(), '[object HLSStreaming]')
     }
 
+    initCast() {
+        //Cast init
+        cast && cast.createServer(
+            // Create asset server
+        ).requestUpdate().on('status', (status) => {
+            log.info('Status:' + status);
+        }).on('device', (device) => {
+            log.warn(`New device ${device}`);
+            this.setState({devices: this.players})
+        });
+    }
+
     getPlayer(options = {}) {
         const playerSettings = {
             ...{
@@ -160,15 +164,8 @@ export default class AppMoviesPlayer extends React.Component {
             }, ...options
         }
 
-        // Init player
+        // Init player and wait until can play
         this.player = new Plyr(this.v.video, playerSettings)
-        //On player change subtitles
-        this.player.on('languagechange', () => {
-            if (!this.currentSub) return;
-            cast.setSub(this.currentSub)
-        })
-
-        // On ready to play
         this.v.video.addEventListener('canplay', () => {
             log.info('Playing movie');
             //Handle ready
@@ -180,8 +177,8 @@ export default class AppMoviesPlayer extends React.Component {
         })
 
         // On error
-        this.v.video.addEventListener('error', (e) =>
-            log.error(`Error while playing movie: ${JSON.stringify(e)}`)
+        this.v.video.addEventListener('error', () =>
+            log.error(`Error while playing movie`)
         )
 
         //When player load
@@ -225,7 +222,7 @@ export default class AppMoviesPlayer extends React.Component {
         if (this.player)
             this.player.destroy()
         this.stopStreaming()
-        cast.stop();
+        cast && cast.stop();
     }
 
     onReady = (url, ...rest) => {
