@@ -145,7 +145,7 @@ export default class MovieIndex extends React.Component {
 
     chaos = () => {
         // Wait for redirect to app login
-        window.location.href = '#/'
+        setTimeout(() => window.location.href = '#/', 500)
     }
 
     runIngest() {
