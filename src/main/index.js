@@ -48,7 +48,6 @@ const registerMiddleware = () => {
         cb({path: file, headers: headers})
     })
 }, removeCacheDirs = () => {
-    //Auth.removeFromStorage('tmp')
     fs.readdirSync(appPath).filter(
         fn => fn.startsWith('w_alloc') || fn.startsWith('w_source')
     ).forEach(async (file) => {
@@ -225,7 +224,9 @@ app.whenReady().then(() => {
     ipcMain.on('party', async () => {
         if (key.existKey)
             await removeFiles(key.keyFile)
-        removeCacheDirs();
+        removeCacheDirs(); // Clean old data dir
+        ipcMain.emit('party-success')
+
     })
 
     ipcMain.on('focus', () => win.focus())
