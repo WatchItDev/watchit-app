@@ -1,6 +1,4 @@
-const Key = require('../key')
-
-module.exports = class BrowserKey extends Key {
+module.exports = class BrowserKey {
 
     static get db() {
         return 'w_db'
@@ -15,7 +13,7 @@ module.exports = class BrowserKey extends Key {
     }
 
     static get existKey() {
-        return Key.isLogged()
+        return this.isLogged()
     }
 
 
