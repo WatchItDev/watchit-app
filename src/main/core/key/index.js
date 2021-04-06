@@ -1,26 +1,14 @@
-const fs = require('fs-extra');
-const path = require('path');
+const log = require('electron-log')
 const orbit = require('orbit-db')
-const {ROOT_DB_DIR, ROOT_STORE} = require('./settings')
+const isBrowser = typeof process === 'undefined'
+log.warn(`Key ${isBrowser ? 'Browser' : 'Node'} env`)
 
-module.exports = class Key {
+const ParentKey = require(
+    // Handle multiple envs for browser or node package
+    isBrowser && './browser' || './node'
+)
 
-    static get db() {
-        return ROOT_DB_DIR
-    }
-
-    static get init() {
-        fs.ensureDirSync(this.db)
-        return this
-    }
-
-    static get existKey() {
-        return fs.existsSync(Key.keyFile)
-    }
-
-    static get keyFile() {
-        return path.join(ROOT_STORE, 'key.json')
-    }
+module.exports = class Key extends ParentKey {
 
     static generateKey(data) {
         return this.addToStorage(data)
@@ -37,13 +25,13 @@ module.exports = class Key {
     }
 
     static isLogged() {
-        return !!Key.read();
+        return !!this.read();
     }
 
     static readFromStorage() {
         try {
             return JSON.parse(
-                Key.read()
+                this.read()
             );
         } catch (e) {
             console.log('Invalid JSON');
@@ -53,33 +41,26 @@ module.exports = class Key {
     }
 
     static removeFromStorage(index) {
-        let currentData = Key.readFromStorage()
+        let currentData = this.readFromStorage()
         if (currentData && index in currentData) {
             delete currentData[index]
-            Key.write(currentData)
+            this.write(currentData)
         }
     }
 
     static addToStorage(data = {}) {
-        let currentData = Key.readFromStorage()
+        let currentData = this.readFromStorage()
         let extendedData = Object.assign({}, currentData, data)
-        Key.write(extendedData)
+        this.write(extendedData)
     }
 
     static getIngestKey() {
-        let fileCollection = Key.readFromStorage()
+        let fileCollection = this.readFromStorage()
         return fileCollection && 'ingest' in fileCollection
             ? fileCollection.ingest.trim() : null
 
     }
 
-    static write(data, file = Key.keyFile) {
-        fs.writeFileSync(file, JSON.stringify(data));
-    }
-
-    static read() {
-        return this.existKey ?
-            fs.readFileSync(Key.keyFile) : null
-    }
 };
+
 
