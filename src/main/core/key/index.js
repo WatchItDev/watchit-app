@@ -1,7 +1,7 @@
 const log = require('electron-log')
 const orbit = require('orbit-db')
 const isBrowser = typeof process === 'undefined'
-log.warn(`Key ${isBrowser ? 'Browser' : 'Node'} env`)
+log.warn(`Running Key ${isBrowser ? 'Browser' : 'Node'} env`)
 
 const ParentKey = require(
     // Handle multiple envs for browser or node package
