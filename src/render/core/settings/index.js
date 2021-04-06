@@ -11,14 +11,15 @@ export default {
         ]
     },
     gateways: [
-        // 'https://vps1.phillm.net',
-        // 'https://vps2.phillm.net',
+        'https://vps1.phillm.net',
+        'https://vps2.phillm.net',
+        'https://vps3.phillm.net',
         'https://gateway.ipfs.io',
         'https://gateway.pinata.cloud',
         'http://localhost:9090',
         'https://ipfs.infura.io',
-        'https://cloudflare-ipfs.com',
-        'https://cf-ipfs.com'
+        // 'https://cloudflare-ipfs.com',
+        // 'https://cf-ipfs.com'
     ],
     subs: {
         hash: {'spanish': 'es', 'english': 'en'},
