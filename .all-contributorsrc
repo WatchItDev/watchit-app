@@ -24,7 +24,8 @@
         "code",
         "design",
         "blog",
-        "ideas"
+        "ideas",
+        "userTesting",
       ]
     },
     {
@@ -34,10 +35,42 @@
       "profile": "http://mrh.io",
       "contributions": [
         "mentoring",
-        "ideas",
         "code",
         "review",
         "userTesting"
+      ]
+    },
+    {
+      "login": "vaultec81",
+      "name": "vaultec",
+      "avatar_url": "https://avatars.githubusercontent.com/u/47548474?v=4",
+      "profile": "https://github.com/vaultec81",
+      "contributions": [
+        "ideas",
+        "userTesting",
+        "talk"
+      ]
+    },
+    {
+      "login": "phillmac",
+      "name": "phillmac",
+      "avatar_url": "https://avatars.githubusercontent.com/u/4534835?v=4",
+      "profile": "https://github.com/phillmac",
+      "contributions": [
+        "ideas",
+        "userTesting",
+        "talk",
+        "code",
+        "infra"
+      ]
+    },
+    {
+      "login": "vasa-develop",
+      "name": "vasa",
+      "avatar_url": "https://avatars.githubusercontent.com/u/28847087?v=4",
+      "profile": "https://vaibhavsaini.com/",
+      "contributions": [
+        "review"
       ]
     },
     {
