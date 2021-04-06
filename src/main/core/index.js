@@ -37,7 +37,8 @@ module.exports = (ipcMain) => {
         ingest.on('ingest-ready', () => e.reply('node-db-ready'))
 
         // On party success ready then logout
-        ipcMain.once('party-success', () => {
+        ipcMain.removeListener('party-success')
+        ipcMain.on('party-success', () => {
             log.warn('Party success')
             e.reply('node-chaos')
         })
