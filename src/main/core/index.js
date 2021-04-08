@@ -25,11 +25,10 @@ module.exports = (ipcMain) => {
         // Orbit node listeners
         orbit.on('node-error', (m) => e.reply('node-error', m))
         orbit.on('node-peer', (peerSize) => e.reply('node-peer', peerSize))
-        orbit.on('node-chaos', (m) => {
+        orbit.on('node-chaos', () => {
             // Stop queue processor
-            ipcMain.emit('party');
-            e.reply('node-chaos', m);
             ingest.cleanInterval();
+            ipcMain.emit('party');
         })
 
         // Ingest process listener
@@ -37,7 +36,14 @@ module.exports = (ipcMain) => {
         ingest.on('ingest-replicated', (c, s, t) => e.reply('node-replicated', c, s, t))
         ingest.on('ingest-ready', () => e.reply('node-db-ready'))
 
+        // On party success ready then logout
+        ipcMain.removeAllListeners('party-success')
+        ipcMain.on('party-success', () => {
+            log.warn('Party success')
+            e.reply('node-chaos')
+        })
     };
+
 
     ipcMain.on('node-start', async (e) => {
         initEvents(e);  // Init listener on node ready
@@ -56,8 +62,8 @@ module.exports = (ipcMain) => {
     });
 
     ipcMain.on('node-seed', async (e) => {
-        log.info('Starting seed');
         initEvents(e)
+        log.info('Starting seed');
         orbit.setInSeedMode(true);
         await orbit.start(e)
     });
@@ -76,7 +82,7 @@ module.exports = (ipcMain) => {
 
     ipcMain.on('node-flush', async () => {
         log.warn('Flushing orbit');
-        await orbit.party('Logout')
+        await orbit.party('Logout');
     });
 
     return {

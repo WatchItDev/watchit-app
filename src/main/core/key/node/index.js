@@ -1,8 +1,7 @@
 const fs = require('fs-extra');
 const path = require('path');
 const {
-    ROOT_DB_DIR,
-    ROOT_STORE
+    ROOT_DB_DIR, ROOT_STORE
 } = require('../../settings')
 
 module.exports = class NodeKey {
