@@ -9,14 +9,14 @@ const EventEmitter = require('events')
 const readTorrent = require('read-torrent');
 const parseTorrent = require('parse-torrent');
 const webtorrentHealth = require('webtorrent-health')
-const {ROOT_TMP_FOLDER} = require(`./settings/`)
+const {ROOT_TMP_FOLDER} = require(`../../settings/`)
 const TORRENT_FILE_READ_TIMEOUT = 30 * 1000
 const {
     MIN_SIZE_LOADED,
     MIN_PERCENTAGE_LOADED,
     TORRENT_TRACKERS,
     MAX_NUM_CONNECTIONS
-} = require(`./settings/torrent`);
+} = require(`../settings`);
 
 module.exports = class TorrentStreamer extends EventEmitter {
     constructor(props) {
@@ -161,7 +161,7 @@ module.exports = class TorrentStreamer extends EventEmitter {
             //Server listening
             this.flix.server.on('listening', () => {
                 if (this.flix) {
-                    let selectedFile = this.flix.torrent.files.reduce(function (biggest, file) {
+                    let selectedFile = this.flix.torrent.files.reduce((biggest, file) => {
                         return biggest.length > file.length ? biggest : file;
                     });
 
