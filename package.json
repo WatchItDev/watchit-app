@@ -14,8 +14,8 @@
   },
   "dependencies": {
     "dlnacasts2": "^0.2.0",
-    "electron-log": "^4.3.2",
-    "electron-updater": "^4.3.7",
+    "electron-log": "^4.3.3",
+    "electron-updater": "^4.3.8",
     "fs-extra": "^9.0.1",
     "go-ipfs": "^0.6.0",
     "hls.js": "^0.14.17",
@@ -86,7 +86,9 @@
       ]
     },
     "nsis": {
-      "deleteAppDataOnUninstall": true
+      "deleteAppDataOnUninstall": true,
+      "allowToChangeInstallationDirectory": false,
+      "runAfterFinish": true
     },
     "linux": {
       "target": [
