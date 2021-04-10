@@ -1,12 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './core/app'
+import App from './core/app/index'
 
 import 'normalize.css'
 import './index.sass';
 import 'plyr/dist/plyr.css';
-
 import * as serviceWorker from './serviceWorker';
+
+
+window.bridge = {
+
+}
 
 const root = document.getElementById('root')
 ReactDOM.render(<App/>, root);
