@@ -1,10 +1,5 @@
-import React from 'react';
-import {HashRouter, Redirect, Route, Switch} from "react-router-dom";
-import DragBar from 'components/app-drag-bar/index'
 import {createBrowserHistory} from 'history';
-import Login from 'pages/login-view/index';
-import MovieIndex from 'pages/index-view';
-import MoviePlayer from 'pages/player-view';
+import bootstrap from './bootstrap'
 
 const key = window.bridge.Key
 const hist = createBrowserHistory({
@@ -13,24 +8,7 @@ const hist = createBrowserHistory({
     hashType: 'slash'
 });
 
-//Require logged
-function DragBarHOC(Component, navigate) {
-    return <DragBar>
-        <Component {...navigate}/>
-    </DragBar>
-}
 
 export default () => {
-    return <HashRouter history={hist}>
-        <Switch>
-            <Route name="login" exact path="/"
-                   render={(n) => !key.isLogged()
-                       ? DragBarHOC(Login, n) : (<Redirect to="/app/movies"/>)}/>
-            <Route name="movies" exact path="/app/movies"
-                   render={(n) => (DragBarHOC(MovieIndex, n))}/>
-            <Route name="player"
-                   path="/play/:resource"
-                   render={(n) => (DragBarHOC(MoviePlayer, n))}/>
-        </Switch>
-    </HashRouter>
+    return bootstrap(hist, key)
 }
