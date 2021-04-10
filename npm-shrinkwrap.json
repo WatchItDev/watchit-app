@@ -9415,9 +9415,9 @@
       }
     },
     "electron-log": {
-      "version": "4.3.3",
-      "resolved": "https://registry.npmjs.org/electron-log/-/electron-log-4.3.3.tgz",
-      "integrity": "sha512-WNPZm56O6YAxdQ2ESTaYr6nEid+jqobNjHMuDCfY2l76uPwz5UBOO+8sGv0XeXG8IQvygcagcwjpVuK9/IggYg=="
+      "version": "4.3.4",
+      "resolved": "https://registry.npmjs.org/electron-log/-/electron-log-4.3.4.tgz",
+      "integrity": "sha512-Cd6xZ9if2J4NG+PNoi3cARAYoanbM4ddpod0faaL5LIhmwuSdxP9XH95C9SgTpHMqklbg8u3CFh1yqiaqo2Bng=="
     },
     "electron-publish": {
       "version": "22.10.5",

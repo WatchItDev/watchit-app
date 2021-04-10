@@ -12,9 +12,12 @@
     "type": "git",
     "url": "https://github.com/ZorrillosDev/watchit-desktop.git"
   },
+  "engines": {
+    "node": ">=0.14"
+  },
   "dependencies": {
     "dlnacasts2": "^0.2.0",
-    "electron-log": "^4.3.3",
+    "electron-log": "^4.3.4",
     "electron-updater": "^4.3.8",
     "fs-extra": "^9.0.1",
     "go-ipfs": "^0.6.0",
