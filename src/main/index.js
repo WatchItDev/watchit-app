@@ -15,7 +15,7 @@ const {
 
 const ROOT_APP = process.cwd();
 const ROOT_STORE = app.getPath('appData');
-const ENV = process.env.ENV || 'prod';
+const ENV = process.env.NODE_ENV || 'production';
 const inDev = Object.is(ENV, 'development');
 let win, isDarwin = Object.is(process.platform, 'darwin'),
     appIcon = path.join(ROOT_APP, '/src/render/media/icons/icon.png'),
