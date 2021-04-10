@@ -2,10 +2,10 @@ const baseConf = require('./webpack.base')
 const {merge} = require('webpack-merge');
 const paths = require('./paths');
 const path = require('path');
+
 // This is the production and development configuration.
 // It is focused on developer experience, fast rebuilds, and a minimal bundle.
 module.exports = function (webpackEnv) {
-
     return merge(baseConf(webpackEnv), {
         resolve: {
             alias: {

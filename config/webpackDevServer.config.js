@@ -14,6 +14,7 @@ const host = process.env.HOST || '0.0.0.0';
 const sockHost = process.env.WDS_SOCKET_HOST;
 const sockPath = process.env.WDS_SOCKET_PATH; // default: '/sockjs-node'
 const sockPort = process.env.WDS_SOCKET_PORT;
+const runElectron = process.env.RUNTIME === 'electron'
 
 module.exports = function (proxy, allowedHost) {
     return {
@@ -127,14 +128,17 @@ module.exports = function (proxy, allowedHost) {
             // https://github.com/facebook/create-react-app/issues/2272#issuecomment-302832432
             app.use(noopServiceWorkerMiddleware(paths.publicUrlOrPath));
 
-            console.log('Starting Main Process...')
-            spawn('npm', ['run', 'electron'], {
-                shell: true,
-                env: process.env,
-                stdio: 'inherit'
-            })
-                .on('close', code => process.exit(code))
-                .on('error', spawnError => console.error(spawnError))
+            if (runElectron) {
+                console.log('Starting Main Process...')
+                spawn('npm', ['run', 'electron'], {
+                    shell: true,
+                    env: process.env,
+                    stdio: 'inherit'
+                })
+                    .on('close', code => process.exit(code))
+                    .on('error', spawnError => console.error(spawnError))
+            }
+
 
         },
     };
