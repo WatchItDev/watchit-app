@@ -1,9 +1,6 @@
-const log = require('electron-log')
-const isBrowser = typeof process === 'undefined'
-log.warn(`Running Torrent ${isBrowser ? 'Browser' : 'Node'} env`)
-
+const runtime = process.env.RUNTIME // web | node | electron
 module.exports = require(
     // Handle multiple envs for browser or node package
-    isBrowser && './browser' || './node'
+    typeof process === 'undefined' && './browser' || './node'
 )
 
