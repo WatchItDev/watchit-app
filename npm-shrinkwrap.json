@@ -20411,13 +20411,6 @@
         }
       }
     },
-    "pathseg": {
-      "version": "1.2.0",
-      "resolved": "https://registry.npmjs.org/pathseg/-/pathseg-1.2.0.tgz",
-      "integrity": "sha512-+pQS7lTaoVIXhaCW7R3Wd/165APzZHWzYVqe7dxzdupxQwebgpBaCmf0/XZwmoA/rkDq3qvzO0qv4d5oFVrBRw==",
-      "dev": true,
-      "optional": true
-    },
     "pbkdf2": {
       "version": "3.1.1",
       "resolved": "https://registry.npmjs.org/pbkdf2/-/pbkdf2-3.1.1.tgz",
@@ -22681,16 +22674,6 @@
         "prop-types": "^15.5.10",
         "react-lifecycles-compat": "^3.0.0",
         "warning": "^4.0.3"
-      }
-    },
-    "react-particles-js": {
-      "version": "3.4.1",
-      "resolved": "https://registry.npmjs.org/react-particles-js/-/react-particles-js-3.4.1.tgz",
-      "integrity": "sha512-c3+vITUMN9RlgbERZYd9Kzvjmf49ENp07+9+NDLvE1Jf9euabrJi/q6gCCcv5foxGHBYjHnGs47Tusmrl0/+GQ==",
-      "dev": true,
-      "requires": {
-        "lodash": "^4.17.11",
-        "tsparticles": "^1.18.10"
       }
     },
     "react-player": {
@@ -26061,15 +26044,6 @@
       "resolved": "https://registry.npmjs.org/tslib/-/tslib-1.14.1.tgz",
       "integrity": "sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg==",
       "dev": true
-    },
-    "tsparticles": {
-      "version": "1.24.1",
-      "resolved": "https://registry.npmjs.org/tsparticles/-/tsparticles-1.24.1.tgz",
-      "integrity": "sha512-swPu6qjssFEuM8IUWvrRV0Q35raL8FaCK17x9g7Wt2Rtz/cN5JXbxDtEtQfS6MslKvUQI71L/kWVrS43eCzoJg==",
-      "dev": true,
-      "requires": {
-        "pathseg": "^1.2.0"
-      }
     },
     "tsutils": {
       "version": "3.21.0",
