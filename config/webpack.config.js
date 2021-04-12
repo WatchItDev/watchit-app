@@ -10,6 +10,7 @@ module.exports = function (webpackEnv) {
 
     return merge(baseConf(webpackEnv), {
         target: runtime === 'web' ? 'web' : 'electron-renderer',
+
         resolve: {
             alias: {
                 'components': path.resolve(paths.appSrc, 'render/core/app/components'),
@@ -17,7 +18,7 @@ module.exports = function (webpackEnv) {
                 'pages': path.resolve(paths.appSrc, 'render/core/app/pages'),
                 'resource': path.resolve(paths.appSrc, 'render/core/resources'),
                 'settings': path.resolve(paths.appSrc, 'render/core/settings'),
-                'main': path.resolve(paths.appSrc, 'main/core/')
+                'main': path.resolve(paths.appSrc, 'main/'),
             }
         }
     });
