@@ -11,7 +11,7 @@ const {ROOT_ORBIT_DIR} = require('./settings')
 module.exports = (ipcMain) => {
 
     const orbit = new Node({rootPath: ROOT_ORBIT_DIR});
-    const ingest = new Ingest(orbit)
+    const ingest = new Ingest(orbit);
 
     const initEvents = (e) => {
         /***
