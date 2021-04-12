@@ -1,3 +1,4 @@
+import 'main/preload'
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './core/app/index'
@@ -8,9 +9,7 @@ import 'plyr/dist/plyr.css';
 import * as serviceWorker from './serviceWorker';
 
 
-window.bridge = {
-
-}
+console.log(window.broker);
 
 const root = document.getElementById('root')
 ReactDOM.render(<App/>, root);

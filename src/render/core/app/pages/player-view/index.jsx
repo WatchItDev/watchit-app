@@ -5,8 +5,6 @@ import MainLoader from 'components/util-main-loader'
 import BtnClose from 'components/util-btn-close'
 import Movie from 'resource/data/movies'
 import cryptHelper from 'resource/helpers/crypt'
-import utilHelper from 'resource/helpers/util'
-import setting from 'settings'
 
 // Access to main process bridge prop
 const log = window.require("electron-log");
@@ -27,7 +25,6 @@ export default class MoviePlayer extends React.Component {
 
     }
 
-
     componentDidMount() {
         //Decode param
         let _movieInfo = JSON.parse(
@@ -40,50 +37,13 @@ export default class MoviePlayer extends React.Component {
         this.movie.get(_movieInfo.id).then((res) => {
             //Set new subs
             this.setState({
-                movieInfo: {..._movieInfo, ...{title:res.title}},
-                movieSubs: this.subs(res)
+                movieInfo: {..._movieInfo, ...{title: res.title}},
+                movieSubs: {}//this.subs(res)
             });
 
         }).catch((e) => {
             log.error('Error in movie get', e)
         })
-    }
-
-
-    preSubs(subs, collection = {}) {
-        Object.values(subs).forEach((el) => {
-            Object.keys(el).reduce((o, i) => {
-                let sIndex = utilHelper.sanitizeSubIndex(i)
-                if (sIndex in o) o[sIndex] = [...o[sIndex], ...el[i]]
-                if (!(sIndex in o)) o[sIndex] = el[i]
-                return o
-            }, collection)
-        })
-    }
-
-    subs(res) {
-        let subs = {}
-        let s = res?.subtitles
-        if (!s) return subs
-        this.preSubs(s, subs);
-
-        // Filter and get better sub rate
-        return Object.keys(subs).filter(
-            (k) => setting.subs.available.includes(k)
-        ).reduce((obj, key) => {
-            obj[key] = this.getBetterSub(subs[key])
-            return obj
-        }, {});
-    }
-
-
-    getBetterSub(subtitles) {
-        //Get better sub
-        return subtitles.sort((a, b) => {
-            a = parseFloat(a.score || a.rating);
-            b = parseFloat(b.score || b.rating);
-            return a - b
-        }).slice(-1)[0];
     }
 
 

@@ -13,6 +13,7 @@ const Torrent = require(`./core/torrent`);
 const Broker = require(`./core/broker`);
 const Subs = require('./core/subs')
 
+// Preload bridge
 window.bridge = {
     Key, Subs,
     DLNA: new DLNA(),

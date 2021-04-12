@@ -9,7 +9,6 @@ import gatewayHelper from "render/core/resources/helpers/gateway";
 import resourceHelper from "render/core/resources/helpers/streaming";
 
 const log = window.require("electron-log");
-const subs = window.bridge.Subs
 const cast = window.bridge.DLNA
 
 const DEFAULT_PLAYER_CONTROLS = [
@@ -33,8 +32,6 @@ const DEFAULT_PLAYER_CONTROLS = [
 export default class AppMoviesPlayer extends React.Component {
     constructor(props) {
         super(props);
-
-        this.subs = {};
         this.v = null;
 
         //Initial State
@@ -82,7 +79,7 @@ export default class AppMoviesPlayer extends React.Component {
     }
 
     get currentSub() {
-        return this.subs[this.currentLang]
+        return this.props.subs[this.currentLang]
     }
 
     get srtSub() {
@@ -90,48 +87,17 @@ export default class AppMoviesPlayer extends React.Component {
             this.currentSub.replace('.vtt', '.srt')
     }
 
-    * interCues(video) {
-        for (const track of video.textTracks) {
-            if (track.label === this.currentLang) {
-                for (const cue of track.cues)
-                    yield cue
-                break;
-            }
-        }
-    }
-
-
-    addOffset(offset) {
-        if (!this.currentSub || !this.v) return;
-        subs.reSync(this.srtSub, offset * 1000).then(() => {
-            for (const cue of this.interCues(this.v.video)) {
-                cue.startTime += offset || 0.5;
-                cue.endTime += offset || 0.5;
-            }
-        })
-    }
-
-    removeOffset(offset) {
-        if (!this.currentSub || !this.v) return;
-        subs.reSync(this.srtSub, (offset * -1) * 1000).then(() => {
-            for (const cue of this.interCues(this.v.video)) {
-                cue.startTime -= offset || 0.5;
-                cue.endTime -= offset || 0.5;
-            }
-        })
-    }
-
 
     async componentDidMount() {
         if (!this.isHLSStreaming)
             this.initCast();
 
-        window.addEventListener("keyup", (e) => {
-            let keyCode = e.which || e.keyCode;
-            if (Object.is(keyCode, 71)) this.addOffset(0.5); //G
-            if (Object.is(keyCode, 72)) this.removeOffset(0.5); //H
-            //if (Object.is(keyCode, 83)) this.syncSubs();
-        });
+        // window.addEventListener("keyup", (e) => {
+        //     let keyCode = e.which || e.keyCode;
+        //     if (Object.is(keyCode, 71)) this.addOffset(0.5); //G
+        //     if (Object.is(keyCode, 72)) this.removeOffset(0.5); //H
+        //     // if (Object.is(keyCode, 83)) this.syncSubs();
+        // });
 
         // Lets run
         this.startStreaming();
