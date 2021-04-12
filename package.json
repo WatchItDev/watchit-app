@@ -12,10 +12,13 @@
     "type": "git",
     "url": "https://github.com/ZorrillosDev/watchit-desktop.git"
   },
+  "engines": {
+    "node": ">=14"
+  },
   "dependencies": {
     "dlnacasts2": "^0.2.0",
-    "electron-log": "^4.3.2",
-    "electron-updater": "^4.3.7",
+    "electron-log": "^4.3.4",
+    "electron-updater": "^4.3.8",
     "fs-extra": "^9.0.1",
     "go-ipfs": "^0.6.0",
     "hls.js": "^0.14.17",
@@ -86,7 +89,9 @@
       ]
     },
     "nsis": {
-      "deleteAppDataOnUninstall": true
+      "deleteAppDataOnUninstall": true,
+      "allowToChangeInstallationDirectory": false,
+      "runAfterFinish": true
     },
     "linux": {
       "target": [
@@ -201,7 +206,6 @@
     "react-dev-utils": "^11.0.3",
     "react-dom": "^16.13.1",
     "react-modal": "^3.11.2",
-    "react-particles-js": "^3.4.1",
     "react-player": "^2.1.0",
     "react-refresh": "^0.8.3",
     "react-router-dom": "^5.2.0",
@@ -215,7 +219,6 @@
     "style-loader": "1.3.0",
     "terser-webpack-plugin": "4.2.3",
     "ts-pnp": "1.2.0",
-    "tsparticles": "^1.19.2",
     "url-loader": "4.1.1",
     "webpack": "4.44.2",
     "webpack-dev-server": "3.11.1",
