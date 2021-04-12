@@ -11,11 +11,11 @@ const DLNA = require(`./core/dlna`);
 const HLS = require(`./core/hls`);
 const Torrent = require(`./core/torrent`);
 const Broker = require(`./core/broker`);
-const Subs = require('./core/subs')
+// const Subs = require('./core/subs')
 
 // Preload bridge
 window.bridge = {
-    Key, Subs,
+    Key, //Subs,
     DLNA: new DLNA(),
     HLS: new HLS(),
     Torrent: new Torrent(),
