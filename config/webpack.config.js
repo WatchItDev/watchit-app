@@ -18,6 +18,7 @@ module.exports = function (webpackEnv) {
                 'pages': path.resolve(paths.appSrc, 'render/core/app/pages'),
                 'resource': path.resolve(paths.appSrc, 'render/core/resources'),
                 'settings': path.resolve(paths.appSrc, 'render/core/settings'),
+                'logger': path.resolve(paths.appSrc, 'main/core/logs'),
                 'main': path.resolve(paths.appSrc, 'main/'),
             }
         }
