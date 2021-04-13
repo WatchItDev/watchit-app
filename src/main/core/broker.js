@@ -1,7 +1,8 @@
 const isBrowser = typeof process === 'undefined'
 const Key = require('./key');
 const EventEmitter = require('events')
-const log = require('logplease').create('BROKER')
+const logplease = require('logplease')
+const log = logplease.create('BROKER', {color: logplease.Colors.Yellow})
 const ipcRenderer = isBrowser ? new EventEmitter() : require('electron').ipcRenderer;
 
 const LinvoDB = require("linvodb3");
