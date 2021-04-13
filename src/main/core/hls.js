@@ -1,5 +1,5 @@
 const hls = require('hls.js')
-const log = require('./logs')
+const log = require('logplease').create('HLS')
 const conf = require('./settings/hls')
 const EventEmitter = require('events')
 

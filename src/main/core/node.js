@@ -3,10 +3,10 @@ const EventEmitter = require('events')
 const OrbitDB = require('orbit-db');
 const last = require('it-last')
 const provider = require('./provs')
-
 const ipfs = require('./ipfs')
 const key = require('./key');
-const log = require('./logs')
+const log = require('logplease')
+    .create('NODE')
 
 const MAX_RETRIES = 10;
 const DEFAULT_HOLD = 10 * 1000

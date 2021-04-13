@@ -5,8 +5,8 @@ import PropTypes from 'prop-types'
 import setting from 'render/core/settings'
 import AppMoviesPlayerShare from '../app-movie-player-share'
 import AppMoviesPlayerVideo from '../app-movie-player-video'
-import gatewayHelper from "render/core/resources/helpers/gateway";
-import resourceHelper from "render/core/resources/helpers/streaming";
+import gatewayHelper from "helpers/gateway";
+import resourceHelper from "helpers/streaming";
 import log from 'logger'
 
 const cast = window.bridge.DLNA

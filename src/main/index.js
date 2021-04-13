@@ -2,7 +2,7 @@ require('v8-compile-cache')
 const fs = require('fs');
 const path = require('path');
 const mime = require('mime');
-const log = require('electron-log');
+const log = require('logplease').create('MAIN');
 
 const {mainMenu} = require('./helpers/menu')
 const {fadeWindowOut, fadeWindowIn} = require('./helpers/screen')
@@ -152,7 +152,6 @@ const registerMiddleware = () => {
  *******************/
 //Auto update setup
 autoUpdater.logger = log;
-autoUpdater.logger.transports.file.level = 'info';
 autoUpdater.autoDownload = false
 autoUpdater.on('update-available', async () => {
     log.info('New Update');

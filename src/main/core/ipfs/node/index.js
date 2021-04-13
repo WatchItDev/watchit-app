@@ -1,8 +1,8 @@
 const fs = require('fs')
-const log = require('electron-log')
 const path = require('path')
 const Ctl = require('ipfsd-ctl')
 const defaultConf = require('../settings');
+const log = require('logplease').create('IPFS')
 
 // Path settings and util helper lib
 const {removeFiles} = require('../../utils');

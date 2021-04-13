@@ -1,5 +1,5 @@
 const {ROOT_TMP_FOLDER} = require('../../settings');
-const log = require('electron-log')
+const log = require('logplease').create('DNLA SERVER')
 const http = require('http');
 const fs = require('fs');
 const PORT = 9990;

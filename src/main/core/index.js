@@ -2,7 +2,7 @@
  * IPFS movies interface
  */
 
-const log = require('electron-log')
+const log = require('logplease').create('CORE')
 const Node = require('./node')
 const Ingest = require('./ingest')
 

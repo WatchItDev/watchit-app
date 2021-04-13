@@ -1,4 +1,4 @@
-const log = require('electron-log')
+const log = require('logplease').create('PROVIDERS')
 
 module.exports = class Providers {
 

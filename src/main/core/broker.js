@@ -1,7 +1,9 @@
+const isBrowser = typeof process === 'undefined'
 const Key = require('./key');
-const log = require('./logs')
 const EventEmitter = require('events')
-const ipcRenderer = require('electron').ipcRenderer;
+const log = require('logplease').create('BROKER')
+const ipcRenderer = isBrowser ? new EventEmitter() : require('electron').ipcRenderer;
+
 const LinvoDB = require("linvodb3");
 LinvoDB.dbPath = Key.init.db
 LinvoDB.defaults.store = {db: require(Key.engine)};
@@ -29,11 +31,12 @@ const IPC_LISTENERS = [
     'node-replicated'
 ]
 
-// Capture unhandled exceptions
-process.on('uncaughtException', () => {
-    console.log('UNCAUGHT EXCEPTION - keeping process alive');
-    // err.message is "foobar"
-});
+if (!isBrowser)
+    // Capture unhandled exceptions
+    process?.on('uncaughtException', () => {
+        log.warn('Uncaught Exception: keeping process alive');
+        // err.message is "foobar"
+    });
 
 module.exports = class Broker extends EventEmitter {
     constructor() {

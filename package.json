@@ -17,7 +17,6 @@
   },
   "dependencies": {
     "dlnacasts2": "^0.2.0",
-    "electron-log": "^4.3.4",
     "electron-updater": "^4.3.8",
     "fs-extra": "^9.0.1",
     "go-ipfs": "^0.6.0",
@@ -33,6 +32,7 @@
     "jschardet": "^2.1.1",
     "leveldown": "^5.6.0",
     "linvodb3": "^3.26.0",
+    "logplease": "^1.2.15",
     "mime": "^2.4.6",
     "msgpack-lite": "^0.1.26",
     "orbit-db": "^0.26.0",
@@ -48,6 +48,7 @@
     "subtitle": "^2.0.3",
     "unzipper": "^0.10.11",
     "v8-compile-cache": "^2.2.0",
+    "webtorrent": "^0.116.1",
     "webtorrent-health": "^1.1.2"
   },
   "build": {
@@ -212,6 +213,7 @@
     "react-tooltip": "^4.2.6",
     "react-window": "^1.8.5",
     "react-window-infinite-loader": "^1.0.5",
+    "request": "^2.79.0",
     "resolve": "1.18.1",
     "resolve-url-loader": "^3.1.2",
     "sass-loader": "^10.0.5",

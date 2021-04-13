@@ -1,4 +1,4 @@
-const log = require('./logs')
+const log = require('logplease').create('INGEST')
 const EventEmitter = require('events')
 const BufferList = require('bl/BufferList')
 const msgpack = require('msgpack-lite');

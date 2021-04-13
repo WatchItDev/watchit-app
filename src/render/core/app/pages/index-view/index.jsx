@@ -1,15 +1,16 @@
 import React from 'react'
 import AppMovies from 'layout/app-movies-list/'
 import AppMovieDetails from 'layout/app-movie-details/'
-import util from 'resource/helpers/util'
 import AppNav from 'components/app-movies-nav-bar/'
 import AppSearch from 'components/app-movies-search/'
 import AppLoader from 'components/app-movie-player-loader'
-import AppUpdater from 'components/app-movies-updater'
+// import AppUpdater from 'components/app-movies-updater'
 import StatsValue from "components/util-stats";
-import storageHelper from 'resource/helpers/storage';
 import BoxLoader from 'components/util-box-loader'
-import Movie from 'resource/data/movies'
+import Movie from 'resource/movies'
+
+import storageHelper from 'helpers/storage';
+import util from 'helpers/util'
 import log from 'logger'
 
 // Access to main process bridge prop
@@ -328,7 +329,7 @@ export default class MovieIndex extends React.Component {
 
                 {
                     /* Happy hunt */
-                    <AppUpdater/>
+                    // <AppUpdater/>
                 }
 
                 {

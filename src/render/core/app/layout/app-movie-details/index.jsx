@@ -10,8 +10,8 @@ import FlowText from 'components/util-flow-text'
 import CustomScrollbars from 'components/util-scroller';
 import ListCommaSplit from 'components/util-list-comma-split'
 
-import Movie from 'resource/data/movies'
-import resourceHelper from "resource/helpers/streaming";
+import Movie from 'resource/movies'
+import resourceHelper from "helpers/streaming";
 
 // Access to main process bridge prop
 const broker = window.bridge.Broker

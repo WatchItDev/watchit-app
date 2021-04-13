@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import PulseLoader from 'components/util-pulse-loader'
-import gatewayHelper from 'render/core/resources/helpers/gateway'
+import gatewayHelper from 'helpers/gateway'
 import log from 'logger'
 
 export default class BoxImage extends React.PureComponent {

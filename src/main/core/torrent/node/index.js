@@ -3,13 +3,15 @@
  * @author gmena
  */
 const path = require('path')
-const log = require('electron-log')
+
 const peerflix = require('peerflix');
 const EventEmitter = require('events')
 const readTorrent = require('read-torrent');
 const parseTorrent = require('parse-torrent');
+const log = require('logplease').create('TORRENT')
 const webtorrentHealth = require('webtorrent-health')
 const {ROOT_TMP_FOLDER} = require(`../../settings/`)
+
 const TORRENT_FILE_READ_TIMEOUT = 30 * 1000
 const {
     MIN_SIZE_LOADED,

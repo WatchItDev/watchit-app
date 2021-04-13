@@ -1,5 +1,5 @@
 const os = require('os');
-const log = require('electron-log')
+const log = require('logplease').create('CHILD PROCESS')
 const osType = os.type().toLowerCase()
 const isWin = osType === 'windows_nt' || osType === 'win32'
 const isLinux = osType === 'linux'
