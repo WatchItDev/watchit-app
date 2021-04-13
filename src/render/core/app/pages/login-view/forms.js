@@ -14,7 +14,7 @@ const FORMS = {
         }],
         buttons: [{
             type: 'submit',
-            text: 'login',
+            text: 'Connect',
             size: 'm6 l6'
         }]
     }
