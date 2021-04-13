@@ -1,4 +1,4 @@
-const log = require('electron-log')
+const log = require('logplease').create('PREINSTALL')
 const {execPassthru, getElevateExec, osType} = require('./util');
 
 const executePreInstall = async () => {
