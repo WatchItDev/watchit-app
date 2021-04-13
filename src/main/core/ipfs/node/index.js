@@ -33,7 +33,7 @@ const forceKill = async (isInstance) => {
     const isInstance = await Ctl.createController({
         ipfsOptions: {config: defaultConf(), repo: ROOT_IPFS_DIR},
         ipfsHttpModule: require('ipfs-http-client'),
-        ipfsBin: resolveIpfsPaths(),
+        ipfsBin: resolveIpfsPaths(), forceKill: true,
         disposable: false, forceKillTimeout: 2000,
         args: ['--enable-pubsub-experiment'],
         remote: false, type: 'go'
