@@ -1,5 +1,5 @@
 const hls = require('hls.js')
-const log = require('electron-log')
+const log = require('./logs')
 const conf = require('./settings/hls')
 const EventEmitter = require('events')
 

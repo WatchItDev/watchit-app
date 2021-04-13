@@ -1,4 +1,4 @@
-const log = require('electron-log')
+const log = require('./logs')
 const EventEmitter = require('events')
 const BufferList = require('bl/BufferList')
 const msgpack = require('msgpack-lite');

@@ -1,4 +1,4 @@
-const log = require('electron-log');
+const log = require('./logs');
 const rimraf = require('rimraf');
 
 module.exports.removeFiles = (dirOrFIle, options) => {

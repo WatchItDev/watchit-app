@@ -1,12 +1,12 @@
 const {CID} = require('ipfs-http-client')
-const log = require('electron-log')
 const EventEmitter = require('events')
 const OrbitDB = require('orbit-db');
 const last = require('it-last')
-
 const provider = require('./provs')
+
 const ipfs = require('./ipfs')
 const key = require('./key');
+const log = require('./logs')
 
 const MAX_RETRIES = 10;
 const DEFAULT_HOLD = 10 * 1000
@@ -231,7 +231,7 @@ module.exports = class Node extends EventEmitter {
             if (this.node) {
                 log.warn('Killing Nodes');
                 await this.node.stop().catch(
-                    err => log.error(err.message)
+                    () => log.error('Fail trying to stop node')
                 );
             }
             log.info('System closed');

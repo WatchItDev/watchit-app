@@ -1,8 +1,8 @@
 const Key = require('./key');
+const log = require('./logs')
 const EventEmitter = require('events')
 const ipcRenderer = require('electron').ipcRenderer;
 const LinvoDB = require("linvodb3");
-const log = require('electron-log')
 LinvoDB.dbPath = Key.init.db
 LinvoDB.defaults.store = {db: require(Key.engine)};
 LinvoDB.defaults.autoIndexing = false
