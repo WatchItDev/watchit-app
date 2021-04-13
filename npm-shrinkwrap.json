@@ -1,6 +1,6 @@
 {
   "name": "watchit",
-  "version": "0.1.0-beta.7",
+  "version": "0.1.0-beta.8",
   "lockfileVersion": 1,
   "requires": true,
   "dependencies": {
@@ -9119,14 +9119,13 @@
       },
       "dependencies": {
         "plist": {
-          "version": "3.0.1",
-          "resolved": "https://registry.npmjs.org/plist/-/plist-3.0.1.tgz",
-          "integrity": "sha512-GpgvHHocGRyQm74b6FWEZZVRroHKE1I0/BTjAmySaohK+cUn+hZpbqXkc3KWgW3gQYkqcQej35FohcT0FRlkRQ==",
+          "version": "3.0.2",
+          "resolved": "https://registry.npmjs.org/plist/-/plist-3.0.2.tgz",
+          "integrity": "sha512-MSrkwZBdQ6YapHy87/8hDU8MnIcyxBKjeF+McXnr5A9MtffPewTs7G3hlpodT5TacyfIyFTaJEhh3GGcmasTgQ==",
           "dev": true,
           "optional": true,
           "requires": {
-            "base64-js": "^1.2.3",
-            "xmldom": "0.1.x"
+            "base64-js": "^1.5.1"
           }
         }
       }
@@ -9594,11 +9593,6 @@
       "requires": {
         "encoding": "^0.1.13"
       }
-    },
-    "electron-log": {
-      "version": "4.3.4",
-      "resolved": "https://registry.npmjs.org/electron-log/-/electron-log-4.3.4.tgz",
-      "integrity": "sha512-Cd6xZ9if2J4NG+PNoi3cARAYoanbM4ddpod0faaL5LIhmwuSdxP9XH95C9SgTpHMqklbg8u3CFh1yqiaqo2Bng=="
     },
     "electron-publish": {
       "version": "22.10.5",

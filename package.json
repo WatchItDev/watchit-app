@@ -1,7 +1,7 @@
 {
   "name": "watchit",
   "author": "ZorrillosDev",
-  "version": "0.1.0-beta.7",
+  "version": "0.1.0-beta.8",
   "private": true,
   "main": "./src/main/index.js",
   "description": "Open movies everywhere",
@@ -124,7 +124,7 @@
     "publish:mac": "npm run package:mac -- --publish always",
     "publish:linux": "npm run package:linux -- --publish always",
     "publish:win": "npm run package:win -- --publish always",
-    "preinstall": "bash -c \"npm install electron-log && node scripts/preinstall.js\"",
+    "preinstall": "bash -c \"npm install logplease && node scripts/preinstall.js\"",
     "postinstall": "bash -c \"node scripts/postinstall.js && /usr/local/bin/node-prune\""
   },
   "eslintConfig": {
