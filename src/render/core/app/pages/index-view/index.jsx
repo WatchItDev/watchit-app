@@ -10,9 +10,9 @@ import StatsValue from "components/util-stats";
 import storageHelper from 'resource/helpers/storage';
 import BoxLoader from 'components/util-box-loader'
 import Movie from 'resource/data/movies'
+import log from 'logger'
 
 // Access to main process bridge prop
-const log = window.require("electron-log");
 const key = window.bridge.Key
 const broker = window.bridge.Broker
 const DEFAULT_INIT_LOAD = 100;

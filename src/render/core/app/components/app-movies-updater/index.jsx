@@ -1,7 +1,7 @@
 import React from 'react'
+import log from 'logger'
 
 const electron = window.require('electron');
-const log = window.require("electron-log");
 const ipcRenderer = electron.ipcRenderer;
 const webFrame = electron.webFrame;
 

@@ -7,8 +7,8 @@ import AppMoviesPlayerShare from '../app-movie-player-share'
 import AppMoviesPlayerVideo from '../app-movie-player-video'
 import gatewayHelper from "render/core/resources/helpers/gateway";
 import resourceHelper from "render/core/resources/helpers/streaming";
+import log from 'logger'
 
-const log = window.require("electron-log");
 const cast = window.bridge.DLNA
 
 const DEFAULT_PLAYER_CONTROLS = [

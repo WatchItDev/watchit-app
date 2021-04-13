@@ -2,12 +2,13 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import PulseLoader from 'components/util-pulse-loader'
 import gatewayHelper from 'render/core/resources/helpers/gateway'
+import log from 'logger'
 
-const log = window.require("electron-log");
 export default class BoxImage extends React.PureComponent {
 
     constructor(props) {
         super(props);
+        this.img = null
         this.state = {
             loaded: false
         };
@@ -40,12 +41,21 @@ export default class BoxImage extends React.PureComponent {
         this.setState({loaded: true})
     }
 
+
+    componentWillUnmount() {
+        this.img.src = "" // Abort
+    }
+
     handleImageError = () => {
         log.warn('Fail image request')
         log.warn('Retrying...')
         this.setState({loaded: false})
         this.forceUpdate()
 
+    }
+
+    getRef = (i) => {
+        this.img = i
     }
 
     render() {
@@ -58,8 +68,8 @@ export default class BoxImage extends React.PureComponent {
                     <PulseLoader style={this.props.pulseStyle}/>
                 }
                 <img alt={''} src={this.parseUriImage(this.props.src)}
-                     onLoad={this.handleImageLoaded}
-                     onError={this.handleImageError}
+                     onLoad={this.handleImageLoaded} loading={"lazy"}
+                     onError={this.handleImageError} ref={this.getRef}
                      className={(this.state.loaded || !this.props.preload) ?
                          "loaded-img responsive-img" : "locked-img invisible"
                      }

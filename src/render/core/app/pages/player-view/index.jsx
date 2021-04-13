@@ -5,9 +5,9 @@ import MainLoader from 'components/util-main-loader'
 import BtnClose from 'components/util-btn-close'
 import Movie from 'resource/data/movies'
 import cryptHelper from 'resource/helpers/crypt'
+import log from 'logger'
 
 // Access to main process bridge prop
-const log = window.require("electron-log");
 const broker = window.bridge.Broker;
 
 //Movie player pages class
