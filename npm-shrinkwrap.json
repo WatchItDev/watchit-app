@@ -18117,6 +18117,34 @@
         "level-packager": "^5.0.0",
         "leveldown": "^5.0.0",
         "opencollective-postinstall": "^2.0.0"
+      },
+      "dependencies": {
+        "abstract-leveldown": {
+          "version": "6.0.3",
+          "resolved": "https://registry.npmjs.org/abstract-leveldown/-/abstract-leveldown-6.0.3.tgz",
+          "integrity": "sha512-jzewKKpZbaYUa6HTThnrl+GrJhzjEAeuc7hTVpZdzg7kupXZFoqQDFwyOwLNbmJKJlmzw8yiipMPkDiuKkT06Q==",
+          "requires": {
+            "level-concat-iterator": "~2.0.0",
+            "xtend": "~4.0.0"
+          }
+        },
+        "immediate": {
+          "version": "3.2.3",
+          "resolved": "https://registry.npmjs.org/immediate/-/immediate-3.2.3.tgz",
+          "integrity": "sha1-0UD6j2FGWb1lQSMwl92qwlzdmRw="
+        },
+        "level-js": {
+          "version": "4.0.2",
+          "resolved": "https://registry.npmjs.org/level-js/-/level-js-4.0.2.tgz",
+          "integrity": "sha512-PeGjZsyMG4O89KHiez1zoMJxStnkM+oBIqgACjoo5PJqFiSUUm3GNod/KcbqN5ktyZa8jkG7I1T0P2u6HN9lIg==",
+          "requires": {
+            "abstract-leveldown": "~6.0.1",
+            "immediate": "~3.2.3",
+            "inherits": "^2.0.3",
+            "ltgt": "^2.1.2",
+            "typedarray-to-buffer": "~3.1.5"
+          }
+        }
       }
     },
     "level-codec": {
@@ -18151,30 +18179,51 @@
       }
     },
     "level-js": {
-      "version": "4.0.2",
-      "resolved": "https://registry.npmjs.org/level-js/-/level-js-4.0.2.tgz",
-      "integrity": "sha512-PeGjZsyMG4O89KHiez1zoMJxStnkM+oBIqgACjoo5PJqFiSUUm3GNod/KcbqN5ktyZa8jkG7I1T0P2u6HN9lIg==",
+      "version": "6.0.0",
+      "resolved": "https://registry.npmjs.org/level-js/-/level-js-6.0.0.tgz",
+      "integrity": "sha512-7dp7JuaoQoqKW4ZGvrV1RB5f51/ktLdEo9fSDsh3Ofmg7sKCMu3X0CIngbY/IUz/YyskhN7LRvEVIkZHCY3LKQ==",
       "requires": {
-        "abstract-leveldown": "~6.0.1",
-        "immediate": "~3.2.3",
+        "abstract-leveldown": "^7.0.0",
+        "buffer": "^6.0.3",
         "inherits": "^2.0.3",
-        "ltgt": "^2.1.2",
-        "typedarray-to-buffer": "~3.1.5"
+        "ltgt": "^2.1.2"
       },
       "dependencies": {
         "abstract-leveldown": {
-          "version": "6.0.3",
-          "resolved": "https://registry.npmjs.org/abstract-leveldown/-/abstract-leveldown-6.0.3.tgz",
-          "integrity": "sha512-jzewKKpZbaYUa6HTThnrl+GrJhzjEAeuc7hTVpZdzg7kupXZFoqQDFwyOwLNbmJKJlmzw8yiipMPkDiuKkT06Q==",
+          "version": "7.0.0",
+          "resolved": "https://registry.npmjs.org/abstract-leveldown/-/abstract-leveldown-7.0.0.tgz",
+          "integrity": "sha512-mFAi5sB/UjpNYglrQ4irzdmr2mbQtE94OJbrAYuK2yRARjH/OACinN1meOAorfnaLPMQdFymSQMlkiDm9AXXKQ==",
           "requires": {
-            "level-concat-iterator": "~2.0.0",
-            "xtend": "~4.0.0"
+            "buffer": "^6.0.3",
+            "is-buffer": "^2.0.5",
+            "level-concat-iterator": "^3.0.0",
+            "level-supports": "^2.0.0",
+            "queue-microtask": "^1.2.3"
           }
         },
-        "immediate": {
-          "version": "3.2.3",
-          "resolved": "https://registry.npmjs.org/immediate/-/immediate-3.2.3.tgz",
-          "integrity": "sha1-0UD6j2FGWb1lQSMwl92qwlzdmRw="
+        "buffer": {
+          "version": "6.0.3",
+          "resolved": "https://registry.npmjs.org/buffer/-/buffer-6.0.3.tgz",
+          "integrity": "sha512-FTiCpNxtwiZZHEZbcbTIcZjERVICn9yq/pDFkTl95/AxzD1naBctN7YO68riM/gLSDY7sdrMby8hofADYuuqOA==",
+          "requires": {
+            "base64-js": "^1.3.1",
+            "ieee754": "^1.2.1"
+          }
+        },
+        "is-buffer": {
+          "version": "2.0.5",
+          "resolved": "https://registry.npmjs.org/is-buffer/-/is-buffer-2.0.5.tgz",
+          "integrity": "sha512-i2R6zNFDwgEHJyQUtJEk0XFi1i0dPFn/oqjK3/vPCcDeJvW5NQ83V8QbicfF1SupOaB0h8ntgBC2YiE7dfyctQ=="
+        },
+        "level-concat-iterator": {
+          "version": "3.0.0",
+          "resolved": "https://registry.npmjs.org/level-concat-iterator/-/level-concat-iterator-3.0.0.tgz",
+          "integrity": "sha512-UHGiIdj+uiFQorOrURRvJF3Ei0uHc89ciM/aRi0qsWDV2f0HXypeXUPhJKL6DsONgSR76Pc0AI4sKYEYYRn2Dg=="
+        },
+        "level-supports": {
+          "version": "2.0.0",
+          "resolved": "https://registry.npmjs.org/level-supports/-/level-supports-2.0.0.tgz",
+          "integrity": "sha512-8UJgzo1pvWP1wq80ZlkL19fPeK7tlyy0sBY90+2pj0x/kvzHCoLDWyuFJJMrsTn33oc7hbMkS3SkjCxMRPHWaw=="
         }
       }
     },

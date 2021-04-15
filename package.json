@@ -48,7 +48,6 @@
     "subtitle": "^2.0.3",
     "unzipper": "^0.10.11",
     "v8-compile-cache": "^2.2.0",
-    "webtorrent": "^0.116.1",
     "webtorrent-health": "^1.1.2"
   },
   "build": {
@@ -142,6 +141,8 @@
   },
   "peerDependencies": {
     "windows-elevate": "^1.0.1",
+    "webtorrent": "^0.116.1",
+    "level-js": "^6.0.0",
     "go-ipfs": "^0.6.0"
   },
   "husky": {
