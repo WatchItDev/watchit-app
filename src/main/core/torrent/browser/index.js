@@ -9,7 +9,7 @@ const {
     MAX_NUM_CONNECTIONS
 } = require(`../settings`);
 
-class BrowserStreamer extends EventEmitter {
+module.exports = class BrowserStreamer extends EventEmitter {
     constructor(props) {
         super(props)
         this.flix = null;

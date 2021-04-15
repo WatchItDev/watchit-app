@@ -143,6 +143,7 @@
     "windows-elevate": "^1.0.1",
     "webtorrent": "^0.116.1",
     "level-js": "^6.0.0",
+    "ipfs": "^0.52.1",
     "go-ipfs": "^0.6.0"
   },
   "husky": {
