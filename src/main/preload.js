@@ -16,9 +16,10 @@ const Broker = require(`./core/broker`);
 // Preload bridge
 window.bridge = {
     Key, //Subs,
+    Broker,
     DLNA: new DLNA(),
     HLS: new HLS(),
     Torrent: new Torrent(),
-    Broker: new Broker()
+
 }
 
