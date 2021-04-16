@@ -124,7 +124,7 @@
     "publish:linux": "npm run package:linux -- --publish always",
     "publish:win": "npm run package:win -- --publish always",
     "preinstall": "bash -c \"npm install logplease && node scripts/preinstall.js\"",
-    "postinstall": "bash -c \"node scripts/postinstall.js && /usr/local/bin/node-prune\""
+    "postinstall": "bash -c \"node scripts/postinstall.js\""
   },
   "eslintConfig": {
     "extends": "react-app",

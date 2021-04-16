@@ -7,6 +7,7 @@ const {exec} = require('child_process')
 
 const getElevatedExec = async () => {
     if (isWin) {
+        log.warn('Running window as admin')
         await execPassthru('npm i windows-elevate --no-save', exec)
         const winExec = require('windows-elevate').exec
         return (execCmd, callback) => {
