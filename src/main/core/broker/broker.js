@@ -57,6 +57,11 @@ module.exports = class Broker extends EventEmitter {
         );
     }
 
+    getIPC() {
+        // Inter process handler
+        return this.renderer
+    }
+
     stopIpcEvents(ipcListeners = []) {
         /***
          * Clear ipc electron events to avoid
@@ -157,7 +162,6 @@ module.exports = class Broker extends EventEmitter {
          */
         this.renderer.on('node-step', (e, step) => {
             this.emit('progress', step)
-
         })
     }
 
@@ -183,6 +187,7 @@ module.exports = class Broker extends EventEmitter {
          * and serve as intermediary between render and main process
          */
         // Clean old listeners first
+        log.info('Broker ready')
         this.stopIpcEvents();
         this.emitStart();
         this.listenForPartyRock();

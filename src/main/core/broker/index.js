@@ -5,5 +5,7 @@ const renderer = require(
 )
 
 // Construct broker with renderer
-module.exports = new Broker(renderer)
+module.exports = new Broker(
+    renderer // WebIPC || Electron.MainIPC
+)
 

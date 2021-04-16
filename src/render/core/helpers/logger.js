@@ -1,2 +1,6 @@
 import logplease from 'logplease'
-export default logplease.create('RENDER', { color: logplease.Colors.Yellow })
+
+window.LOG = "*"
+export default logplease.create('RENDER', {
+    color: logplease.Colors.Yellow
+})

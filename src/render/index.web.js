@@ -1,4 +1,5 @@
 import 'main/preload'
+import Bootstrap from 'main/core'
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './core/app/index'
@@ -8,8 +9,8 @@ import './index.sass';
 import 'plyr/dist/plyr.css';
 import * as serviceWorker from './serviceWorker';
 
-
-console.log(window.broker);
+const webRenderer = window.bridge.Broker.getIPC()
+Bootstrap(webRenderer, 'web') // Initialize nodes and core libs
 
 const root = document.getElementById('root')
 ReactDOM.render(<App/>, root);
