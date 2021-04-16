@@ -20,6 +20,7 @@
     "webtorrent": "0.116.1",
     "level-js": "6.0.0",
     "ipfs": "0.52.1",
+    "wrtc": "0.4.7",
     "go-ipfs": "^0.6.0"
   },
   "dependencies": {
