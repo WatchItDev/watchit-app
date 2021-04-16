@@ -1,8 +1,13 @@
 const EventEmitter = require('events')
 
-class WebBroker extends EventEmitter {
-    send() {
+class WebIPC extends EventEmitter {
+    send(event, ...rest) {
+        this.emit(event, this, ...rest)
+    }
+
+    reply(event, ...rest) {
+        this.send(event, ...rest)
     }
 }
 
-module.exports = new WebBroker();
+module.exports = new WebIPC();
