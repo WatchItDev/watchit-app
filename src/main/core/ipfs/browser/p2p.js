@@ -1,5 +1,3 @@
-'use strict'
-
 const wrtc = require('wrtc')
 const ipns = require('ipns')
 const Libp2p = require('libp2p')
@@ -63,7 +61,9 @@ module.exports = (opts) => {
                     enabled: true
                 },
                 bootstrap: {
-                    enabled: true
+                    interval: 30e3,
+                    enabled: true,
+                    list: []
                 }
             },
             relay: {

@@ -3,8 +3,8 @@ const webtorrentHealth = require('webtorrent-health')
 const parseTorrent = require('parse-torrent');
 const EventEmitter = require('events')
 const {
-    MIN_SIZE_LOADED,
-    MIN_PERCENTAGE_LOADED,
+    // MIN_SIZE_LOADED,
+    // MIN_PERCENTAGE_LOADED,
     TORRENT_TRACKERS,
     MAX_NUM_CONNECTIONS
 } = require(`../settings`);
