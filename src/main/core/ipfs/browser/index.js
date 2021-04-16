@@ -27,7 +27,7 @@ const startRunning = async (repo) => {
         config: conf,
         start: true,
         preload: {enabled: false},
-        EXPERIMENTAL: {pubsub: true, dht: false},
+        EXPERIMENTAL: {pubsub: true, dht: true},
     })
 
     const ipfsID = await isInstance.id()
