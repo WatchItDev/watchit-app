@@ -86,6 +86,7 @@ module.exports = class Node extends EventEmitter {
             const newCID = new CID(cleanedCID)
             return newCID.toBaseEncodedString('base58btc')
         } catch (e) {
+            console.log(e);
             // Avoid using invalid keys
             if (!this.seedMode)
                 await this.party()
