@@ -15,6 +15,13 @@
   "engines": {
     "node": ">=14"
   },
+  "peerDependencies": {
+    "windows-elevate": "^1.0.1",
+    "webtorrent": "0.116.1",
+    "level-js": "6.0.0",
+    "ipfs": "0.52.1",
+    "go-ipfs": "^0.6.0"
+  },
   "dependencies": {
     "dlnacasts2": "^0.2.0",
     "electron-updater": "^4.3.8",
@@ -124,7 +131,7 @@
     "publish:linux": "npm run package:linux -- --publish always",
     "publish:win": "npm run package:win -- --publish always",
     "preinstall": "bash -c \"npm install logplease && node scripts/preinstall.js\"",
-    "postinstall": "bash -c \"node scripts/postinstall.js\""
+    "postinstall": "bash -c \"node scripts/postinstall.js && /usr/local/bin/node-prune\""
   },
   "eslintConfig": {
     "extends": "react-app",
@@ -138,13 +145,6 @@
         }
       }
     ]
-  },
-  "peerDependencies": {
-    "windows-elevate": "^1.0.1",
-    "webtorrent": "^0.116.1",
-    "level-js": "^6.0.0",
-    "ipfs": "^0.52.1",
-    "go-ipfs": "^0.6.0"
   },
   "husky": {
     "hooks": {

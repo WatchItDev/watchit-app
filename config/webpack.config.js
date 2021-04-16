@@ -7,10 +7,10 @@ const path = require('path');
 // It is focused on developer experience, fast rebuilds, and a minimal bundle.
 module.exports = function (webpackEnv) {
     const runtime = process.env.RUNTIME;
+    const isWeb = runtime === 'web'
 
     return merge(baseConf(webpackEnv), {
-        target: runtime === 'web' ? 'web' : 'electron-renderer',
-
+        target:  isWeb ? 'web' : 'electron-renderer',
         resolve: {
             alias: {
                 'components': path.resolve(paths.appSrc, 'render/core/app/components'),
