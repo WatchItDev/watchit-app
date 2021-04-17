@@ -155,7 +155,7 @@ export default class MovieIndex extends React.Component {
             this.setState({state: state})
         }).on('start', async () => {
             log.info('STARTING');
-            if (!this.loaded) localStorage.clear();
+            // if (!this.loaded) localStorage.clear();
 
         }).on('ready', () => {
             //Start filtering set cache synced movies
