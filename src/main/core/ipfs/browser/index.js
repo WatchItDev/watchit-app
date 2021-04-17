@@ -20,8 +20,7 @@ const startRunning = async (repo) => {
 
     const conf = Object.assign({repo}, defaultIPFS);
     const isInstance = await IPFS.create({
-        config: conf,
-        start: true,
+        config: conf, start: true,
         preload: {enabled: false},
         EXPERIMENTAL: {pubsub: true, ipnsPubsub: true, dht: true},
         libp2p: {config: {dht: {enabled: true}}},
