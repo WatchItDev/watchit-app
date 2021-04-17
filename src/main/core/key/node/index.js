@@ -11,7 +11,6 @@ module.exports = class NodeKey {
     }
 
     static get engine() {
-
         return require('leveldown')
     }
 

@@ -8,6 +8,14 @@ class WebIPC extends EventEmitter {
     reply(event, ...rest) {
         this.send(event, ...rest)
     }
+
 }
 
-module.exports = new WebIPC();
+const webIPC = new WebIPC();
+webIPC.removeAllListeners('party')
+webIPC.on('party', () => {
+    localStorage.removeItem('key')
+    webIPC.emit('party-success')
+})
+
+module.exports = webIPC

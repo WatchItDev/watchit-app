@@ -1,7 +1,7 @@
 const fs = require('fs')
 const path = require('path')
 const Ctl = require('ipfsd-ctl')
-const defaultConf = require('../settings');
+const defaultConf = require('./settings');
 const log = require('logplease').create('IPFS')
 
 // Path settings and util helper lib

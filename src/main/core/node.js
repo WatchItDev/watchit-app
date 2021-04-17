@@ -2,6 +2,7 @@ const {CID} = require('ipfs-http-client')
 const EventEmitter = require('events')
 const OrbitDB = require('orbit-db');
 const last = require('it-last')
+
 const provider = require('./provs')
 const ipfs = require('./ipfs')
 const key = require('./key');
@@ -86,7 +87,6 @@ module.exports = class Node extends EventEmitter {
             const newCID = new CID(cleanedCID)
             return newCID.toBaseEncodedString('base58btc')
         } catch (e) {
-            console.log(e);
             // Avoid using invalid keys
             if (!this.seedMode)
                 await this.party()
