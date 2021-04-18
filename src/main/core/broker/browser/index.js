@@ -12,7 +12,6 @@ class WebIPC extends EventEmitter {
 }
 
 const webIPC = new WebIPC();
-webIPC.removeAllListeners('party')
 webIPC.on('party', () => {
     localStorage.removeItem('key')
     webIPC.emit('party-success')
