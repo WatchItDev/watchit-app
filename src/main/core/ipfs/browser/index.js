@@ -4,10 +4,11 @@ const log = require('logplease').create('IPFS')
 const startRunning = async (repo) => {
     const defaultIPFS = {
         "Bootstrap": [
-            "/dns4/ec2-34-209-228-155.us-west-2.compute.amazonaws.com/tcp/4002/ws/p2p/QmSHSTNyKJ1EGVVKj7dKZFmxj9FaBfE7S23MNTj1Jwungg",
-            "/dns4/direct.vps1.phillm.net/tcp/4001/p2p/QmbPFTECrXd7o2HS2jWAJ2CyAckv3Z5SFy8gnEHKxxH52g",
-            "/dns4/direct.vps2.phillm.net/tcp/4001/p2p/12D3KooWQw3vx2E4FKpL9GHC9BpFya1MXVUFEVBAQVhMDkreCqwF",
-            "/dns4/direct.vps3.phillm.net/tcp/4001/p2p/12D3KooWD4Z47R1pnzTxCVQAiTKTHasWU2xTAcffyC38BNKM68yw",
+            "/dns4/ec2-34-209-228-155.us-west-2.compute.amazonaws.com/tcp/4001/p2p/QmSHSTNyKJ1EGVVKj7dKZFmxj9FaBfE7S23MNTj1Jwungg",
+            "/dns4/ec2-34-209-228-155.us-west-2.compute.amazonaws.com/tcp/4002/wss/p2p/QmSHSTNyKJ1EGVVKj7dKZFmxj9FaBfE7S23MNTj1Jwungg",
+            "/dns4/direct.vps1.phillm.net/tcp/4002/wss/p2p/QmbPFTECrXd7o2HS2jWAJ2CyAckv3Z5SFy8gnEHKxxH52g",
+            "/dns4/direct.vps2.phillm.net/tcp/4002/wss/p2p/12D3KooWQw3vx2E4FKpL9GHC9BpFya1MXVUFEVBAQVhMDkreCqwF",
+            "/dns4/direct.vps3.phillm.net/tcp/4002/wss/p2p/12D3KooWD4Z47R1pnzTxCVQAiTKTHasWU2xTAcffyC38BNKM68yw",
         ],
         "Addresses": {
             "Swarm": [

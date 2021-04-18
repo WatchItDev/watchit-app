@@ -67,7 +67,10 @@ module.exports = class Broker extends EventEmitter {
          * Clear ipc electron events to avoid
          * over declarative events
          */
-        (ipcListeners || IPC_LISTENERS).forEach((l) => {
+        const listeners = ipcListeners.length
+            ? ipcListeners : IPC_LISTENERS;
+
+        (listeners).forEach((l) => {
             log.info('Cleaning:', l);
             this.renderer.removeAllListeners(l)
         })
