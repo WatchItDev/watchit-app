@@ -3,6 +3,7 @@ const log = require('logplease').create('IPFS')
 
 const startRunning = async (repo) => {
     const defaultIPFS = {
+        "Discovery": {"MDNS": {"Enabled": true, "Interval": 10}},
         "Bootstrap": [
             "/dns4/ec2-34-209-228-155.us-west-2.compute.amazonaws.com/tcp/4001/p2p/QmSHSTNyKJ1EGVVKj7dKZFmxj9FaBfE7S23MNTj1Jwungg",
             "/dns4/ec2-34-209-228-155.us-west-2.compute.amazonaws.com/tcp/4002/wss/p2p/QmSHSTNyKJ1EGVVKj7dKZFmxj9FaBfE7S23MNTj1Jwungg",
