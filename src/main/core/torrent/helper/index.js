@@ -10,10 +10,10 @@ module.exports = {
         });
     },
     requiresTranscoding: (file) => {
-        return [".mkv", ".avi", ".wmv", ".webm", ".flv"].some((ext) =>
-        file.name.toLowerCase().endsWith(ext)
-      );
-    }
+        return ['.mkv', '.avi', '.wmv', '.flv'].some((ext) =>
+            file.name.toLowerCase().endsWith(ext)
+        );
+    },
     calcChunkPercent: (downloaded, total) => {
         const targetLoadedSize = MIN_SIZE_LOADED > total ? total : MIN_SIZE_LOADED;
         const targetLoadedPercent = MIN_PERCENTAGE_LOADED * total / 100.0;
