@@ -10,6 +10,18 @@ const {
     MAX_NUM_CONNECTIONS
 } = require(`../settings`);
 
+// Trackers for web torrent
+const TORRENT_WEB_TRACKERS = [
+    ...TORRENT_TRACKERS,
+    ...[
+        'wss://tracker.openwebtorrent.com',
+        'wss://tracker.btorrent.xyz',
+        'wss://tracker.fastcast.nz',
+        'wss://tracker.webtorrent.io',
+        'wss://tracker.sloppyta.co'
+    ]
+]
+
 module.exports = class BrowserStreamer extends EventEmitter {
     constructor(props) {
         super(props)
@@ -63,7 +75,7 @@ module.exports = class BrowserStreamer extends EventEmitter {
     async getHealth(hash, i) {
         let {peers, seeds} = await webtorrentHealth(
             parseTorrent.toMagnetURI({infoHash: hash.toLowerCase()}),
-            {trackers: TORRENT_TRACKERS}
+            {trackers: TORRENT_WEB_TRACKERS}
         )
 
         return {peers, seeds, index: i}
@@ -81,28 +93,26 @@ module.exports = class BrowserStreamer extends EventEmitter {
             maxConns: MAX_NUM_CONNECTIONS
         });
 
-        this.client.add(torrent, {
-            announce: [
-                ...TORRENT_TRACKERS,
-                ...[
-                    'wss://tracker.openwebtorrent.com',
-                    'wss://tracker.btorrent.xyz',
-                    'wss://tracker.fastcast.nz',
-                    'wss://tracker.webtorrent.io'
-                ]
-            ]
-        }, (_torrent) => {
-            // Find the biggest file = movie
-            let selectedFile = selectBiggestFile(_torrent.files)
-            this.flix = _torrent // Flix = torrent object
-            this.flix.fileSize = selectedFile.length;
+        try {
+            this.client.add(torrent, {
+                announce: TORRENT_WEB_TRACKERS
+            }, (_torrent) => {
+                // Find the biggest file = movie
+                let selectedFile = selectBiggestFile(_torrent.files)
+                this.flix = _torrent // Flix = torrent object
+                this.flix.fileSize = selectedFile.length;
 
-            log.info('Initializing torrent')
-            selectedFile.renderTo(videoRef, {autoPlay: true})
-            _torrent.on('download', (b) =>
-                this.checkLoadingProgress(_torrent, b)
-            )
-        })
+                log.info('Initializing torrent')
+                selectedFile.renderTo(videoRef, {autoPlay: true})
+                _torrent.on('download', (b) =>
+                    this.checkLoadingProgress(_torrent, b)
+                )
+            })
+        } catch (e) {
+            log.error('Error resolving torrent')
+            this.emit('error', e)
+        }
+
 
         return this;
 
