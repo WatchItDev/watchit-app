@@ -47,7 +47,7 @@ export default class AppMoviesPlayer extends React.Component {
     }
 
     get players() {
-        if (this.isHLSStreaming || !cast) return [];
+        if (this.invalidCastSource || !cast) return [];
         return cast.players.map((d) => {
             return d.name
         })
@@ -89,7 +89,7 @@ export default class AppMoviesPlayer extends React.Component {
 
 
     async componentDidMount() {
-        if (!this.isHLSStreaming)
+        if (!this.invalidCastSource)
             this.initCast();
 
         // window.addEventListener("keyup", (e) => {
@@ -104,9 +104,11 @@ export default class AppMoviesPlayer extends React.Component {
 
     }
 
-    get isHLSStreaming() {
-        // Check object type for streaming lib
-        return Object.is(this.streamer.toString(), '[object HLSStreaming]')
+    get invalidCastSource() {
+        // Check object type for streaming lib and avoid cast for invalid sources
+        const blackListed = ['[object HLSStreaming]', '[object BrowserTorrentStreaming]']
+        const currentStreamer = this.streamer.toString()
+        return blackListed.some((el) => Object.is(currentStreamer, el))
     }
 
     initCast() {
