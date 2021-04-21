@@ -13,11 +13,12 @@ log.info(`Using ${Engine.name}`)
 // ipcRender listeners
 const DB = 'wt'
 const MOVIES_SCHEMA = {
-    _id: {type: String, index: true, unique: false},
+    _id: {type: String, index: true},
     title: {type: String, index: true},
     year: {type: Number, index: true},
     runtime: {type: Number, index: true},
-    genres: {type: [String], index: true},
+    rating: {type: Number, index: true},
+    genres: {type: Array, index: true},
     date_uploaded_unix: {type: Number, index: true}
 }
 
@@ -35,16 +36,21 @@ const IPC_LISTENERS = [
 // Capture unhandled exceptions
 process?.on('uncaughtException', () => {
     log.warn('Uncaught Exception: keeping process alive');
-    // err.message is "foobar"
 });
 
 module.exports = class Broker extends EventEmitter {
     constructor(renderer) {
         super()
         this.renderer = renderer;
-        this.db = new LinvoDB(
-            DB, MOVIES_SCHEMA
-        )
+        this.db = new LinvoDB(DB)//, MOVIES_SCHEMA, {})
+    }
+
+
+    _flushDB() {
+        // Flush indexes on logout and remove db entries
+        //Object.keys(MOVIES_SCHEMA).forEach((k) => this.db.removeIndex(k, () => log.info('Index removed', k)))
+        this.db.remove({}, {multi: true},
+            (err, numRemoved) => log.info('Flushed db entries: ', numRemoved));
     }
 
 
@@ -52,8 +58,8 @@ module.exports = class Broker extends EventEmitter {
         /**
          * Kill all this shit XD
          * */
+        this._flushDB();
         this.renderer.send('node-flush');
-        this.renderer.send('store-flush', this.db);
     }
 
     getIPC() {
@@ -175,9 +181,11 @@ module.exports = class Broker extends EventEmitter {
             log.info('LOADING FROM NETWORK');
             log.info(collection[collection.length - 1]['_id']);
             log.info(collection[0]['_id']);
+
             this.db.insert(collection, (e, n) => {
                 if (e) return; // Avoid `n.length` undefined
-                log.info(`Inserted ${n?.length || 0}`)
+                log.info(`Inserted: ${n?.length || 0}`)
+
             }); // Save in local
             this.emit('replicated')
         })
