@@ -123,6 +123,16 @@ export default class AppMoviesPlayer extends React.Component {
         });
     }
 
+    _initPlaying = () => {
+        log.info('Playing movie');
+        //Handle ready
+        if (this.props.onCanPlay) {
+            this.props.onCanPlay(
+                this.state.url
+            );
+        }
+    }
+
     getPlayer(options = {}) {
         const playerSettings = {
             ...{
@@ -134,25 +144,9 @@ export default class AppMoviesPlayer extends React.Component {
 
         // Init player and wait until can play
         this.player = new Plyr(this.v.video, playerSettings)
-        this.v.video.addEventListener('canplay', () => {
-            log.info('Playing movie');
-            //Handle ready
-            if (this.props.onCanPlay) {
-                this.props.onCanPlay(
-                    this.state.url
-                );
-            }
-        })
-
-        // On error
-        this.v.video.addEventListener('error', () =>
-            log.error(`Error while playing movie`)
-        )
-
-        //When player load
-        this.v.video.addEventListener('loadedmetadata', () =>
-            log.warn('Player metadata loaded')
-        );
+        this.v.video.addEventListener('canplay', this._initPlaying)
+        this.v.video.addEventListener('error', () => log.error(`Error while playing movie`))
+        this.v.video.addEventListener('loadedmetadata', () => log.warn('Player metadata loaded'));
     }
 
     startStreaming() {
@@ -187,11 +181,8 @@ export default class AppMoviesPlayer extends React.Component {
     // destroy player on unmount
     componentWillUnmount() {
         log.warn('STREAMING STOPPED BY USER');
+        if (this.v.video) this.v.video.removeEventListener('canplay', this._initPlaying);
         if (this.player) this.player.destroy();
-        if (this.v.video) {
-            this.v.video.removeEventListener('canplay');
-            this.v.video.remove();
-        }
         this.stopStreaming()
         dlna && dlna.stop();
     }
