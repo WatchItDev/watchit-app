@@ -187,8 +187,11 @@ export default class AppMoviesPlayer extends React.Component {
     // destroy player on unmount
     componentWillUnmount() {
         log.warn('STREAMING STOPPED BY USER');
-        if (this.player)
-            this.player.destroy()
+        if (this.player) this.player.destroy();
+        if (this.v.video) {
+            this.v.video.removeEventListener('canplay');
+            this.v.video.remove();
+        }
         this.stopStreaming()
         dlna && dlna.stop();
     }
