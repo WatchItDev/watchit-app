@@ -294,15 +294,15 @@ export default class MovieIndex extends React.Component {
             }
         }
 
-        //Set new state
-        //Reset limit
-        log.warn('RESET OFFSET AND ENABLED INFINITE SCROLL');
-        log.warn(`SORTING BY ${by.action}`)
-        this.setState({loading: true});
 
-        //Set cache filters
+        //Reset limit
+        log.warn(`Sorting by ${by.action}`)
         storageHelper.add(this.sort).to.mainNavFilters();
-        this.filterMovies(this.sort, true);
+        this.setState({loading: true}, () => {
+            //Set cache filters
+            setImmediate(() => this.filterMovies(this.sort, true));
+        });
+
     }
 
     signOut = (event) => {

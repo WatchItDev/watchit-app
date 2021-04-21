@@ -36,9 +36,9 @@ export default class Movies extends Manager {
 
             // Find data in collection
             this.db.find(selectors)
+                .sort({[filters.sort_by]: sorted_desc})
                 .limit(filters.limit)
                 .skip(filters.skip)
-                .sort({[filters.sort_by]: sorted_desc})
                 .exec((e, r) => {
                     res(r)
                 })
