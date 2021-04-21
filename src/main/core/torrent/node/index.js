@@ -10,14 +10,15 @@ const readTorrent = require('read-torrent');
 const parseTorrent = require('parse-torrent');
 const log = require('logplease').create('TORRENT')
 const webtorrentHealth = require('webtorrent-health')
-const {ROOT_TMP_FOLDER} = require(`../../settings/`)
 
-const TORRENT_FILE_READ_TIMEOUT = 30 * 1000
+const {ROOT_TMP_FOLDER} = require(`../../settings/`)
+const {calcChunkPercent, selectBiggestFile} = require('../helper')
+
 const {
     MIN_SIZE_LOADED,
-    MIN_PERCENTAGE_LOADED,
     TORRENT_TRACKERS,
-    MAX_NUM_CONNECTIONS
+    MAX_NUM_CONNECTIONS,
+    TORRENT_FILE_READ_TIMEOUT
 } = require(`../settings`);
 
 module.exports = class TorrentStreamer extends EventEmitter {
@@ -33,6 +34,12 @@ module.exports = class TorrentStreamer extends EventEmitter {
         return 'TorrentStreaming'
     }
 
+    clear() {
+        this.loadedTimeout && clearTimeout(
+            this.loadedTimeout
+        );
+    }
+
     stop(cb) {
         /**Stop torrent streaming
          * @param {function} callback
@@ -40,7 +47,7 @@ module.exports = class TorrentStreamer extends EventEmitter {
         //Loading timeout stop
         if (this.loadedTimeout) {
             log.warn('Removed stream timeout');
-            clearTimeout(this.loadedTimeout)
+            this.clear() // Remove any timeout
         }
 
         //If flix
@@ -69,17 +76,14 @@ module.exports = class TorrentStreamer extends EventEmitter {
         const total = flix.fileSize;
         const swarm = flix.swarm;
         const downloaded = swarm.downloaded;
+        const cache = swarm.cachedDownload;
         let state = 'Connecting';
 
         // There's a minimum size before we start playing the video.
         if (this.stopped) return; // Avoid keep loading timeout
-        const targetLoadedSize = MIN_SIZE_LOADED > total ? total : MIN_SIZE_LOADED;
-        const targetLoadedPercent = MIN_PERCENTAGE_LOADED * total / 100.0;
-        const targetLoaded = Math.max(targetLoadedPercent, targetLoadedSize);
-        const percent = (downloaded / targetLoaded * 100.0).toFixed(0);
-
-        if ((downloaded > MIN_SIZE_LOADED || swarm.cachedDownload > MIN_SIZE_LOADED)
-        ) {
+        if ((downloaded > MIN_SIZE_LOADED || cache > MIN_SIZE_LOADED)) {
+            log.info('Streaming ready to show')
+            this.clear(); // Clear timeout
             this.emit('ready', flix.href, this.mime, flix);
             this.emit('start', {});
         } else {
@@ -89,7 +93,9 @@ module.exports = class TorrentStreamer extends EventEmitter {
                 state = 'Starting Download';
             }
 
+            const percent = calcChunkPercent(downloaded, total)
             this.emit('progress', flix, percent, state);
+            this.clear() // Clean old timeout before create a new one
             this.loadedTimeout = setTimeout(() => {
                 this.checkLoadingProgress(flix)
             }, 500);
@@ -163,9 +169,10 @@ module.exports = class TorrentStreamer extends EventEmitter {
             //Server listening
             this.flix.server.on('listening', () => {
                 if (this.flix) {
-                    let selectedFile = this.flix.torrent.files.reduce((biggest, file) => {
-                        return biggest.length > file.length ? biggest : file;
-                    });
+                    // Find the biggest file = movie
+                    let selectedFile = selectBiggestFile(
+                        this.flix.torrent.files
+                    )
 
                     //Additional attributes
                     this.flix.hash = tmpFilename;
@@ -174,7 +181,6 @@ module.exports = class TorrentStreamer extends EventEmitter {
                     this.flix.href = 'http://127.0.0.1:' + this.flix.server.address().port + '/';
 
                     //Clear old timeout
-                    this.loadedTimeout && clearTimeout(this.loadedTimeout);
                     this.checkLoadingProgress(this.flix);
                 }
             });
