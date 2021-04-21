@@ -17,4 +17,14 @@ webIPC.on('party', () => {
     webIPC.emit('party-success')
 })
 
+webIPC.on('store-flush', (self, db) => {
+    console.error('flushing db')
+    db.remove({}, {multi: true}, (err, numRemoved) => {
+        // Remove data from local db
+        console.log(err);
+        console.log(numRemoved);
+    });
+})
+
 module.exports = webIPC
+/// zdpuAqmb6oqfa7XCCfaohMCq3arQqJhMn5ffzKhp4t65BGHQx

@@ -52,9 +52,8 @@ module.exports = class Broker extends EventEmitter {
         /**
          * Kill all this shit XD
          * */
-        this.renderer.send(
-            'node-flush'
-        );
+        this.renderer.send('node-flush');
+        this.renderer.send('store-flush', this.db);
     }
 
     getIPC() {
