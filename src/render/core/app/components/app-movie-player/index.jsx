@@ -9,7 +9,7 @@ import gatewayHelper from "helpers/gateway";
 import resourceHelper from "helpers/streaming";
 import log from 'logger'
 
-const cast = window.bridge.DLNA
+const dlna = window.bridge.DLNA
 
 const DEFAULT_PLAYER_CONTROLS = [
     'play-large', // The large play button in the center
@@ -47,8 +47,8 @@ export default class AppMoviesPlayer extends React.Component {
     }
 
     get players() {
-        if (this.invalidCastSource || !cast) return [];
-        return cast.players.map((d) => {
+        if (this.invalidDLNASource || !dlna) return [];
+        return dlna.players.map((d) => {
             return d.name
         })
     }
@@ -67,9 +67,9 @@ export default class AppMoviesPlayer extends React.Component {
     }
 
     onSelectDevice = (index) => {
-        if (!cast) return;
-        cast.setPlayer(index.action);
-        cast.play(this.props.movie.title, this.state.url);
+        if (!dlna) return;
+        dlna.setPlayer(index.action);
+        dlna.play(this.props.movie.title, this.state.url);
         this.player.pause();
     }
 
@@ -89,8 +89,8 @@ export default class AppMoviesPlayer extends React.Component {
 
 
     async componentDidMount() {
-        if (!this.invalidCastSource)
-            this.initCast();
+        if (!this.invalidDLNASource)
+            this.initDLNA();
 
         // window.addEventListener("keyup", (e) => {
         //     let keyCode = e.which || e.keyCode;
@@ -104,16 +104,16 @@ export default class AppMoviesPlayer extends React.Component {
 
     }
 
-    get invalidCastSource() {
-        // Check object type for streaming lib and avoid cast for invalid sources
+    get invalidDLNASource() {
+        // Check object type for streaming lib and avoid DLNA for invalid sources
         const blackListed = ['[object HLSStreaming]', '[object BrowserTorrentStreaming]']
         const currentStreamer = this.streamer.toString()
         return blackListed.some((el) => Object.is(currentStreamer, el))
     }
 
-    initCast() {
-        //Cast init
-        cast && cast.createServer(
+    initDLNA() {
+        //DLNA init
+        dlna && dlna.createServer(
             // Create asset server
         ).requestUpdate().on('status', (status) => {
             log.info('Status:' + status);
@@ -190,7 +190,7 @@ export default class AppMoviesPlayer extends React.Component {
         if (this.player)
             this.player.destroy()
         this.stopStreaming()
-        cast && cast.stop();
+        dlna && dlna.stop();
     }
 
     onReady = (url, ...rest) => {
