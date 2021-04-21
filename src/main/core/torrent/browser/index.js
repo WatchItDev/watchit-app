@@ -84,9 +84,7 @@ module.exports = class BrowserStreamer extends EventEmitter {
 
             this.flix = torrent
             this.flix.fileSize = selectedFile.length;
-            this.flix.href = ''
-            this.server = torrent.createServer()
-            this.server.listen()
+            // this.flix.href = selectedFile.
 
             torrent.on('download', (b) =>
                 this.checkLoadingProgress(torrent, b)

@@ -5,7 +5,7 @@ import ReactDOM from 'react-dom';
 import App from './core/app/index'
 
 import 'normalize.css'
-import './index.sass';
+import './index.web.sass';
 import 'plyr/dist/plyr.css';
 import * as serviceWorker from './serviceWorker';
 
