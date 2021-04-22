@@ -9,6 +9,11 @@ module.exports = {
             return biggest.length > file.length ? biggest : file;
         });
     },
+    requiresTranscoding: (file) => {
+        return ['.mp4', '.webm'].every((ext) =>
+            ! file.name.toLowerCase().endsWith(ext)
+        );
+    },
     calcChunkPercent: (downloaded, total) => {
         const targetLoadedSize = MIN_SIZE_LOADED > total ? total : MIN_SIZE_LOADED;
         const targetLoadedPercent = MIN_PERCENTAGE_LOADED * total / 100.0;
