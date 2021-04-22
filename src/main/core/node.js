@@ -71,6 +71,18 @@ module.exports = class Node extends EventEmitter {
         return [validCache, cache]
     }
 
+    // async waitForPeers() {
+    //     // If not peers available recursive call until peers available
+    //     const currentPeers = await this.node?.swarm.peers()
+    //     if (!currentPeers.length) {
+    //         log.warn('Waiting for peers')
+    //         return await this.waitForPeers()
+    //     }
+    //
+    //     log.info('Peers connected:', currentPeers.length)
+    //     return Promise.resolve()
+    // }
+
     async resolveKey(ipns) {
         /**
          * Resolve ipns key if needed
@@ -81,6 +93,7 @@ module.exports = class Node extends EventEmitter {
         if (~ipns.indexOf('zd')) return ipns
 
         try {
+            // await this.waitForPeers();
             this.emit('node-step', 'Resolving')
             const cid = await last(this.node.name.resolve(ipns))
             const cleanedCID = cid.split('/').pop()
