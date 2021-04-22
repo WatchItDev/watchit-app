@@ -13,7 +13,7 @@ export default class AppLoaderBackground extends React.Component {
 		return (
 			<div className="particles_container">
 				{/*<Particles width="100%" height="100%" params={config}/>*/}
-				<Logo />
+				<Logo /> {/* Loading logo for main page */}
 				<span className="slogan">open movies everywhere</span>
 			</div>
 		)

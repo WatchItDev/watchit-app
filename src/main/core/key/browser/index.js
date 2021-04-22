@@ -5,7 +5,7 @@ module.exports = class BrowserKey {
     }
 
     static get engine() {
-        return 'level-js'
+        return require('level-js')
     }
 
     static get init() {

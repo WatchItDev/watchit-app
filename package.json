@@ -1,7 +1,7 @@
 {
   "name": "watchit",
   "author": "ZorrillosDev",
-  "version": "0.1.0-beta.7",
+  "version": "0.1.0-beta.8",
   "private": true,
   "main": "./src/main/index.js",
   "description": "Open movies everywhere",
@@ -15,9 +15,16 @@
   "engines": {
     "node": ">=14"
   },
+  "peerDependencies": {
+    "windows-elevate": "^1.0.1",
+    "webtorrent": "0.116.1",
+    "level-js": "6.0.0",
+    "ipfs": "0.52.1",
+    "wrtc": "0.4.7",
+    "go-ipfs": "^0.6.0"
+  },
   "dependencies": {
     "dlnacasts2": "^0.2.0",
-    "electron-log": "^4.3.4",
     "electron-updater": "^4.3.8",
     "fs-extra": "^9.0.1",
     "go-ipfs": "^0.6.0",
@@ -33,6 +40,7 @@
     "jschardet": "^2.1.1",
     "leveldown": "^5.6.0",
     "linvodb3": "^3.26.0",
+    "logplease": "^1.2.15",
     "mime": "^2.4.6",
     "msgpack-lite": "^0.1.26",
     "orbit-db": "^0.26.0",
@@ -108,10 +116,12 @@
     }
   },
   "scripts": {
-    "start": "BROWSER=none node scripts/start.js",
+    "start": "BROWSER=none RUNTIME=electron node scripts/start.js",
     "build": "node scripts/build.js",
+    "start:web": "RUNTIME=web node scripts/start.js",
+    "build:web": "RUNTIME=web node scripts/build.js",
     "test": "node scripts/test.js  --watchAll=false -u",
-    "electron": "cross-env LOG=debug IPFS_FD_MAX=10000 ENV=development $(npm bin)/electron .",
+    "electron": "cross-env LOG=debug IPFS_FD_MAX=10000 NODE_ENV=development $(npm bin)/electron .",
     "lint": "eslint --ext js,jsx",
     "lint:fix": "npm run lint -s -- --fix src ",
     "package": "npm run build && electron-builder build",
@@ -121,7 +131,7 @@
     "publish:mac": "npm run package:mac -- --publish always",
     "publish:linux": "npm run package:linux -- --publish always",
     "publish:win": "npm run package:win -- --publish always",
-    "preinstall": "bash -c \"npm install electron-log && node scripts/preinstall.js\"",
+    "preinstall": "bash -c \"npm install logplease && node scripts/preinstall.js\"",
     "postinstall": "bash -c \"node scripts/postinstall.js && /usr/local/bin/node-prune\""
   },
   "eslintConfig": {
@@ -136,10 +146,6 @@
         }
       }
     ]
-  },
-  "peerDependencies": {
-    "windows-elevate": "^1.0.1",
-    "go-ipfs": "^0.6.0"
   },
   "husky": {
     "hooks": {
@@ -210,6 +216,7 @@
     "react-tooltip": "^4.2.6",
     "react-window": "^1.8.5",
     "react-window-infinite-loader": "^1.0.5",
+    "request": "^2.79.0",
     "resolve": "1.18.1",
     "resolve-url-loader": "^3.1.2",
     "sass-loader": "^10.0.5",

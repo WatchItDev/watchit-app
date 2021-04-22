@@ -5,12 +5,11 @@ import PropTypes from 'prop-types'
 import setting from 'render/core/settings'
 import AppMoviesPlayerShare from '../app-movie-player-share'
 import AppMoviesPlayerVideo from '../app-movie-player-video'
-import gatewayHelper from "render/core/resources/helpers/gateway";
-import resourceHelper from "render/core/resources/helpers/streaming";
+import gatewayHelper from "helpers/gateway";
+import resourceHelper from "helpers/streaming";
+import log from 'logger'
 
-const log = window.require("electron-log");
-const subs = window.bridge.Subs
-const cast = window.bridge.DLNA
+const dlna = window.bridge.DLNA
 
 const DEFAULT_PLAYER_CONTROLS = [
     'play-large', // The large play button in the center
@@ -33,8 +32,6 @@ const DEFAULT_PLAYER_CONTROLS = [
 export default class AppMoviesPlayer extends React.Component {
     constructor(props) {
         super(props);
-
-        this.subs = {};
         this.v = null;
 
         //Initial State
@@ -50,8 +47,8 @@ export default class AppMoviesPlayer extends React.Component {
     }
 
     get players() {
-        if (this.isHLSStreaming || !cast) return [];
-        return cast.players.map((d) => {
+        if (this.invalidDLNASource || !dlna) return [];
+        return dlna.players.map((d) => {
             return d.name
         })
     }
@@ -70,9 +67,9 @@ export default class AppMoviesPlayer extends React.Component {
     }
 
     onSelectDevice = (index) => {
-        if (!cast) return;
-        cast.setPlayer(index.action);
-        cast.play(this.props.movie.title, this.state.url);
+        if (!dlna) return;
+        dlna.setPlayer(index.action);
+        dlna.play(this.props.movie.title, this.state.url);
         this.player.pause();
     }
 
@@ -82,7 +79,7 @@ export default class AppMoviesPlayer extends React.Component {
     }
 
     get currentSub() {
-        return this.subs[this.currentLang]
+        return this.props.subs[this.currentLang]
     }
 
     get srtSub() {
@@ -90,62 +87,33 @@ export default class AppMoviesPlayer extends React.Component {
             this.currentSub.replace('.vtt', '.srt')
     }
 
-    * interCues(video) {
-        for (const track of video.textTracks) {
-            if (track.label === this.currentLang) {
-                for (const cue of track.cues)
-                    yield cue
-                break;
-            }
-        }
-    }
-
-
-    addOffset(offset) {
-        if (!this.currentSub || !this.v) return;
-        subs.reSync(this.srtSub, offset * 1000).then(() => {
-            for (const cue of this.interCues(this.v.video)) {
-                cue.startTime += offset || 0.5;
-                cue.endTime += offset || 0.5;
-            }
-        })
-    }
-
-    removeOffset(offset) {
-        if (!this.currentSub || !this.v) return;
-        subs.reSync(this.srtSub, (offset * -1) * 1000).then(() => {
-            for (const cue of this.interCues(this.v.video)) {
-                cue.startTime -= offset || 0.5;
-                cue.endTime -= offset || 0.5;
-            }
-        })
-    }
-
 
     async componentDidMount() {
-        if (!this.isHLSStreaming)
-            this.initCast();
+        if (!this.invalidDLNASource)
+            this.initDLNA();
 
-        window.addEventListener("keyup", (e) => {
-            let keyCode = e.which || e.keyCode;
-            if (Object.is(keyCode, 71)) this.addOffset(0.5); //G
-            if (Object.is(keyCode, 72)) this.removeOffset(0.5); //H
-            //if (Object.is(keyCode, 83)) this.syncSubs();
-        });
+        // window.addEventListener("keyup", (e) => {
+        //     let keyCode = e.which || e.keyCode;
+        //     if (Object.is(keyCode, 71)) this.addOffset(0.5); //G
+        //     if (Object.is(keyCode, 72)) this.removeOffset(0.5); //H
+        //     // if (Object.is(keyCode, 83)) this.syncSubs();
+        // });
 
         // Lets run
         this.startStreaming();
 
     }
 
-    get isHLSStreaming() {
-        // Check object type for streaming lib
-        return Object.is(this.streamer.toString(), '[object HLSStreaming]')
+    get invalidDLNASource() {
+        // Check object type for streaming lib and avoid DLNA for invalid sources
+        const blackListed = ['[object HLSStreaming]', '[object BrowserTorrentStreaming]']
+        const currentStreamer = this.streamer.toString()
+        return blackListed.some((el) => Object.is(currentStreamer, el))
     }
 
-    initCast() {
-        //Cast init
-        cast && cast.createServer(
+    initDLNA() {
+        //DLNA init
+        dlna && dlna.createServer(
             // Create asset server
         ).requestUpdate().on('status', (status) => {
             log.info('Status:' + status);
@@ -153,6 +121,16 @@ export default class AppMoviesPlayer extends React.Component {
             log.warn(`New device ${device}`);
             this.setState({devices: this.players})
         });
+    }
+
+    _initPlaying = () => {
+        log.info('Playing movie');
+        //Handle ready
+        if (this.props.onCanPlay) {
+            this.props.onCanPlay(
+                this.state.url
+            );
+        }
     }
 
     getPlayer(options = {}) {
@@ -166,25 +144,9 @@ export default class AppMoviesPlayer extends React.Component {
 
         // Init player and wait until can play
         this.player = new Plyr(this.v.video, playerSettings)
-        this.v.video.addEventListener('canplay', () => {
-            log.info('Playing movie');
-            //Handle ready
-            if (this.props.onCanPlay) {
-                this.props.onCanPlay(
-                    this.state.url
-                );
-            }
-        })
-
-        // On error
-        this.v.video.addEventListener('error', () =>
-            log.error(`Error while playing movie`)
-        )
-
-        //When player load
-        this.v.video.addEventListener('loadedmetadata', () =>
-            log.warn('Player metadata loaded')
-        );
+        this.v.video.addEventListener('canplay', this._initPlaying)
+        this.v.video.addEventListener('error', () => log.error(`Error while playing movie`))
+        this.v.video.addEventListener('loadedmetadata', () => log.warn('Player metadata loaded'));
     }
 
     startStreaming() {
@@ -219,10 +181,10 @@ export default class AppMoviesPlayer extends React.Component {
     // destroy player on unmount
     componentWillUnmount() {
         log.warn('STREAMING STOPPED BY USER');
-        if (this.player)
-            this.player.destroy()
+        if (this.v.video) this.v.video.removeEventListener('canplay', this._initPlaying);
+        if (this.player) this.player.destroy();
         this.stopStreaming()
-        cast && cast.stop();
+        dlna && dlna.stop();
     }
 
     onReady = (url, ...rest) => {

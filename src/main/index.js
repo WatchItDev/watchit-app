@@ -2,7 +2,7 @@ require('v8-compile-cache')
 const fs = require('fs');
 const path = require('path');
 const mime = require('mime');
-const log = require('electron-log');
+const log = require('logplease').create('MAIN');
 
 const {mainMenu} = require('./helpers/menu')
 const {fadeWindowOut, fadeWindowIn} = require('./helpers/screen')
@@ -15,7 +15,7 @@ const {
 
 const ROOT_APP = process.cwd();
 const ROOT_STORE = app.getPath('appData');
-const ENV = process.env.ENV || 'prod';
+const ENV = process.env.NODE_ENV || 'production';
 const inDev = Object.is(ENV, 'development');
 let win, isDarwin = Object.is(process.platform, 'darwin'),
     appIcon = path.join(ROOT_APP, '/src/render/media/icons/icon.png'),
@@ -152,7 +152,6 @@ const registerMiddleware = () => {
  *******************/
 //Auto update setup
 autoUpdater.logger = log;
-autoUpdater.logger.transports.file.level = 'info';
 autoUpdater.autoDownload = false
 autoUpdater.on('update-available', async () => {
     log.info('New Update');

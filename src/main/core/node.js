@@ -1,5 +1,4 @@
 const {CID} = require('ipfs-http-client')
-const log = require('electron-log')
 const EventEmitter = require('events')
 const OrbitDB = require('orbit-db');
 const last = require('it-last')
@@ -7,6 +6,8 @@ const last = require('it-last')
 const provider = require('./provs')
 const ipfs = require('./ipfs')
 const key = require('./key');
+const log = require('logplease')
+    .create('NODE')
 
 const MAX_RETRIES = 10;
 const DEFAULT_HOLD = 10 * 1000
@@ -70,6 +71,18 @@ module.exports = class Node extends EventEmitter {
         return [validCache, cache]
     }
 
+    // async waitForPeers() {
+    //     // If not peers available recursive call until peers available
+    //     const currentPeers = await this.node?.swarm.peers()
+    //     if (!currentPeers.length) {
+    //         log.warn('Waiting for peers')
+    //         return await this.waitForPeers()
+    //     }
+    //
+    //     log.info('Peers connected:', currentPeers.length)
+    //     return Promise.resolve()
+    // }
+
     async resolveKey(ipns) {
         /**
          * Resolve ipns key if needed
@@ -80,6 +93,7 @@ module.exports = class Node extends EventEmitter {
         if (~ipns.indexOf('zd')) return ipns
 
         try {
+            // await this.waitForPeers();
             this.emit('node-step', 'Resolving')
             const cid = await last(this.node.name.resolve(ipns))
             const cleanedCID = cid.split('/').pop()
@@ -231,7 +245,7 @@ module.exports = class Node extends EventEmitter {
             if (this.node) {
                 log.warn('Killing Nodes');
                 await this.node.stop().catch(
-                    err => log.error(err.message)
+                    () => log.error('Fail trying to stop node')
                 );
             }
             log.info('System closed');

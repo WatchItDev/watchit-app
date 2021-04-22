@@ -2,15 +2,18 @@
  * IPFS movies interface
  */
 
-const log = require('electron-log')
+const log = require('logplease').create('CORE')
 const Node = require('./node')
 const Ingest = require('./ingest')
 
-const {ROOT_ORBIT_DIR} = require('./settings')
+module.exports = (ipcMain, runtime = 'node') => {
+    let nodeParams = {}
+    if (runtime !== 'web') {
+        const {ROOT_ORBIT_DIR} = require('./settings')
+        nodeParams = {rootPath: ROOT_ORBIT_DIR}
+    }
 
-module.exports = (ipcMain) => {
-
-    const orbit = new Node({rootPath: ROOT_ORBIT_DIR});
+    const orbit = new Node(nodeParams);
     const ingest = new Ingest(orbit);
 
     const initEvents = (e) => {
@@ -65,7 +68,7 @@ module.exports = (ipcMain) => {
         initEvents(e)
         log.info('Starting seed');
         orbit.setInSeedMode(true);
-        await orbit.start(e)
+        await orbit.start()
     });
 
 

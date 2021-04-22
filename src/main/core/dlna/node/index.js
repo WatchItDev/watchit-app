@@ -1,6 +1,6 @@
 const ip = require('ip');
 const server = require(`./server.js`)
-const log = require('electron-log')
+const log = require('logplease').create('DNLA')
 const EventEmitter = require('events')
 
 const DLNA_MAX_RETRIES = 10

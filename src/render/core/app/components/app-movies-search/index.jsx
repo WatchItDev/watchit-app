@@ -1,7 +1,7 @@
 import React from 'react'
 import AppMainTopInput from 'components/app-movies-top-inputs'
 import AppSearch from 'components/app-movies-top-search-result'
-import utilHelper from "render/core/resources/helpers/util";
+import utilHelper from "helpers/util";
 import PropTypes from "prop-types";
 
 

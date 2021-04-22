@@ -1,9 +1,13 @@
-const log = require('electron-log')
-
+const log = require('logplease').create('PROVIDERS')
 
 module.exports = class Providers {
 
     static async connect(node, multiAddressList) {
+        /**
+         * Dial peers and from provided list
+         * @param {object} node IPFS
+         * @param {array} multiAddressList
+         */
         for (const m of multiAddressList) {
             try {
                 await node.swarm.connect(m, {timeout: 1000})

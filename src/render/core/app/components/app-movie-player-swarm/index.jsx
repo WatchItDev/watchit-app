@@ -66,7 +66,7 @@ export default class AppMoviesPlayerSwarm extends React.PureComponent {
                                     "orange-text" : "green-text"
                             }>
                             {(this.state.dLoaded > this.state.fSize
-                                && 0.00) || this.state.dSpeed} kb/s
+                                && 0.00) || this.state.dSpeed} KB/S
                         </span>
                     </li>
                     <li className="white-text">
@@ -75,21 +75,15 @@ export default class AppMoviesPlayerSwarm extends React.PureComponent {
                             "red-text" : this.state.uSpeed < 100 && this.state.uSpeed > 50 ?
                                 "orange-text" : "green-text"
                         }>
-                            {this.state.uSpeed} kb/s
+                            {this.state.uSpeed} KB/S
                         </span>
                     </li>
 
                     <li className="white-text">
-                        <span className="bold">File Size: </span>
-                        <span>{this.state.fSize} mb</span>
-                    </li>
-
-                    <li className="white-text">
-                        <span className="bold">Downloaded: </span>
-                        <span>
-                            {(this.state.dLoaded > this.state.fSize
-                                && this.state.fSize) || this.state.dLoaded}mb
-                        </span>
+                        <span className="bold">Progress: </span>
+                        <strong>{this.state.dLoaded > this.state.fSize ? this.state.fSize : this.state.dLoaded}MB</strong>
+                        <span> of </span>
+                        <strong>{this.state.fSize} MB</strong>
                     </li>
                 </ul>
             )

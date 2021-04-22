@@ -1,11 +1,7 @@
-const log = require('electron-log')
 const orbit = require('orbit-db')
-const isBrowser = typeof process === 'undefined'
-log.warn(`Running Key ${isBrowser ? 'Browser' : 'Node'} env`)
-
 const ParentKey = require(
     // Handle multiple envs for browser or node package
-    isBrowser && './browser' || './node'
+    typeof process === 'undefined' ? './browser' : './node'
 )
 
 module.exports = class Key extends ParentKey {

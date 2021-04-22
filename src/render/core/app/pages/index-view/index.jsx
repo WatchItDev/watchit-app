@@ -1,18 +1,19 @@
 import React from 'react'
 import AppMovies from 'layout/app-movies-list/'
 import AppMovieDetails from 'layout/app-movie-details/'
-import util from 'resource/helpers/util'
 import AppNav from 'components/app-movies-nav-bar/'
 import AppSearch from 'components/app-movies-search/'
 import AppLoader from 'components/app-movie-player-loader'
-import AppUpdater from 'components/app-movies-updater'
+// import AppUpdater from 'components/app-movies-updater'
 import StatsValue from "components/util-stats";
-import storageHelper from 'resource/helpers/storage';
 import BoxLoader from 'components/util-box-loader'
-import Movie from 'resource/data/movies'
+import Movie from 'resource/movies'
+
+import storageHelper from 'helpers/storage';
+import util from 'helpers/util'
+import log from 'logger'
 
 // Access to main process bridge prop
-const log = window.require("electron-log");
 const key = window.bridge.Key
 const broker = window.bridge.Broker
 const DEFAULT_INIT_LOAD = 100;
@@ -145,7 +146,7 @@ export default class MovieIndex extends React.Component {
 
     chaos = () => {
         // Wait for redirect to app login
-        setTimeout(() => window.location.href = '#/', 500)
+        setImmediate(() => window.location.href = '#/')
     }
 
     runIngest() {
@@ -154,7 +155,7 @@ export default class MovieIndex extends React.Component {
             this.setState({state: state})
         }).on('start', async () => {
             log.info('STARTING');
-            if (!this.loaded) localStorage.clear();
+            // if (!this.loaded) localStorage.clear();
 
         }).on('ready', () => {
             //Start filtering set cache synced movies
@@ -293,15 +294,15 @@ export default class MovieIndex extends React.Component {
             }
         }
 
-        //Set new state
-        //Reset limit
-        log.warn('RESET OFFSET AND ENABLED INFINITE SCROLL');
-        log.warn(`SORTING BY ${by.action}`)
-        this.setState({loading: true});
 
-        //Set cache filters
+        //Reset limit
+        log.warn(`Sorting by ${by.action}`)
         storageHelper.add(this.sort).to.mainNavFilters();
-        this.filterMovies(this.sort, true);
+        this.setState({loading: true}, () => {
+            //Set cache filters
+            setImmediate(() => this.filterMovies(this.sort, true));
+        });
+
     }
 
     signOut = (event) => {
@@ -328,7 +329,7 @@ export default class MovieIndex extends React.Component {
 
                 {
                     /* Happy hunt */
-                    <AppUpdater/>
+                    // <AppUpdater/>
                 }
 
                 {

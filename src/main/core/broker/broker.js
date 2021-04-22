@@ -1,22 +1,26 @@
-const Key = require('./key');
+const Key = require('../key');
 const EventEmitter = require('events')
-const ipcRenderer = require('electron').ipcRenderer;
+const logplease = require('logplease')
+const log = logplease.create('BROKER', {color: logplease.Colors.Yellow})
+
+const Engine = Key.engine
 const LinvoDB = require("linvodb3");
-const log = require('electron-log')
 LinvoDB.dbPath = Key.init.db
-LinvoDB.defaults.store = {db: require(Key.engine)};
+LinvoDB.defaults.store = {db: Engine};
 LinvoDB.defaults.autoIndexing = false
+log.info(`Using ${Engine.name}`)
 
 // ipcRender listeners
 const DB = 'wt'
-const MOVIES_SCHEMA = {
-    _id: {type: String, index: true, unique: false},
-    title: {type: String, index: true},
-    year: {type: Number, index: true},
-    runtime: {type: Number, index: true},
-    genres: {type: [String], index: true},
-    date_uploaded_unix: {type: Number, index: true}
-}
+// const MOVIES_SCHEMA = {
+//     _id: {type: String, index: true},
+//     title: {type: String, index: true},
+//     year: {type: Number, index: true},
+//     runtime: {type: Number, index: true},
+//     rating: {type: Number, index: true},
+//     genres: {type: Array, index: true},
+//     date_uploaded_unix: {type: Number, index: true}
+// }
 
 const IPC_LISTENERS = [
     'node-chaos',
@@ -30,17 +34,23 @@ const IPC_LISTENERS = [
 ]
 
 // Capture unhandled exceptions
-process.on('uncaughtException', () => {
-    console.log('UNCAUGHT EXCEPTION - keeping process alive');
-    // err.message is "foobar"
+process?.on('uncaughtException', () => {
+    log.warn('Uncaught Exception: keeping process alive');
 });
 
 module.exports = class Broker extends EventEmitter {
-    constructor() {
+    constructor(renderer) {
         super()
-        this.db = new LinvoDB(
-            DB, MOVIES_SCHEMA
-        )
+        this.renderer = renderer;
+        this.db = new LinvoDB(DB)//, MOVIES_SCHEMA, {})
+    }
+
+
+    _flushDB() {
+        // Flush indexes on logout and remove db entries
+        //Object.keys(MOVIES_SCHEMA).forEach((k) => this.db.removeIndex(k, () => log.info('Index removed', k)))
+        this.db.remove({}, {multi: true},
+            (err, numRemoved) => log.info('Flushed db entries: ', numRemoved));
     }
 
 
@@ -48,9 +58,13 @@ module.exports = class Broker extends EventEmitter {
         /**
          * Kill all this shit XD
          * */
-        ipcRenderer.send(
-            'node-flush'
-        );
+        this._flushDB();
+        this.renderer.send('node-flush');
+    }
+
+    getIPC() {
+        // Inter process handler
+        return this.renderer
     }
 
     stopIpcEvents(ipcListeners = []) {
@@ -58,9 +72,12 @@ module.exports = class Broker extends EventEmitter {
          * Clear ipc electron events to avoid
          * over declarative events
          */
-        (ipcListeners || IPC_LISTENERS).forEach((l) => {
+        const listeners = ipcListeners.length
+            ? ipcListeners : IPC_LISTENERS;
+
+        (listeners).forEach((l) => {
             log.info('Cleaning:', l);
-            ipcRenderer.removeAllListeners(l)
+            this.renderer.removeAllListeners(l)
         })
 
         return this;
@@ -71,7 +88,7 @@ module.exports = class Broker extends EventEmitter {
          * Run app as seed mode
          */
         log.info('Run Seed');
-        ipcRenderer.send('node-seed')
+        this.renderer.send('node-seed')
         return this;
     }
 
@@ -79,7 +96,7 @@ module.exports = class Broker extends EventEmitter {
         /***
          * Init signal to start node running
          */
-        ipcRenderer.send('node-start');
+        this.renderer.send('node-start');
         return this;
     }
 
@@ -88,7 +105,7 @@ module.exports = class Broker extends EventEmitter {
         /***
          * New peers interception and caching for stats
          */
-        ipcRenderer.on('node-peer', (e, p) => {
+        this.renderer.on('node-peer', (e, p) => {
             log.info('New peer', p);
             Key.addToStorage({'peers': p});
             this.emit('peer', p)
@@ -101,7 +118,7 @@ module.exports = class Broker extends EventEmitter {
         /***
          * Cannot connect or any invalid key provided
          */
-        ipcRenderer.on('node-chaos', (e, m) => {
+        this.renderer.on('node-chaos', (e, m) => {
             this.emit('chaos', m)
         })
     }
@@ -110,7 +127,7 @@ module.exports = class Broker extends EventEmitter {
         /***
          * Any error in node
          */
-        ipcRenderer.on('node-error', (e, m) => {
+        this.renderer.on('node-error', (e, m) => {
             this.emit('error', m)
         })
     }
@@ -120,7 +137,7 @@ module.exports = class Broker extends EventEmitter {
          * Trigger event before node get ready tu run
          * could be used to clear storage or data previous to run app
          */
-        ipcRenderer.on('node-ready', (e, c) => {
+        this.renderer.on('node-ready', (e, c) => {
             this.emit('start', c)
 
         })
@@ -131,7 +148,7 @@ module.exports = class Broker extends EventEmitter {
          * Trigger event when the node is ready to launch app
          * this event goes after ready event
          */
-        ipcRenderer.on('node-db-ready', (e, c) => {
+        this.renderer.on('node-db-ready', (e, c) => {
             this.emit('ready', c)
 
         })
@@ -141,7 +158,7 @@ module.exports = class Broker extends EventEmitter {
         /***
          * Trigger event when all db are synced
          */
-        ipcRenderer.on('node-db-loaded', (e, c) => {
+        this.renderer.on('node-db-loaded', (e, c) => {
             this.emit('done', c)
 
         })
@@ -151,9 +168,8 @@ module.exports = class Broker extends EventEmitter {
         /***
          * Replicate process event
          */
-        ipcRenderer.on('node-step', (e, step) => {
+        this.renderer.on('node-step', (e, step) => {
             this.emit('progress', step)
-
         })
     }
 
@@ -161,13 +177,15 @@ module.exports = class Broker extends EventEmitter {
         /***
          * Trigger event when new data its replicated
          */
-        ipcRenderer.on('node-replicated', async (e, collection) => {
+        this.renderer.on('node-replicated', async (e, collection) => {
             log.info('LOADING FROM NETWORK');
             log.info(collection[collection.length - 1]['_id']);
             log.info(collection[0]['_id']);
+
             this.db.insert(collection, (e, n) => {
                 if (e) return; // Avoid `n.length` undefined
-                log.info(`Inserted ${n?.length || 0}`)
+                log.info(`Inserted: ${n?.length || 0}`)
+
             }); // Save in local
             this.emit('replicated')
         })
@@ -179,6 +197,7 @@ module.exports = class Broker extends EventEmitter {
          * and serve as intermediary between render and main process
          */
         // Clean old listeners first
+        log.info('Broker ready')
         this.stopIpcEvents();
         this.emitStart();
         this.listenForPartyRock();

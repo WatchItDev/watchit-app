@@ -1,5 +1,5 @@
 const os = require('os');
-const log = require('electron-log')
+const log = require('logplease').create('EXEC')
 const osType = os.type().toLowerCase()
 const isWin = osType === 'windows_nt' || osType === 'win32'
 const isLinux = osType === 'linux'
@@ -7,6 +7,7 @@ const {exec} = require('child_process')
 
 const getElevatedExec = async () => {
     if (isWin) {
+        log.warn('Running window as admin')
         await execPassthru('npm i windows-elevate --no-save', exec)
         const winExec = require('windows-elevate').exec
         return (execCmd, callback) => {
