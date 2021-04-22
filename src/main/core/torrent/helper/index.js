@@ -10,8 +10,8 @@ module.exports = {
         });
     },
     requiresTranscoding: (file) => {
-        return ['.mkv', '.avi', '.wmv', '.flv'].some((ext) =>
-            file.name.toLowerCase().endsWith(ext)
+        return ['.mp4', '.webm'].every((ext) =>
+            ! file.name.toLowerCase().endsWith(ext)
         );
     },
     calcChunkPercent: (downloaded, total) => {
