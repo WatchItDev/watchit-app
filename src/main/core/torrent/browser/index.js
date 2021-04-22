@@ -12,11 +12,16 @@ const {
 
 // Trackers for web torrent
 const TORRENT_WEB_TRACKERS = [
-    'wss://tracker.openwebtorrent.com',
-    'wss://tracker.btorrent.xyz',
-    'wss://tracker.fastcast.nz',
-    'wss://tracker.webtorrent.io',
-    'wss://tracker.sloppyta.co'
+    ...TORRENT_TRACKERS,
+    ...[
+        'wss://tracker.openwebtorrent.com',
+        'wss://tracker.vps1.phillm.net:8000',
+        // 'wss://tracker.btorrent.xyz',
+        // 'wss://tracker.fastcast.nz',
+        // 'wss://tracker.webtorrent.io',
+        // 'wss://tracker.sloppyta.co',
+
+    ]
 ]
 
 
@@ -92,7 +97,12 @@ module.exports = class BrowserStreamer extends EventEmitter {
         });
 
         try {
-            this.client.on('error', (e) => log.error('WebTorrent client error:', e))
+
+            this.client.on('error', (e) => {
+                log.error('WebTorrent client error:', e)
+                this.emit('error', e)
+            })
+
             this.client.add(torrent, {
                 announce: TORRENT_WEB_TRACKERS
             }, (_torrent) => {
@@ -102,13 +112,8 @@ module.exports = class BrowserStreamer extends EventEmitter {
                 this.flix.fileSize = selectedFile.length;
 
                 log.info('Initializing torrent')
-                TORRENT_TRACKERS.forEach((t) => {
-                    log.info('Adding tracker', t)
-                    _torrent.addWebSeed(t)
-                })
-
                 selectedFile.renderTo(videoRef, {autoPlay: true})
-                _torrent.on('wire', (r) => log.info('WebTorrent peer connected:', r))
+                _torrent.on('wire', (_, r) => log.info('WebTorrent peer connected:', r))
                 _torrent.on('download', (b) => this.checkLoadingProgress(_torrent, b))
             })
         } catch (e) {
