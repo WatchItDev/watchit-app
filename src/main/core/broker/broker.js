@@ -46,20 +46,17 @@ module.exports = class Broker extends EventEmitter {
     }
 
 
-    _flushDB() {
-        // Flush indexes on logout and remove db entries
-        //Object.keys(MOVIES_SCHEMA).forEach((k) => this.db.removeIndex(k, () => log.info('Index removed', k)))
-        this.db.remove({}, {multi: true},
-            (err, numRemoved) => log.info('Flushed db entries: ', numRemoved));
-    }
-
-
     flush() {
         /**
          * Kill all this shit XD
          * */
-        this._flushDB();
-        this.renderer.send('node-flush');
+
+        this.db.remove({}, {multi: true},
+            (err, numRemoved) => {
+                if (err) log.error(err)
+                log.info('Flushed db entries: ', numRemoved)
+                this.renderer.send('node-flush');
+            });
     }
 
     getIPC() {
@@ -185,6 +182,7 @@ module.exports = class Broker extends EventEmitter {
             this.db.insert(collection, (e, n) => {
                 if (e) return; // Avoid `n.length` undefined
                 log.info(`Inserted: ${n?.length || 0}`)
+                log.info(`Total:`, this.db.getAllData().length)
 
             }); // Save in local
             this.emit('replicated')

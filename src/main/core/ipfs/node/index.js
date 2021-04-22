@@ -24,7 +24,6 @@ const forceKill = async (isInstance) => {
         await isInstance.start();
     } catch (e) {
         // Gateway stop
-        await forceKill(isInstance)
         throw new Error('Fail starting node')
     }
 

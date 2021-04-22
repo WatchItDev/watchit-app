@@ -208,6 +208,7 @@ module.exports = class Node extends EventEmitter {
                 res(this.node)
             } catch (e) {
                 log.error('Fail starting node')
+                log.info('Holding by:', this.holdby)
                 this.emit('node-error')
                 // Any other .. just retry
                 setTimeout(async () => {
