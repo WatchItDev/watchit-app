@@ -182,6 +182,7 @@ module.exports = class Broker extends EventEmitter {
             this.db.insert(collection, (e, n) => {
                 if (e) return; // Avoid `n.length` undefined
                 log.info(`Inserted: ${n?.length || 0}`)
+                log.info(`Total:`, this.db.getAllData().length)
 
             }); // Save in local
             this.emit('replicated')
