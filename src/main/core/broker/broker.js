@@ -53,6 +53,7 @@ module.exports = class Broker extends EventEmitter {
 
         this.db.remove({}, {multi: true},
             (err, numRemoved) => {
+                if (err) log.error(err)
                 log.info('Flushed db entries: ', numRemoved)
                 this.renderer.send('node-flush');
             });
