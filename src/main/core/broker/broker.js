@@ -50,7 +50,7 @@ module.exports = class Broker extends EventEmitter {
         /**
          * Kill all this shit XD
          * */
-
+        log.warn('Flushing app')
         this.db.remove({}, {multi: true},
             (err, numRemoved) => {
                 if (err) log.error(err)

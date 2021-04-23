@@ -31,6 +31,12 @@ module.exports = {
         'udp://tracker.cyberia.is:6969/announce',
         'udp://www.torrent.eu.org:451/announce',
         'udp://tracker.sktorrent.net:6969/announce',
-        'udp://tracker.eddie4.nl:6969/announce'
+        'udp://tracker.eddie4.nl:6969/announce',
+        'udp://open.demonii.com:1337/announce',
+        'udp://tracker.openbittorrent.com:80',
+        'udp://tracker.coppersurfer.tk:6969',
+        'udp://glotorrents.pw:6969/announce',
+        'udp://torrent.gresille.org:80/announce',
+        'udp://p4p.arenabg.com:1337'
     ]
 };
