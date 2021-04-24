@@ -60,16 +60,6 @@ const registerMiddleware = () => {
     if (cache && !('tmp' in cache)) {
         removeCacheDirs()
     }
-}, wipeTmpSubs = () => {
-    //Loop over files in dir
-    fs.readdir(ROOT_TMP_FOLDER, async (err, files) => {
-        if (!files || !files.length) return false;
-        for (const file of files) {
-            if (/(srt|vtt|zip)$/g.test(file)) {
-                await removeFiles(path.join(ROOT_TMP_FOLDER, file));
-            }
-        }
-    })
 }, initWindowing = (inDev) => {
     const indexUrl = inDev ? 'http://localhost:3000/splash.png'
         : 'file://' + path.join(__dirname, '../build/splash.png')
@@ -185,7 +175,6 @@ app.on('window-all-closed', () => {
 });
 
 app.on('before-quit', () => {
-    wipeTmpSubs();
     wipeInvalidSync();
 })
 

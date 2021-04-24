@@ -235,9 +235,13 @@ module.exports = class Node extends EventEmitter {
     async close(forceDrop = false) {
         try {
             if (this.orbit) {
+                // Closing store
                 log.warn('Killing Store');
                 await this.orbit.disconnect()
+                // Invalid cache or forceDrop db
                 if (!this.hasValidCache || forceDrop) {
+                    log.warn("Flushing sync db")
+                    await this.db.drop(); // Remove all
                     for (const k of ['total', 'limit'])
                         key.removeFromStorage(k)
                 }
