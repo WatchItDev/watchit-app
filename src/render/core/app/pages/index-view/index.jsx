@@ -4,7 +4,6 @@ import AppMovieDetails from 'layout/app-movie-details/'
 import AppNav from 'components/app-movies-nav-bar/'
 import AppSearch from 'components/app-movies-search/'
 import AppLoader from 'components/app-movie-player-loader'
-// import AppUpdater from 'components/app-movies-updater'
 import StatsValue from "components/util-stats";
 import BoxLoader from 'components/util-box-loader'
 import Movie from 'resource/movies'

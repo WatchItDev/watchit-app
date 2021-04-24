@@ -8,13 +8,10 @@ const webFrame = electron.webFrame;
 export default class AppMainUpdater extends React.PureComponent {
     constructor(props) {
         super(props);
-        this.nRef = null;
         this.mRef = null;
     }
 
     componentDidMount() {
-        // Clear old cache on render
-        // Restart listeners
         // Check for updates
         webFrame.clearCache();
         log.info('Requesting update');
@@ -22,7 +19,7 @@ export default class AppMainUpdater extends React.PureComponent {
         ipcRenderer.send('check_update'); // Check for update
         ipcRenderer.on('update_available', () => {
             this.mRef.innerText = 'A new update is available. The app it is being updated and will restart on completion...';
-            this.nRef.classList.remove('hidden');
+            this.mRef.classList.remove('hidden');
         });
 
     }
@@ -32,13 +29,8 @@ export default class AppMainUpdater extends React.PureComponent {
         this.mRef = r
     }
 
-    getNRef = (r) => {
-        this.nRef = r
-    }
 
     render() {
-        return <div id="notification" ref={this.getNRef} className="hidden">
-            <p ref={this.getMRef}>Checking updates..</p>
-        </div>
+        return <strong ref={this.getMRef} className={'white-text hidden bold'} />
     }
 }
