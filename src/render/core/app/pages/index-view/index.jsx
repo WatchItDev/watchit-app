@@ -146,6 +146,7 @@ export default class MovieIndex extends React.Component {
 
     chaos = () => {
         // Wait for redirect to app login
+        log.warn('Redirecting...')
         setImmediate(() => window.location.href = '#/')
     }
 
