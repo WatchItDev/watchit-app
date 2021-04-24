@@ -44,7 +44,7 @@ const forceKill = async (isInstance) => {
     if (alreadyLock) {
         log.warn('Releasing locked node')
         await removeFiles(repoLockDir)
-        return await forceKill(isInstance)
+        await forceKill(isInstance)
     }
 
     //If api file exists on node setup ipfs-daemon.js line:183 doest spawn process
