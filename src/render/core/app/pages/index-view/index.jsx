@@ -114,6 +114,7 @@ export default class MovieIndex extends React.Component {
             broker.removeAllListeners();
             broker.stopIpcEvents();
             broker.listenForNewPeer();
+            broker.listenForPartyRock();
             broker.startSeed()
             broker.on('chaos', this.chaos)
             // Start running node
