@@ -240,7 +240,7 @@ module.exports = class Node extends EventEmitter {
                 // Invalid cache or forceDrop db
                 if (!this.hasValidCache || forceDrop) {
                     log.warn("Flushing sync db")
-                    await this.db.drop(); // Remove all
+                    await this.db?.drop(); // Remove all
                     for (const k of ['total', 'limit'])
                         key.removeFromStorage(k)
                 }
