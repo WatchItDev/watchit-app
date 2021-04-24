@@ -168,7 +168,6 @@ module.exports = class Node extends EventEmitter {
         if (!raw) return false // Avoid move forward
         const address = this.sanitizeKey(raw)
         // Get orbit instance and next line connect providers
-        // Serve as provider too :)
         this.orbit = await this.instanceOB();
         this.emit('node-step', 'Connecting')
         await this.run(address, res);

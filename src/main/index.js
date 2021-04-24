@@ -178,10 +178,10 @@ app.on('before-quit', () => {
     wipeInvalidSync();
 })
 
-// app.on('ready', () => {
-//     if (!key.existKey)
-//         removeCacheDirs();
-// })
+app.on('ready', () => {
+    if (!key.existKey)
+        removeCacheDirs();
+})
 
 // Disable cors errors
 app.commandLine.appendSwitch('js-flags', '--max-old-space-size=512')
