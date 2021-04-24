@@ -48,17 +48,21 @@ export default class AppMoviesPlayerSwarm extends React.PureComponent {
             (
                 <ul>
                     <li className="white-text">
-                        <span className="bold">Peers: </span>
+                        <span className="bold">
+                            <i className={'icon-classic-computer margin-right-5'} />
+                        </span>
                         <span className={
                             this.state.aPeers <= 10 ?
                                 "red-text" : this.state.aPeers < 15 && this.state.aPeers > 10 ?
                                 "orange-text" : "green-text"
                         }>
-                            {this.state.aPeers}
+                            {this.state.aPeers} peers
                         </span>
                     </li>
                     <li className="white-text">
-                        <span className="bold">D/Speed: </span>
+                        <span className="bold">
+                            <i className={'icon-arrow-bold-down margin-right-5'} />
+                        </span>
                         <span
                             className={
                                 parseInt(this.state.dSpeed) <= 100 || this.state.dLoaded > this.state.fSize ?
@@ -66,21 +70,25 @@ export default class AppMoviesPlayerSwarm extends React.PureComponent {
                                     "orange-text" : "green-text"
                             }>
                             {(this.state.dLoaded > this.state.fSize
-                                && 0.00) || this.state.dSpeed} KB/S
+                                && 0.00) || this.state.dSpeed} kb/s
                         </span>
                     </li>
                     <li className="white-text">
-                        <span className="bold">U/Speed: </span>
+                        <span className="bold">
+                            <i className={'icon-arrow-bold-up margin-right-5'} />
+                        </span>
                         <span className={this.state.uSpeed <= 50 ?
                             "red-text" : this.state.uSpeed < 100 && this.state.uSpeed > 50 ?
                                 "orange-text" : "green-text"
                         }>
-                            {this.state.uSpeed} KB/S
+                            {this.state.uSpeed} kb/s
                         </span>
                     </li>
 
                     <li className="white-text">
-                        <span className="bold">Progress: </span>
+                        <span className="bold">
+                            <i className={'icon-download margin-right-5'} />
+                        </span>
                         <strong>{this.state.dLoaded > this.state.fSize ? this.state.fSize : this.state.dLoaded}MB</strong>
                         <span> of </span>
                         <strong>{this.state.fSize} MB</strong>

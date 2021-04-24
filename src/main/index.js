@@ -221,8 +221,7 @@ app.whenReady().then(() => {
 
     ipcMain.on('close', async () => app.quit())
     ipcMain.on('party', async () => {
-        if (key.existKey)
-            await removeFiles(key.keyFile)
+        if (key.existKey) await removeFiles(key.keyFile)
         ipcMain.emit('party-success') // Just after key being removed
         removeCacheDirs(); // Clean old data dir
     })
