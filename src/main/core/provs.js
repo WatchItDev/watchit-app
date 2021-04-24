@@ -27,7 +27,7 @@ module.exports = class Providers {
          */
 
         try {
-            for await (const cid of node.dht.findProvs(
+            for await (const cid of node?.dht?.findProvs(
                 key, {numProviders: 10}
             )) {
                 log.info('Connecting to:', cid.id)
