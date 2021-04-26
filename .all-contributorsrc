@@ -83,6 +83,17 @@
         "userTesting",
         "bug"
       ]
+    },
+    {
+      "login": "justicenode",
+      "name": "Ѵ∑1L",
+      "avatar_url": "https://avatars.githubusercontent.com/u/26402137?v=4",
+      "profile": "https://github.com/justicenode",
+      "contributions": [
+        "ideas",
+        "bug",
+        "userTesting"
+      ]
     }
   ],
   "contributorsPerLine": 7,
