@@ -108,7 +108,8 @@
         "tar.gz"
       ],
       "category": "Video",
-      "maintainer": "ZorrillosDev"
+      "maintainer": "ZorrillosDev",
+      "icon": "src/render/media/icons/icon.icns"
     },
     "directories": {
       "buildResources": "src/render/media/icons",
