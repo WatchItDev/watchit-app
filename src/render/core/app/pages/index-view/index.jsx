@@ -11,6 +11,7 @@ import Movie from 'resource/movies'
 import storageHelper from 'helpers/storage';
 import util from 'helpers/util'
 import log from 'logger'
+import InfoModal from "../../components/app-info-modal";
 
 // Access to main process bridge prop
 const key = window.bridge.Key
@@ -28,7 +29,7 @@ export default class MovieIndex extends React.Component {
             state: 'Initializing', percent: 0, peers: this.peers, count: DEFAULT_INIT_LOAD,
             ready: false, loading: true, movies: [], screen: this.getRecalculatedScreen(),
             lock: false, // Avoid re-render movies list
-            finishLoad: false, showDetailsFor: false, logout: false
+            finishLoad: false, showDetailsFor: false, logout: false, showInfoModal: false
         };
 
         //Max movies for initial request
@@ -316,6 +317,15 @@ export default class MovieIndex extends React.Component {
         })
     }
 
+    openInfoModal = (event) => {
+        console.log('hehe');
+        console.log(this.state.showInfoModal);
+        event.preventDefault();
+        this.setState({
+            showInfoModal: true
+        })
+    };
+
 
     render() {
         return (
@@ -356,6 +366,9 @@ export default class MovieIndex extends React.Component {
                                     <div className="top-right-small-menu">
                                         <strong className={'white-text right'}>
                                             <StatsValue handler={this._index}/>
+                                            <a onClick={this.openInfoModal} href={'/'} className="btn-action cursor-pointer">
+                                                <i className="icon-info-with-circle font-size-1-rem white-text"/>
+                                            </a>
                                             <a onClick={this.signOut} className="logout" href={'/'}>
                                                 <i className="icon-log-out font-size-1-rem white-text"/>
                                             </a>
@@ -387,6 +400,9 @@ export default class MovieIndex extends React.Component {
                         </section>
                     </div>
                 }
+
+                {/*Modal*/}
+                {this.state.showInfoModal && <InfoModal/>}
             </>
         )
     }

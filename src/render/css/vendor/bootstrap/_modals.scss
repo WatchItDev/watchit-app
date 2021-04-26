@@ -12,6 +12,13 @@
   overflow: hidden;
 }
 
+.modal-watchit{
+  top: 10vh;
+  background-color: var(--primary-color);
+  border: 5px solid rgba(var(--primary-color), .4);
+  --modal-display: 'block';
+}
+
 // Container that the modal scrolls within
 .modal {
   display: none;
