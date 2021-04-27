@@ -19,7 +19,13 @@ const forceKill = async (isInstance) => {
 }, initIpfsNode = async (isInstance) => {
     // Check if running time dir exists
     log.warn('Starting node');
-    await isInstance.init().catch(() => log.error('Fail initializing node'));
+    try {
+        // try initialize node
+        await isInstance.init();
+    } catch (e) {
+        log.error('Fail initializing node')
+    }
+
     return isInstance.start();
 }, startRunning = async () => {
     const isInstance = await Ctl.createController({
@@ -59,8 +65,9 @@ const forceKill = async (isInstance) => {
         await initIpfsNode(isInstance)
     } catch (e) {
         // Avoid throw default error
+        log.error('Fail on start setup node')
         await forceKill(isInstance)
-        throw new Error('Fail starting node');
+        return false;
     }
 
     const ipfsApi = isInstance?.api

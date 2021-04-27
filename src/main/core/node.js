@@ -9,18 +9,14 @@ const key = require('./key');
 const log = require('logplease')
     .create('NODE')
 
-const MAX_RETRIES = 10;
 const DEFAULT_HOLD = 10 * 1000
-
 
 module.exports = class Node extends EventEmitter {
     constructor({rootPath}) {
         super();
-        this.holdby = DEFAULT_HOLD
         this.rootPath = rootPath;
         this.seedMode = false;
         this.peers = [];
-        this.retry = 0;
         this.ready = false;
         this.closed = false;
         this.orbit = null;
@@ -197,30 +193,15 @@ module.exports = class Node extends EventEmitter {
          */
         return new Promise(async (res) => {
             // If fail to much.. get fuck out
-            if (this.retry > MAX_RETRIES && !this.hasValidCache) {
-                this.retry = 0; // Avoid remove if in seed mode
-                this.holdby *= 2; // Keep growing until daemon stop
-                if (!this.seedMode) // If not seed mode
-                    return await this.party('Aborting')
-            }
-
-            try {
-                log.info('Setting up node..');
-                this.holdby = DEFAULT_HOLD; // Restore holdby
-                this.node = this.node || await ipfs.start();
+            log.info('Setting up node..');
+            this.node = this.node || await ipfs.start();
+            if (this.node) return res(this.node)
+            this.emit('node-step', 'Waiting Network')
+            // Hold on while raise node
+            setTimeout(async () => {
+                this.node = await this.instanceNode();
                 res(this.node)
-            } catch (e) {
-                log.error('Fail starting node')
-                log.info('Holding by:', this.holdby / 1000, 's')
-                this.emit('node-error')
-                // Any other .. just retry
-                setTimeout(async () => {
-                    log.warn('Retrying ' + this.retry);
-                    this.node = null;
-                    this.retry++;
-                    res(await this.instanceNode())
-                }, this.holdby)
-            }
+            }, DEFAULT_HOLD)
         })
     }
 
