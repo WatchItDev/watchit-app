@@ -19,7 +19,7 @@ const forceKill = async (isInstance) => {
 }, initIpfsNode = async (isInstance) => {
     // Check if running time dir exists
     log.warn('Starting node');
-    await isInstance.init();
+    await isInstance.init().catch(() => log.error('Fail initializing node'));
     return isInstance.start();
 }, startRunning = async () => {
     const isInstance = await Ctl.createController({
