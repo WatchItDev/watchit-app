@@ -198,7 +198,6 @@ module.exports = class Node extends EventEmitter {
             this.node = this.node || await ipfs.start();
             if (this.node) return res(this.node)
             if(!this.seedMode) return await this.party('Aborting')
-            this.emit('node-step', 'Waiting Network')
             // Hold on while raise node
             setTimeout(async () => {
                 this.node = await this.instanceNode();

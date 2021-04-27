@@ -49,7 +49,7 @@ export default class AppMoviesPlayerSwarm extends React.PureComponent {
                 <ul>
                     <li className="white-text">
                         <span className="bold">
-                            <i className={'icon-classic-computer margin-right-5'} />
+                            <i className={'icon-network margin-right-5'}/>
                         </span>
                         <span className={
                             this.state.aPeers <= 10 ?
@@ -60,8 +60,8 @@ export default class AppMoviesPlayerSwarm extends React.PureComponent {
                         </span>
                     </li>
                     <li className="white-text">
-                        <span className="bold">
-                            <i className={'icon-arrow-bold-down margin-right-5'} />
+                         <span className="bold">
+                            <i className={'icon-arrow-bold-down margin-right-5'}/>
                         </span>
                         <span
                             className={
@@ -72,10 +72,9 @@ export default class AppMoviesPlayerSwarm extends React.PureComponent {
                             {(this.state.dLoaded > this.state.fSize
                                 && 0.00) || this.state.dSpeed} kb/s
                         </span>
-                    </li>
-                    <li className="white-text">
+                        <span className={'bold'}> / </span>
                         <span className="bold">
-                            <i className={'icon-arrow-bold-up margin-right-5'} />
+                            <i className={'icon-arrow-bold-up margin-right-5'}/>
                         </span>
                         <span className={this.state.uSpeed <= 50 ?
                             "red-text" : this.state.uSpeed < 100 && this.state.uSpeed > 50 ?
@@ -83,11 +82,13 @@ export default class AppMoviesPlayerSwarm extends React.PureComponent {
                         }>
                             {this.state.uSpeed} kb/s
                         </span>
+
+
                     </li>
 
                     <li className="white-text">
                         <span className="bold">
-                            <i className={'icon-download margin-right-5'} />
+                            <i className={'icon-download margin-right-5'}/>
                         </span>
                         <strong>{this.state.dLoaded > this.state.fSize ? this.state.fSize : this.state.dLoaded}MB</strong>
                         <span> of </span>

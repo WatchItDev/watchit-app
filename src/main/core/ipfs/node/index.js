@@ -55,6 +55,7 @@ const forceKill = async (isInstance) => {
     }
 
     try {
+        await initIpfsNode(isInstance)
         setTimeout(async () => {
             if (!isInstance.started) {
                 log.info('Forcing start..')
@@ -62,7 +63,6 @@ const forceKill = async (isInstance) => {
                 await initIpfsNode(isInstance)
             }
         }, RETRY_GRACE * 1000)
-        await initIpfsNode(isInstance)
     } catch (e) {
         // Avoid throw default error
         log.error('Fail on start setup node')
