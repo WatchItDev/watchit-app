@@ -128,10 +128,12 @@ module.exports = class Node extends EventEmitter {
             this.emit('node-peer', this.peers.length)
         });
 
-        log.info(`Ready in orbit ${key}`);
-        this.emit('node-step', 'Replicating')
-        this.emit('node-ready');
-        this.ready = true;
+        if (this.db) { // Check if db set
+            log.info(`Ready in orbit ${key}`);
+            this.emit('node-step', 'Replicating')
+            this.emit('node-ready');
+            this.ready = true;
+        }
 
         this.db?.events?.on('ready', () => this.emit('loaded'))
         this.db?.events?.on('replicated', (address, t) => {
