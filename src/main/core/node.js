@@ -194,8 +194,10 @@ module.exports = class Node extends EventEmitter {
         return new Promise(async (res) => {
             // If fail to much.. get fuck out
             log.info('Setting up node..');
+            this.emit('node-step', 'Bootstrapping')
             this.node = this.node || await ipfs.start();
             if (this.node) return res(this.node)
+            if(!this.seedMode) await this.party('Aborting')
             this.emit('node-step', 'Waiting Network')
             // Hold on while raise node
             setTimeout(async () => {
