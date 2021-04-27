@@ -2,7 +2,9 @@ require('v8-compile-cache')
 const fs = require('fs');
 const path = require('path');
 const mime = require('mime');
-const log = require('logplease').create('MAIN');
+// Logs settings
+const logger = require('logplease')
+const log = logger.create('MAIN');
 
 const {mainMenu} = require('./helpers/menu')
 const {fadeWindowOut, fadeWindowIn} = require('./helpers/screen')
@@ -21,9 +23,11 @@ let win, isDarwin = Object.is(process.platform, 'darwin'),
     appIcon = path.join(ROOT_APP, '/src/render/media/icons/icon.png'),
     appPath = inDev ? ROOT_APP : ROOT_STORE;
 
+// Setup logger
+logger.setLogfile(`${appPath}/debug.log`);
+logger.setLogLevel(logger.LogLevels.INFO)
 // Dont move appPath from this line
 process.env.appPath = appPath;
-const {ROOT_TMP_FOLDER} = require(`${__dirname}/core/settings/`);
 const {removeFiles} = require(`${__dirname}/core/utils`);
 const key = require(`${__dirname}/core/key`);
 const node = require(`${__dirname}/core`);

@@ -8,7 +8,7 @@ const log = require('logplease').create('IPFS')
 const {removeFiles} = require('../../utils');
 const {ROOT_IPFS_DIR} = require('../../settings')
 
-const RETRY_GRACE = 10
+const RETRY_GRACE = 5
 const resolveIpfsPaths = () => require('go-ipfs').path()
     .replace('app.asar', 'app.asar.unpacked')
 
@@ -17,18 +17,11 @@ const forceKill = async (isInstance) => {
     log.info('Forcing stop')
     return await isInstance.stop();
 }, initIpfsNode = async (isInstance) => {
-    try {
-        // Check if running time dir exists
-        log.warn('Starting node');
-        await isInstance.init();
-        await isInstance.start();
-    } catch (e) {
-        // Gateway stop
-        throw new Error('Fail starting node')
-    }
-
+    // Check if running time dir exists
+    log.warn('Starting node');
+    await isInstance.init();
+    return isInstance.start();
 }, startRunning = async () => {
-
     const isInstance = await Ctl.createController({
         ipfsOptions: {config: defaultConf(), repo: ROOT_IPFS_DIR},
         ipfsHttpModule: require('ipfs-http-client'),
@@ -38,14 +31,14 @@ const forceKill = async (isInstance) => {
         remote: false, type: 'go'
     })
 
-    //If locked node try to release lock using API
-    const repoLockDir = `${ROOT_IPFS_DIR}/repo.lock`
-    const alreadyLock = fs.existsSync(repoLockDir)
-    if (alreadyLock) {
-        log.warn('Releasing locked node')
-        await removeFiles(repoLockDir)
-        await forceKill(isInstance)
-    }
+    // //If locked node try to release lock using API
+    // const repoLockDir = `${ROOT_IPFS_DIR}/repo.lock`
+    // const alreadyLock = fs.existsSync(repoLockDir)
+    // if (alreadyLock) {
+    //     log.warn('Releasing locked node')
+    //     await removeFiles(repoLockDir)
+    //     await forceKill(isInstance)
+    // }
 
     //If api file exists on node setup ipfs-daemon.js line:183 doest spawn process
     //Be sure this lock 'api' file doesnt exists before node boot..
@@ -55,16 +48,23 @@ const forceKill = async (isInstance) => {
         await removeFiles(apiLockFile)
     }
 
-    setTimeout(async () => {
-        if (!isInstance.started) {
-            await forceKill(isInstance) // Force init
-            await initIpfsNode(isInstance)
-        }
-    }, RETRY_GRACE * 1000)
+    try {
+        setTimeout(async () => {
+            if (!isInstance.started) {
+                log.info('Forcing start..')
+                await forceKill(isInstance) // Force init
+                await initIpfsNode(isInstance)
+            }
+        }, RETRY_GRACE * 1000)
+        await initIpfsNode(isInstance)
+    } catch (e) {
+        console.log(e);
+        // Avoid throw default error
+        await forceKill(isInstance)
+        throw new Error('Fail starting node');
+    }
 
-    await initIpfsNode(isInstance)
     const ipfsApi = isInstance?.api
-
     const id = await ipfsApi.id()
     log.info(`Started ${isInstance.started}`)
     log.info('Running ipfs id', id?.id)
