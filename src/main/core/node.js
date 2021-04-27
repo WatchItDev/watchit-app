@@ -115,7 +115,7 @@ module.exports = class Node extends EventEmitter {
         this.db = await this.open(key).catch(async (e) => {
             // If db cannot be opened then just kill
             log.error(`Error opening db ${key}`)
-            this.emit('node-step', 'Retrying')
+            // this.emit('node-step', 'Retrying')
             // this.ready = false;
             // await this.start() // Retrying
         });
@@ -197,7 +197,7 @@ module.exports = class Node extends EventEmitter {
             this.emit('node-step', 'Bootstrapping')
             this.node = this.node || await ipfs.start();
             if (this.node) return res(this.node)
-            if(!this.seedMode) await this.party('Aborting')
+            if(!this.seedMode) return await this.party('Aborting')
             this.emit('node-step', 'Waiting Network')
             // Hold on while raise node
             setTimeout(async () => {

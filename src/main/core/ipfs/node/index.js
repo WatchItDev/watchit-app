@@ -66,7 +66,6 @@ const forceKill = async (isInstance) => {
     } catch (e) {
         // Avoid throw default error
         log.error('Fail on start setup node')
-        await forceKill(isInstance)
         return false;
     }
 
