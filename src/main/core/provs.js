@@ -26,6 +26,11 @@ module.exports = class Providers {
          * @return {Promise<void>}
          */
 
+        // Avoid TypeError: Cannot read property 'Symbol(Symbol.asyncIterator)' of undefined
+        // Cannot read property 'dht' of nul
+        if (!node || !node.dht)
+            return false
+
         try {
             for await (const cid of node?.dht?.findProvs(
                 key, {numProviders: 10}
