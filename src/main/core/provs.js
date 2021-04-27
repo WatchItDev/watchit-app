@@ -41,7 +41,7 @@ module.exports = class Providers {
                 await Providers.connect(node, mAddr)
             }
         } catch (e) {
-            log.error(e)
+            log.error('Fail finding providers')
             // pass
         }
 
