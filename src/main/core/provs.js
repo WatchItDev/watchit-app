@@ -27,7 +27,7 @@ module.exports = class Providers {
          */
 
         // Avoid TypeError: Cannot read property 'Symbol(Symbol.asyncIterator)' of undefined
-        // Cannot read property 'dht' of nul
+        // Cannot read property 'dht' of null
         if (!node || !node.dht)
             return false
 
