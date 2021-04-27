@@ -23,9 +23,6 @@ let win, isDarwin = Object.is(process.platform, 'darwin'),
     appIcon = path.join(ROOT_APP, '/src/render/media/icons/icon.png'),
     appPath = inDev ? ROOT_APP : ROOT_STORE;
 
-// Setup logger
-logger.setLogfile(`${appPath}/debug.log`);
-logger.setLogLevel(logger.LogLevels.INFO)
 // Dont move appPath from this line
 process.env.appPath = appPath;
 const {removeFiles} = require(`${__dirname}/core/utils`);
