@@ -70,7 +70,7 @@ const forceKill = async (isInstance) => {
     }
 
     const ipfsApi = isInstance?.api
-    const id = await ipfsApi.id()
+    const id = ipfsApi.peerId
     log.info(`Started ${isInstance.started}`)
     log.info('Running ipfs id', id?.id)
 
