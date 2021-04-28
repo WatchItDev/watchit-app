@@ -32,7 +32,7 @@ const forceKill = async (isInstance) => {
         ipfsOptions: {config: defaultConf(), repo: ROOT_IPFS_DIR},
         ipfsHttpModule: require('ipfs-http-client'),
         ipfsBin: resolveIpfsPaths(), forceKill: true,
-        disposable: false, forceKillTimeout: 2000,
+        disposable: false, forceKillTimeout: 1000,
         args: ['--enable-pubsub-experiment'],
         remote: false, type: 'go'
     })
@@ -65,7 +65,8 @@ const forceKill = async (isInstance) => {
         }, RETRY_GRACE * 1000)
     } catch (e) {
         // Avoid throw default error
-        log.error('Fail on start setup node')
+        log.error('Fail on start cleanup node')
+        await IsInstance.cleanup();
         return false;
     }
 
