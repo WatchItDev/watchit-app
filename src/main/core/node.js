@@ -232,7 +232,7 @@ module.exports = class Node extends EventEmitter {
 
             if (this.node) {
                 log.warn('Killing Nodes');
-                await this.node.stop().catch(
+                await this.node.kill().catch(
                     () => log.error('Fail trying to stop node')
                 );
             }
