@@ -8,10 +8,9 @@ export default class BoxImage extends React.PureComponent {
 
     constructor(props) {
         super(props);
-        this.img = null
-        this.state = {
-            loaded: false
-        };
+        this.img = null;
+        this.state = {loaded: false};
+        this.handleImageLoaded = this.handleImageLoaded.bind(this);
     }
 
 
@@ -38,9 +37,15 @@ export default class BoxImage extends React.PureComponent {
     }
 
     handleImageLoaded = () => {
+        if (this.state.loaded) return;
         this.setState({loaded: true})
     }
 
+    componentDidMount() {
+        const img = this.img.current
+        if (img && img.complete)
+            this.handleImageLoaded();
+    }
 
     componentWillUnmount() {
         this.img.src = "" // Abort
@@ -49,13 +54,14 @@ export default class BoxImage extends React.PureComponent {
     handleImageError = () => {
         log.warn('Fail image request')
         log.warn('Retrying...')
-        this.setState({loaded: false})
-        this.forceUpdate()
-
+        this.setState({loaded: false}, () => {
+            this.forceUpdate()
+        })
     }
 
     getRef = (i) => {
         this.img = i
+
     }
 
     render() {
@@ -67,9 +73,8 @@ export default class BoxImage extends React.PureComponent {
                     this.props.preload &&
                     <PulseLoader style={this.props.pulseStyle}/>
                 }
-                <img alt={''} src={this.parseUriImage(this.props.src)}
-                     onLoad={this.handleImageLoaded} loading={"lazy"}
-                     onError={this.handleImageError} ref={this.getRef}
+                <img alt={''} src={this.parseUriImage(this.props.src)} onLoad={this.handleImageLoaded}
+                     loading={"lazy"} onError={this.handleImageError} ref={this.getRef}
                      className={(this.state.loaded || !this.props.preload) ?
                          "loaded-img responsive-img" : "locked-img invisible"
                      }
