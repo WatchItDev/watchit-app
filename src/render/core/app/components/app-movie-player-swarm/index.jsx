@@ -56,7 +56,7 @@ export default class AppMoviesPlayerSwarm extends React.PureComponent {
                                 "red-text" : this.state.aPeers < 15 && this.state.aPeers > 10 ?
                                 "orange-text" : "green-text"
                         }>
-                            {this.state.aPeers} peers
+                            {this.state.aPeers} {this.state.aPeers > 1 ? 'peers' : 'peer' }
                         </span>
                     </li>
                     <li className="white-text">
