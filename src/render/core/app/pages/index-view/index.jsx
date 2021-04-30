@@ -227,7 +227,7 @@ export default class MovieIndex extends React.Component {
             this.renderTimeout = setTimeout(() => {
                 this.filterMovies({...{start, to}, ...this.sort},
                     false, false, (state) => {
-                        log.info('Movies loaded');
+                        log.info('Infinite movies loaded');
                         resolve(state)
                     }
                 )
