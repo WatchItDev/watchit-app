@@ -195,6 +195,7 @@ export default class MovieIndex extends React.Component {
         //Get movies
         this.movie.filter(filter).then((movies) => {
             //Chunk and concat movies
+            log.warn('Movies filtered')
             let _chunk = chunks || this.state.screen.chunkSize;
             let _movies = this.moviesToRow(movies, _chunk);
 
