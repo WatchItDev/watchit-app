@@ -90,7 +90,7 @@ module.exports = class TorrentStreamer extends EventEmitter {
             if (downloaded || swarm.piecesGot > 0) {
                 state = 'Downloading';
             } else if (swarm.wires.length) {
-                state = 'Starting Download';
+                state = 'Starting';
             }
 
             const percent = calcChunkPercent(downloaded, total)
