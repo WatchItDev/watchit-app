@@ -196,7 +196,6 @@ app.on('ready', async () => {
         })
     }
 
-
 })
 
 // Disable cors errors
@@ -228,7 +227,7 @@ app.whenReady().then(() => {
     ipcMain.on('party', async () => {
         if (key.existKey) await removeFiles(key.keyFile)
         ipcMain.emit('party-success') // Just after key being removed
-        removeCacheDirs(); // Clean old data dir
+        // removeCacheDirs(); // Clean old data dir
     })
 
     ipcMain.on('focus', () => win.focus())

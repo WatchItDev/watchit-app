@@ -33,23 +33,25 @@ module.exports = class Broker extends EventEmitter {
     constructor(renderer) {
         super()
         this.renderer = renderer;
+        this.initStore();
 
     }
 
-    initDB() {
+    initStore() {
         /**
-         * Initialize db
+         * Singleton initialize db
          * @type {function(*=): void}
          */
         log.warn('Creating local db')
-        this.db = new LinvoDB(DB)//, MOVIES_SCHEMA, {})
+        if (this.db) return this.db;
+        this.db = new LinvoDB(DB)
     }
 
     flush() {
         /**
          * Kill all this shit XD
          * */
-        log.warn('Flushing app')
+
         this.db.remove({}, {multi: true},
             (err, numRemoved) => {
                 if (err) log.error(err)
@@ -168,7 +170,6 @@ module.exports = class Broker extends EventEmitter {
             log.info(collection[0]['_id']); // get id for ingested chunk
             const total = this.db.getAllData().length;
             const firstChunk = Object.is(total, 0);
-
             this.db.insert(collection, (e, n) => {
                 if (e) return; // Avoid `n.length` undefined
                 if (firstChunk) {
@@ -191,7 +192,6 @@ module.exports = class Broker extends EventEmitter {
          */
         // Clean old listeners first
         log.info('Broker ready')
-        this.initDB();
         this.stopIpcEvents();
         this.emitStart();
         this.listenForPartyRock();
