@@ -37,7 +37,7 @@ module.exports = (ipcMain, runtime = 'node') => {
         // Ingest process listener
         ingest.on('ingest-step', (step) => e.reply('node-step', step))
         ingest.on('ingest-replicated', (c, s, t) => e.reply('node-replicated', c, s, t))
-        ingest.on('ingest-ready', () => e.reply('node-db-ready'))
+        // ingest.on('ingest-ready', () => e.reply('node-db-ready'))
 
         // On party success ready then logout
         ipcMain.removeAllListeners('party-success')

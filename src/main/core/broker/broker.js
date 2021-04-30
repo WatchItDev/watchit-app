@@ -7,7 +7,6 @@ const Engine = Key.engine
 const LinvoDB = require("linvodb3");
 LinvoDB.dbPath = Key.init.db
 LinvoDB.defaults.store = {db: Engine};
-LinvoDB.defaults.autoIndexing = false
 log.info(`Using ${Engine.name}`)
 
 // ipcRender listeners
@@ -33,7 +32,7 @@ module.exports = class Broker extends EventEmitter {
     constructor(renderer) {
         super()
         this.renderer = renderer;
-        this.db = new LinvoDB(DB)//, MOVIES_SCHEMA, {})
+        this.db = new LinvoDB(DB, {autoindex: false})//, MOVIES_SCHEMA, {})
     }
 
 
@@ -131,17 +130,6 @@ module.exports = class Broker extends EventEmitter {
         })
     }
 
-    listenForStartRunning() {
-        /***
-         * Trigger event when the node is ready to launch app
-         * this event goes after ready event
-         */
-        this.renderer.on('node-db-ready', (e, c) => {
-            this.emit('ready', c)
-
-        })
-    }
-
     listenForDbLoaded() {
         /***
          * Trigger event when all db are synced
@@ -168,12 +156,19 @@ module.exports = class Broker extends EventEmitter {
         this.renderer.on('node-replicated', async (e, collection) => {
             log.info('LOADING FROM NETWORK');
             log.info(collection[collection.length - 1]['_id']);
-            log.info(collection[0]['_id']);
+            log.info(collection[0]['_id']); // get id for ingested chunk
+            const total = this.db.getAllData().length;
+            const firstChunk = Object.is(total, 0);
 
             this.db.insert(collection, (e, n) => {
                 if (e) return; // Avoid `n.length` undefined
+                if (firstChunk) {
+                    log.warn('First chunk inserted')
+                    this.emit('ready');
+                }
+
                 log.info(`Inserted: ${n?.length || 0}`)
-                log.info(`Total:`, this.db.getAllData().length)
+                log.info(`Total:`, total + n.length)
 
             }); // Save in local
             this.emit('replicated')
@@ -193,7 +188,6 @@ module.exports = class Broker extends EventEmitter {
         this.listenForNewPeer();
         this.listenForError();
         this.listenForReady()
-        this.listenForStartRunning();
         this.listenForDbLoaded();
         this.listenForReplicaProgress();
         this.listenForReplicatedData();

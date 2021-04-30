@@ -22,11 +22,14 @@ const DEFAULT_INIT_LOAD = 100;
 export default class MovieIndex extends React.Component {
     constructor(props) {
         super(props);
+        // It cached or loaded initial chunk
+        const itCached = this.cached || this.loaded;
+        log.warn(`Init with cached:${!!this.cached} and loaded:${!!this.loaded}`)
 
-        //Default state
+        // Initial state
         this.state = {
             state: 'Bootstrapping', percent: 0, peers: this.peers, count: DEFAULT_INIT_LOAD,
-            ready: false, loading: true, movies: [], screen: this.getRecalculatedScreen(),
+            ready: itCached, loading: !itCached, movies: [], screen: this.getRecalculatedScreen(),
             lock: false, // Avoid re-render movies list
             finishLoad: false, showDetailsFor: false, logout: false
         };
@@ -116,14 +119,7 @@ export default class MovieIndex extends React.Component {
             broker.listenForPartyRock();
             broker.startSeed()
             broker.on('chaos', this.chaos)
-            // Start running node
-            return this.startRunning();
-        }
-
-        if (this.loaded) {
-            return this.startRunning(() => {
-                this.runIngest();
-            });
+            return;
         }
 
         // Start ingestion
@@ -212,6 +208,7 @@ export default class MovieIndex extends React.Component {
                 count: !_size ? _current : (_current + 10),
                 finishLoad: !clear ? !_size : false,
                 movies: clear ? _movies : _new_movies,
+                lock: false
             });
 
             // Send state in cb
@@ -222,7 +219,7 @@ export default class MovieIndex extends React.Component {
     loadOrder = (start, to, size = this.state.screen.chunkSize) => {
         start = start * size;
         to = to * size;
-
+        log.warn('Fetching movies from db')
         return new Promise((resolve) => {
             //Throttling
             this.renderTimeout && clearTimeout(this.renderTimeout)
@@ -326,11 +323,6 @@ export default class MovieIndex extends React.Component {
                         id={this.state.showDetailsFor}
                         onClick={this.onClickCloseMovie}
                     />
-                }
-
-                {
-                    /* Happy hunt */
-                    // <AppUpdater/>
                 }
 
                 {

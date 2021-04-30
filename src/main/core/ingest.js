@@ -70,7 +70,7 @@ module.exports = class Ingest extends EventEmitter {
             log.info('Last hash:', lastHash);
 
             this.emit('ingest-replicated', cleanedContent, sliced, tmp.toFixed(1));
-            if (!hasValidCache) this.emit('ingest-ready'); // Ready to show!!!
+            // if (!hasValidCache) this.emit('ingest-ready'); // Ready to show!!!
             key.addToStorage({'chunk': sliced, 'tmp': tmp, 'lastHash': lastHash, 'total': total});
             if (sliced >= total) key.addToStorage({'cached': true, 'hash': [], 'lastHash': null})
             this.asyncLock = false; // Avoid overhead release lock
