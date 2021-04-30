@@ -20,8 +20,13 @@ const ROOT_STORE = app.getPath('appData');
 const ENV = process.env.NODE_ENV || 'production';
 const inDev = Object.is(ENV, 'development');
 let win, isDarwin = Object.is(process.platform, 'darwin'),
+    isWin = Object.is(process.platform, 'win32'),
     appIcon = path.join(ROOT_APP, '/src/render/media/icons/icon.png'),
     appPath = inDev ? ROOT_APP : ROOT_STORE;
+
+// Setup logger
+logger.setLogfile(`${appPath}/debug.log`);
+logger.setLogLevel(logger.LogLevels.DEBUG)
 
 // Dont move appPath from this line
 process.env.appPath = appPath;
@@ -179,9 +184,19 @@ app.on('before-quit', () => {
     wipeInvalidSync();
 })
 
-app.on('ready', () => {
+app.on('ready', async () => {
     if (!key.existKey)
-        removeCacheDirs();
+        return removeCacheDirs();
+
+    if (!isWin && !isDarwin) {
+        // Temp validation while updater failing
+        log.info('Check for updates');
+        await autoUpdater.checkForUpdates().catch(() => {
+            log.warn('No updates available');
+        })
+    }
+
+
 })
 
 // Disable cors errors
@@ -225,14 +240,6 @@ app.whenReady().then(() => {
         if (!isDarwin) win.setFullScreen(!win.isFullScreen());
         if (isDarwin) win.setSimpleFullScreen(!win.isSimpleFullScreen());
     })
-
-    ipcMain.on('check_update', async () => {
-        if (inDev) return;
-        log.info('Check for update');
-        await autoUpdater.checkForUpdates().catch(() => {
-            log.warn('No updates available');
-        })
-    });
 
 })
 

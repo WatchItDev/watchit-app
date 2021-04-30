@@ -12,15 +12,6 @@ log.info(`Using ${Engine.name}`)
 
 // ipcRender listeners
 const DB = 'wt'
-// const MOVIES_SCHEMA = {
-//     _id: {type: String, index: true},
-//     title: {type: String, index: true},
-//     year: {type: Number, index: true},
-//     runtime: {type: Number, index: true},
-//     rating: {type: Number, index: true},
-//     genres: {type: Array, index: true},
-//     date_uploaded_unix: {type: Number, index: true}
-// }
 
 const IPC_LISTENERS = [
     'node-chaos',
