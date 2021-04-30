@@ -71,7 +71,6 @@ module.exports = (ipcMain, runtime = 'node') => {
         await orbit.start()
     });
 
-
     ipcMain.on('online-status-changed', async (e, isOnline) => {
         log.info('Going ' + (isOnline ? 'online' : 'offline'))
         if (!isOnline) await orbit.close();
