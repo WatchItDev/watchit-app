@@ -33,9 +33,17 @@ module.exports = class Broker extends EventEmitter {
     constructor(renderer) {
         super()
         this.renderer = renderer;
-        this.db = new LinvoDB(DB)//, MOVIES_SCHEMA, {})
+
     }
 
+    initDB() {
+        /**
+         * Initialize db
+         * @type {function(*=): void}
+         */
+        log.warn('Creating local db')
+        this.db = new LinvoDB(DB)//, MOVIES_SCHEMA, {})
+    }
 
     flush() {
         /**
@@ -183,6 +191,7 @@ module.exports = class Broker extends EventEmitter {
          */
         // Clean old listeners first
         log.info('Broker ready')
+        this.initDB();
         this.stopIpcEvents();
         this.emitStart();
         this.listenForPartyRock();
