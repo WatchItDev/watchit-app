@@ -188,7 +188,7 @@ app.on('ready', async () => {
     if (!key.existKey)
         return removeCacheDirs();
 
-    if (!isWin && !isDarwin) {
+    if (isWin || isDarwin) {
         // Temp validation while updater failing
         log.info('Check for updates');
         await autoUpdater.checkForUpdates().catch(() => {
