@@ -55,10 +55,14 @@
 
 .share-menu {
   position: fixed;
-  top: 7rem;
+  top: 6rem;
   z-index: 500;
   font-size: 1.8rem;
   right: 4.5rem;
+
+  :hover {
+    background: none !important;
+  }
 
   .dropdown {
     li {
@@ -273,7 +277,7 @@
     left: 0;
     top: 0;
 
-    .logo,.slogan {
+    .logo, .slogan {
       display: none;
     }
   }
