@@ -169,6 +169,7 @@ module.exports = class Node extends EventEmitter {
         const address = this.sanitizeKey(raw)
         // Get orbit instance and next line connect providers
         this.orbit = await this.instanceOB();
+        log.warn('Sanitized key:', address)
         this.emit('node-step', 'Connecting')
         await this.run(address, res);
         await provider.findProv(this.node, raw);
