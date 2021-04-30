@@ -38,7 +38,7 @@ export default class BoxImage extends React.PureComponent {
 
     handleImageLoaded = () => {
         if (this.state.loaded) return;
-        this.setState({loaded: true})
+        setImmediate(() => this.setState({loaded: true}))
     }
 
     componentDidMount() {
