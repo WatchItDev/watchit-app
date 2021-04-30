@@ -7,6 +7,7 @@ const Engine = Key.engine
 const LinvoDB = require("linvodb3");
 LinvoDB.dbPath = Key.init.db
 LinvoDB.defaults.store = {db: Engine};
+LinvoDB.defaults.autoIndexing = false
 log.info(`Using ${Engine.name}`)
 
 // ipcRender listeners
@@ -32,7 +33,7 @@ module.exports = class Broker extends EventEmitter {
     constructor(renderer) {
         super()
         this.renderer = renderer;
-        this.db = new LinvoDB(DB, {autoindex: false})//, MOVIES_SCHEMA, {})
+        this.db = new LinvoDB(DB)//, MOVIES_SCHEMA, {})
     }
 
 
