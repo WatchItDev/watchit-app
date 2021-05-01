@@ -19,20 +19,23 @@ const defaultIPFS = {
 }
 
 const startRunning = async (repo) => {
-    try {
-        const conf = Object.assign({repo}, defaultIPFS);
-        const isInstance = await IPFS.create({
-            config: conf, start: true,
-            preload: {enabled: false},
-            EXPERIMENTAL: {pubsub: true, ipnsPubsub: true, dht: true},
-            libp2p: {config: {dht: {enabled: true}}},
-        })
 
+    const conf = Object.assign({repo}, defaultIPFS);
+    const isInstance = await IPFS.create({
+        config: conf, preload: {enabled: false},
+        EXPERIMENTAL: {pubsub: true, ipnsPubsub: true, dht: true},
+        libp2p: {config: {dht: {enabled: true}}},
+    })
+
+    try {
+        await isInstance.start();
         const ipfsID = await isInstance.id()
         ipfsID.kill = async () => isInstance.stop(); // Alias to stop
         log.info('Running ipfs id', ipfsID.id)
         return isInstance
     } catch (e) {
+        console.log(e);
+        await isInstance.stop().catch(()=> log.error('Error trying to stop node'));
         log.error('Fail on start: cleanup node')
         return false;
     }

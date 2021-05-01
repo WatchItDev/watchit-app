@@ -213,7 +213,7 @@ app.whenReady().then(() => {
     const orbitProcess = node(ipcMain);
     app.on('will-quit', async (e) => {
         log.warn('Closing');
-        await orbitProcess.close(win)
+        await orbitProcess.close()
         app.releaseSingleInstanceLock()
 
         if (!orbitProcess.closed()) {
