@@ -26,10 +26,9 @@ If you log back in to the app you will acquire the metadata again like is the fi
 
 ### What happens when I try to play a movie?
 
-
 You will receive the stream data from somebody that is already watching the movie, 
-or you will become the primary node sharing (`seeding`) the metadata of the movie, this will help you and other 
-to download the stream faster while helping other.
+or you will become the primary node sharing (`seeding`) the movie, this will help you and other 
+to download the stream faster.
 
 ### Will there be data on my computer that I have not asked for?
 
