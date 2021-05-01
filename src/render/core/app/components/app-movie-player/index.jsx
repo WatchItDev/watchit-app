@@ -113,9 +113,9 @@ export default class AppMoviesPlayer extends React.Component {
 
     initDLNA() {
         //DLNA init
-        dlna && dlna.createServer(
-            // Create asset server
-        ).requestUpdate().on('status', (status) => {
+        dlna && dlna.requestUpdate(
+            // Update devices list
+        ).on('status', (status) => {
             log.info('Status:' + status);
         }).on('device', (device) => {
             log.warn(`New device ${device}`);

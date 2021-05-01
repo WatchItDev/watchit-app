@@ -24,7 +24,7 @@ module.exports = (localIp) => {
 			log.error('Address in use, retrying...');
 			setTimeout(() => {
 				server.close();
-				server.listen(PORT + 1, localIp);
+				server.listen(PORT, localIp);
 			}, 1000);
 		}
 	})

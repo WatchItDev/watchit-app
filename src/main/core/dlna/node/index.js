@@ -1,5 +1,4 @@
 const ip = require('ip');
-const server = require(`./server.js`)
 const log = require('logplease').create('DNLA')
 const EventEmitter = require('events')
 
@@ -13,7 +12,6 @@ module.exports = class Cast extends EventEmitter {
         this.subs = []
         this.players = []
         this.player = null;
-        this.server = null;
         this.dlnaTimeout = null;
         this.dlnaRetry = DLNA_MAX_RETRIES
 
@@ -26,19 +24,6 @@ module.exports = class Cast extends EventEmitter {
         this.dnla.on('status', (status) => {
             this.emit('status', status)
         })
-    }
-
-    createServer() {
-        try {
-            // Create server
-            if (this.server) return;
-            this.server = server(this.localIp)
-        } catch (e) {
-            log.info('Creating server error');
-            log.error(e);
-        }
-
-        return this;
     }
 
     requestUpdate() {
@@ -56,12 +41,10 @@ module.exports = class Cast extends EventEmitter {
 
     stop() {
         // Stop server
-        if (this.server) this.server.close();
         if (this.player && this.player.client)
             this.player.stop();
         // Clear attrs
         this.subs = [];
-        this.server = null;
         this.dlnaRetry = DLNA_MAX_RETRIES;
         log.info('DLNA stopped');
     }
@@ -77,11 +60,7 @@ module.exports = class Cast extends EventEmitter {
     }
 
     setSub(sub) {
-        this.subs = [this.sanitizeSub(sub)]
-    }
-
-    sanitizeSub(sub) {
-        return `http://${this.localIp}:9990${sub.replace('.vtt', '.srt')}`
+        this.subs = [sub]
     }
 
     play(title, stream) {
