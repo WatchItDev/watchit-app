@@ -90,9 +90,8 @@ module.exports = (ipcMain, runtime = 'node') => {
 
     return {
         closed: () => orbit.closed,
-        close: async (win) => {
+        close: async () => {
             try {
-                win?.webContents && win.webContents.send('node-step', 'Closing')
                 ingest.cleanInterval();
                 await orbit.close()
             } catch (e) {
