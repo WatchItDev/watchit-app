@@ -61,7 +61,7 @@ const forceKill = async (isInstance) => {
             if (!isInstance.started) {
                 log.info('Forcing start..')
                 await isInstance.stop(); // Force init
-                // await initIpfsNode(isInstance)
+                await initIpfsNode(isInstance)
             }
         }, RETRY_GRACE * 1000)
         await initIpfsNode(isInstance)

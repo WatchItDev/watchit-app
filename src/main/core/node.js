@@ -16,7 +16,7 @@ module.exports = class Node extends EventEmitter {
         super();
         this.rootPath = rootPath;
         this.seedMode = false;
-        this.peers = [];
+        this.peers = new Set();
         this.ready = false;
         this.closed = false;
         this.orbit = null;
@@ -122,8 +122,8 @@ module.exports = class Node extends EventEmitter {
 
         this.db?.events?.on('peer', (p) => {
             log.info('Peer:', p);
-            this.peers.push(p); // Add new peer to list
-            this.emit('node-peer', this.peers.length)
+            this.peers.add(p); // Add new peer to list
+            this.emit('node-peer', this.peers.size)
         });
 
         if (this.db) { // Check if db set
