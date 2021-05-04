@@ -1,12 +1,13 @@
 const WebTorrent = require('webtorrent-hybrid')
-const webtorrentHealth = require('webtorrent-health')
+const webTorrentHealth = require('webtorrent-health')
 const parseTorrent = require('parse-torrent');
 const readTorrent = require('read-torrent');
 const EventEmitter = require('events')
-const log = require('logplease').create('WEBTORRENT')
-const {calcChunkPercent, selectBiggestFile, deselectFiles} = require('../helper')
+const prettyBytes = require('pretty-bytes')
+const log = require('logplease').create('TORRENT')
+const {selectBiggestFile} = require('../helper')
 const {
-    MIN_SIZE_LOADED,
+    STREAM_PORT,
     TORRENT_TRACKERS,
     MAX_NUM_CONNECTIONS,
     TORRENT_FILE_READ_TIMEOUT
@@ -49,8 +50,8 @@ module.exports = class BrowserStreamer extends EventEmitter {
         log.warn('Flix destroyed');
         this.stopped = true;
         this.started = false;
-        if (this.flix)
-            this.flix.destroy(cb);
+        if (this.flix) this.flix.destroy(cb);
+        if (this.client) this.client.destroy();
     }
 
     checkLoadingProgress(torrent) {
@@ -61,24 +62,26 @@ module.exports = class BrowserStreamer extends EventEmitter {
          * */
 
         if (this.stopped || this.started) return; // Avoid keep loading
-        const downloaded = torrent.downloaded
-        const percent = calcChunkPercent(downloaded, this.flix.fileSize);
-        const readyToShow = torrent.downloaded > MIN_SIZE_LOADED
+        const downloaded = torrent.downloaded // Current downloaded size
+        const chunk = this.flix.fileSize * .05 // Wait for threshold
+        const progress = (downloaded / chunk) * 100
 
-        if (readyToShow) {
+        if (downloaded > chunk) {
             log.info('Starting stream')
-            this.started = true;
-            this.emit('start', {})
-        } else {
-            this.emit('progress', torrent,
-                percent, 'Downloading'
-            );
+            return this.onReady();
         }
+
+        // Progress on download
+        this.emit('progress',
+            torrent, progress,
+            progress === 0 ? 'Starting' : 'Downloading'
+        );
+
     }
 
 
     async getHealth(hash, i) {
-        let {peers, seeds} = await webtorrentHealth(
+        let {peers, seeds} = await webTorrentHealth(
             parseTorrent.toMagnetURI({infoHash: hash.toLowerCase()}),
             {trackers: TORRENT_WEB_TRACKERS}
         )
@@ -86,9 +89,34 @@ module.exports = class BrowserStreamer extends EventEmitter {
         return {peers, seeds, index: i}
     }
 
+    runServer(port, fileIndex) {
+        if (this.flix) {
+            log.info('Starting server')
+            this.flix.href = `http://127.0.0.1:${port}/${fileIndex}`;
+            this.flix.createServer(() => {
+                // Process request here!!
+                // Isn't needed for now
+            }).listen(port)
+        }
+    }
 
+    onReady() {
+        this.started = true;
+        this.emit('ready', this.flix.href, this.mime, this);
+        this.emit('start', {});
+    }
 
-    play(torrent, {videoRef}) {
+    get stats() {
+        return {
+            dSpeed: `${prettyBytes(this.flix.downloadSpeed)}/s`, // Download speed
+            uSpeed: `${prettyBytes(this.flix.uploadSpeed)}/s`, // Upload speed
+            dLoaded: `${prettyBytes(this.flix.downloaded)}`, // Downloaded
+            fSize: `${prettyBytes(this.flix.fileSize)}`, // File size
+            aPeers: this.flix.numPeers // Active peers
+        }
+    }
+
+    play(torrent) {
         /** Start playing torrent
          * @param {string} torrent
          * @return object
@@ -115,7 +143,7 @@ module.exports = class BrowserStreamer extends EventEmitter {
                     return;
                 }
 
-                //Don't connect, if stop was triggered
+                // Don't connect, if stop was triggered
                 if (this.stopped) {
                     log.info('Stream stopped');
                     return;
@@ -126,18 +154,16 @@ module.exports = class BrowserStreamer extends EventEmitter {
                     announce: TORRENT_WEB_TRACKERS
                 }, (_torrent) => {
                     log.info('Initializing torrent')
+                    const selectedFile = selectBiggestFile(_torrent.files)
+                    const fileIndex = _torrent.files.indexOf(selectedFile)
                     _torrent.on('wire', (_, r) => log.info('WebTorrent peer connected:', r))
                     _torrent.on('download', (b) => this.checkLoadingProgress(_torrent, b))
+                    _torrent.on('noPeers', () => this.emit('progress', torrent, 0, 'Tracking'))
 
-                    const selectedFile = selectBiggestFile(_torrent.files)
+                    // Handle torrent object
                     this.flix = _torrent // Flix = torrent object
                     this.flix.fileSize = selectedFile.length;
-
-                    // selectedFile.renderTo(videoRef, {autoPlay: true})
-                    // const server = torrent.createServer()
-                    // server.listen('7001')
-
-
+                    this.runServer(STREAM_PORT, fileIndex); // Run server in appointed port
                 })
             })
         } catch (e) {

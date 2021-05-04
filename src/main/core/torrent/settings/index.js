@@ -1,6 +1,7 @@
 //Torrent conf
 module.exports = {
     // Minimum bytes loaded to open video
+    STREAM_PORT: 7001,
     MAX_CACHE_REQUEST_TIMEOUT: 3600000 * 24, // Milliseconds 24h
     MAX_NUM_CONNECTIONS: 100, //Max num of peers 100
     MIN_PERCENTAGE_LOADED: 0.5, //Min % of loaded size
@@ -29,6 +30,7 @@ module.exports = {
         'udp://9.rarbg.to:2710/announce',
         'udp://p4p.arenabg.ch:1337/announce',
         'udp://tracker.cyberia.is:6969/announce',
+        'udp://tracker.leechers-paradise.org:6969/announce',
         'udp://www.torrent.eu.org:451/announce',
         'udp://tracker.sktorrent.net:6969/announce',
         'udp://tracker.eddie4.nl:6969/announce',
