@@ -27,6 +27,7 @@
     "dlnacasts2": "^0.2.0",
     "electron-updater": "^4.3.8",
     "fs-extra": "^9.0.1",
+    "get-port": "^5.1.1",
     "go-ipfs": "^0.6.0",
     "hls.js": "^0.14.17",
     "iconv-lite": "^0.5.1",
