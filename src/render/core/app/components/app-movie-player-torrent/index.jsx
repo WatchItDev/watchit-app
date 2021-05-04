@@ -33,7 +33,8 @@ export default class AppMoviesPlayerTorrent extends React.PureComponent {
         //Change state
         this.setState({
             state: 'Starting',
-            flix: flix, percent: 100
+            flix: flix,
+            percent: 100
         })
     }
 
