@@ -1,3 +1,17 @@
+//Transition image
+img {
+  @include transition(opacity 1.5s ease-in-out);
+
+  &.locked-img {
+    opacity: 0;
+  }
+
+  &.loaded-img {
+    opacity: 1;
+    border-radius: 0.5rem;
+  }
+}
+
 //Fork flow text
 .flow-text {
   @extend .flow-text;
@@ -57,19 +71,7 @@
     width: 100% !important;
     overflow: hidden !important;
 
-    //Transition image
-    img {
-      @include transition(opacity 1.5s ease-in-out);
 
-      &.locked-img {
-        opacity: 0;
-      }
-
-      &.loaded-img {
-        opacity: 1;
-        border-radius: 0.5rem;
-      }
-    }
   }
 
   //Poster main movies lists
@@ -144,21 +146,6 @@
   width: 100%;
   z-index: 10;
   background-color: rgba(0, 0, 0, 0.95);
-
-  //Transition image
-  img {
-    @include transition(opacity 1.5s ease-in-out);
-
-    &.locked-img {
-      opacity: 0;
-    }
-
-    &.loaded-img {
-      opacity: 1;
-      display: block !important;
-      visibility: visible !important;
-    }
-  }
 
   //Movie details navbar
   .nav-bar-movie-details {

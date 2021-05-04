@@ -69,14 +69,13 @@ export default class BoxImage extends React.PureComponent {
             <figure className="image-container no-margin">
                 {
                     // Pulse loader
-                    !this.state.loaded &&
-                    this.props.preload &&
+                    !this.state.loaded && this.props.preload &&
                     <PulseLoader style={this.props.pulseStyle}/>
                 }
                 <img alt={''} src={this.parseUriImage(this.props.src)} onLoad={this.handleImageLoaded}
                      loading={"lazy"} onError={this.handleImageError} ref={this.getRef}
                      className={(this.state.loaded || !this.props.preload) ?
-                         "loaded-img responsive-img" : "locked-img invisible"
+                         "loaded-img responsive-img" : "locked-img"
                      }
                 />
             </figure>
