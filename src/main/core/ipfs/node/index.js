@@ -8,7 +8,7 @@ const log = require('logplease').create('IPFS')
 const {removeFiles} = require('../../utils');
 const {ROOT_IPFS_DIR} = require('../../settings')
 
-const RETRY_GRACE = 5
+const RETRY_GRACE = 10
 const resolveIpfsPaths = () => require('go-ipfs').path()
     .replace('app.asar', 'app.asar.unpacked')
 

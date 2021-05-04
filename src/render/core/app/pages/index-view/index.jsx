@@ -61,10 +61,8 @@ export default class MovieIndex extends React.Component {
     }
 
     startRunning = (cb = null) => {
-        this.setState({
-            ready: true,
-            loading: false
-        }, cb)
+        if (this.state.logout) return;
+        this.setState({ready: true, loading: false}, cb)
     }
 
     getRecalculatedScreen = () => {
@@ -170,6 +168,9 @@ export default class MovieIndex extends React.Component {
     }
 
     filterMovies(filter = {}, clear = false, chunks = null, cb = null) {
+
+        if (this.state.logout)
+            return false; // Nothing to fetch. Go out!!
 
         //Get from cache filters
         if (storageHelper.get().from.mainNavFilters())
