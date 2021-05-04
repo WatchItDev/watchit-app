@@ -54,25 +54,16 @@ export default class AppMoviesPlayerSwarm extends React.PureComponent {
                             <i className={'icon-arrow-bold-down margin-right-5'}/>
                         </span>
                         <span
-                            className={
-                                this.state.dSpeed <= 100 || this.state.dLoaded > this.state.fSize ?
-                                    "red-text" : this.state.dSpeed < 250 && this.state.dSpeed > 100 ?
-                                    "orange-text" : "green-text"
-                            }>
+                            className={"green-text"}>
                             {(this.state.dLoaded > this.state.fSize && 0.00) || this.state.dSpeed}
                         </span>
                         <span className={'bold'}> / </span>
                         <span className="bold">
                             <i className={'icon-arrow-bold-up margin-right-5'}/>
                         </span>
-                        <span className={this.state.uSpeed <= 50 ?
-                            "red-text" : this.state.uSpeed < 100 && this.state.uSpeed > 50 ?
-                                "orange-text" : "green-text"
-                        }>
+                        <span className={"green-text"}>
                             {this.state.uSpeed}
                         </span>
-
-
                     </li>
 
                     <li className="white-text">
