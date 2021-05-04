@@ -1,4 +1,5 @@
-module.exports = () => {
+
+module.exports = (ports) => {
 
     return {
         "Gateway": {
@@ -36,13 +37,13 @@ module.exports = () => {
             "/ip4/209.222.98.165/tcp/4001/p2p/12D3KooWAH9FypmaduofuBTtubSHVJghxW35aykce23vDHjfhiAd"
         ],
         "Addresses": {
-            "API": "/ip4/127.0.0.1/tcp/6002",
-            "Gateway": "/ip4/127.0.0.1/tcp/9090",
+            "API": `/ip4/127.0.0.1/tcp/${ports.api}`, // default 6002
+            "Gateway": `ip4/127.0.0.1/tcp/${ports.gateway}`, // default 9090
             "Announce": [],
             "NoAnnounce": [],
             "Swarm": [
-                '/ip4/0.0.0.0/tcp/4010',
-                '/ip4/0.0.0.0/tcp/4011/ws',
+                `/ip4/0.0.0.0/tcp/${ports.swarmTCP}`, // default 4010
+                `/ip4/0.0.0.0/tcp/${ports.swarmWS}/ws`, //default 4011
                 "/ip6/::/tcp/4003",
                 "/ip6/::/udp/4003/quic"
             ],

@@ -1,5 +1,6 @@
 const fs = require('fs')
 const path = require('path')
+const getPort = require('get-port');
 const Ctl = require('ipfsd-ctl')
 const defaultConf = require('./settings');
 const log = require('logplease').create('IPFS')
@@ -9,6 +10,10 @@ const {removeFiles} = require('../../utils');
 const {ROOT_IPFS_DIR} = require('../../settings')
 
 const RETRY_GRACE = 10
+const DEFAULT_API_PORT = 6002;
+const DEFAULT_GATEWAY_PORT = 9090;
+const DEFAULT_SWARM_TCP = 4010;
+const DEFAULT_SWARM_WS = 4011;
 const resolveIpfsPaths = () => require('go-ipfs').path()
     .replace('app.asar', 'app.asar.unpacked')
 
@@ -30,9 +35,25 @@ const forceKill = async (isInstance) => {
 
     return isInstance.start();
 }, startRunning = async () => {
+    // Find available ports to avoid conflict
+    const [api, gateway, swarmTCP, swarmWS] = await Promise.all([
+        getPort({port: DEFAULT_API_PORT}),
+        getPort({port: DEFAULT_GATEWAY_PORT}),
+        getPort({port: DEFAULT_SWARM_TCP}),
+        getPort({port: DEFAULT_SWARM_WS}),
+    ])
+
+    log.info('Running API on port:', api)
+    log.info('Running Gateway on port:', gateway)
+    log.info('Swarm TCP listening on port:', swarmTCP)
+    log.info('Swarm WS listening on port:', swarmWS)
+
+    // Init spawn daemon
     const isInstance = await Ctl.createController({
-        ipfsOptions: {config: defaultConf(), repo: ROOT_IPFS_DIR},
-        ipfsHttpModule: require('ipfs-http-client'),
+        ipfsOptions: {
+            config: defaultConf({api, gateway, swarmTCP, swarmWS}),
+            repo: ROOT_IPFS_DIR
+        }, ipfsHttpModule: require('ipfs-http-client'),
         ipfsBin: resolveIpfsPaths(), forceKill: true,
         disposable: false, forceKillTimeout: 10 * 1000,
         args: ['--enable-pubsub-experiment'],
