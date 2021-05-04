@@ -243,29 +243,22 @@ export default class MovieIndex extends React.Component {
 
     initialNavVar(genres, sort) {
         //Has sort cache?
-        if (storageHelper.get().from.mainNavFilters()) {
-            //Get cache from localStorage
-            let _sort_cache = storageHelper.get().from.mainNavFilters();
-            let _hash = {'genres': genres, 'sort_by': sort};
+        //Get cache from localStorage
+        const navCache = storageHelper.get().from.mainNavFilters()
+        if (!navCache) return {genres: genres, sort: sort}
+        const currentNav = {'genres': genres, 'sort_by': sort};
 
-            //For each key in cache
-            for (let key_ in _hash) {
-                //Check for genres in cache filter
-                if (key_ in _sort_cache) {
-                    //Iterate over element lists
-                    for (let item in _hash[key_]) {
-                        //Clean default
-                        if ('default' in _hash[key_][item])
-                            delete _hash[key_][item]['default'];
-
-                        //Set new default
-                        if (Object.is(_hash[key_][item].action, _sort_cache[key_])) {
-                            _hash[key_][item]['default'] = true;
-                        }
-                    }
-                }
-            }
-        }
+        //For each key in cache
+        Object.keys(currentNav)
+            .forEach((k) => {
+                // Clean old default prop
+                currentNav[k].forEach((el) => delete el.default)
+                currentNav[k].map((el) => {
+                    if (Object.is(el.action, navCache[k]))
+                        el.default = true;
+                    return el
+                })
+            })
 
         //Return initial
         return {
