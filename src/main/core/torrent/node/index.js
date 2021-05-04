@@ -153,7 +153,7 @@ module.exports = class BrowserStreamer extends EventEmitter {
                 this.client.add(torrent, {
                     announce: TORRENT_WEB_TRACKERS
                 }, (_torrent) => {
-                    log.info('Initializing torrent')
+                    log.info(`Initializing torrent client ${this.client.peerId}`)
                     const selectedFile = selectBiggestFile(_torrent.files)
                     const fileIndex = _torrent.files.indexOf(selectedFile)
                     _torrent.on('wire', (_, r) => log.info('WebTorrent peer connected:', r))

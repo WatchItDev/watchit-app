@@ -16,7 +16,7 @@ const resolveIpfsPaths = () => require('go-ipfs').path()
 const forceKill = async (isInstance) => {
     log.info('Forcing stop')
     await isInstance.stop();
-    await isInstance.cleanup();
+    // await isInstance.cleanup();
 
 }, initIpfsNode = async (isInstance) => {
     // Check if running time dir exists
@@ -38,15 +38,6 @@ const forceKill = async (isInstance) => {
         args: ['--enable-pubsub-experiment'],
         remote: false, type: 'go'
     })
-
-    //If locked node try to release lock using API
-    const repoLockDir = `${ROOT_IPFS_DIR}/repo.lock`
-    const alreadyLock = fs.existsSync(repoLockDir)
-    if (alreadyLock) {
-        log.warn('Releasing locked node')
-        await removeFiles(repoLockDir)
-        await forceKill(isInstance)
-    }
 
     //If api file exists on node setup ipfs-daemon.js line:183 doest spawn process
     //Be sure this lock 'api' file doesnt exists before node boot..
