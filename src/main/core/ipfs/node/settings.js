@@ -1,4 +1,3 @@
-
 module.exports = (ports) => {
 
     return {
@@ -8,22 +7,14 @@ module.exports = (ports) => {
             "RootRedirect": "",
             "Writable": false,
             "HTTPHeaders": {
-                "Access-Control-Allow-Credentials": [
-                    "true"
-                ],
+                "Access-Control-Allow-Credentials": ["true"],
+                "Access-Control-Allow-Origin": ["*"],
+                "Access-Control-Expose-Headers": ["Location"],
+                "Access-Control-Allow-Methods": ["GET"],
                 "Access-Control-Allow-Headers": [
                     "X-Requested-With",
                     "Range",
                     "User-Agent"
-                ],
-                "Access-Control-Allow-Origin": [
-                    "*"
-                ],
-                "Access-Control-Expose-Headers": [
-                    "Location"
-                ],
-                "Access-Control-Allow-Methods": [
-                    "GET"
                 ]
             }
         },
