@@ -56,6 +56,7 @@ module.exports = class TorrentStreamer extends ParentStreamer {
         this.started = false;
         if (this.flix) this.flix.destroy(cb);
         if (this.client) this.client.destroy();
+        this.flix = this.client = null;
     }
 
     checkLoadingProgress(torrent) {
@@ -104,7 +105,7 @@ module.exports = class TorrentStreamer extends ParentStreamer {
         }
     }
 
-    play(torrent) {
+    play(torrent, {videoRef}) {
         /** Start playing torrent
          * @param {string} torrent
          * @return object
@@ -150,6 +151,8 @@ module.exports = class TorrentStreamer extends ParentStreamer {
 
                     // Handle torrent object
                     this.flix = _torrent // Flix = torrent object
+                    this.flix.file = selectedFile;
+                    this.flix.videoRef = videoRef;
                     this.flix.fileSize = selectedFile.length;
                     this.runServer(STREAM_PORT, fileIndex); // Run server in appointed port
                 })

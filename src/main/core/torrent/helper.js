@@ -1,7 +1,7 @@
 const {
     MIN_SIZE_LOADED,
     MIN_PERCENTAGE_LOADED
-} = require(`../settings`);
+} = require(`./settings`);
 
 module.exports = {
     selectBiggestFile: (files) => {

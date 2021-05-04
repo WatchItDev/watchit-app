@@ -4,7 +4,6 @@ const log = require('logplease').create('TORRENT')
 
 module.exports = class BrowserStreamer extends EventEmitter {
 
-
     _client(opts) {
         log.info('Running WebTorrent')
         return new WebTorrent(opts);
@@ -16,9 +15,9 @@ module.exports = class BrowserStreamer extends EventEmitter {
 
     onReady() {
         this.started = true;
-        this.emit('ready', this.flix.href, this.mime, this);
-        this.emit('start', {});
+        this.flix.file.renderTo(this.flix.videoRef, {
+            autoplay: true
+        }, () => this.emit('start', {}))
     }
-
 
 }
