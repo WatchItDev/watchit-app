@@ -15,6 +15,7 @@ module.exports = class BrowserStreamer extends EventEmitter {
 
     onReady() {
         this.started = true;
+        this.emit('ready', null, null, this);
         this.flix.file.renderTo(this.flix.videoRef, {
             autoplay: true
         }, () => this.emit('start', {}))
