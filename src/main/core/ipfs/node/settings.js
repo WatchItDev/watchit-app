@@ -1,3 +1,6 @@
+
+
+
 module.exports = (ports) => {
 
     return {
@@ -29,7 +32,7 @@ module.exports = (ports) => {
         ],
         "Addresses": {
             "API": `/ip4/127.0.0.1/tcp/${ports.api}`, // default 6002
-            "Gateway": `ip4/127.0.0.1/tcp/${ports.gateway}`, // default 9090
+            "Gateway": `/ip4/127.0.0.1/tcp/${ports.gateway}`, // default 9090
             "Announce": [],
             "NoAnnounce": [],
             "Swarm": [
