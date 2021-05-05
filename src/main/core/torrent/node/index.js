@@ -1,4 +1,3 @@
-const wrtc = require('wrtc')
 const WebTorrent = require('webtorrent-hybrid')
 const EventEmitter = require('events')
 const log = require('logplease').create('TORRENT')
@@ -7,7 +6,7 @@ const log = require('logplease').create('TORRENT')
 module.exports = class TorrentStreamer extends EventEmitter {
     _client(opts) {
         log.info('Running WebTorrent-Hybrid')
-        return new WebTorrent({...opts, ...{tracker: {wrtc}}});
+        return new WebTorrent(opts);
     }
 
     runServer(port, fileIndex) {

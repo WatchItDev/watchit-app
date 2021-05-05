@@ -20,7 +20,6 @@
     "webtorrent": "0.116.1",
     "level-js": "6.0.0",
     "ipfs": "0.52.1",
-    "wrtc": "0.4.7",
     "go-ipfs": "^0.6.0"
   },
   "dependencies": {
@@ -58,8 +57,7 @@
     "unzipper": "^0.10.11",
     "v8-compile-cache": "^2.2.0",
     "webtorrent-health": "^1.1.2",
-    "webtorrent-hybrid": "^4.0.3",
-    "wrtc": "^0.4.7"
+    "webtorrent-hybrid": "^4.0.3"
   },
   "build": {
     "productName": "watchit",
