@@ -8,6 +8,11 @@ module.exports = {
     MIN_SIZE_LOADED: 10 * 1024 * 1024, //Min size loaded
     MAGNET_RESOLVE_TIMEOUT: 60 * 1000, //Engine destroy timeout resolving magnet,
     TORRENT_FILE_READ_TIMEOUT: 20 * 1000,
+    STUN_TURN: [
+        {urls: 'stun:stun01.sipphone.com'},
+        {urls: 'stun:stun.ekiga.net'},
+        {urls: 'turn:numb.viagenie.ca', credential: 'muazkh', username: 'webrtc@live.com'}
+    ],
     TORRENT_TRACKERS: [
         'http://opentracker.i2p.rocks:6969/announce',
         'http://tracker.flashtorrents.org:6969/announce',

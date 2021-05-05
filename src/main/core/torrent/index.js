@@ -6,6 +6,7 @@ const log = require('logplease').create('TORRENT')
 const {selectBiggestFile} = require('./helper')
 const {
     STREAM_PORT,
+    STUN_TURN,
     TORRENT_TRACKERS,
     MAX_NUM_CONNECTIONS,
     TORRENT_FILE_READ_TIMEOUT
@@ -115,7 +116,7 @@ module.exports = class TorrentStreamer extends ParentStreamer {
         //Handle remote torrent
         this.client = this._client({
             maxConns: MAX_NUM_CONNECTIONS,
-            tracker: true, dht: true
+            tracker: {rtcConfig: {iceServers: STUN_TURN}}
         });
 
         this.client.on('error', (e) => {
