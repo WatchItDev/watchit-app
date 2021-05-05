@@ -144,7 +144,7 @@ module.exports = class TorrentStreamer extends ParentStreamer {
                     announce: TORRENT_WEB_TRACKERS
                 }, (_torrent) => {
                     log.info(`Initializing torrent client ${this.client.peerId}`)
-                    this.emit('progress', torrent, 0, 'Dialing')
+                    this.emit('progress', torrent, 0, 'Peering')
                     const selectedFile = selectBiggestFile(_torrent.files)
                     const fileIndex = _torrent.files.indexOf(selectedFile)
                     _torrent.on('download', (b) => this.checkLoadingProgress(_torrent, b))
