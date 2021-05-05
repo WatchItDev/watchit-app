@@ -28,7 +28,7 @@ export default class AppMoviesPlayerTorrent extends React.PureComponent {
         })
     }
 
-    onReady = (url, ...rest) => {
+    onReady = (...rest) => {
         const [, flix] = rest
         //Change state
         this.setState({
