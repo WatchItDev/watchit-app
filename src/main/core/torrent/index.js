@@ -115,7 +115,7 @@ module.exports = class TorrentStreamer extends ParentStreamer {
         //Handle remote torrent
         this.client = this._client({
             maxConns: MAX_NUM_CONNECTIONS,
-            trackers: true, dht: true
+            tracker: true, dht: true
         });
 
         this.client.on('error', (e) => {

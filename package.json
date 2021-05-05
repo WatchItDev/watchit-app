@@ -58,7 +58,8 @@
     "unzipper": "^0.10.11",
     "v8-compile-cache": "^2.2.0",
     "webtorrent-health": "^1.1.2",
-    "webtorrent-hybrid": "^4.0.3"
+    "webtorrent-hybrid": "^4.0.3",
+    "wrtc": "^0.4.7"
   },
   "build": {
     "productName": "watchit",
