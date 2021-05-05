@@ -70,10 +70,7 @@ export default class AppMoviesPlayerSwarm extends React.PureComponent {
                         <span className="bold">
                             <i className={'icon-download margin-right-5'}/>
                         </span>
-                        <strong>
-                            {this.state.dLoaded > this.state.fSize ?
-                                this.state.fSize : this.state.dLoaded}
-                        </strong>
+                        <strong>{this.state.dLoaded}</strong>
                         <span> of </span>
                         <strong>{this.state.fSize} </strong>
                     </li>
