@@ -153,7 +153,6 @@ module.exports = class TorrentStreamer extends ParentStreamer {
                         log.info('WebTorrent peer connected:', r)
                     })
 
-
                     // Handle torrent object
                     this.flix = _torrent // Flix = torrent object
                     this.flix.file = selectedFile;
