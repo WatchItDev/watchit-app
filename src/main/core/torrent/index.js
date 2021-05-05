@@ -148,7 +148,7 @@ module.exports = class TorrentStreamer extends ParentStreamer {
                     const fileIndex = _torrent.files.indexOf(selectedFile)
                     _torrent.on('wire', (_, r) => log.info('WebTorrent peer connected:', r))
                     _torrent.on('download', (b) => this.checkLoadingProgress(_torrent, b))
-                    _torrent.on('noPeers', () => this.emit('progress', torrent, 0, 'Tracking'))
+                    _torrent.on('noPeers', () => this.emit('progress', torrent, 0, 'Searching for peers'))
 
                     // Handle torrent object
                     this.flix = _torrent // Flix = torrent object
