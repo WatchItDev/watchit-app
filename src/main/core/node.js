@@ -12,9 +12,9 @@ const log = require('logplease')
 const DEFAULT_HOLD = 10 * 1000
 
 module.exports = class Node extends EventEmitter {
-    constructor({rootPath}) {
+    constructor({conf} = {conf: {}}) {
         super();
-        this.rootPath = rootPath;
+        this.conf = conf || {};
         this.seedMode = false;
         this.peers = new Set();
         this.ready = false;
@@ -184,9 +184,7 @@ module.exports = class Node extends EventEmitter {
          * Orbit db factory
          */
         return (this.orbit && Promise.resolve(this.orbit))
-            || OrbitDB.createInstance(this.node, {
-                directory: this.rootPath
-            });
+            || OrbitDB.createInstance(this.node, this.conf.orbit);
     }
 
     instanceNode() {
@@ -198,7 +196,7 @@ module.exports = class Node extends EventEmitter {
         return new Promise(async (res) => {
             // If fail to much.. get fuck out
             log.info('Setting up node..');
-            this.node = this.node || await ipfs.start();
+            this.node = this.node || await ipfs.start(this.conf.ipfs);
             if (this.node) return res(this.node)
             // Hold on while raise node
             setTimeout(async () => {

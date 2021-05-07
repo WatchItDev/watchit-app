@@ -35,7 +35,7 @@ const forceKill = async (isInstance) => {
     }
 
     return isInstance.start();
-}, ipfsFactory = async () => {
+}, ipfsFactory = async (conf = {}) => {
     // Find available ports to avoid conflict
     const [api, gateway, swarmTCP, swarmWS] = await Promise.all([
         getPort({port: DEFAULT_API_PORT}),
@@ -49,11 +49,13 @@ const forceKill = async (isInstance) => {
     log.info('Swarm TCP listening on port:', swarmTCP)
     log.info('Swarm WS listening on port:', swarmWS)
 
-    // Init spawn daemon
+    // Init factory spawn daemon
     const isInstance = await Ctl.createController({
         ipfsOptions: {
-            config: defaultConf({api, gateway, swarmTCP, swarmWS}),
-            repo: ROOT_IPFS_DIR
+            ...{
+                config: defaultConf({api, gateway, swarmTCP, swarmWS}),
+                repo: ROOT_IPFS_DIR
+            }, ...conf
         }, ipfsHttpModule: require('ipfs-http-client'),
         ipfsBin: resolveIpfsPaths(), forceKill: true,
         disposable: false, forceKillTimeout: 10 * 1000,

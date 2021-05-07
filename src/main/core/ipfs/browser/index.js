@@ -18,13 +18,15 @@ const defaultIPFS = {
     }
 }
 
-const ipfsFactory = async (repo) => {
+const ipfsFactory = async (conf = {}) => {
 
-    const conf = Object.assign({repo}, defaultIPFS);
+    // Ipfs factory
     const isInstance = await IPFS.create({
-        config: conf, preload: {enabled: false},
-        EXPERIMENTAL: {pubsub: true, ipnsPubsub: true, dht: true},
-        libp2p: {config: {dht: {enabled: true}}},
+        ...{
+            config: defaultIPFS, preload: {enabled: false},
+            EXPERIMENTAL: {pubsub: true, ipnsPubsub: true, dht: true},
+            libp2p: {config: {dht: {enabled: true}}},
+        }, ...conf
     })
 
     try {
