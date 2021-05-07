@@ -5,15 +5,17 @@
 const log = require('logplease').create('CORE')
 const Node = require('./node')
 const Ingest = require('./ingest')
+const BroadCast = require('./broadcast')
 
 module.exports = (ipcMain, runtime = 'node') => {
-    let nodeParams = {}
+
+    let nodeConf = {pubsub: BroadCast}
     if (runtime !== 'web') {
         const {ROOT_ORBIT_DIR} = require('./settings')
-        nodeParams = {rootPath: ROOT_ORBIT_DIR}
+        nodeConf = Object.assign({directory: ROOT_ORBIT_DIR}, nodeConf)
     }
 
-    const orbit = Node.getInstance(nodeParams);
+    const orbit = Node.getInstance(nodeConf);
     const ingest = Ingest.getInstance(orbit);
 
     const initEvents = (e) => {

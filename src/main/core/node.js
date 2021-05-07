@@ -157,6 +157,22 @@ module.exports = class Node extends EventEmitter {
         this.emit('node-chaos', msg)
     }
 
+    setPubSubBroker(broker) {
+        /**
+         * Set custom broker to orbitd
+         * @param {class} broker
+         */
+        if (!this.orbit || !this.node || !broker) return;
+        if (!IsCallable(broker.getInstance)) // Validate if getInstace method exists
+            throw new Error('Broker class must implement .getInstance method');
+
+        log.warn('Set PubSub class', broker.name)
+        // Overwrite default broker if param exists
+        this.orbit._pubsub = broker.createInstance(
+            this.node, // ipfs node
+            this.node.peerId // ipfs peer id
+        )
+    }
 
     async nodeReady(res) {
         /***
@@ -172,6 +188,8 @@ module.exports = class Node extends EventEmitter {
         const address = this.sanitizeKey(raw)
         // Get orbit instance and next line connect providers
         this.orbit = await this.instanceOB();
+        this.setPubSubBroker(this.conf.orbit?.broker)
+
         log.warn('Sanitized key:', address)
         this.emit('node-step', 'Connecting')
         await this.run(address, res);
