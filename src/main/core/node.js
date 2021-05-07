@@ -165,13 +165,11 @@ module.exports = class Node extends EventEmitter {
          */
         if (!this.orbit || !this.node) return;
         if (!broker) this.pubsub = this.orbit._pubsub; // Keep default pubsub class
-        if (!broker.getInstance.call) // Validate if .getInstace method is a function
-            throw new Error('Broker class must implement .getInstance method');
 
         log.warn('Overwrite pubsub broker with', broker.name)
         // Overwrite default broker if param exists
         this.pubsub = this.orbit._pubsub = broker.getInstance(
-            this.node, // ipfs node
+            this.node, // ipfs instance
             this.node.peerId // ipfs peer id
         )
     }
@@ -193,6 +191,7 @@ module.exports = class Node extends EventEmitter {
         this.setPubSubBroker(this.conf.orbit?.pubsub)
 
         log.warn('Sanitized key:', address)
+        this.emit('node-initialized')
         this.emit('node-step', 'Connecting')
         await this.run(address, res);
         await provider.findProv(this.node, raw);

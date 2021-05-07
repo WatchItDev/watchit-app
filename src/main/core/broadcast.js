@@ -1,13 +1,18 @@
-// const EventEmitter = require('events')
+const EventEmitter = require('events')
 const PubSub = require('orbit-db-pubsub')
 
 module.exports = class Broadcast extends PubSub {
-    constructor(ipfs, peerId) {
-        super(ipfs, peerId);
-        this.peerId = peerId; // IPFS node id
+
+    constructor(...props) {
+        super(...props);
+        // Extending EventEmitter
+        this.__proto__ = Object.assign(
+            this.__proto__, EventEmitter.prototype
+        )
     }
 
-    static getInstance(ipfs, peerId) {
-        return new Broadcast(ipfs, peerId)
+
+    static getInstance(...props) {
+        return new Broadcast(...props)
     }
 }
