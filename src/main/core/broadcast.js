@@ -5,6 +5,8 @@ module.exports = class Broadcast extends PubSub {
 
     constructor(...props) {
         super(...props);
+        const [ipfs,] = props
+        this._id = ipfs.peerId;
         // Extending EventEmitter
         this.__proto__ = Object.assign(
             this.__proto__, EventEmitter.prototype

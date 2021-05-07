@@ -136,10 +136,8 @@ module.exports = class Node extends EventEmitter {
             this.emit('node-ready');
         }
 
-        this.db?.events?.on('ready', () => this.emit('loaded'))
-        this.db?.events?.on('replicated', (address, t) => {
-            this.emit('node-replicated', address, t)
-        });
+        this.db?.events?.on('ready', () => this.emit('node-loaded'))
+        this.db?.events?.on('replicated', (address, t) => this.emit('node-replicated', address, t));
         this.db?.events?.on('replicate.progress', (address, hash, entry, progress, have) => {
             this.emit('node-progress', address, hash, entry, progress, have)
         });
@@ -161,20 +159,6 @@ module.exports = class Node extends EventEmitter {
         return this.orbit._pubsub
     }
 
-    setPubSubBroker(broker) {
-        /**
-         * Set custom broker to orbitd
-         * @param {class} broker
-         */
-        if (!this.orbit || !this.node || !broker) return;
-
-        log.warn('Overwrite pubsub broker with', broker.name)
-        // Overwrite default broker if param exists
-        this.orbit._pubsub = broker.getInstance(
-            this.node, // ipfs instance
-            this.node.peerId // ipfs peer id
-        )
-    }
 
     async nodeReady(res) {
         /***
@@ -190,12 +174,10 @@ module.exports = class Node extends EventEmitter {
         const address = this.sanitizeKey(raw)
         // Get orbit instance and next line connect providers
         this.orbit = await this.instanceOB();
-        this.setPubSubBroker(this.conf.orbit?.pubsub)
-
         log.warn('Sanitized key:', address)
-        this.emit('node-initialized')
         this.emit('node-step', 'Connecting')
         await this.run(address, res);
+        this.emit('node-raised')
         await provider.findProv(this.node, raw);
 
     }

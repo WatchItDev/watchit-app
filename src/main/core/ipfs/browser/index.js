@@ -32,7 +32,8 @@ const ipfsFactory = async (conf = {}) => {
     try {
         await isInstance.start();
         const ipfsID = await isInstance.id()
-        ipfsID.kill = async () => isInstance.stop(); // Alias to stop
+        isInstance.kill = async () => isInstance.stop(); // Alias to stop
+        isInstance.peerId = ipfsID.id; // Add virtual attr needed for broadcasting
         log.info('Running ipfs id', ipfsID.id)
         return isInstance
     } catch (e) {

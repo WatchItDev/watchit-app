@@ -9,7 +9,7 @@ const BroadCast = require('./broadcast')
 
 module.exports = (ipcMain, runtime = 'node') => {
 
-    let nodeConf = {pubsub: BroadCast}
+    let nodeConf = {broker: BroadCast}
     if (runtime !== 'web') {
         const {ROOT_ORBIT_DIR} = require('./settings')
         nodeConf = Object.assign({directory: ROOT_ORBIT_DIR}, nodeConf)
@@ -36,10 +36,22 @@ module.exports = (ipcMain, runtime = 'node') => {
             ipcMain.emit('party');
         })
 
+        orbit.on('node-raised', async () => {
+            // Node raised and ready to work with it
+            log.info('Node initialized')
+            log.info('Subscribed to broadcast', orbit.pubsub._id)
+            await orbit.pubsub.subscribe('watchit-broadcast', (t, m, f) => {
+                log.info('New message from broadcast')
+                console.log(m);
+                console.log(f);
+            }, () => log.info('New broadcast peer'))
+            orbit.pubsub.publish('watchit-broadcast', {'message': 'ping'})
+
+        })
+
         // Ingest process listener
         ingest.on('ingest-step', (step) => e.reply('node-step', step))
         ingest.on('ingest-replicated', (c, s, t) => e.reply('node-replicated', c, s, t))
-        // ingest.on('ingest-ready', () => e.reply('node-db-ready'))
 
         // On party success ready then logout
         ipcMain.removeAllListeners('party-success')
@@ -56,6 +68,7 @@ module.exports = (ipcMain, runtime = 'node') => {
         // "node-step" handle event to keep tracking states of node
         orbit.on('node-progress', (_, hash) => setImmediate(() => orbit.queue = hash))
             .on('node-step', (step) => e.reply('node-step', step))
+            .on('node-loaded', e.reply('node-loaded'))
             .on('node-ready', () => {
                 // FIFO queue processing
                 ingest.queueProcessor();
