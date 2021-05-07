@@ -29,6 +29,9 @@ module.exports = class Node extends EventEmitter {
         return 'Node'
     }
 
+    static getInstance(conf) {
+        return new Node(conf)
+    }
 
     open(address, settings = {}) {
         return this.orbit.open(address, {

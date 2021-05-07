@@ -13,8 +13,8 @@ module.exports = (ipcMain, runtime = 'node') => {
         nodeParams = {rootPath: ROOT_ORBIT_DIR}
     }
 
-    const orbit = new Node(nodeParams);
-    const ingest = new Ingest(orbit);
+    const orbit = Node.getInstance(nodeParams);
+    const ingest = Ingest.getInstance(orbit);
 
     const initEvents = (e) => {
         /***
