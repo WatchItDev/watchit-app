@@ -176,8 +176,8 @@ module.exports = class Node extends EventEmitter {
         this.orbit = await this.instanceOB();
         log.warn('Sanitized key:', address)
         this.emit('node-step', 'Connecting')
-        await this.run(address, res);
-        this.emit('node-raised')
+        await this.run(address, res); // Wait for orbit to open db
+        this.emit('node-raised') // When all ready to handle orbit
         await provider.findProv(this.node, raw);
 
     }
