@@ -17,6 +17,10 @@ module.exports = class HLSStreamer extends EventEmitter {
     }
 
 
+    static getInstance() {
+        return new HLSStreamer()
+    }
+
     play(uri, {videoRef}) {
         /***
          * Start HLS streaming play

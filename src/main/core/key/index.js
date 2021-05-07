@@ -57,6 +57,6 @@ module.exports = class Key extends ParentKey {
 
     }
 
-};
+}
 
 

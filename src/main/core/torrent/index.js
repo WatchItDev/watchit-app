@@ -47,6 +47,10 @@ module.exports = class TorrentStreamer extends ParentStreamer {
         return 'BrowserTorrentStreaming'
     }
 
+    static getInstance() {
+        return new TorrentStreamer();
+    }
+
     stop(cb) {
         /**Stop torrent streaming
          * @param {function} callback
