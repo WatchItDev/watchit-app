@@ -35,7 +35,7 @@ const forceKill = async (isInstance) => {
     }
 
     return isInstance.start();
-}, startRunning = async () => {
+}, ipfsFactory = async () => {
     // Find available ports to avoid conflict
     const [api, gateway, swarmTCP, swarmWS] = await Promise.all([
         getPort({port: DEFAULT_API_PORT}),
@@ -96,6 +96,6 @@ const forceKill = async (isInstance) => {
 
 
 module.exports = {
-    start: startRunning
+    start: ipfsFactory
 }
 

@@ -18,7 +18,7 @@ const defaultIPFS = {
     }
 }
 
-const startRunning = async (repo) => {
+const ipfsFactory = async (repo) => {
 
     const conf = Object.assign({repo}, defaultIPFS);
     const isInstance = await IPFS.create({
@@ -35,7 +35,7 @@ const startRunning = async (repo) => {
         return isInstance
     } catch (e) {
         console.log(e);
-        await isInstance.stop().catch(()=> log.error('Error trying to stop node'));
+        await isInstance.stop().catch(() => log.error('Error trying to stop node'));
         log.error('Fail on start: cleanup node')
         return false;
     }
@@ -43,5 +43,5 @@ const startRunning = async (repo) => {
 }
 
 module.exports = {
-    start: startRunning
+    start: ipfsFactory
 }
