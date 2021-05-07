@@ -18,8 +18,8 @@ const IPC_LISTENERS = [
     'node-peer',
     'node-error',
     'node-ready',
-    'node-db-ready',
-    'node-db-loaded',
+    'node-ready',
+    'node-loaded',
     'node-progress',
     'node-replicated'
 ]
@@ -145,9 +145,8 @@ module.exports = class Broker extends EventEmitter {
         /***
          * Trigger event when all db are synced
          */
-        this.renderer.on('node-db-loaded', (e, c) => {
+        this.renderer.on('node-loaded', (e, c) => {
             this.emit('done', c)
-
         })
     }
 
