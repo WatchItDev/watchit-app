@@ -15,7 +15,7 @@ module.exports = (ipcMain, runtime = 'node') => {
         nodeConf = Object.assign({directory: ROOT_ORBIT_DIR}, nodeConf)
     }
 
-    const orbit = Node.getInstance(nodeConf);
+    const orbit = Node.getInstance({orbit: nodeConf});
     const ingest = Ingest.getInstance(orbit);
 
     const initEvents = (e) => {

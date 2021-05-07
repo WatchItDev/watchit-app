@@ -12,12 +12,13 @@ const log = require('logplease')
 const DEFAULT_HOLD = 10 * 1000
 
 module.exports = class Node extends EventEmitter {
-    constructor({conf} = {conf: {}}) {
+    constructor(conf = {}) {
         super();
-        this.conf = conf || {};
+        this.conf = conf;
         this.seedMode = false;
         this.peers = new Set();
         this.ready = false;
+        this.pubsub = null;
         this.closed = false;
         this.orbit = null;
         this.node = null;
@@ -162,13 +163,14 @@ module.exports = class Node extends EventEmitter {
          * Set custom broker to orbitd
          * @param {class} broker
          */
-        if (!this.orbit || !this.node || !broker) return;
-        if (!IsCallable(broker.getInstance)) // Validate if getInstace method exists
+        if (!this.orbit || !this.node) return;
+        if (!broker) this.pubsub = this.orbit._pubsub; // Keep default pubsub class
+        if (!broker.getInstance.call) // Validate if .getInstace method is a function
             throw new Error('Broker class must implement .getInstance method');
 
-        log.warn('Set PubSub class', broker.name)
+        log.warn('Overwrite pubsub broker with', broker.name)
         // Overwrite default broker if param exists
-        this.orbit._pubsub = broker.createInstance(
+        this.pubsub = this.orbit._pubsub = broker.getInstance(
             this.node, // ipfs node
             this.node.peerId // ipfs peer id
         )
@@ -188,7 +190,7 @@ module.exports = class Node extends EventEmitter {
         const address = this.sanitizeKey(raw)
         // Get orbit instance and next line connect providers
         this.orbit = await this.instanceOB();
-        this.setPubSubBroker(this.conf.orbit?.broker)
+        this.setPubSubBroker(this.conf.orbit?.pubsub)
 
         log.warn('Sanitized key:', address)
         this.emit('node-step', 'Connecting')
