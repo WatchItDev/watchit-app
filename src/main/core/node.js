@@ -18,7 +18,6 @@ module.exports = class Node extends EventEmitter {
         this.seedMode = false;
         this.peers = new Set();
         this.ready = false;
-        this.pubsub = null;
         this.closed = false;
         this.orbit = null;
         this.node = null;
@@ -158,17 +157,20 @@ module.exports = class Node extends EventEmitter {
         this.emit('node-chaos', msg)
     }
 
+    get pubsub() {
+        return this.orbit._pubsub
+    }
+
     setPubSubBroker(broker) {
         /**
          * Set custom broker to orbitd
          * @param {class} broker
          */
-        if (!this.orbit || !this.node) return;
-        if (!broker) this.pubsub = this.orbit._pubsub; // Keep default pubsub class
+        if (!this.orbit || !this.node || !broker) return;
 
         log.warn('Overwrite pubsub broker with', broker.name)
         // Overwrite default broker if param exists
-        this.pubsub = this.orbit._pubsub = broker.getInstance(
+        this.orbit._pubsub = broker.getInstance(
             this.node, // ipfs instance
             this.node.peerId // ipfs peer id
         )
