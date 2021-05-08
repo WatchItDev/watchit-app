@@ -9,7 +9,7 @@ const log = require('logplease').create('IPFS')
 const {removeFiles} = require('../../utils');
 const {ROOT_IPFS_DIR} = require('../../settings')
 
-const RETRY_GRACE = 10
+const RETRY_GRACE = 15 * 1000;
 const KILL_TIMEOUT = 15 * 1000;
 const DEFAULT_API_PORT = 6002;
 const DEFAULT_GATEWAY_PORT = 9090;
@@ -79,7 +79,7 @@ const forceKill = async (isInstance) => {
                 await isInstance.stop(); // Force init
                 await initIpfsNode(isInstance)
             }
-        }, RETRY_GRACE * 1000)
+        }, RETRY_GRACE)
         await initIpfsNode(isInstance)
     } catch (e) {
         // Avoid throw default error
