@@ -156,7 +156,7 @@ module.exports = class Node extends EventEmitter {
     }
 
     get pubsub() {
-        if(!this.orbit) return;
+        if (!this.orbit) return {};
         return this.orbit._pubsub
     }
 
