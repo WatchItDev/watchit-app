@@ -44,6 +44,7 @@ module.exports = class Broadcast extends PubSub {
     }
 
     async _handleMessage(message) {
+        //TODO add some validations here to avoid invalid incoming messages
         log.info('Incoming message from broadcast')
         const parsedData = this._fromUint8Array(message.data);
         if (parsedData?.to) return this._execMiddleware(parsedData)
