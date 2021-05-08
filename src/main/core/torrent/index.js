@@ -146,7 +146,7 @@ module.exports = class TorrentStreamer extends ParentStreamer {
                 log.warn('Fetching torrent')
                 this.client.add(torrent, {
                     announce: TORRENT_WEB_TRACKERS
-                }, (_torrent) => {
+                }, async (_torrent) => {
                     log.info(`Initializing torrent client ${this.client.peerId}`)
                     this.emit('progress', torrent, 0, 'Peering')
                     const selectedFile = selectBiggestFile(_torrent.files)
@@ -159,7 +159,7 @@ module.exports = class TorrentStreamer extends ParentStreamer {
                     this.flix.file = selectedFile;
                     this.flix.videoRef = videoRef;
                     this.flix.fileSize = selectedFile.length;
-                    this.runServer(STREAM_PORT, fileIndex); // Run server in appointed port
+                    await this.runServer(STREAM_PORT, fileIndex); // Run server in appointed port
                 })
             })
         } catch (e) {

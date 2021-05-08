@@ -8,7 +8,7 @@ module.exports = class BrowserStreamer extends EventEmitter {
         return new WebTorrent(opts);
     }
 
-    runServer() {
+    async runServer() {
         // abstract method
     }
 

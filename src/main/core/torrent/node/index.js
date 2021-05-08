@@ -1,7 +1,7 @@
 const WebTorrent = require('webtorrent-hybrid')
 const EventEmitter = require('events')
+const getPort = require('get-port');
 const log = require('logplease').create('TORRENT')
-
 
 module.exports = class TorrentStreamer extends EventEmitter {
     _client(opts) {
@@ -9,8 +9,11 @@ module.exports = class TorrentStreamer extends EventEmitter {
         return new WebTorrent(opts);
     }
 
-    runServer(port, fileIndex) {
+
+    async runServer(port, fileIndex) {
         if (this.flix) {
+            // Check port available
+            port = await getPort({port: port})
             log.info('Starting server on port:', port)
             this.flix.href = `http://127.0.0.1:${port}/${fileIndex}`;
             this.flix.createServer(() => {
