@@ -68,7 +68,7 @@ module.exports = (ipcMain, runtime = 'node') => {
         // "node-step" handle event to keep tracking states of node
         orbit.on('node-progress', (_, hash) => setImmediate(() => orbit.queue = hash))
             .on('node-step', (step) => e.reply('node-step', step))
-            .on('node-loaded', ()=> e.reply('node-loaded'))
+            .on('node-loaded', () => e.reply('node-loaded'))
             .on('node-ready', () => {
                 // FIFO queue processing
                 ingest.queueProcessor();

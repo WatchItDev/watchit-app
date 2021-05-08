@@ -11,7 +11,7 @@ module.exports = class TorrentStreamer extends EventEmitter {
 
     runServer(port, fileIndex) {
         if (this.flix) {
-            log.info('Starting server')
+            log.info('Starting server on port:', port)
             this.flix.href = `http://127.0.0.1:${port}/${fileIndex}`;
             this.flix.createServer(() => {
                 // Process request here!!

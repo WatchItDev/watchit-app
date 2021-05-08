@@ -37,7 +37,6 @@ const ipfsFactory = async (conf = {}) => {
         log.info('Running ipfs id', ipfsID.id)
         return isInstance
     } catch (e) {
-        console.log(e);
         await isInstance.stop().catch(() => log.error('Error trying to stop node'));
         log.error('Fail on start: cleanup node')
         return false;
