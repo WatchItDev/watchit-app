@@ -2,6 +2,7 @@ const log = require('logplease').create('BROADCAST')
 const EventEmitter = require('events')
 const PubSub = require('orbit-db-pubsub')
 
+
 module.exports = class Broadcast extends PubSub {
 
     constructor(...props) {
@@ -14,6 +15,17 @@ module.exports = class Broadcast extends PubSub {
             this.__proto__, EventEmitter.prototype
         )
     }
+
+
+    async multicast(topic) {
+        const currentPeers = await this.getPeers(topic)
+
+    }
+
+    getPeers(topic) {
+        return this._ipfs.pubsub.peers(topic)
+    }
+
 
     static getInstance(...props) {
         return new Broadcast(...props)
