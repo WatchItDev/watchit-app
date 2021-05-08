@@ -48,8 +48,8 @@ module.exports = (ports) => {
         "Swarm": {
             "ConnMgr": {
                 "GracePeriod": "20s",
-                "HighWater": 1500,
-                "LowWater": 450,
+                "HighWater": 180,
+                "LowWater": 90,
                 "Type": "basic"
             },
             "EnableAutoRelay": true,
