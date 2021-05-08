@@ -98,6 +98,14 @@ module.exports = class Broker extends EventEmitter {
         return this;
     }
 
+    broadcastMessage(message) {
+        /**
+         * Broadcast message from renderer
+         */
+        this.renderer.send('node-broadcast', message)
+        return this;
+    }
+
 
     listenForNewPeer() {
         /***

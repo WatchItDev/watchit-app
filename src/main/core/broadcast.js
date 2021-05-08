@@ -22,22 +22,32 @@ module.exports = class Broadcast extends PubSub {
             return JSON.parse(
                 Buffer.from(message).toString()
             )
-        } catch (e){
-            console.log(e);
-            return message
+        } catch {
+            return false
         }
     }
 
-    async _handleMessage(message) {
-        const parsedData = message.data
-        console.log(this._fromUint8Array(parsedData));
-
-        super._handleMessage(message)
+    broadcast(message) {
+        // Broadcast message to all subscriptions topics
+        Object.keys(this._subscriptions).forEach((topic) => {
+            log.info('Sending message to:', topic)
+            this.publish(topic, message)
+        })
     }
 
-    async multicast(topic) {
-        // const currentPeers = await this.getPeers(topic)
+    _execMiddleware(message) {
+        // Propagate message to middleware
+        if (message.to in this._middlewares)
+            this._middlewares[message.to].intercept(
+                message // Depends on message the middleware can take and action
+            )
+    }
 
+    async _handleMessage(message) {
+        log.info('Incoming message from broadcast')
+        const parsedData = this._fromUint8Array(message.data);
+        if (parsedData?.to) return this._execMiddleware(parsedData)
+        super._handleMessage(message)
     }
 
     addMiddleware(middleware) {

@@ -38,15 +38,9 @@ module.exports = (ipcMain, runtime = 'node') => {
 
         orbit.on('node-raised', async () => {
             // Node raised and ready to work with it
-            log.info('Node initialized')
-            log.info('Subscribed to broadcast', orbit.pubsub._id)
-
-            await orbit.pubsub.subscribe('watchit-broadcast', (t, m, f) => {
-                log.info('New message from broadcast')
-                console.log(m);
-            }, (t, p) => log.info(`New peer ${p} connected to ${t}`))
-            orbit.pubsub.publish('watchit-broadcast', {'message': 'ping'})
-
+            ipcMain.on('node-broadcast', (message) => {
+                orbit.pubsub.broadcast(message)
+            })
         })
 
         // Ingest process listener
