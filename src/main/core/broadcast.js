@@ -15,11 +15,6 @@ module.exports = class Broadcast extends PubSub {
         )
     }
 
-    checkPeers(topic) {
-        return this._ipfs.pubsub.peers(topic)
-    }
-
-
     static getInstance(...props) {
         return new Broadcast(...props)
     }
