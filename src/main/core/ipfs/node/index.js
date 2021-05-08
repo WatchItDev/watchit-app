@@ -10,6 +10,7 @@ const {removeFiles} = require('../../utils');
 const {ROOT_IPFS_DIR} = require('../../settings')
 
 const RETRY_GRACE = 10
+const KILL_TIMEOUT = 15 * 1000;
 const DEFAULT_API_PORT = 6002;
 const DEFAULT_GATEWAY_PORT = 9090;
 const DEFAULT_SWARM_TCP = 4010;
@@ -58,7 +59,7 @@ const forceKill = async (isInstance) => {
             }, ...conf
         }, ipfsHttpModule: require('ipfs-http-client'),
         ipfsBin: resolveIpfsPaths(), forceKill: true,
-        disposable: false, forceKillTimeout: 10 * 1000,
+        disposable: false, forceKillTimeout: KILL_TIMEOUT,
         args: ['--enable-pubsub-experiment'],
         remote: false, type: 'go'
     })
