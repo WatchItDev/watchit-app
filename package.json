@@ -23,6 +23,7 @@
     "go-ipfs": "^0.6.0"
   },
   "dependencies": {
+    "crypto-js": "^4.0.0",
     "dlnacasts2": "^0.2.0",
     "electron-updater": "^4.3.8",
     "fs-extra": "^9.0.1",
