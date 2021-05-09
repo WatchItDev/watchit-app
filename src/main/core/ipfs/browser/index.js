@@ -22,10 +22,10 @@ const ipfsFactory = async (conf = {}) => {
         isInstance.kill = async () => isInstance.stop(); // Alias to stop
         isInstance.peerId = ipfsID; // Add virtual attr needed for broadcasting
 
-        await Promise.all(confSettings.Bootstrap.map(async (p) => {
-            log.info('connecting', p)
+        Promise.all(confSettings.Bootstrap.map(async (p) => {
+            log.info('Dialing to ', p)
             return await isInstance.swarm.connect(p)
-        }))
+        })).then(() => log.info('Dial done'))
 
         setInterval(async () => console.log(await isInstance.swarm.peers()), 3000)
         log.info('Running ipfs id', ipfsID.id)
