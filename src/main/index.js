@@ -151,7 +151,7 @@ autoUpdater.logger = log;
 autoUpdater.autoDownload = false
 autoUpdater.on('update-available', async () => {
     log.info('New Update');
-    win.webContents.send('update_available');
+    win.webContents.send('update-available');
     await autoUpdater.downloadUpdate().catch(() => {
         console.log('Download update failed');
     });

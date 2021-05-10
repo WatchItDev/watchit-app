@@ -6,11 +6,13 @@ const log = require('logplease').create('CORE')
 const Node = require('./node')
 const Ingest = require('./ingest')
 const BroadCast = require('./broadcast')
+const TorrentMiddleware = require('./torrent/middleware')
 
 module.exports = (ipcMain, runtime = 'node') => {
 
     let nodeConf = {broker: BroadCast}
-    if (runtime !== 'web') {
+    const isWebRuntime = runtime === 'web'
+    if (!isWebRuntime) {
         const {ROOT_ORBIT_DIR} = require('./settings')
         nodeConf = Object.assign({directory: ROOT_ORBIT_DIR}, nodeConf)
     }
@@ -37,8 +39,16 @@ module.exports = (ipcMain, runtime = 'node') => {
         })
 
         orbit.on('node-raised', async () => {
+            if (!isWebRuntime) {
+                // Add torrent middleware to broadcast
+                orbit.pubsub.addMiddleware(
+                    TorrentMiddleware.getInstance(ipcMain, e)
+                )
+            }
+
             // Node raised and ready to work with it
-            ipcMain.on('node-broadcast', (message) => {
+            ipcMain.on('node-broadcast', (e, message) => {
+                // On new message broadcast message
                 orbit.pubsub.broadcast(message)
             })
         })
