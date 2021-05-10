@@ -1,0 +1,482 @@
+//Fork flow text
+.flow-text {
+  @extend .flow-text;
+  font-size: 2rem !important;
+}
+
+.List {
+  border: 1px solid #d9dddd;
+}
+
+.ListItemEven,
+.ListItemOdd {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ListItemEven {
+  background-color: #f8f8f0;
+}
+
+
+.stats {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  &__word {
+    font-size: 1rem;
+    text-align: center;
+    line-height: 1;
+    color: #c6e2ff;
+    //animation: neon .08s ease-in-out infinite alternate;
+    text-shadow: 0 0 6px rgba(202, 228, 225, 0.92),
+    0 0 30px rgba(202, 228, 225, 0.34),
+    0 0 12px rgba(30, 132, 242, 0.52),
+    0 0 21px rgba(30, 132, 242, 0.92),
+    0 0 34px rgba(30, 132, 242, 0.78),
+    0 0 54px rgba(30, 132, 242, 0.92);
+  }
+
+}
+
+//Main pages
+.main-view {
+  //Search box
+  .input-black-box {
+    //width: 32rem !important;
+    width: 45% !important;
+  }
+
+  //Main movies lists
+  .movies-box {
+    height: 83%;
+    width: 100% !important;
+    overflow: hidden !important;
+
+    //Transition image
+    img {
+      @include transition(opacity 1.5s ease-in-out);
+
+      &.locked-img {
+        opacity: 0;
+      }
+
+      &.loaded-img {
+        opacity: 1;
+        border-radius: 0.5rem;
+      }
+    }
+  }
+
+  //Poster main movies lists
+  .movies-poster {
+    padding: 0 !important;
+    margin: 0.5rem !important;
+    width: calc(50% - 1rem);
+  }
+
+  .movies-poster {
+    .hover-poster-trailer {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      display: none;
+      color: #fff;
+      text-shadow: 1px 1px 2px #000;
+      z-index: 1000;
+    }
+
+    .hover-poster-box {
+      //padding: 0.3vh 0.3vw !important;
+      position: absolute;
+      display: none;
+      top: 0;
+      left: 0;
+
+      span, i {
+        font-size: 1rem;
+      }
+
+      .hover-info {
+        @include border-radius(0 5px 5px 0);
+        padding: 0.5rem;
+        background-color: rgba(0, 0, 0, 0.8);
+        max-width: 90%;
+        min-width: 90%;
+
+      }
+    }
+
+    &:hover .hover-poster-box {
+      cursor: pointer;
+      display: block !important;
+    }
+
+    &:hover .hover-poster-trailer {
+      cursor: pointer;
+      display: block !important;
+    }
+  }
+
+  .row-img {
+    display: flex;
+    border-collapse: collapse;
+    width: 100%;
+
+    .item {
+      flex: 1;
+    }
+
+    .item img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+  }
+}
+
+//Main movie details
+.movie-details {
+  width: 100%;
+  z-index: 10;
+  background-color: rgba(0, 0, 0, 0.95);
+
+  //Transition image
+  img {
+    @include transition(opacity 1.5s ease-in-out);
+
+    &.locked-img {
+      opacity: 0;
+    }
+
+    &.loaded-img {
+      opacity: 1;
+      display: block !important;
+      visibility: visible !important;
+    }
+  }
+
+  //Movie details navbar
+  .nav-bar-movie-details {
+    .dropdown-button {
+      @extend .flow-text;
+    }
+  }
+
+}
+
+//Main loader
+.loading-box {
+  top: 0;
+  left: 0;
+  z-index: 1000;
+}
+
+//Top search box
+.input-black-box {
+  //float: right;
+  //top: 0.5rem;
+
+  input, textarea {
+    @include placeholder($gray);
+  }
+
+  textarea {
+    height: 20rem;
+    border: none;
+    outline: none;
+    padding: 10px 0 0 0;
+    resize: none;
+    overflow: hidden;
+  }
+
+  input, textarea, i {
+    font-size: 1rem;
+  }
+
+  .points-loader {
+    width: 2rem !important;
+  }
+
+  .profile-picture-upload {
+    .loaded-img, .placeholder-img {
+      overflow: hidden !important;
+      max-height: 50vh !important;
+    }
+  }
+
+  .input-field-black i {
+    position: absolute !important;
+    top: 1rem;
+    right: 1.3rem;
+    color: $gray;
+  }
+
+
+  .search-result-box-title {
+    i {
+      top: 0.1rem;
+      position: relative;
+    }
+  }
+
+}
+
+.result-search-box {
+  .result-search-box-img {
+    display: inline-block !important;
+  }
+
+  .result-search-box-content {
+    margin-left: 1rem !important;
+    max-width: calc(100% - 3rem);
+
+    strong {
+      display: -webkit-box !important;
+      -webkit-line-clamp: 2;
+      white-space: pre-wrap;
+      -webkit-box-orient: vertical;
+      height: auto;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+}
+
+//Main box media top user
+.profile-media {
+  height: 4rem;
+
+  .bar-loader {
+    width: 3rem;
+    left: 2rem;
+    top: 0.5rem;
+    position: relative;
+  }
+
+  .small-picture {
+    position: relative;
+
+    .profile-picture-img {
+      figure {
+        width: 4rem !important;
+        // height: 2.9rem !important;
+        height: 4rem !important;
+        position: relative;
+        overflow: hidden;
+        left: 0;
+        //top: 0.6rem;
+        top: 0;
+
+        img {
+          position: relative;
+          //top: -1rem;
+          height: auto !important;
+        }
+      }
+    }
+
+    .small-picture-border {
+      figure {
+        width: 4rem !important;
+        height: 4rem !important;
+      }
+
+      position: absolute;
+      top: 0;
+      -webkit-filter: grayscale(100%);
+      filter: grayscale(100%);
+    }
+  }
+
+  .small-user-data {
+    strong {
+      font-size: 1.2rem;
+    }
+
+    a {
+      font-size: 1rem;
+    }
+  }
+}
+
+//Small menu on top
+.top-right-small-menu {
+
+  .icon {
+    margin: 0rem 0.5rem 0 1.2rem;
+    transform: translateY(1px);
+    display: inline-block;
+  }
+
+  .dropdown {
+    i {
+      top: 0.4rem !important;
+    }
+
+    i, span, a {
+      font-size: 1.2rem !important;
+    }
+
+    .dropdown-content {
+      top: 1rem !important;
+    }
+  }
+}
+
+// Main filter bar
+.main-nav-filter-movies {
+  .dropdown {
+    i, span, a {
+      font-size: 1.2rem !important;
+    }
+  }
+}
+
+//Result search
+.result-search-box {
+  @include border-radius(5px);
+  //height: 75vh;
+  background-color: rgba(0, 0, 0, 0.9);
+
+  .search-result-box-details {
+    span, i {
+      font-size: 1rem;
+    }
+  }
+
+  .search-result-box-title {
+    span {
+      font-size: 1.2rem;
+    }
+  }
+
+  strong {
+    font-style: normal !important;
+    font-size: 1.2rem;
+  }
+
+  figure {
+    width: 3rem;
+    height: auto;
+
+    img {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  .collection-item:hover {
+    background-color: rgba(0, 0, 0, 1);
+  }
+}
+
+#notification {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  width: auto;
+  padding: 20px;
+  border-radius: 5px;
+  background-color: white;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  z-index: 10000;
+}
+
+//Videos js player
+.video-js {
+  outline: none !important;
+}
+
+//Video stream and loader
+.player-overlay-loader {
+  height: 100% !important;
+}
+
+.points-loader {
+  #to_be_colored_rect {
+    fill: rgba(26, 55, 65, 0.9) !important;
+  }
+}
+
+.movie-player {
+  .video-stream-fixed {
+    width: 75% !important;
+  }
+
+  .video-stream {
+    @include transition(width 1s ease-in-out);
+    width: 100%;
+
+    .chat-box-toggle {
+      bottom: 3rem;
+      right: 1rem;
+    }
+  }
+
+  .chat-box-fixed {
+    opacity: 1 !important;
+    width: 25% !important;
+  }
+
+  .chat-box-toggle {
+    background-color: transparent;
+    position: absolute;
+
+    &:hover {
+      @include box-shadow(-1px 0 10px #fff);
+    }
+  }
+
+  .chat-box {
+    @include transition(width 1s ease-in-out, opacity 2s ease-in-out);
+    @include box-shadow(2px 0 10px #000);
+    background-color: rgba(256, 256, 256, 0.2);
+    position: absolute;
+    height: 93vh !important;
+    opacity: 0;
+    bottom: 0;
+    right: 0;
+    width: 0;
+
+    .chat-box-header {
+      background-color: rgba(0, 0, 0, 0.2)
+    }
+
+    .chat-box-toggle {
+      @include border-radius(5px 0 0 5px);
+      background-color: #fff !important;
+      bottom: 50%;
+      left: -37px;
+
+      i {
+        @extend .grey-text;
+      }
+    }
+
+    .chat-list {
+      .chat-item {
+        .item-text {
+          margin-top: -5px;
+
+          span {
+            font-size: 1rem;
+          }
+
+          strong {
+            font-size: 1.2rem;
+          }
+        }
+
+        .profile-picture-img {
+          @include border-radius(5px)
+        }
+      }
+    }
+  }
+}
+
