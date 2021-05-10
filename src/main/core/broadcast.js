@@ -37,7 +37,7 @@ module.exports = class Broadcast extends PubSub {
 
     _execMiddleware(message) {
         // Propagate message to middleware
-        if (message.to in this._middlewares)
+        if (message.intercept in this._middlewares)
             this._middlewares[message.to].intercept(
                 message // Depends on message the middleware can take and action
             )
@@ -46,8 +46,10 @@ module.exports = class Broadcast extends PubSub {
     async _handleMessage(message) {
         //TODO add some validations here to avoid invalid incoming messages
         log.info('Incoming message from broadcast')
+        console.log(message);
         const parsedData = this._fromUint8Array(message.data);
-        if (parsedData?.to) return this._execMiddleware(parsedData)
+        console.log(parsedData);
+        if (parsedData?.intercept) return this._execMiddleware(parsedData)
         super._handleMessage(message)
     }
 
