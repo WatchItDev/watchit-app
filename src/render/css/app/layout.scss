@@ -323,6 +323,43 @@
   }
 }
 
+@media (max-width: 500px) {
+  .main-login-box {
+    padding: 1rem;
+
+    section {
+      width: 100%;
+
+      .input-field-black {
+        width: 100%;
+      }
+    }
+  }
+
+  .particles_container {
+    .logo {
+      transform: scale(2) translateY(- 2.7rem);
+    }
+
+    .slogan {
+      font-size: 1.2rem;
+    }
+  }
+
+  .app_loader .loading_progress .loading_title {
+    font-size: 2.3rem;
+  }
+
+  .main-nav-filter-movies .dropdown i {
+    height: 1.2rem;
+    line-height: 1.2rem;
+  }
+
+  .header_search {
+    flex-direction: column;
+  }
+}
+
 @media (min-width: 300px) {
   #drag-bar {
     height: 3.5rem;
