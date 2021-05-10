@@ -1,20 +1,14 @@
 const log = require('logplease').create('BROADCAST')
-const EventEmitter = require('events')
 const PubSub = require('orbit-db-pubsub')
 
 module.exports = class Broadcast extends PubSub {
 
     constructor(...props) {
+        log.warn('Broadcast running')
         super(...props);
         const [ipfs,] = props
         this._id = ipfs.peerId.id;
         this._middlewares = {};
-
-        log.warn('Broadcast running')
-        // Extending EventEmitter
-        this.__proto__ = Object.assign(
-            this.__proto__, EventEmitter.prototype
-        )
     }
 
     _fromUint8Array(message) {
@@ -23,7 +17,7 @@ module.exports = class Broadcast extends PubSub {
                 Buffer.from(message).toString()
             )
         } catch {
-            return false
+            return message
         }
     }
 
@@ -35,27 +29,27 @@ module.exports = class Broadcast extends PubSub {
         })
     }
 
-    _execMiddleware(message) {
+    _execMiddleware(message, rawMessage) {
         // Propagate message to middleware
         if (message.intercept in this._middlewares)
-            this._middlewares[message.to].intercept(
-                message // Depends on message the middleware can take and action
+            this._middlewares[message.intercept].intercept(
+                this, message, rawMessage // Depends on message the middleware can take and action
             )
     }
 
     async _handleMessage(message) {
-        //TODO add some validations here to avoid invalid incoming messages
+        if (Object.is(this._id, message.from)) return;
         log.info('Incoming message from broadcast')
-        console.log(message);
         const parsedData = this._fromUint8Array(message.data);
-        console.log(parsedData);
-        if (parsedData?.intercept) return this._execMiddleware(parsedData)
+        if (parsedData?.intercept) return this._execMiddleware(parsedData, message)
         super._handleMessage(message)
     }
 
     addMiddleware(middleware) {
         // Middleware class name as index
-        this._middlewares[middleware.name] = middleware
+        const middlewareName = middleware.constructor.name
+        log.info(middlewareName, 'middleware registered')
+        this._middlewares[middlewareName] = middleware
     }
 
     getPeers(topic) {
