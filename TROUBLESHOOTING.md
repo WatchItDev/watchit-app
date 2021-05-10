@@ -8,8 +8,8 @@ In this page, we will address some common issues that the users often face while
 On many occasions this happens because ipfs has conflicts with the ports in use.
 
 1) First of all check if you have busy ports:
-    * Check ports: `6002, 9090, 4010, 4011`
-    * Stop services in the ports 
+    * Check busy ports: `6002, 9090, 4010, 4011`
+    * Stop services in the ports above listed  
     * Run the app again
 
 
