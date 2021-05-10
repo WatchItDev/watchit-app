@@ -1,6 +1,6 @@
 const hls = require('hls.js')
 const log = require('logplease').create('HLS')
-const conf = require('./settings/hls')
+const conf = require('./settings')
 const EventEmitter = require('events')
 
 module.exports = class HLSStreamer extends EventEmitter {
