@@ -12,16 +12,16 @@ const log = require('logplease')
 const DEFAULT_HOLD = 10 * 1000
 
 module.exports = class Node extends EventEmitter {
-    constructor({rootPath}) {
+    constructor(conf = {}) {
         super();
-        this.rootPath = rootPath;
+        this.conf = conf;
         this.seedMode = false;
         this.peers = new Set();
         this.ready = false;
-        this.closed = false;
-        this.orbit = null;
-        this.node = null;
-        this.db = null;
+        this.closed = false; //
+        this.orbit = null; // Orbit db instance
+        this.node = null; // Running node instance
+        this.db = null; // Current opened db
     }
 
 
@@ -29,6 +29,9 @@ module.exports = class Node extends EventEmitter {
         return 'Node'
     }
 
+    static getInstance(conf) {
+        return new Node(conf)
+    }
 
     open(address, settings = {}) {
         return this.orbit.open(address, {
@@ -133,10 +136,8 @@ module.exports = class Node extends EventEmitter {
             this.emit('node-ready');
         }
 
-        this.db?.events?.on('ready', () => this.emit('loaded'))
-        this.db?.events?.on('replicated', (address, t) => {
-            this.emit('node-replicated', address, t)
-        });
+        this.db?.events?.on('ready', () => this.emit('node-loaded'))
+        this.db?.events?.on('replicated', (address, t) => this.emit('node-replicated', address, t));
         this.db?.events?.on('replicate.progress', (address, hash, entry, progress, have) => {
             this.emit('node-progress', address, hash, entry, progress, have)
         });
@@ -152,6 +153,11 @@ module.exports = class Node extends EventEmitter {
         log.warn('Party rock');
         await this.close(true);
         this.emit('node-chaos', msg)
+    }
+
+    get pubsub() {
+        if (!this.orbit) return {};
+        return this.orbit._pubsub
     }
 
 
@@ -171,7 +177,8 @@ module.exports = class Node extends EventEmitter {
         this.orbit = await this.instanceOB();
         log.warn('Sanitized key:', address)
         this.emit('node-step', 'Connecting')
-        await this.run(address, res);
+        await this.run(address, res); // Wait for orbit to open db
+        this.emit('node-raised') // When all ready to handle orbit
         await provider.findProv(this.node, raw);
 
     }
@@ -181,9 +188,7 @@ module.exports = class Node extends EventEmitter {
          * Orbit db factory
          */
         return (this.orbit && Promise.resolve(this.orbit))
-            || OrbitDB.createInstance(this.node, {
-                directory: this.rootPath
-            });
+            || OrbitDB.createInstance(this.node, this.conf.orbit);
     }
 
     instanceNode() {
@@ -195,7 +200,7 @@ module.exports = class Node extends EventEmitter {
         return new Promise(async (res) => {
             // If fail to much.. get fuck out
             log.info('Setting up node..');
-            this.node = this.node || await ipfs.start();
+            this.node = this.node || await ipfs.start(this.conf.ipfs);
             if (this.node) return res(this.node)
             // Hold on while raise node
             setTimeout(async () => {

@@ -2,7 +2,7 @@
  * Created by gmena on 05-03-17.
  */
 //Storage manifest
-import manifest from 'settings/storage'
+import settings from 'settings'
 
 const Storage = {
     __toObj: {},
@@ -21,7 +21,7 @@ const Storage = {
             return b;
         }, this.__toObj);
     },
-    get(parse = true, man = manifest) {
+    get(parse = true, man = settings.storage) {
         return {
             from: this.__getObj(
                 man, function (key) {
@@ -32,7 +32,7 @@ const Storage = {
             )
         }
     },
-    add(data, serialize = true, man = manifest) {
+    add(data, serialize = true, man = settings.storage) {
         return {
             to: this.__getObj(
                 man, function (key) {
@@ -43,7 +43,7 @@ const Storage = {
             )
         }
     },
-    remove(man = manifest) {
+    remove(man = settings.storage) {
         return this.__getObj(
             man, function (key) {
                 //Remove item from localStorage

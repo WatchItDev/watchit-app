@@ -5,16 +5,20 @@
 const log = require('logplease').create('CORE')
 const Node = require('./node')
 const Ingest = require('./ingest')
+const BroadCast = require('./broadcast')
+const TorrentMiddleware = require('./torrent/middleware')
 
 module.exports = (ipcMain, runtime = 'node') => {
-    let nodeParams = {}
-    if (runtime !== 'web') {
+
+    let nodeConf = {broker: BroadCast}
+    const isWebRuntime = runtime === 'web'
+    if (!isWebRuntime) {
         const {ROOT_ORBIT_DIR} = require('./settings')
-        nodeParams = {rootPath: ROOT_ORBIT_DIR}
+        nodeConf = Object.assign({directory: ROOT_ORBIT_DIR}, nodeConf)
     }
 
-    const orbit = new Node(nodeParams);
-    const ingest = new Ingest(orbit);
+    const orbit = Node.getInstance({orbit: nodeConf});
+    const ingest = Ingest.getInstance(orbit);
 
     const initEvents = (e) => {
         /***
@@ -34,10 +38,24 @@ module.exports = (ipcMain, runtime = 'node') => {
             ipcMain.emit('party');
         })
 
+        orbit.on('node-raised', async () => {
+            if (!isWebRuntime) {
+                // Add torrent middleware to broadcast
+                orbit.pubsub.addMiddleware(
+                    TorrentMiddleware.getInstance(ipcMain, e)
+                )
+            }
+
+            // Node raised and ready to work with it
+            ipcMain.on('node-broadcast', (e, message) => {
+                // On new message broadcast message
+                orbit.pubsub.broadcast(message)
+            })
+        })
+
         // Ingest process listener
         ingest.on('ingest-step', (step) => e.reply('node-step', step))
         ingest.on('ingest-replicated', (c, s, t) => e.reply('node-replicated', c, s, t))
-        // ingest.on('ingest-ready', () => e.reply('node-db-ready'))
 
         // On party success ready then logout
         ipcMain.removeAllListeners('party-success')
@@ -54,6 +72,7 @@ module.exports = (ipcMain, runtime = 'node') => {
         // "node-step" handle event to keep tracking states of node
         orbit.on('node-progress', (_, hash) => setImmediate(() => orbit.queue = hash))
             .on('node-step', (step) => e.reply('node-step', step))
+            .on('node-loaded', () => e.reply('node-loaded'))
             .on('node-ready', () => {
                 // FIFO queue processing
                 ingest.queueProcessor();

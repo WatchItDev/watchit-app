@@ -1,4 +1,5 @@
 const orbit = require('orbit-db')
+const SHA256 = require("crypto-js/sha256");
 const ParentKey = require(
     // Handle multiple envs for browser or node package
     typeof process === 'undefined' ? './browser' : './node'
@@ -8,6 +9,10 @@ module.exports = class Key extends ParentKey {
 
     static generateKey(data) {
         return this.addToStorage(data)
+    }
+
+    static calculateHash(nodeId, currentKey) {
+        return SHA256(nodeId + currentKey)
     }
 
     static isValidKey(key) {
@@ -57,6 +62,6 @@ module.exports = class Key extends ParentKey {
 
     }
 
-};
+}
 
 

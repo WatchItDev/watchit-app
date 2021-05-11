@@ -26,19 +26,9 @@ export default class AppMoviesPlayerSwarm extends React.PureComponent {
     }
 
     componentDidMount() {
-        let flix = this.props.flix;
         //Interval to check for swarm info
         this.timeout = setInterval(() => {
-            this.setState({
-                dSpeed: (flix.swarm.downloadSpeed() / 1024).toFixed(2),
-                uSpeed: (flix.swarm.uploadSpeed() / 1024).toFixed(2),
-                dLoaded: parseInt(((flix.swarm.cachedDownload + flix.swarm.downloaded) / 1024) / 1024, 10),
-                fSize: parseInt((flix.fileSize / 1024) / 1024, 10),
-                aPeers: (flix.swarm.wires.filter(function (w) {
-                    return !w.peerChoking
-                }).length).toString()
-
-            })
+            this.setState(this.props.flix.stats)
         }, 1000);
     }
 
@@ -56,7 +46,7 @@ export default class AppMoviesPlayerSwarm extends React.PureComponent {
                                 "red-text" : this.state.aPeers < 15 && this.state.aPeers > 10 ?
                                 "orange-text" : "green-text"
                         }>
-                            {this.state.aPeers} {this.state.aPeers > 1 ? 'peers' : 'peer' }
+                            {this.state.aPeers} {this.state.aPeers > 1 ? 'peers' : 'peer'}
                         </span>
                     </li>
                     <li className="white-text">
@@ -64,35 +54,25 @@ export default class AppMoviesPlayerSwarm extends React.PureComponent {
                             <i className={'icon-arrow-bold-down margin-right-5'}/>
                         </span>
                         <span
-                            className={
-                                parseInt(this.state.dSpeed) <= 100 || this.state.dLoaded > this.state.fSize ?
-                                    "red-text" : this.state.dSpeed < 250 && this.state.dSpeed > 100 ?
-                                    "orange-text" : "green-text"
-                            }>
-                            {(this.state.dLoaded > this.state.fSize
-                                && 0.00) || this.state.dSpeed} kb/s
+                            className={"green-text"}>
+                            {(this.state.dLoaded > this.state.fSize && 0.00) || this.state.dSpeed}
                         </span>
                         <span className={'bold'}> / </span>
                         <span className="bold">
                             <i className={'icon-arrow-bold-up margin-right-5'}/>
                         </span>
-                        <span className={this.state.uSpeed <= 50 ?
-                            "red-text" : this.state.uSpeed < 100 && this.state.uSpeed > 50 ?
-                                "orange-text" : "green-text"
-                        }>
-                            {this.state.uSpeed} kb/s
+                        <span className={"green-text"}>
+                            {this.state.uSpeed}
                         </span>
-
-
                     </li>
 
                     <li className="white-text">
                         <span className="bold">
                             <i className={'icon-download margin-right-5'}/>
                         </span>
-                        <strong>{this.state.dLoaded > this.state.fSize ? this.state.fSize : this.state.dLoaded}MB</strong>
+                        <strong>{this.state.dLoaded}</strong>
                         <span> of </span>
-                        <strong>{this.state.fSize} MB</strong>
+                        <strong>{this.state.fSize} </strong>
                     </li>
                 </ul>
             )

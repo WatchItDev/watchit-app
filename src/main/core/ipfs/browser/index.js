@@ -1,41 +1,37 @@
 const IPFS = require('ipfs');
 const log = require('logplease').create('IPFS')
+const libp2p = require('./p2p')
+const defaultConf = require('./settings');
 
-const defaultIPFS = {
-    "Discovery": {"MDNS": {"Enabled": true, "Interval": 10}},
-    "Bootstrap": [
-        "/dns4/watchitapp.site/tcp/4002/wss/p2p/QmSHSTNyKJ1EGVVKj7dKZFmxj9FaBfE7S23MNTj1Jwungg",
-        "/dns4/direct.vps1.phillm.net/tcp/4002/wss/p2p/QmbPFTECrXd7o2HS2jWAJ2CyAckv3Z5SFy8gnEHKxxH52g",
-        "/dns4/direct.vps2.phillm.net/tcp/4002/wss/p2p/12D3KooWQw3vx2E4FKpL9GHC9BpFya1MXVUFEVBAQVhMDkreCqwF",
-        "/dns4/direct.vps3.phillm.net/tcp/4002/wss/p2p/12D3KooWD4Z47R1pnzTxCVQAiTKTHasWU2xTAcffyC38BNKM68yw",
-    ],
-    "Addresses": {
-        "Swarm": [
-            '/dns4/wrtc-star1.par.dwebops.pub/tcp/443/wss/p2p-webrtc-star/',
-            '/dns4/wrtc-star2.sjc.dwebops.pub/tcp/443/wss/p2p-webrtc-star/',
-            '/dns4/webrtc-star.discovery.libp2p.io/tcp/443/wss/p2p-webrtc-star/',
-        ]
-    }
-}
 
-const startRunning = async (repo) => {
+const ipfsFactory = async (conf = {}) => {
 
-    const conf = Object.assign({repo}, defaultIPFS);
+    // Ipfs factory
+    const confSettings = defaultConf()
     const isInstance = await IPFS.create({
-        config: conf, preload: {enabled: false},
-        EXPERIMENTAL: {pubsub: true, ipnsPubsub: true, dht: true},
-        libp2p: {config: {dht: {enabled: true}}},
+        ...{
+            config: confSettings, preload: {enabled: false},
+            EXPERIMENTAL: {pubsub: true},
+            ...{libp2p},
+        }, ...conf
     })
 
     try {
         await isInstance.start();
         const ipfsID = await isInstance.id()
-        ipfsID.kill = async () => isInstance.stop(); // Alias to stop
+        isInstance.kill = async () => isInstance.stop(); // Alias to stop
+        isInstance.peerId = ipfsID; // Add virtual attr needed for broadcasting
+
+        // Direct dialing to nodes
+        Promise.all(confSettings.Bootstrap.map(async (p) => {
+            log.info('Dialing to ', p) // Log for dialed peers
+            return await isInstance.swarm.connect(p).catch(() => log.warn('Fail dialing', p))
+        })).then(() => log.info('Dial done'))
+
         log.info('Running ipfs id', ipfsID.id)
         return isInstance
     } catch (e) {
-        console.log(e);
-        await isInstance.stop().catch(()=> log.error('Error trying to stop node'));
+        await isInstance.stop().catch(() => log.error('Error trying to stop node'));
         log.error('Fail on start: cleanup node')
         return false;
     }
@@ -43,5 +39,5 @@ const startRunning = async (repo) => {
 }
 
 module.exports = {
-    start: startRunning
+    start: ipfsFactory
 }

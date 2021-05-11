@@ -188,14 +188,14 @@ export default class AppMoviesPlayer extends React.Component {
     }
 
     onReady = (url, ...rest) => {
-        log.info('Ready to play movie: ' + url);
         if (url) { // Force update with url if passed
+            log.info('Ready to play movie: ' + url);
             const [mime] = rest // Default streaming type
-            this.setState({url: url, type: mime}, () => {
-                this.props.onReady &&
-                this.props.onReady(url, ...rest);
-            });
+            this.setState({url: url, type: mime});
         }
+
+        this.props.onReady &&
+        this.props.onReady(...rest);
     }
 
     onProgress = (...args) => {

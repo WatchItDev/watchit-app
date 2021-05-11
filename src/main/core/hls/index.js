@@ -1,6 +1,6 @@
 const hls = require('hls.js')
 const log = require('logplease').create('HLS')
-const conf = require('./settings/hls')
+const conf = require('./settings')
 const EventEmitter = require('events')
 
 module.exports = class HLSStreamer extends EventEmitter {
@@ -17,6 +17,10 @@ module.exports = class HLSStreamer extends EventEmitter {
     }
 
 
+    static getInstance() {
+        return new HLSStreamer()
+    }
+
     play(uri, {videoRef}) {
         /***
          * Start HLS streaming play
@@ -31,7 +35,6 @@ module.exports = class HLSStreamer extends EventEmitter {
         if (hls.isSupported()) {
             log.warn(`Starting hls: ${uri}`)
             this.hls = new hls(conf)
-            // uri = 'http://gateway.anime4all.net/ipfs/QmRLPbxAadtEWLtRVnP92Zh29f34kewEfEJrqx7z5WdnFb/index.m3u8'
             this.hls.loadSource(uri);
             this.hls.attachMedia(videoRef)
             // When media attached then try to play streaming!!

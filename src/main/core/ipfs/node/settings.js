@@ -1,4 +1,4 @@
-module.exports = () => {
+module.exports = (ports) => {
 
     return {
         "Gateway": {
@@ -7,22 +7,14 @@ module.exports = () => {
             "RootRedirect": "",
             "Writable": false,
             "HTTPHeaders": {
-                "Access-Control-Allow-Credentials": [
-                    "true"
-                ],
+                "Access-Control-Allow-Credentials": ["true"],
+                "Access-Control-Allow-Origin": ["*"],
+                "Access-Control-Expose-Headers": ["Location"],
+                "Access-Control-Allow-Methods": ["GET"],
                 "Access-Control-Allow-Headers": [
                     "X-Requested-With",
                     "Range",
                     "User-Agent"
-                ],
-                "Access-Control-Allow-Origin": [
-                    "*"
-                ],
-                "Access-Control-Expose-Headers": [
-                    "Location"
-                ],
-                "Access-Control-Allow-Methods": [
-                    "GET"
                 ]
             }
         },
@@ -36,13 +28,13 @@ module.exports = () => {
             "/ip4/209.222.98.165/tcp/4001/p2p/12D3KooWAH9FypmaduofuBTtubSHVJghxW35aykce23vDHjfhiAd"
         ],
         "Addresses": {
-            "API": "/ip4/127.0.0.1/tcp/6002",
-            "Gateway": "/ip4/127.0.0.1/tcp/9090",
+            "API": `/ip4/127.0.0.1/tcp/${ports.api}`, // default 6002
+            "Gateway": `/ip4/127.0.0.1/tcp/${ports.gateway}`, // default 9090
             "Announce": [],
             "NoAnnounce": [],
             "Swarm": [
-                '/ip4/0.0.0.0/tcp/4010',
-                '/ip4/0.0.0.0/tcp/4011/ws',
+                `/ip4/0.0.0.0/tcp/${ports.swarmTCP}`, // default 4010
+                `/ip4/0.0.0.0/tcp/${ports.swarmWS}/ws`, //default 4011
                 "/ip6/::/tcp/4003",
                 "/ip6/::/udp/4003/quic"
             ],
@@ -56,8 +48,8 @@ module.exports = () => {
         "Swarm": {
             "ConnMgr": {
                 "GracePeriod": "20s",
-                "HighWater": 1500,
-                "LowWater": 450,
+                "HighWater": 180,
+                "LowWater": 90,
                 "Type": "basic"
             },
             "EnableAutoRelay": true,
@@ -66,9 +58,10 @@ module.exports = () => {
         "Discovery": {"MDNS": {"Enabled": true, "Interval": 10}},
         "Peering": {
             "Peers": [
-                {"ID": "QmSHSTNyKJ1EGVVKj7dKZFmxj9FaBfE7S23MNTj1Jwungg", "Addrs": ["/ip4/34.214.114.130/tcp/4001"]},
+                {"ID": "QmSHSTNyKJ1EGVVKj7dKZFmxj9FaBfE7S23MNTj1Jwungg", "Addrs": ["/ip4/54.184.40.53/tcp/4001"]},
                 {"ID": "QmVzpedLC9oeUPsZZmVFZLZo12sMk6CfXpG2ykUj3xdwTa", "Addrs": ["/ip4/34.210.174.172/tcp/4001"]},
                 {"ID": "QmbPFTECrXd7o2HS2jWAJ2CyAckv3Z5SFy8gnEHKxxH52g", "Addrs": ["/ip4/144.172.69.157/tcp/4001"]},
+                {"ID": "QmVPdm5PwdEb2sPTvaZTdx1bvntZQfWurFwzgLYAapkJXr", "Addrs": ["/ip4/51.159.132.97/tcp/4001"]},
                 {
                     "ID": "12D3KooWQw3vx2E4FKpL9GHC9BpFya1MXVUFEVBAQVhMDkreCqwF",
                     "Addrs": ["/ip4/185.215.224.79/tcp/4001"]

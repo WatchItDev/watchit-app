@@ -13,7 +13,7 @@ module.exports = class Providers {
                 await node.swarm.connect(m, {timeout: 1000})
                 log.info(`Connected to`, m);
             } catch (e) {
-                log.error(`Cannot connect to`, m);
+                log.warn(`Cannot connect to`, m);
             }
         }
     }

@@ -5,7 +5,11 @@ const renderer = require(
 )
 
 // Construct broker with renderer
-module.exports = new Broker(
-    renderer // WebIPC || Electron.MainIPC
-)
+module.exports = class BrokerFactory {
+    static getInstance() {
+        return new Broker(
+            renderer // WebIPC || Electron.MainIPC
+        )
+    }
+}
 

@@ -1,6 +1,6 @@
 const EventEmitter = require('events')
 
-module.exports = class Cast extends EventEmitter {
+module.exports = class BrowserCast extends EventEmitter {
     constructor() {
         super()
         this.players = []

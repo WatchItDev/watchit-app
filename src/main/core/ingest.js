@@ -14,6 +14,10 @@ module.exports = class Ingest extends EventEmitter {
 
     }
 
+    static getInstance(orbit) {
+        return new Ingest(orbit)
+    }
+
     cleanInterval() {
         if (!this.queueInterval) return;
         log.warn('Cleaning queue interval')
