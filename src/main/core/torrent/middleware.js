@@ -1,7 +1,6 @@
 const log = require('logplease').create('TORRENT_MIDDLEWARE')
 const TorrentStream = require('./index')
 const SEED_SIGNAL = 'middleware-torrent-seed'
-const ALLOWED_SIGNALS = [SEED_SIGNAL]
 
 module.exports = class TorrentStreamMiddleware {
 
@@ -9,20 +8,15 @@ module.exports = class TorrentStreamMiddleware {
         this.broker = broker;
         this.channel = channel;
         this.streamer = null;
-        this.actives = {};
-        this.addSignalListeners();
+        this.actives = this.onhold = {}; // Keep tracking
+        this.broker.on(SEED_SIGNAL, this._runTorrentSeed)
     }
 
-    addSignalListeners() {
-        ALLOWED_SIGNALS.forEach((e) => {
-            this.broker.on(e, this.signalCall)
-        })
-    }
-
-    _runTorrentSeed(payload) {
-        this.streamer = TorrentStream.getInstance()
-        this.streamer.play(payload)
-        this.actives[SEED_SIGNAL] = true;
+    _runTorrentSeed(e, response) {
+        console.log(response);
+        // this.streamer = TorrentStream.getInstance()
+        // this.streamer.play(payload)
+        // this.actives[SEED_SIGNAL] = true;
     }
 
     uiIntercept(message, raw) {
@@ -31,25 +25,14 @@ module.exports = class TorrentStreamMiddleware {
         const uiMessage = `Peer ${raw.from} requesting seed movie`
         log.info('Waiting for request approval')
         log.info(uiMessage)
-        // Emit message to UI
+        // Emit authorization request to host
+        this.onhold[message.signal] = message?.payload;
         this.channel.reply(message.signal, uiMessage)
-    }
-
-    signalCall(e, signal) {
-        const signals = {
-            SEED_SIGNAL: this._runTorrentSeed
-        }
-
-        if (signal in signals)
-            return signals[signal]
-        return false;
     }
 
     intercept(e, message, rawMessage) {
         //What we do when incoming message?
-        if (ALLOWED_SIGNALS.includes(message?.signal)) {
-            this.uiIntercept(message, rawMessage)
-        }
+        this.uiIntercept(message, rawMessage)
     }
 
     static getInstance(...props) {
