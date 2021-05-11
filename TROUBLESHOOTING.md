@@ -13,7 +13,7 @@ How solve it?
 * Run the app again
 
 ### Issue: `hangs connecting` [#33](https://github.com/ZorrillosDev/watchit-desktop/issues/33)
-This happens when orbit cannot find peers that share the metadata with it. The metadata replication is constantly updating adding new content, so the versions of each metadata are out of date and the workers simply stop sharing it. The public key is pointing to different versions in each change, so the way to solve it is:
+This happens when orbitdb cannot find peers that share metadata with it. The metadata replication is updated to add new content, so it is likely that you are accessing an outdated version of the metadata. The public key points to different versions on each change, so it is likely that workers simply stop sharing it.
 
 How solve it?
 * Please logout and try login again with the key.
