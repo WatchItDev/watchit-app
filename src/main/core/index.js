@@ -6,7 +6,6 @@ const log = require('logplease').create('CORE')
 const Node = require('./node')
 const Ingest = require('./ingest')
 const BroadCast = require('./broadcast')
-const TorrentMiddleware = require('./torrent/middleware')
 
 module.exports = (ipcMain, runtime = 'node') => {
 
@@ -39,13 +38,6 @@ module.exports = (ipcMain, runtime = 'node') => {
         })
 
         orbit.on('node-raised', async () => {
-            if (!isWebRuntime) {
-                // Add torrent middleware to broadcast
-                orbit.pubsub.addMiddleware(
-                    TorrentMiddleware.getInstance(ipcMain, e)
-                )
-            }
-
             // Node raised and ready to work with it
             ipcMain.on('node-broadcast', (e, message) => {
                 // On new message broadcast message

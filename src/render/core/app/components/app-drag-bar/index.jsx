@@ -1,12 +1,9 @@
 import React from 'react';
-import log from 'logger'
 import Logo from 'components/util-header-logo'
 import AppUpdater from 'components/util-updater'
-import AppNotify from 'components/util-notify'
 
 const electron = window.require('electron');
 const ipcRenderer = electron.ipcRenderer;
-const MIDDLEWARE_TORRENT_EVENT = 'middleware-torrent-seed'
 const UPDATER_EVENT = 'update-available'
 const DEFAULT_UPDATER_MESSAGE = 'A new update is available. The app it is being updated and will restart on completion...'
 
@@ -28,24 +25,14 @@ export default class DragBar extends React.PureComponent {
 
 
     componentDidMount() {
-        ipcRenderer.removeAllListeners(MIDDLEWARE_TORRENT_EVENT)
         ipcRenderer.removeAllListeners(UPDATER_EVENT);
-        ipcRenderer.on(MIDDLEWARE_TORRENT_EVENT, (e, m) => this.setState({seed: m}))
         ipcRenderer.on(UPDATER_EVENT, () => this.setState({updater: DEFAULT_UPDATER_MESSAGE}));
-
         window.removeEventListener('online', this.updateOnlineStatus)
         window.removeEventListener('offline', this.updateOnlineStatus)
         window.addEventListener('online', this.updateOnlineStatus)
         window.addEventListener('offline', this.updateOnlineStatus)
     }
 
-    startSeeding = () => {
-        // Reply to main process to start seeding
-        log.info('Accepted seed request')
-        ipcRenderer.send(MIDDLEWARE_TORRENT_EVENT, {
-            signal: MIDDLEWARE_TORRENT_EVENT, payload: {}
-        })
-    }
 
     closeWin() {
         //'close'
@@ -67,14 +54,7 @@ export default class DragBar extends React.PureComponent {
                         className={`relative transparent z-depth-100 z-index-1000`}>
                     <Logo/>
                     {this.state.updater && <AppUpdater>{this.state.updater}</AppUpdater>}
-                    {this.state.seed && <AppNotify notify={this.state.seed}>
-                        <div>
-                            <p>{this.state.seed}</p>
-                            <button onClick={this.startSeeding}>Accept</button>
-                        </div>
-                    </AppNotify>}
-
-                    <ul className="list-unlisted relative d-flex align-items-center">
+                     <ul className="list-unlisted relative d-flex align-items-center">
                         <li onClick={(e) => this.minimizeWin(e)} className="margin-right-4 d-flex align-items-center">
                             <i className="icon-circle-with-minus orange-text"/>
                         </li>

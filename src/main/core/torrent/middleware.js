@@ -13,16 +13,17 @@ module.exports = class TorrentStreamMiddleware {
     }
 
     _runTorrentSeed(e, response) {
-        console.log(response);
-        // this.streamer = TorrentStream.getInstance()
-        // this.streamer.play(payload)
-        // this.actives[SEED_SIGNAL] = true;
+        if (!('signal' in response) || !('payload' in response))
+            return false; // Not needed nada incoming
+        this.streamer = TorrentStream.getInstance()
+        this.streamer.play(response.payload)
+        this.actives[SEED_SIGNAL] = true;
     }
 
     uiIntercept(message, raw) {
         // Avoid seeding broadcast overflow
         if (message.signal in this.actives) return;
-        const uiMessage = `Peer ${raw.from} requesting seed movie`
+        const uiMessage = `Peer requesting seed movie`
         log.info('Waiting for request approval')
         log.info(uiMessage)
         // Emit authorization request to host
