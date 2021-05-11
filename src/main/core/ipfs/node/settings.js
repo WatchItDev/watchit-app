@@ -58,7 +58,7 @@ module.exports = (ports) => {
         "Discovery": {"MDNS": {"Enabled": true, "Interval": 10}},
         "Peering": {
             "Peers": [
-                {"ID": "QmSHSTNyKJ1EGVVKj7dKZFmxj9FaBfE7S23MNTj1Jwungg", "Addrs": ["/ip4/34.214.114.130/tcp/4001"]},
+                {"ID": "QmSHSTNyKJ1EGVVKj7dKZFmxj9FaBfE7S23MNTj1Jwungg", "Addrs": ["/ip4/54.184.40.53/tcp/4001"]},
                 {"ID": "QmVzpedLC9oeUPsZZmVFZLZo12sMk6CfXpG2ykUj3xdwTa", "Addrs": ["/ip4/34.210.174.172/tcp/4001"]},
                 {"ID": "QmbPFTECrXd7o2HS2jWAJ2CyAckv3Z5SFy8gnEHKxxH52g", "Addrs": ["/ip4/144.172.69.157/tcp/4001"]},
                 {"ID": "QmVPdm5PwdEb2sPTvaZTdx1bvntZQfWurFwzgLYAapkJXr", "Addrs": ["/ip4/51.159.132.97/tcp/4001"]},
