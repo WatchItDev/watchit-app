@@ -110,7 +110,7 @@ module.exports = class TorrentStreamer extends ParentStreamer {
         }
     }
 
-    play(torrent, {videoRef}) {
+    play(torrent, {videoRef} = {}) {
         /** Start playing torrent
          * @param {string} torrent
          * @return object
