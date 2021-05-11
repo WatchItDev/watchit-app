@@ -18,10 +18,10 @@ module.exports = class Node extends EventEmitter {
         this.seedMode = false;
         this.peers = new Set();
         this.ready = false;
-        this.closed = false;
-        this.orbit = null;
-        this.node = null;
-        this.db = null;
+        this.closed = false; //
+        this.orbit = null; // Orbit db instance
+        this.node = null; // Running node instance
+        this.db = null; // Current opened db
     }
 
 
