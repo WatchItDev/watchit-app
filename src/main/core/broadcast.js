@@ -33,7 +33,7 @@ module.exports = class Broadcast extends PubSub {
         // Propagate message to middleware
         if (message.intercept in this._middlewares)
             this._middlewares[message.intercept].intercept(
-                this, message, rawMessage // Depends on message the middleware can take and action
+                this, message, rawMessage // Depends on message the middleware can take any action
             )
     }
 
