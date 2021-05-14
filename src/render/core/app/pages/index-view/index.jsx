@@ -5,7 +5,6 @@ import AppNav from 'components/app-movies-nav-bar/'
 import AppSearch from 'components/app-movies-search/'
 import AppLoader from 'components/app-movie-player-loader'
 import StatsValue from "components/util-stats";
-import AppNotifyAlert from "components/util-notify";
 import BoxLoader from 'components/util-box-loader'
 import Movie from 'resource/movies'
 
@@ -319,10 +318,6 @@ export default class MovieIndex extends React.Component {
     render() {
         return (
             <>
-                <AppNotifyAlert>
-                    Esta es una alerta de prueba, vamos a ver que pasa haha !
-                </AppNotifyAlert>
-
                 {
                     this.state.showDetailsFor &&
                     <AppMovieDetails
