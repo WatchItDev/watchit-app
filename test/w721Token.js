@@ -5,7 +5,7 @@ contract('Token', ([owner, minter, pauser, holder1, holder2]) => {
     let token, tokenId;
     const _name = "WMediaToken"
     const _symbol = "WMT"
-    const tokenUri = 'QmPXME1oRtoT627YKaDPDQ3PwA8tdP9rWuAAweLzqSwAWT/looky.png'
+    const tokenUri = 'ipfs://QmPXME1oRtoT627YKaDPDQ3PwA8tdP9rWuAAweLzqSwAWT/looky.png'
 
     beforeEach(async () => {
         token = await Token.new(_name, _symbol)
