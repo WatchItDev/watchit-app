@@ -8,7 +8,10 @@ contract W721Token is ERC721URIStorage {
     Counters.Counter private _tokenIds;
     uint public tokenCount = 0;
     string private _extendedURI = "";
-    constructor (string memory name_, string memory symbol_) ERC721("WMediaToken", "WMT") {}
+
+    constructor (string memory name_, string memory symbol_) ERC721("WMediaToken", "WMT") {
+        _setBaseURI('ipfs://');
+    }
 
     function _setBaseURI(string memory _uri) private returns (string memory) {
         require(bytes(_uri).length > 0, "Valid token uri needed");
