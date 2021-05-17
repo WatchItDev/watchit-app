@@ -12,6 +12,8 @@
 /build
 
 # misc
+abis/
+orbitdb/
 .DS_Store
 .env.local
 .env.development.local
