@@ -211,6 +211,7 @@ module.exports = class Node extends EventEmitter {
     }
 
     start() {
+        this.closed = false; // Restore closed state
         if (this.ready) return Promise.resolve(this.db);
         return new Promise(async (res) => {
             log.info(`Running ipfs node`);
