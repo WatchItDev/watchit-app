@@ -129,7 +129,7 @@ module.exports = class Node extends EventEmitter {
             this.emit('node-peer', this.peers.size)
         });
 
-        if (this.db) { // Check if db set
+        if (this.db && !this.closed) { // Check if db set
             this.ready = true;
             log.info(`Ready in orbit ${key}`);
             this.emit('node-step', 'Replicating')
@@ -222,6 +222,11 @@ module.exports = class Node extends EventEmitter {
 
 
     async close(forceDrop = false) {
+        // Keep this states on top to avoid
+        // run any event while nodes get closed
+        this.closed = true; // Closed already
+        this.ready = false; // Not ready if closed!
+
         try {
             if (this.orbit) {
                 // Closing store
@@ -251,8 +256,6 @@ module.exports = class Node extends EventEmitter {
         this.db = null;
         this.orbit = null;
         this.node = null;
-        this.ready = false;
-        this.closed = true;
         this.peers.clear();
     }
 
