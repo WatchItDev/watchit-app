@@ -23,11 +23,12 @@ const ipfsFactory = async (conf = {}) => {
         isInstance.peerId = ipfsID; // Add virtual attr needed for broadcasting
 
         // Direct dialing to nodes
-        Promise.all(confSettings.Bootstrap.map(async (p) => {
+        await Promise.all(confSettings.Bootstrap.map(async (p) => {
             log.info('Dialing to ', p) // Log for dialed peers
             return await isInstance.swarm.connect(p).catch(() => log.warn('Fail dialing', p))
-        })).then(() => log.info('Dial done'))
+        })).catch(() => log.error('Fail dialing to workers'))
 
+        log.info('Dial done')
         log.info('Running ipfs id', ipfsID.id)
         return isInstance
     } catch (e) {
