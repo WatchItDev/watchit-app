@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import uid from "shortid";
-import BoxAlert from 'components/app-alerts'
+import Alert from 'components/app-alerts'
 import BoxInput from 'components/app-inputs'
 import BoxButton from 'components/app-buttons'
 
@@ -100,9 +100,9 @@ export default class FormBox extends React.Component {
                         {
                             this.props.error.map((i) => {
                                 return (
-                                    <BoxAlert key={uid.generate()}>
+                                    <Alert key={uid.generate()} color={'danger'}>
                                         {i}
-                                    </BoxAlert>
+                                    </Alert>
                                 )
                             })
                         }
@@ -110,9 +110,9 @@ export default class FormBox extends React.Component {
                 }
 
                 {/* Success message */}
-                {this.props.success && <BoxAlert label="success-label">
+                {this.props.success && <Alert color="success">
                     {this.props.success}
-                </BoxAlert>}
+                </Alert>}
             </form>
         )
     }
