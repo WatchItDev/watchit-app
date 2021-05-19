@@ -1,19 +1,13 @@
-import React from 'react'
-//import PropTypes from 'prop-types'
+import styled from 'styled-components';
+import utilHelper from "helpers/util";
 
-export default class BoxAlert extends React.Component {
-	static get defaultProps() {
-		return {
-			label: 'error-label'
-		}
-	}
-	
-	
-	render() {
-		return (
-			<div className={"bold z-depth-1 lighten-2 text-center " + this.props.label}>
-				{this.props.children}
-			</div>
-		)
-	}
-}
+const Alert = styled.div`
+	padding: 7px 10px;
+	border-radius: 3px;
+	text-align: center;
+	font-weight: bold;
+	color: #fff;
+	background-color: ${({color}) => utilHelper.handleColorType(color)};
+`;
+
+export default Alert;
