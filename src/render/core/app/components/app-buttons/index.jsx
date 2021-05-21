@@ -12,18 +12,18 @@ export default class Button extends React.Component {
 
 	render() {
 		return (
-			<ButtonComponent type={this.props.type} onClick={this.props.onClick}>
+			<ButtonWrapper type={this.props.type} onClick={this.props.onClick}>
 				{
 					/*show loader on submit*/
 					((Object.is(this.props.type, "submit") || this.props.forceLoader)
 						&& this.props.clicked && <PointsLoader/>) || this.props.children
 				}
-			</ButtonComponent>
+			</ButtonWrapper>
 		)
 	}
 }
 
-const ButtonComponent = styled.button`
+const ButtonWrapper = styled.button`
 	width: 100%;
 	text-decoration: none;
 	color: #fff;
