@@ -20,9 +20,9 @@ module.exports = (ipcMain, runtime = 'node') => {
 
   const initEvents = (e) => {
     /***
-         * Initialize events for orbit and ingesting process
-         * @param {object} e ipcMain
-         */
+     * Initialize events for orbit and ingesting process
+     * @param {object} e ipcMain
+     */
     // Remove listener before add new
     orbit.removeAllListeners()
     ingest.removeAllListeners()
@@ -60,7 +60,7 @@ module.exports = (ipcMain, runtime = 'node') => {
     initEvents(e) // Init listener on node ready
     // Node events to handle progress and ready state
     // "node-step" handle event to keep tracking states of node
-    orbit.on('node-progress', (_, hash) => setImmediate(() => orbit.queue = hash))
+    orbit.on('node-progress', (_, hash) => setImmediate(() => { orbit.queue = hash }))
       .on('node-step', (step) => e.reply('node-step', step))
       .on('node-loaded', () => e.reply('node-loaded'))
       .on('node-ready', () => {

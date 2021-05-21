@@ -51,6 +51,7 @@ module.exports = class Key extends ParentKey {
   static getIngestKey () {
     const fileCollection = this.readFromStorage()
     return fileCollection && 'ingest' in fileCollection
-      ? fileCollection.ingest.trim() : null
+      ? fileCollection.ingest.trim()
+      : null
   }
 }

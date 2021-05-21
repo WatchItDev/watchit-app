@@ -191,15 +191,15 @@ module.exports = class Node extends EventEmitter {
          * try keep node alive if cannot do it after MAX_RETRIES
          * app get killed :(
          */
-    return new Promise(async (res) => {
+    return new Promise(async (resolve) => {
       // If fail to much.. get fuck out
       log.info('Setting up node..')
       this.node = this.node || await ipfs.start(this.conf.ipfs)
-      if (this.node) return res(this.node)
+      if (this.node) return resolve(this.node)
       // Hold on while raise node
       setTimeout(async () => {
         this.node = await this.instanceNode()
-        res(this.node)
+        resolve(this.node)
       }, DEFAULT_HOLD)
     })
   }
@@ -207,11 +207,11 @@ module.exports = class Node extends EventEmitter {
   start () {
     this.closed = false // Restore closed state
     if (this.ready) return Promise.resolve(this.db)
-    return new Promise(async (res) => {
+    return new Promise(async (resolve) => {
       log.info('Running ipfs node')
       // Create IPFS instance
       this.node = await this.instanceNode()
-      await this.nodeReady(res)
+      await this.nodeReady(resolve)
     })
   }
 

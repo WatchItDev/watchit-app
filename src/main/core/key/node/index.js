@@ -32,6 +32,7 @@ module.exports = class NodeKey {
 
   static read () {
     return this.existKey
-      ? fs.readFileSync(this.keyFile) : null
+      ? fs.readFileSync(this.keyFile)
+      : null
   }
 }
