@@ -133,8 +133,7 @@
     "build:web": "RUNTIME=web node scripts/build.js",
     "test": "node scripts/test.js  --watchAll=false -u",
     "electron": "cross-env LOG=debug IPFS_FD_MAX=10000 NODE_ENV=development $(npm bin)/electron .",
-    "lint": "eslint --ext js,jsx",
-    "lint:fix": "npm run lint -s -- --fix src ",
+    "lint": "standard \"src/{main,render}/**/*.js\" --fix",
     "package": "npm run build && electron-builder build",
     "package:mac": "npm run package -- --mac",
     "package:linux": "npm run package -- --linux",
@@ -144,6 +143,11 @@
     "publish:win": "npm run package:win -- --publish always",
     "preinstall": "bash -c \"npm install logplease && node scripts/preinstall.js\"",
     "postinstall": "bash -c \"node scripts/postinstall.js\""
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint"
+    }
   },
   "eslintConfig": {
     "extends": "react-app",
@@ -196,7 +200,6 @@
     "file-loader": "6.1.1",
     "html-webpack-plugin": "4.5.0",
     "husky": "^4.3.8",
-    "styled-components": "^5.3.0",
     "jest": "26.6.0",
     "jest-circus": "26.6.0",
     "jest-resolve": "26.6.0",
@@ -231,7 +234,9 @@
     "resolve-url-loader": "^3.1.2",
     "sass-loader": "^10.0.5",
     "semver": "7.3.2",
+    "standard": "^16.0.3",
     "style-loader": "1.3.0",
+    "styled-components": "^5.3.0",
     "terser-webpack-plugin": "4.2.3",
     "ts-pnp": "1.2.0",
     "url-loader": "4.1.1",
