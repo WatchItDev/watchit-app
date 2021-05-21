@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import uid from "shortid";
 import Alert from 'components/app-alerts'
 import BoxInput from 'components/app-inputs'
-import BoxButton from 'components/app-buttons'
+import Button from 'components/app-buttons'
 
 export default class FormBox extends React.Component {
 
@@ -84,10 +84,10 @@ export default class FormBox extends React.Component {
                         /* Generate buttons */
                         this.props.buttons.map((i) => {
                             return (
-                                <BoxButton key={uid.generate()} clicked={this.props.submitted}
+                                <Button key={uid.generate()} clicked={this.props.submitted}
                                            className={i.color} type={i.type}>
                                     <span>{i.text}</span>
-                                </BoxButton>
+                                </Button>
                             )
                         })
                     }
