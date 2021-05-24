@@ -1,14 +1,14 @@
 import React from 'react'
 import all from 'it-all'
 
-import BoxLoader from 'components/util-box-loader'
-import MainHeader from 'components/util-header'
-import BoxImage from 'components/app-image'
-import AppMovieDetailInfo from 'components/app-movie-details-info'
-import AppMovieDetailMenu from 'components/app-movie-details-menu'
-import FlowText from 'components/util-flow-text'
-import CustomScrollbars from 'components/util-scroller';
-import ListCommaSplit from 'components/util-list-comma-split'
+import Image from 'components/app-image/'
+import BoxLoader from 'components/util-box-loader/'
+import MainHeader from 'components/util-header/'
+import FlowText from 'components/util-flow-text/'
+import CustomScrollbars from 'components/util-scroller/';
+import ListCommaSplit from 'components/util-list-comma-split/'
+import AppMovieDetailInfo from 'components/app-movie-details-info/'
+import AppMovieDetailMenu from 'components/app-movie-details-menu/'
 
 import Movie from 'resource/movies'
 import resourceHelper from "helpers/streaming";
@@ -46,7 +46,7 @@ export default class MovieDetails extends React.PureComponent {
                                 {/*Aside*/}
                                 <aside className="col l4 m4 movie-details-poster relative">
                                     {/*Poster*/}
-                                    <BoxImage
+                                    <Image
                                         className="full-width" preload={true}
                                         src={this.state.movies.resource.images.large}
                                         pulseStyle={{top: '20rem'}}

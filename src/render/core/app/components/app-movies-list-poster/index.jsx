@@ -1,6 +1,6 @@
 import React from 'react'
-import BoxImage from 'components/app-image'
-import PulseLoader from 'components/util-pulse-loader'
+import Image from 'components/app-image/'
+import PulseLoader from 'components/util-pulse-loader/'
 
 export default class AppMoviesListPoster extends React.Component {
 
@@ -31,7 +31,7 @@ export default class AppMoviesListPoster extends React.Component {
                     !this.props.empty &&
                     <a href={`/#`} onClick={this.onClick}>
                         {/* Image Box */}
-                        <BoxImage src={this.props.image} preload={this.props.preload}/>
+                        <Image src={this.props.image} preload={this.props.preload}/>
                         {/* Label Box */}
                         <div className="hover-poster-box full-width full-height">
                             <div className="hover-info absolute bottom-1-rem">

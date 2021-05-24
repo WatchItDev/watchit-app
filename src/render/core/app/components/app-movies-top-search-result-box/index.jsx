@@ -1,5 +1,5 @@
 import React from 'react'
-import BoxImage from 'components/app-image'
+import Image from 'components/app-image/'
 
 export default class AppMainSearchResultBoxItem extends React.PureComponent {
 
@@ -12,7 +12,7 @@ export default class AppMainSearchResultBoxItem extends React.PureComponent {
         return (
             <li className="transparent collection-item padding-5 no-border d-flex pointer" onClick={this.onClick}>
                 <div className="result-search-box-img">
-                    <BoxImage src={this.props.image} preload={true} pulseStyle={{position: "relative"}}/>
+                    <Image src={this.props.image} preload={true} pulseStyle={{position: "relative"}}/>
                 </div>
                 <div className="result-search-box-content flex-grow-1">
                     <div className="search-result-box-title">
