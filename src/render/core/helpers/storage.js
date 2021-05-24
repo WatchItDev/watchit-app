@@ -2,6 +2,7 @@
  * Created by gmena on 05-03-17.
  */
 // Storage manifest
+/* global localStorage */
 import settings from 'settings'
 
 const Storage = {
