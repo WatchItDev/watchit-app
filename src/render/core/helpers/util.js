@@ -83,11 +83,17 @@ export default ({
             case "primary":
                 return "#03a9f3";
             case "danger":
+                return "#F44336";
+            case "danger_lighten":
                 return "#E57373";
             case "success":
+                return "#4CAF50";
+            case "success_lighten":
                 return "#81C784";
             case "warning":
                 return "#ca6005";
+            case "warning_lighten":
+                return "#ff9800";
             default:
                 return "rgba(0,0,0,0.5)";
         }

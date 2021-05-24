@@ -100,7 +100,7 @@ export default class FormBox extends React.Component {
                         {
                             this.props.error.map((i) => {
                                 return (
-                                    <Alert key={uid.generate()} color={'danger'}>
+                                    <Alert key={uid.generate()} color={'danger_lighten'}>
                                         {i}
                                     </Alert>
                                 )
@@ -110,7 +110,7 @@ export default class FormBox extends React.Component {
                 }
 
                 {/* Success message */}
-                {this.props.success && <Alert color="success">
+                {this.props.success && <Alert color="success_lighten">
                     {this.props.success}
                 </Alert>}
             </form>
