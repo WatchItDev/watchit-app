@@ -8,13 +8,13 @@ export default class Logo extends React.Component {
         return {
             show: true,
             absolute: false,
-            big: false,
+            thumbnail: false,
         }
     }
 
     render() {
         return (
-            <LogoContainer show={this.props.show} absolute={this.props.absolute} big={this.props.big}>
+            <LogoContainer show={this.props.show} absolute={this.props.absolute} thumbnail={this.props.thumbnail}>
                 <LogoImg src={icon} alt="Logo" width={50} height={50}/>
                 <LogoMiddleText>ATCH</LogoMiddleText>
                 <LogoEndText>IT</LogoEndText>
@@ -26,7 +26,7 @@ export default class Logo extends React.Component {
 const LogoContainer = styled.h5`
   position: ${props => props.absolute ? 'absolute' : 'relative'};
   margin: 0;
-  transform: ${props => props.big ? 'scale(3) translateY(-2.7rem)' : 'scale(1)'};
+  transform: ${props => props.thumbnail ? 'scale(3) translateY(-2.7rem)' : 'scale(1)'};
   letter-spacing: 2px;
   font-family: "Oswald", Arial, sans-serif;
   display: ${props => props.show ? 'inline-block' : 'none'};

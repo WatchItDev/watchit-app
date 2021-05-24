@@ -1,7 +1,5 @@
 import React from 'react'
-// import Particles from 'react-particles-js';
 import styled from 'styled-components';
-// import config from './particleConfig'
 import Logo from 'components/util-header-logo'
 
 export default class AppLoaderBackground extends React.Component {
@@ -19,16 +17,15 @@ export default class AppLoaderBackground extends React.Component {
 
 	render() {
 		return (
-			<ParticlesContainer absolute={this.props.absolute}>
-				{/*<Particles width="100%" height="100%" params={config}/>*/}
-				<Logo show={this.props.showLogo} big={true} absolute={this.props.absolute}/>
+			<BackgroundContainer absolute={this.props.absolute}>
+				<Logo show={this.props.showLogo} thumbnail={true} absolute={this.props.absolute}/>
 				<Slogan show={this.props.showLogo}>open movies everywhere</Slogan>
-			</ParticlesContainer>
+			</BackgroundContainer>
 		)
 	}
 }
 
-const ParticlesContainer = styled.div`
+const BackgroundContainer = styled.div`
 	height: ${props => props.absolute ? '100%' : 'auto'};
 	width: ${props => props.absolute ? '100%' : 'auto'};
 	display: flex;
@@ -37,11 +34,6 @@ const ParticlesContainer = styled.div`
 	${props => props.absolute ? 'absolute' : 'relative'}
 	left: 0;
 	top: 0;
-
-	#tsparticles {
-		width: 100%;
-		height: 100%;
-	}
 `
 
 const Slogan = styled.div`
