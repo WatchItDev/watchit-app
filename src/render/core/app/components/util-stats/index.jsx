@@ -71,11 +71,11 @@ export default class Stats extends React.PureComponent {
   render () {
     return <>
       <span className="icon-traffic-cone icon"/>
-      <span>${this.tmp}%: Sync</span>
+      <span>Sync: {this.tmp}%</span>
       <span className="icon-book icon"/>
-      <span>${this.chunk}/{this.total}: Movies</span>
+      <span>Movies: {this.chunk}/{this.total}</span>
       <span className="icon-user icon"/>
-      <span>${this.peers}: Peers</span>
+      <span>Peers: {this.peers}</span>
     </>
 
   }
