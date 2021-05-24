@@ -16,8 +16,8 @@ export default class Logo extends React.Component {
         return (
             <LogoContainer show={this.props.show} absolute={this.props.absolute} thumbnail={this.props.thumbnail}>
                 <LogoImg src={icon} alt="Logo" width={50} height={50}/>
-                <LogoMiddleText>ATCH</LogoMiddleText>
-                <LogoEndText>IT</LogoEndText>
+                <LogoText>ATCH</LogoText>
+                <LogoColoredText>IT</LogoColoredText>
             </LogoContainer>
         )
     }
@@ -64,7 +64,7 @@ const LogoImg = styled.img`
   }
 `;
 
-const LogoMiddleText = styled.span`
+const LogoText = styled.span`
   position: relative;
   color: #fff;
   top: -9px;
@@ -93,7 +93,7 @@ const Colors = keyframes`
   }
 `;
 
-const LogoEndText = styled.span`
+const LogoColoredText = styled.span`
   font-weight: bold;
   position: relative;
   top: -9px;
