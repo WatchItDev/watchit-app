@@ -1,7 +1,7 @@
-//Basic
 import React from 'react'
+import styled from 'styled-components';
 import Forms from './forms.js'
-import FormBox from 'components/app-form'
+import FormBox from 'components/app-form/'
 import AppLoaderBackground from 'components/app-movie-player-loader-background/'
 
 //Login pages class
@@ -45,21 +45,34 @@ export default class LoginForm extends React.PureComponent {
 
     render() {
         return (
-            <div className="absolute valign-wrapper full-width full-height main-login-box">
-                <section className="valign center-block col m6">
-                    <AppLoaderBackground />
-                    {/* Form Box */}
-                    <section className="row input-black-box">
-                        <FormBox
-                            action={this.handleRequest}
-                            input={Forms.login_user.inputs} // Make inputs
-                            buttons={Forms.login_user.buttons} // Make buttons
-                            error={this.state.error}
-                            submitted={this.state.submitted}
-                        />
-                    </section>
-                </section>
-            </div>
+            <MainLoginBox>
+                <AppLoaderBackground absolute={false}/>
+                <FormContainer>
+                    {/*form */}
+                    <FormBox
+                        action={this.handleRequest}
+                        input={Forms.login_user.inputs} // Make inputs
+                        buttons={Forms.login_user.buttons} // Make buttons
+                        error={this.state?.error}
+                        submitted={this.state?.submitted}
+                    />
+                </FormContainer>
+            </MainLoginBox>
         )
     }
 }
+
+const FormContainer = styled.div`
+  width: 50%;
+  margin-top: 2rem;
+`;
+
+const MainLoginBox = styled.div`
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+`;
