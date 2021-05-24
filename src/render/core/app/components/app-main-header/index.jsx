@@ -78,7 +78,7 @@ const Container = styled.div`
 
 const Header = styled.header`
   z-index: 1000;
-  position: fixed;
+  position: relative;
   top: 0;
   right: 0;
   left: 0;
