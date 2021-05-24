@@ -14,16 +14,16 @@ export default class Logo extends React.Component {
 
     render() {
         return (
-            <LogoContainer show={this.props.show} absolute={this.props.absolute} thumbnail={this.props.thumbnail}>
+            <LogoWrapper show={this.props.show} absolute={this.props.absolute} thumbnail={this.props.thumbnail}>
                 <LogoImg src={icon} alt="Logo" width={50} height={50}/>
                 <LogoText>ATCH</LogoText>
                 <LogoColoredText>IT</LogoColoredText>
-            </LogoContainer>
+            </LogoWrapper>
         )
     }
 }
 
-const LogoContainer = styled.h5`
+const LogoWrapper = styled.h5`
   position: ${props => props.absolute ? 'absolute' : 'relative'};
   transform: ${props => props.thumbnail ? 'scale(3) translateY(-2.7rem)' : 'scale(1)'};
   letter-spacing: 2px;

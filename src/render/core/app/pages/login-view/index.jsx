@@ -45,9 +45,9 @@ export default class LoginForm extends React.PureComponent {
 
     render() {
         return (
-            <LoginContainer>
+            <LoginWrapper>
                 <Background absolute={false}/>
-                <FormContainer>
+                <FormWrapper>
                     {/*form */}
                     <Form
                         action={this.handleRequest}
@@ -56,18 +56,18 @@ export default class LoginForm extends React.PureComponent {
                         error={this.state?.error}
                         submitted={this.state?.submitted}
                     />
-                </FormContainer>
-            </LoginContainer>
+                </FormWrapper>
+            </LoginWrapper>
         )
     }
 }
 
-const FormContainer = styled.div`
+const FormWrapper = styled.div`
   width: 50%;
   margin-top: 2rem;
 `;
 
-const LoginContainer = styled.div`
+const LoginWrapper = styled.div`
   position: absolute;
   height: 100%;
   width: 100%;
