@@ -101,7 +101,7 @@ module.exports = class Node extends EventEmitter {
         } catch (e) {
             // Avoid using invalid keys
             if (!this.seedMode)
-                await this.party()
+                await this.party('Network Error')
             return false;
         }
 
@@ -151,8 +151,8 @@ module.exports = class Node extends EventEmitter {
          * Kill all - party all
          */
         log.warn('Party rock');
-        await this.close(true);
         this.emit('node-chaos', msg)
+        await this.close(true);
     }
 
     get pubsub() {
