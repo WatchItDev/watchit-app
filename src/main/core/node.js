@@ -99,9 +99,10 @@ module.exports = class Node extends EventEmitter {
             const newCID = new CID(cleanedCID)
             return newCID.toBaseEncodedString('base58btc')
         } catch (e) {
+            console.log(e)
             // Avoid using invalid keys
             if (!this.seedMode)
-                await this.party()
+                await this.party('Network Error')
             return false;
         }
 
@@ -151,8 +152,8 @@ module.exports = class Node extends EventEmitter {
          * Kill all - party all
          */
         log.warn('Party rock');
-        await this.close(true);
         this.emit('node-chaos', msg)
+        await this.close(true);
     }
 
     get pubsub() {
