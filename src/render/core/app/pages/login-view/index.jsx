@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components';
 import Forms from './forms.js'
 import FormBox from 'components/app-form/'
-import AppLoaderBackground from 'components/app-movie-player-loader-background/'
+import Background from 'components/app-background/'
 
 //Login pages class
 const key = window.bridge.Key
@@ -45,8 +45,8 @@ export default class LoginForm extends React.PureComponent {
 
     render() {
         return (
-            <MainLoginBox>
-                <AppLoaderBackground absolute={false}/>
+            <LoginContainer>
+                <Background absolute={false}/>
                 <FormContainer>
                     {/*form */}
                     <FormBox
@@ -57,7 +57,7 @@ export default class LoginForm extends React.PureComponent {
                         submitted={this.state?.submitted}
                     />
                 </FormContainer>
-            </MainLoginBox>
+            </LoginContainer>
         )
     }
 }
@@ -67,7 +67,7 @@ const FormContainer = styled.div`
   margin-top: 2rem;
 `;
 
-const MainLoginBox = styled.div`
+const LoginContainer = styled.div`
   position: absolute;
   height: 100%;
   width: 100%;
