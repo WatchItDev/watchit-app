@@ -25,12 +25,11 @@ export default class Logo extends React.Component {
 
 const LogoContainer = styled.h5`
   position: ${props => props.absolute ? 'absolute' : 'relative'};
-  margin: 0;
   transform: ${props => props.thumbnail ? 'scale(3) translateY(-2.7rem)' : 'scale(1)'};
   letter-spacing: 2px;
   font-family: "Oswald", Arial, sans-serif;
   display: ${props => props.show ? 'inline-block' : 'none'};
-
+  margin: 0;  
   @media (min-width: 300px) {
     font-size: 1.5rem !important;
   }
