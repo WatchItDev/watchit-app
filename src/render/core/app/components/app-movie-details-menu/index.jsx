@@ -3,7 +3,7 @@ import settings from 'settings'
 import PropTypes from 'prop-types'
 import NavBarMenu from 'components/app-nav-bar-menu/'
 import NavBarButton from 'components/app-nav-bar-button/'
-import TrailerPop from 'components/app-movie-details-trailer'
+import TrailerPop from 'components/app-movie-details-trailer/'
 
 import gatewayHelper from "helpers/gateway";
 import cryptHelper from 'helpers/crypt'
