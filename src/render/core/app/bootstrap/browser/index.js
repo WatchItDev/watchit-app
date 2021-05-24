@@ -1,7 +1,7 @@
 import {HashRouter, Redirect, Route, Switch} from "react-router-dom";
 import Login from "pages/login-view";
 import Catalog from "pages/index-view";
-import MoviePlayer from "pages/player-view";
+import Player from "pages/player-view";
 import React from "react";
 
 export default (hist, key) => {
@@ -14,7 +14,7 @@ export default (hist, key) => {
                    render={(n) => <Catalog {...n}/>}/>
             <Route name="player"
                    path="/play/:resource"
-                   render={(n) => <MoviePlayer {...n}/>}/>
+                   render={(n) => <Player {...n}/>}/>
         </Switch>
     </HashRouter>
 }
