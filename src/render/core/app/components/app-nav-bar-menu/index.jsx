@@ -78,8 +78,8 @@ export default class NavBarMenu extends React.Component {
                                 //Set personalized label
                                 (this.state.label &&
                                     <span className={"dropdown-result no-bold blue-text"}>
-										{this.state.label}
-									</span>
+                                        {this.state.label}
+                                    </span>
                                 ) || this.props.list.map((i) => {
                                     return (
                                         i.default &&

@@ -9,7 +9,7 @@ export default class Logo extends React.Component {
         return {
             show: true,
             absolute: false,
-            thumbnail: false,
+            thumbnail: true,
         }
     }
 
@@ -26,7 +26,7 @@ export default class Logo extends React.Component {
 
 const LogoWrapper = styled.h5`
   position: ${props => props.absolute ? 'absolute' : 'relative'};
-  transform: ${props => props.thumbnail ? 'scale(3) translateY(-2.7rem)' : 'scale(1)'};
+  transform: ${props => !props.thumbnail ? 'scale(3) translateY(-2.7rem)' : 'scale(1)'};
   letter-spacing: 2px;
   font-family: "Oswald", Arial, sans-serif;
   display: ${props => props.show ? 'inline-block' : 'none'};

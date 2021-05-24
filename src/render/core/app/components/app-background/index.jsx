@@ -18,7 +18,7 @@ export default class Background extends React.Component {
 	render() {
 		return (
 			<BackgroundWrapper absolute={this.props.absolute}>
-				<Logo show={this.props.showLogo} thumbnail={true} absolute={this.props.absolute}/>
+				<Logo show={this.props.showLogo} thumbnail={false} absolute={this.props.absolute}/>
 				<Slogan show={this.props.showLogo}>open movies everywhere</Slogan>
 			</BackgroundWrapper>
 		)
