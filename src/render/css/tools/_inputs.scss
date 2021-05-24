@@ -7,16 +7,16 @@
 
   input {
     //@include transform();
-    @include placeholder(#fff);
-    background-color: transparent !important;
-    float: left;
-    border: none !important;
-    margin: 0 0 2px 0 !important;
+    //@include placeholder(#fff);
+    //background-color: transparent !important;
+    //float: left;
+    //border: none !important;
+    //margin: 0 0 2px 0 !important;
 
-    &:focus {
-      border: none !important;
-      outline: none !important;
-      box-shadow: none !important;
-    }
+    //&:focus {
+    //  border: none !important;
+    //  outline: none !important;
+    //  box-shadow: none !important;
+    //}
   }
 }
