@@ -1,5 +1,5 @@
 import React from 'react'
-import BoxInput from 'components/app-inputs'
+import Input from 'components/app-inputs/'
 
 export default class AppMainTopInputs extends React.Component {
 	
@@ -37,7 +37,7 @@ export default class AppMainTopInputs extends React.Component {
 			<div className="clearfix">
 				<form onSubmit={this.preventDefault} action="#">
 					<div className={"input-field-black margin-top-0 col " + this.props.size}>
-						<BoxInput
+						<Input
 							icon="icon-tv" onInput={this.onInput} required={true} ref={this.getRef}
 							autoComplete="off" type="text" placeholder="Search..." name="search"/>
 					</div>

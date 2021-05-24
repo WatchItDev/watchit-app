@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-export default class BoxInput extends React.PureComponent {
+export default class Input extends React.PureComponent {
 
     constructor(props) {
         super(props);
@@ -61,25 +61,6 @@ export default class BoxInput extends React.PureComponent {
                        onInvalid={this.onInvalid}
                        ref={this.getRef}
                        className="white-text validate"
-                />
-            </div>
-        )
-    }
-}
-
-
-export class BoxTextArea extends BoxInput {
-    render() {
-        return (
-            <div>
-                {this.props.icon && <i className={this.props.icon + " gray-text"}/>}
-                <textarea {...this.props}
-                          onInput={this.onInput}
-                          onChange={this.onChange}
-                          onKeyDown={this.onKeyDown}
-                          onInvalid={this.onInvalid}
-                          ref={this.getRef}
-                          className="white-text validate"
                 />
             </div>
         )
