@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components';
 import Forms from './forms.js'
-import FormBox from 'components/app-form/'
+import Form from 'components/app-form/'
 import Background from 'components/app-background/'
 
 //Login pages class
@@ -49,7 +49,7 @@ export default class LoginForm extends React.PureComponent {
                 <Background absolute={false}/>
                 <FormContainer>
                     {/*form */}
-                    <FormBox
+                    <Form
                         action={this.handleRequest}
                         input={Forms.login_user.inputs} // Make inputs
                         buttons={Forms.login_user.buttons} // Make buttons

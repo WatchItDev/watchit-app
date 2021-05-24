@@ -5,7 +5,7 @@ import Alert from 'components/app-alerts'
 import BoxInput from 'components/app-inputs'
 import Button from 'components/app-buttons'
 
-export default class FormBox extends React.Component {
+export default class Form extends React.Component {
 
     constructor(props) {
         super(props);
