@@ -1,8 +1,8 @@
 import React from 'react'
 import styled from 'styled-components';
-import Logo from 'components/util-header-logo'
+import Logo from 'components/util-header-logo/'
 
-export default class AppLoaderBackground extends React.Component {
+export default class Background extends React.Component {
 
 	shouldComponentUpdate() {
 		return false
