@@ -1,5 +1,6 @@
 import React from 'react'
 import icon from 'render/media/icons/icon.png'
+import setting from 'settings'
 import styled, {keyframes} from 'styled-components';
 
 export default class Logo extends React.Component {
@@ -30,15 +31,15 @@ const LogoContainer = styled.h5`
   font-family: "Oswald", Arial, sans-serif;
   display: ${props => props.show ? 'inline-block' : 'none'};
   margin: 0;  
-  @media (min-width: 300px) {
+  @media ${setting.styles.devices.mobileS} {
     font-size: 1.5rem !important;
   }
   
-  @media (min-width: 992px) {
+  @media ${setting.styles.devices.laptop} {
     font-size: 2rem !important;
   }
   
-  @media (min-width: 2000px) {
+  @media ${setting.styles.devices.desktop} {
     font-size: 3rem !important;
   }
 `;
