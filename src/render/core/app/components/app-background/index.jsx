@@ -17,15 +17,15 @@ export default class Background extends React.Component {
 
 	render() {
 		return (
-			<BackgroundContainer absolute={this.props.absolute}>
+			<BackgroundWrapper absolute={this.props.absolute}>
 				<Logo show={this.props.showLogo} thumbnail={true} absolute={this.props.absolute}/>
 				<Slogan show={this.props.showLogo}>open movies everywhere</Slogan>
-			</BackgroundContainer>
+			</BackgroundWrapper>
 		)
 	}
 }
 
-const BackgroundContainer = styled.div`
+const BackgroundWrapper = styled.div`
 	height: ${props => props.absolute ? '100%' : 'auto'};
 	width: ${props => props.absolute ? '100%' : 'auto'};
 	display: flex;
