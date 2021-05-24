@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default class MainHeader extends React.Component {
+export default class Header extends React.Component {
 
     shouldComponentUpdate() {
         return false

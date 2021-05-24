@@ -3,7 +3,7 @@ import all from 'it-all'
 
 import Image from 'components/app-image/'
 import BoxLoader from 'components/util-box-loader/'
-import MainHeader from 'components/util-header/'
+import Header from 'components/util-header/'
 import FlowText from 'components/util-flow-text/'
 import CustomScrollbars from 'components/util-scroller/';
 import ListCommaSplit from 'components/util-list-comma-split/'
@@ -37,7 +37,7 @@ export default class MovieDetails extends React.PureComponent {
         return (
             <div className="absolute full-height movie-details">
                 {/*Close button*/}
-                <MainHeader text="Movie" icon="icon-tv" onClick={this.props.onClick}/>
+                <Header text="Movie" icon="icon-tv" onClick={this.props.onClick}/>
                 <section className="row clearfix full-height margin-top-5-vh padding-left-2-vw">
                     {/*Main Loader or Movie details*/}
                     {
