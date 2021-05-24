@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default class Header extends React.Component {
+export default class AppMovieDetailsHeader extends React.Component {
 
     shouldComponentUpdate() {
         return false

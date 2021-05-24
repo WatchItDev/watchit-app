@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-export default class LoaderBar extends React.PureComponent {
+export default class BarLoader extends React.PureComponent {
 	static get propTypes() {
 		return {
 			stateText: PropTypes.string.isRequired,

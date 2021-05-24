@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import Background from 'components/app-background/'
-import LoaderBar from 'components/app-loader-bar/'
+import BarLoader from 'components/app-loader-bar/'
 import BtnClose from 'components/util-btn-close/'
 
 export default class AppMoviesPlayerLoader extends React.PureComponent {
@@ -18,7 +18,7 @@ export default class AppMoviesPlayerLoader extends React.PureComponent {
         <div className="app_loader">
           {this.props.onClose && <BtnClose onClick={this.props.onClose}/>}
           <Background absolute={true}/>
-          <LoaderBar stateText={this.props.stateText} statePercent={this.props.statePercent}/>
+          <BarLoader stateText={this.props.stateText} statePercent={this.props.statePercent}/>
         </div>
       </div>
     )

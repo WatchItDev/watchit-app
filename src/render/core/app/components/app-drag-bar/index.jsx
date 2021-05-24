@@ -1,6 +1,6 @@
 import React from 'react';
-import Logo from 'components/util-header-logo'
-import AppUpdater from 'components/util-updater'
+import Logo from 'components/util-header-logo/'
+import AppUpdater from 'components/util-updater/'
 
 const electron = window.require('electron');
 const ipcRenderer = electron.ipcRenderer;

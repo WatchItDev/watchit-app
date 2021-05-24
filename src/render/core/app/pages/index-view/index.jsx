@@ -3,9 +3,9 @@ import AppMovies from 'layout/app-movies-list/'
 import AppMovieDetails from 'layout/app-movie-details/'
 import AppNav from 'components/app-movies-nav-bar/'
 import AppSearch from 'components/app-movies-search/'
-import AppLoader from 'components/app-movie-player-loader'
-import StatsValue from "components/util-stats";
-import BoxLoader from 'components/util-box-loader'
+import AppLoader from 'components/app-movie-player-loader/'
+import StatsValue from "components/util-stats/";
+import BoxLoader from 'components/util-box-loader/'
 import Movie from 'resource/movies'
 
 import storageHelper from 'helpers/storage';
