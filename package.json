@@ -149,19 +149,6 @@
       "pre-commit": "npm run lint"
     }
   },
-  "eslintConfig": {
-    "extends": "react-app",
-    "overrides": [
-      {
-        "files": [
-          "src/**/*.js"
-        ],
-        "rules": {
-          "import/no-anonymous-default-export": "off"
-        }
-      }
-    ]
-  },
   "devDependencies": {
     "@babel/core": "7.12.3",
     "@openzeppelin/contracts": "^4.1.0",
