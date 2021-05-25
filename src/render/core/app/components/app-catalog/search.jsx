@@ -24,7 +24,7 @@ export default class CatalogSearch extends React.PureComponent {
     }
   }
 
-  onSearch = (e) => {
+  handleSearch = (e) => {
     // //The incoming value;
     const targetValue = e.target.value
     const invalidInput = utilHelper.invalidString(targetValue)
@@ -68,7 +68,7 @@ export default class CatalogSearch extends React.PureComponent {
     }, 1000)
   }
 
-  onResultCLick = (id) => {
+  handleClick = (id) => {
     this.searchRef.input.ref.value = ''
     this.setState({ searching: false, searchResult: false }, () => {
       this.props.onClick && this.props.onClick(id)
@@ -84,7 +84,7 @@ export default class CatalogSearch extends React.PureComponent {
       <>
         {/* Search result box */}
         <CatalogSearchInput
-          onInput={this.onSearch} size='m12 l12'
+          onInput={this.handleSearch} size='m12 l12'
           ref={this.getRef}
         />
         {
@@ -92,10 +92,9 @@ export default class CatalogSearch extends React.PureComponent {
             <CatalogSearchResult
               searching={this.state.searching}
               result={this.state.searchResult}
-              onClick={this.onResultCLick}
+              onClick={this.handleClick}
             />
         }
-
       </>
     )
   }

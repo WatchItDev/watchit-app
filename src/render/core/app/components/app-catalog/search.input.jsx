@@ -17,32 +17,32 @@ export default class CatalogSearchInput extends React.Component {
     return false
   }
 
-	onInput = (e) => {
-	  if (this.props.onInput(e)) {
-	    this.props.onInput(e)
-	  }
-	}
+  handleInput = (e) => {
+    if (this.props.onInput(e)) {
+      this.props.onInput(e)
+    }
+  }
 
-	preventDefault (e) {
-	  e.preventDefault()
-	}
+  handlePreventDefault (e) {
+    e.preventDefault()
+  }
 
-	getRef = (ref) => {
-	  this.input = ref
-	}
+  getRef = (ref) => {
+    this.input = ref
+  }
 
-	render () {
-	  return (
-  <div className='clearfix'>
-    <form onSubmit={this.preventDefault} action='#'>
-      <div className={'input-field-black margin-top-0 col ' + this.props.size}>
-        <Input
-          icon='icon-tv' onInput={this.onInput} required ref={this.getRef}
-          autoComplete='off' type='text' placeholder='Search...' name='search'
-        />
+  render () {
+    return (
+      <div className='clearfix'>
+        <form onSubmit={this.handlePreventDefault} action='#'>
+          <div className={'input-field-black margin-top-0 col ' + this.props.size}>
+            <Input
+              icon='icon-tv' onInput={this.handleInput} required ref={this.getRef}
+              autoComplete='off' type='text' placeholder='Search...' name='search'
+            />
+          </div>
+        </form>
       </div>
-    </form>
-  </div>
-	  )
-	}
+    )
+  }
 }

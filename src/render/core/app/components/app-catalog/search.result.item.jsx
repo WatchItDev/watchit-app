@@ -2,14 +2,14 @@ import React from 'react'
 import Image from 'components/app-image/'
 
 export default class CatalogSearchResultItem extends React.PureComponent {
-    onClick = () => {
+    handleClick = () => {
       this.props.onClick &&
         this.props.onClick(this.props._id)
     };
 
     render () {
       return (
-        <li className='transparent collection-item padding-5 no-border d-flex pointer' onClick={this.onClick}>
+        <li className='transparent collection-item padding-5 no-border d-flex pointer' onClick={this.handleClick}>
           <div className='result-search-box-img'>
             <Image src={this.props.image} preload pulseStyle={{ position: 'relative' }} />
           </div>
