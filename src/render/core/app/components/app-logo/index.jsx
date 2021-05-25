@@ -94,6 +94,7 @@ const Logo = (props) => {
   )
 }
 
+// Set default props
 Logo.defaultProps = {
   show: true,
   absolute: false,
