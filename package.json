@@ -131,7 +131,7 @@
     "build": "node scripts/build.js",
     "start:web": "RUNTIME=web node scripts/start.js",
     "build:web": "RUNTIME=web node scripts/build.js",
-    "test": "npm run lint && node scripts/test.js --coverage --watchAll=false -u",
+    "test": "node scripts/test.js --coverage --watchAll=false -u",
     "lint": "standardx \"src/{main,render}/**/*.{js,jsx}\" --fix",
     "electron": "cross-env LOG=debug IPFS_FD_MAX=10000 NODE_ENV=development $(npm bin)/electron .",
     "package": "npm run build && electron-builder build",

@@ -16,9 +16,9 @@ describe('Image component', () => {
   // eslint-disable-next-line no-undef
   it('should render image with random gateway', () => {
     const props = { image: 'image.jpg', cid: 'QmcdLW9p1dcYYKBHZdRXEXA4go6Qd3C4ce12khyiCqVNaH' }
-    const imageComponent = shallow(<Image src={props} />)
+    const imageComponent = mount(<Image src={props} />)
     const imageEl = imageComponent.instance()
-    console.log(imageEl)
+    console.log(imageEl.img)
     // eslint-disable-next-line no-undef
     expect(settings.gateways).toMatch(imageEl.src)
   })

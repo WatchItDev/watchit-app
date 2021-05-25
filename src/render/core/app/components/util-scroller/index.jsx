@@ -54,7 +54,7 @@ export default class CustomScrollbars extends React.PureComponent {
     return (
       <Scrollbars
         ref={(e) => {
-				  this.scroll = e
+          this.scroll = e
           this.getRef && this.getRef(e)
         }}
         renderView={this.renderView}

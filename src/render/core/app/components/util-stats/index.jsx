@@ -38,7 +38,8 @@ export default class Stats extends React.PureComponent {
 
   _index (i) {
     return this.props.handler
-      ? this.props.handler(i) : 0
+      ? this.props.handler(i)
+      : 0
   }
 
   get chunk () {

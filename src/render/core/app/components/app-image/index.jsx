@@ -40,7 +40,7 @@ export default class Image extends React.PureComponent {
   }
 
   componentDidMount () {
-    const img = this.img.current
+    const img = this.img?.current
     if (img && img.complete) { this.handleImageLoaded() }
   }
 

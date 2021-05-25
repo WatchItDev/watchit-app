@@ -18,47 +18,47 @@ export default class LoginForm extends React.PureComponent {
     }
   }
 
-    handleRequest = (fields) => {
-      // Set first state
-      this.setState({
-        error: false,
-        submitted: true
+  handleRequest = (fields) => {
+    // Set first state
+    this.setState({
+      error: false,
+      submitted: true
+    })
+
+    const pb = fields.get('public')
+    // Check if stored key its valid
+    if (!key.isValidKey(pb)) {
+      return this.setState({
+        error: ['Invalid Key'],
+        submitted: false
       })
-
-      const pb = fields.get('public')
-      // Check if stored key its valid
-      if (!key.isValidKey(pb)) {
-        return this.setState({
-          error: ['Invalid Key'],
-          submitted: false
-        })
-      }
-
-      // Write public key
-      key.generateKey({ ingest: pb })
-      setTimeout(() => {
-        // Set first state
-        window.location.href = '#/app/movies'
-      }, 2000)
     }
 
-    render () {
-      return (
-        <LoginWrapper>
-          <Background absolute={false} />
-          <FormWrapper>
-            {/* form */}
-            <Form
-              action={this.handleRequest}
-              input={Forms.login_user.inputs} // Make inputs
-              buttons={Forms.login_user.buttons} // Make buttons
-              error={this.state?.error}
-              submitted={this.state?.submitted}
-            />
-          </FormWrapper>
-        </LoginWrapper>
-      )
-    }
+    // Write public key
+    key.generateKey({ ingest: pb })
+    setTimeout(() => {
+      // Set first state
+      window.location.href = '#/app/movies'
+    }, 2000)
+  }
+
+  render () {
+    return (
+      <LoginWrapper>
+        <Background absolute={false} />
+        <FormWrapper>
+          {/* form */}
+          <Form
+            onAction={this.handleRequest}
+            input={Forms.login_user.inputs} // Make inputs
+            buttons={Forms.login_user.buttons} // Make buttons
+            error={this.state?.error}
+            submitted={this.state?.submitted}
+          />
+        </FormWrapper>
+      </LoginWrapper>
+    )
+  }
 }
 
 const FormWrapper = styled.div`
