@@ -27,5 +27,3 @@ jobs:
       - name: Test code
         run: npm test -- --coverage
 
-      - name: Package
-        run: npm run package
