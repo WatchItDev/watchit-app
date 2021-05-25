@@ -75,20 +75,5 @@ export default ({
       (rv[x[key]] = rv[x[key]] || []).push(x)
       return rv
     }, init)
-  },
-
-  handleColorType: color => {
-    switch (color) {
-      case 'primary':
-        return '#03a9f3'
-      case 'danger':
-        return '#E57373'
-      case 'success':
-        return '#81C784'
-      case 'warning':
-        return '#ca6005'
-      default:
-        return 'rgba(0,0,0,0.5)'
-    }
   }
 })

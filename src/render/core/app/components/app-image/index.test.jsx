@@ -8,12 +8,12 @@ describe('Image component', () => {
   const props = { index: 'image.jpg', cid: 'QmcdLW9p1dcYYKBHZdRXEXA4go6Qd3C4ce12khyiCqVNaH' }
 
   it('should render', () => {
-    const imageComponent = mount(<Image src={props} />)
+    const imageComponent = shallow(<Image src={props} />)
     expect(imageComponent).toMatchSnapshot()
   })
 
   it('should render with src prop cid only', () => {
-    const imageComponent = mount(<Image src={{ cid: props.cid }} />)
+    const imageComponent = shallow(<Image src={{ cid: props.cid }} />)
     expect(imageComponent).toMatchSnapshot()
   })
 
@@ -29,7 +29,7 @@ describe('Image component', () => {
 
   // eslint-disable-next-line no-undef
   it('should render with valid src prop', () => {
-    const imageComponent = mount(<Image src={props} />)
+    const imageComponent = shallow(<Image src={props} />)
     const componentProps = imageComponent.instance().props
 
     /* eslint-disable no-undef */

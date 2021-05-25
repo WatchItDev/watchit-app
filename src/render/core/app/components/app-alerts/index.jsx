@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import utilHelper from 'helpers/util'
+import settings from 'settings'
 
 const Alert = styled.div`
   padding: 7px 10px;
@@ -7,7 +7,8 @@ const Alert = styled.div`
   text-align: center;
   font-weight: bold;
   color: #fff;
-  background-color: ${({ color }) => utilHelper.handleColorType(color)};
+  background-color: ${props => props.color};
 `
 
+Alert.defaultProps = { color: settings.styles.colors.default }
 export default Alert

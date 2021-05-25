@@ -62,6 +62,13 @@ export default {
       laptopL: '(min-width: 1440px)',
       desktop: '(min-width: 1900px)',
       desktopL: '(min-width: 2560px)'
+    },
+    colors: {
+      primary: '#03a9f3',
+      danger: '#E57373',
+      success: '#81C784',
+      warning: '#ca6005',
+      default: 'rgba(0,0,0,0.5)'
     }
   }
 }
