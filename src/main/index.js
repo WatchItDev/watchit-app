@@ -49,8 +49,8 @@ dialog.showErrorBox = (title, content) => {
  *******************/
 const registerMiddleware = () => {
   // Register "file" protocol to use locally
-  protocol.registerFileProtocol('file', (r, cb) => {
-    const file = r.url.substr(7)
+  protocol.registerFileProtocol('file', (request, cb) => {
+    const file = request.url.substr(7)
     const headers = { 'Content-Type': mime.getType(file) }
     cb({ path: file, headers: headers })
   })
@@ -71,7 +71,8 @@ const wipeInvalidSync = () => {
   }
 }
 const initWindowing = (inDev) => {
-  const indexUrl = inDev ? 'http://localhost:3000/splash.png'
+  const indexUrl = inDev
+    ? 'http://localhost:3000/splash.png'
     : 'file://' + path.join(__dirname, '../build/splash.png')
 
   const loadingScreen = new BrowserWindow({
@@ -118,7 +119,8 @@ const createMain = (inDev, child) => {
     }
   })
 
-  const indexUrl = inDev ? 'http://localhost:3000/'
+  const indexUrl = inDev
+    ? 'http://localhost:3000/'
     : 'file://' + path.join(__dirname, '../build/index.html')
 
   // and load the index.html of the app.

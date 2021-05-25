@@ -3,5 +3,9 @@
   "extends": [
     "standard",
     "standard-jsx"
-  ]
+  ],
+  "rules": {
+    "node/no-callback-literal": "off",
+    "no-async-promise-executor": "off"
+  }
 }

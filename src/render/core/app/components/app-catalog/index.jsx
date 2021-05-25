@@ -1,3 +1,4 @@
+/* global localStorage */
 import React from 'react'
 import Details from 'components/app-details/'
 import StateLoader from 'components/app-state-loader/'
@@ -131,14 +132,14 @@ export default class Catalog extends React.Component {
     this.runIngest()
   }
 
-  onClickMovie = (id) => {
+  handleClickMovie = (id) => {
     this.setState({
       showDetailsFor: id,
       lock: true
     })
   }
 
-  onClickCloseMovie = (e) => {
+  handleClickCloseMovie = (e) => {
     e.preventDefault()
     this.setState({
       showDetailsFor: false
@@ -148,7 +149,7 @@ export default class Catalog extends React.Component {
   chaos = () => {
     // Wait for redirect to app login
     log.warn('Redirecting...')
-    setImmediate(() => window.location.href = '#/')
+    setImmediate(() => { window.location.href = '#/' })
   }
 
   runIngest () {
@@ -200,16 +201,16 @@ export default class Catalog extends React.Component {
       const _movies = this.moviesToRow(movies, _chunk)
 
       // Handle sizes
-      const _size = _movies.length
-      const _new_movies = [...this.state.movies, ..._movies]
-      const _current = _new_movies.length
+      const size = _movies.length
+      const newMovies = [...this.state.movies, ..._movies]
+      const current = newMovies.length
 
       this.setState({
         scrolling: false,
         loading: false,
-        count: !_size ? _current : (_current + 10),
-        finishLoad: !clear ? !_size : false,
-        movies: clear ? _movies : _new_movies,
+        count: !size ? current : (current + 10),
+        finishLoad: !clear ? !size : false,
+        movies: clear ? _movies : newMovies,
         lock: false
       })
 
@@ -266,7 +267,7 @@ export default class Catalog extends React.Component {
     }
   }
 
-  onChange = (sort, by) => {
+  handleOnChange = (sort, by) => {
     // If by?
     if ((storage.get().from.mainNavFilters())) {
       this.sort = Object.assign(
@@ -295,7 +296,7 @@ export default class Catalog extends React.Component {
     })
   }
 
-  signOut = (event) => {
+  handleSignOut = (event) => {
     event.preventDefault()
     localStorage.clear()
     broker.flush()
@@ -313,7 +314,7 @@ export default class Catalog extends React.Component {
           this.state.showDetailsFor &&
             <Details
               id={this.state.showDetailsFor}
-              onClick={this.onClickCloseMovie}
+              onClick={this.handleClickCloseMovie}
             />
         }
 
@@ -323,7 +324,7 @@ export default class Catalog extends React.Component {
               <StateLoader
                 stateText={this.state.state}
                 statePercent={this.state.percent}
-                onClose={!this.state.logout && this.signOut}
+                onClose={!this.state.logout && this.handleSignOut}
               />
             </div>
           ) ||
@@ -335,13 +336,13 @@ export default class Catalog extends React.Component {
                     className='no-margin vertical-padding transparent z-depth-1 d-flex align-items-center justify-content-between header_search'
                   >
                     <div className='col l6 m6 relative input-black-box'>
-                      <CatalogSearch movies={this.movie} onClick={this.onClickMovie} />
+                      <CatalogSearch movies={this.movie} onClick={this.handleClickMovie} />
                     </div>
 
                     <div className='top-right-small-menu'>
                       <strong className='white-text right'>
                         <StatsValue handler={this._index} />
-                        <a onClick={this.signOut} className='logout' href='/'>
+                        <a onClick={this.handleSignOut} className='logout' href='/'>
                           <i className='icon-log-out font-size-1-rem white-text' />
                         </a>
                       </strong>
@@ -351,7 +352,7 @@ export default class Catalog extends React.Component {
                   {/* Top main nav */}
                   <nav className='col l12 m12 transparent z-depth-0'>
                     <CatalogNav
-                      onChange={this.onChange}
+                      onChange={this.handleOnChange}
                       setInitialNavVar={this.initialNavVar}
                     />
                   </nav>
@@ -364,7 +365,7 @@ export default class Catalog extends React.Component {
                         movies={this.state.movies} loadOrder={this.loadOrder}
                         count={this.state.count} loading={this.state.lock}
                         end={this.state.finishLoad} chunkSize={this.state.screen.chunkSize}
-                        onClick={this.onClickMovie} screen={this.state.screen}
+                        onClick={this.handleClickMovie} screen={this.state.screen}
                       />) || <BoxLoader size={100} />
                   }
                   </section>

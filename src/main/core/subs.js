@@ -45,8 +45,7 @@ module.exports = class Sub {
       fileStream.pipe(unzip.Parse()).on('entry', (entry) => {
         // Replace bad chars
         const _replaceReg = /(\[|\]|-|\.|\+|\s|'|")/g
-        const _cleanInvalid = /[^\u0000-\u007E]/g
-        const _file = entry.path.replace(_replaceReg, '_').replace(_cleanInvalid, '_')
+        const _file = entry.path.replace(_replaceReg, '_')
         const _fileDir = path.join(ROOT_TMP_FOLDER, _file)
 
         // Make dir if needed
@@ -109,7 +108,7 @@ module.exports = class Sub {
      * @param {String} file_dir
      * @param {String} desination
      */
-    return new Promise(function (r, e) {
+    return new Promise(function (resolve, reject) {
       // The new vtt file
       const newVttFileDir = strFileDir
         .replace('.srt', '.vtt')
@@ -128,9 +127,9 @@ module.exports = class Sub {
 
       // Converting SRT to VTT
       srt2vtt(strBuffer, (err, vttData) => {
-        if (err) e(err)
+        if (err) reject(err)
         fs.writeFileSync(newVttFileDir, vttData)
-        r(newVttFileDir)
+        resolve(newVttFileDir)
       })
     })
   }
