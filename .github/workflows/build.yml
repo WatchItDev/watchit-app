@@ -13,7 +13,7 @@ jobs:
       - name: Check out Git repository
         uses: actions/checkout@v2
 
-      - name: Install Node.js in ${{matrix.os}
+      - name: Install Node.js in ${{ matrix.os }
         uses: actions/setup-node@v2
         with:
           node-version: 14.x
