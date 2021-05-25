@@ -51,8 +51,8 @@ module.exports = class TorrentStreamer extends ParentStreamer {
 
   stop (cb) {
     /** Stop torrent streaming
-         * @param {function} callback
-         * */
+     * @param {function} callback
+     * */
     // Loading timeout stop
     log.warn('Flix destroyed')
     this.stopped = true
@@ -64,10 +64,10 @@ module.exports = class TorrentStreamer extends ParentStreamer {
 
   checkLoadingProgress (torrent) {
     /** Check for progress in torrent download
-         * @param {object} flix
-         * @param {string} href
-         * @return void
-         * */
+     * @param {object} flix
+     * @param {string} href
+     * @return void
+     * */
 
     if (this.stopped || this.started) return // Avoid keep loading
     const downloaded = torrent.downloaded // Current downloaded size
@@ -107,9 +107,9 @@ module.exports = class TorrentStreamer extends ParentStreamer {
 
   play (torrent, { videoRef } = {}) {
     /** Start playing torrent
-         * @param {string} torrent
-         * @return object
-         * * */
+     * @param {string} torrent
+     * @return object
+     * * */
     // Reset stopped on each new play
     this.stopped = false
     // Handle remote torrent
