@@ -1,11 +1,11 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import uid from "shortid";
-import Alert from 'components/app-alerts'
-import BoxInput from 'components/app-inputs'
-import Button from 'components/app-buttons'
+import Alert from 'components/app-alerts/'
+import Input from 'components/app-inputs/'
+import Button from 'components/app-buttons/'
 
-export default class FormBox extends React.Component {
+export default class Form extends React.Component {
 
     constructor(props) {
         super(props);
@@ -70,7 +70,7 @@ export default class FormBox extends React.Component {
                         this.props.input.map((i, k) => {
                             return (
                                 <div key={k} className={"input-field-black col " + i.size}>
-                                    <BoxInput {...i} onChange={this.setValue}/>
+                                    <Input {...i} onChange={this.setValue}/>
                                 </div>
                             )
                         })

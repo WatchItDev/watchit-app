@@ -1,6 +1,5 @@
 import React from 'react';
-import Logo from 'components/util-header-logo'
-import AppUpdater from 'components/util-updater'
+import Logo from 'components/app-logo/'
 
 const electron = window.require('electron');
 const ipcRenderer = electron.ipcRenderer;
@@ -53,7 +52,7 @@ export default class DragBar extends React.PureComponent {
                 <header id="drag-bar"
                         className={`relative transparent z-depth-100 z-index-1000`}>
                     <Logo/>
-                    {this.state.updater && <AppUpdater>{this.state.updater}</AppUpdater>}
+                    {/*{this.state.updater && <Updater>{this.state.updater}</Updater>}*/}
                      <ul className="list-unlisted relative d-flex align-items-center">
                         <li onClick={(e) => this.minimizeWin(e)} className="margin-right-4 d-flex align-items-center">
                             <i className="icon-circle-with-minus orange-text"/>
