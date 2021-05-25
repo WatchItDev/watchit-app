@@ -3,22 +3,6 @@ import setting from 'settings'
 import icon from 'render/media/icons/icon.png'
 import styled, { keyframes } from 'styled-components'
 
-export default function Logo (props = {
-  show: true,
-  absolute: false,
-  thumbnail: true,
-}) {
-
-  return (
-    <LogoWrapper show={props.show} absolute={props.absolute} thumbnail={props.thumbnail}>
-      <LogoImg src={icon} alt="Logo" width={50} height={50}/>
-      <LogoText>ATCH</LogoText>
-      <LogoColoredText>IT</LogoColoredText>
-    </LogoWrapper>
-  )
-
-}
-
 const LogoWrapper = styled.h5`
   position: ${props => props.absolute ? 'absolute' : 'relative'};
   transform: ${props => !props.thumbnail ? 'scale(3) translateY(-2.7rem)' : 'scale(1)'};
@@ -99,3 +83,21 @@ const LogoColoredText = styled.span`
     top: -12px;
   }
 `
+
+const Logo = (props) => {
+  return (
+    <LogoWrapper show={props.show} absolute={props.absolute} thumbnail={props.thumbnail}>
+      <LogoImg src={icon} alt="Logo" width={50} height={50}/>
+      <LogoText>ATCH</LogoText>
+      <LogoColoredText>IT</LogoColoredText>
+    </LogoWrapper>
+  )
+}
+
+Logo.defaultProps = {
+  show: true,
+  absolute: false,
+  thumbnail: true,
+}
+
+export default React.memo(Logo)
