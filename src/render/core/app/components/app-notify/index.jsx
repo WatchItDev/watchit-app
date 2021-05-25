@@ -2,44 +2,47 @@ import React from 'react'
 import styled from 'styled-components'
 
 export default class Notify extends React.PureComponent {
-    constructor(props) {
-        super(props);
-        // Initial state
-        this.renderTimeout = null;
-        this.closeTimeout = null;
-        this.state = Object.assign({
-            closeByUser: true, closeTime: 20,
-            showed: false, delay: 1
-        }, this.props);
-
-    }
+  constructor (props) {
+    super(props)
+    // Initial state
+    this.renderTimeout = null
+    this.closeTimeout = null
+    this.state = Object.assign({
+      closeByUser: true,
+      closeTime: 20,
+      showed: false,
+      delay: 1
+    }, this.props)
+  }
 
     closeNotification = () => {
-        this.setState({showed: false});
+      this.setState({ showed: false })
     }
 
     showNotification = () => {
-        this.setState({showed: true});
+      this.setState({ showed: true })
     }
 
-    componentDidMount() {
-        if (this.renderTimeout) clearTimeout(this.renderTimeout)
-        if (this.closeTimeout) clearTimeout(this.closeTimeout)
-        this.renderTimeout = setTimeout(() => this.showNotification(), this.state.delay * 1000);
-        this.closeTimeout = setTimeout(() => this.closeNotification(), this.state.closeTime * 1000);
+    componentDidMount () {
+      if (this.renderTimeout) clearTimeout(this.renderTimeout)
+      if (this.closeTimeout) clearTimeout(this.closeTimeout)
+      this.renderTimeout = setTimeout(() => this.showNotification(), this.state.delay * 1000)
+      this.closeTimeout = setTimeout(() => this.closeNotification(), this.state.closeTime * 1000)
     }
 
-    render() {
-        return <NotificationWrapper show={this.state.showed}>
-            <NotificationHeader>
-                <span>Notification</span>
-                {
+    render () {
+      return (
+        <NotificationWrapper show={this.state.showed}>
+          <NotificationHeader>
+            <span>Notification</span>
+            {
                     this.state.closeByUser &&
-                    <NotificationClose className="icon-cross" onClick={this.closeNotification}/>
+                      <NotificationClose className='icon-cross' onClick={this.closeNotification} />
                 }
-            </NotificationHeader>
-            {this.props.children}
+          </NotificationHeader>
+          {this.props.children}
         </NotificationWrapper>
+      )
     }
 }
 
@@ -87,7 +90,7 @@ const NotificationWrapper = styled.div`
       font-size: 0.9rem;
     }
   }
-`;
+`
 
 const NotificationHeader = styled.header`
   color: rgb(229, 142, 38);
@@ -98,12 +101,11 @@ const NotificationHeader = styled.header`
   display: flex;
   align-items: center;
   justify-content: space-between;
-`;
-
+`
 
 const NotificationClose = styled.i`
   font-size: 1.5rem;
   line-height: 1rem;
   color: white;
   cursor: pointer;
-`;
+`

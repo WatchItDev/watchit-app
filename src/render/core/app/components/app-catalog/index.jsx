@@ -18,7 +18,7 @@ const key = window.bridge.Key
 const broker = window.bridge.Broker
 const DEFAULT_INIT_LOAD = 100
 
-//Login pages class
+// Login pages class
 export default class Catalog extends React.Component {
   constructor (props) {
     super(props)
@@ -28,13 +28,21 @@ export default class Catalog extends React.Component {
 
     // Initial state
     this.state = {
-      state: 'Bootstrapping', percent: 0, peers: this.peers, count: DEFAULT_INIT_LOAD,
-      ready: itCached, loading: !itCached, movies: [], screen: this.getRecalculatedScreen(),
+      state: 'Bootstrapping',
+      percent: 0,
+      peers: this.peers,
+      count: DEFAULT_INIT_LOAD,
+      ready: itCached,
+      loading: !itCached,
+      movies: [],
+      screen: this.getRecalculatedScreen(),
       lock: false, // Avoid re-render movies list
-      finishLoad: false, showDetailsFor: false, logout: false
+      finishLoad: false,
+      showDetailsFor: false,
+      logout: false
     }
 
-    //Max movies for initial request
+    // Max movies for initial request
     this.movie = new Movie(broker)
     this.renderTimeout = null
     this.resizeTimeout = null
@@ -42,12 +50,11 @@ export default class Catalog extends React.Component {
       sort_by: 'year',
       order: 'desc'
     }
-
   }
 
   _index (i) {
     // Else try get from key file and save
-    let _storage = key.readFromStorage() || {}
+    const _storage = key.readFromStorage() || {}
     return (i in _storage && _storage[i]) || 0
   }
 
@@ -65,9 +72,9 @@ export default class Catalog extends React.Component {
   }
 
   getRecalculatedScreen = () => {
-    const width = Math.min(window.innerWidth, window.screen.width),
-      height = Math.min(window.innerHeight, window.screen.height),
-      defaults = util.calcScreenSize({ width, height })
+    const width = Math.min(window.innerWidth, window.screen.width)
+    const height = Math.min(window.innerHeight, window.screen.height)
+    const defaults = util.calcScreenSize({ width, height })
     log.info(`Recalculating Screen W:${width}, H:${height}`)
     return defaults
   }
@@ -78,17 +85,18 @@ export default class Catalog extends React.Component {
 
   recalculateScreen = () => {
     if (!this.state.movies.length) return
-    const defaults = this.getRecalculatedScreen(),
-      chunkSize = defaults.chunkSize,
-      moviesArrays = this.state.movies,
-      movies = moviesArrays.flat(1),
-      moviesNewStructure = this.moviesToRow(movies, chunkSize),
-      cleanedMovies = this.removeExtraRow(moviesNewStructure, chunkSize)
+    const defaults = this.getRecalculatedScreen()
+    const chunkSize = defaults.chunkSize
+    const moviesArrays = this.state.movies
+    const movies = moviesArrays.flat(1)
+    const moviesNewStructure = this.moviesToRow(movies, chunkSize)
+    const cleanedMovies = this.removeExtraRow(moviesNewStructure, chunkSize)
 
     this.setState({
-      loading: false, lock: false,
+      loading: false,
+      lock: false,
       movies: cleanedMovies,
-      screen: defaults,
+      screen: defaults
     })
   }
 
@@ -150,35 +158,28 @@ export default class Catalog extends React.Component {
     }).on('start', async () => {
       log.info('STARTING')
       // if (!this.loaded) localStorage.clear();
-
     }).on('ready', () => {
-      //Start filtering set cache synced movies
+      // Start filtering set cache synced movies
       log.info('LOADED FROM LOCAL')
       this.startRunning()
-
     }).on('error', (msg = 'Waiting Network') => {
       if (this.state.ready) return
       this.setState({ state: msg, ready: false })
-
     }).on('done', () => {
       log.info('LOAD DONE')
     }).on('chaos', this.chaos).load()
-
   }
 
   filterMovies (filter = {}, clear = false, chunks = null, cb = null) {
+    if (this.state.logout) { return false } // Nothing to fetch. Go out!!
 
-    if (this.state.logout)
-      return false // Nothing to fetch. Go out!!
+    // Get from cache filters
+    if (storage.get().from.mainNavFilters()) { filter = { ...filter, ...storage.get().from.mainNavFilters() } }
 
-    //Get from cache filters
-    if (storage.get().from.mainNavFilters())
-      filter = { ...filter, ...storage.get().from.mainNavFilters() }
-
-    //Clean all.. invalid
+    // Clean all.. invalid
     if ('genres' in filter) {
-      if (filter['genres'] === 'All') {
-        delete filter['genres']
+      if (filter.genres === 'All') {
+        delete filter.genres
       }
     }
 
@@ -191,20 +192,21 @@ export default class Catalog extends React.Component {
       log.info('Chunk:', filter.limit)
     }
 
-    //Get movies
+    // Get movies
     this.movie.filter(filter).then((movies) => {
-      //Chunk and concat movies
+      // Chunk and concat movies
       log.warn('Movies filtered')
-      let _chunk = chunks || this.state.screen.chunkSize
-      let _movies = this.moviesToRow(movies, _chunk)
+      const _chunk = chunks || this.state.screen.chunkSize
+      const _movies = this.moviesToRow(movies, _chunk)
 
       // Handle sizes
-      let _size = _movies.length
-      let _new_movies = [...this.state.movies, ..._movies]
-      let _current = _new_movies.length
+      const _size = _movies.length
+      const _new_movies = [...this.state.movies, ..._movies]
+      const _current = _new_movies.length
 
       this.setState({
-        scrolling: false, loading: false,
+        scrolling: false,
+        loading: false,
         count: !_size ? _current : (_current + 10),
         finishLoad: !clear ? !_size : false,
         movies: clear ? _movies : _new_movies,
@@ -221,7 +223,7 @@ export default class Catalog extends React.Component {
     to = to * size
     log.warn('Fetching movies from db')
     return new Promise((resolve) => {
-      //Throttling
+      // Throttling
       this.renderTimeout && clearTimeout(this.renderTimeout)
       this.renderTimeout = setTimeout(() => {
         this.filterMovies({ ...{ start, to }, ...this.sort },
@@ -240,25 +242,24 @@ export default class Catalog extends React.Component {
   }
 
   initialNavVar (genres, sort) {
-    //Has sort cache?
-    //Get cache from localStorage
+    // Has sort cache?
+    // Get cache from localStorage
     const navCache = storage.get().from.mainNavFilters()
     if (!navCache) return { genres: genres, sort: sort }
-    const currentNav = { 'genres': genres, 'sort_by': sort }
+    const currentNav = { genres: genres, sort_by: sort }
 
-    //For each key in cache
+    // For each key in cache
     Object.keys(currentNav)
       .forEach((k) => {
         // Clean old default prop
         currentNav[k].forEach((el) => delete el.default)
         currentNav[k].map((el) => {
-          if (Object.is(el.action, navCache[k]))
-            el.default = true
+          if (Object.is(el.action, navCache[k])) { el.default = true }
           return el
         })
       })
 
-    //Return initial
+    // Return initial
     return {
       genres: genres,
       sort: sort
@@ -266,7 +267,7 @@ export default class Catalog extends React.Component {
   }
 
   onChange = (sort, by) => {
-    //If by?
+    // If by?
     if ((storage.get().from.mainNavFilters())) {
       this.sort = Object.assign(
         {}, this.sort,
@@ -285,14 +286,13 @@ export default class Catalog extends React.Component {
       }
     }
 
-    //Reset limit
+    // Reset limit
     log.warn(`Sorting by ${by.action}`)
     storage.add(this.sort).to.mainNavFilters()
     this.setState({ loading: true }, () => {
-      //Set cache filters
+      // Set cache filters
       setImmediate(() => this.filterMovies(this.sort, true))
     })
-
   }
 
   signOut = (event) => {
@@ -300,7 +300,8 @@ export default class Catalog extends React.Component {
     localStorage.clear()
     broker.flush()
     this.setState({
-      ready: false, logout: true,
+      ready: false,
+      logout: true,
       state: 'Please Wait'
     })
   }
@@ -310,15 +311,15 @@ export default class Catalog extends React.Component {
       <>
         {
           this.state.showDetailsFor &&
-          <Details
-            id={this.state.showDetailsFor}
-            onClick={this.onClickCloseMovie}
-          />
+            <Details
+              id={this.state.showDetailsFor}
+              onClick={this.onClickCloseMovie}
+            />
         }
 
         {
           (!this.state.ready &&
-            <div className={`movie-player full-width full-height loading`}>
+            <div className='movie-player full-width full-height loading'>
               <StateLoader
                 stateText={this.state.state}
                 statePercent={this.state.percent}
@@ -326,49 +327,50 @@ export default class Catalog extends React.Component {
               />
             </div>
           ) ||
-          <div className="relative full-height main-view">
-            {/*Top main nav*/}
-            <section className="row full-height">
-              <div className="clearfix full-height">
-                <header
-                  className="no-margin vertical-padding transparent z-depth-1 d-flex align-items-center justify-content-between header_search">
-                  <div className="col l6 m6 relative input-black-box">
-                    <CatalogSearch movies={this.movie} onClick={this.onClickMovie}/>
-                  </div>
+            <div className='relative full-height main-view'>
+              {/* Top main nav */}
+              <section className='row full-height'>
+                <div className='clearfix full-height'>
+                  <header
+                    className='no-margin vertical-padding transparent z-depth-1 d-flex align-items-center justify-content-between header_search'
+                  >
+                    <div className='col l6 m6 relative input-black-box'>
+                      <CatalogSearch movies={this.movie} onClick={this.onClickMovie} />
+                    </div>
 
-                  <div className="top-right-small-menu">
-                    <strong className={'white-text right'}>
-                      <StatsValue handler={this._index}/>
-                      <a onClick={this.signOut} className="logout" href={'/'}>
-                        <i className="icon-log-out font-size-1-rem white-text"/>
-                      </a>
-                    </strong>
-                  </div>
-                </header>
+                    <div className='top-right-small-menu'>
+                      <strong className='white-text right'>
+                        <StatsValue handler={this._index} />
+                        <a onClick={this.signOut} className='logout' href='/'>
+                          <i className='icon-log-out font-size-1-rem white-text' />
+                        </a>
+                      </strong>
+                    </div>
+                  </header>
 
-                {/*Top main nav*/}
-                <nav className="col l12 m12 transparent z-depth-0">
-                  <CatalogNav
-                    onChange={this.onChange}
-                    setInitialNavVar={this.initialNavVar}
-                  />
-                </nav>
+                  {/* Top main nav */}
+                  <nav className='col l12 m12 transparent z-depth-0'>
+                    <CatalogNav
+                      onChange={this.onChange}
+                      setInitialNavVar={this.initialNavVar}
+                    />
+                  </nav>
 
-                {/* Movies section lists */}
-                <section className="row movies-box clearfix">
-                  {
+                  {/* Movies section lists */}
+                  <section className='row movies-box clearfix'>
+                    {
                     (!this.state.loading &&
                       <CatalogList
                         movies={this.state.movies} loadOrder={this.loadOrder}
                         count={this.state.count} loading={this.state.lock}
                         end={this.state.finishLoad} chunkSize={this.state.screen.chunkSize}
                         onClick={this.onClickMovie} screen={this.state.screen}
-                      />) || <BoxLoader size={100}/>
+                      />) || <BoxLoader size={100} />
                   }
-                </section>
-              </div>
-            </section>
-          </div>
+                  </section>
+                </div>
+              </section>
+            </div>
         }
       </>
     )

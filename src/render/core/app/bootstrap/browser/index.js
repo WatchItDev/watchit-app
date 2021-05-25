@@ -11,7 +11,8 @@ export default (hist, key) => {
         <Route
           name='login' exact path='/'
           render={(n) => !key.isLogged()
-            ? <Login {...n} /> : (<Redirect to='/app/movies' />)}
+            ? <Login {...n} />
+            : (<Redirect to='/app/movies' />)}
         />
         <Route
           name='movies' exact path='/app/movies'
