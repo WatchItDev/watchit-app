@@ -39,10 +39,12 @@ export default class PlayerSwarm extends React.PureComponent {
               <i className='icon-network margin-right-5' />
             </span>
             <span className={
-                            this.state.aPeers <= 10
-                              ? 'red-text' : this.state.aPeers < 15 && this.state.aPeers > 10
-                                  ? 'orange-text' : 'green-text'
-                        }
+              this.state.aPeers <= 10
+                ? 'red-text'
+                : this.state.aPeers < 15 && this.state.aPeers > 10
+                  ? 'orange-text'
+                  : 'green-text'
+            }
             >
               {this.state.aPeers} {this.state.aPeers > 1 ? 'peers' : 'peer'}
             </span>

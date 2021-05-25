@@ -24,81 +24,79 @@ export default class CatalogSearch extends React.PureComponent {
     }
   }
 
-    onSearch = (e) => {
-      // //The incoming value;
-      const _target_value = e.target.value
-      const _invalid_input = utilHelper.invalidString(_target_value)
+  onSearch = (e) => {
+    // //The incoming value;
+    const targetValue = e.target.value
+    const invalidInput = utilHelper.invalidString(targetValue)
 
-      // Remove old timeout
-      if (this.searchTimeout) {
-        clearTimeout(this.searchTimeout)
-      }
-
-      // Empty write
-      if (_invalid_input) {
-        this.setState({
-          searchResult: false,
-          searching: false
-        })
-      } else {
-        // Searching
-        this.setState({
-          searching: true
-        })
-      }
-
-      // Set time out
-      this.searchTimeout = setTimeout(() => {
-        // Check invalid
-        if (!_invalid_input)
-        // Get movies by search
-        {
-          this.props.movies.search(
-            _target_value
-          ).then((res) => {
-            this.setState({
-              searchResult: res,
-              searching: false
-            })
-          }).catch(() => {
-            this.setState({
-              searchResult: [],
-              searching: false
-            })
-          })
-        }
-      }, 1000)
+    // Remove old timeout
+    if (this.searchTimeout) {
+      clearTimeout(this.searchTimeout)
     }
 
-    onResultCLick = (id) => {
-      this.searchRef.input.ref.value = ''
-      this.setState({ searching: false, searchResult: false }, () => {
-        this.props.onClick && this.props.onClick(id)
+    // Empty write
+    if (invalidInput) {
+      this.setState({
+        searchResult: false,
+        searching: false
       })
-    };
-
-    getRef = (ref) => {
-      this.searchRef = ref
+    } else {
+      // Searching
+      this.setState({
+        searching: true
+      })
     }
 
-    render () {
-      return (
-        <>
-          {/* Search result box */}
-          <CatalogSearchInput
-            onInput={this.onSearch} size='m12 l12'
-            ref={this.getRef}
-          />
-          {
-                    (this.state.searching || this.state.searchResult) &&
-                      <CatalogSearchResult
-                        searching={this.state.searching}
-                        result={this.state.searchResult}
-                        onClick={this.onResultCLick}
-                      />
-                }
+    // Set time out
+    this.searchTimeout = setTimeout(() => {
+      // Check invalid
+      if (!invalidInput) {
+        this.props.movies.search(
+          targetValue
+        ).then((res) => {
+          this.setState({
+            searchResult: res,
+            searching: false
+          })
+        }).catch(() => {
+          this.setState({
+            searchResult: [],
+            searching: false
+          })
+        })
+      }
+    }, 1000)
+  }
 
-        </>
-      )
-    }
+  onResultCLick = (id) => {
+    this.searchRef.input.ref.value = ''
+    this.setState({ searching: false, searchResult: false }, () => {
+      this.props.onClick && this.props.onClick(id)
+    })
+  }
+
+  getRef = (ref) => {
+    this.searchRef = ref
+  }
+
+  render () {
+    return (
+      <>
+        {/* Search result box */}
+        <CatalogSearchInput
+          onInput={this.onSearch} size='m12 l12'
+          ref={this.getRef}
+        />
+        {
+          (this.state.searching || this.state.searchResult) &&
+            <CatalogSearchResult
+              searching={this.state.searching}
+              result={this.state.searchResult}
+              onClick={this.onResultCLick}
+            />
+        }
+
+      </>
+    )
+  }
 }

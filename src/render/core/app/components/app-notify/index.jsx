@@ -15,35 +15,35 @@ export default class Notify extends React.PureComponent {
     }, this.props)
   }
 
-    closeNotification = () => {
-      this.setState({ showed: false })
-    }
+  handleCloseNotification = () => {
+    this.setState({ showed: false })
+  }
 
-    showNotification = () => {
-      this.setState({ showed: true })
-    }
+  handleShowNotification = () => {
+    this.setState({ showed: true })
+  }
 
-    componentDidMount () {
-      if (this.renderTimeout) clearTimeout(this.renderTimeout)
-      if (this.closeTimeout) clearTimeout(this.closeTimeout)
-      this.renderTimeout = setTimeout(() => this.showNotification(), this.state.delay * 1000)
-      this.closeTimeout = setTimeout(() => this.closeNotification(), this.state.closeTime * 1000)
-    }
+  componentDidMount () {
+    if (this.renderTimeout) clearTimeout(this.renderTimeout)
+    if (this.closeTimeout) clearTimeout(this.closeTimeout)
+    this.renderTimeout = setTimeout(() => this.handleShowNotification(), this.state.delay * 1000)
+    this.closeTimeout = setTimeout(() => this.handleCloseNotification(), this.state.closeTime * 1000)
+  }
 
-    render () {
-      return (
-        <NotificationWrapper show={this.state.showed}>
-          <NotificationHeader>
-            <span>Notification</span>
-            {
-                    this.state.closeByUser &&
-                      <NotificationClose className='icon-cross' onClick={this.closeNotification} />
-                }
-          </NotificationHeader>
-          {this.props.children}
-        </NotificationWrapper>
-      )
-    }
+  render () {
+    return (
+      <NotificationWrapper show={this.state.showed}>
+        <NotificationHeader>
+          <span>Notification</span>
+          {
+            this.state.closeByUser &&
+              <NotificationClose className='icon-cross' onClick={this.handleCloseNotification} />
+          }
+        </NotificationHeader>
+        {this.props.children}
+      </NotificationWrapper>
+    )
+  }
 }
 
 const NotificationWrapper = styled.div`

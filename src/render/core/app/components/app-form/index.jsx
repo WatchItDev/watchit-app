@@ -29,7 +29,7 @@ export default class Form extends React.Component {
     }
   }
 
-  setValue = (event) => {
+  handleChange = (event) => {
     // If the input fields were directly within this
     // Set input in formData
     this.fields.set(
@@ -67,7 +67,7 @@ export default class Form extends React.Component {
             this.props.input.map((i, k) => {
               return (
                 <div key={k} className={'input-field-black col ' + i.size}>
-                  <Input {...i} onChange={this.setValue} />
+                  <Input {...i} onChange={this.handleChange} />
                 </div>
               )
             })
@@ -109,9 +109,12 @@ export default class Form extends React.Component {
         }
 
         {/* Success message */}
-        {this.props.success && <Alert color='success'>
-          {this.props.success}
-        </Alert>}
+        {
+          this.props.success &&
+            <Alert color='success'>
+              {this.props.success}
+            </Alert>
+        }
       </form>
     )
   }

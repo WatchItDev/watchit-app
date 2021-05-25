@@ -20,45 +20,45 @@ export default class Input extends React.PureComponent {
     }
   }
 
-    onInput = (e) => {
-      // If handler
-      if (this.props.onInput) this.props.onInput(e)
-      e.target.classList.remove('invalid')
-    }
+  handleInput = (e) => {
+    // If handler
+    if (this.props.onInput) this.props.onInput(e)
+    e.target.classList.remove('invalid')
+  }
 
-    onChange = (e) => {
-      // If handler
-      if (this.props.onChange) { this.props.onChange(e) }
-    }
+  handleChange = (e) => {
+    // If handler
+    if (this.props.onChange) { this.props.onChange(e) }
+  }
 
-    onKeyDown = (e) => {
-      // If handler
-      if (this.props.onKeyDown) { this.props.onKeyDown(e) }
-    }
+  handleKeyDown = (e) => {
+    // If handler
+    if (this.props.onKeyDown) { this.props.onKeyDown(e) }
+  }
 
-    onInvalid = (e) => {
-      e.preventDefault()
-      e.target.classList.add('invalid')
-    }
+  handleInvalid = (e) => {
+    e.preventDefault()
+    e.target.classList.add('invalid')
+  }
 
-    getRef = (ref) => {
-      this.ref = ref
-    }
+  getRef = (ref) => {
+    this.ref = ref
+  }
 
-    render () {
-      return (
-        <div>
-          {this.props.icon && <i className={this.props.icon + ' gray-text'} />}
-          <input
-            {...this.props}
-            onInput={this.onInput}
-            onChange={this.onChange}
-            onKeyDown={this.onKeyDown}
-            onInvalid={this.onInvalid}
-            ref={this.getRef}
-            className='white-text validate'
-          />
-        </div>
-      )
-    }
+  render () {
+    return (
+      <div>
+        {this.props.icon && <i className={this.props.icon + ' gray-text'} />}
+        <input
+          {...this.props}
+          onInput={this.handleInput}
+          onChange={this.handleChange}
+          onKeyDown={this.handleKeyDown}
+          onInvalid={this.handleInvalid}
+          ref={this.getRef}
+          className='white-text validate'
+        />
+      </div>
+    )
+  }
 }
