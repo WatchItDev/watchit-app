@@ -25,7 +25,7 @@ jobs:
         run: npm run lint
 
       - name: Test code
-        run: npm test
+        run: npm test -- --coverage
 
       - name: Package
         run: npm run package
