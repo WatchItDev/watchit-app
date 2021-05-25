@@ -1,6 +1,5 @@
 import React from 'react'
 import { shallow } from 'enzyme'
-import settings from 'settings'
 import Alert from './index'
 
 /* eslint-disable no-undef */
