@@ -1,43 +1,51 @@
-import React from "react";
-import {unmountComponentAtNode} from "react-dom";
-// import {act} from "react-dom/test-utils";
-//import BoxImage from "./index";
-// import pretty from "pretty";
+import React from 'react'
+import { shallow, mount } from 'enzyme'
+import settings from 'settings'
+import Image from './index'
 
-let container = null;
-beforeEach(() => {
-    window.env = {ROOT_URI: "/test/"};
-    container = document.createElement("div");
-    document.body.appendChild(container);
-});
+/* eslint-disable no-undef */
+describe('Image component', () => {
+  const props = { index: 'image.jpg', cid: 'QmcdLW9p1dcYYKBHZdRXEXA4go6Qd3C4ce12khyiCqVNaH' }
 
-afterEach(() => {
-    unmountComponentAtNode(container);
-    container.remove();
-    container = null;
-});
+  it('should render', () => {
+    const imageComponent = mount(<Image src={props} />)
+    expect(imageComponent).toMatchSnapshot()
+  })
 
-test("Temporary Test",() => {
-    // Dummy test
-    expect(2 + 2).toBe(4);
-});
+  it('should render with src prop cid only', () => {
+    const imageComponent = mount(<Image src={{ cid: props.cid }} />)
+    expect(imageComponent).toMatchSnapshot()
+  })
 
-/* describe("Image component", () => {
-    it("Should render image box", () => {
-        act(() => {
-            render(<BoxImage src={"large_cover_image.jpg"}/>, container);
-        });
+  // eslint-disable-next-line no-undef
+  it('should render with random gateway', () => {
+    const imageComponent = mount(<Image src={props} />)
+    const imageEl = imageComponent.instance().img
+    // Image link built using at least one gateway
+    const match = settings.gateways.some(gateway => ~imageEl.src.indexOf(gateway))
+    // eslint-disable-next-line no-undef
+    expect(match).toBeTruthy()
+  })
 
-        expect(pretty(container.innerHTML)).toMatchSnapshot();
-    });
+  // eslint-disable-next-line no-undef
+  it('should render with valid src prop', () => {
+    const imageComponent = mount(<Image src={props} />)
+    const componentProps = imageComponent.instance().props
 
-    it("Should render image box with valid uri", () => {
-        act(() => {
-            render(<BoxImage src={"large_cover_image.jpg"}/>, container);
-        });
+    /* eslint-disable no-undef */
+    expect(componentProps.src).toBeDefined()
+    expect(componentProps.src.cid).toBe(props.cid)
+    expect(componentProps.src.index).toBe(props.index)
+  })
 
-        expect(container.querySelector("img").src).toBe(
-            "http://localhost/test/large_cover_image.jpg"
-        );
-    });
-}); */
+  // eslint-disable-next-line no-undef
+  it('should not render with invalid src prop', () => {
+    try {
+      const emptyObj = {}
+      shallow(<Image src={emptyObj} />)
+    } catch (e) {
+      // eslint-disable-next-line no-undef
+      expect(e).toBeInstanceOf(Error)
+    }
+  })
+})

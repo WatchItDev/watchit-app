@@ -3,22 +3,22 @@
  */
 
 const FORMS = {
-    login_user: {
-        inputs: [{
-            type: 'text',
-            placeholder: "Public Key",
-            autoComplete: 'nope',
-            name: "public",
-            size: 'm12 l12',
-            required: true
-        }],
-        buttons: [{
-            type: 'submit',
-            text: 'Connect',
-            size: 'm6 l6'
-        }]
-    }
-};
+  login_user: {
+    inputs: [{
+      type: 'text',
+      placeholder: 'Public Key',
+      autoComplete: 'nope',
+      name: 'public',
+      size: 'm12 l12',
+      required: true
+    }],
+    buttons: [{
+      type: 'submit',
+      text: 'Connect',
+      size: 'm6 l6'
+    }]
+  }
+}
 
-//Export forms
-export default FORMS;
+// Export forms
+export default FORMS

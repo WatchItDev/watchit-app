@@ -9,9 +9,8 @@ export default class Stats extends React.PureComponent {
       peers: this.peers,
       mainProgress: this.tmp,
       loadedMovies: this.chunk,
-      totalMovies: this.total,
+      totalMovies: this.total
     }
-
   }
 
   componentDidMount () {
@@ -34,13 +33,13 @@ export default class Stats extends React.PureComponent {
   }
 
   componentWillUnmount () {
-    if (this.timer)
-      clearInterval(this.timer)
+    if (this.timer) { clearInterval(this.timer) }
   }
 
   _index (i) {
-    return this.props.handler ?
-      this.props.handler(i) : 0
+    return this.props.handler
+      ? this.props.handler(i)
+      : 0
   }
 
   get chunk () {
@@ -58,7 +57,7 @@ export default class Stats extends React.PureComponent {
   }
 
   get peers () {
-    let _currentPeers = this._index('peers')
+    const _currentPeers = this._index('peers')
     return _currentPeers > 0 ? _currentPeers : 1
   }
 
@@ -69,15 +68,15 @@ export default class Stats extends React.PureComponent {
   }
 
   render () {
-    return <>
-      <span className="icon-traffic-cone icon"/>
-      <span>Sync: {this.tmp}%</span>
-      <span className="icon-book icon"/>
-      <span>Movies: {this.chunk}/{this.total}</span>
-      <span className="icon-user icon"/>
-      <span>Peers: {this.peers}</span>
-    </>
-
+    return (
+      <>
+        <span className='icon-traffic-cone icon' />
+        <span>Sync: {this.tmp}%</span>
+        <span className='icon-book icon' />
+        <span>Movies: {this.chunk}/{this.total}</span>
+        <span className='icon-user icon' />
+        <span>Peers: {this.peers}</span>
+      </>
+    )
   }
 }
-

@@ -14,11 +14,11 @@ export default class PlayerLoader extends React.PureComponent {
 
   render () {
     return (
-      <div className="output-process valign-wrapper full-width full-height">
-        <div className="app_loader">
-          {this.props.onClose && <BtnClose onClick={this.props.onClose}/>}
-          <Background absolute={true}/>
-          <BarLoader stateText={this.props.stateText} statePercent={this.props.statePercent}/>
+      <div className='output-process valign-wrapper full-width full-height'>
+        <div className='app_loader'>
+          {this.props.onClose && <BtnClose onClick={this.props.onClose} />}
+          <Background absolute />
+          <BarLoader stateText={this.props.stateText} statePercent={this.props.statePercent} />
         </div>
       </div>
     )
