@@ -2,7 +2,6 @@
  * Created by gmena on 05-03-17.
  */
 // Storage manifest
-// eslint-disable-next-line
 /* global localStorage */
 import settings from 'settings'
 
