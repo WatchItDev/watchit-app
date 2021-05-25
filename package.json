@@ -133,7 +133,7 @@
     "build:web": "RUNTIME=web node scripts/build.js",
     "test": "node scripts/test.js  --watchAll=false -u",
     "electron": "cross-env LOG=debug IPFS_FD_MAX=10000 NODE_ENV=development $(npm bin)/electron .",
-    "lint": "standard \"src/{main,render}/**/*.js\" --fix",
+    "lint": "standard \"src/{main,render}/**/*.js\" --fix; eslint --fix --ext .jsx  src",
     "package": "npm run build && electron-builder build",
     "package:mac": "npm run package -- --mac",
     "package:linux": "npm run package -- --linux",
@@ -148,6 +148,19 @@
     "hooks": {
       "pre-commit": "npm run lint"
     }
+  },
+  "eslintConfig": {
+    "extends": "react-app",
+    "overrides": [
+      {
+        "files": [
+          "src/**/*.js"
+        ],
+        "rules": {
+          "import/no-anonymous-default-export": "off"
+        }
+      }
+    ]
   },
   "devDependencies": {
     "@babel/core": "7.12.3",

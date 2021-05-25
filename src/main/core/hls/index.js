@@ -1,7 +1,7 @@
 const HLS = require('hls.js')
+const EventEmitter = require('events')
 const log = require('logplease').create('HLS')
 const conf = require('./settings')
-const EventEmitter = require('events')
 
 module.exports = class HLSStreamer extends EventEmitter {
   constructor (props) {
@@ -20,10 +20,10 @@ module.exports = class HLSStreamer extends EventEmitter {
 
   play (uri, { videoRef }) {
     /***
-         * Start HLS streaming play
-         * @param {object} videoRef
-         * @param {function} onReady
-         */
+     * Start HLS streaming play
+     * @param {object} videoRef
+     * @param {function} onReady
+     */
     // Check for native play
     const nativePlay = videoRef.canPlayType(
       'application/vnd.apple.mpegurl'
@@ -47,10 +47,10 @@ module.exports = class HLSStreamer extends EventEmitter {
 
   quality (n) {
     /**
-         * Process qualities to player
-         * @param {object} n
-         * @return {object}
-         */
+     * Process qualities to player
+     * @param {object} n
+     * @return {object}
+     */
     const q = n.levels.map((l) => l.height)
     return {
       quality: {
@@ -69,10 +69,10 @@ module.exports = class HLSStreamer extends EventEmitter {
 
   emitError (e) {
     /***
-         * Handle error on HLS streaming
-         * @param {object} event
-         * @param {object} data
-         */
+     * Handle error on HLS streaming
+     * @param {object} event
+     * @param {object} data
+     */
     log.info('Fail trying play movie')
     this.hls.destroy()
     this.emit('error', e)
