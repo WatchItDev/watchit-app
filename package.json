@@ -133,7 +133,7 @@
     "build:web": "RUNTIME=web node scripts/build.js",
     "test": "node scripts/test.js  --watchAll=false -u",
     "electron": "cross-env LOG=debug IPFS_FD_MAX=10000 NODE_ENV=development $(npm bin)/electron .",
-    "lint": "standard \"src/{main,render}/**/*.js\" --fix; eslint --fix --ext .jsx  src",
+    "lint": "standard \"src/{main,render}/**/*.js\" --fix; eslint --fix --ext .jsx  src/render",
     "package": "npm run build && electron-builder build",
     "package:mac": "npm run package -- --mac",
     "package:linux": "npm run package -- --linux",
