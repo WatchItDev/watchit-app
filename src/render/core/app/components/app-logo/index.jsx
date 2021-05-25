@@ -87,7 +87,7 @@ const LogoColoredText = styled.span`
 const Logo = (props) => {
   return (
     <LogoWrapper show={props.show} absolute={props.absolute} thumbnail={props.thumbnail}>
-      <LogoImg src={icon} alt="Logo" width={50} height={50}/>
+      <LogoImg src={icon} alt='Logo' width={50} height={50} />
       <LogoText>ATCH</LogoText>
       <LogoColoredText>IT</LogoColoredText>
     </LogoWrapper>
@@ -98,7 +98,7 @@ const Logo = (props) => {
 Logo.defaultProps = {
   show: true,
   absolute: false,
-  thumbnail: true,
+  thumbnail: true
 }
 
 export default React.memo(Logo)

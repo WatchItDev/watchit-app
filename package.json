@@ -131,9 +131,9 @@
     "build": "node scripts/build.js",
     "start:web": "RUNTIME=web node scripts/start.js",
     "build:web": "RUNTIME=web node scripts/build.js",
-    "test": "node scripts/test.js  --watchAll=false -u",
+    "test": "node scripts/test.js --coverage --watchAll=false -u",
     "electron": "cross-env LOG=debug IPFS_FD_MAX=10000 NODE_ENV=development $(npm bin)/electron .",
-    "lint": "standard \"src/{main,render}/**/*.js\" --fix; eslint --fix --ext .jsx  src/render",
+    "lint": "standard \"src/{main,render}/**/*.{js,jsx}\" --fix",
     "package": "npm run build && electron-builder build",
     "package:mac": "npm run package -- --mac",
     "package:linux": "npm run package -- --linux",
@@ -146,21 +146,8 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run lint"
+      "pre-commit": "npm test && npm run lint"
     }
-  },
-  "eslintConfig": {
-    "extends": "react-app",
-    "overrides": [
-      {
-        "files": [
-          "src/**/*.js"
-        ],
-        "rules": {
-          "import/no-anonymous-default-export": "off"
-        }
-      }
-    ]
   },
   "devDependencies": {
     "@babel/core": "7.12.3",
@@ -177,8 +164,6 @@
     "bfj": "^7.0.2",
     "camelcase": "^6.1.0",
     "case-sensitive-paths-webpack-plugin": "2.3.0",
-    "chai": "^4.3.4",
-    "chai-as-promised": "^7.1.1",
     "concurrently": "^5.3.0",
     "cross-env": "^7.0.3",
     "css-loader": "4.3.0",
@@ -187,16 +172,8 @@
     "electron": "^12.0.2",
     "electron-builder": "^22.10.5",
     "electron-reload": "^1.5.0",
-    "eslint": "^7.11.0",
-    "eslint-config-react-app": "^6.0.0",
-    "eslint-plugin-flowtype": "^5.2.0",
-    "eslint-plugin-import": "^2.22.1",
-    "eslint-plugin-jest": "^24.1.0",
-    "eslint-plugin-jsx-a11y": "^6.3.1",
-    "eslint-plugin-react": "^7.21.5",
-    "eslint-plugin-react-hooks": "^4.2.0",
-    "eslint-plugin-testing-library": "^3.9.2",
-    "eslint-webpack-plugin": "^2.5.2",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.6",
     "file-loader": "6.1.1",
     "html-webpack-plugin": "4.5.0",
     "husky": "^4.3.8",
@@ -226,6 +203,7 @@
     "react-player": "^2.1.0",
     "react-refresh": "^0.8.3",
     "react-router-dom": "^5.2.0",
+    "react-test-renderer": "^17.0.2",
     "react-tooltip": "^4.2.6",
     "react-window": "^1.8.5",
     "react-window-infinite-loader": "^1.0.5",
@@ -291,11 +269,15 @@
       "^.+\\.module\\.(css|sass|scss)$"
     ],
     "modulePaths": [
-      "/home/geolffrey/WebstormProjects/watchit-desktop/src"
+      "./src"
     ],
     "moduleNameMapper": {
       "^react-native$": "react-native-web",
-      "^.+\\.module\\.(css|sass|scss)$": "identity-obj-proxy"
+      "^.+\\.module\\.(css|sass|scss)$": "identity-obj-proxy",
+      "^components(.*)$": "<rootDir>/src/render/core/app/components$1",
+      "^helpers(.*)$": "<rootDir>/src/render/core/helpers$1",
+      "^settings(.*)$": "<rootDir>/src/render/core/settings",
+      "^logger(.*)$": "<rootDir>/src/render/core/helpers/logger"
     },
     "moduleFileExtensions": [
       "web.js",
