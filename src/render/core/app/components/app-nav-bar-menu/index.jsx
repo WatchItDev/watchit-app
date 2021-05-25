@@ -23,11 +23,11 @@ export default class NavBarMenu extends React.Component {
 
   componentDidMount () {
     // If need for initial item
-    if (this.props.getInitialItem) {
+    if (this.props.onGetInitialItem) {
       this.props.list.map((i, k) => {
         if (!i.default) return true
         // Call method
-        this.props.getInitialItem(
+        this.props.onGetInitialItem(
           this.props.list[k]
         )
         // Stop loop

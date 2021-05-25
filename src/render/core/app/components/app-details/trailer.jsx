@@ -9,7 +9,7 @@ export default class DetailsTrailer extends React.PureComponent {
     super(props)
 
     this.state = {
-      ready_to_play: false
+      readyToPlay: false
     }
 
     // Conf for modal
@@ -41,39 +41,39 @@ export default class DetailsTrailer extends React.PureComponent {
     }
   }
 
-	onReady = () => this.setState({
-	  ready_to_play: true
-	})
+  handleReady = () => this.setState({
+    readyToPlay: true
+  })
 
-	onClose = () => {
-	  this.props.onClose &&
-		this.props.onClose()
-	}
+  handleClose = () => {
+    this.props.onClose &&
+    this.props.onClose()
+  }
 
-	render () {
-	  return (
-  <ReactModal isOpen style={this.modalStyle}>
-    {
-      <button
-        className='btn btn-small btn-floating top-0 right-5 absolute white'
-        onClick={this.onClose}
-      >
-        <i className='icon-cross black-text' />
-      </button>
-			}
-    {
-				!this.state.ready_to_play &&
-  <div className='full-width full-height black'>
-    <BoxLoader size={100} />
-  </div>
-			}
+  render () {
+    return (
+      <ReactModal isOpen style={this.modalStyle}>
+        {
+          <button
+            className='btn btn-small btn-floating top-0 right-5 absolute white'
+            onClick={this.handleClose}
+          >
+            <i className='icon-cross black-text' />
+          </button>
+        }
+        {
+          !this.state.readyToPlay &&
+            <div className='full-width full-height black'>
+              <BoxLoader size={100} />
+            </div>
+        }
 
-    <ReactPlayer
-      onReady={this.onReady}
-      url={`https://www.youtube.com/watch?v=${this.props.trailer}`}
-      playing controls config={{ youtube: { playerVars: { showinfo: 0, disablekb: 1 } } }}
-    />
-  </ReactModal>
-	  )
-	}
+        <ReactPlayer
+          onReady={this.handleReady}
+          url={`https://www.youtube.com/watch?v=${this.props.trailer}`}
+          playing controls config={{ youtube: { playerVars: { showinfo: 0, disablekb: 1 } } }}
+        />
+      </ReactModal>
+    )
+  }
 }

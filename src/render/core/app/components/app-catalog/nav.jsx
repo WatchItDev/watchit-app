@@ -147,20 +147,20 @@ export default class CatalogNavBar extends React.Component {
     }
   }
 
-    sortBy = (e) => this.onChange('sort_by', e)
-    genres = (e) => this.onChange('genres', e)
+    handleSortBy = (e) => this.onChange('sort_by', e)
+    handleGenres = (e) => this.onChange('genres', e)
 
     render () {
       return (
         <div className='nav-wrapper main-nav-filter-movies'>
           <NavBarMenu
             btnText='Sort By' list={this.state.sort}
-            onChange={this.sortBy}
+            onChange={this.handleSortBy}
           />
 
           <NavBarMenu
             btnText='Genre' list={this.state.genres}
-            onChange={this.genres}
+            onChange={this.handleGenres}
           />
         </div>
       )
