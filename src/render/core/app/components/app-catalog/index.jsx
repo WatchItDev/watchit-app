@@ -69,13 +69,19 @@ export default class Catalog extends React.Component {
 
   startRunning = (cb = null) => {
     if (this.state.logout) return
-    this.setState({ ready: true, loading: false }, cb)
+    this.setState({
+      ready: true,
+      loading: false
+    }, cb)
   }
 
   getRecalculatedScreen = () => {
     const width = Math.min(window.innerWidth, window.screen.width)
     const height = Math.min(window.innerHeight, window.screen.height)
-    const defaults = util.calcScreenSize({ width, height })
+    const defaults = util.calcScreenSize({
+      width,
+      height
+    })
     log.info(`Recalculating Screen W:${width}, H:${height}`)
     return defaults
   }
@@ -165,7 +171,10 @@ export default class Catalog extends React.Component {
       this.startRunning()
     }).on('error', (msg = 'Waiting Network') => {
       if (this.state.ready) return
-      this.setState({ state: msg, ready: false })
+      this.setState({
+        state: msg,
+        ready: false
+      })
     }).on('done', () => {
       log.info('LOAD DONE')
     }).on('chaos', this.chaos).load()
@@ -227,11 +236,17 @@ export default class Catalog extends React.Component {
       // Throttling
       this.renderTimeout && clearTimeout(this.renderTimeout)
       this.renderTimeout = setTimeout(() => {
-        this.filterMovies({ ...{ start, to }, ...this.sort },
-          false, false, (state) => {
-            log.info('Infinite movies loaded')
-            resolve(state)
-          }
+        this.filterMovies({
+          ...{
+            start,
+            to
+          },
+          ...this.sort
+        },
+        false, false, (state) => {
+          log.info('Infinite movies loaded')
+          resolve(state)
+        }
         )
       }, 500)
     })
@@ -246,8 +261,16 @@ export default class Catalog extends React.Component {
     // Has sort cache?
     // Get cache from localStorage
     const navCache = storage.get().from.mainNavFilters()
-    if (!navCache) return { genres: genres, sort: sort }
-    const currentNav = { genres: genres, sort_by: sort }
+    if (!navCache) {
+      return {
+        genres: genres,
+        sort: sort
+      }
+    }
+    const currentNav = {
+      genres: genres,
+      sort_by: sort
+    }
 
     // For each key in cache
     Object.keys(currentNav)

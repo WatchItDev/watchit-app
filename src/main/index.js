@@ -7,12 +7,19 @@ const logger = require('logplease')
 const log = logger.create('MAIN')
 
 const { mainMenu } = require('./helpers/menu')
-const { fadeWindowOut, fadeWindowIn } = require('./helpers/screen')
+const {
+  fadeWindowOut,
+  fadeWindowIn
+} = require('./helpers/screen')
 
 const { autoUpdater } = require('electron-updater')
 const {
-  app, BrowserWindow, ipcMain,
-  protocol, Menu, dialog
+  app,
+  BrowserWindow,
+  ipcMain,
+  protocol,
+  Menu,
+  dialog
 } = require('electron')
 
 const ROOT_APP = process.cwd()
@@ -52,7 +59,10 @@ const registerMiddleware = () => {
   protocol.registerFileProtocol('file', (request, cb) => {
     const file = request.url.substr(7)
     const headers = { 'Content-Type': mime.getType(file) }
-    cb({ path: file, headers: headers })
+    cb({
+      path: file,
+      headers: headers
+    })
   })
 }
 const removeCacheDirs = () => {
