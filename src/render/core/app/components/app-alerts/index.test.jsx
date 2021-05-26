@@ -9,7 +9,7 @@ describe('Alert component', () => {
     expect(alertComponent).toMatchSnapshot()
   })
 
-  // it('should render color', () => {
+  // it('should render with prop color', () => {
   //   const color = settings.styles.colors.danger
   //   const alertComponent = shallow(<Alert color={color} />)
   //   const styles = alertComponent.instance().getChildContext()
