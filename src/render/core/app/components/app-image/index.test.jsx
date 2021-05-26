@@ -12,8 +12,7 @@ describe('Image component', () => {
     expect(imageComponent).toMatchSnapshot()
   })
 
-  it('should render with src `cid` prop only', () => {
-    // Render with absolute image cid
+  it('should render with absolute `cid`', () => {
     const imageComponent = shallow(<Image src={{ cid: props.cid }} />)
     expect(imageComponent).toMatchSnapshot()
   })
@@ -29,8 +28,7 @@ describe('Image component', () => {
   })
 
   // eslint-disable-next-line no-undef
-  it('should render with valid src `cid` and `index` prop', () => {
-    // Render with relative image cid using index
+  it('should render with relative `cid` and `index`', () => {
     const imageComponent = shallow(<Image src={props} />)
     const componentProps = imageComponent.instance().props
 
@@ -41,7 +39,7 @@ describe('Image component', () => {
   })
 
   // eslint-disable-next-line no-undef
-  it('should not render with empty src prop', () => {
+  it('should not render with empty src', () => {
     try {
       const emptyObj = {}
       shallow(<Image src={emptyObj} />)
@@ -52,7 +50,7 @@ describe('Image component', () => {
   })
 
   // eslint-disable-next-line no-undef
-  it('should not render without `cid` src prop', () => {
+  it('should not render without `cid`', () => {
     try {
       const withoutCID = { index: 'image.jpg' }
       shallow(<Image src={withoutCID} />)
