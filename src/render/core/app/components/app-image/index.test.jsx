@@ -33,7 +33,7 @@ describe('Image component', () => {
     const componentProps = imageComponent.instance().props
 
     /* eslint-disable no-undef */
-    expect(componentProps.src).toBeDefined()
+    expect(componentProps.src).toBeInstanceOf(Object)
     expect(componentProps.src.cid).toBe(props.cid)
     expect(componentProps.src.index).toBe(props.index)
   })
