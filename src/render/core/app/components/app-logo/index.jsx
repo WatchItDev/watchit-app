@@ -28,17 +28,17 @@ const LogoImg = styled.img`
   height: 50px;
   margin-right: -3px;
 
-  @media (min-width: 300px) {
+  @media ${setting.styles.devices.mobileS} {
     width: 40px;
     height: 40px;
   }
 
-  @media (min-width: 992px) {
+  @media ${setting.styles.devices.laptop} {
     width: 50px;
     height: 50px;
   }
 
-  @media (min-width: 2000px) {
+  @media ${setting.styles.devices.desktop} {
     width: 70px;
     height: 70px;
   }
@@ -50,7 +50,7 @@ const LogoText = styled.span`
   top: -9px;
   font-weight: 600;
 
-  @media (min-width: 2000px) {
+  @media ${setting.styles.devices.desktop} {
     top: -12px;
   }
 `
@@ -79,7 +79,7 @@ const LogoColoredText = styled.span`
   top: -9px;
   animation: ${Colors} 4.6s ease infinite;
 
-  @media (min-width: 2000px) {
+  @media ${setting.styles.devices.desktop} {
     top: -12px;
   }
 `
