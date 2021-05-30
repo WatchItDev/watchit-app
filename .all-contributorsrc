@@ -94,10 +94,19 @@
         "bug",
         "userTesting"
       ]
+    },
+    {
+      "login": "Slender1808",
+      "name": "Jadson G. Matos",
+      "avatar_url": "https://avatars.githubusercontent.com/u/50336793?v=4",
+      "profile": "https://github.com/Slender1808",
+      "contributions": [
+        "ideas"
+      ]
     }
   ],
   "contributorsPerLine": 7,
-  "projectName": "watchit-desktop",
+  "projectName": "watchit-app",
   "projectOwner": "ZorrillosDev",
   "repoType": "github",
   "repoHost": "https://github.com",
