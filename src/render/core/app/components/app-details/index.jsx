@@ -47,7 +47,7 @@ export default class Details extends React.PureComponent {
                               {/* Poster */}
                               <Image
                                 className='full-width' preload
-                                src={this.state.movies.resource.images.large}
+                                src={this.state.movies.resource.posters.large}
                                 pulseStyle={{ top: '20rem' }}
                               />
                             </aside>

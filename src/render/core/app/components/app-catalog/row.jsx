@@ -19,11 +19,12 @@ export default class CatalogRow extends React.Component {
       <div className='clearfix row-img' style={this.props.style}>
         {
                 this.props.chunk.map((i) => {
+                  console.log(i)
                   return (
                     <CatalogPoster
                       key={i._id || uid.generate()} id={i._id}
                       title={i.title} rating={i.rating} year={i.year}
-                      image={i?.resource?.images?.medium}
+                      image={i?.resource?.posters?.medium}
                       {...this.props}
                     />
                   )

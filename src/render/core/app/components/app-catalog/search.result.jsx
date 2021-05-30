@@ -35,7 +35,7 @@ export default class CatalogSearchResult extends React.Component {
                       this.props.result.map((i) => {
                         return (
                           <CatalogSearchResultItem
-                            key={i._id} {...Object.assign(i, { image: i.resource.images.small })}
+                            key={i._id} {...Object.assign(i, { image: i.resource.posters.small })}
                             onClick={this.props.onClick}
                           />
                         )
