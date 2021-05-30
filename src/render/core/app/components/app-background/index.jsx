@@ -30,10 +30,10 @@ const Slogan = styled.div`
 
 const Background = (props) => {
   return (
-      <BackgroundWrapper absolute={props.absolute}>
-        <Logo show={props.showLogo} thumbnail={false} absolute={props.absolute} />
-        <Slogan show={props.showLogo}>open movies everywhere</Slogan>
-      </BackgroundWrapper>
+    <BackgroundWrapper absolute={props.absolute}>
+      <Logo show={props.showLogo} thumbnail={false} absolute={props.absolute} />
+      <Slogan show={props.showLogo}>open movies everywhere</Slogan>
+    </BackgroundWrapper>
   )
 }
 
