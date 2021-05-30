@@ -19,7 +19,6 @@ export default class CatalogRow extends React.Component {
       <div className='clearfix row-img' style={this.props.style}>
         {
                 this.props.chunk.map((i) => {
-                  console.log(i)
                   return (
                     <CatalogPoster
                       key={i._id || uid.generate()} id={i._id}
