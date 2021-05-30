@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import Logo from 'components/app-logo/'
+import setting from 'settings'
 
 export default class Background extends React.Component {
   shouldComponentUpdate () {
@@ -42,4 +43,9 @@ const Slogan = styled.div`
   letter-spacing: 2px;
   font-size: 2rem;
   display: ${({ show }) => show ? 'inline-block' : 'none'};
+
+  @media ${setting.styles.devices.desktop} {
+    font-size: 3rem;
+    transform: translateY(-1rem);
+  }
 `
