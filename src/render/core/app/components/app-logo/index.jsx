@@ -10,6 +10,7 @@ const LogoWrapper = styled.h5`
   font-family: "Oswald", Arial, sans-serif;
   display: ${props => props.show ? 'inline-block' : 'none'};
   margin: 0;
+  
   @media ${setting.styles.devices.mobileS} {
     font-size: 1.5rem !important;
   }
@@ -51,7 +52,7 @@ const LogoText = styled.span`
   font-weight: 600;
 
   @media ${setting.styles.devices.desktop} {
-    top: -12px;
+    top: ${props => !props.thumbnail ? '-12px' : '-9px'};
   }
 `
 
@@ -80,7 +81,7 @@ const LogoColoredText = styled.span`
   animation: ${Colors} 4.6s ease infinite;
 
   @media ${setting.styles.devices.desktop} {
-    top: -12px;
+    top: ${props => !props.thumbnail ? '-12px' : '-9px'};
   }
 `
 
@@ -88,8 +89,8 @@ const Logo = (props) => {
   return (
     <LogoWrapper show={props.show} absolute={props.absolute} thumbnail={props.thumbnail}>
       <LogoImg src={icon} alt='Logo' width={50} height={50} />
-      <LogoText>ATCH</LogoText>
-      <LogoColoredText>IT</LogoColoredText>
+      <LogoText thumbnail={props.thumbnail}>ATCH</LogoText>
+      <LogoColoredText thumbnail={props.thumbnail}>IT</LogoColoredText>
     </LogoWrapper>
   )
 }

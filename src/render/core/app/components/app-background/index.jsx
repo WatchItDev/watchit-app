@@ -3,28 +3,6 @@ import styled from 'styled-components'
 import Logo from 'components/app-logo/'
 import setting from 'settings'
 
-export default class Background extends React.Component {
-  shouldComponentUpdate () {
-    return false
-  }
-
-  static get defaultProps () {
-    return {
-      showLogo: true,
-      absolute: true
-    }
-  }
-
-  render () {
-    return (
-      <BackgroundWrapper absolute={this.props.absolute}>
-        <Logo show={this.props.showLogo} thumbnail={false} absolute={this.props.absolute} />
-        <Slogan show={this.props.showLogo}>open movies everywhere</Slogan>
-      </BackgroundWrapper>
-    )
-  }
-}
-
 const BackgroundWrapper = styled.div`
   height: ${props => props.absolute ? '100%' : 'auto'};
   width: ${props => props.absolute ? '100%' : 'auto'};
@@ -39,7 +17,7 @@ const BackgroundWrapper = styled.div`
 const Slogan = styled.div`
   position: absolute;
   color: white;
-  transform: translateY(-2rem);
+  transform: translateY(-3rem);
   letter-spacing: 2px;
   font-size: 2rem;
   display: ${({ show }) => show ? 'inline-block' : 'none'};
@@ -49,3 +27,19 @@ const Slogan = styled.div`
     transform: translateY(-1rem);
   }
 `
+
+const Background = (props) => {
+  return (
+      <BackgroundWrapper absolute={props.absolute}>
+        <Logo show={props.showLogo} thumbnail={false} absolute={props.absolute} />
+        <Slogan show={props.showLogo}>open movies everywhere</Slogan>
+      </BackgroundWrapper>
+  )
+}
+
+Background.defaultProps = {
+  showLogo: true,
+  absolute: true
+}
+
+export default React.memo(Background)
