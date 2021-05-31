@@ -9,13 +9,18 @@ const BackgroundWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  ${props => props.absolute ? 'absolute' : 'relative'}
+  flex-direction: column;
+  position: ${props => props.absolute ? 'absolute' : 'relative'};
   left: 0;
   top: 0;
+  margin-bottom: -3rem;
+
+  @media ${setting.styles.devices.desktop} {
+    margin-bottom: 0;
+  }
 `
 
 const Slogan = styled.div`
-  position: absolute;
   color: white;
   transform: translateY(-3rem);
   letter-spacing: 2px;
@@ -30,10 +35,10 @@ const Slogan = styled.div`
 
 const Background = (props) => {
   return (
-      <BackgroundWrapper absolute={props.absolute}>
-        <Logo show={props.showLogo} thumbnail={false} absolute={props.absolute} />
-        <Slogan show={props.showLogo}>open movies everywhere</Slogan>
-      </BackgroundWrapper>
+    <BackgroundWrapper absolute={props.absolute}>
+      <Logo show={props.showLogo} thumbnail={false} absolute={props.absolute} />
+      <Slogan show={props.showLogo}>open movies everywhere</Slogan>
+    </BackgroundWrapper>
   )
 }
 

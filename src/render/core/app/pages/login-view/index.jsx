@@ -3,6 +3,7 @@ import Forms from './forms.js'
 import styled from 'styled-components'
 import Form from 'components/app-form/'
 import Background from 'components/app-background/'
+import Footer from 'components/app-footer/'
 
 // Login pages class
 const key = window.bridge.Key
@@ -56,6 +57,7 @@ export default class LoginForm extends React.PureComponent {
             submitted={this.state?.submitted}
           />
         </FormWrapper>
+        <Footer />
       </LoginWrapper>
     )
   }
