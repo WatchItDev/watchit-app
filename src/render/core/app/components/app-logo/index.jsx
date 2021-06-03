@@ -4,8 +4,8 @@ import icon from 'render/media/icons/icon.png'
 import styled, { keyframes } from 'styled-components'
 
 const LogoWrapper = styled.h5`
-  position: ${props => props.absolute ? 'absolute' : 'relative'};
-  transform: ${props => !props.thumbnail ? 'scale(3) translateY(-2.7rem)' : 'scale(1)'};
+  position: relative;
+  transform: ${props => !props.thumbnail ? 'scale(3) translateY(-1.5rem)' : 'scale(1)'};
   letter-spacing: 2px;
   font-family: "Oswald", Arial, sans-serif;
   display: ${props => props.show ? 'inline-block' : 'none'};
@@ -21,6 +21,7 @@ const LogoWrapper = styled.h5`
 
   @media ${setting.styles.devices.desktop} {
     font-size: 3rem !important;
+    transform: ${props => !props.thumbnail ? 'scale(3) translateY(-1rem)' : 'scale(1)'};
   }
 `
 
