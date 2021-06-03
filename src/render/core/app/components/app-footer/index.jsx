@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import setting from 'root/package.json'
+import setting from 'package.json'
 
 const FooterWrapper = styled.div`
   height: auto;
