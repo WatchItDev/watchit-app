@@ -14,6 +14,6 @@ describe('Alert component', () => {
   it('should render with prop color', () => {
     const color = settings.styles.colors.danger
     const alertComponent = shallow(<Alert color={color} />)
-    expect(alertComponent).toHaveStyleRule("background-color", color)
+    expect(alertComponent).toHaveStyleRule('background-color', color)
   })
 })
