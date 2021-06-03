@@ -29,9 +29,4 @@ const Footer = () => {
   )
 }
 
-Footer.defaultProps = {
-  showLogo: true,
-  absolute: true
-}
-
 export default React.memo(Footer)
