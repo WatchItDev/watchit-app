@@ -20,7 +20,9 @@ module.exports = function (webpackEnv) {
                 'helpers': path.resolve(paths.appSrc, 'render/core/helpers'),
                 'settings': path.resolve(paths.appSrc, 'render/core/settings'),
                 'logger': path.resolve(paths.appSrc, 'render/core/helpers/logger'),
-                'main': path.resolve(paths.appSrc, 'main/'),
+                'root': path.resolve(paths.appPath, ''),
+                'package.json': paths.appPackageJson,
+
             }
         }
     });
