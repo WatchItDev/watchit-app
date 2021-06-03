@@ -1,83 +1,81 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import styled from 'styled-components';
+import styled from 'styled-components'
 
-export default class BoxInput extends React.PureComponent {
-
-    constructor(props) {
-        super(props);
-        this.ref = null;
-        this.state = {
-            invalid: false
-        };
+export default class Input extends React.PureComponent {
+  constructor (props) {
+    super(props)
+    this.ref = null
+    this.state = {
+      invalid: false
     }
+  }
 
-    static get defaultProps() {
-        return {
-            type: 'text',
-            autoComplete: 'off'
-        }
+  static get defaultProps () {
+    return {
+      type: 'text',
+      autoComplete: 'off'
     }
+  }
 
-    static get propTypes() {
-        return {
-            placeholder: PropTypes.string.isRequired
-        }
+  static get propTypes () {
+    return {
+      placeholder: PropTypes.string.isRequired
     }
+  }
 
-    onInput = (e) => {
-        //If handler
-        if (this.props.onInput) this.props.onInput(e);
-        this.setState({invalid: false});
-    }
+  handleInput = (e) => {
+    // If handler
+    if (this.props.onInput) this.props.onInput(e)
+    this.setState({ invalid: false })
+  }
 
-    onChange = (e) => {
-        //If handler
-        if (this.props.onChange)
-            this.props.onChange(e);
-    }
+  handleChange = (e) => {
+    // If handler
+    if (this.props.onChange) { this.props.onChange(e) }
+  }
 
-    onKeyDown = (e) => {
-        //If handler
-        if (this.props.onKeyDown)
-            this.props.onKeyDown(e);
-    }
+  handleKeyDown = (e) => {
+    // If handler
+    if (this.props.onKeyDown) { this.props.onKeyDown(e) }
+  }
 
-    onInvalid = (e) => {
-        e.preventDefault();
-        this.setState({invalid: true});
-    }
+  handleInvalid = (e) => {
+    e.preventDefault()
+    this.setState({ invalid: true })
+  }
 
-    getRef = (ref) => {
-        this.ref = ref
-    }
+  getRef = (ref) => {
+    this.ref = ref
+  }
 
-    render() {
-        return (
-            <InputContainer>
-                {this.props.icon && <i className={this.props.icon + " gray-text"}/>}
-                <Input {...this.props}
-                       onInput={this.onInput}
-                       onChange={this.onChange}
-                       onKeyDown={this.onKeyDown}
-                       onInvalid={this.onInvalid}
-                       ref={this.getRef}
-                       invalid={this.state.invalid}
-                />
-            </InputContainer>
-        )
-    }
+  render () {
+    return (
+      <InputWrapper>
+        {this.props.icon && <i className={this.props.icon + ' gray-text'} />}
+        <InputElement
+          {...this.props}
+          onInput={this.handleInput}
+          onChange={this.handleChange}
+          onKeyDown={this.handleKeyDown}
+          onInvalid={this.handleInvalid}
+          ref={this.getRef}
+          invalid={this.state.invalid}
+        />
+      </InputWrapper>
+    )
+  }
 }
 
-const InputContainer = styled.div`
+const InputWrapper = styled.div`
   width: 100%;
   border-radius: 5px;
   background-color: rgba(0, 0, 0, 0.5) !important;
   padding: 0 0.75rem;
   position: relative;
-`;
+`
 
-const Input = styled.input`
+const InputElement = styled.input`
   background-color: transparent;
   border: none;
   border-radius: 0;
@@ -93,13 +91,13 @@ const Input = styled.input`
   border-bottom: 1px solid transparent !important;
   border-bottom: ${props => props.invalid ? '1px solid #F44336 !important' : 'none'};
   box-shadow: ${props => props.invalid ? '0 1px 0 0 #F44336 !important' : 'none'};
-  
+
   &:focus {
     border-bottom: 1px solid #26a69a !important;
     box-shadow: 0 1px 0 0 #26a69a !important;
   }
-  
+
   &::placeholder {
     color: #999;
   }
-`;
+`

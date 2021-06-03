@@ -1,65 +1,78 @@
-//Basic
 import React from 'react'
 import Forms from './forms.js'
-import FormBox from 'components/app-form'
-import AppLoaderBackground from 'components/app-movie-player-loader-background/'
+import styled from 'styled-components'
+import Form from 'components/app-form/'
+import Background from 'components/app-background/'
 
-//Login pages class
+// Login pages class
 const key = window.bridge.Key
 export default class LoginForm extends React.PureComponent {
+  constructor (props) {
+    super(props)
+    // Initial State
+    this.state = {
+      // Inputs lists
+      success: false,
+      submitted: false,
+      error: false
+    }
+  }
 
-    constructor(props) {
-        super(props);
-        //Initial State
-        this.state = {
-            //Inputs lists
-            success: false,
-            submitted: false,
-            error: false,
-        };
+  handleRequest = (fields) => {
+    // Set first state
+    this.setState({
+      error: false,
+      submitted: true
+    })
+
+    const pb = fields.get('public')
+    // Check if stored key its valid
+    if (!key.isValidKey(pb)) {
+      return this.setState({
+        error: ['Invalid Key'],
+        submitted: false
+      })
     }
 
-    handleRequest = (fields) => {
-        //Set first state
-        this.setState({
-            error: false,
-            submitted: true
-        });
+    // Write public key
+    key.generateKey({ ingest: pb })
+    setTimeout(() => {
+      // Set first state
+      window.location.href = '#/app/movies'
+    }, 2000)
+  }
 
-        const pb = fields.get('public')
-        // Check if stored key its valid
-        if (!key.isValidKey(pb)) {
-            return this.setState({
-                error: ['Invalid Key'],
-                submitted: false
-            })
-        }
-
-        // Write public key
-        key.generateKey({ingest: pb});
-        setTimeout(() => {
-            //Set first state
-            window.location.href = '#/app/movies'
-        }, 2000)
-    }
-
-    render() {
-        return (
-            <div className="absolute valign-wrapper full-width full-height main-login-box">
-                <section className="valign center-block col m6">
-                    <AppLoaderBackground />
-                    {/* Form Box */}
-                    <section className="row input-black-box">
-                        <FormBox
-                            action={this.handleRequest}
-                            input={Forms.login_user.inputs} // Make inputs
-                            buttons={Forms.login_user.buttons} // Make buttons
-                            error={this.state.error}
-                            submitted={this.state.submitted}
-                        />
-                    </section>
-                </section>
-            </div>
-        )
-    }
+  render () {
+    return (
+      <LoginWrapper>
+        <Background absolute={false} />
+        <FormWrapper>
+          {/* form */}
+          <Form
+            onAction={this.handleRequest}
+            input={Forms.login_user.inputs} // Make inputs
+            buttons={Forms.login_user.buttons} // Make buttons
+            error={this.state?.error}
+            submitted={this.state?.submitted}
+          />
+        </FormWrapper>
+      </LoginWrapper>
+    )
+  }
 }
+
+const FormWrapper = styled.div`
+  width: 50%;
+  margin-top: 2rem;
+`
+
+const LoginWrapper = styled.div`
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin-top: 3rem;
+`

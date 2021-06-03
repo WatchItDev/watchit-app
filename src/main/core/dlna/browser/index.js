@@ -1,31 +1,28 @@
 const EventEmitter = require('events')
 
 module.exports = class BrowserCast extends EventEmitter {
-    constructor() {
-        super()
-        this.players = []
-    }
+  constructor () {
+    super()
+    this.players = []
+  }
 
-    createServer() {
-        return this;
-    }
+  createServer () {
+    return this
+  }
 
-    requestUpdate() {
-        return this;
-    }
+  requestUpdate () {
+    return this
+  }
 
-    stop() {
-        // Not implemented
-    }
+  stop () {
+    // Not implemented
+  }
 
-    setPlayer(i) {
-        // Not implemented
-    }
+  setPlayer (i) {
+    // Not implemented
+  }
 
-
-    play(title, stream) {
-        // Not implemented
-    }
+  play (title, stream) {
+    // Not implemented
+  }
 }
-
-

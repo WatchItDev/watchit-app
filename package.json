@@ -131,10 +131,9 @@
     "build": "node scripts/build.js",
     "start:web": "RUNTIME=web node scripts/start.js",
     "build:web": "RUNTIME=web node scripts/build.js",
-    "test": "node scripts/test.js  --watchAll=false -u",
+    "test": "node scripts/test.js --watchAll=false -u",
+    "lint": "standardx \"src/{main,render}/**/*.{js,jsx}\" --fix",
     "electron": "cross-env LOG=debug IPFS_FD_MAX=10000 NODE_ENV=development $(npm bin)/electron .",
-    "lint": "eslint --ext js,jsx",
-    "lint:fix": "npm run lint -s -- --fix src ",
     "package": "npm run build && electron-builder build",
     "package:mac": "npm run package -- --mac",
     "package:linux": "npm run package -- --linux",
@@ -145,22 +144,13 @@
     "preinstall": "bash -c \"npm install logplease && node scripts/preinstall.js\"",
     "postinstall": "bash -c \"node scripts/postinstall.js\""
   },
-  "eslintConfig": {
-    "extends": "react-app",
-    "overrides": [
-      {
-        "files": [
-          "src/**/*.js"
-        ],
-        "rules": {
-          "import/no-anonymous-default-export": "off"
-        }
-      }
-    ]
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint && npm test -- --coverage"
+    }
   },
   "devDependencies": {
     "@babel/core": "7.12.3",
-    "@openzeppelin/contracts": "^4.1.0",
     "@pmmmwh/react-refresh-webpack-plugin": "0.4.3",
     "@svgr/webpack": "5.5.0",
     "@typescript-eslint/eslint-plugin": "^4.5.0",
@@ -173,8 +163,6 @@
     "bfj": "^7.0.2",
     "camelcase": "^6.1.0",
     "case-sensitive-paths-webpack-plugin": "2.3.0",
-    "chai": "^4.3.4",
-    "chai-as-promised": "^7.1.1",
     "concurrently": "^5.3.0",
     "cross-env": "^7.0.3",
     "css-loader": "4.3.0",
@@ -183,20 +171,12 @@
     "electron": "^12.0.2",
     "electron-builder": "^22.10.5",
     "electron-reload": "^1.5.0",
-    "eslint": "^7.11.0",
-    "eslint-config-react-app": "^6.0.0",
-    "eslint-plugin-flowtype": "^5.2.0",
-    "eslint-plugin-import": "^2.22.1",
-    "eslint-plugin-jest": "^24.1.0",
-    "eslint-plugin-jsx-a11y": "^6.3.1",
-    "eslint-plugin-react": "^7.21.5",
-    "eslint-plugin-react-hooks": "^4.2.0",
-    "eslint-plugin-testing-library": "^3.9.2",
-    "eslint-webpack-plugin": "^2.5.2",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.6",
+    "eslint-webpack-plugin": "^2.5.4",
     "file-loader": "6.1.1",
     "html-webpack-plugin": "4.5.0",
     "husky": "^4.3.8",
-    "styled-components": "^5.3.0",
     "jest": "26.6.0",
     "jest-circus": "26.6.0",
     "jest-resolve": "26.6.0",
@@ -223,6 +203,7 @@
     "react-player": "^2.1.0",
     "react-refresh": "^0.8.3",
     "react-router-dom": "^5.2.0",
+    "react-test-renderer": "^17.0.2",
     "react-tooltip": "^4.2.6",
     "react-window": "^1.8.5",
     "react-window-infinite-loader": "^1.0.5",
@@ -231,7 +212,9 @@
     "resolve-url-loader": "^3.1.2",
     "sass-loader": "^10.0.5",
     "semver": "7.3.2",
+    "standardx": "^7.0.0",
     "style-loader": "1.3.0",
+    "styled-components": "^5.3.0",
     "terser-webpack-plugin": "4.2.3",
     "ts-pnp": "1.2.0",
     "url-loader": "4.1.1",
@@ -257,57 +240,5 @@
     "presets": [
       "react-app"
     ]
-  },
-  "jest": {
-    "roots": [
-      "<rootDir>/src"
-    ],
-    "collectCoverageFrom": [
-      "src/**/*.{js,jsx,ts,tsx}",
-      "!src/**/*.d.ts"
-    ],
-    "setupFiles": [
-      "react-app-polyfill/jsdom"
-    ],
-    "setupFilesAfterEnv": [],
-    "testMatch": [
-      "<rootDir>/src/**/__tests__/**/*.{js,jsx,ts,tsx}",
-      "<rootDir>/src/**/*.{spec,test}.{js,jsx,ts,tsx}"
-    ],
-    "testEnvironment": "jsdom",
-    "testRunner": "/home/geolffrey/WebstormProjects/watchit-desktop/node_modules/jest-circus/runner.js",
-    "transform": {
-      "^.+\\.(js|jsx|mjs|cjs|ts|tsx)$": "<rootDir>/config/jest/babelTransform.js",
-      "^.+\\.css$": "<rootDir>/config/jest/cssTransform.js",
-      "^(?!.*\\.(js|jsx|mjs|cjs|ts|tsx|css|json)$)": "<rootDir>/config/jest/fileTransform.js"
-    },
-    "transformIgnorePatterns": [
-      "[/\\\\]node_modules[/\\\\].+\\.(js|jsx|mjs|cjs|ts|tsx)$",
-      "^.+\\.module\\.(css|sass|scss)$"
-    ],
-    "modulePaths": [
-      "/home/geolffrey/WebstormProjects/watchit-desktop/src"
-    ],
-    "moduleNameMapper": {
-      "^react-native$": "react-native-web",
-      "^.+\\.module\\.(css|sass|scss)$": "identity-obj-proxy"
-    },
-    "moduleFileExtensions": [
-      "web.js",
-      "js",
-      "web.ts",
-      "ts",
-      "web.tsx",
-      "tsx",
-      "json",
-      "web.jsx",
-      "jsx",
-      "node"
-    ],
-    "watchPlugins": [
-      "jest-watch-typeahead/filename",
-      "jest-watch-typeahead/testname"
-    ],
-    "resetMocks": true
   }
 }
