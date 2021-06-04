@@ -22,4 +22,9 @@ describe('Logo component', () => {
     const logoComponent = shallow(<Logo show={false} />)
     expect(logoComponent).toHaveStyleRule('display', 'none')
   })
+
+  it('should display logo with show = true', () => {
+    const logoComponent = shallow(<Logo show={false} />)
+    expect(logoComponent).toHaveStyleRule('display', 'inline-block')
+  })
 })
