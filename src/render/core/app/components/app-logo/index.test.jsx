@@ -1,12 +1,25 @@
 import React from 'react'
-import { shallow } from 'enzyme'
+import { shallow, mount } from 'enzyme'
 import Logo from './index'
 import 'jest-styled-components'
 
 /* eslint-disable no-undef */
 describe('Logo component', () => {
   it('should render', () => {
-    const alertComponent = shallow(<Logo />)
-    expect(alertComponent).toMatchSnapshot()
+    const logoComponent = shallow(<Logo />)
+    expect(logoComponent).toMatchSnapshot()
+  })
+
+  it('should display valid image + text', () => {
+    const logoComponent = mount(<Logo />)
+    const imageEl = logoComponent.find('img')
+    expect(imageEl.exists()).toEqual(true)
+    expect(imageEl.instance().src).toContain('icon.png')
+    expect(logoComponent.text()).toEqual('ATCHIT')
+  })
+
+  it('should not display logo with show = false', () => {
+    const logoComponent = shallow(<Logo show={false} />)
+    expect(logoComponent).toHaveStyleRule('display', 'none')
   })
 })
