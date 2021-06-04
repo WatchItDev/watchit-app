@@ -24,7 +24,7 @@ describe('Logo component', () => {
   })
 
   it('should display logo with show = true', () => {
-    const logoComponent = shallow(<Logo show={false} />)
+    const logoComponent = shallow(<Logo show />)
     expect(logoComponent).toHaveStyleRule('display', 'inline-block')
   })
 })
