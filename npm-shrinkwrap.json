@@ -15106,6 +15106,15 @@
         }
       }
     },
+    "jest-styled-components": {
+      "version": "7.0.4",
+      "resolved": "https://registry.npmjs.org/jest-styled-components/-/jest-styled-components-7.0.4.tgz",
+      "integrity": "sha512-411C8kdPcht+fUflZt94nbOUqCATa6wO9DSUU8G188vNFtWZImOZN3fNdXxf64fIoXKOf+7NBB0bzdz720jW8g==",
+      "dev": true,
+      "requires": {
+        "css": "^2.2.4"
+      }
+    },
     "jest-util": {
       "version": "26.6.2",
       "resolved": "https://registry.npmjs.org/jest-util/-/jest-util-26.6.2.tgz",
