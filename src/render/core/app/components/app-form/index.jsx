@@ -5,6 +5,7 @@ import uid from 'shortid'
 import Alert from 'components/app-alerts/'
 import Input from 'components/app-inputs/'
 import Button from 'components/app-buttons/'
+import styled from 'styled-components'
 
 export default class Form extends React.Component {
   constructor (props) {
@@ -61,24 +62,20 @@ export default class Form extends React.Component {
     return (
       <form onSubmit={this.handleSubmit} autoComplete='new-password'>
         {/* Inputs */}
-        <div className='row'>
+        <FormRow>
           {
-            /* Generate inputs */
             this.props.input.map((i, k) => {
               return (
-                <div key={k} className={'input-field-black col ' + i.size}>
-                  <Input {...i} onChange={this.handleChange} />
-                </div>
+                <Input {...i} onChange={this.handleChange} key={k} />
               )
             })
 
           }
-        </div>
+        </FormRow>
 
         {/* Buttons */}
-        <div className='row'>
+        <FormRow>
           {
-            /* Generate buttons */
             this.props.buttons.map((i) => {
               return (
                 <Button
@@ -90,12 +87,12 @@ export default class Form extends React.Component {
               )
             })
           }
-        </div>
+        </FormRow>
 
         {/* Alert */}
         {
           this.props.error && this.props.error.length > 0 &&
-            <div className='row'>
+            <FormRow>
               {
               this.props.error.map((i) => {
                 return (
@@ -105,7 +102,7 @@ export default class Form extends React.Component {
                 )
               })
             }
-            </div>
+            </FormRow>
         }
 
         {/* Success message */}
@@ -119,3 +116,7 @@ export default class Form extends React.Component {
     )
   }
 }
+
+const FormRow = styled.div`
+  margin-bottom: 20px;
+`

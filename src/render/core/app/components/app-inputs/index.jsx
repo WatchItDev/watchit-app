@@ -1,71 +1,5 @@
-import React from 'react'
-import PropTypes from 'prop-types'
+import React, { useState } from 'react'
 import styled from 'styled-components'
-
-export default class Input extends React.PureComponent {
-  constructor (props) {
-    super(props)
-    this.ref = null
-    this.state = {
-      invalid: false
-    }
-  }
-
-  static get defaultProps () {
-    return {
-      type: 'text',
-      autoComplete: 'off'
-    }
-  }
-
-  static get propTypes () {
-    return {
-      placeholder: PropTypes.string.isRequired
-    }
-  }
-
-  handleInput = (e) => {
-    // If handler
-    if (this.props.onInput) this.props.onInput(e)
-    this.setState({ invalid: false })
-  }
-
-  handleChange = (e) => {
-    // If handler
-    if (this.props.onChange) { this.props.onChange(e) }
-  }
-
-  handleKeyDown = (e) => {
-    // If handler
-    if (this.props.onKeyDown) { this.props.onKeyDown(e) }
-  }
-
-  handleInvalid = (e) => {
-    e.preventDefault()
-    this.setState({ invalid: true })
-  }
-
-  getRef = (ref) => {
-    this.ref = ref
-  }
-
-  render () {
-    return (
-      <InputWrapper>
-        {this.props.icon && <i className={this.props.icon + ' gray-text'} />}
-        <InputElement
-          {...this.props}
-          onInput={this.handleInput}
-          onChange={this.handleChange}
-          onKeyDown={this.handleKeyDown}
-          onInvalid={this.handleInvalid}
-          ref={this.getRef}
-          invalid={this.state.invalid}
-        />
-      </InputWrapper>
-    )
-  }
-}
 
 const InputWrapper = styled.div`
   width: 100%;
@@ -101,3 +35,60 @@ const InputElement = styled.input`
     color: #999;
   }
 `
+
+const InputIcon = styled.i`
+  position: absolute !important;
+  top: 1rem;
+  right: 1.3rem;
+  color: #555555;
+`
+
+const Input = (props) => {
+  const [invalid, setInvalid] = useState(0)
+  const [value, setValue] = useState('')
+
+  const handleInput = (e) => {
+    // If handler
+    props.onInput(e)
+    setInvalid(false)
+  }
+
+  const handleInvalid = (e) => {
+    // If handler
+    props.onInvalid(e)
+    setInvalid(true)
+  }
+
+  const handleChange = (e) => {
+    // If handler
+    props.onChange(e)
+    setValue(e.target.value)
+  }
+
+  return (
+    <InputWrapper>
+      {props.icon && <InputIcon className={props.icon} />}
+      <InputElement
+        value={value}
+        {...props}
+        onKeyDown={props.onKeyDown}
+        invalid={invalid}
+        onInput={handleInput}
+        onInvalid={handleInvalid}
+        onChange={handleChange}
+      />
+    </InputWrapper>
+  )
+}
+
+Input.defaultProps = {
+  type: 'text',
+  autoComplete: 'off',
+  placeholder: 'Please enter some text',
+  onInput: () => {},
+  onChange: () => {},
+  onInvalid: () => {},
+  onKeyDown: () => {}
+}
+
+export default React.memo(Input)
