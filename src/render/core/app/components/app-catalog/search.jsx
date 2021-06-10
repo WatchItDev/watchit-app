@@ -1,9 +1,8 @@
 import React from 'react'
 import CatalogSearchResult from './search.result'
-import CatalogSearchInput from './search.input'
-
 import utilHelper from 'helpers/util'
 import PropTypes from 'prop-types'
+import Input from 'components/app-inputs/'
 
 export default class CatalogSearch extends React.PureComponent {
   constructor (props) {
@@ -78,8 +77,9 @@ export default class CatalogSearch extends React.PureComponent {
     return (
       <>
         {/* Search result box */}
-        <CatalogSearchInput
-          onInput={this.handleSearch}
+        <Input
+          icon='icon-tv' onInput={this.handleSearch} required
+          autoComplete='off' type='text' placeholder='Search...' name='search'
           {...!this.state.searching && !this.state.searchResult ? { value: '' } : {}}
         />
         {
