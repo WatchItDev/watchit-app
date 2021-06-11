@@ -7,7 +7,7 @@ const Alert = styled.div`
   text-align: center;
   font-weight: bold;
   color: #fff;
-  background-color: ${props => props.color};
+  background-color: ${props => settings.styles.colors[props.color]};
 `
 
 Alert.defaultProps = { color: settings.styles.colors.default }
