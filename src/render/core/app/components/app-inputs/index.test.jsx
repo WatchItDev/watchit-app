@@ -1,6 +1,6 @@
 import React from 'react'
 import { shallow, mount } from 'enzyme'
-import Input, { InputElement } from './index'
+import Input from './index'
 import 'jest-styled-components'
 
 /* eslint-disable no-undef */

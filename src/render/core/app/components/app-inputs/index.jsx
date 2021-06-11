@@ -9,7 +9,7 @@ const InputWrapper = styled.div`
   position: relative;
 `
 
-export const InputElement = styled.input`
+const InputElement = styled.input`
   background-color: transparent;
   border: none;
   border-radius: 0;
