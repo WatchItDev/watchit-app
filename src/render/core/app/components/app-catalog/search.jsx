@@ -1,9 +1,8 @@
 import React from 'react'
 import CatalogSearchResult from './search.result'
-import CatalogSearchInput from './search.input'
-
 import utilHelper from 'helpers/util'
 import PropTypes from 'prop-types'
+import Input from 'components/app-inputs/'
 
 export default class CatalogSearch extends React.PureComponent {
   constructor (props) {
@@ -69,23 +68,19 @@ export default class CatalogSearch extends React.PureComponent {
   }
 
   handleClick = (id) => {
-    this.searchRef.input.ref.value = ''
     this.setState({ searching: false, searchResult: false }, () => {
       this.props.onClick && this.props.onClick(id)
     })
-  }
-
-  getRef = (ref) => {
-    this.searchRef = ref
   }
 
   render () {
     return (
       <>
         {/* Search result box */}
-        <CatalogSearchInput
-          onInput={this.handleSearch} size='m12 l12'
-          ref={this.getRef}
+        <Input
+          icon='icon-tv' onInput={this.handleSearch} required
+          autoComplete='off' type='text' placeholder='Search...' name='search'
+          {...!this.state.searching && !this.state.searchResult ? { value: '' } : {}}
         />
         {
           (this.state.searching || this.state.searchResult) &&
