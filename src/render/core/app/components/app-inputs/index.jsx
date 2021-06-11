@@ -48,19 +48,16 @@ const Input = (props) => {
   const [value, setValue] = useState('')
 
   const handleInput = (e) => {
-    // If handler
     props.onInput(e)
     setInvalid(false)
   }
 
   const handleInvalid = (e) => {
-    // If handler
     props.onInvalid(e)
     setInvalid(true)
   }
 
   const handleChange = (e) => {
-    // If handler
     props.onChange(e)
     setValue(e.target.value)
   }
