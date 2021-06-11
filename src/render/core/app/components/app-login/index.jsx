@@ -5,6 +5,7 @@ import Alert from 'components/app-alerts/'
 import Input from 'components/app-inputs/'
 import Button from 'components/app-buttons/'
 import Background from 'components/app-background/'
+import settings from 'settings'
 
 const key = window.bridge.Key
 const LoginForm = () => {
@@ -65,7 +66,7 @@ const LoginForm = () => {
           {
             error &&
               <FormRow>
-                <Alert color='danger'>
+                <Alert color={settings.styles.colors.danger}>
                   {error}
                 </Alert>
               </FormRow>
