@@ -3,8 +3,8 @@ import ReactDOM from 'react-dom'
 import App from './core/app'
 
 import 'normalize.css'
+import 'plyr/src/sass/plyr.scss'
 import './index.sass'
-import 'plyr/dist/plyr.css'
 
 const root = document.getElementById('root')
 ReactDOM.render(<App />, root)
