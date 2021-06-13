@@ -1,0 +1,369 @@
+/**MEDIA QUERIES*/
+//FIXED WIDTH
+
+/* Small devices (tablets, 768px and up) */
+//
+@media (min-width: 768px) {
+  .chat-list {
+    .chat-item {
+      .small-picture {
+        width: 30%;
+      }
+
+      .item-text {
+        width: 70%;
+      }
+    }
+  }
+
+  //User profile box
+  .profile-media {
+    width: 34vw !important;
+  }
+}
+
+@media (min-width: 900px) {
+  //User profile box
+  .profile-media {
+    width: 30vw !important;
+  }
+}
+
+///* Medium devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+  .chat-list {
+    .chat-item {
+      .small-picture {
+        width: 25%;
+      }
+
+      .item-text {
+        width: 75%;
+      }
+    }
+  }
+
+  //User profile box
+  .profile-media {
+    width: 28vw !important;
+  }
+
+  //.search-result-box {
+  //  .result-search-box-img {
+  //    display: inline-block !important;
+  //  }
+  //
+  //  .result-search-box-content {
+  //    margin-left: 1rem !important;
+  //  }
+  //}
+}
+
+/* Large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+  .video-stream {
+    .btn-close {
+      right: 1rem;
+    }
+
+    .chat-box-toggle {
+      right: 2rem !important;
+    }
+  }
+
+  //Main images
+  .movies-poster {
+    width: 14.26667% !important;
+
+    .placeholder-img {
+      max-height: 20vw !important;
+    }
+  }
+
+  //User profile box
+  .profile-media {
+    width: 26vw !important;
+  }
+}
+
+/* Large devices (large desktops, 1200px and up) */
+@media (min-width: 1250px) {
+  .chat-list {
+    .chat-item {
+      .small-picture {
+        width: 21%;
+      }
+
+      .item-text {
+        width: 79%;
+      }
+    }
+  }
+  //Main images
+  .movies-poster {
+    width: 14.26667% !important;
+  }
+
+  //Main images
+  .movie-details-poster {
+    width: 29.3% !important;
+  }
+
+  //User profile box
+  .profile-media {
+    width: 25vw !important;
+  }
+}
+
+@media (min-width: 1300px) {
+  .chat-list {
+    .chat-item {
+      .small-picture {
+        width: 19%;
+      }
+
+      .item-text {
+        width: 81%;
+      }
+    }
+  }
+  //Main images
+  .movie-details-poster {
+    width: 27.33333% !important;
+  }
+
+  //User profile box
+  .profile-media {
+    width: 23vw !important;
+  }
+}
+
+@media (min-width: 1500px) {
+
+  //.row-list {
+  //  .row-img {
+  //    padding-right: 0.7rem !important;
+  //  }
+  //}
+
+  //Main images
+  .movie-details-poster {
+    width: 30.33333% !important;
+  }
+
+  //User profile box
+  .profile-media {
+    width: 20vw !important;
+  }
+}
+
+@media (min-width: 1600px) {
+  .chat-list {
+    .chat-item {
+      .small-picture {
+        width: 16%;
+      }
+
+      .item-text {
+        width: 84%;
+      }
+    }
+  }
+
+  //Main images
+  .movies-poster {
+    width: 9.966667% !important;
+
+    .placeholder-img {
+      max-height: 13.9vw !important;
+    }
+  }
+
+  //User profile box
+  .profile-media {
+    width: 19vw !important;
+  }
+
+}
+
+@media (min-width: 1900px) {
+  .chat-list {
+    .chat-item {
+      .small-picture {
+        width: 16%;
+      }
+
+      .item-text {
+        width: 84%;
+      }
+    }
+  }
+
+  .movie-details-poster {
+    width: 47vh !important;
+  }
+
+  //User profile box
+  .profile-media {
+    width: 17vw !important;
+  }
+
+  //Main images
+  .movies-poster {
+    width: 7.66667% !important;
+
+    .placeholder-img {
+      max-height: 10.4vw !important;
+    }
+  }
+}
+
+
+//MEDIA QUERIES
+//FIXED HEIGHT
+//IN 600 ranges
+@media (max-height: 600px) {
+
+  .chat-list {
+    height: 75vh;
+  }
+
+  .movies-box {
+    height: 66vh;
+  }
+
+  .movie-details-description {
+    display: none;
+    //display: 22vh;
+  }
+}
+
+@media (min-height: 601px) {
+  .chat-list {
+    height: 75vh;
+  }
+  .movies-box {
+    height: 70vh;
+  }
+
+  .movie-details-description {
+    height: 20vh;
+  }
+}
+
+//IN 700 ranges
+@media (min-height: 701px) {
+  .chat-list {
+    height: 77vh;
+  }
+
+  .movies-box {
+    height: 69vh;
+  }
+
+  .movie-details-description {
+    height: 22vh;
+  }
+}
+
+@media (min-height: 740px) {
+  .chat-list {
+    height: 78vh;
+  }
+
+  .movies-box {
+    height: 70vh;
+  }
+}
+
+@media (min-height: 768px) {
+
+  .chat-list {
+    height: 79vh;
+  }
+
+  .movies-box {
+    height: 71vh;
+  }
+
+  .movie-details-description {
+    height: 20vh;
+  }
+}
+
+@media (min-height: 800px) {
+  .chat-list {
+    height: 80vh;
+  }
+
+  .movie-details-description {
+    height: 15vh;
+  }
+}
+
+@media (min-height: 850px) {
+
+  .chat-list {
+    height: 80.6vh;
+  }
+
+  .movies-box {
+    height: 75vh;
+  }
+
+  .movie-details-description {
+    height: 26vh;
+  }
+}
+
+@media (min-height: 950px) {
+  .chat-list {
+    height: 82vh;
+  }
+}
+
+@media (min-height: 1018px) {
+  .chat-list {
+    height: 82vh;
+  }
+
+  .movies-box {
+    height: 76vh;
+  }
+}
+
+@media (min-height: 1027px) {
+
+  .movies-box {
+    height: 76vh;
+  }
+
+  .movie-details-description {
+    height: 28vh;
+  }
+}
+
+@media (min-height: 1050px) {
+  .chat-list {
+    height: 82vh;
+  }
+
+  .movies-box {
+    height: 77vh;
+  }
+}
+
+@media (min-height: 1080px) {
+
+  .chat-list {
+    height: 83vh;
+  }
+
+  .movies-box {
+    height: 83vh;
+  }
+
+  .movie-details-description {
+    height: 30vh;
+  }
+}

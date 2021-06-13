@@ -1,115 +1,62 @@
 {
   "name": "watchit",
   "author": "ZorrillosDev",
-  "version": "0.1.0-beta.2",
+  "version": "0.1.0-beta13",
   "private": true,
-  "main": "./public/main.js",
-  "description": "Watch movies everywhere",
+  "main": "./src/main/index.js",
+  "description": "Open movies everywhere",
   "email": "support@zorrillos.com",
   "homepage": "./",
+  "license": "LICENSE.md",
   "repository": {
     "type": "git",
     "url": "https://github.com/ZorrillosDev/watchit-desktop.git"
   },
+  "engines": {
+    "node": ">=14"
+  },
+  "peerDependencies": {
+    "windows-elevate": "^1.0.1",
+    "webtorrent": "0.116.1",
+    "level-js": "6.0.0",
+    "ipfs": "0.52.1",
+    "go-ipfs": "^0.6.0"
+  },
   "dependencies": {
-    "@babel/core": "7.9.0",
-    "@svgr/webpack": "4.3.3",
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.5.0",
-    "@testing-library/user-event": "^7.2.1",
-    "@typescript-eslint/eslint-plugin": "^2.10.0",
-    "@typescript-eslint/parser": "^2.10.0",
-    "babel-eslint": "10.1.0",
-    "babel-jest": "^24.9.0",
-    "babel-loader": "8.1.0",
-    "babel-plugin-named-asset-import": "^0.3.6",
-    "babel-preset-react-app": "^9.1.2",
-    "camelcase": "^5.3.1",
-    "case-sensitive-paths-webpack-plugin": "2.3.0",
-    "css-loader": "3.4.2",
     "dlnacasts2": "^0.2.0",
-    "dotenv": "8.2.0",
-    "dotenv-expand": "5.1.0",
-    "electron-log": "^4.3.2",
-    "electron-reload": "^1.5.0",
-    "electron-updater": "^4.3.5",
-    "eslint": "^6.6.0",
-    "eslint-config-react-app": "^5.2.1",
-    "eslint-loader": "3.0.3",
-    "eslint-plugin-flowtype": "4.6.0",
-    "eslint-plugin-import": "2.20.1",
-    "eslint-plugin-jsx-a11y": "6.2.3",
-    "eslint-plugin-react": "7.19.0",
-    "eslint-plugin-react-hooks": "^1.6.1",
-    "file-loader": "4.3.0",
-    "fs-extra": "^8.1.0",
+    "electron-updater": "^4.3.8",
+    "fs-extra": "^9.0.1",
+    "get-port": "^5.1.1",
     "go-ipfs": "^0.6.0",
     "hls.js": "^0.14.17",
-    "html-webpack-plugin": "4.0.0-beta.11",
     "iconv-lite": "^0.5.1",
     "identity-obj-proxy": "3.0.0",
     "ip": "^1.1.5",
     "ipfs-http-client": "^47.0.1",
     "ipfsd-ctl": "^7.2.0",
     "it-all": "^1.0.5",
+    "it-last": "^1.0.5",
     "it-reduce": "^1.0.5",
-    "jest": "24.9.0",
-    "jest-environment-jsdom-fourteen": "1.0.1",
-    "jest-resolve": "24.9.0",
-    "jest-watch-typeahead": "0.4.2",
     "jschardet": "^2.1.1",
     "leveldown": "^5.6.0",
     "linvodb3": "^3.26.0",
+    "logplease": "^1.2.15",
     "mime": "^2.4.6",
-    "mini-css-extract-plugin": "0.9.0",
-    "moment-timezone": "^0.5.31",
     "msgpack-lite": "^0.1.26",
-    "node-sass": "^4.14.1",
-    "optimize-css-assets-webpack-plugin": "5.0.3",
     "orbit-db": "^0.26.0",
     "parse-torrent": "^7.1.3",
-    "peerflix": "^0.39.0",
     "plyr": "^3.6.2",
-    "pnp-webpack-plugin": "1.6.4",
-    "postcss-flexbugs-fixes": "4.1.0",
-    "postcss-loader": "3.0.0",
-    "postcss-normalize": "8.0.1",
-    "postcss-preset-env": "6.7.0",
-    "postcss-safe-parser": "4.0.1",
-    "react": "^16.13.1",
-    "react-app-polyfill": "^1.0.6",
-    "react-custom-scrollbars": "^4.2.1",
-    "react-dev-utils": "^10.2.1",
-    "react-dom": "^16.13.1",
-    "react-modal": "^3.11.2",
-    "react-particles-js": "^3.4.1",
-    "react-player": "^2.1.0",
-    "react-router-dom": "^5.2.0",
-    "react-tooltip": "^4.2.6",
-    "react-window": "^1.8.5",
-    "react-window-infinite-loader": "^1.0.5",
+    "pretty-bytes": "^5.6.0",
     "read-torrent": "^1.3.1",
-    "resolve": "1.15.0",
-    "resolve-url-loader": "3.1.1",
     "rimraf": "^3.0.2",
-    "sass-loader": "8.0.2",
     "secp256k1": "^4.0.2",
-    "semver": "6.3.0",
     "shortid": "^2.2.15",
-    "srt2vtt": "^1.3.1",
     "streaming-iterables": "^5.0.4",
-    "style-loader": "0.23.1",
     "subtitle": "^2.0.3",
-    "terser-webpack-plugin": "2.3.5",
-    "ts-pnp": "1.1.6",
-    "unzip": "^0.1.11",
-    "url-loader": "2.3.0",
+    "unzipper": "^0.10.11",
     "v8-compile-cache": "^2.2.0",
-    "webpack": "4.42.0",
-    "webpack-dev-server": "3.10.3",
-    "webpack-manifest-plugin": "2.2.0",
     "webtorrent-health": "^1.1.2",
-    "workbox-webpack-plugin": "4.3.1"
+    "webtorrent-hybrid": "^4.0.3"
   },
   "build": {
     "productName": "watchit",
@@ -123,9 +70,20 @@
       }
     ],
     "files": [
-      "build/**/*",
+      "!**/node_modules/*/{CHANGELOG.md,README.md,README,readme.md,readme}",
+      "!**/node_modules/*/{test,__tests__,tests,powered-test,example,examples}",
+      "!**/node_modules/*.d.ts",
+      "!**/node_modules/.bin",
+      "!**/*.{iml,o,hprof,orig,pyc,pyo,rbc,swp,csproj,sln,xproj}",
+      "!**/._*",
+      "!**/{.DS_Store,.git,.hg,.svn,CVS,RCS,SCCS,.gitignore,.gitattributes}",
+      "!**/{__pycache__,thumbs.db,.flowconfig,.idea,.vs,.nyc_output}",
+      "!**/{appveyor.yml,.travis.yml,circle.yml}",
+      "!**/{npm-debug.log,yarn.lock,.yarn-integrity,.yarn-metadata.json}",
+      "src/build/**/*",
       "node_modules/**/*",
-      "src/media/icons/*",
+      "src/main/**/*",
+      "src/render/media/icons/*",
       "package.json"
     ],
     "dmg": {
@@ -149,7 +107,9 @@
       ]
     },
     "nsis": {
-      "deleteAppDataOnUninstall": true
+      "deleteAppDataOnUninstall": true,
+      "allowToChangeInstallationDirectory": false,
+      "runAfterFinish": true
     },
     "linux": {
       "target": [
@@ -158,22 +118,22 @@
         "tar.gz"
       ],
       "category": "Video",
-      "maintainer": "ZorrillosDev"
+      "maintainer": "ZorrillosDev",
+      "icon": "src/render/media/icons/icon.icns"
     },
     "directories": {
-      "buildResources": "src/media/icons",
+      "buildResources": "src/render/media/icons",
       "output": "release"
     }
   },
   "scripts": {
-    "start": "node scripts/start.js",
+    "start": "BROWSER=none RUNTIME=electron node scripts/start.js",
     "build": "node scripts/build.js",
-    "test": "node scripts/test.js  --watchAll=false",
-    "electron": "cross-env LOG=debug IPFS_FD_MAX=10000 ENV=dev $(npm bin)/electron .",
-    "dev": "concurrently -k \"npm run start\" \"npm run electron\"",
-    "lint": "eslint --ext js,jsx",
-    "lint:fix": "npm run lint -s -- --fix src ",
-    "inspect": "npm run dev --inspect=5858 watchit",
+    "start:web": "RUNTIME=web node scripts/start.js",
+    "build:web": "RUNTIME=web node scripts/build.js",
+    "test": "node scripts/test.js --watchAll=false -u",
+    "lint": "standardx \"src/{main,render}/**/*.{js,jsx}\" --fix",
+    "electron": "cross-env LOG=debug IPFS_FD_MAX=10000 NODE_ENV=development $(npm bin)/electron .",
     "package": "npm run build && electron-builder build",
     "package:mac": "npm run package -- --mac",
     "package:linux": "npm run package -- --linux",
@@ -181,92 +141,89 @@
     "publish:mac": "npm run package:mac -- --publish always",
     "publish:linux": "npm run package:linux -- --publish always",
     "publish:win": "npm run package:win -- --publish always",
-    "preinstall": "bash -c \"npm install electron-log && node scripts/preinstall.js\"",
-    "postinstall": "node scripts/postinstall.js"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
-  "peerDependencies": {
-    "windows-elevate": "^1.0.1",
-    "go-ipfs": "^0.6.0"
+    "preinstall": "bash -c \"npm install logplease && node scripts/preinstall.js\"",
+    "postinstall": "bash -c \"node scripts/postinstall.js\""
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm test && npm run lint:fix"
-    }
-  },
-  "jest": {
-    "roots": [
-      "<rootDir>/src"
-    ],
-    "collectCoverageFrom": [
-      "src/**/*.{js,jsx,ts,tsx}",
-      "!src/**/*.d.ts"
-    ],
-    "setupFiles": [
-      "react-app-polyfill/jsdom"
-    ],
-    "setupFilesAfterEnv": [
-      "<rootDir>/src/setupTests.js"
-    ],
-    "testMatch": [
-      "<rootDir>/src/**/__tests__/**/*.{js,jsx,ts,tsx}",
-      "<rootDir>/src/**/*.{spec,test}.{js,jsx,ts,tsx}"
-    ],
-    "testEnvironment": "jest-environment-jsdom-fourteen",
-    "transform": {
-      "^.+\\.(js|jsx|ts|tsx)$": "<rootDir>/node_modules/babel-jest",
-      "^.+\\.css$": "<rootDir>/config/jest/cssTransform.js",
-      "^(?!.*\\.(js|jsx|ts|tsx|css|json)$)": "<rootDir>/config/jest/fileTransform.js"
-    },
-    "transformIgnorePatterns": [
-      "[/\\\\]node_modules[/\\\\].+\\.(js|jsx|ts|tsx)$",
-      "^.+\\.module\\.(css|sass|scss)$"
-    ],
-    "modulePaths": [
-      "/home/geolffrey/WebstormProjects/watchit-desktop/src"
-    ],
-    "moduleNameMapper": {
-      "^react-native$": "react-native-web",
-      "^.+\\.module\\.(css|sass|scss)$": "identity-obj-proxy"
-    },
-    "moduleFileExtensions": [
-      "web.js",
-      "js",
-      "web.ts",
-      "ts",
-      "web.tsx",
-      "tsx",
-      "json",
-      "web.jsx",
-      "jsx",
-      "node"
-    ],
-    "watchPlugins": [
-      "jest-watch-typeahead/filename",
-      "jest-watch-typeahead/testname"
-    ],
-    "coverageThreshold": {
-      "global": {
-        "branches": 90,
-        "functions": 90,
-        "lines": 90,
-        "statements": 90
-      }
+      "pre-commit": "npm run lint && npm test -- --coverage"
     }
   },
   "devDependencies": {
+    "@babel/core": "7.12.3",
+    "@pmmmwh/react-refresh-webpack-plugin": "0.4.3",
+    "@svgr/webpack": "5.5.0",
+    "@typescript-eslint/eslint-plugin": "^4.5.0",
+    "@typescript-eslint/parser": "^4.5.0",
+    "babel-eslint": "^10.1.0",
+    "babel-jest": "^26.6.0",
+    "babel-loader": "8.1.0",
+    "babel-plugin-named-asset-import": "^0.3.7",
+    "babel-preset-react-app": "^10.0.0",
+    "bfj": "^7.0.2",
+    "camelcase": "^6.1.0",
+    "case-sensitive-paths-webpack-plugin": "2.3.0",
     "concurrently": "^5.3.0",
     "cross-env": "^7.0.3",
-    "electron": "^9.1.0",
-    "electron-builder": "^22.7.0",
-    "eslint": "^6.6.0",
+    "css-loader": "4.3.0",
+    "dotenv": "8.2.0",
+    "dotenv-expand": "5.1.0",
+    "electron": "^12.0.2",
+    "electron-builder": "^22.10.5",
+    "electron-reload": "^1.5.0",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.6",
+    "eslint-webpack-plugin": "^2.5.4",
+    "file-loader": "6.1.1",
+    "html-webpack-plugin": "4.5.0",
     "husky": "^4.3.8",
-    "jest": "^24.9.0",
+    "jest": "26.6.0",
+    "jest-circus": "26.6.0",
+    "jest-resolve": "26.6.0",
+    "jest-watch-typeahead": "0.6.1",
+    "mini-css-extract-plugin": "0.11.3",
+    "moment-timezone": "^0.5.31",
+    "node-sass": "^5.0.0",
+    "normalize.css": "^8.0.1",
     "npm-run-all": "^4.1.5",
-    "prettier": "^2.2.1",
-    "pretty": "^2.0.0"
+    "optimize-css-assets-webpack-plugin": "5.0.4",
+    "pnp-webpack-plugin": "1.6.4",
+    "postcss-flexbugs-fixes": "4.2.1",
+    "postcss-loader": "3.0.0",
+    "postcss-normalize": "8.0.1",
+    "postcss-preset-env": "6.7.0",
+    "postcss-safe-parser": "5.0.2",
+    "prompts": "2.4.0",
+    "react": "^16.13.1",
+    "react-app-polyfill": "^2.0.0",
+    "react-custom-scrollbars": "^4.2.1",
+    "react-dev-utils": "^11.0.3",
+    "react-dom": "^16.13.1",
+    "react-modal": "^3.11.2",
+    "react-player": "^2.1.0",
+    "react-refresh": "^0.8.3",
+    "react-router-dom": "^5.2.0",
+    "react-test-renderer": "^17.0.2",
+    "react-tooltip": "^4.2.6",
+    "react-window": "^1.8.5",
+    "react-window-infinite-loader": "^1.0.5",
+    "request": "^2.79.0",
+    "resolve": "1.18.1",
+    "resolve-url-loader": "^3.1.2",
+    "sass-loader": "^10.0.5",
+    "semver": "7.3.2",
+    "standardx": "^7.0.0",
+    "style-loader": "1.3.0",
+    "styled-components": "^5.3.0",
+    "terser-webpack-plugin": "4.2.3",
+    "jest-styled-components": "^7.0.4",
+    "ts-pnp": "1.2.0",
+    "url-loader": "4.1.1",
+    "webpack": "4.44.2",
+    "webpack-dev-server": "3.11.1",
+    "webpack-manifest-plugin": "2.2.0",
+    "webpack-merge": "^5.7.3",
+    "workbox-webpack-plugin": "5.1.4"
   },
   "browserslist": {
     "production": [

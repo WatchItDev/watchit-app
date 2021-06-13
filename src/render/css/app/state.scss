@@ -1,0 +1,357 @@
+/**
+https://smacss.com/book/type-state
+*/
+@import url(http://fonts.googleapis.com/css?family=Oswald:400,700);
+@import url(https://fonts.googleapis.com/icon?family=Material+Icons);
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=latin,latin-ext);
+
+@font-face {
+  font-family: 'PFDinTextCondPro';
+  src: url('http://static.cdprojektred.com/buythewitcher/fonts/2B84B5_0_0.eot?1415275841');
+  src: url('http://static.cdprojektred.com/buythewitcher/fonts/2B84B5_0_0.eot?&1415275841#iefix') format("embedded-opentype"),
+  url('http://static.cdprojektred.com/buythewitcher/fonts/2B84B5_0_0.woff?1415275842') format("woff"),
+  url('http://static.cdprojektred.com/buythewitcher/fonts/2B84B5_0_0.ttf?1415275842') format("truetype");
+  font-weight: bold;
+  font-style: normal
+}
+
+@font-face {
+  font-family: 'PFDinTextCondPro';
+  src: url('http://static.cdprojektred.com/buythewitcher/fonts/2B84B5_1_0.eot?1415275842');
+  src: url('http://static.cdprojektred.com/buythewitcher/fonts/2B84B5_1_0.eot?&1415275842#iefix') format("embedded-opentype"),
+  url('http://static.cdprojektred.com/buythewitcher/fonts/2B84B5_1_0.woff?1415275843') format("woff"),
+  url('http://static.cdprojektred.com/buythewitcher/fonts/2B84B5_1_0.ttf?1415275843') format("truetype");
+  font-weight: normal;
+  font-style: normal
+}
+
+@font-face {
+  font-family: 'PFDinTextCondPro';
+  src: url('http://static.cdprojektred.com/buythewitcher/fonts/2B84B5_2_0.eot?1415275843');
+  src: url('http://static.cdprojektred.com/buythewitcher/fonts/2B84B5_2_0.eot?&1415275843#iefix') format("embedded-opentype"),
+  url('http://static.cdprojektred.com/buythewitcher/fonts/2B84B5_2_0.woff?1415275844') format("woff"),
+  url('http://static.cdprojektred.com/buythewitcher/fonts/2B84B5_2_0.ttf?1415275844') format("truetype");
+  font-weight: normal;
+  font-style: italic
+}
+
+@font-face {
+  font-family: 'DroidSans';
+  src: url('http://static.cdprojektred.com/buythewitcher/fonts/DroidSans-webfont.eot?1401937126');
+  src: url('http://static.cdprojektred.com/buythewitcher/fonts/DroidSans-webfont.eot?&1401937126#iefix') format("embedded-opentype"),
+  url('http://static.cdprojektred.com/buythewitcher/fonts/DroidSans-webfont.woff?1401937126') format("woff"),
+  url('http://static.cdprojektred.com/buythewitcher/fonts/DroidSans-webfont.ttf?1401937126') format("truetype"),
+  url('http://static.cdprojektred.com/buythewitcher/fonts/DroidSans-webfont.svg?1401937126#droid_sansregular') format("svg");
+  font-weight: normal;
+  font-style: normal
+}
+
+@font-face {
+  font-family: 'DroidSans';
+  src: url('http://static.cdprojektred.com/buythewitcher/fonts/DroidSans-Bold-webfont.eot?1401937128');
+  src: url('http://static.cdprojektred.com/buythewitcher/fonts/DroidSans-Bold-webfont.eot?&1401937128#iefix') format("embedded-opentype"),
+  url('http://static.cdprojektred.com/buythewitcher/fonts/DroidSans-Bold-webfont.woff?1401937128') format("woff"),
+  url('http://static.cdprojektred.com/buythewitcher/fonts/DroidSans-Bold-webfont.ttf?1401937126') format("truetype"),
+  url('http://static.cdprojektred.com/buythewitcher/fonts/DroidSans-Bold-webfont.svg?1401937128#droid_sansbold') format("svg");
+  font-weight: bold;
+  font-style: normal
+}
+
+.has-main-background {
+  background: url('../../media/img/layout/background.jpg') no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+:target {
+  display: flex !important;
+}
+
+.valign-wrapper-overlay {
+  @extend .valign-wrapper;
+  display: none;
+  z-index: 1000;
+  background-color: rgba(0, 0, 0, 0.8);
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.valign-wrapper-overlay-deep {
+  @extend .valign-wrapper-overlay;
+  background-color: transparentize(#333, 0.2);
+}
+
+.white-hover {
+  &:hover {
+    color: #fff !important;
+  }
+}
+
+.picture {
+  figure {
+    margin: 0;
+    overflow: hidden;
+  }
+}
+
+.poster-picture {
+  figure {
+    margin: 0;
+    img {
+      max-width: 45px;
+    }
+  }
+}
+
+.tiny-picture {
+  @extend .picture;
+  figure {
+    width: 2rem;
+    height: 2rem;
+    img {
+      width: 100%;
+      height: 100%;
+    }
+  }
+}
+
+.small-picture {
+  @extend .picture;
+
+  figure {
+    width: 3rem;
+    height: 3rem;
+
+    img {
+      width: 100%;
+      height: 100%;
+    }
+  }
+}
+
+.middle-picture {
+  @extend .picture;
+
+  figure {
+    width: 5rem;
+    height: 5rem;
+
+    img {
+      width: 100%;
+      height: 100%;
+    }
+  }
+}
+
+/**COMPONENTS*/
+//Dropdown
+.dropdown {
+
+  li {
+    background-color: transparent !important;
+  }
+
+  .dropdown-result {
+    margin-left: 5px;
+    font-weight: bold;
+  }
+
+  .dropdown-button {
+    width: fit-content;
+    cursor: pointer;
+  }
+
+  .dropdown-content {
+    background-color: rgba(0, 0, 0, 0.9);
+    overflow-x: hidden;
+    z-index: 1000;
+    border-radius: 0.5rem;
+    max-width: 100% !important;
+    width: fit-content;
+
+    & > div, & > div:first-child {
+      width: auto;
+      display: inline-flex;
+    }
+
+    ul {
+      position: relative;
+      padding: 1rem;
+      max-height: 21rem;
+      display: inline-grid;
+      grid-auto-flow: column;
+      grid-template-rows: repeat(7, auto);
+
+      li {
+        line-height: normal !important;
+        min-height: auto;
+        width: auto;
+
+        a {
+          padding: 5px 8px !important;
+          color: #fff;
+          font-size: $font-size-base !important;
+          display: flex;
+          align-items: flex-end;
+
+          i {
+            font-size: 1rem;
+            line-height: 1rem;
+            margin-left: 0.5rem;
+          }
+
+          &:hover {
+            color: #000;
+            background-color: white;
+          }
+        }
+      }
+    }
+  }
+
+  &:hover {
+    .dropdown-button {
+      background-color: rgba(0, 0, 0, 0.1);
+    }
+
+    .dropdown-content {
+      display: inline-flex;
+      top: 0;
+      position: absolute;
+      opacity: 1;
+    }
+  }
+}
+
+//Tooltip
+.tooltip {
+  position: relative;
+  display: inline;
+
+  span {
+    @include clearfix();
+    opacity: 0;
+    padding: 2px 8px;
+    position: absolute;
+    min-width: 120px;
+    min-height: 30px;
+    width: auto;
+    height: auto;
+    color: #FFFFFF;
+    background: #000000;
+    line-height: 30px;
+    text-align: center;
+    visibility: hidden;
+    border-radius: 6px;
+  }
+
+  span:after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    margin-left: -8px;
+    width: 0;
+    height: 0;
+    border-top: 8px solid #000000;
+    border-right: 8px solid transparent;
+    border-left: 8px solid transparent;
+  }
+
+  &:hover span {
+    @include transition(opacity .30s ease-in-out);
+    visibility: visible;
+    opacity: 0.8;
+    left: 50%;
+    margin-left: -63px;
+    z-index: 999;
+  }
+
+  //Bottom position
+  .bottom-tip:after {
+    bottom: 100%;
+  }
+
+  &:hover > .bottom-tip {
+    top: 30px;
+  }
+
+  //Top position
+  .top-tip:after {
+    top: 100%;
+  }
+
+  &:hover > .top-tip {
+    bottom: 30px;
+  }
+}
+
+/**OTHERS*/
+.normalize-small-icon {
+  top: 0.1rem;
+  position: relative;
+}
+
+.normalize-medium-icon {
+  top: 0.5rem;
+  position: relative;
+}
+
+.border-dashed-bottom-white {
+  border-bottom: 1px dashed #fff;
+}
+
+.btn-play {
+  background-color: rgba(57, 174, 0, 0.5);
+}
+
+.btn-close {
+  position: absolute;
+  right: 1rem;
+  z-index: 100;
+  top: 1rem;
+}
+
+.btn-close, .btn-add {
+  padding: 0 10px;
+  line-height: normal;
+}
+
+.separated-pipe {
+  &:not(:last-of-type)::after {
+    content: " | "
+  }
+}
+
+.separated-comma {
+  &:not(:last-of-type)::after {
+    content: ", "
+  }
+}
+
+.error-label {
+  padding: 7px 10px !important;
+  @include border-radius(3px);
+  @extend .white-text;
+  @extend .red;
+}
+
+.default-label {
+  padding: 7px 10px !important;
+  @extend .error-label;
+  @extend .orange
+}
+
+.success-label {
+  padding: 7px 10px !important;
+  @extend .error-label;
+  @extend .green;
+}
+
+.radius {
+  @include border-radius(5px);
+}

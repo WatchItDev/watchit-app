@@ -12,6 +12,8 @@
 /build
 
 # misc
+abis/
+orbitdb/
 .DS_Store
 .env.local
 .env.development.local
@@ -23,6 +25,7 @@ build
 .env
 .idea
 __snapshots__
+test-coverage/
 key.json
 w_alloc
 npm-debug.log*
