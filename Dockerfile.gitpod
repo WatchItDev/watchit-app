@@ -1,0 +1,3 @@
+FROM gitpod/workspace-full-vnc
+
+RUN sudo apt-get update && sudo apt-get install -y libgtkextra-dev libgconf2-dev libnss3 libasound2 libxtst-dev libgbm-dev

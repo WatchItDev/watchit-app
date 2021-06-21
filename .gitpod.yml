@@ -1,0 +1,11 @@
+image:
+  file: Dockerfile.gitpod
+ports:
+- port: 6080
+  onOpen: notify
+- port: 5900
+  onOpen: ignore
+tasks:
+- command: >
+    npm install &&
+    npm run start
