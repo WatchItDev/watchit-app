@@ -38,12 +38,17 @@ Please look at our [gateway](https://github.com/ZorrillosDev/watchit-gateway) 's
 
 <details>
   <summary>Installation & Usage</summary>
-  
-## Install
+
+###Gitpod
+
+To run a fast and fully initialized set-up dev environment
+just go to our `ready-to-code` [gitpod](https://gitpod.io/#https://github.com/ZorrillosDev/watchit-app).
+
+### Install
 
 Please run `npm i` to install dependencies
 
-## Usage
+### Usage
 
 In the project directory, you can run:
 
@@ -61,7 +66,7 @@ It correctly bundles React in production mode and optimizes the build for the be
 Your app is being packed for the choosen {os}!
 Package the app to the `release` forder. <br>
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+
 
 </details>
 
