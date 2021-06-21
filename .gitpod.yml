@@ -8,4 +8,4 @@ ports:
 tasks:
 - command: >
     npm install &&
-    npm run start
+    npm run start:web
