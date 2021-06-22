@@ -39,7 +39,7 @@ Please look at our [gateway](https://github.com/ZorrillosDev/watchit-gateway) 's
 <details>
   <summary>Installation & Usage</summary>
 
-###Gitpod
+### Gitpod
 
 To run a fast and fully initialized set-up dev environment
 just go to our `ready-to-code` [gitpod](https://gitpod.io/#https://github.com/ZorrillosDev/watchit-app).
