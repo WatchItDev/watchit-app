@@ -66,11 +66,11 @@ export default {
     colors: {
       primary: '#03a9f3',
       danger: '#E57373',
-      dangerIntense: '#F44336',
+      dangerDark: '#F44336',
       success: '#81C784',
-      successIntense: '#4CAF50',
+      successDark: '#4CAF50',
       warning: '#ca6005',
-      warningIntense: '#ff9800',
+      warningDark: '#ff9800',
       default: 'rgba(0,0,0,0.5)'
     }
   }
