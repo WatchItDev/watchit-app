@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import Logo from 'components/app-logo/'
 import styled from 'styled-components'
+import settings from 'settings'
 
-const electron = window.require('electron')
+const electron = require('electron')
 const ipcRenderer = electron.ipcRenderer
 const UPDATER_EVENT = 'update-available'
 const DEFAULT_UPDATER_MESSAGE = 'A new update is available. The app it is being updated and will restart on completion...'
@@ -58,24 +59,10 @@ const WindowControl = styled.li`
   text-align: -webkit-match-parent;
 `
 
-const handleColorType = color => {
-  switch (color) {
-    case 'primary':
-      return '#03a9f3'
-    case 'danger':
-      return '#F44336'
-    case 'success':
-      return '#4CAF50'
-    case 'warning':
-      return '#ff9800'
-    default:
-      return 'rgba(0,0,0,0.5)'
-  }
-}
-
 const WindowControlIcon = styled.i`
   font-size: 1rem;
-  color: ${({ color }) => handleColorType(color)};
+  color: ${props => props.color};
+  cursor: pointer;
   
   @media (min-width: 300px) {
     font-size: 1.1rem
@@ -128,13 +115,13 @@ const DragBar = (props) => {
         {/* {this.state.updater && <Updater>{this.state.updater}</Updater>} */}
         <WindowControls>
           <WindowControl onClick={(e) => minimizeWin(e)}>
-            <WindowControlIcon className='icon-circle-with-minus' color='warning' />
+            <WindowControlIcon className='icon-circle-with-minus' color={settings.styles.colors.warningIntense} />
           </WindowControl>
           <WindowControl onClick={(e) => maximizeWin(e)}>
-            <WindowControlIcon className='icon-circle-with-plus' color='success' />
+            <WindowControlIcon className='icon-circle-with-plus' color={settings.styles.colors.successIntense} />
           </WindowControl>
           <WindowControl onClick={(e) => closeWin(e)}>
-            <WindowControlIcon className='icon-circle-with-cross' color='danger' />
+            <WindowControlIcon className='icon-circle-with-cross' color={settings.styles.colors.dangerIntense} />
           </WindowControl>
         </WindowControls>
       </Header>
