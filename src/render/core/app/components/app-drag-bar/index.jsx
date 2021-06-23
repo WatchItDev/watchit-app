@@ -79,7 +79,7 @@ const WindowControlIcon = styled.i`
 
 const DragBar = (props) => {
   // eslint-disable-next-line
-  const [updater, setUpdater] = useState('')
+  const [_, setUpdater] = useState('')
 
   const updateOnlineStatus = () => {
     ipcRenderer.send('online-status-changed',
@@ -88,12 +88,15 @@ const DragBar = (props) => {
   }
 
   useEffect(() => {
-    ipcRenderer.removeAllListeners(UPDATER_EVENT)
+    // TODO add updater box
     ipcRenderer.on(UPDATER_EVENT, () => setUpdater(DEFAULT_UPDATER_MESSAGE))
-    window.removeEventListener('online', updateOnlineStatus)
-    window.removeEventListener('offline', updateOnlineStatus)
     window.addEventListener('online', updateOnlineStatus)
     window.addEventListener('offline', updateOnlineStatus)
+    return () => {
+      ipcRenderer.removeAllListeners(UPDATER_EVENT)
+      window.removeEventListener('online', updateOnlineStatus)
+      window.removeEventListener('offline', updateOnlineStatus)
+    }
   })
 
   const closeWin = () => {
