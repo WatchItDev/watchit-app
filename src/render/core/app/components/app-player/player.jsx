@@ -7,10 +7,10 @@ import PlayerShare from './share'
 import PlayerVideo from './video'
 
 import gatewayHelper from 'helpers/gateway'
-import resourceHelper from 'helpers/streaming'
 import log from 'logger'
 
 const dlna = window.bridge.DLNA
+const hls = window.bridge.HLS
 
 const DEFAULT_PLAYER_CONTROLS = [
   'play-large', // The large play button in the center
@@ -52,12 +52,6 @@ export default class Player extends React.Component {
     })
   }
 
-  static get defaultProps () {
-    return {
-      subs: {}
-    }
-  }
-
   static get propTypes () {
     return {
       movie: PropTypes.object.isRequired,
@@ -72,31 +66,9 @@ export default class Player extends React.Component {
     this.player.pause()
   }
 
-  get currentLang () {
-    return this.player?.language &&
-      setting.subs.revHash[this.player.language]
-  }
-
-  get currentSub () {
-    return this.props.subs[this.currentLang]
-  }
-
-  get srtSub () {
-    return this.currentSub &&
-      this.currentSub.replace('.vtt', '.srt')
-  }
-
   async componentDidMount () {
     if (!this.invalidDLNASource) { this.initDLNA() }
-
-    // window.addEventListener("keyup", (e) => {
-    //     let keyCode = e.which || e.keyCode;
-    //     if (Object.is(keyCode, 71)) this.addOffset(0.5); //G
-    //     if (Object.is(keyCode, 72)) this.removeOffset(0.5); //H
-    //     // if (Object.is(keyCode, 83)) this.syncSubs();
-    // });
-
-    // Lets run
+    // Lets start watching :)
     this.startStreaming()
   }
 
@@ -163,9 +135,14 @@ export default class Player extends React.Component {
   }
 
   get streamer () {
-    return resourceHelper.streamer(
-      this.props.movie.type
-    )
+    const _type = this.props.movie.type
+    if (!setting.streaming.includes(_type)) {
+      throw new Error('Not support streaming mechanism')
+    }
+
+    return {
+      hls
+    }[_type]
   }
 
   componentDidCatch (error, info) {
@@ -187,7 +164,10 @@ export default class Player extends React.Component {
     if (url) { // Force update with url if passed
       log.info('Ready to play movie: ' + url)
       const [mime] = rest // Default streaming type
-      this.setState({ url: url, type: mime })
+      this.setState({
+        url: url,
+        type: mime
+      })
     }
 
     this.props.onReady &&

@@ -9,7 +9,6 @@
 const Key = require('./core/key')
 const DLNA = require('./core/dlna')
 const HLS = require('./core/hls')
-const Torrent = require('./core/torrent')
 const Broker = require('./core/broker')
 
 // Preload bridge
@@ -17,6 +16,5 @@ window.bridge = {
   Key,
   Broker: Broker.getInstance(),
   DLNA: DLNA.getInstance(),
-  HLS: HLS.getInstance(),
-  Torrent: Torrent.getInstance()
+  HLS: HLS.getInstance()
 }
