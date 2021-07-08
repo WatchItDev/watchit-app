@@ -58,6 +58,7 @@ export default {
       mobileL: '(min-width: 425px)',
       tablet: '(min-width: 768px)',
       laptop: '(min-width: 992px)',
+      laptopAndLow: '(max-width: 992px)',
       laptopL: '(min-width: 1440px)',
       desktop: '(min-width: 1900px)',
       desktopL: '(min-width: 2560px)'
