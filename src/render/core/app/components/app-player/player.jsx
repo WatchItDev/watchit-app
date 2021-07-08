@@ -93,18 +93,15 @@ export default class Player extends React.Component {
 
   _initPlaying = () => {
     log.info('Playing movie')
-    // Handle ready
     if (this.props.onCanPlay) {
-      this.props.onCanPlay(
-        this.state.url
-      )
+      this.props.onCanPlay()
     }
   }
 
   getPlayer (options = {}) {
     const playerSettings = {
       ...{
-        autoplay: true,
+        autoplay: false,
         settings: ['captions', 'speed', 'quality'],
         controls: DEFAULT_PLAYER_CONTROLS
       },
@@ -112,18 +109,19 @@ export default class Player extends React.Component {
     }
 
     // Init player and wait until can play
+    log.info('Setting up player')
     this.player = new Plyr(this.v.video, playerSettings)
     this.v.video.addEventListener('canplay', this._initPlaying)
     this.v.video.addEventListener('error', () => log.error('Error while playing movie'))
     this.v.video.addEventListener('loadedmetadata', () => log.warn('Player metadata loaded'))
+    this.v.video.play()
   }
 
   startStreaming () {
     // Start streamer
-    log.info('STREAMING MOVIE: ' + this.props.movie.title.toUpperCase())
+    log.info('Streaming Movie: ' + this.props.movie.title.toUpperCase())
     const uriToStream = `${gatewayHelper.dummyParse(this.props.movie)}`
     const streamer = this.streamer.play(uriToStream, { videoRef: this.v.video })
-    streamer.on('ready', this.onReady)
     streamer.on('progress', this.onProgress)
     streamer.on('error', this.onError)
     streamer.on('start', (op) => this.getPlayer(op))
@@ -160,20 +158,6 @@ export default class Player extends React.Component {
     dlna && dlna.stop()
   }
 
-  onReady = (url, ...rest) => {
-    if (url) { // Force update with url if passed
-      log.info('Ready to play movie: ' + url)
-      const [mime] = rest // Default streaming type
-      this.setState({
-        url: url,
-        type: mime
-      })
-    }
-
-    this.props.onReady &&
-    this.props.onReady(...rest)
-  }
-
   onProgress = (...args) => {
     // Handle progress
     if (this.props.onProgress) {
@@ -198,7 +182,7 @@ export default class Player extends React.Component {
     return (
       <div className={(this.props.canPlay && 'left relative full-height full-width') || 'invisible'}>
         <PlayerShare devices={this.state.devices} onChange={this.handleSelectDevice} />
-        <PlayerVideo src={this.state.url} type={this.state.type} ref={this.getVideoRef} />
+        <PlayerVideo ref={this.getVideoRef} />
       </div>
     )
   }

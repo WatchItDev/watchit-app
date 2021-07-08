@@ -1,8 +1,7 @@
 const HLS = require('hls.js')
 const EventEmitter = require('events')
 const log = require('logplease').create('HLS')
-const conf = require('./settings')
-
+const CONF = require('./settings')
 module.exports = class HLSStreamer extends EventEmitter {
   constructor (props) {
     super(props)
@@ -30,14 +29,16 @@ module.exports = class HLSStreamer extends EventEmitter {
     )
 
     if (HLS.isSupported()) {
-      log.warn(`Starting hls: ${uri}`)
-      this.hls = new HLS(conf)
-      this.hls.loadSource(uri)
+      log.warn(`Starting hls from manifest: ${uri}`)
+      this.hls = new HLS(CONF)
       this.hls.attachMedia(videoRef)
       // When media attached then try to play streaming!!
-      this.hls.on(HLS.Events.ERROR, (e, d) => this.emitError(d))
-      this.hls.on(HLS.Events.MEDIA_ATTACHED, () => this.emitMediaAttached(uri))
-      this.hls.on(HLS.Events.MANIFEST_PARSED, (e, n) => this.emitStart(n))
+      this.hls.on(HLS.Events.ERROR, (e, d) => this.emitError(e, d))
+      this.hls.on(HLS.Events.MEDIA_ATTACHED, () => {
+        log.info('Media attached')
+        this.hls.loadSource(uri)
+        this.hls.on(HLS.Events.MANIFEST_PARSED, (e, n) => this.emitStart(n))
+      })
     } else if (nativePlay) {
       this.emit('ready', uri)
     }
@@ -68,23 +69,31 @@ module.exports = class HLSStreamer extends EventEmitter {
     return {}
   }
 
-  emitError (e) {
+  emitError (event, data) {
     /***
      * Handle error on HLS streaming
      * @param {object} event
      * @param {object} data
      */
     log.info('Fail trying play movie')
-    this.hls.destroy()
-    this.emit('error', e)
+    log.info('Trying recover')
+    if (data.fatal) {
+      switch (data.type) {
+        case HLS.ErrorTypes.MEDIA_ERROR:
+          console.log('fatal media error encountered, try to recover')
+          this.hls.recoverMediaError()
+          break
+        case HLS.ErrorTypes.NETWORK_ERROR:
+        default:
+          // cannot recover
+          this.hls.destroy()
+          this.emit('error', data)
+          break
+      }
+    }
   }
 
-  emitMediaAttached (uri) {
-    log.info('Media attached')
-    this.emit('ready', uri, this.mime)
-  }
-
-  emitStart (n) {
+  emitStart () {
     log.info('m3u8 manifest loaded')
     // Add new qualities to option
     this.emit('start', {
