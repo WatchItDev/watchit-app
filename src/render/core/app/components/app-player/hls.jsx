@@ -20,10 +20,6 @@ export default class PlayerHLS extends React.PureComponent {
     }
   }
 
-  handleProgress = () => {
-    // abstract method just keep going
-  }
-
   handleCanPlay = () => {
     this.setState({
       canPlay: true
@@ -51,7 +47,6 @@ export default class PlayerHLS extends React.PureComponent {
             <Player
               movie={this.props.movie}
               canPlay={this.state.canPlay}
-              onProgress={this.handleProgress}
               onCanPlay={this.handleCanPlay}
             />
           </div>

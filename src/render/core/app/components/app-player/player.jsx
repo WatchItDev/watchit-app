@@ -36,7 +36,6 @@ export default class Player extends React.Component {
 
     // Initial State
     this.state = {
-      url: '', // Empty uri on start
       devices: this.players || []
     }
   }
@@ -111,10 +110,9 @@ export default class Player extends React.Component {
     // Init player and wait until can play
     log.info('Setting up player')
     this.player = new Plyr(this.v.video, playerSettings)
-    this.v.video.addEventListener('canplay', this._initPlaying)
-    this.v.video.addEventListener('error', () => log.error('Error while playing movie'))
     this.v.video.addEventListener('loadedmetadata', () => log.warn('Player metadata loaded'))
     this.v.video.play()
+    this._initPlaying()
   }
 
   startStreaming () {
@@ -122,7 +120,6 @@ export default class Player extends React.Component {
     log.info('Streaming Movie: ' + this.props.movie.title.toUpperCase())
     const uriToStream = `${gatewayHelper.dummyParse(this.props.movie)}`
     const streamer = this.streamer.play(uriToStream, { videoRef: this.v.video })
-    streamer.on('progress', this.onProgress)
     streamer.on('error', this.onError)
     streamer.on('start', (op) => this.getPlayer(op))
   }
@@ -156,13 +153,6 @@ export default class Player extends React.Component {
     if (this.player) this.player.destroy()
     this.stopStreaming()
     dlna && dlna.stop()
-  }
-
-  onProgress = (...args) => {
-    // Handle progress
-    if (this.props.onProgress) {
-      this.props.onProgress(...args)
-    }
   }
 
   onError = (e) => {
