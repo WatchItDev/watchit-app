@@ -29,14 +29,14 @@ module.exports = class HLSStreamer extends EventEmitter {
     )
 
     if (HLS.isSupported()) {
-      log.warn(`Starting hls from manifest: ${uri}`)
+      log.warn(`Loading manifest: ${uri}`)
       this.hls = new HLS(CONF)
       this.hls.attachMedia(videoRef)
       // When media attached then try to play streaming!!
       this.hls.on(HLS.Events.ERROR, (e, d) => this.emitError(e, d))
       this.hls.on(HLS.Events.MEDIA_ATTACHED, () => {
         log.info('Media attached')
-        this.hls.loadSource(uri)
+        this.hls.loadSource(uri) // Add uri to HLS to process
         this.hls.on(HLS.Events.MANIFEST_PARSED, (e, n) => this.emitStart(n))
       })
     } else if (nativePlay) {
@@ -76,14 +76,17 @@ module.exports = class HLSStreamer extends EventEmitter {
      * @param {object} data
      */
     log.info('Fail trying play movie')
-    log.info('Trying recover')
     if (data.fatal) {
       switch (data.type) {
+        case HLS.ErrorTypes.NETWORK_ERROR:
+          // try to recover network error
+          console.log('Fatal network error encountered, try to recover')
+          this.hls.startLoad()
+          break
         case HLS.ErrorTypes.MEDIA_ERROR:
-          console.log('fatal media error encountered, try to recover')
+          console.log('Fatal media error encountered, try to recover')
           this.hls.recoverMediaError()
           break
-        case HLS.ErrorTypes.NETWORK_ERROR:
         default:
           // cannot recover
           this.hls.destroy()

@@ -110,9 +110,10 @@ export default class Player extends React.Component {
     // Init player and wait until can play
     log.info('Setting up player')
     this.player = new Plyr(this.v.video, playerSettings)
-    this.v.video.addEventListener('loadedmetadata', () => log.warn('Player metadata loaded'))
-    this.v.video.play()
-    this._initPlaying()
+    this.player.on('canplay', () => {
+      this.player.play()
+      this._initPlaying()
+    })
   }
 
   startStreaming () {
