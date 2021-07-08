@@ -2,6 +2,7 @@ const HLS = require('hls.js')
 const EventEmitter = require('events')
 const log = require('logplease').create('HLS')
 const CONF = require('./settings')
+
 module.exports = class HLSStreamer extends EventEmitter {
   constructor (props) {
     super(props)
@@ -75,18 +76,20 @@ module.exports = class HLSStreamer extends EventEmitter {
      * @param {object} event
      * @param {object} data
      */
-    log.info('Fail trying play movie')
+
     if (data.fatal) {
+      log.info('Fail trying play movie')
       switch (data.type) {
-        case HLS.ErrorTypes.NETWORK_ERROR:
-          // try to recover network error
-          console.log('Fatal network error encountered, try to recover')
-          this.hls.startLoad()
-          break
+        // case HLS.ErrorTypes.NETWORK_ERROR:
+        //   // try to recover network error
+        //   console.log('Fatal network error encountered, try to recover')
+        //   this.hls.startLoad()
+        //   break
         case HLS.ErrorTypes.MEDIA_ERROR:
           console.log('Fatal media error encountered, try to recover')
           this.hls.recoverMediaError()
           break
+        case HLS.ErrorTypes.NETWORK_ERROR:
         default:
           // cannot recover
           this.hls.destroy()

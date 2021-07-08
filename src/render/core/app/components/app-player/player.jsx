@@ -33,6 +33,7 @@ export default class Player extends React.Component {
   constructor (props) {
     super(props)
     this.v = null
+    this.player = null
 
     // Initial State
     this.state = {
@@ -41,7 +42,7 @@ export default class Player extends React.Component {
   }
 
   shouldComponentUpdate (nextProps, nextState, nextContext) {
-    return nextProps.canPlay || nextState.url
+    return nextProps.canPlay
   }
 
   get players () {
@@ -49,6 +50,12 @@ export default class Player extends React.Component {
     return dlna.players.map((d) => {
       return d.name
     })
+  }
+
+  static get defaultProps () {
+    return {
+      canPlay: false
+    }
   }
 
   static get propTypes () {
@@ -91,8 +98,8 @@ export default class Player extends React.Component {
   }
 
   _initPlaying = () => {
-    log.info('Playing movie')
-    if (this.props.onCanPlay) {
+    if (this.props.onCanPlay && !this.props.canPlay) {
+      log.info('Playing movie')
       this.props.onCanPlay()
     }
   }
