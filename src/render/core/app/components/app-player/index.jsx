@@ -5,7 +5,6 @@ import BtnClose from 'components/util-btn-close/'
 import Movie from 'resource/movies'
 import cryptHelper from 'helpers/crypt'
 
-import PlayerTorrent from './torrent'
 import PlayerHLS from './hls'
 import log from 'logger'
 
@@ -47,7 +46,6 @@ export default class PlayerSwitch extends React.Component {
 
   switchPlayer = (type) => {
     const types = {
-      torrent: PlayerTorrent,
       hls: PlayerHLS
     }
 

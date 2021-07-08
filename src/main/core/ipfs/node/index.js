@@ -21,7 +21,7 @@ const resolveIpfsPaths = () => require('go-ipfs').path()
 const forceKill = async (isInstance) => {
   log.info('Forcing stop')
   await isInstance.stop()
-  log.warn('Cleaning corrupt repo')
+  log.warn('Cleaning bad repo')
   await removeFiles(ROOT_IPFS_DIR)
 }; const initIpfsNode = async (isInstance) => {
   // Check if running time dir exists

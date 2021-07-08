@@ -30,11 +30,12 @@ const LoginForm = () => {
     setSubmitted(true)
 
     const pb = fields.get('public')
+    // This validation should be skip
     // Check if stored key its valid
-    if (!key.isValidKey(pb)) {
-      setError('Invalid Key')
-      return setSubmitted(false)
-    }
+    // if (!key.isValidKey(pb)) {
+    //   setError('Invalid Key')
+    //   return setSubmitted(false)
+    // }
 
     // Write public key
     key.generateKey({ ingest: pb })

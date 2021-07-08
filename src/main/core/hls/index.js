@@ -51,6 +51,7 @@ module.exports = class HLSStreamer extends EventEmitter {
      * @param {object} n
      * @return {object}
      */
+    // Not quality in manifest?
     const q = n.levels.map((l) => l.height)
     return {
       quality: {
@@ -87,8 +88,8 @@ module.exports = class HLSStreamer extends EventEmitter {
     log.info('m3u8 manifest loaded')
     // Add new qualities to option
     this.emit('start', {
-      ...this.quality(n),
-      ...this.subs(n)
+      // ...this.quality(n),
+      // ...this.subs(n)
     })
   }
 
