@@ -12,7 +12,7 @@ const HLS = require('./core/hls')
 const Broker = require('./core/broker')
 
 // Preload bridge
-window.bridge = {
+global.bridge = {
   Key,
   Broker: Broker.getInstance(),
   DLNA: DLNA.getInstance(),

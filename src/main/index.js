@@ -103,6 +103,7 @@ const initWindowing = (inDev) => {
     })
   })
 }
+
 const createMain = (inDev, child) => {
   win = new BrowserWindow({
     ...inDev && { icon: appIcon },
