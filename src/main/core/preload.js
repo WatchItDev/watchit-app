@@ -6,13 +6,13 @@
  */
 
 // Bridge
-const Key = require('./core/key')
-const DLNA = require('./core/dlna')
-const HLS = require('./core/hls')
-const Broker = require('./core/broker')
+const Key = require('./key')
+const DLNA = require('./dlna')
+const HLS = require('./hls')
+const Broker = require('./broker')
 
 // Preload bridge
-global.bridge = {
+module.exports = global.bridge = {
   Key,
   Broker: Broker.getInstance(),
   DLNA: DLNA.getInstance(),

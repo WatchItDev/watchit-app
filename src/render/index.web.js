@@ -1,16 +1,15 @@
-require('main/preload')
-const Bootstrap = require('main/core')
-
 import React from 'react'
 import ReactDOM from 'react-dom'
 import App from './core/app/index'
-
+import { Broker as broker } from 'main/bridge'
+import * as Bootstrap from 'main/core'
 import 'normalize.css'
+
 import 'plyr/src/sass/plyr.scss'
 import './index.web.sass'
 import * as serviceWorker from './serviceWorker'
 
-const webRenderer = window.bridge.Broker.getIPC()
+const webRenderer = broker.getIPC()
 Bootstrap(webRenderer, 'web') // Initialize nodes and core libs
 
 const root = document.getElementById('root')

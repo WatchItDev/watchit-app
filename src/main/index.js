@@ -125,7 +125,7 @@ const createMain = (inDev, child) => {
         contextIsolation: false,
         nodeIntegration: true,
         webSecurity: false,
-        preload: path.join(__dirname, '/preload.js')
+        preload: path.join(__dirname, '/core/preload.js')
       }
     }
   })

@@ -4,12 +4,10 @@ import BtnClose from 'components/util-btn-close/'
 
 import Movie from 'resource/movies'
 import cryptHelper from 'helpers/crypt'
-
+import { Broker as broker } from 'main/bridge'
 import PlayerHLS from './hls'
 import log from 'logger'
 
-// Access to main process bridge prop
-const broker = window.bridge.Broker
 // Movie player pages class
 export default class PlayerSwitch extends React.Component {
   constructor (props) {

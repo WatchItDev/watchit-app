@@ -9,11 +9,10 @@ import ListCommaSplit from 'components/util-list-comma-split/'
 import DetailsHeader from './header'
 import DetailsInfo from './info'
 import DetailsMenu from './menu'
-
+import { Broker as broker } from 'main/bridge'
 import Movie from 'resource/movies'
 
 // Access to main process bridge prop
-const broker = window.bridge.Broker
 export default class Details extends React.PureComponent {
   constructor (props) {
     super(props)

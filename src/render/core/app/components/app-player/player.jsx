@@ -5,12 +5,9 @@ import setting from 'render/core/settings'
 
 import PlayerShare from './share'
 import PlayerVideo from './video'
-
+import { DLNA as dlna, HLS as hls } from 'main/bridge'
 import gatewayHelper from 'helpers/gateway'
 import log from 'logger'
-
-const dlna = window.bridge.DLNA
-const hls = window.bridge.HLS
 
 const DEFAULT_PLAYER_CONTROLS = [
   'play-large', // The large play button in the center

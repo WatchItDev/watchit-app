@@ -15,8 +15,7 @@ import util from 'helpers/util'
 import log from 'logger'
 
 // Access to main process bridge prop
-const key = window.bridge.Key
-const broker = window.bridge.Broker
+import { Key as key, Broker as broker } from 'main/bridge'
 const DEFAULT_INIT_LOAD = 100
 
 // Login pages class

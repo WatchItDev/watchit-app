@@ -5,9 +5,9 @@ import Alert from 'components/app-alerts/'
 import Input from 'components/app-inputs/'
 import Button from 'components/app-buttons/'
 import Background from 'components/app-background/'
+import { Key as key } from 'main/bridge'
 import settings from 'settings'
 
-const key = window.bridge.Key
 const LoginForm = () => {
   const fields = new FormData()
   const [submitted, setSubmitted] = useState(false)
