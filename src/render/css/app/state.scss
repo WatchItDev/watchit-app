@@ -1,61 +1,9 @@
 /**
 https://smacss.com/book/type-state
 */
-@import url(http://fonts.googleapis.com/css?family=Oswald:400,700);
+@import url(https://fonts.googleapis.com/css?family=Oswald:400,700);
 @import url(https://fonts.googleapis.com/icon?family=Material+Icons);
-@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=latin,latin-ext);
-
-@font-face {
-  font-family: 'PFDinTextCondPro';
-  src: url('http://static.cdprojektred.com/buythewitcher/fonts/2B84B5_0_0.eot?1415275841');
-  src: url('http://static.cdprojektred.com/buythewitcher/fonts/2B84B5_0_0.eot?&1415275841#iefix') format("embedded-opentype"),
-  url('http://static.cdprojektred.com/buythewitcher/fonts/2B84B5_0_0.woff?1415275842') format("woff"),
-  url('http://static.cdprojektred.com/buythewitcher/fonts/2B84B5_0_0.ttf?1415275842') format("truetype");
-  font-weight: bold;
-  font-style: normal
-}
-
-@font-face {
-  font-family: 'PFDinTextCondPro';
-  src: url('http://static.cdprojektred.com/buythewitcher/fonts/2B84B5_1_0.eot?1415275842');
-  src: url('http://static.cdprojektred.com/buythewitcher/fonts/2B84B5_1_0.eot?&1415275842#iefix') format("embedded-opentype"),
-  url('http://static.cdprojektred.com/buythewitcher/fonts/2B84B5_1_0.woff?1415275843') format("woff"),
-  url('http://static.cdprojektred.com/buythewitcher/fonts/2B84B5_1_0.ttf?1415275843') format("truetype");
-  font-weight: normal;
-  font-style: normal
-}
-
-@font-face {
-  font-family: 'PFDinTextCondPro';
-  src: url('http://static.cdprojektred.com/buythewitcher/fonts/2B84B5_2_0.eot?1415275843');
-  src: url('http://static.cdprojektred.com/buythewitcher/fonts/2B84B5_2_0.eot?&1415275843#iefix') format("embedded-opentype"),
-  url('http://static.cdprojektred.com/buythewitcher/fonts/2B84B5_2_0.woff?1415275844') format("woff"),
-  url('http://static.cdprojektred.com/buythewitcher/fonts/2B84B5_2_0.ttf?1415275844') format("truetype");
-  font-weight: normal;
-  font-style: italic
-}
-
-@font-face {
-  font-family: 'DroidSans';
-  src: url('http://static.cdprojektred.com/buythewitcher/fonts/DroidSans-webfont.eot?1401937126');
-  src: url('http://static.cdprojektred.com/buythewitcher/fonts/DroidSans-webfont.eot?&1401937126#iefix') format("embedded-opentype"),
-  url('http://static.cdprojektred.com/buythewitcher/fonts/DroidSans-webfont.woff?1401937126') format("woff"),
-  url('http://static.cdprojektred.com/buythewitcher/fonts/DroidSans-webfont.ttf?1401937126') format("truetype"),
-  url('http://static.cdprojektred.com/buythewitcher/fonts/DroidSans-webfont.svg?1401937126#droid_sansregular') format("svg");
-  font-weight: normal;
-  font-style: normal
-}
-
-@font-face {
-  font-family: 'DroidSans';
-  src: url('http://static.cdprojektred.com/buythewitcher/fonts/DroidSans-Bold-webfont.eot?1401937128');
-  src: url('http://static.cdprojektred.com/buythewitcher/fonts/DroidSans-Bold-webfont.eot?&1401937128#iefix') format("embedded-opentype"),
-  url('http://static.cdprojektred.com/buythewitcher/fonts/DroidSans-Bold-webfont.woff?1401937128') format("woff"),
-  url('http://static.cdprojektred.com/buythewitcher/fonts/DroidSans-Bold-webfont.ttf?1401937126') format("truetype"),
-  url('http://static.cdprojektred.com/buythewitcher/fonts/DroidSans-Bold-webfont.svg?1401937128#droid_sansbold') format("svg");
-  font-weight: bold;
-  font-style: normal
-}
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=latin,latin-ext);
 
 .has-main-background {
   background: url('../../media/img/layout/background.jpg') no-repeat center center fixed;
