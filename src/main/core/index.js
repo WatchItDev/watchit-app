@@ -5,10 +5,10 @@
 const log = require('logplease').create('CORE')
 const Node = require('./node')
 const Ingest = require('./ingest')
-const BroadCast = require('./broadcast')
+// const BroadCast = require('./broadcast')
 
 module.exports = (ipcMain, runtime = 'node') => {
-  let nodeConf = { broker: BroadCast }
+  let nodeConf = { }
   const isWebRuntime = runtime === 'web'
   if (!isWebRuntime) {
     const { ROOT_ORBIT_DIR } = require('./settings')
@@ -36,13 +36,13 @@ module.exports = (ipcMain, runtime = 'node') => {
       ipcMain.emit('party')
     })
 
-    orbit.on('node-raised', async () => {
-      // Node raised and ready to work with it
-      ipcMain.on('node-broadcast', (e, message) => {
-        // On new message broadcast message
-        orbit.pubsub.broadcast(message)
-      })
-    })
+    // orbit.on('node-raised', async () => {
+    //   // Node raised and ready to work with it
+    //   ipcMain.on('node-broadcast', (e, message) => {
+    //     // On new message broadcast message
+    //     orbit.pubsub.broadcast(message)
+    //   })
+    // })
 
     // Ingest process listener
     ingest.on('ingest-step', (step) => e.reply('node-step', step))
