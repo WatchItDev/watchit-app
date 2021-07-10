@@ -34,7 +34,10 @@ module.exports = class Node extends EventEmitter {
 
   open (address, settings = {}) {
     return this.orbit.open(address, {
-      ...{ replicate: true, overwrite: true },
+      ...{
+        replicate: true,
+        overwrite: true
+      },
       ...settings
     }
     )
@@ -83,10 +86,10 @@ module.exports = class Node extends EventEmitter {
 
   async resolveKey (ipns) {
     /**
-         * Resolve ipns key if needed
-         * @param ipns {string} IPNS hash
-         * @return {string} Orbit address resolver key from ipns
-         */
+     * Resolve ipns key if needed
+     * @param ipns {string} IPNS hash
+     * @return {string} Orbit address resolver key from ipns
+     */
     if (!ipns) return false
     if (~ipns.indexOf('zd')) return ipns
 
@@ -99,6 +102,7 @@ module.exports = class Node extends EventEmitter {
       return newCID.toBaseEncodedString('base58btc')
     } catch (e) {
       // Avoid using invalid keys
+      console.log(e)
       if (!this.seedMode) { await this.party('Network Error') }
       return false
     }
@@ -106,10 +110,10 @@ module.exports = class Node extends EventEmitter {
 
   async run (key, res) {
     /***
-         * Opem orbit address and set events listeners
-         * @param key: orbit address
-         * @param res: callback
-         */
+     * Opem orbit address and set events listeners
+     * @param key: orbit address
+     * @param res: callback
+     */
 
     log.info('Starting movies db:', key)
     this.db = await this.open(key).catch(async (e) => {
@@ -144,8 +148,8 @@ module.exports = class Node extends EventEmitter {
 
   async party (msg = 'Invalid Key') {
     /***
-         * Kill all - party all
-         */
+     * Kill all - party all
+     */
     log.warn('Party rock')
     this.emit('node-chaos', msg)
     await this.close(true)
@@ -158,11 +162,11 @@ module.exports = class Node extends EventEmitter {
 
   async nodeReady (res) {
     /***
-         * Get orbit node ready
-         * this method start orbit instance
-         * and get providers for db
-         * @param res: callback
-         */
+     * Get orbit node ready
+     * this method start orbit instance
+     * and get providers for db
+     * @param res: callback
+     */
     log.info('Node ready')
     log.info('Loading db..')
     const raw = await this.getIngestKey()
@@ -179,18 +183,18 @@ module.exports = class Node extends EventEmitter {
 
   instanceOB () {
     /***
-         * Orbit db factory
-         */
+     * Orbit db factory
+     */
     return (this.orbit && Promise.resolve(this.orbit)) ||
-            OrbitDB.createInstance(this.node, this.conf.orbit)
+      OrbitDB.createInstance(this.node, this.conf.orbit)
   }
 
   instanceNode () {
     /***
-         * Ipfs factory handler
-         * try keep node alive if cannot do it after MAX_RETRIES
-         * app get killed :(
-         */
+     * Ipfs factory handler
+     * try keep node alive if cannot do it after MAX_RETRIES
+     * app get killed :(
+     */
     return new Promise(async (resolve) => {
       // If fail to much.. get fuck out
       log.info('Setting up node..')

@@ -20,14 +20,6 @@ export default class PlayerHLS extends React.PureComponent {
     }
   }
 
-  handleProgress = () => {
-    // abstract method just keep going
-  }
-
-  handleReady = () => {
-    // abstract method just keep going
-  }
-
   handleCanPlay = () => {
     this.setState({
       canPlay: true
@@ -54,10 +46,7 @@ export default class PlayerHLS extends React.PureComponent {
           <div className='full-height movie-box'>
             <Player
               movie={this.props.movie}
-              subs={this.props.subs}
               canPlay={this.state.canPlay}
-              onProgress={this.handleProgress}
-              onReady={this.handleReady}
               onCanPlay={this.handleCanPlay}
             />
           </div>

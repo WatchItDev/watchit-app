@@ -5,56 +5,56 @@ import styled, { keyframes } from 'styled-components'
 
 const LogoWrapper = styled.h5`
   position: relative;
-  transform: ${props => !props.thumbnail ? 'scale(3) translateY(-1.5rem)' : 'scale(1)'};
+  transform: ${props => !props.thumbnail ? 'scale(3) translateY(-1.8rem)' : 'scale(1)'};
   letter-spacing: 2px;
   font-family: "Oswald", Arial, sans-serif;
-  display: ${props => props.show ? 'inline-block' : 'none'};
+  display: ${props => props.show ? 'flex' : 'none'};
   margin: 0;
+  align-items: flex-end;
   
   @media ${setting.styles.devices.mobileS} {
     font-size: 1.5rem !important;
+    line-height: 1.5rem !important;
   }
 
   @media ${setting.styles.devices.laptop} {
     font-size: 2rem !important;
+    line-height: 1.9rem !important;
   }
 
   @media ${setting.styles.devices.desktop} {
     font-size: 3rem !important;
-    transform: ${props => !props.thumbnail ? 'scale(3) translateY(-1rem)' : 'scale(1)'};
+    line-height: 2.8rem !important;
+    transform: ${props => !props.thumbnail ? 'scale(3) translateY(-1.5rem)' : 'scale(0.8) translateX(-1.5rem)'};
   }
 `
 
 const LogoImg = styled.img`
   width: 50px;
-  height: 50px;
+  height: 35px;
   margin-right: -3px;
 
   @media ${setting.styles.devices.mobileS} {
     width: 40px;
-    height: 40px;
+    height: 30px;
   }
 
   @media ${setting.styles.devices.laptop} {
     width: 50px;
-    height: 50px;
+    height: 35px;
   }
 
   @media ${setting.styles.devices.desktop} {
     width: 70px;
-    height: 70px;
+    height: 50px;
   }
 `
 
 const LogoText = styled.span`
   position: relative;
   color: #fff;
-  top: -9px;
+  display: inline-block;
   font-weight: 600;
-
-  @media ${setting.styles.devices.desktop} {
-    top: ${props => !props.thumbnail ? '-12px' : '-9px'};
-  }
 `
 
 const Colors = keyframes`
@@ -78,12 +78,8 @@ const Colors = keyframes`
 const LogoColoredText = styled.span`
   font-weight: bold;
   position: relative;
-  top: -9px;
+  display: inline-block;
   animation: ${Colors} 4.6s ease infinite;
-
-  @media ${setting.styles.devices.desktop} {
-    top: ${props => !props.thumbnail ? '-12px' : '-9px'};
-  }
 `
 
 const Logo = (props) => {

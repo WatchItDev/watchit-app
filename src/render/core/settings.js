@@ -3,10 +3,10 @@
  * **/
 
 export default {
-  streaming: ['hls', 'torrent'],
+  streaming: ['hls'],
   resolutions: {
     available: [
-      '720p', '1080p', '2160p', 'HLS'
+      '720p', '1080p', '2160p'
     ]
   },
   gateways: [
@@ -14,7 +14,6 @@ export default {
     'https://vps2.phillm.net',
     'https://vps3.phillm.net',
     'https://gateway.ipfs.io',
-    'https://gateway.pinata.cloud',
     'http://localhost:9090',
     'https://ipfs.infura.io'
     // 'https://cloudflare-ipfs.com',
@@ -59,6 +58,7 @@ export default {
       mobileL: '(min-width: 425px)',
       tablet: '(min-width: 768px)',
       laptop: '(min-width: 992px)',
+      laptopAndLow: '(max-width: 992px)',
       laptopL: '(min-width: 1440px)',
       desktop: '(min-width: 1900px)',
       desktopL: '(min-width: 2560px)'

@@ -27,6 +27,10 @@ const Slogan = styled.div`
   font-size: 2rem;
   display: ${({ show }) => show ? 'inline-block' : 'none'};
 
+  @media ${setting.styles.devices.laptopAndLow} {
+    font-size: 1.5rem !important;
+  }
+  
   @media ${setting.styles.devices.desktop} {
     font-size: 3rem;
     transform: translateY(-1rem);

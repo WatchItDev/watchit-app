@@ -22,7 +22,7 @@ export default class PlayerVideo extends React.PureComponent {
         ref={this.getRef} autoPlay={false} controls playsInline
         className='vjs-theme-city video-js full-width full-height'
       >
-        <source type={this.props.type} src={this.props.src} />
+        <source />
       </video>
     )
   }

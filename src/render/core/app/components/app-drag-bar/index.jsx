@@ -118,13 +118,13 @@ const DragBar = (props) => {
         {/* {this.state.updater && <Updater>{this.state.updater}</Updater>} */}
         <WindowControls>
           <WindowControl onClick={(e) => minimizeWin(e)}>
-            <WindowControlIcon className='icon-circle-with-minus' color={settings.styles.colors.warningIntense} />
+            <WindowControlIcon className='icon-circle-with-minus' color={settings.styles.colors.warningDark} />
           </WindowControl>
           <WindowControl onClick={(e) => maximizeWin(e)}>
-            <WindowControlIcon className='icon-circle-with-plus' color={settings.styles.colors.successIntense} />
+            <WindowControlIcon className='icon-circle-with-plus' color={settings.styles.colors.successDark} />
           </WindowControl>
           <WindowControl onClick={(e) => closeWin(e)}>
-            <WindowControlIcon className='icon-circle-with-cross' color={settings.styles.colors.dangerIntense} />
+            <WindowControlIcon className='icon-circle-with-cross' color={settings.styles.colors.dangerDark} />
           </WindowControl>
         </WindowControls>
       </Header>
