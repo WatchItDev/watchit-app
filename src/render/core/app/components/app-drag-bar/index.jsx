@@ -59,7 +59,7 @@ const WindowControl = styled.li`
   text-align: -webkit-match-parent;
 `
 
-const WindowControlIcon = styled.i`
+export const WindowControlIcon = styled.i`
   font-size: 1rem;
   color: ${props => props.color};
   cursor: pointer;
