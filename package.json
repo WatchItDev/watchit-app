@@ -19,7 +19,7 @@
     "windows-elevate": "^1.0.1",
     "level-js": "6.0.0",
     "wrtc": "^0.4.7",
-    "ipfs": "0.52.1",
+    "ipfs": "0.55.4",
     "go-ipfs": "^0.6.0"
   },
   "dependencies": {
