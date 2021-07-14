@@ -1,6 +1,6 @@
 [![Gitter](https://badges.gitter.im/watchit-app/community.svg)](https://gitter.im/watchit-app/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-10-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-11-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 # WatchIt App
@@ -92,6 +92,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/justicenode"><img src="https://avatars.githubusercontent.com/u/26402137?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Ѵ∑1L</b></sub></a><br /><a href="#ideas-justicenode" title="Ideas, Planning, & Feedback">🤔</a> <a href="https://github.com/ZorrillosDev/watchit-app/issues?q=author%3Ajusticenode" title="Bug reports">🐛</a> <a href="#userTesting-justicenode" title="User Testing">📓</a></td>
     <td align="center"><a href="https://github.com/Slender1808"><img src="https://avatars.githubusercontent.com/u/50336793?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Jadson G. Matos</b></sub></a><br /><a href="#ideas-Slender1808" title="Ideas, Planning, & Feedback">🤔</a></td>
     <td align="center"><a href="https://github.com/Farickmenacode73"><img src="https://avatars.githubusercontent.com/u/31286606?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Farick Mena</b></sub></a><br /><a href="#ideas-Farickmenacode73" title="Ideas, Planning, & Feedback">🤔</a> <a href="#platform-Farickmenacode73" title="Packaging/porting to new platform">📦</a> <a href="#userTesting-Farickmenacode73" title="User Testing">📓</a></td>
+    <td align="center"><a href="https://github.com/mathiassond"><img src="https://avatars.githubusercontent.com/u/49319141?v=4?s=100" width="100px;" alt=""/><br /><sub><b>mathiassond</b></sub></a><br /><a href="#userTesting-mathiassond" title="User Testing">📓</a> <a href="https://github.com/ZorrillosDev/watchit-app/issues?q=author%3Amathiassond" title="Bug reports">🐛</a></td>
   </tr>
 </table>
 
