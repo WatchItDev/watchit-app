@@ -14,13 +14,18 @@ export default {
     'https://vps2.phillm.net',
     'https://vps3.phillm.net',
     'https://gateway.ipfs.io',
-    'http://localhost:9090',
-    'https://ipfs.infura.io'
+    'https://ipfs.infura.io',
+    ...typeof process !== 'undefined'
+      ? ['http://localhost:9090']
+      : []
     // 'https://cloudflare-ipfs.com',
     // 'https://cf-ipfs.com'
   ],
   subs: {
-    hash: { spanish: 'es', english: 'en' },
+    hash: {
+      spanish: 'es',
+      english: 'en'
+    },
     get revHash () {
       const v = Object.values(this.hash)
       const k = Object.keys(this.hash)
