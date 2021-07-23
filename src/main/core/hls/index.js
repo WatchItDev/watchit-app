@@ -1,13 +1,31 @@
+const Plyr = require('plyr')
 const HLS = require('hls.js')
 const EventEmitter = require('events')
 const log = require('logplease').create('HLS')
 const CONF = require('./settings')
+const DEFAULT_PLAYER_CONTROLS = [
+  'play-large', // The large play button in the center
+  'restart', // Restart playback
+  'rewind', // Rewind by the seek time (default 10 seconds)
+  'play', // Play/pause playback
+  'fast-forward', // Fast forward by the seek time (default 10 seconds)
+  'progress', // The progress bar and scrubber for playback and buffering
+  'current-time', // The current time of playback
+  'duration', // The full duration of the media
+  'mute', // Toggle mute
+  'quality', // Quality control
+  'volume', // Volume control
+  'captions', // Toggle captions
+  'settings', // Settings menu
+  'fullscreen' // Toggle fullscreen
+]
 
 module.exports = class HLSStreamer extends EventEmitter {
   constructor (props) {
     super(props)
     this.mime = 'application/x-mpegURL'
     this.hls = null
+    this.player = null
   }
 
   get [Symbol.toStringTag] () {
@@ -24,10 +42,9 @@ module.exports = class HLSStreamer extends EventEmitter {
      * @param {object} videoRef
      * @param {function} onReady
      */
-    // Check for native play
-    const nativePlay = videoRef.canPlayType(
-      'application/vnd.apple.mpegurl'
-    )
+
+    const nativeMime = 'application/vnd.apple.mpegURL'
+    const nativePlay = videoRef.canPlayType(nativeMime)
 
     if (HLS.isSupported()) {
       log.warn(`Loading manifest: ${uri}`)
@@ -38,10 +55,21 @@ module.exports = class HLSStreamer extends EventEmitter {
       this.hls.on(HLS.Events.MEDIA_ATTACHED, () => {
         log.info('Media attached')
         this.hls.loadSource(uri) // Add uri to HLS to process
-        this.hls.on(HLS.Events.MANIFEST_PARSED, (e, n) => this.emitStart(n))
+        this.hls.on(HLS.Events.MANIFEST_PARSED, (e, n) => {
+          log.info('m3u8 manifest loaded')
+          // Add new qualities to option
+          this.setup(videoRef, {
+            // ...this.quality(n),
+            // ...this.subs(n)
+          })
+        })
       })
     } else if (nativePlay) {
-      this.emit('ready', uri)
+      const newSource = document.createElement('source')
+      newSource.src = uri
+      newSource.type = nativeMime
+      videoRef.append(newSource)
+      this.setup(videoRef)
     }
 
     return this
@@ -99,12 +127,22 @@ module.exports = class HLSStreamer extends EventEmitter {
     }
   }
 
-  emitStart () {
-    log.info('m3u8 manifest loaded')
-    // Add new qualities to option
-    this.emit('start', {
-      // ...this.quality(n),
-      // ...this.subs(n)
+  setup (videoRef, options = {}) {
+    log.info('Setting up player')
+    const playerSettings = {
+      ...{
+        settings: ['captions', 'speed', 'quality'],
+        controls: DEFAULT_PLAYER_CONTROLS
+      },
+      ...options
+    }
+
+    // Init player and wait until can play
+    this.player = new Plyr(videoRef, playerSettings)
+    this.player.on('error', (e) => this.emit('error', e))
+    this.player.on('canplay', () => {
+      // this.player.play()
+      this.emit('ready')
     })
   }
 
@@ -118,6 +156,7 @@ module.exports = class HLSStreamer extends EventEmitter {
   }
 
   stop () {
+    this?.player?.destroy()
     this?.hls?.destroy()
   }
 }

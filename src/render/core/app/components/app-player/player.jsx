@@ -1,4 +1,3 @@
-import Plyr from 'plyr'
 import React from 'react'
 import PropTypes from 'prop-types'
 import setting from 'render/core/settings'
@@ -8,23 +7,6 @@ import PlayerVideo from './video'
 import { DLNA as dlna, HLS as hls } from 'main/bridge'
 import gatewayHelper from 'helpers/gateway'
 import log from 'logger'
-
-const DEFAULT_PLAYER_CONTROLS = [
-  'play-large', // The large play button in the center
-  'restart', // Restart playback
-  'rewind', // Rewind by the seek time (default 10 seconds)
-  'play', // Play/pause playback
-  'fast-forward', // Fast forward by the seek time (default 10 seconds)
-  'progress', // The progress bar and scrubber for playback and buffering
-  'current-time', // The current time of playback
-  'duration', // The full duration of the media
-  'mute', // Toggle mute
-  'quality', // Quality control
-  'volume', // Volume control
-  'captions', // Toggle captions
-  'settings', // Settings menu
-  'fullscreen' // Toggle fullscreen
-]
 
 export default class Player extends React.Component {
   constructor (props) {
@@ -96,28 +78,13 @@ export default class Player extends React.Component {
 
   _initPlaying = () => {
     if (this.props.onCanPlay && !this.props.canPlay) {
-      log.info('Playing movie')
       this.props.onCanPlay()
     }
   }
 
-  getPlayer (options = {}) {
-    const playerSettings = {
-      ...{
-        autoplay: false,
-        settings: ['captions', 'speed', 'quality'],
-        controls: DEFAULT_PLAYER_CONTROLS
-      },
-      ...options
-    }
-
-    // Init player and wait until can play
-    log.info('Setting up player')
-    this.player = new Plyr(this.v.video, playerSettings)
-    this.player.on('canplay', () => {
-      this.player.play()
-      this._initPlaying()
-    })
+  _ready () {
+    log.info('Player ready')
+    this._initPlaying()
   }
 
   startStreaming () {
@@ -126,7 +93,7 @@ export default class Player extends React.Component {
     const uriToStream = `${gatewayHelper.dummyParse(this.props.movie)}`
     const streamer = this.streamer.play(uriToStream, { videoRef: this.v.video })
     streamer.on('error', this.onError)
-    streamer.on('start', (op) => this.getPlayer(op))
+    streamer.on('ready', () => this._ready())
   }
 
   stopStreaming () {
@@ -154,8 +121,6 @@ export default class Player extends React.Component {
   // destroy player on unmount
   componentWillUnmount () {
     log.warn('STREAMING STOPPED BY USER')
-    if (this.v.video) this.v.video.removeEventListener('canplay', this._initPlaying)
-    if (this.player) this.player.destroy()
     this.stopStreaming()
     dlna && dlna.stop()
   }
