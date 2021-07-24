@@ -1,3 +1,4 @@
+const webpack = require('webpack')
 const baseConf = require('./webpack.base')
 const { merge } = require('webpack-merge')
 const paths = require('./paths')
@@ -10,6 +11,14 @@ module.exports = function (webpackEnv) {
   const isWeb = runtime === 'web'
 
   return merge(baseConf(webpackEnv), {
+    plugins: [
+      new webpack.DefinePlugin({
+        'process.env': {
+          NODE_ENV: JSON.stringify('production'),
+          RUNTIME: JSON.stringify('web')
+        }
+      }),
+    ],
     target: isWeb ? 'web' : 'electron-renderer',
     resolve: {
       alias: {
