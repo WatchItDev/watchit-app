@@ -1,7 +1,7 @@
 import React from 'react'
 import { shallow } from 'enzyme'
 import Alert from './index'
-import settings from 'settings'
+import settings from '@settings'
 import 'jest-styled-components'
 
 /* eslint-disable no-undef */
