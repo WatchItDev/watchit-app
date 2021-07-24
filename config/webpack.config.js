@@ -1,4 +1,5 @@
 const webpack = require('webpack')
+const { GenerateSW } = require('workbox-webpack-plugin')
 const baseConf = require('./webpack.base')
 const { merge } = require('webpack-merge')
 const paths = require('./paths')
@@ -12,6 +13,7 @@ module.exports = function (webpackEnv) {
 
   return merge(baseConf(webpackEnv), {
     plugins: [
+      new GenerateSW(),
       new webpack.DefinePlugin({
         'process.env': {
           NODE_ENV: JSON.stringify('production'),
