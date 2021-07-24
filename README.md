@@ -1,7 +1,6 @@
 [![Gitter](https://badges.gitter.im/watchit-app/community.svg)](https://gitter.im/watchit-app/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
-<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
 [![All Contributors](https://img.shields.io/badge/all_contributors-11-orange.svg?style=flat-square)](#contributors-)
-<!-- ALL-CONTRIBUTORS-BADGE:END -->
+[![CI](https://github.com/ZorrillosDev/watchit-app/actions/workflows/build.yml/badge.svg)](https://github.com/ZorrillosDev/watchit-app/actions/workflows/build.yml)
 
 # WatchIt App
 
