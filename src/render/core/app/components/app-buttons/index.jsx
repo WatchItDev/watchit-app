@@ -1,5 +1,5 @@
 import React from 'react'
-import PointsLoader from 'components/util-points-loader'
+import PointsLoader from '@components/util-points-loader'
 import styled from 'styled-components'
 
 export default class Button extends React.Component {

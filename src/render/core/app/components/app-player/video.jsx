@@ -19,11 +19,9 @@ export default class PlayerVideo extends React.PureComponent {
   render () {
     return (
       <video
-        ref={this.getRef} autoPlay={false} controls playsInline
+        ref={this.getRef} autoPlay controls playsInline
         className='vjs-theme-city video-js full-width full-height'
-      >
-        <source type={this.props.type} src={this.props.src} />
-      </video>
+      />
     )
   }
 }

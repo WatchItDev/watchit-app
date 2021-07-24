@@ -1,5 +1,5 @@
 import React from 'react'
-import NavBarMenu from 'components/app-nav-bar-menu/'
+import NavBarMenu from '@components/app-nav-bar-menu/'
 
 export default class CatalogNavBar extends React.Component {
   constructor (props) {

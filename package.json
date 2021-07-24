@@ -1,7 +1,7 @@
 {
   "name": "watchit",
   "author": "ZorrillosDev",
-  "version": "0.1.0-beta13",
+  "version": "0.2.0-alpha.1",
   "private": true,
   "main": "./src/main/index.js",
   "description": "Open movies everywhere",
@@ -17,9 +17,9 @@
   },
   "peerDependencies": {
     "windows-elevate": "^1.0.1",
-    "webtorrent": "0.116.1",
     "level-js": "6.0.0",
-    "ipfs": "0.52.1",
+    "wrtc": "^0.4.7",
+    "ipfs": "0.55.4",
     "go-ipfs": "^0.6.0"
   },
   "dependencies": {
@@ -44,19 +44,15 @@
     "mime": "^2.4.6",
     "msgpack-lite": "^0.1.26",
     "orbit-db": "^0.26.0",
-    "parse-torrent": "^7.1.3",
     "plyr": "^3.6.2",
     "pretty-bytes": "^5.6.0",
-    "read-torrent": "^1.3.1",
     "rimraf": "^3.0.2",
     "secp256k1": "^4.0.2",
     "shortid": "^2.2.15",
     "streaming-iterables": "^5.0.4",
     "subtitle": "^2.0.3",
     "unzipper": "^0.10.11",
-    "v8-compile-cache": "^2.2.0",
-    "webtorrent-health": "^1.1.2",
-    "webtorrent-hybrid": "^4.0.3"
+    "v8-compile-cache": "^2.2.0"
   },
   "build": {
     "productName": "watchit",
@@ -132,7 +128,8 @@
     "start:web": "RUNTIME=web node scripts/start.js",
     "build:web": "RUNTIME=web node scripts/build.js",
     "test": "node scripts/test.js --watchAll=false -u",
-    "lint": "standardx \"src/{main,render}/**/*.{js,jsx}\" --fix",
+    "lint": "standardx \"src/{main,render}/**/*.{js,jsx}\"",
+    "lint:fix": "npm run lint -- --fix",
     "electron": "cross-env LOG=debug IPFS_FD_MAX=10000 NODE_ENV=development $(npm bin)/electron .",
     "package": "npm run build && electron-builder build",
     "package:mac": "npm run package -- --mac",
@@ -180,6 +177,7 @@
     "jest": "26.6.0",
     "jest-circus": "26.6.0",
     "jest-resolve": "26.6.0",
+    "jest-styled-components": "^7.0.4",
     "jest-watch-typeahead": "0.6.1",
     "mini-css-extract-plugin": "0.11.3",
     "moment-timezone": "^0.5.31",
@@ -216,7 +214,6 @@
     "style-loader": "1.3.0",
     "styled-components": "^5.3.0",
     "terser-webpack-plugin": "4.2.3",
-    "jest-styled-components": "^7.0.4",
     "ts-pnp": "1.2.0",
     "url-loader": "4.1.1",
     "webpack": "4.44.2",

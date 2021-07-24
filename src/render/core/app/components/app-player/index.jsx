@@ -1,16 +1,14 @@
 import React from 'react'
-import MainLoader from 'components/util-main-loader/'
-import BtnClose from 'components/util-btn-close/'
+import MainLoader from '@components/util-main-loader/'
+import BtnClose from '@components/util-btn-close/'
 
-import Movie from 'resource/movies'
-import cryptHelper from 'helpers/crypt'
+import Movie from '@db/movies'
+import { Broker as broker } from '@main/bridge'
 
-import PlayerTorrent from './torrent'
+import cryptHelper from '@helpers/crypt'
 import PlayerHLS from './hls'
-import log from 'logger'
+import log from '@logger'
 
-// Access to main process bridge prop
-const broker = window.bridge.Broker
 // Movie player pages class
 export default class PlayerSwitch extends React.Component {
   constructor (props) {
@@ -47,7 +45,6 @@ export default class PlayerSwitch extends React.Component {
 
   switchPlayer = (type) => {
     const types = {
-      torrent: PlayerTorrent,
       hls: PlayerHLS
     }
 

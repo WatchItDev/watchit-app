@@ -1,22 +1,22 @@
 /* global localStorage */
 import React from 'react'
-import Details from 'components/app-details/'
-import StateLoader from 'components/app-state-loader/'
-import StatsValue from 'components/util-stats/'
-import BoxLoader from 'components/util-box-loader/'
+import Details from '@components/app-details/'
+import StateLoader from '@components/app-state-loader/'
+import StatsValue from '@components/util-stats/'
+import BoxLoader from '@components/util-box-loader/'
 
 import CatalogSearch from './search'
 import CatalogList from './list'
 import CatalogNav from './nav'
 
-import Movie from 'resource/movies'
-import storage from 'helpers/storage'
-import util from 'helpers/util'
-import log from 'logger'
+import Movie from '@db/movies'
+import storage from '@helpers/storage'
+import util from '@helpers/util'
+import log from '@logger'
 
 // Access to main process bridge prop
-const key = window.bridge.Key
-const broker = window.bridge.Broker
+import { Key as key, Broker as broker } from 'main/bridge'
+
 const DEFAULT_INIT_LOAD = 100
 
 // Login pages class

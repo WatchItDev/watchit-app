@@ -1,13 +1,31 @@
+const Plyr = require('plyr')
 const HLS = require('hls.js')
 const EventEmitter = require('events')
 const log = require('logplease').create('HLS')
-const conf = require('./settings')
+const CONF = require('./settings')
+const DEFAULT_PLAYER_CONTROLS = [
+  'play-large', // The large play button in the center
+  'restart', // Restart playback
+  'rewind', // Rewind by the seek time (default 10 seconds)
+  'play', // Play/pause playback
+  'fast-forward', // Fast forward by the seek time (default 10 seconds)
+  'progress', // The progress bar and scrubber for playback and buffering
+  'current-time', // The current time of playback
+  'duration', // The full duration of the media
+  'mute', // Toggle mute
+  'quality', // Quality control
+  'volume', // Volume control
+  'captions', // Toggle captions
+  'settings', // Settings menu
+  'fullscreen' // Toggle fullscreen
+]
 
 module.exports = class HLSStreamer extends EventEmitter {
   constructor (props) {
     super(props)
     this.mime = 'application/x-mpegURL'
     this.hls = null
+    this.player = null
   }
 
   get [Symbol.toStringTag] () {
@@ -24,22 +42,34 @@ module.exports = class HLSStreamer extends EventEmitter {
      * @param {object} videoRef
      * @param {function} onReady
      */
-    // Check for native play
-    const nativePlay = videoRef.canPlayType(
-      'application/vnd.apple.mpegurl'
-    )
+
+    const nativeMime = 'application/vnd.apple.mpegURL'
+    const nativePlay = videoRef.canPlayType(nativeMime)
 
     if (HLS.isSupported()) {
-      log.warn(`Starting hls: ${uri}`)
-      this.hls = new HLS(conf)
-      this.hls.loadSource(uri)
+      log.warn(`Loading manifest: ${uri}`)
+      this.hls = new HLS(CONF)
       this.hls.attachMedia(videoRef)
       // When media attached then try to play streaming!!
-      this.hls.on(HLS.Events.ERROR, (e, d) => this.emitError(d))
-      this.hls.on(HLS.Events.MEDIA_ATTACHED, () => this.emitMediaAttached(uri))
-      this.hls.on(HLS.Events.MANIFEST_PARSED, (e, n) => this.emitStart(n))
+      this.hls.on(HLS.Events.ERROR, (e, d) => this.emitError(e, d))
+      this.hls.on(HLS.Events.MEDIA_ATTACHED, () => {
+        log.info('Media attached')
+        this.hls.loadSource(uri) // Add uri to HLS to process
+        this.hls.on(HLS.Events.MANIFEST_PARSED, (e, n) => {
+          log.info('m3u8 manifest loaded')
+          // Add new qualities to option
+          this.setup(videoRef, {
+            // ...this.quality(n),
+            // ...this.subs(n)
+          })
+        })
+      })
     } else if (nativePlay) {
-      this.emit('ready', uri)
+      const newSource = document.createElement('source')
+      newSource.src = uri
+      newSource.type = nativeMime
+      videoRef.append(newSource)
+      this.setup(videoRef)
     }
 
     return this
@@ -51,6 +81,7 @@ module.exports = class HLSStreamer extends EventEmitter {
      * @param {object} n
      * @return {object}
      */
+    // Not quality in manifest?
     const q = n.levels.map((l) => l.height)
     return {
       quality: {
@@ -67,28 +98,51 @@ module.exports = class HLSStreamer extends EventEmitter {
     return {}
   }
 
-  emitError (e) {
+  emitError (event, data) {
     /***
      * Handle error on HLS streaming
      * @param {object} event
      * @param {object} data
      */
-    log.info('Fail trying play movie')
-    this.hls.destroy()
-    this.emit('error', e)
+
+    if (data.fatal) {
+      log.info('Fail trying play movie')
+      switch (data.type) {
+        // case HLS.ErrorTypes.NETWORK_ERROR:
+        //   // try to recover network error
+        //   console.log('Fatal network error encountered, try to recover')
+        //   this.hls.startLoad()
+        //   break
+        case HLS.ErrorTypes.MEDIA_ERROR:
+          console.log('Fatal media error encountered, try to recover')
+          this.hls.recoverMediaError()
+          break
+        case HLS.ErrorTypes.NETWORK_ERROR:
+        default:
+          // cannot recover
+          this.hls.destroy()
+          this.emit('error', data)
+          break
+      }
+    }
   }
 
-  emitMediaAttached (uri) {
-    log.info('Media attached')
-    this.emit('ready', uri, this.mime)
-  }
+  setup (videoRef, options = {}) {
+    log.info('Setting up player')
+    const playerSettings = {
+      ...{
+        settings: ['captions', 'speed', 'quality'],
+        controls: DEFAULT_PLAYER_CONTROLS
+      },
+      ...options
+    }
 
-  emitStart (n) {
-    log.info('m3u8 manifest loaded')
-    // Add new qualities to option
-    this.emit('start', {
-      ...this.quality(n),
-      ...this.subs(n)
+    // Init player and wait until can play
+    this.player = new Plyr(videoRef, playerSettings)
+    this.player.on('error', (e) => this.emit('error', e))
+    this.player.on('canplay', () => {
+      // this.player.play()
+      this.emit('ready')
     })
   }
 
@@ -102,6 +156,7 @@ module.exports = class HLSStreamer extends EventEmitter {
   }
 
   stop () {
+    this?.player?.destroy()
     this?.hls?.destroy()
   }
 }

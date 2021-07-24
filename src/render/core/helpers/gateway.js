@@ -1,10 +1,10 @@
-import settings from 'settings'
+import settings from '@settings'
 
 export default {
 
   _builtPath (resource) {
     let builtPath = resource.cid
-    builtPath = 'quality' in resource && !resource.abs ? `${builtPath}/${resource.quality}` : builtPath
+    builtPath = 'quality' in resource ? `${builtPath}/${resource.quality}` : builtPath
     builtPath = 'index' in resource ? `${builtPath}/${resource.index}` : builtPath
     return builtPath
   },

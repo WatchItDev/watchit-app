@@ -1,5 +1,5 @@
 import React from 'react'
-import PlayerSwitch from 'components/app-player/'
+import PlayerSwitch from '@components/app-player/'
 
 // Movie player page
 export default function MoviePlayer (props) {

@@ -1,5 +1,5 @@
 import React from 'react'
-import Image from 'components/app-image/'
+import Image from '@components/app-image/'
 
 export default class CatalogSearchResultItem extends React.PureComponent {
     handleClick = () => {

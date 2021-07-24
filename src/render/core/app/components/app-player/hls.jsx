@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import StateLoader from 'components/app-state-loader'
+import StateLoader from '@components/app-state-loader'
 
 import Player from './player'
 import PlayerHeader from './header'
@@ -18,14 +18,6 @@ export default class PlayerHLS extends React.PureComponent {
     return {
       movie: PropTypes.object.isRequired
     }
-  }
-
-  handleProgress = () => {
-    // abstract method just keep going
-  }
-
-  handleReady = () => {
-    // abstract method just keep going
   }
 
   handleCanPlay = () => {
@@ -54,10 +46,7 @@ export default class PlayerHLS extends React.PureComponent {
           <div className='full-height movie-box'>
             <Player
               movie={this.props.movie}
-              subs={this.props.subs}
               canPlay={this.state.canPlay}
-              onProgress={this.handleProgress}
-              onReady={this.handleReady}
               onCanPlay={this.handleCanPlay}
             />
           </div>

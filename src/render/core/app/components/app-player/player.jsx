@@ -1,4 +1,3 @@
-import Plyr from 'plyr'
 import React from 'react'
 import PropTypes from 'prop-types'
 import setting from 'render/core/settings'
@@ -6,43 +5,26 @@ import setting from 'render/core/settings'
 import PlayerShare from './share'
 import PlayerVideo from './video'
 
-import gatewayHelper from 'helpers/gateway'
-import resourceHelper from 'helpers/streaming'
-import log from 'logger'
+import { DLNA as dlna } from '@main/bridge'
+import HLS from '@main/core/hls'
 
-const dlna = window.bridge.DLNA
-
-const DEFAULT_PLAYER_CONTROLS = [
-  'play-large', // The large play button in the center
-  'restart', // Restart playback
-  'rewind', // Rewind by the seek time (default 10 seconds)
-  'play', // Play/pause playback
-  'fast-forward', // Fast forward by the seek time (default 10 seconds)
-  'progress', // The progress bar and scrubber for playback and buffering
-  'current-time', // The current time of playback
-  'duration', // The full duration of the media
-  'mute', // Toggle mute
-  'quality', // Quality control
-  'volume', // Volume control
-  'captions', // Toggle captions
-  'settings', // Settings menu
-  'fullscreen' // Toggle fullscreen
-]
+import gatewayHelper from '@helpers/gateway'
+import log from '@logger'
 
 export default class Player extends React.Component {
   constructor (props) {
     super(props)
     this.v = null
+    this.player = null
 
     // Initial State
     this.state = {
-      url: '', // Empty uri on start
       devices: this.players || []
     }
   }
 
   shouldComponentUpdate (nextProps, nextState, nextContext) {
-    return nextProps.canPlay || nextState.url
+    return nextProps.canPlay
   }
 
   get players () {
@@ -54,7 +36,7 @@ export default class Player extends React.Component {
 
   static get defaultProps () {
     return {
-      subs: {}
+      canPlay: false
     }
   }
 
@@ -72,31 +54,9 @@ export default class Player extends React.Component {
     this.player.pause()
   }
 
-  get currentLang () {
-    return this.player?.language &&
-      setting.subs.revHash[this.player.language]
-  }
-
-  get currentSub () {
-    return this.props.subs[this.currentLang]
-  }
-
-  get srtSub () {
-    return this.currentSub &&
-      this.currentSub.replace('.vtt', '.srt')
-  }
-
   async componentDidMount () {
     if (!this.invalidDLNASource) { this.initDLNA() }
-
-    // window.addEventListener("keyup", (e) => {
-    //     let keyCode = e.which || e.keyCode;
-    //     if (Object.is(keyCode, 71)) this.addOffset(0.5); //G
-    //     if (Object.is(keyCode, 72)) this.removeOffset(0.5); //H
-    //     // if (Object.is(keyCode, 83)) this.syncSubs();
-    // });
-
-    // Lets run
+    // Lets start watching :)
     this.startStreaming()
   }
 
@@ -120,41 +80,23 @@ export default class Player extends React.Component {
   }
 
   _initPlaying = () => {
-    log.info('Playing movie')
-    // Handle ready
-    if (this.props.onCanPlay) {
-      this.props.onCanPlay(
-        this.state.url
-      )
+    if (this.props.onCanPlay && !this.props.canPlay) {
+      this.props.onCanPlay()
     }
   }
 
-  getPlayer (options = {}) {
-    const playerSettings = {
-      ...{
-        autoplay: true,
-        settings: ['captions', 'speed', 'quality'],
-        controls: DEFAULT_PLAYER_CONTROLS
-      },
-      ...options
-    }
-
-    // Init player and wait until can play
-    this.player = new Plyr(this.v.video, playerSettings)
-    this.v.video.addEventListener('canplay', this._initPlaying)
-    this.v.video.addEventListener('error', () => log.error('Error while playing movie'))
-    this.v.video.addEventListener('loadedmetadata', () => log.warn('Player metadata loaded'))
+  _ready () {
+    log.info('Player ready')
+    this._initPlaying()
   }
 
   startStreaming () {
     // Start streamer
-    log.info('STREAMING MOVIE: ' + this.props.movie.title.toUpperCase())
+    log.info('Streaming Movie: ' + this.props.movie.title.toUpperCase())
     const uriToStream = `${gatewayHelper.dummyParse(this.props.movie)}`
     const streamer = this.streamer.play(uriToStream, { videoRef: this.v.video })
-    streamer.on('ready', this.onReady)
-    streamer.on('progress', this.onProgress)
     streamer.on('error', this.onError)
-    streamer.on('start', (op) => this.getPlayer(op))
+    streamer.on('ready', () => this._ready())
   }
 
   stopStreaming () {
@@ -163,9 +105,14 @@ export default class Player extends React.Component {
   }
 
   get streamer () {
-    return resourceHelper.streamer(
-      this.props.movie.type
-    )
+    const _type = this.props.movie.type
+    if (!setting.streaming.includes(_type)) {
+      throw new Error('Not support streaming mechanism')
+    }
+
+    return {
+      hls: HLS.getInstance()
+    }[_type]
   }
 
   componentDidCatch (error, info) {
@@ -177,28 +124,8 @@ export default class Player extends React.Component {
   // destroy player on unmount
   componentWillUnmount () {
     log.warn('STREAMING STOPPED BY USER')
-    if (this.v.video) this.v.video.removeEventListener('canplay', this._initPlaying)
-    if (this.player) this.player.destroy()
     this.stopStreaming()
     dlna && dlna.stop()
-  }
-
-  onReady = (url, ...rest) => {
-    if (url) { // Force update with url if passed
-      log.info('Ready to play movie: ' + url)
-      const [mime] = rest // Default streaming type
-      this.setState({ url: url, type: mime })
-    }
-
-    this.props.onReady &&
-    this.props.onReady(...rest)
-  }
-
-  onProgress = (...args) => {
-    // Handle progress
-    if (this.props.onProgress) {
-      this.props.onProgress(...args)
-    }
   }
 
   onError = (e) => {
@@ -218,7 +145,7 @@ export default class Player extends React.Component {
     return (
       <div className={(this.props.canPlay && 'left relative full-height full-width') || 'invisible'}>
         <PlayerShare devices={this.state.devices} onChange={this.handleSelectDevice} />
-        <PlayerVideo src={this.state.url} type={this.state.type} ref={this.getVideoRef} />
+        <PlayerVideo ref={this.getVideoRef} />
       </div>
     )
   }
