@@ -14,7 +14,7 @@ const webRenderer = broker.getIPC()
 Bootstrap(webRenderer, 'web') // Initialize nodes and core libs
 
 const root = document.getElementById('root')
-ReactDOM.render(<App/>, root)
+ReactDOM.render(<App />, root)
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
