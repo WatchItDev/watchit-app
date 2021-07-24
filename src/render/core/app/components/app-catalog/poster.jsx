@@ -1,6 +1,6 @@
 import React from 'react'
-import Image from 'components/app-image/'
-import PulseLoader from 'components/util-pulse-loader/'
+import Image from '@components/app-image/'
+import PulseLoader from '@components/util-pulse-loader/'
 
 export default class CatalogPoster extends React.Component {
   shouldComponentUpdate () {

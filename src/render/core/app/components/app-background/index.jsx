@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
-import Logo from 'components/app-logo/'
-import setting from 'settings'
+import Logo from '@components/app-logo/'
+import setting from '@settings'
 
 export const BackgroundWrapper = styled.div`
   height: ${props => props.absolute ? '100%' : 'auto'};

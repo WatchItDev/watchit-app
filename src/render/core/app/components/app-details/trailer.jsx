@@ -1,5 +1,5 @@
 import React from 'react'
-import BoxLoader from 'components/util-box-loader'
+import BoxLoader from '@components/util-box-loader'
 import ReactPlayer from 'react-player'
 import ReactModal from 'react-modal'
 

@@ -1,17 +1,17 @@
 import React from 'react'
 
-import Image from 'components/app-image/'
-import FlowText from 'components/util-flow-text/'
-import BoxLoader from 'components/util-box-loader/'
-import CustomScrollbars from 'components/util-scroller/'
-import ListCommaSplit from 'components/util-list-comma-split/'
+import Image from '@components/app-image/'
+import FlowText from '@components/util-flow-text/'
+import BoxLoader from '@components/util-box-loader/'
+import CustomScrollbars from '@components/util-scroller/'
+import ListCommaSplit from '@components/util-list-comma-split/'
 
 import DetailsHeader from './header'
 import DetailsInfo from './info'
 import DetailsMenu from './menu'
 
-import { Broker as broker } from 'main/bridge'
-import Movie from 'db/movies'
+import { Broker as broker } from '@main/bridge'
+import Movie from '@db/movies'
 
 // Access to main process bridge prop
 export default class Details extends React.PureComponent {

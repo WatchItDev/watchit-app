@@ -1,7 +1,7 @@
 import { HashRouter, Redirect, Route, Switch } from 'react-router-dom'
-import Login from 'pages/login-view'
-import Catalog from 'pages/index-view'
-import Player from 'pages/player-view'
+import Login from '@pages/login-view'
+import Catalog from '@pages/index-view'
+import Player from '@pages/player-view'
 import React from 'react'
 
 export default (hist, key) => {

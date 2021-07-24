@@ -1,12 +1,12 @@
 /* global FormData */
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import Alert from 'components/app-alerts/'
-import Input from 'components/app-inputs/'
-import Button from 'components/app-buttons/'
-import Background from 'components/app-background/'
-import { Key as key } from 'main/bridge'
-import settings from 'settings'
+import Alert from '@components/app-alerts/'
+import Input from '@components/app-inputs/'
+import Button from '@components/app-buttons/'
+import Background from '@components/app-background/'
+import { Key as key } from '@main/bridge'
+import settings from '@settings'
 
 const LoginForm = () => {
   const fields = new FormData()

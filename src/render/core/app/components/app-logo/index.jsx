@@ -1,6 +1,6 @@
 import React from 'react'
-import setting from 'settings'
-import icon from 'render/media/icons/icon.png'
+import setting from '@settings'
+import icon from '@render/media/icons/icon.png'
 import styled, { keyframes } from 'styled-components'
 
 export const LogoWrapper = styled.h5`

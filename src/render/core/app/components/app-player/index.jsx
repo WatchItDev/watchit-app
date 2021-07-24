@@ -1,13 +1,13 @@
 import React from 'react'
-import MainLoader from 'components/util-main-loader/'
-import BtnClose from 'components/util-btn-close/'
+import MainLoader from '@components/util-main-loader/'
+import BtnClose from '@components/util-btn-close/'
 
-import Movie from 'db/movies'
-import { Broker as broker } from 'main/bridge'
+import Movie from '@db/movies'
+import { Broker as broker } from '@main/bridge'
 
-import cryptHelper from 'helpers/crypt'
+import cryptHelper from '@helpers/crypt'
 import PlayerHLS from './hls'
-import log from 'logger'
+import log from '@logger'
 
 // Movie player pages class
 export default class PlayerSwitch extends React.Component {

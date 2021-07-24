@@ -1,6 +1,6 @@
 import React from 'react'
-import PointsLoader from 'components/util-points-loader'
-import CustomScrollbars from 'components/util-scroller'
+import PointsLoader from '@components/util-points-loader'
+import CustomScrollbars from '@components/util-scroller'
 import CatalogSearchResultItem from './search.result.item'
 
 export default class CatalogSearchResult extends React.Component {
