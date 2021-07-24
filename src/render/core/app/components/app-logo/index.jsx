@@ -1,9 +1,9 @@
 import React from 'react'
-import setting from 'settings'
-import icon from 'render/media/icons/icon.png'
+import setting from '@settings'
+import icon from '@render/media/icons/icon.png'
 import styled, { keyframes } from 'styled-components'
 
-const LogoWrapper = styled.h5`
+export const LogoWrapper = styled.h5`
   position: relative;
   transform: ${props => !props.thumbnail ? 'scale(3) translateY(-1.8rem)' : 'scale(1)'};
   letter-spacing: 2px;
@@ -11,7 +11,7 @@ const LogoWrapper = styled.h5`
   display: ${props => props.show ? 'flex' : 'none'};
   margin: 0;
   align-items: flex-end;
-  
+
   @media ${setting.styles.devices.mobileS} {
     font-size: 1.5rem !important;
     line-height: 1.5rem !important;
@@ -84,7 +84,7 @@ const LogoColoredText = styled.span`
 
 const Logo = (props) => {
   return (
-    <LogoWrapper show={props.show} absolute={props.absolute} thumbnail={props.thumbnail}>
+    <LogoWrapper show={props.show} thumbnail={props.thumbnail}>
       <LogoImg src={icon} alt='Logo' width={50} height={50} />
       <LogoText thumbnail={props.thumbnail}>ATCH</LogoText>
       <LogoColoredText thumbnail={props.thumbnail}>IT</LogoColoredText>
@@ -95,7 +95,6 @@ const Logo = (props) => {
 // Set default props
 Logo.defaultProps = {
   show: true,
-  absolute: false,
   thumbnail: true
 }
 

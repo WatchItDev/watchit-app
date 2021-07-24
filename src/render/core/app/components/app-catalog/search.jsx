@@ -1,8 +1,8 @@
 import React from 'react'
+import Input from '@components/app-inputs/'
+import utilHelper from '@helpers/util'
 import CatalogSearchResult from './search.result'
-import utilHelper from 'helpers/util'
 import PropTypes from 'prop-types'
-import Input from 'components/app-inputs/'
 
 export default class CatalogSearch extends React.PureComponent {
   constructor (props) {

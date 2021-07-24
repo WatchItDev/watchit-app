@@ -1,5 +1,5 @@
 import React from 'react'
-import AudioLoader from 'render/media/img/spinner/audio.svg'
+import AudioLoader from '@render/media/img/spinner/audio.svg'
 export default class BoxLoader extends React.PureComponent {
   static get defaultProps () {
     return {

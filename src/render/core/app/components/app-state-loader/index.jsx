@@ -1,9 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import Background from 'components/app-background/'
-import BarLoader from 'components/app-bar-loader/'
-import BtnClose from 'components/util-btn-close/'
-import Footer from 'components/app-footer/'
+import Background from '@components/app-background/'
+import BarLoader from '@components/app-bar-loader/'
+import BtnClose from '@components/util-btn-close/'
+import Footer from '@components/app-footer/'
 
 export default class PlayerLoader extends React.PureComponent {
   static get propTypes () {

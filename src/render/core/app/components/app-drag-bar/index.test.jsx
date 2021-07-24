@@ -1,5 +1,5 @@
 import React from 'react'
-import settings from 'settings'
+import settings from '@settings'
 import { shallow } from 'enzyme'
 import DragBar, { WindowControlIcon } from './index'
 import 'jest-styled-components'

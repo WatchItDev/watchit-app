@@ -1,6 +1,6 @@
 import React from 'react'
 import { shallow, mount } from 'enzyme'
-import settings from 'settings'
+import settings from '@settings'
 import Image from './index'
 
 /* eslint-disable no-undef */

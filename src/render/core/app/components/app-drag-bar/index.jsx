@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import Logo from 'components/app-logo/'
+import Logo from '@components/app-logo/'
 import styled from 'styled-components'
-import settings from 'settings'
+import settings from '@settings'
 
 const electron = require('electron')
 const ipcRenderer = electron.ipcRenderer

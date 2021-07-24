@@ -1,5 +1,5 @@
 import React from 'react'
-import CatalogList from 'components/app-catalog/'
+import CatalogList from '@components/app-catalog/'
 
 // Movie catalog page
 export default function MovieIndex () {

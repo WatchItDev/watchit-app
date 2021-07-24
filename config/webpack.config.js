@@ -1,3 +1,4 @@
+const webpack = require('webpack')
 const baseConf = require('./webpack.base')
 const { merge } = require('webpack-merge')
 const paths = require('./paths')
@@ -10,17 +11,25 @@ module.exports = function (webpackEnv) {
   const isWeb = runtime === 'web'
 
   return merge(baseConf(webpackEnv), {
+    plugins: [
+      new webpack.DefinePlugin({
+        'process.env': {
+          NODE_ENV: JSON.stringify('production'),
+          RUNTIME: JSON.stringify('web')
+        }
+      }),
+    ],
     target: isWeb ? 'web' : 'electron-renderer',
     resolve: {
       alias: {
-        'components': path.resolve(paths.appSrc, 'render/core/app/components'),
-        'layout': path.resolve(paths.appSrc, 'render/core/app/layout'),
-        'pages': path.resolve(paths.appSrc, 'render/core/app/pages'),
-        'helpers': path.resolve(paths.appSrc, 'render/core/helpers'),
-        'settings': path.resolve(paths.appSrc, 'render/core/settings'),
-        'logger': path.resolve(paths.appSrc, 'render/core/helpers/logger'),
-        'main': path.resolve(paths.appSrc, 'main'),
-        'db': path.resolve(paths.appSrc, 'main/core/db'),
+        '@components': path.resolve(paths.appSrc, 'render/core/app/components'),
+        '@pages': path.resolve(paths.appSrc, 'render/core/app/pages'),
+        '@helpers': path.resolve(paths.appSrc, 'render/core/helpers'),
+        '@logger': path.resolve(paths.appSrc, 'render/core/helpers/logger'),
+        '@main': path.resolve(paths.appSrc, 'main'),
+        '@render': path.resolve(paths.appSrc, 'render'),
+        '@db': path.resolve(paths.appSrc, 'main/core/db'),
+        '@settings': path.resolve(paths.appSrc, 'render/core/settings'),
         'package.json': paths.appPackageJson,
 
       }

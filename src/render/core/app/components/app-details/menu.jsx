@@ -1,14 +1,13 @@
 import React from 'react'
-import settings from 'settings'
+import settings from '@settings'
 import PropTypes from 'prop-types'
-import NavBarMenu from 'components/app-nav-bar-menu/'
-import NavBarButton from 'components/app-nav-bar-button/'
-
-import gatewayHelper from 'helpers/gateway'
-import cryptHelper from 'helpers/crypt'
+import NavBarMenu from '@components/app-nav-bar-menu/'
+import NavBarButton from '@components/app-nav-bar-button/'
 
 import TrailerPop from './trailer'
-import util from 'helpers/util'
+import gatewayHelper from '@helpers/gateway'
+import cryptHelper from '@helpers/crypt'
+import util from '@helpers/util'
 
 export default class DetailsMenu extends React.PureComponent {
   constructor (props) {

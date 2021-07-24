@@ -1,9 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
-import Logo from 'components/app-logo/'
-import setting from 'settings'
+import Logo from '@components/app-logo/'
+import setting from '@settings'
 
-const BackgroundWrapper = styled.div`
+export const BackgroundWrapper = styled.div`
   height: ${props => props.absolute ? '100%' : 'auto'};
   width: ${props => props.absolute ? '100%' : 'auto'};
   display: flex;
@@ -20,7 +20,7 @@ const BackgroundWrapper = styled.div`
   }
 `
 
-const Slogan = styled.div`
+export const Slogan = styled.div`
   color: white;
   transform: translateY(-3rem);
   letter-spacing: 2px;
@@ -40,7 +40,7 @@ const Slogan = styled.div`
 const Background = (props) => {
   return (
     <BackgroundWrapper absolute={props.absolute}>
-      <Logo show={props.showLogo} thumbnail={false} absolute={props.absolute} />
+      <Logo show={props.showLogo} thumbnail={false} />
       <Slogan show={props.showLogo}>open movies everywhere</Slogan>
     </BackgroundWrapper>
   )

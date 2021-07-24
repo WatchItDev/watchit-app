@@ -15,7 +15,7 @@ export default {
     'https://vps3.phillm.net',
     'https://gateway.ipfs.io',
     'https://ipfs.infura.io',
-    ...typeof process !== 'undefined'
+    ...process.env.RUNTIME !== 'web'
       ? ['http://localhost:9090']
       : []
     // 'https://cloudflare-ipfs.com',

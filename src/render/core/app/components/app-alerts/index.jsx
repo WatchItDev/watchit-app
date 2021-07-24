@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import settings from 'settings'
+import settings from '@settings'
 
 const Alert = styled.div`
   padding: 7px 10px;

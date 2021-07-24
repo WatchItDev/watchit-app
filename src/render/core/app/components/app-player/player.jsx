@@ -5,11 +5,11 @@ import setting from 'render/core/settings'
 import PlayerShare from './share'
 import PlayerVideo from './video'
 
-import { DLNA as dlna } from 'main/bridge'
-import HLS from 'main/core/hls'
+import { DLNA as dlna } from '@main/bridge'
+import HLS from '@main/core/hls'
 
-import gatewayHelper from 'helpers/gateway'
-import log from 'logger'
+import gatewayHelper from '@helpers/gateway'
+import log from '@logger'
 
 export default class Player extends React.Component {
   constructor (props) {
