@@ -16,11 +16,11 @@
     "node": ">=14"
   },
   "peerDependencies": {
-    "windows-elevate": "^1.0.1",
-    "level-js": "6.0.0",
-    "wrtc": "^0.4.7",
+    "go-ipfs": "^0.6.0",
     "ipfs": "0.55.4",
-    "go-ipfs": "^0.6.0"
+    "level-js": "6.0.0",
+    "windows-elevate": "^1.0.1",
+    "wrtc": "^0.4.7"
   },
   "dependencies": {
     "dlnacasts2": "^0.2.0",

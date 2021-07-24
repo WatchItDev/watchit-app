@@ -2,7 +2,6 @@ import React from 'react'
 import { shallow, mount } from 'enzyme'
 import Logo, { LogoWrapper } from './index'
 import 'jest-styled-components'
-import Background, { Slogan } from '../app-background'
 
 /* eslint-disable no-undef */
 describe('Logo component', () => {

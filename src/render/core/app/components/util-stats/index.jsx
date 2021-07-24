@@ -69,14 +69,14 @@ export default class Stats extends React.PureComponent {
 
   render () {
     return (
-      <>
+      <div className='stats-container'>
         <span className='icon-traffic-cone icon' />
         <span>Sync: {this.tmp}%</span>
         <span className='icon-book icon' />
         <span>Movies: {this.chunk}/{this.total}</span>
         <span className='icon-user icon' />
         <span>Peers: {this.peers}</span>
-      </>
+      </div>
     )
   }
 }

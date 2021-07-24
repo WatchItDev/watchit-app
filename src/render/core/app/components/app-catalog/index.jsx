@@ -362,13 +362,11 @@ export default class Catalog extends React.Component {
                       <CatalogSearch movies={this.movie} onClick={this.handleClickMovie} />
                     </div>
 
-                    <div className='top-right-small-menu'>
-                      <strong className='white-text right'>
-                        <StatsValue handler={this._index} />
-                        <a onClick={this.handleSignOut} className='logout' href='/'>
-                          <i className='icon-log-out font-size-1-rem white-text' />
-                        </a>
-                      </strong>
+                    <div className='top-right-small-menu white-text'>
+                      <StatsValue handler={this._index} />
+                      <a onClick={this.handleSignOut} className='logout' href='/'>
+                        <i className='icon-log-out font-size-1-rem white-text' />
+                      </a>
                     </div>
                   </header>
 

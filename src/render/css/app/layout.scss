@@ -178,6 +178,16 @@
     padding: 0 1rem 0 2rem;
     cursor: pointer;
   }
+
+  .input-black-box {
+    padding: 0 1rem 0 0 !important;
+  }
+
+  @media (max-width: 576px) {
+    .input-black-box {
+      width: 100% !important;
+    }
+  }
 }
 
 #screen {
@@ -307,7 +317,7 @@
 }
 
 .movie-player {
-  position: relative !important;
+  //position: relative !important;
 
   &.loading {
     height: 100% !important;

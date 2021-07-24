@@ -1,3 +1,7 @@
+.row .col {
+  padding: 0 1rem !important;
+}
+
 //Transition image
 img {
   @include transition(opacity 1.5s ease-in-out);
@@ -293,6 +297,7 @@ img {
 
 //Small menu on top
 .top-right-small-menu {
+  display: flex;
 
   .icon {
     margin: 0rem 0.5rem 0 1.2rem;
@@ -313,6 +318,13 @@ img {
       top: 1rem !important;
     }
   }
+
+  @media (max-width: 576px) {
+    .stats-container {
+      display: none;
+    }
+  }
+
 }
 
 // Main filter bar

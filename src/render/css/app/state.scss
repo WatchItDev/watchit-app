@@ -112,6 +112,10 @@ https://smacss.com/book/type-state
   .dropdown-button {
     width: fit-content;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 1rem 0 0 !important;
   }
 
   .dropdown-content {
@@ -160,6 +164,16 @@ https://smacss.com/book/type-state
         }
       }
     }
+
+    @media (max-width: 576px) {
+      max-width: 17.2rem !important;
+
+      ul {
+        max-height: none;
+        width: 100%;
+        grid-template-rows: repeat(14, auto);
+      }
+    }
   }
 
   &:hover {
@@ -169,7 +183,6 @@ https://smacss.com/book/type-state
 
     .dropdown-content {
       display: inline-flex;
-      top: 0;
       position: absolute;
       opacity: 1;
     }
