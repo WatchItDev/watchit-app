@@ -40,7 +40,7 @@ export const Slogan = styled.div`
 const Background = (props) => {
   return (
     <BackgroundWrapper absolute={props.absolute}>
-      <Logo show={props.showLogo} thumbnail={false} absolute={props.absolute} />
+      <Logo show={props.showLogo} thumbnail={false} />
       <Slogan show={props.showLogo}>open movies everywhere</Slogan>
     </BackgroundWrapper>
   )

@@ -84,7 +84,7 @@ const LogoColoredText = styled.span`
 
 const Logo = (props) => {
   return (
-    <LogoWrapper show={props.show} absolute={props.absolute} thumbnail={props.thumbnail}>
+    <LogoWrapper show={props.show} thumbnail={props.thumbnail}>
       <LogoImg src={icon} alt='Logo' width={50} height={50} />
       <LogoText thumbnail={props.thumbnail}>ATCH</LogoText>
       <LogoColoredText thumbnail={props.thumbnail}>IT</LogoColoredText>
@@ -95,7 +95,6 @@ const Logo = (props) => {
 // Set default props
 Logo.defaultProps = {
   show: true,
-  absolute: false,
   thumbnail: true
 }
 
