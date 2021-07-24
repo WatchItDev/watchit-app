@@ -3,7 +3,7 @@ import setting from 'settings'
 import icon from 'render/media/icons/icon.png'
 import styled, { keyframes } from 'styled-components'
 
-const LogoWrapper = styled.h5`
+export const LogoWrapper = styled.h5`
   position: relative;
   transform: ${props => !props.thumbnail ? 'scale(3) translateY(-1.8rem)' : 'scale(1)'};
   letter-spacing: 2px;
@@ -11,7 +11,7 @@ const LogoWrapper = styled.h5`
   display: ${props => props.show ? 'flex' : 'none'};
   margin: 0;
   align-items: flex-end;
-  
+
   @media ${setting.styles.devices.mobileS} {
     font-size: 1.5rem !important;
     line-height: 1.5rem !important;
