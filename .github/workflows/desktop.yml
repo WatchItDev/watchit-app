@@ -1,4 +1,4 @@
-name: CI
+name: CI Desktop
 
 on: [push,pull_request]
 
@@ -6,6 +6,7 @@ jobs:
   build:
     runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
         os: [ macos-latest, windows-latest, ubuntu-latest ]
 
