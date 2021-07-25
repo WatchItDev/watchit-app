@@ -52,8 +52,8 @@ export default {
   },
   broadcast: {
     middlewareList: [{
-      name: 'TorrentStreamMiddleware ',
-      signal: 'middleware-torrent-seed'
+      name: 'StreamMiddleware ',
+      signal: 'stream-middleware'
     }]
   },
   styles: {
