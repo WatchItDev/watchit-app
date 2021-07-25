@@ -80,6 +80,7 @@
 
 .ReactModalPortal div {
   z-index: 20;
+  max-width: 100%;
 }
 
 .row-list {
@@ -180,7 +181,7 @@
   }
 
   .input-black-box {
-    padding: 0 1rem 0 0 !important;
+    padding: 0 !important;
   }
 
   @media (max-width: 576px) {

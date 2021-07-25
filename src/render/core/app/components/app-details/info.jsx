@@ -37,30 +37,27 @@ export default class DetailsInfo extends React.Component {
 
   render () {
     return (
-      <>
+      <div className='d-flex flex-column'>
         {/* Title */}
-        <div className='col l12 m12 s12 width-55-vw'>
-          <h1 className='white-text margin-top-0 font-type-titles truncate'>
-            {this.props.title}
-          </h1>
-        </div>
-        <div className='col l12 m12 s12'>
+        <h1 className='white-text margin-top-0 font-type-titles truncate'>
+          {this.props.title}
+        </h1>
+        <div className='d-flex'>
           {
             Object.entries(this.props.info).filter(([k, v]) => v ? k : false).map(([char, val], idx) => {
               return (
-                <div className={'col ' + (Object.is(idx, 0) && 'padding-left-0')} key={char}>
-                  <strong
-                    className={this.state[char].color + '-text flow-text ' + this.state[char].align + '-align'}
-                  >
-                    <i className={'normalize-medium-icon left margin-right-8 icon-' + this.state[char].icon} />
-                    {val}
-                  </strong>
-                </div>
+                <strong
+                  className={this.state[char].color + '-text flow-text ' + this.state[char].align + '-align' + ' d-flex align-items-center margin-right-14'}
+                  key={char}
+                >
+                  <i className={'left margin-right-4 icon-' + this.state[char].icon} />
+                  {val}
+                </strong>
               )
             })
-            }
+          }
         </div>
-      </>
+      </div>
     )
   }
 }
