@@ -1,6 +1,6 @@
 [![Gitter](https://badges.gitter.im/watchit-app/community.svg)](https://gitter.im/watchit-app/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 [![All Contributors](https://img.shields.io/badge/all_contributors-11-orange.svg?style=flat-square)](#contributors-)
-[![CI](https://github.com/ZorrillosDev/watchit-app/actions/workflows/build.yml/badge.svg)](https://github.com/ZorrillosDev/watchit-app/actions/workflows/build.yml)
+[![CI Desktop](https://github.com/ZorrillosDev/watchit-app/actions/workflows/desktop.yml/badge.svg)](https://github.com/ZorrillosDev/watchit-app/actions/workflows/desktop.yml)
 
 # WatchIt App
 
