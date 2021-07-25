@@ -33,15 +33,6 @@
   animation-delay: -0.75s;
 }
 
-@-webkit-keyframes sk-bounce {
-  0%, 100% {
-    -webkit-transform: scale(0.0)
-  }
-  50% {
-    -webkit-transform: scale(1.0)
-  }
-}
-
 @keyframes sk-bounce {
   0%, 100% {
     transform: scale(0.0);
@@ -187,6 +178,16 @@
     padding: 0 1rem 0 2rem;
     cursor: pointer;
   }
+
+  .input-black-box {
+    padding: 0 1rem 0 0 !important;
+  }
+
+  @media (max-width: 576px) {
+    .input-black-box {
+      width: 100% !important;
+    }
+  }
 }
 
 #screen {
@@ -316,7 +317,7 @@
 }
 
 .movie-player {
-  position: relative !important;
+  //position: relative !important;
 
   &.loading {
     height: 100% !important;

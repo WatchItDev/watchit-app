@@ -89,7 +89,7 @@ export default class NavBarMenu extends React.Component {
               </a>
 
               {/* Menu List */}
-              <div className='dropdown-content relative'>
+              <div className='dropdown-content'>
                 <ul>
                   {
                   /* The sub menu items */

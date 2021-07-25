@@ -6,7 +6,7 @@ import Input from '@components/app-inputs/'
 import Button from '@components/app-buttons/'
 import Background from '@components/app-background/'
 import { Key as key } from '@main/bridge'
-import settings from '@settings'
+import setting from '@settings'
 
 const LoginForm = () => {
   const fields = new FormData()
@@ -67,7 +67,7 @@ const LoginForm = () => {
           {
             error &&
               <FormRow>
-                <Alert color={settings.styles.colors.danger}>
+                <Alert color={setting.styles.colors.danger}>
                   {error}
                 </Alert>
               </FormRow>
@@ -79,8 +79,24 @@ const LoginForm = () => {
 }
 
 const FormWrapper = styled.div`
-  width: 40%;
+  width: 90%;
   margin-top: 2rem;
+
+  @media ${setting.styles.devices.mobileS} {
+    width: 90%;
+  }
+
+  @media ${setting.styles.devices.mobileM} {
+    width: 70%;
+  }
+  
+  @media ${setting.styles.devices.mobileL} {
+    width: 60%;
+  }
+  
+  @media ${setting.styles.devices.tablet} {
+    width: 40%;
+  }
 `
 
 const LoginWrapper = styled.div`
