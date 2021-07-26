@@ -50,6 +50,7 @@
     "^@settings(.*)$": "<rootDir>/src/render/core/settings",
     "^@logger(.*)$": "<rootDir>/src/render/core/helpers/logger"
   },
+
   "moduleFileExtensions": [
     "web.js",
     "js",
