@@ -1,4 +1,5 @@
 // eslint-disable-next-line
+import 'v8-compile-cache'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import App from './core/app/index'
