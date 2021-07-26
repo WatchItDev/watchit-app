@@ -1,8 +1,6 @@
 name: CI
 
 on:
-  push:
-    branches: [ master ]
   pull_request:
 
 jobs:
@@ -30,4 +28,5 @@ jobs:
 
       - name: Test code
         run: npm test -- --coverage
+
 
