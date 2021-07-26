@@ -35,4 +35,5 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag-prefix: 'v'
+          rc-wording:  'RELEASE,alpha'
 
