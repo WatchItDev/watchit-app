@@ -2,7 +2,8 @@ name: CD
 
 on:
   push:
-    branches: [ master ]
+    branches:
+      - 'v0.*.0'
 
 jobs:
   build:
