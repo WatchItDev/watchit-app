@@ -3,6 +3,7 @@ name: CD
 on:
   push:
     branches:
+      - 'master'
       - 'v0.*.0'
 
 jobs:
