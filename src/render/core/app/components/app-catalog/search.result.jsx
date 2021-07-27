@@ -14,7 +14,7 @@ const ResultsWrapper = styled.div`
   overflow: hidden;
 `
 
-const ResultsContent = styled.div`
+export const ResultsContent = styled.div`
   border-radius: 5px;
   background-color: rgba(0, 0, 0, 0.9);
   width: 100%;
@@ -40,7 +40,7 @@ const ResultsEmpty = styled.ul`
   padding: 1rem;
 `
 
-const NoResultsText = styled.span`
+export const NoResultsText = styled.span`
   font-weight: bold;
   color: #fff;
   font-size: 1rem;
@@ -65,7 +65,7 @@ const CatalogSearchResult = (props) => {
             universal
           >
             {
-            (props.result.length > 0 &&
+            (props.result?.length > 0 &&
               <ResultsContent>
                 <ResultsCollection>
                   {(
