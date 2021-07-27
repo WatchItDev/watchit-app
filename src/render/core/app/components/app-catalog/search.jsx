@@ -1,96 +1,89 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Input from '@components/app-inputs/'
 import utilHelper from '@helpers/util'
 import CatalogSearchResult from './search.result'
 import PropTypes from 'prop-types'
+import styled from 'styled-components'
 
-export default class CatalogSearch extends React.PureComponent {
-  constructor (props) {
-    super(props)
+const SearchWrapper = styled.div`
+  width: 45%;
+  position: relative;
 
-    this.searchTimeout = null
-    this.searchRef = null
-
-    this.state = {
-      searching: false,
-      searchResult: false
-    }
+  @media (max-width: 576px) {
+    width: 100%;
   }
+`
 
-  static get propTypes () {
-    return {
-      movies: PropTypes.object.isRequired
-    }
-  }
+const CatalogSearch = (props) => {
+  let searchTimeout = null
+  const [searching, setSearching] = useState(false)
+  const [searchResult, setSearchResult] = useState(false)
 
-  handleSearch = (e) => {
+  const handleSearch = (e) => {
     // //The incoming value;
     const targetValue = e.target.value
     const invalidInput = utilHelper.invalidString(targetValue)
 
     // Remove old timeout
-    if (this.searchTimeout) {
-      clearTimeout(this.searchTimeout)
+    if (searchTimeout) {
+      clearTimeout(searchTimeout)
     }
 
     // Empty write
     if (invalidInput) {
-      this.setState({
-        searchResult: false,
-        searching: false
-      })
+      setSearchResult(false)
+      setSearching(false)
     } else {
       // Searching
-      this.setState({
-        searching: true
-      })
+      setSearching(true)
     }
 
     // Set time out
-    this.searchTimeout = setTimeout(() => {
+    searchTimeout = setTimeout(() => {
       // Check invalid
       if (!invalidInput) {
-        this.props.movies.search(
+        props.movies.search(
           targetValue
         ).then((res) => {
-          this.setState({
-            searchResult: res,
-            searching: false
-          })
+          setSearchResult(res)
+          setSearching(false)
         }).catch(() => {
-          this.setState({
-            searchResult: [],
-            searching: false
-          })
+          setSearchResult([])
+          setSearching(false)
         })
       }
     }, 1000)
   }
 
-  handleClick = (id) => {
-    this.setState({ searching: false, searchResult: false }, () => {
-      this.props.onClick && this.props.onClick(id)
-    })
+  const handleClick = (id) => {
+    setSearchResult(false)
+    setSearching(false)
+
+    props.onClick && props.onClick(id)
   }
 
-  render () {
-    return (
-      <>
-        {/* Search result box */}
-        <Input
-          icon='icon-tv' onInput={this.handleSearch} required
-          autoComplete='off' type='text' placeholder='Search...' name='search'
-          {...!this.state.searching && !this.state.searchResult ? { value: '' } : {}}
-        />
-        {
-          (this.state.searching || this.state.searchResult) &&
-            <CatalogSearchResult
-              searching={this.state.searching}
-              result={this.state.searchResult}
-              onClick={this.handleClick}
-            />
-        }
-      </>
-    )
-  }
+  return (
+    <SearchWrapper>
+      {/* Search result box */}
+      <Input
+        icon='icon-tv' onInput={handleSearch} required
+        autoComplete='off' type='text' placeholder='Search...' name='search'
+        {...!searching && !searchResult ? { value: '' } : {}}
+      />
+      {
+        (searching || searchResult) &&
+          <CatalogSearchResult
+            searching={searching}
+            result={searchResult}
+            onClick={handleClick}
+          />
+      }
+    </SearchWrapper>
+  )
 }
+
+CatalogSearch.propTypes = {
+  movies: PropTypes.object.isRequired
+}
+
+export default React.memo(CatalogSearch)
