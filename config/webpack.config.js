@@ -24,6 +24,7 @@ module.exports = function (webpackEnv) {
     target: isWeb ? 'web' : 'electron-renderer',
     resolve: {
       alias: {
+        '@public': paths.appPublic,
         '@components': path.resolve(paths.appSrc, 'render/core/app/components'),
         '@pages': path.resolve(paths.appSrc, 'render/core/app/pages'),
         '@helpers': path.resolve(paths.appSrc, 'render/core/helpers'),
