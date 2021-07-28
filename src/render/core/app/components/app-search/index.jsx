@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import Input from '@components/app-inputs/'
 import utilHelper from '@helpers/util'
-import CatalogSearchResult from './search.result'
+import SearchResult from './result'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
@@ -15,7 +15,7 @@ const SearchWrapper = styled.div`
   }
 `
 
-const CatalogSearch = (props) => {
+const Search = (props) => {
   const [searching, setSearching] = useState(false)
   const [searchResult, setSearchResult] = useState(false)
 
@@ -71,7 +71,7 @@ const CatalogSearch = (props) => {
       />
       {
         (searching || searchResult) &&
-          <CatalogSearchResult
+          <SearchResult
             searching={searching}
             result={searchResult}
             onClick={handleClick}
@@ -81,8 +81,8 @@ const CatalogSearch = (props) => {
   )
 }
 
-CatalogSearch.propTypes = {
+Search.propTypes = {
   movies: PropTypes.object.isRequired
 }
 
-export default React.memo(CatalogSearch)
+export default React.memo(Search)

@@ -1,8 +1,9 @@
 import React from 'react'
 import PointsLoader from '@components/util-points-loader'
 import CustomScrollbars from '@components/util-scroller'
-import CatalogSearchResultItem from './search.result.item'
 import styled from 'styled-components'
+
+import SearchResultItem from './result.item'
 
 const ResultsWrapper = styled.div`
   width: 100%;
@@ -46,7 +47,7 @@ export const NoResultsText = styled.span`
   font-size: 1rem;
 `
 
-const CatalogSearchResult = (props) => {
+const SearchResult = (props) => {
   return (
     <ResultsWrapper>
       {
@@ -71,7 +72,7 @@ const CatalogSearchResult = (props) => {
                   {(
                     props.result.map((i) => {
                       return (
-                        <CatalogSearchResultItem
+                        <SearchResultItem
                           key={i._id} {...Object.assign(i, { image: i.resource.posters.small })}
                           onClick={props.onClick}
                         />
@@ -91,4 +92,4 @@ const CatalogSearchResult = (props) => {
   )
 }
 
-export default React.memo(CatalogSearchResult)
+export default React.memo(SearchResult)

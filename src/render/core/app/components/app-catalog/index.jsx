@@ -4,8 +4,8 @@ import Details from '@components/app-details/'
 import StateLoader from '@components/app-state-loader/'
 import Stats from '@components/util-stats/'
 import BoxLoader from '@components/util-box-loader/'
+import Search from '@components/app-search'
 
-import CatalogSearch from './search'
 import CatalogList from './list'
 import CatalogNav from './nav'
 
@@ -358,7 +358,7 @@ export default class Catalog extends React.Component {
               <section className='row full-height'>
                 <div className='clearfix full-height'>
                   <header className='no-margin vertical-padding transparent z-depth-1 d-flex align-items-center justify-content-between header_search'>
-                    <CatalogSearch movies={this.movie} onClick={this.handleClickMovie} />
+                    <Search movies={this.movie} onClick={this.handleClickMovie} />
                     <Stats handler={this._index} onSignOut={this.handleSignOut} />
                   </header>
 

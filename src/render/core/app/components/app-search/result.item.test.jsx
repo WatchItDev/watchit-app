@@ -1,6 +1,6 @@
 import React from 'react'
 import { shallow } from 'enzyme'
-import CatalogSearchResultItem from '../search.result.item'
+import SearchResultItem from './result.item'
 import 'jest-styled-components'
 
 const image = {
@@ -11,7 +11,7 @@ const image = {
 /* eslint-disable no-undef */
 describe('Search Result Item component', () => {
   it('should render', () => {
-    const searchResultItemComponent = shallow(<CatalogSearchResultItem image={image} />)
+    const searchResultItemComponent = shallow(<SearchResultItem image={image} />)
     expect(searchResultItemComponent).toMatchSnapshot()
   })
 })

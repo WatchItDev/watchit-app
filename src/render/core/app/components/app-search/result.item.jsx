@@ -52,7 +52,7 @@ const ResultDetailsItemIcon = styled.i`
   color: ${props => props.color};
 `
 
-const CatalogSearchResultItem = (props) => {
+const SearchResultItem = (props) => {
   const handleClick = () => {
     props.onClick &&
     props.onClick(props._id)
@@ -84,4 +84,4 @@ const CatalogSearchResultItem = (props) => {
   )
 }
 
-export default React.memo(CatalogSearchResultItem)
+export default React.memo(SearchResultItem)
