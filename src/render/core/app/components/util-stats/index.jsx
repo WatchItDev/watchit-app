@@ -86,7 +86,7 @@ const Stats = (props) => {
 
   return (
     <StatWrapper>
-      <StatContent className='stats-container'>
+      <StatContent>
         <StatIcon className='icon-traffic-cone' />
         <StatText>Sync: {progress}%</StatText>
         <StatIcon className='icon-book' />
