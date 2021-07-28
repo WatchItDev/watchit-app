@@ -79,7 +79,7 @@ const Stats = (props) => {
     return () => {
       if (timer) { clearInterval(timer) }
     }
-  })
+  }, [])
 
   return (
     <StatWrapper>
