@@ -3,7 +3,7 @@ import PointsLoader from '@components/util-points-loader'
 import CustomScrollbars from '@components/util-scroller'
 import styled from 'styled-components'
 
-import SearchResultItem from './result.item'
+import SearchResultItem from './item'
 
 const ResultsWrapper = styled.div`
   width: 100%;
