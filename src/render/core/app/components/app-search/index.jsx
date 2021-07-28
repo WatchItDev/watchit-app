@@ -5,7 +5,6 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import SearchResult from './result'
 
-let searchTimeout = null
 const SearchWrapper = styled.div`
   width: 45%;
   position: relative;
@@ -15,6 +14,7 @@ const SearchWrapper = styled.div`
   }
 `
 
+let searchTimeout = null // debounce timeout
 const Search = (props) => {
   const [searching, setSearching] = useState(false)
   const [searchResult, setSearchResult] = useState(false)
