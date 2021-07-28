@@ -75,5 +75,9 @@ export default ({
       (rv[x[key]] = rv[x[key]] || []).push(x)
       return rv
     }, init)
+  },
+
+  isMobile: () => {
+    return (/Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) || (/Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.platform)))
   }
 })

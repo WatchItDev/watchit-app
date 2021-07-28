@@ -5,6 +5,8 @@
 .image-container {
   @include clearfix;
   height: auto;
+  display: inline-block;
+  flex-shrink: 0;
 }
 
 .responsive-img {

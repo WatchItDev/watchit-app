@@ -1,40 +1,87 @@
 import React from 'react'
 import Image from '@components/app-image/'
+import styled from 'styled-components'
+import setting from '@settings'
 
-export default class CatalogSearchResultItem extends React.PureComponent {
-    handleClick = () => {
-      this.props.onClick &&
-        this.props.onClick(this.props._id)
-    };
+const ResultWrapper = styled.li`
+  display: flex;
+  background-color: transparent;
+  list-style-type: none;
+  line-height: 1.5rem;
+  padding: 10px 20px;
+  margin: 0;
+  border-bottom: 1px solid rgba(53, 60, 57, 0.4);
+  cursor: pointer;
+`
 
-    render () {
-      return (
-        <li className='transparent collection-item padding-5 no-border d-flex pointer' onClick={this.handleClick}>
-          <div className='result-search-box-img'>
-            <Image src={this.props.image} preload pulseStyle={{ position: 'relative' }} />
-          </div>
-          <div className='result-search-box-content flex-grow-1'>
-            <div className='search-result-box-title'>
-              <strong className='white-text truncate'>
-                {this.props.title}
-              </strong>
-            </div>
-            <div className='margin-top-1-p search-result-box-details'>
-              <span className='green-text'>
-                <i className='icon-calendar margin-right-1-p' />
-                {this.props.year}
-              </span>
-              <span className='orange-text margin-left-3-p'>
-                <i className='icon-star margin-right-1-p' />
-                {this.props.rating}
-              </span>
-              <span className='red-text margin-left-3-p'>
-                <i className='icon-back-in-time margin-right-1-p' />
-                {this.props.runtime}
-              </span>
-            </div>
-          </div>
-        </li>
-      )
-    }
+const ResultContent = styled.div`
+  margin-left: 1rem;
+  max-width: calc(100% - 3rem);
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+`
+
+const ResultTitle = styled.strong`
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  white-space: pre-wrap;
+  -webkit-box-orient: vertical;
+  height: auto;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-style: normal;
+  font-size: 1.2rem;
+  word-break: break-all;
+  color: #FFF;
+  font-weight: 500;
+`
+
+const ResultDetails = styled.div`
+  margin-top: 0.4rem;
+`
+
+const ResultDetailsItem = styled.span`
+  font-size: 1rem;
+  margin-right: 1rem;
+  color: ${props => props.color};
+`
+const ResultDetailsItemIcon = styled.i`
+  font-size: 1rem;
+  margin-right: 0.3rem;
+  color: ${props => props.color};
+`
+
+const CatalogSearchResultItem = (props) => {
+  const handleClick = () => {
+    props.onClick &&
+    props.onClick(props._id)
+  }
+
+  return (
+    <ResultWrapper onClick={handleClick}>
+      <Image src={props.image} preload pulseStyle={{ position: 'relative' }} />
+      <ResultContent>
+        <ResultTitle>
+          {props.title}
+        </ResultTitle>
+        <ResultDetails>
+          <ResultDetailsItem color={setting.styles.colors.successDark}>
+            <ResultDetailsItemIcon className='icon-calendar' />
+            {props.year}
+          </ResultDetailsItem>
+          <ResultDetailsItem color={setting.styles.colors.warningDark}>
+            <ResultDetailsItemIcon className='icon-star' />
+            {props.rating}
+          </ResultDetailsItem>
+          <ResultDetailsItem color={setting.styles.colors.dangerDark}>
+            <ResultDetailsItemIcon className='icon-back-in-time' />
+            {props.runtime}
+          </ResultDetailsItem>
+        </ResultDetails>
+      </ResultContent>
+    </ResultWrapper>
+  )
 }
+
+export default React.memo(CatalogSearchResultItem)

@@ -14,6 +14,7 @@ export const BackgroundWrapper = styled.div`
   left: 0;
   top: 0;
   margin-bottom: -3rem;
+  margin-top: 3rem;
 
   @media ${setting.styles.devices.desktop} {
     margin-bottom: 0;
