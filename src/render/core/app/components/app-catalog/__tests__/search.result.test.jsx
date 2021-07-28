@@ -1,7 +1,7 @@
 import React from 'react'
 import { shallow } from 'enzyme'
-import CatalogSearchResult, { NoResultsText } from './search.result'
-import CatalogSearchResultItem from './search.result.item'
+import CatalogSearchResult, { NoResultsText } from '../search.result'
+import CatalogSearchResultItem from '../search.result.item'
 import PointsLoader from '@components/util-points-loader'
 import 'jest-styled-components'
 

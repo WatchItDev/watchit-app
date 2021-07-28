@@ -1,6 +1,6 @@
 import React from 'react'
 import { shallow } from 'enzyme'
-import CatalogSearchResultItem from './search.result.item'
+import CatalogSearchResultItem from '../search.result.item'
 import 'jest-styled-components'
 
 const image = {

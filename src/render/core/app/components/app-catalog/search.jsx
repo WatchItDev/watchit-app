@@ -5,6 +5,7 @@ import CatalogSearchResult from './search.result'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
+let searchTimeout = null
 const SearchWrapper = styled.div`
   width: 45%;
   position: relative;
@@ -15,7 +16,6 @@ const SearchWrapper = styled.div`
 `
 
 const CatalogSearch = (props) => {
-  let searchTimeout = null
   const [searching, setSearching] = useState(false)
   const [searchResult, setSearchResult] = useState(false)
 
