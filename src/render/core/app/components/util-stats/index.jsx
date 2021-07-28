@@ -2,18 +2,18 @@ import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
+let timer = null
+
 const StatWrapper = styled.div`
   display: flex;
-
-  @media (max-width: 800px) {
-    > div {
-      display: none;
-    }
-  }
 `
 
 const StatContent = styled.div`
   display: inline-block;
+  
+  @media (max-width: 800px) {
+    display: none;
+  }
 `
 
 const StatIcon = styled.i`
@@ -69,7 +69,6 @@ const Stats = (props) => {
   const [progress, setProgress] = useState(getTmp())
   const [loaded, setLoaded] = useState(chunk())
   const [total, setTotal] = useState(getTotal())
-  let timer = null
 
   useEffect(() => {
     timer = setInterval(() => {
@@ -86,7 +85,7 @@ const Stats = (props) => {
 
   return (
     <StatWrapper>
-      <StatContent className='stats-container'>
+      <StatContent>
         <StatIcon className='icon-traffic-cone' />
         <StatText>Sync: {progress}%</StatText>
         <StatIcon className='icon-book' />
