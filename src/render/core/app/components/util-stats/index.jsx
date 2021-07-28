@@ -77,7 +77,7 @@ const Stats = (props) => {
     }, 10000)
 
     return () => {
-      if (timer) { clearInterval(timer) }
+      clearInterval(timer)
     }
   }, [])
 
