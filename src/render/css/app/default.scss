@@ -158,6 +158,53 @@ img {
     }
   }
 
+  .movie-details-content {
+    margin-top: 5vh;
+    height: 100%;
+
+    p {
+      margin: 0;
+    }
+  }
+
+  .dropdown-button i {
+    margin: 0 0 0 0.5rem !important;
+  }
+
+  @media (max-width: 600px) {
+    .movie-details-content {
+      flex-direction: column;
+      margin-top: 0;
+      //height: calc(100% - 7rem);
+      overflow-y: scroll;
+      padding-bottom: 25vh;
+
+      .movie-details-poster {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .image-container {
+          width: 10rem;
+        }
+      }
+
+      .flow-text, .nav-bar-movie-details .dropdown-button {
+        font-size: 1rem !important;
+      }
+
+      h1 {
+        font-size: 2.5rem !important;
+        line-height: 2.5rem;
+        margin-top: 0.5rem !important;
+      }
+
+      .dropdown-button i {
+        font-size: 1.2rem;
+      }
+    }
+  }
+
 }
 
 //Main loader
@@ -341,6 +388,7 @@ img {
   @include border-radius(5px);
   //height: 75vh;
   background-color: rgba(0, 0, 0, 0.9);
+  width: 100%;
 
   .search-result-box-details {
     span, i {

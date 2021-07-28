@@ -48,7 +48,8 @@
     "^@components(.*)$": "<rootDir>/src/render/core/app/components$1",
     "^@helpers(.*)$": "<rootDir>/src/render/core/helpers$1",
     "^@settings(.*)$": "<rootDir>/src/render/core/settings",
-    "^@logger(.*)$": "<rootDir>/src/render/core/helpers/logger"
+    "^@logger(.*)$": "<rootDir>/src/render/core/helpers/logger",
+    "^@db(.*)$": "<rootDir>/src/main/core/db$1"
   },
   "moduleFileExtensions": [
     "web.js",

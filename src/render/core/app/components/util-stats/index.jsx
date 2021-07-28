@@ -1,82 +1,109 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
+import styled from 'styled-components'
 
-export default class Stats extends React.PureComponent {
-  constructor (props) {
-    super(props)
-    this.timer = null
-    this.state = {
-      peers: this.peers,
-      mainProgress: this.tmp,
-      loadedMovies: this.chunk,
-      totalMovies: this.total
+const StatWrapper = styled.div`
+  display: flex;
+
+  @media (max-width: 800px) {
+    > div {
+      display: none;
     }
   }
+`
 
-  componentDidMount () {
-    this.timer = setInterval(() => {
-      this.setState({
-        peers: this.peers,
-        mainProgress: this.tmp,
-        loadedMovies: this.chunk,
-        totalMovies: this.total
-      })
-    }, 10000)
-  }
+const StatContent = styled.div`
+  display: inline-block;
+`
 
-  get loaded () {
-    return this._index('chunk') > 0
-  }
+const StatIcon = styled.i`
+  margin: 0 0.5rem 0 1.2rem;
+  transform: translateY(1px);
+  display: inline-block;
+  font-size: 1rem;
+  color: #fff;
+`
 
-  get cached () {
-    return this._index('cached')
-  }
+const StatText = styled.span`
+  font-size: 1rem;
+  color: #fff;
+`
 
-  componentWillUnmount () {
-    if (this.timer) { clearInterval(this.timer) }
-  }
+const LogOut = styled.a`
+  padding: 0 1rem 0 2rem;
+  cursor: pointer;
+`
 
-  _index (i) {
-    return this.props.handler
-      ? this.props.handler(i)
+const LogOutIcon = styled.i`
+  font-size: 1rem;
+  color: #fff;
+`
+
+const Stats = (props) => {
+  const _index = (i) => {
+    return props.handler
+      ? props.handler(i)
       : 0
   }
 
-  get chunk () {
-    return this._index('chunk')
+  const chunk = () => {
+    return _index('chunk')
   }
 
-  get total () {
-    return this._index('total')
+  const getTotal = () => {
+    return _index('total')
   }
 
-  get tmp () {
+  const getTmp = () => {
     return parseFloat(
-      this._index('tmp')
+      _index('tmp')
     ).toFixed(1)
   }
 
-  get peers () {
-    const _currentPeers = this._index('peers')
+  const getPeers = () => {
+    const _currentPeers = _index('peers')
     return _currentPeers > 0 ? _currentPeers : 1
   }
 
-  static get propTypes () {
-    return {
-      handler: PropTypes.func.isRequired
-    }
-  }
+  const [peers, setPeers] = useState(getPeers())
+  const [progress, setProgress] = useState(getTmp())
+  const [loaded, setLoaded] = useState(chunk())
+  const [total, setTotal] = useState(getTotal())
+  let timer = null
 
-  render () {
-    return (
-      <div className='stats-container'>
-        <span className='icon-traffic-cone icon' />
-        <span>Sync: {this.tmp}%</span>
-        <span className='icon-book icon' />
-        <span>Movies: {this.chunk}/{this.total}</span>
-        <span className='icon-user icon' />
-        <span>Peers: {this.peers}</span>
-      </div>
-    )
-  }
+  useEffect(() => {
+    timer = setInterval(() => {
+      setPeers(getPeers())
+      setProgress(getTmp())
+      setLoaded(chunk())
+      setTotal(getTotal())
+    }, 10000)
+
+    return () => {
+      if (timer) { clearInterval(timer) }
+    }
+  })
+
+  return (
+    <StatWrapper>
+      <StatContent className='stats-container'>
+        <StatIcon className='icon-traffic-cone' />
+        <StatText>Sync: {progress}%</StatText>
+        <StatIcon className='icon-book' />
+        <StatText>Movies: {loaded}/{total}</StatText>
+        <StatIcon className='icon-user' />
+        <StatText>Peers: {peers}</StatText>
+      </StatContent>
+      <LogOut onClick={props.onSignOut} href='/'>
+        <LogOutIcon className='icon-log-out' />
+      </LogOut>
+    </StatWrapper>
+  )
 }
+
+Stats.propTypes = {
+  handler: PropTypes.func.isRequired,
+  handleSignOut: PropTypes.func
+}
+
+export default React.memo(Stats)

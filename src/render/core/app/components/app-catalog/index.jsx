@@ -2,7 +2,7 @@
 import React from 'react'
 import Details from '@components/app-details/'
 import StateLoader from '@components/app-state-loader/'
-import StatsValue from '@components/util-stats/'
+import Stats from '@components/util-stats/'
 import BoxLoader from '@components/util-box-loader/'
 
 import CatalogSearch from './search'
@@ -76,8 +76,10 @@ export default class Catalog extends React.Component {
   }
 
   getRecalculatedScreen = () => {
-    const width = Math.min(window.innerWidth, window.screen.width)
-    const height = Math.min(window.innerHeight, window.screen.height)
+    const w = Math.min(window.innerWidth, window.screen.width)
+    const h = Math.min(window.innerHeight, window.screen.height)
+    const width = util.isMobile() ? window.innerWidth : w
+    const height = util.isMobile() ? window.innerHeight : h
     const defaults = util.calcScreenSize({
       width,
       height
@@ -355,19 +357,9 @@ export default class Catalog extends React.Component {
               {/* Top main nav */}
               <section className='row full-height'>
                 <div className='clearfix full-height'>
-                  <header
-                    className='no-margin vertical-padding transparent z-depth-1 d-flex align-items-center justify-content-between header_search'
-                  >
-                    <div className='col l6 m6 relative input-black-box'>
-                      <CatalogSearch movies={this.movie} onClick={this.handleClickMovie} />
-                    </div>
-
-                    <div className='top-right-small-menu white-text'>
-                      <StatsValue handler={this._index} />
-                      <a onClick={this.handleSignOut} className='logout' href='/'>
-                        <i className='icon-log-out font-size-1-rem white-text' />
-                      </a>
-                    </div>
+                  <header className='no-margin vertical-padding transparent z-depth-1 d-flex align-items-center justify-content-between header_search'>
+                    <CatalogSearch movies={this.movie} onClick={this.handleClickMovie} />
+                    <Stats handler={this._index} onSignOut={this.handleSignOut} />
                   </header>
 
                   {/* Top main nav */}
