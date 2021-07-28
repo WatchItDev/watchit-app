@@ -76,8 +76,10 @@ export default class Catalog extends React.Component {
   }
 
   getRecalculatedScreen = () => {
-    const width = Math.min(window.innerWidth, window.screen.width)
-    const height = Math.min(window.innerHeight, window.screen.height)
+    const w = Math.min(window.innerWidth, window.screen.width)
+    const h = Math.min(window.innerHeight, window.screen.height)
+    const width = util.isMobile() ? window.innerWidth : w
+    const height = util.isMobile() ? window.innerHeight : h
     const defaults = util.calcScreenSize({
       width,
       height

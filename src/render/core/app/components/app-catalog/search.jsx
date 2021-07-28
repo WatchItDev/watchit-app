@@ -9,7 +9,7 @@ const SearchWrapper = styled.div`
   width: 45%;
   position: relative;
 
-  @media (max-width: 576px) {
+  @media (max-width: 800px) {
     width: 100%;
   }
 `
