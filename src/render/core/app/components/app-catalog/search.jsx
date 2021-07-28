@@ -58,7 +58,6 @@ const CatalogSearch = (props) => {
   const handleClick = (id) => {
     setSearchResult(false)
     setSearching(false)
-
     props.onClick && props.onClick(id)
   }
 

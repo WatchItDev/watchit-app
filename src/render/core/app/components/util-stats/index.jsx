@@ -6,7 +6,7 @@ const StatWrapper = styled.div`
   display: flex;
 
   @media (max-width: 800px) {
-    .stats-container {
+    > div {
       display: none;
     }
   }
