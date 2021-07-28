@@ -1,9 +1,10 @@
 import React from 'react'
-import { shallow } from 'enzyme'
-import SearchResultItem from './result.item'
-import SearchResult, { NoResultsText } from './result'
-import PointsLoader from '@components/util-points-loader'
 import 'jest-styled-components'
+import { shallow } from 'enzyme'
+import PointsLoader from '@components/util-points-loader'
+
+import SearchResult, { NoResultsText } from './result'
+import SearchResultItem from './result.item'
 
 const results = [
   {

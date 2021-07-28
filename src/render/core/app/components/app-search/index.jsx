@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import Input from '@components/app-inputs/'
 import utilHelper from '@helpers/util'
-import SearchResult from './result'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
+import SearchResult from './result'
 
 let searchTimeout = null
 const SearchWrapper = styled.div`
