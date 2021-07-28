@@ -24,7 +24,7 @@ const Search = (props) => {
     const targetValue = e.target.value
     const invalidInput = utilHelper.invalidString(targetValue)
 
-    // Remove old timeout
+    // Debounce
     if (searchTimeout) {
       clearTimeout(searchTimeout)
     }
