@@ -2,15 +2,13 @@ import React, { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
-let timer = null
-
 const StatWrapper = styled.div`
   display: flex;
 `
 
 const StatContent = styled.div`
   display: inline-block;
-  
+
   @media (max-width: 800px) {
     display: none;
   }
@@ -71,7 +69,7 @@ const Stats = (props) => {
   const [total, setTotal] = useState(getTotal())
 
   useEffect(() => {
-    timer = setInterval(() => {
+    const timer = setInterval(() => {
       setPeers(getPeers())
       setProgress(getTmp())
       setLoaded(chunk())
@@ -79,9 +77,9 @@ const Stats = (props) => {
     }, 10000)
 
     return () => {
-      if (timer) { clearInterval(timer) }
+      clearInterval(timer)
     }
-  })
+  }, [])
 
   return (
     <StatWrapper>
