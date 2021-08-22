@@ -75,7 +75,7 @@ const FlowTextWrappper = styled.span`
     font-size: 1.656rem;
   }
   @media only screen and (min-width: 960px) {
-    font-size: 1.68rem;
+    font-size: 1.8rem;
   }
   @media only screen and (max-width: 360px) {
     font-size: 1.2rem;
