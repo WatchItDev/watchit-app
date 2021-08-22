@@ -1,6 +1,5 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import FlowText from '@components/FlowText'
 
 export default class NavBarButton extends React.Component {
   shouldComponentUpdate (nextProps, nextState, nextContext) {

@@ -1,6 +1,5 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import FlowText from '../FlowText'
 
 export default class DetailsInfo extends React.Component {
   constructor (props) {
