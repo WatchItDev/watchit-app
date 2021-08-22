@@ -58,15 +58,15 @@ export default {
   },
   styles: {
     devices: {
-      mobileS: '(min-width: 320px)',
-      mobileM: '(min-width: 375px)',
-      mobileL: '(min-width: 425px)',
-      tablet: '(min-width: 768px)',
-      laptop: '(min-width: 992px)',
-      laptopAndLow: '(max-width: 992px)',
-      laptopL: '(min-width: 1440px)',
-      desktop: '(min-width: 1900px)',
-      desktopL: '(min-width: 2560px)'
+      mobileS: 'only screen and (min-width: 320px)',
+      mobileM: 'only screen and (min-width: 375px)',
+      mobileL: 'only screen and (min-width: 425px)',
+      tablet: 'only screen and (min-width: 768px)',
+      laptop: 'only screen and (min-width: 992px)',
+      laptopAndLow: 'only screen and (max-width: 992px)',
+      laptopL: 'only screen and (min-width: 1440px)',
+      desktop: 'only screen and (min-width: 1900px)',
+      desktopL: 'only screen and (min-width: 2560px)'
     },
     colors: {
       primary: '#03a9f3',

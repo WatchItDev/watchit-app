@@ -23,10 +23,10 @@
       "@pages/*" : [
         "src/render/core/app/pages/*"
       ],
-      "^@settings$": [
+      "@settings": [
         "src/render/core/settings.js"
       ],
-      "^@logger$": [
+      "@logger": [
         "src/render/core/helpers/logger.js"
       ]
     }

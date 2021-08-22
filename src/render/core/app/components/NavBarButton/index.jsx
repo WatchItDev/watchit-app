@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import FlowText from '@components/FlowText'
 
 export default class NavBarButton extends React.Component {
   shouldComponentUpdate (nextProps, nextState, nextContext) {
@@ -29,8 +30,10 @@ export default class NavBarButton extends React.Component {
       <ul>
         <li className='dropdown'>
           <a className='dropdown-button flow-text clearfix' {...this.props.link}>
-            <span className='font-light-gray right'>{this.props.text}</span>
-            <i className={`${this.props.icon} normalize-small-icon float-left margin-right-${this.props.mrb}`} />
+            <FlowText>
+              <span className='font-light-gray right'>{this.props.text}</span>
+              <i className={`${this.props.icon} normalize-small-icon float-left margin-right-${this.props.mrb}`} />
+            </FlowText>
           </a>
         </li>
       </ul>
