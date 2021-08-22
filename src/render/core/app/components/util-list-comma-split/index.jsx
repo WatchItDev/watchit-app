@@ -1,31 +1,34 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import uid from 'shortid'
+import styled from 'styled-components'
+import FlowText from '../util-flow-text'
 
-export default class ListCommaSplit extends React.Component {
-  shouldComponentUpdate () {
-    return false
-  }
-
-  static get propTypes () {
-    return {
-      list: PropTypes.array.isRequired
-    }
-  }
-
-  render () {
-    return (
-      <div className='col l12 m12 s12 truncate flow-text blue-grey-text'>
-        {
-          this.props.list.map((splitter) => {
-            return (
-              <span className='separated-comma' key={uid.generate()}>
-                {splitter}
-              </span>
-            )
-          })
-        }
-      </div>
-    )
-  }
+const ListCommaSplit = (props) => {
+  return (
+    <ListCommaWrapper>
+      {
+        props.list.map((splitter) => {
+          return (
+            <FlowText color='#607d8b' key={uid.generate()}>
+              {splitter}
+            </FlowText>
+          )
+        })
+      }
+    </ListCommaWrapper>
+  )
 }
+
+export default React.memo(ListCommaSplit)
+
+const ListCommaWrapper = styled.div`
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-all;
+
+  span:not(:last-of-type)::after {
+    content: ", "
+  }
+`

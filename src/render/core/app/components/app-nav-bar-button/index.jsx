@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import FlowText from '../util-flow-text'
 
 export default class NavBarButton extends React.Component {
   shouldComponentUpdate (nextProps, nextState, nextContext) {
@@ -8,7 +9,8 @@ export default class NavBarButton extends React.Component {
 
   static get defaultProps () {
     return {
-      mrb: 5, link: {}
+      mrb: 5,
+      link: {}
     }
   }
 

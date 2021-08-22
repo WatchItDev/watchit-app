@@ -66,9 +66,11 @@ export default class Details extends React.PureComponent {
 
                 {/* Genres */}
                 <section className='row'>
-                  <ListCommaSplit
-                    list={this.state.movies.genres}
-                  />
+                  <div className='col l12 s12 m12'>
+                    <ListCommaSplit
+                      list={this.state.movies.genres}
+                    />
+                  </div>
                 </section>
 
                 {/* Description */}
@@ -80,11 +82,13 @@ export default class Details extends React.PureComponent {
                     thumbMinSize={30}
                     universal
                   >
-                    <FlowText>
-                      <span>
-                        {this.state.movies.synopsis}
-                      </span>
-                    </FlowText>
+                    <div className='col l12 s12 m12'>
+                      <FlowText>
+                        <span>
+                          {this.state.movies.synopsis}
+                        </span>
+                      </FlowText>
+                    </div>
                   </CustomScrollbars>
                 </section>
 

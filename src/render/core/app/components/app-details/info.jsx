@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import FlowText from '../util-flow-text'
 
 export default class DetailsInfo extends React.Component {
   constructor (props) {
@@ -46,13 +47,15 @@ export default class DetailsInfo extends React.Component {
           {
             Object.entries(this.props.info).filter(([k, v]) => v ? k : false).map(([char, val], idx) => {
               return (
-                <strong
-                  className={this.state[char].color + '-text flow-text ' + this.state[char].align + '-align' + ' d-flex align-items-center margin-right-14'}
-                  key={char}
-                >
-                  <i className={'left margin-right-4 icon-' + this.state[char].icon} />
-                  {val}
-                </strong>
+                <FlowText key={idx}>
+                  <strong
+                    className={this.state[char].color + '-text flow-text ' + this.state[char].align + '-align' + ' d-flex align-items-center margin-right-14'}
+                    key={char}
+                  >
+                    <i className={'left margin-right-4 icon-' + this.state[char].icon} />
+                    {val}
+                  </strong>
+                </FlowText>
               )
             })
           }
