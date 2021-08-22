@@ -30,10 +30,8 @@ export default class NavBarButton extends React.Component {
       <ul>
         <li className='dropdown'>
           <a className='dropdown-button flow-text clearfix' {...this.props.link}>
-            <FlowText>
-              <span className='font-light-gray right'>{this.props.text}</span>
-              <i className={`${this.props.icon} normalize-small-icon float-left margin-right-${this.props.mrb}`} />
-            </FlowText>
+            <span className='font-light-gray right'>{this.props.text}</span>
+            <i className={`${this.props.icon} normalize-small-icon float-left margin-right-${this.props.mrb}`} />
           </a>
         </li>
       </ul>

@@ -32,5 +32,9 @@ const FlowTextWrappper = styled.span`
   @media ${settings.styles.devices.laptop} {
     font-size: 1.8rem;
   }
+
+  @media ${settings.styles.devices.desktopL} {
+    font-size: 3rem;
+  }
   
 `

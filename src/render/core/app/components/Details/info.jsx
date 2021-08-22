@@ -47,15 +47,13 @@ export default class DetailsInfo extends React.Component {
           {
             Object.entries(this.props.info).filter(([k, v]) => v ? k : false).map(([char, val], idx) => {
               return (
-                <FlowText key={idx}>
-                  <strong
-                    className={this.state[char].color + '-text flow-text ' + this.state[char].align + '-align' + ' d-flex align-items-center margin-right-14'}
-                    key={char}
-                  >
-                    <i className={'left margin-right-4 icon-' + this.state[char].icon} />
-                    {val}
-                  </strong>
-                </FlowText>
+                <strong
+                  className={this.state[char].color + '-text flow-text ' + this.state[char].align + '-align' + ' d-flex align-items-center margin-right-14'}
+                  key={char}
+                >
+                  <i className={'left margin-right-4 icon-' + this.state[char].icon} />
+                  {val}
+                </strong>
               )
             })
           }
