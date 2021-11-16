@@ -1,6 +1,6 @@
 [![Gitter](https://badges.gitter.im/watchit-app/community.svg)](https://gitter.im/watchit-app/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 [![All Contributors](https://img.shields.io/badge/all_contributors-11-orange.svg?style=flat-square)](#contributors-)
-[![CI Desktop](https://github.com/ZorrillosDev/watchit-app/actions/workflows/desktop.yml/badge.svg)](https://github.com/ZorrillosDev/watchit-app/actions/workflows/desktop.yml)
+[![CI](https://github.com/ZorrillosDev/watchit-app/actions/workflows/test.yml/badge.svg)](https://github.com/ZorrillosDev/watchit-app/actions/workflows/test.yml)
 
 # WatchIt App
 
@@ -30,7 +30,7 @@ Please look at our [gateway](https://github.com/ZorrillosDev/watchit-gateway) 's
 * Visit our site [watchitapp.site](http://watchitapp.site).
 * Read our post: [Watchit - Open Movies](https://dev.to/geolffreym/watchit-2b88).
 * Check out [the roadmap](https://github.com/ZorrillosDev/watchit-desktop/projects/1) to future features.
-* Get in touch with us in [gitter](https://gitter.im/watchit-app/community) or #watchit:matrix.org
+* Get in touch with us in [gitter](https://gitter.im/watchit-app/community) | #watchit:matrix.org | [discord](https://discord.com/channels/903317258577797161/903317259290816594)
 * See our [FAQ](FAQ.md) for frequently asked questions.
 * For help or bugs please [create an issue](https://github.com/ZorrillosDev/watchit-desktop/issues).
 
@@ -92,6 +92,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/Slender1808"><img src="https://avatars.githubusercontent.com/u/50336793?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Jadson G. Matos</b></sub></a><br /><a href="#ideas-Slender1808" title="Ideas, Planning, & Feedback">🤔</a></td>
     <td align="center"><a href="https://github.com/Farickmenacode73"><img src="https://avatars.githubusercontent.com/u/31286606?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Farick Mena</b></sub></a><br /><a href="#ideas-Farickmenacode73" title="Ideas, Planning, & Feedback">🤔</a> <a href="#platform-Farickmenacode73" title="Packaging/porting to new platform">📦</a> <a href="#userTesting-Farickmenacode73" title="User Testing">📓</a></td>
     <td align="center"><a href="https://github.com/mathiassond"><img src="https://avatars.githubusercontent.com/u/49319141?v=4?s=100" width="100px;" alt=""/><br /><sub><b>mathiassond</b></sub></a><br /><a href="#userTesting-mathiassond" title="User Testing">📓</a> <a href="https://github.com/ZorrillosDev/watchit-app/issues?q=author%3Amathiassond" title="Bug reports">🐛</a></td>
+    <td align="center"><a href="https://yosephks.github.io/personal_website.github.io"><img src="https://avatars.githubusercontent.com/u/48710170?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Yoseph Kurnia Soenggoro</b></sub></a><br /><a href="#ideas-YosephKS" title="Ideas, Planning, & Feedback">🤔</a></td>
   </tr>
 </table>
 

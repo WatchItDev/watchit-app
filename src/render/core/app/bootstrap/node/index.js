@@ -1,9 +1,9 @@
 // Require logged
 import { HashRouter, Redirect, Route, Switch } from 'react-router-dom'
-import DragBar from '@components/app-drag-bar'
-import Login from '@pages/login-view'
-import Catalog from '@pages/index-view'
-import Player from '@pages/player-view'
+import DragBar from '@components/DragBar'
+import Login from '@pages/Login'
+import Catalog from '@pages/Home'
+import Player from '@pages/Player'
 import React from 'react'
 
 function DragBarHOC (Component, navigate) {

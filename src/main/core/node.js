@@ -102,7 +102,6 @@ module.exports = class Node extends EventEmitter {
       return newCID.toBaseEncodedString('base58btc')
     } catch (e) {
       // Avoid using invalid keys
-      console.log(e)
       if (!this.seedMode) { await this.party('Network Error') }
       return false
     }

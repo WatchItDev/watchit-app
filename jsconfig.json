@@ -1,8 +1,34 @@
 {
   "compilerOptions": {
-    "baseUrl": "src"
-  },
-  "include": [
-    "src"
-  ]
+    "baseUrl": ".",
+    "paths": {
+      "@src/*": [
+        "src/*"
+      ],
+      "@components/*" : [
+        "src/render/core/app/components/*"
+      ],
+      "@main/*" : [
+        "src/main/*"
+      ],
+      "@db/*" : [
+        "src/main/core/db/*"
+      ],
+      "@render/*" : [
+        "src/render/*"
+      ],
+      "@helpers/*" : [
+        "src/render/core/helpers/*"
+      ],
+      "@pages/*" : [
+        "src/render/core/app/pages/*"
+      ],
+      "@settings": [
+        "src/render/core/settings.js"
+      ],
+      "@logger": [
+        "src/render/core/helpers/logger.js"
+      ]
+    }
+  }
 }

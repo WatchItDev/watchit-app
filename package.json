@@ -127,7 +127,7 @@
     "build": "node scripts/build.js",
     "start:web": "RUNTIME=web node scripts/start.js",
     "build:web": "RUNTIME=web node scripts/build.js",
-    "test": "node scripts/test.js --watchAll=false -u",
+    "test": "node scripts/test.js --verbose --watchAll=false --runInBand --detectOpenHandles --forceExit --coverage -u",
     "lint": "standardx \"src/{main,render}/**/*.{js,jsx}\"",
     "lint:fix": "npm run lint -- --fix",
     "electron": "cross-env LOG=debug IPFS_FD_MAX=10000 NODE_ENV=development $(npm bin)/electron .",

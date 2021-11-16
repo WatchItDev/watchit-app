@@ -1,6 +1,6 @@
 import { createBrowserHistory } from 'history'
 import bootstrap from './bootstrap'
-import { Key as key } from 'main/bridge'
+import { Key as key } from '@main/bridge'
 
 const hist = createBrowserHistory({
   basename: '/', // The base URL of the app (see below)

@@ -34,7 +34,6 @@ module.exports = function (webpackEnv) {
         '@db': path.resolve(paths.appSrc, 'main/core/db'),
         '@settings': path.resolve(paths.appSrc, 'render/core/settings'),
         'package.json': paths.appPackageJson,
-
       }
     }
   })
