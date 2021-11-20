@@ -139,7 +139,8 @@
     "publish:linux": "npm run package:linux -- --publish always",
     "publish:win": "npm run package:win -- --publish always",
     "preinstall": "bash -c \"npm install logplease && node scripts/preinstall.js\"",
-    "postinstall": "bash -c \"node scripts/postinstall.js\""
+    "postinstall": "bash -c \"node scripts/postinstall.js\"",
+    "publish": "ipfs-deploy -C src/build -d cloudflare -p pinata"
   },
   "husky": {
     "hooks": {
@@ -174,6 +175,7 @@
     "file-loader": "6.1.1",
     "html-webpack-plugin": "4.5.0",
     "husky": "^4.3.8",
+    "ipfs-deploy": "^11.1.0",
     "jest": "26.6.0",
     "jest-circus": "26.6.0",
     "jest-resolve": "26.6.0",
