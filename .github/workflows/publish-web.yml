@@ -23,6 +23,8 @@ jobs:
 
       - name: Build
         run: npm run build:web
+        env:
+          CI: ""
 
       - name: Publish
         run: npm run publish
