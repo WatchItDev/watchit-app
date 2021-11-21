@@ -1,7 +1,7 @@
 {
   "name": "watchit",
   "author": "ZorrillosDev",
-  "version": "0.2.0-alpha.1",
+  "version": "0.2.0-alpha.2",
   "private": true,
   "main": "./src/main/index.js",
   "description": "Open movies everywhere",
@@ -61,7 +61,7 @@
       {
         "provider": "github",
         "owner": "ZorrillosDev",
-        "repo": "watchit-desktop",
+        "repo": "watchit-app",
         "private": false
       }
     ],
