@@ -124,9 +124,9 @@
   },
   "scripts": {
     "start": "BROWSER=none RUNTIME=electron node scripts/start.js",
-    "build": "node scripts/build.js",
+    "build": "CI=false node scripts/build.js",
     "start:web": "RUNTIME=web node scripts/start.js",
-    "build:web": "RUNTIME=web node scripts/build.js",
+    "build:web": "CI=false RUNTIME=web node scripts/build.js",
     "test": "node scripts/test.js --verbose --watchAll=false --runInBand --detectOpenHandles --forceExit --coverage -u",
     "lint": "standardx \"src/{main,render}/**/*.{js,jsx}\"",
     "lint:fix": "npm run lint -- --fix",
