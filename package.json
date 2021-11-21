@@ -124,7 +124,7 @@
   },
   "scripts": {
     "start": "BROWSER=none RUNTIME=electron node scripts/start.js",
-    "build": "CI=false node scripts/build.js",
+    "build": "node scripts/build.js",
     "start:web": "RUNTIME=web node scripts/start.js",
     "build:web": "CI=false RUNTIME=web node scripts/build.js",
     "test": "node scripts/test.js --verbose --watchAll=false --runInBand --detectOpenHandles --forceExit --coverage -u",
