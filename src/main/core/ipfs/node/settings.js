@@ -62,7 +62,7 @@ module.exports = (ports) => {
         { ID: 'QmbPFTECrXd7o2HS2jWAJ2CyAckv3Z5SFy8gnEHKxxH52g', Addrs: ['/ip4/144.172.69.157/tcp/4001'] },
         { ID: 'QmVPdm5PwdEb2sPTvaZTdx1bvntZQfWurFwzgLYAapkJXr', Addrs: ['/ip4/51.159.132.97/tcp/4001'] },
         {
-          ID: '12D3KooWQw3vx2E4FKpL9GHC9BpFya1MXVUFEVBAQVhMDkreCqwF',
+          ID: '12D3KooWCWDM7X9ZJwH71TPdnLXSNYAR8FF92CHK99Fw7cNCicQA',
           Addrs: ['/ip4/185.215.224.79/tcp/4001']
         },
         {
