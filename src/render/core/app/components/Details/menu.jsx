@@ -79,7 +79,7 @@ export default class DetailsMenu extends React.PureComponent {
       resource: cryptHelper.toBase64(
         JSON.stringify({
           type,
-          cid: resource,
+          route: resource,
           id: this.props.movie._id
         })
       )
