@@ -10,7 +10,7 @@ export default {
   },
 
   dummyParse (resource) {
-    if (!('cid' in resource)) throw new Error('Resource object need at least `cid`')
+    if (!('route' in resource)) throw new Error('Resource object need at least `cid`')
     const builtPath = this._builtPath(resource) // Build path using index and optional quality
     const random = Math.floor(Math.random() * settings.gateways.length)
     return `${settings.gateways[random]}/ipfs/${builtPath}`
