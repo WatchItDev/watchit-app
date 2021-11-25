@@ -5,15 +5,15 @@ import Image from './index'
 
 /* eslint-disable no-undef */
 describe('<Image />', () => {
-  const props = { index: 'image.jpg', cid: 'QmcdLW9p1dcYYKBHZdRXEXA4go6Qd3C4ce12khyiCqVNaH' }
+  const props = { index: 'image.jpg', route: 'QmcdLW9p1dcYYKBHZdRXEXA4go6Qd3C4ce12khyiCqVNaH' }
 
   it('should render', () => {
     const imageComponent = shallow(<Image src={props} />)
     expect(imageComponent).toMatchSnapshot()
   })
 
-  it('should render with absolute `cid`', () => {
-    const imageComponent = shallow(<Image src={{ cid: props.cid }} />)
+  it('should render with absolute `route`', () => {
+    const imageComponent = shallow(<Image src={{ route: props.route }} />)
     expect(imageComponent).toMatchSnapshot()
   })
 
@@ -28,13 +28,13 @@ describe('<Image />', () => {
   })
 
   // eslint-disable-next-line no-undef
-  it('should render with relative `cid` and `index`', () => {
+  it('should render with relative `route` and `index`', () => {
     const imageComponent = shallow(<Image src={props} />)
     const componentProps = imageComponent.instance().props
 
     /* eslint-disable no-undef */
     expect(componentProps.src).toBeInstanceOf(Object)
-    expect(componentProps.src.cid).toBe(props.cid)
+    expect(componentProps.src.route).toBe(props.route)
     expect(componentProps.src.index).toBe(props.index)
   })
 
@@ -50,10 +50,10 @@ describe('<Image />', () => {
   })
 
   // eslint-disable-next-line no-undef
-  it('should not render without `cid`', () => {
+  it('should not render without `route`', () => {
     try {
-      const withoutCID = { index: 'image.jpg' }
-      shallow(<Image src={withoutCID} />)
+      const withoutRoute = { index: 'image.jpg' }
+      shallow(<Image src={withoutRoute} />)
     } catch (e) {
       // eslint-disable-next-line no-undef
       expect(e).toBeInstanceOf(Error)
