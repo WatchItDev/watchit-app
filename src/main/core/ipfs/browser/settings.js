@@ -1,10 +1,10 @@
 module.exports = () => {
   return {
     Bootstrap: [
-      '/dns4/watchitapp.site/tcp/4002/wss/p2p/12D3KooWBC6zVHQwkwxXfx1Uk7e3BRq833f7n3j3i9H7G9XPtZ3u',
-      '/dns4/direct.vps1.phillm.net/tcp/4002/wss/p2p/QmbPFTECrXd7o2HS2jWAJ2CyAckv3Z5SFy8gnEHKxxH52g',
-      '/dns4/direct.vps2.phillm.net/tcp/4002/wss/p2p/12D3KooWCWDM7X9ZJwH71TPdnLXSNYAR8FF92CHK99Fw7cNCicQA',
-      '/dns4/direct.vps3.phillm.net/tcp/4002/wss/p2p/12D3KooWD4Z47R1pnzTxCVQAiTKTHasWU2xTAcffyC38BNKM68yw'
+      '/dns4/watchitapp.site/tcp/443/wss/p2p/12D3KooWBC6zVHQwkwxXfx1Uk7e3BRq833f7n3j3i9H7G9XPtZ3u',
+      '/dns4/direct.vps1.phillm.net/tcp/443/wss/p2p/QmbPFTECrXd7o2HS2jWAJ2CyAckv3Z5SFy8gnEHKxxH52g',
+      '/dns4/direct.vps2.phillm.net/tcp/443/wss/p2p/12D3KooWCWDM7X9ZJwH71TPdnLXSNYAR8FF92CHK99Fw7cNCicQA',
+      '/dns4/direct.vps3.phillm.net/tcp/443/wss/p2p/12D3KooWD4Z47R1pnzTxCVQAiTKTHasWU2xTAcffyC38BNKM68yw'
     ],
     Addresses: {
       Delegates: [
