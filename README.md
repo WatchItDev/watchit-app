@@ -2,6 +2,7 @@
 [![All Contributors](https://img.shields.io/badge/all_contributors-11-orange.svg?style=flat-square)](#contributors-)
 [![CI](https://github.com/ZorrillosDev/watchit-app/actions/workflows/test.yml/badge.svg)](https://github.com/ZorrillosDev/watchit-app/actions/workflows/test.yml)
 [![CD-App](https://github.com/ZorrillosDev/watchit-app/actions/workflows/publish.yml/badge.svg)](https://github.com/ZorrillosDev/watchit-app/actions/workflows/publish.yml)
+[![CD-App](https://github.com/ZorrillosDev/watchit-app/actions/workflows/publish.yml/badge.svg)](https://github.com/ZorrillosDev/watchit-app/actions/workflows/publish.yml)
 # WatchIt App
 
 WatchIt decentralizes the way you watch your movies. In short, it is a "collective entertainment methodology" in which each user consumes movies from 
