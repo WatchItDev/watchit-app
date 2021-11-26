@@ -2,7 +2,7 @@
 [![All Contributors](https://img.shields.io/badge/all_contributors-11-orange.svg?style=flat-square)](#contributors-)
 [![CI](https://github.com/ZorrillosDev/watchit-app/actions/workflows/test.yml/badge.svg)](https://github.com/ZorrillosDev/watchit-app/actions/workflows/test.yml)
 [![CD-App](https://github.com/ZorrillosDev/watchit-app/actions/workflows/publish.yml/badge.svg)](https://github.com/ZorrillosDev/watchit-app/actions/workflows/publish.yml)
-[![CD-App](https://github.com/ZorrillosDev/watchit-app/actions/workflows/publish.yml/badge.svg)](https://github.com/ZorrillosDev/watchit-app/actions/workflows/publish.yml)
+[![CD-Web](https://github.com/ZorrillosDev/watchit-app/actions/workflows/publish-web.yml/badge.svg)](https://github.com/ZorrillosDev/watchit-app/actions/workflows/publish-web.yml)
 # WatchIt App
 
 WatchIt decentralizes the way you watch your movies. In short, it is a "collective entertainment methodology" in which each user consumes movies from 
@@ -28,7 +28,8 @@ Please look at our [gateway](https://github.com/ZorrillosDev/watchit-gateway) 's
 [![screenshot](src/render/media/img/layout/nodes.png?raw=true)]()
 
 ##  More info
-* Visit our site [watchitapp.site](http://watchitapp.site).
+* Visit our site [watchitapp.site](https://watchitapp.site).
+* Try our web app release [web.watchitapp.site](https://web.watchitapp.site).
 * Read our post: [Watchit - Open Movies](https://dev.to/geolffreym/watchit-2b88).
 * Check out [the roadmap](https://github.com/ZorrillosDev/watchit-desktop/projects/1) to future features.
 * Get in touch with us in [gitter](https://gitter.im/watchit-app/community) | #watchit:matrix.org | [discord](https://discord.com/channels/903317258577797161/903317259290816594)
