@@ -57,7 +57,7 @@ module.exports = (ipcMain, runtime = 'node') => {
   }
 
   ipcMain.on('node-start', async (e) => {
-    initEvents(e) // Init listener on node ready1
+    initEvents(e) // Init listener on node ready
     // Node events to handle progress and ready state
     // "node-step" handle event to keep tracking states of node
     orbit.on('node-progress', (_, hash) => setImmediate(() => { ingest.queue = hash }))
