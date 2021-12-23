@@ -142,11 +142,6 @@
     "postinstall": "bash -c \"node scripts/postinstall.js\"",
     "publish": "ipfs-deploy -C src/build -d cloudflare -p pinata"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run lint && npm test -- --coverage"
-    }
-  },
   "devDependencies": {
     "@babel/core": "7.12.3",
     "@pmmmwh/react-refresh-webpack-plugin": "0.4.3",
@@ -174,7 +169,6 @@
     "eslint-webpack-plugin": "^2.5.4",
     "file-loader": "6.1.1",
     "html-webpack-plugin": "4.5.0",
-    "husky": "^4.3.8",
     "ipfs-deploy": "^11.1.0",
     "jest": "26.6.0",
     "jest-circus": "26.6.0",

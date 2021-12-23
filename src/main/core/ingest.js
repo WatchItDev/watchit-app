@@ -13,6 +13,20 @@ module.exports = class Ingest extends EventEmitter {
     this.asyncLock = false
   }
 
+  set queue (hash) {
+    log.info('Storing hash in queue')
+    const cache = key.readFromStorage()
+    const cacheList = cache.hash ?? []
+    // Deduplication with sets
+    const newHash = [...new Set([...cacheList, ...[hash]])]
+    key.addToStorage({ hash: newHash })
+  }
+
+  get queue () {
+    const cache = key.readFromStorage()
+    return cache?.hash ?? []
+  }
+
   static getInstance (orbit) {
     return new Ingest(orbit)
   }
@@ -89,7 +103,7 @@ module.exports = class Ingest extends EventEmitter {
       }
 
       const [validCache, cache] = this.orbit.cache
-      const currentQueue = this.orbit.queue
+      const currentQueue = this.queue
       const lastHash = cache.lastHash ?? 0
       const queueLength = currentQueue.length
 
