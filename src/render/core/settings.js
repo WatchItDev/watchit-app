@@ -4,11 +4,6 @@
 
 export default {
   streaming: ['hls'],
-  resolutions: {
-    available: [
-      '720p', '1080p', '2160p'
-    ]
-  },
   gateways: [
     'https://vps1.phillm.net',
     'https://vps2.phillm.net',

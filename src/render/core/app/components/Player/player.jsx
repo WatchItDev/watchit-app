@@ -7,8 +7,6 @@ import PlayerVideo from './video'
 
 import { DLNA as dlna } from '@main/bridge'
 import HLS from '@main/core/hls'
-
-import gatewayHelper from '@helpers/gateway'
 import log from '@logger'
 
 export default class Player extends React.Component {
@@ -93,7 +91,7 @@ export default class Player extends React.Component {
   startStreaming () {
     // Start streamer
     log.info('Streaming Movie: ' + this.props.movie.title.toUpperCase())
-    const uriToStream = `${gatewayHelper.dummyParse(this.props.movie)}`
+    const uriToStream = this.props.movie.route // Ready to play uri
     const streamer = this.streamer.play(uriToStream, { videoRef: this.v.video })
     streamer.on('error', this.onError)
     streamer.on('ready', () => this._ready())

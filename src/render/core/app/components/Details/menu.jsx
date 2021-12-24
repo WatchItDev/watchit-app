@@ -1,145 +1,86 @@
 import React from 'react'
-import settings from '@settings'
 import PropTypes from 'prop-types'
-import NavBarMenu from '@components/NavBarMenu/'
 import NavBarButton from '@components/NavBarButton/'
 
 import TrailerPop from './trailer'
 import gatewayHelper from '@helpers/gateway'
 import cryptHelper from '@helpers/crypt'
-import util from '@helpers/util'
 
 export default class DetailsMenu extends React.PureComponent {
-  constructor (props) {
-    super(props)
-    // Default state
-    this.state = {
-      resource: null,
-      modalOpen: false
+    constructor(props) {
+        super(props)
+        // Default state
+        this.state = {
+            resource: null,
+            modalOpen: false
+        }
     }
-  }
 
-  static get propTypes () {
-    return {
-      movie: PropTypes.object.isRequired
+    static get propTypes() {
+        return {
+            movie: PropTypes.object.isRequired
+        }
     }
-  }
 
-  isMovieResource (resourceType) {
-    return settings.streaming.includes(
-      resourceType
-    )
-  }
-
-  parseResource = (resource) => {
-    if (resource) {
-      return gatewayHelper._builtPath(
-        resource
-      )
+    componentDidMount() {
+        this.prepareDataToPlayer()
     }
-  }
 
-  getHealth (rate) {
-    rate = rate < 1
-      ? 'red-text'
-      : rate >= 1 && rate <= 2
-        ? 'yellow-text'
-        : 'green-text'
-    return <i className={`icon-heart pointer-events-none ${rate}`} />
-  }
 
-  prepareMenu (items) {
-    let i = 0
-    // Prepare for menu structure
-    return items.map((v) => {
-      // If type of items is torrent
-      const resourceType = v?.type
-      const isMovieResource = this.isMovieResource(resourceType)
-      if (isMovieResource) {
-        if (!(~(settings.resolutions.available.indexOf(v.quality)))) { return false }
-      }
-
-      return {
-        default: (i++ === 0),
-        type: v.type,
-        label: isMovieResource ? v.quality : (v[0].toUpperCase() + v.slice(1)),
-        action: isMovieResource ? this.parseResource(v) : v,
-        icon: isMovieResource ? this.getHealth(v.health) : null
-      }
-    })
-  }
-
-  handleMenuChange = (t) => {
-    this.prepareDataToPlayer(t.action, t.type)
-  }
-
-  prepareDataToPlayer (resource, type) {
-    // Handle type of menu
-    this.setState({
-      resource: cryptHelper.toBase64(
-        JSON.stringify({
-          type,
-          route: resource,
-          id: this.props.movie._id
+    prepareDataToPlayer() {
+        // Handle type of menu
+        this.setState({
+            resource: cryptHelper.toBase64(
+                JSON.stringify({
+                    id: this.props.movie._id,
+                    type: gatewayHelper.getVideoProtocol(this.props.movie.resource.video),
+                    route: gatewayHelper.parseMovie(this.props.movie.resource.video)
+                })
+            )
         })
-      )
-    })
-  }
+    }
 
-  handleCloseTrailer = () => {
-    this.setState({
-      modalOpen: false
-    })
-  }
+    handleCloseTrailer = () => {
+        this.setState({
+            modalOpen: false
+        })
+    }
 
-  openTrailer = (e) => {
-    e.preventDefault()
-    this.setState({
-      modalOpen: true
-    })
-  }
+    openTrailer = (e) => {
+        e.preventDefault()
+        this.setState({
+            modalOpen: true
+        })
+    }
 
-  render () {
-    return (
-      <nav className='col l12 m12 transparent z-depth-0'>
-        <div className='nav-wrapper'>
+    render() {
+        return (
+            <nav className='col l12 m12 transparent z-depth-0'>
+                <div className='nav-wrapper'>
 
-          {
-            this.state.modalOpen &&
-              <TrailerPop
-                trailer={this.props.movie.trailer_code}
-                onClose={this.handleCloseTrailer}
-              />
-          }
+                    {
+                        this.state.modalOpen &&
+                        <TrailerPop
+                            trailer={this.props.movie.trailer_code}
+                            onClose={this.handleCloseTrailer}
+                        />
+                    }
 
-          {/* Play */}
-          <NavBarButton
-            text='Play' icon='icon-controller-play'
-            link={{ href: `#/play/${this.state.resource}` }}
-          />
+                    {/* Play */}
+                    <NavBarButton
+                        text='Play' icon='icon-controller-play'
+                        link={{href: `#/play/${this.state.resource}`}}
+                    />
 
-          {/* The resolution menu */}
-          {
-            <NavBarMenu
-              btnText='HD'
-              onChange={this.handleMenuChange}
-              onGetInitialItem={this.handleMenuChange}
-              list={this.prepareMenu(
-                  this.props.movie.resource.video
-
-              )}
-            />
-          }
-
-          {
-            this.props.movie.trailer_code &&
-              <NavBarButton
-                text='Trailer' icon='icon-video' mrb={7}
-                link={{ onClick: this.openTrailer, href: '#' }}
-              />
-          }
-        </div>
-      </nav>
-    )
-  }
+                    {
+                        this.props.movie.trailer_code &&
+                        <NavBarButton
+                            text='Trailer' icon='icon-video' mrb={7}
+                            link={{onClick: this.openTrailer, href: '#'}}
+                        />
+                    }
+                </div>
+            </nav>
+        )
+    }
 }

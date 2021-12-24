@@ -1,18 +1,23 @@
 import settings from '@settings'
 
+
 export default {
+    getVideoProtocol(videoResourceObject) {
+        if (!('index' in videoResourceObject)) throw new Error('Invalid resource scheme')
+        const videoIndex = videoResourceObject.index; // Get index based on scheme
+        return 'dash' in videoIndex ? 'dash' : 'hls'
 
-  _builtPath (resource) {
-    let builtPath = resource.route
-    builtPath = 'quality' in resource ? `${builtPath}/${resource.quality}` : builtPath
-    builtPath = 'index' in resource ? `${builtPath}/${resource.index}` : builtPath
-    return builtPath
-  },
+    },
+    parseMovie(videoResource) {
+        const videoProtocol = this.getVideoProtocol(videoResource)
+        const dashInput = `${videoResource.index?.dash}/index.mpd`
+        const hlsInput = `${videoResource.index?.hls}/index.m3u8`
+        const videoSource = Object.is(videoProtocol, 'dash') ? dashInput : hlsInput
+        return this.dummyParse(`${videoResource.route}/${videoSource}`)
+    },
 
-  dummyParse (resource) {
-    if (!('route' in resource)) throw new Error('Resource object need at least `route`')
-    const builtPath = this._builtPath(resource) // Build path using index and optional quality
-    const random = Math.floor(Math.random() * settings.gateways.length)
-    return `${settings.gateways[random]}/ipfs/${builtPath}`
-  }
+    dummyParse(resource) {
+        const random = Math.floor(Math.random() * settings.gateways.length)
+        return `${settings.gateways[random]}/ipfs/${resource}`
+    }
 }

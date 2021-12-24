@@ -25,18 +25,17 @@ export default class PlayerSwitch extends React.Component {
 
   componentDidMount () {
     // Decode param
-    const _movieInfo = JSON.parse(
+    const _movie = JSON.parse(
       cryptHelper.fromBase64(
         this.props.params.resource
       )
     )
 
     // Set subs from movie if exists
-    this.movie.get(_movieInfo.id).then((res) => {
+    this.movie.get(_movie.id).then((res) => {
       // Set new subs
       this.setState({
-        movieInfo: { ..._movieInfo, ...{ title: res.title } },
-        movieSubs: {}// this.subs(res)
+        movie: { ..._movie, ...{ title: res.title } }
       })
     }).catch((e) => {
       log.error('Error in movie get', e)
@@ -58,9 +57,9 @@ export default class PlayerSwitch extends React.Component {
 
         {
           (
-            this.state.movieInfo && React.createElement(
-              this.switchPlayer(this.state.movieInfo.type), {
-                movie: this.state.movieInfo,
+            this.state.movie && React.createElement(
+              this.switchPlayer(this.state.movie.type), {
+                movie: this.state.movie,
                 subs: this.state.movieSubs
               }
             )
