@@ -99,16 +99,6 @@ export default class DetailsMenu extends React.PureComponent {
     })
   }
 
-  selectBestQuality (resources) {
-    const groupedQualities = util.groupBy(resources, 'quality')
-    return Object.keys(groupedQualities).map((key) => {
-      return groupedQualities[key].reduce((old, curr) => {
-        const bestOne = (old.health || 0) > curr.health
-        return bestOne ? old : curr
-      })
-    })
-  }
-
   render () {
     return (
       <nav className='col l12 m12 transparent z-depth-0'>
@@ -135,9 +125,8 @@ export default class DetailsMenu extends React.PureComponent {
               onChange={this.handleMenuChange}
               onGetInitialItem={this.handleMenuChange}
               list={this.prepareMenu(
-                this.selectBestQuality(
-                  this.props.movie.resource.videos
-                )
+                  this.props.movie.resource.video
+
               )}
             />
           }
