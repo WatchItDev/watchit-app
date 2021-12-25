@@ -54,7 +54,6 @@ export default class PlayerSwitch extends React.Component {
     return (
       <div className='movie-player full-width full-height'>
         <ButtonClose action='#/app/movies' />
-
         {
           (
             this.state.movie && React.createElement(

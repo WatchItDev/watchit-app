@@ -7,80 +7,79 @@ import gatewayHelper from '@helpers/gateway'
 import cryptHelper from '@helpers/crypt'
 
 export default class DetailsMenu extends React.PureComponent {
-    constructor(props) {
-        super(props)
-        // Default state
-        this.state = {
-            resource: null,
-            modalOpen: false
-        }
+  constructor (props) {
+    super(props)
+    // Default state
+    this.state = {
+      resource: null,
+      modalOpen: false
     }
+  }
 
-    static get propTypes() {
-        return {
-            movie: PropTypes.object.isRequired
-        }
+  static get propTypes () {
+    return {
+      movie: PropTypes.object.isRequired
     }
+  }
 
-    componentDidMount() {
-        this.prepareDataToPlayer()
-    }
+  componentDidMount () {
+    this.prepareDataToPlayer()
+  }
 
-
-    prepareDataToPlayer() {
-        // Handle type of menu
-        this.setState({
-            resource: cryptHelper.toBase64(
-                JSON.stringify({
-                    id: this.props.movie._id,
-                    type: gatewayHelper.getVideoProtocol(this.props.movie.resource.video),
-                    route: gatewayHelper.parseMovie(this.props.movie.resource.video)
-                })
-            )
+  prepareDataToPlayer () {
+    // Handle type of menu
+    this.setState({
+      resource: cryptHelper.toBase64(
+        JSON.stringify({
+          id: this.props.movie._id,
+          type: gatewayHelper.getVideoProtocol(this.props.movie.resource.video),
+          route: gatewayHelper.parseMovie(this.props.movie.resource.video)
         })
-    }
+      )
+    })
+  }
 
     handleCloseTrailer = () => {
-        this.setState({
-            modalOpen: false
-        })
+      this.setState({
+        modalOpen: false
+      })
     }
 
     openTrailer = (e) => {
-        e.preventDefault()
-        this.setState({
-            modalOpen: true
-        })
+      e.preventDefault()
+      this.setState({
+        modalOpen: true
+      })
     }
 
-    render() {
-        return (
-            <nav className='col l12 m12 transparent z-depth-0'>
-                <div className='nav-wrapper'>
+    render () {
+      return (
+        <nav className='col l12 m12 transparent z-depth-0'>
+          <div className='nav-wrapper'>
 
-                    {
+            {
                         this.state.modalOpen &&
-                        <TrailerPop
+                          <TrailerPop
                             trailer={this.props.movie.trailer_code}
                             onClose={this.handleCloseTrailer}
-                        />
+                          />
                     }
 
-                    {/* Play */}
-                    <NavBarButton
-                        text='Play' icon='icon-controller-play'
-                        link={{href: `#/play/${this.state.resource}`}}
-                    />
+            {/* Play */}
+            <NavBarButton
+              text='Play' icon='icon-controller-play'
+              link={{ href: `#/play/${this.state.resource}` }}
+            />
 
-                    {
+            {
                         this.props.movie.trailer_code &&
-                        <NavBarButton
+                          <NavBarButton
                             text='Trailer' icon='icon-video' mrb={7}
-                            link={{onClick: this.openTrailer, href: '#'}}
-                        />
+                            link={{ onClick: this.openTrailer, href: '#' }}
+                          />
                     }
-                </div>
-            </nav>
-        )
+          </div>
+        </nav>
+      )
     }
 }

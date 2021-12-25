@@ -59,7 +59,7 @@ module.exports = class HLSStreamer extends EventEmitter {
           log.info('m3u8 manifest loaded')
           // Add new qualities to option
           this.setup(videoRef, {
-            ...this.quality(n),
+            ...this.quality(n)
             // ...this.subs(n)
           })
         })
