@@ -20,7 +20,7 @@
     "level-js": "6.0.0",
     "wrtc": "^0.4.7",
     "ipfs": "0.55.4",
-    "go-ipfs": "^0.6.0"
+    "go-ipfs": "^0.10.0"
   },
   "dependencies": {
     "dlnacasts2": "^0.2.0",
