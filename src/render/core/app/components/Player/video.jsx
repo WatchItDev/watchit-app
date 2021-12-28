@@ -19,7 +19,7 @@ export default class PlayerVideo extends React.PureComponent {
   render () {
     return (
       <video
-        ref={this.getRef} autoPlay controls playsInline
+        ref={this.getRef} autoPlay controls playsInline crossOrigin
         className='vjs-theme-city video-js full-width full-height'
       />
     )
