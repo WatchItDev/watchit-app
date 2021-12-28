@@ -5,7 +5,6 @@ import setting from '@settings'
 import PlayerShare from './share'
 import PlayerVideo from './video'
 
-import { DLNA as dlna } from '@main/bridge'
 import HLS from '@main/core/hls'
 import log from '@logger'
 
@@ -16,21 +15,13 @@ export default class Player extends React.Component {
     this.player = null
 
     // Initial State
-    this.state = {
-      devices: this.players || []
-    }
+    this.state = {}
   }
 
   shouldComponentUpdate (nextProps, nextState, nextContext) {
     return nextProps.canPlay
   }
 
-  get players () {
-    if (this.invalidDLNASource || !dlna) return []
-    return dlna.players.map((d) => {
-      return d.name
-    })
-  }
 
   static get defaultProps () {
     return {
@@ -45,37 +36,12 @@ export default class Player extends React.Component {
     }
   }
 
-  handleSelectDevice = (index) => {
-    if (!dlna) return
-    dlna.setPlayer(index.action)
-    dlna.play(this.props.movie.title, this.state.url)
-    this.player.pause()
-  }
 
   async componentDidMount () {
-    if (!this.invalidDLNASource) { this.initDLNA() }
     // Lets start watching :)
     this.startStreaming()
   }
 
-  get invalidDLNASource () {
-    // Check object type for streaming lib and avoid DLNA for invalid sources
-    const blackListed = ['[object HLSStreaming]', '[object BrowserTorrentStreaming]']
-    const currentStreamer = this.streamer.toString()
-    return blackListed.some((el) => Object.is(currentStreamer, el))
-  }
-
-  initDLNA () {
-    // DLNA init
-    dlna && dlna.requestUpdate(
-      // Update devices list
-    ).on('status', (status) => {
-      log.info('Status:' + status)
-    }).on('device', (device) => {
-      log.warn(`New device ${device}`)
-      this.setState({ devices: this.players })
-    })
-  }
 
   _initPlaying = () => {
     if (this.props.onCanPlay && !this.props.canPlay) {
@@ -123,7 +89,6 @@ export default class Player extends React.Component {
   componentWillUnmount () {
     log.warn('STREAMING STOPPED BY USER')
     this.stopStreaming()
-    dlna && dlna.stop()
   }
 
   onError = (e) => {

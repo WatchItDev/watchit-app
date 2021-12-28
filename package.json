@@ -23,7 +23,6 @@
     "go-ipfs": "^0.11.0"
   },
   "dependencies": {
-    "dlnacasts2": "^0.2.0",
     "electron-updater": "^4.3.8",
     "fs-extra": "^9.0.1",
     "get-port": "^5.1.1",
@@ -43,8 +42,9 @@
     "logplease": "^1.2.15",
     "mime": "^2.4.6",
     "msgpack-lite": "^0.1.26",
+    "node-ssdp": "^4.0.1",
     "orbit-db": "^0.28.0",
-    "plyr": "^3.6.2",
+    "plyr": "^3.6.12",
     "pretty-bytes": "^5.6.0",
     "rimraf": "^3.0.2",
     "secp256k1": "^4.0.2",
