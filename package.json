@@ -19,8 +19,8 @@
     "windows-elevate": "^1.0.1",
     "level-js": "6.0.0",
     "wrtc": "^0.4.7",
-    "ipfs": "0.55.4",
-    "go-ipfs": "^0.10.0"
+    "ipfs": "0.61.0",
+    "go-ipfs": "^0.11.0"
   },
   "dependencies": {
     "dlnacasts2": "^0.2.0",
@@ -43,7 +43,7 @@
     "logplease": "^1.2.15",
     "mime": "^2.4.6",
     "msgpack-lite": "^0.1.26",
-    "orbit-db": "^0.26.0",
+    "orbit-db": "^0.28.0",
     "plyr": "^3.6.2",
     "pretty-bytes": "^5.6.0",
     "rimraf": "^3.0.2",
