@@ -2,9 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import setting from '@settings'
 
-import PlayerShare from './share'
 import PlayerVideo from './video'
-
 import HLS from '@main/core/hls'
 import log from '@logger'
 
@@ -104,7 +102,6 @@ export default class Player extends React.Component {
   render () {
     return (
       <div className={(this.props.canPlay && 'left relative full-height full-width') || 'invisible'}>
-        <PlayerShare devices={this.state.devices} onChange={this.handleSelectDevice} />
         <PlayerVideo ref={this.getVideoRef} />
       </div>
     )

@@ -12,7 +12,7 @@ export default {
     const dashInput = videoResource.index?.dash
     const hlsInput = videoResource.index?.hls
     const videoSource = Object.is(videoProtocol, 'dash') ? dashInput : hlsInput
-    return this.dummyParse(`${videoResource.route}/${videoSource}`)
+    return this.dummyParse(`${videoResource.route}${videoSource}`)
   },
 
   parsePosterUri (resource, index) {
