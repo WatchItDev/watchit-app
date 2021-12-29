@@ -58,27 +58,22 @@ export default class DetailsMenu extends React.PureComponent {
         <nav className='col l12 m12 transparent z-depth-0'>
           <div className='nav-wrapper'>
 
-            {
-                        this.state.modalOpen &&
-                          <TrailerPop
-                            trailer={this.props.movie.trailer_code}
-                            onClose={this.handleCloseTrailer}
-                          />
-                    }
+            {this.state.modalOpen &&
+              <TrailerPop
+                trailer={this.props.movie.trailer_code}
+                onClose={this.handleCloseTrailer}
+              />}
 
-            {/* Play */}
             <NavBarButton
               text='Play' icon='icon-controller-play'
               link={{ href: `#/play/${this.state.resource}` }}
             />
 
-            {
-                        this.props.movie.trailer_code &&
-                          <NavBarButton
-                            text='Trailer' icon='icon-video' mrb={7}
-                            link={{ onClick: this.openTrailer, href: '#' }}
-                          />
-                    }
+            {this.props.movie.trailer_code &&
+              <NavBarButton
+                text='Trailer' icon='icon-video' mrb={7}
+                link={{ onClick: this.openTrailer, href: '#' }}
+              />}
           </div>
         </nav>
       )
