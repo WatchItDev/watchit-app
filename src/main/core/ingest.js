@@ -3,7 +3,7 @@ const EventEmitter = require('events')
 const BufferList = require('bl/BufferList')
 const msgpack = require('msgpack-lite')
 const key = require('./key')
-const QUEUE_SLEEP = 7000
+const QUEUE_SLEEP = 5000
 
 module.exports = class Ingest extends EventEmitter {
   constructor (orbit) {
