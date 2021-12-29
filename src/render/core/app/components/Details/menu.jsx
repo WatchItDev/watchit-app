@@ -32,8 +32,8 @@ export default class DetailsMenu extends React.PureComponent {
       resource: cryptHelper.toBase64(
         JSON.stringify({
           id: this.props.movie._id,
-          type: gatewayHelper.getVideoProtocol(this.props.movie.resource.video),
-          route: gatewayHelper.parseMovie(this.props.movie.resource.video)
+          type: gatewayHelper.getVideoProtocol(this.props.movie.resource),
+          route: gatewayHelper.parseMovie(this.props.movie.resource)
         })
       )
     })

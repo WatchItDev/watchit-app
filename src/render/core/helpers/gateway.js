@@ -2,17 +2,17 @@ import settings from '@settings'
 
 // TODO write tests
 export default {
-  getVideoProtocol (videoResourceObject) {
-    if (!('index' in videoResourceObject)) throw new Error('Invalid resource scheme')
-    const videoIndex = videoResourceObject.index // Get index based on scheme
+  getVideoProtocol (resource) {
+    if (!('index' in resource?.video)) throw new Error('Invalid resource scheme')
+    const videoIndex = resource.video.index // Get index based on scheme
     return 'dash' in videoIndex ? 'dash' : 'hls'
   },
-  parseMovie (videoResource) {
-    const videoProtocol = this.getVideoProtocol(videoResource)
-    const dashInput = videoResource.index?.dash
-    const hlsInput = videoResource.index?.hls
+  parseMovie (resource) {
+    const videoProtocol = this.getVideoProtocol(resource)
+    const dashInput = resource.video.index?.dash
+    const hlsInput = resource.video.index?.hls
     const videoSource = Object.is(videoProtocol, 'dash') ? dashInput : hlsInput
-    return this.dummyParse(`${videoResource.route}${videoSource}`)
+    return this.dummyParse(`${resource.video.route}${videoSource}`)
   },
 
   parsePosterUri (resource, index) {
