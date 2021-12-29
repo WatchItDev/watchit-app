@@ -4,9 +4,8 @@ import ReactDOM from 'react-dom'
 import App from './core/app/index'
 import { Broker as broker } from '@main/bridge'
 import * as Bootstrap from '@main/core'
-import 'normalize.css'
 
-import 'plyr/src/sass/plyr.scss'
+import 'normalize.css'
 import './index.web.sass'
 import * as serviceWorker from './serviceWorker'
 

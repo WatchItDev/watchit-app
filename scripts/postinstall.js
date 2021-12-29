@@ -12,7 +12,7 @@ const executePostInstall = async () => {
     await execPassthru('sudo chmod 4755 -R node_modules/electron/dist/chrome-sandbox')
   }
 
-  await execPassthru('npm i wrtc@0.4.7 ipfs@0.61.0 level-js@6.0.0 --no-save')
+  await execPassthru('npm i wrtc@0.4.7 ipfs@0.60.2 level-js@6.0.0 --no-save')
   await execPassthru('electron-builder install-app-deps')
   await execPassthru('npm rebuild ursa-optional')
 }

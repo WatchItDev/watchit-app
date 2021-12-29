@@ -5,7 +5,6 @@ import ReactDOM from 'react-dom'
 import App from './core/app'
 
 import 'normalize.css'
-import 'plyr/src/sass/plyr.scss'
 import './index.sass'
 
 const root = document.getElementById('root')
