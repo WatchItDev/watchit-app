@@ -60,19 +60,19 @@ $m-width_height: max-height max-width min-height min-width;
 
     @each $m_p in $margin_padding {
       .#{$m_p}-#{$l}-#{$i}-#{"vh"} {
-        #{$m_p}-#{$l}: $i#{"vh"} !important;
+        #{$m_p}-#{$l}: $i+vh !important;
       }
     }
 
     @each $m_p in $margin_padding {
       .#{$m_p}-#{$l}-#{$i}-#{"vw"} {
-        #{$m_p}-#{$l}: $i#{"vw"} !important;
+        #{$m_p}-#{$l}: $i+vw !important;
       }
     }
 
     @each $m_p in $margin_padding {
       .#{$m_p}-#{$l}-#{$i}-#{"rem"} {
-        #{$m_p}-#{$l}: $i#{"rem"} !important;
+        #{$m_p}-#{$l}: $i+rem !important;
       }
     }
   }
@@ -90,15 +90,15 @@ $m-width_height: max-height max-width min-height min-width;
     }
 
     .#{$l}-#{$i}-#{"vh"} {
-      #{$l}: $i#{"vh"} !important;
+      #{$l}: $i+vh !important;
     }
 
     .#{$l}-#{$i}-#{"vw"} {
-      #{$l}: $i#{"vw"} !important;
+      #{$l}: $i+vw !important;
     }
 
     .#{$l}-#{$i}-#{"rem"} {
-      #{$l}: $i#{"rem"} !important;
+      #{$l}: $i+rem !important;
     }
   }
 }
@@ -126,15 +126,15 @@ $m-width_height: max-height max-width min-height min-width;
 
   @each $l in $width_height {
     .#{$l}-#{$i}-#{"vh"} {
-      #{$l}: (0 + $i)#{"vh"} !important;
+      #{$l}: (0 + $i)+vh !important;
     }
 
     .#{$l}-#{$i}-#{"vw"} {
-      #{$l}: (0 + $i)#{"vw"} !important;
+      #{$l}: (0 + $i)+vw !important;
     }
 
     .#{$l}-#{$i}-#{"rem"} {
-      #{$l}:  $i#{"rem"} !important;
+      #{$l}:  $i+rem !important;
     }
 
   }
@@ -148,15 +148,15 @@ $m-width_height: max-height max-width min-height min-width;
       #{$l}: 0px + $i !important;
     }
     .#{$l}-#{$i}-#{"vw"} {
-      #{$l}: (0 + $i)#{"vw"} !important;
+      #{$l}: (0 + $i)+vw !important;
     }
 
     .#{$l}-#{$i}-#{"vh"} {
-      #{$l}: (0 + $i)#{"vh"} !important;
+      #{$l}: (0 + $i)+vh !important;
     }
 
     .#{$l}-#{$i}-#{"rem"} {
-      #{$l}: (0 + $i)#{"rem"} !important;
+      #{$l}: (0 + $i)+rem !important;
     }
 
   }
