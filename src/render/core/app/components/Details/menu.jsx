@@ -27,13 +27,14 @@ export default class DetailsMenu extends React.PureComponent {
   }
 
   prepareDataToPlayer () {
-    // Handle type of menu
+    const id = this.props.movie._id
+    const type = gatewayHelper.getVideoProtocol(this.props.movie.resource)
+    const route = gatewayHelper.parseMovie(this.props.movie.resource)
+
     this.setState({
       resource: cryptHelper.toBase64(
         JSON.stringify({
-          id: this.props.movie._id,
-          type: gatewayHelper.getVideoProtocol(this.props.movie.resource),
-          route: gatewayHelper.parseMovie(this.props.movie.resource)
+          id, type, route
         })
       )
     })
@@ -58,12 +59,12 @@ export default class DetailsMenu extends React.PureComponent {
           <div className='nav-wrapper'>
 
             {
-                this.state.modalOpen &&
-                  <TrailerPop
-                    trailer={this.props.movie.trailer_code}
-                    onClose={this.handleCloseTrailer}
-                  />
-            }
+                        this.state.modalOpen &&
+                          <TrailerPop
+                            trailer={this.props.movie.trailer_code}
+                            onClose={this.handleCloseTrailer}
+                          />
+                    }
 
             {/* Play */}
             <NavBarButton
@@ -72,12 +73,12 @@ export default class DetailsMenu extends React.PureComponent {
             />
 
             {
-                this.props.movie.trailer_code &&
-                  <NavBarButton
-                    text='Trailer' icon='icon-video' mrb={7}
-                    link={{ onClick: this.openTrailer, href: '#' }}
-                  />
-            }
+                        this.props.movie.trailer_code &&
+                          <NavBarButton
+                            text='Trailer' icon='icon-video' mrb={7}
+                            link={{ onClick: this.openTrailer, href: '#' }}
+                          />
+                    }
           </div>
         </nav>
       )
