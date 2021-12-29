@@ -2,6 +2,7 @@ const log = require('logplease').create('INGEST')
 const EventEmitter = require('events')
 const BufferList = require('bl/BufferList')
 const msgpack = require('msgpack-lite')
+const provider = require('./provs')
 const key = require('./key')
 const QUEUE_SLEEP = 7000
 
@@ -39,9 +40,9 @@ module.exports = class Ingest extends EventEmitter {
   }
 
   async cat (cid) {
-    log.info('Fetching cid', cid)
-
     try {
+      await provider.findProv(this.orbit.node, cid)
+      log.info('Fetching and reaching providers for CID:', cid)
       for await (const file of this.orbit.node.get(cid)) {
         if (!file.content) continue
 
