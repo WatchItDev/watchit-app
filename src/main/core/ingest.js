@@ -34,7 +34,7 @@ module.exports = class Ingest extends EventEmitter {
   cleanInterval () {
     if (!this.queueInterval) return
     log.warn('Cleaning queue interval')
-    this.asyncLock = false;
+    this.asyncLock = false
     return clearInterval(this.queueInterval)
   }
 
@@ -96,7 +96,7 @@ module.exports = class Ingest extends EventEmitter {
 
   async queueProcessor () {
     this.queueInterval = setInterval(async () => {
-      const maxToReplicate = this.orbit.db.iterator({limit: -1}).collect().length
+      const maxToReplicate = this.orbit.db.iterator({ limit: -1 }).collect().length
       if (this.asyncLock || Object.is(maxToReplicate, 0)) {
         log.info('Skip process queue. Waiting for data or lock release')
         return false // Skip if locked or no data received

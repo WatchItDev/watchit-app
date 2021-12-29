@@ -14,6 +14,12 @@ export default {
     const videoSource = Object.is(videoProtocol, 'dash') ? dashInput : hlsInput
     return this.dummyParse(`${videoResource.route}/${videoSource}`)
   },
+
+  parsePosterUri (resource, index) {
+    const imageRoute = resource?.image?.route
+    const imageIndex = resource?.image?.index[index]
+    return this.dummyParse(`${imageRoute}${imageIndex}`)
+  },
   dummyParse (resource) {
     const random = Math.floor(Math.random() * settings.gateways.length)
     return `${settings.gateways[random]}/ipfs/${resource}`

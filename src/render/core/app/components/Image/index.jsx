@@ -1,7 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import PulseLoader from '@components/PulseLoader/'
-import gatewayHelper from '@helpers/gateway'
 import log from '@logger'
 
 export default class Image extends React.PureComponent {
@@ -11,17 +10,9 @@ export default class Image extends React.PureComponent {
     this.state = { loaded: false }
   }
 
-  parseUriImage = (image) => {
-    if (image) {
-      // While load chunk of movies image = undefined
-      // Check if valid param before
-      return gatewayHelper.dummyParse(image)
-    }
-  }
-
   static get propTypes () {
     return {
-      src: PropTypes.object.isRequired
+      src: PropTypes.string.isRequired
     }
   }
 
@@ -69,7 +60,7 @@ export default class Image extends React.PureComponent {
             <PulseLoader style={this.props.pulseStyle} />
         }
         <img
-          alt='' src={this.parseUriImage(this.props.src)} onLoad={this.handleImageLoaded}
+          alt='' src={this.props.src} onLoad={this.handleImageLoaded}
           loading='lazy' onError={this.handleImageError} ref={this.getRef}
           className={(this.state.loaded || !this.props.preload)
             ? 'loaded-img responsive-img'

@@ -31,6 +31,7 @@
     "iconv-lite": "^0.5.1",
     "identity-obj-proxy": "3.0.0",
     "ip": "^1.1.5",
+    "ipfs": "^0.55.0",
     "ipfs-http-client": "^47.0.1",
     "ipfsd-ctl": "^7.2.0",
     "it-all": "^1.0.5",

@@ -22,7 +22,6 @@ export default class Player extends React.Component {
     return nextProps.canPlay
   }
 
-
   static get defaultProps () {
     return {
       canPlay: false
@@ -36,12 +35,10 @@ export default class Player extends React.Component {
     }
   }
 
-
   async componentDidMount () {
     // Lets start watching :)
     this.startStreaming()
   }
-
 
   _initPlaying = () => {
     if (this.props.onCanPlay && !this.props.canPlay) {

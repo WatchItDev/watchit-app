@@ -11,5 +11,5 @@ const Broker = require('./broker')
 
 // Preload bridge
 module.exports = global.bridge = {
-    Key, Broker: Broker.getInstance(),
+  Key, Broker: Broker.getInstance()
 }
