@@ -50,9 +50,7 @@ module.exports = (ports) => {
         HighWater: 180,
         LowWater: 90,
         Type: 'basic'
-      },
-      EnableAutoRelay: true,
-      EnableRelayHop: false
+      }
     },
     Discovery: { MDNS: { Enabled: true, Interval: 10 } },
     Peering: {

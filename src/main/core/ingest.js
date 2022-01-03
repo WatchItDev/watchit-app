@@ -1,6 +1,5 @@
 const log = require('logplease').create('INGEST')
 const EventEmitter = require('events')
-const BufferList = require('bl/BufferList')
 const msgpack = require('msgpack-lite')
 const key = require('./key')
 const QUEUE_SLEEP = 5000
@@ -41,13 +40,8 @@ module.exports = class Ingest extends EventEmitter {
   async cat (cid) {
     try {
       log.info('Fetching and reaching providers for CID:', cid)
-      for await (const file of this.orbit.node.get(cid)) {
-        if (!file.content) continue
-
-        // log.info(`Processing ${c.cid}`);
-        const content = new BufferList()
-        for await (const chunk of file.content) content.append(chunk)
-        return { content: msgpack.decode(content.slice()) }
+      for await (const buffer of this.orbit.node.get(cid)) {
+        return { content: msgpack.decode(buffer.toString()) }
       }
     } catch (e) {
       log.error('Error trying fetch CID', cid, 'from network')
@@ -96,7 +90,7 @@ module.exports = class Ingest extends EventEmitter {
 
   async queueProcessor () {
     this.queueInterval = setInterval(async () => {
-      const maxToReplicate = this.orbit.db.iterator({ limit: -1 }).collect().length
+      const maxToReplicate = this.orbit.db?.replicationStatus?.max || 0
       if (this.asyncLock || Object.is(maxToReplicate, 0)) {
         log.info('Skip process queue. Waiting for data or lock release')
         return false // Skip if locked or no data received

@@ -1,6 +1,6 @@
 const IPFS = require('ipfs')
 const log = require('logplease').create('IPFS')
-const libp2p = require('./p2p')
+// const libp2p = require('./p2p')
 const defaultConf = require('./settings')
 
 const ipfsFactory = async (conf = {}) => {
@@ -11,7 +11,7 @@ const ipfsFactory = async (conf = {}) => {
       config: confSettings,
       preload: { enabled: false },
       EXPERIMENTAL: { pubsub: true },
-      ...{ libp2p }
+      // ...{ libp2p }
     },
     ...conf
   })
