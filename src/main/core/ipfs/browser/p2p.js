@@ -8,7 +8,6 @@ const Gossipsub = require('libp2p-gossipsub')
 const MulticastDNS = require('libp2p-mdns')
 const KadDHT = require('libp2p-kad-dht')
 const MPLEX = require('libp2p-mplex')
-const { NOISE } = require('libp2p-noise')
 const { FaultTolerance } = require('libp2p/src/transport-manager')
 const uint8ArrayToString = require('uint8arrays/to-string')
 
@@ -48,7 +47,6 @@ module.exports = (opts) => {
     modules: {
       transport: [Websockets, WebrtcStar],
       streamMuxer: [MPLEX],
-      connEncryption: [NOISE],
       peerDiscovery: [Bootstrap, MulticastDNS],
       dht: KadDHT,
       pubsub: Gossipsub
