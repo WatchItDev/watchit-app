@@ -1,4 +1,8 @@
 @use "sass:color";
+@use "_variables";
+@use "_mixins";
+@use "_prefixer";
+@forward "_typography";
 //Default styles
 
 html {
@@ -24,7 +28,7 @@ ul {
 }
 
 a {
-  color: $link-color;
+  color: variables.$link-color;
   text-decoration: none;
 
   // Gets rid of tap active state
@@ -33,8 +37,8 @@ a {
 
 // Positioning
 .valign-wrapper {
-  @include flexbox();
-  @include align(center);
+  @include prefixer.flexbox();
+  @include prefixer.align(center);
 
   .valign {
     display: block;
@@ -92,7 +96,7 @@ ul {
 .divider {
   height: 1px;
   overflow: hidden;
-  background-color: color("grey", "lighten-2");
+  background-color: #e0e0e0;
 }
 
 //  Blockquote
@@ -100,7 +104,7 @@ ul {
 blockquote {
   margin: 20px 0;
   padding-left: 1.5rem;
-  border-left: 5px solid $primary-color;
+  border-left: 5px solid variables.$primary-color;
 }
 
 // Icon Styles
@@ -158,7 +162,7 @@ video.responsive-video {
     }
 
     &.active {
-      background-color: $primary-color;
+      background-color: variables.$primary-color;
     }
 
     &.disabled a {
@@ -178,7 +182,7 @@ video.responsive-video {
   }
 }
 
-@media #{$medium-and-down} {
+@media #{variables.$medium-and-down} {
   .pagination {
     width: 100%;
 
@@ -276,68 +280,68 @@ ul.staggered-list li {
   Media Query Classes
 **********************/
 .hide-on-small-only, .hide-on-small-and-down {
-  @media #{$small-and-down} {
+  @media #{variables.$small-and-down} {
     display: none !important;
   }
 }
 
 .hide-on-med-and-down {
-  @media #{$medium-and-down} {
+  @media #{variables.$medium-and-down} {
     display: none !important;
   }
 }
 
 .hide-on-med-and-up {
-  @media #{$medium-and-up} {
+  @media #{variables.$medium-and-up} {
     display: none !important;
   }
 }
 
 .hide-on-med-only {
-  @media only screen and (min-width: $small-screen) and (max-width: $medium-screen) {
+  @media only screen and (min-width: variables.$small-screen) and (max-width: variables.$medium-screen) {
     display: none !important;
   }
 }
 
 .hide-on-large-only {
-  @media #{$large-and-up} {
+  @media #{variables.$large-and-up} {
     display: none !important;
   }
 }
 
 .show-on-large {
-  @media #{$large-and-up} {
+  @media #{variables.$large-and-up} {
     display: initial !important;
   }
 }
 
 .show-on-medium {
-  @media only screen and (min-width: $small-screen) and (max-width: $medium-screen) {
+  @media only screen and (min-width: variables.$small-screen) and (max-width: variables.$medium-screen) {
     display: initial !important;
   }
 }
 
 .show-on-small {
-  @media #{$small-and-down} {
+  @media #{variables.$small-and-down} {
     display: initial !important;
   }
 }
 
 .show-on-medium-and-up {
-  @media #{$medium-and-up} {
+  @media #{variables.$medium-and-up} {
     display: initial !important;
   }
 }
 
 .show-on-medium-and-down {
-  @media #{$medium-and-down} {
+  @media #{variables.$medium-and-down} {
     display: initial !important;
   }
 }
 
 // Center text on mobile
 .center-on-small-only {
-  @media #{$small-and-down} {
+  @media #{variables.$small-and-down} {
     text-align: center;
   }
 }
@@ -346,7 +350,7 @@ ul.staggered-list li {
 footer.page-footer {
   margin-top: 20px;
   padding-top: 20px;
-  background-color: $footer-bg-color;
+  background-color: variables.$footer-bg-color;
 
   .footer-copyright {
     overflow: hidden;
@@ -369,12 +373,12 @@ table {
 
   &.bordered > thead > tr,
   &.bordered > tbody > tr {
-    border-bottom: 1px solid $table-border-color;
+    border-bottom: 1px solid variables.$table-border-color;
   }
 
   &.striped > tbody {
     > tr:nth-child(odd) {
-      background-color: $table-striped-color;
+      background-color: variables.$table-striped-color;
     }
 
     > tr > td {
@@ -383,9 +387,9 @@ table {
   }
 
   &.highlight > tbody > tr {
-    @include transition(background-color .25s ease);
+    @include prefixer.transition(background-color .25s ease);
     &:hover {
-      background-color: $table-striped-color;
+      background-color: variables.$table-striped-color;
     }
   }
 
@@ -399,7 +403,7 @@ table {
 }
 
 thead {
-  border-bottom: 1px solid $table-border-color;
+  border-bottom: 1px solid variables.$table-border-color;
 }
 
 td, th {
@@ -411,7 +415,7 @@ td, th {
 }
 
 // Responsive Table
-@media #{$medium-and-down} {
+@media #{variables.$medium-and-down} {
 
   table.responsive-table {
     width: 100%;
@@ -470,7 +474,7 @@ td, th {
     /* sort out borders */
     thead {
       border: 0;
-      border-right: 1px solid $table-border-color;
+      border-right: 1px solid variables.$table-border-color;
     }
 
     &.bordered {
@@ -487,7 +491,7 @@ td, th {
         border: 0;
       }
       tbody tr {
-        border-right: 1px solid $table-border-color;
+        border-right: 1px solid variables.$table-border-color;
       }
     }
 
@@ -497,18 +501,18 @@ td, th {
 
 // Collections
 .collection {
-  margin: $element-top-margin 0 $element-bottom-margin 0;
-  border: 1px solid $collection-border-color;
+  margin: variables.$element-top-margin 0 variables.$element-bottom-margin 0;
+  border: 1px solid variables.$collection-border-color;
   border-radius: 2px;
   overflow: hidden;
   position: relative;
 
   .collection-item {
-    background-color: $collection-bg-color;
+    background-color: variables.$collection-bg-color;
     line-height: 1.5rem;
     padding: 10px 20px;
     margin: 0;
-    border-bottom: 1px solid $collection-border-color;
+    border-bottom: 1px solid variables.$collection-border-color;
 
     // Avatar Collection
     &.avatar {
@@ -554,8 +558,8 @@ td, th {
     }
 
     &.active {
-      background-color: $collection-active-bg-color;
-      color: $collection-active-color;
+      background-color: variables.$collection-active-bg-color;
+      color: variables.$collection-active-color;
 
       .secondary-content {
         color: #fff;
@@ -564,19 +568,19 @@ td, th {
   }
   a.collection-item {
     display: block;
-    @include transition(.25s);
-    color: $collection-link-color;
+    @include prefixer.transition(.25s);
+    color: variables.$collection-link-color;
     &:not(.active) {
       &:hover {
-        background-color: $collection-hover-bg-color;
+        background-color: variables.$collection-hover-bg-color;
       }
     }
   }
 
   &.with-header {
     .collection-header {
-      background-color: $collection-bg-color;
-      border-bottom: 1px solid $collection-border-color;
+      background-color: variables.$collection-bg-color;
+      border-bottom: 1px solid variables.$collection-border-color;
       padding: 10px 20px;
     }
     .collection-item {
@@ -592,7 +596,7 @@ td, th {
 // Made less specific to allow easier overriding
 .secondary-content {
   float: right;
-  color: $secondary-color;
+  color: variables.$secondary-color;
 }
 
 .collapsible .collection {
@@ -610,13 +614,13 @@ span.badge {
   color: color('grey', 'darken-1');
   position: absolute;
   right: 15px;
-  @include box-sizing(border-box);
+  @include prefixer.box-sizing(border-box);
 
   &.new {
     font-weight: 300;
     font-size: 0.8rem;
     color: #fff;
-    background-color: $badge-bg-color;
+    background-color: variables.$badge-bg-color;
     border-radius: 2px;
   }
   &.new:after {
@@ -652,9 +656,9 @@ nav ul a span.badge {
   height: 4px;
   display: block;
   width: 100%;
-  background-color: color.adjust($progress-bar-color, $lightness: 40%);
+  background-color: color.adjust(variables.$progress-bar-color, $lightness: 40%);
   border-radius: 2px;
-  margin: $element-top-margin 0 $element-bottom-margin 0;
+  margin: variables.$element-top-margin 0 variables.$element-bottom-margin 0;
   overflow: hidden;
   .determinate {
     position: absolute;
@@ -662,11 +666,11 @@ nav ul a span.badge {
     top: 0;
     left: 0;
     bottom: 0;
-    background-color: $progress-bar-color;
-    @include transition(width .3s linear);
+    background-color: variables.$progress-bar-color;
+    @include prefixer.transition(width .3s linear);
   }
   .indeterminate {
-    background-color: $progress-bar-color;
+    background-color: variables.$progress-bar-color;
     &:before {
       content: '';
       position: absolute;
@@ -676,7 +680,7 @@ nav ul a span.badge {
       bottom: 0;
       will-change: left, right;
       // Custom bezier
-      @include animation(indeterminate 2.1s cubic-bezier(0.650, 0.815, 0.735, 0.395) infinite);
+      @include prefixer.animation(indeterminate 2.1s cubic-bezier(0.650, 0.815, 0.735, 0.395) infinite);
 
     }
     &:after {
@@ -688,13 +692,13 @@ nav ul a span.badge {
       bottom: 0;
       will-change: left, right;
       // Custom bezier
-      @include animation(indeterminate-short 2.1s cubic-bezier(0.165, 0.840, 0.440, 1.000) infinite);
-      @include animation-delay(1.15s);
+      @include prefixer.animation(indeterminate-short 2.1s cubic-bezier(0.165, 0.840, 0.440, 1.000) infinite);
+      @include prefixer.animation-delay(1.15s);
     }
   }
 }
 
-@include keyframes(indeterminate) {
+@include prefixer.keyframes(indeterminate) {
   0% {
     left: -35%;
     right: 100%;
@@ -709,7 +713,7 @@ nav ul a span.badge {
   }
 }
 
-@include keyframes(indeterminate-short) {
+@include prefixer.keyframes(indeterminate-short) {
   0% {
     left: -200%;
     right: 100%;

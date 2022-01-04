@@ -1,4 +1,5 @@
 @use "_mixins";
+@forward "../vendor/sass/components/_form";
 /**INPUTS*/
 .input-field-black {
   @extend .input-field;

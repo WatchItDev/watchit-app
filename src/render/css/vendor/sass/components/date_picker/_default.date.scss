@@ -4,6 +4,8 @@
 /**
  * The picker box.
  */
+@use "../_variables";
+@use "../_prefixer";
 .picker__box {
   padding: 0 1em;
 }
@@ -50,7 +52,7 @@
 }
 .picker__select--month:focus,
 .picker__select--year:focus {
-  border-color: $datepicker-focus;
+  border-color: variables.$datepicker-focus;
 }
 /**
  * The month navigation buttons.
@@ -209,7 +211,7 @@
 
 //  Circle background
    border-radius: 50%;
-  @include transform(scale(.75));
+  @include prefixer.transform(scale(.75));
   background: #0089ec;
   color: #ffffff;
 }
@@ -258,7 +260,7 @@
 .picker__button--clear:focus,
 .picker__button--close:focus {
   background: #b1dcfb;
-  border-color: $datepicker-focus;
+  border-color: variables.$datepicker-focus;
   outline: none;
 }
 .picker__button--today:before,
@@ -313,7 +315,7 @@
 
 .picker__date-display {
   text-align: center;
-  background-color: $datepicker-date-bg;
+  background-color: variables.$datepicker-date-bg;
   color: #fff;
   padding-bottom: 15px;
   font-weight: 300;
@@ -323,11 +325,11 @@
 .picker__nav--next:hover {
   cursor: pointer;
   color: #000000;
-  background: $datepicker-selected-outfocus;
+  background: variables.$datepicker-selected-outfocus;
 }
 
 .picker__weekday-display {
-  background-color: $datepicker-weekday-bg;
+  background-color: variables.$datepicker-weekday-bg;
   padding: 10px;
   font-weight: 200;
   letter-spacing: .5;
@@ -346,7 +348,7 @@
 }
 .picker__year-display {
   font-size: 1.8rem;
-  color: $datepicker-year;
+  color: variables.$datepicker-year;
 }
 
 .picker__box {
@@ -376,7 +378,7 @@
 
 //Today style
 .picker__day.picker__day--today {
-  color: $datepicker-selected;
+  color: variables.$datepicker-selected;
 }
 
 .picker__day.picker__day--today.picker__day--selected {
@@ -394,10 +396,10 @@
 .picker--focused .picker__day--selected {
   // Circle background
   border-radius: 50%;
-  @include transform(scale(.9));
-  background-color: $datepicker-selected;
+  @include prefixer.transform(scale(.9));
+  background-color: variables.$datepicker-selected;
   &.picker__day--outfocus {
-    background-color: $datepicker-selected-outfocus;
+    background-color: variables.$datepicker-selected-outfocus;
   }
   color: #ffffff;
 }
@@ -411,7 +413,7 @@
 .picker__close, .picker__today {
   font-size: 1.1rem;
   padding: 0 1rem;
-  color: $datepicker-selected;
+  color: variables.$datepicker-selected;
 }
 
 //month nav buttons
@@ -431,5 +433,5 @@
   border-left: 0.75em solid #676767;
 }
 button.picker__today:focus, button.picker__clear:focus, button.picker__close:focus {
-  background-color: $datepicker-selected-outfocus;
+  background-color: variables.$datepicker-selected-outfocus;
 }

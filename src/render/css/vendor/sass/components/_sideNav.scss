@@ -1,3 +1,6 @@
+@use "_variables";
+@use "_prefixer";
+@forward "_global";
 .side-nav {
   position: fixed;
   width: 240px;
@@ -8,7 +11,7 @@
   height: calc(100% + 60px);
   height: -moz-calc(100%); //Temporary Firefox Fix
   padding-bottom: 60px;
-  background-color: $sidenav-bg-color;
+  background-color: variables.$sidenav-bg-color;
   z-index: 999;
   overflow-y: auto;
 
@@ -29,7 +32,7 @@
 
   li {
     float: none;
-    padding: 0 $sidenav-padding-right;
+    padding: 0 variables.$sidenav-padding-right;
     &:hover, &.active { background-color: #ddd; }
   }
   a {
@@ -38,7 +41,7 @@
     font-size: 1rem;
     height: 64px;
     line-height: 64px;
-    padding: 0 $sidenav-padding-right;
+    padding: 0 variables.$sidenav-padding-right;
   }
 }
 
@@ -57,7 +60,7 @@
 .side-nav.fixed {
   a {
     display: block;
-    padding: 0 $sidenav-padding-right;
+    padding: 0 variables.$sidenav-padding-right;
     color: #444;
   }
 }
@@ -76,7 +79,7 @@
 }
 
 // Fixed sideNav hide on smaller
-@media #{$medium-and-down} {
+@media #{variables.$medium-and-down} {
   .side-nav.fixed {
     left: -105%;
 
@@ -90,9 +93,9 @@
 
 .side-nav .collapsible-body li.active,
 .side-nav.fixed .collapsible-body li.active {
-  background-color: $primary-color;
+  background-color: variables.$primary-color;
   a {
-    color: $sidenav-bg-color;
+    color: variables.$sidenav-bg-color;
   }
 }
 

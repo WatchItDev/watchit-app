@@ -2,14 +2,14 @@
 /*** Colors ***/
 @use "sass:math";
 
-$primary-color: color("materialize-red", "lighten-2") !default;
+$primary-color: #e51c23 !default;
 $primary-color-light: color.adjust($primary-color, $lightness: 15%) !default;
 $primary-color-dark: color.adjust($primary-color, $lightness: -15%) !default;
 
-$secondary-color: color("teal", "lighten-1") !default;
-$success-color: color("green", "base") !default;
-$error-color: color("red", "base") !default;
-$link-color: color("light-blue", "darken-1") !default;
+$secondary-color: #26a69a !default;
+$success-color: #4CAF50 !default;
+$error-color: #F44336 !default;
+$link-color:  #03a9f4 !default;
 
 /*** Badges ***/
 $badge-bg-color: $secondary-color !default;
@@ -29,7 +29,7 @@ $button-line-height: 36px !default;
 /*** Cards ***/
 $card-padding: 20px !default;
 $card-bg-color: #fff !default;
-$card-link-color: color("orange", "accent-2") !default;
+$card-link-color: #ffab40 !default;
 $card-link-color-light: color.adjust($card-link-color, $lightness: 20%) !default;
 
 /*** Collapsible ***/
@@ -55,13 +55,13 @@ $dropdown-color: $secondary-color !default;
 $dropdown-item-height: 50px !default;
 
 /*** Fonts ***/
-$roboto-font-path: "../font/roboto/" !default;
-$icons-font-path: "../font/material-design-icons/" !default;
+$roboto-font-path: "./css/include/font/roboto/" !default;
+$icons-font-path: "./css/include/font/material-design-icons/" !default;
 
 
 /*** Forms ***/
 // Text Inputs + Textarea
-$input-border-color: color("grey", "base") !default;
+$input-border-color: #9e9e9e !default;
 $input-bg-color: #fff !default;
 $input-error-color: $error-color !default;
 $input-success-color: $success-color !default;
@@ -113,9 +113,9 @@ $sidenav-bg-color: #fff !default;
 $sidenav-padding-right: 15px !default;
 
 /*** Photo Slider ***/
-$slider-bg-color: color('grey', 'base') !default;
-$slider-bg-color-light: color('grey', 'lighten-2') !default;
-$slider-indicator-color: color('green', 'base') !default;
+$slider-bg-color: #9e9e9e !default;
+$slider-bg-color-light: #e0e0e0 !default;
+$slider-indicator-color: #9e9e9e !default;
 
 /*** Spinners | Loaders ***/
 $spinner-default-color: $secondary-color !default;

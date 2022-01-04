@@ -1,7 +1,9 @@
 @use "sass:color";
+@use "_variables";
+@forward "_global";
 .dropdown-content {
   @extend .z-depth-1;
-  background-color: $dropdown-bg-color;
+  background-color: variables.$dropdown-bg-color;
   margin: 0;
   display: none;
   min-width: 80px;
@@ -14,20 +16,20 @@
 
   li {
     clear: both;
-    color: $off-black;
+    color: variables.$off-black;
     cursor: pointer;
-    min-height: $dropdown-item-height;
+    min-height: variables.$dropdown-item-height;
     line-height: 1.5rem;
     width: 100%;
     text-align: left;
     text-transform: none;
 
     &:hover, &.active, &.selected {
-      background-color: $dropdown-hover-bg-color;
+      background-color: variables.$dropdown-hover-bg-color;
     }
 
     &.active.selected {
-      background-color: color.adjust($dropdown-hover-bg-color, $lightness: -5%);
+      background-color: color.adjust(variables.$dropdown-hover-bg-color, $lightness: -5%);
     }
 
     &.divider {
@@ -37,10 +39,10 @@
 
     & > a, & > span {
       font-size: 16px;
-      color: $dropdown-color;
+      color: variables.$dropdown-color;
       display: block;
       line-height: 22px;
-      padding: (($dropdown-item-height - 22) * 0.5) 16px;
+      padding: ((variables.$dropdown-item-height - 22) * 0.5) 16px;
     }
 
     & > span > label {

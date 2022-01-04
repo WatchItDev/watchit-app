@@ -1,3 +1,5 @@
+@use "_variables";
+@use "_prefixer";
 .slider {
   position: relative;
   height: 400px;
@@ -24,7 +26,7 @@
   }
 
   .slides {
-    background-color: $slider-bg-color;
+    background-color: variables.$slider-bg-color;
     margin: 0;
     height: 400px;
 
@@ -53,7 +55,7 @@
         width: 70%;
         opacity: 0;
 
-        p { color: $slider-bg-color-light; }
+        p { color: variables.$slider-bg-color-light; }
       }
 
       &.active {
@@ -78,13 +80,13 @@
       height: 16px;
       width: 16px;
       margin: 0 12px;
-      background-color: $slider-bg-color-light;
+      background-color: variables.$slider-bg-color-light;
 
-      @include transition(background-color .3s);
+      @include prefixer.transition(background-color .3s);
       border-radius: 50%;
 
       &.active {
-        background-color: $slider-indicator-color;
+        background-color: variables.$slider-indicator-color;
       }
     }
   }

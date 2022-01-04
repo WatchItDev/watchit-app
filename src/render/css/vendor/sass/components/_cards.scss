@@ -1,18 +1,19 @@
-
-
+@use "_variables";
+@use "_prefixer";
+@forward "_global";
 .card-panel {
   transition: box-shadow .25s;
-  padding: $card-padding;
-  margin: $element-top-margin 0 $element-bottom-margin 0;
+  padding: variables.$card-padding;
+  margin: variables.$element-top-margin 0 variables.$element-bottom-margin 0;
   border-radius: 2px;
   @extend .z-depth-1;
-  background-color: $card-bg-color;
+  background-color: variables.$card-bg-color;
 }
 
 .card {
   position: relative;
-  margin: $element-top-margin 0 $element-bottom-margin 0;
-  background-color: $card-bg-color;
+  margin: variables.$element-top-margin 0 variables.$element-bottom-margin 0;
+  background-color: variables.$card-bg-color;
   transition: box-shadow .25s;
   border-radius: 2px;
   @extend .z-depth-1;
@@ -77,17 +78,17 @@
     }
 
     .card-title {
-      color: $card-bg-color;
+      color: variables.$card-bg-color;
       position: absolute;
       bottom: 0;
       left: 0;
-      padding: $card-padding;
+      padding: variables.$card-padding;
     }
 
   }
 
   .card-content {
-    padding: $card-padding;
+    padding: variables.$card-padding;
     border-radius: 0 0 2px 2px;
 
 
@@ -102,22 +103,22 @@
 
   .card-action {
     border-top: 1px solid rgba(160,160,160,.2);
-    padding: $card-padding;
+    padding: variables.$card-padding;
 
     a {
-      color: $card-link-color;
-      margin-right: $card-padding;
-      @include transition(color .3s ease);
+      color: variables.$card-link-color;
+      margin-right: variables.$card-padding;
+      @include prefixer.transition(color .3s ease);
       text-transform: uppercase;
 
-      &:hover { color: $card-link-color-light; }
+      &:hover { color: variables.$card-link-color-light; }
     }
   }
 
   .card-reveal {
-    padding: $card-padding;
+    padding: variables.$card-padding;
     position: absolute;
-    background-color: $card-bg-color;
+    background-color: variables.$card-bg-color;
     width: 100%;
     overflow-y: auto;
     top: 100%;

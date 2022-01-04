@@ -1,24 +1,27 @@
+@use "_variables";
+@use "_prefixer";
+@forward "_global";
 .collapsible {
-  border-top: 1px solid $collapsible-border-color;
-  border-right: 1px solid $collapsible-border-color;
-  border-left: 1px solid $collapsible-border-color;
-  margin: $element-top-margin 0 $element-bottom-margin 0;
+  border-top: 1px solid variables.$collapsible-border-color;
+  border-right: 1px solid variables.$collapsible-border-color;
+  border-left: 1px solid variables.$collapsible-border-color;
+  margin: variables.$element-top-margin 0 variables.$element-bottom-margin 0;
   @extend .z-depth-1;
 }
 
 .collapsible-header {
   display: block;
   cursor: pointer;
-  min-height: $collapsible-height;
-  line-height: $collapsible-height;
+  min-height: variables.$collapsible-height;
+  line-height: variables.$collapsible-height;
   padding: 0 1rem;
-  background-color: $collapsible-header-color;
-  border-bottom: 1px solid $collapsible-border-color;
+  background-color: variables.$collapsible-header-color;
+  border-bottom: 1px solid variables.$collapsible-border-color;
 
   i {
     width: 2rem;
     font-size: 1.6rem;
-    line-height: $collapsible-height;
+    line-height: variables.$collapsible-height;
     display: block;
     float: left;
     text-align: center;
@@ -28,8 +31,8 @@
 
 .collapsible-body {
   display: none;
-  border-bottom: 1px solid $collapsible-border-color;
-  @include box-sizing(border-box);
+  border-bottom: 1px solid variables.$collapsible-border-color;
+  @include prefixer.box-sizing(border-box);
 
   p {
     margin: 0;
@@ -59,7 +62,7 @@
 
   .collapsible-body {
     border: 0;
-    background-color: $collapsible-header-color;
+    background-color: variables.$collapsible-header-color;
 
     li a { margin: 0 1rem 0 2rem; }
   }

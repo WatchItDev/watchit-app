@@ -1,4 +1,6 @@
 @use "sass:color";
+@use "_variables";
+@use "_prefixer";
 /***************
     Nav List
 ***************/
@@ -23,12 +25,12 @@
     &:hover {
       color: color.adjust(#757575, $lightness: 20%);
       padding-left: 19px;
-      border-left: 1px solid color.adjust(color("materialize-red", "base"),$lightness: 10%);
+      border-left: 1px solid color.adjust(#e51c23,$lightness: 10%);
     }
     &.active {
       font-weight: 500;
       padding-left: 18px;
-      border-left: 2px solid color.adjust(color("materialize-red", "base"),$lightness: 10%);
+      border-left: 2px solid color.adjust(#e51c23,$lightness: 10%);
     }
   }
 }
