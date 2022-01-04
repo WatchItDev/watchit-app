@@ -156,7 +156,7 @@ module.exports = class HLSStreamer extends EventEmitter {
   }
 
   stop () {
-    this?.player?.stop();
+    this?.player?.stop()
     this?.player?.destroy()
     this?.hls?.destroy()
   }

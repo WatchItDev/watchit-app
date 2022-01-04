@@ -9,7 +9,7 @@ const ipfsFactory = async (conf = {}) => {
     ...{
       config: confSettings,
       preload: { enabled: false },
-      EXPERIMENTAL: { pubsub: true },
+      EXPERIMENTAL: { pubsub: true }
     },
     ...conf
   })
