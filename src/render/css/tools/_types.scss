@@ -1,4 +1,7 @@
 /**MODIFIERS*/
+@use "_vars";
+@use "_functions";
+@use "_mixins";
 //Generate positions
 @for $i from 1 through 100 {
   .font-size-#{$i} {
@@ -66,72 +69,72 @@
 /**FONT STYLE*/
 
 .font-type-base {
-  font-family: $font-family-base;
+  font-family: vars.$font-family-base;
 }
 
 .font-type-titles {
-  font-family: $font-family-titles;
+  font-family: vars.$font-family-titles;
 }
 
 .font-type-content {
-  font-family: $font-family-content;
+  font-family: vars.$font-family-content;
 }
 
 .font-size-vw-large {
-  font-size: get-vw($font-size-large);
+  font-size: functions.get-vw(vars.$font-size-large);
 }
 
 .font-size-vw-middle {
-  font-size: get-vw($font-size-middle);
+  font-size: functions.get-vw(vars.$font-size-middle);
 }
 
 .font-size-vw-base {
-  font-size: get-vw($font-size-base);
+  font-size: functions.get-vw(vars.$font-size-base);
 }
 
 .font-size-vw-small {
-  font-size: get-vw($font-size-small);
+  font-size: functions.get-vw(vars.$font-size-small);
 }
 
 .font-size-vw-tiny {
-  font-size: get-vw($font-size-tiny);
+  font-size: functions.get-vw(vars.$font-size-tiny);
 }
 
 .font-size-large {
-  font-size: $font-size-large !important;
+  font-size: vars.$font-size-large !important;
 }
 
 .font-size-middle {
-  font-size: $font-size-middle !important;
+  font-size: vars.$font-size-middle !important;
 }
 
 .font-size-base {
-  font-size: $font-size-base !important;
+  font-size: vars.$font-size-base !important;
 }
 
 .font-size-small {
-  font-size: $font-size-small !important;
+  font-size: vars.$font-size-small !important;
 }
 
 .font-size-tiny {
-  font-size: $font-size-tiny !important;
+  font-size: vars.$font-size-tiny !important;
 }
 
 .font-size-responsive {
-  font-size: $font-size-base;
+  font-size: vars.$font-size-base;
 
-  @include media-small {
-    font-size: $font-size-small;
+  @include mixins.media-small {
+    font-size: vars.$font-size-small;
   }
 
   /* Medium devices (desktops, 992px and up) */
-  @include media-middle {
-    font-size: $font-size-middle;
+  @include mixins.media-middle {
+    font-size: vars.$font-size-middle;
   }
 
   /* Large devices (large desktops, 1200px and up) */
-  @include media-large {
-    font-size: $font-size-large;
+  @include mixins.media-large {
+    font-size: vars.$font-size-large;
   }
 }
 

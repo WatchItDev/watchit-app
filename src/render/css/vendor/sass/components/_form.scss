@@ -1,10 +1,11 @@
+@use "sass:color";
 /* Remove Focus Boxes */
 select:focus {
-  outline: 1px solid lighten($secondary-color, 47%);
+  outline: 1px solid color.adjust($secondary-color, $lightness: 47%);
 }
 button:focus {
   outline: none;
-  background-color: lighten($button-color, 4%);
+  background-color: color.adjust($button-color, $lightness: 4%);
 }
 
 label {
@@ -18,19 +19,19 @@ label {
 
 // Style Placeholders
 ::-webkit-input-placeholder {
-   color: lighten($input-border-color, 20%);
+   color: color.adjust($input-border-color, $lightness: 20%);
 }
 
 :-moz-placeholder { /* Firefox 18- */
-   color: lighten($input-border-color, 20%);
+   color: color.adjust($input-border-color, $lightness: 20%);
 }
 
 ::-moz-placeholder {  /* Firefox 19+ */
-   color: lighten($input-border-color, 20%);
+   color: color.adjust($input-border-color, $lightness: 20%);
 }
 
 :-ms-input-placeholder {
-   color: lighten($input-border-color, 20%);
+   color: color.adjust($input-border-color, $lightness: 20%);
 }
 
 // Text inputs
@@ -128,7 +129,7 @@ textarea.materialize-textarea {
     color: $input-border-color;
     position: absolute;
     top: 0.8rem;
-    left: $gutter-width / 2;
+    left: $gutter-width * 0.5;
     font-size: 1rem;
     cursor: text;
     @include transition(.2s ease-out);
@@ -587,7 +588,7 @@ form p:last-child {
 
 // Switch active style
 input[type=checkbox]:checked:not(:disabled) ~ .lever:active:after {
-       box-shadow: 0 1px 3px 1px rgba(0,0,0,.4), 0 0 0 15px transparentize($switch-bg-color, .9);
+       box-shadow: 0 1px 3px 1px rgba(0,0,0,.4), 0 0 0 15px color.adjust($switch-bg-color, $alpha: -.9);
 }
 
 input[type=checkbox]:not(:disabled) ~ .lever:active:after {

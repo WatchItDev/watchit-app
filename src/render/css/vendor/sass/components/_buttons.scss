@@ -1,3 +1,4 @@
+@use "sass:color";
 // shared styles
 .btn, .btn-flat {
   border: none;
@@ -48,7 +49,7 @@
   cursor: pointer;
 
   &:hover {
-    background-color: lighten($button-color, 5%);
+    background-color: color.adjust($button-color, $lightness: 5%);
     @extend .z-depth-1-half;
   }
 }
@@ -158,7 +159,7 @@ button.btn-floating {
   cursor: pointer;
 
   &.disabled {
-    color: lighten(#999, 10%);
+    color: color.adjust(#999, $lightness: 10%);
     cursor: default;
   }
 }

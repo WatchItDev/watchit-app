@@ -1,40 +1,12 @@
 /* Floats and Blocks */
+@use "_mixins";
+@use "_vars";
 $property: border;
 $position_list: bottom top right left;
 $margin_padding: margin padding;
 $width_height: height width;
 $m-width_height: max-height max-width min-height min-width;
 
-//Generate borders colors
-@each $color_name, $color in $colors {
-  @each $color_type, $color_value in $color {
-    @each $l in $position_list {
-      @each $p in $property {
-        @if $color_type == "base" {
-          .#{$p}-#{$color_name}-#{$l} {
-            border-#{$l}-color: $color_value !important;
-            &:before {
-              border-#{$l}-color: $color_value !important;
-            }
-            &:after {
-              border-#{$l}-color: $color_value !important;
-            }
-          }
-        } @else {
-          .#{$p}-#{$color_name}-#{$l}.#{$color_type} {
-            border-#{$l}-color: $color_value !important;
-            &:before {
-              border-#{$l}-color: $color_value !important;
-            }
-            &:after {
-              border-#{$l}-color: $color_value !important;
-            }
-          }
-        }
-      }
-    }
-  }
-}
 
 //Generate padding, margin
 @for $i from 0 through 100 {
@@ -163,7 +135,7 @@ $m-width_height: max-height max-width min-height min-width;
 }
 
 .clearfix {
-  @include clearfix;
+  @include mixins.clearfix;
 }
 
 .center-block {
@@ -222,13 +194,13 @@ $m-width_height: max-height max-width min-height min-width;
 }
 
 .vertical-padding {
-  padding-top: ($grid-gutter-height / 2) !important;
-  padding-bottom: ($grid-gutter-height / 2) !important;
+  padding-top: (vars.$grid-gutter-height * 0.5) !important;
+  padding-bottom: (vars.$grid-gutter-height * 0.5) !important;
 }
 
 .horizontal-padding {
-  padding-left: ($grid-gutter-width / 2) !important;
-  padding-right: ($grid-gutter-width / 2) !important;
+  padding-left: (vars.$grid-gutter-width * 0.5) !important;
+  padding-right: (vars.$grid-gutter-width * 0.5) !important;
 }
 
 /***** Out styles *****/

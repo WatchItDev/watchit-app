@@ -1,4 +1,4 @@
-
+@use "_mixins";
 .loader-text {
   animation: dot-colors 4.6s ease infinite;
   -o-animation: dot-colors 4.6s ease infinite;
@@ -7,7 +7,7 @@
   -moz-animation: dot-colors 4.6s ease infinite;
 }
 
-@include keyframes(dot-colors) {
+@include mixins.keyframes(dot-colors) {
   0% {
     color: rgb(251, 211, 1);
   }

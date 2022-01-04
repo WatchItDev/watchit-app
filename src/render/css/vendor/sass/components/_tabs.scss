@@ -1,3 +1,4 @@
+@use "sass:color";
 .tabs {
   @include flexbox();
   position: relative;
@@ -35,12 +36,12 @@
       overflow: hidden;
       @include transition( color .28s ease);
       &:hover {
-        color: lighten($tabs-text-color, 20%);
+        color: color.adjust($tabs-text-color, $lightness: 20%);
       }
     }
 
     &.disabled a {
-      color: lighten($tabs-text-color, 20%);
+      color: color.adjust($tabs-text-color, $lightness: 20%);
       cursor: default;
     }
   }
