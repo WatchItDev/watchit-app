@@ -1,18 +1,27 @@
 import settings from '@settings'
 
+// TODO write tests
 export default {
-
-  _builtPath (resource) {
-    let builtPath = resource.route
-    builtPath = 'quality' in resource ? `${builtPath}/${resource.quality}` : builtPath
-    builtPath = 'index' in resource ? `${builtPath}/${resource.index}` : builtPath
-    return builtPath
+  getVideoProtocol (resource) {
+    if (!('index' in resource?.video)) throw new Error('Invalid resource scheme')
+    const videoIndex = resource.video.index // Get index based on scheme
+    return 'dash' in videoIndex ? 'dash' : 'hls'
+  },
+  parseMovie (resource) {
+    const videoProtocol = this.getVideoProtocol(resource)
+    const dashInput = resource.video.index?.dash
+    const hlsInput = resource.video.index?.hls
+    const videoSource = Object.is(videoProtocol, 'dash') ? dashInput : hlsInput
+    return this.dummyParse(`${resource.video.route}${videoSource}`)
   },
 
+  parsePosterUri (resource, index) {
+    const imageRoute = resource?.image?.route
+    const imageIndex = resource?.image?.index[index]
+    return this.dummyParse(`${imageRoute}${imageIndex}`)
+  },
   dummyParse (resource) {
-    if (!('route' in resource)) throw new Error('Resource object need at least `route`')
-    const builtPath = this._builtPath(resource) // Build path using index and optional quality
     const random = Math.floor(Math.random() * settings.gateways.length)
-    return `${settings.gateways[random]}/ipfs/${builtPath}`
+    return `${settings.gateways[random]}/ipfs/${resource}`
   }
 }

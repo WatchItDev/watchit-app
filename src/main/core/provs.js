@@ -31,7 +31,7 @@ module.exports = class Providers {
 
     try {
       for await (const cid of node?.dht?.findProvs(
-        key, { numProviders: 10 }
+        key, { numProviders: 5 }
       )) {
         log.info('Connecting to:', cid.id)
         // Sanitize addresses to valid multi address format

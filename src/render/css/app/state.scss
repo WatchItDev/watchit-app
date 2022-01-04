@@ -1,3 +1,6 @@
+@use "sass:color";
+@use "../tools/_mixins";
+@use "../tools/_vars";
 /**
 https://smacss.com/book/type-state
 */
@@ -6,7 +9,7 @@ https://smacss.com/book/type-state
 @import url(https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=latin,latin-ext);
 
 .has-main-background {
-  background: url('../../media/img/layout/background.jpg') no-repeat center center fixed;
+  background: url('./media/img/layout/background.jpg') no-repeat center center fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -31,7 +34,7 @@ https://smacss.com/book/type-state
 
 .valign-wrapper-overlay-deep {
   @extend .valign-wrapper-overlay;
-  background-color: transparentize(#333, 0.2);
+  background-color: color.adjust(#333, $alpha: -0.2);
 }
 
 .white-hover {
@@ -147,7 +150,7 @@ https://smacss.com/book/type-state
         a {
           padding: 5px 8px !important;
           color: #fff;
-          font-size: $font-size-base !important;
+          font-size: vars.$font-size-base !important;
           display: flex;
           align-items: flex-end;
 
@@ -195,7 +198,7 @@ https://smacss.com/book/type-state
   display: inline;
 
   span {
-    @include clearfix();
+    @include mixins.clearfix();
     opacity: 0;
     padding: 2px 8px;
     position: absolute;
@@ -224,7 +227,7 @@ https://smacss.com/book/type-state
   }
 
   &:hover span {
-    @include transition(opacity .30s ease-in-out);
+    @include mixins.transition(opacity .30s ease-in-out);
     visibility: visible;
     opacity: 0.8;
     left: 50%;
@@ -296,7 +299,7 @@ https://smacss.com/book/type-state
 
 .error-label {
   padding: 7px 10px !important;
-  @include border-radius(3px);
+  @include mixins.border-radius(3px);
   @extend .white-text;
   @extend .red;
 }
@@ -314,5 +317,5 @@ https://smacss.com/book/type-state
 }
 
 .radius {
-  @include border-radius(5px);
+  @include mixins.border-radius(5px);
 }

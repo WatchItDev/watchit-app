@@ -1,39 +1,39 @@
 @charset "UTF-8";
 
 // Mixins
-@import "components/prefixer";
-@import "components/mixins";
-@import "components/color";
+@use "components/prefixer";
+@use "components/mixins";
+@use "components/color";
 
 // Variables;
-@import "components/variables";
+@use "components/variables";
 
 // Reset
-@import "components/normalize";
+@use "components/normalize";
 
 // components
-@import "components/global";
-@import "components/icons-material-design";
-@import "components/grid";
-@import "components/navbar";
-@import "components/roboto";
-@import "components/typography";
-@import "components/cards";
-@import "components/toast";
-@import "components/tabs";
-@import "components/tooltip";
-@import "components/buttons";
-@import "components/dropdown";
-@import "components/waves";
-@import "components/modal";
-@import "components/collapsible";
-@import "components/chips";
-@import "components/materialbox";
-@import "components/form";
-@import "components/table_of_contents";
-@import "components/sideNav";
-@import "components/preloader";
-@import "components/slider";
-@import "components/date_picker/default";
-@import "components/date_picker/default.date";
-@import "components/date_picker/default.time";
+@use "components/global";
+@use "components/icons-material-design";
+@use "components/grid";
+@use "components/navbar";
+@use "components/roboto";
+@use "components/typography";
+@use "components/cards";
+@use "components/toast";
+@use "components/tabs";
+@use "components/tooltip";
+@use "components/buttons";
+@use "components/dropdown";
+@use "components/waves";
+@use "components/modal";
+@use "components/collapsible";
+@use "components/chips";
+@use "components/materialbox";
+@use "components/form";
+@use "components/table_of_contents";
+@use "components/sideNav";
+@use "components/preloader";
+@use "components/slider";
+@use "components/date_picker/default";
+@use "components/date_picker/default.date" as default2;
+@use "components/date_picker/default.time" as default3;

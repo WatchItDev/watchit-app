@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - 'master'
-      - 'v0.*.0'
+      - 'v0.3.0'
 
 jobs:
   release:

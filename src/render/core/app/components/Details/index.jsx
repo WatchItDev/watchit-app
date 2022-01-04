@@ -10,6 +10,7 @@ import DetailsHeader from './header'
 import DetailsInfo from './info'
 import DetailsMenu from './menu'
 
+import gatewayHelper from '@helpers/gateway'
 import { Broker as broker } from '@main/bridge'
 import Movie from '@db/movies'
 
@@ -42,8 +43,11 @@ export default class Details extends React.PureComponent {
                 {/* Poster */}
                 <Image
                   className='full-width' preload
-                  src={this.state.movies.resource.posters.large}
                   pulseStyle={{ top: '20rem' }}
+                  src={gatewayHelper.parsePosterUri(
+                    this.state.movies.resource,
+                    'large'
+                  )}
                 />
               </aside>
 

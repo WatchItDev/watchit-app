@@ -1,3 +1,6 @@
+
+@use "_variables";
+@forward "_global";
 .modal {
   @extend .z-depth-4;
 
@@ -15,7 +18,7 @@
   border-radius: 2px;
   will-change: top, opacity;
 
-  @media #{$medium-and-down} {
+  @media #{variables.$medium-and-down} {
    width: 80%;
   }
 

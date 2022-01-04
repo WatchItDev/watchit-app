@@ -7,12 +7,9 @@
 
 // Bridge
 const Key = require('./key')
-const DLNA = require('./dlna')
 const Broker = require('./broker')
 
 // Preload bridge
 module.exports = global.bridge = {
-  Key,
-  Broker: Broker.getInstance(),
-  DLNA: DLNA.getInstance()
+  Key, Broker: Broker.getInstance()
 }

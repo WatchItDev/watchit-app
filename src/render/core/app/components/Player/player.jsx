@@ -2,13 +2,8 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import setting from '@settings'
 
-import PlayerShare from './share'
 import PlayerVideo from './video'
-
-import { DLNA as dlna } from '@main/bridge'
 import HLS from '@main/core/hls'
-
-import gatewayHelper from '@helpers/gateway'
 import log from '@logger'
 
 export default class Player extends React.Component {
@@ -18,20 +13,11 @@ export default class Player extends React.Component {
     this.player = null
 
     // Initial State
-    this.state = {
-      devices: this.players || []
-    }
+    this.state = {}
   }
 
   shouldComponentUpdate (nextProps, nextState, nextContext) {
     return nextProps.canPlay
-  }
-
-  get players () {
-    if (this.invalidDLNASource || !dlna) return []
-    return dlna.players.map((d) => {
-      return d.name
-    })
   }
 
   static get defaultProps () {
@@ -47,36 +33,9 @@ export default class Player extends React.Component {
     }
   }
 
-  handleSelectDevice = (index) => {
-    if (!dlna) return
-    dlna.setPlayer(index.action)
-    dlna.play(this.props.movie.title, this.state.url)
-    this.player.pause()
-  }
-
   async componentDidMount () {
-    if (!this.invalidDLNASource) { this.initDLNA() }
     // Lets start watching :)
     this.startStreaming()
-  }
-
-  get invalidDLNASource () {
-    // Check object type for streaming lib and avoid DLNA for invalid sources
-    const blackListed = ['[object HLSStreaming]', '[object BrowserTorrentStreaming]']
-    const currentStreamer = this.streamer.toString()
-    return blackListed.some((el) => Object.is(currentStreamer, el))
-  }
-
-  initDLNA () {
-    // DLNA init
-    dlna && dlna.requestUpdate(
-      // Update devices list
-    ).on('status', (status) => {
-      log.info('Status:' + status)
-    }).on('device', (device) => {
-      log.warn(`New device ${device}`)
-      this.setState({ devices: this.players })
-    })
   }
 
   _initPlaying = () => {
@@ -93,7 +52,7 @@ export default class Player extends React.Component {
   startStreaming () {
     // Start streamer
     log.info('Streaming Movie: ' + this.props.movie.title.toUpperCase())
-    const uriToStream = `${gatewayHelper.dummyParse(this.props.movie)}`
+    const uriToStream = this.props.movie.route // Ready to play uri
     const streamer = this.streamer.play(uriToStream, { videoRef: this.v.video })
     streamer.on('error', this.onError)
     streamer.on('ready', () => this._ready())
@@ -125,7 +84,6 @@ export default class Player extends React.Component {
   componentWillUnmount () {
     log.warn('STREAMING STOPPED BY USER')
     this.stopStreaming()
-    dlna && dlna.stop()
   }
 
   onError = (e) => {
@@ -144,7 +102,6 @@ export default class Player extends React.Component {
   render () {
     return (
       <div className={(this.props.canPlay && 'left relative full-height full-width') || 'invisible'}>
-        <PlayerShare devices={this.state.devices} onChange={this.handleSelectDevice} />
         <PlayerVideo ref={this.getVideoRef} />
       </div>
     )

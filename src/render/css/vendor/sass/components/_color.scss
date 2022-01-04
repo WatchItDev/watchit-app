@@ -1,3 +1,4 @@
+@use "sass:map";
 // Utility Color Classes
 
 //.success {
@@ -195,7 +196,7 @@ $light-green: (
         "lighten-3": #c5e1a5,
         "lighten-2": #aed581,
         "lighten-1": #9ccc65,
-        "base": #8bc34a,
+        "base": #8bc34a,use
         "darken-1": #7cb342,
         "darken-2": #689f38,
         "darken-3": #558b2f,
@@ -402,10 +403,10 @@ $colors: (
 // to avoid to repeating map-get($colors, ...)
 
 @function color($color, $type) {
-  @if map-has-key($colors, $color) {
-    $curr_color: map-get($colors, $color);
-    @if map-has-key($curr_color, $type) {
-      @return map-get($curr_color, $type);
+  @if map.has-key($colors, $color) {
+    $curr_color: map.get($colors, $color);
+    @if map.has-key($curr_color, $type) {
+      @return map.get($curr_color, $type);
     }
   }
   @warn "Unknown `#{name}` in $colors.";

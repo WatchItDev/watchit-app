@@ -21,6 +21,7 @@ module.exports = babelJest.createTransformer({
       require.resolve('babel-preset-react-app'),
       {
         runtime: hasJsxRuntime ? 'automatic' : 'classic',
+        absoluteRuntime: false
       },
     ],
   ],

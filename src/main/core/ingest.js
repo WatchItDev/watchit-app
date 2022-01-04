@@ -1,9 +1,10 @@
 const log = require('logplease').create('INGEST')
+const { toString } = require('uint8arrays/to-string')
+const { concat } = require('uint8arrays/concat')
 const EventEmitter = require('events')
-const BufferList = require('bl/BufferList')
-const msgpack = require('msgpack-lite')
 const key = require('./key')
-const QUEUE_SLEEP = 7000
+const all = require('it-all')
+const QUEUE_SLEEP = 5000
 
 module.exports = class Ingest extends EventEmitter {
   constructor (orbit) {
@@ -34,22 +35,17 @@ module.exports = class Ingest extends EventEmitter {
   cleanInterval () {
     if (!this.queueInterval) return
     log.warn('Cleaning queue interval')
+    this.asyncLock = false
     return clearInterval(this.queueInterval)
   }
 
   async cat (cid) {
-    log.info('Fetching cid', cid)
-
     try {
-      for await (const file of this.orbit.node.get(cid)) {
-        if (!file.content) continue
-
-        // log.info(`Processing ${c.cid}`);
-        const content = new BufferList()
-        for await (const chunk of file.content) content.append(chunk)
-        return { content: msgpack.decode(content.slice()) }
-      }
+      log.info('Fetching and reaching providers for CID:', cid)
+      const data = concat(await all(this.orbit.node.cat(cid)))
+      return JSON.parse(toString(data))
     } catch (e) {
+      console.log(e)
       log.error('Error trying fetch CID', cid, 'from network')
     }
   }
@@ -70,35 +66,33 @@ module.exports = class Ingest extends EventEmitter {
       return
     }
 
-    const collectionFromIPFS = await this.cat(hashContent)
-    if (collectionFromIPFS) { // If has data
-      const cleanedContent = collectionFromIPFS.content
-      const slicedSize = cleanedContent.length
+    const cleanedContent = await this.cat(hashContent)
+    if (!cleanedContent.length) return
 
-      const lastHash = hash
-      const total = parseInt(cleanedContent[0].total)
-      const sliced = slice + slicedSize
-      const tmp = (sliced / total) * 100
+    const lastHash = hash
+    const slicedSize = cleanedContent.length
+    const total = parseInt(cleanedContent[0].total)
+    const sliced = slice + slicedSize
+    const tmp = (sliced / total) * 100
 
-      log.info('Total:', total)
-      log.info('Pending:', total - sliced)
-      log.info('Load collection size:', slicedSize)
-      log.info('Last hash:', lastHash)
+    log.info('Total:', total)
+    log.info('Pending:', total - sliced)
+    log.info('Load collection size:', slicedSize)
+    log.info('Last hash:', lastHash)
 
-      this.emit('ingest-replicated', cleanedContent, sliced, tmp.toFixed(1))
-      // if (!hasValidCache) this.emit('ingest-ready'); // Ready to show!!!
-      key.addToStorage({ chunk: sliced, tmp: tmp, lastHash: lastHash, total: total })
-      if (sliced >= total) key.addToStorage({ cached: true, hash: [], lastHash: null })
-      this.asyncLock = false // Avoid overhead release lock
-      log.info('Release Lock')
-    }
+    this.emit('ingest-replicated', cleanedContent, sliced, tmp.toFixed(1))
+    // if (!hasValidCache) this.emit('ingest-ready'); // Ready to show!!!
+    key.addToStorage({ chunk: sliced, tmp: tmp, lastHash: lastHash, total: total })
+    if (sliced >= total) key.addToStorage({ cached: true, hash: [], lastHash: null })
+    this.asyncLock = false // Avoid overhead release lock
+    log.info('Release Lock')
   }
 
   async queueProcessor () {
     this.queueInterval = setInterval(async () => {
       const maxToReplicate = this.orbit.db?.replicationStatus?.max || 0
       if (this.asyncLock || Object.is(maxToReplicate, 0)) {
-        log.info('Skip process queue')
+        log.info('Skip process queue. Waiting for data or lock release')
         return false // Skip if locked or no data received
       }
 

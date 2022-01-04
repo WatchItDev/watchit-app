@@ -1,8 +1,9 @@
+@use "_prefixer";
 .materialboxed {
   display: block;
   cursor: zoom-in;
   position: relative;
-  @include transition(opacity .4s);
+  @include prefixer.transition(opacity .4s);
 
   &:hover {
     &:not(.active) {
