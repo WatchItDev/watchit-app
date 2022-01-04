@@ -12,7 +12,6 @@ describe('<Image />', () => {
     expect(imageComponent).toMatchSnapshot()
   })
 
-
   // eslint-disable-next-line no-undef
   it('should render with random gateway', () => {
     const imageComponent = mount(<Image src={src} />)
@@ -26,12 +25,10 @@ describe('<Image />', () => {
   // eslint-disable-next-line no-undef
   it('should not render with empty src', () => {
     try {
-      shallow(<Image src={""} />)
+      shallow(<Image src='' />)
     } catch (e) {
       // eslint-disable-next-line no-undef
       expect(e).toBeInstanceOf(Error)
     }
   })
-
-
 })
