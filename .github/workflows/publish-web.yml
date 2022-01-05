@@ -19,7 +19,7 @@ jobs:
           node-version: 14.x
 
       - name: Install
-        run: npm cache clean --force
+        run: npm cache clean --force && npm install
 
       - name: Build
         run: npm run build:web
