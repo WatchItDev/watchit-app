@@ -13,8 +13,6 @@ const executePostInstall = async () => {
   }
 
   await execPassthru('npm i wrtc@0.4.7 ipfs@0.60.2 level-js@6.1.0 blockstore-core@1.0.3 --no-save')
-  await execPassthru('npm i electron-builder@22.14.5 --no-save')
-  await execPassthru('electron-builder install-app-deps')
   await execPassthru('npm rebuild ursa-optional')
 }
 
