@@ -1,7 +1,7 @@
 {
   "name": "watchit",
   "author": "ZorrillosDev",
-  "version": "0.3.0-alpha.1",
+  "version": "0.3.0-alpha.2",
   "private": true,
   "main": "./src/main/index.js",
   "description": "Open movies everywhere",
@@ -17,13 +17,14 @@
   },
   "peerDependencies": {
     "windows-elevate": "^1.0.1",
-    "level-js": "6.0.0",
+    "level-js": "6.1.0",
     "wrtc": "^0.4.7",
     "ipfs": "0.60.2",
-    "go-ipfs": "^0.10.0"
+    "go-ipfs": "^0.10.0",
+    "blockstore-core": "1.0.3"
   },
   "dependencies": {
-    "electron-updater": "^4.3.8",
+    "electron-updater": "^4.6.5",
     "fs-extra": "^9.0.1",
     "get-port": "^5.1.1",
     "go-ipfs": "^0.10.0",
@@ -159,8 +160,8 @@
     "css-loader": "4.3.0",
     "dotenv": "8.2.0",
     "dotenv-expand": "5.1.0",
-    "electron": "^12.0.2",
-    "electron-builder": "^22.10.5",
+    "electron": "^15.3.0",
+    "electron-builder": "^22.14.5",
     "electron-reload": "^1.5.0",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.6",
