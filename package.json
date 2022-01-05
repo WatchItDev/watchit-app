@@ -30,7 +30,6 @@
     "hls.js": "^1.1.2",
     "iconv-lite": "^0.5.1",
     "ip": "^1.1.5",
-    "ipfs": "^0.60.2",
     "ipfs-http-client": "^54.0.0",
     "ipfsd-ctl": "^10.0.5",
     "it-all": "^1.0.6",
