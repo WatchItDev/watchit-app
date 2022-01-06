@@ -1,4 +1,4 @@
-const log = require('logplease').create('PREINSTALL')
+const log = require('logplease').create('POSTINSTALL')
 const { execPassthru, getElevateExec, osType } = require('./util')
 
 ;(async () => {
