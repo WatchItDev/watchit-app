@@ -82,7 +82,7 @@ module.exports = class HLSStreamer extends EventEmitter {
      * @return {object}
      */
     // Not quality in manifest?
-    const q = n.levels.map((l) => l.height)
+    const q = n.levels.map((l) => l.height).reverse()
     return {
       quality: {
         // this ensures Plyr to use Hls to update quality level
