@@ -20,7 +20,9 @@
     "level-js": "6.1.0",
     "wrtc": "^0.4.7",
     "ipfs": "0.60.2",
-    "go-ipfs": "^0.10.0"
+    "go-ipfs": "^0.10.0",
+    "blockstore-core": "^1.0.2",
+    "blockstore-datastore-adapter": "^2.0.2"
   },
   "dependencies": {
     "electron-updater": "^4.6.5",
@@ -45,7 +47,6 @@
     "plyr": "^3.6.12",
     "pretty-bytes": "^5.6.0",
     "rimraf": "^3.0.2",
-    "sass": "^1.45.2",
     "secp256k1": "^4.0.2",
     "shortid": "^2.2.15",
     "subtitle": "^2.0.3",
@@ -137,7 +138,7 @@
     "publish:mac": "npm run package:mac -- --publish always",
     "publish:linux": "npm run package:linux -- --publish always",
     "publish:win": "npm run package:win -- --publish always",
-    "preinstall": "bash -c \"npm install logplease && node scripts/preinstall.js\"",
+    "preinstall": "bash -c \"npm install logplease && node scripts/postinstall.js\"",
     "publish": "ipfs-deploy -C src/build -d cloudflare -p pinata"
   },
   "devDependencies": {
@@ -175,7 +176,7 @@
     "jest-watch-typeahead": "0.6.1",
     "mini-css-extract-plugin": "0.11.3",
     "moment-timezone": "^0.5.31",
-    "node-sass": "^4.14.1",
+    "sass": "^1.45.2",
     "normalize.css": "^8.0.1",
     "optimize-css-assets-webpack-plugin": "5.0.4",
     "pnp-webpack-plugin": "1.6.4",
