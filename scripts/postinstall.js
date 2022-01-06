@@ -1,20 +1,15 @@
-const log = require('logplease').create('POSTNSTALL')
-const { execPassthru, isLinux } = require('./util')
+const log = require('logplease').create('PREINSTALL')
+const { execPassthru, getElevateExec, osType } = require('./util')
 
-const executePostInstall = async () => {
-  /***
-     * Run post install fixes and install peer deps
-     */
-  if (isLinux) {
-    // Fix The SUID sandbox helper binary was found
-    log.info('Running PostInstall Script ... ')
-    await execPassthru('sudo chown root.root node_modules/electron/dist/chrome-sandbox -R')
-    await execPassthru('sudo chmod 4755 -R node_modules/electron/dist/chrome-sandbox')
+;(async () => {
+  log.info('Installing on', osType)
+  try {
+    // Try `npm cache clean --force` if packages isn't installed
+    await execPassthru('npm install go-ipfs@0.10.0 --no-save', await getElevateExec())
+    await execPassthru('npm install wrtc@0.4.7 ipfs@0.60.2 level-js@6.1.0 --no-save', await getElevateExec())
+    await execPassthru('npm install blockstore-core@1.0.2 blockstore-datastore-adapter@2.0.2 --no-save', await getElevateExec())
+  } catch (err) {
+    log.error(err)
   }
+})()
 
-  await execPassthru('npm i wrtc@0.4.7 ipfs@0.60.2 level-js@6.0.0 --no-save')
-  await execPassthru('electron-builder install-app-deps')
-  await execPassthru('npm rebuild ursa-optional')
-}
-
-executePostInstall()

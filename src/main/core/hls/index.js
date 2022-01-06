@@ -149,7 +149,7 @@ module.exports = class HLSStreamer extends EventEmitter {
   updateQuality (newQuality) {
     this.hls.levels.forEach((level, levelIndex) => {
       if (level.height === newQuality) {
-        console.log('Found quality match with ' + newQuality)
+        log.info(`Found quality match with ${newQuality}`)
         this.hls.currentLevel = levelIndex
       }
     })

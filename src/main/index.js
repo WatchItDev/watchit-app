@@ -189,7 +189,7 @@ autoUpdater.on('update-downloaded', async () => {
 // Behaviour on second instance for parent process- Pretty much optional
 if (isDarwin) mainMenu(Menu, app)
 // https://www.electronjs.org/docs/tutorial/offscreen-rendering
-app.disableHardwareAcceleration()
+// app.disableHardwareAcceleration()
 app.setPath('crashDumps', path.join(appPath, 'crashes'))
 app.on('second-instance', () => {
   if (win) {
@@ -207,7 +207,9 @@ app.on('before-quit', () => {
 })
 
 app.on('ready', async () => {
-  if (!key.existKey) { return removeCacheDirs() }
+  if (!key.existKey) {
+    return removeCacheDirs()
+  }
 
   if (isWin || isDarwin) {
     // Temp validation while updater failing
