@@ -20,8 +20,7 @@
     "level-js": "6.1.0",
     "wrtc": "^0.4.7",
     "ipfs": "0.60.2",
-    "go-ipfs": "^0.10.0",
-    "blockstore-core": "1.0.3"
+    "go-ipfs": "^0.10.0"
   },
   "dependencies": {
     "electron-updater": "^4.6.5",
