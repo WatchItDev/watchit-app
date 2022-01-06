@@ -32,7 +32,6 @@ const ipfsFactory = async (conf = {}) => {
   } catch (e) {
     await isInstance.stop().catch(() => log.error('Error trying to stop node'))
     log.error('Fail on start: cleanup node')
-    console.log(e)
     return false
   }
 }
