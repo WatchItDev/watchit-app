@@ -30,7 +30,8 @@
     "hls.js": "^1.1.2",
     "iconv-lite": "^0.5.1",
     "ip": "^1.1.5",
-    "ipfs-http-client": "^54.0.0",
+    "ipfs": "^0.60.2",
+    "ipfs-http-client": "^54.0.2",
     "ipfsd-ctl": "^10.0.5",
     "it-all": "^1.0.6",
     "it-last": "^1.0.5",
@@ -137,7 +138,6 @@
     "publish:linux": "npm run package:linux -- --publish always",
     "publish:win": "npm run package:win -- --publish always",
     "preinstall": "bash -c \"npm install logplease && node scripts/preinstall.js\"",
-    "postinstall": "bash -c \"node scripts/postinstall.js\"",
     "publish": "ipfs-deploy -C src/build -d cloudflare -p pinata"
   },
   "devDependencies": {
@@ -161,7 +161,6 @@
     "dotenv-expand": "5.1.0",
     "electron": "^15.3.0",
     "electron-builder": "^22.14.5",
-    "electron-reload": "^1.5.0",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.6",
     "eslint-webpack-plugin": "^2.5.4",
