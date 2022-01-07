@@ -66,6 +66,7 @@ export default {
         }
     },
     node: {
+        global: true,
         __dirname: true,
         __filename: true
     },

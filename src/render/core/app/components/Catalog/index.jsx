@@ -317,7 +317,7 @@ export default class Catalog extends React.Component {
     storage.add(this.sort).to.mainNavFilters()
     this.setState({ loading: true }, () => {
       // Set cache filters
-      setImmediate(() => this.filterMovies(this.sort, true))
+      setTimeout(() => this.filterMovies(this.sort, true), 0)
     })
   }
 
