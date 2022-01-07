@@ -5,8 +5,8 @@ import App from './core/app/index'
 import { Broker as broker } from '@main/bridge'
 import * as Bootstrap from '@main/core'
 
-// import 'normalize.css'
-// import './index.web.scss'
+import 'normalize.css'
+import './index.web.scss'
 import registerServiceWorker from './swRegister'
 
 const webRenderer = broker.getIPC()

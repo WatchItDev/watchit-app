@@ -45,6 +45,11 @@ export const fontsRule = {
 }
 
 export const cssRule = {
-  test: /\.s(a|c)ss$/,
-  use: ['style-loader', 'css-loader', 'sass-loader' ]
+  test: /\.css$/i,
+  use: ["style-loader", "css-loader"],
+}
+
+export const sassRule = {
+  test: /\.s[ac]ss$/i,
+  use: ['style-loader',  "css-loader", 'sass-loader' ]
 }

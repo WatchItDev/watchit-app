@@ -33,6 +33,7 @@ export default {
       rules.imagesRule,
       rules.fontsRule,
       rules.cssRule,
+      rules.sassRule,
       ...rules.svgRules
     ])
   },
@@ -50,7 +51,7 @@ export default {
       path.resolve(__dirname)
     ],
     alias: aliasItems,
-    extensions: ['.js', '.jsx'],
+    extensions: ['.js', '.jsx', '.css', '.json', '.scss'],
     fallback: {
       stream: require.resolve("stream-browserify"),
       fs: false
