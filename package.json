@@ -17,7 +17,6 @@
   "peerDependencies": {
     "blockstore-core": "^1.0.2",
     "blockstore-datastore-adapter": "^2.0.2",
-    "go-ipfs": "^0.10.0",
     "ipfs": "0.60.2",
     "level-js": "6.1.0",
     "windows-elevate": "^1.0.1",

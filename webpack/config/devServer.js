@@ -8,7 +8,7 @@ const buildPath = process.env.BUILD_PATH || 'src/build';
 
 
 const defaultPort = 8082
-const devServerHost = isWindows() ? '127.0.0.1' : '0.0.0.0'
+const devServerHost = 'localhost'
 
 export const devServerUrl = `http://${devServerHost}:${defaultPort}/`
 const runElectron = process.env.RUNTIME === 'electron'
