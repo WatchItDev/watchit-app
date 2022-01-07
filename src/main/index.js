@@ -182,7 +182,7 @@ autoUpdater.on('update-available', async () => {
 autoUpdater.on('error', () => log.error('Error trying update app'))
 autoUpdater.on('update-downloaded', async () => {
   log.info('Update Downloaded')
-  setImmediate(() => autoUpdater.quitAndInstall())
+  setTimeout(() => autoUpdater.quitAndInstall(), 0)
 })
 // End auto update setup
 

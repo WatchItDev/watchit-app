@@ -157,7 +157,7 @@ export default class Catalog extends React.Component {
   chaos = () => {
     // Wait for redirect to app login
     log.warn('Redirecting...')
-    setImmediate(() => { window.location.href = '#/' })
+    setTimeout(() => { window.location.href = '#/' }, 0)
   }
 
   runIngest () {
