@@ -8,7 +8,7 @@ const Ingest = require('./ingest')
 // const BroadCast = require('./broadcast')
 
 module.exports = (ipcMain, runtime = 'web') => {
-  let nodeConf = { }
+  const nodeConf = { }
   log.info(runtime)
 
   const orbit = Node.getInstance({ orbit: nodeConf })

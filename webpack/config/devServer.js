@@ -1,4 +1,3 @@
-import isWindows from 'is-windows'
 import {devServerProxyConfig} from './devServierProxy'
 import {spawn} from "child_process";
 import {join, resolve} from "path";
