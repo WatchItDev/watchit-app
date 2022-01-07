@@ -1,7 +1,7 @@
 const orbit = require('orbit-db')
 const ParentKey = require(
   // Handle multiple envs for browser or node package
-  typeof process === 'undefined' ? './browser' : './node'
+  process.env.RUNTIME === 'web' ? './browser' : './node'
 )
 
 module.exports = class Key extends ParentKey {

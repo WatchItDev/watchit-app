@@ -1,4 +1,4 @@
-const log = require('logplease').create('POSTINSTALL')
+const log = require('logplease').create('PEER-INSTALL')
 const { execPassthru, getElevateExec, osType } = require('./util')
 
 ;(async () => {

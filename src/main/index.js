@@ -82,7 +82,7 @@ const wipeInvalidSync = () => {
 }
 const initWindowing = (inDev) => {
   const indexUrl = inDev
-    ? 'http://localhost:3000/splash.png'
+    ? 'http://localhost:8082/splash.png'
     : 'file://' + path.join(__dirname, '../build/splash.png')
 
   const loadingScreen = new BrowserWindow({
@@ -131,7 +131,7 @@ const createMain = (inDev, child) => {
   })
 
   const indexUrl = inDev
-    ? 'http://localhost:3000/'
+    ? 'http://localhost:8082/'
     : 'file://' + path.join(__dirname, '../build/index.html')
 
   // and load the index.html of the app.

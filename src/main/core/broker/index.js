@@ -1,7 +1,7 @@
 const Broker = require('./broker')
 const renderer = require(
   // Handle multiple envs for browser or node package
-  typeof process === 'undefined' ? './browser' : './node'
+  process.env.RUNTIME === 'web' ? './browser' : './node'
 )
 
 // Construct broker with renderer

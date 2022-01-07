@@ -20,7 +20,7 @@
     "react-app-polyfill/jsdom"
   ],
   "setupFilesAfterEnv": [
-    "<rootDir>/src/render/setupEnzyme.js"
+    "<rootDir>/.jest/setupEnzyme.js"
   ],
   "testMatch": [
     "<rootDir>/src/**/__tests__/**/*.{js,jsx,ts,tsx}",
@@ -29,9 +29,8 @@
   "testEnvironment": "jsdom",
   "testRunner": "<rootDir>/node_modules/jest-circus/runner.js",
   "transform": {
-    "^.+\\.(js|jsx|mjs|cjs|ts|tsx)$": "<rootDir>/config/jest/babelTransform.js",
-    "^.+\\.css$": "<rootDir>/config/jest/cssTransform.js",
-    "^(?!.*\\.(js|jsx|mjs|cjs|ts|tsx|css|json)$)": "<rootDir>/config/jest/fileTransform.js"
+    "^.+\\.jsx?$": "babel-jest",
+    "^(?!.*\\.(js|jsx|mjs|cjs|ts|tsx|css|json)$)": "<rootDir>/.jest/fileTransformer.js"
   },
   "transformIgnorePatterns": [
     "[/\\\\]node_modules[/\\\\].+\\.(js|jsx|mjs|cjs|ts|tsx)$",
