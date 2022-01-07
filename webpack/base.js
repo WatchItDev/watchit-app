@@ -66,7 +66,6 @@ export default {
         }
     },
     node: {
-        global: true,
         __dirname: true,
         __filename: true
     },
@@ -74,3 +73,4 @@ export default {
     externals: externalItems,
     devtool: 'inline-source-map',
 }
+
