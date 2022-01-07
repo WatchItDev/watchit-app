@@ -31,6 +31,6 @@ jobs:
         run: npm run lint
 
       - name: Test code
-        run: npm test -- -u --coverage
+        run: npm test -- -u
 
 
