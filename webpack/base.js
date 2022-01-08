@@ -35,6 +35,7 @@ export default {
             rules.fontsRule,
             rules.cssRule,
             rules.sassRule,
+            rules.svgRules,
             ...rules.svgRules
         ])
     },

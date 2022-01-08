@@ -53,3 +53,8 @@ export const sassRule = {
   test: /\.s[ac]ss$/i,
   use: ['style-loader',  "css-loader", 'sass-loader' ]
 }
+
+export const svgRule = {
+  test: /\.svg$/,
+  use: ['@svgr/webpack'],
+}

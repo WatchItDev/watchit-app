@@ -8,7 +8,6 @@ import { ProvidePlugin } from 'webpack'
 
 const config = {
     Buffer: ['buffer', 'Buffer'],
-    setImmediate: ['setimmediate', 'setImmedate'],
     process: 'process/browser'
 }
 
