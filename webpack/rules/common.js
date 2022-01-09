@@ -1,60 +1,64 @@
-import { babelLoader } from './useLoaderRuleItems'
+import {babelLoader} from './useLoaderRuleItems'
 
 /**
  * @see https://webpack.js.org/guides/typescript/#loader
  */
 export const typescriptRule = {
-  test: /\.tsx?$/,
-  loader: 'ts-loader',
-  options: {
-    transpileOnly: true
-  },
-  exclude: /node_modules/
+    test: /\.tsx?$/,
+    loader: 'ts-loader',
+    options: {
+        transpileOnly: true
+    },
+    exclude: /node_modules/
 }
 /**
  * @see https://webpack.js.org/loaders/babel-loader
  */
 export const javascriptRule = {
-  test: /\.(js|jsx)$/,
-  use: [babelLoader],
-  exclude: /node_modules/
+    test: /\.(js|jsx)$/,
+    use: [babelLoader],
+    exclude: /node_modules/
 }
 
 /**
  * @see https://webpack.js.org/loaders/html-loader
  */
 export const htmlRule = {
-  test: /\.(html)$/,
-  use: {
-    loader: 'html-loader'
-  }
+    test: /\.(html)$/,
+    use: {
+        loader: 'html-loader'
+    }
 }
 /**
  * @see https://webpack.js.org/guides/asset-modules/
  */
 export const imagesRule = {
-  test: /\.(?:ico|gif|png|jpg|jpeg)$/i,
-  type: 'asset/resource'
+    test: /\.(?:ico|gif|png|jpg|jpeg)$/i,
+    type: 'asset/resource'
 }
 /**
  * @see https://webpack.js.org/guides/asset-modules/
  */
 export const fontsRule = {
-  test: /\.(woff(2)?|eot|ttf|otf|)$/,
-  type: 'asset/inline'
+    test: /\.(woff(2)?|eot|ttf|otf|)$/,
+    type: 'asset/inline'
 }
 
 export const cssRule = {
-  test: /\.css$/i,
-  use: ["style-loader", "css-loader"],
+    test: /\.css$/i,
+    use: ["style-loader", "css-loader"],
 }
 
 export const sassRule = {
-  test: /\.s[ac]ss$/i,
-  use: ['style-loader',  "css-loader", 'sass-loader' ]
+    test: /\.s[ac]ss$/i,
+    use: ['style-loader', "css-loader", 'sass-loader']
 }
 
-export const svgRule = {
-  test: /\.svg$/,
-  use: ['@svgr/webpack'],
+export const urlLoader = {
+    test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/],
+    loader: require.resolve('url-loader'),
+    options: {
+        limit: 10000,
+        name: 'static/media/[name].[hash:8].[ext]',
+    },
 }

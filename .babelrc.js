@@ -12,6 +12,19 @@ module.exports = (api) => {
                 }
             }],
             '@babel/preset-react'
+        ],
+        plugins: [
+            [
+                require.resolve('babel-plugin-named-asset-import'),
+                {
+                    loaderMap: {
+                        svg: {
+                            ReactComponent:
+                                '@svgr/webpack?-svgo,+titleProp,+ref![path]',
+                        },
+                    },
+                },
+            ]
         ]
     };
 };

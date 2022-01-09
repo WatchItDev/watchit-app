@@ -25,7 +25,6 @@ export const svgReactComponentRule = {
  */
 export const svgRule = {
   test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
-  issuer: { not: [/\.[jt]sx$/] },
   type: 'asset/inline'
 }
 
