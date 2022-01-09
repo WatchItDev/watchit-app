@@ -7,9 +7,13 @@ const Node = require('./node')
 const Ingest = require('./ingest')
 // const BroadCast = require('./broadcast')
 
-module.exports = (ipcMain, runtime = 'web') => {
-  const nodeConf = { }
-  log.info(runtime)
+module.exports = (ipcMain, runtime = 'node') => {
+  let nodeConf = { }
+
+  if (!Object.is(runtime, 'web')) {
+    const { ROOT_ORBIT_DIR } = require('./settings')
+    nodeConf = Object.assign({ directory: ROOT_ORBIT_DIR }, nodeConf)
+  }
 
   const orbit = Node.getInstance({ orbit: nodeConf })
   const ingest = Ingest.getInstance(orbit)

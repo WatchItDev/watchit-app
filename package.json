@@ -74,7 +74,6 @@
       "!**/{appveyor.yml,.travis.yml,circle.yml}",
       "!**/{npm-debug.log,yarn.lock,.yarn-integrity,.yarn-metadata.json}",
       "src/build/**/*",
-      "node_modules/**/*",
       "src/main/**/*",
       "src/render/media/icons/*",
       "package.json"

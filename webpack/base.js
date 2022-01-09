@@ -31,11 +31,10 @@ export default {
             rules.javascriptRule,
             rules.typescriptRule,
             rules.htmlRule,
-            rules.imagesRule,
             rules.fontsRule,
             rules.cssRule,
             rules.sassRule,
-            rules.urlLoader,
+            rules.imagesRule,
             ...rules.svgRules
         ])
     },
