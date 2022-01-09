@@ -50,18 +50,16 @@ module.exports = class HLSStreamer extends EventEmitter {
       log.warn(`Loading manifest: ${uri}`)
       this.hls = new HLS(CONF)
       this.hls.loadSource(uri) // Add uri to HLS to process
-      this.hls.attachMedia(videoRef)
       // When media attached then try to play streaming!!
       this.hls.on(HLS.Events.ERROR, (e, d) => this.emitError(e, d))
-      this.hls.on(HLS.Events.MEDIA_ATTACHED, () => {
-        log.info('Media attached')
-        this.hls.on(HLS.Events.MANIFEST_PARSED, (e, n) => {
-          log.info('m3u8 manifest loaded')
-          // Add new qualities to option
-          this.setup(videoRef, {
-            ...this.quality(n)
-            // ...this.subs(n)
-          })
+      this.hls.on(HLS.Events.MEDIA_ATTACHED, () => log.info('Media attached'))
+      this.hls.on(HLS.Events.MANIFEST_PARSED, (e, n) => {
+        log.info('m3u8 manifest loaded')
+        this.hls.attachMedia(videoRef)
+        // Add new qualities to option
+        this.setup(videoRef, {
+          ...this.quality(n)
+          // ...this.subs(n)
         })
       })
     } else if (nativePlay) {
