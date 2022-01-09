@@ -10,7 +10,7 @@ export default {
     'https://vps3.phillm.net',
     'https://gateway.ipfs.io',
     'https://ipfs.infura.io',
-    'https://gateway.pinata.cloud',
+    // 'https://gateway.pinata.cloud',
     ...process.env.RUNTIME !== 'web'
       ? ['http://localhost:9090']
       : []
