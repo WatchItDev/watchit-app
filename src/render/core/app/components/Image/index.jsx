@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import PulseLoader from '@components/PulseLoader/'
+import PulseLoader from '@components/PulseLoader'
 import log from '@logger'
 
 export default class Image extends React.PureComponent {

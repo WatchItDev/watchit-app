@@ -7,4 +7,4 @@ const PointsLoader = styled.img`
 `
 
 PointsLoader.defaultProps = { src: Dots }
-export default React.memo(PointsLoader)
+export default PointsLoader
