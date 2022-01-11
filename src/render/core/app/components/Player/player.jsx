@@ -90,6 +90,7 @@ export default class Player extends React.Component {
     // Handle error
     this.props.onError && this.props.onError(e)
     log.error('Error while streaming')
+    log.error(e);
     log.warn('Retrying...')
     this.stopStreaming()
     this.startStreaming()
