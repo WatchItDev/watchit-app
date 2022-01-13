@@ -49,8 +49,7 @@
     "subtitle": "^2.0.3",
     "uint8arrays": "^3.0.0",
     "unzipper": "^0.10.11",
-    "v8-compile-cache": "^2.2.0",
-    "webworkify-webpack": "^2.1.5"
+    "v8-compile-cache": "^2.2.0"
   },
   "build": {
     "productName": "watchit",
@@ -218,7 +217,8 @@
     "workbox-routing": "^6.4.2",
     "workbox-strategies": "^6.4.2",
     "workbox-webpack-plugin": "^6.4.2",
-    "workbox-window": "^6.4.2"
+    "workbox-window": "^6.4.2",
+    "webworkify-webpack": "^2.1.5"
   },
   "browserslist": [
     ">0.2%",
