@@ -1,3 +1,4 @@
+import webpack from 'webpack'
 import path, {join, resolve} from 'path'
 import {aliasItems, devServerUrl, externalItems} from './config'
 import entry from './entry'
@@ -36,7 +37,11 @@ export default {
             rules.sassRule,
             rules.imagesRule,
             ...rules.svgRules
-        ])
+        ]),
+        noParse: [
+            // WORKAROUND: For `hls.js >=0.6.x` -- against the `This seems to be a pre-built javascript file.` warning. @see https://github.com/dailymotion/hls.js/issues/265#issuecomment-233661596
+            /\/node_modules\/hls\.js\/.+$/,
+        ],
     },
     plugins: arrayFilterEmpty([
         plugins.htmlWebpackPlugin,
@@ -44,7 +49,7 @@ export default {
         plugins.definePlugin,
         plugins.nodePolyfillPlugin,
         plugins.copyPlugin,
-        new webpack.NormalModuleReplacementPlugin(/^webworkify$/, 'webworkify-webpack'),
+        plugins.webWork,
         ...(isProd && [plugins.workBoxSW] || [])
     ]),
     resolve: {
