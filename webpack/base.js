@@ -1,4 +1,3 @@
-import webpack from 'webpack'
 import path, {join, resolve} from 'path'
 import {aliasItems, devServerUrl, externalItems} from './config'
 import entry from './entry'
