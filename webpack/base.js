@@ -44,6 +44,7 @@ export default {
         plugins.definePlugin,
         plugins.nodePolyfillPlugin,
         plugins.copyPlugin,
+        new webpack.NormalModuleReplacementPlugin(/^webworkify$/, 'webworkify-webpack'),
         ...(isProd && [plugins.workBoxSW] || [])
     ]),
     resolve: {
