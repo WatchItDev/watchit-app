@@ -1,4 +1,5 @@
 module.exports = {
+  enableWorker: false,
   manifestLoadingTimeOut: 15 * 1000,
   manifestLoadingMaxRetry: 3,
   manifestLoadingRetryDelay: 1000,
