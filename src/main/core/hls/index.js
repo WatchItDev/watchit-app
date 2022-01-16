@@ -118,7 +118,7 @@ module.exports = class HLSStreamer extends EventEmitter {
         case HLS.ErrorTypes.NETWORK_ERROR:
         default:
           // cannot recover
-          this.hls.destroy()
+          this.stop()
           this.emit('error', data)
           break
       }
