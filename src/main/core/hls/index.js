@@ -104,13 +104,8 @@ module.exports = class HLSStreamer extends EventEmitter {
      */
 
     if (data.fatal) {
-      log.info('Fail trying play movie')
+      log.info(`Fail trying play movie: ${JSON.stringify(data)}`)
       switch (data.type) {
-        // case HLS.ErrorTypes.NETWORK_ERROR:
-        //   // try to recover network error
-        //   console.log('Fatal network error encountered, try to recover')
-        //   this.hls.startLoad()
-        //   break
         case HLS.ErrorTypes.MEDIA_ERROR:
           console.log('Fatal media error encountered, try to recover')
           this.hls.recoverMediaError()
