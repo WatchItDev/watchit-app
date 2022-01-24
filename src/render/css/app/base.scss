@@ -1,6 +1,6 @@
-
+@use "../tools/_vars";
 html, body {
-  font-family: $font-family-base;
+  font-family: vars.$font-family-base;
   box-sizing: border-box;
   -webkit-user-select: none;
 
@@ -8,7 +8,7 @@ html, body {
 
 a {
   text-decoration: none;
-  color: $link-color;
+  color: vars.$link-color;
 }
 
 ul {
@@ -95,14 +95,6 @@ input[type=file] {
   }
 }
 
-//Video conf
-video::-webkit-media-text-track-container {
-  // Style the container
-}
-
-video::-webkit-media-text-track-background {
-  // Style the text background
-}
 
 :root {
   --plyr-font-size-large: 3.5vw;
@@ -119,7 +111,7 @@ video::-webkit-media-text-track-background {
 
   .plyr__caption {
     color: #fff;
-    font-family: $font-family-titles;
+    font-family: vars.$font-family-titles;
     font-size: 1rem !important;
     display: block;
     line-height: 1.2;

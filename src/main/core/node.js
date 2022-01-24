@@ -116,6 +116,7 @@ module.exports = class Node extends EventEmitter {
 
     log.info('Starting movies db:', key)
     this.db = await this.open(key).catch(async (e) => {
+      console.log(e)
       // If db cannot be opened then just kill
       log.error(`Error opening db ${key}`)
       // this.emit('node-step', 'Retrying')
@@ -262,19 +263,5 @@ module.exports = class Node extends EventEmitter {
     return result.payload.value
     // console.log('Request hash', hash);
     // return this.db.get(hash).payload.value
-  }
-
-  set queue (hash) {
-    log.info('Storing hash in queue')
-    const cache = key.readFromStorage()
-    const cacheList = cache.hash ?? []
-    // Deduplication with sets
-    const newHash = [...new Set([...cacheList, ...[hash]])]
-    key.addToStorage({ hash: newHash })
-  }
-
-  get queue () {
-    const cache = key.readFromStorage()
-    return cache?.hash ?? []
   }
 }

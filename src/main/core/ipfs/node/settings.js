@@ -50,19 +50,17 @@ module.exports = (ports) => {
         HighWater: 180,
         LowWater: 90,
         Type: 'basic'
-      },
-      EnableAutoRelay: true,
-      EnableRelayHop: false
+      }
     },
     Discovery: { MDNS: { Enabled: true, Interval: 10 } },
     Peering: {
       Peers: [
-        { ID: 'QmSHSTNyKJ1EGVVKj7dKZFmxj9FaBfE7S23MNTj1Jwungg', Addrs: ['/ip4/34.221.74.117/tcp/4001'] },
+        { ID: '12D3KooWGuS8AVUokZ7MKCvNTXn6mv5wYLAP86Rg5snDz7SbZgSZ', Addrs: ['/ip4/172.104.243.69/tcp/4001'] },
         { ID: 'QmVzpedLC9oeUPsZZmVFZLZo12sMk6CfXpG2ykUj3xdwTa', Addrs: ['/ip4/34.210.174.172/tcp/4001'] },
         { ID: 'QmbPFTECrXd7o2HS2jWAJ2CyAckv3Z5SFy8gnEHKxxH52g', Addrs: ['/ip4/144.172.69.157/tcp/4001'] },
         { ID: 'QmVPdm5PwdEb2sPTvaZTdx1bvntZQfWurFwzgLYAapkJXr', Addrs: ['/ip4/51.159.132.97/tcp/4001'] },
         {
-          ID: '12D3KooWQw3vx2E4FKpL9GHC9BpFya1MXVUFEVBAQVhMDkreCqwF',
+          ID: '12D3KooWCWDM7X9ZJwH71TPdnLXSNYAR8FF92CHK99Fw7cNCicQA',
           Addrs: ['/ip4/185.215.224.79/tcp/4001']
         },
         {

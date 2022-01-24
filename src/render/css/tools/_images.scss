@@ -1,9 +1,11 @@
+@use "_mixins";
+
 .image-background-cover {
   background-size: cover !important;
 }
 
 .image-container {
-  @include clearfix;
+  @include mixins.clearfix;
   width: 100%;
   height: auto;
   display: inline-block;

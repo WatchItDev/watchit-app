@@ -1,6 +1,6 @@
 //Autor: Geolffrey Mena
 //Mixins
-
+@use "_vars";
 /***** ANIMATION MIXINS *******/
 @mixin keyframes($name) {
   @-webkit-keyframes #{$name} {
@@ -94,8 +94,8 @@
 
 /**HELPERS**/
 @mixin popup($width:0.1px, $height: 0.1px) {
-  @include calc(left, 50vw - #{($width /2)});
-  @include calc(top, 50vh - #{($height /2)});
+  @include calc(left, 50vw - #{($width *0.5)});
+  @include calc(top, 50vh - #{($height *0.5)});
   min-width: $width;
   min-height: $height;
   position: fixed;
@@ -131,21 +131,21 @@
 
 //Util
 @mixin media-small() {
-  @media (min-width: $screen-sm-min) {
+  @media (min-width: vars.$screen-sm-min) {
     @content;
   }
 }
 
 @mixin media-middle() {
   /* Medium devices (desktops, 992px and up) */
-  @media (min-width: $screen-md-min) {
+  @media (min-width: vars.$screen-md-min) {
     @content
   }
 }
 
 @mixin media-large() {
   /* Large devices (large desktops, 1200px and up) */
-  @media (min-width: $screen-lg-min) {
+  @media (min-width: vars.$screen-lg-min) {
     @content;
   }
 

@@ -2,6 +2,7 @@ import React from 'react'
 import uid from 'shortid'
 import PropTypes from 'prop-types'
 import CatalogPoster from './poster'
+import gatewayHelper from '@helpers/gateway'
 
 export default class CatalogRow extends React.Component {
   static get propTypes () {
@@ -22,7 +23,7 @@ export default class CatalogRow extends React.Component {
             <CatalogPoster
               key={i._id || uid.generate()} id={i._id}
               title={i.title} rating={i.rating} year={i.year}
-              image={i?.resource?.posters?.medium}
+              image={gatewayHelper.parsePosterUri(i.resource, 'medium')}
               {...this.props}
             />
           )

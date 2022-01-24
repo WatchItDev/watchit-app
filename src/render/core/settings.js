@@ -4,22 +4,16 @@
 
 export default {
   streaming: ['hls'],
-  resolutions: {
-    available: [
-      '720p', '1080p', '2160p'
-    ]
-  },
   gateways: [
     'https://vps1.phillm.net',
     'https://vps2.phillm.net',
     'https://vps3.phillm.net',
     'https://gateway.ipfs.io',
     'https://ipfs.infura.io',
+    'https://gateway.pinata.cloud',
     ...process.env.RUNTIME !== 'web'
       ? ['http://localhost:9090']
       : []
-    // 'https://cloudflare-ipfs.com',
-    // 'https://cf-ipfs.com'
   ],
   subs: {
     hash: {

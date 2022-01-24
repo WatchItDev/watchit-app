@@ -1,3 +1,4 @@
+@use "sass:color";
 //FONTS
 $font-size-tiny: 12px;
 $font-size-small: 14px;
@@ -24,16 +25,17 @@ $yellow: #f1c40f;
 $red: #c0392b;
 $green: #27ae60;
 $teal: #009688;
-$gray-darker: lighten(#000, 13.5%) !default;
-$gray-dark: lighten(#000, 20%) !default;
-$gray: lighten(#000, 33.5%) !default;
-$gray-light: lighten(#000, 60%) !default;
-$gray-lighter: lighten(#000, 93.5%) !default;
+$gray-darker: color.adjust(#000, $lightness: 13.5%) !default;
+$gray-dark: color.adjust(#000, $lightness: 20%) !default;
+$gray: color.adjust(#000, $lightness: 33.5%) !default;
+$gray-light: color.adjust(#000, $lightness: 60%) !default;
+$gray-lighter: color.adjust(#000, $lightness: 93.5%) !default;
 $brand-primary: #428bca !default;
 $brand-success: #5cb85c !default;
 $brand-info: #5bc0de !default;
 $brand-warning: #f0ad4e !default;
 $brand-danger: #d9534f !default;
+$link-color: color("light-blue", "darken-1") !default;
 
 $input-base-color: $gray-light;
 

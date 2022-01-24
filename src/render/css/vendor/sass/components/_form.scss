@@ -1,15 +1,19 @@
+@use "sass:color";
+@use "_variables";
+@use "_prefixer";
+@forward "_global";
 /* Remove Focus Boxes */
 select:focus {
-  outline: 1px solid lighten($secondary-color, 47%);
+  outline: 1px solid color.adjust(variables.$secondary-color, $lightness: 47%);
 }
 button:focus {
   outline: none;
-  background-color: lighten($button-color, 4%);
+  background-color: color.adjust(variables.$button-color, $lightness: 4%);
 }
 
 label {
-  font-size: $label-font-size;
-  color: $input-border-color;
+  font-size: variables.$label-font-size;
+  color: variables.$input-border-color;
 }
 
 /***************************
@@ -18,19 +22,19 @@ label {
 
 // Style Placeholders
 ::-webkit-input-placeholder {
-   color: lighten($input-border-color, 20%);
+   color: color.adjust(variables.$input-border-color, $lightness: 20%);
 }
 
 :-moz-placeholder { /* Firefox 18- */
-   color: lighten($input-border-color, 20%);
+   color: color.adjust(variables.$input-border-color, $lightness: 20%);
 }
 
 ::-moz-placeholder {  /* Firefox 19+ */
-   color: lighten($input-border-color, 20%);
+   color: color.adjust(variables.$input-border-color, $lightness: 20%);
 }
 
 :-ms-input-placeholder {
-   color: lighten($input-border-color, 20%);
+   color: color.adjust(variables.$input-border-color, $lightness: 20%);
 }
 
 // Text inputs
@@ -49,7 +53,7 @@ textarea.materialize-textarea {
   // General Styles
   background-color: transparent;
   border: none;
-  border-bottom: 1px solid $input-border-color;
+  border-bottom: 1px solid variables.$input-border-color;
   border-radius: 0;
   outline: none;
   height: 3rem;
@@ -59,52 +63,52 @@ textarea.materialize-textarea {
   margin: 0 0 15px 0;
   padding: 0;
   box-shadow: none;
-  @include box-sizing(content-box);
+  @include prefixer.box-sizing(content-box);
   transition: all .3s;
 
 
   // Disabled input style
   &:disabled, &[readonly="readonly"] {
-    color: $input-disabled-color;
-    border-bottom: 1px dotted $input-disabled-color;
+    color: variables.$input-disabled-color;
+    border-bottom: 1px dotted variables.$input-disabled-color;
   }
   // Disabled label style
   &:disabled+label, &[readonly="readonly"]+label {
-    color: $input-disabled-color;
+    color: variables.$input-disabled-color;
   }
   // Focused input style
   &:focus:not([readonly]) {
-    border-bottom: 1px solid $input-focus-color;
-    box-shadow: 0 1px 0 0 $input-focus-color;
+    border-bottom: 1px solid variables.$input-focus-color;
+    box-shadow: 0 1px 0 0 variables.$input-focus-color;
   }
   // Focused label style
   &:focus:not([readonly])+label {
-    color: $input-focus-color;
+    color: variables.$input-focus-color;
   }
   // Valid Input Style
   &.valid,
   &:focus.valid {
-    border-bottom: 1px solid $input-success-color;
-    box-shadow: 0 1px 0 0 $input-success-color;
+    border-bottom: 1px solid variables.$input-success-color;
+    box-shadow: 0 1px 0 0 variables.$input-success-color;
   }
   // Custom Success Message
   &.valid + label:after,
   &:focus.valid + label:after {
     content: attr(data-success);
-    color: $input-success-color;
+    color: variables.$input-success-color;
     opacity: 1;
   }
   // Invalid Input Style
   &.invalid,
   &:focus.invalid {
-    border-bottom: 1px solid $input-error-color;
-    box-shadow: 0 1px 0 0 $input-error-color;
+    border-bottom: 1px solid variables.$input-error-color;
+    box-shadow: 0 1px 0 0 variables.$input-error-color;
   }
   // Custom Error message
   &.invalid + label:after,
   &:focus.invalid + label:after {
     content: attr(data-error);
-    color: $input-error-color;
+    color: variables.$input-error-color;
     opacity: 1;
   }
 
@@ -125,17 +129,17 @@ textarea.materialize-textarea {
   margin-top: 1rem;
 
   label {
-    color: $input-border-color;
+    color: variables.$input-border-color;
     position: absolute;
     top: 0.8rem;
-    left: $gutter-width / 2;
+    left: variables.$gutter-width * 0.5;
     font-size: 1rem;
     cursor: text;
-    @include transition(.2s ease-out);
+    @include prefixer.transition(.2s ease-out);
   }
   label.active {
-    font-size: $label-font-size;
-    @include transform(translateY(-140%));
+    font-size: variables.$label-font-size;
+    @include prefixer.transform(translateY(-140%));
   }
 
   // Prefix Icons
@@ -143,9 +147,9 @@ textarea.materialize-textarea {
     position: absolute;
     width: 3rem;
     font-size: 2rem;
-    @include transition(color .2s);
+    @include prefixer.transition(color .2s);
 
-    &.active { color: $input-focus-color; }
+    &.active { color: variables.$input-focus-color; }
   }
   .prefix ~ input,
   .prefix ~ textarea {
@@ -156,13 +160,13 @@ textarea.materialize-textarea {
   .prefix ~ textarea { padding-top: .8rem; }
   .prefix ~ label { margin-left: 3rem; }
 
-  @media #{$medium-and-down} {
+  @media #{variables.$medium-and-down} {
     .prefix ~ input {
       width: 86%;
       width: calc(100% - 3rem);
     }
   }
-  @media #{$small-and-down} {
+  @media #{variables.$small-and-down} {
     .prefix ~ input {
       width: 80%;
       width: calc(100% - 3rem);
@@ -178,7 +182,7 @@ textarea.materialize-textarea {
   width: calc(100% - 4rem);
 
   &:focus {
-    background-color: $input-bg-color;
+    background-color: variables.$input-bg-color;
     border: 0;
     box-shadow: none;
     color: #444;
@@ -252,7 +256,7 @@ textarea {
   height: 25px;
   line-height: 25px;
   font-size: 1rem;
-  @include transition(.28s ease);
+  @include prefixer.transition(.28s ease);
 
   -webkit-user-select: none; /* webkit (safari, chrome) browsers */
   -moz-user-select: none; /* mozilla browsers */
@@ -270,20 +274,20 @@ textarea {
   width: 16px;
   height: 16px;
   z-index: 0;
-  @include transition(.28s ease);
+  @include prefixer.transition(.28s ease);
 }
 
 /* Unchecked styles */
 [type="radio"]:not(:checked) + label:before {
   border-radius: 50%;
-  border: 2px solid $radio-empty-color;
+  border: 2px solid variables.$radio-empty-color;
 }
 [type="radio"]:not(:checked) + label:after {
   border-radius: 50%;
-  border: 2px solid $radio-empty-color;
+  border: 2px solid variables.$radio-empty-color;
   z-index: -1;
 
-  @include transform(scale(0));
+  @include prefixer.transform(scale(0));
 }
 
 /* Checked styles */
@@ -293,49 +297,49 @@ textarea {
 }
 [type="radio"]:checked + label:after {
   border-radius: 50%;
-  border: 2px solid $radio-fill-color;
-  background-color: $radio-fill-color;
+  border: 2px solid variables.$radio-fill-color;
+  background-color: variables.$radio-fill-color;
   z-index: 0;
-  @include transform(scale(1.02));
+  @include prefixer.transform(scale(1.02));
 }
 
 /* Radio With gap */
 [type="radio"].with-gap:checked + label:before {
   border-radius: 50%;
-  border: 2px solid $radio-fill-color;
+  border: 2px solid variables.$radio-fill-color;
 }
 [type="radio"].with-gap:checked + label:after {
   border-radius: 50%;
-  border: 2px solid $radio-fill-color;
-  background-color: $radio-fill-color;
+  border: 2px solid variables.$radio-fill-color;
+  background-color: variables.$radio-fill-color;
   z-index: 0;
-  @include transform(scale(.5));
+  @include prefixer.transform(scale(.5));
 }
 
 /* Disabled Radio With gap */
 [type="radio"].with-gap:disabled:checked + label:before {
-  border: 2px solid $input-disabled-color;
+  border: 2px solid variables.$input-disabled-color;
 }
 [type="radio"].with-gap:disabled:checked + label:after {
   border: none;
-  background-color: $input-disabled-color;
+  background-color: variables.$input-disabled-color;
 }
 
 /* Disabled style */
 [type="radio"]:disabled:not(:checked) + label:before,
 [type="radio"]:disabled:checked + label:before {
   background-color: transparent;
-  border-color: $input-disabled-color;
+  border-color: variables.$input-disabled-color;
 }
 [type="radio"]:disabled + label {
-  color: $input-disabled-color;
+  color: variables.$input-disabled-color;
 }
 [type="radio"]:disabled:not(:checked) + label:before {
-  border-color: $input-disabled-color;
+  border-color: variables.$input-disabled-color;
 }
 [type="radio"]:disabled:checked + label:after {
-  background-color: $input-disabled-color;
-  border-color: $input-disabled-solid-color;
+  background-color: variables.$input-disabled-color;
+  border-color: variables.$input-disabled-solid-color;
 }
 
 /***************
@@ -387,15 +391,15 @@ form p:last-child {
     width: 18px;
     height: 18px;
     z-index: 0;
-    border: 2px solid $radio-empty-color;
+    border: 2px solid variables.$radio-empty-color;
     border-radius: 1px;
     margin-top: 2px;
-    @include transition(.2s);
+    @include prefixer.transition(.2s);
   }
 
   &:not(:checked):disabled + label:before {
     border: none;
-    background-color: $input-disabled-color;
+    background-color: variables.$input-disabled-color;
   }
 }
 
@@ -406,16 +410,16 @@ form p:last-child {
     width: 12px; height: 22px;
     border-top: 2px solid transparent;
     border-left: 2px solid transparent;
-    border-right: 2px solid $radio-fill-color;
-    border-bottom: 2px solid $radio-fill-color;
-    @include transform(rotate(40deg));
+    border-right: 2px solid variables.$radio-fill-color;
+    border-bottom: 2px solid variables.$radio-fill-color;
+    @include prefixer.transform(rotate(40deg));
     -webkit-backface-visibility: hidden;
-    @include transform-origin(100% 100%);
+    @include prefixer.transform-origin(100% 100%);
   }
 
   &:disabled + label:before {
-    border-right: 2px solid $input-disabled-color;
-    border-bottom: 2px solid $input-disabled-color;
+    border-right: 2px solid variables.$input-disabled-color;
+    border-bottom: 2px solid variables.$input-disabled-color;
   }
 }
 
@@ -427,16 +431,16 @@ form p:last-child {
     width: 10px; height: 22px;
     border-top: none;
     border-left: none;
-    border-right: 2px solid $radio-fill-color;
+    border-right: 2px solid variables.$radio-fill-color;
     border-bottom: none;
-    @include transform(rotate(90deg));
+    @include prefixer.transform(rotate(90deg));
     -webkit-backface-visibility: hidden;
-    @include transform-origin(100% 100%);
+    @include prefixer.transform-origin(100% 100%);
   }
 
   // Disabled indeterminate
   &:disabled + label:before {
-    border-right: 2px solid $input-disabled-color;
+    border-right: 2px solid variables.$input-disabled-color;
     background-color: transparent;
   }
 }
@@ -475,7 +479,7 @@ form p:last-child {
     height: 20px;
     width: 20px;
     background-color: transparent;
-    border: 2px solid $radio-empty-color;
+    border: 2px solid variables.$radio-empty-color;
     top: 0px;
     z-index: 0;
   }
@@ -489,8 +493,8 @@ form p:last-child {
       height: 13px;
       border-top: 2px solid transparent;
       border-left: 2px solid transparent;
-      border-right: 2px solid $input-bg-color;
-      border-bottom: 2px solid $input-bg-color;
+      border-right: 2px solid variables.$input-bg-color;
+      border-bottom: 2px solid variables.$input-bg-color;
       -webkit-transform: rotateZ(37deg);
       transform: rotateZ(37deg);
 
@@ -502,8 +506,8 @@ form p:last-child {
       top: 0px;
       width: 20px;
       height: 20px;
-      border: 2px solid $secondary-color;
-      background-color: $secondary-color;
+      border: 2px solid variables.$secondary-color;
+      background-color: variables.$secondary-color;
       z-index: 0;
     }
   }
@@ -515,7 +519,7 @@ form p:last-child {
 
   &:disabled:not(:checked) + label:after {
     border-color: transparent;
-    background-color: $input-disabled-solid-color;
+    background-color: variables.$input-disabled-solid-color;
   }
 
   &:disabled:checked + label:before {
@@ -523,8 +527,8 @@ form p:last-child {
   }
 
   &:disabled:checked + label:after {
-    background-color: $input-disabled-solid-color;
-    border-color: $input-disabled-solid-color;
+    background-color: variables.$input-disabled-solid-color;
+    border-color: variables.$input-disabled-solid-color;
   }
 }
 
@@ -550,11 +554,11 @@ form p:last-child {
 }
 
 .switch label input[type=checkbox]:checked + .lever {
-    background-color: $switch-checked-lever-bg;
+    background-color: variables.$switch-checked-lever-bg;
 }
 
 .switch label input[type=checkbox]:checked + .lever:after {
-    background-color: $switch-bg-color;
+    background-color: variables.$switch-bg-color;
 }
 
 .switch label .lever {
@@ -563,7 +567,7 @@ form p:last-child {
     position: relative;
     width: 40px;
     height: 15px;
-    background-color: $switch-unchecked-lever-bg;
+    background-color: variables.$switch-unchecked-lever-bg;
     border-radius: 15px;
     margin-right: 10px;
     transition: background 0.3s ease;
@@ -577,7 +581,7 @@ form p:last-child {
     display: inline-block;
     width: 21px;
     height: 21px;
-    background-color: $switch-unchecked-bg;
+    background-color: variables.$switch-unchecked-bg;
     border-radius: 21px;
     box-shadow: 0 1px 3px 1px rgba(0,0,0,.4);
     left: -5px;
@@ -587,7 +591,7 @@ form p:last-child {
 
 // Switch active style
 input[type=checkbox]:checked:not(:disabled) ~ .lever:active:after {
-       box-shadow: 0 1px 3px 1px rgba(0,0,0,.4), 0 0 0 15px transparentize($switch-bg-color, .9);
+       box-shadow: 0 1px 3px 1px rgba(0,0,0,.4), 0 0 0 15px color.adjust(variables.$switch-bg-color, $alpha: -.9);
 }
 
 input[type=checkbox]:not(:disabled) ~ .lever:active:after {
@@ -604,7 +608,7 @@ input[type=checkbox]:not(:disabled) ~ .lever:active:after {
 }
 .switch label input[type=checkbox][disabled] + .lever:after,
 .switch label input[type=checkbox][disabled]:checked + .lever:after {
-    background-color: $input-disabled-solid-color;
+    background-color: variables.$input-disabled-solid-color;
 }
 
 /***************
@@ -623,7 +627,7 @@ input[type=checkbox]:not(:disabled) ~ .lever:active:after {
     // color: #444;
     background-color: transparent;
     border: none;
-    border-bottom: 1px solid $input-border-color;
+    border-bottom: 1px solid variables.$input-border-color;
     outline: none;
     height: 3rem;
     line-height: 3rem;
@@ -641,14 +645,14 @@ input[type=checkbox]:not(:disabled) ~ .lever:active:after {
     top: 16px;
     font-size: 10px;
     &.disabled {
-      color: $input-disabled-color;
+      color: variables.$input-disabled-color;
     }
   }
 
   & + label {
     position: absolute;
     top: -14px;
-    font-size: $label-font-size;
+    font-size: variables.$label-font-size;
   }
 }
 
@@ -683,8 +687,8 @@ select:disabled {
 // Icons
 .select-dropdown li {
   img {
-    height: $dropdown-item-height - 10;
-    width: $dropdown-item-height - 10;
+    height: variables.$dropdown-item-height - 10;
+    width: variables.$dropdown-item-height - 10;
     margin: 5px 15px;
     float: right;
   }
@@ -692,7 +696,7 @@ select:disabled {
 
 // Optgroup styles
 .select-dropdown li.optgroup {
-  border-top: 1px solid $dropdown-hover-bg-color;
+  border-top: 1px solid variables.$dropdown-hover-bg-color;
 
   &.selected > span {
     color: rgba(0,0,0, .7);
@@ -774,27 +778,27 @@ input[type=range] + .thumb {
   height: 0;
   width: 0;
   border-radius: 50%;
-  background-color: $radio-fill-color;
+  background-color: variables.$radio-fill-color;
   top: 10px;
   margin-left: -6px;
 
-  @include transform-origin(50% 50%);
-  @include transform(rotate(-45deg));
+  @include prefixer.transform-origin(50% 50%);
+  @include prefixer.transform(rotate(-45deg));
 
   .value {
     display: block;
     width: 30px;
     text-align: center;
-    color: $radio-fill-color;
+    color: variables.$radio-fill-color;
     font-size: 0;
-    @include transform(rotate(45deg));
+    @include prefixer.transform(rotate(45deg));
   }
 
   &.active {
     border-radius: 50% 50% 50% 0;
 
     .value {
-      color: $input-bg-color;
+      color: variables.$input-bg-color;
       margin-left: -1px;
       margin-top: 8px;
       font-size: 10px;
@@ -824,10 +828,10 @@ input[type=range]::-webkit-slider-thumb {
   height: 14px;
   width: 14px;
   border-radius: 50%;
-  background-color: $radio-fill-color;
+  background-color: variables.$radio-fill-color;
   transform-origin: 50% 50%;
   margin: -5px 0 0 0;
-  @include transition(.3s);
+  @include prefixer.transition(.3s);
 }
 
 input[type=range]:focus::-webkit-slider-runnable-track {
@@ -853,7 +857,7 @@ input[type=range]::-moz-range-thumb {
   height: 14px;
   width: 14px;
   border-radius: 50%;
-  background: $radio-fill-color;
+  background: variables.$radio-fill-color;
   margin-top: -5px;
 }
 
@@ -895,7 +899,7 @@ input[type=range]::-ms-thumb {
   height: 14px;
   width: 14px;
   border-radius: 50%;
-  background: $radio-fill-color;
+  background: variables.$radio-fill-color;
 }
 
 input[type=range]:focus::-ms-fill-lower {

@@ -4,10 +4,9 @@ import ReactDOM from 'react-dom'
 import App from './core/app/index'
 import { Broker as broker } from '@main/bridge'
 import * as Bootstrap from '@main/core'
-import 'normalize.css'
 
-import 'plyr/src/sass/plyr.scss'
-import './index.web.sass'
+import 'normalize.css'
+import './index.web.scss'
 import * as serviceWorker from './serviceWorker'
 
 const webRenderer = broker.getIPC()

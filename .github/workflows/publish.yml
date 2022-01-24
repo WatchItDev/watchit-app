@@ -1,14 +1,13 @@
-name: CD
+name: CD-App
 
 on:
   push:
     branches:
       - 'master'
-      - 'v0.*.0'
+      - 'v0.3.0'
 
 jobs:
-  build:
-    if: false
+  release:
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -30,5 +29,7 @@ jobs:
           # GitHub token, automatically provided to the action
           # (No need to define this secret in the repo settings)
           github_token: ${{ secrets.GH_TOKEN }}
-
+          release: true
+        env:
+          CI: ""
 

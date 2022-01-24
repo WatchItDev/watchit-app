@@ -1,10 +1,12 @@
+@use "../tools/_mixins";
+@use "../tools/_vars";
 .row .col {
   padding: 0 1rem !important;
 }
 
 //Transition image
 img {
-  @include transition(opacity 1.5s ease-in-out);
+  @include mixins.transition(opacity 1.5s ease-in-out);
 
   &.locked-img {
     opacity: 0;
@@ -108,7 +110,7 @@ img {
       }
 
       .hover-info {
-        @include border-radius(0 5px 5px 0);
+        @include mixins.border-radius(0 5px 5px 0);
         padding: 0.5rem;
         background-color: rgba(0, 0, 0, 0.8);
         max-width: 90%;
@@ -220,7 +222,7 @@ img {
   //top: 0.5rem;
 
   input, textarea {
-    @include placeholder($gray);
+    @include mixins.placeholder(vars.$gray);
   }
 
   textarea {
@@ -251,7 +253,7 @@ img {
     position: absolute !important;
     top: 1rem;
     right: 1.3rem;
-    color: $gray;
+    color: vars.$gray;
   }
 
 
@@ -385,7 +387,7 @@ img {
 
 //Result search
 .result-search-box {
-  @include border-radius(5px);
+  @include mixins.border-radius(5px);
   //height: 75vh;
   background-color: rgba(0, 0, 0, 0.9);
   width: 100%;
@@ -456,7 +458,7 @@ img {
   }
 
   .video-stream {
-    @include transition(width 1s ease-in-out);
+    @include mixins.transition(width 1s ease-in-out);
     width: 100%;
 
     .chat-box-toggle {
@@ -475,13 +477,13 @@ img {
     position: absolute;
 
     &:hover {
-      @include box-shadow(-1px 0 10px #fff);
+      @include mixins.box-shadow(-1px 0 10px #fff);
     }
   }
 
   .chat-box {
-    @include transition(width 1s ease-in-out, opacity 2s ease-in-out);
-    @include box-shadow(2px 0 10px #000);
+    @include mixins.transition(width 1s ease-in-out, opacity 2s ease-in-out);
+    @include mixins.box-shadow(2px 0 10px #000);
     background-color: rgba(256, 256, 256, 0.2);
     position: absolute;
     height: 93vh !important;
@@ -495,7 +497,7 @@ img {
     }
 
     .chat-box-toggle {
-      @include border-radius(5px 0 0 5px);
+      @include mixins.border-radius(5px 0 0 5px);
       background-color: #fff !important;
       bottom: 50%;
       left: -37px;
@@ -520,7 +522,7 @@ img {
         }
 
         .profile-picture-img {
-          @include border-radius(5px)
+          @include mixins.border-radius(5px)
         }
       }
     }

@@ -1,7 +1,7 @@
 {
   "name": "watchit",
   "author": "ZorrillosDev",
-  "version": "0.2.0-alpha.1",
+  "version": "0.3.0-alpha.1",
   "private": true,
   "main": "./src/main/index.js",
   "description": "Open movies everywhere",
@@ -19,22 +19,21 @@
     "windows-elevate": "^1.0.1",
     "level-js": "6.0.0",
     "wrtc": "^0.4.7",
-    "ipfs": "0.55.4",
-    "go-ipfs": "^0.6.0"
+    "ipfs": "0.60.2",
+    "go-ipfs": "^0.10.0"
   },
   "dependencies": {
-    "dlnacasts2": "^0.2.0",
     "electron-updater": "^4.3.8",
     "fs-extra": "^9.0.1",
     "get-port": "^5.1.1",
-    "go-ipfs": "^0.6.0",
-    "hls.js": "^0.14.17",
+    "go-ipfs": "^0.10.0",
+    "hls.js": "^1.1.2",
     "iconv-lite": "^0.5.1",
-    "identity-obj-proxy": "3.0.0",
     "ip": "^1.1.5",
-    "ipfs-http-client": "^47.0.1",
-    "ipfsd-ctl": "^7.2.0",
-    "it-all": "^1.0.5",
+    "ipfs": "^0.60.2",
+    "ipfs-http-client": "^54.0.0",
+    "ipfsd-ctl": "^10.0.5",
+    "it-all": "^1.0.6",
     "it-last": "^1.0.5",
     "it-reduce": "^1.0.5",
     "jschardet": "^2.1.1",
@@ -42,15 +41,15 @@
     "linvodb3": "^3.26.0",
     "logplease": "^1.2.15",
     "mime": "^2.4.6",
-    "msgpack-lite": "^0.1.26",
-    "orbit-db": "^0.26.0",
-    "plyr": "^3.6.2",
+    "orbit-db": "^0.28.0",
+    "plyr": "^3.6.12",
     "pretty-bytes": "^5.6.0",
     "rimraf": "^3.0.2",
+    "sass": "^1.45.2",
     "secp256k1": "^4.0.2",
     "shortid": "^2.2.15",
-    "streaming-iterables": "^5.0.4",
     "subtitle": "^2.0.3",
+    "uint8arrays": "^3.0.0",
     "unzipper": "^0.10.11",
     "v8-compile-cache": "^2.2.0"
   },
@@ -61,7 +60,7 @@
       {
         "provider": "github",
         "owner": "ZorrillosDev",
-        "repo": "watchit-desktop",
+        "repo": "watchit-app",
         "private": false
       }
     ],
@@ -123,7 +122,7 @@
     }
   },
   "scripts": {
-    "start": "BROWSER=none RUNTIME=electron node scripts/start.js",
+    "start": "BROWSER=none LOG=* RUNTIME=electron node scripts/start.js",
     "build": "node scripts/build.js",
     "start:web": "RUNTIME=web node scripts/start.js",
     "build:web": "RUNTIME=web node scripts/build.js",
@@ -139,12 +138,8 @@
     "publish:linux": "npm run package:linux -- --publish always",
     "publish:win": "npm run package:win -- --publish always",
     "preinstall": "bash -c \"npm install logplease && node scripts/preinstall.js\"",
-    "postinstall": "bash -c \"node scripts/postinstall.js\""
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run lint && npm test -- --coverage"
-    }
+    "postinstall": "bash -c \"node scripts/postinstall.js\"",
+    "publish": "ipfs-deploy -C src/build -d cloudflare -p pinata"
   },
   "devDependencies": {
     "@babel/core": "7.12.3",
@@ -173,7 +168,8 @@
     "eslint-webpack-plugin": "^2.5.4",
     "file-loader": "6.1.1",
     "html-webpack-plugin": "4.5.0",
-    "husky": "^4.3.8",
+    "identity-obj-proxy": "3.0.0",
+    "ipfs-deploy": "^11.1.0",
     "jest": "26.6.0",
     "jest-circus": "26.6.0",
     "jest-resolve": "26.6.0",
@@ -181,9 +177,8 @@
     "jest-watch-typeahead": "0.6.1",
     "mini-css-extract-plugin": "0.11.3",
     "moment-timezone": "^0.5.31",
-    "node-sass": "^5.0.0",
+    "node-sass": "^4.14.1",
     "normalize.css": "^8.0.1",
-    "npm-run-all": "^4.1.5",
     "optimize-css-assets-webpack-plugin": "5.0.4",
     "pnp-webpack-plugin": "1.6.4",
     "postcss-flexbugs-fixes": "4.2.1",

@@ -1,12 +1,15 @@
+@use "_variables";
+@use "_prefixer";
+@forward "_global";
 nav {
-  color: $navbar-font-color;
+  color: variables.$navbar-font-color;
   @extend .z-depth-1;
-  background-color: $primary-color;
+  background-color: variables.$primary-color;
   width: 100%;
-  height: $navbar-height-mobile;
-  line-height: $navbar-height-mobile;
+  height: variables.$navbar-height-mobile;
+  line-height: variables.$navbar-height-mobile;
 
-  a { color: $navbar-font-color; }
+  a { color: variables.$navbar-font-color; }
 
   .nav-wrapper {
     position: relative;
@@ -18,7 +21,7 @@ nav {
     }
   }
 
-  @media #{$large-and-up} {
+  @media #{variables.$large-and-up} {
     a.button-collapse { display: none; }
   }
 
@@ -28,12 +31,12 @@ nav {
     float: left;
     position: relative;
     z-index: 1;
-    height: $navbar-height-mobile;
+    height: variables.$navbar-height-mobile;
 
     i {
       font-size: 2.7rem;
-      height: $navbar-height-mobile;
-      line-height: $navbar-height-mobile;
+      height: variables.$navbar-height-mobile;
+      line-height: variables.$navbar-height-mobile;
     }
   }
 
@@ -41,24 +44,24 @@ nav {
   // Logo
   .brand-logo {
     position: absolute;
-    color: $navbar-font-color;
+    color: variables.$navbar-font-color;
     display: inline-block;
-    font-size: $navbar-brand-font-size;
+    font-size: variables.$navbar-brand-font-size;
     padding: 0;
     white-space: nowrap;
 
     &.center {
       left: 50%;
-      @include transform(translateX(-50%));
+      @include prefixer.transform(translateX(-50%));
     }
 
-    @media #{$medium-and-down} {
+    @media #{variables.$medium-and-down} {
       left: 50%;
-      @include transform(translateX(-50%));
+      @include prefixer.transform(translateX(-50%));
 
       &.left, &.right {
         padding: 0;
-        @include transform(none);
+        @include prefixer.transform(none);
       }
 
       &.left { left: 0.5rem; }
@@ -80,7 +83,7 @@ nav {
     margin: 0;
 
     li {
-      @include transition(background-color .3s);
+      @include prefixer.transition(background-color .3s);
       float: left;
       padding: 0;
 
@@ -90,7 +93,7 @@ nav {
     }
     a {
       font-size: 1rem;
-      color: $navbar-font-color;
+      color: variables.$navbar-font-color;
       display: block;
       padding: 0 15px;
     }
@@ -122,11 +125,11 @@ nav {
 
       i {
         color: rgba(255,255,255,.7);
-        @include transition(color .3s);
+        @include prefixer.transition(color .3s);
       }
-      &.active i { color: $navbar-font-color; }
+      &.active i { color: variables.$navbar-font-color; }
       &.active {
-        @include transform(translateY(0));
+        @include prefixer.transform(translateY(0));
       }
     }
 
@@ -137,19 +140,19 @@ nav {
 // Fixed Navbar
 .navbar-fixed {
   position: relative;
-  height: $navbar-height-mobile;
+  height: variables.$navbar-height-mobile;
   z-index: 998;
 
   nav {
     position: fixed;
   }
 }
-@media #{$medium-and-up} {
+@media #{variables.$medium-and-up} {
   nav, nav .nav-wrapper i, nav a.button-collapse, nav a.button-collapse i {
-    height: $navbar-height;
-    line-height: $navbar-height;
+    height: variables.$navbar-height;
+    line-height: variables.$navbar-height;
   }
   .navbar-fixed {
-    height: $navbar-height;
+    height: variables.$navbar-height;
   }
 }
