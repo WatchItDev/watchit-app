@@ -133,6 +133,15 @@
       "contributions": [
         "ideas"
       ]
+    },
+    {
+      "login": "Stake2",
+      "name": "Stake2",
+      "avatar_url": "https://avatars.githubusercontent.com/u/39934220?v=4",
+      "profile": "https://thestake2.netlify.app/stake2/",
+      "contributions": [
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7,
