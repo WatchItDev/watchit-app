@@ -133,6 +133,15 @@
       "contributions": [
         "ideas"
       ]
+    },
+    {
+      "login": "olwe1",
+      "name": "olwe1",
+      "avatar_url": "https://avatars.githubusercontent.com/u/20174673?v=4",
+      "profile": "https://github.com/olwe1",
+      "contributions": [
+        "bug"
+      ]
     }
   ],
   "contributorsPerLine": 7,
