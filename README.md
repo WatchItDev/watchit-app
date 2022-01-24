@@ -96,6 +96,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/mathiassond"><img src="https://avatars.githubusercontent.com/u/49319141?v=4?s=100" width="100px;" alt=""/><br /><sub><b>mathiassond</b></sub></a><br /><a href="#userTesting-mathiassond" title="User Testing">📓</a> <a href="https://github.com/ZorrillosDev/watchit-app/issues?q=author%3Amathiassond" title="Bug reports">🐛</a></td>
     <td align="center"><a href="https://yosephks.github.io/personal_website.github.io"><img src="https://avatars.githubusercontent.com/u/48710170?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Yoseph Kurnia Soenggoro</b></sub></a><br /><a href="#ideas-YosephKS" title="Ideas, Planning, & Feedback">🤔</a></td>
     <td align="center"><a href="https://github.com/olwe1"><img src="https://avatars.githubusercontent.com/u/20174673?v=4?s=100" width="100px;" alt=""/><br /><sub><b>olwe1</b></sub></a><br /><a href="https://github.com/ZorrillosDev/watchit-app/issues?q=author%3Aolwe1" title="Bug reports">🐛</a></td>
+    <td align="center"><a href="https://thestake2.netlify.app/stake2/"><img src="https://avatars.githubusercontent.com/u/39934220?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Stake2</b></sub></a><br /><a href="https://github.com/ZorrillosDev/watchit-app/issues?q=author%3AStake2" title="Bug reports">🐛</a></td>
   </tr>
 </table>
 
