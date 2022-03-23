@@ -52,12 +52,12 @@ export default ({
     return k.split(' ')[0].trim()
   },
 
+  /**
+       * Check for invalid string
+       * @param {string} string
+       * @return {boolean} invalid or valid string
+     */
   invalidString: (string) => {
-    /**
-         * Check for invalid string
-         * @param {string} string
-         * @return {boolean} invalid or valid string
-         */
     return (typeof string !== 'string' ||
             !string || /^\s*$/.test(string) ||
             string.length === 0)

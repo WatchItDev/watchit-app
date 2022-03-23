@@ -17,13 +17,13 @@ const getElevatedExec = async () => {
   return exec
 }
 
-const execPassthru = async (execCmd, exec_ = exec) => {
-  /***
+/***
      * Run spawm commands
      * @param execCmd
      * @param exec_
      * @return <Promise>
      */
+const execPassthru = async (execCmd, exec_ = exec) => {
   log.info('Running', execCmd)
   return new Promise((resolve, reject) => {
     exec_(execCmd, (error, stdout, stderr) => {

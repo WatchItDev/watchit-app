@@ -1,12 +1,13 @@
 const log = require('logplease').create('PROVIDERS')
 
 module.exports = class Providers {
+
+  /**
+     * Dial peers and from provided list
+     * @param {object} node IPFS
+     * @param {array} multiAddressList
+     */
   static async connect (node, multiAddressList) {
-    /**
-         * Dial peers and from provided list
-         * @param {object} node IPFS
-         * @param {array} multiAddressList
-         */
     for (const m of multiAddressList) {
       try {
         await node.swarm.connect(m, { timeout: 1000 })
@@ -17,14 +18,13 @@ module.exports = class Providers {
     }
   }
 
+  /***
+     * This module find providers to orbit address
+     * and connect with them
+     * @param key
+     * @return {Promise<void>}
+     */
   static async findProv (node, key) {
-    /***
-         * This module find providers to orbit address
-         * and connect with them
-         * @param key
-         * @return {Promise<void>}
-         */
-
     // Avoid TypeError: Cannot read property 'Symbol(Symbol.asyncIterator)' of undefined
     // Cannot read property 'dht' of null
     if (!node || !node.dht) { return false }

@@ -85,12 +85,12 @@ module.exports = class Node extends EventEmitter {
   //     return Promise.resolve()
   // }
 
-  async resolveKey (ipns) {
-    /**
+  /**
          * Resolve ipns key if needed
          * @param ipns {string} IPNS hash
          * @return {string} Orbit address resolver key from ipns
          */
+  async resolveKey (ipns) {
     if (!ipns) return false
     if (~ipns.indexOf('zd')) return ipns
 
@@ -110,13 +110,12 @@ module.exports = class Node extends EventEmitter {
     }
   }
 
+  /***
+     * Opem orbit address and set events listeners
+     * @param key: orbit address
+     * @param res: callback
+     */
   async run (key, res) {
-    /***
-         * Opem orbit address and set events listeners
-         * @param key: orbit address
-         * @param res: callback
-         */
-
     log.info('Starting movies db:', key)
     this.db = await this.open(key).catch(async (e) => {
       console.log(e)
@@ -163,13 +162,13 @@ module.exports = class Node extends EventEmitter {
     return this.orbit._pubsub
   }
 
+  /**
+     * Get orbit node ready
+     * this method start orbit instance
+     * and get providers for db
+     * @param res: callback
+  */
   async nodeReady (res) {
-    /***
-         * Get orbit node ready
-         * this method start orbit instance
-         * and get providers for db
-         * @param res: callback
-         */
     log.info('Node ready')
     log.info('Loading db..')
     const raw = await this.getIngestKey()
