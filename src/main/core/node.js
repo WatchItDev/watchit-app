@@ -33,6 +33,13 @@ module.exports = class Node extends EventEmitter {
     return new Node(conf)
   }
 
+  /**
+   * Open new orbit channel
+   *
+   * @param {*} address
+   * @param {*} [settings={}]
+   * @return {*}
+   */
   open (address, settings = {}) {
     return this.orbit.open(address, {
       ...{
@@ -44,6 +51,13 @@ module.exports = class Node extends EventEmitter {
     )
   }
 
+  /**
+   * Set node in seed mode
+   * this state avoid close/destroy the node
+   * id this state is true then the node keep running to provide data to network
+   *
+   * @param {boolean} [isRunningSeed=false]
+   */
   setInSeedMode (isRunningSeed = false) {
     this.seedMode = isRunningSeed
   }
