@@ -11,13 +11,13 @@ const MPLEX = require('libp2p-mplex')
 const { FaultTolerance } = require('libp2p/src/transport-manager')
 const uint8ArrayToString = require('uint8arrays/to-string')
 
-  /**
-      * @param {Uint8Array} buf
-      * @param {Uint8Array} key
-      * @param {Uint8Array} record
-      * @param {*} _k
-      * @param {Uint8Array[]} records
-     */
+/**
+   * @param {Uint8Array} buf
+   * @param {Uint8Array} key
+   * @param {Uint8Array} record
+   * @param {*} _k
+   * @param {Uint8Array[]} records
+*/
 const ipnsUtils = {
 
   encodeBase32: (buf) => uint8ArrayToString(buf, 'base32upper'),

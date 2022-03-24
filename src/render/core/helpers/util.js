@@ -27,6 +27,10 @@ export default ({
     return ((weightedTotal * 3) / 100) | 0
   },
 
+  /**
+     * Calculate screen size and pics using screen dim
+     * @type {HTMLElement}
+  */
   calcScreenSize: (
     {
       width = window.screen.width,
@@ -34,11 +38,7 @@ export default ({
       imageSize = 200, mp = 20
     } = {}
   ) => {
-    /**
-         * Calculate screen size and pics using screen dim
-         * @type {HTMLElement}
-         */
-
+  
     // Avoid full fill row with small images
     imageSize = width > 1800 ? Math.floor(width / 10) : imageSize
     // chunkSize = how many movies reach in each row
@@ -53,10 +53,10 @@ export default ({
   },
 
   /**
-       * Check for invalid string
-       * @param {string} string
-       * @return {boolean} invalid or valid string
-     */
+     * Check for invalid string
+     * @param {string} string
+     * @return {boolean} invalid or valid string
+  */
   invalidString: (string) => {
     return (typeof string !== 'string' ||
             !string || /^\s*$/.test(string) ||

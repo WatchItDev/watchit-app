@@ -1,10 +1,10 @@
-  /**
-     * Fade out browser window
-     * @param {object} _window BrowserWindow
-     * @param {float} step Interval
-     * @param {function} cb After finish cb
-   */
- const fadeWindowOut = (
+/**
+   * Fade out browser window
+   * @param {object} _window BrowserWindow
+   * @param {float} step Interval
+   * @param {function} cb After finish cb
+*/
+const fadeWindowOut = (
   _window,
   step = 0.1,
   fadeEveryXSeconds = 10,
@@ -25,11 +25,11 @@
 }
 
 /**
-     * Fade in browser window
-     * @param {object} _window BrowserWindow
-     * @param {float} step Interval
-     * @param {function} cb After finish cb
-   */
+   * Fade in browser window
+   * @param {object} _window BrowserWindow
+   * @param {float} step Interval
+   * @param {function} cb After finish cb
+*/
 const fadeWindowIn = (
   _window,
   step = 0.1,

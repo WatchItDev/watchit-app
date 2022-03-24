@@ -18,10 +18,10 @@ module.exports = (ipcMain, runtime = 'node') => {
   const orbit = Node.getInstance({ orbit: nodeConf })
   const ingest = Ingest.getInstance(orbit)
 
-  /***
+  /**
      * Initialize events for orbit and ingesting process
      * @param {object} e ipcMain
-     */
+  */
   const initEvents = (e) => {
     // Remove listener before add new
     orbit.removeAllListeners()

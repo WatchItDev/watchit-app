@@ -36,11 +36,11 @@ module.exports = class HLSStreamer extends EventEmitter {
     return new HLSStreamer()
   }
 
-  /***
+  /**
      * Start HLS streaming play
      * @param {object} videoRef
      * @param {function} onReady
-   */
+  */
   play (uri, { videoRef }) {
     const nativeMime = 'application/vnd.apple.mpegURL'
     const nativePlay = videoRef.canPlayType(nativeMime)
@@ -73,9 +73,9 @@ module.exports = class HLSStreamer extends EventEmitter {
   }
 
   /**
-   * Process qualities to player
-   * @param {object} n
-   * @return {object}
+     * Process qualities to player
+     * @param {object} n
+     * @return {object}
   */
   quality (n) {
     // Not quality in manifest?
@@ -95,11 +95,11 @@ module.exports = class HLSStreamer extends EventEmitter {
     return {}
   }
 
-  /***
+  /**
      * Handle error on HLS streaming
      * @param {object} event
      * @param {object} data
-   */
+  */
   emitError (event, data) {
     if (data.fatal) {
       log.info(`Fail trying play movie: ${JSON.stringify(data)}`)

@@ -86,10 +86,10 @@ module.exports = class Node extends EventEmitter {
   // }
 
   /**
-         * Resolve ipns key if needed
-         * @param ipns {string} IPNS hash
-         * @return {string} Orbit address resolver key from ipns
-         */
+     * Resolve ipns key if needed
+     * @param ipns {string} IPNS hash
+     * @return {string} Orbit address resolver key from ipns
+  */
   async resolveKey (ipns) {
     if (!ipns) return false
     if (~ipns.indexOf('zd')) return ipns
@@ -110,11 +110,11 @@ module.exports = class Node extends EventEmitter {
     }
   }
 
-  /***
+  /**
      * Opem orbit address and set events listeners
      * @param key: orbit address
      * @param res: callback
-     */
+  */
   async run (key, res) {
     log.info('Starting movies db:', key)
     this.db = await this.open(key).catch(async (e) => {
@@ -148,10 +148,10 @@ module.exports = class Node extends EventEmitter {
     res(this.db)
   }
 
+  /**
+     * Kill all - party all
+  */
   async party (msg = 'Invalid Key') {
-    /***
-         * Kill all - party all
-         */
     log.warn('Party rock')
     this.emit('node-chaos', msg)
     await this.close(true)
@@ -183,20 +183,20 @@ module.exports = class Node extends EventEmitter {
     await provider.findProv(this.node, raw)
   }
 
+  /**
+     * Orbit db factory
+  */
   instanceOB () {
-    /***
-         * Orbit db factory
-         */
     return (this.orbit && Promise.resolve(this.orbit)) ||
             OrbitDB.createInstance(this.node, this.conf.orbit)
   }
 
+  /**
+     * Ipfs factory handler
+     * try keep node alive if cannot do it after MAX_RETRIES
+     * app get killed :(
+  */
   instanceNode () {
-    /***
-         * Ipfs factory handler
-         * try keep node alive if cannot do it after MAX_RETRIES
-         * app get killed :(
-         */
     return new Promise(async (resolve) => {
       // If fail to much.. get fuck out
       log.info('Setting up node..')

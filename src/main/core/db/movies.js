@@ -5,10 +5,11 @@
 import Manager from './manager'
 
 export default class Movies extends Manager {
+  
+  /**
+     * Search for movies
+  */
   search (textToSearch) {
-    /***
-         * Search for movies
-         */
     return new Promise((resolve) => {
       // Filter by genres
 
@@ -21,10 +22,10 @@ export default class Movies extends Manager {
   }
 
   /**
-         * Return filtered movies
-         * @param filter
-         * @param token
-         */
+     * Return filtered movies
+     * @param filter
+     * @param token
+  */
   filter (filters = {}) {
     return new Promise((resolve) => {
       // Filter by genres
@@ -45,7 +46,7 @@ export default class Movies extends Manager {
   /**
      * Return movie by id
      * @param id
-     */
+  */
   get (id) {
     return new Promise((resolve) => {
       this.db.findOne({ _id: id }, (e, r) => {
