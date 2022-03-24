@@ -38,7 +38,6 @@ export default ({
       imageSize = 200, mp = 20
     } = {}
   ) => {
-  
     // Avoid full fill row with small images
     imageSize = width > 1800 ? Math.floor(width / 10) : imageSize
     // chunkSize = how many movies reach in each row

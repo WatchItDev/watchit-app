@@ -33,12 +33,13 @@ module.exports = class Node extends EventEmitter {
     return new Node(conf)
   }
 
+  
   /**
    * Open new orbit channel
    *
    * @param {*} address
    * @param {*} [settings={}]
-   * @return {*}
+   * @return {*} 
    */
   open (address, settings = {}) {
     return this.orbit.open(address, {
@@ -53,7 +54,7 @@ module.exports = class Node extends EventEmitter {
 
   /**
    * Set node in seed mode
-   * this state avoid close/destroy the node
+   * this state avoid close/destroy the nodXe
    * id this state is true then the node keep running to provide data to network
    *
    * @param {boolean} [isRunningSeed=false]
@@ -100,9 +101,9 @@ module.exports = class Node extends EventEmitter {
   // }
 
   /**
-     * Resolve ipns key if needed
-     * @param ipns {string} IPNS hash
-     * @return {string} Orbit address resolver key from ipns
+   * Resolve ipns key if needed
+   * @param ipns {string} IPNS hash
+   * @return {string} Orbit address resolver key from ipns
   */
   async resolveKey (ipns) {
     if (!ipns) return false

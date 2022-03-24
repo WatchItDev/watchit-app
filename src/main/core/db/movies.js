@@ -5,7 +5,6 @@
 import Manager from './manager'
 
 export default class Movies extends Manager {
-  
   /**
      * Search for movies
   */
