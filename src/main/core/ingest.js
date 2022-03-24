@@ -14,11 +14,16 @@ module.exports = class Ingest extends EventEmitter {
     this.asyncLock = false
   }
 
+  
+  /**
+   * Add to queue hash to process
+   * @param {string} hash
+   */
   set queue (hash) {
     log.info('Storing hash in queue')
     const cache = key.readFromStorage()
     const cacheList = cache.hash ?? []
-    // Deduplication with sets
+    // Deduplicate with sets
     const newHash = [...new Set([...cacheList, ...[hash]])]
     key.addToStorage({ hash: newHash })
   }
