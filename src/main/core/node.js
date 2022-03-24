@@ -104,7 +104,7 @@ module.exports = class Node extends EventEmitter {
    * Resolve ipns key if needed
    * @param ipns {string} IPNS hash
    * @return {string} Orbit address resolver key from ipns
-  */
+   */
   async resolveKey (ipns) {
     if (!ipns) return false
     if (~ipns.indexOf('zd')) return ipns
@@ -126,10 +126,10 @@ module.exports = class Node extends EventEmitter {
   }
 
   /**
-     * Opem orbit address and set events listeners
-     * @param key: orbit address
-     * @param res: callback
-  */
+   * Opem orbit address and set events listeners
+   * @param key: orbit address
+   * @param res: callback
+   */
   async run (key, res) {
     log.info('Starting movies db:', key)
     this.db = await this.open(key).catch(async (e) => {
@@ -164,8 +164,8 @@ module.exports = class Node extends EventEmitter {
   }
 
   /**
-     * Kill all - party all
-  */
+   * Kill all - party all
+   */
   async party (msg = 'Invalid Key') {
     log.warn('Party rock')
     this.emit('node-chaos', msg)
@@ -178,11 +178,11 @@ module.exports = class Node extends EventEmitter {
   }
 
   /**
-     * Get orbit node ready
-     * this method start orbit instance
-     * and get providers for db
-     * @param res: callback
-  */
+   * Get orbit node ready
+   * this method start orbit instance
+   * and get providers for db
+   * @param res: callback
+   */
   async nodeReady (res) {
     log.info('Node ready')
     log.info('Loading db..')
@@ -207,10 +207,10 @@ module.exports = class Node extends EventEmitter {
   }
 
   /**
-     * Ipfs factory handler
-     * try keep node alive if cannot do it after MAX_RETRIES
-     * app get killed :(
-  */
+   * IPFS factory handler
+   * try keep node alive if cannot do it after MAX_RETRIES
+   * app get killed :(
+   */
   instanceNode () {
     return new Promise(async (resolve) => {
       // If fail to much.. get fuck out
