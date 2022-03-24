@@ -38,7 +38,7 @@ module.exports = class Node extends EventEmitter {
    *
    * @param {*} address
    * @param {*} [settings={}]
-   * @return {*}
+   * @return {*} 
    */
   open (address, settings = {}) {
     return this.orbit.open(address, {
