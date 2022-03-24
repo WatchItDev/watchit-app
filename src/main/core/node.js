@@ -33,13 +33,12 @@ module.exports = class Node extends EventEmitter {
     return new Node(conf)
   }
 
-  
   /**
    * Open new orbit channel
    *
    * @param {*} address
    * @param {*} [settings={}]
-   * @return {*} 
+   * @return {*}
    */
   open (address, settings = {}) {
     return this.orbit.open(address, {
