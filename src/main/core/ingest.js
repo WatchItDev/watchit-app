@@ -14,7 +14,6 @@ module.exports = class Ingest extends EventEmitter {
     this.asyncLock = false
   }
 
-  
   /**
    * Add to queue hash to process
    * @param {string} hash
