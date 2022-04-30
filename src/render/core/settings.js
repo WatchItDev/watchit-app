@@ -5,9 +5,9 @@
 export default {
   streaming: ['hls'],
   gateways: [
-    'https://vps1.phillm.net',
-    'https://vps2.phillm.net',
-    'https://vps3.phillm.net',
+    // 'https://vps1.phillm.net',
+    // 'https://vps2.phillm.net',
+    // 'https://vps3.phillm.net',
     'https://gateway.ipfs.io',
     'https://ipfs.infura.io',
     // 'https://gateway.pinata.cloud',
