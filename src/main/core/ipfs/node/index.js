@@ -18,23 +18,44 @@ const DEFAULT_SWARM_WS = 4011
 const resolveIpfsPaths = () => require('go-ipfs').path()
   .replace('app.asar', 'app.asar.unpacked')
 
-const forceKill = async (isInstance) => {
+/**
+ * Enforce IPFS node shutdown
+ * 
+ * @param ipfs - IPFS controller
+ */
+const forceKill = async (ipfs) => {
   log.info('Forcing stop')
-  await isInstance.stop()
+  await ipfs.stop()
   log.warn('Cleaning bad repo')
   await removeFiles(ROOT_IPFS_DIR)
-}; const initIpfsNode = async (isInstance) => {
+};
+
+/**
+ * Init/Start ipfs node
+ * 
+ * @param ipfs - Ipfs controller 
+ * @returns {Promise} Promise resolved by ipfs controller
+ */
+const initIpfsNode = async (ipfs) => {
   // Check if running time dir exists
   log.warn('Starting node')
   try {
     // try initialize node
-    await isInstance.init()
+    await ipfs.init()
   } catch (e) {
     log.error('Fail initializing node')
   }
 
-  return isInstance.start()
-}; const ipfsFactory = async (conf = {}) => {
+  return ipfs.start()
+};
+
+/**
+ * Create IPFS controller and init node
+ * 
+ * @param {*} conf 
+ * @returns {} IPFS interface
+ */
+const ipfsFactory = async (conf = {}) => {
   // Find available ports to avoid conflict
   const [api, gateway, swarmTCP, swarmWS] = await Promise.all([
     getPort({ port: DEFAULT_API_PORT }),
@@ -49,7 +70,7 @@ const forceKill = async (isInstance) => {
   log.info('Swarm WS listening on port:', swarmWS)
 
   // Init factory spawn daemon
-  const isInstance = await Ctl.createController({
+  const ipfs = await Ctl.createController({
     ipfsOptions: {
       ...{
         config: defaultConf({ api, gateway, swarmTCP, swarmWS }),
@@ -77,24 +98,24 @@ const forceKill = async (isInstance) => {
 
   try {
     setTimeout(async () => {
-      if (!isInstance.started) {
+      if (!ipfs.started) {
         log.info('Forcing start')
-        await isInstance.stop() // Force init
-        await initIpfsNode(isInstance)
+        await ipfs.stop() // Force init
+        await initIpfsNode(ipfs)
       }
     }, RETRY_GRACE)
-    await initIpfsNode(isInstance)
+    await initIpfsNode(ipfs)
   } catch (e) {
     // Avoid throw default error
     log.error('Fail on start')
-    await forceKill(isInstance)
+    await forceKill(ipfs)
     return false
   }
 
-  const ipfsApi = isInstance?.api
+  const ipfsApi = ipfs?.api
   const id = ipfsApi.peerId
-  ipfsApi.kill = async () => isInstance.stop()
-  log.info(`Started ${isInstance.started}`)
+  ipfsApi.kill = async () => ipfs.stop()
+  log.info(`Started ${ipfs.started}`)
   log.info('Running ipfs id', id.id)
 
   return ipfsApi
