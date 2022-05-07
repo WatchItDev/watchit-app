@@ -9,7 +9,7 @@
   "license": "LICENSE.md",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ZorrillosDev/watchit-desktop.git"
+    "url": "https://github.com/ZorrillosDev/watchit-app.git"
   },
   "engines": {
     "node": ">=14"
