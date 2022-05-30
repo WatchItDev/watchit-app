@@ -8,8 +8,8 @@ on:
 
 jobs:
   release:
-    needs: "test"
     runs-on: ubuntu-latest
+    needs: "test"
     steps:
       - name: Check out Git repository
         uses: actions/checkout@v2
