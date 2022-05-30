@@ -9,7 +9,6 @@ on:
 jobs:
   release:
     runs-on: ${{ matrix.os }}
-    needs: "test"
     strategy:
       fail-fast: false
       matrix:
