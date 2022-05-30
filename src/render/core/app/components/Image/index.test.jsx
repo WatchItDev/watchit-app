@@ -5,7 +5,7 @@ import Image from './index'
 
 /* eslint-disable no-undef */
 describe('<Image />', () => {
-  const src = 'https://gateway.ipfs.io/ipfs/QmcdLW9p1dcYYKBHZdRXEXA4go6Qd3C4ce12khyiCqVNaH/image/medium.jpg'
+  const src = 'https://watchit.mypinata.cloud/ipfs/QmcdLW9p1dcYYKBHZdRXEXA4go6Qd3C4ce12khyiCqVNaH/image/medium.jpg'
 
   it('should render', () => {
     const imageComponent = shallow(<Image src={src} />)
@@ -17,7 +17,7 @@ describe('<Image />', () => {
     const imageComponent = mount(<Image src={src} />)
     const imageEl = imageComponent.instance().img
     // Image link built using at least one gateway
-    const match = settings.gateways.some(gateway => ~imageEl.src.indexOf(gateway))
+    const match = settings.gateways.some(gateway => imageEl.src.includes(gateway))
     // eslint-disable-next-line no-undef
     expect(match).toBeTruthy()
   })
