@@ -30,27 +30,25 @@ process?.on('uncaughtException', () => {
 })
 
 module.exports = class Broker extends EventEmitter {
-  constructor (renderer) {
+  constructor(renderer) {
     super()
     this.renderer = renderer
     this.initStore()
   }
 
-  initStore () {
-    /**
-     * Singleton initialize db
-     * @type {function(*=): void}
-     */
+  /**
+   * Singleton initialize db
+   * @type {function(*=): void}
+   */
+  initStore() {
+
     log.warn('Creating local db')
     if (this.db) return this.db
     this.db = new LinvoDB(DB)
   }
 
-  flush () {
-    /**
-     * Kill all this shit XD
-     * */
-
+  //Flush app cache
+  flush() {
     this.db.remove({}, { multi: true },
       (err, numRemoved) => {
         if (err) log.error(err)
@@ -59,16 +57,26 @@ module.exports = class Broker extends EventEmitter {
       })
   }
 
-  getIPC () {
-    // Inter process handler
+  
+  /**
+   * Inter process handler
+   *
+   * @return {IPCRenderer} 
+   */
+  getIPC() {
     return this.renderer
   }
 
-  stopIpcEvents (ipcListeners = []) {
-    /***
-     * Clear ipc electron events to avoid
-     * over declarative events
-     */
+
+  /**
+   * Clear ipc electron events to avoid
+   * over declarative events
+   * 
+   * @param {Array} ipcListeners: List of listeners to stop 
+   * @return {Broker}
+   */
+  stopIpcEvents(ipcListeners = []) {
+
     const listeners = ipcListeners.length
       ? ipcListeners
       : IPC_LISTENERS;
@@ -81,35 +89,46 @@ module.exports = class Broker extends EventEmitter {
     return this
   }
 
-  startSeed () {
-    /***
-     * Run app as seed mode
-     */
+  /**
+   * Run app as seed mode
+   * 
+   * @return {Broker}
+   */
+  startSeed() {
+
     log.info('Run Seed')
     this.renderer.send('node-seed')
     return this
   }
 
-  emitStart () {
-    /***
-     * Init signal to start node running
-     */
+  /**
+   * Init signal to start node running
+   * 
+   * @return {Broker}
+   */
+  emitStart() {
+
     this.renderer.send('node-start')
     return this
   }
 
-  broadcastMessage (message) {
-    /**
-     * Broadcast message from renderer
-     */
+  /**
+   * Broadcast message from renderer
+   * 
+   * @param {string} message: Message to broadcast
+   * @return {Broker}
+   */
+  broadcastMessage(message) {
+
     this.renderer.send('node-broadcast', message)
     return this
   }
 
-  listenForNewPeer () {
-    /***
-     * New peers interception and caching for stats
-     */
+   /**
+    * New peers interception and caching for stats
+    */
+  listenForNewPeer() {
+   
     this.renderer.on('node-peer', (e, p) => {
       log.info('New peer', p)
       Key.addToStorage({ peers: p })
@@ -117,56 +136,57 @@ module.exports = class Broker extends EventEmitter {
     })
   }
 
-  listenForPartyRock () {
-    /***
-     * Cannot connect or any invalid key provided
-     */
+  /**
+   * Cannot connect or any invalid key provided
+   */
+  listenForPartyRock() {
     this.renderer.on('node-chaos', (e, m) => {
       this.emit('chaos', m)
     })
   }
 
-  listenForError () {
-    /***
-     * Any error in node
-     */
+  /**
+   * Any error in node
+   */
+  listenForError() {
     this.renderer.on('node-error', (e, m) => {
       this.emit('error', m)
     })
   }
 
-  listenForReady () {
-    /**
-     * Trigger event before node get ready tu run
-     * could be used to clear storage or data previous to run app
-     */
+  /**
+   * Trigger event before node get ready tu run
+   * could be used to clear storage or data previous to run app
+   */
+  listenForReady() {
     this.renderer.on('node-ready', (e, c) => {
       this.emit('start', c)
     })
   }
 
-  listenForDbLoaded () {
-    /***
-     * Trigger event when all db are synced
-     */
+  /**
+   * Trigger event when all db are synced
+   */
+  listenForDbLoaded() {
     this.renderer.on('node-loaded', (e, c) => {
       this.emit('done', c)
     })
   }
 
-  listenForReplicaProgress () {
-    /***
-     * Replicate process event
-     */
+  /**
+   * Replicate process event
+   */
+  listenForReplicaProgress() {
     this.renderer.on('node-step', (e, step) => {
       this.emit('progress', step)
     })
   }
 
-  listenForReplicatedData () {
-    /***
-     * Trigger event when new data its replicated
-     */
+  /**
+   * Trigger event when new data its replicated
+   */
+  listenForReplicatedData() {
+   
     this.renderer.on('node-replicated', async (e, collection) => {
       log.info('LOADING FROM NETWORK')
       log.info(collection[collection.length - 1]._id)
@@ -187,11 +207,12 @@ module.exports = class Broker extends EventEmitter {
     })
   }
 
-  load () {
-    /***
-     * This method add method to electron ipcRender
-     * and serve as intermediary between render and main process
-     */
+  /**
+   * This method add method to electron ipcRender
+   * and serve as intermediary between render and main process
+   */
+  load() {
+
     // Clean old listeners first
     log.info('Broker ready')
     this.stopIpcEvents()
