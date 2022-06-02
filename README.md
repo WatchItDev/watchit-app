@@ -28,8 +28,8 @@ Please look at our [gateway](https://github.com/ZorrillosDev/watchit-gateway) 's
 [![screenshot](src/render/media/img/layout/nodes.png?raw=true)]()
 
 ##  More info
-* Visit our site [watchitapp.site](https://watchitapp.site).
-* Try our web app release [web.watchitapp.site](https://web.watchitapp.site).
+* Visit our site [watchit.movie](https://watchit.movie).
+* Try our web app release [web.watchitapp.site](https://web.watchit.movie).
 * Read our post: [Watchit - Open Movies](https://dev.to/geolffreym/watchit-2b88).
 * Read our interview in [Console 94](https://console.substack.com/p/console-94?r=3cbez&utm_campaign=post&utm_medium=web&utm_source=url)
 * Check out [the roadmap](https://github.com/ZorrillosDev/watchit-desktop/projects/1) to future features.
