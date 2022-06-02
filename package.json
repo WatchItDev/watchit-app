@@ -1,7 +1,7 @@
 {
   "name": "watchit",
   "author": "ZorrillosDev",
-  "version": "0.3.3-alpha.1",
+  "version": "0.3.3-alpha.3",
   "private": true,
   "main": "./src/main/index.js",
   "description": "Open movies everywhere",
