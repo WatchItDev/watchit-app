@@ -1,7 +1,7 @@
 {
   "name": "watchit",
   "author": "ZorrillosDev",
-  "version": "0.3.3-alpha.3",
+  "version": "0.3.4-alpha.1",
   "private": true,
   "main": "./src/main/index.js",
   "description": "Open movies everywhere",
@@ -79,7 +79,8 @@
       "package.json"
     ],
     "dmg": {
-      "contents": [
+      "contents": 
+      [
         {
           "x": 130,
           "y": 220
