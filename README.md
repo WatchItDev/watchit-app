@@ -32,7 +32,7 @@ Please look at our [gateway](https://github.com/ZorrillosDev/watchit-gateway) 's
 * Try our web app release [web.watchit.movie](https://web.watchit.movie).
 * Read our post: [Watchit - Open Movies](https://dev.to/geolffreym/watchit-2b88).
 * Read our interview in [Console 94](https://console.substack.com/p/console-94?r=3cbez&utm_campaign=post&utm_medium=web&utm_source=url)
-* Check out [the roadmap](https://github.com/ZorrillosDev/watchit-desktop/projects/1) to future features.
+* Check out [the roadmap](https://github.com/ZorrillosDev/watchit-desktop/projects/1) for future features.
 * Get in touch with us in [gitter](https://gitter.im/watchit-app/community) | [matrix](https://matrix.to/#/#watchit:matrix.org) | [discord](https://discord.gg/QJcSXedY) | [telegram](https://t.me/watchitofficial)
 * See our [FAQ](FAQ.md) for frequently asked questions.
 * For help or bugs please [create an issue](https://github.com/ZorrillosDev/watchit-desktop/issues).
