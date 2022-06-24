@@ -57,7 +57,7 @@ const SearchResultItem = (props) => {
     props.onClick &&
     props.onClick(props._id)
   }
-  
+
   return (
     <ResultWrapper onClick={handleClick}>
       <Image src={props.image} preload pulseStyle={{ position: 'relative' }} />

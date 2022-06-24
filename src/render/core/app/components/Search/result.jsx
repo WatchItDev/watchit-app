@@ -56,16 +56,16 @@ const SearchResult = (props) => {
             <PointsLoader />
           </ResultsEmpty>
         ) ||
-        <CustomScrollbars
-          autoHide
-          autoHeight
-          autoHeightMax={500}
-          autoHideTimeout={1000}
-          autoHideDuration={200}
-          thumbMinSize={30}
-          universal
-        >
-          {
+          <CustomScrollbars
+            autoHide
+            autoHeight
+            autoHeightMax={500}
+            autoHideTimeout={1000}
+            autoHideDuration={200}
+            thumbMinSize={30}
+            universal
+          >
+            {
             (props.result?.length > 0 &&
               <ResultsContent>
                 <ResultsCollection>
@@ -85,11 +85,11 @@ const SearchResult = (props) => {
                 </ResultsCollection>
               </ResultsContent>
             ) ||
-            <ResultsEmpty>
-              <NoResultsText>No results were found</NoResultsText>
-            </ResultsEmpty>
+              <ResultsEmpty>
+                <NoResultsText>No results were found</NoResultsText>
+              </ResultsEmpty>
           }
-        </CustomScrollbars>
+          </CustomScrollbars>
       }
     </ResultsWrapper>
   )
