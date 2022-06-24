@@ -1,8 +1,8 @@
 ## Frequently Asked Questions
 
 ### Where can I find a key to access the app?
-You can find a key with public domain movies on our [website](http://watchitapp.site), or the community will be providing their own content soon.
-If you want to generate your own content please visit our [toolkit](https://github.com/ZorrillosDev/watchit-gateway) repository.
+You can find a key with public domain movies on our [website](http://watchit.movie), or the community will be providing their own content soon.
+If you want to generate your own content please visit our [toolkit](https://github.com/ZorrillosDev/watchit-toolkit) repository.
 
 ### Is this illegal? What about copyright infringement?
 
