@@ -2,8 +2,8 @@ import React from 'react'
 import PointsLoader from '@components/PointsLoader'
 import CustomScrollbars from '@components/Scroller'
 import styled from 'styled-components'
-
 import SearchResultItem from './item'
+import gatewayHelper from '@helpers/gateway'
 
 const ResultsWrapper = styled.div`
   width: 100%;
@@ -56,16 +56,16 @@ const SearchResult = (props) => {
             <PointsLoader />
           </ResultsEmpty>
         ) ||
-          <CustomScrollbars
-            autoHide
-            autoHeight
-            autoHeightMax={500}
-            autoHideTimeout={1000}
-            autoHideDuration={200}
-            thumbMinSize={30}
-            universal
-          >
-            {
+        <CustomScrollbars
+          autoHide
+          autoHeight
+          autoHeightMax={500}
+          autoHideTimeout={1000}
+          autoHideDuration={200}
+          thumbMinSize={30}
+          universal
+        >
+          {
             (props.result?.length > 0 &&
               <ResultsContent>
                 <ResultsCollection>
@@ -73,8 +73,11 @@ const SearchResult = (props) => {
                     props.result.map((i) => {
                       return (
                         <SearchResultItem
-                          key={i._id} {...Object.assign(i, { image: i.resource.posters.small })}
+                          key={i._id}
                           onClick={props.onClick}
+                          {...Object.assign(i, {
+                            image: gatewayHelper.parsePosterUri(i.resource, 'small')
+                          })}
                         />
                       )
                     })
@@ -82,11 +85,11 @@ const SearchResult = (props) => {
                 </ResultsCollection>
               </ResultsContent>
             ) ||
-              <ResultsEmpty>
-                <NoResultsText>No results were found</NoResultsText>
-              </ResultsEmpty>
+            <ResultsEmpty>
+              <NoResultsText>No results were found</NoResultsText>
+            </ResultsEmpty>
           }
-          </CustomScrollbars>
+        </CustomScrollbars>
       }
     </ResultsWrapper>
   )
