@@ -12,6 +12,8 @@ const LoginForm = () => {
   const fields = new FormData()
   const [submitted, setSubmitted] = useState(false)
   const [error, setError] = useState(false)
+  const [value, setValue] = useState('')
+  const [showLocalNode, setShowLocalNode] = useState(false)
 
   const handleInput = (event) => {
     // If the input fields were directly within this
@@ -54,14 +56,49 @@ const LoginForm = () => {
             <Input
               placeholder='Public Key'
               name='public' required
-              onChange={handleInput}
+              value={value}
+              onChange={(e) => {
+                setValue(event.target.value)
+                handleInput(e)
+              }}
             />
           </FormRow>
 
           <FormRow>
-            <Button clicked={submitted} type='submit'>
-              <span>Connect</span>
-            </Button>
+            <ButtonsContainer>
+              <LoginButtonContainer>
+                <Button clicked={submitted} type='submit'>
+                  <span>Connect</span>
+                </Button>
+              </LoginButtonContainer>
+              <SmallButtonContainer onClick={() => setValue('zdpuB2dv2oU6bLV2qNYbjWwnXudc4vZAzDh3rGcpFWUwccZ9d')}>
+                <Button clicked={submitted} type='button'>
+                  <span>Last Key</span>
+                </Button>
+              </SmallButtonContainer>
+              <SmallButtonContainer>
+                {
+                  showLocalNode ? (
+                    <>
+                      <Input
+                        placeholder='Port'
+                        name='node_port'
+                        onChange={handleInput}
+                      />
+                      <div className={'cancel-button'} onClick={() => setShowLocalNode(false)}>
+                        <i className='icon-cross white-text' />
+                      </div>
+                    </>
+                  ) : (
+                    <div onClick={() => setShowLocalNode(true)}>
+                      <Button clicked={submitted} type='button'>
+                        <span>Local Node</span>
+                      </Button>
+                    </div>
+                  )
+                }
+              </SmallButtonContainer>
+            </ButtonsContainer>
           </FormRow>
 
           {
@@ -112,6 +149,54 @@ const LoginWrapper = styled.div`
 
 const FormRow = styled.div`
   margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 `
+
+const ButtonsContainer = styled.div`
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  grid-gap: 1rem;
+`
+
+const LoginButtonContainer = styled.div`
+  width: calc(50% - 1rem);
+  
+  @media (max-width: 500px) {
+    width: 100%;
+  }
+`
+
+const SmallButtonContainer = styled.div`
+  width: calc(25% - 0.5rem);
+  position: relative;
+  
+  .input-wrapper {
+    height: 36px;
+    
+    input {
+      height: 36px;
+    }
+  }
+  
+  .cancel-button {
+    width: 2rem;
+    height: 100%;
+    position: absolute;
+    right: 0;
+    top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+  
+  @media (max-width: 500px) {
+    width: 100%;
+  }
+`
+
 
 export default React.memo(LoginForm)
