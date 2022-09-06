@@ -8,9 +8,10 @@ export default {
     // 'https://vps1.phillm.net',
     // 'https://vps2.phillm.net',
     // 'https://vps3.phillm.net',
-    'https://watchit.mypinata.cloud',
-    'https://ipfs.infura.io',
-    // 'https://gateway.pinata.cloud',
+    // 'https://watchit.mypinata.cloud',
+    'https://ipfs.filebase.io',
+    'https://gateway.ipfs.io',
+    'https://ipfs.io',
     ...process.env.RUNTIME !== 'web'
       ? ['http://localhost:9090']
       : []
