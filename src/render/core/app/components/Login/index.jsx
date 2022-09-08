@@ -1,4 +1,3 @@
-/* global FormData */
 import React, { useState, useCallback } from 'react'
 import styled from 'styled-components'
 import Alert from '@components/Alert/'
@@ -12,14 +11,12 @@ const pb = process.env.WATCHIT_PUBLIC_KEY
 const runtime = process.env.RUNTIME
 const isWeb = runtime === 'web'
 
-
 const LoginForm = () => {
   const [submitted, setSubmitted] = useState(false)
   const [error, setError] = useState(false)
   const [ingest, setValue] = useState('')
   const [node, setNode] = useState('')
   const [showLocalNode, setShowLocalNode] = useState(false)
-
 
   const handleSubmit = useCallback((e) => {
     // Avoid trigger default event
@@ -28,11 +25,10 @@ const LoginForm = () => {
     setError(false)
     setSubmitted(true)
 
-    let dataToStore = {
+    const dataToStore = {
       ...node && { node },
       ...{ ingest }
     }
-
 
     // This validation should be skip because we can use orbit or ipns address
     // Check if stored key its valid
@@ -70,16 +66,17 @@ const LoginForm = () => {
                   <span>Connect</span>
                 </Button>
               </LoginButtonContainer>
-              <SmallButtonContainer size={isWeb ? "50%" : null} onClick={() => setValue(pb)}>
+              <SmallButtonContainer size={isWeb ? '50%' : null} onClick={() => setValue(pb)}>
                 <Button clicked={submitted} type='button'>
                   <span>Last Key</span>
                 </Button>
               </SmallButtonContainer>
-              {
-                !isWeb ?
+              {!isWeb
+                ? (
                   <SmallButtonContainer>
                     {
-                      showLocalNode ? (
+                    showLocalNode
+                      ? (
                         <>
                           <Input
                             placeholder='Port'
@@ -88,31 +85,32 @@ const LoginForm = () => {
                             value={node}
                             onChange={(e) => setNode(e.target.value)}
                           />
-                          <div className={'cancel-button'} onClick={() => setShowLocalNode(false)}>
+                          <div className='cancel-button' onClick={() => setShowLocalNode(false)}>
                             <i className='icon-cross white-text' />
                           </div>
                         </>
-                      ) : (
+                        )
+                      : (
                         <div onClick={() => setShowLocalNode(true)}>
                           <Button clicked={submitted} type='button'>
                             <span>Local Node</span>
                           </Button>
                         </div>
-                      )
-                    }
+                        )
+                  }
                   </SmallButtonContainer>
-                  : <></>
-              }
+                  )
+                : <></>}
             </ButtonsContainer>
           </FormRow>
 
           {
             error &&
-            <FormRow>
-              <Alert color={setting.styles.colors.danger}>
-                {error}
-              </Alert>
-            </FormRow>
+              <FormRow>
+                <Alert color={setting.styles.colors.danger}>
+                  {error}
+                </Alert>
+              </FormRow>
           }
         </form>
       </FormWrapper>
@@ -175,7 +173,7 @@ const LoginButtonContainer = styled.div`
 `
 
 const SmallButtonContainer = styled.div`
-  width: ${props => `calc(${props.size ? props.size : "25%"} - 0.5rem)`};
+  width: ${props => `calc(${props.size ? props.size : '25%'} - 0.5rem)`};
   position: relative;
   
   .input-wrapper {
@@ -202,6 +200,5 @@ const SmallButtonContainer = styled.div`
     width: 100%;
   }
 `
-
 
 export default React.memo(LoginForm)

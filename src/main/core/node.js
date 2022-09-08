@@ -13,7 +13,7 @@ const log = require('logplease')
 const DEFAULT_HOLD = 10 * 1000
 
 module.exports = class Node extends EventEmitter {
-  constructor(conf = {}) {
+  constructor (conf = {}) {
     super()
     this.conf = conf
     this.seedMode = false
@@ -25,11 +25,11 @@ module.exports = class Node extends EventEmitter {
     this.db = null // Current opened db
   }
 
-  get [Symbol.toStringTag]() {
+  get [Symbol.toStringTag] () {
     return 'Node'
   }
 
-  static getInstance(conf) {
+  static getInstance (conf) {
     return new Node(conf)
   }
 
@@ -40,7 +40,7 @@ module.exports = class Node extends EventEmitter {
    * @param {*} [settings={}]
    * @return {*}
    */
-  open(address, settings = {}) {
+  open (address, settings = {}) {
     return this.orbit.open(address, {
       ...{
         replicate: true,
@@ -58,30 +58,30 @@ module.exports = class Node extends EventEmitter {
    *
    * @param {boolean} [isRunningSeed=false]
    */
-  setInSeedMode(isRunningSeed = false) {
+  setInSeedMode (isRunningSeed = false) {
     this.seedMode = isRunningSeed
   }
 
-  async getIngestKey() {
+  async getIngestKey () {
     return this.resolveKey(
       this.rawIngestKey
     )
   }
 
-  sanitizeKey(address) {
+  sanitizeKey (address) {
     return key.sanitizedKey(address)
   }
 
-  get rawIngestKey() {
+  get rawIngestKey () {
     return key.getIngestKey()
   }
 
-  get hasValidCache() {
+  get hasValidCache () {
     const [validCache] = this.cache
     return validCache
   }
 
-  get cache() {
+  get cache () {
     const cache = key.readFromStorage()
     const validCache = cache && 'tmp' in cache
     return [validCache, cache]
@@ -104,7 +104,7 @@ module.exports = class Node extends EventEmitter {
    * @param ipns {string} IPNS hash
    * @return {string} Orbit address resolver key from ipns
    */
-  async resolveKey(ipns) {
+  async resolveKey (ipns) {
     if (!ipns) return false
     if (~ipns.indexOf('zd')) return ipns
 
@@ -129,7 +129,7 @@ module.exports = class Node extends EventEmitter {
    * @param key: orbit address
    * @param res: callback
    */
-  async run(key, res) {
+  async run (key, res) {
     log.info('Starting movies db:', key)
     this.db = await this.open(key).catch(async (e) => {
       console.log(e)
@@ -165,13 +165,13 @@ module.exports = class Node extends EventEmitter {
   /**
    * Kill all - party all
    */
-  async party(msg = 'Invalid Key') {
+  async party (msg = 'Invalid Key') {
     log.warn('Party rock')
     this.emit('node-chaos', msg)
     await this.close(true)
   }
 
-  get pubsub() {
+  get pubsub () {
     if (!this.orbit) return {}
     return this.orbit._pubsub
   }
@@ -182,7 +182,7 @@ module.exports = class Node extends EventEmitter {
    * and get providers for db
    * @param res: callback
    */
-  async nodeReady(res) {
+  async nodeReady (res) {
     log.info('Node ready')
     log.info('Loading db..')
     const raw = await this.getIngestKey()
@@ -202,7 +202,7 @@ module.exports = class Node extends EventEmitter {
   /**
      * Orbit db factory
   */
-  instanceOB() {
+  instanceOB () {
     return (this.orbit && Promise.resolve(this.orbit)) ||
       OrbitDB.createInstance(this.node, this.conf.orbit)
   }
@@ -212,7 +212,7 @@ module.exports = class Node extends EventEmitter {
    * try keep node alive if cannot do it after MAX_RETRIES
    * app get killed :(
    */
-  instanceNode() {
+  instanceNode () {
     return new Promise(async (resolve) => {
       // If fail to much.. get fuck out
       log.info('Setting up node..')
@@ -226,7 +226,7 @@ module.exports = class Node extends EventEmitter {
     })
   }
 
-  start() {
+  start () {
     this.closed = false // Restore closed state
     if (this.ready) return Promise.resolve(this.db)
     return new Promise(async (resolve) => {
@@ -237,7 +237,7 @@ module.exports = class Node extends EventEmitter {
     })
   }
 
-  async close(forceDrop = false) {
+  async close (forceDrop = false) {
     // Keep this states on top to avoid
     // run any event while nodes get closed
     this.closed = true // Closed already
@@ -276,7 +276,7 @@ module.exports = class Node extends EventEmitter {
     this.peers.clear()
   }
 
-  async get(hash) {
+  async get (hash) {
     const oplog = (this.db.oplog || this.db._oplog)
     const result = oplog.values.find(v => v.hash === hash)
     if (!result || !hash) return false

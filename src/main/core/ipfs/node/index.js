@@ -18,14 +18,14 @@ const KILL_TIMEOUT = 15 * 1000
 const DEFAULT_SWARM_TCP = 4010
 const DEFAULT_SWARM_WS = 4011
 const resolveIpfsPaths = () => require('go-ipfs').path()
-  .replace('app.asar', 'app.asar.unpacked');
+  .replace('app.asar', 'app.asar.unpacked')
 
 const forceKill = async (isInstance) => {
   log.info('Forcing stop')
   await isInstance.stop()
   log.warn('Cleaning bad repo')
   await removeFiles(ROOT_IPFS_DIR)
-};
+}
 
 const initIpfsNode = async (isInstance) => {
   // Check if running time dir exists
@@ -38,10 +38,9 @@ const initIpfsNode = async (isInstance) => {
   }
 
   return isInstance.start()
-};
+}
 
 const ipfsFactory = async (conf = {}) => {
-
   // Link to current local node
   if ('node' in conf) {
     log.info('Using provided node on port:', conf.node)
