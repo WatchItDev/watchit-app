@@ -13,15 +13,14 @@ export default {
     'https://gateway.ipfs.io',
     'https://ipfs.io',
     ...process.env.RUNTIME !== 'web'
-      ? ['http://localhost:9090']
-      : []
+      ? [`http://localhost:8080`] : []
   ],
   subs: {
     hash: {
       spanish: 'es',
       english: 'en'
     },
-    get revHash () {
+    get revHash() {
       const v = Object.values(this.hash)
       const k = Object.keys(this.hash)
       return v.reduce((o, i, index) => {
@@ -29,7 +28,7 @@ export default {
         return o
       }, {})
     },
-    get available () {
+    get available() {
       return Object.keys(this.hash)
     }
   },

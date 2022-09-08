@@ -1,5 +1,5 @@
 /* global FormData */
-import React, { useState } from 'react'
+import React, { useState, useCallback } from 'react'
 import styled from 'styled-components'
 import Alert from '@components/Alert/'
 import Input from '@components/Input/'
@@ -8,31 +8,33 @@ import Background from '@components/Background/'
 import { Key as key } from '@main/bridge'
 import setting from '@settings'
 
+const pb = process.env.WATCHIT_PUBLIC_KEY
+const runtime = process.env.RUNTIME
+const isWeb = runtime === 'web'
+
+
 const LoginForm = () => {
-  const fields = new FormData()
   const [submitted, setSubmitted] = useState(false)
   const [error, setError] = useState(false)
-  const [value, setValue] = useState('')
+  const [ingest, setValue] = useState('')
+  const [node, setNode] = useState('')
   const [showLocalNode, setShowLocalNode] = useState(false)
 
-  const handleInput = (event) => {
-    // If the input fields were directly within this
-    // Set input in formData
-    fields.set(
-      event.target.name,
-      event.target.value
-    )
-  }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = useCallback((e) => {
     // Avoid trigger default event
     e.preventDefault()
     // Set first state
     setError(false)
     setSubmitted(true)
 
-    const pb = fields.get('public')
-    // This validation should be skip
+    let dataToStore = {
+      ...node && { node },
+      ...{ ingest }
+    }
+
+
+    // This validation should be skip because we can use orbit or ipns address
     // Check if stored key its valid
     // if (!key.isValidKey(pb)) {
     //   setError('Invalid Key')
@@ -40,12 +42,12 @@ const LoginForm = () => {
     // }
 
     // Write public key
-    key.generateKey({ ingest: pb })
+    key.generateKey(dataToStore)
     setTimeout(() => {
       // Set first state
       window.location.href = '#/app/movies'
     }, 2000)
-  }
+  }, [node, ingest])
 
   return (
     <LoginWrapper>
@@ -54,13 +56,10 @@ const LoginForm = () => {
         <form onSubmit={handleSubmit} autoComplete='new-password'>
           <FormRow>
             <Input
+              value={ingest}
               placeholder='Public Key'
               name='public' required
-              value={value}
-              onChange={(e) => {
-                setValue(event.target.value)
-                handleInput(e)
-              }}
+              onInput={(e) => setValue(e.target.value)}
             />
           </FormRow>
 
@@ -71,43 +70,49 @@ const LoginForm = () => {
                   <span>Connect</span>
                 </Button>
               </LoginButtonContainer>
-              <SmallButtonContainer onClick={() => setValue('zdpuB2dv2oU6bLV2qNYbjWwnXudc4vZAzDh3rGcpFWUwccZ9d')}>
+              <SmallButtonContainer size={isWeb ? "50%" : null} onClick={() => setValue(pb)}>
                 <Button clicked={submitted} type='button'>
                   <span>Last Key</span>
                 </Button>
               </SmallButtonContainer>
-              <SmallButtonContainer>
-                {
-                  showLocalNode ? (
-                    <>
-                      <Input
-                        placeholder='Port'
-                        name='node_port'
-                        onChange={handleInput}
-                      />
-                      <div className={'cancel-button'} onClick={() => setShowLocalNode(false)}>
-                        <i className='icon-cross white-text' />
-                      </div>
-                    </>
-                  ) : (
-                    <div onClick={() => setShowLocalNode(true)}>
-                      <Button clicked={submitted} type='button'>
-                        <span>Local Node</span>
-                      </Button>
-                    </div>
-                  )
-                }
-              </SmallButtonContainer>
+              {
+                !isWeb ?
+                  <SmallButtonContainer>
+                    {
+                      showLocalNode ? (
+                        <>
+                          <Input
+                            placeholder='Port'
+                            name='node_port'
+                            type='number'
+                            value={node}
+                            onChange={(e) => setNode(e.target.value)}
+                          />
+                          <div className={'cancel-button'} onClick={() => setShowLocalNode(false)}>
+                            <i className='icon-cross white-text' />
+                          </div>
+                        </>
+                      ) : (
+                        <div onClick={() => setShowLocalNode(true)}>
+                          <Button clicked={submitted} type='button'>
+                            <span>Local Node</span>
+                          </Button>
+                        </div>
+                      )
+                    }
+                  </SmallButtonContainer>
+                  : <></>
+              }
             </ButtonsContainer>
           </FormRow>
 
           {
             error &&
-              <FormRow>
-                <Alert color={setting.styles.colors.danger}>
-                  {error}
-                </Alert>
-              </FormRow>
+            <FormRow>
+              <Alert color={setting.styles.colors.danger}>
+                {error}
+              </Alert>
+            </FormRow>
           }
         </form>
       </FormWrapper>
@@ -170,7 +175,7 @@ const LoginButtonContainer = styled.div`
 `
 
 const SmallButtonContainer = styled.div`
-  width: calc(25% - 0.5rem);
+  width: ${props => `calc(${props.size ? props.size : "25%"} - 0.5rem)`};
   position: relative;
   
   .input-wrapper {

@@ -5,17 +5,20 @@
 const log = require('logplease').create('CORE')
 const Node = require('./node')
 const Ingest = require('./ingest')
-// const BroadCast = require('./broadcast')
+const key = require('./key')
 
 module.exports = (ipcMain, runtime = 'node') => {
-  let nodeConf = { }
+  let nodeConf = {}
+  const keyFile = key.readFromStorage()
+  // Check if user added local node port
+  const node = keyFile && 'node' in keyFile ? keyFile.node : null
 
   if (!Object.is(runtime, 'web')) {
     const { ROOT_ORBIT_DIR } = require('./settings')
     nodeConf = Object.assign({ directory: ROOT_ORBIT_DIR }, nodeConf)
   }
 
-  const orbit = Node.getInstance({ orbit: nodeConf })
+  const orbit = Node.getInstance({ orbit: nodeConf, ipfs: { node } })
   const ingest = Ingest.getInstance(orbit)
 
   /**
