@@ -63,7 +63,7 @@ module.exports = class Node extends EventEmitter {
   }
 
   async getIngestKey () {
-    return await this.resolveKey(
+    return this.resolveKey(
       this.rawIngestKey
     )
   }
@@ -125,7 +125,7 @@ module.exports = class Node extends EventEmitter {
   }
 
   /**
-   * Opem orbit address and set events listeners
+   * Open orbit address and set events listeners
    * @param key: orbit address
    * @param res: callback
    */
@@ -188,10 +188,12 @@ module.exports = class Node extends EventEmitter {
     const raw = await this.getIngestKey()
     if (!raw) return false // Avoid move forward
     const address = this.sanitizeKey(raw)
+
     // Get orbit instance and next line connect providers
     this.orbit = await this.instanceOB()
     log.warn('Sanitized key:', address)
     this.emit('node-step', 'Connecting')
+
     await this.run(address, res) // Wait for orbit to open db
     this.emit('node-raised') // When all ready to handle orbit
     await provider.findProv(this.node, raw)
@@ -202,7 +204,7 @@ module.exports = class Node extends EventEmitter {
   */
   instanceOB () {
     return (this.orbit && Promise.resolve(this.orbit)) ||
-            OrbitDB.createInstance(this.node, this.conf.orbit)
+      OrbitDB.createInstance(this.node, this.conf.orbit)
   }
 
   /**
@@ -256,7 +258,7 @@ module.exports = class Node extends EventEmitter {
         }
       }
 
-      if (this.node) {
+      if (this.node && this.node?.kill) {
         log.warn('Killing Nodes')
         await this.node.kill().catch(
           () => log.error('Fail trying to stop node')

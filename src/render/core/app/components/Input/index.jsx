@@ -63,7 +63,7 @@ const Input = (props) => {
   }
 
   return (
-    <InputWrapper>
+    <InputWrapper className='input-wrapper'>
       {props.icon && <InputIcon className={props.icon} />}
       <InputElement
         value={value}
