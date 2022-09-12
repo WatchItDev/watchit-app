@@ -79,7 +79,7 @@ const LoginForm = () => {
                       ? (
                         <>
                           <Input
-                            placeholder='Port'
+                            placeholder='Api Port'
                             name='node_port'
                             type='number'
                             value={node}
