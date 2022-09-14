@@ -3,8 +3,8 @@ name: CD-App
 on:
   push:
     branches:
-      - 'master'
-      - 'v0.3.0'
+      - "master"
+      - "v0.3.0"
 
 jobs:
   release:
@@ -12,7 +12,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ macos-latest, windows-latest, ubuntu-latest ]
+        os: [macos-latest, windows-latest, ubuntu-latest]
 
     steps:
       - name: Check out Git repository
@@ -31,5 +31,5 @@ jobs:
           github_token: ${{ secrets.GH_TOKEN }}
           release: true
         env:
+          WATCHIT_PUBLIC_KEY: ${{ secrets.WATCHIT_PUBLIC_KEY }}
           CI: ""
-

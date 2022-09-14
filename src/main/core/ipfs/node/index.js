@@ -42,7 +42,7 @@ const initIpfsNode = async (isInstance) => {
 
 const ipfsFactory = async (conf = {}) => {
   // Link to current local node
-  if ('node' in conf) {
+  if (conf.node) {
     log.info('Using provided node on port:', conf.node)
     return IPFSClient.create({
       host: DEFAULT_LOOPBACK,

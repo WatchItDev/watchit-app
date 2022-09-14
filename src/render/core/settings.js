@@ -11,7 +11,7 @@ export default {
     // 'https://watchit.mypinata.cloud',
     'https://ipfs.filebase.io',
     'https://gateway.ipfs.io',
-    'https://ipfs.io',
+    // 'https://ipfs.io',
     ...process.env.RUNTIME !== 'web'
       ? ['http://localhost:8080']
       : []
