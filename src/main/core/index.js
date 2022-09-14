@@ -9,9 +9,9 @@ const key = require('./key')
 
 module.exports = (ipcMain, runtime = 'node') => {
   let nodeConf = {}
-  const keyFile = key.readFromStorage()
   // Check if user added local node port
-  const node = keyFile && 'node' in keyFile ? keyFile.node : null
+  const keyFile = key.readFromStorage() || {}
+  const node = 'node' in keyFile && keyFile.node ? keyFile.node : null
 
   if (!Object.is(runtime, 'web')) {
     const { ROOT_ORBIT_DIR } = require('./settings')
