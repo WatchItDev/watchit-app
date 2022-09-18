@@ -2,6 +2,12 @@
  * Handle global settings
  * **/
 
+// import { Key as key } from '@main/bridge'
+
+// const keyFile = key.readFromStorage() || {}
+// const node = 'node' in keyFile && keyFile.node ? keyFile.node : null
+const port = null ? '8080' : '9090'
+
 export default {
   streaming: ['hls'],
   gateways: [
@@ -13,7 +19,7 @@ export default {
     'https://gateway.ipfs.io',
     // 'https://ipfs.io',
     ...process.env.RUNTIME !== 'web'
-      ? ['http://localhost:8080']
+      ? [`http://localhost:${port}`]
       : []
   ],
   subs: {
@@ -21,7 +27,7 @@ export default {
       spanish: 'es',
       english: 'en'
     },
-    get revHash () {
+    get revHash() {
       const v = Object.values(this.hash)
       const k = Object.keys(this.hash)
       return v.reduce((o, i, index) => {
@@ -29,7 +35,7 @@ export default {
         return o
       }, {})
     },
-    get available () {
+    get available() {
       return Object.keys(this.hash)
     }
   },

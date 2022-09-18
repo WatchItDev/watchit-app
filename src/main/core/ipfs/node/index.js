@@ -11,21 +11,21 @@ const { removeFiles } = require('../../utils')
 const { ROOT_IPFS_DIR } = require('../../settings')
 
 const DEFAULT_LOOPBACK = '127.0.0.1'
+const DEFAULT_GATEWAY_PORT = 9090
 const RETRY_GRACE = 20 * 1000
-const DEFAULT_API_PORT = 5001
-const DEFAULT_GATEWAY_PORT = 8080
+const DEFAULT_API_PORT = 6002
 const KILL_TIMEOUT = 15 * 1000
 const DEFAULT_SWARM_TCP = 4010
 const DEFAULT_SWARM_WS = 4011
 const resolveIpfsPaths = () => require('go-ipfs').path()
-  .replace('app.asar', 'app.asar.unpacked')
+  .replace('app.asar', 'app.asar.unpacked');
 
 const forceKill = async (isInstance) => {
   log.info('Forcing stop')
   await isInstance.stop()
   log.warn('Cleaning bad repo')
   await removeFiles(ROOT_IPFS_DIR)
-}
+};
 
 const initIpfsNode = async (isInstance) => {
   // Check if running time dir exists
@@ -103,9 +103,10 @@ const ipfsFactory = async (conf = {}) => {
   } catch (e) {
     // Avoid throw default error
     log.error('Fail on start')
+    await forceKill(isInstance)
     return false
   }
-  await forceKill(isInstance)
+
 
   const ipfsApi = isInstance?.api
   const id = ipfsApi.peerId

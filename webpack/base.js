@@ -1,12 +1,12 @@
-import path, {join, resolve} from 'path'
-import {aliasItems, devServerUrl, externalItems} from './config'
+import path, { join, resolve } from 'path'
+import { aliasItems, devServerUrl, externalItems } from './config'
 import entry from './entry'
-import {rootDir} from './utils/env'
+import { rootDir } from './utils/env'
 import optimization from './optimization'
 import * as plugins from './plugins'
 import * as rules from './rules'
-import {isDevServer, isProd} from './utils/env'
-import {arrayFilterEmpty} from './utils/helpers'
+import { isDevServer, isProd } from './utils/env'
+import { arrayFilterEmpty } from './utils/helpers'
 
 const runtime = process.env.RUNTIME
 const isWeb = runtime === 'web'
@@ -69,6 +69,9 @@ export default {
             tls: false,
             child_process: false,
         }
+    },
+    watchOptions: {
+        ignored: '**/node_modules',
     },
     node: {
         global: true,
