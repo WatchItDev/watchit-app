@@ -2,15 +2,16 @@
  * Handle global settings
  * **/
 
-import { Key as key } from '@main/bridge'
+// import { Key as key } from '@main/bridge'
+
 
 export default {
   streaming: ['hls'],
   gateways: () => {
-    const keyFile = key.readFromStorage() || {}
-    const node = 'node' in keyFile && keyFile.node ? keyFile.node : null
-    const port = node ? '8080' : '9090'
-    
+    // const keyFile = key.readFromStorage() || {}
+    // const node = 'node' in keyFile && keyFile.node ? keyFile.node : null
+    const port = '9090'//null ? '8080' : '9090'
+
     return [
       // 'https://vps1.phillm.net',
       // 'https://vps2.phillm.net',
