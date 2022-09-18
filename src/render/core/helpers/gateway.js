@@ -21,7 +21,8 @@ export default {
     return this.dummyParse(`${imageRoute}${imageIndex}`)
   },
   dummyParse (resource) {
-    const random = Math.floor(Math.random() * settings.gateways.length)
-    return `${settings.gateways[random]}/ipfs/${resource}`
+    const gateways = settings.gateways()
+    const random = Math.floor(Math.random() * gateways.length)
+    return `${gateways[random]}/ipfs/${resource}`
   }
 }

@@ -17,7 +17,7 @@ describe('<Image />', () => {
     const imageComponent = mount(<Image src={src} />)
     const imageEl = imageComponent.instance().img
     // Image link built using at least one gateway
-    const match = settings.gateways.some(gateway => imageEl.src.includes(gateway))
+    const match = settings.gateways().some(gateway => imageEl.src.includes(gateway))
     // eslint-disable-next-line no-undef
     expect(match).toBeTruthy()
   })

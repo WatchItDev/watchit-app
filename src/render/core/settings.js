@@ -2,26 +2,28 @@
  * Handle global settings
  * **/
 
-// import { Key as key } from '@main/bridge'
-
-// const keyFile = key.readFromStorage() || {}
-// const node = 'node' in keyFile && keyFile.node ? keyFile.node : null
-const port = null ? '8080' : '9090'
+import { Key as key } from '@main/bridge'
 
 export default {
   streaming: ['hls'],
-  gateways: [
-    // 'https://vps1.phillm.net',
-    // 'https://vps2.phillm.net',
-    // 'https://vps3.phillm.net',
-    // 'https://watchit.mypinata.cloud',
-    'https://ipfs.filebase.io',
-    'https://gateway.ipfs.io',
-    // 'https://ipfs.io',
-    ...process.env.RUNTIME !== 'web'
-      ? [`http://localhost:${port}`]
-      : []
-  ],
+  gateways: () => {
+    const keyFile = key.readFromStorage() || {}
+    const node = 'node' in keyFile && keyFile.node ? keyFile.node : null
+    const port = node ? '8080' : '9090'
+    
+    return [
+      // 'https://vps1.phillm.net',
+      // 'https://vps2.phillm.net',
+      // 'https://vps3.phillm.net',
+      // 'https://watchit.mypinata.cloud',
+      'https://ipfs.filebase.io',
+      'https://gateway.ipfs.io',
+      // 'https://ipfs.io',
+      ...process.env.RUNTIME !== 'web'
+        ? [`http://localhost:${port}`]
+        : []
+    ]
+  },
   subs: {
     hash: {
       spanish: 'es',

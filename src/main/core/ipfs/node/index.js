@@ -7,6 +7,7 @@ const log = require('logplease').create('IPFS')
 const IPFSClient = require('ipfs-http-client')
 
 // Path settings and util helper lib
+const key = require('../../key')
 const { removeFiles } = require('../../utils')
 const { ROOT_IPFS_DIR } = require('../../settings')
 
@@ -41,9 +42,12 @@ const initIpfsNode = async (isInstance) => {
 }
 
 const ipfsFactory = async (conf = {}) => {
+  const keyFile = key.readFromStorage() || {}
+  const node = 'node' in keyFile && keyFile.node ? keyFile.node : null
+  
   // Link to current local node
-  if (conf.node) {
-    log.info('Using provided node on port:', conf.node)
+  if (node) {
+    log.info('Using provided node on port:', node)
     return IPFSClient.create({
       host: DEFAULT_LOOPBACK,
       port: conf.node,
