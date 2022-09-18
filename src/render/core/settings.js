@@ -4,13 +4,12 @@
 
 // import { Key as key } from '@main/bridge'
 
-
 export default {
   streaming: ['hls'],
   gateways: () => {
     // const keyFile = key.readFromStorage() || {}
     // const node = 'node' in keyFile && keyFile.node ? keyFile.node : null
-    const port = '9090'//null ? '8080' : '9090'
+    const port = '9090'// null ? '8080' : '9090'
 
     return [
       // 'https://vps1.phillm.net',
@@ -30,7 +29,7 @@ export default {
       spanish: 'es',
       english: 'en'
     },
-    get revHash() {
+    get revHash () {
       const v = Object.values(this.hash)
       const k = Object.keys(this.hash)
       return v.reduce((o, i, index) => {
@@ -38,7 +37,7 @@ export default {
         return o
       }, {})
     },
-    get available() {
+    get available () {
       return Object.keys(this.hash)
     }
   },
