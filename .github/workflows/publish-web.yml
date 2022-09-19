@@ -24,12 +24,12 @@ jobs:
       - name: Build
         run: npm run build:web
         env:
+          WATCHIT_PUBLIC_KEY: ${{ secrets.WATCHIT_PUBLIC_KEY }}
           CI: ""
 
       - name: Publish
         run: npm run publish
         env:
-          WATCHIT_PUBLIC_KEY: ${{ secrets.WATCHIT_PUBLIC_KEY }}
           IPFS_DEPLOY_CLOUDFLARE__API_TOKEN: ${{ secrets.IPFS_DEPLOY_CLOUDFLARE__API_TOKEN }}
           IPFS_DEPLOY_CLOUDFLARE__ZONE: ${{ secrets.IPFS_DEPLOY_CLOUDFLARE__ZONE }}
           IPFS_DEPLOY_CLOUDFLARE__RECORD: ${{ secrets.IPFS_DEPLOY_CLOUDFLARE__RECORD }}
