@@ -20,8 +20,8 @@ It is also possible that WatchIt can be synchronized through different movie cha
 
 
 ## Build your network
-Migrate your own content and share it with community. WatchIt gateway provides simple tools for the generation and fetching of content. 
-Please look at our [gateway](https://github.com/ZorrillosDev/watchit-gateway) 's readme.
+Migrate your own content and share it with community. WatchIt toolkit provides simple tools for the generation and decentralization of content. 
+Please look at our [toolkit](https://github.com/ZorrillosDev/watchit-gateway) 's readme.
 
 ## Node Types and Capabilities
 
