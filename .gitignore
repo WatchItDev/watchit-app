@@ -23,6 +23,7 @@ release
 build
 .env
 .idea
+.npmrc
 __snapshots__
 test-coverage/
 key.json

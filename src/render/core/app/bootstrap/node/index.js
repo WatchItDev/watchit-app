@@ -21,7 +21,7 @@ export default (hist, key) => {
         <Route
           name='login' exact path='/'
           render={(n) => !key.isLogged()
-            ? DragBarHOC(Login, n)
+            ? Login
             : (<Redirect to='/app/movies' />)}
         />
         <Route
