@@ -2,89 +2,203 @@ import React, { useState, useCallback } from 'react'
 import styled from 'styled-components'
 import Alert from '@components/Alert/'
 import Input from '@components/Input/'
-//import Button from '@components/Button/'
+import Button from '@components/Button/'
 import Background from '@components/Background/'
 import { Key as key } from '@main/bridge'
 import setting from '@settings'
-import { Logo,Button,ProgressBar,Poster,ControllerSlider,VideoPlayer } from '@zorrillosdev/watchit_uix'
-import { ChannelManageDesktop } from '../ChannelManageDesktop'
-import { BrowseDestop } from '../BrowseDestop'
-import { MovieDetails } from '../MovieDetails'
 
-import { ChannelItem }  from '@zorrillosdev/watchit_uix'
-import { Box} from "@mui/material";
 const pb = process.env.WATCHIT_PUBLIC_KEY
 const runtime = process.env.RUNTIME
 const isWeb = runtime === 'web'
 
 const LoginForm = () => {
-  const movies = [
-    {
-      img:'https://cuevana3.mu/img/Mkp0NmxQeko2cXFxOVZVbDBLaEw5TTZpRmdEb1gzR1puSGVrN01RcE5QQzVpNUZFWHJDaFpHOUxDUStHd00xVQ.webp',
-      title:'Renfield'
-    },
-    {
-      img:'https://cuevana3.mu/img/SmV4UDhnZnJtd254dEk2YjQ5bm8vTzNwRTRNaU16NkJLMWJjbVVFVk02eHhQcGlwYy9NV1dUNFFsYzJWZG93cQ.webp',
-      title:'Super Mario Bros: La Pelicula'
-    },
-    {
-      img:'https://cuevana3.mu/img/b25UV3ZTaGpwNkQ2N05RMzZmQmsrSHlhUFJXN0pRMU5KcExXdDNOMGY3NnJJS3pTa0tDMGREb2hnU0wrbzJRYQ.webp',
-      title:'Dungeons & Dragons: Honor entre ladrones'
-    },
-    {
-      img:'https://cuevana3.mu/img/UUErRWRkQlZDY2JQNG0xSEVWM3ZFbWxuWG5QU3JmaGJHejhiUUZKaEVmcFcvV3djVTJzNEQvRG52emV5NTl1Qg.webp',
-      title:'Misterio a la vista'
-    },
-    {
-      img:'https://cuevana3.mu/img/YkRXS3VXV1lMdzZJMkF1dm5ZUEloSzh1T2gxR000RjBXWlhrZGUxbFQ0QXJ5T3BOMitCTGt4d0cxY2FNcU9IQQ.webp',
-      title:'John Wick 4'
-    },
-    {
-      img:'https://cuevana3.mu/img/M2tpS2s3elEvYjlnM2ZmOWdEUFhNRGtiSk4rMUR4cnRxZGhzRzliazQxekZVSUlxQmZ3R2xsODRSYTJ0Q0h2MA.webp',
-      title:'¡Shazam! La furia de los dioses'
-    },
-    {
-      img:'https://cuevana3.mu/img/a0tXYjhoY2tadm9OcEVxNXRiOThXMzZNMHN6Qnd4dnRhWCt1ZUlubTg1RmtPTFF5eXdHMXFVS2ZrckNPNW9KVQ.webp',
-      title:'Ant-Man y la Avispa: Quantumanía'
-    },
-    {
-      img:'https://cuevana3.mu/img/bVdLSU91UGlodmtGY28zREo3VVBON1Zlc2VLMXk4Ukp1SkU4Z2s0RXNvK2lqNUVTYlpHb1VaZnFiK3VFeXBUcw.webp',
-      title:'The Devil Conspiracy'
-    },
-    {
-      img:'https://cuevana3.mu/img/MmFFa2k2MXpqZVdaVmZDYk1XeEp1RFRSYUVKaCtCUGdoUWtxbnFnWjJNRFllcVFvR0V2cDhKMGFwVzVKZDg2TQ.webp',
-      title:'Babylon'
-    },
-    {
-      img:'https://cuevana3.mu/img/SXlYRTdoa3EwY0JIakw5dGxrTVJEb25YTGZCNmtWNG1mcVcxbFpvQjRQOEhwNkZOa3d1U2JuanJIeHg2MDF0QQ.webp',
-      title:'Bodas de Plomo'
-    },
-    {
-      img:'https://cuevana3.mu/img/bVpzc3pzU0lCK2x0aERxdG9hRWVHNzYwNjhIZzlyS2pOeXIzdG8zSjdoWE9KUjVZcjd6R0pYb3ZQSzFnWUxwNw.webp',
-      title:'Operation Fortune: Ruse de Guerre'
-    },
-    {
-      img:'https://cuevana3.mu/img/eDJScVR0TGRsZHNER0RWSkMzRzZxcGFzQk9jTG1zU3RvRWlwVlZXSGJuaXkyYTl4N2N1NmhFclJkYWxwSHptVQ.webp',
-      title:'Avatar: El camino del agua'
+  const [submitted, setSubmitted] = useState(false)
+  const [error, setError] = useState(false)
+  const [ingest, setValue] = useState('')
+  const [node, setNode] = useState('')
+  const [showLocalNode, setShowLocalNode] = useState(false)
+
+  const handleSubmit = useCallback((e) => {
+    // Avoid trigger default event
+    e.preventDefault()
+    // Set first state
+    setError(false)
+    setSubmitted(true)
+
+    const dataToStore = {
+      ...node && { node },
+      ...{ ingest }
     }
-  ]
+
+    // This validation should be skip because we can use orbit or ipns address
+    // Check if stored key its valid
+    // if (!key.isValidKey(pb)) {
+    //   setError('Invalid Key')
+    //   return setSubmitted(false)
+    // }
+
+    // Write public key
+    key.generateKey(dataToStore)
+    setTimeout(() => {
+      // Set first state
+      window.location.href = '#/app/movies'
+    }, 2000)
+  }, [node, ingest])
+
   return (
-    <>
-      {/* <ChannelManageDesktop/> */}
-      {/* <BrowseDestop/> */}
-      {/* <MovieDetails/> */}
-      <Box sx={{width:'100%',height:'100vh'}}>
-        <VideoPlayer 
-          titleMovie="Renfield"
-          defaultVolumen={50}
-          src="http://vjs.zencdn.net/v/oceans.mp4"
-          preview={false}
-        />
-      </Box>
-    </>
+    <LoginWrapper>
+      <Background absolute={false} />
+      <FormWrapper>
+        <form onSubmit={handleSubmit} autoComplete='new-password'>
+          <FormRow>
+            <Input
+              value={ingest}
+              placeholder='Public Key'
+              name='public' required
+              onInput={(e) => setValue(e.target.value)}
+            />
+          </FormRow>
+
+          <FormRow>
+            <ButtonsContainer>
+              <LoginButtonContainer>
+                <Button clicked={submitted} type='submit'>
+                  <span>Connect</span>
+                </Button>
+              </LoginButtonContainer>
+              <SmallButtonContainer size={isWeb ? '50%' : null} onClick={() => setValue(pb)}>
+                <Button clicked={submitted} type='button'>
+                  <span>Last Key</span>
+                </Button>
+              </SmallButtonContainer>
+              {!isWeb
+                ? (
+                  <SmallButtonContainer>
+                    {
+                    showLocalNode
+                      ? (
+                        <>
+                          <Input
+                            placeholder='Api Port'
+                            name='node_port'
+                            type='number'
+                            value={node}
+                            onChange={(e) => setNode(e.target.value)}
+                          />
+                          <div className='cancel-button' onClick={() => setShowLocalNode(false)}>
+                            <i className='icon-cross white-text' />
+                          </div>
+                        </>
+                        )
+                      : (
+                        <div onClick={() => setShowLocalNode(true)}>
+                          <Button clicked={submitted} type='button'>
+                            <span>Local Node</span>
+                          </Button>
+                        </div>
+                        )
+                  }
+                  </SmallButtonContainer>
+                  )
+                : <></>}
+            </ButtonsContainer>
+          </FormRow>
+
+          {
+            error &&
+              <FormRow>
+                <Alert color={setting.styles.colors.danger}>
+                  {error}
+                </Alert>
+              </FormRow>
+          }
+        </form>
+      </FormWrapper>
+    </LoginWrapper>
   )
 }
 
+const FormWrapper = styled.div`
+  width: 90%;
+  margin-top: 2rem;
 
+  @media ${setting.styles.devices.mobileS} {
+    width: 90%;
+  }
 
-export default LoginForm
+  @media ${setting.styles.devices.mobileM} {
+    width: 70%;
+  }
+  
+  @media ${setting.styles.devices.mobileL} {
+    width: 60%;
+  }
+  
+  @media ${setting.styles.devices.tablet} {
+    width: 40%;
+  }
+`
+
+const LoginWrapper = styled.div`
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin-top: 3rem;
+`
+
+const FormRow = styled.div`
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`
+
+const ButtonsContainer = styled.div`
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  grid-gap: 1rem;
+`
+
+const LoginButtonContainer = styled.div`
+  width: calc(50% - 1rem);
+  
+  @media (max-width: 500px) {
+    width: 100%;
+  }
+`
+
+const SmallButtonContainer = styled.div`
+  width: ${props => `calc(${props.size ? props.size : '25%'} - 0.5rem)`};
+  position: relative;
+  
+  .input-wrapper {
+    height: 36px;
+    
+    input {
+      height: 36px;
+    }
+  }
+  
+  .cancel-button {
+    width: 2rem;
+    height: 100%;
+    position: absolute;
+    right: 0;
+    top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+  
+  @media (max-width: 500px) {
+    width: 100%;
+  }
+`
+
+export default React.memo(LoginForm)

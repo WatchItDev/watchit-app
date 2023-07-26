@@ -1,10 +1,14 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { styled, Box, Typography } from "@mui/material";
-import { Poster, ProfileInfo, RoundProgress, ControllerSlider, VideoPlayer } from '@zorrillosdev/watchit_uix';
+import { Poster, ProfileInfo, RoundProgress, ControllerSlider, VideoPlayer,CustomButton } from '@zorrillosdev/watchit_uix';
 import { Clock } from "tabler-icons-react";
 import Grid from '@mui/material/Grid';
+import { Close, VolumeUp, PlayArrow, VolumeOff } from '@mui/icons-material'
+import { useHistory } from 'react-router-dom'
 
-export const MovieDetails =()=>{
+export const MovieDetails =(props)=>{
+  const [ defaultVolumen, setDefaultVolumen] = useState(0)
+  const history = useHistory()
   const item = [
     {
       icon:<RoundProgress size={25} percentage={80} text={'8'} textSize={10} />,
@@ -76,17 +80,26 @@ export const MovieDetails =()=>{
   return(
     <MovieDetailsContainer>
       <MovieDetailsWrapper>
-        <Box sx={{bottom:'0',zIndex:'99',left:'0',position:'absolute',height:'65%',width:'100%',background:'linear-gradient(transparent, #1A1C20 24%)' }}></Box>
-        <Box sx={{top:'0',zIndex:'98',left:'0',position:'absolute'}} height={'300px'} width={'100%'} >
+        <Box sx={{bottom:'0',zIndex:'1',left:'0',position:'absolute',height:'66%',width:'100%',background:'linear-gradient(transparent, #1A1C20 20%)' }}></Box>
+        <Box sx={{top:'0',zIndex:'0',left:'0',position:'absolute'}} height={'300px'} width={'100%'} >
           <VideoPlayer 
             titleMovie="Renfield"
-            defaultVolumen={50}
+            defaultVolumen={defaultVolumen}
             src="http://vjs.zencdn.net/v/oceans.mp4"
             preview={true}
+            autoPlay={true}
           />
         </Box>
-
-        <Grid sx={{zIndex:'99',padding:'0.5rem',marginTop:'13rem'}} container spacing={2}>
+        <Grid sx={{zIndex:'99',marginTop:'6rem'}} container spacing={2}>
+          <Grid sx={{display:'flex',alignItems:'center',justifyContent:'center', marginBottom:'5rem'}} item xs={12}>
+            <CustomButton
+              variant={'flat'}
+              height={"30px"}
+              width={"30px"}
+              icon={<><PlayArrow style={{ color: '#D1D2D3'}}/></>}
+              onClick={() => history.push("/player")}
+            />
+          </Grid>
           <Grid sx={{display:'flex',alignItems:'center',justifyContent:'center'}} item xs={3}>
             <Poster 
               img={'https://cuevana3.mu/img/Mkp0NmxQeko2cXFxOVZVbDBLaEw5TTZpRmdEb1gzR1puSGVrN01RcE5QQzVpNUZFWHJDaFpHOUxDUStHd00xVQ.webp'}
@@ -94,12 +107,22 @@ export const MovieDetails =()=>{
               progress={50}
               year={2022}
               canHover={true} 
+              size={{
+                height:'100% !important'
+              }}
             />
           </Grid>
-          <Grid  item xs={9}>
-          <Grid container spacing={1}>
-            <Grid sx={{display:'flex',alignItems:'center',justifyContent:'start'}} item xs={12}>
+        <Grid  item xs={9}>
+          <Grid sx={{padding:'0 1rem 1rem'}} container spacing={1}>
+            <Grid sx={{display:'flex',alignItems:'center',justifyContent:'space-between'}} item xs={12}>
               <MovieText color={'#ffffff'} fontSize={'40px'} fontWeight={'bold'}>Renfield</MovieText>
+              <CustomButton
+                variant={'secondary'}
+                height={"30px"}
+                width={"30px"}
+                icon={ defaultVolumen == 0 ? <><VolumeUp style={{ color: '#D1D2D3'}}/></> : <><VolumeOff style={{ color: '#D1D2D3'}}/></> }
+                onClick={() => { defaultVolumen == 0 ? setDefaultVolumen(50) : setDefaultVolumen(0)}}
+              />
             </Grid>
             <Grid sx={{display:'flex',alignItems:'center',justifyContent:'space-between'}} item xs={12}>
               <MovieText color={'#D1D2D3'} fontSize={'20px'} fontWeight={'regular'}>Thiller - Terror</MovieText> 
@@ -156,7 +179,10 @@ export const MovieDetailsContainer = styled(Box)((props) => ({
   width:'100%',
   height:'100vh',
   zIndex:'97',
-  /* backgroundColor: 'rgb(0,0,0,0.43)', */
+  position:'absolute',
+  top:'0',
+  left:'0',
+  backgroundColor: 'rgb(0,0,0,0.43)'
 }))
 
 export const MovieDetailsWrapper = styled(Box)((props) => ({

@@ -5,10 +5,12 @@ import { MobileHeader } from '@zorrillosdev/watchit_uix'
 import {ControllerSlider} from '@zorrillosdev/watchit_uix'
 import { Menu2,BellRinging2 } from "tabler-icons-react";
 import { ChannelsMenu }  from '@zorrillosdev/watchit_uix'
+import { MovieDetails } from "../../components/MovieDetails";
 
 export const BrowseDestop =(props)=> {
   const [ active, setActive ] = useState('1')
   const [ isOpen, setIsOpen ] = useState(false)
+  const [ openModal, setOpenModal ] = useState(false)
 
   const movies = [
     {
@@ -107,12 +109,12 @@ export const BrowseDestop =(props)=> {
           items={items}
           width={'340px'}
         />
-        <Box sx={{width:'100%',display:'flex',alignItems:'center',justifyContent:'space-between'}}>
+        <Box sx={{width:'100%',display:'flex',alignItems:'center',justifyContent:'space-between',backgroundColor: isOpen ? '#212328' : '#1A1C20'}}>
           <MobileHeader 
             title="Broswe"
             isActive={isOpen}
           />
-          <Box display={'flex'} justifyContent={'end'} alignItems={'center'} style={{ padding:'0 2rem' }}>
+          <Box display={'flex'} justifyContent={'end'} alignItems={'center'} style={{ padding:'0 2rem'}}>
           <BellRinging2 style={{ color: '#D1D2D3',transform: 'rotate(-45deg)',marginRight:'8px' }}/>  
           <AvatarWrapper>
           <Avatar>
@@ -128,9 +130,11 @@ export const BrowseDestop =(props)=> {
       </MobileHeaderWrapper> 
 
       <ControlSliderWrapper open={isOpen}>
-        <ControllerSlider movies={movies} title="Continue watching"/>
-        <ControllerSlider movies={movies} title="Top rated"/>
+        <ControllerSlider onClick={()=>setOpenModal(true)} movies={movies} title="Continue watching"/>
+        <ControllerSlider onClick={()=>setOpenModal(true)} movies={movies} title="Top rated"/>
       </ControlSliderWrapper>
+
+      { openModal && <MovieDetails OnCloseModal={()=>setOpenModal(false)}/> }
     </>
   )
 }
@@ -156,10 +160,12 @@ export const UserTitles = styled(Typography)((props) => ({
 })) 
 
 export const ControlSliderWrapper = styled(Box)((props) => ({
-  width: `${ props.open ? 'calc(100% - 380px)' : '100%'}`,
-  marginTop:'72px',
-  transform: `translateX( ${ props.open ? '380px' : '0' })`,
+  width: `${ props.open ? 'calc(100% - 335px)' : '100%'}`,
+  marginTop:'65px',
+  transform: `translateX( ${ props.open ? '335px' : '0' })`,
   transition: 'transform 250ms ease-in-out',
+  padding:'1rem',
+  backgroundColor: '#212328',
   //,width 1s ease-in-out
   //WebkitTransition:'width 1s ease-in-out',
   //MozTransition:'width 1s ease-in-out',

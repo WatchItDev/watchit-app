@@ -2,10 +2,12 @@ import React from "react";
 import { styled, Box, Grid } from "@mui/material";
 import { Add } from "@mui/icons-material";
 import { Logo, ChannelItem, CustomButton }  from '@zorrillosdev/watchit_uix'
+import { useHistory } from 'react-router-dom'
 
 export const ChannelManageDesktop = () => {
   const users = [ 'Austin', 'Brooklyn','Chicago']
-
+  const history = useHistory()
+  
   return (
     <ChannelManageDektopWrapper>
       <Box sx={{ display: 'flex',marginTop:'2rem' }}>
@@ -24,6 +26,7 @@ export const ChannelManageDesktop = () => {
                   innerLetterSize={35} 
                   selected={index == 0 ? true : false} 
                   borderWidth={3}
+                  onClick={()=>history.push("/browse")}
                 />
               </Grid>
             )
@@ -43,7 +46,7 @@ export const ChannelManageDesktop = () => {
           </Grid>
         </Grid>
       </Box>
-      <Box sx={{ display: 'flex' }}>
+      <Box sx={{ display: 'flex',marginBottom:'2rem' }}>
         <CustomButton  variant={'secondary'} children={<span>MANAGE CHANNELS</span>} />
       </Box>
     </ChannelManageDektopWrapper>
@@ -56,7 +59,8 @@ export const ChannelManageDektopWrapper = styled(Box)(() => ({
   alignItems: 'center',
   justifyContent: 'space-between',
   backgroundColor: 'transparent',
-  height:'calc(100vh - 3rem)',
+  height:'calc(100vh)',
+  backgroundColor: '#212328'
 }))
 
 export const AddChannelWrapper = styled(Box)(() => ({

@@ -30,7 +30,7 @@
     "@mui/material": "^5.14.1",
     "@mui/styled-engine-sc": "^5.12.0",
     "@tabler/icons": "^2.28.0",
-    "@zorrillosdev/watchit_uix": "npm:@ZorrillosDev/watchit_uix@^0.0.22",
+    "@zorrillosdev/watchit_uix": "npm:@ZorrillosDev/watchit_uix@^0.0.26",
     "electron-updater": "^4.6.5",
     "fs-extra": "^9.0.1",
     "get-port": "^5.1.1",
