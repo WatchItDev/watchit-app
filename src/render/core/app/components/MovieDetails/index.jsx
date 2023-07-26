@@ -80,6 +80,16 @@ export const MovieDetails =(props)=>{
   return(
     <MovieDetailsContainer>
       <MovieDetailsWrapper>
+        <Box sx={{top:'1.2rem',zIndex:'2',left:'0',position:'absolute',display:'flex',justifyContent:'end'}} height={'30px'} width={'100%'} >
+          <CustomButton
+            variant={'flat'}
+            height={"30px"}
+            width={"30px"}
+            margin='0 0.5rem 0 0'
+            icon={<><Close style={{ color: '#D1D2D3'}}/></>}
+            onClick={ props.OnCloseModal }
+          />
+        </Box>
         <Box sx={{bottom:'0',zIndex:'1',left:'0',position:'absolute',height:'66%',width:'100%',background:'linear-gradient(transparent, #1A1C20 20%)' }}></Box>
         <Box sx={{top:'0',zIndex:'0',left:'0',position:'absolute'}} height={'300px'} width={'100%'} >
           <VideoPlayer 
@@ -100,6 +110,16 @@ export const MovieDetails =(props)=>{
               onClick={() => history.push("/player")}
             />
           </Grid>
+          <Grid sx={{display:'flex',alignItems:'center',justifyContent:'end'}} width={'100%'} item xs={12}>
+            <CustomButton
+              variant={'secondary'}
+              height={"30px"}
+              width={"30px"}
+              margin='0 1.2rem 0 0'
+              icon={ defaultVolumen == 0 ? <><VolumeUp style={{ color: '#D1D2D3'}}/></> : <><VolumeOff style={{ color: '#D1D2D3'}}/></> }
+              onClick={() => { defaultVolumen == 0 ? setDefaultVolumen(50) : setDefaultVolumen(0)}}
+            />
+          </Grid>
           <Grid sx={{display:'flex',alignItems:'center',justifyContent:'center'}} item xs={3}>
             <Poster 
               img={'https://cuevana3.mu/img/Mkp0NmxQeko2cXFxOVZVbDBLaEw5TTZpRmdEb1gzR1puSGVrN01RcE5QQzVpNUZFWHJDaFpHOUxDUStHd00xVQ.webp'}
@@ -116,13 +136,6 @@ export const MovieDetails =(props)=>{
           <Grid sx={{padding:'0 1rem 1rem'}} container spacing={1}>
             <Grid sx={{display:'flex',alignItems:'center',justifyContent:'space-between'}} item xs={12}>
               <MovieText color={'#ffffff'} fontSize={'40px'} fontWeight={'bold'}>Renfield</MovieText>
-              <CustomButton
-                variant={'secondary'}
-                height={"30px"}
-                width={"30px"}
-                icon={ defaultVolumen == 0 ? <><VolumeUp style={{ color: '#D1D2D3'}}/></> : <><VolumeOff style={{ color: '#D1D2D3'}}/></> }
-                onClick={() => { defaultVolumen == 0 ? setDefaultVolumen(50) : setDefaultVolumen(0)}}
-              />
             </Grid>
             <Grid sx={{display:'flex',alignItems:'center',justifyContent:'space-between'}} item xs={12}>
               <MovieText color={'#D1D2D3'} fontSize={'20px'} fontWeight={'regular'}>Thiller - Terror</MovieText> 
