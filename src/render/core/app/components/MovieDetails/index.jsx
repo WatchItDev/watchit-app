@@ -46,6 +46,20 @@ export const MovieDetails =(props)=>{
       subTitle:'Duration',
       onClick:() => console.log('clicked profile info')
     }
+    /* ,
+    {
+      icon:<Clock />,
+      title:'1h 28m',
+      subTitle:'Duration',
+      onClick:() => console.log('clicked profile info')
+    }
+    ,
+    {
+      icon:<Clock />,
+      title:'1h 28m',
+      subTitle:'Duration',
+      onClick:() => console.log('clicked profile info')
+    } */
   ]
   const movies = [
     {
@@ -116,11 +130,11 @@ export const MovieDetails =(props)=>{
               height={"30px"}
               width={"30px"}
               margin='0 1.2rem 0 0'
-              icon={ defaultVolumen == 0 ? <><VolumeUp style={{ color: '#D1D2D3'}}/></> : <><VolumeOff style={{ color: '#D1D2D3'}}/></> }
+              icon={ defaultVolumen == 0 ? <><VolumeUp style={{ color: '#D1D2D3' }}/></> : <><VolumeOff style={{ color: '#D1D2D3'}}/></> }
               onClick={() => { defaultVolumen == 0 ? setDefaultVolumen(50) : setDefaultVolumen(0)}}
             />
           </Grid>
-          <Grid sx={{display:'flex',alignItems:'center',justifyContent:'center'}} item xs={3}>
+          <Grid sx={{display:'flex',alignItems:'center',justifyContent:'end',padding:'0'}} item xs={3}>
             <Poster 
               img={'https://cuevana3.mu/img/Mkp0NmxQeko2cXFxOVZVbDBLaEw5TTZpRmdEb1gzR1puSGVrN01RcE5QQzVpNUZFWHJDaFpHOUxDUStHd00xVQ.webp'}
               title={'Renfield'}
@@ -132,16 +146,16 @@ export const MovieDetails =(props)=>{
               }}
             />
           </Grid>
-        <Grid  item xs={9}>
-          <Grid sx={{padding:'0 1rem 1rem'}} container spacing={1}>
-            <Grid sx={{display:'flex',alignItems:'center',justifyContent:'space-between'}} item xs={12}>
+        <Grid item xs={9}>
+          <Grid container spacing={1}>
+            <Grid sx={{display:'flex',alignItems:'center',padding:'0 1rem'}} item xs={12}>
               <MovieText color={'#ffffff'} fontSize={'40px'} fontWeight={'bold'}>Renfield</MovieText>
             </Grid>
-            <Grid sx={{display:'flex',alignItems:'center',justifyContent:'space-between'}} item xs={12}>
+            <Grid sx={{display:'flex',alignItems:'center',justifyContent:'space-between',padding:'0 1rem'}} item xs={12}>
               <MovieText color={'#D1D2D3'} fontSize={'20px'} fontWeight={'regular'}>Thiller - Terror</MovieText> 
               <MovieText color={'#ffffff'} fontSize={'20px'} fontWeight={'bold'}>2019</MovieText> 
             </Grid>
-            <Grid sx={{display:'flex',alignItems:'center',justifyContent:'between'}} item xs={12}>
+            <Grid sx={{display:'flex',alignItems:'center',justifyContent:'start',padding:'0 1rem'}} item xs={12}>
               <MovieText sx={{textAlign:'justify'}} color={'#D1D2D3'} fontSize={'16px'} fontWeight={'regular'}>
                 Lorem ipsum dolor, sit amet consectetur adipisicing elit. 
                 Laudantium incidunt dolorum dolor suscipit debitis. Quisquam 
@@ -149,18 +163,19 @@ export const MovieDetails =(props)=>{
                 deserunt voluptates reprehenderit possimus enim placeat officiis.
               </MovieText> 
             </Grid>
-            <Grid item xs={12}>
-              <Grid container spacing={2}>
+            <Grid sx={{padding:'0 1rem'}} item xs={12}>
+              <Grid sx={{/* transform: 'rotate(180deg)',overflowY:'scroll',width:'100%',display:'flex' */}} container spacing={2}>
                 {item.map(x=>{
                   return(
-                    <Grid sx={{display:'flex'}} item xs={2}>
-                      <ProfileInfo
-                        icon={x.icon}
-                        title={x.title}
-                        subTitle={x.subTitle}
-                        onClick={x.onClick}>
-                      </ProfileInfo>
+                    <Grid sx={{/* display:'flex',transform: 'rotate(-180deg)',display:'flex' */}} item xs={2}>
+                          <ProfileInfo
+                          icon={x.icon}
+                          title={x.title}
+                          subTitle={x.subTitle}
+                          onClick={x.onClick}>
+                        </ProfileInfo>
                     </Grid>
+            
                   )
                 })}
               </Grid>
@@ -168,11 +183,11 @@ export const MovieDetails =(props)=>{
           </Grid>
         </Grid>
 
-        <hr style={{borderTop:'1px solid rgb(241, 238, 239, 0.2)',width:'calc(100% - 5rem)',marginTop:'3rem' }}/>
+        <hr style={{borderTop:'1px solid rgb(241, 238, 239, 0.2)',width:'calc(100% - 3rem)',marginTop:'3rem' }}/>
 
-        <Grid display={'flex'} sx={{alignItems:'center',justifyContent:'center'}}item xs={12}>
+        <Grid display={'flex'} sx={{alignItems:'center',justifyContent:'center'}} item xs={12}>
           <Box display={'flex'} sx={{width:'calc(100% - 2rem)',alignItems:'center',justifyContent:'center'}}>
-          <ControllerSlider movies={movies} title='More titles like this' />
+            <ControllerSlider movies={movies} title='More titles like this' />
           </Box>
         </Grid>
         </Grid>

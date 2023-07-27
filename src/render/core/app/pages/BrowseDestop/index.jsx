@@ -96,9 +96,9 @@ export const BrowseDestop =(props)=> {
   const handleToggleOpen = () => setIsOpen((open) => !open)
   
   return (
-    <>
+    <MobileHeaderContainer>
       <MobileHeaderWrapper isOpen={isOpen} >
-        <Box sx={{height:'65px'}}>
+        <Box sx={{height:'55px'}}>
           <ChannelsMenu isOpen={isOpen}/>
         </Box>
         <Menu 
@@ -107,9 +107,9 @@ export const BrowseDestop =(props)=> {
           isOpen={isOpen} 
           onIsOpenChange={handleToggleOpen}
           items={items}
-          width={'340px'}
+          width={'255px'}
         />
-        <Box sx={{width:'100%',display:'flex',alignItems:'center',justifyContent:'space-between',backgroundColor: isOpen ? '#212328' : '#1A1C20'}}>
+        <Box sx={{width:'calc(100% - 320px)',display:'flex',alignItems:'center',justifyContent:'space-between',backgroundColor: isOpen ? '#212328' : '#1A1C20'}}>
           <MobileHeader 
             title="Broswe"
             isActive={isOpen}
@@ -132,12 +132,19 @@ export const BrowseDestop =(props)=> {
       <ControlSliderWrapper open={isOpen}>
         <ControllerSlider onClick={()=>setOpenModal(true)} movies={movies} title="Continue watching"/>
         <ControllerSlider onClick={()=>setOpenModal(true)} movies={movies} title="Top rated"/>
+        <ControllerSlider onClick={()=>setOpenModal(true)} movies={movies} title="Top rated"/>
       </ControlSliderWrapper>
 
       { openModal && <MovieDetails OnCloseModal={()=>setOpenModal(false)}/> }
-    </>
+    </MobileHeaderContainer>
   )
 }
+
+export const MobileHeaderContainer = styled(Box)((props) => ({
+  height: '100vh',
+  width:'100%',
+  backgroundColor:'#1A1C20'
+}))
 
 export const MobileHeaderWrapper = styled(Box)((props) => ({
   display: 'flex',
@@ -160,12 +167,21 @@ export const UserTitles = styled(Typography)((props) => ({
 })) 
 
 export const ControlSliderWrapper = styled(Box)((props) => ({
-  width: `${ props.open ? 'calc(100% - 335px)' : '100%'}`,
+  width: `${ props.open ? 'calc(100% - 330px)' : '100%'}`,
   marginTop:'65px',
-  transform: `translateX( ${ props.open ? '335px' : '0' })`,
+  transform: `translateX( ${ props.open ? '330px' : '0' })`,
   transition: 'transform 250ms ease-in-out',
   padding:'1rem',
   backgroundColor: '#212328',
+  overflowX:'auto',
+  maxHeight:'100vh',
+  '&::-webkit-scrollbar':{
+    width: '0', 
+    background: 'transparent ' 
+  },
+  "&::-webkit-scrollbar-thumb":{
+    background: '#FF0000'
+  }
   //,width 1s ease-in-out
   //WebkitTransition:'width 1s ease-in-out',
   //MozTransition:'width 1s ease-in-out',
