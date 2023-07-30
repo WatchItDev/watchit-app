@@ -92,14 +92,14 @@ export const BrowseDestop =(props)=> {
       onClick: () => console.log('clicked menu item')
     }
   ] 
-
+  const users = [ 'Austin', 'Brooklyn','Chicago'] 
   const handleToggleOpen = () => setIsOpen((open) => !open)
   
   return (
     <MobileHeaderContainer>
       <MobileHeaderWrapper isOpen={isOpen} >
-        <Box sx={{height:'55px'}}>
-          <ChannelsMenu isOpen={isOpen}/>
+        <Box sx={{height:'55px',width:'80px'}}>
+          <ChannelsMenu isOpen={isOpen} users={users}/>
         </Box>
         <Menu 
           onItemChange={setActive} 

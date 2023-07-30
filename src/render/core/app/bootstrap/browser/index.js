@@ -7,14 +7,14 @@ import ChannelManageDesktop from '../../pages/ChannelManageDesktop'
 import BrowseDestop from '../../pages/BrowseDestop'
 import PlayerUIX from '../../pages/PlayUIX'
 
-export default (/* hist, key */) => {
+export default (hist, key) => {
   return (
-    <HashRouter /* history={hist} */>
+    <HashRouter history={hist}>
       <Switch>
-        {/* <Route
+        <Route
           name='login' exact path='/'
           render={(n) => !key.isLogged()
-            ? <BrowseDestop/>
+            ? <Login/>
             : (<Redirect to='/app/movies' />)}
         />
         <Route
@@ -25,7 +25,7 @@ export default (/* hist, key */) => {
           name='player'
           path='/play/:resource'
           render={(n) => <Player {...n} />}
-        /> */}
+        />
         <Route
           name='channels'
           path='/channels'

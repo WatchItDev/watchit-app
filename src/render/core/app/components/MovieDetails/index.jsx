@@ -46,20 +46,6 @@ export const MovieDetails =(props)=>{
       subTitle:'Duration',
       onClick:() => console.log('clicked profile info')
     }
-    /* ,
-    {
-      icon:<Clock />,
-      title:'1h 28m',
-      subTitle:'Duration',
-      onClick:() => console.log('clicked profile info')
-    }
-    ,
-    {
-      icon:<Clock />,
-      title:'1h 28m',
-      subTitle:'Duration',
-      onClick:() => console.log('clicked profile info')
-    } */
   ]
   const movies = [
     {
@@ -91,6 +77,7 @@ export const MovieDetails =(props)=>{
       title:'Ant-Man y la Avispa: Quantumanía'
     }
   ]
+  
   return(
     <MovieDetailsContainer>
       <MovieDetailsWrapper>
@@ -104,8 +91,8 @@ export const MovieDetails =(props)=>{
             onClick={ props.OnCloseModal }
           />
         </Box>
-        <Box sx={{bottom:'0',zIndex:'1',left:'0',position:'absolute',height:'66%',width:'100%',background:'linear-gradient(transparent, #1A1C20 20%)' }}></Box>
-        <Box sx={{top:'0',zIndex:'0',left:'0',position:'absolute'}} height={'300px'} width={'100%'} >
+        <Box sx={{bottom:'0',zIndex:'1',left:'0',position:'absolute',height:'52%',width:'100%',background:'linear-gradient(transparent, #1A1C20 19%)' }}></Box>
+        <Box sx={{top:'0',zIndex:'0',left:'0',position:'absolute'}} height={'360px'} width={'100%'} >
           <VideoPlayer 
             titleMovie="Renfield"
             defaultVolumen={defaultVolumen}
@@ -164,29 +151,30 @@ export const MovieDetails =(props)=>{
               </MovieText> 
             </Grid>
             <Grid sx={{padding:'0 1rem'}} item xs={12}>
-              <Grid sx={{/* transform: 'rotate(180deg)',overflowY:'scroll',width:'100%',display:'flex' */}} container spacing={2}>
+              <Grid container spacing={2}>
                 {item.map(x=>{
                   return(
-                    <Grid sx={{/* display:'flex',transform: 'rotate(-180deg)',display:'flex' */}} item xs={2}>
-                          <ProfileInfo
-                          icon={x.icon}
-                          title={x.title}
-                          subTitle={x.subTitle}
-                          onClick={x.onClick}>
-                        </ProfileInfo>
+                    <Grid item xs={2}>
+                      <ProfileInfo
+                        icon={x.icon}
+                        title={x.title}
+                        subTitle={x.subTitle}
+                        onClick={x.onClick}>
+                      </ProfileInfo>
                     </Grid>
-            
                   )
                 })}
               </Grid>
             </Grid>
           </Grid>
         </Grid>
-
-        <hr style={{borderTop:'1px solid rgb(241, 238, 239, 0.2)',width:'calc(100% - 3rem)',marginTop:'3rem' }}/>
+        <Grid display={'flex'} sx={{alignItems:'center',justifyContent:'center',pading:'0'}} item xs={12}>
+          <hr style={{borderTop:'1px solid rgb(241, 238, 239, 0.2)',width:'calc(100% - 3rem)'}}/>
+        </Grid>
 
         <Grid display={'flex'} sx={{alignItems:'center',justifyContent:'center'}} item xs={12}>
-          <Box display={'flex'} sx={{width:'calc(100% - 2rem)',alignItems:'center',justifyContent:'center'}}>
+          
+          <Box display={'flex'} sx={{width:'calc(100% - 2rem)',alignItems:'center',justifyContent:'center',marginBottom:'1.5rem'}}>
             <ControllerSlider movies={movies} title='More titles like this' />
           </Box>
         </Grid>
