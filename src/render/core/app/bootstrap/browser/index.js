@@ -3,8 +3,8 @@ import Login from '@pages/Login'
 import Catalog from '@pages/Home'
 import Player from '@pages/Player'
 import React from 'react'
-import ChannelManageDesktop from '../../pages/ChannelManageDesktop'
-import BrowseDestop from '../../pages/BrowseDestop'
+import Channels from '../../pages/Channels'
+import Browse from '../../pages/Browse'
 import PlayerUIX from '../../pages/PlayUIX'
 
 export default (hist, key) => {
@@ -14,7 +14,7 @@ export default (hist, key) => {
         <Route
           name='login' exact path='/'
           render={(n) => !key.isLogged()
-            ? <Login/>
+            ? <Login />
             : (<Redirect to='/app/movies' />)}
         />
         <Route
@@ -29,17 +29,17 @@ export default (hist, key) => {
         <Route
           name='channels'
           path='/channels'
-          render={() => <ChannelManageDesktop/>}
+          render={() => <Channels />}
         />
         <Route
           name='browse'
           path='/browse'
-          render={() => <BrowseDestop/>}
+          render={() => <Browse />}
         />
         <Route
-          name='player'
+          name='player_uix'
           path='/player'
-          render={() => <PlayerUIX/>}
+          render={() => <PlayerUIX />}
         />
       </Switch>
     </HashRouter>

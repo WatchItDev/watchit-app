@@ -3,7 +3,7 @@
 @use "_prefixer";
 @forward "_global";
 /* Remove Focus Boxes */
-select:focus {
+/* select:focus {
   outline: 1px solid color.adjust(variables.$secondary-color, $lightness: 47%);
 }
 button:focus {
@@ -11,16 +11,18 @@ button:focus {
   background-color: color.adjust(variables.$button-color, $lightness: 4%);
 }
 
+
 label {
   font-size: variables.$label-font-size;
   color: variables.$input-border-color;
-}
+} */
 
 /***************************
    Text Inputs + Textarea
 ****************************/
 
 // Style Placeholders
+
 ::-webkit-input-placeholder {
    color: color.adjust(variables.$input-border-color, $lightness: 20%);
 }

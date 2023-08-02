@@ -106,7 +106,7 @@
     padding: variables.$card-padding;
 
     a {
-      color: variables.$card-link-color;
+      /* color: variables.$card-link-color; */
       margin-right: variables.$card-padding;
       @include prefixer.transition(color .3s ease);
       text-transform: uppercase;

@@ -22,7 +22,7 @@
 .btn.disabled, .btn-floating.disabled, .btn-large.disabled, .btn:disabled, .btn-large:disabled, .btn-floating:disabled {
   background-color: variables.$button-bg-color-disabled !important;
   box-shadow: none;
-  color: variables.$button-color-disabled !important;
+  /* color: variables.$button-color-disabled !important; */
   cursor: default;
   * {
     pointer-events: none;
@@ -30,7 +30,7 @@
 
   &:hover {
     background-color: variables.$button-bg-color-disabled;
-    color: variables.$button-color-disabled;
+    /* color: variables.$button-color-disabled; */
   }
 }
 // Shared icon styles
@@ -44,7 +44,7 @@
 // Raised Button
 .btn {
   text-decoration:none;
-  color: variables.$button-color-raised;
+  /* color: variables.$button-color-raised; */
   background-color: variables.$button-color;
   text-align: center;
   letter-spacing: .5px;
@@ -61,7 +61,7 @@
 // Floating button
 .btn-floating {
   display: inline-block;
-  color: variables.$button-color-raised;
+  /* color: variables.$button-color-raised; */
   position: relative;
   overflow: hidden;
   z-index: 1;
@@ -80,7 +80,7 @@
     width: inherit;
     display: inline-block;
     text-align: center;
-    color: variables.$button-color-raised;
+    /* color: variables.$button-color-raised; */
     font-size: variables.$button-large-icon-font-size;
     line-height: variables.$button-floating-size;
   }
@@ -159,7 +159,7 @@ button.btn-floating {
 .btn-flat {
   box-shadow: none;
   background-color: transparent;
-  color: variables.$button-color-flat;
+  /* color: variables.$button-color-flat; */
   cursor: pointer;
 
   &.disabled {

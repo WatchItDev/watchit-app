@@ -1,23 +1,37 @@
-import React, {  useState } from "react";
-import { styled, Box, Typography } from "@mui/material";
-import { VideoPlayer }  from '@zorrillosdev/watchit_uix'
+// REACT IMPORTS
+import React from 'react'
+
+// MUI IMPORTS
+import { styled, Box } from '@mui/material'
+
+// WATCHIT_UIX PACKAGE IMPORTS
+import { VideoPlayer } from '@zorrillosdev/watchit_uix'
+
+// REACT ROUTER IMPORT
 import { useHistory } from 'react-router-dom'
 
-export const PlayerUIX =(props)=> {
+// ===========================||  VIDEO PLAYER ||=========================== //
+
+export const PlayerUIX = () => {
   const history = useHistory()
 
   return (
-    <Box sx={{width:'100%',height:'100vh'}}>
-      <VideoPlayer 
-        titleMovie="Renfield"
-        defaultVolumen={50}
-        src="http://vjs.zencdn.net/v/oceans.mp4"
+    <VideoPlayerContainer>
+      <VideoPlayer
+        titleMovie='Renfield'
+        defaultVolume={50}
+        src='http://vjs.zencdn.net/v/oceans.mp4'
         preview={false}
-        onClose={()=>history.push("/browse")}
+        onClose={() => history.push('/browse')}
         autoPlay={false}
       />
-    </Box>
+    </VideoPlayerContainer>
   )
 }
+
+export const VideoPlayerContainer = styled(Box)(() => ({
+  width: '100%',
+  height: '100vh'
+}))
 
 export default PlayerUIX

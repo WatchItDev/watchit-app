@@ -9,7 +9,8 @@ $primary-color-dark: color.adjust($primary-color, $lightness: -15%) !default;
 $secondary-color: #26a69a !default;
 $success-color: #4CAF50 !default;
 $error-color: #F44336 !default;
-$link-color:  #03a9f4 !default;
+//$link-color:  #03a9f4 !default;
+$link-color:  'transparent' !default;
 
 /*** Badges ***/
 $badge-bg-color: $secondary-color !default;
