@@ -13,7 +13,8 @@ import {
   ProfileInfo,
   ControllerSlider,
   VideoPlayer,
-  CustomButton
+  CustomButton,
+  Button
 } from '@zorrillosdev/watchit_uix'
 
 // REACT ROUTER IMPORT
@@ -43,7 +44,7 @@ export const MovieDetails = (props) => {
             height='40px'
             width='40px'
             margin='0 1.2rem 0 0'
-            icon={<><Close style={{ color: '#D1D2D3' }} /></>}
+            icon={<><Close /></>}
             onClick={props.handleOnCloseModal}
           />
         </CloseButtonWrapper>
@@ -60,25 +61,27 @@ export const MovieDetails = (props) => {
           />
         </VideoPlayerWrapper>
 
-        <Grid sx={{ zIndex: '99', marginTop: '5rem' }} container spacing={2}>
+        <Grid 
+          container spacing={2} 
+          sx={{ zIndex: '99', marginTop: '8rem' }}>
           <Grid 
             item xs={12}
             display='flex' alignItems='center'
-            justifyContent='center' sx={{ marginBottom: '5rem' }}
+            justifyContent='center' sx={{ marginBottom: '3rem' }}
           >
             <CustomButton
               variant='flat'
               height='40px'
               width='40px'
-              icon={<><PlayArrow style={{ color: '#D1D2D3' }} /></>}
+              icon={<><PlayArrow /></>}
               onClick={() => history.push('/player')}
             />
           </Grid>
 
-          <Grid
+          <CustomGridVolumen
+            item xs={12}
             display='flex' alignItems='center'
             justifyContent='end' width='100%'
-            item xs={12}
           >
             <CustomButton
               variant='secondary'
@@ -87,19 +90,23 @@ export const MovieDetails = (props) => {
               margin='0 1.2rem 0 0'
               icon={
                 defaultVolume === 0
-                  ? <VolumeUp style={{ color: '#D1D2D3' }} />
-                  : <VolumeOff style={{ color: '#D1D2D3' }} />
+                  ? <VolumeUp />
+                  : <VolumeOff />
               }
               onClick={() => handleVolumePreview()}
             />
-          </Grid>
+          </CustomGridVolumen>
 
           <Grid
             item xs={12} sm={3}
             display='flex' alignItems='center'
-            justifyContent='end' sx={{ padding: '0' }}
+            justifyContent='end' sx={{ paddingTop: '0 !important' }}
           >
-            <Grid display='flex' justifyContent='center' height='100%' item xs={6} sm={12}>
+            <CustomGridPoster 
+              item xs={6} sm={12} 
+              display='flex' justifyContent='center' 
+              height='100%' sx={{ paddingTop: '0 !important' }} 
+            >
               <Poster
                 img={movies[0].img}
                 title='Renfield'
@@ -110,70 +117,71 @@ export const MovieDetails = (props) => {
                   height: '100% !important'
                 }}
               />
-            </Grid>
+            </CustomGridPoster>
 
             <CustomGrid item xs={6} sm={12}>
               <Box 
                 display='flex' justifyContent='space-between' 
                 sx={{ width: 'calc(100% - 4rem)' }}
               >
-                <CustomButton
+                <Button
                   variant='secondary'
-                  height='30px'
-                  width='30px'
                   children={<span>Play</span>}
-                  icon={<PlayArrow style={{ color: '#D1D2D3' }} />}
+                  icon={<PlayArrow />}
                   onClick={() => history.push('/player')}
                 />
                 <CustomButton
                   variant='secondary'
-                  height='30px'
-                  width='30px'
+                  height='40px'
+                  width='40px'
                   icon={
                     defaultVolume === 0
-                      ? <VolumeUp style={{ color: '#D1D2D3' }} />
-                      : <VolumeOff style={{ color: '#D1D2D3' }} />
+                      ? <VolumeUp />
+                      : <VolumeOff />
                   }
                   onClick={() => handleVolumePreview()}
                 />
               </Box>
               <MobileTitleWrapper>
-                <MovieText color='#D1D2D3' fontSize='20px' fontWeight='regular'>Thiller - Terror</MovieText>
-                <MovieText color='#ffffff' fontSize='20px' fontWeight='bold'>2019</MovieText>
+                <Typography variant='subtitle1'>Thiller - Terror</Typography>
+                <Typography variant='subtitle1'>2019</Typography>
               </MobileTitleWrapper>
             </CustomGrid>
 
           </Grid>
 
-          <Grid item xs={12} sm={9}>
+          <Grid item xs={12} sm={9} sx={{ padding:'0 !important' }}>
             <Grid 
-              container spacing={1} 
+              container spacing={0} 
               display='flex' alignItems='start'
             >
-
-              <Grid sx={{ display: 'flex', alignItems: 'center', padding: '0 1rem' }} item xs={12}>
-                <MovieText color='#ffffff' fontSize='40px' fontWeight='bold'>Renfield</MovieText>
+              <Grid 
+                item xs={12}
+                display='flex' alignItems='center' 
+                sx={{ padding: '0 1rem', margin:'0px 0' }} 
+              >
+                <Typography variant='h1'>Renfield</Typography>
               </Grid>
 
               <CustomGrid2 item xs={12}>
-                <MovieText color='#D1D2D3' fontSize='20px' fontWeight='regular'>Thiller - Terror</MovieText>
-                <MovieText color='#ffffff' fontSize='20px' fontWeight='bold'>2019</MovieText>
+                <Typography variant='subtitle1'>Thiller - Terror</Typography>
+                <Typography variant='subtitle1'>2019</Typography>
               </CustomGrid2>
 
               <Grid 
                 item xs={12} 
                 display='flex' alignItems='center' 
-                justifyContent='start' sx={{  padding: '0 1rem' }} 
+                justifyContent='start' sx={{  padding: '0 1rem',margin:'8px 0'  }} 
               >
-                <MovieText sx={{ textAlign: 'justify' }} color='#D1D2D3' fontSize='16px' fontWeight='regular'>
+                <Typography variant='subtitle2' align='justify'>
                   Lorem ipsum dolor, sit amet consectetur adipisicing elit.
                   Laudantium incidunt dolorum dolor suscipit debitis. Quisquam
                   vitae fuga temporibus tempore consectetur, ab voluptates! Quod
                   deserunt voluptates reprehenderit possimus enim placeat officiis.
-                </MovieText>
+                </Typography>
               </Grid>
 
-              <Grid sx={{ padding: '0 1rem' }} item xs={12}>
+              <Grid sx={{ padding: '0 1rem',margin:'7px 0' }} item xs={12}>
                 <Grid container spacing={2}>
                   {profileInfoList.map((profile, index) => {
                     return (
@@ -240,12 +248,18 @@ export const MovieDetailsWrapper = styled(Box)(() => ({
   }
 }))
 
-export const MovieText = styled(Typography)((props) => ({
-  fontSize: props.fontSize,
-  fontWeight: props.fontWeight,
-  color: props.color,
-  margin: props.margin
+const CustomGridPoster = styled(Grid)(({ theme }) => ({
+  //padding: '0 1rem',
+  //display: 'none',
+  //flexDirection: 'column',
+  //alignItems: 'center',
+  //justifyContent: 'end',
+  //height: '100%',
+  [theme.breakpoints.only('xs')]: {
+    justifyContent: 'start'
+  }
 }))
+
 
 const CustomGrid = styled(Grid)(({ theme }) => ({
   padding: '0 1rem',
@@ -255,7 +269,16 @@ const CustomGrid = styled(Grid)(({ theme }) => ({
   justifyContent: 'end',
   height: '100%',
   [theme.breakpoints.only('xs')]: {
-    display: 'flex'
+    display: 'flex',
+    "&button":{
+      margin:'8px 0'
+    }
+  }
+}))
+
+const CustomGridVolumen = styled(Grid)(({ theme }) => ({
+  [theme.breakpoints.only('xs')]: {
+    display: 'none',
   }
 }))
 
@@ -264,6 +287,7 @@ const CustomGrid2 = styled(Grid)(({ theme, props }) => ({
   alignItems: 'center',
   justifyContent: 'space-between',
   padding: '0 1rem',
+  margin: '10px 0',
   [theme.breakpoints.only('xs')]: {
     display: 'none'
   }
@@ -306,7 +330,10 @@ export const MobileTitleWrapper = styled(Box)(() => ({
   marginTop: '4rem',
   flexDirection: 'column',
   textAlign: 'end',
-  width: 'calc(100% - 4rem)'
+  width: 'calc(100% - 4rem)',
+  'span':{
+    margin:'8px 0'
+  }
 }))
 
 export const CustomModal = styled(Modal)(() => ({

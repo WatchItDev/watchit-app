@@ -1,5 +1,5 @@
 // REACT IMPORTS
-import React, { useState } from 'react'
+import React, { useState, memo } from 'react'
 
 // MUI IMPORTS
 import { styled, Box, Typography } from '@mui/material'
@@ -8,9 +8,9 @@ import { styled, Box, Typography } from '@mui/material'
 import {
   Menu,
   MobileHeader,
+  ProfileAvatar,
   ControllerSlider,
   ChannelsMenu,
-  Avatar
 } from '@zorrillosdev/watchit_uix'
 
 // TABLER ICON IMPORTS
@@ -32,6 +32,7 @@ export const Browse = (props) => {
   const handleToggleOpen = () => setIsOpen(!isOpen)
 
   return (
+    <React.StrictMode>
     <BrowseContainer>
       <HeaderContainer isOpen={isOpen}>
         <Box sx={{ height: '55px', width: '80px' }}>
@@ -47,7 +48,7 @@ export const Browse = (props) => {
         />
         <HeaderWrapper isOpen={isOpen}>
           <MobileHeader
-            title='Broswe'
+            title='Browse'
             isActive={isOpen}
           />
           <Box 
@@ -55,7 +56,7 @@ export const Browse = (props) => {
             alignItems='center' style={{ padding: '0 1rem' }}
           >
             <NotificationsIcon style={{ color: '#D1D2D3', marginRight: '8px', flexShrink: 0 }} />
-            <Avatar
+            <ProfileAvatar
               width={30} height={30} borderSize={2}
               userName='Jacob Peralta' rank='Platinum'
             />
@@ -64,7 +65,7 @@ export const Browse = (props) => {
       </HeaderContainer>
 
       <ControlSliderWrapper open={isOpen}>
-        <ControllerSlider onClick={() => setOpenModal(true)} movies={movies} title='Continue watching' />
+        <ControllerSlider onClick={() => setOpenModal(true)} movies={movies} title='Continue Watching'  />
         <ControllerSlider onClick={() => setOpenModal(true)} movies={movies} title='Top rated' />
         <ControllerSlider onClick={() => setOpenModal(true)} movies={movies} title='Top rated' />
       </ControlSliderWrapper>
@@ -79,6 +80,7 @@ export const Browse = (props) => {
           />
       }
     </BrowseContainer>
+    </React.StrictMode>
   )
 }
 
@@ -122,13 +124,6 @@ export const MobileHeaderWrapper = styled(Box)((props) => ({
   backgroundColor: props.active ? '#212328' : '#1A1C20'
 }))
 
-export const UserTitles = styled(Typography)((props) => ({
-  fontSize: `${props.fontSize}`,
-  fontWeight: `${props.fontWeight}`,
-  color: '#D1D2D3',
-  margin: '0'
-}))
-
 export const ControlSliderWrapper = styled(Box)((props) => ({
   width: `${props.open ? 'calc(100% - 330px)' : '100%'}`,
   marginTop: '65px',
@@ -138,13 +133,16 @@ export const ControlSliderWrapper = styled(Box)((props) => ({
   backgroundColor: '#212328',
   overflowX: 'auto',
   maxHeight: '100vh',
+  display: 'flex',
+  flexDirection: "column",
+  gap:'12px 0',
   '&::-webkit-scrollbar': {
     width: '0',
     background: 'transparent '
   },
   '&::-webkit-scrollbar-thumb': {
     background: '#FF0000'
-  }
+  },
   //, width 1s ease-in-out
   // WebkitTransition:'width 1s ease-in-out',
   // MozTransition:'width 1s ease-in-out',

@@ -2,9 +2,12 @@ import React from 'react'
 import MenuIcon from '@mui/icons-material/Menu'
 import AccessTimeIcon from '@mui/icons-material/AccessTime'
 import { RoundProgress } from '@zorrillosdev/watchit_uix'
+import { BrandSafari, ClockHour4, CalendarStats } from 'tabler-icons-react'
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 
 const Icon = () => <MenuIcon />
 const Icon2 = () => <AccessTimeIcon />
+const Icon3 = () => <FavoriteBorderIcon />
 
 export const movies = [
   {
@@ -60,28 +63,28 @@ export const movies = [
 export const items = [
   {
     id: '1',
-    icon: <Icon />,
+    icon: <BrandSafari />,
     title: 'Browse',
     active: false,
     onClick: () => console.log('clicked menu item')
   },
   {
     id: '2',
-    icon: <Icon />,
+    icon: <ClockHour4 />,
     title: 'Recent',
     active: false,
     onClick: () => console.log('clicked menu item')
   },
   {
     id: '3',
-    icon: <Icon />,
+    icon: <CalendarStats />,
     title: 'Coming Soon',
     active: false,
     onClick: () => console.log('clicked menu item')
   },
   {
     id: '4',
-    icon: <Icon />,
+    icon: <Icon3 />,
     title: 'Watch List',
     active: false,
     onClick: () => console.log('clicked menu item')
