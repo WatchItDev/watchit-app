@@ -1,47 +1,29 @@
-import { HashRouter, Redirect, Route, Switch } from 'react-router-dom'
-import Login from '@pages/Login'
-import Catalog from '@pages/Home'
-import Player from '@pages/Player'
 import React from 'react'
-import ChannelManageDesktop from '../../pages/ChannelManageDesktop'
-import BrowseDestop from '../../pages/BrowseDestop'
-import PlayerUIX from '../../pages/PlayUIX'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import ChannelManageDesktop from '@pages/ChannelManageDesktop'
+// import BrowseDesktop from '@pages/BrowseDesktop'
+// import PlayerUIX from '@pages/PlayUIX'
 
 export default (/* hist, key */) => {
   return (
-    <HashRouter /* history={hist} */>
-      <Switch>
-        {/* <Route
-          name='login' exact path='/'
-          render={(n) => !key.isLogged()
-            ? <BrowseDestop/>
-            : (<Redirect to='/app/movies' />)}
-        />
-        <Route
-          name='movies' exact path='/app/movies'
-          render={(n) => <Catalog {...n} />}
-        />
-        <Route
-          name='player'
-          path='/play/:resource'
-          render={(n) => <Player {...n} />}
-        /> */}
+    <BrowserRouter /* history={hist} */>
+      <Routes>
         <Route
           name='channels'
-          path='/channels'
+          path='/'
           render={() => <ChannelManageDesktop/>}
         />
-        <Route
+        {/* <Route
           name='browse'
           path='/browse'
-          render={() => <BrowseDestop/>}
+          render={() => <BrowseDesktop/>}
         />
         <Route
           name='player'
           path='/player'
           render={() => <PlayerUIX/>}
-        />
-      </Switch>
-    </HashRouter>
+        /> */}
+      </Routes>
+    </BrowserRouter>
   )
 }

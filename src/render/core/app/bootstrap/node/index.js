@@ -1,39 +1,52 @@
 // Require logged
-import { HashRouter, Redirect, Route, Switch } from 'react-router-dom'
-import DragBar from '@components/DragBar'
-import Login from '@pages/Login'
-import Catalog from '@pages/Home'
-import Player from '@pages/Player'
-import React from 'react'
+import React from "react";
+import { HashRouter, Route, Routes } from "react-router-dom";
 
-function DragBarHOC (Component, navigate) {
-  return (
-    <DragBar>
-      <Component {...navigate} />
-    </DragBar>
-  )
-}
+import DragBar from "@components/DragBar";
+import ChannelManageDesktop from "@pages/ChannelManageDesktop";
+import BrowseDesktop from "@pages/BrowseDesktop";
+import PlayerUIX from "@pages/PlayUIX";
 
-export default (hist, key) => {
+export default () => {
   return (
-    <HashRouter history={hist}>
-      <Switch>
+    <HashRouter basename="/">
+      <Routes>
+        {/* <Route
+          name="login"
+          path="/"
+          render={() => <BrowseDesktop />}
+          // render={(n) => !key.isLogged()
+          //   ? Login
+          //   : (<Redirect to='/app/movies' />)}
+        /> */}
         <Route
-          name='login' exact path='/'
-          render={(n) => !key.isLogged()
-            ? Login
-            : (<Redirect to='/app/movies' />)}
+          path="/"
+          name="channels"
+          element={
+            <DragBar>
+              <ChannelManageDesktop />
+            </DragBar>
+          }
         />
         <Route
-          name='movies' exact path='/app/movies'
-          render={(n) => (DragBarHOC(Catalog, n))}
+          name="browse"
+          path="/browse"
+          element={
+            <DragBar>
+              <BrowseDesktop />
+            </DragBar>
+          }
         />
         <Route
-          name='player'
-          path='/play/:resource'
-          render={(n) => (DragBarHOC(Player, n))}
+          name="player"
+          path="/player"
+          element={
+            <DragBar>
+              <PlayerUIX />
+            </DragBar>
+          }
         />
-      </Switch>
+      </Routes>
     </HashRouter>
-  )
-}
+  );
+};

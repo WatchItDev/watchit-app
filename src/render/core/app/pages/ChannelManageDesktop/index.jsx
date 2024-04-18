@@ -1,15 +1,16 @@
 import React from "react";
-import { styled, Box, Grid } from "@mui/material";
+import { useNavigate } from 'react-router-dom'
+
 import { Add } from "@mui/icons-material";
-import { Logo, ChannelItem, CustomButton }  from '@zorrillosdev/watchit_uix'
-import { useHistory } from 'react-router-dom'
+import { styled, Box, Grid } from "@mui/material";
+import { Logo, ChannelItem, CustomButton }  from '@watchitapp/watchitapp-uix'
 
 export const ChannelManageDesktop = () => {
   const users = [ 'Austin', 'Brooklyn','Chicago']
-  const history = useHistory()
+  const navigate = useNavigate()
   
   return (
-    <ChannelManageDektopWrapper>
+    <ChannelManageDesktopWrapper>
       <Box sx={{ display: 'flex',marginTop:'2rem' }}>
         <Logo size={150}/>
       </Box>
@@ -17,7 +18,7 @@ export const ChannelManageDesktop = () => {
         <Grid container justifyContent={'center'} spacing={2}>
           { users.map( (user, index) => {
             return(
-              <Grid index={index} item xs={6} sm={3} md={3}>
+              <Grid index={index} item xs={6} sm={3} md={3} key={index}>
                 <ChannelItem 
                   innerLetter={user} 
                   label={user} 
@@ -26,7 +27,7 @@ export const ChannelManageDesktop = () => {
                   innerLetterSize={35} 
                   selected={index == 0 ? true : false} 
                   borderWidth={3}
-                  onClick={()=>history.push("/browse")}
+                  onClick={()=>navigate("/browse")}
                 />
               </Grid>
             )
@@ -49,11 +50,11 @@ export const ChannelManageDesktop = () => {
       <Box sx={{ display: 'flex',marginBottom:'2rem' }}>
         <CustomButton  variant={'secondary'} children={<span>MANAGE CHANNELS</span>} />
       </Box>
-    </ChannelManageDektopWrapper>
+    </ChannelManageDesktopWrapper>
   )
 }
 
-export const ChannelManageDektopWrapper = styled(Box)(() => ({
+export const ChannelManageDesktopWrapper = styled(Box)(() => ({
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',

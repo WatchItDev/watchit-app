@@ -18,4 +18,3 @@ webIPC.on('party', () => {
 })
 
 module.exports = webIPC
-/// zdpuAqmb6oqfa7XCCfaohMCq3arQqJhMn5ffzKhp4t65BGHQx

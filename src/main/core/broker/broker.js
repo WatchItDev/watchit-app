@@ -5,6 +5,7 @@ const log = logplease.create('BROKER', { color: logplease.Colors.Yellow })
 
 const Engine = Key.engine
 const LinvoDB = require('linvodb3')
+
 LinvoDB.dbPath = Key.init.db
 LinvoDB.defaults.store = { db: Engine }
 LinvoDB.defaults.autoIndexing = false
@@ -25,31 +26,27 @@ const IPC_LISTENERS = [
 ]
 
 // Capture unhandled exceptions
-process?.on('uncaughtException', () => {
+process?.on('uncaughtException', (e) => {
+  log.warn(e)
   log.warn('Uncaught Exception: keeping process alive')
 })
 
 module.exports = class Broker extends EventEmitter {
   constructor (renderer) {
     super()
+
+    this.db = null
     this.renderer = renderer
     this.initStore()
   }
 
   initStore () {
-    /**
-     * Singleton initialize db
-     * @type {function(*=): void}
-     */
     log.warn('Creating local db')
     if (this.db) return this.db
     this.db = new LinvoDB(DB)
   }
 
   flush () {
-    /**
-     * Kill all this shit XD
-     * */
 
     this.db.remove({}, { multi: true },
       (err, numRemoved) => {
@@ -65,10 +62,6 @@ module.exports = class Broker extends EventEmitter {
   }
 
   stopIpcEvents (ipcListeners = []) {
-    /***
-     * Clear ipc electron events to avoid
-     * over declarative events
-     */
     const listeners = ipcListeners.length
       ? ipcListeners
       : IPC_LISTENERS;
@@ -82,34 +75,22 @@ module.exports = class Broker extends EventEmitter {
   }
 
   startSeed () {
-    /***
-     * Run app as seed mode
-     */
     log.info('Run Seed')
     this.renderer.send('node-seed')
     return this
   }
 
   emitStart () {
-    /***
-     * Init signal to start node running
-     */
     this.renderer.send('node-start')
     return this
   }
 
   broadcastMessage (message) {
-    /**
-     * Broadcast message from renderer
-     */
     this.renderer.send('node-broadcast', message)
     return this
   }
 
   listenForNewPeer () {
-    /***
-     * New peers interception and caching for stats
-     */
     this.renderer.on('node-peer', (e, p) => {
       log.info('New peer', p)
       Key.addToStorage({ peers: p })
@@ -118,55 +99,36 @@ module.exports = class Broker extends EventEmitter {
   }
 
   listenForPartyRock () {
-    /***
-     * Cannot connect or any invalid key provided
-     */
     this.renderer.on('node-chaos', (e, m) => {
       this.emit('chaos', m)
     })
   }
 
   listenForError () {
-    /***
-     * Any error in node
-     */
     this.renderer.on('node-error', (e, m) => {
       this.emit('error', m)
     })
   }
 
   listenForReady () {
-    /**
-     * Trigger event before node get ready tu run
-     * could be used to clear storage or data previous to run app
-     */
     this.renderer.on('node-ready', (e, c) => {
       this.emit('start', c)
     })
   }
 
   listenForDbLoaded () {
-    /***
-     * Trigger event when all db are synced
-     */
     this.renderer.on('node-loaded', (e, c) => {
       this.emit('done', c)
     })
   }
 
   listenForReplicaProgress () {
-    /***
-     * Replicate process event
-     */
     this.renderer.on('node-step', (e, step) => {
       this.emit('progress', step)
     })
   }
 
   listenForReplicatedData () {
-    /***
-     * Trigger event when new data its replicated
-     */
     this.renderer.on('node-replicated', async (e, collection) => {
       log.info('LOADING FROM NETWORK')
       log.info(collection[collection.length - 1]._id)
@@ -188,10 +150,6 @@ module.exports = class Broker extends EventEmitter {
   }
 
   load () {
-    /***
-     * This method add method to electron ipcRender
-     * and serve as intermediary between render and main process
-     */
     // Clean old listeners first
     log.info('Broker ready')
     this.stopIpcEvents()

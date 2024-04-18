@@ -10,9 +10,9 @@ import DetailsHeader from './header'
 import DetailsInfo from './info'
 import DetailsMenu from './menu'
 
+import Movie from '@db/movies'
 import gatewayHelper from '@helpers/gateway'
 import { Broker as broker } from '@main/bridge'
-import Movie from '@db/movies'
 
 // Access to main process bridge prop
 export default class Details extends React.PureComponent {

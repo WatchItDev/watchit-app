@@ -4,9 +4,6 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import App from './core/app'
 
-import 'normalize.css'
-import './index.scss'
-
 const root = document.getElementById('root')
 ReactDOM.render(<App />, root)
 
