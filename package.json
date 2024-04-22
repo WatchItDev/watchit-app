@@ -173,6 +173,7 @@
     "jest-watch-typeahead": "0.6.1",
     "moment-timezone": "^0.5.31",
     "node-polyfill-webpack-plugin": "^1.1.4",
+    "normalize.css": "^8.0.1",
     "pnp-webpack-plugin": "1.6.4",
     "prompts": "2.4.0",
     "react": "^18.2.0",

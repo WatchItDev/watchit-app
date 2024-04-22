@@ -4,7 +4,7 @@ import { HashRouter, Route, Routes } from "react-router-dom";
 
 import DragBar from "@components/DragBar";
 import ChannelManageDesktop from "@pages/ChannelManageDesktop";
-import BrowseDesktop from "@pages/BrowseDesktop";
+import BrowserDesktop from "@pages/BrowserDesktop";
 import PlayerUIX from "@pages/PlayUIX";
 
 export default () => {
@@ -33,7 +33,7 @@ export default () => {
           path="/browse"
           element={
             <DragBar>
-              <BrowseDesktop />
+              <BrowserDesktop />
             </DragBar>
           }
         />

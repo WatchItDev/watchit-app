@@ -1,26 +1,34 @@
 // eslint-disable-next-line
 // import 'v8-compile-cache'
-import React from 'react'
-import ReactDOM from 'react-dom'
-import App from './core/app'
+import React from "react";
+import { createRoot } from "react-dom/client";
+import App from "./core/app";
 
-const root = document.getElementById('root')
-ReactDOM.render(<App />, root)
+import 'normalize.css'
+import './index.scss'
+
+const root = createRoot(document.getElementById("root"));
+root.render(<App />)
 
 // LISTENERS
-const preventDefault = (e) => e.preventDefault()
+const preventDefault = (e) => e.preventDefault();
 // Prevent dropping files into the window
-window.addEventListener('dragover', preventDefault, false)
-window.addEventListener('drop', preventDefault, false)
+window.addEventListener("dragover", preventDefault, false);
+window.addEventListener("drop", preventDefault, false);
 // Prevent dragging files outside the window
-window.addEventListener('dragstart', preventDefault, false)
+window.addEventListener("dragstart", preventDefault, false);
 // Avoid right click
-document.addEventListener('contextmenu', preventDefault, false)
+document.addEventListener("contextmenu", preventDefault, false);
 // Prevent default reload, devtools
-document.addEventListener('keydown', (e) => {
-  const keyCode = !window.event ? (e.which || e.keyCode) : window.event.keyCode
-  const avoidReload = (e.ctrlKey && keyCode === 82 && process.env.NODE_ENV !== 'development')
+document.addEventListener("keydown", (e) => {
+  const keyCode = !window.event ? e.which || e.keyCode : window.event.keyCode;
+  const avoidReload =
+    e.ctrlKey && keyCode === 82 && process.env.NODE_ENV !== "development";
   // this code handles the F5/Ctrl+F5/Ctrl+R
-  if (keyCode === 116 || avoidReload) { e.preventDefault() }
-  if (keyCode === 122 || keyCode === 123) { e.preventDefault() }
-})
+  if (keyCode === 116 || avoidReload) {
+    e.preventDefault();
+  }
+  if (keyCode === 122 || keyCode === 123) {
+    e.preventDefault();
+  }
+});
