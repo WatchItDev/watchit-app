@@ -27,7 +27,7 @@ build
 __snapshots__
 test-coverage/
 key.json
-w_alloc
+walloc
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
