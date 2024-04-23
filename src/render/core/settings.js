@@ -2,8 +2,6 @@
  * Handle global settings
  * **/
 
-// import { Key as key } from '@main/bridge'
-
 export default {
   streaming: ['hls'],
   gateways: () => {

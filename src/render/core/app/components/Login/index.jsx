@@ -1,11 +1,13 @@
-import React, { useState, useCallback } from 'react'
 import styled from 'styled-components'
+import React, { useState, useCallback } from 'react'
+
+import setting from '@settings'
 import Alert from '@components/Alert/'
 import Input from '@components/Input/'
 import Button from '@components/Button/'
 import Background from '@components/Background/'
+
 import { Key as key } from '@main/bridge'
-import setting from '@settings'
 
 const pb = process.env.WATCHIT_PUBLIC_KEY
 const runtime = process.env.RUNTIME
