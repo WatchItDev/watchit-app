@@ -1,7 +1,7 @@
 import React from 'react'
 import MenuIcon from '@mui/icons-material/Menu'
 import AccessTimeIcon from '@mui/icons-material/AccessTime'
-import { RoundProgress } from '@zorrillosdev/watchit_uix'
+import { RoundProgress } from '@watchitapp/watchitapp-uix'
 import { BrandSafari, ClockHour4, CalendarStats } from 'tabler-icons-react'
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 
@@ -11,51 +11,51 @@ const Icon3 = () => <FavoriteBorderIcon />
 
 export const movies = [
   {
-    img: 'https://cuevana3.mu/img/Mkp0NmxQeko2cXFxOVZVbDBLaEw5TTZpRmdEb1gzR1puSGVrN01RcE5QQzVpNUZFWHJDaFpHOUxDUStHd00xVQ.webp',
+    img: 'https://cuevana33.com/wp-content/uploads/2024/01/7IqJaCVN0xkLWnI79EguVtwgfXf-185x278.jpg',
     title: 'Renfield'
   },
   {
-    img: 'https://cuevana3.mu/img/SmV4UDhnZnJtd254dEk2YjQ5bm8vTzNwRTRNaU16NkJLMWJjbVVFVk02eHhQcGlwYy9NV1dUNFFsYzJWZG93cQ.webp',
+    img: 'https://cuevana33.com/wp-content/uploads/2024/01/7IqJaCVN0xkLWnI79EguVtwgfXf-185x278.jpg',
     title: 'Super Mario Bros: La Pelicula'
   },
   {
-    img: 'https://cuevana3.mu/img/b25UV3ZTaGpwNkQ2N05RMzZmQmsrSHlhUFJXN0pRMU5KcExXdDNOMGY3NnJJS3pTa0tDMGREb2hnU0wrbzJRYQ.webp',
+    img: 'https://cuevana33.com/wp-content/uploads/2024/01/7IqJaCVN0xkLWnI79EguVtwgfXf-185x278.jpg',
     title: 'Dungeons & Dragons: Honor entre ladrones'
   },
   {
-    img: 'https://cuevana3.mu/img/UUErRWRkQlZDY2JQNG0xSEVWM3ZFbWxuWG5QU3JmaGJHejhiUUZKaEVmcFcvV3djVTJzNEQvRG52emV5NTl1Qg.webp',
+    img: 'https://cuevana33.com/wp-content/uploads/2024/01/7IqJaCVN0xkLWnI79EguVtwgfXf-185x278.jpg',
     title: 'Misterio a la vista'
   },
   {
-    img: 'https://cuevana3.mu/img/YkRXS3VXV1lMdzZJMkF1dm5ZUEloSzh1T2gxR000RjBXWlhrZGUxbFQ0QXJ5T3BOMitCTGt4d0cxY2FNcU9IQQ.webp',
+    img: 'https://cuevana33.com/wp-content/uploads/2024/01/7IqJaCVN0xkLWnI79EguVtwgfXf-185x278.jpg',
     title: 'John Wick 4'
   },
   {
-    img: 'https://cuevana3.mu/img/M2tpS2s3elEvYjlnM2ZmOWdEUFhNRGtiSk4rMUR4cnRxZGhzRzliazQxekZVSUlxQmZ3R2xsODRSYTJ0Q0h2MA.webp',
+    img: 'https://cuevana33.com/wp-content/uploads/2024/01/7IqJaCVN0xkLWnI79EguVtwgfXf-185x278.jpg',
     title: '¡Shazam! La furia de los dioses'
   },
   {
-    img: 'https://cuevana3.mu/img/a0tXYjhoY2tadm9OcEVxNXRiOThXMzZNMHN6Qnd4dnRhWCt1ZUlubTg1RmtPTFF5eXdHMXFVS2ZrckNPNW9KVQ.webp',
+    img: 'https://cuevana33.com/wp-content/uploads/2024/01/7IqJaCVN0xkLWnI79EguVtwgfXf-185x278.jpg',
     title: 'Ant-Man y la Avispa: Quantumanía'
   },
   {
-    img: 'https://cuevana3.mu/img/bVdLSU91UGlodmtGY28zREo3VVBON1Zlc2VLMXk4Ukp1SkU4Z2s0RXNvK2lqNUVTYlpHb1VaZnFiK3VFeXBUcw.webp',
+    img: 'https://cuevana33.com/wp-content/uploads/2024/01/7IqJaCVN0xkLWnI79EguVtwgfXf-185x278.jpg',
     title: 'The Devil Conspiracy'
   },
   {
-    img: 'https://cuevana3.mu/img/MmFFa2k2MXpqZVdaVmZDYk1XeEp1RFRSYUVKaCtCUGdoUWtxbnFnWjJNRFllcVFvR0V2cDhKMGFwVzVKZDg2TQ.webp',
+    img: 'https://cuevana33.com/wp-content/uploads/2024/01/7IqJaCVN0xkLWnI79EguVtwgfXf-185x278.jpg',
     title: 'Babylon'
   },
   {
-    img: 'https://cuevana3.mu/img/SXlYRTdoa3EwY0JIakw5dGxrTVJEb25YTGZCNmtWNG1mcVcxbFpvQjRQOEhwNkZOa3d1U2JuanJIeHg2MDF0QQ.webp',
+    img: 'https://cuevana33.com/wp-content/uploads/2024/01/7IqJaCVN0xkLWnI79EguVtwgfXf-185x278.jpg',
     title: 'Bodas de Plomo'
   },
   {
-    img: 'https://cuevana3.mu/img/bVpzc3pzU0lCK2x0aERxdG9hRWVHNzYwNjhIZzlyS2pOeXIzdG8zSjdoWE9KUjVZcjd6R0pYb3ZQSzFnWUxwNw.webp',
+    img: 'https://cuevana33.com/wp-content/uploads/2024/01/7IqJaCVN0xkLWnI79EguVtwgfXf-185x278.jpg',
     title: 'Operation Fortune: Ruse de Guerre'
   },
   {
-    img: 'https://cuevana3.mu/img/eDJScVR0TGRsZHNER0RWSkMzRzZxcGFzQk9jTG1zU3RvRWlwVlZXSGJuaXkyYTl4N2N1NmhFclJkYWxwSHptVQ.webp',
+    img: 'https://cuevana33.com/wp-content/uploads/2024/01/7IqJaCVN0xkLWnI79EguVtwgfXf-185x278.jpg',
     title: 'Avatar: El camino del agua'
   }
 ]

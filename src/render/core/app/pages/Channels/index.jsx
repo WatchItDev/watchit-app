@@ -6,7 +6,7 @@ import { styled, Box, Grid } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
 
 // WATCHIT_UIX PACKAGE IMPORTS
-import { Logo, ChannelItem, CustomButton } from '@zorrillosdev/watchit_uix'
+import { Logo, ChannelItem, CustomButton } from '@watchitapp/watchitapp-uix'
 
 // REACT ROUTER IMPORT
 import { useHistory } from 'react-router-dom'

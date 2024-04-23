@@ -11,7 +11,7 @@ import {
   ProfileAvatar,
   ControllerSlider,
   ChannelsMenu,
-} from '@zorrillosdev/watchit_uix'
+} from '@watchitapp/watchitapp-uix'
 
 // TABLER ICON IMPORTS
 import NotificationsIcon from '@mui/icons-material/Notifications'
@@ -98,7 +98,9 @@ export const HeaderWrapper = styled(Box)((props) => ({
   backgroundColor: props.isOpen ? '#212328' : '#1A1C20'
 }))
 
-export const HeaderContainer = styled(Box)((props) => ({
+export const HeaderContainer = styled(Box, {
+  shouldForwardProp: (prop) => (prop !== 'isOpen')
+})((props) => ({
   display: 'flex',
   flexDirection: 'row',
   alignItems: 'center',
