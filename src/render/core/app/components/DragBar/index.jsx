@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import Logo from '@components/Logo/'
+import { Logo } from '@watchitapp/watchitapp-uix'
 import styled from 'styled-components'
 import settings from '@settings'
 
@@ -10,35 +10,24 @@ const DEFAULT_UPDATER_MESSAGE = 'A new update is available. The app it is being 
 
 const Container = styled.section`
   position: absolute;
-  height: 100%;
+  height: calc(100% - 4rem);
+  top: 4rem;
   width: 100%;
 `
 
 const Header = styled.header`
   -webkit-app-region: drag;
   z-index: 1000;
-  position: relative;
+  position: fixed;
   top: 0;
   right: 0;
   left: 0;
-  background-color: rgba(0, 0, 0, 0.8);
-  padding: 1rem;
-  height: 3rem;
+  background-color: #1A1C20;
+  padding: 1rem 1.5rem;
+  height: 4rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
-
-  @media (min-width: 300px) {
-    height: 3.5rem;
-  }
-
-  @media (min-width: 992px) {
-    height: 4rem;
-  }
-
-  @media (min-width: 2000px) {
-    height: 6rem;
-  }
 `
 
 const WindowControls = styled.ul`
@@ -114,7 +103,8 @@ const DragBar = (props) => {
   return (
     <Container>
       <Header>
-        <Logo />
+        <Logo size={100}  />
+        {/*<Logo />*/}
         {/* {this.state.updater && <Updater>{this.state.updater}</Updater>} */}
         <WindowControls>
           <WindowControl onClick={(e) => minimizeWin(e)}>

@@ -1,16 +1,21 @@
+//REACT IMPORTS
 import React, { useState } from 'react'
-import { styled, Box, Typography } from "@mui/material";
-import { Poster, ProfileInfo, RoundProgress, ControllerSlider, VideoPlayer, CustomButton } from '@watchitapp/watchitapp-uix';
-
-import { Clock } from "tabler-icons-react";
-import Grid from '@mui/material/Grid';
-import { Close, VolumeUp, PlayArrow, VolumeOff } from '@mui/icons-material'
 import { useNavigate} from 'react-router-dom'
+
+// MUI IMPORTS
+import { styled, Box, Typography, Grid } from "@mui/material";
+import { Close, VolumeUp, PlayArrow, VolumeOff } from '@mui/icons-material'
+
+// UIX IMPORTS
+import { Poster, ProfileInfo, RoundProgress, VideoPlayer, CustomButton } from '@watchitapp/watchitapp-uix';
+
+// TABLER IMPORTS
+import { Clock } from "tabler-icons-react";
 
 export const MovieDetails = (props) => {
   const [defaultVolumen, setDefaultVolumen] = useState(0)
   const navigate = useNavigate()
-  
+
   const item = [
     {
       icon: <RoundProgress size={25} percentage={80} text={'8'} textSize={10} />,
@@ -48,51 +53,8 @@ export const MovieDetails = (props) => {
       subTitle: 'Duration',
       onClick: () => console.log('clicked profile info')
     }
-    /* ,
-    {
-      icon:<Clock />,
-      title:'1h 28m',
-      subTitle:'Duration',
-      onClick:() => console.log('clicked profile info')
-    }
-    ,
-    {
-      icon:<Clock />,
-      title:'1h 28m',
-      subTitle:'Duration',
-      onClick:() => console.log('clicked profile info')
-    } */
   ]
-  const movies = [
-    {
-      img: 'https://cuevana3.mu/img/Mkp0NmxQeko2cXFxOVZVbDBLaEw5TTZpRmdEb1gzR1puSGVrN01RcE5QQzVpNUZFWHJDaFpHOUxDUStHd00xVQ.webp',
-      title: 'Renfield'
-    },
-    {
-      img: 'https://cuevana3.mu/img/SmV4UDhnZnJtd254dEk2YjQ5bm8vTzNwRTRNaU16NkJLMWJjbVVFVk02eHhQcGlwYy9NV1dUNFFsYzJWZG93cQ.webp',
-      title: 'Super Mario Bros: La Pelicula'
-    },
-    {
-      img: 'https://cuevana3.mu/img/b25UV3ZTaGpwNkQ2N05RMzZmQmsrSHlhUFJXN0pRMU5KcExXdDNOMGY3NnJJS3pTa0tDMGREb2hnU0wrbzJRYQ.webp',
-      title: 'Dungeons & Dragons: Honor entre ladrones'
-    },
-    {
-      img: 'https://cuevana3.mu/img/UUErRWRkQlZDY2JQNG0xSEVWM3ZFbWxuWG5QU3JmaGJHejhiUUZKaEVmcFcvV3djVTJzNEQvRG52emV5NTl1Qg.webp',
-      title: 'Misterio a la vista'
-    },
-    {
-      img: 'https://cuevana3.mu/img/YkRXS3VXV1lMdzZJMkF1dm5ZUEloSzh1T2gxR000RjBXWlhrZGUxbFQ0QXJ5T3BOMitCTGt4d0cxY2FNcU9IQQ.webp',
-      title: 'John Wick 4'
-    },
-    {
-      img: 'https://cuevana3.mu/img/M2tpS2s3elEvYjlnM2ZmOWdEUFhNRGtiSk4rMUR4cnRxZGhzRzliazQxekZVSUlxQmZ3R2xsODRSYTJ0Q0h2MA.webp',
-      title: '¡Shazam! La furia de los dioses'
-    },
-    {
-      img: 'https://cuevana3.mu/img/a0tXYjhoY2tadm9OcEVxNXRiOThXMzZNMHN6Qnd4dnRhWCt1ZUlubTg1RmtPTFF5eXdHMXFVS2ZrckNPNW9KVQ.webp',
-      title: 'Ant-Man y la Avispa: Quantumanía'
-    }
-  ]
+
   return (
     <MovieDetailsContainer>
       <MovieDetailsWrapper>
@@ -110,7 +72,7 @@ export const MovieDetails = (props) => {
         <Box sx={{ top: '0', zIndex: '0', left: '0', position: 'absolute' }} height={'300px'} width={'100%'} >
           <VideoPlayer
             titleMovie="Renfield"
-            defaultVolumen={defaultVolumen}
+            defaultVolume={defaultVolumen}
             src="http://vjs.zencdn.net/v/oceans.mp4"
             preview={true}
             autoPlay={true}
@@ -132,13 +94,13 @@ export const MovieDetails = (props) => {
               height={"30px"}
               width={"30px"}
               margin='0 1.2rem 0 0'
-              icon={defaultVolumen == 0 ? <><VolumeUp style={{ color: '#D1D2D3' }} /></> : <><VolumeOff style={{ color: '#D1D2D3' }} /></>}
-              onClick={() => { defaultVolumen == 0 ? setDefaultVolumen(50) : setDefaultVolumen(0) }}
+              icon={defaultVolumen === 0 ? <><VolumeUp style={{ color: '#D1D2D3' }} /></> : <><VolumeOff style={{ color: '#D1D2D3' }} /></>}
+              onClick={() => { defaultVolumen === 0 ? setDefaultVolumen(50) : setDefaultVolumen(0) }}
             />
           </Grid>
           <Grid sx={{ display: 'flex', alignItems: 'center', justifyContent: 'end', padding: '0' }} item xs={3}>
             <Poster
-              img={'https://cuevana3.mu/img/Mkp0NmxQeko2cXFxOVZVbDBLaEw5TTZpRmdEb1gzR1puSGVrN01RcE5QQzVpNUZFWHJDaFpHOUxDUStHd00xVQ.webp'}
+              img={'https://cuevana33.com/wp-content/uploads/2024/01/7IqJaCVN0xkLWnI79EguVtwgfXf-185x278.jpg'}
               title={'Renfield'}
               progress={50}
               year={2022}
@@ -167,9 +129,9 @@ export const MovieDetails = (props) => {
               </Grid>
               <Grid sx={{ padding: '0 1rem' }} item xs={12}>
                 <Grid sx={{/* transform: 'rotate(180deg)',overflowY:'scroll',width:'100%',display:'flex' */ }} container spacing={2}>
-                  {item.map(x => {
+                  {item.map((x, i) => {
                     return (
-                      <Grid sx={{/* display:'flex',transform: 'rotate(-180deg)',display:'flex' */ }} item xs={2}>
+                      <Grid sx={{/* display:'flex',transform: 'rotate(-180deg)',display:'flex' */ }} item xs={2} key={i} >
                         <ProfileInfo
                           icon={x.icon}
                           title={x.title}
@@ -189,7 +151,7 @@ export const MovieDetails = (props) => {
 
           <Grid display={'flex'} sx={{ alignItems: 'center', justifyContent: 'center' }} item xs={12}>
             <Box display={'flex'} sx={{ width: 'calc(100% - 2rem)', alignItems: 'center', justifyContent: 'center' }}>
-              <ControllerSlider movies={movies} title='More titles like this' />
+              {/*<ControllerSlider movies={movies} title='More titles like this' />*/}
             </Box>
           </Grid>
         </Grid>
@@ -200,14 +162,13 @@ export const MovieDetails = (props) => {
 
 export default MovieDetails
 
-export const MovieDetailsContainer = styled(Box)((props) => ({
+export const MovieDetailsContainer = styled(Box)(() => ({
   display: 'flex',
   flexDirection: 'row',
   alignItems: 'center',
   justifyContent: 'center',
-  height: 'calc(100% - 10rem)',
+  height: '100%',
   width: '100%',
-  height: '100vh',
   zIndex: '97',
   position: 'absolute',
   top: '0',
@@ -215,10 +176,11 @@ export const MovieDetailsContainer = styled(Box)((props) => ({
   backgroundColor: 'rgb(0,0,0,0.43)'
 }))
 
-export const MovieDetailsWrapper = styled(Box)((props) => ({
+export const MovieDetailsWrapper = styled(Box)(() => ({
   display: 'flex',
   height: 'calc(100% - 3rem)',
-  maxHeight: '910px',
+  // maxHeight: '910px',
+  maxHeight: '570px',
   width: '848px',
   zIndex: '10',
   borderRadius: '10px',

@@ -186,9 +186,9 @@ app.whenReady().then(async () => {
   if (isWin || isDarwin) {
     // Temp validation while updater failing
     log.info("Check for updates");
-    await autoUpdater.checkForUpdates().catch(() => {
-      log.warn("No updates available");
-    });
+    // await autoUpdater.checkForUpdates().catch(() => {
+    //   log.warn("No updates available");
+    // });
   }
 
   // Load the dist build or connect to webpack-dev-server

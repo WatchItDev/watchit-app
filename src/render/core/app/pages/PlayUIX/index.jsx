@@ -2,7 +2,7 @@
 import React from "react";
 
 // MUI IMPORTS
-import { Box } from "@mui/material";
+import {Box, styled} from "@mui/material";
 
 // WATCHIT_UIX PACKAGE IMPORTS
 import { VideoPlayer } from '@watchitapp/watchitapp-uix'
@@ -19,11 +19,11 @@ export const PlayerUIX = () => {
     <VideoPlayerContainer>
       <VideoPlayer
         titleMovie="Renfield"
-        defaultVolumen={50}
+        defaultVolume={50}
         src="http://vjs.zencdn.net/v/oceans.mp4"
         preview={false}
-        onClose={() => navigate("/browse")}
-        autoPlay={false}
+        onClose={() => navigate("/")}
+        autoPlay={true}
       />
     </VideoPlayerContainer>
   )
@@ -31,7 +31,7 @@ export const PlayerUIX = () => {
 
 export const VideoPlayerContainer = styled(Box)(() => ({
     width: '100%',
-    height: '100vh'
+    height: 'calc(100vh - 2rem)'
 }))
 
 export default PlayerUIX
