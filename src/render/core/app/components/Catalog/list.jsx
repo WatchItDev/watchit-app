@@ -38,6 +38,7 @@ export default class CatalogList extends React.Component {
           key={uid.generate()} style={style}
           chunk={Array(this.state.chunkSize).fill(0)}
           chunkSize={this.state.chunkSize}
+          end={this.state.end}
         />
       )
     }
@@ -49,6 +50,7 @@ export default class CatalogList extends React.Component {
         chunkSize={this.state.chunkSize}
         onClick={this.props.onClick}
         empty={false} preload
+        end={this.state.end}
       />
     )
   }
@@ -70,7 +72,7 @@ export default class CatalogList extends React.Component {
         <InfiniteLoader
           isItemLoaded={this.alreadyLoaded}
           loadMoreItems={this.onScrollUpdate}
-          itemCount={this.state.count}
+          itemCount={this.state.count + 2}
         >
           {({ onItemsRendered, ref }) => (
             <FixedSizeList

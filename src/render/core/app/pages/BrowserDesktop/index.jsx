@@ -1,77 +1,118 @@
 // REACT IMPORTS
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 
 // MUI IMPORTS
-import { styled, Box, Typography } from "@mui/material";
+import { styled, Box } from '@mui/material'
 
 // UIX IMPORTS
-import { MobileHeader } from '@watchitapp/watchitapp-uix'
-import { ControllerSlider } from '@watchitapp/watchitapp-uix'
-import { ChannelsMenu } from '@watchitapp/watchitapp-uix'
+import { MobileHeader, ChannelsMenu } from '@watchitapp/watchitapp-uix'
 
 // PROJECT IMPORTS
-import { MovieDetails } from "@components/MovieDetails";
+import { MovieDetails } from '@components/MovieDetails'
+import CatalogList from '@components/Catalog/list'
+import log from '@logger'
+import util from '@helpers/util'
+
+const generateFakeMovies = (count) => {
+  let movies = [];
+  for (let i = 0; i < count; i++) {
+    movies.push({
+      _id: i,
+      image: `https://i0.wp.com/www.themoviedb.org/t/p/w185/ncKCQVXgk4BcQV6XbvesgZ2zLvZ.jpg`,
+      title: `Movie Title ${i}`,
+      year: `Year ${2000 + i}`,
+      rating: 1 + (i % 5)
+    });
+  }
+  return movies;
+};
+
+const fakeMovies = generateFakeMovies(1000)
 
 export const BrowserDesktop = () => {
   const isOpen= true
   const [openModal, setOpenModal] = useState(false)
-
-  const movies = [
-    {
-      img: 'https://cuevana33.com/wp-content/uploads/2024/01/7IqJaCVN0xkLWnI79EguVtwgfXf-185x278.jpg',
-      title: 'Renfield'
-    },
-    {
-      img: 'https://cuevana33.com/wp-content/uploads/2024/01/7IqJaCVN0xkLWnI79EguVtwgfXf-185x278.jpg',
-      title: 'Super Mario Bros: La Pelicula'
-    },
-    {
-      img: 'https://cuevana33.com/wp-content/uploads/2024/01/7IqJaCVN0xkLWnI79EguVtwgfXf-185x278.jpg',
-      title: 'Dungeons & Dragons: Honor entre ladrones'
-    },
-    {
-      img: 'https://cuevana33.com/wp-content/uploads/2024/01/7IqJaCVN0xkLWnI79EguVtwgfXf-185x278.jpg',
-      title: 'Misterio a la vista'
-    },
-    {
-      img: 'https://cuevana33.com/wp-content/uploads/2024/01/7IqJaCVN0xkLWnI79EguVtwgfXf-185x278.jpg',
-      title: 'John Wick 4'
-    },
-    {
-      img: 'https://cuevana33.com/wp-content/uploads/2024/01/7IqJaCVN0xkLWnI79EguVtwgfXf-185x278.jpg',
-      title: '¡Shazam! La furia de los dioses'
-    },
-    {
-      img: 'https://cuevana33.com/wp-content/uploads/2024/01/7IqJaCVN0xkLWnI79EguVtwgfXf-185x278.jpg',
-      title: 'Ant-Man y la Avispa: Quantumanía'
-    },
-    {
-      img: 'https://cuevana33.com/wp-content/uploads/2024/01/7IqJaCVN0xkLWnI79EguVtwgfXf-185x278.jpg',
-      title: 'The Devil Conspiracy'
-    },
-    {
-      img: 'https://cuevana33.com/wp-content/uploads/2024/01/7IqJaCVN0xkLWnI79EguVtwgfXf-185x278.jpg',
-      title: 'Babylon'
-    },
-    {
-      img: 'https://cuevana33.com/wp-content/uploads/2024/01/7IqJaCVN0xkLWnI79EguVtwgfXf-185x278.jpg',
-      title: 'Bodas de Plomo'
-    },
-    {
-      img: 'https://cuevana33.com/wp-content/uploads/2024/01/7IqJaCVN0xkLWnI79EguVtwgfXf-185x278.jpg',
-      title: 'Operation Fortune: Ruse de Guerre'
-    },
-    {
-      img: 'https://cuevana33.com/wp-content/uploads/2024/01/7IqJaCVN0xkLWnI79EguVtwgfXf-185x278.jpg',
-      title: 'Avatar: El camino del agua'
-    }
-  ]
+  const [movies, setMovies] = useState([])
+  const [screen, setScreen] = useState(undefined)
+  const [loading, setLoading] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
+  const resizeTimeout = useRef(null)
+  const moviesWrapper = useRef(null);
+  const lastMovieLoadedRef = useRef(0);
 
   const channels = [
     'Austin',
     'Brooklyn',
     'Chicago'
   ]
+
+  const getRecalculatedScreen = () => {
+    const width = moviesWrapper.current.offsetWidth
+    const height = moviesWrapper.current.offsetHeight
+    const defaults = util.calcScreenSize({
+      width,
+      height
+    })
+    log.info(`Recalculating Screen W:${width}, H:${height}`)
+    return defaults
+  }
+
+  const loadOrder = async (start, to) => {
+    if (loading || !hasMore) return;
+    return new Promise((resolve) => {
+      setLoading(true);
+
+      // Simula la carga de datos
+      setTimeout(() => {
+        const defaults = getRecalculatedScreen()
+        const chunkSize = defaults.chunkSize
+        const startIndex = start * chunkSize;
+        const end = to * chunkSize;
+        const endIndex = fakeMovies.length < end ? fakeMovies.length : end;
+        const newMovies = fakeMovies.slice(startIndex, endIndex);
+        const moviesNewStructure = moviesToRow(newMovies, chunkSize)
+
+        setMovies((prevMovies) => [...prevMovies, ...moviesNewStructure]);
+        setLoading(false);
+        lastMovieLoadedRef.current = endIndex;
+        setHasMore(endIndex < fakeMovies.length);
+        resolve([...movies,...moviesNewStructure])
+      }, 1000);
+    })
+  };
+
+  const moviesToRow = (_movies, l) => {
+    return new Array(Math.ceil(_movies.length / l)).fill(0)
+        .map((_, n) => _movies.slice(n * l, n * l + l))
+  }
+
+  const recalculateScreen = useCallback(() => {
+    // if (!this.state.movies.length) return
+    const defaults = getRecalculatedScreen()
+
+    setMovies((currMovies) => {
+      const defaults = getRecalculatedScreen()
+      const chunkSize = defaults.chunkSize
+
+      return moviesToRow(currMovies.flat(1), chunkSize)
+    })
+    setScreen(defaults)
+  }, [movies])
+
+  const handleResize = useCallback(() => {
+    resizeTimeout.current && clearTimeout(resizeTimeout.current)
+    resizeTimeout.current = setTimeout(recalculateScreen, 500)
+  }, [movies])
+
+  useEffect(() => {
+    window.addEventListener('resize', handleResize)
+    loadOrder(0, 6)
+    handleResize()
+
+    return () => {
+      window.removeEventListener('resize', handleResize)
+    }
+  }, []);
 
   return (
     <MobileHeaderContainer>
@@ -87,9 +128,21 @@ export const BrowserDesktop = () => {
         </BrowseBarWrapper>
       </MobileHeaderWrapper>
 
-      {/* TODO make a list of movies instead this slider */}
-      <ControlSliderWrapper open={isOpen}>
-        <ControllerSlider onClick={() => setOpenModal(true)} movies={movies} title="Continue watching" />
+      <ControlSliderWrapper open={isOpen} ref={moviesWrapper}>
+        {
+            movies.length > 0 && !!screen && (
+                <CatalogList
+                    movies={movies}
+                    loadOrder={loadOrder}
+                    count={Math.ceil(fakeMovies?.length / (screen?.chunkSize ?? 6))}
+                    loading={loading}
+                    end={!hasMore}
+                    chunkSize={screen.chunkSize}
+                    onClick={() => setOpenModal(true)}
+                    screen={screen}
+                />
+            )
+        }
       </ControlSliderWrapper>
 
       {openModal && <MovieDetails OnCloseModal={() => setOpenModal(false)} />}
@@ -110,7 +163,6 @@ export const MobileHeaderWrapper = styled(Box, {
   flexDirection: 'row',
   alignItems: 'center',
   height: '65px',
-  // position: "fixed",
   width: '100%',
   top: 0,
   left: 0,
@@ -125,16 +177,11 @@ export const ControlSliderWrapper = styled(Box, {
   marginTop: '2px',
   transform: `translateX( ${props.open ? '80px' : '0'})`,
   transition: 'transform 250ms ease-in-out',
-  padding: '1rem',
   backgroundColor: '#212328',
-  overflowX: 'auto',
-  maxHeight: '100vh',
+  height: '100%',
   '&::-webkit-scrollbar': {
     width: '0',
     background: 'transparent '
-  },
-  "&::-webkit-scrollbar-thumb": {
-    background: '#FF0000'
   }
 }))
 
