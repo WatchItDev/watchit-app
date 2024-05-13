@@ -1,15 +1,15 @@
 {
   "name": "watchit",
-  "author": "ZorrillosDev",
+  "author": "WatchItDev",
   "version": "1.0.0",
   "private": true,
   "main": "./src/main/index.js",
   "description": "Open movies everywhere",
-  "email": "support@zorrillos.com",
+  "email": "info@watchit.movie",
   "license": "LICENSE.md",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ZorrillosDev/watchit-app.git"
+    "url": "https://github.com/WatchItDev/watchit-app.git"
   },
   "engines": {
     "node": ">=14"
@@ -22,6 +22,7 @@
   "dependencies": {
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
+    "@helia/unixfs": "^3.0.6",
     "@tabler/icons": "^2.28.0",
     "electron-updater": "^4.6.5",
     "fs-extra": "^9.0.1",
@@ -40,7 +41,6 @@
     "pretty-bytes": "^5.6.0",
     "react-window": "^1.8.10",
     "react-window-infinite-loader": "^1.0.9",
-    "rimraf": "^3.0.2",
     "secp256k1": "^4.0.2",
     "shortid": "^2.2.15",
     "subtitle": "^2.0.3",
@@ -50,11 +50,11 @@
   },
   "build": {
     "productName": "watchit",
-    "appId": "org.zorrillos.WatchIt",
+    "appId": "org.team.WatchIt",
     "publish": [
       {
         "provider": "github",
-        "owner": "ZorrillosDev",
+        "owner": "WatchItDev",
         "repo": "watchit-app",
         "private": false
       }
@@ -107,7 +107,7 @@
         "tar.gz"
       ],
       "category": "Video",
-      "maintainer": "ZorrillosDev",
+      "maintainer": "WatchItDev",
       "icon": "src/render/media/icons/icon.icns"
     },
     "directories": {

@@ -60,8 +60,8 @@ const Storage = {
       }
     )
   },
-  flush () {
-    // Flush all localstorage
+  clear () {
+    // Flush all local storage
     //! Warning
     localStorage.clear()
   }
