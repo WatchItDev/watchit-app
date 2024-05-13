@@ -29,7 +29,13 @@ export async function Helia() {
           "/ws",
         ],
       },
-      pubsub: gossipsub({allowPublishToZeroPeers: true, emitSelf: true, canRelayMessage: true}),
+      services: {
+        pubsub: gossipsub({
+          allowPublishToZeroPeers: true,
+          emitSelf: true,
+          canRelayMessage: true,
+        }),
+      },
       peerDiscovery: [
         mdns(),
         bootstrap({
