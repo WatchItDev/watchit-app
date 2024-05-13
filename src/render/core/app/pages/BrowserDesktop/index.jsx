@@ -10,7 +10,6 @@ import { MobileHeader, ChannelsMenu } from '@watchitapp/watchitapp-uix'
 // PROJECT IMPORTS
 import { MovieDetails } from '@components/MovieDetails'
 import CatalogList from '@components/Catalog/list'
-import Movie from '@db/movies'
 import log from '@logger'
 import util from '@helpers/util'
 
@@ -56,7 +55,6 @@ export const BrowserDesktop = () => {
   const renderTimeout = useRef(null)
   const resizeTimeout = useRef(null)
   const moviesWrapper = useRef(null);
-  const movie = new Movie(broker)
   const lastMovieLoadedRef = useRef(0);
 
   const channels = [
@@ -137,22 +135,22 @@ export const BrowserDesktop = () => {
 
   const runIngest = () => {
     // Init ingest
-    broker.removeAllListeners().on('progress', (state) => {
-      setState(state)
-    }).on('start', async () => {
-      log.info('STARTING')
-      // if (!loaded) localStorage.clear();
-    }).on('ready', () => {
-      // Start filtering set cache synced movies
-      log.info('LOADED FROM LOCAL')
-      startRunning()
-    }).on('error', (msg = 'Waiting Network') => {
-      if (ready) return
-      setState(msg)
-      setReady(false)
-    }).on('done', () => {
-      log.info('LOAD DONE')
-    }).on('chaos', chaos).load()
+    // broker.removeAllListeners().on('progress', (state) => {
+    //   setState(state)
+    // }).on('start', async () => {
+    //   log.info('STARTING')
+    //   // if (!loaded) localStorage.clear();
+    // }).on('ready', () => {
+    //   // Start filtering set cache synced movies
+    //   log.info('LOADED FROM LOCAL')
+    //   startRunning()
+    // }).on('error', (msg = 'Waiting Network') => {
+    //   if (ready) return
+    //   setState(msg)
+    //   setReady(false)
+    // }).on('done', () => {
+    //   log.info('LOAD DONE')
+    // }).on('chaos', chaos).load()
   }
 
   const filterMovies = (filter = {}, clear = false, chunks = null, cb = null) => {
@@ -180,27 +178,27 @@ export const BrowserDesktop = () => {
     }
 
     // Get movies
-    movie.filter(filter).then((movies) => {
-      // Chunk and concat movies
-      log.warn('Movies filtered')
-      const _chunk = chunks || screen.chunkSize
-      const _movies = moviesToRow(movies, _chunk)
-
-      // Handle sizes
-      const size = _movies.length
-      const newMovies = [...movies, ..._movies]
-      const current = newMovies.length
-
-      setScrolling(false)
-      setLoading(false)
-      setCount(!size ? current : (current + 10))
-      setFinishLoad(!clear ? !size : false)
-      setMovies(clear ? _movies : newMovies)
-      setLock(false)
-
-      // Send state in cb
-      cb && cb(state)
-    })
+    // movie.filter(filter).then((movies) => {
+    //   // Chunk and concat movies
+    //   log.warn('Movies filtered')
+    //   const _chunk = chunks || screen.chunkSize
+    //   const _movies = moviesToRow(movies, _chunk)
+    //
+    //   // Handle sizes
+    //   const size = _movies.length
+    //   const newMovies = [...movies, ..._movies]
+    //   const current = newMovies.length
+    //
+    //   setScrolling(false)
+    //   setLoading(false)
+    //   setCount(!size ? current : (current + 10))
+    //   setFinishLoad(!clear ? !size : false)
+    //   setMovies(clear ? _movies : newMovies)
+    //   setLock(false)
+    //
+    //   // Send state in cb
+    //   cb && cb(state)
+    // })
   }
 
   const recalculateScreen = useCallback(() => {
@@ -225,23 +223,23 @@ export const BrowserDesktop = () => {
     // Add resize event listener
     window.addEventListener('resize', handleResize)
 
-    const itCached = getCached() || getLoaded()
-    setLoading(!itCached)
-    setReady(itCached)
+    // const itCached = getCached() || getLoaded()
+    // setLoading(!itCached)
+    // setReady(itCached)
 
     broker.startListeningIPC()
-    broker.connect('QmSexexHts3biAEyN8WZKUCNABmePtsDfNzU1M29Yc5pbd')
-
     broker.on('notification', (e) => {
       console.log('Hello notification!!!!!!!!')
       console.log(e)
     })
 
+    broker.connect('QmSexexHts3biAEyN8WZKUCNABmePtsDfNzU1M29Yc5pbd')
+
     // Start ingest if not
-    if (getCached()) {
-      log.info('Running Cache')
-      return
-    }
+    // if (getCached()) {
+    //   log.info('Running Cache')
+    //   return
+    // }
 
     // Start ingestion
     runIngest()
@@ -255,19 +253,19 @@ export const BrowserDesktop = () => {
     }
   }, []);
 
-  const _index = (i) => {
-    // Else try get from key file and save
-    const _storage = key.readFromStorage() || {}
-    return (i in _storage && _storage[i]) || 0
-  }
-
-  const getLoaded = () => {
-    return +_index('chunk') > 0
-  }
-
-  const getCached = () => {
-    return _index('cached')
-  }
+  // const _index = (i) => {
+  //   // Else try get from key file and save
+  //   const _storage = key.readFromStorage() || {}
+  //   return (i in _storage && _storage[i]) || 0
+  // }
+  //
+  // const getLoaded = () => {
+  //   return +_index('chunk') > 0
+  // }
+  //
+  // const getCached = () => {
+  //   return _index('cached')
+  // }
 
   const startRunning = (cb = null) => {
     if (logout) return
