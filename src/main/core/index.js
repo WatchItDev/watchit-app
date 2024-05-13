@@ -21,7 +21,7 @@ module.exports = async (ipcMain, { Helia }) => {
 
   
   ipcMain.on("node-start", async (e, key) => {
-    console.log("starting");
+    console.log("starting key", key);
     const parsedData = await catJSON(key);
     log.info(`Collecting ${parsedData.count}`);
 
