@@ -44,7 +44,7 @@ export async function Helia() {
       ],
       transports: [
         tcp(),
-        webSockets({ filter: all }),
+        webSockets({ websocket: { rejectUnauthorized: false } }),
         webRTC(),
         webRTCDirect(),
         webTransport(),
