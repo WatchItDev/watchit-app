@@ -25,9 +25,11 @@ module.exports = async (ipcMain, { Helia }) => {
     console.log("starting");
     const parsedData = await catJSON(key);
     log.info(`Collecting ${parsedData.count}`);
-    
+
     for (const content of parsedData.manifest) {
-      e.reply('notification', await catJSON(content.data));
+      log.info(content.data)
+      const data = await catJSON(content.data)
+      e.reply('notification', data);
     }
 
     // initEvents(e); // Init listener on node ready
