@@ -15,7 +15,7 @@ import util from '@helpers/util'
 import log from '@logger'
 
 // Access to main process bridge prop
-import { Key as key, Broker as broker } from '@main/bridge'
+import { Key as key, Broker as broker, Db as db } from '@main/bridge'
 
 const DEFAULT_INIT_LOAD = 100
 
@@ -128,10 +128,7 @@ export default class Catalog extends React.Component {
     if (this.cached) {
       log.info('Running Cache')
       broker.removeAllListeners()
-      broker.stopIpcEvents()
-      broker.listenForNewPeer()
-      broker.listenForPartyRock()
-      broker.startSeed()
+      broker.stopMainEvents()
       broker.on('chaos', this.chaos)
       return
     }
@@ -164,8 +161,12 @@ export default class Catalog extends React.Component {
     // Init ingest
     broker.removeAllListeners().on('progress', (state) => {
       this.setState({ state: state })
-    }).on('start', async () => {
+    }).on('notification', async (e, notification) => {
       log.info('STARTING')
+      if (notification.type === "data") {
+        broker.insert(notification.data, notification.channel)
+      }
+
       // if (!this.loaded) localStorage.clear();
     }).on('ready', () => {
       // Start filtering set cache synced movies
@@ -324,7 +325,7 @@ export default class Catalog extends React.Component {
   handleSignOut = (event) => {
     event.preventDefault()
     localStorage.clear()
-    broker.flush()
+    broker.clear("test")
     this.setState({
       ready: false,
       logout: true,

@@ -34,9 +34,6 @@ logger.setLogLevel(logger.LogLevels.DEBUG);
 
 // D'ont move appPath from this line
 process.env.appPath = appPath;
-// const { removeFiles } = require("./core/utils");
-
-const key = require('./core/key')
 const backend = require("./core");
 
 const indexSplash = `file://${path.join(__dirname, "../build/splash.png")}`;
@@ -66,22 +63,6 @@ const registerMiddleware = () => {
   });
 };
 
-const removeCacheDirs = () => {
-  fs.readdirSync(appPath)
-    .filter((fn) => fn.startsWith("walloc") || fn.startsWith("wsource"))
-    .forEach(async (file) => {
-      log.warn("Removing " + file);
-      await removeFiles(path.join(appPath, file));
-    });
-};
-
-const wipeInvalidSync = () => {
-  key.removeFromStorage('peers')
-  const cache = key.readFromStorage()
-  if (cache && !('tmp' in cache)) {
-    removeCacheDirs()
-  }
-};
 
 const initWindowing = (inDev) => {
   const loadingScreen = new BrowserWindow({
@@ -176,10 +157,6 @@ app.on("window-all-closed", () => {
   if (!isDarwin) app.quit();
 });
 
-app.on("before-quit", () => {
-  wipeInvalidSync();
-});
-
 // On app ready open windows
 // app.on('ready', async () => {})
 app.whenReady().then(async () => {
@@ -196,7 +173,7 @@ app.whenReady().then(async () => {
   registerMiddleware();
 
   // Initialize ipfs/helia node and assign underlying events.
-  const helia = await import("./core/helia/index.mjs");
+  const helia = await import("./core/helia.mjs");
   const mainThread = await backend(ipcMain, helia);
 
   //
@@ -208,7 +185,6 @@ app.whenReady().then(async () => {
 
   ipcMain.on("close", async () => app.quit());
   ipcMain.on("party", async () => {
-    // if (key.existKey) await removeFiles(key.keyFile)
     ipcMain.emit("party-success"); // Just after key being removed
     removeCacheDirs(); // Clean old data dir
   });

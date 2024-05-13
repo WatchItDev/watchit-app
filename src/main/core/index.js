@@ -3,13 +3,28 @@
  */
 
 const log = require("logplease").create("CORE");
+const { concat } = require("uint8arrays/concat");
+const { toString } = require("uint8arrays/to-string");
+const all = require("it-all");
 
-module.exports = async (ipcMain, helia) => {
-  
+const key = "QmSexexHts3biAEyN8WZKUCNABmePtsDfNzU1M29Yc5pbd";
 
+module.exports = async (ipcMain, { Helia }) => {
   log.info("Start helia..");
-  const node = await helia.createNode();
-  log.info(`Running helia with peer ${node.libp2p.peerId}`);
+  const helia = await Helia();
+  log.info(`Running helia with peer ${helia.node.libp2p.peerId}`);
+
+  async function catJSON(key) {
+    const bufferedData = concat(await all(helia.fs.cat(key)));
+    const jsonString = toString(bufferedData);
+    return JSON.parse(jsonString);
+  }
+
+  const parsedData = await catJSON(key);
+  log.info(`Collecting ${parsedData.count}`);
+  for (const content of parsedData.manifest) {
+    console.log(await catJSON(content.data));
+  }
 
   /**
    * Initialize events for orbit and ingesting process
@@ -50,6 +65,8 @@ module.exports = async (ipcMain, helia) => {
   };
 
   ipcMain.on("node-start", async (e) => {
+    console.log("starting");
+
     // initEvents(e); // Init listener on node ready
 
     // Node events to handle progress and ready state
@@ -62,9 +79,6 @@ module.exports = async (ipcMain, helia) => {
     //     ingest.queueProcessor()
     //     e.reply('node-ready')
     //   })
-
-
-
   });
 
   ipcMain.on("node-seed", async (e) => {
@@ -90,5 +104,5 @@ module.exports = async (ipcMain, helia) => {
     // ingest.cleanInterval()
   });
 
-  return node
+  return helia.node;
 };
