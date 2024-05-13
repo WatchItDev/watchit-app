@@ -10,8 +10,15 @@ import { MobileHeader, ChannelsMenu } from '@watchitapp/watchitapp-uix'
 // PROJECT IMPORTS
 import { MovieDetails } from '@components/MovieDetails'
 import CatalogList from '@components/Catalog/list'
+import Movie from '@db/movies'
 import log from '@logger'
 import util from '@helpers/util'
+
+// MAIN BRIDGE
+import { Key as key, Broker as broker } from '@main/bridge'
+import storage from "@helpers/storage";
+
+const DEFAULT_INIT_LOAD = 100
 
 const generateFakeMovies = (count) => {
   let movies = [];
@@ -34,10 +41,22 @@ export const BrowserDesktop = () => {
   const [openModal, setOpenModal] = useState(false)
   const [movies, setMovies] = useState([])
   const [screen, setScreen] = useState(undefined)
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [ready, setReady] = useState(false)
   const [hasMore, setHasMore] = useState(true);
+  const [state, setState] = useState('Bootstrapping')
+  const [percent, setPercent] = useState(0)
+  const [peers, setPeers] = useState(0)
+  const [count, setCount] = useState(DEFAULT_INIT_LOAD)
+  const [scrolling, setScrolling] = useState(false)
+  const [lock, setLock] = useState(false)
+  const [finishLoad, setFinishLoad] = useState(false)
+  const [selectedMovie, setSelectedMovie] = useState(false)
+  const [logout, setLogout] = useState(false)
+  const renderTimeout = useRef(null)
   const resizeTimeout = useRef(null)
   const moviesWrapper = useRef(null);
+  const movie = new Movie(broker)
   const lastMovieLoadedRef = useRef(0);
 
   const channels = [
@@ -59,25 +78,49 @@ export const BrowserDesktop = () => {
 
   const loadOrder = async (start, to) => {
     if (loading || !hasMore) return;
+
+    log.warn('Fetching movies from db')
     return new Promise((resolve) => {
-      setLoading(true);
 
+      // Throttling
+      renderTimeout.current && clearTimeout(renderTimeout.current)
+      renderTimeout.current = setTimeout(() => {
+        filterMovies({
+              ...{
+                start,
+                to
+              },
+              ...{
+                sort_by: 'year',
+                order: 'desc'
+              }
+              // ...sort
+            },
+            false, false, (state) => {
+              log.info('Infinite movies loaded')
+              resolve(state)
+            }
+        )
+      }, 500)
+
+      // TODO: FAKE!!
       // Simula la carga de datos
-      setTimeout(() => {
-        const defaults = getRecalculatedScreen()
-        const chunkSize = defaults.chunkSize
-        const startIndex = start * chunkSize;
-        const end = to * chunkSize;
-        const endIndex = fakeMovies.length < end ? fakeMovies.length : end;
-        const newMovies = fakeMovies.slice(startIndex, endIndex);
-        const moviesNewStructure = moviesToRow(newMovies, chunkSize)
-
-        setMovies((prevMovies) => [...prevMovies, ...moviesNewStructure]);
-        setLoading(false);
-        lastMovieLoadedRef.current = endIndex;
-        setHasMore(endIndex < fakeMovies.length);
-        resolve([...movies,...moviesNewStructure])
-      }, 1000);
+      // setLoading(true);
+      // setTimeout(() => {
+      //   const defaults = getRecalculatedScreen()
+      //   const chunkSize = defaults.chunkSize
+      //   const startIndex = start * chunkSize;
+      //   const end = to * chunkSize;
+      //   const endIndex = fakeMovies.length < end ? fakeMovies.length : end;
+      //   const newMovies = fakeMovies.slice(startIndex, endIndex);
+      //   const moviesNewStructure = moviesToRow(newMovies, chunkSize)
+      //
+      //   setMovies((prevMovies) => [...prevMovies, ...moviesNewStructure]);
+      //   setLoading(false);
+      //   lastMovieLoadedRef.current = endIndex;
+      //   setHasMore(endIndex < fakeMovies.length);
+      //   resolve([...movies,...moviesNewStructure])
+      // }, 1000);
     })
   };
 
@@ -86,8 +129,82 @@ export const BrowserDesktop = () => {
         .map((_, n) => _movies.slice(n * l, n * l + l))
   }
 
+  const chaos = () => {
+    // Wait for redirect to app login
+    log.warn('Redirecting...')
+    setTimeout(() => { window.location.href = '#/' }, 0)
+  }
+
+  const runIngest = () => {
+    // Init ingest
+    broker.removeAllListeners().on('progress', (state) => {
+      setState(state)
+    }).on('start', async () => {
+      log.info('STARTING')
+      // if (!loaded) localStorage.clear();
+    }).on('ready', () => {
+      // Start filtering set cache synced movies
+      log.info('LOADED FROM LOCAL')
+      startRunning()
+    }).on('error', (msg = 'Waiting Network') => {
+      if (ready) return
+      setState(msg)
+      setReady(false)
+    }).on('done', () => {
+      log.info('LOAD DONE')
+    }).on('chaos', chaos).load()
+  }
+
+  const filterMovies = (filter = {}, clear = false, chunks = null, cb = null) => {
+    if (logout) { return false } // Nothing to fetch. Go out!!
+
+    // Get from cache filters
+    if (storage.get().from.mainNavFilters()) {
+      filter = { ...filter, ...storage.get().from.mainNavFilters() }
+    }
+
+    // Clean all... invalid
+    if ('genres' in filter) {
+      if (filter.genres === 'All') {
+        delete filter.genres
+      }
+    }
+
+    // Add limit to filters
+    filter = { ...{ limit: screen.limit }, ...filter }
+    if ('to' in filter && 'start' in filter) {
+      filter.limit = filter.to - filter.start
+      filter.skip = filter.start
+      log.info('Skip:', filter.skip)
+      log.info('Chunk:', filter.limit)
+    }
+
+    // Get movies
+    movie.filter(filter).then((movies) => {
+      // Chunk and concat movies
+      log.warn('Movies filtered')
+      const _chunk = chunks || screen.chunkSize
+      const _movies = moviesToRow(movies, _chunk)
+
+      // Handle sizes
+      const size = _movies.length
+      const newMovies = [...movies, ..._movies]
+      const current = newMovies.length
+
+      setScrolling(false)
+      setLoading(false)
+      setCount(!size ? current : (current + 10))
+      setFinishLoad(!clear ? !size : false)
+      setMovies(clear ? _movies : newMovies)
+      setLock(false)
+
+      // Send state in cb
+      cb && cb(state)
+    })
+  }
+
   const recalculateScreen = useCallback(() => {
-    // if (!this.state.movies.length) return
+    if (!movies.length) return
     const defaults = getRecalculatedScreen()
 
     setMovies((currMovies) => {
@@ -105,14 +222,70 @@ export const BrowserDesktop = () => {
   }, [movies])
 
   useEffect(() => {
+    // Add resize event listener
     window.addEventListener('resize', handleResize)
+
+    const itCached = getCached() || getLoaded()
+    setLoading(!itCached)
+    setReady(itCached)
+
+    // Start ingest if not
+    if (getCached()) {
+      log.info('Running Cache')
+      broker.removeAllListeners()
+      broker.stopIpcEvents()
+      broker.listenForNewPeer()
+      broker.listenForPartyRock()
+      broker.startSeed()
+      broker.on('chaos', chaos)
+      return
+    }
+
+    // Start ingestion
+    runIngest()
+
     loadOrder(0, 6)
     handleResize()
 
     return () => {
       window.removeEventListener('resize', handleResize)
+      broker.removeAllListeners()
     }
   }, []);
+
+  const _index = (i) => {
+    // Else try get from key file and save
+    const _storage = key.readFromStorage() || {}
+    return (i in _storage && _storage[i]) || 0
+  }
+
+  const getLoaded = () => {
+    return +_index('chunk') > 0
+  }
+
+  const getCached = () => {
+    return _index('cached')
+  }
+
+  const startRunning = (cb = null) => {
+    if (logout) return
+    setReady(true)
+    setLoading(false)
+
+    cb?.()
+  }
+
+  const onMovieClick = (id) => {
+    setSelectedMovie(id)
+    setLock(true)
+    setOpenModal(true)
+  }
+
+  const onCloseMovieModal = (id) => {
+    setSelectedMovie(null)
+    setLock(false)
+    setOpenModal(false)
+  }
 
   return (
     <MobileHeaderContainer>
@@ -134,18 +307,19 @@ export const BrowserDesktop = () => {
                 <CatalogList
                     movies={movies}
                     loadOrder={loadOrder}
-                    count={Math.ceil(fakeMovies?.length / (screen?.chunkSize ?? 6))}
+                    // count={Math.ceil(fakeMovies?.length / (screen?.chunkSize ?? 6))}
+                    count={count}
                     loading={loading}
                     end={!hasMore}
                     chunkSize={screen.chunkSize}
-                    onClick={() => setOpenModal(true)}
+                    onClick={onMovieClick}
                     screen={screen}
                 />
             )
         }
       </ControlSliderWrapper>
 
-      {openModal && <MovieDetails OnCloseModal={() => setOpenModal(false)} />}
+      {openModal && <MovieDetails OnCloseModal={onCloseMovieModal} />}
     </MobileHeaderContainer>
   )
 }
