@@ -20,9 +20,11 @@
     "windows-elevate": "^1.0.1"
   },
   "dependencies": {
+    "@chainsafe/libp2p-gossipsub": "^13.0.0",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@helia/unixfs": "^3.0.6",
+    "@libp2p/pubsub-peer-discovery": "^10.0.2",
     "@tabler/icons": "^2.28.0",
     "electron-updater": "^4.6.5",
     "fs-extra": "^9.0.1",
