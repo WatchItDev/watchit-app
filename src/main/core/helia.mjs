@@ -47,7 +47,7 @@ export async function Helia() {
         webSockets({ websocket: { rejectUnauthorized: false } }),
         webRTC(),
         webRTCDirect(),
-        webTransport(),
+        // webTransport(),
         // https://github.com/libp2p/js-libp2p-websockets#libp2p-usage-example
         circuitRelayTransport({ discoverRelays: 3 }),
       ],
