@@ -7,7 +7,6 @@ const { concat } = require("uint8arrays/concat");
 const { toString } = require("uint8arrays/to-string");
 const all = require("it-all");
 
-const key = "bafkreibec3yptircaamjhg6vox5vzxn5am6c773nnye4nnmvzbxovp2nt4";
 
 module.exports = async (ipcMain, { Helia }) => {
   log.info("Start helia..");
@@ -21,7 +20,7 @@ module.exports = async (ipcMain, { Helia }) => {
   }
 
   
-  ipcMain.on("node-start", async (e) => {
+  ipcMain.on("node-start", async (e, key) => {
     console.log("starting");
     const parsedData = await catJSON(key);
     log.info(`Collecting ${parsedData.count}`);
