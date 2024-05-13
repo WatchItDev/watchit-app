@@ -1,13 +1,16 @@
+const logplease = require("logplease");
+const log = logplease.create("DB", { color: logplease.Colors.Yellow });
+
 const LinvoDB = require("linvodb3");
-const levelJs = require("level-js");
-const levelDown = require("leveldown");
-const engine = process.env.RUNTIME === "web" ? levelJs : levelDown;
+const engine = require(process.env.RUNTIME === "web"
+  ? "level-js"
+  : "leveldown");
 
 LinvoDB.defaults.store = { db: engine };
 LinvoDB.defaults.autoIndexing = false;
 log.info(`Using ${engine.name}`);
 
-export default class DB {
+class DB {
   constructor() {
     // db is a collection of databases
     this.db = {};
@@ -128,3 +131,8 @@ export default class DB {
     });
   }
 }
+
+// Construct broker with renderer
+module.exports = function DBFactory() {
+  return new DB();
+};

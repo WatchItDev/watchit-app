@@ -1,6 +1,6 @@
 // eslint-disable-next-line
 import React from "react";
-import { createHelia } from "helia";
+import { Helia } from "@main/core/helia.mjs";
 
 import ReactDOM from "react-dom";
 import App from "./core/app/index";
@@ -8,13 +8,12 @@ import App from "./core/app/index";
 import { Broker as broker } from "@main/bridge";
 import * as Bootstrap from "@main/core";
 
+console.log(broker)
+
 const webRenderer = broker.getIPC();
 // Initialize nodes and core libs
 // this initialization persist over the underlying ipc
-Bootstrap(webRenderer, {
-  // adapt helia factory
-  createNode: createHelia
-});
+Bootstrap(webRenderer, { Helia });
 
 const root = document.getElementById("root");
 ReactDOM.render(<App />, root);

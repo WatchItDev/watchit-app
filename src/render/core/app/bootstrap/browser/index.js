@@ -1,6 +1,6 @@
 import React from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import BrowseDesktop from '@pages/BrowseDesktop'
+import BrowserDesktop from "@pages/BrowserDesktop";
 import PlayerUIX from '@pages/PlayUIX'
 
 export default (/* hist, key */) => {
@@ -10,7 +10,7 @@ export default (/* hist, key */) => {
         <Route
           path='/'
           name='browse'
-          render={() => <BrowseDesktop/>}
+          render={() => <BrowserDesktop/>}
         />
         <Route
           name='player'

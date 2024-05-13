@@ -11,6 +11,6 @@ const DB = require("./db");
 
 // Preload bridge
 module.exports = global.bridge = {
-  Broker: new Broker(),
-  DB: new DB(),
+  Broker: Broker(),
+  DB: DB(),
 };
