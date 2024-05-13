@@ -20,52 +20,15 @@ module.exports = async (ipcMain, { Helia }) => {
     return JSON.parse(jsonString);
   }
 
-  const parsedData = await catJSON(key);
-  log.info(`Collecting ${parsedData.count}`);
-  for (const content of parsedData.manifest) {
-    console.log(await catJSON(content.data));
-  }
-
-  /**
-   * Initialize events for orbit and ingesting process
-   * @param {object} e ipcMain
-   */
-  const initEvents = (e) => {
-    // // Remove listener before add new
-    // orbit.removeAllListeners()
-    // ingest.removeAllListeners()
-
-    // // Orbit node listeners
-    // orbit.on('node-error', (m) => e.reply('node-error', m))
-    // orbit.on('node-peer', (peerSize) => e.reply('node-peer', peerSize))
-    // orbit.on('node-chaos', () => {
-    //   // Stop queue processor
-    //   ingest.cleanInterval()
-    //   ipcMain.emit('party')
-    // })
-
-    // orbit.on('node-raised', async () => {
-    //   // Node raised and ready to work with it
-    //   ipcMain.on('node-broadcast', (e, message) => {
-    //     // On new message broadcast message
-    //     orbit.pubsub.broadcast(message)
-    //   })
-    // })
-
-    // Ingest process listener
-    // ingest.on('ingest-step', (step) => e.reply('node-step', step))
-    // ingest.on('ingest-replicated', (c, s, t) => e.reply('node-replicated', c, s, t))
-
-    // On party success ready then logout
-    ipcMain.removeAllListeners("party-success");
-    ipcMain.on("party-success", () => {
-      log.warn("Party success");
-      e.reply("node-chaos");
-    });
-  };
-
+  
   ipcMain.on("node-start", async (e) => {
     console.log("starting");
+    const parsedData = await catJSON(key);
+    log.info(`Collecting ${parsedData.count}`);
+    
+    for (const content of parsedData.manifest) {
+      e.reply('notification', await catJSON(content.data));
+    }
 
     // initEvents(e); // Init listener on node ready
 
@@ -81,12 +44,6 @@ module.exports = async (ipcMain, { Helia }) => {
     //   })
   });
 
-  ipcMain.on("node-seed", async (e) => {
-    // initEvents(e);
-    log.info("Starting seed");
-    // orbit.setInSeedMode(true)
-    // await orbit.start()
-  });
 
   ipcMain.on("online-status-changed", async (e, isOnline) => {
     log.info("Going " + (isOnline ? "online" : "offline"));
