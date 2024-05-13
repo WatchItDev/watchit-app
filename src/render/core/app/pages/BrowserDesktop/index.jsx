@@ -229,15 +229,17 @@ export const BrowserDesktop = () => {
     setLoading(!itCached)
     setReady(itCached)
 
+    broker.startListeningIPC()
+    broker.connect('QmSexexHts3biAEyN8WZKUCNABmePtsDfNzU1M29Yc5pbd')
+
+    broker.on('notification', (e) => {
+      console.log('Hello notification!!!!!!!!')
+      console.log(e)
+    })
+
     // Start ingest if not
     if (getCached()) {
       log.info('Running Cache')
-      broker.removeAllListeners()
-      broker.stopIpcEvents()
-      broker.listenForNewPeer()
-      broker.listenForPartyRock()
-      broker.startSeed()
-      broker.on('chaos', chaos)
       return
     }
 
@@ -249,7 +251,7 @@ export const BrowserDesktop = () => {
 
     return () => {
       window.removeEventListener('resize', handleResize)
-      broker.removeAllListeners()
+      broker.stopListeningIPC()
     }
   }, []);
 
@@ -281,7 +283,7 @@ export const BrowserDesktop = () => {
     setOpenModal(true)
   }
 
-  const onCloseMovieModal = (id) => {
+  const onCloseMovieModal = () => {
     setSelectedMovie(null)
     setLock(false)
     setOpenModal(false)
