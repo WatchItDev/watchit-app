@@ -16,27 +16,21 @@ class DB {
     this.db = {};
     this.id = null;
   }
-  /**
-   * Set the context database to exec subsequent operations
-   * @param {string} id - The id of the database
-   * @returns {DB} The database interface
-   */
-  connect(id) {
-    this.id = id;
-    return this;
-  }
 
   /**
-   * Initialize the database with the provided name.
+   * Set the context database to exec subsequent operations and initialize the database with the provided name.
    * If the database exist or is initialized, then return the existing.
    *
    * @param {string} id - The database identifier
    * @returns {DB} The database interface
    */
-  initStore(id) {
+  connect(id) {
     log.warn(`Creating local db for ${id}`);
-    if (id in this.db) return this.db[id];
-    this.db[id] = new LinvoDB(id);
+    if (!(id in this.db)) {
+      this.id = id
+      this.db[id] = new LinvoDB(id);
+    }
+    
     return this;
   }
 
