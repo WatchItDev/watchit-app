@@ -27,10 +27,10 @@ class DB {
   connect(id) {
     log.warn(`Creating local db for ${id}`);
     if (!(id in this.db)) {
-      this.id = id
       this.db[id] = new LinvoDB(id);
     }
-    
+
+    this.id = id
     return this;
   }
 
