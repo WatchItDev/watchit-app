@@ -9,7 +9,7 @@ const all = require("it-all");
 
 module.exports = async (ipcMain, { Helia }) => {
   log.info("Start helia..");
-  const { helia, fs } = await Helia();
+  const { node, fs } = await Helia();
   log.info(`Running helia with peer ${node.libp2p.peerId}`);
 
   /**
