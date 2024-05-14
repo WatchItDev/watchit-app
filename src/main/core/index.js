@@ -7,7 +7,6 @@ const { concat } = require("uint8arrays/concat");
 const { toString } = require("uint8arrays/to-string");
 const all = require("it-all");
 
-
 module.exports = async (ipcMain, { Helia }) => {
   log.info("Start helia..");
   const helia = await Helia();
@@ -19,16 +18,15 @@ module.exports = async (ipcMain, { Helia }) => {
     return JSON.parse(jsonString);
   }
 
-  
   ipcMain.on("node-start", async (e, key) => {
-    console.log("starting key", key);
+    console.log("starting");
     const parsedData = await catJSON(key);
     log.info(`Collecting ${parsedData.count}`);
 
     for (const content of parsedData.manifest) {
-      log.info(content.data)
-      const data = await catJSON(content.data)
-      e.reply('notification', data);
+      log.info(content.data);
+      const data = await catJSON(content.data);
+      e.reply("notification", data);
     }
 
     // initEvents(e); // Init listener on node ready
@@ -44,7 +42,6 @@ module.exports = async (ipcMain, { Helia }) => {
     //     e.reply('node-ready')
     //   })
   });
-
 
   ipcMain.on("online-status-changed", async (e, isOnline) => {
     log.info("Going " + (isOnline ? "online" : "offline"));
