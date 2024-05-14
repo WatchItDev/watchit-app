@@ -8,7 +8,6 @@ const { toString } = require("uint8arrays/to-string");
 const all = require("it-all");
 
 module.exports = async (ipcMain, { Helia }) => {
-  log.info("Start helia..");
   const { node, fs } = await Helia();
   log.info(`Running helia with peer ${node.libp2p.peerId}`);
 
