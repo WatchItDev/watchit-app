@@ -9,38 +9,34 @@ const all = require("it-all");
 
 module.exports = async (ipcMain, { Helia }) => {
   log.info("Start helia..");
-  const helia = await Helia();
-  log.info(`Running helia with peer ${helia.node.libp2p.peerId}`);
+  const { helia, fs } = await Helia();
+  log.info(`Running helia with peer ${node.libp2p.peerId}`);
 
-  async function catJSON(key) {
-    const bufferedData = concat(await all(helia.fs.cat(key)));
+  /**
+   * Collect data from ipfs using `cat` and deserialize it to json object
+   * @param {*} cid - The cid for the content to fetch
+   * @returns {Promise<object>} A promise that resolves with the fetched json object
+   */
+  async function catJSON(cid) {
+    const bufferedData = concat(await all(fs.cat(cid)));
     const jsonString = toString(bufferedData);
     return JSON.parse(jsonString);
   }
 
   ipcMain.on("node-start", async (e, key) => {
-    console.log("starting");
     const parsedData = await catJSON(key);
-    log.info(`Collecting ${parsedData.count}`);
-
-    for (const content of parsedData.manifest) {
-      log.info(content.data);
-      const data = await catJSON(content.data);
-      e.reply("notification", data);
+    if (!parsedData.manifest) {
+      throw new Error("Fetched content with invalid manifest ");
     }
+    
+    log.info(`Collecting ${parsedData.count} entries`);
+    const event = parsedData.manifest.map(async () => ({
+      ...(await catJSON(content.data)),
+      ...{ type: "DATA" },
+    }));
 
-    // initEvents(e); // Init listener on node ready
-
-    // Node events to handle progress and ready state
-    // "node-step" handle event to keep tracking states of node
-    // orbit.on('node-progress', (_, hash) => setTimeout(() => { ingest.queue = hash }), 0)
-    //   .on('node-step', (step) => e.reply('node-step', step))
-    //   .on('node-loaded', () => e.reply('node-loaded'))
-    //   .on('node-ready', () => {
-    //     // FIFO queue processing
-    //     ingest.queueProcessor()
-    //     e.reply('node-ready')
-    //   })
+    // notify to renderer process
+    e.reply("notification", event);
   });
 
   ipcMain.on("online-status-changed", async (e, isOnline) => {
@@ -59,5 +55,5 @@ module.exports = async (ipcMain, { Helia }) => {
     // ingest.cleanInterval()
   });
 
-  return helia.node;
+  return node;
 };
