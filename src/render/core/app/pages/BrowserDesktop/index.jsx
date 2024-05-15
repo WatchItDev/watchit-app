@@ -228,12 +228,12 @@ export const BrowserDesktop = () => {
     // setReady(itCached)
 
     broker.startListeningIPC()
-    broker.on('notification', (e) => {
+    broker.on('notification', (e, d) => {
       console.log('Hello notification!!!!!!!!')
-      console.log(e)
+      console.log(d)
     })
 
-    broker.connect('bafkreibec3yptircaamjhg6vox5vzxn5am6c773nnye4nnmvzbxovp2nt4')
+    broker.connect('bafkreih2jbuozzrl3ge4opr3y46ti6kw5adw5m7qci4axg5mf6qzqnykw4')
 
     // Start ingest if not
     // if (getCached()) {

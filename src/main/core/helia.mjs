@@ -47,7 +47,12 @@ export async function Helia() {
   const node = await createHelia(config);
   const fs = unixfs(node);
   log.info(`Running helia with peer ${node.libp2p.peerId}`);
+
   // uncomment for print peer connecting info
+  node.libp2p.addEventListener("peer:connect", (ev) => {
+    if (ev.detail.toString() == "12D3KooWHL1tsQ3nTzWMBmouSST4iA41bcYpzXgKN26FBF5dBnYz")
+      console.log("[peer:connect]", ev.detail);
+  });
 
   return {
     node,
