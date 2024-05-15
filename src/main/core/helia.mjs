@@ -4,7 +4,6 @@ import { webRTC, webRTCDirect } from "@libp2p/webrtc";
 import { webSockets } from "@libp2p/websockets";
 import { createHelia, libp2pDefaults } from "helia";
 import { gossipsub } from "@chainsafe/libp2p-gossipsub";
-import { yamux } from "@chainsafe/libp2p-yamux";
 import { circuitRelayTransport } from "@libp2p/circuit-relay-v2";
 import { unixfs } from "@helia/unixfs";
 
@@ -18,7 +17,6 @@ function getConfig(env = "node") {
       addresses: {
         listen: ["/ip4/0.0.0.0/tcp/0", "/ip4/0.0.0.0/tcp/0/ws", "/webrtc"],
       },
-      // streamMuxers: [yamux()],
       transports: [
         tcp(),
         webSockets({ websocket: { rejectUnauthorized: false } }),
@@ -48,11 +46,10 @@ export async function Helia() {
   const fs = unixfs(node);
   log.info(`Running helia with peer ${node.libp2p.peerId}`);
 
-
-   // uncomment for print peer connecting info
-   node.libp2p.addEventListener("peer:connect", (ev) => {
-    console.log("[peer:connect]", ev.detail);
-  });
+  // uncomment for print peer connecting info
+  // node.libp2p.addEventListener("peer:connect", (ev) => {
+  //   console.log("[peer:connect]", ev.detail);
+  // });
 
   return {
     node,

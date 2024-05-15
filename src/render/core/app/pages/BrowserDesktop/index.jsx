@@ -233,7 +233,7 @@ export const BrowserDesktop = () => {
       console.log(d)
     })
 
-    broker.connect('bafkreih2jbuozzrl3ge4opr3y46ti6kw5adw5m7qci4axg5mf6qzqnykw4')
+    broker.connect('bafkreib5help7v26l7gmjib5ybjsh34ss7kmkmku5eukisl5ufqxmcxoya')
 
     // Start ingest if not
     // if (getCached()) {

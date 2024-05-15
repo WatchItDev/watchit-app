@@ -48,7 +48,7 @@ module.exports = async (ipcMain, { Helia }) => {
         count: parsedData.count,
         progress: ((+key + 1) / parsedData.count) * 100,
         type: "watchit/data",
-        data: fetchedData,
+        meta: fetchedData,
       });
 
       log.info(`Processing ${+key + 1}/${event.count} ${event.progress}%`);
