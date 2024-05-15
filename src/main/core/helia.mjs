@@ -18,7 +18,7 @@ function getConfig(env = "node") {
       addresses: {
         listen: ["/ip4/0.0.0.0/tcp/0", "/ip4/0.0.0.0/tcp/0/ws", "/webrtc"],
       },
-      // streamMuxers: [yamux()],
+      streamMuxers: [yamux()],
       transports: [
         tcp(),
         webSockets({ websocket: { rejectUnauthorized: false } }),
