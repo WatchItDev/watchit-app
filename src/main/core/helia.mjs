@@ -14,28 +14,28 @@ function getConfig(env = "node") {
   const defaults = libp2pDefaults();
   return {
     start: true,
-    libp2p: Object.assign({}, defaults, {
-      addresses: {
-        listen: ["/ip4/0.0.0.0/tcp/0", "/ip4/0.0.0.0/tcp/0/ws", "/webrtc"],
-      },
-      streamMuxers: [yamux()],
-      transports: [
-        tcp(),
-        webSockets({ websocket: { rejectUnauthorized: false } }),
-        circuitRelayTransport({ discoverRelays: 3 }),
-        // webRTC(), solo para web
-        // webTransport(), solo para web
-        webRTCDirect(),
-      ],
-      services: {
-        ...defaults.services,
-        pubsub: gossipsub({
-          allowPublishToZeroPeers: true,
-          emitSelf: true,
-          canRelayMessage: true,
-        }),
-      },
-    }),
+    // libp2p: Object.assign({}, defaults, {
+    //   addresses: {
+    //     listen: ["/ip4/0.0.0.0/tcp/0", "/ip4/0.0.0.0/tcp/0/ws", "/webrtc"],
+    //   },
+    //   streamMuxers: [yamux()],
+    //   transports: [
+    //     tcp(),
+    //     webSockets({ websocket: { rejectUnauthorized: false } }),
+    //     circuitRelayTransport({ discoverRelays: 3 }),
+    //     // webRTC(), solo para web
+    //     // webTransport(), solo para web
+    //     webRTCDirect(),
+    //   ],
+    //   services: {
+    //     ...defaults.services,
+    //     pubsub: gossipsub({
+    //       allowPublishToZeroPeers: true,
+    //       emitSelf: true,
+    //       canRelayMessage: true,
+    //     }),
+    //   },
+    // }),
   };
 }
 
@@ -47,12 +47,6 @@ export async function Helia() {
   const node = await createHelia(config);
   const fs = unixfs(node);
   log.info(`Running helia with peer ${node.libp2p.peerId}`);
-
-  // uncomment for print peer connecting info
-  node.libp2p.addEventListener("peer:connect", (ev) => {
-    if (ev.detail.toString() == "12D3KooWHL1tsQ3nTzWMBmouSST4iA41bcYpzXgKN26FBF5dBnYz")
-      console.log("[peer:connect]", ev.detail);
-  });
 
   return {
     node,
