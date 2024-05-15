@@ -14,28 +14,28 @@ function getConfig(env = "node") {
   const defaults = libp2pDefaults();
   return {
     start: true,
-    // libp2p: Object.assign({}, defaults, {
-    //   addresses: {
-    //     listen: ["/ip4/0.0.0.0/tcp/0", "/ip4/0.0.0.0/tcp/0/ws", "/webrtc"],
-    //   },
-    //   streamMuxers: [yamux()],
-    //   transports: [
-    //     tcp(),
-    //     webSockets({ websocket: { rejectUnauthorized: false } }),
-    //     circuitRelayTransport({ discoverRelays: 3 }),
-    //     // webRTC(), solo para web
-    //     // webTransport(), solo para web
-    //     webRTCDirect(),
-    //   ],
-    //   services: {
-    //     ...defaults.services,
-    //     pubsub: gossipsub({
-    //       allowPublishToZeroPeers: true,
-    //       emitSelf: true,
-    //       canRelayMessage: true,
-    //     }),
-    //   },
-    // }),
+    libp2p: Object.assign({}, defaults, {
+      addresses: {
+        listen: ["/ip4/0.0.0.0/tcp/0", "/ip4/0.0.0.0/tcp/0/ws", "/webrtc"],
+      },
+      // streamMuxers: [yamux()],
+      transports: [
+        tcp(),
+        webSockets({ websocket: { rejectUnauthorized: false } }),
+        circuitRelayTransport({ discoverRelays: 3 }),
+        // webRTC(), solo para web
+        // webTransport(), solo para web
+        webRTCDirect(),
+      ],
+      services: {
+        ...defaults.services,
+        pubsub: gossipsub({
+          allowPublishToZeroPeers: true,
+          emitSelf: true,
+          canRelayMessage: true,
+        }),
+      },
+    }),
   };
 }
 
