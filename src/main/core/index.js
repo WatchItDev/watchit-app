@@ -25,14 +25,17 @@ module.exports = async (ipcMain, { Helia }) => {
   ipcMain.on("node-start", async (e, key) => {
     const parsedData = await catJSON(key);
     if (!parsedData.manifest) {
-      throw new Error("Fetched content with invalid manifest ");
+      throw new Error("Fetched content with invalid manifest.");
     }
     
     log.info(`Collecting ${parsedData.count} entries`);
-    const event = parsedData.manifest.map(async () => ({
+    const event = await Promise.all(parsedData.manifest.map(async (content) => ({
       ...(await catJSON(content.data)),
-      ...{ type: "DATA" },
-    }));
+      ...{ type: "watchit/data" },
+    })));
+
+
+    log.info(event)
 
     // notify to renderer process
     e.reply("notification", event);
