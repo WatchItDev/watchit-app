@@ -51,8 +51,7 @@ export async function Helia() {
 
    // uncomment for print peer connecting info
    node.libp2p.addEventListener("peer:connect", (ev) => {
-    if ([ "12D3KooWDfaSVDTkx4phJRuNbLX7VX9bXRhCfnsf56oHCk6ZmYT6", "12D3KooWE5CjGnYuW8ZaFtKmXRkmgH7hmhDGrQLLhgpXD4BvZF6x"].includes(ev.detail.toString()))
-      console.log("[peer:connect]", ev.detail);
+    console.log("[peer:connect]", ev.detail);
   });
 
   return {
