@@ -35,16 +35,21 @@ class DB {
   }
 
   /**
-   * Add data to underlying db
-   * @param {*} collection - The data to store in db
-   * @returns {DB} The database interface
+   * Add data to underlying db.
+   *
+   * @async
+   * @param {*} collection - The data to store in db.
+   * @returns {Promise<{status: string, db: object}>} A promise that resolves with an object containing the status and the database interface.
    */
   insert(collection) {
-    if (!(this.id in this.db)) return;
-    this.db[this.id].insert(collection, () => {
-      this.emit("ready");
-    }); // Save in local
-    return this;
+    return new Promise((resolve, reject) => {
+      if (!(this.id in this.db)) {
+        return reject(new Error('No id in db'));
+      }
+      this.db[this.id].insert(collection, () => {
+        resolve({ status: 'ready', db: this });
+      }); // Save in local
+    });
   }
 
   /**
@@ -52,7 +57,7 @@ class DB {
    * @param {string} id - The database identifier
    * @returns {DB} The database interface
    */
-  clear() {
+  clear(id) {
     if (!(this.id in this.db)) return;
     // clear all the content in database
     this.db[id].remove({}, { multi: true }, (err, numRemoved) => {

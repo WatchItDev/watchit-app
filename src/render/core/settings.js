@@ -10,16 +10,17 @@ export default {
     const port = '9090'// null ? '8080' : '9090'
 
     return [
-      // 'https://vps1.phillm.net',
-      // 'https://vps2.phillm.net',
-      // 'https://vps3.phillm.net',
-      // 'https://watchit.mypinata.cloud',
-      'https://ipfs.filebase.io',
       'https://gateway.ipfs.io',
-      // 'https://ipfs.io',
-      ...process.env.RUNTIME !== 'web'
-        ? [`http://localhost:${port}`]
-        : []
+      'https://ipfs.io',
+      'https://cloudflare-ipfs.com',
+      'https://storry.tv',
+      'https://cf-ipfs.com',
+      'https://4everland.io',
+      'https://gateway.pinata.cloud',
+      'https://dweb.link',
+      // ...process.env.RUNTIME !== 'web'
+      //   ? [`http://localhost:${port}`]
+      //   : []
     ]
   },
   subs: {

@@ -1,8 +1,9 @@
 import React from 'react'
 import uid from 'shortid'
 import PropTypes from 'prop-types'
-import CatalogPoster from './poster'
+import gatewayHelper from '@helpers/gateway'
 import { Box, styled } from '@mui/material'
+import { Poster } from '@watchitapp/watchitapp-uix'
 
 export default class CatalogRow extends React.Component {
   static get propTypes () {
@@ -12,7 +13,7 @@ export default class CatalogRow extends React.Component {
   }
 
   shouldComponentUpdate(nextProps) {
-    return nextProps.chunkSize !== this.props.chunkSize;
+    return (nextProps.chunkSize !== this.props.chunkSize) || (nextProps.chunk.length !== this.props.chunk.length);
   }
 
   render () {
@@ -20,19 +21,26 @@ export default class CatalogRow extends React.Component {
       <RowWrapper className='row-img' style={this.props.style}>
         {this.props.chunk.map((i) => {
           return (
-            <CatalogPoster
-              key={i._id || uid.generate()} id={i._id}
-              title={i.title} rating={i.rating} year={i.year}
-              // image={gatewayHelper.parsePosterUri(i.resource, 'medium')}
-              image={i.image}
-              {...this.props}
-            />
+              <Poster
+                  key={i.id || uid.generate()}
+                  img={gatewayHelper.dummyParse(i.images['medium'])}
+                  onClick={() => { this.props.onClick(i) }}
+                  title={i.meta.title}
+                  rate={i.meta.rating}
+                  end={this.props.end}
+                  year={i.meta.year} canHover={true}
+              />
           )
         })}
         {
             (this.props.chunk.length < this.props.chunkSize) &&
             Array(this.props.chunkSize - this.props.chunk.length).fill(0).map(() => {
-              return <CatalogPoster key={uid.generate()} end={this.props.end} empty />
+              return <Poster
+                  key={uid.generate()}
+                  img={'https://i0.wp.com/www.themoviedb.org/t/p/w185/ncKCQVXgk4BcQV6XbvesgZ2zLvZ.jpg'}
+                  title={''}
+                  end={this.props.end} empty
+              />
             })
         }
       </RowWrapper>

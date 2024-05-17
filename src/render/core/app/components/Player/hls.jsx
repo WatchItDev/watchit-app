@@ -1,7 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import StateLoader from '@components/PlayerLoader'
-
 import Player from './player'
 import PlayerHeader from './header'
 

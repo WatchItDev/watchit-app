@@ -1,58 +1,87 @@
-import React from 'react'
-import Image from '@components/Image/'
-import PulseLoader from '@components/PulseLoader/'
-import { Box, styled } from '@mui/material'
+import React from 'react';
+import Image from '@components/Image/';
+import PulseLoader from '@components/PulseLoader/';
+import { Box, styled } from '@mui/material';
 
-export default class CatalogPoster extends React.Component {
-  shouldComponentUpdate () {
-    return false
-  }
+const CatalogPoster = ({ id, empty = true, end, onClick, image, preload, title, year, rating }) => {
+  const handleClick = (e) => {
+    e.preventDefault();
+    onClick && onClick(id);
+  };
 
-  static get defaultProps () {
-    return {
-      empty: true
-    }
-  }
-
-  handleClick = (e) => {
-    e.preventDefault()
-    this.props.onClick &&
-    this.props.onClick(this.props.id)
-  }
-
-  render () {
-    return (
+  return (
       <PosterWrapper>
-        {
-          // Show loader if empty result before load
-          this.props.empty && !this.props.end && <PulseLoader />
-        }
-        <a href='/#' onClick={this.handleClick ?? (() => {})} style={{ opacity: this.props.empty ? 0 : 1, pointerEvents: this.props.empty ? 'none' : 'all' }}>
-          {/* Image Box */}
-          <Image src={this.props.image ?? 'https://i0.wp.com/www.themoviedb.org/t/p/w185/ncKCQVXgk4BcQV6XbvesgZ2zLvZ.jpg'} preload={this.props.preload}/>
-          <div className='hover-poster-box full-width full-height'>
-            <div className='hover-info absolute bottom-1-rem'>
-              <strong className='white-text truncate'>
-                {this.props.title ?? ''}
-              </strong>
-              <span className='green-text'>
-                    <i className='icon-calendar margin-right-3-p'/>
-                {this.props.year ?? ''}
-                  </span>
-              <span className='orange-text margin-left-5-p'>
-                    <i className='icon-star margin-right-2-p'/>
-                {this.props.rating ?? ''}
-                  </span>
-            </div>
-          </div>
-        </a>
+        {empty && !end && <PulseLoader />}
+        <PosterLink href='/#' onClick={handleClick} empty={empty}>
+          <Image src={image ?? 'https://i0.wp.com/www.themoviedb.org/t/p/w185/ncKCQVXgk4BcQV6XbvesgZ2zLvZ.jpg'} preload={preload} />
+          <HoverPosterBox>
+            <HoverInfo>
+              <Title>{title ?? ''}</Title>
+              <InfoText>
+                <i className='icon-calendar margin-right-3-p' />
+                {year ?? ''}
+              </InfoText>
+              <InfoText>
+                <i className='icon-star margin-right-2-p' />
+                {rating ?? ''}
+              </InfoText>
+            </HoverInfo>
+          </HoverPosterBox>
+        </PosterLink>
       </PosterWrapper>
-    )
-  }
-}
+  );
+};
 
-export const PosterWrapper = styled(Box)(() => ({
+const PosterWrapper = styled(Box)({
   paddingLeft: '0.5rem',
   paddingRight: '0.5rem',
   position: 'relative'
-}))
+});
+
+const PosterLink = styled('a')(({ empty }) => ({
+  opacity: empty ? 0 : 1,
+  pointerEvents: empty ? 'none' : 'all',
+  textDecoration: 'none'
+}));
+
+const HoverPosterBox = styled('div')({
+  position: 'absolute',
+  top: 0,
+  left: 0,
+  width: '100%',
+  height: '100%',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  opacity: 0,
+  transition: 'opacity 0.3s',
+  '&:hover': {
+    opacity: 1
+  }
+});
+
+const HoverInfo = styled('div')({
+  position: 'absolute',
+  bottom: '1rem',
+  left: '0.5rem',
+  right: '0.5rem',
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'flex-start'
+});
+
+const Title = styled('strong')({
+  color: 'white',
+  whiteSpace: 'nowrap',
+  overflow: 'hidden',
+  textOverflow: 'ellipsis'
+});
+
+const InfoText = styled('span')({
+  display: 'flex',
+  alignItems: 'center',
+  color: 'white'
+});
+
+export default CatalogPoster

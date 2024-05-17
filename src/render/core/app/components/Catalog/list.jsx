@@ -16,12 +16,12 @@ export default class CatalogList extends React.Component {
     }
   }
 
-  shouldComponentUpdate (nextProps, nextState, nextContext) {
-    return !nextProps.loading && nextProps.movies.length > 0
-  }
+  // shouldComponentUpdate (nextProps, nextState, nextContext) {
+  //   return (!nextProps.loading && nextProps.movies.length > 0) || (nextProps.movies.length !== this.props.movies.length)
+  // }
 
   static getDerivedStateFromProps (nextProps) {
-    if (!nextProps.movies) { return null }
+    // if (!nextProps.movies) { return null }
 
     const movies = nextProps.movies
     const count = nextProps.count
@@ -56,7 +56,8 @@ export default class CatalogList extends React.Component {
   }
 
   alreadyLoaded = (index) => {
-    return !!this.state.movies[index]
+    // return !!this.state.movies[index]
+    return false
   }
 
   onScrollUpdate = (...params) => {

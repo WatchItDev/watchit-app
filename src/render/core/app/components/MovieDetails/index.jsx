@@ -11,6 +11,7 @@ import { Poster, ProfileInfo, RoundProgress, VideoPlayer, CustomButton } from '@
 
 // TABLER IMPORTS
 import { Clock } from "tabler-icons-react";
+import gatewayHelper from "@helpers/gateway";
 
 export const MovieDetails = (props) => {
   const [defaultVolumen, setDefaultVolumen] = useState(0)
@@ -71,9 +72,9 @@ export const MovieDetails = (props) => {
         <Box sx={{ bottom: '0', zIndex: '1', left: '0', position: 'absolute', height: '66%', width: '100%', background: 'linear-gradient(transparent, #1A1C20 20%)' }}></Box>
         <Box sx={{ top: '0', zIndex: '0', left: '0', position: 'absolute' }} height={'300px'} width={'100%'} >
           <VideoPlayer
-            titleMovie="Renfield"
+            titleMovie={props.movie.meta.title}
             defaultVolume={defaultVolumen}
-            src="http://vjs.zencdn.net/v/oceans.mp4"
+            src={props.movie.meta.trailerUrl}
             preview={true}
             autoPlay={true}
           />
@@ -100,10 +101,10 @@ export const MovieDetails = (props) => {
           </Grid>
           <Grid sx={{ display: 'flex', alignItems: 'center', justifyContent: 'end', padding: '0' }} item xs={3}>
             <Poster
-              img={'https://cuevana33.com/wp-content/uploads/2024/01/7IqJaCVN0xkLWnI79EguVtwgfXf-185x278.jpg'}
-              title={'Renfield'}
-              progress={50}
-              year={2022}
+              img={gatewayHelper.dummyParse(props.movie.images['medium'])}
+              title={props.movie.meta.title}
+              progress={0}
+              year={props.movie.meta.year}
               canHover={true}
               size={{
                 height: '100% !important'
@@ -113,18 +114,15 @@ export const MovieDetails = (props) => {
           <Grid item xs={9}>
             <Grid container spacing={1}>
               <Grid sx={{ display: 'flex', alignItems: 'center', padding: '0 1rem' }} item xs={12}>
-                <MovieText color={'#ffffff'} fontSize={'40px'} fontWeight={'bold'}>Renfield</MovieText>
+                <MovieText color={'#ffffff'} fontSize={'40px'} fontWeight={'bold'}>{props.movie.meta.title}</MovieText>
               </Grid>
               <Grid sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 1rem' }} item xs={12}>
-                <MovieText color={'#D1D2D3'} fontSize={'20px'} fontWeight={'regular'}>Thiller - Terror</MovieText>
-                <MovieText color={'#ffffff'} fontSize={'20px'} fontWeight={'bold'}>2019</MovieText>
+                <MovieText color={'#D1D2D3'} fontSize={'20px'} fontWeight={'regular'}>{props.movie.meta.genres.join(' - ')}</MovieText>
+                <MovieText color={'#ffffff'} fontSize={'20px'} fontWeight={'bold'}>{props.movie.meta.year}</MovieText>
               </Grid>
               <Grid sx={{ display: 'flex', alignItems: 'center', justifyContent: 'start', padding: '0 1rem' }} item xs={12}>
                 <MovieText sx={{ textAlign: 'justify' }} color={'#D1D2D3'} fontSize={'16px'} fontWeight={'regular'}>
-                  Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                  Laudantium incidunt dolorum dolor suscipit debitis. Quisquam
-                  vitae fuga temporibus tempore consectetur, ab voluptates! Quod
-                  deserunt voluptates reprehenderit possimus enim placeat officiis.
+                  {props.movie.meta.synopsis}
                 </MovieText>
               </Grid>
               <Grid sx={{ padding: '0 1rem' }} item xs={12}>
