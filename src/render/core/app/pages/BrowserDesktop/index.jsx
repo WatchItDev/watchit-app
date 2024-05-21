@@ -256,7 +256,7 @@ export const BrowserDesktop = () => {
       values: collectionsArr
     }, 'local')
 
-    setNewCollectionCID(null)
+    setNewCollectionCID('')
     setCollections(collectionsArr.map((c) => c.cid))
     setSelectedCollection(newCollectionCID)
     setShowNewCollection(false)
