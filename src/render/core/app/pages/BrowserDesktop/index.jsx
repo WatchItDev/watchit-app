@@ -343,7 +343,7 @@ export const ModalWrapper = styled(Box)(() => ({
   backgroundColor: '#212328',
   borderRadius: '1rem',
   boxShadow: 24,
-  padding: 4,
+  padding: '1rem',
 }));
 
 export const MobileHeaderWrapper = styled(Box, {
