@@ -8,12 +8,10 @@ import App from "./core/app/index";
 import { Broker as broker } from "@main/bridge";
 import * as Bootstrap from "@main/core";
 
-console.log(broker)
-
 const webRenderer = broker.getIPC();
 // Initialize nodes and core libs
 // this initialization persist over the underlying ipc
-Bootstrap(webRenderer, { Helia });
+Bootstrap(webRenderer, { Helia, runtime: "web" });
 
 const root = document.getElementById("root");
 ReactDOM.render(<App />, root);

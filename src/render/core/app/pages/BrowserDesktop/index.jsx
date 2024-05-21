@@ -114,10 +114,32 @@ export const BrowserDesktop = () => {
   }, [loadedMovies]);
 
   useEffect(() => {
-    window.addEventListener('resize', handleResize);
+    // Add resize event listener
+    window.addEventListener('resize', handleResize)
 
-    runIngest(cid);
-    handleResize();
+    // const itCached = getCached() || getLoaded()
+    // setLoading(!itCached)
+    // setReady(itCached)
+
+    broker.startListeningIPC()
+    broker.on('notification', (e, d) => {
+      console.log('Hello notification!!!!!!!!')
+      console.log(d)
+    })
+
+    broker.connect('bafkreigryozzhq5q4fsof3odknebncmvuguxot5jdrfxtcmmqcypwid2qy')
+
+    // Start ingest if not
+    // if (getCached()) {
+    //   log.info('Running Cache')
+    //   return
+    // }
+
+    // Start ingestion
+    runIngest()
+
+    loadOrder(0, 6)
+    handleResize()
 
     return () => {
       window.removeEventListener('resize', handleResize);

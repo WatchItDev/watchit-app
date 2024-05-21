@@ -20,8 +20,8 @@ const all = require("it-all");
  *   }
  */
 
-module.exports = async (ipcMain, { Helia }) => {
-  const { node, fs } = await Helia();
+module.exports = async (ipcMain, { Helia, runtime }) => {
+  const { node, fs } = await Helia(runtime);
 
   /**
    * Collect data from ipfs using `cat` and deserialize it to json object
@@ -45,11 +45,13 @@ module.exports = async (ipcMain, { Helia }) => {
       // collect data stored in
       const fetchedData = await catJSON(content.data);
       const event = Object.assign(content, {
+        meta: fetchedData,
+        type: "watchit/data",
         count: parsedData.count,
         progress: ((+key + 1) / parsedData.count) * 100,
-        type: "watchit/data",
-        meta: fetchedData,
       });
+
+      console.log(event)
 
       log.info(`Processing ${+key + 1}/${event.count} ${event.progress}%`);
       e.reply("notification", event);
