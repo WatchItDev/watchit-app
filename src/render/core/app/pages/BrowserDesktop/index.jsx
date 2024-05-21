@@ -31,8 +31,8 @@ export const BrowserDesktop = () => {
   const getRecalculatedScreen = (force = false) => {
     if (screen && !force) return screen
 
-    const width = moviesWrapper.current.offsetWidth;
-    const height = moviesWrapper.current.offsetHeight;
+    const width = moviesWrapper.current?.offsetWidth;
+    const height = moviesWrapper.current?.offsetHeight;
     const defaults = util.calcScreenSize({ width, height });
     log.info(`Recalculating Screen W:${width}, H:${height}`);
     setScreen(defaults);
@@ -63,7 +63,7 @@ export const BrowserDesktop = () => {
 
   const moviesToRow = (_movies, l) => {
     return new Array(Math.ceil(_movies.length / l)).fill(0)
-        .map((_, n) => _movies.slice(n * l, n * l + l));
+      .map((_, n) => _movies.slice(n * l, n * l + l));
   };
 
   const updateOrInsertMovie = async (db, movie, collection) => {
@@ -86,7 +86,6 @@ export const BrowserDesktop = () => {
     // console.log(moviesFromDb)
     broker.removeAllListeners();
     broker.stopListeningIPC();
-
     broker.startListeningIPC();
 
     broker.on('notification', async (e, n) => {

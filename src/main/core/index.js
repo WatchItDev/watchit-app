@@ -20,8 +20,8 @@ const all = require("it-all");
  *   }
  */
 
-module.exports = async (ipcMain, { Helia }) => {
-  const { node, fs } = await Helia();
+module.exports = async (ipcMain, { Helia, runtime }) => {
+  const { node, fs } = await Helia(runtime);
 
   /**
    * Collect data from ipfs using `cat` and deserialize it to json object
@@ -35,6 +35,7 @@ module.exports = async (ipcMain, { Helia }) => {
   }
 
   ipcMain.on("node-start", async (e, key) => {
+    log.info(`Processing ${key}`)
     const parsedData = await catJSON(key);
     if (!parsedData.manifest) {
       throw new Error("Fetched content with invalid manifest.");
@@ -45,10 +46,11 @@ module.exports = async (ipcMain, { Helia }) => {
       // collect data stored in
       const fetchedData = await catJSON(content.data);
       const event = Object.assign(content, {
+        meta: fetchedData,
+        type: "watchit/data",
         count: parsedData.count,
         progress: ((+key + 1) / parsedData.count) * 100,
-        type: "watchit/data",
-        meta: fetchedData,
+        end: key === parsedData.count
       });
 
       log.info(`Processing ${+key + 1}/${event.count} ${event.progress}%`);
@@ -63,12 +65,10 @@ module.exports = async (ipcMain, { Helia }) => {
   });
 
   ipcMain.on("node-close", async () => {
-    log.warn("Closing orbit");
-    // await orbit.close()
+    await orbit.stop()
   });
 
   ipcMain.on("node-flush", async () => {
-    log.warn("Flushing orbit");
     // ingest.cleanInterval()
   });
 
