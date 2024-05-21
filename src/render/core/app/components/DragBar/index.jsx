@@ -23,7 +23,7 @@ const Header = styled.header`
   right: 0;
   left: 0;
   background-color: #1A1C20;
-  padding: 1rem 1.5rem;
+  padding: 1rem;
   height: 4rem;
   display: flex;
   align-items: center;
@@ -103,7 +103,7 @@ const DragBar = (props) => {
   return (
     <Container>
       <Header>
-        <Logo size={100}  />
+        <Logo size={50}  />
         {/*<Logo />*/}
         {/* {this.state.updater && <Updater>{this.state.updater}</Updater>} */}
         <WindowControls>

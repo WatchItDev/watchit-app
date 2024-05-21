@@ -51,6 +51,7 @@ export default class CatalogList extends React.Component {
         onClick={this.props.onClick}
         empty={false} preload
         end={this.state.end}
+        cid={this.props.cid}
       />
     )
   }

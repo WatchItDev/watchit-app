@@ -14,8 +14,6 @@ export default {
       'https://ipfs.io',
       'https://cloudflare-ipfs.com',
       'https://storry.tv',
-      'https://cf-ipfs.com',
-      'https://4everland.io',
       'https://gateway.pinata.cloud',
       'https://dweb.link',
       // ...process.env.RUNTIME !== 'web'

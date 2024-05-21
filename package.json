@@ -20,6 +20,7 @@
     "windows-elevate": "^1.0.1"
   },
   "dependencies": {
+    "@chainsafe/libp2p-gossipsub": "^13.0.0",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@helia/unixfs": "^3.0.6",
@@ -38,7 +39,8 @@
     "logplease": "^1.2.15",
     "material-ui": "^0.20.2",
     "mime": "^2.4.6",
-    "plyr": "^3.6.12",
+    "plyr": "^3.7.8",
+    "plyr-react": "^5.3.0",
     "pretty-bytes": "^5.6.0",
     "react-window": "^1.8.10",
     "react-window-infinite-loader": "^1.0.9",
@@ -143,7 +145,7 @@
     "@svgr/webpack": "^5.5.0",
     "@typescript-eslint/eslint-plugin": "^4.5.0",
     "@typescript-eslint/parser": "^4.5.0",
-    "@watchitapp/watchitapp-uix": "1.0.8",
+    "@watchitapp/watchitapp-uix": "1.0.13",
     "babel-eslint": "^10.1.0",
     "babel-jest": "^26.6.0",
     "babel-loader": "8.2.3",

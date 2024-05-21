@@ -13,7 +13,11 @@ export default class CatalogRow extends React.Component {
   }
 
   shouldComponentUpdate(nextProps) {
-    return (nextProps.chunkSize !== this.props.chunkSize) || (nextProps.chunk.length !== this.props.chunk.length);
+    // console.log('is diferent cid?')
+    // console.log(nextProps.cid)
+    // console.log(this.props.cid)
+    // console.log((nextProps.cid !== this.props.cid))
+    return (nextProps.chunkSize !== this.props.chunkSize) || (nextProps.chunk.length !== this.props.chunk.length) || (nextProps.end !== this.props.end) || (nextProps.cid !== this.props.cid);
   }
 
   render () {
@@ -23,12 +27,12 @@ export default class CatalogRow extends React.Component {
           return (
               <Poster
                   key={i.id || uid.generate()}
-                  img={gatewayHelper.dummyParse(i.images['medium'])}
+                  img={gatewayHelper.dummyParse(i.images?.['medium'] ?? '')}
                   onClick={() => { this.props.onClick(i) }}
-                  title={i.meta.title}
-                  rate={i.meta.rating}
+                  title={i.meta?.title}
+                  rate={i.meta?.rating}
                   end={this.props.end}
-                  year={i.meta.year} canHover={true}
+                  year={i.meta?.year} canHover={true}
               />
           )
         })}

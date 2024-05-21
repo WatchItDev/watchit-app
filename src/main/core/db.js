@@ -39,16 +39,42 @@ class DB {
    *
    * @async
    * @param {*} collection - The data to store in db.
+   * @param {string} id - The id of the db.
    * @returns {Promise<{status: string, db: object}>} A promise that resolves with an object containing the status and the database interface.
    */
-  insert(collection) {
+  insert(collection, id) {
     return new Promise((resolve, reject) => {
-      if (!(this.id in this.db)) {
+      if (!((id ?? this.id) in this.db)) {
         return reject(new Error('No id in db'));
       }
-      this.db[this.id].insert(collection, () => {
+      this.db[id ?? this.id].insert(collection, () => {
+        console.log(`item ${collection?._id} inserted in ${(id ?? this.id)}`)
         resolve({ status: 'ready', db: this });
       }); // Save in local
+    });
+  }
+
+  /**
+   * Update data in the underlying db.
+   *
+   * @async
+   * @param {object} query - The query object to find the document to update.
+   * @param {object} update - The update object.
+   * @param {object} options - The update options.
+   * @param {string} id - The id of the db.
+   * @returns {Promise<object>} A promise that resolves with the update result.
+   */
+  update(query, update, options = {}, id) {
+    return new Promise((resolve, reject) => {
+      if (!((id ?? this.id) in this.db)) {
+        return reject(new Error('No id in db'));
+      }
+      this.db[id ?? this.id].update(query, update, options, (err, numReplaced) => {
+        if (err) {
+          return reject(err);
+        }
+        resolve({ numReplaced });
+      });
     });
   }
 
@@ -58,16 +84,35 @@ class DB {
    * @returns {DB} The database interface
    */
   clear(id) {
-    if (!(this.id in this.db)) return;
+    if (!((id ?? this.id) in this.db)) return;
     // clear all the content in database
-    this.db[id].remove({}, { multi: true }, (err, numRemoved) => {
+    this.db[id ?? this.id].remove({}, { multi: true }, (err, numRemoved) => {
       if (err) log.error(err);
       log.info("Flushed db entries: ", numRemoved);
       // communicate the event the main thread to handle the it
-      this.ipc.send("node-flush");
+      // this.ipc.send("node-flush");
     });
 
     return this;
+  }
+
+  /**
+   * Get all data from the database.
+   *
+   * @returns {Promise<object[]>} A promise that resolves with all the movies.
+   */
+  getAllData(id) {
+    return new Promise((resolve, reject) => {
+      if (!((id ?? this.id) in this.db)) {
+        return reject(new Error('No id in db'));
+      }
+      this.db[(id ?? this.id)].find({}, (err, docs) => {
+        if (err) {
+          return reject(err);
+        }
+        resolve(docs);
+      });
+    });
   }
 
   /**
@@ -119,12 +164,16 @@ class DB {
   /**
    * Get content from id.
    * @param {*} id - The content id to retrieve from db.
+   * @param {string} db - The db id.
    * @returns {Promise<object>} A promise that will be resolved with the result.
    */
-  get(id) {
-    if (!(this.id in this.db)) return;
+  get(id, db) {
+    if (!((db ?? this.id) in this.db)) return;
     return new Promise((resolve) => {
-      this.db[this.id].findOne({ _id: id }, (e, r) => {
+      this.db[(db ?? this.id)].findOne({ _id: id }, (e, r) => {
+        console.log(`get item with id ${id} from db: ${db ?? this.id}}`)
+        console.log(e)
+        console.log(r)
         resolve(r);
       });
     });
