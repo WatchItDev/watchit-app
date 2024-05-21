@@ -9,10 +9,10 @@ import { DB as db, Broker as broker } from '@main/bridge';
 
 const DEFAULT_INIT_LOAD = 100;
 
-const cid = 'bafkreigryozzhq5q4fsof3odknebncmvuguxot5jdrfxtcmmqcypwid2qy';
-
 export const BrowserDesktop = () => {
-  const isOpen= true;
+
+
+  const isOpen = true;
   const [movies, setMovies] = useState([]);
   const [loadedMovies, setLoadedMovies] = useState([]);
   const [screen, setScreen] = useState(undefined);
@@ -32,12 +32,13 @@ export const BrowserDesktop = () => {
   ];
 
   const getRecalculatedScreen = () => {
-    const width = moviesWrapper.current.offsetWidth;
-    const height = moviesWrapper.current.offsetHeight;
+    const width = moviesWrapper.current?.offsetWidth;
+    const height = moviesWrapper.current?.offsetHeight;
     const defaults = util.calcScreenSize({ width, height });
     log.info(`Recalculating Screen W:${width}, H:${height}`);
     return defaults;
   };
+
 
   const loadOrder = useCallback(async (start, to) => {
     if (loading || !hasMore) return;
@@ -64,19 +65,16 @@ export const BrowserDesktop = () => {
 
   const moviesToRow = (_movies, l) => {
     return new Array(Math.ceil(_movies.length / l)).fill(0)
-        .map((_, n) => _movies.slice(n * l, n * l + l));
+      .map((_, n) => _movies.slice(n * l, n * l + l));
   };
 
   const runIngest = (cid) => {
     const cursor = db.connect(cid);
     broker.removeAllListeners();
     broker.startListeningIPC();
-
     broker.on('notification', async (e, n) => {
       const movie = { ...n, id: n.meta.id };
-
       await cursor.insert(movie);
-
       setMovies((prevMovies) => [...prevMovies, movie]);
       setPercent(movie.progress);
       setCount(movie.count);
@@ -113,31 +111,15 @@ export const BrowserDesktop = () => {
     resizeTimeout.current = setTimeout(recalculateScreen, 500);
   }, [loadedMovies]);
 
+
+
   useEffect(() => {
     // Add resize event listener
     window.addEventListener('resize', handleResize)
-
-    // const itCached = getCached() || getLoaded()
-    // setLoading(!itCached)
-    // setReady(itCached)
-
-    broker.startListeningIPC()
-    broker.on('notification', (e, d) => {
-      console.log('Hello notification!!!!!!!!')
-      console.log(d)
-    })
-
-    broker.connect('bafkreigryozzhq5q4fsof3odknebncmvuguxot5jdrfxtcmmqcypwid2qy')
-
-    // Start ingest if not
-    // if (getCached()) {
-    //   log.info('Running Cache')
-    //   return
-    // }
+    const cid = "bafkreicyho2ul5ya74lrcwwowyufow7o53digtq5nhtb5ymjfgple7pr7q"
 
     // Start ingestion
-    runIngest()
-
+    runIngest(cid)
     loadOrder(0, 6)
     handleResize()
 
@@ -149,50 +131,50 @@ export const BrowserDesktop = () => {
 
   const onMovieClick = (movie) => {
     setSelectedMovie(movie);
-    setLock(true);
+    // setLock(true);
   };
 
   const onCloseMovieModal = () => {
     setSelectedMovie(null);
-    setLock(false);
+    // setLock(false);
   };
 
   return (
-      <MobileHeaderContainer>
-        <MobileHeaderWrapper isOpen={isOpen} >
-          <Box sx={{ height: '55px', width: '80px' }}>
-            <ChannelsMenu isOpen={isOpen} users={channels} />
-          </Box>
-          <BrowseBarWrapper sx={{ backgroundColor: isOpen ? '#212328' : '#1A1C20' }}>
-            <MobileHeader
-                title="Browse"
-                isActive={isOpen}
+    <MobileHeaderContainer>
+      <MobileHeaderWrapper isOpen={isOpen} >
+        <Box sx={{ height: '55px', width: '80px' }}>
+          <ChannelsMenu isOpen={isOpen} users={channels} />
+        </Box>
+        <BrowseBarWrapper sx={{ backgroundColor: isOpen ? '#212328' : '#1A1C20' }}>
+          <MobileHeader
+            title="Browse"
+            isActive={isOpen}
+          />
+        </BrowseBarWrapper>
+      </MobileHeaderWrapper>
+
+      <ControlSliderWrapper open={isOpen} ref={moviesWrapper}>
+        {percent < 100 ? (
+          <span>Loading</span>
+        ) : <></>}
+        {
+          loadedMovies.length > 0 && !!screen && percent === 100 && (
+            <CatalogList
+              movies={loadedMovies}
+              loadOrder={loadOrder}
+              count={Math.ceil(count / (screen?.chunkSize ?? 6))}
+              loading={loading}
+              end={!hasMore}
+              chunkSize={screen.chunkSize}
+              onClick={onMovieClick}
+              screen={screen}
             />
-          </BrowseBarWrapper>
-        </MobileHeaderWrapper>
+          )
+        }
+      </ControlSliderWrapper>
 
-        <ControlSliderWrapper open={isOpen} ref={moviesWrapper}>
-          { percent < 100 ? (
-              <span>Loading</span>
-          ) : <></> }
-          {
-              loadedMovies.length > 0 && !!screen && percent === 100 && (
-                  <CatalogList
-                      movies={loadedMovies}
-                      loadOrder={loadOrder}
-                      count={Math.ceil(count / (screen?.chunkSize ?? 6))}
-                      loading={loading}
-                      end={!hasMore}
-                      chunkSize={screen.chunkSize}
-                      onClick={onMovieClick}
-                      screen={screen}
-                  />
-              )
-          }
-        </ControlSliderWrapper>
-
-        {selectedMovie && <MovieDetails movie={selectedMovie} OnCloseModal={onCloseMovieModal} />}
-      </MobileHeaderContainer>
+      {selectedMovie && <MovieDetails movie={selectedMovie} OnCloseModal={onCloseMovieModal} />}
+    </MobileHeaderContainer>
   );
 };
 

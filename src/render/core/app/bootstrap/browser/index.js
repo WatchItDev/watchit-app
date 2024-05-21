@@ -1,23 +1,15 @@
-import React from 'react'
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import React from "react";
+import { HashRouter, Route, Routes } from "react-router-dom";
 import BrowserDesktop from "@pages/BrowserDesktop";
-import PlayerUIX from '@pages/PlayUIX'
+import PlayerUIX from "@pages/PlayUIX";
 
 export default (/* hist, key */) => {
   return (
-    <BrowserRouter /* history={hist} */>
+    <HashRouter basename="/">
       <Routes>
-        <Route
-          path='/'
-          name='browse'
-          render={() => <BrowserDesktop/>}
-        />
-        <Route
-          name='player'
-          path='/player'
-          render={() => <PlayerUIX/>}
-        />
+        <Route name="browse" path="/" element={<BrowserDesktop />} />
+        <Route name="player" path="/player" element={<PlayerUIX />} />
       </Routes>
-    </BrowserRouter>
-  )
-}
+    </HashRouter>
+  );
+};

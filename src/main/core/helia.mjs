@@ -4,25 +4,19 @@ import { unixfs } from "@helia/unixfs";
 
 import { tcp } from "@libp2p/tcp";
 import { gossipsub } from "@chainsafe/libp2p-gossipsub";
-import { webRTCStar } from "@libp2p/webrtc-star";
 import { webSockets } from "@libp2p/websockets";
 import { webRTC, webRTCDirect } from "@libp2p/webrtc";
+import { webTransport } from '@libp2p/webtransport'
 import { circuitRelayTransport } from "@libp2p/circuit-relay-v2";
-import * as filters from "@libp2p/websockets/filters";
 
 const log = logplease.create("HELIA");
 
 function getConfig(runtime = "node") {
   const isBrowserRuntime = runtime === "web";
   const defaults = libp2pDefaults();
-  const star = webRTCStar();
 
   // Here we handle the logic the setup the corresponding conf for each runtime.
   // eg. Since browser cannot dial via tcp, we remote and same for node don't use web-transport, etc
-  const discovery = [
-    ...defaults.peerDiscovery,
-    ...((isBrowserRuntime && [star.discovery]) || []),
-  ];
   
   const listen = [
     // node listen
@@ -31,8 +25,6 @@ function getConfig(runtime = "node") {
       "/ip4/0.0.0.0/tcp/0/ws",
       "/webrtc",
     ]) || [
-      "/ip4/0.0.0.0/tcp/0",
-      "/ip4/0.0.0.0/tcp/0/ws",
       "/webrtc",
       "/wss",
       "/ws",
@@ -42,14 +34,14 @@ function getConfig(runtime = "node") {
   const transports = [
     ...((!isBrowserRuntime && [
       tcp(),
+      circuitRelayTransport({ discoverRelays: 3 }),
       webSockets({ websocket: { rejectUnauthorized: false } }),
     ]) || [
       webRTC(),
       webTransport(),
-      webSockets({ filter: filters.all }),
-      star.transport,
+      webSockets(),
+      circuitRelayTransport({ discoverRelays: 1 })
     ]),
-    circuitRelayTransport({ discoverRelays: 3 }),
     webRTCDirect(), // both runtimes
   ];
 
@@ -58,7 +50,6 @@ function getConfig(runtime = "node") {
     libp2p: Object.assign({}, defaults, {
       transports,
       addresses: { listen },
-      peerDiscovery: discovery,
       services: {
         ...defaults.services,
         pubsub: gossipsub({

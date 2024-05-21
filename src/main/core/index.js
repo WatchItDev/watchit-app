@@ -35,6 +35,7 @@ module.exports = async (ipcMain, { Helia, runtime }) => {
   }
 
   ipcMain.on("node-start", async (e, key) => {
+    log.info(`Processing ${key}`)
     const parsedData = await catJSON(key);
     if (!parsedData.manifest) {
       throw new Error("Fetched content with invalid manifest.");
@@ -49,9 +50,8 @@ module.exports = async (ipcMain, { Helia, runtime }) => {
         type: "watchit/data",
         count: parsedData.count,
         progress: ((+key + 1) / parsedData.count) * 100,
+        end: key === parsedData.count
       });
-
-      console.log(event)
 
       log.info(`Processing ${+key + 1}/${event.count} ${event.progress}%`);
       e.reply("notification", event);
@@ -65,12 +65,10 @@ module.exports = async (ipcMain, { Helia, runtime }) => {
   });
 
   ipcMain.on("node-close", async () => {
-    log.warn("Closing orbit");
-    // await orbit.close()
+    await orbit.stop()
   });
 
   ipcMain.on("node-flush", async () => {
-    log.warn("Flushing orbit");
     // ingest.cleanInterval()
   });
 

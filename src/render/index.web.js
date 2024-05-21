@@ -1,8 +1,7 @@
 // eslint-disable-next-line
 import React from "react";
 import { Helia } from "@main/core/helia.mjs";
-
-import ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client";
 import App from "./core/app/index";
 
 import { Broker as broker } from "@main/bridge";
@@ -11,10 +10,9 @@ import * as Bootstrap from "@main/core";
 const webRenderer = broker.getIPC();
 // Initialize nodes and core libs
 // this initialization persist over the underlying ipc
-Bootstrap(webRenderer, { Helia, runtime: "web" });
-
-const root = document.getElementById("root");
-ReactDOM.render(<App />, root);
+await Bootstrap(webRenderer, { Helia, runtime: "web" });
+const root = createRoot(document.getElementById("root"));
+root.render(<App />)
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
