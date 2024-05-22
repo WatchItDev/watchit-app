@@ -35,7 +35,7 @@ export default ({
     {
       width = window.screen.width,
       height = window.screen.height,
-      imageSize = 200, mp = 20
+      imageSize = 220, mp = 20
     } = {}
   ) => {
     // Avoid full fill row with small images

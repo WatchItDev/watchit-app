@@ -53,7 +53,7 @@ export const BrowserDesktop = () => {
       const newMovies = movies.slice(startIndex, endIndex);
       const moviesNewStructure = moviesToRow(newMovies, chunkSize);
 
-      setLoadedMovies((prevMovies) => [...prevMovies, ...moviesNewStructure]);
+      setLoadedMovies(moviesNewStructure);
       setLoading(false);
       lastMovieLoadedRef.current = endIndex;
       setHasMore(endIndex < count);
@@ -190,19 +190,18 @@ export const BrowserDesktop = () => {
     });
   }, [selectedCollection]);
 
-  const recalculateScreen = useCallback(() => {
-    if (!loadedMovies.length) return;
-    const defaults = getRecalculatedScreen(true);
-
+  const recalculateScreen = () => {
     setLoadedMovies((currMovies) => {
+      if (!currMovies.length) return currMovies;
+      const defaults = getRecalculatedScreen(true);
       const chunkSize = defaults.chunkSize;
       return moviesToRow(currMovies.flat(1), chunkSize);
     });
-  }, [loadedMovies]);
+  };
 
   const handleResize = useCallback(() => {
     resizeTimeout.current && clearTimeout(resizeTimeout.current);
-    resizeTimeout.current = setTimeout(recalculateScreen, 500);
+    resizeTimeout.current = setTimeout(recalculateScreen, 100);
   }, [loadedMovies]);
 
   useEffect(() => {
@@ -256,12 +255,11 @@ export const BrowserDesktop = () => {
       values: collectionsArr
     }, 'local')
 
-    setNewCollectionCID('')
     setCollections(collectionsArr.map((c) => c.cid))
     setSelectedCollection(newCollectionCID)
     setShowNewCollection(false)
+    setNewCollectionCID('')
   }
-
 
   // console.log(movies)
   // console.log(collections)
@@ -365,7 +363,7 @@ export const MobileHeaderWrapper = styled(Box, {
 export const ControlSliderWrapper = styled(Box, {
   shouldForwardProp: (prop) => (prop !== 'open')
 })((props) => ({
-  width: '100%',
+  width: 'calc(100% - 80px)',
   backgroundColor: '#212328',
   height: '100%',
   borderTopLeftRadius: '1rem',
@@ -373,15 +371,6 @@ export const ControlSliderWrapper = styled(Box, {
     width: '0',
     background: 'transparent '
   }
-}));
-
-export const BrowseBarWrapper = styled(Box)(() => ({
-  width: 'calc(100% - 80px)',
-  borderTopLeftRadius: '1rem',
-  overflow: 'hidden',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'space-between'
 }));
 
 export default BrowserDesktop;

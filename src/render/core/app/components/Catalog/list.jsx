@@ -1,96 +1,73 @@
-import React from 'react'
-import uid from 'shortid'
-import InfiniteLoader from 'react-window-infinite-loader'
-import { FixedSizeList } from 'react-window'
-import CatalogRow from './row'
+import React from 'react';
+import uid from 'shortid';
+import InfiniteLoader from 'react-window-infinite-loader';
+import { FixedSizeList } from 'react-window';
+import CatalogRow from './row';
 
-export default class CatalogList extends React.Component {
-  constructor (props) {
-    super(props)
-    this.state = {
-      movies: [],
-      end: false,
-      chunkSize: 0,
-      count: 0,
-      screen: {}
-    }
-  }
+const CatalogList = ({ movies, count, end, chunkSize, screen, onClick, loadOrder, cid }) => {
 
-  // shouldComponentUpdate (nextProps, nextState, nextContext) {
-  //   return (!nextProps.loading && nextProps.movies.length > 0) || (nextProps.movies.length !== this.props.movies.length)
-  // }
-
-  static getDerivedStateFromProps (nextProps) {
-    // if (!nextProps.movies) { return null }
-
-    const movies = nextProps.movies
-    const count = nextProps.count
-    const end = nextProps.end
-    const chunkSize = nextProps.chunkSize
-    const screen = nextProps.screen
-    return { count, movies, end, chunkSize, screen }
-  }
-
-  renderRow = ({ index, style }) => {
-    if (!this.state.movies[index]) {
+  const renderRow = ({ index, style }) => {
+    if (!movies[index]) {
       return (
-        <CatalogRow
-          key={uid.generate()} style={style}
-          chunk={Array(this.state.chunkSize).fill(0)}
-          chunkSize={this.state.chunkSize}
-          end={this.state.end}
-        />
-      )
+          <CatalogRow
+              key={uid.generate()}
+              style={style}
+              chunk={Array(chunkSize).fill(0)}
+              chunkSize={chunkSize}
+              end={end}
+          />
+      );
     }
 
     return (
-      <CatalogRow
-        key={index} style={style}
-        chunk={this.state.movies[index]}
-        chunkSize={this.state.chunkSize}
-        onClick={this.props.onClick}
-        empty={false} preload
-        end={this.state.end}
-        cid={this.props.cid}
-      />
-    )
-  }
+        <CatalogRow
+            key={index}
+            style={style}
+            chunk={movies[index]}
+            chunkSize={chunkSize}
+            onClick={onClick}
+            empty={false}
+            preload
+            end={end}
+            cid={cid}
+        />
+    );
+  };
 
-  alreadyLoaded = (index) => {
-    // return !!this.state.movies[index]
-    return false
-  }
+  const alreadyLoaded = (index) => {
+    return !!movies[index];
+  };
 
-  onScrollUpdate = (...params) => {
-    const [start, end] = params
-    return this.state.end
-      ? new Promise(() => console.log('Finish'))
-      : this.props.loadOrder && this.props.loadOrder(start, end)
-  }
+  const onScrollUpdate = (startIndex, endIndex) => {
+    return end
+        ? new Promise(() => console.log('Finish'))
+        : loadOrder && loadOrder(startIndex, endIndex);
+  };
 
-  render () {
-    return (
+  return (
       <div className='movie-list-posters'>
         <InfiniteLoader
-          isItemLoaded={this.alreadyLoaded}
-          loadMoreItems={this.onScrollUpdate}
-          itemCount={this.state.count + 2}
+            isItemLoaded={alreadyLoaded}
+            loadMoreItems={onScrollUpdate}
+            itemCount={count + 2}
         >
           {({ onItemsRendered, ref }) => (
-            <FixedSizeList
-              className='row-list'
-              height={this.state.screen.height}
-              itemCount={this.state.count}
-              itemSize={this.state.screen.chunkHeight}
-              onItemsRendered={onItemsRendered}
-              width={this.state.screen.width}
-              ref={ref}
-            >
-              {this.renderRow}
-            </FixedSizeList>
+              <FixedSizeList
+                  className='row-list'
+                  height={screen.height}
+                  itemCount={count}
+                  itemSize={screen.chunkHeight}
+                  onItemsRendered={onItemsRendered}
+                  width={screen.width}
+                  ref={ref}
+              >
+                {renderRow}
+              </FixedSizeList>
           )}
         </InfiniteLoader>
       </div>
-    )
-  }
-}
+  );
+};
+
+export default CatalogList;
+
