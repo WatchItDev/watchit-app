@@ -38,10 +38,10 @@ const CatalogList = ({ movies, count, end, chunkSize, screen, onClick, loadOrder
     return !!movies[index];
   };
 
-  const onScrollUpdate = (startIndex, endIndex) => {
+  const onScrollUpdate = (start, end) => {
     return end
         ? new Promise(() => console.log('Finish'))
-        : loadOrder && loadOrder(startIndex, endIndex);
+        : loadOrder && loadOrder(start, end);
   };
 
   return (

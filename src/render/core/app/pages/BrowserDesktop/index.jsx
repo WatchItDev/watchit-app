@@ -66,15 +66,15 @@ export const BrowserDesktop = () => {
       .map((_, n) => _movies.slice(n * l, n * l + l));
   };
 
-  const updateOrInsertMovie = async (db, movie, collection) => {
-    const existingMovie = await db.get(movie._id);
-    if (existingMovie) {
-      db.update({ _id: movie._id }, movie, {}, collection).then(() => {
-        console.log(`Movie ${movie._id} updated in the database`)
+  const updateOrInsert = async (db, item, collection) => {
+    const existingItem = await db.get(item._id, collection);
+    if (existingItem) {
+      db.update({ _id: item._id }, item, {}, collection).then(() => {
+        console.log(`Item ${item._id} updated in the database`)
       })
     } else {
-      db.insert(movie, collection).then(() => {
-        console.log(`Movie ${movie._id} inserted into the database`);
+      db.insert(item, collection).then(() => {
+        console.log(`Item ${item._id} inserted into the database`);
       })
     }
   };
@@ -95,7 +95,7 @@ export const BrowserDesktop = () => {
       // console.log(moviesFromDb)
       const moviesAreLoaded = moviesFromDb.length
 
-      await updateOrInsertMovie(db, movie, cid);
+      await updateOrInsert(db, movie, cid);
 
       // console.log('on collect movie')
       // console.log(moviesAreLoaded)
@@ -249,8 +249,7 @@ export const BrowserDesktop = () => {
     // console.log('handle add collection')
     // console.log(collectionsArr)
 
-    // SET MOCKED COLLECTION
-    await localDb.insert({
+    await updateOrInsert(localDb, {
       _id: 'collections',
       values: collectionsArr
     }, 'local')
