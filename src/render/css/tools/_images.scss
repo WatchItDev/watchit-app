@@ -6,7 +6,8 @@
 
 .image-container {
   @include mixins.clearfix;
-  height: auto;
+  width: 100%;
+  height: 100%;
   display: inline-block;
   flex-shrink: 0;
 }

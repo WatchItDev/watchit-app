@@ -35,6 +35,39 @@ class DB {
   }
 
   /**
+   * Check if a database exists.
+   *
+   * @param {string} id - The database identifier
+   * @returns {boolean} True if the database exists, false otherwise
+   */
+  exists(id) {
+    return id in this.db;
+  }
+
+  /**
+   * Delete a database.
+   *
+   * @param {string} id - The database identifier
+   * @returns {Promise<boolean>} A promise that resolves to true if the database was deleted, false otherwise
+   */
+  delete(id) {
+    return new Promise((resolve, reject) => {
+      if (!this.exists(id)) {
+        return reject(new Error('Database not found'));
+      }
+      this.db[id].remove({}, { multi: true }, (err, numRemoved) => {
+        if (err) {
+          log.error(err);
+          return reject(err);
+        }
+        delete this.db[id];
+        log.info(`Database ${id} deleted`);
+        resolve(true);
+      });
+    });
+  }
+
+  /**
    * Add data to underlying db.
    *
    * @async

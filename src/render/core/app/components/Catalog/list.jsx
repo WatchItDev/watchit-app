@@ -1,10 +1,10 @@
-import React from 'react';
+import React, {memo} from 'react';
 import uid from 'shortid';
 import InfiniteLoader from 'react-window-infinite-loader';
 import { FixedSizeList } from 'react-window';
 import CatalogRow from './row';
 
-const CatalogList = ({ movies, count, end, chunkSize, screen, onClick, loadOrder, cid }) => {
+const CatalogList = ({ movies, count, end, chunkSize, screen, onClick, loadOrder, cid, onPlay }) => {
 
   const renderRow = ({ index, style }) => {
     if (!movies[index]) {
@@ -14,6 +14,9 @@ const CatalogList = ({ movies, count, end, chunkSize, screen, onClick, loadOrder
               style={style}
               chunk={Array(chunkSize).fill(0)}
               chunkSize={chunkSize}
+              onClick={() => {}}
+              onPlay={() => {}}
+              screen={screen}
               end={end}
           />
       );
@@ -26,6 +29,8 @@ const CatalogList = ({ movies, count, end, chunkSize, screen, onClick, loadOrder
             chunk={movies[index]}
             chunkSize={chunkSize}
             onClick={onClick}
+            onPlay={onPlay}
+            screen={screen}
             empty={false}
             preload
             end={end}
@@ -69,5 +74,5 @@ const CatalogList = ({ movies, count, end, chunkSize, screen, onClick, loadOrder
   );
 };
 
-export default CatalogList;
+export default memo(CatalogList);
 

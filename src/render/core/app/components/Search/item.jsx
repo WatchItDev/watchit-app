@@ -22,6 +22,10 @@ const ResultContent = styled.div`
   flex-direction: column;
 `
 
+const ImageContainer = styled.div`
+  width: 2.2rem;
+`
+
 const ResultTitle = styled.strong`
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -54,29 +58,30 @@ const ResultDetailsItemIcon = styled.i`
 
 const SearchResultItem = (props) => {
   const handleClick = () => {
-    props.onClick &&
-    props.onClick(props._id)
+    props.onClick?.(props)
   }
 
   return (
     <ResultWrapper onClick={handleClick}>
-      <Image src={props.image} preload pulseStyle={{ position: 'relative' }} />
+      <ImageContainer>
+        <Image src={props.image} preload pulseStyle={{ position: 'relative' }} />
+      </ImageContainer>
       <ResultContent>
         <ResultTitle>
-          {props.title}
+          {props?.meta?.title}
         </ResultTitle>
         <ResultDetails>
           <ResultDetailsItem color={setting.styles.colors.successDark}>
             <ResultDetailsItemIcon className='icon-calendar' />
-            {props.year}
+            {props?.meta?.year}
           </ResultDetailsItem>
           <ResultDetailsItem color={setting.styles.colors.warningDark}>
             <ResultDetailsItemIcon className='icon-star' />
-            {props.rating}
+            {props?.meta?.rating}
           </ResultDetailsItem>
           <ResultDetailsItem color={setting.styles.colors.dangerDark}>
             <ResultDetailsItemIcon className='icon-back-in-time' />
-            {props.runtime}
+            {props?.meta?.runtime}
           </ResultDetailsItem>
         </ResultDetails>
       </ResultContent>

@@ -76,7 +76,7 @@ const SearchResult = (props) => {
                           key={i._id}
                           onClick={props.onClick}
                           {...Object.assign(i, {
-                            image: gatewayHelper.parsePosterUri(i.resource, 'small')
+                            image: i.images?.['medium']
                           })}
                         />
                       )

@@ -8,6 +8,7 @@ const StatWrapper = styled.div`
 
 const StatContent = styled.div`
   display: inline-block;
+  margin-right: 0.5rem;
 
   @media (max-width: 800px) {
     display: none;
@@ -38,68 +39,20 @@ const LogOutIcon = styled.i`
 `
 
 const Stats = (props) => {
-  const _index = (i) => {
-    return props.handler
-      ? props.handler(i)
-      : 0
-  }
-
-  const chunk = () => {
-    return _index('chunk')
-  }
-
-  const getTotal = () => {
-    return _index('total')
-  }
-
-  const getTmp = () => {
-    return parseFloat(
-      _index('tmp')
-    ).toFixed(1)
-  }
-
-  const getPeers = () => {
-    const _currentPeers = _index('peers')
-    return _currentPeers > 0 ? _currentPeers : 1
-  }
-
-  const [peers, setPeers] = useState(getPeers())
-  const [progress, setProgress] = useState(getTmp())
-  const [loaded, setLoaded] = useState(chunk())
-  const [total, setTotal] = useState(getTotal())
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setPeers(getPeers())
-      setProgress(getTmp())
-      setLoaded(chunk())
-      setTotal(getTotal())
-    }, 10000)
-
-    return () => {
-      clearInterval(timer)
-    }
-  }, [])
 
   return (
     <StatWrapper>
       <StatContent>
-        <StatIcon className='icon-traffic-cone' />
-        <StatText>Sync: {progress}%</StatText>
         <StatIcon className='icon-book' />
-        <StatText>Movies: {loaded}/{total}</StatText>
-        <StatIcon className='icon-user' />
-        <StatText>Peers: {peers}</StatText>
+        <StatText>Movies: {props.loaded}/{props.count}</StatText>
       </StatContent>
-      <LogOut onClick={props.onSignOut} href='/'>
-        <LogOutIcon className='icon-log-out' />
-      </LogOut>
     </StatWrapper>
   )
 }
 
 Stats.propTypes = {
-  handler: PropTypes.func.isRequired,
+  loaded: PropTypes.number.isRequired,
+  count: PropTypes.number.isRequired,
   handleSignOut: PropTypes.func
 }
 

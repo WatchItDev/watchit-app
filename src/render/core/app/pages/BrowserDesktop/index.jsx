@@ -6,6 +6,8 @@ import CatalogList from '@components/Catalog/list';
 import log from '@logger';
 import util from '@helpers/util';
 import { DB, Broker as broker } from '@main/bridge';
+import Search from "@components/Search";
+import Stats from "@components/Stats";
 
 const DEFAULT_INIT_LOAD = 100;
 
@@ -19,7 +21,7 @@ export const BrowserDesktop = () => {
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
   const [percent, setPercent] = useState(0);
-  const [count, setCount] = useState(DEFAULT_INIT_LOAD);
+  const [count, setCount] = useState(0);
   const [selectedMovie, setSelectedMovie] = useState();
   const [selectedCollection, setSelectedCollection] = useState();
   const [showNewCollection, setShowNewCollection] = useState(false);
@@ -84,6 +86,19 @@ export const BrowserDesktop = () => {
     // console.log(db)
     // console.log(cid)
     // console.log(moviesFromDb)
+    const existingItem = await db.exists(cid);
+    const data = await db.getAllData(cid);
+
+    // console.log('hello has data ingest')
+    // console.log(data)
+    // console.log(data.length)
+    // console.log(existingItem)
+    // console.log(existingItem && data.length)
+
+    if (existingItem && data.length) return
+
+    // console.log('ingest')
+    // console.log(moviesFromDb)
     broker.removeAllListeners();
     broker.stopListeningIPC();
     broker.startListeningIPC();
@@ -103,6 +118,7 @@ export const BrowserDesktop = () => {
       // console.log(movie.count)
       // console.log(movie.progress)
 
+      !moviesAreLoaded && setCount(movie.count);
       !moviesAreLoaded && setPercent(movie.progress);
 
       if (movie.progress === 100 && !moviesAreLoaded) {
@@ -146,12 +162,12 @@ export const BrowserDesktop = () => {
     (async () => {
       if (!localDb) return;
 
-      // const all = await localDb.getAllData('local')
+      const all = await localDb.getAllData('local')
       const collectionsStored = await localDb.get('collections', 'local')
       const selectedChannel = await localDb.get('selectedCollection', 'local')
 
-      // console.log('all local data')
-      // console.log(all)
+      console.log('all local data')
+      console.log(all)
 
       if (collectionsStored?.values) {
         setCollections(collectionsStored.values.map((c) => c.cid))
@@ -218,7 +234,14 @@ export const BrowserDesktop = () => {
   }, []);
 
   const onMovieClick = (movie) => {
+    // console.log('on movie click')
+    // console.log(movie)
     setSelectedMovie(movie);
+  };
+
+  const onMoviePlay = (movie) => {
+    console.log('on movie play')
+    console.log(movie)
   };
 
   const onCloseMovieModal = () => {
@@ -234,10 +257,10 @@ export const BrowserDesktop = () => {
     // console.log('on channel click: ', channel)
     setSelectedCollection(channel)
 
-    await localDb.insert({
+    await updateOrInsert(localDb, {
       _id: 'selectedCollection',
-      value: channel
-    }, 'local')
+      values: channel
+    }, 'local');
   }
 
   const handleAddCollection = async () => {
@@ -260,20 +283,50 @@ export const BrowserDesktop = () => {
     setNewCollectionCID('')
   }
 
+  const onRemoveCollection = async (collection) => {
+    await localDb.delete(collection);
+    const collectionsStored = await localDb.get('collections', 'local') || { values: [] };
+    const updatedCollections = collectionsStored.values.filter(c => c.cid !== collection);
+    const selected = updatedCollections.length ? updatedCollections[0].cid : null;
+
+    await updateOrInsert(localDb, {
+      _id: 'collections',
+      values: updatedCollections
+    }, 'local');
+
+    await updateOrInsert(localDb, {
+      _id: 'selectedCollection',
+      values: selected
+    }, 'local');
+
+    setCollections(updatedCollections.map((c) => c.cid));
+    setSelectedCollection(selected);
+  }
+
+  const handleSignOut = async (el) => {
+    console.log('handle click sign out')
+    console.log(el)
+  }
+
   // console.log(movies)
   // console.log(collections)
   // console.log(percent)
 
   return (
-      <MobileHeaderContainer>
-        <MobileHeaderWrapper isOpen={true} >
+      <MainContainer>
+        <ChannelsMenuWrapper>
           <ChannelsMenu
               channels={collections} selected={selectedCollection}
               onAddChannel={onAddChannel} onChannelClick={onChannelClick}
+              onRemoveChannel={onRemoveCollection}
           />
-        </MobileHeaderWrapper>
+        </ChannelsMenuWrapper>
 
-        <ControlSliderWrapper open={true} ref={moviesWrapper}>
+        <MainContent ref={moviesWrapper}>
+          <MainContentHeader>
+            <Search movies={movies} onClick={onMovieClick} />
+            <Stats loaded={Math.ceil((percent/100)  * count)} count={count} onSignOut={handleSignOut} />
+          </MainContentHeader>
           { percent < 100 && collections.length ? (
               <span>Loading {percent}%</span>
           ) : <></> }
@@ -293,16 +346,16 @@ export const BrowserDesktop = () => {
                       end={!hasMore}
                       chunkSize={screen.chunkSize}
                       onClick={onMovieClick}
+                      onPlay={onMoviePlay}
                       screen={screen}
                   />
               )
           }
-        </ControlSliderWrapper>
-
-        {selectedMovie && <MovieDetails movie={selectedMovie} OnCloseModal={onCloseMovieModal} />}
+          {selectedMovie && <MovieDetails movie={selectedMovie} onCloseModal={onCloseMovieModal} />}
+        </MainContent>
 
         <Modal open={showNewCollection} onClose={() => setShowNewCollection(false)}>
-          <ModalWrapper>
+          <AddCollectionModalWrapper>
             <Typography>Add new collection</Typography>
             <TextField
                 label="Collection CID"
@@ -314,20 +367,20 @@ export const BrowserDesktop = () => {
             <Button variant="contained" color="primary" onClick={handleAddCollection}>
               Add Collection
             </Button>
-          </ModalWrapper>
+          </AddCollectionModalWrapper>
         </Modal>
-      </MobileHeaderContainer>
+      </MainContainer>
   );
 };
 
-export const MobileHeaderContainer = styled(Box)(() => ({
+export const MainContainer = styled(Box)(() => ({
   display: 'flex',
   height: '100vh',
   width: '100%',
   backgroundColor: '#1A1C20'
 }));
 
-export const ModalWrapper = styled(Box)(() => ({
+export const AddCollectionModalWrapper = styled(Box)(() => ({
   position: 'absolute',
   display: 'flex',
   flexDirection: 'column',
@@ -343,9 +396,7 @@ export const ModalWrapper = styled(Box)(() => ({
   padding: '1rem',
 }));
 
-export const MobileHeaderWrapper = styled(Box, {
-  shouldForwardProp: (prop) => (prop !== 'isOpen')
-})((props) => ({
+export const ChannelsMenuWrapper = styled(Box)(() => ({
   display: 'flex',
   flexDirection: 'row',
   alignItems: 'flex-start',
@@ -356,20 +407,32 @@ export const MobileHeaderWrapper = styled(Box, {
   top: 0,
   left: 0,
   zIndex: '10',
-  backgroundColor: props.active ? '#212328' : '#1A1C20',
+  backgroundColor: '#212328',
 }));
 
-export const ControlSliderWrapper = styled(Box, {
-  shouldForwardProp: (prop) => (prop !== 'open')
-})((props) => ({
+export const MainContent = styled(Box)(() => ({
   width: 'calc(100% - 80px)',
   backgroundColor: '#212328',
   height: '100%',
+  position: 'relative',
   borderTopLeftRadius: '1rem',
+  border: '1px solid #444',
   '&::-webkit-scrollbar': {
     width: '0',
     background: 'transparent '
   }
+}));
+
+export const MainContentHeader = styled(Box)(() => ({
+  width: '100%',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  backgroundColor: '#212328',
+  padding: '0.5rem',
+  borderTopLeftRadius: '1rem',
+  borderBottom: '1px solid #444',
+  marginBottom: '0.5rem'
 }));
 
 export default BrowserDesktop;
