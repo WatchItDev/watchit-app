@@ -5,20 +5,12 @@
 export default {
   streaming: ['hls'],
   gateways: () => {
-    // const keyFile = key.readFromStorage() || {}
-    // const node = 'node' in keyFile && keyFile.node ? keyFile.node : null
-    const port = '9090'// null ? '8080' : '9090'
-
     return [
       'https://gateway.ipfs.io',
       'https://ipfs.io',
       'https://cloudflare-ipfs.com',
       'https://storry.tv',
-      'https://gateway.pinata.cloud',
-      'https://dweb.link',
-      // ...process.env.RUNTIME !== 'web'
-      //   ? [`http://localhost:${port}`]
-      //   : []
+      'https://dweb.link'
     ]
   },
   subs: {

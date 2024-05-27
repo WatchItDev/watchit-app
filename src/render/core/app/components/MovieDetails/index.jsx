@@ -10,10 +10,11 @@ import { Close } from '@mui/icons-material'
 import { CustomButton } from '@watchitapp/watchitapp-uix';
 
 // TABLER IMPORTS
-import gatewayHelper from "@helpers/gateway";
 import Plyr from 'plyr-react'
 
+// PROJECT IMPORTS
 import './index.scss';
+import Image from "@components/Image";
 
 export const MovieDetails = (props) => {
   const navigate = useNavigate()
@@ -116,7 +117,7 @@ export const MovieDetails = (props) => {
                       }}
                   >
                     <ButtonTrailer>Trailer</ButtonTrailer>
-                    <GradientBorderButton onClick={props.onClick}>Watch IT</GradientBorderButton>
+                    <GradientBorderButton onClick={() => { props.onPlay(props.movie) }}>Watch IT</GradientBorderButton>
                   </Box>
                 </Grid>
               </Grid>
@@ -135,7 +136,7 @@ export const MovieDetails = (props) => {
                   md={5}
               >
                 <figure className="detail__image slide-in-right">
-                  <img src={gatewayHelper.dummyParse(props.movie.images['medium'])} alt="Short description" />
+                  <Image src={props.movie.images['large']} preload alt="Short description" />
                 </figure>
               </Grid>
             </Grid>
@@ -145,7 +146,7 @@ export const MovieDetails = (props) => {
           <Box sx={{ top: '40%', zIndex: '1', left: '-50%', position: 'absolute', height: '170%', pointerEvents: 'none', width: '150%', background: 'radial-gradient(circle, rgba(0, 0, 0, 0.6) 22%, rgba(0, 0, 0, 0) 100%)' }}></Box>
 
           <figure className="background__detail__image">
-            <img src={gatewayHelper.dummyParse(props.movie.images['medium'])} alt="Short description"/>
+            <Image src={props.movie.images['medium']} alt="Short description"/>
           </figure>
         </Grid>
       </MovieDetailsWrapper>

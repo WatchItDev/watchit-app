@@ -8,6 +8,7 @@ import util from '@helpers/util';
 import { DB, Broker as broker } from '@main/bridge';
 import Search from "@components/Search";
 import Stats from "@components/Stats";
+import MoviePlayer from "@components/MoviePlayer";
 
 const DEFAULT_INIT_LOAD = 100;
 
@@ -26,6 +27,7 @@ export const BrowserDesktop = () => {
   const [selectedCollection, setSelectedCollection] = useState();
   const [showNewCollection, setShowNewCollection] = useState(false);
   const [newCollectionCID, setNewCollectionCID] = useState('');
+  const [isPlaying, setIsPlaying] = useState(false);
   const resizeTimeout = useRef(null);
   const moviesWrapper = useRef(null);
   const lastMovieLoadedRef = useRef(0);
@@ -234,18 +236,25 @@ export const BrowserDesktop = () => {
   }, []);
 
   const onMovieClick = (movie) => {
-    // console.log('on movie click')
-    // console.log(movie)
+    console.log('on movie click')
+    console.log(movie)
     setSelectedMovie(movie);
   };
 
   const onMoviePlay = (movie) => {
     console.log('on movie play')
     console.log(movie)
+    setSelectedMovie(movie);
+    setIsPlaying(true)
   };
 
   const onCloseMovieModal = () => {
     setSelectedMovie(null);
+  };
+
+  const onClosePlayer = () => {
+    setSelectedMovie(null)
+    setIsPlaying(false)
   };
 
   const onAddChannel = async () => {
@@ -351,8 +360,10 @@ export const BrowserDesktop = () => {
                   />
               )
           }
-          {selectedMovie && <MovieDetails movie={selectedMovie} onCloseModal={onCloseMovieModal} />}
+          {selectedMovie && !isPlaying && <MovieDetails movie={selectedMovie} onCloseModal={onCloseMovieModal} onPlay={onMoviePlay} />}
         </MainContent>
+
+        {selectedMovie && isPlaying && <MoviePlayer movie={selectedMovie} onClose={onClosePlayer} />}
 
         <Modal open={showNewCollection} onClose={() => setShowNewCollection(false)}>
           <AddCollectionModalWrapper>

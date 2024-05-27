@@ -5,7 +5,7 @@ const log = require("logplease").create("HLS");
 const CONF = require("./settings");
 const DEFAULT_PLAYER_CONTROLS = [
   "play-large", // The large play button in the center
-  "restart", // Restart playback
+  // "restart", // Restart playback
   "rewind", // Rewind by the seek time (default 10 seconds)
   "play", // Play/pause playback
   "fast-forward", // Fast forward by the seek time (default 10 seconds)
@@ -80,6 +80,9 @@ module.exports = class HLSStreamer extends EventEmitter {
   quality(n) {
     // Not quality in manifest?
     const q = n.levels.map((l) => l.height).reverse();
+    // Add "Auto" option
+    q.unshift(-1);
+
     return {
       quality: {
         // this ensures Plyr to use Hls to update quality level
@@ -132,16 +135,49 @@ module.exports = class HLSStreamer extends EventEmitter {
     this.player = new Plyr(videoRef, playerSettings);
     this.player.on("error", (e) => this.emit("error", e));
     this.player.on("canplay", () => {
+      setTimeout(this.modifyQualityMenu, 100)
+      setTimeout(this.modifyQualitySetting, 100)
       // this.player.play()
       this.emit("ready");
     });
   }
 
   updateQuality(newQuality) {
-    this.hls.levels.forEach((level, levelIndex) => {
-      if (level.height === newQuality) {
-        log.info(`Found quality match with ${newQuality}`);
-        this.hls.currentLevel = levelIndex;
+    if (newQuality === -1) {
+      log.info("Auto quality selected");
+      this.hls.currentLevel = -1;
+    } else {
+      this.hls.levels.forEach((level, levelIndex) => {
+        if (level.height === newQuality) {
+          log.info(`Found quality match with ${newQuality}`);
+          this.hls.currentLevel = levelIndex;
+        }
+      });
+    }
+
+    setTimeout(this.modifyQualitySetting, 100)
+  }
+
+  modifyQualityMenu() {
+    const qualityMenuButton = document.querySelector('button[data-plyr="quality"][value="-1"]');
+    if (qualityMenuButton) {
+      const spanElement = qualityMenuButton.querySelector('span');
+      if (spanElement) {
+        spanElement.textContent = "Auto";
+      }
+    }
+  }
+
+  modifyQualitySetting() {
+    const qualitySettingButtons = document.querySelectorAll('button[data-plyr="settings"]');
+
+    qualitySettingButtons.forEach(button => {
+      const mainSpan = button.querySelector('span');
+      if (mainSpan && mainSpan.textContent.includes("Quality")) {
+        const valueSpan = mainSpan.querySelector('span.plyr__menu__value');
+        if (valueSpan && valueSpan.textContent.trim() === "-1p") {
+          valueSpan.textContent = "Auto";
+        }
       }
     });
   }

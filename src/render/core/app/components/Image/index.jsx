@@ -63,13 +63,10 @@ export default class Image extends React.PureComponent {
   }
 
   setLoadTimeout = () => {
-    clearTimeout(this.loadTimeout)
-    this.loadTimeout = setTimeout(() => {
-      if (!this.state.loaded) {
-        log.warn(`Image load timeout on attempt ${this.state.attempt + 1}, retrying...`)
-        this.retryLoadingImage()
-      }
-    }, 10000) // Max load timeout of 5 seconds
+    if (!this.state.loaded) {
+      log.warn(`Image load timeout on attempt ${this.state.attempt + 1}, retrying...`)
+      this.retryLoadingImage()
+    }
   }
 
   retryLoadingImage = () => {

@@ -51,8 +51,8 @@ export default class Player extends React.Component {
 
   startStreaming () {
     // Start streamer
-    log.info('Streaming Movie: ' + this.props.movie.title.toUpperCase())
-    const uriToStream = this.props.movie.route // Ready to play uri
+    log.info('Streaming Movie: ' + this.props.movie?.meta?.title?.toUpperCase())
+    const uriToStream = this.props.movie?.video // Ready to play uri
     const streamer = this.streamer.play(uriToStream, { videoRef: this.v.video })
     streamer.on('error', this.onError)
     streamer.on('ready', () => this._ready())
@@ -64,7 +64,8 @@ export default class Player extends React.Component {
   }
 
   get streamer () {
-    const _type = this.props.movie.type
+    // const _type = this.props.movie.type
+    const _type = 'hls'
     if (!setting.streaming.includes(_type)) {
       throw new Error('Not support streaming mechanism')
     }
