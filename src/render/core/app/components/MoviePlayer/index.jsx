@@ -17,18 +17,8 @@ export const MoviePlayer = (props) => {
   return (
     <MoviePlayerContainer>
       <MoviePlayerWrapper className={'background movie-details'}>
-        <Box sx={{ top: '1.2rem', right: '1.2rem', zIndex: '100', left: '0', position: 'absolute', display: 'flex', justifyContent: 'end' }} height={'30px'} >
-          <CustomButton
-            variant={'flat'}
-            height={"30px"}
-            width={"30px"}
-            margin='0 0.5rem 0 0'
-            icon={<Close style={{ color: '#D1D2D3' }} />}
-            onClick={props.onClose}
-          />
-        </Box>
         <Grid sx={{zIndex: '99', height: '100%', background: '#000'}}>
-          <Player movie={{...props.movie, video: `${Gateway.dummyParse(props.movie.video)}/index.m3u8`}} />
+          <Player movie={{...props.movie, video: `${Gateway.dummyParse(props.movie.video)}/index.m3u8`}} onClose={props.onClose} />
         </Grid>
       </MoviePlayerWrapper>
     </MoviePlayerContainer>

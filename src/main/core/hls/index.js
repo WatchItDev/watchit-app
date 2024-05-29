@@ -1,6 +1,5 @@
 const Plyr = require("plyr");
 const HLS = require("hls.js");
-const EventEmitter = require("events");
 const log = require("logplease").create("HLS");
 const CONF = require("./settings");
 const DEFAULT_PLAYER_CONTROLS = [
@@ -20,12 +19,21 @@ const DEFAULT_PLAYER_CONTROLS = [
   "fullscreen", // Toggle fullscreen
 ];
 
-module.exports = class HLSStreamer extends EventEmitter {
-  constructor(props) {
-    super(props);
+module.exports = class HLSStreamer {
+  constructor() {
     this.mime = "application/x-mpegURL";
     this.hls = null;
     this.player = null;
+
+    // Enlazar métodos al contexto de la instancia
+    this.play = this.play.bind(this);
+    this.quality = this.quality.bind(this);
+    this.emitError = this.emitError.bind(this);
+    this.setup = this.setup.bind(this);
+    this.updateQuality = this.updateQuality.bind(this);
+    this.modifyQualityMenu = this.modifyQualityMenu.bind(this);
+    this.modifyQualitySetting = this.modifyQualitySetting.bind(this);
+    this.stop = this.stop.bind(this);
   }
 
   get [Symbol.toStringTag]() {
@@ -41,7 +49,7 @@ module.exports = class HLSStreamer extends EventEmitter {
    * @param {object} videoRef
    * @param {function} onReady
    */
-  play(uri, { videoRef }) {
+  play(uri, { videoRef }, onReady, onError) {
     const nativeMime = "application/vnd.apple.mpegURL";
     const nativePlay = videoRef.canPlayType(nativeMime);
 
@@ -56,17 +64,14 @@ module.exports = class HLSStreamer extends EventEmitter {
         log.info("m3u8 manifest loaded");
         this.hls.attachMedia(videoRef);
         // Add new qualities to option
-        this.setup(videoRef, {
-          ...this.quality(n),
-          // ...this.subs(n)
-        });
+        this.setup(videoRef, { ...this.quality(n) }, onReady);
       });
     } else if (nativePlay) {
       const newSource = document.createElement("source");
       newSource.src = uri;
       newSource.type = nativeMime;
       videoRef.append(newSource);
-      this.setup(videoRef);
+      this.setup(videoRef, {}, onReady);
     }
 
     return this;
@@ -78,14 +83,12 @@ module.exports = class HLSStreamer extends EventEmitter {
    * @return {object}
    */
   quality(n) {
-    // Not quality in manifest?
     const q = n.levels.map((l) => l.height).reverse();
     // Add "Auto" option
     q.unshift(-1);
 
     return {
       quality: {
-        // this ensures Plyr to use Hls to update quality level
         forced: true,
         default: q[0],
         options: q,
@@ -94,18 +97,14 @@ module.exports = class HLSStreamer extends EventEmitter {
     };
   }
 
-  subs() {
-    return {};
-  }
-
   /**
    * Handle error on HLS streaming
    * @param {object} event
    * @param {object} data
    */
-  emitError(event, data) {
+  emitError(event, data, onError) {
     if (data.fatal) {
-      log.info(`Fail trying play movie: ${JSON.stringify(data)}`);
+      log.info(`Fail trying to play movie: ${JSON.stringify(data)}`);
       switch (data.type) {
         case HLS.ErrorTypes.MEDIA_ERROR:
           console.log("Fatal media error encountered, try to recover");
@@ -115,13 +114,13 @@ module.exports = class HLSStreamer extends EventEmitter {
         default:
           // cannot recover
           this.stop();
-          this.emit("error", data);
+          onError(data);
           break;
       }
     }
   }
 
-  setup(videoRef, options = {}) {
+  setup(videoRef, options = {}, onReady) {
     log.info("Setting up player");
     const playerSettings = {
       ...{
@@ -133,12 +132,11 @@ module.exports = class HLSStreamer extends EventEmitter {
 
     // Init player and wait until can play
     this.player = new Plyr(videoRef, playerSettings);
-    this.player.on("error", (e) => this.emit("error", e));
+    this.player.on("error", (e) => onError(e));
     this.player.on("canplay", () => {
-      setTimeout(this.modifyQualityMenu, 100)
-      setTimeout(this.modifyQualitySetting, 100)
-      // this.player.play()
-      this.emit("ready");
+      setTimeout(this.modifyQualityMenu, 100);
+      setTimeout(this.modifyQualitySetting, 100);
+      onReady();
     });
   }
 
@@ -155,7 +153,8 @@ module.exports = class HLSStreamer extends EventEmitter {
       });
     }
 
-    setTimeout(this.modifyQualitySetting, 100)
+    setTimeout(this.modifyQualityMenu, 100);
+    setTimeout(this.modifyQualitySetting, 100);
   }
 
   modifyQualityMenu() {
@@ -183,8 +182,17 @@ module.exports = class HLSStreamer extends EventEmitter {
   }
 
   stop() {
-    this?.player?.stop();
-    this?.player?.destroy();
-    this?.hls?.destroy();
+    console.log('Stopping HLSStreamer...');
+    if (this.player) {
+      this.player.stop();
+      this.player.destroy();
+      this.player = null;
+    }
+    if (this.hls) {
+      this.hls.stopLoad();
+      this.hls.detachMedia();
+      this.hls.destroy();
+      this.hls = null;
+    }
   }
 };

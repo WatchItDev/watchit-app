@@ -7,7 +7,7 @@ export default class PlayerHls extends React.PureComponent {
   constructor (props) {
     super(props)
     this.state = {
-      canPlay: false,
+      canPlay: true,
       state: 'Connecting'
     }
   }
@@ -18,10 +18,11 @@ export default class PlayerHls extends React.PureComponent {
     }
   }
 
-  handleCanPlay = () => {
+  handleClose = () => {
     this.setState({
-      canPlay: true
+      canPlay: false
     })
+    this.props?.onClose()
   }
 
   render () {
@@ -34,8 +35,9 @@ export default class PlayerHls extends React.PureComponent {
             {/* Main player */}
             <div className='full-height movie-box'>
               <Player
-                  movie={this.props.movie}
+                  movie={this.state.canPlay ? this.props.movie : null}
                   canPlay={true}
+                  onClose={this.handleClose}
               />
             </div>
           </section>
