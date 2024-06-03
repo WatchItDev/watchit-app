@@ -15,7 +15,6 @@
     "node": ">=14"
   },
   "peerDependencies": {
-    "level-js": "6.1.0",
     "react": "^15.4.0",
     "windows-elevate": "^1.0.1"
   },
@@ -35,15 +34,18 @@
     "it-last": "^1.0.5",
     "it-reduce": "^1.0.5",
     "jschardet": "^2.1.1",
+    "level-js": "6.1.0",
     "leveldown": "^5.6.0",
     "linvodb3": "^3.26.0",
     "logplease": "^1.2.15",
+    "lottie-react": "^2.4.0",
     "material-ui": "^0.20.2",
     "mime": "^2.4.6",
     "plyr": "^3.7.8",
     "plyr-react": "^5.3.0",
     "pretty-bytes": "^5.6.0",
     "react-custom-scrollbars": "^4.2.1",
+    "react-refresh": "^0.14.2",
     "react-window": "^1.8.10",
     "react-window-infinite-loader": "^1.0.9",
     "secp256k1": "^4.0.2",

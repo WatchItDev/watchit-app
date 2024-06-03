@@ -18,6 +18,7 @@ export const devServerConfig = {
     overlay: false,
     compress: true,
     host: devServerHost,
+    disableHostCheck: true,
     after() {
         if (runElectron) {
             console.log('Starting Main Process...')
@@ -29,6 +30,5 @@ export const devServerConfig = {
                 .on('close', code => process.exit(code))
                 .on('error', spawnError => console.error(spawnError))
         }
-
     },
 }

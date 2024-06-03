@@ -2,12 +2,15 @@
 import React from "react";
 import { Helia } from "@main/core/helia.mjs";
 import { createRoot } from "react-dom/client";
-import App from "./core/app/index";
+import App from "./core/app";
 
-import { Broker as broker } from "@main/bridge";
+import { Broker } from "@main/bridge";
 import * as Bootstrap from "@main/core";
 
-const webRenderer = broker.getIPC();
+import 'normalize.css'
+import './index.scss'
+
+const webRenderer = Broker.getIPC();
 // Initialize nodes and core libs
 // this initialization persist over the underlying ipc
 await Bootstrap(webRenderer, { Helia, runtime: "web" });

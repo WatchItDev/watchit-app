@@ -4,10 +4,14 @@
   overflow: hidden;
   display: block;
   width: 60%;
+  min-height: 5rem;
   pointer-events: none;
-  background: linear-gradient(to bottom, rgb(0, 0, 0), rgba(0, 0, 0, 0.5));
   -webkit-transition: all 0.65s ease;
   transition: all 0.65s ease;
+}
+
+.detail__image.bg {
+  background: linear-gradient(to bottom, rgb(0, 0, 0), rgba(0, 0, 0, 0.5));
 }
 
 .detail__image img {

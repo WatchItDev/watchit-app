@@ -3,13 +3,8 @@ import React from 'react'
 
 // MUI IMPORTS
 import { styled, Box, Grid } from "@mui/material";
-import { Close } from '@mui/icons-material'
-
-// UIX IMPORTS
-import { CustomButton } from '@watchitapp/watchitapp-uix';
 
 // PROJECT IMPORTS
-import './index.scss';
 import Player from "@components/Player/index";
 import Gateway from "@helpers/gateway";
 

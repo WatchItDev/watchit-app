@@ -9,8 +9,29 @@ import { DB, Broker as broker } from '@main/bridge';
 import Search from "@components/Search";
 import Stats from "@components/Stats";
 import MoviePlayer from "@components/MoviePlayer";
+import EmptyBlankSlate from "@components/EmptyBlankslate";
+import Lottie from "lottie-react";
+import loaderAnimation from "@render/media/img/loader.json";
+import Filters from "@components/Filters";
 
 const DEFAULT_INIT_LOAD = 100;
+
+const yearRanges = {
+  "Before 1900": [0, 1899],
+  "1900s": [1900, 1909],
+  "1910s": [1910, 1919],
+  "1920s": [1920, 1929],
+  "1930s": [1930, 1939],
+  "1940s": [1940, 1949],
+  "1950s": [1950, 1959],
+  "1960s": [1960, 1969],
+  "1970s": [1970, 1979],
+  "1980s": [1980, 1989],
+  "1990s": [1990, 1999],
+  "2000s": [2000, 2009],
+  "2010s": [2010, 2019],
+  "2020s": [2020, 2029]
+};
 
 export const BrowserDesktop = () => {
   const [localDb, setLocalDb] = useState(null);
@@ -25,12 +46,52 @@ export const BrowserDesktop = () => {
   const [count, setCount] = useState(0);
   const [selectedMovie, setSelectedMovie] = useState();
   const [selectedCollection, setSelectedCollection] = useState();
+  const [year, setYear] = useState('');
+  const [genre, setGenre] = useState('');
   const [showNewCollection, setShowNewCollection] = useState(false);
   const [newCollectionCID, setNewCollectionCID] = useState('');
   const [isPlaying, setIsPlaying] = useState(false);
   const resizeTimeout = useRef(null);
   const moviesWrapper = useRef(null);
   const lastMovieLoadedRef = useRef(0);
+
+  // Handle filter changes
+  const handleYearChange = (event) => setYear(event.target.value);
+  const handleGenreChange = (event) => setGenre(event.target.value);
+
+  const onResetFilters = () => {
+    if (!screen) return console.log('No screen...')
+
+    setYear('');
+    setGenre('');
+
+    const moviesNewStructure = moviesToRow(movies, screen.chunkSize);
+    setLoadedMovies(moviesNewStructure);
+    setCount(movies.length);
+  };
+
+  useEffect(() => {
+    if (!screen) return console.log('No screen...')
+
+    if (!year && !genre) {
+      const moviesNewStructure = moviesToRow(movies, screen.chunkSize);
+      setLoadedMovies(moviesNewStructure);
+      setCount(movies.length);
+    } else {
+      const filteredMovies = movies.filter((movie) => {
+        const movieYear = movie?.meta?.year || 0;
+        const movieGenre = movie?.meta?.genres || [];
+        const [startYear, endYear] = yearRanges[year] || [0, Infinity];
+        const yearMatches = movieYear >= startYear && movieYear <= endYear;
+        const genreMatches = movieGenre.some(g => g === genre);
+
+        return (!year || yearMatches) && (!genre || genreMatches);
+      });
+      const moviesNewStructure = moviesToRow(filteredMovies, screen.chunkSize);
+      setLoadedMovies(moviesNewStructure);
+      setCount(filteredMovies.length);
+    }
+  }, [year, genre, movies, screen]);
 
   const getRecalculatedScreen = (force = false) => {
     if (screen && !force) return screen
@@ -171,7 +232,7 @@ export const BrowserDesktop = () => {
       console.log('all local data')
       console.log(all)
 
-      if (collectionsStored?.values) {
+      if (collectionsStored?.values?.length) {
         setCollections(collectionsStored.values.map((c) => c.cid))
         setSelectedCollection(collectionsStored.values[0].cid)
       }
@@ -332,16 +393,32 @@ export const BrowserDesktop = () => {
         </ChannelsMenuWrapper>
 
         <MainContent ref={moviesWrapper}>
-          <MainContentHeader>
-            <Search movies={movies} onClick={onMovieClick} />
-            <Stats loaded={Math.ceil((percent/100)  * count)} count={count} onSignOut={handleSignOut} />
-          </MainContentHeader>
-          { percent < 100 && collections.length ? (
-              <span>Loading {percent}%</span>
+          { collections.length ? (
+              <MainContentHeader>
+                <Search movies={movies} onClick={onMovieClick} />
+                <FiltersWrapper>
+                  <Filters
+                      year={year}
+                      genre={genre}
+                      onYearChange={handleYearChange}
+                      onGenreChange={handleGenreChange}
+                      onResetFilters={onResetFilters}
+                  />
+                  <Stats loaded={Math.ceil((percent/100)  * count)} count={count} onSignOut={handleSignOut} />
+                </FiltersWrapper>
+              </MainContentHeader>
           ) : <></> }
+          { percent < 100 && collections.length ? (
+              <LoaderWrapper>
+                <Lottie animationData={loaderAnimation} loop autoPlay style={{width: 200, height: 200}} />
+                <span style={{ marginLeft: '0.5rem' }}>{percent}%</span>
+              </LoaderWrapper>
+          ) : <></>}
 
           { !collections.length ? (
-              <span>Hey add a collection!</span>
+              <Box sx={{ width: '100%', height: '100%' }}>
+                <EmptyBlankSlate />
+              </Box>
           ) : <></> }
 
           {
@@ -443,7 +520,28 @@ export const MainContentHeader = styled(Box)(() => ({
   padding: '0.5rem',
   borderTopLeftRadius: '1rem',
   borderBottom: '1px solid #444',
-  marginBottom: '0.5rem'
+  marginBottom: '0.5rem',
+  position: 'relative',
+  zIndex: 10
+}));
+
+export const LoaderWrapper = styled(Box)(() => ({
+  position: 'absolute',
+  top: -55,
+  width: '100%',
+  height: '100%',
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  justifyContent: 'center'
+}));
+
+const FiltersWrapper = styled(Box)(() => ({
+  display: 'flex',
+  gap: '1rem',
+  flexGrow: 1,
+  alignItems: 'center',
+  justifyContent: 'flex-end'
 }));
 
 export default BrowserDesktop;

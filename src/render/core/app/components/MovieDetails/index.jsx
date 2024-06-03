@@ -1,6 +1,5 @@
 //REACT IMPORTS
-import React from 'react'
-import { useNavigate} from 'react-router-dom'
+import React, { useState } from 'react'
 
 // MUI IMPORTS
 import { styled, Box, Grid, Button } from "@mui/material";
@@ -15,9 +14,13 @@ import Plyr from 'plyr-react'
 // PROJECT IMPORTS
 import './index.scss';
 import Image from "@components/Image";
+import VideoModal from "@components/VideoModal";
 
 export const MovieDetails = (props) => {
-  const navigate = useNavigate()
+    const [open, setOpen] = useState(false);
+
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
 
   return (
     <MovieDetailsContainer>
@@ -116,7 +119,7 @@ export const MovieDetails = (props) => {
                         width: { xs: '100%', sm: '75%', md: '50%' },
                       }}
                   >
-                    <ButtonTrailer>Trailer</ButtonTrailer>
+                    <ButtonTrailer onClick={handleOpen}>Trailer</ButtonTrailer>
                     <GradientBorderButton onClick={() => { props.onPlay(props.movie) }}>Watch IT</GradientBorderButton>
                   </Box>
                 </Grid>
@@ -150,6 +153,7 @@ export const MovieDetails = (props) => {
           </figure>
         </Grid>
       </MovieDetailsWrapper>
+      <VideoModal videoId={props.movie?.meta?.trailerUrl} open={open} handleClose={handleClose} />
     </MovieDetailsContainer>
   )
 }
