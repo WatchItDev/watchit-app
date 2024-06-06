@@ -2,12 +2,18 @@ import logplease from "logplease";
 import { createHelia, libp2pDefaults } from "helia";
 import { unixfs } from "@helia/unixfs";
 
+import {
+  createDelegatedRoutingV1HttpApiClient,
+  DelegatedRoutingV1HttpApiClient,
+} from '@helia/delegated-routing-v1-http-api-client'
+
 import { tcp } from "@libp2p/tcp";
 import { gossipsub } from "@chainsafe/libp2p-gossipsub";
 import { webSockets } from "@libp2p/websockets";
 import { webRTC, webRTCDirect } from "@libp2p/webrtc";
 import { webTransport } from '@libp2p/webtransport'
 import { circuitRelayTransport } from "@libp2p/circuit-relay-v2";
+import { pubsubPeerDiscovery } from '@libp2p/pubsub-peer-discovery'
 
 const log = logplease.create("HELIA");
 
@@ -16,8 +22,7 @@ function getConfig(runtime = "node") {
   const defaults = libp2pDefaults();
 
   // Here we handle the logic the setup the corresponding conf for each runtime.
-  // eg. Since browser cannot dial via tcp, we remote and same for node don't use web-transport, etc
-  
+  // eg. Since browser cannot dial via tcp, we remote and same for node don't use web-transport, etc  
   const listen = [
     // node listen
     ...((!isBrowserRuntime && [
@@ -26,7 +31,7 @@ function getConfig(runtime = "node") {
       "/webrtc",
     ]) || [
       "/webrtc",
-      "/wss",
+      // "/wss",
       "/ws",
     ]),
   ];
@@ -37,10 +42,19 @@ function getConfig(runtime = "node") {
       circuitRelayTransport({ discoverRelays: 3 }),
       webSockets({ websocket: { rejectUnauthorized: false } }),
     ]) || [
-      webRTC(),
       webTransport(),
       webSockets(),
-      circuitRelayTransport({ discoverRelays: 1 })
+      circuitRelayTransport({ discoverRelays: 0 }),
+      webRTC({
+        rtcConfiguration: {
+          iceServers: [
+            {
+              // STUN servers help the browser discover its own public IPs
+              urls: ['stun:stun.l.google.com:19302', 'stun:global.stun.twilio.com:3478'],
+            },
+          ],
+        },
+      }), 
     ]),
     webRTCDirect(), // both runtimes
   ];
