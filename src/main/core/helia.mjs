@@ -38,7 +38,7 @@ function getConfig(runtime = "node") {
       webSockets({ websocket: { rejectUnauthorized: false } }),
     ]) || [
       webRTC(),
-      // webTransport(),
+      webTransport(),
       webSockets(),
       circuitRelayTransport({ discoverRelays: 1 })
     ]),

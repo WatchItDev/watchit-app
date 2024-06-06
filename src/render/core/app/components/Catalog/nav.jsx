@@ -2,26 +2,23 @@ import React from 'react'
 import NavBarMenu from '@components/NavBarMenu/'
 
 export default class CatalogNavBar extends React.Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     // Initial state
-    this.prevState = {
+    this.state = {
       sort: [{
         label: 'Year',
-        action: 'year',
+        action: 'meta.year',
         default: true
       }, {
         label: 'Title',
-        action: 'title'
-      }, {
-        label: 'Recently Added',
-        action: 'date_uploaded_unix'
+        action: 'meta.title'
       }, {
         label: 'Runtime',
-        action: 'runtime'
+        action: 'meta.runtime'
       }, {
         label: 'Rating',
-        action: 'rating'
+        action: 'meta.rating'
       }],
       genres: [{
         label: 'All',
@@ -109,60 +106,36 @@ export default class CatalogNavBar extends React.Component {
       }]
     }
 
-    // Set initial state
-    this.state = this.getInitialNavVar()
   }
 
-  shouldComponentUpdate () {
+  shouldComponentUpdate() {
     return false
   }
 
-  getInitialNavVar () {
-    // Return set state
-    if (this.props.setInitialNavVar) {
-      return this.props.setInitialNavVar(
-        this.prevState.genres,
-        this.prevState.sort
-      )
-    }
-
-    // Return default
-    return this.prevState
-  }
-
-  onChange (type, e) {
+  onChange(type, e) {
     // OnChange
     if (this.props.onChange) {
       this.props.onChange(type, e)
     }
 
-    // Return set state
-    if (this.props.setInitialNavVar) {
-      this.setState(
-        this.props.setInitialNavVar(
-          this.state.genres,
-          this.state.sort
-        )
-      )
-    }
   }
 
-    handleSortBy = (e) => this.onChange('sort_by', e)
-    handleGenres = (e) => this.onChange('genres', e)
+  handleSortBy = (e) => this.onChange('sort_by', e)
+  handleGenres = (e) => this.onChange('genres', e)
 
-    render () {
-      return (
-        <div className='nav-wrapper main-nav-filter-movies'>
-          <NavBarMenu
-            btnText='Sort By' list={this.state.sort}
-            onChange={this.handleSortBy}
-          />
+  render() {
+    return (
+      <div className='nav-wrapper main-nav-filter-movies'>
+        <NavBarMenu
+          btnText='Sort By' list={this.state.sort}
+          onChange={this.handleSortBy}
+        />
 
-          <NavBarMenu
-            btnText='Genre' list={this.state.genres}
-            onChange={this.handleGenres}
-          />
-        </div>
-      )
-    }
+        <NavBarMenu
+          btnText='Genre' list={this.state.genres}
+          onChange={this.handleGenres}
+        />
+      </div>
+    )
+  }
 }

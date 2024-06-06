@@ -38,16 +38,16 @@ export default class Catalog extends React.Component {
       screen: this.getRecalculatedScreen(),
       lock: false, // Avoid re-render movies list
       finishLoad: false,
-      logout: false
+      logout: false,
+      sort: {
+        sort_by: 'meta.year',
+        order: 'asc'
+      }
     }
 
     // Max movies for initial request
     this.renderTimeout = null
     this.resizeTimeout = null
-    this.sort = {
-      sort_by: 'year',
-      order: 'desc'
-    }
   }
 
   _index(i) {
@@ -173,11 +173,6 @@ export default class Catalog extends React.Component {
   filterMovies(filter = {}, clear = false, chunks = null, cb = null) {
     if (this.state.logout) { return false } // Nothing to fetch. Go out!!
 
-    // Get from cache filters
-    // if (storage.get().from.mainNavFilters())
-    //   filter = { ...filter, ...storage.get().from.mainNavFilters() }
-
-
     // Clean all.. invalid
     if ('genres' in filter) {
       if (filter.genres === 'All') {
@@ -249,71 +244,19 @@ export default class Catalog extends React.Component {
       .map((_, n) => _movies.slice(n * l, n * l + l))
   }
 
-  initialNavVar(genres, sort) {
-    // Has sort cache?
-    // Get cache from localStorage
-    const navCache = storage.get().from.mainNavFilters()
-    if (!navCache) {
-      return {
-        genres: genres,
-        sort: sort
-      }
-    }
-    const currentNav = {
-      genres: genres,
-      sort_by: sort
-    }
-
-    // For each key in cache
-    Object.keys(currentNav)
-      .forEach((k) => {
-        // Clean old default prop
-        currentNav[k].forEach((el) => delete el.default)
-        currentNav[k].map((el) => {
-          if (Object.is(el.action, navCache[k])) { el.default = true }
-          return el
-        })
-      })
-
-    // Return initial
-    return {
-      genres: genres,
-      sort: sort
-    }
-  }
 
   handleOnChange = (sort, by) => {
-    // // If by?
-    // if ((storage.get().from.mainNavFilters())) {
-    //   this.sort = Object.assign(
-    //     {}, this.sort,
-    //     storage.get().from.mainNavFilters(),
-    //     { [sort]: by.action }
-    //   )
-    // } else {
-    //   if (by.action) {
-    //     this.sort = Object.assign(
-    //       {}, this.sort, { [sort]: by.action }
-    //     )
-    //   } else {
-    //     if (sort in this.sort) {
-    //       delete this.sort[sort]
-    //     }
-    //   }
-    // }
-
     // Reset limit
     log.warn(`Sorting by ${by.action}`)
     // storage.add(this.sort).to.mainNavFilters()
     this.setState({ loading: true }, () => {
       // Set cache filters
-      setTimeout(() => this.filterMovies(this.sort, true), 0)
+      setTimeout(() => this.filterMovies({ [sort]: by.action }, true), 0)
     })
   }
 
   handleSignOut = (event) => {
     event.preventDefault()
-    localStorage.clear()
     this.setState({
       ready: false,
       logout: true,
@@ -343,7 +286,6 @@ export default class Catalog extends React.Component {
                 <nav className='col l12 m12 transparent z-depth-0'>
                   <CatalogNav
                     onChange={this.handleOnChange}
-                    setInitialNavVar={this.initialNavVar}
                   />
                 </nav>
 
