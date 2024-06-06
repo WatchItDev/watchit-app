@@ -32,19 +32,51 @@ export default ({
      * @type {HTMLElement}
   */
   calcScreenSize: (
-    {
-      width = window.screen.width,
-      height = window.screen.height,
-      imageSize = 200, mp = 20
-    } = {}
+      {
+        width = window.screen.width,
+        height = window.screen.height,
+        minWidth = 170,
+        maxWidth = 210,
+        aspectRatio = 1.5, // Aspect ratio of the poster (e.g., 3:2)
+        containerPadding = 16,
+        itemGap = 16
+      } = {}
   ) => {
-    // Avoid full fill row with small images
-    imageSize = width > 1800 ? Math.floor(width / 10) : imageSize
-    // chunkSize = how many movies reach in each row
-    const chunkSize = Math.ceil(width / imageSize)
-    // Formula to get the height of rows based on chunkSizes
-    const chunkHeight = ((width - (chunkSize * mp)) / chunkSize) * 1.66
-    return { width, height, chunkSize, chunkHeight }
+    // Calculate the available width inside the container
+    const availableWidth = width - (2 * containerPadding);
+
+    // Calculate the maximum number of items per row based on minWidth
+    let itemsPerRow = Math.floor(availableWidth / (minWidth + itemGap));
+
+    // Ensure at least one item per row
+    itemsPerRow = Math.max(itemsPerRow, 1);
+
+    // Calculate the width of each item based on the number of items per row
+    let itemWidth = (availableWidth - (itemsPerRow - 1) * itemGap) / itemsPerRow;
+
+  // Adjust item width to be within minWidth and maxWidth, unless there's only one item per row
+  if (itemsPerRow === 1) {
+    itemWidth = availableWidth;
+  } else if (itemWidth > maxWidth) {
+    itemWidth = maxWidth;
+    itemsPerRow = Math.floor(availableWidth / (itemWidth + itemGap));
+  } else if (itemWidth < minWidth) {
+    itemWidth = minWidth;
+    itemsPerRow = Math.floor(availableWidth / (itemWidth + itemGap));
+  }
+
+    // Calculate the height of each item based on the aspect ratio
+    const itemHeight = itemWidth * aspectRatio;
+
+    // Return the calculated values
+    return {
+      width,
+      height,
+      chunkSize: itemsPerRow,
+      chunkHeight: itemHeight + itemGap,
+      itemWidth,
+      itemHeight
+    };
   },
 
   sanitizeSubIndex: (k) => {

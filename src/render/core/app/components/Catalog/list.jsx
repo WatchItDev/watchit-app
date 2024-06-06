@@ -48,6 +48,7 @@ export default class CatalogList extends React.Component {
         chunk={this.state.movies[index]}
         chunkSize={this.state.chunkSize}
         onClick={this.props.onClick}
+        screen={this.props.screen}
         empty={false} preload
       />
     )

@@ -33,7 +33,7 @@ export default class Catalog extends React.Component {
       ready: this.cached,
       loading: !this.cached,
       movies: [],
-      screen: this.getRecalculatedScreen(),
+      screen: {},
       lock: false, // Avoid re-render movies list
       finishLoad: false,
       logout: false,
@@ -46,6 +46,7 @@ export default class Catalog extends React.Component {
     // Max movies for initial request
     this.renderTimeout = null
     this.resizeTimeout = null
+    this.moviesWrapper = React.createRef()
   }
 
   get db() {
@@ -71,7 +72,6 @@ export default class Catalog extends React.Component {
       log.warn('Stored movies')
     })
   }
-
 
   // Handle ipc interactions and movies collections reception from network..
   startConnecting = async (cid) => {
@@ -102,10 +102,8 @@ export default class Catalog extends React.Component {
   }
 
   getRecalculatedScreen = () => {
-    const w = Math.min(window.innerWidth, window.screen.width)
-    const h = Math.min(window.innerHeight, window.screen.height)
-    const width = util.isMobile() ? window.innerWidth : w
-    const height = util.isMobile() ? window.innerHeight : h
+    const width = this.moviesWrapper.current?.offsetWidth;
+    const height = this.moviesWrapper.current?.offsetHeight;
     const defaults = util.calcScreenSize({
       width,
       height
@@ -150,6 +148,10 @@ export default class Catalog extends React.Component {
   componentDidMount() {
     // Set initial screen
     window.addEventListener('resize', this.handleResize)
+
+    const defaults = this.getRecalculatedScreen()
+    this.setState({ screen: defaults })
+
     this.startConnecting(this.props.cid)
   }
 
@@ -252,46 +254,42 @@ export default class Catalog extends React.Component {
 
   render() {
     return (
-      <>
-
+        <div className='relative full-height main-view' ref={this.moviesWrapper}>
         {
           (!this.state.ready &&
-            <div className='movie-player full-width full-height loading'>
-              <StateLoader
-                stateText={this.state.state}
-                statePercent={this.state.percent}
-                onClose={!this.state.logout && this.handleSignOut}
-              />
-            </div>
-          ) ||
-          <div className='relative full-height main-view'>
-            {/* Top main nav */}
-            <section className='row full-height'>
-              <div className='clearfix full-height'>
+              <div className='movie-player full-width full-height loading'>
+                  <StateLoader
+                    stateText={this.state.state}
+                    statePercent={this.state.percent}
+                    onClose={!this.state.logout && this.handleSignOut}
+                  />
+                </div>
+              ) ||
+              <section className='row full-height'>
+                  <div className='clearfix full-height'>
                 {/* Top main nav */}
                 <nav className='col l12 m12 transparent z-depth-0'>
                   <CatalogNav
-                    onChange={this.handleOnChange}
+                      onChange={this.handleOnChange}
                   />
                 </nav>
 
                 {/* Movies section lists */}
                 <section className='row movies-box clearfix'>
                   {
-                    (!this.state.loading &&
-                      <CatalogList
-                        movies={this.state.movies} loadOrder={this.loadOrder}
-                        count={this.state.count} loading={this.state.lock}
-                        end={this.state.finishLoad} chunkSize={this.state.screen.chunkSize}
-                        onClick={this.handleClickMovie} screen={this.state.screen}
-                      />) || <BoxLoader size={100} />
+                      (!this.state.loading &&
+                          <CatalogList
+                              movies={this.state.movies} loadOrder={this.loadOrder}
+                              count={this.state.count} loading={this.state.lock}
+                              end={this.state.finishLoad} chunkSize={this.state.screen.chunkSize}
+                              onClick={this.handleClickMovie} screen={this.state.screen}
+                          />) || <BoxLoader size={100} />
                   }
                 </section>
               </div>
-            </section>
-          </div>
+          </section>
         }
-      </>
+      </div>
     )
   }
 }

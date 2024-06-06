@@ -21,7 +21,7 @@ export default class CatalogPoster extends React.Component {
 
   render () {
     return (
-      <div className='col relative movies-poster padding-left-2 padding-right-2 item'>
+      <div className='col relative movies-poster padding-left-2 padding-right-2 item' style={{ width: `${this.props.itemWidth}px`, height: `${this.props.itemHeight}px` }}>
         {
           // Show loader if empty result before load
           this.props.empty && <PulseLoader />
