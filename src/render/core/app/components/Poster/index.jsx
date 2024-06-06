@@ -46,29 +46,12 @@ export const Poster = (props) => {
         props.onClick(props._id);
     };
 
-    console.log('hello poster props')
-    console.log(props)
-
     return (
         <Box className="card" data-effect="zoom" sx={{ width: `${props?.screen?.itemWidth}px`, height: `${props?.screen?.itemHeight}px` }} onClick={handleClick}>
             <figure className="card__image">
                 <Image src={props.image} preload pulseStyle={{ position: 'relative' }} />
             </figure>
             <div className="card__body">
-                <Box display={'flex'} alignItems={'center'} justifyContent={'space-between'}
-                     sx={{width: '100%', marginTop: '0.5rem'}}>
-                    <div className="card--slide-in-left">
-                        <RoundProgress
-                            text={`${props.rating}`}
-                            percentage={((props.rating ?? 0) / 10) * 100}
-                            progressBackgroundColor={secondaryRateColors[color]}
-                            progressBarColor={primaryRateColors[color]}
-                            textColor={secondaryRateColors[color]}
-                            size={30}
-                        />
-                    </div>
-                    <p className="card__year card--slide-in-right">{props?.meta?.year}</p>
-                </Box>
                 <h3 className="card__name card--slide-in-top">
                   <span>
                     {props.title}
@@ -76,23 +59,35 @@ export const Poster = (props) => {
                 </h3>
                 <Stack direction="row" spacing={1} className={'card--fade-in'}>
                     {props.meta?.genres?.slice(0, 2).map((g, i) => {
-                        return <Chip key={`chip-${props._id}-${i}`} label={g} sx={{borderColor: '#fff', color: '#fff', opacity: 0.7}} variant="outlined"
+                        return <Chip key={`chip-${props._id}-${i}`} label={g}
+                                     sx={{borderColor: '#fff', color: '#fff', opacity: 0.7}} variant="outlined"
                                      size="small"/>
                     })}
                 </Stack>
-                <p className="card__desc card--slide-in-bottom">{props.meta?.synopsis}</p>
-                <GradientBorderButton
-                    className={'play-button card--slide-in-bottom'}
-                    onClick={onPlay}
+                <Box display={'flex'} alignItems={'center'} justifyContent={'center'} flexDirection={'column'}
+                     sx={{width: '100%', marginTop: '0.5rem', position: 'absolute', bottom: 0, left: 0, p: 1}}
                 >
-                    Watch IT
-                </GradientBorderButton>
+                    <Box display={'flex'} alignItems={'center'} justifyContent={'space-between'} sx={{width: '100%', marginTop: '0.5rem'}}>
+                        <div className="card--slide-in-left">
+                            <RoundProgress
+                                text={`${props.rating}`}
+                                percentage={((props.rating ?? 0) / 10) * 100}
+                                progressBackgroundColor={secondaryRateColors[color]}
+                                progressBarColor={primaryRateColors[color]}
+                                textColor={secondaryRateColors[color]}
+                                size={30}
+                            />
+                        </div>
+                        <p className="card__year card--slide-in-right">{props?.meta?.year}</p>
+                    </Box>
+                    <p className="card__desc card--slide-in-bottom">{props.meta?.synopsis}</p>
+                </Box>
             </div>
         </Box>
     );
 };
 
-const GradientBorderButton = styled(Button)(({ theme }) => ({
+const GradientBorderButton = styled(Button)(({theme}) => ({
     position: 'relative',
     overflow: 'hidden',
     padding: '0.5rem 1.5rem',

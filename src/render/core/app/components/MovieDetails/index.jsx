@@ -38,7 +38,7 @@ export const MovieDetails = (props) => {
   const handleClose = () => setOpen(false);
 
   return (
-    ready && <MovieDetailsContainer>
+    ready && <MovieDetailsContainer sx={{ borderTopLeftRadius: process.env.RUNTIME === 'web' ? '0' : '1rem' }}>
       <MovieDetailsWrapper className={'background movie-details'}>
         <Box sx={{ top: '1.2rem', right: '1.2rem', zIndex: '100', left: '0', position: 'absolute', display: 'flex', justifyContent: 'end' }} height={'30px'} >
           <CustomButton
@@ -51,7 +51,7 @@ export const MovieDetails = (props) => {
           />
         </Box>
         <Grid sx={{ zIndex: '99', height: '100%', background: '#000' }}>
-          <Grid sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', background: 'linear-gradient(to right, rgba(0, 0, 0, 0.8) 0, rgba(0, 0, 0, 0) 100%, rgba(0, 0, 0, 0.3) 90%, rgba(0, 0, 0, 0) 100%)' }} container spacing={2}>
+          <Grid sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: 'calc(100% + 16px)', background: 'linear-gradient(to right, rgba(0, 0, 0, 0.8) 0, rgba(0, 0, 0, 0) 100%, rgba(0, 0, 0, 0.3) 90%, rgba(0, 0, 0, 0) 100%)' }} container spacing={2}>
             <Grid
               sx={{
                 display: 'flex',
@@ -233,7 +233,6 @@ export const MovieDetailsContainer = styled(Box)(() => ({
   top: '0',
   left: '0',
   backgroundColor: '#22232a',
-  borderTopLeftRadius: '1rem',
   overflow: 'hidden'
   // border: '1px solid #444'
 }))

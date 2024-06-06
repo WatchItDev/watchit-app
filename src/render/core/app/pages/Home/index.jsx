@@ -70,7 +70,7 @@ export default function MovieIndex() {
         />
       </ChannelsMenuWrapper>
 
-      <MainContent ref={moviesWrapper}>
+      <MainContent ref={moviesWrapper} sx={{ borderTopLeftRadius: process.env.RUNTIME === 'web' ? '0' : '1rem' }}>
 
         {!selectedCollection ? (
           <Box sx={{ width: '100%', height: '100%' }}>

@@ -33,7 +33,7 @@ export default class CatalogRow extends React.Component {
         {
           (this.props.chunk.length < this.props.chunkSize) && !this.props.empty &&
                 Array(this.props.chunkSize - this.props.chunk.length).fill(0).map(() => {
-                  return <CatalogPoster key={uid.generate()} empty end={this.props.end} />
+                  return <CatalogPoster key={uid.generate()} {...this.props} empty />
                 })
         }
       </div>
