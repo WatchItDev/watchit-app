@@ -21,7 +21,6 @@ export default class Catalog extends React.Component {
   constructor(props) {
     super(props)
     // It cached or loaded initial chunk
-    log.warn(`Init with cached:${!!this.cached}`)
 
     // bafkreiegiu74bzxm4hneylxgthjpb74c5vxanee6nzbnot72fvbgt2p6ey
     // Initial state
@@ -30,8 +29,8 @@ export default class Catalog extends React.Component {
       percent: 0,
       peers: this.peers,
       count: DEFAULT_INIT_LOAD,
-      ready: this.cached,
-      loading: !this.cached,
+      ready: false,
+      loading: true,
       movies: [],
       screen: {},
       lock: false, // Avoid re-render movies list
@@ -55,8 +54,8 @@ export default class Catalog extends React.Component {
     )
   }
 
-  get cached() {
-    return this.db.count() > 0;
+  async cached() {
+    return await this.db.count() > 0;
   }
 
   startRunning = (cb = null) => {
@@ -75,7 +74,10 @@ export default class Catalog extends React.Component {
 
   // Handle ipc interactions and movies collections reception from network..
   startConnecting = async (cid) => {
-    if (!cid || this.cached) return;
+    if (!cid) return;
+    if (await this.cached()) 
+      return this.startRunning()
+
     broker.removeAllListeners();
     broker.stopListeningIPC();
     broker.startListeningIPC();

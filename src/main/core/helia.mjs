@@ -47,27 +47,10 @@ function getConfig(runtime = "node") {
       circuitRelayTransport({ discoverRelays: 3 }),
       webSockets({ websocket: { rejectUnauthorized: false } }),
     ]) || [
-        // webTransport(),
+        webTransport(),
         webSockets(),
         circuitRelayTransport({ discoverRelays: 1 }),
-        webRTC({
-          rtcConfiguration: {
-            iceServers: [
-              {
-                urls: [
-                  'stun:stun.l.google.com:19302',
-                  'stun:global.stun.twilio.com:3478',
-                  'STUN:freestun.net:3479',
-                ],
-              },
-              {
-                credential: 'free',
-                username: 'free',
-                urls: ['TURN:freestun.net:3479', 'TURNS:freestun.net:5350'],
-              },
-            ],
-          },
-        }),
+        webRTC()
       ]),
     webRTCDirect(), // both runtimes
   ];
