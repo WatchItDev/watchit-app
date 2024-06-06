@@ -3,7 +3,7 @@ import PointsLoader from '@components/PointsLoader'
 import CustomScrollbars from '@components/Scroller'
 import styled from 'styled-components'
 import SearchResultItem from './item'
-import gatewayHelper from '@helpers/gateway'
+import gateway from '@helpers/gateway'
 
 const ResultsWrapper = styled.div`
   width: 100%;
@@ -76,7 +76,7 @@ const SearchResult = (props) => {
                           key={i._id}
                           onClick={props.onClick}
                           {...Object.assign(i, {
-                            image: gatewayHelper.parsePosterUri(i.resource, 'small')
+                            image: gateway.parse(i.images?.small)
                           })}
                         />
                       )

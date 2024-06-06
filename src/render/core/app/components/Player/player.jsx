@@ -1,6 +1,5 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import setting from '@settings'
 
 import PlayerVideo from './video'
 import HLS from '@main/core/hls'
@@ -11,12 +10,13 @@ export default class Player extends React.Component {
     super(props)
     this.v = null
     this.player = null
+    this.streamer = HLS.getInstance();
 
     // Initial State
     this.state = {}
   }
 
-  shouldComponentUpdate (nextProps, nextState, nextContext) {
+  shouldComponentUpdate (nextProps) {
     return nextProps.canPlay
   }
 
@@ -52,8 +52,9 @@ export default class Player extends React.Component {
   startStreaming () {
     // Start streamer
     log.info('Streaming Movie: ' + this.props.movie.title.toUpperCase())
-    const uriToStream = this.props.movie.route // Ready to play uri
+    const uriToStream = this.props.movie.video // Ready to play uri
     const streamer = this.streamer.play(uriToStream, { videoRef: this.v.video })
+    console.log(streamer)
     streamer.on('error', this.onError)
     streamer.on('ready', () => this._ready())
   }
@@ -61,17 +62,6 @@ export default class Player extends React.Component {
   stopStreaming () {
     this.streamer.stop()
     this.streamer.removeAllListeners()
-  }
-
-  get streamer () {
-    const _type = this.props.movie.type
-    if (!setting.streaming.includes(_type)) {
-      throw new Error('Not support streaming mechanism')
-    }
-
-    return {
-      hls: HLS.getInstance()
-    }[_type]
   }
 
   componentDidCatch (error, info) {

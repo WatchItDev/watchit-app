@@ -19,11 +19,6 @@ export default class DetailsInfo extends React.Component {
         color: 'blue',
         align: 'right',
         icon: 'back-in-time'
-      },
-      rate: {
-        color: 'orange',
-        align: 'right',
-        icon: 'bell'
       }
     }
   }

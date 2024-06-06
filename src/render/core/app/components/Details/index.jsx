@@ -10,33 +10,41 @@ import DetailsHeader from './header'
 import DetailsInfo from './info'
 import DetailsMenu from './menu'
 
-import gatewayHelper from '@helpers/gateway'
-import { Broker as broker } from '@main/bridge'
-import Movie from '@db/movies'
+import { DB as db } from '@main/bridge'
+import gateway from '@helpers/gateway'
 
 // Access to main process bridge prop
 export default class Details extends React.PureComponent {
-  constructor (props) {
+  constructor(props) {
     super(props)
     // Auth object
-    this.movie = new Movie(broker)
-    this.state = { movies: null }
+    this.db = db.connect(this.props.cid)
+    this.state = {
+      year: 0,
+      rating: 0,
+      title: '',
+      synopsis: '',
+      runtime: 0,
+      images: {},
+      genres: [],
+      ready: false
+    }
   }
 
-  async componentDidMount () {
+  async componentDidMount() {
     // Movie details
-    const movies = await this.movie.get(this.props.id)
-    this.setState({ movies })
+    const movies = await this.db.get(this.props.id)
+    this.setState({ ...movies, ready: true })
   }
 
-  render () {
+  render() {
     return (
       <div className='absolute full-height movie-details'>
         {/* Close button */}
-        <DetailsHeader text='Movie' icon='icon-tv' onClick={this.props.onClick} />
+        <DetailsHeader text='Movie' icon='icon-tv' onClick={this.props.onClose} />
         {/* Main Loader or Movie details */}
         {
-          (this.state.movies &&
+          (this.state.ready &&
             <div className='d-flex movie-details-content'>
               {/* Aside */}
               <aside className='col l4 m4 movie-details-poster relative'>
@@ -44,9 +52,8 @@ export default class Details extends React.PureComponent {
                 <Image
                   className='full-width' preload
                   pulseStyle={{ top: '20rem' }}
-                  src={gatewayHelper.parsePosterUri(
-                    this.state.movies.resource,
-                    'large'
+                  src={gateway.parse(
+                    this.state.images.large
                   )}
                 />
               </aside>
@@ -57,12 +64,11 @@ export default class Details extends React.PureComponent {
                   <div className='col l12 s12 m12'>
                     {/* Movie Info */}
                     <DetailsInfo
-                      title={this.state.movies.title}
+                      title={this.state.meta.title}
                       info={{
-                        year: this.state.movies.year,
-                        rating: this.state.movies.rating,
-                        runtime: this.state.movies.runtime,
-                        rate: this.state.movies.mpa_rating
+                        year: this.state.meta.year,
+                        rating: this.state.meta.rating,
+                        runtime: this.state.meta.runtime,
                       }}
                     />
                   </div>
@@ -72,7 +78,7 @@ export default class Details extends React.PureComponent {
                 <section className='row'>
                   <div className='col l12 s12 m12'>
                     <ListCommaSplit
-                      list={this.state.movies.genres}
+                      list={this.state.meta.genres}
                     />
                   </div>
                 </section>
@@ -89,7 +95,7 @@ export default class Details extends React.PureComponent {
                     <div className='col l12 s12 m12'>
                       <FlowText>
                         <span>
-                          {this.state.movies.synopsis}
+                          {this.state.meta.synopsis}
                         </span>
                       </FlowText>
                     </div>
@@ -99,7 +105,7 @@ export default class Details extends React.PureComponent {
                 {/* Footer */}
                 <footer className='row nav-bar-movie-details'>
                   <DetailsMenu
-                    movie={this.state.movies}
+                   id={this.props.id}
                   />
                 </footer>
               </section>

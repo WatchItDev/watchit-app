@@ -42,6 +42,9 @@ export default {
             /\/node_modules\/hls\.js\/.+$/,
         ],
     },
+    experiments: {
+        topLevelAwait: true
+    },
     plugins: arrayFilterEmpty([
         plugins.htmlWebpackPlugin,
         plugins.providePlugin,

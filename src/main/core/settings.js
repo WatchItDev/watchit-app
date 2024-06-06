@@ -7,10 +7,9 @@ const ROOT_HOME = os.homedir()
 const ROOT_STORE = process.env.appPath
 const ROOT_APP = fs.realpathSync(process.cwd())
 const ROOT_TMP_FOLDER = path.join(ROOT_DIR, 'wtmp')
-const ROOT_RUNNING_DB = path.join(ROOT_STORE, 'w_alloc')
+const ROOT_RUNNING_DB = path.join(ROOT_STORE, 'walloc')
 const ROOT_DB_DIR = path.join(ROOT_RUNNING_DB, 'linvo')
-const ROOT_ORBIT_DIR = path.join(ROOT_RUNNING_DB, 'orbit')
-const ROOT_IPFS_DIR = path.join(ROOT_HOME, '.ipfs_w')
+const ROOT_IPFS_DIR = path.join(ROOT_HOME, '.ipfsw')
 
 module.exports = {
   ROOT_APP,
@@ -19,7 +18,6 @@ module.exports = {
   ROOT_STORE,
   ROOT_DB_DIR,
   ROOT_IPFS_DIR,
-  ROOT_ORBIT_DIR,
   ROOT_RUNNING_DB,
   ROOT_TMP_FOLDER
 }

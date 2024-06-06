@@ -1,4 +1,3 @@
-const orbit = require('orbit-db')
 const ParentKey = require(
   // Handle multiple envs for browser or node package
   process.env.RUNTIME === 'web' ? './browser' : './node'
@@ -7,16 +6,6 @@ const ParentKey = require(
 module.exports = class Key extends ParentKey {
   static generateKey (data) {
     return this.addToStorage(data)
-  }
-
-  static isValidKey (key) {
-    return orbit.isValidAddress(
-      this.sanitizedKey(key)
-    )
-  }
-
-  static sanitizedKey (key) {
-    return `/orbitdb/${key}/wt.movies.db`
   }
 
   static isLogged () {

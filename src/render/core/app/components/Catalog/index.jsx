@@ -1,6 +1,5 @@
 /* global localStorage */
 import React from 'react'
-import Details from '@components/Details/'
 import StateLoader from '@components/PlayerLoader/'
 import Stats from '@components/Stats/'
 import BoxLoader from '@components/BoxLoader/'
@@ -9,24 +8,23 @@ import Search from '@components/Search'
 import CatalogList from './list'
 import CatalogNav from './nav'
 
-import Movie from '@db/movies'
 import storage from '@helpers/storage'
 import util from '@helpers/util'
 import log from '@logger'
 
 // Access to main process bridge prop
-import { Key as key, Broker as broker } from '@main/bridge'
+import { Broker as broker, DB } from '@main/bridge'
 
-const DEFAULT_INIT_LOAD = 100
+const DEFAULT_INIT_LOAD = 50
 
 // Login pages class
 export default class Catalog extends React.Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     // It cached or loaded initial chunk
     const itCached = this.cached || this.loaded
     log.warn(`Init with cached:${!!this.cached} and loaded:${!!this.loaded}`)
-
+    // bafkreiegiu74bzxm4hneylxgthjpb74c5vxanee6nzbnot72fvbgt2p6ey
     // Initial state
     this.state = {
       state: 'Bootstrapping',
@@ -36,15 +34,14 @@ export default class Catalog extends React.Component {
       ready: itCached,
       loading: !itCached,
       movies: [],
+      selectedCollection: this.props.cid,
       screen: this.getRecalculatedScreen(),
       lock: false, // Avoid re-render movies list
       finishLoad: false,
-      showDetailsFor: false,
       logout: false
     }
 
     // Max movies for initial request
-    this.movie = new Movie(broker)
     this.renderTimeout = null
     this.resizeTimeout = null
     this.sort = {
@@ -53,26 +50,67 @@ export default class Catalog extends React.Component {
     }
   }
 
-  _index (i) {
+  _index(i) {
     // Else try get from key file and save
-    const _storage = key.readFromStorage() || {}
+    const _storage = {}
     return (i in _storage && _storage[i]) || 0
   }
 
-  get loaded () {
+  get loaded() {
     return +this._index('chunk') > 0
   }
 
-  get cached () {
+  get cached() {
     return this._index('cached')
   }
 
   startRunning = (cb = null) => {
-    if (this.state.logout) return
     this.setState({
       ready: true,
       loading: false
     }, cb)
+  }
+
+  getCurrentDb = () => {
+    return DB.connect(
+      this.state.selectedCollection
+    )
+  }
+
+  storeCollections = async (movie) => {
+    const db = this.getCurrentDb()
+    // store movies in local database..
+    await db.insert(movie).then((item) => {
+      log.warn('Stored movies')
+    })
+  }
+
+
+  // Handle ipc interactions and movies collections reception from network..
+  startConnecting = async (cid) => {
+    if (!cid) return;
+
+    broker.removeAllListeners();
+    broker.stopListeningIPC();
+    broker.startListeningIPC();
+
+    // the ipc notification when a new movie is added..
+    broker.on('notification', async (e, n) => {
+      const movie = { ...n, _id: n.meta.id };
+      this.setState({ percent: parseInt(movie.progress), count: movie.count });
+
+      // accumulate incoming movies and store them when finish..
+      // this approach could help to handle errors if the app is closed before
+      // receive the complete collection and force to restart...
+      await this.storeCollections(movie)
+      // when movie finish loading..
+      if (movie.end) {
+        this.startRunning()
+      }
+    });
+
+    // connect to cid
+    broker.connect(cid);
   }
 
   getRecalculatedScreen = () => {
@@ -84,6 +122,7 @@ export default class Catalog extends React.Component {
       width,
       height
     })
+
     log.info(`Recalculating Screen W:${width}, H:${height}`)
     return defaults
   }
@@ -115,74 +154,23 @@ export default class Catalog extends React.Component {
     this.resizeTimeout = setTimeout(this.recalculateScreen, 500)
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     window.removeEventListener('resize', this.handleResize)
     broker.removeAllListeners()
   }
 
-  componentDidMount () {
+  componentDidMount() {
     // Set initial screen
     window.addEventListener('resize', this.handleResize)
-
-    // Start ingest if not
-    if (this.cached) {
-      log.info('Running Cache')
-      broker.removeAllListeners()
-      broker.stopIpcEvents()
-      broker.listenForNewPeer()
-      broker.listenForPartyRock()
-      broker.startSeed()
-      broker.on('chaos', this.chaos)
-      return
-    }
-
-    // Start ingestion
-    this.runIngest()
+    this.startConnecting(this.state.selectedCollection)
   }
 
   handleClickMovie = (id) => {
-    this.setState({
-      showDetailsFor: id,
-      lock: true
-    })
+    this.props?.onClickMovie(id)
+    this.setState({ lock: true })
   }
 
-  handleClickCloseMovie = (e) => {
-    e.preventDefault()
-    this.setState({
-      showDetailsFor: false
-    })
-  }
-
-  chaos = () => {
-    // Wait for redirect to app login
-    log.warn('Redirecting...')
-    setTimeout(() => { window.location.href = '#/' }, 0)
-  }
-
-  runIngest () {
-    // Init ingest
-    broker.removeAllListeners().on('progress', (state) => {
-      this.setState({ state: state })
-    }).on('start', async () => {
-      log.info('STARTING')
-      // if (!this.loaded) localStorage.clear();
-    }).on('ready', () => {
-      // Start filtering set cache synced movies
-      log.info('LOADED FROM LOCAL')
-      this.startRunning()
-    }).on('error', (msg = 'Waiting Network') => {
-      if (this.state.ready) return
-      this.setState({
-        state: msg,
-        ready: false
-      })
-    }).on('done', () => {
-      log.info('LOAD DONE')
-    }).on('chaos', this.chaos).load()
-  }
-
-  filterMovies (filter = {}, clear = false, chunks = null, cb = null) {
+  filterMovies(filter = {}, clear = false, chunks = null, cb = null) {
     if (this.state.logout) { return false } // Nothing to fetch. Go out!!
 
     // Get from cache filters
@@ -205,7 +193,7 @@ export default class Catalog extends React.Component {
     }
 
     // Get movies
-    this.movie.filter(filter).then((movies) => {
+    this.getCurrentDb().filter(filter).then((movies) => {
       // Chunk and concat movies
       log.warn('Movies filtered')
       const _chunk = chunks || this.state.screen.chunkSize
@@ -245,21 +233,21 @@ export default class Catalog extends React.Component {
           },
           ...this.sort
         },
-        false, false, (state) => {
-          log.info('Infinite movies loaded')
-          resolve(state)
-        }
+          false, false, (state) => {
+            log.info('Infinite movies loaded')
+            resolve(state)
+          }
         )
       }, 500)
     })
   }
 
-  moviesToRow (_movies, l) {
+  moviesToRow(_movies, l) {
     return new Array(Math.ceil(_movies.length / l)).fill(0)
       .map((_, n) => _movies.slice(n * l, n * l + l))
   }
 
-  initialNavVar (genres, sort) {
+  initialNavVar(genres, sort) {
     // Has sort cache?
     // Get cache from localStorage
     const navCache = storage.get().from.mainNavFilters()
@@ -324,7 +312,6 @@ export default class Catalog extends React.Component {
   handleSignOut = (event) => {
     event.preventDefault()
     localStorage.clear()
-    broker.flush()
     this.setState({
       ready: false,
       logout: true,
@@ -332,16 +319,9 @@ export default class Catalog extends React.Component {
     })
   }
 
-  render () {
+  render() {
     return (
       <>
-        {
-          this.state.showDetailsFor &&
-            <Details
-              id={this.state.showDetailsFor}
-              onClick={this.handleClickCloseMovie}
-            />
-        }
 
         {
           (!this.state.ready &&
@@ -353,26 +333,21 @@ export default class Catalog extends React.Component {
               />
             </div>
           ) ||
-            <div className='relative full-height main-view'>
-              {/* Top main nav */}
-              <section className='row full-height'>
-                <div className='clearfix full-height'>
-                  <header className='no-margin vertical-padding transparent z-depth-1 d-flex align-items-center justify-content-between header_search'>
-                    <Search movies={this.movie} onClick={this.handleClickMovie} />
-                    <Stats handler={this._index} onSignOut={this.handleSignOut} />
-                  </header>
+          <div className='relative full-height main-view'>
+            {/* Top main nav */}
+            <section className='row full-height'>
+              <div className='clearfix full-height'>
+                {/* Top main nav */}
+                <nav className='col l12 m12 transparent z-depth-0'>
+                  <CatalogNav
+                    onChange={this.handleOnChange}
+                    setInitialNavVar={this.initialNavVar}
+                  />
+                </nav>
 
-                  {/* Top main nav */}
-                  <nav className='col l12 m12 transparent z-depth-0'>
-                    <CatalogNav
-                      onChange={this.handleOnChange}
-                      setInitialNavVar={this.initialNavVar}
-                    />
-                  </nav>
-
-                  {/* Movies section lists */}
-                  <section className='row movies-box clearfix'>
-                    {
+                {/* Movies section lists */}
+                <section className='row movies-box clearfix'>
+                  {
                     (!this.state.loading &&
                       <CatalogList
                         movies={this.state.movies} loadOrder={this.loadOrder}
@@ -381,10 +356,10 @@ export default class Catalog extends React.Component {
                         onClick={this.handleClickMovie} screen={this.state.screen}
                       />) || <BoxLoader size={100} />
                   }
-                  </section>
-                </div>
-              </section>
-            </div>
+                </section>
+              </div>
+            </section>
+          </div>
         }
       </>
     )

@@ -1,39 +1,34 @@
 // Require logged
-import { HashRouter, Redirect, Route, Switch } from 'react-router-dom'
-import DragBar from '@components/DragBar'
-import Login from '@pages/Login'
-import Catalog from '@pages/Home'
-import Player from '@pages/Player'
-import React from 'react'
+import React from "react";
+import { HashRouter, Route, Routes } from "react-router-dom";
 
-function DragBarHOC (Component, navigate) {
-  return (
-    <DragBar>
-      <Component {...navigate} />
-    </DragBar>
-  )
-}
+import DragBar from "@components/DragBar";
+import Home from "@pages/Home";
+import PlayerUIX from "@pages/PlayUIX";
 
-export default (hist, key) => {
+export default () => {
   return (
-    <HashRouter history={hist}>
-      <Switch>
+    <HashRouter basename="/">
+      <Routes>
         <Route
-          name='login' exact path='/'
-          render={(n) => !key.isLogged()
-            ? DragBarHOC(Login, n)
-            : (<Redirect to='/app/movies' />)}
+          name="home"
+          path="/"
+          element={
+            <DragBar>
+              <Home />
+            </DragBar>
+          }
         />
         <Route
-          name='movies' exact path='/app/movies'
-          render={(n) => (DragBarHOC(Catalog, n))}
+          name="player"
+          path="/player"
+          element={
+            <DragBar>
+              <PlayerUIX />
+            </DragBar>
+          }
         />
-        <Route
-          name='player'
-          path='/play/:resource'
-          render={(n) => (DragBarHOC(Player, n))}
-        />
-      </Switch>
+      </Routes>
     </HashRouter>
-  )
-}
+  );
+};

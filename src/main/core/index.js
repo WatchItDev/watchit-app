@@ -2,110 +2,75 @@
  * IPFS movies interface
  */
 
-const log = require('logplease').create('CORE')
-const Node = require('./node')
-const Ingest = require('./ingest')
+const log = require("logplease").create("CORE");
+const { concat } = require("uint8arrays/concat");
+const { toString } = require("uint8arrays/to-string");
+const all = require("it-all");
 
-module.exports = (ipcMain, runtime = 'node') => {
-  let nodeConf = {}
-  // Check if user added local node port
+/**
+ * The manifest entry shape.
+ *
+ * {
+ *   video: 'bafybeidxvztbrha74yrbetf3zkc7hjkfi2mln6hht6xm5pmpcsgm2ucqgi',
+ *   data: 'bafkreih3yoh652amfvj6livc5enaozpxc4xt2bed3huyrpzm5syn7itzoe'm
+ *   images: {
+ *    small: 'bafkreierapri53q5564hook7xknhqou3phptq2glzwk5fy3n5htlyribyu',
+ *     medium: 'bafkreibfqeuhl2xmsaabkixyptoy26fppqqnrh2ytykoaclzawqumdjoqa',
+ *     large: 'bafkreign3lpz4ckhma76wntti6ughu56nhullknwux6f7swzgqhqnr23je'
+ *   }
+ */
 
-  if (!Object.is(runtime, 'web')) {
-    const { ROOT_ORBIT_DIR } = require('./settings')
-    nodeConf = Object.assign({ directory: ROOT_ORBIT_DIR }, nodeConf)
-  }
-
-  const orbit = Node.getInstance({ orbit: nodeConf })
-  const ingest = Ingest.getInstance(orbit)
+module.exports = async (ipcMain, { Helia, runtime }) => {
+  const { node, fs } = await Helia(runtime);
 
   /**
-     * Initialize events for orbit and ingesting process
-     * @param {object} e ipcMain
-  */
-  const initEvents = (e) => {
-    // Remove listener before add new
-    orbit.removeAllListeners()
-    ingest.removeAllListeners()
-
-    // Orbit node listeners
-    orbit.on('node-error', (m) => e.reply('node-error', m))
-    orbit.on('node-peer', (peerSize) => e.reply('node-peer', peerSize))
-    orbit.on('node-chaos', () => {
-      // Stop queue processor
-      ingest.cleanInterval()
-      ipcMain.emit('party')
-    })
-
-    // orbit.on('node-raised', async () => {
-    //   // Node raised and ready to work with it
-    //   ipcMain.on('node-broadcast', (e, message) => {
-    //     // On new message broadcast message
-    //     orbit.pubsub.broadcast(message)
-    //   })
-    // })
-
-    // Ingest process listener
-    ingest.on('ingest-step', (step) => e.reply('node-step', step))
-    ingest.on('ingest-replicated', (c, s, t) => e.reply('node-replicated', c, s, t))
-
-    // On party success ready then logout
-    ipcMain.removeAllListeners('party-success')
-    ipcMain.on('party-success', () => {
-      log.warn('Party success')
-      e.reply('node-chaos')
-    })
+   * Collect data from ipfs using `cat` and deserialize it to json object
+   * @param {*} cid - The cid for the content to fetch
+   * @returns {Promise<object>} A promise that resolves with the fetched json object
+   */
+  async function catJSON(cid) {
+    const bufferedData = concat(await all(fs.cat(cid)));
+    const jsonString = toString(bufferedData);
+    return JSON.parse(jsonString);
   }
 
-  ipcMain.on('node-start', async (e) => {
-    initEvents(e) // Init listener on node ready
-    // Node events to handle progress and ready state
-    // "node-step" handle event to keep tracking states of node
-    orbit.on('node-progress', (_, hash) => setTimeout(() => { ingest.queue = hash }), 0)
-      .on('node-step', (step) => e.reply('node-step', step))
-      .on('node-loaded', () => e.reply('node-loaded'))
-      .on('node-ready', () => {
-        // FIFO queue processing
-        ingest.queueProcessor()
-        e.reply('node-ready')
-      })
-
-    log.info('Start orbit..')
-    await orbit.start(e)
-  })
-
-  ipcMain.on('node-seed', async (e) => {
-    initEvents(e)
-    log.info('Starting seed')
-    orbit.setInSeedMode(true)
-    await orbit.start()
-  })
-
-  ipcMain.on('online-status-changed', async (e, isOnline) => {
-    log.info('Going ' + (isOnline ? 'online' : 'offline'))
-    if (!isOnline) await orbit.close()
-    if (isOnline) await orbit.start()
-  })
-
-  ipcMain.on('node-close', async () => {
-    log.warn('Closing orbit')
-    await orbit.close()
-  })
-
-  ipcMain.on('node-flush', async () => {
-    log.warn('Flushing orbit')
-    ingest.cleanInterval()
-    await orbit.party('Logout')
-  })
-
-  return {
-    closed: () => orbit.closed,
-    close: async () => {
-      try {
-        ingest.cleanInterval()
-        await orbit.close()
-      } catch (e) {
-        log.error('Error trying close node')
-      }
+  ipcMain.on("node-start", async (e, key) => {
+    log.info(`Processing ${key}`)
+    const parsedData = await catJSON(key);
+    if (!parsedData.manifest) {
+      throw new Error("Fetched content with invalid manifest.");
     }
-  }
-}
+
+    log.info(`Collecting ${parsedData.count} entries`);
+    for await (const [key, content] of Object.entries(parsedData.manifest)) {
+      // collect data stored in
+      const fetchedData = await catJSON(content.data);
+      const event = Object.assign(content, {
+        meta: fetchedData,
+        type: "watchit/data",
+        count: parsedData.count,
+        progress: ((+key + 1) / parsedData.count) * 100,
+        end: (+key + 1) === parsedData.count
+      });
+
+      log.info(`Processing ${+key + 1}/${event.count} ${event.progress}%`);
+      e.reply("notification", event);
+    }
+  });
+
+  ipcMain.on("online-status-changed", async (e, isOnline) => {
+    log.info("Going " + (isOnline ? "online" : "offline"));
+    // if (!isOnline) await orbit.close()
+    // if (isOnline) await orbit.start()
+  });
+
+  ipcMain.on("node-close", async () => {
+    await orbit.stop()
+  });
+
+  ipcMain.on("node-flush", async () => {
+    // ingest.cleanInterval()
+  });
+
+  return node;
+};

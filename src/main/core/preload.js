@@ -6,10 +6,11 @@
  */
 
 // Bridge
-const Key = require('./key')
-const Broker = require('./broker')
+const Broker = require("./broker");
+const DB = require("./db");
 
 // Preload bridge
 module.exports = global.bridge = {
-  Key, Broker: Broker.getInstance()
-}
+  Broker: Broker(),
+  DB: DB(),
+};
