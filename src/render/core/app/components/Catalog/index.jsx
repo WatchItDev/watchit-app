@@ -245,14 +245,17 @@ export default class Catalog extends React.Component {
       .map((_, n) => _movies.slice(n * l, n * l + l))
   }
 
-
   handleOnChange = (sort, by) => {
     // Reset limit
     log.warn(`Sorting by ${by.action}`)
     // storage.add(this.sort).to.mainNavFilters()
-    this.setState({ loading: true }, () => {
+    this.setState({ 
+      loading: true, 
+      // persist old sorting conf..
+      sort: { ...this.state.sort, [sort]: by.action } 
+    }, () => {
       // Set cache filters
-      setTimeout(() => this.filterMovies({ [sort]: by.action }, true), 0)
+      setTimeout(() => this.filterMovies(this.state.sort, true), 0)
     })
   }
 

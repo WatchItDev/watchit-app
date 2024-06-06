@@ -6,7 +6,7 @@ import { tcp } from "@libp2p/tcp";
 import { gossipsub } from "@chainsafe/libp2p-gossipsub";
 import { webSockets } from "@libp2p/websockets";
 import { webRTC, webRTCDirect } from "@libp2p/webrtc";
-// import { webTransport } from '@libp2p/webtransport'
+import { webTransport } from '@libp2p/webtransport'
 import { circuitRelayTransport } from "@libp2p/circuit-relay-v2";
 
 const log = logplease.create("HELIA");
@@ -38,7 +38,7 @@ function getConfig(runtime = "node") {
       webSockets({ websocket: { rejectUnauthorized: false } }),
     ]) || [
       webRTC(),
-      // webTransport(),
+      webTransport(),
       webSockets(),
       circuitRelayTransport({ discoverRelays: 1 })
     ]),
