@@ -8,7 +8,7 @@ import * as Bootstrap from "@main/core";
 import App from "./core/app";
 
 import 'normalize.css'
-import './index.scss'
+import './index.web.scss'
 
 const webRenderer = Broker.getIPC();
 // Initialize nodes and core libs

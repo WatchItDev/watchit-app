@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { styled, Box, Modal, TextField, Button, Typography } from '@mui/material';
-import { ChannelsMenu } from '@watchitapp/watchitapp-uix';
+import { ChannelsMenu, Logo } from '@watchitapp/watchitapp-uix';
 
 import Details from '@components/MovieDetails';
 import CatalogList from '@components/Catalog';
@@ -59,6 +59,9 @@ export default function MovieIndex() {
   return (
     <MainContainer>
       <ChannelsMenuWrapper>
+        <Box className={'hide-on-desktop'} sx={{ marginTop: '0.3rem' }}>
+          <Logo size={50} />
+        </Box>
         <ChannelsMenu
           channels={collections} selected={selectedCollection}
           onAddChannel={onAddChannel} onChannelClick={onChannelClick}
@@ -149,16 +152,16 @@ export const AddCollectionModalWrapper = styled(Box)(() => ({
 
 export const ChannelsMenuWrapper = styled(Box)(() => ({
   display: 'flex',
-  flexDirection: 'row',
-  alignItems: 'flex-start',
-  justifyContent: 'center',
+  flexDirection: 'column',
+  alignItems: 'center',
+  justifyContent: 'flex-start',
   height: '100%',
   maxWidth: '80px',
   minWidth: '80px',
   top: 0,
   left: 0,
   zIndex: '10',
-  backgroundColor: '#212328',
+  backgroundColor: '#1A1C20',
 }));
 
 export const MainContent = styled(Box)(() => ({

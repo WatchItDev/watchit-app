@@ -15,3 +15,7 @@
 @import "css/app/queries.web";
 @import "css/include/iconmoon/style.css";
 @import "~plyr/src/sass/plyr";
+
+.hide-on-web {
+  display: none;
+}
