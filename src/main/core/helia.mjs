@@ -13,7 +13,7 @@ import { pubsubPeerDiscovery } from '@libp2p/pubsub-peer-discovery'
 const log = logplease.create("HELIA");
 const PUBSUB_PEER_DISCOVERY = 'watchit-pubsub-discovery';
 
-function getConfig(runtime = "node", bootstrapNodes = []) {
+function getConfig(runtime = "node") {
   const isBrowserRuntime = runtime === "web";
   const defaults = libp2pDefaults();
 
@@ -47,10 +47,27 @@ function getConfig(runtime = "node", bootstrapNodes = []) {
       circuitRelayTransport({ discoverRelays: 3 }),
       webSockets({ websocket: { rejectUnauthorized: false } }),
     ]) || [
-        webTransport(),
+        // webTransport(),
         webSockets(),
         circuitRelayTransport({ discoverRelays: 1 }),
-        webRTC(),
+        webRTC({
+          rtcConfiguration: {
+            iceServers: [
+              {
+                urls: [
+                  'stun:stun.l.google.com:19302',
+                  'stun:global.stun.twilio.com:3478',
+                  'STUN:freestun.net:3479',
+                ],
+              },
+              {
+                credential: 'free',
+                username: 'free',
+                urls: ['TURN:freestun.net:3479', 'TURNS:freestun.net:5350'],
+              },
+            ],
+          },
+        }),
       ]),
     webRTCDirect(), // both runtimes
   ];

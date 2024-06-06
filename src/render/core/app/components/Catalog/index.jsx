@@ -8,12 +8,11 @@ import Search from '@components/Search'
 import CatalogList from './list'
 import CatalogNav from './nav'
 
-import storage from '@helpers/storage'
 import util from '@helpers/util'
 import log from '@logger'
 
 // Access to main process bridge prop
-import { Broker as broker, DB } from '@main/bridge'
+import { Broker as broker, DB as db } from '@main/bridge'
 
 const DEFAULT_INIT_LOAD = 50
 
@@ -22,8 +21,8 @@ export default class Catalog extends React.Component {
   constructor(props) {
     super(props)
     // It cached or loaded initial chunk
-    const itCached = this.cached || this.loaded
-    log.warn(`Init with cached:${!!this.cached} and loaded:${!!this.loaded}`)
+    log.warn(`Init with cached:${!!this.cached}`)
+
     // bafkreiegiu74bzxm4hneylxgthjpb74c5vxanee6nzbnot72fvbgt2p6ey
     // Initial state
     this.state = {
@@ -31,10 +30,9 @@ export default class Catalog extends React.Component {
       percent: 0,
       peers: this.peers,
       count: DEFAULT_INIT_LOAD,
-      ready: itCached,
-      loading: !itCached,
+      ready: this.cached,
+      loading: !this.cached,
       movies: [],
-      selectedCollection: this.props.cid,
       screen: this.getRecalculatedScreen(),
       lock: false, // Avoid re-render movies list
       finishLoad: false,
@@ -50,18 +48,14 @@ export default class Catalog extends React.Component {
     this.resizeTimeout = null
   }
 
-  _index(i) {
-    // Else try get from key file and save
-    const _storage = {}
-    return (i in _storage && _storage[i]) || 0
-  }
-
-  get loaded() {
-    return +this._index('chunk') > 0
+  get db() {
+    return db.connect(
+      this.props.cid
+    )
   }
 
   get cached() {
-    return this._index('cached')
+    return this.db.count() > 0;
   }
 
   startRunning = (cb = null) => {
@@ -71,16 +65,9 @@ export default class Catalog extends React.Component {
     }, cb)
   }
 
-  getCurrentDb = () => {
-    return DB.connect(
-      this.state.selectedCollection
-    )
-  }
-
   storeCollections = async (movie) => {
-    const db = this.getCurrentDb()
     // store movies in local database..
-    await db.insert(movie).then((item) => {
+    await this.db.insert(movie).then((item) => {
       log.warn('Stored movies')
     })
   }
@@ -88,12 +75,12 @@ export default class Catalog extends React.Component {
 
   // Handle ipc interactions and movies collections reception from network..
   startConnecting = async (cid) => {
-    if (!cid) return;
-
+    if (!cid || this.cached) return;
     broker.removeAllListeners();
     broker.stopListeningIPC();
     broker.startListeningIPC();
 
+    const acc = [];
     // the ipc notification when a new movie is added..
     broker.on('notification', async (e, n) => {
       const movie = { ...n, _id: n.meta.id };
@@ -102,9 +89,10 @@ export default class Catalog extends React.Component {
       // accumulate incoming movies and store them when finish..
       // this approach could help to handle errors if the app is closed before
       // receive the complete collection and force to restart...
-      await this.storeCollections(movie)
       // when movie finish loading..
+      acc.push(movie);
       if (movie.end) {
+        await this.storeCollections(acc)
         this.startRunning()
       }
     });
@@ -162,7 +150,7 @@ export default class Catalog extends React.Component {
   componentDidMount() {
     // Set initial screen
     window.addEventListener('resize', this.handleResize)
-    this.startConnecting(this.state.selectedCollection)
+    this.startConnecting(this.props.cid)
   }
 
   handleClickMovie = (id) => {
@@ -189,9 +177,8 @@ export default class Catalog extends React.Component {
       log.info('Chunk:', filter.limit)
     }
 
-    console.log(filter)
     // Get movies
-    this.getCurrentDb().filter(filter).then((movies) => {
+    this.db.filter(filter).then((movies) => {
       // Chunk and concat movies
       log.warn('Movies filtered')
       const _chunk = chunks || this.state.screen.chunkSize

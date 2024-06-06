@@ -138,14 +138,27 @@ class DB {
   }
 
   /**
- * Get all data from the database.
- *
- * @returns {Promise<object[]>} A promise that resolves with all the movies.
- */
+   * Get all data from the database.
+   *
+   * @returns {Promise<object[]>} A promise that resolves with all the movies.
+   */
   all() {
     return this._promiseFactory((resolve) => {
       this.db[(this.id)].find({}, (err, docs) => {
         resolve(docs);
+      });
+    });
+  }
+
+  /**
+   * Count data from the database.
+   * @param {*} filters - The filter used to count.
+   * @returns {Promise<object[]>} A promise that resolves with the count number.
+   */
+  count(filters) {
+    return this._promiseFactory((resolve) => {
+      this.db[(this.id)].count(filters, (err, count) => {
+        resolve(count);
       });
     });
   }
