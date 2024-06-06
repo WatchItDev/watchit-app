@@ -173,6 +173,7 @@ export default class Catalog extends React.Component {
   filterMovies(filter = {}, clear = false, chunks = null, cb = null) {
     if (this.state.logout) { return false } // Nothing to fetch. Go out!!
 
+    console.log(filter)
     // Clean all.. invalid
     if ('genres' in filter) {
       if (filter.genres === 'All') {

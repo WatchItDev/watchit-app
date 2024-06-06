@@ -112,7 +112,6 @@ class DB {
         ...("genres" in filters && { 'meta.genres': { $in: [filters.genres] } }),
       };
 
-      console.log(filters)
       // Find data in collection
       this.db[this.id]
         .find(selectors)
