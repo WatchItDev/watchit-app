@@ -174,7 +174,9 @@ export default class Catalog extends React.Component {
     if (this.state.logout) { return false } // Nothing to fetch. Go out!!
 
     // Get from cache filters
-    if (storage.get().from.mainNavFilters()) { filter = { ...filter, ...storage.get().from.mainNavFilters() } }
+    // if (storage.get().from.mainNavFilters())
+    //   filter = { ...filter, ...storage.get().from.mainNavFilters() }
+
 
     // Clean all.. invalid
     if ('genres' in filter) {
@@ -281,28 +283,28 @@ export default class Catalog extends React.Component {
   }
 
   handleOnChange = (sort, by) => {
-    // If by?
-    if ((storage.get().from.mainNavFilters())) {
-      this.sort = Object.assign(
-        {}, this.sort,
-        storage.get().from.mainNavFilters(),
-        { [sort]: by.action }
-      )
-    } else {
-      if (by.action) {
-        this.sort = Object.assign(
-          {}, this.sort, { [sort]: by.action }
-        )
-      } else {
-        if (sort in this.sort) {
-          delete this.sort[sort]
-        }
-      }
-    }
+    // // If by?
+    // if ((storage.get().from.mainNavFilters())) {
+    //   this.sort = Object.assign(
+    //     {}, this.sort,
+    //     storage.get().from.mainNavFilters(),
+    //     { [sort]: by.action }
+    //   )
+    // } else {
+    //   if (by.action) {
+    //     this.sort = Object.assign(
+    //       {}, this.sort, { [sort]: by.action }
+    //     )
+    //   } else {
+    //     if (sort in this.sort) {
+    //       delete this.sort[sort]
+    //     }
+    //   }
+    // }
 
     // Reset limit
     log.warn(`Sorting by ${by.action}`)
-    storage.add(this.sort).to.mainNavFilters()
+    // storage.add(this.sort).to.mainNavFilters()
     this.setState({ loading: true }, () => {
       // Set cache filters
       setTimeout(() => this.filterMovies(this.sort, true), 0)
