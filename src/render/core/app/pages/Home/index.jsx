@@ -21,7 +21,8 @@ export default function MovieIndex() {
     setSelectedMovie(movieId);
   };
 
-  const onMoviePlay = (movie) => {
+  const onMoviePlay = (movieId) => {
+    setSelectedMovie(movieId);
     setIsPlaying(true)
   };
 
@@ -82,6 +83,7 @@ export default function MovieIndex() {
             <CatalogList
               cid={selectedCollection}
               onClickMovie={onMovieClick}
+              onPlayMovie={onMoviePlay}
             />
           ) : <></>
         }

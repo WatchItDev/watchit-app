@@ -134,6 +134,8 @@ img {
     display: flex;
     border-collapse: collapse;
     width: 100%;
+    align-items: center;
+    justify-content: space-between;
 
     .item {
       flex: 1;

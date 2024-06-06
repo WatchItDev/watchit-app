@@ -284,7 +284,7 @@ export default class Catalog extends React.Component {
                               movies={this.state.movies} loadOrder={this.loadOrder}
                               count={this.state.count} loading={this.state.lock}
                               end={this.state.finishLoad} chunkSize={this.state.screen.chunkSize}
-                              onClick={this.handleClickMovie} screen={this.state.screen}
+                              onClick={this.handleClickMovie} onPlay={this.props.onPlayMovie} screen={this.state.screen}
                           />) || <BoxLoader size={100} />
                   }
                 </section>

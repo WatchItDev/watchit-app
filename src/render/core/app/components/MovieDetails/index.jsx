@@ -135,7 +135,7 @@ export const MovieDetails = (props) => {
                     }}
                   >
                     <ButtonTrailer onClick={handleOpen}>Trailer</ButtonTrailer>
-                    <GradientBorderButton onClick={() => { props.onPlay(movie) }}>Watch IT</GradientBorderButton>
+                    <GradientBorderButton onClick={() => { props.onPlay(movie?._id) }}>Watch IT</GradientBorderButton>
                   </Box>
                 </Grid>
               </Grid>
@@ -172,13 +172,6 @@ export const MovieDetails = (props) => {
     </MovieDetailsContainer> || <> </>
   )
 }
-
-
-const MemoizedPlyr = React.memo(
-  React.forwardRef((props, ref) => (
-    <Plyr ref={ref} {...props} />
-  ))
-);
 
 export default MovieDetails
 

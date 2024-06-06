@@ -37,7 +37,8 @@ export default class CatalogList extends React.Component {
         <CatalogRow
           key={uid.generate()} style={style}
           chunk={Array(this.state.chunkSize).fill(0)}
-          chunkSize={this.state.chunkSize}
+          chunkSize={this.state.chunkSize} empty
+          onClick={() => {}} onPlay={() => {}}
         />
       )
     }
@@ -48,6 +49,7 @@ export default class CatalogList extends React.Component {
         chunk={this.state.movies[index]}
         chunkSize={this.state.chunkSize}
         onClick={this.props.onClick}
+        onPlay={this.props.onPlay}
         screen={this.props.screen}
         empty={false} preload
       />
