@@ -9,9 +9,6 @@ import { webRTC, webRTCDirect } from "@libp2p/webrtc";
 import { webTransport } from '@libp2p/webtransport'
 import { circuitRelayTransport } from "@libp2p/circuit-relay-v2";
 import { pubsubPeerDiscovery } from '@libp2p/pubsub-peer-discovery'
-import { peerIdFromString } from '@libp2p/peer-id'
-import { createDelegatedRoutingV1HttpApiClient } from '@helia/delegated-routing-v1-http-api-client'
-import { bootstrap } from '@libp2p/bootstrap'
 
 const log = logplease.create("HELIA");
 const PUBSUB_PEER_DISCOVERY = 'watchit-pubsub-discovery';
@@ -53,16 +50,7 @@ function getConfig(runtime = "node", bootstrapNodes = []) {
         webTransport(),
         webSockets(),
         circuitRelayTransport({ discoverRelays: 1 }),
-        webRTC({
-          rtcConfiguration: {
-            iceServers: [
-              {
-                // STUN servers help the browser discover its own public IPs
-                urls: ['stun:stun.l.google.com:19302', 'stun:global.stun.twilio.com:3478'],
-              },
-            ],
-          },
-        }),
+        webRTC(),
       ]),
     webRTCDirect(), // both runtimes
   ];
