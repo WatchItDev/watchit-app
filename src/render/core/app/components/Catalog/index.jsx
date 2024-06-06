@@ -225,17 +225,12 @@ export default class Catalog extends React.Component {
       this.renderTimeout && clearTimeout(this.renderTimeout)
       this.renderTimeout = setTimeout(() => {
         this.filterMovies({
-          ...{
-            start,
-            to
-          },
-          ...this.sort
-        },
-          false, false, (state) => {
-            log.info('Infinite movies loaded')
-            resolve(state)
-          }
-        )
+          ...{ start, to },
+          ...this.state.sort
+        }, false, false, (state) => {
+          log.info('Infinite movies loaded')
+          resolve(state)
+        })
       }, 500)
     })
   }
@@ -249,10 +244,10 @@ export default class Catalog extends React.Component {
     // Reset limit
     log.warn(`Sorting by ${by.action}`)
     // storage.add(this.sort).to.mainNavFilters()
-    this.setState({ 
-      loading: true, 
+    this.setState({
+      loading: true,
       // persist old sorting conf..
-      sort: { ...this.state.sort, [sort]: by.action } 
+      sort: { ...this.state.sort, [sort]: by.action }
     }, () => {
       // Set cache filters
       setTimeout(() => this.filterMovies(this.state.sort, true), 0)
