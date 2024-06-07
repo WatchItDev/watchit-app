@@ -16,6 +16,7 @@ import Plyr from 'plyr-react'
 import './index.scss';
 import Image from "@components/Image";
 import VideoModal from "@components/VideoModal";
+import CustomScrollbars from '@components/Scroller'
 import gateway from '@helpers/gateway'
 
 
@@ -28,7 +29,7 @@ export const MovieDetails = (props) => {
     (async () => {
       const connectedDb = db.connect(props.cid)
       const movies = await connectedDb.get(props.id)
-      
+
       setMovie(movies)
       setReady(true);
     })()
@@ -114,14 +115,24 @@ export const MovieDetails = (props) => {
                       alignItems: 'start',
                       justifyContent: 'center',
                       padding: '0 1rem',
-                      maxHeight: '16rem',
+                      maxHeight: 'auto',
                       overflow: 'auto',
                       marginTop: '0.5rem',
                     }}
                     item
                     xs={12}
                   >
-                    <p className="movie__text slide-in-left">{movie?.meta?.synopsis}</p>
+                    <CustomScrollbars
+                      autoHide
+                      autoHeight
+                      autoHeightMax={400}
+                      autoHideTimeout={1000}
+                      autoHideDuration={200}
+                      thumbMinSize={20}
+                      universal
+                    >
+                      <p className="movie__text slide-in-left">{movie?.meta?.synopsis}</p>
+                    </CustomScrollbars>
                   </Grid>
                   <Box
                     className="slide-in-bottom"

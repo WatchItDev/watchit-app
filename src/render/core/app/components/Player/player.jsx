@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 
 import PlayerVideo from './video'
 import HLS from '@main/core/hls'
+import gateway from "@helpers/gateway";
 import log from '@logger'
 
 export default class Player extends React.Component {
@@ -51,10 +52,9 @@ export default class Player extends React.Component {
 
   startStreaming () {
     // Start streamer
-    log.info('Streaming Movie: ' + this.props.movie.title.toUpperCase())
-    const uriToStream = this.props.movie.video // Ready to play uri
+    log.info('Streaming Movie: ' + this.props.movie.title.toUpperCase())    
+    const uriToStream = `${gateway.parse(this.props.movie.video)}/index.m3u8`// Ready to play uri
     const streamer = this.streamer.play(uriToStream, { videoRef: this.v.video })
-    console.log(streamer)
     streamer.on('error', this.onError)
     streamer.on('ready', () => this._ready())
   }

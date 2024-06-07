@@ -10,6 +10,10 @@
   transition: all 0.65s ease;
 }
 
+.movie__text {
+  text-align: justify;
+}
+
 .detail__image.bg {
   background: linear-gradient(to bottom, rgb(0, 0, 0), rgba(0, 0, 0, 0.5));
 }

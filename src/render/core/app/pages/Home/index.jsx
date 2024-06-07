@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { styled, Box, Modal, TextField, Button, Typography } from '@mui/material';
+import { styled, Box } from '@mui/material';
 import { ChannelsMenu, Logo } from '@watchitapp/watchitapp-uix';
 
 import Details from '@components/MovieDetails';
@@ -12,8 +12,6 @@ export default function MovieIndex() {
   const [collections, setCollections] = useState([]);
   const [selectedMovie, setSelectedMovie] = useState();
   const [selectedCollection, setSelectedCollection] = useState();
-  const [showNewCollection, setShowNewCollection] = useState(false);
-  const [newCollectionCID, setNewCollectionCID] = useState('');
   const [isPlaying, setIsPlaying] = useState(false);
   const moviesWrapper = useRef(null);
 
@@ -37,25 +35,21 @@ export default function MovieIndex() {
 
   const onAddChannel = async () => {
     // console.log('on add channel')
-    setShowNewCollection(true)
+    setSelectedCollection(null)
   }
 
   const onChannelClick = async (channel) => {
     setSelectedCollection(channel)
   }
 
-  const handleAddCollection = async () => {
-    setSelectedCollection(newCollectionCID)
-    setNewCollectionCID('')
+  const handleAddCollection = async (cid) => {
+    setSelectedCollection(cid)
   }
 
   const onRemoveCollection = async (collection) => {
 
   }
 
-  const handleSignOut = async (el) => {
-
-  }
 
   return (
     <MainContainer>
@@ -74,7 +68,7 @@ export default function MovieIndex() {
 
         {!selectedCollection ? (
           <Box sx={{ width: '100%', height: '100%' }}>
-            <EmptyBlankSlate />
+            <EmptyBlankSlate onButtonClick={handleAddCollection} />
           </Box>
         ) : <></>}
 
@@ -109,21 +103,6 @@ export default function MovieIndex() {
         )
       }
 
-      <Modal open={showNewCollection} onClose={() => setShowNewCollection(false)}>
-        <AddCollectionModalWrapper>
-          <Typography>Add new collection</Typography>
-          <TextField
-            label="Collection CID"
-            sx={{ marginY: 2, 'fieldset': { borderColor: '#fff' }, 'label, input': { color: '#fff' } }}
-            value={newCollectionCID}
-            onChange={(e) => setNewCollectionCID(e.target.value)}
-            fullWidth
-          />
-          <Button variant="contained" color="primary" onClick={handleAddCollection}>
-            Add Collection
-          </Button>
-        </AddCollectionModalWrapper>
-      </Modal>
     </MainContainer>
   );
 };
@@ -136,15 +115,8 @@ export const MainContainer = styled(Box)(() => ({
   position: 'relative'
 }));
 
-export const AddCollectionModalWrapper = styled(Box)(() => ({
-  position: 'absolute',
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'flex-start',
+export const AddCollectionWrapper = styled(Box)(() => ({
   justifyContent: 'center',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
   width: 400,
   backgroundColor: '#212328',
   borderRadius: '1rem',
@@ -204,11 +176,4 @@ export const LoaderWrapper = styled(Box)(() => ({
   justifyContent: 'center'
 }));
 
-const FiltersWrapper = styled(Box)(() => ({
-  display: 'flex',
-  gap: '1rem',
-  flexGrow: 1,
-  alignItems: 'center',
-  justifyContent: 'flex-end'
-}));
 

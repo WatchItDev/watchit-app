@@ -75,7 +75,7 @@ export default class Catalog extends React.Component {
   // Handle ipc interactions and movies collections reception from network..
   startConnecting = async (cid) => {
     if (!cid) return;
-    if (await this.cached()) 
+    if (await this.cached())
       return this.startRunning()
 
     broker.removeAllListeners();
@@ -153,7 +153,6 @@ export default class Catalog extends React.Component {
 
     const defaults = this.getRecalculatedScreen()
     this.setState({ screen: defaults })
-
     this.startConnecting(this.props.cid)
   }
 
@@ -256,39 +255,44 @@ export default class Catalog extends React.Component {
 
   render() {
     return (
-        <div className='relative full-height main-view' ref={this.moviesWrapper}>
+      <div className='relative full-height main-view' ref={this.moviesWrapper}>
         {
           (!this.state.ready &&
-              <div className='movie-player full-width full-height loading'>
-                  <StateLoader
-                    stateText={this.state.state}
-                    statePercent={this.state.percent}
-                    onClose={!this.state.logout && this.handleSignOut}
-                  />
-                </div>
-              ) ||
-              <section className='row full-height'>
-                  <div className='clearfix full-height'>
-                {/* Top main nav */}
-                <nav className='col l12 m12 transparent z-depth-0'>
+            <div className='movie-player full-width full-height loading'>
+              <StateLoader
+                stateText={this.state.state}
+                statePercent={this.state.percent}
+                onClose={!this.state.logout && this.handleSignOut}
+              />
+            </div>
+          ) ||
+          <section className='row full-height'>
+            <div className='clearfix full-height'>
+              <header className='no-margin vertical-padding transparent z-depth-1 d-flex align-items-center justify-content-between header_search'>
+                <Search cid={this.props.cid} onClick={this.handleClickMovie} />
+                <nav className='col l6 m6 transparent z-depth-0'>
                   <CatalogNav
-                      onChange={this.handleOnChange}
+                    onChange={this.handleOnChange}
                   />
                 </nav>
+                {<Stats onSignOut={this.handleSignOut} /> }
+              </header>
+              {/* Top main nav */}
 
-                {/* Movies section lists */}
-                <section className='row movies-box clearfix'>
-                  {
-                      (!this.state.loading &&
-                          <CatalogList
-                              movies={this.state.movies} loadOrder={this.loadOrder}
-                              count={this.state.count} loading={this.state.lock}
-                              end={this.state.finishLoad} chunkSize={this.state.screen.chunkSize}
-                              onClick={this.handleClickMovie} onPlay={this.props.onPlayMovie} screen={this.state.screen}
-                          />) || <BoxLoader size={100} />
-                  }
-                </section>
-              </div>
+
+              {/* Movies section lists */}
+              <section className='row movies-box clearfix'>
+                {
+                  (!this.state.loading &&
+                    <CatalogList
+                      movies={this.state.movies} loadOrder={this.loadOrder}
+                      count={this.state.count} loading={this.state.lock}
+                      end={this.state.finishLoad} chunkSize={this.state.screen.chunkSize}
+                      onClick={this.handleClickMovie} onPlay={this.props.onPlayMovie} screen={this.state.screen}
+                    />) || <BoxLoader size={100} />
+                }
+              </section>
+            </div>
           </section>
         }
       </div>

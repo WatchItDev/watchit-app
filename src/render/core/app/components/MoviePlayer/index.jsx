@@ -7,7 +7,6 @@ import { DB as db } from '@main/bridge'
 
 // PROJECT IMPORTS
 import Player from "@components/Player";
-import gateway from "@helpers/gateway";
 
 export const MoviePlayer = (props) => {
 
@@ -27,7 +26,7 @@ export const MoviePlayer = (props) => {
     ready && <MoviePlayerContainer>
       <MoviePlayerWrapper className={'background movie-details'}>
         <Grid sx={{zIndex: '99', height: '100%', background: '#000'}}>
-          <Player movie={{...movie.meta, video: `${gateway.parse(movie.video)}/index.m3u8`}} onClose={props.onClose} />
+          <Player movie={{...movie.meta, video: movie.video}} onClose={props.onClose} />
         </Grid>
       </MoviePlayerWrapper>
     </MoviePlayerContainer>

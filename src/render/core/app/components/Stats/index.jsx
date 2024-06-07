@@ -63,34 +63,34 @@ const Stats = (props) => {
     return _currentPeers > 0 ? _currentPeers : 1
   }
 
-  const [peers, setPeers] = useState(getPeers())
-  const [progress, setProgress] = useState(getTmp())
-  const [loaded, setLoaded] = useState(chunk())
-  const [total, setTotal] = useState(getTotal())
+  // const [peers, setPeers] = useState(getPeers())
+  // const [progress, setProgress] = useState(getTmp())
+  // const [loaded, setLoaded] = useState(chunk())
+  // const [total, setTotal] = useState(getTotal())
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setPeers(getPeers())
-      setProgress(getTmp())
-      setLoaded(chunk())
-      setTotal(getTotal())
-    }, 10000)
+  // useEffect(() => {
+  //   const timer = setInterval(() => {
+  //     setPeers(getPeers())
+  //     setProgress(getTmp())
+  //     setLoaded(chunk())
+  //     setTotal(getTotal())
+  //   }, 10000)
 
-    return () => {
-      clearInterval(timer)
-    }
-  }, [])
+  //   return () => {
+  //     clearInterval(timer)
+  //   }
+  // }, [])
 
   return (
     <StatWrapper>
-      <StatContent>
+      {/* <StatContent>
         <StatIcon className='icon-traffic-cone' />
         <StatText>Sync: {progress}%</StatText>
         <StatIcon className='icon-book' />
         <StatText>Movies: {loaded}/{total}</StatText>
         <StatIcon className='icon-user' />
         <StatText>Peers: {peers}</StatText>
-      </StatContent>
+      </StatContent> */}
       <LogOut onClick={props.onSignOut} href='/'>
         <LogOutIcon className='icon-log-out' />
       </LogOut>

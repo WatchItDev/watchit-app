@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
-import Input from '@components/Input/'
-import utilHelper from '@helpers/util'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
+
+import { DB as db } from '@main/bridge'
+import Input from '@components/Input/'
+import utilHelper from '@helpers/util'
 import SearchResult from './result'
 
 const SearchWrapper = styled.div`
@@ -42,7 +44,7 @@ const Search = (props) => {
     searchTimeout = setTimeout(() => {
       // Check invalid
       if (!invalidInput) {
-        props.movies.search(
+        db.connect(props.cid).search(
           targetValue
         ).then((res) => {
           setSearchResult(res)
@@ -71,11 +73,11 @@ const Search = (props) => {
       />
       {
         (searching || searchResult) &&
-          <SearchResult
-            searching={searching}
-            result={searchResult}
-            onClick={handleClick}
-          />
+        <SearchResult
+          searching={searching}
+          result={searchResult}
+          onClick={handleClick}
+        />
       }
     </SearchWrapper>
   )

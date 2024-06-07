@@ -28,7 +28,7 @@ export default class CustomScrollbars extends React.PureComponent {
 
   renderThumbHorizontal ({ style, ...props }) {
     const thumbStyle = {
-      // marginLeft: '5px',
+      marginRight: '-1px',
       backgroundColor: 'rgba(167, 201, 235, 0.6)',
       width: '5px',
       borderRadius: '5px'

@@ -26,7 +26,7 @@ class DB {
    */
   connect(id) {
     if (!(id in this.db)) {
-      log.warn(`Creating local db for ${id}`);
+      log.warn(`Connecting to db: ${id}`);
       this.db[id] = new LinvoDB(id);
     }
 
@@ -92,7 +92,7 @@ class DB {
     return this._promiseFactory((resolve) => {
       // Find data in collection
       const re = new RegExp(`${term}`, "gi");
-      this.db[this.id].find({ title: { $regex: re } }).exec((e, r) => {
+      this.db[this.id].find({ 'meta.title': { $regex: re } }).exec((e, r) => {
         resolve(r);
       });
     });
