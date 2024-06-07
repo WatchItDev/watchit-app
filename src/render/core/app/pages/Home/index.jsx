@@ -12,38 +12,40 @@ export default function MovieIndex() {
   const [collections, setCollections] = useState([]);
   const [selectedMovie, setSelectedMovie] = useState();
   const [selectedCollection, setSelectedCollection] = useState();
+  
+  const [isAdding, setIsAdding] = useState(true);
   const [isPlaying, setIsPlaying] = useState(false);
   const moviesWrapper = useRef(null);
 
-  const onMovieClick = (movieId) => {
+  const handleMovieClick = (movieId) => {
     setSelectedMovie(movieId);
   };
 
-  const onMoviePlay = (movieId) => {
+  const handleMoviePlay = (movieId) => {
     setSelectedMovie(movieId);
     setIsPlaying(true)
   };
 
-  const onCloseMovie = () => {
+  const handleCloseMovie = () => {
     setSelectedMovie(null);
   };
 
-  const onClosePlayer = () => {
+  const handleClosePlayer = () => {
     setSelectedMovie(null)
     setIsPlaying(false)
   };
 
-  const onAddChannel = () => {
-    // console.log('on add channel')
-    setSelectedCollection(null)
+  const handleAddChannel = () => {
+    setIsAdding(true);
   }
 
-  const onChannelClick = (channel) => {
+  const handleChannelClick = (channel) => {
     setSelectedCollection(channel)
   }
 
   const handleAddCollection = (cid) => {
     setSelectedCollection(cid)
+    setIsAdding(false)
   }
 
   const onRemoveCollection = (collection) => {
@@ -58,13 +60,13 @@ export default function MovieIndex() {
         </Box>
         <ChannelsMenu
           channels={collections} selected={selectedCollection}
-          onAddChannel={onAddChannel} onChannelClick={onChannelClick}
+          onAddChannel={handleAddChannel} onChannelClick={handleChannelClick}
           onRemoveChannel={onRemoveCollection}
         />
       </ChannelsMenuWrapper>
 
       <MainContent ref={moviesWrapper} sx={{ borderTopLeftRadius: process.env.RUNTIME === 'web' ? '0' : '1rem' }}>
-        {!selectedCollection ? (
+        {isAdding ? (
           <Box sx={{ width: '100%', height: '100%' }}>
             <EmptyBlankSlate onButtonClick={handleAddCollection} />
           </Box>
@@ -74,21 +76,21 @@ export default function MovieIndex() {
           selectedCollection && !selectedMovie ? (
             <CatalogList
               cid={selectedCollection}
-              onClickMovie={onMovieClick}
-              onPlayMovie={onMoviePlay}
+              onClickMovie={handleMovieClick}
+              onPlayMovie={handleMoviePlay}
             />
           ) : <></>
         }
 
         {
-          selectedMovie && (
+          selectedMovie && selectedCollection ? (
             <Details
               id={selectedMovie}
-              onClose={onCloseMovie}
-              onPlay={onMoviePlay}
+              onClose={handleCloseMovie}
+              onPlay={handleMoviePlay}
               cid={selectedCollection}
             />
-          )
+          ) : <></>
         }
       </MainContent>
 
@@ -97,7 +99,7 @@ export default function MovieIndex() {
           <MoviePlayer
             id={selectedMovie}
             cid={selectedCollection}
-            onClose={onClosePlayer} />
+            onClose={handleClosePlayer} />
         )
       }
 

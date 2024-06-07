@@ -84,7 +84,7 @@ const Search = (props) => {
 }
 
 Search.propTypes = {
-  movies: PropTypes.object.isRequired
+  cid: PropTypes.string.isRequired
 }
 
 export default React.memo(Search)

@@ -16,16 +16,14 @@ export default class CatalogRow extends React.Component {
   }
 
   render () {
+    
     return (
       <div className='clearfix row-img' style={this.props.style}>
         {!this.props.empty && this.props.chunk.map((i) => {
           return (
             <CatalogPoster
               key={i._id || uid.generate()} id={i._id}
-              title={i.meta?.title} rating={i.meta?.rating ?? 0} year={i.meta?.year}
               image={gateway.parse(i?.images?.medium)}
-              onClick={() => { this.props.onClick(i._id); }}
-              onPlay={() => { this.props.onPlay(i._id); }}
               {...this.props} {...i}
             />
           )
