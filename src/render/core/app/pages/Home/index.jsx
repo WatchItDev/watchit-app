@@ -5,7 +5,7 @@ import { ChannelsMenu, Logo } from '@watchitapp/watchitapp-uix';
 import Details from '@components/MovieDetails';
 import CatalogList from '@components/Catalog';
 import MoviePlayer from "@components/MoviePlayer";
-import EmptyBlankSlate from "@components/EmptyBlankslate";
+import EmptyBlankSlate from "@components/Blankslate";
 
 
 export default function MovieIndex() {
@@ -33,23 +33,22 @@ export default function MovieIndex() {
     setIsPlaying(false)
   };
 
-  const onAddChannel = async () => {
+  const onAddChannel = () => {
     // console.log('on add channel')
     setSelectedCollection(null)
   }
 
-  const onChannelClick = async (channel) => {
+  const onChannelClick = (channel) => {
     setSelectedCollection(channel)
   }
 
-  const handleAddCollection = async (cid) => {
+  const handleAddCollection = (cid) => {
     setSelectedCollection(cid)
   }
 
-  const onRemoveCollection = async (collection) => {
+  const onRemoveCollection = (collection) => {
 
   }
-
 
   return (
     <MainContainer>
@@ -65,7 +64,6 @@ export default function MovieIndex() {
       </ChannelsMenuWrapper>
 
       <MainContent ref={moviesWrapper} sx={{ borderTopLeftRadius: process.env.RUNTIME === 'web' ? '0' : '1rem' }}>
-
         {!selectedCollection ? (
           <Box sx={{ width: '100%', height: '100%' }}>
             <EmptyBlankSlate onButtonClick={handleAddCollection} />

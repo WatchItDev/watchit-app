@@ -13,11 +13,12 @@ export const Wrapper = styled(Box)(() => ({
   padding: '1rem',
 }));
 
-const Index = () => {
-
+const Blankslate = (props) => {
+  // 
   const [cid, setCID] = useState('');
   const handleClick = () => {
-    props?.onNewCid(cid)
+    if (!cid) return;
+    props?.onButtonClick(cid)
     setCID("")
   }
 
@@ -61,4 +62,4 @@ const Index = () => {
   );
 };
 
-export default Index;
+export default Blankslate;
