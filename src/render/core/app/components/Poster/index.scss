@@ -80,7 +80,8 @@
 }
 
 .card__body {
-  padding: 0 0.8rem;
+  height: 100%;
+  padding: 0 0.3rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -104,11 +105,12 @@
   -webkit-transition: all var(--speed) ease;
   transition: all var(--speed) ease;
 
-  height: 4.5rem; /* Height for three lines of text */
+  //height: 4.5rem; /* Height for three lines of text */
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 0;
+  margin-bottom: 0.2rem;
+  margin-top: 0;
 }
 
 .card__name span {

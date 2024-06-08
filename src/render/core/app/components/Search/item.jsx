@@ -52,6 +52,16 @@ const ResultDetailsItemIcon = styled.i`
   color: ${props => props.color};
 `
 
+const ImageWrapper = styled.figure`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+    width: 2.5rem;
+    -webkit-transition: all 0.65s ease;
+    transition: all 0.65s ease;
+`
+
 const SearchResultItem = (props) => {
   const handleClick = () => {
     props.onClick &&
@@ -59,29 +69,31 @@ const SearchResultItem = (props) => {
   }
 
   return (
-    <ResultWrapper onClick={handleClick}>
-      <Image src={props.image} preload pulseStyle={{ position: 'relative' }} />
-      <ResultContent>
-        <ResultTitle>
-          {props.title}
-        </ResultTitle>
-        <ResultDetails>
-          <ResultDetailsItem color={setting.styles.colors.successDark}>
-            <ResultDetailsItemIcon className='icon-calendar' />
-            {props.year}
-          </ResultDetailsItem>
-          <ResultDetailsItem color={setting.styles.colors.warningDark}>
-            <ResultDetailsItemIcon className='icon-star' />
-            {props.rating}
-          </ResultDetailsItem>
-          <ResultDetailsItem color={setting.styles.colors.dangerDark}>
-            <ResultDetailsItemIcon className='icon-back-in-time' />
-            {props.runtime}
-          </ResultDetailsItem>
-        </ResultDetails>
-      </ResultContent>
-    </ResultWrapper>
-  )
+      <ResultWrapper onClick={handleClick}>
+        <ImageWrapper className="slide-in-right">
+          <Image src={props.image} preload pulseStyle={{position: 'relative'}}/>
+        </ImageWrapper>
+        <ResultContent>
+          <ResultTitle>
+            {props.meta.title}
+          </ResultTitle>
+          <ResultDetails>
+            <ResultDetailsItem color={setting.styles.colors.successDark}>
+              <ResultDetailsItemIcon className='icon-calendar'/>
+              {props.meta.year}
+            </ResultDetailsItem>
+            <ResultDetailsItem color={setting.styles.colors.warningDark}>
+              <ResultDetailsItemIcon className='icon-star'/>
+              {props.meta.rating}
+            </ResultDetailsItem>
+            <ResultDetailsItem color={setting.styles.colors.dangerDark}>
+              <ResultDetailsItemIcon className='icon-back-in-time'/>
+              {props.meta.runtime} m
+            </ResultDetailsItem>
+          </ResultDetails>
+        </ResultContent>
+      </ResultWrapper>
+)
 }
 
 export default React.memo(SearchResultItem)

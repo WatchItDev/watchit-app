@@ -1,8 +1,7 @@
 /* global localStorage */
 import React from 'react'
-import StateLoader from '@components/PlayerLoader/'
 import Stats from '@components/Stats/'
-import BoxLoader from '@components/BoxLoader/'
+import MainLoader from '@components/MainLoader/'
 import Search from '@components/Search'
 
 import CatalogList from './list'
@@ -258,13 +257,7 @@ export default class Catalog extends React.Component {
       <div className='relative full-height main-view' ref={this.moviesWrapper}>
         {
           (!this.state.ready &&
-            <div className='movie-player full-width full-height loading'>
-              <StateLoader
-                stateText={this.state.state}
-                statePercent={this.state.percent}
-                onClose={!this.state.logout && this.handleSignOut}
-              />
-            </div>
+            <MainLoader />
           ) ||
           <section className='row full-height'>
             <div className='clearfix full-height'>
@@ -289,7 +282,7 @@ export default class Catalog extends React.Component {
                       count={this.state.count} loading={this.state.lock}
                       end={this.state.finishLoad} chunkSize={this.state.screen.chunkSize}
                       onClick={this.handleClickMovie} onPlay={this.props.onPlayMovie} screen={this.state.screen}
-                    />) || <BoxLoader size={100} />
+                    />) || <MainLoader />
                 }
               </section>
             </div>

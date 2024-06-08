@@ -169,7 +169,11 @@
 }
 
 .header_search {
+  position: relative;
   padding: 1rem;
+  z-index: 2;
+  box-shadow: none;
+  border-bottom: 1px solid #444;
 
   & > div {
     padding: 0 !important;

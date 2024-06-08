@@ -73,11 +73,12 @@ img {
 
   //Main movies lists
   .movies-box {
-    height: 83%;
+    height: calc(100% - 7rem);
     width: 100% !important;
     overflow: hidden !important;
-
-
+    z-index: 1;
+    position: relative;
+    padding-top: 1rem;
   }
 
   //Poster main movies lists
@@ -382,7 +383,7 @@ img {
 .main-nav-filter-movies {
   .dropdown {
     i, span, a {
-      font-size: 1.2rem !important;
+      font-size: 1rem !important;
     }
   }
 }

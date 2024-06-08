@@ -55,7 +55,7 @@ export default function MovieIndex() {
   return (
     <MainContainer>
       <ChannelsMenuWrapper>
-        <Box className={'hide-on-desktop'} sx={{ marginTop: '0.3rem' }}>
+        <Box className={'hide-on-desktop'} sx={{ marginTop: '1rem' }}>
           <Logo size={50} />
         </Box>
         <ChannelsMenu

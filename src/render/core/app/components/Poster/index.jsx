@@ -1,27 +1,15 @@
 import React from 'react';
 import './index.scss';
-import { Box, Button, styled } from "@mui/material";
-import { RoundProgress } from "@watchitapp/watchitapp-uix";
+import { Box } from "@mui/material";
 import Image from "@components/Image";
 import PulseLoader from "@components/PulseLoader";
+import styled from 'styled-components'
+import setting from "@settings";
 
-const primaryRateColors = {
-    'success': '#037015',
-    'warning': '#f59e0b',
-    'danger': '#ef4444'
-};
-
-const secondaryRateColors = {
-    'success': '#81ba83',
-    'warning': '#fef3c7',
-    'danger': '#fee2e2'
-};
-
-const getColorByRate = (rate) => {
-    if (rate < 4) return 'danger';
-    if (rate >= 7) return 'success';
-    return 'warning';
-};
+const ResultDetailsItem = styled.span`
+  font-size: 1rem;
+  color: ${props => props.color};
+`
 
 export const Poster = (props) => {
 
@@ -75,12 +63,15 @@ export const Poster = (props) => {
                         justifyContent={'space-between'}
                         sx={{ width: '100%', margin: '0.5rem 0' }}
                     >
-                        <div className={`card--slide-in-left`}>
-                            {`${props.meta.rating ?? 0} / 10`}
-                        </div>
-                        <div className="card--slide-in-right">
+                        <ResultDetailsItem className={'card--slide-in-left'} color={setting.styles.colors.successDark}>
                             {props.meta.year}
-                        </div>
+                        </ResultDetailsItem>
+                        <ResultDetailsItem className={'card--fade-in'} color={setting.styles.colors.warningDark}>
+                            {props.meta.rating} / 10
+                        </ResultDetailsItem>
+                        <ResultDetailsItem className={'card--slide-in-right'} color={setting.styles.colors.dangerDark}>
+                            {props.meta.runtime} m
+                        </ResultDetailsItem>
                     </Box>
                     <p className="card__desc card--slide-in-bottom">
                         {props.meta?.synopsis}
@@ -90,35 +81,5 @@ export const Poster = (props) => {
         </Box>
     );
 };
-
-const GradientBorderButton = styled(Button)(({ theme }) => ({
-    position: 'relative',
-    overflow: 'hidden',
-    padding: '0.5rem 1.5rem',
-    color: theme.palette.common.white,
-    backgroundColor: 'transparent',
-    fontWeight: 700,
-    width: '100%',
-    marginTop: '0.5rem',
-    borderRadius: '2rem',
-    '&::before': {
-        content: '""',
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        borderRadius: 'inherit',
-        padding: '2px', // Adjust the padding to control the border width
-        background: 'linear-gradient(45deg, rgb(248,244,135), rgb(53,176,182))',
-        WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
-        mask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
-        WebkitMaskComposite: 'destination-out',
-        maskComposite: 'exclude',
-    },
-    '&:hover': {
-        backgroundColor: theme.palette.action.hover,
-    },
-}));
 
 export default Poster;
