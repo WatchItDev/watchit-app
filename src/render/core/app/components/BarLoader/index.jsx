@@ -4,7 +4,8 @@ import PropTypes from 'prop-types'
 export default class BarLoader extends React.PureComponent {
   static get propTypes () {
     return {
-      stateText: PropTypes.string.isRequired,
+      showText: PropTypes.bool,
+      stateText: PropTypes.string,
       statePercent: PropTypes.number.isRequired
     }
   }
@@ -19,14 +20,14 @@ export default class BarLoader extends React.PureComponent {
         </div>
         {
           this.props.statePercent > 0 &&
-            <div className='absolute full-width no-left'>
+            <div className='absolute full-width no-left progress-wrapper'>
               <div className={'progress lighten-1 width-' + this.props.statePercent + '-p'}>
                 <div className='determinate amber darken-4' />
               </div>
             </div>
         }
         {
-          this.props.statePercent > 0 &&
+          this.props.statePercent > 0 && this.props.showText &&
             <div className='relative top-10 text-center'>
               <h3 className='font-type-titles white-text loading_subtitle'>
                 {this.props.statePercent}%

@@ -254,7 +254,12 @@ export default class Catalog extends React.Component {
   render() {
     return (
       <div className='relative full-height main-view' ref={this.moviesWrapper}>
-        {this.state.loading && <MainLoader />}
+        {this.state.loading &&
+            <MainLoader
+                content={`Loading movie ${Math.ceil((this.state.percent / 100) * this.state.count)} of ${this.state.count}`}
+                percent={this.state.percent}
+            />
+        }
         {
           <section className='row full-height'>
             <div className='clearfix full-height'>

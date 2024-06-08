@@ -219,6 +219,25 @@ img {
   z-index: 1000;
 }
 
+.main-loader-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1001;
+  width: 100%;
+
+  .progress-wrapper {
+    top: -8px;
+  }
+}
+
+.main-loader-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
 //Top search box
 .input-black-box {
   //float: right;
