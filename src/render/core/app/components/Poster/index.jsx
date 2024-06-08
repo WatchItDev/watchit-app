@@ -42,7 +42,7 @@ export const Poster = (props) => {
             }}
         >
             <figure className="card__image">
-                <Image src={props.image} preload pulseStyle={{ position: 'relative' }} />
+                <Image src={props.image} preload pulseStyle={{ position: 'absolute' }} />
             </figure>
             <div className="card__body">
                 <h3 className="card__name card--slide-in-top">
