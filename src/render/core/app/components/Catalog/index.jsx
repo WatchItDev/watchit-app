@@ -275,7 +275,6 @@ export default class Catalog extends React.Component {
               </header>
               {/* Top main nav */}
 
-
               {/* Movies section lists */}
               <section className='row movies-box clearfix'>
                 {
