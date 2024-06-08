@@ -1,21 +1,17 @@
-//REACT IMPORTS
 import React, { useState, useEffect } from 'react'
 
-// MUI IMPORTS
 import { styled, Box, Grid, Button } from "@mui/material";
+import { CustomButton } from '@watchitapp/watchitapp-uix';
 import { Close } from '@mui/icons-material'
 
-// UIX IMPORTS
-import { CustomButton } from '@watchitapp/watchitapp-uix';
-import { DB as db } from '@main/bridge'
-
-// PROJECT IMPORTS
-import './index.scss';
 import Image from "@components/Image";
+import MainLoader from '@components/MainLoader';
 import VideoModal from "@components/VideoModal";
 import CustomScrollbars from '@components/Scroller'
-import gateway from '@helpers/gateway'
 
+import { DB as db } from '@main/bridge'
+import gateway from '@helpers/gateway'
+import './index.scss';
 
 export const MovieDetails = (props) => {
   const [open, setOpen] = useState(false);
@@ -36,7 +32,8 @@ export const MovieDetails = (props) => {
   const handleClose = () => setOpen(false);
 
   return (
-    ready && <MovieDetailsContainer sx={{ borderTopLeftRadius: process.env.RUNTIME === 'web' ? '0' : '1rem' }}>
+    !ready && <MainLoader /> ||
+    < MovieDetailsContainer sx={{ borderTopLeftRadius: process.env.RUNTIME === 'web' ? '0' : '1rem' }}>
       <MovieDetailsWrapper className={'background movie-details'}>
         <Box sx={{ top: '1.2rem', right: '1.2rem', zIndex: '100', left: '0', position: 'absolute', display: 'flex', justifyContent: 'end' }} height={'30px'} >
           <CustomButton
@@ -177,7 +174,7 @@ export const MovieDetails = (props) => {
         </Grid>
       </MovieDetailsWrapper>
       <VideoModal videoId={movie?.meta?.trailerUrl} open={open} handleClose={handleClose} />
-    </MovieDetailsContainer> || <> </>
+    </MovieDetailsContainer >
   )
 }
 

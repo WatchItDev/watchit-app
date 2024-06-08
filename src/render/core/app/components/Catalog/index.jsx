@@ -59,8 +59,7 @@ export default class Catalog extends React.Component {
 
   startRunning = (cb = null) => {
     this.setState({
-      ready: true,
-      loading: false
+      ready: true
     }, cb)
   }
 
@@ -112,6 +111,11 @@ export default class Catalog extends React.Component {
 
     log.info(`Recalculating Screen W:${width}, H:${height}`)
     return defaults
+  }
+
+  moviesToRow(_movies, l) {
+    return new Array(Math.ceil(_movies.length / l)).fill(0)
+      .map((_, n) => _movies.slice(n * l, n * l + l))
   }
 
   removeExtraRow = (movies, chunk) => {
@@ -224,11 +228,6 @@ export default class Catalog extends React.Component {
     })
   }
 
-  moviesToRow(_movies, l) {
-    return new Array(Math.ceil(_movies.length / l)).fill(0)
-      .map((_, n) => _movies.slice(n * l, n * l + l))
-  }
-
   handleOnChange = (sort, by) => {
     // Reset limit
     log.warn(`Sorting by ${by.action}`)
@@ -255,10 +254,8 @@ export default class Catalog extends React.Component {
   render() {
     return (
       <div className='relative full-height main-view' ref={this.moviesWrapper}>
+        {this.state.loading && <MainLoader />}
         {
-          (!this.state.ready &&
-            <MainLoader />
-          ) ||
           <section className='row full-height'>
             <div className='clearfix full-height'>
               <header className='no-margin vertical-padding transparent z-depth-1 d-flex align-items-center justify-content-between header_search'>
@@ -268,7 +265,7 @@ export default class Catalog extends React.Component {
                     onChange={this.handleOnChange}
                   />
                 </nav>
-                {<Stats onSignOut={this.handleSignOut} /> }
+                {<Stats onSignOut={this.handleSignOut} />}
               </header>
               {/* Top main nav */}
 
@@ -276,13 +273,13 @@ export default class Catalog extends React.Component {
               {/* Movies section lists */}
               <section className='row movies-box clearfix'>
                 {
-                  (!this.state.loading &&
+                  (this.state.ready &&
                     <CatalogList
                       movies={this.state.movies} loadOrder={this.loadOrder}
                       count={this.state.count} loading={this.state.lock}
                       end={this.state.finishLoad} chunkSize={this.state.screen.chunkSize}
                       onClick={this.handleClickMovie} onPlay={this.props.onPlayMovie} screen={this.state.screen}
-                    />) || <MainLoader />
+                    />)
                 }
               </section>
             </div>
