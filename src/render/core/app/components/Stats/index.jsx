@@ -99,8 +99,8 @@ const Stats = (props) => {
 }
 
 Stats.propTypes = {
-  handler: PropTypes.func.isRequired,
-  handleSignOut: PropTypes.func
+  // handler: PropTypes.func.isRequired,
+  onSignOut: PropTypes.func
 }
 
 export default React.memo(Stats)
