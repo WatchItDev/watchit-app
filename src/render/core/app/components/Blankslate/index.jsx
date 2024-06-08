@@ -6,6 +6,7 @@ export const Wrapper = styled(Box)(() => ({
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',
+  alignItems: 'center',
   width: '25rem',
   backgroundColor: '#212328',
   borderRadius: '1rem',
