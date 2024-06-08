@@ -50,6 +50,7 @@ export default class PlayerHLS extends React.PureComponent {
               movie={this.props.movie}
               canPlay={this.state.canPlay}
               onCanPlay={this.handleCanPlay}
+              onClose={this.props.onClose}
             />
           </div>
         </section>

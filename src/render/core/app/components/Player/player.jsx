@@ -5,6 +5,7 @@ import PlayerVideo from './video'
 import HLS from '@main/core/hls'
 import gateway from "@helpers/gateway";
 import log from '@logger'
+import ButtonClose from "@components/ButtonClose";
 
 export default class Player extends React.Component {
   constructor (props) {
@@ -92,6 +93,7 @@ export default class Player extends React.Component {
   render () {
     return (
       <div className={(this.props.canPlay && 'left relative full-height full-width') || 'invisible'}>
+        {this.props.onClose && <ButtonClose onClick={this.props.onClose} />}
         <PlayerVideo ref={this.getVideoRef} />
       </div>
     )
