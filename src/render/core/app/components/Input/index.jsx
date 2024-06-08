@@ -43,7 +43,15 @@ const InputIcon = styled.i`
   color: #555555;
 `
 
-const Input = (props) => {
+const Input = (props = {
+  type: 'text',
+  autoComplete: 'off',
+  placeholder: 'Please enter some text',
+  onInput: () => { },
+  onChange: () => { },
+  onInvalid: () => { },
+  onKeyDown: () => { }
+}) => {
   const [invalid, setInvalid] = useState(0)
   const [value, setValue] = useState('')
 
@@ -78,14 +86,5 @@ const Input = (props) => {
   )
 }
 
-Input.defaultProps = {
-  type: 'text',
-  autoComplete: 'off',
-  placeholder: 'Please enter some text',
-  onInput: () => {},
-  onChange: () => {},
-  onInvalid: () => {},
-  onKeyDown: () => {}
-}
 
 export default React.memo(Input)
