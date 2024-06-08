@@ -6,7 +6,7 @@ export const Wrapper = styled(Box)(() => ({
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',
-  width: '50%',
+  width: '25rem',
   backgroundColor: '#212328',
   borderRadius: '1rem',
   boxShadow: 24,
@@ -54,7 +54,7 @@ const Blankslate = (props) => {
           onChange={(e) => setCID(e.target.value)}
           fullWidth
         />
-        <Button variant="contained" color="primary" onClick={handleClick} >
+        <Button variant="contained" color="primary" onClick={handleClick} sx={{ width: '13rem', textTransform: 'none' }}>
           Add Collection
         </Button>
       </Wrapper>
