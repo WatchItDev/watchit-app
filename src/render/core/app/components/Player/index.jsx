@@ -45,7 +45,7 @@ export default class PlayerHLS extends React.PureComponent {
                     icon={<Close style={{ color: '#D1D2D3' }} />}
                     onClick={this.props.onClose}
                 />}
-                <MainLoader />
+                <MainLoader content={'Loading movie...'} />
               </div>
           )
         }
