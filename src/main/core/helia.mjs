@@ -3,10 +3,11 @@ import { createHelia, libp2pDefaults } from "helia";
 import { unixfs } from "@helia/unixfs";
 
 import { tcp } from "@libp2p/tcp";
-import { gossipsub } from "@chainsafe/libp2p-gossipsub";
+import { yamux } from '@chainsafe/libp2p-yamux'
 import { webSockets } from "@libp2p/websockets";
-import { webRTC, webRTCDirect } from "@libp2p/webrtc";
 import { webTransport } from '@libp2p/webtransport'
+import { webRTC, webRTCDirect } from "@libp2p/webrtc";
+import { gossipsub } from "@chainsafe/libp2p-gossipsub";
 import { circuitRelayTransport } from "@libp2p/circuit-relay-v2";
 import { pubsubPeerDiscovery } from '@libp2p/pubsub-peer-discovery'
 
@@ -26,7 +27,7 @@ function getConfig(runtime = "node") {
       "/ip4/0.0.0.0/tcp/0/ws",
       "/webrtc",
     ]) || [
-        "/webrtc",
+        "/webrtc", "/wss", "/ws",
       ]),
   ];
 
@@ -61,6 +62,9 @@ function getConfig(runtime = "node") {
       transports,
       addresses: { listen },
       peerDiscovery,
+      streamMuxers: [
+        yamux()
+      ],
       services: {
         ...defaults.services,
         pubsub: gossipsub({
