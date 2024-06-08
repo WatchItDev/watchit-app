@@ -1,9 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import StateLoader from '@components/PlayerLoader'
 
 import Player from './player'
 import PlayerHeader from './header'
+import MainLoader from "@components/MainLoader";
+import ButtonClose from "@components/ButtonClose";
 
 export default class PlayerHLS extends React.PureComponent {
   constructor (props) {
@@ -33,7 +34,8 @@ export default class PlayerHLS extends React.PureComponent {
           (
             !this.state.canPlay &&
               <div className='absolute full-width full-height player-overlay-loader'>
-                <StateLoader stateText={this.state.state} statePercent={0} />
+                {this.props.onClose && <ButtonClose onClick={this.props.onClose} />}
+                <MainLoader />
               </div>
           )
         }
