@@ -1,10 +1,20 @@
 import React from 'react';
-import './index.scss';
-import { Box } from "@mui/material";
+import { Box, Button, styled } from "@mui/material";
 import Image from "@components/Image";
 import PulseLoader from "@components/PulseLoader";
-import styled from 'styled-components'
-import setting from "@settings";
+import './index.scss';
+
+const primaryRateColors = {
+    'success': '#037015',
+    'warning': '#f59e0b',
+    'danger': '#ef4444'
+};
+
+const secondaryRateColors = {
+    'success': '#81ba83',
+    'warning': '#fef3c7',
+    'danger': '#fee2e2'
+};
 
 const ResultDetailsItem = styled.span`
   font-size: 1rem;
@@ -64,6 +74,13 @@ export const Poster = (props) => {
                         sx={{ width: '100%', margin: '0.5rem 0' }}
                     >
                         <ResultDetailsItem className={'card--slide-in-left'} color={setting.styles.colors.successDark}>
+                        <div className={`card--slide-in-left`}>
+                            {props.meta.rating ?? 0}
+                        </div>
+                        <div className={`card--slide-in-top`}>
+                            {props.meta.runtime}
+                        </div>
+                        <div className="card--slide-in-right">
                             {props.meta.year}
                         </ResultDetailsItem>
                         <ResultDetailsItem className={'card--fade-in'} color={setting.styles.colors.warningDark}>

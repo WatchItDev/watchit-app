@@ -9,9 +9,6 @@ import { Close } from '@mui/icons-material'
 import { CustomButton } from '@watchitapp/watchitapp-uix';
 import { DB as db } from '@main/bridge'
 
-// TABLER IMPORTS
-import Plyr from 'plyr-react'
-
 // PROJECT IMPORTS
 import './index.scss';
 import Image from "@components/Image";
