@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
 
 import { styled, Box, Grid, Button } from "@mui/material";
-import { CustomButton } from '@watchitapp/watchitapp-uix';
 import { Close } from '@mui/icons-material'
 
+import CustomButton from "@components/CustomButton";
 import Image from "@components/Image";
 import MainLoader from '@components/MainLoader';
 import VideoModal from "@components/VideoModal";
@@ -41,6 +41,7 @@ export const MovieDetails = (props) => {
             height={"30px"}
             width={"30px"}
             margin='0 0.5rem 0 0'
+            backgroundColor={'rgba(28,29,33,0.4) !important'}
             icon={<Close style={{ color: '#D1D2D3' }} />}
             onClick={props.onClose}
           />
@@ -165,7 +166,7 @@ export const MovieDetails = (props) => {
             </Grid>
           </Grid>
           <Box sx={{ top: '-130%', zIndex: '1', left: '-50%', position: 'absolute', height: '170%', pointerEvents: 'none', width: '150%', background: 'radial-gradient(circle, rgba(0, 0, 0, 0.6) 22%, rgba(0, 0, 0, 0) 100%)' }}></Box>
-          <Box sx={{ top: '0', zIndex: '1', left: '-115%', position: 'absolute', height: '100%', pointerEvents: 'none', width: '175%', background: 'radial-gradient(circle, rgba(0, 0, 0, 0.7) 22%, rgba(0, 0, 0, 0) 100%)' }}></Box>
+          <Box sx={{ top: '0', zIndex: '1', left: '-75%', position: 'absolute', height: '100%', pointerEvents: 'none', width: '175%', background: 'radial-gradient(circle, rgba(0, 0, 0, 0.7) 22%, rgba(0, 0, 0, 0) 100%)' }}></Box>
           <Box sx={{ top: '40%', zIndex: '1', left: '-50%', position: 'absolute', height: '170%', pointerEvents: 'none', width: '150%', background: 'radial-gradient(circle, rgba(0, 0, 0, 0.6) 22%, rgba(0, 0, 0, 0) 100%)' }}></Box>
 
           <figure className="background__detail__image">

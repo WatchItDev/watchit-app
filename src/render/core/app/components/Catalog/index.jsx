@@ -28,6 +28,7 @@ export default class Catalog extends React.Component {
       percent: 0,
       peers: this.peers,
       count: DEFAULT_INIT_LOAD,
+      total: 0,
       ready: false,
       loading: true,
       movies: [],
@@ -84,7 +85,7 @@ export default class Catalog extends React.Component {
     // the ipc notification when a new movie is added..
     broker.on('notification', async (e, n) => {
       const movie = { ...n, _id: n.meta.id };
-      this.setState({ percent: parseInt(movie.progress), count: movie.count });
+      this.setState({ percent: parseInt(movie.progress), count: movie.count, total: movie.count });
 
       // accumulate incoming movies and store them when finish..
       // this approach could help to handle errors if the app is closed before
@@ -256,7 +257,7 @@ export default class Catalog extends React.Component {
       <div className='relative full-height main-view' ref={this.moviesWrapper}>
         {this.state.loading &&
             <MainLoader
-                content={`Loading movie ${Math.ceil((this.state.percent / 100) * this.state.count)} of ${this.state.count}`}
+                content={`Loading movie ${Math.ceil((this.state.percent / 100) * this.state.total)} of ${this.state.total}`}
                 percent={this.state.percent}
             />
         }

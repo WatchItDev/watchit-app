@@ -275,7 +275,7 @@ https://smacss.com/book/type-state
 }
 
 .btn-close {
-  position: absolute;
+  position: absolute !important;
   right: 1rem;
   z-index: 1001;
   top: 1rem;
