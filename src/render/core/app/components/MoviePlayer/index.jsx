@@ -1,11 +1,9 @@
-//REACT IMPORTS
-import React,{ useState, useEffect }  from 'react'
 
-// MUI IMPORTS
+import React,{ useState, useEffect }  from 'react'
+import MainLoader from '@components/MainLoader';
 import { styled, Box, Grid } from "@mui/material";
 import { DB as db } from '@main/bridge'
 
-// PROJECT IMPORTS
 import Player from "@components/Player";
 
 export const MoviePlayer = (props) => {
@@ -29,7 +27,7 @@ export const MoviePlayer = (props) => {
           <Player movie={{...movie.meta, video: movie.video}} onClose={props.onClose} />
         </Grid>
       </MoviePlayerWrapper>
-    </MoviePlayerContainer>
+    </MoviePlayerContainer> || <MainLoader />
   )
 }
 

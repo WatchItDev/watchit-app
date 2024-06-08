@@ -52,6 +52,11 @@ export default function MovieIndex() {
 
   }
 
+  // add premises to show a component only when needed
+  const showCatalog = selectedCollection && !selectedMovie
+  const showDetails = selectedMovie && selectedCollection && !isPlaying
+  const showPlayer = isPlaying
+
   return (
     <MainContainer>
       <ChannelsMenuWrapper>
@@ -73,7 +78,7 @@ export default function MovieIndex() {
         ) : <></>}
 
         {
-          selectedCollection && !selectedMovie ? (
+          showCatalog ? (
             <CatalogList
               cid={selectedCollection}
               onClickMovie={handleMovieClick}
@@ -83,7 +88,7 @@ export default function MovieIndex() {
         }
 
         {
-          selectedMovie && selectedCollection ? (
+          showDetails ? (
             <Details
               id={selectedMovie}
               onClose={handleCloseMovie}
@@ -95,7 +100,7 @@ export default function MovieIndex() {
       </MainContent>
 
       {
-        isPlaying && (
+        showPlayer && (
           <MoviePlayer
             id={selectedMovie}
             cid={selectedCollection}
