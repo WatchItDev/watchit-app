@@ -19,13 +19,13 @@ export default function MovieIndex() {
   const [isPlaying, setIsPlaying] = useState(false);
   const moviesWrapper = useRef(null);
 
+  const showCatalog = selectedCollection && !selectedMovie;
+  const showDetails = selectedMovie && selectedCollection && !isPlaying;
+
   const getCollectionDb = () => {
     return db.connect('collections');
   }
 
-  const getStateDb = () => {
-    return db.connect('state');
-  }
 
   const handleMovieClick = (movieId) => {
     setSelectedMovie(movieId);
@@ -50,8 +50,8 @@ export default function MovieIndex() {
   };
 
   const handleChannelClick = async (channel) => {
-    await getStateDb().insert([{ _id: 'selected', value: channel }]);
     setSelectedCollection(channel);
+    setIsAdding(false);
   };
 
   const handleAddCollection = async (cid) => {
@@ -61,35 +61,30 @@ export default function MovieIndex() {
 
     log.info(`New collection stored: ${cid}`)
     // insert new entry and update the collection list..
-    setCollections((prevState) => ({ ...prevState, ...newEntry }));
+    setCollections((prevState) => (
+      // if cid is not in prevState already..
+      [...prevState, ...(!prevState.includes(cid) ? [cid] : [])]
+    ));
+
     setSelectedCollection(cid);
     setIsAdding(false);
   };
 
   const onRemoveCollection = async (collectionId) => {
     await getCollectionDb().delete({ _id: collectionId });
-    delete collections[collectionId];
-    setCollections(collections);
+    // filter the collection and avoid adding the removed to avoid re-slice..
+    const newCollection = collections.filter((el)=> el != collectionId );
+    setCollections(newCollection);
+    setSelectedCollection(null);
+    setIsAdding(true);
   };
 
   useEffect(() => {
     (async () => {
-      const stateDb = getStateDb();
-      const collectionDb = getCollectionDb();
-
-      const collectionsFromDB = await collectionDb.all();
-      const lastSelectedCollection = await stateDb.get('selected');
-      const selected = lastSelectedCollection?.value
-
+      const collectionsFromDB = await getCollectionDb().all();
       setCollections(collectionsFromDB.map((el) => el._id));
-      setSelectedCollection(selected);
-      setIsAdding(!selected);
     })();
-  }, []);
-
-
-  const showCatalog = selectedCollection && !selectedMovie;
-  const showDetails = selectedMovie && selectedCollection && !isPlaying;
+  }, [collections]);
 
   return (
     <MainContainer>
@@ -97,14 +92,14 @@ export default function MovieIndex() {
         <Box className={'hide-on-desktop'} sx={{ marginTop: '1rem' }}>
           <Logo size={50} />
         </Box>
-        {/* {
+        {
           <ChannelsMenu
             channels={collections}
             selected={selectedCollection}
             onAddChannel={handleAddChannel}
             onChannelClick={handleChannelClick}
-          /> 
-        } */}
+          />
+        }
       </ChannelsMenuWrapper>
 
       <MainContent

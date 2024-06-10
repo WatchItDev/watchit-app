@@ -10,7 +10,7 @@ export const ChannelsMenu = ( props ) => {
         <ChannelMenuWrapper open={props.isOpen}>
             <ChannelItemWrapper>
                 <Grid container justifyContent='center' spacing={1}>
-                    { props?.channels?.map((channel, index) => {
+                    { props?.channels?.map?.((channel, index) => {
                         return(
                             <Grid item xs={ 12 } key={index}>
                                 <ChannelItem
