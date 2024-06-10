@@ -1,21 +1,34 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { styled, Box } from '@mui/material';
 import { ChannelsMenu, Logo } from '@watchitapp/watchitapp-uix';
-
 import Details from '@components/MovieDetails';
 import CatalogList from '@components/Catalog';
 import MoviePlayer from "@components/MoviePlayer";
 import EmptyBlankSlate from "@components/Blankslate";
-
+import { DB as db } from '@main/bridge';
 
 export default function MovieIndex() {
   const [collections, setCollections] = useState([]);
   const [selectedMovie, setSelectedMovie] = useState();
   const [selectedCollection, setSelectedCollection] = useState();
-  
   const [isAdding, setIsAdding] = useState(true);
   const [isPlaying, setIsPlaying] = useState(false);
   const moviesWrapper = useRef(null);
+
+  useEffect(() => {
+    const initializeDB = async () => {
+      const collectionsFromDB = await db.connect('collections').all();
+      setCollections(collectionsFromDB.map((el) => el._id));
+
+      await db.connect('state').all();
+      const lastSelectedCollection = await db.connect('state').get('selected');
+      const selected = lastSelectedCollection[0]?.value ?? collectionsFromDB[0]?._id
+
+      setSelectedCollection(selected);
+      setIsAdding(!selected);
+    };
+    initializeDB();
+  }, []);
 
   const handleMovieClick = (movieId) => {
     setSelectedMovie(movieId);
@@ -23,7 +36,7 @@ export default function MovieIndex() {
 
   const handleMoviePlay = (movieId) => {
     setSelectedMovie(movieId);
-    setIsPlaying(true)
+    setIsPlaying(true);
   };
 
   const handleCloseMovie = () => {
@@ -31,84 +44,90 @@ export default function MovieIndex() {
   };
 
   const handleClosePlayer = () => {
-    setSelectedMovie(null)
-    setIsPlaying(false)
+    setSelectedMovie(null);
+    setIsPlaying(false);
   };
 
   const handleAddChannel = () => {
     setIsAdding(true);
-  }
+  };
 
-  const handleChannelClick = (channel) => {
-    setSelectedCollection(channel)
-  }
+  const handleChannelClick = async (channel) => {
+    setSelectedCollection(channel);
+    await db.connect('state').insert({ _id: 'selected', value: channel });
+  };
 
-  const handleAddCollection = (cid) => {
-    setSelectedCollection(cid)
-    setIsAdding(false)
-  }
+  const handleAddCollection = async (cid) => {
+    const newCollection = { _id: cid };
+    await db.connect('collections').insert(newCollection);
+    const updatedCollections = await db.connect('collections').all();
+    setCollections(updatedCollections.map((el) => el._id));
+    setSelectedCollection(cid);
+    setIsAdding(false);
+  };
 
-  const onRemoveCollection = (collection) => {
+  const onRemoveCollection = async (collectionId) => {
+    await db.connect('collections').delete({ id: collectionId });
+    const updatedCollections = await db.connect('collections').all();
+    setCollections(updatedCollections.map((el) => el._id));
+  };
 
-  }
-
-  // add premises to show a component only when needed
-  const showCatalog = selectedCollection && !selectedMovie
-  const showDetails = selectedMovie && selectedCollection && !isPlaying
-  const showPlayer = isPlaying
+  // Premisas para mostrar componentes solo cuando sea necesario
+  const showCatalog = selectedCollection && !selectedMovie;
+  const showDetails = selectedMovie && selectedCollection && !isPlaying;
+  const showPlayer = isPlaying;
 
   return (
-    <MainContainer>
-      <ChannelsMenuWrapper>
-        <Box className={'hide-on-desktop'} sx={{ marginTop: '1rem' }}>
-          <Logo size={50} />
-        </Box>
-        <ChannelsMenu
-          channels={collections} selected={selectedCollection}
-          onAddChannel={handleAddChannel} onChannelClick={handleChannelClick}
-          onRemoveChannel={onRemoveCollection}
-        />
-      </ChannelsMenuWrapper>
-
-      <MainContent ref={moviesWrapper} sx={{ borderTopLeftRadius: process.env.RUNTIME === 'web' ? '0' : '1rem' }}>
-        {isAdding ? (
-          <Box sx={{ width: '100%', height: '100%' }}>
-            <EmptyBlankSlate onButtonClick={handleAddCollection} />
+      <MainContainer>
+        <ChannelsMenuWrapper>
+          <Box className={'hide-on-desktop'} sx={{ marginTop: '1rem' }}>
+            <Logo size={50} />
           </Box>
-        ) : <></>}
+          <ChannelsMenu
+              channels={collections} selected={selectedCollection}
+              onAddChannel={handleAddChannel} onChannelClick={handleChannelClick}
+              onRemoveChannel={onRemoveCollection}
+          />
+        </ChannelsMenuWrapper>
+
+        <MainContent ref={moviesWrapper} sx={{ borderTopLeftRadius: process.env.RUNTIME === 'web' ? '0' : '1rem' }}>
+          {isAdding ? (
+              <Box sx={{ width: '100%', height: '100%' }}>
+                <EmptyBlankSlate onButtonClick={handleAddCollection} />
+              </Box>
+          ) : <></>}
+
+          {
+            showCatalog ? (
+                <CatalogList
+                    cid={selectedCollection}
+                    onClickMovie={handleMovieClick}
+                    onPlayMovie={handleMoviePlay}
+                />
+            ) : <></>
+          }
+
+          {
+            showDetails ? (
+                <Details
+                    id={selectedMovie}
+                    onClose={handleCloseMovie}
+                    onPlay={handleMoviePlay}
+                    cid={selectedCollection}
+                />
+            ) : <></>
+          }
+        </MainContent>
 
         {
-          showCatalog ? (
-            <CatalogList
-              cid={selectedCollection}
-              onClickMovie={handleMovieClick}
-              onPlayMovie={handleMoviePlay}
-            />
-          ) : <></>
+            showPlayer && (
+                <MoviePlayer
+                    id={selectedMovie}
+                    cid={selectedCollection}
+                    onClose={handleClosePlayer} />
+            )
         }
-
-        {
-          showDetails ? (
-            <Details
-              id={selectedMovie}
-              onClose={handleCloseMovie}
-              onPlay={handleMoviePlay}
-              cid={selectedCollection}
-            />
-          ) : <></>
-        }
-      </MainContent>
-
-      {
-        showPlayer && (
-          <MoviePlayer
-            id={selectedMovie}
-            cid={selectedCollection}
-            onClose={handleClosePlayer} />
-        )
-      }
-
-    </MainContainer>
+      </MainContainer>
   );
 };
 
@@ -180,5 +199,3 @@ export const LoaderWrapper = styled(Box)(() => ({
   alignItems: 'center',
   justifyContent: 'center'
 }));
-
-

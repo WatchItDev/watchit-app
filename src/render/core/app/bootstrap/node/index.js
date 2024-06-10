@@ -4,7 +4,6 @@ import { HashRouter, Route, Routes } from "react-router-dom";
 
 import DragBar from "@components/DragBar";
 import Home from "@pages/Home";
-import PlayerUIX from "@pages/PlayUIX";
 
 export default () => {
   return (
@@ -16,15 +15,6 @@ export default () => {
           element={
             <DragBar>
               <Home />
-            </DragBar>
-          }
-        />
-        <Route
-          name="player"
-          path="/player"
-          element={
-            <DragBar>
-              <PlayerUIX />
             </DragBar>
           }
         />
