@@ -77,7 +77,8 @@ export default function MovieIndex() {
 
       const collectionsFromDB = await collectionDb.all();
       const lastSelectedCollection = await stateDb.get('selected');
-      const selected = lastSelectedCollection[0]?.value ?? collectionsFromDB[0]?._id
+      console.log(await stateDb.get('selected'))
+      const selected = lastSelectedCollection?.value
 
       setCollections(collectionsFromDB.map((el) => el._id));
       setSelectedCollection(selected);
@@ -95,13 +96,22 @@ export default function MovieIndex() {
         <Box className={'hide-on-desktop'} sx={{ marginTop: '1rem' }}>
           <Logo size={50} />
         </Box>
-        <ChannelsMenu
-          channels={collections} selected={selectedCollection}
-          onAddChannel={handleAddChannel} onChannelClick={handleChannelClick}
-        />
+        {
+          collections.length && <ChannelsMenu
+            channels={collections}
+            selected={selectedCollection}
+            onAddChannel={handleAddChannel}
+            onChannelClick={handleChannelClick}
+          /> || <></>
+        }
       </ChannelsMenuWrapper>
 
-      <MainContent ref={moviesWrapper} sx={{ borderTopLeftRadius: process.env.RUNTIME === 'web' ? '0' : '1rem' }}>
+      <MainContent
+        ref={moviesWrapper}
+        sx={{
+          borderTopLeftRadius: process.env.RUNTIME === 'web' ? '0' : '1rem'
+        }}
+      >
         {isAdding ? (
           <Box sx={{ width: '100%', height: '100%' }}>
             <EmptyBlankSlate onButtonClick={handleAddCollection} />
