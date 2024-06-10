@@ -16,10 +16,6 @@ export default class CatalogList extends React.Component {
     }
   }
 
-  shouldComponentUpdate (nextProps, nextState, nextContext) {
-    return !nextProps.loading && nextProps.movies.length > 0
-  }
-
   static getDerivedStateFromProps (nextProps) {
     if (!nextProps.movies) { return null }
 

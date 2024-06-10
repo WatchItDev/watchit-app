@@ -11,10 +11,6 @@ export default class CatalogRow extends React.Component {
     }
   }
 
-  shouldComponentUpdate () {
-    return false
-  }
-
   render () {
     
     return (
