@@ -15,20 +15,13 @@ export default function MovieIndex() {
   const [isPlaying, setIsPlaying] = useState(false);
   const moviesWrapper = useRef(null);
 
-  useEffect(() => {
-    const initializeDB = async () => {
-      const collectionsFromDB = await db.connect('collections').all();
-      setCollections(collectionsFromDB.map((el) => el._id));
+  const getCollectionDb = () => {
+    return db.connect('collections');
+  }
 
-      await db.connect('state').all();
-      const lastSelectedCollection = await db.connect('state').get('selected');
-      const selected = lastSelectedCollection[0]?.value ?? collectionsFromDB[0]?._id
-
-      setSelectedCollection(selected);
-      setIsAdding(!selected);
-    };
-    initializeDB();
-  }, []);
+  const getStateDb = () => {
+    return db.connect('state');
+  }
 
   const handleMovieClick = (movieId) => {
     setSelectedMovie(movieId);
@@ -54,80 +47,99 @@ export default function MovieIndex() {
 
   const handleChannelClick = async (channel) => {
     setSelectedCollection(channel);
-    await db.connect('state').insert({ _id: 'selected', value: channel });
+    await getStateDb().insert({ _id: 'selected', value: channel });
   };
 
   const handleAddCollection = async (cid) => {
-    const newCollection = { _id: cid };
-    await db.connect('collections').insert(newCollection);
-    const updatedCollections = await db.connect('collections').all();
-    setCollections(updatedCollections.map((el) => el._id));
+    const newEntry = { _id: cid }
+    const collectionDb = getCollectionDb();
+    await collectionDb.insert(newEntry);
+    // insert new entry and update the collection list..
+    setCollections((prevState) => ({ ...prevState, ...newEntry }));
     setSelectedCollection(cid);
     setIsAdding(false);
   };
 
   const onRemoveCollection = async (collectionId) => {
-    await db.connect('collections').delete({ id: collectionId });
-    const updatedCollections = await db.connect('collections').all();
-    setCollections(updatedCollections.map((el) => el._id));
+    const removedEntry = { _id: collectionId }
+    const collectionDb = getCollectionDb();
+    await collectionDb.delete(removedEntry);
+    delete collections[collectionId];
+    setCollections(collections);
   };
 
-  // Premisas para mostrar componentes solo cuando sea necesario
+
+  // first run
+  useEffect(() => {
+    (async () => {
+      const stateDb = getStateDb();
+      const collectionDb = getCollectionDb();
+
+      const collectionsFromDB = await collectionDb.all();
+      const lastSelectedCollection = await stateDb.get('selected');
+      const selected = lastSelectedCollection[0]?.value ?? collectionsFromDB[0]?._id
+
+      setCollections(collectionsFromDB.map((el) => el._id));
+      setSelectedCollection(selected);
+      setIsAdding(!selected);
+    })();
+  }, []);
+
+
   const showCatalog = selectedCollection && !selectedMovie;
   const showDetails = selectedMovie && selectedCollection && !isPlaying;
-  const showPlayer = isPlaying;
 
   return (
-      <MainContainer>
-        <ChannelsMenuWrapper>
-          <Box className={'hide-on-desktop'} sx={{ marginTop: '1rem' }}>
-            <Logo size={50} />
+    <MainContainer>
+      <ChannelsMenuWrapper>
+        <Box className={'hide-on-desktop'} sx={{ marginTop: '1rem' }}>
+          <Logo size={50} />
+        </Box>
+        <ChannelsMenu
+          channels={collections} selected={selectedCollection}
+          onAddChannel={handleAddChannel} onChannelClick={handleChannelClick}
+        />
+      </ChannelsMenuWrapper>
+
+      <MainContent ref={moviesWrapper} sx={{ borderTopLeftRadius: process.env.RUNTIME === 'web' ? '0' : '1rem' }}>
+        {isAdding ? (
+          <Box sx={{ width: '100%', height: '100%' }}>
+            <EmptyBlankSlate onButtonClick={handleAddCollection} />
           </Box>
-          <ChannelsMenu
-              channels={collections} selected={selectedCollection}
-              onAddChannel={handleAddChannel} onChannelClick={handleChannelClick}
-              onRemoveChannel={onRemoveCollection}
-          />
-        </ChannelsMenuWrapper>
-
-        <MainContent ref={moviesWrapper} sx={{ borderTopLeftRadius: process.env.RUNTIME === 'web' ? '0' : '1rem' }}>
-          {isAdding ? (
-              <Box sx={{ width: '100%', height: '100%' }}>
-                <EmptyBlankSlate onButtonClick={handleAddCollection} />
-              </Box>
-          ) : <></>}
-
-          {
-            showCatalog ? (
-                <CatalogList
-                    cid={selectedCollection}
-                    onClickMovie={handleMovieClick}
-                    onPlayMovie={handleMoviePlay}
-                />
-            ) : <></>
-          }
-
-          {
-            showDetails ? (
-                <Details
-                    id={selectedMovie}
-                    onClose={handleCloseMovie}
-                    onPlay={handleMoviePlay}
-                    cid={selectedCollection}
-                />
-            ) : <></>
-          }
-        </MainContent>
+        ) : <></>}
 
         {
-            showPlayer && (
-                <MoviePlayer
-                    id={selectedMovie}
-                    cid={selectedCollection}
-                    onClose={handleClosePlayer} />
-            )
+          showCatalog ? (
+            <CatalogList
+              cid={selectedCollection}
+              onClickMovie={handleMovieClick}
+              onPlayMovie={handleMoviePlay}
+              onSignOut={onRemoveCollection}
+            />
+          ) : <></>
         }
-      </MainContainer>
+
+        {
+          showDetails ? (
+            <Details
+              id={selectedMovie}
+              onClose={handleCloseMovie}
+              onPlay={handleMoviePlay}
+              cid={selectedCollection}
+            />
+          ) : <></>
+        }
+      </MainContent>
+
+      {
+        isPlaying && (
+          <MoviePlayer
+            id={selectedMovie}
+            cid={selectedCollection}
+            onClose={handleClosePlayer} />
+        )
+      }
+    </MainContainer>
   );
 };
 

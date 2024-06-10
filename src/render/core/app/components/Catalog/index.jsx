@@ -242,11 +242,7 @@ export default class Catalog extends React.Component {
 
   handleSignOut = (event) => {
     event.preventDefault()
-    this.setState({
-      ready: false,
-      logout: true,
-      state: 'Please Wait'
-    })
+    this.props?.onSignOut(this.props.cid)
   }
 
   render() {
