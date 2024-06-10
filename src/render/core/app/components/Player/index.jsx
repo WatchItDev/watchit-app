@@ -36,15 +36,7 @@ export default class PlayerHLS extends React.PureComponent {
           (
             !this.state.canPlay &&
               <div className='absolute full-width full-height player-overlay-loader'>
-                {this.props.onClose && <CustomButton
-                    variant={'flat btn-close'}
-                    height={"30px"}
-                    width={"30px"}
-                    margin='0 0.5rem 0 0'
-                    backgroundColor={'rgba(28,29,33,0.4) !important'}
-                    icon={<Close style={{ color: '#D1D2D3' }} />}
-                    onClick={this.props.onClose}
-                />}
+                {this.props.onClose && <ButtonClose onClose={this.props.onClose} />}
                 <MainLoader content={'Loading movie...'} />
               </div>
           )

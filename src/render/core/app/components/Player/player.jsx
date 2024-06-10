@@ -7,6 +7,7 @@ import gateway from "@helpers/gateway";
 import log from '@logger'
 import {Close} from "@mui/icons-material";
 import CustomButton from "@components/CustomButton";
+import ButtonClose from "@components/ButtonClose";
 
 export default class Player extends React.Component {
   constructor (props) {
@@ -94,15 +95,7 @@ export default class Player extends React.Component {
   render () {
     return (
       <div className={(this.props.canPlay && 'left relative full-height full-width') || 'invisible'}>
-        {this.props.onClose && <CustomButton
-            variant={'flat btn-close'}
-            height={"30px"}
-            width={"30px"}
-            margin='0 0.5rem 0 0'
-            backgroundColor={'rgba(28,29,33,0.4) !important'}
-            icon={<Close style={{ color: '#D1D2D3' }} />}
-            onClick={this.props.onClose}
-        />}
+        {this.props.onClose && <ButtonClose onClose={this.props.onClose} />}
         <PlayerVideo ref={this.getVideoRef} />
       </div>
     )

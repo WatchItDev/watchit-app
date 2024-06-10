@@ -12,6 +12,7 @@ import CustomScrollbars from '@components/Scroller'
 import { DB as db } from '@main/bridge'
 import gateway from '@helpers/gateway'
 import './index.scss';
+import ButtonClose from "@components/ButtonClose";
 
 export const MovieDetails = (props) => {
   const [open, setOpen] = useState(false);
@@ -35,17 +36,7 @@ export const MovieDetails = (props) => {
     !ready && <MainLoader /> ||
     < MovieDetailsContainer sx={{ borderTopLeftRadius: process.env.RUNTIME === 'web' ? '0' : '1rem' }}>
       <MovieDetailsWrapper className={'background movie-details'}>
-        <Box sx={{ top: '1.2rem', right: '1.2rem', zIndex: '100', left: '0', position: 'absolute', display: 'flex', justifyContent: 'end' }} height={'30px'} >
-          <CustomButton
-            variant={'flat'}
-            height={"30px"}
-            width={"30px"}
-            margin='0 0.5rem 0 0'
-            backgroundColor={'rgba(28,29,33,0.4) !important'}
-            icon={<Close style={{ color: '#D1D2D3' }} />}
-            onClick={props.onClose}
-          />
-        </Box>
+        <ButtonClose onClose={props.onClose} />
         <Grid sx={{ zIndex: '99', height: '100%', background: '#000' }}>
           <Grid sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: 'calc(100% + 16px)', background: 'linear-gradient(to right, rgba(0, 0, 0, 0.8) 0, rgba(0, 0, 0, 0) 100%, rgba(0, 0, 0, 0.3) 90%, rgba(0, 0, 0, 0) 100%)' }} container spacing={2}>
             <Grid
