@@ -12,7 +12,7 @@ export default class MainLoader extends React.Component {
   render () {
     return (
       <div className='absolute full-height full-width loading-box has-main-background valign-wrapper'>
-        {this.props.percent > 0 ? (
+        {this.props.percent ? (
             <div className='main-loader-bar'>
               <BarLoader statePercent={this.props.percent} />
             </div>

@@ -131,7 +131,7 @@ class DB {
    */
   get(id) {
     return this._promiseFactory((resolve) => {
-      this.db[(this.id)].findOne({ _id: id }, (e, r) => {
+      this.db[this.id].findOne({ _id: id }, (e, r) => {
         resolve(r);
       });
     });
@@ -144,7 +144,7 @@ class DB {
    */
   all() {
     return this._promiseFactory((resolve) => {
-      this.db[(this.id)].find({}, (err, docs) => {
+      this.db[this.id].find({}, (err, docs) => {
         resolve(docs);
       });
     });
@@ -157,7 +157,7 @@ class DB {
    */
   count(filters) {
     return this._promiseFactory((resolve) => {
-      this.db[(this.id)].count(filters, (err, count) => {
+      this.db[this.id].count(filters, (err, count) => {
         resolve(count);
       });
     });

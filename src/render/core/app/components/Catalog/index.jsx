@@ -24,7 +24,7 @@ export default class Catalog extends React.Component {
       state: 'Bootstrapping',
       percent: 0,
       peers: this.peers,
-      count: DEFAULT_INIT_LOAD,
+      count: 0,
       total: 0,
       ready: false,
       loading: true,
@@ -196,7 +196,7 @@ export default class Catalog extends React.Component {
       this.setState({
         scrolling: false,
         loading: false,
-        count: !size ? current : (current + 10),
+        count: current,
         finishLoad: !clear ? !size : false,
         movies: clear ? _movies : newMovies,
         lock: false
@@ -254,7 +254,7 @@ export default class Catalog extends React.Component {
       <div className='relative full-height main-view' ref={this.moviesWrapper}>
         {this.state.loading &&
           <MainLoader
-            content={`${this.state.percent} %`}
+            content={this.state.percent > 0 ?`${this.state.percent} %` : null}
             percent={this.state.percent}
           />
         }
