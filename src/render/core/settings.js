@@ -7,24 +7,12 @@
 export default {
   streaming: ['hls'],
   gateways: () => {
-    // const keyFile = key.readFromStorage() || {}
-    // const node = 'node' in keyFile && keyFile.node ? keyFile.node : null
-    // const port = '9090'// null ? '8080' : '9090'
-
     return [
-      // 'https://vps1.phillm.net',
-      // 'https://vps2.phillm.net',
-      // 'https://vps3.phillm.net',
-      // 'https://watchit.mypinata.cloud',
-      'https://ipfs.filebase.io',
+      'https://ipfs.io',
       'https://gateway.ipfs.io',
       'https://cloudflare-ipfs.com',
       'https://storry.tv',
       'https://dweb.link'
-      // 'https://ipfs.io',
-      // ...process.env.RUNTIME !== 'web'
-      //   ? [`http://localhost:${port}`]
-      //   : []
     ]
   },
   subs: {

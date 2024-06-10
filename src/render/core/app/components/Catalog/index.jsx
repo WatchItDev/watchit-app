@@ -19,9 +19,6 @@ const DEFAULT_INIT_LOAD = 50
 export default class Catalog extends React.Component {
   constructor(props) {
     super(props)
-    // It cached or loaded initial chunk
-
-    // bafkreiegiu74bzxm4hneylxgthjpb74c5vxanee6nzbnot72fvbgt2p6ey
     // Initial state
     this.state = {
       state: 'Bootstrapping',
