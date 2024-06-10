@@ -5,7 +5,7 @@ import { unixfs } from "@helia/unixfs";
 import { tcp } from "@libp2p/tcp";
 import { yamux } from '@chainsafe/libp2p-yamux'
 import { webSockets } from "@libp2p/websockets";
-import { webTransport } from '@libp2p/webtransport'
+// import { webTransport } from '@libp2p/webtransport'
 import { webRTC, webRTCDirect } from "@libp2p/webrtc";
 import { gossipsub } from "@chainsafe/libp2p-gossipsub";
 import { circuitRelayTransport } from "@libp2p/circuit-relay-v2";
@@ -48,7 +48,7 @@ function getConfig(runtime = "node") {
       circuitRelayTransport({ discoverRelays: 3 }),
       webSockets({ websocket: { rejectUnauthorized: false } }),
     ]) || [
-        webTransport(),
+        // webTransport(),
         webSockets(),
         circuitRelayTransport({ discoverRelays: 1 }),
         webRTC()

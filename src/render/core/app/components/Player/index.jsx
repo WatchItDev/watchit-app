@@ -50,7 +50,7 @@ export default class PlayerHLS extends React.PureComponent {
           )
         }
 
-        <section className='absolute full-height clearfix video-stream'>
+        <section className='absolute full-height full-width clearfix video-stream'>
           {/* Movie torrent info */}
           {this.state.canPlay && <PlayerHeader title={this.props.movie.title} />}
 
