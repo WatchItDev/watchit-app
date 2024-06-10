@@ -57,25 +57,22 @@ function getConfig(runtime = "node") {
     webRTCDirect(), // both runtimes
   ];
 
-  return {
-    start: true,
-    libp2p: Object.assign({}, defaults, {
-      transports,
-      addresses: { listen },
-      peerDiscovery,
-      streamMuxers: [
-        yamux()
-      ],
-      services: {
-        ...defaults.services,
-        pubsub: gossipsub({
-          allowPublishToZeroPeers: true,
-          emitSelf: true,
-          canRelayMessage: true,
-        }),
-      },
-    }),
-  };
+  return Object.assign({}, defaults, {
+    transports,
+    addresses: { listen },
+    peerDiscovery,
+    streamMuxers: [
+      yamux()
+    ],
+    services: {
+      ...defaults.services,
+      pubsub: gossipsub({
+        allowPublishToZeroPeers: true,
+        emitSelf: true,
+        canRelayMessage: true,
+      }),
+    },
+  })
 }
 
 
@@ -83,10 +80,10 @@ function getConfig(runtime = "node") {
 // Helia is an ESM-only module but Electron currently only supports CJS
 // at the top level, so we have to use dynamic imports to load it
 export async function Helia(runtime) {
-  const config = getConfig(runtime);
-  const node = await createHelia(config);
-  const fs = unixfs(node);
+  const libp2p = getConfig(runtime);
+  const node = await createHelia({ libp2p, start: true });
   log.info(`Running helia with peer ${node.libp2p.peerId}`);
+  const fs = unixfs(node);
 
   return {
     node,
