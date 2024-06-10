@@ -1,10 +1,11 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { styled, Box } from '@mui/material';
-import { ChannelsMenu, Logo } from '@watchitapp/watchitapp-uix';
+import { Logo } from '@watchitapp/watchitapp-uix';
 import Details from '@components/MovieDetails';
 import CatalogList from '@components/Catalog';
 import MoviePlayer from "@components/MoviePlayer";
 import EmptyBlankSlate from "@components/Blankslate";
+import ChannelsMenu from "@components/ChannelsMenu";
 import { DB as db } from '@main/bridge';
 
 export default function MovieIndex() {
