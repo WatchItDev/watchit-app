@@ -1,11 +1,14 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { styled, Box } from '@mui/material';
+
 import { Logo } from '@watchitapp/watchitapp-uix';
 import Details from '@components/MovieDetails';
 import CatalogList from '@components/Catalog';
 import MoviePlayer from "@components/MoviePlayer";
 import EmptyBlankSlate from "@components/Blankslate";
 import ChannelsMenu from "@components/ChannelsMenu";
+
+import log from '@logger'
 import { DB as db } from '@main/bridge';
 
 export default function MovieIndex() {
@@ -47,14 +50,16 @@ export default function MovieIndex() {
   };
 
   const handleChannelClick = async (channel) => {
+    await getStateDb().insert([{ _id: 'selected', value: channel }]);
     setSelectedCollection(channel);
-    await getStateDb().insert({ _id: 'selected', value: channel });
   };
 
   const handleAddCollection = async (cid) => {
     const newEntry = { _id: cid }
     const collectionDb = getCollectionDb();
     await collectionDb.insert(newEntry);
+
+    log.info(`New collection stored: ${cid}`)
     // insert new entry and update the collection list..
     setCollections((prevState) => ({ ...prevState, ...newEntry }));
     setSelectedCollection(cid);
@@ -62,15 +67,11 @@ export default function MovieIndex() {
   };
 
   const onRemoveCollection = async (collectionId) => {
-    const removedEntry = { _id: collectionId }
-    const collectionDb = getCollectionDb();
-    await collectionDb.delete(removedEntry);
+    await getCollectionDb().delete({ _id: collectionId });
     delete collections[collectionId];
     setCollections(collections);
   };
 
-
-  // first run
   useEffect(() => {
     (async () => {
       const stateDb = getStateDb();
@@ -78,7 +79,6 @@ export default function MovieIndex() {
 
       const collectionsFromDB = await collectionDb.all();
       const lastSelectedCollection = await stateDb.get('selected');
-      console.log(await stateDb.get('selected'))
       const selected = lastSelectedCollection?.value
 
       setCollections(collectionsFromDB.map((el) => el._id));
@@ -97,14 +97,14 @@ export default function MovieIndex() {
         <Box className={'hide-on-desktop'} sx={{ marginTop: '1rem' }}>
           <Logo size={50} />
         </Box>
-        {
-          collections.length && <ChannelsMenu
+        {/* {
+          <ChannelsMenu
             channels={collections}
             selected={selectedCollection}
             onAddChannel={handleAddChannel}
             onChannelClick={handleChannelClick}
-          /> || <></>
-        }
+          /> 
+        } */}
       </ChannelsMenuWrapper>
 
       <MainContent

@@ -13,8 +13,6 @@ import log from '@logger'
 // Access to main process bridge prop
 import { Broker as broker, DB as db } from '@main/bridge'
 
-const DEFAULT_INIT_LOAD = 50
-
 // Login pages class
 export default class Catalog extends React.Component {
   constructor(props) {
@@ -23,8 +21,7 @@ export default class Catalog extends React.Component {
     this.state = {
       state: 'Bootstrapping',
       percent: 0,
-      peers: this.peers,
-      count: 0,
+      count:10,
       total: 0,
       ready: false,
       loading: true,
@@ -32,7 +29,6 @@ export default class Catalog extends React.Component {
       screen: {},
       lock: false, // Avoid re-render movies list
       finishLoad: false,
-      logout: false,
       sort: {
         sort_by: 'meta.year',
         order: 'asc'
@@ -51,19 +47,18 @@ export default class Catalog extends React.Component {
     )
   }
 
-  async cached() {
-    return await this.db.count() > 0;
-  }
 
-  startRunning = (cb = null) => {
+  startRunning = (count) => {
     this.setState({
-      ready: true
-    }, cb)
+      ready: true,
+      total: count,
+      count
+    })
   }
 
   storeCollections = async (movie) => {
     // store movies in local database..
-    await this.db.insert(movie).then((item) => {
+    await this.db.insert(movie).then(() => {
       log.warn('Stored movies')
     })
   }
@@ -71,8 +66,11 @@ export default class Catalog extends React.Component {
   // Handle ipc interactions and movies collections reception from network..
   startConnecting = async (cid) => {
     if (!cid) return;
-    if (await this.cached())
-      return this.startRunning()
+
+    // check if collection is already stored..
+    const cachedCount = await this.db.count()
+    if (cachedCount > 0)
+      return this.startRunning(cachedCount)
 
     broker.removeAllListeners();
     broker.stopListeningIPC();
@@ -91,7 +89,7 @@ export default class Catalog extends React.Component {
       acc.push(movie);
       if (movie.end) {
         await this.storeCollections(acc)
-        this.startRunning()
+        this.startRunning(movie.count)
       }
     });
 
@@ -123,11 +121,9 @@ export default class Catalog extends React.Component {
   recalculateScreen = () => {
     if (!this.state.movies.length) return
     const defaults = this.getRecalculatedScreen()
-    const chunkSize = defaults.chunkSize
-    const moviesArrays = this.state.movies
-    const movies = moviesArrays.flat(1)
-    const moviesNewStructure = this.moviesToRow(movies, chunkSize)
-    const cleanedMovies = this.removeExtraRow(moviesNewStructure, chunkSize)
+    const movies = this.state.movies.flat(1)
+    const moviesNewStructure = this.moviesToRow(movies, defaults.chunkSize)
+    const cleanedMovies = this.removeExtraRow(moviesNewStructure, defaults.chunkSize)
 
     this.setState({
       loading: false,
@@ -151,7 +147,6 @@ export default class Catalog extends React.Component {
   componentDidMount() {
     // Set initial screen
     window.addEventListener('resize', this.handleResize)
-
     const defaults = this.getRecalculatedScreen()
     this.setState({ screen: defaults })
     this.startConnecting(this.props.cid)
@@ -163,8 +158,6 @@ export default class Catalog extends React.Component {
   }
 
   filterMovies(filter = {}, clear = false, chunks = null, cb = null) {
-    if (this.state.logout) { return false } // Nothing to fetch. Go out!!
-
     // Clean all.. invalid
     if ('genres' in filter) {
       if (filter.genres === 'All') {
@@ -210,6 +203,7 @@ export default class Catalog extends React.Component {
   loadOrder = (start, to, size = this.state.screen.chunkSize) => {
     start = start * size
     to = to * size
+
     log.warn('Fetching movies from db')
     return new Promise((resolve) => {
       // Throttling
@@ -242,7 +236,7 @@ export default class Catalog extends React.Component {
 
   handleSignOut = (event) => {
     event.preventDefault()
-    this.props?.onSignOut(this.props.cid)
+    this.props.onSignOut(this.props.cid)
   }
 
   render() {
@@ -250,7 +244,7 @@ export default class Catalog extends React.Component {
       <div className='relative full-height main-view' ref={this.moviesWrapper}>
         {this.state.loading &&
           <MainLoader
-            content={this.state.percent > 0 ?`${this.state.percent} %` : null}
+            content={this.state.percent > 0 ? `${this.state.percent} %` : null}
             percent={this.state.percent}
           />
         }
