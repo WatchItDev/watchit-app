@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { styled, Box, TextField, Typography } from '@mui/material';
+import { styled, Box, TextField, Typography, Divider } from '@mui/material';
 import NoCollection from '@render/media/img/layout/movies.png';
 import CustomButton from "@components/CustomButton";
 import ChannelItem from '@components/ChannelItem';
@@ -78,7 +78,7 @@ const EmptyPage = (props) => {
   return (
       <Box sx={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <Box display="flex" width={'100%'} height={'100%'} alignItems={'center'} justifyContent={'center'} sx={{ maxWidth: '1200px' }}>
-          <Box display="flex" flexDirection="column" width="40%" alignItems={'center'} justifyContent={'center'}>
+          <Box display="flex" flexDirection="column" width="50%" alignItems={'center'} justifyContent={'center'}>
             <Typography variant="h4" color={'#D1D2D3'} sx={{ mb: 4 }}>
               Public collections
             </Typography>
@@ -104,7 +104,14 @@ const EmptyPage = (props) => {
               </Box>
             </CustomScrollbars>
           </Box>
-          <Box display="flex" justifyContent="center" alignItems="center" width="60%">
+          <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" sx={{ height: '50%', opacity: 0.4, overflow: 'hidden' }}>
+            <Divider orientation="vertical" sx={{ height: '100%', mx: 2, borderColor: '#D1D2D3' }} />
+            <Typography variant="body1" color={'#D1D2D3'} gutterBottom>
+              or
+            </Typography>
+            <Divider orientation="vertical" sx={{ height: '100%', mx: 2, borderColor: '#D1D2D3' }} />
+          </Box>
+          <Box display="flex" justifyContent="center" alignItems="center" width="50%">
             <Blankslate onButtonClick={props.onButtonClick} />
           </Box>
         </Box>
