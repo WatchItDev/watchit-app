@@ -1,18 +1,16 @@
 import React, { useState, useEffect } from 'react'
 
 import { styled, Box, Grid, Button } from "@mui/material";
-import { Close } from '@mui/icons-material'
 
-import CustomButton from "@components/CustomButton";
 import Image from "@components/Image";
 import MainLoader from '@components/MainLoader';
 import VideoModal from "@components/VideoModal";
 import CustomScrollbars from '@components/Scroller'
+import ButtonClose from "@components/ButtonClose";
 
 import { DB as db } from '@main/bridge'
 import gateway from '@helpers/gateway'
 import './index.scss';
-import ButtonClose from "@components/ButtonClose";
 
 export const MovieDetails = (props) => {
   const [open, setOpen] = useState(false);
@@ -151,7 +149,7 @@ export const MovieDetails = (props) => {
                 md={5}
               >
                 <figure className="detail__image slide-in-right">
-                  <Image src={gateway.parse(movie.images['large'])} preload alt="Short description" />
+                  <Image src={gateway.parse(movie.images['large'])} preload />
                 </figure>
               </Grid>
             </Grid>
@@ -161,7 +159,7 @@ export const MovieDetails = (props) => {
           <Box sx={{ top: '40%', zIndex: '1', left: '-50%', position: 'absolute', height: '170%', pointerEvents: 'none', width: '150%', background: 'radial-gradient(circle, rgba(0, 0, 0, 0.6) 22%, rgba(0, 0, 0, 0) 100%)' }}></Box>
 
           <figure className="background__detail__image">
-            <Image src={gateway.parse(movie.images['medium'])} alt="Short description" />
+            <Image src={gateway.parse(movie.images['medium'])}  />
           </figure>
         </Grid>
       </MovieDetailsWrapper>

@@ -9,9 +9,12 @@ export default {
   gateways: () => {
     return [
       'https://ipfs.io',
-      'https://gateway.ipfs.io',
-      'https://cloudflare-ipfs.com',
-      'https://storry.tv',
+      // 'https://gateway.ipfs.io',
+      // 'https://cloudflare-ipfs.com',
+      // 'https://storry.tv',
+      // 'https://w3s.link',
+      // "https://10.via0.com",
+      // 'https://4everland.io',
       'https://dweb.link'
     ]
   },
@@ -31,24 +34,6 @@ export default {
     get available () {
       return Object.keys(this.hash)
     }
-  },
-  storage: {
-    // User conf
-    user: 'USER_CACHE',
-    userToken: 'TOKEN_CACHE',
-    userTimezone: 'USER_TIMEZONE',
-    userSettingMoviesDiskClean: 'MOVIES_DISK_CLEAN',
-    userSettingSubsDiskClean: 'SUBS_DISK_CLEAN',
-
-    // Global conf
-    mainNavFilters: 'FILTERS_CACHE',
-    currentIndex: 'DATA_FETCHED'
-  },
-  broadcast: {
-    middlewareList: [{
-      name: 'StreamMiddleware ',
-      signal: 'stream-middleware'
-    }]
   },
   styles: {
     devices: {

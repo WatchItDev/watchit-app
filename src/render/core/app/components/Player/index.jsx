@@ -5,8 +5,6 @@ import Player from './player'
 import PlayerHeader from './header'
 import MainLoader from "@components/MainLoader";
 import ButtonClose from "@components/ButtonClose";
-import {Close} from "@mui/icons-material";
-import CustomButton from "@components/CustomButton";
 
 export default class PlayerHLS extends React.PureComponent {
   constructor (props) {
