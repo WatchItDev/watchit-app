@@ -1,6 +1,6 @@
 // eslint-disable-next-line
 
-import './wdr';
+import './wdyr';
 
 import React from "react";
 import { Helia } from "@main/core/helia.mjs";

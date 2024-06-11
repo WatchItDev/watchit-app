@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useMemo} from 'react'
 import { Add } from '@mui/icons-material'
 import { styled, Box, Grid } from '@mui/material'
 
@@ -6,6 +6,11 @@ import CustomButton from "@components/CustomButton"
 import ChannelItem from "@components/ChannelItem"
 
 export const ChannelsMenu = ( props ) => {
+
+    const addIconStyle = useMemo(() => ({
+        color: '#D1D2D3'
+    }), []);
+
     return (
         <ChannelMenuWrapper open={props.isOpen}>
             <ChannelItemWrapper>
@@ -32,7 +37,7 @@ export const ChannelsMenu = ( props ) => {
                                 height='40px'
                                 width='40px'
                                 borderRadius='10px !important'
-                                icon={<Add style={{ color: '#D1D2D3' }}/>}
+                                icon={<Add style={addIconStyle}/>}
                                 variant={'flat'}
                                 backgroundColor={'transparent'}
                                 onClick={ () => { props?.onAddChannel?.() } }
