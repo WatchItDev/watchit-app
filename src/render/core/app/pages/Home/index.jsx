@@ -198,6 +198,7 @@ export const MainContent = styled(Box)(() => ({
   position: 'relative',
   borderTopLeftRadius: '1rem',
   border: '1px solid #444',
+  overflow: 'hidden',
   '&::-webkit-scrollbar': {
     width: '0',
     background: 'transparent '

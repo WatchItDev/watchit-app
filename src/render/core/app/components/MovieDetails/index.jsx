@@ -207,15 +207,12 @@ const ButtonTrailer = styled(Button)(({ theme }) => ({
   overflow: 'hidden',
   padding: '0.5rem 1.5rem',
   color: theme.palette.common.white,
-  backgroundColor: 'transparent',
+  backgroundColor: 'transparent !important',
   fontWeight: 700,
   width: '100%',
   marginTop: '1rem',
   borderRadius: '2rem',
-  border: '2px solid #ff0200',
-  '&:hover': {
-    backgroundColor: theme.palette.action.hover,
-  },
+  border: '2px solid #ff0200'
 }));
 
 export const MovieDetailsContainer = styled(Box)(() => ({
