@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect, useCallback } from 'react';
 import { styled, Box } from '@mui/material';
 import Logo from '@components/Logo/'
 import Details from '@components/MovieDetails';
@@ -57,21 +57,22 @@ export default function MovieIndex() {
     setIsAdding(false);
   };
 
-  const handleAddCollection = async (cid) => {
-    const newEntry = { _id: cid }
-    const collectionDb = getCollectionDb();
-    await collectionDb.insert(newEntry);
+  const handleAddCollection = useCallback(
+    async (cid) => {
+      const newEntry = { _id: cid }
+      const collectionDb = getCollectionDb();
+      await collectionDb.insert(newEntry);
 
-    log.info(`New collection stored: ${cid}`)
-    // insert new entry and update the collection list..
-    setCollections((prevState) => (
-      // if cid is not in prevState already..
-      [...prevState, ...(!prevState.includes(cid) ? [cid] : [])]
-    ));
+      log.info(`New collection stored: ${cid}`)
+      // insert new entry and update the collection list..
+      setCollections((prevState) => (
+        // if cid is not in prevState already..
+        [...prevState, ...(!prevState.includes(cid) ? [cid] : [])]
+      ));
 
-    setSelectedCollection(cid);
-    setIsAdding(false);
-  };
+      setSelectedCollection(cid);
+      setIsAdding(false);
+    }, []);
 
   const onRemoveCollection = async (collectionId) => {
     await getCollectionDb().delete({ _id: collectionId });
@@ -131,9 +132,9 @@ export default function MovieIndex() {
           }}
         >
           <OpenCollectiveLogo
-              src={OpenCollective}
-              alt="OpenCollective"
-              onClick={() => window.open('https://opencollective.com/watchit', '_blank')}
+            src={OpenCollective}
+            alt="OpenCollective"
+            onClick={() => window.open('https://opencollective.com/watchit', '_blank')}
           />
         </Box>
       </ChannelsMenuWrapper>

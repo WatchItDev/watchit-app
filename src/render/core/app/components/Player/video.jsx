@@ -1,22 +1,16 @@
 import React from 'react'
 
 export default class PlayerVideo extends React.PureComponent {
-  constructor (props) {
+  constructor(props = { type: '' }) {
     super(props)
     this.video = null
-  }
-
-  static get defaultProps () {
-    return {
-      type: ''
-    }
   }
 
   getRef = (node) => {
     this.video = node
   }
 
-  render () {
+  render() {
     return (
       <video
         ref={this.getRef} autoPlay controls playsInline

@@ -3,14 +3,16 @@ import PointsLoader from '@components/PointsLoader'
 import styled from 'styled-components'
 
 export default class Button extends React.Component {
-  static get defaultProps () {
-    return {
-      clicked: false,
-      type: 'button'
-    }
+
+  constructor(props = {
+    clicked: false,
+    type: 'button'
+  }) {
+    super(props)
   }
 
-  render () {
+
+  render() {
     return (
       <ButtonWrapper type={this.props.type} onClick={this.props.onClick}>
         {

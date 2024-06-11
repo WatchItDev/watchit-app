@@ -4,24 +4,20 @@ import PulseLoader from '@components/PulseLoader'
 import log from '@logger'
 
 export default class Image extends React.PureComponent {
-  constructor(props) {
+  constructor(props = {
+    preload: false,
+    pulseStyle: null
+  }) {
     super(props)
     this.img = null
-    this.state = { 
-      loaded: false 
+    this.state = {
+      loaded: false
     }
   }
 
   static get propTypes() {
     return {
       src: PropTypes.string.isRequired
-    }
-  }
-
-  static get defaultProps() {
-    return {
-      preload: false,
-      pulseStyle: null
     }
   }
 

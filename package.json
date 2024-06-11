@@ -113,7 +113,7 @@
   "scripts": {
     "start": "cross-env LOG=* RUNTIME=electron WEBPACK_IS_DEV_SERVER=false NODE_ENV=development webpack --config webpack.config.babel.js --watch",
     "build": "cross-env RUNTIME=electron NODE_ENV=production webpack",
-    "start:web": "cross-env RUNTIME=web WEBPACK_IS_DEV_SERVER=true NODE_ENV=development webpack serve --config webpack.config.babel.js --hot --inline",
+    "start:web": "cross-env RUNTIME=web WEBPACK_IS_DEV_SERVER=true NODE_ENV=development webpack serve --config webpack.config.babel.js",
     "build:web": "cross-env RUNTIME=web NODE_ENV=production webpack",
     "test": "jest --verbose --runInBand --detectOpenHandles --forceExit",
     "lint": "standardx \"src/{main,render}/**/*.{js,jsx}\"",

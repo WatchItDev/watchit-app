@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState} from 'react';
 import { styled, Box, TextField, Typography, Divider } from '@mui/material';
 import NoCollection from '@render/media/img/layout/movies.png';
 import CustomButton from "@components/CustomButton";
@@ -26,35 +26,29 @@ const Collections = (props) => {
   };
 
   return (
-  <>
-    <Typography variant="h4" color={'#D1D2D3'} gutterBottom>
-      Collections
-    </Typography>
-    <Typography variant="body1" color={'#D1D2D3'} gutterBottom>
-      Click to any collection below to start synchronization.
-    </Typography>
-    <CustomScrollbars
-      autoHide
-      autoHeight
-      autoHeightMax={500}
-      autoHideTimeout={1000}
-      autoHideDuration={200}
-      thumbMinSize={20}
-      universal
-    >
-      <Box display="flex" flexWrap={'wrap'} alignItems={'center'} justifyContent={'center'}>
-        {settings.featuredCollections.map((collection) => (
-          <Box key={collection.cid} display="flex" alignItems={'center'} justifyContent={'center'} width={'33%'} mb={4}>
-            <ChannelItem
-              label={collection.label}
-              innerLetter={collection.cid}
-              onClick={() => handleChannelItemClick(collection.cid)}
-            />
-          </Box>
-        ))}
-      </Box>
-    </CustomScrollbars>
-  </>
+    <>
+      <CustomScrollbars
+        autoHide
+        autoHeight
+        autoHeightMax={500}
+        autoHideTimeout={1000}
+        autoHideDuration={200}
+        thumbMinSize={20}
+        universal
+      >
+        <Box display="flex" flexWrap={'wrap'} alignItems={'center'} justifyContent={'center'}>
+          {settings.featuredCollections.map((collection) => (
+            <Box key={collection.cid} display="flex" alignItems={'center'} justifyContent={'center'} width={'33%'} mb={4}>
+              <ChannelItem
+                label={collection.label}
+                innerLetter={collection.cid}
+                onClick={() => handleChannelItemClick(collection.cid)}
+              />
+            </Box>
+          ))}
+        </Box>
+      </CustomScrollbars>
+    </>
   )
 }
 
@@ -83,10 +77,10 @@ const Blankslate = (props) => {
           width="20rem"
         />
       </Box>
-      <Typography variant="h4" color={'#D1D2D3'} gutterBottom>
+      <Typography variant="h4" color={'#eee'} gutterBottom>
         Add a new collection.
       </Typography>
-      <Typography variant="body1" color={'#D1D2D3'} gutterBottom>
+      <Typography variant="body1" color={'#eee'} gutterBottom>
         You can find a collection cid in the creator profile.
       </Typography>
 
@@ -94,7 +88,7 @@ const Blankslate = (props) => {
         <TextField
           value={cid}
           label="Collection CID"
-          sx={{ marginY: 2, 'fieldset': { borderColor: '#fff !important' }, 'label, input': { color: '#fff !important' } }}
+          sx={{ marginY: 2, 'fieldset': { borderColor: '#eee !important' }, 'label, input': { color: '#eee !important' } }}
           onChange={(e) => setCID(e.target.value)}
           fullWidth
         />
@@ -113,6 +107,13 @@ const EmptyPage = (props) => {
         <Box display="flex" flexDirection="column" width="40%" alignItems={'center'} justifyContent={'center'}>
           <Collections onButtonClick={props.onButtonClick} />
         </Box>
+        <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" sx={{ height: '50%', opacity: 0.4, overflow: 'hidden' }}>
+          <Divider orientation="vertical" sx={{ height: '100%', mx: 2, borderColor: '#D1D2D3' }} />
+          <Typography variant="body1" color={'#D1D2D3'} gutterBottom>
+            or
+          </Typography>
+          <Divider orientation="vertical" sx={{ height: '100%', mx: 2, borderColor: '#D1D2D3' }} />
+        </Box>
         <Box display="flex" justifyContent="center" alignItems="center" width="60%">
           <Blankslate onButtonClick={props.onButtonClick} />
         </Box>
@@ -121,4 +122,4 @@ const EmptyPage = (props) => {
   );
 };
 
-export default memo(EmptyPage);
+export default React.memo(EmptyPage);

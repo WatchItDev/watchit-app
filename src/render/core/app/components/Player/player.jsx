@@ -5,12 +5,14 @@ import PlayerVideo from './video'
 import HLS from '@main/core/hls'
 import gateway from "@helpers/gateway";
 import log from '@logger'
-import {Close} from "@mui/icons-material";
+import { Close } from "@mui/icons-material";
 import CustomButton from "@components/CustomButton";
 import ButtonClose from "@components/ButtonClose";
 
 export default class Player extends React.Component {
-  constructor (props) {
+  constructor(props = {
+    canPlay: false
+  }) {
     super(props)
     this.v = null
     this.player = null
@@ -20,24 +22,19 @@ export default class Player extends React.Component {
     this.state = {}
   }
 
-  shouldComponentUpdate (nextProps) {
+  shouldComponentUpdate(nextProps) {
     return nextProps.canPlay
   }
 
-  static get defaultProps () {
-    return {
-      canPlay: false
-    }
-  }
 
-  static get propTypes () {
+  static get propTypes() {
     return {
       movie: PropTypes.object.isRequired,
       canPlay: PropTypes.bool.isRequired
     }
   }
 
-  async componentDidMount () {
+  async componentDidMount() {
     // Lets start watching :)
     this.startStreaming()
   }
@@ -48,33 +45,33 @@ export default class Player extends React.Component {
     }
   }
 
-  _ready () {
+  _ready() {
     log.info('Player ready')
     this._initPlaying()
   }
 
-  startStreaming () {
+  startStreaming() {
     // Start streamer
-    log.info('Streaming Movie: ' + this.props.movie.title.toUpperCase())    
+    log.info('Streaming Movie: ' + this.props.movie.title.toUpperCase())
     const uriToStream = `${gateway.parse(this.props.movie.video)}/index.m3u8`// Ready to play uri
     const streamer = this.streamer.play(uriToStream, { videoRef: this.v.video })
     streamer.on('error', this.onError)
     streamer.on('ready', () => this._ready())
   }
 
-  stopStreaming () {
+  stopStreaming() {
     this.streamer.stop()
     this.streamer.removeAllListeners()
   }
 
-  componentDidCatch (error, info) {
+  componentDidCatch(error, info) {
     log.error('Component Did Catch Error')
     log.error(error)
     log.info(info)
   }
 
   // destroy player on unmount
-  componentWillUnmount () {
+  componentWillUnmount() {
     log.warn('STREAMING STOPPED BY USER')
     this.stopStreaming()
   }
@@ -92,7 +89,7 @@ export default class Player extends React.Component {
     this.v = ref
   }
 
-  render () {
+  render() {
     return (
       <div className={(this.props.canPlay && 'left relative full-height full-width') || 'invisible'}>
         {this.props.onClose && <ButtonClose onClose={this.props.onClose} />}

@@ -2,29 +2,29 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 export default class NavBarButton extends React.Component {
-  shouldComponentUpdate (nextProps, nextState, nextContext) {
+  constructor(props = {
+    mrb: 5,
+    link: {}
+  }) {
+    super(props)
+  }
+
+  shouldComponentUpdate(nextProps, nextState, nextContext) {
     return !Object.is(nextProps.link.href, this.props.link.href)
   }
 
-  static get defaultProps () {
-    return {
-      mrb: 5,
-      link: {}
-    }
-  }
-
-  static get propTypes () {
+  static get propTypes() {
     return {
       text: PropTypes.string.isRequired,
       icon: PropTypes.string.isRequired
     }
   }
 
-  preventDefault (e) {
+  preventDefault(e) {
     e.preventDefault()
   }
 
-  render () {
+  render() {
     return (
       <ul>
         <li className='dropdown'>
