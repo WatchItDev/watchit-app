@@ -58,6 +58,14 @@ const CustomButtonWrapper = styled(Button)(() => ({
             backgroundColor: '#1c1d21 !important',
         }
     },
+    "&.filled": {
+        background: '#D1D2D3 !important',
+        border: 'none !important',
+        color: '#1c1d21 !important',
+        '&:hover': {
+            backgroundColor: '#fff !important',
+        }
+    },
     "&.flat": {
         background: 'transparent',
         border: 'none !important',

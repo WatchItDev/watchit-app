@@ -3,31 +3,37 @@ import { styled, Box, Typography } from '@mui/material'
 
 export const ChannelItem = (props) => {
 
-    return (
-        <Box display='flex' flexDirection='column' alignItems='center' justifyContent='center' sx={{ cursor: 'pointer' }}>
-            <ChannelItemWrapper
-                onClick={props.onClick} selected={!!props.selected}
-                data-testid='channel-item-wrapper'
-                sx={{
-                    padding: props.borderWidth ? `${props.borderWidth}px` : '5px',
-                    width: `${props.size ?? 100}px`,
-                    height: `${props.size ?? 100}px`,
-                    position: 'relative'
-                }}
-            >
-                <ChannelItemContent
-                    display='flex' alignItems='center' justifyContent='center'
-                    data-testid='channel-item-content'
-                    sx={{
-                        borderWidth: props.borderWidth ? `${props.borderWidth}px` : '5px',
-                        fontSize: `${props.innerLetterSize ?? 40}px`
-                    }}
-                >
-                    {props.innerLetter[props.innerLetter.length - 1]}
-                </ChannelItemContent>
-            </ChannelItemWrapper>
-        </Box>
-    )
+  return (
+      <Box display='flex' flexDirection='column' alignItems='center' justifyContent='center' sx={{ cursor: 'pointer' }}>
+        <ChannelItemWrapper
+            onClick={props.onClick} selected={!!props.selected}
+            data-testid='channel-item-wrapper'
+            sx={{
+              padding: props.borderWidth ? `${props.borderWidth}px` : '5px',
+              width: `${props.size ?? 100}px`,
+              height: `${props.size ?? 100}px`
+            }}
+        >
+          <ChannelItemContent
+              display='flex' alignItems='center' justifyContent='center'
+              data-testid='channel-item-content'
+              sx={{
+                borderWidth: props.borderWidth ? `${props.borderWidth}px` : '5px',
+                fontSize: `${props.innerLetterSize ?? 40}px`
+              }}
+          >
+            {props.innerLetter[props.innerLetter.length - 1]}
+          </ChannelItemContent>
+        </ChannelItemWrapper>
+        {
+          props.label ? (
+              <ChannelItemText fontSize={props.labelLetterSize} variant='body1'>
+                {props.label}
+              </ChannelItemText>
+          ) : <></>
+        }
+      </Box>
+  )
 }
 
 export const ChannelItemWrapper = styled(Box)((props) => ({

@@ -109,9 +109,7 @@ export default function MovieIndex() {
         }}
       >
         {isAdding ? (
-          <Box sx={{ width: '100%', height: '100%' }}>
-            <EmptyBlankSlate onButtonClick={handleAddCollection} />
-          </Box>
+          <EmptyBlankSlate onButtonClick={handleAddCollection} />
         ) : <></>}
 
         {
