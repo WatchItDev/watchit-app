@@ -4,38 +4,43 @@ import PulseLoader from '@components/PulseLoader'
 import log from '@logger'
 
 export default class Image extends React.PureComponent {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.img = null
-    this.state = { loaded: false }
+    this.state = { 
+      loaded: false 
+    }
   }
 
-  static get propTypes () {
+  static get propTypes() {
     return {
       src: PropTypes.string.isRequired
     }
   }
 
-  static get defaultProps () {
+  static get defaultProps() {
     return {
       preload: false,
       pulseStyle: null
     }
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    return nextState.loaded === false;
+  }
+
   handleImageLoaded = () => {
-    if (this.state.loaded) return
     setTimeout(() => this.setState({
       loaded: true
     }), 0)
   }
 
-  componentDidMount () {
+  componentDidMount() {
     const img = this.img?.current
     if (img && img.complete) { this.handleImageLoaded() }
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     this.img.src = '' // Abort
   }
 
@@ -51,13 +56,13 @@ export default class Image extends React.PureComponent {
     this.img = i
   }
 
-  render () {
+  render() {
     return (
       <figure className='image-container no-margin'>
         {
           // Pulse loader
           !this.state.loaded && this.props.preload &&
-            <PulseLoader style={this.props.pulseStyle} />
+          <PulseLoader style={this.props.pulseStyle} />
         }
         <img
           alt='' src={this.props.src} onLoad={this.handleImageLoaded}

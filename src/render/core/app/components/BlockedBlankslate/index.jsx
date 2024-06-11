@@ -4,15 +4,19 @@ import Blocked from '@render/media/img/layout/blocked.png';
 
 const BlockedBlankslate = () => {
   return (
-      <Blocker >
-        <Box display="flex" flexDirection={'column'} width={'100%'} height={'100%'} alignItems={'center'} justifyContent={'center'} sx={{ maxWidth: '600px' }}>
-          <Box display="flex" alignItems="center" mb={4}>
-            <Box component="img" src={Blocked} alt="blocked" width="20rem" />
-          </Box>
-          <Typography variant="h4" sx={{ opacity: 0.7 }}>Sorry, Watchit is not available on mobile or small screens yet.</Typography>
-          <Typography variant="body1" sx={{ mt: 4, opacity: 0.5 }}>Support for this device or screen size is coming soon.</Typography>
+    <Blocker >
+      <Box display="flex" flexDirection={'column'} width={'100%'} height={'100%'} alignItems={'center'} justifyContent={'center'} sx={{ maxWidth: '350px' }}>
+        <Box display="flex" alignItems="center" mb={4}>
+          <Box component="img" src={Blocked} alt="blocked" width="20rem" />
         </Box>
-      </Blocker>
+        <Typography variant="h4" sx={{ opacity: 0.7 }}>
+          Our mobile app is currently in development.
+        </Typography>
+        <Typography variant="h5" sx={{ mt: 1, opacity: 0.5 }}>
+          At this time, mobile web support is not available.
+        </Typography>
+      </Box>
+    </Blocker>
   );
 };
 

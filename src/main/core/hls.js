@@ -4,13 +4,9 @@ const EventEmitter = require('events')
 const log = require('logplease').create('HLS')
 
 const CONF = {
-  manifestLoadingTimeOut: 15 * 1000,
-  manifestLoadingMaxRetry: 3,
-  manifestLoadingRetryDelay: 1000,
-  manifestLoadingMaxRetryTimeout: 60 * 1000,
-  "enableWorker": true,
-  "lowLatencyMode": true,
-  "backBufferLength": 90
+  manifestLoadingMaxRetry: 2,
+  manifestLoadingTimeOut: 5 * 1000,
+  manifestLoadingRetryDelay: 1000
 }
 
 const DEFAULT_PLAYER_CONTROLS = [
@@ -113,7 +109,6 @@ module.exports = class HLSStreamer extends EventEmitter {
   */
   emitError(event, data) {
     if (data.fatal) {
-      log.info(`Fail trying play movie: ${JSON.stringify(data)}`)
       switch (data.type) {
         case HLS.ErrorTypes.MEDIA_ERROR:
           console.log('Fatal media error encountered, try to recover')

@@ -139,6 +139,11 @@ export default class Catalog extends React.Component {
     this.resizeTimeout = setTimeout(this.recalculateScreen, 500)
   }
 
+  // shouldComponentUpdate(nextProps, nextState) {
+  //   return nextProps.cid !== this.props.cid || nextState.loading;
+  // }
+
+
   componentWillUnmount() {
     window.removeEventListener('resize', this.handleResize)
     broker.removeAllListeners()

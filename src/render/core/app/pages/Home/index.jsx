@@ -2,11 +2,13 @@ import React, { useRef, useState, useEffect } from 'react';
 import { styled, Box } from '@mui/material';
 import Logo from '@components/Logo/'
 import Details from '@components/MovieDetails';
+import MainLoader from '@components/MainLoader';
 import CatalogList from '@components/Catalog';
 import MoviePlayer from "@components/MoviePlayer";
 import EmptyBlankSlate from "@components/Blankslate";
 import ChannelsMenu from "@components/ChannelsMenu";
 import BlockedBlankslate from "@components/BlockedBlankslate";
+
 import { DB as db } from '@main/bridge';
 import log from '@logger'
 import OpenCollective from '@render/media/img/layout/openCollective.png'
@@ -16,6 +18,7 @@ export default function MovieIndex() {
   const [collections, setCollections] = useState([]);
   const [selectedMovie, setSelectedMovie] = useState();
   const [selectedCollection, setSelectedCollection] = useState();
+  const [isLoading, setIsLoading] = useState(true);
   const [isAdding, setIsAdding] = useState(true);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isBlocked, setIsBlocked] = useState(false);
@@ -74,7 +77,7 @@ export default function MovieIndex() {
   const onRemoveCollection = async (collectionId) => {
     await getCollectionDb().delete({ _id: collectionId });
     // filter the collection and avoid adding the removed to avoid re-slice..
-    const newCollection = collections.filter((el)=> el != collectionId );
+    const newCollection = collections.filter((el) => el != collectionId);
     setCollections(newCollection);
     setSelectedCollection(null);
     setIsAdding(true);
@@ -91,7 +94,9 @@ export default function MovieIndex() {
     const userAgent = navigator.userAgent.toLowerCase();
     const isMobileDevice = /mobile|android|iphone|ipad|tablet/i.test(userAgent);
     const isSmallScreen = window.innerWidth < 900;
-    setIsBlocked(isMobileDevice || isSmallScreen);
+    const tmpBlock = isMobileDevice || isSmallScreen
+    setIsBlocked(tmpBlock);
+    setIsLoading(false)
 
     const handleResize = () => {
       setIsBlocked(window.innerWidth < 900);
@@ -101,7 +106,12 @@ export default function MovieIndex() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  if (isBlocked) return <BlockedBlankslate />;
+
+  if (isLoading)
+    return <MainLoader />
+
+  if (isBlocked)
+    return <BlockedBlankslate />;
 
   return (
     <MainContainer>
@@ -110,10 +120,10 @@ export default function MovieIndex() {
           <Logo size={50} />
         </Box>
         <ChannelsMenu
-            channels={collections}
-            selected={selectedCollection}
-            onAddChannel={handleAddChannel}
-            onChannelClick={handleChannelClick}
+          channels={collections}
+          selected={selectedCollection}
+          onAddChannel={handleAddChannel}
+          onChannelClick={handleChannelClick}
         />
         <Box
           sx={{
