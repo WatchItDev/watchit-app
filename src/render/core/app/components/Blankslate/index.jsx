@@ -43,10 +43,10 @@ const Blankslate = (props) => {
               width="20rem"
           />
         </Box>
-        <Typography variant="h4" gutterBottom>
+        <Typography variant="h4" color={'#D1D2D3'} gutterBottom>
           Add a new collection.
         </Typography>
-        <Typography variant="body1" gutterBottom>
+        <Typography variant="body1" color={'#D1D2D3'} gutterBottom>
           You can get a collection from the creator profile.
         </Typography>
 

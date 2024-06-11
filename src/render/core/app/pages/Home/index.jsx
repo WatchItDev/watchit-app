@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { styled, Box } from '@mui/material';
-import { Logo } from '@watchitapp/watchitapp-uix';
+import Logo from '@components/Logo/'
 import Details from '@components/MovieDetails';
 import CatalogList from '@components/Catalog';
 import MoviePlayer from "@components/MoviePlayer";

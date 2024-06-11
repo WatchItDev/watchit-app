@@ -21,7 +21,7 @@ const Header = styled.header`
   top: 0;
   right: 0;
   left: 0;
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: #1A1C20;
   padding: 1rem;
   height: 3rem;
   display: flex;
@@ -114,7 +114,7 @@ const DragBar = (props) => {
   return (
     <Container>
       <Header>
-        <Logo />
+        <Logo size={50} />
         {/* {this.state.updater && <Updater>{this.state.updater}</Updater>} */}
         <WindowControls>
           <WindowControl onClick={(e) => minimizeWin(e)}>
