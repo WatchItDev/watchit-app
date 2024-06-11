@@ -8,11 +8,10 @@ import MoviePlayer from "@components/MoviePlayer";
 import EmptyBlankSlate from "@components/Blankslate";
 import ChannelsMenu from "@components/ChannelsMenu";
 import BlockedBlankslate from "@components/BlockedBlankslate";
-
-import { DB as db } from '@main/bridge';
-import log from '@logger'
 import OpenCollective from '@render/media/img/layout/openCollective.png'
-import NoCollection from "@render/media/img/layout/movies.png";
+
+import log from '@logger'
+import { DB as db } from '@main/bridge';
 
 export default function MovieIndex() {
   const [collections, setCollections] = useState([]);

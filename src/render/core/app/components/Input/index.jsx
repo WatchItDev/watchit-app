@@ -66,7 +66,7 @@ const Input = (props = {
   }
 
   const handleChange = (e) => {
-    props.onChange(e)
+    // props.onChange(e)
     setValue(e.target.value)
   }
 

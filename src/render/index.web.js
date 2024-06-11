@@ -1,4 +1,7 @@
 // eslint-disable-next-line
+
+import './wdr';
+
 import React from "react";
 import { Helia } from "@main/core/helia.mjs";
 import { createRoot } from "react-dom/client";

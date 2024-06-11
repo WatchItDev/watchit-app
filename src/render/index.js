@@ -10,6 +10,7 @@ import './index.scss'
 const root = createRoot(document.getElementById("root"));
 root.render(<App />)
 
+
 // LISTENERS
 const preventDefault = (e) => e.preventDefault();
 // Prevent dropping files into the window

@@ -18,6 +18,9 @@ export default {
       'https://dweb.link'
     ]
   },
+  featuredCollections: [
+    { cid: 'bafkreiaenzlqmc34crc7sfsr3wanvbdwovsgfgggm2am7lafeejn6orghi', label: "Public Domain" },
+  ],
   subs: {
     hash: {
       spanish: 'es',

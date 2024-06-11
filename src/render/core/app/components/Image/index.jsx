@@ -25,10 +25,6 @@ export default class Image extends React.PureComponent {
     }
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    return nextState.loaded === false;
-  }
-
   handleImageLoaded = () => {
     setTimeout(() => this.setState({
       loaded: true

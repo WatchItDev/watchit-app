@@ -38,18 +38,16 @@ export const Slogan = styled.div`
   }
 `
 
-const Background = (props) => {
+const Background = (props = {
+  showLogo: true,
+  absolute: true
+}) => {
   return (
     <BackgroundWrapper absolute={props.absolute}>
       <Logo show={props.showLogo} thumbnail={false} />
       <Slogan show={props.showLogo}>open movies everywhere</Slogan>
     </BackgroundWrapper>
   )
-}
-
-Background.defaultProps = {
-  showLogo: true,
-  absolute: true
 }
 
 export default React.memo(Background)
