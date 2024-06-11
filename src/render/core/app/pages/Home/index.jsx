@@ -9,6 +9,8 @@ import ChannelsMenu from "@components/ChannelsMenu";
 import BlockedBlankslate from "@components/BlockedBlankslate";
 import { DB as db } from '@main/bridge';
 import log from '@logger'
+import OpenCollective from '@render/media/img/layout/openCollective.png'
+import NoCollection from "@render/media/img/layout/movies.png";
 
 export default function MovieIndex() {
   const [collections, setCollections] = useState([]);
@@ -113,6 +115,18 @@ export default function MovieIndex() {
             onAddChannel={handleAddChannel}
             onChannelClick={handleChannelClick}
         />
+        <Box
+          sx={{
+            marginTop: 'auto', display: 'flex', padding: '1rem',
+            width: '100%', alignItems: 'center', justifyContent: 'center'
+          }}
+        >
+          <OpenCollectiveLogo
+              src={OpenCollective}
+              alt="OpenCollective"
+              onClick={() => window.open('https://opencollective.com/watchit', '_blank')}
+          />
+        </Box>
       </ChannelsMenuWrapper>
 
       <MainContent
@@ -175,6 +189,18 @@ export const AddCollectionWrapper = styled(Box)(() => ({
   borderRadius: '1rem',
   boxShadow: 24,
   padding: '1rem',
+}));
+
+const OpenCollectiveLogo = styled('img')(() => ({
+  marginTop: 'auto',
+  width: '70%',
+  opacity: 0.5,
+  cursor: 'pointer',
+  transition: 'opacity 0.3s, transform 0.3s',
+  '&:hover': {
+    opacity: 1,
+    transform: 'scale(1.2)',
+  }
 }));
 
 export const ChannelsMenuWrapper = styled(Box)(() => ({
