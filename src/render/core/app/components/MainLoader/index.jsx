@@ -21,7 +21,7 @@ export default class MainLoader extends React.Component {
           <div className='main-loader-content'>
             <Lottie animationData={loaderAnimation} loop autoPlay style={{width: 200, height: 200}} />
             {this.props.content ? (
-                <Typography variant="h5" sx={{ marginTop: -5 }}>
+                <Typography variant="h5" color={'#D1D2D3'} sx={{ marginTop: -5 }}>
                   {this.props.content}
                 </Typography>
             ) : <></>}
