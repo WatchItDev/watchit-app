@@ -1,15 +1,14 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { styled, Box } from '@mui/material';
-
 import { Logo } from '@watchitapp/watchitapp-uix';
 import Details from '@components/MovieDetails';
 import CatalogList from '@components/Catalog';
 import MoviePlayer from "@components/MoviePlayer";
 import EmptyBlankSlate from "@components/Blankslate";
 import ChannelsMenu from "@components/ChannelsMenu";
-
-import log from '@logger'
+import BlockedBlankslate from "@components/BlockedBlankslate";
 import { DB as db } from '@main/bridge';
+import log from '@logger'
 
 export default function MovieIndex() {
   const [collections, setCollections] = useState([]);
@@ -17,6 +16,7 @@ export default function MovieIndex() {
   const [selectedCollection, setSelectedCollection] = useState();
   const [isAdding, setIsAdding] = useState(true);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isBlocked, setIsBlocked] = useState(false);
   const moviesWrapper = useRef(null);
 
   const showCatalog = selectedCollection && !selectedMovie;
@@ -25,7 +25,6 @@ export default function MovieIndex() {
   const getCollectionDb = () => {
     return db.connect('collections');
   }
-
 
   const handleMovieClick = (movieId) => {
     setSelectedMovie(movieId);
@@ -86,20 +85,34 @@ export default function MovieIndex() {
     })();
   }, [collections]);
 
+  useEffect(() => {
+    const userAgent = navigator.userAgent.toLowerCase();
+    const isMobileDevice = /mobile|android|iphone|ipad|tablet/i.test(userAgent);
+    const isSmallScreen = window.innerWidth < 900;
+    setIsBlocked(isMobileDevice || isSmallScreen);
+
+    const handleResize = () => {
+      setIsBlocked(window.innerWidth < 900);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  if (isBlocked) return <BlockedBlankslate />;
+
   return (
     <MainContainer>
       <ChannelsMenuWrapper>
         <Box className={'hide-on-desktop'} sx={{ marginTop: '1rem' }}>
           <Logo size={50} />
         </Box>
-        {
-          <ChannelsMenu
+        <ChannelsMenu
             channels={collections}
             selected={selectedCollection}
             onAddChannel={handleAddChannel}
             onChannelClick={handleChannelClick}
-          />
-        }
+        />
       </ChannelsMenuWrapper>
 
       <MainContent
