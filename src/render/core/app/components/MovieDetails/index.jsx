@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, {useState, useEffect, memo} from 'react'
 import { styled, Box, Grid, Button } from "@mui/material";
 
 import Image from "@components/Image";
@@ -31,7 +31,7 @@ export const MovieDetails = (props) => {
 
   return (
     !ready && <MainLoader /> ||
-    < MovieDetailsContainer sx={{ borderTopLeftRadius: process.env.RUNTIME === 'web' ? '0' : '1rem' }}>
+    <MovieDetailsContainer sx={{ borderTopLeftRadius: process.env.RUNTIME === 'web' ? '0' : '1rem' }}>
       <MovieDetailsWrapper className={'background movie-details'}>
         <ButtonClose onClose={props.onClose} />
         <Grid sx={{ zIndex: '99', height: '100%', background: '#000' }}>
@@ -128,7 +128,9 @@ export const MovieDetails = (props) => {
                       width: { xs: '100%', sm: '75%', md: '50%' },
                     }}
                   >
-                    <ButtonTrailer onClick={handleOpen}>Trailer</ButtonTrailer>
+                    {movie?.meta?.trailerUrl ? (
+                      <ButtonTrailer onClick={handleOpen}>Trailer</ButtonTrailer>
+                    ) : <></>}
                     <GradientBorderButton onClick={() => { props.onPlay(movie?._id) }}>Watch IT</GradientBorderButton>
                   </Box>
                 </Grid>
@@ -167,7 +169,7 @@ export const MovieDetails = (props) => {
   )
 }
 
-export default MovieDetails
+export default memo(MovieDetails)
 
 const GradientBorderButton = styled(Button)(({ theme }) => ({
   position: 'relative',

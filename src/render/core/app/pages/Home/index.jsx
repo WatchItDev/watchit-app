@@ -88,9 +88,7 @@ export default function MovieIndex() {
       const collectionsFromDB = await getCollectionDb().all();
       setCollections(collectionsFromDB.map((el) => el._id));
     })();
-  }, [collections]);
 
-  useEffect(() => {
     const userAgent = navigator.userAgent.toLowerCase();
     const isMobileDevice = /mobile|android|iphone|ipad|tablet/i.test(userAgent);
     const isSmallScreen = window.innerWidth < 900;

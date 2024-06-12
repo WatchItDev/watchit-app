@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo, useMemo, useCallback, useState, useEffect } from 'react';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
@@ -7,7 +7,9 @@ import Plyr from 'plyr-react';
 import 'plyr-react/plyr.css';
 
 const VideoModal = ({ videoId, open, handleClose }) => {
-    const style = {
+    const [key, setKey] = useState(0);
+
+    const style = useMemo(() => ({
         position: 'absolute',
         top: '50%',
         left: '50%',
@@ -18,9 +20,9 @@ const VideoModal = ({ videoId, open, handleClose }) => {
         borderRadius: '1rem',
         maxHeight: '90%',
         overflow: 'hidden',
-    };
+    }), []);
 
-    const videoSrc = {
+    const videoSrc = useMemo(() => ({
         type: 'video',
         sources: [
             {
@@ -28,19 +30,39 @@ const VideoModal = ({ videoId, open, handleClose }) => {
                 provider: 'youtube',
             },
         ],
+    }), [videoId]);
+
+    const handleModalClose = useCallback(() => {
+        handleClose();
+    }, [handleClose]);
+
+    const handleRetry = () => {
+        setKey(prevKey => prevKey + 1); // This will force a re-render of plyr if there is an error
     };
+
+    useEffect(() => {
+        const player = document.querySelector('.plyr__video-embed');
+        if (player) {
+            player.addEventListener('error', handleRetry);
+        }
+        return () => {
+            if (player) {
+                player.removeEventListener('error', handleRetry);
+            }
+        };
+    }, [key]);
 
     return (
         <Modal
             open={open}
-            onClose={handleClose}
+            onClose={handleModalClose}
             aria-labelledby="modal-title"
             aria-describedby="modal-description"
         >
             <Box sx={style}>
                 <IconButton
                     aria-label="close"
-                    onClick={handleClose}
+                    onClick={handleModalClose}
                     sx={{
                         position: 'absolute',
                         right: 8,
@@ -60,7 +82,7 @@ const VideoModal = ({ videoId, open, handleClose }) => {
                             height: '100%',
                         }}
                     >
-                        <Plyr source={videoSrc} options={{ autoplay: open }} />
+                        <Plyr key={key} source={videoSrc} options={{ autoplay: true }} />
                     </Box>
                 </Box>
             </Box>
@@ -68,4 +90,4 @@ const VideoModal = ({ videoId, open, handleClose }) => {
     );
 };
 
-export default VideoModal;
+export default memo(VideoModal);
