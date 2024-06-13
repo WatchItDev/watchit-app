@@ -9,13 +9,8 @@ export default {
   gateways: () => {
     return [
       'https://ipfs.io',
-      // 'https://gateway.ipfs.io',
-      // 'https://cloudflare-ipfs.com',
-      // 'https://storry.tv',
-      // 'https://w3s.link',
-      // "https://10.via0.com",
-      // 'https://4everland.io',
-      'https://dweb.link'
+      'https://dweb.link',
+      'https://gw.watchit.movie/'
     ]
   },
   featuredCollections: [
@@ -26,7 +21,7 @@ export default {
       spanish: 'es',
       english: 'en'
     },
-    get revHash () {
+    get revHash() {
       const v = Object.values(this.hash)
       const k = Object.keys(this.hash)
       return v.reduce((o, i, index) => {
@@ -34,7 +29,7 @@ export default {
         return o
       }, {})
     },
-    get available () {
+    get available() {
       return Object.keys(this.hash)
     }
   },

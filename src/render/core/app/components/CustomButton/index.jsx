@@ -40,7 +40,6 @@ export const CustomButton = (props) => {
 
 const CustomButtonWrapper = styled(Button)(() => ({
     background: 'transparent',
-    borderRadius: '50px !important',
     color: '#D1D2D3 !important',
     fontWeight: '500 !important',
     textTransform: 'capitalize',
@@ -60,11 +59,11 @@ const CustomButtonWrapper = styled(Button)(() => ({
         }
     },
     "&.filled": {
-        background: '#D1D2D3 !important',
+        background: '#44bd32 !important',
         border: 'none !important',
-        color: '#1c1d21 !important',
+        color: '#fff !important',
         '&:hover': {
-            backgroundColor: '#fff !important',
+            backgroundColor: '#44bd32 !important',
         }
     },
     "&.flat": {

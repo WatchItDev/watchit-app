@@ -67,7 +67,7 @@ function getConfig(runtime = "node") {
     services: {
       ...defaults.services,
       pubsub: gossipsub({
-        allowPublishToZeroPeers: true,
+        allowPublishToZeroTopicPeers: true,
         emitSelf: true,
         canRelayMessage: true,
       }),

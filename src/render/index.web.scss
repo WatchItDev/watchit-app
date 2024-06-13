@@ -12,10 +12,13 @@
 @import "css/app/state";
 @import "css/app/base";
 @import "css/app/layout";
-@import "css/app/queries.web";
 @import "css/include/iconmoon/style.css";
 @import "~plyr/src/sass/plyr";
 
 .hide-on-web {
   display: none;
+}
+
+.movies-box {
+  height: calc(100% - 7rem);
 }

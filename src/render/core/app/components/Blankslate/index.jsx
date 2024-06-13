@@ -1,9 +1,9 @@
-import React, { useState} from 'react';
+import React, { useState } from 'react';
 import { styled, Box, TextField, Typography, Divider } from '@mui/material';
-import NoCollection from '@render/media/img/layout/movies.png';
 import CustomButton from "@components/CustomButton";
 import ChannelItem from '@components/ChannelItem';
 import CustomScrollbars from "@components/Scroller";
+import Footer from '@components/Footer'
 import settings from '@settings'
 
 export const Wrapper = styled(Box)(() => ({
@@ -11,7 +11,7 @@ export const Wrapper = styled(Box)(() => ({
   flexDirection: 'column',
   justifyContent: 'center',
   alignItems: 'center',
-  width: '25rem',
+  width: '100%',
   backgroundColor: '#212328',
   borderRadius: '1rem',
   boxShadow: 24,
@@ -69,30 +69,35 @@ const Blankslate = (props) => {
       textAlign="center"
       height="calc(100% - 6rem)"
     >
-      <Box display="flex" alignItems="center" mb={4}>
-        <Box
-          component="img"
-          src={NoCollection}
-          alt="No Collection"
-          width="20rem"
-        />
-      </Box>
       <Typography variant="h4" color={'#eee'} gutterBottom>
-        Add a new collection.
+        New collection.
       </Typography>
       <Typography variant="body1" color={'#eee'} gutterBottom>
-        You can find a collection cid in the creator profile.
+        Find the collection CID in the creator's profile.
       </Typography>
 
       <Wrapper>
         <TextField
+          fullWidth
           value={cid}
           label="Collection CID"
-          sx={{ marginY: 2, 'fieldset': { borderColor: '#eee !important' }, 'label, input': { color: '#eee !important' } }}
           onChange={(e) => setCID(e.target.value)}
-          fullWidth
+          sx={{
+            marginY: 2,
+            fieldset: {
+              borderColor: '#eee !important'
+            },
+            'label,input': {
+              color: '#eee !important',
+            }
+          }}
         />
-        <CustomButton variant={'filled'} onClick={handleClick} padding={'8px 16px'}>
+        <CustomButton
+          variant={'filled'}
+          onClick={handleClick}
+          width='100%'
+          padding={'8px 16px'}
+        >
           Connect
         </CustomButton>
       </Wrapper>
@@ -108,16 +113,17 @@ const EmptyPage = (props) => {
           <Collections onButtonClick={props.onButtonClick} />
         </Box>
         <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center" sx={{ height: '50%', opacity: 0.4, overflow: 'hidden' }}>
-          <Divider orientation="vertical" sx={{ height: '100%', mx: 2, borderColor: '#D1D2D3' }} />
-          <Typography variant="body1" color={'#D1D2D3'} gutterBottom>
+          <Divider orientation="vertical" sx={{ height: '100%', mx: 2, borderColor: '#eee' }} />
+          <Typography variant="body1" color={'#eee'} gutterBottom>
             or
           </Typography>
-          <Divider orientation="vertical" sx={{ height: '100%', mx: 2, borderColor: '#D1D2D3' }} />
+          <Divider orientation="vertical" sx={{ height: '100%', mx: 2, borderColor: '#eee' }} />
         </Box>
         <Box display="flex" justifyContent="center" alignItems="center" width="60%">
           <Blankslate onButtonClick={props.onButtonClick} />
         </Box>
       </Box>
+      <Footer />
     </Box>
   );
 };

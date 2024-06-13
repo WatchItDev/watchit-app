@@ -75,12 +75,14 @@ export default function MovieIndex() {
     }, []);
 
   const onRemoveCollection = async (collectionId) => {
-    await getCollectionDb().delete({ _id: collectionId });
     // filter the collection and avoid adding the removed to avoid re-slice..
+    // setIsLoading(true);
     const newCollection = collections.filter((el) => el != collectionId);
+    await getCollectionDb().delete({ _id: collectionId });
     setCollections(newCollection);
     setSelectedCollection(null);
     setIsAdding(true);
+    // setIsLoading(false);
   };
 
   useEffect(() => {
@@ -231,7 +233,7 @@ export const MainContent = styled(Box)(() => ({
   height: '100%',
   position: 'relative',
   borderTopLeftRadius: '1rem',
-  border: '1px solid #444',
+  // border: '1px solid #444',
   overflow: 'hidden',
   '&::-webkit-scrollbar': {
     width: '0',

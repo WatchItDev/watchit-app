@@ -10,9 +10,13 @@ export default class CatalogRow extends React.Component {
       chunk: PropTypes.array.isRequired
     }
   }
+  
+  shouldComponentUpdate(nextProps) {
+    return nextProps.chunk !== this.props.chunk || nextProps.chunkSize != this.props.chunkSize
+  }
+
 
   render () {
-    
     return (
       <div className='clearfix row-img' style={this.props.style}>
         {!this.props.empty && this.props.chunk.map((i) => {

@@ -139,11 +139,6 @@ export default class Catalog extends React.Component {
     this.resizeTimeout = setTimeout(this.recalculateScreen, 500)
   }
 
-  // shouldComponentUpdate(nextProps, nextState) {
-  //   return nextProps.cid !== this.props.cid || nextState.loading;
-  // }
-
-
   componentWillUnmount() {
     window.removeEventListener('resize', this.handleResize)
     broker.removeAllListeners()
@@ -256,7 +251,7 @@ export default class Catalog extends React.Component {
         {
           <section className='row full-height'>
             <div className='clearfix full-height'>
-              <header className='no-margin vertical-padding transparent z-depth-1 d-flex align-items-center justify-content-between header_search'>
+              <header className='no-margin vertical-padding transparent z-depth-1 d-flex align-items-center justify-content-between header-search'>
                 <Search cid={this.props.cid} onClick={this.handleClickMovie} />
                 <nav className='col l6 m6 transparent z-depth-0'>
                   <CatalogNav

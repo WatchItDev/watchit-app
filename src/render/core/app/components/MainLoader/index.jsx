@@ -1,8 +1,9 @@
 import React from 'react'
 import Lottie from 'lottie-react'
-import loaderAnimation from '@render/media/img/watchit_logo.json'
 import {Typography} from "@mui/material";
+
 import BarLoader from "@components/BarLoader";
+import loaderAnimation from '@render/media/img/watchit_logo.json'
 
 export default class MainLoader extends React.Component {
   shouldComponentUpdate (nextProps) {

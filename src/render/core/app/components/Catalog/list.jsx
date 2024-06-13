@@ -60,7 +60,7 @@ export default class CatalogList extends React.Component {
     const [start, end] = params
     return this.state.end
       ? new Promise(() => console.log('Finish'))
-      : this.props.loadOrder && this.props.loadOrder(start, end)
+      : this.props.loadOrder?.(start, end)
   }
 
   render () {

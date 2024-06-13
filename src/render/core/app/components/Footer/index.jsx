@@ -5,7 +5,7 @@ import setting from 'package.json'
 const FooterWrapper = styled.div`
   height: auto;
   width: 100%;
-  position: fixed;
+  position: absolute;
   display: flex;
   align-items: center;
   justify-content: flex-start;

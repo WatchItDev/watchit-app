@@ -4,7 +4,6 @@ import { Box } from "@mui/material";
 
 import Image from "@components/Image";
 import setting from "@settings";
-
 import './index.scss';
 
 const ResultDetailsItem = styled.span`
@@ -13,7 +12,6 @@ const ResultDetailsItem = styled.span`
 `
 
 export const Poster = (props) => {
-
     if (props.empty)
         return <Box sx={{
             width: `${props?.screen?.itemWidth}px`,
@@ -71,4 +69,4 @@ export const Poster = (props) => {
     );
 };
 
-export default Poster;
+export default React.memo(Poster);

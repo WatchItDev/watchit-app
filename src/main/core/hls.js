@@ -6,7 +6,8 @@ const log = require('logplease').create('HLS')
 const CONF = {
   manifestLoadingMaxRetry: 2,
   manifestLoadingTimeOut: 5 * 1000,
-  manifestLoadingRetryDelay: 1000
+  manifestLoadingRetryDelay: 1000,
+  manifestLoadingMaxRetryTimeout: 60 * 1000,
 }
 
 const DEFAULT_PLAYER_CONTROLS = [

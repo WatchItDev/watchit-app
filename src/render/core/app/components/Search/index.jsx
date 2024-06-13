@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useCallback } from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
@@ -21,7 +21,7 @@ const Search = (props) => {
   const [searching, setSearching] = useState(false)
   const [searchResult, setSearchResult] = useState(false)
 
-  const handleSearch = (e) => {
+  const handleSearch = useCallback((e) => {
     // //The incoming value;
     const targetValue = e.target.value
     const invalidInput = utilHelper.invalidString(targetValue)
@@ -55,7 +55,7 @@ const Search = (props) => {
         })
       }
     }, 1000)
-  }
+  }, [])
 
   const handleClick = (id) => {
     setSearchResult(false)

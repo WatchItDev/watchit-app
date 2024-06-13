@@ -73,7 +73,6 @@ img {
 
   //Main movies lists
   .movies-box {
-    height: calc(100% - 7rem);
     width: 100% !important;
     overflow: hidden !important;
     z-index: 1;
@@ -530,25 +529,6 @@ img {
       }
     }
 
-    .chat-list {
-      .chat-item {
-        .item-text {
-          margin-top: -5px;
-
-          span {
-            font-size: 1rem;
-          }
-
-          strong {
-            font-size: 1.2rem;
-          }
-        }
-
-        .profile-picture-img {
-          @include mixins.border-radius(5px)
-        }
-      }
-    }
   }
 }
 
