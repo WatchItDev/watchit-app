@@ -36,7 +36,7 @@ logger.setLogLevel(logger.LogLevels.DEBUG);
 process.env.appPath = appPath;
 const backend = require("./core");
 
-const indexSplash = `file://${path.join(__dirname, "../build/splash.png")}`;
+const indexSplash = `file://${path.join(__dirname, "../build/splash2.png")}`;
 const indexUrl = `file://${path.join(__dirname, "../build/index.html")}`;
 
 const gotTheLock = app.requestSingleInstanceLock();

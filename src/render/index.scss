@@ -21,5 +21,9 @@
 }
 
 .movies-box {
-  height: calc(100% - 11rem);
+  height: calc(100% - 11rem) !important;
+}
+
+.movie-box {
+  height: calc(100% - 3.9rem) !important;
 }

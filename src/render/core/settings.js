@@ -9,6 +9,9 @@ export default {
   gateways: () => {
     return [
       'https://ipfs.io',
+      'https://storry.tv',
+      "https://nftstorage.link",
+      'https://4everland.io',
       'https://dweb.link',
       'https://gw.watchit.movie/'
     ]
