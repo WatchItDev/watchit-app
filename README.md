@@ -6,7 +6,7 @@ WatchIt decentralizes the way you watch your movies. It employs a "collective en
 
 [![screenshot](src/render/media/img/layout/screen2.png?raw=true)]()
 
-## Overview
+### Overview
 
 WatchIt is a movie playback system that allows users to filter, search, and play movies. To decentralize our movies so that everyone can have access to them, we employ incredible tools such as [Helia](https://github.com/ipfs/helia), which enables us to create a decentralized platform. In simple terms, WatchIt is an application that does not rely on external resources; instead, everyone contributes to its functionality.
 
@@ -16,13 +16,9 @@ WatchIt is a movie playback system that allows users to filter, search, and play
 - **Movie Filtering and Searching:** Efficiently find and filter movies based on various criteria.
 - **Seamless Playback:** Stream movies directly from the network without any centralized servers.
 
-## Protocol Integration
+## Protocol Integration and Synchronization
 
-WatchIt is part of the WatchIt protocol, which encompasses various components to ensure a fully decentralized and efficient movie streaming experience. The WatchIt app is a crucial part of this protocol, providing a user-friendly interface for interacting with the decentralized network.
-
-## Synchronization and Library Access
-
-WatchIt can synchronize through different movie channels, opening the possibility to access various libraries with different content across the network. This enhances the diversity and availability of movies for all users.
+WatchIt is part of the WatchIt protocol, which encompasses various components to ensure a fully decentralized and efficient movie streaming experience. The WatchIt app is a crucial part of this protocol, providing a user-friendly interface for interacting with the decentralized network. It can synchronize through different movie channels, opening the possibility to access various libraries with different content across the network. This enhances the diversity and availability of movies for all users.
 
 
 ## Node Types and Capabilities
