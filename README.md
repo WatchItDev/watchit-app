@@ -1,27 +1,29 @@
-[![Gitter](https://badges.gitter.im/watchit-app/community.svg)](https://gitter.im/watchit-app/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 [![All Contributors](https://img.shields.io/badge/all_contributors-11-orange.svg?style=flat-square)](#contributors-)
-[![CI](https://github.com/ZorrillosDev/watchit-app/actions/workflows/test.yml/badge.svg)](https://github.com/ZorrillosDev/watchit-app/actions/workflows/test.yml)
-[![CD-App](https://github.com/ZorrillosDev/watchit-app/actions/workflows/publish.yml/badge.svg)](https://github.com/ZorrillosDev/watchit-app/actions/workflows/publish.yml)
-[![CD-Web](https://github.com/ZorrillosDev/watchit-app/actions/workflows/publish-web.yml/badge.svg)](https://github.com/ZorrillosDev/watchit-app/actions/workflows/publish-web.yml)
-# WatchIt App
 
-WatchIt decentralizes the way you watch your movies. In short, it is a "collective entertainment methodology" in which each user consumes movies from 
-the network and at the same time shares movies with other users.
+# WatchIt
 
-Indeed, Watchit is a movie playback system, in its most basic form it allows you to filter, search, play movies.
-Well, in order to decentralize our movies so that everyone can have access to them, we resorted to incredible tools such as [IPFS](https://github.com/ipfs/go-ipfs)
-and [OrbitDB](https://orbitdb.org/), which allowed us to have created a DAPP (Decentralized App). In simple words, 
-Watchit is an application that does not require external resources, but rather everyone helps everyone to make it work.
+WatchIt decentralizes the way you watch your movies. It employs a "collective entertainment methodology" where each user consumes movies from the network and simultaneously shares movies with other users.
 
-It is also possible that WatchIt can be synchronized through different movie channels opening the possibility to many libraries with different content across the network.
+## Overview
+
+WatchIt is a movie playback system that allows users to filter, search, and play movies. To decentralize our movies so that everyone can have access to them, we employ incredible tools such as [Helia](https://github.com/ipfs/helia), which enables us to create a decentralized platform. In simple terms, WatchIt is an application that does not rely on external resources; instead, everyone contributes to its functionality.
+
+## Features
+
+- **Decentralized Movie Sharing:** Users share movies with each other, ensuring a robust and distributed network.
+- **Movie Filtering and Searching:** Efficiently find and filter movies based on various criteria.
+- **Seamless Playback:** Stream movies directly from the network without any centralized servers.
+
+## Protocol Integration
+
+WatchIt is part of the WatchIt protocol, which encompasses various components to ensure a fully decentralized and efficient movie streaming experience. The WatchIt app is a crucial part of this protocol, providing a user-friendly interface for interacting with the decentralized network.
+
+## Synchronization and Library Access
+
+WatchIt can synchronize through different movie channels, opening the possibility to access various libraries with different content across the network. This enhances the diversity and availability of movies for all users.
 
 
-[![screenshot](src/render/media/img/layout/screen.png?raw=true)]()
-
-
-## Build your network
-Migrate your own content and share it with community. WatchIt toolkit provides simple tools for the generation and decentralization of content. 
-Please look at our [toolkit](https://github.com/ZorrillosDev/watchit-gateway) 's readme.
+[![screenshot](src/render/media/img/layout/screen2.png?raw=true)]()
 
 ## Node Types and Capabilities
 
@@ -29,49 +31,12 @@ Please look at our [toolkit](https://github.com/ZorrillosDev/watchit-gateway) 's
 
 ##  More info
 * Visit our site [watchit.movie](https://watchit.movie).
-* Try our web app release [web.watchit.movie](https://web.watchit.movie).
+* Try our web app release [app.watchit.movie](https://web.watchit.movie).
 * Read our post: [Watchit - Open Movies](https://dev.to/geolffreym/watchit-2b88).
 * Read our interview in [Console 94](https://console.substack.com/p/console-94?r=3cbez&utm_campaign=post&utm_medium=web&utm_source=url)
-* Check out [the roadmap](https://github.com/ZorrillosDev/watchit-desktop/projects/1) for future features.
-* Get in touch with us in [gitter](https://gitter.im/watchit-app/community) | [matrix](https://matrix.to/#/#watchit:matrix.org) | [discord](https://discord.gg/QJcSXedY) | [telegram](https://t.me/watchitofficial)
+* Get in touch with us in [matrix](https://matrix.to/#/#watchit:matrix.org) | [discord](https://discord.gg/QJcSXedY) | [telegram](https://t.me/watchitofficial)
 * See our [FAQ](FAQ.md) for frequently asked questions.
 * For help or bugs please [create an issue](https://github.com/ZorrillosDev/watchit-desktop/issues).
-
-
-<details>
-  <summary>Installation & Usage</summary>
-
-### Gitpod
-
-To run a fast and fully initialized set-up dev environment
-just go to our `ready-to-code` [gitpod](https://gitpod.io/#https://github.com/ZorrillosDev/watchit-app).
-
-### Install
-
-Please run `npm i` to install dependencies
-
-### Usage
-
-In the project directory, you can run:
-
-### `npm run start`
-
-Runs the app in the development mode.<br />
-Open to view it in electron.
-
-
-### `npm run package:{os}`
-
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-Your app is being packed for the choosen {os}!
-Package the app to the `release` forder. <br>
-
-
-
-</details>
-
 
 ## Contributors ✨
 
