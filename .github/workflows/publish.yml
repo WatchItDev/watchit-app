@@ -43,7 +43,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
   build-on-win:
-    runs-on: window-latest
+    runs-on: windows-latest
     strategy:
       fail-fast: false
     steps:
