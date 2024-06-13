@@ -4,6 +4,8 @@
 
 WatchIt decentralizes the way you watch your movies. It employs a "collective entertainment methodology" where each user consumes movies from the network and simultaneously shares movies with other users.
 
+[![screenshot](src/render/media/img/layout/screen2.png?raw=true)]()
+
 ## Overview
 
 WatchIt is a movie playback system that allows users to filter, search, and play movies. To decentralize our movies so that everyone can have access to them, we employ incredible tools such as [Helia](https://github.com/ipfs/helia), which enables us to create a decentralized platform. In simple terms, WatchIt is an application that does not rely on external resources; instead, everyone contributes to its functionality.
@@ -22,8 +24,6 @@ WatchIt is part of the WatchIt protocol, which encompasses various components to
 
 WatchIt can synchronize through different movie channels, opening the possibility to access various libraries with different content across the network. This enhances the diversity and availability of movies for all users.
 
-
-[![screenshot](src/render/media/img/layout/screen2.png?raw=true)]()
 
 ## Node Types and Capabilities
 
