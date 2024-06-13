@@ -23,6 +23,8 @@ jobs:
         run: npm install --force
       - name: Build/release
         run: npm run publish:linux
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
   build-on-mac:
     runs-on: macos-latest
     strategy:
@@ -38,6 +40,8 @@ jobs:
         run: npm install --force
       - name: Build/release
         run: npm run publish:mac
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
   build-on-win:
     runs-on: window-latest
     strategy:
@@ -53,3 +57,5 @@ jobs:
         run: npm install --force
       - name: Build/release
         run: npm run publish:win
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
