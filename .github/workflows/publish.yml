@@ -9,7 +9,7 @@ on:
 # TODO create a reusable workflow
 jobs:
   build-on-linux:
-    runs-on: macos-latest
+    runs-on: linux-latest
     strategy:
       fail-fast: false
     steps:
