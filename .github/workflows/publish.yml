@@ -6,29 +6,50 @@ on:
       - "master"
       - "v1.0.0"
 
+# TODO create a reusable workflow
 jobs:
-  release:
-    runs-on: ${{ matrix.os }}
+  build-on-linux:
+    runs-on: macos-latest
     strategy:
       fail-fast: false
-      matrix:
-        os: [macos-latest, windows-latest, ubuntu-latest]
-
     steps:
       - name: Check out Git repository
         uses: actions/checkout@v2
-
       - name: Install Node.js in ${{ matrix.os }}
         uses: actions/setup-node@v2
         with:
           node-version: 18.x
-
+      - name: Install
+        run: npm install --force
       - name: Build/release
-        uses: samuelmeuli/action-electron-builder@v1
+        run: npm run publish:linux
+  build-on-mac:
+    runs-on: macos-latest
+    strategy:
+      fail-fast: false
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v2
+      - name: Install Node.js in ${{ matrix.os }}
+        uses: actions/setup-node@v2
         with:
-          # GitHub token, automatically provided to the action
-          # (No need to define this secret in the repo settings)
-          github_token: ${{ secrets.GH_TOKEN }}
-          release: true
-        env:
-          CI: ""
+          node-version: 18.x
+      - name: Install
+        run: npm install --force
+      - name: Build/release
+        run: npm run publish:mac
+  build-on-win:
+    runs-on: window-latest
+    strategy:
+      fail-fast: false
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v2
+      - name: Install Node.js in ${{ matrix.os }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: 18.x
+      - name: Install
+        run: npm install --force
+      - name: Build/release
+        run: npm run publish:win
