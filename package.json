@@ -125,8 +125,7 @@
     "package:win": "npm run package -- --win --x64 --ia32",
     "publish:mac": "npm run package:mac -- --publish always",
     "publish:linux": "npm run package:linux -- --publish always",
-    "publish:win": "npm run package:win -- --publish always",
-    "release": "electron-builder --publish always"
+    "publish:win": "npm run package:win -- --publish always"
   },
   "devDependencies": {
     "@babel/core": "^7.14.6",
