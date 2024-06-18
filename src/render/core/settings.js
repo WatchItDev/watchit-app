@@ -13,7 +13,7 @@ export default {
       "https://nftstorage.link",
       'https://4everland.io',
       'https://dweb.link',
-      'https://gw.watchit.movie/'
+      'https://gw.watchit.movie'
     ]
   },
   featuredCollections: [
