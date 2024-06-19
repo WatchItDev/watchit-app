@@ -17,7 +17,7 @@ export default {
     ]
   },
   featuredCollections: [
-    { cid: 'bafkreiaenzlqmc34crc7sfsr3wanvbdwovsgfgggm2am7lafeejn6orghi', label: "Public Domain" },
+    { cid: import.meta.env.DEFAULT_PDM_KEY, label: import.meta.env.DEFAULT_PDM_LABEL },
   ],
   subs: {
     hash: {
