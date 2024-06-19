@@ -27,10 +27,10 @@ WatchIt is part of the WatchIt protocol, which encompasses various components to
 
 ##  More info
 * Visit our site [watchit.movie](https://watchit.movie).
-* Try our web app release [app.watchit.movie](https://web.watchit.movie).
+* Try our web app release [app.watchit.movie](https://app.watchit.movie).
 * Read our post: [Watchit - Open Movies](https://dev.to/geolffreym/watchit-2b88).
 * Read our interview in [Console 94](https://console.substack.com/p/console-94?r=3cbez&utm_campaign=post&utm_medium=web&utm_source=url)
-* Get in touch with us in [matrix](https://matrix.to/#/#watchit:matrix.org) | [discord](https://discord.gg/QJcSXedY) | [telegram](https://t.me/watchitofficial)
+* Get in touch with us in [matrix](https://matrix.to/#/#watchit:matrix.org) | [discord](https://discord.gg/QJcSXedY) | [telegram](https://t.me/watchitofficial) | [reddit](https://www.reddit.com/r/watchitprotocol/)
 * See our [FAQ](FAQ.md) for frequently asked questions.
 * For help or bugs please [create an issue](https://github.com/ZorrillosDev/watchit-desktop/issues).
 
