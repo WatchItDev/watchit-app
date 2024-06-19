@@ -6,7 +6,13 @@ const indexPath = process.env.RUNTIME === 'web' ? 'index.web.js' : 'index.js'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  root: './public',
+  plugins: [react()],
+  resolve: {
+    alias: {
+      '@main': './src/main',
+      '@render': './src/render'
+    },
+  },
   dist: {
     build: {
       outDir: './dist',
@@ -15,5 +21,5 @@ export default defineConfig({
       }
     }
   },
-  plugins: [react()],
+
 })
