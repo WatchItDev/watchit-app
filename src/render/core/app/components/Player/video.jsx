@@ -1,4 +1,11 @@
 import React from 'react'
+import { styled } from '@mui/material';
+
+const Video = styled('video')({
+  outline: 'none !important',
+  width: '100%',
+  height: '100%'
+});
 
 export default class PlayerVideo extends React.PureComponent {
   constructor(props = { type: '' }) {
@@ -12,9 +19,12 @@ export default class PlayerVideo extends React.PureComponent {
 
   render() {
     return (
-      <video
-        ref={this.getRef} autoPlay controls playsInline
-        className='vjs-theme-city video-js full-width full-height'
+      <Video
+          ref={this.getRef}
+          autoPlay
+          controls
+          playsInline
+          className="vjs-theme-city video-js"
       />
     )
   }

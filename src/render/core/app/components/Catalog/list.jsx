@@ -2,6 +2,7 @@ import React from 'react'
 import uid from 'shortid'
 import InfiniteLoader from 'react-window-infinite-loader'
 import { FixedSizeList } from 'react-window'
+import { Box } from '@mui/material';
 import CatalogRow from './row'
 
 export default class CatalogList extends React.Component {
@@ -63,29 +64,28 @@ export default class CatalogList extends React.Component {
       : this.props.loadOrder?.(start, end)
   }
 
-  render () {
+  render() {
     return (
-      <div className='movie-list-posters'>
-        <InfiniteLoader
-          isItemLoaded={this.alreadyLoaded}
-          loadMoreItems={this.onScrollUpdate}
-          itemCount={this.state.count}
-        >
-          {({ onItemsRendered, ref }) => (
-            <FixedSizeList
-              className='row-list'
-              height={this.state.screen.height}
+        <Box sx={{ height: '100%' }}>
+          <InfiniteLoader
+              isItemLoaded={this.alreadyLoaded}
+              loadMoreItems={this.onScrollUpdate}
               itemCount={this.state.count}
-              itemSize={this.state.screen.chunkHeight}
-              onItemsRendered={onItemsRendered}
-              width={this.state.screen.width}
-              ref={ref}
-            >
-              {this.renderRow}
-            </FixedSizeList>
-          )}
-        </InfiniteLoader>
-      </div>
-    )
+          >
+            {({ onItemsRendered, ref }) => (
+                <FixedSizeList
+                    height={this.state.screen.height}
+                    itemCount={this.state.count}
+                    itemSize={this.state.screen.chunkHeight}
+                    onItemsRendered={onItemsRendered}
+                    width={this.state.screen.width}
+                    ref={ref}
+                >
+                  {this.renderRow}
+                </FixedSizeList>
+            )}
+          </InfiniteLoader>
+        </Box>
+    );
   }
 }

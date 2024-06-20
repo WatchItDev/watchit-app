@@ -1,13 +1,10 @@
-
 import React,{ useState, useEffect }  from 'react'
 import MainLoader from '@components/MainLoader';
 import { styled, Box, Grid } from "@mui/material";
 import { DB as db } from '@main/bridge'
-
 import Player from "@components/Player";
 
 export const MoviePlayer = (props) => {
-
   const [ready, setReady] = useState(false);
   const [movie, setMovie] = useState({});
 

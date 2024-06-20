@@ -1,9 +1,13 @@
-import React from 'react'
-import styled from 'styled-components'
-import Dots from '@render/media/img/spinner/three-dots.svg'
+import React from 'react';
+import Dots from '@render/media/img/spinner/three-dots.svg';
+import { Box, styled } from '@mui/material';
 
-const PointsLoader = styled.img`
-  height: 0.8rem;
-`
-PointsLoader.defaultProps = { src: Dots }
-export default React.memo(PointsLoader)
+const PointsLoader = styled(Box)(() => ({
+    height: '0.8rem',
+    width: '3rem',
+    backgroundImage: `url(${Dots})`,
+    backgroundRepeat: 'no-repeat',
+    backgroundSize: 'contain',
+}));
+
+export default React.memo(PointsLoader);

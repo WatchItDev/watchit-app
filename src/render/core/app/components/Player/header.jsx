@@ -1,16 +1,39 @@
-import React from 'react'
+import React from 'react';
+import { Box, Typography, styled } from '@mui/material';
 
-export default class PlayerHeader extends React.PureComponent {
-  render () {
+const PlayerHeader = ({ title, children }) => {
     return (
-      <header className='row absolute z-index-100 top-2-vh left-2-vw clearfix'>
-        <div className='row'>
-          <h4 className='white-text bold font-type-titles'>
-            {this.props.title}
-          </h4>
-        </div>
-        <div>{this.props.children}</div>
-      </header>
-    )
-  }
-}
+        <Header>
+            <Row>
+                <Title variant="h4">
+                    {title}
+                </Title>
+            </Row>
+            <Box>{children}</Box>
+        </Header>
+    );
+};
+
+const Header = styled('header')({
+    position: 'absolute',
+    zIndex: 100,
+    top: '2vh',
+    left: '2vw',
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '16px',
+});
+
+const Row = styled('div')({
+    display: 'flex',
+    alignItems: 'center',
+});
+
+const Title = styled(Typography)({
+    color: 'white',
+    fontWeight: 'bold',
+    fontFamily: '"Open Sans", Arial, sans-serif',
+});
+
+export default PlayerHeader;

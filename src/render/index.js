@@ -1,14 +1,15 @@
-// eslint-disable-next-line
-// import 'v8-compile-cache'
 import React from "react";
 import { createRoot } from "react-dom/client";
 import App from "./core/app";
-
-import 'normalize.css'
-import './index.scss'
+import { GlobalStyles } from "./globalStyles";
 
 const root = createRoot(document.getElementById("root"));
-root.render(<App />)
+root.render(
+    <>
+      <App />
+      <GlobalStyles />
+    </>
+)
 
 
 // LISTENERS

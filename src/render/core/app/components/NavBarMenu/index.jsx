@@ -1,44 +1,48 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import uid from 'shortid'
+import React from 'react';
+import PropTypes from 'prop-types';
+import uid from 'shortid';
+import { Box, Button, Typography, Menu, MenuItem } from '@mui/material';
+import { ArrowDropDown } from '@mui/icons-material';
 
 export default class NavBarMenu extends React.Component {
-  constructor (props) {
-    super(props)
+  constructor(props) {
+    super(props);
     this.state = {
-      label: false
-    }
+      label: false,
+      anchorEl: null,
+    };
   }
 
-  shouldComponentUpdate (nextProps, nextState, nextContext) {
-    return !Object.is(nextState.label, this.state.label)
+  shouldComponentUpdate(nextProps, nextState) {
+    return !Object.is(nextState.label, this.state.label) || nextState.anchorEl !== this.state.anchorEl;
   }
 
-  static get propTypes () {
+  static get propTypes() {
     return {
       list: PropTypes.array.isRequired,
-      btnText: PropTypes.string.isRequired
-    }
+      btnText: PropTypes.string.isRequired,
+      onChange: PropTypes.func,
+      onGetInitialItem: PropTypes.func,
+      icon: PropTypes.string,
+    };
   }
 
-  componentDidMount () {
+  componentDidMount() {
     // If need for initial item
     if (this.props.onGetInitialItem) {
-      this.props.list.map((i, k) => {
-        if (!i.default) return true
+      this.props.list.forEach((i, k) => {
+        if (!i.default) return true;
         // Call method
-        this.props.onGetInitialItem(
-          this.props.list[k]
-        )
+        this.props.onGetInitialItem(this.props.list[k]);
         // Stop loop
-        return false
-      })
+        return false;
+      });
     }
   }
 
-  handlePreventDefault (e) {
-    e.preventDefault()
-  }
+  handlePreventDefault = (e) => {
+    e.preventDefault();
+  };
 
   handleClick = (e) => {
     /***
@@ -47,70 +51,123 @@ export default class NavBarMenu extends React.Component {
      */
 
     // On change
-    this.handlePreventDefault(e)
-    const obj = e.target
-    const dataset = obj.dataset
-    const { label } = dataset
+    this.handlePreventDefault(e);
+    const obj = e.currentTarget;
+    const dataset = obj.dataset;
+    const { label } = dataset;
 
     // Assign new label
-    this.setState({ label: label })
+    this.setState({ label, anchorEl: null });
     // Select action
-    if (this.props.onChange) { this.props.onChange(dataset) }
-  }
+    if (this.props.onChange) {
+      this.props.onChange(dataset);
+    }
+  };
 
-  render () {
+  handleMenuOpen = (event) => {
+    this.setState({ anchorEl: event.currentTarget });
+  };
+
+  handleMenuClose = () => {
+    this.setState({ anchorEl: null });
+  };
+
+  render() {
+    const { list, btnText } = this.props;
+    const { label, anchorEl } = this.state;
+
     return (
-      <ul className='dropdown'>
-        {/* Check for valid list of subs */}
-        {
-          this.props.list.length > 0 &&
-            <li>
-              <a className='dropdown-button' onClick={this.handlePreventDefault} href='/'>
-                <i
-                  className={`${this.props.icon || 'icon-triangle-down'} white-text nav-var-icon normalize-small-icon left margin-right-4`}
-                />
-                <span className='white-text'>{this.props.btnText}</span>
-                {
-                /* The main button */
-                // Set personalized label
-                (this.state.label &&
-                  <span className='dropdown-result no-bold blue-text'>
-                    {this.state.label}
-                  </span>
-                ) || this.props.list.map((i) => {
-                  return (
-                    i.default &&
-                      <span className='dropdown-result no-bold blue-text' key={uid.generate()}>
-                        {i.label}
-                      </span>
-                  )
-                })
-              }
-              </a>
+        <Box sx={{ position: 'relative' }}>
+          {list.length > 0 && (
+              <Box>
+                <Button
+                    onClick={this.handleMenuOpen}
+                    sx={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      color: 'white',
+                      textDecoration: 'none',
+                      textTransform: 'none',
+                      backgroundColor: 'transparent !important',
+                      '&:hover': {
+                        backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                      },
+                    }}
+                >
+                  <ArrowDropDown sx={{ marginRight: '0.5rem', fontSize: '2rem' }} />
+                  <Typography variant="body1" sx={{ color: 'white' }}>
+                    {btnText}
+                  </Typography>
+                  {label ? (
+                      <Typography variant="body1" sx={{ color: '#2196f3', marginLeft: '0.5rem' }}>
+                        {label}
+                      </Typography>
+                  ) : (
+                      list.map(
+                          (i) =>
+                              i.default && (
+                                  <Typography
+                                      key={uid.generate()}
+                                      variant="body1"
+                                      sx={{ color: '#2196f3', marginLeft: '0.5rem' }}
+                                  >
+                                    {i.label}
+                                  </Typography>
+                              )
+                      )
+                  )}
+                </Button>
 
-              {/* Menu List */}
-              <div className='dropdown-content'>
-                <ul>
-                  {
-                  /* The sub menu items */
-                  this.props.list.map((i) => {
-                    return (
-                      <li key={uid.generate()}>
-                        <a
-                          onClick={this.handleClick} className='drop-item' href='/'
-                          data-action={i.action} data-label={i.label} data-type={i.type}
-                        >
-                          <span className='pointer-events-none'>{i.label}</span> {i.icon}
-                        </a>
-                      </li>
-                    )
-                  })
-                }
-                </ul>
-              </div>
-            </li>
-        }
-      </ul>
-    )
+                <Menu
+                    anchorEl={anchorEl}
+                    open={Boolean(anchorEl)}
+                    onClose={this.handleMenuClose}
+                    sx={{
+                      '& .MuiPaper-root': {
+                        boxShadow: 'none !important',
+                        backgroundColor: 'rgba(0, 0, 0, 0.85)',
+                        transform: 'translateY(20px)',
+                      }
+                    }}
+                    MenuListProps={{
+                      sx: {
+                        color: 'white',
+                        position: 'relative',
+                        padding: '1rem',
+                        maxHeight: '21rem',
+                        display: 'inline-grid',
+                        gridAutoFlow: 'column',
+                        gridTemplateRows: 'repeat(7, auto)',
+                        '& .MuiMenuItem-root': {
+                          '&:hover': {
+                            backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                          },
+                        },
+                      },
+                    }}
+                >
+                  {list.map((i) => (
+                      <MenuItem
+                          key={uid.generate()}
+                          onClick={this.handleClick}
+                          data-action={i.action}
+                          data-label={i.label}
+                          data-type={i.type}
+                          sx={{
+                            backgroundColor: 'transparent',
+                            color: 'white',
+                            '&:hover': {
+                              backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                            },
+                          }}
+                      >
+                        <Typography variant="body1">{i.label}</Typography> {i.icon}
+                      </MenuItem>
+                  ))}
+                </Menu>
+              </Box>
+          )}
+        </Box>
+    );
   }
 }

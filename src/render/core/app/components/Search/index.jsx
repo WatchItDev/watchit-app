@@ -1,22 +1,12 @@
 import React, { useState, useCallback } from 'react'
-import PropTypes from 'prop-types'
-import styled from 'styled-components'
-
 import { DB as db } from '@main/bridge'
 import Input from '@components/Input/'
 import utilHelper from '@helpers/util'
 import SearchResult from './result'
+import { Box, styled } from '@mui/material';
 
-const SearchWrapper = styled.div`
-  width: 45%;
-  position: relative;
+let searchTimeout = null; // debounce timeout
 
-  @media (max-width: 800px) {
-    width: 100%;
-  }
-`
-
-let searchTimeout = null // debounce timeout
 const Search = (props) => {
   const [searching, setSearching] = useState(false)
   const [searchResult, setSearchResult] = useState(false)
@@ -83,8 +73,12 @@ const Search = (props) => {
   )
 }
 
-Search.propTypes = {
-  cid: PropTypes.string.isRequired
-}
+const SearchWrapper = styled(Box)(({ theme }) => ({
+  width: '45%',
+  position: 'relative',
+  [theme.breakpoints.down('md')]: {
+    width: '100%',
+  },
+}));
 
 export default React.memo(Search)
