@@ -11,5 +11,4 @@ class WebIPC extends EventEmitter {
   }
 }
 
-const webIPC = new WebIPC()
-module.exports = webIPC
+export default new WebIPC()

@@ -1,11 +1,9 @@
-const Broker = require("./broker");
-const renderer = require(process.env.RUNTIME === "web"
-  ? "./browser"
-  : "./node");
+import Broker from "./broker";
+import renderer from './browser'
 
 // Construct broker with renderer
-module.exports = function BrokerFactory() {
+export default function BrokerFactory() {
   return new Broker(
-    renderer // WebIPC || Electron.MainIPC
+    renderer
   );
 };

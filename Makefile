@@ -45,6 +45,18 @@ format:
 lint:
 	npm run lint
 
+.PHONY: runweb ## run dev mode
+runweb:
+	npx vite
+
+.PHONY: build ## build app
+build:
+	npx vite build
+	
+.PHONY: preview ## preview app
+preview: 
+	npx vite preview --host
+
 .PHONY: release ## generate a new release version
 release:
 	npx standard-version

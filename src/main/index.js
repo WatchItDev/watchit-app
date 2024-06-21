@@ -4,9 +4,7 @@ const path = require("path");
 const mime = require("mime");
 
 // Logs settings
-const logger = require("logplease");
-const log = logger.create("MAIN");
-
+const log = require("@/main/logger");
 const { mainMenu } = require("./helpers/menu");
 const { fadeWindowOut, fadeWindowIn } = require("./helpers/screen");
 const {

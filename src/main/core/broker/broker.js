@@ -1,14 +1,6 @@
-const EventEmitter = require("events");
-const logplease = require("logplease");
-const log = logplease.create("BROKER", { color: logplease.Colors.Yellow });
+import EventEmitter from "events"
 
-// Capture unhandled exceptions
-process?.on("uncaughtException", (e) => {
-  log.warn(e);
-  log.warn("Uncaught Exception: keeping process alive");
-});
-
-module.exports = class Broker extends EventEmitter {
+export default class Broker extends EventEmitter {
   constructor(ipc) {
     super();
     // ipc communicate the main and render processes

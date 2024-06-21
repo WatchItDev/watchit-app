@@ -6,11 +6,11 @@
  */
 
 // Bridge
-const Broker = require("./broker");
-const DB = require("./db");
+import BrokerClass from "./broker";
+import DBClass from "./db";
 
-// Preload bridge
-module.exports = global.bridge = {
-  Broker: Broker(),
-  DB: DB(),
-};
+export const Broker = BrokerClass()
+export const DB = DBClass()
+
+global.bridge |= { DB, Broker }
+export default global.bridge

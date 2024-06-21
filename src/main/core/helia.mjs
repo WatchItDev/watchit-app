@@ -1,4 +1,3 @@
-import logplease from "logplease";
 import { createHelia, libp2pDefaults } from "helia";
 import { unixfs } from "@helia/unixfs";
 
@@ -10,9 +9,7 @@ import { webRTC, webRTCDirect } from "@libp2p/webrtc";
 import { gossipsub } from "@chainsafe/libp2p-gossipsub";
 import { circuitRelayTransport } from "@libp2p/circuit-relay-v2";
 import { pubsubPeerDiscovery } from '@libp2p/pubsub-peer-discovery'
-
-const log = logplease.create("HELIA");
-const PUBSUB_PEER_DISCOVERY = 'watchit-pubsub-discovery';
+import log from '@/main/logger'
 
 function getConfig(runtime = "node") {
   const isBrowserRuntime = runtime === "web";
@@ -36,7 +33,7 @@ function getConfig(runtime = "node") {
     ...(isBrowserRuntime && [
       pubsubPeerDiscovery({
         interval: 10_000,
-        topics: [PUBSUB_PEER_DISCOVERY],
+        topics: [import.meta.env.WATCHIT_PUBSUB_PEER_DISCOVERY],
         listenOnly: false,
       })
     ] || [])

@@ -2,10 +2,11 @@
  * IPFS movies interface
  */
 
-const log = require("logplease").create("CORE");
-const { concat } = require("uint8arrays/concat");
-const { toString } = require("uint8arrays/to-string");
-const all = require("it-all");
+import { concat } from "uint8arrays/concat";
+import { toString } from "uint8arrays/to-string";
+
+import all from "it-all";
+import log from "@/main/logger";
 
 /**
  * The manifest entry shape.
@@ -20,7 +21,7 @@ const all = require("it-all");
  *   }
  */
 
-module.exports = async (ipcMain, { Helia, runtime }) => {
+export default async (ipcMain, { Helia, runtime }) => {
   const { node, fs } = await Helia(runtime);
 
   /**

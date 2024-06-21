@@ -1,7 +1,7 @@
-const Plyr = require('plyr')
-const HLS = require('hls.js')
-const EventEmitter = require('events')
-const log = require('logplease').create('HLS')
+import Plyr from 'plyr'
+import HLS from 'hls.js'
+import EventEmitter from 'events'
+import log from "@/main/logger"
 
 const CONF = {
   manifestLoadingMaxRetry: 2,
@@ -27,7 +27,7 @@ const DEFAULT_PLAYER_CONTROLS = [
   'fullscreen' // Toggle fullscreen
 ]
 
-module.exports = class HLSStreamer extends EventEmitter {
+export default class HLSStreamer extends EventEmitter {
   constructor(props) {
     super(props)
     this.mime = 'application/x-mpegURL'

@@ -1,1 +1,1 @@
-module.exports = require('electron').ipcRenderer
+export { ipcRenderer } from 'electron'
