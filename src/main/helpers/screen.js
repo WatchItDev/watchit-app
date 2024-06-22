@@ -4,7 +4,7 @@
    * @param {float} step Interval
    * @param {function} cb After finish cb
 */
-const fadeWindowOut = (
+export const fadeWindowOut = (
   _window,
   step = 0.1,
   fadeEveryXSeconds = 10,
@@ -18,19 +18,19 @@ const fadeWindowOut = (
       cb()
     }
     !_window.isDestroyed() &&
-        _window.setOpacity(opacity)
+      _window.setOpacity(opacity)
     opacity -= step
   }, fadeEveryXSeconds)
   return interval
 }
 
 /**
-   * Fade in browser window
-   * @param {object} _window BrowserWindow
-   * @param {float} step Interval
-   * @param {function} cb After finish cb
+ * Fade in browser window
+ * @param {object} _window BrowserWindow
+ * @param {float} step Interval
+ * @param {function} cb After finish cb
 */
-const fadeWindowIn = (
+export const fadeWindowIn = (
   _window,
   step = 0.1,
   fadeEveryXSeconds = 10,
@@ -44,11 +44,8 @@ const fadeWindowIn = (
       cb()
     }
     !_window.isDestroyed() &&
-        _window.setOpacity(opacity)
+      _window.setOpacity(opacity)
     opacity += step
   }, fadeEveryXSeconds)
   return interval
 }
-
-module.exports.fadeWindowIn = fadeWindowIn
-module.exports.fadeWindowOut = fadeWindowOut

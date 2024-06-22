@@ -2,11 +2,11 @@
  * IPFS movies interface
  */
 
-import { concat } from "uint8arrays/concat";
-import { toString } from "uint8arrays/to-string";
+import { concat } from 'uint8arrays/concat'
+import { toString } from 'uint8arrays/to-string'
 
-import all from "it-all";
-import log from "@/main/logger";
+import all from 'it-all'
+import log from '@/main/logger'
 
 /**
  * The manifest entry shape.
@@ -22,56 +22,52 @@ import log from "@/main/logger";
  */
 
 export default async (ipcMain, { Helia, runtime }) => {
-  const { node, fs } = await Helia(runtime);
+  const { node, fs } = await Helia(runtime)
 
   /**
    * Collect data from ipfs using `cat` and deserialize it to json object
    * @param {*} cid - The cid for the content to fetch
    * @returns {Promise<object>} A promise that resolves with the fetched json object
    */
-  async function catJSON(cid) {
-    const bufferedData = concat(await all(fs.cat(cid)));
-    const jsonString = toString(bufferedData);
-    return JSON.parse(jsonString);
+  async function catJSON (cid) {
+    const bufferedData = concat(await all(fs.cat(cid)))
+    const jsonString = toString(bufferedData)
+    return JSON.parse(jsonString)
   }
 
-  ipcMain.on("node-start", async (e, key) => {
+  ipcMain.on('node-start', async (e, key) => {
     log.info(`Processing ${key}`)
-    const parsedData = await catJSON(key);
+    const parsedData = await catJSON(key)
     if (!parsedData.manifest) {
-      throw new Error("Fetched content with invalid manifest.");
+      throw new Error('Fetched content with invalid manifest.')
     }
 
-    log.info(`Collecting ${parsedData.count} entries`);
+    log.info(`Collecting ${parsedData.count} entries`)
     for await (const [key, content] of Object.entries(parsedData.manifest)) {
       // collect data stored in
-      const fetchedData = await catJSON(content.data);
+      const fetchedData = await catJSON(content.data)
       const event = Object.assign(content, {
         meta: fetchedData,
-        type: "watchit/data",
+        type: 'watchit/data',
         count: parsedData.count,
         progress: ((+key + 1) / parsedData.count) * 100,
         end: (+key + 1) === parsedData.count
-      });
+      })
 
-      log.info(`Processing ${+key + 1}/${event.count} ${event.progress}%`);
-      e.reply("notification", event);
+      log.info(`Processing ${+key + 1}/${event.count} ${event.progress}%`)
+      e.reply('notification', event)
     }
-  });
+  })
 
-  ipcMain.on("online-status-changed", async (e, isOnline) => {
-    log.info("Going " + (isOnline ? "online" : "offline"));
+  ipcMain.on('online-status-changed', async (e, isOnline) => {
+    log.info('Going ' + (isOnline ? 'online' : 'offline'))
     // if (!isOnline) await orbit.close()
     // if (isOnline) await orbit.start()
-  });
+  })
 
-  ipcMain.on("node-close", async () => {
-    await orbit.stop()
-  });
-
-  ipcMain.on("node-flush", async () => {
+  ipcMain.on('node-flush', async () => {
     // ingest.cleanInterval()
-  });
+  })
 
-  return node;
-};
+  return node
+}

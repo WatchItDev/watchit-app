@@ -3,7 +3,7 @@
   "author": "WatchItDev",
   "version": "1.0.0-beta.0",
   "private": true,
-  "main": "./src/main/index.js",
+  "main": "./out/main/index.js",
   "description": "Open movies everywhere",
   "email": "info@watchit.movie",
   "license": "LICENSE.md",
@@ -13,7 +13,7 @@
     "url": "https://github.com/WatchItDev/watchit-app.git"
   },
   "engines": {
-    "node": ">=14"
+    "node": ">=18"
   },
   "build": {
     "productName": "watchit",
@@ -83,21 +83,7 @@
     }
   },
   "scripts": {
-    "start": "cross-env LOG=* RUNTIME=electron WEBPACK_IS_DEV_SERVER=false NODE_ENV=development webpack --config webpack.config.babel.js --watch",
-    "build": "cross-env RUNTIME=electron NODE_ENV=production webpack",
-    "start:web": "cross-env RUNTIME=web WEBPACK_IS_DEV_SERVER=true NODE_ENV=development webpack serve --config webpack.config.babel.js",
-    "build:web": "cross-env RUNTIME=web NODE_ENV=production webpack",
-    "test": "jest --verbose --runInBand --detectOpenHandles --forceExit",
-    "lint": "standard \"src/{main,render}/**/*.{js,jsx}\"",
-    "format": "npm run lint -- --fix",
-    "electron": "NODE_ENV=development npx electron .",
-    "package": "npm run build && electron-builder build",
-    "package:mac": "npm run package -- --mac",
-    "package:linux": "npm run package -- --linux",
-    "package:win": "npm run package -- --win --x64 --ia32",
-    "publish:mac": "npm run package:mac -- --publish always",
-    "publish:linux": "npm run package:linux -- --publish always",
-    "publish:win": "npm run package:win -- --publish always"
+    "postinstall": "electron-builder install-app-deps"
   },
   "overrides": {
     "react": "^18.2.0",
@@ -105,11 +91,14 @@
   },
   "dependencies": {
     "@chainsafe/libp2p-gossipsub": "^13.0.0",
+    "@electron-toolkit/preload": "^3.0.0",
+    "@electron-toolkit/utils": "^3.0.0",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@helia/unixfs": "^3.0.6",
     "@libp2p/pubsub-peer-discovery": "^10.0.2",
     "@tabler/icons": "^2.28.0",
+    "electron-updater": "^6.1.7",
     "fs-extra": "^9.0.1",
     "helia": "^4.2.3",
     "hls.js": "^1.5.11",
@@ -121,6 +110,8 @@
     "lottie-react": "^2.4.0",
     "memfs": "^4.9.3",
     "mime": "^2.4.6",
+    "pino": "^9.2.0",
+    "pino-pretty": "^11.2.1",
     "plyr": "^3.7.8",
     "plyr-react": "^5.3.0",
     "react-custom-scrollbars": "^4.2.1",
@@ -144,6 +135,7 @@
     "@welldone-software/why-did-you-render": "^8.0.1",
     "electron": "^29.1.4",
     "electron-builder": "^24.13.3",
+    "electron-vite": "^2.2.0",
     "eslint": "^8.57.0",
     "eslint-plugin-react": "^7.34.1",
     "eslint-plugin-react-hooks": "^4.6.0",
@@ -156,11 +148,10 @@
     "react-dom": "^18.2.0",
     "rollup-plugin-polyfill-node": "^0.13.0",
     "sass": "^1.77.6",
+    "standard": "^17.1.0",
     "styled-components": "^5.3.0",
     "vite": "^5.3.1",
-    "vite-plugin-commonjs": "^0.10.1",
-    "vite-plugin-dynamic-import": "^1.5.0",
-    "vite-plugin-favicon": "^1.0.8",
+    "vite-plugin-handlebars": "^2.0.0",
     "vite-plugin-node-polyfills": "^0.22.0"
   },
   "browserslist": [

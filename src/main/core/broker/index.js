@@ -1,9 +1,8 @@
-import Broker from "./broker";
-import renderer from './browser'
+import Broker from './broker'
 
 // Construct broker with renderer
-export default function BrokerFactory() {
+export default function BrokerFactory (renderer) {
   return new Broker(
     renderer
-  );
-};
+  )
+}

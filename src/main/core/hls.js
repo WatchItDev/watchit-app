@@ -1,13 +1,13 @@
 import Plyr from 'plyr'
 import HLS from 'hls.js'
 import EventEmitter from 'events'
-import log from "@/main/logger"
+import log from '@/main/logger'
 
 const CONF = {
   manifestLoadingMaxRetry: 2,
   manifestLoadingTimeOut: 5 * 1000,
   manifestLoadingRetryDelay: 1000,
-  manifestLoadingMaxRetryTimeout: 60 * 1000,
+  manifestLoadingMaxRetryTimeout: 60 * 1000
 }
 
 const DEFAULT_PLAYER_CONTROLS = [
@@ -28,18 +28,18 @@ const DEFAULT_PLAYER_CONTROLS = [
 ]
 
 export default class HLSStreamer extends EventEmitter {
-  constructor(props) {
+  constructor (props) {
     super(props)
     this.mime = 'application/x-mpegURL'
     this.hls = null
     this.player = null
   }
 
-  get [Symbol.toStringTag]() {
+  get [Symbol.toStringTag] () {
     return 'HLSStreaming'
   }
 
-  static getInstance() {
+  static getInstance () {
     return new HLSStreamer()
   }
 
@@ -48,7 +48,7 @@ export default class HLSStreamer extends EventEmitter {
     * @param {object} videoRef
     * @param {function} onReady
     */
-  play(uri, { videoRef }) {
+  play (uri, { videoRef }) {
     const nativeMime = 'application/vnd.apple.mpegURL'
     const nativePlay = videoRef.canPlayType(nativeMime)
 
@@ -85,7 +85,7 @@ export default class HLSStreamer extends EventEmitter {
      * @param {object} n
      * @return {object}
   */
-  quality(n) {
+  quality (n) {
     // Not quality in manifest?
     const q = n.levels.map((l) => l.height).reverse()
     return {
@@ -99,7 +99,7 @@ export default class HLSStreamer extends EventEmitter {
     }
   }
 
-  subs() {
+  subs () {
     return {}
   }
 
@@ -108,7 +108,7 @@ export default class HLSStreamer extends EventEmitter {
      * @param {object} event
      * @param {object} data
   */
-  emitError(event, data) {
+  emitError (event, data) {
     if (data.fatal) {
       switch (data.type) {
         case HLS.ErrorTypes.MEDIA_ERROR:
@@ -125,7 +125,7 @@ export default class HLSStreamer extends EventEmitter {
     }
   }
 
-  setup(videoRef, options = {}) {
+  setup (videoRef, options = {}) {
     log.info('Setting up player')
     const playerSettings = {
       ...{
@@ -144,7 +144,7 @@ export default class HLSStreamer extends EventEmitter {
     })
   }
 
-  updateQuality(newQuality) {
+  updateQuality (newQuality) {
     this.hls.levels.forEach((level, levelIndex) => {
       if (level.height === newQuality) {
         log.info(`Found quality match with ${newQuality}`)
@@ -153,7 +153,7 @@ export default class HLSStreamer extends EventEmitter {
     })
   }
 
-  stop() {
+  stop () {
     this?.player?.stop()
     this?.player?.destroy()
     this?.hls?.destroy()

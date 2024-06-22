@@ -1,15 +1,15 @@
-import EventEmitter from "events"
+import EventEmitter from 'events'
 
 export default class Broker extends EventEmitter {
-  constructor(ipc) {
-    super();
+  constructor (ipc) {
+    super()
     // ipc communicate the main and render processes
-    this.ipc = ipc;
+    this.ipc = ipc
   }
 
-  getIPC() {
+  getIPC () {
     // Inter process handler
-    return this.ipc;
+    return this.ipc
   }
 
   /**
@@ -19,17 +19,17 @@ export default class Broker extends EventEmitter {
    * @param {*} ipcListeners - The list of events to remove.
    * @returns {Broker}
    */
-  stopListeningIPC() {
-    this.ipc.removeAllListeners("notification");
+  stopListeningIPC () {
+    this.ipc.removeAllListeners('notification')
   }
 
   /**
    * Start listening for events from main process.
    */
-  startListeningIPC() {
-    this.ipc.on("notification", (...args) => {
-      this.emit("notification", ...args);
-    });
+  startListeningIPC () {
+    this.ipc.on('notification', (...args) => {
+      this.emit('notification', ...args)
+    })
   }
 
   /**
@@ -38,8 +38,8 @@ export default class Broker extends EventEmitter {
    * @param {string} cid - The manifest cid to start fetching content from.
    * @returns {Broker}
    */
-  connect(cid) {
-    this.ipc.send("node-start", cid);
-    return this;
+  connect (cid) {
+    this.ipc.send('node-start', cid)
+    return this
   }
 };

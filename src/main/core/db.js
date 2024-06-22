@@ -1,16 +1,15 @@
-import log from "@/main/logger";
-import LinvoDB from "linvodb3";
+import log from '@/main/logger'
+import LinvoDB from 'linvodb3'
 import engine from 'level-js'
 
-LinvoDB.defaults.store = { db: engine };
-LinvoDB.defaults.autoIndexing = false;
-log.info(`Using ${engine.name}`);
+LinvoDB.defaults.store = { db: engine }
+LinvoDB.defaults.autoIndexing = false
 
 class DB {
-  constructor() {
+  constructor () {
     // db is a collection of databases
-    this.db = {};
-    this.id = null;
+    this.db = {}
+    this.id = null
   }
 
   /**
@@ -20,22 +19,26 @@ class DB {
    * @param {string} id - The database identifier
    * @returns {DB} The database interface
    */
-  connect(id) {
+  connect (id) {
     if (!(id in this.db)) {
-      log.warn(`Connecting to db: ${id}`);
-      this.db[id] = new LinvoDB(id);
+      log.info(`Connecting to db: ${id}`)
+      this.db[id] = new LinvoDB(id)
     }
 
     this.id = id
-    return this;
+    return this
   }
 
-  _promiseFactory(toResolve) {
+  _promiseFactory (toResolve) {
     return new Promise((resolve, reject) => {
-      if (!(this.id in this.db))
-        return reject();
+      // ignore: prefer-promise-reject-errors
+      if (!(this.id in this.db)) {
+        // temporal patch!! need to reject with a valid error
+        return reject(new Error())
+      }
+
       toResolve(resolve)
-    });
+    })
   }
 
   /**
@@ -44,22 +47,22 @@ class DB {
    * @param {string} id - The database identifier
    * @returns {boolean} True if the database exists, false otherwise
    */
-  exists(id) {
-    return id in this.db;
+  exists (id) {
+    return id in this.db
   }
 
   /**
    * Delete a database.
-   * 
+   *
    * @returns {Promise<boolean>} A promise that resolves to true if the database was deleted, false otherwise
    */
-  delete() {
+  delete () {
     return this._promiseFactory((resolve) => {
-      this.db[this.id].remove({}, { multi: true }, (err) => {
-        delete this.db[this.id];
-        resolve(true);
-      });
-    });
+      this.db[this.id].remove({}, { multi: true }, () => {
+        delete this.db[this.id]
+        resolve(true)
+      })
+    })
   }
 
   /**
@@ -69,14 +72,13 @@ class DB {
    * @param {*} collection - The data to store in db.
    * @returns {Promise<{status: string, db: object}>} A promise that resolves with an object containing the status and the database interface.
    */
-  insert(collection) {
+  insert (collection) {
     return this._promiseFactory((resolve) => {
       this.db[this.id].insert(collection, () => {
-        resolve(collection);
-      }); // Save in local
-    });
+        resolve(collection)
+      }) // Save in local
+    })
   }
-
 
   /**
    * Start a search based on regular expression in db entries
@@ -84,14 +86,14 @@ class DB {
    * @param {string} term - The term used to search for entries.
    * @returns {Promise<object>} A promise that will be resolved with the results.
    */
-  search(term) {
+  search (term) {
     return this._promiseFactory((resolve) => {
       // Find data in collection
-      const re = new RegExp(`${term}`, "gi");
+      const re = new RegExp(`${term}`, 'gi')
       this.db[this.id].find({ 'meta.title': { $regex: re } }).exec((e, r) => {
-        resolve(r);
-      });
-    });
+        resolve(r)
+      })
+    })
   }
 
   /**
@@ -100,13 +102,13 @@ class DB {
    * @param {*} filters - The filter used during filtering process
    * @returns {Promise<object>} A promise that will be resolved with the results.
    */
-  filter(filters = {}) {
+  filter (filters = {}) {
     return this._promiseFactory((resolve) => {
       // Filter by genres
-      const sortedDescAsc = Object.is(filters.order, "desc") ? -1 : 1;
+      const sortedDescAsc = Object.is(filters.order, 'desc') ? -1 : 1
       const selectors = {
-        ...("genres" in filters && { 'meta.genres': { $in: [filters.genres] } }),
-      };
+        ...('genres' in filters && { 'meta.genres': { $in: [filters.genres] } })
+      }
 
       // Find data in collection
       this.db[this.id]
@@ -115,9 +117,9 @@ class DB {
         .limit(filters.limit)
         .skip(filters.skip)
         .exec((e, r) => {
-          resolve(r);
-        });
-    });
+          resolve(r)
+        })
+    })
   }
 
   /**
@@ -125,12 +127,12 @@ class DB {
    * @param {*} id - The content id to retrieve from db.
    * @returns {Promise<object>} A promise that will be resolved with the result.
    */
-  get(id) {
+  get (id) {
     return this._promiseFactory((resolve) => {
       this.db[this.id].findOne({ _id: id }, (e, r) => {
-        resolve(r);
-      });
-    });
+        resolve(r)
+      })
+    })
   }
 
   /**
@@ -138,12 +140,12 @@ class DB {
    *
    * @returns {Promise<object[]>} A promise that resolves with all the movies.
    */
-  all() {
+  all () {
     return this._promiseFactory((resolve) => {
-      this.db[this.id].find({}, (err, docs) => {
-        resolve(docs);
-      });
-    });
+      this.db[this.id].find({}, (_, docs) => {
+        resolve(docs)
+      })
+    })
   }
 
   /**
@@ -151,16 +153,16 @@ class DB {
    * @param {*} filters - The filter used to count.
    * @returns {Promise<object[]>} A promise that resolves with the count number.
    */
-  count(filters) {
+  count (filters) {
     return this._promiseFactory((resolve) => {
-      this.db[this.id].count(filters, (err, count) => {
-        resolve(count);
-      });
-    });
+      this.db[this.id].count(filters, (_, count) => {
+        resolve(count)
+      })
+    })
   }
 }
 
 // Construct broker with renderer
-export default function DBFactory() {
-  return new DB();
+export default function DBFactory () {
+  return new DB()
 };

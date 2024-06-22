@@ -13,6 +13,7 @@
 
 # misc
 abis/
+src/dist/
 orbitdb/
 .DS_Store
 .env.local
