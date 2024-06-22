@@ -27,6 +27,7 @@ testcov:
 clean:
 	rm -rf coverage
 	rm -rf dist
+	rm -rf out
 	rm -rf node_modules
 	npm cache clean -f
 

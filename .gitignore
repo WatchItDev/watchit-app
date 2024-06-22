@@ -13,6 +13,7 @@
 
 # misc
 abis/
+out/
 src/dist/
 orbitdb/
 .DS_Store
