@@ -10,15 +10,15 @@ const DragBar = (props) => {
 
 
   const closeWin = () => {
-    window.ipc.send('win:invoke', 'close')
+    window.electron.ipcRenderer.send('win:invoke', 'close')
   }
 
   const minimizeWin = () => {
-    window.ipc.send('win:invoke', 'min')
+    window.electron.ipcRenderer.send('win:invoke', 'min')
   }
 
   const maximizeWin = () => {
-    window.ipc.send('win:invoke', 'max')
+    window.electron.ipcRenderer.send('win:invoke', 'max')
   }
 
   return (

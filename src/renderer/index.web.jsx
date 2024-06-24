@@ -5,27 +5,22 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 
 import DB from '@/main/core/db'
-import Bootstrap from "@/main/core";
-import Broker from "@/main/core/broker";
-import IPC from "@/main/core/broker/fallback";
-import { Helia } from "@/main/core/helia.mjs";
+import Bootstrap from "@/main/core/bootstrap";
+import webRenderer from "@/main/core/broker/fallback";
+import Helia from "@/main/core/helia";
 
 import App from "./package/runtime/browser";
 import { ContextProvider } from "./package/runtime/context";
 import { GlobalStylesWeb } from "./globalStyles.web.jsx";
 
-const db = DB();
-const broker = Broker(IPC)
-const webRenderer = broker.getIPC();
 // Initialize nodes and core libs
 // this initialization persist over the underlying ipc
+const bridge = { db: DB(), broker: webRenderer }
 await Bootstrap(webRenderer, { Helia, runtime: "web" });
 ReactDOM.createRoot(document.getElementById('root')).render(
-    <React.StrictMode>
-        <ContextProvider value={{ broker, db }}>
-            <App />
-            <GlobalStylesWeb />
-        </ContextProvider>
-    </React.StrictMode>,
+    <ContextProvider value={bridge}>
+        <App />
+        <GlobalStylesWeb />
+    </ContextProvider>
 )
 

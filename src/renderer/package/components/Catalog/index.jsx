@@ -73,12 +73,9 @@ export default class Catalog extends React.Component {
     if (cachedCount > 0)
       return this.startRunning(cachedCount)
 
-    this.context.broker.removeAllListeners();
-    this.context.broker.stopListeningIPC();
-    this.context.broker.startListeningIPC();
-
     const acc = [];
     // the ipc notification when a new movie is added..
+    this.context.broker.removeAllListeners('notification');
     this.context.broker.on('notification', async (e, n) => {
       const movie = { ...n, _id: n.meta.id };
       this.setState({ percent: parseInt(movie.progress), count: movie.count, total: movie.count });
@@ -95,7 +92,7 @@ export default class Catalog extends React.Component {
     });
 
     // connect to cid
-    this.context.broker.connect(cid);
+    this.context.broker.send('node-start', cid);
   }
 
   getRecalculatedScreen = () => {
@@ -125,7 +122,7 @@ export default class Catalog extends React.Component {
     const movies = this.state.movies.flat(1)
     const moviesNewStructure = this.moviesToRow(movies, defaults.chunkSize)
     const cleanedMovies = this.removeExtraRow(moviesNewStructure, defaults.chunkSize)
-
+    
     this.setState({
       loading: false,
       lock: false,

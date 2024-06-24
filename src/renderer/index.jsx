@@ -4,24 +4,19 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 
 import DB from '@/main/core/db'
-import Broker from "@/main/core/broker";
-
 import { ContextProvider } from "./package/runtime/context";
 import App from "./package/runtime/node";
 import { GlobalStyles } from "./globalStyles.jsx";
 
-const db = DB();
-// from preload global initialization
-const broker = Broker(window.ipc)
+const bridge = { db: DB(), broker: window.ipc }
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
-      <ContextProvider value={{ broker, db }}>
-          <App />
-          <GlobalStyles />
-      </ContextProvider>
-  </React.StrictMode>,
+  // <React.StrictMode>
+  <ContextProvider value={bridge}>
+    <App />
+      <GlobalStyles />
+  </ContextProvider>
+  // </React.StrictMode>,
 )
-
 
 // LISTENERS
 const preventDefault = (e) => e.preventDefault();

@@ -15,73 +15,6 @@
   "engines": {
     "node": ">=18"
   },
-  "build": {
-    "productName": "watchit",
-    "appId": "org.team.WatchIt",
-    "publish": [
-      {
-        "provider": "github",
-        "owner": "WatchItDev",
-        "repo": "watchit-app",
-        "private": false
-      }
-    ],
-    "files": [
-      "!**/node_modules/*/{CHANGELOG.md,README.md,README,readme.md,readme}",
-      "!**/node_modules/*/{test,__tests__,tests,powered-test,example,examples}",
-      "!**/node_modules/*.d.ts",
-      "!**/node_modules/.bin",
-      "!**/*.{iml,o,hprof,orig,pyc,pyo,rbc,swp,csproj,sln,xproj}",
-      "!**/._*",
-      "!**/{.DS_Store,.git,.hg,.svn,CVS,RCS,SCCS,.gitignore,.gitattributes}",
-      "!**/{__pycache__,thumbs.db,.flowconfig,.idea,.vs,.nyc_output}",
-      "!**/{appveyor.yml,.travis.yml,circle.yml}",
-      "!**/{npm-debug.log,yarn.lock,.yarn-integrity,.yarn-metadata.json}",
-      "src/build/**/*",
-      "src/main/**/*",
-      "src/render/media/icons/*",
-      "package.json"
-    ],
-    "dmg": {
-      "contents": [
-        {
-          "x": 130,
-          "y": 220
-        },
-        {
-          "x": 410,
-          "y": 220,
-          "type": "link",
-          "path": "/Applications"
-        }
-      ]
-    },
-    "win": {
-      "target": [
-        "nsis",
-        "msi"
-      ]
-    },
-    "nsis": {
-      "deleteAppDataOnUninstall": true,
-      "allowToChangeInstallationDirectory": false,
-      "runAfterFinish": true
-    },
-    "linux": {
-      "target": [
-        "deb",
-        "AppImage",
-        "tar.gz"
-      ],
-      "category": "Video",
-      "maintainer": "WatchItDev",
-      "icon": "src/render/media/icons/icon.icns"
-    },
-    "directories": {
-      "buildResources": "src/render/media/icons",
-      "output": "release"
-    }
-  },
   "scripts": {
     "postinstall": "electron-builder install-app-deps"
   },
@@ -98,18 +31,19 @@
     "@helia/unixfs": "^3.0.6",
     "@libp2p/pubsub-peer-discovery": "^10.0.2",
     "@tabler/icons": "^2.28.0",
+    "bufferutil": "^4.0.8",
     "electron-updater": "^6.1.7",
     "fs-extra": "^9.0.1",
-    "helia": "^4.2.3",
+    "helia": "^4.2.4",
     "hls.js": "^1.5.11",
     "it-all": "^1.0.6",
     "jschardet": "^2.1.1",
     "level-js": "6.1.0",
-    "leveldown": "^5.6.0",
     "linvodb3": "^3.19.0",
     "lottie-react": "^2.4.0",
     "memfs": "^4.9.3",
     "mime": "^2.4.6",
+    "node-datachannel": "^0.9.2",
     "pino": "^9.2.0",
     "pino-pretty": "^11.2.1",
     "plyr": "^3.7.8",
@@ -119,16 +53,14 @@
     "react-window": "^1.8.10",
     "react-window-infinite-loader": "^1.0.9",
     "shortid": "^2.2.15",
-    "subtitle": "^2.0.3",
-    "uint8arrays": "^3.0.0",
-    "winston": "^3.13.0"
+    "utf-8-validate": "^5.0.10"
   },
   "devDependencies": {
     "@esbuild-plugins/node-globals-polyfill": "^0.2.3",
     "@esbuild-plugins/node-modules-polyfill": "^0.2.2",
     "@mui/icons-material": "^5.15.20",
     "@mui/material": "^5.15.20",
-    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/plugin-commonjs": "^26.0.1",
     "@types/react": "^18.2.66",
     "@types/react-dom": "^18.2.22",
     "@vitejs/plugin-react": "^4.2.1",

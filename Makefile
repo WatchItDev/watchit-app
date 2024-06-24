@@ -53,9 +53,13 @@ run-web:
 run-electron:
 	npx electron-vite
 
-.PHONY: build-web ## build app
+.PHONY: build-web ## build web app
 build-web:
 	npx vite build
+	
+.PHONY: build-electron ## build app
+build-electron:
+	npx electron-vite build
 	
 .PHONY: preview-web ## preview app
 preview-web: 
@@ -66,7 +70,7 @@ release:
 	npx standard-version
 
 .PHONY: package ## generate a new electron package
-package:
+package: build-electron
 	npx electron-builder build $(filter-out $@,$(MAKECMDGOALS))
 
 .PHONY: package-mac ## generate a new electron mac package
