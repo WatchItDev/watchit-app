@@ -12,9 +12,7 @@ import { Helia } from "@/main/core/helia.mjs";
 
 import App from "./package/runtime/browser";
 import { ContextProvider } from "./package/runtime/context";
-
-import 'normalize.css'
-import './index.web.scss'
+import { GlobalStylesWeb } from "./globalStyles.web.jsx";
 
 const db = DB();
 const broker = Broker(IPC)
@@ -26,6 +24,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     <React.StrictMode>
         <ContextProvider value={{ broker, db }}>
             <App />
+            <GlobalStylesWeb />
         </ContextProvider>
     </React.StrictMode>,
 )

@@ -8,7 +8,7 @@ import Broker from "@/main/core/broker";
 
 import { ContextProvider } from "./package/runtime/context";
 import App from "./package/runtime/node";
-import { GlobalStyles } from "./globalStyles";
+import { GlobalStyles } from "./globalStyles.jsx";
 
 const db = DB();
 // from preload global initialization

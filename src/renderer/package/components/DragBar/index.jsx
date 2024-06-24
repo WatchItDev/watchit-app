@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import Logo from '@/renderer/package/components/Logo/'
-import styled from 'styled-components'
 import settings from '@/renderer/settings'
 
 import { styled } from '@mui/material/styles';

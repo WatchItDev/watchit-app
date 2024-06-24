@@ -1,7 +1,4 @@
 import React, { useState, useCallback, useContext } from 'react'
-import PropTypes from 'prop-types'
-import styled from 'styled-components'
-
 import { Context } from '@/renderer/package/runtime/context'
 import Input from '@/renderer/package/components/Input/'
 import utilHelper from '@/renderer/util'
