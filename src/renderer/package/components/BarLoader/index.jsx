@@ -1,40 +1,56 @@
-import React from 'react'
-import PropTypes from 'prop-types'
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Box, Typography, LinearProgress } from '@mui/material';
 
-export default class BarLoader extends React.PureComponent {
-  static get propTypes () {
-    return {
-      showText: PropTypes.bool,
-      stateText: PropTypes.string,
-      statePercent: PropTypes.number.isRequired
-    }
-  }
+const BarLoader = ({ showText, stateText, statePercent }) => {
+  return (
+      <Box
+          position="absolute"
+          bottom="30%"
+          width="100%"
+          zIndex={2}
+          textAlign="center"
+      >
+        <Box>
+          <Typography
+              variant="h3"
+              sx={{ margin: '0 0 1rem 0', opacity: 0.5, color: 'white' }}
+          >
+            {stateText}
+          </Typography>
+        </Box>
+        {statePercent > 0 && (
+            <Box position="absolute" width="100%">
+              <LinearProgress
+                  variant="determinate"
+                  value={statePercent}
+                  sx={{
+                    backgroundColor: 'rgba(255, 255, 255, 0.5)',
+                    '& .MuiLinearProgress-bar': {
+                      backgroundColor: '#FF8F00',
+                    },
+                  }}
+              />
+            </Box>
+        )}
+        {statePercent > 0 && showText && (
+            <Box position="relative" top="10px">
+              <Typography
+                  variant="h3"
+                  sx={{ margin: '2.5rem 0 0 0', opacity: 0.5, color: 'white' }}
+              >
+                {statePercent}%
+              </Typography>
+            </Box>
+        )}
+      </Box>
+  );
+};
 
-  render () {
-    return (
-      <div className='center-block valign loading_progress'>
-        <div>
-          <h3 className='font-type-titles align-center white-text loading_title'>
-            {this.props.stateText}
-          </h3>
-        </div>
-        {
-          this.props.statePercent > 0 &&
-            <div className='absolute full-width no-left progress-wrapper'>
-              <div className={'progress lighten-1 width-' + this.props.statePercent + '-p'}>
-                <div className='determinate amber darken-4' />
-              </div>
-            </div>
-        }
-        {
-          this.props.statePercent > 0 && this.props.showText &&
-            <div className='relative top-10 text-center'>
-              <h3 className='font-type-titles white-text loading_subtitle'>
-                {this.props.statePercent}%
-              </h3>
-            </div>
-        }
-      </div>
-    )
-  }
-}
+BarLoader.propTypes = {
+  showText: PropTypes.bool,
+  stateText: PropTypes.string,
+  statePercent: PropTypes.number.isRequired,
+};
+
+export default BarLoader;

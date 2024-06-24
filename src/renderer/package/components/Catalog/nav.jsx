@@ -1,5 +1,6 @@
 import React from 'react'
 import NavBarMenu from '@/renderer/package/components/NavBarMenu/'
+import { Box } from '@mui/material'
 
 export default class CatalogNavBar extends React.Component {
   constructor(props) {
@@ -125,17 +126,33 @@ export default class CatalogNavBar extends React.Component {
 
   render() {
     return (
-      <div className='nav-wrapper main-nav-filter-movies'>
-        <NavBarMenu
-          btnText='Sort By' list={this.state.sort}
-          onChange={this.handleSortBy}
-        />
-
-        <NavBarMenu
-          btnText='Genre' list={this.state.genres}
-          onChange={this.handleGenres}
-        />
-      </div>
-    )
+        <Box
+            sx={{
+              position: 'relative',
+              display: 'flex',
+              alignItems: 'center',
+              flexGrow: 1,
+              paddingX: '1rem',
+              '.dropdown i, .dropdown span, .dropdown a': {
+                fontSize: '1rem !important',
+              },
+              i: {
+                display: 'block',
+                fontSize: '2rem',
+              },
+            }}
+        >
+          <NavBarMenu
+              btnText="Sort By"
+              list={this.state.sort}
+              onChange={this.handleSortBy}
+          />
+          <NavBarMenu
+              btnText="Genre"
+              list={this.state.genres}
+              onChange={this.handleGenres}
+          />
+        </Box>
+    );
   }
 }

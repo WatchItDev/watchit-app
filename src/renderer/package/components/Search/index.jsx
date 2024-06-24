@@ -6,15 +6,7 @@ import { Context } from '@/renderer/package/runtime/context'
 import Input from '@/renderer/package/components/Input/'
 import utilHelper from '@/renderer/util'
 import SearchResult from './result'
-
-const SearchWrapper = styled.div`
-  width: 45%;
-  position: relative;
-
-  @media (max-width: 800px) {
-    width: 100%;
-  }
-`
+import { Box, styled } from '@mui/material';
 
 let searchTimeout = null // debounce timeout
 const Search = (props) => {
@@ -84,8 +76,12 @@ const Search = (props) => {
   )
 }
 
-Search.propTypes = {
-  cid: PropTypes.string.isRequired
-}
+const SearchWrapper = styled(Box)(({ theme }) => ({
+  width: '45%',
+  position: 'relative',
+  [theme.breakpoints.down('md')]: {
+    width: '100%',
+  },
+}));
 
 export default React.memo(Search)

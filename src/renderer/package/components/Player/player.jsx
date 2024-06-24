@@ -6,6 +6,7 @@ import HLS from '@/main/core/hls'
 import log from '@/main/logger'
 import gateway from "@/renderer/gateway";
 import ButtonClose from "@/renderer/package/components/ButtonClose";
+import { Box, Typography, styled } from '@mui/material';
 
 export default class Player extends React.Component {
   constructor(props = {
@@ -89,10 +90,19 @@ export default class Player extends React.Component {
 
   render() {
     return (
-      <div className={(this.props.canPlay && 'left relative full-height full-width') || 'invisible'}>
-        {this.props.onClose && <ButtonClose onClose={this.props.onClose} />}
-        <PlayerVideo ref={this.getVideoRef} />
-      </div>
+        <Container className={!this.props.canPlay ? 'invisible' : ''}>
+          {this.props.onClose && <ButtonClose onClose={this.props.onClose} />}
+          <PlayerVideo ref={this.getVideoRef} />
+        </Container>
     )
   }
 }
+
+const Container = styled(Box)({
+  position: 'relative',
+  width: '100%',
+  height: '100%',
+  '&.invisible': {
+    display: 'none',
+  },
+});

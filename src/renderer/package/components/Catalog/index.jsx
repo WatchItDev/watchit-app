@@ -4,6 +4,7 @@ import Stats from '@/renderer/package/components/Stats/'
 import MainLoader from '@/renderer/package/components/MainLoader/'
 import Search from '@/renderer/package/components/Search'
 import { Context } from '@/renderer/package/runtime/context'
+import { Box, Container, AppBar, Toolbar, CircularProgress, Typography } from '@mui/material';
 
 import CatalogList from './list'
 import CatalogNav from './nav'
@@ -241,43 +242,75 @@ export default class Catalog extends React.Component {
 
   render() {
     return (
-      <div className='relative full-height main-view' ref={this.moviesWrapper}>
-        {this.state.loading &&
-          <MainLoader
-            content={this.state.percent > 0 ? `${this.state.percent} %` : null}
-            percent={this.state.percent}
-          />
-        }
-        {
-          <section className='row full-height'>
-            <div className='clearfix full-height'>
-              <header className='no-margin vertical-padding transparent z-depth-1 d-flex align-items-center justify-content-between header-search'>
+        <Box
+            ref={this.moviesWrapper}
+            sx={{
+              position: 'relative',
+              height: '100%',
+            }}
+        >
+          {this.state.loading && (
+              <MainLoader
+                  content={this.state.percent > 0 ? `${this.state.percent} %` : null}
+                  percent={this.state.percent}
+              />
+          )}
+          <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                height: '100%',
+              }}
+          >
+            <AppBar
+                position="static"
+                color="transparent"
+                sx={{
+                  boxShadow: 'none',
+                  borderBottom: '1px solid #18191c',
+                  padding: '1rem',
+                  zIndex: 2,
+                }}
+            >
+              <Toolbar
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    padding: '0 !important',
+                    minHeight: 'auto !important'
+                  }}
+              >
                 <Search cid={this.props.cid} onClick={this.handleClickMovie} />
-                <nav className='col l6 m6 transparent z-depth-0'>
-                  <CatalogNav
-                    onChange={this.handleOnChange}
-                  />
-                </nav>
-                {<Stats onSignOut={this.handleSignOut} />}
-              </header>
-              {/* Top main nav */}
+                <CatalogNav onChange={this.handleOnChange} />
+                <Stats onSignOut={this.handleSignOut} />
+              </Toolbar>
+            </AppBar>
 
-              {/* Movies section lists */}
-              <section className='row movies-box clearfix'>
-                {
-                  (this.state.ready &&
-                    <CatalogList
-                      movies={this.state.movies} loadOrder={this.loadOrder}
-                      count={this.state.count} loading={this.state.lock}
-                      end={this.state.finishLoad} chunkSize={this.state.screen.chunkSize}
-                      onClick={this.handleClickMovie} onPlay={this.props.onPlayMovie} screen={this.state.screen}
-                    />)
-                }
-              </section>
-            </div>
-          </section>
-        }
-      </div>
-    )
+            <Box
+                sx={{
+                  width: '100%',
+                  padding: '1rem 0',
+                  overflow: 'hidden',
+                  zIndex: 1
+                }}
+            >
+              {this.state.ready && (
+                  <CatalogList
+                      movies={this.state.movies}
+                      loadOrder={this.loadOrder}
+                      count={this.state.count}
+                      loading={this.state.lock}
+                      end={this.state.finishLoad}
+                      chunkSize={this.state.screen.chunkSize}
+                      onClick={this.handleClickMovie}
+                      onPlay={this.props.onPlayMovie}
+                      screen={this.state.screen}
+                  />
+              )}
+            </Box>
+          </Box>
+        </Box>
+    );
   }
 }

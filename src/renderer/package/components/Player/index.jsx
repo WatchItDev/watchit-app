@@ -5,6 +5,7 @@ import Player from './player'
 import PlayerHeader from './header'
 import MainLoader from "@/renderer/package/components/MainLoader";
 import ButtonClose from "@/renderer/package/components/ButtonClose";
+import { Box, styled } from '@mui/material';
 
 export default class PlayerHLS extends React.PureComponent {
   constructor (props) {
@@ -27,34 +28,50 @@ export default class PlayerHLS extends React.PureComponent {
     })
   }
 
-  render () {
+  render() {
     return (
-      <>
-        {
-          (
-            !this.state.canPlay &&
-              <div className='absolute full-width full-height player-overlay-loader'>
+        <>
+          {!this.state.canPlay && (
+              <OverlayLoader>
                 {this.props.onClose && <ButtonClose onClose={this.props.onClose} />}
                 <MainLoader content={'Loading movie...'} />
-              </div>
-          )
-        }
+              </OverlayLoader>
+          )}
 
-        <section className='absolute full-height full-width clearfix video-stream'>
-          {/* Movie torrent info */}
-          {this.state.canPlay && <PlayerHeader title={this.props.movie.title} />}
+          <VideoStream>
+            {this.state.canPlay && <PlayerHeader title={this.props.movie.title} />}
 
-          {/* Main player */}
-          <div className='full-height movie-box'>
-            <Player
-              movie={this.props.movie}
-              canPlay={this.state.canPlay}
-              onCanPlay={this.handleCanPlay}
-              onClose={this.props.onClose}
-            />
-          </div>
-        </section>
-      </>
-    )
+            <MovieBox>
+              <Player
+                  movie={this.props.movie}
+                  canPlay={this.state.canPlay}
+                  onCanPlay={this.handleCanPlay}
+                  onClose={this.props.onClose}
+              />
+            </MovieBox>
+          </VideoStream>
+        </>
+    );
   }
 }
+
+const OverlayLoader = styled(Box)(({ theme }) => ({
+  height: '100%',
+  backgroundColor: '#1A1C20',
+  position: 'absolute',
+  width: '100%',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+}));
+
+const VideoStream = styled(Box)(({ theme }) => ({
+  position: 'absolute',
+  height: '100%',
+  width: '100%',
+  overflow: 'hidden',
+}));
+
+const MovieBox = styled(Box)(({ theme }) => ({
+  height: '100%',
+}));

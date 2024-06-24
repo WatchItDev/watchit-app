@@ -72,6 +72,14 @@ const CustomButtonWrapper = styled(Button)(() => ({
         '&:hover': {
             backgroundColor: '#1c1d21 !important',
         }
+    },
+    "&.btn-close": {
+        position: 'absolute !important',
+        right: '1rem',
+        zIndex: 1001,
+        top: '1rem',
+        padding: '0 10px',
+        lineHeight: 'normal'
     }
 }))
 

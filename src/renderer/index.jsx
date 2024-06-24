@@ -8,9 +8,7 @@ import Broker from "@/main/core/broker";
 
 import { ContextProvider } from "./package/runtime/context";
 import App from "./package/runtime/node";
-
-import 'normalize.css'
-import './index.scss'
+import { GlobalStyles } from "./globalStyles";
 
 const db = DB();
 // from preload global initialization
@@ -19,6 +17,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
       <ContextProvider value={{ broker, db }}>
           <App />
+          <GlobalStyles />
       </ContextProvider>
   </React.StrictMode>,
 )
