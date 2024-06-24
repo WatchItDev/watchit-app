@@ -7,10 +7,25 @@ export default defineConfig({
     main: {
         envPrefix: 'WATCHIT_',
         resolve: { alias },
-        plugins: [externalizeDepsPlugin()]
+        plugins: [externalizeDepsPlugin()],
+        build: {
+            rollupOptions: {
+                output: {
+                    format: 'es'
+                }
+            }
+
+        }
     },
     preload: {
-        plugins: [externalizeDepsPlugin()]
+        plugins: [externalizeDepsPlugin()],
+        build: {
+            rollupOptions: {
+                output: {
+                    format: 'es'
+                }
+            }
+        }
     },
     renderer: {
         build,

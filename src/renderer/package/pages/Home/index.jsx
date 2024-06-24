@@ -7,14 +7,12 @@ import CatalogList from '@/renderer/package/components/Catalog';
 import MoviePlayer from "@/renderer/package/components/MoviePlayer";
 import EmptyBlankSlate from "@/renderer/package/components/Blankslate";
 import ChannelsMenu from "@/renderer/package/components/ChannelsMenu";
-import BlockedBlankslate from "@/renderer/package/components/BlockedBlankslate";
 import OpenCollective from '@/renderer/media/img/layout/openCollective.png'
 import { Context } from '@/renderer/package/runtime/context'
 
 import log from '@/main/logger'
 
 const runtime = import.meta.env.WATCHIT_RUNTIME
-
 export default function MovieIndex() {
   const context = useContext(Context)
   const [collections, setCollections] = useState([]);
@@ -23,7 +21,6 @@ export default function MovieIndex() {
   const [isLoading, setIsLoading] = useState(true);
   const [isAdding, setIsAdding] = useState(true);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [isBlocked, setIsBlocked] = useState(false);
   const moviesWrapper = useRef(null);
 
   const showCatalog = selectedCollection && !selectedMovie;
@@ -92,29 +89,12 @@ export default function MovieIndex() {
     (async () => {
       const collectionsFromDB = await getCollectionDb().all();
       setCollections(collectionsFromDB.map((el) => el._id));
+      setIsLoading(false)
     })();
-
-    const userAgent = navigator.userAgent.toLowerCase();
-    const isMobileDevice = /mobile|android|iphone|ipad|tablet/i.test(userAgent);
-    const isSmallScreen = window.innerWidth < 900;
-    const tmpBlock = isMobileDevice || isSmallScreen
-    setIsBlocked(tmpBlock);
-    setIsLoading(false)
-
-    const handleResize = () => {
-      setIsBlocked(window.innerWidth < 900);
-    };
-
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
   }, []);
-
 
   if (isLoading)
     return <MainLoader />
-
-  if (isBlocked)
-    return <BlockedBlankslate />;
 
   return (
     <MainContainer>

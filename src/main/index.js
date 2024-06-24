@@ -1,6 +1,7 @@
 import path from 'path'
 import log from '@/main/logger'
-import backend from './core'
+import helia from './core/helia'
+import bootstrap from './core/bootstrap'
 
 import { mainMenu } from './helpers/menu'
 import { fadeWindowOut, fadeWindowIn } from './helpers/screen'
@@ -8,17 +9,18 @@ import { fadeWindowOut, fadeWindowIn } from './helpers/screen'
 import { app, BrowserWindow, ipcMain, Menu, dialog } from 'electron'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 
-let win
-const ROOT_APP = process.cwd()
-const ROOT_STORE = app.getPath('appData')
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+let win;
 const isDarwin = Object.is(process.platform, 'darwin')
 const isWin = Object.is(process.platform, 'win32')
-const appIcon = path.join(ROOT_APP, '/src/render/media/icons/icon.png')
-const appPath = is.dev ? ROOT_APP : ROOT_STORE
+const appIcon = path.join(__dirname, '/src/render/media/icons/icon.png')
 
-// D'ont move appPath from this line
-process.env.appPath = appPath
+process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
 const gotTheLock = app.requestSingleInstanceLock()
 if (!gotTheLock) app.quit()
 
@@ -68,12 +70,10 @@ const createMain = (devMode, child) => {
       show: false,
       transparent: false,
       webPreferences: {
-        spellCheck: false,
-        enableRemoteModule: false,
-        contextIsolation: false,
+        sandbox: false,
+        contextIsolation: true,
         nodeIntegration: true,
-        webSecurity: false,
-        preload: path.join(__dirname, '../preload/index.mjs')
+        preload: `${path.join(__dirname, '../preload/index.mjs')}`
       }
     }
   })
@@ -109,7 +109,6 @@ const createMain = (devMode, child) => {
 if (isDarwin) mainMenu(Menu, app)
 // https://www.electronjs.org/docs/tutorial/offscreen-rendering
 // app.disableHardwareAcceleration()
-app.setPath('crashDumps', path.join(appPath, 'crashes'))
 app.on('second-instance', () => {
   if (win) {
     if (win.isMinimized()) win.restore()
@@ -129,9 +128,9 @@ app.whenReady().then(async () => {
   // Default open or close DevTools by F12 in development
   // and ignore CommandOrControl + R in production.
   // see https://github.com/alex8088/electron-toolkit/tree/master/packages/utils
-  app.on('browser-window-created', (_, window) => {
-    optimizer.watchWindowShortcuts(window)
-  })
+  // app.on('browser-window-created', (_, window) => {
+  //   optimizer.watchWindowShortcuts(window)
+  // })
 
   if (isWin || isDarwin) {
     // Temp validation while updater failing
@@ -144,12 +143,12 @@ app.whenReady().then(async () => {
   // Load the dist build or connect to webpack-dev-server
   initWindowing(is.dev)
   // Initialize ipfs/helia node and assign underlying events.
-  const helia = await import('./core/helia.mjs')
-  const mainThread = await backend(ipcMain, helia)
+  bootstrap(ipcMain, { Helia: helia }).then(() => {
+    log.info('Helia node ready')
+  })
 
   app.on('will-quit', async (e) => {
     log.warn('Closing')
-    await mainThread.stop()
     app.releaseSingleInstanceLock()
   })
 

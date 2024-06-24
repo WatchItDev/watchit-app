@@ -76,10 +76,10 @@ function getConfig(runtime = "node") {
 // Tricky implementation to allow handle helia in electron and browser
 // Helia is an ESM-only module but Electron currently only supports CJS
 // at the top level, so we have to use dynamic imports to load it
-export async function Helia(runtime) {
+export default async function Helia(runtime) {
   const libp2p = getConfig(runtime);
   const node = await createHelia({ libp2p, start: true });
-  log.info(`Running helia with peer ${node.libp2p.peerId}`);
+  log.info(`Running helia with peer ${node.libp2p.peerId} in mode: ${runtime}`);
   const fs = unixfs(node);
 
   return {
