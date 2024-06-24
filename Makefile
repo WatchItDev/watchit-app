@@ -45,57 +45,53 @@ lint:
 format:
 	@$(MAKE) lint -- --fix
 
-.PHONY: run-web ## run dev mode
-run-web:
+.PHONY: runweb ## run dev mode
+runweb:
 	npx vite
 
-.PHONY: run-electron ## run electron dev mode
-run-electron:
+.PHONY: runelectron ## run electron dev mode
+runelectron:
 	npx electron-vite
 
-.PHONY: build-web ## build web app
-build-web:
+.PHONY: buildweb ## build web app
+buildweb:
 	npx vite build
 	
-.PHONY: build-electron ## build app
-build-electron:
+.PHONY: buildelectron ## build app
+buildelectron:
 	npx electron-vite build
-	
-.PHONY: preview-web ## preview app
-preview-web: 
-	npx vite preview --host
+
+.PHONY: package ## generate a new electron package
+package: buildelectron
+	npx electron-builder build $(filter-out $@,$(MAKECMDGOALS))
+
+.PHONY: packagemac ## generate a new electron mac package
+packagemac:
+	@$(MAKE) package -- --mac $(filter-out $@,$(MAKECMDGOALS))
+
+.PHONY: packagelinux ## generate a new electron linux package
+packagelinux:
+	@$(MAKE) package -- --linux $(filter-out $@,$(MAKECMDGOALS))
+
+.PHONY: packagewin ## generate a new electron win package
+packagewin:
+	@$(MAKE) package -- --win --x64 --ia32 $(filter-out $@,$(MAKECMDGOALS))
+
+.PHONY: publishmac ## publish a new electron mac package
+publishmac:
+	@$(MAKE) packagemac -- --publish always
+
+.PHONY: publishlinux ## publish a new electron linux package
+publishlinux:
+	@$(MAKE) packagelinux -- --publish always
+
+.PHONY: publishwin ## publish a new electron win package
+publishwin:
+	@$(MAKE) packagewin -- --publish always
 
 .PHONY: release ## generate a new release version
 release:
 	npx standard-version
-
-.PHONY: package ## generate a new electron package
-package: build-electron
-	npx electron-builder build $(filter-out $@,$(MAKECMDGOALS))
-
-.PHONY: package-mac ## generate a new electron mac package
-package-mac:
-	@$(MAKE) package -- --mac $(filter-out $@,$(MAKECMDGOALS))
-
-.PHONY: package-linux ## generate a new electron linux package
-package-linux:
-	@$(MAKE) package -- --linux $(filter-out $@,$(MAKECMDGOALS))
-
-.PHONY: package-win ## generate a new electron win package
-package-win:
-	@$(MAKE) package -- --win --x64 --ia32 $(filter-out $@,$(MAKECMDGOALS))
-
-.PHONY: publish-mac ## publish a new electron mac package
-publish-mac:
-	@$(MAKE) package-mac -- --publish always
-
-.PHONY: publish-linux ## publish a new electron linux package
-publish-linux:
-	@$(MAKE) package-linux -- --publish always
-
-.PHONY: publish-win ## publish a new electron win package
-publish-win:
-	@$(MAKE) package-win -- --publish always
 
 .PHONY: syncenv ## pull environments to dotenv vault
 syncenv:

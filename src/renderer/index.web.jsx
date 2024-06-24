@@ -1,5 +1,5 @@
 // eslint-disable-next-line
-// import './wdyr';
+import './wdyr';
 
 import React from "react";
 import ReactDOM from "react-dom/client";
