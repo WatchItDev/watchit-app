@@ -6,7 +6,7 @@ import ReactDOM from "react-dom/client";
 
 import DB from '@/main/core/db'
 import Bootstrap from "@/main/core/bootstrap";
-import webRenderer from "@/main/core/broker/fallback";
+import webRenderer from "@/main/core/fallback";
 import Helia from "@/main/core/helia";
 
 import App from "./package/runtime/browser";

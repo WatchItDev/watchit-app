@@ -1,5 +1,5 @@
 import React from "react";
-import "plyr/src/sass/plyr";
+import "plyr/src/sass/plyr.scss";
 
 const slideInBottom = `
   @keyframes slide-in-bottom {
