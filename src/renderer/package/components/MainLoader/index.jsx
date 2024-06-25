@@ -1,6 +1,6 @@
 import React from 'react'
 import Lottie from 'lottie-react'
-import { Typography, Box } from '@mui/material';
+import { Typography, Box, styled } from '@mui/material';
 
 import BarLoader from "@/renderer/package/components/BarLoader";
 import loaderAnimation from '@/renderer/media/img/watchit_logo.json'

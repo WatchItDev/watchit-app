@@ -5,7 +5,7 @@ import Blocked from '@/renderer/media/img/layout/blocked.png';
 const BlockedBlankslate = () => {
   return (
     <Blocker >
-      <Box display="flex" flexDirection={'column'} width={'100%'} height={'100%'} alignItems={'center'} justifyContent={'center'} sx={{ maxWidth: '350px' }}>
+      <Box display="flex" flexDirection={'column'} width={'100%'} height={'100%'} alignItems={'center'} justifyContent={'center'} sx={{ maxWidth: '390px' }}>
         <Box display="flex" alignItems="center" mb={4}>
           <Box component="img" src={Blocked} alt="blocked" width="20rem" />
         </Box>

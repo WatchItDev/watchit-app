@@ -8,6 +8,7 @@ import MoviePlayer from "@/renderer/package/components/MoviePlayer";
 import EmptyBlankSlate from "@/renderer/package/components/Blankslate";
 import ChannelsMenu from "@/renderer/package/components/ChannelsMenu";
 import OpenCollective from '@/renderer/media/img/layout/openCollective.png'
+import BlockedBlankslate from "@/renderer/package/components/BlockedBlankslate";
 import { Context } from '@/renderer/package/runtime/context'
 
 import log from '@/main/logger'
@@ -97,82 +98,99 @@ export default function MovieIndex() {
     return <MainLoader />
 
   return (
-    <MainContainer>
-      <ChannelsMenuWrapper>
-        <Box className={'hide-on-desktop'} sx={{ marginTop: '1rem' }}>
-          <Logo size={50} />
-        </Box>
-        <ChannelsMenu
-          channels={collections}
-          selected={selectedCollection}
-          onAddChannel={handleAddChannel}
-          onChannelClick={handleChannelClick}
-        />
-        <Box
-          sx={{
-            marginTop: 'auto', display: 'flex', padding: '1rem',
-            width: '100%', alignItems: 'center', justifyContent: 'center'
-          }}
-        >
-          <OpenCollectiveLogo
-            src={OpenCollective}
-            alt="OpenCollective"
-            onClick={() => window.open('https://opencollective.com/watchit', '_blank')}
+    <>
+      <BlockedBlankslateWrapper>
+        <BlockedBlankslate />
+      </BlockedBlankslateWrapper>
+      <MainContainer>
+        <ChannelsMenuWrapper>
+          <Box className={'hide-on-desktop'} sx={{ marginTop: '1rem' }}>
+            <Logo size={50} />
+          </Box>
+          <ChannelsMenu
+              channels={collections}
+              selected={selectedCollection}
+              onAddChannel={handleAddChannel}
+              onChannelClick={handleChannelClick}
           />
-        </Box>
-      </ChannelsMenuWrapper>
+          <Box
+              sx={{
+                marginTop: 'auto', display: 'flex', padding: '1rem',
+                width: '100%', alignItems: 'center', justifyContent: 'center'
+              }}
+          >
+            <OpenCollectiveLogo
+                src={OpenCollective}
+                alt="OpenCollective"
+                onClick={() => window.open('https://opencollective.com/watchit', '_blank')}
+            />
+          </Box>
+        </ChannelsMenuWrapper>
 
-      <MainContent
-        ref={moviesWrapper}
-        sx={{
-          borderTopLeftRadius: runtime === 'browser' ? '0' : '1rem'
-        }}
-      >
-        {isAdding ? (
-          <EmptyBlankSlate onButtonClick={handleAddCollection} />
-        ) : <></>}
+        <MainContent
+            ref={moviesWrapper}
+            sx={{
+              borderTopLeftRadius: runtime === 'browser' ? '0' : '1rem'
+            }}
+        >
+          {isAdding ? (
+              <EmptyBlankSlate onButtonClick={handleAddCollection} />
+          ) : <></>}
+
+          {
+            showCatalog ? (
+                <CatalogList
+                    cid={selectedCollection}
+                    onClickMovie={handleMovieClick}
+                    onPlayMovie={handleMoviePlay}
+                    onSignOut={onRemoveCollection}
+                />
+            ) : <></>
+          }
+
+          {
+            showDetails ? (
+                <Details
+                    id={selectedMovie}
+                    onClose={handleCloseMovie}
+                    onPlay={handleMoviePlay}
+                    cid={selectedCollection}
+                />
+            ) : <></>
+          }
+        </MainContent>
 
         {
-          showCatalog ? (
-            <CatalogList
-              cid={selectedCollection}
-              onClickMovie={handleMovieClick}
-              onPlayMovie={handleMoviePlay}
-              onSignOut={onRemoveCollection}
-            />
-          ) : <></>
+            isPlaying && (
+                <MoviePlayer
+                    id={selectedMovie}
+                    cid={selectedCollection}
+                    onClose={handleClosePlayer} />
+            )
         }
-
-        {
-          showDetails ? (
-            <Details
-              id={selectedMovie}
-              onClose={handleCloseMovie}
-              onPlay={handleMoviePlay}
-              cid={selectedCollection}
-            />
-          ) : <></>
-        }
-      </MainContent>
-
-      {
-        isPlaying && (
-          <MoviePlayer
-            id={selectedMovie}
-            cid={selectedCollection}
-            onClose={handleClosePlayer} />
-        )
-      }
-    </MainContainer>
+      </MainContainer>
+    </>
   );
 };
+
+const BlockedBlankslateWrapper = styled(Box)(() => ({
+  display: 'none',
+  height: '100%',
+  width: '100%',
+  '@media (max-width: 900px)': {
+    display: 'flex'
+  }
+}));
 
 export const MainContainer = styled(Box)(() => ({
   display: 'flex',
   height: '100vh',
   width: '100%',
   backgroundColor: '#1A1C20',
-  position: 'relative'
+  position: 'relative',
+  '@media (max-width: 900px)': {
+    display: 'none'
+  }
 }));
 
 export const AddCollectionWrapper = styled(Box)(() => ({
