@@ -1,6 +1,13 @@
+// REACT IMPORTS
 import React from 'react'
+
+// MUI IMPORTS
 import { Close } from "@mui/icons-material";
+
+// LOCAL IMPORTS
 import CustomButton from "@/renderer/package/components/CustomButton";
+
+// ----------------------------------------------------------------------
 
 const ButtonClose = ({ onClose }) => {
   return (
@@ -15,5 +22,7 @@ const ButtonClose = ({ onClose }) => {
       />
   );
 };
+
+// ----------------------------------------------------------------------
 
 export default React.memo(ButtonClose);

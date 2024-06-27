@@ -1,8 +1,14 @@
+// REACT IMPORTS
 import React from 'react';
-import { styled } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
+
+// MUI IMPORTS
+import { Box, styled, Typography } from '@mui/material'
+
+// LOCAL IMPORTS
 import setting from '#/package.json';
+
+// ----------------------------------------------------------------------
+// MAIN COMPONENT
 
 const Footer = () => {
     return (
@@ -12,9 +18,9 @@ const Footer = () => {
     );
 };
 
-export default React.memo(Footer);
+// ----------------------------------------------------------------------
+// SUB COMPONENTS
 
-// Styled Components
 const FooterWrapper = styled(Box)({
     height: 'auto',
     width: '100%',
@@ -33,3 +39,7 @@ const Version = styled(Typography)({
     fontSize: '0.9rem',
     lineHeight: 1,
 });
+
+// ----------------------------------------------------------------------
+
+export default React.memo(Footer);

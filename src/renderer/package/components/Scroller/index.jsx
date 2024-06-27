@@ -1,5 +1,11 @@
+// REACT IMPORTS
 import React from 'react'
+
+// THIRD PARTY IMPORTS
 import { Scrollbars } from 'react-custom-scrollbars'
+
+// ----------------------------------------------------------------------
+// MAIN COMPONENT
 
 export default class CustomScrollbars extends React.PureComponent {
   constructor (props) {

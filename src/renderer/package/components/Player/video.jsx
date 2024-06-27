@@ -1,11 +1,11 @@
+// REACT IMPORTS
 import React from 'react'
+
+// MUI IMPORTS
 import { styled } from '@mui/material';
 
-const Video = styled('video')({
-  outline: 'none !important',
-  width: '100%',
-  height: '100%'
-});
+// ----------------------------------------------------------------------
+// MAIN COMPONENT
 
 export default class PlayerVideo extends React.PureComponent {
   constructor(props = { type: '' }) {
@@ -29,3 +29,12 @@ export default class PlayerVideo extends React.PureComponent {
     )
   }
 }
+
+// ----------------------------------------------------------------------
+// SUB COMPONENTS
+
+const Video = styled('video')({
+  outline: 'none !important',
+  width: '100%',
+  height: '100%'
+});

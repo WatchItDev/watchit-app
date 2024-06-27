@@ -1,11 +1,20 @@
+// REACT IMPORTS
 import React from 'react'
+
+// MUI IMPORTS
+import { Box, styled } from '@mui/material';
+
+// THIRD PARTY IMPORTS
 import PropTypes from 'prop-types'
 
+// LOCAL IMPORTS
 import Player from './player'
 import PlayerHeader from './header'
 import MainLoader from "@/renderer/package/components/MainLoader";
 import ButtonClose from "@/renderer/package/components/ButtonClose";
-import { Box, styled } from '@mui/material';
+
+// ----------------------------------------------------------------------
+// MAIN COMPONENT
 
 export default class PlayerHLS extends React.PureComponent {
   constructor (props) {
@@ -54,6 +63,9 @@ export default class PlayerHLS extends React.PureComponent {
     );
   }
 }
+
+// ----------------------------------------------------------------------
+// SUB COMPONENTS
 
 const OverlayLoader = styled(Box)(({ theme }) => ({
   height: '100%',

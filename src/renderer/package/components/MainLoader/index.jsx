@@ -1,9 +1,18 @@
+// REACT IMPORTS
 import React from 'react'
-import Lottie from 'lottie-react'
+
+// MUI IMPORTS
 import { Typography, Box, styled } from '@mui/material';
 
+// THIRD PARTY IMPORTS
+import Lottie from 'lottie-react'
+
+// LOCAL IMPORTS
 import BarLoader from "@/renderer/package/components/BarLoader";
 import loaderAnimation from '@/renderer/media/img/watchit_logo.json'
+
+// ----------------------------------------------------------------------
+// MAIN COMPONENT
 
 export default class MainLoader extends React.Component {
   shouldComponentUpdate(nextProps) {
@@ -36,7 +45,9 @@ export default class MainLoader extends React.Component {
   }
 }
 
-// Styled Components
+// ----------------------------------------------------------------------
+// SUB COMPONENTS
+
 const LoadingBox = styled(Box)({
   position: 'absolute',
   top: 0,

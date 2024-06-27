@@ -1,6 +1,14 @@
+// REACT IMPORTS
 import React from 'react'
+
+// MUI IMPORTS
+import { Box, styled } from '@mui/material'
+
+// LOCAL IMPORTS
 import NavBarMenu from '@/renderer/package/components/NavBarMenu/'
-import { Box } from '@mui/material'
+
+// ----------------------------------------------------------------------
+// MAIN COMPONENT
 
 export default class CatalogNavBar extends React.Component {
   constructor(props) {
@@ -126,22 +134,7 @@ export default class CatalogNavBar extends React.Component {
 
   render() {
     return (
-        <Box
-            sx={{
-              position: 'relative',
-              display: 'flex',
-              alignItems: 'center',
-              flexGrow: 1,
-              paddingX: '1rem',
-              '.dropdown i, .dropdown span, .dropdown a': {
-                fontSize: '1rem !important',
-              },
-              i: {
-                display: 'block',
-                fontSize: '2rem',
-              },
-            }}
-        >
+        <CatalogNavWrapper>
           <NavBarMenu
               btnText="Sort By"
               list={this.state.sort}
@@ -152,7 +145,25 @@ export default class CatalogNavBar extends React.Component {
               list={this.state.genres}
               onChange={this.handleGenres}
           />
-        </Box>
+        </CatalogNavWrapper>
     );
   }
 }
+
+// ----------------------------------------------------------------------
+// SUB COMPONENTS
+
+const CatalogNavWrapper = styled(Box)(() => ({
+  position: 'relative',
+  display: 'flex',
+  alignItems: 'center',
+  flexGrow: 1,
+  paddingX: '1rem',
+  '.dropdown i, .dropdown span, .dropdown a': {
+    fontSize: '1rem !important',
+  },
+  i: {
+    display: 'block',
+    fontSize: '2rem',
+  },
+}));

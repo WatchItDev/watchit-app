@@ -1,12 +1,21 @@
+// REACT IMPORTS
 import React from 'react'
+
+// MUI IMPORTS
+import { Box, Typography, styled } from '@mui/material';
+
+// THIRD PARTY IMPORTS
 import PropTypes from 'prop-types'
 
+// LOCAL IMPORTS
 import PlayerVideo from './video'
 import HLS from '@/main/core/hls'
 import log from '@/main/logger'
 import gateway from "@/renderer/gateway";
 import ButtonClose from "@/renderer/package/components/ButtonClose";
-import { Box, Typography, styled } from '@mui/material';
+
+// ----------------------------------------------------------------------
+// MAIN COMPONENT
 
 export default class Player extends React.Component {
   constructor(props = {
@@ -97,6 +106,9 @@ export default class Player extends React.Component {
     )
   }
 }
+
+// ----------------------------------------------------------------------
+// SUB COMPONENTS
 
 const Container = styled(Box)({
   position: 'relative',

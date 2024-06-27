@@ -1,5 +1,11 @@
+// REACT IMPORTS
 import React from 'react';
+
+// MUI IMPORTS
 import { styled, keyframes } from '@mui/system';
+
+// ----------------------------------------------------------------------
+// MAIN COMPONENT
 
 const SpinnerComponent = (props) => {
     return (
@@ -9,6 +15,9 @@ const SpinnerComponent = (props) => {
         </Spinner>
     );
 };
+
+// ----------------------------------------------------------------------
+// SUB COMPONENTS
 
 const bounce = keyframes`
   0%, 100% {
@@ -43,5 +52,7 @@ const Spinner = styled('div')({
         animationDelay: '-0.75s',
     },
 });
+
+// ----------------------------------------------------------------------
 
 export default React.memo(SpinnerComponent);

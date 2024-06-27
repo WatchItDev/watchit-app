@@ -1,8 +1,13 @@
+// REACT IMPORTS
 import React from 'react'
+
+// MUI IMPORTS
 import { styled, Box, Typography } from '@mui/material'
 
-export const ChannelItem = (props) => {
+// ----------------------------------------------------------------------
+// MAIN COMPONENT
 
+export const ChannelItem = (props) => {
   return (
       <Box display='flex' flexDirection='column' alignItems='center' justifyContent='center' sx={{ cursor: 'pointer' }}>
         <ChannelItemWrapper
@@ -36,6 +41,9 @@ export const ChannelItem = (props) => {
   )
 }
 
+// ----------------------------------------------------------------------
+// SUB COMPONENTS
+
 export const ChannelItemWrapper = styled(Box)((props) => ({
     backgroundColor: props.selected ? 'rgba(209,210,211,1)' : 'transparent',
     borderRadius: '13px',
@@ -66,29 +74,6 @@ export const ChannelItemContent = styled(Box)(() => ({
     fontWeight: 500
 }))
 
-export const DeleteChannel = styled(Box)(() => ({
-    position: 'absolute',
-    bottom: '0',
-    left: '-19px',
-    backgroundColor: '#e50915',
-    color: '#fff',
-    borderTopRightRadius: '1rem',
-    borderBottomRightRadius: '1rem',
-    width: '11px',
-    height: '100%',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    cursor: 'pointer',
-    opacity: 0,
-    transform: 'translateX(-12px)',
-    transition: 'opacity 0.3s ease, transform 0.3s ease',
-    paddingRight: '2px',
-    '&:hover': {
-        backgroundColor: '#ff1744'
-    }
-}))
-
 export const ChannelItemText = styled(Typography)((props) => ({
     fontSize: props.fontSize,
     fontWeight: 500,
@@ -97,5 +82,7 @@ export const ChannelItemText = styled(Typography)((props) => ({
     marginTop: '1rem',
     maxWidth: '100%'
 }))
+
+// ----------------------------------------------------------------------
 
 export default ChannelItem

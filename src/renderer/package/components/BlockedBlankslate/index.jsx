@@ -1,6 +1,14 @@
+// REACT IMPORTS
 import React from 'react';
+
+// MUI IMPORTS
 import { styled, Box, Typography } from '@mui/material';
+
+// LOCAL IMPORTS
 import Blocked from '@/renderer/media/img/layout/blocked.png';
+
+// ----------------------------------------------------------------------
+// MAIN COMPONENT
 
 const BlockedBlankslate = () => {
   return (
@@ -20,6 +28,9 @@ const BlockedBlankslate = () => {
   );
 };
 
+// ----------------------------------------------------------------------
+// SUB COMPONENTS
+
 const Blocker = styled(Box)(() => ({
   display: 'flex',
   flexDirection: 'column',
@@ -32,5 +43,7 @@ const Blocker = styled(Box)(() => ({
   textAlign: 'center',
   padding: '1rem'
 }));
+
+// ----------------------------------------------------------------------
 
 export default BlockedBlankslate;

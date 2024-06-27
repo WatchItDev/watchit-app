@@ -1,8 +1,16 @@
+// REACT IMPORTS
 import React from 'react';
-import PropTypes from 'prop-types';
-import uid from 'shortid';
+
+// MUI IMPORTS
 import { Box, Button, Typography, Menu, MenuItem } from '@mui/material';
 import { ArrowDropDown } from '@mui/icons-material';
+
+// THIRD PARTY IMPORTS
+import PropTypes from 'prop-types';
+import uid from 'shortid';
+
+// ----------------------------------------------------------------------
+// MAIN COMPONENT
 
 export default class NavBarMenu extends React.Component {
   constructor(props) {

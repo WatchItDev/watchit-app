@@ -1,9 +1,17 @@
+// REACT IMPORTS
 import React, { useState, useCallback, useContext } from 'react'
+
+// MUI IMPORTS
+import { Box, styled } from '@mui/material';
+
+// LOCAL IMPORTS
 import { Context } from '@/renderer/package/runtime/context'
 import Input from '@/renderer/package/components/Input/'
 import utilHelper from '@/renderer/util'
 import SearchResult from './result'
-import { Box, styled } from '@mui/material';
+
+// ----------------------------------------------------------------------
+// MAIN COMPONENT
 
 let searchTimeout = null // debounce timeout
 const Search = (props) => {
@@ -73,6 +81,9 @@ const Search = (props) => {
   )
 }
 
+// ----------------------------------------------------------------------
+// SUB COMPONENTS
+
 const SearchWrapper = styled(Box)(({ theme }) => ({
   width: '45%',
   position: 'relative',
@@ -80,5 +91,7 @@ const SearchWrapper = styled(Box)(({ theme }) => ({
     width: '100%',
   },
 }));
+
+// ----------------------------------------------------------------------
 
 export default React.memo(Search)

@@ -1,10 +1,64 @@
+// REACT IMPORTS
 import React from 'react';
+
+// MUI IMPORTS
 import { Box, Typography, styled, keyframes } from "@mui/material";
 
+// LOCAL IMPORTS
 import Image from "@/renderer/package/components/Image";
 import setting from "@/renderer/settings";
 
+// ----------------------------------------------------------------------
+// MAIN COMPONENT
 
+export const Poster = (props) => {
+    if (props.empty) {
+        return <StyledPoster itemWidth={props?.screen?.itemWidth} itemHeight={props?.screen?.itemHeight} />;
+    }
+
+    return (
+        <StyledPoster itemWidth={props?.screen?.itemWidth} itemHeight={props?.screen?.itemHeight} onClick={() => props.onClick(props._id)}>
+            <StyledCardImage className="card__image">
+                <Image src={props.image} preload />
+            </StyledCardImage>
+            <StyledCardBody className="card__body">
+                <StyledCardName className="card__name card--slide-in-top" variant="h3">
+                    <span>{props.meta.title}</span>
+                </StyledCardName>
+                <Box
+                    display={'flex'}
+                    alignItems={'center'}
+                    justifyContent={'center'}
+                    flexDirection={'column'}
+                    sx={{ width: '100%', bottom: 0, left: 0, p: 1 }}
+                >
+                    <Box
+                        display={'flex'}
+                        alignItems={'center'}
+                        justifyContent={'space-between'}
+                        sx={{ width: '100%', margin: '0.5rem 0' }}
+                    >
+                        <StyledResultDetailsItem className="card--slide-in-left" color={setting.styles.colors.successDark}>
+                            {props.meta.year}
+                        </StyledResultDetailsItem>
+                        <StyledResultDetailsItem className="card--fade-in" color={setting.styles.colors.warningDark}>
+                            {props.meta.rating} / 10
+                        </StyledResultDetailsItem>
+                        <StyledResultDetailsItem className="card--slide-in-right" color={setting.styles.colors.dangerDark}>
+                            {props.meta.runtime} m
+                        </StyledResultDetailsItem>
+                    </Box>
+                    <StyledCardDesc className="card__desc card--slide-in-bottom">
+                        {props.meta?.synopsis}
+                    </StyledCardDesc>
+                </Box>
+            </StyledCardBody>
+        </StyledPoster>
+    );
+};
+
+// ----------------------------------------------------------------------
+// SUB COMPONENTS
 
 const zoom = keyframes`
   from {
@@ -184,51 +238,6 @@ const StyledResultDetailsItem = styled(Typography)(({ color }) => ({
     opacity: 0
 }));
 
-
-export const Poster = (props) => {
-    if (props.empty) {
-        return <StyledPoster itemWidth={props?.screen?.itemWidth} itemHeight={props?.screen?.itemHeight} />;
-    }
-
-    return (
-        <StyledPoster itemWidth={props?.screen?.itemWidth} itemHeight={props?.screen?.itemHeight} onClick={() => props.onClick(props._id)}>
-            <StyledCardImage className="card__image">
-                <Image src={props.image} preload />
-            </StyledCardImage>
-            <StyledCardBody className="card__body">
-                <StyledCardName className="card__name card--slide-in-top" variant="h3">
-                    <span>{props.meta.title}</span>
-                </StyledCardName>
-                <Box
-                    display={'flex'}
-                    alignItems={'center'}
-                    justifyContent={'center'}
-                    flexDirection={'column'}
-                    sx={{ width: '100%', bottom: 0, left: 0, p: 1 }}
-                >
-                    <Box
-                        display={'flex'}
-                        alignItems={'center'}
-                        justifyContent={'space-between'}
-                        sx={{ width: '100%', margin: '0.5rem 0' }}
-                    >
-                        <StyledResultDetailsItem className="card--slide-in-left" color={setting.styles.colors.successDark}>
-                            {props.meta.year}
-                        </StyledResultDetailsItem>
-                        <StyledResultDetailsItem className="card--fade-in" color={setting.styles.colors.warningDark}>
-                            {props.meta.rating} / 10
-                        </StyledResultDetailsItem>
-                        <StyledResultDetailsItem className="card--slide-in-right" color={setting.styles.colors.dangerDark}>
-                            {props.meta.runtime} m
-                        </StyledResultDetailsItem>
-                    </Box>
-                    <StyledCardDesc className="card__desc card--slide-in-bottom">
-                        {props.meta?.synopsis}
-                    </StyledCardDesc>
-                </Box>
-            </StyledCardBody>
-        </StyledPoster>
-    );
-};
+// ----------------------------------------------------------------------
 
 export default React.memo(Poster);

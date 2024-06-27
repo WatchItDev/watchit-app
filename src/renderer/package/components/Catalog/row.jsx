@@ -1,9 +1,19 @@
+// REACT IMPORTS
 import React from 'react'
+
+// MUI IMPORTS
+import {Box, styled} from '@mui/material';
+
+// THIRD PARTY IMPORTS
 import uid from 'shortid'
 import PropTypes from 'prop-types'
+
+// LOCAL IMPORTS
 import CatalogPoster from '@/renderer/package/components/Poster'
 import gateway from '@/renderer/gateway'
-import { Box } from '@mui/material';
+
+// ----------------------------------------------------------------------
+// MAIN COMPONENT
 
 export default class CatalogRow extends React.Component {
   static get propTypes () {
@@ -18,16 +28,7 @@ export default class CatalogRow extends React.Component {
 
   render() {
     return (
-        <Box
-            sx={{
-              display: 'flex',
-              width: '100%',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              paddingX: '1rem'
-            }}
-            style={this.props.style}
-        >
+        <RowWrapper style={this.props.style}>
           {!this.props.empty &&
               this.props.chunk.map((i) => {
                 return (
@@ -47,7 +48,18 @@ export default class CatalogRow extends React.Component {
                   .map(() => {
                     return <CatalogPoster key={uid.generate()} {...this.props} empty />;
                   })}
-        </Box>
+        </RowWrapper>
     );
   }
 }
+
+// ----------------------------------------------------------------------
+// SUB COMPONENTS
+
+const RowWrapper = styled(Box)(() => ({
+    display: 'flex',
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingX: '1rem'
+}));

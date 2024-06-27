@@ -1,18 +1,22 @@
-/* global localStorage */
+// REACT IMPORTS
 import React from 'react'
+
+// MUI IMPORTS
+import { Box, AppBar, Toolbar, styled } from '@mui/material';
+
+// LOCAL IMPORTS
 import Stats from '@/renderer/package/components/Stats/'
 import MainLoader from '@/renderer/package/components/MainLoader/'
 import Search from '@/renderer/package/components/Search'
 import { Context } from '@/renderer/package/runtime/context'
-import { Box, Container, AppBar, Toolbar, CircularProgress, Typography } from '@mui/material';
-
 import CatalogList from './list'
 import CatalogNav from './nav'
-
 import util from '@/renderer/util'
 import log from '@/main/logger'
 
-// Login pages class
+// ----------------------------------------------------------------------
+// MAIN COMPONENT
+
 export default class Catalog extends React.Component {
   static contextType = Context
 
@@ -239,59 +243,23 @@ export default class Catalog extends React.Component {
 
   render() {
     return (
-        <Box
-            ref={this.moviesWrapper}
-            sx={{
-              position: 'relative',
-              height: '100%',
-            }}
-        >
+        <StyledMoviesWrapper ref={this.moviesWrapper}>
           {this.state.loading && (
               <MainLoader
                   content={this.state.percent > 0 ? `${this.state.percent} %` : null}
                   percent={this.state.percent}
               />
           )}
-          <Box
-              sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                height: '100%',
-              }}
-          >
-            <AppBar
-                position="static"
-                color="transparent"
-                sx={{
-                  boxShadow: 'none',
-                  borderBottom: '1px solid #18191c',
-                  padding: '1rem',
-                  zIndex: 2,
-                }}
-            >
-              <Toolbar
-                  sx={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    padding: '0 !important',
-                    minHeight: 'auto !important'
-                  }}
-              >
+          <StyledContentBox>
+            <StyledAppBar position="static" color="transparent">
+              <StyledToolbar>
                 <Search cid={this.props.cid} onClick={this.handleClickMovie} />
                 <CatalogNav onChange={this.handleOnChange} />
                 <Stats onSignOut={this.handleSignOut} />
-              </Toolbar>
-            </AppBar>
+              </StyledToolbar>
+            </StyledAppBar>
 
-            <Box
-                sx={{
-                  width: '100%',
-                  padding: '1rem 0',
-                  overflow: 'hidden',
-                  zIndex: 1
-                }}
-            >
+            <StyledInnerBox>
               {this.state.ready && (
                   <CatalogList
                       movies={this.state.movies}
@@ -305,9 +273,45 @@ export default class Catalog extends React.Component {
                       screen={this.state.screen}
                   />
               )}
-            </Box>
-          </Box>
-        </Box>
+            </StyledInnerBox>
+          </StyledContentBox>
+        </StyledMoviesWrapper>
     );
   }
 }
+
+// ----------------------------------------------------------------------
+// SUB COMPONENTS
+
+const StyledMoviesWrapper = styled(Box)({
+  position: 'relative',
+  height: '100%',
+});
+
+const StyledAppBar = styled(AppBar)({
+  boxShadow: 'none',
+  borderBottom: '1px solid #18191c',
+  padding: '1rem',
+  zIndex: 2,
+});
+
+const StyledToolbar = styled(Toolbar)({
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  padding: '0 !important',
+  minHeight: 'auto !important',
+});
+
+const StyledContentBox = styled(Box)({
+  display: 'flex',
+  flexDirection: 'column',
+  height: '100%',
+});
+
+const StyledInnerBox = styled(Box)({
+  width: '100%',
+  padding: '1rem 0',
+  overflow: 'hidden',
+  zIndex: 1,
+});

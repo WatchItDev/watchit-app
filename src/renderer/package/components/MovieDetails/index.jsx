@@ -1,18 +1,22 @@
+// REACT IMPORTS
 import React, { useState, useEffect, useContext, memo } from 'react'
+
+// MUI IMPORTS
 import { styled, Box, Grid, Button, Typography } from '@mui/material';
 
+// LOCAL IMPORTS
 import Image from "@/renderer/package/components/Image";
 import MainLoader from '@/renderer/package/components/MainLoader';
 import VideoModal from "@/renderer/package/components/VideoModal";
 import CustomScrollbars from '@/renderer/package/components/Scroller'
 import ButtonClose from "@/renderer/package/components/ButtonClose";
 import { Context } from '@/renderer/package/runtime/context'
-
 import gateway from '@/renderer/gateway'
 
-const runtime = import.meta.env.WATCHIT_RUNTIME
-export const MovieDetails = (props) => {
+// ----------------------------------------------------------------------
+// MAIN COMPONENT
 
+export const MovieDetails = (props) => {
   const context = useContext(Context)
   const [open, setOpen] = useState(false);
   const [ready, setReady] = useState(false);
@@ -160,7 +164,8 @@ export const MovieDetails = (props) => {
     );
 };
 
-export default memo(MovieDetails);
+// ----------------------------------------------------------------------
+// SUB COMPONENTS
 
 const GradientBorderButton = styled(Button)(({ theme }) => ({
     position: 'relative',
@@ -487,3 +492,7 @@ const StyledSynopsis = styled(Typography)(({ theme }) => ({
         fontSize: '1.5rem !important',
     },
 }))
+
+// ----------------------------------------------------------------------
+
+export default memo(MovieDetails);

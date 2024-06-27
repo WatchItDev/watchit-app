@@ -1,5 +1,11 @@
+// REACT IMPORTS
 import React from 'react';
+
+// MUI IMPORTS
 import { Box, Typography, styled } from '@mui/material';
+
+// ----------------------------------------------------------------------
+// MAIN COMPONENT
 
 const PlayerHeader = ({ title, children }) => {
     return (
@@ -13,6 +19,9 @@ const PlayerHeader = ({ title, children }) => {
         </Header>
     );
 };
+
+// ----------------------------------------------------------------------
+// SUB COMPONENTS
 
 const Header = styled('header')({
     position: 'absolute',
@@ -35,5 +44,7 @@ const Title = styled(Typography)({
     fontWeight: 'bold',
     fontFamily: '"Open Sans", Arial, sans-serif',
 });
+
+// ----------------------------------------------------------------------
 
 export default PlayerHeader;

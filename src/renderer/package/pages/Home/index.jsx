@@ -1,5 +1,10 @@
+// REACT IMPORTS
 import React, { useRef, useState, useEffect, useCallback, useContext } from 'react';
+
+// MUI IMPORTS
 import { styled, Box } from '@mui/material';
+
+// LOCAL IMPORTS
 import Logo from '@/renderer/package/components/Logo'
 import Details from '@/renderer/package/components/MovieDetails';
 import MainLoader from '@/renderer/package/components/MainLoader';
@@ -10,8 +15,10 @@ import ChannelsMenu from "@/renderer/package/components/ChannelsMenu";
 import OpenCollective from '@/renderer/media/img/layout/openCollective.png'
 import BlockedBlankslate from "@/renderer/package/components/BlockedBlankslate";
 import { Context } from '@/renderer/package/runtime/context'
-
 import log from '@/main/logger'
+
+// ----------------------------------------------------------------------
+// MAIN COMPONENT
 
 const runtime = import.meta.env.WATCHIT_RUNTIME
 export default function MovieIndex() {
@@ -172,6 +179,9 @@ export default function MovieIndex() {
     </>
   );
 };
+
+// ----------------------------------------------------------------------
+// SUB COMPONENTS
 
 const BlockedBlankslateWrapper = styled(Box)(() => ({
   display: 'none',

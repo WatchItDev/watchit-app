@@ -1,5 +1,11 @@
+// REACT IMPORTS
 import React from 'react'
+
+// MUI IMPORTS
 import { styled, Button, Box } from '@mui/material'
+
+// ----------------------------------------------------------------------
+// MAIN COMPONENT
 
 export const CustomButton = (props) => {
     return (
@@ -37,6 +43,9 @@ export const CustomButton = (props) => {
         </CustomButtonWrapper>
     )
 }
+
+// ----------------------------------------------------------------------
+// SUB COMPONENTS
 
 const CustomButtonWrapper = styled(Button)(() => ({
     background: 'transparent',
@@ -82,5 +91,7 @@ const CustomButtonWrapper = styled(Button)(() => ({
         lineHeight: 'normal'
     }
 }))
+
+// ----------------------------------------------------------------------
 
 export default CustomButton

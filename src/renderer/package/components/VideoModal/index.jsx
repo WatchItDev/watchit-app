@@ -1,10 +1,16 @@
+// REACT IMPORTS
 import React, { memo, useMemo, useCallback, useState, useEffect } from 'react';
-import Modal from '@mui/material/Modal';
-import Box from '@mui/material/Box';
-import IconButton from '@mui/material/IconButton';
+
+// MUI IMPORTS
+import { Modal, Box, IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
+
+// THIRD PARTY IMPORTS
 import Plyr from 'plyr-react';
 import 'plyr-react/plyr.css';
+
+// ----------------------------------------------------------------------
+// MAIN COMPONENT
 
 const VideoModal = ({ videoId, open, handleClose }) => {
     const [key, setKey] = useState(0);
@@ -89,5 +95,7 @@ const VideoModal = ({ videoId, open, handleClose }) => {
         </Modal>
     );
 };
+
+// ----------------------------------------------------------------------
 
 export default memo(VideoModal);

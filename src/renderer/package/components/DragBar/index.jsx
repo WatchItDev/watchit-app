@@ -1,14 +1,17 @@
-import React, { useState, useEffect } from 'react'
+// REACT IMPORTS
+import React from 'react'
+
+// MUI IMPORTS
+import { Box, styled } from '@mui/material'
+
+// LOCAL IMPORTS
 import Logo from '@/renderer/package/components/Logo/'
 import settings from '@/renderer/settings'
 
-import { styled } from '@mui/material/styles';
-import { Box } from '@mui/material';
+// ----------------------------------------------------------------------
+// MAIN COMPONENT
 
 const DragBar = (props) => {
-  // eslint-disable-next-line
-
-
   const closeWin = () => {
     window.electron.ipcRenderer.send('win:invoke', 'close')
   }
@@ -42,9 +45,9 @@ const DragBar = (props) => {
   );
 };
 
-export default React.memo(DragBar);
+// ----------------------------------------------------------------------
+// SUB COMPONENTS
 
-// Styled Components
 const Container = styled(Box)({
   position: 'absolute',
   height: '100%',
@@ -106,3 +109,6 @@ const WindowControlIcon = styled('i')(({ color }) => ({
   },
 }));
 
+// ----------------------------------------------------------------------
+
+export default React.memo(DragBar);

@@ -1,13 +1,18 @@
-
+// REACT IMPORTS
 import React, { useState, useEffect, useContext } from 'react'
-import MainLoader from '@/renderer/package/components/MainLoader';
-import { styled, Box, Grid } from "@mui/material";
-import { Context } from '@/renderer/package/runtime/context'
 
+// MUI IMPORTS
+import { styled, Box, Grid } from "@mui/material";
+
+// LOCAL IMPORTS
+import MainLoader from '@/renderer/package/components/MainLoader';
+import { Context } from '@/renderer/package/runtime/context'
 import Player from "@/renderer/package/components/Player";
 
-export const MoviePlayer = (props) => {
+// ----------------------------------------------------------------------
+// MAIN COMPONENT
 
+export const MoviePlayer = (props) => {
   const context = useContext(Context)
   const [ready, setReady] = useState(false);
   const [movie, setMovie] = useState({});
@@ -32,7 +37,8 @@ export const MoviePlayer = (props) => {
   )
 }
 
-export default MoviePlayer
+// ----------------------------------------------------------------------
+// SUB COMPONENTS
 
 export const MoviePlayerContainer = styled(Box)(() => ({
   display: 'flex',
@@ -66,3 +72,7 @@ export const MoviePlayerWrapper = styled(Box)(() => ({
     background: 'transparent'
   }
 }))
+
+// ----------------------------------------------------------------------
+
+export default MoviePlayer

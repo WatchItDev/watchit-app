@@ -1,12 +1,18 @@
-import React, {useMemo} from 'react'
+// REACT IMPORTS
+import React, { useMemo } from 'react'
+
+// MUI IMPORTS
 import { Add } from '@mui/icons-material'
 import { styled, Box, Grid } from '@mui/material'
 
+// LOCAL IMPORTS
 import CustomButton from "@/renderer/package/components/CustomButton"
 import ChannelItem from "@/renderer/package/components/ChannelItem"
 
-export const ChannelsMenu = ( props ) => {
+// ----------------------------------------------------------------------
+// MAIN COMPONENT
 
+export const ChannelsMenu = ( props ) => {
     const addIconStyle = useMemo(() => ({
         color: '#D1D2D3'
     }), []);
@@ -50,6 +56,9 @@ export const ChannelsMenu = ( props ) => {
     )
 }
 
+// ----------------------------------------------------------------------
+// SUB COMPONENTS
+
 export const ChannelMenuWrapper = styled(Box)(() => ({
     display: 'flex',
     flexDirection: 'column',
@@ -76,5 +85,7 @@ export const AddChannelWrapper = styled(Box)(() => ({
     justifyContent:'center',
     cursor:'pointer',
 }))
+
+// ----------------------------------------------------------------------
 
 export default ChannelsMenu

@@ -1,7 +1,11 @@
-import React, { useState } from 'react';
-import { styled } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import InputBase from '@mui/material/InputBase';
+// REACT IMPORTS
+import React, { useState } from 'react'
+
+// MUI IMPORTS
+import { styled, Box } from '@mui/material'
+
+// ----------------------------------------------------------------------
+// MAIN COMPONENT
 
 const Input = (props = {
   type: 'text',
@@ -46,9 +50,9 @@ const Input = (props = {
   );
 };
 
-export default React.memo(Input);
+// ----------------------------------------------------------------------
+// SUB COMPONENTS
 
-// Styled Components
 const InputWrapper = styled(Box)({
   width: '100%',
   borderRadius: '5px',
@@ -87,3 +91,7 @@ const InputIcon = styled('i')({
   right: '1.3rem',
   color: '#555555',
 });
+
+// ----------------------------------------------------------------------
+
+export default React.memo(Input);

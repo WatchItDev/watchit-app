@@ -1,9 +1,19 @@
+// REACT IMPORTS
 import React from 'react'
-import PropTypes from 'prop-types'
-import PulseLoader from '@/renderer/package/components/PulseLoader'
-import log from '@/main/logger'
+
+// MUI IMPORTS
 import { styled } from '@mui/material/styles'
 import Box from '@mui/material/Box'
+
+// THIRD PARTY IMPORTS
+import PropTypes from 'prop-types'
+
+// LOCAL IMPORTS
+import PulseLoader from '@/renderer/package/components/PulseLoader'
+import log from '@/main/logger'
+
+// ----------------------------------------------------------------------
+// MAIN COMPONENT
 
 class Image extends React.PureComponent {
   constructor(props = { preload: false, pulseStyle: null }) {
@@ -65,9 +75,9 @@ class Image extends React.PureComponent {
   }
 }
 
-export default React.memo(Image);
+// ----------------------------------------------------------------------
+// SUB COMPONENTS
 
-// Styled Components
 const ImageContainer = styled(Box)({
   width: '100%',
   height: 'auto',
@@ -95,3 +105,7 @@ const StyledImage = styled('img')(({ theme }) => ({
     },
   },
 }));
+
+// ----------------------------------------------------------------------
+
+export default React.memo(Image);

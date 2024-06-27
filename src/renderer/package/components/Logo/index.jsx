@@ -1,5 +1,11 @@
+// REACT IMPORTS
 import React from 'react'
+
+// MUI IMPORTS
 import { Box, styled } from '@mui/material'
+
+// ----------------------------------------------------------------------
+// MAIN COMPONENT
 
 export const Logo = (props) => {
     return (
@@ -48,11 +54,16 @@ export const Logo = (props) => {
     )
 }
 
+// ----------------------------------------------------------------------
+// SUB COMPONENTS
+
 const LogoWrapper = styled(Box)(() => ({
     cursor: 'pointer',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center'
 }))
+
+// ----------------------------------------------------------------------
 
 export default Logo

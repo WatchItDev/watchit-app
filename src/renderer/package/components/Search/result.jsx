@@ -1,9 +1,17 @@
+// REACT IMPORTS
 import React from 'react'
+
+// MUI IMPORTS
+import { Box, Typography, List, styled } from '@mui/material';
+
+// LOCAL IMPORTS
 import PointsLoader from '@/renderer/package/components/PointsLoader'
 import CustomScrollbars from '@/renderer/package/components/Scroller'
 import SearchResultItem from './item'
 import gateway from '@/renderer/gateway'
-import { Box, Typography, List, styled } from '@mui/material';
+
+// ----------------------------------------------------------------------
+// MAIN COMPONENT
 
 const SearchResult = (props) => {
   return (
@@ -47,7 +55,8 @@ const SearchResult = (props) => {
   );
 };
 
-export default React.memo(SearchResult);
+// ----------------------------------------------------------------------
+// SUB COMPONENTS
 
 const ResultsWrapper = styled(Box)(() => ({
   width: '100%',
@@ -90,3 +99,7 @@ const NoResultsText = styled(Typography)(() => ({
   color: '#fff',
   fontSize: '1rem',
 }));
+
+// ----------------------------------------------------------------------
+
+export default React.memo(SearchResult);

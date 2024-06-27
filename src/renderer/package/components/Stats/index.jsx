@@ -1,6 +1,12 @@
+// REACT IMPORTS
 import React from 'react';
-import { Box, Link, Icon, styled } from '@mui/material';
+
+// MUI IMPORTS
+import { Box, Link, styled } from '@mui/material';
 import LogoutIcon from '@mui/icons-material/Logout';
+
+// ----------------------------------------------------------------------
+// MAIN COMPONENT
 
 const Stats = (props) => {
   return (
@@ -12,6 +18,9 @@ const Stats = (props) => {
   );
 };
 
+// ----------------------------------------------------------------------
+// SUB COMPONENTS
+
 const StatWrapper = styled(Box)(() => ({
   display: 'flex',
 }));
@@ -22,5 +31,7 @@ const LogOut = styled(Link)(() => ({
   display: 'flex',
   alignItems: 'center',
 }));
+
+// ----------------------------------------------------------------------
 
 export default React.memo(Stats);

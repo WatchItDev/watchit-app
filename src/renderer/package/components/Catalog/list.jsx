@@ -1,9 +1,18 @@
+// REACT IMPORTS
 import React from 'react'
+
+// MUI IMPORTS
+import { Box } from '@mui/material';
+
+// THIRD PARTY IMPORTS
 import uid from 'shortid'
 import InfiniteLoader from 'react-window-infinite-loader'
 import { FixedSizeList } from 'react-window'
-import { Box } from '@mui/material';
+
+// LOCAL IMPORTS
 import CatalogRow from './row'
+
+// ----------------------------------------------------------------------
 
 export default class CatalogList extends React.Component {
   constructor (props) {

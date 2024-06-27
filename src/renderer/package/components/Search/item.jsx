@@ -1,7 +1,15 @@
+// REACT IMPORTS
 import React from 'react'
-import Image from '@/renderer/package/components/Image/'
+
+// MUI IMPORTS
 import { Box, Typography, ListItem, Icon, styled } from '@mui/material';
+
+// LOCAL IMPORTS
+import Image from '@/renderer/package/components/Image/'
 import setting from '@/renderer/settings'
+
+// ----------------------------------------------------------------------
+// MAIN COMPONENT
 
 const SearchResultItem = (props) => {
   const handleClick = () => {
@@ -37,7 +45,8 @@ const SearchResultItem = (props) => {
     );
 };
 
-export default React.memo(SearchResultItem);
+// ----------------------------------------------------------------------
+// SUB COMPONENTS
 
 const ResultWrapper = styled(ListItem)(() => ({
     display: 'flex',
@@ -102,3 +111,7 @@ const ImageWrapper = styled('figure')(() => ({
     width: '2.5rem',
     transition: 'all 0.65s ease',
 }));
+
+// ----------------------------------------------------------------------
+
+export default React.memo(SearchResultItem);
