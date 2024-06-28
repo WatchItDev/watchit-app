@@ -18,7 +18,6 @@ out/
 release
 build
 .env
-.env.*
 .idea
 __snapshots__
 test-coverage/
