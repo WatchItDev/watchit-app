@@ -117,4 +117,7 @@ const Container = styled(Box)({
   '&.invisible': {
     display: 'none',
   },
+  '& .plyr--video': {
+    height: '100% !important'
+  },
 });

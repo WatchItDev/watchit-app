@@ -130,7 +130,8 @@ export default class HLSStreamer extends EventEmitter {
     const playerSettings = {
       ...{
         settings: ['captions', 'speed', 'quality'],
-        controls: DEFAULT_PLAYER_CONTROLS
+        controls: DEFAULT_PLAYER_CONTROLS,
+        iconUrl: 'https://cdn.plyr.io/3.6.8/plyr.svg'
       },
       ...options
     }

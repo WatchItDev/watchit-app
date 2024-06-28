@@ -61,5 +61,6 @@ const RowWrapper = styled(Box)(() => ({
     width: '100%',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingX: '1rem'
+    paddingLeft: '1rem',
+    paddingRight: '1rem'
 }));

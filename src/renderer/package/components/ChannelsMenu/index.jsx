@@ -2,8 +2,8 @@
 import React, { useMemo } from 'react'
 
 // MUI IMPORTS
-import { Add } from '@mui/icons-material'
 import { styled, Box, Grid } from '@mui/material'
+import { Add } from '@mui/icons-material'
 
 // LOCAL IMPORTS
 import CustomButton from "@/renderer/package/components/CustomButton"

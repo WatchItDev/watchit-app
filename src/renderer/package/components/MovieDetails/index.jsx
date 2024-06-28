@@ -122,9 +122,9 @@ export const MovieDetails = (props) => {
                                             </CustomScrollbars>
                                         </Grid>
                                         <ButtonBox className="slide-in-bottom" sx={{ width: { xs: '100%', sm: '75%', md: '50%' } }}>
-                                            {movie?.meta?.trailerUrl ? (
-                                                <ButtonTrailer onClick={handleOpen}>Trailer</ButtonTrailer>
-                                            ) : null}
+                                            {/*{movie?.meta?.trailerUrl ? (*/}
+                                            {/*    <ButtonTrailer onClick={handleOpen}>Trailer</ButtonTrailer>*/}
+                                            {/*) : null}*/}
                                             <GradientBorderButton onClick={() => props.onPlay(movie?._id)}>Watch IT</GradientBorderButton>
                                         </ButtonBox>
                                     </Grid>

@@ -285,7 +285,7 @@ export default class Catalog extends React.Component {
 
 const StyledMoviesWrapper = styled(Box)({
   position: 'relative',
-  height: '100%',
+  height: '100%'
 });
 
 const StyledAppBar = styled(AppBar)({

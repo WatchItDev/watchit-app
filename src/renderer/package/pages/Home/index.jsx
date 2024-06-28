@@ -21,7 +21,7 @@ import log from '@/main/logger'
 // MAIN COMPONENT
 
 const runtime = import.meta.env.WATCHIT_RUNTIME
-export default function MovieIndex() {
+export default function MovieIndex(props) {
   const context = useContext(Context)
   const [collections, setCollections] = useState([]);
   const [selectedMovie, setSelectedMovie] = useState();
@@ -109,7 +109,7 @@ export default function MovieIndex() {
       <BlockedBlankslateWrapper>
         <BlockedBlankslate />
       </BlockedBlankslateWrapper>
-      <MainContainer>
+      <MainContainer sx={{ height: props.isDragBarShowing ? 'calc(100% - 4rem)' : '100vh' }}>
         <ChannelsMenuWrapper>
           <Box className={'hide-on-desktop'} sx={{ marginTop: '1rem' }}>
             <Logo size={50} />

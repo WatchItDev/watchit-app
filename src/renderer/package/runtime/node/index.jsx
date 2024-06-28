@@ -6,7 +6,7 @@ import Home from "@/renderer/package/pages/Home";
 export default () => {
   return (
     <DragBar>
-      <Home />
+      <Home isDragBarShowing />
     </DragBar>
   )
 };

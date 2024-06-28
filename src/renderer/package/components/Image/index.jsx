@@ -2,8 +2,7 @@
 import React from 'react'
 
 // MUI IMPORTS
-import { styled } from '@mui/material/styles'
-import Box from '@mui/material/Box'
+import { Box, styled } from '@mui/material'
 
 // THIRD PARTY IMPORTS
 import PropTypes from 'prop-types'

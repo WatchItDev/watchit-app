@@ -2,7 +2,10 @@
 import React from 'react'
 
 // MUI IMPORTS
-import { Box, styled } from '@mui/material'
+import { Box, styled, IconButton } from '@mui/material'
+import MinimizeIcon from '@mui/icons-material/Remove'
+import MaximizeIcon from '@mui/icons-material/Add'
+import CloseIcon from '@mui/icons-material/Close'
 
 // LOCAL IMPORTS
 import Logo from '@/renderer/package/components/Logo/'
@@ -13,15 +16,15 @@ import settings from '@/renderer/settings'
 
 const DragBar = (props) => {
   const closeWin = () => {
-    window.electron.ipcRenderer.send('win:invoke', 'close')
+    window.ipc.send('win:invoke', 'close')
   }
 
   const minimizeWin = () => {
-    window.electron.ipcRenderer.send('win:invoke', 'min')
+    window.ipc.send('win:invoke', 'min')
   }
 
   const maximizeWin = () => {
-    window.electron.ipcRenderer.send('win:invoke', 'max')
+    window.ipc.send('win:invoke', 'max')
   }
 
   return (
@@ -29,14 +32,14 @@ const DragBar = (props) => {
         <Header>
           <Logo size={50} />
           <WindowControls>
-            <WindowControl onClick={minimizeWin}>
-              <WindowControlIcon className='icon-circle-with-minus' color={settings.styles.colors.warningDark} />
+            <WindowControl onClick={minimizeWin} sx={{ backgroundColor: `${settings.styles.colors.warningDark} !important` }}>
+              <MinimizeIcon />
             </WindowControl>
-            <WindowControl onClick={maximizeWin}>
-              <WindowControlIcon className='icon-circle-with-plus' color={settings.styles.colors.successDark} />
+            <WindowControl onClick={maximizeWin} sx={{ backgroundColor: `${settings.styles.colors.successDark} !important` }}>
+              <MaximizeIcon />
             </WindowControl>
-            <WindowControl onClick={closeWin}>
-              <WindowControlIcon className='icon-circle-with-cross' color={settings.styles.colors.dangerDark} />
+            <WindowControl onClick={closeWin} sx={{ backgroundColor: `${settings.styles.colors.dangerDark} !important` }}>
+              <CloseIcon />
             </WindowControl>
           </WindowControls>
         </Header>
@@ -87,25 +90,28 @@ const WindowControls = styled(Box)({
   listStyleType: 'none',
 });
 
-const WindowControl = styled(Box)({
-  marginRight: '4px',
+const WindowControl = styled(IconButton)(() => ({
+  marginRight: '8px',
   display: 'flex',
   alignItems: 'center',
-  listStyleType: 'none',
-});
-
-const WindowControlIcon = styled('i')(({ color }) => ({
-  fontSize: '1rem',
-  color: color,
-  cursor: 'pointer',
-  '@media (min-width: 300px)': {
-    fontSize: '1.1rem',
+  justifyContent: 'center',
+  borderRadius: '50%',
+  width: '1rem',
+  height: '1rem',
+  opacity: 0.8,
+  '&:hover': {
+    opacity: 1
   },
-  '@media (min-width: 992px)': {
-    fontSize: '1.2rem',
+  '& svg': {
+    color: '#fff',
+    fontSize: '0.8rem',
+    '@media (min-width: 2000px)': {
+      fontSize: '1.1rem',
+    },
   },
   '@media (min-width: 2000px)': {
-    fontSize: '2rem',
+    width: '1.5rem',
+    height: '1.5rem',
   },
 }));
 

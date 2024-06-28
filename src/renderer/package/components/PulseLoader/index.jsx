@@ -2,7 +2,7 @@
 import React from 'react';
 
 // MUI IMPORTS
-import { styled, keyframes } from '@mui/system';
+import { styled, keyframes } from '@mui/material';
 
 // ----------------------------------------------------------------------
 // MAIN COMPONENT
