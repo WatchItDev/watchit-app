@@ -22,7 +22,7 @@ function absPath(relative) {
 }
 
 let win;
-const appIcon = '../../resources/splash.png?asset'
+const appIcon = '../../resources/icon.png?asset'
 const isDarwin = Object.is(process.platform, 'darwin')
 const isWin = Object.is(process.platform, 'win32')
 
@@ -43,7 +43,7 @@ const initWindowing = () => {
   // If dev load the local dev server else load production file
   const indexSplash = is.dev && process.env.ELECTRON_RENDERER_URL
     ? loadingScreen.loadURL(`${process.env.ELECTRON_RENDERER_URL}/splash.png`)
-    : loadingScreen.loadFile('../../resources/splash.png?asset')
+    : loadingScreen.loadFile(`${absPath('../renderer/splash.png')}`)
 
   indexSplash.then(() => {
     loadingScreen.setOpacity(0)
