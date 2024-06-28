@@ -1,4 +1,3 @@
-import path from 'path'
 import log from '@/main/logger'
 import helia from './core/helia'
 import bootstrap from './core/bootstrap'
@@ -10,15 +9,22 @@ import { app, BrowserWindow, ipcMain, Menu, dialog } from 'electron'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 
 import { fileURLToPath } from 'url';
-import { dirname } from 'path';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+/**
+ * Creates an absolute path from a relative one.
+ * https://electron-vite.org/guide/dev#esm-support-in-electron
+ * 
+ * @param {*} relative 
+ * @returns 
+ */
+function absPath(relative) {
+  return fileURLToPath(new URL(relative, import.meta.url))
+}
 
 let win;
+const appIcon = '../../resources/splash.png?asset'
 const isDarwin = Object.is(process.platform, 'darwin')
 const isWin = Object.is(process.platform, 'win32')
-const appIcon = path.join(__dirname, '/src/render/media/icons/icon.png')
 
 process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
 const gotTheLock = app.requestSingleInstanceLock()
@@ -29,34 +35,36 @@ dialog.showErrorBox = (title, content) => {
   log.info(`${title}\n${content}`)
 }
 
-const initWindowing = (devMode) => {
-  const indexSplash = is.dev && process.env.ELECTRON_RENDERER_URL
-    ? `${process.env.ELECTRON_RENDERER_URL}/splash.png`
-    : `${path.join(__dirname, '../renderer/splash.png')}`
-
+const initWindowing = () => {
   const loadingScreen = new BrowserWindow({
     width: 600, height: 400, frame: false, show: false
   })
 
-  loadingScreen.loadURL(indexSplash).then(() => {
+  // If dev load the local dev server else load production file
+  const indexSplash = is.dev && process.env.ELECTRON_RENDERER_URL
+    ? loadingScreen.loadURL(`${process.env.ELECTRON_RENDERER_URL}/splash.png`)
+    : loadingScreen.loadFile('../../resources/splash.png?asset')
+
+  indexSplash.then(() => {
     loadingScreen.setOpacity(0)
     loadingScreen.show()
 
     // fade in the splash screen
     fadeWindowIn(loadingScreen, 0.1, 30, () => {
       log.info('Fade in splash done')
-      createMain(devMode, loadingScreen)
+      createMain(loadingScreen)
     })
   })
 }
 
-const createMain = (devMode, child) => {
-  const indexUrl = is.dev && process.env.ELECTRON_RENDERER_URL
-    ? process.env.ELECTRON_RENDERER_URL
-    : `${path.join(__dirname, '../renderer/index.html')}`
+const createMain = (child) => {
 
   win = new BrowserWindow({
-    ...(devMode && { icon: appIcon }),
+    ...(
+      process.platform === 'linux'
+        ? { icon: appIcon }
+        : {}
+    ),
     ...{
       title: 'WatchIt',
       width: 1280,
@@ -73,13 +81,17 @@ const createMain = (devMode, child) => {
         sandbox: false,
         contextIsolation: true,
         nodeIntegration: true,
-        preload: `${path.join(__dirname, '../preload/index.mjs')}`
+        preload: `${absPath('../preload/index.mjs')}`
       }
     }
   })
 
+  const indexUrl = is.dev && process.env.ELECTRON_RENDERER_URL
+    ? win.loadURL(process.env.ELECTRON_RENDERER_URL)
+    : win.loadFile(`${absPath('../renderer/index.html')}`)
+
   // and load the index.html of the app.
-  win.loadURL(indexUrl).then(() => {
+  indexUrl.then(() => {
     if (child) {
       // fade out the splash screen
       fadeWindowOut(child, 0.1, 10, () => {
@@ -141,7 +153,7 @@ app.whenReady().then(async () => {
   }
 
   // Load the dist build or connect to webpack-dev-server
-  initWindowing(is.dev)
+  initWindowing()
   // Initialize ipfs/helia node and assign underlying events.
   bootstrap(ipcMain, { Helia: helia }).then(() => {
     log.info('Helia node ready')
