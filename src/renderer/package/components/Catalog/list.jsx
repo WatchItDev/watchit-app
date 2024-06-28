@@ -83,7 +83,7 @@ export default class CatalogList extends React.Component {
           >
             {({ onItemsRendered, ref }) => (
                 <FixedSizeList
-                    height={this.state.screen.height}
+                    height={this.state.screen.height - 100}
                     itemCount={this.state.count}
                     itemSize={this.state.screen.chunkHeight}
                     onItemsRendered={onItemsRendered}
