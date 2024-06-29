@@ -1,0 +1,70 @@
+appId: org.team.WatchIt
+productName: watchit
+publish:
+  provider: github
+  owner: "watchitDev"
+  repo: "watchit-app"
+  private: false
+npmRebuild: false
+directories:
+  buildResources: build
+files:
+  - '**/*'
+  - '!.bin'
+  - '!src/*'
+  - '!**/.{vscode,jest,github}/*'
+  - '!{CHANGELOG.md,README.md,README,readme.md,readme}'
+  - '!{test,__tests__,tests,powered-test,example,examples}'
+  - '!*.d.ts'
+  - '!*.{iml,o,hprof,orig,pyc,pyo,rbc,swp,csproj,sln,xproj}'
+  - '!._*'
+  - '!{.DS_Store,.git,.hg,.svn,CVS,RCS,SCCS,.gitignore,.gitattributes}'
+  - '!{__pycache__,thumbs.db,.flowconfig,.idea,.vs,.nyc_output}'
+  - '!{npm-debug.log,yarn.lock,.yarn-integrity,.yarn-metadata.json}'
+  - '!electron.vite.config.{js,ts,mjs,cjs}'
+  - '!{.eslintignore,.eslintrc.cjs,.prettierignore,.prettierrc.yaml,dev-app-update.yml,CHANGELOG.md,README.md}'
+  - '!{.env,.env.*,.npmrc,pnpm-lock.yaml}'
+asarUnpack:
+  - resources/**
+win:
+  executableName: watchit
+  target:
+    - nsis
+    - msi
+nsis:
+  artifactName: ${name}-${version}-setup.${ext}
+  shortcutName: ${productName}
+  uninstallDisplayName: ${productName}
+  createDesktopShortcut: always
+  deleteAppDataOnUninstall: true
+  allowToChangeInstallationDirectory: false
+  runAfterFinish: true
+mac:
+  target: dmg
+  entitlementsInherit: build/entitlements.mac.plist
+  extendInfo:
+    - NSCameraUsageDescription: Application requests access to the device's camera.
+    - NSMicrophoneUsageDescription: Application requests access to the device's microphone.
+    - NSDocumentsFolderUsageDescription: Application requests access to the user's Documents folder.
+    - NSDownloadsFolderUsageDescription: Application requests access to the user's Downloads folder.
+  notarize: false
+dmg:
+  iconSize: 128
+  artifactName: ${name}-${version}.${ext}
+  contents:
+    - {x: 380, y: 240, type: link, path: /Applications}
+    - {x: 122, y: 240, type: file}
+linux:
+  target:
+    - AppImage
+    - snap
+    - deb
+    - tar.gz
+  maintainer: WatchItDev
+  category: Video
+  executableArgs:
+    - '--js-flags="--max-old-space-size=12288"'
+appImage:
+  artifactName: ${name}-${version}.${ext}
+electronDownload:
+  mirror: https://npmmirror.com/mirrors/electron/

@@ -1,9 +1,0 @@
-@use "sass:color";
-.gradient-horizontal-gray {
-  @include gradients(to right, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.0))
-}
-
-
-.gradient-vertical-gray{
-  @include gradients(top, color.adjust($brand-primary, $alpha: -0.8), color.adjust($brand-primary, $alpha: -0.6), color.adjust($brand-primary, $alpha: -0.4), color.adjust($brand-primary, $alpha: -0.2), color.adjust($brand-primary, $alpha: -0))
-}

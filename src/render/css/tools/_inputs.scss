@@ -1,9 +1,0 @@
-@use "_mixins";
-@forward "../vendor/sass/components/_form";
-/**INPUTS*/
-.input-field-black {
-  @extend .input-field;
-  @include mixins.border-radius(5px);
-  background-color: rgba(0, 0, 0, 0.5) !important;
-  padding-left: 1.3rem !important;
-}

@@ -1,4 +1,4 @@
-const buildMenu = (menu, app) => {
+export const buildMenu = (menu, app) => {
   return menu.buildFromTemplate([{
     label: 'Application',
     submenu: [
@@ -19,12 +19,9 @@ const buildMenu = (menu, app) => {
   }])
 }
 
-const mainMenu = (menu, app) => {
+export const mainMenu = (menu, app) => {
   /***
      * Default menu for Mac
      */
   menu.setApplicationMenu(buildMenu(menu, app))
 }
-
-module.exports.mainMenu = mainMenu
-module.exports.buildMenu = buildMenu

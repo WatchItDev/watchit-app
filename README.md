@@ -8,7 +8,7 @@ WatchIt decentralizes the way you watch your movies. It employs a "collective en
 
 ### Overview
 
-WatchIt is a movie playback system that allows users to filter, search, and play movies. To decentralize our movies so that everyone can have access to them, we employ incredible tools such as [Helia](https://github.com/ipfs/helia), which enables us to create a decentralized platform. In simple terms, WatchIt is an application that does not rely on external resources; instead, everyone contributes to its functionality.
+WatchIt is a movie playback system that allows users to filter, search, and play movies. To decentralize our movies so that everyone can have access to them, we employ incredible tools such as [Helia](https://github.com/ipfs/helia) and [Kubo](https://github.com/ipfs/kubo), which enables us to create a decentralized platform. In simple terms, WatchIt is an application that does not rely on external resources; instead, everyone contributes to its functionality.
 
 ## Features
 
@@ -27,12 +27,23 @@ WatchIt is part of the WatchIt protocol, which encompasses various components to
 
 ##  More info
 * Visit our site [watchit.movie](https://watchit.movie).
-* Try our web app release [app.watchit.movie](https://web.watchit.movie).
+* Try our web app release [app.watchit.movie](https://app.watchit.movie).
 * Read our post: [Watchit - Open Movies](https://dev.to/geolffreym/watchit-2b88).
 * Read our interview in [Console 94](https://console.substack.com/p/console-94?r=3cbez&utm_campaign=post&utm_medium=web&utm_source=url)
-* Get in touch with us in [matrix](https://matrix.to/#/#watchit:matrix.org) | [discord](https://discord.gg/QJcSXedY) | [telegram](https://t.me/watchitofficial)
+* Get in touch with us in [matrix](https://matrix.to/#/#watchit:matrix.org) | [discord](https://discord.gg/QJcSXedY) | [telegram](https://t.me/watchitofficial) | [reddit](https://www.reddit.com/r/watchitprotocol/)
 * See our [FAQ](FAQ.md) for frequently asked questions.
 * For help or bugs please [create an issue](https://github.com/ZorrillosDev/watchit-desktop/issues).
+
+## Development
+
+Some available capabilities for dev support:
+
+- **Bootstrap**: `make bootstrap` - Setup the development environment.
+- **Tests**: `make test` - Run tests.
+- **Run Web**: `make run-web` - Run development mode for web.
+- **Run Electron**: `make run-electron` - Run electron development mode 
+
+Note: Run `make help` to check for more capabilities.  
 
 ## Contributors ✨
 
