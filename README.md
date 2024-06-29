@@ -4,7 +4,7 @@
 
 WatchIt decentralizes the way you watch your movies. It employs a "collective entertainment methodology" where each user consumes movies from the network and simultaneously shares movies with other users.
 
-[![screenshot](src/render/media/img/layout/screen2.png?raw=true)]()
+[![screenshot](src/renderer/media/img/layout/screen2.png?raw=true)]()
 
 ### Overview
 
@@ -23,7 +23,7 @@ WatchIt is part of the WatchIt protocol, which encompasses various components to
 
 ## Node Types and Capabilities
 
-[![screenshot](src/render/media/img/layout/nodes.png?raw=true)]()
+[![screenshot](src/renderer/media/img/layout/nodes.png?raw=true)]()
 
 ##  More info
 * Visit our site [watchit.movie](https://watchit.movie).
