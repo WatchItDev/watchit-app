@@ -7,26 +7,23 @@ publish:
   private: false
 npmRebuild: false
 directories:
-  buildResources: resources
+  buildResources: build
 files:
-  - '!**/.vscode/*'
+  - '**/*'
+  - '!.bin'
   - '!src/*'
+  - '!**/.{vscode,jest,github}/*'
+  - '!{CHANGELOG.md,README.md,README,readme.md,readme}'
+  - '!{test,__tests__,tests,powered-test,example,examples}'
+  - '!*.d.ts'
+  - '!*.{iml,o,hprof,orig,pyc,pyo,rbc,swp,csproj,sln,xproj}'
+  - '!._*'
+  - '!{.DS_Store,.git,.hg,.svn,CVS,RCS,SCCS,.gitignore,.gitattributes}'
+  - '!{__pycache__,thumbs.db,.flowconfig,.idea,.vs,.nyc_output}'
+  - '!{npm-debug.log,yarn.lock,.yarn-integrity,.yarn-metadata.json}'
   - '!electron.vite.config.{js,ts,mjs,cjs}'
   - '!{.eslintignore,.eslintrc.cjs,.prettierignore,.prettierrc.yaml,dev-app-update.yml,CHANGELOG.md,README.md}'
   - '!{.env,.env.*,.npmrc,pnpm-lock.yaml}'
-  - "**/*"
-  - "!**/node_modules/*/{CHANGELOG.md,README.md,README,readme.md,readme}"
-  - "!**/node_modules/*/{test,__tests__,tests,powered-test,example,examples}"
-  - "!**/node_modules/*.d.ts"
-  - "!**/node_modules/.bin"
-  - "!**/*.{iml,o,hprof,orig,pyc,pyo,rbc,swp,csproj,sln,xproj}"
-  - "!.editorconfig"
-  - "!**/._*"
-  - "!**/{.DS_Store,.git,.hg,.svn,CVS,RCS,SCCS,.gitignore,.gitattributes}"
-  - "!**/{__pycache__,thumbs.db,.flowconfig,.idea,.vs,.nyc_output}"
-  - "!**/{appveyor.yml,.travis.yml,circle.yml}"
-  - "!**/{npm-debug.log,yarn.lock,.yarn-integrity,.yarn-metadata.json}"
-  - "resources/**/*"
 asarUnpack:
   - resources/**
 win:
@@ -35,6 +32,10 @@ win:
     - nsis
     - msi
 nsis:
+  artifactName: ${name}-${version}-setup.${ext}
+  shortcutName: ${productName}
+  uninstallDisplayName: ${productName}
+  createDesktopShortcut: always
   deleteAppDataOnUninstall: true
   allowToChangeInstallationDirectory: false
   runAfterFinish: true
@@ -49,6 +50,7 @@ mac:
   notarize: false
 dmg:
   iconSize: 128
+  artifactName: ${name}-${version}.${ext}
   contents:
     - {x: 380, y: 240, type: link, path: /Applications}
     - {x: 122, y: 240, type: file}

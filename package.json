@@ -16,6 +16,7 @@
     "node": ">=18"
   },
   "scripts": {
+    "preinstall": "npm i -g electron-icon-maker",
     "postinstall": "electron-builder install-app-deps"
   },
   "overrides": {

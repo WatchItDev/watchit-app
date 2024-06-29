@@ -33,9 +33,7 @@ clean:
 
 .PHONY: install ## install dependencies
 install:
-	rm -rf node_modules
-	npm cache clean -f
-	npm install --legacy-peer-deps
+	npm ci 
 
 .PHONY: lint ## lint standard js
 lint:
@@ -60,6 +58,11 @@ buildweb:
 .PHONY: buildelectron ## build app
 buildelectron:
 	npx electron-vite build
+
+.PHONY: buildicons ## generate a new icon bundle from tpl1024
+buildicons: 
+	electron-icon-maker --input ./tpl1024.png --output ./icons
+
 
 .PHONY: package ## generate a new electron package
 package: buildelectron

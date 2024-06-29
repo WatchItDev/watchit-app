@@ -4,8 +4,8 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 
 import DB from '@/main/core/db'
-import { ContextProvider } from "./package/runtime/context";
 import App from "./package/runtime/node";
+import { ContextProvider } from "./package/runtime/context";
 import { GlobalStyles } from "./globalStyles.jsx";
 
 const bridge = { db: DB(), broker: window.ipc }

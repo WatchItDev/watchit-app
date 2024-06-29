@@ -4,10 +4,8 @@ import bootstrap from './core/bootstrap'
 
 import { mainMenu } from './helpers/menu'
 import { fadeWindowOut, fadeWindowIn } from './helpers/screen'
-
 import { app, BrowserWindow, ipcMain, Menu, dialog } from 'electron'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
-
 import { fileURLToPath } from 'url';
 
 /**
@@ -22,9 +20,10 @@ function absPath(relative) {
 }
 
 let win;
-const appIcon = '../../resources/icon.png?asset'
+const appIcon = absPath('../../resources/icon.png')
 const isDarwin = Object.is(process.platform, 'darwin')
 const isWin = Object.is(process.platform, 'win32')
+const isLinux = Object.is(process.platform, 'linux')
 
 process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
 const gotTheLock = app.requestSingleInstanceLock()
@@ -36,16 +35,13 @@ dialog.showErrorBox = (title, content) => {
 }
 
 const initWindowing = () => {
+  const indexSplash = `${absPath('../../resources/splash.png')}`
   const loadingScreen = new BrowserWindow({
     width: 600, height: 400, frame: false, show: false
   })
 
   // If dev load the local dev server else load production file
-  const indexSplash = is.dev && process.env.ELECTRON_RENDERER_URL
-    ? loadingScreen.loadURL(`${process.env.ELECTRON_RENDERER_URL}/splash.png`)
-    : loadingScreen.loadFile(`${absPath('../renderer/splash.png')}`)
-
-  indexSplash.then(() => {
+  loadingScreen.loadFile(indexSplash).then(() => {
     loadingScreen.setOpacity(0)
     loadingScreen.show()
 
@@ -60,11 +56,6 @@ const initWindowing = () => {
 const createMain = (child) => {
 
   win = new BrowserWindow({
-    ...(
-      process.platform === 'linux'
-        ? { icon: appIcon }
-        : {}
-    ),
     ...{
       title: 'WatchIt',
       width: 1280,
@@ -73,10 +64,12 @@ const createMain = (child) => {
       minHeight: 800,
       backgroundColor: '#12191f',
       backgroundThrottling: false,
+      autoHideMenuBar: true,
       center: true,
       frame: false,
       show: false,
       transparent: false,
+      ...(isLinux ? { icon: appIcon } : {}),
       webPreferences: {
         sandbox: false,
         contextIsolation: true,
@@ -140,9 +133,9 @@ app.whenReady().then(async () => {
   // Default open or close DevTools by F12 in development
   // and ignore CommandOrControl + R in production.
   // see https://github.com/alex8088/electron-toolkit/tree/master/packages/utils
-  // app.on('browser-window-created', (_, window) => {
-  //   optimizer.watchWindowShortcuts(window)
-  // })
+  app.on('browser-window-created', (_, window) => {
+    optimizer.watchWindowShortcuts(window)
+  })
 
   if (isWin || isDarwin) {
     // Temp validation while updater failing
@@ -166,18 +159,6 @@ app.whenReady().then(async () => {
 
   optimizer.registerFramelessWindowIpc()
   ipcMain.on('ping', () => console.log('pong'))
-
-  // ipcMain.on("close", async () => app.quit());
-
-  // ipcMain.on("focus", () => win.focus());
-  // ipcMain.on("minimize", (e) => {
-  //   win.minimize();
-  // });
-
-  // ipcMain.on("maximize", (e) => {
-  //   if (!isDarwin) win.setFullScreen(!win.isFullScreen());
-  //   if (isDarwin) win.setSimpleFullScreen(!win.isSimpleFullScreen());
-  // });
 })
 
 // Disable cors errors

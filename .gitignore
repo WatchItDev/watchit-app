@@ -16,7 +16,6 @@ out/
 .env.test.local
 .env.production.local
 release
-build
 .env
 .idea
 __snapshots__
