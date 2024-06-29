@@ -38,10 +38,10 @@ WatchIt is part of the WatchIt protocol, which encompasses various components to
 
 Some available capabilities for dev support:
 
-- **Bootstrap**: `make bootstrap` - Setup the development environment.
 - **Tests**: `make test` - Run tests.
-- **Run Web**: `make run-web` - Run development mode for web.
-- **Run Electron**: `make run-electron` - Run electron development mode 
+- **Bootstrap**: `make bootstrap` - Setup the development environment.
+- **Run Web**: `make runweb` - Run development mode for web.
+- **Run Electron**: `make runelectron` - Run electron development mode 
 
 Note: Run `make help` to check for more capabilities.  
 
