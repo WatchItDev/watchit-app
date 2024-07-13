@@ -61,7 +61,7 @@ buildelectron:
 
 .PHONY: buildicons ## generate a new icon bundle from tpl1024
 buildicons: 
-	electron-icon-maker --input ./tpl1024.png --output ./icons
+	npx electron-icon-maker --input ./tpl1024.png --output ./icons
 
 
 .PHONY: package ## generate a new electron package
