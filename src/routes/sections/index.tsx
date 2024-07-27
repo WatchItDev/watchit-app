@@ -4,6 +4,8 @@ import { PATH_AFTER_LOGIN } from 'src/config-global';
 //
 import { dashboardRoutes } from './dashboard';
 import NotFoundPage from '../../pages/404';
+import Login from '../../pages/login';
+
 
 // ----------------------------------------------------------------------
 
@@ -13,7 +15,10 @@ export default function Router() {
       path: '/',
       element: <Navigate to={PATH_AFTER_LOGIN} replace />,
     },
-
+    {
+      path: 'login',
+      element: <Login />, // Add the login route
+     },
     // Dashboard routes
     ...dashboardRoutes,
 

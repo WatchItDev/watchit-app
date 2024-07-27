@@ -12,12 +12,14 @@ import Typography from '@mui/material/Typography';
 import { paths } from 'src/routes/paths';
 import { useRouter } from 'src/routes/hooks';
 // hooks
+import { useNavigate } from 'react-router-dom';
+
 import { useMockedUser } from 'src/hooks/use-mocked-user';
 // components
 import { varHover } from 'src/components/animate';
 import { useSnackbar } from 'src/components/snackbar';
 import CustomPopover, { usePopover } from 'src/components/custom-popover';
-
+import { useLogout } from '@lens-protocol/react-web';
 // ----------------------------------------------------------------------
 
 const OPTIONS = [
@@ -39,17 +41,17 @@ const OPTIONS = [
 
 export default function AccountPopover() {
   const router = useRouter();
-
+  const { execute, loading } = useLogout();
   const { user } = useMockedUser();
-
+const navigate=useNavigate();
   const { enqueueSnackbar } = useSnackbar();
 
   const popover = usePopover();
 
   const handleLogout = async () => {
     try {
-      popover.onClose();
-      router.replace('/');
+      execute()
+    
     } catch (error) {
       console.error(error);
       enqueueSnackbar('Unable to logout!', { variant: 'error' });
