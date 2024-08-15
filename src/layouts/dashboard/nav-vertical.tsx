@@ -49,7 +49,7 @@ export default function NavVertical({ openNav, onCloseNav }: Props) {
     <Scrollbar
       sx={{
         height: 1,
-        backgroundColor: 'rgba(0,0,0,0.1)',
+        backgroundColor: '#2B2D31',
         '& .simplebar-content': {
           height: 1,
           display: 'flex',
@@ -71,7 +71,7 @@ export default function NavVertical({ openNav, onCloseNav }: Props) {
         direction="row"
         alignItems="center"
         justifyContent="space-between"
-        sx={{ padding: '12px 16px 8px 16px', backgroundColor: 'rgba(0,0,0,0.3)' }}
+        sx={{ padding: '12px 16px 8px 16px', backgroundColor: '#232428' }}
       >
         <AccountPopover />
         <Box

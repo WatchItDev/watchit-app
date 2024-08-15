@@ -5,9 +5,10 @@ import match from 'autosuggest-highlight/match';
 import { useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import List from '@mui/material/List';
-import Stack from '@mui/material/Stack';
+import Button from '@mui/material/Button';
 import InputBase from '@mui/material/InputBase';
 import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
 import InputAdornment from '@mui/material/InputAdornment';
 import Dialog, { dialogClasses } from '@mui/material/Dialog';
 // hooks
@@ -106,13 +107,24 @@ function Searchbar() {
   };
 
   const renderButton = (
-    <Stack direction="row" alignItems="center">
-      <IconButton onClick={search.onTrue}>
+    <Button
+      onClick={search.onTrue} disableFocusRipple
+      sx={{
+        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+        backgroundColor: '#24262A', borderRadius: 1.5, m: 1, p: 0.2,
+        '&:hover': {
+          // opacity: 0.7,
+          backgroundColor: '#1E1F22'
+        }
+      }}
+    >
+      <IconButton disableRipple>
         <Iconify icon="eva:search-fill" />
+        <Typography sx={{ ml: 1 }} variant='subtitle2'>Search</Typography>
       </IconButton>
 
-      {mdUp && <Label sx={{ px: 0.75, fontSize: 12, color: 'text.secondary' }}>⌘K</Label>}
-    </Stack>
+      {mdUp && <Label sx={{ px: 0.75, mr: 1, fontSize: 12, color: 'text.secondary' }}>⌘K</Label>}
+    </Button>
   );
 
   return (
