@@ -2,6 +2,7 @@ import { forwardRef } from 'react';
 // @mui
 import { useTheme } from '@mui/material/styles';
 import Link from '@mui/material/Link';
+import Box from '@mui/material/Box';
 import Tooltip from '@mui/material/Tooltip';
 import ListItemText from '@mui/material/ListItemText';
 // routes
@@ -10,7 +11,7 @@ import { RouterLink } from 'src/routes/components';
 import Iconify from '../../iconify';
 //
 import { NavItemProps, NavConfigProps } from '../types';
-import { StyledItem, StyledIcon } from './styles';
+import { StyledItem, StyledIcon, StyledNavContent } from './styles';
 
 // ----------------------------------------------------------------------
 
@@ -37,73 +38,68 @@ const NavItem = forwardRef<HTMLDivElement, Props>(
         config={config}
         {...other}
       >
-        {icon && (
-          <StyledIcon
-            size={config.iconSize}
-            sx={{
-              ...(subItem && { mr: 1.5 }),
-            }}
-          >
-            {icon}
-          </StyledIcon>
-        )}
+        <Box className='menu-pill'
+             sx={{
+               position: 'absolute',
+               top: 0,
+               left: 0,
+               width: '4px',
+               height: '100%',
+               display: 'flex',
+               overflow: 'hidden',
+               alignItems: 'center',
+               justifyContent: 'flex-start',
+               transition: 'all 0.2s ease-in-out'
+             }}
+        >
+          <Box className='pill' sx={{
+            width: active ? '4px' : 0 ,
+            height: active ? '60%' : 0,
+            borderRadius: 0,
+            borderTopRightRadius: '1rem',
+            borderBottomRightRadius: '1rem',
+            backgroundColor: '#fff',
+            transition: 'all 0.3s ease-in-out'
+          }} />
+        </Box>
 
-        {!(config.hiddenLabel && !subItem) && (
-          <ListItemText
-            sx={{
-              width: 1,
-              flex: 'unset',
-              ...(!subItem && {
-                px: 0.5,
-                mt: 0.5,
-              }),
-            }}
-            primary={title}
-            primaryTypographyProps={{
-              noWrap: true,
-              fontSize: 10,
-              lineHeight: '16px',
-              textAlign: 'center',
-              textTransform: 'capitalize',
-              fontWeight: active ? 'fontWeightBold' : 'fontWeightSemiBold',
-              ...(subItem && {
-                textAlign: 'unset',
-                fontSize: theme.typography.body2.fontSize,
-                lineHeight: theme.typography.body2.lineHeight,
-                fontWeight: active ? 'fontWeightSemiBold' : 'fontWeightMedium',
-              }),
-            }}
-          />
-        )}
-
-        {caption && (
-          <Tooltip title={caption} arrow placement="right">
-            <Iconify
-              width={16}
-              icon="eva:info-outline"
+        <StyledNavContent
+          active={active}
+        >
+          {icon && (
+            <StyledIcon
+              size={config.iconSize}
               sx={{
-                color: 'text.disabled',
-                ...(!subItem && {
-                  top: 11,
-                  left: 6,
-                  position: 'absolute',
-                }),
+                width: '1.7rem',
+                height: '1.7rem',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                ...(subItem && { mr: 1.5 }),
+              }}
+            >
+              {icon}
+            </StyledIcon>
+          )}
+
+          {!icon && title && (
+            <ListItemText
+              sx={{
+                width: 1,
+                flex: 'unset'
+              }}
+              primary={title.slice(0,4)}
+              primaryTypographyProps={{
+                noWrap: true,
+                fontSize: 14,
+                lineHeight: 1,
+                textAlign: 'center',
+                textTransform: 'capitalize',
+                fontWeight: active ? 'fontWeightBold' : 'fontWeightSemiBold',
               }}
             />
-          </Tooltip>
-        )}
-
-        {!!children && (
-          <Iconify
-            width={16}
-            icon="eva:arrow-ios-forward-fill"
-            sx={{
-              top: 11,
-              right: 6,
-              position: 'absolute',
-            }}
-          />
-        )}
+          )}
+        </StyledNavContent>
       </StyledItem>
     );
 

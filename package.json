@@ -60,6 +60,7 @@
     "@mui/x-data-grid": "^6.10.0",
     "@mui/x-date-pickers": "^6.10.0",
     "@react-pdf/renderer": "^3.1.12",
+    "@tabler/icons-react": "^3.11.0",
     "apexcharts": "^3.41.0",
     "autosuggest-highlight": "^3.3.4",
     "axios": "^1.4.0",
