@@ -1,5 +1,7 @@
 [![All Contributors](https://img.shields.io/badge/all_contributors-11-orange.svg?style=flat-square)](#contributors-)
 
+**Note:** The current web app and desktop versions are undergoing deprecation. A renewed version will be released soon, bringing improved features and a better user experience.
+
 # WatchIt
 
 WatchIt decentralizes the way you watch your movies. It employs a "collective entertainment methodology" where each user consumes movies from the network and simultaneously shares movies with other users.
@@ -27,7 +29,6 @@ WatchIt is part of the WatchIt protocol, which encompasses various components to
 
 ##  More info
 * Visit our site [watchit.movie](https://watchit.movie).
-* Try our web app release [app.watchit.movie](https://app.watchit.movie).
 * Read our post: [Watchit - Open Movies](https://dev.to/geolffreym/watchit-2b88).
 * Read our interview in [Console 94](https://console.substack.com/p/console-94?r=3cbez&utm_campaign=post&utm_medium=web&utm_source=url)
 * Get in touch with us in [matrix](https://matrix.to/#/#watchit:matrix.org) | [discord](https://discord.gg/VdGMqNJgFq) | [telegram](https://t.me/watchitofficial) | [reddit](https://www.reddit.com/r/watchitprotocol/)
