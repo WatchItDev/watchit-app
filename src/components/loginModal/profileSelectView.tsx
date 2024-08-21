@@ -15,7 +15,12 @@ import {
 
 // HOOKS IMPORTS
 import { useAuth } from 'src/hooks/use-auth';
+
+// WAGMI IMPORTS
 import { useAccount } from 'wagmi';
+
+// UTILS IMPORTS
+import { truncateAddress } from 'src/utils/wallet';
 
 // ----------------------------------------------------------------------
 
@@ -31,13 +36,6 @@ interface ProfileSelectionProps {
 export const ProfileSelectView: React.FC<ProfileSelectionProps> = ({ onLogin, onRegisterNewProfile, activeConnector, onDisconnect }) => {
   const { address } = useAccount();
   const { profiles, selectProfile, selectedProfile } = useAuth();
-
-  const truncateAddress = (text: string, startChars: number = 6, endChars: number = 6) => {
-    if (text.length <= startChars + endChars) {
-      return text;
-    }
-    return `${text.slice(0, startChars)  }...${  text.slice(-endChars)}`;
-  }
 
   useEffect(() => {
     if (selectedProfile) onLogin?.()
