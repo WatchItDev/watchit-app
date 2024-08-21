@@ -3,9 +3,8 @@ import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 // theme
 import { hideScroll } from 'src/theme/css';
-import { IconBrandApple, IconCloudDownload, IconGridDots, IconPlus } from '@tabler/icons-react';
+import { IconCloudDownload, IconGridDots, IconPlus } from '@tabler/icons-react';
 // components
-import NavItem from 'src/components/nav-section/mini/nav-item';
 import { NAV } from '../config-layout';
 import { NavSectionMini } from '../../components/nav-section';
 import { data } from './config-navigation-mini';

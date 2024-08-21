@@ -1,14 +1,10 @@
 import { forwardRef } from 'react';
 // @mui
-import { useTheme } from '@mui/material/styles';
 import Link from '@mui/material/Link';
 import Box from '@mui/material/Box';
-import Tooltip from '@mui/material/Tooltip';
 import ListItemText from '@mui/material/ListItemText';
 // routes
 import { RouterLink } from 'src/routes/components';
-//
-import Iconify from '../../iconify';
 //
 import { NavItemProps, NavConfigProps } from '../types';
 import { StyledItem, StyledIcon, StyledNavContent } from './styles';
@@ -21,9 +17,8 @@ type Props = NavItemProps & {
 
 const NavItem = forwardRef<HTMLDivElement, Props>(
   ({ item, depth, open, active, externalLink, config, ...other }, ref) => {
-    const theme = useTheme();
 
-    const { title, path, icon, children, disabled, caption, roles } = item;
+    const { title, path, icon, disabled, roles } = item;
 
     const subItem = depth !== 1;
 

@@ -5,10 +5,8 @@ import DashboardLayout from 'src/layouts/dashboard';
 // components
 import { LoadingScreen, SplashScreen } from 'src/components/loading-screen';
 import CompactLayout from 'src/layouts/compact';
-import { SessionProvider } from './SessionContext'; // Adjust the import path as needed
 
 // ----------------------------------------------------------------------
-import ProtectedRoute from './ProtectedRoute'; // Import the ProtectedRoute HOC
 
 // OVERVIEW
 const ExplorePage = lazy(() => import('src/pages/dashboard/explore'));

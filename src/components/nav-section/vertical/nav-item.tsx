@@ -123,7 +123,7 @@ export default function NavItem({
   return (
     <Link
       component={RouterLink}
-      href={path}
+      href={path ?? '/'}
       underline="none"
       color="inherit"
       sx={{

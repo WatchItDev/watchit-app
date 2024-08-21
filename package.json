@@ -71,6 +71,7 @@
     "axios": "^1.4.0",
     "date-fns": "^2.30.0",
     "firebase": "^10.0.0",
+    "formik": "^2.4.6",
     "framer-motion": "^10.12.21",
     "highlight.js": "^11.8.0",
     "history": "^5.3.0",
@@ -112,7 +113,7 @@
     "wagmi": "^2.12.0",
     "worker-loader": "^3.0.8",
     "yet-another-react-lightbox": "^3.11.4",
-    "yup": "^1.2.0"
+    "yup": "^1.4.0"
   },
   "devDependencies": {
     "@babel/core": "^7.22.9",

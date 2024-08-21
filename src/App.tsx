@@ -38,19 +38,8 @@ import ProgressBar from 'src/components/progress-bar';
 import MotionLazy from 'src/components/animate/motion-lazy';
 import SnackbarProvider from 'src/components/snackbar/snackbar-provider';
 import { SettingsProvider, SettingsDrawer } from 'src/components/settings';
+import { AuthProvider } from 'src/auth/context/lens';
 
-
-import {  LensConfig,  LensProvider,  development,} from "@lens-protocol/react-web";
-
-import { SessionProvider } from 'src/routes/sections/SessionContext'; // Adjust the import path as needed
-
-import  ProtectedRoute  from 'src/routes/sections/ProtectedRoute'; // Adjust the import path as needed
-
-import { bindings } from "@lens-protocol/wagmi";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { WagmiProvider, createConfig, http } from "wagmi";
-import { polygonAmoy } from "wagmi/chains";
-import { injected, metaMask, safe, walletConnect } from 'wagmi/connectors'
 // ----------------------------------------------------------------------
 
 export default function App() {
@@ -64,21 +53,12 @@ export default function App() {
 
 `;
 
-const queryClient = new QueryClient();
-const wagmiConfig = createConfig({  chains: [polygonAmoy],  connectors: [
-    injected(),
-    metaMask(),
-    safe(),
-  ], transports: {    [polygonAmoy.id]: http(),  },});
-const lensConfig: LensConfig = {  environment: development,  bindings: bindings(wagmiConfig),};
-
   console.info(`%c${charAt}`, 'color: #4A34B8');
 
   useScrollToTop();
 
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
-
       <SettingsProvider
         defaultSettings={{
           themeMode: 'dark', // 'light' | 'dark'
@@ -89,29 +69,17 @@ const lensConfig: LensConfig = {  environment: development,  bindings: bindings(
           themeStretch: false,
         }}
       >
-      <WagmiProvider config={wagmiConfig}>
-      <QueryClientProvider client={queryClient}>
-      <LensProvider config={lensConfig}>
-      <SessionProvider>
-
-        <ThemeProvider>
-          <MotionLazy>
-            <SnackbarProvider>
-              <SettingsDrawer />
-              <ProgressBar />
-              <ProtectedRoute>
-
-              <Router />
-              </ProtectedRoute>
-
-            </SnackbarProvider>
-          </MotionLazy>
-        </ThemeProvider>
-        </SessionProvider>
-
-        </LensProvider>
-         </QueryClientProvider>
-          </WagmiProvider>
+        <AuthProvider>
+          <ThemeProvider>
+            <MotionLazy>
+              <SnackbarProvider>
+                <SettingsDrawer />
+                <ProgressBar />
+                <Router />
+              </SnackbarProvider>
+            </MotionLazy>
+          </ThemeProvider>
+        </AuthProvider>
       </SettingsProvider>
     </LocalizationProvider>
   );
