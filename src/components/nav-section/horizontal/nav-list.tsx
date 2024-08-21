@@ -24,9 +24,9 @@ export default function NavList({ data, depth, hasChild, config }: NavListRootPr
 
   const pathname = usePathname();
 
-  const active = useActiveLink(data.path, hasChild);
+  const active = useActiveLink(data?.path ?? '', hasChild);
 
-  const externalLink = data.path.includes('http');
+  const externalLink = data?.path?.includes('http');
 
   const [open, setOpen] = useState(false);
 

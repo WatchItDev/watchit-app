@@ -5,6 +5,7 @@ import { PATH_AFTER_LOGIN } from 'src/config-global';
 import { dashboardRoutes } from './dashboard';
 import NotFoundPage from '../../pages/404';
 
+
 // ----------------------------------------------------------------------
 
 export default function Router() {
@@ -13,7 +14,6 @@ export default function Router() {
       path: '/',
       element: <Navigate to={PATH_AFTER_LOGIN} replace />,
     },
-
     // Dashboard routes
     ...dashboardRoutes,
 

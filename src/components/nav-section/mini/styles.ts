@@ -1,7 +1,8 @@
 // @mui
-import { alpha, styled } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemButton from '@mui/material/ListItemButton';
+import Box from '@mui/material/Box';
 //
 import { NavItemProps, NavConfigProps } from '../types';
 
@@ -18,12 +19,7 @@ export const StyledItem = styled(ListItemButton, {
 
   const activeStyles = {
     root: {
-      color:
-        theme.palette.mode === 'light' ? theme.palette.primary.main : theme.palette.primary.light,
-      backgroundColor: alpha(theme.palette.primary.main, 0.08),
-      '&:hover': {
-        backgroundColor: alpha(theme.palette.primary.main, 0.16),
-      },
+      color: theme.palette.text.primary,
     },
     sub: {
       color: theme.palette.text.primary,
@@ -36,17 +32,29 @@ export const StyledItem = styled(ListItemButton, {
 
   return {
     // Root item
+    position: 'relative',
     flexDirection: 'column',
     justifyContent: 'center',
+    alignItems: 'center',
     borderRadius: config.itemRadius,
     minHeight: config.itemRootHeight,
     color: theme.palette.text.secondary,
-    margin: `0 ${config.itemGap}px ${config.itemGap}px ${config.itemGap}px`,
-    ...(config.hiddenLabel &&
-      !subItem && {
-        padding: config.itemPadding,
-      }),
-
+    margin: 0,
+    padding: '0 !important',
+    '&, & *': {
+      transition: 'all 0.1s ease-out'
+    },
+    '&:hover': {
+      backgroundColor: 'transparent'
+    },
+    '&:hover .MuiBox-root:not(.svg-color):not(.menu-pill):not(.pill)': {
+      borderRadius: '0.75rem',
+      backgroundColor: theme.palette.primary.main
+    },
+    '&:hover .pill': {
+      width: '4px',
+      height: '60%'
+    },
     // Active root item
     ...(active && {
       ...activeStyles.root,
@@ -63,15 +71,26 @@ export const StyledItem = styled(ListItemButton, {
         ...activeStyles.sub,
       }),
     }),
-
-    // Open
-    ...(open &&
-      !active && {
-        color: theme.palette.text.primary,
-        backgroundColor: theme.palette.action.hover,
-      }),
   };
 });
+
+// ----------------------------------------------------------------------
+
+type StyledNavContentProps = {
+  active?: boolean;
+};
+
+export const StyledNavContent = styled(Box)<StyledNavContentProps>(({ active, theme }) => ({
+  width: '3rem',
+  height: '3rem',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  // margin: 0,
+  margin: '0 0 0 0.1rem',
+  backgroundColor: active ? theme.palette.primary.main : '#313339',
+  borderRadius: active ? '0.75rem' : '50%',
+}));
 
 // ----------------------------------------------------------------------
 

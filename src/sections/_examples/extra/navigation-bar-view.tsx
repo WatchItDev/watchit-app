@@ -81,14 +81,8 @@ export default function NavigationBarView() {
       <Typography variant="h6"> Nav Mini </Typography>
 
       <NavSectionMini
-        data={NAV_ITEMS}
+        items={NAV_ITEMS[0].items}
         config={config}
-        sx={{
-          py: 2,
-          borderRadius: 2,
-          bgcolor: 'background.paper',
-          boxShadow: (theme) => theme.customShadows.z20,
-        }}
       />
     </Stack>
   );

@@ -38,6 +38,7 @@ import ProgressBar from 'src/components/progress-bar';
 import MotionLazy from 'src/components/animate/motion-lazy';
 import SnackbarProvider from 'src/components/snackbar/snackbar-provider';
 import { SettingsProvider, SettingsDrawer } from 'src/components/settings';
+import { AuthProvider } from 'src/auth/context/lens';
 
 // ----------------------------------------------------------------------
 
@@ -51,7 +52,6 @@ export default function App() {
   ░░░      ░░░
 
 `;
-
 
   console.info(`%c${charAt}`, 'color: #4A34B8');
 
@@ -69,15 +69,17 @@ export default function App() {
           themeStretch: false,
         }}
       >
-        <ThemeProvider>
-          <MotionLazy>
-            <SnackbarProvider>
-              <SettingsDrawer />
-              <ProgressBar />
-              <Router />
-            </SnackbarProvider>
-          </MotionLazy>
-        </ThemeProvider>
+        <AuthProvider>
+          <ThemeProvider>
+            <MotionLazy>
+              <SnackbarProvider>
+                <SettingsDrawer />
+                <ProgressBar />
+                <Router />
+              </SnackbarProvider>
+            </MotionLazy>
+          </ThemeProvider>
+        </AuthProvider>
       </SettingsProvider>
     </LocalizationProvider>
   );

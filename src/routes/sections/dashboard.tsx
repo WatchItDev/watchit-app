@@ -15,7 +15,6 @@ const GovernancePage = lazy(() => import('src/pages/dashboard/governance'));
 const MarketplacePage = lazy(() => import('src/pages/dashboard/marketplace'));
 const EventsPage = lazy(() => import('src/pages/dashboard/events'));
 const AchievementsPage = lazy(() => import('src/pages/dashboard/achievements'));
-
 // MANAGEMENT
 const AnalyticsPage = lazy(() => import('src/pages/dashboard/analytics'));
 const StudioPage = lazy(() => import('src/pages/dashboard/studio'));
@@ -33,8 +32,10 @@ export const dashboardRoutes = [
   {
     path: 'dashboard',
     element: (
+
       <DashboardLayout>
         <Suspense fallback={<LoadingScreen />}>
+
           <Outlet />
         </Suspense>
       </DashboardLayout>
@@ -57,7 +58,7 @@ export const dashboardRoutes = [
     element: (
       <CompactLayout>
         <Suspense fallback={<SplashScreen />}>
-          <Outlet />
+        <Outlet />
         </Suspense>
       </CompactLayout>
     ),

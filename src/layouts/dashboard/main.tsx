@@ -22,6 +22,7 @@ export default function Main({ children, sx, ...other }: BoxProps) {
         minHeight: 1,
         display: 'flex',
         flexDirection: 'column',
+        backgroundColor: '#1E1F22',
         // py: `${HEADER.H_MOBILE + SPACING}px`,
         ...(lgUp && {
           px: 2,
