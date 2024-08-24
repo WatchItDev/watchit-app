@@ -240,7 +240,7 @@ export const _phoneNumbers = [
 
 export const _roles = [
   'HR Manager',
-  'Data Analyst',
+  'Watchit user',
   'Legal Counsel',
   'UX/UI Designer',
   'Project Manager',

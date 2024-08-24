@@ -27,7 +27,7 @@ const OPTIONS = [
   },
   {
     label: 'Profile',
-    linkTo: paths.dashboard.root,
+    linkTo: paths.dashboard.user.root,
   },
   {
     label: 'Settings',

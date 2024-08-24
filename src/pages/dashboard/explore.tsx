@@ -1,6 +1,5 @@
 import { Helmet } from 'react-helmet-async';
-import ComingSoonView from '../../sections/coming-soon/view';
-import BlankView from '../../sections/blank/view';
+import { ExploreView } from 'src/sections/explore';
 
 // ----------------------------------------------------------------------
 
@@ -11,9 +10,7 @@ export default function OverviewAppPage() {
         <title> Dashboard: App</title>
       </Helmet>
 
-      <BlankView>
-        <ComingSoonView />
-      </BlankView>
+      <ExploreView />
     </>
   );
 }

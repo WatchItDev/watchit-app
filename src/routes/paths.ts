@@ -1,3 +1,11 @@
+import { paramCase } from 'src/utils/change-case';
+import { _id, _postTitles } from 'src/_mock/assets';
+
+// ----------------------------------------------------------------------
+
+const MOCK_ID = _id[1];
+
+const MOCK_TITLE = _postTitles[2];
 
 const ROOTS = {
   AUTH: '/auth',
@@ -35,5 +43,52 @@ export const paths = {
     ownership: `${ROOTS.DASHBOARD}/ownership`,
     finance: `${ROOTS.DASHBOARD}/finance`,
     marketing: `${ROOTS.DASHBOARD}/marketing`,
+    user: {
+      root: `${ROOTS.DASHBOARD}/user`,
+      new: `${ROOTS.DASHBOARD}/user/new`,
+      list: `${ROOTS.DASHBOARD}/user/list`,
+      cards: `${ROOTS.DASHBOARD}/user/cards`,
+      profile: `${ROOTS.DASHBOARD}/user/profile`,
+      account: `${ROOTS.DASHBOARD}/user/account`,
+      edit: (id: string) => `${ROOTS.DASHBOARD}/user/${id}/edit`,
+      demo: {
+        edit: `${ROOTS.DASHBOARD}/user/${MOCK_ID}/edit`,
+      },
+    },
+    movie: {
+      root: `${ROOTS.DASHBOARD}/movie`,
+      new: `${ROOTS.DASHBOARD}/movie/new`,
+      details: (id: string) => `${ROOTS.DASHBOARD}/movie/${id}`,
+      edit: (id: string) => `${ROOTS.DASHBOARD}/movie/${id}/edit`,
+      demo: {
+        details: `${ROOTS.DASHBOARD}/movie/${MOCK_ID}`,
+        edit: `${ROOTS.DASHBOARD}/movie/${MOCK_ID}/edit`,
+      },
+    },
+    post: {
+      root: `${ROOTS.DASHBOARD}/post`,
+      new: `${ROOTS.DASHBOARD}/post/new`,
+      details: (title: string) => `${ROOTS.DASHBOARD}/post/${paramCase(title)}`,
+      edit: (title: string) => `${ROOTS.DASHBOARD}/post/${paramCase(title)}/edit`,
+      demo: {
+        details: `${ROOTS.DASHBOARD}/post/${paramCase(MOCK_TITLE)}`,
+        edit: `${ROOTS.DASHBOARD}/post/${paramCase(MOCK_TITLE)}/edit`,
+      },
+    },
+  },
+  movie: {
+    root: `/movie`,
+    checkout: `/movie/checkout`,
+    details: (id: string) => `/movie/${id}`,
+    demo: {
+      details: `/movie/${MOCK_ID}`,
+    },
+  },
+  post: {
+    root: `/post`,
+    details: (title: string) => `/post/${paramCase(title)}`,
+    demo: {
+      details: `/post/${paramCase(MOCK_TITLE)}`,
+    },
   },
 };
