@@ -123,7 +123,7 @@ export default function ReactHookForm({ debug }: Props) {
       });
 
       if (newFile) {
-        // setValue('singleUpload', newFile, { shouldValidate: true });
+        setValue('singleUpload', newFile, { shouldValidate: true });
       }
     },
     [setValue]
@@ -139,11 +139,11 @@ export default function ReactHookForm({ debug }: Props) {
         })
       );
 
-      // setValue('multiUpload', [...files, ...newFiles], {
-      //   shouldValidate: true,
-      // });
+      setValue('multiUpload', [...files, ...newFiles], {
+        shouldValidate: true,
+      });
     },
-    [values.multiUpload]
+    [setValue, values.multiUpload]
   );
 
   return (

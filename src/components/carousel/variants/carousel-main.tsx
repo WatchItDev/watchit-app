@@ -14,16 +14,13 @@ import Image from 'src/components/image';
 import { MotionContainer, varFade } from 'src/components/animate';
 import Carousel, { CarouselDots, useCarousel } from 'src/components/carousel/index';
 import Container from '@mui/material/Container';
+import Stack from '@mui/material/Stack';
+import { Poster } from '../../poster/types';
 
 // ----------------------------------------------------------------------
 
 type Props = {
-  data: {
-    id: string;
-    title: string;
-    coverUrl: string;
-    description: string;
-  }[];
+  data: Poster[]
 };
 
 export default function CarouselMain({ data }: Props) {
@@ -39,8 +36,8 @@ export default function CarouselMain({ data }: Props) {
   return (
     <Card sx={{ borderRadius: 0, boxShadow: 'none' }}>
       <Carousel ref={carousel.carouselRef} {...carousel.carouselSettings}>
-        {data.map((item, index) => (
-          <CarouselItem key={item.id} item={item} active={index === carousel.currentIndex} />
+        {data.map((poster, index) => (
+          <CarouselItem key={poster.id} poster={poster} active={index === carousel.currentIndex} />
         ))}
       </Carousel>
     </Card>
@@ -50,72 +47,57 @@ export default function CarouselMain({ data }: Props) {
 // ----------------------------------------------------------------------
 
 type CarouselItemProps = {
-  item: {
-    title: string;
-    description: string;
-    coverUrl: string;
-  };
+  poster: Poster
   active: boolean;
 };
 
-function CarouselItem({ item, active }: CarouselItemProps) {
+function CarouselItem({ poster, active }: CarouselItemProps) {
   const theme = useTheme();
-
-  const { coverUrl, title } = item;
 
   const variants = theme.direction === 'rtl' ? varFade().inLeft : varFade().inRight;
 
   return (
     <Paper sx={{ position: 'relative', boxShadow: 'none' }}>
-      <Image dir="ltr" alt={title} src={coverUrl} ratio="21/9" />
+      <Image dir="ltr" alt={poster.title} src={poster.images.vertical} ratio="21/9" />
 
-      <Box
+      <CardContent
         sx={{
-          top: 0,
-          width: 1,
-          height: 1,
+          bottom: 0,
+          zIndex: 9,
+          width: '100%',
+          textAlign: 'left',
           position: 'absolute',
+          color: 'common.white',
           ...bgGradient({
             direction: 'to top',
-            startColor: `#1E1F22 0%`,
-            endColor: `${alpha('#1E1F22', 0)} 100%`,
+            startColor: `#000 25%`,
+            endColor: `${alpha('#000', 0)} 100%`,
           }),
         }}
-      />
-      <Container>
-        <CardContent
-          component={MotionContainer}
-          animate={active}
-          action
-          sx={{
-            left: '50px',
-            bottom: 50,
-            maxWidth: '50%',
-            p: '0 !important',
-            textAlign: 'left',
-            position: 'absolute',
-            color: 'common.white',
-          }}
-        >
-          <m.div variants={variants}>
-            <Typography variant="h3" gutterBottom>
-              {item.title}
-            </Typography>
-          </m.div>
-
-          <m.div variants={variants}>
-            <Typography variant="body2" noWrap gutterBottom>
-              {item.description}
-            </Typography>
-          </m.div>
-
-          <m.div variants={variants}>
-            <Button variant="contained" sx={{ mt: 3 }}>
-              View More
-            </Button>
-          </m.div>
-        </CardContent>
-      </Container>
+      >
+        {/* Title */}
+        <m.div variants={variants}>
+          <Typography variant="h6" gutterBottom>
+            {poster.title}
+          </Typography>
+        </m.div>
+        {/* Details: Rating, Year, Genre */}
+        <Stack direction="row" spacing={1} alignItems="center">
+          <Typography variant="body2">{poster.rating} ★</Typography>
+          <Typography variant="body2">| {poster.year}</Typography>
+          <Typography variant="body2">| {poster.genre}</Typography>
+        </Stack>
+        <m.div variants={variants}>
+          <Typography variant="body2" noWrap gutterBottom>
+            {poster.synopsis}
+          </Typography>
+        </m.div>
+        <m.div variants={variants}>
+          <Button variant="contained" sx={{ mt: 3 }}>
+            View More
+          </Button>
+        </m.div>
+      </CardContent>
     </Paper>
   );
 }

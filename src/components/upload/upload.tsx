@@ -47,6 +47,20 @@ export default function Upload({
 
   const hasError = isDragReject || !!error;
 
+  // console.log('upload props')
+  // console.log('file:')
+  // console.log(file)
+  // console.log('files:')
+  // console.log(files)
+  // console.log('multiple:')
+  // console.log(multiple)
+  // console.log('isDragActive:')
+  // console.log(isDragActive)
+  // console.log('isDragReject:')
+  // console.log(isDragReject)
+  // console.log('error:')
+  // console.log(error)
+
   const renderPlaceholder = (
     <Stack spacing={3} alignItems="center" justifyContent="center" flexWrap="wrap">
       <UploadIllustration sx={{ width: 1, maxWidth: 200 }} />

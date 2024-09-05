@@ -16,6 +16,7 @@ import Button from '@mui/material/Button';
 import TextMaxLine from '../../text-max-line';
 import Iconify from '../../iconify';
 import { MotionContainer, varFade } from '../../animate';
+import { Poster } from '../../poster/types';
 
 // ----------------------------------------------------------------------
 
@@ -34,12 +35,7 @@ const StyledThumbnailsContainer = styled('div')<{ length: number }>(({ length, t
 // ----------------------------------------------------------------------
 
 type Props = {
-  data: {
-    id: string;
-    title: string;
-    coverUrl: string;
-    description: string;
-  }[];
+  data: Poster[]
 };
 
 export default function CarouselMixed({ data }: Props) {
@@ -76,9 +72,9 @@ export default function CarouselMixed({ data }: Props) {
         asNavFor={carouselThumb.nav}
         ref={carouselLarge.carouselRef}
       >
-        {data.map((item, index) => (
-          <Box key={item.id}>
-            <CarouselLargeItem item={item} active={carouselLarge.currentIndex === index} />
+        {data.map((poster, index) => (
+          <Box key={poster.id}>
+            <CarouselLargeItem poster={poster} active={carouselLarge.currentIndex === index} />
           </Box>
         ))}
       </Carousel>
@@ -92,9 +88,9 @@ export default function CarouselMixed({ data }: Props) {
         asNavFor={carouselLarge.nav}
         ref={carouselThumb.carouselRef}
       >
-         {data.map((item, index) => (
-          <Box key={item.id} sx={{ px: 0.75 }}>
-            <CarouselThumbItem item={item} active={carouselLarge.currentIndex === index} />
+         {data.map((poster, index) => (
+          <Box key={poster.id} sx={{ px: 0.75 }}>
+            <CarouselThumbItem poster={poster} active={carouselLarge.currentIndex === index} />
           </Box>
          ))}
       </Carousel>
@@ -113,17 +109,11 @@ export default function CarouselMixed({ data }: Props) {
 
 type CarouselThumbItemProps = {
   active: boolean;
-  item: {
-    title: string;
-    description: string;
-    coverUrl: string;
-  };
+  poster: Poster
 };
 
-function CarouselThumbItem({ item, active }: CarouselThumbItemProps) {
+function CarouselThumbItem({ poster, active }: CarouselThumbItemProps) {
   const theme = useTheme();
-
-  const { coverUrl, title } = item;
 
   return (
     <Paper
@@ -139,7 +129,7 @@ function CarouselThumbItem({ item, active }: CarouselThumbItemProps) {
         }),
       }}
     >
-      <Image alt={title} src={coverUrl} ratio="4/6" />
+      <Image alt={poster.title} src={poster.images.vertical} ratio="4/6" />
 
       <CardContent
         sx={{
@@ -157,7 +147,7 @@ function CarouselThumbItem({ item, active }: CarouselThumbItemProps) {
         }}
       >
         <TextMaxLine variant="h4" sx={{ mb: 2 }}>
-          {title}
+          {poster.title}
         </TextMaxLine>
 
         <Link
@@ -181,24 +171,18 @@ function CarouselThumbItem({ item, active }: CarouselThumbItemProps) {
 
 
 type CarouselLargeItemProps = {
-  item: {
-    title: string;
-    description: string;
-    coverUrl: string;
-  };
-  active: boolean;
+  poster: Poster
+  active: boolean
 };
 
-function CarouselLargeItem({ item, active }: CarouselLargeItemProps) {
+function CarouselLargeItem({ poster, active }: CarouselLargeItemProps) {
   const theme = useTheme();
-
-  const { coverUrl, title } = item;
 
   const variants = theme.direction === 'rtl' ? varFade().inLeft : varFade().inRight;
 
   return (
     <Paper sx={{ position: 'relative', boxShadow: 'none' }}>
-      <Image dir="ltr" alt={title} src={coverUrl} ratio="21/9" />
+      <Image dir="ltr" alt={poster.title} src={poster.images.wallpaper} ratio="21/9" />
 
       <Box
         sx={{
@@ -245,13 +229,13 @@ function CarouselLargeItem({ item, active }: CarouselLargeItemProps) {
       >
         <m.div variants={variants}>
           <Typography variant="h3" gutterBottom>
-            {item.title}
+            {poster.title}
           </Typography>
         </m.div>
 
         <m.div variants={variants}>
           <Typography variant="body2" noWrap gutterBottom>
-            {item.description}
+            {poster.synopsis}
           </Typography>
         </m.div>
 

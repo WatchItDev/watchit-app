@@ -1,26 +1,13 @@
 // @mui
-import { alpha, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
-import Link from '@mui/material/Link';
-import Paper from '@mui/material/Paper';
-import CardContent from '@mui/material/CardContent';
-// theme
-import { bgGradient } from 'src/theme/css';
-// components
-import Image from 'src/components/image';
-import Iconify from 'src/components/iconify';
-import TextMaxLine from 'src/components/text-max-line';
 import Carousel, { CarouselArrows, useCarousel } from 'src/components/carousel/index';
+import { PosterVertical } from '../../poster';
+import { Poster } from '../../poster/types';
 
 // ----------------------------------------------------------------------
 
 type Props = {
-  data: {
-    id: string;
-    title: string;
-    coverUrl: string;
-    description: string;
-  }[];
+  data: Poster[]
 };
 
 export default function CarouselPoster({ data }: Props) {
@@ -62,74 +49,11 @@ export default function CarouselPoster({ data }: Props) {
         <Carousel ref={carousel.carouselRef} {...carousel.carouselSettings}>
           {data.map((item) => (
             <Box key={item.id} sx={{ px: 0.75 }}>
-              <CarouselItem item={item} />
+              <PosterVertical {...item} />
             </Box>
           ))}
         </Carousel>
       </CarouselArrows>
     </Box>
-  );
-}
-
-// ----------------------------------------------------------------------
-
-type CarouselItemProps = {
-  item: {
-    title: string;
-    description: string;
-    coverUrl: string;
-  };
-};
-
-function CarouselItem({ item }: CarouselItemProps) {
-  const theme = useTheme();
-
-  const { coverUrl, title } = item;
-
-  return (
-    <Paper
-      sx={{
-        borderRadius: 2,
-        overflow: 'hidden',
-        position: 'relative',
-      }}
-    >
-      <Image alt={title} src={coverUrl} ratio="4/6" />
-
-      <CardContent
-        sx={{
-          bottom: 0,
-          zIndex: 9,
-          width: '100%',
-          textAlign: 'left',
-          position: 'absolute',
-          color: 'common.white',
-          ...bgGradient({
-            direction: 'to top',
-            startColor: `#000 25%`,
-            endColor: `${alpha('#000', 0)} 100%`,
-          }),
-        }}
-      >
-        <TextMaxLine variant="h4" sx={{ mb: 2 }}>
-          {title}
-        </TextMaxLine>
-
-        <Link
-          color="inherit"
-          variant="overline"
-          sx={{
-            opacity: 0.72,
-            alignItems: 'center',
-            display: 'inline-flex',
-            transition: theme.transitions.create(['opacity']),
-            '&:hover': { opacity: 1 },
-          }}
-        >
-          learn More
-          <Iconify icon="eva:arrow-forward-fill" width={16} sx={{ ml: 1 }} />
-        </Link>
-      </CardContent>
-    </Paper>
   );
 }
