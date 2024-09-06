@@ -83,9 +83,9 @@ function CarouselItem({ poster, active }: CarouselItemProps) {
         </m.div>
         {/* Details: Rating, Year, Genre */}
         <Stack direction="row" spacing={1} alignItems="center">
-          <Typography variant="body2">{poster.rating} ★</Typography>
-          <Typography variant="body2">| {poster.year}</Typography>
-          <Typography variant="body2">| {poster.genre}</Typography>
+          <Typography style={{fontSize: 'clamp(0.1rem, 2vw + 1rem, 0.7rem)',}} /* variant="body2" */>{poster.rating} ★</Typography>
+          <Typography style={{fontSize: 'clamp(0.1rem, 2vw + 1rem, 0.7rem)',}} /* variant="body2" */>| {poster.year}</Typography>
+          <Typography /* style={{fontSize: 'clamp(1rem, 2vw + 1rem, 3rem)',}} */ variant="body2">| {poster.genre}</Typography>
         </Stack>
         <m.div variants={variants}>
           <Typography variant="body2" noWrap gutterBottom>

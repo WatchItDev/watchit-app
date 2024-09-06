@@ -49,15 +49,15 @@ const PosterVertical = ({ title, images, rating, year, likes, price, genre }: Po
         {/* Likes */}
         <Stack direction="row" alignItems="center" spacing={0.5}>
           <IconHeartFilled size={18} color="#F2F3F5" />
-          <Typography variant="body2">{likes}K</Typography>
+          <Typography style={{fontSize: 'clamp(0.1rem, 0.8vw, 0.8rem)',whiteSpace: 'nowrap'}} variant="body2">{likes}K</Typography>
         </Stack>
 
         {/* Price WVC & USD */}
         <Stack alignItems="flex-end">
-          <Typography variant="body2" sx={{ lineHeight: 1 }}>
+          <Typography variant="body2" sx={{ lineHeight: 1 , fontSize: 'clamp(0.1rem, 0.8vw, 0.8rem)',whiteSpace: 'nowrap' }}>
             {price.wvc} WVC
           </Typography>
-          <Typography variant="body2" sx={{ lineHeight: 1 }}>
+          <Typography variant="body2" sx={{ lineHeight: 1 , fontSize: 'clamp(0.1rem, 0.8vw, 0.8rem)',whiteSpace: 'nowrap' }}>
             {price.usd} USD
           </Typography>
         </Stack>
@@ -80,15 +80,17 @@ const PosterVertical = ({ title, images, rating, year, likes, price, genre }: Po
         }}
       >
         {/* Title */}
-        <Typography variant="h6" sx={{ mb: 1 }}>
+        <Typography style={{fontSize: 'clamp(0.5rem, 1vw, 2rem)'}} variant="h6" sx={{ mb: 1 }}>
           {title}
         </Typography>
 
         {/* Details: Rating, Year, Genre */}
-        <Stack direction="row" spacing={1} alignItems="center">
-          <Typography variant="body2">{rating} ★</Typography>
-          <Typography variant="body2">| {year}</Typography>
-          <Typography variant="body2">| {genre}</Typography>
+        <Stack sx={{overflow: 'hidden'}} direction="row" spacing={1} alignItems="center">
+          <Typography sx={{fontSize: 'clamp(0.1rem, 1vw, 3rem)',whiteSpace: 'nowrap'}} variant="body2">{rating} ★</Typography>
+          <Typography sx={{fontSize: 'clamp(0.1rem, 1vw, 3rem)',whiteSpace: 'nowrap'}} variant="body2">| {year}</Typography>
+          <Typography sx={{fontSize: 'clamp(0.1rem, 1vw, 3rem)',overflow: 'hidden',
+          whiteSpace: 'nowrap',
+          textOverflow: 'ellipsis',}} variant="body2">| {genre}</Typography>
         </Stack>
       </CardContent>
     </Paper>
