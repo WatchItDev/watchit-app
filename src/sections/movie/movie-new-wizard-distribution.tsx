@@ -13,6 +13,7 @@ import { IconTrash } from '@tabler/icons-react';
 import Divider from '@mui/material/Divider';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+import MenuItem from '@mui/material/MenuItem';
 import MovieWizardContentLayout from './movie-new-wizard-layout';
 
 // const DistributionSchema = Yup.object().shape({
@@ -80,7 +81,10 @@ export default function DistributionForm({ onSubmit, onBack, data }: any) {
 
   const {
     formState: { errors },
+    watch
   } = methods;
+
+  const values = watch();
 
   const licenseTypeOptions = [
     { value: 'full', label: 'Full License' },
@@ -122,27 +126,27 @@ export default function DistributionForm({ onSubmit, onBack, data }: any) {
 
   return (
     <FormProvider methods={methods} onSubmit={methods.handleSubmit(onSubmit)}>
-      <MovieWizardContentLayout data={data} showNext disableNext={totalRevenueShare > 100} showBack onBack={onBack}>
+      <MovieWizardContentLayout data={{...data, ...values}} showNext disableNext={totalRevenueShare > 100} showBack onBack={onBack}>
         <Grid xs={12}>
           <Card sx={{ backgroundColor: 'transparent' }}>
             <CardHeader title="Rights & Legal Information" />
             <Stack spacing={3} sx={{ p: 3 }}>
               <Grid container spacing={3}>
                 <Grid item xs={12} md={6} >
-                  <RHFSelect native name="licenseType" label="License Type" InputLabelProps={{ shrink: true }}>
+                  <RHFSelect name="licenseType" label="License Type">
                     {licenseTypeOptions.map((option) => (
-                      <option key={option.value} value={option.value}>
+                      <MenuItem key={option.value} value={option.value}>
                         {option.label}
-                      </option>
+                      </MenuItem>
                     ))}
                   </RHFSelect>
                 </Grid>
                 <Grid item xs={12} md={6} >
-                  <RHFSelect native name="territory" label="Applicable Territory" InputLabelProps={{ shrink: true }}>
+                  <RHFSelect name="territory" label="Applicable Territory">
                     {territoryOptions.map((option) => (
-                      <option key={option.value} value={option.value}>
+                      <MenuItem key={option.value} value={option.value}>
                         {option.label}
-                      </option>
+                      </MenuItem>
                     ))}
                   </RHFSelect>
                 </Grid>
@@ -202,24 +206,22 @@ export default function DistributionForm({ onSubmit, onBack, data }: any) {
              {errors?.creators ? <Typography variant="body2" color="error" sx={{ px: 3 }}><>{ errors?.creators?.message ?? '' }</></Typography> : undefined}
             <Stack spacing={3} sx={{ p: 3 }}>
               {creatorsFields.map((creator: any, index) => (
-                <>
+                <Stack key={creator.id} spacing={2}>
                   { index > 0 ? <Divider sx={{ borderStyle: 'dashed' }} /> : undefined }
-                  <Stack key={creator.id} spacing={2}>
-                    <Box sx={{ display: 'flex', flexWrap: 'nowrap', gap: 1 }}>
-                      <RHFTextField name={`creators[${index}].name`} label="Name" />
-                      <RHFTextField name={`creators[${index}].role`} label="Role" />
-                      <RHFTextField name={`creators[${index}].walletAddress`} label="Wallet Address" />
-                      <RHFTextField
-                        name={`creators[${index}].revenueShare`}
-                        label="Revenue Share (%)"
-                        type="number"
-                      />
-                      <IconButton onClick={() => creatorsRemove(index)}>
-                        <IconTrash />
-                      </IconButton>
-                    </Box>
-                  </Stack>
-                </>
+                  <Box sx={{ display: 'flex', flexWrap: 'nowrap', gap: 1 }}>
+                    <RHFTextField name={`creators[${index}].name`} label="Name" />
+                    <RHFTextField name={`creators[${index}].role`} label="Role" />
+                    <RHFTextField name={`creators[${index}].walletAddress`} label="Wallet Address" />
+                    <RHFTextField
+                      name={`creators[${index}].revenueShare`}
+                      label="Revenue Share (%)"
+                      type="number"
+                    />
+                    <IconButton onClick={() => creatorsRemove(index)}>
+                      <IconTrash />
+                    </IconButton>
+                  </Box>
+                </Stack>
               ))}
             </Stack>
           </Card>
@@ -247,31 +249,29 @@ export default function DistributionForm({ onSubmit, onBack, data }: any) {
              {errors?.distribution ? <Typography variant="body2" color="error" sx={{ px: 3 }}><>{ errors?.distribution?.message ?? '' }</></Typography> : undefined}
             <Stack spacing={3} sx={{ p: 3 }}>
               {distributionFields.map((distribution: any, index) => (
-                <>
+                <Stack key={distribution.id} spacing={2}>
                   { index > 0 ? <Divider sx={{ borderStyle: 'dashed' }} /> : undefined }
-                  <Stack key={distribution.id} spacing={2}>
-                    <Box sx={{ display: 'flex', flexWrap: 'nowrap', gap: 1 }}>
-                      <RHFSelect native name={`distribution[${index}].type`} label="Type" InputLabelProps={{ shrink: true }}>
-                        {distributionTypeOptions.map((option) => (
-                          <option key={option.value} value={option.value}>
-                            {option.label}
-                          </option>
-                        ))}
-                      </RHFSelect>
-                      <RHFSelect native name={`distribution[${index}].currency`} label="Currency" InputLabelProps={{ shrink: true }}>
-                        {currenciesOptions.map((option) => (
-                          <option key={option.value} value={option.value}>
-                            {option.label}
-                          </option>
-                        ))}
-                      </RHFSelect>
-                      <RHFTextField name={`distribution[${index}].price`} label="Price" type="number" />
-                      <IconButton onClick={() => distributionRemove(index)}>
-                        <IconTrash />
-                      </IconButton>
-                    </Box>
-                  </Stack>
-                </>
+                  <Box sx={{ display: 'flex', flexWrap: 'nowrap', gap: 1 }}>
+                    <RHFSelect name={`distribution[${index}].type`} label="Type">
+                      {distributionTypeOptions.map((option) => (
+                        <MenuItem key={option.value} value={option.value}>
+                          {option.label}
+                        </MenuItem>
+                      ))}
+                    </RHFSelect>
+                    <RHFSelect name={`distribution[${index}].currency`} label="Currency">
+                      {currenciesOptions.map((option) => (
+                        <MenuItem key={option.value} value={option.value}>
+                          {option.label}
+                        </MenuItem>
+                      ))}
+                    </RHFSelect>
+                    <RHFTextField name={`distribution[${index}].price`} label="Price" type="number" />
+                    <IconButton onClick={() => distributionRemove(index)}>
+                      <IconTrash />
+                    </IconButton>
+                  </Box>
+                </Stack>
               ))}
             </Stack>
           </Card>

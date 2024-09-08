@@ -1,94 +1,72 @@
 // @mui
 import { useTheme } from '@mui/material/styles';
-import Stack from '@mui/material/Stack';
+import Box from '@mui/material/Box';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
+import Container from '@mui/material/Container';
+// hooks
+import { useOffSetTop } from 'src/hooks/use-off-set-top';
 // theme
 import { bgBlur } from 'src/theme/css';
-// hooks
-import { useResponsive } from 'src/hooks/use-responsive';
-// components
-import Logo from 'src/components/logo';
-import SvgColor from 'src/components/svg-color';
-import { useSettingsContext } from 'src/components/settings';
 //
+import { FC, PropsWithChildren } from 'react';
 import { HEADER } from '../config-layout';
-import {
-  AccountPopover,
-  SettingsButton,
-  LanguagePopover,
-  ContactsPopover,
-  NotificationsPopover,
-} from '../_common';
+//
+import {  HeaderShadow } from '../_common';
 
 // ----------------------------------------------------------------------
 
-type Props = {
-  onOpenNav?: VoidFunction;
-};
+interface HeaderProps {
+  actions?: React.ReactNode
+}
 
-export default function Header({ onOpenNav }: Props) {
+// ----------------------------------------------------------------------
+
+const Header: FC<PropsWithChildren<HeaderProps>> = ({ children ,actions }) =>  {
   const theme = useTheme();
 
-  const settings = useSettingsContext();
-
-  const isNavHorizontal = settings.themeLayout === 'horizontal';
-
-  const lgUp = useResponsive('up', 'lg');
-
-  const renderContent = (
-    <>
-      {lgUp && isNavHorizontal && <Logo sx={{ mr: 2.5 }} />}
-
-      {!lgUp && (
-        <IconButton onClick={onOpenNav}>
-          <SvgColor src="/assets/icons/navbar/ic_menu_item.svg" />
-        </IconButton>
-      )}
-
-      <Stack
-        flexGrow={1}
-        direction="row"
-        alignItems="center"
-        justifyContent="flex-end"
-        spacing={{ xs: 0.5, sm: 1 }}
-      >
-        <LanguagePopover />
-
-        <NotificationsPopover />
-
-        <ContactsPopover />
-
-        <SettingsButton />
-
-        <AccountPopover />
-      </Stack>
-    </>
-  );
-
   return (
-    <AppBar
-      sx={{
-        height: HEADER.H_MOBILE,
-        zIndex: theme.zIndex.appBar + 1,
-        ...bgBlur({
-          color: theme.palette.background.default,
-        }),
-        transition: theme.transitions.create(['height'], {
-          duration: theme.transitions.duration.shorter,
-        }),
-        width: `calc(100% - 368px)`,
-      }}
-    >
+    <>
       <Toolbar
+        disableGutters
         sx={{
-          height: 1,
-          px: { lg: 5 },
+          height: {
+            xs: HEADER.H_MOBILE,
+            md: HEADER.H_DESKTOP,
+          },
+          minHeight: {
+            xs: HEADER.H_MOBILE,
+            md: HEADER.H_DESKTOP,
+          },
+          borderBottom: `dashed 1px ${theme.palette.divider}`,
+          transition: theme.transitions.create(['height'], {
+            easing: theme.transitions.easing.easeInOut,
+            duration: theme.transitions.duration.shorter,
+          }),
+          // ...bgBlur({
+          //   color: theme.palette.background.default,
+          // })
+          backgroundColor: '#2B2D31',
+          position: 'sticky',
+          top: 0,
+          zIndex: 10
         }}
       >
-        {renderContent}
+        <Container sx={{ height: 1, display: 'flex', alignItems: 'center' }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start' }}>
+            { children }
+          </Box>
+          <Box sx={{ flexGrow: 1 }} />
+
+          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
+            { actions }
+          </Box>
+        </Container>
       </Toolbar>
-    </AppBar>
+
+      {/* <HeaderShadow /> */}
+    </>
   );
 }
+
+export default Header

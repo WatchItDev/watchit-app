@@ -7,6 +7,8 @@ import Stack from '@mui/material/Stack';
 import CardHeader from '@mui/material/CardHeader';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import FormProvider, { RHFTextField, RHFSelect, RHFMultiSelect } from 'src/components/hook-form';
+import MenuItem from '@mui/material/MenuItem';
+import Typography from '@mui/material/Typography';
 import MovieWizardContentLayout from './movie-new-wizard-layout';
 
 // const MovieInformationSchema = Yup.object().shape({
@@ -91,6 +93,10 @@ export default function MovieInformationForm({ onSubmit, data }: any) {
     },
   });
 
+  const { watch, formState: { errors } } = methods;
+
+  const values = watch();
+
   const genreOptions = [
     { value: 'drama', label: 'Drama' },
     { value: 'thriller', label: 'Thriller' },
@@ -105,9 +111,12 @@ export default function MovieInformationForm({ onSubmit, data }: any) {
     { value: 'french', label: 'French' },
   ];
 
+  console.log('errors')
+  console.log(errors)
+
   return (
     <FormProvider methods={methods} onSubmit={methods.handleSubmit(onSubmit)}>
-      <MovieWizardContentLayout data={data} showNext>
+      <MovieWizardContentLayout data={{...data, ...values}} showNext>
         <Grid item xs={12}>
           <Card sx={{ backgroundColor: 'transparent' }}>
             <CardHeader title="Basic Movie Information" />
@@ -135,35 +144,36 @@ export default function MovieInformationForm({ onSubmit, data }: any) {
                       />
                     )}
                   />
+                  {errors?.releaseDate ? <Typography variant="caption" color="error" sx={{ px: 2 }}><>{ errors?.releaseDate?.message ?? '' }</></Typography> : undefined}
                 </Grid>
                 <Grid item xs={12} md={6} >
-                  <RHFSelect native name="language" label="Language" InputLabelProps={{ shrink: true }}>
+                  <RHFSelect name="language" label="Language">
                     {languageOptions.map((option) => (
-                      <option key={option.value} value={option.value}>
+                      <MenuItem key={option.value} value={option.label}>
                         {option.label}
-                      </option>
+                      </MenuItem>
                     ))}
                   </RHFSelect>
                 </Grid>
                 <Grid item xs={12} md={6} >
-                  <RHFSelect native name="country" label="Country of Origin" InputLabelProps={{ shrink: true }}>
-                    <option value="usa">USA</option>
-                    <option value="canada">Canada</option>
+                  <RHFSelect name="country" label="Country of Origin">
+                    <MenuItem value="usa">USA</MenuItem>
+                    <MenuItem value="canada">Canada</MenuItem>
                   </RHFSelect>
                 </Grid>
                 <Grid item xs={12} md={6} >
-                  <RHFSelect native name="rating" label="Rating" InputLabelProps={{ shrink: true }}>
-                    <option value="g">G</option>
-                    <option value="pg">PG</option>
-                    <option value="pg13">PG-13</option>
-                    <option value="r">R</option>
+                  <RHFSelect name="rating" label="Rating">
+                    <MenuItem value="g">G</MenuItem>
+                    <MenuItem value="pg">PG</MenuItem>
+                    <MenuItem value="pg13">PG-13</MenuItem>
+                    <MenuItem value="r">R</MenuItem>
                   </RHFSelect>
                 </Grid>
                 <Grid item xs={12} md={6} >
-                  <RHFSelect native name="format" label="Format" InputLabelProps={{ shrink: true }}>
-                    <option value="sd">SD</option>
-                    <option value="hd">HD</option>
-                    <option value="4k">4K</option>
+                  <RHFSelect name="format" label="Format">
+                    <MenuItem value="sd">SD</MenuItem>
+                    <MenuItem value="hd">HD</MenuItem>
+                    <MenuItem value="4k">4K</MenuItem>
                   </RHFSelect>
                 </Grid>
                 <Grid item xs={12}>
@@ -201,6 +211,7 @@ export default function MovieInformationForm({ onSubmit, data }: any) {
                       />
                     )}
                   />
+                  {errors?.filmingStart ? <Typography variant="caption" color="error" sx={{ px: 2 }}><>{ errors?.filmingStart?.message ?? '' }</></Typography> : undefined}
                 </Grid>
                 <Grid item xs={12} md={6} >
                   <Controller
@@ -215,6 +226,7 @@ export default function MovieInformationForm({ onSubmit, data }: any) {
                       />
                     )}
                   />
+                  {errors?.filmingEnd ? <Typography variant="caption" color="error" sx={{ px: 2 }}><>{ errors?.filmingEnd?.message ?? '' }</></Typography> : undefined}
                 </Grid>
                 <Grid item xs={12} md={6} >
                   <RHFTextField name="director" label="Director" />

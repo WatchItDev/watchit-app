@@ -1,25 +1,20 @@
 // @mui
 import Box from '@mui/material/Box';
 //
-import Image, { ImageRatio } from '../image';
+import Image from '../image';
+import { SingleFilePreviewProps } from './preview-single-file';
 
 // ----------------------------------------------------------------------
 
-export interface SingleFilePreviewProps {
-  imgUrl?: string;
-  ratio?: ImageRatio;
-}
-
-export default function SingleFilePreview({ imgUrl = '', ratio }: SingleFilePreviewProps) {
+export default function SingleFilePreviewCustom({ imgUrl = '', ratio }: SingleFilePreviewProps) {
   return (
     <Box
+      className="custom"
       sx={{
         p: 1,
-        top: 0,
-        left: 0,
-        width: 1,
-        height: 1,
-        position: 'absolute',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
       }}
     >
       <Image

@@ -1,6 +1,8 @@
 import { DropzoneOptions } from 'react-dropzone';
 // @mui
 import { Theme, SxProps } from '@mui/material/styles';
+import { ImageRatio } from '../image';
+import SingleFilePreview from './preview-single-file';
 
 // ----------------------------------------------------------------------
 
@@ -14,6 +16,7 @@ export interface UploadProps extends DropzoneOptions {
   error?: boolean;
   sx?: SxProps<Theme>;
   thumbnail?: boolean;
+  thumbnailRatio?: ImageRatio;
   placeholder?: React.ReactNode;
   helperText?: React.ReactNode;
   disableMultiple?: boolean;
@@ -25,4 +28,6 @@ export interface UploadProps extends DropzoneOptions {
   onUpload?: VoidFunction;
   onRemove?: (file: CustomFile | string) => void;
   onRemoveAll?: VoidFunction;
+  singleFilePreview?: typeof SingleFilePreview,
+  isCustomPreview?: boolean
 }

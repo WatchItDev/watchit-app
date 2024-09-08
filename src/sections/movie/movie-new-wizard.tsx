@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
-import Typography from '@mui/material/Typography';
+import Header from 'src/layouts/dashboard/header';
 import MovieInformationForm from './movie-new-wizard-information';
 import MediaAssetsForm from './movie-new-wizard-assets';
 import DistributionForm from './movie-new-wizard-distribution';
@@ -40,9 +40,6 @@ export default function MovieNewWizard() {
 
   return (
     <Container maxWidth={settings.themeStretch ? false : 'lg'} sx={{ mb: 5,  mt: 5 }}>
-      <Typography variant="h4" sx={{ my: { xs: 3, md: 5 } }}>
-        Add new movie
-      </Typography>
 
       <Grid container justifyContent="flex-start">
         <Grid xs={12} md={12}>

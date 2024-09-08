@@ -29,9 +29,13 @@ export default function Upload({
   //
   files,
   thumbnail,
+  thumbnailRatio,
   onUpload,
   onRemove,
   onRemoveAll,
+  placeholder,
+  singleFilePreview = SingleFilePreview,
+  isCustomPreview = false,
   sx,
   ...other
 }: UploadProps) {
@@ -47,21 +51,7 @@ export default function Upload({
 
   const hasError = isDragReject || !!error;
 
-  // console.log('upload props')
-  // console.log('file:')
-  // console.log(file)
-  // console.log('files:')
-  // console.log(files)
-  // console.log('multiple:')
-  // console.log(multiple)
-  // console.log('isDragActive:')
-  // console.log(isDragActive)
-  // console.log('isDragReject:')
-  // console.log(isDragReject)
-  // console.log('error:')
-  // console.log(error)
-
-  const renderPlaceholder = (
+  const defaultPlaceholder = (
     <Stack spacing={3} alignItems="center" justifyContent="center" flexWrap="wrap">
       <UploadIllustration sx={{ width: 1, maxWidth: 200 }} />
       <Stack spacing={1} sx={{ textAlign: 'center' }}>
@@ -78,14 +68,17 @@ export default function Upload({
           >
             browse
           </Box>
-          thorough your machine
+          through your machine
         </Typography>
       </Stack>
     </Stack>
   );
 
+  const renderPlaceholder = placeholder ?? defaultPlaceholder;
+  const SinglePreview = singleFilePreview
+
   const renderSinglePreview = (
-    <SingleFilePreview imgUrl={typeof file === 'string' ? file : file?.preview} />
+    <SinglePreview imgUrl={typeof file === 'string' ? file : file?.preview} ratio={thumbnailRatio} />
   );
 
   const removeSinglePreview = hasFile && onDelete && (
@@ -140,7 +133,7 @@ export default function Upload({
       <Box
         {...getRootProps()}
         sx={{
-          p: 5,
+          p: isCustomPreview ? 2 : 5,
           outline: 'none',
           borderRadius: 1,
           cursor: 'pointer',
@@ -165,7 +158,7 @@ export default function Upload({
             borderColor: 'error.light',
           }),
           ...(hasFile && {
-            padding: '24% 0',
+            padding: isCustomPreview ? 2 : '24% 0',
           }),
         }}
       >

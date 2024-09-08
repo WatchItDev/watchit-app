@@ -25,7 +25,7 @@ const MovieWizardContentLayout: FC<PropsWithChildren<MovieWizardContentLayoutPro
       </Grid>
 
       <Grid xs={12} md={4} sx={{ pl: 2 }}>
-        <Box sx={{ position: 'sticky', top: '30px' }}>
+        <Box sx={{ position: 'sticky', top: '75px' }}>
           <Box sx={{ display: 'flex', gap: 2 }}>
             {
               showBack ? (
