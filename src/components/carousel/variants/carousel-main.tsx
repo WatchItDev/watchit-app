@@ -13,6 +13,7 @@ import { bgGradient } from 'src/theme/css';
 import Image from 'src/components/image';
 import { MotionContainer, varFade } from 'src/components/animate';
 import Carousel, { CarouselDots, useCarousel } from 'src/components/carousel/index';
+import { IconFlagFilled, IconStarFilled, IconPlayerPlay } from '@tabler/icons-react';
 import Container from '@mui/material/Container';
 import Stack from '@mui/material/Stack';
 import { Poster } from '../../poster/types';
@@ -77,25 +78,51 @@ function CarouselItem({ poster, active }: CarouselItemProps) {
       >
         {/* Title */}
         <m.div variants={variants}>
-          <Typography variant="h6" gutterBottom>
+          <Typography sx={{ fontSize: 'clamp(2rem, 1vw, 3rem)',fontWeight: 'bold' }} gutterBottom>
             {poster.title}
           </Typography>
         </m.div>
         {/* Details: Rating, Year, Genre */}
         <Stack direction="row" spacing={1} alignItems="center">
-          <Typography style={{fontSize: 'clamp(0.1rem, 2vw + 1rem, 0.7rem)',}} /* variant="body2" */>{poster.rating} ★</Typography>
-          <Typography style={{fontSize: 'clamp(0.1rem, 2vw + 1rem, 0.7rem)',}} /* variant="body2" */>| {poster.year}</Typography>
-          <Typography /* style={{fontSize: 'clamp(1rem, 2vw + 1rem, 3rem)',}} */ variant="body2">| {poster.genre}</Typography>
+          <IconStarFilled size={14} color="#FFCD19"/>
+          <Typography sx={{fontSize: 'clamp(0.3rem, 2vw + 1rem, 0.9rem)'}} variant="body2">{poster.rating}</Typography>
+          <Typography sx={{fontSize: 'clamp(0.3rem, 2vw + 1rem, 0.9rem)'}} variant="body2">|  {poster.year}</Typography>
+          <Typography sx={{fontSize: 'clamp(0.3rem, 2vw + 1rem, 0.9rem)'}} variant="body2">|  {poster.genre}</Typography>
         </Stack>
-        <m.div variants={variants}>
-          <Typography variant="body2" noWrap gutterBottom>
-            {poster.synopsis}
-          </Typography>
-        </m.div>
-        <m.div variants={variants}>
-          <Button variant="contained" sx={{ mt: 3 }}>
-            View More
+        <Box  sx={{
+          width: '50%',
+          '@media (max-width: 500px)': {
+            width: '100%', 
+          },
+        }}>
+          <m.div  variants={variants}>
+            <Typography sx={{
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              display: '-webkit-box',
+              WebkitLineClamp: '5',
+              WebkitBoxOrient: 'vertical',
+            }} 
+              variant="body2" >
+              {poster.synopsis}
+            </Typography>
+          </m.div>
+        </Box>
+        <m.div className='flex space-x-6' variants={variants}>
+        <Stack direction="row" spacing={1} alignItems="center">
+          <Button variant='contained' sx={{ mt: 3 , color:'#FFFFFF',background: 'linear-gradient(to right, #7B61FF 0%, #4A34B8 100%)' }}>
+            <IconPlayerPlay style={{marginRight:'4px'}} size={22} color='#FFFFFF' /> Play now
           </Button>
+          <Button variant="outlined" sx={{ mt: 3 , borderColor: '#FFFFFF',
+              color: '#FFFFFF',
+              '&:hover': {
+                borderColor: 'darkred',
+                color: 'darkred',
+              }, }}>
+              <IconFlagFilled style={{marginRight:'4px'}} size={22} color='#FFFFFF' />
+              Add watchlist
+          </Button>
+          </Stack>
         </m.div>
       </CardContent>
     </Paper>

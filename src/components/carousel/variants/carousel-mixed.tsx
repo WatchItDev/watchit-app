@@ -13,10 +13,14 @@ import Link from '@mui/material/Link';
 import { m } from 'framer-motion';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
+import { IconFlagFilled, IconStarFilled, IconPlayerPlay } from '@tabler/icons-react';
+import Stack from '@mui/material/Stack';
 import TextMaxLine from '../../text-max-line';
 import Iconify from '../../iconify';
 import { MotionContainer, varFade } from '../../animate';
 import { Poster } from '../../poster/types';
+import { PosterVertical } from '../../poster';
+
 
 // ----------------------------------------------------------------------
 
@@ -129,42 +133,7 @@ function CarouselThumbItem({ poster, active }: CarouselThumbItemProps) {
         }),
       }}
     >
-      <Image alt={poster.title} src={poster.images.vertical} ratio="4/6" />
-
-      <CardContent
-        sx={{
-          bottom: 0,
-          zIndex: 9,
-          width: '100%',
-          textAlign: 'left',
-          position: 'absolute',
-          color: 'common.white',
-          ...bgGradient({
-            direction: 'to top',
-            startColor: `#000 25%`,
-            endColor: `${alpha('#000', 0)} 100%`,
-          }),
-        }}
-      >
-        <TextMaxLine variant="h4" sx={{ mb: 2 }}>
-          {poster.title}
-        </TextMaxLine>
-
-        <Link
-          color="inherit"
-          variant="overline"
-          sx={{
-            opacity: 0.72,
-            alignItems: 'center',
-            display: 'inline-flex',
-            transition: theme.transitions.create(['opacity']),
-            '&:hover': { opacity: 1 },
-          }}
-        >
-          learn More
-          <Iconify icon="eva:arrow-forward-fill" width={16} sx={{ ml: 1 }} />
-        </Link>
-      </CardContent>
+      <PosterVertical {...poster} />
     </Paper>
   );
 }
@@ -182,6 +151,7 @@ function CarouselLargeItem({ poster, active }: CarouselLargeItemProps) {
 
   return (
     <Paper sx={{ position: 'relative', boxShadow: 'none' }}>
+      
       <Image dir="ltr" alt={poster.title} src={poster.images.wallpaper} ratio="21/9" />
 
       <Box
@@ -198,6 +168,7 @@ function CarouselLargeItem({ poster, active }: CarouselLargeItemProps) {
           }),
         }}
       />
+        
       <Box
         sx={{
           top: 0,
@@ -214,35 +185,80 @@ function CarouselLargeItem({ poster, active }: CarouselLargeItemProps) {
       />
 
       <CardContent
-        component={MotionContainer}
-        animate={active}
-        action
         sx={{
-          left: '50px',
-          bottom: 75,
-          maxWidth: '40%',
-          p: '0px !important',
+          bottom: 0,
+          zIndex: 9,
+          width: '100%',
           textAlign: 'left',
           position: 'absolute',
           color: 'common.white',
+          ...bgGradient({
+            direction: 'to top',
+            startColor: `#000 25%`,
+            endColor: `${alpha('#000', 0)} 100%`,
+          }),
         }}
       >
-        <m.div variants={variants}>
-          <Typography variant="h3" gutterBottom>
-            {poster.title}
-          </Typography>
-        </m.div>
+        <Box sx={{
+          width: '40%',
+          position: 'absolute',
+          top: '-80px'
+        }}>
+          <m.div variants={variants}>
+            <Typography lineHeight={1} sx={{ fontSize: 'clamp(1.7rem, 1vw, 2.5rem)',fontWeight: 'bold' }} noWrap gutterBottom>
+              Featured in watchit
+            </Typography>
+            <Typography color="common.gray" lineHeight={1} sx={{ fontSize: 'clamp(0.8rem, 1vw, 2rem)' }} noWrap gutterBottom>
+              Best featured for you today
+            </Typography>
+          </m.div>
+        </Box>
 
-        <m.div variants={variants}>
-          <Typography variant="body2" noWrap gutterBottom>
-            {poster.synopsis}
-          </Typography>
-        </m.div>
-
-        <m.div variants={variants}>
-          <Button variant="contained" sx={{ mt: 3 }}>
-            View More
+        {/* Title */}
+        <Box sx={{width: '40%'}}>
+          <m.div variants={variants}>
+            <Typography  noWrap gutterBottom>
+              {poster.title}
+            </Typography>
+          </m.div>
+        </Box>
+        {/* Details: Ratinsx={{ fontSize: 'clamp(1.5rem, 1vw, 2rem)',fontWeight: 'bold' }}g, Year, Genre */}
+        <Stack direction="row" spacing={1} alignItems="center">
+          <IconStarFilled size={14} color="#FFCD19"/>
+          <Typography sx={{fontSize: 'clamp(0.3rem, 1vw, 0.7rem)'}} variant="body2">{poster.rating}</Typography>
+          <Typography sx={{fontSize: 'clamp(0.3rem, 1vw, 0.7rem)'}} variant="body2">|  {poster.year}</Typography>
+          <Typography sx={{fontSize: 'clamp(0.3rem, 1vw, 0.7rem)'}} variant="body2">|  {poster.genre}</Typography>
+        </Stack>
+        <Box sx={{width: '40%'}}>
+          <m.div  variants={variants}>
+            <Typography sx={{
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              display: '-webkit-box',
+              WebkitLineClamp: '3',
+              WebkitBoxOrient: 'vertical',
+              fontSize: 'clamp(0.3rem, 2vw, 0.9rem)'
+            }} 
+              variant="body2" >
+              {poster.synopsis}
+            </Typography>
+          </m.div>
+        </Box>
+        <m.div className='flex space-x-6' variants={variants}>
+        <Stack direction="row" spacing={1} alignItems="center">
+          <Button variant='contained' sx={{ mt: 3 , color:'#FFFFFF',background: 'linear-gradient(to right, #7B61FF 0%, #4A34B8 100%)' }}>
+            <IconPlayerPlay style={{marginRight:'4px'}} size={22} color='#FFFFFF' /> Play now
           </Button>
+          <Button variant="outlined" sx={{ mt: 3 , borderColor: '#FFFFFF',
+              color: '#FFFFFF',
+              '&:hover': {
+                borderColor: 'darkred',
+                color: 'darkred',
+              }, }}>
+              <IconFlagFilled style={{marginRight:'4px'}} size={22} color='#FFFFFF' />
+              Add watchlist
+          </Button>
+          </Stack>
         </m.div>
       </CardContent>
     </Paper>

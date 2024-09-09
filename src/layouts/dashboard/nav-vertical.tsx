@@ -81,7 +81,13 @@ export default function NavVertical({ openNav, onCloseNav }: Props) {
         direction="row"
         alignItems="center"
         justifyContent="space-between"
-        sx={{ padding: '12px 16px 8px 16px', backgroundColor: '#232428' }}
+        sx={{ 
+          padding: '12px 16px 8px 16px', 
+          backgroundColor: '#232428',
+          position: 'Fix',
+          bottom: '0',
+          width: '100%',
+        }}
       >
         {loading ? (
           <CircularProgress size={24} sx={{ color: '#fff' }} />
