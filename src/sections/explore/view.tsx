@@ -13,15 +13,6 @@ import { CarouselSection } from '../../components/carousel/carousel-section';
 
 // ----------------------------------------------------------------------
 
-const _carouselsExample = [...Array(20)].map((_, index) => ({
-  id: _mock.id(index),
-  title: _mock.postTitle(index),
-  coverUrl: _mock.image.cover(index),
-  description: _mock.description(index),
-}));
-
-// ----------------------------------------------------------------------
-
 export default function ExploreView() {
   return (
     <Container sx={{ p: '0 !important', maxWidth: '2000px !important' }}>
