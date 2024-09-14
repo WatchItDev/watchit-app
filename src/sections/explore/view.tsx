@@ -1,6 +1,7 @@
 // MUI IMPORTS
 import Stack from '@mui/material/Stack';
 import Container from '@mui/material/Container';
+import Box from '@mui/material/Box';
 
 // MOCK IMPORTS
 import { _mock, moviesMock } from 'src/_mock';
@@ -9,7 +10,11 @@ import { _mock, moviesMock } from 'src/_mock';
 import CarouselMain from 'src/components/carousel/variants/carousel-main';
 import CarouselMixed from 'src/components/carousel/variants/carousel-mixed';
 import CarouselPoster from 'src/components/carousel/variants/carousel-poster';
+import CarouselSlider from 'src/components/carousel/variants/carousel-slider';
+import MovieDetailMain from 'src/components/carousel/variants/movie-detail-main';
+import PosterHorizontal from 'src/components/poster/variants/poster-horizontal';
 import { CarouselSection } from '../../components/carousel/carousel-section';
+
 
 // ----------------------------------------------------------------------
 
@@ -38,8 +43,22 @@ export default function ExploreView() {
           <CarouselPoster data={moviesMock.slice(8, 16)} />
         </CarouselSection>
 
-        <CarouselSection title="Carousel Center Mode">
-          <CarouselPoster data={moviesMock.slice(8, 16)} />
+        <CarouselSection>
+          <Box sx={{width:"40%"}}>
+            <CarouselSlider title='Movies on awards' data={moviesMock.slice(8, 16)} />
+          </Box>
+        </CarouselSection>
+
+        <CarouselSection>
+          <Box sx={{width:"40%"}}>
+            <PosterHorizontal {...moviesMock.slice(8, 16)[0]} />
+          </Box>
+        </CarouselSection>
+
+        <CarouselSection>
+          <Box sx={{width:"100%",height:'800px'}}>
+            <MovieDetailMain data={moviesMock.slice(8, 16)}/>
+          </Box>
         </CarouselSection>
       </Stack>
     </Container>

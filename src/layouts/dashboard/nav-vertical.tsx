@@ -84,9 +84,9 @@ export default function NavVertical({ openNav, onCloseNav }: Props) {
         sx={{ 
           padding: '12px 16px 8px 16px', 
           backgroundColor: '#232428',
-          position: 'Fix',
+          position: 'fixed',
           bottom: '0',
-          width: '100%',
+          width: '100%'
         }}
       >
         {loading ? (
