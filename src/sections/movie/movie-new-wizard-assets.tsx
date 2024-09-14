@@ -33,40 +33,22 @@ type MediaAssetFields =
   | 'subtitleLanguage';
 
 
-// const MediaAssetsSchema = Yup.object().shape({
-//   verticalPoster: Yup.mixed().required('Vertical poster file is required'),
-//   horizontalPoster: Yup.mixed().required('Horizontal poster file is required'),
-//   wallpaper: Yup.mixed().required('Wallpaper file is required'),
-//   trailer: Yup.mixed().required('Trailer file is required'),
-//   fullMovie: Yup.mixed().required('Full movie file is required'),
-//   videoFormat: Yup.string().required('Video format is required'),
-//   resolution: Yup.string().required('Resolution is required'),
-//   bitrate: Yup.number().min(0, 'Bitrate cannot be negative').required('Bitrate is required'),
-//   codec: Yup.string().required('Codec is required'),
-//   audioFormat: Yup.string().required('Audio format is required'),
-//   audioChannels: Yup.string().required('Audio channels are required'),
-//   audioBitrate: Yup.number().min(0, 'Bitrate cannot be negative').required('Bitrate is required'),
-//   subtitles: Yup.mixed().required('Subtitle file is required'),
-//   subtitleFormat: Yup.string().required('Subtitle format is required'),
-//   subtitleLanguage: Yup.string().required('Subtitle language is required'),
-// });
-
 const MediaAssetsSchema = Yup.object().shape({
-  verticalPoster: Yup.mixed(),
-  horizontalPoster: Yup.mixed(),
-  wallpaper: Yup.mixed(),
-  trailer: Yup.mixed(),
-  fullMovie: Yup.mixed(),
-  videoFormat: Yup.string(),
-  resolution: Yup.string(),
-  bitrate: Yup.number(),
-  codec: Yup.string(),
-  audioFormat: Yup.string(),
-  audioChannels: Yup.string(),
-  audioBitrate: Yup.number(),
-  subtitles: Yup.mixed(),
-  subtitleFormat: Yup.string(),
-  subtitleLanguage: Yup.string(),
+  verticalPoster: Yup.mixed().required('Vertical poster file is required'),
+  horizontalPoster: Yup.mixed().required('Horizontal poster file is required'),
+  wallpaper: Yup.mixed().required('Wallpaper file is required'),
+  trailer: Yup.mixed().required('Trailer file is required'),
+  fullMovie: Yup.mixed().required('Full movie file is required'),
+  videoFormat: Yup.string().required('Video format is required'),
+  resolution: Yup.string().required('Resolution is required'),
+  bitrate: Yup.number().min(0, 'Bitrate cannot be negative').required('Bitrate is required'),
+  codec: Yup.string().required('Codec is required'),
+  audioFormat: Yup.string().required('Audio format is required'),
+  audioChannels: Yup.string().required('Audio channels are required'),
+  audioBitrate: Yup.number().min(0, 'Bitrate cannot be negative').required('Bitrate is required'),
+  subtitles: Yup.mixed().required('Subtitle file is required'),
+  subtitleFormat: Yup.string().required('Subtitle format is required'),
+  subtitleLanguage: Yup.string().required('Subtitle language is required'),
 });
 
 export default function MediaAssetsForm({ onSubmit, onBack, data }: any) {

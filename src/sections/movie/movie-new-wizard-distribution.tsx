@@ -16,52 +16,28 @@ import Typography from '@mui/material/Typography';
 import MenuItem from '@mui/material/MenuItem';
 import MovieWizardContentLayout from './movie-new-wizard-layout';
 
-// const DistributionSchema = Yup.object().shape({
-//   creators: Yup.array().of(
-//     Yup.object().shape({
-//       role: Yup.string().required('Role is required'),
-//       name: Yup.string().required('Name is required'),
-//       walletAddress: Yup.string().required('Wallet address is required'),
-//       revenueShare: Yup.number().min(0).max(100).required('Revenue share is required'),
-//     })
-//   ).required('Creators are required'),
-//   distribution: Yup.array().of(
-//     Yup.object().shape({
-//       type: Yup.string().required('Distribution type is required'),
-//       currency: Yup.string().required('Distribution currency is required'),
-//       price: Yup.string().required('Distributtion price is required')
-//     })
-//   ).min(1, 'At least one distribution price is required').required('Distribution prices are required'),
-//   licenseType: Yup.string().required('License type is required'),
-//   territory: Yup.string().required('Territory is required'),
-//   licenseDuration: Yup.date().required('License duration is required'),
-//   copyrightHolder: Yup.string().required('Copyright holder name is required'),
-//   copyrightRegistrationNumber: Yup.string().required('Copyright registration number is required'),
-//   termsOfServiceURL: Yup.string().url('Must be a valid URL').required('Terms of service URL is required'),
-// });
-
 const DistributionSchema = Yup.object().shape({
   creators: Yup.array().of(
     Yup.object().shape({
-      role: Yup.string(),
-      name: Yup.string(),
-      walletAddress: Yup.string(),
-      revenueShare: Yup.number(),
+      role: Yup.string().required('Role is required'),
+      name: Yup.string().required('Name is required'),
+      walletAddress: Yup.string().required('Wallet address is required'),
+      revenueShare: Yup.number().min(0).max(100).required('Revenue share is required'),
     })
-  ),
+  ).required('Creators are required'),
   distribution: Yup.array().of(
     Yup.object().shape({
-      type: Yup.string(),
-      currency: Yup.string(),
-      price: Yup.string()
+      type: Yup.string().required('Distribution type is required'),
+      currency: Yup.string().required('Distribution currency is required'),
+      price: Yup.string().required('Distributtion price is required')
     })
-  ),
-  licenseType: Yup.string(),
-  territory: Yup.string(),
-  licenseDuration: Yup.date(),
-  copyrightHolder: Yup.string(),
-  copyrightRegistrationNumber: Yup.string(),
-  termsOfServiceURL: Yup.string(),
+  ).min(1, 'At least one distribution price is required').required('Distribution prices are required'),
+  licenseType: Yup.string().required('License type is required'),
+  territory: Yup.string().required('Territory is required'),
+  licenseDuration: Yup.date().required('License duration is required'),
+  copyrightHolder: Yup.string().required('Copyright holder name is required'),
+  copyrightRegistrationNumber: Yup.string().required('Copyright registration number is required'),
+  termsOfServiceURL: Yup.string().url('Must be a valid URL').required('Terms of service URL is required'),
 });
 
 export default function DistributionForm({ onSubmit, onBack, data }: any) {

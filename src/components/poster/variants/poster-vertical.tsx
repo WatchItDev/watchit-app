@@ -1,5 +1,5 @@
 // @mui
-import { alpha, useTheme } from '@mui/material/styles';
+import { alpha } from '@mui/material/styles';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import CardContent from '@mui/material/CardContent';
@@ -11,11 +11,17 @@ import { bgGradient } from 'src/theme/css';
 import Image from 'src/components/image';
 import { IconHeartFilled, IconStarFilled } from '@tabler/icons-react';
 import { Poster } from '../types';
+import { useRouter } from '../../../routes/hooks';
+import { paths } from '../../../routes/paths';
 
 // ----------------------------------------------------------------------
 
-const PosterVertical = ({ title, images, rating, year, likes, price, genre }: Poster) => {
-  const theme = useTheme();
+const PosterVertical = ({ id, title, images, rating, year, likes, price, genre }: Poster) => {
+  const router = useRouter();
+
+  const handlePosterClick = () => {
+    router.push(paths.dashboard.movie.details(id));
+  }
 
   return (
     <Paper
@@ -23,7 +29,9 @@ const PosterVertical = ({ title, images, rating, year, likes, price, genre }: Po
         borderRadius: 2,
         overflow: 'hidden',
         position: 'relative',
+        cursor: 'pointer'
       }}
+      onClick={handlePosterClick}
     >
       {/* Poster image */}
       <Image alt={title} src={images.vertical} ratio="4/6" />
@@ -60,7 +68,7 @@ const PosterVertical = ({ title, images, rating, year, likes, price, genre }: Po
             </Typography>
           </Box>
         </Box>
-        
+
         {/* Price WVC & USD */}
         <Stack alignItems='flex-end'>
           <Typography variant="body2" sx={{ lineHeight: 1 , fontSize: 'clamp(0.1rem, 0.8vw, 0.5rem)',whiteSpace: 'nowrap' }}>
@@ -96,12 +104,12 @@ const PosterVertical = ({ title, images, rating, year, likes, price, genre }: Po
           <IconStarFilled size={12} color="#FFCD19" />
           <Typography sx={{fontSize: 'clamp(0.1rem, 0.8vw, 2rem)',whiteSpace: 'nowrap'}} variant='body2'>{rating}</Typography>
           <Typography sx={{fontSize: 'clamp(0.1rem, 0.8vw, 2rem)',whiteSpace: 'nowrap'}} variant='body2'>|  {year}</Typography>
-          <Typography 
+          <Typography
             sx={{fontSize: 'clamp(0.1rem, 0.8vw, 2rem)',
             overflow: 'hidden',
             whiteSpace: 'nowrap',
-            textOverflow: 'ellipsis'}} 
-            variant="body2"> 
+            textOverflow: 'ellipsis'}}
+            variant="body2">
             |  {genre}
           </Typography>
         </Stack>
