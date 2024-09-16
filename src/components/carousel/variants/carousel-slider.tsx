@@ -56,13 +56,13 @@ export default function CarouselSlider({ data,title }: Props) {
     <CardContent
         sx={{
           width: '100%',
-          height:'500px',
           textAlign: 'left',
           color: 'common.white',
+          marginTop:'20px',
           padding: 0
         }}
       >
-        <Box style={{width:'100%',height:'300px'}}>
+        <Box style={{width:'100%',height:'25%'}}>
           <Image sx={{height:'100%',borderRadius:'10px'}} dir="ltr" alt={data[currentIndex].title} src={data[currentIndex].images.vertical} ratio="21/9" />
         </Box>
 
@@ -88,7 +88,7 @@ export default function CarouselSlider({ data,title }: Props) {
               overflow: 'hidden',
               textOverflow: 'ellipsis',
               display: '-webkit-box',
-              WebkitLineClamp: '3',
+              WebkitLineClamp: '4',
               WebkitBoxOrient: 'vertical',
               fontSize: 'clamp(0.3rem, 2vw, 0.9rem)'
             }} 
@@ -114,6 +114,6 @@ export default function CarouselSlider({ data,title }: Props) {
           </Stack>
         </m.div>
       </CardContent>
-      </>
+    </>
   );
 }

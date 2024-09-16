@@ -96,10 +96,10 @@ export default function MovieDetailMain({ data }: Props) {
             </Typography>
             <Box sx={{display:'flex',alignItems:'center'}}>
               <Typography variant="body2" sx={{ lineHeight: 1 , fontSize: 'clamp(0.1rem, 0.8vw, 0.5rem)'/* ,whiteSpace: 'nowrap'  */}}>
-                {data[0].price.wvc} WVC
+                {data[0].price.wvc} WVC / 
               </Typography>
               <Typography variant="body2" sx={{ lineHeight: 1 , fontSize: 'clamp(0.1rem, 0.8vw, 0.5rem)',whiteSpace: 'nowrap' }}>
-                {data[0].price.usd} USD
+                 {data[0].price.usd} USD
               </Typography>
             </Box>
             </Box>

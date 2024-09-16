@@ -59,6 +59,8 @@ export default function NavVertical({ openNav, onCloseNav }: Props) {
       sx={{
         height: 1,
         backgroundColor: '#2B2D31',
+        display:'flex',
+        flexDirection:'column',
         '& .simplebar-content': {
           height: 1,
           display: 'flex',
@@ -84,7 +86,7 @@ export default function NavVertical({ openNav, onCloseNav }: Props) {
         sx={{ 
           padding: '12px 16px 8px 16px', 
           backgroundColor: '#232428',
-          position: 'fixed',
+          position: 'sticky',
           bottom: '0',
           width: '100%'
         }}

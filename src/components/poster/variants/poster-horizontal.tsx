@@ -81,7 +81,7 @@ const PosterHorizontal = ({ title, images, rating, year, likes, price, genre }: 
         }}
       >
         {/* Title */}
-        <Typography style={{fontSize: 'clamp(0.5rem, 1vw, 2rem)'}} variant='h6' sx={{ mb: 1 }}>
+        <Typography style={{fontSize: 'clamp(0.5rem, 1vw, 2rem)'}} noWrap variant='h6' sx={{ mb: 1 }}>
           {title}
         </Typography>
 

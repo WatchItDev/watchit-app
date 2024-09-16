@@ -11,10 +11,13 @@ import CarouselMain from 'src/components/carousel/variants/carousel-main';
 import CarouselMixed from 'src/components/carousel/variants/carousel-mixed';
 import CarouselPoster from 'src/components/carousel/variants/carousel-poster';
 import CarouselSlider from 'src/components/carousel/variants/carousel-slider';
+import CarouselPosterMini from 'src/components/carousel/variants/carousel-poster-mini';
+import CarouselPosterHorizontal from 'src/components/carousel/variants/carousel-poster-horizontal';
 import MovieDetailMain from 'src/components/carousel/variants/movie-detail-main';
 import PosterHorizontal from 'src/components/poster/variants/poster-horizontal';
+import PosterMini from 'src/components/poster/variants/poster-mini';
+import CarouselSliderMini from 'src/components/carousel/variants/carousel-slider-mini';
 import { CarouselSection } from '../../components/carousel/carousel-section';
-
 
 // ----------------------------------------------------------------------
 
@@ -31,24 +34,32 @@ export default function ExploreView() {
          <CarouselMixed data={moviesMock.slice(0, 8)} />
 
         <CarouselSection title="Carousel Center Mode">
-          <CarouselPoster data={moviesMock.slice(8, 16)} />
+          <CarouselPosterMini data={moviesMock.slice(8, 16)} />
+        </CarouselSection>
+
+        <CarouselSection title="Carousel Center Mode">
+          <CarouselPosterHorizontal data={moviesMock.slice(8, 16)} />
+        </CarouselSection>
+
+        <CarouselSection title="Carousel Center Mode">
+          <CarouselPosterHorizontal data={moviesMock.slice(8, 16)} />
+        </CarouselSection>
+
+        <CarouselSection title="Carousel Center Mode">
+          <CarouselPosterHorizontal data={moviesMock.slice(8, 16)} />
         </CarouselSection>
 
         <CarouselSection>
-          <Box sx={{width:"40%"}}>
-            <CarouselSlider title='Movies on awards' data={moviesMock.slice(8, 16)} />
-          </Box>
-        </CarouselSection>
-
-        <CarouselSection>
-          <Box sx={{width:"40%"}}>
-            <PosterHorizontal {...moviesMock.slice(8, 16)[0]} />
-          </Box>
-        </CarouselSection>
-
-        <CarouselSection>
-          <Box sx={{width:"100%",height:'800px'}}>
-            <MovieDetailMain data={moviesMock.slice(8, 16)}/>
+          <Box sx={{width:"100%",display:'flex'}}>
+            <Box sx={{width:"50%"}}>
+              <CarouselSlider title='Movies on awards' data={moviesMock.slice(8, 16)} />
+            </Box>
+            <Box sx={{width:"25%",padding:'0px 10px',height:'100%'}}>
+              <CarouselSliderMini title='Fast' data={moviesMock.slice(0, 16)} />
+            </Box>
+            <Box sx={{width:"25%",padding:'0px 10px',height:'100%'}}>
+              <CarouselSliderMini title='On Parties' data={moviesMock.slice(0, 16)} />
+            </Box>
           </Box>
         </CarouselSection>
       </Stack>
