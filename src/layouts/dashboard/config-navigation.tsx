@@ -67,7 +67,7 @@ export function useNavData() {
           },
           {
             title: t('Gorvernance'),
-            path: paths.dashboard.governance,
+            path: paths.dashboard.governance.root,
             icon: ICONS.kanban,
           },
           {

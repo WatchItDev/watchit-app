@@ -36,9 +36,9 @@ const PosterMini = ({ id, title, images, rating, year, likes, price, genre }: Po
       onClick={handlePosterClick}
     >
       <Box sx={{borderRadius:'10px',width:'200px',height:'100%',display:'flex'}}>
-        <Image style={{borderRadius:'10px'}} alt={title} src={images.vertical} ratio="16/9" />
+        <Image style={{borderRadius:'10px'}} alt={title} src={images.vertical} ratio="4/6" />
       </Box>
-      
+
 
       {/* Upper side: Likes & prices */}
       <Box
@@ -52,8 +52,8 @@ const PosterMini = ({ id, title, images, rating, year, likes, price, genre }: Po
       >
 
         {/* Poster image */}
-      
-        
+
+
       <Box
         sx={{
           width: '100%',
@@ -74,10 +74,10 @@ const PosterMini = ({ id, title, images, rating, year, likes, price, genre }: Po
           }}
         >
           {/* Title */}
-          <Typography 
-            style={{fontSize: 'clamp(0.5rem, 1vw, 1rem)'}} 
-            variant='h6' 
-            sx={{ 
+          <Typography
+            style={{fontSize: 'clamp(0.5rem, 1vw, 1rem)'}}
+            variant='h6'
+            sx={{
               overflow: 'hidden',
               textOverflow: 'ellipsis',
               display: '-webkit-box',

@@ -1,26 +1,30 @@
 // @mui
 import Container from '@mui/material/Container';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-
+// routes
+import { paths } from 'src/routes/paths';
 // components
 import { useSettingsContext } from 'src/components/settings';
+import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
 //
+import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
 import { IconChevronLeft } from '@tabler/icons-react';
-import MovieNewWizard from '../movie-new-wizard';
-import Header from '../../../layouts/dashboard/header';
+import Typography from '@mui/material/Typography';
+import GovernanceNewEditForm from '../governance-new-edit-form';
 import Label from '../../../components/label';
+import Header from '../../../layouts/dashboard/header';
 import { useResponsive } from '../../../hooks/use-responsive';
+import { useRouter } from '../../../routes/hooks';
 
 // ----------------------------------------------------------------------
 
-export default function MovieCreateView() {
+export default function GovernanceCreateView() {
   const settings = useSettingsContext();
   const mdUp = useResponsive('up', 'md');
+  const router = useRouter();
 
   const handleBack = () => {
-
+    router.push(paths.dashboard.governance.root)
   }
 
   return (
@@ -47,13 +51,29 @@ export default function MovieCreateView() {
 
           {mdUp && <Label sx={{ px: 0.75, mr: 1, fontSize: 12, color: 'text.secondary' }}>Esc</Label>}
         </Button>
-        <Typography variant="h6" sx={{ ml: 2 }}>
-          New movie
-        </Typography>
       </Header>
       <Container maxWidth={settings.themeStretch ? false : 'lg'}>
-        {/* <MovieNewEditForm /> */}
-        <MovieNewWizard />
+        <CustomBreadcrumbs
+          heading="Create a new post"
+          links={[
+            {
+              name: 'Dashboard',
+              href: paths.dashboard.root,
+            },
+            {
+              name: 'Blog',
+              href: paths.dashboard.post.root,
+            },
+            {
+              name: 'Create',
+            },
+          ]}
+          sx={{
+            mb: { xs: 3, md: 5 },
+          }}
+        />
+
+        <GovernanceNewEditForm />
       </Container>
     </>
   );

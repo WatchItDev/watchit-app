@@ -62,5 +62,6 @@ export type IPostItem = {
   author: {
     name: string;
     avatarUrl: string;
+    wallet: string;
   };
 };

@@ -11,10 +11,13 @@ import CompactLayout from 'src/layouts/compact';
 // OVERVIEW
 const ExplorePage = lazy(() => import('src/pages/dashboard/explore'));
 const CommunityPage = lazy(() => import('src/pages/dashboard/community'));
-const GovernancePage = lazy(() => import('src/pages/dashboard/governance'));
 const MarketplacePage = lazy(() => import('src/pages/dashboard/marketplace'));
 const EventsPage = lazy(() => import('src/pages/dashboard/events'));
 const AchievementsPage = lazy(() => import('src/pages/dashboard/achievements'));
+// GOVERNANCE
+const GovernancePage = lazy(() => import('src/pages/dashboard/governance/list'));
+const GovernanceNewPage = lazy(() => import('src/pages/dashboard/governance/new'));
+const GovernanceDetailPage = lazy(() => import('src/pages/dashboard/governance/details'));
 // MANAGEMENT
 const AnalyticsPage = lazy(() => import('src/pages/dashboard/analytics'));
 const StudioPage = lazy(() => import('src/pages/dashboard/studio'));
@@ -49,7 +52,6 @@ export const dashboardRoutes = [
   {
     path: 'dashboard',
     element: (
-
       <DashboardLayout>
         <Suspense fallback={<LoadingScreen />}>
 
@@ -60,7 +62,6 @@ export const dashboardRoutes = [
     children: [
       { element: <ExplorePage />, index: true },
       { path: 'community', element: <CommunityPage /> },
-      { path: 'governance', element: <GovernancePage /> },
       { path: 'marketplace', element: <MarketplacePage /> },
       { path: 'events', element: <EventsPage /> },
       { path: 'achievements', element: <AchievementsPage /> },
@@ -69,6 +70,14 @@ export const dashboardRoutes = [
       { path: 'ownership', element: <OwnershipPage /> },
       { path: 'finance', element: <FinancePage /> },
       { path: 'marketing', element: <MarketingPage /> },
+      {
+        path: 'governance',
+        children: [
+          { element: <GovernancePage />, index: true },
+          { path: 'details/:id', element: <GovernanceDetailPage /> },
+          { path: 'new', element: <GovernanceNewPage /> },
+        ],
+      },
       {
         path: 'user',
         children: [

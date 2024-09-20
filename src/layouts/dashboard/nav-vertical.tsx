@@ -83,8 +83,8 @@ export default function NavVertical({ openNav, onCloseNav }: Props) {
         direction="row"
         alignItems="center"
         justifyContent="space-between"
-        sx={{ 
-          padding: '12px 16px 8px 16px', 
+        sx={{
+          padding: '12px 16px 8px 16px',
           backgroundColor: '#232428',
           position: 'sticky',
           bottom: '0',

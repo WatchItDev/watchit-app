@@ -11,8 +11,6 @@ import Divider from '@mui/material/Divider';
 import InputBase from '@mui/material/InputBase';
 import Grid from '@mui/material/Unstable_Grid2';
 import CardHeader from '@mui/material/CardHeader';
-// _mock
-import { _socials } from 'src/_mock';
 // utils
 import { fNumber } from 'src/utils/format-number';
 // types
@@ -144,38 +142,6 @@ export default function ProfileHome({ info, posts }: Props) {
     </Card>
   );
 
-  const renderSocials = (
-    <Card>
-      <CardHeader title="Social" />
-
-      <Stack spacing={2} sx={{ p: 3 }}>
-        {_socials.map((link) => (
-          <Stack
-            key={link.name}
-            spacing={2}
-            direction="row"
-            sx={{ wordBreak: 'break-all', typography: 'body2' }}
-          >
-            <Iconify
-              icon={link.icon}
-              width={24}
-              sx={{
-                flexShrink: 0,
-                color: link.color,
-              }}
-            />
-            <Link color="inherit">
-              {link.value === 'facebook' && info.socialLinks.facebook}
-              {link.value === 'instagram' && info.socialLinks.instagram}
-              {link.value === 'linkedin' && info.socialLinks.linkedin}
-              {link.value === 'twitter' && info.socialLinks.twitter}
-            </Link>
-          </Stack>
-        ))}
-      </Stack>
-    </Card>
-  );
-
   return (
     <Grid container spacing={3}>
       <Grid xs={12} md={4}>
@@ -183,8 +149,6 @@ export default function ProfileHome({ info, posts }: Props) {
           {renderFollows}
 
           {renderAbout}
-
-          {renderSocials}
         </Stack>
       </Grid>
 

@@ -31,17 +31,7 @@ const TABS = [
     value: 'followers',
     label: 'Followers',
     icon: <Iconify icon="solar:heart-bold" width={24} />,
-  },
-  {
-    value: 'friends',
-    label: 'Friends',
-    icon: <Iconify icon="solar:users-group-rounded-bold" width={24} />,
-  },
-  {
-    value: 'gallery',
-    label: 'Gallery',
-    icon: <Iconify icon="solar:gallery-wide-bold" width={24} />,
-  },
+  }
 ];
 
 // ----------------------------------------------------------------------
@@ -107,16 +97,6 @@ export default function UserProfileView() {
       {currentTab === 'profile' && <ProfileHome info={_userAbout} posts={_userFeeds} />}
 
       {currentTab === 'followers' && <ProfileFollowers followers={_userFollowers} />}
-
-      {currentTab === 'friends' && (
-        <ProfileFriends
-          friends={_userFriends}
-          searchFriends={searchFriends}
-          onSearchFriends={handleSearchFriends}
-        />
-      )}
-
-      {currentTab === 'gallery' && <ProfileGallery gallery={_userGallery} />}
     </Container>
   );
 }

@@ -34,7 +34,6 @@ export const paths = {
   dashboard: {
     root: ROOTS.DASHBOARD,
     community: `${ROOTS.DASHBOARD}/community`,
-    governance: `${ROOTS.DASHBOARD}/governance`,
     marketplace: `${ROOTS.DASHBOARD}/marketplace`,
     events: `${ROOTS.DASHBOARD}/events`,
     achievements: `${ROOTS.DASHBOARD}/achievements`,
@@ -54,6 +53,11 @@ export const paths = {
       demo: {
         edit: `${ROOTS.DASHBOARD}/user/${MOCK_ID}/edit`,
       },
+    },
+    governance: {
+      root: `${ROOTS.DASHBOARD}/governance`,
+      new: `${ROOTS.DASHBOARD}/governance/new`,
+      details: (id: string) => `${ROOTS.DASHBOARD}/governance/details/${id}`,
     },
     movie: {
       root: `${ROOTS.DASHBOARD}/movie`,

@@ -27,7 +27,7 @@ const PosterHorizontal = ({ title, images, rating, year, likes, price, genre }: 
       }}
     >
       {/* Poster image */}
-      <Image style={{borderRadius:'10px'}} alt={title} src={images.vertical} ratio='4/3' />
+      <Image style={{borderRadius:'10px'}} alt={title} src={images.vertical} ratio='16/9' />
 
       {/* Upper side: Likes & prices */}
       <Box
@@ -61,7 +61,7 @@ const PosterHorizontal = ({ title, images, rating, year, likes, price, genre }: 
             </Typography>
           </Box>
         </Box>
-        
+
         {/* Price WVC & USD */}
         <Stack alignItems='flex-end'>
           <Typography variant="body2" sx={{ lineHeight: 1 , fontSize: 'clamp(0.1rem, 0.8vw, 0.5rem)',whiteSpace: 'nowrap' }}>
@@ -90,12 +90,12 @@ const PosterHorizontal = ({ title, images, rating, year, likes, price, genre }: 
           <IconStarFilled size={12} color="#FFCD19" />
           <Typography sx={{fontSize: 'clamp(0.1rem, 0.8vw, 2rem)',whiteSpace: 'nowrap'}} variant='body2'>{rating}</Typography>
           <Typography sx={{fontSize: 'clamp(0.1rem, 0.8vw, 2rem)',whiteSpace: 'nowrap'}} variant='body2'>|  {year}</Typography>
-          <Typography 
+          <Typography
             sx={{fontSize: 'clamp(0.1rem, 0.8vw, 2rem)',
             overflow: 'hidden',
             whiteSpace: 'nowrap',
-            textOverflow: 'ellipsis'}} 
-            variant="body2"> 
+            textOverflow: 'ellipsis'}}
+            variant="body2">
             |  {genre}
           </Typography>
         </Stack>
