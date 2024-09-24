@@ -15,18 +15,18 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import { IconFlagFilled, IconStarFilled, IconPlayerPlay } from '@tabler/icons-react';
 import Stack from '@mui/material/Stack';
-import TextMaxLine from '../../text-max-line';
-import Iconify from '../../iconify';
-import { MotionContainer, varFade } from '../../animate';
+import { varFade } from '../../animate';
 import { Poster } from '../../poster/types';
 import { PosterVertical } from '../../poster';
+import { paths } from '../../../routes/paths';
+import { useRouter } from '../../../routes/hooks';
 
 
 // ----------------------------------------------------------------------
 
 const StyledThumbnailsContainer = styled('div')<{ length: number }>(({ length, theme }) => ({
   position: 'absolute',
-  bottom: 75,
+  bottom: 50,
   right: '50px',
   zIndex: 1,
   maxWidth: '45%',
@@ -93,7 +93,7 @@ export default function CarouselMixed({ data }: Props) {
         ref={carouselThumb.carouselRef}
       >
          {data.map((poster, index) => (
-          <Box key={poster.id} sx={{ px: 0.75 }}>
+          <Box key={poster.id} sx={{ px: 0.75, cursor: 'pointer' }}>
             <CarouselThumbItem poster={poster} active={carouselLarge.currentIndex === index} />
           </Box>
          ))}
@@ -127,6 +127,7 @@ function CarouselThumbItem({ poster, active }: CarouselThumbItemProps) {
         position: 'relative',
         opacity: 0.48,
         cursor: 'pointer',
+        pointerEvents: 'none',
         ...( active && {
           opacity: 1,
           border: `solid 4px ${theme.palette.primary.main}`,
@@ -146,12 +147,17 @@ type CarouselLargeItemProps = {
 
 function CarouselLargeItem({ poster, active }: CarouselLargeItemProps) {
   const theme = useTheme();
+  const router = useRouter();
 
   const variants = theme.direction === 'rtl' ? varFade().inLeft : varFade().inRight;
 
+  const handlePlay = () => {
+    router.push(paths.dashboard.movie.details(poster.id));
+  }
+
   return (
     <Paper sx={{ position: 'relative', boxShadow: 'none' }}>
-      
+
       <Image dir="ltr" alt={poster.title} src={poster.images.wallpaper} ratio="21/9" />
 
       <Box
@@ -168,7 +174,7 @@ function CarouselLargeItem({ poster, active }: CarouselLargeItemProps) {
           }),
         }}
       />
-        
+
       <Box
         sx={{
           top: 0,
@@ -188,78 +194,94 @@ function CarouselLargeItem({ poster, active }: CarouselLargeItemProps) {
         sx={{
           bottom: 0,
           zIndex: 9,
-          width: '100%',
+          width: '50%',
+          height: '100%',
           textAlign: 'left',
           position: 'absolute',
           color: 'common.white',
-          ...bgGradient({
-            direction: 'to top',
-            startColor: `#000 25%`,
-            endColor: `${alpha('#000', 0)} 100%`,
-          }),
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'space-between',
+          padding: '50px !important'
         }}
       >
-        <Box sx={{
-          width: '40%',
-          position: 'absolute',
-          top: '-80px'
-        }}>
+        <Box sx={{ width: '100%' }}>
           <m.div variants={variants}>
             <Typography lineHeight={1} sx={{ fontSize: 'clamp(1.7rem, 1vw, 2.5rem)',fontWeight: 'bold' }} noWrap gutterBottom>
               Featured in watchit
             </Typography>
-            <Typography color="common.gray" lineHeight={1} sx={{ fontSize: 'clamp(0.8rem, 1vw, 2rem)' }} noWrap gutterBottom>
+            <Typography color="textSecondary" lineHeight={1} sx={{ fontSize: 'clamp(0.8rem, 1vw, 2rem)' }} noWrap gutterBottom>
               Best featured for you today
             </Typography>
           </m.div>
         </Box>
 
         {/* Title */}
-        <Box sx={{width: '40%'}}>
+        <Box sx={{width: '100%'}}>
+          {/* Title */}
           <m.div variants={variants}>
-            <Typography  noWrap gutterBottom>
+            <Typography sx={{ fontSize: 'clamp(1.7rem, 1vw, 2.5rem)', fontWeight: 'bold', lineHeight: 1.1, mb: 0.5 }} gutterBottom>
               {poster.title}
             </Typography>
           </m.div>
-        </Box>
-        {/* Details: Ratinsx={{ fontSize: 'clamp(1.5rem, 1vw, 2rem)',fontWeight: 'bold' }}g, Year, Genre */}
-        <Stack direction="row" spacing={1} alignItems="center">
-          <IconStarFilled size={14} color="#FFCD19"/>
-          <Typography sx={{fontSize: 'clamp(0.3rem, 1vw, 0.7rem)'}} variant="body2">{poster.rating}</Typography>
-          <Typography sx={{fontSize: 'clamp(0.3rem, 1vw, 0.7rem)'}} variant="body2">|  {poster.year}</Typography>
-          <Typography sx={{fontSize: 'clamp(0.3rem, 1vw, 0.7rem)'}} variant="body2">|  {poster.genre}</Typography>
-        </Stack>
-        <Box sx={{width: '40%'}}>
-          <m.div  variants={variants}>
-            <Typography sx={{
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-              display: '-webkit-box',
-              WebkitLineClamp: '3',
-              WebkitBoxOrient: 'vertical',
-              fontSize: 'clamp(0.3rem, 2vw, 0.9rem)'
-            }} 
-              variant="body2" >
-              {poster.synopsis}
+          {/* Details: Rating, Year, Genre */}
+          <Stack direction="row" spacing={1} alignItems="center" sx={{ mb: 1.5 }}>
+            <Stack direction="row" spacing={0.5} alignItems="center">
+              <IconStarFilled size={14} color="#FFCD19"/>
+              <Typography sx={{fontSize: 'clamp(0.3rem, 2vw + 1rem, 0.9rem)', fontWeight: '700' }} variant="body2">{poster.rating}</Typography>
+            </Stack>
+            <Typography sx={{fontSize: 'clamp(0.3rem, 2vw + 1rem, 0.9rem)'}} variant="body2" color="textSecondary">|</Typography>
+            <Typography sx={{fontSize: 'clamp(0.3rem, 2vw + 1rem, 0.9rem)', fontWeight: '700'}} variant="body2">{poster.year}</Typography>
+            <Typography sx={{fontSize: 'clamp(0.3rem, 2vw + 1rem, 0.9rem)'}} variant="body2" color="textSecondary">|</Typography>
+            <Typography sx={{fontSize: 'clamp(0.3rem, 2vw + 1rem, 0.9rem)', fontWeight: '700'}} variant="body2" color="textSecondary">
+              { poster.genre.join('  -  ') }
             </Typography>
+          </Stack>
+          <Box>
+            <m.div  variants={variants}>
+              <Typography sx={{
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                display: '-webkit-box',
+                WebkitLineClamp: '5',
+                WebkitBoxOrient: 'vertical',
+                fontWeight: '700'
+              }}
+                          variant="body2" >
+                {poster.synopsis}
+              </Typography>
+            </m.div>
+          </Box>
+          <m.div className='flex space-x-6' variants={variants}>
+            <Stack direction="row" spacing={1} alignItems="center">
+              <Button
+                variant='contained'
+                sx={{
+                  mt: 3 ,
+                  color:'#FFFFFF',
+                  background: 'linear-gradient(to right, #7B61FF 0%, #4A34B8 100%)',
+                  height: '40px'
+                }}
+                onClick={handlePlay}
+              >
+                <IconPlayerPlay style={{marginRight:'4px'}} size={22} color='#FFFFFF' />
+                Play now
+              </Button>
+              <Button
+                variant="outlined"
+                sx={{
+                  mt: 3,
+                  borderColor: '#FFFFFF',
+                  color: '#FFFFFF',
+                  height: '40px'
+                }}
+              >
+                <IconFlagFilled style={{marginRight:'4px'}} size={22} color='#FFFFFF' />
+                Add watchlist
+              </Button>
+            </Stack>
           </m.div>
         </Box>
-        <m.div className='flex space-x-6' variants={variants}>
-        <Stack direction="row" spacing={1} alignItems="center">
-          <Button variant='contained' sx={{ mt: 3 , color:'#FFFFFF',background: 'linear-gradient(to right, #7B61FF 0%, #4A34B8 100%)' }}>
-            <IconPlayerPlay style={{marginRight:'4px'}} size={22} color='#FFFFFF' /> Play now
-          </Button>
-          <Button variant="outlined" sx={{ mt: 3 , borderColor: '#FFFFFF',
-              color: '#FFFFFF',
-              '&:hover': {
-                borderColor: 'darkred',
-                color: 'darkred',
-              }, }}>
-              <IconFlagFilled style={{marginRight:'4px'}} size={22} color='#FFFFFF' />
-              Add watchlist
-          </Button>
-          </Stack>
-        </m.div>
       </CardContent>
     </Paper>
   );

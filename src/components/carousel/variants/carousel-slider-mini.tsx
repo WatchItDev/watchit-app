@@ -59,7 +59,7 @@ export default function CarouselSliderMini({ data,title }: Props) {
       <Box sx={{display:'flex',flexDirection:'column',height:'100%',width:'100%'}} >
         {
           data.slice(currentIndex, currentIndex + 4).map((item) => (
-            <Box key={item.id} sx={{ px: 0.75, display:'flex !important',margin:'10px 0' }}>
+            <Box key={item.id} sx={{ px: 0.75, display:'flex !important', margin:'10px 0', height: '100%' }}>
               <PosterMini {...item} />
             </Box>
           ))

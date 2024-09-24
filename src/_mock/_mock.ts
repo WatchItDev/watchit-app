@@ -273,7 +273,7 @@ export const moviesMock: Poster[] = [
     images: {
       vertical: _mock.image.cover(11),
       horizontal: _mock.image.cover(11),
-      wallpaper: _mock.image.portrait(11),
+      wallpaper: _mock.image.portrait(1),
     },
     rating: 4.6,
     year: 2023,
@@ -292,7 +292,7 @@ export const moviesMock: Poster[] = [
     images: {
       vertical: _mock.image.cover(12),
       horizontal: _mock.image.cover(12),
-      wallpaper: _mock.image.portrait(12),
+      wallpaper: _mock.image.portrait(2),
     },
     rating: 4.4,
     year: 2021,
@@ -311,7 +311,7 @@ export const moviesMock: Poster[] = [
     images: {
       vertical: _mock.image.cover(13),
       horizontal: _mock.image.cover(13),
-      wallpaper: _mock.image.portrait(13),
+      wallpaper: _mock.image.portrait(3),
     },
     rating: 4.5,
     year: 2022,
@@ -330,7 +330,7 @@ export const moviesMock: Poster[] = [
     images: {
       vertical: _mock.image.cover(14),
       horizontal: _mock.image.cover(14),
-      wallpaper: _mock.image.portrait(14),
+      wallpaper: _mock.image.portrait(4),
     },
     rating: 4.0,
     year: 2021,
@@ -349,7 +349,7 @@ export const moviesMock: Poster[] = [
     images: {
       vertical: _mock.image.cover(15),
       horizontal: _mock.image.cover(15),
-      wallpaper: _mock.image.portrait(15),
+      wallpaper: _mock.image.portrait(5),
     },
     rating: 4.1,
     year: 2023,

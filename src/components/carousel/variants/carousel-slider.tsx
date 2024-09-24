@@ -66,7 +66,7 @@ export default function CarouselSlider({ data,title }: Props) {
           <Image sx={{height:'100%',borderRadius:'10px'}} dir="ltr" alt={data[currentIndex].title} src={data[currentIndex].images.vertical} ratio="21/9" />
         </Box>
 
-    
+
         {/* Title */}
         <Box sx={{width: '100%',marginTop:'20px'}}>
           <m.div variants={variants}>
@@ -91,7 +91,7 @@ export default function CarouselSlider({ data,title }: Props) {
               WebkitLineClamp: '4',
               WebkitBoxOrient: 'vertical',
               fontSize: 'clamp(0.3rem, 2vw, 0.9rem)'
-            }} 
+            }}
               variant="body2" >
               {data[currentIndex].synopsis}
             </Typography>

@@ -12,7 +12,7 @@ type Props = {
 
 export default function CarouselPosterHorizontal({ data }: Props) {
   const carousel = useCarousel({
-    slidesToShow: 5,
+    slidesToShow: 4,
     adaptiveHeight: true,
     focusOnSelect: true,
     swipeToSlide: true,

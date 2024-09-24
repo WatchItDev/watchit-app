@@ -31,84 +31,84 @@ const PosterMini = ({ id, title, images, rating, year, likes, price, genre }: Po
         cursor: 'pointer',
         display: 'flex',
         backgroundColor:'transparent',
-        justifyContent:'space-between'
+        justifyContent:'space-between',
+        width: '100%'
       }}
       onClick={handlePosterClick}
     >
-      <Box sx={{borderRadius:'10px',width:'200px',height:'100%',display:'flex'}}>
+       <Box sx={{borderRadius:'10px',height:'100%', width: '50%',display:'flex', flexGrow: 1, flexShrink: 0}}>
         <Image style={{borderRadius:'10px'}} alt={title} src={images.vertical} ratio="4/6" />
-      </Box>
+       </Box>
 
 
       {/* Upper side: Likes & prices */}
       <Box
         sx={{
-          width:'200px',
+          maxWidth: '50%',
           padding: 0,
           display: 'flex',
           color: 'common.white',
           marginLeft: '10px'
         }}
       >
-
-        {/* Poster image */}
-
-
-      <Box
-        sx={{
-          width: '100%',
-          p: 1,
-          display: 'flex',
-          flexDirection:'column',
-          justifyContent:'space-between',
-          color: 'common.white',
-          padding: 0
-        }}
-      >
-        {/* Downside: Title & details */}
-        <CardContent
+        <Box
           sx={{
             width: '100%',
-            padding: 0,
-            textAlign: 'left'
+            p: 1,
+            display: 'flex',
+            flexDirection:'column',
+            justifyContent:'space-between',
+            color: 'common.white',
+            padding: 0
           }}
         >
-          {/* Title */}
-          <Typography
-            style={{fontSize: 'clamp(0.5rem, 1vw, 1rem)'}}
-            variant='h6'
+          {/* Downside: Title & details */}
+          <CardContent
             sx={{
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-              display: '-webkit-box',
-              WebkitLineClamp: '2',
-              WebkitBoxOrient: 'vertical'
-            }}>
-            {title}
-          </Typography>
-
-          {/* Details: Rating, Year, Genre */}
-          <Stack sx={{overflow: 'hidden'}} direction="row" spacing={1} alignItems='center'>
-            <IconStarFilled size={12} color="#FFCD19" />
-            <Typography sx={{fontSize: 'clamp(0.1rem, 0.8vw, 0.7rem)',whiteSpace: 'nowrap'}} variant='body2'>{rating}</Typography>
-            <Typography sx={{fontSize: 'clamp(0.1rem, 0.8vw, 0.7rem)',whiteSpace: 'nowrap'}} variant='body2'>|  {year}</Typography>
-          </Stack>
-          <Stack sx={{overflow: 'hidden'}} direction="row" spacing={1} alignItems='center'>
-            <Typography sx={{fontSize: 'clamp(0.1rem, 0.8vw, 0.7rem)'}} noWrap variant="body2">{genre}</Typography>
-          </Stack>
-        </CardContent>
-        {/* Likes */}
-        <Box>
-          <Box sx={{flexDirection:'colum',justifyContent:'space-between'}}>
-            <Typography variant="body2" sx={{ lineHeight: 1 , fontSize: 'clamp(0.1rem, 0.8vw, 0.7rem)'/* ,whiteSpace: 'nowrap'  */}}>
-              {price.wvc} WVC
+              width: '100%',
+              padding: 0,
+              textAlign: 'left'
+            }}
+          >
+            {/* Title */}
+            <Typography
+              style={{fontSize: 'clamp(0.5rem, 1vw, 1rem)'}}
+              variant='h6'
+              sx={{
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                display: '-webkit-box',
+                WebkitLineClamp: '2',
+                WebkitBoxOrient: 'vertical'
+              }}>
+              {title}
             </Typography>
-            {/* Price WVC & USD */}
-            <Typography variant="body2" sx={{ lineHeight: 1 , fontSize: 'clamp(0.1rem, 0.8vw, 0.7rem)',whiteSpace: 'nowrap' }}>
-            {price.usd} USD
-          </Typography>
+
+            <Stack direction="row" spacing={1} alignItems="center">
+              <Stack direction="row" spacing={0.5} alignItems="center">
+                <IconStarFilled size={14} color="#FFCD19"/>
+                <Typography sx={{fontSize: 'clamp(0.1rem, 0.8vw, 0.7rem)', fontWeight: '700' }} variant="body2">{rating}</Typography>
+              </Stack>
+              <Typography sx={{fontSize: 'clamp(0.1rem, 0.8vw, 0.7rem)'}} variant="body2" color="textSecondary">|</Typography>
+              <Typography sx={{fontSize: 'clamp(0.1rem, 0.8vw, 0.7rem)', fontWeight: '700'}} variant="body2">{year}</Typography>
+            </Stack>
+            <Stack direction="row" spacing={1} alignItems="center">
+              <Typography sx={{fontSize: 'clamp(0.1rem, 0.8vw, 0.7rem)', fontWeight: '700'}} variant="body2" color="textSecondary">
+                { genre.join(' - ') }
+              </Typography>
+            </Stack>
+          </CardContent>
+          {/* Likes */}
+          <Box>
+            <Box sx={{flexDirection:'colum',justifyContent:'space-between'}}>
+              <Typography variant="body2" sx={{ lineHeight: 1 , fontSize: 'clamp(0.5rem, 0.9vw, 1rem)', fontWeight: '700', mb: 0.5}}>
+                {price.wvc} WVC
+              </Typography>
+              <Typography variant="body2" color="textSecondary" sx={{ lineHeight: 1 , fontSize: 'clamp(0.1rem, 0.8vw, 0.7rem)', fontWeight: '700' }}>
+              {price.usd} USD
+            </Typography>
+            </Box>
           </Box>
-        </Box>
         </Box>
       </Box>
     </Paper>

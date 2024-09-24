@@ -13,7 +13,7 @@ type Props = {
 
 export default function CarouselPosterMini({ data }: Props) {
   const carousel = useCarousel({
-    slidesToShow: 5,
+    slidesToShow: 4,
     adaptiveHeight: true,
     focusOnSelect: true,
     swipeToSlide: true,
@@ -39,6 +39,19 @@ export default function CarouselPosterMini({ data }: Props) {
       sx={{
         overflow: 'hidden',
         position: 'relative',
+        '.slick-track': {
+          height: '100%'
+        },
+        '.slick-slide': {
+          height: '100%',
+          minHeight: '100%',
+          maxHeight: '100%'
+        },
+        '.slick-slide > div': {
+          height: '100%',
+          minHeight: '100%',
+          maxHeight: '100%'
+        }
       }}
     >
       <CarouselArrows
@@ -49,11 +62,11 @@ export default function CarouselPosterMini({ data }: Props) {
       >
         <Carousel ref={carousel.carouselRef} {...carousel.carouselSettings}>
           {data.map((item) => (
-            <Box key={item.id} sx={{ px: 0.75, display:'flex !important' }}>
-              <PosterMini {...item} />
+            <Box key={item.id} sx={{ px: 0.75, display:'flex !important', height: '100%' }}>
               <Box sx={{display:'flex',alignItems:'center'}}>
-                <Typography fontWeight="fontWeightBold" sx={{fontSize: 'clamp(2rem, 0.8vw, 2rem)',whiteSpace: 'nowrap',marginLeft:'10px' }} variant='body2'>{item.id}</Typography>
+                <Typography fontWeight="fontWeightBold" sx={{ fontSize: 'clamp(2rem, 0.8vw, 2rem)', whiteSpace: 'nowrap', marginRight:'10px' }} variant='body2'>{item.id}</Typography>
               </Box>
+              <PosterMini {...item} />
             </Box>
           ))}
         </Carousel>

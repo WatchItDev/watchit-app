@@ -23,6 +23,15 @@ const PosterVertical = ({ id, title, images, rating, year, likes, price, genre }
     router.push(paths.dashboard.movie.details(id));
   }
 
+  const formatLikes = (totalLikes: number) => {
+    if (totalLikes >= 1000000) {
+      return `${(totalLikes / 1000000).toFixed(1)  }M`;
+    } if (totalLikes >= 1000) {
+      return `${(totalLikes / 1000).toFixed(1)  }K`;
+    }
+    return totalLikes;
+  };
+
   return (
     <Paper
       sx={{
@@ -41,17 +50,16 @@ const PosterVertical = ({ id, title, images, rating, year, likes, price, genre }
         sx={{
           position: 'absolute',
           top: 0,
-          width: '100%',
           p: 1,
+          pb: 3,
+          width: '100%',
           display: 'flex',
           flexDirection: 'column',
-          /* justifyContent: 'space-between',
-          alignItems:'center', */
           color: 'common.white',
           zIndex: 9,
           ...bgGradient({
             direction: 'to bottom',
-            startColor: alpha('#000', 0.8),
+            startColor: alpha('#000', 0.9),
             endColor: alpha('#000', 0),
           }),
         }}
@@ -59,19 +67,21 @@ const PosterVertical = ({ id, title, images, rating, year, likes, price, genre }
         {/* Likes */}
         <Box sx={{display:'flex',alignItems:'center',justifyContent: 'space-between'}}>
           <Stack  direction="row" spacing={0.5} alignItems='center' textAlign='center'>
-            <IconHeartFilled style={{marginBottom:'2px'}} size={13} color="#F2F3F5" />
-            <Typography style={{fontSize: 'clamp(0.1rem, 0.8vw, 0.9rem)',whiteSpace: 'nowrap'}} variant="body2">{likes}K</Typography>
+            <IconHeartFilled style={{marginBottom:'2px'}} size={16} color="#F2F3F5" />
+            <Typography style={{fontSize: 'clamp(0.1rem, 0.8vw, 0.9rem)', fontWeight: '700', whiteSpace: 'nowrap'}} variant="body2">
+              {formatLikes(likes)}
+            </Typography>
           </Stack>
           <Box>
-            <Typography variant="body2" sx={{ lineHeight: 1 , fontSize: 'clamp(0.1rem, 0.8vw, 0.9rem)'/* ,whiteSpace: 'nowrap'  */}}>
-              {price.wvc} WVC
+            <Typography variant="body2" sx={{ lineHeight: 1 , fontSize: 'clamp(0.1rem, 0.8vw, 0.9rem)', fontWeight: '700'}}>
+              {price.wvc} MMC
             </Typography>
           </Box>
         </Box>
 
         {/* Price WVC & USD */}
         <Stack alignItems='flex-end'>
-          <Typography variant="body2" sx={{ lineHeight: 1 , fontSize: 'clamp(0.1rem, 0.8vw, 0.5rem)',whiteSpace: 'nowrap' }}>
+          <Typography variant="body2" sx={{ lineHeight: 1 , fontSize: 'clamp(0.1rem, 0.8vw, 0.8rem)', whiteSpace: 'nowrap' }}>
             {price.usd} USD
           </Typography>
         </Stack>
@@ -83,34 +93,44 @@ const PosterVertical = ({ id, title, images, rating, year, likes, price, genre }
           bottom: 0,
           zIndex: 9,
           width: '100%',
-          padding:'0px 8px 4px 8px',
+          padding:'16px 8px 12px 8px !important',
           textAlign: 'left',
           position: 'absolute',
           color: 'common.white',
           ...bgGradient({
             direction: 'to top',
-            startColor: `#000 25%`,
-            endColor: `${alpha('#000', 0)} 100%`,
+            startColor: alpha('#000', 0.9),
+            endColor: alpha('#000', 0),
           }),
         }}
       >
         {/* Title */}
-        <Typography style={{fontSize: 'clamp(0.5rem, 1vw, 2rem)'}} variant='h6' sx={{ mb: 1 }}>
+        <Typography
+          variant='h6'
+          sx={{
+            mb: 1,
+            fontSize: 'clamp(0.5rem, 1vw, 2rem)',
+            lineHeight: 1.1,
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            display: '-webkit-box',
+            WebkitBoxOrient: 'vertical',
+            WebkitLineClamp: 2
+          }}
+        >
           {title}
         </Typography>
 
-        {/* Details: Rating, Year, Genre */}
-        <Stack sx={{overflow: 'hidden'}} direction="row" spacing={1} alignItems='center'>
-          <IconStarFilled size={12} color="#FFCD19" />
-          <Typography sx={{fontSize: 'clamp(0.1rem, 0.8vw, 2rem)',whiteSpace: 'nowrap'}} variant='body2'>{rating}</Typography>
-          <Typography sx={{fontSize: 'clamp(0.1rem, 0.8vw, 2rem)',whiteSpace: 'nowrap'}} variant='body2'>|  {year}</Typography>
-          <Typography
-            sx={{fontSize: 'clamp(0.1rem, 0.8vw, 2rem)',
-            overflow: 'hidden',
-            whiteSpace: 'nowrap',
-            textOverflow: 'ellipsis'}}
-            variant="body2">
-            |  {genre}
+        <Stack direction="row" spacing={1} alignItems="center">
+          <Stack direction="row" spacing={0.5} alignItems="center">
+            <IconStarFilled size={14} color="#FFCD19"/>
+            <Typography sx={{fontSize: 'clamp(0.1rem, 0.8vw, 2rem)', fontWeight: '700' }} variant="body2">{rating}</Typography>
+          </Stack>
+          <Typography sx={{fontSize: 'clamp(0.1rem, 0.8vw, 2rem)'}} variant="body2" color="textSecondary">|</Typography>
+          <Typography sx={{fontSize: 'clamp(0.1rem, 0.8vw, 2rem)', fontWeight: '700'}} variant="body2">{year}</Typography>
+          <Typography sx={{fontSize: 'clamp(0.1rem, 0.8vw, 2rem)'}} variant="body2" color="textSecondary">|</Typography>
+          <Typography sx={{fontSize: 'clamp(0.1rem, 0.8vw, 2rem)', fontWeight: '700'}} variant="body2" color="textSecondary">
+            { genre[0] }
           </Typography>
         </Stack>
       </CardContent>

@@ -1,5 +1,5 @@
 // @mui
-import { alpha, useTheme } from '@mui/material/styles';
+import { alpha } from '@mui/material/styles';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import CardContent from '@mui/material/CardContent';
@@ -11,11 +11,26 @@ import { bgGradient } from 'src/theme/css';
 import Image from 'src/components/image';
 import { IconHeartFilled, IconStarFilled } from '@tabler/icons-react';
 import { Poster } from '../types';
+import { useRouter } from '../../../routes/hooks';
+import { paths } from '../../../routes/paths';
 
 // ----------------------------------------------------------------------
 
-const PosterHorizontal = ({ title, images, rating, year, likes, price, genre }: Poster) => {
-  const theme = useTheme();
+const PosterHorizontal = ({ title, images, rating, year, likes, price, genre, id }: Poster) => {
+  const router = useRouter();
+
+  const handlePosterClick = () => {
+    router.push(paths.dashboard.movie.details(id));
+  }
+
+  const formatLikes = (totalLikes: number) => {
+    if (totalLikes >= 1000000) {
+      return `${(totalLikes / 1000000).toFixed(1)  }M`;
+    } if (totalLikes >= 1000) {
+      return `${(totalLikes / 1000).toFixed(1)  }K`;
+    }
+    return totalLikes;
+  };
 
   return (
     <Paper
@@ -23,8 +38,10 @@ const PosterHorizontal = ({ title, images, rating, year, likes, price, genre }: 
         borderRadius: 2,
         overflow: 'hidden',
         position: 'relative',
-        backgroundColor:'transparent'
+        backgroundColor:'transparent',
+        cursor: 'pointer'
       }}
+      onClick={handlePosterClick}
     >
       {/* Poster image */}
       <Image style={{borderRadius:'10px'}} alt={title} src={images.vertical} ratio='16/9' />
@@ -52,19 +69,21 @@ const PosterHorizontal = ({ title, images, rating, year, likes, price, genre }: 
         {/* Likes */}
         <Box sx={{display:'flex',alignItems:'center',justifyContent: 'space-between'}}>
           <Stack  direction="row" spacing={0.5} alignItems='center' textAlign='center'>
-            <IconHeartFilled style={{marginBottom:'2px'}} size={13} color="#F2F3F5" />
-            <Typography style={{fontSize: 'clamp(0.1rem, 0.8vw, 0.9rem)',whiteSpace: 'nowrap'}} variant="body2">{likes}K</Typography>
+            <IconHeartFilled style={{marginBottom:'2px'}} size={16} color="#F2F3F5" />
+            <Typography style={{fontSize: 'clamp(0.1rem, 0.8vw, 0.9rem)', fontWeight: '700', whiteSpace: 'nowrap'}} variant="body2">
+              {formatLikes(likes)}
+            </Typography>
           </Stack>
           <Box>
-            <Typography variant="body2" sx={{ lineHeight: 1 , fontSize: 'clamp(0.1rem, 0.8vw, 0.9rem)'/* ,whiteSpace: 'nowrap'  */}}>
-              {price.wvc} WVC
+            <Typography variant="body2" sx={{ lineHeight: 1 , fontSize: 'clamp(0.1rem, 0.8vw, 0.9rem)', fontWeight: '700'}}>
+              {price.wvc} MMC
             </Typography>
           </Box>
         </Box>
 
         {/* Price WVC & USD */}
         <Stack alignItems='flex-end'>
-          <Typography variant="body2" sx={{ lineHeight: 1 , fontSize: 'clamp(0.1rem, 0.8vw, 0.5rem)',whiteSpace: 'nowrap' }}>
+          <Typography variant="body2" sx={{ lineHeight: 1 , fontSize: 'clamp(0.1rem, 0.8vw, 0.8rem)', whiteSpace: 'nowrap' }}>
             {price.usd} USD
           </Typography>
         </Stack>
@@ -74,7 +93,7 @@ const PosterHorizontal = ({ title, images, rating, year, likes, price, genre }: 
       <CardContent
         sx={{
           width: '100%',
-          padding:'0px 8px 4px 8px',
+          padding:'0px 8px 0px 8px !important',
           textAlign: 'left',
           color: 'common.white',
           marginTop:'10px'
@@ -86,17 +105,16 @@ const PosterHorizontal = ({ title, images, rating, year, likes, price, genre }: 
         </Typography>
 
         {/* Details: Rating, Year, Genre */}
-        <Stack sx={{overflow: 'hidden'}} direction="row" spacing={1} alignItems='center'>
-          <IconStarFilled size={12} color="#FFCD19" />
-          <Typography sx={{fontSize: 'clamp(0.1rem, 0.8vw, 2rem)',whiteSpace: 'nowrap'}} variant='body2'>{rating}</Typography>
-          <Typography sx={{fontSize: 'clamp(0.1rem, 0.8vw, 2rem)',whiteSpace: 'nowrap'}} variant='body2'>|  {year}</Typography>
-          <Typography
-            sx={{fontSize: 'clamp(0.1rem, 0.8vw, 2rem)',
-            overflow: 'hidden',
-            whiteSpace: 'nowrap',
-            textOverflow: 'ellipsis'}}
-            variant="body2">
-            |  {genre}
+        <Stack direction="row" spacing={1} alignItems="center">
+          <Stack direction="row" spacing={0.5} alignItems="center">
+            <IconStarFilled size={14} color="#FFCD19"/>
+            <Typography sx={{fontSize: 'clamp(0.1rem, 0.8vw, 2rem)', fontWeight: '700' }} variant="body2">{rating}</Typography>
+          </Stack>
+          <Typography sx={{fontSize: 'clamp(0.1rem, 0.8vw, 2rem)'}} variant="body2" color="textSecondary">|</Typography>
+          <Typography sx={{fontSize: 'clamp(0.1rem, 0.8vw, 2rem)', fontWeight: '700'}} variant="body2">{year}</Typography>
+          <Typography sx={{fontSize: 'clamp(0.1rem, 0.8vw, 2rem)'}} variant="body2" color="textSecondary">|</Typography>
+          <Typography sx={{fontSize: 'clamp(0.1rem, 0.8vw, 2rem)', fontWeight: '700'}} variant="body2" color="textSecondary">
+            { genre.join(' - ') }
           </Typography>
         </Stack>
       </CardContent>

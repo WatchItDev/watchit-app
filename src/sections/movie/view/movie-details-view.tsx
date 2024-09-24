@@ -8,11 +8,9 @@ import Card from '@mui/material/Card';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
-import CardContent from '@mui/material/CardContent';
-import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
 // _mock
-import { _mock, productMock, moviesMock } from 'src/_mock';
+import { productMock, moviesMock } from 'src/_mock';
 // routes
 import { paths } from 'src/routes/paths';
 import { RouterLink } from 'src/routes/components';
@@ -20,7 +18,6 @@ import { RouterLink } from 'src/routes/components';
 import Iconify from 'src/components/iconify';
 import { useSettingsContext } from 'src/components/settings';
 
-import { m } from 'framer-motion';
 //
 import MovieDetailMain from 'src/components/carousel/variants/movie-detail-main';
 import IconButton from '@mui/material/IconButton';
@@ -28,15 +25,11 @@ import { IconChevronLeft } from '@tabler/icons-react';
 import Tooltip from '@mui/material/Tooltip';
 import MovieDetailsReview from '../movie-details-review';
 import MovieDetailsDescription from '../movie-details-description';
-import MovieDetailsDiscussion from '../movie-details-discussion';
-import { MotionContainer, varFade } from '../../../components/animate';
-
-import Image from '../../../components/image';
-import { bgGradient } from '../../../theme/css';
 import Label from '../../../components/label';
 import Header from '../../../layouts/dashboard/header';
 import { useResponsive } from '../../../hooks/use-responsive';
 import { useRouter,useParams  } from '../../../routes/hooks';
+import { Poster } from '../../../components/poster/types';
 
 // ----------------------------------------------------------------------
 
@@ -63,53 +56,51 @@ export default function MovieDetailsView({ id }: Props) {
 
   const renderProduct = product && (
     <>
-      <Box sx={{width:"100%",height:'700px'}}>
-        <MovieDetailMain data={moviesMock.filter(x=> x.id === pathname?.id)}/>
+      <Box sx={{width:"100%"}}>
+        <MovieDetailMain movie={moviesMock.find(x=> x.id === pathname?.id) ?? {} as Poster} />
       </Box>
-      <Card>
-        <Tabs
-          value={currentTab}
-          onChange={handleChangeTab}
-          sx={{
-            px: 3,
-            boxShadow: (theme) => `inset 0 -2px 0 0 ${alpha(theme.palette.grey[500], 0.08)}`,
-          }}
-        >
-          {[
-            {
-              value: 'suggestions',
-              label: 'Suggestions'
-            },
-            {
-              value: 'reviews',
-              label: `Reviews (${product.reviews.length})`,
-            },
-            {
-              value: 'Discussions',
-              label: `Discussions (${product.reviews.length})`,
-            },
-          ].map((tab) => (
-            <Tab key={tab.value} value={tab.value} label={tab.label} />
-          ))}
-        </Tabs>
+      <Container maxWidth={settings.themeStretch ? false : 'lg'}>
+        <Card>
+          <Tabs
+            value={currentTab}
+            onChange={handleChangeTab}
+            sx={{
+              px: 3,
+              boxShadow: (theme) => `inset 0 -2px 0 0 ${alpha(theme.palette.grey[500], 0.08)}`,
+            }}
+          >
+            {[
+              {
+                value: 'suggestions',
+                label: 'Suggestions'
+              },
+              {
+                value: 'reviews',
+                label: `Reviews (${product.reviews.length})`,
+              },
+            ].map((tab) => (
+              <Tab key={tab.value} value={tab.value} label={tab.label} />
+            ))}
+          </Tabs>
 
-        {currentTab === 'suggestions' && (
-          <MovieDetailsDescription description={product?.description} />
-        )}
+          {currentTab === 'suggestions' && (
+            <MovieDetailsDescription description={product?.description} />
+          )}
 
-        {currentTab === 'reviews' && (
-          <MovieDetailsReview
-            ratings={product.ratings}
-            reviews={product.reviews as any}
-            totalRatings={product.totalRatings}
-            totalReviews={product.totalReviews}
-          />
-        )}
+          {currentTab === 'reviews' && (
+            <MovieDetailsReview
+              ratings={product.ratings}
+              reviews={product.reviews as any}
+              totalRatings={product.totalRatings}
+              totalReviews={product.totalReviews}
+            />
+          )}
 
-        {currentTab === 'Discussions' && (
-          <MovieDetailsDiscussion/>
-        )}
-      </Card>
+          {/* {currentTab === 'Discussions' && ( */}
+          {/*  <MovieDetailsDiscussion/> */}
+          {/* )} */}
+        </Card>
+      </Container>
     </>
   );
 
@@ -156,9 +147,9 @@ export default function MovieDetailsView({ id }: Props) {
           Movie details
         </Typography>
       </Header>
-      <Container maxWidth={settings.themeStretch ? false : 'lg'}>
+      <Stack direction="column" spacing={1}>
         {product && renderProduct}
-      </Container>
+      </Stack>
     </>
   );
 }
