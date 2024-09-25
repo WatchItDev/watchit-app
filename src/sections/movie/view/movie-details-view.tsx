@@ -138,7 +138,7 @@ export default function MovieDetailsView({ id }: Props) {
         >
           <IconButton disableRipple>
             <IconChevronLeft size={20} />
-            <Typography sx={{ ml: 1 }} variant='subtitle2'>Esc</Typography>
+            <Typography sx={{ ml: 1 }} variant='subtitle2'>Back</Typography>
           </IconButton>
 
 

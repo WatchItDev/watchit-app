@@ -35,13 +35,15 @@ export default function MovieDetailMain({ post }: Props) {
   const variants = theme.direction === 'rtl' ? varFade().inLeft : varFade().inRight;
 
   const handlePlay = () => {
-    router.push(paths.dashboard.movie.details(`${post.id}`));
+    router.push(paths.movie.play(`${post.id}`));
   }
 
   const getMediaUri = (cid: string): string => `https://ipfs.io/ipfs/${cid.replace('ipfs://', '')}`
 
   const getWallpaperCid = (): string => post?.metadata?.attachments?.find((el: any) => el.altTag === 'Wallpaper')?.image?.raw?.uri
+
   const getPosterCid = (): string => post?.metadata?.attachments?.find((el: any) => el.altTag === 'Vertical Poster')?.image?.raw?.uri
+
   const getPosterHorizontalCid = (): string => post?.metadata?.attachments?.find((el: any) => el.altTag === 'Horizontal Poster')?.image?.raw?.uri
 
   const getMovieYear = (): number => {

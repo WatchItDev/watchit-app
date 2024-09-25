@@ -83,6 +83,7 @@ export const paths = {
   movie: {
     root: `/movie`,
     checkout: `/movie/checkout`,
+    play: (id: string) => `/movie/play/${id}`,
     details: (id: string) => `/movie/${id}`,
     demo: {
       details: `/movie/${MOCK_ID}`,

@@ -31,11 +31,12 @@ const UserListPage = lazy(() => import('src/pages/dashboard/user/list'));
 const UserAccountPage = lazy(() => import('src/pages/dashboard/user/account'));
 const UserCreatePage = lazy(() => import('src/pages/dashboard/user/new'));
 const UserEditPage = lazy(() => import('src/pages/dashboard/user/edit'));
-// PRODUCT
+// MOVIE
 const MovieDetailsPage = lazy(() => import('src/pages/dashboard/movie/details'));
 const MovieListPage = lazy(() => import('src/pages/dashboard/movie/list'));
 const MovieCreatePage = lazy(() => import('src/pages/dashboard/movie/new'));
 const MovieEditPage = lazy(() => import('src/pages/dashboard/movie/edit'));
+const MoviePlayPage = lazy(() => import('src/pages/dashboard/movie/play'));
 // BLOG
 const BlogPostsPage = lazy(() => import('src/pages/dashboard/post/list'));
 const BlogPostPage = lazy(() => import('src/pages/dashboard/post/details'));
@@ -110,6 +111,14 @@ export const dashboardRoutes = [
         ],
       },
     ],
+  },
+  {
+    path: 'movie/play/:id',
+    element: (
+      <Suspense fallback={<SplashScreen />}>
+        <MoviePlayPage />
+      </Suspense>
+    ),
   },
   {
     element: (

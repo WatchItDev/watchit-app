@@ -26,31 +26,31 @@ export const ButtonCustom: FC<PropsWithChildren<ButtonProps>> = (props) : JSX.El
 
   return (
     <MuiButton
-      onClick={props.onClick} variant={getButtonVariant(props.variant)}
-      sx={{  //padding: props.children ? '0.3rem 1rem' : '0.3rem 0.5rem',
-             backgroundColor: props.backgroundColor,
-             border:props.border,
-             borderRadius: props.borderRadius,
-             padding: props.padding,
-             height: props.height,
-             width: props.width,
-             margin: props.margin
+      onClick={props?.onClick} variant={getButtonVariant(props?.variant)}
+      sx={{  // padding: props.children ? '0.3rem 1rem' : '0.3rem 0.5rem',
+             backgroundColor: props?.backgroundColor,
+             border:props?.border,
+             borderRadius: props?.borderRadius,
+             padding: props?.padding,
+             height: props?.height,
+             width: props?.width,
+             margin: props?.margin
       }}
     >
       <Box display='flex' alignItems='center' justifyContent='center'>
         {
-          props.icon ? (
+          props?.icon ? (
             <Box
               display='flex' alignItems='center' justifyContent='center'
-              sx={{ mr: props.children ? '0.5rem' : '0' }} data-testid='icon'
+              sx={{ mr: props?.children ? '0.5rem' : '0' }} data-testid='icon'
             >
-              { props.icon }
+              { props?.icon }
             </Box>
           ) : <></>
         }
         {
-          props.children ? (
-            props.children
+          props?.children ? (
+            props?.children
           ) : <></>
         }
       </Box>

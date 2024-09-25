@@ -1,9 +1,9 @@
 import React, { FC, useState, useRef, useEffect } from 'react'
 import { styled, Box, BoxProps, Typography, Grid, IconButton, Button } from '@mui/material'
-import { 
-  IconPlayerPauseFilled, 
-  IconPlayerPlayFilled, 
-  IconRotate, 
+import {
+  IconPlayerPauseFilled,
+  IconPlayerPlayFilled,
+  IconRotate,
   IconStarFilled,
   IconRewindBackward15,
   IconRewindForward15,
@@ -23,15 +23,17 @@ import SliderVolumen from './components/SliderVolumen/SliderVolumen'
 import ListItems from './components/ListItem/ListItem'
 import PopUp from './components/PopUp/PopUp'
 import { useResponsive } from '../../hooks/use-responsive';
+import { paths } from '../../routes/paths';
 
 export type VideoPlayerProps = {
   src: string
   titleMovie: string
-  preview: boolean
+  preview?: boolean
   defaultVolume: number
   /* currentTime?: number */
   onClose?: () => void
-  autoPlay: boolean
+  onBack?: () => void
+  autoPlay?: boolean
 }
 
 const item = [
@@ -60,7 +62,7 @@ const item2 = [
   }
 ]
 
-const item3 = [ 
+const item3 = [
   {
     id:'t1',
     title:'English',
@@ -87,7 +89,7 @@ const item3 = [
   }
 ]
 
-export const VideoPlayer: FC<VideoPlayerProps> = ( {src,titleMovie,preview,defaultVolume,onClose,autoPlay }) : JSX.Element => {
+export const VideoPlayer: FC<VideoPlayerProps> = ( {src,titleMovie,preview,defaultVolume,onClose,autoPlay, onBack }) : JSX.Element => {
   const [ show, setShow ] = useState(false)
   const [ duration, setDuration ] = useState(0)
   const [ currentTime, setCurrentTime ] = useState(0)
@@ -95,7 +97,7 @@ export const VideoPlayer: FC<VideoPlayerProps> = ( {src,titleMovie,preview,defau
   const [ openLanguageOption, setOpenLanguageOption ] = useState(false)
   const video = useRef<HTMLVideoElement>(null);
   const mdUp = useResponsive('up', 'md');
- 
+
   const playVideo = () => {
     if ((currentTime / duration) * 100 < 100) {
       if (video.current) {
@@ -146,14 +148,14 @@ export const VideoPlayer: FC<VideoPlayerProps> = ( {src,titleMovie,preview,defau
 
     videoR?.addEventListener('timeupdate',timeUpdateHandler)
     videoR?.addEventListener('loadedmetadata',loadedMetaHandler)
-    
+
     return()=>{
       if (videoR !== null) {
         videoR.removeEventListener('timeupdate',timeUpdateHandler)
-        videoR.removeEventListener('loadedmetadata',loadedMetaHandler)  
+        videoR.removeEventListener('loadedmetadata',loadedMetaHandler)
       }
     }
-    
+
   },[video]);
 
   useEffect(() => {
@@ -174,7 +176,7 @@ export const VideoPlayer: FC<VideoPlayerProps> = ( {src,titleMovie,preview,defau
     const volumenStep = defaultVolume / 100;
     if (video.current !== null) {
       video.current.volume = volumenStep;
-      setShow(prevShow => !prevShow); 
+      setShow(prevShow => !prevShow);
     }
   }, [defaultVolume]);
 
@@ -189,7 +191,7 @@ export const VideoPlayer: FC<VideoPlayerProps> = ( {src,titleMovie,preview,defau
         }
         setShow(prevShow => !prevShow);
     }
-  }, [currentTime, duration, preview, show]); 
+  }, [currentTime, duration, preview, show]);
 
   useEffect(() => {
     if ((currentTime / duration) * 100 === 100 && preview) {
@@ -205,7 +207,7 @@ export const VideoPlayer: FC<VideoPlayerProps> = ( {src,titleMovie,preview,defau
       if (autoPlay) {
         video.current.play();
       }
-      setShow(autoPlay);
+      setShow(!!autoPlay);
     }
   }, [autoPlay]);
 
@@ -213,56 +215,54 @@ export const VideoPlayer: FC<VideoPlayerProps> = ( {src,titleMovie,preview,defau
     if ((currentTime / duration) * 100 >= 100) {
       return <IconRotate style={{ color: '#D1D2D3 !important' }} />;
     }
-    
-    return show 
+
+    return show
       ? <IconPlayerPauseFilled style={{ color: '#D1D2D3 !important' }} />
       : <IconPlayerPlayFilled style={{ color: '#D1D2D3 !important' }} />;
   };
 
   return (
     <VideoPlayerWrapper>
-      <CustomVideo ref={ video } preview={ preview }>
+      <CustomVideo ref={ video } preview={ !!preview }>
         <source type='video/mp4' src={src}/>
           </CustomVideo>
             <ButtonsPlayerWrapper>
-              { !preview && 
+              { !preview &&
                 <TopButtonWrapper>
-                  <Box>
-                    <Button
-                      onClick={()=>alert('back')} disableFocusRipple
-                      sx={{
-                        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-                        backgroundColor: '#24262A',
-                        borderRadius: 1.5,
-                        m: 1,
-                        p: 0.2,
-                        '&:hover': {
-                          backgroundColor: '#1E1F22'
-                        }
-                      }}
-                    >
-                      <IconButton disableRipple>
-                        <IconChevronLeft size={20} />
-                        <Typography sx={{ ml: 1 }} variant='subtitle2'>Esc</Typography>
-                      </IconButton>
+                  <Button
+                    onClick={onBack} disableFocusRipple
+                    sx={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      backgroundColor: '#24262A',
+                      borderRadius: 1.5,
+                      m: 1,
+                      p: 0.2,
+                      '&:hover': {
+                        backgroundColor: '#1E1F22'
+                      }
+                    }}
+                  >
+                    <IconButton disableRipple>
+                      <IconChevronLeft size={20} />
+                      <Typography sx={{ ml: 1 }} variant='subtitle2'>Back</Typography>
+                    </IconButton>
+                    {mdUp && <Label sx={{ px: 0.75, mr: 1, fontSize: 12, color: 'text.secondary' }}>Esc</Label>}
+                  </Button>
+                </TopButtonWrapper>
+              }
 
-
-                      {mdUp && <Label sx={{ px: 0.75, mr: 1, fontSize: 12, color: 'text.secondary' }}>⌘K</Label>}
-                    </Button>
-                  </Box>
-          </TopButtonWrapper>
-        }
-        
         <PlayerBarWrapper>
-          <Grid 
-            container spacing={2} width='100%' 
+          <Grid
+            container spacing={2} width='100%'
             display='flex' alignItems='center'
           >
-            { !preview && 
+            { !preview &&
               <>
-                <Grid 
+                <Grid
                   item xs={12}
-                  display='flex' alignItems='end' 
+                  display='flex' alignItems='end'
                   justifyContent='space-between'
                 >
                   <Box sx={{textAling:'center'}}>
@@ -276,51 +276,51 @@ export const VideoPlayer: FC<VideoPlayerProps> = ( {src,titleMovie,preview,defau
                     </Typography>
                   </Box>
                 </Grid>
-                <Grid 
-                  item xs={12} width='100%' 
+                <Grid
+                  item xs={12} width='100%'
                   display='flex' alignItems='center'
                 >
-                  <Grid 
-                    container spacing={2} width='100%' 
+                  <Grid
+                    container spacing={2} width='100%'
                     display='flex' alignItems='center'
                   >
-                    <Grid 
-                      item xs={12} width='100%' 
+                    <Grid
+                      item xs={12} width='100%'
                       display='flex' alignItems='center'
                     >
-                      <ProgressBar 
-                        percentage={(currentTime / duration) * 100} 
-                        showBullet 
-                        onNewPercentage={(increaseValue: number) => handleProgressVideo(increaseValue)} 
+                      <ProgressBar
+                        percentage={(currentTime / duration) * 100}
+                        showBullet
+                        onNewPercentage={(increaseValue: number) => handleProgressVideo(increaseValue)}
                       />
                     </Grid>
-                    <Grid 
-                      item xs={12} width='100%' 
+                    <Grid
+                      item xs={12} width='100%'
                       display='flex' alignItems='center'
                     >
                         <Box sx={{width:'100%'}}>
-                          { !preview && 
-                            <ButtonCustom 
-                              width='30px' 
+                          { !preview &&
+                            <ButtonCustom
+                              width='30px'
                               backgroundColor='transparent'
-                              variant='flat' 
-                              icon={getIcon()} 
+                              variant='flat'
+                              icon={getIcon()}
                               onClick={playVideo}
                             />
                           }
-                          { !preview && 
-                            <ButtonCustom 
-                              width='30px' 
-                              backgroundColor='transparent' 
+                          { !preview &&
+                            <ButtonCustom
+                              width='30px'
+                              backgroundColor='transparent'
                               variant='flat'
                               icon={<IconRewindBackward15 color="#FFFFFF" />}
                               onClick={()=>{prevVideo()}}
                             />
                           }
-                          { !preview && 
+                          { !preview &&
                             (currentTime/duration) * 100 < 100 &&
-                              <ButtonCustom 
-                                width='30px' 
+                              <ButtonCustom
+                                width='30px'
                                 backgroundColor='transparent'
                                 variant='flat'
                                 icon={<IconRewindForward15 color="#FFFFFF" />}
@@ -329,40 +329,40 @@ export const VideoPlayer: FC<VideoPlayerProps> = ( {src,titleMovie,preview,defau
                           }
                         </Box>
                         <Box sx={{display:'flex',alignItems:'center'}}>
-                          <SliderVolumen 
-                            alwaysShow={ false } 
-                            defaultVolume={ defaultVolume } 
+                          <SliderVolumen
+                            alwaysShow={ false }
+                            defaultVolume={ defaultVolume }
                             onChange={ ( value:number ) => handleVolumne( value ) }
                           />
-                          <ButtonCustom 
-                            width='30px' 
+                          <ButtonCustom
+                            width='30px'
                             backgroundColor='transparent'
                             variant='flat'
                             icon={<IconHeartFilled color="#FFFFFF" />}
                             onClick={()=>{nextVideo()}}
                           />
-                          <ButtonCustom 
-                            width='30px' 
+                          <ButtonCustom
+                            width='30px'
                             backgroundColor='transparent'
                             variant='flat'
                             icon={<IconMessageCircle color="#FFFFFF" />}
                             onClick={()=>{nextVideo()}}
                           />
-                          <ButtonCustom 
-                            width='30px' 
+                          <ButtonCustom
+                            width='30px'
                             backgroundColor='transparent'
                             variant='flat'
                             icon={<IconFocusCentered color="#FFFFFF" />}
                             onClick={()=>{nextVideo()}}
                           />
-                          <ButtonCustom 
-                            width='30px' 
+                          <ButtonCustom
+                            width='30px'
                             backgroundColor='transparent'
                             variant='flat'
                             icon={<IconDotsVertical color="#FFFFFF" />}
                             onClick={()=>{nextVideo()}}
                           />
-                          
+
                         </Box>
                     </Grid>
                   </Grid>
@@ -389,7 +389,7 @@ const CustomVideo = styled( 'video' )<{ preview: boolean }>(( props ) => ({
   width:'100%',
   height:'100%',
   lineHeight:0,
-  objectFit:`${props.preview ? 'cover': 'revert'}`
+  objectFit:`${props?.preview ? 'cover': 'revert'}`
 }))
 
 const PlayerBarWrapper = styled( Box )<BoxProps>(() => ({
@@ -404,10 +404,10 @@ const PlayerBarWrapper = styled( Box )<BoxProps>(() => ({
 const TopButtonWrapper = styled( Box )<BoxProps>(() => ({
   display: 'flex',
   alignItems: 'center',
-  width: 'calc(100% - 1rem)',
+  left: '10px',
   position: 'absolute',
   justifyContent: 'space-between',
-  top: '5px'
+  top: '20px'
 }))
 
 const ButtonsPlayerWrapper = styled( Box )<BoxProps>(() => ({
@@ -427,6 +427,6 @@ export const PosterImage = styled( Box )<BoxProps & { src: string }>(() => ({
   width: '100%',
   height: '100%',
   position: 'relative'
-})) 
+}))
 
 export default VideoPlayer
