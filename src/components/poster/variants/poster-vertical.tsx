@@ -72,19 +72,25 @@ const PosterVertical = ({ id, title, images, rating, year, likes, price, genre }
               {formatLikes(likes)}
             </Typography>
           </Stack>
-          <Box>
-            <Typography variant="body2" sx={{ lineHeight: 1 , fontSize: 'clamp(0.1rem, 0.8vw, 0.9rem)', fontWeight: '700'}}>
-              {price.wvc} MMC
-            </Typography>
-          </Box>
+          {
+            price?.wvc && (
+              <Box>
+                <Typography variant="body2" sx={{ lineHeight: 1 , fontSize: 'clamp(0.1rem, 0.8vw, 0.9rem)', fontWeight: '700'}}>
+                  {price?.wvc} MMC
+                </Typography>
+              </Box>
+            )
+          }
         </Box>
-
-        {/* Price WVC & USD */}
-        <Stack alignItems='flex-end'>
-          <Typography variant="body2" sx={{ lineHeight: 1 , fontSize: 'clamp(0.1rem, 0.8vw, 0.8rem)', whiteSpace: 'nowrap' }}>
-            {price.usd} USD
-          </Typography>
-        </Stack>
+        {
+          price?.usd && (
+            <Stack alignItems='flex-end'>
+              <Typography variant="body2" sx={{ lineHeight: 1 , fontSize: 'clamp(0.1rem, 0.8vw, 0.8rem)', whiteSpace: 'nowrap' }}>
+                {price?.usd} USD
+              </Typography>
+            </Stack>
+          )
+        }
       </Box>
 
       {/* Downside: Title & details */}
@@ -122,11 +128,17 @@ const PosterVertical = ({ id, title, images, rating, year, likes, price, genre }
         </Typography>
 
         <Stack direction="row" spacing={1} alignItems="center">
-          <Stack direction="row" spacing={0.5} alignItems="center">
-            <IconStarFilled size={14} color="#FFCD19"/>
-            <Typography sx={{fontSize: 'clamp(0.1rem, 0.8vw, 2rem)', fontWeight: '700' }} variant="body2">{rating}</Typography>
-          </Stack>
-          <Typography sx={{fontSize: 'clamp(0.1rem, 0.8vw, 2rem)'}} variant="body2" color="textSecondary">|</Typography>
+          {
+            rating && (
+              <>
+                <Stack direction="row" spacing={0.5} alignItems="center">
+                  <IconStarFilled size={14} color="#FFCD19"/>
+                  <Typography sx={{fontSize: 'clamp(0.1rem, 0.8vw, 2rem)', fontWeight: '700' }} variant="body2">{rating}</Typography>
+                </Stack>
+                <Typography sx={{fontSize: 'clamp(0.1rem, 0.8vw, 2rem)'}} variant="body2" color="textSecondary">|</Typography>
+              </>
+            )
+          }
           <Typography sx={{fontSize: 'clamp(0.1rem, 0.8vw, 2rem)', fontWeight: '700'}} variant="body2">{year}</Typography>
           <Typography sx={{fontSize: 'clamp(0.1rem, 0.8vw, 2rem)'}} variant="body2" color="textSecondary">|</Typography>
           <Typography sx={{fontSize: 'clamp(0.1rem, 0.8vw, 2rem)', fontWeight: '700'}} variant="body2" color="textSecondary">

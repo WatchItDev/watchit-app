@@ -14,8 +14,9 @@ import { varFade } from 'src/components/animate';
 import { IconStarFilled, IconPlayerPlay, IconFlagFilled } from '@tabler/icons-react';
 import Container from '@mui/material/Container';
 import Stack from '@mui/material/Stack';
+import { Post } from '@lens-protocol/api-bindings/dist/declarations/src/lens/graphql/generated';
+import moment from 'moment';
 import { PosterVertical } from '../../poster';
-import { Poster } from '../../poster/types';
 import { useRouter } from '../../../routes/hooks';
 import { paths } from '../../../routes/paths';
 import { useSettingsContext } from '../../settings';
@@ -23,10 +24,10 @@ import { useSettingsContext } from '../../settings';
 // ----------------------------------------------------------------------
 
 type Props = {
-  movie: Poster
+  post: any
 };
 
-export default function MovieDetailMain({ movie }: Props) {
+export default function MovieDetailMain({ post }: Props) {
   const theme = useTheme();
   const router = useRouter();
   const settings = useSettingsContext();
@@ -34,12 +35,25 @@ export default function MovieDetailMain({ movie }: Props) {
   const variants = theme.direction === 'rtl' ? varFade().inLeft : varFade().inRight;
 
   const handlePlay = () => {
-    router.push(paths.dashboard.movie.details(movie.id));
+    router.push(paths.dashboard.movie.details(`${post.id}`));
   }
+
+  const getMediaUri = (cid: string): string => `https://ipfs.io/ipfs/${cid.replace('ipfs://', '')}`
+
+  const getWallpaperCid = (): string => post?.metadata?.attachments?.find((el: any) => el.altTag === 'Wallpaper')?.image?.raw?.uri
+  const getPosterCid = (): string => post?.metadata?.attachments?.find((el: any) => el.altTag === 'Vertical Poster')?.image?.raw?.uri
+  const getPosterHorizontalCid = (): string => post?.metadata?.attachments?.find((el: any) => el.altTag === 'Horizontal Poster')?.image?.raw?.uri
+
+  const getMovieYear = (): number => {
+    const releaseDate = post?.metadata?.attributes?.find((el: any) => el.key === 'Release Date')?.value;
+    return releaseDate ? +moment(releaseDate).format('YYYY') : 0
+  }
+
+  const getMovieGenres = (): string => post?.metadata?.attributes?.find((el: any) => el.key === 'Genres')?.value
 
   return (
     <Paper sx={{ position: 'relative', boxShadow: 'none',}}>
-      <Image dir="ltr" alt={movie.title} src={movie.images.vertical} ratio="21/9" />
+      <Image dir="ltr" alt={post?.metadata?.title} src={getMediaUri(getWallpaperCid())} ratio="21/9" />
 
       <Box sx={{
         bottom: 0,
@@ -70,7 +84,7 @@ export default function MovieDetailMain({ movie }: Props) {
         }),
       }} />
 
-      <Container maxWidth={settings.themeStretch ? false : 'lg'}>
+      <Container maxWidth={settings.themeStretch ? false : 'lg'} sx={{ position: 'relative' }}>
         <CardContent
           sx={{
             bottom: 0,
@@ -83,25 +97,25 @@ export default function MovieDetailMain({ movie }: Props) {
           }}
         >
           {/* Title */}
-          <Box sx={{display:'flex', alignItems: 'center', justifyContent: 'space-between',paddingBottom:'30px'}}>
-            <Box sx={{display:'flex', flexDirection:'column', justifyContent:'end', width: '60%'}}>
+          <Box sx={{ display:'flex', alignItems: 'flex-end', justifyContent: 'space-between' }}>
+            <Box sx={{ display:'flex', flexDirection:'column', justifyContent:'end', width: '60%' }}>
               {/* Title */}
               <m.div variants={variants}>
                 <Typography sx={{ fontSize: 'clamp(2rem, 1vw, 3rem)', fontWeight: 'bold', lineHeight: 1.1, mb: 0.5 }} gutterBottom>
-                  {movie.title}
+                  {post?.metadata?.title}
                 </Typography>
               </m.div>
               {/* Details: Rating, Year, Genre */}
               <Stack direction="row" spacing={1} alignItems="center" sx={{ mb: 1.5 }}>
-                <Stack direction="row" spacing={0.5} alignItems="center">
-                  <IconStarFilled size={14} color="#FFCD19"/>
-                  <Typography sx={{fontSize: 'clamp(0.3rem, 2vw + 1rem, 0.9rem)', fontWeight: '700' }} variant="body2">{movie.rating}</Typography>
-                </Stack>
-                <Typography sx={{fontSize: 'clamp(0.3rem, 2vw + 1rem, 0.9rem)'}} variant="body2" color="textSecondary">|</Typography>
-                <Typography sx={{fontSize: 'clamp(0.3rem, 2vw + 1rem, 0.9rem)', fontWeight: '700'}} variant="body2">{movie.year}</Typography>
+                {/* <Stack direction="row" spacing={0.5} alignItems="center"> */}
+                {/*  <IconStarFilled size={14} color="#FFCD19"/> */}
+                {/*  <Typography sx={{fontSize: 'clamp(0.3rem, 2vw + 1rem, 0.9rem)', fontWeight: '700' }} variant="body2">{movie.rating}</Typography> */}
+                {/* </Stack> */}
+                {/* <Typography sx={{fontSize: 'clamp(0.3rem, 2vw + 1rem, 0.9rem)'}} variant="body2" color="textSecondary">|</Typography> */}
+                <Typography sx={{fontSize: 'clamp(0.3rem, 2vw + 1rem, 0.9rem)', fontWeight: '700'}} variant="body2">{getMovieYear()}</Typography>
                 <Typography sx={{fontSize: 'clamp(0.3rem, 2vw + 1rem, 0.9rem)'}} variant="body2" color="textSecondary">|</Typography>
                 <Typography sx={{fontSize: 'clamp(0.3rem, 2vw + 1rem, 0.9rem)', fontWeight: '700'}} variant="body2" color="textSecondary">
-                  { movie.genre.join('  -  ') }
+                  { getMovieGenres().split(', ').join('  -  ') }
                 </Typography>
               </Stack>
               <Box>
@@ -115,7 +129,7 @@ export default function MovieDetailMain({ movie }: Props) {
                     fontWeight: '700'
                   }}
                               variant="body2" >
-                    {movie.synopsis}
+                    {post?.metadata?.content ?? ''}
                   </Typography>
                 </m.div>
               </Box>
@@ -138,7 +152,7 @@ export default function MovieDetailMain({ movie }: Props) {
                           Watch it!
                         </Typography>
                         <Typography variant="body2" sx={{ lineHeight: 1 , fontSize: 'clamp(0.1rem, 0.7vw, 0.7rem)' }}>
-                          {movie.price.wvc} MMC / {movie.price.usd} USD
+                          10 MMC / 0.2 USD
                         </Typography>
                       </Stack>
                     </Stack>
@@ -167,7 +181,20 @@ export default function MovieDetailMain({ movie }: Props) {
               }}
             >
               <Box sx={{ width:'200px' }}>
-                <PosterVertical sx={{ height:'100%' }} { ...movie } />
+                 <PosterVertical
+                   sx={{ height:'100%' }}
+                   id={post?.id}
+                   title={post?.metadata?.title}
+                   genre={getMovieGenres().split(', ')}
+                   images={{
+                     vertical: getMediaUri(getPosterCid()),
+                     horizontal: getMediaUri(getPosterHorizontalCid()),
+                     wallpaper: getMediaUri(getWallpaperCid())
+                   }}
+                   likes={post?.stats?.upvotes ?? 0}
+                   synopsis={post?.metadata?.content ?? ''}
+                   year={getMovieYear()}
+                 />
               </Box>
             </Box>
           </Box>

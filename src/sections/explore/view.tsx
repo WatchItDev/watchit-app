@@ -11,71 +11,65 @@ import CarouselMixed from 'src/components/carousel/variants/carousel-mixed';
 import CarouselPoster from 'src/components/carousel/variants/carousel-poster';
 import CarouselPosterMini from 'src/components/carousel/variants/carousel-poster-mini';
 import CarouselPosterHorizontal from 'src/components/carousel/variants/carousel-poster-horizontal';
-import { usePublications, PublicationType, profileId, appId } from '@lens-protocol/react-web';
+import {
+  usePublications,
+  PublicationType,
+  appId,
+} from '@lens-protocol/react-web';
+// eslint-disable-next-line import/no-extraneous-dependencies
+// import { type Post } from '@lens-protocol/api-bindings/dist/declarations/src/lens/graphql/generated';
 import { CarouselSection } from '../../components/carousel/carousel-section';
-import { useAuth } from '../../hooks/use-auth';
+import { LoadingScreen } from '../../components/loading-screen';
 
 // ----------------------------------------------------------------------
 
 export default function ExploreView() {
-  const { selectedProfile } = useAuth();
-  // const { data, loading, error } = usePublications({
-  //   where: {
-  //     publicationTypes: [PublicationType.Post]
-  //   },
-  // });
-
-  console.log('selected')
-  console.log(selectedProfile)
-  console.log(selectedProfile?.id)
-  console.log(typeof selectedProfile?.id)
-
-  const profile = profileId(selectedProfile?.handle?.ownedBy as string)
-
-  console.log('profileId')
-  console.log(profile)
-
-  const { data, loading, error } = usePublications({
+  const { data, loading, error }: any = usePublications({
     where: {
       publicationTypes: [PublicationType.Post],
       metadata: {
+        // mainContentFocus: [PublicationMetadataMainFocusType.Video],
         publishedOn: [appId('watchit')],
       }
     }
   });
 
   console.log('posts')
+  console.log(loading)
   console.log(data)
   console.log(data?.map((item: any) => item?.metadata?.appId))
-  console.log(loading)
   console.log(error)
+
+  if (loading) return <LoadingScreen />
+
+  const movieArr: any = [...data, ...data, ...data, ...data, ...data, ...data, ...data, ...data, ...data]
 
   return (
     <Container sx={{ p: '0 !important', maxWidth: '2000px !important' }}>
       <Stack spacing={3} sx={{ pb: 6 }}>
-         <CarouselMain data={moviesMock.slice(12, 16)} />
+         <CarouselMain data={movieArr} />
 
         <CarouselSection title="Carousel Center Mode">
-          <CarouselPoster data={moviesMock.slice(8, 16)} />
+          <CarouselPoster data={movieArr} />
         </CarouselSection>
 
-         <CarouselMixed data={moviesMock.slice(11, 15)} />
+         <CarouselMixed data={movieArr} />
 
         <CarouselSection title="Carousel Center Mode">
-          <CarouselPosterMini data={moviesMock.slice(0, 8)} />
+          <CarouselPosterMini data={movieArr} />
         </CarouselSection>
 
         <Stack spacing={1}>
           <CarouselSection title="Carousel Center Mode">
-            <CarouselPosterHorizontal data={moviesMock.slice(8, 16)} />
+            <CarouselPosterHorizontal data={movieArr} />
           </CarouselSection>
 
           <CarouselSection title="Carousel Center Mode">
-            <CarouselPosterHorizontal data={moviesMock.slice(8, 16)} />
+            <CarouselPosterHorizontal data={movieArr} />
           </CarouselSection>
 
           <CarouselSection title="Carousel Center Mode">
-            <CarouselPosterHorizontal data={moviesMock.slice(8, 16)} />
+            <CarouselPosterHorizontal data={movieArr} />
           </CarouselSection>
         </Stack>
 

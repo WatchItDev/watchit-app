@@ -54,7 +54,6 @@ export const dashboardRoutes = [
     element: (
       <DashboardLayout>
         <Suspense fallback={<LoadingScreen />}>
-
           <Outlet />
         </Suspense>
       </DashboardLayout>

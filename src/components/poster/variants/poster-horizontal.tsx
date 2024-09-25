@@ -76,7 +76,7 @@ const PosterHorizontal = ({ title, images, rating, year, likes, price, genre, id
           </Stack>
           <Box>
             <Typography variant="body2" sx={{ lineHeight: 1 , fontSize: 'clamp(0.1rem, 0.8vw, 0.9rem)', fontWeight: '700'}}>
-              {price.wvc} MMC
+              {price?.wvc ?? 0} MMC
             </Typography>
           </Box>
         </Box>
@@ -84,7 +84,7 @@ const PosterHorizontal = ({ title, images, rating, year, likes, price, genre, id
         {/* Price WVC & USD */}
         <Stack alignItems='flex-end'>
           <Typography variant="body2" sx={{ lineHeight: 1 , fontSize: 'clamp(0.1rem, 0.8vw, 0.8rem)', whiteSpace: 'nowrap' }}>
-            {price.usd} USD
+            {price?.usd ?? 0} USD
           </Typography>
         </Stack>
       </Box>

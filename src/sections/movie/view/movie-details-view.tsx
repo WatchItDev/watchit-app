@@ -23,6 +23,8 @@ import MovieDetailMain from 'src/components/carousel/variants/movie-detail-main'
 import IconButton from '@mui/material/IconButton';
 import { IconChevronLeft } from '@tabler/icons-react';
 import Tooltip from '@mui/material/Tooltip';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { usePublication } from '@lens-protocol/react';
 import MovieDetailsReview from '../movie-details-review';
 import MovieDetailsDescription from '../movie-details-description';
 import Label from '../../../components/label';
@@ -30,6 +32,7 @@ import Header from '../../../layouts/dashboard/header';
 import { useResponsive } from '../../../hooks/use-responsive';
 import { useRouter,useParams  } from '../../../routes/hooks';
 import { Poster } from '../../../components/poster/types';
+import { LoadingScreen } from '../../../components/loading-screen';
 
 // ----------------------------------------------------------------------
 
@@ -38,13 +41,14 @@ type Props = {
 };
 
 export default function MovieDetailsView({ id }: Props) {
-  const product = productMock
+  const [currentTab, setCurrentTab] = useState('suggestions');
+
   const settings = useSettingsContext();
   const mdUp = useResponsive('up', 'md');
   const router = useRouter();
-  const pathname = useParams()
-
-  const [currentTab, setCurrentTab] = useState('suggestions');
+  const { data, error, loading }: any = usePublication({
+    forId: id as any
+  });
 
   const handleChangeTab = useCallback((event: React.SyntheticEvent, newValue: string) => {
     setCurrentTab(newValue);
@@ -54,10 +58,12 @@ export default function MovieDetailsView({ id }: Props) {
     router.push(paths.dashboard.root);
   }
 
-  const renderProduct = product && (
+  if (loading) return <LoadingScreen />
+
+  const renderProduct = data && (
     <>
       <Box sx={{width:"100%"}}>
-        <MovieDetailMain movie={moviesMock.find(x=> x.id === pathname?.id) ?? {} as Poster} />
+        <MovieDetailMain post={data} />
       </Box>
       <Container maxWidth={settings.themeStretch ? false : 'lg'}>
         <Card>
@@ -74,27 +80,27 @@ export default function MovieDetailsView({ id }: Props) {
                 value: 'suggestions',
                 label: 'Suggestions'
               },
-              {
-                value: 'reviews',
-                label: `Reviews (${product.reviews.length})`,
-              },
+              // {
+              //   value: 'reviews',
+              //   label: `Reviews (${data?.stats?.comments})`,
+              // },
             ].map((tab) => (
               <Tab key={tab.value} value={tab.value} label={tab.label} />
             ))}
           </Tabs>
 
           {currentTab === 'suggestions' && (
-            <MovieDetailsDescription description={product?.description} />
+            <MovieDetailsDescription description={data.metadata?.content} />
           )}
 
-          {currentTab === 'reviews' && (
-            <MovieDetailsReview
-              ratings={product.ratings}
-              reviews={product.reviews as any}
-              totalRatings={product.totalRatings}
-              totalReviews={product.totalReviews}
-            />
-          )}
+          {/* {currentTab === 'reviews' && ( */}
+          {/*  <MovieDetailsReview */}
+          {/*    ratings={product.ratings} */}
+          {/*    reviews={product.reviews as any} */}
+          {/*    totalRatings={product.totalRatings} */}
+          {/*    totalReviews={product.totalReviews} */}
+          {/*  /> */}
+          {/* )} */}
 
           {/* {currentTab === 'Discussions' && ( */}
           {/*  <MovieDetailsDiscussion/> */}
@@ -109,14 +115,9 @@ export default function MovieDetailsView({ id }: Props) {
       <Header
         actions={(
           <Box>
-            <Tooltip title="Go Live">
+            <Tooltip title="Share">
               <IconButton component={RouterLink} href="#">
                 <Iconify icon="eva:external-link-fill" />
-              </IconButton>
-            </Tooltip>
-            <Tooltip title="Edit">
-              <IconButton component={RouterLink} href="#">
-                <Iconify icon="solar:pen-bold" />
               </IconButton>
             </Tooltip>
           </Box>
@@ -148,7 +149,7 @@ export default function MovieDetailsView({ id }: Props) {
         </Typography>
       </Header>
       <Stack direction="column" spacing={1}>
-        {product && renderProduct}
+        {data && renderProduct}
       </Stack>
     </>
   );

@@ -15,14 +15,15 @@ import { varFade } from 'src/components/animate';
 import Carousel, { CarouselDots, useCarousel } from 'src/components/carousel/index';
 import { IconFlagFilled, IconStarFilled, IconPlayerPlay } from '@tabler/icons-react';
 import Stack from '@mui/material/Stack';
-import { Poster } from '../../poster/types';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { type Post } from '@lens-protocol/api-bindings/dist/declarations/src/lens/graphql/generated';
 import { paths } from '../../../routes/paths';
 import { useRouter } from '../../../routes/hooks';
 
 // ----------------------------------------------------------------------
 
 type Props = {
-  data: Poster[]
+  data: Post[]
 };
 
 export default function CarouselMain({ data }: Props) {
@@ -38,8 +39,8 @@ export default function CarouselMain({ data }: Props) {
   return (
     <Card sx={{ borderRadius: 0, boxShadow: 'none' }}>
       <Carousel ref={carousel.carouselRef} {...carousel.carouselSettings}>
-        {data.map((poster, index) => (
-          <CarouselItem key={poster.id} poster={poster} active={index === carousel.currentIndex} />
+        {data.map((post, index) => (
+          <CarouselItem key={post.id} post={post} active={index === carousel.currentIndex} />
         ))}
       </Carousel>
     </Card>
@@ -49,23 +50,31 @@ export default function CarouselMain({ data }: Props) {
 // ----------------------------------------------------------------------
 
 type CarouselItemProps = {
-  poster: Poster
+  post: any
   active: boolean;
 };
 
-function CarouselItem({ poster, active }: CarouselItemProps) {
+function CarouselItem({ post, active }: CarouselItemProps) {
   const theme = useTheme();
   const router = useRouter();
 
   const variants = theme.direction === 'rtl' ? varFade().inLeft : varFade().inRight;
 
   const handlePlay = () => {
-    router.push(paths.dashboard.movie.details(poster.id));
+    router.push(paths.dashboard.movie.details(`${post.id}`));
   }
+
+  const getMediaUri = (cid: string): string => `https://ipfs.io/ipfs/${cid.replace('ipfs://', '')}`
+
+  const getWallpaperCid = (): string => post?.metadata?.attachments?.find((el: any) => el.altTag === 'Wallpaper')?.image?.raw?.uri
+
+  const getMovieYear = (): string => post?.metadata?.attributes?.find((el: any) => el.key === 'Release Date')?.value
+
+  const getMovieGenres = (): string => post?.metadata?.attributes?.find((el: any) => el.key === 'Genres')?.value
 
   return (
     <Paper sx={{ position: 'relative', boxShadow: 'none' }}>
-      <Image dir="ltr" alt={poster.title} src={poster.images.vertical} ratio="21/9" />
+      <Image dir="ltr" alt={post.metadata?.title} src={getMediaUri(getWallpaperCid())} ratio="21/9" />
 
       <Box sx={{
         bottom: 0,
@@ -94,8 +103,6 @@ function CarouselItem({ poster, active }: CarouselItemProps) {
         }),
       }} />
 
-
-
       <CardContent
         sx={{
           bottom: 0,
@@ -114,20 +121,20 @@ function CarouselItem({ poster, active }: CarouselItemProps) {
         {/* Title */}
         <m.div variants={variants}>
           <Typography sx={{ fontSize: 'clamp(2rem, 1vw, 3rem)', fontWeight: 'bold', lineHeight: 1.1, mb: 0.5 }} gutterBottom>
-            {poster.title}
+            {post?.metadata?.title}
           </Typography>
         </m.div>
         {/* Details: Rating, Year, Genre */}
         <Stack direction="row" spacing={1} alignItems="center" sx={{ mb: 1.5 }}>
-          <Stack direction="row" spacing={0.5} alignItems="center">
-            <IconStarFilled size={14} color="#FFCD19"/>
-            <Typography sx={{fontSize: 'clamp(0.3rem, 2vw + 1rem, 0.9rem)', fontWeight: '700' }} variant="body2">{poster.rating}</Typography>
-          </Stack>
-          <Typography sx={{fontSize: 'clamp(0.3rem, 2vw + 1rem, 0.9rem)'}} variant="body2" color="textSecondary">|</Typography>
-          <Typography sx={{fontSize: 'clamp(0.3rem, 2vw + 1rem, 0.9rem)', fontWeight: '700'}} variant="body2">{poster.year}</Typography>
+          {/* <Stack direction="row" spacing={0.5} alignItems="center"> */}
+          {/*  <IconStarFilled size={14} color="#FFCD19"/> */}
+          {/*  <Typography sx={{fontSize: 'clamp(0.3rem, 2vw + 1rem, 0.9rem)', fontWeight: '700' }} variant="body2">{poster.rating}</Typography> */}
+          {/* </Stack> */}
+          {/* <Typography sx={{fontSize: 'clamp(0.3rem, 2vw + 1rem, 0.9rem)'}} variant="body2" color="textSecondary">|</Typography> */}
+          <Typography sx={{fontSize: 'clamp(0.3rem, 2vw + 1rem, 0.9rem)', fontWeight: '700'}} variant="body2">{getMovieYear()}</Typography>
           <Typography sx={{fontSize: 'clamp(0.3rem, 2vw + 1rem, 0.9rem)'}} variant="body2" color="textSecondary">|</Typography>
           <Typography sx={{fontSize: 'clamp(0.3rem, 2vw + 1rem, 0.9rem)', fontWeight: '700'}} variant="body2" color="textSecondary">
-            { poster.genre.join('  -  ') }
+            { getMovieGenres().split(', ').join('  -  ') }
           </Typography>
         </Stack>
         <Box>
@@ -141,7 +148,7 @@ function CarouselItem({ poster, active }: CarouselItemProps) {
               fontWeight: '700'
             }}
               variant="body2" >
-              {poster.synopsis}
+              {post?.metadata?.content ?? ''}
             </Typography>
           </m.div>
         </Box>

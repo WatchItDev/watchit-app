@@ -8,7 +8,6 @@ import { MovieDetailsView } from 'src/sections/movie/view';
 
 export default function ProductDetailsPage() {
   const params = useParams();
-
   const { id } = params;
 
   return (

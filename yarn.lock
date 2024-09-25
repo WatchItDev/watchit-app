@@ -3448,7 +3448,7 @@
   resolved "https://registry.npmjs.org/@leichtgewicht/ip-codec/-/ip-codec-2.0.4.tgz"
   integrity sha512-Hcv+nVC0kZnQ3tD9GVu5xSMR4VVYOteQIr/hwFPVEvPdlXqgGEuRjiheChHgdM+JyqdgNcmzZOX/tnl0JOiI7A==
 
-"@lens-protocol/api-bindings@0.12.3":
+"@lens-protocol/api-bindings@^0.12.3", "@lens-protocol/api-bindings@0.12.3":
   version "0.12.3"
   resolved "https://registry.npmjs.org/@lens-protocol/api-bindings/-/api-bindings-0.12.3.tgz"
   integrity sha512-lHkdQjU/iD2U6bBsk8SB4N30EWzyxufibkJn6ZXWVzcFBKV7gcQzNEBK9R0OhWc8VSu6mwM11X59Xc10DbcliA==
@@ -14587,6 +14587,11 @@ mlly@^1.6.1, mlly@^1.7.1:
     pathe "^1.1.2"
     pkg-types "^1.1.1"
     ufo "^1.5.3"
+
+moment@^2.30.1:
+  version "2.30.1"
+  resolved "https://registry.npmjs.org/moment/-/moment-2.30.1.tgz"
+  integrity sha512-uEmtNhbDOrWPFS+hdjFCBfy9f2YoyzRpwcl+DqpC6taX21FzsTLQVbMV/W7PzNSX6x/bhC1zA3c2UQ5NzH6how==
 
 mortice@^3.0.4:
   version "3.0.4"

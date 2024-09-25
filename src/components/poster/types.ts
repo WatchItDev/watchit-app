@@ -12,14 +12,14 @@ export interface Poster {
     horizontal: string
     wallpaper: string
   }
-  rating: number
+  rating?: number
   year: number
   likes: number
-  price: {
-    wvc: number
-    usd: number
+  price?: {
+    wvc?: number
+    usd?: number
   }
   genre: string[]
-  trailerUrl: string
+  trailerUrl?: string
   sx?: SxProps<Theme>
 }
