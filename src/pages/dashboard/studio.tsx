@@ -9,7 +9,6 @@ import {
 import { video, MetadataAttributeType, AnyMedia } from '@lens-protocol/metadata';
 import Typography from '@mui/material/Typography';
 import axios from 'axios';
-import { ethers } from 'ethers';
 import { useAuth } from '../../hooks/use-auth';
 import uuidv4 from '../../utils/uuidv4';
 import { LoadingScreen } from '../../components/loading-screen';

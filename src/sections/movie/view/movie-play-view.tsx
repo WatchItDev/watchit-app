@@ -48,7 +48,6 @@ export default function MoviePlayView({ id }: Props) {
             src={getMediaUri(getMovieCid())}
             titleMovie={data?.metadata?.title}
             preview={false}
-            defaultVolume={80}
             onBack={handleBack}
           />
         )
