@@ -15,9 +15,9 @@ _static
 out
 dist
 build
+.idea
 
 # environment variables
-.idea
 .env
 .env.local
 .env.development.local
