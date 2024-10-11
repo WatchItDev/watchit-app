@@ -17,6 +17,7 @@ dist
 build
 
 # environment variables
+.idea
 .env
 .env.local
 .env.development.local
