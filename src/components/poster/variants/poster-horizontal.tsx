@@ -76,7 +76,7 @@ const PosterHorizontal = ({ title, images, rating, year, likes, price, genre, id
           </Stack>
           <Box>
             <Typography variant="body2" sx={{ lineHeight: 1 , fontSize: 'clamp(0.1rem, 0.8vw, 0.9rem)', fontWeight: '700'}}>
-              {price?.wvc ?? 0} MMC
+              {price?.mmc ?? 0} MMC
             </Typography>
           </Box>
         </Box>

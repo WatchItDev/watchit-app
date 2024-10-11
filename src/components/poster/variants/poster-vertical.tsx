@@ -73,10 +73,10 @@ const PosterVertical = ({ id, title, images, rating, year, likes, price, genre }
             </Typography>
           </Stack>
           {
-            price?.wvc && (
+            price?.mmc && (
               <Box>
                 <Typography variant="body2" sx={{ lineHeight: 1 , fontSize: 'clamp(0.1rem, 0.8vw, 0.9rem)', fontWeight: '700'}}>
-                  {price?.wvc} MMC
+                  {price?.mmc} MMC
                 </Typography>
               </Box>
             )

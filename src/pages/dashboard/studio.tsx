@@ -1,287 +1,22 @@
-// import { Skeleton, Grid, Box, Button, Modal } from '@mui/material';
-// import { Helmet } from 'react-helmet-async';
-// import { useState } from 'react';
-// import { useCreatePost } from '@lens-protocol/react-web';
-// import { video, MetadataAttributeType, AnyMedia } from '@lens-protocol/metadata';
-// import Typography from '@mui/material/Typography';
-// import TextField from '@mui/material/TextField';
-// import { create } from 'ipfs-http-client';
-// import { useAuth } from '../../hooks/use-auth';
-// import uuidv4 from '../../utils/uuidv4';
-//
-// // Configuración del cliente IPFS
-// const ipfs = create({ host: 'localhost', port: 5001, protocol: 'http' });
-//
-// // Función para subir los metadatos a IPFS
-// const uploadToIpfs = async (metadata: any) => {
-//   const { cid } = await ipfs.add(JSON.stringify(metadata));
-//   return `ipfs://${cid}`;
-// };
-//
-// // Función para obtener datos desde IPFS usando el hash
-// const fetchFromIpfs = async (hash: string) => {
-//   const response = await fetch(`http://localhost:8080/ipfs/${hash}`);
-//   if (!response.ok) {
-//     throw new Error(`Failed to fetch from IPFS: ${response.statusText}`);
-//   }
-//   const data = await response.json();
-//   return data;
-// };
-//
-// // ----------------------------------------------------------------------
-//
-// export default function OverviewFilePage() {
-//   const [open, setOpen] = useState(false);
-//   const [ipfsHash, setIpfsHash] = useState('');
-//   const { selectedProfile: activeProfile } = useAuth(); // Obtener el perfil activo
-//
-//   const handleOpen = () => setOpen(true);
-//   const handleClose = () => setOpen(false);
-//
-//   const { execute: createPost } = useCreatePost();
-//
-//   const handleSubmit = async () => {
-//     try {
-//       if (!activeProfile) {
-//         console.error('No active profile found');
-//         return;
-//       }
-//
-//       console.log('submit')
-//       console.log(ipfsHash)
-//
-//       // Paso 1: Obtener los metadatos desde IPFS usando el hash proporcionado
-//       const metadataInput = await fetchFromIpfs(ipfsHash);
-//
-//       console.log('ipfs content')
-//       console.log(metadataInput)
-//
-//       // Prepara los atributos
-//       const attributes = [
-//         { traitType: 'Genres', value: metadataInput.genres.join(', ') },
-//         { traitType: 'Release Date', value: metadataInput.releaseDate },
-//         { traitType: 'Duration', value: metadataInput.duration },
-//         { traitType: 'Language', value: metadataInput.language },
-//         { traitType: 'Country', value: metadataInput.country },
-//         { traitType: 'Rating', value: metadataInput.rating },
-//         { traitType: 'Format', value: metadataInput.format },
-//         { traitType: 'Studio Name', value: metadataInput.studioName },
-//         { traitType: 'Budget', value: metadataInput.budget },
-//         { traitType: 'Director', value: metadataInput.director },
-//         { traitType: 'Writer', value: metadataInput.writer },
-//         { traitType: 'Producers', value: metadataInput.producers.join(', ') },
-//         { traitType: 'Editor', value: metadataInput.editor },
-//         { traitType: 'Creators', value: metadataInput.creators.join(', ') },
-//       ];
-//
-//       console.log('attributes')
-//       console.log(attributes)
-//
-//       // Prepara los medios
-//       const mediaItems: AnyMedia[] = metadataInput.media.map((mediaItem: any) => ({
-//         item: `ipfs://${mediaItem.item}`,
-//         type: mediaItem.type as any,
-//         altTag: mediaItem.altTag as string,
-//       }));
-//
-//       console.log('media')
-//       console.log(mediaItems)
-//
-//       // Crear el objeto de metadatos usando el helper 'video'
-//       const metadata = video({
-//         id: uuidv4(),
-//         title: metadataInput.title,
-//         content: metadataInput.synopsis,
-//         video: mediaItems[mediaItems.length -2] as any,
-//         locale: 'en',
-//         attributes: attributes.map((attr) => ({
-//           type: MetadataAttributeType.STRING,
-//           key: attr.traitType,
-//           value: attr.value,
-//         })),
-//         attachments: mediaItems,
-//         appId: 'watchit',
-//       });
-//
-//       console.log('metadata')
-//       console.log(metadata)
-//
-//       // Subir los metadatos a IPFS
-//       const metadataUri = await uploadToIpfs(metadata);
-//
-//       console.log('metadata cid')
-//       console.log(metadataUri)
-//
-//       // Crear el post en Lens
-//       const result = await createPost({
-//         metadata: metadataUri
-//       });
-//
-//       console.log('result')
-//       console.log(result)
-//       console.log(JSON.stringify(result))
-//
-//       if (result.isFailure()) {
-//         console.error('Error creating post', result.error);
-//       } else {
-//         console.log('Posting:', result.value);
-//
-//         const completion = await result.value.waitForCompletion();
-//
-//         console.log('completion')
-//         console.log(completion)
-//         console.log(JSON.stringify(completion))
-//
-//         // check for late failures
-//         if (completion.isFailure()) {
-//           window.alert(completion.error.message);
-//           return;
-//         }
-//
-//         window.alert(completion.value);
-//         console.log('Post created successfully:', completion.value);
-//
-//         handleClose(); // Cierra el modal
-//         setIpfsHash(''); // Reinicia el input
-//       }
-//     } catch (error) {
-//       console.error('Error submitting to Lens:', error);
-//     }
-//   };
-//
-//   return (
-//     <>
-//       <Helmet>
-//         <title> Dashboard: File</title>
-//       </Helmet>
-//
-//       <Grid container spacing={2} style={{ height: 'calc(100vh - 5rem)', width: '100%', padding: '2rem 1.5rem 2rem 2rem' }}>
-//         <Grid item xs={8} style={{ height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'flex-start' }}>
-//           <Grid container spacing={2} style={{ flexGrow: 1 }}>
-//             <Grid item xs={4}>
-//               <Skeleton sx={{ bgcolor: '#2B2D31', height: '9rem',borderRadius:'10px' }} variant="rectangular" width="100%" />
-//             </Grid>
-//             <Grid item xs={4}>
-//               <Skeleton sx={{ bgcolor: '#2B2D31', height: '9rem',borderRadius:'10px' }} variant="rectangular" width="100%" />
-//             </Grid>
-//             <Grid item xs={4}>
-//               <Skeleton sx={{ bgcolor: '#2B2D31', height: '9rem',borderRadius:'10px' }} variant="rectangular" width="100%" />
-//             </Grid>
-//             <Grid item xs={6}>
-//               <Skeleton sx={{ bgcolor: '#2B2D31', height: 'calc(100vh - 31rem)',borderRadius:'10px' }} variant="rectangular" width="100%" />
-//             </Grid>
-//             <Grid item xs={6}>
-//               <Skeleton sx={{ bgcolor: '#2B2D31', height: 'calc(100vh - 31rem)',borderRadius:'10px' }} variant="rectangular" width="100%" />
-//             </Grid>
-//             <Grid item xs={4}>
-//               <Skeleton sx={{ bgcolor: '#2B2D31', height: '16rem',borderRadius:'10px' }} variant="rectangular" width="100%" />
-//             </Grid>
-//             <Grid item xs={4}>
-//               <Skeleton sx={{ bgcolor: '#2B2D31', height: '16rem',borderRadius:'10px' }} variant="rectangular" width="100%" />
-//             </Grid>
-//             <Grid item xs={4}>
-//               <Skeleton sx={{ bgcolor: '#2B2D31', height: '16rem',borderRadius:'10px' }} variant="rectangular" width="100%" />
-//             </Grid>
-//           </Grid>
-//         </Grid>
-//
-//         <Grid item xs={4} style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-//           <Grid container spacing={2} style={{ flexGrow: 1 }}>
-//             <Grid item xs={12}>
-//               <Box sx={{ height: '9rem' }}>
-//                 <Box sx={{width:'100%',height:'100%',padding:'25px 15px',display:'flex',flexDirection:'column',borderRadius:'10px',background:'black',justifyContent:'center',alignItems:'center'}}>
-//                   <Box sx={{textAlign:'center',fontWeight:'bold'}}>
-//                     Do you want other people to see your movies?
-//                   </Box>
-//                   <Box>
-//                     <Button
-//                       variant='contained' onClick={handleOpen}
-//                       sx={{ mt: 3 , color:'#FFFFFF',background: 'linear-gradient(to right, #7B61FF 0%, #4A34B8 100%)' }}
-//                     >
-//                       Upload Movie
-//                     </Button>
-//                   </Box>
-//                 </Box>
-//               </Box>
-//             </Grid>
-//             <Grid item xs={12}>
-//               <Skeleton sx={{ bgcolor: '#2B2D31', height: 'calc(100vh - 14rem)',borderRadius:'10px' }} variant="rectangular" width="100%" />
-//             </Grid>
-//           </Grid>
-//         </Grid>
-//       </Grid>
-//
-//       <Modal open={open} onClose={handleClose}>
-//         <Box
-//           sx={{
-//             position: 'absolute',
-//             top: '50%',
-//             left: '50%',
-//             transform: 'translate(-50%, -50%)',
-//             width: 400,
-//             bgcolor: '#2B2D31',
-//             borderRadius: '10px',
-//             boxShadow: 24,
-//             p: 4,
-//           }}
-//         >
-//           <Typography
-//             variant="h6"
-//             component="h2"
-//             sx={{ mb: 2, color: '#fff' }}
-//           >
-//             Ingresar Hash de IPFS
-//           </Typography>
-//           <TextField
-//             fullWidth
-//             label="IPFS Hash"
-//             variant="outlined"
-//             value={ipfsHash}
-//             onChange={(e) => setIpfsHash(e.target.value)}
-//             sx={{
-//               input: { color: '#fff' },
-//               label: { color: '#fff' },
-//               '& .MuiOutlinedInput-root': {
-//                 '& fieldset': {
-//                   borderColor: '#fff',
-//                 },
-//                 '&:hover fieldset': {
-//                   borderColor: '#fff',
-//                 },
-//                 '&.Mui-focused fieldset': {
-//                   borderColor: '#fff',
-//                 },
-//               },
-//             }}
-//           />
-//           <Button
-//             variant="contained"
-//             sx={{ mt: 3 }}
-//             onClick={handleSubmit}
-//             disabled={!ipfsHash} // Deshabilitar el botón si el input está vacío
-//           >
-//             Enviar
-//           </Button>
-//         </Box>
-//       </Modal>
-//     </>
-//   );
-// }
-
 import { Skeleton, Grid, Box, Button, Modal } from '@mui/material';
 import { Helmet } from 'react-helmet-async';
 import { useState } from 'react';
-import { useCreatePost } from '@lens-protocol/react-web';
+import {
+  OpenActionType,
+  Amount,
+  useCreatePost, useCurrencies
+} from '@lens-protocol/react-web';
 import { video, MetadataAttributeType, AnyMedia } from '@lens-protocol/metadata';
 import Typography from '@mui/material/Typography';
-import TextField from '@mui/material/TextField';
 import axios from 'axios';
+import { ethers } from 'ethers';
 import { useAuth } from '../../hooks/use-auth';
 import uuidv4 from '../../utils/uuidv4';
+import { LoadingScreen } from '../../components/loading-screen';
 
 // Metadatos de la película en una constante
 const movieMetadata = {
-  title: "Infinite Skies",
+  title: "Infinite Skies (collectable 3)",
   synopsis: "In a world where gravity is no longer a constant, humanity has learned to live in the clouds. A young inventor discovers a way to unlock the secrets of flight, but dangerous forces are ready to exploit his discoveries for their own gain.",
   genres: ["Sci-Fi", "Adventure"],
   releaseDate: "2022-07-11",
@@ -296,6 +31,7 @@ const movieMetadata = {
   writer: "Grace Martin",
   producers: ["Samuel Lee", "Isabella Carter"],
   editor: "Nathan Lewis",
+  price: 50,
   media: [
     {
       item: "QmU1DBnZ8ut5iztmMMn412FVKGFAJgVokFaUtxW59KuHCm",
@@ -353,6 +89,13 @@ export default function OverviewFilePage() {
   const handleClose = () => setOpen(false);
 
   const { execute: createPost } = useCreatePost();
+  const { data, loading } = useCurrencies();
+
+  console.log('currencies')
+  console.log(data)
+
+  console.log('activeProfile')
+  console.log(activeProfile)
 
   const handleSubmit = async () => {
     try {
@@ -416,9 +159,30 @@ export default function OverviewFilePage() {
       console.log('metadata cid')
       console.log(metadataUri)
 
-      // Crear el post en Lens
+      // Obtener la moneda MMC
+      const mmc = data?.find((el) => (el.symbol === 'MMC'))
+
+      if (!mmc) {
+        console.error('Currency not found');
+        return;
+      }
+
+      const amount = Amount.erc20(mmc, movieMetadata.price);
+
+      console.log(amount)
+
+      // Crear el post en Lens con el Collect Action Module
       const result = await createPost({
-        metadata: metadataUri
+        metadata: metadataUri,
+        actions: [
+          {
+            type: OpenActionType.SIMPLE_COLLECT,
+            amount,
+            recipient: activeProfile.ownedBy.address, // Dirección que recibirá los pagos
+            followerOnly: false, // Permitir que cualquiera pueda coleccionar
+            referralFee: 0, // Sin comisión para referidos
+          },
+        ],
       });
 
       console.log('result')
@@ -439,6 +203,8 @@ export default function OverviewFilePage() {
       console.error('Error submitting to Lens:', error);
     }
   };
+
+  if (loading) return <LoadingScreen />
 
   return (
     <>

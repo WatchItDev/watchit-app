@@ -102,7 +102,7 @@ const PosterMini = ({ id, title, images, rating, year, likes, price, genre }: Po
           <Box>
             <Box sx={{flexDirection:'colum',justifyContent:'space-between'}}>
               <Typography variant="body2" sx={{ lineHeight: 1 , fontSize: 'clamp(0.5rem, 0.9vw, 1rem)', fontWeight: '700', mb: 0.5}}>
-                {price?.wvc ?? 0} WVC
+                {price?.mmc ?? 0} MMC
               </Typography>
               <Typography variant="body2" color="textSecondary" sx={{ lineHeight: 1 , fontSize: 'clamp(0.1rem, 0.8vw, 0.7rem)', fontWeight: '700' }}>
               {price?.usd ?? 0} USD

@@ -77,6 +77,9 @@ export default function CarouselPoster({ data }: Props) {
                 likes={post?.stats?.upvotes ?? 0}
                 synopsis={post?.metadata?.content ?? ''}
                 year={getMovieYear(post)}
+                price={{
+                  mmc: post?.openActionModules?.[0]?.amount?.value ?? 0
+                }}
               />
             </Box>
           ))}

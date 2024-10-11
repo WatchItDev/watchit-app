@@ -89,7 +89,7 @@ export const moviesMock: Poster[] = [
     year: 2024,
     likes: 8600,
     price: {
-      wvc: 1560,
+      mmc: 1560,
       usd: 4.3,
     },
     genre: ['Action', 'Adventure'],
@@ -108,7 +108,7 @@ export const moviesMock: Poster[] = [
     year: 2024,
     likes: 10600,
     price: {
-      wvc: 2060,
+      mmc: 2060,
       usd: 5.2,
     },
     genre: ['Action', 'Fantasy'],
@@ -127,7 +127,7 @@ export const moviesMock: Poster[] = [
     year: 2024,
     likes: 4200,
     price: {
-      wvc: 1560,
+      mmc: 1560,
       usd: 4.3,
     },
     genre: ['Action', 'Fantasy'],
@@ -146,7 +146,7 @@ export const moviesMock: Poster[] = [
     year: 2023,
     likes: 3100,
     price: {
-      wvc: 1560,
+      mmc: 1560,
       usd: 4.3,
     },
     genre: ['Action', 'Sci-Fi'],
@@ -165,7 +165,7 @@ export const moviesMock: Poster[] = [
     year: 2023,
     likes: 3200,
     price: {
-      wvc: 1560,
+      mmc: 1560,
       usd: 4.3,
     },
     genre: ['Fantasy', 'Adventure'],
@@ -184,7 +184,7 @@ export const moviesMock: Poster[] = [
     year: 2022,
     likes: 7500,
     price: {
-      wvc: 1820,
+      mmc: 1820,
       usd: 5.0,
     },
     genre: ['Action', 'Adventure'],
@@ -203,7 +203,7 @@ export const moviesMock: Poster[] = [
     year: 2021,
     likes: 6300,
     price: {
-      wvc: 2100,
+      mmc: 2100,
       usd: 6.1,
     },
     genre: ['Sci-Fi', 'Adventure'],
@@ -222,7 +222,7 @@ export const moviesMock: Poster[] = [
     year: 2023,
     likes: 5400,
     price: {
-      wvc: 1750,
+      mmc: 1750,
       usd: 5.0,
     },
     genre: ['Action', 'Adventure'],
@@ -241,7 +241,7 @@ export const moviesMock: Poster[] = [
     year: 2022,
     likes: 4800,
     price: {
-      wvc: 1540,
+      mmc: 1540,
       usd: 4.1,
     },
     genre: ['Sci-Fi', 'Action'],
@@ -260,7 +260,7 @@ export const moviesMock: Poster[] = [
     year: 2022,
     likes: 6900,
     price: {
-      wvc: 1780,
+      mmc: 1780,
       usd: 5.1,
     },
     genre: ['Action', 'Fantasy'],
@@ -279,7 +279,7 @@ export const moviesMock: Poster[] = [
     year: 2023,
     likes: 9000,
     price: {
-      wvc: 2400,
+      mmc: 2400,
       usd: 6.5,
     },
     genre: ['Action', 'Fantasy'],
@@ -298,7 +298,7 @@ export const moviesMock: Poster[] = [
     year: 2021,
     likes: 5200,
     price: {
-      wvc: 1620,
+      mmc: 1620,
       usd: 4.8,
     },
     genre: ['Action', 'Fantasy'],
@@ -317,7 +317,7 @@ export const moviesMock: Poster[] = [
     year: 2022,
     likes: 7300,
     price: {
-      wvc: 1900,
+      mmc: 1900,
       usd: 5.4,
     },
     genre: ['Action', 'Crime'],
@@ -336,7 +336,7 @@ export const moviesMock: Poster[] = [
     year: 2021,
     likes: 5800,
     price: {
-      wvc: 1700,
+      mmc: 1700,
       usd: 4.9,
     },
     genre: ['Action', 'Comedy'],
@@ -355,7 +355,7 @@ export const moviesMock: Poster[] = [
     year: 2023,
     likes: 6400,
     price: {
-      wvc: 1850,
+      mmc: 1850,
       usd: 5.0,
     },
     genre: ['Action', 'Fantasy'],
@@ -374,7 +374,7 @@ export const moviesMock: Poster[] = [
     year: 2022,
     likes: 5100,
     price: {
-      wvc: 1520,
+      mmc: 1520,
       usd: 4.0,
     },
     genre: ['Action', 'Adventure'],
@@ -393,7 +393,7 @@ export const moviesMock: Poster[] = [
     year: 2022,
     likes: 4900,
     price: {
-      wvc: 1600,
+      mmc: 1600,
       usd: 4.2,
     },
     genre: ['Action', 'Fantasy'],
@@ -412,7 +412,7 @@ export const moviesMock: Poster[] = [
     year: 2021,
     likes: 6200,
     price: {
-      wvc: 1720,
+      mmc: 1720,
       usd: 4.9,
     },
     genre: ['Action', 'Thriller'],
@@ -431,7 +431,7 @@ export const moviesMock: Poster[] = [
     year: 2021,
     likes: 5600,
     price: {
-      wvc: 1580,
+      mmc: 1580,
       usd: 4.3,
     },
     genre: ['Action', 'Sci-Fi'],
@@ -450,7 +450,7 @@ export const moviesMock: Poster[] = [
     year: 2022,
     likes: 9300,
     price: {
-      wvc: 2550,
+      mmc: 2550,
       usd: 6.9,
     },
     genre: ['Action', 'Drama'],

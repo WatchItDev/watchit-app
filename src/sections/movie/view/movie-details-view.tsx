@@ -9,8 +9,6 @@ import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
-// _mock
-import { productMock, moviesMock } from 'src/_mock';
 // routes
 import { paths } from 'src/routes/paths';
 import { RouterLink } from 'src/routes/components';
@@ -30,8 +28,7 @@ import MovieDetailsDescription from '../movie-details-description';
 import Label from '../../../components/label';
 import Header from '../../../layouts/dashboard/header';
 import { useResponsive } from '../../../hooks/use-responsive';
-import { useRouter,useParams  } from '../../../routes/hooks';
-import { Poster } from '../../../components/poster/types';
+import { useRouter } from '../../../routes/hooks';
 import { LoadingScreen } from '../../../components/loading-screen';
 
 // ----------------------------------------------------------------------

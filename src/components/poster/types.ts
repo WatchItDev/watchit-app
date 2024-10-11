@@ -16,7 +16,7 @@ export interface Poster {
   year: number
   likes: number
   price?: {
-    wvc?: number
+    mmc?: number
     usd?: number
   }
   genre: string[]

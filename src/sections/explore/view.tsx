@@ -20,6 +20,7 @@ import {
 // import { type Post } from '@lens-protocol/api-bindings/dist/declarations/src/lens/graphql/generated';
 import { CarouselSection } from '../../components/carousel/carousel-section';
 import { LoadingScreen } from '../../components/loading-screen';
+import { getAccessiblePublications } from '../../utils/publication';
 
 // ----------------------------------------------------------------------
 
@@ -42,7 +43,7 @@ export default function ExploreView() {
 
   if (loading) return <LoadingScreen />
 
-  const movieArr: any = [...data, ...data, ...data, ...data, ...data, ...data, ...data, ...data, ...data]
+  const movieArr: any = getAccessiblePublications([...data, ...data, ...data, ...data, ...data, ...data, ...data, ...data, ...data])
 
   return (
     <Container sx={{ p: '0 !important', maxWidth: '2000px !important' }}>

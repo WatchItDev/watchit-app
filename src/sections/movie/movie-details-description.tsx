@@ -4,8 +4,8 @@ import Stack from '@mui/material/Stack';
 import { appId, PublicationType, usePublications } from '@lens-protocol/react-web';
 import { CarouselSection } from '../../components/carousel/carousel-section';
 import CarouselPoster from '../../components/carousel/variants/carousel-poster';
-import { moviesMock } from '../../_mock';
 import { LoadingScreen } from '../../components/loading-screen';
+import { getAccessiblePublications } from '../../utils/publication';
 
 // ----------------------------------------------------------------------
 
@@ -26,7 +26,7 @@ export default function MovieDetailsDescription({ description }: Props) {
 
   if (loading) return <LoadingScreen />
 
-  const movieArr: any = [...data, ...data, ...data, ...data, ...data, ...data, ...data, ...data, ...data]
+  const movieArr: any = getAccessiblePublications([...data, ...data, ...data, ...data, ...data, ...data, ...data, ...data, ...data])
 
   return (
     <Stack spacing={3} sx={{ pb: 6 }}>
