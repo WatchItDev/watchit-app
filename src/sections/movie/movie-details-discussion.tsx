@@ -1,28 +1,14 @@
-import sumBy from 'lodash/sumBy';
 // @mui
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
-import Rating from '@mui/material/Rating';
 import Button from '@mui/material/Button';
-import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
-import LinearProgress from '@mui/material/LinearProgress';
-// utils
-import { fShortenNumber } from 'src/utils/format-number';
 // hooks
 import { useBoolean } from 'src/hooks/use-boolean';
-// components
-import Iconify from 'src/components/iconify';
-// types
-import { IProductReview } from 'src/types/product';
 //
-import { IconChevronLeft, IconArrowUp, IconArrowDown, IconHeartFilled, IconMessageCircle2Filled } from '@tabler/icons-react';
-import MovieReviewList from './movie-review-list';
-import MovieReviewNewForm from './movie-review-new-form';
-
+import { IconArrowUp, IconArrowDown, IconHeartFilled, IconMessageCircle2Filled } from '@tabler/icons-react';
 
 // ----------------------------------------------------------------------
-
 
 export default function MovieDetailsDiscussion() {
   const review = useBoolean();
@@ -34,8 +20,7 @@ export default function MovieDetailsDiscussion() {
   ];
 
   return (
-    <>
-      <Box sx={{display:'flex'}}>
+    <Box sx={{display:'flex'}}>
       <Box sx={{width:'70%',display:'flex',flexDirection:'column',padding:'0 20px'}}>
         {
           items.map((item, index) => (
@@ -67,8 +52,8 @@ export default function MovieDetailsDiscussion() {
                 <Stack sx={{overflow: 'hidden',flexDirection:'column', width:'100%'}} direction="row" spacing={1} alignItems='center'>
                   <Typography sx={{fontSize: 'clamp(1rem, 0.8vw, 2rem)'}} variant='body2'>
                       The movie Edge of Tomorrow has an ending that has left many viewers divided. Some believe that the
-                      conclusion is satisfying and ties up the story well, while others think it is confusing and does not 
-                      resolve all the questions posed throughout the film. What do you think about the ending? Do you believe 
+                      conclusion is satisfying and ties up the story well, while others think it is confusing and does not
+                      resolve all the questions posed throughout the film. What do you think about the ending? Do you believe
                       it makes sense within the context of the movie?
                   </Typography>
                   <Box style={{display:'flex',alignItems:'center',justifyContent:'space-between', width:'100%'}}>
@@ -116,7 +101,5 @@ export default function MovieDetailsDiscussion() {
           </Box>
         </Box>
       </Box>
-    </>
-    
   );
 }

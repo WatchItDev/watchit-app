@@ -20,7 +20,7 @@ import { useSettingsContext } from 'src/components/settings';
 import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
 //
 import CartIcon from '../common/cart-icon';
-import MovieDetailsReview from '../movie-details-review';
+import MovieDetailsComments from '../movie-details-comments';
 import { ProductDetailsSkeleton } from '../movie-skeleton';
 import MovieDetailsSummary from '../movie-details-summary';
 import MovieDetailsCarousel from '../movie-details-carousel';
@@ -166,14 +166,14 @@ export default function MovieShopDetailsView({ id }: Props) {
           <MovieDetailsDescription description={product?.description} />
         )}
 
-        {currentTab === 'reviews' && (
-          <MovieDetailsReview
-            ratings={product.ratings}
-            reviews={product.reviews}
-            totalRatings={product.totalRatings}
-            totalReviews={product.totalReviews}
-          />
-        )}
+        {/* {currentTab === 'reviews' && ( */}
+        {/*  <MovieDetailsComments */}
+        {/*    ratings={product.ratings} */}
+        {/*    reviews={product.reviews} */}
+        {/*    totalRatings={product.totalRatings} */}
+        {/*    totalReviews={product.totalReviews} */}
+        {/*  /> */}
+        {/* )} */}
       </Card>
     </>
   );

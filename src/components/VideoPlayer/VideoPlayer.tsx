@@ -5,8 +5,8 @@ import {
   MediaPlayer,
   MediaPlayerInstance,
   MediaProvider,
-  Poster,
-  Track,
+  // Poster,
+  // Track,
   useMediaState,
 } from '@vidstack/react';
 import { DefaultVideoLayout, defaultLayoutIcons } from '@vidstack/react/player/layouts/default';

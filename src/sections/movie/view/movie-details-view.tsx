@@ -23,13 +23,14 @@ import { IconChevronLeft } from '@tabler/icons-react';
 import Tooltip from '@mui/material/Tooltip';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { usePublication } from '@lens-protocol/react';
-import MovieDetailsReview from '../movie-details-review';
+import MovieDetailsComments from '../movie-details-comments';
 import MovieDetailsDescription from '../movie-details-description';
 import Label from '../../../components/label';
 import Header from '../../../layouts/dashboard/header';
 import { useResponsive } from '../../../hooks/use-responsive';
 import { useRouter } from '../../../routes/hooks';
 import { LoadingScreen } from '../../../components/loading-screen';
+import { useGetProduct } from '../../../api/product';
 
 // ----------------------------------------------------------------------
 
@@ -39,6 +40,7 @@ type Props = {
 
 export default function MovieDetailsView({ id }: Props) {
   const [currentTab, setCurrentTab] = useState('suggestions');
+  const { product} = useGetProduct('e99f09a7-dd88-49d5-b1c8-1daf80c2d7b2');
 
   const settings = useSettingsContext();
   const mdUp = useResponsive('up', 'md');
@@ -77,10 +79,10 @@ export default function MovieDetailsView({ id }: Props) {
                 value: 'suggestions',
                 label: 'Suggestions'
               },
-              // {
-              //   value: 'reviews',
-              //   label: `Reviews (${data?.stats?.comments})`,
-              // },
+              {
+                value: 'comments',
+                label: `Comments (${data?.stats?.comments})`,
+              },
             ].map((tab) => (
               <Tab key={tab.value} value={tab.value} label={tab.label} />
             ))}
@@ -90,14 +92,9 @@ export default function MovieDetailsView({ id }: Props) {
             <MovieDetailsDescription description={data.metadata?.content} />
           )}
 
-          {/* {currentTab === 'reviews' && ( */}
-          {/*  <MovieDetailsReview */}
-          {/*    ratings={product.ratings} */}
-          {/*    reviews={product.reviews as any} */}
-          {/*    totalRatings={product.totalRatings} */}
-          {/*    totalReviews={product.totalReviews} */}
-          {/*  /> */}
-          {/* )} */}
+           {currentTab === 'comments' && (
+            <MovieDetailsComments id={id} />
+           )}
 
           {/* {currentTab === 'Discussions' && ( */}
           {/*  <MovieDetailsDiscussion/> */}

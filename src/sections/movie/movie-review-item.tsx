@@ -60,21 +60,21 @@ export default function MovieReviewItem({ review }: Props) {
 
   const renderContent = (
     <Stack spacing={1} flexGrow={1}>
-      <Rating size="small" value={rating} precision={0.1} readOnly />
+      {/* <Rating size="small" value={rating} precision={0.1} readOnly /> */}
 
-      {isPurchased && (
-        <Stack
-          direction="row"
-          alignItems="center"
-          sx={{
-            color: 'success.main',
-            typography: 'caption',
-          }}
-        >
-          <Iconify icon="ic:round-verified" width={16} sx={{ mr: 0.5 }} />
-          Verified purchase
-        </Stack>
-      )}
+      {/* {isPurchased && ( */}
+      {/*  <Stack */}
+      {/*    direction="row" */}
+      {/*    alignItems="center" */}
+      {/*    sx={{ */}
+      {/*      color: 'success.main', */}
+      {/*      typography: 'caption', */}
+      {/*    }} */}
+      {/*  > */}
+      {/*    <Iconify icon="ic:round-verified" width={16} sx={{ mr: 0.5 }} /> */}
+      {/*    Verified purchase */}
+      {/*  </Stack> */}
+      {/* )} */}
 
       <Typography variant="body2">{comment}</Typography>
 
