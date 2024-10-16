@@ -18,11 +18,6 @@ WatchIt is a movie playback system that allows users to filter, search, and play
 - **Movie Filtering and Searching:** Efficiently find and filter movies based on various criteria.
 - **Seamless Playback:** Stream movies directly from the network without any centralized servers.
 
-## Protocol Integration and Synchronization
-
-WatchIt is part of the WatchIt protocol, which encompasses various components to ensure a fully decentralized and efficient movie streaming experience. The WatchIt app is a crucial part of this protocol, providing a user-friendly interface for interacting with the decentralized network. It can synchronize through different movie channels, opening the possibility to access various libraries with different content across the network. This enhances the diversity and availability of movies for all users.
-
-
 ## Node Types and Capabilities
 
 [![screenshot](src/renderer/media/img/layout/nodes.png?raw=true)]()
