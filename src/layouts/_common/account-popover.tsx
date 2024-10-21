@@ -21,18 +21,18 @@ import { useAuth } from '../../hooks/use-auth';
 // ----------------------------------------------------------------------
 
 const OPTIONS = [
-  {
-    label: 'Home',
-    linkTo: '/',
-  },
+  // {
+  //   label: 'Home',
+  //   linkTo: '/',
+  // },
   {
     label: 'Profile',
     linkTo: paths.dashboard.user.root,
   },
-  {
-    label: 'Settings',
-    linkTo: paths.dashboard.root,
-  },
+  // {
+  //   label: 'Settings',
+  //   linkTo: paths.dashboard.root,
+  // },
 ];
 
 // ----------------------------------------------------------------------
@@ -100,7 +100,7 @@ export default function AccountPopover() {
 
         <Stack sx={{ p: 1 }}>
           {OPTIONS.map((option) => (
-            <MenuItem key={option.label} onClick={() => handleClickItem(option.linkTo)}>
+            <MenuItem key={option.label} onClick={() => handleClickItem(option.linkTo(`${selectedProfile?.id}`))}>
               {option.label}
             </MenuItem>
           ))}

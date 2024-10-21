@@ -4,20 +4,17 @@ import Tab from '@mui/material/Tab';
 import Card from '@mui/material/Card';
 import Container from '@mui/material/Container';
 import Tabs, { tabsClasses } from '@mui/material/Tabs';
-// hooks
-// import { useMockedUser } from 'src/hooks/use-mocked-user';
-// _mock
-import { _userAbout, _userFeeds, _userFriends, _userGallery, _userFollowers } from 'src/_mock';
 // components
 import Iconify from 'src/components/iconify';
 import { useSettingsContext } from 'src/components/settings';
 //
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { useProfile } from '@lens-protocol/react';
+import { ProfileId } from '@lens-protocol/react-web';
 import ProfileHome from '../profile-home';
 import ProfileCover from '../profile-cover';
-import ProfileFriends from '../profile-friends';
-import ProfileGallery from '../profile-gallery';
 import ProfileFollowers from '../profile-followers';
-import { useAuth } from '../../../hooks/use-auth';
+import ProfileFollowing from '../profile-following';
 
 // ----------------------------------------------------------------------
 
@@ -31,43 +28,40 @@ const TABS = [
     value: 'followers',
     label: 'Followers',
     icon: <Iconify icon="solar:heart-bold" width={24} />,
+  },
+  {
+    value: 'following',
+    label: 'Following',
+    icon: <Iconify icon="solar:heart-bold" width={24} />,
   }
 ];
 
 // ----------------------------------------------------------------------
 
-export default function UserProfileView() {
-  const settings = useSettingsContext();
-
-  // const { user } = useMockedUser();
-
-  const { selectedProfile } = useAuth();
-
-  const [searchFriends, setSearchFriends] = useState('');
-
+const UserProfileView = ({ id }: { id: string | undefined }) => {
   const [currentTab, setCurrentTab] = useState('profile');
+  const settings = useSettingsContext();
+  const { data: profile, error, loading } = useProfile({
+    forProfileId: id as ProfileId
+  });
 
   const handleChangeTab = useCallback((event: React.SyntheticEvent, newValue: string) => {
     setCurrentTab(newValue);
   }, []);
 
-  const handleSearchFriends = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchFriends(event.target.value);
-  }, []);
+  console.log('profile')
+  console.log(profile)
 
   return (
     <Container maxWidth={settings.themeStretch ? false : 'lg'}>
       <Card
         sx={{
           my: 3,
-          height: 290,
+          height: 400,
         }}
       >
         <ProfileCover
-          role={_userAbout.role}
-          name={selectedProfile?.handle?.localName ?? ''}
-          avatarUrl={`https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${selectedProfile?.id}`}
-          coverUrl={_userAbout.coverUrl}
+          profile={profile}
         />
 
         <Tabs
@@ -78,13 +72,9 @@ export default function UserProfileView() {
             bottom: 0,
             zIndex: 9,
             position: 'absolute',
-            bgcolor: 'background.paper',
+            bgcolor: '#2b2d31',
             [`& .${tabsClasses.flexContainer}`]: {
-              pr: { md: 3 },
-              justifyContent: {
-                sm: 'center',
-                md: 'flex-end',
-              },
+              justifyContent: 'center'
             },
           }}
         >
@@ -94,9 +84,13 @@ export default function UserProfileView() {
         </Tabs>
       </Card>
 
-      {currentTab === 'profile' && <ProfileHome info={_userAbout} posts={_userFeeds} />}
+      {currentTab === 'profile' && profile && <ProfileHome profile={profile} />}
 
-      {currentTab === 'followers' && <ProfileFollowers followers={_userFollowers} />}
+      {currentTab === 'followers' && profile && <ProfileFollowers profile={profile} />}
+
+      {currentTab === 'following' && profile && <ProfileFollowing profile={profile} />}
     </Container>
   );
 }
+
+export default UserProfileView

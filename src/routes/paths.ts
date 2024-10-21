@@ -43,7 +43,7 @@ export const paths = {
     finance: `${ROOTS.DASHBOARD}/finance`,
     marketing: `${ROOTS.DASHBOARD}/marketing`,
     user: {
-      root: `${ROOTS.DASHBOARD}/user`,
+      root: (id: string) => `${ROOTS.DASHBOARD}/profile/${id}`,
       new: `${ROOTS.DASHBOARD}/user/new`,
       list: `${ROOTS.DASHBOARD}/user/list`,
       cards: `${ROOTS.DASHBOARD}/user/cards`,

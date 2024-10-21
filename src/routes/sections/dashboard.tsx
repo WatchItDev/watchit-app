@@ -70,6 +70,7 @@ export const dashboardRoutes = [
       { path: 'ownership', element: <OwnershipPage /> },
       { path: 'finance', element: <FinancePage /> },
       { path: 'marketing', element: <MarketingPage /> },
+      { path: 'profile/:id', element: <UserProfilePage /> },
       {
         path: 'governance',
         children: [

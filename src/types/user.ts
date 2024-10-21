@@ -1,4 +1,5 @@
 import { CustomFile } from 'src/components/upload';
+import { Profile } from '@lens-protocol/api-bindings';
 
 // ----------------------------------------------------------------------
 
@@ -20,8 +21,9 @@ export type IUserSocialLink = {
 };
 
 export type IUserProfileCover = {
+  profile?: Profile;
   name: string;
-  role: string;
+  profileRole: string;
   coverUrl: string;
   avatarUrl: string;
 };

@@ -22,10 +22,10 @@ export default function UserCreateView() {
             name: 'Dashboard',
             href: paths.dashboard.root,
           },
-          {
-            name: 'User',
-            href: paths.dashboard.user.root,
-          },
+          // {
+          //   name: 'User',
+          //   href: paths.dashboard.user.root,
+          // },
           { name: 'New user' },
         ]}
         sx={{

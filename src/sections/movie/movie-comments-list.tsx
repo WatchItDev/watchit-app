@@ -1,57 +1,51 @@
-// @mui
 import Box from '@mui/material/Box';
-import Pagination from '@mui/material/Pagination';
-// types
-import { IPostComment } from 'src/types/blog';
-//
+import { usePublications, publicationId } from '@lens-protocol/react-web';
+
 import MovieCommentItem from './movie-comment-item';
+import RepliesList from './movie-replies-list';
 
 // ----------------------------------------------------------------------
 
 type Props = {
-  comments: IPostComment[];
-  id: string;
+  publicationId: string;
+  showReplies?: boolean
 };
 
-export default function PostCommentList({ comments, id }: Props) {
+export default function PostCommentList({ publicationId: id, showReplies }: Props) {
+  // Fetch top-level comments (where commentOn is the post ID)
+  const { data: comments, loading, error } = usePublications({
+    where: {
+      commentOn: {
+        id: publicationId(id),
+      },
+    },
+  });
+
+  if (loading) return <p>Loading comments...</p>;
+  if (error) return <p>Error loading comments: {error.message}</p>;
+
   return (
     <>
-      <>
-        {comments.map((comment) => {
-          const { id: commentId, replyComment, name, users, message, avatarUrl, postedAt } = comment;
+      {comments?.map((comment: any) => {
+        // Destructure necessary data from the comment
+        const { id: commentId, metadata, createdAt, by } = comment;
 
-          const hasReply = !!replyComment.length;
-
-          return (
-            <Box key={commentId}>
-              <MovieCommentItem
-                name={name}
-                message={message}
-                postedAt={postedAt}
-                avatarUrl={avatarUrl}
-              />
-              {hasReply &&
-                replyComment.map((reply) => {
-                  const userReply = users.find((user) => user.id === reply.userId);
-
-                  return (
-                    <MovieCommentItem
-                      key={reply.id}
-                      name={userReply?.name || ''}
-                      message={reply.message}
-                      postedAt={reply.postedAt}
-                      avatarUrl={userReply?.avatarUrl || ''}
-                      tagUser={reply.tagUser}
-                      hasReply
-                    />
-                  );
-                })}
-            </Box>
-          );
-        })}
-      </>
-
-      <Pagination count={8} sx={{ my: 5, mx: 'auto' }} />
+        return (
+          <Box key={commentId} width="100%">
+            <MovieCommentItem
+              profileName={by?.handle?.localName}
+              profileId={by?.id}
+              message={metadata?.content}
+              postedAt={new Date(createdAt)}
+              commentId={commentId}
+              canReply={showReplies}
+            />
+            {showReplies && (
+              <RepliesList parentCommentId={commentId} />
+            )}
+          </Box>
+        );
+      })}
     </>
   );
 }

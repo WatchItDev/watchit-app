@@ -30,7 +30,6 @@ import Header from '../../../layouts/dashboard/header';
 import { useResponsive } from '../../../hooks/use-responsive';
 import { useRouter } from '../../../routes/hooks';
 import { LoadingScreen } from '../../../components/loading-screen';
-import { useGetProduct } from '../../../api/product';
 
 // ----------------------------------------------------------------------
 
@@ -40,7 +39,6 @@ type Props = {
 
 export default function MovieDetailsView({ id }: Props) {
   const [currentTab, setCurrentTab] = useState('suggestions');
-  const { product} = useGetProduct('e99f09a7-dd88-49d5-b1c8-1daf80c2d7b2');
 
   const settings = useSettingsContext();
   const mdUp = useResponsive('up', 'md');
@@ -136,7 +134,7 @@ export default function MovieDetailsView({ id }: Props) {
           </IconButton>
 
 
-          {mdUp && <Label sx={{ px: 0.75, mr: 1, fontSize: 12, color: 'text.secondary' }}>⌘K</Label>}
+          {mdUp && <Label sx={{ px: 0.75, mr: 1, fontSize: 12, color: 'text.secondary' }}>Esc</Label>}
         </Button>
         <Typography variant="h6" sx={{ ml: 2 }}>
           Movie details

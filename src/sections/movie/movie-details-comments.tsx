@@ -1,27 +1,26 @@
 import Divider from '@mui/material/Divider';
-//
+import Box from '@mui/material/Box';
 import MovieCommentForm from './movie-details-comment-form';
 import PostCommentList from './movie-comments-list';
-import { useGetPost } from '../../api/blog';
 
 // ----------------------------------------------------------------------
 
 type Props = {
-  id: string;
+  id: string; // ID of the post
 };
 
-const MovieDetailsComments = ({ id }: Props) => {
-  const { post} = useGetPost('exploring-the-hidden-gems-of-destination');
-
-  return (
+const MovieDetailsComments = ({ id }: Props) => (
     <>
-      <MovieCommentForm id={id} />
+      {/* Comment Form for Top-Level Comments */}
+      <Box sx={{ mt: 3, mb: 3 }}>
+        <MovieCommentForm commentOn={id} />
+      </Box>
 
-      <Divider sx={{ mt: 5, mb: 2 }} />
+       <Divider sx={{ mt: 2, mb: 2 }} />
 
-      <PostCommentList comments={post.comments} id={id} />
+      {/* List of Top-Level Comments */}
+      <PostCommentList publicationId={id} showReplies />
     </>
-  );
-}
+  )
 
-export default MovieDetailsComments
+export default MovieDetailsComments;

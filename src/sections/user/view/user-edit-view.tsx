@@ -30,10 +30,10 @@ export default function UserEditView({ id }: Props) {
             name: 'Dashboard',
             href: paths.dashboard.root,
           },
-          {
-            name: 'User',
-            href: paths.dashboard.user.root,
-          },
+          // {
+          //   name: 'User',
+          //   href: paths.dashboard.user.root,
+          // },
           { name: currentUser?.name },
         ]}
         sx={{
