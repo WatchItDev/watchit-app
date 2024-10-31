@@ -67,7 +67,7 @@ export default function AccountPopover() {
           }}
         >
           <Avatar
-            src={`https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${selectedProfile?.id}`}
+            src={(selectedProfile?.metadata?.picture as any)?.optimized?.uri ?? `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${selectedProfile?.id}`}
             alt={user?.displayName}
             sx={{
               width: 36,

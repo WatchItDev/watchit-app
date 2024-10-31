@@ -28,8 +28,7 @@ const RepliesList = ({ parentCommentId, canReply }: Props) => {
         return (
           <Box key={replyId}>
             <MovieCommentItem
-              profileName={by?.handle?.localName}
-              profileId={by?.id}
+              profile={by}
               message={metadata?.content}
               postedAt={new Date(createdAt)}
               commentId={replyId}

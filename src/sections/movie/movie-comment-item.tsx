@@ -6,6 +6,7 @@ import { useBoolean } from 'src/hooks/use-boolean';
 import { fDate } from 'src/utils/format-time';
 import Iconify from 'src/components/iconify';
 import Paper from '@mui/material/Paper';
+import { Profile } from '@lens-protocol/api-bindings';
 import MovieCommentForm from './movie-details-comment-form';
 import { paths } from '../../routes/paths';
 import { useRouter } from '../../routes/hooks';
@@ -13,8 +14,7 @@ import { useRouter } from '../../routes/hooks';
 // ----------------------------------------------------------------------
 
 type Props = {
-  profileName: string;
-  profileId: string;
+  profile: Profile;
   message: string;
   postedAt: Date;
   hasReply?: boolean;
@@ -23,8 +23,7 @@ type Props = {
 };
 
 export default function MovieCommentItem({
-                                           profileName,
-                                           profileId,
+                                           profile,
                                            message,
                                            postedAt,
                                            hasReply,
@@ -35,7 +34,9 @@ export default function MovieCommentItem({
   const router = useRouter();
 
   const goToProfile = () => {
-    router.push(paths.dashboard.user.root(profileId))
+    if (!profile?.id) return;
+
+    router.push(paths.dashboard.user.root(`${profile?.id}`))
   }
 
   return (
@@ -56,8 +57,8 @@ export default function MovieCommentItem({
         spacing={2}
       >
          <Avatar
-          src={`https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${profileId}`}
-          alt={profileName} onClick={goToProfile}
+          src={(profile?.metadata?.picture as any)?.optimized?.uri ?? `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${profile?.id}`}
+          alt={profile?.id} onClick={goToProfile}
           sx={{
             width: 40,
             height: 40,
@@ -80,7 +81,7 @@ export default function MovieCommentItem({
             justifyContent="space-between"
             direction={{ xs: 'column', sm: 'row' }}
           >
-            <Box sx={{ typography: 'subtitle2' }}>{profileName}</Box>
+            <Box sx={{ typography: 'subtitle2' }}>{profile?.handle?.localName}</Box>
 
             <Box display="flex" flexDirection="row" alignItems="center" justifyContent="center">
               <Box sx={{ typography: 'caption', color: 'text.disabled' }}>

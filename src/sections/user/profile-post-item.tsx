@@ -81,7 +81,7 @@ export default function ProfilePostItem({ publication, profile }: Props) {
       disableTypography
       avatar={
         <Avatar
-          src={`https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${profile?.id}`}
+          src={(profile?.metadata?.picture as any)?.optimized?.uri ?? `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${profile?.id}`}
           alt={profile?.handle?.localName ?? ''}
         />
       }

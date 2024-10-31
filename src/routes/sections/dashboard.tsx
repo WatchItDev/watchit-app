@@ -33,9 +33,7 @@ const UserCreatePage = lazy(() => import('src/pages/dashboard/user/new'));
 const UserEditPage = lazy(() => import('src/pages/dashboard/user/edit'));
 // MOVIE
 const MovieDetailsPage = lazy(() => import('src/pages/dashboard/movie/details'));
-const MovieListPage = lazy(() => import('src/pages/dashboard/movie/list'));
 const MovieCreatePage = lazy(() => import('src/pages/dashboard/movie/new'));
-const MovieEditPage = lazy(() => import('src/pages/dashboard/movie/edit'));
 const MoviePlayPage = lazy(() => import('src/pages/dashboard/movie/play'));
 // BLOG
 const BlogPostsPage = lazy(() => import('src/pages/dashboard/post/list'));
@@ -94,11 +92,8 @@ export const dashboardRoutes = [
       {
         path: 'movie',
         children: [
-          { element: <MovieListPage />, index: true },
-          { path: 'list', element: <MovieListPage /> },
           { path: ':id', element: <MovieDetailsPage /> },
           { path: 'new', element: <MovieCreatePage /> },
-          { path: ':id/edit', element: <MovieEditPage /> },
         ],
       },
       {

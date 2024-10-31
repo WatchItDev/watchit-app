@@ -52,6 +52,8 @@
     "@typescript-eslint/naming-convention": 0,
     "jsx-a11y/control-has-associated-label": 0,
     "@typescript-eslint/no-use-before-define": 0,
+    "no-unused-expressions": 0,
+    "@typescript-eslint/no-unused-expressions\n": 0,
     "react/jsx-no-useless-fragment": [
       1,
       {

@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { AuthContext } from '../auth/context/lens/authProvider';
+import { AuthContext } from "../auth/context/lens";
 
 // ----------------------------------------------------------------------
 

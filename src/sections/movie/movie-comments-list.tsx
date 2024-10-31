@@ -33,8 +33,7 @@ export default function PostCommentList({ publicationId: id, showReplies }: Prop
         return (
           <Box key={commentId} width="100%">
             <MovieCommentItem
-              profileName={by?.handle?.localName}
-              profileId={by?.id}
+              profile={by}
               message={metadata?.content}
               postedAt={new Date(createdAt)}
               commentId={commentId}

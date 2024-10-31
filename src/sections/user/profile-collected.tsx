@@ -10,14 +10,17 @@ interface ProfileHomeProps {
   profile: Profile;
 }
 
-export default function ProfileHome({ profile }: ProfileHomeProps) {
+export default function ProfileCollected({ profile }: ProfileHomeProps) {
   const { data: publications } = usePublications({
     where: {
-      from: [profile.id],
+      actedBy: profile.id,
       publicationTypes: [PublicationType.Post],
       metadata: { publishedOn: [appId('watchit')] },
     },
   });
+
+  console.log('publications')
+  console.log(publications)
 
   const minItemWidth = 150;
   const maxItemWidth = 200;
@@ -39,9 +42,6 @@ export default function ProfileHome({ profile }: ProfileHomeProps) {
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
-
-  console.log('publications')
-  console.log(publications)
 
   return (
     <Box
