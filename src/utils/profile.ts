@@ -1,6 +1,10 @@
 import { profile as profileBuilder, MetadataAttributeType } from '@lens-protocol/metadata';
 import { ProfileData } from 'src/auth/context/lens/types';
 
+const removeEmptyValues = (obj: any): any => Object.fromEntries(
+  Object.entries(obj).filter(([_, v]) => v !== '' && v !== null)
+)
+
 /**
  * Build profile metadata object.
  * @param data - Profile data.
@@ -12,26 +16,25 @@ export const buildProfileMetadata = (
   data: ProfileData,
   profileImageURI: string | null,
   backgroundImageURI: string | null
-): any =>
-  profileBuilder({
+): any => {
+  const cleanSocialLinks = Object.entries(data.socialLinks ?? {})
+    .filter(([_, value]) => value !== '' && value !== null)
+    .map(
+      ([key, value]) =>
+        ({
+          key,
+          value,
+          type: MetadataAttributeType.STRING,
+        } as any)
+    );
+  const metadata = {
     name: data.name ?? '',
     bio: data.bio ?? '',
     picture: profileImageURI ?? '',
     coverPicture: backgroundImageURI ?? '',
-    attributes: [
-      {
-        key: 'nickname',
-        value: data.nickname,
-        type: MetadataAttributeType.STRING,
-      },
-      // Add social links as attributes
-      ...Object.entries(data.socialLinks ?? {}).map(
-        ([key, value]) =>
-          ({
-            key,
-            value,
-            type: MetadataAttributeType.STRING,
-          } as any)
-      ),
-    ],
-  });
+    ...(cleanSocialLinks.length > 0 && { attributes: cleanSocialLinks }),
+  }
+  const cleanedMetadata = removeEmptyValues(metadata)
+
+  return profileBuilder(cleanedMetadata)
+};

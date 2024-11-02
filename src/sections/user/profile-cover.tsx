@@ -1,20 +1,8 @@
 // @mui
-import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
-import Avatar from '@mui/material/Avatar';
-import ListItemText from '@mui/material/ListItemText';
-import { useTheme, alpha } from '@mui/material/styles';
-import Snackbar from '@mui/material/Snackbar';
-import Alert from '@mui/material/Alert';
-// hooks
-import { useFollow, useUnfollow } from '@lens-protocol/react-web';
-import { useState, useEffect } from 'react';
+import { alpha } from '@mui/material/styles';
 // theme
 import { bgGradient } from 'src/theme/css';
-import LoadingButton from '@mui/lab/LoadingButton';
 import { Profile } from '@lens-protocol/api-bindings';
-import { _userAbout } from '../../_mock';
-import { useAuth } from '../../hooks/use-auth';
 import Image from '../../components/image';
 
 // ----------------------------------------------------------------------

@@ -1,27 +1,39 @@
+// REACT IMPORTS
 import { useState, useEffect } from 'react';
-// @mui
-import Card from '@mui/material/Card';
-import Avatar from '@mui/material/Avatar';
-import ListItemText from '@mui/material/ListItemText';
-// components
-import { Profile } from '@lens-protocol/api-bindings';
-import LoadingButton from '@mui/lab/LoadingButton';
-import Snackbar from '@mui/material/Snackbar';
-import Alert from '@mui/material/Alert';
+
+// MUI IMPORTS
 import Box from '@mui/material/Box';
+import Card from '@mui/material/Card';
+import Alert from '@mui/material/Alert';
+import Avatar from '@mui/material/Avatar';
+import { Theme } from '@mui/material/styles';
+import Snackbar from '@mui/material/Snackbar';
+import LoadingButton from '@mui/lab/LoadingButton';
+import { SxProps } from '@mui/system/styleFunctionSx';
+import ListItemText from '@mui/material/ListItemText';
+
+// LENS IMPORTS
+import { Profile } from '@lens-protocol/api-bindings';
 import { useFollow, useUnfollow } from '@lens-protocol/react-web';
-import { useAuth } from '../../hooks/use-auth';
-import { useRouter } from '../../routes/hooks';
+
+// LOCAL IMPORTS
+import Image from '../image';
 import { paths } from '../../routes/paths';
-import Image from '../../components/image';
+import { useRouter } from '../../routes/hooks';
+import { useAuth } from '../../hooks/use-auth';
 
 // ----------------------------------------------------------------------
 
-type FollowerItemProps = {
-  profile: Profile;
-};
+interface FollowerItemProps {
+  profile: Profile
+  onClick?: () => void
+  sx?: SxProps<Theme>
+  canFollow?: boolean
+}
 
-export const FollowerItem = ({ profile }: FollowerItemProps) => {
+// ----------------------------------------------------------------------
+
+export const UserItem = ({ profile, sx, onClick, canFollow = true }: FollowerItemProps) => {
   const { selectedProfile } = useAuth();
   const [isFollowed, setIsFollowed] = useState(false);
   // State to handle error and success messages
@@ -33,7 +45,8 @@ export const FollowerItem = ({ profile }: FollowerItemProps) => {
   const router = useRouter();
 
   const goToProfile = () => {
-    router.push(paths.dashboard.user.root(`${profile.id}`))
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+    onClick ? onClick() : router.push(paths.dashboard.user.root(`${profile.id}`))
   }
 
   // Handle errors from follow and unfollow actions
@@ -150,6 +163,7 @@ export const FollowerItem = ({ profile }: FollowerItemProps) => {
           padding: 1,
           transition: 'transform 0.2s ease-in-out',
           '&:hover': { transform: 'scale(1.03)' },
+          ...sx
         }}
         onClick={goToProfile}
       >
@@ -215,27 +229,29 @@ export const FollowerItem = ({ profile }: FollowerItemProps) => {
               }}
             />
 
-            <LoadingButton
-              size="small"
-              title={isFollowed ? "Unfollow" : "Follow"}
-              variant={isFollowed ? "outlined" : "contained"}
-              sx={{
-                minWidth: 120,
-                backgroundColor: isFollowed ? '#24262A' : '#fff'
-              }}
-              onClick={(event) => {
-                event.stopPropagation();
-                if (isFollowed) {
-                  handleUnfollow();
-                } else {
-                  handleFollow();
-                }
-              }}
-              disabled={followLoading || unfollowLoading || !selectedProfile || profile?.id === selectedProfile?.id}
-              loading={followLoading || unfollowLoading}
-            >
-              {isFollowed ? "Unfollow" : "Follow"}
-            </LoadingButton>
+            {canFollow && (
+              <LoadingButton
+                size="small"
+                title={isFollowed ? "Unfollow" : "Follow"}
+                variant={isFollowed ? "outlined" : "contained"}
+                sx={{
+                  minWidth: 120,
+                  backgroundColor: isFollowed ? '#24262A' : '#fff'
+                }}
+                onClick={(event) => {
+                  event.stopPropagation();
+                  if (isFollowed) {
+                    handleUnfollow();
+                  } else {
+                    handleFollow();
+                  }
+                }}
+                disabled={followLoading || unfollowLoading || !selectedProfile || profile?.id === selectedProfile?.id}
+                loading={followLoading || unfollowLoading}
+              >
+                {isFollowed ? "Unfollow" : "Follow"}
+              </LoadingButton>
+            )}
 
           </Box>
         </Card>
@@ -269,5 +285,3 @@ export const FollowerItem = ({ profile }: FollowerItemProps) => {
     </>
   );
 }
-
-export default FollowerItem

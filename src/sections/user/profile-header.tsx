@@ -105,7 +105,7 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
     setIsFollowed(!!profile?.operations?.isFollowedByMe?.value)
   }, [selectedProfile, profile]);
 
-  const socialMediaUrls: SocialMediaUrls = profile.metadata?.attributes?.reduce(
+  const socialMediaUrls: SocialMediaUrls = profile?.metadata?.attributes?.reduce(
     (acc: SocialMediaUrls, attr) => {
       if (['twitter', 'facebook', 'instagram'].includes(attr.key)) {
         acc[attr.key as keyof SocialMediaUrls] = attr.value;
@@ -230,8 +230,8 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
     }
   };
 
-  console.log('profile')
-  console.log(profile)
+  // console.log('profile')
+  // console.log(profile)
 
   return (
     <>

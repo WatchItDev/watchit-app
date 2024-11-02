@@ -1,116 +1,5 @@
-// // REACT IMPORTS
-// import React from 'react';
-//
-// // MUI IMPORTS
-// import {
-//   Typography,
-//   Button,
-//   TextField,
-// } from '@mui/material';
-//
-// // FORM IMPORTS
-// import { useFormik } from 'formik';
-// import * as Yup from 'yup';
-// import Box from '@mui/material/Box';
-//
-// // ----------------------------------------------------------------------
-//
-// export interface NewProfileData {
-//   username: string,
-//   name: string,
-//   bio: string
-// }
-//
-// export interface ProfileCreateProps {
-//   onCreate: (data: NewProfileData) => void;
-//   onCancel: () => void;
-// }
-//
-// // ----------------------------------------------------------------------
-//
-// export const ProfileCreateView: React.FC<ProfileCreateProps> = ({ onCreate, onCancel }) => {
-//
-//   const validationSchema = Yup.object({
-//     username: Yup.string()
-//       .min(5, 'Username must be at least 5 characters long')
-//       .required('Username is required'),
-//     name: Yup.string()
-//       .required('Full name is required'),
-//     bio: Yup.string()
-//   });
-//
-//   const formik = useFormik({
-//     initialValues: {
-//       username: '',
-//       name: '',
-//       bio: '',
-//     },
-//     validationSchema,
-//     onSubmit: (values) => {
-//       onCreate(values);
-//       formik.resetForm();
-//     },
-//   });
-//
-//   return (
-//     <>
-//       <Typography variant="h6" sx={{ pb: 2 }}>
-//         Create a New Profile
-//       </Typography>
-//       <form onSubmit={formik.handleSubmit}>
-//         <TextField
-//           fullWidth
-//           label="Username"
-//           variant="outlined"
-//           id="username"
-//           name="username"
-//           value={formik.values.username}
-//           onChange={formik.handleChange}
-//           onBlur={formik.handleBlur}
-//           sx={{ mb: 2 }}
-//           error={formik.touched.username && Boolean(formik.errors.username)}
-//           helperText={formik.touched.username && formik.errors.username}
-//         />
-//         <TextField
-//           fullWidth
-//           label="Full name"
-//           variant="outlined"
-//           id="name"
-//           name="name"
-//           value={formik.values.name}
-//           onChange={formik.handleChange}
-//           onBlur={formik.handleBlur}
-//           sx={{ mb: 2 }}
-//           error={formik.touched.name && Boolean(formik.errors.name)}
-//           helperText={formik.touched.name && formik.errors.name}
-//         />
-//         <TextField
-//           fullWidth
-//           label="Bio"
-//           variant="outlined"
-//           id="bio"
-//           name="bio"
-//           value={formik.values.bio}
-//           onChange={formik.handleChange}
-//           onBlur={formik.handleBlur}
-//           sx={{ mb: 2 }}
-//           error={formik.touched.bio && Boolean(formik.errors.bio)}
-//           helperText={formik.touched.bio && formik.errors.bio}
-//         />
-//         <Box display="flex" alignItems="center" justifyContent="space-between" sx={{ mt: 1 }}>
-//           <Button variant="outlined" onClick={onCancel} sx={{ width: '45%', py: 1 }}>
-//             Cancel
-//           </Button>
-//           <Button variant="contained" type="submit" sx={{ width: '45%', py: 1 }}>
-//             Create Profile
-//           </Button>
-//         </Box>
-//       </form>
-//     </>
-//   )
-// }
 // REACT IMPORTS
-import React, { useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 // MUI IMPORTS
 import {
@@ -119,255 +8,379 @@ import {
   TextField,
   Box,
   Input,
+  Grid,
 } from '@mui/material';
 
 // FORM IMPORTS
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { IconCamera } from '@tabler/icons-react';
-import { ProfileData } from '../../auth/context/lens/types';
+import Avatar from '@mui/material/Avatar';
+import { useAuth } from 'src/hooks/use-auth';
+import LoadingButton from '@mui/lab/LoadingButton';
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
+import Image from '../image';
 
 // ----------------------------------------------------------------------
 
 export interface ProfileCreateProps {
-  onCreate: (data: ProfileData) => void;
+  onSuccess: () => void;
   onCancel: () => void;
 }
 
 // ----------------------------------------------------------------------
 
-export const ProfileCreateView: React.FC<ProfileCreateProps> = ({ onCreate, onCancel }) => {
+export const ProfileCreateView: React.FC<ProfileCreateProps> = ({ onSuccess, onCancel }) => {
+  const { registerProfile, loading} = useAuth();
+
+  const [errorMessage, setErrorMessage] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const validationSchema = Yup.object({
     username: Yup.string()
-      .min(5, 'El nombre de usuario debe tener al menos 5 caracteres')
-      .required('El nombre de usuario es obligatorio'),
-    name: Yup.string().required('El nombre es obligatorio'),
-    nickname: Yup.string().required('El apodo es obligatorio'),
-    bio: Yup.string(),
+      .min(5, 'Username must be at least 5 characters')
+      .required('Username is required'),
+    name: Yup.string().required('Name is required'),
+    bio: Yup.string().required('Bio is required'),
     socialLinks: Yup.object({
-      web3: Yup.string().url('Ingresa una URL válida'),
-      twitter: Yup.string().url('Ingresa una URL válida'),
-      facebook: Yup.string().url('Ingresa una URL válida'),
-      instagram: Yup.string().url('Ingresa una URL válida'),
+      twitter: Yup.string().url('Enter a valid URL'),
+      instagram: Yup.string().url('Enter a valid URL'),
+      orb: Yup.string().url('Enter a valid URL'),
+      farcaster: Yup.string().url('Enter a valid URL'),
     }),
   });
+
+  useEffect(() => {
+    if (isSubmitting && !loading && !errorMessage) {
+      onSuccess();
+      setIsSubmitting(false);
+    }
+  }, [isSubmitting, loading, onSuccess, errorMessage]);
 
   const formik = useFormik({
     initialValues: {
       username: '',
       name: '',
-      nickname: '',
       bio: '',
       profileImage: null,
       backgroundImage: null,
       socialLinks: {
-        web3: '',
         twitter: '',
-        facebook: '',
         instagram: '',
+        orb: '',
+        farcaster: '',
       },
     },
     validationSchema,
-    onSubmit: (values) => {
-      onCreate(values);
-      formik.resetForm();
+    onSubmit: async (values) => {
+      try {
+        console.log('hello start registration')
+        setIsSubmitting(true);
+        await registerProfile(values);
+        console.log('hello before registration')
+      } catch (error) {
+        console.error('Error registering profile', error);
+        console.error(error.message);
+        setErrorMessage(error.message || 'Ocurrió un error durante el registro.');
+      }
     },
   });
 
   const profileImageInputRef = useRef<HTMLInputElement>(null);
   const backgroundImageInputRef = useRef<HTMLInputElement>(null);
 
+  const [profileImagePreview, setProfileImagePreview] = useState<string | null>(null);
+  const [backgroundImagePreview, setBackgroundImagePreview] = useState<string | null>(null);
+
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>, field: string) => {
     if (event.currentTarget.files && event.currentTarget.files[0]) {
-      formik.setFieldValue(field, event.currentTarget.files[0]);
+      const file = event.currentTarget.files[0];
+      formik.setFieldValue(field, file);
+
+      // Create an object URL for preview
+      const previewUrl = URL.createObjectURL(file);
+
+      if (field === 'profileImage') {
+        setProfileImagePreview(previewUrl);
+      } else if (field === 'backgroundImage') {
+        setBackgroundImagePreview(previewUrl);
+      }
     }
   };
 
+  const clearError = () => {
+    setErrorMessage('')
+    setIsSubmitting(false);
+  }
+
   return (
-    <>
+    <Box sx={{ p: 2 }}>
       <Typography variant="h6" sx={{ pb: 2 }}>
-        Crear un Nuevo Perfil
+        Create a New Profile
       </Typography>
+      {/* Hidden inputs for image uploads */}
+      <Input
+        type="file"
+        onChange={(event: any) => handleFileChange(event, 'backgroundImage')}
+        inputRef={backgroundImageInputRef}
+        sx={{ display: 'none' }}
+      />
+      <Input
+        type="file"
+        onChange={(event: any) => handleFileChange(event, 'profileImage')}
+        inputRef={profileImageInputRef}
+        sx={{ display: 'none' }}
+      />
       <Box component="form" onSubmit={formik.handleSubmit}>
-        {/* Subir Imagen de Perfil */}
-        <Box display="flex" alignItems="center" mb={2}>
-          <Input
-            type="file"
-            onChange={(event: any) => handleFileChange(event, 'profileImage')}
-            inputRef={profileImageInputRef}
-            sx={{ display: 'none' }}
+        <Box sx={{ width: '100%', position: 'relative' }}>
+          {/* Background Image */}
+          <Image
+            src={
+              backgroundImagePreview || 'https://picsum.photos/seed/new/1920/820'
+            }
+            onClick={() => backgroundImageInputRef.current?.click()}
+            sx={{
+              height: 120,
+              width: '100%',
+              opacity: 0.7,
+              color: 'common.white',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              borderRadius: 2,
+              overflow: 'hidden',
+              cursor: 'pointer',
+              border: '1px solid #fff',
+              transition: 'transform 0.2s ease-in-out',
+              '&:hover': {
+                transform: 'scale(1.03)',
+                border: '2px solid #fff',
+                opacity: 1,
+              },
+            }}
           />
-          <Button variant="contained" onClick={() => profileImageInputRef.current?.click()}>
-            <IconCamera style={{ marginRight: 3 }} />
-            Subir Imagen de Perfil
-          </Button>
-          {formik.values.profileImage && (
-            <Typography variant="body2" sx={{ ml: 2 }}>
-              Hello profile image name
-              {/* {formik.values.profileImage.name ?? 'Hello profile image name'} */}
+          {/* Avatar */}
+          <Avatar
+            src={
+              profileImagePreview ||
+              'https://api.dicebear.com/9.x/bottts-neutral/svg?seed=new'
+            }
+            alt=""
+            onClick={() => profileImageInputRef.current?.click()}
+            sx={{
+              width: 60,
+              height: 60,
+              opacity: 0.9,
+              ml: 2,
+              mt: -3,
+              cursor: 'pointer',
+              border: '1px solid #fff',
+              transition: 'transform 0.2s ease-in-out',
+              '&:hover': {
+                transform: 'scale(1.1)',
+                border: '2px solid #fff',
+                opacity: 1,
+              },
+            }}
+            variant="rounded"
+          />
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'flex-end',
+              justifyContent: 'flex-end',
+              position: 'absolute',
+              bottom: -8,
+              right: 0,
+              opacity: 0.7
+            }}
+          >
+            <Typography
+              variant="caption"
+              fontWeight="bold"
+              color="text.secondary"
+            >
+              * Click the profile or cover image to select one
             </Typography>
-          )}
+            <Typography
+              variant="caption"
+              fontWeight="bold"
+              color="text.secondary"
+            >
+              * Images are optional (current images are placeholders)
+            </Typography>
+          </Box>
         </Box>
 
-        {/* Subir Imagen de Fondo */}
-        <Box display="flex" alignItems="center" mb={2}>
-          <Input
-            type="file"
-            onChange={(event: any) => handleFileChange(event, 'backgroundImage')}
-            inputRef={backgroundImageInputRef}
-            sx={{ display: 'none' }}
-          />
-          <Button variant="contained" onClick={() => backgroundImageInputRef.current?.click()}>
-            <IconCamera style={{ marginRight: 3 }} />
-            Subir Imagen de Fondo
-          </Button>
-          {formik.values.backgroundImage && (
-            <Typography variant="body2" sx={{ ml: 2 }}>
-              Hello background image name
-              {/* {formik.values.backgroundImage.name ?? 'Hello background image name'} */}
-            </Typography>
-          )}
-        </Box>
-
-        {/* Campos de Texto */}
-        <TextField
-          fullWidth
-          label="Nombre"
-          variant="outlined"
-          id="name"
-          name="name"
-          value={formik.values.name}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          sx={{ mb: 2 }}
-          error={formik.touched.name && Boolean(formik.errors.name)}
-          helperText={formik.touched.name && formik.errors.name}
-        />
-
-        <TextField
-          fullWidth
-          label="Apodo"
-          variant="outlined"
-          id="nickname"
-          name="nickname"
-          value={formik.values.nickname}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          sx={{ mb: 2 }}
-          error={formik.touched.nickname && Boolean(formik.errors.nickname)}
-          helperText={formik.touched.nickname && formik.errors.nickname}
-        />
+        {/* Text Fields */}
+        <Grid container spacing={2} sx={{ mt: 2 }}>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              label="Name"
+              variant="outlined"
+              id="name"
+              name="name"
+              placeholder="Enter your name"
+              value={formik.values.name}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.name && Boolean(formik.errors.name)}
+              helperText={formik.touched.name ? formik.errors.name : 'e.g., John Doe'}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              label="Username"
+              variant="outlined"
+              id="username"
+              name="username"
+              placeholder="Enter a username"
+              value={formik.values.username}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.username && Boolean(formik.errors.username)}
+              helperText={formik.touched.username ? formik.errors.username : 'e.g., johndoe123'}
+            />
+          </Grid>
+        </Grid>
 
         <TextField
           fullWidth
-          label="Nombre de Usuario"
-          variant="outlined"
-          id="username"
-          name="username"
-          value={formik.values.username}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          sx={{ mb: 2 }}
-          error={formik.touched.username && Boolean(formik.errors.username)}
-          helperText={formik.touched.username && formik.errors.username}
-        />
-
-        <TextField
-          fullWidth
-          label="Biografía"
+          label="Bio"
           variant="outlined"
           id="bio"
           name="bio"
+          placeholder="Tell us about yourself"
           value={formik.values.bio}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           multiline
           rows={4}
-          sx={{ mb: 2 }}
+          sx={{ mt: 2 }}
           error={formik.touched.bio && Boolean(formik.errors.bio)}
-          helperText={formik.touched.bio && formik.errors.bio}
+          helperText={formik.touched.bio ? formik.errors.bio : 'Share something about yourself'}
         />
 
-        {/* Enlazar Redes Sociales */}
-        <Typography variant="subtitle1" sx={{ mt: 2, mb: 1 }}>
-          Enlazar Redes Sociales
+        {/* Link Social Networks */}
+        <Typography variant="subtitle1" sx={{ mt: 4, mb: 2 }}>
+          Link Social Networks
         </Typography>
 
-        <TextField
-          fullWidth
-          label="Web3"
-          variant="outlined"
-          id="socialLinks.web3"
-          name="socialLinks.web3"
-          value={formik.values.socialLinks.web3}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          sx={{ mb: 2 }}
-          error={formik.touched.socialLinks?.web3 && Boolean(formik.errors.socialLinks?.web3)}
-          helperText={formik.touched.socialLinks?.web3 && formik.errors.socialLinks?.web3}
+        <Grid container spacing={2}>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              label="Twitter"
+              variant="outlined"
+              id="socialLinks.twitter"
+              name="socialLinks.twitter"
+              placeholder="e.g., https://twitter.com/yourhandle"
+              value={formik.values.socialLinks.twitter}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={
+                formik.touched.socialLinks?.twitter && Boolean(formik.errors.socialLinks?.twitter)
+              }
+              helperText={formik.touched.socialLinks?.twitter ? formik.errors.socialLinks?.twitter : ''}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              label="Instagram"
+              variant="outlined"
+              id="socialLinks.instagram"
+              name="socialLinks.instagram"
+              placeholder="e.g., https://instagram.com/yourprofile"
+              value={formik.values.socialLinks.instagram}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={
+                formik.touched.socialLinks?.instagram &&
+                Boolean(formik.errors.socialLinks?.instagram)
+              }
+              helperText={
+                formik.touched.socialLinks?.instagram ? formik.errors.socialLinks?.instagram : ''
+              }
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              label="Orb.club"
+              variant="outlined"
+              id="socialLinks.orb"
+              name="socialLinks.orb"
+              placeholder="e.g., https://orb.club/yourprofile"
+              value={formik.values.socialLinks.orb}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={
+                formik.touched.socialLinks?.orb && Boolean(formik.errors.socialLinks?.orb)
+              }
+              helperText={formik.touched.socialLinks?.orb ? formik.errors.socialLinks?.orb : ''}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              label="Farcaster"
+              variant="outlined"
+              id="socialLinks.farcaster"
+              name="socialLinks.farcaster"
+              placeholder="e.g., https://farcaster.xyz/yourhandle"
+              value={formik.values.socialLinks.farcaster}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={
+                formik.touched.socialLinks?.farcaster && Boolean(formik.errors.socialLinks?.farcaster)
+              }
+              helperText={
+                formik.touched.socialLinks?.farcaster ? formik.errors.socialLinks?.farcaster : ''
+              }
+            />
+          </Grid>
+        </Grid>
+
+        <Box
+          sx={{
+            width: '100%',
+            height: '1px',
+            backgroundColor: 'rgba(0,0,0,0.1)',
+            mb: 2,
+            mt: 4,
+          }}
         />
 
-        <TextField
-          fullWidth
-          label="Twitter"
-          variant="outlined"
-          id="socialLinks.twitter"
-          name="socialLinks.twitter"
-          value={formik.values.socialLinks.twitter}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          sx={{ mb: 2 }}
-          error={
-            formik.touched.socialLinks?.twitter && Boolean(formik.errors.socialLinks?.twitter)
-          }
-          helperText={formik.touched.socialLinks?.twitter && formik.errors.socialLinks?.twitter}
-        />
-
-        <TextField
-          fullWidth
-          label="Facebook"
-          variant="outlined"
-          id="socialLinks.facebook"
-          name="socialLinks.facebook"
-          value={formik.values.socialLinks.facebook}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          sx={{ mb: 2 }}
-          error={
-            formik.touched.socialLinks?.facebook && Boolean(formik.errors.socialLinks?.facebook)
-          }
-          helperText={formik.touched.socialLinks?.facebook && formik.errors.socialLinks?.facebook}
-        />
-
-        <TextField
-          fullWidth
-          label="Instagram"
-          variant="outlined"
-          id="socialLinks.instagram"
-          name="socialLinks.instagram"
-          value={formik.values.socialLinks.instagram}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          sx={{ mb: 2 }}
-          error={
-            formik.touched.socialLinks?.instagram &&
-            Boolean(formik.errors.socialLinks?.instagram)
-          }
-          helperText={
-            formik.touched.socialLinks?.instagram && formik.errors.socialLinks?.instagram
-          }
-        />
-
-        {/* Botones de Acción */}
-        <Box display="flex" alignItems="center" justifyContent="space-between" sx={{ mt: 3 }}>
-          <Button variant="outlined" onClick={onCancel} sx={{ width: '45%', py: 1 }}>
-            Cancelar
-          </Button>
-          <Button variant="contained" type="submit" sx={{ width: '45%', py: 1 }}>
-            Crear Perfil
-          </Button>
-        </Box>
+        {/* Action Buttons */}
+        <Grid container spacing={2}>
+          <Grid item xs={12} sm={6}>
+            <Button variant="outlined" onClick={onCancel} sx={{ width: '100%', py: 1 }}>
+              Cancel
+            </Button>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <LoadingButton variant="contained" type="submit" loading={loading} sx={{ width: '100%', py: 1 }}>
+              Create Profile
+            </LoadingButton>
+          </Grid>
+        </Grid>
       </Box>
-    </>
+
+      {/* Snackbar para mensajes de error */}
+      <Snackbar
+        open={!!errorMessage}
+        autoHideDuration={6000}
+        onClose={clearError}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+      >
+        <Alert onClose={clearError} severity="error" sx={{ width: '100%' }}>
+          {errorMessage}
+        </Alert>
+      </Snackbar>
+    </Box>
   );
 };

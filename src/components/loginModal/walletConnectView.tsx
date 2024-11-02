@@ -9,7 +9,7 @@ import {
   Button,
   ListItemAvatar,
   Avatar,
-  ListItemText
+  ListItemText, Box,
 } from '@mui/material';
 
 // HOOKS IMPORTS
@@ -41,13 +41,21 @@ export const WalletConnectView: React.FC<WalletConnectProps> = ({ onConnect, onC
 
   return (
     <>
-      <Typography variant="h6" gutterBottom>
+      <Typography variant="body1" fontWeight="bold" sx={{ p: 2 }}>
         Connect a Wallet
       </Typography>
 
-      <List>
+      <Box
+        sx={{
+          width: '100%',
+          height: '1px',
+          backgroundColor: 'rgba(0,0,0,0.1)'
+        }}
+      />
+
+      <List sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: 2, padding: 2, paddingTop: 1 }}>
         {connectors.map((connector) => (
-          <ListItem key={connector.id} sx={{ width: '100%' }}>
+          <ListItem key={connector.id} sx={{ width: '48%' }}>
             <Button onClick={() => handleConnect(connector, connector.icon ?? coinbaseIcon)}
                     sx={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'flex-start' }}>
               <ListItemAvatar>

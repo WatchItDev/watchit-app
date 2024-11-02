@@ -1,16 +1,21 @@
-// @mui
+// MUI IMPORTS
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-// components
-import { useProfileFollowers } from '@lens-protocol/react';
+
+// LENS IMPORTS
 import { Profile } from '@lens-protocol/api-bindings';
-import { FollowerItem } from './profile-follower-item';
+import { useProfileFollowers } from '@lens-protocol/react';
+
+// LOCAL IMPORTS
+import { UserItem } from '../../components/user-item';
 
 // ----------------------------------------------------------------------
 
-type Props = {
-  profile: Profile;
-};
+interface Props {
+  profile: Profile
+}
+
+// ----------------------------------------------------------------------
 
 const ProfileFollowers = ({ profile }: Props) => {
   const { data: followers, loading, error } = useProfileFollowers({
@@ -33,7 +38,7 @@ const ProfileFollowers = ({ profile }: Props) => {
       {
         followers?.length ? (
           followers.map((follower) => (
-            <FollowerItem profile={follower} />
+            <UserItem profile={follower} />
           ))
         ) : (
           <Typography>No followers</Typography>

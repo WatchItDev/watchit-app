@@ -9,15 +9,14 @@ import React from 'react';
 export interface ProfileData {
   username: string;
   name: string;
-  nickname: string;
   bio: string;
   profileImage: File | null;
   backgroundImage: File | null;
   socialLinks?: {
-    web3?: string;
-    twitter?: string;
-    facebook?: string;
-    instagram?: string;
+    twitter: string;
+    instagram: string;
+    orb: string;
+    farcaster: string;
   };
 }
 
@@ -27,13 +26,14 @@ export interface ProfileData {
 export interface AuthContextProps {
   authenticated: boolean;
   loading: boolean;
-  login: () => Promise<void>;
+  login: (profile?: Profile) => Promise<void>;
   logout: () => Promise<void>;
   profiles: Profile[];
   selectedProfile?: Profile;
   registerProfile: (data: ProfileData) => Promise<void>;
   selectProfile: (profile: Profile) => void;
   updateProfileMetadata: (data: ProfileData, profile: Profile) => Promise<void>;
+  refetchProfiles: () => Promise<void>;
 }
 
 /**

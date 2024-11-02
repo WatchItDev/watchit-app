@@ -26,6 +26,9 @@ export const AuthContextProvider: React.FC<AuthProviderProps> = ({ children }) =
   // Authentication status
   const [authenticated, setAuthenticated] = useState(false);
 
+  // Registration loader
+  const [registrationLoading, setRegistrationLoading] = useState(false);
+
   // List of profiles associated with the connected wallet
   const [profiles, setProfiles] = useState<Profile[]>([]);
 
@@ -139,36 +142,21 @@ export const AuthContextProvider: React.FC<AuthProviderProps> = ({ children }) =
     setSelectedProfile(profile);
   }, []);
 
-  /**
-   * Authenticate and select a profile.
-   * @param profile - Profile to authenticate with.
-   */
-  const authenticateAndSelectProfile = useCallback(
-    async (profile: Profile) => {
-      if (!address || !profile) {
-        console.error('Address or profile is missing.');
-        return;
-      }
+  const refetchProfiles = useCallback(async () => {
+    if (!address) {
+      console.error('Wallet address not available.');
+      return;
+    }
+    try {
+      await fetchProfiles({
+        for: address,
+        includeOwned: true,
+      });
+    } catch (error) {
+      console.error('Error re-fetching profiles:', error);
+    }
+  }, [address, fetchProfiles]);
 
-      try {
-        const result = await loginExecute({
-          address,
-          profileId: profile.id,
-        } as any);
-
-        if (result.isFailure()) {
-          console.error('Authentication failed:', result.error.message);
-          return;
-        }
-
-        console.log('Authentication initiated.');
-        // No need to wait here since useEffect will handle session changes
-      } catch (error) {
-        console.error('Error during authentication:', error);
-      }
-    },
-    [address, loginExecute]
-  );
 
   /**
    * Update profile metadata on the Lens Protocol.
@@ -225,16 +213,19 @@ export const AuthContextProvider: React.FC<AuthProviderProps> = ({ children }) =
         const updatedProfile = profileData?.find((p) => p.id === profile.id);
 
         if (updatedProfile) selectProfile(updatedProfile);
+
+        setRegistrationLoading(false);
       } catch (error) {
         console.error('Error updating profile metadata:', error);
+        setRegistrationLoading(false);
       }
     },
     [
       setProfileMetadataExecute,
       fetchProfiles,
-      profileData,
       address,
-      selectProfile,
+      profileData,
+      selectProfile
     ]
   );
 
@@ -250,16 +241,21 @@ export const AuthContextProvider: React.FC<AuthProviderProps> = ({ children }) =
       }
 
       try {
+        setRegistrationLoading(true);
         console.log('Creating new profile...');
+        console.log(data);
+        console.log(address);
 
         const result = await createProfileExecute({
           localName: data.username,
           to: address,
         });
 
+        console.log('hello result')
+        console.log(result)
+
         if (result.isFailure()) {
-          console.error('Failed to create profile:', result.error.message);
-          return;
+          throw new Error(result.error.message);
         }
 
         const newProfile: Profile = result.value;
@@ -273,6 +269,8 @@ export const AuthContextProvider: React.FC<AuthProviderProps> = ({ children }) =
         console.log('Authentication initiated. Metadata update will resume once authenticated.');
       } catch (error) {
         console.error('Error during profile registration:', error);
+        setRegistrationLoading(false);
+        throw error;
       }
     },
     [address, createProfileExecute, login]
@@ -333,6 +331,7 @@ export const AuthContextProvider: React.FC<AuthProviderProps> = ({ children }) =
       logoutLoading ||
       isConnecting ||
       createProfileLoading ||
+      registrationLoading ||
       setProfileMetadataLoading,
     [
       sessionLoading,
@@ -341,6 +340,7 @@ export const AuthContextProvider: React.FC<AuthProviderProps> = ({ children }) =
       logoutLoading,
       isConnecting,
       createProfileLoading,
+      registrationLoading,
       setProfileMetadataLoading,
     ]
   );
@@ -357,6 +357,7 @@ export const AuthContextProvider: React.FC<AuthProviderProps> = ({ children }) =
       registerProfile,
       selectProfile,
       updateProfileMetadata,
+      refetchProfiles,
     }),
     [
       authenticated,
@@ -368,6 +369,7 @@ export const AuthContextProvider: React.FC<AuthProviderProps> = ({ children }) =
       registerProfile,
       selectProfile,
       updateProfileMetadata,
+      refetchProfiles,
     ]
   );
 
