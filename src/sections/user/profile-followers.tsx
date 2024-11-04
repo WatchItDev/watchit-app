@@ -13,17 +13,18 @@ import { UserItem } from '../../components/user-item';
 
 interface Props {
   profile: Profile
+  onActionFinished?: () => void
 }
 
 // ----------------------------------------------------------------------
 
-const ProfileFollowers = ({ profile }: Props) => {
+const ProfileFollowers = ({ profile, onActionFinished }: Props) => {
   const { data: followers, loading, error } = useProfileFollowers({
     of: profile.id
   });
 
-  console.log('followers')
-  console.log(followers)
+  // console.log('followers')
+  // console.log(followers)
 
   return (
     <Box
@@ -37,8 +38,8 @@ const ProfileFollowers = ({ profile }: Props) => {
     >
       {
         followers?.length ? (
-          followers.map((follower) => (
-            <UserItem profile={follower} />
+          followers.map((follower, index) => (
+            <UserItem key={`follower-${index}`} profile={follower} onActionFinished={onActionFinished} />
           ))
         ) : (
           <Typography>No followers</Typography>

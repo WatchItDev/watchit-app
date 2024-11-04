@@ -10,8 +10,8 @@ export interface ProfileData {
   username: string;
   name: string;
   bio: string;
-  profileImage: File | null;
-  backgroundImage: File | null;
+  profileImage: File | string | null;
+  backgroundImage: File | string | null;
   socialLinks?: {
     twitter: string;
     instagram: string;

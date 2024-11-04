@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useEffect, useState } from 'react';
 // @mui
 import Tab from '@mui/material/Tab';
 import Container from '@mui/material/Container';
@@ -6,7 +6,7 @@ import Tabs, { tabsClasses } from '@mui/material/Tabs';
 
 // components
 import { useSettingsContext } from 'src/components/settings';
-import { useProfile, useLazyProfile } from '@lens-protocol/react';
+import { useLazyProfile, useProfile } from '@lens-protocol/react';
 import { appId, ProfileId, PublicationType, usePublications } from '@lens-protocol/react-web';
 import ProfileHome from '../profile-home';
 import ProfileFollowers from '../profile-followers';
@@ -20,42 +20,54 @@ import ProfileCollected from '../profile-collected';
 const TABS = [
   { value: 'publications', label: 'Publications' },
   { value: 'collected', label: 'Collected' },
-  { value: 'followers', label: 'Followers' },
-  { value: 'following', label: 'Following' }
+  { value: 'subscribers', label: 'Subscribers' },
+  { value: 'subscribed', label: 'Subscribed to' },
 ];
 
 // ----------------------------------------------------------------------
 
-const UserProfileView = ({ id }: { id: string | undefined }) => {
+const UserProfileView = ({ id }: any) => {
   const [currentTab, setCurrentTab] = useState('publications');
   const settings = useSettingsContext();
 
-  const { data: profile, loading } = useProfile({ forProfileId: id as ProfileId });
+  const { called, data: profile, error, loading, execute } = useLazyProfile();
 
-  const { data: publications, loading: publicationsLoading } = usePublications({
+  const { data: publications } = usePublications({
     where: {
-      from: [...(profile?.id ? [profile.id] : [])],
+      from: profile?.id ? [profile.id] : [],
       publicationTypes: [PublicationType.Post],
-      metadata: { publishedOn: [appId('watchit')] }
-    }
+      metadata: { publishedOn: [appId('watchit')] },
+    },
   });
 
-  console.log('hello profile stats')
-  console.log(profile?.stats?.collects)
-  console.log(profile?.stats?.followers)
-  console.log(profile?.stats?.following)
-  console.log(loading)
+  useEffect(() => {
+    if (!called) execute({ forProfileId: id as ProfileId })
+  }, [id, execute, called]);
 
   const counts: any = {
     publications: publications?.length ?? 0,
-    collected: profile?.stats.collects ?? 0,
-    followers: profile?.stats.followers ?? 0,
-    following: profile?.stats.following ?? 0,
+    collected: profile?.stats?.collects ?? 0,
+    subscribers: profile?.stats?.followers ?? 0,
+    subscribed: profile?.stats?.following ?? 0,
   };
 
-  const handleChangeTab = useCallback((event: React.SyntheticEvent, newValue: string) => {
+  const handleChangeTab = (event: any, newValue: any) => {
     setCurrentTab(newValue);
-  }, []);
+  };
+
+  const handleUpdateProfile = () => {
+    execute({ forProfileId: id as ProfileId })
+  };
+
+  const tabsWithCounts = TABS.map((tab: any) => ({
+    ...tab,
+    key: tab.value,
+    count: counts[tab.value],
+  }));
+
+  console.log('profile hello')
+  console.log(profile)
+  console.log(profile?.stats?.following)
 
   return (
     <Container maxWidth={settings.themeStretch ? false : 'lg'}>
@@ -67,14 +79,14 @@ const UserProfileView = ({ id }: { id: string | undefined }) => {
             width: 1,
             zIndex: 9,
             borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
-            [`& .${tabsClasses.flexContainer}`]: { justifyContent: 'center' }
+            [`& .${tabsClasses.flexContainer}`]: { justifyContent: 'center' },
           }}
         >
-          {TABS.map((tab) => (
+          {tabsWithCounts.map((tab) => (
             <Tab
-              key={`${tab.value}-${counts[tab.value]}`}
+              key={tab.value}
               value={tab.value}
-              label={<TabLabel label={tab.label} count={counts[tab.value]} />}
+              label={<TabLabel label={tab.label} count={tab.count} />}
             />
           ))}
         </Tabs>
@@ -82,13 +94,13 @@ const UserProfileView = ({ id }: { id: string | undefined }) => {
 
       {currentTab === 'publications' && profile && <ProfileHome profile={profile} />}
       {currentTab === 'collected' && profile && <ProfileCollected profile={profile} />}
-      {currentTab === 'followers' && profile && <ProfileFollowers profile={profile} />}
-      {currentTab === 'following' && profile && <ProfileFollowing profile={profile} />}
+      {currentTab === 'subscribers' && profile && <ProfileFollowers profile={profile} onActionFinished={handleUpdateProfile} />}
+      {currentTab === 'subscribed' && profile && <ProfileFollowing profile={profile} />}
     </Container>
   );
 };
 
-const TabLabel = ({ label, count }: { label: string, count: number }) => (
+const TabLabel = ({ label, count }: any) => (
   <>
     {label}
     {count > 0 && (

@@ -18,7 +18,7 @@ import { useAccount, useDisconnect } from 'wagmi';
 // LOCAL IMPORTS
 import { WalletConnectView } from 'src/components/loginModal/walletConnectView';
 import { ProfileSelectView } from 'src/components/loginModal/profileSelectView';
-import { ProfileCreateView } from 'src/components/loginModal/profileCreateView';
+import { ProfileFormView } from 'src/components/loginModal/profileFormView';
 import { WatchitLoader } from '../watchit-loader';
 
 // ----------------------------------------------------------------------
@@ -143,9 +143,10 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
                 )}
 
                 {view === 'create' && (
-                  <ProfileCreateView
+                  <ProfileFormView
                     onSuccess={handleProfileCreateSuccess}
                     onCancel={() => setView('profile')}
+                    mode="register"
                   />
                 )}
               </>

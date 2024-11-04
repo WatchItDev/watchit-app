@@ -44,6 +44,22 @@ export const uploadToIPFS = async (data: File | object): Promise<string> => {
 };
 
 /**
+ * Upload image to IPFS.
+ * @param image - Image file.
+ * @returns URIs of the uploaded image.
+ */
+export const uploadImageToIPFS = async (
+  image: File | null,
+): Promise<string | null> => {
+  try {
+    return image ? await uploadToIPFS(image) : null;
+  } catch (error) {
+    console.error('Error uploading images to IPFS:', error);
+    throw error;
+  }
+};
+
+/**
  * Upload profile and background images to IPFS.
  * @param profileImage - Profile image file.
  * @param backgroundImage - Background image file.

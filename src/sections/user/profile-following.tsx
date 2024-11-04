@@ -22,8 +22,8 @@ const ProfileFollowing = ({ profile }: Props) => {
     for: profile.id
   });
 
-  console.log('following')
-  console.log(following)
+  // console.log('following')
+  // console.log(following)
 
   return (
     <Box
@@ -37,8 +37,8 @@ const ProfileFollowing = ({ profile }: Props) => {
     >
       {
         following?.length ? (
-          following.map((follower) => (
-            <UserItem profile={follower} />
+          following.map((follower, index) => (
+            <UserItem key={`following-${index}`} profile={follower} />
           ))
         ) : (
           <Typography>No following</Typography>

@@ -19,20 +19,22 @@ import { useAuth } from 'src/hooks/use-auth';
 import LoadingButton from '@mui/lab/LoadingButton';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
+import { Profile } from '@lens-protocol/api-bindings';
 import Image from '../image';
 
 // ----------------------------------------------------------------------
 
-export interface ProfileCreateProps {
+export interface ProfileFormProps {
   onSuccess: () => void;
   onCancel: () => void;
+  mode: 'register' | 'update';
+  initialValues?: any;
 }
 
 // ----------------------------------------------------------------------
 
-export const ProfileCreateView: React.FC<ProfileCreateProps> = ({ onSuccess, onCancel }) => {
-  const { registerProfile, loading} = useAuth();
-
+export const ProfileFormView: React.FC<ProfileFormProps> = ({ onSuccess, onCancel, mode, initialValues }) => {
+  const { selectedProfile, registerProfile, updateProfileMetadata, loading} = useAuth();
   const [errorMessage, setErrorMessage] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -57,8 +59,8 @@ export const ProfileCreateView: React.FC<ProfileCreateProps> = ({ onSuccess, onC
     }
   }, [isSubmitting, loading, onSuccess, errorMessage]);
 
-  const formik = useFormik({
-    initialValues: {
+  const formik: any = useFormik({
+    initialValues: initialValues ?? {
       username: '',
       name: '',
       bio: '',
@@ -76,8 +78,11 @@ export const ProfileCreateView: React.FC<ProfileCreateProps> = ({ onSuccess, onC
       try {
         console.log('hello start registration')
         setIsSubmitting(true);
-        await registerProfile(values);
-        console.log('hello before registration')
+        if (mode === 'register') {
+          await registerProfile(values);
+        } else if (mode === 'update') {
+          await updateProfileMetadata(values, selectedProfile as Profile);
+        }
       } catch (error) {
         console.error('Error registering profile', error);
         console.error(error.message);
@@ -116,7 +121,7 @@ export const ProfileCreateView: React.FC<ProfileCreateProps> = ({ onSuccess, onC
   return (
     <Box sx={{ p: 2 }}>
       <Typography variant="h6" sx={{ pb: 2 }}>
-        Create a New Profile
+        {mode === 'register' ? 'Create a New Profile' : 'Update Profile'}
       </Typography>
       {/* Hidden inputs for image uploads */}
       <Input
@@ -136,7 +141,11 @@ export const ProfileCreateView: React.FC<ProfileCreateProps> = ({ onSuccess, onC
           {/* Background Image */}
           <Image
             src={
-              backgroundImagePreview || 'https://picsum.photos/seed/new/1920/820'
+              backgroundImagePreview ?? (
+                initialValues?.backgroundImage ?
+                  `https://ipfs.io/ipfs/${initialValues?.backgroundImage?.replaceAll?.('ipfs://', '')}` :
+                  `https://picsum.photos/seed/${mode === 'update' && selectedProfile ? selectedProfile?.id : 'new'}/1920/820`
+              )
             }
             onClick={() => backgroundImageInputRef.current?.click()}
             sx={{
@@ -162,8 +171,11 @@ export const ProfileCreateView: React.FC<ProfileCreateProps> = ({ onSuccess, onC
           {/* Avatar */}
           <Avatar
             src={
-              profileImagePreview ||
-              'https://api.dicebear.com/9.x/bottts-neutral/svg?seed=new'
+              profileImagePreview ?? (
+                initialValues?.profileImage ?
+                  `https://ipfs.io/ipfs/${initialValues?.profileImage?.replaceAll?.('ipfs://', '')}` :
+                  `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${mode === 'update' && selectedProfile ? selectedProfile?.id : 'new'}`
+              )
             }
             alt=""
             onClick={() => profileImageInputRef.current?.click()}
@@ -226,6 +238,7 @@ export const ProfileCreateView: React.FC<ProfileCreateProps> = ({ onSuccess, onC
               value={formik.values.name}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
+              disabled={loading}
               error={formik.touched.name && Boolean(formik.errors.name)}
               helperText={formik.touched.name ? formik.errors.name : 'e.g., John Doe'}
             />
@@ -238,6 +251,7 @@ export const ProfileCreateView: React.FC<ProfileCreateProps> = ({ onSuccess, onC
               id="username"
               name="username"
               placeholder="Enter a username"
+              disabled={mode === 'update' || loading}
               value={formik.values.username}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
@@ -257,6 +271,7 @@ export const ProfileCreateView: React.FC<ProfileCreateProps> = ({ onSuccess, onC
           value={formik.values.bio}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
+          disabled={loading}
           multiline
           rows={4}
           sx={{ mt: 2 }}
@@ -281,6 +296,7 @@ export const ProfileCreateView: React.FC<ProfileCreateProps> = ({ onSuccess, onC
               value={formik.values.socialLinks.twitter}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
+              disabled={loading}
               error={
                 formik.touched.socialLinks?.twitter && Boolean(formik.errors.socialLinks?.twitter)
               }
@@ -298,6 +314,7 @@ export const ProfileCreateView: React.FC<ProfileCreateProps> = ({ onSuccess, onC
               value={formik.values.socialLinks.instagram}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
+              disabled={loading}
               error={
                 formik.touched.socialLinks?.instagram &&
                 Boolean(formik.errors.socialLinks?.instagram)
@@ -318,6 +335,7 @@ export const ProfileCreateView: React.FC<ProfileCreateProps> = ({ onSuccess, onC
               value={formik.values.socialLinks.orb}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
+              disabled={loading}
               error={
                 formik.touched.socialLinks?.orb && Boolean(formik.errors.socialLinks?.orb)
               }
@@ -335,11 +353,12 @@ export const ProfileCreateView: React.FC<ProfileCreateProps> = ({ onSuccess, onC
               value={formik.values.socialLinks.farcaster}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
+              disabled={loading}
               error={
-                formik.touched.socialLinks?.farcaster && Boolean(formik.errors.socialLinks?.farcaster)
+                formik?.touched?.socialLinks?.farcaster && Boolean(formik.errors.socialLinks?.farcaster)
               }
               helperText={
-                formik.touched.socialLinks?.farcaster ? formik.errors.socialLinks?.farcaster : ''
+                formik?.touched?.socialLinks?.farcaster ? formik.errors.socialLinks?.farcaster : ''
               }
             />
           </Grid>
@@ -358,13 +377,13 @@ export const ProfileCreateView: React.FC<ProfileCreateProps> = ({ onSuccess, onC
         {/* Action Buttons */}
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6}>
-            <Button variant="outlined" onClick={onCancel} sx={{ width: '100%', py: 1 }}>
+            <Button variant="outlined" onClick={onCancel} disabled={loading} sx={{ width: '100%', py: 1 }}>
               Cancel
             </Button>
           </Grid>
           <Grid item xs={12} sm={6}>
             <LoadingButton variant="contained" type="submit" loading={loading} sx={{ width: '100%', py: 1 }}>
-              Create Profile
+              {mode === 'register' ? 'Create Profile' : 'Update Profile'}
             </LoadingButton>
           </Grid>
         </Grid>

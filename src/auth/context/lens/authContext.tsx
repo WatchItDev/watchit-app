@@ -11,7 +11,7 @@ import {
 } from '@lens-protocol/react-web';
 import { useAccount } from 'wagmi';
 import { AuthContextProps, AuthProviderProps, ProfileData } from './types';
-import { uploadImagesToIPFS, uploadMetadataToIPFS } from '../../../utils/ipfs';
+import { uploadImagesToIPFS, uploadImageToIPFS, uploadMetadataToIPFS } from '../../../utils/ipfs';
 import { buildProfileMetadata } from '../../../utils/profile';
 
 // Create the authentication context
@@ -166,13 +166,12 @@ export const AuthContextProvider: React.FC<AuthProviderProps> = ({ children }) =
   const updateProfileMetadata = useCallback(
     async (data: ProfileData, profile: Profile) => {
       console.log('Updating profile metadata');
+      setRegistrationLoading(true);
 
       try {
         // Upload images to IPFS
-        const { profileImageURI, backgroundImageURI } = await uploadImagesToIPFS(
-          data.profileImage,
-          data.backgroundImage
-        );
+        const profileImageURI = typeof data?.profileImage === 'string' ? data?.profileImage : await uploadImageToIPFS(data.profileImage);
+        const backgroundImageURI = typeof data?.backgroundImage === 'string' ? data?.backgroundImage : await uploadImageToIPFS(data.backgroundImage);
 
         // Build profile metadata
         const metadata = buildProfileMetadata(data, profileImageURI, backgroundImageURI);

@@ -81,7 +81,7 @@ export default function AccountPopover() {
             {selectedProfile?.handle?.localName}
           </Typography>
           <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
-            Watchit user
+            {`${selectedProfile?.id}`}
           </Typography>
         </Box>
       </Box>
@@ -89,10 +89,10 @@ export default function AccountPopover() {
       <CustomPopover open={popover.open} arrow="bottom-center" onClose={popover.onClose} sx={{ width: 200, p: 0 }}>
         <Box sx={{ p: 2, pb: 1.5 }}>
           <Typography variant="subtitle2" noWrap>
-            {selectedProfile?.handle?.localName}
+            {selectedProfile?.metadata?.displayName ?? ''}
           </Typography>
           <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
-            Watchit user
+            {selectedProfile?.handle?.localName}
           </Typography>
         </Box>
 

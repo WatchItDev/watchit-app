@@ -27,13 +27,14 @@ import { useAuth } from '../../hooks/use-auth';
 interface FollowerItemProps {
   profile: Profile
   onClick?: () => void
+  onActionFinished?: () => void
   sx?: SxProps<Theme>
   canFollow?: boolean
 }
 
 // ----------------------------------------------------------------------
 
-export const UserItem = ({ profile, sx, onClick, canFollow = true }: FollowerItemProps) => {
+export const UserItem = ({ profile, sx, onClick, onActionFinished, canFollow = true }: FollowerItemProps) => {
   const { selectedProfile } = useAuth();
   const [isFollowed, setIsFollowed] = useState(false);
   // State to handle error and success messages
@@ -73,6 +74,8 @@ export const UserItem = ({ profile, sx, onClick, canFollow = true }: FollowerIte
         setSuccessMessage('Successfully followed the profile.');
         // Wait for transaction confirmation
         await result.value.waitForCompletion();
+
+        onActionFinished?.()
       } else {
         // Handle specific follow errors
         handleFollowError(result.error);
@@ -92,6 +95,8 @@ export const UserItem = ({ profile, sx, onClick, canFollow = true }: FollowerIte
         setSuccessMessage('Successfully unfollowed the profile.');
         // Wait for transaction confirmation
         await result.value.waitForCompletion();
+
+        onActionFinished?.()
       } else {
         // Handle specific unfollow errors
         handleUnfollowError(result.error);

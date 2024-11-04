@@ -14,8 +14,8 @@ const removeEmptyValues = (obj: any): any => Object.fromEntries(
  */
 export const buildProfileMetadata = (
   data: ProfileData,
-  profileImageURI: string | null,
-  backgroundImageURI: string | null
+  profileImageURI?: string | null,
+  backgroundImageURI?: string | null
 ): any => {
   const cleanSocialLinks = Object.entries(data.socialLinks ?? {})
     .filter(([_, value]) => value !== '' && value !== null)

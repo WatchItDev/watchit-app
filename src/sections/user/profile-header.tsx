@@ -22,6 +22,7 @@ import { useAuth } from '../../hooks/use-auth';
 import ProfileCover from './profile-cover';
 import { truncateAddress } from '../../utils/wallet';
 import CopyableText from '../../components/copyableText/copyableText';
+import { UpdateModal } from '../../components/updateModal';
 
 // ----------------------------------------------------------------------
 
@@ -86,6 +87,7 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
   // State to handle error and success messages
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
+  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
 
   // Hooks for follow and unfollow actions
   const { execute: follow, error: followError, loading: followLoading } = useFollow();
@@ -230,8 +232,8 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
     }
   };
 
-  // console.log('profile')
-  // console.log(profile)
+  console.log('profile')
+  console.log(profile)
 
   return (
     <>
@@ -296,50 +298,38 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
             </Stack>
 
             <Stack direction='column' sx={{ width: '100%' }}>
-              <ListItemText
-                sx={{
-                  mt: 2,
-                  width: '80%'
-                }}
-                primary={profile?.handle?.localName ?? ''}
-                secondary={profile?.metadata?.bio}
-                primaryTypographyProps={{
-                  typography: 'h4',
-                }}
-                secondaryTypographyProps={{
-                  mt: 0.5,
-                  mb: 2,
-                  color: 'inherit',
-                  component: 'span',
-                  typography: 'body2',
-                  sx: { opacity: 0.48 },
-                }}
-              />
-              <Stack direction='row' sx={{ width: '100%', mb: 5, gap: 2 }}>
-                {/* <LoadingButton */}
-                {/*  title="Update Metadata" */}
-                {/*  variant="contained" */}
-                {/*  sx={{ */}
-                {/*    minWidth: 120, */}
-                {/*    backgroundColor: '#fff' */}
-                {/*  }} */}
-                {/*  onClick={updateMetadata} */}
-                {/* > */}
-                {/*  Update Metadata */}
-                {/* </LoadingButton> */}
-                <LoadingButton
-                  title="Subscribe"
-                  variant="contained"
+              <Box sx={{ mt: 2, width: '80%' }}>
+                <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-end', mt: 0, mb: 1 }}>
+                  <Typography variant="h4" color="text.primary">
+                    {profile?.metadata?.displayName ?? ''}
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    color="text.primary"
+                    sx={{
+                      opacity: 0.48,
+                      ml: 2,
+                      mb: 0.4,
+                    }}
+                  >
+                    {profile?.handle?.localName ?? ''}
+                  </Typography>
+                </Box>
+                <Typography
+                  variant="body2"
+                  color="text.primary"
                   sx={{
-                    minWidth: 120,
-                    backgroundColor: '#fff'
+                    mt: 0,
+                    mb: 2,
+                    opacity: 0.7
                   }}
-                  onClick={() => {}}
                 >
-                  Subscribe
-                </LoadingButton>
+                  {profile?.metadata?.bio ?? ''}
+                </Typography>
+              </Box>
+              <Stack direction='row' sx={{ width: '100%', mb: 5, gap: 2 }}>
                 <LoadingButton
-                  title={isFollowed ? "Unfollow" : "Follow"}
+                  title={isFollowed ? "Unsubscribe" : "Subscribe"}
                   variant={isFollowed ? "outlined" : "contained"}
                   sx={{
                     minWidth: 120,
@@ -349,11 +339,24 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
                   disabled={followLoading || unfollowLoading || profile?.id === selectedProfile?.id}
                   loading={followLoading || unfollowLoading}
                 >
-                  {isFollowed ? "Unfollow" : "Follow"}
+                  {isFollowed ? "Unsubscribe" : "Subscribe"}
                 </LoadingButton>
                 <Button size="medium" variant="outlined" sx={{ p: 1, minWidth: '44px' }} onClick={handlePopoverOpen}>
                   <Iconify icon="ion:share-outline" width={20} />
                 </Button>
+                {selectedProfile && profile?.id === selectedProfile?.id && (
+                  <Button
+                    variant="contained"
+                    sx={{
+                      p: 1,
+                      minWidth: '44px',
+                      backgroundColor: '#fff'
+                    }}
+                    onClick={() => setIsUpdateModalOpen(true)}
+                  >
+                    <Iconify icon="mingcute:user-edit-line" width={20} />
+                  </Button>
+                )}
 
                 <Popover
                   open={open}
@@ -487,6 +490,8 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
 
         { children }
       </Box>
+
+      <UpdateModal open={isUpdateModalOpen} onClose={() => setIsUpdateModalOpen(false)} />
 
       {/* Snackbar for error messages */}
       <Snackbar
