@@ -7,7 +7,7 @@ import CardHeader from '@mui/material/CardHeader';
 import Typography from '@mui/material/Typography';
 import CardContent from '@mui/material/CardContent';
 // utils
-import { fCurrency } from 'src/utils/format-number';
+import { fCurrency } from '@src/utils/format-number';
 import { IconCheck } from '@tabler/icons-react';
 import Scrollbar from '../../components/scrollbar';
 

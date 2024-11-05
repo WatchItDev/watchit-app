@@ -9,14 +9,14 @@ import Button from '@mui/material/Button';
 import { CircularProgress } from '@mui/material';
 
 // COMPONENTS IMPORTS
-import Scrollbar from 'src/components/scrollbar';
-import { NavSectionVertical } from 'src/components/nav-section';
-import { LoginModal } from 'src/components/loginModal';
+import Scrollbar from '@src/components/scrollbar';
+import { NavSectionVertical } from '@src/components/nav-section';
+import { LoginModal } from '@src/components/loginModal';
 
 // HOOKS IMPORTS
-import { useResponsive } from 'src/hooks/use-responsive';
-import { usePathname } from 'src/routes/hooks';
-import { useAuth } from 'src/hooks/use-auth'
+import { useResponsive } from '@src/hooks/use-responsive';
+import { usePathname } from '@src/routes/hooks';
+import { useAuth } from '@src/hooks/use-auth'
 import { useNavData } from './config-navigation';
 
 // LAYOUT IMPORTS

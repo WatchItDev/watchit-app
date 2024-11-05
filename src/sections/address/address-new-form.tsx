@@ -11,17 +11,17 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 // types
-import { IAddressItem } from 'src/types/address';
+import { IAddressItem } from '@src/types/address';
 // assets
-import { countries } from 'src/assets/data';
+import { countries } from '@src/assets/data';
 // components
-import Iconify from 'src/components/iconify';
+import Iconify from '@src/components/iconify';
 import FormProvider, {
   RHFCheckbox,
   RHFTextField,
   RHFRadioGroup,
   RHFAutocomplete,
-} from 'src/components/hook-form';
+} from '@src/components/hook-form';
 
 // ----------------------------------------------------------------------
 

@@ -1,49 +1,49 @@
 import { lazy, Suspense } from 'react';
 import { Outlet } from 'react-router-dom';
 // layouts
-import DashboardLayout from 'src/layouts/dashboard';
+import DashboardLayout from '@src/layouts/dashboard';
 // components
-import { LoadingScreen, SplashScreen } from 'src/components/loading-screen';
-import CompactLayout from 'src/layouts/compact';
+import { LoadingScreen, SplashScreen } from '@src/components/loading-screen';
+import CompactLayout from '@src/layouts/compact';
 
 // ----------------------------------------------------------------------
 
 // OVERVIEW
-const ExplorePage = lazy(() => import('src/pages/dashboard/explore'));
-const CommunityPage = lazy(() => import('src/pages/dashboard/community'));
-const MarketplacePage = lazy(() => import('src/pages/dashboard/marketplace'));
-const EventsPage = lazy(() => import('src/pages/dashboard/events'));
-const AchievementsPage = lazy(() => import('src/pages/dashboard/achievements'));
+const ExplorePage = lazy(() => import('@src/pages/dashboard/explore'));
+const CommunityPage = lazy(() => import('@src/pages/dashboard/community'));
+const MarketplacePage = lazy(() => import('@src/pages/dashboard/marketplace'));
+const EventsPage = lazy(() => import('@src/pages/dashboard/events'));
+const AchievementsPage = lazy(() => import('@src/pages/dashboard/achievements'));
 // GOVERNANCE
-const GovernancePage = lazy(() => import('src/pages/dashboard/governance/list'));
-const GovernanceNewPage = lazy(() => import('src/pages/dashboard/governance/new'));
-const GovernanceDetailPage = lazy(() => import('src/pages/dashboard/governance/details'));
+const GovernancePage = lazy(() => import('@src/pages/dashboard/governance/list'));
+const GovernanceNewPage = lazy(() => import('@src/pages/dashboard/governance/new'));
+const GovernanceDetailPage = lazy(() => import('@src/pages/dashboard/governance/details'));
 // MANAGEMENT
-const AnalyticsPage = lazy(() => import('src/pages/dashboard/analytics'));
-const StudioPage = lazy(() => import('src/pages/dashboard/studio'));
-const OwnershipPage = lazy(() => import('src/pages/dashboard/ownership'));
-const FinancePage = lazy(() => import('src/pages/dashboard/finance'));
-const MarketingPage = lazy(() => import('src/pages/dashboard/marketing'));
+const AnalyticsPage = lazy(() => import('@src/pages/dashboard/analytics'));
+const StudioPage = lazy(() => import('@src/pages/dashboard/studio'));
+const OwnershipPage = lazy(() => import('@src/pages/dashboard/ownership'));
+const FinancePage = lazy(() => import('@src/pages/dashboard/finance'));
+const MarketingPage = lazy(() => import('@src/pages/dashboard/marketing'));
 // USER
-const UserProfilePage = lazy(() => import('src/pages/dashboard/user/profile'));
-const UserCardsPage = lazy(() => import('src/pages/dashboard/user/cards'));
-const UserListPage = lazy(() => import('src/pages/dashboard/user/list'));
-const UserAccountPage = lazy(() => import('src/pages/dashboard/user/account'));
-const UserCreatePage = lazy(() => import('src/pages/dashboard/user/new'));
-const UserEditPage = lazy(() => import('src/pages/dashboard/user/edit'));
+const UserProfilePage = lazy(() => import('@src/pages/dashboard/user/profile'));
+const UserCardsPage = lazy(() => import('@src/pages/dashboard/user/cards'));
+const UserListPage = lazy(() => import('@src/pages/dashboard/user/list'));
+const UserAccountPage = lazy(() => import('@src/pages/dashboard/user/account'));
+const UserCreatePage = lazy(() => import('@src/pages/dashboard/user/new'));
+const UserEditPage = lazy(() => import('@src/pages/dashboard/user/edit'));
 // MOVIE
-const MovieDetailsPage = lazy(() => import('src/pages/dashboard/movie/details'));
-const MovieCreatePage = lazy(() => import('src/pages/dashboard/movie/new'));
-const MoviePlayPage = lazy(() => import('src/pages/dashboard/movie/play'));
+const MovieDetailsPage = lazy(() => import('@src/pages/dashboard/movie/details'));
+const MovieCreatePage = lazy(() => import('@src/pages/dashboard/movie/new'));
+const MoviePlayPage = lazy(() => import('@src/pages/dashboard/movie/play'));
 // BLOG
-const BlogPostsPage = lazy(() => import('src/pages/dashboard/post/list'));
-const BlogPostPage = lazy(() => import('src/pages/dashboard/post/details'));
-const BlogNewPostPage = lazy(() => import('src/pages/dashboard/post/new'));
-const BlogEditPostPage = lazy(() => import('src/pages/dashboard/post/edit'));
+const BlogPostsPage = lazy(() => import('@src/pages/dashboard/post/list'));
+const BlogPostPage = lazy(() => import('@src/pages/dashboard/post/details'));
+const BlogNewPostPage = lazy(() => import('@src/pages/dashboard/post/new'));
+const BlogEditPostPage = lazy(() => import('@src/pages/dashboard/post/edit'));
 
-const Page500 = lazy(() => import('src/pages/500'));
-const Page403 = lazy(() => import('src/pages/403'));
-const Page404 = lazy(() => import('src/pages/404'));
+const Page500 = lazy(() => import('@src/pages/500'));
+const Page403 = lazy(() => import('@src/pages/403'));
+const Page404 = lazy(() => import('@src/pages/404'));
 
 // ----------------------------------------------------------------------
 

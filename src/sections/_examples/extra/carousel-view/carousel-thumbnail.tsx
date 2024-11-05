@@ -4,10 +4,10 @@ import { styled, alpha } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Avatar from '@mui/material/Avatar';
 // theme
-import { bgGradient } from 'src/theme/css';
+import { bgGradient } from '@src/theme/css';
 // components
-import Image from 'src/components/image';
-import Carousel, { CarouselArrowIndex, useCarousel } from 'src/components/carousel';
+import Image from '@src/components/image';
+import Carousel, { CarouselArrowIndex, useCarousel } from '@src/components/carousel';
 
 // ----------------------------------------------------------------------
 

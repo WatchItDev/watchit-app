@@ -8,25 +8,36 @@ import { LoadingScreen } from '../../components/loading-screen';
 import { getAccessiblePublications } from '../../utils/publication';
 
 // ----------------------------------------------------------------------
-
+// @ts-ignore
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 type Props = {
   description: string;
 };
 
-export default function MovieDetailsDescription({ description }: Props) {
-  const { data, loading, error }: any = usePublications({
+export default function MovieDetailsDescription() {
+  const { data, loading }: any = usePublications({
     where: {
       publicationTypes: [PublicationType.Post],
       metadata: {
         // mainContentFocus: [PublicationMetadataMainFocusType.Video],
         publishedOn: [appId('watchit')],
-      }
-    }
+      },
+    },
   });
 
-  if (loading) return <LoadingScreen />
+  if (loading) return <LoadingScreen />;
 
-  const movieArr: any = getAccessiblePublications([...data, ...data, ...data, ...data, ...data, ...data, ...data, ...data, ...data])
+  const movieArr: any = getAccessiblePublications([
+    ...data,
+    ...data,
+    ...data,
+    ...data,
+    ...data,
+    ...data,
+    ...data,
+    ...data,
+    ...data,
+  ]);
 
   return (
     <Stack spacing={3} sx={{ pb: 6 }}>

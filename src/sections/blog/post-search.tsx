@@ -8,11 +8,11 @@ import Typography from '@mui/material/Typography';
 import InputAdornment from '@mui/material/InputAdornment';
 import Autocomplete, { autocompleteClasses } from '@mui/material/Autocomplete';
 // components
-import Iconify from 'src/components/iconify';
-import { useRouter } from 'src/routes/hooks';
-import SearchNotFound from 'src/components/search-not-found';
+import Iconify from '@src/components/iconify';
+import { useRouter } from '@src/routes/hooks';
+import SearchNotFound from '@src/components/search-not-found';
 // types
-import { IPostItem } from 'src/types/blog';
+import { IPostItem } from '@src/types/blog';
 
 // ----------------------------------------------------------------------
 

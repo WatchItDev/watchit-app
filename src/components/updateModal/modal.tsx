@@ -12,10 +12,10 @@ import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 
 // HOOKS IMPORTS
-import { useAuth } from 'src/hooks/use-auth';
+import { useAuth } from '@src/hooks/use-auth';
 
 // LOCAL IMPORTS
-import { ProfileFormView } from 'src/components/loginModal/profileFormView';
+import { ProfileFormView } from '@src/components/loginModal/profileFormView';
 
 // ----------------------------------------------------------------------
 

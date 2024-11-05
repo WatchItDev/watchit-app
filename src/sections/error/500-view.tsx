@@ -3,10 +3,10 @@ import { m } from 'framer-motion';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 // assets
-import { SeverErrorIllustration } from 'src/assets/illustrations';
+import { SeverErrorIllustration } from '@src/assets/illustrations';
 // components
-import { RouterLink } from 'src/routes/components';
-import { MotionContainer, varBounce } from 'src/components/animate';
+import { RouterLink } from '@src/routes/components';
+import { MotionContainer, varBounce } from '@src/components/animate';
 
 // ----------------------------------------------------------------------
 

@@ -3,11 +3,11 @@ import { DateSelectArg, EventClickArg, EventDropArg } from '@fullcalendar/core';
 import { EventResizeDoneArg } from '@fullcalendar/interaction';
 import { useState, useCallback, useRef } from 'react';
 // hooks
-import { useResponsive } from 'src/hooks/use-responsive';
+import { useResponsive } from '@src/hooks/use-responsive';
 // utils
-import { fTimestamp } from 'src/utils/format-time';
+import { fTimestamp } from '@src/utils/format-time';
 // types
-import { ICalendarView, ICalendarRange, ICalendarEvent } from 'src/types/calendar';
+import { ICalendarView, ICalendarRange, ICalendarEvent } from '@src/types/calendar';
 
 // ----------------------------------------------------------------------
 

@@ -2,15 +2,12 @@
 import Stack from '@mui/material/Stack';
 import Container from '@mui/material/Container';
 
-// MOCK IMPORTS
-import { moviesMock } from 'src/_mock';
-
 // COMPONENTS IMPORTS
-import CarouselMain from 'src/components/carousel/variants/carousel-main';
-import CarouselMixed from 'src/components/carousel/variants/carousel-mixed';
-import CarouselPoster from 'src/components/carousel/variants/carousel-poster';
-import CarouselPosterMini from 'src/components/carousel/variants/carousel-poster-mini';
-import CarouselPosterHorizontal from 'src/components/carousel/variants/carousel-poster-horizontal';
+import CarouselMain from '@src/components/carousel/variants/carousel-main';
+import CarouselMixed from '@src/components/carousel/variants/carousel-mixed';
+import CarouselPoster from '@src/components/carousel/variants/carousel-poster';
+import CarouselPosterMini from '@src/components/carousel/variants/carousel-poster-mini';
+import CarouselPosterHorizontal from '@src/components/carousel/variants/carousel-poster-horizontal';
 import {
   usePublications,
   PublicationType,

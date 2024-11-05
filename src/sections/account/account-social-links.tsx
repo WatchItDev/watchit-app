@@ -5,11 +5,11 @@ import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
 import InputAdornment from '@mui/material/InputAdornment';
 // types
-import { IUserSocialLink } from 'src/types/user';
+import { IUserSocialLink } from '@src/types/user';
 // components
-import Iconify from 'src/components/iconify';
-import { useSnackbar } from 'src/components/snackbar';
-import FormProvider, { RHFTextField } from 'src/components/hook-form';
+import Iconify from '@src/components/iconify';
+import { useSnackbar } from '@src/components/snackbar';
+import FormProvider, { RHFTextField } from '@src/components/hook-form';
 
 // ----------------------------------------------------------------------
 

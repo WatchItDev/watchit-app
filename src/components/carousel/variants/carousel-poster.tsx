@@ -1,11 +1,11 @@
 // @mui
 import Box from '@mui/material/Box';
-import Carousel, { CarouselArrows, useCarousel } from 'src/components/carousel/index';
+import Carousel, { CarouselArrows, useCarousel } from '@src/components/carousel/index';
+
+// @ts-ignore
 import { type Post } from '@lens-protocol/api-bindings/dist/declarations/src/lens/graphql/generated';
 import moment from 'moment/moment';
 import { PosterVertical } from '../../poster';
-import { Poster } from '../../poster/types';
-
 // ----------------------------------------------------------------------
 
 type Props = {

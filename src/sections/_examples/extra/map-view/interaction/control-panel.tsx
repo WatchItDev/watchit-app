@@ -5,7 +5,7 @@ import Switch from '@mui/material/Switch';
 import InputBase from '@mui/material/InputBase';
 import Typography from '@mui/material/Typography';
 // components
-import { MapSettingKeys, MapSettings, StyledControlPanel } from 'src/components/map';
+import { MapSettingKeys, MapSettings, StyledControlPanel } from '@src/components/map';
 
 // ----------------------------------------------------------------------
 

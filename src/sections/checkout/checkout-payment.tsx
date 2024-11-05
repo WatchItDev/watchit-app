@@ -10,10 +10,10 @@ import {
   ICheckoutCardOption,
   ICheckoutPaymentOption,
   ICheckoutDeliveryOption,
-} from 'src/types/checkout';
+} from '@src/types/checkout';
 // components
-import Iconify from 'src/components/iconify';
-import FormProvider from 'src/components/hook-form';
+import Iconify from '@src/components/iconify';
+import FormProvider from '@src/components/hook-form';
 //
 import { useCheckoutContext } from './context';
 import CheckoutSummary from './checkout-summary';

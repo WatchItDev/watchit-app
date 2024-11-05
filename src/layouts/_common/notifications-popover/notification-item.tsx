@@ -8,10 +8,10 @@ import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import ListItemButton from '@mui/material/ListItemButton';
 // utils
-import { fToNow } from 'src/utils/format-time';
+import { fToNow } from '@src/utils/format-time';
 // components
-import Label from 'src/components/label';
-import FileThumbnail from 'src/components/file-thumbnail';
+import Label from '@src/components/label';
+import FileThumbnail from '@src/components/file-thumbnail';
 
 // ----------------------------------------------------------------------
 

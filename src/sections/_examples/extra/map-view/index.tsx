@@ -1,4 +1,4 @@
-import 'src/utils/mapboxgl';
+import '@src/utils/mapboxgl';
 // @mui
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
@@ -8,14 +8,14 @@ import Container from '@mui/material/Container';
 import CardHeader from '@mui/material/CardHeader';
 import CardContent from '@mui/material/CardContent';
 // routes
-import { paths } from 'src/routes/paths';
+import { paths } from '@src/routes/paths';
 // config
-import { MAPBOX_API } from 'src/config-global';
+import { MAPBOX_API } from '@src/config-global';
 // _mock
-import { cities as CITIES } from 'src/_mock/map/cities';
-import { countries as COUNTRIES } from 'src/_mock/map/countries';
+import { cities as CITIES } from '@src/_mock/map/cities';
+import { countries as COUNTRIES } from '@src/_mock/map/countries';
 // components
-import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
+import CustomBreadcrumbs from '@src/components/custom-breadcrumbs';
 //
 import MapHeatmap from './heatmap';
 import MapClusters from './clusters';

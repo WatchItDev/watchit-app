@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 // sections
-import { GovernanceCreateView } from 'src/sections/governance/view';
+import { GovernanceCreateView } from '@src/sections/governance/view';
 
 // ----------------------------------------------------------------------
 

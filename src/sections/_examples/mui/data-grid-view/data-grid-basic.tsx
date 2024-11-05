@@ -2,7 +2,7 @@
 import IconButton from '@mui/material/IconButton';
 import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
 // components
-import Iconify from 'src/components/iconify';
+import Iconify from '@src/components/iconify';
 
 // ----------------------------------------------------------------------
 

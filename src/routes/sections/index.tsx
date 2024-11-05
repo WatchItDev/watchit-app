@@ -1,6 +1,6 @@
 import { Navigate, useRoutes } from 'react-router-dom';
 // config
-import { PATH_AFTER_LOGIN } from 'src/config-global';
+import { PATH_AFTER_LOGIN } from '@src/config-global';
 //
 import { dashboardRoutes } from './dashboard';
 import NotFoundPage from '../../pages/404';

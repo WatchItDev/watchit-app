@@ -1,9 +1,9 @@
 import useSWR from 'swr';
 import { useMemo } from 'react';
 // utils
-import { fetcher, endpoints } from 'src/utils/axios';
+import { fetcher, endpoints } from '@src/utils/axios';
 // types
-import { IProductItem } from 'src/types/product';
+import { IProductItem } from '@src/types/product';
 
 // ----------------------------------------------------------------------
 

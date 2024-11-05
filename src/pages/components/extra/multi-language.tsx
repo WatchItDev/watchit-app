@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 // sections
-import MultiLanguageView from 'src/sections/_examples/extra/multi-language-view';
+import MultiLanguageView from '@src/sections/_examples/extra/multi-language-view';
 
 // ----------------------------------------------------------------------
 

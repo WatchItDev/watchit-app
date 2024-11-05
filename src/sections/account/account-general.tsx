@@ -11,20 +11,20 @@ import Button from '@mui/material/Button';
 import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
 // hooks
-import { useMockedUser } from 'src/hooks/use-mocked-user';
+import { useMockedUser } from '@src/hooks/use-mocked-user';
 // utils
-import { fData } from 'src/utils/format-number';
+import { fData } from '@src/utils/format-number';
 // assets
-import { countries } from 'src/assets/data';
+import { countries } from '@src/assets/data';
 // components
-import Iconify from 'src/components/iconify';
-import { useSnackbar } from 'src/components/snackbar';
+import Iconify from '@src/components/iconify';
+import { useSnackbar } from '@src/components/snackbar';
 import FormProvider, {
   RHFSwitch,
   RHFTextField,
   RHFUploadAvatar,
   RHFAutocomplete,
-} from 'src/components/hook-form';
+} from '@src/components/hook-form';
 
 // ----------------------------------------------------------------------
 

@@ -8,8 +8,8 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import Dialog, { DialogProps } from '@mui/material/Dialog';
 // components
-import Iconify from 'src/components/iconify';
-import { Upload } from 'src/components/upload';
+import Iconify from '@src/components/iconify';
+import { Upload } from '@src/components/upload';
 
 // ----------------------------------------------------------------------
 

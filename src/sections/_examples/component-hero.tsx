@@ -7,11 +7,11 @@ import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 
 // hooks
-import { useResponsive } from 'src/hooks/use-responsive';
+import { useResponsive } from '@src/hooks/use-responsive';
 // theme
-import { bgGradient } from 'src/theme/css';
+import { bgGradient } from '@src/theme/css';
 // components
-import { MotionContainer, varFade } from 'src/components/animate';
+import { MotionContainer, varFade } from '@src/components/animate';
 
 // ----------------------------------------------------------------------
 

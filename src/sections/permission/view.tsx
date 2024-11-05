@@ -4,11 +4,11 @@ import Container from '@mui/material/Container';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 // routes
-import { paths } from 'src/routes/paths';
+import { paths } from '@src/routes/paths';
 
 // components
-import { useSettingsContext } from 'src/components/settings';
-import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
+import { useSettingsContext } from '@src/components/settings';
+import CustomBreadcrumbs from '@src/components/custom-breadcrumbs';
 
 // ----------------------------------------------------------------------
 

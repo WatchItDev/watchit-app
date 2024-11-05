@@ -1,6 +1,6 @@
 import axios, { AxiosRequestConfig } from 'axios';
 // config
-import { HOST_API } from 'src/config-global';
+import { HOST_API } from '@src/config-global';
 
 // ----------------------------------------------------------------------
 

@@ -1,7 +1,7 @@
 // @mui
 import { styled, alpha } from '@mui/material/styles';
 // theme
-import { bgBlur } from 'src/theme/css';
+import { bgBlur } from '@src/theme/css';
 //
 import { MenuPopoverArrowValue } from './types';
 

@@ -4,8 +4,8 @@ import Map from 'react-map-gl';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 // components
-import Image from 'src/components/image';
-import { MapPopup, MapMarker, MapControl, MapBoxProps } from 'src/components/map';
+import Image from '@src/components/image';
+import { MapPopup, MapMarker, MapControl, MapBoxProps } from '@src/components/map';
 
 // ----------------------------------------------------------------------
 

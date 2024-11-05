@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 // sections
-import { MovieCreateView } from 'src/sections/movie/view';
+import { MovieCreateView } from '@src/sections/movie/view';
 
 // ----------------------------------------------------------------------
 

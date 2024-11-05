@@ -1,15 +1,14 @@
 // @mui
 import Stack from '@mui/material/Stack';
-import Rating from '@mui/material/Rating';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import ListItemText from '@mui/material/ListItemText';
 // utils
-import { fDate } from 'src/utils/format-time';
+import { fDate } from '@src/utils/format-time';
 // types
-import { IProductReview } from 'src/types/product';
+import { IProductReview } from '@src/types/product';
 // components
-import Iconify from 'src/components/iconify';
+import Iconify from '@src/components/iconify';
 
 // ----------------------------------------------------------------------
 
@@ -18,7 +17,7 @@ type Props = {
 };
 
 export default function MovieReviewItem({ review }: Props) {
-  const { name, rating, comment, postedAt, avatarUrl, isPurchased } = review;
+  const { name, comment, postedAt, avatarUrl } = review;
 
   const renderInfo = (
     <Stack

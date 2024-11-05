@@ -7,12 +7,12 @@ import MenuItem from '@mui/material/MenuItem';
 import IconButton from '@mui/material/IconButton';
 import CardHeader from '@mui/material/CardHeader';
 // hooks
-import { useBoolean } from 'src/hooks/use-boolean';
+import { useBoolean } from '@src/hooks/use-boolean';
 // types
-import { IAddressItem } from 'src/types/address';
+import { IAddressItem } from '@src/types/address';
 // components
-import Iconify from 'src/components/iconify';
-import CustomPopover, { usePopover } from 'src/components/custom-popover';
+import Iconify from '@src/components/iconify';
+import CustomPopover, { usePopover } from '@src/components/custom-popover';
 //
 import { AddressNewForm, AddressItem } from '../address';
 

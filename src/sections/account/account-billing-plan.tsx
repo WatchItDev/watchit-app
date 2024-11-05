@@ -9,15 +9,15 @@ import Divider from '@mui/material/Divider';
 import Grid from '@mui/material/Unstable_Grid2';
 import CardHeader from '@mui/material/CardHeader';
 // hooks
-import { useBoolean } from 'src/hooks/use-boolean';
+import { useBoolean } from '@src/hooks/use-boolean';
 // types
-import { IPaymentCard } from 'src/types/payment';
-import { IAddressItem } from 'src/types/address';
+import { IPaymentCard } from '@src/types/payment';
+import { IAddressItem } from '@src/types/address';
 // assets
-import { PlanFreeIcon, PlanStarterIcon, PlanPremiumIcon } from 'src/assets/icons';
+import { PlanFreeIcon, PlanStarterIcon, PlanPremiumIcon } from '@src/assets/icons';
 // components
-import Label from 'src/components/label';
-import Iconify from 'src/components/iconify';
+import Label from '@src/components/label';
+import Iconify from '@src/components/iconify';
 //
 import { AddressListDialog } from '../address';
 import PaymentCardListDialog from '../payment/payment-card-list-dialog';

@@ -8,9 +8,9 @@ import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import DialogActions from '@mui/material/DialogActions';
 // components
-import Markdown from 'src/components/markdown';
-import Scrollbar from 'src/components/scrollbar';
-import EmptyContent from 'src/components/empty-content';
+import Markdown from '@src/components/markdown';
+import Scrollbar from '@src/components/scrollbar';
+import EmptyContent from '@src/components/empty-content';
 //
 import PostDetailsHero from './post-details-hero';
 

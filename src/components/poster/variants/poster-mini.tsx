@@ -1,5 +1,4 @@
 // @mui
-import { alpha } from '@mui/material/styles';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import CardContent from '@mui/material/CardContent';
@@ -7,16 +6,15 @@ import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 
 // components
-import { bgGradient } from 'src/theme/css';
-import Image from 'src/components/image';
-import { IconHeartFilled, IconStarFilled } from '@tabler/icons-react';
+import Image from '@src/components/image';
+import { IconStarFilled } from '@tabler/icons-react';
 import { Poster } from '../types';
-import { useRouter } from '../../../routes/hooks';
-import { paths } from '../../../routes/paths';
+import { useRouter } from '@src/routes/hooks';
+import { paths } from '@src/routes/paths.ts';
 
 // ----------------------------------------------------------------------
 
-const PosterMini = ({ id, title, images, rating, year, likes, price, genre }: Poster) => {
+const PosterMini = ({ id, title, images, rating, year, price, genre }: Poster) => {
   const router = useRouter();
 
   const handlePosterClick = () => {

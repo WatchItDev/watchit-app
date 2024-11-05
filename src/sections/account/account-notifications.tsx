@@ -8,8 +8,8 @@ import Grid from '@mui/material/Unstable_Grid2';
 import ListItemText from '@mui/material/ListItemText';
 import FormControlLabel from '@mui/material/FormControlLabel';
 // components
-import FormProvider from 'src/components/hook-form';
-import { useSnackbar } from 'src/components/snackbar';
+import FormProvider from '@src/components/hook-form';
+import { useSnackbar } from '@src/components/snackbar';
 
 // ----------------------------------------------------------------------
 

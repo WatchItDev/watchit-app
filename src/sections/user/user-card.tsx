@@ -9,16 +9,16 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import ListItemText from '@mui/material/ListItemText';
 // utils
-import { fShortenNumber } from 'src/utils/format-number';
+import { fShortenNumber } from '@src/utils/format-number';
 // types
-import { IUserCard } from 'src/types/user';
+import { IUserCard } from '@src/types/user';
 // _mock
-import { _socials } from 'src/_mock';
+import { _socials } from '@src/_mock';
 // assets
-import { AvatarShape } from 'src/assets/illustrations';
+import { AvatarShape } from '@src/assets/illustrations';
 // components
-import Image from 'src/components/image';
-import Iconify from 'src/components/iconify';
+import Image from '@src/components/image';
+import Iconify from '@src/components/iconify';
 
 // ----------------------------------------------------------------------
 

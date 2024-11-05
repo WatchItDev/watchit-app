@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 // sections
-import { UserProfileView } from 'src/sections/user/view';
+import { UserProfileView } from '@src/sections/user/view';
 import { useParams } from '../../../routes/hooks';
 
 // ----------------------------------------------------------------------

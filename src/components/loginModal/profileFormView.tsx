@@ -15,7 +15,7 @@ import {
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import Avatar from '@mui/material/Avatar';
-import { useAuth } from 'src/hooks/use-auth';
+import { useAuth } from '@src/hooks/use-auth';
 import LoadingButton from '@mui/lab/LoadingButton';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';

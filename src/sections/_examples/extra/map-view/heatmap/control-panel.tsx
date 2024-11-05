@@ -5,9 +5,9 @@ import Switch from '@mui/material/Switch';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 // utils
-import { fDate } from 'src/utils/format-time';
+import { fDate } from '@src/utils/format-time';
 // components
-import { StyledControlPanel } from 'src/components/map';
+import { StyledControlPanel } from '@src/components/map';
 
 // ----------------------------------------------------------------------
 

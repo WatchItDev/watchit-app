@@ -1,7 +1,7 @@
 // @mui
 import Box from '@mui/material/Box';
 // hooks
-import { useBoolean } from 'src/hooks/use-boolean';
+import { useBoolean } from '@src/hooks/use-boolean';
 //
 import Main from './main';
 // import Header from './header';

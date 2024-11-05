@@ -13,13 +13,13 @@ import Typography from '@mui/material/Typography';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemButton from '@mui/material/ListItemButton';
 // utils
-import { fDateTime } from 'src/utils/format-time';
+import { fDateTime } from '@src/utils/format-time';
 // types
-import { ICalendarFilters, ICalendarFilterValue, ICalendarEvent } from 'src/types/calendar';
+import { ICalendarFilters, ICalendarFilterValue, ICalendarEvent } from '@src/types/calendar';
 // components
-import Iconify from 'src/components/iconify';
-import Scrollbar from 'src/components/scrollbar';
-import { ColorPicker } from 'src/components/color-utils';
+import Iconify from '@src/components/iconify';
+import Scrollbar from '@src/components/scrollbar';
+import { ColorPicker } from '@src/components/color-utils';
 
 // ----------------------------------------------------------------------
 

@@ -1,5 +1,5 @@
 import { profile as profileBuilder, MetadataAttributeType } from '@lens-protocol/metadata';
-import { ProfileData } from 'src/auth/context/lens/types';
+import { ProfileData } from '@src/auth/context/lens/types';
 
 const removeEmptyValues = (obj: any): any => Object.fromEntries(
   Object.entries(obj).filter(([_, v]) => v !== '' && v !== null)

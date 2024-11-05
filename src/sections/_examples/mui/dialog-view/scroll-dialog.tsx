@@ -7,7 +7,7 @@ import DialogContent from '@mui/material/DialogContent';
 import Dialog, { DialogProps } from '@mui/material/Dialog';
 import DialogContentText from '@mui/material/DialogContentText';
 // hooks
-import { useBoolean } from 'src/hooks/use-boolean';
+import { useBoolean } from '@src/hooks/use-boolean';
 
 // ----------------------------------------------------------------------
 

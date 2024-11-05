@@ -11,13 +11,13 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import InputAdornment from '@mui/material/InputAdornment';
 // types
-import { IUserProfileFriend } from 'src/types/user';
+import { IUserProfileFriend } from '@src/types/user';
 // _mock
-import { _socials } from 'src/_mock';
+import { _socials } from '@src/_mock';
 // components
-import Iconify from 'src/components/iconify';
-import SearchNotFound from 'src/components/search-not-found';
-import CustomPopover, { usePopover } from 'src/components/custom-popover';
+import Iconify from '@src/components/iconify';
+import SearchNotFound from '@src/components/search-not-found';
+import CustomPopover, { usePopover } from '@src/components/custom-popover';
 
 // ----------------------------------------------------------------------
 

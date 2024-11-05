@@ -9,13 +9,13 @@ import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import ListItemButton from '@mui/material/ListItemButton';
 // hooks
-import { useBoolean } from 'src/hooks/use-boolean';
-import { useResponsive } from 'src/hooks/use-responsive';
+import { useBoolean } from '@src/hooks/use-boolean';
+import { useResponsive } from '@src/hooks/use-responsive';
 // components
-import Image from 'src/components/image';
-import Iconify from 'src/components/iconify';
-import TextMaxLine from 'src/components/text-max-line';
-import { MotionViewport, varFade } from 'src/components/animate';
+import Image from '@src/components/image';
+import Iconify from '@src/components/iconify';
+import TextMaxLine from '@src/components/text-max-line';
+import { MotionViewport, varFade } from '@src/components/animate';
 
 // ----------------------------------------------------------------------
 

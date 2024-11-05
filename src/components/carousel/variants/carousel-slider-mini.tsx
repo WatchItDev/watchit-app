@@ -1,21 +1,15 @@
 import {useState} from 'react';
-import { m } from 'framer-motion';
 // @mui
 import Box from '@mui/material/Box';
-import { alpha, useTheme } from '@mui/material/styles';
-import { Poster } from 'src/components/poster/types';
-import CardContent from '@mui/material/CardContent';
+// import { useTheme } from '@mui/material/styles';
+import { Poster } from '@src/components/poster/types';
+
 import Typography from '@mui/material/Typography';
-import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
-import Carousel, { CarouselArrows, useCarousel } from 'src/components/carousel/index';
-// theme
-import { bgGradient } from 'src/theme/css';
 // components
-import Image from 'src/components/image';
-import { IconFlagFilled, IconStarFilled, IconPlayerPlay, IconChevronRight, IconChevronLeft } from '@tabler/icons-react';
-import { MotionContainer, varFade } from 'src/components/animate';
-import PosterMini from 'src/components/poster/variants/poster-mini';
+import { IconChevronRight, IconChevronLeft } from '@tabler/icons-react';
+// import { varFade } from '@src/components/animate';
+import PosterMini from '@src/components/poster/variants/poster-mini';
 
 // ----------------------------------------------------------------------
 
@@ -38,9 +32,9 @@ export default function CarouselSliderMini({ data,title }: Props) {
     });
   };
 
-  const theme = useTheme();
+  // const theme = useTheme();
 
-  const variants = theme.direction === 'rtl' ? varFade().inLeft : varFade().inRight;
+  // const variants = theme.direction === 'rtl' ? varFade().inLeft : varFade().inRight;
 
   return (
     <>

@@ -8,9 +8,9 @@ import Typography from '@mui/material/Typography';
 import ListItemText from '@mui/material/ListItemText';
 import Paper, { PaperProps } from '@mui/material/Paper';
 // hooks
-import { useBoolean } from 'src/hooks/use-boolean';
+import { useBoolean } from '@src/hooks/use-boolean';
 // components
-import Iconify from 'src/components/iconify';
+import Iconify from '@src/components/iconify';
 //
 import PaymentNewCardDialog from './payment-new-card-dialog';
 

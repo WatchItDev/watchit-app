@@ -10,14 +10,14 @@ import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 // routes
-import { paths } from 'src/routes/paths';
-import { RouterLink } from 'src/routes/components';
+import { paths } from '@src/routes/paths';
+import { RouterLink } from '@src/routes/components';
 // components
-import Iconify from 'src/components/iconify';
-import { useSettingsContext } from 'src/components/settings';
+import Iconify from '@src/components/iconify';
+import { useSettingsContext } from '@src/components/settings';
 
 //
-import MovieDetailMain from 'src/components/carousel/variants/movie-detail-main';
+import MovieDetailMain from '@src/components/carousel/variants/movie-detail-main';
 import IconButton from '@mui/material/IconButton';
 import { IconChevronLeft } from '@tabler/icons-react';
 import Tooltip from '@mui/material/Tooltip';
@@ -27,8 +27,8 @@ import MovieDetailsComments from '../movie-details-comments';
 import MovieDetailsDescription from '../movie-details-description';
 import Label from '../../../components/label';
 import Header from '../../../layouts/dashboard/header';
-import { useResponsive } from '../../../hooks/use-responsive';
-import { useRouter } from '../../../routes/hooks';
+import { useResponsive } from '@src/hooks/use-responsive.ts';
+import { useRouter } from '@src/routes/hooks';
 import { LoadingScreen } from '../../../components/loading-screen';
 
 // ----------------------------------------------------------------------
@@ -43,11 +43,11 @@ export default function MovieDetailsView({ id }: Props) {
   const settings = useSettingsContext();
   const mdUp = useResponsive('up', 'md');
   const router = useRouter();
-  const { data, error, loading }: any = usePublication({
-    forId: id as any
+  const { data, loading }: any = usePublication({
+    forId: id as any,
   });
 
-  const handleChangeTab = useCallback((event: React.SyntheticEvent, newValue: string) => {
+  const handleChangeTab = useCallback((_event: React.SyntheticEvent, newValue: string) => {
     setCurrentTab(newValue);
   }, []);
 

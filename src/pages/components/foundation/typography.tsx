@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 // sections
-import { TypographyView } from 'src/sections/_examples/foundation';
+import { TypographyView } from '@src/sections/_examples/foundation';
 
 // ----------------------------------------------------------------------
 

@@ -6,7 +6,7 @@ import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
 import CardHeader from '@mui/material/CardHeader';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import FormProvider, { RHFTextField, RHFSelect } from 'src/components/hook-form';
+import FormProvider, { RHFTextField, RHFSelect } from '@src/components/hook-form';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import { IconTrash } from '@tabler/icons-react';

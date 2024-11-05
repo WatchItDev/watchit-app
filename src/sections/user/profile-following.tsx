@@ -7,7 +7,7 @@ import { Profile } from '@lens-protocol/api-bindings';
 import { useProfileFollowing } from '@lens-protocol/react';
 
 // LOCAL IMPORTS
-import { UserItem } from '../../components/user-item';
+import { UserItem } from '@src/components/user-item';
 
 // ----------------------------------------------------------------------
 
@@ -18,7 +18,7 @@ interface Props {
 // ----------------------------------------------------------------------
 
 const ProfileFollowing = ({ profile }: Props) => {
-  const { data: following, loading, error } = useProfileFollowing({
+  const { data: following } = useProfileFollowing({
     for: profile.id
   });
 

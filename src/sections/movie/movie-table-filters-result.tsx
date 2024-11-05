@@ -5,9 +5,9 @@ import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
 import Stack, { StackProps } from '@mui/material/Stack';
 // components
-import Iconify from 'src/components/iconify';
+import Iconify from '@src/components/iconify';
 // types
-import { IProductTableFilters, IProductTableFilterValue } from 'src/types/product';
+import { IProductTableFilters, IProductTableFilterValue } from '@src/types/product';
 
 // ----------------------------------------------------------------------
 

@@ -8,10 +8,10 @@ import Box, { BoxProps } from '@mui/material/Box';
 import InputAdornment from '@mui/material/InputAdornment';
 import { outlinedInputClasses } from '@mui/material/OutlinedInput';
 // theme
-import { bgGradient } from 'src/theme/css';
+import { bgGradient } from '@src/theme/css';
 // components
-import Iconify from 'src/components/iconify';
-import { MotionContainer, varFade } from 'src/components/animate';
+import Iconify from '@src/components/iconify';
+import { MotionContainer, varFade } from '@src/components/animate';
 
 // ----------------------------------------------------------------------
 

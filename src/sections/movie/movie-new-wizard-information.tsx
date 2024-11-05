@@ -6,7 +6,7 @@ import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
 import CardHeader from '@mui/material/CardHeader';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import FormProvider, { RHFTextField, RHFSelect, RHFMultiSelect } from 'src/components/hook-form';
+import FormProvider, { RHFTextField, RHFSelect, RHFMultiSelect } from '@src/components/hook-form';
 import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
 import MovieWizardContentLayout from './movie-new-wizard-layout';

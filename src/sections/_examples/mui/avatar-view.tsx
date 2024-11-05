@@ -9,12 +9,12 @@ import Tooltip from '@mui/material/Tooltip';
 import Container from '@mui/material/Container';
 import AvatarGroup, { avatarGroupClasses } from '@mui/material/AvatarGroup';
 // routes
-import { paths } from 'src/routes/paths';
+import { paths } from '@src/routes/paths';
 // _mock
-import { _mock } from 'src/_mock';
+import { _mock } from '@src/_mock';
 // components
-import Iconify from 'src/components/iconify';
-import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
+import Iconify from '@src/components/iconify';
+import CustomBreadcrumbs from '@src/components/custom-breadcrumbs';
 //
 import ComponentBlock from '../component-block';
 

@@ -2,7 +2,7 @@
 import Paper from '@mui/material/Paper';
 import IconButton from '@mui/material/IconButton';
 // components
-import Iconify from 'src/components/iconify';
+import Iconify from '@src/components/iconify';
 
 // ----------------------------------------------------------------------
 

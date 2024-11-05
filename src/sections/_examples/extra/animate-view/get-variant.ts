@@ -9,7 +9,7 @@ import {
   varRotate,
   varBgColor,
   varBgKenburns,
-} from 'src/components/animate';
+} from '@src/components/animate';
 
 // ----------------------------------------------------------------------
 

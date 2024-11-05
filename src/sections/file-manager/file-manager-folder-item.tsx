@@ -13,17 +13,17 @@ import IconButton from '@mui/material/IconButton';
 import ListItemText from '@mui/material/ListItemText';
 import AvatarGroup, { avatarGroupClasses } from '@mui/material/AvatarGroup';
 // hooks
-import { useBoolean } from 'src/hooks/use-boolean';
-import { useCopyToClipboard } from 'src/hooks/use-copy-to-clipboard';
+import { useBoolean } from '@src/hooks/use-boolean';
+import { useCopyToClipboard } from '@src/hooks/use-copy-to-clipboard';
 // utils
-import { fData } from 'src/utils/format-number';
+import { fData } from '@src/utils/format-number';
 // types
-import { IFolderManager } from 'src/types/file';
+import { IFolderManager } from '@src/types/file';
 // components
-import Iconify from 'src/components/iconify';
-import { useSnackbar } from 'src/components/snackbar';
-import { ConfirmDialog } from 'src/components/custom-dialog';
-import CustomPopover, { usePopover } from 'src/components/custom-popover';
+import Iconify from '@src/components/iconify';
+import { useSnackbar } from '@src/components/snackbar';
+import { ConfirmDialog } from '@src/components/custom-dialog';
+import CustomPopover, { usePopover } from '@src/components/custom-popover';
 //
 import FileManagerShareDialog from './file-manager-share-dialog';
 import FileManagerFileDetails from './file-manager-file-details';

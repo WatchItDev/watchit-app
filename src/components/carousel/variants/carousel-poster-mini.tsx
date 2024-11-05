@@ -1,11 +1,11 @@
 // @mui
 import Box from '@mui/material/Box';
 import { Typography } from '@mui/material';
-import Carousel, { CarouselArrows, useCarousel } from 'src/components/carousel/index';
-import PosterMini from 'src/components/poster/variants/poster-mini';
+import Carousel, { CarouselArrows, useCarousel } from '@src/components/carousel/index';
+import PosterMini from '@src/components/poster/variants/poster-mini';
+// @ts-ignore
 import { type Post } from '@lens-protocol/api-bindings/dist/declarations/src/lens/graphql/generated';
 import moment from 'moment/moment';
-import { Poster } from '../../poster/types';
 
 // ----------------------------------------------------------------------
 

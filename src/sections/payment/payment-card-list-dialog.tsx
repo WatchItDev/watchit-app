@@ -7,10 +7,10 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import InputAdornment from '@mui/material/InputAdornment';
 // types
-import { IPaymentCard } from 'src/types/payment';
+import { IPaymentCard } from '@src/types/payment';
 // components
-import Iconify from 'src/components/iconify';
-import SearchNotFound from 'src/components/search-not-found';
+import Iconify from '@src/components/iconify';
+import SearchNotFound from '@src/components/search-not-found';
 //
 import PaymentCardItem from './payment-card-item';
 

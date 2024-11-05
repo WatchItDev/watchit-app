@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 // sections
-import AnimateView from 'src/sections/_examples/extra/animate-view';
+import AnimateView from '@src/sections/_examples/extra/animate-view';
 
 // ----------------------------------------------------------------------
 

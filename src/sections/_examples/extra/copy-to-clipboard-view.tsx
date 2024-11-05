@@ -10,15 +10,15 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import InputAdornment from '@mui/material/InputAdornment';
 // hooks
-import { useCopyToClipboard } from 'src/hooks/use-copy-to-clipboard';
+import { useCopyToClipboard } from '@src/hooks/use-copy-to-clipboard';
 // routes
-import { paths } from 'src/routes/paths';
+import { paths } from '@src/routes/paths';
 // hooks
-import { useDoubleClick } from 'src/hooks/use-double-click';
+import { useDoubleClick } from '@src/hooks/use-double-click';
 // components
-import Iconify from 'src/components/iconify';
-import { useSnackbar } from 'src/components/snackbar';
-import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
+import Iconify from '@src/components/iconify';
+import { useSnackbar } from '@src/components/snackbar';
+import CustomBreadcrumbs from '@src/components/custom-breadcrumbs';
 
 // ----------------------------------------------------------------------
 

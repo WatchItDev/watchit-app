@@ -5,7 +5,7 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 
 // components
-import { useSettingsContext } from 'src/components/settings';
+import { useSettingsContext } from '@src/components/settings';
 //
 import { IconChevronLeft } from '@tabler/icons-react';
 import MovieNewWizard from '../movie-new-wizard';

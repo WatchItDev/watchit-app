@@ -5,7 +5,7 @@ import Typography from '@mui/material/Typography';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 // components
-import { StyledControlPanel } from 'src/components/map';
+import { StyledControlPanel } from '@src/components/map';
 
 // ----------------------------------------------------------------------
 

@@ -3,8 +3,8 @@ import { m } from 'framer-motion';
 import Masonry from '@mui/lab/Masonry';
 import IconButton from '@mui/material/IconButton';
 // components
-import Iconify from 'src/components/iconify';
-import { varHover } from 'src/components/animate';
+import Iconify from '@src/components/iconify';
+import { varHover } from '@src/components/animate';
 //
 import ComponentBlock from '../../component-block';
 

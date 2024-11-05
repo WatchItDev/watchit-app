@@ -12,13 +12,13 @@ import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 
 // HOOKS IMPORTS
-import { useAuth } from 'src/hooks/use-auth';
+import { useAuth } from '@src/hooks/use-auth';
 import { useAccount, useDisconnect } from 'wagmi';
 
 // LOCAL IMPORTS
-import { WalletConnectView } from 'src/components/loginModal/walletConnectView';
-import { ProfileSelectView } from 'src/components/loginModal/profileSelectView';
-import { ProfileFormView } from 'src/components/loginModal/profileFormView';
+import { WalletConnectView } from '@src/components/loginModal/walletConnectView';
+import { ProfileSelectView } from '@src/components/loginModal/profileSelectView';
+import { ProfileFormView } from '@src/components/loginModal/profileFormView';
 import { WatchitLoader } from '../watchit-loader';
 
 // ----------------------------------------------------------------------

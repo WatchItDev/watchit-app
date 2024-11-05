@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 // sections
-import StepperView from 'src/sections/_examples/mui/stepper-view';
+import StepperView from '@src/sections/_examples/mui/stepper-view';
 
 // ----------------------------------------------------------------------
 

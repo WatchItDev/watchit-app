@@ -11,10 +11,10 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControl from '@mui/material/FormControl';
 import FormControlLabel from '@mui/material/FormControlLabel';
 // routes
-import { paths } from 'src/routes/paths';
+import { paths } from '@src/routes/paths';
 // components
-import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
-import CustomPopover, { MenuPopoverArrowValue, usePopover } from 'src/components/custom-popover';
+import CustomBreadcrumbs from '@src/components/custom-breadcrumbs';
+import CustomPopover, { MenuPopoverArrowValue, usePopover } from '@src/components/custom-popover';
 //
 import ComponentBlock from '../component-block';
 

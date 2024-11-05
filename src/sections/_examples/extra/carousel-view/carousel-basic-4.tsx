@@ -5,11 +5,11 @@ import Card from '@mui/material/Card';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 // theme
-import { bgBlur } from 'src/theme/css';
+import { bgBlur } from '@src/theme/css';
 // components
-import Image from 'src/components/image';
-import Iconify from 'src/components/iconify';
-import Carousel, { CarouselArrows, useCarousel } from 'src/components/carousel';
+import Image from '@src/components/image';
+import Iconify from '@src/components/iconify';
+import Carousel, { CarouselArrows, useCarousel } from '@src/components/carousel';
 
 // ----------------------------------------------------------------------
 

@@ -6,8 +6,8 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import Stack from '@mui/material/Stack';
 import IconButton from '@mui/material/IconButton';
 // components
-import Iconify from 'src/components/iconify';
-import FormProvider, { RHFTextField } from 'src/components/hook-form';
+import Iconify from '@src/components/iconify';
+import FormProvider, { RHFTextField } from '@src/components/hook-form';
 
 // ----------------------------------------------------------------------
 

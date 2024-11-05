@@ -13,15 +13,15 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 // _mock
-import { USER_STATUS_OPTIONS } from 'src/_mock';
+import { USER_STATUS_OPTIONS } from '@src/_mock';
 // types
-import { IUserItem } from 'src/types/user';
+import { IUserItem } from '@src/types/user';
 // assets
-import { countries } from 'src/assets/data';
+import { countries } from '@src/assets/data';
 // components
-import Iconify from 'src/components/iconify';
-import { useSnackbar } from 'src/components/snackbar';
-import FormProvider, { RHFSelect, RHFTextField, RHFAutocomplete } from 'src/components/hook-form';
+import Iconify from '@src/components/iconify';
+import { useSnackbar } from '@src/components/snackbar';
+import FormProvider, { RHFSelect, RHFTextField, RHFAutocomplete } from '@src/components/hook-form';
 
 // ----------------------------------------------------------------------
 

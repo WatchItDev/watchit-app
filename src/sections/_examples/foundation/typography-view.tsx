@@ -7,10 +7,10 @@ import Container from '@mui/material/Container';
 import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
 // routes
-import { paths } from 'src/routes/paths';
+import { paths } from '@src/routes/paths';
 // components
-import { useTypography } from 'src/components/text-max-line';
-import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
+import { useTypography } from '@src/components/text-max-line';
+import CustomBreadcrumbs from '@src/components/custom-breadcrumbs';
 
 // ----------------------------------------------------------------------
 

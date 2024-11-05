@@ -1,9 +1,9 @@
 import { useMemo } from 'react';
 // routes
-import { paths } from 'src/routes/paths';
+import { paths } from '@src/routes/paths';
 // locales
-import { useLocales } from 'src/locales';
-import SvgColor from 'src/components/svg-color';
+import { useLocales } from '@src/locales';
+import SvgColor from '@src/components/svg-color';
 
 // ----------------------------------------------------------------------
 
@@ -66,7 +66,7 @@ export function useNavData() {
             icon: ICONS.userGroup,
           },
           {
-            title: t('Gorvernance'),
+            title: t('Governance'),
             path: paths.dashboard.governance.root,
             icon: ICONS.kanban,
           },

@@ -11,8 +11,8 @@ import {
 } from '@lens-protocol/react-web';
 import { useAccount } from 'wagmi';
 import { AuthContextProps, AuthProviderProps, ProfileData } from './types';
-import { uploadImagesToIPFS, uploadImageToIPFS, uploadMetadataToIPFS } from '../../../utils/ipfs';
-import { buildProfileMetadata } from '../../../utils/profile';
+import { uploadImageToIPFS, uploadMetadataToIPFS } from '@src/utils/ipfs.ts';
+import { buildProfileMetadata } from '@src/utils/profile.ts';
 
 // Create the authentication context
 export const AuthContext = createContext<AuthContextProps>({} as AuthContextProps);

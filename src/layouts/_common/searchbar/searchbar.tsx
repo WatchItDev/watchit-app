@@ -12,15 +12,15 @@ import Typography from '@mui/material/Typography';
 import InputAdornment from '@mui/material/InputAdornment';
 import Dialog, { dialogClasses } from '@mui/material/Dialog';
 // hooks
-import { useBoolean } from 'src/hooks/use-boolean';
-import { useResponsive } from 'src/hooks/use-responsive';
-import { useEventListener } from 'src/hooks/use-event-listener';
+import { useBoolean } from '@src/hooks/use-boolean';
+import { useResponsive } from '@src/hooks/use-responsive';
+import { useEventListener } from '@src/hooks/use-event-listener';
 // components
-import Label from 'src/components/label';
-import Iconify from 'src/components/iconify';
-import Scrollbar from 'src/components/scrollbar';
-import { useRouter } from 'src/routes/hooks';
-import SearchNotFound from 'src/components/search-not-found';
+import Label from '@src/components/label';
+import Iconify from '@src/components/iconify';
+import Scrollbar from '@src/components/scrollbar';
+import { useRouter } from '@src/routes/hooks';
+import SearchNotFound from '@src/components/search-not-found';
 //
 import ResultItem from './result-item';
 import { useNavData } from '../../dashboard/config-navigation';

@@ -2,7 +2,7 @@
 import Box, { BoxProps } from '@mui/material/Box';
 import Pagination, { paginationClasses } from '@mui/material/Pagination';
 // types
-import { IProductItem } from 'src/types/product';
+import { IProductItem } from '@src/types/product';
 //
 import MovieItem from './movie-item';
 import { ProductItemSkeleton } from './movie-skeleton';

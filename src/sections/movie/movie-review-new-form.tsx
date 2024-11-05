@@ -15,7 +15,7 @@ import FormHelperText from '@mui/material/FormHelperText';
 import Dialog, { DialogProps } from '@mui/material/Dialog';
 // types
 // components
-import FormProvider, { RHFTextField } from 'src/components/hook-form';
+import FormProvider, { RHFTextField } from '@src/components/hook-form';
 
 // ----------------------------------------------------------------------
 
@@ -83,7 +83,7 @@ export default function MovieReviewNewForm({ onClose, ...other }: Props) {
                   {...field}
                   size="small"
                   value={Number(field.value)}
-                  onChange={(event, newValue) => {
+                  onChange={(_event, newValue) => {
                     field.onChange(newValue as number);
                   }}
                 />

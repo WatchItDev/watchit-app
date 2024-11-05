@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 // sections
-import { MoviePlayView } from 'src/sections/movie/view';
+import { MoviePlayView } from '@src/sections/movie/view';
 import { useParams } from '../../../routes/hooks';
 
 // ----------------------------------------------------------------------

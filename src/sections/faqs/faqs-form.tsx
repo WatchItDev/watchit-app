@@ -5,7 +5,7 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 //
-import { varFade, MotionViewport } from 'src/components/animate';
+import { varFade, MotionViewport } from '@src/components/animate';
 
 // ----------------------------------------------------------------------
 

@@ -14,15 +14,15 @@ import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 // hooks
-import { useBoolean } from 'src/hooks/use-boolean';
-import { useResponsive } from 'src/hooks/use-responsive';
+import { useBoolean } from '@src/hooks/use-boolean';
+import { useResponsive } from '@src/hooks/use-responsive';
 // _mock
-import { _notifications } from 'src/_mock';
+import { _notifications } from '@src/_mock';
 // components
-import Label from 'src/components/label';
-import Iconify from 'src/components/iconify';
-import Scrollbar from 'src/components/scrollbar';
-import { varHover } from 'src/components/animate';
+import Label from '@src/components/label';
+import Iconify from '@src/components/iconify';
+import Scrollbar from '@src/components/scrollbar';
+import { varHover } from '@src/components/animate';
 //
 import NotificationItem from './notification-item';
 

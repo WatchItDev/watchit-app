@@ -14,9 +14,9 @@ import Stack, { StackProps } from '@mui/material/Stack';
 import InputAdornment from '@mui/material/InputAdornment';
 import CircularProgress from '@mui/material/CircularProgress';
 // hooks
-import { useBoolean } from 'src/hooks/use-boolean';
+import { useBoolean } from '@src/hooks/use-boolean';
 // components
-import Iconify from 'src/components/iconify';
+import Iconify from '@src/components/iconify';
 import FormProvider, {
   RHFEditor,
   RHFSelect,
@@ -29,7 +29,7 @@ import FormProvider, {
   RHFMultiSelect,
   RHFAutocomplete,
   RHFMultiCheckbox,
-} from 'src/components/hook-form';
+} from '@src/components/hook-form';
 //
 import { FormSchema } from './schema';
 import ValuesPreview from './values-preview';

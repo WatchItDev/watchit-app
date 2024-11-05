@@ -3,29 +3,30 @@ import { useEffect } from 'react';
 import { styled, alpha, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 // theme
-import { bgGradient } from 'src/theme/css';
+import { bgGradient } from '@src/theme/css';
 // components
-import Image from 'src/components/image';
-import Carousel, { CarouselDots, useCarousel } from 'src/components/carousel/index';
+import Image from '@src/components/image';
+import Carousel, { CarouselDots, useCarousel } from '@src/components/carousel/index';
 import Paper from '@mui/material/Paper';
 import CardContent from '@mui/material/CardContent';
-import Link from '@mui/material/Link';
 import { m } from 'framer-motion';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import { IconFlagFilled, IconStarFilled, IconPlayerPlay } from '@tabler/icons-react';
 import Stack from '@mui/material/Stack';
+
+// @ts-ignore
 import { type Post } from '@lens-protocol/api-bindings/dist/declarations/src/lens/graphql/generated';
 import moment from 'moment';
 import { varFade } from '../../animate';
 import { Poster } from '../../poster/types';
 import { PosterVertical } from '../../poster';
-import { paths } from '../../../routes/paths';
-import { useRouter } from '../../../routes/hooks';
+import { paths } from '@src/routes/paths.ts';
+import { useRouter } from '@src/routes/hooks';
 
 // ----------------------------------------------------------------------
 
-const StyledThumbnailsContainer = styled('div')<{ length: number }>(({ length, theme }) => ({
+const StyledThumbnailsContainer = styled('div')<{ length: number }>(() => ({
   position: 'absolute',
   bottom: 50,
   right: '50px',
@@ -189,7 +190,7 @@ type CarouselLargeItemProps = {
   active: boolean
 };
 
-function CarouselLargeItem({ poster, active }: CarouselLargeItemProps) {
+function CarouselLargeItem({ poster}:  Readonly<CarouselLargeItemProps>) {
   const theme = useTheme();
   const router = useRouter();
 

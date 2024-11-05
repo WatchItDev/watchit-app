@@ -4,11 +4,11 @@ import { useTheme } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 // theme
-import { bgBlur } from 'src/theme/css';
+import { bgBlur } from '@src/theme/css';
 // hooks
-import { useMockedUser } from 'src/hooks/use-mocked-user';
+import { useMockedUser } from '@src/hooks/use-mocked-user';
 // components
-import { NavSectionHorizontal } from 'src/components/nav-section';
+import { NavSectionHorizontal } from '@src/components/nav-section';
 //
 import { HEADER } from '../config-layout';
 import { useNavData } from './config-navigation';

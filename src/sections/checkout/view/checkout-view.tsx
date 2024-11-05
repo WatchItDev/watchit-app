@@ -3,9 +3,9 @@ import Container from '@mui/material/Container';
 import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
 // _mock
-import { PRODUCT_CHECKOUT_STEPS } from 'src/_mock/_product';
+import { PRODUCT_CHECKOUT_STEPS } from '@src/_mock/_product';
 // components
-import { useSettingsContext } from 'src/components/settings';
+import { useSettingsContext } from '@src/components/settings';
 //
 import { useCheckoutContext } from '../context';
 import CheckoutCart from '../checkout-cart';

@@ -1,7 +1,7 @@
 // @mui
 import Box from '@mui/material/Box';
 // types
-import { IUserCard } from 'src/types/user';
+import { IUserCard } from '@src/types/user';
 //
 import UserCard from './user-card';
 

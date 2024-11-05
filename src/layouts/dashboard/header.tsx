@@ -1,18 +1,10 @@
 // @mui
 import { useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
-import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Container from '@mui/material/Container';
-// hooks
-import { useOffSetTop } from 'src/hooks/use-off-set-top';
-// theme
-import { bgBlur } from 'src/theme/css';
-//
 import { FC, PropsWithChildren } from 'react';
 import { HEADER } from '../config-layout';
-//
-import {  HeaderShadow } from '../_common';
 
 // ----------------------------------------------------------------------
 
