@@ -190,7 +190,7 @@ type CarouselLargeItemProps = {
   active: boolean
 };
 
-function CarouselLargeItem({ poster}: CarouselLargeItemProps) {
+function CarouselLargeItem({ poster}:  Readonly<CarouselLargeItemProps>) {
   const theme = useTheme();
   const router = useRouter();
 

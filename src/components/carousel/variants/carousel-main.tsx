@@ -56,7 +56,7 @@ type CarouselItemProps = {
   active: boolean;
 };
 
-function CarouselItem({ post }: CarouselItemProps) {
+function CarouselItem({ post }: Readonly<CarouselItemProps>) {
   const theme = useTheme();
   const router = useRouter();
 
