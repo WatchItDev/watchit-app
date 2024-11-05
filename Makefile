@@ -24,4 +24,4 @@ install:
 
 .PHONY: lint ## lint standard js
 lint:
-	npx eslint "src/**/*.{js,jsx,ts,tsx}\""
+	npx eslint "src/**/*.{js,jsx,ts,tsx}"
