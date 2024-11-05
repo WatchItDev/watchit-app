@@ -8,13 +8,13 @@ import { LoadingScreen } from '../../components/loading-screen';
 import { getAccessiblePublications } from '../../utils/publication';
 
 // ----------------------------------------------------------------------
-
+// @ts-ignore
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 type Props = {
   description: string;
 };
 
-// eslint-disable-next-line no-empty-pattern
-export default function MovieDetailsDescription({}: Props) {
+export default function MovieDetailsDescription() {
   const { data, loading }: any = usePublications({
     where: {
       publicationTypes: [PublicationType.Post],

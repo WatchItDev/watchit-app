@@ -26,8 +26,7 @@ import { useRouter } from '@src/routes/hooks';
 
 // ----------------------------------------------------------------------
 
-// eslint-disable-next-line no-empty-pattern
-const StyledThumbnailsContainer = styled('div')<{ length: number }>(({}) => ({
+const StyledThumbnailsContainer = styled('div')<{ length: number }>(() => ({
   position: 'absolute',
   bottom: 50,
   right: '50px',
