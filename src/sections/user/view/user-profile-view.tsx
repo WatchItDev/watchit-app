@@ -31,9 +31,7 @@ const UserProfileView = ({ id }: any) => {
   const [currentTab, setCurrentTab] = useState('publications');
   const settings = useSettingsContext();
   const { loading } = useAuth()
-
-  const { called,data: profile, execute } = useLazyProfile();
-
+  const { called, data: profile, execute } = useLazyProfile();
   const { data: publications } = usePublications({
     where: {
       from: profile?.id ? [profile.id] : [],
