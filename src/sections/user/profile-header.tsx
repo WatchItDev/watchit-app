@@ -271,6 +271,8 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
                 alt={profile?.handle?.localName ?? ''}
                 variant="rounded"
                 sx={{
+                  transition: '2s',
+                  opacity: (profile?.metadata?.picture as any)?.optimized?.uri ? 1: 0,
                   width: { xs: 64, md: 128 },
                   height: { xs: 64, md: 128 },
                   border: `solid 2px ${theme.palette.common.white}`,
