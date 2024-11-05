@@ -11,6 +11,7 @@ export default defineConfig(({ mode }) => {
     resolve: {
       alias: {
         '@src': path.resolve(__dirname, 'src'),
+        '@public': path.resolve(__dirname, 'public'),
       },
     },
     define: {
