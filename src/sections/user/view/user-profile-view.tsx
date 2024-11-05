@@ -30,9 +30,9 @@ const TABS = [
 const UserProfileView = ({ id }: any) => {
   const [currentTab, setCurrentTab] = useState('publications');
   const settings = useSettingsContext();
+  const { loading } = useAuth()
 
-  const { called, execute } = useLazyProfile();
-  const { selectedProfile: profile } = useAuth();
+  const { called,data: profile, execute } = useLazyProfile();
 
   const { data: publications } = usePublications({
     where: {
@@ -73,6 +73,7 @@ const UserProfileView = ({ id }: any) => {
 
   return (
     <Container maxWidth={settings.themeStretch ? false : 'lg'}>
+      { !loading && profile ? (<>
       <ProfileHeader profile={profile as any}>
         <Tabs
           value={currentTab}
@@ -98,6 +99,8 @@ const UserProfileView = ({ id }: any) => {
       {currentTab === 'collected' && profile && <ProfileCollected profile={profile} />}
       {currentTab === 'subscribers' && profile && <ProfileFollowers profile={profile} onActionFinished={handleUpdateProfile} />}
       {currentTab === 'subscribed' && profile && <ProfileFollowing profile={profile} />}
+        </>
+      ): <></>}
     </Container>
   );
 };
