@@ -339,6 +339,7 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
                     mt: 0,
                     mb: 2,
                     opacity: 0.7,
+                    minWidth: '400px',
                   }}
                 >
                   {profile?.metadata?.bio ?? ''}
@@ -364,15 +365,15 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
                   sx={{ p: 1, minWidth: '44px' }}
                   onClick={handlePopoverOpen}
                 >
-                  <Iconify icon="ion:share-outline" width={20} />
+                  <Iconify icon="ion:share-social-outline" width={20} />
                 </Button>
                 {selectedProfile && profile?.id === selectedProfile?.id && (
                   <Button
-                    variant="contained"
+                    variant="outlined"
                     sx={{
                       p: 1,
                       minWidth: '44px',
-                      backgroundColor: '#fff',
+                      backgroundColor: 'transparent',
                     }}
                     onClick={() => setIsUpdateModalOpen(true)}
                   >
