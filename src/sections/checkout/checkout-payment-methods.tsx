@@ -10,11 +10,11 @@ import ListItemText from '@mui/material/ListItemText';
 import Paper, { PaperProps } from '@mui/material/Paper';
 import FormHelperText from '@mui/material/FormHelperText';
 // hooks
-import { useBoolean } from 'src/hooks/use-boolean';
+import { useBoolean } from '@src/hooks/use-boolean';
 // components
-import Iconify from 'src/components/iconify';
+import Iconify from '@src/components/iconify';
 // types
-import { ICheckoutCardOption, ICheckoutPaymentOption } from 'src/types/checkout';
+import { ICheckoutCardOption, ICheckoutPaymentOption } from '@src/types/checkout';
 //
 import PaymentNewCardDialog from '../payment/payment-new-card-dialog';
 

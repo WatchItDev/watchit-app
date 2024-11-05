@@ -2,7 +2,7 @@
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 // theme
-import { hideScroll } from 'src/theme/css';
+import { hideScroll } from '@src/theme/css';
 import { IconCloudDownload, IconGridDots, IconPlus } from '@tabler/icons-react';
 // components
 import { NAV } from '../config-layout';

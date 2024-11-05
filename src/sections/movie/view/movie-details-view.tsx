@@ -10,14 +10,14 @@ import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 // routes
-import { paths } from 'src/routes/paths';
-import { RouterLink } from 'src/routes/components';
+import { paths } from '@src/routes/paths';
+import { RouterLink } from '@src/routes/components';
 // components
-import Iconify from 'src/components/iconify';
-import { useSettingsContext } from 'src/components/settings';
+import Iconify from '@src/components/iconify';
+import { useSettingsContext } from '@src/components/settings';
 
 //
-import MovieDetailMain from 'src/components/carousel/variants/movie-detail-main';
+import MovieDetailMain from '@src/components/carousel/variants/movie-detail-main';
 import IconButton from '@mui/material/IconButton';
 import { IconChevronLeft } from '@tabler/icons-react';
 import Tooltip from '@mui/material/Tooltip';

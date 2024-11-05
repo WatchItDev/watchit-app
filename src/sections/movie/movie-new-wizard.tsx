@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
-// import Header from 'src/layouts/dashboard/header';
+// import Header from '@src/layouts/dashboard/header';
 import { useCreatePost } from '@lens-protocol/react-web';
 // import { MetadataAttributeType } from '@lens-protocol/metadata';
 import { createHelia } from 'helia';

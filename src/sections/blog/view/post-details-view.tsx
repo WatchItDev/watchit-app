@@ -11,18 +11,18 @@ import Typography from '@mui/material/Typography';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import AvatarGroup, { avatarGroupClasses } from '@mui/material/AvatarGroup';
 // routes
-import { paths } from 'src/routes/paths';
-import { RouterLink } from 'src/routes/components';
+import { paths } from '@src/routes/paths';
+import { RouterLink } from '@src/routes/components';
 // utils
-import { fShortenNumber } from 'src/utils/format-number';
+import { fShortenNumber } from '@src/utils/format-number';
 // _mock
-import { POST_PUBLISH_OPTIONS } from 'src/_mock';
+import { POST_PUBLISH_OPTIONS } from '@src/_mock';
 // api
-import { useGetPost } from 'src/api/blog';
+import { useGetPost } from '@src/api/blog';
 // components
-import Iconify from 'src/components/iconify';
-import Markdown from 'src/components/markdown';
-import EmptyContent from 'src/components/empty-content';
+import Iconify from '@src/components/iconify';
+import Markdown from '@src/components/markdown';
+import EmptyContent from '@src/components/empty-content';
 //
 import PostDetailsHero from '../post-details-hero';
 import PostCommentList from '../post-comment-list';

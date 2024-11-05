@@ -6,11 +6,11 @@ import Portal from '@mui/material/Portal';
 import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
 // theme
-import { bgBlur } from 'src/theme/css';
+import { bgBlur } from '@src/theme/css';
 // hooks
-import { useResponsive } from 'src/hooks/use-responsive';
+import { useResponsive } from '@src/hooks/use-responsive';
 // components
-import { fileData } from 'src/components/file-thumbnail';
+import { fileData } from '@src/components/file-thumbnail';
 
 // ----------------------------------------------------------------------
 

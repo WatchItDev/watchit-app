@@ -4,7 +4,7 @@ import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 // theme
-import { bgBlur } from 'src/theme/css';
+import { bgBlur } from '@src/theme/css';
 //
 import { IconifyProps } from '../iconify';
 //

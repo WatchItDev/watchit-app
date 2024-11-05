@@ -4,9 +4,9 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Stack, { StackProps } from '@mui/material/Stack';
 // theme
-import { bgGradient } from 'src/theme/css';
+import { bgGradient } from '@src/theme/css';
 // assets
-import { UpgradeStorageIllustration } from 'src/assets/illustrations';
+import { UpgradeStorageIllustration } from '@src/assets/illustrations';
 
 // ----------------------------------------------------------------------
 

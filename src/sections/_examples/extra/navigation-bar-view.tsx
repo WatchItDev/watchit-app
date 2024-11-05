@@ -18,17 +18,17 @@ import Typography from '@mui/material/Typography';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 // routes
-import { paths } from 'src/routes/paths';
+import { paths } from '@src/routes/paths';
 // components
-import Iconify from 'src/components/iconify';
-import Label from 'src/components/label';
+import Iconify from '@src/components/iconify';
+import Label from '@src/components/label';
 import {
   NavSectionMini,
   NavConfigProps,
   NavSectionVertical,
   NavSectionHorizontal,
-} from 'src/components/nav-section';
-import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
+} from '@src/components/nav-section';
+import CustomBreadcrumbs from '@src/components/custom-breadcrumbs';
 
 // ----------------------------------------------------------------------
 

@@ -5,7 +5,7 @@ import Grid from '@mui/material/Grid';
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
 import CardHeader from '@mui/material/CardHeader';
-import FormProvider, { RHFTextField, RHFSelect, RHFUpload } from 'src/components/hook-form';
+import FormProvider, { RHFTextField, RHFSelect, RHFUpload } from '@src/components/hook-form';
 import Typography from '@mui/material/Typography';
 import { useCallback } from 'react';
 import MenuItem from '@mui/material/MenuItem';

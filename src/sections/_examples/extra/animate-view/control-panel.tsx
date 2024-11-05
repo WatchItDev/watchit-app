@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography';
 import Paper, { PaperProps } from '@mui/material/Paper';
 import FormControlLabel from '@mui/material/FormControlLabel';
 // components
-import Scrollbar from 'src/components/scrollbar';
+import Scrollbar from '@src/components/scrollbar';
 
 // ----------------------------------------------------------------------
 

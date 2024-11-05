@@ -1,13 +1,13 @@
-import { _mock } from 'src/_mock';
+import { _mock } from '@src/_mock';
 
 // TO GET THE USER FROM THE AUTHCONTEXT, YOU CAN USE
 
 // CHANGE:
-// import { useMockedUser } from 'src/hooks/use-mocked-user';
+// import { useMockedUser } from '@src/hooks/use-mocked-user';
 // const { user } = useMockedUser();
 
 // TO:
-// import { useAuthContext } from 'src/auth/hooks';
+// import { useAuthContext } from '@src/auth/hooks';
 // const { user } = useAuthContext();
 
 // ----------------------------------------------------------------------

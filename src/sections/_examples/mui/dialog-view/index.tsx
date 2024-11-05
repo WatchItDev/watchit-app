@@ -3,9 +3,9 @@ import Masonry from '@mui/lab/Masonry';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 // routes
-import { paths } from 'src/routes/paths';
+import { paths } from '@src/routes/paths';
 // components
-import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
+import CustomBreadcrumbs from '@src/components/custom-breadcrumbs';
 //
 import FormDialog from './form-dialog';
 import AlertDialog from './alert-dialog';

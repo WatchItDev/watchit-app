@@ -5,9 +5,9 @@ import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Container from '@mui/material/Container';
 // hooks
-import { useOffSetTop } from 'src/hooks/use-off-set-top';
+import { useOffSetTop } from '@src/hooks/use-off-set-top';
 // theme
-import { bgBlur } from 'src/theme/css';
+import { bgBlur } from '@src/theme/css';
 //
 import { FC, PropsWithChildren } from 'react';
 import { HEADER } from '../config-layout';

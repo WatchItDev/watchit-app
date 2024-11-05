@@ -2,7 +2,7 @@ import { memo } from 'react';
 // @mui
 import Stack from '@mui/material/Stack';
 // theme
-import { hideScroll } from 'src/theme/css';
+import { hideScroll } from '@src/theme/css';
 //
 import { NavSectionProps, NavListProps, NavConfigProps } from '../types';
 import { navHorizontalConfig } from '../config';

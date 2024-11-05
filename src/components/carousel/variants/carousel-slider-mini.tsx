@@ -3,19 +3,19 @@ import { m } from 'framer-motion';
 // @mui
 import Box from '@mui/material/Box';
 import { alpha, useTheme } from '@mui/material/styles';
-import { Poster } from 'src/components/poster/types';
+import { Poster } from '@src/components/poster/types';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
-import Carousel, { CarouselArrows, useCarousel } from 'src/components/carousel/index';
+import Carousel, { CarouselArrows, useCarousel } from '@src/components/carousel/index';
 // theme
-import { bgGradient } from 'src/theme/css';
+import { bgGradient } from '@src/theme/css';
 // components
-import Image from 'src/components/image';
+import Image from '@src/components/image';
 import { IconFlagFilled, IconStarFilled, IconPlayerPlay, IconChevronRight, IconChevronLeft } from '@tabler/icons-react';
-import { MotionContainer, varFade } from 'src/components/animate';
-import PosterMini from 'src/components/poster/variants/poster-mini';
+import { MotionContainer, varFade } from '@src/components/animate';
+import PosterMini from '@src/components/poster/variants/poster-mini';
 
 // ----------------------------------------------------------------------
 

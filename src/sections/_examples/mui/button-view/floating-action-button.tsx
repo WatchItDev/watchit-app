@@ -4,8 +4,8 @@ import Masonry from '@mui/lab/Masonry';
 import Box from '@mui/material/Box';
 import Fab, { fabClasses } from '@mui/material/Fab';
 // components
-import Iconify from 'src/components/iconify';
-import { varHover } from 'src/components/animate';
+import Iconify from '@src/components/iconify';
+import { varHover } from '@src/components/animate';
 //
 import ComponentBlock from '../../component-block';
 

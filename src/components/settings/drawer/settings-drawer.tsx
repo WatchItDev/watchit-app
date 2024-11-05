@@ -8,7 +8,7 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import Drawer, { drawerClasses } from '@mui/material/Drawer';
 // theme
-import { paper } from 'src/theme/css';
+import { paper } from '@src/theme/css';
 //
 import Iconify from '../../iconify';
 import Scrollbar from '../../scrollbar';

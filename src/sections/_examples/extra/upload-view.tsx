@@ -10,15 +10,15 @@ import Typography from '@mui/material/Typography';
 import CardContent from '@mui/material/CardContent';
 import FormControlLabel from '@mui/material/FormControlLabel';
 // routes
-import { paths } from 'src/routes/paths';
+import { paths } from '@src/routes/paths';
 // utils
-import { fData } from 'src/utils/format-number';
+import { fData } from '@src/utils/format-number';
 // hooks
-import { useBoolean } from 'src/hooks/use-boolean';
+import { useBoolean } from '@src/hooks/use-boolean';
 // components
-import Iconify from 'src/components/iconify';
-import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
-import { UploadAvatar, Upload, UploadBox } from 'src/components/upload';
+import Iconify from '@src/components/iconify';
+import CustomBreadcrumbs from '@src/components/custom-breadcrumbs';
+import { UploadAvatar, Upload, UploadBox } from '@src/components/upload';
 
 // ----------------------------------------------------------------------
 

@@ -4,7 +4,7 @@ import { alpha } from '@mui/material/styles';
 import IconButton from '@mui/material/IconButton';
 import Stack, { StackProps } from '@mui/material/Stack';
 // components
-import Iconify from 'src/components/iconify';
+import Iconify from '@src/components/iconify';
 
 // ----------------------------------------------------------------------
 

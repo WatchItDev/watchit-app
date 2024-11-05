@@ -7,8 +7,8 @@ import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 
 // components
-import { bgGradient } from 'src/theme/css';
-import Image from 'src/components/image';
+import { bgGradient } from '@src/theme/css';
+import Image from '@src/components/image';
 import { IconHeartFilled, IconStarFilled } from '@tabler/icons-react';
 import { Poster } from '../types';
 import { useRouter } from '../../../routes/hooks';

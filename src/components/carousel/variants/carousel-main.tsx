@@ -8,11 +8,11 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import CardContent from '@mui/material/CardContent';
 // theme
-import { bgGradient } from 'src/theme/css';
+import { bgGradient } from '@src/theme/css';
 // components
-import Image from 'src/components/image';
-import { varFade } from 'src/components/animate';
-import Carousel, { CarouselDots, useCarousel } from 'src/components/carousel/index';
+import Image from '@src/components/image';
+import { varFade } from '@src/components/animate';
+import Carousel, { CarouselDots, useCarousel } from '@src/components/carousel/index';
 import { IconFlagFilled, IconStarFilled, IconPlayerPlay } from '@tabler/icons-react';
 import Stack from '@mui/material/Stack';
 // eslint-disable-next-line import/no-extraneous-dependencies

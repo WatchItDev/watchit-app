@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 // sections
-import CheckboxView from 'src/sections/_examples/mui/checkbox-view';
+import CheckboxView from '@src/sections/_examples/mui/checkbox-view';
 
 // ----------------------------------------------------------------------
 

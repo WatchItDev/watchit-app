@@ -1,7 +1,7 @@
 // @mui
 import { alpha } from '@mui/material/styles';
 // theme
-import { bgGradient } from 'src/theme/css';
+import { bgGradient } from '@src/theme/css';
 import { Profile } from '@lens-protocol/api-bindings';
 import Image from '../../components/image';
 

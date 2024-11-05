@@ -5,7 +5,7 @@ import Switch from '@mui/material/Switch';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 // _mock
-import { _pricingPlans } from 'src/_mock';
+import { _pricingPlans } from '@src/_mock';
 //
 import PricingCard from './pricing-card';
 

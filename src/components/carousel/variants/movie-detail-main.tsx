@@ -7,10 +7,10 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import CardContent from '@mui/material/CardContent';
 // theme
-import { bgGradient } from 'src/theme/css';
+import { bgGradient } from '@src/theme/css';
 // components
-import Image from 'src/components/image';
-import { varFade } from 'src/components/animate';
+import Image from '@src/components/image';
+import { varFade } from '@src/components/animate';
 import { IconStarFilled, IconPlayerPlay, IconFlagFilled, IconHeart, IconHeartFilled } from '@tabler/icons-react';
 import Container from '@mui/material/Container';
 import Stack from '@mui/material/Stack';

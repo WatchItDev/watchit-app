@@ -2,12 +2,12 @@
 import { useTheme } from '@mui/material/styles';
 import IconButton, { IconButtonProps } from '@mui/material/IconButton';
 // hooks
-import { useResponsive } from 'src/hooks/use-responsive';
+import { useResponsive } from '@src/hooks/use-responsive';
 // theme
-import { bgBlur } from 'src/theme/css';
+import { bgBlur } from '@src/theme/css';
 // components
-import Iconify from 'src/components/iconify';
-import { useSettingsContext } from 'src/components/settings';
+import Iconify from '@src/components/iconify';
+import { useSettingsContext } from '@src/components/settings';
 //
 import { NAV } from '../config-layout';
 

@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 // sections
-import ButtonView from 'src/sections/_examples/mui/button-view';
+import ButtonView from '@src/sections/_examples/mui/button-view';
 
 // ----------------------------------------------------------------------
 

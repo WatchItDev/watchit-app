@@ -12,16 +12,16 @@ import IconButton from '@mui/material/IconButton';
 import ListItemText from '@mui/material/ListItemText';
 import LinearProgress from '@mui/material/LinearProgress';
 // utils
-import { fCurrency } from 'src/utils/format-number';
+import { fCurrency } from '@src/utils/format-number';
 // hooks
-import { useBoolean } from 'src/hooks/use-boolean';
+import { useBoolean } from '@src/hooks/use-boolean';
 // components
-import Label from 'src/components/label';
-import Iconify from 'src/components/iconify';
-import { ConfirmDialog } from 'src/components/custom-dialog';
-import CustomPopover, { usePopover } from 'src/components/custom-popover';
+import Label from '@src/components/label';
+import Iconify from '@src/components/iconify';
+import { ConfirmDialog } from '@src/components/custom-dialog';
+import CustomPopover, { usePopover } from '@src/components/custom-popover';
 // types
-import { IProductItem } from 'src/types/product';
+import { IProductItem } from '@src/types/product';
 
 // ----------------------------------------------------------------------
 

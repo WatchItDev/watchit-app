@@ -5,7 +5,7 @@ import Link from '@mui/material/Link';
 import Tooltip from '@mui/material/Tooltip';
 import ListItemText from '@mui/material/ListItemText';
 // routes
-import { RouterLink } from 'src/routes/components';
+import { RouterLink } from '@src/routes/components';
 //
 import Iconify from '../../iconify';
 //

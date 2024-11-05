@@ -12,17 +12,17 @@ import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
 import DialogActions from '@mui/material/DialogActions';
 // utils
-import uuidv4 from 'src/utils/uuidv4';
-import { fTimestamp } from 'src/utils/format-time';
+import uuidv4 from '@src/utils/uuidv4';
+import { fTimestamp } from '@src/utils/format-time';
 // api
-import { createEvent, updateEvent, deleteEvent } from 'src/api/calendar';
+import { createEvent, updateEvent, deleteEvent } from '@src/api/calendar';
 // components
-import Iconify from 'src/components/iconify';
-import { useSnackbar } from 'src/components/snackbar';
-import { ColorPicker } from 'src/components/color-utils';
-import FormProvider, { RHFTextField, RHFSwitch } from 'src/components/hook-form';
+import Iconify from '@src/components/iconify';
+import { useSnackbar } from '@src/components/snackbar';
+import { ColorPicker } from '@src/components/color-utils';
+import FormProvider, { RHFTextField, RHFSwitch } from '@src/components/hook-form';
 // types
-import { ICalendarEvent, ICalendarDate } from 'src/types/calendar';
+import { ICalendarEvent, ICalendarDate } from '@src/types/calendar';
 
 // ----------------------------------------------------------------------
 

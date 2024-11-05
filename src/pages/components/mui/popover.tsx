@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 // sections
-import PopoverView from 'src/sections/_examples/mui/popover-view';
+import PopoverView from '@src/sections/_examples/mui/popover-view';
 
 // ----------------------------------------------------------------------
 

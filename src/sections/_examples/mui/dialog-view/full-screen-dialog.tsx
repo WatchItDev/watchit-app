@@ -13,9 +13,9 @@ import ListItemText from '@mui/material/ListItemText';
 import ListItemButton from '@mui/material/ListItemButton';
 import { TransitionProps } from '@mui/material/transitions';
 // hooks
-import { useBoolean } from 'src/hooks/use-boolean';
+import { useBoolean } from '@src/hooks/use-boolean';
 // components
-import Iconify from 'src/components/iconify';
+import Iconify from '@src/components/iconify';
 
 // ----------------------------------------------------------------------
 

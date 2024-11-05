@@ -3,10 +3,10 @@ import { useEffect } from 'react';
 import { styled, alpha, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 // theme
-import { bgGradient } from 'src/theme/css';
+import { bgGradient } from '@src/theme/css';
 // components
-import Image from 'src/components/image';
-import Carousel, { CarouselDots, useCarousel } from 'src/components/carousel/index';
+import Image from '@src/components/image';
+import Carousel, { CarouselDots, useCarousel } from '@src/components/carousel/index';
 import Paper from '@mui/material/Paper';
 import CardContent from '@mui/material/CardContent';
 import Link from '@mui/material/Link';

@@ -5,7 +5,7 @@ import Card from '@mui/material/Card';
 import IconButton from '@mui/material/IconButton';
 import CardContent from '@mui/material/CardContent';
 // components
-import Iconify from 'src/components/iconify';
+import Iconify from '@src/components/iconify';
 //
 import Logo from './logo';
 import Buttons from './buttons';

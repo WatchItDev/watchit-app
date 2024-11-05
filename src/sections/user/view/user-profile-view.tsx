@@ -5,7 +5,7 @@ import Container from '@mui/material/Container';
 import Tabs, { tabsClasses } from '@mui/material/Tabs';
 
 // components
-import { useSettingsContext } from 'src/components/settings';
+import { useSettingsContext } from '@src/components/settings';
 import { useLazyProfile, useProfile } from '@lens-protocol/react';
 import { appId, ProfileId, PublicationType, usePublications } from '@lens-protocol/react-web';
 import ProfileHome from '../profile-home';

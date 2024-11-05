@@ -13,24 +13,24 @@ import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
 import FormControlLabel from '@mui/material/FormControlLabel';
 // utils
-import { fData } from 'src/utils/format-number';
+import { fData } from '@src/utils/format-number';
 // routes
-import { paths } from 'src/routes/paths';
-import { useRouter } from 'src/routes/hooks';
+import { paths } from '@src/routes/paths';
+import { useRouter } from '@src/routes/hooks';
 // types
-import { IUserItem } from 'src/types/user';
+import { IUserItem } from '@src/types/user';
 // assets
-import { countries } from 'src/assets/data';
+import { countries } from '@src/assets/data';
 // components
-import Label from 'src/components/label';
-import Iconify from 'src/components/iconify';
-import { useSnackbar } from 'src/components/snackbar';
+import Label from '@src/components/label';
+import Iconify from '@src/components/iconify';
+import { useSnackbar } from '@src/components/snackbar';
 import FormProvider, {
   RHFSwitch,
   RHFTextField,
   RHFUploadAvatar,
   RHFAutocomplete,
-} from 'src/components/hook-form';
+} from '@src/components/hook-form';
 
 // ----------------------------------------------------------------------
 

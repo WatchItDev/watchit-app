@@ -3,9 +3,9 @@ import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import Grid from '@mui/material/Unstable_Grid2';
 // components
-import Iconify from 'src/components/iconify';
+import Iconify from '@src/components/iconify';
 // types
-import { IPostItem } from 'src/types/blog';
+import { IPostItem } from '@src/types/blog';
 //
 import PostItem from './post-item';
 import { PostItemSkeleton } from './post-skeleton';

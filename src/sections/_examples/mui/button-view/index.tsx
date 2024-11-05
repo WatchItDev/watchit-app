@@ -5,9 +5,9 @@ import Box from '@mui/material/Box';
 import Tabs from '@mui/material/Tabs';
 import Container from '@mui/material/Container';
 // routes
-import { paths } from 'src/routes/paths';
+import { paths } from '@src/routes/paths';
 // components
-import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
+import CustomBreadcrumbs from '@src/components/custom-breadcrumbs';
 //
 import IconButtons from './icon-buttons';
 import ButtonGroups from './button-groups';

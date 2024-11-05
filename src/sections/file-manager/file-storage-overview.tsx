@@ -6,9 +6,9 @@ import Stack from '@mui/material/Stack';
 import Card, { CardProps } from '@mui/material/Card';
 import ListItemText from '@mui/material/ListItemText';
 // utils
-import { fData } from 'src/utils/format-number';
+import { fData } from '@src/utils/format-number';
 // components
-import Chart, { useChart } from 'src/components/chart';
+import Chart, { useChart } from '@src/components/chart';
 
 // ----------------------------------------------------------------------
 

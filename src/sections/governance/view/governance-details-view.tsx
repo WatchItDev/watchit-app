@@ -18,9 +18,9 @@ import Card from '@mui/material/Card';
 import { styled } from '@mui/material/styles';
 import LinearProgress, { linearProgressClasses } from '@mui/material/LinearProgress';
 import { m } from 'framer-motion';
-import { fShortenNumber } from 'src/utils/format-number';
-import Iconify from 'src/components/iconify';
-import Markdown from 'src/components/markdown';
+import { fShortenNumber } from '@src/utils/format-number';
+import Iconify from '@src/components/iconify';
+import Markdown from '@src/components/markdown';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { truncateAddress } from '../../../utils/wallet';
 import GovernanceCommentList from '../governance-comment-list';
@@ -403,10 +403,10 @@ const CustomLinearProgress = styled(LinearProgress)(({ theme }) => ({
 // import FormControlLabel from '@mui/material/FormControlLabel';
 // import AvatarGroup, { avatarGroupClasses } from '@mui/material/AvatarGroup';
 // // utils
-// import { fCurrency, fShortenNumber } from 'src/utils/format-number';
+// import { fCurrency, fShortenNumber } from '@src/utils/format-number';
 // // components
-// import Iconify from 'src/components/iconify';
-// import Markdown from 'src/components/markdown';
+// import Iconify from '@src/components/iconify';
+// import Markdown from '@src/components/markdown';
 // //
 // import IconButton from '@mui/material/IconButton';
 // import { IconChevronLeft } from '@tabler/icons-react';

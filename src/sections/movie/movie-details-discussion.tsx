@@ -4,7 +4,7 @@ import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 // hooks
-import { useBoolean } from 'src/hooks/use-boolean';
+import { useBoolean } from '@src/hooks/use-boolean';
 //
 import { IconArrowUp, IconArrowDown, IconHeartFilled, IconMessageCircle2Filled } from '@tabler/icons-react';
 

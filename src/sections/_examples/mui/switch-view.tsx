@@ -7,9 +7,9 @@ import FormGroup from '@mui/material/FormGroup';
 import FormControl from '@mui/material/FormControl';
 import FormControlLabel from '@mui/material/FormControlLabel';
 // routes
-import { paths } from 'src/routes/paths';
+import { paths } from '@src/routes/paths';
 // components
-import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
+import CustomBreadcrumbs from '@src/components/custom-breadcrumbs';
 //
 import ComponentBlock from '../component-block';
 

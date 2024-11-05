@@ -6,14 +6,14 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import LinearProgress from '@mui/material/LinearProgress';
 // utils
-import { fDate } from 'src/utils/format-time';
+import { fDate } from '@src/utils/format-time';
 // hooks
-import { useResponsive } from 'src/hooks/use-responsive';
+import { useResponsive } from '@src/hooks/use-responsive';
 // types
-import { ICalendarView } from 'src/types/calendar';
+import { ICalendarView } from '@src/types/calendar';
 // components
-import Iconify from 'src/components/iconify';
-import CustomPopover, { usePopover } from 'src/components/custom-popover';
+import Iconify from '@src/components/iconify';
+import CustomPopover, { usePopover } from '@src/components/custom-popover';
 
 // ----------------------------------------------------------------------
 

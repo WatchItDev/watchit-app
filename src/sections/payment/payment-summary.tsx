@@ -6,8 +6,8 @@ import Divider from '@mui/material/Divider';
 import Box, { BoxProps } from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 // components
-import Label from 'src/components/label';
-import Iconify from 'src/components/iconify';
+import Label from '@src/components/label';
+import Iconify from '@src/components/iconify';
 
 // ----------------------------------------------------------------------
 

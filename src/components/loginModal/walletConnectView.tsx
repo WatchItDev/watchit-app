@@ -16,7 +16,7 @@ import {
 import { useConnect } from 'wagmi';
 
 // ICONS IMPORTS
-import { coinbaseIcon } from 'src/assets/icons/coinbase-icon_base64';
+import { coinbaseIcon } from '@src/assets/icons/coinbase-icon_base64';
 
 // ----------------------------------------------------------------------
 

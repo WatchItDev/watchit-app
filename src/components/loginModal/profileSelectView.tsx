@@ -14,7 +14,7 @@ import {
 import { useAccount } from 'wagmi';
 
 // UTILS IMPORTS
-import { truncateAddress } from 'src/utils/wallet';
+import { truncateAddress } from '@src/utils/wallet';
 import { UserItem } from '../user-item';
 import { useAuth } from '../../hooks/use-auth';
 

@@ -5,9 +5,9 @@ import Stack from '@mui/material/Stack';
 import Container from '@mui/material/Container';
 import CardHeader from '@mui/material/CardHeader';
 // routes
-import { paths } from 'src/routes/paths';
+import { paths } from '@src/routes/paths';
 // components
-import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
+import CustomBreadcrumbs from '@src/components/custom-breadcrumbs';
 //
 import BasicTable from './basic-table';
 import CollapsibleTable from './collapsible-table';

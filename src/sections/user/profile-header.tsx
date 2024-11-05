@@ -1,7 +1,7 @@
 import { useState, useCallback, useEffect, PropsWithChildren } from 'react';
 // components
-import Iconify from 'src/components/iconify';
-import { useSettingsContext } from 'src/components/settings';
+import Iconify from '@src/components/iconify';
+import { useSettingsContext } from '@src/components/settings';
 //
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { appId, PublicationType, useFollow, usePublications, useUnfollow } from '@lens-protocol/react-web';

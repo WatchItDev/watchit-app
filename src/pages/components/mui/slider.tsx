@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 // sections
-import SliderView from 'src/sections/_examples/mui/slider-view';
+import SliderView from '@src/sections/_examples/mui/slider-view';
 
 // ----------------------------------------------------------------------
 

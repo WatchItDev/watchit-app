@@ -6,17 +6,17 @@ import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
 import Tooltip from '@mui/material/Tooltip';
 // routes
-import { paths } from 'src/routes/paths';
-import { RouterLink } from 'src/routes/components';
+import { paths } from '@src/routes/paths';
+import { RouterLink } from '@src/routes/components';
 // utils
-import { fCurrency } from 'src/utils/format-number';
+import { fCurrency } from '@src/utils/format-number';
 // components
-import Label from 'src/components/label';
-import Image from 'src/components/image';
-import Iconify from 'src/components/iconify';
-import { ColorPreview } from 'src/components/color-utils';
+import Label from '@src/components/label';
+import Image from '@src/components/image';
+import Iconify from '@src/components/iconify';
+import { ColorPreview } from '@src/components/color-utils';
 // types
-import { IProductItem } from 'src/types/product';
+import { IProductItem } from '@src/types/product';
 //
 import { useCheckoutContext } from '../checkout/context';
 

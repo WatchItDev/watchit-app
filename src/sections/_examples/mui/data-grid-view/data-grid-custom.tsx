@@ -17,10 +17,10 @@ import {
   GridColumnVisibilityModel,
 } from '@mui/x-data-grid';
 // utils
-import { fPercent } from 'src/utils/format-number';
+import { fPercent } from '@src/utils/format-number';
 // components
-import Label from 'src/components/label';
-import Iconify from 'src/components/iconify';
+import Label from '@src/components/label';
+import Iconify from '@src/components/iconify';
 
 // ----------------------------------------------------------------------
 

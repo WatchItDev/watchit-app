@@ -10,7 +10,7 @@ import { useCreateComment } from '@lens-protocol/react-web';
 import { textOnly } from '@lens-protocol/metadata';
 
 // Custom components
-import FormProvider from 'src/components/hook-form';
+import FormProvider from '@src/components/hook-form';
 import Avatar from '@mui/material/Avatar';
 import InputBase from '@mui/material/InputBase';
 import InputAdornment from '@mui/material/InputAdornment';

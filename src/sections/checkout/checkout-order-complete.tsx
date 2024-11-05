@@ -9,10 +9,10 @@ import Typography from '@mui/material/Typography';
 import Paper, { PaperProps } from '@mui/material/Paper';
 import Dialog, { DialogProps } from '@mui/material/Dialog';
 // assets
-import { OrderCompleteIllustration } from 'src/assets/illustrations';
+import { OrderCompleteIllustration } from '@src/assets/illustrations';
 // components
-import Iconify from 'src/components/iconify';
-import { varFade } from 'src/components/animate';
+import Iconify from '@src/components/iconify';
+import { varFade } from '@src/components/animate';
 
 // ----------------------------------------------------------------------
 

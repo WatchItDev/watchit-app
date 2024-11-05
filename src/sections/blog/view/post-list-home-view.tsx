@@ -5,17 +5,17 @@ import Stack from '@mui/material/Stack';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
 // routes
-import { paths } from 'src/routes/paths';
+import { paths } from '@src/routes/paths';
 // hooks
-import { useDebounce } from 'src/hooks/use-debounce';
+import { useDebounce } from '@src/hooks/use-debounce';
 // _mock
-import { POST_SORT_OPTIONS } from 'src/_mock';
+import { POST_SORT_OPTIONS } from '@src/_mock';
 // api
-import { useGetPosts, useSearchPosts } from 'src/api/blog';
+import { useGetPosts, useSearchPosts } from '@src/api/blog';
 // components
-import { useSettingsContext } from 'src/components/settings';
+import { useSettingsContext } from '@src/components/settings';
 // types
-import { IPostItem } from 'src/types/blog';
+import { IPostItem } from '@src/types/blog';
 //
 import PostList from '../post-list';
 import PostSort from '../post-sort';

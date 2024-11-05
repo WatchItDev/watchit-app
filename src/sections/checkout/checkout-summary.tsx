@@ -10,9 +10,9 @@ import Typography from '@mui/material/Typography';
 import CardContent from '@mui/material/CardContent';
 import InputAdornment from '@mui/material/InputAdornment';
 // utils
-import { fCurrency } from 'src/utils/format-number';
+import { fCurrency } from '@src/utils/format-number';
 // components
-import Iconify from 'src/components/iconify';
+import Iconify from '@src/components/iconify';
 
 // ----------------------------------------------------------------------
 

@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 // sections
-import ScrollProgressView from 'src/sections/_examples/extra/scroll-progress-view';
+import ScrollProgressView from '@src/sections/_examples/extra/scroll-progress-view';
 
 // ----------------------------------------------------------------------
 

@@ -4,9 +4,9 @@ import { useMemo } from 'react';
 import CssBaseline from '@mui/material/CssBaseline';
 import { createTheme, ThemeProvider as MuiThemeProvider, ThemeOptions } from '@mui/material/styles';
 // locales
-import { useLocales } from 'src/locales';
+import { useLocales } from '@src/locales';
 // components
-import { useSettingsContext } from 'src/components/settings';
+import { useSettingsContext } from '@src/components/settings';
 // system
 import { palette } from './palette';
 import { shadows } from './shadows';

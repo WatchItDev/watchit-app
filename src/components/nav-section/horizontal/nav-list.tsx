@@ -4,8 +4,8 @@ import Stack from '@mui/material/Stack';
 import Popover from '@mui/material/Popover';
 import { appBarClasses } from '@mui/material/AppBar';
 // routes
-import { usePathname } from 'src/routes/hooks';
-import { useActiveLink } from 'src/routes/hooks/use-active-link';
+import { usePathname } from '@src/routes/hooks';
+import { useActiveLink } from '@src/routes/hooks/use-active-link';
 //
 import { NavListProps, NavConfigProps } from '../types';
 import NavItem from './nav-item';

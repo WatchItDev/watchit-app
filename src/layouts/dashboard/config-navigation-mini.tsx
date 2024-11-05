@@ -9,7 +9,7 @@ export const data = [
   },
   {
     id: '123',
-    title: 'Gorvernance',
+    title: 'Governance',
   },
   {
     id: '1234',

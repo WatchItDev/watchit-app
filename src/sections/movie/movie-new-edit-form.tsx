@@ -16,9 +16,9 @@ import Typography from '@mui/material/Typography';
 import InputAdornment from '@mui/material/InputAdornment';
 import FormControlLabel from '@mui/material/FormControlLabel';
 // routes
-import { paths } from 'src/routes/paths';
+import { paths } from '@src/routes/paths';
 // hooks
-import { useResponsive } from 'src/hooks/use-responsive';
+import { useResponsive } from '@src/hooks/use-responsive';
 // _mock
 import {
   _tags,
@@ -26,10 +26,10 @@ import {
   PRODUCT_GENDER_OPTIONS,
   PRODUCT_COLOR_NAME_OPTIONS,
   PRODUCT_CATEGORY_GROUP_OPTIONS,
-} from 'src/_mock';
+} from '@src/_mock';
 // components
-import { useSnackbar } from 'src/components/snackbar';
-import { useRouter } from 'src/routes/hooks';
+import { useSnackbar } from '@src/components/snackbar';
+import { useRouter } from '@src/routes/hooks';
 import FormProvider, {
   RHFSelect,
   RHFEditor,
@@ -39,9 +39,9 @@ import FormProvider, {
   RHFMultiSelect,
   RHFAutocomplete,
   RHFMultiCheckbox,
-} from 'src/components/hook-form';
+} from '@src/components/hook-form';
 // types
-import { IProductItem } from 'src/types/product';
+import { IProductItem } from '@src/types/product';
 
 // ----------------------------------------------------------------------
 

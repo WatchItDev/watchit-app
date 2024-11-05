@@ -4,11 +4,11 @@ import Stack from '@mui/material/Stack';
 import Tooltip from '@mui/material/Tooltip';
 import Container from '@mui/material/Container';
 // routes
-import { paths } from 'src/routes/paths';
+import { paths } from '@src/routes/paths';
 // components
-import Label from 'src/components/label';
-import Iconify from 'src/components/iconify';
-import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
+import Label from '@src/components/label';
+import Iconify from '@src/components/iconify';
+import CustomBreadcrumbs from '@src/components/custom-breadcrumbs';
 //
 import ComponentBlock from '../component-block';
 

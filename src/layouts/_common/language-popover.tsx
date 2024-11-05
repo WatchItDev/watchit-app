@@ -4,11 +4,11 @@ import { m } from 'framer-motion';
 import MenuItem from '@mui/material/MenuItem';
 import IconButton from '@mui/material/IconButton';
 // locales
-import { useLocales } from 'src/locales';
+import { useLocales } from '@src/locales';
 // components
-import Iconify from 'src/components/iconify';
-import { varHover } from 'src/components/animate';
-import CustomPopover, { usePopover } from 'src/components/custom-popover';
+import Iconify from '@src/components/iconify';
+import { varHover } from '@src/components/animate';
+import CustomPopover, { usePopover } from '@src/components/custom-popover';
 
 // ----------------------------------------------------------------------
 

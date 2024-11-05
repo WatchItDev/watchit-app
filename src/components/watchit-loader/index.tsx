@@ -2,7 +2,7 @@ import React, { FC, useEffect, useRef } from 'react';
 import Box from '@mui/material/Box';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import Lottie, { LottieRefCurrentProps } from 'lottie-react';
-import watchitLogo from 'src/assets/animations/watchit_spinner.json';
+import watchitLogo from '@src/assets/animations/watchit_spinner.json';
 
 interface WatchitLoaderProps {
   speed?: number

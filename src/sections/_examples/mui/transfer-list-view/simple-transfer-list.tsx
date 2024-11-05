@@ -9,7 +9,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemButton from '@mui/material/ListItemButton';
 // components
-import Iconify from 'src/components/iconify';
+import Iconify from '@src/components/iconify';
 
 // ----------------------------------------------------------------------
 

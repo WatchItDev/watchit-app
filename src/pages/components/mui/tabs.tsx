@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 // sections
-import TabsView from 'src/sections/_examples/mui/tabs-view';
+import TabsView from '@src/sections/_examples/mui/tabs-view';
 
 // ----------------------------------------------------------------------
 

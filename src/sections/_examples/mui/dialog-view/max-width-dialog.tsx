@@ -14,7 +14,7 @@ import Dialog, { DialogProps } from '@mui/material/Dialog';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 // hooks
-import { useBoolean } from 'src/hooks/use-boolean';
+import { useBoolean } from '@src/hooks/use-boolean';
 
 // ----------------------------------------------------------------------
 

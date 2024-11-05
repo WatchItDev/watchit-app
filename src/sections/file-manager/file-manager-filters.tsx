@@ -9,13 +9,13 @@ import Typography from '@mui/material/Typography';
 import CardActionArea from '@mui/material/CardActionArea';
 import InputAdornment from '@mui/material/InputAdornment';
 // types
-import { IFileFilters, IFileFilterValue } from 'src/types/file';
+import { IFileFilters, IFileFilterValue } from '@src/types/file';
 // components
-import Label from 'src/components/label';
-import Iconify from 'src/components/iconify';
-import FileThumbnail from 'src/components/file-thumbnail';
-import CustomPopover, { usePopover } from 'src/components/custom-popover';
-import CustomDateRangePicker, { shortDateLabel } from 'src/components/custom-date-range-picker';
+import Label from '@src/components/label';
+import Iconify from '@src/components/iconify';
+import FileThumbnail from '@src/components/file-thumbnail';
+import CustomPopover, { usePopover } from '@src/components/custom-popover';
+import CustomDateRangePicker, { shortDateLabel } from '@src/components/custom-date-range-picker';
 
 // ----------------------------------------------------------------------
 

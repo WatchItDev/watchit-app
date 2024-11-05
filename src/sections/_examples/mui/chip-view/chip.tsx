@@ -5,9 +5,9 @@ import Stack from '@mui/material/Stack';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 // _mock
-import { _mock } from 'src/_mock';
+import { _mock } from '@src/_mock';
 // components
-import Iconify from 'src/components/iconify';
+import Iconify from '@src/components/iconify';
 
 // ----------------------------------------------------------------------
 

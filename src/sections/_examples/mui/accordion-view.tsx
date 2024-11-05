@@ -8,12 +8,12 @@ import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 // routes
-import { paths } from 'src/routes/paths';
+import { paths } from '@src/routes/paths';
 // _mock
-import { _mock } from 'src/_mock';
+import { _mock } from '@src/_mock';
 // components
-import Iconify from 'src/components/iconify';
-import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
+import Iconify from '@src/components/iconify';
+import CustomBreadcrumbs from '@src/components/custom-breadcrumbs';
 //
 import ComponentBlock from '../component-block';
 

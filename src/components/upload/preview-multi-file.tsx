@@ -5,7 +5,7 @@ import Stack from '@mui/material/Stack';
 import IconButton from '@mui/material/IconButton';
 import ListItemText from '@mui/material/ListItemText';
 // utils
-import { fData } from 'src/utils/format-number';
+import { fData } from '@src/utils/format-number';
 //
 import Iconify from '../iconify';
 import { varFade } from '../animate';

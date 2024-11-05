@@ -3,7 +3,7 @@ import { Popup } from 'react-map-gl';
 import { useTheme, styled } from '@mui/material/styles';
 import GlobalStyles from '@mui/material/GlobalStyles';
 // theme
-import { bgBlur } from 'src/theme/css';
+import { bgBlur } from '@src/theme/css';
 
 // ----------------------------------------------------------------------
 

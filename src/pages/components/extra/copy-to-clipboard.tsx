@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 // sections
-import CopyToClipboardView from 'src/sections/_examples/extra/copy-to-clipboard-view';
+import CopyToClipboardView from '@src/sections/_examples/extra/copy-to-clipboard-view';
 
 // ----------------------------------------------------------------------
 

@@ -7,7 +7,7 @@ import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 // assets
-import { UploadIllustration } from 'src/assets/illustrations';
+import { UploadIllustration } from '@src/assets/illustrations';
 //
 import Iconify from '../iconify';
 //

@@ -7,20 +7,20 @@ import Typography from '@mui/material/Typography';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 // utils
-import { fTimestamp } from 'src/utils/format-time';
+import { fTimestamp } from '@src/utils/format-time';
 // _mock
-import { _allFiles, FILE_TYPE_OPTIONS } from 'src/_mock';
+import { _allFiles, FILE_TYPE_OPTIONS } from '@src/_mock';
 // hooks
-import { useBoolean } from 'src/hooks/use-boolean';
+import { useBoolean } from '@src/hooks/use-boolean';
 // components
-import Iconify from 'src/components/iconify';
-import EmptyContent from 'src/components/empty-content';
-import { fileFormat } from 'src/components/file-thumbnail';
-import { ConfirmDialog } from 'src/components/custom-dialog';
-import { useSettingsContext } from 'src/components/settings';
-import { useTable, getComparator } from 'src/components/table';
+import Iconify from '@src/components/iconify';
+import EmptyContent from '@src/components/empty-content';
+import { fileFormat } from '@src/components/file-thumbnail';
+import { ConfirmDialog } from '@src/components/custom-dialog';
+import { useSettingsContext } from '@src/components/settings';
+import { useTable, getComparator } from '@src/components/table';
 // types
-import { IFile, IFileFilters, IFileFilterValue } from 'src/types/file';
+import { IFile, IFileFilters, IFileFilterValue } from '@src/types/file';
 //
 import FileManagerTable from '../file-manager-table';
 import FileManagerFilters from '../file-manager-filters';

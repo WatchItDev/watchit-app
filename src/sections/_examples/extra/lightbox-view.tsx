@@ -12,13 +12,13 @@ import FormLabel from '@mui/material/FormLabel';
 import FormControl from '@mui/material/FormControl';
 import FormControlLabel from '@mui/material/FormControlLabel';
 // routes
-import { paths } from 'src/routes/paths';
+import { paths } from '@src/routes/paths';
 // _mock
-import { _mock } from 'src/_mock';
+import { _mock } from '@src/_mock';
 // components
-import Image from 'src/components/image';
-import Lightbox, { useLightBox, SlideVideo } from 'src/components/lightbox';
-import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
+import Image from '@src/components/image';
+import Lightbox, { useLightBox, SlideVideo } from '@src/components/lightbox';
+import CustomBreadcrumbs from '@src/components/custom-breadcrumbs';
 
 // ----------------------------------------------------------------------
 

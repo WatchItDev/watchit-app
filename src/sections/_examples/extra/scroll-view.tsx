@@ -5,10 +5,10 @@ import Container from '@mui/material/Container';
 import CardHeader from '@mui/material/CardHeader';
 import CardContent from '@mui/material/CardContent';
 // routes
-import { paths } from 'src/routes/paths';
+import { paths } from '@src/routes/paths';
 // components
-import Scrollbar from 'src/components/scrollbar';
-import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
+import Scrollbar from '@src/components/scrollbar';
+import CustomBreadcrumbs from '@src/components/custom-breadcrumbs';
 
 // ----------------------------------------------------------------------
 

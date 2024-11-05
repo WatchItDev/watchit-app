@@ -1,7 +1,7 @@
 // @mui
 import { alpha } from '@mui/material/styles';
 // theme
-import { palette as themePalette } from 'src/theme/palette';
+import { palette as themePalette } from '@src/theme/palette';
 
 // ----------------------------------------------------------------------
 

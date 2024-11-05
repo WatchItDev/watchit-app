@@ -10,11 +10,11 @@ import Tooltip from '@mui/material/Tooltip';
 import Container from '@mui/material/Container';
 import IconButton from '@mui/material/IconButton';
 // routes
-import { paths } from 'src/routes/paths';
+import { paths } from '@src/routes/paths';
 // components
-import Iconify from 'src/components/iconify';
-import { varHover } from 'src/components/animate';
-import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
+import Iconify from '@src/components/iconify';
+import { varHover } from '@src/components/animate';
+import CustomBreadcrumbs from '@src/components/custom-breadcrumbs';
 //
 import ComponentBlock from '../component-block';
 

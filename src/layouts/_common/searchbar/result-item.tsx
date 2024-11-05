@@ -4,7 +4,7 @@ import Box from '@mui/material/Box';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemButton from '@mui/material/ListItemButton';
 // components
-import Label from 'src/components/label';
+import Label from '@src/components/label';
 
 // ----------------------------------------------------------------------
 

@@ -7,9 +7,9 @@ import Card, { CardProps } from '@mui/material/Card';
 import ListItemText from '@mui/material/ListItemText';
 import Paper, { PaperProps } from '@mui/material/Paper';
 // components
-import Iconify from 'src/components/iconify';
+import Iconify from '@src/components/iconify';
 // types
-import { ICheckoutDeliveryOption } from 'src/types/checkout';
+import { ICheckoutDeliveryOption } from '@src/types/checkout';
 
 // ----------------------------------------------------------------------
 

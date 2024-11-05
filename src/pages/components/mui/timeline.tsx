@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 // sections
-import TimelineView from 'src/sections/_examples/mui/timeline-view';
+import TimelineView from '@src/sections/_examples/mui/timeline-view';
 
 // ----------------------------------------------------------------------
 

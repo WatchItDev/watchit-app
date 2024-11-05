@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 // sections
-import MenuView from 'src/sections/_examples/mui/menu-view';
+import MenuView from '@src/sections/_examples/mui/menu-view';
 
 // ----------------------------------------------------------------------
 

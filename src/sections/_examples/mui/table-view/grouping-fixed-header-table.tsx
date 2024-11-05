@@ -6,8 +6,8 @@ import TableCell from '@mui/material/TableCell';
 import TableBody from '@mui/material/TableBody';
 import TableContainer from '@mui/material/TableContainer';
 // components
-import Scrollbar from 'src/components/scrollbar';
-import { useTable, TablePaginationCustom } from 'src/components/table';
+import Scrollbar from '@src/components/scrollbar';
+import { useTable, TablePaginationCustom } from '@src/components/table';
 
 // ----------------------------------------------------------------------
 

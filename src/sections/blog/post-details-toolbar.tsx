@@ -7,10 +7,10 @@ import MenuItem from '@mui/material/MenuItem';
 import IconButton from '@mui/material/IconButton';
 import Stack, { StackProps } from '@mui/material/Stack';
 // routes
-import { RouterLink } from 'src/routes/components';
+import { RouterLink } from '@src/routes/components';
 // components
-import Iconify from 'src/components/iconify';
-import CustomPopover, { usePopover } from 'src/components/custom-popover';
+import Iconify from '@src/components/iconify';
+import CustomPopover, { usePopover } from '@src/components/custom-popover';
 
 // ----------------------------------------------------------------------
 

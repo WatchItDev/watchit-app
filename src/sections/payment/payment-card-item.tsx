@@ -5,11 +5,11 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import Stack, { StackProps } from '@mui/material/Stack';
 // types
-import { IPaymentCard } from 'src/types/payment';
+import { IPaymentCard } from '@src/types/payment';
 // components
-import Label from 'src/components/label';
-import Iconify from 'src/components/iconify';
-import CustomPopover, { usePopover } from 'src/components/custom-popover';
+import Label from '@src/components/label';
+import Iconify from '@src/components/iconify';
+import CustomPopover, { usePopover } from '@src/components/custom-popover';
 
 // ----------------------------------------------------------------------
 

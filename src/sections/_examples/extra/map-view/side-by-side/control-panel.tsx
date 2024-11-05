@@ -3,7 +3,7 @@ import { memo } from 'react';
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 // components
-import { StyledControlPanel } from 'src/components/map';
+import { StyledControlPanel } from '@src/components/map';
 
 // ----------------------------------------------------------------------
 

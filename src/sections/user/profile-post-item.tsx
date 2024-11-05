@@ -12,12 +12,12 @@ import Typography from '@mui/material/Typography';
 import FormControlLabel from '@mui/material/FormControlLabel';
 
 // utils
-import { fDate } from 'src/utils/format-time';
-import { fShortenNumber } from 'src/utils/format-number';
+import { fDate } from '@src/utils/format-time';
+import { fShortenNumber } from '@src/utils/format-number';
 
 // components
-import Image from 'src/components/image';
-import Iconify from 'src/components/iconify';
+import Image from '@src/components/image';
+import Iconify from '@src/components/iconify';
 
 // Lens Protocol hooks
 import { useReactionToggle, PublicationReactionType, hasReacted } from '@lens-protocol/react-web';

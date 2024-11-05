@@ -6,7 +6,7 @@ import Stack from '@mui/material/Stack';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 // theme
-import { ColorSchema } from 'src/theme/palette';
+import { ColorSchema } from '@src/theme/palette';
 //
 import Label from '../../label';
 //

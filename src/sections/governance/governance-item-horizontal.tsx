@@ -5,15 +5,15 @@ import Stack from '@mui/material/Stack';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 // routes
-import { paths } from 'src/routes/paths';
-import { useRouter } from 'src/routes/hooks';
+import { paths } from '@src/routes/paths';
+import { useRouter } from '@src/routes/hooks';
 import { formatDistanceToNow } from 'date-fns';
 // types
-import { IPostItem } from 'src/types/blog';
+import { IPostItem } from '@src/types/blog';
 // components
-import Label from 'src/components/label';
-import TextMaxLine from 'src/components/text-max-line';
-import { usePopover } from 'src/components/custom-popover';
+import Label from '@src/components/label';
+import TextMaxLine from '@src/components/text-max-line';
+import { usePopover } from '@src/components/custom-popover';
 import { truncateAddress } from '../../utils/wallet';
 
 // ----------------------------------------------------------------------

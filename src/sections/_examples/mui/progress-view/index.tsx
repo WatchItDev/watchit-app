@@ -4,9 +4,9 @@ import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Container from '@mui/material/Container';
 // routes
-import { paths } from 'src/routes/paths';
+import { paths } from '@src/routes/paths';
 // components
-import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
+import CustomBreadcrumbs from '@src/components/custom-breadcrumbs';
 //
 import ProgressLinear from './progress-linear';
 import ProgressCircular from './progress-circular';

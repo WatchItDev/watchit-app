@@ -3,11 +3,11 @@ import { m } from 'framer-motion';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 // routes
-import { RouterLink } from 'src/routes/components';
+import { RouterLink } from '@src/routes/components';
 // components
-import { MotionContainer, varBounce } from 'src/components/animate';
+import { MotionContainer, varBounce } from '@src/components/animate';
 // assets
-import { PageNotFoundIllustration } from 'src/assets/illustrations';
+import { PageNotFoundIllustration } from '@src/assets/illustrations';
 
 // ----------------------------------------------------------------------
 

@@ -3,9 +3,9 @@ import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 // hooks
-import { useCountdownDate } from 'src/hooks/use-countdown';
+import { useCountdownDate } from '@src/hooks/use-countdown';
 // assets
-import { ComingSoonIllustration } from 'src/assets/illustrations';
+import { ComingSoonIllustration } from '@src/assets/illustrations';
 
 // ----------------------------------------------------------------------
 

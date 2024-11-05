@@ -4,7 +4,7 @@ import Link from '@mui/material/Link';
 import Box from '@mui/material/Box';
 import ListItemText from '@mui/material/ListItemText';
 // routes
-import { RouterLink } from 'src/routes/components';
+import { RouterLink } from '@src/routes/components';
 //
 import { NavItemProps, NavConfigProps } from '../types';
 import { StyledItem, StyledIcon, StyledNavContent } from './styles';

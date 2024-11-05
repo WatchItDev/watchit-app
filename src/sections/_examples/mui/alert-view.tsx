@@ -7,9 +7,9 @@ import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import AlertTitle from '@mui/material/AlertTitle';
 // routes
-import { paths } from 'src/routes/paths';
+import { paths } from '@src/routes/paths';
 // components
-import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
+import CustomBreadcrumbs from '@src/components/custom-breadcrumbs';
 //
 import ComponentBlock from '../component-block';
 

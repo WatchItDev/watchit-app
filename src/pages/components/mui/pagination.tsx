@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 // sections
-import PaginationView from 'src/sections/_examples/mui/pagination-view';
+import PaginationView from '@src/sections/_examples/mui/pagination-view';
 
 // ----------------------------------------------------------------------
 

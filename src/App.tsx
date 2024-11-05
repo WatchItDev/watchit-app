@@ -1,5 +1,5 @@
 // i18n
-import 'src/locales/i18n';
+import '@src/locales/i18n';
 
 // scrollbar
 import 'simplebar-react/dist/simplebar.min.css';
@@ -28,17 +28,17 @@ import 'react-lazy-load-image-component/src/effects/blur.css';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 // routes
-import Router from 'src/routes/sections';
+import Router from '@src/routes/sections';
 // theme
-import ThemeProvider from 'src/theme';
+import ThemeProvider from '@src/theme';
 // hooks
-import { useScrollToTop } from 'src/hooks/use-scroll-to-top';
+import { useScrollToTop } from '@src/hooks/use-scroll-to-top';
 // components
-import ProgressBar from 'src/components/progress-bar';
-import MotionLazy from 'src/components/animate/motion-lazy';
-import SnackbarProvider from 'src/components/snackbar/snackbar-provider';
-import { SettingsProvider, SettingsDrawer } from 'src/components/settings';
-import { AuthProvider } from 'src/auth/context/lens';
+import ProgressBar from '@src/components/progress-bar';
+import MotionLazy from '@src/components/animate/motion-lazy';
+import SnackbarProvider from '@src/components/snackbar/snackbar-provider';
+import { SettingsProvider, SettingsDrawer } from '@src/components/settings';
+import { AuthProvider } from '@src/auth/context/lens';
 
 // ----------------------------------------------------------------------
 

@@ -3,9 +3,9 @@ import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
-import CustomDateRangePicker, { useDateRangePicker } from 'src/components/custom-date-range-picker';
+import CustomDateRangePicker, { useDateRangePicker } from '@src/components/custom-date-range-picker';
 // utils
-import { fDate } from 'src/utils/format-time';
+import { fDate } from '@src/utils/format-time';
 //
 import ComponentBlock from '../../component-block';
 

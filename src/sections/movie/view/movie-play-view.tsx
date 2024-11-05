@@ -1,7 +1,7 @@
 // @mui
 import Typography from '@mui/material/Typography';
 // routes
-import { paths } from 'src/routes/paths';
+import { paths } from '@src/routes/paths';
 //
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { usePublication } from '@lens-protocol/react';

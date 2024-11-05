@@ -8,10 +8,10 @@ import Divider from '@mui/material/Divider';
 import { CardProps } from '@mui/material/Card';
 import Typography from '@mui/material/Typography';
 // assets
-import { PlanFreeIcon, PlanStarterIcon, PlanPremiumIcon } from 'src/assets/icons';
+import { PlanFreeIcon, PlanStarterIcon, PlanPremiumIcon } from '@src/assets/icons';
 // components
-import Label from 'src/components/label';
-import Iconify from 'src/components/iconify';
+import Label from '@src/components/label';
+import Iconify from '@src/components/iconify';
 
 // ----------------------------------------------------------------------
 

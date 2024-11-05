@@ -12,15 +12,15 @@ import CardContent from '@mui/material/CardContent';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 // routes
-import { paths } from 'src/routes/paths';
-import { RouterLink } from 'src/routes/components';
+import { paths } from '@src/routes/paths';
+import { RouterLink } from '@src/routes/components';
 // hooks
-import { useDebounce } from 'src/hooks/use-debounce';
-import { useResponsive } from 'src/hooks/use-responsive';
+import { useDebounce } from '@src/hooks/use-debounce';
+import { useResponsive } from '@src/hooks/use-responsive';
 // components
-import Iconify from 'src/components/iconify';
-import { useSettingsContext } from 'src/components/settings';
-import SvgColor from 'src/components/svg-color';
+import Iconify from '@src/components/iconify';
+import { useSettingsContext } from '@src/components/settings';
+import SvgColor from '@src/components/svg-color';
 import GovernanceSearch from '../governance-search';
 import GovernanceListHorizontal from '../governance-list-horizontal';
 import Label from '../../../components/label';
@@ -197,15 +197,15 @@ export default function GovernanceListView() {
 // import Container from '@mui/material/Container';
 // import Typography from '@mui/material/Typography';
 // // routes
-// import { paths } from 'src/routes/paths';
-// import { RouterLink } from 'src/routes/components';
+// import { paths } from '@src/routes/paths';
+// import { RouterLink } from '@src/routes/components';
 // // hooks
-// import { useDebounce } from 'src/hooks/use-debounce';
+// import { useDebounce } from '@src/hooks/use-debounce';
 // // api
-// import { useGetPosts, useSearchPosts } from 'src/api/blog';
+// import { useGetPosts, useSearchPosts } from '@src/api/blog';
 // // components
-// import Iconify from 'src/components/iconify';
-// import { useSettingsContext } from 'src/components/settings';
+// import Iconify from '@src/components/iconify';
+// import { useSettingsContext } from '@src/components/settings';
 // //
 // import IconButton from '@mui/material/IconButton';
 // import { IconChevronLeft } from '@tabler/icons-react';

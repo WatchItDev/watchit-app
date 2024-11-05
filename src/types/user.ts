@@ -1,4 +1,4 @@
-import { CustomFile } from 'src/components/upload';
+import { CustomFile } from '@src/components/upload';
 import { Profile } from '@lens-protocol/api-bindings';
 
 // ----------------------------------------------------------------------

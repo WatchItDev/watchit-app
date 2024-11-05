@@ -9,12 +9,12 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import Autocomplete from '@mui/material/Autocomplete';
 // routes
-import { paths } from 'src/routes/paths';
+import { paths } from '@src/routes/paths';
 // assets
-import { countries } from 'src/assets/data';
+import { countries } from '@src/assets/data';
 // components
-import Iconify from 'src/components/iconify';
-import CustomBreadcrumbs from 'src/components/custom-breadcrumbs';
+import Iconify from '@src/components/iconify';
+import CustomBreadcrumbs from '@src/components/custom-breadcrumbs';
 //
 import ComponentBlock from '../component-block';
 

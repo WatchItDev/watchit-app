@@ -1,5 +1,5 @@
 import { Helmet } from 'react-helmet-async';
-import { ExploreView } from 'src/sections/explore';
+import { ExploreView } from '@src/sections/explore';
 
 // ----------------------------------------------------------------------
 
