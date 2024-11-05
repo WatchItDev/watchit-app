@@ -1,4 +1,4 @@
-import { Skeleton, Grid, Box, Button, Modal } from '@mui/material';
+// import { Skeleton, Grid, Box, Button, Modal } from '@mui/material';
 import { Helmet } from 'react-helmet-async';
 import { useState } from 'react';
 import {
@@ -7,11 +7,13 @@ import {
   useCreatePost, useCurrencies
 } from '@lens-protocol/react-web';
 import { video, MetadataAttributeType, AnyMedia } from '@lens-protocol/metadata';
-import Typography from '@mui/material/Typography';
+// import Typography from '@mui/material/Typography';
 import axios from 'axios';
 import { useAuth } from '../../hooks/use-auth';
 import uuidv4 from '../../utils/uuidv4';
 import { LoadingScreen } from '../../components/loading-screen';
+import ComingSoonView from "@src/sections/coming-soon/view.tsx";
+import BlankView from "@src/sections/blank/view.tsx";
 
 // Metadatos de la película en una constante
 const movieMetadata = {
@@ -81,9 +83,11 @@ const uploadToPinata = async (metadata: any) => {
 // ----------------------------------------------------------------------
 
 export default function OverviewFilePage() {
+  // @ts-ignore eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [open, setOpen] = useState(false);
   const { selectedProfile: activeProfile } = useAuth(); // Obtener el perfil activo
 
+  // @ts-ignore eslint-disable-next-line @typescript-eslint/no-unused-vars
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
@@ -96,6 +100,8 @@ export default function OverviewFilePage() {
   console.log('activeProfile')
   console.log(activeProfile)
 
+  // @ts-ignore eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const handleSubmit = async () => {
     try {
       if (!activeProfile) {
@@ -211,7 +217,10 @@ export default function OverviewFilePage() {
         <title> Dashboard: File</title>
       </Helmet>
 
-      <Grid container spacing={2} style={{ height: 'calc(100vh - 5rem)', width: '100%', padding: '2rem 1.5rem 2rem 2rem' }}>
+      <BlankView>
+        <ComingSoonView />
+      </BlankView>
+      {/*<Grid container spacing={2} style={{ height: 'calc(100vh - 5rem)', width: '100%', padding: '2rem 1.5rem 2rem 2rem' }}>
         <Grid item xs={8} style={{ height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'flex-start' }}>
           <Grid container spacing={2} style={{ flexGrow: 1 }}>
             <Grid item xs={4}>
@@ -296,7 +305,7 @@ export default function OverviewFilePage() {
             Upload
           </Button>
         </Box>
-      </Modal>
+      </Modal>*/}
     </>
   );
 }
