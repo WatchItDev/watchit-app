@@ -31,8 +31,7 @@ const UserProfileView = ({ id }: any) => {
   const [currentTab, setCurrentTab] = useState('publications');
   const settings = useSettingsContext();
 
-  const { called, execute } = useLazyProfile();
-  const { selectedProfile: profile } = useAuth();
+  const { called, data: profile, execute } = useLazyProfile();
 
   const { data: publications } = usePublications({
     where: {
