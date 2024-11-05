@@ -14,6 +14,7 @@ import ProfileFollowing from '../profile-following';
 import ProfileHeader from '../profile-header';
 import Label from '../../../components/label';
 import ProfileCollected from '../profile-collected';
+import {useAuth} from "@src/hooks/use-auth.ts";
 
 // ----------------------------------------------------------------------
 
@@ -30,7 +31,8 @@ const UserProfileView = ({ id }: any) => {
   const [currentTab, setCurrentTab] = useState('publications');
   const settings = useSettingsContext();
 
-  const { called, data: profile, execute } = useLazyProfile();
+  const { called, execute } = useLazyProfile();
+  const { selectedProfile: profile } = useAuth();
 
   const { data: publications } = usePublications({
     where: {
