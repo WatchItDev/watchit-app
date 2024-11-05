@@ -25,6 +25,7 @@
     /* Aliases */
     "paths": {
       "@src/*": ["./src/*"],
+      "@public/*": ["./public/*"],
     }
   },
   "include": ["src"]
