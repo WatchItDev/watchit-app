@@ -1,9 +1,5 @@
 // @mui
 import Box from '@mui/material/Box';
-import Pagination, { paginationClasses } from '@mui/material/Pagination';
-// types
-import { IPostItem } from '@src/types/blog';
-//
 import { GovernanceItemSkeleton } from './governance-skeleton';
 import GovernanceItemHorizontal from './governance-item-horizontal';
 

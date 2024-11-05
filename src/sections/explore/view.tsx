@@ -2,9 +2,6 @@
 import Stack from '@mui/material/Stack';
 import Container from '@mui/material/Container';
 
-// MOCK IMPORTS
-import { moviesMock } from '@src/_mock';
-
 // COMPONENTS IMPORTS
 import CarouselMain from '@src/components/carousel/variants/carousel-main';
 import CarouselMixed from '@src/components/carousel/variants/carousel-mixed';

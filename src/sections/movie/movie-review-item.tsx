@@ -1,6 +1,5 @@
 // @mui
 import Stack from '@mui/material/Stack';
-import Rating from '@mui/material/Rating';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import ListItemText from '@mui/material/ListItemText';
@@ -18,7 +17,7 @@ type Props = {
 };
 
 export default function MovieReviewItem({ review }: Props) {
-  const { name, rating, comment, postedAt, avatarUrl, isPurchased } = review;
+  const { name, comment, postedAt, avatarUrl } = review;
 
   const renderInfo = (
     <Stack

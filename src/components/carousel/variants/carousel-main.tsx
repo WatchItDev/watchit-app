@@ -13,12 +13,14 @@ import { bgGradient } from '@src/theme/css';
 import Image from '@src/components/image';
 import { varFade } from '@src/components/animate';
 import Carousel, { CarouselDots, useCarousel } from '@src/components/carousel/index';
-import { IconFlagFilled, IconStarFilled, IconPlayerPlay } from '@tabler/icons-react';
+import { IconFlagFilled, IconPlayerPlay } from '@tabler/icons-react';
 import Stack from '@mui/material/Stack';
+
+// @ts-ignore
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { type Post } from '@lens-protocol/api-bindings/dist/declarations/src/lens/graphql/generated';
-import { paths } from '../../../routes/paths';
-import { useRouter } from '../../../routes/hooks';
+import { paths } from '@src/routes/paths.ts';
+import { useRouter } from '@src/routes/hooks';
 
 // ----------------------------------------------------------------------
 
@@ -54,7 +56,7 @@ type CarouselItemProps = {
   active: boolean;
 };
 
-function CarouselItem({ post, active }: CarouselItemProps) {
+function CarouselItem({ post }: CarouselItemProps) {
   const theme = useTheme();
   const router = useRouter();
 

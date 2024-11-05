@@ -7,7 +7,7 @@ import { Profile } from '@lens-protocol/api-bindings';
 import { useProfileFollowers } from '@lens-protocol/react';
 
 // LOCAL IMPORTS
-import { UserItem } from '../../components/user-item';
+import { UserItem } from '@src/components/user-item';
 
 // ----------------------------------------------------------------------
 
@@ -19,7 +19,7 @@ interface Props {
 // ----------------------------------------------------------------------
 
 const ProfileFollowers = ({ profile, onActionFinished }: Props) => {
-  const { data: followers, loading, error } = useProfileFollowers({
+  const { data: followers } = useProfileFollowers({
     of: profile.id
   });
 

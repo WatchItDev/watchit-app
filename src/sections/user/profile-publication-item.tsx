@@ -1,17 +1,20 @@
 // ProfilePublicationItem.js
-import { useState, useRef, useCallback, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { PublicationReactionType, hasReacted } from '@lens-protocol/react-web';
 import Image from '../../components/image';
 import { paths } from '../../routes/paths';
-import { useRouter } from '../../routes/hooks';
+import { useRouter } from '@src/routes/hooks';
 
 interface Props {
   publication: any;
 }
 
 export const ProfilePublicationItem = ({ publication }: Props) => {
+
+  // @ts-ignore
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [hasLiked, setHasLiked] = useState(false);
   const router = useRouter();
 

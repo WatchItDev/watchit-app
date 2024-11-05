@@ -27,8 +27,8 @@ import MovieDetailsComments from '../movie-details-comments';
 import MovieDetailsDescription from '../movie-details-description';
 import Label from '../../../components/label';
 import Header from '../../../layouts/dashboard/header';
-import { useResponsive } from '../../../hooks/use-responsive';
-import { useRouter } from '../../../routes/hooks';
+import { useResponsive } from '@src/hooks/use-responsive.ts';
+import { useRouter } from '@src/routes/hooks';
 import { LoadingScreen } from '../../../components/loading-screen';
 
 // ----------------------------------------------------------------------
@@ -43,11 +43,11 @@ export default function MovieDetailsView({ id }: Props) {
   const settings = useSettingsContext();
   const mdUp = useResponsive('up', 'md');
   const router = useRouter();
-  const { data, error, loading }: any = usePublication({
-    forId: id as any
+  const { data, loading }: any = usePublication({
+    forId: id as any,
   });
 
-  const handleChangeTab = useCallback((event: React.SyntheticEvent, newValue: string) => {
+  const handleChangeTab = useCallback((_event: React.SyntheticEvent, newValue: string) => {
     setCurrentTab(newValue);
   }, []);
 

@@ -11,19 +11,18 @@ import { bgGradient } from '@src/theme/css';
 // components
 import Image from '@src/components/image';
 import { varFade } from '@src/components/animate';
-import { IconStarFilled, IconPlayerPlay, IconFlagFilled, IconHeart, IconHeartFilled } from '@tabler/icons-react';
+import { IconPlayerPlay, IconFlagFilled, IconHeart, IconHeartFilled } from '@tabler/icons-react';
 import Container from '@mui/material/Container';
 import Stack from '@mui/material/Stack';
-import { Post } from '@lens-protocol/api-bindings/dist/declarations/src/lens/graphql/generated';
-import { TokenAllowanceLimit, useApproveModule, PrimaryPublication, PublicationReactionType, hasReacted, useReactionToggle } from '@lens-protocol/react-web';
+import { TokenAllowanceLimit, useApproveModule, PublicationReactionType, hasReacted, useReactionToggle } from '@lens-protocol/react-web';
 import moment from 'moment';
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { AnyPublication, OpenActionKind, useHidePublication, useOpenAction } from '@lens-protocol/react';
+import { OpenActionKind, useHidePublication, useOpenAction } from '@lens-protocol/react';
 import { useState } from 'react';
 import { CircularProgress } from '@mui/material';
 import { useSettingsContext } from '../../settings';
-import { useRouter } from '../../../routes/hooks';
-import { paths } from '../../../routes/paths';
+import { useRouter } from '@src/routes/hooks';
+import { paths } from '@src/routes/paths.ts';
 import { PosterVertical } from '../../poster';
 
 // ----------------------------------------------------------------------
@@ -39,14 +38,14 @@ export default function MovieDetailMain({ post }: Props) {
   const settings = useSettingsContext();
   const price = post?.openActionModules?.[0]?.amount?.value ?? ''
   const coin = post?.openActionModules?.[0]?.amount?.asset?.symbol ?? ''
-  const { execute: collect, loading, error } = useOpenAction({
+  const { execute: collect, loading } = useOpenAction({
     action: { kind: OpenActionKind.COLLECT }
   });
   const approve = useApproveModule({
     limit: TokenAllowanceLimit.INFINITE,
   });
   const { execute: hide, loading: loadingHide } = useHidePublication();
-  const { execute: toggle, loading: loadingLike, error: errorLike } = useReactionToggle();
+  const { execute: toggle, loading: loadingLike} = useReactionToggle();
   const [hasLiked, setHasLiked] = useState(hasReacted({ publication: post, reaction: PublicationReactionType.Upvote }));
 
   const variants = theme.direction === 'rtl' ? varFade().inLeft : varFade().inRight;

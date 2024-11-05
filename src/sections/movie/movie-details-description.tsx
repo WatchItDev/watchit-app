@@ -13,20 +13,31 @@ type Props = {
   description: string;
 };
 
-export default function MovieDetailsDescription({ description }: Props) {
-  const { data, loading, error }: any = usePublications({
+// eslint-disable-next-line no-empty-pattern
+export default function MovieDetailsDescription({}: Props) {
+  const { data, loading }: any = usePublications({
     where: {
       publicationTypes: [PublicationType.Post],
       metadata: {
         // mainContentFocus: [PublicationMetadataMainFocusType.Video],
         publishedOn: [appId('watchit')],
-      }
-    }
+      },
+    },
   });
 
-  if (loading) return <LoadingScreen />
+  if (loading) return <LoadingScreen />;
 
-  const movieArr: any = getAccessiblePublications([...data, ...data, ...data, ...data, ...data, ...data, ...data, ...data, ...data])
+  const movieArr: any = getAccessiblePublications([
+    ...data,
+    ...data,
+    ...data,
+    ...data,
+    ...data,
+    ...data,
+    ...data,
+    ...data,
+    ...data,
+  ]);
 
   return (
     <Stack spacing={3} sx={{ pb: 6 }}>

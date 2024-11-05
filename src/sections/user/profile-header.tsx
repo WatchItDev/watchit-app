@@ -1,7 +1,6 @@
-import { useState, useCallback, useEffect, PropsWithChildren } from 'react';
+import { useState, useEffect, PropsWithChildren } from 'react';
 // components
 import Iconify from '@src/components/iconify';
-import { useSettingsContext } from '@src/components/settings';
 //
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { appId, PublicationType, useFollow, usePublications, useUnfollow } from '@lens-protocol/react-web';
@@ -15,14 +14,13 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import LoadingButton from '@mui/lab/LoadingButton';
-import ListItemText from '@mui/material/ListItemText';
 import Button from '@mui/material/Button';
 import Popover from '@mui/material/Popover';
 import { useAuth } from '../../hooks/use-auth';
 import ProfileCover from './profile-cover';
 import { truncateAddress } from '../../utils/wallet';
 import CopyableText from '../../components/copyableText/copyableText';
-import { UpdateModal } from '../../components/updateModal';
+import { UpdateModal } from '@src/components/updateModal';
 
 // ----------------------------------------------------------------------
 
@@ -68,18 +66,18 @@ interface SocialMediaUrls {
 // ----------------------------------------------------------------------
 
 const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderProps>) => {
-  const { data: publications, loading: publicationsLoading } = usePublications({
+  usePublications({
     where: {
       from: [...(profile?.id ? [profile.id] : [])],
       publicationTypes: [PublicationType.Post],
       metadata: {
         publishedOn: [appId('watchit')],
-      }
-    }
+      },
+    },
   });
 
   const theme = useTheme();
-  const { selectedProfile, updateProfileMetadata  } = useAuth();
+  const { selectedProfile } = useAuth();
   const [isFollowed, setIsFollowed] = useState(false);
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const open = Boolean(anchorEl);
@@ -104,18 +102,16 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
   }, [followError, unfollowError]);
 
   useEffect(() => {
-    setIsFollowed(!!profile?.operations?.isFollowedByMe?.value)
+    setIsFollowed(!!profile?.operations?.isFollowedByMe?.value);
   }, [selectedProfile, profile]);
 
-  const socialMediaUrls: SocialMediaUrls = profile?.metadata?.attributes?.reduce(
-    (acc: SocialMediaUrls, attr) => {
+  const socialMediaUrls: SocialMediaUrls =
+    profile?.metadata?.attributes?.reduce((acc: SocialMediaUrls, attr) => {
       if (['twitter', 'facebook', 'instagram'].includes(attr.key)) {
         acc[attr.key as keyof SocialMediaUrls] = attr.value;
       }
       return acc;
-    },
-    {} as SocialMediaUrls
-  ) || {};
+    }, {} as SocialMediaUrls) || {};
 
   // const updateMetadata = async () => {
   //   if (!selectedProfile) return
@@ -130,7 +126,7 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
 
   // Function to handle following a profile
   const handleFollow = async () => {
-    if (!profile) return
+    if (!profile) return;
 
     try {
       const result = await follow({ profile });
@@ -149,7 +145,7 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
 
   // Function to handle unfollowing a profile
   const handleUnfollow = async () => {
-    if (!profile) return
+    if (!profile) return;
 
     try {
       const result = await unfollow({ profile });
@@ -176,10 +172,18 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
         setErrorMessage('There is a pending signing request in your wallet.');
         break;
       case 'InsufficientAllowanceError':
-        setErrorMessage(`You must approve the contract to spend at least: ${error.requestedAmount.asset.symbol} ${error.requestedAmount.toSignificantDigits(6)}`);
+        setErrorMessage(
+          `You must approve the contract to spend at least: ${
+            error.requestedAmount.asset.symbol
+          } ${error.requestedAmount.toSignificantDigits(6)}`
+        );
         break;
       case 'InsufficientFundsError':
-        setErrorMessage(`You do not have enough funds to pay for this follow fee: ${error.requestedAmount.asset.symbol} ${error.requestedAmount.toSignificantDigits(6)}`);
+        setErrorMessage(
+          `You do not have enough funds to pay for this follow fee: ${
+            error.requestedAmount.asset.symbol
+          } ${error.requestedAmount.toSignificantDigits(6)}`
+        );
         break;
       case 'WalletConnectionError':
         setErrorMessage('There was an error connecting to your wallet.');
@@ -232,8 +236,8 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
     }
   };
 
-  console.log('profile')
-  console.log(profile)
+  console.log('profile');
+  console.log(profile);
 
   return (
     <>
@@ -260,8 +264,12 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
           >
             <Stack direction="row">
               <Avatar
-                src={(profile?.metadata?.picture as any)?.optimized?.uri ?? `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${profile?.id}`}
-                alt={profile?.handle?.localName ?? ''} variant="rounded"
+                src={
+                  (profile?.metadata?.picture as any)?.optimized?.uri ??
+                  `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${profile?.id}`
+                }
+                alt={profile?.handle?.localName ?? ''}
+                variant="rounded"
                 sx={{
                   width: { xs: 64, md: 128 },
                   height: { xs: 64, md: 128 },
@@ -269,37 +277,46 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
                 }}
               />
               <Stack direction="row" spacing={2} justifyContent="center" sx={{ mt: 11, ml: 2 }}>
-                {socialMedia.map(({ key, icon }) => (
-                  socialMediaUrls[key as keyof SocialMediaUrls] && (
-                    <Button
-                      key={key}
-                      component="a"
-                      href={socialMediaUrls[key as keyof SocialMediaUrls]}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      sx={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        borderRadius: 1,
-                        border: '1px solid rgba(255, 255, 255, 0.12)',
-                        p: 1,
-                        width: 40,
-                        height: 40,
-                        minWidth: '40px',
-                      }}
-                    >
-                      <Iconify icon={icon} width={20} />
-                    </Button>
-                  )
-                ))}
+                {socialMedia.map(
+                  ({ key, icon }) =>
+                    socialMediaUrls[key as keyof SocialMediaUrls] && (
+                      <Button
+                        key={key}
+                        component="a"
+                        href={socialMediaUrls[key as keyof SocialMediaUrls]}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        sx={{
+                          display: 'flex',
+                          flexDirection: 'column',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          borderRadius: 1,
+                          border: '1px solid rgba(255, 255, 255, 0.12)',
+                          p: 1,
+                          width: 40,
+                          height: 40,
+                          minWidth: '40px',
+                        }}
+                      >
+                        <Iconify icon={icon} width={20} />
+                      </Button>
+                    )
+                )}
               </Stack>
             </Stack>
 
-            <Stack direction='column' sx={{ width: '100%' }}>
+            <Stack direction="column" sx={{ width: '100%' }}>
               <Box sx={{ mt: 2, width: '80%' }}>
-                <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-end', mt: 0, mb: 1 }}>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    alignItems: 'flex-end',
+                    mt: 0,
+                    mb: 1,
+                  }}
+                >
                   <Typography variant="h4" color="text.primary">
                     {profile?.metadata?.displayName ?? ''}
                   </Typography>
@@ -321,27 +338,32 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
                   sx={{
                     mt: 0,
                     mb: 2,
-                    opacity: 0.7
+                    opacity: 0.7,
                   }}
                 >
                   {profile?.metadata?.bio ?? ''}
                 </Typography>
               </Box>
-              <Stack direction='row' sx={{ width: '100%', mb: 5, gap: 2 }}>
+              <Stack direction="row" sx={{ width: '100%', mb: 5, gap: 2 }}>
                 <LoadingButton
-                  title={isFollowed ? "Unsubscribe" : "Subscribe"}
-                  variant={isFollowed ? "outlined" : "contained"}
+                  title={isFollowed ? 'Unsubscribe' : 'Subscribe'}
+                  variant={isFollowed ? 'outlined' : 'contained'}
                   sx={{
                     minWidth: 120,
-                    backgroundColor: isFollowed ? '#24262A' : '#fff'
+                    backgroundColor: isFollowed ? '#24262A' : '#fff',
                   }}
                   onClick={isFollowed ? handleUnfollow : handleFollow}
                   disabled={followLoading || unfollowLoading || profile?.id === selectedProfile?.id}
                   loading={followLoading || unfollowLoading}
                 >
-                  {isFollowed ? "Unsubscribe" : "Subscribe"}
+                  {isFollowed ? 'Unsubscribe' : 'Subscribe'}
                 </LoadingButton>
-                <Button size="medium" variant="outlined" sx={{ p: 1, minWidth: '44px' }} onClick={handlePopoverOpen}>
+                <Button
+                  size="medium"
+                  variant="outlined"
+                  sx={{ p: 1, minWidth: '44px' }}
+                  onClick={handlePopoverOpen}
+                >
                   <Iconify icon="ion:share-outline" width={20} />
                 </Button>
                 {selectedProfile && profile?.id === selectedProfile?.id && (
@@ -350,7 +372,7 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
                     sx={{
                       p: 1,
                       minWidth: '44px',
-                      backgroundColor: '#fff'
+                      backgroundColor: '#fff',
                     }}
                     onClick={() => setIsUpdateModalOpen(true)}
                   >
@@ -457,7 +479,7 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
               borderRadius: 2,
               width: '328px',
               marginTop: 4,
-              marginBottom: 3
+              marginBottom: 3,
             }}
           >
             <Stack
@@ -483,12 +505,15 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
               }}
             >
               <Typography color="text.secondary">Address</Typography>
-              <CopyableText label={truncateAddress(`${profile?.ownedBy?.address}`)} text={`${profile?.ownedBy?.address}`} />
+              <CopyableText
+                label={truncateAddress(`${profile?.ownedBy?.address}`)}
+                text={`${profile?.ownedBy?.address}`}
+              />
             </Stack>
           </Stack>
         </Stack>
 
-        { children }
+        {children}
       </Box>
 
       <UpdateModal open={isUpdateModalOpen} onClose={() => setIsUpdateModalOpen(false)} />
@@ -520,6 +545,6 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
       </Snackbar>
     </>
   );
-}
+};
 
 export default ProfileHeader

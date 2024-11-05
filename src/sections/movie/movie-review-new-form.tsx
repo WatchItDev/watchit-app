@@ -83,7 +83,7 @@ export default function MovieReviewNewForm({ onClose, ...other }: Props) {
                   {...field}
                   size="small"
                   value={Number(field.value)}
-                  onChange={(event, newValue) => {
+                  onChange={(_event, newValue) => {
                     field.onChange(newValue as number);
                   }}
                 />

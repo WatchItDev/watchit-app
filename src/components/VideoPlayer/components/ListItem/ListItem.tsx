@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react'
+import { FC, useState } from 'react';
 import { styled, Box, BoxProps, Typography } from '@mui/material'
 /* import { Check } from '@mui/icons-material'
 import { withTheme } from '../../../hoc/withTheme' */
@@ -13,16 +13,17 @@ export type ListItemProps = {
   list:Item[]
   title?:string
   onChange?: ( id: string )=> void
-}  
+}
 
 const ListItems: FC<ListItemProps> = ( props ) : JSX.Element => {
-  const [selected, setSelected] = useState( props.defaultSelect || '' )
+  const [setSelected] = useState( props.defaultSelect || '' )
 
+  // @ts-ignore
   const handleOnChange = ( id:string ) => setSelected(id)
-  
+
   return (
     <Box sx={{margin:'0 10px'}}>
-      {props.title 
+      {props.title
         && <Typography noWrap
               sx={{ margin:'0 0 10px 0' }}
             >
@@ -40,7 +41,7 @@ const ListItems: FC<ListItemProps> = ( props ) : JSX.Element => {
             {/* <Check sx={{
                 visibility:`${ item.id == selected ? 'visible' : 'hidden' }`,
                 width:'18px',
-                height:'auto', 
+                height:'auto',
                 marginLeft:'1.5rem',
                 color: '#D1D2D3 !important'
               }}

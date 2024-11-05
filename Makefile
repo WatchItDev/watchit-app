@@ -24,4 +24,4 @@ install:
 
 .PHONY: lint ## lint standard js
 lint:
-	npx standard "src/{main,render}/**/*.{js,jsx}" $(filter-out $@,$(MAKECMDGOALS))
+	npx eslint "src/**/*.{js,jsx,ts,tsx}\""

@@ -1,4 +1,4 @@
-import React, { useState, FC } from 'react'
+import { useState, FC } from 'react';
 import { styled, Box, BoxProps, Slider } from '@mui/material'
 import { IconVolume } from '@tabler/icons-react';
 /* import { VolumeUp, VolumeOff } from '@mui/icons-material' */
@@ -8,27 +8,29 @@ import { ButtonCustom } from '../Button/Button'
 
 export type SliderVolumenProps = {
   defaultVolume?: number,
-  alwaysShow: boolean, 
+  alwaysShow: boolean,
   onChange: ( value:number ) => void;
 }
 
 const SliderVolumen: FC<SliderVolumenProps> = (props) : JSX.Element => {
   const { defaultVolume = 0, alwaysShow = true, onChange } = props
-  // State use to show TextField and change button icon 
+  // State use to show TextField and change button icon
   const [ show, setShow ] = useState( alwaysShow )
+  // @ts-ignore
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [ volumen, setVolumen ] = useState(defaultVolume)
 
   const handleShow = () => show ? setShow(false) : setShow(true)
 
-  const handleShow2 = (e:Event,value:any) =>{ 
-    setVolumen(value)
-    onChange(value)
-  }
+  const handleShow2 = (_e: Event, value: any) => {
+    setVolumen(value);
+    onChange(value);
+  };
 
   return (
-      <MainWrapper>  
-        { show && 
-          <SliderVolumenWrapper>          
+      <MainWrapper>
+        { show &&
+          <SliderVolumenWrapper>
             <SliderCustom
               aria-label='Volumen'
               orientation='vertical'
@@ -38,12 +40,12 @@ const SliderVolumen: FC<SliderVolumenProps> = (props) : JSX.Element => {
             />
           </SliderVolumenWrapper>
         }
-        <ButtonCustom 
+        <ButtonCustom
           variant='flat'
           width='45px'
           height='45px'
-          icon={<IconVolume color="#FFFFFF" />} 
-          onClick={ ()=> handleShow() } 
+          icon={<IconVolume color="#FFFFFF" />}
+          onClick={ ()=> handleShow() }
           backgroundColor='transparent'
           data-testid='button-show-slider'
         />

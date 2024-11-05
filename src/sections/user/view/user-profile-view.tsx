@@ -6,7 +6,7 @@ import Tabs, { tabsClasses } from '@mui/material/Tabs';
 
 // components
 import { useSettingsContext } from '@src/components/settings';
-import { useLazyProfile, useProfile } from '@lens-protocol/react';
+import { useLazyProfile } from '@lens-protocol/react';
 import { appId, ProfileId, PublicationType, usePublications } from '@lens-protocol/react-web';
 import ProfileHome from '../profile-home';
 import ProfileFollowers from '../profile-followers';
@@ -30,7 +30,7 @@ const UserProfileView = ({ id }: any) => {
   const [currentTab, setCurrentTab] = useState('publications');
   const settings = useSettingsContext();
 
-  const { called, data: profile, error, loading, execute } = useLazyProfile();
+  const { called, data: profile, execute } = useLazyProfile();
 
   const { data: publications } = usePublications({
     where: {
@@ -51,7 +51,7 @@ const UserProfileView = ({ id }: any) => {
     subscribed: profile?.stats?.following ?? 0,
   };
 
-  const handleChangeTab = (event: any, newValue: any) => {
+  const handleChangeTab = (_event: any, newValue: any) => {
     setCurrentTab(newValue);
   };
 

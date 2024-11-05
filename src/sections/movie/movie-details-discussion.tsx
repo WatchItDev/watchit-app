@@ -4,14 +4,14 @@ import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 // hooks
-import { useBoolean } from '@src/hooks/use-boolean';
+/* import { useBoolean } from '@src/hooks/use-boolean'; */
 //
 import { IconArrowUp, IconArrowDown, IconHeartFilled, IconMessageCircle2Filled } from '@tabler/icons-react';
 
 // ----------------------------------------------------------------------
 
 export default function MovieDetailsDiscussion() {
-  const review = useBoolean();
+  // const review = useBoolean();
   const items = [
     { title: 'Item 1', description: 'Descripción del ítem 1' },
     { title: 'Item 2', description: 'Descripción del ítem 2' },
@@ -23,7 +23,7 @@ export default function MovieDetailsDiscussion() {
     <Box sx={{display:'flex'}}>
       <Box sx={{width:'70%',display:'flex',flexDirection:'column',padding:'0 20px'}}>
         {
-          items.map((item, index) => (
+          items.map(() => (
             <Box sx={{display:'flex',alignItems:'center',margin:'20px 0',width:'100%'}}>
               <Box>
                   <Box sx={{
