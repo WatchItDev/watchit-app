@@ -85,7 +85,9 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({ onSuccess, onCance
         }
       } catch (error) {
         console.error('Error registering profile', error);
+        // @ts-ignore
         console.error(error.message);
+        // @ts-ignore
         setErrorMessage(error.message || 'Ocurrió un error durante el registro.');
       }
     },
