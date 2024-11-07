@@ -14,7 +14,6 @@ import ProfileFollowing from '../profile-following';
 import ProfileHeader from '../profile-header';
 import Label from '../../../components/label';
 import ProfileCollected from '../profile-collected';
-import {useAuth} from "@src/hooks/use-auth.ts";
 
 // ----------------------------------------------------------------------
 
@@ -30,7 +29,6 @@ const TABS = [
 const UserProfileView = ({ id }: any) => {
   const [currentTab, setCurrentTab] = useState('publications');
   const settings = useSettingsContext();
-  const { loading } = useAuth()
 
   const { called,data: profile, execute } = useLazyProfile();
 
@@ -73,7 +71,7 @@ const UserProfileView = ({ id }: any) => {
 
   return (
     <Container maxWidth={settings.themeStretch ? false : 'lg'}>
-      { !loading && profile ? (<>
+      { profile ? (<>
       <ProfileHeader profile={profile as any}>
         <Tabs
           value={currentTab}
