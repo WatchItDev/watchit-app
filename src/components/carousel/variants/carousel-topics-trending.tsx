@@ -1,15 +1,12 @@
 // @mui
 import Box from '@mui/material/Box';
 import Carousel, { CarouselArrows, useCarousel } from '@src/components/carousel/index';
-// @ts-ignore
-import { type Post } from '@lens-protocol/api-bindings/dist/declarations/src/lens/graphql/generated';
 import PosterTrendingTopic from "@src/components/poster/variants/poster-trending-topic.tsx";
-import {TrendingTopics} from "@src/sections/explore/view.tsx";
-
+import {TrendingTopicsType} from "@src/sections/explore/view.tsx";
 // ----------------------------------------------------------------------
 
 type Props = {
-  data: TrendingTopics[],
+  data: TrendingTopicsType [],
   category?: string
 };
 

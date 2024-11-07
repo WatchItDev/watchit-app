@@ -1,6 +1,5 @@
 // import { Skeleton, Grid, Box, Button, Modal } from '@mui/material';
 import { Helmet } from 'react-helmet-async';
-import { useState } from 'react';
 import {
   OpenActionType,
   Amount,
@@ -84,12 +83,12 @@ const uploadToPinata = async (metadata: any) => {
 
 export default function OverviewFilePage() {
   // @ts-ignore eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [open, setOpen] = useState(false);
+  // const [open, setOpen] = useState(false);
   const { selectedProfile: activeProfile } = useAuth(); // Obtener el perfil activo
 
   // @ts-ignore eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  // const handleOpen = () => setOpen(true);
+  //  const handleClose = () => setOpen(false);
 
   const { execute: createPost } = useCreatePost();
   const { data, loading } = useCurrencies();
@@ -202,7 +201,7 @@ export default function OverviewFilePage() {
           window.alert('Post created successfully');
         }
 
-        handleClose(); // Cierra el modal
+        // handleClose(); // Cierra el modal
       }
     } catch (error) {
       console.error('Error submitting to Lens:', error);
