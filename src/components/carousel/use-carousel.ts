@@ -35,6 +35,7 @@ export default function useCarousel(props?: Settings): ReturnType {
     arrows: false,
     dots: !!props?.customPaging,
     rtl,
+    // @ts-ignore
     beforeChange: (current: number, next: number) => setCurrentIndex(next),
     ...props,
     fade: !!(props?.fade && !rtl),
