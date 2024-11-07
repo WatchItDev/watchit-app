@@ -1,21 +1,21 @@
 // @mui
 import Box from '@mui/material/Box';
-import { Typography } from '@mui/material';
 import Carousel, { CarouselArrows, useCarousel } from '@src/components/carousel/index';
-import PosterMini from '@src/components/poster/variants/poster-mini';
 // @ts-ignore
 import { type Post } from '@lens-protocol/api-bindings/dist/declarations/src/lens/graphql/generated';
 import moment from 'moment/moment';
+import PosterHorizontal from "@src/components/poster/variants/poster-horizontal.tsx";
 
 // ----------------------------------------------------------------------
 
 type Props = {
   data: Post[]
+  category?: string
 };
 
-export default function CarouselPosterMini({ data }: Props) {
+export default function CarouselPosterMini({ data, category }: Props) {
   const carousel = useCarousel({
-    slidesToShow: 4,
+    slidesToShow: 6,
     adaptiveHeight: true,
     focusOnSelect: true,
     swipeToSlide: true,
@@ -76,12 +76,9 @@ export default function CarouselPosterMini({ data }: Props) {
         onPrev={carousel.onPrev}
       >
         <Carousel ref={carousel.carouselRef} {...carousel.carouselSettings}>
-          {data.map((post: any, index: number) => (
-            <Box key={post.id} sx={{ px: 0.75, display:'flex !important', height: '100%' }}>
-              <Box sx={{display:'flex',alignItems:'center'}}>
-                <Typography fontWeight="fontWeightBold" sx={{ fontSize: 'clamp(2rem, 0.8vw, 2rem)', whiteSpace: 'nowrap', marginRight:'10px' }} variant='body2'>{index + 1}</Typography>
-              </Box>
-              <PosterMini
+          {data.map((post: any) => (
+            <Box key={`${category}-${post.id}`} sx={{ px: 0.75, display:'flex !important', height: '100%' }}>
+              <PosterHorizontal
                 id={post?.id}
                 title={post?.metadata?.title}
                 genre={getMovieGenres(post).split(', ')}

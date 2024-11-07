@@ -44,7 +44,7 @@ const PosterHorizontal = ({ title, images, rating, year, likes, price, genre, id
       onClick={handlePosterClick}
     >
       {/* Poster image */}
-      <Image style={{borderRadius:'10px'}} alt={title} src={images.vertical} ratio='16/9' />
+      <Image style={{borderRadius:'10px'}} alt={title} src={images.vertical} ratio='1/1' />
 
       {/* Upper side: Likes & prices */}
       <Box
