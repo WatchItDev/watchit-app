@@ -9,14 +9,14 @@ import Stack from '@mui/material/Stack';
 // components
 import { bgGradient } from '@src/theme/css';
 import Image from '@src/components/image';
-import { IconHeartFilled, IconStarFilled } from '@tabler/icons-react';
+import { IconHeartFilled } from '@tabler/icons-react';
 import { Poster } from '../types';
-import { useRouter } from '../../../routes/hooks';
-import { paths } from '../../../routes/paths';
+import { useRouter } from '@src/routes/hooks';
+import { paths } from '@src/routes/paths.ts';
 
 // ----------------------------------------------------------------------
 
-const PosterHorizontal = ({ title, images, rating, year, likes, price, genre, id }: Poster) => {
+const PosterHorizontal = ({ title, images, year, likes, genre, id }: Poster) => {
   const router = useRouter();
 
   const handlePosterClick = () => {
@@ -74,19 +74,7 @@ const PosterHorizontal = ({ title, images, rating, year, likes, price, genre, id
               {formatLikes(likes)}
             </Typography>
           </Stack>
-          <Box>
-            <Typography variant="body2" sx={{ lineHeight: 1 , fontSize: 'clamp(0.1rem, 0.8vw, 0.9rem)', fontWeight: '700'}}>
-              {price?.mmc ?? 0} MMC
-            </Typography>
-          </Box>
         </Box>
-
-        {/* Price WVC & USD */}
-        <Stack alignItems='flex-end'>
-          <Typography variant="body2" sx={{ lineHeight: 1 , fontSize: 'clamp(0.1rem, 0.8vw, 0.8rem)', whiteSpace: 'nowrap' }}>
-            {price?.usd ?? 0} USD
-          </Typography>
-        </Stack>
       </Box>
 
       {/* Downside: Title & details */}
@@ -106,11 +94,7 @@ const PosterHorizontal = ({ title, images, rating, year, likes, price, genre, id
 
         {/* Details: Rating, Year, Genre */}
         <Stack direction="row" spacing={1} alignItems="center">
-          <Stack direction="row" spacing={0.5} alignItems="center">
-            <IconStarFilled size={14} color="#FFCD19"/>
-            <Typography sx={{fontSize: 'clamp(0.1rem, 0.8vw, 2rem)', fontWeight: '700' }} variant="body2">{rating}</Typography>
-          </Stack>
-          <Typography sx={{fontSize: 'clamp(0.1rem, 0.8vw, 2rem)'}} variant="body2" color="textSecondary">|</Typography>
+
           <Typography sx={{fontSize: 'clamp(0.1rem, 0.8vw, 2rem)', fontWeight: '700'}} variant="body2">{year}</Typography>
           <Typography sx={{fontSize: 'clamp(0.1rem, 0.8vw, 2rem)'}} variant="body2" color="textSecondary">|</Typography>
           <Typography sx={{fontSize: 'clamp(0.1rem, 0.8vw, 2rem)', fontWeight: '700'}} variant="body2" color="textSecondary">
