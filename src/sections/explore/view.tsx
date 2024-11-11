@@ -21,6 +21,7 @@ import { getAccessiblePublications } from '../../utils/publication';
 import {CarouselSection} from "@src/components/poster/carousel-section.tsx";
 import Box from "@mui/material/Box";
 import CarouselTopicsTrending from "@src/components/carousel/variants/carousel-topics-trending.tsx";
+import CarouselTopTitles from "@src/components/carousel/variants/carousel-top-titles.tsx";
 
 // ----------------------------------------------------------------------
 export type TrendingTopicsType = {
@@ -100,6 +101,9 @@ export default function ExploreView() {
           </TabsListStyled>
           {arrayTabs.map((_item, index) => (
             <TabPanelStyled key={`tabContent-${_item}-${index}`} value={index}>
+
+              <CarouselTopTitles data={movieArr} />
+
               <CarouselSection title="Top success creators">
                 <CarouselPosterMini data={movieArr} />
               </CarouselSection>
@@ -167,12 +171,11 @@ const TabStyled = styled(Tab)`
 `;
 
 const TabPanelStyled = styled(TabPanel)(
-  ({ theme }) => `
+  () => `
   width: 100%;
   font-family: 'IBM Plex Sans', sans-serif;
   font-size: 0.875rem;
-  padding: 20px 12px;
-  background: ${theme.palette.mode === 'dark' ? grey[900] : '#fff'};
+
   border-radius: 12px;
   opacity: 0.6;
   `,

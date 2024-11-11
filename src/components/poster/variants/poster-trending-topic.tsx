@@ -9,12 +9,12 @@ import Stack from '@mui/material/Stack';
 import Image from '@src/components/image';
 import { useRouter } from '@src/routes/hooks';
 import { paths } from '@src/routes/paths.ts';
-import {TrendingTopics} from "@src/sections/explore/view.tsx";
+import {TrendingTopicsType} from "@src/sections/explore/view.tsx";
 import Box from "@mui/material/Box";
 
 // ----------------------------------------------------------------------
 
-const PosterTrendingTopic = ({ id, title, image, desc }: TrendingTopics) => {
+const PosterTrendingTopic = ({ id, title, image, desc }: TrendingTopicsType) => {
   const router = useRouter();
 
   const handlePosterClick = () => {
@@ -37,15 +37,15 @@ const PosterTrendingTopic = ({ id, title, image, desc }: TrendingTopics) => {
             direction="row"
             spacing={0}
         >
-          <Item>
+          <StackItem>
             {/* Poster image */}
            <Box sx={{
              width: '150px'
            }} >
              <Image style={{borderRadius:'10px'}} alt={title} src={image} ratio='1/1' />
            </Box>
-          </Item>
-          <Item>
+          </StackItem>
+          <StackItem>
             <Typography style={{fontSize: 'clamp(0.5rem, 1vw, 2rem)', textOverflow: 'clip', wordWrap: 'break-word'  }} noWrap variant='h6' sx={{ mb: 1 }}>
               {title}
             </Typography>
@@ -55,7 +55,7 @@ const PosterTrendingTopic = ({ id, title, image, desc }: TrendingTopics) => {
                 { desc }
               </Typography>
             </Stack>
-          </Item>
+          </StackItem>
         </Stack>
     </Paper>
   );
@@ -64,7 +64,7 @@ const PosterTrendingTopic = ({ id, title, image, desc }: TrendingTopics) => {
 export default PosterTrendingTopic
 
 
-const Item = styled('div')(({ theme }) => ({
+export const StackItem = styled('div')(({ theme }) => ({
   backgroundColor: '#fff',
   padding: theme.spacing(1),
   borderRadius: 4,
