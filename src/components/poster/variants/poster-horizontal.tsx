@@ -16,7 +16,7 @@ import { paths } from '@src/routes/paths.ts';
 
 // ----------------------------------------------------------------------
 
-const PosterHorizontal = ({ title, images, year, likes, genre, id }: Poster) => {
+const PosterHorizontal = ({ title, images, likes, id }: Poster) => {
   const router = useRouter();
 
   const handlePosterClick = () => {
@@ -94,11 +94,8 @@ const PosterHorizontal = ({ title, images, year, likes, genre, id }: Poster) => 
 
         {/* Details: Rating, Year, Genre */}
         <Stack direction="row" spacing={1} alignItems="center">
-
-          <Typography sx={{fontSize: 'clamp(0.1rem, 0.8vw, 2rem)', fontWeight: '700'}} variant="body2">{year}</Typography>
-          <Typography sx={{fontSize: 'clamp(0.1rem, 0.8vw, 2rem)'}} variant="body2" color="textSecondary">|</Typography>
-          <Typography sx={{fontSize: 'clamp(0.1rem, 0.8vw, 2rem)', fontWeight: '700'}} variant="body2" color="textSecondary">
-            { genre.join(' - ') }
+          <Typography sx={{fontSize: 'clamp(0.1rem, 0.8vw, 2rem)', fontWeight: '500'}}  noWrap variant="body2" color="textSecondary">
+            Dive into the world of the unknown when Jhon Connor is sent back in time to save the world from the machines.
           </Typography>
         </Stack>
       </CardContent>

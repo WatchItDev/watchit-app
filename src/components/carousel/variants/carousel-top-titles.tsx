@@ -52,7 +52,6 @@ export default function CarouselTopTitles({ data, category }: Props) {
     <Box
       style={{ height: '90vh' }}
       sx={{
-        padding: '50px',
         overflow: 'hidden',
         position: 'relative',
         '.slick-track': {

@@ -1,11 +1,6 @@
 // MUI IMPORTS
 import Stack from '@mui/material/Stack';
 import Container from '@mui/material/Container';
-import  Tabs  from '@mui/base/Tabs';
-import TabsList from '@mui/base/TabsList';
-import TabPanel from '@mui/base/TabPanel';
-import  Tab, { tabClasses} from '@mui/base/Tab';
-import { styled } from '@mui/system';
 
 // COMPONENTS IMPORTS
 import CarouselPosterMini from '@src/components/carousel/variants/carousel-poster-mini';
@@ -84,113 +79,20 @@ export default function ExploreView() {
     ...topic
   ];
 
-  const arrayTabs = [
-    'All','Pop culture','Comedy','Drama','Action','Adventure','Fantasy','Horror','Mystery','Romance','Sci-fi','Thriller'
-  ];
-
   return (
     <Container sx={{ p: '0 !important', maxWidth: '2000px !important' }}>
-      <Stack spacing={3} sx={{ p: 6 }}>
-        <Tabs defaultValue={0}>
-          <TabsListStyled>
-            {arrayTabs.map((item, index) => (
-              <TabStyled key={`tab-${item}-${index}`} value={index}>
-                {item}
-              </TabStyled>
-            ))}
-          </TabsListStyled>
-          {arrayTabs.map((_item, index) => (
-            <TabPanelStyled key={`tabContent-${_item}-${index}`} value={index}>
+      <Stack spacing={3}>
+        <CarouselTopTitles data={movieArr} />
+        <CarouselSection title="Recent publications">
+          <CarouselPosterMini data={movieArr} />
+        </CarouselSection>
 
-              <CarouselTopTitles data={movieArr} />
-
-              <CarouselSection title="Top success creators">
-                <CarouselPosterMini data={movieArr} />
-              </CarouselSection>
-
-              <Box sx={{ mt: 3 }}>
-                <CarouselSection title="Popular this week">
-                  <CarouselTopicsTrending data={trendingTopics} />
-                </CarouselSection>
-              </Box>
-
-              <Box sx={{ mt: 3 }}>
-                <CarouselSection title="Newest on Watchit">
-                  <CarouselPosterMini data={movieArr} />
-                </CarouselSection>
-              </Box>
-            </TabPanelStyled>
-          ))}
-        </Tabs>
+        <Box sx={{ mt: 3 }}>
+          <CarouselSection title="Find by creators">
+            <CarouselTopicsTrending data={trendingTopics} />
+          </CarouselSection>
+        </Box>
       </Stack>
     </Container>
   );
 }
-
-const grey = {
-  50: '#F3F6F9',
-  100: '#E5EAF2',
-  200: '#DAE2ED',
-  300: '#C7D0DD',
-  400: '#B0B8C4',
-  500: '#9DA8B7',
-  600: '#6B7A90',
-  700: '#434D5B',
-  800: '#303740',
-  900: '#1C2025',
-  'bg': '#2B2D31',
-};
-
-const TabStyled = styled(Tab)`
-  font-family: 'IBM Plex Sans', sans-serif;
-  color: ${grey[500]};
-  cursor: pointer;
-  font-size: 0.875rem;
-  font-weight: 600;
-  background-color: ${grey['bg']};
-  width: 100%;
-  padding: 10px 12px;
-  margin: 6px;
-  border: none;
-  border-radius: 7px;
-  display: flex;
-  justify-content: center;
-
-  &:hover {
-    background-color: ${grey[900]};
-  }
-
-  &:focus {
-    color: #fff;
-  }
-
-  &.${tabClasses.selected} {
-    background-color: ${grey[900]};
-    color: ${grey[50]};
-  }
-`;
-
-const TabPanelStyled = styled(TabPanel)(
-  () => `
-  width: 100%;
-  font-family: 'IBM Plex Sans', sans-serif;
-  font-size: 0.875rem;
-
-  border-radius: 12px;
-  opacity: 0.6;
-  `,
-);
-
-const TabsListStyled = styled(TabsList)(
-  ({ theme }) => `
-  min-width: 400px;
-  background-color: transparent;
-  border-radius: 12px;
-  margin-bottom: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  align-content: space-between;
-  box-shadow: 0px 4px 30px ${theme.palette.mode === 'dark' ? grey[900] : grey[200]};
-  `,
-);

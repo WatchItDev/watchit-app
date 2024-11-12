@@ -16,7 +16,7 @@ import Box from "@mui/material/Box";
 
 // ----------------------------------------------------------------------
 
-const PosterTopTitles = ({ title, images, year, genre, id, synopsis }: Poster) => {
+const PosterTopTitles = ({ title, images, id, synopsis }: Poster) => {
   const router = useRouter();
 
   const handlePosterClick = () => {
@@ -24,7 +24,7 @@ const PosterTopTitles = ({ title, images, year, genre, id, synopsis }: Poster) =
   }
 
   return (
-    <Stack direction={'row'} sx={{minWidth: '100%', borderRadius: 10, padding:'90px', position: 'relative'}}>
+    <Stack spacing={3} direction={'row'} sx={{minWidth: '100%', borderRadius: 10, padding:'90px', position: 'relative'}}>
       <Box sx={{
         borderRadius: '10px',
         position: 'absolute',
@@ -34,6 +34,9 @@ const PosterTopTitles = ({ title, images, year, genre, id, synopsis }: Poster) =
         height: '100%',
         opacity: 0.3,
         backgroundImage: `url('https://wallpaperswide.com/download/star_wars_the_rise_of_skywalker_movie-wallpaper-1600x900.jpg')`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
         zIndex: 0,
       }} ></Box>
       <StackItem sx={{minWidth: '50%', background: 'transparent', padding: 0}}>
@@ -66,29 +69,21 @@ const PosterTopTitles = ({ title, images, year, genre, id, synopsis }: Poster) =
                 {title}
               </Typography>
 
-              <Stack direction="row" spacing={1} alignItems="center">
-                <Typography sx={{fontSize: 'clamp(0.1rem, 0.8vw, 2rem)', fontWeight: '700'}} variant="body2">{year}</Typography>
-                <Typography sx={{fontSize: 'clamp(0.1rem, 0.8vw, 2rem)'}} variant="body2" color="textSecondary">|</Typography>
-                <Typography sx={{fontSize: 'clamp(0.1rem, 0.8vw, 2rem)', fontWeight: '700'}} variant="body2" color="textSecondary">
-                  { genre.join(' - ') }
-                </Typography>
-              </Stack>
-
               <Typography style={{fontSize: 'clamp(0.5rem, 1vw, 2rem)'}} variant='h6' sx={{ mb: 1 }}>
                 {synopsis}
               </Typography>
 
               <Stack direction="row" spacing={1} alignItems="center">
                 <Button
-                  variant="outlined"
+                  variant="contained"
                   sx={{
                     mt: 3,
                     borderColor: '#FFFFFF',
-                    color: '#FFFFFF',
+                    color: '#000',
                     height: '40px'
                   }}
                 >
-                  <IconPlayerPlay style={{marginRight:'4px'}} size={22} color='#FFFFFF' />
+                  <IconPlayerPlay style={{marginRight:'4px'}} size={22} color='#000' />
                   Watch now
                 </Button>
                 <Button
