@@ -31,6 +31,8 @@ export type NavListProps = {
   caption?: string;
   disabled?: boolean;
   roles?: string[];
+  badge?: string | number | React.ReactElement;
+  bgColor?: string;
   children?: any;
 };
 
