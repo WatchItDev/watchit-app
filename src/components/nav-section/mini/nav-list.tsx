@@ -7,7 +7,8 @@ import { usePathname } from '@src/routes/hooks';
 //
 import { NavListProps, NavConfigProps } from '../types';
 import NavItem from './nav-item';
-
+import Box from "@mui/material/Box";
+import Stack from "@mui/material/Stack";
 // ----------------------------------------------------------------------
 
 type NavListRootProps = {
@@ -98,7 +99,24 @@ export default function NavList({ data, active, depth, config, onClick }: NavLis
           pointerEvents: 'none'
         }}
       >
-        { data.title }
+          <Stack spacing={1} direction={'row'}>
+            { data.title }
+            { data.badge && (
+              <Box sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                backgroundColor: '#FFAB00',
+                borderRadius: '10%',
+                padding: '2px 1px',
+                color: 'black',
+                fontSize: '0.75rem',
+                fontWeight: 500
+              }}>
+                { data.badge}
+              </Box>
+            )}
+          </Stack>
       </Popover>
     </>
   );
