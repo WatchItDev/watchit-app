@@ -22,6 +22,10 @@ import { useNavData } from './config-navigation';
 // LAYOUT IMPORTS
 import { NAV } from '../config-layout';
 import { AccountPopover, NotificationsPopover, Searchbar } from '../_common';
+import {
+  IconLayoutSidebarLeftCollapse,
+  IconLayoutSidebarRightCollapse,
+} from '@tabler/icons-react';
 
 // ----------------------------------------------------------------------
 
@@ -38,6 +42,7 @@ export default function NavVertical({ openNav, onCloseNav }: Props) {
   const navData = useNavData();
   const { authenticated, loading } = useAuth(); // Use the AuthProvider to check authentication
   const [loginModalOpen, setLoginModalOpen] = useState(false); // State to control LoginModal visibility
+  const [sidebarWidth, setSidebarWidth ] = useState(NAV.W_VERTICAL); // State to control LoginModal visibility
 
   useEffect(() => {
     if (openNav) {
@@ -54,9 +59,20 @@ export default function NavVertical({ openNav, onCloseNav }: Props) {
     setLoginModalOpen(false);
   };
 
+  const toggleSidebarWidth = () => {
+    if (sidebarWidth === NAV.W_VERTICAL) {
+      setSidebarWidth(NAV.W_MINI);
+    } else {
+      setSidebarWidth(NAV.W_VERTICAL);
+    }
+  };
+
   const renderContent = (
     <Scrollbar
       sx={{
+        transition: 'all 0.7s ease',
+        position: 'relative',
+        width: sidebarWidth,
         height: 1,
         backgroundColor: '#2B2D31',
         display:'flex',
@@ -68,9 +84,42 @@ export default function NavVertical({ openNav, onCloseNav }: Props) {
         },
       }}
     >
+      {/*Add a icon to make collapsible the sidebar*/}
+      <Box sx={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        position: 'absolute',
+        top: '7%',
+        right: '-5px',
+        cursor: 'pointer',
+        zIndex: 20,
+      }}>
+        <Stack
+          direction="row"
+          justifyContent="flex-end"
+          sx={{
+            padding: '5px 12px',
+            backgroundColor: 'rgba(0,0,0,.2)',
+            borderTopLeftRadius: '10px',
+            borderBottomLeftRadius: '10px'
+        }}
+        >
+          <Box onClick={toggleSidebarWidth}>
+            {
+              sidebarWidth === NAV.W_VERTICAL ? (
+                <IconLayoutSidebarLeftCollapse color={'#0FA'} />
+              ) : (
+                <IconLayoutSidebarRightCollapse />)
+            }
+          </Box>
+        </Stack>
+      </Box>
+
       <Searchbar />
 
       <NavSectionVertical
+        size={sidebarWidth === NAV.W_MINI ? 'collapsed' : 'full'}
         data={navData}
         config={{
           currentRole: 'admin',
@@ -123,7 +172,7 @@ export default function NavVertical({ openNav, onCloseNav }: Props) {
       component="nav"
       sx={{
         flexShrink: { lg: 0 },
-        width: { lg: NAV.W_VERTICAL },
+        width: { lg: sidebarWidth },
       }}
     >
       {lgUp ? (
@@ -143,7 +192,7 @@ export default function NavVertical({ openNav, onCloseNav }: Props) {
           onClose={onCloseNav}
           PaperProps={{
             sx: {
-              width: NAV.W_VERTICAL,
+              width: sidebarWidth,
             },
           }}
         >

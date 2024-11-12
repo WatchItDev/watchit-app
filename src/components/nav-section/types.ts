@@ -42,4 +42,5 @@ export type NavSectionProps = StackProps & {
     items: NavListProps[];
   }[];
   config?: NavConfigProps;
+  size?: 'collapsed' | 'full';
 };

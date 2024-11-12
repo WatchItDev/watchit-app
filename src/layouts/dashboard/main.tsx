@@ -18,6 +18,7 @@ export default function Main({ children, sx, ...other }: BoxProps) {
     <Box
       component="main"
       sx={{
+        transition: 'all 0.7s ease',
         flexGrow: 1,
         minHeight: 1,
         display: 'flex',
