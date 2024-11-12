@@ -50,7 +50,6 @@ export default function CarouselTopTitles({ data, category }: Props) {
 
   return (
     <Box
-      style={{ height: '90vh' }}
       sx={{
         overflow: 'hidden',
         position: 'relative',

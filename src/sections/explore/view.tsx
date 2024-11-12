@@ -51,25 +51,25 @@ export default function ExploreView() {
     {
       id: 1,
       desc: 'Description for the content trending during the week ',
-      title: 'The Lord of the Rings',
+      title: 'Jhon Doe',
       image: 'https://static0.srcdn.com/wordpress/wp-content/uploads/2023/09/lord-of-the-rings-movies-in-order.jpg'
     },
     {
       id: 2,
       desc: 'Description for the content trending during the week ',
-      title: 'Resident Evil',
+      title: 'Dina Doe',
       image: 'https://i.blogs.es/6ff623/resident-evil-milla-jovovich/1366_2000.jpeg'
     },
     {
       id: 3,
       desc: 'Description for the content trending during the week ',
-      title: 'Gladiator',
+      title: 'Lina Doe',
       image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRSpAo-w7KfZSCvVq81iaatdILc-VWTw-2TkQ&s'
     },
     {
       id: 4,
       desc: 'Description for the content trending during the week ',
-      title: 'Matrix',
+      title: 'Jane Doe',
       image: 'https://static.euronews.com/articles/stories/08/35/93/32/1440x810_cmsv2_c7416dac-8a99-57b8-b728-b28d69040539-8359332.jpg'
     }
   ];
