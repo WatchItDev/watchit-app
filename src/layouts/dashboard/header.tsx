@@ -44,8 +44,8 @@ const Header: FC<PropsWithChildren<HeaderProps>> = ({ children ,actions }) =>  {
           zIndex: 10
         }}
       >
-        <Container sx={{ height: 1, display: 'flex', alignItems: 'center' }}>
-          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start' }}>
+        <Box sx={{ height: 1, display: 'flex', alignItems: 'center' }}>
+          <Box sx={{width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'flex-start' }}>
             { children }
           </Box>
           <Box sx={{ flexGrow: 1 }} />
@@ -53,7 +53,7 @@ const Header: FC<PropsWithChildren<HeaderProps>> = ({ children ,actions }) =>  {
           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
             { actions }
           </Box>
-        </Container>
+        </Box>
       </Toolbar>
 
       {/* <HeaderShadow /> */}

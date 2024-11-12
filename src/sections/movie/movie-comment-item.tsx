@@ -2,42 +2,57 @@ import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Avatar from '@mui/material/Avatar';
-import { useBoolean } from '@src/hooks/use-boolean';
-import { fDate } from '@src/utils/format-time';
-import Iconify from '@src/components/iconify';
 import Paper from '@mui/material/Paper';
-import { Profile } from '@lens-protocol/api-bindings';
 import MovieCommentForm from './movie-details-comment-form';
 import { paths } from '../../routes/paths';
 import { useRouter } from '../../routes/hooks';
+import { CircularProgress } from '@mui/material';
+import { IconHeart, IconHeartFilled, IconMessageCircle, IconMessageCircleFilled } from '@tabler/icons-react';
+import Typography from '@mui/material/Typography';
+import { hasReacted, PublicationReactionType, useReactionToggle } from '@lens-protocol/react-web';
+import { useState } from 'react';
+import RepliesList from '@src/sections/movie/movie-replies-list.tsx';
+import { timeAgo } from '@src/utils/comment.ts';
 
 // ----------------------------------------------------------------------
 
 type Props = {
-  profile: Profile;
-  message: string;
-  postedAt: Date;
+  comment: any
   hasReply?: boolean;
   canReply?: boolean;
-  commentId: string; // Current comment ID
 };
 
 export default function MovieCommentItem({
-                                           profile,
-                                           message,
-                                           postedAt,
+                                           comment,
                                            hasReply,
                                            canReply,
-                                           commentId,
                                          }: Props) {
-  const reply = useBoolean();
   const router = useRouter();
+  const { execute: toggle, loading: loadingLike} = useReactionToggle();
+  const [hasLiked, setHasLiked] = useState(hasReacted({ publication: comment, reaction: PublicationReactionType.Upvote }));
+  // const [hasLiked, setHasLiked] = useState(false);
+  const [showComments, setShowComments] = useState(false);
+
+  const toggleReaction = async () => {
+    try {
+      await toggle({
+        reaction: PublicationReactionType.Upvote,
+        publication: comment,
+      });
+      setHasLiked(!hasLiked); // Toggle the UI based on the reaction state
+    } catch (err) {
+      console.error('Error toggling reaction:', err);
+    }
+  };
 
   const goToProfile = () => {
-    if (!profile?.id) return;
+    if (!comment?.profile?.id) return;
 
-    router.push(paths.dashboard.user.root(`${profile?.id}`))
+    router.push(paths.dashboard.user.root(`${comment?.profile?.id}`))
   }
+
+  console.log('hello comment')
+  console.log(comment)
 
   return (
     <Stack
@@ -46,69 +61,116 @@ export default function MovieCommentItem({
           pl: 8, // Indent replies
         }),
         ...(!hasReply && {
-          pt: 2,
+          pt: 1,
         })
       }}
       direction="column"
       spacing={2}
     >
       <Stack
-        direction="row"
-        spacing={2}
+        direction="column"
+        spacing={1}
       >
-         <Avatar
-          src={(profile?.metadata?.picture as any)?.optimized?.uri ?? `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${profile?.id}`}
-          alt={profile?.id} onClick={goToProfile}
-          sx={{
-            width: 40,
-            height: 40,
-            cursor: 'pointer',
-            border: (theme) => `solid 2px ${theme.palette.background.default}`,
-          }}
-         />
-
-        <Paper
-          sx={{
-            p: 1.5,
-            pt: 0.7,
-            flexGrow: 1,
-            bgcolor: 'background.neutral',
-          }}
+        <Stack
+          direction="row"
+          spacing={2}
         >
-          <Stack
-            sx={{ mb: 0.5 }}
-            alignItems={{ sm: 'center' }}
-            justifyContent="space-between"
-            direction={{ xs: 'column', sm: 'row' }}
+           <Avatar
+            src={(comment?.by?.metadata?.picture as any)?.optimized?.uri ?? `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${comment?.by?.id}`}
+            alt={comment?.by?.id} onClick={goToProfile}
+            sx={{
+              width: 40,
+              height: 40,
+              cursor: 'pointer',
+              border: (theme) => `solid 2px ${theme.palette.background.default}`,
+            }}
+           />
+
+          <Paper
+            sx={{
+              p: 1.5,
+              pt: 0.7,
+              flexGrow: 1,
+              bgcolor: 'background.neutral',
+            }}
           >
-            <Box sx={{ typography: 'subtitle2' }}>{profile?.handle?.localName}</Box>
+            <Stack
+              sx={{ mb: 0.5 }}
+              alignItems={{ sm: 'center' }}
+              justifyContent="flex-start"
+              direction={{ xs: 'column', sm: 'row' }}
+            >
+              <Box sx={{ typography: 'subtitle2' }}>{comment?.by?.handle?.localName}</Box>
 
-            <Box display="flex" flexDirection="row" alignItems="center" justifyContent="center">
-              <Box sx={{ typography: 'caption', color: 'text.disabled' }}>
-                {fDate(postedAt)}
+              <Box display="flex" flexDirection="row" alignItems="center" justifyContent="center" sx={{ ml: 1 }}>
+                <Box sx={{ typography: 'caption', color: 'text.disabled' }}>
+                  {comment?.createdAt ? timeAgo(new Date(comment.createdAt)) : 'Just now'}
+                </Box>
               </Box>
+            </Stack>
 
-              {(!hasReply && !!canReply) && (
-                <Button
-                  size="small"
-                  color={reply.value ? 'primary' : 'inherit'}
-                  startIcon={<Iconify icon="solar:pen-bold" width={16} />}
-                  onClick={reply.onToggle}
-                  sx={{ ml: 2 }}
-                >
-                  Reply
-                </Button>
-              )}
-            </Box>
-          </Stack>
-
-          <Box sx={{ typography: 'body2', color: 'text.secondary' }}>{message}</Box>
-        </Paper>
-      </Stack>
-      {reply.value && (
-        <Box sx={{ mt: 1, mb: 2 }}>
-          <MovieCommentForm commentOn={commentId} />
+            <Box sx={{ typography: 'body2', color: 'text.secondary' }}>{comment?.metadata?.content}</Box>
+          </Paper>
+        </Stack>
+        <Box sx={{ display: 'flex', pl: 7 }}>
+          <Button
+            variant="text"
+            sx={{
+              borderColor: '#FFFFFF',
+              color: '#FFFFFF',
+              height: '30px',
+              minWidth: '40px'
+            }}
+            onClick={toggleReaction}
+            disabled={loadingLike}
+          >
+            {loadingLike ? (
+              <CircularProgress size="25px" sx={{ color: '#fff' }} />
+            ) : (
+              <>
+                {hasLiked ? (
+                  <IconHeartFilled size={22} color='#FFFFFF' />
+                ) : (
+                  <IconHeart size={22} color='#FFFFFF' />
+                )}
+                <Typography variant="body2" sx={{ lineHeight: 1, ml: 1, fontSize: 'clamp(0.5rem, 0.9vw, 1.1rem)', fontWeight: '700'}}>
+                  {comment?.stats?.upvotes}
+                </Typography>
+              </>
+            )}
+          </Button>
+          {canReply && (
+            <Button
+              variant="text"
+              sx={{
+                borderColor: '#FFFFFF',
+                color: '#FFFFFF',
+                height: '30px',
+                minWidth: '40px'
+              }}
+              onClick={() => setShowComments(!showComments)}
+            >
+              <>
+                {showComments ? (
+                  <IconMessageCircleFilled size={22} color='#FFFFFF' />
+                ) : (
+                  <IconMessageCircle size={22} color='#FFFFFF' />
+                )}
+                <Typography variant="body2" sx={{ lineHeight: 1, ml: 1, fontSize: 'clamp(0.5rem, 0.9vw, 1.1rem)', fontWeight: '700'}}>
+                  {comment?.stats?.comments}
+                </Typography>
+              </>
+            </Button>
+          )}
         </Box>
+      </Stack>
+      {showComments && (
+        <>
+          <Box sx={{ mt: 1, mb: 2, ml: 8 }}>
+            <MovieCommentForm commentOn={comment?.id} />
+          </Box>
+          <RepliesList parentCommentId={comment.id} canReply={canReply} />
+        </>
       )}
     </Stack>
   );

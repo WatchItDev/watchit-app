@@ -1,8 +1,9 @@
 import Box from '@mui/material/Box';
-import { usePublications, publicationId } from '@lens-protocol/react-web';
+import { LimitType, publicationId, usePublications } from '@lens-protocol/react-web';
 
 import MovieCommentItem from './movie-comment-item';
 import RepliesList from './movie-replies-list';
+import LinearProgress from '@mui/material/LinearProgress';
 
 // ----------------------------------------------------------------------
 
@@ -13,35 +14,36 @@ type Props = {
 
 export default function PostCommentList({ publicationId: id, showReplies }: Props) {
   // Fetch top-level comments (where commentOn is the post ID)
-  const { data: comments, loading, error } = usePublications({
+  const { data: comments, loading, error, beforeCount, hasMore, next } = usePublications({
     where: {
       commentOn: {
         id: publicationId(id),
       },
     },
+    limit: LimitType.Ten,
   });
 
-  if (loading) return <p>Loading comments...</p>;
+  if (loading) return <LinearProgress color="inherit" sx={{ width: 1, maxWidth: 360, marginTop: '16px', alignSelf: 'center' }} />;
   if (error) return <p>Error loading comments: {error.message}</p>;
+
+  console.log('hello coments')
+  console.log(comments)
+  console.log(beforeCount)
+  console.log(hasMore)
+  console.log(next)
 
   return (
     <>
       {comments?.map((comment: any) => {
         // Destructure necessary data from the comment
-        const { id: commentId, metadata, createdAt, by } = comment;
+        const { id: commentId } = comment;
 
         return (
           <Box key={commentId} width="100%">
             <MovieCommentItem
-              profile={by}
-              message={metadata?.content}
-              postedAt={new Date(createdAt)}
-              commentId={commentId}
+              comment={comment}
               canReply={showReplies}
             />
-            {showReplies && (
-              <RepliesList parentCommentId={commentId} />
-            )}
           </Box>
         );
       })}

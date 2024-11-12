@@ -1,4 +1,3 @@
-// import { Skeleton, Grid, Box, Button, Modal } from '@mui/material';
 import { Helmet } from 'react-helmet-async';
 import { useState } from 'react';
 import {
@@ -7,13 +6,18 @@ import {
   useCreatePost, useCurrencies
 } from '@lens-protocol/react-web';
 import { video, MetadataAttributeType, AnyMedia } from '@lens-protocol/metadata';
-// import Typography from '@mui/material/Typography';
 import axios from 'axios';
 import { useAuth } from '../../hooks/use-auth';
 import uuidv4 from '../../utils/uuidv4';
 import { LoadingScreen } from '../../components/loading-screen';
 import ComingSoonView from "@src/sections/coming-soon/view.tsx";
 import BlankView from "@src/sections/blank/view.tsx";
+import { encodeData } from '@lens-protocol/react';
+import { Grid, Modal } from '@mui/material';
+import Skeleton from '@mui/material/Skeleton';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
 
 // Metadatos de la película en una constante
 const movieMetadata = {
@@ -62,6 +66,9 @@ const movieMetadata = {
   ],
   creators: ["Lucas Brown", "Grace Martin"]
 };
+
+const TIP_ACTION_MODULE_ADDRESS = '0x22cb67432C101a9b6fE0F9ab542c8ADD5DD48153';
+const MMC_ADDRESS = '0x30f106094dB26F4e17439DfCD19A315573bCad0c';
 
 // Función para subir los metadatos a Pinata
 const uploadToPinata = async (metadata: any) => {
@@ -165,7 +172,7 @@ export default function OverviewFilePage() {
       console.log(metadataUri)
 
       // Obtener la moneda MMC
-      const mmc = data?.find((el) => (el.symbol === 'MMC'))
+      const mmc = data?.find((el) => (el.address === MMC_ADDRESS))
 
       if (!mmc) {
         console.error('Currency not found');
@@ -176,6 +183,11 @@ export default function OverviewFilePage() {
 
       console.log(amount)
 
+      const calldata = encodeData(
+        [{ name: 'tipReceiver', type: 'address' }],
+        [activeProfile.ownedBy.address], // Address of tip receiver
+      );
+
       // Crear el post en Lens con el Collect Action Module
       const result = await createPost({
         metadata: metadataUri,
@@ -183,9 +195,14 @@ export default function OverviewFilePage() {
           {
             type: OpenActionType.SIMPLE_COLLECT,
             amount,
-            recipient: activeProfile.ownedBy.address, // Dirección que recibirá los pagos
-            followerOnly: false, // Permitir que cualquiera pueda coleccionar
-            referralFee: 0, // Sin comisión para referidos
+            recipient: activeProfile.ownedBy.address,
+            followerOnly: false,
+            referralFee: 0,
+          },
+          {
+            type: OpenActionType.UNKNOWN_OPEN_ACTION,
+            address: TIP_ACTION_MODULE_ADDRESS,
+            data: calldata,
           },
         ],
       });
@@ -217,10 +234,11 @@ export default function OverviewFilePage() {
         <title> Dashboard: File</title>
       </Helmet>
 
-      <BlankView>
-        <ComingSoonView />
-      </BlankView>
-      {/*<Grid container spacing={2} style={{ height: 'calc(100vh - 5rem)', width: '100%', padding: '2rem 1.5rem 2rem 2rem' }}>
+      {/*<BlankView>*/}
+      {/*  <ComingSoonView />*/}
+      {/*</BlankView>*/}
+
+      <Grid container spacing={2} style={{ height: 'calc(100vh - 5rem)', width: '100%', padding: '2rem 1.5rem 2rem 2rem' }}>
         <Grid item xs={8} style={{ height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'flex-start' }}>
           <Grid container spacing={2} style={{ flexGrow: 1 }}>
             <Grid item xs={4}>
@@ -305,7 +323,7 @@ export default function OverviewFilePage() {
             Upload
           </Button>
         </Box>
-      </Modal>*/}
+      </Modal>
     </>
   );
 }

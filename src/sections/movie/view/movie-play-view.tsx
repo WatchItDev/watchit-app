@@ -6,43 +6,42 @@ import { useResponsive } from '@src/hooks/use-responsive.ts';
 import { useRouter } from '@src/routes/hooks';
 import { LoadingScreen } from '../../../components/loading-screen';
 import VideoPlayer from '../../../components/VideoPlayer';
+import Box from '@mui/material/Box';
 
 // ----------------------------------------------------------------------
 type Props = {
-  id: string | undefined;
+  publication: any;
+  loading: boolean;
 };
 
 // ----------------------------------------------------------------------
 
-export default function MoviePlayView({ id }: Props) {
-  useResponsive('up', 'md');
-  const router = useRouter();
-  const { data, loading }: any = usePublication({
-    forId: id as any
-  });
+export default function MoviePlayView({ publication, loading }: Props) {
+  // useResponsive('up', 'md');
+  // const router = useRouter();
 
-  const handleBack = () => {
-    router.push(paths.dashboard.movie.details(`${id}`));
-  }
+  // const handleBack = () => {
+  //   router.push(paths.dashboard.movie.details(`${id}`));
+  // }
 
   const getMediaUri = (cid: string): string => `https://ipfs.io/ipfs/${cid?.replace('ipfs://', '')}`
 
-  const getMovieCid = (): string => data?.metadata?.attachments?.find((el: any) => el.altTag === 'Full Movie')?.video?.raw?.uri
+  const getMovieCid = (): string => publication?.metadata?.attachments?.find((el: any) => el.altTag === 'Full Movie')?.video?.raw?.uri
 
   if (loading) return <LoadingScreen />
 
   return (
-    <>
+    <Box sx={{ width: '100%', borderRadius: '1rem', overflow: 'hidden', display: 'flex', border: '1px solid rgba(255, 255, 255, 0.08)' }}>
       {
         getMovieCid() && (
           <VideoPlayer
             src={getMediaUri(getMovieCid())}
-            titleMovie={data?.metadata?.title}
+            titleMovie={publication?.metadata?.title}
             preview={false}
-            onBack={handleBack}
+            // onBack={handleBack}
           />
         )
       }
-    </>
+    </Box>
   );
 }

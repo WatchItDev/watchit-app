@@ -11,7 +11,15 @@ import { bgGradient } from '@src/theme/css';
 // components
 import Image from '@src/components/image';
 import { varFade } from '@src/components/animate';
-import { IconPlayerPlay, IconFlagFilled, IconHeart, IconHeartFilled } from '@tabler/icons-react';
+import {
+  IconPlayerPlay,
+  IconFlagFilled,
+  IconMessageCircle,
+  IconMessageCircleFilled,
+  IconHeart,
+  IconHeartFilled,
+  IconDots, IconBookmark,
+} from '@tabler/icons-react';
 import Container from '@mui/material/Container';
 import Stack from '@mui/material/Stack';
 import { TokenAllowanceLimit, useApproveModule, PublicationReactionType, hasReacted, useReactionToggle } from '@lens-protocol/react-web';
@@ -24,20 +32,46 @@ import { useSettingsContext } from '../../settings';
 import { useRouter } from '@src/routes/hooks';
 import { paths } from '@src/routes/paths.ts';
 import { PosterVertical } from '../../poster';
+import Card from '@mui/material/Card';
+import Avatar from '@mui/material/Avatar';
+import Divider from '@mui/material/Divider';
+import Label from '@src/components/label';
+import PostCommentList from '@src/sections/movie/movie-comments-list.tsx';
+import MovieCommentForm from '@src/sections/movie/movie-details-comment-form.tsx';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import DialogActions from '@mui/material/DialogActions';
+import { useAuth } from '@src/hooks/use-auth.ts';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Radio from '@mui/material/Radio';
+import TextField from '@mui/material/TextField';
+import { LeaveTipCard } from '@src/components/carousel/variants/leave-tip-card.tsx';
+import { SubscribeToUnlockCard } from '@src/components/carousel/variants/subscribe-to-unlock-card.tsx';
 
 // ----------------------------------------------------------------------
 
 type Props = {
   post: any
+  handleSubscribe: () => void
 };
 
-export default function MovieDetailMain({ post }: Props) {
+export default function MovieDetailMain({ post, handleSubscribe }: Props) {
   const theme = useTheme();
   const router = useRouter();
   const [hasCollected, setHasCollected] = useState(false);
-  const settings = useSettingsContext();
+  const [hasAccess, setHasAccess] = useState(false)
+  const [selectedTip, setSelectedTip] = useState('10');
+  const [customTip, setCustomTip] = useState('');
+  const [loadingTip, setLoadingTip] = useState(false);
+  const [successMessage, setSuccessMessage] = useState(false);
+
   const price = post?.openActionModules?.[0]?.amount?.value ?? ''
   const coin = post?.openActionModules?.[0]?.amount?.asset?.symbol ?? ''
+  const { selectedProfile } = useAuth();
   const { execute: collect, loading } = useOpenAction({
     action: { kind: OpenActionKind.COLLECT }
   });
@@ -47,6 +81,12 @@ export default function MovieDetailMain({ post }: Props) {
   const { execute: hide, loading: loadingHide } = useHidePublication();
   const { execute: toggle, loading: loadingLike} = useReactionToggle();
   const [hasLiked, setHasLiked] = useState(hasReacted({ publication: post, reaction: PublicationReactionType.Upvote }));
+  const [showComments, setShowComments] = useState(false);
+
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const openMenu = Boolean(anchorEl);
+
+  const [openConfirmModal, setOpenConfirmModal] = useState(false);
 
   const variants = theme.direction === 'rtl' ? varFade().inLeft : varFade().inRight;
 
@@ -132,29 +172,21 @@ export default function MovieDetailMain({ post }: Props) {
     }
   };
 
-  const handlePlay = async () => {
-    router.push(paths.movie.play(`${post.id}`));
-  };
-
-  const getMediaUri = (cid: string): string => `https://ipfs.io/ipfs/${cid.replace('ipfs://', '')}`
-
-  const getWallpaperCid = (): string => post?.metadata?.attachments?.find((el: any) => el.altTag === 'Wallpaper')?.image?.raw?.uri
-
-  const getPosterCid = (): string => post?.metadata?.attachments?.find((el: any) => el.altTag === 'Vertical Poster')?.image?.raw?.uri
-
-  const getPosterHorizontalCid = (): string => post?.metadata?.attachments?.find((el: any) => el.altTag === 'Horizontal Poster')?.image?.raw?.uri
-
-  const getMovieYear = (): number => {
-    const releaseDate = post?.metadata?.attributes?.find((el: any) => el.key === 'Release Date')?.value;
-    return releaseDate ? +moment(releaseDate).format('YYYY') : 0
-  }
-
-  const getMovieGenres = (): string => post?.metadata?.attributes?.find((el: any) => el.key === 'Genres')?.value
-
   const handleHide = async () => {
     console.log('handle hide')
     await hide({ publication: post })
     console.log('publication hided')
+  };
+
+  const goToProfile = () => {
+    if (!post?.by?.id) return;
+
+    router.push(paths.dashboard.user.root(`${post?.by?.id}`))
+  }
+
+  const handleSubscription = () => {
+    setHasAccess(true)
+    handleSubscribe()
   };
 
   console.log('hello price and coin')
@@ -165,239 +197,321 @@ export default function MovieDetailMain({ post }: Props) {
   if (post.isHidden) return <p>Publication is hidden</p>;
 
   return (
-    <Paper sx={{ position: 'relative', boxShadow: 'none',}}>
-      <Image dir="ltr" alt={post?.metadata?.title} src={getMediaUri(getWallpaperCid())} ratio="21/9" />
-
-      <Box sx={{
-        bottom: 0,
-        left: 0,
-        zIndex: 8,
-        width: '100%',
-        height: '100%',
-        textAlign: 'left',
-        position: 'absolute',
-        ...bgGradient({
-          direction: 'to top',
-          startColor: `#1E1F22 0%`,
-          endColor: `${alpha('#1E1F22', 0.2)} 100%`,
-        }),
-      }} />
-      <Box sx={{
-        bottom: 0,
-        left: 0,
-        zIndex: 7,
-        width: '100%',
-        height: '100%',
-        textAlign: 'left',
-        position: 'absolute',
-        ...bgGradient({
-          direction: 'to top',
-          startColor: `${alpha('#1E1F22', 0.7)} 30%`,
-          endColor: `${alpha('#1E1F22', 0.2)} 100%`,
-        }),
-      }} />
-
-      <Container maxWidth={settings.themeStretch ? false : 'lg'} sx={{ position: 'relative' }}>
+    <Box sx={{ position: 'sticky', top: '75px', paddingTop: '10px', width: '450px', height: 'fit-content', maxHeight: '100vh', flexShrink: 0 }}>
+      <Card
+        component={m.div}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+        sx={{ border: '1px solid rgba(255, 255, 255, 0.08)' }}
+      >
         <CardContent
           sx={{
-            bottom: 0,
-            left: 0,
-            zIndex: 9,
-            width: '100%',
-            textAlign: 'left',
-            position: 'absolute',
-            color: 'common.white'
+            maxHeight: 'calc(100vh - 10rem)',
+            overflowY: 'scroll',
+            backgroundColor: '#1e1f22',
+            padding: '0 !important',
+            margin: '24px'
           }}
         >
-          {/* Title */}
-          <Box sx={{ display:'flex', alignItems: 'flex-end', justifyContent: 'space-between' }}>
-            <Box sx={{ display:'flex', flexDirection:'column', justifyContent:'end', width: '60%' }}>
-              {/* Title */}
-              <m.div variants={variants}>
-                <Typography sx={{ fontSize: 'clamp(2rem, 1vw, 3rem)', fontWeight: 'bold', lineHeight: 1.1, mb: 0.5 }} gutterBottom>
-                  {post?.metadata?.title}
-                </Typography>
-              </m.div>
-              {/* Details: Rating, Year, Genre */}
-              <Stack direction="row" spacing={1} alignItems="center" sx={{ mb: 1.5 }}>
-                {/* <Stack direction="row" spacing={0.5} alignItems="center"> */}
-                {/*  <IconStarFilled size={14} color="#FFCD19"/> */}
-                {/*  <Typography sx={{fontSize: 'clamp(0.3rem, 2vw + 1rem, 0.9rem)', fontWeight: '700' }} variant="body2">{movie.rating}</Typography> */}
-                {/* </Stack> */}
-                {/* <Typography sx={{fontSize: 'clamp(0.3rem, 2vw + 1rem, 0.9rem)'}} variant="body2" color="textSecondary">|</Typography> */}
-                <Typography sx={{fontSize: 'clamp(0.3rem, 2vw + 1rem, 0.9rem)', fontWeight: '700'}} variant="body2">{getMovieYear()}</Typography>
-                <Typography sx={{fontSize: 'clamp(0.3rem, 2vw + 1rem, 0.9rem)'}} variant="body2" color="textSecondary">|</Typography>
-                <Typography sx={{fontSize: 'clamp(0.3rem, 2vw + 1rem, 0.9rem)', fontWeight: '700'}} variant="body2" color="textSecondary">
-                  { getMovieGenres().split(', ').join('  -  ') }
-                </Typography>
-              </Stack>
-              <Box>
-                <m.div  variants={variants}>
-                  <Typography sx={{
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    display: '-webkit-box',
-                    WebkitLineClamp: '5',
-                    WebkitBoxOrient: 'vertical',
-                    fontWeight: '700'
-                  }}
-                              variant="body2" >
-                    {post?.metadata?.content ?? ''}
-                  </Typography>
-                </m.div>
-              </Box>
-              <m.div className='flex space-x-6' variants={variants}>
-                <Stack direction="row" spacing={1} alignItems="center">
-                  {
-                    post?.operations?.hasCollected?.value ? (
-                      <Button
-                        variant='contained'
-                        sx={{
-                          mt: 3 ,
-                          color:'#FFFFFF',
-                          background: 'linear-gradient(to right, #7B61FF 0%, #4A34B8 100%)',
-                          height: '40px'
-                        }}
-                        onClick={handlePlay}
-                      >
-                        <Stack spacing={0.5} direction="row" alignItems="center">
-                          <>
-                            <IconPlayerPlay style={{marginRight:'4px'}} size={22} color='#FFFFFF' />
-                            <Stack spacing={0.5} direction="column" alignItems="flex-start" justifyContent="flex-start">
-                              <Typography variant="body2" sx={{ lineHeight: 1 , fontSize: 'clamp(0.5rem, 0.9vw, 1.1rem)', fontWeight: '700'}}>
-                                Watch it!
-                              </Typography>
-                            </Stack>
-                          </>
-                        </Stack>
-                      </Button>
-                    ) : (
-                      <Button
-                        variant='contained'
-                        sx={{
-                          mt: 3 ,
-                          color:'#FFFFFF',
-                          background: 'linear-gradient(to right, #7B61FF 0%, #4A34B8 100%)',
-                          height: '40px'
-                        }}
-                        onClick={handleCollect}
-                      >
-                        <Stack spacing={0.5} direction="row" alignItems="center">
-                          {
-                            loading ? (
-                              <CircularProgress size="25px" />
-                            ) : (
-                              <>
-                                <IconPlayerPlay style={{marginRight:'4px'}} size={22} color='#FFFFFF' />
-                                <Stack spacing={0.5} direction="column" alignItems="flex-start" justifyContent="flex-start">
-                                  <Typography variant="body2" sx={{ lineHeight: 1 , fontSize: 'clamp(0.5rem, 0.9vw, 1.1rem)', fontWeight: '700'}}>
-                                    Collect!
-                                  </Typography>
-                                  <Typography variant="body2" sx={{ lineHeight: 1 , fontSize: 'clamp(0.1rem, 0.7vw, 0.7rem)' }}>
-                                    {price} {coin}
-                                  </Typography>
-                                </Stack>
-                              </>
-                            )
-                          }
-                        </Stack>
-                      </Button>
-                    )
-                  }
-                  <Button
-                    variant="outlined"
-                    sx={{
-                      mt: 3,
-                      borderColor: '#FFFFFF',
-                      color: '#FFFFFF',
-                      height: '40px'
-                    }}
-                  >
-                    <IconFlagFilled style={{marginRight:'4px'}} size={22} color='#FFFFFF' />
-                    Add watchlist
-                  </Button>
-                  <Button
-                    variant='contained'
-                    sx={{
-                      mt: 3 ,
-                      color:'#FFFFFF',
-                      background: 'linear-gradient(to right, #7B61FF 0%, #4A34B8 100%)',
-                      height: '40px'
-                    }}
-                    onClick={handleHide}
-                  >
-                    <Stack spacing={0.5} direction="row" alignItems="center">
-                      {
-                        loadingHide ? (
-                          <CircularProgress size="25px" />
-                        ) : (
-                          <Typography variant="body2" sx={{ lineHeight: 1 , fontSize: 'clamp(0.5rem, 0.9vw, 1.1rem)', fontWeight: '700'}}>
-                            Hide
-                          </Typography>
-                        )
-                      }
-                    </Stack>
-                  </Button>
-                  <Button
-                    variant="outlined"
-                    sx={{
-                      mt: 3,
-                      borderColor: '#FFFFFF',
-                      color: '#FFFFFF',
-                      height: '40px'
-                    }}
-                    onClick={toggleReaction}
-                    disabled={loadingLike}
-                  >
-                    {loadingLike ? (
-                      <CircularProgress size="25px" />
-                    ) : (
-                      <>
-                        {hasLiked ? (
-                          <IconHeartFilled size={22} color='#FFFFFF' />
-                        ) : (
-                          <IconHeart size={22} color='#FFFFFF' />
-                        )}
-                      </>
-                    )}
-                  </Button>
-                </Stack>
-              </m.div>
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              mb: 2,
+              zIndex: 1,
+              position: 'sticky',
+              top: '0px',
+              backgroundColor: '#1e1f22'
+            }}
+          >
+            <Box sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }} onClick={goToProfile}>
+              <Avatar
+                src={(post?.by?.metadata?.picture as any)?.optimized?.uri ?? `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${post?.by?.id}`}
+                sx={{
+                  width: 26,
+                  height: 26,
+                  border: (theme) => `solid 2px ${theme.palette.background.default}`,
+                }}
+              />
+              <Typography variant="subtitle2" noWrap sx={{ ml: 1 }}>
+                {post?.by?.metadata?.displayName}
+              </Typography>
             </Box>
+            <Button
+              variant="text"
+              sx={{
+                borderColor: '#FFFFFF',
+                color: '#FFFFFF',
+                height: '40px',
+                minWidth: '40px'
+              }}
+              onClick={(event) => setAnchorEl(event.currentTarget)}
+            >
+              <IconDots size={22} color='#FFFFFF' />
+            </Button>
+            <Menu
+              id="dots-menu"
+              anchorEl={anchorEl}
+              open={openMenu}
+              onClose={() => setAnchorEl(null)}
+            >
+              <MenuItem onClick={() => { setOpenConfirmModal(true); setAnchorEl(null); }}>Hide</MenuItem>
+              <MenuItem onClick={() => { /* Manejar acción de reportar */ setAnchorEl(null); }}>Report</MenuItem>
+            </Menu>
+          </Box>
+
+          <Box
+            sx={{
+              display:'flex',
+              flexDirection:'column',
+              justifyContent:'end',
+              zIndex: 1,
+              position: 'sticky',
+              top: '2.5rem',
+              backgroundColor: '#1e1f22'
+            }}
+          >
+            <m.div variants={variants}>
+              <Typography variant="h6" sx={{ fontWeight: 'bold', lineHeight: 1.1, mb: 2 }} gutterBottom>
+                {post?.metadata?.title}
+              </Typography>
+            </m.div>
+          </Box>
+          <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'end', mb: 3, mt: 1 }}>
+            {hasAccess ? (
+              <LeaveTipCard />
+            ) : (
+              <SubscribeToUnlockCard onSubscribe={handleSubscription} />
+            )}
+          </Box>
+
+          {/*<Box sx={{ display:'flex', flexDirection:'column', justifyContent:'end', mb: 3 }}>*/}
+          {/*  /!*<Box>*!/*/}
+          {/*  /!*  <m.div  variants={variants}>*!/*/}
+          {/*  /!*    <Typography*!/*/}
+          {/*  /!*      sx={{*!/*/}
+          {/*  /!*        overflow: 'hidden',*!/*/}
+          {/*  /!*        textOverflow: 'ellipsis',*!/*/}
+          {/*  /!*        display: '-webkit-box',*!/*/}
+          {/*  /!*        WebkitLineClamp: '5',*!/*/}
+          {/*  /!*        WebkitBoxOrient: 'vertical',*!/*/}
+          {/*  /!*        fontWeight: '700'*!/*/}
+          {/*  /!*      }}*!/*/}
+          {/*  /!*      variant="body2"*!/*/}
+          {/*  /!*      color="text.secondary"*!/*/}
+          {/*  /!*    >*!/*/}
+          {/*  /!*      {post?.metadata?.content ?? ''}*!/*/}
+          {/*  /!*    </Typography>*!/*/}
+          {/*  /!*  </m.div>*!/*/}
+          {/*  /!*</Box>*!/*/}
+          {/*  <Card*/}
+          {/*    component={m.div}*/}
+          {/*    initial={{ opacity: 0 }}*/}
+          {/*    animate={{ opacity: 1 }}*/}
+          {/*    transition={{ duration: 0.5 }}*/}
+          {/*    sx={{*/}
+          {/*      backgroundColor: '#2B2D31',*/}
+          {/*      mt: 2*/}
+          {/*    }}*/}
+          {/*  >*/}
+          {/*    <CardContent sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>*/}
+          {/*      <Stack direction="column" spacing={1}>*/}
+          {/*        <Typography variant="caption" color="text.secondary" sx={{ lineHeight: 1 , fontWeight: '700'}}>*/}
+          {/*          Price*/}
+          {/*        </Typography>*/}
+          {/*        <Typography variant="h6" sx={{ lineHeight: 1 , fontWeight: '700'}}>*/}
+          {/*          {price} {coin}*/}
+          {/*        </Typography>*/}
+          {/*      </Stack>*/}
+          {/*      <Stack direction="row" spacing={1} alignItems="center">*/}
+          {/*        {*/}
+          {/*          post?.operations?.hasCollected?.value ? (*/}
+          {/*            <Button*/}
+          {/*              variant='contained'*/}
+          {/*              sx={{*/}
+          {/*                color: '#1E1F22',*/}
+          {/*                background: '#FFFFFF',*/}
+          {/*                height: '40px'*/}
+          {/*              }}*/}
+          {/*              onClick={() => {}}*/}
+          {/*              disabled={true}*/}
+          {/*            >*/}
+          {/*              <Typography variant="body2" sx={{ lineHeight: 1 , fontWeight: '700'}}>*/}
+          {/*                You has already access*/}
+          {/*              </Typography>*/}
+          {/*            </Button>*/}
+          {/*          ) : (*/}
+          {/*            <Button*/}
+          {/*              variant='contained'*/}
+          {/*              sx={{*/}
+          {/*                color: '#1E1F22',*/}
+          {/*                background: '#FFFFFF',*/}
+          {/*                height: '40px'*/}
+          {/*              }}*/}
+          {/*              onClick={handleCollect}*/}
+          {/*            >*/}
+          {/*              <Stack spacing={0.5} direction="row" alignItems="center">*/}
+          {/*                {*/}
+          {/*                  loading ? (*/}
+          {/*                    <CircularProgress size="25px" sx={{ color: '#1E1F22' }} />*/}
+          {/*                  ) : (*/}
+          {/*                    <Typography variant="body2" sx={{ lineHeight: 1 , fontWeight: 'bold'}}>*/}
+          {/*                      Get access!*/}
+          {/*                    </Typography>*/}
+          {/*                  )*/}
+          {/*                }*/}
+          {/*              </Stack>*/}
+          {/*            </Button>*/}
+          {/*          )*/}
+          {/*        }*/}
+          {/*      </Stack>*/}
+          {/*    </CardContent>*/}
+          {/*  </Card>*/}
+
+          {/*</Box>*/}
+          <Box
+            sx={{
+              display:'flex',
+              flexDirection:'column',
+              justifyContent:'end',
+              zIndex: 1,
+              position: 'sticky',
+              top: '4.6rem',
+              backgroundColor: '#1e1f22'
+            }}
+          >
+            <m.div className='flex space-x-6' variants={variants}>
+              <Stack direction="row" spacing={1} alignItems="center">
+                <Button
+                  variant="text"
+                  sx={{
+                    borderColor: '#FFFFFF',
+                    color: '#FFFFFF',
+                    height: '40px',
+                    minWidth: '40px'
+                  }}
+                  onClick={toggleReaction}
+                  disabled={loadingLike}
+                >
+                  {loadingLike ? (
+                    <CircularProgress size="25px" sx={{ color: '#fff' }} />
+                  ) : (
+                    <>
+                      {hasLiked ? (
+                        <IconHeartFilled size={22} color='#FFFFFF' />
+                      ) : (
+                        <IconHeart size={22} color='#FFFFFF' />
+                      )}
+                      <Typography variant="body2" sx={{ lineHeight: 1, ml: 1, fontSize: 'clamp(0.5rem, 0.9vw, 1.1rem)', fontWeight: '700'}}>
+                        {post?.stats?.upvotes}
+                      </Typography>
+                    </>
+                  )}
+                </Button>
+                <Button
+                  variant="text"
+                  sx={{
+                    borderColor: '#FFFFFF',
+                    color: '#FFFFFF',
+                    height: '40px',
+                    minWidth: '40px'
+                  }}
+                  onClick={() => setShowComments(!showComments)}
+                >
+                  <>
+                    {showComments ? (
+                      <IconMessageCircleFilled size={22} color='#FFFFFF' />
+                    ) : (
+                      <IconMessageCircle size={22} color='#FFFFFF' />
+                    )}
+                    <Typography variant="body2" sx={{ lineHeight: 1, ml: 1, fontSize: 'clamp(0.5rem, 0.9vw, 1.1rem)', fontWeight: '700'}}>
+                      {post?.stats?.comments}
+                    </Typography>
+                  </>
+                </Button>
+                <Button
+                  variant="text"
+                  sx={{
+                    borderColor: '#FFFFFF',
+                    color: '#FFFFFF',
+                    height: '40px',
+                    minWidth: '40px'
+                  }}
+                  onClick={() => {}}
+                >
+                  <IconBookmark size={22} color='#FFFFFF' />
+                </Button>
+              </Stack>
+            </m.div>
+          </Box>
+
+          {/*Comments*/}
+          {showComments && (
             <Box
               sx={{
-                width:'200px',
-                height:'100%',
-                position:'relative',
-
+                display:'flex',
+                flexDirection:'column'
               }}
             >
-              <Box sx={{ width:'200px' }}>
-                 <PosterVertical
-                   sx={{ height:'100%' }}
-                   id={post?.id}
-                   title={post?.metadata?.title}
-                   genre={getMovieGenres().split(', ')}
-                   images={{
-                     vertical: getMediaUri(getPosterCid()),
-                     horizontal: getMediaUri(getPosterHorizontalCid()),
-                     wallpaper: getMediaUri(getWallpaperCid())
-                   }}
-                   likes={post?.stats?.upvotes ?? 0}
-                   synopsis={post?.metadata?.content ?? ''}
-                   year={getMovieYear()}
-                 />
+              <Box
+                sx={{
+                  display:'flex',
+                  flexDirection:'column',
+                  pb: 2,
+                  zIndex: 1,
+                  position: 'sticky',
+                  top: '6.6rem',
+                  backgroundColor: '#1e1f22'
+                }}
+              >
+                <Divider sx={{ my: 3 }} />
+                {selectedProfile ? (
+                  <MovieCommentForm commentOn={post?.id} />
+                ) : (
+                  <Typography
+                    variant="body1"
+                    color="text.secondary"
+                    sx={{
+                      width: '100%',
+                      textAlign: 'center',
+                      backgroundColor: '#2B2D31',
+                      p: 2,
+                      borderRadius: 1,
+                    }}
+                  >
+                    Login to leave a comment
+                  </Typography>
+                )}
+              </Box>
+              <Box sx={{ display:'flex', flexDirection:'column', mt: 2 }}>
+                <PostCommentList publicationId={post?.id} showReplies />
               </Box>
             </Box>
-          </Box>
+          )}
+
+          <Dialog
+            open={openConfirmModal}
+            onClose={() => setOpenConfirmModal(false)}
+          >
+            <DialogTitle>Confirm Hide</DialogTitle>
+            <DialogContent>
+              <Typography>
+                Are you sure you want to hide this publication?
+              </Typography>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={() => setOpenConfirmModal(false)} color="primary">
+                Cancel
+              </Button>
+              <Button onClick={() => { handleHide(); setOpenConfirmModal(false); }} color="primary">
+                Confirm
+              </Button>
+            </DialogActions>
+          </Dialog>
         </CardContent>
-      </Container>
-    </Paper>
+      </Card>
+    </Box>
   );
 }
-
-
-
-
-
-

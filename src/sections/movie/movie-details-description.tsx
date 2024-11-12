@@ -40,7 +40,7 @@ export default function MovieDetailsDescription() {
   ]);
 
   return (
-    <Stack spacing={3} sx={{ pb: 6 }}>
+    <Stack spacing={3} sx={{ pb: 6, maxWidth: '100%' }}>
       <CarouselSection title="Similar movies for you">
         <CarouselPoster data={movieArr} />
       </CarouselSection>
