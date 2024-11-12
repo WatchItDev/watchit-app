@@ -31,6 +31,7 @@ const NavItem = forwardRef<HTMLDivElement, Props>(
         active={active}
         disabled={disabled}
         config={config}
+        bgColor={item.bgColor}
         {...other}
       >
         <Box className='menu-pill'
@@ -53,7 +54,7 @@ const NavItem = forwardRef<HTMLDivElement, Props>(
             borderRadius: 0,
             borderTopRightRadius: '1rem',
             borderBottomRightRadius: '1rem',
-            backgroundColor: '#fff',
+            backgroundColor: item.bgColor,
             transition: 'all 0.3s ease-in-out'
           }} />
         </Box>
