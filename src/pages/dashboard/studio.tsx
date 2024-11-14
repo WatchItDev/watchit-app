@@ -1,17 +1,11 @@
 import { Helmet } from 'react-helmet-async';
-import { useState } from 'react';
-import {
-  OpenActionType,
-  Amount,
-  useCreatePost, useCurrencies
-} from '@lens-protocol/react-web';
-import { video, MetadataAttributeType, AnyMedia } from '@lens-protocol/metadata';
+import { useEffect, useState } from 'react';
+import { Amount, OpenActionType, useCreatePost, useCurrencies } from '@lens-protocol/react-web';
+import { AnyMedia, MetadataAttributeType, module, ModuleOptions, ModuleSchemaId, video } from '@lens-protocol/metadata';
 import axios from 'axios';
 import { useAuth } from '../../hooks/use-auth';
 import uuidv4 from '../../utils/uuidv4';
 import { LoadingScreen } from '../../components/loading-screen';
-import ComingSoonView from "@src/sections/coming-soon/view.tsx";
-import BlankView from "@src/sections/blank/view.tsx";
 import { encodeData } from '@lens-protocol/react';
 import { Grid, Modal } from '@mui/material';
 import Skeleton from '@mui/material/Skeleton';
@@ -67,8 +61,8 @@ const movieMetadata = {
   creators: ["Lucas Brown", "Grace Martin"]
 };
 
-const TIP_ACTION_MODULE_ADDRESS = '0x22cb67432C101a9b6fE0F9ab542c8ADD5DD48153';
-const MMC_ADDRESS = '0x30f106094dB26F4e17439DfCD19A315573bCad0c';
+const TIP_ACTION_MODULE_ADDRESS = '0xe95A8326EBd29B6574875806474d6f9734De80A5';
+const MMC_ADDRESS = '0xdC2E7C4444730980CEB8982CfC8A1c4902fa36bE';
 
 // Función para subir los metadatos a Pinata
 const uploadToPinata = async (metadata: any) => {
@@ -225,6 +219,47 @@ export default function OverviewFilePage() {
       console.error('Error submitting to Lens:', error);
     }
   };
+
+  const createTipModuleMetadata = () => {
+    return module({
+      name: 'TipActionModule',
+      title: 'Tip Action Module',
+      description: 'This module allows users to tip the author of a publication.',
+      authors: ['martijn.vanhalen@gmail.com'],
+      initializeCalldataABI: `${JSON.stringify([
+        {
+          "type": "address",
+          "name": "tipReceiver"
+        }
+      ])}`,
+      processCalldataABI: `${JSON.stringify([
+        {
+          "type": "address",
+          "name": "currency"
+        },
+        {
+          "type": "uint256",
+          "name": "tipAmount"
+        }
+      ])}`,
+      $schema: ModuleSchemaId.LATEST
+    } as ModuleOptions);
+  };
+
+  const createAndUploadTipModuleMetadata = async () => {
+    try {
+      const metadata = createTipModuleMetadata();
+      const metadataUri = await uploadToPinata(metadata);
+      console.log(metadata);
+      console.log('Module Metadata CID:', metadataUri);
+    } catch (error) {
+      console.error('Error uploading metadata:', error);
+    }
+  };
+
+  useEffect(() => {
+    // createAndUploadTipModuleMetadata();
+  }, []);
 
   if (loading) return <LoadingScreen />
 

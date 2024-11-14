@@ -20,7 +20,7 @@ const PosterHorizontal = ({ title, images, rating, year, likes, price, genre, id
   const router = useRouter();
 
   const handlePosterClick = () => {
-    router.push(paths.dashboard.movie.details(id));
+    router.push(paths.dashboard.publication.details(id));
   }
 
   const formatLikes = (totalLikes: number) => {

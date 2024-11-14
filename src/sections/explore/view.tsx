@@ -32,11 +32,11 @@ export default function ExploreView() {
     }
   });
 
-  console.log('posts')
-  console.log(loading)
-  console.log(data)
-  console.log(data?.map((item: any) => item?.metadata?.appId))
-  console.log(error)
+  // console.log('posts')
+  // console.log(loading)
+  // console.log(data)
+  // console.log(data?.map((item: any) => item?.metadata?.appId))
+  // console.log(error)
 
   if (loading) return <LoadingScreen />
 
