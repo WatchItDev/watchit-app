@@ -22,27 +22,23 @@ import { useNavData } from './config-navigation';
 // LAYOUT IMPORTS
 import { NAV } from '../config-layout';
 import { AccountPopover, NotificationsPopover, Searchbar } from '../_common';
-import {
-  IconLayoutSidebarLeftCollapse,
-  IconLayoutSidebarRightCollapse,
-} from '@tabler/icons-react';
-
 // ----------------------------------------------------------------------
 
 type Props = {
   openNav: boolean;
   onCloseNav: VoidFunction;
+  sidebarWidth: number;
 };
 
 // ----------------------------------------------------------------------
 
-export default function NavVertical({ openNav, onCloseNav }: Props) {
+export default function NavVertical({ openNav, onCloseNav, sidebarWidth}: Props) {
   const pathname = usePathname();
   const lgUp = useResponsive('up', 'lg');
   const navData = useNavData();
   const { authenticated, loading } = useAuth(); // Use the AuthProvider to check authentication
   const [loginModalOpen, setLoginModalOpen] = useState(false); // State to control LoginModal visibility
-  const [sidebarWidth, setSidebarWidth ] = useState(NAV.W_VERTICAL); // State to control LoginModal visibility
+
 
   useEffect(() => {
     if (openNav) {
@@ -59,13 +55,6 @@ export default function NavVertical({ openNav, onCloseNav }: Props) {
     setLoginModalOpen(false);
   };
 
-  const toggleSidebarWidth = () => {
-    if (sidebarWidth === NAV.W_VERTICAL) {
-      setSidebarWidth(NAV.W_MINI);
-    } else {
-      setSidebarWidth(NAV.W_VERTICAL);
-    }
-  };
 
   const renderContent = (
     <Scrollbar
@@ -85,36 +74,7 @@ export default function NavVertical({ openNav, onCloseNav }: Props) {
       }}
     >
       {/*Add a icon to make collapsible the sidebar*/}
-      <Box sx={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        position: 'absolute',
-        top: '7%',
-        right: '-5px',
-        cursor: 'pointer',
-        zIndex: 20,
-      }}>
-        <Stack
-          direction="row"
-          justifyContent="flex-end"
-          sx={{
-            padding: '5px 12px',
-            backgroundColor: 'rgba(0,0,0,.2)',
-            borderTopLeftRadius: '10px',
-            borderBottomLeftRadius: '10px'
-        }}
-        >
-          <Box onClick={toggleSidebarWidth}>
-            {
-              sidebarWidth === NAV.W_VERTICAL ? (
-                <IconLayoutSidebarLeftCollapse color={'#0FA'} />
-              ) : (
-                <IconLayoutSidebarRightCollapse />)
-            }
-          </Box>
-        </Stack>
-      </Box>
+
 
       <Searchbar />
 
@@ -178,9 +138,10 @@ export default function NavVertical({ openNav, onCloseNav }: Props) {
       {lgUp ? (
         <Stack
           sx={{
+            transition: 'all 0.7s ease',
             height: 1,
             position: 'fixed',
-            width: NAV.W_VERTICAL,
+            width: sidebarWidth,
             borderRight: (theme) => `dashed 1px ${theme.palette.divider}`,
           }}
         >
