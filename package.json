@@ -18,7 +18,7 @@
     "clear-all": "rm -rf node_modules .next out dist build",
     "re-start": "rm -rf node_modules .next out dist build && yarn install && yarn start",
     "re-build": "rm -rf node_modules .next out dist build && yarn install && yarn build",
-    "start": "vite",
+    "start": "vite --host 0.0.0.0",
     "build": "tsc && vite build"
   },
   "eslintConfig": {
