@@ -4,8 +4,7 @@ import Carousel, { CarouselArrows, useCarousel } from '@src/components/carousel/
 // @ts-ignore
 import { type Post } from '@lens-protocol/api-bindings/dist/declarations/src/lens/graphql/generated';
 import moment from 'moment/moment';
-import PosterHorizontal from "@src/components/poster/variants/poster-horizontal.tsx";
-
+import PosterTopTitles from "@src/components/poster/variants/poster-top-titles.tsx";
 // ----------------------------------------------------------------------
 
 type Props = {
@@ -13,9 +12,9 @@ type Props = {
   category?: string
 };
 
-export default function CarouselPosterMini({ data, category }: Props) {
+export default function CarouselTopTitles({ data, category }: Props) {
   const carousel = useCarousel({
-    slidesToShow: 6,
+    slidesToShow: 1,
     adaptiveHeight: true,
     focusOnSelect: true,
     swipeToSlide: true,
@@ -70,6 +69,9 @@ export default function CarouselPosterMini({ data, category }: Props) {
       }}
     >
       <CarouselArrows
+        sx={{
+
+        }}
         filled
         shape="rounded"
         onNext={carousel.onNext}
@@ -77,8 +79,8 @@ export default function CarouselPosterMini({ data, category }: Props) {
       >
         <Carousel ref={carousel.carouselRef} {...carousel.carouselSettings}>
           {data.map((post: any) => (
-            <Box key={`${category}-${post.id}`} sx={{ px: 0.75, display:'flex !important', height: '100%' }}>
-              <PosterHorizontal
+            <Box key={`${category}-${post.id}`} sx={{ px: 0.75, display:'flex !important', height: '100%', background: 'transparent' }}>
+              <PosterTopTitles
                 id={post?.id}
                 title={post?.metadata?.title}
                 genre={getMovieGenres(post).split(', ')}

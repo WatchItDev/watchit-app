@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 // theme
 import { hideScroll } from '@src/theme/css';
-import { IconCloudDownload, IconGridDots, IconPlus } from '@tabler/icons-react';
+// import { IconCloudDownload, IconGridDots, IconPlus } from '@tabler/icons-react';
 // components
 import { NAV } from '../config-layout';
 import { NavSectionMini } from '../../components/nav-section';
@@ -39,7 +39,7 @@ export default function NavMini() {
           active
           data={{
             id: 'watchit',
-            title: 'Watchit Collection',
+            title: 'Watchit',
             path: paths.dashboard.root,
             icon: <SvgColor src='/assets/icons/navbar/ic_watchit.svg' sx={{ width: 1, height: 1 }} />
           }}
@@ -56,7 +56,7 @@ export default function NavMini() {
             hiddenLabel: true
           }}
         />
-        <Box sx={{ width: '100%', py: 0.5 }} />
+       {/* <Box sx={{ width: '100%', py: 0.5 }} />
         <NavList
           data={{
             id: 'new_collection',
@@ -86,7 +86,7 @@ export default function NavMini() {
           depth={1}
           config={{}}
           onClick={() => { console.log('clicked w') }}
-        />
+        />*/}
       </Stack>
     </Box>
   );

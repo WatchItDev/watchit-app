@@ -22,22 +22,23 @@ import { useNavData } from './config-navigation';
 // LAYOUT IMPORTS
 import { NAV } from '../config-layout';
 import { AccountPopover, NotificationsPopover, Searchbar } from '../_common';
-
 // ----------------------------------------------------------------------
 
 type Props = {
   openNav: boolean;
   onCloseNav: VoidFunction;
+  sidebarWidth: number;
 };
 
 // ----------------------------------------------------------------------
 
-export default function NavVertical({ openNav, onCloseNav }: Props) {
+export default function NavVertical({ openNav, onCloseNav, sidebarWidth}: Props) {
   const pathname = usePathname();
   const lgUp = useResponsive('up', 'lg');
   const navData = useNavData();
   const { authenticated, loading } = useAuth(); // Use the AuthProvider to check authentication
   const [loginModalOpen, setLoginModalOpen] = useState(false); // State to control LoginModal visibility
+
 
   useEffect(() => {
     if (openNav) {
@@ -54,9 +55,13 @@ export default function NavVertical({ openNav, onCloseNav }: Props) {
     setLoginModalOpen(false);
   };
 
+
   const renderContent = (
     <Scrollbar
       sx={{
+        transition: 'all 0.7s ease',
+        position: 'relative',
+        width: sidebarWidth,
         height: 1,
         backgroundColor: '#2B2D31',
         display:'flex',
@@ -68,9 +73,13 @@ export default function NavVertical({ openNav, onCloseNav }: Props) {
         },
       }}
     >
+      {/*Add a icon to make collapsible the sidebar*/}
+
+
       <Searchbar />
 
       <NavSectionVertical
+        size={sidebarWidth === NAV.W_MINI ? 'collapsed' : 'full'}
         data={navData}
         config={{
           currentRole: 'admin',
@@ -123,15 +132,16 @@ export default function NavVertical({ openNav, onCloseNav }: Props) {
       component="nav"
       sx={{
         flexShrink: { lg: 0 },
-        width: { lg: NAV.W_VERTICAL },
+        width: { lg: sidebarWidth },
       }}
     >
       {lgUp ? (
         <Stack
           sx={{
+            transition: 'all 0.7s ease',
             height: 1,
             position: 'fixed',
-            width: NAV.W_VERTICAL,
+            width: sidebarWidth,
             borderRight: (theme) => `dashed 1px ${theme.palette.divider}`,
           }}
         >
@@ -143,7 +153,7 @@ export default function NavVertical({ openNav, onCloseNav }: Props) {
           onClose={onCloseNav}
           PaperProps={{
             sx: {
-              width: NAV.W_VERTICAL,
+              width: sidebarWidth,
             },
           }}
         >

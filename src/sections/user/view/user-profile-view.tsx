@@ -14,7 +14,6 @@ import ProfileFollowing from '../profile-following';
 import ProfileHeader from '../profile-header';
 import Label from '../../../components/label';
 import ProfileCollected from '../profile-collected';
-import {useAuth} from "@src/hooks/use-auth.ts";
 
 // ----------------------------------------------------------------------
 

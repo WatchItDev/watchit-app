@@ -10,11 +10,12 @@ import { NavItemProps, NavConfigProps } from '../types';
 
 type StyledItemProps = Omit<NavItemProps, 'item'> & {
   config: NavConfigProps;
+  bgColor?: string;
 };
 
 export const StyledItem = styled(ListItemButton, {
   shouldForwardProp: (prop) => prop !== 'active',
-})<StyledItemProps>(({ active, open, depth, config, theme }) => {
+})<StyledItemProps>(({ active, depth, config, theme, bgColor }) => {
   const subItem = depth !== 1;
 
   const activeStyles = {
@@ -49,7 +50,7 @@ export const StyledItem = styled(ListItemButton, {
     },
     '&:hover .MuiBox-root:not(.svg-color):not(.menu-pill):not(.pill)': {
       borderRadius: '0.75rem',
-      backgroundColor: theme.palette.primary.main
+      backgroundColor: bgColor,
     },
     '&:hover .pill': {
       width: '4px',
