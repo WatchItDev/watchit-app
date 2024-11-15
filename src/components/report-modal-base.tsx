@@ -14,58 +14,44 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 
-// LENS IMPORTS
-import { useReportPublication, PublicationReportReason } from '@lens-protocol/react-web';
-
 // ----------------------------------------------------------------------
 
-type PublicationReportModalProps = {
-  post: any
-  isOpen: boolean
-  onClose: () => void
+type ReportModalBaseProps = {
+  title: string;
+  reasons: string[];
+  onSubmit: (reason: string, comments: string) => Promise<{ isSuccess: () => boolean; error?: { message: string } }>;
+  isOpen: boolean;
+  onClose: () => void;
 };
 
 // ----------------------------------------------------------------------
 
-export const PublicationReportModal = ({ post, isOpen, onClose }: PublicationReportModalProps) => {
-  // STATES HOOKS
+export const ReportModalBase = ({ title, reasons, onSubmit, isOpen, onClose }: ReportModalBaseProps) => {
   const [additionalComments, setAdditionalComments] = useState('');
-  const [reportReason, setReportReason] = useState<PublicationReportReason | ''>('');
-  // LENS HOOKS
-  const { execute: report, loading: loadingReport } = useReportPublication();
+  const [reportReason, setReportReason] = useState<string | ''>('');
+  const [loading, setLoading] = useState(false);
 
   const handleReportSubmit = async () => {
     if (!reportReason) {
       alert('Please select a reason for reporting.');
       return;
     }
-
-    const result = await report({
-      publicationId: post.id,
-      reason: reportReason,
-      additionalComments,
-    } as any);
+    setLoading(true);
+    const result = await onSubmit(reportReason, additionalComments);
+    setLoading(false);
 
     if (result.isSuccess()) {
-      alert('Publication reported successfully!');
-      onClose?.()
+      onClose();
       setReportReason('');
       setAdditionalComments('');
     } else {
-      alert(`Error reporting publication: ${result.error.message}`);
+      alert(`Error reporting ${title.toLowerCase()}: ${result.error?.message}`);
     }
   };
 
-  if (post.isHidden) return <p>Publication is hidden</p>;
-
   return (
-    <Dialog
-      open={isOpen}
-      onClose={onClose}
-      fullWidth
-      maxWidth="sm"
-    >
-      <DialogTitle>Report Publication</DialogTitle>
+    <Dialog open={isOpen} onClose={onClose} fullWidth maxWidth="sm">
+      <DialogTitle>{title}</DialogTitle>
       <DialogContent>
         <FormControl variant="outlined" fullWidth margin="dense">
           <InputLabel id="report-reason-label">Report Reason</InputLabel>
@@ -73,12 +59,12 @@ export const PublicationReportModal = ({ post, isOpen, onClose }: PublicationRep
             labelId="report-reason-label"
             id="report-reason-select"
             value={reportReason}
-            onChange={(e) => setReportReason(e.target.value as PublicationReportReason)}
+            onChange={(e) => setReportReason(e.target.value as string)}
             label="Report Reason"
           >
-            {Object.values(PublicationReportReason).map((reason: any) => (
+            {reasons.map((reason) => (
               <MenuItem key={reason} value={reason}>
-                {reason.replace(/_/g, ' ').toLowerCase().replace(/\b\w/g, c => c.toUpperCase())}
+                {reason.replace(/_/g, ' ').toLowerCase().replace(/\b\w/g, (c) => c.toUpperCase())}
               </MenuItem>
             ))}
           </Select>
@@ -95,25 +81,13 @@ export const PublicationReportModal = ({ post, isOpen, onClose }: PublicationRep
         />
       </DialogContent>
       <DialogActions>
-
-        <Button
-          variant="outlined"
-          sx={{ borderColor: '#fff' }}
-          onClick={onClose}
-        >
+        <Button variant="outlined" sx={{ borderColor: '#fff' }} onClick={onClose}>
           Cancel
         </Button>
-        <Button
-          variant="contained"
-          sx={{ backgroundColor: '#fff' }}
-          onClick={handleReportSubmit}
-          disabled={loadingReport || !reportReason}
-        >
-          {loadingReport ? (
-            <CircularProgress size="25px" sx={{ color: '#fff' }} />
-          ) : 'Submit Report'}
+        <Button variant="contained" sx={{ backgroundColor: '#fff' }} onClick={handleReportSubmit} disabled={loading || !reportReason}>
+          {loading ? <CircularProgress size="25px" sx={{ color: '#fff' }} /> : 'Submit Report'}
         </Button>
       </DialogActions>
     </Dialog>
   );
-}
+};

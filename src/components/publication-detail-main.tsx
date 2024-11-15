@@ -51,7 +51,8 @@ import { LeaveTipCard } from '@src/components/leave-tip-card.tsx';
 import PostCommentList from '@src/sections/publication/publication-comments-list.tsx';
 import PublicationCommentForm from '@src/sections/publication/publication-details-comment-form.tsx';
 import { SubscribeToUnlockCard } from '@src/components/subscribe-to-unlock-card.tsx';
-import { PublicationReportModal } from '@src/components/publication-report-modal.tsx';
+import { ReportPublicationModal } from '@src/components/report-publication-modal.tsx';
+import Popover from '@mui/material/Popover';
 
 // ----------------------------------------------------------------------
 
@@ -179,17 +180,33 @@ export default function PublicationDetailMain({ post, handleSubscribe }: Props) 
             >
               <IconDots size={22} color='#FFFFFF' />
             </Button>
-            <Menu
-              id="dots-menu"
-              anchorEl={anchorEl}
+            <Popover
               open={openMenu}
+              anchorEl={anchorEl}
               onClose={() => setAnchorEl(null)}
+              anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+              transformOrigin={{ vertical: 'top', horizontal: 'center' }}
+              PaperProps={{
+                sx: {
+                  background: 'linear-gradient(90deg, #1C1C1E, #2C2C2E)',
+                  borderRadius: 1,
+                  p: 1,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  mt: 1,
+                  ml: -3,
+                  alignItems: 'center',
+                  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.5)',
+                },
+              }}
             >
-              {post?.by?.ownedBy?.address === selectedProfile?.ownedBy?.address && (
-                <MenuItem onClick={() => { setOpenConfirmModal(true); setAnchorEl(null); }}>Hide</MenuItem>
-              )}
-              <MenuItem onClick={() => { setOpenReportModal(true); setAnchorEl(null); }}>Report</MenuItem>
-            </Menu>
+              <Stack direction="column" spacing={0} justifyContent="center">
+                {post?.by?.ownedBy?.address === selectedProfile?.ownedBy?.address && (
+                  <MenuItem onClick={() => { setOpenConfirmModal(true); setAnchorEl(null); }}>Hide</MenuItem>
+                )}
+                <MenuItem onClick={() => { setOpenReportModal(true); setAnchorEl(null); }}>Report</MenuItem>
+              </Stack>
+            </Popover>
           </Box>
 
           <Box
@@ -376,7 +393,7 @@ export default function PublicationDetailMain({ post, handleSubscribe }: Props) 
           </Dialog>
 
           {/* Report Publication Modal */}
-          <PublicationReportModal post={post} isOpen={openReportModal} onClose={() => setOpenReportModal(false)} />
+          <ReportPublicationModal post={post} isOpen={openReportModal} onClose={() => setOpenReportModal(false)} />
         </CardContent>
       </Card>
     </Box>

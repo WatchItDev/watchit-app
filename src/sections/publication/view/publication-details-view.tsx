@@ -219,7 +219,7 @@ export default function PublicationDetailsView({ id }: Props) {
                     <Box sx={{ display:'flex', flexDirection:'column', justifyContent:'end', mt: 3 }}>
                       <m.div variants={variants}>
                         <Typography variant="h5" sx={{ fontWeight: 'bold', lineHeight: 1.1, mb: 0.5, width: '100%' }} gutterBottom>
-                          Overview
+                          {data?.metadata?.title}
                         </Typography>
                       </m.div>
                       <Box sx={{ mt: 2, px: 4, position: 'relative' }}>
@@ -237,7 +237,7 @@ export default function PublicationDetailsView({ id }: Props) {
                             <Markdown children={videoDescription} />
                           </Box>
                           <Button variant="outlined" onClick={toggleDescription} sx={{ mt: 2 }}>
-                            {showToggle ? 'Mostrar menos' : 'Mostrar más'}
+                            {showToggle ? 'Show less' : 'Show more'}
                           </Button>
                         </m.div>
                       </Box>

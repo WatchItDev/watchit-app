@@ -21,6 +21,9 @@ import ProfileCover from './profile-cover';
 import { truncateAddress } from '../../utils/wallet';
 import CopyableText from '../../components/copyableText/copyableText';
 import { UpdateModal } from '@src/components/updateModal';
+import { IconDots } from '@tabler/icons-react';
+import MenuItem from '@mui/material/MenuItem';
+import { ReportProfileModal } from '@src/components/report-profile-modal.tsx';
 
 // ----------------------------------------------------------------------
 
@@ -80,7 +83,10 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
   const { selectedProfile } = useAuth();
   const [isFollowed, setIsFollowed] = useState(false);
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+  const [menuAnchorEl, setMenuAnchorEl] = useState<HTMLButtonElement | null>(null);
+  const [openReportModal, setOpenReportModal] = useState(false);
   const open = Boolean(anchorEl);
+  const openMenu = Boolean(menuAnchorEl);
 
   // State to handle error and success messages
   const [errorMessage, setErrorMessage] = useState('');
@@ -244,6 +250,47 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
       <Box sx={{ my: 3 }}>
         <ProfileCover profile={profile} />
 
+        <Button
+          variant="text"
+          sx={{
+            borderColor: '#FFFFFF',
+            color: '#FFFFFF',
+            height: '40px',
+            minWidth: '40px',
+            position: 'absolute',
+            right: 38,
+            top: 32
+          }}
+          onClick={(event) => setMenuAnchorEl(event.currentTarget)}
+        >
+          <IconDots size={22} color='#FFFFFF' />
+        </Button>
+
+        <Popover
+          open={openMenu}
+          anchorEl={menuAnchorEl}
+          onClose={() => setMenuAnchorEl(null)}
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+          transformOrigin={{ vertical: 'top', horizontal: 'center' }}
+          PaperProps={{
+            sx: {
+              background: 'linear-gradient(90deg, #1C1C1E, #2C2C2E)',
+              borderRadius: 1,
+              p: 1,
+              display: 'flex',
+              flexDirection: 'column',
+              mt: 1,
+              ml: -3,
+              alignItems: 'center',
+              boxShadow: '0 4px 12px rgba(0, 0, 0, 0.5)',
+            },
+          }}
+        >
+          <Stack direction="column" spacing={0} justifyContent="center">
+            <MenuItem sx={{ p: 1 }} onClick={() => { setOpenReportModal(true); setMenuAnchorEl(null); }}>Report</MenuItem>
+          </Stack>
+        </Popover>
+
         <Stack
           direction="row"
           sx={{
@@ -271,8 +318,6 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
                 alt={profile?.handle?.localName ?? ''}
                 variant="rounded"
                 sx={{
-                  transition: '2s',
-                  opacity: (profile?.metadata?.picture as any)?.optimized?.uri ? 1: 0,
                   width: { xs: 64, md: 128 },
                   height: { xs: 64, md: 128 },
                   border: `solid 2px ${theme.palette.common.white}`,
@@ -546,6 +591,8 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
           {successMessage}
         </Alert>
       </Snackbar>
+
+      <ReportProfileModal profile={profile} isOpen={openReportModal} onClose={() => setOpenReportModal(false)} />
     </>
   );
 };
