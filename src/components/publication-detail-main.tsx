@@ -4,7 +4,6 @@ import { useState } from 'react';
 // MUI IMPORTS
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
-import Menu from '@mui/material/Menu';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Avatar from '@mui/material/Avatar';
@@ -59,13 +58,13 @@ import Popover from '@mui/material/Popover';
 type Props = {
   post: any
   handleSubscribe: () => void
+  hasAccess: boolean
 };
 
 // ----------------------------------------------------------------------
 
-export default function PublicationDetailMain({ post, handleSubscribe }: Props) {
+export default function PublicationDetailMain({ post, handleSubscribe, hasAccess }: Props) {
   // STATES HOOKS
-  const [hasAccess, setHasAccess] = useState(false)
   const [showComments, setShowComments] = useState(false);
   const [openReportModal, setOpenReportModal] = useState(false);
   const [openConfirmModal, setOpenConfirmModal] = useState(false);
@@ -117,11 +116,6 @@ export default function PublicationDetailMain({ post, handleSubscribe }: Props) 
 
     router.push(paths.dashboard.user.root(`${post?.by?.id}`))
   }
-
-  const handleSubscription = () => {
-    setHasAccess(true)
-    handleSubscribe()
-  };
 
   if (post.isHidden) return <p>Publication is hidden</p>;
 
@@ -230,7 +224,7 @@ export default function PublicationDetailMain({ post, handleSubscribe }: Props) 
             {hasAccess ? (
               <LeaveTipCard />
             ) : (
-              <SubscribeToUnlockCard onSubscribe={handleSubscription} />
+              <SubscribeToUnlockCard onSubscribe={handleSubscribe} />
             )}
           </Box>
 

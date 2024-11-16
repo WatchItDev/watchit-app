@@ -1,5 +1,5 @@
 // REACT IMPORTS
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 // MUI IMPORTS
 import Box from '@mui/material/Box';
@@ -14,6 +14,9 @@ import CardContent from '@mui/material/CardContent';
 
 // LENS IMPORTS
 import { usePublication } from '@lens-protocol/react';
+
+// WAGMI IMPORTS
+import { useReadContract } from 'wagmi';
 
 // MOTION IMPORTS
 import { m } from 'framer-motion';
@@ -34,6 +37,8 @@ import ProfileHome from '@src/sections/user/profile-home.tsx';
 import { LoadingScreen } from '@src/components/loading-screen';
 import MoviePlayView from '@src/sections/publication/view/publication-play-view.tsx';
 import PublicationDetailMain from '@src/components/publication-detail-main.tsx';
+import SubscriptionPolicyAbi from '@src/config/abi/SubscriptionPolicy.json';
+import { useAuth } from '@src/hooks/use-auth.ts';
 
 const videoDescription = `
 ¡Bienvenidos al canal! 🎥 En este video, vamos a explorar **[Tema del Video]**, donde desglosaremos paso a paso todo lo que necesitas saber. Este es un video extenso y detallado, así que si eres alguien que quiere profundizar en este tema y conocer todos los aspectos importantes, ¡has llegado al lugar correcto!
@@ -63,6 +68,10 @@ Si te gustó este contenido y quieres seguir aprendiendo sobre **[tema del video
 ¡Gracias por tu tiempo y hasta pronto! 🙌
 `;
 
+const MAX_LINES = 5;
+const SubscriptionPolicyContractAddress = '0xcafde3bc71b7ab469c8b165e896547d5868e9e5c'
+const GeoAddress = '0xEFBBD14082cF2FbCf5Badc7ee619F0f4e36D0A5B'
+
 
 // ----------------------------------------------------------------------
 
@@ -75,11 +84,12 @@ type Props = {
 export default function PublicationDetailsView({ id }: Props) {
   // STATES HOOKS
   const [showToggle, setShowToggle] = useState(false);
-  const [hasAccess, setHasAccess] = useState(false)
+  const [showButton, setShowButton] = useState(false);
   const descriptionRef = useRef(null);
   // LOCAL HOOKS
   const theme = useTheme();
   const router = useRouter();
+  const { selectedProfile } = useAuth();
   const mdUp = useResponsive('up', 'md');
   // LENS HOOKS
   const { data, loading }: any = usePublication({
@@ -87,6 +97,14 @@ export default function PublicationDetailsView({ id }: Props) {
   });
   // CONSTANTS
   const variants = theme.direction === 'rtl' ? varFade().inLeft : varFade().inRight;
+
+  // CONTRACT
+  const isAccessAllowed: any = useReadContract({
+    abi: SubscriptionPolicyAbi.abi,
+    address: SubscriptionPolicyContractAddress,
+    functionName: 'isAccessAllowed',
+    args: [data?.by?.ownedBy?.address, selectedProfile?.ownedBy?.address], // first address is the address owner and the second one is the address who is asking if has access
+  })
 
   const handleBack = () => {
     router.push(paths.dashboard.root);
@@ -103,8 +121,21 @@ export default function PublicationDetailsView({ id }: Props) {
   };
 
   const handleSubscribe = () => {
-    setHasAccess(true)
+    // Subscribe logic
   };
+
+  useEffect(() => {
+    if (descriptionRef.current) {
+      const lineHeight = parseInt(
+        window.getComputedStyle(descriptionRef.current).lineHeight,
+        10
+      );
+      const maxHeight = lineHeight * MAX_LINES;
+      if (descriptionRef.current.scrollHeight > maxHeight) {
+        setShowButton(true);
+      }
+    }
+  }, [descriptionRef.current, data?.metadata?.content]);
 
   if (loading) return <LoadingScreen />
 
@@ -145,7 +176,7 @@ export default function PublicationDetailsView({ id }: Props) {
           >
             <Card sx={{ width: '100%' }}>
               <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-                {hasAccess ? (
+                {isAccessAllowed?.data ? (
                   <MoviePlayView publication={data} loading={loading} />
                 ) : (
                   <Box sx={{ position: 'relative', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -228,17 +259,19 @@ export default function PublicationDetailsView({ id }: Props) {
                             ref={descriptionRef}
                             sx={{
                               display: '-webkit-box',
-                              WebkitLineClamp: showToggle ? 'none' : 5,
+                              WebkitLineClamp: showToggle ? 'none' : MAX_LINES,
                               WebkitBoxOrient: 'vertical',
                               overflow: 'hidden',
                               opacity: 0.8,
                             }}
                           >
-                            <Markdown children={videoDescription} />
+                            <Markdown children={data?.metadata?.content} />
                           </Box>
-                          <Button variant="outlined" onClick={toggleDescription} sx={{ mt: 2 }}>
-                            {showToggle ? 'Show less' : 'Show more'}
-                          </Button>
+                          {showButton && (
+                            <Button variant="outlined" onClick={toggleDescription} sx={{ mt: 2 }}>
+                              {showToggle ? 'Show less' : 'Show more'}
+                            </Button>
+                          )}
                         </m.div>
                       </Box>
                     </Box>
@@ -283,7 +316,7 @@ export default function PublicationDetailsView({ id }: Props) {
               </CardContent>
             </Card>
           </Stack>
-          <PublicationDetailMain post={data} handleSubscribe={handleSubscribe} />
+          <PublicationDetailMain post={data} handleSubscribe={handleSubscribe} hasAccess={isAccessAllowed?.data} />
         </Box>
       </Box>
     </>
