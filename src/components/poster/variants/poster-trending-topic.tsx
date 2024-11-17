@@ -18,7 +18,7 @@ const PosterTrendingTopic = ({ id, title, image, desc }: TrendingTopicsType) => 
   const router = useRouter();
 
   const handlePosterClick = () => {
-    router.push(paths.dashboard.movie.details(String(id)));
+    router.push(paths.dashboard.publication.details(String(id)));
   }
 
   return (

@@ -9,19 +9,13 @@ import Label from '@src/components/label';
 // ----------------------------------------------------------------------
 
 type Props = {
-  title: {
-    text: string;
-    highlight: boolean;
-  }[];
-  path: {
-    text: string;
-    highlight: boolean;
-  }[];
-  groupLabel: string;
+  title: string
+  subtitle: string
+  groupLabel: string
   onClickItem: VoidFunction;
 };
 
-export default function ResultItem({ title, path, groupLabel, onClickItem }: Props) {
+export default function ResultItem({ title, subtitle, groupLabel, onClickItem }: Props) {
   return (
     <ListItemButton
       onClick={onClickItem}
@@ -44,31 +38,29 @@ export default function ResultItem({ title, path, groupLabel, onClickItem }: Pro
           sx: { textTransform: 'capitalize' },
         }}
         secondaryTypographyProps={{ typography: 'caption' }}
-        primary={title.map((part, index) => (
+        primary={(
           <Box
-            key={index}
             component="span"
             sx={{
-              color: part.highlight ? 'primary.main' : 'text.primary',
+              color: '#fff',
             }}
           >
-            {part.text}
+            {title}
           </Box>
-        ))}
-        secondary={path.map((part, index) => (
+        )}
+        secondary={(
           <Box
-            key={index}
             component="span"
             sx={{
-              color: part.highlight ? 'primary.main' : 'text.secondary',
+              color: 'text.secondary',
             }}
           >
-            {part.text}
+            {subtitle}
           </Box>
-        ))}
+        )}
       />
 
-      {groupLabel && <Label color="info">{groupLabel}</Label>}
+      {groupLabel && <Label color="info" sx={{ flexShrink: 0, marginLeft: '8px' }}>{groupLabel}</Label>}
     </ListItemButton>
   );
 }
