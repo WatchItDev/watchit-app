@@ -77,7 +77,7 @@ export default function App() {
                 <SettingsDrawer />
                 <ProgressBar />
                 <Router />
-                {/*<ResponsiveOverlay />*/}
+                <ResponsiveOverlay />
               </SnackbarProvider>
             </MotionLazy>
           </ThemeProvider>

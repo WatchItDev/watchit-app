@@ -1,1 +1,1 @@
-export { default as ResponsiveOverlay } from './ResponsiveOverlay.tsx';
+export { default as ResponsiveOverlay } from './ResetMiniNavOnResize.tsx';

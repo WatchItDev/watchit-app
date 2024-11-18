@@ -23,6 +23,7 @@ import { useNavData } from './config-navigation';
 import { AccountPopover, NotificationsPopover, Searchbar } from '../_common';
 import { NavToggleButton } from '../_common';
 import {NAV} from "@src/layouts/config-layout.ts";
+import NavMini from "@src/layouts/dashboard/nav-mini.tsx";
 // ----------------------------------------------------------------------
 
 type Props = {
@@ -150,11 +151,26 @@ export default function NavVertical({ openNav, onCloseNav}: Props) {
           onClose={onCloseNav}
           PaperProps={{
             sx: {
-              width: NAV.W_VERTICAL,
+              width: NAV.W_VERTICAL + NAV.W_MINI,
             },
           }}
         >
-          {renderContent}
+          <Stack direction={'row'} sx={{
+
+          }}>
+            <Box sx={{
+              width: NAV.W_MINI,
+            }}>
+              <NavMini />
+            </Box>
+            <Box sx={{
+              width: NAV.W_VERTICAL,
+            }}>
+              {renderContent}
+            </Box>
+
+          </Stack>
+
         </Drawer>
       )}
       <LoginModal open={loginModalOpen} onClose={handleCloseModal} />
