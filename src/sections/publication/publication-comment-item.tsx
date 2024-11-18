@@ -46,9 +46,11 @@ export default function PublicationCommentItem({
   };
 
   const goToProfile = () => {
-    if (!comment?.profile?.id) return;
+    console.log('comment')
+    console.log(comment)
+    if (!comment?.by?.id) return;
 
-    router.push(paths.dashboard.user.root(`${comment?.profile?.id}`))
+    router.push(paths.dashboard.user.root(`${comment?.by?.id}`))
   }
 
   console.log('hello comment')

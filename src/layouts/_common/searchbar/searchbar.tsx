@@ -141,6 +141,7 @@ function Searchbar() {
         alignItems: 'center',
         justifyContent: 'space-between',
         backgroundColor: '#24262A', borderRadius: 1.5, m: 1, p: 0.2,
+        mb: !hideSearchText ? 0 : 3,
         '&:hover': { backgroundColor: '#1E1F22' },
       }}
     >

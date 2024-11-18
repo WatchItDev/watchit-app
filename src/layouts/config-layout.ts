@@ -10,5 +10,5 @@ export const NAV = {
   W_VERTICAL: 260,
   W_MINI: 72,
   W_VERTICAL_MINI: 72 + 25,
-  TOGGLE_TOP: 17,
+  TOGGLE_TOP: 49,
 };

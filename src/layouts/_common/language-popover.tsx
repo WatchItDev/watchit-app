@@ -12,11 +12,18 @@ import CustomPopover, { usePopover } from '@src/components/custom-popover';
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import {IconCoinMonero} from "@tabler/icons-react";
+import { useBalance } from 'wagmi';
+import { useAuth } from '@src/hooks/use-auth.ts';
 
 // ----------------------------------------------------------------------
 
 export default function LanguagePopover() {
   const locales = useLocales();
+  const { selectedProfile } = useAuth();
+  const { data, isError, isLoading } = useBalance({
+    address: selectedProfile?.ownedBy?.address,
+    token: '0xdC2E7C4444730980CEB8982CfC8A1c4902fa36bE'
+  });
 
   const popover = usePopover();
 
@@ -28,28 +35,31 @@ export default function LanguagePopover() {
     [locales, popover]
   );
 
+  const balanceOptions = { minimumFractionDigits: 1, maximumFractionDigits: 3 };
+  const formattedBalance = new Intl.NumberFormat('en-US', balanceOptions).format(data?.formatted);
+
   return (
     <>
       <Stack direction="row" alignItems="center" justifyContent="center">
-
-      <IconButton
-        component={m.button}
-        whileTap="tap"
-        whileHover="hover"
-        variants={varHover(1.05)}
-        // onClick={popover.onOpen}
-        sx={{
-          width: 40,
-          height: 40,
-          ...(popover.open && {
-            bgcolor: 'action.selected',
-          }),
-        }}
-      >
-        {/*<Iconify icon={locales.currentLang.icon} sx={{ borderRadius: 0.65, width: 28 }} />*/}
-        <IconCoinMonero style={{ borderRadius: 0.65, width: 64 }} />
-      </IconButton>
-        <Typography variant="subtitle2">123,457</Typography>
+        <IconButton
+          component={m.button}
+          whileTap="tap"
+          whileHover="hover"
+          variants={varHover(1.05)}
+          // onClick={popover.onOpen}
+          sx={{
+            width: 40,
+            height: 40,
+            ...(popover.open && {
+              bgcolor: 'action.selected',
+            }),
+          }}
+        >
+          {/*<Iconify icon={locales.currentLang.icon} sx={{ borderRadius: 0.65, width: 28 }} />*/}
+          <IconCoinMonero style={{ borderRadius: 0.65, width: 64 }} />
+        </IconButton>
+        <Typography variant="subtitle2" sx={{ mt: 0.4 }}>{formattedBalance}</Typography>
+        <Typography variant="caption" color="text.secondary" sx={{ ml: 1, mt: 0.6, fontSize: 10 }}>MMC</Typography>
       </Stack>
 
       <CustomPopover open={popover.open} onClose={popover.onClose} sx={{ width: 160 }}>
