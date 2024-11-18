@@ -20,6 +20,7 @@ import {
   LanguagePopover,
   NotificationsPopover,
 } from '../_common';
+import {useAuth} from "@src/hooks/use-auth.ts";
 
 // ----------------------------------------------------------------------
 
@@ -28,6 +29,7 @@ type Props = {
 };
 
 export default function Header({ onOpenNav }: Props) {
+  const { authenticated } = useAuth();
   const theme = useTheme();
 
   const settings = useSettingsContext();
@@ -60,7 +62,11 @@ export default function Header({ onOpenNav }: Props) {
         spacing={{ xs: 0.5, sm: 1 }}
         sx={{ pr: 2 }}
       >
-        <LanguagePopover />
+        {
+          authenticated && (
+            <LanguagePopover />
+          )
+        }
 
         <NotificationsPopover />
 
