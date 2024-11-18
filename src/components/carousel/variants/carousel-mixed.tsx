@@ -197,7 +197,7 @@ function CarouselLargeItem({ poster}:  Readonly<CarouselLargeItemProps>) {
   const variants = theme.direction === 'rtl' ? varFade().inLeft : varFade().inRight;
 
   const handlePlay = () => {
-    router.push(paths.dashboard.movie.details(poster.id));
+    router.push(paths.dashboard.publication.details(poster.id));
   }
 
   return (

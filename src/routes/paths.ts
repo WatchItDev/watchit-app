@@ -59,14 +59,14 @@ export const paths = {
       new: `${ROOTS.DASHBOARD}/governance/new`,
       details: (id: string) => `${ROOTS.DASHBOARD}/governance/details/${id}`,
     },
-    movie: {
-      root: `${ROOTS.DASHBOARD}/movie`,
-      new: `${ROOTS.DASHBOARD}/movie/new`,
-      details: (id: string) => `${ROOTS.DASHBOARD}/movie/${id}`,
-      edit: (id: string) => `${ROOTS.DASHBOARD}/movie/${id}/edit`,
+    publication: {
+      root: `${ROOTS.DASHBOARD}/publication`,
+      new: `${ROOTS.DASHBOARD}/publication/new`,
+      details: (id: string) => `${ROOTS.DASHBOARD}/publication/${id}`,
+      edit: (id: string) => `${ROOTS.DASHBOARD}/publication/${id}/edit`,
       demo: {
-        details: `${ROOTS.DASHBOARD}/movie/${MOCK_ID}`,
-        edit: `${ROOTS.DASHBOARD}/movie/${MOCK_ID}/edit`,
+        details: `${ROOTS.DASHBOARD}/publication/${MOCK_ID}`,
+        edit: `${ROOTS.DASHBOARD}/publication/${MOCK_ID}/edit`,
       },
     },
     post: {
@@ -80,13 +80,13 @@ export const paths = {
       },
     },
   },
-  movie: {
-    root: `/movie`,
-    checkout: `/movie/checkout`,
-    play: (id: string) => `/movie/play/${id}`,
-    details: (id: string) => `/movie/${id}`,
+  publication: {
+    root: `/publication`,
+    checkout: `/publication/checkout`,
+    play: (id: string) => `/publication/play/${id}`,
+    details: (id: string) => `/publication/${id}`,
     demo: {
-      details: `/movie/${MOCK_ID}`,
+      details: `/publication/${MOCK_ID}`,
     },
   },
   post: {

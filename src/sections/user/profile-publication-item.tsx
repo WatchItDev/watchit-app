@@ -29,7 +29,7 @@ export const ProfilePublicationItem = ({ publication }: Props) => {
     publication?.metadata?.attachments?.find((el: any) => el.altTag === 'Vertical Poster')?.image?.raw?.uri;
 
   const handleClick = () => {
-    router.push(paths.dashboard.movie.details(publication.id));
+    router.push(paths.dashboard.publication.details(publication.id));
   }
 
   return (

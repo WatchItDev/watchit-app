@@ -18,7 +18,7 @@ const PosterMini = ({ id, title, images, rating, year, price, genre }: Poster) =
   const router = useRouter();
 
   const handlePosterClick = () => {
-    router.push(paths.dashboard.movie.details(id));
+    router.push(paths.dashboard.publication.details(id));
   }
 
   return (

@@ -8,9 +8,10 @@ import { ProfilePublicationItem } from './profile-publication-item';
 
 interface ProfileHomeProps {
   profile: Profile;
+  noPaddings?: boolean
 }
 
-export default function ProfileHome({ profile }: ProfileHomeProps) {
+export default function ProfileHome({ profile, noPaddings = false }: ProfileHomeProps) {
   const { data: publications } = usePublications({
     where: {
       from: [profile.id],
@@ -51,7 +52,7 @@ export default function ProfileHome({ profile }: ProfileHomeProps) {
         gap: `${gap}px`,
         justifyContent: 'flex-start',
         alignItems: 'flex-start',
-        padding: 2,
+        padding: noPaddings ? 0 : 2,
       }}
     >
       {publications?.map((publication) => (

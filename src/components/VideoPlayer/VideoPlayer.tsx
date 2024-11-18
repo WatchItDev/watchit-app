@@ -21,9 +21,10 @@ export type VideoPlayerProps = {
   titleMovie: string;
   preview?: boolean;
   onBack?: () => void;
+  showBack?: boolean;
 };
 
-export const VideoPlayer: FC<VideoPlayerProps> = ({ src, titleMovie, preview, onBack }) => {
+export const VideoPlayer: FC<VideoPlayerProps> = ({ src, titleMovie, preview, onBack, showBack }) => {
   const mdUp = useResponsive('up', 'md');
   const player = useRef<MediaPlayerInstance>(null);
   const controlsVisible = useMediaState('controlsVisible', player);
@@ -53,46 +54,48 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({ src, titleMovie, preview, on
       title={titleMovie}
       style={{ width: '100%', height: '100%' }}
     >
-      <Button
-        onClick={onBack}
-        disableFocusRipple
-        sx={{
-          position: 'absolute',
-          top: '16px',
-          left: '16px',
-          display: controlsVisible ? 'flex' : 'none',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          backgroundColor: '#24262A',
-          borderRadius: 1.5,
-          zIndex: 100,
-          m: 1,
-          p: 0.2,
-          '&:hover': {
-            backgroundColor: '#1E1F22',
-          },
-        }}
-      >
-        <IconButton disableRipple>
-          <IconChevronLeft size={20} />
-          <Typography sx={{ ml: 1 }} variant="subtitle2">
-            Back
-          </Typography>
-        </IconButton>
-        {mdUp && (
-          <Label
-            sx={{
-              px: 0.75,
-              mr: 1,
-              fontSize: 12,
-              color: 'text.secondary',
-              cursor: 'pointer',
-            }}
-          >
-            Esc
-          </Label>
-        )}
-      </Button>
+      {showBack && (
+        <Button
+          onClick={onBack}
+          disableFocusRipple
+          sx={{
+            position: 'absolute',
+            top: '16px',
+            left: '16px',
+            display: controlsVisible ? 'flex' : 'none',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            backgroundColor: '#24262A',
+            borderRadius: 1.5,
+            zIndex: 100,
+            m: 1,
+            p: 0.2,
+            '&:hover': {
+              backgroundColor: '#1E1F22',
+            },
+          }}
+        >
+          <IconButton disableRipple>
+            <IconChevronLeft size={20} />
+            <Typography sx={{ ml: 1 }} variant="subtitle2">
+              Back
+            </Typography>
+          </IconButton>
+          {mdUp && (
+            <Label
+              sx={{
+                px: 0.75,
+                mr: 1,
+                fontSize: 12,
+                color: 'text.secondary',
+                cursor: 'pointer',
+              }}
+            >
+              Esc
+            </Label>
+          )}
+        </Button>
+      )}
       <MediaProvider>
         {/* <Poster className="vds-poster" /> */}
         {/* {textTracks.map(track => (

@@ -63,7 +63,7 @@ function CarouselItem({ post }: Readonly<CarouselItemProps>) {
   const variants = theme.direction === 'rtl' ? varFade().inLeft : varFade().inRight;
 
   const handlePlay = () => {
-    router.push(paths.dashboard.movie.details(`${post.id}`));
+    router.push(paths.dashboard.publication.details(`${post.id}`));
   }
 
   const getMediaUri = (cid: string): string => `https://ipfs.io/ipfs/${cid.replace('ipfs://', '')}`

@@ -32,9 +32,9 @@ const UserAccountPage = lazy(() => import('@src/pages/dashboard/user/account'));
 const UserCreatePage = lazy(() => import('@src/pages/dashboard/user/new'));
 const UserEditPage = lazy(() => import('@src/pages/dashboard/user/edit'));
 // MOVIE
-const MovieDetailsPage = lazy(() => import('@src/pages/dashboard/movie/details'));
-const MovieCreatePage = lazy(() => import('@src/pages/dashboard/movie/new'));
-const MoviePlayPage = lazy(() => import('@src/pages/dashboard/movie/play'));
+const PublicationDetailsPage = lazy(() => import('@src/pages/dashboard/publication/details'));
+const PublicationCreatePage = lazy(() => import('@src/pages/dashboard/publication/new'));
+const PublicationPlayPage = lazy(() => import('@src/pages/dashboard/publication/play'));
 // BLOG
 const BlogPostsPage = lazy(() => import('@src/pages/dashboard/post/list'));
 const BlogPostPage = lazy(() => import('@src/pages/dashboard/post/details'));
@@ -90,10 +90,10 @@ export const dashboardRoutes = [
         ],
       },
       {
-        path: 'movie',
+        path: 'publication',
         children: [
-          { path: ':id', element: <MovieDetailsPage /> },
-          { path: 'new', element: <MovieCreatePage /> },
+          { path: ':id', element: <PublicationDetailsPage /> },
+          { path: 'new', element: <PublicationCreatePage /> },
         ],
       },
       {
@@ -109,10 +109,10 @@ export const dashboardRoutes = [
     ],
   },
   {
-    path: 'movie/play/:id',
+    path: 'publication/play/:id',
     element: (
       <Suspense fallback={<SplashScreen />}>
-        <MoviePlayPage />
+        <PublicationPlayPage />
       </Suspense>
     ),
   },

@@ -187,7 +187,7 @@ export function CheckoutProvider({ children }: Props) {
   const onReset = useCallback(() => {
     if (completed) {
       setValues(initialState);
-      router.replace(paths.movie.root);
+      router.replace(paths.publication.root);
     }
   }, [completed, router, setValues]);
 

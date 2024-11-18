@@ -1,18 +1,17 @@
-// import { Skeleton, Grid, Box, Button, Modal } from '@mui/material';
 import { Helmet } from 'react-helmet-async';
-import {
-  OpenActionType,
-  Amount,
-  useCreatePost, useCurrencies
-} from '@lens-protocol/react-web';
-import { video, MetadataAttributeType, AnyMedia } from '@lens-protocol/metadata';
-// import Typography from '@mui/material/Typography';
+import { useEffect, useState } from 'react';
+import { Amount, OpenActionType, useCreatePost, useCurrencies } from '@lens-protocol/react-web';
+import { AnyMedia, MetadataAttributeType, module, ModuleOptions, ModuleSchemaId, video } from '@lens-protocol/metadata';
 import axios from 'axios';
 import { useAuth } from '../../hooks/use-auth';
 import uuidv4 from '../../utils/uuidv4';
 import { LoadingScreen } from '../../components/loading-screen';
-import ComingSoonView from "@src/sections/coming-soon/view.tsx";
-import BlankView from "@src/sections/blank/view.tsx";
+import { encodeData } from '@lens-protocol/react';
+import { Grid, Modal } from '@mui/material';
+import Skeleton from '@mui/material/Skeleton';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
 
 // Metadatos de la película en una constante
 const movieMetadata = {
@@ -62,6 +61,9 @@ const movieMetadata = {
   creators: ["Lucas Brown", "Grace Martin"]
 };
 
+const TIP_ACTION_MODULE_ADDRESS = '0xe95A8326EBd29B6574875806474d6f9734De80A5';
+const MMC_ADDRESS = '0xdC2E7C4444730980CEB8982CfC8A1c4902fa36bE';
+
 // Función para subir los metadatos a Pinata
 const uploadToPinata = async (metadata: any) => {
   const pinataApiKey = '26e37a596e8e561427af'; // Reemplaza con tu clave de API
@@ -83,12 +85,12 @@ const uploadToPinata = async (metadata: any) => {
 
 export default function OverviewFilePage() {
   // @ts-ignore eslint-disable-next-line @typescript-eslint/no-unused-vars
-  // const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false);
   const { selectedProfile: activeProfile } = useAuth(); // Obtener el perfil activo
 
   // @ts-ignore eslint-disable-next-line @typescript-eslint/no-unused-vars
-  // const handleOpen = () => setOpen(true);
-  //  const handleClose = () => setOpen(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   const { execute: createPost } = useCreatePost();
   const { data, loading } = useCurrencies();
@@ -164,7 +166,7 @@ export default function OverviewFilePage() {
       console.log(metadataUri)
 
       // Obtener la moneda MMC
-      const mmc = data?.find((el) => (el.symbol === 'MMC'))
+      const mmc = data?.find((el) => (el.address === MMC_ADDRESS))
 
       if (!mmc) {
         console.error('Currency not found');
@@ -175,6 +177,11 @@ export default function OverviewFilePage() {
 
       console.log(amount)
 
+      const calldata = encodeData(
+        [{ name: 'tipReceiver', type: 'address' }],
+        [activeProfile.ownedBy.address], // Address of tip receiver
+      );
+
       // Crear el post en Lens con el Collect Action Module
       const result = await createPost({
         metadata: metadataUri,
@@ -182,9 +189,14 @@ export default function OverviewFilePage() {
           {
             type: OpenActionType.SIMPLE_COLLECT,
             amount,
-            recipient: activeProfile.ownedBy.address, // Dirección que recibirá los pagos
-            followerOnly: false, // Permitir que cualquiera pueda coleccionar
-            referralFee: 0, // Sin comisión para referidos
+            recipient: activeProfile.ownedBy.address,
+            followerOnly: false,
+            referralFee: 0,
+          },
+          {
+            type: OpenActionType.UNKNOWN_OPEN_ACTION,
+            address: TIP_ACTION_MODULE_ADDRESS,
+            data: calldata,
           },
         ],
       });
@@ -201,12 +213,53 @@ export default function OverviewFilePage() {
           window.alert('Post created successfully');
         }
 
-        // handleClose(); // Cierra el modal
+        handleClose(); // Cierra el modal
       }
     } catch (error) {
       console.error('Error submitting to Lens:', error);
     }
   };
+
+  const createTipModuleMetadata = () => {
+    return module({
+      name: 'TipActionModule',
+      title: 'Tip Action Module',
+      description: 'This module allows users to tip the author of a publication.',
+      authors: ['martijn.vanhalen@gmail.com'],
+      initializeCalldataABI: `${JSON.stringify([
+        {
+          "type": "address",
+          "name": "tipReceiver"
+        }
+      ])}`,
+      processCalldataABI: `${JSON.stringify([
+        {
+          "type": "address",
+          "name": "currency"
+        },
+        {
+          "type": "uint256",
+          "name": "tipAmount"
+        }
+      ])}`,
+      $schema: ModuleSchemaId.LATEST
+    } as ModuleOptions);
+  };
+
+  const createAndUploadTipModuleMetadata = async () => {
+    try {
+      const metadata = createTipModuleMetadata();
+      const metadataUri = await uploadToPinata(metadata);
+      console.log(metadata);
+      console.log('Module Metadata CID:', metadataUri);
+    } catch (error) {
+      console.error('Error uploading metadata:', error);
+    }
+  };
+
+  useEffect(() => {
+    // createAndUploadTipModuleMetadata();
+  }, []);
 
   if (loading) return <LoadingScreen />
 
@@ -216,10 +269,11 @@ export default function OverviewFilePage() {
         <title> Dashboard: File</title>
       </Helmet>
 
-      <BlankView>
-        <ComingSoonView />
-      </BlankView>
-      {/*<Grid container spacing={2} style={{ height: 'calc(100vh - 5rem)', width: '100%', padding: '2rem 1.5rem 2rem 2rem' }}>
+      {/*<BlankView>*/}
+      {/*  <ComingSoonView />*/}
+      {/*</BlankView>*/}
+
+      <Grid container spacing={2} style={{ height: 'calc(100vh - 5rem)', width: '100%', padding: '2rem 1.5rem 2rem 2rem' }}>
         <Grid item xs={8} style={{ height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'flex-start' }}>
           <Grid container spacing={2} style={{ flexGrow: 1 }}>
             <Grid item xs={4}>
@@ -304,7 +358,7 @@ export default function OverviewFilePage() {
             Upload
           </Button>
         </Box>
-      </Modal>*/}
+      </Modal>
     </>
   );
 }
