@@ -32,7 +32,7 @@ export default function NavToggleButton({ sx, ...other }: IconButtonProps) {
       }
       sx={{
         p: 0.5,
-        top: 32,
+        top: NAV.TOGGLE_TOP,
         position: 'fixed',
         left: NAV.W_VERTICAL +  NAV.W_MINI - 12,
         zIndex: theme.zIndex.appBar + 1,
