@@ -11,11 +11,12 @@ import { paths } from '@src/routes/paths';
 // hooks
 import { useOffSetTop } from '@src/hooks/use-off-set-top';
 // components
-import Logo from '@src/components/logo';
 import { RouterLink } from '@src/routes/components';
 //
 import { HEADER } from '../config-layout';
 import HeaderShadow from './header-shadow';
+import SvgColor from "@src/components/svg-color";
+import NavList from "@src/components/nav-section/mini/nav-list.tsx";
 
 // ----------------------------------------------------------------------
 
@@ -28,6 +29,7 @@ export default function HeaderSimple() {
     <AppBar>
       <Toolbar
         sx={{
+          padding: '0px 11px !important',
           justifyContent: 'space-between',
           height: {
             xs: HEADER.H_MOBILE,
@@ -47,7 +49,20 @@ export default function HeaderSimple() {
           }),
         }}
       >
-        <Logo />
+        <Stack direction="row" alignItems="center" spacing={1}>
+          <NavList
+            active
+            data={{
+              id: 'watchit',
+              title: 'Watchit',
+              path: paths.dashboard.root,
+              icon: <SvgColor src='/assets/icons/navbar/ic_watchit.svg' sx={{ width: 1, height: 1 }} />
+            }}
+            depth={1}
+            config={{}}
+            onClick={() => { console.log('clicked w') }}
+          />
+        </Stack>
 
         <Stack direction="row" alignItems="center" spacing={1}>
           <Link
