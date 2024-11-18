@@ -31,7 +31,17 @@ const PosterTopTitles = ({ title, images, id, synopsis }: Poster) => {
     <Stack spacing={3} direction={{
       xs: 'column',
       lg: 'row'
-    }} sx={{minWidth: '100%', borderRadius: 10, padding:'90px', position: 'relative'}}>
+    }} sx={{
+        minWidth: '100%',
+      borderRadius: 10,
+      position: 'relative',
+      padding:  {
+        xs: '90px 0px 0px 0px',
+        sm: '0',
+        md: '0',
+        lg: '90px !important',
+      }
+    }}>
       <Box sx={{
         borderRadius: '10px',
         position: 'absolute',
