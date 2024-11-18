@@ -24,7 +24,7 @@ export default function NavVerticalMini() {
       component="nav"
       sx={{
         flexShrink: { lg: 0 },
-        width: { lg: NAV.W_MINI + 25 },
+        width: { lg: NAV.W_VERTICAL_MINI },
       }}
     >
       <NavToggleButton
@@ -39,7 +39,7 @@ export default function NavVerticalMini() {
           pb: 2,
           height: 1,
           position: 'fixed',
-          width: NAV.W_MINI + 25 ,
+          width: NAV.W_VERTICAL_MINI ,
           borderRight: (theme) => `dashed 1px ${theme.palette.divider}`,
           ...hideScroll.x,
         }}

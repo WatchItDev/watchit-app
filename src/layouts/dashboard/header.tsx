@@ -90,7 +90,7 @@ export default function Header({ onOpenNav }: Props) {
             height: HEADER.H_DESKTOP_OFFSET,
           }),
           ...(isNavMini && {
-            width: `calc(100% - ${NAV.W_MINI * 2 + 1}px)`,
+            width: `calc(100% - ${NAV.W_MINI + NAV.W_VERTICAL_MINI}px)`,
           }),
         }),
 
