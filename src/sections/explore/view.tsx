@@ -9,6 +9,12 @@ import {
   usePublications,
   PublicationType,
   appId,
+  useRecommendedProfiles,
+  profileId,
+  useBookmarks,
+  useExploreProfiles,
+  ExploreProfilesOrderByType,
+  useExplorePublications, ExplorePublicationsOrderByType, ExplorePublicationType,
 } from '@lens-protocol/react-web';
 
 import { LoadingScreen } from '../../components/loading-screen';
@@ -17,6 +23,7 @@ import {CarouselSection} from "@src/components/poster/carousel-section.tsx";
 import Box from "@mui/material/Box";
 import CarouselTopicsTrending from "@src/components/carousel/variants/carousel-topics-trending.tsx";
 import CarouselTopTitles from "@src/components/carousel/variants/carousel-top-titles.tsx";
+import { useAuth } from '@src/hooks/use-auth.ts';
 
 // ----------------------------------------------------------------------
 export type TrendingTopicsType = {
@@ -27,6 +34,7 @@ export type TrendingTopicsType = {
 }
 
 export default function ExploreView() {
+  const { selectedProfile } = useAuth();
   const { data, loading, error }: any = usePublications({
     where: {
       publicationTypes: [PublicationType.Post],
@@ -36,12 +44,43 @@ export default function ExploreView() {
       }
     }
   });
+  const { data: recommendedProfiles, loading: recommendedProfilesLoading, error: recommendedProfilesError } = useRecommendedProfiles({
+    for: selectedProfile?.id ?? profileId('0x043b')
+  });
+  const { data: bookmark, loading: bookmarkLoading, error: bookmarkError } = useBookmarks();
+  const { data: exploreProfiles, error: exploreProfilesError, loading: exploreProfilesLoading } = useExploreProfiles({
+    orderBy: ExploreProfilesOrderByType.MostPublication
+  });
 
-  // console.log('posts')
-  // console.log(loading)
-  // console.log(data)
-  // console.log(data?.map((item: any) => item?.metadata?.appId))
-  // console.log(error)
+  const { data: explorePublications, error: explorePublicationsError, loading: explorePublicationsLoading } = useExplorePublications({
+    where: {
+      publicationTypes: [ExplorePublicationType.Post],
+    },
+    orderBy: ExplorePublicationsOrderByType.TopCommented,
+  });
+
+  console.log('hello recommended profiles')
+  console.log(selectedProfile?.id ?? profileId('0x043b'))
+  console.log(recommendedProfiles)
+  console.log(recommendedProfilesLoading)
+  console.log(recommendedProfilesError)
+
+  console.log('hello bookmark')
+  console.log(bookmark)
+  console.log(bookmarkLoading)
+  console.log(bookmarkError)
+
+  console.log('hello explore profiles')
+  console.log(exploreProfiles)
+  console.log(exploreProfilesLoading)
+  console.log(exploreProfilesError)
+
+  console.log('hello explore publications')
+  console.log(explorePublications)
+  console.log(explorePublicationsLoading)
+  console.log(explorePublicationsError)
+
+
 
   if (loading) return <LoadingScreen />
 
