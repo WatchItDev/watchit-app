@@ -12,15 +12,15 @@ import NavList from './nav-list';
 
 // ----------------------------------------------------------------------
 
-function NavSectionVertical({ data, config, sx, size, ...other }: NavSectionProps) {
+function NavSectionVertical({ data, config, sx, ...other }: NavSectionProps) {
   return (
     <Stack sx={sx} {...other}>
       {data.map((group, index) => (
         <Group
           key={group.subheader || index}
-          subheader={group.subheader && size==='full' ?group.subheader : ''}
           items={group.items}
           config={navVerticalConfig(config)}
+          subheader={group?.subheader || ''}
         />
       ))}
     </Stack>
