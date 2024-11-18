@@ -18,7 +18,7 @@ import { HEADER, NAV } from '../config-layout';
 import {
   AccountPopover,
   LanguagePopover,
-  NotificationsPopover,
+  NotificationsPopover, Searchbar,
 } from '../_common';
 
 // ----------------------------------------------------------------------
@@ -52,7 +52,7 @@ export default function Header({ onOpenNav }: Props) {
         </IconButton>
       )}
 
-
+      <Searchbar />
 
       <Stack
         flexGrow={1}
@@ -104,7 +104,7 @@ export default function Header({ onOpenNav }: Props) {
       <Toolbar
         sx={{
           height: 1,
-          px: { lg: 5 },
+          px: { lg: 1 },
         }}
       >
         {renderContent}

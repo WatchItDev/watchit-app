@@ -110,7 +110,9 @@ function Searchbar() {
     <Button
       onClick={search.onTrue} disableFocusRipple
       sx={{
-        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
         backgroundColor: '#24262A', borderRadius: 1.5, m: 1, p: 0.2,
         '&:hover': {
           // opacity: 0.7,
@@ -120,7 +122,11 @@ function Searchbar() {
     >
       <IconButton disableRipple>
         <Iconify icon="eva:search-fill" />
-        <Typography sx={{ ml: 1 }} variant='subtitle2'>Search</Typography>
+        <Typography sx={{
+            ml: 1,
+            // Hide on mobile
+          display: { xs: 'none', lg: 'block' },
+          }} variant='subtitle2'>Search</Typography>
       </IconButton>
 
       {mdUp && <Label sx={{ px: 0.75, mr: 1, fontSize: 12, color: 'text.secondary' }}>⌘K</Label>}

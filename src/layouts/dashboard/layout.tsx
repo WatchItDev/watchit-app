@@ -27,7 +27,7 @@ export default function DashboardLayout({ children }: Props) {
 
   const isMini = settings.themeLayout === 'mini';
 
-  const renderNavMini =<><NavMini /> <NavVerticalMini openNav={nav.value} onCloseNav={nav.onFalse} /></>;
+  const renderNavMini =<><NavMini /> <NavVerticalMini /></>;
 
   const renderNavVertical =<><NavMini /><NavVertical openNav={nav.value} onCloseNav={nav.onFalse} /></>;
 

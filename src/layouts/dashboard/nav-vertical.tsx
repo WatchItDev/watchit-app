@@ -72,10 +72,7 @@ export default function NavVertical({ openNav, onCloseNav}: Props) {
         },
       }}
     >
-      {/*Add a icon to make collapsible the sidebar*/}
-
-
-      <Searchbar />
+      {/*<Searchbar />*/}
 
       <NavSectionVertical
         data={navData}
