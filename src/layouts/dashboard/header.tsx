@@ -18,7 +18,7 @@ import { HEADER, NAV } from '../config-layout';
 import {
   AccountPopover,
   LanguagePopover,
-  NotificationsPopover, Searchbar,
+  NotificationsPopover,
 } from '../_common';
 
 // ----------------------------------------------------------------------
@@ -58,6 +58,7 @@ export default function Header({ onOpenNav }: Props) {
         alignItems="center"
         justifyContent="flex-end"
         spacing={{ xs: 0.5, sm: 1 }}
+        sx={{ pr: 2 }}
       >
         <LanguagePopover />
 
@@ -88,7 +89,7 @@ export default function Header({ onOpenNav }: Props) {
             height: HEADER.H_DESKTOP_OFFSET,
           }),
           ...(isNavMini && {
-            width: `calc(100% - ${NAV.W_MINI + NAV.W_VERTICAL_MINI}px)`,
+            width: `calc(100% - ${NAV.W_MINI + NAV.W_VERTICAL_MINI + 2}px)`,
           }),
         }),
 

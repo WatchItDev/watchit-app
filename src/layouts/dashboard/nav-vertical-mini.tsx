@@ -25,14 +25,17 @@ export default function NavVerticalMini() {
       sx={{
         flexShrink: { lg: 0 },
         width: { lg: NAV.W_VERTICAL_MINI },
-        backgroundColor: '#232428',
+        backgroundColor: '#2b2d31',
+        left: (NAV.W_MINI + NAV.W_VERTICAL_MINI) - 12,
+        zIndex: '1300 !important'
       }}
     >
-      <Searchbar />
+
       <NavToggleButton
         sx={{
           top: NAV.TOGGLE_TOP,
-          left: NAV.W_MINI - 12,
+          left: (NAV.W_MINI + NAV.W_VERTICAL_MINI) - 12,
+          zIndex: '1300 !important'
         }}
       />
 
@@ -46,6 +49,7 @@ export default function NavVerticalMini() {
           ...hideScroll.x,
         }}
       >
+        <Searchbar />
         <NavSectionVerticalMini
           data={navData}
           config={{

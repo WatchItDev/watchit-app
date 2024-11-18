@@ -2,6 +2,7 @@
 import Box, { BoxProps } from '@mui/material/Box';
 // hooks
 import { useResponsive } from '@src/hooks/use-responsive';
+import {HEADER, NAV} from "@src/layouts/config-layout.ts";
 // components
 // import { useSettingsContext } from '@src/components/settings';
 //
@@ -18,6 +19,7 @@ export default function Main({ children, sx, ...other }: BoxProps) {
     <Box
       component="main"
       sx={{
+        padding: 5,
         transition: 'all 0.7s ease',
         flexGrow: 1,
         minHeight: 1,

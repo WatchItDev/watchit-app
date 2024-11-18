@@ -130,8 +130,6 @@ function Searchbar() {
     );
   };
 
-  console.log('Searchbar: is mini: ', isMini);
-
   const renderButton = (
     <Button
       onClick={search.onTrue}
@@ -141,6 +139,7 @@ function Searchbar() {
         alignItems: 'center',
         justifyContent: 'space-between',
         backgroundColor: '#24262A', borderRadius: 1.5, m: 1, p: 0.2,
+        mb: !hideSearchText ? 0 : 3,
         '&:hover': { backgroundColor: '#1E1F22' },
       }}
     >
@@ -156,7 +155,8 @@ function Searchbar() {
           )
         }
       </IconButton>
-      {mdUp && <Label sx={{ px: 0.75, mr: 1, fontSize: 12, color: 'text.secondary' }}>⌘K</Label>}
+      {(mdUp) && <Label sx={{ px: 0.75, mr: 1, fontSize: 12, color: 'text.secondary' }}>⌘K</Label>}
+      {(!isMini && !mdUp) && <Label sx={{ px: 0.75, mr: 1, fontSize: 12, color: 'text.secondary' }}>⌘K</Label>}
     </Button>
   );
 
