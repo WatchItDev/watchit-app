@@ -8,7 +8,7 @@ export default function OverviewBookingPage() {
   return (
     <>
       <Helmet>
-        <title> Dashboard: Booking</title>
+        <title> WatchIt | Community</title>
       </Helmet>
 
       <BlankView>

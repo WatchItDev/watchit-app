@@ -22,11 +22,11 @@ export default function CarouselTopTitles({ data, category }: Props) {
     responsive: [
       {
         breakpoint: 1024,
-        settings: { slidesToShow: 4 },
+        settings: { slidesToShow: 1 },
       },
       {
         breakpoint: 600,
-        settings: { slidesToShow: 2 },
+        settings: { slidesToShow: 1 },
       },
       {
         breakpoint: 480,

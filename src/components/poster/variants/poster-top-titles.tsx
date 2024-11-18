@@ -28,7 +28,10 @@ const PosterTopTitles = ({ title, images, id, synopsis }: Poster) => {
   }
 
   return (
-    <Stack spacing={3} direction={'row'} sx={{minWidth: '100%', borderRadius: 10, padding:'90px', position: 'relative'}}>
+    <Stack spacing={3} direction={{
+      xs: 'column',
+      lg: 'row'
+    }} sx={{minWidth: '100%', borderRadius: 10, padding:'90px', position: 'relative'}}>
       <Box sx={{
         borderRadius: '10px',
         position: 'absolute',
@@ -52,7 +55,13 @@ const PosterTopTitles = ({ title, images, id, synopsis }: Poster) => {
           <Image style={{borderRadius:'10px', display:'flex', alignItems: 'center', maxWidth:'400px', boxShadow: '0 0 25px #CCC'}} alt={title} src={images.vertical} ratio='1/1' />
         </Box>
       </StackItem>
-      <StackItem sx={{maxWidth: '40%', display: 'flex', alignItems: 'center', background: 'transparent', padding: '0 0 0 10px'}}>
+      <StackItem sx={{
+        // maxWidth responsive
+        maxWidth: { xs: '100%', sm: '100%', md: '100%', lg: '40%' },
+        display: 'flex',
+        alignItems: 'center',
+        background: 'transparent',
+        padding: '0 0 0 10px'}}>
         <Paper
           sx={{
             backgroundColor: 'transparent',

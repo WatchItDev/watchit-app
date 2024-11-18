@@ -89,16 +89,11 @@ export default function Header({ onOpenNav }: Props) {
           ...(offsetTop && {
             height: HEADER.H_DESKTOP_OFFSET,
           }),
-          ...(isNavHorizontal && {
-            width: 1,
-            bgcolor: 'background.default',
-            height: HEADER.H_DESKTOP_OFFSET,
-            borderBottom: `dashed 1px ${theme.palette.divider}`,
-          }),
           ...(isNavMini && {
             width: `calc(100% - ${NAV.W_MINI * 2 + 1}px)`,
           }),
         }),
+
       }}
     >
       <Toolbar

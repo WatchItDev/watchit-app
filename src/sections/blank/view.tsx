@@ -17,6 +17,12 @@ export default function BlankView({ children }: any) {
 
       <Box
         sx={{
+          marginLeft: {
+            xs: 7,
+            sm: 6,
+            md: 6,
+            lg: 0,
+          },
           mt: 5,
           padding: '16px !important',
           width: 1,
