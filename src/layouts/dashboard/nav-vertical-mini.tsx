@@ -10,7 +10,7 @@ import { NavSectionVerticalMini } from '@src/components/nav-section/mini/nav-sec
 // Projects
 import { NAV } from '../config-layout';
 import { useNavData } from './config-navigation';
-import { NavToggleButton } from '../_common';
+import {NavToggleButton, Searchbar} from '../_common';
 
 // ----------------------------------------------------------------------
 
@@ -25,11 +25,13 @@ export default function NavVerticalMini() {
       sx={{
         flexShrink: { lg: 0 },
         width: { lg: NAV.W_VERTICAL_MINI },
+        backgroundColor: '#232428',
       }}
     >
+      <Searchbar />
       <NavToggleButton
         sx={{
-          top: 22,
+          top: NAV.TOGGLE_TOP,
           left: NAV.W_MINI - 12,
         }}
       />

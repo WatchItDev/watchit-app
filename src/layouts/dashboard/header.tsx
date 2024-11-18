@@ -52,8 +52,6 @@ export default function Header({ onOpenNav }: Props) {
         </IconButton>
       )}
 
-      <Searchbar />
-
       <Stack
         flexGrow={1}
         direction="row"
@@ -98,8 +96,10 @@ export default function Header({ onOpenNav }: Props) {
     >
       <Toolbar
         sx={{
+          backgroundColor: '#1E1F22',
           height: 1,
           px: { lg: 1 },
+          borderBottom: (theme) => `dashed 1px ${theme.palette.divider}`,
         }}
       >
         {renderContent}

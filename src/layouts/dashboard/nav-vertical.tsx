@@ -72,7 +72,7 @@ export default function NavVertical({ openNav, onCloseNav}: Props) {
         },
       }}
     >
-      {/*<Searchbar />*/}
+      <Searchbar />
 
       <NavSectionVertical
         data={navData}

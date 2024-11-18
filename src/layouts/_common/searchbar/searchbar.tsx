@@ -21,6 +21,7 @@ import { applyFilter } from './utils';
 import { appId, useSearchProfiles, useSearchPublications } from '@lens-protocol/react-web';
 import { CircularProgress } from '@mui/material';
 import { paths } from '@src/routes/paths.ts';
+import {useSettingsContext} from "@src/components/settings";
 
 function Searchbar() {
   const theme = useTheme();
@@ -74,6 +75,13 @@ function Searchbar() {
 
   const notFound = searchQuery && !dataFiltered.length && !profiles?.length && !publications?.length;
 
+  const settings = useSettingsContext();
+  const isMini = settings.themeLayout === 'mini';
+  const lgUp = useResponsive('up', 'lg');
+
+  // If isMini and isLgUp, hide the Search text
+  const hideSearchText = isMini && lgUp;
+
   const renderItems = () => {
     if (!searchQuery && !profiles?.length && !publications?.length) {
       return (
@@ -122,6 +130,8 @@ function Searchbar() {
     );
   };
 
+  console.log('Searchbar: is mini: ', isMini);
+
   const renderButton = (
     <Button
       onClick={search.onTrue}
@@ -136,11 +146,15 @@ function Searchbar() {
     >
       <IconButton disableRipple>
         <Iconify icon="eva:search-fill" />
-        <Typography sx={{
-            ml: 1,
-            // Hide on mobile
-          display: { xs: 'none', lg: 'block' },
-          }} variant='subtitle2'>Search</Typography>
+        {
+          !hideSearchText && (
+            <Typography sx={{
+              ml: 1,
+              // Hide on mobile
+              display: { xs: 'none', lg: 'block' },
+            }} variant='subtitle2'>Search</Typography>
+          )
+        }
       </IconButton>
       {mdUp && <Label sx={{ px: 0.75, mr: 1, fontSize: 12, color: 'text.secondary' }}>⌘K</Label>}
     </Button>
