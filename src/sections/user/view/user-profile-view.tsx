@@ -14,6 +14,7 @@ import ProfileFollowing from '../profile-following';
 import ProfileHeader from '../profile-header';
 import Label from '../../../components/label';
 import ProfileCollected from '../profile-collected';
+import { LoadingScreen } from '@src/components/loading-screen';
 
 // ----------------------------------------------------------------------
 
@@ -30,9 +31,9 @@ const UserProfileView = ({ id }: any) => {
   const [currentTab, setCurrentTab] = useState('publications');
   const settings = useSettingsContext();
 
-  const { called, data: profile, execute } = useLazyProfile();
+  const { called, data: profile, loading: loadingProfile, execute } = useLazyProfile();
 
-  const { data: publications } = usePublications({
+  const { data: publications, loading: loadingPublications } = usePublications({
     where: {
       from: profile?.id ? [profile.id] : [],
       publicationTypes: [PublicationType.Post],
@@ -68,6 +69,8 @@ const UserProfileView = ({ id }: any) => {
   console.log('profile hello')
   console.log(profile)
   console.log(profile?.stats?.following)
+
+  if (loadingProfile || loadingPublications) return <LoadingScreen />
 
   return (
     <Container maxWidth={settings.themeStretch ? false : 'lg'}>

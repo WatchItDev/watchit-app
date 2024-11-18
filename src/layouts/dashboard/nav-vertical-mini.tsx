@@ -30,12 +30,10 @@ export default function NavVerticalMini() {
         zIndex: '1300 !important'
       }}
     >
-
       <NavToggleButton
         sx={{
           top: NAV.TOGGLE_TOP,
-          left: (NAV.W_MINI + NAV.W_VERTICAL_MINI) - 12,
-          zIndex: '1300 !important'
+          left: NAV.W_MINI - 12,
         }}
       />
 
