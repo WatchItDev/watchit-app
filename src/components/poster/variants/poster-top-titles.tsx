@@ -4,7 +4,7 @@ import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 
-// components
+// components is used to import the Image component
 import Image from '@src/components/image';
 import { Poster } from '../types';
 import { useRouter } from '@src/routes/hooks';

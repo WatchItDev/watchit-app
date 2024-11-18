@@ -7,7 +7,7 @@ import { hideScroll } from '@src/theme/css';
 import { useMockedUser } from '@src/hooks/use-mocked-user';
 // components
 import { NavSectionVerticalMini } from '@src/components/nav-section/mini/nav-section-vertical-mini.tsx';
-//
+// Projects
 import { NAV } from '../config-layout';
 import { useNavData } from './config-navigation';
 import { NavToggleButton } from '../_common';
