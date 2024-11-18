@@ -10,7 +10,7 @@ export default function CalendarPage() {
   return (
     <>
       <Helmet>
-        <title> Dashboard: Calendar</title>
+        <title> WatchIt | Events</title>
       </Helmet>
 
       <BlankView>

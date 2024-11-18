@@ -8,7 +8,7 @@ export default function ChatPage() {
   return (
     <>
       <Helmet>
-        <title> Dashboard: Chat</title>
+        <title> WatchIt | Marketing</title>
       </Helmet>
 
       <BlankView>

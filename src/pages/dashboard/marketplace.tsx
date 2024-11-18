@@ -8,7 +8,7 @@ export default function OverviewEcommercePage() {
   return (
     <>
       <Helmet>
-        <title> Dashboard: E-Commerce</title>
+        <title> WatchIt | Marketplace</title>
       </Helmet>
 
       <BlankView>

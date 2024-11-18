@@ -8,7 +8,7 @@ export default function OverviewAnalyticsPage() {
   return (
     <>
       <Helmet>
-        <title> Dashboard: Analytics</title>
+        <title> WatchIt | Analytics</title>
       </Helmet>
 
       <BlankView>

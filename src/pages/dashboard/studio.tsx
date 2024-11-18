@@ -266,7 +266,7 @@ export default function OverviewFilePage() {
   return (
     <>
       <Helmet>
-        <title> Dashboard: File</title>
+        <title> WatchIt | Studio</title>
       </Helmet>
 
       {/*<BlankView>*/}

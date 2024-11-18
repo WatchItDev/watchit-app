@@ -10,7 +10,7 @@ export default function GovernanceList() {
   return (
     <>
       <Helmet>
-        <title> Dashboard: Kanban</title>
+        <title> WatchIt | Governance</title>
       </Helmet>
 
       <BlankView>

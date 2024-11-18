@@ -9,7 +9,7 @@ export default function BlankPage() {
   return (
     <>
       <Helmet>
-        <title> Dashboard: Blank</title>
+        <title> WatchIt | Achievements</title>
       </Helmet>
 
       <BlankView>
