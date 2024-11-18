@@ -9,6 +9,9 @@ import { useLocales } from '@src/locales';
 import Iconify from '@src/components/iconify';
 import { varHover } from '@src/components/animate';
 import CustomPopover, { usePopover } from '@src/components/custom-popover';
+import Typography from "@mui/material/Typography";
+import Stack from "@mui/material/Stack";
+import {IconCoinMonero} from "@tabler/icons-react";
 
 // ----------------------------------------------------------------------
 
@@ -27,12 +30,14 @@ export default function LanguagePopover() {
 
   return (
     <>
+      <Stack direction="row" alignItems="center" justifyContent="center">
+
       <IconButton
         component={m.button}
         whileTap="tap"
         whileHover="hover"
         variants={varHover(1.05)}
-        onClick={popover.onOpen}
+        // onClick={popover.onOpen}
         sx={{
           width: 40,
           height: 40,
@@ -41,8 +46,11 @@ export default function LanguagePopover() {
           }),
         }}
       >
-        <Iconify icon={locales.currentLang.icon} sx={{ borderRadius: 0.65, width: 28 }} />
+        {/*<Iconify icon={locales.currentLang.icon} sx={{ borderRadius: 0.65, width: 28 }} />*/}
+        <IconCoinMonero style={{ borderRadius: 0.65, width: 64 }} />
       </IconButton>
+        <Typography variant="subtitle2">123,457</Typography>
+      </Stack>
 
       <CustomPopover open={popover.open} onClose={popover.onClose} sx={{ width: 160 }}>
         {locales.allLangs.map((option) => (
