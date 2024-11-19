@@ -1,5 +1,5 @@
 import { m } from 'framer-motion';
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 // @mui
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
@@ -16,37 +16,16 @@ import Typography from '@mui/material/Typography';
 // hooks
 import { useBoolean } from '@src/hooks/use-boolean';
 import { useResponsive } from '@src/hooks/use-responsive';
-// _mock
-import { _notifications } from '@src/_mock';
 // components
 import Label from '@src/components/label';
 import Iconify from '@src/components/iconify';
 import Scrollbar from '@src/components/scrollbar';
 import { varHover } from '@src/components/animate';
-//
+// Importa el hook useNotifications y NotificationType
+import { useNotifications, NotificationType, appId } from '@lens-protocol/react-web';
+
 import NotificationItem from './notification-item';
-
-// ----------------------------------------------------------------------
-
-const TABS = [
-  {
-    value: 'all',
-    label: 'All',
-    count: 22,
-  },
-  {
-    value: 'unread',
-    label: 'Unread',
-    count: 12,
-  },
-  {
-    value: 'archived',
-    label: 'Archived',
-    count: 10,
-  },
-];
-
-// ----------------------------------------------------------------------
+import { CircularProgress } from '@mui/material';
 
 export default function NotificationsPopover() {
   const drawer = useBoolean();
@@ -55,31 +34,115 @@ export default function NotificationsPopover() {
 
   const [currentTab, setCurrentTab] = useState('all');
 
+  const [notifications, setNotifications] = useState([]);
+
   const handleChangeTab = useCallback((event: React.SyntheticEvent, newValue: string) => {
     setCurrentTab(newValue);
   }, []);
 
-  const [notifications, setNotifications] = useState(_notifications);
+  // Utiliza el hook useNotifications con tus parámetros
+  const { data, error, loading } = useNotifications({
+    where: {
+      publishedOn: [appId('watchit')],
+      notificationTypes: [
+        NotificationType.Followed,
+        NotificationType.Commented,
+        NotificationType.Acted,
+        NotificationType.Mentioned,
+        NotificationType.Reacted,
+      ],
+    },
+  });
 
-  const totalUnRead = notifications.filter((item) => item.isUnRead === true).length;
+  // Función para obtener las notificaciones leídas desde localStorage
+  const getReadNotifications = () => {
+    const readNotifications = localStorage.getItem('readNotifications');
+    return readNotifications ? JSON.parse(readNotifications) : [];
+  };
+
+  // Función para guardar las notificaciones leídas en localStorage
+  const setReadNotifications = (readNotifications) => {
+    localStorage.setItem('readNotifications', JSON.stringify(readNotifications));
+  };
+
+  // Efecto para mapear las notificaciones cuando se obtienen los datos
+  useEffect(() => {
+    if (data) {
+      const readNotifications = getReadNotifications();
+
+      const mappedNotifications = data.map((notification) => {
+        let mappedNotification = {
+          id: notification.id,
+          title: '',
+          category: notification.__typename,
+          createdAt: new Date(),
+          isUnRead: true,
+          type: notification.__typename,
+          avatarUrl: null,
+        };
+
+        // Verifica si la notificación ya fue leída
+        const isRead = readNotifications.includes(notification.id);
+        mappedNotification.isUnRead = !isRead;
+
+        switch (notification.__typename) {
+          case 'ActedNotification':
+            if (notification.actions && notification.actions.length > 0) {
+              const action = notification.actions[0];
+              mappedNotification.title = `${action.by.handle.suggestedFormatted.localName} realizó una acción`;
+              mappedNotification.createdAt = action.actedAt;
+              mappedNotification.avatarUrl = action.by.metadata.picture?.optimized?.uri || null;
+            }
+            break;
+
+          case 'CommentNotification':
+            mappedNotification.title = `${notification.comment.by.handle.suggestedFormatted.localName} comentó: "${notification.comment.metadata.content}"`;
+            mappedNotification.createdAt = notification.comment.createdAt;
+            mappedNotification.avatarUrl = notification.comment.by.metadata.picture?.optimized?.uri || null;
+            break;
+
+          default:
+            mappedNotification.title = 'Nueva notificación';
+            break;
+        }
+
+        return mappedNotification;
+      });
+
+      setNotifications(mappedNotifications);
+    }
+  }, [data]);
+
+  const totalUnRead = notifications.filter((item) => item.isUnRead).length;
 
   const handleMarkAllAsRead = () => {
-    setNotifications(
-      notifications.map((notification) => ({
-        ...notification,
-        isUnRead: false,
-      }))
-    );
+    const allNotificationIds = notifications.map((notification) => notification.id);
+    setReadNotifications(allNotificationIds);
+
+    const updatedNotifications = notifications.map((notification) => ({
+      ...notification,
+      isUnRead: false,
+    }));
+
+    setNotifications(updatedNotifications);
   };
+
+  if (loading) {
+    return <CircularProgress size={24} sx={{ color: '#fff' }} />;
+  }
+
+  if (error) {
+    return <></>
+  }
 
   const renderHead = (
     <Stack direction="row" alignItems="center" sx={{ py: 2, pl: 2.5, pr: 1, minHeight: 68 }}>
       <Typography variant="h6" sx={{ flexGrow: 1 }}>
-        Notifications
+        Notificaciones
       </Typography>
 
       {!!totalUnRead && (
-        <Tooltip title="Mark all as read">
+        <Tooltip title="Marcar todas como leídas">
           <IconButton color="primary" onClick={handleMarkAllAsRead}>
             <Iconify icon="eva:done-all-fill" />
           </IconButton>
@@ -92,46 +155,6 @@ export default function NotificationsPopover() {
         </IconButton>
       )}
     </Stack>
-  );
-
-  const renderTabs = (
-    <Tabs value={currentTab} onChange={handleChangeTab}>
-      {TABS.map((tab) => (
-        <Tab
-          key={tab.value}
-          iconPosition="end"
-          value={tab.value}
-          label={tab.label}
-          icon={
-            <Label
-              variant={((tab.value === 'all' || tab.value === currentTab) && 'filled') || 'soft'}
-              color={
-                (tab.value === 'unread' && 'info') ||
-                (tab.value === 'archived' && 'success') ||
-                'default'
-              }
-            >
-              {tab.count}
-            </Label>
-          }
-          sx={{
-            '&:not(:last-of-type)': {
-              mr: 3,
-            },
-          }}
-        />
-      ))}
-    </Tabs>
-  );
-
-  const renderList = (
-    <Scrollbar>
-      <List disablePadding>
-        {notifications.map((notification) => (
-          <NotificationItem key={notification.id} notification={notification} />
-        ))}
-      </List>
-    </Scrollbar>
   );
 
   return (
@@ -164,27 +187,29 @@ export default function NotificationsPopover() {
 
         <Divider />
 
-        <Stack
-          direction="row"
-          alignItems="center"
-          justifyContent="space-between"
-          sx={{ pl: 2.5, pr: 1 }}
-        >
-          {renderTabs}
-          <IconButton onClick={handleMarkAllAsRead}>
-            <Iconify icon="solar:settings-bold-duotone" />
-          </IconButton>
-        </Stack>
+        <Scrollbar>
+          <List disablePadding>
+            {notifications.map((notification) => (
+              <NotificationItem
+                key={notification.id}
+                notification={notification}
+                onMarkAsRead={(id) => {
+                  const readNotifications = getReadNotifications();
+                  if (!readNotifications.includes(id)) {
+                    readNotifications.push(id);
+                    setReadNotifications(readNotifications);
+                  }
 
-        <Divider />
-
-        {renderList}
-
-        <Box sx={{ p: 1 }}>
-          <Button fullWidth size="large">
-            View All
-          </Button>
-        </Box>
+                  setNotifications((prevNotifications) =>
+                    prevNotifications.map((notif) =>
+                      notif.id === id ? { ...notif, isUnRead: false } : notif
+                    )
+                  );
+                }}
+              />
+            ))}
+          </List>
+        </Scrollbar>
       </Drawer>
     </>
   );
