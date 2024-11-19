@@ -22,7 +22,7 @@ import { useNavData } from './config-navigation';
 // LAYOUT IMPORTS
 import { AccountPopover, NotificationsPopover, Searchbar } from '../_common';
 import { NavToggleButton } from '../_common';
-import {NAV} from "@src/layouts/config-layout.ts";
+import {COLORS, NAV} from "@src/layouts/config-layout.ts";
 import NavMini from "@src/layouts/dashboard/nav-mini.tsx";
 // ----------------------------------------------------------------------
 
@@ -82,9 +82,9 @@ export default function NavVertical({ openNav, onCloseNav}: Props) {
         }}
       />
 
-      <Box sx={{ flexGrow: 1 }} />
+      <Box sx={{ flexGrow: 1}} />
 
-      <Stack
+      {/*<Stack
         direction="row"
         alignItems="center"
         justifyContent="space-between"
@@ -119,7 +119,7 @@ export default function NavVertical({ openNav, onCloseNav}: Props) {
         >
           <NotificationsPopover />
         </Box>
-      </Stack>
+      </Stack>*/}
     </Scrollbar>
   );
 
@@ -156,14 +156,19 @@ export default function NavVertical({ openNav, onCloseNav}: Props) {
           }}
         >
           <Stack direction={'row'} sx={{
-
+            backgroundColor: COLORS.GRAY_LIGHT,
+            height: '100%'
           }}>
             <Box sx={{
               width: NAV.W_MINI,
+              backgroundColor: COLORS.GRAY_DARK,
             }}>
               <NavMini />
             </Box>
             <Box sx={{
+              flex: 1,
+              flexGrow: 1,
+              backgroundColor: 'red',
               width: NAV.W_VERTICAL,
             }}>
               {renderContent}
@@ -173,7 +178,7 @@ export default function NavVertical({ openNav, onCloseNav}: Props) {
 
         </Drawer>
       )}
-      <LoginModal open={loginModalOpen} onClose={handleCloseModal} />
+      {/*<LoginModal open={loginModalOpen} onClose={handleCloseModal} />*/}
     </Box>
   );
 }

@@ -12,3 +12,8 @@ export const NAV = {
   W_VERTICAL_MINI: 72 + 25,
   TOGGLE_TOP: 49,
 };
+
+export const COLORS = {
+  GRAY_DARK: '#1E1F22',
+  GRAY_LIGHT: '#2B2D31',
+}
