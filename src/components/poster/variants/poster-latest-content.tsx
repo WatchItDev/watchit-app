@@ -117,13 +117,13 @@ const PosterLatestContent = ({ id }: TrendingTopicsType) => {
             alignItems: 'center',
           }}>
             <Box>
-              <Typography variant={'h6'} sx={{ fontWeight: 300 }}>Date</Typography>
+              <Typography variant={'h6'} sx={{ fontWeight: 300, color: '#CCC' }}>Date</Typography>
               <Typography variant={'h4'} sx={{ fontWeight: 200, textTransform: 'uppercase' }}>
                 12/12/2021
               </Typography>
             </Box>
             <Box sx={{textAlign: 'right'}}>
-              <Typography variant={'h6'} sx={{ fontWeight: 300 }}>Likes</Typography>
+              <Typography variant={'h6'} sx={{ fontWeight: 300, color: '#CCC' }}>Likes</Typography>
               <Typography variant={'h4'} sx={{ fontWeight: 200, textTransform: 'uppercase' }}>
                 124
               </Typography>

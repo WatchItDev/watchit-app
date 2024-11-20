@@ -62,7 +62,7 @@ const PosterTopTitles = ({ title, images, id, synopsis }: Poster) => {
           alignItems: 'center',
           justifyContent: 'center',
         }}>
-          <Image style={{borderRadius:'10px', display:'flex', alignItems: 'center', maxWidth:'400px', boxShadow: '0 0 25px #CCC'}} alt={title} src={images.vertical} ratio='1/1' />
+          <Image style={{borderRadius:'10px', display:'flex', alignItems: 'center', maxWidth:'400px'}} alt={title} src={images.vertical} ratio='1/1' />
         </Box>
       </StackItem>
       <StackItem sx={{
