@@ -10,7 +10,7 @@ import { ComingSoonIllustration } from '@src/assets/illustrations';
 // ----------------------------------------------------------------------
 
 export default function ComingSoonView() {
-  const { days, hours, minutes, seconds } = useCountdownDate(new Date('11/20/2024 21:30'));
+  const { days, hours, minutes, seconds } = useCountdownDate(new Date('11/30/2024 21:30'));
 
   return (
     <>

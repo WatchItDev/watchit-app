@@ -9,6 +9,8 @@ import { paths } from '@src/routes/paths.ts';
 import {TrendingTopicsType} from "@src/sections/explore/view.tsx";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+import TextMaxLine from "@src/components/text-max-line";
+import {COLORS} from "@src/layouts/config-layout.ts";
 
 const randomImages = [
   'https://storage.needpix.com/rsynced_images/banner-header-1449745071UBW.jpg',
@@ -19,7 +21,7 @@ const randomImages = [
   'https://cdn12.picryl.com/photo/2016/12/31/banner-header-christmas-13e7dc-1024.jpg',
 ]
 
-const randomColorsForBackground = [
+const _randomColorsForBackground = [
   '#f44336',
   '#e91e63',
   '#9c27b0',
@@ -41,6 +43,10 @@ const randomColorsForBackground = [
   '#607d8b',
   '#000000',
   ];
+const randomColorsForBackground = [
+  COLORS.GRAY_LIGHT,
+  COLORS.GRAY_DARK,
+];
 
 
 const PosterLatestContent = ({ id }: TrendingTopicsType) => {
@@ -100,16 +106,19 @@ const PosterLatestContent = ({ id }: TrendingTopicsType) => {
                sx={{ mt: 2, flexDirection: 'column', display: 'flex', justifyContent: 'space-between', height: '50%' }}
         >
           <Box>
-            <Typography variant={'h4'}>Publication title</Typography>
-            <Typography variant={'h6'} sx={{ fontWeight: 200 }}>
+            <TextMaxLine  line={1} variant='h5' sx={{fontWeight: 400}}>
+              Publication title
+            </TextMaxLine>
+
+            <TextMaxLine  line={4} variant='body1' sx={{fontWeight: 100 }}>
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, purus eget tincidunt
               scelerisque, nunc odio dictum tortor, nec aliquet elit nunc id nunc
-            </Typography>
+            </TextMaxLine>
           </Box>
 
           <Box sx={{
-            backgroundColor: 'rgba(0,0,0,.5)',
-            padding: 1,
+            backgroundColor: 'rgba(0,0,0,.3)',
+            padding: 2,
             borderRadius: 2,
             marginBottom: 2,
             display: 'flex',
@@ -117,14 +126,14 @@ const PosterLatestContent = ({ id }: TrendingTopicsType) => {
             alignItems: 'center',
           }}>
             <Box>
-              <Typography variant={'h6'} sx={{ fontWeight: 300, color: '#CCC' }}>Date</Typography>
-              <Typography variant={'h4'} sx={{ fontWeight: 200, textTransform: 'uppercase' }}>
+              <Typography variant={'body1'} sx={{ fontWeight: 300, color: '#CCC' }}>Date</Typography>
+              <Typography variant={'body2'} sx={{ fontWeight: 200, textTransform: 'uppercase' }}>
                 12/12/2021
               </Typography>
             </Box>
             <Box sx={{textAlign: 'right'}}>
-              <Typography variant={'h6'} sx={{ fontWeight: 300, color: '#CCC' }}>Likes</Typography>
-              <Typography variant={'h4'} sx={{ fontWeight: 200, textTransform: 'uppercase' }}>
+              <Typography variant={'body1'} sx={{ fontWeight: 300, color: '#CCC' }}>Likes</Typography>
+              <Typography variant={'body2'} sx={{ fontWeight: 200, textTransform: 'uppercase' }}>
                 124
               </Typography>
             </Box>

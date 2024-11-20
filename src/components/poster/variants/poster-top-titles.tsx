@@ -17,6 +17,7 @@ import {
   IconRosetteDiscountCheckFilled
 } from '@tabler/icons-react';
 import Box from "@mui/material/Box";
+import TextMaxLine from "@src/components/text-max-line";
 
 // ----------------------------------------------------------------------
 
@@ -94,9 +95,10 @@ const PosterTopTitles = ({ title, images, id, synopsis }: Poster) => {
           >
             {/* Title */}
             <Stack spacing={1} gap={'20px'}>
-              <Typography style={{fontSize: 'clamp(2rem, 1vw, 2rem)'}} noWrap variant='h1' sx={{ mb: 1 }}>
+              <TextMaxLine  line={2} variant='h3' sx={{mb: 1}}>
                 {title}
-              </Typography>
+              </TextMaxLine>
+
               <Box sx={{display: 'flex', alignItems: 'flex-start'}}>
                 <Stack direction="row" spacing={0} alignItems="center" onClick={() => alert('Clicked') }>
                   <Typography style={{ marginRight: 5}} variant='caption'>

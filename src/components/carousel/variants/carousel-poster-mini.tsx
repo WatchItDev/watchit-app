@@ -15,7 +15,7 @@ type Props = {
 
 export default function CarouselPosterMini({ data, category }: Props) {
   const carousel = useCarousel({
-    slidesToShow: 6,
+    slidesToShow: 4,
     adaptiveHeight: true,
     focusOnSelect: true,
     swipeToSlide: true,
