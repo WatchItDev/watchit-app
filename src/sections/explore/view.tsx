@@ -24,6 +24,7 @@ import Box from "@mui/material/Box";
 import CarouselTopicsTrending from "@src/components/carousel/variants/carousel-topics-trending.tsx";
 import CarouselTopTitles from "@src/components/carousel/variants/carousel-top-titles.tsx";
 import CarouselCreators from "@src/components/carousel/variants/carousel-creators.tsx";
+import CarouselLatestContent from "@src/components/carousel/variants/carousel-latest-content.tsx";
 // import { useAuth } from '@src/hooks/use-auth.ts';
 
 // ----------------------------------------------------------------------
@@ -36,7 +37,7 @@ export type TrendingTopicsType = {
 
 export default function ExploreView() {
   // const { selectedProfile } = useAuth();
-  const { data, loading, error }: any = usePublications({
+  const { data, loading }: any = usePublications({
     where: {
       publicationTypes: [PublicationType.Post],
       metadata: {
@@ -136,6 +137,12 @@ export default function ExploreView() {
         <Box sx={{ mt: 3 }}>
           <CarouselSection title="Latest creators">
             <CarouselCreators data={trendingTopics} />
+          </CarouselSection>
+        </Box>
+
+        <Box sx={{ mt: 3 }}>
+          <CarouselSection title="Latest content">
+            <CarouselLatestContent data={trendingTopics} />
           </CarouselSection>
         </Box>
       </Stack>
