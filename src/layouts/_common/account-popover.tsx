@@ -20,6 +20,7 @@ import { useAuth } from '../../hooks/use-auth';
 import {LoginModal} from "@src/components/loginModal";
 import {useState} from "react";
 import Button from "@mui/material/Button";
+import {CircularProgress} from "@mui/material";
 
 // ----------------------------------------------------------------------
 
@@ -97,6 +98,10 @@ export default function AccountPopover() {
 
 
         <Box sx={{ display: 'flex', flexDirection: 'column', ml: 1, cursor: 'pointer' }}>
+
+          {loading ? (
+            <CircularProgress size={24} sx={{ color: '#fff' }} />
+          ) : undefined}
 
           {!authenticated && !loading ? (
             <Button variant="contained" onClick={handleOpenModal}>
