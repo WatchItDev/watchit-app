@@ -1,30 +1,16 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { development, LensConfig, LensProvider } from '@lens-protocol/react-web';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { bindings } from '@lens-protocol/wagmi';
 import { WagmiProvider, createConfig, http } from 'wagmi';
-import { Chain } from 'wagmi/chains';
-import { coinbaseWallet } from 'wagmi/connectors';
 import { AuthContextProvider } from './authContext';
 import { AuthProviderProps } from './types';
+import { Web3AuthConnector } from "@web3auth/web3auth-wagmi-connector";
+import { Web3Auth } from "@web3auth/modal";
+import { web3AuthOptions } from '@src/auth/web3AuthServices/web3authContext.tsx';
+import { polygonAmoy } from "wagmi/chains";
 
-const polygonAmoy: Chain = {
-  id: 80002,
-  name: 'Polygon Amoy Testnet',
-  nativeCurrency: {
-    name: 'Polygon',
-    symbol: 'POL',
-    decimals: 18,
-  },
-  rpcUrls: {
-    default: { http: ['https://rpc-amoy.polygon.technology'] },
-  },
-  blockExplorers: {
-    default: { name: 'OKLink', url: 'https://www.oklink.com/amoy' },
-  },
-  testnet: true,
-};
-
+const web3AuthInstance = new Web3Auth(web3AuthOptions);
 
 /**
  * AuthProvider is a higher-order component that wraps the application with necessary providers
@@ -33,10 +19,28 @@ const polygonAmoy: Chain = {
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const queryClient = new QueryClient();
 
+  useEffect(() => {
+    const configureWeb3Auth = async () => {
+      try {
+        await web3AuthInstance.initModal();
+      } catch (error) {
+        console.error('Error inicializando Web3Auth:', error);
+      }
+    };
+
+    configureWeb3Auth();
+  }, []);
+
+  const web3AuthConnector = new Web3AuthConnector({
+    web3AuthInstance
+  });
+
   const wagmiConfig = useMemo(
     () =>
       createConfig({
-        connectors: [coinbaseWallet()],
+        connectors: [
+          web3AuthConnector,
+        ],
         chains: [polygonAmoy],
         transports: {
           [polygonAmoy.id]: http(),
@@ -54,7 +58,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     <QueryClientProvider client={queryClient}>
       <WagmiProvider config={wagmiConfig}>
         <LensProvider config={lensConfig}>
-          <AuthContextProvider>{children}</AuthContextProvider>
+          <AuthContextProvider web3AuthInstance={web3AuthInstance}>{children}</AuthContextProvider>
         </LensProvider>
       </WagmiProvider>
     </QueryClientProvider>

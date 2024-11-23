@@ -41,6 +41,10 @@ import { SettingsProvider, SettingsDrawer } from '@src/components/settings';
 import { AuthProvider } from '@src/auth/context/lens';
 import {ResponsiveOverlay} from "@src/components/responsive-overlay";
 
+import { Buffer } from 'buffer';
+
+window.Buffer = Buffer;
+
 // ----------------------------------------------------------------------
 
 export default function App() {

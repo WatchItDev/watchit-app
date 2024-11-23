@@ -77,6 +77,7 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({ onSuccess, onCance
     onSubmit: async (values) => {
       try {
         console.log('hello start registration')
+        console.log(values)
         setIsSubmitting(true);
         if (mode === 'register') {
           await registerProfile(values);

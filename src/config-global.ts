@@ -8,6 +8,13 @@ import { paths } from '@src/routes/paths';
 export const HOST_API = import.meta.env.REACT_APP_HOST_API || 'https://default-api.example.com';
 export const ASSETS_API = import.meta.env.REACT_APP_ASSETS_API || 'https://default-assets.example.com';
 
+export const GLOBAL_CONSTANTS = {
+  MMC_ADDRESS: process.env.REACT_APP_MMC_ADDRESS || import.meta.env.REACT_APP_MMC_ADDRESS || '',
+  AGREEMENT_PORTAL_ADDRESS: process.env.REACT_APP_AGREEMENT_PORTAL_ADDRESS || import.meta.env.REACT_APP_AGREEMENT_PORTAL_ADDRESS || '',
+  SUBSCRIPTION_POLICY_ADDRESS: process.env.REACT_APP_SUBSCRIPTION_POLICY_ADDRESS || import.meta.env.REACT_APP_SUBSCRIPTION_POLICY_ADDRESS || '',
+  RIGHT_POLICY_AUTHORIZER: process.env.REACT_APP_RIGHT_POLICY_AUTHORIZER || import.meta.env.REACT_APP_RIGHT_POLICY_AUTHORIZER || '',
+};
+
 export const FIREBASE_API = {
   apiKey: import.meta.env.REACT_APP_FIREBASE_API_KEY || '',
   authDomain: import.meta.env.REACT_APP_FIREBASE_AUTH_DOMAIN || '',

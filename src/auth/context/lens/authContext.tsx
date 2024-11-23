@@ -9,10 +9,11 @@ import {
   useSession,
   useSetProfileMetadata,
 } from '@lens-protocol/react-web';
-import { useAccount } from 'wagmi';
 import { AuthContextProps, AuthProviderProps, ProfileData } from './types';
 import { uploadImageToIPFS, uploadMetadataToIPFS } from '@src/utils/ipfs.ts';
 import { buildProfileMetadata } from '@src/utils/profile.ts';
+import { useAccount } from 'wagmi';
+import { Web3Auth } from '@web3auth/modal/dist/types/modalManager';
 
 // Create the authentication context
 export const AuthContext = createContext<AuthContextProps>({} as AuthContextProps);
@@ -20,7 +21,7 @@ export const AuthContext = createContext<AuthContextProps>({} as AuthContextProp
 /**
  * AuthContextProvider manages authentication state, profiles, and interactions with the Lens Protocol.
  */
-export const AuthContextProvider: React.FC<AuthProviderProps> = ({ children }) => {
+export const AuthContextProvider: React.FC<AuthProviderProps & { web3AuthInstance: Web3Auth }> = ({ children, web3AuthInstance }) => {
   // State variables
 
   // Authentication status
@@ -62,8 +63,13 @@ export const AuthContextProvider: React.FC<AuthProviderProps> = ({ children }) =
   } = useLazyProfilesManaged();
 
   // Create profile and set profile metadata functions from Lens Protocol
-  const { execute: createProfileExecute, loading: createProfileLoading } = useCreateProfile();
+  const { execute: createProfileExecute, error, loading: createProfileLoading } = useCreateProfile();
   const { execute: setProfileMetadataExecute, loading: setProfileMetadataLoading } = useSetProfileMetadata();
+
+  useEffect(() => {
+    console.log('use create profile error from effect')
+    console.log(error)
+  }, [error])
 
   // Fetch profiles when the wallet address changes
   useEffect(() => {
@@ -124,6 +130,7 @@ export const AuthContextProvider: React.FC<AuthProviderProps> = ({ children }) =
    * Log out from the current session.
    */
   const logout = useCallback(async () => {
+    console.log('Logged out');
     try {
       await logoutExecute();
       setAuthenticated(false);
@@ -357,6 +364,7 @@ export const AuthContextProvider: React.FC<AuthProviderProps> = ({ children }) =
       selectProfile,
       updateProfileMetadata,
       refetchProfiles,
+      web3AuthInstance
     }),
     [
       authenticated,
@@ -369,6 +377,7 @@ export const AuthContextProvider: React.FC<AuthProviderProps> = ({ children }) =
       selectProfile,
       updateProfileMetadata,
       refetchProfiles,
+      web3AuthInstance
     ]
   );
 

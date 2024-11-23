@@ -18,7 +18,13 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true
+    "noUncheckedSideEffectImports": true,
+    "paths": {
+      "@web3auth/*-adapter": ["./packages/adapters/*-adapter"],
+      "@web3auth/*-provider": ["./packages/providers/*-provider"],
+      "@web3auth/*": ["./packages/*"],
+      "@web3auth/*-plugin": ["./packages/plugins/*-plugin"]
+    }
   },
   "include": ["vite.config.ts"]
 }

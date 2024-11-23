@@ -1,33 +1,51 @@
+// REACT IMPORTS
 import { useState, useEffect, PropsWithChildren } from 'react';
-// components
-import Iconify from '@src/components/iconify';
-//
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { appId, PublicationType, useFollow, usePublications, useUnfollow } from '@lens-protocol/react-web';
-import { useTheme } from '@mui/material/styles';
-import { Profile } from '@lens-protocol/api-bindings';
-import Snackbar from '@mui/material/Snackbar';
-import Alert from '@mui/material/Alert';
+
+// MUI IMPORTS
 import Box from '@mui/material/Box';
-import Avatar from '@mui/material/Avatar';
+import Alert from '@mui/material/Alert';
 import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
-import Divider from '@mui/material/Divider';
-import LoadingButton from '@mui/lab/LoadingButton';
+import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
+import Divider from '@mui/material/Divider';
 import Popover from '@mui/material/Popover';
-import { useAuth } from '../../hooks/use-auth';
-import ProfileCover from './profile-cover';
-import { truncateAddress } from '../../utils/wallet';
-import CopyableText from '../../components/copyableText/copyableText';
-import { UpdateModal } from '@src/components/updateModal';
-import { IconDots } from '@tabler/icons-react';
+import Snackbar from '@mui/material/Snackbar';
 import MenuItem from '@mui/material/MenuItem';
+import { useTheme } from '@mui/material/styles';
+import Typography from '@mui/material/Typography';
+import LoadingButton from '@mui/lab/LoadingButton';
+import { Profile } from '@lens-protocol/api-bindings';
+import CircularProgress from '@mui/material/CircularProgress';
+
+// LENS IMPORTS
+import { appId, PublicationType, usePublications } from '@lens-protocol/react-web';
+
+// VIEM IMPORTS
+import { Address } from 'viem';
+
+// ICONS IMPORTS
+import { IconDots } from '@tabler/icons-react';
+
+// LOCAL IMPORTS
+import ProfileCover from './profile-cover';
+import Iconify from '@src/components/iconify';
+import { useAuth } from '@src/hooks/use-auth';
+import { truncateAddress } from '@src/utils/wallet';
+import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
+import { UpdateModal } from '@src/components/updateModal';
+import { useHasAccess } from '@src/hooks/use-has-access.ts';
+import CopyableText from '@src/components/copyableText/copyableText';
 import { ReportProfileModal } from '@src/components/report-profile-modal.tsx';
+import { useIsPolicyAuthorized } from '@src/hooks/use-is-policy-authorized.ts';
+import { SubscribeProfileModal } from '@src/components/subscribe-profile-modal.tsx';
+import { ActivateSubscriptionProfileModal } from '@src/components/activate-subscription-profile-modal.tsx';
+import FollowUnfollowButton from '@src/components/follow-unfollow-button.tsx';
 
 // ----------------------------------------------------------------------
 
 const urlToShare = "https://watchit.movie";
+
+// const GeoAddress = '0xEFBBD14082cF2FbCf5Badc7ee619F0f4e36D0A5B'
 
 const shareLinks = [
   {
@@ -81,10 +99,10 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
 
   const theme = useTheme();
   const { selectedProfile } = useAuth();
-  const [isFollowed, setIsFollowed] = useState(false);
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const [menuAnchorEl, setMenuAnchorEl] = useState<HTMLButtonElement | null>(null);
   const [openReportModal, setOpenReportModal] = useState(false);
+  const [openSubscribeModal, setOpenSubscribeModal] = useState(false);
   const open = Boolean(anchorEl);
   const openMenu = Boolean(menuAnchorEl);
 
@@ -92,24 +110,41 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
+  const [isActivateModalOpen, setIsActivateModalOpen] = useState(false);
 
-  // Hooks for follow and unfollow actions
-  const { execute: follow, error: followError, loading: followLoading } = useFollow();
-  const { execute: unfollow, error: unfollowError, loading: unfollowLoading } = useUnfollow();
+  const {
+    hasAccess,
+    loading: accessLoading,
+    // fetching: accessFetchingLoading,
+    error: accessError,
+    refetch: refetchAccess,
+  } = useHasAccess(profile.ownedBy.address as Address);
+  // } = useHasAccess(GeoAddress as Address);
+  const {
+    isAuthorized,
+    loading: authorizedLoading,
+    error: authorizedError,
+    refetch: refetchAuthorized,
+  } = useIsPolicyAuthorized(GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS, profile.ownedBy.address as Address);
+  // } = useIsPolicyAuthorized(GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS, GeoAddress as Address);
+
+  useEffect(() => {
+    console.log('is authorized')
+    console.log(isAuthorized)
+    console.log(authorizedLoading)
+    console.log(authorizedError)
+  }, [isAuthorized, authorizedLoading, authorizedError, refetchAuthorized]);
+
+  useEffect(() => {
+    console.log('has access')
+    console.log(hasAccess)
+    console.log(accessLoading)
+  }, [hasAccess, accessLoading]);
 
   // Handle errors from follow and unfollow actions
   useEffect(() => {
-    if (followError) {
-      setErrorMessage(followError.message);
-    }
-    if (unfollowError) {
-      setErrorMessage(unfollowError.message);
-    }
-  }, [followError, unfollowError]);
-
-  useEffect(() => {
-    setIsFollowed(!!profile?.operations?.isFollowedByMe?.value);
-  }, [selectedProfile, profile]);
+    if (accessError) setErrorMessage(accessError.shortMessage ?? accessError.message);
+  }, [accessError]);
 
   const socialMediaUrls: SocialMediaUrls =
     profile?.metadata?.attributes?.reduce((acc: SocialMediaUrls, attr) => {
@@ -119,110 +154,11 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
       return acc;
     }, {} as SocialMediaUrls) || {};
 
-  // const updateMetadata = async () => {
-  //   if (!selectedProfile) return
-  //
-  //   updateProfileMetadata({
-  //     username: 'jacob',
-  //     name: 'jacob',
-  //     nickname: 'jacob',
-  //     bio: 'test',
-  //   }, selectedProfile)
-  // };
-
   // Function to handle following a profile
-  const handleFollow = async () => {
-    if (!profile) return;
-
-    try {
-      const result = await follow({ profile });
-      if (result.isSuccess()) {
-        setSuccessMessage('Successfully followed the profile.');
-        // Wait for transaction confirmation
-        await result.value.waitForCompletion();
-      } else {
-        // Handle specific follow errors
-        handleFollowError(result.error);
-      }
-    } catch (error) {
-      setErrorMessage('An error occurred while trying to follow the profile.');
-    }
-  };
-
-  // Function to handle unfollowing a profile
-  const handleUnfollow = async () => {
-    if (!profile) return;
-
-    try {
-      const result = await unfollow({ profile });
-      if (result.isSuccess()) {
-        setSuccessMessage('Successfully unfollowed the profile.');
-        // Wait for transaction confirmation
-        await result.value.waitForCompletion();
-      } else {
-        // Handle specific unfollow errors
-        handleUnfollowError(result.error);
-      }
-    } catch (error) {
-      setErrorMessage('An error occurred while trying to unfollow the profile.');
-    }
-  };
-
-  // Function to handle specific follow errors
-  const handleFollowError = (error: any) => {
-    switch (error.name) {
-      case 'BroadcastingError':
-        setErrorMessage('There was an error broadcasting the transaction.');
-        break;
-      case 'PendingSigningRequestError':
-        setErrorMessage('There is a pending signing request in your wallet.');
-        break;
-      case 'InsufficientAllowanceError':
-        setErrorMessage(
-          `You must approve the contract to spend at least: ${
-            error.requestedAmount.asset.symbol
-          } ${error.requestedAmount.toSignificantDigits(6)}`
-        );
-        break;
-      case 'InsufficientFundsError':
-        setErrorMessage(
-          `You do not have enough funds to pay for this follow fee: ${
-            error.requestedAmount.asset.symbol
-          } ${error.requestedAmount.toSignificantDigits(6)}`
-        );
-        break;
-      case 'WalletConnectionError':
-        setErrorMessage('There was an error connecting to your wallet.');
-        break;
-      case 'PrematureFollowError':
-        setErrorMessage('There is a pending unfollow request for this profile.');
-        break;
-      case 'UserRejectedError':
-        // Optionally notify the user that they rejected the action
-        break;
-      default:
-        setErrorMessage('An unknown error occurred.');
-    }
-  };
-
-  // Function to handle specific unfollow errors
-  const handleUnfollowError = (error: any) => {
-    switch (error.name) {
-      case 'BroadcastingError':
-        setErrorMessage('There was an error broadcasting the transaction.');
-        break;
-      case 'PendingSigningRequestError':
-        setErrorMessage('There is a pending signing request in your wallet.');
-        break;
-      case 'WalletConnectionError':
-        setErrorMessage('There was an error connecting to your wallet.');
-        break;
-      case 'UserRejectedError':
-        // Optionally notify the user that they rejected the action
-        break;
-      default:
-        setErrorMessage('An unknown error occurred.');
-    }
+  const onSubscribe = async () => {
+    console.log('subscribe success');
+    console.log('fetching access');
+    refetchAccess()
   };
 
   const handlePopoverOpen = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -241,9 +177,6 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
       setErrorMessage('Failed to copy link.');
     }
   };
-
-  console.log('profile');
-  console.log(profile);
 
   return (
     <>
@@ -392,20 +325,41 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
                   {profile?.metadata?.bio ?? ''}
                 </Typography>
               </Box>
-              <Stack direction="row" sx={{ width: '100%', mb: 5, gap: 2 }}>
-                <LoadingButton
-                  title={isFollowed ? 'Unsubscribe' : 'Subscribe'}
-                  variant={isFollowed ? 'outlined' : 'contained'}
-                  sx={{
-                    minWidth: 120,
-                    backgroundColor: isFollowed ? '#24262A' : '#fff',
-                  }}
-                  onClick={isFollowed ? handleUnfollow : handleFollow}
-                  disabled={followLoading || unfollowLoading || profile?.id === selectedProfile?.id}
-                  loading={followLoading || unfollowLoading}
-                >
-                  {isFollowed ? 'Unsubscribe' : 'Subscribe'}
-                </LoadingButton>
+              <Stack direction="row" sx={{ width: '100%', mb: 2, gap: 2 }}>
+                {authorizedLoading && (
+                  <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                    <CircularProgress size={24} sx={{ color: '#fff' }} />
+                  </Box>
+                )}
+                {isAuthorized && !authorizedLoading && (
+                  <LoadingButton
+                    title={hasAccess ? 'You are subscribed!' : 'Subscribe'}
+                    variant={hasAccess ? 'outlined' : 'contained'}
+                    sx={{
+                      minWidth: 120,
+                      backgroundColor: hasAccess ? '#24262A' : '#fff',
+                    }}
+                    onClick={!hasAccess ? () => { setOpenSubscribeModal(true) } : () => {}}
+                    disabled={accessLoading || hasAccess || !selectedProfile || profile?.id === selectedProfile?.id}
+                    loading={accessLoading}
+                  >
+                    {hasAccess ? 'You are subscribed!' : 'Subscribe'}
+                  </LoadingButton>
+                )}
+                {!isAuthorized && !authorizedLoading && selectedProfile?.id === profile?.id && (
+                  <LoadingButton
+                    title={'Activate Subscription'}
+                    variant={'contained'}
+                    sx={{
+                      minWidth: 120,
+                      backgroundColor: '#fff',
+                    }}
+                    onClick={() => setIsActivateModalOpen(true)}
+                  >
+                    Activate Subscription
+                  </LoadingButton>
+                )}
+                <FollowUnfollowButton profile={profile} />
                 <Button
                   size="medium"
                   variant="outlined"
@@ -514,6 +468,13 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
                   </Stack>
                 </Popover>
               </Stack>
+              <Stack direction="row" sx={{ width: '100%', mb: 5, gap: 2 }}>
+                {!selectedProfile && (
+                  <Typography variant="body2" color="error" sx={{opacity: 0.5}}>
+                    Please login to perform actions
+                  </Typography>
+                )}
+              </Stack>
             </Stack>
           </Stack>
           <Stack
@@ -572,7 +533,7 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
         autoHideDuration={6000}
         onClose={() => setErrorMessage('')}
         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-        sx={{ zIndex: 1000 }}
+        sx={{ zIndex: 1200 }}
       >
         <Alert onClose={() => setErrorMessage('')} severity="error" sx={{ width: '100%' }}>
           {errorMessage}
@@ -585,13 +546,20 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
         autoHideDuration={6000}
         onClose={() => setSuccessMessage('')}
         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-        sx={{ zIndex: 1000 }}
+        sx={{ zIndex: 1200 }}
       >
         <Alert onClose={() => setSuccessMessage('')} severity="success" sx={{ width: '100%' }}>
           {successMessage}
         </Alert>
       </Snackbar>
 
+      <SubscribeProfileModal
+        isOpen={openSubscribeModal}
+        onClose={() => setOpenSubscribeModal(false)}
+        onSubscribe={onSubscribe}
+        profile={profile}
+      />
+      <ActivateSubscriptionProfileModal isOpen={isActivateModalOpen} onClose={() => setIsActivateModalOpen(false)} />
       <ReportProfileModal profile={profile} isOpen={openReportModal} onClose={() => setOpenReportModal(false)} />
     </>
   );

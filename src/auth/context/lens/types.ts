@@ -2,6 +2,7 @@
 
 import { Profile } from '@lens-protocol/react-web';
 import React from 'react';
+import { Web3Auth } from '@web3auth/modal/dist/types/modalManager';
 
 /**
  * Interface for profile data used in profile creation and updates.
@@ -34,6 +35,7 @@ export interface AuthContextProps {
   selectProfile: (profile: Profile) => void;
   updateProfileMetadata: (data: ProfileData, profile: Profile) => Promise<void>;
   refetchProfiles: () => Promise<void>;
+  web3AuthInstance: Web3Auth
 }
 
 /**

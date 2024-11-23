@@ -12,17 +12,19 @@ import CustomPopover, { usePopover } from '@src/components/custom-popover';
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import {IconCoinMonero} from "@tabler/icons-react";
-import { useBalance } from 'wagmi';
+import { useAccount, useBalance } from 'wagmi';
 import { useAuth } from '@src/hooks/use-auth.ts';
+import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 
 // ----------------------------------------------------------------------
 
 export default function LanguagePopover() {
   const locales = useLocales();
+  const { address } = useAccount();
   const { selectedProfile } = useAuth();
   const { data, isError, isLoading } = useBalance({
-    address: selectedProfile?.ownedBy?.address,
-    token: '0xdC2E7C4444730980CEB8982CfC8A1c4902fa36bE'
+    address,
+    token: GLOBAL_CONSTANTS.MMC_ADDRESS
   });
 
   const popover = usePopover();

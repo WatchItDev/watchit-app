@@ -21,8 +21,8 @@ import { LoadingScreen } from '@src/components/loading-screen';
 const TABS = [
   { value: 'publications', label: 'Publications' },
   { value: 'collected', label: 'Collected' },
-  { value: 'subscribers', label: 'Subscribers' },
-  { value: 'subscribed', label: 'Subscribed to' },
+  { value: 'followers', label: 'Followers' },
+  { value: 'following', label: 'Following' },
 ];
 
 // ----------------------------------------------------------------------
@@ -30,9 +30,7 @@ const TABS = [
 const UserProfileView = ({ id }: any) => {
   const [currentTab, setCurrentTab] = useState('publications');
   const settings = useSettingsContext();
-
   const { called, data: profile, loading: loadingProfile, execute } = useLazyProfile();
-
   const { data: publications, loading: loadingPublications } = usePublications({
     where: {
       from: profile?.id ? [profile.id] : [],
@@ -48,8 +46,8 @@ const UserProfileView = ({ id }: any) => {
   const counts: any = {
     publications: publications?.length ?? 0,
     collected: profile?.stats?.collects ?? 0,
-    subscribers: profile?.stats?.followers ?? 0,
-    subscribed: profile?.stats?.following ?? 0,
+    followers: profile?.stats?.followers ?? 0,
+    following: profile?.stats?.following ?? 0,
   };
 
   const handleChangeTab = (_event: any, newValue: any) => {
@@ -97,8 +95,8 @@ const UserProfileView = ({ id }: any) => {
 
       {currentTab === 'publications' && profile && <ProfileHome profile={profile} />}
       {currentTab === 'collected' && profile && <ProfileCollected profile={profile} />}
-      {currentTab === 'subscribers' && profile && <ProfileFollowers profile={profile} onActionFinished={handleUpdateProfile} />}
-      {currentTab === 'subscribed' && profile && <ProfileFollowing profile={profile} />}
+      {currentTab === 'followers' && profile && <ProfileFollowers profile={profile} onActionFinished={handleUpdateProfile} />}
+      {currentTab === 'following' && profile && <ProfileFollowing profile={profile} />}
     </Container>
   );
 };

@@ -20,7 +20,7 @@ import {
   LanguagePopover,
   NotificationsPopover,
 } from '../_common';
-import {useAuth} from "@src/hooks/use-auth.ts";
+import { useAccount } from 'wagmi';
 
 // ----------------------------------------------------------------------
 
@@ -29,7 +29,7 @@ type Props = {
 };
 
 export default function Header({ onOpenNav }: Props) {
-  const { authenticated } = useAuth();
+  const { isConnected } = useAccount();
   const theme = useTheme();
 
   const settings = useSettingsContext();
@@ -63,7 +63,7 @@ export default function Header({ onOpenNav }: Props) {
         sx={{ pr: 2 }}
       >
         {
-          authenticated && (
+          isConnected && (
             <LanguagePopover />
           )
         }
