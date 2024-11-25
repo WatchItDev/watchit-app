@@ -126,13 +126,3 @@ const PosterCreators = ({ id }: TrendingTopicsType) => {
 }
 
 export default PosterCreators
-
-
-export const StackItem = styled('div')(({ theme }) => ({
-  backgroundColor: '#fff',
-  padding: theme.spacing(1),
-  borderRadius: 4,
-  ...theme.applyStyles('dark', {
-    backgroundColor: '#262B32',
-  }),
-}));
