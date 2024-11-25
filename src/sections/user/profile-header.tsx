@@ -43,7 +43,7 @@ import FollowUnfollowButton from '@src/components/follow-unfollow-button.tsx';
 
 // ----------------------------------------------------------------------
 
-const urlToShare = "https://watchit.movie";
+const urlToShare = "https://app.watchit.movie/profileId";
 
 // const GeoAddress = '0xEFBBD14082cF2FbCf5Badc7ee619F0f4e36D0A5B'
 
@@ -51,7 +51,7 @@ const shareLinks = [
   {
     icon: 'mingcute:social-x-line',
     label: 'X',
-    url: `https://x.com/share/?url=${encodeURIComponent(urlToShare)}&text=Watchit%20Movie&hashtags=Watchit`,
+    url: `https://x.com/share/?url=${encodeURIComponent(urlToShare)}&text=Visit%20my%20profile%20in%20Watchit%20Movie&hashtags=Watchit`,
   },
   {
     icon: 'mdi:facebook',
@@ -82,6 +82,10 @@ interface SocialMediaUrls {
   twitter?: string;
   facebook?: string;
   instagram?: string;
+}
+
+const prependProfileIdToUrl = (url: string, profileId: string) => {
+  return url.replace('profileId', profileId);
 }
 
 // ----------------------------------------------------------------------
@@ -348,7 +352,7 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
                 )}
                 {!isAuthorized && !authorizedLoading && selectedProfile?.id === profile?.id && (
                   <LoadingButton
-                    title={'Activate Subscription'}
+                    title={'Configure subscription'}
                     variant={'contained'}
                     sx={{
                       minWidth: 120,
@@ -356,7 +360,7 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
                     }}
                     onClick={() => setIsActivateModalOpen(true)}
                   >
-                    Activate Subscription
+                    Configure subscription
                   </LoadingButton>
                 )}
                 {profile?.id !== selectedProfile?.id && (
@@ -420,7 +424,7 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
                       >
                         <Button
                           component="a"
-                          href={item.url}
+                          href={prependProfileIdToUrl(item.url, profile?.id)}
                           target="_blank"
                           rel="noopener noreferrer"
                           sx={{
