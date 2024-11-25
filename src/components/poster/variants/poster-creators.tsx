@@ -2,9 +2,6 @@
 import Paper from '@mui/material/Paper';
 import { styled } from '@mui/system';
 
-import Typography from '@mui/material/Typography';
-import Stack from '@mui/material/Stack';
-
 // components
 import Image from '@src/components/image';
 import { useRouter } from '@src/routes/hooks';
@@ -25,7 +22,7 @@ const randomImages = [
 ]
 
 
-const PosterCreators = ({ id, title, image, desc }: TrendingTopicsType) => {
+const PosterCreators = ({ id }: TrendingTopicsType) => {
   const router = useRouter();
 
   const handlePosterClick = () => {
@@ -36,6 +33,7 @@ const PosterCreators = ({ id, title, image, desc }: TrendingTopicsType) => {
     <Paper
       sx={{
         width: '100%',
+        padding: '5px',
         marginBottom: 4,
         borderRadius: 2,
         overflow: 'hidden',
@@ -47,7 +45,7 @@ const PosterCreators = ({ id, title, image, desc }: TrendingTopicsType) => {
     >
       <Box
         sx={{
-          width: '100%',
+          width: '99%',
           border: '1px solid rgba(255, 255, 255, 0.12)',
           borderRadius: 2,
           overflow: 'hidden',
@@ -55,7 +53,7 @@ const PosterCreators = ({ id, title, image, desc }: TrendingTopicsType) => {
           boxShadow: 1,
           padding: 1,
           transition: 'transform 0.2s ease-in-out',
-          '&:hover': { transform: 'scale(1.03)' },
+          '&:hover': {transform: 'scale(1.03)'},
         }}
         onClick={() => {}}
       >
