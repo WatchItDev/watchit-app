@@ -1,5 +1,5 @@
 // REACT IMPORTS
-import { useState, useEffect, PropsWithChildren } from 'react';
+import {useState, useEffect, PropsWithChildren, useRef, useCallback} from 'react';
 
 // MUI IMPORTS
 import Box from '@mui/material/Box';
@@ -91,6 +91,33 @@ const prependProfileIdToUrl = (url: string, profileId: string) => {
 // ----------------------------------------------------------------------
 
 const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderProps>) => {
+  const navRef = useRef(null);
+  const navRefSocial = useRef(null);
+  const [openTooltip, setOpenTooltip] = useState(false);
+  const [openTooltipShare, setOpenTooltipShare] = useState(false);
+
+  useEffect(() => {
+    if (open) {
+      handleClose();
+    }
+  },[]);
+
+  const handleOpen = useCallback(() => {
+    setOpenTooltip(true);
+  }, []);
+
+  const handleClose = useCallback(() => {
+    setOpenTooltip(false);
+  }, []);
+
+  const handleOpenShare = useCallback(() => {
+    setOpenTooltipShare(true);
+  }, []);
+
+  const handleCloseShare = useCallback(() => {
+    setOpenTooltipShare(false);
+  }, []);
+
   usePublications({
     where: {
       from: [...(profile?.id ? [profile.id] : [])],
@@ -196,11 +223,11 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
             minWidth: '40px',
             position: 'absolute',
             right: 38,
-            top: 32
+            top: 32,
           }}
           onClick={(event) => setMenuAnchorEl(event.currentTarget)}
         >
-          <IconDots size={22} color='#FFFFFF' />
+          <IconDots size={22} color="#FFFFFF" />
         </Button>
 
         <Popover
@@ -224,7 +251,15 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
           }}
         >
           <Stack direction="column" spacing={0} justifyContent="center">
-            <MenuItem sx={{ p: 1 }} onClick={() => { setOpenReportModal(true); setMenuAnchorEl(null); }}>Report</MenuItem>
+            <MenuItem
+              sx={{ p: 1 }}
+              onClick={() => {
+                setOpenReportModal(true);
+                setMenuAnchorEl(null);
+              }}
+            >
+              Report
+            </MenuItem>
           </Stack>
         </Popover>
 
@@ -343,8 +378,16 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
                       minWidth: 120,
                       backgroundColor: hasAccess ? '#24262A' : '#fff',
                     }}
-                    onClick={!hasAccess ? () => { setOpenSubscribeModal(true) } : () => {}}
-                    disabled={accessLoading || hasAccess || !selectedProfile || accessFetchingLoading}
+                    onClick={
+                      !hasAccess
+                        ? () => {
+                            setOpenSubscribeModal(true);
+                          }
+                        : () => {}
+                    }
+                    disabled={
+                      accessLoading || hasAccess || !selectedProfile || accessFetchingLoading
+                    }
                     loading={accessLoading || accessFetchingLoading}
                   >
                     {hasAccess ? 'You are subscribed!' : 'Subscribe'}
@@ -363,10 +406,11 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
                     Configure subscription
                   </LoadingButton>
                 )}
-                {profile?.id !== selectedProfile?.id && (
-                  <FollowUnfollowButton profile={profile} />
-                )}
+                {profile?.id !== selectedProfile?.id && <FollowUnfollowButton profile={profile} />}
                 <Button
+                  onMouseEnter={handleOpenShare}
+                  onMouseLeave={handleCloseShare}
+                  ref={navRefSocial}
                   size="medium"
                   variant="outlined"
                   sx={{ p: 1, minWidth: '44px' }}
@@ -374,18 +418,73 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
                 >
                   <Iconify icon="ion:share-social-outline" width={20} />
                 </Button>
+
+                <Popover
+                  open={openTooltipShare}
+                  anchorEl={navRefSocial.current}
+                  anchorOrigin={{ vertical: 'center', horizontal: 'right' }}
+                  transformOrigin={{ vertical: 'center', horizontal: 'left' }}
+                  slotProps={{
+                    paper: {
+                      onMouseEnter: handleOpenShare,
+                      onMouseLeave: handleCloseShare,
+                      sx: {
+                        backgroundColor: 'rgba(0,0,0,0.6)',
+                        padding: '8px 20px',
+                        ...(open && {
+                          pointerEvents: 'auto',
+                        }),
+                      },
+                    },
+                  }}
+                  sx={{
+                    pointerEvents: 'none'
+                  }}
+                >
+                  <Typography>Share Watchit on your social</Typography>
+                </Popover>
+
                 {selectedProfile && profile?.id === selectedProfile?.id && (
-                  <Button
-                    variant="outlined"
-                    sx={{
-                      p: 1,
-                      minWidth: '44px',
-                      backgroundColor: 'transparent',
-                    }}
-                    onClick={() => setIsUpdateModalOpen(true)}
-                  >
-                    <Iconify icon="mingcute:user-edit-line" width={20} />
-                  </Button>
+                  <>
+                    <Button
+                      onMouseEnter={handleOpen}
+                      onMouseLeave={handleClose}
+                      ref={navRef}
+                      variant="outlined"
+                      sx={{
+                        p: 1,
+                        minWidth: '44px',
+                        backgroundColor: 'transparent',
+                      }}
+                      onClick={() => setIsUpdateModalOpen(true)}
+                    >
+                      <Iconify icon="mingcute:user-edit-line" width={20} />
+                    </Button>
+                    <Popover
+                      open={openTooltip}
+                      anchorEl={navRef.current}
+                      anchorOrigin={{ vertical: 'center', horizontal: 'right' }}
+                      transformOrigin={{ vertical: 'center', horizontal: 'left' }}
+                      slotProps={{
+                        paper: {
+                          onMouseEnter: handleOpen,
+                          onMouseLeave: handleClose,
+                          sx: {
+                            backgroundColor: 'rgba(0,0,0,0.6)',
+                            padding: '8px 20px',
+                            ...(open && {
+                              pointerEvents: 'auto',
+                            }),
+                          },
+                        },
+                      }}
+                      sx={{
+                        pointerEvents: 'none'
+                      }}
+                    >
+                        <Typography>Update your profile information</Typography>
+                    </Popover>
+                  </>
                 )}
 
                 <Popover
@@ -476,7 +575,7 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
               </Stack>
               <Stack direction="row" sx={{ width: '100%', mb: 5, gap: 2 }}>
                 {!selectedProfile && (
-                  <Typography variant="body2" color="error" sx={{opacity: 0.5}}>
+                  <Typography variant="body2" color="error" sx={{ opacity: 0.5 }}>
                     Please login to perform actions
                   </Typography>
                 )}
@@ -553,7 +652,7 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
             >
               <Typography color="text.secondary">Distributor</Typography>
               <StyledBoxGradient>
-                <Typography style={{ marginRight: 5, fontWeight: 'bold'}} variant='caption'>
+                <Typography style={{ marginRight: 5, fontWeight: 'bold' }} variant="caption">
                   Watchit
                 </Typography>
                 <IconRosetteDiscountCheckFilled />
@@ -599,8 +698,15 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
         onSubscribe={onSubscribe}
         profile={profile}
       />
-      <ActivateSubscriptionProfileModal isOpen={isActivateModalOpen} onClose={() => setIsActivateModalOpen(false)} />
-      <ReportProfileModal profile={profile} isOpen={openReportModal} onClose={() => setOpenReportModal(false)} />
+      <ActivateSubscriptionProfileModal
+        isOpen={isActivateModalOpen}
+        onClose={() => setIsActivateModalOpen(false)}
+      />
+      <ReportProfileModal
+        profile={profile}
+        isOpen={openReportModal}
+        onClose={() => setOpenReportModal(false)}
+      />
     </>
   );
 };
