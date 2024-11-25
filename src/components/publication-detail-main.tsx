@@ -120,7 +120,15 @@ export default function PublicationDetailMain({ post, handleSubscribe, hasAccess
   if (post.isHidden) return <p>Publication is hidden</p>;
 
   return (
-    <Box sx={{ position: 'sticky', top: '75px', paddingTop: '10px', width: '450px', height: 'fit-content', maxHeight: '100vh', flexShrink: 0 }}>
+    <Box sx={{
+      position: 'sticky',
+      width: {
+      xs: '100%',
+        lg: '450px',
+      },
+      padding: '10px',
+      top: '75px',
+      height: 'fit-content', maxHeight: '100vh', flexShrink: 0 }}>
       <Card
         component={m.div}
         initial={{ opacity: 0 }}

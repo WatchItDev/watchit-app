@@ -19,7 +19,7 @@ import { usePublication } from '@lens-protocol/react';
 import { m } from 'framer-motion';
 
 // ICONS IMPORTS
-import { IconChevronLeft, IconLock } from '@tabler/icons-react';
+import { IconChevronLeft, IconLock, IconPlayerPlay } from '@tabler/icons-react';
 
 // LOCAL IMPORTS
 import { paths } from '@src/routes/paths';
@@ -132,11 +132,23 @@ export default function PublicationDetailsView({ id }: Props) {
           </Typography>
         </>
       </Header>
-      <Box sx={{ width: '100%', maxWidth: 'calc(100% - 1.5rem)', maxHeight: '100%', position: 'relative' }}>
-        <Box sx={{ display: 'flex', flexDirection: 'row', width: '100%', maxWidth: '100%' }}>
+
+      <Box sx={{
+        flexDirection: {
+          xs: 'column',
+          lg: 'row'
+        },
+        display: 'flex',
+        width: '100%',
+        maxWidth: 'calc(100% - 1.5rem)',
+        maxHeight: '100%',
+        position: 'relative' }}>
+
+
           <Stack
             sx={{
-              display: 'flex', flexGrow: 1, maxWidth: 'calc(100% - 450px)'
+              display: 'flex',
+              flexGrow: 1
             }}
           >
             <Card sx={{ width: '100%' }}>
@@ -144,7 +156,8 @@ export default function PublicationDetailsView({ id }: Props) {
                 {hasAccess ? (
                   <MoviePlayView publication={data} loading={loading} />
                 ) : (
-                  <Box sx={{ position: 'relative', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <Box sx={{ position: 'relative', width: '100%', display: 'flex',
+                    alignItems: 'center', justifyContent: 'center' }}>
                     <Box
                       sx={{
                         position: 'absolute',
@@ -202,9 +215,9 @@ export default function PublicationDetailsView({ id }: Props) {
                       onClick={() => {}}
                       disabled={false}
                     >
-                      <IconLock fontSize="large" size={18} />
+                      <IconPlayerPlay fontSize="large" size={18} />
                       <Typography variant="body2" sx={{ lineHeight: 1 , fontWeight: '700', ml: 1}}>
-                        Locked
+                        Distributed by Watchit
                       </Typography>
                     </Button>
                   </Box>
@@ -281,8 +294,8 @@ export default function PublicationDetailsView({ id }: Props) {
               </CardContent>
             </Card>
           </Stack>
+
           <PublicationDetailMain post={data} handleSubscribe={handleSubscribe} hasAccess={!!hasAccess} />
-        </Box>
       </Box>
     </>
   );
