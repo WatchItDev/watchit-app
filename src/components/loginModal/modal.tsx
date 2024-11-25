@@ -2,21 +2,15 @@
 import React, { useState, useEffect, useCallback } from 'react';
 
 // MUI IMPORTS
-import {
-  Modal,
-  Box,
-  Fade,
-  Backdrop
-} from '@mui/material';
+import { Modal, Box, Fade, Backdrop } from '@mui/material';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 
-// HOOKS IMPORTS
-import { useAuth } from '@src/hooks/use-auth';
-import { useAccount, useDisconnect } from 'wagmi';
+// WAGMI IMPORTS
+import { useAccount, useConnect, useDisconnect } from 'wagmi';
 
 // LOCAL IMPORTS
-import { WalletConnectView } from '@src/components/loginModal/walletConnectView';
+import { useAuth } from '@src/hooks/use-auth';
 import { ProfileSelectView } from '@src/components/loginModal/profileSelectView';
 import { ProfileFormView } from '@src/components/loginModal/profileFormView';
 import { WatchitLoader } from '../watchit-loader';
@@ -31,51 +25,61 @@ interface LoginModalProps {
 // ----------------------------------------------------------------------
 
 export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
-  // hooks
   const { authenticated, loading: authLoading, login, logout, profiles, selectProfile, refetchProfiles } = useAuth();
-  const { address, isConnected, connector, isConnecting } = useAccount();
+  const { address, isConnected, connector } = useAccount();
+  const { connect, connectors, error } = useConnect();
   const { disconnect } = useDisconnect();
 
-  // states
   const [loading, setLoading] = useState(true);
   const [activeConnector, setActiveConnector] = useState<any>(null);
-  const [view, setView] = useState<'wallet' | 'profile' | 'create'>();
+  const [view, setView] = useState<'wallet' | 'profile' | 'create'>('wallet');
   const [successMessage, setSuccessMessage] = useState('');
 
-  const isLoading = (loading || authLoading || isConnecting) && (view !== 'create')
+  const isLoading = (loading || authLoading) && view !== 'create';
+
+  const onLogin = useCallback(async () => {
+    if (connectors.length > 0 && !isConnected) {
+      const web3AuthConnector = connectors.find((el) => el.id === 'web3auth');
+      if (web3AuthConnector) {
+        await connect({ connector: web3AuthConnector });
+      }
+    }
+  }, [connect, connectors, isConnected]);
 
   useEffect(() => {
-    setLoading(false);
+    if (open && view === 'wallet') {
+      onLogin();
+    }
+  }, [open, onLogin, view]);
 
+  useEffect(() => {
     if (isConnected && connector) {
       setActiveConnector({ ...connector, address });
       setView('profile');
-    }
-
-    if (!isConnected) {
+    } else {
       setActiveConnector(null);
       setView('wallet');
     }
-  }, [isConnected, connector, address, isConnecting]);
+    setLoading(false);
+  }, [isConnected, connector, address]);
 
   useEffect(() => {
-    if (isConnected && address) {
+    if (isConnected && address && view === 'profile') {
       refetchProfiles();
     }
-    // eslint-disable-next-line
-  }, [isConnected, address]);
+  }, [isConnected, view, address]);
 
-  const handleConnectWallet = async ({ connector: newConnector, icon }: any) => {
-    setActiveConnector({ ...newConnector, icon, address });
-    setView('profile');
-  };
+  useEffect(() => {
+    console.log('error', error);
+    if (error) {
+      console.log('error', error);
+      onClose();
+    }
+  }, [error]);
 
   const handleProfileSelect = useCallback(async (profile: any) => {
-    console.log('hello profile select')
-    console.log(profile)
-
-    selectProfile(profile);
     await login(profile);
+    selectProfile(profile);
     onClose();
   }, [login, onClose, selectProfile]);
 
@@ -97,9 +101,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
         onClose={onClose}
         closeAfterTransition
         BackdropComponent={Backdrop}
-        BackdropProps={{
-          timeout: 500,
-        }}
+        BackdropProps={{ timeout: 500 }}
       >
         <Fade in={open}>
           <Box
@@ -113,24 +115,15 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
               borderRadius: 2,
               boxShadow: isLoading ? 0 : 24,
               outline: 'none',
-              transition: 'all 0.5s easy-in-out'
+              transition: 'all 0.5s ease-in-out',
             }}
           >
-            { isLoading ? (
+            {isLoading ? (
               <Box display="flex" justifyContent="center" alignItems="center" height="100%">
                 <WatchitLoader />
               </Box>
             ) : (
               <>
-                {view === 'wallet' && !isConnected && (
-                  <WalletConnectView
-                    onConnectorsLoad={() => {
-                      setLoading(false);
-                    }}
-                    onConnect={handleConnectWallet}
-                  />
-                )}
-
                 {view === 'profile' && isConnected && (
                   <ProfileSelectView
                     onProfileSelect={handleProfileSelect}
@@ -142,7 +135,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
                   />
                 )}
 
-                {view === 'create' && (
+                {view === 'create' && isConnected && (
                   <ProfileFormView
                     onSuccess={handleProfileCreateSuccess}
                     onCancel={() => setView('profile')}
@@ -165,7 +158,6 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
           {successMessage}
         </Alert>
       </Snackbar>
-
     </>
   );
 };

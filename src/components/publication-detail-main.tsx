@@ -10,7 +10,7 @@ import Avatar from '@mui/material/Avatar';
 import Dialog from '@mui/material/Dialog';
 import Divider from '@mui/material/Divider';
 import MenuItem from '@mui/material/MenuItem';
-import { useTheme } from '@mui/material/styles';
+import { useTheme, styled } from '@mui/material/styles';
 import { CircularProgress } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import CardContent from '@mui/material/CardContent';
@@ -35,7 +35,7 @@ import {
   IconHeartFilled,
   IconDots,
   IconBookmark,
-  IconBookmarkFilled,
+  IconBookmarkFilled, IconRosetteDiscountCheckFilled,
 } from '@tabler/icons-react';
 
 // MOTION IMPORTS
@@ -215,14 +215,27 @@ export default function PublicationDetailMain({ post, handleSubscribe, hasAccess
             }}
           >
             <m.div variants={variants}>
-              <Typography variant="h6" sx={{ fontWeight: 'bold', lineHeight: 1.1, mb: 2 }} gutterBottom>
+              <Typography variant="h6" sx={{ fontWeight: 'bold', lineHeight: 1.1, mb: 1.5 }} gutterBottom>
                 {post?.metadata?.title}
               </Typography>
+            </m.div>
+            <m.div variants={variants}>
+              <Stack direction="row" sx={{ mb: 1.5 }} spacing={0} alignItems="center" onClick={() => alert('Clicked') }>
+                <Typography style={{ marginRight: 5, fontWeight: 'bold'}} variant='caption'>
+                  Handled by
+                </Typography>
+                <StyledBoxGradient>
+                  <Typography style={{ marginRight: 5, fontWeight: 'bold'}} variant='caption'>
+                    Watchit
+                  </Typography>
+                  <IconRosetteDiscountCheckFilled />
+                </StyledBoxGradient>
+              </Stack>
             </m.div>
           </Box>
           <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'end', mb: 3, mt: 1 }}>
             {hasAccess ? (
-              <LeaveTipCard />
+              <LeaveTipCard post={post} />
             ) : (
               <SubscribeToUnlockCard onSubscribe={handleSubscribe} />
             )}
@@ -235,7 +248,7 @@ export default function PublicationDetailMain({ post, handleSubscribe, hasAccess
               justifyContent:'end',
               zIndex: 1,
               position: 'sticky',
-              top: '4.6rem',
+              top: '4.5rem',
               backgroundColor: '#1e1f22'
             }}
           >
@@ -393,3 +406,19 @@ export default function PublicationDetailMain({ post, handleSubscribe, hasAccess
     </Box>
   );
 }
+
+const StyledBoxGradient = styled(Box)(({ theme }) => ({
+  background: `linear-gradient(300deg, ${theme.palette.primary.main} 0%, ${theme.palette.warning.main} 25%, ${theme.palette.primary.main} 50%, ${theme.palette.warning.main} 75%, ${theme.palette.primary.main} 100%)`,
+  backgroundSize: '400%',
+  animation: 'gradientShift 20s infinite',
+  padding: '4px 10px',
+  borderRadius: 20,
+  display: 'flex',
+  alignItems: 'center',
+  gap: '4px',
+  '@keyframes gradientShift': {
+    '0%': { backgroundPosition: '0% 50%' },
+    '50%': { backgroundPosition: '100% 50%' },
+    '100%': { backgroundPosition: '0% 50%' },
+  },
+}));

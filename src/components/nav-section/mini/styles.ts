@@ -14,7 +14,7 @@ type StyledItemProps = Omit<NavItemProps, 'item'> & {
 };
 
 export const StyledItem = styled(ListItemButton, {
-  shouldForwardProp: (prop) => prop !== 'active',
+  shouldForwardProp: (prop) => prop !== 'active' && prop !== 'bgColor',
 })<StyledItemProps>(({ active, depth, config, theme, bgColor }) => {
   const subItem = depth !== 1;
 

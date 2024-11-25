@@ -1,11 +1,10 @@
-import { useCallback, useEffect, useState } from 'react';
+import { FC, useCallback, useEffect, useState } from 'react';
 import { Typography, Box, TextField, Stack, Paper } from '@mui/material';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import {
   useOpenAction,
   OpenActionKind,
-  useModuleMetadata,
   useLazyModuleMetadata,
   development,
 } from '@lens-protocol/react-web';
@@ -13,7 +12,7 @@ import { ethers } from 'ethers';
 import { encodeData, LensClient, LensClientConfig } from '@lens-protocol/client';
 import { useAuth } from '@src/hooks/use-auth.ts';
 import LoadingButton from '@mui/lab/LoadingButton';
-import { decodeData, ModuleParam } from '@lens-protocol/react';
+import { ModuleParam } from '@lens-protocol/react';
 import TipActionModuleAbi from '@src/config/abi/TipActionModule.json';
 
 const TIP_ACTION_MODULE_ADDRESS = '0xe95A8326EBd29B6574875806474d6f9734De80A5';
@@ -29,7 +28,11 @@ const tipOptions = [
   { value: '100', title: '100 MMC', subtitle: 'Go the extra mile' },
 ];
 
-export const LeaveTipCard = ({ post, tipReceiver }) => {
+interface LeaveTipCardProps {
+  post: any
+}
+
+export const LeaveTipCard: FC<LeaveTipCardProps> = ({ post }) => {
   const [selectedTip, setSelectedTip] = useState('10');
   const [customTip, setCustomTip] = useState('');
   const [successMessage, setSuccessMessage] = useState(false);

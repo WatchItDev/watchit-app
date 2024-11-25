@@ -11,7 +11,6 @@ import Typography from '@mui/material/Typography';
 // routes
 import { paths } from '@src/routes/paths';
 import { useRouter } from '@src/routes/hooks';
-import { useMockedUser } from '@src/hooks/use-mocked-user';
 
 // components
 import { varHover } from '@src/components/animate';
@@ -20,30 +19,20 @@ import { useAuth } from '../../hooks/use-auth';
 import {LoginModal} from "@src/components/loginModal";
 import {useState} from "react";
 import Button from "@mui/material/Button";
-import {CircularProgress} from "@mui/material";
 
 // ----------------------------------------------------------------------
 
 const OPTIONS = [
-  // {
-  //   label: 'Home',
-  //   linkTo: '/',
-  // },
   {
     label: 'Profile',
     linkTo: paths.dashboard.user.root,
   },
-  // {
-  //   label: 'Settings',
-  //   linkTo: paths.dashboard.root,
-  // },
 ];
 
 // ----------------------------------------------------------------------
 
 export default function AccountPopover() {
   const router = useRouter();
-  const { user } = useMockedUser();
   const { logout, selectedProfile } = useAuth();
   const popover = usePopover();
 
@@ -85,7 +74,7 @@ export default function AccountPopover() {
             >
               <Avatar
                 src={(selectedProfile?.metadata?.picture as any)?.optimized?.uri ?? `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${selectedProfile?.id}`}
-                alt={user?.displayName}
+                alt={'avatar'}
                 sx={{
                   width: 36,
                   height: 36,
@@ -96,22 +85,15 @@ export default function AccountPopover() {
           ) : <></>
         }
 
-
         <Box sx={{ display: 'flex', flexDirection: 'column', ml: 1, cursor: 'pointer' }}>
-
-          {loading ? (
-            <CircularProgress size={24} sx={{ color: '#fff' }} />
-          ) : undefined}
-
           {!authenticated && !loading ? (
             <Button variant="contained" onClick={handleOpenModal}>
               Login
             </Button>
           ) : undefined}
 
-
           {
-            authenticated ? (
+            authenticated && !loading ? (
                 <>
                   <Typography variant="subtitle2" noWrap>
                     {selectedProfile?.handle?.localName}
@@ -122,7 +104,6 @@ export default function AccountPopover() {
                 </>
             ) : <></>
           }
-
         </Box>
       </Box>
 

@@ -143,7 +143,7 @@ function Searchbar() {
         '&:hover': { backgroundColor: '#1E1F22' },
       }}
     >
-      <IconButton disableRipple>
+      <IconButton component={'div'} disableRipple>
         <Iconify icon="eva:search-fill" />
         {
           !hideSearchText && (
