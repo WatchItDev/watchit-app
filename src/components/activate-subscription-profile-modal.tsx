@@ -125,11 +125,11 @@ export const ActivateSubscriptionProfileModal = ({
   return (
     <>
       <Dialog open={isOpen} onClose={onClose} fullWidth maxWidth="xs">
-        <DialogTitle sx={{ pb: 2 }}>Activate Subscription</DialogTitle>
+        <DialogTitle sx={{ pb: 2 }}>Configure subscription pricing</DialogTitle>
         <Divider sx={{ mb: 2, borderStyle: 'dashed' }} />
         <DialogContent>
-          <Typography variant="body2" color="textSecondary" textAlign="center" sx={{ mb: 3 }}>
-            Choose an amount to set as your daily subscription rate.
+          <Typography variant="body2" color="textSecondary" sx={{ mb: 3 }}>
+            Your subscribers will pay a <span style={{ fontWeight: 'bolder' }}>daily</span> rate for accessing your content.
           </Typography>
           <Stack spacing={2}>
             <Stack spacing={2} direction="row">
@@ -171,30 +171,63 @@ export const ActivateSubscriptionProfileModal = ({
           <Divider sx={{ my: 2, borderStyle: 'dashed' }} />
 
           <Stack spacing={1}>
-            <Typography variant="body2" color="textSecondary" sx={{ mb: 1 }}>Your subscribers will pay:</Typography>
+            <Typography variant="body2" color="textSecondary" sx={{ mb: 1 }}>
+              Your subscribers will pay:
+            </Typography>
             <Stack spacing={1} direction="row">
-              <Stack spacing={0} sx={{ p: 1, backgroundColor: 'rgba(255,255,255,0.05)', borderRadius: 1, flexGrow: 1 }}>
-                <Typography variant="body1" textAlign="center">{weeklyCost} MMC</Typography>
-                <Typography variant="body2" textAlign="center" color="textSecondary">per Week</Typography>
+              <Stack
+                spacing={0}
+                sx={{
+                  p: 1,
+                  backgroundColor: 'rgba(255,255,255,0.05)',
+                  borderRadius: 1,
+                  flexGrow: 1,
+                }}
+              >
+                <Typography variant="body1" textAlign="center">
+                  {weeklyCost} MMC
+                </Typography>
+                <Typography variant="body2" textAlign="center" color="textSecondary">
+                  per week
+                </Typography>
               </Stack>
-              <Stack spacing={0} sx={{ p: 1, backgroundColor: 'rgba(255,255,255,0.05)', borderRadius: 1, flexGrow: 1 }}>
-                <Typography variant="body1" textAlign="center">{fifteenDaysCost} MMC</Typography>
-                <Typography variant="body2" textAlign="center" color="textSecondary">each 15 Days</Typography>
+              <Stack
+                spacing={0}
+                sx={{
+                  p: 1,
+                  backgroundColor: 'rgba(255,255,255,0.05)',
+                  borderRadius: 1,
+                  flexGrow: 1,
+                }}
+              >
+                <Typography variant="body1" textAlign="center">
+                  {fifteenDaysCost} MMC
+                </Typography>
+                <Typography variant="body2" textAlign="center" color="textSecondary">
+                  each 15 days
+                </Typography>
               </Stack>
-              <Stack spacing={0} sx={{ p: 1, backgroundColor: 'rgba(255,255,255,0.05)', borderRadius: 1, flexGrow: 1 }}>
-                <Typography variant="body1" textAlign="center">{monthlyCost} MMC</Typography>
-                <Typography variant="body2" textAlign="center" color="textSecondary">per Month</Typography>
+              <Stack
+                spacing={0}
+                sx={{
+                  p: 1,
+                  backgroundColor: 'rgba(255,255,255,0.05)',
+                  borderRadius: 1,
+                  flexGrow: 1,
+                }}
+              >
+                <Typography variant="body1" textAlign="center">
+                  {monthlyCost} MMC
+                </Typography>
+                <Typography variant="body2" textAlign="center" color="textSecondary">
+                  per month
+                </Typography>
               </Stack>
             </Stack>
           </Stack>
 
           {error && (
-            <Typography
-              variant="body2"
-              color="error"
-              align="center"
-              sx={{ mt: 2 }}
-            >
+            <Typography variant="body2" color="error" align="center" sx={{ mt: 2 }}>
               {error.message}
             </Typography>
           )}
@@ -210,11 +243,7 @@ export const ActivateSubscriptionProfileModal = ({
             onClick={handleAuthorizeSubscription}
             disabled={loading || (!selectedAmount && !customAmount)}
           >
-            {loading ? (
-              <CircularProgress size="25px" sx={{ color: '#fff' }} />
-            ) : (
-              'Activate Subscription'
-            )}
+            {loading ? <CircularProgress size="25px" sx={{ color: '#fff' }} /> : 'Activate'}
           </Button>
         </DialogActions>
       </Dialog>
