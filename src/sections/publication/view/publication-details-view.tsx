@@ -231,7 +231,7 @@ export default function PublicationDetailsView({ id }: Props) {
                           {data?.metadata?.title}
                         </Typography>
                       </m.div>
-                      <Box sx={{ mt: 2, px: 4, position: 'relative' }}>
+                      <Box sx={{ mt: 2, position: 'relative' }}>
                         <m.div variants={variants}>
                           <Box
                             ref={descriptionRef}
@@ -260,7 +260,7 @@ export default function PublicationDetailsView({ id }: Props) {
                           Sponsors
                         </Typography>
                       </m.div>
-                      <Box sx={{ mt: 2, opacity: 0.8, px: 4 }}>
+                      <Box sx={{ mt: 2, opacity: 0.8 }}>
                         <m.div variants={variants}>
                           <Typography variant="body1" color="textSecondary"
                                       sx={{ fontWeight: 'bold', lineHeight: 1.1, mb: 0.5, width: '100%' }} gutterBottom>
@@ -275,7 +275,7 @@ export default function PublicationDetailsView({ id }: Props) {
                           Bakers
                         </Typography>
                       </m.div>
-                      <Box sx={{ mt: 2, opacity: 0.8, px: 4 }}>
+                      <Box sx={{ mt: 2, opacity: 0.8 }}>
                         <m.div  variants={variants}>
                           <Typography variant="body1" color="textSecondary" sx={{ fontWeight: 'bold', lineHeight: 1.1, mb: 0.5, width: '100%' }} gutterBottom>
                             No Bakers yet. Be the first to support!
