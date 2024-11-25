@@ -19,7 +19,7 @@ import { useFollow, useUnfollow } from '@lens-protocol/react-web';
 // LOCAL IMPORTS
 import Image from '../image';
 import { paths } from '../../routes/paths';
-import { useRouter } from '../../routes/hooks';
+import { useRouter } from '@src/routes/hooks';
 import { useAuth } from '../../hooks/use-auth';
 
 // ----------------------------------------------------------------------
