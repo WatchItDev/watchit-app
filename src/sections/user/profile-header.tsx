@@ -85,7 +85,7 @@ interface SocialMediaUrls {
 }
 
 const prependProfileIdToUrl = (url: string, profileId: string) => {
-  return url.replace('profileId', profileId);
+  return url.replace('profileId', 'dashboard/profile/' + profileId);
 }
 
 // ----------------------------------------------------------------------
