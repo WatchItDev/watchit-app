@@ -13,14 +13,12 @@ import ProfileFollowers from '../profile-followers';
 import ProfileFollowing from '../profile-following';
 import ProfileHeader from '../profile-header';
 import Label from '../../../components/label';
-import ProfileCollected from '../profile-collected';
 import { LoadingScreen } from '@src/components/loading-screen';
 
 // ----------------------------------------------------------------------
 
 const TABS = [
   { value: 'publications', label: 'Publications' },
-  { value: 'collected', label: 'Collected' },
   { value: 'followers', label: 'Followers' },
   { value: 'following', label: 'Following' },
 ];
@@ -45,7 +43,6 @@ const UserProfileView = ({ id }: any) => {
 
   const counts: any = {
     publications: publications?.length ?? 0,
-    collected: profile?.stats?.collects ?? 0,
     followers: profile?.stats?.followers ?? 0,
     following: profile?.stats?.following ?? 0,
   };
@@ -94,7 +91,6 @@ const UserProfileView = ({ id }: any) => {
       </ProfileHeader>
 
       {currentTab === 'publications' && profile && <ProfileHome profile={profile} />}
-      {currentTab === 'collected' && profile && <ProfileCollected profile={profile} />}
       {currentTab === 'followers' && profile && <ProfileFollowers profile={profile} onActionFinished={handleUpdateProfile} />}
       {currentTab === 'following' && profile && <ProfileFollowing profile={profile} />}
     </Container>

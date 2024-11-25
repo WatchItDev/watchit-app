@@ -135,9 +135,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         transports: {
           [polygonAmoy.id]: http(),
         },
-        // autoConnect: true
+        syncConnectedChain: true
       }),
-    []
+    [web3AuthConnector]
   );
 
   const lensConfig: LensConfig = {

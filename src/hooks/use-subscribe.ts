@@ -59,13 +59,11 @@ export const useSubscribe = (): UseSubscribeHook => {
     amountInWei: bigint
   ): string => {
     // Encode the approve function call data
-    const approveData = encodeFunctionData({
+    return encodeFunctionData({
       abi: MMCAbi.abi,
       functionName: 'approve',
       args: [GLOBAL_CONSTANTS.AGREEMENT_PORTAL_ADDRESS, amountInWei],
     });
-
-    return approveData;
   };
 
   /**
@@ -83,7 +81,7 @@ export const useSubscribe = (): UseSubscribeHook => {
     payload: string
   ): string => {
     // Encode the flashPolicyAgreement function call data
-    const flashPolicyAgreementData = encodeFunctionData({
+    return encodeFunctionData({
       abi: AgreementPortalAbi.abi,
       functionName: 'flashPolicyAgreement',
       args: [
@@ -94,8 +92,6 @@ export const useSubscribe = (): UseSubscribeHook => {
         payload,
       ],
     });
-
-    return flashPolicyAgreementData;
   };
 
   /**

@@ -11,7 +11,7 @@ import Divider from '@mui/material/Divider';
 import Popover from '@mui/material/Popover';
 import Snackbar from '@mui/material/Snackbar';
 import MenuItem from '@mui/material/MenuItem';
-import { useTheme } from '@mui/material/styles';
+import { styled, useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { Profile } from '@lens-protocol/api-bindings';
@@ -24,7 +24,7 @@ import { appId, PublicationType, usePublications } from '@lens-protocol/react-we
 import { Address } from 'viem';
 
 // ICONS IMPORTS
-import { IconDots } from '@tabler/icons-react';
+import { IconDots, IconRosetteDiscountCheckFilled } from '@tabler/icons-react';
 
 // LOCAL IMPORTS
 import ProfileCover from './profile-cover';
@@ -115,7 +115,7 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
   const {
     hasAccess,
     loading: accessLoading,
-    // fetching: accessFetchingLoading,
+    fetching: accessFetchingLoading,
     error: accessError,
     refetch: refetchAccess,
   } = useHasAccess(profile.ownedBy.address as Address);
@@ -331,7 +331,7 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
                     <CircularProgress size={24} sx={{ color: '#fff' }} />
                   </Box>
                 )}
-                {isAuthorized && !authorizedLoading && (
+                {isAuthorized && !authorizedLoading && profile?.id !== selectedProfile?.id && (
                   <LoadingButton
                     title={hasAccess ? 'You are subscribed!' : 'Subscribe'}
                     variant={hasAccess ? 'outlined' : 'contained'}
@@ -340,8 +340,8 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
                       backgroundColor: hasAccess ? '#24262A' : '#fff',
                     }}
                     onClick={!hasAccess ? () => { setOpenSubscribeModal(true) } : () => {}}
-                    disabled={accessLoading || hasAccess || !selectedProfile || profile?.id === selectedProfile?.id}
-                    loading={accessLoading}
+                    disabled={accessLoading || hasAccess || !selectedProfile || accessFetchingLoading}
+                    loading={accessLoading || accessFetchingLoading}
                   >
                     {hasAccess ? 'You are subscribed!' : 'Subscribe'}
                   </LoadingButton>
@@ -359,7 +359,9 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
                     Activate Subscription
                   </LoadingButton>
                 )}
-                <FollowUnfollowButton profile={profile} />
+                {profile?.id !== selectedProfile?.id && (
+                  <FollowUnfollowButton profile={profile} />
+                )}
                 <Button
                   size="medium"
                   variant="outlined"
@@ -519,6 +521,40 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
                 text={`${profile?.ownedBy?.address}`}
               />
             </Stack>
+            <Divider sx={{ borderColor: 'rgba(255, 255, 255, 0.08)', width: '100%' }} />
+            <Stack
+              direction="row"
+              sx={{
+                zIndex: 10,
+                width: '100%',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+              }}
+            >
+              <Typography color="text.secondary">Attestation</Typography>
+              <CopyableText
+                label={truncateAddress(`${profile?.ownedBy?.address}`)}
+                text={`${profile?.ownedBy?.address}`}
+              />
+            </Stack>
+            <Divider sx={{ borderColor: 'rgba(255, 255, 255, 0.08)', width: '100%' }} />
+            <Stack
+              direction="row"
+              sx={{
+                zIndex: 10,
+                width: '100%',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+              }}
+            >
+              <Typography color="text.secondary">Distributor</Typography>
+              <StyledBoxGradient>
+                <Typography style={{ marginRight: 5, fontWeight: 'bold'}} variant='caption'>
+                  Watchit
+                </Typography>
+                <IconRosetteDiscountCheckFilled />
+              </StyledBoxGradient>
+            </Stack>
           </Stack>
         </Stack>
 
@@ -566,3 +602,19 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
 };
 
 export default ProfileHeader
+
+const StyledBoxGradient = styled(Box)(({ theme }) => ({
+  background: `linear-gradient(300deg, ${theme.palette.primary.main} 0%, ${theme.palette.warning.main} 25%, ${theme.palette.primary.main} 50%, ${theme.palette.warning.main} 75%, ${theme.palette.primary.main} 100%)`,
+  backgroundSize: '400%',
+  animation: 'gradientShift 20s infinite',
+  padding: '4px 10px',
+  borderRadius: 20,
+  display: 'flex',
+  alignItems: 'center',
+  gap: '4px',
+  '@keyframes gradientShift': {
+    '0%': { backgroundPosition: '0% 50%' },
+    '50%': { backgroundPosition: '100% 50%' },
+    '100%': { backgroundPosition: '0% 50%' },
+  },
+}));

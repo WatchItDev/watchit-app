@@ -62,13 +62,16 @@ export const SubscribeProfileModal = ({
   ];
 
   useEffect(() => {
+    if (error) console.log('Subscribe error: ', error)
     if (error) setErrorMessage(error.shortMessage ?? error.message);
   }, [error]);
 
   useEffect(() => {
+    console.log('Subscribe Profile Modal', data);
     if (data?.receipt) {
       setSuccessMessage('Successfully subscribed to the profile.');
       onSubscribe?.();
+      onClose?.();
     }
   }, [data]);
 
@@ -107,6 +110,9 @@ export const SubscribeProfileModal = ({
 
       // Convert total cost to MMC tokens as a string
       const totalCostMMC = ethers.formatUnits(totalCostWei, 18); // Converts Wei to MMC
+
+      console.log('Total cost: ', totalCostMMC);
+      console.log('Holder addresses: ', profile?.ownedBy?.address);
 
       // Subscribe using the amount in tokens (as a string)
       await subscribe({

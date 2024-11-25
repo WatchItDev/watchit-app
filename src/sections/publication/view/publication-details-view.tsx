@@ -15,9 +15,6 @@ import CardContent from '@mui/material/CardContent';
 // LENS IMPORTS
 import { usePublication } from '@lens-protocol/react';
 
-// WAGMI IMPORTS
-import { useReadContract } from 'wagmi';
-
 // MOTION IMPORTS
 import { m } from 'framer-motion';
 
@@ -37,37 +34,7 @@ import ProfileHome from '@src/sections/user/profile-home.tsx';
 import { LoadingScreen } from '@src/components/loading-screen';
 import MoviePlayView from '@src/sections/publication/view/publication-play-view.tsx';
 import PublicationDetailMain from '@src/components/publication-detail-main.tsx';
-import SubscriptionPolicyAbi from '@src/config/abi/SubscriptionPolicy.json';
-import { useAuth } from '@src/hooks/use-auth.ts';
 import { useHasAccess } from '@src/hooks/use-has-access.ts';
-
-const videoDescription = `
-¡Bienvenidos al canal! 🎥 En este video, vamos a explorar **[Tema del Video]**, donde desglosaremos paso a paso todo lo que necesitas saber. Este es un video extenso y detallado, así que si eres alguien que quiere profundizar en este tema y conocer todos los aspectos importantes, ¡has llegado al lugar correcto!
-
-## Contenido del video
-
-1. **Introducción y objetivos**: Comenzamos con una breve introducción para explicar por qué este tema es relevante y lo que puedes esperar al finalizar el video.
-2. **Explicación detallada**: Desglosamos cada sección con ejemplos prácticos y explicaciones fáciles de seguir.
-3. **Ejemplos y demostraciones**: Incluimos casos de uso reales y simulaciones para ilustrar los conceptos de manera visual.
-4. **Resumen y puntos clave**: Recapitulamos los puntos más importantes para asegurarnos de que te lleves un aprendizaje completo.
-5. **Conclusiones y próxima sesión**: Te contamos cómo puedes seguir profundizando y qué se viene en los próximos videos.
-
-## Recursos mencionados
-
-- [Enlace a documentación](#)
-- [Artículos relacionados](#)
-- [Plantillas de trabajo](#)
-
-## ¡Únete a la comunidad!
-
-Si te gustó este contenido y quieres seguir aprendiendo sobre **[tema del video]**, no olvides darle like 👍, suscribirte 🔔 y activar la campanita para no perderte ninguna actualización. También puedes dejar tus comentarios y preguntas abajo, ya que me encanta interactuar con la comunidad y conocer tus opiniones.
-
----
-
-**¿Te ha resultado útil este video?** Compártelo con tus amigos o colegas que puedan estar interesados. Nos vemos en el próximo video, donde seguiremos explorando temas fascinantes y prácticos para tu crecimiento personal y profesional.
-
-¡Gracias por tu tiempo y hasta pronto! 🙌
-`;
 
 const MAX_LINES = 5;
 
@@ -138,30 +105,32 @@ export default function PublicationDetailsView({ id }: Props) {
   return (
     <>
       <Header>
-        <Button
-          onClick={handleBack} disableFocusRipple
-          sx={{
-            display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-            backgroundColor: '#24262A',
-            borderRadius: 1.5,
-            m: 1,
-            p: 0.2,
-            '&:hover': {
-              backgroundColor: '#1E1F22'
-            }
-          }}
-        >
-          <IconButton disableRipple>
-            <IconChevronLeft size={20} />
-            <Typography sx={{ ml: 1 }} variant='subtitle2'>Back</Typography>
-          </IconButton>
+        <>
+          <Button
+            onClick={handleBack} disableFocusRipple
+            sx={{
+              display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+              backgroundColor: '#24262A',
+              borderRadius: 1.5,
+              m: 1,
+              p: 0.2,
+              '&:hover': {
+                backgroundColor: '#1E1F22'
+              }
+            }}
+          >
+            <IconButton disableRipple>
+              <IconChevronLeft size={20} />
+              <Typography sx={{ ml: 1 }} variant='subtitle2'>Back</Typography>
+            </IconButton>
 
 
-          {mdUp && <Label sx={{ px: 0.75, mr: 1, fontSize: 12, color: 'text.secondary' }}>Esc</Label>}
-        </Button>
-        <Typography variant="h6" sx={{ ml: 2 }}>
-          Movie details
-        </Typography>
+            {mdUp && <Label sx={{ px: 0.75, mr: 1, fontSize: 12, color: 'text.secondary' }}>Esc</Label>}
+          </Button>
+          <Typography variant="h6" sx={{ ml: 2 }}>
+            Movie details
+          </Typography>
+        </>
       </Header>
       <Box sx={{ width: '100%', maxWidth: 'calc(100% - 1.5rem)', maxHeight: '100%', position: 'relative' }}>
         <Box sx={{ display: 'flex', flexDirection: 'row', width: '100%', maxWidth: '100%' }}>

@@ -21,6 +21,7 @@ import {
   NotificationsPopover,
 } from '../_common';
 import { useAccount } from 'wagmi';
+import { PropsWithChildren } from 'react';
 
 // ----------------------------------------------------------------------
 
@@ -28,8 +29,9 @@ type Props = {
   onOpenNav?: VoidFunction;
 };
 
-export default function Header({ onOpenNav }: Props) {
+export default function Header({ onOpenNav, children }: PropsWithChildren<Props>) {
   const { isConnected } = useAccount();
+
   const theme = useTheme();
 
   const settings = useSettingsContext();
@@ -54,6 +56,8 @@ export default function Header({ onOpenNav }: Props) {
         </IconButton>
       )}
 
+      {children}
+
       <Stack
         flexGrow={1}
         direction="row"
@@ -69,8 +73,6 @@ export default function Header({ onOpenNav }: Props) {
         }
 
         <NotificationsPopover />
-
-        {/*<SettingsButton />*/}
 
         <AccountPopover />
       </Stack>
