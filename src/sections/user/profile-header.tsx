@@ -211,7 +211,7 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
 
   return (
     <>
-      <Box sx={{ my: 3 }}>
+      <Box sx={{ my: 3, position: 'relative' }}>
         <ProfileCover profile={profile} />
 
         <Button
@@ -222,8 +222,9 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
             height: '40px',
             minWidth: '40px',
             position: 'absolute',
-            right: 38,
-            top: 32,
+            zIndex: 99999,
+            right: 5,
+            top: 5,
           }}
           onClick={(event) => setMenuAnchorEl(event.currentTarget)}
         >
@@ -243,7 +244,6 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
               p: 1,
               display: 'flex',
               flexDirection: 'column',
-              mt: 1,
               ml: -3,
               alignItems: 'center',
               boxShadow: '0 4px 12px rgba(0, 0, 0, 0.5)',
