@@ -51,7 +51,7 @@ const shareLinks = [
   {
     icon: 'mingcute:social-x-line',
     label: 'X',
-    url: `https://x.com/share/?url=${encodeURIComponent(urlToShare)}&text=Visit%20my%20profile%20in%20Watchit%20Movie&hashtags=Watchit`,
+    url: `https://x.com/share/?url=${encodeURIComponent(urlToShare)}&text=Visit%20my%20profile%20in%20Watchit&hashtags=Watchit`,
   },
   {
     icon: 'mdi:facebook',

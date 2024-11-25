@@ -14,18 +14,18 @@ export default function UserProfilePage() {
       <Helmet>
         <title> Dashboard: User Profile | {id}</title>
         {/*OG*/}
-        <meta property="og:title" content={`Watchit Movie | ${id}`} />
+        <meta property="og:title" content={`Watchit | ${id}`} />
         <meta
           property="og:description"
-          content="Visit my profile in Watchit Movie | Discover stories, art, and experiences like never before, connecting you with creators in a decentralized, space built just for you."
+          content="Visit my profile in Watchit | Discover stories, art, and experiences like never before, connecting you with creators in a decentralized, space built just for you."
         />
         <meta property="og:image" content={`https://app.watchit.movie/default.jpg`} />
         <meta property="og:url" content={`https://app.watchit.movie/${id}`} />
         {/*Twitter*/}
-        <meta name="twitter:title" content={`Watchit Movie: A New Era of Video Content with Web3 x AI | ${id}`} />
+        <meta name="twitter:title" content={`Watchit: A New Era of Video Content with Web3 x AI | ${id}`} />
         <meta
           name="twitter:description"
-          content="Visit my profile in Watchit Movie | Discover stories, art, and experiences like never before, connecting you with creators in a decentralized, space built just for you."
+          content="Visit my profile in Watchit | Discover stories, art, and experiences like never before, connecting you with creators in a decentralized, space built just for you."
         />
         <meta name="twitter:image" content={`https://app.watchit.movie/default.jpg`} />
         <meta name="twitter:card" content="summary_large_image" />
