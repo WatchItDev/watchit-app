@@ -1,6 +1,5 @@
 // @mui
 import Paper from '@mui/material/Paper';
-import { styled } from '@mui/system';
 
 // components
 import Image from '@src/components/image';
