@@ -28,6 +28,14 @@ const ProfileFollowers = ({ profile, onActionFinished }: Props) => {
 
   return (
     <Box
+      sx={{
+        display: 'flex',
+        flexWrap: 'wrap',
+        gap: `${16}px`,
+        justifyContent: 'flex-start',
+        alignItems: 'flex-start',
+        padding: 2
+      }}
       gap={3}
       display="grid"
       gridTemplateColumns={{
@@ -42,7 +50,21 @@ const ProfileFollowers = ({ profile, onActionFinished }: Props) => {
             <UserItem key={`follower-${index}`} profile={follower} onActionFinished={onActionFinished} />
           ))
         ) : (
-          <Typography>No followers</Typography>
+          <Typography
+            sx={{
+              height: '20rem',
+              textAlign: 'center',
+              width: '100%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontWeight: 'bold',
+              background: '#2b2d31',
+              borderRadius: '1rem',
+            }}
+          >
+            This profile has no followers
+          </Typography>
         )
       }
     </Box>
