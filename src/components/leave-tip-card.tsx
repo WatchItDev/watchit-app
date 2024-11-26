@@ -6,14 +6,15 @@ import {
   useOpenAction,
   OpenActionKind,
   useLazyModuleMetadata,
-  development,
+  development, ProfileSession, useSession,
 } from '@lens-protocol/react-web';
 import { ethers } from 'ethers';
 import { encodeData, LensClient, LensClientConfig } from '@lens-protocol/client';
-import { useAuth } from '@src/hooks/use-auth.ts';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { ModuleParam } from '@lens-protocol/react';
 import TipActionModuleAbi from '@src/config/abi/TipActionModule.json';
+// @ts-ignore
+import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
 
 const TIP_ACTION_MODULE_ADDRESS = '0xe95A8326EBd29B6574875806474d6f9734De80A5';
 const MMC_ADDRESS = '0xdC2E7C4444730980CEB8982CfC8A1c4902fa36bE';
@@ -36,7 +37,7 @@ export const LeaveTipCard: FC<LeaveTipCardProps> = ({ post }) => {
   const [selectedTip, setSelectedTip] = useState('10');
   const [customTip, setCustomTip] = useState('');
   const [successMessage, setSuccessMessage] = useState(false);
-  const { selectedProfile } = useAuth();
+  const { data: sessionData }: ReadResult<ProfileSession> = useSession();
   const { data: metadata, error, loading: loadingMetadata, execute } = useLazyModuleMetadata();
   // const amountInWei = ethers.parseUnits(
   //   customTip || selectedTip,
@@ -120,7 +121,7 @@ export const LeaveTipCard: FC<LeaveTipCardProps> = ({ post }) => {
     console.log('call data')
     console.log(callData)
 
-    if (!selectedProfile) {
+    if (!sessionData?.profile) {
       alert('Please log in to leave a tip');
       return;
     }

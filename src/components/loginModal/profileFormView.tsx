@@ -1,5 +1,5 @@
 // REACT IMPORTS
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 // MUI IMPORTS
 import {
@@ -15,12 +15,24 @@ import {
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import Avatar from '@mui/material/Avatar';
-import { useAuth } from '@src/hooks/use-auth';
 import LoadingButton from '@mui/lab/LoadingButton';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import { Profile } from '@lens-protocol/api-bindings';
 import Image from '../image';
+// @ts-ignore
+import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
+import {
+  ProfileSession, SessionType,
+  useCreateProfile,
+  useLogin,
+  useSession,
+  useSetProfileMetadata,
+} from '@lens-protocol/react-web';
+import { useAccount } from 'wagmi';
+import { ProfileData } from '@src/auth/context/lens/types.ts';
+import { uploadImageToIPFS, uploadMetadataToIPFS } from '@src/utils/ipfs.ts';
+import { buildProfileMetadata } from '@src/utils/profile.ts';
 
 // ----------------------------------------------------------------------
 
@@ -34,9 +46,23 @@ export interface ProfileFormProps {
 // ----------------------------------------------------------------------
 
 export const ProfileFormView: React.FC<ProfileFormProps> = ({ onSuccess, onCancel, mode, initialValues }) => {
-  const { selectedProfile, registerProfile, updateProfileMetadata, loading} = useAuth();
   const [errorMessage, setErrorMessage] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [registrationLoading, setRegistrationLoading] = useState(false);
+  // Pending metadata update (used when profile creation requires authentication)
+  const [pendingMetadataUpdate, setPendingMetadataUpdate] = useState<{
+    data: ProfileData;
+    profile: Profile;
+  } | null>(null);
+
+  const { data: sessionData }: ReadResult<ProfileSession> = useSession();
+  const { address } = useAccount();
+
+  // Create profile and set profile metadata functions from Lens Protocol
+  const { execute: createProfileExecute, error: errorCreateProfile, loading: createProfileLoading } = useCreateProfile();
+  const { execute: setProfileMetadataExecute, error: errorSetProfileMetadata, loading: setProfileMetadataLoading } = useSetProfileMetadata();
+  const { execute: loginExecute, error: errorlogin, loading: loginLoading } = useLogin();
+  const loading = createProfileLoading || setProfileMetadataLoading || registrationLoading || loginLoading
 
   const validationSchema = Yup.object({
     username: Yup.string()
@@ -53,11 +79,164 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({ onSuccess, onCance
   });
 
   useEffect(() => {
+    if (errorCreateProfile) setErrorMessage(errorCreateProfile?.message)
+    if (errorSetProfileMetadata) setErrorMessage(errorSetProfileMetadata?.message)
+    if (errorlogin) setErrorMessage(errorlogin?.message)
+  }, [errorCreateProfile, errorSetProfileMetadata, errorlogin]);
+
+  useEffect(() => {
     if (isSubmitting && !loading && !errorMessage) {
       onSuccess();
       setIsSubmitting(false);
     }
   }, [isSubmitting, loading, onSuccess, errorMessage]);
+
+  const login = useCallback(
+    async (profile?: Profile) => {
+      const profileToUse = profile;
+
+      if (!profileToUse) {
+        console.warn('No profile selected or provided, please select one.');
+        return;
+      }
+
+      if (!address) {
+        console.error('Wallet address not available.');
+        return;
+      }
+
+      try {
+        const result = await loginExecute({
+          address,
+          profileId: profileToUse.id,
+        } as any);
+
+        if (result.isFailure()) {
+          console.error('Error during login:', result.error.message);
+        } else {
+          console.log('Login initiated.');
+        }
+      } catch (err) {
+        console.error('Error in login:', err);
+      }
+    },
+    [loginExecute, address]
+  );
+
+  /**
+   * Update profile metadata on the Lens Protocol.
+   * @param data - Profile data to update.
+   * @param profile - Profile to update.
+   */
+  const updateProfileMetadata = useCallback(
+    // async (data: ProfileData, profile: Profile) => {
+    async (data: ProfileData) => {
+      console.log('Updating profile metadata');
+      setRegistrationLoading(true);
+
+      try {
+        // Upload images to IPFS
+        const profileImageURI = typeof data?.profileImage === 'string' ? data?.profileImage : await uploadImageToIPFS(data.profileImage);
+        const backgroundImageURI = typeof data?.backgroundImage === 'string' ? data?.backgroundImage : await uploadImageToIPFS(data.backgroundImage);
+
+        // Build profile metadata
+        const metadata = buildProfileMetadata(data, profileImageURI, backgroundImageURI);
+        console.log('Metadata:', metadata);
+
+        // Upload metadata to IPFS
+        const metadataURI = await uploadMetadataToIPFS(metadata);
+        console.log('Metadata URI:', metadataURI);
+
+        // Update metadata on the Lens Protocol
+        const result = await setProfileMetadataExecute({ metadataURI });
+
+        if (result.isFailure()) {
+          console.error('Failed to update metadata:', result.error.message);
+          return;
+        }
+
+        console.log('Metadata updated, waiting for completion.');
+
+        // Wait for the transaction to be processed
+        const completion = await result.value.waitForCompletion();
+
+        if (completion.isFailure()) {
+          console.error('Error processing the transaction:', completion.error.message);
+          return;
+        }
+
+        console.log('Metadata updated successfully.');
+
+        // if (!address) return;
+
+        // // Refresh profiles and select the updated one
+        // await fetchProfiles({
+        //   for: address,
+        //   includeOwned: true,
+        // });
+        //
+        // const updatedProfile = profileData?.find((p) => p.id === profile.id);
+        //
+        // if (updatedProfile) selectProfile(updatedProfile);
+
+        setRegistrationLoading(false);
+      } catch (error) {
+        console.error('Error updating profile metadata:', error);
+        setRegistrationLoading(false);
+      }
+    },
+    [
+      setProfileMetadataExecute,
+      address,
+    ]
+  );
+
+  /**
+   * Register a new profile on the Lens Protocol.
+   * @param data - Profile data for the new profile.
+   */
+  const registerProfile = useCallback(
+    async (data: ProfileData) => {
+      if (!address) {
+        console.error('Wallet address not available.');
+        return;
+      }
+
+      try {
+        setRegistrationLoading(true);
+        console.log('Creating new profile...');
+        console.log(data);
+        console.log(address);
+
+        const result = await createProfileExecute({
+          localName: data.username,
+          to: address,
+        });
+
+        console.log('hello result')
+        console.log(result)
+
+        if (result.isFailure()) {
+          throw new Error(result.error.message);
+        }
+
+        const newProfile: Profile = result.value;
+
+        // Authenticate using the new profile
+        await login(newProfile);
+
+        // Save the pending metadata update
+        setPendingMetadataUpdate({ data, profile: newProfile });
+
+        console.log('Authentication initiated. Metadata update will resume once authenticated.');
+      } catch (error) {
+        console.error('Error during profile registration:', error);
+        setRegistrationLoading(false);
+        throw error;
+      }
+    },
+    [address, createProfileExecute, login]
+  );
 
   const formik: any = useFormik({
     initialValues: initialValues ?? {
@@ -82,7 +261,7 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({ onSuccess, onCance
         if (mode === 'register') {
           await registerProfile(values);
         } else if (mode === 'update') {
-          await updateProfileMetadata(values, selectedProfile as Profile);
+          await updateProfileMetadata(values);
         }
       } catch (error) {
         console.error('Error registering profile', error);
@@ -96,7 +275,6 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({ onSuccess, onCance
 
   const profileImageInputRef = useRef<HTMLInputElement>(null);
   const backgroundImageInputRef = useRef<HTMLInputElement>(null);
-
   const [profileImagePreview, setProfileImagePreview] = useState<string | null>(null);
   const [backgroundImagePreview, setBackgroundImagePreview] = useState<string | null>(null);
 
@@ -120,6 +298,24 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({ onSuccess, onCance
     setErrorMessage('')
     setIsSubmitting(false);
   }
+
+  // Handle session changes and resume pending metadata updates
+  useEffect(() => {
+    // Resume metadata update if pending and authenticated
+    if (
+      sessionData?.authenticated &&
+      sessionData.type === SessionType.WithProfile &&
+      pendingMetadataUpdate
+    ) {
+      console.log('Session is active. Resuming metadata update...');
+      updateProfileMetadata(pendingMetadataUpdate.data);
+      setPendingMetadataUpdate(null); // Clear the pending update
+    }
+  }, [
+    sessionData,
+    pendingMetadataUpdate,
+    updateProfileMetadata,
+  ]);
 
   return (
     <Box sx={{ p: 2 }}>
@@ -147,7 +343,7 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({ onSuccess, onCance
               backgroundImagePreview ?? (
                 initialValues?.backgroundImage ?
                   `https://ipfs.io/ipfs/${initialValues?.backgroundImage?.replaceAll?.('ipfs://', '')}` :
-                  `https://picsum.photos/seed/${mode === 'update' && selectedProfile ? selectedProfile?.id : 'new'}/1920/820`
+                  `https://picsum.photos/seed/${mode === 'update' && sessionData?.authenticated ? sessionData?.profile?.id : 'new'}/1920/820`
               )
             }
             onClick={() => backgroundImageInputRef.current?.click()}
@@ -177,7 +373,7 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({ onSuccess, onCance
               profileImagePreview ?? (
                 initialValues?.profileImage ?
                   `https://ipfs.io/ipfs/${initialValues?.profileImage?.replaceAll?.('ipfs://', '')}` :
-                  `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${mode === 'update' && selectedProfile ? selectedProfile?.id : 'new'}`
+                  `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${mode === 'update' && sessionData?.authenticated ? sessionData?.profile?.id : 'new'}`
               )
             }
             alt=""

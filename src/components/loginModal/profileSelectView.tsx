@@ -1,5 +1,5 @@
 // REACT IMPORTS
-import React from 'react';
+import React, { useCallback } from 'react';
 
 // MUI IMPORTS
 import {
@@ -16,12 +16,13 @@ import { useAccount } from 'wagmi';
 // UTILS IMPORTS
 import { truncateAddress } from '@src/utils/wallet';
 import { UserItem } from '../user-item';
-import { useAuth } from '../../hooks/use-auth';
+import { Profile, ProfileSession, useLogin, useSession } from '@lens-protocol/react-web';
+// @ts-ignore
+import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
 
 // ----------------------------------------------------------------------
 
 interface ProfileSelectionProps {
-  onProfileSelect: (profile: any) => void;
   onRegisterNewProfile: () => void;
   activeConnector: any;
   onDisconnect: () => void;
@@ -32,24 +33,67 @@ interface ProfileSelectionProps {
 // ----------------------------------------------------------------------
 
 export const ProfileSelectView: React.FC<ProfileSelectionProps> = ({
-                                                                     onProfileSelect,
                                                                      onRegisterNewProfile,
                                                                      activeConnector,
                                                                      onDisconnect,
                                                                      onClose,
                                                                      profiles,
                                                                    }) => {
-  const { address } = useAccount();
-  const { selectedProfile, logout } = useAuth();
+  const { data: sessionData, error: sessionError, loading: sessionLoading }: ReadResult<ProfileSession> = useSession();
+  const { execute: loginExecute, loading: loginLoading } = useLogin();
+  const { address, isConnecting, isConnected, status, connector } = useAccount();
+
+  console.log('sessionData', sessionData);
+  console.log('sessionError', sessionError);
+  console.log('sessionLoading', sessionLoading);
+  console.log('loginLoading', loginLoading);
+  console.log('isConnecting', isConnecting);
+  console.log('isConnected', isConnected);
+  console.log('status', status);
+  console.log('connector', connector);
+
+  const login = useCallback(
+    async (profile?: Profile) => {
+      const profileToUse = profile;
+
+      if (!profileToUse) {
+        console.warn('No profile selected or provided, please select one.');
+        return;
+      }
+
+      if (!address) {
+        console.error('Wallet address not available.');
+        return;
+      }
+
+      try {
+        console.log('loginExecute')
+        console.log(address)
+        console.log(profileToUse)
+
+        const result = await loginExecute({
+          address,
+          profileId: profileToUse.id,
+        } as any);
+
+        if (result.isFailure()) {
+          console.error('Error during login:', result.error.message);
+        } else {
+          console.log('Login initiated.');
+        }
+      } catch (err) {
+        console.error('Error in login:', err);
+      }
+    },
+    [loginExecute, address]
+  );
 
   const handleProfileClick = async (profile: any) => {
-    if (selectedProfile?.id === profile.id) {
+    if (sessionData?.authenticated && (sessionData?.profile?.id === profile.id)) {
       onClose?.()
-    } else if (selectedProfile) {
-      await logout()
-      onProfileSelect(profile)
     } else {
-      onProfileSelect(profile)
+      await login(profile);
+      onClose();
     }
   }
 

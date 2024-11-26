@@ -23,7 +23,7 @@ import {
   PublicationReactionType,
   hasReacted,
   useReactionToggle,
-  useBookmarkToggle
+  useBookmarkToggle, ProfileSession, useSession,
 } from '@lens-protocol/react-web';
 import { useHidePublication } from '@lens-protocol/react';
 
@@ -44,7 +44,6 @@ import { m } from 'framer-motion';
 // LOCAL IMPORTS
 import { paths } from '@src/routes/paths.ts';
 import { useRouter } from '@src/routes/hooks';
-import { useAuth } from '@src/hooks/use-auth.ts';
 import { varFade } from '@src/components/animate';
 import { LeaveTipCard } from '@src/components/leave-tip-card.tsx';
 import PostCommentList from '@src/sections/publication/publication-comments-list.tsx';
@@ -52,6 +51,8 @@ import PublicationCommentForm from '@src/sections/publication/publication-detail
 import { SubscribeToUnlockCard } from '@src/components/subscribe-to-unlock-card.tsx';
 import { ReportPublicationModal } from '@src/components/report-publication-modal.tsx';
 import Popover from '@mui/material/Popover';
+// @ts-ignore
+import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
 
 // ----------------------------------------------------------------------
 
@@ -74,7 +75,7 @@ export default function PublicationDetailMain({ post, handleSubscribe, hasAccess
   // LOCAL HOOKS
   const router = useRouter();
   const theme = useTheme();
-  const { selectedProfile } = useAuth();
+  const { data: sessionData }: ReadResult<ProfileSession> = useSession();
   // LENS HOOKS
   const { execute: toggle, loading: loadingLike} = useReactionToggle();
   const { execute: hide, loading: loadingHide } = useHidePublication();
@@ -203,7 +204,7 @@ export default function PublicationDetailMain({ post, handleSubscribe, hasAccess
               }}
             >
               <Stack direction="column" spacing={0} justifyContent="center">
-                {post?.by?.ownedBy?.address === selectedProfile?.ownedBy?.address && (
+                {post?.by?.ownedBy?.address === sessionData?.profile?.ownedBy?.address && (
                   <MenuItem onClick={() => { setOpenConfirmModal(true); setAnchorEl(null); }}>Hide</MenuItem>
                 )}
                 <MenuItem onClick={() => { setOpenReportModal(true); setAnchorEl(null); }}>Report</MenuItem>
@@ -355,7 +356,7 @@ export default function PublicationDetailMain({ post, handleSubscribe, hasAccess
                 }}
               >
                 <Divider sx={{ my: 3 }} />
-                {selectedProfile ? (
+                {sessionData?.authenticated ? (
                   <PublicationCommentForm commentOn={post?.id} />
                 ) : (
                   <Typography

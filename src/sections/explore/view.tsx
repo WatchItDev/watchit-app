@@ -9,6 +9,7 @@ import {
   usePublications,
   PublicationType,
   appId,
+  // ProfileSession, useSession,
   // useRecommendedProfiles,
   // profileId,
   // useBookmarks,
@@ -25,7 +26,7 @@ import CarouselTopicsTrending from "@src/components/carousel/variants/carousel-t
 import CarouselTopTitles from "@src/components/carousel/variants/carousel-top-titles.tsx";
 import CarouselCreators from "@src/components/carousel/variants/carousel-creators.tsx";
 import CarouselLatestContent from "@src/components/carousel/variants/carousel-latest-content.tsx";
-// import { useAuth } from '@src/hooks/use-auth.ts';
+// import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
 
 // ----------------------------------------------------------------------
 export type TrendingTopicsType = {
@@ -36,7 +37,7 @@ export type TrendingTopicsType = {
 }
 
 export default function ExploreView() {
-  // const { selectedProfile } = useAuth();
+  // const { data: sessionData }: ReadResult<ProfileSession> = useSession();
   const { data, loading }: any = usePublications({
     where: {
       publicationTypes: [PublicationType.Post],
@@ -47,7 +48,7 @@ export default function ExploreView() {
     }
   });
   // const { data: recommendedProfiles, loading: recommendedProfilesLoading, error: recommendedProfilesError } = useRecommendedProfiles({
-  //   for: selectedProfile?.id ?? profileId('0x043b')
+  //   for: sessionData?.profile?.id ?? profileId('0x043b')
   // });
   // const { data: bookmark, loading: bookmarkLoading, error: bookmarkError } = useBookmarks();
   // const { data: exploreProfiles, error: exploreProfilesError, loading: exploreProfilesLoading } = useExploreProfiles({
@@ -62,7 +63,7 @@ export default function ExploreView() {
   // });
 
   // console.log('hello recommended profiles')
-  // console.log(selectedProfile?.id ?? profileId('0x043b'))
+  // console.log(sessionData?.profile?.id ?? profileId('0x043b'))
   // console.log(recommendedProfiles)
   // console.log(recommendedProfilesLoading)
   // console.log(recommendedProfilesError)

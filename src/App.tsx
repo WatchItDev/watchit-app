@@ -38,7 +38,7 @@ import ProgressBar from '@src/components/progress-bar';
 import MotionLazy from '@src/components/animate/motion-lazy';
 import SnackbarProvider from '@src/components/snackbar/snackbar-provider';
 import { SettingsProvider, SettingsDrawer } from '@src/components/settings';
-import { AuthProvider } from '@src/auth/context/lens';
+import { AuthProvider } from '@src/auth/context/web3Auth';
 import {ResponsiveOverlay} from "@src/components/responsive-overlay";
 
 import { Buffer } from 'buffer';

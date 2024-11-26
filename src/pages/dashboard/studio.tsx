@@ -1,9 +1,15 @@
 import { Helmet } from 'react-helmet-async';
 import { useEffect, useState } from 'react';
-import { Amount, OpenActionType, useCreatePost, useCurrencies } from '@lens-protocol/react-web';
+import {
+  Amount,
+  OpenActionType,
+  ProfileSession,
+  useCreatePost,
+  useCurrencies,
+  useSession,
+} from '@lens-protocol/react-web';
 import { AnyMedia, MetadataAttributeType, module, ModuleOptions, ModuleSchemaId, video } from '@lens-protocol/metadata';
 import axios from 'axios';
-import { useAuth } from '../../hooks/use-auth';
 import uuidv4 from '../../utils/uuidv4';
 import { LoadingScreen } from '../../components/loading-screen';
 import { encodeData } from '@lens-protocol/react';
@@ -12,6 +18,8 @@ import Skeleton from '@mui/material/Skeleton';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+// @ts-ignore
+import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
 
 // Metadatos de la película en una constante
 const movieMetadata = {
@@ -86,7 +94,7 @@ const uploadToPinata = async (metadata: any) => {
 export default function OverviewFilePage() {
   // @ts-ignore eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [open, setOpen] = useState(false);
-  const { selectedProfile: activeProfile } = useAuth(); // Obtener el perfil activo
+  const { data: sessionData }: ReadResult<ProfileSession> = useSession();
 
   // @ts-ignore eslint-disable-next-line @typescript-eslint/no-unused-vars
   const handleOpen = () => setOpen(true);
@@ -99,13 +107,13 @@ export default function OverviewFilePage() {
   console.log(data)
 
   console.log('activeProfile')
-  console.log(activeProfile)
+  console.log(sessionData?.profile)
 
   // @ts-ignore eslint-disable-next-line @typescript-eslint/no-unused-vars
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const handleSubmit = async () => {
     try {
-      if (!activeProfile) {
+      if (!sessionData?.authenticated) {
         console.error('No active profile found');
         return;
       }
@@ -179,7 +187,7 @@ export default function OverviewFilePage() {
 
       const calldata = encodeData(
         [{ name: 'tipReceiver', type: 'address' }],
-        [activeProfile.ownedBy.address], // Address of tip receiver
+        [sessionData?.profile.ownedBy.address], // Address of tip receiver
       );
 
       // Crear el post en Lens con el Collect Action Module
@@ -189,7 +197,7 @@ export default function OverviewFilePage() {
           {
             type: OpenActionType.SIMPLE_COLLECT,
             amount,
-            recipient: activeProfile.ownedBy.address,
+            recipient: sessionData?.profile?.ownedBy.address,
             followerOnly: false,
             referralFee: 0,
           },

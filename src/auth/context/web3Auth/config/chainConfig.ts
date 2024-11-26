@@ -1,4 +1,5 @@
-import { CHAIN_NAMESPACES, CustomChainConfig } from "@web3auth/base";
+// import { CustomChainConfig } from "@web3auth/base";
+import { CHAIN_NAMESPACES } from "@web3auth/base";
 // import { polygonAmoy } from "wagmi/chains";
 
 export const chain = {

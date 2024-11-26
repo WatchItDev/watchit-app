@@ -8,10 +8,13 @@ import { ethers } from 'ethers';
 import { encodeFunctionData } from 'viem';
 
 // LOCAL IMPORTS
-import { useAuth } from '@src/hooks/use-auth.ts';
+import { useWeb3Auth } from '@src/hooks/use-web3-auth.ts';
 import MMCAbi from '@src/config/abi/MMC.json';
 import AgreementPortalAbi from '@src/config/abi/AgreementPortal.json';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
+// @ts-ignore
+import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
+import { ProfileSession, useSession } from '@lens-protocol/react-web';
 
 // ----------------------------------------------------------------------
 
@@ -47,12 +50,12 @@ export const useSubscribe = (): UseSubscribeHook => {
   const [data, setData] = useState<SubscribeData>();
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<SubscribeError | null>(null);
-  const { web3AuthInstance, selectedProfile } = useAuth();
+  const { data: sessionData }: ReadResult<ProfileSession> = useSession();
+  const { web3AuthInstance } = useWeb3Auth();
 
   /**
    * Approves MMC tokens for the Agreement Portal.
    * @param amountInWei The amount of MMC tokens to approve (in Wei).
-   * @param spenderAddress The address of the spender (Agreement Portal).
    * @returns The encoded function data for the approve call.
    */
   const approveMMC = (
@@ -109,7 +112,7 @@ export const useSubscribe = (): UseSubscribeHook => {
       const bundlerClient = accountAbstractionProvider.bundlerClient;
       const smartAccount = accountAbstractionProvider.smartAccount;
 
-      if (!selectedProfile) {
+      if (!sessionData?.authenticated) {
         setError({ message: 'Please login to subscribe' });
         setLoading(false);
         return;
@@ -122,7 +125,7 @@ export const useSubscribe = (): UseSubscribeHook => {
       }
 
       const approvalAmountInWei = ethers.parseUnits(amount, 18); // Convert amount to BigInt (in Wei)
-      const parties = [selectedProfile.ownedBy.address]; // The parties involved in the agreement (e.g., the user's address)
+      const parties = [sessionData?.profile?.ownedBy.address]; // The parties involved in the agreement (e.g., the user's address)
       const payload = '0x'; // Additional payload data if needed
 
       // Prepare the approve MMC data

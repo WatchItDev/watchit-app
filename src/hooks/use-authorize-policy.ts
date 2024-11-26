@@ -7,16 +7,14 @@ import { useState } from 'react';
 import { encodeFunctionData } from 'viem';
 
 // LOCAL IMPORTS
-import { useAuth } from '@src/hooks/use-auth.ts';
+import { useWeb3Auth } from '@src/hooks/use-web3-auth.ts';
 import RightsPolicyAuthorizerAbi from '@src/config/abi/RightsPolicyAuthorizer.json';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
+// @ts-ignore
+import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
+import { ProfileSession, useSession } from '@lens-protocol/react-web';
 
 // ----------------------------------------------------------------------
-
-// Define the shape of the subscription data
-interface SubscribeData {
-  receipt?: any; // The subscribe receipt, to get the transaction hash use receipt.transactionHash
-}
 
 // Define the shape of the error object
 interface AuthorizeError {
@@ -45,7 +43,8 @@ export const useAuthorizePolicy = (): useAuthorizePolicyHook => {
   const [data, setData] = useState();
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<AuthorizeError | null>(null);
-  const { web3AuthInstance, selectedProfile } = useAuth();
+  const { data: sessionData }: ReadResult<ProfileSession> = useSession();
+  const { web3AuthInstance } = useWeb3Auth();
 
   /**
    * Creates the flash policy agreement data.
@@ -76,7 +75,7 @@ export const useAuthorizePolicy = (): useAuthorizePolicyHook => {
       const bundlerClient = accountAbstractionProvider.bundlerClient;
       const smartAccount = accountAbstractionProvider.smartAccount;
 
-      if (!selectedProfile) {
+      if (!sessionData?.authenticated) {
         setError({ message: 'Please login to authorize policy' });
         setLoading(false);
         return;

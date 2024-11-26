@@ -14,13 +14,14 @@ import ListItemText from '@mui/material/ListItemText';
 
 // LENS IMPORTS
 import { Profile } from '@lens-protocol/api-bindings';
-import { useFollow, useUnfollow } from '@lens-protocol/react-web';
+import { ProfileSession, useFollow, useSession, useUnfollow } from '@lens-protocol/react-web';
+// @ts-ignore
+import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
 
 // LOCAL IMPORTS
 import Image from '../image';
 import { paths } from '../../routes/paths';
 import { useRouter } from '@src/routes/hooks';
-import { useAuth } from '../../hooks/use-auth';
 
 // ----------------------------------------------------------------------
 
@@ -35,7 +36,7 @@ interface FollowerItemProps {
 // ----------------------------------------------------------------------
 
 export const UserItem = ({ profile, sx, onClick, onActionFinished, canFollow = true }: FollowerItemProps) => {
-  const { selectedProfile } = useAuth();
+  const { data: sessionData }: ReadResult<ProfileSession> = useSession();
   const [isFollowed, setIsFollowed] = useState(false);
   // State to handle error and success messages
   const [errorMessage, setErrorMessage] = useState('');
@@ -62,7 +63,7 @@ export const UserItem = ({ profile, sx, onClick, onActionFinished, canFollow = t
 
   useEffect(() => {
     setIsFollowed(!!profile?.operations?.isFollowedByMe?.value)
-  }, [selectedProfile, profile]);
+  }, [sessionData, profile]);
 
   // Function to handle following a profile
   const handleFollow = async () => {
@@ -216,7 +217,7 @@ export const UserItem = ({ profile, sx, onClick, onActionFinished, canFollow = t
               primary={profile?.handle?.localName ?? ''}
               secondary={
                 <>
-                  {profile?.id !== selectedProfile?.id ? profile?.id : 'This is you!'}
+                  {profile?.id !== sessionData?.profile?.id ? profile?.id : 'This is you!'}
                 </>
               }
               primaryTypographyProps={{
@@ -251,7 +252,7 @@ export const UserItem = ({ profile, sx, onClick, onActionFinished, canFollow = t
                     handleFollow();
                   }
                 }}
-                disabled={followLoading || unfollowLoading || !selectedProfile || profile?.id === selectedProfile?.id}
+                disabled={followLoading || unfollowLoading || !sessionData?.authenticated || profile?.id === sessionData?.profile?.id}
                 loading={followLoading || unfollowLoading}
               >
                 {isFollowed ? "Unfollow" : "Follow"}

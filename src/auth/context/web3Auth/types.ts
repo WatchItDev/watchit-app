@@ -1,6 +1,4 @@
 // types.ts
-
-import { Profile } from '@lens-protocol/react-web';
 import React from 'react';
 import { Web3Auth } from '@web3auth/modal/dist/types/modalManager';
 
@@ -25,16 +23,6 @@ export interface ProfileData {
  * Interface for the authentication context.
  */
 export interface AuthContextProps {
-  authenticated: boolean;
-  loading: boolean;
-  login: (profile?: Profile) => Promise<void>;
-  logout: () => Promise<void>;
-  profiles: Profile[];
-  selectedProfile?: Profile;
-  registerProfile: (data: ProfileData) => Promise<void>;
-  selectProfile: (profile: Profile) => void;
-  updateProfileMetadata: (data: ProfileData, profile: Profile) => Promise<void>;
-  refetchProfiles: () => Promise<void>;
   web3AuthInstance: Web3Auth
 }
 

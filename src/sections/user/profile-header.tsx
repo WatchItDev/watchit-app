@@ -18,7 +18,7 @@ import { Profile } from '@lens-protocol/api-bindings';
 import CircularProgress from '@mui/material/CircularProgress';
 
 // LENS IMPORTS
-import { appId, PublicationType, usePublications } from '@lens-protocol/react-web';
+import { appId, ProfileSession, PublicationType, usePublications, useSession } from '@lens-protocol/react-web';
 
 // VIEM IMPORTS
 import { Address } from 'viem';
@@ -29,7 +29,6 @@ import { IconDots, IconRosetteDiscountCheckFilled } from '@tabler/icons-react';
 // LOCAL IMPORTS
 import ProfileCover from './profile-cover';
 import Iconify from '@src/components/iconify';
-import { useAuth } from '@src/hooks/use-auth';
 import { truncateAddress } from '@src/utils/wallet';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 import { UpdateModal } from '@src/components/updateModal';
@@ -40,6 +39,8 @@ import { useIsPolicyAuthorized } from '@src/hooks/use-is-policy-authorized.ts';
 import { SubscribeProfileModal } from '@src/components/subscribe-profile-modal.tsx';
 import { ActivateSubscriptionProfileModal } from '@src/components/activate-subscription-profile-modal.tsx';
 import FollowUnfollowButton from '@src/components/follow-unfollow-button.tsx';
+// @ts-ignore
+import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
 
 // ----------------------------------------------------------------------
 
@@ -129,7 +130,7 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
   });
 
   const theme = useTheme();
-  const { selectedProfile } = useAuth();
+  const { data: sessionData }: ReadResult<ProfileSession> = useSession();
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const [menuAnchorEl, setMenuAnchorEl] = useState<HTMLButtonElement | null>(null);
   const [openReportModal, setOpenReportModal] = useState(false);
@@ -370,7 +371,7 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
                     <CircularProgress size={24} sx={{ color: '#fff' }} />
                   </Box>
                 )}
-                {isAuthorized && !authorizedLoading && profile?.id !== selectedProfile?.id && (
+                {isAuthorized && !authorizedLoading && profile?.id !== sessionData?.profile?.id && (
                   <LoadingButton
                     title={hasAccess ? 'You are subscribed!' : 'Subscribe'}
                     variant={hasAccess ? 'outlined' : 'contained'}
@@ -378,22 +379,14 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
                       minWidth: 120,
                       backgroundColor: hasAccess ? '#24262A' : '#fff',
                     }}
-                    onClick={
-                      !hasAccess
-                        ? () => {
-                            setOpenSubscribeModal(true);
-                          }
-                        : () => {}
-                    }
-                    disabled={
-                      accessLoading || hasAccess || !selectedProfile || accessFetchingLoading
-                    }
+                    onClick={!hasAccess ? () => { setOpenSubscribeModal(true) } : () => {}}
+                    disabled={accessLoading || hasAccess || !sessionData?.profile || accessFetchingLoading}
                     loading={accessLoading || accessFetchingLoading}
                   >
                     {hasAccess ? 'You are subscribed!' : 'Subscribe'}
                   </LoadingButton>
                 )}
-                {!isAuthorized && !authorizedLoading && selectedProfile?.id === profile?.id && (
+                {!isAuthorized && !authorizedLoading && sessionData?.profile?.id === profile?.id && (
                   <LoadingButton
                     title={'Configure subscription'}
                     variant={'contained'}
@@ -406,7 +399,9 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
                     Configure subscription
                   </LoadingButton>
                 )}
-                {profile?.id !== selectedProfile?.id && <FollowUnfollowButton profile={profile} />}
+                {profile?.id !== sessionData?.profile?.id && (
+                  <FollowUnfollowButton profile={profile} />
+                )}
                 <Button
                   onMouseEnter={handleOpenShare}
                   onMouseLeave={handleCloseShare}
@@ -444,7 +439,7 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
                   <Typography>Share Watchit on your social</Typography>
                 </Popover>
 
-                {selectedProfile && profile?.id === selectedProfile?.id && (
+                {sessionData?.profile && profile?.id === sessionData?.profile?.id && (
                   <>
                     <Button
                       onMouseEnter={handleOpen}
@@ -574,8 +569,8 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
                 </Popover>
               </Stack>
               <Stack direction="row" sx={{ width: '100%', mb: 5, gap: 2 }}>
-                {!selectedProfile && (
-                  <Typography variant="body2" color="error" sx={{ opacity: 0.5 }}>
+                {!sessionData?.authenticated && (
+                  <Typography variant="body2" color="error" sx={{opacity: 0.5}}>
                     Please login to perform actions
                   </Typography>
                 )}

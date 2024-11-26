@@ -2,7 +2,7 @@ import { useState } from 'react';
 import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
 // import Header from '@src/layouts/dashboard/header';
-import { useCreatePost } from '@lens-protocol/react-web';
+import { ProfileSession, useCreatePost, useSession } from '@lens-protocol/react-web';
 // import { MetadataAttributeType } from '@lens-protocol/metadata';
 import { createHelia } from 'helia';
 import { unixfs } from '@helia/unixfs';
@@ -12,7 +12,8 @@ import DistributionForm from './publication-new-wizard-distribution';
 // import ReviewFinalizeForm from './movie-new-wizard-summary';
 import PublicationNewWizardSteps from './publication-new-wizard-steps.tsx';
 import { useSettingsContext } from '../../components/settings';
-import { useAuth } from '../../hooks/use-auth';
+// @ts-ignore
+import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
 
 
 const steps = ['Movie Information', 'Media Assets & Technical Details', 'Distribution & Rights'];
@@ -21,7 +22,7 @@ export default function PublicationNewWizard() {
   const [activeStep, setActiveStep] = useState(0);
   const [formData, setFormData] = useState<any>({});
   const settings = useSettingsContext();
-  const { selectedProfile: activeProfile } = useAuth();
+  const { data: sessionData }: ReadResult<ProfileSession> = useSession();
   const { execute: createPost } = useCreatePost();
 
   const handleNext = () => {
@@ -65,7 +66,7 @@ export default function PublicationNewWizard() {
   };
 
   const submitMoviePost = async () => {
-    if (!activeProfile) {
+    if (!sessionData?.profile) {
       console.error('No active profile found');
       return;
     }

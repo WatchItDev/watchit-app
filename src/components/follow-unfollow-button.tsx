@@ -8,10 +8,11 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import { Profile } from '@lens-protocol/api-bindings';
 
 // LENS IMPORTS
-import { useFollow, useUnfollow } from '@lens-protocol/react-web';
+import { ProfileSession, useFollow, useSession, useUnfollow } from '@lens-protocol/react-web';
 
 // LOCAL IMPORTS
-import { useAuth } from '@src/hooks/use-auth';
+// @ts-ignore
+import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
 
 // ----------------------------------------------------------------------
 
@@ -22,7 +23,7 @@ interface FollowUnfollowButtonProps {
 // ----------------------------------------------------------------------
 
 const FollowUnfollowButton = ({ profile }: PropsWithChildren<FollowUnfollowButtonProps>) => {
-  const { selectedProfile } = useAuth();
+  const { data: sessionData }: ReadResult<ProfileSession> = useSession();
   const [isFollowed, setIsFollowed] = useState(false);
 
   // State to handle error and success messages
@@ -41,7 +42,7 @@ const FollowUnfollowButton = ({ profile }: PropsWithChildren<FollowUnfollowButto
 
   useEffect(() => {
     setIsFollowed(!!profile?.operations?.isFollowedByMe?.value);
-  }, [selectedProfile, profile]);
+  }, [sessionData, profile]);
 
   // Function to handle following a profile
   const handleFollow = async () => {
@@ -152,7 +153,7 @@ const FollowUnfollowButton = ({ profile }: PropsWithChildren<FollowUnfollowButto
           backgroundColor: isFollowed ? '#24262A' : '#fff',
         }}
         onClick={isFollowed ? handleUnfollow : handleFollow}
-        disabled={followLoading || unfollowLoading || !selectedProfile || profile?.id === selectedProfile?.id}
+        disabled={followLoading || unfollowLoading || !sessionData?.authenticated || profile?.id === sessionData?.profile?.id}
         loading={followLoading || unfollowLoading}
       >
         {isFollowed ? 'Unfollow' : 'Follow'}

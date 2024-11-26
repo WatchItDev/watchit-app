@@ -6,11 +6,13 @@ import { Modal, Box, Fade, Backdrop } from '@mui/material';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 
+// LENS IMPORTS
+import { useLazyProfilesManaged, useLogout, useSession } from '@lens-protocol/react-web';
+
 // WAGMI IMPORTS
 import { useAccount, useConnect, useDisconnect } from 'wagmi';
 
 // LOCAL IMPORTS
-import { useAuth } from '@src/hooks/use-auth';
 import { ProfileSelectView } from '@src/components/loginModal/profileSelectView';
 import { ProfileFormView } from '@src/components/loginModal/profileFormView';
 import { WatchitLoader } from '../watchit-loader';
@@ -25,19 +27,28 @@ interface LoginModalProps {
 // ----------------------------------------------------------------------
 
 export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
-  const { authenticated, loading: authLoading, login, logout, profiles, selectProfile, refetchProfiles } = useAuth();
-  const { address, isConnected, connector } = useAccount();
-  const { connect, connectors, error } = useConnect();
-  const { disconnect } = useDisconnect();
-
   const [loading, setLoading] = useState(true);
   const [activeConnector, setActiveConnector] = useState<any>(null);
   const [view, setView] = useState<'wallet' | 'profile' | 'create'>('wallet');
   const [successMessage, setSuccessMessage] = useState('');
 
-  const isLoading = (loading || authLoading) && view !== 'create';
+  const { data: sessionData } = useSession();
+  const { address, isConnected, connector } = useAccount();
+  const { connect, connectors, error } = useConnect();
+  const { execute: logoutExecute } = useLogout();
+  const { disconnect } = useDisconnect();
 
-  const onLogin = useCallback(async () => {
+  // Fetch profiles associated with the connected wallet
+  const {
+    execute: fetchProfiles,
+    data: profiles,
+    loading: profilesLoading,
+    called: profilesCalled,
+  } = useLazyProfilesManaged();
+
+  const isLoading = (loading || profilesLoading) && view !== 'create';
+
+  const connectWeb3AuthWallet = useCallback(async () => {
     if (connectors.length > 0 && !isConnected) {
       const web3AuthConnector = connectors.find((el) => el.id === 'web3auth');
       if (web3AuthConnector) {
@@ -46,11 +57,36 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
     }
   }, [connect, connectors, isConnected]);
 
+  // Fetch profiles when the wallet address changes
+  useEffect(() => {
+    if (address && !profilesLoading && !profilesCalled) {
+      fetchProfiles({
+        for: address,
+        includeOwned: true,
+      });
+    }
+  }, [address, fetchProfiles, profilesLoading, profilesCalled]);
+
+  const refetchProfiles = useCallback(async () => {
+    if (!address) {
+      console.error('Wallet address not available.');
+      return;
+    }
+    try {
+      await fetchProfiles({
+        for: address,
+        includeOwned: true,
+      });
+    } catch (error) {
+      console.error('Error re-fetching profiles:', error);
+    }
+  }, [address, fetchProfiles]);
+
   useEffect(() => {
     if (open && view === 'wallet') {
-      onLogin();
+      connectWeb3AuthWallet();
     }
-  }, [open, onLogin, view]);
+  }, [open, connectWeb3AuthWallet, view]);
 
   useEffect(() => {
     if (isConnected && connector) {
@@ -77,19 +113,13 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
     }
   }, [error]);
 
-  const handleProfileSelect = useCallback(async (profile: any) => {
-    await login(profile);
-    selectProfile(profile);
-    onClose();
-  }, [login, onClose, selectProfile]);
-
   const handleProfileCreateSuccess = () => {
     setSuccessMessage('Profile created successfully.');
     setView('profile');
   };
 
   const handleDisconnectWallet = async () => {
-    if (authenticated) await logout();
+    if (sessionData?.authenticated) await logoutExecute();
     disconnect();
     setView('wallet');
   };
@@ -126,12 +156,11 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
               <>
                 {view === 'profile' && isConnected && (
                   <ProfileSelectView
-                    onProfileSelect={handleProfileSelect}
                     activeConnector={activeConnector}
                     onRegisterNewProfile={() => setView('create')}
                     onDisconnect={handleDisconnectWallet}
                     onClose={onClose}
-                    profiles={profiles}
+                    profiles={profiles ?? []}
                   />
                 )}
 

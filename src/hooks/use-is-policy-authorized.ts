@@ -5,9 +5,11 @@ import { useReadContract } from 'wagmi';
 import { Address } from 'viem';
 
 // LOCAL IMPORTS
-import { useAuth } from '@src/hooks/use-auth.ts';
 import RightsPolicyAuthorizerAbi from '@src/config/abi/RightsPolicyAuthorizer.json';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
+// @ts-ignore
+import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
+import { ProfileSession, useSession } from '@lens-protocol/react-web';
 
 // ----------------------------------------------------------------------
 
@@ -36,8 +38,8 @@ interface UseIsPolicyAuthorizedHook {
  * @returns An object containing the access data, loading state, error, and a refetch function.
  */
 export const useIsPolicyAuthorized = (policy: Address, holder?: Address): UseIsPolicyAuthorizedHook => {
-  const { selectedProfile } = useAuth();
-  const userAddress = selectedProfile?.ownedBy?.address as Address | undefined;
+  const { data: sessionData }: ReadResult<ProfileSession> = useSession();
+  const userAddress = sessionData?.profile?.ownedBy?.address as Address | undefined;
 
   // Use the useReadContract hook to call the smart contract function
   const {

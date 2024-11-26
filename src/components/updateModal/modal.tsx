@@ -11,11 +11,11 @@ import {
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 
-// HOOKS IMPORTS
-import { useAuth } from '@src/hooks/use-auth';
-
 // LOCAL IMPORTS
 import { ProfileFormView } from '@src/components/loginModal/profileFormView';
+// @ts-ignore
+import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
+import { ProfileSession, useSession } from '@lens-protocol/react-web';
 
 // ----------------------------------------------------------------------
 
@@ -27,9 +27,7 @@ interface UpdateModalProps {
 // ----------------------------------------------------------------------
 
 export const UpdateModal: React.FC<UpdateModalProps> = ({ open, onClose }) => {
-  // hooks
-  const { selectedProfile, loading} = useAuth();
-
+  const { data: sessionData, loading }: ReadResult<ProfileSession> = useSession();
   // states
   const [successMessage, setSuccessMessage] = useState('');
 
@@ -70,11 +68,11 @@ export const UpdateModal: React.FC<UpdateModalProps> = ({ open, onClose }) => {
               onCancel={onClose}
               mode="update"
               initialValues={{
-                name: selectedProfile?.metadata?.displayName,
-                username: selectedProfile?.handle?.localName,
-                bio: selectedProfile?.metadata?.bio,
-                profileImage: (selectedProfile?.metadata?.picture as any)?.raw?.uri,
-                backgroundImage: (selectedProfile?.metadata?.coverPicture as any)?.raw?.uri,
+                name: sessionData?.profile?.metadata?.displayName,
+                username: sessionData?.profile?.handle?.localName,
+                bio: sessionData?.profile?.metadata?.bio,
+                profileImage: (sessionData?.profile?.metadata?.picture as any)?.raw?.uri,
+                backgroundImage: (sessionData?.profile?.metadata?.coverPicture as any)?.raw?.uri,
                 socialLinks: {
                   twitter: '',
                   instagram: '',

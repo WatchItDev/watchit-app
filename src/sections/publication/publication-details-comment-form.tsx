@@ -6,7 +6,7 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import axios from 'axios';
 
 // Import from Lens SDK
-import { useCreateComment } from '@lens-protocol/react-web';
+import { ProfileSession, useCreateComment, useSession } from '@lens-protocol/react-web';
 import { textOnly } from '@lens-protocol/metadata';
 
 // Custom components
@@ -16,7 +16,8 @@ import InputBase from '@mui/material/InputBase';
 import InputAdornment from '@mui/material/InputAdornment';
 import { alpha } from '@mui/material/styles';
 import Iconify from '../../components/iconify';
-import { useAuth } from '../../hooks/use-auth';
+// @ts-ignore
+import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
 
 // Define the props types
 type MovieCommentFormProps = {
@@ -45,7 +46,7 @@ const MovieCommentForm = ({ commentOn }: MovieCommentFormProps) => {
 
   // Initialize useCreateComment
   const { execute: createComment } = useCreateComment();
-  const { selectedProfile } = useAuth();
+  const { data: sessionData }: ReadResult<ProfileSession> = useSession();
 
   // Implementation of uploadToIpfs using Pinata
   const uploadToIpfs = async (metadata: any) => {
@@ -141,8 +142,8 @@ const MovieCommentForm = ({ commentOn }: MovieCommentFormProps) => {
       alignItems="center"
     >
       <Avatar
-        src={(selectedProfile?.metadata?.picture as any)?.optimized?.uri ?? `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${selectedProfile?.id}`}
-        alt={selectedProfile?.handle?.localName ?? ''}
+        src={(sessionData?.profile?.metadata?.picture as any)?.optimized?.uri ?? `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${sessionData?.profile?.id}`}
+        alt={sessionData?.profile?.handle?.localName ?? ''}
       />
 
       {/* Usamos Controller para conectar InputBase con react-hook-form */}
