@@ -56,9 +56,9 @@ export const SubscribeProfileModal = ({
   const { data, error, loading, subscribe } = useSubscribe();
 
   const durationOptions = [
-    { value: '7', title: '1 Week' },
-    { value: '15', title: '15 Days' },
-    { value: '30', title: '1 Month' },
+    { value: '7', title: '1 week' },
+    { value: '15', title: '15 days' },
+    { value: '30', title: '1 month' },
   ];
 
   useEffect(() => {
@@ -144,13 +144,12 @@ export const SubscribeProfileModal = ({
   return (
     <>
       <Dialog open={isOpen} onClose={onClose} fullWidth maxWidth="xs">
-        <DialogTitle sx={{ pb: 2 }}>Subscribe to Profile</DialogTitle>
+        <DialogTitle sx={{ pb: 2 }}>Subscribe to profile</DialogTitle>
         <Divider sx={{ mb: 2, borderStyle: 'dashed' }} />
         <DialogContent>
           <Typography
             variant="body2"
             color="textSecondary"
-            textAlign="center"
             sx={{ mb: 3 }}
           >
             Select the duration of your subscription.
@@ -174,7 +173,7 @@ export const SubscribeProfileModal = ({
                     '&:hover': { opacity: 1 },
                   }}
                 >
-                  <Typography variant="body1" fontWeight="bold">
+                  <Typography align={'center'} variant="body1" fontWeight="bold">
                     {option.title}
                   </Typography>
                 </Paper>
