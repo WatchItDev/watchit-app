@@ -3,7 +3,6 @@ import { Helmet } from 'react-helmet-async';
 import { useParams } from '@src/routes/hooks';
 // sections
 import { PublicationDetailsView } from '@src/sections/publication/view';
-import Box from "@mui/material/Box";
 
 // ----------------------------------------------------------------------
 
