@@ -68,7 +68,7 @@ const PosterTopTitles = ({ title, images, id, synopsis }: Poster) => {
       </StackItem>
       <StackItem sx={{
         // maxWidth responsive
-        maxWidth: { xs: '100%', sm: '100%', md: '100%', lg: '40%' },
+        maxWidth: { xs: '100%', sm: '100%', md: '100%', lg: '50%' },
         display: 'flex',
         alignItems: 'center',
         background: 'transparent',
