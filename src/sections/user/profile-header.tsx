@@ -387,7 +387,8 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
                     {hasAccess ? 'You are subscribed!' : 'Subscribe'}
                   </LoadingButton>
                 )}
-                {!isAuthorized && !authorizedLoading && sessionData?.profile?.id === profile?.id && (
+
+                {sessionData?.profile?.id === profile?.id ? (
                   <LoadingButton
                     title={'Configure subscription'}
                     variant={'contained'}
@@ -397,9 +398,12 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
                     }}
                     onClick={() => setIsActivateModalOpen(true)}
                   >
-                    Configure subscription
+                    {!isAuthorized && !authorizedLoading  ? 'Activate subscription': 'Update subscription'}
+
                   </LoadingButton>
-                )}
+                ): <></>}
+
+
                 {profile?.id !== sessionData?.profile?.id && (
                   <FollowUnfollowButton profile={profile} />
                 )}
