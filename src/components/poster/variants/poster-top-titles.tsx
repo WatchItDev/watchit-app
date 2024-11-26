@@ -29,57 +29,78 @@ const PosterTopTitles = ({ title, images, id, synopsis }: Poster) => {
   }
 
   return (
-    <Stack spacing={3} direction={{
-      xs: 'column',
-      lg: 'row'
-    }} sx={{
+    <Stack
+      spacing={3}
+      direction={{
+        xs: 'column',
+        lg: 'row',
+      }}
+      sx={{
         minWidth: '100%',
-      borderRadius: 10,
-      position: 'relative',
-      padding:  {
-        xs: '90px 0px 0px 0px',
-        sm: '0',
-        md: '0',
-        lg: '90px !important',
-      }
-    }}>
-      <Box sx={{
-        borderRadius: '10px',
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100%',
-        opacity: 0.3,
-        backgroundImage: `url('https://wallpaperswide.com/download/star_wars_the_rise_of_skywalker_movie-wallpaper-1600x900.jpg')`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
-        zIndex: 0,
-      }} ></Box>
-      <StackItem sx={{minWidth: '50%', background: 'transparent', padding: 0}}>
-        <Box sx={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}>
-          <Image style={{borderRadius:'10px', display:'flex', alignItems: 'center', maxWidth:'400px'}} alt={title} src={images.vertical} ratio='1/1' />
+        borderRadius: 10,
+        position: 'relative',
+        padding: {
+          xs: '90px 0px 0px 0px',
+          sm: '0',
+          md: '0',
+          lg: '90px !important',
+        },
+      }}
+    >
+      <Box
+        sx={{
+          borderRadius: '10px',
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          opacity: 0.3,
+          backgroundImage: `url('https://wallpaperswide.com/download/star_wars_the_rise_of_skywalker_movie-wallpaper-1600x900.jpg')`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          zIndex: 0,
+        }}
+      ></Box>
+      <StackItem sx={{ minWidth: '50%', background: 'transparent', padding: 0 }}>
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <Image
+            style={{
+              borderRadius: '10px',
+              display: 'flex',
+              alignItems: 'center',
+              maxWidth: '400px',
+            }}
+            alt={title}
+            src={images.vertical}
+            ratio="1/1"
+          />
         </Box>
       </StackItem>
-      <StackItem sx={{
-        // maxWidth responsive
-        maxWidth: { xs: '100%', sm: '100%', md: '100%', lg: '50%' },
-        display: 'flex',
-        alignItems: 'center',
-        background: 'transparent',
-        padding: '0 0 0 10px'}}>
+      <StackItem
+        sx={{
+          // maxWidth responsive
+          maxWidth: { xs: '100%', sm: '100%', md: '100%', lg: '50%' },
+          display: 'flex',
+          alignItems: 'center',
+          background: 'transparent',
+          padding: '0 0 0 10px',
+        }}
+      >
         <Paper
           sx={{
             backgroundColor: 'transparent',
             borderRadius: 2,
             overflow: 'hidden',
             verticalAlign: 'middle',
-            cursor: 'pointer'
+            cursor: 'pointer',
           }}
           onClick={handlePosterClick}
         >
@@ -87,27 +108,44 @@ const PosterTopTitles = ({ title, images, id, synopsis }: Poster) => {
           <CardContent
             sx={{
               width: '100%',
-              padding:'0px 8px 0px 8px !important',
+              padding: '0px 8px 0px 8px !important',
               textAlign: 'left',
               color: 'common.white',
-              marginTop:'10px'
+              marginTop: '10px',
             }}
           >
             {/* Title */}
             <Stack spacing={1} gap={'20px'}>
-              <TextMaxLine  line={2} variant='h3' sx={{mb: 1}}>
+              <TextMaxLine line={2} variant="h3" sx={{ mb: 1 }}>
                 {title}
               </TextMaxLine>
 
-              <Box sx={{display: 'flex', alignItems: 'flex-start'}}>
-                <Stack direction="row" spacing={0} alignItems="center" onClick={() => alert('Clicked') }>
-                  <Typography style={{ marginRight: 5}} variant='caption'>
+              <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
+                <Stack
+                  direction="row"
+                  spacing={0}
+                  alignItems="center"
+                  onClick={() => alert('Clicked')}
+                >
+                  <Typography style={{ marginRight: 5 }} variant="caption">
                     by
                   </Typography>
-                  <Typography style={{ gap:4, display: 'flex', alignItems: 'center', backgroundColor: 'rgba(0,0,0,.9)', padding: '4px 10px', borderRadius: 5}} variant='caption'>
-                    <Image ratio={'1/1'} style={{width: '20px', height: '20px', borderRadius: '50%'}} src={images.vertical}>
-
-                    </Image>
+                  <Typography
+                    style={{
+                      gap: 4,
+                      display: 'flex',
+                      alignItems: 'center',
+                      backgroundColor: 'rgba(0,0,0,.9)',
+                      padding: '4px 10px',
+                      borderRadius: 5,
+                    }}
+                    variant="caption"
+                  >
+                    <Image
+                      ratio={'1/1'}
+                      style={{ width: '20px', height: '20px', borderRadius: '50%' }}
+                      src={images.vertical}
+                    ></Image>
                     Jhon Doe <IconRosetteDiscountCheckFilled />
                   </Typography>
                 </Stack>
@@ -120,7 +158,8 @@ const PosterTopTitles = ({ title, images, id, synopsis }: Poster) => {
                   WebkitBoxOrient: 'vertical',
                   WebkitLineClamp: 4,
                 }}
-                variant='h6'>
+                variant="h6"
+              >
                 {synopsis}
               </Typography>
 
@@ -128,35 +167,59 @@ const PosterTopTitles = ({ title, images, id, synopsis }: Poster) => {
                 <Button
                   variant="contained"
                   sx={{
-                    mt: 3,
                     borderColor: '#FFFFFF',
                     color: '#000',
-                    height: '40px'
+                    height: '40px',
                   }}
                 >
-                  <IconPlayerPlay style={{marginRight:'4px'}} size={22} color='#000' />
-                  Watch now
+                  <Box sx={{ marginRight: {
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    xs: 0,
+                    lg: '4px',
+                    }}}>
+                    <IconPlayerPlay size={22} color="#000" />
+                  </Box>
+                  <TextMaxLine  sx={{
+                    display: {
+                      xs: 'none',
+                      lg: 'inline',
+                    }}} line={1} variant="button">
+                    Watch now
+                  </TextMaxLine>
                 </Button>
                 <Button
                   variant="outlined"
                   sx={{
-                    mt: 3,
                     borderColor: '#FFFFFF',
                     color: '#FFFFFF',
-                    height: '40px'
+                    height: '40px',
                   }}
                 >
-                  <IconDeviceTv style={{marginRight:'4px'}} size={22} color='#FFFFFF' />
-                  Add watchlist
+                  <Box sx={{ marginRight: {
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      xs: 0,
+                      lg: '4px',
+                    }}}>
+                    <IconDeviceTv size={22} color="#FFFFFF" />
+                  </Box>
+
+                  <TextMaxLine sx={{
+                    display: {
+                      xs: 'none',
+                      lg: 'inline',
+                  }}} line={1} variant="button">
+                    Add watchlist
+                  </TextMaxLine>
                 </Button>
               </Stack>
-
             </Stack>
           </CardContent>
         </Paper>
       </StackItem>
-
-
     </Stack>
   );
 }
