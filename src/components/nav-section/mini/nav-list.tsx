@@ -88,7 +88,7 @@ export default function NavList({ data, active, depth, config, onClick }: NavLis
             onMouseLeave: handleClose,
             sx: {
               backgroundColor: 'rgba(0,0,0,0.6)',
-              padding: '8px 20px',
+              padding: '8px 8px',
               ...(open && {
                 pointerEvents: 'auto',
               }),
@@ -107,8 +107,8 @@ export default function NavList({ data, active, depth, config, onClick }: NavLis
                 justifyContent: 'center',
                 alignItems: 'center',
                 backgroundColor: '#FFAB00',
-                borderRadius: '10%',
-                padding: '2px 1px',
+                borderRadius: '8px',
+                padding: '2px 4px',
                 color: 'black',
                 fontSize: '0.75rem',
                 fontWeight: 500
