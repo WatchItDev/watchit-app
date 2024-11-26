@@ -128,7 +128,7 @@ export default function AccountPopover() {
 
       {
         sessionData?.authenticated ? (
-          <CustomPopover open={popover.open} arrow="bottom-center" onClose={popover.onClose} sx={{ width: 200, p: 0 }}>
+          <CustomPopover open={popover.open} arrow="top-center" onClose={popover.onClose} sx={{ width: 200, p: 0,mt: '18px' }}>
             <Box sx={{ p: 2, pb: 1.5 }}>
               <Typography variant="subtitle2" noWrap>
                 {sessionData?.profile?.metadata?.displayName ?? ''}
