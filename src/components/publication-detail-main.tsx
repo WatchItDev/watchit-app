@@ -158,7 +158,7 @@ export default function PublicationDetailMain({ post, handleSubscribe, hasAccess
               backgroundColor: '#1e1f22'
             }}
           >
-            <Box sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }} onClick={goToProfile}>
+            <Box sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer'}} onClick={goToProfile}>
               <Avatar
                 src={(post?.by?.metadata?.picture as any)?.optimized?.uri ?? `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${post?.by?.id}`}
                 sx={{
@@ -242,7 +242,7 @@ export default function PublicationDetailMain({ post, handleSubscribe, hasAccess
               </Stack>
             </m.div>
           </Box>
-          <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'end', mb: 3, mt: 1 }}>
+          <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'end', mb: 3, mt: 1, pr: 1 }}>
             {hasAccess ? (
               <LeaveTipCard post={post} />
             ) : (
@@ -355,7 +355,7 @@ export default function PublicationDetailMain({ post, handleSubscribe, hasAccess
                   backgroundColor: '#1e1f22'
                 }}
               >
-                <Divider sx={{ my: 3 }} />
+                <Divider sx={{ my: 3, mr: 1 }} />
                 {sessionData?.authenticated ? (
                   <PublicationCommentForm commentOn={post?.id} />
                 ) : (
@@ -374,7 +374,7 @@ export default function PublicationDetailMain({ post, handleSubscribe, hasAccess
                   </Typography>
                 )}
               </Box>
-              <Box sx={{ display:'flex', flexDirection:'column', mt: 2 }}>
+              <Box sx={{ display:'flex', flexDirection:'column', mt: 2, pr: 1 }}>
                 <PostCommentList publicationId={post?.id} showReplies />
               </Box>
             </Box>

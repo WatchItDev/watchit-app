@@ -140,7 +140,6 @@ export default function PublicationDetailsView({ id }: Props) {
         },
         display: 'flex',
         width: '100%',
-        maxWidth: 'calc(100% - 1.5rem)',
         maxHeight: '100%',
         position: 'relative' }}>
 

@@ -137,6 +137,7 @@ const MovieCommentForm = ({ commentOn }: MovieCommentFormProps) => {
 
   const renderInput = (
     <Stack
+      sx={{ pr: 1 }}
       spacing={2}
       direction="row"
       alignItems="center"
@@ -154,7 +155,7 @@ const MovieCommentForm = ({ commentOn }: MovieCommentFormProps) => {
           <InputBase
             fullWidth
             {...field}
-            placeholder="Escribe un comentario…"
+            placeholder="Write a comment…"
             endAdornment={
               <InputAdornment position="end" sx={{ mr: 1 }}>
                 <LoadingButton
