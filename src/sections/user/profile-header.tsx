@@ -41,6 +41,7 @@ import { ActivateSubscriptionProfileModal } from '@src/components/activate-subsc
 import FollowUnfollowButton from '@src/components/follow-unfollow-button.tsx';
 // @ts-ignore
 import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
+import {randomColors} from "@src/components/poster/variants/poster-latest-content.tsx";
 
 // ----------------------------------------------------------------------
 
@@ -637,21 +638,38 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
             </Stack>
             <Divider sx={{ borderColor: 'rgba(255, 255, 255, 0.08)', width: '100%' }} />
             <Stack
-              direction="row"
+              direction="column"
               sx={{
                 zIndex: 10,
                 width: '100%',
-                alignItems: 'center',
+                alignItems: 'flex-start',
                 justifyContent: 'space-between',
               }}
             >
-              <Typography color="text.secondary">Distributor</Typography>
-              <StyledBoxGradient>
-                <Typography style={{ marginRight: 5, fontWeight: 'bold' }} variant="caption">
-                  Watchit
-                </Typography>
-                <IconRosetteDiscountCheckFilled />
-              </StyledBoxGradient>
+              <Typography color="text.secondary">Distribution partners</Typography>
+              <Box
+                gridTemplateColumns={{
+                  xs: 'repeat(1, 1fr)',
+                  sm: 'repeat(2, 1fr)',
+                  md: 'repeat(3, 1fr)',
+                }}
+                sx={{
+                overflow: 'hidden',
+                display: 'grid',
+                gap: 1,
+                mt: 1,
+              }}>
+                {
+                  ['Watchit','Listenit','CaptureIt','Readit','Storeit','Playit'].map((partner, index) => (
+                    <StyledBoxGradient color1={randomColors[randomColors.length - index]} color2={randomColors[index]} >
+                      <Typography style={{ marginRight: 5, fontWeight: 'bold' }} variant="caption">
+                        {partner}
+                      </Typography>
+                      <IconRosetteDiscountCheckFilled />
+                    </StyledBoxGradient>
+                ))}
+
+              </Box>
             </Stack>
           </Stack>
         </Stack>
@@ -708,18 +726,24 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
 
 export default ProfileHeader
 
-const StyledBoxGradient = styled(Box)(({ theme }) => ({
-  background: `linear-gradient(300deg, ${theme.palette.primary.main} 0%, ${theme.palette.warning.main} 25%, ${theme.palette.primary.main} 50%, ${theme.palette.warning.main} 75%, ${theme.palette.primary.main} 100%)`,
-  backgroundSize: '400%',
-  animation: 'gradientShift 20s infinite',
-  padding: '4px 10px',
-  borderRadius: 20,
-  display: 'flex',
-  alignItems: 'center',
-  gap: '4px',
-  '@keyframes gradientShift': {
-    '0%': { backgroundPosition: '0% 50%' },
-    '50%': { backgroundPosition: '100% 50%' },
-    '100%': { backgroundPosition: '0% 50%' },
-  },
-}));
+const StyledBoxGradient = styled(Box)<{ color1?: string; color2?: string }>(({ theme, color1, color2 }) => {
+  const defaultColor1 = theme.palette.primary.main;
+  const defaultColor2 = theme.palette.secondary.main;
+
+  return {
+    background: `linear-gradient(300deg, ${color1 || defaultColor1} 0%, ${color2 || defaultColor2} 25%, ${color1 || defaultColor1} 50%, ${color2 || defaultColor2} 75%, ${color1 || defaultColor1} 100%)`,
+    backgroundSize: '400%',
+    animation: 'gradientShift 20s infinite',
+    padding: '4px 8px',
+    borderRadius: 20,
+    display: 'flex',
+    alignItems: 'center',
+    width: 'fit-content',
+    gap: '3px',
+    '@keyframes gradientShift': {
+      '0%': { backgroundPosition: '0% 50%' },
+      '50%': { backgroundPosition: '100% 50%' },
+      '100%': { backgroundPosition: '0% 50%' },
+    },
+  };
+});
