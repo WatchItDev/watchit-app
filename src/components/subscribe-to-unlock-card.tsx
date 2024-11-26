@@ -12,7 +12,7 @@ export const SubscribeToUnlockCard = ({onSubscribe }: { onSubscribe: () => void 
         <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 2 }}>
           <IconLock fontSize="large" size={20} />
           <Typography variant="h6" fontWeight="bold">
-            Join to view
+            Join to play
           </Typography>
         </Stack>
         <Typography variant="body2" sx={{ mb: 3 }}>
@@ -26,7 +26,7 @@ export const SubscribeToUnlockCard = ({onSubscribe }: { onSubscribe: () => void 
           onClick={onSubscribe}
         >
           <IconPlayerPlay size={20} style={{marginRight: 5}} />
-          Subscribe to play
+          Join
         </Button>
         <Box sx={{ mt: 3, borderRadius: 1 }}>
           <Typography variant="body2" color="textSecondary">

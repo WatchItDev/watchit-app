@@ -217,7 +217,7 @@ export default function PublicationDetailsView({ id }: Props) {
                     >
                       <IconPlayerPlay fontSize="large" size={18} />
                       <Typography variant="body2" sx={{ lineHeight: 1 , fontWeight: '700', ml: 1}}>
-                        Subscribe to play
+                        Join
                       </Typography>
                     </Button>
                   </Box>
