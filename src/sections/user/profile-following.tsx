@@ -35,7 +35,7 @@ const ProfileFollowing = ({ profile }: Props) => {
         md: 'repeat(3, 1fr)',
       }}
       sx={{
-        display: 'flex',
+        display: following?.length ? 'grid' : 'flex',
         flexWrap: 'wrap',
         gap: `${16}px`,
         justifyContent: 'flex-start',

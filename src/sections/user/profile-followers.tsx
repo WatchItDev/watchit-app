@@ -29,7 +29,7 @@ const ProfileFollowers = ({ profile, onActionFinished }: Props) => {
   return (
     <Box
       sx={{
-        display: 'flex',
+        display: followers?.length ? 'grid' : 'flex',
         flexWrap: 'wrap',
         gap: `${16}px`,
         justifyContent: 'flex-start',
