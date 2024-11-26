@@ -13,6 +13,7 @@ import { IconHeartFilled } from '@tabler/icons-react';
 import { Poster } from '../types';
 import { useRouter } from '@src/routes/hooks';
 import { paths } from '@src/routes/paths.ts';
+import TextMaxLine from "@src/components/text-max-line";
 
 // ----------------------------------------------------------------------
 
@@ -94,8 +95,11 @@ const PosterHorizontal = ({ title, images, likes, id }: Poster) => {
 
         {/* Details: Rating, Year, Genre */}
         <Stack direction="row" spacing={1} alignItems="center">
-          <Typography sx={{fontSize: 'clamp(0.1rem, 0.8vw, 2rem)', fontWeight: '500'}}  noWrap variant="body2" color="textSecondary">
+          <TextMaxLine line={2} variant="body2"  color="textSecondary">
             Dive into the world of the unknown when Jhon Connor is sent back in time to save the world from the machines.
+          </TextMaxLine>
+          <Typography sx={{fontSize: 'clamp(0.1rem, 0.8vw, 2rem)', fontWeight: '500'}}  noWrap variant="body2">
+
           </Typography>
         </Stack>
       </CardContent>
