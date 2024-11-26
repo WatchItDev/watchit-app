@@ -21,7 +21,7 @@ const randomImages = [
   'https://cdn12.picryl.com/photo/2016/12/31/banner-header-christmas-13e7dc-1024.jpg',
 ]
 
-const _randomColorsForBackground = [
+export const randomColors = [
   '#f44336',
   '#e91e63',
   '#9c27b0',
