@@ -1,56 +1,45 @@
 // @mui
 import Box from '@mui/material/Box';
 // hooks
-import { useBoolean } from '@src/hooks/use-boolean';
 import { useResponsive } from '@src/hooks/use-responsive';
-// components
-import { useSettingsContext } from '@src/components/settings';
 //
 import Main from './main';
-import Header from './header';
 import NavMini from './nav-mini';
 import NavVertical from './nav-vertical';
 import NavVerticalMini from "@src/layouts/dashboard/nav-vertical-mini";
 
-// ----------------------------------------------------------------------
+import { useSelector, useDispatch } from 'react-redux';
+import {toggleMinibar, removeMinibar} from '@redux/minibar';
+import { useEffect } from 'react';
 
+// ----------------------------------------------------------------------
 type Props = {
   children: React.ReactNode;
 };
 
 export default function DashboardLayout({ children }: Props) {
-  const settings = useSettingsContext();
+  const dispatch = useDispatch();
+  // @ts-ignore
+  const minibarState = useSelector((state) => state.minibar.state);
+  // @ts-ignore
+  const wasCollapse = useSelector((state) => state.minibar.wasCollapsed);
 
   const lgUp = useResponsive('up', 'lg');
 
-  const nav = useBoolean();
+  useEffect(() => {
+    if (lgUp && !wasCollapse) {
+      dispatch(removeMinibar());
+    } else if (!lgUp && minibarState !== 'vertical') {
+      dispatch(toggleMinibar());
+    }
 
-  const isMini = settings.themeLayout === 'mini';
+  }, [lgUp, minibarState, dispatch]);
 
-  const renderNavMini =<><NavMini /> <NavVerticalMini /></>;
+  const renderNavMini = <><NavMini /> <NavVerticalMini /></>;
+  const renderNavVertical = <><NavMini /><NavVertical /></>;
 
-  const renderNavVertical =<><NavMini /><NavVertical openNav={nav.value} onCloseNav={nav.onFalse} /></>;
-
-  if (isMini) {
+  if (minibarState === 'mini') {
     return (
-      <>
-        <Box
-          sx={{
-            minHeight: 1,
-            display: 'flex',
-            flexDirection: { xs: 'column', md: 'row' },
-          }}
-        >
-          {lgUp ? renderNavMini : renderNavVertical}
-
-          <Main>{children}</Main>
-        </Box>
-      </>
-    );
-  }
-
-  return (
-    <>
       <Box
         sx={{
           minHeight: 1,
@@ -58,18 +47,24 @@ export default function DashboardLayout({ children }: Props) {
           flexDirection: { xs: 'column', md: 'row' },
         }}
       >
-        {
-          lgUp
-            ? renderNavVertical
-            : (
-              <NavVertical
-                openNav={nav.value}
-                onCloseNav={nav.onFalse}
-              />
-            )
-        }
+        {lgUp ? renderNavMini : renderNavVertical}
         <Main>{children}</Main>
       </Box>
-    </>
+    );
+  }
+
+  return (
+    <Box
+      sx={{
+        minHeight: 1,
+        display: 'flex',
+        flexDirection: { xs: 'column', md: 'row' },
+      }}
+    >
+      {lgUp ? renderNavVertical : (
+        <NavVertical />
+      )}
+      <Main>{children}</Main>
+    </Box>
   );
 }

@@ -1,3 +1,4 @@
+import { store } from "@redux/store";
 // i18n
 import '@src/locales/i18n';
 
@@ -42,6 +43,7 @@ import { AuthProvider } from '@src/auth/context/web3Auth';
 import {ResponsiveOverlay} from "@src/components/responsive-overlay";
 
 import { Buffer } from 'buffer';
+import {Provider} from "react-redux";
 
 window.Buffer = Buffer;
 
@@ -74,6 +76,7 @@ export default function App() {
           themeStretch: false,
         }}
       >
+        <Provider store={store}>
         <AuthProvider>
           <ThemeProvider>
             <MotionLazy>
@@ -86,6 +89,7 @@ export default function App() {
             </MotionLazy>
           </ThemeProvider>
         </AuthProvider>
+        </Provider>
       </SettingsProvider>
     </LocalizationProvider>
   );

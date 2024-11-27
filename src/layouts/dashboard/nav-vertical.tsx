@@ -1,3 +1,6 @@
+import { useSelector, useDispatch } from 'react-redux';
+import { closeDrawer } from '@src/redux/drawer';
+
 // REACT IMPORTS
 import { useEffect } from 'react';
 
@@ -22,21 +25,24 @@ import {COLORS, NAV} from "@src/layouts/config-layout.ts";
 import NavMini from "@src/layouts/dashboard/nav-mini.tsx";
 // ----------------------------------------------------------------------
 
-type Props = {
-  openNav: boolean;
-  onCloseNav: VoidFunction;
-};
-
-// ----------------------------------------------------------------------
-
-export default function NavVertical({ openNav, onCloseNav}: Props) {
+export default function NavVertical() {
   const pathname = usePathname();
   const lgUp = useResponsive('up', 'lg');
   const navData = useNavData();
 
+  // Inside the NavVertical component
+  const dispatch = useDispatch();
+  // @ts-ignore
+  const openNav = useSelector((state) => state.drawer.open);
+
+  const handleCloseNav = () => {
+    dispatch(closeDrawer());
+  };
+
+  // Replace the onCloseNav prop with handleCloseNav
   useEffect(() => {
     if (openNav) {
-      onCloseNav();
+      handleCloseNav();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
@@ -96,7 +102,7 @@ export default function NavVertical({ openNav, onCloseNav}: Props) {
       ) : (
         <Drawer
           open={openNav}
-          onClose={onCloseNav}
+          onClose={handleCloseNav}
           PaperProps={{
             sx: {
               width: NAV.W_VERTICAL + NAV.W_MINI,

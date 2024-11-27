@@ -7,35 +7,39 @@ import { useResponsive } from '@src/hooks/use-responsive';
 import { bgBlur } from '@src/theme/css';
 // components
 import Iconify from '@src/components/iconify';
-import { useSettingsContext } from '@src/components/settings';
-//
+// redux
+import { useDispatch, useSelector } from 'react-redux';
+import {setCollapsed, toggleMinibar} from '@redux/minibar';
 import { NAV } from '../config-layout';
 
 // ----------------------------------------------------------------------
 
 export default function NavToggleButton({ sx, ...other }: IconButtonProps) {
   const theme = useTheme();
-
-  const settings = useSettingsContext();
-
+  const dispatch = useDispatch();
   const lgUp = useResponsive('up', 'lg');
+  // @ts-ignore
+  const minibarState = useSelector((state) => state.minibar.state);
 
   if (!lgUp) {
     return null;
   }
 
+  const handleToggleMinibar = () => {
+    dispatch(setCollapsed(true));
+    dispatch(toggleMinibar());
+  };
+
   return (
     <IconButton
       size="small"
-      onClick={() =>
-        settings.onUpdate('themeLayout', settings.themeLayout === 'vertical' ? 'mini' : 'vertical')
-      }
+      onClick={handleToggleMinibar}
       sx={{
         p: 0.5,
         top: NAV.TOGGLE_TOP,
         position: 'fixed',
-        left: NAV.W_VERTICAL +  NAV.W_MINI - 12,
-        zIndex: theme.zIndex.appBar + 1,
+        left: NAV.W_VERTICAL + NAV.W_MINI - 12,
+        zIndex: theme.zIndex.appBar + 2,
         border: `dashed 1px ${theme.palette.divider}`,
         ...bgBlur({ opacity: 0.48, color: theme.palette.background.default }),
         '&:hover': {
@@ -48,7 +52,7 @@ export default function NavToggleButton({ sx, ...other }: IconButtonProps) {
       <Iconify
         width={16}
         icon={
-          settings.themeLayout === 'vertical'
+          minibarState === 'vertical'
             ? 'eva:arrow-ios-back-fill'
             : 'eva:arrow-ios-forward-fill'
         }

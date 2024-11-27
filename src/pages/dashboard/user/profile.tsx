@@ -2,6 +2,8 @@ import { Helmet } from 'react-helmet-async';
 // sections
 import { UserProfileView } from '@src/sections/user/view';
 import { useParams } from '@src/routes/hooks';
+import HeaderContent from "@src/layouts/dashboard/HeaderContent.tsx";
+import Header from "@src/layouts/dashboard/header.tsx";
 
 // ----------------------------------------------------------------------
 
@@ -31,6 +33,10 @@ export default function UserProfilePage() {
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:site" content="@app_watchit" />
       </Helmet>
+
+      <Header>
+        <HeaderContent title="Profile" />
+      </Header>
 
       <UserProfileView id={id} />
     </>

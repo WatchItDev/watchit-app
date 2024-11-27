@@ -21,7 +21,7 @@ import { applyFilter } from './utils';
 import { appId, useSearchProfiles, useSearchPublications } from '@lens-protocol/react-web';
 import { CircularProgress } from '@mui/material';
 import { paths } from '@src/routes/paths.ts';
-import {useSettingsContext} from "@src/components/settings";
+import {useSelector} from "react-redux";
 
 function Searchbar() {
   const theme = useTheme();
@@ -75,8 +75,10 @@ function Searchbar() {
 
   const notFound = searchQuery && !dataFiltered.length && !profiles?.length && !publications?.length;
 
-  const settings = useSettingsContext();
-  const isMini = settings.themeLayout === 'mini';
+  // @ts-ignore
+  const minibarState = useSelector((state) => state.minibar.state);
+
+  const isMini = minibarState === 'mini';
   const lgUp = useResponsive('up', 'lg');
 
   // If isMini and isLgUp, hide the Search text

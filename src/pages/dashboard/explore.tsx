@@ -1,5 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 import { ExploreView } from '@src/sections/explore';
+import Header from "@src/layouts/dashboard/header.tsx";
+import HeaderContent from "@src/layouts/dashboard/HeaderContent.tsx";
 // import { useWeb3Auth } from '@src/hooks/use-web3-auth.ts';
 // import { useEffect } from 'react';
 
@@ -33,6 +35,10 @@ export default function OverviewAppPage() {
       <Helmet>
         <title> Dashboard: App</title>
       </Helmet>
+
+      <Header>
+        <HeaderContent title="Explore" />
+      </Header>
 
       <ExploreView />
     </>

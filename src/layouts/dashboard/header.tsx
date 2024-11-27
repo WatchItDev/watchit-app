@@ -23,13 +23,11 @@ import {
 import { useAccount } from 'wagmi';
 import { PropsWithChildren } from 'react';
 
+import {useDispatch, useSelector} from 'react-redux';
+import { toggleDrawer } from '@redux/drawer';
 // ----------------------------------------------------------------------
 
-type Props = {
-  onOpenNav?: VoidFunction;
-};
-
-export default function Header({ onOpenNav, children }: PropsWithChildren<Props>) {
+export default function Header({ children }: PropsWithChildren) {
   const { isConnected } = useAccount();
 
   const theme = useTheme();
@@ -38,20 +36,30 @@ export default function Header({ onOpenNav, children }: PropsWithChildren<Props>
 
   const isNavHorizontal = settings.themeLayout === 'horizontal';
 
-  const isNavMini = settings.themeLayout === 'mini';
-
   const lgUp = useResponsive('up', 'lg');
 
   const offset = useOffSetTop(HEADER.H_DESKTOP);
 
   const offsetTop = offset && !isNavHorizontal;
 
+  // Inside the Header component
+  const dispatch = useDispatch();
+
+  const handleToggleDrawer = () => {
+    dispatch(toggleDrawer());
+  };
+
+  // @ts-ignore
+  const minibarState = useSelector((state) => state.minibar.state);
+
+  const isNavMini = minibarState === 'mini';
+
   const renderContent = (
     <>
       {lgUp && isNavHorizontal && <Logo sx={{ mr: 2.5 }} />}
 
       {!lgUp && (
-        <IconButton onClick={onOpenNav}>
+        <IconButton onClick={handleToggleDrawer}>
           <SvgColor src="/assets/icons/navbar/ic_menu_item.svg" />
         </IconButton>
       )}
