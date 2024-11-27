@@ -9,7 +9,6 @@ import Button from '@mui/material/Button';
 import { useTheme } from '@mui/material/styles';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
-import IconButton from '@mui/material/IconButton';
 import CardContent from '@mui/material/CardContent';
 
 // LENS IMPORTS
@@ -19,17 +18,12 @@ import { usePublication } from '@lens-protocol/react';
 import { m } from 'framer-motion';
 
 // ICONS IMPORTS
-import { IconChevronLeft, IconPlayerPlay } from '@tabler/icons-react';
+import { IconPlayerPlay } from '@tabler/icons-react';
 
 // LOCAL IMPORTS
-import { paths } from '@src/routes/paths';
-import Label from '@src/components/label';
 import Image from '@src/components/image';
-import { useRouter } from '@src/routes/hooks';
 import Markdown from '@src/components/markdown';
 import { varFade } from '@src/components/animate';
-import Header from '@src/layouts/dashboard/header';
-import { useResponsive } from '@src/hooks/use-responsive.ts';
 import ProfileHome from '@src/sections/user/profile-home.tsx';
 import { LoadingScreen } from '@src/components/loading-screen';
 import MoviePlayView from '@src/sections/publication/view/publication-play-view.tsx';
@@ -53,8 +47,6 @@ export default function PublicationDetailsView({ id }: Props) {
   const descriptionRef = useRef(null);
   // LOCAL HOOKS
   const theme = useTheme();
-  const router = useRouter();
-  const mdUp = useResponsive('up', 'md');
   // LENS HOOKS
   const { data, loading }: any = usePublication({
     forId: id as any,
@@ -68,10 +60,6 @@ export default function PublicationDetailsView({ id }: Props) {
     hasAccess,
     loading: accessLoading
   } = useHasAccess(ownerAddress);
-
-  const handleBack = () => {
-    router.push(paths.dashboard.root);
-  }
 
   const getMediaUri = (cid: string): string => `https://ipfs.io/ipfs/${cid.replace('ipfs://', '')}`
 
@@ -104,35 +92,6 @@ export default function PublicationDetailsView({ id }: Props) {
 
   return (
     <>
-      <Header>
-        <>
-          <Button
-            onClick={handleBack} disableFocusRipple
-            sx={{
-              display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-              backgroundColor: '#24262A',
-              borderRadius: 1.5,
-              m: 1,
-              p: 0.2,
-              '&:hover': {
-                backgroundColor: '#1E1F22'
-              }
-            }}
-          >
-            <IconButton disableRipple>
-              <IconChevronLeft size={20} />
-              <Typography sx={{ ml: 1 }} variant='subtitle2'>Back</Typography>
-            </IconButton>
-
-
-            {mdUp && <Label sx={{ px: 0.75, mr: 1, fontSize: 12, color: 'text.secondary' }}>Esc</Label>}
-          </Button>
-          <Typography variant="h6" sx={{ ml: 2 }}>
-            Movie details
-          </Typography>
-        </>
-      </Header>
-
       <Box sx={{
         flexDirection: {
           xs: 'column',
