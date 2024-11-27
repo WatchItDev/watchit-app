@@ -26,6 +26,7 @@
     "paths": {
       "@src/*": ["./src/*"],
       "@public/*": ["./public/*"],
+      "@redux/*": ["./src/redux/*"],
       "@web3auth/*-adapter": ["./packages/adapters/*-adapter"],
       "@web3auth/*-provider": ["./packages/providers/*-provider"],
       "@web3auth/*": ["./packages/*"],

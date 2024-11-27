@@ -18,6 +18,7 @@ export default defineConfig(({ mode }) => {
       alias: {
         '@src': path.resolve(__dirname, 'src'),
         '@public': path.resolve(__dirname, 'public'),
+        '@redux': path.resolve(__dirname, 'src/redux'),
       },
     },
     define: {
