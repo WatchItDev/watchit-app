@@ -116,7 +116,6 @@ export default function NavVertical({ openNav, onCloseNav}: Props) {
             <Box sx={{
               flex: 1,
               flexGrow: 1,
-              backgroundColor: 'red',
               width: NAV.W_VERTICAL,
             }}>
               {renderContent}
