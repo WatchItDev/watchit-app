@@ -19,7 +19,7 @@ import { usePublication } from '@lens-protocol/react';
 import { m } from 'framer-motion';
 
 // ICONS IMPORTS
-import { IconChevronLeft, IconLock, IconPlayerPlay } from '@tabler/icons-react';
+import { IconChevronLeft, IconPlayerPlay } from '@tabler/icons-react';
 
 // LOCAL IMPORTS
 import { paths } from '@src/routes/paths';
