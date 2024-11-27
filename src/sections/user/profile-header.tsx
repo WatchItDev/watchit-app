@@ -42,10 +42,13 @@ import FollowUnfollowButton from '@src/components/follow-unfollow-button.tsx';
 // @ts-ignore
 import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
 import {randomColors} from "@src/components/poster/variants/poster-latest-content.tsx";
+import OpenableText from '@src/components/openableText/openableText.tsx';
+import { useGetAttestation } from '@src/hooks/use-get-attestation.ts';
 
 // ----------------------------------------------------------------------
 
 const urlToShare = "https://app.watchit.movie/profileId";
+const urlAttestationBase = "https://polygon-amoy.easscan.org/attestation/view/";
 
 // const GeoAddress = '0xEFBBD14082cF2FbCf5Badc7ee619F0f4e36D0A5B'
 
@@ -98,6 +101,38 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
   const [openTooltip, setOpenTooltip] = useState(false);
   const [openTooltipShare, setOpenTooltipShare] = useState(false);
 
+  const theme = useTheme();
+  const { data: sessionData }: ReadResult<ProfileSession> = useSession();
+  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+  const [menuAnchorEl, setMenuAnchorEl] = useState<HTMLButtonElement | null>(null);
+  const [openReportModal, setOpenReportModal] = useState(false);
+  const [openSubscribeModal, setOpenSubscribeModal] = useState(false);
+  const open = Boolean(anchorEl);
+  const openMenu = Boolean(menuAnchorEl);
+
+  // State to handle error and success messages
+  const [errorMessage, setErrorMessage] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
+  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
+  const [isActivateModalOpen, setIsActivateModalOpen] = useState(false);
+
+  const {
+    attestation,
+    loading: attestationLoading,
+    refetch: refetchAttestation,
+  } = useGetAttestation(sessionData?.profile?.ownedBy?.address as Address, profile.ownedBy.address as Address);
+  const {
+    hasAccess,
+    loading: accessLoading,
+    fetching: accessFetchingLoading,
+    error: accessError,
+    refetch: refetchAccess,
+  } = useHasAccess(profile.ownedBy.address as Address);
+  const {
+    isAuthorized,
+    loading: authorizedLoading,
+  } = useIsPolicyAuthorized(GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS, profile.ownedBy.address as Address);
+
   useEffect(() => {
     if (open) {
       handleClose();
@@ -130,50 +165,6 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
     },
   });
 
-  const theme = useTheme();
-  const { data: sessionData }: ReadResult<ProfileSession> = useSession();
-  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
-  const [menuAnchorEl, setMenuAnchorEl] = useState<HTMLButtonElement | null>(null);
-  const [openReportModal, setOpenReportModal] = useState(false);
-  const [openSubscribeModal, setOpenSubscribeModal] = useState(false);
-  const open = Boolean(anchorEl);
-  const openMenu = Boolean(menuAnchorEl);
-
-  // State to handle error and success messages
-  const [errorMessage, setErrorMessage] = useState('');
-  const [successMessage, setSuccessMessage] = useState('');
-  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
-  const [isActivateModalOpen, setIsActivateModalOpen] = useState(false);
-
-  const {
-    hasAccess,
-    loading: accessLoading,
-    fetching: accessFetchingLoading,
-    error: accessError,
-    refetch: refetchAccess,
-  } = useHasAccess(profile.ownedBy.address as Address);
-  // } = useHasAccess(GeoAddress as Address);
-  const {
-    isAuthorized,
-    loading: authorizedLoading,
-    error: authorizedError,
-    refetch: refetchAuthorized,
-  } = useIsPolicyAuthorized(GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS, profile.ownedBy.address as Address);
-  // } = useIsPolicyAuthorized(GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS, GeoAddress as Address);
-
-  useEffect(() => {
-    console.log('is authorized')
-    console.log(isAuthorized)
-    console.log(authorizedLoading)
-    console.log(authorizedError)
-  }, [isAuthorized, authorizedLoading, authorizedError, refetchAuthorized]);
-
-  useEffect(() => {
-    console.log('has access')
-    console.log(hasAccess)
-    console.log(accessLoading)
-  }, [hasAccess, accessLoading]);
-
   // Handle errors from follow and unfollow actions
   useEffect(() => {
     if (accessError) setErrorMessage(accessError.shortMessage ?? accessError.message);
@@ -190,8 +181,9 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
   // Function to handle following a profile
   const onSubscribe = async () => {
     console.log('subscribe success');
-    console.log('fetching access');
+    console.log('fetching access and attestation');
     refetchAccess()
+    refetchAttestation()
   };
 
   const handlePopoverOpen = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -372,6 +364,7 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
                     <CircularProgress size={24} sx={{ color: '#fff' }} />
                   </Box>
                 )}
+
                 {isAuthorized && !authorizedLoading && profile?.id !== sessionData?.profile?.id && (
                   <LoadingButton
                     title={hasAccess ? 'You are subscribed!' : 'Subscribe'}
@@ -624,22 +617,26 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
                 text={`${profile?.ownedBy?.address}`}
               />
             </Stack>
-            <Divider sx={{ borderColor: 'rgba(255, 255, 255, 0.08)', width: '100%' }} />
-            <Stack
-              direction="row"
-              sx={{
-                zIndex: 10,
-                width: '100%',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-              }}
-            >
-              <Typography color="text.secondary">Attestation</Typography>
-              <CopyableText
-                label={truncateAddress(`${profile?.ownedBy?.address}`)}
-                text={`${profile?.ownedBy?.address}`}
-              />
-            </Stack>
+            {isAuthorized && !authorizedLoading && attestation && !attestationLoading && hasAccess && !accessLoading && profile?.id !== sessionData?.profile?.id && (
+              <>
+                <Divider sx={{ borderColor: 'rgba(255, 255, 255, 0.08)', width: '100%' }} />
+                <Stack
+                  direction="row"
+                  sx={{
+                    zIndex: 10,
+                    width: '100%',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                  }}
+                >
+                  <Typography color="text.secondary">Attestation</Typography>
+                  <OpenableText
+                    label={truncateAddress(`${attestation}`)}
+                    url={`${urlAttestationBase}${attestation}`}
+                  />
+                </Stack>
+              </>
+            )}
             <Divider sx={{ borderColor: 'rgba(255, 255, 255, 0.08)', width: '100%' }} />
             <Stack
               direction="column"

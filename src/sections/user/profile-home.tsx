@@ -14,7 +14,7 @@ interface ProfileHomeProps {
 export default function ProfileHome({ profile, noPaddings = false }: ProfileHomeProps) {
   const { data: publications } = usePublications({
     where: {
-      from: [profile.id],
+      from: [profile?.id],
       publicationTypes: [PublicationType.Post],
       metadata: { publishedOn: [appId('watchit')] },
     },

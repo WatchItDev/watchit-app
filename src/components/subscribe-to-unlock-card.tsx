@@ -1,7 +1,19 @@
 import { Box, Button, Card, CardContent, Typography, Stack } from '@mui/material';
 import { IconLock, IconPlayerPlay } from '@tabler/icons-react';
+import { ethers } from 'ethers';
+import { useResolveTerms } from '@src/hooks/use-resolve-terms.ts';
+import { Address } from 'viem';
 
-export const SubscribeToUnlockCard = ({onSubscribe }: { onSubscribe: () => void }) => {
+interface Props {
+  post: any
+  onSubscribe: () => void
+}
+
+export const SubscribeToUnlockCard = ({ onSubscribe, post }: Props) => {
+  const { terms } = useResolveTerms(post?.by?.ownedBy?.address as Address);
+  const durationDays = 30; // a month
+  const totalCostWei = terms?.amount ? (terms?.amount * BigInt(durationDays)) : 0; // Calculate total cost in Wei: DAILY_COST_WEI * durationDays
+  const totalCostMMC = ethers.formatUnits(totalCostWei, 18); // Converts Wei to MMC
 
   return (
     <Card sx={{ maxWidth: {
@@ -30,7 +42,7 @@ export const SubscribeToUnlockCard = ({onSubscribe }: { onSubscribe: () => void 
         </Button>
         <Box sx={{ mt: 3, borderRadius: 1 }}>
           <Typography variant="body2" color="textSecondary">
-            Join now for only <strong>MMC 300/month</strong> and access to <strong>431</strong> exclusive posts from <strong>Jacob Peralta!</strong>
+            Join now for only <strong>{totalCostMMC} MMC/month</strong> and access to <strong>{post?.by?.stats?.posts}</strong> exclusive posts from <strong>{post?.by?.metadata?.displayName ?? post?.handle?.localName}!</strong>
           </Typography>
         </Box>
       </CardContent>

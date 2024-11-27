@@ -20,15 +20,17 @@ import {
   LanguagePopover,
   NotificationsPopover,
 } from '../_common';
-import { useAccount } from 'wagmi';
 import { PropsWithChildren } from 'react';
+// @ts-ignore
+import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
+import { ProfileSession, useSession } from '@lens-protocol/react-web';
 
 import {useDispatch, useSelector} from 'react-redux';
 import { toggleDrawer } from '@redux/drawer';
 // ----------------------------------------------------------------------
 
 export default function Header({ children }: PropsWithChildren) {
-  const { isConnected } = useAccount();
+  const { data: sessionData }: ReadResult<ProfileSession> = useSession();
 
   const theme = useTheme();
 
@@ -75,7 +77,7 @@ export default function Header({ children }: PropsWithChildren) {
         sx={{ pr: 2 }}
       >
         {
-          isConnected && (
+          sessionData?.authenticated && (
             <LanguagePopover />
           )
         }

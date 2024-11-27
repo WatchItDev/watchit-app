@@ -6,20 +6,25 @@ import { varHover } from '@src/components/animate';
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import {IconCoinMonero} from "@tabler/icons-react";
-import { useAccount, useBalance } from 'wagmi';
+import { useBalance } from 'wagmi';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
+// @ts-ignore
+import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
+import { ProfileSession, useSession } from '@lens-protocol/react-web';
 
 // ----------------------------------------------------------------------
 
 export default function HeaderBalance() {
-  const { address } = useAccount();
-  const { data, isError, isLoading } = useBalance({
-    address,
+  const { data: sessionData }: ReadResult<ProfileSession> = useSession();
+  const { data } = useBalance({
+    address: sessionData?.address,
     token: GLOBAL_CONSTANTS.MMC_ADDRESS
   });
 
   const balanceOptions = { minimumFractionDigits: 1, maximumFractionDigits: 3 };
   const formattedBalance = new Intl.NumberFormat('en-US', balanceOptions).format(data?.formatted);
+
+  if (!formattedBalance || formattedBalance === 'NaN') return null;
 
   return (
     <>

@@ -20,9 +20,16 @@ interface HasAccessError {
   [key: string]: any;
 }
 
+interface Terms {
+  amount: any, // Amount in wei
+  currency: string, // Mmc address
+  rateBasis: number,
+  uri: string,
+}
+
 // Defines the return type of the useResolveTerms hook.
 interface UseResolveTermsHook {
-  terms?: any;
+  terms?: Terms;
   loading: boolean;
   fetching: boolean;
   error?: HasAccessError | null;
@@ -55,10 +62,10 @@ export const useResolveTerms = (holderAddress?: Address): UseResolveTermsHook =>
     args: [holderAddress as Address],
   });
 
-  if (!userAddress) return { terms: false, loading: false, fetching: false, error: null, refetch: () => {}, }
+  if (!userAddress) return { terms: {} as Terms, loading: false, fetching: false, error: null, refetch: () => {}, }
 
   return {
-    terms: accessData as boolean | undefined,
+    terms: accessData as Terms | undefined,
     loading: isAccessLoading,
     fetching: isAccessFetching,
     error: accessError ? { message: contractError?.message || 'An error occurred' } : null,

@@ -61,11 +61,11 @@ export default function PublicationDetailsView({ id }: Props) {
     loading: accessLoading
   } = useHasAccess(ownerAddress);
 
-  const getMediaUri = (cid: string): string => `https://ipfs.io/ipfs/${cid.replace('ipfs://', '')}`
+  const getMediaUri = (cid: string): string => `https://ipfs.io/ipfs/${cid?.replace('ipfs://', '')}`
 
-  const getWallpaperCid = (): string => data?.metadata?.attachments?.find((el: any) => el.altTag === 'Wallpaper')?.image?.raw?.uri
+  const getWallpaperCid = (): string => data?.metadata?.attachments?.find((el: any) => el?.altTag === 'Wallpaper')?.image?.raw?.uri
 
-  const getPosterCid = (): string => data?.metadata?.attachments?.find((el: any) => el.altTag === 'Vertical Poster')?.image?.raw?.uri
+  const getPosterCid = (): string => data?.metadata?.attachments?.find((el: any) => el?.altTag === 'Vertical Poster')?.image?.raw?.uri
 
   const toggleDescription = () => {
     setShowToggle(!showToggle);
@@ -146,7 +146,7 @@ export default function PublicationDetailsView({ id }: Props) {
                     />
 
                     <Image
-                      alt={data.id}
+                      alt={data?.id}
                       src={getMediaUri(getPosterCid())}
                       ratio="1/1"
                       sx={{

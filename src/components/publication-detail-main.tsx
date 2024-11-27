@@ -78,11 +78,11 @@ export default function PublicationDetailMain({ post, handleSubscribe, hasAccess
   const { data: sessionData }: ReadResult<ProfileSession> = useSession();
   // LENS HOOKS
   const { execute: toggle, loading: loadingLike} = useReactionToggle();
-  const { execute: hide, loading: loadingHide } = useHidePublication();
+  const { execute: hide } = useHidePublication();
   const { execute: toggleBookMarkFunction, loading: loadingBookMark } = useBookmarkToggle();
+
   // CONSTANTS
   const variants = theme.direction === 'rtl' ? varFade().inLeft : varFade().inRight;
-
 
   const toggleReaction = async () => {
     try {
@@ -246,7 +246,7 @@ export default function PublicationDetailMain({ post, handleSubscribe, hasAccess
             {hasAccess ? (
               <LeaveTipCard post={post} />
             ) : (
-              <SubscribeToUnlockCard onSubscribe={handleSubscribe} />
+              <SubscribeToUnlockCard onSubscribe={handleSubscribe} post={post} />
             )}
           </Box>
 

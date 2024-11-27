@@ -1,14 +1,10 @@
 import { m } from 'framer-motion';
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 // @mui
-import Tab from '@mui/material/Tab';
-import Box from '@mui/material/Box';
-import Tabs from '@mui/material/Tabs';
 import List from '@mui/material/List';
 import Stack from '@mui/material/Stack';
 import Badge from '@mui/material/Badge';
 import Drawer from '@mui/material/Drawer';
-import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
 import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
@@ -17,7 +13,6 @@ import Typography from '@mui/material/Typography';
 import { useBoolean } from '@src/hooks/use-boolean';
 import { useResponsive } from '@src/hooks/use-responsive';
 // components
-import Label from '@src/components/label';
 import Iconify from '@src/components/iconify';
 import Scrollbar from '@src/components/scrollbar';
 import { varHover } from '@src/components/animate';
@@ -29,16 +24,8 @@ import { CircularProgress } from '@mui/material';
 
 export default function NotificationsPopover() {
   const drawer = useBoolean();
-
   const smUp = useResponsive('up', 'sm');
-
-  const [currentTab, setCurrentTab] = useState('all');
-
   const [notifications, setNotifications] = useState([]);
-
-  const handleChangeTab = useCallback((event: React.SyntheticEvent, newValue: string) => {
-    setCurrentTab(newValue);
-  }, []);
 
   // Utiliza el hook useNotifications con tus parámetros
   const { data, error, loading } = useNotifications({
@@ -61,7 +48,7 @@ export default function NotificationsPopover() {
   };
 
   // Función para guardar las notificaciones leídas en localStorage
-  const setReadNotifications = (readNotifications) => {
+  const setReadNotifications = (readNotifications: any) => {
     localStorage.setItem('readNotifications', JSON.stringify(readNotifications));
   };
 
