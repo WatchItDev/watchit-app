@@ -269,7 +269,7 @@ export const UserItem = ({ profile, sx, onClick, onActionFinished, canFollow = t
         autoHideDuration={6000}
         onClose={() => setErrorMessage('')}
         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-        sx={{ zIndex: 1000 }}
+        sx={{ zIndex: 1200, top: '80px !important' }}
       >
         <Alert onClose={() => setErrorMessage('')} severity="error" sx={{ width: '100%' }}>
           {errorMessage}
@@ -282,7 +282,7 @@ export const UserItem = ({ profile, sx, onClick, onActionFinished, canFollow = t
         autoHideDuration={6000}
         onClose={() => setSuccessMessage('')}
         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-        sx={{ zIndex: 1000 }}
+        sx={{ zIndex: 1200, top: '80px !important' }}
       >
         <Alert onClose={() => setSuccessMessage('')} severity="success" sx={{ width: '100%' }}>
           {successMessage}

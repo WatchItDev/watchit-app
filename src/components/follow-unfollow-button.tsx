@@ -5,26 +5,27 @@ import { useState, useEffect, PropsWithChildren } from 'react';
 import Alert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
 import LoadingButton from '@mui/lab/LoadingButton';
-import { Profile } from '@lens-protocol/api-bindings';
 
 // LENS IMPORTS
-import { ProfileSession, useFollow, useSession, useUnfollow } from '@lens-protocol/react-web';
+import { ProfileId, ProfileSession, useFollow, useSession, useUnfollow } from '@lens-protocol/react-web';
 
 // LOCAL IMPORTS
 // @ts-ignore
 import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
+import { useLazyProfile } from '@lens-protocol/react';
 
 // ----------------------------------------------------------------------
 
 interface FollowUnfollowButtonProps {
-  profile: Profile;
+  profileId: string;
 }
 
 // ----------------------------------------------------------------------
 
-const FollowUnfollowButton = ({ profile }: PropsWithChildren<FollowUnfollowButtonProps>) => {
+const FollowUnfollowButton = ({ profileId }: PropsWithChildren<FollowUnfollowButtonProps>) => {
+  const { data: profile, loading: loadingProfile, execute: getProfile } = useLazyProfile();
   const { data: sessionData }: ReadResult<ProfileSession> = useSession();
-  const [isFollowed, setIsFollowed] = useState(false);
+  const [isFollowed, setIsFollowed] = useState(profile?.operations?.isFollowedByMe?.value);
 
   // State to handle error and success messages
   const [errorMessage, setErrorMessage] = useState('');
@@ -34,6 +35,10 @@ const FollowUnfollowButton = ({ profile }: PropsWithChildren<FollowUnfollowButto
   const { execute: follow, error: followError, loading: followLoading } = useFollow();
   const { execute: unfollow, error: unfollowError, loading: unfollowLoading } = useUnfollow();
 
+  useEffect(() => {
+    if (profileId && profileId !== sessionData?.profile?.id) getProfile({ forProfileId: profileId as ProfileId })
+  }, []);
+
   // Handle errors from follow and unfollow actions
   useEffect(() => {
     if (followError) setErrorMessage(followError.message);
@@ -41,8 +46,12 @@ const FollowUnfollowButton = ({ profile }: PropsWithChildren<FollowUnfollowButto
   }, [followError, unfollowError]);
 
   useEffect(() => {
-    setIsFollowed(!!profile?.operations?.isFollowedByMe?.value);
-  }, [sessionData, profile]);
+    setIsFollowed(profile?.operations?.isFollowedByMe?.value);
+  }, [profile?.operations?.isFollowedByMe?.value]);
+
+  const handleUpdateProfile = () => {
+    getProfile({ forProfileId: profileId as ProfileId })
+  };
 
   // Function to handle following a profile
   const handleFollow = async () => {
@@ -52,8 +61,11 @@ const FollowUnfollowButton = ({ profile }: PropsWithChildren<FollowUnfollowButto
       const result = await follow({ profile });
       if (result.isSuccess()) {
         setSuccessMessage('Successfully followed the profile.');
+        setIsFollowed(true);
+
         // Wait for transaction confirmation
         await result.value.waitForCompletion();
+        handleUpdateProfile();
       } else {
         // Handle specific follow errors
         handleFollowError(result.error);
@@ -72,9 +84,12 @@ const FollowUnfollowButton = ({ profile }: PropsWithChildren<FollowUnfollowButto
     try {
       const result = await unfollow({ profile });
       if (result.isSuccess()) {
+        setIsFollowed(false);
         setSuccessMessage('Successfully unfollowed the profile.');
+
         // Wait for transaction confirmation
         await result.value.waitForCompletion();
+        handleUpdateProfile();
       } else {
         // Handle specific unfollow errors
         handleUnfollowError(result.error);

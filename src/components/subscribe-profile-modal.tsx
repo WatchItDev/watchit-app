@@ -30,6 +30,12 @@ import { Profile } from '@lens-protocol/api-bindings';
 import { useResolveTerms } from '@src/hooks/use-resolve-terms.ts';
 import LinearProgress from '@mui/material/LinearProgress';
 
+import { useBalance } from 'wagmi';
+import { ProfileSession, useSession } from '@lens-protocol/react-web';
+import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
+// @ts-ignore
+import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
+
 // ----------------------------------------------------------------------
 
 type SubscribeProfileModalProps = {
@@ -47,27 +53,55 @@ export const SubscribeProfileModal = ({
                                         profile,
                                         onSubscribe,
                                       }: SubscribeProfileModalProps) => {
+  // State variables for handling durations and messages
   const [selectedDuration, setSelectedDuration] = useState('7');
   const [customDuration, setCustomDuration] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
+  // Hooks for subscription and terms resolution
   const { data, error, loading, subscribe } = useSubscribe();
-  const { terms, loading: loadingTerms } = useResolveTerms(profile?.ownedBy?.address as Address);
+  const {
+    terms,
+    loading: loadingTerms,
+  } = useResolveTerms(profile?.ownedBy?.address as Address);
 
+  // Hook to get the user's session data
+  const { data: sessionData }: ReadResult<ProfileSession> = useSession();
+
+  // Hook to get the user's balance
+  const {
+    data: balanceData,
+    isLoading: balanceLoading,
+    error: balanceError,
+  } = useBalance({
+    address: sessionData?.address,
+    token: GLOBAL_CONSTANTS.MMC_ADDRESS,
+  });
+
+  // Options for predefined durations
   const durationOptions = [
     { value: '7', title: '1 week' },
     { value: '15', title: '15 days' },
     { value: '30', title: '1 month' },
   ];
 
+  // Effect to handle subscription errors
   useEffect(() => {
-    if (error) console.log('Subscribe error: ', error)
+    if (error) console.log('Subscribe error: ', error);
     if (error) setErrorMessage(error.shortMessage ?? error.message);
   }, [error]);
 
+  // Effect to handle balance errors
   useEffect(() => {
-    console.log('Subscribe Profile Modal', data);
+    if (balanceError) {
+      console.log('Error fetching balance: ', balanceError);
+      setErrorMessage('Could not retrieve your balance. Please try again later.');
+    }
+  }, [balanceError]);
+
+  // Effect to handle successful subscription
+  useEffect(() => {
     if (data?.receipt) {
       setSuccessMessage('Successfully subscribed to the profile.');
       onSubscribe?.();
@@ -75,6 +109,7 @@ export const SubscribeProfileModal = ({
     }
   }, [data]);
 
+  // Handler for changing the selected duration
   const handleDurationChange = (value: string) => {
     setSelectedDuration(value);
     setCustomDuration('');
@@ -82,77 +117,80 @@ export const SubscribeProfileModal = ({
     setErrorMessage('');
   };
 
-  const handleCustomDurationChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  // Handler for changing the custom duration
+  const handleCustomDurationChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedDuration('');
     setCustomDuration(event.target.value);
     setSuccessMessage('');
     setErrorMessage('');
   };
 
+  // Calculate total cost and check if the balance is sufficient
+  const duration = customDuration || selectedDuration || '0';
+  const durationDays = parseInt(duration);
+  const minDays = 7;
+  const isCustomDurationInvalid = customDuration && (isNaN(durationDays) || durationDays < minDays);
+
+  let totalCostWei = BigInt(0);
+  let totalCostMMC = '0.00';
+
+  if (!isCustomDurationInvalid && durationDays >= minDays && terms?.amount) {
+    totalCostWei = terms.amount * BigInt(durationDays);
+    totalCostMMC = ethers.formatUnits(totalCostWei, 18); // Convert Wei to MMC
+  }
+
+  const isBalanceSufficient = balanceData && totalCostWei && balanceData.value >= totalCostWei;
+
+  // Determine if the subscribe button should be disabled
+  const isButtonDisabled =
+    loading ||
+    (!selectedDuration && !customDuration) ||
+    isCustomDurationInvalid ||
+    balanceLoading ||
+    !isBalanceSufficient;
+
+  // Handler for the subscribe action
   const handleSubscribe = async () => {
-    const duration = customDuration || selectedDuration;
     if (!duration) {
       return;
     }
 
-    const durationDays = parseInt(duration);
+    if (isCustomDurationInvalid) {
+      setErrorMessage(`Please enter a valid number of days (minimum ${minDays} days).`);
+      return;
+    }
 
-    if (isNaN(durationDays) || durationDays < 7) {
-      setErrorMessage('Please enter a valid number of days (minimum 7 days).');
+    if (!isBalanceSufficient) {
+      setErrorMessage('Insufficient balance to complete the subscription.');
       return;
     }
 
     try {
-      // Calculate total cost in Wei: DAILY_COST_WEI * durationDays
-      const totalCostWei = terms?.amount * BigInt(durationDays);
-
-      // Convert total cost to MMC tokens as a string
-      const totalCostMMC = ethers.formatUnits(totalCostWei, 18); // Converts Wei to MMC
-
-      console.log('Total cost: ', totalCostMMC);
-      console.log('Holder addresses: ', profile?.ownedBy?.address);
-
-      // Subscribe using the amount in tokens (as a string)
+      // Proceed with the subscription using the calculated amount
       await subscribe({
         holderAddress: profile?.ownedBy?.address as Address,
         amount: totalCostMMC,
-      }); // amount is now in MMC tokens as a string
+      });
     } catch (err) {
       console.error(err);
       setErrorMessage('Failed to activate subscription.');
     }
   };
 
-  // Calculate total cost in MMC for display (convert from Wei)
-  const duration = customDuration || selectedDuration || '0';
-  const durationDays = parseInt(duration);
-  const minDays = 7;
-  const isCustomDurationInvalid =
-    customDuration && (isNaN(durationDays) || durationDays < minDays);
-
-  let totalCostMMC = '0.00';
-  if (!isCustomDurationInvalid && durationDays >= minDays && terms?.amount) {
-    const totalCostWei = terms?.amount * BigInt(durationDays);
-    totalCostMMC = ethers.formatUnits(totalCostWei, 18); // Convert Wei to MMC
-  }
-
   return (
     <>
       <Dialog open={isOpen} onClose={onClose} fullWidth maxWidth="xs">
-        <DialogTitle sx={{ pb: 2 }}>Subscribe to profile</DialogTitle>
+        <DialogTitle sx={{ pb: 2 }}>Subscribe to Profile</DialogTitle>
         <Divider sx={{ mb: 2, borderStyle: 'dashed' }} />
         <DialogContent>
-          {loadingTerms ? (
-            <LinearProgress color="inherit" sx={{ width: 1, maxWidth: 360, marginTop: '16px', alignSelf: 'center' }} />
+          {loadingTerms || balanceLoading ? (
+            <LinearProgress
+              color="inherit"
+              sx={{ width: 1, maxWidth: 360, marginTop: '16px', alignSelf: 'center' }}
+            />
           ) : (
             <>
-              <Typography
-                variant="body2"
-                color="textSecondary"
-                sx={{ mb: 3 }}
-              >
+              <Typography variant="body2" color="textSecondary" sx={{ mb: 3 }}>
                 Select the duration of your subscription.
               </Typography>
               <Stack spacing={2}>
@@ -174,7 +212,7 @@ export const SubscribeProfileModal = ({
                         '&:hover': { opacity: 1 },
                       }}
                     >
-                      <Typography align={'center'} variant="body1" fontWeight="bold">
+                      <Typography align="center" variant="body1" fontWeight="bold">
                         {option.title}
                       </Typography>
                     </Paper>
@@ -195,11 +233,7 @@ export const SubscribeProfileModal = ({
               <Divider sx={{ my: 2, borderStyle: 'dashed' }} />
 
               <Stack spacing={1}>
-                <Typography
-                  variant="body2"
-                  color="textSecondary"
-                  sx={{ mb: 1 }}
-                >
+                <Typography variant="body2" color="textSecondary" sx={{ mb: 1 }}>
                   Total Cost:
                 </Typography>
                 {!isCustomDurationInvalid && durationDays >= minDays ? (
@@ -219,23 +253,22 @@ export const SubscribeProfileModal = ({
                     </Typography>
                   </Stack>
                 ) : (
-                  <Typography
-                    variant="body2"
-                    color="error"
-                    sx={{ mt: 1 }}
-                  >
+                  <Typography variant="body2" color="error" sx={{ mt: 1 }}>
                     Please enter a valid number of days (minimum {minDays} days).
                   </Typography>
                 )}
               </Stack>
 
+              {/* Display error if balance is insufficient */}
+              {balanceData && !isBalanceSufficient && (
+                <Typography variant="body2" color="error" align="center" sx={{ mt: 2 }}>
+                  Insufficient balance to complete the subscription.
+                </Typography>
+              )}
+
+              {/* Display any error messages */}
               {errorMessage && (
-                <Typography
-                  variant="body2"
-                  color="error"
-                  align="center"
-                  sx={{ mt: 2 }}
-                >
+                <Typography variant="body2" color="error" align="center" sx={{ mt: 2 }}>
                   {errorMessage}
                 </Typography>
               )}
@@ -253,11 +286,7 @@ export const SubscribeProfileModal = ({
                 variant="contained"
                 sx={{ backgroundColor: '#fff' }}
                 onClick={handleSubscribe}
-                disabled={
-                  loading ||
-                  (!selectedDuration && !customDuration) ||
-                  !!isCustomDurationInvalid
-                }
+                disabled={isButtonDisabled}
                 loading={loading}
               >
                 Subscribe
@@ -266,6 +295,8 @@ export const SubscribeProfileModal = ({
           </>
         )}
       </Dialog>
+
+      {/* Success message Snackbar */}
       <Snackbar
         open={!!successMessage}
         autoHideDuration={6000}
@@ -282,6 +313,7 @@ export const SubscribeProfileModal = ({
         </Alert>
       </Snackbar>
 
+      {/* Error message Snackbar */}
       <Snackbar
         open={!!errorMessage}
         autoHideDuration={6000}
@@ -289,11 +321,7 @@ export const SubscribeProfileModal = ({
         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
         sx={{ zIndex: 1200 }}
       >
-        <Alert
-          onClose={() => setErrorMessage('')}
-          severity="error"
-          sx={{ width: '100%' }}
-        >
+        <Alert onClose={() => setErrorMessage('')} severity="error" sx={{ width: '100%' }}>
           {errorMessage}
         </Alert>
       </Snackbar>

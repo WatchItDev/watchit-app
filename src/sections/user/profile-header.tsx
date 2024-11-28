@@ -120,18 +120,18 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
     attestation,
     loading: attestationLoading,
     refetch: refetchAttestation,
-  } = useGetAttestation(sessionData?.profile?.ownedBy?.address as Address, profile.ownedBy.address as Address);
+  } = useGetAttestation(sessionData?.profile?.ownedBy?.address as Address, profile?.ownedBy?.address as Address);
   const {
     hasAccess,
     loading: accessLoading,
     fetching: accessFetchingLoading,
     error: accessError,
     refetch: refetchAccess,
-  } = useHasAccess(profile.ownedBy.address as Address);
+  } = useHasAccess(profile?.ownedBy?.address as Address);
   const {
     isAuthorized,
     loading: authorizedLoading,
-  } = useIsPolicyAuthorized(GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS, profile.ownedBy.address as Address);
+  } = useIsPolicyAuthorized(GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS, profile?.ownedBy?.address as Address);
 
   useEffect(() => {
     if (open) {
@@ -398,7 +398,7 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
 
 
                 {profile?.id !== sessionData?.profile?.id && (
-                  <FollowUnfollowButton profile={profile} />
+                  <FollowUnfollowButton profileId={profile?.id} />
                 )}
                 <Button
                   onMouseEnter={handleOpenShare}

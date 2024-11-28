@@ -20,10 +20,11 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 // @ts-ignore
 import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
+import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 
 // Metadatos de la película en una constante
 const movieMetadata = {
-  title: "Infinite Skies (collectable 4)",
+  title: "Infinite Skies (collectable 7)",
   synopsis: "In a world where gravity is no longer a constant, humanity has learned to live in the clouds. A young inventor discovers a way to unlock the secrets of flight, but dangerous forces are ready to exploit his discoveries for their own gain.",
   genres: ["Sci-Fi", "Adventure"],
   releaseDate: "2022-07-11",
@@ -70,7 +71,6 @@ const movieMetadata = {
 };
 
 const TIP_ACTION_MODULE_ADDRESS = '0xe95A8326EBd29B6574875806474d6f9734De80A5';
-const MMC_ADDRESS = '0xdC2E7C4444730980CEB8982CfC8A1c4902fa36bE';
 
 // Función para subir los metadatos a Pinata
 const uploadToPinata = async (metadata: any) => {
@@ -174,7 +174,7 @@ export default function OverviewFilePage() {
       console.log(metadataUri)
 
       // Obtener la moneda MMC
-      const mmc = data?.find((el) => (el.address === MMC_ADDRESS))
+      const mmc = data?.find((el) => (el.address === GLOBAL_CONSTANTS.MMC_ADDRESS))
 
       if (!mmc) {
         console.error('Currency not found');

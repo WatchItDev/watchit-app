@@ -2,7 +2,6 @@ import Box from '@mui/material/Box';
 import { LimitType, publicationId, usePublications } from '@lens-protocol/react-web';
 
 import PublicationCommentItem from './publication-comment-item.tsx';
-import RepliesList from './movie-replies-list';
 import LinearProgress from '@mui/material/LinearProgress';
 
 // ----------------------------------------------------------------------
