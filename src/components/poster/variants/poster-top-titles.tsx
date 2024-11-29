@@ -40,7 +40,7 @@ const PosterTopTitles = ({ title, images, id, synopsis }: Poster) => {
         borderRadius: 10,
         position: 'relative',
         padding: {
-          xs: '90px 0px 0px 0px',
+          xs: '0',
           sm: '0',
           md: '0',
           lg: '90px !important',
@@ -73,6 +73,7 @@ const PosterTopTitles = ({ title, images, id, synopsis }: Poster) => {
         >
           <Image
             style={{
+              padding: '15px',
               borderRadius: '10px',
               display: 'flex',
               alignItems: 'center',

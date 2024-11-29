@@ -65,7 +65,7 @@ export default function CarouselCreators({ data, category }: Props) {
       >
         <Carousel key={`caroussel-${category}`} ref={carousel.carouselRef} {...carousel.carouselSettings}>
           {data.map((post: any) => (
-            <Box key={`ca-${category}-${post.id}`} sx={{ px: 0.75, display:'flex !important', height: '100%' }}>
+            <Box key={`ca-${category}-${post.id}`} sx={{ display:'flex !important', height: '100%' }}>
               <PosterCreators
                 id={post.id}
                 title={post.title}
