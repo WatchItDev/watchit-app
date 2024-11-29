@@ -3,8 +3,6 @@ import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 // theme
 import { hideScroll } from '@src/theme/css';
-// hooks
-import { useMockedUser } from '@src/hooks/use-mocked-user';
 // components
 import { NavSectionVerticalMini } from '@src/components/nav-section/mini/nav-section-vertical-mini.tsx';
 // Projects
@@ -15,7 +13,6 @@ import {NavToggleButton, Searchbar} from '../_common';
 // ----------------------------------------------------------------------
 
 export default function NavVerticalMini() {
-  const { user } = useMockedUser();
 
   const navData = useNavData();
 
@@ -51,7 +48,7 @@ export default function NavVerticalMini() {
         <NavSectionVerticalMini
           data={navData}
           config={{
-            currentRole: user?.role || 'admin',
+            currentRole: 'admin',
           }}
         />
       </Stack>
