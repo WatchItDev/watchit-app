@@ -60,7 +60,7 @@ export default function ProfileHome({ profile, noPaddings = false }: ProfileHome
           key={publication.id}
           sx={{
             flex: `0 1 ${itemWidth}px`,
-            maxWidth: `${maxItemWidth}px`,
+            //maxWidth: `${maxItemWidth}px`,
           }}
         >
           <ProfilePublicationItem publication={publication} />
