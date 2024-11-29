@@ -218,7 +218,7 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
             height: '40px',
             minWidth: '40px',
             position: 'absolute',
-            zIndex: 99999,
+            zIndex: 99,
             right: 5,
             top: 5,
           }}
