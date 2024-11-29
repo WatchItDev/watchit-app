@@ -35,7 +35,7 @@ export default function CarouselTopTitles({ data, category }: Props) {
     ],
   });
 
-  const getMediaUri = (cid: string): string => `https://ipfs.io/ipfs/${cid.replace('ipfs://', '')}`
+  const getMediaUri = (cid: string): string => `https://ipfs.io/ipfs/${cid?.replace?.('ipfs://', '')}`
 
   const getWallpaperCid = (post: any): string => post?.metadata?.attachments?.find((el: any) => el.altTag === 'Wallpaper')?.image?.raw?.uri
   const getPosterCid = (post: any): string => post?.metadata?.attachments?.find((el: any) => el.altTag === 'Vertical Poster')?.image?.raw?.uri
@@ -83,7 +83,7 @@ export default function CarouselTopTitles({ data, category }: Props) {
               <PosterTopTitles
                 id={post?.id}
                 title={post?.metadata?.title}
-                genre={getMovieGenres(post)?.split(', ')}
+                genre={getMovieGenres(post)?.split?.(', ')}
                 images={{
                   vertical: getMediaUri(getPosterCid(post)),
                   horizontal: getMediaUri(getPosterHorizontalCid(post)),
