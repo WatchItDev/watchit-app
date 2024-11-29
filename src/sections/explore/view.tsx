@@ -112,12 +112,163 @@ export default function ExploreView() {
       desc: 'Description for the content trending during the week ',
       title: 'Jane Doe',
       image: 'https://static.euronews.com/articles/stories/08/35/93/32/1440x810_cmsv2_c7416dac-8a99-57b8-b728-b28d69040539-8359332.jpg'
-    }
-  ];
-
-  const trendingTopics = [
-    ...topic,
-    ...topic
+    },
+    {
+      id: 5,
+      desc: 'Description for the content trending during the week ',
+      title: 'Jane Doe',
+      image: 'https://static.euronews.com/articles/stories/08/35/93/32/1440x810_cmsv2_c7416dac-8a99-57b8-b728-b28d69040539-8359332.jpg'
+    },
+    {
+      id: 6,
+      desc: 'Description for the content trending during the week ',
+      title: 'Jane Doe',
+      image: 'https://static.euronews.com/articles/stories/08/35/93/32/1440x810_cmsv2_c7416dac-8a99-57b8-b728-b28d69040539-8359332.jpg'
+    },
+    {
+      id: 7,
+      desc: 'Description for the content trending during the week ',
+      title: 'Jane Doe',
+      image: 'https://static.euronews.com/articles/stories/08/35/93/32/1440x810_cmsv2_c7416dac-8a99-57b8-b728-b28d69040539-8359332.jpg'
+    },
+    {
+      id: 8,
+      desc: 'Description for the content trending during the week ',
+      title: 'Jane Doe',
+      image: 'https://static.euronews.com/articles/stories/08/35/93/32/1440x810_cmsv2_c7416dac-8a99-57b8-b728-b28d69040539-8359332.jpg'
+    },
+    {
+      id: 9,
+      desc: 'Description for the content trending during the week ',
+      title: 'Jane Doe',
+      image: 'https://static.euronews.com/articles/stories/08/35/93/32/1440x810_cmsv2_c7416dac-8a99-57b8-b728-b28d69040539-8359332.jpg'
+    },
+    {
+      id: 10,
+      desc: 'Description for the content trending during the week ',
+      title: 'Jane Doe',
+      image: 'https://static.euronews.com/articles/stories/08/35/93/32/1440x810_cmsv2_c7416dac-8a99-57b8-b728-b28d69040539-8359332.jpg'
+    },
+    {
+      id: 11,
+      desc: 'Description for the content trending during the week ',
+      title: 'Jane Doe',
+      image: 'https://static.euronews.com/articles/stories/08/35/93/32/1440x810_cmsv2_c7416dac-8a99-57b8-b728-b28d69040539-8359332.jpg'
+    },
+    {
+      id: 12,
+      desc: 'Description for the content trending during the week ',
+      title: 'Jane Doe',
+      image: 'https://static.euronews.com/articles/stories/08/35/93/32/1440x810_cmsv2_c7416dac-8a99-57b8-b728-b28d69040539-8359332.jpg'
+    },
+    {
+      id: 13,
+      desc: 'Description for the content trending during the week ',
+      title: 'Jane Doe',
+      image: 'https://static.euronews.com/articles/stories/08/35/93/32/1440x810_cmsv2_c7416dac-8a99-57b8-b728-b28d69040539-8359332.jpg'
+    },
+    {
+      id: 14,
+      desc: 'Description for the content trending during the week ',
+      title: 'Jane Doe',
+      image: 'https://static.euronews.com/articles/stories/08/35/93/32/1440x810_cmsv2_c7416dac-8a99-57b8-b728-b28d69040539-8359332.jpg'
+    },
+    {
+      id: 15,
+      desc: 'Description for the content trending during the week ',
+      title: 'Jane Doe',
+      image: 'https://static.euronews.com/articles/stories/08/35/93/32/1440x810_cmsv2_c7416dac-8a99-57b8-b728-b28d69040539-8359332.jpg'
+    },
+    {
+      id: 16,
+      desc: 'Description for the content trending during the week ',
+      title: 'Jane Doe',
+      image: 'https://static.euronews.com/articles/stories/08/35/93/32/1440x810_cmsv2_c7416dac-8a99-57b8-b728-b28d69040539-8359332.jpg'
+    },
+    {
+      id: 17,
+      desc: 'Description for the content trending during the week ',
+      title: 'Jane Doe',
+      image: 'https://static.euronews.com/articles/stories/08/35/93/32/1440x810_cmsv2_c7416dac-8a99-57b8-b728-b28d69040539-8359332.jpg'
+    },
+    {
+      id: 18,
+      desc: 'Description for the content trending during the week ',
+      title: 'Jane Doe',
+      image: 'https://static.euronews.com/articles/stories/08/35/93/32/1440x810_cmsv2_c7416dac-8a99-57b8-b728-b28d69040539-8359332.jpg'
+    },
+    {
+      id: 19,
+      desc: 'Description for the content trending during the week ',
+      title: 'Jane Doe',
+      image: 'https://static.euronews.com/articles/stories/08/35/93/32/1440x810_cmsv2_c7416dac-8a99-57b8-b728-b28d69040539-8359332.jpg'
+    },
+    {
+      id: 20,
+      desc: 'Description for the content trending during the week ',
+      title: 'Jane Doe',
+      image: 'https://static.euronews.com/articles/stories/08/35/93/32/1440x810_cmsv2_c7416dac-8a99-57b8-b728-b28d69040539-8359332.jpg'
+    },
+    {
+      id: 21,
+      desc: 'Description for the content trending during the week ',
+      title: 'Jane Doe',
+      image: 'https://static.euronews.com/articles/stories/08/35/93/32/1440x810_cmsv2_c7416dac-8a99-57b8-b728-b28d69040539-8359332.jpg'
+    },
+    {
+      id: 22,
+      desc: 'Description for the content trending during the week ',
+      title: 'Jane Doe',
+      image: 'https://static.euronews.com/articles/stories/08/35/93/32/1440x810_cmsv2_c7416dac-8a99-57b8-b728-b28d69040539-8359332.jpg'
+    },
+    {
+      id: 23,
+      desc: 'Description for the content trending during the week ',
+      title: 'Jane Doe',
+      image: 'https://static.euronews.com/articles/stories/08/35/93/32/1440x810_cmsv2_c7416dac-8a99-57b8-b728-b28d69040539-8359332.jpg'
+    },
+    {
+      id: 24,
+      desc: 'Description for the content trending during the week ',
+      title: 'Jane Doe',
+      image: 'https://static.euronews.com/articles/stories/08/35/93/32/1440x810_cmsv2_c7416dac-8a99-57b8-b728-b28d69040539-8359332.jpg'
+    },
+    {
+      id: 25,
+      desc: 'Description for the content trending during the week ',
+      title: 'Jane Doe',
+      image: 'https://static.euronews.com/articles/stories/08/35/93/32/1440x810_cmsv2_c7416dac-8a99-57b8-b728-b28d69040539-8359332.jpg'
+    },
+    {
+      id: 26,
+      desc: 'Description for the content trending during the week ',
+      title: 'Jane Doe',
+      image: 'https://static.euronews.com/articles/stories/08/35/93/32/1440x810_cmsv2_c7416dac-8a99-57b8-b728-b28d69040539-8359332.jpg'
+    },
+    {
+      id: 27,
+      desc: 'Description for the content trending during the week ',
+      title: 'Jane Doe',
+      image: 'https://static.euronews.com/articles/stories/08/35/93/32/1440x810_cmsv2_c7416dac-8a99-57b8-b728-b28d69040539-8359332.jpg'
+    },
+    {
+      id: 28,
+      desc: 'Description for the content trending during the week ',
+      title: 'Jane Doe',
+      image: 'https://static.euronews.com/articles/stories/08/35/93/32/1440x810_cmsv2_c7416dac-8a99-57b8-b728-b28d69040539-8359332.jpg'
+    },
+    {
+      id: 29,
+      desc: 'Description for the content trending during the week ',
+      title: 'Jane Doe',
+      image: 'https://static.euronews.com/articles/stories/08/35/93/32/1440x810_cmsv2_c7416dac-8a99-57b8-b728-b28d69040539-8359332.jpg'
+    },
+    {
+      id: 30,
+      desc: 'Description for the content trending during the week ',
+      title: 'Jane Doe',
+      image: 'https://static.euronews.com/articles/stories/08/35/93/32/1440x810_cmsv2_c7416dac-8a99-57b8-b728-b28d69040539-8359332.jpg'
+    },
   ];
 
   return (
@@ -128,9 +279,14 @@ export default function ExploreView() {
           <CarouselPosterMini data={movieArr} />
         </CarouselSection>
 
-        <Box sx={{ mt: 3 }}>
+        <Box sx={{ mt: 3, maxWidth: '100vw !important' }}>
           <CarouselSection title="Latest creators">
-            <CarouselCreators data={trendingTopics} />
+            <CarouselCreators
+              data={topic}
+              category="latest"
+              minItemWidth={250}
+              maxItemWidth={400}
+            />
           </CarouselSection>
         </Box>
       </Stack>

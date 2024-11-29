@@ -133,6 +133,8 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
     loading: authorizedLoading,
   } = useIsPolicyAuthorized(GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS, profile?.ownedBy?.address as Address);
 
+  const attestationAddress = `0x${BigInt(attestation ?? '').toString(16)}`
+
   useEffect(() => {
     if (open) {
       handleClose();
@@ -631,8 +633,8 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
                 >
                   <Typography color="text.secondary">Attestation</Typography>
                   <OpenableText
-                    label={truncateAddress(`${attestation}`)}
-                    url={`${urlAttestationBase}${attestation}`}
+                    label={truncateAddress(attestationAddress)}
+                    url={`${urlAttestationBase}${attestationAddress}`}
                   />
                 </Stack>
               </>

@@ -1,60 +1,107 @@
-// @mui
+import { useState, useEffect, useRef } from 'react';
 import Box from '@mui/material/Box';
 import Carousel, { CarouselArrows, useCarousel } from '@src/components/carousel/index';
-import {TrendingTopicsType} from "@src/sections/explore/view.tsx";
-import PosterCreators from "@src/components/poster/variants/poster-creators.tsx";
+import { TrendingTopicsType } from '@src/sections/explore/view.tsx';
+import PosterCreators from '@src/components/poster/variants/poster-creators.tsx';
+import { LoadingScreen } from '@src/components/loading-screen';
+
 // ----------------------------------------------------------------------
 
 type Props = {
-  data: TrendingTopicsType [],
-  category?: string
+  data: TrendingTopicsType[];
+  category?: string;
+  minItemWidth: number;
+  maxItemWidth: number;
 };
 
-export default function CarouselCreators({ data, category }: Props) {
+export default function CarouselCreators({ data, minItemWidth, maxItemWidth }: Props) {
+  const [itemsPerSlide, setItemsPerSlide] = useState(1);
+  const [slideData, setSlideData] = useState<TrendingTopicsType[][]>([]);
+  const [loading, setLoading] = useState(true);
+  const parentRef = useRef<HTMLDivElement>(null);
+
   const carousel = useCarousel({
-    className: "center",
-    // centerMode: true,
-    infinite: true,
-    centerPadding: "60px",
-    slidesToShow: 3,
+    infinite: false,
+    slidesToShow: 1,
     speed: 500,
-    rows: 2,
+    rows: 1,
     slidesPerRow: 1,
     lazyLoad: 'progressive',
-    responsive: [
-      {
-        breakpoint: 1024,
-        settings: { slidesToShow: 1 },
-      },
-      {
-        breakpoint: 600,
-        settings: { slidesToShow: 1 },
-      },
-      {
-        breakpoint: 480,
-        settings: { slidesToShow: 1 },
-      },
-    ],
   });
+
+  const calculateItemsPerSlide = (parentWidth: number) => {
+    let maxItems = Math.floor(parentWidth / minItemWidth);
+    let minItems = Math.floor(parentWidth / maxItemWidth);
+    let items = maxItems;
+
+    while (items >= minItems) {
+      const itemWidth = parentWidth / items;
+      if (itemWidth >= minItemWidth && itemWidth <= maxItemWidth) {
+        break;
+      }
+      items--;
+    }
+
+    if (items < 1) items = 1;
+
+    return items;
+  };
+
+  useEffect(() => {
+    if (!parentRef.current) return;
+
+    const observer = new ResizeObserver((entries) => {
+      for (let entry of entries) {
+        const parentWidth = entry.contentRect.width;
+        const items = calculateItemsPerSlide(parentWidth);
+        setItemsPerSlide(items);
+      }
+    });
+
+    observer.observe(parentRef.current);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [minItemWidth, maxItemWidth]);
+
+  useEffect(() => {
+    if (parentRef.current) {
+      const parentWidth = parentRef.current.offsetWidth;
+      const items = calculateItemsPerSlide(parentWidth);
+      setItemsPerSlide(items);
+      setLoading(false);
+    }
+  }, [minItemWidth, maxItemWidth]);
+
+  useEffect(() => {
+    const chunkSize = itemsPerSlide * 2;
+    const chunks: TrendingTopicsType[][] = [];
+    for (let i = 0; i < data.length; i += chunkSize) {
+      chunks.push(data.slice(i, i + chunkSize));
+    }
+    setSlideData(chunks);
+  }, [itemsPerSlide, data]);
+
+  // if (loading) {
+  //   return <LoadingScreen />;
+  // }
 
   return (
     <Box
+      ref={parentRef}
       sx={{
         overflow: 'hidden',
         position: 'relative',
         '.slick-track': {
-          height: '100%'
+          height: '100%',
         },
         '.slick-slide': {
           height: '100%',
-          minHeight: '100%',
-          maxHeight: '100%'
         },
         '.slick-slide > div': {
           height: '100%',
-          minHeight: '100%',
-          maxHeight: '100%'
-        }
+        },
       }}
     >
       <CarouselArrows
@@ -63,19 +110,48 @@ export default function CarouselCreators({ data, category }: Props) {
         onNext={carousel.onNext}
         onPrev={carousel.onPrev}
       >
-        <Carousel key={`caroussel-${category}`} ref={carousel.carouselRef} {...carousel.carouselSettings}>
-          {data.map((post: any) => (
-            <Box key={`ca-${category}-${post.id}`} sx={{ display:'flex !important', height: '100%' }}>
-              <PosterCreators
-                id={post.id}
-                title={post.title}
-                desc={post.desc}
-                image={post.image}
-              />
-            </Box>
+        <Carousel ref={carousel.carouselRef} {...carousel.carouselSettings}>
+          {slideData.map((slideItems, index) => (
+            <Slide key={`slide-${index}`} items={slideItems} itemsPerRow={itemsPerSlide} />
           ))}
         </Carousel>
       </CarouselArrows>
+    </Box>
+  );
+}
+
+type SlideProps = {
+  items: TrendingTopicsType[];
+  itemsPerRow: number;
+};
+
+function Slide({ items, itemsPerRow }: SlideProps) {
+  const row1 = items.slice(0, itemsPerRow);
+  const row2 = items.slice(itemsPerRow, itemsPerRow * 2);
+  const itemWidthPercent = 100 / itemsPerRow;
+
+  return (
+    <Box>
+      {[row1, row2].map((rowItems, rowIndex) => (
+        <Box key={`row-${rowIndex}`} sx={{ display: 'flex' }}>
+          {rowItems.map((item) => (
+            <Box
+              key={item.id}
+              sx={{
+                flexBasis: `${itemWidthPercent}%`,
+                maxWidth: `${itemWidthPercent}%`,
+              }}
+            >
+              <PosterCreators
+                id={item.id}
+                title={item.title}
+                desc={item.desc}
+                image={item.image}
+              />
+            </Box>
+          ))}
+        </Box>
+      ))}
     </Box>
   );
 }
