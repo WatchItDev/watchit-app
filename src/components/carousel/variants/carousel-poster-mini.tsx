@@ -77,7 +77,7 @@ export default function CarouselPosterMini({ data, category }: Props) {
       >
         <Carousel ref={carousel.carouselRef} {...carousel.carouselSettings}>
           {data.map((post: any) => (
-            <Box key={`${category}-${post.id}`} sx={{ display:'flex !important', height: '100%' }}>
+            <Box key={`${category}-${post.id}`} sx={{ px: 0.75, display:'flex !important', height: '100%' }}>
               <PosterHorizontal
                 id={post?.id}
                 title={post?.metadata?.title}

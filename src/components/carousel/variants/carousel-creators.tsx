@@ -1,9 +1,10 @@
 import { useState, useEffect, useRef } from 'react';
 import Box from '@mui/material/Box';
-import Carousel, { CarouselArrows, useCarousel } from '@src/components/carousel/index';
+import Carousel, { useCarousel } from '@src/components/carousel/index';
 import { TrendingTopicsType } from '@src/sections/explore/view.tsx';
 import PosterCreators from '@src/components/poster/variants/poster-creators.tsx';
-import { LoadingScreen } from '@src/components/loading-screen';
+import {CarouselSection} from "@src/components/poster/carousel-section.tsx";
+import NavigationArrows from "@src/components/carousel/NavigationArrows.tsx";
 
 // ----------------------------------------------------------------------
 
@@ -88,6 +89,7 @@ export default function CarouselCreators({ data, minItemWidth, maxItemWidth }: P
   // }
 
   return (
+    <CarouselSection title="Latest creators" action={<NavigationArrows next={carousel.onNext} prev={carousel.onPrev} />}>
     <Box
       ref={parentRef}
       sx={{
@@ -104,19 +106,14 @@ export default function CarouselCreators({ data, minItemWidth, maxItemWidth }: P
         },
       }}
     >
-      <CarouselArrows
-        filled
-        shape="rounded"
-        onNext={carousel.onNext}
-        onPrev={carousel.onPrev}
-      >
-        <Carousel ref={carousel.carouselRef} {...carousel.carouselSettings}>
-          {slideData.map((slideItems, index) => (
-            <Slide key={`slide-${index}`} items={slideItems} itemsPerRow={itemsPerSlide} />
-          ))}
-        </Carousel>
-      </CarouselArrows>
+      <Carousel ref={carousel.carouselRef} {...carousel.carouselSettings}>
+        {slideData.map((slideItems, index) => (
+          <Slide key={`slide-${index}`} items={slideItems} itemsPerRow={itemsPerSlide} />
+        ))}
+      </Carousel>
+
     </Box>
+    </CarouselSection>
   );
 }
 

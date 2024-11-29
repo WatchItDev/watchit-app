@@ -83,7 +83,7 @@ export default function CarouselTopTitles({ data, category }: Props) {
               <PosterTopTitles
                 id={post?.id}
                 title={post?.metadata?.title}
-                genre={getMovieGenres(post).split(', ')}
+                genre={getMovieGenres(post)?.split(', ')}
                 images={{
                   vertical: getMediaUri(getPosterCid(post)),
                   horizontal: getMediaUri(getPosterHorizontalCid(post)),
