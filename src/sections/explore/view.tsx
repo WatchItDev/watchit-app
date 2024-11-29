@@ -34,6 +34,21 @@ export type TrendingTopicsType = {
   desc: string
 }
 
+type ImageType = {
+  vertical: string,
+  horizontal: string
+  wallpaper: string
+}
+export type LatestCreatorsType = {
+  id: string,
+  title: string,
+  genre: string[],
+  images: ImageType,
+  likes: number,
+  synopsis: string,
+  year: number,
+}
+
 export default function ExploreView() {
   // const { data: sessionData }: ReadResult<ProfileSession> = useSession();
   const { data, loading }: any = usePublications({
@@ -275,7 +290,11 @@ export default function ExploreView() {
       <Stack spacing={3}>
         <CarouselTopTitles data={movieArr} />
 
-        <CarouselPosterMini data={movieArr} />
+        <CarouselPosterMini data={movieArr}
+                            category="publications"
+                            minItemWidth={250}
+                            maxItemWidth={400}
+        />
 
         <Box sx={{ mt: 3, maxWidth: '100vw !important' }}>
             <CarouselCreators

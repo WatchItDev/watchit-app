@@ -1,56 +1,101 @@
 // @mui
 import Box from '@mui/material/Box';
-import Carousel, { CarouselArrows, useCarousel } from '@src/components/carousel/index';
+import Carousel, { useCarousel } from '@src/components/carousel/index';
 // @ts-ignore
 import { type Post } from '@lens-protocol/api-bindings/dist/declarations/src/lens/graphql/generated';
-import moment from 'moment/moment';
+
 import PosterHorizontal from "@src/components/poster/variants/poster-horizontal.tsx";
+import NavigationArrows from "@src/components/carousel/NavigationArrows.tsx";
+import {CarouselSection} from "@src/components/poster/carousel-section.tsx";
+import {useEffect, useRef, useState} from "react";
+import {LatestCreatorsType} from "@src/sections/explore/view.tsx";
 
 // ----------------------------------------------------------------------
-
 type Props = {
   data: Post[]
   category?: string
+  minItemWidth: number;
+  maxItemWidth: number;
 };
 
-export default function CarouselPosterMini({ data, category }: Props) {
+export default function CarouselPosterMini({ data, minItemWidth, maxItemWidth }: Props) {
+  const [itemsPerSlide, setItemsPerSlide] = useState(1);
+  const [slideData, setSlideData] = useState<LatestCreatorsType[][]>([]);
+  const [loading, setLoading] = useState(true);
+  const parentRef = useRef<HTMLDivElement>(null);
+
   const carousel = useCarousel({
-    slidesToShow: 4,
+    slidesToShow: 1,
+    speed: 500,
+    rows: 1,
+    slidesPerRow: 1,
     adaptiveHeight: true,
     focusOnSelect: true,
     swipeToSlide: true,
-    lazyLoad: 'progressive',
-    responsive: [
-      {
-        breakpoint: 1024,
-        settings: { slidesToShow: 4 },
-      },
-      {
-        breakpoint: 600,
-        settings: { slidesToShow: 2 },
-      },
-      {
-        breakpoint: 480,
-        settings: { slidesToShow: 1 },
-      },
-    ],
+    lazyLoad: 'progressive'
   });
 
-  const getMediaUri = (cid: string): string => `https://ipfs.io/ipfs/${cid?.replace?.('ipfs://', '')}`
+  const calculateItemsPerSlide = (parentWidth: number) => {
+    let maxItems = Math.floor(parentWidth / minItemWidth);
+    let minItems = Math.floor(parentWidth / maxItemWidth);
+    let items = maxItems;
 
-  const getWallpaperCid = (post: any): string => post?.metadata?.attachments?.find((el: any) => el.altTag === 'Wallpaper')?.image?.raw?.uri
-  const getPosterCid = (post: any): string => post?.metadata?.attachments?.find((el: any) => el.altTag === 'Vertical Poster')?.image?.raw?.uri
-  const getPosterHorizontalCid = (post: any): string => post?.metadata?.attachments?.find((el: any) => el.altTag === 'Horizontal Poster')?.image?.raw?.uri
+    while (items >= minItems) {
+      const itemWidth = parentWidth / items;
+      if (itemWidth >= minItemWidth && itemWidth <= maxItemWidth) {
+        break;
+      }
+      items--;
+    }
 
-  const getMovieYear = (post: any): number => {
-    const releaseDate = post?.metadata?.attributes?.find((el: any) => el.key === 'Release Date')?.value;
-    return releaseDate ? +moment(releaseDate).format('YYYY') : 0
-  }
+    if (items < 1) items = 1;
 
-  const getMovieGenres = (post: any): string => post?.metadata?.attributes?.find((el: any) => el.key === 'Genres')?.value
+    return items;
+  };
+
+  useEffect(() => {
+    if (!parentRef.current) return;
+
+    const observer = new ResizeObserver((entries) => {
+      for (let entry of entries) {
+        const parentWidth = entry.contentRect.width;
+        const items = calculateItemsPerSlide(parentWidth);
+        setItemsPerSlide(items);
+      }
+    });
+
+    observer.observe(parentRef.current);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [minItemWidth, maxItemWidth]);
+
+  useEffect(() => {
+    if (parentRef.current) {
+      const parentWidth = parentRef.current.offsetWidth;
+      const items = calculateItemsPerSlide(parentWidth);
+      setItemsPerSlide(items);
+      setLoading(false);
+    }
+  }, [minItemWidth, maxItemWidth]);
+
+
+  useEffect(() => {
+    const chunkSize = itemsPerSlide * 2;
+    const chunks: LatestCreatorsType[][] = [];
+    for (let i = 0; i < data.length; i += chunkSize) {
+      chunks.push(data.slice(i, i + chunkSize));
+    }
+    setSlideData(chunks);
+
+    console.log('data', chunks)
+  }, [itemsPerSlide, data]);
 
   return (
+    <CarouselSection title="Publications" action={<NavigationArrows next={carousel.onNext} prev={carousel.onPrev} />}>
     <Box
+      ref={parentRef}
       sx={{
         overflow: 'hidden',
         position: 'relative',
@@ -69,32 +114,61 @@ export default function CarouselPosterMini({ data, category }: Props) {
         }
       }}
     >
-      <CarouselArrows
-        filled
-        shape="rounded"
-        onNext={carousel.onNext}
-        onPrev={carousel.onPrev}
-      >
         <Carousel ref={carousel.carouselRef} {...carousel.carouselSettings}>
-          {data.map((post: any) => (
-            <Box key={`${category}-${post.id}`} sx={{ px: 0.75, display:'flex !important', height: '100%' }}>
+          {slideData.map((slideItems, index) => (
+            <Slide key={`slide-publications-${index}`} items={slideItems} itemsPerRow={itemsPerSlide} />
+          ))}
+        </Carousel>
+    </Box>
+    </CarouselSection>
+  );
+}
+
+type SlideProps = {
+  items: LatestCreatorsType[];
+  itemsPerRow: number;
+};
+
+function Slide({ items, itemsPerRow }: SlideProps) {
+  const row1 = items.slice(0, itemsPerRow);
+  const row2 = items.slice(itemsPerRow, itemsPerRow * 2);
+  const itemWidthPercent = 100 / itemsPerRow;
+
+  const getMediaUri = (cid: string): string => `https://ipfs.io/ipfs/${cid?.replace?.('ipfs://', '')}`
+  const getWallpaperCid = (post: any): string => post?.metadata?.attachments?.find((el: any) => el.altTag === 'Wallpaper')?.image?.raw?.uri
+  const getPosterCid = (post: any): string => post?.metadata?.attachments?.find((el: any) => el.altTag === 'Vertical Poster')?.image?.raw?.uri
+  const getPosterHorizontalCid = (post: any): string => post?.metadata?.attachments?.find((el: any) => el.altTag === 'Horizontal Poster')?.image?.raw?.uri
+  const getMovieGenres = (post: any): string => post?.metadata?.attributes?.find((el: any) => el.key === 'Genres')?.value
+
+  return (
+    <Box>
+      {[row1, row2].map((rowItems, rowIndex) => (
+        <Box key={`row-publications-${rowIndex}`} sx={{ display: 'flex' }}>
+          {rowItems.map((post) => (
+            <Box
+              key={post.id}
+              sx={{
+                flexBasis: `${itemWidthPercent}%`,
+                maxWidth: `${itemWidthPercent}%`,
+              }}
+            >
               <PosterHorizontal
-                id={post?.id}
-                title={post?.metadata?.title}
-                genre={getMovieGenres(post)?.split?.(', ')}
+                id={post.id}
+                title={post.title}
                 images={{
                   vertical: getMediaUri(getPosterCid(post)),
                   horizontal: getMediaUri(getPosterHorizontalCid(post)),
                   wallpaper: getMediaUri(getWallpaperCid(post))
                 }}
-                likes={post?.stats?.upvotes ?? 0}
-                synopsis={post?.metadata?.content ?? ''}
-                year={getMovieYear(post)}
+                likes={post.likes}
+                synopsis={post.synopsis}
+                year={post.year}
+                genre={getMovieGenres(post)?.split?.(', ')}
               />
             </Box>
           ))}
-        </Carousel>
-      </CarouselArrows>
+        </Box>
+      ))}
     </Box>
   );
 }
