@@ -98,8 +98,10 @@ const prependProfileIdToUrl = (url: string, profileId: string) => {
 const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderProps>) => {
   const navRef = useRef(null);
   const navRefSocial = useRef(null);
+  const navRefSettings = useRef(null);
   const [openTooltip, setOpenTooltip] = useState(false);
   const [openTooltipShare, setOpenTooltipShare] = useState(false);
+  const [openTooltipSettings, setOpenTooltipSettings] = useState(false);
 
   const theme = useTheme();
   const { data: sessionData }: ReadResult<ProfileSession> = useSession();
@@ -155,6 +157,14 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
 
   const handleCloseShare = useCallback(() => {
     setOpenTooltipShare(false);
+  }, []);
+
+  const handleOpenSettings = useCallback(() => {
+    setOpenTooltipSettings(true);
+  }, []);
+
+  const handleCloseSettings = useCallback(() => {
+    setOpenTooltipSettings(false);
   }, []);
 
   usePublications({
@@ -384,18 +394,45 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
                 )}
 
                 {sessionData?.profile?.id === profile?.id ? (
-                  <LoadingButton
-                    title={'Configure subscription'}
-                    variant={'contained'}
-                    sx={{
-                      minWidth: 120,
-                      backgroundColor: '#fff',
-                    }}
-                    onClick={() => setIsActivateModalOpen(true)}
-                  >
-                    {!isAuthorized && !authorizedLoading  ? 'Activate subscription': 'Update subscription'}
+                  <>
+                    <Button
+                      onMouseEnter={handleOpenSettings}
+                      onMouseLeave={handleCloseSettings}
+                      ref={navRefSettings}
+                      size="medium"
+                      variant="outlined"
+                      sx={{ p: 1, minWidth: '44px' }}
+                      onClick={() => setIsActivateModalOpen(true)}
+                    >
+                      <Iconify icon="ion:logo-usd" width={20} />
+                    </Button>
 
-                  </LoadingButton>
+                    <Popover
+                      open={openTooltipSettings}
+                      anchorEl={navRefSettings.current}
+                      anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+                      transformOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+                      slotProps={{
+                        paper: {
+                          onMouseEnter: handleOpenSettings,
+                          onMouseLeave: handleCloseSettings,
+                          sx: {
+                            mt: 6,
+                            backgroundColor: 'rgba(0,0,0,0.6)',
+                            padding: '8px 20px',
+                            ...(open && {
+                              pointerEvents: 'auto',
+                            }),
+                          },
+                        },
+                      }}
+                      sx={{
+                        pointerEvents: 'none'
+                      }}
+                    >
+                      <Typography>Configure join pricing</Typography>
+                    </Popover>
+                  </>
                 ): <></>}
 
 
@@ -417,13 +454,14 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
                 <Popover
                   open={openTooltipShare}
                   anchorEl={navRefSocial.current}
-                  anchorOrigin={{ vertical: 'center', horizontal: 'right' }}
-                  transformOrigin={{ vertical: 'center', horizontal: 'left' }}
+                  anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+                  transformOrigin={{ vertical: 'bottom', horizontal: 'center' }}
                   slotProps={{
                     paper: {
                       onMouseEnter: handleOpenShare,
                       onMouseLeave: handleCloseShare,
                       sx: {
+                        mt: 6,
                         backgroundColor: 'rgba(0,0,0,0.6)',
                         padding: '8px 20px',
                         ...(open && {
@@ -458,13 +496,14 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
                     <Popover
                       open={openTooltip}
                       anchorEl={navRef.current}
-                      anchorOrigin={{ vertical: 'center', horizontal: 'right' }}
-                      transformOrigin={{ vertical: 'center', horizontal: 'left' }}
+                      anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+                      transformOrigin={{ vertical: 'bottom', horizontal: 'center' }}
                       slotProps={{
                         paper: {
                           onMouseEnter: handleOpen,
                           onMouseLeave: handleClose,
                           sx: {
+                            mt: 6,
                             backgroundColor: 'rgba(0,0,0,0.6)',
                             padding: '8px 20px',
                             ...(open && {
