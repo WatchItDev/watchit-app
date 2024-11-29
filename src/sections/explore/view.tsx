@@ -22,10 +22,9 @@ import { LoadingScreen } from '../../components/loading-screen';
 import { getAccessiblePublications } from '../../utils/publication';
 import {CarouselSection} from "@src/components/poster/carousel-section.tsx";
 import Box from "@mui/material/Box";
-import CarouselTopicsTrending from "@src/components/carousel/variants/carousel-topics-trending.tsx";
 import CarouselTopTitles from "@src/components/carousel/variants/carousel-top-titles.tsx";
 import CarouselCreators from "@src/components/carousel/variants/carousel-creators.tsx";
-import CarouselLatestContent from "@src/components/carousel/variants/carousel-latest-content.tsx";
+
 // import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
 
 // ----------------------------------------------------------------------
@@ -130,20 +129,8 @@ export default function ExploreView() {
         </CarouselSection>
 
         <Box sx={{ mt: 3 }}>
-          <CarouselSection title="Find by creators">
-            <CarouselTopicsTrending data={trendingTopics} />
-          </CarouselSection>
-        </Box>
-
-        <Box sx={{ mt: 3 }}>
           <CarouselSection title="Latest creators">
             <CarouselCreators data={trendingTopics} />
-          </CarouselSection>
-        </Box>
-
-        <Box sx={{ mt: 3 }}>
-          <CarouselSection title="Latest content">
-            <CarouselLatestContent data={trendingTopics} />
           </CarouselSection>
         </Box>
       </Stack>
