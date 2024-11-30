@@ -22,11 +22,11 @@ export default function ProductDetailsPage() {
   return (
     <>
       <Helmet>
-        <title> Dashboard: Movie Details</title>
+        <title> Dashboard: Movie details</title>
       </Helmet>
 
       <Header>
-        <HeaderContent handleBack={handleBack} title="Movie Details" />
+        <HeaderContent handleBack={handleBack} title="Movie details" />
       </Header>
 
       <PublicationDetailsView id={`${id}`} />
