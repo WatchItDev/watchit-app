@@ -31,11 +31,12 @@ interface FollowerItemProps {
   onActionFinished?: () => void
   sx?: SxProps<Theme>
   canFollow?: boolean
+  followButtonMinWidth?: number
 }
 
 // ----------------------------------------------------------------------
 
-export const UserItem = ({ profile, sx, onClick, onActionFinished, canFollow = true }: FollowerItemProps) => {
+export const UserItem = ({ profile, sx, followButtonMinWidth = 120, onClick, onActionFinished, canFollow = true }: FollowerItemProps) => {
   const { data: sessionData }: ReadResult<ProfileSession> = useSession();
   const [isFollowed, setIsFollowed] = useState(false);
   // State to handle error and success messages
@@ -241,7 +242,7 @@ export const UserItem = ({ profile, sx, onClick, onActionFinished, canFollow = t
                 title={isFollowed ? "Unfollow" : "Follow"}
                 variant={isFollowed ? "outlined" : "contained"}
                 sx={{
-                  minWidth: 120,
+                  minWidth: followButtonMinWidth,
                   backgroundColor: isFollowed ? '#24262A' : '#fff'
                 }}
                 onClick={(event) => {

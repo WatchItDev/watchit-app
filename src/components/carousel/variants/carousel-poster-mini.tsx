@@ -12,15 +12,14 @@ import {useEffect, useRef, useState} from "react";
 // ----------------------------------------------------------------------
 type Props = {
   data: Post[]
-  category?: string
+  title?: string
   minItemWidth: number;
   maxItemWidth: number;
 };
 
-export default function CarouselPosterMini({ data, minItemWidth, maxItemWidth }: Props) {
+export default function CarouselPosterMini({ data, title, minItemWidth, maxItemWidth }: Props) {
   const [itemsPerSlide, setItemsPerSlide] = useState(1);
   const [slideData, setSlideData] = useState<Post[][]>([]);
-  const [loading, setLoading] = useState(true);
   const parentRef = useRef<HTMLDivElement>(null);
 
   const carousel = useCarousel({
@@ -76,7 +75,6 @@ export default function CarouselPosterMini({ data, minItemWidth, maxItemWidth }:
       const parentWidth = parentRef.current.offsetWidth;
       const items = calculateItemsPerSlide(parentWidth);
       setItemsPerSlide(items);
-      setLoading(false);
     }
   }, [minItemWidth, maxItemWidth]);
 
@@ -88,12 +86,10 @@ export default function CarouselPosterMini({ data, minItemWidth, maxItemWidth }:
       chunks.push(data.slice(i, i + chunkSize));
     }
     setSlideData(chunks);
-
-    console.log('data', chunks)
   }, [itemsPerSlide, data]);
 
   return (
-    <CarouselSection title="Publications" action={<NavigationArrows next={carousel.onNext} prev={carousel.onPrev} />}>
+    <CarouselSection title={title} action={<NavigationArrows next={carousel.onNext} prev={carousel.onPrev} />}>
     <Box
       ref={parentRef}
       sx={{

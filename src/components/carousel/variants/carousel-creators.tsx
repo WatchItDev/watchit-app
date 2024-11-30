@@ -1,24 +1,23 @@
 import { useState, useEffect, useRef } from 'react';
 import Box from '@mui/material/Box';
 import Carousel, { useCarousel } from '@src/components/carousel/index';
-import { TrendingTopicsType } from '@src/sections/explore/view.tsx';
-import PosterCreators from '@src/components/poster/variants/poster-creators.tsx';
 import {CarouselSection} from "@src/components/poster/carousel-section.tsx";
 import NavigationArrows from "@src/components/carousel/NavigationArrows.tsx";
+import { Profile } from '@lens-protocol/api-bindings';
+import { UserItem } from '@src/components/user-item';
 
 // ----------------------------------------------------------------------
 
 type Props = {
-  data: TrendingTopicsType[];
-  category?: string;
+  data: Profile[];
+  title?: string;
   minItemWidth: number;
   maxItemWidth: number;
 };
 
-export default function CarouselCreators({ data, minItemWidth, maxItemWidth }: Props) {
+export default function CarouselCreators({ data, title, minItemWidth, maxItemWidth }: Props) {
   const [itemsPerSlide, setItemsPerSlide] = useState(1);
-  const [slideData, setSlideData] = useState<TrendingTopicsType[][]>([]);
-  const [loading, setLoading] = useState(true);
+  const [slideData, setSlideData] = useState<Profile[][]>([]);
   const parentRef = useRef<HTMLDivElement>(null);
 
   const carousel = useCarousel({
@@ -71,25 +70,20 @@ export default function CarouselCreators({ data, minItemWidth, maxItemWidth }: P
       const parentWidth = parentRef.current.offsetWidth;
       const items = calculateItemsPerSlide(parentWidth);
       setItemsPerSlide(items);
-      setLoading(false);
     }
   }, [minItemWidth, maxItemWidth]);
 
   useEffect(() => {
     const chunkSize = itemsPerSlide * 2;
-    const chunks: TrendingTopicsType[][] = [];
+    const chunks: Profile[][] = [];
     for (let i = 0; i < data.length; i += chunkSize) {
       chunks.push(data.slice(i, i + chunkSize));
     }
     setSlideData(chunks);
   }, [itemsPerSlide, data]);
 
-  // if (loading) {
-  //   return <LoadingScreen />;
-  // }
-
   return (
-    <CarouselSection title="Latest creators" action={<NavigationArrows next={carousel.onNext} prev={carousel.onPrev} />}>
+    <CarouselSection title={title} action={<NavigationArrows next={carousel.onNext} prev={carousel.onPrev} />}>
     <Box
       ref={parentRef}
       sx={{
@@ -118,7 +112,7 @@ export default function CarouselCreators({ data, minItemWidth, maxItemWidth }: P
 }
 
 type SlideProps = {
-  items: TrendingTopicsType[];
+  items: Profile[];
   itemsPerRow: number;
 };
 
@@ -140,12 +134,7 @@ function Slide({ items, itemsPerRow }: SlideProps) {
                 p: 1,
               }}
             >
-              <PosterCreators
-                id={item.id}
-                title={item.title}
-                desc={item.desc}
-                image={item.image}
-              />
+              <UserItem profile={item} onActionFinished={() => {}} followButtonMinWidth={90} />
             </Box>
           ))}
         </Box>
