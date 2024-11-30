@@ -29,6 +29,13 @@ import { LoadingScreen } from '@src/components/loading-screen';
 import MoviePlayView from '@src/sections/publication/view/publication-play-view.tsx';
 import PublicationDetailMain from '@src/components/publication-detail-main.tsx';
 import { useHasAccess } from '@src/hooks/use-has-access.ts';
+import { SubscribeProfileModal } from '@src/components/subscribe-profile-modal.tsx';
+import LoadingButton from '@mui/lab/LoadingButton';
+import { useDispatch } from 'react-redux';
+import { openLoginModal } from '@redux/auth';
+// @ts-ignore
+import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
+import { ProfileSession, useSession } from '@lens-protocol/react-web';
 
 const MAX_LINES = 5;
 
@@ -44,13 +51,15 @@ export default function PublicationDetailsView({ id }: Props) {
   // STATES HOOKS
   const [showToggle, setShowToggle] = useState(false);
   const [showButton, setShowButton] = useState(false);
+  const [openSubscribeModal, setOpenSubscribeModal] = useState(false);
   const descriptionRef = useRef(null);
+  // REDUX HOOKS
+  const dispatch = useDispatch();
   // LOCAL HOOKS
   const theme = useTheme();
   // LENS HOOKS
-  const { data, loading }: any = usePublication({
-    forId: id as any,
-  });
+  const { data: sessionData }: ReadResult<ProfileSession> = useSession();
+  const { data, loading }: any = usePublication({ forId: id as any });
   // CONSTANTS
   const variants = theme.direction === 'rtl' ? varFade().inLeft : varFade().inRight;
   const ownerAddress = data?.by?.ownedBy?.address;
@@ -58,7 +67,9 @@ export default function PublicationDetailsView({ id }: Props) {
   // PROTOCOL HOOKS
   const {
     hasAccess,
-    loading: accessLoading
+    loading: accessLoading,
+    fetching: accessFetchingLoading,
+    refetch: refetchAccess,
   } = useHasAccess(ownerAddress);
 
   const getMediaUri = (cid: string): string => `https://ipfs.io/ipfs/${cid?.replace('ipfs://', '')}`
@@ -71,8 +82,20 @@ export default function PublicationDetailsView({ id }: Props) {
     setShowToggle(!showToggle);
   };
 
+  console.log('publication')
+  console.log(data)
+
   const handleSubscribe = () => {
-    // Subscribe logic
+    if (!sessionData?.authenticated) return dispatch(openLoginModal());
+
+    setOpenSubscribeModal(true);
+  };
+
+  // Function to handle following a profile
+  const onSubscribe = async () => {
+    console.log('subscribe success');
+    console.log('fetching access and attestation');
+    refetchAccess()
   };
 
   useEffect(() => {
@@ -92,17 +115,18 @@ export default function PublicationDetailsView({ id }: Props) {
 
   return (
     <>
-      <Box sx={{
-        flexDirection: {
-          xs: 'column',
-          lg: 'row'
-        },
-        display: 'flex',
-        width: '100%',
-        maxHeight: '100%',
-        position: 'relative' }}>
-
-
+      <Box
+        sx={{
+          flexDirection: {
+            xs: 'column',
+            lg: 'row'
+          },
+          display: 'flex',
+          width: '100%',
+          maxHeight: '100%',
+          position: 'relative'
+        }}
+      >
           <Stack
             sx={{
               display: 'flex',
@@ -114,8 +138,15 @@ export default function PublicationDetailsView({ id }: Props) {
                 {hasAccess ? (
                   <MoviePlayView publication={data} loading={loading} />
                 ) : (
-                  <Box sx={{ position: 'relative', width: '100%', display: 'flex',
-                    alignItems: 'center', justifyContent: 'center' }}>
+                  <Box
+                    sx={{
+                      position: 'relative',
+                      width: '100%',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center'
+                    }}
+                  >
                     <Box
                       sx={{
                         position: 'absolute',
@@ -159,7 +190,7 @@ export default function PublicationDetailsView({ id }: Props) {
                       }}
                     />
 
-                    <Button
+                    <LoadingButton
                       variant='contained'
                       sx={{
                         color: '#1E1F22',
@@ -170,14 +201,15 @@ export default function PublicationDetailsView({ id }: Props) {
                         position: 'absolute',
                         zIndex: 2,
                       }}
-                      onClick={() => {}}
-                      disabled={false}
+                      onClick={handleSubscribe}
+                      disabled={accessLoading || hasAccess || accessFetchingLoading}
+                      loading={accessLoading || accessFetchingLoading}
                     >
                       <IconPlayerPlay fontSize="large" size={18} />
                       <Typography variant="body2" sx={{ lineHeight: 1 , fontWeight: '700', ml: 1}}>
                         Join
                       </Typography>
-                    </Button>
+                    </LoadingButton>
                   </Box>
                 )}
 
@@ -253,8 +285,20 @@ export default function PublicationDetailsView({ id }: Props) {
             </Card>
           </Stack>
 
-          <PublicationDetailMain post={data} handleSubscribe={handleSubscribe} hasAccess={!!hasAccess} />
+          <PublicationDetailMain
+            post={data}
+            handleSubscribe={handleSubscribe}
+            loadingSubscribe={accessLoading || accessFetchingLoading}
+            subscribeDisabled={accessLoading || hasAccess || accessFetchingLoading}
+            hasAccess={!!hasAccess}
+          />
       </Box>
+      <SubscribeProfileModal
+        isOpen={openSubscribeModal}
+        onClose={() => setOpenSubscribeModal(false)}
+        onSubscribe={onSubscribe}
+        profile={data?.by}
+      />
     </>
   );
 }

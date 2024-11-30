@@ -59,12 +59,14 @@ import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/r
 type Props = {
   post: any
   handleSubscribe: () => void
+  loadingSubscribe: boolean
+  subscribeDisabled: boolean
   hasAccess: boolean
 };
 
 // ----------------------------------------------------------------------
 
-export default function PublicationDetailMain({ post, handleSubscribe, hasAccess }: Props) {
+export default function PublicationDetailMain({ post, handleSubscribe, loadingSubscribe, subscribeDisabled, hasAccess }: Props) {
   // STATES HOOKS
   const [showComments, setShowComments] = useState(false);
   const [openReportModal, setOpenReportModal] = useState(false);
@@ -246,7 +248,7 @@ export default function PublicationDetailMain({ post, handleSubscribe, hasAccess
             {hasAccess ? (
               <LeaveTipCard post={post} />
             ) : (
-              <SubscribeToUnlockCard onSubscribe={handleSubscribe} post={post} />
+              <SubscribeToUnlockCard loadingSubscribe={loadingSubscribe} subscribeDisabled={subscribeDisabled} onSubscribe={handleSubscribe} post={post} />
             )}
           </Box>
 
@@ -324,7 +326,7 @@ export default function PublicationDetailMain({ post, handleSubscribe, hasAccess
                     <CircularProgress size="25px" sx={{ color: '#fff' }} />
                   ) : (
                     <>
-                      {post.operations.hasBookmarked ? (
+                      {post?.operations?.hasBookmarked ? (
                         <IconBookmarkFilled size={22} color='#FFFFFF' />
                       ) : (
                         <IconBookmark size={22} color='#FFFFFF' />

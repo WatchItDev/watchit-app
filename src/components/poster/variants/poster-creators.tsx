@@ -32,7 +32,6 @@ const PosterCreators = ({ id }: TrendingTopicsType) => {
     <Paper
       sx={{
         width: '100%',
-        marginBottom: 4,
         borderRadius: 2,
         overflow: 'hidden',
         position: 'relative',

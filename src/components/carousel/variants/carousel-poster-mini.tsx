@@ -8,7 +8,6 @@ import PosterHorizontal from "@src/components/poster/variants/poster-horizontal.
 import NavigationArrows from "@src/components/carousel/NavigationArrows.tsx";
 import {CarouselSection} from "@src/components/poster/carousel-section.tsx";
 import {useEffect, useRef, useState} from "react";
-import {LatestCreatorsType} from "@src/sections/explore/view.tsx";
 
 // ----------------------------------------------------------------------
 type Props = {
@@ -20,11 +19,12 @@ type Props = {
 
 export default function CarouselPosterMini({ data, minItemWidth, maxItemWidth }: Props) {
   const [itemsPerSlide, setItemsPerSlide] = useState(1);
-  const [slideData, setSlideData] = useState<LatestCreatorsType[][]>([]);
+  const [slideData, setSlideData] = useState<Post[][]>([]);
   const [loading, setLoading] = useState(true);
   const parentRef = useRef<HTMLDivElement>(null);
 
   const carousel = useCarousel({
+    infinite: false,
     slidesToShow: 1,
     speed: 500,
     rows: 1,
@@ -83,7 +83,7 @@ export default function CarouselPosterMini({ data, minItemWidth, maxItemWidth }:
 
   useEffect(() => {
     const chunkSize = itemsPerSlide * 2;
-    const chunks: LatestCreatorsType[][] = [];
+    const chunks: Post[][] = [];
     for (let i = 0; i < data.length; i += chunkSize) {
       chunks.push(data.slice(i, i + chunkSize));
     }
@@ -99,6 +99,9 @@ export default function CarouselPosterMini({ data, minItemWidth, maxItemWidth }:
       sx={{
         overflow: 'hidden',
         position: 'relative',
+        '.slick-list': {
+          height: 'auto !important'
+        },
         '.slick-track': {
           height: '100%'
         },
@@ -125,7 +128,7 @@ export default function CarouselPosterMini({ data, minItemWidth, maxItemWidth }:
 }
 
 type SlideProps = {
-  items: LatestCreatorsType[];
+  items: Post[];
   itemsPerRow: number;
 };
 
@@ -150,6 +153,7 @@ function Slide({ items, itemsPerRow }: SlideProps) {
               sx={{
                 flexBasis: `${itemWidthPercent}%`,
                 maxWidth: `${itemWidthPercent}%`,
+                p: 1,
               }}
             >
               <PosterHorizontal

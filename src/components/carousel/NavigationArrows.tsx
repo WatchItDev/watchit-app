@@ -9,10 +9,10 @@ interface NavigationArrowsProps {
 
 const NavigationArrows: FC<NavigationArrowsProps> = ({ next, prev }) => (
   <>
-  <IconButton onClick={next} >
+  <IconButton onClick={prev} >
     <IconChevronLeft />
   </IconButton>
-<IconButton onClick={prev} >
+<IconButton onClick={next} >
   <IconChevronRight />
 </IconButton>
   </>

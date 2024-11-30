@@ -13,6 +13,8 @@ import { ProfileId, ProfileSession, useFollow, useSession, useUnfollow } from '@
 // @ts-ignore
 import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
 import { useLazyProfile } from '@lens-protocol/react';
+import { openLoginModal } from '@redux/auth';
+import { useDispatch } from 'react-redux';
 
 // ----------------------------------------------------------------------
 
@@ -23,7 +25,9 @@ interface FollowUnfollowButtonProps {
 // ----------------------------------------------------------------------
 
 const FollowUnfollowButton = ({ profileId }: PropsWithChildren<FollowUnfollowButtonProps>) => {
-  const { data: profile, loading: loadingProfile, execute: getProfile } = useLazyProfile();
+  const dispatch = useDispatch();
+
+  const { data: profile, execute: getProfile } = useLazyProfile();
   const { data: sessionData }: ReadResult<ProfileSession> = useSession();
   const [isFollowed, setIsFollowed] = useState(profile?.operations?.isFollowedByMe?.value);
 
@@ -56,6 +60,7 @@ const FollowUnfollowButton = ({ profileId }: PropsWithChildren<FollowUnfollowBut
   // Function to handle following a profile
   const handleFollow = async () => {
     if (!profile) return;
+    if (!sessionData?.authenticated) return dispatch(openLoginModal());
 
     try {
       const result = await follow({ profile });
@@ -168,7 +173,7 @@ const FollowUnfollowButton = ({ profileId }: PropsWithChildren<FollowUnfollowBut
           backgroundColor: isFollowed ? '#24262A' : '#fff',
         }}
         onClick={isFollowed ? handleUnfollow : handleFollow}
-        disabled={followLoading || unfollowLoading || !sessionData?.authenticated || profile?.id === sessionData?.profile?.id}
+        disabled={followLoading || unfollowLoading || profile?.id === sessionData?.profile?.id}
         loading={followLoading || unfollowLoading}
       >
         {isFollowed ? 'Unfollow' : 'Follow'}

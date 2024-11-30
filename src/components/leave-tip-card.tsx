@@ -196,14 +196,25 @@ export const LeaveTipCard: FC<LeaveTipCardProps> = ({ post }) => {
         <Stack direction="row" justifyContent="center" sx={{ mt: 4 }}>
           <LoadingButton
             variant="contained"
-            onClick={handleSendTip}
-            disabled={loading || (!selectedTip && !customTip)}
+            // onClick={handleSendTip}
+            // disabled={loading || (!selectedTip && !customTip)}
+            onClick={() => {}}
+            disabled={true}
             sx={{ width: '100%', py: 1.5 }}
             loading={loading}
           >
             Leave a Tip
           </LoadingButton>
         </Stack>
+
+        <Typography
+          variant="body2"
+          color="text.secondary"
+          align="center"
+          sx={{ mt: 2 }}
+        >
+          This feature is coming in the next release!
+        </Typography>
 
         {successMessage && (
           <Typography

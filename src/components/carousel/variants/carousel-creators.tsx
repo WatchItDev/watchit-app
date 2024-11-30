@@ -137,6 +137,7 @@ function Slide({ items, itemsPerRow }: SlideProps) {
               sx={{
                 flexBasis: `${itemWidthPercent}%`,
                 maxWidth: `${itemWidthPercent}%`,
+                p: 1,
               }}
             >
               <PosterCreators

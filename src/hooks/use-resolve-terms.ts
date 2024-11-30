@@ -9,7 +9,6 @@ import SubscriptionPolicyAbi from '@src/config/abi/SubscriptionPolicy.json';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 // @ts-ignore
 import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
-import { ProfileSession, useSession } from '@lens-protocol/react-web';
 
 // ----------------------------------------------------------------------
 
@@ -44,9 +43,6 @@ interface UseResolveTermsHook {
  * @returns An object containing the access data, loading state, error, and a refetch function.
  */
 export const useResolveTerms = (holderAddress?: Address): UseResolveTermsHook => {
-  const { data: sessionData }: ReadResult<ProfileSession> = useSession();
-  const userAddress = sessionData?.profile?.ownedBy?.address as Address | undefined;
-
   // Use the useReadContract hook to call the smart contract function
   const {
     data: accessData,
@@ -62,7 +58,7 @@ export const useResolveTerms = (holderAddress?: Address): UseResolveTermsHook =>
     args: [holderAddress as Address],
   });
 
-  if (!userAddress) return { terms: {} as Terms, loading: false, fetching: false, error: null, refetch: () => {}, }
+  if (!holderAddress) return { terms: {} as Terms, loading: false, fetching: false, error: null, refetch: () => {}, }
 
   return {
     terms: accessData as Terms | undefined,

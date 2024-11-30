@@ -100,7 +100,13 @@ export default function ExploreView() {
 
   if (loading) return <LoadingScreen />
 
-  const movieArr: any = getAccessiblePublications([...data, ...data, ...data, ...data, ...data, ...data, ...data, ...data, ...data])
+  const movieArrA: any = getAccessiblePublications([...data, ...data, ...data, ...data, ...data, ...data, ...data, ...data, ...data])
+  const movieArr: any = movieArrA.map((el: any, index: number) => {
+    return ({
+      ...el,
+      id: `${el.id}_${index}`,
+    })
+  })
 
   const topic = [
     {
@@ -287,23 +293,21 @@ export default function ExploreView() {
 
   return (
     <Container sx={{ p: '0 !important', maxWidth: '2000px !important' }}>
-      <Stack spacing={3}>
+      <Stack spacing={3} sx={{ maxWidth: '100vw !important' }}>
         <CarouselTopTitles data={movieArr} />
 
         <CarouselPosterMini data={movieArr}
                             category="publications"
-                            minItemWidth={250}
-                            maxItemWidth={400}
+                            minItemWidth={200}
+                            maxItemWidth={350}
         />
 
-        <Box sx={{ mt: 3, maxWidth: '100vw !important' }}>
-            <CarouselCreators
-              data={topic}
-              category="latest"
-              minItemWidth={250}
-              maxItemWidth={400}
-            />
-        </Box>
+        <CarouselCreators
+          data={topic}
+          category="latest"
+          minItemWidth={250}
+          maxItemWidth={400}
+        />
       </Stack>
     </Container>
   );

@@ -1,3 +1,4 @@
+// @ts-ignore
 import { Post } from '@lens-protocol/api-bindings/dist/declarations/src/lens/graphql/generated';
 
 // ----------------------------------------------------------------------

@@ -44,6 +44,8 @@ import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/r
 import {randomColors} from "@src/components/poster/variants/poster-latest-content.tsx";
 import OpenableText from '@src/components/openableText/openableText.tsx';
 import { useGetAttestation } from '@src/hooks/use-get-attestation.ts';
+import { openLoginModal } from '@redux/auth';
+import { useDispatch } from 'react-redux';
 
 // ----------------------------------------------------------------------
 
@@ -96,6 +98,7 @@ const prependProfileIdToUrl = (url: string, profileId: string) => {
 // ----------------------------------------------------------------------
 
 const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderProps>) => {
+  const dispatch = useDispatch();
   const navRef = useRef(null);
   const navRefSocial = useRef(null);
   const navRefSettings = useRef(null);
@@ -213,6 +216,12 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
     } catch (err) {
       setErrorMessage('Failed to copy link.');
     }
+  };
+
+  const handleSubscription = async () => {
+    if (!sessionData?.authenticated) return dispatch(openLoginModal());
+
+    if (!hasAccess) setOpenSubscribeModal(true)
   };
 
   return (
@@ -385,8 +394,8 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
                       minWidth: 120,
                       backgroundColor: hasAccess ? '#24262A' : '#fff',
                     }}
-                    onClick={!hasAccess ? () => { setOpenSubscribeModal(true) } : () => {}}
-                    disabled={accessLoading || hasAccess || !sessionData?.profile || accessFetchingLoading}
+                    onClick={handleSubscription}
+                    disabled={accessLoading || hasAccess || accessFetchingLoading}
                     loading={accessLoading || accessFetchingLoading}
                   >
                     {hasAccess ? 'You are subscribed!' : 'Subscribe'}
@@ -606,13 +615,6 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
                     </Stack>
                   </Stack>
                 </Popover>
-              </Stack>
-              <Stack direction="row" sx={{ width: '100%', mb: 5, gap: 2 }}>
-                {!sessionData?.authenticated && (
-                  <Typography variant="body2" color="error" sx={{opacity: 0.5}}>
-                    Please login to perform actions
-                  </Typography>
-                )}
               </Stack>
             </Stack>
           </Stack>

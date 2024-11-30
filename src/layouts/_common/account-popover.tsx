@@ -1,5 +1,5 @@
 // REACT IMPORTS
-import { useCallback, useState } from 'react';
+import { useCallback } from 'react';
 
 // LENS IMPORTS
 // @ts-ignore
@@ -26,6 +26,8 @@ import { useRouter } from '@src/routes/hooks';
 import { varHover } from '@src/components/animate';
 import {LoginModal} from "@src/components/loginModal";
 import CustomPopover, { usePopover } from '@src/components/custom-popover';
+import { useDispatch, useSelector } from 'react-redux';
+import { closeLoginModal, openLoginModal } from '@redux/auth';
 
 // ----------------------------------------------------------------------
 
@@ -39,12 +41,13 @@ const OPTIONS = [
 // ----------------------------------------------------------------------
 
 export default function AccountPopover() {
+  const dispatch = useDispatch();
   const router = useRouter();
   const popover = usePopover();
+  const { isLoginModalOpen } = useSelector((state: any) => state.auth);
 
   const { data: sessionData, loading }: ReadResult<ProfileSession> = useSession();
   const { execute: logoutExecute } = useLogout();
-  const [loginModalOpen, setLoginModalOpen] = useState(false); // State to control LoginModal visibility
 
   /**
    * Log out from the current session.
@@ -64,11 +67,11 @@ export default function AccountPopover() {
   };
 
   const handleOpenModal = () => {
-    setLoginModalOpen(true);
+    dispatch(openLoginModal());
   };
 
   const handleCloseModal = () => {
-    setLoginModalOpen(false);
+    dispatch(closeLoginModal());
   };
 
   return (
@@ -159,7 +162,7 @@ export default function AccountPopover() {
           </CustomPopover>
         ) : <></>
       }
-      <LoginModal open={loginModalOpen} onClose={handleCloseModal} />
+      <LoginModal open={isLoginModalOpen} onClose={handleCloseModal} />
     </>
   );
 }
