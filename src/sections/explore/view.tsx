@@ -20,7 +20,6 @@ import {
 
 import { LoadingScreen } from '../../components/loading-screen';
 import { getAccessiblePublications } from '../../utils/publication';
-import Box from "@mui/material/Box";
 import CarouselTopTitles from "@src/components/carousel/variants/carousel-top-titles.tsx";
 import CarouselCreators from "@src/components/carousel/variants/carousel-creators.tsx";
 
@@ -292,8 +291,8 @@ export default function ExploreView() {
   ];
 
   return (
-    <Container sx={{ p: '0 !important', maxWidth: '2000px !important' }}>
-      <Stack spacing={3} sx={{ maxWidth: '100vw !important' }}>
+    <Container sx={{ p: '0 !important', maxWidth: '2000px !important'}}>
+      <Stack direction={'column'} spacing={1} sx={{ maxWidth: '100vw !important' }}>
         <CarouselTopTitles data={movieArr} />
 
         <CarouselPosterMini data={movieArr}

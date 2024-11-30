@@ -18,21 +18,7 @@ export default function CarouselTopTitles({ data, category }: Props) {
     adaptiveHeight: true,
     focusOnSelect: true,
     swipeToSlide: true,
-    lazyLoad: 'progressive',
-    responsive: [
-      {
-        breakpoint: 1024,
-        settings: { slidesToShow: 1 },
-      },
-      {
-        breakpoint: 600,
-        settings: { slidesToShow: 1 },
-      },
-      {
-        breakpoint: 480,
-        settings: { slidesToShow: 1 },
-      },
-    ],
+    lazyLoad: 'progressive'
   });
 
   const getMediaUri = (cid: string): string => `https://ipfs.io/ipfs/${cid?.replace?.('ipfs://', '')}`
@@ -54,12 +40,13 @@ export default function CarouselTopTitles({ data, category }: Props) {
         overflow: 'hidden',
         position: 'relative',
         '.slick-track': {
-          height: '100%'
+          display: 'flex',
+          flexDirection: 'row',
+        flexWrap: 'nowrap',
+        alignItems: 'stretch',
         },
         '.slick-slide': {
-          height: '100%',
-          minHeight: '100%',
-          maxHeight: '100%'
+          height: 'auto',
         },
         '.slick-slide > div': {
           height: '100%',
@@ -69,9 +56,6 @@ export default function CarouselTopTitles({ data, category }: Props) {
       }}
     >
       <CarouselArrows
-        sx={{
-
-        }}
         filled
         shape="rounded"
         onNext={carousel.onNext}
@@ -79,7 +63,7 @@ export default function CarouselTopTitles({ data, category }: Props) {
       >
         <Carousel ref={carousel.carouselRef} {...carousel.carouselSettings}>
           {data.map((post: any) => (
-            <Box key={`${category}-${post.id}`} sx={{ px: 0.75, display:'flex !important', height: '100%', background: 'transparent' }}>
+            <Box key={`${category}-${post.id}`} sx={{ px: 0.75, display:'flex !important'}}>
               <PosterTopTitles
                 id={post?.id}
                 title={post?.metadata?.title}
