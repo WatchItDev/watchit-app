@@ -31,10 +31,12 @@ export const ProfilePublicationItem = ({ publication }: Props) => {
   const handleClick = () => {
     router.push(paths.dashboard.publication.details(publication.id));
   }
-
+  // @TODO review this
   return (
     <Box
       sx={{
+        display: 'flex',
+        flexDirection: 'column',
         width: '100%',
         border: '1px solid rgba(255, 255, 255, 0.12)',
         borderRadius: 2,
@@ -70,7 +72,7 @@ export const ProfilePublicationItem = ({ publication }: Props) => {
           {publication?.metadata?.title}
         </Typography>
         <Typography variant="subtitle2" color="text.secondary">
-          {`Price: ${publication?.openActionModules?.[0]?.amount?.value} MMC`}
+          {`Price: ${publication?.openActionModules?.[0]?.amount?.value ?? 0} MMC`}
         </Typography>
       </Box>
     </Box>
