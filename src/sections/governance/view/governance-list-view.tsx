@@ -25,9 +25,9 @@ import GovernanceSearch from '../governance-search';
 import GovernanceListHorizontal from '../governance-list-horizontal';
 import Label from '../../../components/label';
 import Header from '../../../layouts/dashboard/header';
-import { useRouter } from '../../../routes/hooks';
+import { useRouter } from '@src/routes/hooks';
 import { ProposalsMockList } from '../governance-mock';
-import { useSearchPosts } from '../../../api/blog';
+// import { useSearchPosts } from '../../../api/blog';
 
 // ----------------------------------------------------------------------
 
@@ -40,7 +40,7 @@ export default function GovernanceListView() {
 
   const debouncedQuery = useDebounce(searchQuery);
 
-  const { searchResults, searchLoading } = useSearchPosts(debouncedQuery);
+  // const { searchResults, searchLoading } = useSearchPosts(debouncedQuery);
 
   const mdUp = useResponsive('up', 'md');
 
@@ -167,7 +167,7 @@ export default function GovernanceListView() {
                 query={debouncedQuery}
                 results={searchResults}
                 onSearch={handleSearch}
-                loading={searchLoading}
+                // loading={searchLoading}
                 hrefItem={(title: string) => paths.dashboard.governance.details(title)}
               />
 
