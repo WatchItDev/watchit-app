@@ -24,9 +24,9 @@ const client = new LensClient({
 } as LensClientConfig);
 
 const tipOptions = [
-  { value: '10', title: '10 MMC', subtitle: 'A token of appreciation' },
-  { value: '50', title: '50 MMC', subtitle: 'Show more support' },
-  { value: '100', title: '100 MMC', subtitle: 'Go the extra mile' },
+  { value: '10', title: '10', subtitle: 'A token of appreciation' },
+  { value: '50', title: '50', subtitle: 'Show more support' },
+  { value: '100', title: '100', subtitle: 'Go the extra mile' },
 ];
 
 interface LeaveTipCardProps {
@@ -151,7 +151,8 @@ export const LeaveTipCard: FC<LeaveTipCardProps> = ({ post }) => {
   }, []);
 
   return (
-    <Card sx={{ maxWidth: 400, margin: 'auto', backgroundColor: '#2B2D31' }}>
+
+    <Card sx={{width: '100%', maxWidth: {lg: 400}, margin: 'auto', backgroundColor: '#2B2D31' }}>
       <CardContent>
         <Typography variant="h6" gutterBottom>
           Support the Creator
@@ -175,7 +176,15 @@ export const LeaveTipCard: FC<LeaveTipCardProps> = ({ post }) => {
                   '&:hover': { opacity: 1 },
                 }}
               >
-                <Typography variant="body1" fontWeight="bold">{option.title}</Typography>
+                <Typography variant="body1" fontWeight="bold" align={'center'}>
+                  {option.title}
+                </Typography>
+                <Typography variant="subtitle2" align={'center'} style={{
+                  color: 'text.secondary',
+                  fontSize: '0.7rem'
+                }}>
+                  MMC
+                </Typography>
               </Paper>
             ))}
           </Stack>
