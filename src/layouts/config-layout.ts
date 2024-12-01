@@ -17,3 +17,9 @@ export const COLORS = {
   GRAY_DARK: '#1E1F22',
   GRAY_LIGHT: '#2B2D31',
 }
+
+// Breakpoints to handle show/hide minibar
+export const BREAKPOINTS_MINIBAR = {
+  MIN: 1200,
+  MAX: 1600,
+};
