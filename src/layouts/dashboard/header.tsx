@@ -78,11 +78,12 @@ export default function Header({ children }: PropsWithChildren) {
       >
         {
           sessionData?.authenticated && (
-            <LanguagePopover />
+            <>
+              <LanguagePopover />
+              <NotificationsPopover />
+            </>
           )
         }
-
-        <NotificationsPopover />
 
         <AccountPopover />
       </Stack>

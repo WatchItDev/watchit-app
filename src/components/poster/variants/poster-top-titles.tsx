@@ -42,6 +42,10 @@ const PosterTopTitles = ({ post }: { post: any }) => {
     }
   };
 
+  const goToProfile = () => {
+    router.push(paths.dashboard.user.root(`${post?.by?.id}`))
+  }
+
   return (
     <Stack
       sx={{position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center'}}
@@ -127,11 +131,10 @@ const PosterTopTitles = ({ post }: { post: any }) => {
               </TextMaxLine>
 
               <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
-                <Stack
-                  direction="row"
-                  spacing={0}
-                  alignItems="center"
-                  onClick={() => alert('Clicked')}
+                <Button
+                  variant="text"
+                  sx={{ cursor: 'pointer', background: 'transparent', p: 0, pl: 1 }}
+                  onClick={goToProfile}
                 >
                   <Typography style={{ marginRight: 5 }} variant="caption">
                     by
@@ -141,9 +144,9 @@ const PosterTopTitles = ({ post }: { post: any }) => {
                       gap: 4,
                       display: 'flex',
                       alignItems: 'center',
-                      backgroundColor: 'rgba(0,0,0,.9)',
+                      backgroundColor: 'rgba(0,0,0,.7)',
                       padding: '4px 10px',
-                      borderRadius: 5,
+                      borderRadius: 8,
                     }}
                     variant="caption"
                   >
@@ -157,7 +160,7 @@ const PosterTopTitles = ({ post }: { post: any }) => {
                     />
                     {post?.by?.metadata?.displayName ?? post?.by?.handle?.localName}
                   </Typography>
-                </Stack>
+                </Button>
               </Box>
             </Stack>
 

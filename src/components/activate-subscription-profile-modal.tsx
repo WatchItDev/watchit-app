@@ -107,7 +107,7 @@ export const ActivateSubscriptionProfileModal = ({
       console.log('hey successfully ended');
       console.log(encodedData);
 
-      setSuccessMessage('Subscription activated successfully!')
+      setSuccessMessage('Joining price set successfully!')
       onClose?.()
     } catch (err) {
       console.error('err');
@@ -129,7 +129,7 @@ export const ActivateSubscriptionProfileModal = ({
         <Divider sx={{ mb: 2, borderStyle: 'dashed' }} />
         <DialogContent>
           <Typography variant="body2" color="textSecondary" sx={{ mb: 3 }}>
-            Your subscribers will pay a <span style={{ fontWeight: 'bolder' }}>daily</span> rate for accessing your content.
+            People who join you will pay a <span style={{ fontWeight: 'bolder' }}>daily</span> rate for accessing your content.
           </Typography>
           <Stack spacing={2}>
             <Stack spacing={2} direction="row">
@@ -172,7 +172,7 @@ export const ActivateSubscriptionProfileModal = ({
 
           <Stack spacing={1}>
             <Typography variant="body2" color="textSecondary" sx={{ mb: 1 }}>
-              Your subscribers will pay:
+              People who join will pay:
             </Typography>
             <Stack spacing={1} direction="row">
               <Stack
@@ -243,7 +243,7 @@ export const ActivateSubscriptionProfileModal = ({
             onClick={handleAuthorizeSubscription}
             disabled={loading || (!selectedAmount && !customAmount)}
           >
-            {loading ? <CircularProgress size="25px" sx={{ color: '#fff' }} /> : 'Activate'}
+            {loading ? <CircularProgress size="25px" sx={{ color: '#fff' }} /> : 'Set price'}
           </Button>
         </DialogActions>
       </Dialog>

@@ -103,7 +103,7 @@ export const SubscribeProfileModal = ({
   // Effect to handle successful subscription
   useEffect(() => {
     if (data?.receipt) {
-      setSuccessMessage('Successfully subscribed to the profile.');
+      setSuccessMessage('Successfully joined the profile.');
       onSubscribe?.();
       onClose?.();
     }
@@ -161,7 +161,7 @@ export const SubscribeProfileModal = ({
     }
 
     if (!isBalanceSufficient) {
-      setErrorMessage('Insufficient balance to complete the subscription.');
+      setErrorMessage('Insufficient balance to complete the action.');
       return;
     }
 
@@ -173,14 +173,14 @@ export const SubscribeProfileModal = ({
       });
     } catch (err) {
       console.error(err);
-      setErrorMessage('Failed to activate subscription.');
+      setErrorMessage('Failed to join the profile.');
     }
   };
 
   return (
     <>
       <Dialog open={isOpen} onClose={onClose} fullWidth maxWidth="xs">
-        <DialogTitle sx={{ pb: 2 }}>Subscribe to Profile</DialogTitle>
+        <DialogTitle sx={{ pb: 2 }}>Join Profile</DialogTitle>
         <Divider sx={{ mb: 2, borderStyle: 'dashed' }} />
         <DialogContent>
           {loadingTerms || balanceLoading ? (
@@ -191,7 +191,7 @@ export const SubscribeProfileModal = ({
           ) : (
             <>
               <Typography variant="body2" color="textSecondary" sx={{ mb: 3 }}>
-                Select the duration of your subscription.
+                Select how many days you'd like to join.
               </Typography>
               <Stack spacing={2}>
                 <Stack spacing={2} direction="row">
@@ -262,7 +262,7 @@ export const SubscribeProfileModal = ({
               {/* Display error if balance is insufficient */}
               {balanceData && !isBalanceSufficient && (
                 <Typography variant="body2" color="error" align="center" sx={{ mt: 2 }}>
-                  Insufficient balance to complete the subscription.
+                  Insufficient balance to complete the action.
                 </Typography>
               )}
 
@@ -289,7 +289,7 @@ export const SubscribeProfileModal = ({
                 disabled={isButtonDisabled}
                 loading={loading}
               >
-                Subscribe
+                Join
               </LoadingButton>
             </DialogActions>
           </>

@@ -388,7 +388,7 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
 
                 {isAuthorized && !authorizedLoading && profile?.id !== sessionData?.profile?.id && (
                   <LoadingButton
-                    title={hasAccess ? 'You are subscribed!' : 'Subscribe'}
+                    title={hasAccess ? 'You have already joined!' : 'Join'}
                     variant={hasAccess ? 'outlined' : 'contained'}
                     sx={{
                       minWidth: 120,
@@ -398,7 +398,7 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
                     disabled={accessLoading || hasAccess || accessFetchingLoading}
                     loading={accessLoading || accessFetchingLoading}
                   >
-                    {hasAccess ? 'You are subscribed!' : 'Subscribe'}
+                    {hasAccess ? 'You have already joined!' : 'Join'}
                   </LoadingButton>
                 )}
 
@@ -439,7 +439,7 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
                         pointerEvents: 'none'
                       }}
                     >
-                      <Typography>Configure join pricing</Typography>
+                      <Typography>Configure joining pricing</Typography>
                     </Popover>
                   </>
                 ): <></>}

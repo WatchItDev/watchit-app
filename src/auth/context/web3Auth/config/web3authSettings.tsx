@@ -54,6 +54,14 @@ export const modalConfig = {
   [WALLET_ADAPTERS.AUTH]: {
     label: "openlogin",
     loginMethods: {
+      email_passwordless: {
+        name: "email_passwordless",
+        showOnModal: false,
+      },
+      sms_passwordless: {
+        name: "sms_passwordless",
+        showOnModal: false,
+      },
       facebook: {
         // it will hide the facebook option from the Web3Auth modal.
         name: "facebook login",

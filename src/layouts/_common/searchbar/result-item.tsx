@@ -53,10 +53,15 @@ export default function ResultItem({ title, subtitle, groupLabel, onClickItem }:
             component="span"
             sx={{
               color: 'text.secondary',
+              display: '-webkit-box',
+              overflow: 'hidden',
+              WebkitBoxOrient: 'vertical',
+              WebkitLineClamp: 2,
             }}
           >
             {subtitle}
           </Box>
+
         )}
       />
 

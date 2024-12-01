@@ -59,13 +59,13 @@ export default function ProfileHome({ profile, noPaddings = false }: ProfileHome
         <Box
           key={publication.id}
           sx={{
-            display: { xs: 'block', sm: 'flex' },
-            gap: `${gap}px`,
+            // display: { xs: 'block', sm: 'flex' },
+            // gap: `${gap}px`,
             flex: `0 1 ${itemWidth}px`,
             maxWidth: `${maxItemWidth}px`,
           }}
         >
-          <ProfilePublicationItem publication={publication} />
+          {/*<ProfilePublicationItem publication={publication} />*/}
           <ProfilePublicationItem publication={publication} />
         </Box>
       ))}

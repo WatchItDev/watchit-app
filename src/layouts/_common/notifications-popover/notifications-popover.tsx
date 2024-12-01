@@ -16,19 +16,15 @@ import { useResponsive } from '@src/hooks/use-responsive';
 import Iconify from '@src/components/iconify';
 import Scrollbar from '@src/components/scrollbar';
 import { varHover } from '@src/components/animate';
-// Importa el hook useNotifications y NotificationType
 import { useNotifications, NotificationType, appId } from '@lens-protocol/react-web';
-
 import NotificationItem from './notification-item';
-import { CircularProgress } from '@mui/material';
 
 export default function NotificationsPopover() {
   const drawer = useBoolean();
   const smUp = useResponsive('up', 'sm');
   const [notifications, setNotifications] = useState([]);
 
-  // Utiliza el hook useNotifications con tus parámetros
-  const { data, error, loading } = useNotifications({
+  const { data } = useNotifications({
     where: {
       publishedOn: [appId('watchit')],
       notificationTypes: [
@@ -41,18 +37,15 @@ export default function NotificationsPopover() {
     },
   });
 
-  // Función para obtener las notificaciones leídas desde localStorage
   const getReadNotifications = () => {
     const readNotifications = localStorage.getItem('readNotifications');
     return readNotifications ? JSON.parse(readNotifications) : [];
   };
 
-  // Función para guardar las notificaciones leídas en localStorage
   const setReadNotifications = (readNotifications: any) => {
     localStorage.setItem('readNotifications', JSON.stringify(readNotifications));
   };
 
-  // Efecto para mapear las notificaciones cuando se obtienen los datos
   useEffect(() => {
     if (data) {
       const readNotifications = getReadNotifications();
@@ -68,7 +61,6 @@ export default function NotificationsPopover() {
           avatarUrl: null,
         };
 
-        // Verifica si la notificación ya fue leída
         const isRead = readNotifications.includes(notification.id);
         mappedNotification.isUnRead = !isRead;
 
@@ -113,14 +105,6 @@ export default function NotificationsPopover() {
 
     setNotifications(updatedNotifications);
   };
-
-  if (loading) {
-    return <CircularProgress size={24} sx={{ color: '#fff' }} />;
-  }
-
-  if (error) {
-    return <></>
-  }
 
   const renderHead = (
     <Stack direction="row" alignItems="center" sx={{ py: 2, pl: 2.5, pr: 1, minHeight: 68 }}>
