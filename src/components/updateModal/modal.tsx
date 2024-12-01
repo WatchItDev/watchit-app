@@ -45,7 +45,7 @@ export const UpdateModal: React.FC<UpdateModalProps> = ({ open, onClose }) => {
         BackdropComponent={Backdrop}
         BackdropProps={{
           timeout: 500,
-          sx: { pointerEvents: loading ? 'none' : 'all' }
+          sx: {  pointerEvents: loading ? 'none' : 'all' }
         }}
       >
         <Fade in={open}>
@@ -55,7 +55,10 @@ export const UpdateModal: React.FC<UpdateModalProps> = ({ open, onClose }) => {
               top: '50%',
               left: '50%',
               transform: 'translate(-50%, -50%)',
-              width: 500,
+              width: {
+                xs: '90%',
+                sm: 500
+              },
               bgcolor: 'background.paper',
               borderRadius: 2,
               boxShadow: 24,

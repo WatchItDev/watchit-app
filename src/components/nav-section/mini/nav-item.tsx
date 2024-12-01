@@ -127,7 +127,7 @@ const NavItem = forwardRef<HTMLDivElement, Props>(
     return (
       <Link
         component={RouterLink}
-        href={path}
+        href={path ?? '#'}
         underline="none"
         sx={{
           width: 1,

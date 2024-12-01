@@ -51,7 +51,7 @@ export default function NavMini() {
         <NavSectionMini
           items={data}
           activeId=''
-          onClick={(id) => { console.log(`clicked ${id}`) }}
+          // onClick={(id) => () => {} }
           config={{
             hiddenLabel: true
           }}

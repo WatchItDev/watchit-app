@@ -49,9 +49,9 @@ export const ActivateSubscriptionProfileModal = ({
   const { authorize, loading, error } = useAuthorizePolicy();
 
   const amountOptions = [
-    { value: '1', title: '1 MMC' },
-    { value: '5', title: '5 MMC' },
-    { value: '10', title: '10 MMC' },
+    { value: '1', title: '1' },
+    { value: '5', title: '5' },
+    { value: '10', title: '10' },
   ];
 
   useEffect(() => {
@@ -138,6 +138,10 @@ export const ActivateSubscriptionProfileModal = ({
                   key={option.value}
                   onClick={() => handleAmountChange(option.value)}
                   sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'center',
                     p: 1.5,
                     cursor: 'pointer',
                     width: '33%',
@@ -152,6 +156,9 @@ export const ActivateSubscriptionProfileModal = ({
                 >
                   <Typography variant="body1" fontWeight="bold">
                     {option.title}
+                  </Typography>
+                  <Typography variant="caption" textAlign={'center'}>
+                    MMC
                   </Typography>
                 </Paper>
               ))}

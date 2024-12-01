@@ -145,7 +145,10 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
               top: '50%',
               left: '50%',
               transform: 'translate(-50%, -50%)',
-              width: 500,
+              width: {
+                xs: '90%',
+                sm: 500,
+              },
               bgcolor: isLoading ? 'transparent' : 'background.paper',
               borderRadius: 2,
               boxShadow: isLoading ? 0 : 24,

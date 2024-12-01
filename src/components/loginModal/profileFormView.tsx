@@ -318,7 +318,7 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({ onSuccess, onCance
   ]);
 
   return (
-    <Box sx={{ p: 2 }}>
+    <Box sx={{p: 2}}>
       <Typography variant="h6" sx={{ pb: 2 }}>
         {mode === 'register' ? 'Create a New Profile' : 'Update Profile'}
       </Typography>

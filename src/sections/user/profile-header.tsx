@@ -279,7 +279,12 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
         </Popover>
 
         <Stack
-          direction="row"
+          direction={
+            {
+              xs: 'column',
+              md: 'row',
+            }
+          }
           sx={{
             zIndex: 10,
             alignItems: 'flex-start',
@@ -627,7 +632,10 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
               alignItems: 'flex-start',
               border: '1px solid rgba(255, 255, 255, 0.08)',
               borderRadius: 2,
-              width: '328px',
+              width: {
+                xs: '100%',
+                md: '328px',
+              },
               marginTop: 4,
               marginBottom: 3,
             }}
@@ -693,9 +701,7 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
               <Typography color="text.secondary">Distribution partners</Typography>
               <Box
                 gridTemplateColumns={{
-                  xs: 'repeat(1, 1fr)',
-                  sm: 'repeat(2, 1fr)',
-                  md: 'repeat(3, 1fr)',
+                  xs: 'repeat(3, 1fr)'
                 }}
                 sx={{
                 overflow: 'hidden',
