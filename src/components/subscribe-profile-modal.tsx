@@ -195,7 +195,7 @@ export const SubscribeProfileModal = ({
   return (
     <>
       <Dialog open={isOpen} onClose={onClose} fullWidth maxWidth="xs">
-        <DialogTitle sx={{ pb: 2 }}>Join Profile</DialogTitle>
+        <DialogTitle sx={{ pb: 2 }}>Join to {profile?.metadata?.displayName} content</DialogTitle>
         <Divider sx={{ mb: 2, borderStyle: 'dashed' }} />
         <DialogContent>
           {loadingTerms || balanceLoading ? (

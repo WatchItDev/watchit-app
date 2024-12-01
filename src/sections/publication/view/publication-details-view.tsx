@@ -35,7 +35,7 @@ import { useDispatch } from 'react-redux';
 import { openLoginModal } from '@redux/auth';
 // @ts-ignore
 import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
-import { ProfileSession, useSession } from '@lens-protocol/react-web';
+import {appId, ProfileSession, PublicationType, usePublications, useSession} from '@lens-protocol/react-web';
 
 const MAX_LINES = 5;
 
@@ -71,6 +71,8 @@ export default function PublicationDetailsView({ id }: Props) {
     fetching: accessFetchingLoading,
     refetch: refetchAccess,
   } = useHasAccess(ownerAddress);
+
+
 
   const getMediaUri = (cid: string): string => `https://ipfs.io/ipfs/${cid?.replace('ipfs://', '')}`
 
@@ -110,6 +112,19 @@ export default function PublicationDetailsView({ id }: Props) {
       }
     }
   }, [descriptionRef.current, data?.metadata?.content]);
+
+
+  // Load publications from current user to show in More from section
+  const {data: publications} = usePublications({
+    where: {
+      from: [data?.by?.id],
+      publicationTypes: [PublicationType.Post],
+      metadata: { publishedOn: [appId('watchit')]},
+    },
+  });
+
+  // Remove from publications the current publication
+  const filteredPublications = publications?.filter((publication) => publication.id !== id) ?? [];
 
   if (loading || accessLoading) return <LoadingScreen />
 
@@ -273,12 +288,18 @@ export default function PublicationDetailsView({ id }: Props) {
                         </m.div>
                       </Box>
                     </Box>
-                    <Box sx={{ display:'flex', flexDirection:'column', mt: 6 }}>
-                      <Typography variant="h5" sx={{ mb: 2, width: '100%' }}>
-                        More from {data?.by?.metadata?.displayName.split(' ')[0]}
-                      </Typography>
-                      <ProfileHome profile={data?.by} noPaddings={true} />
-                    </Box>
+
+                    {
+                      filteredPublications?.length > 0 && (
+                        <Box sx={{ display:'flex', flexDirection:'column', mt: 6 }}>
+                          <Typography variant="h5" sx={{ mb: 2, width: '100%' }}>
+                            More from {data?.by?.metadata?.displayName.split(' ')[0]}
+                          </Typography>
+                          <ProfileHome publications={filteredPublications} noPaddings={true}  />
+                        </Box>
+                      )
+                    }
+
                   </Box>
                 </Container>
               </CardContent>

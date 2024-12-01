@@ -2,24 +2,14 @@
 import { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { Profile } from '@lens-protocol/api-bindings';
-import { appId, PublicationType, usePublications } from '@lens-protocol/react-web';
 import { ProfilePublicationItem } from './profile-publication-item';
 
 interface ProfileHomeProps {
-  profile: Profile;
+  publications: any;
   noPaddings?: boolean
 }
 
-export default function ProfileHome({ profile, noPaddings = false }: ProfileHomeProps) {
-  const { data: publications } = usePublications({
-    where: {
-      from: [profile?.id],
-      publicationTypes: [PublicationType.Post],
-      metadata: { publishedOn: [appId('watchit')] },
-    },
-  });
-
+export default function ProfileHome({ publications, noPaddings = false}: ProfileHomeProps) {
   const minItemWidth = 150;
   const maxItemWidth = 200;
   const gap = 16; // Espacio entre ítems
