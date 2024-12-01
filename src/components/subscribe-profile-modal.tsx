@@ -35,6 +35,8 @@ import { ProfileSession, useSession } from '@lens-protocol/react-web';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 // @ts-ignore
 import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
+import { setBalance } from '@redux/auth';
+import { useDispatch } from 'react-redux';
 
 // ----------------------------------------------------------------------
 
@@ -53,6 +55,8 @@ export const SubscribeProfileModal = ({
                                         profile,
                                         onSubscribe,
                                       }: SubscribeProfileModalProps) => {
+  const dispatch = useDispatch();
+
   // State variables for handling durations and messages
   const [selectedDuration, setSelectedDuration] = useState('7');
   const [customDuration, setCustomDuration] = useState('');
@@ -74,6 +78,7 @@ export const SubscribeProfileModal = ({
     data: balanceData,
     isLoading: balanceLoading,
     error: balanceError,
+    refetch: balanceRefetch,
   } = useBalance({
     address: sessionData?.address,
     token: GLOBAL_CONSTANTS.MMC_ADDRESS,
@@ -85,45 +90,6 @@ export const SubscribeProfileModal = ({
     { value: '15', title: '15 days' },
     { value: '30', title: '1 month' },
   ];
-
-  // Effect to handle subscription errors
-  useEffect(() => {
-    if (error) console.log('Subscribe error: ', error);
-    if (error) setErrorMessage(error.shortMessage ?? error.message);
-  }, [error]);
-
-  // Effect to handle balance errors
-  useEffect(() => {
-    if (balanceError) {
-      console.log('Error fetching balance: ', balanceError);
-      setErrorMessage('Could not retrieve your balance. Please try again later.');
-    }
-  }, [balanceError]);
-
-  // Effect to handle successful subscription
-  useEffect(() => {
-    if (data?.receipt) {
-      setSuccessMessage('Successfully joined the profile.');
-      onSubscribe?.();
-      onClose?.();
-    }
-  }, [data]);
-
-  // Handler for changing the selected duration
-  const handleDurationChange = (value: string) => {
-    setSelectedDuration(value);
-    setCustomDuration('');
-    setSuccessMessage('');
-    setErrorMessage('');
-  };
-
-  // Handler for changing the custom duration
-  const handleCustomDurationChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSelectedDuration('');
-    setCustomDuration(event.target.value);
-    setSuccessMessage('');
-    setErrorMessage('');
-  };
 
   // Calculate total cost and check if the balance is sufficient
   const duration = customDuration || selectedDuration || '0';
@@ -148,6 +114,55 @@ export const SubscribeProfileModal = ({
     isCustomDurationInvalid ||
     balanceLoading ||
     !isBalanceSufficient;
+
+  useEffect(() => {
+    if (balanceData?.formatted) {
+      const parsedBalance = parseFloat(balanceData.formatted);
+      if (!isNaN(parsedBalance)) {
+        dispatch(setBalance({ balance: parsedBalance }));
+      }
+    }
+  }, [balanceData?.formatted, dispatch]);
+
+  // Effect to handle subscription errors
+  useEffect(() => {
+    if (error) console.log('Subscribe error: ', error);
+    if (error) setErrorMessage(error.shortMessage ?? error.message);
+  }, [error]);
+
+  // Effect to handle balance errors
+  useEffect(() => {
+    if (balanceError) {
+      console.log('Error fetching balance: ', balanceError);
+      setErrorMessage('Could not retrieve your balance. Please try again later.');
+    }
+  }, [balanceError]);
+
+  // Effect to handle successful subscription
+  useEffect(() => {
+    if (data?.receipt) {
+      setSuccessMessage('Successfully joined the profile.');
+      onSubscribe?.();
+      balanceRefetch?.();
+      onClose?.();
+    }
+  }, [data]);
+
+  // Handler for changing the selected duration
+  const handleDurationChange = (value: string) => {
+    setSelectedDuration(value);
+    setCustomDuration('');
+    setSuccessMessage('');
+    setErrorMessage('');
+  };
+
+  // Handler for changing the custom duration
+  const handleCustomDurationChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSelectedDuration('');
+    setCustomDuration(event.target.value);
+    setSuccessMessage('');
+    setErrorMessage('');
+  };
 
   // Handler for the subscribe action
   const handleSubscribe = async () => {

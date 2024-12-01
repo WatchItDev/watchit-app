@@ -1,5 +1,5 @@
 // REACT IMPORTS
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 // MUI IMPORTS
 import {
@@ -19,6 +19,10 @@ import { UserItem } from '../user-item';
 import { Profile, ProfileSession, useLogin, useSession } from '@lens-protocol/react-web';
 // @ts-ignore
 import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
+import { useDispatch } from 'react-redux';
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
+import { setAuthLoading } from '@redux/auth';
 
 // ----------------------------------------------------------------------
 
@@ -39,9 +43,12 @@ export const ProfileSelectView: React.FC<ProfileSelectionProps> = ({
                                                                      onClose,
                                                                      profiles,
                                                                    }) => {
+  const dispatch = useDispatch();
   const { data: sessionData, error: sessionError, loading: sessionLoading }: ReadResult<ProfileSession> = useSession();
-  const { execute: loginExecute, loading: loginLoading } = useLogin();
+  const { execute: loginExecute, loading: loginLoading, data, error } = useLogin();
   const { address, isConnecting, isConnected, status, connector } = useAccount();
+  const [successMessage, setSuccessMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
   console.log('sessionData', sessionData);
   console.log('sessionError', sessionError);
@@ -51,6 +58,14 @@ export const ProfileSelectView: React.FC<ProfileSelectionProps> = ({
   console.log('isConnected', isConnected);
   console.log('status', status);
   console.log('connector', connector);
+
+  useEffect(() => {
+    console.log('data')
+    console.log(data)
+    console.log(error)
+    if (!!data && !error) dispatch(setAuthLoading({ isAuthLoading: false }));
+    if (error) setErrorMessage(error.message);
+  }, [data, error])
 
   const login = useCallback(
     async (profile?: Profile) => {
@@ -92,6 +107,7 @@ export const ProfileSelectView: React.FC<ProfileSelectionProps> = ({
     if (sessionData?.authenticated && (sessionData?.profile?.id === profile.id)) {
       onClose?.()
     } else {
+      dispatch(setAuthLoading({ isAuthLoading: true }))
       await login(profile);
       onClose();
     }
@@ -174,6 +190,29 @@ export const ProfileSelectView: React.FC<ProfileSelectionProps> = ({
           </Button>
         </Box>
       )}
+      <Snackbar
+        open={!!successMessage}
+        autoHideDuration={6000}
+        onClose={() => setSuccessMessage('')}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        sx={{ zIndex: 1200 }}
+      >
+        <Alert onClose={() => setSuccessMessage('')} severity="success" sx={{ width: '100%' }}>
+          {successMessage}
+        </Alert>
+      </Snackbar>
+
+      <Snackbar
+        open={!!errorMessage}
+        autoHideDuration={6000}
+        onClose={() => setErrorMessage('')}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        sx={{ zIndex: 1200 }}
+      >
+        <Alert onClose={() => setErrorMessage('')} severity="error" sx={{ width: '100%' }}>
+          {errorMessage}
+        </Alert>
+      </Snackbar>
     </>
   );
 };

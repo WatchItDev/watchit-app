@@ -17,7 +17,7 @@ import { useSettingsContext } from '@src/components/settings';
 import { HEADER, NAV } from '../config-layout';
 import {
   AccountPopover,
-  LanguagePopover,
+  HeaderBalance,
   NotificationsPopover,
 } from '../_common';
 import { PropsWithChildren } from 'react';
@@ -79,7 +79,7 @@ export default function Header({ children }: PropsWithChildren) {
         {
           sessionData?.authenticated && (
             <>
-              <LanguagePopover />
+              <HeaderBalance />
               <NotificationsPopover />
             </>
           )

@@ -5,26 +5,38 @@ import IconButton from '@mui/material/IconButton';
 import { varHover } from '@src/components/animate';
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
-import {IconCoinMonero} from "@tabler/icons-react";
+import { IconCoinMonero } from "@tabler/icons-react";
 import { useBalance } from 'wagmi';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 // @ts-ignore
 import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
 import { ProfileSession, useSession } from '@lens-protocol/react-web';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { setBalance } from '@redux/auth';
 
 // ----------------------------------------------------------------------
 
 export default function HeaderBalance() {
+  const dispatch = useDispatch();
+  const { balance } = useSelector((state: any) => state.auth);
   const { data: sessionData }: ReadResult<ProfileSession> = useSession();
   const { data } = useBalance({
     address: sessionData?.address,
-    token: GLOBAL_CONSTANTS.MMC_ADDRESS
+    token: GLOBAL_CONSTANTS.MMC_ADDRESS,
   });
 
-  const balanceOptions = { minimumFractionDigits: 1, maximumFractionDigits: 3 };
-  const formattedBalance = new Intl.NumberFormat('en-US', balanceOptions).format(data?.formatted);
+  useEffect(() => {
+    if (data?.formatted) {
+      const parsedBalance = parseFloat(data.formatted);
+      if (!isNaN(parsedBalance)) {
+        dispatch(setBalance({ balance: parsedBalance }));
+      }
+    }
+  }, [data?.formatted, dispatch]);
 
-  if (!formattedBalance || formattedBalance === 'NaN') return null;
+  const balanceOptions = { minimumFractionDigits: 1, maximumFractionDigits: 3 };
+  const formattedBalance = new Intl.NumberFormat('en-US', balanceOptions).format(balance);
 
   return (
     <>

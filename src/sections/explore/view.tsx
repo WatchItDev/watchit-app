@@ -74,12 +74,14 @@ export default function ExploreView() {
           posts={combinedPosts}
         />
 
-        <CarouselPosterMini
-          data={bookmark ?? []}
-          title="Bookmarks"
-          minItemWidth={250}
-          maxItemWidth={350}
-        />
+        {!!bookmark?.length && (
+          <CarouselPosterMini
+            data={bookmark ?? []}
+            title="Bookmarks"
+            minItemWidth={250}
+            maxItemWidth={350}
+          />
+        )}
 
         <CarouselCreators
           data={latestCreatedProfiles ?? []}
