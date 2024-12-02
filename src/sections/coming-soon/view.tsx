@@ -1,9 +1,9 @@
 // @mui
 import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
+// import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 // hooks
-import { useCountdownDate } from '@src/hooks/use-countdown';
+// import { useCountdownDate } from '@src/hooks/use-countdown';
 // assets
 import { ComingSoonIllustration } from '@src/assets/illustrations';
 import HeaderContent from "@src/layouts/dashboard/HeaderContent.tsx";
@@ -12,7 +12,7 @@ import Header from "@src/layouts/dashboard/header.tsx";
 // ----------------------------------------------------------------------
 
 export default function ComingSoonView() {
-  const { days, hours, minutes, seconds } = useCountdownDate(new Date('12/03/2024 21:30'));
+  // const { days, hours, minutes, seconds } = useCountdownDate(new Date('12/03/2024 21:30'));
 
   return (
     <>
@@ -29,7 +29,7 @@ export default function ComingSoonView() {
 
       <ComingSoonIllustration sx={{ my: 10, height: 240 }} />
 
-      <Stack
+      {/*<Stack
         direction="row"
         justifyContent="center"
         divider={<Box sx={{ mx: { xs: 1, sm: 2.5 } }}>:</Box>}
@@ -42,7 +42,7 @@ export default function ComingSoonView() {
         <TimeBlock label="Minutes" value={minutes} />
 
         <TimeBlock label="Seconds" value={seconds} />
-      </Stack>
+      </Stack>*/}
     </>
   );
 }
