@@ -285,7 +285,7 @@ export default function PublicationDetailMain({ post, handleSubscribe, loadingSu
                       ) : (
                         <IconHeart size={22} color='#FFFFFF' />
                       )}
-                      <Typography variant="body2" sx={{ lineHeight: 1, ml: 1, fontSize: 'clamp(0.5rem, 0.9vw, 1.1rem)', fontWeight: '700'}}>
+                      <Typography variant="body2" sx={{ lineHeight: 1, ml: 1, fontWeight: '700'}}>
                         {post?.stats?.upvotes}
                       </Typography>
                     </>
@@ -307,7 +307,7 @@ export default function PublicationDetailMain({ post, handleSubscribe, loadingSu
                     ) : (
                       <IconMessageCircle size={22} color='#FFFFFF' />
                     )}
-                    <Typography variant="body2" sx={{ lineHeight: 1, ml: 1, fontSize: 'clamp(0.5rem, 0.9vw, 1.1rem)', fontWeight: '700'}}>
+                    <Typography variant="body2" sx={{ lineHeight: 1, ml: 1, fontWeight: '700'}}>
                       {post?.stats?.comments}
                     </Typography>
                   </>
