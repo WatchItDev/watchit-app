@@ -120,7 +120,7 @@ export default function AccountPopover() {
           ) : <></>
         }
 
-        <Box sx={{ display: 'flex', flexDirection: 'column', ml: 1, cursor: 'pointer' }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', ml: { xs: 0, md: 1 }, cursor: 'pointer' }}>
           {!sessionData?.authenticated && !loading ? (
             <Button variant="contained" onClick={handleOpenModal}>
               Login
@@ -150,7 +150,7 @@ export default function AccountPopover() {
         </Box>
       </Box>
 
-      <CustomPopover open={popover.open} arrow="top-center" onClose={popover.onClose} sx={{ width: 200, p: 0, mt: '18px' }}>
+      <CustomPopover open={popover.open} arrow="top-right" onClose={popover.onClose} sx={{ width: 200, p: 0, mt: '18px' }}>
         {
           sessionData?.authenticated ? (
               <>

@@ -297,6 +297,7 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
               zIndex: 10,
               alignItems: 'flex-start',
               justifyContent: 'flex-start',
+              width: '100%',
               marginTop: { xs: '-48px', md: '-64px' },
               ml: {
                 xs: 0,
@@ -401,7 +402,7 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
                   {profile?.metadata?.bio ?? ''}
                 </Typography>
               </Box>
-              <Stack direction="row" sx={{ width: '100%', mb: 2, gap: 2 }}>
+              <Stack direction="row" sx={{ width: '100%', mb: 2, gap: 2, flexWrap: 'wrap' }}>
                 {authorizedLoading && (
                   <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', maxWidth:'100%', flexWrap: 'wrap' }}>
                     <CircularProgress size={24} sx={{ color: '#fff' }} />
