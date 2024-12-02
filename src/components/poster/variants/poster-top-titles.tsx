@@ -52,20 +52,23 @@ const PosterTopTitles = ({ post }: { post: any }) => {
       alignItems={'stretch'}
       spacing={{ xs: 1, sm: 2, md: 4 }}
     >
-      <Box
+      <Image
+        alt={post?.metadata?.title}
+        src={getMediaUri(getWallpaperCid(post))}
+        ratio="16/9"
         sx={{
+          zIndex: 0,
           position: 'absolute',
           top: 0,
           left: 0,
           width: '100%',
           height: '100%',
           opacity: 0.2,
-          backgroundImage: `url('${getMediaUri(getWallpaperCid(post))}')`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
-          zIndex: 0,
-        }}/>
+        }}
+      />
 
       <Box
         sx={{

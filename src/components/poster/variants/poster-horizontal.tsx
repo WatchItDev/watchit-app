@@ -91,9 +91,9 @@ const PosterHorizontal = ({ title, images, likes, id }: Poster) => {
         }}
       >
         {/* Title */}
-        <Typography style={{fontSize: 'clamp(0.5rem, 1vw, 2rem)'}} noWrap variant='h6' sx={{ mb: 1 }}>
+        <TextMaxLine line={2} noWrap variant='h6' sx={{ mb: 1 }}>
           {title}
-        </Typography>
+        </TextMaxLine>
 
         {/* Details: Rating, Year, Genre */}
         <Stack direction="row" spacing={1} alignItems="center">
