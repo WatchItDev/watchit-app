@@ -403,14 +403,14 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
               </Box>
               <Stack direction="row" sx={{ width: '100%', mb: 2, gap: 2 }}>
                 {authorizedLoading && (
-                  <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                  <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', maxWidth:'100%', flexWrap: 'wrap' }}>
                     <CircularProgress size={24} sx={{ color: '#fff' }} />
                   </Box>
                 )}
 
                 {isAuthorized && !authorizedLoading && profile?.id !== sessionData?.profile?.id && (
                   <LoadingButton
-                    title={hasAccess ? 'You have already joined!' : 'Join'}
+                    title={hasAccess ? 'Joined!' : 'Join'}
                     variant={hasAccess ? 'outlined' : 'contained'}
                     sx={{
                       minWidth: 120,
@@ -420,7 +420,7 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
                     disabled={accessLoading || hasAccess || accessFetchingLoading}
                     loading={accessLoading || accessFetchingLoading}
                   >
-                    {hasAccess ? 'You have already joined!' : 'Join'}
+                    {hasAccess ? 'Joined!' : 'Join'}
                   </LoadingButton>
                 )}
 
