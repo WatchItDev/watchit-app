@@ -88,7 +88,7 @@ export default function ProfileHome({ publications, noPaddings = false }: Profil
       <Box
         ref={parentRef}
         sx={{
-          display: 'grid',
+          display:publicationsToShow.length ? 'grid' : 'flex',
           gridTemplateColumns: `repeat(auto-fill, minmax(${minItemWidth}px, 1fr))`,
           flexWrap: 'wrap',
           gap: `${gap}px`,

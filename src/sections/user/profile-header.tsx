@@ -297,11 +297,20 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
               zIndex: 10,
               alignItems: 'flex-start',
               justifyContent: 'flex-start',
-              marginTop: { xs: '-32px', md: '-64px' },
-              ml: 4,
+              marginTop: { xs: '-48px', md: '-64px' },
+              ml: {
+                xs: 0,
+                md: 4,
+              },
             }}
           >
-            <Stack direction="row">
+            <Stack direction="row" sx={{
+              ml: {
+                xs: 4,
+                sm: 4,
+                md: 0,
+              }
+            }}>
               <Avatar
                 src={
                   (profile?.metadata?.picture as any)?.optimized?.uri ??
@@ -310,12 +319,20 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
                 alt={profile?.handle?.localName ?? ''}
                 variant="rounded"
                 sx={{
-                  width: { xs: 64, md: 128 },
-                  height: { xs: 64, md: 128 },
+                  width: { xs: 96, md: 128 },
+                  height: { xs: 96, md: 128 },
                   border: `solid 2px ${theme.palette.common.white}`,
                 }}
               />
-              <Stack direction="row" spacing={2} justifyContent="center" sx={{ mt: 11, ml: 2 }}>
+              <Stack direction="row" spacing={2} justifyContent="center" sx={
+                {
+                mt: {
+                  xs: 7,
+                  sm: 7,
+                  md: 11,
+                },
+                ml: 2 }}
+              >
                 {socialMedia.map(
                   ({ key, icon }) =>
                     socialMediaUrls[key as keyof SocialMediaUrls] && (

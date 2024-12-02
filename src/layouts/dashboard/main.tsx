@@ -25,6 +25,7 @@ export default function Main({ children, sx, ...other }: BoxProps) {
         display: 'flex',
         flexDirection: 'column',
         backgroundColor: '#1E1F22',
+        overflow: 'hidden',
         // py: `${HEADER.H_MOBILE + SPACING}px`,
         ...(lgUp && {
           // px: 2,

@@ -130,12 +130,20 @@ export default function AccountPopover() {
           {
             sessionData?.authenticated && !loading ? (
                 <>
+                  <Box sx={{
+                    display: {
+                      xs: 'none',
+                      md: 'flex',
+                  },
+                  flexDirection: 'column',
+                  }}>
                   <Typography variant="subtitle2" noWrap>
                     {sessionData?.profile?.handle?.localName}
                   </Typography>
                   <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
                     {`${sessionData?.profile?.id}`}
                   </Typography>
+                  </Box>
                 </>
             ) : <></>
           }
