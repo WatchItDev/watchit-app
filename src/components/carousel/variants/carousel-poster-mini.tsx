@@ -154,7 +154,7 @@ function Slide({ items, itemsPerRow }: SlideProps) {
             >
               <PosterHorizontal
                 id={post.id}
-                title={post.title}
+                title={post.metadata.title}
                 images={{
                   vertical: getMediaUri(getPosterCid(post)),
                   horizontal: getMediaUri(getPosterHorizontalCid(post)),

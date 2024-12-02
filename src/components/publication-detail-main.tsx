@@ -126,12 +126,16 @@ export default function PublicationDetailMain({ post, handleSubscribe, loadingSu
     <Box sx={{
       position: 'sticky',
       width: {
-      xs: '100%',
+        xs: '100%',
         lg: '450px',
       },
       padding: '10px',
-      top: '75px',
-      height: 'fit-content', maxHeight: '100vh', flexShrink: 0 }}>
+      top: '12px',
+      height: 'fit-content',
+      maxHeight: '100vh',
+      flexShrink: 0
+    }}>
+
       <Card
         component={m.div}
         initial={{ opacity: 0 }}
@@ -145,7 +149,7 @@ export default function PublicationDetailMain({ post, handleSubscribe, loadingSu
             overflowY: 'scroll',
             backgroundColor: '#1e1f22',
             padding: '0 !important',
-            margin: '24px'
+            margin: '10px 10px 0 20px'
           }}
         >
           <Box
