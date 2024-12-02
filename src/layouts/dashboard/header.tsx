@@ -74,7 +74,7 @@ export default function Header({ children }: PropsWithChildren) {
         alignItems="center"
         justifyContent="flex-end"
         spacing={{ xs: 0.5, sm: 1 }}
-        sx={{ pr: 2 }}
+        sx={{ pr: { xs: 0, md: 2 } }}
       >
         {
           sessionData?.authenticated && (

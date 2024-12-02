@@ -14,6 +14,8 @@ interface HeaderContentProps {
 const HeaderContent: FC<HeaderContentProps> = ({handleBack, title}) => {
   const mdUp = useResponsive('up', 'md');
 
+  if (!mdUp) return <></>;
+
   return (
     <>
       { handleBack ? (
@@ -32,9 +34,7 @@ const HeaderContent: FC<HeaderContentProps> = ({handleBack, title}) => {
         >
           <IconButton disableRipple>
             <IconChevronLeft size={20} />
-            { mdUp ? (
-              <Typography sx={{ ml: 1 }} variant='subtitle2'>Back</Typography>
-            ):<></> }
+            <Typography sx={{ ml: 1 }} variant='subtitle2'>Back</Typography>
           </IconButton>
           {mdUp && <Label sx={{ px: 0.75, mr: 1, fontSize: 12, color: 'text.secondary' }}>Esc</Label>}
         </Button>
