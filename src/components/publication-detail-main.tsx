@@ -233,7 +233,7 @@ export default function PublicationDetailMain({ post, handleSubscribe, loadingSu
               </Typography>
             </m.div>
             <m.div variants={variants}>
-              <Stack direction="row" sx={{ mb: 1.5 }} spacing={0} alignItems="center" onClick={() => alert('Clicked') }>
+              <Stack direction="row" sx={{ mb: 1.5, cursor: 'pointer' }} spacing={0} alignItems="center">
                 <Typography style={{ marginRight: 5}} variant='body1'>
                   Distributed by
                 </Typography>
