@@ -209,7 +209,7 @@ export default function OverviewFilePage() {
       </Helmet>
 
       <BlankView>
-        <ComingSoonView />
+        <ComingSoonView deadline={'03/30/2025 21:30'} showDeadline={true} />
       </BlankView>
 
       {/*<Header>*/}
