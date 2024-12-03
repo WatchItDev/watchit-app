@@ -28,7 +28,6 @@ interface LoginModalProps {
 
 export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
   const [loading, setLoading] = useState(true);
-  const [activeConnector, setActiveConnector] = useState<any>(null);
   const [view, setView] = useState<'wallet' | 'profile' | 'create'>('wallet');
   const [successMessage, setSuccessMessage] = useState('');
 
@@ -58,26 +57,18 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
   }, [address]);
 
   useEffect(() => {
-    (async () => {
+    if (open && view === 'wallet') {
       const web3AuthConnector = connectors.find((el) => el.id === 'web3auth');
-      if (open && view === 'wallet') {
-        if (web3AuthConnector) {
-          connect({ connector: web3AuthConnector })
-        }
+      if (web3AuthConnector) {
+        connect({ connector: web3AuthConnector })
       }
-    })()
-  }, [open, view, isConnected]);
+    }
+  }, [open, view]);
 
   useEffect(() => {
-    if (isConnected && connector) {
-      setActiveConnector({ ...connector, address });
-      setView('profile');
-    } else {
-      setActiveConnector(null);
-      setView('wallet');
-    }
+    setView(isConnected && connector ? 'profile' : 'wallet');
     setLoading(false);
-  }, [isConnected, connector, address]);
+  }, [isConnected, address]);
 
   useEffect(() => {
     if (error) {
@@ -92,7 +83,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
   };
 
   const handleDisconnectWallet = async () => {
-    if (sessionData?.authenticated) await logoutExecute();
+    if (sessionData?.authenticated) await logoutExecute()
     disconnect();
     setView('wallet');
   };
@@ -132,7 +123,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
               <>
                 {view === 'profile' && isConnected && (
                   <ProfileSelectView
-                    activeConnector={activeConnector}
+                    activeConnector={{ ...(connector && { connector, address } || {}) }}
                     onRegisterNewProfile={() => setView('create')}
                     onDisconnect={handleDisconnectWallet}
                     onClose={onClose}
