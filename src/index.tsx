@@ -5,6 +5,12 @@ import { BrowserRouter } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import * as Sentry from "@sentry/react";
 import App from './App';
+import { Buffer } from 'buffer';
+import process from 'process';
+
+window.Buffer = Buffer;
+window.process = process;
+window.global = window;
 
 Sentry.init({
   dsn: process.env.REACT_APP_SENTRY_DNS,
