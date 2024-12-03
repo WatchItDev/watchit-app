@@ -17,7 +17,7 @@ import TextMaxLine from "@src/components/text-max-line";
 
 // ----------------------------------------------------------------------
 
-const PosterHorizontal = ({ title, images, likes, id }: Poster) => {
+const PosterHorizontal = ({ title, images, likes, id, synopsis }: Poster) => {
   const router = useRouter();
 
   const handlePosterClick = () => {
@@ -98,7 +98,7 @@ const PosterHorizontal = ({ title, images, likes, id }: Poster) => {
         {/* Details: Rating, Year, Genre */}
         <Stack direction="row" spacing={1} alignItems="center">
           <TextMaxLine line={2} variant="body2"  color="textSecondary">
-            Dive into the world of the unknown when Jhon Connor is sent back in time to save the world from the machines.
+            {synopsis}
           </TextMaxLine>
           <Typography sx={{fontSize: 'clamp(0.1rem, 0.8vw, 2rem)', fontWeight: '500'}}  noWrap variant="body2">
 

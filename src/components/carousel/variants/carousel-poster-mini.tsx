@@ -133,11 +133,12 @@ function Slide({ items, itemsPerRow }: SlideProps) {
   const row2 = items.slice(itemsPerRow, itemsPerRow * 2);
   const itemWidthPercent = 100 / itemsPerRow;
 
-  const getMediaUri = (cid: string): string => `https://ipfs.io/ipfs/${cid?.replace?.('ipfs://', '')}`
-  const getWallpaperCid = (post: any): string => post?.metadata?.attachments?.find((el: any) => el.altTag === 'Wallpaper')?.image?.raw?.uri
-  const getPosterCid = (post: any): string => post?.metadata?.attachments?.find((el: any) => el.altTag === 'Vertical Poster')?.image?.raw?.uri
-  const getPosterHorizontalCid = (post: any): string => post?.metadata?.attachments?.find((el: any) => el.altTag === 'Horizontal Poster')?.image?.raw?.uri
-  const getMovieGenres = (post: any): string => post?.metadata?.attributes?.find((el: any) => el.key === 'Genres')?.value
+  // const getMediaUri = (cid: string): string => `https://ipfs.io/ipfs/${cid?.replace?.('ipfs://', '')}`
+  const getMediaUri = (cid: string): string => `${cid}`
+  const getWallpaperCid = (post: any): string => post?.metadata?.attachments?.find((el: any) => el.altTag === 'wallpaper')?.image?.raw?.uri
+  const getPosterCid = (post: any): string => post?.metadata?.attachments?.find((el: any) => el.altTag === 'poster')?.image?.raw?.uri
+
+  console.log(items)
 
   return (
     <Box>
@@ -157,13 +158,10 @@ function Slide({ items, itemsPerRow }: SlideProps) {
                 title={post.metadata.title}
                 images={{
                   vertical: getMediaUri(getPosterCid(post)),
-                  horizontal: getMediaUri(getPosterHorizontalCid(post)),
                   wallpaper: getMediaUri(getWallpaperCid(post))
                 }}
-                likes={post.likes}
-                synopsis={post.synopsis}
-                year={post.year}
-                genre={getMovieGenres(post)?.split?.(', ')}
+                likes={post.globalStats.upvotes}
+                synopsis={post.metadata.content}
               />
             </Box>
           ))}

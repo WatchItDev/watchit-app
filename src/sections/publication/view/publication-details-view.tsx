@@ -74,11 +74,12 @@ export default function PublicationDetailsView({ id }: Props) {
 
 
 
-  const getMediaUri = (cid: string): string => `https://ipfs.io/ipfs/${cid?.replace('ipfs://', '')}`
+  // const getMediaUri = (cid: string): string => `https://ipfs.io/ipfs/${cid?.replace('ipfs://', '')}`
+  const getMediaUri = (cid: string): string => `${cid}`
 
-  const getWallpaperCid = (): string => data?.metadata?.attachments?.find((el: any) => el?.altTag === 'Wallpaper')?.image?.raw?.uri
+  const getWallpaperCid = (): string => data?.metadata?.attachments?.find((el: any) => el?.altTag === 'wallpaper')?.image?.raw?.uri
 
-  const getPosterCid = (): string => data?.metadata?.attachments?.find((el: any) => el?.altTag === 'Vertical Poster')?.image?.raw?.uri
+  const getPosterCid = (): string => data?.metadata?.attachments?.find((el: any) => el?.altTag === 'poster')?.image?.raw?.uri
 
   const toggleDescription = () => {
     setShowToggle(!showToggle);

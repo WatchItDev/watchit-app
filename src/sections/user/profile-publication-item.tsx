@@ -24,9 +24,10 @@ export const ProfilePublicationItem = ({ publication }: Props) => {
     }
   }, [publication]);
 
-  const getMediaUri = (cid: string): string => `https://ipfs.io/ipfs/${cid.replace('ipfs://', '')}`;
+  // const getMediaUri = (cid: string): string => `https://ipfs.io/ipfs/${cid.replace('ipfs://', '')}`;
+  const getMediaUri = (cid: string): string => `${cid}`;
   const getPosterCid = (): string =>
-    publication?.metadata?.attachments?.find((el: any) => el.altTag === 'Vertical Poster')?.image?.raw?.uri;
+    publication?.metadata?.attachments?.find((el: any) => el.altTag === 'poster')?.image?.raw?.uri;
 
   const handleClick = () => {
     router.push(paths.dashboard.publication.details(publication.id));
@@ -41,7 +42,8 @@ export const ProfilePublicationItem = ({ publication }: Props) => {
         border: '1px solid rgba(255, 255, 255, 0.12)',
         borderRadius: 2,
         overflow: 'hidden',
-        cursor: 'pointer',
+        cursor: 'pointer !important',
+        pointerEvents: 'all',
         boxShadow: 1,
         padding: 1,
         transition: 'transform 0.2s ease-in-out',
@@ -57,9 +59,10 @@ export const ProfilePublicationItem = ({ publication }: Props) => {
           borderRadius: 1,
           objectFit: 'cover',
           width: '100%',
+          cursor: 'pointer',
         }}
       />
-      <Box sx={{ pt: 1 }}>
+      <Box sx={{ pt: 1, cursor: 'pointer', }}>
         <Typography
           variant="body1"
           fontWeight="bold"

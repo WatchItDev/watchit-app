@@ -27,10 +27,11 @@ const PosterTopTitles = ({ post }: { post: any }) => {
     router.push(paths.dashboard.publication.details(post.id));
   }
 
-  const getMediaUri = (cid: string): string => `https://ipfs.io/ipfs/${cid?.replace?.('ipfs://', '')}`
+  // const getMediaUri = (cid: string): string => `https://ipfs.io/ipfs/${cid?.replace?.('ipfs://', '')}`
+  const getMediaUri = (cid: string): string => `${cid}`
 
-  const getWallpaperCid = (post: any): string => post?.metadata?.attachments?.find((el: any) => el.altTag === 'Wallpaper')?.image?.raw?.uri
-  const getPosterCid = (post: any): string => post?.metadata?.attachments?.find((el: any) => el.altTag === 'Vertical Poster')?.image?.raw?.uri
+  const getWallpaperCid = (post: any): string => post?.metadata?.attachments?.find((el: any) => el.altTag === 'wallpaper')?.image?.raw?.uri
+  const getPosterCid = (post: any): string => post?.metadata?.attachments?.find((el: any) => el.altTag === 'poster')?.image?.raw?.uri
 
   const toggleBookMark = async () => {
     try {

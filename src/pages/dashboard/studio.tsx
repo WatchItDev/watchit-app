@@ -1,18 +1,13 @@
 import { Helmet } from 'react-helmet-async';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import {
-  Amount,
-  OpenActionType,
   ProfileSession,
   useCreatePost,
-  useCurrencies,
   useSession,
 } from '@lens-protocol/react-web';
-import { AnyMedia, MetadataAttributeType, module, ModuleOptions, ModuleSchemaId, video } from '@lens-protocol/metadata';
+import { AnyMedia, video } from '@lens-protocol/metadata';
 import axios from 'axios';
 import uuidv4 from '../../utils/uuidv4';
-import { LoadingScreen } from '../../components/loading-screen';
-import { encodeData } from '@lens-protocol/react';
 import { Grid, Modal } from '@mui/material';
 import Skeleton from '@mui/material/Skeleton';
 import Box from '@mui/material/Box';
@@ -20,57 +15,30 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 // @ts-ignore
 import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
-import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
+import HeaderContent from '@src/layouts/dashboard/HeaderContent.tsx';
+import Header from '@src/layouts/dashboard/header.tsx';
 
-// Metadatos de la película en una constante
-const movieMetadata = {
-  title: "Infinite Skies (collectable 7)",
-  synopsis: "In a world where gravity is no longer a constant, humanity has learned to live in the clouds. A young inventor discovers a way to unlock the secrets of flight, but dangerous forces are ready to exploit his discoveries for their own gain.",
-  genres: ["Sci-Fi", "Adventure"],
-  releaseDate: "2022-07-11",
-  duration: "112 minutes",
-  language: "English",
-  country: "USA",
-  rating: "PG",
-  format: "4DX",
-  studioName: "Cloud Productions",
-  budget: "$90,000,000",
-  director: "Lucas Brown",
-  writer: "Grace Martin",
-  producers: ["Samuel Lee", "Isabella Carter"],
-  editor: "Nathan Lewis",
-  price: 50,
+const publicationMetadata = {
+  title: "Faust",
+  synopsis: "God and Satan war over earth; to settle things, they wager on the soul of Faust, a learned and prayerful alchemist. During a plague, Faust despairs and burns his books after failing to stop death; Satan sends Mephisto to tempt Faust, first with insight into treating the plague and then with a day's return to youth. Mephisto is clever, timing the end of this 24 hours as Faust embraces the beautiful Duchess of Parma. Faust trades his soul for youth. Some time later, he's bored, and demands on Easter Sunday that Mephisto take him home. Faust promptly sees and falls in love with the beautiful Gretchen, whose liaison with him brings her dishonor. Is there redemption? Who wins the wager?",
   media: [
     {
-      item: "QmU1DBnZ8ut5iztmMMn412FVKGFAJgVokFaUtxW59KuHCm",
+      item: "bafkreig2z6hngyeirhlfcfq2sv4wvi6ble6lmemlr4dygcv2upsxfavrhy",
       type: "image/jpeg",
-      altTag: "Vertical Poster"
-    },
-    {
-      item: "QmZhcxRvNhTZ5SGNU5RFVheHa3bAbg5QuR2PPeevhoZmMf",
-      type: "image/jpeg",
-      altTag: "Horizontal Poster"
+      altTag: "poster"
     },
     {
       item: "QmNrua6yuwbmxxKKwaHSvmsjSLjJ79P4jbSBqsbJS1SjNS",
       type: "image/jpeg",
-      altTag: "Wallpaper"
+      altTag: "wallpaper"
     },
     {
-      item: "QmQMZt69xAU1qwn6cvQywzXsMSaWVdwEht7vuLE4AGWZFg",
+      item: "bafkreibcieqddlbfyzb3difnwukbeob5ka4rnmlj6iiyrip3itm43ol3ce",
       type: "video/mp4",
-      altTag: "Movie Trailer"
-    },
-    {
-      item: "QmQMZt69xAU1qwn6cvQywzXsMSaWVdwEht7vuLE4AGWZFg",
-      type: "video/mp4",
-      altTag: "Full Movie"
+      altTag: "content"
     }
-  ],
-  creators: ["Lucas Brown", "Grace Martin"]
+  ]
 };
-
-const TIP_ACTION_MODULE_ADDRESS = '0xe95A8326EBd29B6574875806474d6f9734De80A5';
 
 // Función para subir los metadatos a Pinata
 const uploadToPinata = async (metadata: any) => {
@@ -101,13 +69,8 @@ export default function OverviewFilePage() {
   const handleClose = () => setOpen(false);
 
   const { execute: createPost } = useCreatePost();
-  const { data, loading } = useCurrencies();
 
-  console.log('currencies')
-  console.log(data)
-
-  console.log('activeProfile')
-  console.log(sessionData?.profile)
+  const getMediaUri = (cid: string): string => `https://g.watchit.movie/fetch/${cid?.replace('ipfs://', '')}/`
 
   // @ts-ignore eslint-disable-next-line @typescript-eslint/no-unused-vars
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -120,29 +83,9 @@ export default function OverviewFilePage() {
 
       console.log('submit')
 
-      // Prepara los atributos
-      const attributes = [
-        { traitType: 'Genres', value: movieMetadata.genres.join(', ') },
-        { traitType: 'Release Date', value: movieMetadata.releaseDate },
-        { traitType: 'Duration', value: movieMetadata.duration },
-        { traitType: 'Language', value: movieMetadata.language },
-        { traitType: 'Country', value: movieMetadata.country },
-        { traitType: 'Rating', value: movieMetadata.rating },
-        { traitType: 'Format', value: movieMetadata.format },
-        { traitType: 'Studio Name', value: movieMetadata.studioName },
-        { traitType: 'Budget', value: movieMetadata.budget },
-        { traitType: 'Director', value: movieMetadata.director },
-        { traitType: 'Writer', value: movieMetadata.writer },
-        { traitType: 'Producers', value: movieMetadata.producers.join(', ') },
-        { traitType: 'Editor', value: movieMetadata.editor },
-        { traitType: 'Creators', value: movieMetadata.creators.join(', ') },
-      ];
-
-      console.log('attributes')
-
       // Prepara los medios
-      const mediaItems: AnyMedia[] = movieMetadata.media.map((mediaItem: any) => ({
-        item: `ipfs://${mediaItem.item}` as any,
+      const mediaItems: AnyMedia[] = publicationMetadata.media.map((mediaItem: any) => ({
+        item: getMediaUri(mediaItem.item) as any,
         type: mediaItem.type as any,
         altTag: mediaItem.altTag as string,
       }));
@@ -152,19 +95,18 @@ export default function OverviewFilePage() {
       // Crear el objeto de metadatos usando el helper 'video'
       const metadata = video({
         id: uuidv4(),
-        title: movieMetadata.title,
-        content: movieMetadata.synopsis,
-        video: mediaItems[mediaItems.length - 2] as any,
+        title: publicationMetadata.title,
+        content: publicationMetadata.synopsis,
+        video: mediaItems[mediaItems.length - 1] as any,
         locale: 'en',
-        attributes: attributes.map((attr) => ({
-          type: MetadataAttributeType.STRING,
-          key: attr.traitType,
-          value: attr.value,
-        })),
         attachments: mediaItems,
         appId: 'watchit',
       });
 
+      console.log('last media')
+      console.log(metadata)
+      console.log(mediaItems)
+      console.log(mediaItems[mediaItems.length - 1])
       console.log('metadata')
 
       // Subir los metadatos a Pinata
@@ -173,40 +115,9 @@ export default function OverviewFilePage() {
       console.log('metadata cid')
       console.log(metadataUri)
 
-      // Obtener la moneda MMC
-      const mmc = data?.find((el) => (el.address === GLOBAL_CONSTANTS.MMC_ADDRESS))
-
-      if (!mmc) {
-        console.error('Currency not found');
-        return;
-      }
-
-      const amount = Amount.erc20(mmc, movieMetadata.price);
-
-      console.log(amount)
-
-      const calldata = encodeData(
-        [{ name: 'tipReceiver', type: 'address' }],
-        [sessionData?.profile.ownedBy.address], // Address of tip receiver
-      );
-
       // Crear el post en Lens con el Collect Action Module
       const result = await createPost({
-        metadata: metadataUri,
-        actions: [
-          {
-            type: OpenActionType.SIMPLE_COLLECT,
-            amount,
-            recipient: sessionData?.profile?.ownedBy.address,
-            followerOnly: false,
-            referralFee: 0,
-          },
-          {
-            type: OpenActionType.UNKNOWN_OPEN_ACTION,
-            address: TIP_ACTION_MODULE_ADDRESS,
-            data: calldata,
-          },
-        ],
+        metadata: metadataUri
       });
 
       console.log('result')
@@ -228,48 +139,48 @@ export default function OverviewFilePage() {
     }
   };
 
-  const createTipModuleMetadata = () => {
-    return module({
-      name: 'TipActionModule',
-      title: 'Tip Action Module',
-      description: 'This module allows users to tip the author of a publication.',
-      authors: ['martijn.vanhalen@gmail.com'],
-      initializeCalldataABI: `${JSON.stringify([
-        {
-          "type": "address",
-          "name": "tipReceiver"
-        }
-      ])}`,
-      processCalldataABI: `${JSON.stringify([
-        {
-          "type": "address",
-          "name": "currency"
-        },
-        {
-          "type": "uint256",
-          "name": "tipAmount"
-        }
-      ])}`,
-      $schema: ModuleSchemaId.LATEST
-    } as ModuleOptions);
-  };
-
-  const createAndUploadTipModuleMetadata = async () => {
-    try {
-      const metadata = createTipModuleMetadata();
-      const metadataUri = await uploadToPinata(metadata);
-      console.log(metadata);
-      console.log('Module Metadata CID:', metadataUri);
-    } catch (error) {
-      console.error('Error uploading metadata:', error);
-    }
-  };
-
-  useEffect(() => {
-    // createAndUploadTipModuleMetadata();
-  }, []);
-
-  if (loading) return <LoadingScreen />
+  // const createTipModuleMetadata = () => {
+  //   return module({
+  //     name: 'TipActionModule',
+  //     title: 'Tip Action Module',
+  //     description: 'This module allows users to tip the author of a publication.',
+  //     authors: ['martijn.vanhalen@gmail.com'],
+  //     initializeCalldataABI: `${JSON.stringify([
+  //       {
+  //         "type": "address",
+  //         "name": "tipReceiver"
+  //       }
+  //     ])}`,
+  //     processCalldataABI: `${JSON.stringify([
+  //       {
+  //         "type": "address",
+  //         "name": "currency"
+  //       },
+  //       {
+  //         "type": "uint256",
+  //         "name": "tipAmount"
+  //       }
+  //     ])}`,
+  //     $schema: ModuleSchemaId.LATEST
+  //   } as ModuleOptions);
+  // };
+  //
+  // const createAndUploadTipModuleMetadata = async () => {
+  //   try {
+  //     const metadata = createTipModuleMetadata();
+  //     const metadataUri = await uploadToPinata(metadata);
+  //     console.log(metadata);
+  //     console.log('Module Metadata CID:', metadataUri);
+  //   } catch (error) {
+  //     console.error('Error uploading metadata:', error);
+  //   }
+  // };
+  //
+  // useEffect(() => {
+  //   // createAndUploadTipModuleMetadata();
+  // }, []);
+  //
+  // if (loading) return <LoadingScreen />
 
   return (
     <>
@@ -280,6 +191,10 @@ export default function OverviewFilePage() {
       {/*<BlankView>*/}
       {/*  <ComingSoonView />*/}
       {/*</BlankView>*/}
+
+      <Header>
+        <HeaderContent title="Studio" />
+      </Header>
 
       <Grid container spacing={2} style={{ height: 'calc(100vh - 5rem)', width: '100%', padding: '2rem 1.5rem 2rem 2rem' }}>
         <Grid item xs={8} style={{ height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'flex-start' }}>
@@ -356,7 +271,7 @@ export default function OverviewFilePage() {
             component="h2"
             sx={{ mb: 2, color: '#fff' }}
           >
-            Ingresar Hash de IPFS
+            Upload hardcoded movie
           </Typography>
           <Button
             variant="contained"

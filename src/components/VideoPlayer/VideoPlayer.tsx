@@ -1,13 +1,12 @@
-import React, { FC, useRef, useEffect } from 'react';
+import { FC, useRef, useEffect } from 'react';
 import { Typography, IconButton, Button } from '@mui/material';
 import { IconChevronLeft } from '@tabler/icons-react';
 import {
   MediaPlayer,
   MediaPlayerInstance,
   MediaProvider,
-  // Poster,
-  // Track,
   useMediaState,
+  isHLSProvider,
 } from '@vidstack/react';
 import { DefaultVideoLayout, defaultLayoutIcons } from '@vidstack/react/player/layouts/default';
 import Label from '../label';
@@ -19,15 +18,17 @@ import '@vidstack/react/player/styles/default/layouts/video.css';
 export type VideoPlayerProps = {
   src: string;
   titleMovie: string;
-  preview?: boolean;
   onBack?: () => void;
   showBack?: boolean;
 };
 
-export const VideoPlayer: FC<VideoPlayerProps> = ({ src, titleMovie, preview, onBack, showBack }) => {
+export const VideoPlayer: FC<VideoPlayerProps> = ({ src, titleMovie, onBack, showBack }) => {
   const mdUp = useResponsive('up', 'md');
   const player = useRef<MediaPlayerInstance>(null);
   const controlsVisible = useMediaState('controlsVisible', player);
+
+  console.log('hello url')
+  console.log(src)
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -41,10 +42,25 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({ src, titleMovie, preview, on
     };
   }, [onBack]);
 
+  useEffect(() => {
+    if (player.current) {
+      const provider = player.current?.provider;
+      if (isHLSProvider(provider)) {
+        provider.config = {
+          enableWorker: true,
+          lowLatencyMode: true,
+        };
+      }
+    }
+  }, []);
+
   return (
     <MediaPlayer
-      src={src}
       ref={player}
+      src={{
+        src,
+        type: 'application/x-mpegurl',
+      }}
       viewType="video"
       streamType="on-demand"
       logLevel="warn"
@@ -96,16 +112,8 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({ src, titleMovie, preview, on
           )}
         </Button>
       )}
-      <MediaProvider>
-        {/* <Poster className="vds-poster" /> */}
-        {/* {textTracks.map(track => (
-          <Track {...track} key={track.src} />
-        ))} */}
-      </MediaProvider>
-      <DefaultVideoLayout
-        // thumbnails="https://files.vidstack.io/sprite-fight/thumbnails.vtt"
-        icons={defaultLayoutIcons}
-      />
+      <MediaProvider />
+      <DefaultVideoLayout icons={defaultLayoutIcons} />
     </MediaPlayer>
   );
 };

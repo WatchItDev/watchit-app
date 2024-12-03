@@ -24,7 +24,7 @@ export default function PublicationPlayView({ publication, loading }: Props) {
   //   router.push(paths.dashboard.publication.details(`${id}`));
   // }
 
-  const getMediaUri = (cid: string): string => `https://ipfs.io/ipfs/${cid?.replace('ipfs://', '')}`
+  const getMediaUri = (cid: string): string => `https://g.watchit.movie/fetch/${cid?.replace('ipfs://', '')}/`
 
   const getMovieCid = (): string => publication?.metadata?.attachments?.find((el: any) => el.altTag === 'Full Movie')?.video?.raw?.uri
 
@@ -37,7 +37,6 @@ export default function PublicationPlayView({ publication, loading }: Props) {
           <VideoPlayer
             src={getMediaUri(getMovieCid())}
             titleMovie={publication?.metadata?.title}
-            preview={false}
             // onBack={handleBack}
           />
         )
