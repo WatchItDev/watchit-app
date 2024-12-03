@@ -8,6 +8,7 @@ import Alert from '@mui/material/Alert';
 
 // LENS IMPORTS
 import { useLazyProfilesManaged, useLogout, useSession } from '@lens-protocol/react-web';
+import { useWeb3Auth } from '@src/hooks/use-web3-auth';
 
 // WAGMI IMPORTS
 import { useAccount, useConnect, useDisconnect } from 'wagmi';
@@ -36,6 +37,8 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
   const { connect, connectors, error } = useConnect();
   const { execute: logoutExecute } = useLogout();
   const { disconnect } = useDisconnect();
+  const { web3AuthInstance: w3 } = useWeb3Auth();
+
 
   // Fetch profiles associated with the connected wallet
   const {
@@ -48,7 +51,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
   const isLoading = (loading || profilesLoading) && view !== 'create';
   // Fetch profiles when the wallet address changes
   useEffect(() => {
-    if (address && !profilesLoading && !profilesCalled) {
+    if (address) {
       fetchProfiles({
         for: address,
         includeOwned: true,
@@ -57,23 +60,6 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
   }, [address]);
 
   useEffect(() => {
-    (async () => {
-      if (!address) return;
-
-      try {
-        await fetchProfiles({
-          for: address,
-          includeOwned: true,
-        });
-      } catch (error) {
-        console.error('Error re-fetching profiles:', error);
-      }
-    })()
-  }, [address]);
-
-  // Reset the reference when the modal is closed
-  useEffect(() => {
-    // if (isConnected && view === 'wallet') { setView('profile'); }
     if (open && view === 'wallet' && isDisconnected) {
       const web3AuthConnector = connectors.find((el) => el.id === 'web3auth');
       if (web3AuthConnector) {
@@ -83,14 +69,15 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
       }
     }
 
-    return () => {
-      if (connector) disconnect({ connector })
-    }
-  }, [open, isDisconnected]);
+    // avoid memory leak bug from wallet 
+    return () => { w3.removeAllListeners() }
+  }, [open, view, isConnected]);
 
   useEffect(() => {
     if (error) {
       onClose();
+      w3.loginModal.closeModal()
+      w3.clearCache()
       setView('wallet');
     }
   }, [error]);
@@ -105,6 +92,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
     disconnect({ connector });
     setView('wallet');
   };
+
 
   return (
     <>
