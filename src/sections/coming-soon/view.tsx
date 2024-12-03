@@ -14,9 +14,16 @@ import Header from "@src/layouts/dashboard/header.tsx";
 interface props {
   deadline?: string
   showDeadline?: boolean
+  title?: string
+  content?: string
 }
 
-export const ComingSoonView = ({ deadline = '01/12/2025 21:30', showDeadline }: props) => {
+export const ComingSoonView = ({
+  deadline = '01/12/2025 21:30',
+  showDeadline,
+  title = 'Coming Soon!',
+  content = 'We are currently working hard on this page!'
+}: props) => {
   const { days, hours, minutes, seconds } = useCountdownDate(new Date(deadline));
 
   return (
@@ -25,11 +32,11 @@ export const ComingSoonView = ({ deadline = '01/12/2025 21:30', showDeadline }: 
         <HeaderContent title="Coming soon" />
       </Header>
       <Typography variant="h3" sx={{ mb: 2, mt: 3, width: '100%', textAlign: 'center' }}>
-        Coming Soon!
+        {title}
       </Typography>
 
       <Typography variant={'h6'} sx={{ color: 'text.secondary', width: '100%', textAlign: 'center', mb: 1 }}>
-        We are currently working hard on this page!
+        {content}
       </Typography>
 
       <ComingSoonIllustration sx={{ my: 10, height: 240 }} />
