@@ -127,76 +127,6 @@ export default function PublicationDetailsView({ id }: Props) {
   // Remove from publications the current publication
   const filteredPublications = publications?.filter((publication) => publication.id !== id) ?? [];
 
-  // Append hardcoded publications
-  // @TODO: Remove this when we have a better way to get publications
-
-  const hardcodedPublications = [
-    {
-      ...filteredPublications[0],
-      id: '1',
-    },
-    {
-      ...filteredPublications[0],
-      id: '2',
-    },
-    {
-      ...filteredPublications[0],
-      id: '3',
-    },
-    {
-      ...filteredPublications[0],
-      id: '4',
-    },
-    {
-      ...filteredPublications[0],
-      id: '5',
-    },
-    {
-      ...filteredPublications[0],
-      id: '6',
-    },
-    {
-      ...filteredPublications[0],
-      id: '7',
-    },
-    {
-      ...filteredPublications[0],
-      id: '8',
-    },
-    {
-      ...filteredPublications[0],
-      id: '9',
-    },
-    {
-      ...filteredPublications[0],
-      id: '10',
-    },
-    {
-      ...filteredPublications[0],
-      id: '11',
-    },
-    {
-      ...filteredPublications[0],
-      id: '12',
-    },
-    {
-      ...filteredPublications[0],
-      id: '13',
-    },
-    {
-      ...filteredPublications[0],
-      id: '14',
-    },
-    {
-      ...filteredPublications[0],
-      id: '15',
-    },
-  ];
-
-
-
-
-
   if (loading || accessLoading) return <LoadingScreen />
 
   return (
@@ -367,8 +297,7 @@ export default function PublicationDetailsView({ id }: Props) {
                             More from {data?.by?.metadata?.displayName.split(' ')[0]}
                           </Typography>
                           <ProfileHome publications={[
-                            ...filteredPublications,
-                            ...hardcodedPublications
+                            ...filteredPublications
                           ]} noPaddings={true}  />
                         </Box>
                       )
