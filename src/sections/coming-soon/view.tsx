@@ -22,7 +22,7 @@ export const ComingSoonView = ({
   deadline = '01/12/2025 21:30',
   showDeadline,
   title = 'Coming Soon!',
-  content = 'We are currently working hard on this page!'
+  content = 'Exciting things are on the way—this section is under construction!'
 }: props) => {
   const { days, hours, minutes, seconds } = useCountdownDate(new Date(deadline));
 
@@ -35,7 +35,7 @@ export const ComingSoonView = ({
         {title}
       </Typography>
 
-      <Typography variant={'h6'} sx={{ color: 'text.secondary', width: '100%', textAlign: 'center', mb: 1 }}>
+      <Typography variant={'h6'} sx={{ color: 'text.secondary', width: { xs: '100%', md: '80%' }, mx: 'auto', textAlign: 'center', mb: 1 }}>
         {content}
       </Typography>
 

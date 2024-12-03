@@ -209,7 +209,11 @@ export default function OverviewFilePage() {
       </Helmet>
 
       <BlankView>
-        <ComingSoonView deadline={'03/30/2025 21:30'} showDeadline={true} />
+        <ComingSoonView
+          deadline={'03/30/2025 21:30'}
+          showDeadline={true}
+          content={"Studio will enable creators to generate new content and refine existing creations using AI-driven tools for metadata, images, subtitles, voiceovers, and security verifications. Stay tuned!"}
+        />
       </BlankView>
 
       {/*<Header>*/}
