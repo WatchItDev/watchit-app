@@ -5,7 +5,7 @@ import {
   useCreatePost,
   useSession,
 } from '@lens-protocol/react-web';
-import { AnyMedia, video } from '@lens-protocol/metadata';
+import { AnyMedia, MediaVideoMimeType, video } from '@lens-protocol/metadata';
 import axios from 'axios';
 import uuidv4 from '../../utils/uuidv4';
 import { Grid, Modal } from '@mui/material';
@@ -19,24 +19,20 @@ import HeaderContent from '@src/layouts/dashboard/HeaderContent.tsx';
 import Header from '@src/layouts/dashboard/header.tsx';
 
 const publicationMetadata = {
-  title: "Faust",
-  synopsis: "God and Satan war over earth; to settle things, they wager on the soul of Faust, a learned and prayerful alchemist. During a plague, Faust despairs and burns his books after failing to stop death; Satan sends Mephisto to tempt Faust, first with insight into treating the plague and then with a day's return to youth. Mephisto is clever, timing the end of this 24 hours as Faust embraces the beautiful Duchess of Parma. Faust trades his soul for youth. Some time later, he's bored, and demands on Easter Sunday that Mephisto take him home. Faust promptly sees and falls in love with the beautiful Gretchen, whose liaison with him brings her dishonor. Is there redemption? Who wins the wager?",
+  title: "Nosferatu",
+  synopsis: "homas Hutter, working for an estate agency, is sent to Transylvania by his boss to visit a new client named Count Orlok who plans to buy a property. After entrusting his wife Ellen to his good pal, he embarks on his journey. During his journey amid the mountainous regions, he stops at an inn for dinner. The locals discourage Hutter from traveling to the Count's castle but Hutter proceeds his journey by taking a coach. Due to nightfall, the coachman declines to take him any further than the bridge. Hutter continues his journey alone and after crossing the bridge, a mysterious coach appears and a mysterious coachman gestures Hutter to climb aboard. After leaving Hutter outside the Count's castle, the coach goes away. Hutter is welcomed at the castle by Count Orlok",
+  asset: "bafkreih3d5mvezcyzzlp2qb7ezkh53vlmtjenfofjv3diafsl22xaowzcu",
   media: [
     {
-      item: "bafkreig2z6hngyeirhlfcfq2sv4wvi6ble6lmemlr4dygcv2upsxfavrhy",
+      item: "bafkreihj3xgnid6d6os3d2sihsircvttgc44thcgvyou4z2mpmrpumj5am",
       type: "image/jpeg",
       altTag: "poster"
     },
     {
-      item: "QmNrua6yuwbmxxKKwaHSvmsjSLjJ79P4jbSBqsbJS1SjNS",
+      item: "bafybeicj2bi3ozc6gwqok7m4v4pzhqp2wi6uhjkjugcj2clqxrwxaldgfe",
       type: "image/jpeg",
       altTag: "wallpaper"
     },
-    {
-      item: "bafkreibcieqddlbfyzb3difnwukbeob5ka4rnmlj6iiyrip3itm43ol3ce",
-      type: "video/mp4",
-      altTag: "content"
-    }
   ]
 };
 
@@ -83,6 +79,8 @@ export default function OverviewFilePage() {
 
       console.log('submit')
 
+      console.log('attributes')
+
       // Prepara los medios
       const mediaItems: AnyMedia[] = publicationMetadata.media.map((mediaItem: any) => ({
         item: getMediaUri(mediaItem.item) as any,
@@ -97,7 +95,11 @@ export default function OverviewFilePage() {
         id: uuidv4(),
         title: publicationMetadata.title,
         content: publicationMetadata.synopsis,
-        video: mediaItems[mediaItems.length - 1] as any,
+        video: {
+          item: publicationMetadata.asset,
+          type: MediaVideoMimeType.MP4,
+          altTag: "asset"
+        },
         locale: 'en',
         attachments: mediaItems,
         appId: 'watchit',
