@@ -69,7 +69,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
   useEffect(() => {
     setView(isConnected && connector ? 'profile' : 'wallet');
     setLoading(false);
-  }, [isConnected, address]);
+  }, [isConnected, connector, address]);
 
   useEffect(() => {
     if (error) {
