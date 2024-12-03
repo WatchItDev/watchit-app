@@ -57,8 +57,6 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
   }, [address]);
 
   useEffect(() => {
-    console.log(isDisconnected)
-    console.log(isConnected)
     // if (isConnected && view === 'wallet') { setView('profile'); }
     if (open && view === 'wallet' && isDisconnected) {
       const web3AuthConnector = connectors.find((el) => el.id === 'web3auth');
@@ -68,13 +66,14 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
         setLoading(false);
       }
     }
-  }, [open, view, isDisconnected]);
 
+    return ()=> disconnect()
+  }, [open, view, isDisconnected]);
 
   useEffect(() => {
     if (error) {
-      console.log('error', error);
       onClose();
+      setView('wallet');
     }
   }, [error]);
 
