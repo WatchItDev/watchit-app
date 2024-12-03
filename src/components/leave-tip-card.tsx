@@ -67,6 +67,7 @@ export const LeaveTipCard: FC<LeaveTipCardProps> = ({ post }) => {
     [MMC_ADDRESS, amountInWei.toString()]
   );
 
+
   console.log('call data')
   console.log(callData)
   console.log(processCallData)
