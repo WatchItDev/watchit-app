@@ -10,9 +10,9 @@
     "type": "git",
     "url": "https://github.com/WatchItDev/watchit-app.git"
   },
-  "engines" : { 
-    "npm" : ">=10.8.0 <=10.8.1",
-    "node" : ">=18.20.3 <=22.3.0"
+  "engines": {
+    "npm": ">=10.8.0 <=10.8.1",
+    "node": ">=18.20.3 <=22.3.0"
   },
   "scripts": {
     "eject": "react-scripts eject",
@@ -129,6 +129,7 @@
     "swr": "^2.2.0",
     "uuid": "^10.0.0",
     "viem": "^2.17.11",
+    "vite-plugin-node-polyfills": "^0.22.0",
     "wagmi": "^2.12.0",
     "worker-loader": "^3.0.8",
     "yet-another-react-lightbox": "^3.11.4",

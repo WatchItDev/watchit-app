@@ -4,6 +4,7 @@ import inject from '@rollup/plugin-inject';
 import { sentryVitePlugin } from "@sentry/vite-plugin";
 import stdLibBrowser from 'vite-plugin-node-stdlib-browser';
 import path from 'path';
+import { nodePolyfills } from 'vite-plugin-node-polyfills'
 
 export default defineConfig(({ mode }) => {
   // Load environment variables based on the current mode
@@ -72,6 +73,11 @@ export default defineConfig(({ mode }) => {
         project: "watchit-app",
       }),
       stdLibBrowser(),
+      nodePolyfills({
+        // To add only specific polyfills, add them here. If no option is passed, adds all polyfills
+        include: ['process'],
+        globals: { global: true, process: true },
+      }),
     ],
     resolve: {
       alias: {
