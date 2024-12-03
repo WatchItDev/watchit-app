@@ -45,7 +45,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
     execute: fetchProfiles,
     data: profiles,
     loading: profilesLoading,
-    called: profilesCalled,
+    // called: profilesCalled,
   } = useLazyProfilesManaged();
 
   const isLoading = (loading || profilesLoading) && view !== 'create';
