@@ -1,5 +1,5 @@
 // REACT IMPORTS
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 
 // MUI IMPORTS
 import { Modal, Box, Fade, Backdrop } from '@mui/material';
@@ -56,6 +56,22 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
     }
   }, [address]);
 
+  useEffect(() => {
+    (async () => {
+      if (!address) return;
+
+      try {
+        await fetchProfiles({
+          for: address,
+          includeOwned: true,
+        });
+      } catch (error) {
+        console.error('Error re-fetching profiles:', error);
+      }
+    })()
+  }, [address]);
+
+  // Reset the reference when the modal is closed
   useEffect(() => {
     // if (isConnected && view === 'wallet') { setView('profile'); }
     if (open && view === 'wallet' && isDisconnected) {
