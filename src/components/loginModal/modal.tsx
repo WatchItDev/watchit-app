@@ -99,11 +99,11 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
     setLoading(false);
   }, [isConnected, connector, address]);
 
-  useEffect(() => {
-    if (isConnected && address && view === 'profile') {
-      refetchProfiles();
-    }
-  }, [isConnected, view, address]);
+  // useEffect(() => {
+  //   if (isConnected && address && view === 'profile') {
+  //     refetchProfiles();
+  //   }
+  // }, [isConnected, view, address]);
 
   useEffect(() => {
     if (error) {
