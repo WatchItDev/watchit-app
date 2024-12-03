@@ -23,9 +23,6 @@ const ProfileFollowers = ({ profile, onActionFinished }: Props) => {
     of: profile.id
   });
 
-  // console.log('followers')
-  // console.log(followers)
-
   return (
     <Box
       sx={{

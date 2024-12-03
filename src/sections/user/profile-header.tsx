@@ -195,8 +195,6 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
 
   // Function to handle following a profile
   const onSubscribe = async () => {
-    console.log('subscribe success');
-    console.log('fetching access and attestation');
     refetchAccess()
     refetchAttestation()
   };

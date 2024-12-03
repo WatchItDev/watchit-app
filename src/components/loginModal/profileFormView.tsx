@@ -113,8 +113,6 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({ onSuccess, onCance
 
         if (result.isFailure()) {
           console.error('Error during login:', result.error.message);
-        } else {
-          console.log('Login initiated.');
         }
       } catch (err) {
         console.error('Error in login:', err);
@@ -131,7 +129,6 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({ onSuccess, onCance
   const updateProfileMetadata = useCallback(
     // async (data: ProfileData, profile: Profile) => {
     async (data: ProfileData) => {
-      console.log('Updating profile metadata');
       setRegistrationLoading(true);
 
       try {
@@ -141,11 +138,9 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({ onSuccess, onCance
 
         // Build profile metadata
         const metadata = buildProfileMetadata(data, profileImageURI, backgroundImageURI);
-        console.log('Metadata:', metadata);
 
         // Upload metadata to IPFS
         const metadataURI = await uploadMetadataToIPFS(metadata);
-        console.log('Metadata URI:', metadataURI);
 
         // Update metadata on the Lens Protocol
         const result = await setProfileMetadataExecute({ metadataURI });
@@ -155,8 +150,6 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({ onSuccess, onCance
           return;
         }
 
-        console.log('Metadata updated, waiting for completion.');
-
         // Wait for the transaction to be processed
         const completion = await result.value.waitForCompletion();
 
@@ -164,20 +157,6 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({ onSuccess, onCance
           console.error('Error processing the transaction:', completion.error.message);
           return;
         }
-
-        console.log('Metadata updated successfully.');
-
-        // if (!address) return;
-
-        // // Refresh profiles and select the updated one
-        // await fetchProfiles({
-        //   for: address,
-        //   includeOwned: true,
-        // });
-        //
-        // const updatedProfile = profileData?.find((p) => p.id === profile.id);
-        //
-        // if (updatedProfile) selectProfile(updatedProfile);
 
         setRegistrationLoading(false);
       } catch (error) {
@@ -204,17 +183,11 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({ onSuccess, onCance
 
       try {
         setRegistrationLoading(true);
-        console.log('Creating new profile...');
-        console.log(data);
-        console.log(address);
 
         const result = await createProfileExecute({
           localName: data.username,
           to: address,
         });
-
-        console.log('hello result')
-        console.log(result)
 
         if (result.isFailure()) {
           throw new Error(result.error.message);
@@ -227,8 +200,6 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({ onSuccess, onCance
 
         // Save the pending metadata update
         setPendingMetadataUpdate({ data, profile: newProfile });
-
-        console.log('Authentication initiated. Metadata update will resume once authenticated.');
       } catch (error) {
         console.error('Error during profile registration:', error);
         setRegistrationLoading(false);
@@ -255,8 +226,6 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({ onSuccess, onCance
     validationSchema,
     onSubmit: async (values) => {
       try {
-        console.log('hello start registration')
-        console.log(values)
         setIsSubmitting(true);
         if (mode === 'register') {
           await registerProfile(values);
@@ -307,7 +276,6 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({ onSuccess, onCance
       sessionData.type === SessionType.WithProfile &&
       pendingMetadataUpdate
     ) {
-      console.log('Session is active. Resuming metadata update...');
       updateProfileMetadata(pendingMetadataUpdate.data);
       setPendingMetadataUpdate(null); // Clear the pending update
     }

@@ -13,28 +13,10 @@ export const GLOBAL_CONSTANTS = {
   AGREEMENT_PORTAL_ADDRESS: process.env.REACT_APP_AGREEMENT_PORTAL_ADDRESS || import.meta.env.REACT_APP_AGREEMENT_PORTAL_ADDRESS || '',
   SUBSCRIPTION_POLICY_ADDRESS: process.env.REACT_APP_SUBSCRIPTION_POLICY_ADDRESS || import.meta.env.REACT_APP_SUBSCRIPTION_POLICY_ADDRESS || '',
   RIGHT_POLICY_AUTHORIZER: process.env.REACT_APP_RIGHT_POLICY_AUTHORIZER || import.meta.env.REACT_APP_RIGHT_POLICY_AUTHORIZER || '',
-};
-
-export const FIREBASE_API = {
-  apiKey: import.meta.env.REACT_APP_FIREBASE_API_KEY || '',
-  authDomain: import.meta.env.REACT_APP_FIREBASE_AUTH_DOMAIN || '',
-  projectId: import.meta.env.REACT_APP_FIREBASE_PROJECT_ID || '',
-  storageBucket: import.meta.env.REACT_APP_FIREBASE_STORAGE_BUCKET || '',
-  messagingSenderId: import.meta.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID || '',
-  appId: import.meta.env.REACT_APP_FIREBASE_APPID || '',
-  measurementId: import.meta.env.REACT_APP_FIREBASE_MEASUREMENT_ID || '',
-};
-
-export const AMPLIFY_API = {
-  userPoolId: import.meta.env.REACT_APP_AWS_AMPLIFY_USER_POOL_ID || '',
-  userPoolWebClientId: import.meta.env.REACT_APP_AWS_AMPLIFY_USER_POOL_WEB_CLIENT_ID || '',
-  region: import.meta.env.REACT_APP_AWS_AMPLIFY_REGION || '',
-};
-
-export const AUTH0_API = {
-  clientId: import.meta.env.REACT_APP_AUTH0_CLIENT_ID || '',
-  domain: import.meta.env.REACT_APP_AUTH0_DOMAIN || '',
-  callbackUrl: import.meta.env.REACT_APP_AUTH0_CALLBACK_URL || '',
+  SENTRY_AUTH_TOKEN: process.env.REACT_APP_SENTRY_AUTH_TOKEN || import.meta.env.REACT_APP_SENTRY_AUTH_TOKEN || '',
+  SENTRY_DNS: process.env.REACT_APP_SENTRY_DNS || import.meta.env.REACT_APP_SENTRY_DNS || '',
+  PINATA_API_KEY: process.env.REACT_APP_PINATA_API_KEY || import.meta.env.REACT_APP_PINATA_API_KEY || '',
+  PINATA_SECRET_API_KEY: process.env.REACT_APP_PINATA_SECRET_API_KEY || import.meta.env.REACT_APP_PINATA_SECRET_API_KEY || '',
 };
 
 export const MAPBOX_API = import.meta.env.REACT_APP_MAPBOX_API || '';

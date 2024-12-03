@@ -7,9 +7,6 @@ import Container from '@mui/material/Container';
 import SpeedDial from '@mui/material/SpeedDial';
 import Typography from '@mui/material/Typography';
 import ListItemText from '@mui/material/ListItemText';
-import SpeedDialAction from '@mui/material/SpeedDialAction';
-// _mock
-import { _socials } from '@src/_mock';
 // hooks
 import { useResponsive } from '@src/hooks/use-responsive';
 // utils
@@ -102,15 +99,7 @@ export default function GovernanceDetailsHero({ title, author, coverUrl, created
               right: { xs: 16, md: 24 },
             }}
           >
-            {_socials.map((action) => (
-              <SpeedDialAction
-                key={action.name}
-                icon={<Iconify icon={action.icon} sx={{ color: action.color }} />}
-                tooltipTitle={action.name}
-                tooltipPlacement="top"
-                FabProps={{ color: 'default' }}
-              />
-            ))}
+
           </SpeedDial>
         </Stack>
       </Container>

@@ -138,8 +138,6 @@ function Slide({ items, itemsPerRow }: SlideProps) {
   const getWallpaperCid = (post: any): string => post?.metadata?.attachments?.find((el: any) => el.altTag === 'wallpaper')?.image?.raw?.uri
   const getPosterCid = (post: any): string => post?.metadata?.attachments?.find((el: any) => el.altTag === 'poster')?.image?.raw?.uri
 
-  console.log(items)
-
   return (
     <Box>
       {[row1, row2].map((rowItems, rowIndex) => (

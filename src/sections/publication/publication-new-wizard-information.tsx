@@ -85,9 +85,6 @@ export default function PublicationInformationForm({ onSubmit, data }: any) {
     { value: 'french', label: 'French' },
   ];
 
-  console.log('errors')
-  console.log(errors)
-
   return (
     <FormProvider methods={methods} onSubmit={methods.handleSubmit(onSubmit)}>
       <MovieWizardContentLayout data={{...data, ...values}} showNext>

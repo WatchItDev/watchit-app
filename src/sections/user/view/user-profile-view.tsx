@@ -61,10 +61,6 @@ const UserProfileView = ({ id }: any) => {
     count: counts[tab.value],
   }));
 
-  console.log('profile hello')
-  console.log(profile)
-  console.log(profile?.stats?.following)
-
   if (loadingProfile || loadingPublications) return <LoadingScreen />
 
   return (

@@ -97,9 +97,6 @@ export default function DistributionForm({ onSubmit, onBack, data }: any) {
   const totalRevenueShare = creators.reduce((total: any, creator: any) => total + (creator.revenueShare || 0), 0);
   const remainingPercentage = 100 - totalRevenueShare;
 
-  console.log('errors')
-  console.log(errors)
-
   return (
     <FormProvider methods={methods} onSubmit={methods.handleSubmit(onSubmit)}>
       <MovieWizardContentLayout data={{...data, ...values}} showNext disableNext={totalRevenueShare > 100} showBack onBack={onBack}>

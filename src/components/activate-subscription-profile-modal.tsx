@@ -78,8 +78,6 @@ export const ActivateSubscriptionProfileModal = ({
       return;
     }
 
-    console.log(amount);
-
     try {
       // Convert the amount to Wei (BigInt)
       const amountInWeiBigNumber = ethers.parseUnits(amount, 18);
@@ -91,21 +89,13 @@ export const ActivateSubscriptionProfileModal = ({
         { name: 'token', type: 'address' },
       ];
       const values = [amountInWei, GLOBAL_CONSTANTS.MMC_ADDRESS];
-      console.log('amountInWei', amountInWei);
-      console.log('values', values);
       // @ts-ignore
       const encodedData = encodeAbiParameters(types, values);
-
-      console.log('encodedData');
-      console.log(encodedData);
 
       await authorize({
         policyAddress: GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS,
         data: encodedData,
       });
-
-      console.log('hey successfully ended');
-      console.log(encodedData);
 
       setSuccessMessage('Joining price set successfully!')
       onClose?.()

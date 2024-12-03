@@ -33,8 +33,6 @@ const PosterHorizontal = ({ title, images, likes, id, synopsis }: Poster) => {
     return totalLikes;
   };
 
-  console.log(title)
-
   return (
     <Paper
       sx={{

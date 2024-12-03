@@ -62,7 +62,6 @@ export default function AccountPopover() {
    * Log out from the current session.
    */
   const logout = useCallback(async () => {
-    console.log('Logged out');
     try {
       await logoutExecute();
     } catch (err) {

@@ -24,8 +24,8 @@ export default function PublicationPlayView({ publication, loading }: Props) {
   //   router.push(paths.dashboard.publication.details(`${id}`));
   // }
 
-  // const getMediaUri = (cid: string): string => `https://g.watchit.movie/fetch/${cid?.replace('ipfs://', '')}/`
-  const getMediaUri = (cid: string): string => `https://g.watchit.movie/fetch/${cid}/`
+  // const getMediaUri = (cid: string): string => `https://g.watchit.movie/content/${cid?.replace('ipfs://', '')}/`
+  const getMediaUri = (cid: string): string => `https://g.watchit.movie/content/${cid}/`
 
   const getMovieCid = (): string => publication?.metadata?.asset?.video?.raw?.uri
 

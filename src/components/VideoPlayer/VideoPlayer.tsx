@@ -27,9 +27,6 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({ src, titleMovie, onBack, sho
   const player = useRef<MediaPlayerInstance>(null);
   const controlsVisible = useMediaState('controlsVisible', player);
 
-  console.log('hello url')
-  console.log(src)
-
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape' || event.key === 'Esc') onBack?.();

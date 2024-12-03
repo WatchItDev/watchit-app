@@ -73,9 +73,6 @@ export default function ProfilePostItem({ publication, profile }: Props) {
 
   const getWallpaperCid = (): string => publication?.metadata?.attachments?.find((el: any) => el.altTag === 'Wallpaper')?.image?.raw?.uri
 
-  console.log('publication')
-  console.log(publication)
-
   const renderHead = (
     <CardHeader
       disableTypography

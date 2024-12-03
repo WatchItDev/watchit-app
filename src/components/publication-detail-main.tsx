@@ -109,9 +109,7 @@ export default function PublicationDetailMain({ post, handleSubscribe, loadingSu
   };
 
   const handleHide = async () => {
-    console.log('handle hide')
     await hide({ publication: post })
-    console.log('publication hided')
   };
 
   const goToProfile = () => {

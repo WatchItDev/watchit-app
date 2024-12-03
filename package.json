@@ -71,6 +71,8 @@
     "@react-pdf/renderer": "^3.1.12",
     "@reduxjs/toolkit": "^2.3.0",
     "@rollup/plugin-inject": "^5.0.5",
+    "@sentry/react": "^8.42.0",
+    "@sentry/vite-plugin": "^2.22.6",
     "@tabler/icons-react": "^3.11.0",
     "@tanstack/react-query": "^5.51.11",
     "@thirdweb-dev/react": "^4.9.4",

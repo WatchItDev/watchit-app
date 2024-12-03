@@ -60,7 +60,7 @@ export default function HeaderSimple() {
             }}
             depth={1}
             config={{}}
-            onClick={() => { console.log('clicked w') }}
+            onClick={() => {}}
           />
         </Stack>
 

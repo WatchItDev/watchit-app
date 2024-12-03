@@ -126,14 +126,12 @@ export const SubscribeProfileModal = ({
 
   // Effect to handle subscription errors
   useEffect(() => {
-    if (error) console.log('Subscribe error: ', error);
     if (error) setErrorMessage(error.shortMessage ?? error.message);
   }, [error]);
 
   // Effect to handle balance errors
   useEffect(() => {
     if (balanceError) {
-      console.log('Error fetching balance: ', balanceError);
       setErrorMessage('Could not retrieve your balance. Please try again later.');
     }
   }, [balanceError]);

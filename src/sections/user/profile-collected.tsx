@@ -19,9 +19,6 @@ export default function ProfileCollected({ profile }: ProfileHomeProps) {
     },
   });
 
-  console.log('publications')
-  console.log(publications)
-
   const minItemWidth = 150;
   const maxItemWidth = 200;
   const gap = 16; // Espacio entre ítems

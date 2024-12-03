@@ -76,8 +76,6 @@ const FollowUnfollowButton = ({ profileId }: PropsWithChildren<FollowUnfollowBut
         handleFollowError(result.error);
       }
     } catch (error) {
-      console.log('hello error')
-      console.log(error)
       setErrorMessage('An error occurred while trying to follow the profile.');
     }
   };
@@ -100,8 +98,6 @@ const FollowUnfollowButton = ({ profileId }: PropsWithChildren<FollowUnfollowBut
         handleUnfollowError(result.error);
       }
     } catch (error) {
-      console.log('hello error')
-      console.log(error)
       setErrorMessage('An error occurred while trying to unfollow the profile.');
     }
   };

@@ -44,25 +44,13 @@ export const ProfileSelectView: React.FC<ProfileSelectionProps> = ({
                                                                      profiles,
                                                                    }) => {
   const dispatch = useDispatch();
-  const { data: sessionData, error: sessionError, loading: sessionLoading }: ReadResult<ProfileSession> = useSession();
-  const { execute: loginExecute, loading: loginLoading, data, error } = useLogin();
-  const { address, isConnecting, isConnected, status, connector } = useAccount();
+  const { data: sessionData }: ReadResult<ProfileSession> = useSession();
+  const { execute: loginExecute, data, error } = useLogin();
+  const { address } = useAccount();
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
-  console.log('sessionData', sessionData);
-  console.log('sessionError', sessionError);
-  console.log('sessionLoading', sessionLoading);
-  console.log('loginLoading', loginLoading);
-  console.log('isConnecting', isConnecting);
-  console.log('isConnected', isConnected);
-  console.log('status', status);
-  console.log('connector', connector);
-
   useEffect(() => {
-    console.log('data')
-    console.log(data)
-    console.log(error)
     if (!!data && !error) dispatch(setAuthLoading({ isAuthLoading: false }));
     if (error) setErrorMessage(error.message);
   }, [data, error])
@@ -82,10 +70,6 @@ export const ProfileSelectView: React.FC<ProfileSelectionProps> = ({
       }
 
       try {
-        console.log('loginExecute')
-        console.log(address)
-        console.log(profileToUse)
-
         const result = await loginExecute({
           address,
           profileId: profileToUse.id,
@@ -93,8 +77,6 @@ export const ProfileSelectView: React.FC<ProfileSelectionProps> = ({
 
         if (result.isFailure()) {
           console.error('Error during login:', result.error.message);
-        } else {
-          console.log('Login initiated.');
         }
       } catch (err) {
         console.error('Error in login:', err);

@@ -85,9 +85,6 @@ export default function PublicationDetailsView({ id }: Props) {
     setShowToggle(!showToggle);
   };
 
-  console.log('publication')
-  console.log(data)
-
   const handleSubscribe = () => {
     if (!sessionData?.authenticated) return dispatch(openLoginModal());
 
@@ -96,8 +93,6 @@ export default function PublicationDetailsView({ id }: Props) {
 
   // Function to handle following a profile
   const onSubscribe = async () => {
-    console.log('subscribe success');
-    console.log('fetching access and attestation');
     refetchAccess()
   };
 

@@ -22,9 +22,6 @@ const ProfileFollowing = ({ profile }: Props) => {
     for: profile.id
   });
 
-  // console.log('following')
-  // console.log(following)
-
   return (
     <Box
       gap={3}

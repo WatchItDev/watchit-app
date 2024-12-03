@@ -1,6 +1,7 @@
 import react from '@vitejs/plugin-react';
 import { defineConfig, loadEnv } from 'vite';
 import inject from '@rollup/plugin-inject';
+import { sentryVitePlugin } from "@sentry/vite-plugin";
 import path from 'path';
 
 export default defineConfig(({ mode }) => {
@@ -8,11 +9,20 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
 
   return {
+    build: {
+      sourcemap: true, // Source map generation must be turned on
+    },
     plugins: [
       react(),
       inject({
         Buffer: ['buffer', 'Buffer'],
       }),
+      sentryVitePlugin({
+        authToken: process.env.REACT_APP_SENTRY_AUTH_TOKEN,
+        org: "watchit",
+        project: "watchit-app",
+      }),
+
     ],
     resolve: {
       alias: {

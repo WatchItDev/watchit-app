@@ -13,7 +13,7 @@ type Props = {
 
 export default function PostCommentList({ publicationId: id, showReplies }: Props) {
   // Fetch top-level comments (where commentOn is the post ID)
-  const { data: comments, loading, error, beforeCount, hasMore, next } = usePublications({
+  const { data: comments, loading, error } = usePublications({
     where: {
       commentOn: {
         id: publicationId(id),
@@ -24,12 +24,6 @@ export default function PostCommentList({ publicationId: id, showReplies }: Prop
 
   if (loading) return <LinearProgress color="inherit" sx={{ width: 1, maxWidth: 360, marginTop: '16px', alignSelf: 'center' }} />;
   if (error) return <p>Error loading comments: {error.message}</p>;
-
-  console.log('hello coments')
-  console.log(comments)
-  console.log(beforeCount)
-  console.log(hasMore)
-  console.log(next)
 
   return (
     <>

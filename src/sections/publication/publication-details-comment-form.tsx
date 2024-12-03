@@ -118,21 +118,6 @@ const MovieCommentForm = ({ commentOn }: MovieCommentFormProps) => {
       }
 
       console.log('comment created successfully');
-
-      // // Wait for the transaction to complete
-      // const completion = await result.value.waitForCompletion();
-      //
-      // if (completion.isFailure()) {
-      //   console.log('Error processing the transaction', completion.error.message);
-      //   return;
-      // }
-      //
-      // console.log('completion successfully.');
-      //
-      // // The comment was created successfully
-      // const comment = completion.value;
-      // console.log('Comment created', comment);
-
       reset(); // Clear the form
     } catch (e) {
       console.error('Error creating the comment:', e);

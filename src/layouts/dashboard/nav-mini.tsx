@@ -45,7 +45,7 @@ export default function NavMini() {
           }}
           depth={1}
           config={{}}
-          onClick={() => { console.log('clicked w') }}
+          onClick={() => {}}
         />
         <Box sx={{ width: '100%', py: 0.5 }} />
         <NavSectionMini
@@ -65,7 +65,7 @@ export default function NavMini() {
           }}
           depth={1}
           config={{}}
-          onClick={() => { console.log('clicked w') }}
+          onClick={() => {}}
         />
         <NavList
           data={{
@@ -75,7 +75,7 @@ export default function NavMini() {
           }}
           depth={1}
           config={{}}
-          onClick={() => { console.log('clicked w') }}
+          onClick={() => {}}
         />
         <NavList
           data={{
@@ -85,7 +85,7 @@ export default function NavMini() {
           }}
           depth={1}
           config={{}}
-          onClick={() => { console.log('clicked w') }}
+          onClick={() => {}}
         />*/}
       </Stack>
     </Box>
