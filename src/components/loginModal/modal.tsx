@@ -67,8 +67,10 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
       }
     }
 
-    return ()=> disconnect()
-  }, [open, view, isDisconnected]);
+    return () => {
+      if (connector) disconnect({ connector })
+    }
+  }, [open, isDisconnected]);
 
   useEffect(() => {
     if (error) {
