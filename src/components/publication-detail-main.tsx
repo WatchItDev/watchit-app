@@ -130,7 +130,7 @@ export default function PublicationDetailMain({ post, handleSubscribe, loadingSu
         lg: '450px',
       },
       padding: '10px',
-      top: '12px',
+      top: '80px',
       height: 'fit-content',
       maxHeight: '100vh',
       flexShrink: 0
