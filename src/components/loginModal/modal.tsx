@@ -61,12 +61,12 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
     (async () => {
       const web3AuthConnector = connectors.find((el) => el.id === 'web3auth');
       if (open && view === 'wallet') {
-        if (web3AuthConnector && !isConnected) {
+        if (web3AuthConnector) {
           connect({ connector: web3AuthConnector })
         }
       }
     })()
-  }, [open, view]);
+  }, [open, view, isConnected]);
 
   useEffect(() => {
     if (isConnected && connector) {
