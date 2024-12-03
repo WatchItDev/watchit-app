@@ -236,7 +236,7 @@ export default function PublicationDetailMain({ post, handleSubscribe, loadingSu
             </m.div>
             <m.div variants={variants}>
               <Stack direction="row" sx={{ mb: 1.5 }} spacing={0} alignItems="center" onClick={() => alert('Clicked') }>
-                <Typography style={{ marginRight: 5, fontWeight: 'bold'}} variant='caption'>
+                <Typography style={{ marginRight: 5, fontWeight: 'bold'}} variant='body1'>
                   Distributed by
                 </Typography>
                 <StyledBoxGradient>
