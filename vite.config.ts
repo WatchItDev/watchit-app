@@ -1,9 +1,8 @@
+import path from 'path';
 import react from '@vitejs/plugin-react';
 import { defineConfig, loadEnv } from 'vite';
-import inject from '@rollup/plugin-inject';
 import { sentryVitePlugin } from "@sentry/vite-plugin";
-import stdLibBrowser from 'vite-plugin-node-stdlib-browser';
-import path from 'path';
+import preserveDirectives from 'rollup-preserve-directives'
 import { nodePolyfills } from 'vite-plugin-node-polyfills'
 
 export default defineConfig(({ mode }) => {
@@ -12,36 +11,20 @@ export default defineConfig(({ mode }) => {
 
   return {
     build: {
-      sourcemap: true, // Source map generation must be turned on
-      rollupOptions: {
-        output: {
-          manualChunks: (id) => {
-            if (id.includes('node_modules')) {
-              return id
-                .toString()
-                .split('node_modules/')[1]
-                .split('/')[0]
-                .toString();
-            }
-          },
-        },
-      },
+      sourcemap: true
     },
     plugins: [
       react(),
-      inject({
-        Buffer: ['buffer', 'Buffer'],
-      }),
+      preserveDirectives(),
       sentryVitePlugin({
-        authToken: process.env.REACT_APP_SENTRY_AUTH_TOKEN,
+        authToken: env.REACT_APP_SENTRY_AUTH_TOKEN,
         org: "watchit",
         project: "watchit-app",
       }),
-      stdLibBrowser(),
       nodePolyfills({
         // To add only specific polyfills, add them here. If no option is passed, adds all polyfills
-        include: ['process'],
-        globals: { global: true, process: true },
+        include: ['process', "module", "buffer"],
+        globals: { global: true, process: true, Buffer: true },
       }),
     ],
     resolve: {
