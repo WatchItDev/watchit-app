@@ -11,7 +11,7 @@ import MediaAssetsForm from './publication-new-wizard-assets';
 import DistributionForm from './publication-new-wizard-distribution';
 // import ReviewFinalizeForm from './movie-new-wizard-summary';
 import PublicationNewWizardSteps from './publication-new-wizard-steps.tsx';
-import { useSettingsContext } from '../../components/settings';
+import { useSettingsContext } from '@src/components/settings';
 // @ts-ignore
 import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
 
