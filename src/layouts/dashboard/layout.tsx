@@ -33,7 +33,7 @@ export default function DashboardLayout({ children }: Props) {
       dispatch(toggleMinibar());
     }
 
-  }, [lgUp, minibarState, dispatch]);
+  }, [lgUp, minibarState, dispatch, wasCollapse]);
 
   const renderNavMini = <><NavMini /> <NavVerticalMini /></>;
   const renderNavVertical = <><NavMini /><NavVertical /></>;
