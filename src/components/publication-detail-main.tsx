@@ -149,7 +149,7 @@ export default function PublicationDetailMain({ post, handleSubscribe, loadingSu
             overflowY: 'scroll',
             backgroundColor: '#1e1f22',
             padding: '0 !important',
-            margin: '10px 10px 0 20px'
+            margin: '10px 10px 10px 20px'
           }}
         >
           <Box
