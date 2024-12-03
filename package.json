@@ -86,7 +86,6 @@
     "drand-client": "^1.2.6",
     "enc-utils": "^3.0.0",
     "ethers": "^6.13.4",
-    "firebase": "^10.0.0",
     "formik": "^2.4.6",
     "framer-motion": "^10.12.21",
     "helia": "^5.1.1",
