@@ -8,7 +8,7 @@ import { Address } from 'viem';
 import SubscriptionPolicyAbi from '@src/config/abi/SubscriptionPolicy.json';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 // @ts-ignore
-import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
+// import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
 
 // ----------------------------------------------------------------------
 

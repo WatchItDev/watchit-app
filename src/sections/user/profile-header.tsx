@@ -140,18 +140,18 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
 
   const attestationAddress = `0x${BigInt(attestation ?? '').toString(16)}`
 
+  const handleClose = useCallback(() => {
+    setOpenTooltip(false);
+  }, []);
+
   useEffect(() => {
     if (open) {
       handleClose();
     }
-  },[]);
+  },[handleClose, open]);
 
   const handleOpen = useCallback(() => {
     setOpenTooltip(true);
-  }, []);
-
-  const handleClose = useCallback(() => {
-    setOpenTooltip(false);
   }, []);
 
   const handleOpenShare = useCallback(() => {

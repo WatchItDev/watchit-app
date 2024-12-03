@@ -1,9 +1,4 @@
-// routes
-import { paths } from '@src/routes/paths';
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { usePublication } from '@lens-protocol/react';
-import { useResponsive } from '@src/hooks/use-responsive.ts';
-import { useRouter } from '@src/routes/hooks';
 import { LoadingScreen } from '../../../components/loading-screen';
 import VideoPlayer from '../../../components/VideoPlayer';
 import Box from '@mui/material/Box';
