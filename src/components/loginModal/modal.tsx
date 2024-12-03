@@ -38,10 +38,10 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
   const { execute: logoutExecute } = useLogout();
   const { disconnect } = useDisconnect();
 
-  console.log('account wagmi')
-  console.log(address)
-  console.log(isConnected)
-  console.log(connector)
+  // console.log('account wagmi')
+  // console.log(address)
+  // console.log(isConnected)
+  // console.log(connector)
 
   // Fetch profiles associated with the connected wallet
   const {
