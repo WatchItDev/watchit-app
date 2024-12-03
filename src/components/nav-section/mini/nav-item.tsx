@@ -60,7 +60,6 @@ const NavItem = forwardRef<HTMLDivElement, Props>(
         </Box>
 
         <StyledNavContent
-          active={active}
         >
           {icon && (
             <StyledIcon

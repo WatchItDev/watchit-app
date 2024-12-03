@@ -81,7 +81,7 @@ type StyledNavContentProps = {
   active?: boolean;
 };
 
-export const StyledNavContent = styled(Box)<StyledNavContentProps>(({ active, theme }) => ({
+export const StyledNavContent = styled(Box)(({ theme }) => ({
   width: '3rem',
   height: '3rem',
   display: 'flex',
@@ -89,8 +89,8 @@ export const StyledNavContent = styled(Box)<StyledNavContentProps>(({ active, th
   justifyContent: 'center',
   // margin: 0,
   margin: '0 0 0 0.1rem',
-  backgroundColor: active ? theme.palette.primary.main : '#313339',
-  borderRadius: active ? '0.75rem' : '50%',
+  // backgroundColor: active ? theme.palette.primary.main : '#313339',
+  // borderRadius: active ? '0.75rem' : '50%',
 }));
 
 // ----------------------------------------------------------------------
