@@ -15,43 +15,14 @@ export default defineConfig(({ mode }) => {
       sourcemap: true, // Source map generation must be turned on
       rollupOptions: {
         output: {
-          manualChunks: {
-            vendor: [
-              'react',
-              'react-dom',
-              'redux',
-              'react-redux',
-              '@reduxjs/toolkit',
-              'lodash',
-              'axios',
-              'moment',
-              'date-fns',
-            ],
-            ui: [
-              '@mui/material',
-              '@mui/lab',
-              '@mui/system',
-              'framer-motion',
-              'react-quill',
-              'notistack',
-            ],
-            lens: [
-              '@lens-protocol/api-bindings',
-              '@lens-protocol/client',
-              '@lens-protocol/metadata',
-              '@lens-protocol/react',
-              '@lens-protocol/react-web',
-              '@lens-protocol/wagmi',
-            ],
-            web3auth: [
-              '@web3auth/account-abstraction-provider',
-              '@web3auth/base',
-              '@web3auth/default-evm-adapter',
-              '@web3auth/ethereum-provider',
-              '@web3auth/modal',
-              '@web3auth/modal-react-hooks',
-              '@web3auth/web3auth-wagmi-connector',
-            ]
+          manualChunks: (id) => {
+            if (id.includes('node_modules')) {
+              return id
+                .toString()
+                .split('node_modules/')[1]
+                .split('/')[0]
+                .toString();
+            }
           },
         },
       },

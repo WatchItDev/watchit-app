@@ -22,7 +22,7 @@
     "re-start": "rm -rf node_modules .next out dist build && yarn install && yarn start",
     "re-build": "rm -rf node_modules .next out dist build && yarn install && yarn build",
     "start": "vite --host 0.0.0.0",
-    "build": "tsc && vite build"
+    "build": "tsc && NODE_OPTIONS=\"--max-old-space-size=8192\" vite build"
   },
   "eslintConfig": {
     "extends": [
@@ -42,6 +42,7 @@
     ]
   },
   "dependencies": {
+    "@esbuild/darwin-x64": "^0.24.0",
     "@helia/unixfs": "^4.0.1",
     "@hookform/resolvers": "^3.1.1",
     "@iconify/react": "^4.1.1",
@@ -60,6 +61,7 @@
     "@react-pdf/renderer": "^3.1.12",
     "@reduxjs/toolkit": "^2.3.0",
     "@rollup/plugin-inject": "^5.0.5",
+    "@rollup/rollup-darwin-x64": "^4.28.0",
     "@sentry/react": "^8.42.0",
     "@sentry/vite-plugin": "^2.22.6",
     "@tabler/icons-react": "^3.11.0",
