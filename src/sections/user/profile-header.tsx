@@ -728,7 +728,7 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
                 mt: 1,
               }}>
                 {
-                  ['Watchit','Listenit','CaptureIt','Readit','Storeit','Playit'].map((partner, index) => (
+                  ['Watchit'].map((partner, index) => (
                     <StyledBoxGradient color1={randomColors[randomColors.length - index]} color2={randomColors[index]} >
                       <Typography style={{ marginRight: 5, fontWeight: 'bold' }} variant="caption">
                         {partner}
