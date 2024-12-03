@@ -13,7 +13,7 @@ window.process = process;
 window.global = window;
 
 Sentry.init({
-  dsn: process.env.REACT_APP_SENTRY_DNS,
+  dsn: process.env.VITE_SENTRY_DNS,
   integrations: [
     Sentry.browserTracingIntegration(),
     Sentry.replayIntegration(),

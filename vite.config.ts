@@ -17,7 +17,7 @@ export default defineConfig(({ mode }) => {
       react(),
       preserveDirectives(),
       sentryVitePlugin({
-        authToken: env.REACT_APP_SENTRY_AUTH_TOKEN,
+        authToken: env.VITE_SENTRY_AUTH_TOKEN,
         org: "watchit",
         project: "watchit-app",
       }),

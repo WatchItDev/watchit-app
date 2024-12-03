@@ -5,7 +5,6 @@ import { chain } from "./chainConfig.ts";
 import { AccountAbstractionProvider, KernelSmartAccount } from '@web3auth/account-abstraction-provider';
 import { WALLET_ADAPTERS } from '@web3auth/base';
 
-export const clientId = "BEUBURZkLpvEJVRr8IE1uHXFJSb_lgBIO3fBGaBQfDoM9aW-RXe1BKLx_Bx2KvyysuH-bNtynmkg0yYN-K4e_ZM";
 
 const accountAbstractionProvider = new AccountAbstractionProvider({
   config: {
@@ -13,11 +12,11 @@ const accountAbstractionProvider = new AccountAbstractionProvider({
     smartAccountInit: new KernelSmartAccount(),
     bundlerConfig: {
       // Get the pimlico API Key from dashboard.pimlico.io
-      url: `https://api.pimlico.io/v2/80002/rpc?apikey=pim_NjucSQWxtjQHuXBXAQiUAX`,
+      url: process.env.VITE_PIMLICO as string,
     },
     paymasterConfig: {
       // Get the pimlico API Key from dashboard.pimlico.io
-      url: `https://api.pimlico.io/v2/80002/rpc?apikey=pim_NjucSQWxtjQHuXBXAQiUAX`,
+      url: process.env.VITE_PIMLICO as string,
     },
   }
 });
@@ -30,7 +29,7 @@ const privateKeyProvider = new EthereumPrivateKeyProvider({
 
 export const web3AuthOptions: Web3AuthOptions = {
   chainConfig: chain.polygonAmoy,
-  clientId,
+  clientId: process.env.VITE_WEB3_CLIENT_ID as string,
   privateKeyProvider,
   accountAbstractionProvider,
   uiConfig: {
