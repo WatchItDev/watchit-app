@@ -48,14 +48,6 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
 
   const isLoading = (loading || profilesLoading) && view !== 'create';
 
-  const connectWeb3AuthWallet = useCallback(async () => {
-    if (connectors.length > 0 && !isConnected) {
-      const web3AuthConnector = connectors.find((el) => el.id === 'web3auth');
-      if (web3AuthConnector) {
-        await connect({ connector: web3AuthConnector });
-      }
-    }
-  }, [connect, connectors, isConnected]);
 
   // Fetch profiles when the wallet address changes
   useEffect(() => {
@@ -65,28 +57,33 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
         includeOwned: true,
       });
     }
-  }, [address, fetchProfiles, profilesLoading, profilesCalled]);
+  }, [address]);
 
-  const refetchProfiles = useCallback(async () => {
-    if (!address) {
-      console.error('Wallet address not available.');
-      return;
-    }
-    try {
-      await fetchProfiles({
-        for: address,
-        includeOwned: true,
-      });
-    } catch (error) {
-      console.error('Error re-fetching profiles:', error);
-    }
-  }, [address, fetchProfiles]);
+  // const refetchProfiles = useCallback(async () => {
+  //   if (!address) {
+  //     console.error('Wallet address not available.');
+  //     return;
+  //   }
+  //   try {
+  //     await fetchProfiles({
+  //       for: address,
+  //       includeOwned: true,
+  //     });
+  //   } catch (error) {
+  //     console.error('Error re-fetching profiles:', error);
+  //   }
+  // }, [address, fetchProfiles]);
 
   useEffect(() => {
-    if (open && view === 'wallet') {
-      connectWeb3AuthWallet();
-    }
-  }, [open, connectWeb3AuthWallet, view]);
+    (async () => {
+      const web3AuthConnector = connectors.find((el) => el.id === 'web3auth');
+      if (open && view === 'wallet') {
+        if (web3AuthConnector) {
+          await connect({ connector: web3AuthConnector })
+        }
+      }
+    })()
+  }, [open, view]);
 
   useEffect(() => {
     if (isConnected && connector) {
