@@ -29,6 +29,7 @@ import CustomPopover, { usePopover } from '@src/components/custom-popover';
 import { useDispatch, useSelector } from 'react-redux';
 import { closeLoginModal, openLoginModal, setAuthLoading } from '@redux/auth';
 import { CircularProgress } from '@mui/material';
+import { useDisconnect } from 'wagmi';
 
 // ----------------------------------------------------------------------
 
@@ -45,6 +46,7 @@ export default function AccountPopover() {
   const dispatch = useDispatch();
   const router = useRouter();
   const popover = usePopover();
+  const { disconnect } = useDisconnect();
   const { isLoginModalOpen, isAuthLoading } = useSelector((state: any) => state.auth);
 
   const { data: sessionData, loading }: ReadResult<ProfileSession> = useSession();
@@ -64,6 +66,7 @@ export default function AccountPopover() {
   const logout = useCallback(async () => {
     try {
       await logoutExecute();
+      disconnect();
     } catch (err) {
       console.error('Error during logout:', err);
     }
