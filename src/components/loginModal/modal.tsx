@@ -47,8 +47,6 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
   } = useLazyProfilesManaged();
 
   const isLoading = (loading || profilesLoading) && view !== 'create';
-
-
   // Fetch profiles when the wallet address changes
   useEffect(() => {
     if (address && !profilesLoading && !profilesCalled) {
@@ -59,27 +57,12 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
     }
   }, [address]);
 
-  // const refetchProfiles = useCallback(async () => {
-  //   if (!address) {
-  //     console.error('Wallet address not available.');
-  //     return;
-  //   }
-  //   try {
-  //     await fetchProfiles({
-  //       for: address,
-  //       includeOwned: true,
-  //     });
-  //   } catch (error) {
-  //     console.error('Error re-fetching profiles:', error);
-  //   }
-  // }, [address, fetchProfiles]);
-
   useEffect(() => {
     (async () => {
       const web3AuthConnector = connectors.find((el) => el.id === 'web3auth');
       if (open && view === 'wallet') {
         if (web3AuthConnector && !isConnected) {
-          await connect({ connector: web3AuthConnector })
+          connect({ connector: web3AuthConnector })
         }
       }
     })()
@@ -95,12 +78,6 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
     }
     setLoading(false);
   }, [isConnected, connector, address]);
-
-  // useEffect(() => {
-  //   if (isConnected && address && view === 'profile') {
-  //     refetchProfiles();
-  //   }
-  // }, [isConnected, view, address]);
 
   useEffect(() => {
     if (error) {
