@@ -51,13 +51,7 @@ export default defineConfig(({ mode }) => {
               '@web3auth/modal',
               '@web3auth/modal-react-hooks',
               '@web3auth/web3auth-wagmi-connector',
-            ],
-            charts: [
-              'apexcharts',
-            ],
-            map: [
-              'react-map-gl',
-            ],
+            ]
           },
         },
       },
