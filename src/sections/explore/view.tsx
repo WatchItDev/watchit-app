@@ -67,6 +67,8 @@ export default function ExploreView() {
     self.findIndex((t) => t.id === item.id) === index
   ).slice(0, 10);
 
+  const bookmarksFiltered = (bookmark ?? []).filter(post => !post.isHidden)
+
   return (
     <Container sx={{ p: '0 !important', maxWidth: '2000px !important'}}>
       <Stack direction={'column'} spacing={1} sx={{ maxWidth: '100vw !important' }}>
@@ -74,9 +76,9 @@ export default function ExploreView() {
           posts={combinedPosts}
         />
 
-        {!!bookmark?.length && (
+        {!!bookmarksFiltered?.length && (
           <CarouselPosterMini
-            data={bookmark ?? []}
+            data={bookmarksFiltered ?? []}
             title="Bookmarks"
             minItemWidth={250}
             maxItemWidth={350}
