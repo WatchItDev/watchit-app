@@ -52,7 +52,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
   const isLoading = (loading || profilesLoading) && view !== 'create';
   // Fetch profiles when the wallet address changes
   useEffect(() => {
-    if (address) {
+    if (address && isConnected) {
       fetchProfiles({
         for: address,
         includeOwned: true,
