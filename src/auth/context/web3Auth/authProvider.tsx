@@ -17,7 +17,7 @@ import { wagmi } from "./config/chainConfig";
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   
   const queryClient = new QueryClient();
-  const web3AuthConnector = web3AuthConnectorFactory()
+  const [web3AuthInstance, web3AuthConnector] = web3AuthConnectorFactory()
 
   const wagmiConfig = createConfig({
     syncConnectedChain: true,
