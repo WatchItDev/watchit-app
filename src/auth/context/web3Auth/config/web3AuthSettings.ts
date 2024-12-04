@@ -13,7 +13,7 @@ export const chain = {
     chainId: "0x13882",
     chainNamespace: CHAIN_NAMESPACES.EIP155,
     displayName: polygonAmoy.name,
-    rpcTarget: polygonAmoy.rpcUrls.default,
+    rpcTarget: polygonAmoy.rpcUrls.default.http[0],
     blockExplorerUrl: polygonAmoy.blockExplorers.default.url,
     tickerName: polygonAmoy.nativeCurrency.name,
     ticker: polygonAmoy.nativeCurrency.symbol,
