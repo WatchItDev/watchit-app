@@ -51,7 +51,7 @@ export const useSubscribe = (): UseSubscribeHook => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<SubscribeError | null>(null);
   const { data: sessionData }: ReadResult<ProfileSession> = useSession();
-  const { web3AuthInstance } = useWeb3Auth();
+  const { web3Auth } = useWeb3Auth();
 
   /**
    * Approves MMC tokens for the Agreement Portal.
@@ -108,7 +108,7 @@ export const useSubscribe = (): UseSubscribeHook => {
     try {
       // Retrieve the account abstraction provider, bundler client, and smart account
       const accountAbstractionProvider =
-        web3AuthInstance.options.accountAbstractionProvider;
+        web3Auth.options.accountAbstractionProvider;
       const bundlerClient = accountAbstractionProvider.bundlerClient;
       const smartAccount = accountAbstractionProvider.smartAccount;
 

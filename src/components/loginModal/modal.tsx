@@ -37,7 +37,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
   const { connect, connectors, error} = useConnect();
   const { execute: logoutExecute } = useLogout();
   const { disconnect } = useDisconnect();
-  const { web3AuthInstance: w3 } = useWeb3Auth();
+  const { web3Auth: w3 } = useWeb3Auth();
 
   // Fetch profiles associated with the connected wallet
   const {

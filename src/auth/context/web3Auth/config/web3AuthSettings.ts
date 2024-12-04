@@ -143,6 +143,6 @@ export function web3AuthConnectorFactory(): [Web3Auth, CreateConnectorFn] {
     useAAWithExternalWallet: false,
   };
 
-  const web3AuthInstance = new Web3Auth(web3AuthOptions);
-  return [web3AuthInstance, Web3AuthConnector({ web3AuthInstance, modalConfig })];
+  const web3Auth = new Web3Auth(web3AuthOptions);
+  return [web3Auth, Web3AuthConnector({ web3AuthInstance: web3Auth, modalConfig })];
 }
