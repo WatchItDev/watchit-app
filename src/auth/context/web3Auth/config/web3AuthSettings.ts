@@ -30,6 +30,11 @@ const modalConfig = {
         name: "discord login",
         showOnModal: true,
       },
+      twitter: {
+        // it will hide the facebook option from the Web3Auth modal.
+        name: "twitter login",
+        showOnModal: true,
+      },
       email_passwordless: {
         name: "email_passwordless",
         showOnModal: false,
@@ -76,11 +81,6 @@ const modalConfig = {
       linkedin: {
         // it will hide the facebook option from the Web3Auth modal.
         name: "linkedin login",
-        showOnModal: false,
-      },
-      twitter: {
-        // it will hide the facebook option from the Web3Auth modal.
-        name: "twitter login",
         showOnModal: false,
       },
       wechat: {
