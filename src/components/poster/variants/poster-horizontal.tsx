@@ -71,9 +71,9 @@ const PosterHorizontal = ({ title, images, likes, id, synopsis }: Poster) => {
         <Box sx={{display:'flex',alignItems:'center',justifyContent: 'space-between'}}>
           <Stack  direction="row" spacing={0.5} alignItems='center' textAlign='center'>
             <IconHeartFilled style={{marginBottom:'2px'}} size={16} color="#F2F3F5" />
-            <Typography style={{fontSize: 'clamp(0.1rem, 0.8vw, 0.9rem)', fontWeight: '700', whiteSpace: 'nowrap'}} variant="body2">
-              {formatLikes(likes)}
-            </Typography>
+            <TextMaxLine line={1} variant="body2">
+              {formatLikes(likes ?? 0)}
+            </TextMaxLine>
           </Stack>
         </Box>
       </Box>
