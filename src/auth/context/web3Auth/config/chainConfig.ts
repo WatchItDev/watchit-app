@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { CHAIN_NAMESPACES } from "@web3auth/base";
 import { defineChain } from 'viem';
 
@@ -5,6 +6,10 @@ const name = 'Polygon Amoy'
 const symbol = 'POL'
 const symbolName = 'Polygon'
 const rpc = `${process.env.VITE_RPC_ALCHEMY}`
+=======
+
+import { CHAIN_NAMESPACES } from "@web3auth/base";
+>>>>>>> 8d3d8e26 (refactor: wagmi)
 
 export const chain = {
   polygonAmoy: {
