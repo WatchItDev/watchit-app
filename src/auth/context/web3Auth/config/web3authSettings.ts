@@ -35,7 +35,7 @@ export const web3AuthOptions: Web3AuthOptions = {
     uxMode: "popup",
     mode: "dark",
   },
-  web3AuthNetwork: WEBAUTH_NETWORK.SAPPHIRE_DEVNET,
+  web3AuthNetwork: WEB3AUTH_NETWORK.SAPPHIRE_DEVNET,
   // This will allow you to use EthereumPrivateKeyProvider for
   // external wallets, while use the AccountAbstractionProvider
   // for Web3Auth embedded wallets.
