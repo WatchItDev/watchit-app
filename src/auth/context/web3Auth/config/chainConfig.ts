@@ -1,26 +1,48 @@
-// import { CustomChainConfig } from "@web3auth/base";
 import { CHAIN_NAMESPACES } from "@web3auth/base";
-// import { polygonAmoy } from "wagmi/chains";
+import { defineChain } from 'viem';
+
+const name = 'Polygon Amoy'
+const symbol = 'POL'
+const symbolName = 'Polygon'
+const rpc = `${process.env.VITE_RPC_ALCHEMY}`
 
 export const chain = {
-  // polygonAmoy: {
-  //   chainNamespace: CHAIN_NAMESPACES.EIP155,
-  //   chainId: "0x" + polygonAmoy.id.toString(16),
-  //   rpcTarget: polygonAmoy.rpcUrls.default.http[0],
-  //   displayName: polygonAmoy.name,
-  //   tickerName: polygonAmoy.nativeCurrency?.name,
-  //   ticker: polygonAmoy.nativeCurrency?.symbol,
-  //   blockExplorerUrl: polygonAmoy.blockExplorers?.default.url[0] as string,
-  // },
   polygonAmoy: {
     chainNamespace: CHAIN_NAMESPACES.EIP155,
-    rpcTarget: process.env.VITE_RPC_ALCHEMY,
     chainId: "0x13882",
-    displayName: "Polygon Amoy Testnet",
+    rpcTarget: rpc,
+    displayName: name,
     blockExplorerUrl: "https://www.oklink.com/amoy",
-    ticker: "POL",
-    tickerName: "Polygon",
+    ticker: symbol,
+    tickerName: symbolName,
     logo: "https://web3auth.io/images/web3authlog.png",
     isTestnet: true
   },
 };
+
+export const wagmi = {
+  polygonAmoy: defineChain({
+    id: 80_002,
+    name: name,
+    nativeCurrency: { name: symbolName, symbol: symbol, decimals: 18 },
+    rpcUrls: {
+      default: {
+        http: [rpc],
+      },
+    },
+    blockExplorers: {
+      default: {
+        name: 'PolygonScan',
+        url: 'https://amoy.polygonscan.com',
+        apiUrl: 'https://api-amoy.polygonscan.com/api',
+      },
+    },
+    contracts: {
+      multicall3: {
+        address: '0xca11bde05977b3631167028862be2a173976ca11',
+        blockCreated: 3127388,
+      },
+    },
+    testnet: true,
+  })
+}
