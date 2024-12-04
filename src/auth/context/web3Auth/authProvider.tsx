@@ -1,12 +1,10 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { development, LensConfig, LensProvider } from '@lens-protocol/react-web';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { WagmiProvider, createConfig, http } from 'wagmi';
 import { bindings } from '@lens-protocol/wagmi';
-
 import { AuthProviderProps } from './types';
 import { AuthContextProvider } from './authContext';
-
 import { web3AuthConnectorFactory } from "./config/web3AuthSettings";
 import { wagmi } from "./config/chainConfig";
 
@@ -15,7 +13,7 @@ import { wagmi } from "./config/chainConfig";
  * for state management, wallet connection, and Lens Protocol integration.
  */
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  
+
   const queryClient = new QueryClient();
   const [web3AuthInstance, web3AuthConnector] = web3AuthConnectorFactory()
 

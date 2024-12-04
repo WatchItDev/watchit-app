@@ -4,11 +4,17 @@ import { Web3AuthConnector } from "@web3auth/web3auth-wagmi-connector";
 import { AccountAbstractionProvider, KernelSmartAccount } from '@web3auth/account-abstraction-provider';
 import { WALLET_ADAPTERS, WEB3AUTH_NETWORK } from '@web3auth/base';
 import { chain } from "./chainConfig.ts";
+import { CreateConnectorFn } from '@wagmi/core';
 
 const modalConfig = {
   [WALLET_ADAPTERS.AUTH]: {
     label: "openlogin",
     loginMethods: {
+      discord: {
+        // it will hide the facebook option from the Web3Auth modal.
+        name: "discord login",
+        showOnModal: true,
+      },
       email_passwordless: {
         name: "email_passwordless",
         showOnModal: false,
@@ -25,11 +31,6 @@ const modalConfig = {
       reddit: {
         // it will hide the facebook option from the Web3Auth modal.
         name: "reddit login",
-        showOnModal: false,
-      },
-      discord: {
-        // it will hide the facebook option from the Web3Auth modal.
-        name: "discord login",
         showOnModal: false,
       },
       twitch: {
@@ -89,8 +90,7 @@ const modalConfig = {
 }
 
 
-export function web3AuthConnectorFactory() {
-
+export function web3AuthConnectorFactory(): [Web3Auth, CreateConnectorFn] {
   // account abstraction setup
   const accountAbstractionProvider = new AccountAbstractionProvider({
     config: {
@@ -128,9 +128,7 @@ export function web3AuthConnectorFactory() {
     useAAWithExternalWallet: false,
   };
 
-
   const web3AuthInstance = new Web3Auth(web3AuthOptions);
+
   return [web3AuthInstance, Web3AuthConnector({ web3AuthInstance, modalConfig })];
-
-
 }
