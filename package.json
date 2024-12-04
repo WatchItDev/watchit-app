@@ -61,7 +61,7 @@
     "@sentry/react": "^8.42.0",
     "@sentry/vite-plugin": "^2.22.6",
     "@tabler/icons-react": "^3.11.0",
-    "@tanstack/react-query": "^5.51.11",
+    "@tanstack/react-query": "^5.62.2",
     "@thirdweb-dev/react": "^4.9.4",
     "@thirdweb-dev/sdk": "^4.0.99",
     "@toruslabs/starkware-crypto": "^4.0.1",
@@ -119,7 +119,7 @@
     "swr": "^2.2.0",
     "uuid": "^10.0.0",
     "viem": "^2.21.53",
-    "wagmi": "2.12.20",
+    "wagmi": "^2.13.3",
     "worker-loader": "^3.0.8",
     "yet-another-react-lightbox": "^3.11.4",
     "yup": "^1.4.0"
