@@ -66,7 +66,6 @@
     "@thirdweb-dev/sdk": "^4.0.99",
     "@toruslabs/starkware-crypto": "^4.0.1",
     "@vidstack/react": "^1.9.7",
-    "@wagmi/core": "2.6.5",
     "@web3auth/account-abstraction-provider": "~9.4.5",
     "@web3auth/base": "~9.4.5",
     "@web3auth/ethereum-provider": "~9.4.0",
@@ -120,7 +119,7 @@
     "swr": "^2.2.0",
     "uuid": "^10.0.0",
     "viem": "^2.17.11",
-    "wagmi": "^2.13.3",
+    "wagmi": "2.12.20",
     "worker-loader": "^3.0.8",
     "yet-another-react-lightbox": "^3.11.4",
     "yup": "^1.4.0"

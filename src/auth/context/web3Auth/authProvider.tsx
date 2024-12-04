@@ -3,6 +3,7 @@ import { development, LensConfig, LensProvider } from '@lens-protocol/react-web'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { WagmiProvider, createConfig, http } from 'wagmi';
 import { bindings } from '@lens-protocol/wagmi';
+
 import { AuthProviderProps } from './types';
 import { AuthContextProvider } from './authContext';
 import { web3AuthConnectorFactory } from "./config/web3AuthSettings";
