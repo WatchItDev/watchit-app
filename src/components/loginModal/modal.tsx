@@ -14,7 +14,6 @@ import { useWeb3Auth } from '@src/hooks/use-web3-auth';
 import { useAccount, useConnect, useDisconnect } from 'wagmi';
 
 // LOCAL IMPORTS
-import { ADAPTER_EVENTS, LOGIN_MODAL_EVENTS } from "@web3auth/base"
 import { ProfileSelectView } from '@src/components/loginModal/profileSelectView';
 import { ProfileFormView } from '@src/components/loginModal/profileFormView';
 import { WatchitLoader } from '../watchit-loader';
@@ -49,7 +48,6 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
   } = useLazyProfilesManaged();
 
   const isLoading = (loading || profilesLoading) && view !== 'create';
-
   // Fetch profiles when the wallet address changes
   useEffect(() => {
     if (address && isConnected && isSuccess) {

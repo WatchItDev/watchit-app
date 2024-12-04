@@ -10,9 +10,6 @@ import {
   Avatar,
 } from '@mui/material';
 
-// WAGMI IMPORTS
-import { useAccount } from 'wagmi';
-
 // UTILS IMPORTS
 import { truncateAddress } from '@src/utils/wallet';
 import { UserItem } from '../user-item';
@@ -37,20 +34,20 @@ interface ProfileSelectionProps {
 // ----------------------------------------------------------------------
 
 export const ProfileSelectView: React.FC<ProfileSelectionProps> = ({
-                                                                     onRegisterNewProfile,
-                                                                     activeConnector,
-                                                                     onDisconnect,
-                                                                     onClose,
-                                                                     profiles,
-                                                                   }) => {
+  onRegisterNewProfile,
+  activeConnector,
+  onDisconnect,
+  onClose,
+  profiles,
+}) => {
   const dispatch = useDispatch();
   const { data: sessionData }: ReadResult<ProfileSession> = useSession();
   const { execute: loginExecute, data, error } = useLogin();
-  const { address } = useAccount();
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
+    console.log(error)
     if (!!data && !error) dispatch(setAuthLoading({ isAuthLoading: false }));
     if (error) setErrorMessage(error.message);
   }, [data, error])
@@ -64,14 +61,14 @@ export const ProfileSelectView: React.FC<ProfileSelectionProps> = ({
         return;
       }
 
-      if (!address) {
+      if (!activeConnector.address) {
         console.error('Wallet address not available.');
         return;
       }
 
       try {
         const result = await loginExecute({
-          address,
+          address: activeConnector.address,
           profileId: profileToUse.id,
         } as any);
 
@@ -81,9 +78,7 @@ export const ProfileSelectView: React.FC<ProfileSelectionProps> = ({
       } catch (err) {
         console.error('Error in login:', err);
       }
-    },
-    [loginExecute, address]
-  );
+    }, []);
 
   const handleProfileClick = async (profile: any) => {
     if (sessionData?.authenticated && (sessionData?.profile?.id === profile.id)) {
@@ -108,7 +103,7 @@ export const ProfileSelectView: React.FC<ProfileSelectionProps> = ({
               {activeConnector.name}
             </Typography>
             <Typography variant="subtitle2" color="text.secondary">
-              {truncateAddress(`${address}`)}
+              {truncateAddress(`${activeConnector.address}`)}
             </Typography>
           </Box>
         </Box>
@@ -143,19 +138,19 @@ export const ProfileSelectView: React.FC<ProfileSelectionProps> = ({
           </Box>
           <Box sx={{ maxHeight: '600px', overflowY: 'auto' }}>
             <List style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: 16, padding: 16, paddingTop: 3 }}>
-               {profiles.map((profile, index) => {
-                 const isLastOddItem = profiles.length % 2 !== 0 && index === profiles.length - 1;
+              {profiles.map((profile, index) => {
+                const isLastOddItem = profiles.length % 2 !== 0 && index === profiles.length - 1;
 
-                 return (
-                   <UserItem
-                     key={`profiles-list-item-${profile.id}`}
-                     onClick={() => handleProfileClick(profile)}
-                     profile={profile}
-                     canFollow={false}
-                     sx={{ width: isLastOddItem ? '100%' : '48%' }}
-                   />
-                 )
-               })}
+                return (
+                  <UserItem
+                    key={`profiles-list-item-${profile.id}`}
+                    onClick={() => handleProfileClick(profile)}
+                    profile={profile}
+                    canFollow={false}
+                    sx={{ width: isLastOddItem ? '100%' : '48%' }}
+                  />
+                )
+              })}
             </List>
           </Box>
         </Box>
