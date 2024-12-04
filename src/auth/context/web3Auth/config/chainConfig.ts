@@ -1,10 +1,11 @@
 import { CHAIN_NAMESPACES } from "@web3auth/base";
 import { defineChain } from 'viem';
+import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 
 const name = 'Polygon Amoy'
 const symbol = 'POL'
 const symbolName = 'Polygon'
-const rpc = `${process.env.VITE_RPC_ALCHEMY}`
+const rpc = `${GLOBAL_CONSTANTS.RPC_ALCHEMY}`
 const blockExplorerUrl = "https://www.oklink.com/amoy"
 
 export const chain = {
