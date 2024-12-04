@@ -5,8 +5,10 @@ import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 const name = 'Polygon Amoy'
 const symbol = 'POL'
 const symbolName = 'Polygon'
+const multiCall3BlockCreated = 3127388
 const rpc = `${GLOBAL_CONSTANTS.RPC}`
 const blockExplorerUrl = "https://www.oklink.com/amoy"
+const multiCall3Contract = '0xca11bde05977b3631167028862be2a173976ca11'
 
 console.log('rpc')
 console.log(rpc)
@@ -44,8 +46,8 @@ export const wagmi = {
     },
     contracts: {
       multicall3: {
-        address: '0xca11bde05977b3631167028862be2a173976ca11',
-        blockCreated: 3127388,
+        address: multiCall3Contract,
+        blockCreated: multiCall3BlockCreated,
       },
     },
     testnet: true,
