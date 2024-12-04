@@ -33,6 +33,7 @@ import { useAccount } from 'wagmi';
 import { ProfileData } from '@src/auth/context/web3Auth/types.ts';
 import { uploadImageToIPFS, uploadMetadataToIPFS } from '@src/utils/ipfs.ts';
 import { buildProfileMetadata } from '@src/utils/profile.ts';
+import TextMaxLine from "@src/components/text-max-line";
 
 // ----------------------------------------------------------------------
 
@@ -286,7 +287,7 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({ onSuccess, onCance
   ]);
 
   return (
-    <Box sx={{p: 2}}>
+    <Box sx={{p: 2, overflow: "hidden",overflowY: "scroll", zIndex: '1000'}}>
       <Typography variant="h6" sx={{ pb: 2 }}>
         {mode === 'register' ? 'Create a New Profile' : 'Update Profile'}
       </Typography>
@@ -366,34 +367,50 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({ onSuccess, onCance
           <Box
             sx={{
               display: 'flex',
+              marginTop: 10,
               flexDirection: 'column',
-              alignItems: 'flex-end',
-              justifyContent: 'flex-end',
+              alignItems: {
+                xs: 'flex-start',
+                sm:  'flex-end',
+              },
+              justifyContent: {
+                xs: 'flex-start',
+                sm:  'flex-end',
+              },
               position: 'absolute',
-              bottom: -8,
+              width: '100%',
+              bottom: {
+                xs: -50,
+                sm: -8,
+              },
               right: 0,
               opacity: 0.7
             }}
           >
-            <Typography
+            <TextMaxLine
+              line={1}
               variant="caption"
               fontWeight="bold"
               color="text.secondary"
             >
               * Click the profile or cover image to select one
-            </Typography>
-            <Typography
+            </TextMaxLine>
+            <TextMaxLine
+              line={1}
               variant="caption"
               fontWeight="bold"
               color="text.secondary"
             >
               * Images are optional (current images are placeholders)
-            </Typography>
+            </TextMaxLine>
           </Box>
         </Box>
 
         {/* Text Fields */}
-        <Grid container spacing={2} sx={{ mt: 2 }}>
+        <Grid container spacing={2} sx={{ mt: {
+          xs: 6,
+          sm: 2,
+          } }}>
           <Grid item xs={12} sm={6}>
             <TextField
               fullWidth
