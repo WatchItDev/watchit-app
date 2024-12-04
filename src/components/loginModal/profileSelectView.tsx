@@ -50,7 +50,7 @@ export const ProfileSelectView: React.FC<ProfileSelectionProps> = ({
     if (data !== undefined && !error) dispatch(setAuthLoading({ isAuthLoading: false }));
     if (error) setErrorMessage(error.message);
   }, [data, error])
-  
+
   const login = async (profile?: Profile) => {
 
     if (!profile) {
