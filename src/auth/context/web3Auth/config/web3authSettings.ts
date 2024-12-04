@@ -1,24 +1,26 @@
-import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { Web3AuthOptions } from "@web3auth/modal";
-
+import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+import { Web3AuthConnector } from "@web3auth/web3auth-wagmi-connector";
 import { AccountAbstractionProvider, KernelSmartAccount } from '@web3auth/account-abstraction-provider';
-import { WALLET_ADAPTERS,WEB3AUTH_NETWORK } from '@web3auth/base';
+import { WALLET_ADAPTERS, WEB3AUTH_NETWORK } from '@web3auth/base';
 import { chain } from "./chainConfig.ts";
 
-// account abstraction setup
-const accountAbstractionProvider = new AccountAbstractionProvider({
-  config: {
-    chainConfig: chain.polygonAmoy,
-    smartAccountInit: new KernelSmartAccount(),
-    bundlerConfig: { url: process.env.VITE_PIMLICO as string },
-    paymasterConfig: { url: process.env.VITE_PIMLICO as string },
-  }
-});
+export function web3AuthConnectorFactory() {
+  
+  // account abstraction setup
+  const accountAbstractionProvider = new AccountAbstractionProvider({
+    config: {
+      chainConfig: chain.polygonAmoy,
+      smartAccountInit: new KernelSmartAccount(),
+      bundlerConfig: { url: process.env.VITE_PIMLICO as string },
+      paymasterConfig: { url: process.env.VITE_PIMLICO as string },
+    }
+  });
 
-// ethereum prover for web3 auth
-const privateKeyProvider = new EthereumPrivateKeyProvider({
-  config: { chainConfig: chain.polygonAmoy },
-});
+  // ethereum prover for web3 auth
+  const privateKeyProvider = new EthereumPrivateKeyProvider({
+    config: { chainConfig: chain.polygonAmoy },
+  });
 
 export const web3AuthOptions: Web3AuthOptions = {
   privateKeyProvider,
@@ -42,85 +44,92 @@ export const web3AuthOptions: Web3AuthOptions = {
   useAAWithExternalWallet: false,
 };
 
-export const modalConfig = {
-  [WALLET_ADAPTERS.AUTH]: {
-    label: "openlogin",
-    loginMethods: {
-      email_passwordless: {
-        name: "email_passwordless",
-        showOnModal: false,
+  export const modalConfig = {
+    [WALLET_ADAPTERS.AUTH]: {
+      label: "openlogin",
+      loginMethods: {
+        email_passwordless: {
+          name: "email_passwordless",
+          showOnModal: false,
+        },
+        sms_passwordless: {
+          name: "sms_passwordless",
+          showOnModal: false,
+        },
+        facebook: {
+          // it will hide the facebook option from the Web3Auth modal.
+          name: "facebook login",
+          showOnModal: false,
+        },
+        reddit: {
+          // it will hide the facebook option from the Web3Auth modal.
+          name: "reddit login",
+          showOnModal: false,
+        },
+        discord: {
+          // it will hide the facebook option from the Web3Auth modal.
+          name: "discord login",
+          showOnModal: false,
+        },
+        twitch: {
+          // it will hide the facebook option from the Web3Auth modal.
+          name: "twitch login",
+          showOnModal: false,
+        },
+        apple: {
+          // it will hide the facebook option from the Web3Auth modal.
+          name: "apple login",
+          showOnModal: false,
+        },
+        line: {
+          // it will hide the facebook option from the Web3Auth modal.
+          name: "line login",
+          showOnModal: false,
+        },
+        github: {
+          // it will hide the facebook option from the Web3Auth modal.
+          name: "github login",
+          showOnModal: false,
+        },
+        kakao: {
+          // it will hide the facebook option from the Web3Auth modal.
+          name: "kakao login",
+          showOnModal: false,
+        },
+        linkedin: {
+          // it will hide the facebook option from the Web3Auth modal.
+          name: "linkedin login",
+          showOnModal: false,
+        },
+        twitter: {
+          // it will hide the facebook option from the Web3Auth modal.
+          name: "twitter login",
+          showOnModal: false,
+        },
+        wechat: {
+          // it will hide the facebook option from the Web3Auth modal.
+          name: "wechat login",
+          showOnModal: false,
+        },
+        weibo: {
+          // it will hide the facebook option from the Web3Auth modal.
+          name: "weibo login",
+          showOnModal: false,
+        },
+        farcaster: {
+          // it will hide the facebook option from the Web3Auth modal.
+          name: "farcaster login",
+          showOnModal: false,
+        }
       },
-      sms_passwordless: {
-        name: "sms_passwordless",
-        showOnModal: false,
-      },
-      facebook: {
-        // it will hide the facebook option from the Web3Auth modal.
-        name: "facebook login",
-        showOnModal: false,
-      },
-      reddit: {
-        // it will hide the facebook option from the Web3Auth modal.
-        name: "reddit login",
-        showOnModal: false,
-      },
-      discord: {
-        // it will hide the facebook option from the Web3Auth modal.
-        name: "discord login",
-        showOnModal: false,
-      },
-      twitch: {
-        // it will hide the facebook option from the Web3Auth modal.
-        name: "twitch login",
-        showOnModal: false,
-      },
-      apple: {
-        // it will hide the facebook option from the Web3Auth modal.
-        name: "apple login",
-        showOnModal: false,
-      },
-      line: {
-        // it will hide the facebook option from the Web3Auth modal.
-        name: "line login",
-        showOnModal: false,
-      },
-      github: {
-        // it will hide the facebook option from the Web3Auth modal.
-        name: "github login",
-        showOnModal: false,
-      },
-      kakao: {
-        // it will hide the facebook option from the Web3Auth modal.
-        name: "kakao login",
-        showOnModal: false,
-      },
-      linkedin: {
-        // it will hide the facebook option from the Web3Auth modal.
-        name: "linkedin login",
-        showOnModal: false,
-      },
-      twitter: {
-        // it will hide the facebook option from the Web3Auth modal.
-        name: "twitter login",
-        showOnModal: false,
-      },
-      wechat: {
-        // it will hide the facebook option from the Web3Auth modal.
-        name: "wechat login",
-        showOnModal: false,
-      },
-      weibo: {
-        // it will hide the facebook option from the Web3Auth modal.
-        name: "weibo login",
-        showOnModal: false,
-      },
-      farcaster: {
-        // it will hide the facebook option from the Web3Auth modal.
-        name: "farcaster login",
-        showOnModal: false,
-      }
+      // setting it to false will hide all social login methods from modal.
+      showOnModal: true,
     },
-    // setting it to false will hide all social login methods from modal.
-    showOnModal: true,
-  },
+  }
+
+
+  const web3AuthInstance = new Web3Auth(web3AuthOptions);
+  return Web3AuthConnector({ web3AuthInstance, modalConfig });
+
+
 }
