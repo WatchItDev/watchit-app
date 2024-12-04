@@ -51,12 +51,10 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
   // Fetch profiles when the wallet address changes
   useEffect(() => {
     if (address && isConnected && isSuccess) {
-      setTimeout(() => {
-        fetchProfiles({
-          for: address,
-          includeOwned: true,
-        });
-      }, 500)
+      fetchProfiles({
+        for: address,
+        includeOwned: true,
+      });
     }
   }, [address, isConnected, isSuccess]);
 

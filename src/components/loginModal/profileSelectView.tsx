@@ -42,49 +42,50 @@ export const ProfileSelectView: React.FC<ProfileSelectionProps> = ({
 }) => {
   const dispatch = useDispatch();
   const { data: sessionData }: ReadResult<ProfileSession> = useSession();
-  const { execute: loginExecute, data, error } = useLogin();
+  const { execute: loginExecute, data, loading, error } = useLogin();
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
+  debugger;
   useEffect(() => {
-    if (!!data && !error) dispatch(setAuthLoading({ isAuthLoading: false }));
+    if (data !== undefined && !error) dispatch(setAuthLoading({ isAuthLoading: false }));
     if (error) setErrorMessage(error.message);
   }, [data, error])
+  
+  const login = async (profile?: Profile) => {
 
-  const login = useCallback(
-    async (profile?: Profile) => {
+    console.log(await activeConnector.getAccounts())
+    if (!profile) {
+      console.warn('No profile selected or provided, please select one.');
+      return;
+    }
 
-      if (!profile) {
-        console.warn('No profile selected or provided, please select one.');
-        return;
+    if (!activeConnector.address) {
+      console.error('Wallet address not available.');
+      return;
+    }
+
+    try {
+      const result = await loginExecute({
+        address: activeConnector.address,
+        profileId: profile.id,
+      } as any);
+
+      if (result.isFailure()) {
+        console.error('Error during login:', result.error.message);
       }
-
-      if (!activeConnector.address) {
-        console.error('Wallet address not available.');
-        return;
-      }
-
-      try {
-        const result = await loginExecute({
-          address: activeConnector.address,
-          profileId: profile.id,
-        } as any);
-
-        if (result.isFailure()) {
-          console.error('Error during login:', result.error.message);
-        }
-      } catch (err) {
-        console.error('Error in login:', err);
-      }
-    }, []);
+    } catch (err) {
+      console.error('Error in login:', err);
+    }
+  };
 
   const handleProfileClick = async (profile: any) => {
     if (sessionData?.authenticated && (sessionData?.profile?.id === profile.id)) {
       onClose?.()
     } else {
+      onClose();
       dispatch(setAuthLoading({ isAuthLoading: true }))
       await login(profile);
-      onClose();
     }
   }
 
