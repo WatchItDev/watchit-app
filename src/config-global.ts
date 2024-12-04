@@ -18,7 +18,7 @@ export const GLOBAL_CONSTANTS = {
   PINATA_API_KEY: process.env.VITE_PINATA_API_KEY || import.meta.env.VITE_PINATA_API_KEY || '',
   PINATA_SECRET_API_KEY: process.env.VITE_PINATA_SECRET_API_KEY || import.meta.env.VITE_PINATA_SECRET_API_KEY || '',
   WEB3_CLIENT_ID: process.env.VITE_WEB3_CLIENT_ID || import.meta.env.VITE_WEB3_CLIENT_ID || '',
-  RPC: process.env.VITE_RPC || import.meta.env.VITE_RPC || '',
+  PIMLICO: process.env.VITE_PIMLICO || import.meta.env.VITE_PIMLICO || '',
 };
 
 export const MAPBOX_API = import.meta.env.VITE_MAPBOX_API || '';

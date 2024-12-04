@@ -111,8 +111,8 @@ export function web3AuthConnectorFactory(): [Web3Auth, CreateConnectorFn] {
     config: {
       chainConfig: chain.polygonAmoy,
       smartAccountInit: new KernelSmartAccount(),
-      bundlerConfig: { url: process.env.VITE_PIMLICO as string },
-      paymasterConfig: { url: process.env.VITE_PIMLICO as string },
+      bundlerConfig: { url: GLOBAL_CONSTANTS.PIMLICO },
+      paymasterConfig: { url: GLOBAL_CONSTANTS.PIMLICO },
     }
   });
 

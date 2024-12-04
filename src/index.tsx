@@ -3,6 +3,8 @@ import { Suspense } from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
+import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
+
 import * as Sentry from "@sentry/react";
 import App from './App';
 import { Buffer } from 'buffer';
@@ -13,7 +15,7 @@ window.process = process;
 window.global = window;
 
 Sentry.init({
-  dsn: process.env.VITE_SENTRY_DNS,
+  dsn: GLOBAL_CONSTANTS.SENTRY_DNS,
   integrations: [
     Sentry.browserTracingIntegration(),
     Sentry.replayIntegration(),
