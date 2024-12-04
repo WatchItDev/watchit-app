@@ -7,7 +7,7 @@ import { bindings } from '@lens-protocol/wagmi';
 import { AuthProviderProps } from './types';
 import { AuthContextProvider } from './authContext';
 import { web3AuthConnectorFactory } from "./config/web3AuthSettings";
-import { wagmi } from "./config/chainConfig";
+import { polygonAmoy } from "wagmi/chains";
 
 /**
  * AuthProvider is a higher-order component that wraps the application with necessary providers
@@ -20,9 +20,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const wagmiConfig = createConfig({
     syncConnectedChain: true,
-    chains: [wagmi.polygonAmoy],
+    chains: [polygonAmoy],
     connectors: [web3AuthConnector],
-    transports: { [wagmi.polygonAmoy.id]: http(), }
+    transports: { [polygonAmoy.id]: http(), }
   })
 
   const lensConfig: LensConfig = {
