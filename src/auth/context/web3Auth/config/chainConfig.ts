@@ -5,8 +5,11 @@ import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 const name = 'Polygon Amoy'
 const symbol = 'POL'
 const symbolName = 'Polygon'
-const rpc = `${GLOBAL_CONSTANTS.RPC_ALCHEMY}`
+const rpc = `${GLOBAL_CONSTANTS.RPC}`
 const blockExplorerUrl = "https://www.oklink.com/amoy"
+
+console.log('rpc')
+console.log(rpc)
 
 export const chain = {
   polygonAmoy: {
