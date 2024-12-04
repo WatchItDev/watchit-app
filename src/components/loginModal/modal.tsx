@@ -14,6 +14,7 @@ import { useWeb3Auth } from '@src/hooks/use-web3-auth';
 import { useAccount, useConnect, useDisconnect } from 'wagmi';
 
 // LOCAL IMPORTS
+import { ADAPTER_EVENTS, LOGIN_MODAL_EVENTS } from "@web3auth/base"
 import { ProfileSelectView } from '@src/components/loginModal/profileSelectView';
 import { ProfileFormView } from '@src/components/loginModal/profileFormView';
 import { WatchitLoader } from '../watchit-loader';
@@ -68,15 +69,13 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
         setLoading(false);
       }
     }
-
-    // avoid memory leak bug from wallet 
-    return () => { w3.removeAllListeners() }
-  }, [open, view, isConnected]);
+  }, [open, view, isDisconnected]);
 
   useEffect(() => {
     if (error) {
       onClose();
       w3.loginModal.closeModal()
+      w3.removeAllListeners()
       w3.clearCache()
       setView('wallet');
     }
