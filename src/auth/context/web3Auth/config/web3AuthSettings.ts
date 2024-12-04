@@ -5,6 +5,7 @@ import { AccountAbstractionProvider, KernelSmartAccount } from '@web3auth/accoun
 import { WALLET_ADAPTERS, WEB3AUTH_NETWORK } from '@web3auth/base';
 import { CreateConnectorFn } from 'wagmi';
 import { chain } from "./chainConfig.ts";
+import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 
 const modalConfig = {
   [WALLET_ADAPTERS.AUTH]: {
@@ -110,7 +111,7 @@ export function web3AuthConnectorFactory(): [Web3Auth, CreateConnectorFn] {
     privateKeyProvider,
     accountAbstractionProvider,
     chainConfig: chain.polygonAmoy,
-    clientId: process.env.VITE_WEB3_CLIENT_ID as string,
+    clientId: GLOBAL_CONSTANTS.WEB3_CLIENT_ID,
     uiConfig: {
       appName: 'Watchit',
       loginMethodsOrder: ["google"],
