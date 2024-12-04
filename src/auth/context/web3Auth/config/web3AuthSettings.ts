@@ -2,14 +2,14 @@ import { Web3Auth, Web3AuthOptions } from "@web3auth/modal";
 import { Web3AuthConnector } from "@web3auth/web3auth-wagmi-connector";
 import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
 import { AccountAbstractionProvider, KernelSmartAccount } from '@web3auth/account-abstraction-provider';
-import { WALLET_ADAPTERS, WEB3AUTH_NETWORK } from '@web3auth/base';
+import { CHAIN_NAMESPACES, WALLET_ADAPTERS, WEB3AUTH_NETWORK } from '@web3auth/base';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 import { CreateConnectorFn } from 'wagmi';
 import { polygonAmoy } from "wagmi/chains";
 
 export const chain = {
   polygonAmoy: {
-    isTestnet: true
+    isTestnet: true,
     chainId: "0x13882",
     chainNamespace: CHAIN_NAMESPACES.EIP155,
     displayName: polygonAmoy.name,
