@@ -118,7 +118,7 @@
     "stylis-plugin-rtl": "^2.0.2",
     "swr": "^2.2.0",
     "uuid": "^10.0.0",
-    "viem": "^2.17.11",
+    "viem": "^2.21.9",
     "wagmi": "2.12.20",
     "worker-loader": "^3.0.8",
     "yet-another-react-lightbox": "^3.11.4",
