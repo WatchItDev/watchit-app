@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { development, LensConfig, LensProvider } from '@lens-protocol/react-web';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { WagmiProvider, createConfig, http } from 'wagmi';
@@ -17,7 +17,7 @@ import { wagmi } from "./config/chainConfig";
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   
   const queryClient = new QueryClient();
-  const [web3AuthInstance, web3AuthConnector] = web3AuthConnectorFactory()
+  const [web3Auth, web3AuthConnector] = web3AuthConnectorFactory()
 
   const wagmiConfig = createConfig({
     syncConnectedChain: true,
@@ -35,7 +35,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     <QueryClientProvider client={queryClient}>
       <WagmiProvider config={wagmiConfig}>
         <LensProvider config={lensConfig}>
-          <AuthContextProvider web3AuthInstance={web3AuthInstance}>{children}</AuthContextProvider>
+          <AuthContextProvider web3Auth={web3Auth}>{children}</AuthContextProvider>
         </LensProvider>
       </WagmiProvider>
     </QueryClientProvider>
