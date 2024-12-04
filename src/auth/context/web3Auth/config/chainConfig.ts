@@ -5,14 +5,15 @@ const name = 'Polygon Amoy'
 const symbol = 'POL'
 const symbolName = 'Polygon'
 const rpc = `${process.env.VITE_RPC_ALCHEMY}`
+const blockExplorerUrl = "https://www.oklink.com/amoy"
 
 export const chain = {
   polygonAmoy: {
+    blockExplorerUrl,
     chainNamespace: CHAIN_NAMESPACES.EIP155,
     chainId: "0x13882",
     rpcTarget: rpc,
     displayName: name,
-    blockExplorerUrl: "https://www.oklink.com/amoy",
     ticker: symbol,
     tickerName: symbolName,
     logo: "https://web3auth.io/images/web3authlog.png",
@@ -33,9 +34,9 @@ export const wagmi = {
     blockExplorers: {
       default: {
         name: 'Ok',
-        url: 'https://www.oklink.com/amoy',
-        apiUrl: 'https://www.oklink.com/amoy',
-      },
+        url: blockExplorerUrl,
+        apiUrl: blockExplorerUrl
+      }
     },
     contracts: {
       multicall3: {
