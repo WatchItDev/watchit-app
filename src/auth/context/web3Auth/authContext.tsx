@@ -8,6 +8,6 @@ export const AuthContext = createContext<AuthContextProps>({} as AuthContextProp
 /**
  * AuthContextProvider manages authentication state, profiles, and interactions with the Lens Protocol.
  */
-export const AuthContextProvider: React.FC<AuthProviderProps & { web3AuthInstance: Web3Auth }> = ({ children, web3AuthInstance }) => {
-  return <AuthContext.Provider value={{ web3AuthInstance }}>{children}</AuthContext.Provider>;
+export const AuthContextProvider: React.FC<AuthProviderProps & { web3Auth: Web3Auth }> = ({ children, web3Auth }) => {
+  return <AuthContext.Provider value={{ web3Auth }}>{children}</AuthContext.Provider>;
 };
