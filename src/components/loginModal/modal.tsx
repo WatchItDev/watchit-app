@@ -35,11 +35,10 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
 
   const { data: sessionData } = useSession();
   const { address, isConnected, isDisconnected, connector } = useAccount();
-  const { connect, connectors, error } = useConnect();
+  const { connect, connectors, error, isSuccess } = useConnect();
   const { execute: logoutExecute } = useLogout();
   const { disconnect } = useDisconnect();
   const { web3AuthInstance: w3 } = useWeb3Auth();
-
 
   // Fetch profiles associated with the connected wallet
   const {
@@ -53,13 +52,13 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
 
   // Fetch profiles when the wallet address changes
   useEffect(() => {
-    if (address && isConnected) {
+    if (address && isConnected && isSuccess) {
       fetchProfiles({
         for: address,
         includeOwned: true,
       });
     }
-  }, [address, isConnected]);
+  }, [address, isConnected, isSuccess]);
 
   useEffect(() => {
     if (open && view === 'wallet' && isDisconnected) {
