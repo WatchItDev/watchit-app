@@ -7,7 +7,7 @@ import { bindings } from '@lens-protocol/wagmi';
 import { Web3Auth } from "@web3auth/modal";
 import { Web3AuthConnector } from "@web3auth/web3auth-wagmi-connector";
 
-import { wagmi } from "./chainConfig.ts";
+import { wagmi } from "./config/chainConfig.ts";
 import { AuthProviderProps } from './types';
 import { AuthContextProvider } from './authContext';
 import { web3AuthOptions, modalConfig } from './config/web3authSettings';
@@ -20,7 +20,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const web3AuthInstance = new Web3Auth(web3AuthOptions);
   const queryClient = new QueryClient();
 
-  // wagmi web3 auth 
+  // wagmi web3 auth
   const web3AuthConnector = Web3AuthConnector({
     web3AuthInstance,
     modalConfig
