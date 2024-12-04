@@ -10,13 +10,13 @@ import { polygonAmoy } from "wagmi/chains";
 export const chain = {
   polygonAmoy: {
     isTestnet: true
+    chainId: "0x13882",
+    chainNamespace: CHAIN_NAMESPACES.EIP155,
+    displayName: polygonAmoy.name,
     rpcTarget: polygonAmoy.rpcUrls.default,
     blockExplorerUrl: polygonAmoy.blockExplorers.default.url,
-    chainNamespace: CHAIN_NAMESPACES.EIP155,
-    chainId: "0x13882",
-    displayName: name,
-    ticker: symbol,
-    tickerName: symbolName,
+    tickerName: polygonAmoy.nativeCurrency.name,
+    ticker: polygonAmoy.nativeCurrency.symbol,
     logo: "https://web3auth.io/images/web3authlog.png",
   },
 };
