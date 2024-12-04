@@ -42,7 +42,7 @@ export const ProfileSelectView: React.FC<ProfileSelectionProps> = ({
 }) => {
   const dispatch = useDispatch();
   const { data: sessionData }: ReadResult<ProfileSession> = useSession();
-  const { execute: loginExecute, data, loading, error } = useLogin();
+  const { execute: loginExecute, data, error } = useLogin();
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
