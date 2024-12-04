@@ -437,7 +437,10 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({ onSuccess, onCance
               placeholder="Enter a username"
               disabled={mode === 'update' || loading}
               value={formik.values.username}
-              onChange={formik.handleChange}
+              onChange={(event) => {
+                const lowercaseValue = event.target.value.toLowerCase();
+                formik.setFieldValue('username', lowercaseValue);
+              }}
               onBlur={formik.handleBlur}
               error={formik.touched.username && Boolean(formik.errors.username)}
               helperText={formik.touched.username ? formik.errors.username : 'e.g., johndoe123'}

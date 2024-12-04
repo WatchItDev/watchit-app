@@ -336,7 +336,7 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
                   ({ key, icon }) =>
                     socialMediaUrls[key as keyof SocialMediaUrls] && (
                       <Button
-                        key={key}
+                        key={`link-${key}`}
                         component="a"
                         href={socialMediaUrls[key as keyof SocialMediaUrls]}
                         target="_blank"
@@ -575,9 +575,9 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
                     Share link to this page
                   </Typography>
                   <Stack direction="row" spacing={2} justifyContent="center">
-                    {shareLinks.map((item) => (
+                    {shareLinks.map((item, index) => (
                       <Stack
-                        key={item.label}
+                        key={`share-link-item-${index}`}
                         direction="column"
                         sx={{
                           display: 'flex',
@@ -727,7 +727,7 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
               }}>
                 {
                   ['Watchit'].map((partner, index) => (
-                    <StyledBoxGradient color1={randomColors[randomColors.length - index]} color2={randomColors[index]} >
+                    <StyledBoxGradient key={`partner-${index}`} color1={randomColors[randomColors.length - index]} color2={randomColors[index]} >
                       <Typography style={{ marginRight: 5, fontWeight: 'bold' }} variant="caption">
                         {partner}
                       </Typography>
@@ -747,6 +747,7 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
 
       {/* Snackbar for error messages */}
       <Snackbar
+        key={`error-${errorMessage}`}
         open={!!errorMessage}
         autoHideDuration={6000}
         onClose={() => setErrorMessage('')}
@@ -760,6 +761,7 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
 
       {/* Snackbar for success messages */}
       <Snackbar
+        key={`success-${successMessage}`}
         open={!!successMessage}
         autoHideDuration={6000}
         onClose={() => setSuccessMessage('')}

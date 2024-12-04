@@ -67,6 +67,7 @@ const UserProfileView = ({ id }: any) => {
     <Container maxWidth={settings.themeStretch ? false : 'lg'}>
       <ProfileHeader profile={profile as any}>
         <Tabs
+          key={`tabs-${profile?.id}`}
           value={currentTab}
           onChange={handleChangeTab}
           sx={{
