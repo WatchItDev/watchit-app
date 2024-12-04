@@ -33,8 +33,8 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
   const [successMessage, setSuccessMessage] = useState('');
 
   const { data: sessionData } = useSession();
-  const { address, isConnected, isDisconnected, connector } = useAccount();
-  const { connect, connectors, error, isSuccess } = useConnect();
+  const { address, isConnected, connector } = useAccount();
+  const { connect, connectors, error} = useConnect();
   const { execute: logoutExecute } = useLogout();
   const { disconnect } = useDisconnect();
   const { web3AuthInstance: w3 } = useWeb3Auth();
@@ -50,16 +50,16 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
   const isLoading = (loading || profilesLoading) && view !== 'create';
   // Fetch profiles when the wallet address changes
   useEffect(() => {
-    if (address && isConnected && isSuccess) {
+    if (connector && address && isConnected) {
       fetchProfiles({
         for: address,
         includeOwned: true,
       });
     }
-  }, [address, isConnected, isSuccess]);
+  }, [address, connector, isConnected]);
 
   useEffect(() => {
-    if (open && view === 'wallet' && isDisconnected) {
+    if (open && view === 'wallet') {
       const web3AuthConnector = connectors.find((el) => el.id === 'web3auth');
       if (web3AuthConnector) {
         connect({ connector: web3AuthConnector })
@@ -67,14 +67,14 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
         setLoading(false);
       }
     }
-  }, [open, view, isDisconnected]);
+  }, [open, view, isConnected]);
 
   useEffect(() => {
     if (error) {
       onClose();
-      w3.loginModal.closeModal()
-      w3.removeAllListeners()
-      w3.clearCache()
+      w3?.loginModal.closeModal()
+      w3?.removeAllListeners()
+      w3?.clearCache()
       setView('wallet');
     }
   }, [error]);

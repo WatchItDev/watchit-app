@@ -66,7 +66,7 @@ export const ProfileSelectView: React.FC<ProfileSelectionProps> = ({
     try {
       const result = await loginExecute({
         address: activeConnector.address,
-        profileId: profile.id,
+        // profileId: profile.id,
       } as any);
 
       if (result.isFailure()) {
