@@ -6,6 +6,21 @@ import { WALLET_ADAPTERS, WEB3AUTH_NETWORK } from '@web3auth/base';
 import { chain } from "./chainConfig.ts";
 import { CreateConnectorFn } from 'wagmi';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
+import { polygonAmoy } from "wagmi/chains";
+
+export const chain = {
+  polygonAmoy: {
+    isTestnet: true
+    rpcTarget: polygonAmoy.rpcUrls.default,
+    blockExplorerUrl: polygonAmoy.blockExplorers.default.url,
+    chainNamespace: CHAIN_NAMESPACES.EIP155,
+    chainId: "0x13882",
+    displayName: name,
+    ticker: symbol,
+    tickerName: symbolName,
+    logo: "https://web3auth.io/images/web3authlog.png",
+  },
+};
 
 const modalConfig = {
   [WALLET_ADAPTERS.AUTH]: {
