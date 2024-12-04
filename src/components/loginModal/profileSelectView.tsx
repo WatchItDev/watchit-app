@@ -70,9 +70,6 @@ export const ProfileSelectView: React.FC<ProfileSelectionProps> = ({
       }
 
       try {
-        console.log('login');
-        console.log(address);
-        console.log(profileToUse.id);
         const result = await loginExecute({
           address,
           profileId: profileToUse.id,
