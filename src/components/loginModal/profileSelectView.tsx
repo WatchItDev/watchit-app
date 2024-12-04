@@ -54,9 +54,8 @@ export const ProfileSelectView: React.FC<ProfileSelectionProps> = ({
 
   const login = useCallback(
     async (profile?: Profile) => {
-      const profileToUse = profile;
 
-      if (!profileToUse) {
+      if (!profile) {
         console.warn('No profile selected or provided, please select one.');
         return;
       }
@@ -69,7 +68,7 @@ export const ProfileSelectView: React.FC<ProfileSelectionProps> = ({
       try {
         const result = await loginExecute({
           address: activeConnector.address,
-          profileId: profileToUse.id,
+          profileId: profile.id,
         } as any);
 
         if (result.isFailure()) {
