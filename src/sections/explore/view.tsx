@@ -23,6 +23,7 @@ import {
 import { LoadingScreen } from '@src/components/loading-screen';
 import CarouselTopTitles from '@src/components/carousel/variants/carousel-top-titles.tsx';
 import CarouselCreators from '@src/components/carousel/variants/carousel-creators.tsx';
+import {useResponsive} from "@src/hooks/use-responsive.ts";
 
 // ----------------------------------------------------------------------
 
@@ -34,6 +35,17 @@ export type TrendingTopicsType = {
 }
 
 export default function ExploreView() {
+  const lgUp = useResponsive('up', 'lg');
+
+  let minItemWidth = 250;
+  let maxItemWidth = 350;
+
+  if(!lgUp) {
+    minItemWidth = 170;
+    maxItemWidth = 250;
+
+  }
+
   const { data, loading }: any = usePublications({
     where: {
       publicationTypes: [PublicationType.Post],
@@ -95,8 +107,8 @@ export default function ExploreView() {
         <CarouselPosterMini
           data={data ?? []}
           title="Publications"
-          minItemWidth={250}
-          maxItemWidth={350}
+          minItemWidth={minItemWidth}
+          maxItemWidth={maxItemWidth}
         />
       </Stack>
     </Container>
