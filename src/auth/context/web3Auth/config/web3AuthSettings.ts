@@ -35,6 +35,11 @@ const modalConfig = {
         name: "twitter login",
         showOnModal: true,
       },
+      reddit: {
+        // it will hide the facebook option from the Web3Auth modal.
+        name: "reddit login",
+        showOnModal: true,
+      },
       email_passwordless: {
         name: "email_passwordless",
         showOnModal: false,
@@ -46,11 +51,6 @@ const modalConfig = {
       facebook: {
         // it will hide the facebook option from the Web3Auth modal.
         name: "facebook login",
-        showOnModal: false,
-      },
-      reddit: {
-        // it will hide the facebook option from the Web3Auth modal.
-        name: "reddit login",
         showOnModal: false,
       },
       twitch: {
