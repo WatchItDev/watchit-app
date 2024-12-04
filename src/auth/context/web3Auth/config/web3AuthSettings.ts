@@ -130,6 +130,5 @@ export function web3AuthConnectorFactory(): [Web3Auth, CreateConnectorFn] {
   };
 
   const web3AuthInstance = new Web3Auth(web3AuthOptions);
-
   return [web3AuthInstance, Web3AuthConnector({ web3AuthInstance, modalConfig })];
 }
