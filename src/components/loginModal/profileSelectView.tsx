@@ -46,7 +46,6 @@ export const ProfileSelectView: React.FC<ProfileSelectionProps> = ({
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
-  debugger;
   useEffect(() => {
     if (data !== undefined && !error) dispatch(setAuthLoading({ isAuthLoading: false }));
     if (error) setErrorMessage(error.message);
@@ -54,7 +53,6 @@ export const ProfileSelectView: React.FC<ProfileSelectionProps> = ({
   
   const login = async (profile?: Profile) => {
 
-    console.log(await activeConnector.getAccounts())
     if (!profile) {
       console.warn('No profile selected or provided, please select one.');
       return;
