@@ -47,7 +47,6 @@ export const ProfileSelectView: React.FC<ProfileSelectionProps> = ({
   const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
-    console.log(error)
     if (!!data && !error) dispatch(setAuthLoading({ isAuthLoading: false }));
     if (error) setErrorMessage(error.message);
   }, [data, error])
