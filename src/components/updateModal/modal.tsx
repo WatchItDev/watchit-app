@@ -36,9 +36,12 @@ export const UpdateModal: React.FC<UpdateModalProps> = ({ open, onClose }) => {
     onClose?.()
   };
 
+
   return (
     <>
       <Modal
+        style={{ overflow: 'scroll' }}
+        disableScrollLock={true}
         open={open}
         onClose={onClose}
         closeAfterTransition

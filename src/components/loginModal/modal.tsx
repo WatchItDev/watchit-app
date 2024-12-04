@@ -94,6 +94,8 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
   return (
     <>
       <Modal
+        style={{ overflow: 'scroll' }}
+        disableScrollLock={true}
         open={open}
         onClose={onClose}
         closeAfterTransition
