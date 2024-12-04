@@ -21,6 +21,7 @@ import { useDispatch } from 'react-redux';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import { setAuthLoading } from '@redux/auth';
+import {useResponsive} from "@src/hooks/use-responsive.ts";
 
 // ----------------------------------------------------------------------
 
@@ -47,11 +48,13 @@ export const ProfileSelectView: React.FC<ProfileSelectionProps> = ({
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
+  const lgUp = useResponsive('up', 'lg');
+
   useEffect(() => {
     if (data !== undefined && !error) dispatch(setAuthLoading({ isAuthLoading: false }));
     if (error) setErrorMessage(error.message);
   }, [data, error])
-  
+
   const login = async (profile?: Profile) => {
 
     if (!profile) {
@@ -134,7 +137,7 @@ export const ProfileSelectView: React.FC<ProfileSelectionProps> = ({
               New Profile
             </Button>
           </Box>
-          <Box sx={{ maxHeight: '600px', overflowY: 'auto' }}>
+          <Box sx={{ maxHeight: '600px', overflowY: 'auto', overflow: 'auto' }}>
             <List style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', gap: 16, padding: 16, paddingTop: 3 }}>
               {profiles.map((profile, index) => {
                 const isLastOddItem = profiles.length % 2 !== 0 && index === profiles.length - 1;
@@ -145,7 +148,7 @@ export const ProfileSelectView: React.FC<ProfileSelectionProps> = ({
                     onClick={() => handleProfileClick(profile)}
                     profile={profile}
                     canFollow={false}
-                    sx={{ width: isLastOddItem ? '100%' : '48%' }}
+                    sx={{ width: !lgUp ? '100%' : isLastOddItem ? '100%' : '48%' }}
                   />
                 )
               })}
