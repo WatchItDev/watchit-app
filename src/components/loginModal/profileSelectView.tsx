@@ -1,5 +1,5 @@
 // REACT IMPORTS
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 // MUI IMPORTS
 import {
@@ -16,6 +16,7 @@ import { UserItem } from '../user-item';
 import { Profile, ProfileSession, useLogin, useSession } from '@lens-protocol/react-web';
 // @ts-ignore
 import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
+
 import { useDispatch } from 'react-redux';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
@@ -50,7 +51,7 @@ export const ProfileSelectView: React.FC<ProfileSelectionProps> = ({
     if (data !== undefined && !error) dispatch(setAuthLoading({ isAuthLoading: false }));
     if (error) setErrorMessage(error.message);
   }, [data, error])
-
+  
   const login = async (profile?: Profile) => {
 
     if (!profile) {
