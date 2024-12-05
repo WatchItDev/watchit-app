@@ -56,9 +56,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
       setView('profile');
       setLoading(false);
     }
-  }, [open, view, isConnected]);
 
-  useEffect(() => {
     if (open && view === 'wallet' && !isConnected) {
       (async () => {
         try {
