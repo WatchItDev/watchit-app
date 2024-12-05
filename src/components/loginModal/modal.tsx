@@ -59,7 +59,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
         includeOwned: true,
       });
     }
-  }, [address]);
+  }, [address, isConnected]);
 
   const waitForAccount = async (): Promise<GetAccountReturnType> => {
     return new Promise((resolve: any, reject: any) => {
