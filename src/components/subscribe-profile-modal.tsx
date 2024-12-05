@@ -65,7 +65,7 @@ export const SubscribeProfileModal = ({
 
   // Hook to get the user's session data
   const { data: sessionData }: ReadResult<ProfileSession> = useSession();
-  const balanceFromContract = useGetBalance(sessionData?.address);
+  const { balance: balanceFromContract, refetch } = useGetBalance(sessionData?.address);
 
   // Hooks for subscription and terms resolution
   const { data, error, loading, subscribe } = useSubscribe();
@@ -101,7 +101,8 @@ export const SubscribeProfileModal = ({
     totalCostMMC = ethers.formatUnits(totalCostWei, 18); // Convert Wei to MMC
   }
 
-  const isBalanceSufficient = balanceFromRedux && totalCostWei && balanceFromRedux >= totalCostWei;
+  const balanceWei = balanceFromRedux ? ethers.parseUnits(balanceFromRedux.toString(), 18) : BigInt(0);
+  const isBalanceSufficient = balanceWei && totalCostWei && balanceWei >= totalCostWei;
 
   // Determine if the subscribe button should be disabled
   const isButtonDisabled =
@@ -120,7 +121,7 @@ export const SubscribeProfileModal = ({
     if (data?.receipt) {
       setSuccessMessage('Successfully joined the profile.');
       onSubscribe?.();
-      // balanceRefetch?.();
+      refetch?.();
       onClose?.();
     }
   }, [data]);
@@ -239,7 +240,7 @@ export const SubscribeProfileModal = ({
                       textAlign: 'center',
                     }}
                   >
-                    <Typography variant="h6">{totalCostMMC} MMC</Typography>
+                    <Typography variant="h6" color={isBalanceSufficient ? 'text.primary' : 'error'}>{totalCostMMC} MMC</Typography>
                     <Typography variant="body2" color="textSecondary">
                       for {durationDays} days
                     </Typography>
@@ -252,11 +253,11 @@ export const SubscribeProfileModal = ({
               </Stack>
 
               {/* Display error if balance is insufficient */}
-              {balanceFromRedux && !isBalanceSufficient && (
-                <Typography variant="body2" color="error" align="center" sx={{ mt: 2 }}>
-                  Insufficient balance to complete the action.
-                </Typography>
-              )}
+              {/*{balanceFromRedux && !isBalanceSufficient && (*/}
+              {/*  <Typography variant="body2" color="error" align="center" sx={{ mt: 2 }}>*/}
+              {/*    Insufficient balance to complete the action.*/}
+              {/*  </Typography>*/}
+              {/*)}*/}
 
               {/* Display any error messages */}
               {errorMessage && (

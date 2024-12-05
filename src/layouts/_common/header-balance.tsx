@@ -20,7 +20,7 @@ export default function HeaderBalance() {
   const dispatch = useDispatch();
   const { balance: balanceFromRedux } = useSelector((state: any) => state.auth);
   const { data: sessionData }: ReadResult<ProfileSession> = useSession();
-  const balanceFromContract = useGetBalance(sessionData?.address);
+  const { balance: balanceFromContract } = useGetBalance(sessionData?.address);
 
   useEffect(() => {
     if (balanceFromContract) {
