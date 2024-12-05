@@ -98,7 +98,9 @@ export const SubscribeProfileModal = ({
     totalCostMMC = ethers.formatUnits(totalCostWei, 18); // Convert Wei to MMC
   }
 
-  const balanceWei = balanceFromRedux ? ethers.parseUnits(balanceFromRedux.toString(), 18) : BigInt(0);
+  const balanceWei = balanceFromRedux
+    ? ethers.parseUnits(balanceFromRedux.toString(), 18)
+    : BigInt(0);
   const isBalanceSufficient = balanceWei && totalCostWei && balanceWei >= totalCostWei;
 
   // Determine if the subscribe button should be disabled
@@ -237,7 +239,9 @@ export const SubscribeProfileModal = ({
                       textAlign: 'center',
                     }}
                   >
-                    <Typography variant="h6" color={isBalanceSufficient ? 'text.primary' : 'error'}>{totalCostMMC} MMC</Typography>
+                    <Typography variant="h6" color={isBalanceSufficient ? 'text.primary' : 'error'}>
+                      {totalCostMMC} MMC
+                    </Typography>
                     <Typography variant="body2" color="textSecondary">
                       for {durationDays} days
                     </Typography>
