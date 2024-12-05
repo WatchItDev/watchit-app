@@ -158,13 +158,13 @@ export const ProfileSelectView: React.FC<ProfileSelectionProps> = ({
       ) : (
         <Box display="flex" flexDirection="column" alignItems="center" sx={{ mt: 1, p: 3 }}>
           <Typography variant="h6" fontWeight="bold" textAlign="center" sx={{ pt: 2, pb: 1 }}>
-            No Profiles Found
+            No profiles found
           </Typography>
           <Typography variant="body2" color="textSecondary" textAlign="center" sx={{ pb: 4, width: '80%' }}>
             It seems you don’t have any profiles yet. Register a new profile to get started.
           </Typography>
           <Button variant="outlined" onClick={onRegisterNewProfile} sx={{ p: 1, mb: 2, width: '50%' }}>
-            Register New Profile
+            Register new profile
           </Button>
         </Box>
       )}
