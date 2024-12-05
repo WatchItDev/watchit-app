@@ -7,7 +7,7 @@ import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 
 // LENS IMPORTS
-import { useLazyProfilesManaged, useLogout, useSession } from '@lens-protocol/react-web';
+import { useLogout, useSession } from '@lens-protocol/react-web';
 import { useWeb3Auth } from '@src/hooks/use-web3-auth';
 
 // WAGMI IMPORTS
@@ -41,25 +41,6 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
   const { connect, connectors, error } = useConnect();
   const { execute: logoutExecute } = useLogout();
   const { web3Auth: w3, wagmiConfig } = useWeb3Auth();
-
-  // Fetch profiles associated with the connected wallet
-  const {
-    execute: fetchProfiles,
-    data: profiles,
-    loading: profilesLoading,
-    // called: profilesCalled,
-  } = useLazyProfilesManaged();
-
-  const isLoading = (loading || profilesLoading) && view !== 'create';
-  // Fetch profiles when the wallet address changes
-  useEffect(() => {
-    if (address && isConnected) {
-      fetchProfiles({
-        for: address,
-        includeOwned: true,
-      });
-    }
-  }, [address]);
 
   const waitForAccount = async (): Promise<GetAccountReturnType> => {
     return new Promise((resolve: any, reject: any) => {
@@ -123,7 +104,6 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
     setView('wallet');
   };
 
-
   return (
     <>
       <Modal
@@ -146,31 +126,31 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
                 xs: '90%',
                 sm: 500,
               },
-              bgcolor: isLoading ? 'transparent' : 'background.paper',
+              bgcolor: loading ? 'transparent' : 'background.paper',
               borderRadius: 2,
-              boxShadow: isLoading ? 0 : 24,
+              boxShadow: loading ? 0 : 24,
               outline: 'none',
               transition: 'all 0.5s ease-in-out',
             }}
           >
-            {isLoading ? (
+            {loading ? (
               <Box display="flex" justifyContent="center" alignItems="center" height="100%">
                 <WatchitLoader />
               </Box>
             ) : (
               <>
-                {view === 'profile' && isConnected && !isDisconnected && (
+                {view === 'profile' && isConnected && address && (
                   <ProfileSelectView
                     activeConnector={{ ...(connector && { connector, address } || {}) }}
                     onRegisterNewProfile={() => setView('create')}
                     onDisconnect={handleDisconnectWallet}
                     onClose={onClose}
-                    profiles={profiles ?? []}
                   />
                 )}
 
-                {view === 'create' && isConnected && (
+                {view === 'create' && isConnected && address && (
                   <ProfileFormView
+                    address={address}
                     onSuccess={handleProfileCreateSuccess}
                     onCancel={() => setView('profile')}
                     mode="register"
