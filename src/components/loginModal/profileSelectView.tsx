@@ -26,8 +26,8 @@ import {useResponsive} from "@src/hooks/use-responsive.ts";
 // ----------------------------------------------------------------------
 
 interface ProfileSelectionProps {
+  address: string;
   onRegisterNewProfile: () => void;
-  activeConnector: any;
   onDisconnect: () => void;
   onClose: () => void;
   profiles: any[];
@@ -36,8 +36,8 @@ interface ProfileSelectionProps {
 // ----------------------------------------------------------------------
 
 export const ProfileSelectView: React.FC<ProfileSelectionProps> = ({
+  address,
   onRegisterNewProfile,
-  activeConnector,
   onDisconnect,
   onClose,
   profiles,
@@ -62,14 +62,14 @@ export const ProfileSelectView: React.FC<ProfileSelectionProps> = ({
       return;
     }
 
-    if (!activeConnector.address) {
+    if (!address) {
       console.error('Wallet address not available.');
       return;
     }
 
     try {
       const result = await loginExecute({
-        address: activeConnector.address,
+        address: address,
         profileId: profile.id,
       } as any);
 
@@ -96,15 +96,15 @@ export const ProfileSelectView: React.FC<ProfileSelectionProps> = ({
       <Box display="flex" alignItems="center" sx={{ p: 4 }}>
         <Box display="flex" alignItems="center">
           <Avatar
-            src={activeConnector.icon}
+            src={''}
             sx={{ mr: 1, width: 30, height: 30 }}
           />
           <Box display="flex" flexDirection="column">
             <Typography variant="subtitle2">
-              {activeConnector.name}
+              Web3Auth
             </Typography>
             <Typography variant="subtitle2" color="text.secondary">
-              {truncateAddress(`${activeConnector.address}`)}
+              {truncateAddress(`${address}`)}
             </Typography>
           </Box>
         </Box>

@@ -11,7 +11,7 @@ import { useLazyProfilesManaged, useLogout, useSession } from '@lens-protocol/re
 import { useWeb3Auth } from '@src/hooks/use-web3-auth';
 
 // WAGMI IMPORTS
-import { useAccount, useConnect, useDisconnect } from 'wagmi';
+// import { useAccount, useConnect, useDisconnect } from 'wagmi';
 
 // LOCAL IMPORTS
 import { ProfileSelectView } from '@src/components/loginModal/profileSelectView';
@@ -33,14 +33,21 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
   const [successMessage, setSuccessMessage] = useState('');
 
   const { data: sessionData } = useSession();
-  const { address, isConnected, isDisconnected, connector } = useAccount();
-  const { connect, connectors, error} = useConnect();
-  const { execute: logoutExecute } = useLogout();
-  const { disconnect } = useDisconnect();
   const { web3Auth: w3 } = useWeb3Auth();
+  // const { address, isConnected, isDisconnected, connector } = useAccount();
+  const isConnected = w3?.connected;
+  const isDisconnected = !isConnected;
+  // const { connect, connectors, error} = useConnect();
+  // const connect = () => {};
+  // const connectors = [];
+  const error = '';
+  const { execute: logoutExecute } = useLogout();
+  // const { disconnect } = useDisconnect();
+  const [address, setAddress] = useState('');
 
   console.log('hello web3Auth instance')
   console.log(w3)
+  console.log(w3?.connected)
 
   // Fetch profiles associated with the connected wallet
   const {
@@ -51,6 +58,30 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
   } = useLazyProfilesManaged();
 
   const isLoading = (loading || profilesLoading) && view !== 'create';
+
+  console.log(loading)
+  console.log(profilesLoading)
+  console.log(view !== 'create')
+  console.log(isLoading)
+
+  useEffect(() => {
+    const getAddress = async () => {
+      console.log('getAddress');
+      console.log(w3);
+      if (w3?.provider) {
+        console.log('hello inside');
+        const accounts: any = await w3.provider.request({ method: 'eth_accounts' });
+        console.log('hello accounts');
+        console.log(accounts);
+        if (accounts && accounts.length > 0) {
+          setAddress(accounts[0]);
+        }
+      }
+    };
+
+    getAddress();
+  }, []);
+
   // Fetch profiles when the wallet address changes
   useEffect(() => {
     if (address && isConnected) {
@@ -62,24 +93,35 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
   }, [address, isConnected]);
 
   useEffect(() => {
+    if (open && view === 'wallet' && !isDisconnected) {
+      setView('profile');
+      setLoading(false);
+    }
+
     if (open && view === 'wallet' && isDisconnected) {
-      const web3AuthConnector = connectors.find((el) => el.id === 'web3auth');
-      if (web3AuthConnector) {
-        const povider = connect({ connector: web3AuthConnector })
-        console.log('on login')
-        console.log(povider)
+      w3?.connect().then((provider) => {
+        console.log('connected to wallet');
+        console.log(provider);
         setView('profile');
         setLoading(false);
-      }
+      });
+      // const web3AuthConnector = connectors.find((el) => el.id === 'web3auth');
+      // if (web3AuthConnector) {
+        // const povider = connect({ connector: web3AuthConnector })
+        // console.log('on login')
+        // console.log(povider)
+        // setView('profile');
+        // setLoading(false);
+      // }
     }
   }, [open, view, isDisconnected]);
 
   useEffect(() => {
     if (error) {
       onClose();
-      w3.loginModal.closeModal()
-      w3.removeAllListeners()
-      w3.clearCache()
+      w3?.loginModal.closeModal()
+      w3?.removeAllListeners()
+      w3?.clearCache()
       setView('wallet');
     }
   }, [error]);
@@ -91,10 +133,13 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
 
   const handleDisconnectWallet = async () => {
     if (sessionData?.authenticated) await logoutExecute()
-    disconnect({ connector });
+    // disconnect({ connector });
     setView('wallet');
   };
 
+  console.log('view')
+  console.log(view)
+  console.log(isConnected)
 
   return (
     <>
@@ -133,7 +178,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
               <>
                 {view === 'profile' && isConnected && (
                   <ProfileSelectView
-                    activeConnector={{ ...(connector && { connector, address } || {}) }}
+                    address={address}
                     onRegisterNewProfile={() => setView('create')}
                     onDisconnect={handleDisconnectWallet}
                     onClose={onClose}

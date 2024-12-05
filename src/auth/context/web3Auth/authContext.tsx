@@ -1,6 +1,8 @@
 import React, { createContext, useState, useEffect } from 'react';
+import { Web3Auth } from '@web3auth/modal/dist/types/modalManager';
 
 interface AuthContextType {
+  web3Auth?: Web3Auth;
   isAuthenticated: boolean;
   login: () => Promise<void>;
   logout: () => Promise<void>;
@@ -34,7 +36,7 @@ export const AuthContextProvider: React.FC<{ web3Auth: any; children: React.Reac
   }, [web3Auth.provider]);
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login: handleLogin, logout: handleLogout }}>
+    <AuthContext.Provider value={{ web3Auth, isAuthenticated, login: handleLogin, logout: handleLogout }}>
       {children}
     </AuthContext.Provider>
   );

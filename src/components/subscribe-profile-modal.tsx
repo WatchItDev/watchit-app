@@ -30,13 +30,13 @@ import { Profile } from '@lens-protocol/api-bindings';
 import { useResolveTerms } from '@src/hooks/use-resolve-terms.ts';
 import LinearProgress from '@mui/material/LinearProgress';
 
-import { useBalance } from 'wagmi';
 import { ProfileSession, useSession } from '@lens-protocol/react-web';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 // @ts-ignore
 import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
 import { setBalance } from '@redux/auth';
 import { useDispatch } from 'react-redux';
+import { useWeb3Auth } from '@src/hooks/use-web3-auth.ts';
 
 // ----------------------------------------------------------------------
 
@@ -62,6 +62,7 @@ export const SubscribeProfileModal = ({
   const [customDuration, setCustomDuration] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const [userBalance, setUserBalance] = useState<string>('');
 
   // Hooks for subscription and terms resolution
   const { data, error, loading, subscribe } = useSubscribe();
@@ -73,16 +74,41 @@ export const SubscribeProfileModal = ({
   // Hook to get the user's session data
   const { data: sessionData }: ReadResult<ProfileSession> = useSession();
 
+  const { web3Auth } = useWeb3Auth();
+
   // Hook to get the user's balance
-  const {
-    data: balanceData,
-    isLoading: balanceLoading,
-    error: balanceError,
-    refetch: balanceRefetch,
-  } = useBalance({
-    address: sessionData?.address,
-    token: GLOBAL_CONSTANTS.MMC_ADDRESS,
-  });
+  // const {
+  //   data: balanceData,
+  //   isLoading: balanceLoading,
+  //   error: balanceError,
+  //   refetch: balanceRefetch,
+  // } = useBalance({
+  //   address: sessionData?.address,
+  //   token: GLOBAL_CONSTANTS.MMC_ADDRESS,
+  // });
+
+  useEffect(() => {
+    const getBalance = async () => {
+      console.log('ethers')
+      console.log(ethers)
+      console.log(ethers.providers)
+      console.log(sessionData?.address)
+      console.log(web3Auth)
+      console.log(web3Auth?.provider)
+
+      if (!sessionData?.address || !web3Auth?.provider) return;
+
+      // Crear un provider de ethers a partir de web3Auth.provider
+      const ethersProvider = new ethers.providers.Web3Provider(web3Auth.provider as any);
+      // Obtener balance en Wei
+      const balanceWei = await ethersProvider.getBalance(sessionData?.address);
+      // Formatear a Ether
+      const balanceEth = ethers.utils.formatEther(balanceWei);
+      setUserBalance(balanceEth);
+    };
+
+    getBalance();
+  }, [sessionData?.address, web3Auth?.provider]);
 
   // Options for predefined durations
   const durationOptions = [
