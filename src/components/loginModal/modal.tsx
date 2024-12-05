@@ -59,6 +59,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
 
   const isLoading = (loading || profilesLoading) && view !== 'create';
 
+  console.log('loading')
   console.log(loading)
   console.log(profilesLoading)
   console.log(view !== 'create')
@@ -182,12 +183,12 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
                     onRegisterNewProfile={() => setView('create')}
                     onDisconnect={handleDisconnectWallet}
                     onClose={onClose}
-                    profiles={profiles ?? []}
                   />
                 )}
 
                 {view === 'create' && isConnected && (
                   <ProfileFormView
+                    address={address}
                     onSuccess={handleProfileCreateSuccess}
                     onCancel={() => setView('profile')}
                     mode="register"
