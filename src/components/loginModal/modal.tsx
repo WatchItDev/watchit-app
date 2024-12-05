@@ -29,12 +29,11 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
   const [view, setView] = useState<'wallet' | 'profile' | 'create'>('wallet');
   const [successMessage, setSuccessMessage] = useState('');
   const [isConnected, setIsConnected] = useState(false)
-
-  const { data: sessionData } = useSession();
-  const { web3Auth: w3 } = useWeb3Auth();
-
-  const { execute: logoutExecute } = useLogout();
   const [address, setAddress] = useState('');
+
+  const { web3Auth: w3 } = useWeb3Auth();
+  const { data: sessionData } = useSession();
+  const { execute: logoutExecute } = useLogout();
 
   useEffect(() => {
     (async () => {
