@@ -56,11 +56,10 @@ export const ProfileSelectView: React.FC<ProfileSelectionProps> = ({
 
   useEffect(() => {
     (async () => {
-      if (!sessionData?.authenticated) return;
       const results = await getProfiles({ where: { ownedBy: address as string } });
       if (!results.isFailure()) setProfiles(results?.value as Profile[])
     })()
-  }, [sessionData?.authenticated])
+  }, [address])
 
   const login = async (profile?: Profile) => {
     if (!profile || !address) return;
