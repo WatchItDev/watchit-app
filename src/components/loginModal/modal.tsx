@@ -12,7 +12,7 @@ import { useWeb3Auth } from '@src/hooks/use-web3-auth';
 
 // WAGMI IMPORTS
 import { useAccount, useConnect, useDisconnect } from 'wagmi';
-import { type Connector, getAccount } from '@wagmi/core';
+import { getAccount, disconnect } from '@wagmi/core';
 
 // LOCAL IMPORTS
 import { ProfileSelectView } from '@src/components/loginModal/profileSelectView';
@@ -34,7 +34,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
   const [successMessage, setSuccessMessage] = useState('');
   const [isConnected, setIsConnected] = useState(false);
 
-  const { disconnect } = useDisconnect();
+  // const { disconnect } = useDisconnect();
   const { data: sessionData } = useSession();
   const { address, connector, isDisconnected } = useAccount();
   const { connect, connectors, error } = useConnect();
@@ -78,13 +78,12 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
 
   useEffect(() => {
     (async () => {
-      if (connector) {
+      if (connector && !isDisconnected) {
         const connectedAccount = await waitForAccount()
         console.log("connected account ", connectedAccount)
-        setIsConnected(true)
       }
     })()
-  }, [connector])
+  }, [connector, isDisconnected])
 
   useEffect(() => {
     if (open && view === 'wallet' && isDisconnected) {
@@ -114,7 +113,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
 
   const handleDisconnectWallet = async () => {
     if (sessionData?.authenticated) await logoutExecute()
-    disconnect({ connector });
+    disconnect(wagmiConfig);
     setIsConnected(false)
     setView('wallet');
   };
