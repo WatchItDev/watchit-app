@@ -86,8 +86,8 @@ export default function ExploreView() {
           <CarouselPosterMini
             data={bookmarksFiltered ?? []}
             title="Bookmarks"
-            minItemWidth={250}
-            maxItemWidth={350}
+            minItemWidth={minItemWidth}
+            maxItemWidth={maxItemWidth}
           />
         )}
 
