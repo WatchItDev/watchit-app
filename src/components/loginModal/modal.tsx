@@ -81,6 +81,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
       if (connector && !isDisconnected) {
         const connectedAccount = await waitForAccount()
         console.log("connected account ", connectedAccount)
+        setIsConnected(true)
       }
     })()
   }, [connector, isDisconnected])
