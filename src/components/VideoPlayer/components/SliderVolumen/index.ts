@@ -1,1 +1,1 @@
-export { default } from './SliderVolumen'
+export { default } from './SliderVolumen';

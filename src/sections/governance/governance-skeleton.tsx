@@ -9,7 +9,11 @@ type PostItemSkeletonProps = StackProps & {
   variant?: 'vertical' | 'horizontal';
 };
 
-export function GovernanceItemSkeleton({ variant = 'vertical', sx, ...other }: PostItemSkeletonProps) {
+export function GovernanceItemSkeleton({
+  variant = 'vertical',
+  sx,
+  ...other
+}: PostItemSkeletonProps) {
   if (variant === 'horizontal') {
     return (
       <Stack

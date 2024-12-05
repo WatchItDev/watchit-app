@@ -7,7 +7,13 @@ import Snackbar from '@mui/material/Snackbar';
 import LoadingButton from '@mui/lab/LoadingButton';
 
 // LENS IMPORTS
-import { ProfileId, ProfileSession, useFollow, useSession, useUnfollow } from '@lens-protocol/react-web';
+import {
+  ProfileId,
+  ProfileSession,
+  useFollow,
+  useSession,
+  useUnfollow,
+} from '@lens-protocol/react-web';
 
 // LOCAL IMPORTS
 // @ts-ignore
@@ -40,7 +46,8 @@ const FollowUnfollowButton = ({ profileId }: PropsWithChildren<FollowUnfollowBut
   const { execute: unfollow, error: unfollowError, loading: unfollowLoading } = useUnfollow();
 
   useEffect(() => {
-    if (profileId && profileId !== sessionData?.profile?.id) getProfile({ forProfileId: profileId as ProfileId })
+    if (profileId && profileId !== sessionData?.profile?.id)
+      getProfile({ forProfileId: profileId as ProfileId });
   }, []);
 
   // Handle errors from follow and unfollow actions
@@ -54,7 +61,7 @@ const FollowUnfollowButton = ({ profileId }: PropsWithChildren<FollowUnfollowBut
   }, [profile?.operations?.isFollowedByMe?.value]);
 
   const handleUpdateProfile = () => {
-    getProfile({ forProfileId: profileId as ProfileId })
+    getProfile({ forProfileId: profileId as ProfileId });
   };
 
   // Function to handle following a profile
@@ -204,4 +211,4 @@ const FollowUnfollowButton = ({ profileId }: PropsWithChildren<FollowUnfollowBut
   );
 };
 
-export default FollowUnfollowButton
+export default FollowUnfollowButton;

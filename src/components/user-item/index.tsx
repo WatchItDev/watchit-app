@@ -26,17 +26,24 @@ import { useRouter } from '@src/routes/hooks';
 // ----------------------------------------------------------------------
 
 interface FollowerItemProps {
-  profile: Profile
-  onClick?: () => void
-  onActionFinished?: () => void
-  sx?: SxProps<Theme>
-  canFollow?: boolean
-  followButtonMinWidth?: number
+  profile: Profile;
+  onClick?: () => void;
+  onActionFinished?: () => void;
+  sx?: SxProps<Theme>;
+  canFollow?: boolean;
+  followButtonMinWidth?: number;
 }
 
 // ----------------------------------------------------------------------
 
-export const UserItem = ({ profile, sx, followButtonMinWidth = 120, onClick, onActionFinished, canFollow = true }: FollowerItemProps) => {
+export const UserItem = ({
+  profile,
+  sx,
+  followButtonMinWidth = 120,
+  onClick,
+  onActionFinished,
+  canFollow = true,
+}: FollowerItemProps) => {
   const { data: sessionData }: ReadResult<ProfileSession> = useSession();
   const [isFollowed, setIsFollowed] = useState(false);
   // State to handle error and success messages
@@ -49,8 +56,8 @@ export const UserItem = ({ profile, sx, followButtonMinWidth = 120, onClick, onA
 
   const goToProfile = () => {
     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-    onClick ? onClick() : router.push(paths.dashboard.user.root(`${profile.id}`))
-  }
+    onClick ? onClick() : router.push(paths.dashboard.user.root(`${profile.id}`));
+  };
 
   // Handle errors from follow and unfollow actions
   useEffect(() => {
@@ -63,12 +70,12 @@ export const UserItem = ({ profile, sx, followButtonMinWidth = 120, onClick, onA
   }, [followError, unfollowError]);
 
   useEffect(() => {
-    setIsFollowed(!!profile?.operations?.isFollowedByMe?.value)
+    setIsFollowed(!!profile?.operations?.isFollowedByMe?.value);
   }, [sessionData, profile]);
 
   // Function to handle following a profile
   const handleFollow = async () => {
-    if (!profile) return
+    if (!profile) return;
 
     try {
       const result = await follow({ profile });
@@ -77,7 +84,7 @@ export const UserItem = ({ profile, sx, followButtonMinWidth = 120, onClick, onA
         // Wait for transaction confirmation
         await result.value.waitForCompletion();
 
-        onActionFinished?.()
+        onActionFinished?.();
       } else {
         // Handle specific follow errors
         handleFollowError(result.error);
@@ -89,7 +96,7 @@ export const UserItem = ({ profile, sx, followButtonMinWidth = 120, onClick, onA
 
   // Function to handle unfollowing a profile
   const handleUnfollow = async () => {
-    if (!profile) return
+    if (!profile) return;
 
     try {
       const result = await unfollow({ profile });
@@ -98,7 +105,7 @@ export const UserItem = ({ profile, sx, followButtonMinWidth = 120, onClick, onA
         // Wait for transaction confirmation
         await result.value.waitForCompletion();
 
-        onActionFinished?.()
+        onActionFinished?.();
       } else {
         // Handle specific unfollow errors
         handleUnfollowError(result.error);
@@ -118,10 +125,14 @@ export const UserItem = ({ profile, sx, followButtonMinWidth = 120, onClick, onA
         setErrorMessage('There is a pending signing request in your wallet.');
         break;
       case 'InsufficientAllowanceError':
-        setErrorMessage(`You must approve the contract to spend at least: ${error.requestedAmount.asset.symbol} ${error.requestedAmount.toSignificantDigits(6)}`);
+        setErrorMessage(
+          `You must approve the contract to spend at least: ${error.requestedAmount.asset.symbol} ${error.requestedAmount.toSignificantDigits(6)}`
+        );
         break;
       case 'InsufficientFundsError':
-        setErrorMessage(`You do not have enough funds to pay for this follow fee: ${error.requestedAmount.asset.symbol} ${error.requestedAmount.toSignificantDigits(6)}`);
+        setErrorMessage(
+          `You do not have enough funds to pay for this follow fee: ${error.requestedAmount.asset.symbol} ${error.requestedAmount.toSignificantDigits(6)}`
+        );
         break;
       case 'WalletConnectionError':
         setErrorMessage('There was an error connecting to your wallet.');
@@ -170,12 +181,15 @@ export const UserItem = ({ profile, sx, followButtonMinWidth = 120, onClick, onA
           padding: 1,
           transition: 'transform 0.2s ease-in-out',
           '&:hover': { transform: 'scale(1.03)' },
-          ...sx
+          ...sx,
         }}
         onClick={goToProfile}
       >
         <Image
-          src={profile?.metadata?.coverPicture?.optimized?.uri ?? `https://picsum.photos/seed/${profile?.id}/1920/820`}
+          src={
+            profile?.metadata?.coverPicture?.optimized?.uri ??
+            `https://picsum.photos/seed/${profile?.id}/1920/820`
+          }
           sx={{
             height: 120,
             opacity: 0.7,
@@ -184,7 +198,7 @@ export const UserItem = ({ profile, sx, followButtonMinWidth = 120, onClick, onA
             alignItems: 'center',
             justifyContent: 'center',
             borderRadius: 2,
-            overflow: 'hidden'
+            overflow: 'hidden',
           }}
         />
         <Card
@@ -199,7 +213,10 @@ export const UserItem = ({ profile, sx, followButtonMinWidth = 120, onClick, onA
           }}
         >
           <Avatar
-            src={(profile?.metadata?.picture as any)?.optimized?.uri ?? `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${profile?.id}`}
+            src={
+              (profile?.metadata?.picture as any)?.optimized?.uri ??
+              `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${profile?.id}`
+            }
             alt={profile?.handle?.localName ?? ''}
             sx={{ width: 48, height: 48, mr: 2 }}
             variant="rounded"
@@ -217,9 +234,7 @@ export const UserItem = ({ profile, sx, followButtonMinWidth = 120, onClick, onA
             <ListItemText
               primary={profile?.handle?.localName ?? ''}
               secondary={
-                <>
-                  {profile?.id !== sessionData?.profile?.id ? profile?.id : 'This is you!'}
-                </>
+                <>{profile?.id !== sessionData?.profile?.id ? profile?.id : 'This is you!'}</>
               }
               primaryTypographyProps={{
                 noWrap: true,
@@ -239,11 +254,11 @@ export const UserItem = ({ profile, sx, followButtonMinWidth = 120, onClick, onA
             {canFollow && (
               <LoadingButton
                 size="small"
-                title={isFollowed ? "Unfollow" : "Follow"}
-                variant={isFollowed ? "outlined" : "contained"}
+                title={isFollowed ? 'Unfollow' : 'Follow'}
+                variant={isFollowed ? 'outlined' : 'contained'}
                 sx={{
                   minWidth: followButtonMinWidth,
-                  backgroundColor: isFollowed ? '#24262A' : '#fff'
+                  backgroundColor: isFollowed ? '#24262A' : '#fff',
                 }}
                 onClick={(event) => {
                   event.stopPropagation();
@@ -253,13 +268,17 @@ export const UserItem = ({ profile, sx, followButtonMinWidth = 120, onClick, onA
                     handleFollow();
                   }
                 }}
-                disabled={followLoading || unfollowLoading || !sessionData?.authenticated || profile?.id === sessionData?.profile?.id}
+                disabled={
+                  followLoading ||
+                  unfollowLoading ||
+                  !sessionData?.authenticated ||
+                  profile?.id === sessionData?.profile?.id
+                }
                 loading={followLoading || unfollowLoading}
               >
-                {isFollowed ? "Unfollow" : "Follow"}
+                {isFollowed ? 'Unfollow' : 'Follow'}
               </LoadingButton>
             )}
-
           </Box>
         </Card>
       </Box>
@@ -291,4 +310,4 @@ export const UserItem = ({ profile, sx, followButtonMinWidth = 120, onClick, onA
       </Snackbar>
     </>
   );
-}
+};

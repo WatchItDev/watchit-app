@@ -9,18 +9,26 @@ import Card from '@mui/material/Card';
 // ----------------------------------------------------------------------
 
 type CarouselSectionProps = {
-  action?: React.ReactNode,
-  title?: string
+  action?: React.ReactNode;
+  title?: string;
 };
 
-export const CarouselSection: FC<PropsWithChildren<CarouselSectionProps>> = ({ title, action, children }) => (
-    <Card>
-      <CardHeader title={title} sx={{ px: '25px'}} action={action} />
-      <CardContent sx={{ px: {
-        xs: '5px',
-        lg: '25px',
-        } }}>
-        { children }
-      </CardContent>
-    </Card>
-)
+export const CarouselSection: FC<PropsWithChildren<CarouselSectionProps>> = ({
+  title,
+  action,
+  children,
+}) => (
+  <Card>
+    <CardHeader title={title} sx={{ px: '25px' }} action={action} />
+    <CardContent
+      sx={{
+        px: {
+          xs: '5px',
+          lg: '25px',
+        },
+      }}
+    >
+      {children}
+    </CardContent>
+  </Card>
+);

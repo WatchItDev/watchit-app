@@ -41,7 +41,7 @@ const StyledThumbnailsContainer = styled('div')<{ length: number }>(() => ({
 // ----------------------------------------------------------------------
 
 type Props = {
-  data: Post[]
+  data: Post[];
 };
 
 export default function CarouselMixed({ data }: Props) {
@@ -58,7 +58,7 @@ export default function CarouselMixed({ data }: Props) {
   const carouselThumb = useCarousel({
     swipeToSlide: true,
     focusOnSelect: true,
-    slidesToShow: 3
+    slidesToShow: 3,
   });
 
   useEffect(() => {
@@ -66,18 +66,26 @@ export default function CarouselMixed({ data }: Props) {
     carouselThumb.onSetNav();
   }, [carouselLarge, carouselThumb]);
 
-  const getMediaUri = (cid: string): string => `https://ipfs.io/ipfs/${cid.replace('ipfs://', '')}`
+  const getMediaUri = (cid: string): string => `https://ipfs.io/ipfs/${cid.replace('ipfs://', '')}`;
 
-  const getWallpaperCid = (post: any): string => post?.metadata?.attachments?.find((el: any) => el.altTag === 'Wallpaper')?.image?.raw?.uri
-  const getPosterCid = (post: any): string => post?.metadata?.attachments?.find((el: any) => el.altTag === 'Vertical Poster')?.image?.raw?.uri
-  const getPosterHorizontalCid = (post: any): string => post?.metadata?.attachments?.find((el: any) => el.altTag === 'Horizontal Poster')?.image?.raw?.uri
+  const getWallpaperCid = (post: any): string =>
+    post?.metadata?.attachments?.find((el: any) => el.altTag === 'Wallpaper')?.image?.raw?.uri;
+  const getPosterCid = (post: any): string =>
+    post?.metadata?.attachments?.find((el: any) => el.altTag === 'Vertical Poster')?.image?.raw
+      ?.uri;
+  const getPosterHorizontalCid = (post: any): string =>
+    post?.metadata?.attachments?.find((el: any) => el.altTag === 'Horizontal Poster')?.image?.raw
+      ?.uri;
 
   const getMovieYear = (post: any): number => {
-    const releaseDate = post?.metadata?.attributes?.find((el: any) => el.key === 'Release Date')?.value;
-    return releaseDate ? +moment(releaseDate).format('YYYY') : 0
-  }
+    const releaseDate = post?.metadata?.attributes?.find(
+      (el: any) => el.key === 'Release Date'
+    )?.value;
+    return releaseDate ? +moment(releaseDate).format('YYYY') : 0;
+  };
 
-  const getMovieGenres = (post: any): string => post?.metadata?.attributes?.find((el: any) => el.key === 'Genres')?.value
+  const getMovieGenres = (post: any): string =>
+    post?.metadata?.attributes?.find((el: any) => el.key === 'Genres')?.value;
 
   const renderLargeImg = (
     <Box
@@ -101,11 +109,11 @@ export default function CarouselMixed({ data }: Props) {
                 images: {
                   vertical: getMediaUri(getPosterCid(post)),
                   horizontal: getMediaUri(getPosterHorizontalCid(post)),
-                  wallpaper: getMediaUri(getWallpaperCid(post))
+                  wallpaper: getMediaUri(getWallpaperCid(post)),
                 },
                 likes: post?.stats?.upvotes ?? 0,
                 synopsis: post?.metadata?.content ?? '',
-                year: getMovieYear(post)
+                year: getMovieYear(post),
               }}
               active={carouselLarge.currentIndex === index}
             />
@@ -122,7 +130,7 @@ export default function CarouselMixed({ data }: Props) {
         asNavFor={carouselLarge.nav}
         ref={carouselThumb.carouselRef}
       >
-         {data.map((post:any, index: number) => (
+        {data.map((post: any, index: number) => (
           <Box key={post.id} sx={{ px: 0.75, cursor: 'pointer' }}>
             <CarouselThumbItem
               poster={{
@@ -132,16 +140,16 @@ export default function CarouselMixed({ data }: Props) {
                 images: {
                   vertical: getMediaUri(getPosterCid(post)),
                   horizontal: getMediaUri(getPosterHorizontalCid(post)),
-                  wallpaper: getMediaUri(getWallpaperCid(post))
+                  wallpaper: getMediaUri(getWallpaperCid(post)),
                 },
                 likes: post?.stats?.upvotes ?? 0,
                 synopsis: post?.metadata?.content ?? '',
-                year: getMovieYear(post)
+                year: getMovieYear(post),
               }}
               active={carouselLarge.currentIndex === index}
             />
           </Box>
-         ))}
+        ))}
       </Carousel>
     </StyledThumbnailsContainer>
   );
@@ -155,10 +163,9 @@ export default function CarouselMixed({ data }: Props) {
   );
 }
 
-
 type CarouselThumbItemProps = {
   active: boolean;
-  poster: Poster
+  poster: Poster;
 };
 
 function CarouselThumbItem({ poster, active }: CarouselThumbItemProps) {
@@ -173,7 +180,7 @@ function CarouselThumbItem({ poster, active }: CarouselThumbItemProps) {
         opacity: 0.48,
         cursor: 'pointer',
         pointerEvents: 'none',
-        ...( active && {
+        ...(active && {
           opacity: 1,
           border: `solid 4px ${theme.palette.primary.main}`,
         }),
@@ -184,13 +191,12 @@ function CarouselThumbItem({ poster, active }: CarouselThumbItemProps) {
   );
 }
 
-
 type CarouselLargeItemProps = {
-  poster: Poster
-  active: boolean
+  poster: Poster;
+  active: boolean;
 };
 
-function CarouselLargeItem({ poster}:  Readonly<CarouselLargeItemProps>) {
+function CarouselLargeItem({ poster }: Readonly<CarouselLargeItemProps>) {
   const theme = useTheme();
   const router = useRouter();
 
@@ -198,11 +204,10 @@ function CarouselLargeItem({ poster}:  Readonly<CarouselLargeItemProps>) {
 
   const handlePlay = () => {
     router.push(paths.dashboard.publication.details(poster.id));
-  }
+  };
 
   return (
     <Paper sx={{ position: 'relative', boxShadow: 'none' }}>
-
       <Image dir="ltr" alt={poster.title} src={poster.images.wallpaper} ratio="21/9" />
 
       <Box
@@ -247,69 +252,116 @@ function CarouselLargeItem({ poster}:  Readonly<CarouselLargeItemProps>) {
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'space-between',
-          padding: '50px !important'
+          padding: '50px !important',
         }}
       >
         <Box sx={{ width: '100%' }}>
           <m.div variants={variants}>
-            <Typography lineHeight={1} sx={{ fontSize: 'clamp(1.7rem, 1vw, 2.5rem)',fontWeight: 'bold' }} noWrap gutterBottom>
+            <Typography
+              lineHeight={1}
+              sx={{ fontSize: 'clamp(1.7rem, 1vw, 2.5rem)', fontWeight: 'bold' }}
+              noWrap
+              gutterBottom
+            >
               Featured in watchit
             </Typography>
-            <Typography color="textSecondary" lineHeight={1} sx={{ fontSize: 'clamp(0.8rem, 1vw, 2rem)' }} noWrap gutterBottom>
+            <Typography
+              color="textSecondary"
+              lineHeight={1}
+              sx={{ fontSize: 'clamp(0.8rem, 1vw, 2rem)' }}
+              noWrap
+              gutterBottom
+            >
               Best featured for you today
             </Typography>
           </m.div>
         </Box>
 
         {/* Title */}
-        <Box sx={{width: '100%'}}>
+        <Box sx={{ width: '100%' }}>
           {/* Title */}
           <m.div variants={variants}>
-            <Typography sx={{ fontSize: 'clamp(1.7rem, 1vw, 2.5rem)', fontWeight: 'bold', lineHeight: 1.1, mb: 0.5 }} gutterBottom>
+            <Typography
+              sx={{
+                fontSize: 'clamp(1.7rem, 1vw, 2.5rem)',
+                fontWeight: 'bold',
+                lineHeight: 1.1,
+                mb: 0.5,
+              }}
+              gutterBottom
+            >
               {poster.title}
             </Typography>
           </m.div>
           {/* Details: Rating, Year, Genre */}
           <Stack direction="row" spacing={1} alignItems="center" sx={{ mb: 1.5 }}>
             <Stack direction="row" spacing={0.5} alignItems="center">
-              <IconStarFilled size={14} color="#FFCD19"/>
-              <Typography sx={{fontSize: 'clamp(0.3rem, 2vw + 1rem, 0.9rem)', fontWeight: '700' }} variant="body2">{poster.rating}</Typography>
+              <IconStarFilled size={14} color="#FFCD19" />
+              <Typography
+                sx={{ fontSize: 'clamp(0.3rem, 2vw + 1rem, 0.9rem)', fontWeight: '700' }}
+                variant="body2"
+              >
+                {poster.rating}
+              </Typography>
             </Stack>
-            <Typography sx={{fontSize: 'clamp(0.3rem, 2vw + 1rem, 0.9rem)'}} variant="body2" color="textSecondary">|</Typography>
-            <Typography sx={{fontSize: 'clamp(0.3rem, 2vw + 1rem, 0.9rem)', fontWeight: '700'}} variant="body2">{poster.year}</Typography>
-            <Typography sx={{fontSize: 'clamp(0.3rem, 2vw + 1rem, 0.9rem)'}} variant="body2" color="textSecondary">|</Typography>
-            <Typography sx={{fontSize: 'clamp(0.3rem, 2vw + 1rem, 0.9rem)', fontWeight: '700'}} variant="body2" color="textSecondary">
-              { poster.genre.join('  -  ') }
+            <Typography
+              sx={{ fontSize: 'clamp(0.3rem, 2vw + 1rem, 0.9rem)' }}
+              variant="body2"
+              color="textSecondary"
+            >
+              |
+            </Typography>
+            <Typography
+              sx={{ fontSize: 'clamp(0.3rem, 2vw + 1rem, 0.9rem)', fontWeight: '700' }}
+              variant="body2"
+            >
+              {poster.year}
+            </Typography>
+            <Typography
+              sx={{ fontSize: 'clamp(0.3rem, 2vw + 1rem, 0.9rem)' }}
+              variant="body2"
+              color="textSecondary"
+            >
+              |
+            </Typography>
+            <Typography
+              sx={{ fontSize: 'clamp(0.3rem, 2vw + 1rem, 0.9rem)', fontWeight: '700' }}
+              variant="body2"
+              color="textSecondary"
+            >
+              {poster.genre.join('  -  ')}
             </Typography>
           </Stack>
           <Box>
-            <m.div  variants={variants}>
-              <Typography sx={{
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-                display: '-webkit-box',
-                WebkitLineClamp: '5',
-                WebkitBoxOrient: 'vertical',
-                fontWeight: '700'
-              }}
-                          variant="body2" >
+            <m.div variants={variants}>
+              <Typography
+                sx={{
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  display: '-webkit-box',
+                  WebkitLineClamp: '5',
+                  WebkitBoxOrient: 'vertical',
+                  fontWeight: '700',
+                }}
+                variant="body2"
+              >
                 {poster.synopsis}
               </Typography>
             </m.div>
           </Box>
-          <m.div className='flex space-x-6' variants={variants}>
+          <m.div className="flex space-x-6" variants={variants}>
             <Stack direction="row" spacing={1} alignItems="center">
               <Button
-                variant='contained'
+                variant="contained"
                 sx={{
-                  mt: 3 ,
-                  color:'#FFFFFF',
+                  mt: 3,
+                  color: '#FFFFFF',
                   background: 'linear-gradient(to right, #7B61FF 0%, #4A34B8 100%)',
-                  height: '40px'
+                  height: '40px',
                 }}
                 onClick={handlePlay}
               >
-                <IconPlayerPlay style={{marginRight:'4px'}} size={22} color='#FFFFFF' />
+                <IconPlayerPlay style={{ marginRight: '4px' }} size={22} color="#FFFFFF" />
                 Play now
               </Button>
               <Button
@@ -318,10 +370,10 @@ function CarouselLargeItem({ poster}:  Readonly<CarouselLargeItemProps>) {
                   mt: 3,
                   borderColor: '#FFFFFF',
                   color: '#FFFFFF',
-                  height: '40px'
+                  height: '40px',
                 }}
               >
-                <IconFlagFilled style={{marginRight:'4px'}} size={22} color='#FFFFFF' />
+                <IconFlagFilled style={{ marginRight: '4px' }} size={22} color="#FFFFFF" />
                 Add watchlist
               </Button>
             </Stack>

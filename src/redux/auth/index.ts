@@ -1,12 +1,12 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export type AuthReducerState = {
-  isLoginModalOpen: boolean,
-  isAuthLoading: boolean,
-  balance: number,
-}
+  isLoginModalOpen: boolean;
+  isAuthLoading: boolean;
+  balance: number;
+};
 
-const initialState : AuthReducerState = {
+const initialState: AuthReducerState = {
   isLoginModalOpen: false,
   isAuthLoading: false,
   balance: 0,

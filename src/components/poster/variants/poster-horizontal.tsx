@@ -13,7 +13,7 @@ import { IconHeartFilled } from '@tabler/icons-react';
 import { Poster } from '../types';
 import { useRouter } from '@src/routes/hooks';
 import { paths } from '@src/routes/paths.ts';
-import TextMaxLine from "@src/components/text-max-line";
+import TextMaxLine from '@src/components/text-max-line';
 
 // ----------------------------------------------------------------------
 
@@ -22,13 +22,14 @@ const PosterHorizontal = ({ title, images, likes, id, synopsis }: Poster) => {
 
   const handlePosterClick = () => {
     router.push(paths.dashboard.publication.details(id));
-  }
+  };
 
   const formatLikes = (totalLikes: number) => {
     if (totalLikes >= 1000000) {
-      return `${(totalLikes / 1000000).toFixed(1)  }M`;
-    } if (totalLikes >= 1000) {
-      return `${(totalLikes / 1000).toFixed(1)  }K`;
+      return `${(totalLikes / 1000000).toFixed(1)}M`;
+    }
+    if (totalLikes >= 1000) {
+      return `${(totalLikes / 1000).toFixed(1)}K`;
     }
     return totalLikes;
   };
@@ -39,13 +40,13 @@ const PosterHorizontal = ({ title, images, likes, id, synopsis }: Poster) => {
         borderRadius: 2,
         overflow: 'hidden',
         position: 'relative',
-        backgroundColor:'transparent',
-        cursor: 'pointer'
+        backgroundColor: 'transparent',
+        cursor: 'pointer',
       }}
       onClick={handlePosterClick}
     >
       {/* Poster image */}
-      <Image style={{borderRadius:'10px'}} alt={title} src={images.vertical} ratio='1/1' />
+      <Image style={{ borderRadius: '10px' }} alt={title} src={images.vertical} ratio="1/1" />
 
       {/* Upper side: Likes & prices */}
       <Box
@@ -68,9 +69,9 @@ const PosterHorizontal = ({ title, images, likes, id, synopsis }: Poster) => {
         }}
       >
         {/* Likes */}
-        <Box sx={{display:'flex',alignItems:'center',justifyContent: 'space-between'}}>
-          <Stack  direction="row" spacing={0.5} alignItems='center' textAlign='center'>
-            <IconHeartFilled style={{marginBottom:'2px'}} size={16} color="#F2F3F5" />
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <Stack direction="row" spacing={0.5} alignItems="center" textAlign="center">
+            <IconHeartFilled style={{ marginBottom: '2px' }} size={16} color="#F2F3F5" />
             <TextMaxLine line={1} variant="body2">
               {formatLikes(likes ?? 0)}
             </TextMaxLine>
@@ -82,29 +83,31 @@ const PosterHorizontal = ({ title, images, likes, id, synopsis }: Poster) => {
       <CardContent
         sx={{
           width: '100%',
-          padding:'0px 8px 0px 8px !important',
+          padding: '0px 8px 0px 8px !important',
           textAlign: 'left',
           color: 'common.white',
-          marginTop:'10px'
+          marginTop: '10px',
         }}
       >
         {/* Title */}
-        <TextMaxLine line={2} noWrap variant='h6' sx={{ mb: 1 }}>
+        <TextMaxLine line={2} noWrap variant="h6" sx={{ mb: 1 }}>
           {title}
         </TextMaxLine>
 
         {/* Details: Rating, Year, Genre */}
         <Stack direction="row" spacing={1} alignItems="center">
-          <TextMaxLine line={2} variant="body2"  color="textSecondary">
+          <TextMaxLine line={2} variant="body2" color="textSecondary">
             {synopsis}
           </TextMaxLine>
-          <Typography sx={{fontSize: 'clamp(0.1rem, 0.8vw, 2rem)', fontWeight: '500'}}  noWrap variant="body2">
-
-          </Typography>
+          <Typography
+            sx={{ fontSize: 'clamp(0.1rem, 0.8vw, 2rem)', fontWeight: '500' }}
+            noWrap
+            variant="body2"
+          ></Typography>
         </Stack>
       </CardContent>
     </Paper>
   );
-}
+};
 
-export default PosterHorizontal
+export default PosterHorizontal;

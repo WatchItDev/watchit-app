@@ -1,4 +1,4 @@
-import { store } from "@redux/store";
+import { store } from '@redux/store';
 // i18n
 import '@src/locales/i18n';
 
@@ -37,10 +37,10 @@ import MotionLazy from '@src/components/animate/motion-lazy';
 import SnackbarProvider from '@src/components/snackbar/snackbar-provider';
 import { SettingsProvider, SettingsDrawer } from '@src/components/settings';
 import { AuthProvider } from '@src/auth/context/web3Auth';
-import {ResponsiveOverlay} from "@src/components/responsive-overlay";
+import { ResponsiveOverlay } from '@src/components/responsive-overlay';
 
 import { Buffer } from 'buffer';
-import {Provider} from "react-redux";
+import { Provider } from 'react-redux';
 
 window.Buffer = Buffer;
 
@@ -74,18 +74,18 @@ export default function App() {
         }}
       >
         <Provider store={store}>
-        <AuthProvider>
-          <ThemeProvider>
-            <MotionLazy>
-              <SnackbarProvider>
-                <SettingsDrawer />
-                <ProgressBar />
-                <Router />
-                <ResponsiveOverlay />
-              </SnackbarProvider>
-            </MotionLazy>
-          </ThemeProvider>
-        </AuthProvider>
+          <AuthProvider>
+            <ThemeProvider>
+              <MotionLazy>
+                <SnackbarProvider>
+                  <SettingsDrawer />
+                  <ProgressBar />
+                  <Router />
+                  <ResponsiveOverlay />
+                </SnackbarProvider>
+              </MotionLazy>
+            </ThemeProvider>
+          </AuthProvider>
         </Provider>
       </SettingsProvider>
     </LocalizationProvider>

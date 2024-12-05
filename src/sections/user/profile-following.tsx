@@ -12,14 +12,14 @@ import { UserItem } from '@src/components/user-item';
 // ----------------------------------------------------------------------
 
 interface Props {
-  profile: Profile
+  profile: Profile;
 }
 
 // ----------------------------------------------------------------------
 
 const ProfileFollowing = ({ profile }: Props) => {
   const { data: following } = useProfileFollowing({
-    for: profile.id
+    for: profile.id,
   });
 
   return (
@@ -37,34 +37,32 @@ const ProfileFollowing = ({ profile }: Props) => {
         gap: `${16}px`,
         justifyContent: 'flex-start',
         alignItems: 'flex-start',
-        padding: 2
+        padding: 2,
       }}
     >
-      {
-        following?.length ? (
-          following.map((follower, index) => (
-            <UserItem key={`following-${index}`} profile={follower} />
-          ))
-        ) : (
-          <Typography
-            sx={{
-              height: '20rem',
-              textAlign: 'center',
-              width: '100%',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontWeight: 'bold',
-              background: '#2b2d31',
-              borderRadius: '1rem',
-            }}
-          >
-            This profile has no following
-          </Typography>
-        )
-      }
+      {following?.length ? (
+        following.map((follower, index) => (
+          <UserItem key={`following-${index}`} profile={follower} />
+        ))
+      ) : (
+        <Typography
+          sx={{
+            height: '20rem',
+            textAlign: 'center',
+            width: '100%',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontWeight: 'bold',
+            background: '#2b2d31',
+            borderRadius: '1rem',
+          }}
+        >
+          This profile has no following
+        </Typography>
+      )}
     </Box>
   );
-}
+};
 
-export default ProfileFollowing
+export default ProfileFollowing;

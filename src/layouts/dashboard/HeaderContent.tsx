@@ -1,9 +1,9 @@
-import Button from "@mui/material/Button";
-import { IconChevronLeft } from "@tabler/icons-react";
-import Typography from "@mui/material/Typography";
-import Label from "@src/components/label";
-import { FC } from "react";
-import { useResponsive } from "@src/hooks/use-responsive.ts";
+import Button from '@mui/material/Button';
+import { IconChevronLeft } from '@tabler/icons-react';
+import Typography from '@mui/material/Typography';
+import Label from '@src/components/label';
+import { FC } from 'react';
+import { useResponsive } from '@src/hooks/use-responsive.ts';
 
 interface HeaderContentProps {
   handleBack?: () => void;
@@ -32,12 +32,14 @@ const HeaderContent: FC<HeaderContentProps> = ({ handleBack, title }) => {
             gap: 1,
             p: 1,
             '&:hover': {
-              backgroundColor: '#1E1F22'
-            }
+              backgroundColor: '#1E1F22',
+            },
           }}
         >
-          <Typography variant='subtitle2'>Back</Typography>
-          {mdUp && <Label sx={{ px: 0.75, mr: 1, fontSize: 12, color: 'text.secondary' }}>Esc</Label>}
+          <Typography variant="subtitle2">Back</Typography>
+          {mdUp && (
+            <Label sx={{ px: 0.75, mr: 1, fontSize: 12, color: 'text.secondary' }}>Esc</Label>
+          )}
         </Button>
       )}
 
@@ -48,6 +50,6 @@ const HeaderContent: FC<HeaderContentProps> = ({ handleBack, title }) => {
       )}
     </>
   );
-}
+};
 
 export default HeaderContent;

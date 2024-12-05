@@ -27,7 +27,10 @@ interface UseIsPolicyAuthorizedHook {
  * @param policy The address of the policy.
  * @param holder The address of the holder. If not provided, it uses the current logged-in profile's address.
  */
-export const useIsPolicyAuthorized = (policy: Address, holder?: Address): UseIsPolicyAuthorizedHook => {
+export const useIsPolicyAuthorized = (
+  policy: Address,
+  holder?: Address
+): UseIsPolicyAuthorizedHook => {
   const { data: sessionData }: ReadResult<ProfileSession> = useSession();
   const userAddress = sessionData?.profile?.ownedBy?.address as Address | undefined;
 

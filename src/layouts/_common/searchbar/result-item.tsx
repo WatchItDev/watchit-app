@@ -9,9 +9,9 @@ import Label from '@src/components/label';
 // ----------------------------------------------------------------------
 
 type Props = {
-  title: string
-  subtitle: string
-  groupLabel: string
+  title: string;
+  subtitle: string;
+  groupLabel: string;
   onClickItem: VoidFunction;
 };
 
@@ -38,7 +38,7 @@ export default function ResultItem({ title, subtitle, groupLabel, onClickItem }:
           sx: { textTransform: 'capitalize' },
         }}
         secondaryTypographyProps={{ typography: 'caption' }}
-        primary={(
+        primary={
           <Box
             component="span"
             sx={{
@@ -47,8 +47,8 @@ export default function ResultItem({ title, subtitle, groupLabel, onClickItem }:
           >
             {title}
           </Box>
-        )}
-        secondary={(
+        }
+        secondary={
           <Box
             component="span"
             sx={{
@@ -61,11 +61,14 @@ export default function ResultItem({ title, subtitle, groupLabel, onClickItem }:
           >
             {subtitle}
           </Box>
-
-        )}
+        }
       />
 
-      {groupLabel && <Label color="info" sx={{ flexShrink: 0, marginLeft: '8px' }}>{groupLabel}</Label>}
+      {groupLabel && (
+        <Label color="info" sx={{ flexShrink: 0, marginLeft: '8px' }}>
+          {groupLabel}
+        </Label>
+      )}
     </ListItemButton>
   );
 }

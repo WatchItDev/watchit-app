@@ -5,11 +5,11 @@ import Paper from '@mui/material/Paper';
 import Image from '@src/components/image';
 import { useRouter } from '@src/routes/hooks';
 import { paths } from '@src/routes/paths.ts';
-import {TrendingTopicsType} from "@src/sections/explore/view.tsx";
-import Box from "@mui/material/Box";
-import Card from "@mui/material/Card";
-import Avatar from "@mui/material/Avatar";
-import ListItemText from "@mui/material/ListItemText";
+import { TrendingTopicsType } from '@src/sections/explore/view.tsx';
+import Box from '@mui/material/Box';
+import Card from '@mui/material/Card';
+import Avatar from '@mui/material/Avatar';
+import ListItemText from '@mui/material/ListItemText';
 
 const randomImages = [
   'https://storage.needpix.com/rsynced_images/banner-header-1449745071UBW.jpg',
@@ -18,15 +18,14 @@ const randomImages = [
   'https://storage.needpix.com/rsynced_images/banner-header-tapete-1463227719cPu.jpg',
   'https://cdn12.picryl.com/photo/2016/12/31/banner-header-background-backgrounds-textures-b8d9b9-1024.jpg',
   'https://cdn12.picryl.com/photo/2016/12/31/banner-header-christmas-13e7dc-1024.jpg',
-]
-
+];
 
 const PosterCreators = ({ id }: TrendingTopicsType) => {
   const router = useRouter();
 
   const handlePosterClick = () => {
     router.push(paths.dashboard.publication.details(String(id)));
-  }
+  };
 
   return (
     <Paper
@@ -35,8 +34,8 @@ const PosterCreators = ({ id }: TrendingTopicsType) => {
         borderRadius: 2,
         overflow: 'hidden',
         position: 'relative',
-        backgroundColor:'transparent',
-        cursor: 'pointer'
+        backgroundColor: 'transparent',
+        cursor: 'pointer',
       }}
       onClick={handlePosterClick}
     >
@@ -50,7 +49,7 @@ const PosterCreators = ({ id }: TrendingTopicsType) => {
           boxShadow: 1,
           padding: 1,
           transition: 'transform 0.2s ease-in-out',
-          '&:hover': {transform: 'scale(1.03)'},
+          '&:hover': { transform: 'scale(1.03)' },
         }}
         onClick={() => {}}
       >
@@ -64,7 +63,7 @@ const PosterCreators = ({ id }: TrendingTopicsType) => {
             alignItems: 'center',
             justifyContent: 'center',
             borderRadius: 2,
-            overflow: 'hidden'
+            overflow: 'hidden',
           }}
         />
         <Card
@@ -96,11 +95,7 @@ const PosterCreators = ({ id }: TrendingTopicsType) => {
           >
             <ListItemText
               primary={'Name'}
-              secondary={
-                <>
-                  {'x0000'}
-                </>
-              }
+              secondary={<>{'x0000'}</>}
               primaryTypographyProps={{
                 noWrap: true,
                 typography: 'subtitle2',
@@ -120,6 +115,6 @@ const PosterCreators = ({ id }: TrendingTopicsType) => {
       </Box>
     </Paper>
   );
-}
+};
 
-export default PosterCreators
+export default PosterCreators;

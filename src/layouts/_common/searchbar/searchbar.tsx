@@ -21,7 +21,7 @@ import { applyFilter } from './utils';
 import { appId, useSearchProfiles, useSearchPublications } from '@lens-protocol/react-web';
 import { CircularProgress } from '@mui/material';
 import { paths } from '@src/routes/paths.ts';
-import {useSelector} from "react-redux";
+import { useSelector } from 'react-redux';
 
 function Searchbar() {
   const theme = useTheme();
@@ -45,18 +45,18 @@ function Searchbar() {
   useEventListener('keydown', handleKeyDown);
 
   const handleClickPublication = (publicationId: string) => {
-    if (!publicationId) return
+    if (!publicationId) return;
 
     router.push(paths.dashboard.publication.details(publicationId));
-    handleClose()
-  }
+    handleClose();
+  };
 
   const handleClickProfile = (profileId: string) => {
     if (!profileId) return;
 
-    router.push(paths.dashboard.user.root(profileId))
-    handleClose()
-  }
+    router.push(paths.dashboard.user.root(profileId));
+    handleClose();
+  };
 
   const handleSearch = useCallback((event) => {
     setSearchQuery(event.target.value);
@@ -65,7 +65,7 @@ function Searchbar() {
   const { data: profiles, loading: loadingProfiles } = useSearchProfiles({ query: searchQuery });
   const { data: publications, loading: loadingPublications } = useSearchPublications({
     query: searchQuery,
-    where: { metadata: { publishedOn: [appId('watchit')] } }
+    where: { metadata: { publishedOn: [appId('watchit')] } },
   });
 
   const dataFiltered = applyFilter({
@@ -73,7 +73,8 @@ function Searchbar() {
     query: searchQuery,
   });
 
-  const notFound = searchQuery && !dataFiltered.length && !profiles?.length && !publications?.length;
+  const notFound =
+    searchQuery && !dataFiltered.length && !profiles?.length && !publications?.length;
 
   // @ts-ignore
   const minibarState = useSelector((state) => state.minibar.state);
@@ -107,27 +108,29 @@ function Searchbar() {
 
     return (
       <>
-        {profiles && profiles.map((profile) => (
-          <List key={profile.id}>
-            <ResultItem
-              title={`${profile?.metadata?.displayName ?? profile?.handle?.localName}`}
-              subtitle={`${profile?.metadata?.bio ?? profile?.id}`}
-              groupLabel={'Profile'}
-              onClickItem={() => handleClickProfile(`${profile.id}`)}
-            />
-          </List>
-        ))}
+        {profiles &&
+          profiles.map((profile) => (
+            <List key={profile.id}>
+              <ResultItem
+                title={`${profile?.metadata?.displayName ?? profile?.handle?.localName}`}
+                subtitle={`${profile?.metadata?.bio ?? profile?.id}`}
+                groupLabel={'Profile'}
+                onClickItem={() => handleClickProfile(`${profile.id}`)}
+              />
+            </List>
+          ))}
 
-        {publications && publications.map((publication: any) => (
-          <List key={publication.id}>
-            <ResultItem
-              title={`${publication?.metadata?.title}`}
-              subtitle={`${publication?.metadata?.content}`}
-              groupLabel={'Publication'}
-              onClickItem={() => handleClickPublication(`${publication.id}`)}
-            />
-          </List>
-        ))}
+        {publications &&
+          publications.map((publication: any) => (
+            <List key={publication.id}>
+              <ResultItem
+                title={`${publication?.metadata?.title}`}
+                subtitle={`${publication?.metadata?.content}`}
+                groupLabel={'Publication'}
+                onClickItem={() => handleClickPublication(`${publication.id}`)}
+              />
+            </List>
+          ))}
       </>
     );
   };
@@ -140,29 +143,37 @@ function Searchbar() {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        backgroundColor: '#24262A', borderRadius: 1.5, m: 1, p: 0.2,
+        backgroundColor: '#24262A',
+        borderRadius: 1.5,
+        m: 1,
+        p: 0.2,
         mb: !hideSearchText ? 0 : 3,
         '&:hover': { backgroundColor: '#1E1F22' },
       }}
     >
       <IconButton component={'div'} disableRipple>
         <Iconify icon="eva:search-fill" />
-        {
-          !hideSearchText && (
-            <Typography sx={{
+        {!hideSearchText && (
+          <Typography
+            sx={{
               ml: 1,
               // Hide on mobile
               display: { xs: 'none', lg: 'block' },
-            }} variant='subtitle2'>Search</Typography>
-          )
-        }
+            }}
+            variant="subtitle2"
+          >
+            Search
+          </Typography>
+        )}
       </IconButton>
-      {(mdUp) && <Label sx={{ px: 0.75, mr: 1, fontSize: 12, color: 'text.secondary' }}>⌘K</Label>}
-      {(!isMini && !mdUp) && <Label sx={{ px: 0.75, mr: 1, fontSize: 12, color: 'text.secondary' }}>⌘K</Label>}
+      {mdUp && <Label sx={{ px: 0.75, mr: 1, fontSize: 12, color: 'text.secondary' }}>⌘K</Label>}
+      {!isMini && !mdUp && (
+        <Label sx={{ px: 0.75, mr: 1, fontSize: 12, color: 'text.secondary' }}>⌘K</Label>
+      )}
     </Button>
   );
 
-  const loading = loadingProfiles || loadingPublications
+  const loading = loadingProfiles || loadingPublications;
 
   return (
     <>
@@ -197,7 +208,15 @@ function Searchbar() {
         </Box>
         <Scrollbar sx={{ p: 3, pt: 2, height: 400 }}>
           {loading && (
-            <Box sx={{ width: '100%', height: '340px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <Box
+              sx={{
+                width: '100%',
+                height: '340px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
               <CircularProgress size={32} sx={{ color: '#fff' }} />
             </Box>
           )}

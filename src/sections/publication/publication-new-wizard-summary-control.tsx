@@ -14,12 +14,12 @@ import Scrollbar from '../../components/scrollbar';
 // ----------------------------------------------------------------------
 
 type Props = {
-  data: any
+  data: any;
 };
 
 export default function PublicationNewWizardSummaryControl({ data }: Props) {
   const renderSection = (title: string, items: any) => {
-    const filteredItems = items.filter((item : any) => item.value);
+    const filteredItems = items.filter((item: any) => item.value);
 
     if (filteredItems.length === 0) {
       return null;
@@ -35,13 +35,14 @@ export default function PublicationNewWizardSummaryControl({ data }: Props) {
   };
 
   function formatDate(date: any) {
-    if (date) return new Date(date).toLocaleDateString('es-ES', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric'
-    });
+    if (date)
+      return new Date(date).toLocaleDateString('es-ES', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+      });
 
-    return undefined as any
+    return undefined as any;
   }
 
   const basicInfoItems = [
@@ -67,16 +68,34 @@ export default function PublicationNewWizardSummaryControl({ data }: Props) {
     { label: 'VFX Supervisor', value: data?.vfxSupervisor },
     { label: 'Lead Actor', value: data?.leadActor },
     { label: 'Supporting Actor', value: data?.supportingActor },
-    { label: 'Supporting Actress', value: data?.supportingActress }
+    { label: 'Supporting Actress', value: data?.supportingActress },
   ];
 
   const mediaAssetsItems = [
-    { label: 'Vertical Poster', value: data?.verticalPoster && <IconCheck color="success" style={{ stroke: '#22C55E' }} /> },
-    { label: 'Horizontal Poster', value: data?.horizontalPoster && <IconCheck color="success" style={{ stroke: '#22C55E' }} /> },
-    { label: 'Wallpaper', value: data?.wallpaper && <IconCheck color="success" style={{ stroke: '#22C55E' }} /> },
-    { label: 'Trailer', value: data?.trailer && <IconCheck color="success" style={{ stroke: '#22C55E' }} /> },
-    { label: 'Full Movie', value: data?.fullMovie && <IconCheck color="success" style={{ stroke: '#22C55E' }} /> },
-    { label: 'Subtitle', value: data?.subtitles && <IconCheck color="success" style={{ stroke: '#22C55E' }} /> },
+    {
+      label: 'Vertical Poster',
+      value: data?.verticalPoster && <IconCheck color="success" style={{ stroke: '#22C55E' }} />,
+    },
+    {
+      label: 'Horizontal Poster',
+      value: data?.horizontalPoster && <IconCheck color="success" style={{ stroke: '#22C55E' }} />,
+    },
+    {
+      label: 'Wallpaper',
+      value: data?.wallpaper && <IconCheck color="success" style={{ stroke: '#22C55E' }} />,
+    },
+    {
+      label: 'Trailer',
+      value: data?.trailer && <IconCheck color="success" style={{ stroke: '#22C55E' }} />,
+    },
+    {
+      label: 'Full Movie',
+      value: data?.fullMovie && <IconCheck color="success" style={{ stroke: '#22C55E' }} />,
+    },
+    {
+      label: 'Subtitle',
+      value: data?.subtitles && <IconCheck color="success" style={{ stroke: '#22C55E' }} />,
+    },
     { label: 'Video Format', value: data?.videoFormat },
     { label: 'Resolution', value: data?.resolution },
     { label: 'Bitrate', value: data?.bitrate ? `${data?.bitrate} kbps` : null },
@@ -85,7 +104,7 @@ export default function PublicationNewWizardSummaryControl({ data }: Props) {
     { label: 'Audio Channels', value: data?.audioChannels },
     { label: 'Audio Bitrate', value: data?.audioBitrate ? `${data?.audioBitrate} kbps` : null },
     { label: 'Subtitle Format', value: data?.subtitleFormat },
-    { label: 'Subtitle Language', value: data?.subtitleLanguage }
+    { label: 'Subtitle Language', value: data?.subtitleLanguage },
   ];
 
   const distributionItems = [
@@ -94,7 +113,10 @@ export default function PublicationNewWizardSummaryControl({ data }: Props) {
     { label: 'License Duration', value: data?.licenseDuration?.toString?.() },
     { label: 'Copyright Holder', value: data?.copyrightHolder },
     { label: 'Copyright Registration Number', value: data?.copyrightRegistrationNumber },
-    { label: 'Terms of Service URL', value: data?.termsOfServiceURL && <IconCheck color="success" style={{ stroke: '#22C55E' }} /> }
+    {
+      label: 'Terms of Service URL',
+      value: data?.termsOfServiceURL && <IconCheck color="success" style={{ stroke: '#22C55E' }} />,
+    },
   ];
 
   const hasCreators = data?.creators && data?.creators.length > 0;
@@ -108,11 +130,17 @@ export default function PublicationNewWizardSummaryControl({ data }: Props) {
         <Scrollbar sx={{ maxHeight: '75vh' }}>
           <Stack spacing={2}>
             {renderSection('Basic Information', basicInfoItems)}
-            {basicInfoItems.some(item => item.value) && <Divider sx={{ borderStyle: 'dashed' }} />}
+            {basicInfoItems.some((item) => item.value) && (
+              <Divider sx={{ borderStyle: 'dashed' }} />
+            )}
             {renderSection('Media Assets', mediaAssetsItems)}
-            {mediaAssetsItems.some(item => item.value) && <Divider sx={{ borderStyle: 'dashed' }} />}
+            {mediaAssetsItems.some((item) => item.value) && (
+              <Divider sx={{ borderStyle: 'dashed' }} />
+            )}
             {renderSection('Distribution', distributionItems)}
-            {distributionItems.some(item => item.value) && <Divider sx={{ borderStyle: 'dashed' }} />}
+            {distributionItems.some((item) => item.value) && (
+              <Divider sx={{ borderStyle: 'dashed' }} />
+            )}
             {hasCreators && (
               <Section title="Creators">
                 <ul>
@@ -140,9 +168,9 @@ export default function PublicationNewWizardSummaryControl({ data }: Props) {
                 </ul>
               </Section>
             )}
-            {!basicInfoItems.some(item => item.value) &&
-              !mediaAssetsItems.some(item => item.value) &&
-              !distributionItems.some(item => item.value) &&
+            {!basicInfoItems.some((item) => item.value) &&
+              !mediaAssetsItems.some((item) => item.value) &&
+              !distributionItems.some((item) => item.value) &&
               !hasCreators &&
               !hasDistribution && (
                 <Typography variant="h6" color="text.secondary">
@@ -160,12 +188,14 @@ export default function PublicationNewWizardSummaryControl({ data }: Props) {
 function Section({ title, children }: any) {
   return (
     <Box>
-      <Typography variant="h6" gutterBottom sx={{ position: 'sticky', top: 0, pb: 2, mb: '0 !important', backgroundColor: '#2B2D31' }}>
+      <Typography
+        variant="h6"
+        gutterBottom
+        sx={{ position: 'sticky', top: 0, pb: 2, mb: '0 !important', backgroundColor: '#2B2D31' }}
+      >
         {title}
       </Typography>
-      <Stack spacing={1}>
-        {children}
-      </Stack>
+      <Stack spacing={1}>{children}</Stack>
     </Box>
   );
 }
@@ -177,9 +207,7 @@ function InfoItem({ label, value }: any) {
       <Typography variant="body2" sx={{ color: 'text.secondary', mr: 2 }}>
         {label}
       </Typography>
-      <Typography variant="subtitle2">
-        {value}
-      </Typography>
+      <Typography variant="subtitle2">{value}</Typography>
     </Stack>
   );
 }

@@ -37,7 +37,7 @@ const CustomHeader = (props: any) => (
   <Typography variant="h6" style={{ fontWeight: 'bold', marginTop: 16, marginBottom: 8 }}>
     {props.children}
   </Typography>
-)
+);
 
 const components = {
   img: ({ ...props }) => <Image alt={props.alt} ratio="16/9" sx={{ borderRadius: 2 }} {...props} />,
@@ -52,26 +52,19 @@ const components = {
       </Link>
     );
   },
-  h1: ({ node, ...props }) => (
-    <CustomHeader {...props} />
-  ),
-  h2: ({ node, ...props }) => (
-    <CustomHeader {...props} />
-  ),
-  h3: ({ node, ...props }) => (
-    <CustomHeader {...props} />
-  ),
-  h4: ({ node, ...props }) => (
-    <CustomHeader {...props} />
-  ),
-  h5: ({ node, ...props }) => (
-    <CustomHeader {...props} />
-  ),
-  h6: ({ node, ...props }) => (
-    <CustomHeader {...props} />
-  ),
+  h1: ({ node, ...props }) => <CustomHeader {...props} />,
+  h2: ({ node, ...props }) => <CustomHeader {...props} />,
+  h3: ({ node, ...props }) => <CustomHeader {...props} />,
+  h4: ({ node, ...props }) => <CustomHeader {...props} />,
+  h5: ({ node, ...props }) => <CustomHeader {...props} />,
+  h6: ({ node, ...props }) => <CustomHeader {...props} />,
   p: ({ node, ...props }) => (
     <Typography variant="body1" style={{ lineHeight: 1.6, mt: 2 }} {...props} />
   ),
-  hr: ({ ...props }) => <Box sx={{ mt: 4, mb: 4, border: 'none', borderTop: '1px solid rgba(255,255,255,0.5)' }} {...props} />
+  hr: ({ ...props }) => (
+    <Box
+      sx={{ mt: 4, mb: 4, border: 'none', borderTop: '1px solid rgba(255,255,255,0.5)' }}
+      {...props}
+    />
+  ),
 };

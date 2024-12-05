@@ -19,33 +19,37 @@ export default function PublicationCreateView() {
   const settings = useSettingsContext();
   const mdUp = useResponsive('up', 'md');
 
-  const handleBack = () => {
-
-  }
+  const handleBack = () => {};
 
   return (
     <>
       <Header>
         <Button
-          onClick={handleBack} disableFocusRipple
+          onClick={handleBack}
+          disableFocusRipple
           sx={{
-            display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
             backgroundColor: '#24262A',
             borderRadius: 1.5,
             m: 1,
             p: 0.2,
             '&:hover': {
-              backgroundColor: '#1E1F22'
-            }
+              backgroundColor: '#1E1F22',
+            },
           }}
         >
           <IconButton disableRipple>
             <IconChevronLeft size={20} />
-            <Typography sx={{ ml: 1 }} variant='subtitle2'>Back</Typography>
+            <Typography sx={{ ml: 1 }} variant="subtitle2">
+              Back
+            </Typography>
           </IconButton>
 
-
-          {mdUp && <Label sx={{ px: 0.75, mr: 1, fontSize: 12, color: 'text.secondary' }}>Esc</Label>}
+          {mdUp && (
+            <Label sx={{ px: 0.75, mr: 1, fontSize: 12, color: 'text.secondary' }}>Esc</Label>
+          )}
         </Button>
         <Typography variant="h6" sx={{ ml: 2 }}>
           New movie

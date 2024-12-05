@@ -63,22 +63,25 @@ export default function ProfilePostItem({ publication, profile }: Props) {
   // update hasLiked state when the publication load
   useEffect(() => {
     if (publication) {
-      setHasLiked(
-        hasReacted({ publication, reaction: PublicationReactionType.Upvote })
-      );
+      setHasLiked(hasReacted({ publication, reaction: PublicationReactionType.Upvote }));
     }
   }, [publication]);
 
-  const getMediaUri = (cid: string): string => `https://ipfs.io/ipfs/${cid.replace('ipfs://', '')}`
+  const getMediaUri = (cid: string): string => `https://ipfs.io/ipfs/${cid.replace('ipfs://', '')}`;
 
-  const getWallpaperCid = (): string => publication?.metadata?.attachments?.find((el: any) => el.altTag === 'Wallpaper')?.image?.raw?.uri
+  const getWallpaperCid = (): string =>
+    publication?.metadata?.attachments?.find((el: any) => el.altTag === 'Wallpaper')?.image?.raw
+      ?.uri;
 
   const renderHead = (
     <CardHeader
       disableTypography
       avatar={
         <Avatar
-          src={(profile?.metadata?.picture as any)?.optimized?.uri ?? `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${profile?.id}`}
+          src={
+            (profile?.metadata?.picture as any)?.optimized?.uri ??
+            `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${profile?.id}`
+          }
           alt={profile?.handle?.localName ?? ''}
         />
       }

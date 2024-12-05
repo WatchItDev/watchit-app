@@ -58,9 +58,7 @@ export const useSubscribe = (): UseSubscribeHook => {
    * @param amountInWei The amount of MMC tokens to approve (in Wei).
    * @returns The encoded function data for the approve call.
    */
-  const approveMMC = (
-    amountInWei: bigint
-  ): string => {
+  const approveMMC = (amountInWei: bigint): string => {
     // Encode the approve function call data
     return encodeFunctionData({
       abi: MMCAbi.abi,
@@ -107,8 +105,7 @@ export const useSubscribe = (): UseSubscribeHook => {
 
     try {
       // Retrieve the account abstraction provider, bundler client, and smart account
-      const accountAbstractionProvider =
-        web3Auth.options.accountAbstractionProvider;
+      const accountAbstractionProvider = web3Auth.options.accountAbstractionProvider;
       const bundlerClient = accountAbstractionProvider.bundlerClient;
       const smartAccount = accountAbstractionProvider.smartAccount;
 

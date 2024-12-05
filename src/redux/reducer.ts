@@ -8,7 +8,7 @@ const appReducer = combineReducers({
   minibar: minibarReducer,
   drawer: drawerReducer,
   auth: authReducer,
-  address: addressReducer
+  address: addressReducer,
 });
 
 const rootReducer = (state: any, action: any) => {

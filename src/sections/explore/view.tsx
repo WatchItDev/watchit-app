@@ -23,16 +23,16 @@ import {
 import { LoadingScreen } from '@src/components/loading-screen';
 import CarouselTopTitles from '@src/components/carousel/variants/carousel-top-titles.tsx';
 import CarouselCreators from '@src/components/carousel/variants/carousel-creators.tsx';
-import {useResponsive} from "@src/hooks/use-responsive.ts";
+import { useResponsive } from '@src/hooks/use-responsive.ts';
 
 // ----------------------------------------------------------------------
 
 export type TrendingTopicsType = {
-  id: number,
-  image: string,
-  title: string,
-  desc: string
-}
+  id: number;
+  image: string;
+  title: string;
+  desc: string;
+};
 
 export default function ExploreView() {
   const lgUp = useResponsive('up', 'lg');
@@ -40,10 +40,9 @@ export default function ExploreView() {
   let minItemWidth = 250;
   let maxItemWidth = 350;
 
-  if(!lgUp) {
+  if (!lgUp) {
     minItemWidth = 170;
     maxItemWidth = 250;
-
   }
 
   const { data, loading }: any = usePublications({
@@ -51,42 +50,37 @@ export default function ExploreView() {
       publicationTypes: [PublicationType.Post],
       metadata: {
         publishedOn: [appId('watchit')],
-      }
-    }
+      },
+    },
   });
   const { data: bookmark } = useBookmarks();
   const { data: latestCreatedProfiles } = useExploreProfiles({
     orderBy: ExploreProfilesOrderByType.LatestCreated,
-    limit: LimitType.Fifty
+    limit: LimitType.Fifty,
   });
   const { data: explorePublications } = useExplorePublications({
     where: {
       publicationTypes: [ExplorePublicationType.Post],
       metadata: {
         publishedOn: [appId('watchit')],
-      }
+      },
     },
     limit: LimitType.Ten,
     orderBy: ExplorePublicationsOrderByType.TopCommented,
   });
 
-  if (loading) return <LoadingScreen />
+  if (loading) return <LoadingScreen />;
 
-  const combinedPosts = [
-    ...(explorePublications ?? []),
-    ...(data ?? []),
-  ].filter((item, index, self) =>
-    self.findIndex((t) => t.id === item.id) === index
-  ).slice(0, 10);
+  const combinedPosts = [...(explorePublications ?? []), ...(data ?? [])]
+    .filter((item, index, self) => self.findIndex((t) => t.id === item.id) === index)
+    .slice(0, 10);
 
-  const bookmarksFiltered = (bookmark ?? []).filter(post => !post.isHidden)
+  const bookmarksFiltered = (bookmark ?? []).filter((post) => !post.isHidden);
 
   return (
-    <Container sx={{ p: '0 !important', maxWidth: '2000px !important'}}>
+    <Container sx={{ p: '0 !important', maxWidth: '2000px !important' }}>
       <Stack direction={'column'} spacing={1} sx={{ maxWidth: '100vw !important' }}>
-        <CarouselTopTitles
-          posts={combinedPosts}
-        />
+        <CarouselTopTitles posts={combinedPosts} />
 
         {!!bookmarksFiltered?.length && (
           <CarouselPosterMini

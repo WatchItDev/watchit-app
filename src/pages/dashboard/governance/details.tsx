@@ -8,7 +8,5 @@ export default function ProductDetailsPage() {
   //
   // const { id } = params;
 
-  return (
-    <GovernanceDetailsView title="" />
-  );
+  return <GovernanceDetailsView title="" />;
 }

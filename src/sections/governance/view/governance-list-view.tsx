@@ -103,9 +103,7 @@ export default function GovernanceListView() {
           </IconButton>
 
           {mdUp && (
-            <Label sx={{ px: 0.75, mr: 1, fontSize: 12, color: 'text.secondary' }}>
-              Esc
-            </Label>
+            <Label sx={{ px: 0.75, mr: 1, fontSize: 12, color: 'text.secondary' }}>Esc</Label>
           )}
         </Button>
       </Header>
@@ -188,7 +186,6 @@ export default function GovernanceListView() {
     </>
   );
 }
-
 
 // import { useCallback, useState } from 'react';
 // // @mui

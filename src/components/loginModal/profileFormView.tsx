@@ -2,14 +2,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 // MUI IMPORTS
-import {
-  Typography,
-  Button,
-  TextField,
-  Box,
-  Input,
-  Grid,
-} from '@mui/material';
+import { Typography, Button, TextField, Box, Input, Grid } from '@mui/material';
 
 // FORM IMPORTS
 import { useFormik } from 'formik';
@@ -23,7 +16,8 @@ import Image from '../image';
 // @ts-ignore
 import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
 import {
-  ProfileSession, SessionType,
+  ProfileSession,
+  SessionType,
   useCreateProfile,
   useSession,
   LoginError,
@@ -33,12 +27,12 @@ import {
 import { ProfileData } from '@src/auth/context/web3Auth/types.ts';
 import { uploadImageToIPFS, uploadMetadataToIPFS } from '@src/utils/ipfs.ts';
 import { buildProfileMetadata } from '@src/utils/profile.ts';
-import TextMaxLine from "@src/components/text-max-line";
+import TextMaxLine from '@src/components/text-max-line';
 
 // ----------------------------------------------------------------------
 
 export interface ProfileFormProps {
-  address: string,
+  address: string;
   initialValues?: any;
   mode: 'register' | 'update';
   error?: LoginError;
@@ -69,9 +63,17 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
 
   const { data: sessionData }: ReadResult<ProfileSession> = useSession();
   // Create profile and set profile metadata functions from Lens Protocol
-  const { execute: createProfileExecute, error: errorCreateProfile, loading: createProfileLoading } = useCreateProfile();
-  const { execute: setProfileMetadataExecute, error: errorSetProfileMetadata, loading: setProfileMetadataLoading } = useSetProfileMetadata();
-  const loading = createProfileLoading || setProfileMetadataLoading || registrationLoading
+  const {
+    execute: createProfileExecute,
+    error: errorCreateProfile,
+    loading: createProfileLoading,
+  } = useCreateProfile();
+  const {
+    execute: setProfileMetadataExecute,
+    error: errorSetProfileMetadata,
+    loading: setProfileMetadataLoading,
+  } = useSetProfileMetadata();
+  const loading = createProfileLoading || setProfileMetadataLoading || registrationLoading;
 
   const validationSchema = Yup.object({
     username: Yup.string()
@@ -88,9 +90,9 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
   });
 
   useEffect(() => {
-    if (errorCreateProfile) setErrorMessage(errorCreateProfile?.message)
-    if (errorSetProfileMetadata) setErrorMessage(errorSetProfileMetadata?.message)
-    if (error) setErrorMessage(error?.message)
+    if (errorCreateProfile) setErrorMessage(errorCreateProfile?.message);
+    if (errorSetProfileMetadata) setErrorMessage(errorSetProfileMetadata?.message);
+    if (error) setErrorMessage(error?.message);
   }, [errorCreateProfile, errorSetProfileMetadata]);
 
   useEffect(() => {
@@ -112,8 +114,14 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
 
       try {
         // Upload images to IPFS
-        const profileImageURI = typeof data?.profileImage === 'string' ? data?.profileImage : await uploadImageToIPFS(data.profileImage);
-        const backgroundImageURI = typeof data?.backgroundImage === 'string' ? data?.backgroundImage : await uploadImageToIPFS(data.backgroundImage);
+        const profileImageURI =
+          typeof data?.profileImage === 'string'
+            ? data?.profileImage
+            : await uploadImageToIPFS(data.profileImage);
+        const backgroundImageURI =
+          typeof data?.backgroundImage === 'string'
+            ? data?.backgroundImage
+            : await uploadImageToIPFS(data.backgroundImage);
         // Build profile metadata
         const metadata = buildProfileMetadata(data, profileImageURI, backgroundImageURI);
         // Upload metadata to IPFS
@@ -138,10 +146,7 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
         setRegistrationLoading(false);
       }
     },
-    [
-      setProfileMetadataExecute,
-      address,
-    ]
+    [setProfileMetadataExecute, address]
   );
 
   /**
@@ -167,7 +172,7 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
           throw new Error(result.error.message);
         }
 
-        console.log("Profile registered")
+        console.log('Profile registered');
         const newProfile: Profile = result.value;
 
         // Authenticate using the new profile
@@ -239,9 +244,9 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
   };
 
   const clearError = () => {
-    setErrorMessage('')
+    setErrorMessage('');
     setIsSubmitting(false);
-  }
+  };
 
   // Handle session changes and resume pending metadata updates
   useEffect(() => {
@@ -254,14 +259,10 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
       updateProfileMetadata(pendingMetadataUpdate.data);
       setPendingMetadataUpdate(null); // Clear the pending update
     }
-  }, [
-    sessionData,
-    pendingMetadataUpdate,
-    updateProfileMetadata,
-  ]);
+  }, [sessionData, pendingMetadataUpdate, updateProfileMetadata]);
 
   return (
-    <Box sx={{ p: 2, overflow: "hidden", overflowY: "scroll", zIndex: '1000' }}>
+    <Box sx={{ p: 2, overflow: 'hidden', overflowY: 'scroll', zIndex: '1000' }}>
       <Typography variant="h6" sx={{ pb: 2 }}>
         {mode === 'register' ? 'Create a new profile' : 'Update profile'}
       </Typography>
@@ -283,11 +284,10 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
           {/* Background Image */}
           <Image
             src={
-              backgroundImagePreview ?? (
-                initialValues?.backgroundImage ?
-                  `https://ipfs.io/ipfs/${initialValues?.backgroundImage?.replaceAll?.('ipfs://', '')}` :
-                  `https://picsum.photos/seed/${mode === 'update' && sessionData?.authenticated ? sessionData?.profile?.id : 'new'}/1920/820`
-              )
+              backgroundImagePreview ??
+              (initialValues?.backgroundImage
+                ? `https://ipfs.io/ipfs/${initialValues?.backgroundImage?.replaceAll?.('ipfs://', '')}`
+                : `https://picsum.photos/seed/${mode === 'update' && sessionData?.authenticated ? sessionData?.profile?.id : 'new'}/1920/820`)
             }
             onClick={() => backgroundImageInputRef.current?.click()}
             sx={{
@@ -313,11 +313,10 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
           {/* Avatar */}
           <Avatar
             src={
-              profileImagePreview ?? (
-                initialValues?.profileImage ?
-                  `https://ipfs.io/ipfs/${initialValues?.profileImage?.replaceAll?.('ipfs://', '')}` :
-                  `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${mode === 'update' && sessionData?.authenticated ? sessionData?.profile?.id : 'new'}`
-              )
+              profileImagePreview ??
+              (initialValues?.profileImage
+                ? `https://ipfs.io/ipfs/${initialValues?.profileImage?.replaceAll?.('ipfs://', '')}`
+                : `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${mode === 'update' && sessionData?.authenticated ? sessionData?.profile?.id : 'new'}`)
             }
             alt=""
             onClick={() => profileImageInputRef.current?.click()}
@@ -358,35 +357,29 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
                 sm: -8,
               },
               right: 0,
-              opacity: 0.7
+              opacity: 0.7,
             }}
           >
-            <TextMaxLine
-              line={1}
-              variant="caption"
-              fontWeight="bold"
-              color="text.secondary"
-            >
+            <TextMaxLine line={1} variant="caption" fontWeight="bold" color="text.secondary">
               * Click the profile or cover image to select one
             </TextMaxLine>
-            <TextMaxLine
-              line={1}
-              variant="caption"
-              fontWeight="bold"
-              color="text.secondary"
-            >
+            <TextMaxLine line={1} variant="caption" fontWeight="bold" color="text.secondary">
               * Images are optional (current images are placeholders)
             </TextMaxLine>
           </Box>
         </Box>
 
         {/* Text Fields */}
-        <Grid container spacing={2} sx={{
-          mt: {
-            xs: 6,
-            sm: 2,
-          }
-        }}>
+        <Grid
+          container
+          spacing={2}
+          sx={{
+            mt: {
+              xs: 6,
+              sm: 2,
+            },
+          }}
+        >
           <Grid item xs={12} sm={6}>
             <TextField
               fullWidth
@@ -463,7 +456,9 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
               error={
                 formik.touched.socialLinks?.twitter && Boolean(formik.errors.socialLinks?.twitter)
               }
-              helperText={formik.touched.socialLinks?.twitter ? formik.errors.socialLinks?.twitter : ''}
+              helperText={
+                formik.touched.socialLinks?.twitter ? formik.errors.socialLinks?.twitter : ''
+              }
             />
           </Grid>
           <Grid item xs={12} sm={6}>
@@ -499,9 +494,7 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               disabled={loading}
-              error={
-                formik.touched.socialLinks?.orb && Boolean(formik.errors.socialLinks?.orb)
-              }
+              error={formik.touched.socialLinks?.orb && Boolean(formik.errors.socialLinks?.orb)}
               helperText={formik.touched.socialLinks?.orb ? formik.errors.socialLinks?.orb : ''}
             />
           </Grid>
@@ -518,7 +511,8 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
               onBlur={formik.handleBlur}
               disabled={loading}
               error={
-                formik?.touched?.socialLinks?.farcaster && Boolean(formik.errors.socialLinks?.farcaster)
+                formik?.touched?.socialLinks?.farcaster &&
+                Boolean(formik.errors.socialLinks?.farcaster)
               }
               helperText={
                 formik?.touched?.socialLinks?.farcaster ? formik.errors.socialLinks?.farcaster : ''
@@ -540,12 +534,22 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
         {/* Action Buttons */}
         <Grid container spacing={2}>
           <Grid item xs={12} sm={6}>
-            <Button variant="outlined" onClick={onCancel} disabled={loading} sx={{ width: '100%', py: 1 }}>
+            <Button
+              variant="outlined"
+              onClick={onCancel}
+              disabled={loading}
+              sx={{ width: '100%', py: 1 }}
+            >
               Cancel
             </Button>
           </Grid>
           <Grid item xs={12} sm={6}>
-            <LoadingButton variant="contained" type="submit" loading={loading} sx={{ width: '100%', py: 1 }}>
+            <LoadingButton
+              variant="contained"
+              type="submit"
+              loading={loading}
+              sx={{ width: '100%', py: 1 }}
+            >
               {mode === 'register' ? 'Create profile' : 'Update profile'}
             </LoadingButton>
           </Grid>

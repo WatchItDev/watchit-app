@@ -38,9 +38,9 @@ type ActivateSubscriptionProfileModalProps = {
 // ----------------------------------------------------------------------
 
 export const ActivateSubscriptionProfileModal = ({
-                                                   isOpen,
-                                                   onClose,
-                                                 }: ActivateSubscriptionProfileModalProps) => {
+  isOpen,
+  onClose,
+}: ActivateSubscriptionProfileModalProps) => {
   const [selectedAmount, setSelectedAmount] = useState('10');
   const [customAmount, setCustomAmount] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
@@ -64,9 +64,7 @@ export const ActivateSubscriptionProfileModal = ({
     setSuccessMessage('');
   };
 
-  const handleCustomAmountChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleCustomAmountChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedAmount('');
     setCustomAmount(event.target.value);
     setSuccessMessage('');
@@ -97,8 +95,8 @@ export const ActivateSubscriptionProfileModal = ({
         data: encodedData,
       });
 
-      setSuccessMessage('Joining price set successfully!')
-      onClose?.()
+      setSuccessMessage('Joining price set successfully!');
+      onClose?.();
     } catch (err) {
       console.error('err');
       console.error(err);
@@ -119,7 +117,8 @@ export const ActivateSubscriptionProfileModal = ({
         <Divider sx={{ mb: 2, borderStyle: 'dashed' }} />
         <DialogContent>
           <Typography variant="body2" color="textSecondary" sx={{ mb: 3 }}>
-            People who join you will pay a <span style={{ fontWeight: 'bolder' }}>daily</span> rate for accessing your content.
+            People who join you will pay a <span style={{ fontWeight: 'bolder' }}>daily</span> rate
+            for accessing your content.
           </Typography>
           <Stack spacing={2}>
             <Stack spacing={2} direction="row">

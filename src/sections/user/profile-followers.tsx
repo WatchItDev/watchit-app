@@ -12,15 +12,15 @@ import { UserItem } from '@src/components/user-item';
 // ----------------------------------------------------------------------
 
 interface Props {
-  profile: Profile
-  onActionFinished?: () => void
+  profile: Profile;
+  onActionFinished?: () => void;
 }
 
 // ----------------------------------------------------------------------
 
 const ProfileFollowers = ({ profile, onActionFinished }: Props) => {
   const { data: followers } = useProfileFollowers({
-    of: profile.id
+    of: profile.id,
   });
 
   return (
@@ -31,7 +31,7 @@ const ProfileFollowers = ({ profile, onActionFinished }: Props) => {
         gap: `${16}px`,
         justifyContent: 'flex-start',
         alignItems: 'flex-start',
-        padding: 2
+        padding: 2,
       }}
       gap={3}
       display="grid"
@@ -41,31 +41,33 @@ const ProfileFollowers = ({ profile, onActionFinished }: Props) => {
         md: 'repeat(3, 1fr)',
       }}
     >
-      {
-        followers?.length ? (
-          followers.map((follower, index) => (
-            <UserItem key={`follower-${index}`} profile={follower} onActionFinished={onActionFinished} />
-          ))
-        ) : (
-          <Typography
-            sx={{
-              height: '20rem',
-              textAlign: 'center',
-              width: '100%',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontWeight: 'bold',
-              background: '#2b2d31',
-              borderRadius: '1rem',
-            }}
-          >
-            This profile has no followers
-          </Typography>
-        )
-      }
+      {followers?.length ? (
+        followers.map((follower, index) => (
+          <UserItem
+            key={`follower-${index}`}
+            profile={follower}
+            onActionFinished={onActionFinished}
+          />
+        ))
+      ) : (
+        <Typography
+          sx={{
+            height: '20rem',
+            textAlign: 'center',
+            width: '100%',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontWeight: 'bold',
+            background: '#2b2d31',
+            borderRadius: '1rem',
+          }}
+        >
+          This profile has no followers
+        </Typography>
+      )}
     </Box>
   );
-}
+};
 
-export default ProfileFollowers
+export default ProfileFollowers;

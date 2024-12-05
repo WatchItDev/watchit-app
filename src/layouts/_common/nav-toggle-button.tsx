@@ -9,7 +9,7 @@ import { bgBlur } from '@src/theme/css';
 import Iconify from '@src/components/iconify';
 // redux
 import { useDispatch, useSelector } from 'react-redux';
-import {setCollapsed, toggleMinibar} from '@redux/minibar';
+import { setCollapsed, toggleMinibar } from '@redux/minibar';
 import { NAV } from '../config-layout';
 
 // ----------------------------------------------------------------------
@@ -52,9 +52,7 @@ export default function NavToggleButton({ sx, ...other }: IconButtonProps) {
       <Iconify
         width={16}
         icon={
-          minibarState === 'vertical'
-            ? 'eva:arrow-ios-back-fill'
-            : 'eva:arrow-ios-forward-fill'
+          minibarState === 'vertical' ? 'eva:arrow-ios-back-fill' : 'eva:arrow-ios-forward-fill'
         }
       />
     </IconButton>

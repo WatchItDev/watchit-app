@@ -23,7 +23,9 @@ import {
   PublicationReactionType,
   hasReacted,
   useReactionToggle,
-  useBookmarkToggle, ProfileSession, useSession,
+  useBookmarkToggle,
+  ProfileSession,
+  useSession,
 } from '@lens-protocol/react-web';
 import { useHidePublication } from '@lens-protocol/react';
 
@@ -35,7 +37,8 @@ import {
   IconHeartFilled,
   IconDots,
   IconBookmark,
-  IconBookmarkFilled, IconRosetteDiscountCheckFilled,
+  IconBookmarkFilled,
+  IconRosetteDiscountCheckFilled,
 } from '@tabler/icons-react';
 
 // MOTION IMPORTS
@@ -57,29 +60,37 @@ import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/r
 // ----------------------------------------------------------------------
 
 type Props = {
-  post: any
-  handleSubscribe: () => void
-  loadingSubscribe: boolean
-  subscribeDisabled: boolean
-  hasAccess: boolean
+  post: any;
+  handleSubscribe: () => void;
+  loadingSubscribe: boolean;
+  subscribeDisabled: boolean;
+  hasAccess: boolean;
 };
 
 // ----------------------------------------------------------------------
 
-export default function PublicationDetailMain({ post, handleSubscribe, loadingSubscribe, subscribeDisabled, hasAccess }: Props) {
+export default function PublicationDetailMain({
+  post,
+  handleSubscribe,
+  loadingSubscribe,
+  subscribeDisabled,
+  hasAccess,
+}: Props) {
   // STATES HOOKS
   const [showComments, setShowComments] = useState(false);
   const [openReportModal, setOpenReportModal] = useState(false);
   const [openConfirmModal, setOpenConfirmModal] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [hasLiked, setHasLiked] = useState(hasReacted({ publication: post, reaction: PublicationReactionType.Upvote }));
+  const [hasLiked, setHasLiked] = useState(
+    hasReacted({ publication: post, reaction: PublicationReactionType.Upvote })
+  );
   const openMenu = Boolean(anchorEl);
   // LOCAL HOOKS
   const router = useRouter();
   const theme = useTheme();
   const { data: sessionData }: ReadResult<ProfileSession> = useSession();
   // LENS HOOKS
-  const { execute: toggle, loading: loadingLike} = useReactionToggle();
+  const { execute: toggle, loading: loadingLike } = useReactionToggle();
   const { execute: hide } = useHidePublication();
   const { execute: toggleBookMarkFunction, loading: loadingBookMark } = useBookmarkToggle();
 
@@ -101,7 +112,7 @@ export default function PublicationDetailMain({ post, handleSubscribe, loadingSu
   const toggleBookMark = async () => {
     try {
       await toggleBookMarkFunction({
-        publication: post
+        publication: post,
       });
     } catch (err) {
       console.error('Error toggling bookmark:', err);
@@ -109,31 +120,32 @@ export default function PublicationDetailMain({ post, handleSubscribe, loadingSu
   };
 
   const handleHide = async () => {
-    await hide({ publication: post })
+    await hide({ publication: post });
   };
 
   const goToProfile = () => {
     if (!post?.by?.id) return;
 
-    router.push(paths.dashboard.user.root(`${post?.by?.id}`))
-  }
+    router.push(paths.dashboard.user.root(`${post?.by?.id}`));
+  };
 
   if (post.isHidden) return <p>Publication is hidden</p>;
 
   return (
-    <Box sx={{
-      position: 'sticky',
-      width: {
-        xs: '100%',
-        lg: '450px',
-      },
-      padding: '10px',
-      top: '80px',
-      height: 'fit-content',
-      maxHeight: '100vh',
-      flexShrink: 0
-    }}>
-
+    <Box
+      sx={{
+        position: 'sticky',
+        width: {
+          xs: '100%',
+          lg: '450px',
+        },
+        padding: '10px',
+        top: '80px',
+        height: 'fit-content',
+        maxHeight: '100vh',
+        flexShrink: 0,
+      }}
+    >
       <Card
         component={m.div}
         initial={{ opacity: 0 }}
@@ -147,7 +159,7 @@ export default function PublicationDetailMain({ post, handleSubscribe, loadingSu
             overflowY: 'scroll',
             backgroundColor: '#1e1f22',
             padding: '0 !important',
-            margin: '10px 10px 10px 20px'
+            margin: '10px 10px 10px 20px',
           }}
         >
           <Box
@@ -159,12 +171,18 @@ export default function PublicationDetailMain({ post, handleSubscribe, loadingSu
               zIndex: 1,
               position: 'sticky',
               top: '0px',
-              backgroundColor: '#1e1f22'
+              backgroundColor: '#1e1f22',
             }}
           >
-            <Box sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer'}} onClick={goToProfile}>
+            <Box
+              sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
+              onClick={goToProfile}
+            >
               <Avatar
-                src={(post?.by?.metadata?.picture as any)?.optimized?.uri ?? `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${post?.by?.id}`}
+                src={
+                  (post?.by?.metadata?.picture as any)?.optimized?.uri ??
+                  `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${post?.by?.id}`
+                }
                 sx={{
                   width: 26,
                   height: 26,
@@ -181,11 +199,11 @@ export default function PublicationDetailMain({ post, handleSubscribe, loadingSu
                 borderColor: '#FFFFFF',
                 color: '#FFFFFF',
                 height: '40px',
-                minWidth: '40px'
+                minWidth: '40px',
               }}
               onClick={(event) => setAnchorEl(event.currentTarget)}
             >
-              <IconDots size={22} color='#FFFFFF' />
+              <IconDots size={22} color="#FFFFFF" />
             </Button>
             <Popover
               open={openMenu}
@@ -209,36 +227,59 @@ export default function PublicationDetailMain({ post, handleSubscribe, loadingSu
             >
               <Stack direction="column" spacing={0} justifyContent="center">
                 {post?.by?.ownedBy?.address === sessionData?.profile?.ownedBy?.address && (
-                  <MenuItem onClick={() => { setOpenConfirmModal(true); setAnchorEl(null); }}>Hide</MenuItem>
+                  <MenuItem
+                    onClick={() => {
+                      setOpenConfirmModal(true);
+                      setAnchorEl(null);
+                    }}
+                  >
+                    Hide
+                  </MenuItem>
                 )}
-                <MenuItem onClick={() => { setOpenReportModal(true); setAnchorEl(null); }}>Report</MenuItem>
+                <MenuItem
+                  onClick={() => {
+                    setOpenReportModal(true);
+                    setAnchorEl(null);
+                  }}
+                >
+                  Report
+                </MenuItem>
               </Stack>
             </Popover>
           </Box>
 
           <Box
             sx={{
-              display:'flex',
-              flexDirection:'column',
-              justifyContent:'end',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'end',
               zIndex: 1,
               position: 'sticky',
               top: '2.5rem',
-              backgroundColor: '#1e1f22'
+              backgroundColor: '#1e1f22',
             }}
           >
             <m.div variants={variants}>
-              <Typography variant="h6" sx={{ fontWeight: 'bold', lineHeight: 1.1, mb: 1.5 }} gutterBottom>
+              <Typography
+                variant="h6"
+                sx={{ fontWeight: 'bold', lineHeight: 1.1, mb: 1.5 }}
+                gutterBottom
+              >
                 {post?.metadata?.title}
               </Typography>
             </m.div>
             <m.div variants={variants}>
-              <Stack direction="row" sx={{ mb: 1.5, cursor: 'pointer' }} spacing={0} alignItems="center">
-                <Typography style={{ marginRight: 5}} variant='body1'>
+              <Stack
+                direction="row"
+                sx={{ mb: 1.5, cursor: 'pointer' }}
+                spacing={0}
+                alignItems="center"
+              >
+                <Typography style={{ marginRight: 5 }} variant="body1">
                   Distributed by
                 </Typography>
                 <StyledBoxGradient>
-                  <Typography style={{ marginRight: 5, fontWeight: 'bold'}} variant='caption'>
+                  <Typography style={{ marginRight: 5, fontWeight: 'bold' }} variant="caption">
                     Watchit
                   </Typography>
                   <IconRosetteDiscountCheckFilled />
@@ -246,26 +287,40 @@ export default function PublicationDetailMain({ post, handleSubscribe, loadingSu
               </Stack>
             </m.div>
           </Box>
-          <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'end', mb: 3, mt: 1, pr: 1 }}>
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'end',
+              mb: 3,
+              mt: 1,
+              pr: 1,
+            }}
+          >
             {hasAccess ? (
               <LeaveTipCard post={post} />
             ) : (
-              <SubscribeToUnlockCard loadingSubscribe={loadingSubscribe} subscribeDisabled={subscribeDisabled} onSubscribe={handleSubscribe} post={post} />
+              <SubscribeToUnlockCard
+                loadingSubscribe={loadingSubscribe}
+                subscribeDisabled={subscribeDisabled}
+                onSubscribe={handleSubscribe}
+                post={post}
+              />
             )}
           </Box>
 
           <Box
             sx={{
-              display:'flex',
-              flexDirection:'column',
-              justifyContent:'end',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'end',
               zIndex: 1,
               position: 'sticky',
               top: '4.5rem',
-              backgroundColor: '#1e1f22'
+              backgroundColor: '#1e1f22',
             }}
           >
-            <m.div className='flex space-x-6' variants={variants}>
+            <m.div className="flex space-x-6" variants={variants}>
               <Stack direction="row" spacing={1} alignItems="center">
                 <Button
                   variant="text"
@@ -273,7 +328,7 @@ export default function PublicationDetailMain({ post, handleSubscribe, loadingSu
                     borderColor: '#FFFFFF',
                     color: '#FFFFFF',
                     height: '40px',
-                    minWidth: '40px'
+                    minWidth: '40px',
                   }}
                   onClick={toggleReaction}
                   disabled={loadingLike}
@@ -283,11 +338,11 @@ export default function PublicationDetailMain({ post, handleSubscribe, loadingSu
                   ) : (
                     <>
                       {hasLiked ? (
-                        <IconHeartFilled size={22} color='#FFFFFF' />
+                        <IconHeartFilled size={22} color="#FFFFFF" />
                       ) : (
-                        <IconHeart size={22} color='#FFFFFF' />
+                        <IconHeart size={22} color="#FFFFFF" />
                       )}
-                      <Typography variant="body2" sx={{ lineHeight: 1, ml: 1, fontWeight: '700'}}>
+                      <Typography variant="body2" sx={{ lineHeight: 1, ml: 1, fontWeight: '700' }}>
                         {post?.stats?.upvotes}
                       </Typography>
                     </>
@@ -299,17 +354,17 @@ export default function PublicationDetailMain({ post, handleSubscribe, loadingSu
                     borderColor: '#FFFFFF',
                     color: '#FFFFFF',
                     height: '40px',
-                    minWidth: '40px'
+                    minWidth: '40px',
                   }}
                   onClick={() => setShowComments(!showComments)}
                 >
                   <>
                     {showComments ? (
-                      <IconMessageCircleFilled size={22} color='#FFFFFF' />
+                      <IconMessageCircleFilled size={22} color="#FFFFFF" />
                     ) : (
-                      <IconMessageCircle size={22} color='#FFFFFF' />
+                      <IconMessageCircle size={22} color="#FFFFFF" />
                     )}
-                    <Typography variant="body2" sx={{ lineHeight: 1, ml: 1, fontWeight: '700'}}>
+                    <Typography variant="body2" sx={{ lineHeight: 1, ml: 1, fontWeight: '700' }}>
                       {post?.stats?.comments}
                     </Typography>
                   </>
@@ -320,7 +375,7 @@ export default function PublicationDetailMain({ post, handleSubscribe, loadingSu
                     borderColor: '#FFFFFF',
                     color: '#FFFFFF',
                     height: '40px',
-                    minWidth: '40px'
+                    minWidth: '40px',
                   }}
                   onClick={toggleBookMark}
                 >
@@ -329,9 +384,9 @@ export default function PublicationDetailMain({ post, handleSubscribe, loadingSu
                   ) : (
                     <>
                       {post?.operations?.hasBookmarked ? (
-                        <IconBookmarkFilled size={22} color='#FFFFFF' />
+                        <IconBookmarkFilled size={22} color="#FFFFFF" />
                       ) : (
-                        <IconBookmark size={22} color='#FFFFFF' />
+                        <IconBookmark size={22} color="#FFFFFF" />
                       )}
                     </>
                   )}
@@ -344,19 +399,19 @@ export default function PublicationDetailMain({ post, handleSubscribe, loadingSu
           {showComments && (
             <Box
               sx={{
-                display:'flex',
-                flexDirection:'column'
+                display: 'flex',
+                flexDirection: 'column',
               }}
             >
               <Box
                 sx={{
-                  display:'flex',
-                  flexDirection:'column',
+                  display: 'flex',
+                  flexDirection: 'column',
                   pb: 2,
                   zIndex: 1,
                   position: 'sticky',
                   top: '6.6rem',
-                  backgroundColor: '#1e1f22'
+                  backgroundColor: '#1e1f22',
                 }}
               >
                 <Divider sx={{ my: 3, mr: 1 }} />
@@ -378,21 +433,16 @@ export default function PublicationDetailMain({ post, handleSubscribe, loadingSu
                   </Typography>
                 )}
               </Box>
-              <Box sx={{ display:'flex', flexDirection:'column', mt: 2, pr: 1 }}>
+              <Box sx={{ display: 'flex', flexDirection: 'column', mt: 2, pr: 1 }}>
                 <PostCommentList publicationId={post?.id} showReplies />
               </Box>
             </Box>
           )}
 
-          <Dialog
-            open={openConfirmModal}
-            onClose={() => setOpenConfirmModal(false)}
-          >
+          <Dialog open={openConfirmModal} onClose={() => setOpenConfirmModal(false)}>
             <DialogTitle>Confirm Hide</DialogTitle>
             <DialogContent>
-              <Typography>
-                Are you sure you want to hide this publication?
-              </Typography>
+              <Typography>Are you sure you want to hide this publication?</Typography>
             </DialogContent>
             <DialogActions>
               <Button
@@ -405,7 +455,10 @@ export default function PublicationDetailMain({ post, handleSubscribe, loadingSu
               <Button
                 variant="contained"
                 sx={{ backgroundColor: '#fff' }}
-                onClick={() => { handleHide(); setOpenConfirmModal(false); }}
+                onClick={() => {
+                  handleHide();
+                  setOpenConfirmModal(false);
+                }}
               >
                 Confirm
               </Button>
@@ -413,7 +466,11 @@ export default function PublicationDetailMain({ post, handleSubscribe, loadingSu
           </Dialog>
 
           {/* Report Publication Modal */}
-          <ReportPublicationModal post={post} isOpen={openReportModal} onClose={() => setOpenReportModal(false)} />
+          <ReportPublicationModal
+            post={post}
+            isOpen={openReportModal}
+            onClose={() => setOpenReportModal(false)}
+          />
         </CardContent>
       </Card>
     </Box>

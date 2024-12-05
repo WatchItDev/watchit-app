@@ -17,7 +17,6 @@ type Props = NavItemProps & {
 
 const NavItem = forwardRef<HTMLDivElement, Props>(
   ({ item, depth, open, active, externalLink, config, ...other }, ref) => {
-
     const { title, path, icon, disabled, roles } = item;
 
     const subItem = depth !== 1;
@@ -34,33 +33,36 @@ const NavItem = forwardRef<HTMLDivElement, Props>(
         bgColor={item.bgColor}
         {...other}
       >
-        <Box className='menu-pill'
-             sx={{
-               position: 'absolute',
-               top: 0,
-               left: 0,
-               width: '4px',
-               height: '100%',
-               display: 'flex',
-               overflow: 'hidden',
-               alignItems: 'center',
-               justifyContent: 'flex-start',
-               transition: 'all 0.2s ease-in-out'
-             }}
+        <Box
+          className="menu-pill"
+          sx={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '4px',
+            height: '100%',
+            display: 'flex',
+            overflow: 'hidden',
+            alignItems: 'center',
+            justifyContent: 'flex-start',
+            transition: 'all 0.2s ease-in-out',
+          }}
         >
-          <Box className='pill' sx={{
-            width: active ? '4px' : 0 ,
-            height: active ? '60%' : 0,
-            borderRadius: 0,
-            borderTopRightRadius: '1rem',
-            borderBottomRightRadius: '1rem',
-            backgroundColor: item.bgColor,
-            transition: 'all 0.3s ease-in-out'
-          }} />
+          <Box
+            className="pill"
+            sx={{
+              width: active ? '4px' : 0,
+              height: active ? '60%' : 0,
+              borderRadius: 0,
+              borderTopRightRadius: '1rem',
+              borderBottomRightRadius: '1rem',
+              backgroundColor: item.bgColor,
+              transition: 'all 0.3s ease-in-out',
+            }}
+          />
         </Box>
 
-        <StyledNavContent
-        >
+        <StyledNavContent>
           {icon && (
             <StyledIcon
               size={config.iconSize}
@@ -81,9 +83,9 @@ const NavItem = forwardRef<HTMLDivElement, Props>(
             <ListItemText
               sx={{
                 width: 1,
-                flex: 'unset'
+                flex: 'unset',
               }}
-              primary={title.slice(0,4)}
+              primary={title.slice(0, 4)}
               primaryTypographyProps={{
                 noWrap: true,
                 fontSize: 14,

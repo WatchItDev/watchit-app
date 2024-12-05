@@ -1,6 +1,6 @@
-import IconButton from "@mui/material/IconButton";
-import {IconChevronLeft, IconChevronRight} from "@tabler/icons-react";
-import {FC} from "react";
+import IconButton from '@mui/material/IconButton';
+import { IconChevronLeft, IconChevronRight } from '@tabler/icons-react';
+import { FC } from 'react';
 
 interface NavigationArrowsProps {
   next: () => void;
@@ -9,14 +9,13 @@ interface NavigationArrowsProps {
 
 const NavigationArrows: FC<NavigationArrowsProps> = ({ next, prev }) => (
   <>
-  <IconButton onClick={prev} >
-    <IconChevronLeft />
-  </IconButton>
-<IconButton onClick={next} >
-  <IconChevronRight />
-</IconButton>
+    <IconButton onClick={prev}>
+      <IconChevronLeft />
+    </IconButton>
+    <IconButton onClick={next}>
+      <IconChevronRight />
+    </IconButton>
   </>
-)
+);
 
 export default NavigationArrows;
-

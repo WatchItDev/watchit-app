@@ -3,6 +3,7 @@ import { Post } from '@lens-protocol/api-bindings/dist/declarations/src/lens/gra
 
 // ----------------------------------------------------------------------
 
-export const getAccessiblePublications = (publications: Post[]):Post[] => publications.filter((p) => !p?.isHidden)
+export const getAccessiblePublications = (publications: Post[]): Post[] =>
+  publications.filter((p) => !p?.isHidden);
 
 // ----------------------------------------------------------------------

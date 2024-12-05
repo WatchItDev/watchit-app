@@ -41,7 +41,6 @@ const checksum = (entropy) => {
 
 const sha256 = (data) => crypto.createHash('sha256').update(data).digest();
 
-
 const normalize = (text) => text.normalize('NFKD');
 
 export const mnemonicToSeedSync = (mnemonic, password = '') => {

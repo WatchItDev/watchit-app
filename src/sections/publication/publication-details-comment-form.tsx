@@ -51,8 +51,7 @@ const MovieCommentForm = ({ commentOn }: MovieCommentFormProps) => {
   // Implementation of uploadToIpfs using Pinata
   const uploadToIpfs = async (metadata: any) => {
     const pinataApiKey = '26e37a596e8e561427af'; // Replace with your API key
-    const pinataSecretApiKey =
-      '9d9469c678bb8db458851c5342f9201ab4811c29f281f7d8205a6a18cf302566'; // Replace with your secret API key
+    const pinataSecretApiKey = '9d9469c678bb8db458851c5342f9201ab4811c29f281f7d8205a6a18cf302566'; // Replace with your secret API key
 
     const url = 'https://api.pinata.cloud/pinning/pinJSONToIPFS';
 
@@ -101,7 +100,7 @@ const MovieCommentForm = ({ commentOn }: MovieCommentFormProps) => {
           case 'PendingSigningRequestError':
             console.log(
               'There is a pending signature request in your wallet. ' +
-              'Approve it or dismiss it and try again.'
+                'Approve it or dismiss it and try again.'
             );
             break;
           case 'WalletConnectionError':
@@ -125,14 +124,12 @@ const MovieCommentForm = ({ commentOn }: MovieCommentFormProps) => {
   });
 
   const renderInput = (
-    <Stack
-      sx={{ pr: 1 }}
-      spacing={2}
-      direction="row"
-      alignItems="center"
-    >
+    <Stack sx={{ pr: 1 }} spacing={2} direction="row" alignItems="center">
       <Avatar
-        src={(sessionData?.profile?.metadata?.picture as any)?.optimized?.uri ?? `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${sessionData?.profile?.id}`}
+        src={
+          (sessionData?.profile?.metadata?.picture as any)?.optimized?.uri ??
+          `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${sessionData?.profile?.id}`
+        }
         alt={sessionData?.profile?.handle?.localName ?? ''}
       />
 
@@ -150,9 +147,7 @@ const MovieCommentForm = ({ commentOn }: MovieCommentFormProps) => {
                 <LoadingButton
                   type="submit"
                   loading={isSubmitting}
-                  loadingIndicator={
-                    <CircularProgress color="inherit" size={20} />
-                  }
+                  loadingIndicator={<CircularProgress color="inherit" size={20} />}
                   sx={{
                     padding: 0.5,
                     minWidth: 'auto',

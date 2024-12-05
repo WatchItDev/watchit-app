@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { openMinibar, removeMinibar } from '@src/redux/minibar';
-import {BREAKPOINTS_MINIBAR} from "@src/layouts/config-layout.ts";
+import { BREAKPOINTS_MINIBAR } from '@src/layouts/config-layout.ts';
 
 const ResetMiniNavOnResize = () => {
   const [isSmallScreen, setIsSmallScreen] = useState(false);
@@ -21,7 +21,8 @@ const ResetMiniNavOnResize = () => {
 
       // If greater than 1600, close the minibar
       if (screenWidth > BREAKPOINTS_MINIBAR.MAX) {
-        dispatch(removeMinibar());}
+        dispatch(removeMinibar());
+      }
     };
 
     window.addEventListener('resize', handleResize);
@@ -29,7 +30,6 @@ const ResetMiniNavOnResize = () => {
 
     return () => window.removeEventListener('resize', handleResize);
   }, [dispatch]);
-
 
   if (!isSmallScreen) {
     return null;

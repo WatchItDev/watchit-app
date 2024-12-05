@@ -28,8 +28,7 @@ export const LeaveTipCard: FC = () => {
   };
 
   return (
-
-    <Card sx={{width: '100%', maxWidth: {lg: 400}, margin: 'auto', backgroundColor: '#2B2D31' }}>
+    <Card sx={{ width: '100%', maxWidth: { lg: 400 }, margin: 'auto', backgroundColor: '#2B2D31' }}>
       <CardContent>
         <Typography variant="h6" gutterBottom>
           Support the Creator
@@ -49,17 +48,24 @@ export const LeaveTipCard: FC = () => {
                   width: '33%',
                   backgroundColor: '#1e1f22',
                   opacity: selectedTip === option.value ? 1 : 0.4,
-                  border: selectedTip === option.value ? '2px solid rgba(255,255,255,0.3)' : '2px solid transparent',
+                  border:
+                    selectedTip === option.value
+                      ? '2px solid rgba(255,255,255,0.3)'
+                      : '2px solid transparent',
                   '&:hover': { opacity: 1 },
                 }}
               >
                 <Typography variant="body1" fontWeight="bold" align={'center'}>
                   {option.title}
                 </Typography>
-                <Typography variant="subtitle2" align={'center'} style={{
-                  color: 'text.secondary',
-                  fontSize: '0.7rem'
-                }}>
+                <Typography
+                  variant="subtitle2"
+                  align={'center'}
+                  style={{
+                    color: 'text.secondary',
+                    fontSize: '0.7rem',
+                  }}
+                >
                   MMC
                 </Typography>
               </Paper>
@@ -91,22 +97,12 @@ export const LeaveTipCard: FC = () => {
           </LoadingButton>
         </Stack>
 
-        <Typography
-          variant="body2"
-          color="text.secondary"
-          align="center"
-          sx={{ mt: 2 }}
-        >
+        <Typography variant="body2" color="text.secondary" align="center" sx={{ mt: 2 }}>
           This feature is coming in the next release!
         </Typography>
 
         {successMessage && (
-          <Typography
-            variant="body2"
-            color="success.main"
-            align="center"
-            sx={{ mt: 2 }}
-          >
+          <Typography variant="body2" color="success.main" align="center" sx={{ mt: 2 }}>
             Tip sent successfully! Thank you for your support.
           </Typography>
         )}

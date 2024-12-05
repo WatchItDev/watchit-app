@@ -2,8 +2,8 @@ import { useEffect, useRef, useState } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { ProfilePublicationItem } from './profile-publication-item';
-import IconButton from "@mui/material/IconButton";
-import { IconCaretDown, IconCaretUp } from "@tabler/icons-react";
+import IconButton from '@mui/material/IconButton';
+import { IconCaretDown, IconCaretUp } from '@tabler/icons-react';
 
 interface ProfileHomeProps {
   publications: any;
@@ -11,7 +11,11 @@ interface ProfileHomeProps {
   showAll?: boolean;
 }
 
-export default function ProfileHome({ publications, noPaddings = false, showAll=false }: ProfileHomeProps) {
+export default function ProfileHome({
+  publications,
+  noPaddings = false,
+  showAll = false,
+}: ProfileHomeProps) {
   const parentRef = useRef<HTMLDivElement>(null);
   const minItemWidth = 200;
   const maxItemWidth = 250;
@@ -65,7 +69,11 @@ export default function ProfileHome({ publications, noPaddings = false, showAll=
   }, [minItemWidth, maxItemWidth]);
 
   // Filter publications to show
-  const displayedPublications = showAll ? publications : (publications ? publications.slice(0, 10) : []);
+  const displayedPublications = showAll
+    ? publications
+    : publications
+      ? publications.slice(0, 10)
+      : [];
 
   const handleShowMore = () => {
     if (allItemsShown) {
@@ -89,7 +97,7 @@ export default function ProfileHome({ publications, noPaddings = false, showAll=
       <Box
         ref={parentRef}
         sx={{
-          display:publicationsToShow.length ? 'grid' : 'flex',
+          display: publicationsToShow.length ? 'grid' : 'flex',
           gridTemplateColumns: `repeat(auto-fill, minmax(${minItemWidth}px, 1fr))`,
           flexWrap: 'wrap',
           gap: `${gap}px`,

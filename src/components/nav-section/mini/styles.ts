@@ -43,10 +43,10 @@ export const StyledItem = styled(ListItemButton, {
     margin: 0,
     padding: '0 !important',
     '&, & *': {
-      transition: 'all 0.1s ease-out'
+      transition: 'all 0.1s ease-out',
     },
     '&:hover': {
-      backgroundColor: 'transparent'
+      backgroundColor: 'transparent',
     },
     '&:hover .MuiBox-root:not(.svg-color):not(.menu-pill):not(.pill)': {
       borderRadius: '0.75rem',
@@ -54,7 +54,7 @@ export const StyledItem = styled(ListItemButton, {
     },
     '&:hover .pill': {
       width: '4px',
-      height: '60%'
+      height: '60%',
     },
     // Active root item
     ...(active && {

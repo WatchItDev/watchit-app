@@ -8,7 +8,7 @@ import { usePathname } from '@src/routes/hooks';
 import { useActiveLink } from '@src/routes/hooks/use-active-link';
 //
 import { NavListProps, NavConfigProps } from '../types';
-import NavItemVerticalMini from "@src/components/nav-section/mini/nav-item-vertical-mini.tsx";
+import NavItemVerticalMini from '@src/components/nav-section/mini/nav-item-vertical-mini.tsx';
 
 // ----------------------------------------------------------------------
 

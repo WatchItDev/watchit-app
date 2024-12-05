@@ -21,13 +21,14 @@ const PosterVertical = ({ id, title, images, rating, year, likes, price, genre }
 
   const handlePosterClick = () => {
     router.push(paths.dashboard.publication.details(id));
-  }
+  };
 
   const formatLikes = (totalLikes: number) => {
     if (totalLikes >= 1000000) {
-      return `${(totalLikes / 1000000).toFixed(1)  }M`;
-    } if (totalLikes >= 1000) {
-      return `${(totalLikes / 1000).toFixed(1)  }K`;
+      return `${(totalLikes / 1000000).toFixed(1)}M`;
+    }
+    if (totalLikes >= 1000) {
+      return `${(totalLikes / 1000).toFixed(1)}K`;
     }
     return totalLikes;
   };
@@ -38,7 +39,7 @@ const PosterVertical = ({ id, title, images, rating, year, likes, price, genre }
         borderRadius: 2,
         overflow: 'hidden',
         position: 'relative',
-        cursor: 'pointer'
+        cursor: 'pointer',
       }}
       onClick={handlePosterClick}
     >
@@ -65,32 +66,41 @@ const PosterVertical = ({ id, title, images, rating, year, likes, price, genre }
         }}
       >
         {/* Likes */}
-        <Box sx={{display:'flex',alignItems:'center',justifyContent: 'space-between'}}>
-          <Stack  direction="row" spacing={0.5} alignItems='center' textAlign='center'>
-            <IconHeartFilled style={{marginBottom:'2px'}} size={16} color="#F2F3F5" />
-            <Typography style={{fontSize: 'clamp(0.1rem, 0.8vw, 0.9rem)', fontWeight: '700', whiteSpace: 'nowrap'}} variant="body2">
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <Stack direction="row" spacing={0.5} alignItems="center" textAlign="center">
+            <IconHeartFilled style={{ marginBottom: '2px' }} size={16} color="#F2F3F5" />
+            <Typography
+              style={{
+                fontSize: 'clamp(0.1rem, 0.8vw, 0.9rem)',
+                fontWeight: '700',
+                whiteSpace: 'nowrap',
+              }}
+              variant="body2"
+            >
               {formatLikes(likes)}
             </Typography>
           </Stack>
-          {
-            price?.mmc && (
-              <Box>
-                <Typography variant="body2" sx={{ lineHeight: 1 , fontSize: 'clamp(0.1rem, 0.8vw, 0.9rem)', fontWeight: '700'}}>
-                  {price?.mmc} MMC
-                </Typography>
-              </Box>
-            )
-          }
-        </Box>
-        {
-          price?.usd && (
-            <Stack alignItems='flex-end'>
-              <Typography variant="body2" sx={{ lineHeight: 1 , fontSize: 'clamp(0.1rem, 0.8vw, 0.8rem)', whiteSpace: 'nowrap' }}>
-                {price?.usd} USD
+          {price?.mmc && (
+            <Box>
+              <Typography
+                variant="body2"
+                sx={{ lineHeight: 1, fontSize: 'clamp(0.1rem, 0.8vw, 0.9rem)', fontWeight: '700' }}
+              >
+                {price?.mmc} MMC
               </Typography>
-            </Stack>
-          )
-        }
+            </Box>
+          )}
+        </Box>
+        {price?.usd && (
+          <Stack alignItems="flex-end">
+            <Typography
+              variant="body2"
+              sx={{ lineHeight: 1, fontSize: 'clamp(0.1rem, 0.8vw, 0.8rem)', whiteSpace: 'nowrap' }}
+            >
+              {price?.usd} USD
+            </Typography>
+          </Stack>
+        )}
       </Box>
 
       {/* Downside: Title & details */}
@@ -99,7 +109,7 @@ const PosterVertical = ({ id, title, images, rating, year, likes, price, genre }
           bottom: 0,
           zIndex: 9,
           width: '100%',
-          padding:'16px 8px 12px 8px !important',
+          padding: '16px 8px 12px 8px !important',
           textAlign: 'left',
           position: 'absolute',
           color: 'common.white',
@@ -112,7 +122,7 @@ const PosterVertical = ({ id, title, images, rating, year, likes, price, genre }
       >
         {/* Title */}
         <Typography
-          variant='h6'
+          variant="h6"
           sx={{
             mb: 1,
             fontSize: 'clamp(0.5rem, 1vw, 2rem)',
@@ -121,33 +131,57 @@ const PosterVertical = ({ id, title, images, rating, year, likes, price, genre }
             textOverflow: 'ellipsis',
             display: '-webkit-box',
             WebkitBoxOrient: 'vertical',
-            WebkitLineClamp: 2
+            WebkitLineClamp: 2,
           }}
         >
           {title}
         </Typography>
 
         <Stack direction="row" spacing={1} alignItems="center">
-          {
-            rating && (
-              <>
-                <Stack direction="row" spacing={0.5} alignItems="center">
-                  <IconStarFilled size={14} color="#FFCD19"/>
-                  <Typography sx={{fontSize: 'clamp(0.1rem, 0.8vw, 2rem)', fontWeight: '700' }} variant="body2">{rating}</Typography>
-                </Stack>
-                <Typography sx={{fontSize: 'clamp(0.1rem, 0.8vw, 2rem)'}} variant="body2" color="textSecondary">|</Typography>
-              </>
-            )
-          }
-          <Typography sx={{fontSize: 'clamp(0.1rem, 0.8vw, 2rem)', fontWeight: '700'}} variant="body2">{year}</Typography>
-          <Typography sx={{fontSize: 'clamp(0.1rem, 0.8vw, 2rem)'}} variant="body2" color="textSecondary">|</Typography>
-          <Typography sx={{fontSize: 'clamp(0.1rem, 0.8vw, 2rem)', fontWeight: '700'}} variant="body2" color="textSecondary">
-            { genre[0] }
+          {rating && (
+            <>
+              <Stack direction="row" spacing={0.5} alignItems="center">
+                <IconStarFilled size={14} color="#FFCD19" />
+                <Typography
+                  sx={{ fontSize: 'clamp(0.1rem, 0.8vw, 2rem)', fontWeight: '700' }}
+                  variant="body2"
+                >
+                  {rating}
+                </Typography>
+              </Stack>
+              <Typography
+                sx={{ fontSize: 'clamp(0.1rem, 0.8vw, 2rem)' }}
+                variant="body2"
+                color="textSecondary"
+              >
+                |
+              </Typography>
+            </>
+          )}
+          <Typography
+            sx={{ fontSize: 'clamp(0.1rem, 0.8vw, 2rem)', fontWeight: '700' }}
+            variant="body2"
+          >
+            {year}
+          </Typography>
+          <Typography
+            sx={{ fontSize: 'clamp(0.1rem, 0.8vw, 2rem)' }}
+            variant="body2"
+            color="textSecondary"
+          >
+            |
+          </Typography>
+          <Typography
+            sx={{ fontSize: 'clamp(0.1rem, 0.8vw, 2rem)', fontWeight: '700' }}
+            variant="body2"
+            color="textSecondary"
+          >
+            {genre[0]}
           </Typography>
         </Stack>
       </CardContent>
     </Paper>
   );
-}
+};
 
-export default PosterVertical
+export default PosterVertical;

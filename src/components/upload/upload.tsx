@@ -75,10 +75,13 @@ export default function Upload({
   );
 
   const renderPlaceholder = placeholder ?? defaultPlaceholder;
-  const SinglePreview = singleFilePreview
+  const SinglePreview = singleFilePreview;
 
   const renderSinglePreview = (
-    <SinglePreview imgUrl={typeof file === 'string' ? file : file?.preview} ratio={thumbnailRatio} />
+    <SinglePreview
+      imgUrl={typeof file === 'string' ? file : file?.preview}
+      ratio={thumbnailRatio}
+    />
   );
 
   const removeSinglePreview = hasFile && onDelete && (

@@ -3,9 +3,9 @@ import { m } from 'framer-motion';
 import IconButton from '@mui/material/IconButton';
 // components
 import { varHover } from '@src/components/animate';
-import Typography from "@mui/material/Typography";
-import Stack from "@mui/material/Stack";
-import { IconCoinMonero } from "@tabler/icons-react";
+import Typography from '@mui/material/Typography';
+import Stack from '@mui/material/Stack';
+import { IconCoinMonero } from '@tabler/icons-react';
 // @ts-ignore
 import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
 import { ProfileSession, useSession } from '@lens-protocol/react-web';
@@ -46,8 +46,12 @@ export default function HeaderBalance() {
         >
           <IconCoinMonero style={{ borderRadius: 0.65, width: 64 }} />
         </IconButton>
-        <Typography variant="subtitle2" sx={{ mt: 0.4 }}>{formattedBalance}</Typography>
-        <Typography variant="caption" color="text.secondary" sx={{ ml: 1, mt: 0.6, fontSize: 10 }}>MMC</Typography>
+        <Typography variant="subtitle2" sx={{ mt: 0.4 }}>
+          {formattedBalance}
+        </Typography>
+        <Typography variant="caption" color="text.secondary" sx={{ ml: 1, mt: 0.6, fontSize: 10 }}>
+          MMC
+        </Typography>
       </Stack>
     </>
   );

@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet-async';
 import { UserProfileView } from '@src/sections/user/view';
 import { useParams } from '@src/routes/hooks';
 import Header from '@src/layouts/dashboard/header.tsx';
-import HeaderContent from "@src/layouts/dashboard/HeaderContent.tsx";
+import HeaderContent from '@src/layouts/dashboard/HeaderContent.tsx';
 
 // ----------------------------------------------------------------------
 
@@ -24,7 +24,10 @@ export default function UserProfilePage() {
         <meta property="og:image" content={`https://app.watchit.movie/default.jpg`} />
         <meta property="og:url" content={`https://app.watchit.movie/${id}`} />
         {/*Twitter*/}
-        <meta name="twitter:title" content={`Watchit: A New Era of Video Content with Web3 x AI | ${id}`} />
+        <meta
+          name="twitter:title"
+          content={`Watchit: A New Era of Video Content with Web3 x AI | ${id}`}
+        />
         <meta
           name="twitter:description"
           content="Visit my profile in Watchit | Discover stories, art, and experiences like never before, connecting you with creators in a decentralized, space built just for you."

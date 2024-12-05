@@ -33,7 +33,7 @@ export const uploadToIPFS = async (data: File | object): Promise<string> => {
 
     const response = await axios.post(url, body, {
       maxContentLength: Infinity,
-      headers
+      headers,
     });
 
     return `ipfs://${response.data.IpfsHash}`;
@@ -48,9 +48,7 @@ export const uploadToIPFS = async (data: File | object): Promise<string> => {
  * @param image - Image file.
  * @returns URIs of the uploaded image.
  */
-export const uploadImageToIPFS = async (
-  image: File | null,
-): Promise<string | null> => {
+export const uploadImageToIPFS = async (image: File | null): Promise<string | null> => {
   try {
     return image ? await uploadToIPFS(image) : null;
   } catch (error) {

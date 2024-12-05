@@ -14,7 +14,7 @@ export default function SingleFilePreviewCustom({ imgUrl = '', ratio }: SingleFi
         p: 1,
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
       }}
     >
       <Image

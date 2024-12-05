@@ -2,7 +2,7 @@ import { paramCase } from '@src/utils/change-case';
 
 // ----------------------------------------------------------------------
 
-const MOCK_ID = '0x123'
+const MOCK_ID = '0x123';
 
 const MOCK_TITLE = 'Demo title';
 

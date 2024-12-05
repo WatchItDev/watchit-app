@@ -15,17 +15,13 @@ import SvgColor from '@src/components/svg-color';
 import { useSettingsContext } from '@src/components/settings';
 //
 import { HEADER, NAV } from '../config-layout';
-import {
-  AccountPopover,
-  HeaderBalance,
-  NotificationsPopover,
-} from '../_common';
+import { AccountPopover, HeaderBalance, NotificationsPopover } from '../_common';
 import { PropsWithChildren } from 'react';
 // @ts-ignore
 import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
 import { ProfileSession, useSession } from '@lens-protocol/react-web';
 
-import {useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { toggleDrawer } from '@redux/drawer';
 // ----------------------------------------------------------------------
 
@@ -76,14 +72,12 @@ export default function Header({ children }: PropsWithChildren) {
         spacing={{ xs: 0.5, sm: 1 }}
         sx={{ pr: { xs: 0, md: 2 } }}
       >
-        {
-          sessionData?.authenticated && (
-            <>
-              <HeaderBalance />
-              <NotificationsPopover />
-            </>
-          )
-        }
+        {sessionData?.authenticated && (
+          <>
+            <HeaderBalance />
+            <NotificationsPopover />
+          </>
+        )}
 
         <AccountPopover />
       </Stack>
@@ -102,7 +96,7 @@ export default function Header({ children }: PropsWithChildren) {
           duration: theme.transitions.duration.shorter,
         }),
         ...(lgUp && {
-          width: `calc(100% - ${NAV.W_VERTICAL + NAV.W_MINI+ 1}px)`,
+          width: `calc(100% - ${NAV.W_VERTICAL + NAV.W_MINI + 1}px)`,
           height: HEADER.H_DESKTOP,
           ...(offsetTop && {
             height: HEADER.H_DESKTOP_OFFSET,
@@ -111,7 +105,6 @@ export default function Header({ children }: PropsWithChildren) {
             width: `calc(100% - ${NAV.W_MINI + NAV.W_VERTICAL_MINI + 2}px)`,
           }),
         }),
-
       }}
     >
       <Toolbar

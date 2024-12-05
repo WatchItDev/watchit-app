@@ -34,17 +34,22 @@ interface Props extends StepperProps {
   goToStep: (step: number) => void;
 }
 
-export default function PublicationNewWizardSteps({ steps, activeStep, goToStep, sx, ...other }: Props) {
-
+export default function PublicationNewWizardSteps({
+  steps,
+  activeStep,
+  goToStep,
+  sx,
+  ...other
+}: Props) {
   const handleStepClick = (step: number) => {
-    if (step <= activeStep) goToStep(step)
-  }
+    if (step <= activeStep) goToStep(step);
+  };
 
   return (
     <Stepper
       alternativeLabel
       activeStep={activeStep}
-      connector={ <StepConnector /> }
+      connector={<StepConnector />}
       sx={{
         mb: { xs: 3, md: 5 },
         ...sx,
@@ -52,7 +57,13 @@ export default function PublicationNewWizardSteps({ steps, activeStep, goToStep,
       {...other}
     >
       {steps.map((label, index) => (
-        <Step key={label} onClick={() => { handleStepClick(index) }} sx={{ cursor: 'pointer' }}>
+        <Step
+          key={label}
+          onClick={() => {
+            handleStepClick(index);
+          }}
+          sx={{ cursor: 'pointer' }}
+        >
           <StepLabel
             StepIconComponent={StepIcon}
             sx={{

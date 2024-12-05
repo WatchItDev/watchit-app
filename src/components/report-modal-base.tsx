@@ -19,14 +19,23 @@ import DialogContent from '@mui/material/DialogContent';
 type ReportModalBaseProps = {
   title: string;
   reasons: string[];
-  onSubmit: (reason: string, comments: string) => Promise<{ isSuccess: () => boolean; error?: { message: string } }>;
+  onSubmit: (
+    reason: string,
+    comments: string
+  ) => Promise<{ isSuccess: () => boolean; error?: { message: string } }>;
   isOpen: boolean;
   onClose: () => void;
 };
 
 // ----------------------------------------------------------------------
 
-export const ReportModalBase = ({ title, reasons, onSubmit, isOpen, onClose }: ReportModalBaseProps) => {
+export const ReportModalBase = ({
+  title,
+  reasons,
+  onSubmit,
+  isOpen,
+  onClose,
+}: ReportModalBaseProps) => {
   const [additionalComments, setAdditionalComments] = useState('');
   const [reportReason, setReportReason] = useState<string | ''>('');
   const [loading, setLoading] = useState(false);
@@ -64,7 +73,10 @@ export const ReportModalBase = ({ title, reasons, onSubmit, isOpen, onClose }: R
           >
             {reasons.map((reason) => (
               <MenuItem key={reason} value={reason}>
-                {reason.replace(/_/g, ' ').toLowerCase().replace(/\b\w/g, (c) => c.toUpperCase())}
+                {reason
+                  .replace(/_/g, ' ')
+                  .toLowerCase()
+                  .replace(/\b\w/g, (c) => c.toUpperCase())}
               </MenuItem>
             ))}
           </Select>
@@ -84,7 +96,12 @@ export const ReportModalBase = ({ title, reasons, onSubmit, isOpen, onClose }: R
         <Button variant="outlined" sx={{ borderColor: '#fff' }} onClick={onClose}>
           Cancel
         </Button>
-        <Button variant="contained" sx={{ backgroundColor: '#fff' }} onClick={handleReportSubmit} disabled={loading || !reportReason}>
+        <Button
+          variant="contained"
+          sx={{ backgroundColor: '#fff' }}
+          onClick={handleReportSubmit}
+          disabled={loading || !reportReason}
+        >
           {loading ? <CircularProgress size="25px" sx={{ color: '#fff' }} /> : 'Submit Report'}
         </Button>
       </DialogActions>

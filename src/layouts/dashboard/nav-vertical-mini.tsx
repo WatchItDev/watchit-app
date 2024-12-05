@@ -8,12 +8,11 @@ import { NavSectionVerticalMini } from '@src/components/nav-section/mini/nav-sec
 // Projects
 import { NAV } from '../config-layout';
 import { useNavData } from './config-navigation';
-import {NavToggleButton, Searchbar} from '../_common';
+import { NavToggleButton, Searchbar } from '../_common';
 
 // ----------------------------------------------------------------------
 
 export default function NavVerticalMini() {
-
   const navData = useNavData();
 
   return (
@@ -23,8 +22,8 @@ export default function NavVerticalMini() {
         flexShrink: { lg: 0 },
         width: { lg: NAV.W_VERTICAL_MINI },
         backgroundColor: '#2b2d31',
-        left: (NAV.W_MINI + NAV.W_VERTICAL_MINI) - 12,
-        zIndex: '1300 !important'
+        left: NAV.W_MINI + NAV.W_VERTICAL_MINI - 12,
+        zIndex: '1300 !important',
       }}
     >
       <NavToggleButton
@@ -39,7 +38,7 @@ export default function NavVerticalMini() {
           pb: 2,
           height: 1,
           position: 'fixed',
-          width: NAV.W_VERTICAL_MINI ,
+          width: NAV.W_VERTICAL_MINI,
           borderRight: (theme) => `dashed 1px ${theme.palette.divider}`,
           ...hideScroll.x,
         }}

@@ -40,14 +40,14 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
       if (w3?.provider && w3.connected) {
         // get accounts from provider
         const accounts: any = await w3.provider.request({
-          method: 'eth_accounts'
+          method: 'eth_accounts',
         });
 
         if (accounts && accounts.length > 0) {
           setAddress(accounts[0]);
         }
       }
-    })()
+    })();
   }, [address, w3.connected]);
 
   useEffect(() => {
@@ -61,16 +61,16 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
     if (open && view === 'wallet' && !w3.connected) {
       (async () => {
         try {
-          await w3?.connect()
+          await w3?.connect();
           setView('profile');
           setLoading(false);
         } catch (err) {
           onClose();
-          w3?.loginModal.closeModal()
+          w3?.loginModal.closeModal();
           setLoading(false);
           setView('wallet');
         }
-      })()
+      })();
     }
   }, [open, view, w3.connected]);
 
@@ -83,19 +83,19 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
     if (!profile || !address) return;
     const result = await loginExecute({
       address: address,
-      profileId: profile.id
+      profileId: profile.id,
     } as any);
 
     if (result.isFailure()) {
       console.error('Error during login:', result.error.message);
     }
-  }
+  };
 
   const handleDisconnectWallet = async () => {
-    if (sessionData?.authenticated) await logoutExecute()
+    if (sessionData?.authenticated) await logoutExecute();
     if (w3.connected) await w3?.logout();
     setView('wallet');
-    setAddress("")
+    setAddress('');
   };
 
   return (

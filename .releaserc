@@ -1,0 +1,59 @@
+{
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Envios-2224/remis-app.git"
+  },
+  "publishConfig": {
+    "access": "restricted"
+  },
+  "branches": [
+    "staging"
+  ],
+  "plugins": [
+    "@semantic-release/release-notes-generator",
+    [
+      "@semantic-release/changelog",
+      {
+        "changelogFile": "CHANGELOG.md"
+      }
+    ],
+    [
+      "@semantic-release/npm",
+      {
+        "npmPublish": false
+      }
+    ],
+    [
+      "@semantic-release/commit-analyzer",
+      {
+        "releaseRules": [
+          {
+            "type": "feat",
+            "release": "minor"
+          },
+          {
+            "type": "fix",
+            "release": "patch"
+          },
+          {
+            "type": "perf",
+            "release": "patch"
+          }
+        ]
+      }
+    ],
+    [
+      "@semantic-release/git",
+      {
+        "assets": [
+          "CHANGELOG.md",
+          "package.json",
+          "ios/remisapp/Info.plist",
+          "ios/remisapp.xcodeproj/project.pbxproj",
+          "android/app/build.gradle"
+        ],
+        "message": "chore(release): ${nextRelease.version} [skip ci]"
+      }
+    ]
+  ]
+}

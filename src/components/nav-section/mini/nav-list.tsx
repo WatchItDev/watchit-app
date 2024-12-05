@@ -7,8 +7,8 @@ import { usePathname } from '@src/routes/hooks';
 //
 import { NavListProps, NavConfigProps } from '../types';
 import NavItem from './nav-item';
-import Box from "@mui/material/Box";
-import Stack from "@mui/material/Stack";
+import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
 // ----------------------------------------------------------------------
 
 type NavListRootProps = {
@@ -16,7 +16,7 @@ type NavListRootProps = {
   active?: boolean;
   depth: number;
   config: NavConfigProps;
-  onClick?: () => void
+  onClick?: () => void;
 };
 
 export default function NavList({ data, active, depth, config, onClick }: NavListRootProps) {
@@ -96,13 +96,14 @@ export default function NavList({ data, active, depth, config, onClick }: NavLis
           },
         }}
         sx={{
-          pointerEvents: 'none'
+          pointerEvents: 'none',
         }}
       >
-          <Stack spacing={1} direction={'row'}>
-            { data.title }
-            { data.badge && (
-              <Box sx={{
+        <Stack spacing={1} direction={'row'}>
+          {data.title}
+          {data.badge && (
+            <Box
+              sx={{
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
@@ -111,12 +112,13 @@ export default function NavList({ data, active, depth, config, onClick }: NavLis
                 padding: '2px 4px',
                 color: 'black',
                 fontSize: '0.75rem',
-                fontWeight: 500
-              }}>
-                { data.badge}
-              </Box>
-            )}
-          </Stack>
+                fontWeight: 500,
+              }}
+            >
+              {data.badge}
+            </Box>
+          )}
+        </Stack>
       </Popover>
     </>
   );

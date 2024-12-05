@@ -21,8 +21,8 @@ import { useNavData } from './config-navigation';
 // LAYOUT IMPORTS
 import { Searchbar } from '../_common';
 import { NavToggleButton } from '../_common';
-import {COLORS, NAV} from "@src/layouts/config-layout.ts";
-import NavMini from "@src/layouts/dashboard/nav-mini.tsx";
+import { COLORS, NAV } from '@src/layouts/config-layout.ts';
+import NavMini from '@src/layouts/dashboard/nav-mini.tsx';
 // ----------------------------------------------------------------------
 
 export default function NavVertical() {
@@ -47,7 +47,6 @@ export default function NavVertical() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
 
-
   const renderContent = (
     <Scrollbar
       sx={{
@@ -55,8 +54,8 @@ export default function NavVertical() {
         position: 'relative',
         height: 1,
         backgroundColor: '#2B2D31',
-        display:'flex',
-        flexDirection:'column',
+        display: 'flex',
+        flexDirection: 'column',
         '& .simplebar-content': {
           height: 1,
           display: 'flex',
@@ -73,7 +72,7 @@ export default function NavVertical() {
         }}
       />
 
-      <Box sx={{ flexGrow: 1}} />
+      <Box sx={{ flexGrow: 1 }} />
     </Scrollbar>
   );
 
@@ -109,26 +108,31 @@ export default function NavVertical() {
             },
           }}
         >
-          <Stack direction={'row'} sx={{
-            backgroundColor: COLORS.GRAY_LIGHT,
-            height: '100%'
-          }}>
-            <Box sx={{
-              width: NAV.W_MINI,
-              backgroundColor: COLORS.GRAY_DARK,
-            }}>
+          <Stack
+            direction={'row'}
+            sx={{
+              backgroundColor: COLORS.GRAY_LIGHT,
+              height: '100%',
+            }}
+          >
+            <Box
+              sx={{
+                width: NAV.W_MINI,
+                backgroundColor: COLORS.GRAY_DARK,
+              }}
+            >
               <NavMini />
             </Box>
-            <Box sx={{
-              flex: 1,
-              flexGrow: 1,
-              width: NAV.W_VERTICAL,
-            }}>
+            <Box
+              sx={{
+                flex: 1,
+                flexGrow: 1,
+                width: NAV.W_VERTICAL,
+              }}
+            >
               {renderContent}
             </Box>
-
           </Stack>
-
         </Drawer>
       )}
     </Box>

@@ -26,8 +26,8 @@ const TABS = [
 // ----------------------------------------------------------------------
 
 const UserProfileView = ({ id }: any) => {
-  const [currentTab, setCurrentTab] = useState('publications');
   const settings = useSettingsContext();
+  const [currentTab, setCurrentTab] = useState('publications');
   const { called, data: profile, loading: loadingProfile, execute } = useLazyProfile();
   const { data: publications, loading: loadingPublications } = usePublications({
     where: {
@@ -43,6 +43,9 @@ const UserProfileView = ({ id }: any) => {
     console.log('called', called);
 
     (async () => {
+      if (id !== profile?.id || !called) await execute({ forProfileId: id as ProfileId });
+    })();
+  }, [id, called]);
       if (id !== profile?.id || !called)
         await execute({ forProfileId: id as ProfileId })
     })()
@@ -59,7 +62,7 @@ const UserProfileView = ({ id }: any) => {
   };
 
   const handleUpdateProfile = () => {
-    execute({ forProfileId: id as ProfileId })
+    execute({ forProfileId: id as ProfileId });
   };
 
   const tabsWithCounts = TABS.map((tab: any) => ({
@@ -68,7 +71,7 @@ const UserProfileView = ({ id }: any) => {
     count: counts[tab.value],
   }));
 
-  if (loadingProfile || loadingPublications) return <LoadingScreen />
+  if (loadingProfile || loadingPublications) return <LoadingScreen />;
 
   return (
     <Container maxWidth={settings.themeStretch ? false : 'lg'}>
@@ -94,8 +97,12 @@ const UserProfileView = ({ id }: any) => {
         </Tabs>
       </ProfileHeader>
 
-      {currentTab === 'publications' && profile && <ProfileHome publications={publications} showAll={true} />}
-      {currentTab === 'followers' && profile && <ProfileFollowers profile={profile} onActionFinished={handleUpdateProfile} />}
+      {currentTab === 'publications' && profile && (
+        <ProfileHome publications={publications} showAll={true} />
+      )}
+      {currentTab === 'followers' && profile && (
+        <ProfileFollowers profile={profile} onActionFinished={handleUpdateProfile} />
+      )}
       {currentTab === 'following' && profile && <ProfileFollowing profile={profile} />}
     </Container>
   );
@@ -105,9 +112,7 @@ const TabLabel = ({ label, count }: any) => (
   <>
     {label}
     {count > 0 && (
-      <Label sx={{ px: 0.75, ml: 1, fontSize: 12, color: 'text.secondary' }}>
-        {count}
-      </Label>
+      <Label sx={{ px: 0.75, ml: 1, fontSize: 12, color: 'text.secondary' }}>{count}</Label>
     )}
   </>
 );

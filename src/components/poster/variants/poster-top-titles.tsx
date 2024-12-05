@@ -7,13 +7,9 @@ import Image from '@src/components/image';
 import { useRouter } from '@src/routes/hooks';
 import { paths } from '@src/routes/paths.ts';
 import Button from '@mui/material/Button';
-import {
-  IconBookmark,
-  IconBookmarkFilled,
-  IconPlayerPlay,
-} from '@tabler/icons-react';
-import Box from "@mui/material/Box";
-import TextMaxLine from "@src/components/text-max-line";
+import { IconBookmark, IconBookmarkFilled, IconPlayerPlay } from '@tabler/icons-react';
+import Box from '@mui/material/Box';
+import TextMaxLine from '@src/components/text-max-line';
 import { CircularProgress } from '@mui/material';
 import { useBookmarkToggle } from '@lens-protocol/react-web';
 
@@ -25,18 +21,20 @@ const PosterTopTitles = ({ post }: { post: any }) => {
 
   const handlePosterClick = () => {
     router.push(paths.dashboard.publication.details(post.id));
-  }
+  };
 
   // const getMediaUri = (cid: string): string => `https://ipfs.io/ipfs/${cid?.replace?.('ipfs://', '')}`
-  const getMediaUri = (cid: string): string => `${cid}`
+  const getMediaUri = (cid: string): string => `${cid}`;
 
-  const getWallpaperCid = (post: any): string => post?.metadata?.attachments?.find((el: any) => el.altTag === 'wallpaper')?.image?.raw?.uri
-  const getPosterCid = (post: any): string => post?.metadata?.attachments?.find((el: any) => el.altTag === 'poster')?.image?.raw?.uri
+  const getWallpaperCid = (post: any): string =>
+    post?.metadata?.attachments?.find((el: any) => el.altTag === 'wallpaper')?.image?.raw?.uri;
+  const getPosterCid = (post: any): string =>
+    post?.metadata?.attachments?.find((el: any) => el.altTag === 'poster')?.image?.raw?.uri;
 
   const toggleBookMark = async () => {
     try {
       await toggleBookMarkFunction({
-        publication: post
+        publication: post,
       });
     } catch (err) {
       console.error('Error toggling bookmark:', err);
@@ -44,12 +42,12 @@ const PosterTopTitles = ({ post }: { post: any }) => {
   };
 
   const goToProfile = () => {
-    router.push(paths.dashboard.user.root(`${post?.by?.id}`))
-  }
+    router.push(paths.dashboard.user.root(`${post?.by?.id}`));
+  };
 
   return (
     <Stack
-      sx={{position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center'}}
+      sx={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
       alignItems={'stretch'}
       spacing={{ xs: 1, sm: 2, md: 4 }}
     >
@@ -79,7 +77,7 @@ const PosterTopTitles = ({ post }: { post: any }) => {
           py: 6,
           flexDirection: {
             xs: 'column',
-            sm: 'row'
+            sm: 'row',
           },
         }}
       >
@@ -125,7 +123,7 @@ const PosterTopTitles = ({ post }: { post: any }) => {
             alignItems: 'center',
             background: 'transparent',
             px: '12px',
-            py: { xs: 0, md: 8 } ,
+            py: { xs: 0, md: 8 },
           }}
         >
           <Stack spacing={1} gap={'16px'}>
@@ -190,20 +188,29 @@ const PosterTopTitles = ({ post }: { post: any }) => {
                 }}
                 onClick={handlePosterClick}
               >
-                <Box sx={{ marginRight: {
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    xs: 0,
-                    lg: '4px',
-                  }}}>
+                <Box
+                  sx={{
+                    marginRight: {
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      xs: 0,
+                      lg: '4px',
+                    },
+                  }}
+                >
                   <IconPlayerPlay size={22} color="#000" />
                 </Box>
-                <TextMaxLine  sx={{
-                  display: {
-                    xs: 'none',
-                    lg: 'inline',
-                  }}} line={1} variant="button">
+                <TextMaxLine
+                  sx={{
+                    display: {
+                      xs: 'none',
+                      lg: 'inline',
+                    },
+                  }}
+                  line={1}
+                  variant="button"
+                >
                   Watch now
                 </TextMaxLine>
               </Button>
@@ -213,7 +220,7 @@ const PosterTopTitles = ({ post }: { post: any }) => {
                   borderColor: '#FFFFFF',
                   color: '#FFFFFF',
                   height: '40px',
-                  minWidth: '40px'
+                  minWidth: '40px',
                 }}
                 onClick={toggleBookMark}
               >
@@ -222,9 +229,9 @@ const PosterTopTitles = ({ post }: { post: any }) => {
                 ) : (
                   <>
                     {post?.operations?.hasBookmarked ? (
-                      <IconBookmarkFilled size={22} color='#FFFFFF' />
+                      <IconBookmarkFilled size={22} color="#FFFFFF" />
                     ) : (
-                      <IconBookmark size={22} color='#FFFFFF' />
+                      <IconBookmark size={22} color="#FFFFFF" />
                     )}
                   </>
                 )}
@@ -235,6 +242,6 @@ const PosterTopTitles = ({ post }: { post: any }) => {
       </Box>
     </Stack>
   );
-}
+};
 
-export default PosterTopTitles
+export default PosterTopTitles;

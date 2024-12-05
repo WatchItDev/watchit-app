@@ -80,10 +80,7 @@ export default function NavigationBarView() {
     <Stack spacing={2}>
       <Typography variant="h6"> Nav Mini </Typography>
 
-      <NavSectionMini
-        items={NAV_ITEMS[0].items}
-        config={config}
-      />
+      <NavSectionMini items={NAV_ITEMS[0].items} config={config} />
     </Stack>
   );
 

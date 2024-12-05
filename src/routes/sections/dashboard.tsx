@@ -95,7 +95,7 @@ export const dashboardRoutes = [
     element: (
       <CompactLayout>
         <Suspense fallback={<SplashScreen />}>
-        <Outlet />
+          <Outlet />
         </Suspense>
       </CompactLayout>
     ),

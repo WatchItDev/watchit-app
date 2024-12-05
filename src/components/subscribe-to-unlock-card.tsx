@@ -6,23 +6,36 @@ import { Address } from 'viem';
 import LoadingButton from '@mui/lab/LoadingButton';
 
 interface Props {
-  post: any
-  onSubscribe: () => void
-  loadingSubscribe: boolean
-  subscribeDisabled: boolean
+  post: any;
+  onSubscribe: () => void;
+  loadingSubscribe: boolean;
+  subscribeDisabled: boolean;
 }
 
-export const SubscribeToUnlockCard = ({ onSubscribe, loadingSubscribe, subscribeDisabled, post }: Props) => {
+export const SubscribeToUnlockCard = ({
+  onSubscribe,
+  loadingSubscribe,
+  subscribeDisabled,
+  post,
+}: Props) => {
   const { terms } = useResolveTerms(post?.by?.ownedBy?.address as Address);
   const durationDays = 30; // a month
-  const totalCostWei = terms?.amount ? (terms?.amount * BigInt(durationDays)) : 0; // Calculate total cost in Wei: DAILY_COST_WEI * durationDays
+  const totalCostWei = terms?.amount ? terms?.amount * BigInt(durationDays) : 0; // Calculate total cost in Wei: DAILY_COST_WEI * durationDays
   const totalCostMMC = ethers.formatUnits(totalCostWei, 18); // Converts Wei to MMC
 
   return (
-    <Card sx={{ maxWidth: {
-      xs: '100%',
-        lg: 500
-      }, margin: 'auto', backgroundColor: '#2B2D31', color: 'white', borderRadius: 2 }}>
+    <Card
+      sx={{
+        maxWidth: {
+          xs: '100%',
+          lg: 500,
+        },
+        margin: 'auto',
+        backgroundColor: '#2B2D31',
+        color: 'white',
+        borderRadius: 2,
+      }}
+    >
       <CardContent>
         <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 2 }}>
           <IconLock fontSize="large" size={20} />
@@ -31,7 +44,8 @@ export const SubscribeToUnlockCard = ({ onSubscribe, loadingSubscribe, subscribe
           </Typography>
         </Stack>
         <Typography variant="body2" sx={{ mb: 3 }}>
-          This content is only available to our subscribers. Join our growing community and gain access to exclusive posts, behind-the-scenes content, and more!
+          This content is only available to our subscribers. Join our growing community and gain
+          access to exclusive posts, behind-the-scenes content, and more!
         </Typography>
 
         <LoadingButton
@@ -42,15 +56,17 @@ export const SubscribeToUnlockCard = ({ onSubscribe, loadingSubscribe, subscribe
           loading={loadingSubscribe}
           disabled={subscribeDisabled}
         >
-          <IconPlayerPlay size={20} style={{marginRight: 5}} />
+          <IconPlayerPlay size={20} style={{ marginRight: 5 }} />
           Join
         </LoadingButton>
         <Box sx={{ mt: 3, borderRadius: 1 }}>
           <Typography variant="body2" color="textSecondary">
-            Join now for only <strong>{totalCostMMC} MMC/month</strong> and access to <strong>{post?.by?.stats?.posts}</strong> exclusive posts from <strong>{post?.by?.metadata?.displayName ?? post?.handle?.localName}!</strong>
+            Join now for only <strong>{totalCostMMC} MMC/month</strong> and access to{' '}
+            <strong>{post?.by?.stats?.posts}</strong> exclusive posts from{' '}
+            <strong>{post?.by?.metadata?.displayName ?? post?.handle?.localName}!</strong>
           </Typography>
         </Box>
       </CardContent>
     </Card>
   );
-}
+};

@@ -1,5 +1,5 @@
 // REACT IMPORTS
-import {useState, useEffect, PropsWithChildren, useRef, useCallback} from 'react';
+import { useState, useEffect, PropsWithChildren, useRef, useCallback } from 'react';
 
 // MUI IMPORTS
 import Box from '@mui/material/Box';
@@ -18,7 +18,13 @@ import { Profile } from '@lens-protocol/api-bindings';
 import CircularProgress from '@mui/material/CircularProgress';
 
 // LENS IMPORTS
-import { appId, ProfileSession, PublicationType, usePublications, useSession } from '@lens-protocol/react-web';
+import {
+  appId,
+  ProfileSession,
+  PublicationType,
+  usePublications,
+  useSession,
+} from '@lens-protocol/react-web';
 
 // VIEM IMPORTS
 import { Address } from 'viem';
@@ -41,7 +47,7 @@ import { ActivateSubscriptionProfileModal } from '@src/components/activate-subsc
 import FollowUnfollowButton from '@src/components/follow-unfollow-button.tsx';
 // @ts-ignore
 import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
-import {randomColors} from "@src/components/poster/variants/poster-latest-content.tsx";
+import { randomColors } from '@src/components/poster/variants/poster-latest-content.tsx';
 import OpenableText from '@src/components/openableText/openableText.tsx';
 import { useGetAttestation } from '@src/hooks/use-get-attestation.ts';
 import { openLoginModal } from '@redux/auth';
@@ -49,8 +55,8 @@ import { useDispatch } from 'react-redux';
 
 // ----------------------------------------------------------------------
 
-const urlToShare = "https://app.watchit.movie/profileId";
-const urlAttestationBase = "https://polygon-amoy.easscan.org/attestation/view/";
+const urlToShare = 'https://app.watchit.movie/profileId';
+const urlAttestationBase = 'https://polygon-amoy.easscan.org/attestation/view/';
 
 // const GeoAddress = '0xEFBBD14082cF2FbCf5Badc7ee619F0f4e36D0A5B'
 
@@ -69,7 +75,7 @@ const shareLinks = [
     icon: 'mdi:telegram',
     label: 'Telegram',
     url: `https://telegram.me/share/?url=${encodeURIComponent(urlToShare)}&title=Watchit`,
-  }
+  },
 ];
 
 const socialMedia = [
@@ -77,7 +83,6 @@ const socialMedia = [
   { key: 'facebook', icon: 'mdi:facebook' },
   { key: 'instagram', icon: 'mdi:instagram' },
 ];
-
 
 // ----------------------------------------------------------------------
 
@@ -93,7 +98,7 @@ interface SocialMediaUrls {
 
 const prependProfileIdToUrl = (url: string, profileId: string) => {
   return url.replace('profileId', 'dashboard/profile/' + profileId);
-}
+};
 
 // ----------------------------------------------------------------------
 
@@ -125,7 +130,10 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
     attestation,
     loading: attestationLoading,
     refetch: refetchAttestation,
-  } = useGetAttestation(sessionData?.profile?.ownedBy?.address as Address, profile?.ownedBy?.address as Address);
+  } = useGetAttestation(
+    sessionData?.profile?.ownedBy?.address as Address,
+    profile?.ownedBy?.address as Address
+  );
   const {
     hasAccess,
     loading: accessLoading,
@@ -133,12 +141,12 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
     error: accessError,
     refetch: refetchAccess,
   } = useHasAccess(profile?.ownedBy?.address as Address);
-  const {
-    isAuthorized,
-    loading: authorizedLoading,
-  } = useIsPolicyAuthorized(GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS, profile?.ownedBy?.address as Address);
+  const { isAuthorized, loading: authorizedLoading } = useIsPolicyAuthorized(
+    GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS,
+    profile?.ownedBy?.address as Address
+  );
 
-  const attestationAddress = `0x${BigInt(attestation ?? '').toString(16)}`
+  const attestationAddress = `0x${BigInt(attestation ?? '').toString(16)}`;
 
   const handleClose = useCallback(() => {
     setOpenTooltip(false);
@@ -148,7 +156,7 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
     if (open) {
       handleClose();
     }
-  },[handleClose, open]);
+  }, [handleClose, open]);
 
   const handleOpen = useCallback(() => {
     setOpenTooltip(true);
@@ -195,8 +203,8 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
 
   // Function to handle following a profile
   const onSubscribe = async () => {
-    refetchAccess()
-    refetchAttestation()
+    refetchAccess();
+    refetchAttestation();
   };
 
   const handlePopoverOpen = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -219,7 +227,7 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
   const handleSubscription = async () => {
     if (!sessionData?.authenticated) return dispatch(openLoginModal());
 
-    if (!hasAccess) setOpenSubscribeModal(true)
+    if (!hasAccess) setOpenSubscribeModal(true);
   };
 
   return (
@@ -277,12 +285,10 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
         </Popover>
 
         <Stack
-          direction={
-            {
-              xs: 'column',
-              md: 'row',
-            }
-          }
+          direction={{
+            xs: 'column',
+            md: 'row',
+          }}
           sx={{
             zIndex: 10,
             alignItems: 'flex-start',
@@ -303,13 +309,16 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
               },
             }}
           >
-            <Stack direction="row" sx={{
-              ml: {
-                xs: 4,
-                sm: 4,
-                md: 0,
-              }
-            }}>
+            <Stack
+              direction="row"
+              sx={{
+                ml: {
+                  xs: 4,
+                  sm: 4,
+                  md: 0,
+                },
+              }}
+            >
               <Avatar
                 src={
                   (profile?.metadata?.picture as any)?.optimized?.uri ??
@@ -323,14 +332,18 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
                   border: `solid 2px ${theme.palette.common.white}`,
                 }}
               />
-              <Stack direction="row" spacing={2} justifyContent="center" sx={
-                {
-                mt: {
-                  xs: 7,
-                  sm: 7,
-                  md: 11,
-                },
-                ml: 2 }}
+              <Stack
+                direction="row"
+                spacing={2}
+                justifyContent="center"
+                sx={{
+                  mt: {
+                    xs: 7,
+                    sm: 7,
+                    md: 11,
+                  },
+                  ml: 2,
+                }}
               >
                 {socialMedia.map(
                   ({ key, icon }) =>
@@ -402,7 +415,15 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
               </Box>
               <Stack direction="row" sx={{ width: '100%', mb: 2, gap: 2, flexWrap: 'wrap' }}>
                 {authorizedLoading && (
-                  <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', maxWidth:'100%', flexWrap: 'wrap' }}>
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      maxWidth: '100%',
+                      flexWrap: 'wrap',
+                    }}
+                  >
                     <CircularProgress size={24} sx={{ color: '#fff' }} />
                   </Box>
                 )}
@@ -457,14 +478,15 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
                         },
                       }}
                       sx={{
-                        pointerEvents: 'none'
+                        pointerEvents: 'none',
                       }}
                     >
                       <Typography>Configure joining pricing</Typography>
                     </Popover>
                   </>
-                ): <></>}
-
+                ) : (
+                  <></>
+                )}
 
                 {profile?.id !== sessionData?.profile?.id && (
                   <FollowUnfollowButton profileId={profile?.id} />
@@ -501,7 +523,7 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
                     },
                   }}
                   sx={{
-                    pointerEvents: 'none'
+                    pointerEvents: 'none',
                   }}
                 >
                   <Typography>Share Watchit on your social</Typography>
@@ -543,10 +565,10 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
                         },
                       }}
                       sx={{
-                        pointerEvents: 'none'
+                        pointerEvents: 'none',
                       }}
                     >
-                        <Typography>Update your profile information</Typography>
+                      <Typography>Update your profile information</Typography>
                     </Popover>
                   </>
                 )}
@@ -684,26 +706,32 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
                 text={`${profile?.ownedBy?.address}`}
               />
             </Stack>
-            {isAuthorized && !authorizedLoading && attestation && !attestationLoading && hasAccess && !accessLoading && profile?.id !== sessionData?.profile?.id && (
-              <>
-                <Divider sx={{ borderColor: 'rgba(255, 255, 255, 0.08)', width: '100%' }} />
-                <Stack
-                  direction="row"
-                  sx={{
-                    zIndex: 10,
-                    width: '100%',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                  }}
-                >
-                  <Typography color="text.secondary">Attestation</Typography>
-                  <OpenableText
-                    label={truncateAddress(attestationAddress)}
-                    url={`${urlAttestationBase}${attestationAddress}`}
-                  />
-                </Stack>
-              </>
-            )}
+            {isAuthorized &&
+              !authorizedLoading &&
+              attestation &&
+              !attestationLoading &&
+              hasAccess &&
+              !accessLoading &&
+              profile?.id !== sessionData?.profile?.id && (
+                <>
+                  <Divider sx={{ borderColor: 'rgba(255, 255, 255, 0.08)', width: '100%' }} />
+                  <Stack
+                    direction="row"
+                    sx={{
+                      zIndex: 10,
+                      width: '100%',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                    }}
+                  >
+                    <Typography color="text.secondary">Attestation</Typography>
+                    <OpenableText
+                      label={truncateAddress(attestationAddress)}
+                      url={`${urlAttestationBase}${attestationAddress}`}
+                    />
+                  </Stack>
+                </>
+              )}
             <Divider sx={{ borderColor: 'rgba(255, 255, 255, 0.08)', width: '100%' }} />
             <Stack
               direction="column"
@@ -717,24 +745,27 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
               <Typography color="text.secondary">Distribution partners</Typography>
               <Box
                 gridTemplateColumns={{
-                  xs: 'repeat(3, 1fr)'
+                  xs: 'repeat(3, 1fr)',
                 }}
                 sx={{
-                overflow: 'hidden',
-                display: 'grid',
-                gap: 1,
-                mt: 1,
-              }}>
-                {
-                  ['Watchit'].map((partner, index) => (
-                    <StyledBoxGradient key={`partner-${index}`} color1={randomColors[randomColors.length - index]} color2={randomColors[index]} >
-                      <Typography style={{ marginRight: 5, fontWeight: 'bold' }} variant="caption">
-                        {partner}
-                      </Typography>
-                      <IconRosetteDiscountCheckFilled />
-                    </StyledBoxGradient>
+                  overflow: 'hidden',
+                  display: 'grid',
+                  gap: 1,
+                  mt: 1,
+                }}
+              >
+                {['Watchit'].map((partner, index) => (
+                  <StyledBoxGradient
+                    key={`partner-${index}`}
+                    color1={randomColors[randomColors.length - index]}
+                    color2={randomColors[index]}
+                  >
+                    <Typography style={{ marginRight: 5, fontWeight: 'bold' }} variant="caption">
+                      {partner}
+                    </Typography>
+                    <IconRosetteDiscountCheckFilled />
+                  </StyledBoxGradient>
                 ))}
-
               </Box>
             </Stack>
           </Stack>
@@ -792,9 +823,13 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
   );
 };
 
-export default ProfileHeader
+export default ProfileHeader;
 
-const StyledBoxGradient = styled(Box)<{ color1?: string; color2?: string }>(({ theme, color1, color2 }) => {
+const StyledBoxGradient = styled(Box)<{ color1?: string; color2?: string }>(({
+  theme,
+  color1,
+  color2,
+}) => {
   const defaultColor1 = theme.palette.primary.main;
   const defaultColor2 = theme.palette.secondary.main;
 

@@ -9,7 +9,7 @@ type GroupProps = {
   items: NavListProps[];
   activeId?: string;
   config: NavConfigProps;
-  onClick?: (id: string) => void
+  onClick?: (id: string) => void;
 };
 
 function NavSectionMini({ items, activeId, config, onClick }: GroupProps) {
@@ -22,7 +22,9 @@ function NavSectionMini({ items, activeId, config, onClick }: GroupProps) {
           data={list}
           depth={1}
           config={config}
-          onClick={() => { onClick?.(list.id ?? '') }}
+          onClick={() => {
+            onClick?.(list.id ?? '');
+          }}
         />
       ))}
     </>

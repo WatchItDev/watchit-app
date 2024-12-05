@@ -1,11 +1,11 @@
-import './init.js'
+import './init.js';
 import { Suspense } from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 
-import * as Sentry from "@sentry/react";
+import * as Sentry from '@sentry/react';
 import App from './App';
 import { Buffer } from 'buffer';
 import process from 'process';
@@ -16,10 +16,7 @@ window.global = window;
 
 Sentry.init({
   dsn: GLOBAL_CONSTANTS.SENTRY_DNS,
-  integrations: [
-    Sentry.browserTracingIntegration(),
-    Sentry.replayIntegration(),
-  ],
+  integrations: [Sentry.browserTracingIntegration(), Sentry.replayIntegration()],
   // Tracing
   tracesSampleRate: 1.0, //  Capture 100% of the transactions
   // Session Replay

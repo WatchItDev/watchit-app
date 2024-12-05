@@ -5,7 +5,7 @@ import Lottie, { LottieRefCurrentProps } from 'lottie-react';
 import watchitLogo from '@src/assets/animations/watchit_spinner.json';
 
 interface WatchitLoaderProps {
-  speed?: number
+  speed?: number;
 }
 
 export const WatchitLoader: FC<WatchitLoaderProps> = ({ speed = 1.5 }) => {

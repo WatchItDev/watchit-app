@@ -3,7 +3,7 @@ import Stack from '@mui/material/Stack';
 //
 import { NavSectionProps, NavListProps, NavConfigProps } from '../types';
 import { navMiniConfig } from '../config';
-import NavListVerticalMini from "@src/components/nav-section/mini/nav-list-vertical-mini.tsx";
+import NavListVerticalMini from '@src/components/nav-section/mini/nav-list-vertical-mini.tsx';
 
 // ----------------------------------------------------------------------
 

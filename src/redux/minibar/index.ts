@@ -1,7 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-
-export type StateType = 'mini' | 'vertical'
+export type StateType = 'mini' | 'vertical';
 
 const initialState = {
   state: 'vertical' as StateType,
@@ -26,11 +25,10 @@ const minibarSlice = createSlice({
 
     setCollapsed: (state, action) => {
       state.wasCollapsed = action.payload;
-    }
-
+    },
   },
 });
 
-export const { toggleMinibar, removeMinibar, openMinibar, setCollapsed  } = minibarSlice.actions;
+export const { toggleMinibar, removeMinibar, openMinibar, setCollapsed } = minibarSlice.actions;
 
 export default minibarSlice.reducer;

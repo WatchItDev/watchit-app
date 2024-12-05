@@ -6,7 +6,7 @@ import { PublicationDetailsView } from '@src/sections/publication/view';
 import Header from '@src/layouts/dashboard/header.tsx';
 import { paths } from '@src/routes/paths.ts';
 
-import HeaderContent from "@src/layouts/dashboard/HeaderContent.tsx";
+import HeaderContent from '@src/layouts/dashboard/HeaderContent.tsx';
 
 // ----------------------------------------------------------------------
 
@@ -17,7 +17,7 @@ export default function ProductDetailsPage() {
 
   const handleBack = () => {
     router.push(paths.dashboard.root);
-  }
+  };
 
   return (
     <>

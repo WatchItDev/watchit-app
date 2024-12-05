@@ -80,7 +80,7 @@ export const useHasAccess = (ownerAddress?: Address): UseHasAccessHook => {
       loading: false,
       fetching: false,
       error: null,
-      refetch: () => {}
+      refetch: () => {},
     };
   }
 

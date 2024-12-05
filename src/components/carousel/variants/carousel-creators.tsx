@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 import Box from '@mui/material/Box';
 import Carousel, { useCarousel } from '@src/components/carousel/index';
-import {CarouselSection} from "@src/components/poster/carousel-section.tsx";
-import NavigationArrows from "@src/components/carousel/NavigationArrows.tsx";
+import { CarouselSection } from '@src/components/poster/carousel-section.tsx';
+import NavigationArrows from '@src/components/carousel/NavigationArrows.tsx';
 import { Profile } from '@lens-protocol/api-bindings';
 import { UserItem } from '@src/components/user-item';
 
@@ -83,30 +83,32 @@ export default function CarouselCreators({ data, title, minItemWidth, maxItemWid
   }, [itemsPerSlide, data]);
 
   return (
-    <CarouselSection title={title} action={<NavigationArrows next={carousel.onNext} prev={carousel.onPrev} />}>
-    <Box
-      ref={parentRef}
-      sx={{
-        overflow: 'hidden',
-        position: 'relative',
-        '.slick-track': {
-          height: '100%',
-        },
-        '.slick-slide': {
-          height: '100%',
-        },
-        '.slick-slide > div': {
-          height: '100%',
-        },
-      }}
+    <CarouselSection
+      title={title}
+      action={<NavigationArrows next={carousel.onNext} prev={carousel.onPrev} />}
     >
-      <Carousel ref={carousel.carouselRef} {...carousel.carouselSettings}>
-        {slideData.map((slideItems, index) => (
-          <Slide key={`slide-${index}`} items={slideItems} itemsPerRow={itemsPerSlide} />
-        ))}
-      </Carousel>
-
-    </Box>
+      <Box
+        ref={parentRef}
+        sx={{
+          overflow: 'hidden',
+          position: 'relative',
+          '.slick-track': {
+            height: '100%',
+          },
+          '.slick-slide': {
+            height: '100%',
+          },
+          '.slick-slide > div': {
+            height: '100%',
+          },
+        }}
+      >
+        <Carousel ref={carousel.carouselRef} {...carousel.carouselSettings}>
+          {slideData.map((slideItems, index) => (
+            <Slide key={`slide-${index}`} items={slideItems} itemsPerRow={itemsPerSlide} />
+          ))}
+        </Carousel>
+      </Box>
     </CarouselSection>
   );
 }

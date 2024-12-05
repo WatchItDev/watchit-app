@@ -2,12 +2,7 @@
 import React, { useState } from 'react';
 
 // MUI IMPORTS
-import {
-  Modal,
-  Box,
-  Fade,
-  Backdrop
-} from '@mui/material';
+import { Modal, Box, Fade, Backdrop } from '@mui/material';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 
@@ -33,9 +28,8 @@ export const UpdateModal: React.FC<UpdateModalProps> = ({ open, onClose }) => {
 
   const handleProfileUpdateSuccess = () => {
     setSuccessMessage('Profile updated successfully.');
-    onClose?.()
+    onClose?.();
   };
-
 
   return (
     <>
@@ -48,7 +42,7 @@ export const UpdateModal: React.FC<UpdateModalProps> = ({ open, onClose }) => {
         BackdropComponent={Backdrop}
         BackdropProps={{
           timeout: 500,
-          sx: {  pointerEvents: loading ? 'none' : 'all' }
+          sx: { pointerEvents: loading ? 'none' : 'all' },
         }}
       >
         <Fade in={open}>
@@ -60,13 +54,13 @@ export const UpdateModal: React.FC<UpdateModalProps> = ({ open, onClose }) => {
               transform: 'translate(-50%, -50%)',
               width: {
                 xs: '90%',
-                sm: 500
+                sm: 500,
               },
               bgcolor: 'background.paper',
               borderRadius: 2,
               boxShadow: 24,
               outline: 'none',
-              transition: 'all 0.5s easy-in-out'
+              transition: 'all 0.5s easy-in-out',
             }}
           >
             <ProfileFormView
@@ -83,7 +77,7 @@ export const UpdateModal: React.FC<UpdateModalProps> = ({ open, onClose }) => {
                   twitter: '',
                   instagram: '',
                   orb: '',
-                  farcaster: ''
+                  farcaster: '',
                 },
               }}
             />
@@ -101,7 +95,6 @@ export const UpdateModal: React.FC<UpdateModalProps> = ({ open, onClose }) => {
           {successMessage}
         </Alert>
       </Snackbar>
-
     </>
   );
 };

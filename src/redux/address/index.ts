@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export type AddressReducerState = {
-  address: string | null,
-}
+  address: string | null;
+};
 
 const initialState: AddressReducerState = {
   address: null,

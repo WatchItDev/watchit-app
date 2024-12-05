@@ -98,9 +98,7 @@ export default function GovernanceDetailsHero({ title, author, coverUrl, created
               bottom: { xs: 32, md: 64 },
               right: { xs: 16, md: 24 },
             }}
-          >
-
-          </SpeedDial>
+          ></SpeedDial>
         </Stack>
       </Container>
     </Box>

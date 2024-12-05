@@ -6,23 +6,23 @@ import Typography from '@mui/material/Typography';
 import { useCountdownDate } from '@src/hooks/use-countdown';
 // assets
 import { ComingSoonIllustration } from '@src/assets/illustrations';
-import HeaderContent from "@src/layouts/dashboard/HeaderContent.tsx";
-import Header from "@src/layouts/dashboard/header.tsx";
+import HeaderContent from '@src/layouts/dashboard/HeaderContent.tsx';
+import Header from '@src/layouts/dashboard/header.tsx';
 
 // ----------------------------------------------------------------------
 
 interface props {
-  deadline?: string
-  showDeadline?: boolean
-  title?: string
-  content?: string
+  deadline?: string;
+  showDeadline?: boolean;
+  title?: string;
+  content?: string;
 }
 
 export const ComingSoonView = ({
   deadline = '01/12/2025 21:30',
   showDeadline,
   title = 'Coming Soon!',
-  content = 'Exciting things are on the way—this section is under construction!'
+  content = 'Exciting things are on the way—this section is under construction!',
 }: props) => {
   const { days, hours, minutes, seconds } = useCountdownDate(new Date(deadline));
 
@@ -35,7 +35,16 @@ export const ComingSoonView = ({
         {title}
       </Typography>
 
-      <Typography variant={'h6'} sx={{ color: 'text.secondary', width: { xs: '100%', md: '80%' }, mx: 'auto', textAlign: 'center', mb: 1 }}>
+      <Typography
+        variant={'h6'}
+        sx={{
+          color: 'text.secondary',
+          width: { xs: '100%', md: '80%' },
+          mx: 'auto',
+          textAlign: 'center',
+          mb: 1,
+        }}
+      >
         {content}
       </Typography>
 
@@ -59,7 +68,7 @@ export const ComingSoonView = ({
       )}
     </>
   );
-}
+};
 
 // ----------------------------------------------------------------------
 

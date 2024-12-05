@@ -70,8 +70,7 @@ export const useAuthorizePolicy = (): useAuthorizePolicyHook => {
 
     try {
       // Retrieve the account abstraction provider, bundler client, and smart account
-      const accountAbstractionProvider =
-        web3Auth.options.accountAbstractionProvider;
+      const accountAbstractionProvider = web3Auth.options.accountAbstractionProvider;
       const bundlerClient = accountAbstractionProvider.bundlerClient;
       const smartAccount = accountAbstractionProvider.smartAccount;
 
@@ -90,7 +89,7 @@ export const useAuthorizePolicy = (): useAuthorizePolicyHook => {
       // Prepare the authorize policy data
       const rightPolicyAuthorizerData = initializeAuthorizePolicy({
         policyAddress,
-        data
+        data,
       });
 
       // Create the array of calls to be included in the user operation

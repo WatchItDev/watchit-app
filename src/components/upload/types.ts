@@ -28,6 +28,6 @@ export interface UploadProps extends DropzoneOptions {
   onUpload?: VoidFunction;
   onRemove?: (file: CustomFile | string) => void;
   onRemoveAll?: VoidFunction;
-  singleFilePreview?: typeof SingleFilePreview,
-  isCustomPreview?: boolean
+  singleFilePreview?: typeof SingleFilePreview;
+  isCustomPreview?: boolean;
 }

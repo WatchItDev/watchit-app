@@ -6,11 +6,15 @@ import LinearProgress from '@mui/material/LinearProgress';
 
 type Props = {
   parentCommentId: string;
-  canReply?: boolean
+  canReply?: boolean;
 };
 
 const RepliesList = ({ parentCommentId, canReply }: Props) => {
-  const { data: replies, loading, error } = usePublications({
+  const {
+    data: replies,
+    loading,
+    error,
+  } = usePublications({
     where: {
       commentOn: {
         id: publicationId(parentCommentId),
@@ -18,7 +22,19 @@ const RepliesList = ({ parentCommentId, canReply }: Props) => {
     },
   });
 
-  if (loading) return <LinearProgress color="inherit" sx={{ width: 1, maxWidth: 300, marginBottom: '16px', marginRight: '16px', alignSelf: 'flex-end' }} />;
+  if (loading)
+    return (
+      <LinearProgress
+        color="inherit"
+        sx={{
+          width: 1,
+          maxWidth: 300,
+          marginBottom: '16px',
+          marginRight: '16px',
+          alignSelf: 'flex-end',
+        }}
+      />
+    );
   if (error) return <p>Error loading replies: {error.message}</p>;
 
   return (

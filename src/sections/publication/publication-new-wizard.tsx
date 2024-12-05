@@ -15,7 +15,6 @@ import { useSettingsContext } from '@src/components/settings';
 // @ts-ignore
 import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
 
-
 const steps = ['Movie Information', 'Media Assets & Technical Details', 'Distribution & Rights'];
 
 export default function PublicationNewWizard() {
@@ -57,9 +56,9 @@ export default function PublicationNewWizard() {
     // Subir archivo a IPFS
     const cid = await fs.addBytes(uint8Array);
 
-    console.log('file ipfs')
-    console.log(cid)
-    console.log(cid?.toString?.())
+    console.log('file ipfs');
+    console.log(cid);
+    console.log(cid?.toString?.());
 
     // Retornar la URI de IPFS
     return `ipfs://${cid?.toString?.()}`;
@@ -77,7 +76,7 @@ export default function PublicationNewWizard() {
     // Crear la publicación en Lens
     const result = await createPost({
       metadata: metadataUri,
-      sponsored: false
+      sponsored: false,
     });
 
     if (result.isFailure()) {
@@ -101,7 +100,7 @@ export default function PublicationNewWizard() {
       })
     );
 
-    console.log('file uploads')
+    console.log('file uploads');
 
     // Construir metadatos con los hashes de los archivos en IPFS
     const metadata = {
@@ -180,7 +179,9 @@ export default function PublicationNewWizard() {
     };
 
     // Subir los metadatos a IPFS
-    const metadataUri = await uploadFileToIpfs(new File([JSON.stringify(metadata)], 'metadata.json', { type: 'application/json' }));
+    const metadataUri = await uploadFileToIpfs(
+      new File([JSON.stringify(metadata)], 'metadata.json', { type: 'application/json' })
+    );
 
     return metadataUri; // Devolver la URI de los metadatos
   };
@@ -197,8 +198,7 @@ export default function PublicationNewWizard() {
   };
 
   return (
-    <Container maxWidth={settings.themeStretch ? false : 'lg'} sx={{ mb: 5,  mt: 5 }}>
-
+    <Container maxWidth={settings.themeStretch ? false : 'lg'} sx={{ mb: 5, mt: 5 }}>
       <Grid container justifyContent="flex-start">
         <Grid xs={12} md={12}>
           <PublicationNewWizardSteps activeStep={activeStep} steps={steps} goToStep={goToStep} />
@@ -206,8 +206,12 @@ export default function PublicationNewWizard() {
       </Grid>
 
       {activeStep === 0 && <MovieInformationForm onSubmit={handleFormSubmit} data={formData} />}
-      {activeStep === 1 && <MediaAssetsForm onSubmit={handleFormSubmit} onBack={handleBack} data={formData} />}
-      {activeStep === 2 && <DistributionForm onSubmit={handleFormSubmit} onBack={handleBack} data={formData} />}
+      {activeStep === 1 && (
+        <MediaAssetsForm onSubmit={handleFormSubmit} onBack={handleBack} data={formData} />
+      )}
+      {activeStep === 2 && (
+        <DistributionForm onSubmit={handleFormSubmit} onBack={handleBack} data={formData} />
+      )}
     </Container>
   );
 }

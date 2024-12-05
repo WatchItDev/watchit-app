@@ -41,7 +41,9 @@ export default function NavMini() {
             id: 'watchit',
             title: 'Watchit',
             path: paths.dashboard.root,
-            icon: <SvgColor src='/assets/icons/navbar/ic_watchit.svg' sx={{ width: 1, height: 1 }} />
+            icon: (
+              <SvgColor src="/assets/icons/navbar/ic_watchit.svg" sx={{ width: 1, height: 1 }} />
+            ),
           }}
           depth={1}
           config={{}}
@@ -50,13 +52,13 @@ export default function NavMini() {
         <Box sx={{ width: '100%', py: 0.5 }} />
         <NavSectionMini
           items={data}
-          activeId=''
+          activeId=""
           // onClick={(id) => () => {} }
           config={{
-            hiddenLabel: true
+            hiddenLabel: true,
           }}
         />
-       {/* <Box sx={{ width: '100%', py: 0.5 }} />
+        {/* <Box sx={{ width: '100%', py: 0.5 }} />
         <NavList
           data={{
             id: 'new_collection',

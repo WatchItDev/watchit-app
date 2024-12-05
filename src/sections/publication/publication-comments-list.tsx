@@ -8,12 +8,16 @@ import LinearProgress from '@mui/material/LinearProgress';
 
 type Props = {
   publicationId: string;
-  showReplies?: boolean
+  showReplies?: boolean;
 };
 
 export default function PostCommentList({ publicationId: id, showReplies }: Props) {
   // Fetch top-level comments (where commentOn is the post ID)
-  const { data: comments, loading, error } = usePublications({
+  const {
+    data: comments,
+    loading,
+    error,
+  } = usePublications({
     where: {
       commentOn: {
         id: publicationId(id),
@@ -22,7 +26,13 @@ export default function PostCommentList({ publicationId: id, showReplies }: Prop
     limit: LimitType.Ten,
   });
 
-  if (loading) return <LinearProgress color="inherit" sx={{ width: 1, maxWidth: 360, marginTop: '16px', alignSelf: 'center' }} />;
+  if (loading)
+    return (
+      <LinearProgress
+        color="inherit"
+        sx={{ width: 1, maxWidth: 360, marginTop: '16px', alignSelf: 'center' }}
+      />
+    );
   if (error) return <p>Error loading comments: {error.message}</p>;
 
   return (
@@ -33,10 +43,7 @@ export default function PostCommentList({ publicationId: id, showReplies }: Prop
 
         return (
           <Box key={commentId} width="100%">
-            <PublicationCommentItem
-              comment={comment}
-              canReply={showReplies}
-            />
+            <PublicationCommentItem comment={comment} canReply={showReplies} />
           </Box>
         );
       })}

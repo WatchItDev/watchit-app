@@ -32,7 +32,6 @@ type MediaAssetFields =
   | 'subtitleFormat'
   | 'subtitleLanguage';
 
-
 const MediaAssetsSchema = Yup.object().shape({
   verticalPoster: Yup.mixed().required('Vertical poster file is required'),
   horizontalPoster: Yup.mixed().required('Horizontal poster file is required'),
@@ -129,7 +128,12 @@ export default function MediaAssetsForm({ onSubmit, onBack, data }: any) {
 
   return (
     <FormProvider methods={methods} onSubmit={methods.handleSubmit(onSubmit)}>
-      <PublicationWizardContentLayout data={{...data, ...values}} showNext showBack onBack={onBack}>
+      <PublicationWizardContentLayout
+        data={{ ...data, ...values }}
+        showNext
+        showBack
+        onBack={onBack}
+      >
         <Grid xs={12}>
           <Card sx={{ backgroundColor: 'transparent' }}>
             <CardHeader title="Media Assets" />
@@ -143,19 +147,33 @@ export default function MediaAssetsForm({ onSubmit, onBack, data }: any) {
                     thumbnail
                     thumbnailRatio="4/6"
                     name="verticalPoster"
-                    onDrop={(acceptedFiles) => { handleDropSingleFile('verticalPoster', acceptedFiles) }}
+                    onDrop={(acceptedFiles) => {
+                      handleDropSingleFile('verticalPoster', acceptedFiles);
+                    }}
                     helperText="Upload the vertical poster image"
                     accept={{ 'image/*': [] }}
-                    onRemove={(inputFile) => { console.log('on remove: ', inputFile) }}
-                    onRemoveAll={() => { console.log('on remove all') }}
+                    onRemove={(inputFile) => {
+                      console.log('on remove: ', inputFile);
+                    }}
+                    onRemoveAll={() => {
+                      console.log('on remove all');
+                    }}
                     onUpload={() => console.info('ON UPLOAD')}
                     singleFilePreview={SingleFilePreviewCustom}
                     isCustomPreview
-                    placeholder={(
-                      <Box sx={{ height: '15rem', display: 'flex', alignItems: 'center', justifyContent: 'center', p: 1 }}>
+                    placeholder={
+                      <Box
+                        sx={{
+                          height: '15rem',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          p: 1,
+                        }}
+                      >
                         <Image src="/assets/illustrations/poster_skeleton.png" />
                       </Box>
-                    )}
+                    }
                   />
                 </Grid>
 
@@ -167,19 +185,33 @@ export default function MediaAssetsForm({ onSubmit, onBack, data }: any) {
                     thumbnail
                     thumbnailRatio="16/9"
                     name="horizontalPoster"
-                    onDrop={(acceptedFiles) => { handleDropSingleFile('horizontalPoster', acceptedFiles) }}
+                    onDrop={(acceptedFiles) => {
+                      handleDropSingleFile('horizontalPoster', acceptedFiles);
+                    }}
                     helperText="Upload the horizontal poster image"
                     accept={{ 'image/*': [] }}
-                    onRemove={(inputFile) => { console.log('on remove: ', inputFile) }}
-                    onRemoveAll={() => { console.log('on remove all') }}
+                    onRemove={(inputFile) => {
+                      console.log('on remove: ', inputFile);
+                    }}
+                    onRemoveAll={() => {
+                      console.log('on remove all');
+                    }}
                     onUpload={() => console.info('ON UPLOAD')}
                     singleFilePreview={SingleFilePreviewCustom}
                     isCustomPreview
-                    placeholder={(
-                      <Box sx={{ height: '15rem', display: 'flex', alignItems: 'center', justifyContent: 'center', p: 1 }}>
+                    placeholder={
+                      <Box
+                        sx={{
+                          height: '15rem',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          p: 1,
+                        }}
+                      >
                         <Image src="/assets/illustrations/poster_horizontal_skeleton.png" />
                       </Box>
-                    )}
+                    }
                   />
                 </Grid>
 
@@ -191,19 +223,32 @@ export default function MediaAssetsForm({ onSubmit, onBack, data }: any) {
                     thumbnail
                     thumbnailRatio="21/9"
                     name="wallpaper"
-                    onDrop={(acceptedFiles) => { handleDropSingleFile('wallpaper', acceptedFiles) }}
+                    onDrop={(acceptedFiles) => {
+                      handleDropSingleFile('wallpaper', acceptedFiles);
+                    }}
                     helperText="Upload the wallpaper image"
                     accept={{ 'image/*': [] }}
-                    onRemove={(inputFile) => { console.log('on remove: ', inputFile) }}
-                    onRemoveAll={() => { console.log('on remove all') }}
+                    onRemove={(inputFile) => {
+                      console.log('on remove: ', inputFile);
+                    }}
+                    onRemoveAll={() => {
+                      console.log('on remove all');
+                    }}
                     onUpload={() => console.info('ON UPLOAD')}
                     singleFilePreview={SingleFilePreviewCustom}
                     isCustomPreview
-                    placeholder={(
-                      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', p: 1 }}>
+                    placeholder={
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          p: 1,
+                        }}
+                      >
                         <Image src="/assets/illustrations/poster_extended_skeleton.png" />
                       </Box>
-                    )}
+                    }
                   />
                 </Grid>
 
@@ -218,17 +263,30 @@ export default function MediaAssetsForm({ onSubmit, onBack, data }: any) {
                   <RHFUpload
                     thumbnail
                     name="fullMovie"
-                    onDrop={(acceptedFiles) => { handleDropSingleFile('fullMovie', acceptedFiles) }}
+                    onDrop={(acceptedFiles) => {
+                      handleDropSingleFile('fullMovie', acceptedFiles);
+                    }}
                     helperText="Upload the full movie file"
                     accept={{ 'video/*': [] }}
-                    onRemove={(inputFile) => { console.log('on remove: ', inputFile) }}
-                    onRemoveAll={() => { console.log('on remove all') }}
+                    onRemove={(inputFile) => {
+                      console.log('on remove: ', inputFile);
+                    }}
+                    onRemoveAll={() => {
+                      console.log('on remove all');
+                    }}
                     onUpload={() => console.info('ON UPLOAD')}
-                    placeholder={(
-                      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', p: 1 }}>
+                    placeholder={
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          p: 1,
+                        }}
+                      >
                         <Image src="/assets/illustrations/movie_skeleton.png" />
                       </Box>
-                    )}
+                    }
                   />
                 </Grid>
 
@@ -239,17 +297,30 @@ export default function MediaAssetsForm({ onSubmit, onBack, data }: any) {
                   <RHFUpload
                     thumbnail
                     name="trailer"
-                    onDrop={(acceptedFiles) => { handleDropSingleFile('trailer', acceptedFiles) }}
+                    onDrop={(acceptedFiles) => {
+                      handleDropSingleFile('trailer', acceptedFiles);
+                    }}
                     helperText="Upload the trailer file"
                     accept={{ 'video/*': [] }}
-                    onRemove={(inputFile) => { console.log('on remove: ', inputFile) }}
-                    onRemoveAll={() => { console.log('on remove all') }}
+                    onRemove={(inputFile) => {
+                      console.log('on remove: ', inputFile);
+                    }}
+                    onRemoveAll={() => {
+                      console.log('on remove all');
+                    }}
                     onUpload={() => console.info('ON UPLOAD')}
-                    placeholder={(
-                      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', p: 1 }}>
+                    placeholder={
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          p: 1,
+                        }}
+                      >
                         <Image src="/assets/illustrations/movie_skeleton.png" />
                       </Box>
-                    )}
+                    }
                   />
                 </Grid>
 
@@ -260,17 +331,30 @@ export default function MediaAssetsForm({ onSubmit, onBack, data }: any) {
                   <RHFUpload
                     thumbnail
                     name="subtitles"
-                    onDrop={(acceptedFiles) => { handleDropSingleFile('subtitles', acceptedFiles) }}
+                    onDrop={(acceptedFiles) => {
+                      handleDropSingleFile('subtitles', acceptedFiles);
+                    }}
                     helperText="Upload the subtitle file"
                     accept={{ 'text/vtt': ['.vtt'], 'application/x-subrip': ['.srt'] }}
-                    onRemove={(inputFile) => { console.log('on remove: ', inputFile) }}
-                    onRemoveAll={() => { console.log('on remove all') }}
+                    onRemove={(inputFile) => {
+                      console.log('on remove: ', inputFile);
+                    }}
+                    onRemoveAll={() => {
+                      console.log('on remove all');
+                    }}
                     onUpload={() => console.info('ON UPLOAD')}
-                    placeholder={(
-                      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', p: 1 }}>
+                    placeholder={
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          p: 1,
+                        }}
+                      >
                         <Image src="/assets/illustrations/movie_subtitle_skeleton.png" />
                       </Box>
-                    )}
+                    }
                   />
                 </Grid>
               </Grid>
@@ -283,7 +367,7 @@ export default function MediaAssetsForm({ onSubmit, onBack, data }: any) {
             <CardHeader title="Technical Details" />
             <Stack spacing={3} sx={{ p: 3 }}>
               <Grid container spacing={3}>
-                <Grid item xs={12} md={6} >
+                <Grid item xs={12} md={6}>
                   <RHFSelect name="videoFormat" label="Video Format">
                     {videoFormatOptions.map((option) => (
                       <MenuItem key={option.value} value={option.value}>
@@ -292,7 +376,7 @@ export default function MediaAssetsForm({ onSubmit, onBack, data }: any) {
                     ))}
                   </RHFSelect>
                 </Grid>
-                <Grid item xs={12} md={6} >
+                <Grid item xs={12} md={6}>
                   <RHFSelect name="resolution" label="Resolution">
                     {resolutionOptions.map((option) => (
                       <MenuItem key={option.value} value={option.value}>
@@ -301,10 +385,10 @@ export default function MediaAssetsForm({ onSubmit, onBack, data }: any) {
                     ))}
                   </RHFSelect>
                 </Grid>
-                <Grid item xs={12} md={6} >
+                <Grid item xs={12} md={6}>
                   <RHFTextField name="bitrate" label="Bitrate (Mbps)" type="number" />
                 </Grid>
-                <Grid item xs={12} md={6} >
+                <Grid item xs={12} md={6}>
                   <RHFSelect name="codec" label="Codec">
                     {codecOptions.map((option) => (
                       <MenuItem key={option.value} value={option.value}>
@@ -313,7 +397,7 @@ export default function MediaAssetsForm({ onSubmit, onBack, data }: any) {
                     ))}
                   </RHFSelect>
                 </Grid>
-                <Grid item xs={12} md={6} >
+                <Grid item xs={12} md={6}>
                   <RHFSelect name="audioFormat" label="Audio Format">
                     {audioFormatOptions.map((option) => (
                       <MenuItem key={option.value} value={option.value}>
@@ -322,7 +406,7 @@ export default function MediaAssetsForm({ onSubmit, onBack, data }: any) {
                     ))}
                   </RHFSelect>
                 </Grid>
-                <Grid item xs={12} md={6} >
+                <Grid item xs={12} md={6}>
                   <RHFSelect name="audioChannels" label="Audio Channels">
                     {audioChannelsOptions.map((option) => (
                       <MenuItem key={option.value} value={option.value}>
@@ -331,10 +415,10 @@ export default function MediaAssetsForm({ onSubmit, onBack, data }: any) {
                     ))}
                   </RHFSelect>
                 </Grid>
-                <Grid item xs={12} md={6} >
+                <Grid item xs={12} md={6}>
                   <RHFTextField name="audioBitrate" label="Bitrate (kbps)" type="number" />
                 </Grid>
-                <Grid item xs={12} md={6} >
+                <Grid item xs={12} md={6}>
                   <RHFSelect name="subtitleFormat" label="Subtitle Format">
                     {subtitleFormatOptions.map((option) => (
                       <MenuItem key={option.value} value={option.value}>
@@ -343,7 +427,7 @@ export default function MediaAssetsForm({ onSubmit, onBack, data }: any) {
                     ))}
                   </RHFSelect>
                 </Grid>
-                <Grid item xs={12} md={6} >
+                <Grid item xs={12} md={6}>
                   <RHFSelect name="subtitleLanguage" label="Subtitle Language">
                     {subtitleLanguageOptions.map((option) => (
                       <MenuItem key={option.value} value={option.value}>

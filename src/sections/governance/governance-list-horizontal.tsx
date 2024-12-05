@@ -28,12 +28,8 @@ export default function GovernanceListHorizontal({ posts, loading }: Props) {
   );
 
   return (
-    <Box
-        gap={3}
-        display="grid"
-        gridTemplateColumns="repeat(1, 1fr)"
-      >
-        {loading ? renderSkeleton : renderList}
+    <Box gap={3} display="grid" gridTemplateColumns="repeat(1, 1fr)">
+      {loading ? renderSkeleton : renderList}
     </Box>
   );
 }

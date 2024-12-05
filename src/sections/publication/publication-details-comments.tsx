@@ -10,17 +10,17 @@ type Props = {
 };
 
 const PublicationDetailsComments = ({ id }: Props) => (
-    <>
-      {/* Comment Form for Top-Level Comments */}
-      <Box sx={{ mt: 3, mb: 3 }}>
-        <MovieCommentForm commentOn={id} />
-      </Box>
+  <>
+    {/* Comment Form for Top-Level Comments */}
+    <Box sx={{ mt: 3, mb: 3 }}>
+      <MovieCommentForm commentOn={id} />
+    </Box>
 
-       <Divider sx={{ mt: 2, mb: 2 }} />
+    <Divider sx={{ mt: 2, mb: 2 }} />
 
-      {/* List of Top-Level Comments */}
-      <PostCommentList publicationId={id} showReplies />
-    </>
-  )
+    {/* List of Top-Level Comments */}
+    <PostCommentList publicationId={id} showReplies />
+  </>
+);
 
 export default PublicationDetailsComments;

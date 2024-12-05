@@ -29,7 +29,7 @@ export default function Main({ children, sx, ...other }: BoxProps) {
         ...(lgUp && {
           // px: 2,
           // py: `${HEADER.H_DESKTOP + SPACING}px`,
-          width: `calc(100% - 368px)`
+          width: `calc(100% - 368px)`,
         }),
         ...sx,
       }}

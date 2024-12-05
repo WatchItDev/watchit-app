@@ -198,7 +198,11 @@ export default function GovernanceDetailsView({ title }: Props) {
             <CardContent>
               <Typography variant="h6">Voting results</Typography>
               <Stack>
-                <Stack spacing={2} sx={{ mt: 2, mb: 1, alignItems: 'center', justifyContent: 'space-between' }} direction="row">
+                <Stack
+                  spacing={2}
+                  sx={{ mt: 2, mb: 1, alignItems: 'center', justifyContent: 'space-between' }}
+                  direction="row"
+                >
                   <Typography variant="body2" fontWeight="700">
                     In Favor
                   </Typography>
@@ -211,7 +215,11 @@ export default function GovernanceDetailsView({ title }: Props) {
                   value={(proposalVotes.results.forVotes / totalVotes) * 100}
                 />
 
-                <Stack spacing={2} sx={{ mt: 2, mb: 1, alignItems: 'center', justifyContent: 'space-between' }} direction="row">
+                <Stack
+                  spacing={2}
+                  sx={{ mt: 2, mb: 1, alignItems: 'center', justifyContent: 'space-between' }}
+                  direction="row"
+                >
                   <Typography variant="body2" fontWeight="700">
                     Against
                   </Typography>
@@ -224,7 +232,11 @@ export default function GovernanceDetailsView({ title }: Props) {
                   value={(proposalVotes.results.againstVotes / totalVotes) * 100}
                 />
 
-                <Stack spacing={2} sx={{ mt: 2, mb: 1, alignItems: 'center', justifyContent: 'space-between' }} direction="row">
+                <Stack
+                  spacing={2}
+                  sx={{ mt: 2, mb: 1, alignItems: 'center', justifyContent: 'space-between' }}
+                  direction="row"
+                >
                   <Typography variant="body2" fontWeight="700">
                     Abstention
                   </Typography>
@@ -276,7 +288,12 @@ export default function GovernanceDetailsView({ title }: Props) {
                     <Box sx={{ mt: 2 }}>
                       <Typography variant="body2" color="success.main">
                         {/* eslint-disable-next-line no-nested-ternary */}
-                        You have already voted: {userVote === 'for' ? 'In Favor' : userVote === 'against' ? 'Against' : 'Abstain'}
+                        You have already voted:{' '}
+                        {userVote === 'for'
+                          ? 'In Favor'
+                          : userVote === 'against'
+                            ? 'Against'
+                            : 'Abstain'}
                       </Typography>
                     </Box>
                   )}
@@ -291,20 +308,13 @@ export default function GovernanceDetailsView({ title }: Props) {
 
               <Stack spacing={1} sx={{ mt: 2, alignItems: 'center' }} direction="row">
                 <Typography variant="h6">Votes</Typography>
-                <Label variant="soft">
-                  {proposalVotes.votes.length}
-                </Label>
+                <Label variant="soft">{proposalVotes.votes.length}</Label>
               </Stack>
 
               <Box sx={{ maxHeight: 200, overflowY: 'auto' }}>
                 <Stack spacing={2} sx={{ mt: 2 }}>
                   {proposalVotes.votes.map((vote, index) => (
-                    <Box
-                      key={index}
-                      display="flex"
-                      alignItems="center"
-                      justifyContent="flex-start"
-                    >
+                    <Box key={index} display="flex" alignItems="center" justifyContent="flex-start">
                       <Box
                         display="flex"
                         alignItems="center"
@@ -361,9 +371,7 @@ export default function GovernanceDetailsView({ title }: Props) {
           </IconButton>
 
           {mdUp && (
-            <Label sx={{ px: 0.75, mr: 1, fontSize: 12, color: 'text.secondary' }}>
-              Esc
-            </Label>
+            <Label sx={{ px: 0.75, mr: 1, fontSize: 12, color: 'text.secondary' }}>Esc</Label>
           )}
         </Button>
       </Header>

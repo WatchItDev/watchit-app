@@ -67,7 +67,10 @@ export default function PublicationInformationForm({ onSubmit, data }: any) {
     },
   });
 
-  const { watch, formState: { errors } } = methods;
+  const {
+    watch,
+    formState: { errors },
+  } = methods;
 
   const values = watch();
 
@@ -87,22 +90,27 @@ export default function PublicationInformationForm({ onSubmit, data }: any) {
 
   return (
     <FormProvider methods={methods} onSubmit={methods.handleSubmit(onSubmit)}>
-      <MovieWizardContentLayout data={{...data, ...values}} showNext>
+      <MovieWizardContentLayout data={{ ...data, ...values }} showNext>
         <Grid item xs={12}>
           <Card sx={{ backgroundColor: 'transparent' }}>
             <CardHeader title="Basic Movie Information" />
             <Stack spacing={3} sx={{ p: 3 }}>
               <Grid container spacing={3}>
-                <Grid item xs={12} md={6} >
+                <Grid item xs={12} md={6}>
                   <RHFTextField name="title" label="Title" />
                 </Grid>
-                <Grid item xs={12} md={6} >
+                <Grid item xs={12} md={6}>
                   <RHFTextField name="duration" label="Duration (minutes)" type="number" />
                 </Grid>
-                <Grid item xs={12} md={6} >
-                  <RHFMultiSelect name="genre" label="Genre" options={genreOptions} sx={{ width: '100%' }} />
+                <Grid item xs={12} md={6}>
+                  <RHFMultiSelect
+                    name="genre"
+                    label="Genre"
+                    options={genreOptions}
+                    sx={{ width: '100%' }}
+                  />
                 </Grid>
-                <Grid item xs={12} md={6} >
+                <Grid item xs={12} md={6}>
                   <Controller
                     name="releaseDate"
                     control={methods.control}
@@ -115,9 +123,13 @@ export default function PublicationInformationForm({ onSubmit, data }: any) {
                       />
                     )}
                   />
-                  {errors?.releaseDate ? <Typography variant="caption" color="error" sx={{ px: 2 }}><>{ errors?.releaseDate?.message ?? '' }</></Typography> : undefined}
+                  {errors?.releaseDate ? (
+                    <Typography variant="caption" color="error" sx={{ px: 2 }}>
+                      <>{errors?.releaseDate?.message ?? ''}</>
+                    </Typography>
+                  ) : undefined}
                 </Grid>
-                <Grid item xs={12} md={6} >
+                <Grid item xs={12} md={6}>
                   <RHFSelect name="language" label="Language">
                     {languageOptions.map((option) => (
                       <MenuItem key={option.value} value={option.label}>
@@ -126,13 +138,13 @@ export default function PublicationInformationForm({ onSubmit, data }: any) {
                     ))}
                   </RHFSelect>
                 </Grid>
-                <Grid item xs={12} md={6} >
+                <Grid item xs={12} md={6}>
                   <RHFSelect name="country" label="Country of Origin">
                     <MenuItem value="usa">USA</MenuItem>
                     <MenuItem value="canada">Canada</MenuItem>
                   </RHFSelect>
                 </Grid>
-                <Grid item xs={12} md={6} >
+                <Grid item xs={12} md={6}>
                   <RHFSelect name="rating" label="Rating">
                     <MenuItem value="g">G</MenuItem>
                     <MenuItem value="pg">PG</MenuItem>
@@ -140,7 +152,7 @@ export default function PublicationInformationForm({ onSubmit, data }: any) {
                     <MenuItem value="r">R</MenuItem>
                   </RHFSelect>
                 </Grid>
-                <Grid item xs={12} md={6} >
+                <Grid item xs={12} md={6}>
                   <RHFSelect name="format" label="Format">
                     <MenuItem value="sd">SD</MenuItem>
                     <MenuItem value="hd">HD</MenuItem>
@@ -160,16 +172,16 @@ export default function PublicationInformationForm({ onSubmit, data }: any) {
             <CardHeader title="Production Details" />
             <Stack spacing={3} sx={{ p: 3 }}>
               <Grid container spacing={3}>
-                <Grid item xs={12} md={6} >
+                <Grid item xs={12} md={6}>
                   <RHFTextField name="studioName" label="Studio Name" />
                 </Grid>
-                <Grid item xs={12} md={6} >
+                <Grid item xs={12} md={6}>
                   <RHFTextField name="filmingLocation" label="Primary Filming Location" />
                 </Grid>
-                <Grid item xs={12} md={6} >
+                <Grid item xs={12} md={6}>
                   <RHFTextField name="budget" label="Estimated Budget" type="number" />
                 </Grid>
-                <Grid item xs={12} md={6} >
+                <Grid item xs={12} md={6}>
                   <Controller
                     name="filmingStart"
                     control={methods.control}
@@ -182,9 +194,13 @@ export default function PublicationInformationForm({ onSubmit, data }: any) {
                       />
                     )}
                   />
-                  {errors?.filmingStart ? <Typography variant="caption" color="error" sx={{ px: 2 }}><>{ errors?.filmingStart?.message ?? '' }</></Typography> : undefined}
+                  {errors?.filmingStart ? (
+                    <Typography variant="caption" color="error" sx={{ px: 2 }}>
+                      <>{errors?.filmingStart?.message ?? ''}</>
+                    </Typography>
+                  ) : undefined}
                 </Grid>
-                <Grid item xs={12} md={6} >
+                <Grid item xs={12} md={6}>
                   <Controller
                     name="filmingEnd"
                     control={methods.control}
@@ -197,33 +213,37 @@ export default function PublicationInformationForm({ onSubmit, data }: any) {
                       />
                     )}
                   />
-                  {errors?.filmingEnd ? <Typography variant="caption" color="error" sx={{ px: 2 }}><>{ errors?.filmingEnd?.message ?? '' }</></Typography> : undefined}
+                  {errors?.filmingEnd ? (
+                    <Typography variant="caption" color="error" sx={{ px: 2 }}>
+                      <>{errors?.filmingEnd?.message ?? ''}</>
+                    </Typography>
+                  ) : undefined}
                 </Grid>
-                <Grid item xs={12} md={6} >
+                <Grid item xs={12} md={6}>
                   <RHFTextField name="director" label="Director" />
                 </Grid>
-                <Grid item xs={12} md={6} >
+                <Grid item xs={12} md={6}>
                   <RHFTextField name="writer" label="Writer" />
                 </Grid>
-                <Grid item xs={12} md={6} >
+                <Grid item xs={12} md={6}>
                   <RHFTextField name="producers" label="Producers" />
                 </Grid>
-                <Grid item xs={12} md={6} >
+                <Grid item xs={12} md={6}>
                   <RHFTextField name="editor" label="Editor" />
                 </Grid>
-                <Grid item xs={12} md={6} >
+                <Grid item xs={12} md={6}>
                   <RHFTextField name="soundEngineer" label="Sound Engineer" />
                 </Grid>
-                <Grid item xs={12} md={6} >
+                <Grid item xs={12} md={6}>
                   <RHFTextField name="vfxSupervisor" label="VFX Supervisor" />
                 </Grid>
-                <Grid item xs={12} md={6} >
+                <Grid item xs={12} md={6}>
                   <RHFTextField name="leadActor" label="Lead Actor" />
                 </Grid>
-                <Grid item xs={12} md={6} >
+                <Grid item xs={12} md={6}>
                   <RHFTextField name="supportingActor" label="Supporting Actor" />
                 </Grid>
-                <Grid item xs={12} md={6} >
+                <Grid item xs={12} md={6}>
                   <RHFTextField name="supportingActress" label="Supporting Actress" />
                 </Grid>
               </Grid>

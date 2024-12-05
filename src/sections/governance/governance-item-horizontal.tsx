@@ -27,13 +27,7 @@ export default function GovernanceItemHorizontal({ post }: Props) {
 
   const router = useRouter();
 
-  const {
-    title,
-    author,
-    publish,
-    createdAt,
-    description,
-  } = post;
+  const { title, author, publish, createdAt, description } = post;
 
   // Generar fechas y datos aleatorios
   let displayTime = '';
@@ -45,7 +39,7 @@ export default function GovernanceItemHorizontal({ post }: Props) {
     const endDate = new Date(createdAt);
     const daysToAdd = Math.floor(Math.random() * 5) + 1; // Entre 1 y 5 días
     endDate.setDate(endDate.getDate() + daysToAdd);
-    displayTime = `Ends in ${  formatDistanceToNow(endDate, { addSuffix: false })}`;
+    displayTime = `Ends in ${formatDistanceToNow(endDate, { addSuffix: false })}`;
   } else {
     const closedAt = new Date(createdAt);
     const daysToAdd = Math.floor(Math.random() * 30) + 1; // Entre 1 y 30 días
@@ -53,7 +47,7 @@ export default function GovernanceItemHorizontal({ post }: Props) {
     if (closedAt > new Date()) {
       closedAt.setDate(new Date().getDate() - daysToAdd);
     }
-    displayTime = `Ended ${  formatDistanceToNow(closedAt, { addSuffix: true })}`;
+    displayTime = `Ended ${formatDistanceToNow(closedAt, { addSuffix: true })}`;
 
     // Datos aleatorios para los resultados de la votación
     votesFor = Math.floor(Math.random() * 1000);
@@ -73,8 +67,8 @@ export default function GovernanceItemHorizontal({ post }: Props) {
         cursor: 'pointer',
         border: (theme) => `dashed 1px ${theme.palette.divider}`,
         '&:hover': {
-          backgroundColor: 'rgba(255,255,255,0.01)'
-        }
+          backgroundColor: 'rgba(255,255,255,0.01)',
+        },
       }}
     >
       <Stack

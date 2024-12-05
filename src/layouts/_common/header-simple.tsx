@@ -15,8 +15,8 @@ import { RouterLink } from '@src/routes/components';
 //
 import { HEADER } from '../config-layout';
 import HeaderShadow from './header-shadow';
-import SvgColor from "@src/components/svg-color";
-import NavList from "@src/components/nav-section/mini/nav-list.tsx";
+import SvgColor from '@src/components/svg-color';
+import NavList from '@src/components/nav-section/mini/nav-list.tsx';
 
 // ----------------------------------------------------------------------
 
@@ -56,7 +56,9 @@ export default function HeaderSimple() {
               id: 'watchit',
               title: 'Watchit',
               path: paths.dashboard.root,
-              icon: <SvgColor src='/assets/icons/navbar/ic_watchit.svg' sx={{ width: 1, height: 1 }} />
+              icon: (
+                <SvgColor src="/assets/icons/navbar/ic_watchit.svg" sx={{ width: 1, height: 1 }} />
+              ),
             }}
             depth={1}
             config={{}}

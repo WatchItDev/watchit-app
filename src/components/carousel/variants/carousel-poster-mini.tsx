@@ -4,15 +4,15 @@ import Carousel, { useCarousel } from '@src/components/carousel/index';
 // @ts-ignore
 import { type Post } from '@lens-protocol/api-bindings/dist/declarations/src/lens/graphql/generated';
 
-import PosterHorizontal from "@src/components/poster/variants/poster-horizontal.tsx";
-import NavigationArrows from "@src/components/carousel/NavigationArrows.tsx";
-import {CarouselSection} from "@src/components/poster/carousel-section.tsx";
-import {useEffect, useRef, useState} from "react";
+import PosterHorizontal from '@src/components/poster/variants/poster-horizontal.tsx';
+import NavigationArrows from '@src/components/carousel/NavigationArrows.tsx';
+import { CarouselSection } from '@src/components/poster/carousel-section.tsx';
+import { useEffect, useRef, useState } from 'react';
 
 // ----------------------------------------------------------------------
 type Props = {
-  data: Post[]
-  title?: string
+  data: Post[];
+  title?: string;
   minItemWidth: number;
   maxItemWidth: number;
 };
@@ -31,7 +31,7 @@ export default function CarouselPosterMini({ data, title, minItemWidth, maxItemW
     adaptiveHeight: true,
     focusOnSelect: true,
     swipeToSlide: true,
-    lazyLoad: 'progressive'
+    lazyLoad: 'progressive',
   });
 
   const calculateItemsPerSlide = (parentWidth: number) => {
@@ -78,7 +78,6 @@ export default function CarouselPosterMini({ data, title, minItemWidth, maxItemW
     }
   }, [minItemWidth, maxItemWidth]);
 
-
   useEffect(() => {
     const chunkSize = itemsPerSlide * 2;
     const chunks: Post[][] = [];
@@ -89,36 +88,43 @@ export default function CarouselPosterMini({ data, title, minItemWidth, maxItemW
   }, [itemsPerSlide, data]);
 
   return (
-    <CarouselSection title={title} action={<NavigationArrows next={carousel.onNext} prev={carousel.onPrev} />}>
-    <Box
-      ref={parentRef}
-      sx={{
-        overflow: 'hidden',
-        position: 'relative',
-        '.slick-list': {
-          height: 'auto !important'
-        },
-        '.slick-track': {
-          height: '100%'
-        },
-        '.slick-slide': {
-          height: '100%',
-          minHeight: '100%',
-          maxHeight: '100%'
-        },
-        '.slick-slide > div': {
-          height: '100%',
-          minHeight: '100%',
-          maxHeight: '100%'
-        }
-      }}
+    <CarouselSection
+      title={title}
+      action={<NavigationArrows next={carousel.onNext} prev={carousel.onPrev} />}
     >
+      <Box
+        ref={parentRef}
+        sx={{
+          overflow: 'hidden',
+          position: 'relative',
+          '.slick-list': {
+            height: 'auto !important',
+          },
+          '.slick-track': {
+            height: '100%',
+          },
+          '.slick-slide': {
+            height: '100%',
+            minHeight: '100%',
+            maxHeight: '100%',
+          },
+          '.slick-slide > div': {
+            height: '100%',
+            minHeight: '100%',
+            maxHeight: '100%',
+          },
+        }}
+      >
         <Carousel ref={carousel.carouselRef} {...carousel.carouselSettings}>
           {slideData.map((slideItems, index) => (
-            <Slide key={`slide-publications-${index}`} items={slideItems} itemsPerRow={itemsPerSlide} />
+            <Slide
+              key={`slide-publications-${index}`}
+              items={slideItems}
+              itemsPerRow={itemsPerSlide}
+            />
           ))}
         </Carousel>
-    </Box>
+      </Box>
     </CarouselSection>
   );
 }
@@ -134,9 +140,11 @@ function Slide({ items, itemsPerRow }: SlideProps) {
   const itemWidthPercent = 100 / itemsPerRow;
 
   // const getMediaUri = (cid: string): string => `https://ipfs.io/ipfs/${cid?.replace?.('ipfs://', '')}`
-  const getMediaUri = (cid: string): string => `${cid}`
-  const getWallpaperCid = (post: any): string => post?.metadata?.attachments?.find((el: any) => el.altTag === 'wallpaper')?.image?.raw?.uri
-  const getPosterCid = (post: any): string => post?.metadata?.attachments?.find((el: any) => el.altTag === 'poster')?.image?.raw?.uri
+  const getMediaUri = (cid: string): string => `${cid}`;
+  const getWallpaperCid = (post: any): string =>
+    post?.metadata?.attachments?.find((el: any) => el.altTag === 'wallpaper')?.image?.raw?.uri;
+  const getPosterCid = (post: any): string =>
+    post?.metadata?.attachments?.find((el: any) => el.altTag === 'poster')?.image?.raw?.uri;
 
   return (
     <Box>
@@ -156,7 +164,7 @@ function Slide({ items, itemsPerRow }: SlideProps) {
                 title={post.metadata.title}
                 images={{
                   vertical: getMediaUri(getPosterCid(post)),
-                  wallpaper: getMediaUri(getWallpaperCid(post))
+                  wallpaper: getMediaUri(getWallpaperCid(post)),
                 }}
                 likes={post.globalStats.upvotes}
                 synopsis={post.metadata.content}

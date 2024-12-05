@@ -11,7 +11,7 @@ interface HasAccessError {
 }
 
 interface Terms {
-  amount: any;    // Amount in wei
+  amount: any; // Amount in wei
   currency: string; // MMC address
   rateBasis: number;
   uri: string;
@@ -26,11 +26,11 @@ interface UseResolveTermsHook {
 }
 
 type SubscriptionTerms = {
-  amount: number,
-  currency: string,
-  rateBasis: number,
-  uri: string
-}
+  amount: number;
+  currency: string;
+  rateBasis: number;
+  uri: string;
+};
 
 /**
  * Custom hook to resolve terms from a given holder address.
@@ -53,12 +53,12 @@ export const useResolveTerms = (holderAddress?: Address): UseResolveTermsHook =>
 
     try {
       setFetching(true);
-      const data: SubscriptionTerms = await publicClient.readContract({
+      const data: SubscriptionTerms = (await publicClient.readContract({
         address: GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS,
         abi: SubscriptionPolicyAbi.abi,
         functionName: 'resolveTerms',
         args: [holderAddress],
-      }) as unknown as SubscriptionTerms;
+      })) as unknown as SubscriptionTerms;
 
       setTerms(data);
       setError(null);
@@ -86,7 +86,7 @@ export const useResolveTerms = (holderAddress?: Address): UseResolveTermsHook =>
       loading: false,
       fetching: false,
       error: null,
-      refetch: () => { },
+      refetch: () => {},
     };
   }
 

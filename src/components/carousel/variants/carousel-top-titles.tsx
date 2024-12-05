@@ -3,12 +3,12 @@ import Box from '@mui/material/Box';
 import Carousel, { CarouselArrows, useCarousel } from '@src/components/carousel/index';
 // @ts-ignore
 import { type Post } from '@lens-protocol/api-bindings/dist/declarations/src/lens/graphql/generated';
-import PosterTopTitles from "@src/components/poster/variants/poster-top-titles.tsx";
+import PosterTopTitles from '@src/components/poster/variants/poster-top-titles.tsx';
 // ----------------------------------------------------------------------
 
 type Props = {
-  posts: Post[]
-  category?: string
+  posts: Post[];
+  category?: string;
 };
 
 export default function CarouselTopTitles({ posts, category }: Props) {
@@ -17,7 +17,7 @@ export default function CarouselTopTitles({ posts, category }: Props) {
     adaptiveHeight: true,
     focusOnSelect: true,
     swipeToSlide: true,
-    lazyLoad: 'progressive'
+    lazyLoad: 'progressive',
   });
 
   return (
@@ -28,8 +28,8 @@ export default function CarouselTopTitles({ posts, category }: Props) {
         '.slick-track': {
           display: 'flex',
           flexDirection: 'row',
-        flexWrap: 'nowrap',
-        alignItems: 'stretch',
+          flexWrap: 'nowrap',
+          alignItems: 'stretch',
         },
         '.slick-slide': {
           height: 'auto',
@@ -37,19 +37,14 @@ export default function CarouselTopTitles({ posts, category }: Props) {
         '.slick-slide > div': {
           height: '100%',
           minHeight: '100%',
-          maxHeight: '100%'
-        }
+          maxHeight: '100%',
+        },
       }}
     >
-      <CarouselArrows
-        filled
-        shape="rounded"
-        onNext={carousel.onNext}
-        onPrev={carousel.onPrev}
-      >
+      <CarouselArrows filled shape="rounded" onNext={carousel.onNext} onPrev={carousel.onPrev}>
         <Carousel ref={carousel.carouselRef} {...carousel.carouselSettings}>
           {posts.map((post: any) => (
-            <Box key={`${category}-${post.id}`} sx={{ px: 0.75, display:'flex !important'}}>
+            <Box key={`${category}-${post.id}`} sx={{ px: 0.75, display: 'flex !important' }}>
               <PosterTopTitles post={post} />
             </Box>
           ))}

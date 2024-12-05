@@ -20,15 +20,13 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   };
 
   useEffect(() => {
-    initWeb3Auth()
+    initWeb3Auth();
   }, []);
 
   return (
     <QueryClientProvider client={queryClient}>
       <LensProvider config={lensConfig}>
-        <AuthContextProvider web3Auth={web3Auth}>
-          {children}
-        </AuthContextProvider>
+        <AuthContextProvider web3Auth={web3Auth}>{children}</AuthContextProvider>
       </LensProvider>
     </QueryClientProvider>
   );

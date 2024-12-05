@@ -49,11 +49,11 @@ type SubscribeProfileModalProps = {
 // ----------------------------------------------------------------------
 
 export const SubscribeProfileModal = ({
-                                        isOpen,
-                                        onClose,
-                                        profile,
-                                        onSubscribe,
-                                      }: SubscribeProfileModalProps) => {
+  isOpen,
+  onClose,
+  profile,
+  onSubscribe,
+}: SubscribeProfileModalProps) => {
   const dispatch = useDispatch();
   const { balance: balanceFromRedux } = useSelector((state: any) => state.auth);
 
@@ -69,10 +69,7 @@ export const SubscribeProfileModal = ({
 
   // Hooks for subscription and terms resolution
   const { data, error, loading, subscribe } = useSubscribe();
-  const {
-    terms,
-    loading: loadingTerms,
-  } = useResolveTerms(profile?.ownedBy?.address as Address);
+  const { terms, loading: loadingTerms } = useResolveTerms(profile?.ownedBy?.address as Address);
 
   useEffect(() => {
     if (balanceFromContract) {
@@ -297,11 +294,7 @@ export const SubscribeProfileModal = ({
         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
         sx={{ zIndex: 1200 }}
       >
-        <Alert
-          onClose={() => setSuccessMessage('')}
-          severity="success"
-          sx={{ width: '100%' }}
-        >
+        <Alert onClose={() => setSuccessMessage('')} severity="success" sx={{ width: '100%' }}>
           {successMessage}
         </Alert>
       </Snackbar>

@@ -128,7 +128,7 @@ export function useNavData() {
             icon: ICONS.tour,
           },
         ],
-      }
+      },
     ],
     [t]
   );

@@ -12,7 +12,6 @@ interface Props {
 }
 
 export const ProfilePublicationItem = ({ publication }: Props) => {
-
   // @ts-ignore
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [hasLiked, setHasLiked] = useState(false);
@@ -31,7 +30,7 @@ export const ProfilePublicationItem = ({ publication }: Props) => {
 
   const handleClick = () => {
     router.push(paths.dashboard.publication.details(publication.id));
-  }
+  };
   // @TODO review this
   return (
     <Box
@@ -62,14 +61,14 @@ export const ProfilePublicationItem = ({ publication }: Props) => {
           cursor: 'pointer',
         }}
       />
-      <Box sx={{ pt: 1, cursor: 'pointer', }}>
+      <Box sx={{ pt: 1, cursor: 'pointer' }}>
         <Typography
           variant="body1"
           fontWeight="bold"
           sx={{
             whiteSpace: 'nowrap',
             overflow: 'hidden',
-            textOverflow: 'ellipsis'
+            textOverflow: 'ellipsis',
           }}
         >
           {publication?.metadata?.title}

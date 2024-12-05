@@ -9,7 +9,7 @@ import { PosterVertical } from '../../poster';
 // ----------------------------------------------------------------------
 
 type Props = {
-  data: Post[]
+  data: Post[];
 };
 
 export default function CarouselPoster({ data }: Props) {
@@ -35,18 +35,26 @@ export default function CarouselPoster({ data }: Props) {
     ],
   });
 
-  const getMediaUri = (cid: string): string => `https://ipfs.io/ipfs/${cid.replace('ipfs://', '')}`
+  const getMediaUri = (cid: string): string => `https://ipfs.io/ipfs/${cid.replace('ipfs://', '')}`;
 
-  const getWallpaperCid = (post: any): string => post?.metadata?.attachments?.find((el: any) => el.altTag === 'Wallpaper')?.image?.raw?.uri
-  const getPosterCid = (post: any): string => post?.metadata?.attachments?.find((el: any) => el.altTag === 'Vertical Poster')?.image?.raw?.uri
-  const getPosterHorizontalCid = (post: any): string => post?.metadata?.attachments?.find((el: any) => el.altTag === 'Horizontal Poster')?.image?.raw?.uri
+  const getWallpaperCid = (post: any): string =>
+    post?.metadata?.attachments?.find((el: any) => el.altTag === 'Wallpaper')?.image?.raw?.uri;
+  const getPosterCid = (post: any): string =>
+    post?.metadata?.attachments?.find((el: any) => el.altTag === 'Vertical Poster')?.image?.raw
+      ?.uri;
+  const getPosterHorizontalCid = (post: any): string =>
+    post?.metadata?.attachments?.find((el: any) => el.altTag === 'Horizontal Poster')?.image?.raw
+      ?.uri;
 
   const getMovieYear = (post: any): number => {
-    const releaseDate = post?.metadata?.attributes?.find((el: any) => el.key === 'Release Date')?.value;
-    return releaseDate ? +moment(releaseDate).format('YYYY') : 0
-  }
+    const releaseDate = post?.metadata?.attributes?.find(
+      (el: any) => el.key === 'Release Date'
+    )?.value;
+    return releaseDate ? +moment(releaseDate).format('YYYY') : 0;
+  };
 
-  const getMovieGenres = (post: any): string => post?.metadata?.attributes?.find((el: any) => el.key === 'Genres')?.value
+  const getMovieGenres = (post: any): string =>
+    post?.metadata?.attributes?.find((el: any) => el.key === 'Genres')?.value;
 
   return (
     <Box
@@ -55,30 +63,25 @@ export default function CarouselPoster({ data }: Props) {
         position: 'relative',
       }}
     >
-      <CarouselArrows
-        filled
-        shape="rounded"
-        onNext={carousel.onNext}
-        onPrev={carousel.onPrev}
-      >
+      <CarouselArrows filled shape="rounded" onNext={carousel.onNext} onPrev={carousel.onPrev}>
         <Carousel ref={carousel.carouselRef} {...carousel.carouselSettings}>
           {data.map((post: any) => (
             <Box key={post.id} sx={{ px: 0.75 }}>
               <PosterVertical
-                sx={{ height:'100%' }}
+                sx={{ height: '100%' }}
                 id={post?.id}
                 title={post?.metadata?.title}
                 genre={getMovieGenres(post).split(', ')}
                 images={{
                   vertical: getMediaUri(getPosterCid(post)),
                   horizontal: getMediaUri(getPosterHorizontalCid(post)),
-                  wallpaper: getMediaUri(getWallpaperCid(post))
+                  wallpaper: getMediaUri(getWallpaperCid(post)),
                 }}
                 likes={post?.stats?.upvotes ?? 0}
                 synopsis={post?.metadata?.content ?? ''}
                 year={getMovieYear(post)}
                 price={{
-                  mmc: post?.openActionModules?.[0]?.amount?.value ?? 0
+                  mmc: post?.openActionModules?.[0]?.amount?.value ?? 0,
                 }}
               />
             </Box>
