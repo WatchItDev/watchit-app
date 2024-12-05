@@ -58,7 +58,7 @@ export const ProfileSelectView: React.FC<ProfileSelectionProps> = ({
 
   useEffect(() => {
     (async () => {
-      const results = await getProfiles({ where: { ownedBy: address as string } });
+      const results = await getProfiles({ where: { ownedBy: [address as string] as string[] } });
       if (!results.isFailure()) setProfiles(results?.value as Profile[])
     })()
   }, [address])
