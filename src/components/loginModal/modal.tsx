@@ -61,7 +61,6 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
     if (open && view === 'wallet' && !w3.connected) {
       (async () => {
         try {
-          console.log()
           await w3?.connect()
           setView('profile');
           setLoading(false);
