@@ -40,13 +40,14 @@ import TextMaxLine from "@src/components/text-max-line";
 export interface ProfileFormProps {
   onSuccess: () => void;
   onCancel: () => void;
+  address: string,
   mode: 'register' | 'update';
   initialValues?: any;
 }
 
 // ----------------------------------------------------------------------
 
-export const ProfileFormView: React.FC<ProfileFormProps> = ({ onSuccess, onCancel, mode, initialValues }) => {
+export const ProfileFormView: React.FC<ProfileFormProps> = ({ onSuccess, address, onCancel, mode, initialValues }) => {
   const [errorMessage, setErrorMessage] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [registrationLoading, setRegistrationLoading] = useState(false);
@@ -57,8 +58,6 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({ onSuccess, onCance
   } | null>(null);
 
   const { data: sessionData }: ReadResult<ProfileSession> = useSession();
-  const { address } = useAccount();
-
   // Create profile and set profile metadata functions from Lens Protocol
   const { execute: createProfileExecute, error: errorCreateProfile, loading: createProfileLoading } = useCreateProfile();
   const { execute: setProfileMetadataExecute, error: errorSetProfileMetadata, loading: setProfileMetadataLoading } = useSetProfileMetadata();
@@ -90,7 +89,7 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({ onSuccess, onCance
       onSuccess();
       setIsSubmitting(false);
     }
-  }, [isSubmitting, loading, onSuccess, errorMessage]);
+  }, [isSubmitting, loading, errorMessage]);
 
   const login = useCallback(
     async (profile?: Profile) => {
@@ -119,7 +118,7 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({ onSuccess, onCance
         console.error('Error in login:', err);
       }
     },
-    [loginExecute, address]
+    [address]
   );
 
   /**
@@ -194,6 +193,7 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({ onSuccess, onCance
           throw new Error(result.error.message);
         }
 
+        console.log("Profile registered")
         const newProfile: Profile = result.value;
 
         // Authenticate using the new profile
@@ -287,9 +287,9 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({ onSuccess, onCance
   ]);
 
   return (
-    <Box sx={{p: 2, overflow: "hidden",overflowY: "scroll", zIndex: '1000'}}>
+    <Box sx={{ p: 2, overflow: "hidden", overflowY: "scroll", zIndex: '1000' }}>
       <Typography variant="h6" sx={{ pb: 2 }}>
-        {mode === 'register' ? 'Create a New Profile' : 'Update Profile'}
+        {mode === 'register' ? 'Create a new profile' : 'Update profile'}
       </Typography>
       {/* Hidden inputs for image uploads */}
       <Input
@@ -371,11 +371,11 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({ onSuccess, onCance
               flexDirection: 'column',
               alignItems: {
                 xs: 'flex-start',
-                sm:  'flex-end',
+                sm: 'flex-end',
               },
               justifyContent: {
                 xs: 'flex-start',
-                sm:  'flex-end',
+                sm: 'flex-end',
               },
               position: 'absolute',
               width: '100%',
@@ -407,10 +407,12 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({ onSuccess, onCance
         </Box>
 
         {/* Text Fields */}
-        <Grid container spacing={2} sx={{ mt: {
-          xs: 6,
-          sm: 2,
-          } }}>
+        <Grid container spacing={2} sx={{
+          mt: {
+            xs: 6,
+            sm: 2,
+          }
+        }}>
           <Grid item xs={12} sm={6}>
             <TextField
               fullWidth
@@ -570,7 +572,7 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({ onSuccess, onCance
           </Grid>
           <Grid item xs={12} sm={6}>
             <LoadingButton variant="contained" type="submit" loading={loading} sx={{ width: '100%', py: 1 }}>
-              {mode === 'register' ? 'Create Profile' : 'Update Profile'}
+              {mode === 'register' ? 'Create profile' : 'Update profile'}
             </LoadingButton>
           </Grid>
         </Grid>

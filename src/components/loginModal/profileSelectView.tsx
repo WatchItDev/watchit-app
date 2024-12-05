@@ -13,16 +13,15 @@ import {
 // UTILS IMPORTS
 import { truncateAddress } from '@src/utils/wallet';
 import { UserItem } from '../user-item';
-import { Profile, ProfileSession, useLogin, useSession } from '@lens-protocol/react-web';
+import { Profile, ProfileSession, useLogin, useSession, useLazyProfiles } from '@lens-protocol/react-web';
 // @ts-ignore
 import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
+import Alert from '@mui/material/Alert';
+import Snackbar from '@mui/material/Snackbar';
 
 import { useDispatch } from 'react-redux';
-import Snackbar from '@mui/material/Snackbar';
-import Alert from '@mui/material/Alert';
 import { setAuthLoading } from '@redux/auth';
-import {useResponsive} from "@src/hooks/use-responsive.ts";
-
+import { useResponsive } from "@src/hooks/use-responsive.ts";
 // ----------------------------------------------------------------------
 
 interface ProfileSelectionProps {
@@ -30,7 +29,6 @@ interface ProfileSelectionProps {
   onRegisterNewProfile: () => void;
   onDisconnect: () => void;
   onClose: () => void;
-  profiles: any[];
 }
 
 // ----------------------------------------------------------------------
@@ -39,47 +37,42 @@ export const ProfileSelectView: React.FC<ProfileSelectionProps> = ({
   address,
   onRegisterNewProfile,
   onDisconnect,
-  onClose,
-  profiles,
+  onClose
 }) => {
   const dispatch = useDispatch();
+  const lgUp = useResponsive('up', 'lg');
+
+  const [profiles, setProfiles] = useState([] as Profile[])
   const { data: sessionData }: ReadResult<ProfileSession> = useSession();
+  const { execute: getProfiles } = useLazyProfiles();
   const { execute: loginExecute, data, error } = useLogin();
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-
-  const lgUp = useResponsive('up', 'lg');
 
   useEffect(() => {
     if (data !== undefined && !error) dispatch(setAuthLoading({ isAuthLoading: false }));
     if (error) setErrorMessage(error.message);
   }, [data, error])
 
+  useEffect(() => {
+    (async () => {
+      if (sessionData?.authenticated) return;
+      const results = await getProfiles({ where: { ownedBy: address } });
+      if (!results.isFailure()) setProfiles(results?.value as Profile[])
+    })()
+  }, [sessionData?.authenticated])
+
   const login = async (profile?: Profile) => {
+    if (!profile || !address) return;
+    const result = await loginExecute({
+      address: address,
+      profileId: profile.id
+    } as any);
 
-    if (!profile) {
-      console.warn('No profile selected or provided, please select one.');
-      return;
+    if (result.isFailure()) {
+      console.error('Error during login:', result.error.message);
     }
-
-    if (!address) {
-      console.error('Wallet address not available.');
-      return;
-    }
-
-    try {
-      const result = await loginExecute({
-        address: address,
-        profileId: profile.id,
-      } as any);
-
-      if (result.isFailure()) {
-        console.error('Error during login:', result.error.message);
-      }
-    } catch (err) {
-      console.error('Error in login:', err);
-    }
-  };
+  }
 
   const handleProfileClick = async (profile: any) => {
     if (sessionData?.authenticated && (sessionData?.profile?.id === profile.id)) {
@@ -134,7 +127,7 @@ export const ProfileSelectView: React.FC<ProfileSelectionProps> = ({
               Please select one profile
             </Typography>
             <Button variant="outlined" onClick={onRegisterNewProfile} sx={{ p: 1, width: '40%' }}>
-              New Profile
+              New profile
             </Button>
           </Box>
           <Box sx={{ maxHeight: '600px', overflowY: 'auto', overflow: 'auto' }}>
@@ -158,13 +151,13 @@ export const ProfileSelectView: React.FC<ProfileSelectionProps> = ({
       ) : (
         <Box display="flex" flexDirection="column" alignItems="center" sx={{ mt: 1, p: 3 }}>
           <Typography variant="h6" fontWeight="bold" textAlign="center" sx={{ pt: 2, pb: 1 }}>
-            No Profiles Found
+            No profiles found
           </Typography>
           <Typography variant="body2" color="textSecondary" textAlign="center" sx={{ pb: 4, width: '80%' }}>
             It seems you don’t have any profiles yet. Register a new profile to get started.
           </Typography>
           <Button variant="outlined" onClick={onRegisterNewProfile} sx={{ p: 1, mb: 2, width: '50%' }}>
-            Register New Profile
+            Register new profile
           </Button>
         </Box>
       )}
