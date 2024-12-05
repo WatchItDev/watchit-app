@@ -25,6 +25,8 @@ interface UseResolveTermsHook {
   refetch: () => void;
 }
 
+type SubscriptionTerms = { amount: number, currency: string, rateBasis: number, uri: string }
+
 /**
  * Custom hook to resolve terms from a given holder address.
  * @param holderAddress The address of the publication owner (holder).
@@ -46,15 +48,16 @@ export const useResolveTerms = (holderAddress?: Address): UseResolveTermsHook =>
 
     setFetching(true);
 
+
     try {
-      const data = await publicClient.readContract({
+      const data : SubscriptionTerms = await publicClient.readContract({
         address: GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS,
         abi: SubscriptionPolicyAbi.abi,
         functionName: 'resolveTerms',
         args: [holderAddress],
-      });
+      }) as unknown as SubscriptionTerms;
 
-      const [amount, currency, rateBasis, uri] = data as [any, string, number, string];
+      const {amount, currency, rateBasis, uri} = data;
       setTerms({ amount, currency, rateBasis, uri });
       setError(null);
     } catch (err: any) {
