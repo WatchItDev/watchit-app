@@ -10,9 +10,6 @@ import Alert from '@mui/material/Alert';
 import { useLazyProfilesManaged, useLogout, useSession } from '@lens-protocol/react-web';
 import { useWeb3Auth } from '@src/hooks/use-web3-auth';
 
-// WAGMI IMPORTS
-// import { useAccount, useConnect, useDisconnect } from 'wagmi';
-
 // LOCAL IMPORTS
 import { ProfileSelectView } from '@src/components/loginModal/profileSelectView';
 import { ProfileFormView } from '@src/components/loginModal/profileFormView';
@@ -34,20 +31,12 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
 
   const { data: sessionData } = useSession();
   const { web3Auth: w3 } = useWeb3Auth();
-  // const { address, isConnected, isDisconnected, connector } = useAccount();
+  const error = '';
+
   const isConnected = w3?.connected;
   const isDisconnected = !isConnected;
-  // const { connect, connectors, error} = useConnect();
-  // const connect = () => {};
-  // const connectors = [];
-  const error = '';
   const { execute: logoutExecute } = useLogout();
-  // const { disconnect } = useDisconnect();
   const [address, setAddress] = useState('');
-
-  console.log('hello web3Auth instance')
-  console.log(w3)
-  console.log(w3?.connected)
 
   // Fetch profiles associated with the connected wallet
   const {

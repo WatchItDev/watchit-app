@@ -23,8 +23,7 @@ export interface ProfileData {
  * Interface for the authentication context.
  */
 export interface AuthContextProps {
-  web3Auth: Web3Auth,
-  wagmiConfig: Config
+  web3Auth: Web3Auth
 }
 
 /**
