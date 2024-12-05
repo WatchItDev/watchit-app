@@ -38,7 +38,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
   useEffect(() => {
     (async () => {
       if (w3?.provider) {
-        // get accounts from provider 
+        // get accounts from provider
         const accounts: any = await w3.provider.request({
           method: 'eth_accounts'
         });
@@ -80,8 +80,9 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
   };
 
   const handleDisconnectWallet = async () => {
+    console.log('W3', w3.connected)
     if (sessionData?.authenticated) await logoutExecute()
-    if (isConnected) await w3?.logout();
+    if (w3.connected) await w3?.logout({cleanup: true});
     setIsConnected(false);
     setView('wallet');
   };
