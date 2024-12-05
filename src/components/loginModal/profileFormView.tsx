@@ -289,7 +289,7 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({ onSuccess, onCance
   return (
     <Box sx={{p: 2, overflow: "hidden",overflowY: "scroll", zIndex: '1000'}}>
       <Typography variant="h6" sx={{ pb: 2 }}>
-        {mode === 'register' ? 'Create a New Profile' : 'Update Profile'}
+        {mode === 'register' ? 'Create a new profile' : 'Update profile'}
       </Typography>
       {/* Hidden inputs for image uploads */}
       <Input
@@ -570,7 +570,7 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({ onSuccess, onCance
           </Grid>
           <Grid item xs={12} sm={6}>
             <LoadingButton variant="contained" type="submit" loading={loading} sx={{ width: '100%', py: 1 }}>
-              {mode === 'register' ? 'Create Profile' : 'Update Profile'}
+              {mode === 'register' ? 'Create profile' : 'Update profile'}
             </LoadingButton>
           </Grid>
         </Grid>
