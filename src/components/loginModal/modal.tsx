@@ -34,7 +34,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
   const [successMessage, setSuccessMessage] = useState("");
   const [isConnected, setIsConnected] = useState(false);
   const [address, setAddress] = useState("");
-
+  
   const { disconnect } = useDisconnect();
   const { data: sessionData } = useSession();
   const { connector, isDisconnected } = useAccount();
@@ -53,13 +53,13 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
   const isLoading = (loading || profilesLoading) && view !== 'create';
   // Fetch profiles when the wallet address changes
   useEffect(() => {
-    if (address && isConnected) {
+    if (address && !isDisconnected) {
       fetchProfiles({
         for: address,
         includeOwned: true,
       });
     }
-  }, [address, isConnected]);
+  }, [address]);
 
   const waitForAccount = async (): Promise<GetAccountReturnType> => {
     return new Promise((resolve: any, reject: any) => {
