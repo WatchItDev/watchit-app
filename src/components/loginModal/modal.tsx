@@ -116,7 +116,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
 
   const handleDisconnectWallet = async () => {
     if (sessionData?.authenticated) await logoutExecute()
-    await wagmiDisconnect(wagmi)
+    await wagmiDisconnect(wagmiConfig)
     setIsConnected(false)
     setAddress("")
     disconnect();
