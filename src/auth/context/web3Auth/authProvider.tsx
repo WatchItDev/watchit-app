@@ -12,9 +12,7 @@ import { bindings } from './config/bindings';
  * for state management, wallet connection, and Lens Protocol integration.
  */
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-
   const queryClient = new QueryClient();
-
   const lensConfig: LensConfig = {
     environment: development,
     bindings: bindings,

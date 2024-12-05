@@ -43,8 +43,8 @@ export const ProfileSelectView: React.FC<ProfileSelectionProps> = ({
   const lgUp = useResponsive('up', 'lg');
 
   const [profiles, setProfiles] = useState([] as Profile[])
-  const { data: sessionData }: ReadResult<ProfileSession> = useSession();
   const { execute: getProfiles } = useLazyProfiles();
+  const { data: sessionData }: ReadResult<ProfileSession> = useSession();
   const { execute: loginExecute, data, error } = useLogin();
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
@@ -57,7 +57,7 @@ export const ProfileSelectView: React.FC<ProfileSelectionProps> = ({
   useEffect(() => {
     (async () => {
       if (sessionData?.authenticated) return;
-      const results = await getProfiles({ where: { ownedBy: address } });
+      const results = await getProfiles({ where: { ownedBy: address as string } });
       if (!results.isFailure()) setProfiles(results?.value as Profile[])
     })()
   }, [sessionData?.authenticated])
@@ -75,7 +75,7 @@ export const ProfileSelectView: React.FC<ProfileSelectionProps> = ({
   }
 
   const handleProfileClick = async (profile: any) => {
-    if (sessionData?.authenticated && (sessionData?.profile?.id === profile.id)) {
+    if (sessionData?.authenticated) {
       onClose?.()
     } else {
       onClose();

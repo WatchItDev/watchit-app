@@ -28,83 +28,41 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
   const [loading, setLoading] = useState(true);
   const [view, setView] = useState<'wallet' | 'profile' | 'create'>('wallet');
   const [successMessage, setSuccessMessage] = useState('');
+  const [isConnected, setIsConnected] = useState(false)
 
   const { data: sessionData } = useSession();
   const { web3Auth: w3 } = useWeb3Auth();
   const error = '';
 
-  const isConnected = w3?.connected;
-  const isDisconnected = !isConnected;
   const { execute: logoutExecute } = useLogout();
   const [address, setAddress] = useState('');
 
-  // Fetch profiles associated with the connected wallet
-  const {
-    execute: fetchProfiles,
-    data: profiles,
-    loading: profilesLoading,
-    // called: profilesCalled,
-  } = useLazyProfilesManaged();
-
-  const isLoading = (loading || profilesLoading) && view !== 'create';
-
-  console.log('loading')
-  console.log(loading)
-  console.log(profilesLoading)
-  console.log(view !== 'create')
-  console.log(isLoading)
-
   useEffect(() => {
-    const getAddress = async () => {
-      console.log('getAddress');
-      console.log(w3);
+    (async () => {
       if (w3?.provider) {
-        console.log('hello inside');
         const accounts: any = await w3.provider.request({ method: 'eth_accounts' });
-        console.log('hello accounts');
-        console.log(accounts);
         if (accounts && accounts.length > 0) {
           setAddress(accounts[0]);
+          setIsConnected(true);
         }
       }
-    };
+    })()
+  }, [address]);
 
-    getAddress();
-  }, []);
-
-  // Fetch profiles when the wallet address changes
-  useEffect(() => {
-    if (address && isConnected) {
-      fetchProfiles({
-        for: address,
-        includeOwned: true,
-      });
-    }
-  }, [address, isConnected]);
 
   useEffect(() => {
-    if (open && view === 'wallet' && !isDisconnected) {
+    if (open && view === 'wallet' && isConnected) {
       setView('profile');
       setLoading(false);
     }
 
-    if (open && view === 'wallet' && isDisconnected) {
-      w3?.connect().then((provider) => {
-        console.log('connected to wallet');
-        console.log(provider);
+    if (open && view === 'wallet' && !isConnected) {
+      w3?.connect().then(() => {
         setView('profile');
         setLoading(false);
       });
-      // const web3AuthConnector = connectors.find((el) => el.id === 'web3auth');
-      // if (web3AuthConnector) {
-        // const povider = connect({ connector: web3AuthConnector })
-        // console.log('on login')
-        // console.log(povider)
-        // setView('profile');
-        // setLoading(false);
-      // }
     }
-  }, [open, view, isDisconnected]);
+  }, [open, view, isConnected]);
 
   useEffect(() => {
     if (error) {
@@ -153,14 +111,14 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
                 xs: '90%',
                 sm: 500,
               },
-              bgcolor: isLoading ? 'transparent' : 'background.paper',
+              bgcolor: loading ? 'transparent' : 'background.paper',
               borderRadius: 2,
-              boxShadow: isLoading ? 0 : 24,
+              boxShadow: loading ? 0 : 24,
               outline: 'none',
               transition: 'all 0.5s ease-in-out',
             }}
           >
-            {isLoading ? (
+            {loading ? (
               <Box display="flex" justifyContent="center" alignItems="center" height="100%">
                 <WatchitLoader />
               </Box>
