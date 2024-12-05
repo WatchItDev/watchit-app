@@ -56,7 +56,6 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
     }
   }, [open, view, w3.connected]);
 
-
   useEffect(() => {
     if (open && view === 'wallet' && !w3.connected) {
       (async () => {
