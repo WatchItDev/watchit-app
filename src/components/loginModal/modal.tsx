@@ -38,7 +38,11 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
   useEffect(() => {
     (async () => {
       if (w3?.provider) {
-        const accounts: any = await w3.provider.request({ method: 'eth_accounts' });
+        // get accounts from provider 
+        const accounts: any = await w3.provider.request({
+          method: 'eth_accounts'
+        });
+
         if (accounts && accounts.length > 0) {
           setAddress(accounts[0]);
           setIsConnected(true);
