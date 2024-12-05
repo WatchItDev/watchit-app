@@ -26,6 +26,7 @@ import {
   ProfileSession, SessionType,
   useCreateProfile,
   useSession,
+  LoginError,
   useSetProfileMetadata,
 } from '@lens-protocol/react-web';
 
@@ -40,6 +41,7 @@ export interface ProfileFormProps {
   address: string,
   initialValues?: any;
   mode: 'register' | 'update';
+  error?: LoginError;
   onSuccess: () => void;
   onCancel: () => void;
   login: (profile?: Profile) => Promise<void>;
@@ -52,6 +54,7 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
   address,
   onCancel,
   mode,
+  error,
   login,
   initialValues
 }) => {
@@ -87,6 +90,7 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
   useEffect(() => {
     if (errorCreateProfile) setErrorMessage(errorCreateProfile?.message)
     if (errorSetProfileMetadata) setErrorMessage(errorSetProfileMetadata?.message)
+    if (error) setErrorMessage(error?.message)
   }, [errorCreateProfile, errorSetProfileMetadata]);
 
   useEffect(() => {

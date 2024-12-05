@@ -13,9 +13,8 @@ import {
 // UTILS IMPORTS
 import { truncateAddress } from '@src/utils/wallet';
 import { UserItem } from '../user-item';
-import { Profile, ProfileSession, useSession, useLazyProfiles } from '@lens-protocol/react-web';
+import { Profile, ProfileSession, useSession, useLazyProfiles, LoginError, ReadResult } from '@lens-protocol/react-web';
 // @ts-ignore
-import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
 import Alert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
 
@@ -26,6 +25,7 @@ import { useResponsive } from "@src/hooks/use-responsive.ts";
 
 interface ProfileSelectionProps {
   address: string;
+  error?: LoginError;
   onRegisterNewProfile: () => void;
   onDisconnect: () => void;
   onClose: () => void;
@@ -36,6 +36,7 @@ interface ProfileSelectionProps {
 
 export const ProfileSelectView: React.FC<ProfileSelectionProps> = ({
   address,
+  error,
   onRegisterNewProfile,
   onDisconnect,
   onClose,
@@ -51,9 +52,9 @@ export const ProfileSelectView: React.FC<ProfileSelectionProps> = ({
   const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
-    if (data !== undefined && !error) dispatch(setAuthLoading({ isAuthLoading: false }));
+    if (!error) dispatch(setAuthLoading({ isAuthLoading: false }));
     if (error) setErrorMessage(error.message);
-  }, [data, error])
+  }, [error])
 
   useEffect(() => {
     (async () => {

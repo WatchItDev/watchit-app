@@ -33,7 +33,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
   const { web3Auth: w3 } = useWeb3Auth();
   const { data: sessionData } = useSession();
   const { execute: logoutExecute } = useLogout();
-  const { execute: loginExecute } = useLogin();
+  const { execute: loginExecute, error } = useLogin();
 
   useEffect(() => {
     (async () => {
@@ -136,6 +136,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
               <>
                 {view === 'profile' && address && (
                   <ProfileSelectView
+                    error={error}
                     address={address}
                     login={handleLogin}
                     onRegisterNewProfile={() => setView('create')}
@@ -146,6 +147,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
 
                 {view === 'create' && address && (
                   <ProfileFormView
+                    error={error}
                     address={address}
                     login={handleLogin}
                     onSuccess={handleProfileCreateSuccess}
