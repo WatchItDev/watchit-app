@@ -6,66 +6,30 @@ import { varHover } from '@src/components/animate';
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import { IconCoinMonero } from "@tabler/icons-react";
-import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 // @ts-ignore
 import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
 import { ProfileSession, useSession } from '@lens-protocol/react-web';
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { setBalance } from '@redux/auth';
-import { PublicClient, formatUnits, createPublicClient, http } from 'viem';
-import { useWeb3Auth } from '@src/hooks/use-web3-auth.ts';
-import MMCAbi from '@src/config/abi/MMC.json';
-import { polygonAmoy } from 'wagmi/chains';
+import { useGetBalance } from '@src/hooks/use-get-balance.ts';
 
 // ----------------------------------------------------------------------
 
 export default function HeaderBalance() {
   const dispatch = useDispatch();
-  const [userBalance, setUserBalance] = useState<string>('');
-  const { balance } = useSelector((state: any) => state.auth);
+  const { balance: balanceFromRedux } = useSelector((state: any) => state.auth);
   const { data: sessionData }: ReadResult<ProfileSession> = useSession();
-  const { web3Auth } = useWeb3Auth();
-  // const { data } = useBalance({
-  //   address: sessionData?.address,
-  //   token: GLOBAL_CONSTANTS.MMC_ADDRESS,
-  // });
+  const balanceFromContract = useGetBalance(sessionData?.address);
 
   useEffect(() => {
-    const getBalance = async () => {
-      const publicClient = createPublicClient({
-        chain: polygonAmoy,
-        transport: http(polygonAmoy.rpcUrls.default.http[0]),
-      });
-
-
-
-      // const balance = await PublicClient.readContract({
-      //   address: GLOBAL_CONSTANTS.MMC_ADDRESS,
-      //   abi: MMCAbi.abi,
-      //   functionName: 'balanceOf',
-      //   args: [sessionData?.address],
-      // });
-      //
-      // const formattedBalance = formatUnits(balance, 18);
-      // console.log(`El balance de la cuenta es: ${formattedBalance} tokens`);
-      // setUserBalance(balanceEth);
-    };
-
-    getBalance();
-  }, [sessionData?.address, web3Auth?.provider]);
-
-  // useEffect(() => {
-  //   if (data?.formatted) {
-  //     const parsedBalance = parseFloat(data.formatted);
-  //     if (!isNaN(parsedBalance)) {
-  //       dispatch(setBalance({ balance: parsedBalance }));
-  //     }
-  //   }
-  // }, [data?.formatted, dispatch]);
+    if (balanceFromContract) {
+      dispatch(setBalance({ balance: balanceFromContract }));
+    }
+  }, [balanceFromContract]);
 
   const balanceOptions = { minimumFractionDigits: 1, maximumFractionDigits: 3 };
-  const formattedBalance = new Intl.NumberFormat('en-US', balanceOptions).format(balance);
+  const formattedBalance = new Intl.NumberFormat('en-US', balanceOptions).format(balanceFromRedux);
 
   return (
     <>

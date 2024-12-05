@@ -29,7 +29,6 @@ import {
   useSession,
   useSetProfileMetadata,
 } from '@lens-protocol/react-web';
-import { useAccount } from 'wagmi';
 import { ProfileData } from '@src/auth/context/web3Auth/types.ts';
 import { uploadImageToIPFS, uploadMetadataToIPFS } from '@src/utils/ipfs.ts';
 import { buildProfileMetadata } from '@src/utils/profile.ts';
