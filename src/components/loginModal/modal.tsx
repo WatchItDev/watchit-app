@@ -159,7 +159,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
               </Box>
             ) : (
               <>
-                {view === 'profile' && isConnected && !isDisconnected (
+                {view === 'profile' && isConnected && !isDisconnected && (
                   <ProfileSelectView
                     activeConnector={{ ...(connector && { connector, address } || {}) }}
                     onRegisterNewProfile={() => setView('create')}
