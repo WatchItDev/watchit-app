@@ -13,7 +13,7 @@ import {
 // UTILS IMPORTS
 import { truncateAddress } from '@src/utils/wallet';
 import { UserItem } from '../user-item';
-import { Profile, ProfileSession, useLogin, useSession, useLazyProfiles } from '@lens-protocol/react-web';
+import { Profile, ProfileSession, useSession, useLazyProfiles } from '@lens-protocol/react-web';
 // @ts-ignore
 import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
 import Alert from '@mui/material/Alert';
@@ -29,6 +29,7 @@ interface ProfileSelectionProps {
   onRegisterNewProfile: () => void;
   onDisconnect: () => void;
   onClose: () => void;
+  login: (profile?: Profile) => Promise<void>;
 }
 
 // ----------------------------------------------------------------------
@@ -37,7 +38,8 @@ export const ProfileSelectView: React.FC<ProfileSelectionProps> = ({
   address,
   onRegisterNewProfile,
   onDisconnect,
-  onClose
+  onClose,
+  login
 }) => {
   const dispatch = useDispatch();
   const lgUp = useResponsive('up', 'lg');
@@ -45,7 +47,6 @@ export const ProfileSelectView: React.FC<ProfileSelectionProps> = ({
   const [profiles, setProfiles] = useState([] as Profile[])
   const { execute: getProfiles } = useLazyProfiles();
   const { data: sessionData }: ReadResult<ProfileSession> = useSession();
-  const { execute: loginExecute, data, error } = useLogin();
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
@@ -60,18 +61,6 @@ export const ProfileSelectView: React.FC<ProfileSelectionProps> = ({
       if (!results.isFailure()) setProfiles(results?.value as Profile[])
     })()
   }, [address])
-
-  const login = async (profile?: Profile) => {
-    if (!profile || !address) return;
-    const result = await loginExecute({
-      address: address,
-      profileId: profile.id
-    } as any);
-
-    if (result.isFailure()) {
-      console.error('Error during login:', result.error.message);
-    }
-  }
 
   const handleProfileClick = async (profile: any) => {
     if (sessionData?.authenticated) {

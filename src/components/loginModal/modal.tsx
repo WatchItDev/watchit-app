@@ -7,7 +7,7 @@ import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 
 // LENS IMPORTS
-import { useLogout, useSession } from '@lens-protocol/react-web';
+import { useLogout, useSession, useLogin, type Profile } from '@lens-protocol/react-web';
 import { useWeb3Auth } from '@src/hooks/use-web3-auth';
 
 // LOCAL IMPORTS
@@ -33,6 +33,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
   const { web3Auth: w3 } = useWeb3Auth();
   const { data: sessionData } = useSession();
   const { execute: logoutExecute } = useLogout();
+  const { execute: loginExecute } = useLogin();
 
   useEffect(() => {
     (async () => {
@@ -77,6 +78,18 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
     setSuccessMessage('Profile created successfully.');
     setView('profile');
   };
+
+  const handleLogin = async (profile?: Profile) => {
+    if (!profile || !address) return;
+    const result = await loginExecute({
+      address: address,
+      profileId: profile.id
+    } as any);
+
+    if (result.isFailure()) {
+      console.error('Error during login:', result.error.message);
+    }
+  }
 
   const handleDisconnectWallet = async () => {
     console.log('W3', w3.connected)
@@ -124,6 +137,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
                 {view === 'profile' && address && (
                   <ProfileSelectView
                     address={address}
+                    login={handleLogin}
                     onRegisterNewProfile={() => setView('create')}
                     onDisconnect={handleDisconnectWallet}
                     onClose={onClose}
@@ -133,6 +147,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
                 {view === 'create' && address && (
                   <ProfileFormView
                     address={address}
+                    login={handleLogin}
                     onSuccess={handleProfileCreateSuccess}
                     onCancel={() => setView('profile')}
                     mode="register"

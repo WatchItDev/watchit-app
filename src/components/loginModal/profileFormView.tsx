@@ -25,10 +25,10 @@ import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/r
 import {
   ProfileSession, SessionType,
   useCreateProfile,
-  useLogin,
   useSession,
   useSetProfileMetadata,
 } from '@lens-protocol/react-web';
+
 import { ProfileData } from '@src/auth/context/web3Auth/types.ts';
 import { uploadImageToIPFS, uploadMetadataToIPFS } from '@src/utils/ipfs.ts';
 import { buildProfileMetadata } from '@src/utils/profile.ts';
@@ -37,16 +37,24 @@ import TextMaxLine from "@src/components/text-max-line";
 // ----------------------------------------------------------------------
 
 export interface ProfileFormProps {
+  address: string,
+  initialValues?: any;
+  mode: 'register' | 'update';
   onSuccess: () => void;
   onCancel: () => void;
-  address: string,
-  mode: 'register' | 'update';
-  initialValues?: any;
+  login: (profile?: Profile) => Promise<void>;
 }
 
 // ----------------------------------------------------------------------
 
-export const ProfileFormView: React.FC<ProfileFormProps> = ({ onSuccess, address, onCancel, mode, initialValues }) => {
+export const ProfileFormView: React.FC<ProfileFormProps> = ({
+  onSuccess,
+  address,
+  onCancel,
+  mode,
+  login,
+  initialValues
+}) => {
   const [errorMessage, setErrorMessage] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [registrationLoading, setRegistrationLoading] = useState(false);
@@ -60,8 +68,7 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({ onSuccess, address
   // Create profile and set profile metadata functions from Lens Protocol
   const { execute: createProfileExecute, error: errorCreateProfile, loading: createProfileLoading } = useCreateProfile();
   const { execute: setProfileMetadataExecute, error: errorSetProfileMetadata, loading: setProfileMetadataLoading } = useSetProfileMetadata();
-  const { execute: loginExecute, error: errorlogin, loading: loginLoading } = useLogin();
-  const loading = createProfileLoading || setProfileMetadataLoading || registrationLoading || loginLoading
+  const loading = createProfileLoading || setProfileMetadataLoading || registrationLoading
 
   const validationSchema = Yup.object({
     username: Yup.string()
@@ -80,8 +87,7 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({ onSuccess, address
   useEffect(() => {
     if (errorCreateProfile) setErrorMessage(errorCreateProfile?.message)
     if (errorSetProfileMetadata) setErrorMessage(errorSetProfileMetadata?.message)
-    if (errorlogin) setErrorMessage(errorlogin?.message)
-  }, [errorCreateProfile, errorSetProfileMetadata, errorlogin]);
+  }, [errorCreateProfile, errorSetProfileMetadata]);
 
   useEffect(() => {
     if (isSubmitting && !loading && !errorMessage) {
@@ -89,36 +95,6 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({ onSuccess, address
       setIsSubmitting(false);
     }
   }, [isSubmitting, loading, errorMessage]);
-
-  const login = useCallback(
-    async (profile?: Profile) => {
-      const profileToUse = profile;
-
-      if (!profileToUse) {
-        console.warn('No profile selected or provided, please select one.');
-        return;
-      }
-
-      if (!address) {
-        console.error('Wallet address not available.');
-        return;
-      }
-
-      try {
-        const result = await loginExecute({
-          address,
-          profileId: profileToUse.id,
-        } as any);
-
-        if (result.isFailure()) {
-          console.error('Error during login:', result.error.message);
-        }
-      } catch (err) {
-        console.error('Error in login:', err);
-      }
-    },
-    [address]
-  );
 
   /**
    * Update profile metadata on the Lens Protocol.
@@ -134,16 +110,12 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({ onSuccess, address
         // Upload images to IPFS
         const profileImageURI = typeof data?.profileImage === 'string' ? data?.profileImage : await uploadImageToIPFS(data.profileImage);
         const backgroundImageURI = typeof data?.backgroundImage === 'string' ? data?.backgroundImage : await uploadImageToIPFS(data.backgroundImage);
-
         // Build profile metadata
         const metadata = buildProfileMetadata(data, profileImageURI, backgroundImageURI);
-
         // Upload metadata to IPFS
         const metadataURI = await uploadMetadataToIPFS(metadata);
-
         // Update metadata on the Lens Protocol
         const result = await setProfileMetadataExecute({ metadataURI });
-
         if (result.isFailure()) {
           console.error('Failed to update metadata:', result.error.message);
           return;
@@ -151,7 +123,6 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({ onSuccess, address
 
         // Wait for the transaction to be processed
         const completion = await result.value.waitForCompletion();
-
         if (completion.isFailure()) {
           console.error('Error processing the transaction:', completion.error.message);
           return;
@@ -206,7 +177,7 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({ onSuccess, address
         throw error;
       }
     },
-    [address, createProfileExecute, login]
+    [address, createProfileExecute]
   );
 
   const formik: any = useFormik({
