@@ -1,18 +1,9 @@
-// WAGMI IMPORTS
-import { useReadContract } from 'wagmi';
-
-// VIEM IMPORTS
+import { useState, useEffect, useCallback } from 'react';
 import { Address } from 'viem';
-
-// LOCAL IMPORTS
+import { publicClient } from '@src/clients/viem/publicClient';
 import SubscriptionPolicyAbi from '@src/config/abi/SubscriptionPolicy.json';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
-// @ts-ignore
-// import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
 
-// ----------------------------------------------------------------------
-
-// Defines the structure of the error object returned by the useResolveTerms hook.
 interface HasAccessError {
   message: string;
   code?: number;
@@ -20,13 +11,12 @@ interface HasAccessError {
 }
 
 interface Terms {
-  amount: any, // Amount in wei
-  currency: string, // Mmc address
-  rateBasis: number,
-  uri: string,
+  amount: any;    // Amount in wei
+  currency: string; // MMC address
+  rateBasis: number;
+  uri: string;
 }
 
-// Defines the return type of the useResolveTerms hook.
 interface UseResolveTermsHook {
   terms?: Terms;
   loading: boolean;
@@ -35,36 +25,71 @@ interface UseResolveTermsHook {
   refetch: () => void;
 }
 
-// ----------------------------------------------------------------------
-
 /**
- * Custom hook to check if the user has access to a publication.
- * @param holderAddress The address of the owner of the publication.
- * @returns An object containing the access data, loading state, error, and a refetch function.
+ * Custom hook to resolve terms from a given holder address.
+ * @param holderAddress The address of the publication owner (holder).
+ * @returns An object with terms, loading state, error, and a refetch function.
  */
 export const useResolveTerms = (holderAddress?: Address): UseResolveTermsHook => {
-  // Use the useReadContract hook to call the smart contract function
-  const {
-    data: accessData,
-    isError: accessError,
-    isLoading: isAccessLoading,
-    isFetching: isAccessFetching,
-    error: contractError,
-    refetch,
-  } = useReadContract({
-    abi: SubscriptionPolicyAbi.abi,
-    address: GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS,
-    functionName: 'resolveTerms',
-    args: [holderAddress as Address],
-  });
+  const [terms, setTerms] = useState<Terms | undefined>(undefined);
+  const [loading, setLoading] = useState(true);
+  const [fetching, setFetching] = useState(true);
+  const [error, setError] = useState<HasAccessError | null>(null);
 
-  if (!holderAddress) return { terms: {} as Terms, loading: false, fetching: false, error: null, refetch: () => {}, }
+  const fetchTerms = useCallback(async () => {
+    if (!holderAddress) {
+      setLoading(false);
+      setFetching(false);
+      setError({ message: 'Holder address is missing.' });
+      return;
+    }
+
+    setFetching(true);
+
+    try {
+      const data = await publicClient.readContract({
+        address: GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS,
+        abi: SubscriptionPolicyAbi.abi,
+        functionName: 'resolveTerms',
+        args: [holderAddress],
+      });
+
+      const [amount, currency, rateBasis, uri] = data as [any, string, number, string];
+      setTerms({ amount, currency, rateBasis, uri });
+      setError(null);
+    } catch (err: any) {
+      console.error('Error resolving terms:', err);
+      setTerms(undefined);
+      setError({ message: err?.message || 'An error occurred' });
+    } finally {
+      setLoading(false);
+      setFetching(false);
+    }
+  }, [holderAddress]);
+
+  useEffect(() => {
+    fetchTerms();
+  }, [fetchTerms]);
+
+  const refetch = useCallback(() => {
+    fetchTerms();
+  }, [fetchTerms]);
+
+  if (!holderAddress) {
+    return {
+      terms: {} as Terms,
+      loading: false,
+      fetching: false,
+      error: null,
+      refetch: () => {},
+    };
+  }
 
   return {
-    terms: accessData as Terms | undefined,
-    loading: isAccessLoading,
-    fetching: isAccessFetching,
-    error: accessError ? { message: contractError?.message || 'An error occurred' } : null,
+    terms,
+    loading,
+    fetching,
+    error,
     refetch,
   };
 };

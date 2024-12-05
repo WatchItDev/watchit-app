@@ -1,26 +1,19 @@
-// WAGMI IMPORTS
-import { useReadContract } from 'wagmi';
-
-// VIEM IMPORTS
+import { useState, useEffect, useCallback } from 'react';
 import { Address } from 'viem';
-
-// LOCAL IMPORTS
+import { publicClient } from '@src/clients/viem/publicClient';
 import SubscriptionPolicyAbi from '@src/config/abi/SubscriptionPolicy.json';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
+// LENS IMPORTS
+import { ProfileSession, useSession } from '@lens-protocol/react-web';
 // @ts-ignore
 import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
-import { ProfileSession, useSession } from '@lens-protocol/react-web';
 
-// ----------------------------------------------------------------------
-
-// Defines the structure of the error object returned by the useHasAccess hook.
 interface HasAccessError {
   message: string;
   code?: number;
   [key: string]: any;
 }
 
-// Defines the return type of the useHasAccess hook.
 interface UseHasAccessHook {
   hasAccess?: boolean;
   loading: boolean;
@@ -28,8 +21,6 @@ interface UseHasAccessHook {
   error?: HasAccessError | null;
   refetch: () => void;
 }
-
-// ----------------------------------------------------------------------
 
 /**
  * Custom hook to check if the user has access to a publication.
@@ -40,28 +31,64 @@ export const useHasAccess = (ownerAddress?: Address): UseHasAccessHook => {
   const { data: sessionData }: ReadResult<ProfileSession> = useSession();
   const userAddress = sessionData?.profile?.ownedBy?.address as Address | undefined;
 
-  // Use the useReadContract hook to call the smart contract function
-  const {
-    data: accessData,
-    isError: accessError,
-    isLoading: isAccessLoading,
-    isFetching: isAccessFetching,
-    error: contractError,
-    refetch,
-  } = useReadContract({
-    abi: SubscriptionPolicyAbi.abi,
-    address: GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS,
-    functionName: 'isAccessAllowed',
-    args: [userAddress as Address, ownerAddress as Address],
-  });
+  const [hasAccess, setHasAccess] = useState<boolean | undefined>(undefined);
+  const [loading, setLoading] = useState(true);
+  const [fetching, setFetching] = useState(true);
+  const [error, setError] = useState<HasAccessError | null>(null);
 
-  if (!userAddress) return { hasAccess: false, loading: false, fetching: false, error: null, refetch: () => {}, }
+  const fetchAccess = useCallback(async () => {
+    if (!userAddress || !ownerAddress) {
+      setLoading(false);
+      setFetching(false);
+      setError({ message: 'User address or owner address is missing.' });
+      return;
+    }
+
+    setFetching(true);
+    try {
+      const accessData: unknown = await publicClient.readContract({
+        address: GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS,
+        abi: SubscriptionPolicyAbi.abi,
+        functionName: 'isAccessAllowed',
+        args: [userAddress, ownerAddress],
+      });
+
+      const access = Boolean(accessData);
+      setHasAccess(access);
+      setError(null);
+    } catch (err: any) {
+      console.error('Error checking access:', err);
+      setHasAccess(undefined);
+      setError({ message: err?.message || 'An error occurred' });
+    } finally {
+      setLoading(false);
+      setFetching(false);
+    }
+  }, [userAddress, ownerAddress]);
+
+  useEffect(() => {
+    fetchAccess();
+  }, [fetchAccess]);
+
+  const refetch = useCallback(() => {
+    fetchAccess();
+  }, [fetchAccess]);
+
+  if (!userAddress) {
+    return {
+      hasAccess: false,
+      loading: false,
+      fetching: false,
+      error: null,
+      refetch: () => {}
+    };
+  }
 
   return {
-    hasAccess: accessData as boolean | undefined,
-    loading: isAccessLoading,
-    fetching: isAccessFetching,
-    error: accessError ? { message: contractError?.message || 'An error occurred' } : null,
+    hasAccess,
+    loading,
+    fetching,
+    error,
     refetch,
   };
 };

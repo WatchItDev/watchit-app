@@ -31,12 +31,11 @@ import { useResolveTerms } from '@src/hooks/use-resolve-terms.ts';
 import LinearProgress from '@mui/material/LinearProgress';
 
 import { ProfileSession, useSession } from '@lens-protocol/react-web';
-import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 // @ts-ignore
 import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
 import { setBalance } from '@redux/auth';
-import { useDispatch } from 'react-redux';
-import { useWeb3Auth } from '@src/hooks/use-web3-auth.ts';
+import { useDispatch, useSelector } from 'react-redux';
+import { useGetBalance } from '@src/hooks/use-get-balance.ts';
 
 // ----------------------------------------------------------------------
 
@@ -56,13 +55,17 @@ export const SubscribeProfileModal = ({
                                         onSubscribe,
                                       }: SubscribeProfileModalProps) => {
   const dispatch = useDispatch();
+  const { balance: balanceFromRedux } = useSelector((state: any) => state.auth);
 
   // State variables for handling durations and messages
   const [selectedDuration, setSelectedDuration] = useState('7');
   const [customDuration, setCustomDuration] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-  const [userBalance, setUserBalance] = useState<string>('');
+
+  // Hook to get the user's session data
+  const { data: sessionData }: ReadResult<ProfileSession> = useSession();
+  const balanceFromContract = useGetBalance(sessionData?.address);
 
   // Hooks for subscription and terms resolution
   const { data, error, loading, subscribe } = useSubscribe();
@@ -71,44 +74,11 @@ export const SubscribeProfileModal = ({
     loading: loadingTerms,
   } = useResolveTerms(profile?.ownedBy?.address as Address);
 
-  // Hook to get the user's session data
-  const { data: sessionData }: ReadResult<ProfileSession> = useSession();
-
-  const { web3Auth } = useWeb3Auth();
-
-  // Hook to get the user's balance
-  // const {
-  //   data: balanceData,
-  //   isLoading: balanceLoading,
-  //   error: balanceError,
-  //   refetch: balanceRefetch,
-  // } = useBalance({
-  //   address: sessionData?.address,
-  //   token: GLOBAL_CONSTANTS.MMC_ADDRESS,
-  // });
-
   useEffect(() => {
-    const getBalance = async () => {
-      console.log('ethers')
-      console.log(ethers)
-      console.log(ethers.providers)
-      console.log(sessionData?.address)
-      console.log(web3Auth)
-      console.log(web3Auth?.provider)
-
-      if (!sessionData?.address || !web3Auth?.provider) return;
-
-      // Crear un provider de ethers a partir de web3Auth.provider
-      const ethersProvider = new ethers.providers.Web3Provider(web3Auth.provider as any);
-      // Obtener balance en Wei
-      const balanceWei = await ethersProvider.getBalance(sessionData?.address);
-      // Formatear a Ether
-      const balanceEth = ethers.utils.formatEther(balanceWei);
-      setUserBalance(balanceEth);
-    };
-
-    getBalance();
-  }, [sessionData?.address, web3Auth?.provider]);
+    if (balanceFromContract) {
+      dispatch(setBalance({ balance: balanceFromContract }));
+    }
+  }, [balanceFromContract]);
 
   // Options for predefined durations
   const durationOptions = [
@@ -131,43 +101,26 @@ export const SubscribeProfileModal = ({
     totalCostMMC = ethers.formatUnits(totalCostWei, 18); // Convert Wei to MMC
   }
 
-  const isBalanceSufficient = balanceData && totalCostWei && balanceData.value >= totalCostWei;
+  const isBalanceSufficient = balanceFromRedux && totalCostWei && balanceFromRedux >= totalCostWei;
 
   // Determine if the subscribe button should be disabled
   const isButtonDisabled =
     loading ||
     (!selectedDuration && !customDuration) ||
     isCustomDurationInvalid ||
-    balanceLoading ||
     !isBalanceSufficient;
-
-  useEffect(() => {
-    if (balanceData?.formatted) {
-      const parsedBalance = parseFloat(balanceData.formatted);
-      if (!isNaN(parsedBalance)) {
-        dispatch(setBalance({ balance: parsedBalance }));
-      }
-    }
-  }, [balanceData?.formatted, dispatch]);
 
   // Effect to handle subscription errors
   useEffect(() => {
     if (error) setErrorMessage(error.shortMessage ?? error.message);
   }, [error]);
 
-  // Effect to handle balance errors
-  useEffect(() => {
-    if (balanceError) {
-      setErrorMessage('Could not retrieve your balance. Please try again later.');
-    }
-  }, [balanceError]);
-
   // Effect to handle successful subscription
   useEffect(() => {
     if (data?.receipt) {
       setSuccessMessage('Successfully joined the profile.');
       onSubscribe?.();
-      balanceRefetch?.();
+      // balanceRefetch?.();
       onClose?.();
     }
   }, [data]);
@@ -222,7 +175,7 @@ export const SubscribeProfileModal = ({
         <DialogTitle sx={{ pb: 2 }}>Join to {profile?.metadata?.displayName} content</DialogTitle>
         <Divider sx={{ mb: 2, borderStyle: 'dashed' }} />
         <DialogContent>
-          {loadingTerms || balanceLoading ? (
+          {loadingTerms ? (
             <LinearProgress
               color="inherit"
               sx={{ width: 1, maxWidth: 360, marginTop: '16px', alignSelf: 'center' }}
@@ -299,7 +252,7 @@ export const SubscribeProfileModal = ({
               </Stack>
 
               {/* Display error if balance is insufficient */}
-              {balanceData && !isBalanceSufficient && (
+              {balanceFromRedux && !isBalanceSufficient && (
                 <Typography variant="body2" color="error" align="center" sx={{ mt: 2 }}>
                   Insufficient balance to complete the action.
                 </Typography>

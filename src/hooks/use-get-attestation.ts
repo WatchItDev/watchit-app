@@ -1,29 +1,21 @@
-// WAGMI IMPORTS
-import { useReadContract } from 'wagmi';
-
-// VIEM IMPORTS
+import { useState, useEffect, useCallback } from 'react';
 import { Address } from 'viem';
+import { publicClient } from '@src/clients/viem/publicClient';
+import { GLOBAL_CONSTANTS } from '@src/config-global';
+import SubscriptionPolicyAbi from '@src/config/abi/SubscriptionPolicy.json';
 
 // LENS IMPORTS
 import { ProfileSession, useSession } from '@lens-protocol/react-web';
 // @ts-ignore
 import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
 
-// LOCAL IMPORTS
-import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
-import SubscriptionPolicyAbi from '@src/config/abi/SubscriptionPolicy.json';
-
-// ----------------------------------------------------------------------
-
-// Defines the structure of the error object returned by the useGetAttestation hook.
 interface AttestationError {
   message: string;
   code?: number;
   [key: string]: any;
 }
 
-// Defines the return type of the useGetAttestation hook.
-interface UseGetAttestationook {
+interface UseGetAttestationHook {
   attestation?: string;
   loading: boolean;
   fetching: boolean;
@@ -31,38 +23,64 @@ interface UseGetAttestationook {
   refetch: () => void;
 }
 
-// ----------------------------------------------------------------------
-
 /**
  * Custom hook to get the attestation of a subscription.
  * @param recipient The address of the recipient of subscription.
  * @param holder The address of the holder of subscription.
  * @returns An object containing the attestation data, loading state, error, and a refetch function.
  */
-export const useGetAttestation = (recipient: Address, holder?: Address): UseGetAttestationook => {
+export function useGetAttestation(recipient: Address, holder?: Address): UseGetAttestationHook {
   const { data: sessionData }: ReadResult<ProfileSession> = useSession();
   const userAddress = sessionData?.profile?.ownedBy?.address as Address | undefined;
 
-  // Use the useReadContract hook to call the smart contract function
-  const {
-    data: attestationData,
-    isError: attestationError,
-    isLoading: isAttestationLoading,
-    isFetching: isAttestationFetching,
-    error: contractError,
-    refetch,
-  } = useReadContract({
-    abi: SubscriptionPolicyAbi.abi,
-    address: GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS,
-    functionName: 'getAttestation',
-    args: [recipient as Address, holder ?? userAddress as Address],
-  });
+  const [attestation, setAttestation] = useState<string | undefined>(undefined);
+  const [loading, setLoading] = useState(true);
+  const [fetching, setFetching] = useState(true);
+  const [error, setError] = useState<AttestationError | null>(null);
+
+  const fetchAttestation = useCallback(async () => {
+    setFetching(true);
+    try {
+      const attestationData: unknown = await publicClient.readContract({
+        address: GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS,
+        abi: SubscriptionPolicyAbi.abi,
+        functionName: 'getAttestation',
+        args: [recipient, holder ?? (userAddress as Address)],
+      });
+
+      const attestationStr = attestationData ? String(attestationData) : undefined;
+      setAttestation(attestationStr);
+      setError(null);
+    } catch (err: any) {
+      console.error('Error fetching attestation:', err);
+      setError({ message: err.message || 'An error occurred' });
+      setAttestation(undefined);
+    } finally {
+      setLoading(false);
+      setFetching(false);
+    }
+  }, [recipient, holder, userAddress]);
+
+  useEffect(() => {
+    if (!recipient || !(holder ?? userAddress)) {
+      setLoading(false);
+      setFetching(false);
+      setError({ message: 'Recipient or holder address is missing.' });
+      return;
+    }
+    fetchAttestation();
+  }, [recipient, holder, userAddress, fetchAttestation]);
+
+  const refetch = useCallback(() => {
+    setFetching(true);
+    fetchAttestation();
+  }, [fetchAttestation]);
 
   return {
-    attestation: attestationData ? `${attestationData}` : undefined,
-    loading: isAttestationLoading,
-    fetching: isAttestationFetching,
-    error: attestationError ? { message: contractError?.message || 'An error occurred' } : null,
+    attestation,
+    loading,
+    fetching,
+    error,
     refetch,
   };
-};
+}
