@@ -50,7 +50,6 @@
     "@lens-protocol/metadata": "^1.2.0",
     "@lens-protocol/react": "^2.3.2",
     "@lens-protocol/react-web": "^2.3.1",
-    "@lens-protocol/wagmi": "^4.1.5",
     "@mui/base": "^5.0.0-beta.7",
     "@mui/lab": "^5.0.0-alpha.136",
     "@mui/material": "^5.16.5",
@@ -73,7 +72,6 @@
     "@web3auth/modal": "~9.4.0",
     "@web3auth/modal-react-hooks": "~9.4.0",
     "@web3auth/wallet-services-plugin-react-hooks": "~9.4.0",
-    "@web3auth/web3auth-wagmi-connector": "~7.0.0",
     "autosuggest-highlight": "^3.3.4",
     "axios": "^1.4.0",
     "date-fns": "^2.30.0",
@@ -120,7 +118,6 @@
     "swr": "^2.2.0",
     "uuid": "^10.0.0",
     "viem": "^2.21.53",
-    "wagmi": "^2.13.3",
     "worker-loader": "^3.0.8",
     "yet-another-react-lightbox": "^3.11.4",
     "yup": "^1.4.0"
