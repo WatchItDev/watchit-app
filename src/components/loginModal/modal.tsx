@@ -12,7 +12,7 @@ import { useWeb3Auth } from '@src/hooks/use-web3-auth';
 
 // WAGMI IMPORTS
 import { useAccount, useConnect, useDisconnect } from 'wagmi';
-import { getAccount, type GetAccountReturnType } from '@wagmi/core';
+import { getAccount, disconnect as wagmiDisconnect, type GetAccountReturnType } from '@wagmi/core';
 
 // LOCAL IMPORTS
 import { ProfileSelectView } from '@src/components/loginModal/profileSelectView';
@@ -116,6 +116,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
 
   const handleDisconnectWallet = async () => {
     if (sessionData?.authenticated) await logoutExecute()
+    await wagmiDisconnect(wagmiConfig)
     setIsConnected(false)
     setAddress("")
     disconnect();
