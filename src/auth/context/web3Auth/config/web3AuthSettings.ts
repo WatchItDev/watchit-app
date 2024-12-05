@@ -1,11 +1,9 @@
-import { Web3Auth, Web3AuthOptions } from "@web3auth/modal";
-import { Web3AuthConnector } from "@web3auth/web3auth-wagmi-connector";
-import { EthereumPrivateKeyProvider } from "@web3auth/ethereum-provider";
+import { Web3Auth, Web3AuthOptions } from '@web3auth/modal';
+import { EthereumPrivateKeyProvider } from '@web3auth/ethereum-provider';
 import { AccountAbstractionProvider, KernelSmartAccount } from '@web3auth/account-abstraction-provider';
 import { CHAIN_NAMESPACES, WALLET_ADAPTERS, WEB3AUTH_NETWORK } from '@web3auth/base';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
-import { CreateConnectorFn } from 'wagmi';
-import { polygonAmoy } from "wagmi/chains";
+import { polygonAmoy } from 'wagmi/chains';
 
 export const chain = {
   polygonAmoy: {
@@ -21,7 +19,7 @@ export const chain = {
   },
 };
 
-const modalConfig = {
+export const modalConfig = {
   [WALLET_ADAPTERS.AUTH]: {
     label: "openlogin",
     loginMethods: {
@@ -104,8 +102,7 @@ const modalConfig = {
   },
 }
 
-
-export function web3AuthConnectorFactory(): [Web3Auth, CreateConnectorFn] {
+export function web3AuthFactory(): Web3Auth {
   // account abstraction setup
   const accountAbstractionProvider = new AccountAbstractionProvider({
     config: {
@@ -143,7 +140,5 @@ export function web3AuthConnectorFactory(): [Web3Auth, CreateConnectorFn] {
     useAAWithExternalWallet: false,
   };
 
-  const web3Auth = new Web3Auth(web3AuthOptions);
-  const web3AuthConnector = Web3AuthConnector({ web3AuthInstance: web3Auth, modalConfig })
-  return [web3Auth, web3AuthConnector];
+  return new Web3Auth(web3AuthOptions);
 }

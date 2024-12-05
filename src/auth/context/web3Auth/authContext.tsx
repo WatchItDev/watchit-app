@@ -1,13 +1,41 @@
-import React, { createContext } from 'react';
-import { AuthContextProps, AuthProviderProps } from './types';
-import { Web3Auth } from '@web3auth/modal/dist/types/modalManager';
+import React, { createContext, useState, useEffect } from 'react';
 
-// Create the authentication context
-export const AuthContext = createContext<AuthContextProps>({} as AuthContextProps);
+interface AuthContextType {
+  isAuthenticated: boolean;
+  login: () => Promise<void>;
+  logout: () => Promise<void>;
+}
 
-/**
- * AuthContextProvider manages authentication state, profiles, and interactions with the Lens Protocol.
- */
-export const AuthContextProvider: React.FC<AuthProviderProps & { web3Auth: Web3Auth }> = ({ children, web3Auth }) => {
-  return <AuthContext.Provider value={{ web3Auth }}>{children}</AuthContext.Provider>;
+export const AuthContext = createContext<AuthContextType>({
+  isAuthenticated: false,
+  login: async () => {},
+  logout: async () => {},
+});
+
+export const AuthContextProvider: React.FC<{ web3Auth: any; children: React.ReactNode }> = ({ web3Auth, children }) => {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  const handleLogin = async () => {
+    if (!web3Auth.provider) {
+      await web3Auth.connect();
+    }
+    setIsAuthenticated(true);
+  };
+
+  const handleLogout = async () => {
+    await web3Auth.logout();
+    setIsAuthenticated(false);
+  };
+
+  useEffect(() => {
+    if (web3Auth.provider) {
+      setIsAuthenticated(true);
+    }
+  }, [web3Auth.provider]);
+
+  return (
+    <AuthContext.Provider value={{ isAuthenticated, login: handleLogin, logout: handleLogout }}>
+      {children}
+    </AuthContext.Provider>
+  );
 };

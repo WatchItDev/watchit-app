@@ -39,6 +39,9 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
   const { disconnect } = useDisconnect();
   const { web3Auth: w3 } = useWeb3Auth();
 
+  console.log('hello web3Auth instance')
+  console.log(w3)
+
   // Fetch profiles associated with the connected wallet
   const {
     execute: fetchProfiles,
@@ -62,7 +65,9 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
     if (open && view === 'wallet' && isDisconnected) {
       const web3AuthConnector = connectors.find((el) => el.id === 'web3auth');
       if (web3AuthConnector) {
-        connect({ connector: web3AuthConnector })
+        const povider = connect({ connector: web3AuthConnector })
+        console.log('on login')
+        console.log(povider)
         setView('profile');
         setLoading(false);
       }
