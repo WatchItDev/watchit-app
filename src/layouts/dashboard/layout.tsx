@@ -74,7 +74,7 @@ export default function DashboardLayout({ children }: Props) {
        position: 'fixed',
         bottom: 0,
         right: 0,
-        padding: 1,
+        padding: '3px 10px',
         color: 'text.secondary',
         fontSize: '0.8rem',
         backgroundColor: 'rgba(0, 0, 0, 0.6)',
