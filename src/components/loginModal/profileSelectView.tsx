@@ -134,7 +134,7 @@ export const ProfileSelectView: React.FC<ProfileSelectionProps> = ({
               Please select one profile
             </Typography>
             <Button variant="outlined" onClick={onRegisterNewProfile} sx={{ p: 1, width: '40%' }}>
-              New Profile
+              New profile
             </Button>
           </Box>
           <Box sx={{ maxHeight: '600px', overflowY: 'auto', overflow: 'auto' }}>
