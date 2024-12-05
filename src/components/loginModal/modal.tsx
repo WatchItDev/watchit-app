@@ -36,7 +36,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
 
   useEffect(() => {
     (async () => {
-      if (w3?.provider) {
+      if (w3?.provider && w3.connected) {
         // get accounts from provider
         const accounts: any = await w3.provider.request({
           method: 'eth_accounts'
@@ -47,7 +47,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
         }
       }
     })()
-  }, [address]);
+  }, [address, w3.connected]);
 
   useEffect(() => {
     if (open && view === 'wallet' && w3.connected) {
@@ -68,6 +68,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
         } catch (err) {
           onClose();
           w3?.loginModal.closeModal()
+          setLoading(false);
           setView('wallet');
         }
       })()
@@ -83,8 +84,8 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
     console.log('W3', w3.connected)
     if (sessionData?.authenticated) await logoutExecute()
     if (w3.connected) await w3?.logout({ cleanup: true });
-    setAddress("")
     setView('wallet');
+    setAddress("")
   };
 
   return (
