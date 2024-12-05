@@ -89,7 +89,7 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({ onSuccess, address
       onSuccess();
       setIsSubmitting(false);
     }
-  }, [isSubmitting, loading, onSuccess, errorMessage]);
+  }, [isSubmitting, loading, errorMessage]);
 
   const login = useCallback(
     async (profile?: Profile) => {
@@ -118,7 +118,7 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({ onSuccess, address
         console.error('Error in login:', err);
       }
     },
-    [loginExecute, address]
+    [address]
   );
 
   /**

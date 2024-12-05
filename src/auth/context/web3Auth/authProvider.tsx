@@ -21,6 +21,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const wagmiConfig = createConfig({
     syncConnectedChain: true,
     chains: [polygonAmoy],
+    pollingInterval: 1000,
     cacheTime: 1_000,
     connectors: [web3AuthConnector],
     transports: { [polygonAmoy.id]: http() }

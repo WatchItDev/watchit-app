@@ -16,13 +16,12 @@ import { UserItem } from '../user-item';
 import { Profile, ProfileSession, useLogin, useSession, useLazyProfiles } from '@lens-protocol/react-web';
 // @ts-ignore
 import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
+import Alert from '@mui/material/Alert';
+import Snackbar from '@mui/material/Snackbar';
 
 import { useDispatch } from 'react-redux';
-import Snackbar from '@mui/material/Snackbar';
-import Alert from '@mui/material/Alert';
 import { setAuthLoading } from '@redux/auth';
 import { useResponsive } from "@src/hooks/use-responsive.ts";
-
 // ----------------------------------------------------------------------
 
 interface ProfileSelectionProps {
@@ -41,61 +40,38 @@ export const ProfileSelectView: React.FC<ProfileSelectionProps> = ({
   onClose
 }) => {
   const dispatch = useDispatch();
+  const lgUp = useResponsive('up', 'lg');
+
   const [profiles, setProfiles] = useState([] as Profile[])
   const { data: sessionData }: ReadResult<ProfileSession> = useSession();
   const { execute: getProfiles } = useLazyProfiles();
   const { execute: loginExecute, data, error } = useLogin();
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-  const lgUp = useResponsive('up', 'lg');
 
   useEffect(() => {
     if (data !== undefined && !error) dispatch(setAuthLoading({ isAuthLoading: false }));
     if (error) setErrorMessage(error.message);
   }, [data, error])
 
-
   useEffect(() => {
     (async () => {
-      console.log(sessionData)
-      if (sessionData?.authenticated)
-        return;
-      // available profiles
-      const results = await getProfiles({
-        where: { ownedBy: activeConnector.address }
-      });
-
-      if (results.isFailure()) {
-        console.error('Error during login:', results.error.message);
-        return
-      }
-
-      setProfiles(results?.value as Profile[])
-
+      if (sessionData?.authenticated) return;
+      const results = await getProfiles({ where: { ownedBy: activeConnector.address } });
+      if (!results.isFailure()) setProfiles(results?.value as Profile[])
     })()
-  }, [activeConnector.address, sessionData?.authenticated])
+  }, [sessionData?.authenticated])
 
   const login = async (profile?: Profile) => {
-
-    if (!profile) {
-      console.warn('No profile selected or provided, please select one.');
-      return;
-    }
-
-    if (!activeConnector.address) {
-      console.error('Wallet address not available.');
-      return;
-    }
-
+    if (!profile || !activeConnector.address) return;
     const result = await loginExecute({
       address: activeConnector.address,
-      profileId: profile.id,
+      profileId: profile.id
     } as any);
 
     if (result.isFailure()) {
       console.error('Error during login:', result.error.message);
     }
-
   }
 
   const handleProfileClick = async (profile: any) => {
