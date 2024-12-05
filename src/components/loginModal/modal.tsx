@@ -34,7 +34,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
   const [successMessage, setSuccessMessage] = useState("");
   const [isConnected, setIsConnected] = useState(false);
   const [address, setAddress] = useState("");
-  
+
   const { disconnect } = useDisconnect();
   const { data: sessionData } = useSession();
   const { connector, isDisconnected } = useAccount();
@@ -53,7 +53,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
   const isLoading = (loading || profilesLoading) && view !== 'create';
   // Fetch profiles when the wallet address changes
   useEffect(() => {
-    if (address && !isDisconnected) {
+    if (address && isConnected) {
       fetchProfiles({
         for: address,
         includeOwned: true,
@@ -86,7 +86,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
         setIsConnected(true)
       }
     })()
-  }, [connector, isDisconnected])
+  }, [connector, address, isDisconnected])
 
   useEffect(() => {
     if (open && view === 'wallet' && isDisconnected) {
@@ -116,7 +116,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
 
   const handleDisconnectWallet = async () => {
     if (sessionData?.authenticated) await logoutExecute()
-    await wagmiDisconnect(wagmiConfig)
+    await wagmiDisconnect(wagmi)
     setIsConnected(false)
     setAddress("")
     disconnect();
