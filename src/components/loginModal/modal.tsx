@@ -33,10 +33,11 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
   const [view, setView] = useState<'wallet' | 'profile' | 'create'>('wallet');
   const [successMessage, setSuccessMessage] = useState('');
   const [isConnected, setIsConnected] = useState(false);
+  const [address, setAddress] = useState("");
 
   const { disconnect } = useDisconnect();
   const { data: sessionData } = useSession();
-  const { address, connector, isDisconnected } = useAccount();
+  const { connector, isDisconnected } = useAccount();
   const { connect, connectors, error } = useConnect();
   const { execute: logoutExecute } = useLogout();
   const { web3Auth: w3, wagmiConfig } = useWeb3Auth();
@@ -81,6 +82,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
       if (connector && !isDisconnected) {
         const connectedAccount = await waitForAccount()
         console.log("connected account ", connectedAccount)
+        setAddress(connectedAccount.address)
         setIsConnected(true)
       }
     })()
