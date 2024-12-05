@@ -17,7 +17,7 @@ export default function ProfileHome({
   showAll = false,
 }: ProfileHomeProps) {
   const parentRef = useRef<HTMLDivElement>(null);
-  const minItemWidth = 200;
+  const minItemWidth = 180;
   const maxItemWidth = 250;
   const gap = 10; // Space between items
   const [itemsPerRow, setItemsPerRow] = useState(4); // Default items per row
