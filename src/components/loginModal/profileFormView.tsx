@@ -51,12 +51,12 @@ export interface ProfileFormProps {
 
 export const ProfileFormView: React.FC<ProfileFormProps> = ({
   onSuccess,
-  address,
   onCancel,
-  mode,
-  error,
+  initialValues,
+  address,
   login,
-  initialValues
+  error,
+  mode,
 }) => {
   const [errorMessage, setErrorMessage] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);

@@ -47,7 +47,7 @@ export const ProfileSelectView: React.FC<ProfileSelectionProps> = ({
 
   const [profiles, setProfiles] = useState([] as Profile[])
   const { execute: getProfiles } = useLazyProfiles();
-  const { data: sessionData }: ReadResult<ProfileSession> = useSession();
+  const { data: sessionData } = useSession();
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
