@@ -32,7 +32,6 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
 
   const { data: sessionData } = useSession();
   const { web3Auth: w3 } = useWeb3Auth();
-  const error = '';
 
   const { execute: logoutExecute } = useLogout();
   const [address, setAddress] = useState('');
@@ -57,22 +56,22 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
     }
 
     if (open && view === 'wallet' && !isConnected) {
-      w3?.connect().then(() => {
-        setView('profile');
-        setLoading(false);
-      });
+      (async () => {
+        try {
+          await w3?.connect()
+          setView('profile');
+          setLoading(false);
+        } catch (err) {
+          console.log('Error connecting to wallet');
+          onClose();
+          w3?.loginModal.closeModal()
+          w3?.removeAllListeners()
+          w3?.clearCache()
+          setView('wallet');
+        }
+      })()
     }
   }, [open, view, isConnected]);
-
-  useEffect(() => {
-    if (error) {
-      onClose();
-      w3?.loginModal.closeModal()
-      w3?.removeAllListeners()
-      w3?.clearCache()
-      setView('wallet');
-    }
-  }, [error]);
 
   const handleProfileCreateSuccess = () => {
     setSuccessMessage('Profile created successfully.');

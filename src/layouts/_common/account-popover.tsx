@@ -29,6 +29,7 @@ import CustomPopover, { usePopover } from '@src/components/custom-popover';
 import { useDispatch, useSelector } from 'react-redux';
 import { closeLoginModal, openLoginModal, setAuthLoading } from '@redux/auth';
 import { CircularProgress } from '@mui/material';
+import { useWeb3Auth } from '@src/hooks/use-web3-auth.ts';
 
 // ----------------------------------------------------------------------
 
@@ -45,6 +46,7 @@ export default function AccountPopover() {
   const dispatch = useDispatch();
   const router = useRouter();
   const popover = usePopover();
+  const { web3Auth } = useWeb3Auth();
   const { isLoginModalOpen, isAuthLoading } = useSelector((state: any) => state.auth);
 
   const { data: sessionData, loading }: ReadResult<ProfileSession> = useSession();
@@ -64,7 +66,7 @@ export default function AccountPopover() {
   const logout = useCallback(async () => {
     try {
       await logoutExecute();
-      // disconnect(); // disconnect wallet
+      await web3Auth?.logout();
     } catch (err) {
       console.error('Error during logout:', err);
     }
