@@ -12,6 +12,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import {toggleMinibar, removeMinibar} from '@redux/minibar';
 import { useEffect } from 'react';
 
+// Get the version from package.json
+import { version } from '../../../package.json';
 // ----------------------------------------------------------------------
 type Props = {
   children: React.ReactNode;
@@ -54,6 +56,7 @@ export default function DashboardLayout({ children }: Props) {
   }
 
   return (
+    <>
     <Box
       sx={{
         minHeight: 1,
@@ -66,5 +69,21 @@ export default function DashboardLayout({ children }: Props) {
       )}
       <Main>{children}</Main>
     </Box>
+      {/* Static footer to show version */}
+     <Box sx={{
+       position: 'fixed',
+        bottom: 0,
+        right: 0,
+        padding: 1,
+        color: 'text.secondary',
+        fontSize: '0.8rem',
+        backgroundColor: 'rgba(0, 0, 0, 0.6)',
+        zIndex: 9999,
+        borderRadius: '8px 0 0 0',
+        borderTop: '1px solid rgba(255, 255, 255, 0.08)',
+     }}>
+       {`v${version}`}
+     </Box>
+    </>
   );
 }

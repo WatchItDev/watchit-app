@@ -87,7 +87,7 @@ const UserProfileView = ({ id }: any) => {
         </Tabs>
       </ProfileHeader>
 
-      {currentTab === 'publications' && profile && <ProfileHome publications={publications} />}
+      {currentTab === 'publications' && profile && <ProfileHome publications={publications} showAll={true} />}
       {currentTab === 'followers' && profile && <ProfileFollowers profile={profile} onActionFinished={handleUpdateProfile} />}
       {currentTab === 'following' && profile && <ProfileFollowing profile={profile} />}
     </Container>

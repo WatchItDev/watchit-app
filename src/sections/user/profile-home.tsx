@@ -8,9 +8,10 @@ import { IconCaretDown, IconCaretUp } from "@tabler/icons-react";
 interface ProfileHomeProps {
   publications: any;
   noPaddings?: boolean;
+  showAll?: boolean;
 }
 
-export default function ProfileHome({ publications, noPaddings = false }: ProfileHomeProps) {
+export default function ProfileHome({ publications, noPaddings = false, showAll=false }: ProfileHomeProps) {
   const parentRef = useRef<HTMLDivElement>(null);
   const minItemWidth = 200;
   const maxItemWidth = 250;
@@ -63,8 +64,8 @@ export default function ProfileHome({ publications, noPaddings = false }: Profil
     }
   }, [minItemWidth, maxItemWidth]);
 
-  // Only take 9 publications to avoid performance issues and UI problems
-  const displayedPublications = publications ? publications.slice(0, 10) : [];
+  // Filter publications to show
+  const displayedPublications = showAll ? publications : (publications ? publications.slice(0, 10) : []);
 
   const handleShowMore = () => {
     if (allItemsShown) {
