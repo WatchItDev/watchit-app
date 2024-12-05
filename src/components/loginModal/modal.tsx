@@ -53,7 +53,6 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
     if (open && view === 'wallet' && w3.connected) {
       setView('profile');
       setLoading(false);
-      return;
     }
   }, [open, view, w3.connected]);
 
@@ -62,6 +61,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
     if (open && view === 'wallet' && !w3.connected) {
       (async () => {
         try {
+          console.log()
           await w3?.connect()
           setView('profile');
           setLoading(false);
@@ -83,6 +83,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
     console.log('W3', w3.connected)
     if (sessionData?.authenticated) await logoutExecute()
     if (w3.connected) await w3?.logout({ cleanup: true });
+    setAddress("")
     setView('wallet');
   };
 
@@ -121,7 +122,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
               </Box>
             ) : (
               <>
-                {view === 'profile' && w3.connected && (
+                {view === 'profile' && address && (
                   <ProfileSelectView
                     address={address}
                     onRegisterNewProfile={() => setView('create')}
@@ -130,7 +131,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
                   />
                 )}
 
-                {view === 'create' && w3.connected && (
+                {view === 'create' && address && (
                   <ProfileFormView
                     address={address}
                     onSuccess={handleProfileCreateSuccess}
