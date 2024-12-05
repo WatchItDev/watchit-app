@@ -6,7 +6,7 @@ import {
 } from '@web3auth/account-abstraction-provider';
 import { CHAIN_NAMESPACES, WALLET_ADAPTERS, WEB3AUTH_NETWORK } from '@web3auth/base';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
-import { polygonAmoy } from 'wagmi/chains';
+import { polygonAmoy } from 'viem/chains';
 
 export const chain = {
   polygonAmoy: {

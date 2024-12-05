@@ -1,5 +1,5 @@
 import { createPublicClient, http } from 'viem';
-import { polygonAmoy } from 'wagmi/chains';
+import { polygonAmoy } from 'viem/chains';
 
 export const publicClient = createPublicClient({
   chain: polygonAmoy,
