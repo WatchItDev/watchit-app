@@ -38,11 +38,15 @@ const UserProfileView = ({ id }: any) => {
   });
 
   useEffect(() => {
+    console.log('ID', id);
+    console.log('ProfileID', profile?.id);
+    console.log('called', called);
+
     (async () => {
       if (id !== profile?.id || !called)
         await execute({ forProfileId: id as ProfileId })
     })()
-  }, [id, called, profile?.id]);
+  }, [profile?.id, id]);
 
   const counts: any = {
     publications: publications?.length ?? 0,
