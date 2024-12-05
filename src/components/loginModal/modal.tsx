@@ -83,7 +83,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
 
   const handleDisconnectWallet = async () => {
     if (sessionData?.authenticated) await logoutExecute()
-    await w3?.logout();
+    if (isConnected) await w3?.logout();
     setIsConnected(false);
     setView('wallet');
   };
