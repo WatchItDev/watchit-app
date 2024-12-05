@@ -7,7 +7,7 @@ import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 
 // LENS IMPORTS
-import { useLazyProfilesManaged, useLogout, useSession } from '@lens-protocol/react-web';
+import { useLogout, useSession } from '@lens-protocol/react-web';
 import { useWeb3Auth } from '@src/hooks/use-web3-auth';
 
 // LOCAL IMPORTS
@@ -53,7 +53,9 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
       setView('profile');
       setLoading(false);
     }
+  }, [open, view, isConnected]);
 
+  useEffect(() => {
     if (open && view === 'wallet' && !isConnected) {
       (async () => {
         try {
@@ -61,7 +63,6 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
           setView('profile');
           setLoading(false);
         } catch (err) {
-          console.log('Error connecting to wallet');
           onClose();
           w3?.loginModal.closeModal()
           w3?.removeAllListeners()
@@ -80,7 +81,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
   const handleDisconnectWallet = async () => {
     if (sessionData?.authenticated) await logoutExecute()
     await w3?.logout();
-    setIsConnectedFalse(false);
+    setIsConnected(false);
     setView('wallet');
   };
 
