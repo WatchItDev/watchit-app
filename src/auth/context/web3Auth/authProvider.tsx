@@ -19,7 +19,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [web3Auth, web3AuthConnector] = web3AuthConnectorFactory()
 
   const wagmiConfig = createConfig({
-    syncConnectedChain: false,
+    syncConnectedChain: true,
     chains: [polygonAmoy],
     cacheTime: 1_000,
     connectors: [web3AuthConnector],
@@ -36,7 +36,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     <WagmiProvider config={wagmiConfig}>
       <QueryClientProvider client={queryClient}>
         <LensProvider config={lensConfig}>
-          <AuthContextProvider web3Auth={web3Auth}>
+          <AuthContextProvider web3Auth={web3Auth} wagmiConfig={wagmiConfig}>
             {children}
           </AuthContextProvider>
         </LensProvider>

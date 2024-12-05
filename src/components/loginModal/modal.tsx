@@ -12,6 +12,7 @@ import { useWeb3Auth } from '@src/hooks/use-web3-auth';
 
 // WAGMI IMPORTS
 import { useAccount, useConnect, useDisconnect } from 'wagmi';
+import { type Connector, getAccount } from '@wagmi/core';
 
 // LOCAL IMPORTS
 import { ProfileSelectView } from '@src/components/loginModal/profileSelectView';
@@ -31,13 +32,14 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
   const [loading, setLoading] = useState(true);
   const [view, setView] = useState<'wallet' | 'profile' | 'create'>('wallet');
   const [successMessage, setSuccessMessage] = useState('');
+  const [isConnected, setIsConnected] = useState(false);
 
-  const { data: sessionData } = useSession();
-  const { address, isConnected, isDisconnected, connector } = useAccount();
-  const { connect, connectors, error} = useConnect();
-  const { execute: logoutExecute } = useLogout();
   const { disconnect } = useDisconnect();
-  const { web3Auth: w3 } = useWeb3Auth();
+  const { data: sessionData } = useSession();
+  const { address, connector, isDisconnected } = useAccount();
+  const { connect, connectors, error } = useConnect();
+  const { execute: logoutExecute } = useLogout();
+  const { web3Auth: w3, wagmiConfig } = useWeb3Auth();
 
   // Fetch profiles associated with the connected wallet
   const {
@@ -56,7 +58,33 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
         includeOwned: true,
       });
     }
-  }, [address, isConnected]);
+  }, [address]);
+
+  const waitForAccount = async (): Promise<void> => {
+    return new Promise((resolve: any, reject: any) => {
+      const waiting = () => {
+        const account = getAccount(wagmiConfig);
+        if (account.isDisconnected) reject();
+        if (account.isConnecting) setTimeout(() => waiting(), 500)
+        // if only if account is connected and connector is connected
+        if (account.isConnected) {
+          resolve(account)
+        }
+      }
+      waiting()
+
+    })
+  }
+
+  useEffect(() => {
+    (async () => {
+      if (connector) {
+        const connectedAccount = await waitForAccount()
+        console.log("connected account ", connectedAccount)
+        setIsConnected(true)
+      }
+    })()
+  }, [connector])
 
   useEffect(() => {
     if (open && view === 'wallet' && isDisconnected) {
@@ -72,10 +100,10 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
   useEffect(() => {
     if (error) {
       onClose();
-      w3.loginModal.closeModal()
-      w3.removeAllListeners()
+      // w3.removeAllListeners()
       w3.clearCache()
       setView('wallet');
+      // setLoading(false);
     }
   }, [error]);
 
@@ -87,6 +115,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
   const handleDisconnectWallet = async () => {
     if (sessionData?.authenticated) await logoutExecute()
     disconnect({ connector });
+    setIsConnected(false)
     setView('wallet');
   };
 
