@@ -233,7 +233,7 @@ export default function PublicationDetailsView({ id }: Props) {
                 </Box>
               )}
 
-              <Container sx={{ mb: 8, p: '0 !important' }}>
+              <Box sx={{ mb: 8, p: '0 !important' }}>
                 <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                   <Box
                     sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'end', mt: 3 }}
@@ -329,7 +329,7 @@ export default function PublicationDetailsView({ id }: Props) {
                     </Box>
                   )}
                 </Box>
-              </Container>
+              </Box>
             </CardContent>
           </Card>
         </Stack>

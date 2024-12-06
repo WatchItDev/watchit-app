@@ -4,6 +4,7 @@ import Carousel, { CarouselArrows, useCarousel } from '@src/components/carousel/
 // @ts-ignore
 import { type Post } from '@lens-protocol/api-bindings/dist/declarations/src/lens/graphql/generated';
 import PosterTopTitles from '@src/components/poster/variants/poster-top-titles.tsx';
+
 // ----------------------------------------------------------------------
 
 type Props = {
@@ -41,7 +42,14 @@ export default function CarouselTopTitles({ posts, category }: Props) {
         },
       }}
     >
-      <CarouselArrows filled shape="rounded" onNext={carousel.onNext} onPrev={carousel.onPrev}>
+      <CarouselArrows
+        filled
+        shape="rounded"
+        onNext={carousel.onNext}
+        onPrev={carousel.onPrev}
+        leftButtonProps={{ sx: { top: { xs: '44%', sm: '50%' } } }}
+        rightButtonProps={{ sx: { top: { xs: '44%', sm: '50%' } } }}
+      >
         <Carousel ref={carousel.carouselRef} {...carousel.carouselSettings}>
           {posts.map((post: any) => (
             <Box key={`${category}-${post.id}`} sx={{ px: 0.75, display: 'flex !important' }}>
