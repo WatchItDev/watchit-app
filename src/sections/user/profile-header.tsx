@@ -235,22 +235,24 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
       <Box sx={{ my: 3, position: 'relative' }}>
         <ProfileCover profile={profile} />
 
-        <Button
-          variant="text"
-          sx={{
-            borderColor: '#FFFFFF',
-            color: '#FFFFFF',
-            height: '40px',
-            minWidth: '40px',
-            position: 'absolute',
-            zIndex: 99,
-            right: 5,
-            top: 5,
-          }}
-          onClick={(event) => setMenuAnchorEl(event.currentTarget)}
-        >
-          <IconDots size={22} color="#FFFFFF" />
-        </Button>
+        {sessionData?.authenticated ? (
+          <Button
+            variant="text"
+            sx={{
+              borderColor: '#FFFFFF',
+              color: '#FFFFFF',
+              height: '40px',
+              minWidth: '40px',
+              position: 'absolute',
+              zIndex: 99,
+              right: 5,
+              top: 5,
+            }}
+            onClick={(event) => setMenuAnchorEl(event.currentTarget)}
+          >
+            <IconDots size={22} color="#FFFFFF" />
+          </Button>
+        ) : <></>}
 
         <Popover
           open={openMenu}
@@ -444,7 +446,7 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
                   </LoadingButton>
                 )}
 
-                {sessionData?.profile?.id === profile?.id ? (
+                {sessionData?.authenticated && sessionData?.profile?.id === profile?.id ? (
                   <>
                     <Button
                       onMouseEnter={handleOpenSettings}

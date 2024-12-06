@@ -56,6 +56,8 @@ import { ReportPublicationModal } from '@src/components/report-publication-modal
 import Popover from '@mui/material/Popover';
 // @ts-ignore
 import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
+import { openLoginModal } from '@redux/auth';
+import { useDispatch } from 'react-redux';
 
 // ----------------------------------------------------------------------
 
@@ -89,6 +91,8 @@ export default function PublicationDetailMain({
   const router = useRouter();
   const theme = useTheme();
   const { data: sessionData }: ReadResult<ProfileSession> = useSession();
+  const dispatch = useDispatch();
+
   // LENS HOOKS
   const { execute: toggle, loading: loadingLike } = useReactionToggle();
   const { execute: hide } = useHidePublication();
@@ -98,6 +102,8 @@ export default function PublicationDetailMain({
   const variants = theme.direction === 'rtl' ? varFade().inLeft : varFade().inRight;
 
   const toggleReaction = async () => {
+    if (!sessionData?.authenticated) return dispatch(openLoginModal());
+
     try {
       await toggle({
         reaction: PublicationReactionType.Upvote,
@@ -110,6 +116,8 @@ export default function PublicationDetailMain({
   };
 
   const toggleBookMark = async () => {
+    if (!sessionData?.authenticated) return dispatch(openLoginModal());
+
     try {
       await toggleBookMarkFunction({
         publication: post,
@@ -193,18 +201,20 @@ export default function PublicationDetailMain({
                 {post?.by?.metadata?.displayName}
               </Typography>
             </Box>
-            <Button
-              variant="text"
-              sx={{
-                borderColor: '#FFFFFF',
-                color: '#FFFFFF',
-                height: '40px',
-                minWidth: '40px',
-              }}
-              onClick={(event) => setAnchorEl(event.currentTarget)}
-            >
-              <IconDots size={22} color="#FFFFFF" />
-            </Button>
+            {sessionData?.authenticated ? (
+              <Button
+                variant="text"
+                sx={{
+                  borderColor: '#FFFFFF',
+                  color: '#FFFFFF',
+                  height: '40px',
+                  minWidth: '40px',
+                }}
+                onClick={(event) => setAnchorEl(event.currentTarget)}
+              >
+                <IconDots size={22} color="#FFFFFF" />
+              </Button>
+            ) : <></>}
             <Popover
               open={openMenu}
               anchorEl={anchorEl}
@@ -298,7 +308,7 @@ export default function PublicationDetailMain({
             }}
           >
             {hasAccess ? (
-              <LeaveTipCard post={post} />
+              <LeaveTipCard />
             ) : (
               <SubscribeToUnlockCard
                 loadingSubscribe={loadingSubscribe}
