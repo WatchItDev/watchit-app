@@ -58,7 +58,7 @@ export default function PublicationDetailsView({ id }: Props) {
   const [showToggle, setShowToggle] = useState(false);
   const [showButton, setShowButton] = useState(false);
   const [openSubscribeModal, setOpenSubscribeModal] = useState(false);
-  const descriptionRef = useRef(null);
+  const descriptionRef: any = useRef(null);
   // REDUX HOOKS
   const dispatch = useDispatch();
   // LOCAL HOOKS
