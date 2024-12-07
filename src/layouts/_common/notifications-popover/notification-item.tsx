@@ -1,4 +1,3 @@
-import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
@@ -9,35 +8,51 @@ import ListItemButton from '@mui/material/ListItemButton';
 import { formatDistanceToNow } from 'date-fns';
 // components
 import Iconify from '@src/components/iconify';
+import Box from "@mui/material/Box";
+
+// Types / map for category number
+export const NOTIFICATION_CATEGORIES: { [key: number]: string } = {
+  1: 'Follow',
+  2: 'Like',
+  3: 'Comment',
+  4: 'Join',
+  5: 'Mention',
+};
+
+// Inverted type for notification columns to use text as key and id as value
+export const NOTIFICATION_CATEGORIES_LABELS: { [key: string]: number } = {
+  'FOLLOW': 1,
+  'Like': 2,
+  'COMMENT': 3,
+  'JOIN': 4,
+  'MENTION': 5,
+};
+
+export type NotificationColumnsProps = {
+  id: string;
+  text: string;
+  readed: boolean;
+  sender_id: string;
+  category: number;
+  receiver_id: string;
+  created_at: string | Date;
+}
 
 type NotificationItemProps = {
-  notification: {
-    id: string;
-    title: string;
-    category: string;
-    createdAt: string | Date;
-    isUnRead: boolean;
-    type: string;
-    avatarUrl: string | null;
-  };
+  notification: NotificationColumnsProps;
   onMarkAsRead: (id: string) => void;
 };
 
 export default function NotificationItem({ notification, onMarkAsRead }: NotificationItemProps) {
   const handleItemClick = () => {
     onMarkAsRead(notification.id);
-    // Aquí puedes agregar la lógica adicional que quieras al hacer clic en la notificación
   };
 
   const renderAvatar = (
     <ListItemAvatar>
-      {notification.avatarUrl ? (
-        <Avatar src={notification.avatarUrl} sx={{ bgcolor: 'background.neutral' }} />
-      ) : (
         <Avatar sx={{ bgcolor: 'background.neutral' }}>
           <Iconify icon="eva:person-fill" />
         </Avatar>
-      )}
     </ListItemAvatar>
   );
 
@@ -46,24 +61,24 @@ export default function NotificationItem({ notification, onMarkAsRead }: Notific
       disableTypography
       primary={
         <Typography variant="subtitle2" noWrap>
-          {notification.title}
+          {notification.text}
         </Typography>
       }
       secondary={
         <Stack
           direction="row"
           alignItems="center"
-          sx={{ typography: 'caption', color: 'text.disabled' }}
+          sx={{typography: 'caption', color: 'text.disabled'}}
           spacing={1}
         >
-          <span>{formatDistanceToNow(new Date(notification.createdAt), { addSuffix: true })}</span>
-          <span>{notification.category}</span>
+          <span>{formatDistanceToNow(new Date(notification.created_at), {addSuffix: true})}</span>
+          <span>{NOTIFICATION_CATEGORIES[notification.category]}</span>
         </Stack>
       }
     />
   );
 
-  const renderUnReadBadge = notification.isUnRead && (
+  const renderUnReadBadge = !notification.readed && (
     <Box
       sx={{
         top: 26,

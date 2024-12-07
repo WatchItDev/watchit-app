@@ -14,7 +14,7 @@ import ListItemText from '@mui/material/ListItemText';
 
 // LENS IMPORTS
 import { Profile } from '@lens-protocol/api-bindings';
-import { ProfileSession, useFollow, useSession, useUnfollow } from '@lens-protocol/react-web';
+import {ProfileSession, useFollow, useSession, useUnfollow} from '@lens-protocol/react-web';
 // @ts-ignore
 import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
 
@@ -22,6 +22,11 @@ import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/r
 import Image from '../image';
 import { paths } from '../../routes/paths';
 import { useRouter } from '@src/routes/hooks';
+import {useNotifications} from "@src/hooks/use-notifications.ts";
+import {
+  NOTIFICATION_CATEGORIES,
+  NOTIFICATION_CATEGORIES_LABELS
+} from "@src/layouts/_common/notifications-popover/notification-item.tsx";
 
 // ----------------------------------------------------------------------
 
@@ -54,6 +59,8 @@ export const UserItem = ({
   const { execute: unfollow, error: unfollowError, loading: unfollowLoading } = useUnfollow();
   const router = useRouter();
 
+  const { sendNotification } = useNotifications();
+
   const goToProfile = () => {
     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     onClick ? onClick() : router.push(paths.dashboard.user.root(`${profile.id}`));
@@ -83,6 +90,9 @@ export const UserItem = ({
         setSuccessMessage('Successfully followed the profile.');
         // Wait for transaction confirmation
         await result.value.waitForCompletion();
+
+        // Send a notification to the profile owner using the sendNotification function from useNotifications hook
+        await sendNotification(profile.id, sessionData?.profile?.id, 'You have a new follower!', NOTIFICATION_CATEGORIES_LABELS['FOLLOW']);
 
         onActionFinished?.();
       } else {

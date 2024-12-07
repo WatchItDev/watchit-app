@@ -56,6 +56,10 @@ import { ReportPublicationModal } from '@src/components/report-publication-modal
 import Popover from '@mui/material/Popover';
 // @ts-ignore
 import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
+import {useNotifications} from "@src/hooks/use-notifications.ts";
+import {
+  NOTIFICATION_CATEGORIES_LABELS
+} from "@src/layouts/_common/notifications-popover/notification-item.tsx";
 
 // ----------------------------------------------------------------------
 
@@ -93,6 +97,7 @@ export default function PublicationDetailMain({
   const { execute: toggle, loading: loadingLike } = useReactionToggle();
   const { execute: hide } = useHidePublication();
   const { execute: toggleBookMarkFunction, loading: loadingBookMark } = useBookmarkToggle();
+  const { sendNotification } = useNotifications();
 
   // CONSTANTS
   const variants = theme.direction === 'rtl' ? varFade().inLeft : varFade().inRight;
@@ -102,6 +107,9 @@ export default function PublicationDetailMain({
       await toggle({
         reaction: PublicationReactionType.Upvote,
         publication: post,
+      }).then(() => {
+        // Send notification to the author
+        sendNotification(post.by.id, sessionData.profile.id, `${sessionData?.profile?.metadata?.displayName} liked your post`, NOTIFICATION_CATEGORIES_LABELS['LIKE']);
       });
       setHasLiked(!hasLiked); // Toggle the UI based on the reaction state
     } catch (err) {

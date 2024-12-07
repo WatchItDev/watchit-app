@@ -30,6 +30,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { closeLoginModal, openLoginModal, setAuthLoading } from '@redux/auth';
 import { CircularProgress } from '@mui/material';
 import { useWeb3Auth } from '@src/hooks/use-web3-auth.ts';
+import { useNotifications } from '@src/hooks/use-notifications';
 
 // ----------------------------------------------------------------------
 
@@ -51,9 +52,18 @@ export default function AccountPopover() {
 
   const { data: sessionData, loading }: ReadResult<ProfileSession> = useSession();
   const { execute: logoutExecute } = useLogout();
+  const { getNotifications, subscribeToNotifications } = useNotifications();
 
   useEffect(() => {
-    if (sessionData?.authenticated) dispatch(setAuthLoading({ isAuthLoading: false }));
+    if (sessionData?.authenticated){
+      dispatch(setAuthLoading({ isAuthLoading: false }))
+
+      // Subscribe to notifications
+      getNotifications(sessionData?.profile?.id).then((data) => {
+        console.log('Notifications:', data);
+      });
+      subscribeToNotifications();
+    }
   }, [sessionData?.authenticated]);
 
   useEffect(() => {
