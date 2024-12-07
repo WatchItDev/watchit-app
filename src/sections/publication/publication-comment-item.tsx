@@ -25,6 +25,7 @@ import { useState } from 'react';
 import RepliesList from '@src/sections/publication/publication-replies-list.tsx';
 import { timeAgo } from '@src/utils/comment.ts';
 import { openLoginModal } from '@redux/auth';
+// @ts-ignore
 import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
 import { useDispatch } from 'react-redux';
 
@@ -37,6 +38,7 @@ type Props = {
 };
 
 export default function PublicationCommentItem({ comment, hasReply, canReply }: Props) {
+  const [refetchRepliesTrigger, setRefetchRepliesTrigger] = useState(0);
   const router = useRouter();
   const { execute: toggle, loading: loadingLike } = useReactionToggle();
   const [hasLiked, setHasLiked] = useState(
@@ -64,6 +66,10 @@ export default function PublicationCommentItem({ comment, hasReply, canReply }: 
     if (!comment?.by?.id) return;
 
     router.push(paths.dashboard.user.root(`${comment?.by?.id}`));
+  };
+
+  const handleRefetchReplies = () => {
+    setRefetchRepliesTrigger((prev) => prev + 1);
   };
 
   return (
@@ -202,7 +208,7 @@ export default function PublicationCommentItem({ comment, hasReply, canReply }: 
         <>
           <Box sx={{ mt: 1, mb: 2, ml: 8 }}>
             {sessionData?.authenticated ? (
-              <PublicationCommentForm commentOn={comment?.id} />
+              <PublicationCommentForm commentOn={comment?.id} onCommentSuccess={handleRefetchReplies} />
             ) : (
               <Typography
                 variant="body1"
@@ -219,7 +225,7 @@ export default function PublicationCommentItem({ comment, hasReply, canReply }: 
               </Typography>
             )}
           </Box>
-          <RepliesList parentCommentId={comment.id} canReply={canReply} />
+          <RepliesList parentCommentId={comment.id} canReply={canReply} refetchTrigger={refetchRepliesTrigger} />
         </>
       )}
     </Stack>

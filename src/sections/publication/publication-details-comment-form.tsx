@@ -22,9 +22,10 @@ import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/r
 // Define the props types
 type MovieCommentFormProps = {
   commentOn: string; // ID of the publication (post or comment) to comment on
+  onCommentSuccess?: () => void;
 };
 
-const MovieCommentForm = ({ commentOn }: MovieCommentFormProps) => {
+const MovieCommentForm = ({ commentOn, onCommentSuccess }: MovieCommentFormProps) => {
   const CommentSchema = Yup.object().shape({
     comment: Yup.string().required('Comment is required'),
   });
@@ -118,6 +119,7 @@ const MovieCommentForm = ({ commentOn }: MovieCommentFormProps) => {
 
       console.log('comment created successfully');
       reset(); // Clear the form
+      onCommentSuccess?.();
     } catch (e) {
       console.error('Error creating the comment:', e);
     }

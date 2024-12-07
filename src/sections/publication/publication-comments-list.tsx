@@ -1,30 +1,37 @@
 import Box from '@mui/material/Box';
-import { LimitType, publicationId, usePublications } from '@lens-protocol/react-web';
+import { publicationId, useLazyPublications } from '@lens-protocol/react-web';
 
 import PublicationCommentItem from './publication-comment-item.tsx';
 import LinearProgress from '@mui/material/LinearProgress';
+import { useEffect } from 'react';
 
 // ----------------------------------------------------------------------
 
 type Props = {
   publicationId: string;
   showReplies?: boolean;
+  refetchTrigger?: number;
 };
 
-export default function PostCommentList({ publicationId: id, showReplies }: Props) {
-  // Fetch top-level comments (where commentOn is the post ID)
-  const {
-    data: comments,
-    loading,
-    error,
-  } = usePublications({
-    where: {
-      commentOn: {
-        id: publicationId(id),
-      },
-    },
-    limit: LimitType.Ten,
-  });
+export default function PostCommentList({ publicationId: id, showReplies, refetchTrigger }: Props) {
+  const { data: comments, error, loading, execute } = useLazyPublications();
+
+  useEffect(() => {
+    (async () => {
+      const result = await execute({
+        where: {
+          commentOn: {
+            id: publicationId(id),
+          },
+        }
+      });
+
+      if (result.isFailure()) {
+        console.log('Error trying to get comments');
+        return;
+      }
+    })()
+  }, [refetchTrigger]);
 
   if (loading)
     return (
