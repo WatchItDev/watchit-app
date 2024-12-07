@@ -58,6 +58,7 @@ import Popover from '@mui/material/Popover';
 import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
 import { openLoginModal } from '@redux/auth';
 import { useDispatch } from 'react-redux';
+import { addBookmark, removeBookmark } from '@redux/bookmark';
 
 // ----------------------------------------------------------------------
 
@@ -119,6 +120,12 @@ export default function PublicationDetailMain({
     if (!sessionData?.authenticated) return dispatch(openLoginModal());
 
     try {
+      if (!post?.operations?.hasBookmarked) {
+        dispatch(addBookmark(post));
+      } else {
+        dispatch(removeBookmark(post?.id));
+      }
+
       await toggleBookMarkFunction({
         publication: post,
       });

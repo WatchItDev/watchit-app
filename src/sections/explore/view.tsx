@@ -24,6 +24,7 @@ import { LoadingScreen } from '@src/components/loading-screen';
 import CarouselTopTitles from '@src/components/carousel/variants/carousel-top-titles.tsx';
 import CarouselCreators from '@src/components/carousel/variants/carousel-creators.tsx';
 import { useResponsive } from '@src/hooks/use-responsive.ts';
+import { useSelector } from 'react-redux';
 
 // ----------------------------------------------------------------------
 
@@ -36,6 +37,7 @@ export type TrendingTopicsType = {
 
 export default function ExploreView() {
   const lgUp = useResponsive('up', 'lg');
+  const { bookmarkPublications, hiddenBookmarks } = useSelector((state: any) => state.bookmark);
 
   let minItemWidth = 250;
   let maxItemWidth = 350;
@@ -75,7 +77,12 @@ export default function ExploreView() {
     .filter((item, index, self) => self.findIndex((t) => t.id === item.id) === index)
     .slice(0, 10);
 
-  const bookmarksFiltered = (bookmark ?? []).filter((post) => !post.isHidden);
+  const bookmarksFiltered = [...[...bookmarkPublications].reverse(), ...(bookmark ?? [])]
+    .filter((post) => !hiddenBookmarks.some((hidden) => hidden.id === post.id))
+    .filter((post) => !post.isHidden)
+    .filter((post, index, self) =>
+      index === self.findIndex((p) => p.id === post.id)
+    );
 
   return (
     <Container sx={{ p: '0 !important', maxWidth: '2000px !important' }}>

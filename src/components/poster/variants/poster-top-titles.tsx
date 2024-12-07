@@ -16,6 +16,7 @@ import { openLoginModal } from '@redux/auth';
 // @ts-ignore
 import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
 import { useDispatch } from 'react-redux';
+import { addBookmark, removeBookmark } from '@redux/bookmark';
 
 // ----------------------------------------------------------------------
 
@@ -41,6 +42,12 @@ const PosterTopTitles = ({ post }: { post: any }) => {
     if (!sessionData?.authenticated) return dispatch(openLoginModal());
 
     try {
+      if (!post?.operations?.hasBookmarked) {
+        dispatch(addBookmark(post));
+      } else {
+        dispatch(removeBookmark(post?.id));
+      }
+
       await toggleBookMarkFunction({
         publication: post,
       });
