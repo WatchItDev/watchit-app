@@ -28,6 +28,8 @@ export const GLOBAL_CONSTANTS = {
     process.env.VITE_PINATA_SECRET_API_KEY || import.meta.env.VITE_PINATA_SECRET_API_KEY || '',
   WEB3_CLIENT_ID: process.env.VITE_WEB3_CLIENT_ID || import.meta.env.VITE_WEB3_CLIENT_ID || '',
   PIMLICO: process.env.VITE_PIMLICO || import.meta.env.VITE_PIMLICO || '',
+  NEXT_PUBLIC_SUPABASE_URL: process.env.VITE_SUPABASE_URL || import.meta.env.VITE_SUPABASE_URL || '',
+  NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.VITE_SUPABASE_API_KEY || import.meta.env.VITE_SUPABASE_API_KEY || '',
 };
 
 export const MAPBOX_API = import.meta.env.VITE_MAPBOX_API || '';
