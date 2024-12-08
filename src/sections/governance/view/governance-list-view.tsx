@@ -190,7 +190,7 @@ export default function GovernanceListView() {
 // import { useCallback, useState } from 'react';
 // // @mui
 // import Stack from '@mui/material/Stack';
-// import Button from '@mui/material/Button';
+// import button from '@mui/material/button';
 // import Container from '@mui/material/Container';
 // import Typography from '@mui/material/Typography';
 // // routes
@@ -251,7 +251,7 @@ export default function GovernanceListView() {
 //   return (
 //     <>
 //       <Header>
-//         <Button
+//         <button
 //           onClick={handleBack} disableFocusRipple
 //           sx={{
 //             display: 'flex', alignItems: 'center', justifyContent: 'space-between',
@@ -271,7 +271,7 @@ export default function GovernanceListView() {
 //
 //
 //           {mdUp && <Label sx={{ px: 0.75, mr: 1, fontSize: 12, color: 'text.secondary' }}>Esc</Label>}
-//         </Button>
+//         </button>
 //       </Header>
 //       <Container maxWidth={settings.themeStretch ? false : 'lg'} sx={{ py: 5 }}>
 //          <Grid container spacing={3} sx={{ margin: '0 !important',width: '100% !important' }}>
@@ -309,14 +309,14 @@ export default function GovernanceListView() {
 //                 hrefItem={(title: string) => paths.dashboard.governance.details(title)}
 //               />
 //
-//               <Button
+//               <button
 //                 component={RouterLink}
 //                 href={paths.dashboard.governance.new}
 //                 variant="contained"
 //                 startIcon={<Iconify icon="mingcute:add-line" />}
 //               >
 //                 New Post
-//               </Button>
+//               </button>
 //             </Stack>
 //
 //             <GovernanceListHorizontal posts={ProposalsMockList} loading={false} />
