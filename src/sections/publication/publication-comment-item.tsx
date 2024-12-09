@@ -88,6 +88,10 @@ export default function PublicationCommentItem({ comment, hasReply, canReply }: 
     dispatch(hiddeComment(comment));
   };
 
+  console.log('hello')
+  console.log(comment)
+  console.log(sessionData)
+
   return (
     <Stack
       sx={{
@@ -118,7 +122,7 @@ export default function PublicationCommentItem({ comment, hasReply, canReply }: 
             }}
           />
 
-          {sessionData?.authenticated && (
+          {sessionData?.authenticated && comment?.by?.id === sessionData?.profile?.id && (
             <Button
               variant="text"
               sx={{
@@ -160,7 +164,7 @@ export default function PublicationCommentItem({ comment, hasReply, canReply }: 
                 }}
               >
                 <Stack direction="column" spacing={0} justifyContent="center">
-                  {comment?.by?.ownedBy?.address === sessionData?.profile?.ownedBy?.address && (
+                  {comment?.by?.id === sessionData?.profile?.id && (
                     <LazyMenuItem
                       onClick={() => {
                         setOpenConfirmModal(true);
@@ -308,7 +312,7 @@ export default function PublicationCommentItem({ comment, hasReply, canReply }: 
           <LazyDialog open={openConfirmModal} onClose={() => setOpenConfirmModal(false)}>
             <LazyDialogTitle>Confirm Hide</LazyDialogTitle>
             <LazyDialogContent>
-              <Typography>Are you sure you want to hide this publication?</Typography>
+              <Typography>Are you sure you want to hide this comment?</Typography>
             </LazyDialogContent>
             <LazyDialogActions>
               <Button
