@@ -50,7 +50,6 @@ type Props = {
 };
 
 export default function PublicationCommentItem({ comment, hasReply, canReply }: Props) {
-  const [refetchRepliesTrigger, setRefetchRepliesTrigger] = useState(0);
   const [openConfirmModal, setOpenConfirmModal] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const openMenu = Boolean(anchorEl);
@@ -82,10 +81,6 @@ export default function PublicationCommentItem({ comment, hasReply, canReply }: 
     if (!comment?.by?.id) return;
 
     router.push(paths.dashboard.user.root(`${comment?.by?.id}`));
-  };
-
-  const handleRefetchReplies = () => {
-    setRefetchRepliesTrigger((prev) => prev + 1);
   };
 
   const handleHide = async () => {
@@ -286,7 +281,7 @@ export default function PublicationCommentItem({ comment, hasReply, canReply }: 
         <>
           <Box sx={{ mt: 1, mb: 2, ml: 8 }}>
             {sessionData?.authenticated ? (
-              <PublicationCommentForm commentOn={comment?.id} onCommentSuccess={handleRefetchReplies} />
+              <PublicationCommentForm commentOn={comment?.id} />
             ) : (
               <Typography
                 variant="body1"
@@ -303,7 +298,7 @@ export default function PublicationCommentItem({ comment, hasReply, canReply }: 
               </Typography>
             )}
           </Box>
-          <RepliesList parentCommentId={comment.id} canReply={canReply} refetchTrigger={refetchRepliesTrigger} />
+          <RepliesList parentCommentId={comment.id} canReply={canReply} />
         </>
       )}
 

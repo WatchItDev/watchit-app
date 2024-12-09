@@ -83,7 +83,6 @@ export default function PublicationDetailMain({
   const [showComments, setShowComments] = useState(false);
   const [openReportModal, setOpenReportModal] = useState(false);
   const [openConfirmModal, setOpenConfirmModal] = useState(false);
-  const [refetchTrigger, setRefetchTrigger] = useState(0);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [hasLiked, setHasLiked] = useState(
     hasReacted({ publication: post, reaction: PublicationReactionType.Upvote })
@@ -143,10 +142,6 @@ export default function PublicationDetailMain({
     if (!post?.by?.id) return;
 
     router.push(paths.dashboard.user.root(`${post?.by?.id}`));
-  };
-
-  const handleRefetchComments = () => {
-    setRefetchTrigger((prev) => prev + 1); // cambiará el valor y disparará el useEffect en PostCommentList
   };
 
   if (post.isHidden) return <p>Publication is hidden</p>;
@@ -438,7 +433,7 @@ export default function PublicationDetailMain({
               >
                 <Divider sx={{ my: 3, mr: 1 }} />
                 {sessionData?.authenticated ? (
-                  <PublicationCommentForm commentOn={post?.id} onCommentSuccess={handleRefetchComments} />
+                  <PublicationCommentForm commentOn={post?.id} />
                 ) : (
                   <Typography
                     variant="body1"
@@ -456,7 +451,7 @@ export default function PublicationDetailMain({
                 )}
               </Box>
               <Box sx={{ display: 'flex', flexDirection: 'column', mt: 2, pr: 1 }}>
-                <PostCommentList publicationId={post?.id} showReplies refetchTrigger={refetchTrigger} />
+                <PostCommentList publicationId={post?.id} showReplies />
               </Box>
             </Box>
           )}

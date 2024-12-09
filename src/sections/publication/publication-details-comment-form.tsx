@@ -21,11 +21,12 @@ import Iconify from '@src/components/iconify';
 import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
 import { uploadMetadataToIPFS, verifyIpfsData } from '@src/utils/ipfs';
 import uuidv4 from '@src/utils/uuidv4.ts';
+import { useDispatch } from 'react-redux';
+import { refetchCommentsByPublication } from '@redux/comments';
 
 // Define the props types
 type MovieCommentFormProps = {
   commentOn: string; // ID of the publication (post or comment) to comment on
-  onCommentSuccess?: () => void;
 };
 
 /**
@@ -34,7 +35,7 @@ type MovieCommentFormProps = {
  * @param {MovieCommentFormProps} props - Component props.
  * @returns {JSX.Element} - Rendered component.
  */
-const MovieCommentForm = ({ commentOn, onCommentSuccess }: MovieCommentFormProps) => {
+const MovieCommentForm = ({ commentOn }: MovieCommentFormProps) => {
   // Define the validation schema using Yup
   const CommentSchema = Yup.object().shape({
     comment: Yup.string().required('Comment is required'),
@@ -59,6 +60,7 @@ const MovieCommentForm = ({ commentOn, onCommentSuccess }: MovieCommentFormProps
 
   const { execute: createComment } = useCreateComment();
   const { data: sessionData }: ReadResult<ProfileSession> = useSession();
+  const dispatch = useDispatch();
 
   const executeCreateCommentWithRetry = async (
     createComment: any,
@@ -138,7 +140,7 @@ const MovieCommentForm = ({ commentOn, onCommentSuccess }: MovieCommentFormProps
       // If execution reaches here, the comment was created successfully
       console.log('Comment created successfully');
       reset(); // Reset the form
-      onCommentSuccess?.(); // Trigger success callback if provided
+      dispatch(refetchCommentsByPublication(commentOn));
     } catch (e: any) {
       console.error('Error creating the comment:', e.message);
 

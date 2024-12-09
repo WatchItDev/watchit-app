@@ -8,12 +8,12 @@ import { useSelector } from 'react-redux';
 type Props = {
   parentCommentId: string;
   canReply?: boolean;
-  refetchTrigger?: number;
 };
 
-const RepliesList = ({ parentCommentId, refetchTrigger }: Props) => {
+const RepliesList = ({ parentCommentId }: Props) => {
   const { data: replies, error, loading, execute } = useLazyPublications();
-  const { hiddenComments } = useSelector((state: any) => state.comments);
+  const { hiddenComments, refetchTriggerByPublication } = useSelector((state: any) => state.comments);
+  const refetchTrigger = refetchTriggerByPublication[parentCommentId] || 0;
 
   useEffect(() => {
     (async () => {
@@ -32,20 +32,6 @@ const RepliesList = ({ parentCommentId, refetchTrigger }: Props) => {
     })()
   }, [refetchTrigger]);
 
-  if (loading)
-    return (
-      <LinearProgress
-        color="inherit"
-        sx={{
-          width: 1,
-          maxWidth: 300,
-          marginBottom: '16px',
-          marginRight: '16px',
-          alignSelf: 'flex-end',
-        }}
-      />
-    );
-
   if (error) return <p>Error loading replies: {error.message}</p>;
 
   const repliesFiltered = (replies ?? [])
@@ -54,6 +40,20 @@ const RepliesList = ({ parentCommentId, refetchTrigger }: Props) => {
 
   return (
     <Box sx={{ ml: 0, mb: 1 }}>
+      {loading && (
+        <LinearProgress
+          color="inherit"
+          sx={{
+            width: 1,
+            maxWidth: 300,
+            marginTop: '-8px',
+            marginBottom: '16px',
+            marginRight: '16px',
+            alignSelf: 'flex-end',
+            marginLeft: 'auto'
+          }}
+        />
+      )}
       {repliesFiltered?.map((reply: any) => {
         const { id: replyId } = reply;
 
