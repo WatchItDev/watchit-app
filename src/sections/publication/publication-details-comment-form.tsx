@@ -3,21 +3,24 @@ import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Stack, CircularProgress } from '@mui/material';
 import LoadingButton from '@mui/lab/LoadingButton';
-import axios from 'axios';
-
-// Import from Lens SDK
 import { ProfileSession, useCreateComment, useSession } from '@lens-protocol/react-web';
-import { textOnly } from '@lens-protocol/metadata';
-
-// Custom components
+import {
+  textOnly,
+  PublicationMetadataSchema,
+  formatZodError,
+  MetadataAttributeType,
+  MarketplaceMetadataAttributeDisplayType,
+} from '@lens-protocol/metadata';
 import FormProvider from '@src/components/hook-form';
 import Avatar from '@mui/material/Avatar';
 import InputBase from '@mui/material/InputBase';
 import InputAdornment from '@mui/material/InputAdornment';
 import { alpha } from '@mui/material/styles';
-import Iconify from '../../components/iconify';
+import Iconify from '@src/components/iconify';
 // @ts-ignore
 import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
+import { uploadMetadataToIPFS, verifyIpfsData } from '@src/utils/ipfs';
+import uuidv4 from '@src/utils/uuidv4.ts';
 
 // Define the props types
 type MovieCommentFormProps = {
@@ -25,15 +28,24 @@ type MovieCommentFormProps = {
   onCommentSuccess?: () => void;
 };
 
+/**
+ * MovieCommentForm Component
+ *
+ * @param {MovieCommentFormProps} props - Component props.
+ * @returns {JSX.Element} - Rendered component.
+ */
 const MovieCommentForm = ({ commentOn, onCommentSuccess }: MovieCommentFormProps) => {
+  // Define the validation schema using Yup
   const CommentSchema = Yup.object().shape({
     comment: Yup.string().required('Comment is required'),
   });
 
+  // Define default form values
   const defaultValues = {
     comment: '',
   };
 
+  // Initialize the form methods
   const methods = useForm({
     resolver: yupResolver(CommentSchema),
     defaultValues,
@@ -45,83 +57,106 @@ const MovieCommentForm = ({ commentOn, onCommentSuccess }: MovieCommentFormProps
     formState: { isSubmitting },
   } = methods;
 
-  // Initialize useCreateComment
   const { execute: createComment } = useCreateComment();
   const { data: sessionData }: ReadResult<ProfileSession> = useSession();
 
-  // Implementation of uploadToIpfs using Pinata
-  const uploadToIpfs = async (metadata: any) => {
-    const pinataApiKey = '26e37a596e8e561427af'; // Replace with your API key
-    const pinataSecretApiKey = '9d9469c678bb8db458851c5342f9201ab4811c29f281f7d8205a6a18cf302566'; // Replace with your secret API key
+  const executeCreateCommentWithRetry = async (
+    createComment: any,
+    params: any,
+    retries = 4,
+    delayMs = 3000
+  ): Promise<any> => {
+    for (let attempt = 1; attempt <= retries; attempt++) {
+      try {
+        const result = await createComment(params);
+        if (!result.isFailure()) {
+          return result;
+        } else {
+          console.warn(`Attempt ${attempt}: Failed to create comment. Error: ${result.error.message}`);
+        }
+      } catch (error: any) {
+        console.warn(`Attempt ${attempt}: Error creating comment. Error: ${error.message}`);
+      }
 
-    const url = 'https://api.pinata.cloud/pinning/pinJSONToIPFS';
-
-    try {
-      const response = await axios.post(url, metadata, {
-        headers: {
-          'Content-Type': 'application/json',
-          pinata_api_key: pinataApiKey,
-          pinata_secret_api_key: pinataSecretApiKey,
-        },
-      });
-
-      // Return the IPFS URI
-      return `ipfs://${response.data.IpfsHash}`;
-    } catch (e) {
-      console.error('Error uploading to IPFS:', e);
-      throw e;
+      if (attempt < retries) {
+        console.log(`Retrying in ${delayMs}ms... (${attempt}/${retries})`);
+        await new Promise((resolve) => setTimeout(resolve, delayMs));
+      }
     }
+
+    throw new Error(`Could not create the comment after ${retries} attempts.`);
   };
 
+  /**
+   * Form submission handler.
+   *
+   * @param {any} data - Form data.
+   */
   const onSubmit = handleSubmit(async (data) => {
     try {
-      const content = data.comment;
-
-      // Create metadata using textOnly
       const metadata = textOnly({
-        content,
         appId: 'watchit',
-      });
-
-      // Upload metadata to IPFS
-      const uri = await uploadToIpfs(metadata);
-
-      // Execute the comment creation
-      const result = await createComment({
-        commentOn: commentOn as any, // ID of the publication to comment on
-        metadata: uri,
-      });
-
-      if (result.isFailure()) {
-        // Handle failure scenarios
-        switch (result.error.name) {
-          case 'BroadcastingError':
-            console.log('Error broadcasting the transaction', result.error.message);
-            break;
-          case 'PendingSigningRequestError':
-            console.log(
-              'There is a pending signature request in your wallet. ' +
-                'Approve it or dismiss it and try again.'
-            );
-            break;
-          case 'WalletConnectionError':
-            console.log('Error connecting to the wallet', result.error.message);
-            break;
-          case 'UserRejectedError':
-            // The user decided not to sign
-            break;
-          default:
-            console.log('Error:', result.error.message);
-            break;
+        id: uuidv4(),
+        attributes: [
+          { type: MetadataAttributeType.STRING, key: 'publication', value: commentOn },
+          { type: MetadataAttributeType.STRING, key: 'creator', value: sessionData?.profile?.handle?.localName },
+          { type: MetadataAttributeType.STRING, key: 'app', value: 'watchit' },
+        ],
+        content: data.comment,
+        locale: 'en',
+        marketplace: {
+          name: `Comment by ${sessionData?.profile?.handle?.localName}`,
+          attributes: [
+            { display_type: MarketplaceMetadataAttributeDisplayType.STRING, value: commentOn },
+            { display_type: MarketplaceMetadataAttributeDisplayType.STRING, value: sessionData?.profile?.handle?.localName },
+            { display_type: MarketplaceMetadataAttributeDisplayType.STRING, value: 'watchit' },
+          ],
+          description: data.comment,
+          external_url: `https://watchit.movie/comment/${uuidv4()}`,
         }
+      });
+
+      // Validate metadata against the schema
+      const validation = PublicationMetadataSchema.safeParse(metadata);
+      if (!validation.success) {
+        console.error('Metadata validation error:', formatZodError(validation.error));
         return;
       }
 
-      console.log('comment created successfully');
-      reset(); // Clear the form
-      onCommentSuccess?.();
-    } catch (e) {
-      console.error('Error creating the comment:', e);
+      // Upload metadata to IPFS
+      const uri = await uploadMetadataToIPFS(metadata);
+
+      // Verify availability of metadata on IPFS
+      await verifyIpfsData(uri);
+
+      // Create comment with retry logic
+      await executeCreateCommentWithRetry(createComment, {
+        commentOn: commentOn as any,
+        metadata: uri,
+      });
+
+      // If execution reaches here, the comment was created successfully
+      console.log('Comment created successfully');
+      reset(); // Reset the form
+      onCommentSuccess?.(); // Trigger success callback if provided
+    } catch (e: any) {
+      console.error('Error creating the comment:', e.message);
+
+      // Handle specific failure scenarios if necessary
+      if (e.message.includes('BroadcastingError')) {
+        console.log('Error broadcasting the transaction:', e.message);
+      } else if (e.message.includes('PendingSigningRequestError')) {
+        console.log(
+          'There is a pending signature request in your wallet. ' +
+          'Approve it or dismiss it and try again.'
+        );
+      } else if (e.message.includes('WalletConnectionError')) {
+        console.log('Error connecting to the wallet:', e.message);
+      } else if (e.message.includes('UserRejectedError')) {
+        // The user decided not to sign
+      } else {
+        console.log('Error:', e.message);
+      }
     }
   });
 
@@ -135,7 +170,6 @@ const MovieCommentForm = ({ commentOn, onCommentSuccess }: MovieCommentFormProps
         alt={sessionData?.profile?.handle?.localName ?? ''}
       />
 
-      {/* Usamos Controller para conectar InputBase con react-hook-form */}
       <Controller
         name="comment"
         control={methods.control}

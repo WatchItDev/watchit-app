@@ -78,7 +78,7 @@ export default function NotificationsPopover() {
             mappedNotification.title = `${notification.comment.by.handle.suggestedFormatted.localName} comentó: "${notification.comment.metadata.content}"`;
             mappedNotification.createdAt = notification.comment.createdAt;
             mappedNotification.avatarUrl =
-              notification.comment.by.metadata.picture?.optimized?.uri || null;
+              notification.comment.by.metadata?.picture?.optimized?.uri || null;
             break;
 
           default:

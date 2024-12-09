@@ -3,6 +3,7 @@ import Box from '@mui/material/Box';
 import { publicationId, useLazyPublications } from '@lens-protocol/react-web';
 import PublicationCommentItem from './publication-comment-item.tsx';
 import LinearProgress from '@mui/material/LinearProgress';
+import { useSelector } from 'react-redux';
 
 type Props = {
   parentCommentId: string;
@@ -12,6 +13,7 @@ type Props = {
 
 const RepliesList = ({ parentCommentId, refetchTrigger }: Props) => {
   const { data: replies, error, loading, execute } = useLazyPublications();
+  const { hiddenComments } = useSelector((state: any) => state.comments);
 
   useEffect(() => {
     (async () => {
@@ -43,11 +45,16 @@ const RepliesList = ({ parentCommentId, refetchTrigger }: Props) => {
         }}
       />
     );
+
   if (error) return <p>Error loading replies: {error.message}</p>;
+
+  const repliesFiltered = (replies ?? [])
+    .filter((comment) => !hiddenComments.some((hiddenComment: any) => hiddenComment.id === comment.id))
+    .filter((comment) => !comment.isHidden)
 
   return (
     <Box sx={{ ml: 0, mb: 1 }}>
-      {replies?.map((reply: any) => {
+      {repliesFiltered?.map((reply: any) => {
         const { id: replyId } = reply;
 
         return (

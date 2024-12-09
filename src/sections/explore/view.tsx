@@ -78,7 +78,7 @@ export default function ExploreView() {
     .slice(0, 10);
 
   const bookmarksFiltered = [...[...bookmarkPublications].reverse(), ...(bookmark ?? [])]
-    .filter((post) => !hiddenBookmarks.some((hidden) => hidden.id === post.id))
+    .filter((post) => !hiddenBookmarks.some((hidden: any) => hidden.id === post.id))
     .filter((post) => !post.isHidden)
     .filter((post, index, self) =>
       index === self.findIndex((p) => p.id === post.id)
