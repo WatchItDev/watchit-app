@@ -101,7 +101,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
   return (
     <>
       <Modal
-        style={{ overflow: 'scroll' }}
+        style={{ overflow: 'scroll', zIndex: view === 'profile' && address ? 3147483647 : 10000 }}
         disableScrollLock={true}
         open={open}
         onClose={onClose}
