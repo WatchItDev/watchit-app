@@ -126,6 +126,7 @@
     "@babel/plugin-syntax-flow": "^7.22.5",
     "@babel/plugin-transform-react-jsx": "^7.22.5",
     "@eslint/js": "^9.14.0",
+    "@froxz/vite-plugin-s3": "^1.6.0",
     "@types/autosuggest-highlight": "^3.2.0",
     "@types/lodash": "^4.14.195",
     "@types/mapbox-gl": "^2.7.11",

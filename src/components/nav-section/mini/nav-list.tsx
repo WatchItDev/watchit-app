@@ -100,7 +100,7 @@ export default function NavList({ data, active, depth, config, onClick }: NavLis
         }}
       >
         <Stack spacing={1} direction={'row'}>
-          {data.title}
+          <small>{data.title}</small>
           {data.badge && (
             <Box
               sx={{

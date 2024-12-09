@@ -21,15 +21,15 @@ interface props {
 export const ComingSoonView = ({
   deadline = '01/12/2025 21:30',
   showDeadline,
-  title = 'Coming Soon!',
-  content = 'Exciting things are on the way—this section is under construction!',
+  title = 'New Features Coming Soon!',
+  content = 'We’re working hard to bring this section to life. Check back soon!',
 }: props) => {
   const { days, hours, minutes, seconds } = useCountdownDate(new Date(deadline));
 
   return (
     <>
       <Header>
-        <HeaderContent title="Coming soon" />
+        <HeaderContent title="New Features Coming Soon" />
       </Header>
       <Typography variant="h3" sx={{ mb: 2, mt: 3, width: '100%', textAlign: 'center' }}>
         {title}
@@ -39,7 +39,7 @@ export const ComingSoonView = ({
         variant={'h6'}
         sx={{
           color: 'text.secondary',
-          width: { xs: '100%', md: '80%' },
+          width: { xs: '100%', md: '60%' },
           mx: 'auto',
           textAlign: 'center',
           mb: 1,

@@ -306,10 +306,10 @@ export default function PublicationDetailsView({ id }: Props) {
                         <Typography
                           variant="body1"
                           color="textSecondary"
-                          sx={{ fontWeight: 'bold', lineHeight: 1.1, mb: 0.5, width: '100%' }}
+                          sx={{ lineHeight: 1.1, mb: 0.5, width: '100%' }}
                           gutterBottom
                         >
-                          No Sponsors yet. Be the first to support!
+                          No sponsors yet. Be the first to join and support!
                         </Typography>
                       </m.div>
                     </Box>
@@ -331,10 +331,10 @@ export default function PublicationDetailsView({ id }: Props) {
                         <Typography
                           variant="body1"
                           color="textSecondary"
-                          sx={{ fontWeight: 'bold', lineHeight: 1.1, mb: 0.5, width: '100%' }}
+                          sx={{ lineHeight: 1.1, mb: 0.5, width: '100%' }}
                           gutterBottom
                         >
-                          No Bakers yet. Be the first to support!
+                          No bakers yet. Be the first to join and support!
                         </Typography>
                       </m.div>
                     </Box>

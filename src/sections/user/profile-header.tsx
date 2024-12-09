@@ -483,7 +483,7 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
                         pointerEvents: 'none',
                       }}
                     >
-                      <Typography>Configure joining pricing</Typography>
+                      <Typography>Set joining pricing</Typography>
                     </Popover>
                   </>
                 ) : (
@@ -689,7 +689,7 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
                 justifyContent: 'space-between',
               }}
             >
-              <Typography color="text.secondary">Lens id</Typography>
+              <Typography color="text.secondary">Lens ID</Typography>
               <CopyableText label={`${profile?.id}`} text={`${profile?.id}`} />
             </Stack>
             <Divider sx={{ borderColor: 'rgba(255, 255, 255, 0.08)', width: '100%' }} />
@@ -744,7 +744,7 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
                 justifyContent: 'space-between',
               }}
             >
-              <Typography color="text.secondary">Distribution partners</Typography>
+              <Typography color="text.secondary">Distribution Partners</Typography>
               <Box
                 gridTemplateColumns={{
                   xs: 'repeat(3, 1fr)',

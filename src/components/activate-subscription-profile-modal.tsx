@@ -113,12 +113,11 @@ export const ActivateSubscriptionProfileModal = ({
   return (
     <>
       <Dialog open={isOpen} onClose={onClose} fullWidth maxWidth="xs">
-        <DialogTitle sx={{ pb: 2 }}>Configure joining prices</DialogTitle>
+        <DialogTitle sx={{ pb: 2 }}>Set joining prices</DialogTitle>
         <Divider sx={{ mb: 2, borderStyle: 'dashed' }} />
         <DialogContent>
           <Typography variant="body2" color="textSecondary" sx={{ mb: 3 }}>
-            People who join you will pay a <span style={{ fontWeight: 'bolder' }}>daily</span> rate
-            for accessing your content.
+            Users will pay a <span style={{ fontWeight: 'bolder' }}>daily</span> rate to access your content.
           </Typography>
           <Stack spacing={2}>
             <Stack spacing={2} direction="row">
@@ -168,7 +167,7 @@ export const ActivateSubscriptionProfileModal = ({
 
           <Stack spacing={1}>
             <Typography variant="body2" color="textSecondary" sx={{ mb: 1 }}>
-              People who join will pay:
+              Users will pay:
             </Typography>
             <Stack spacing={1} direction="row">
               <Stack
@@ -239,7 +238,7 @@ export const ActivateSubscriptionProfileModal = ({
             onClick={handleAuthorizeSubscription}
             disabled={loading || (!selectedAmount && !customAmount)}
           >
-            {loading ? <CircularProgress size="25px" sx={{ color: '#fff' }} /> : 'Set price'}
+            {loading ? <CircularProgress size="25px" sx={{ color: '#fff' }} /> : 'Confirm price'}
           </Button>
         </DialogActions>
       </Dialog>
