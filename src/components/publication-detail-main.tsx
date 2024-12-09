@@ -60,6 +60,9 @@ import {useNotifications} from "@src/hooks/use-notifications.ts";
 import {
   NOTIFICATION_CATEGORIES_LABELS
 } from "@src/layouts/_common/notifications-popover/notification-item.tsx";
+import { openLoginModal } from '@redux/auth';
+import { useDispatch } from 'react-redux';
+import { addBookmark, removeBookmark } from '@redux/bookmark';
 
 // ----------------------------------------------------------------------
 
@@ -84,6 +87,7 @@ export default function PublicationDetailMain({
   const [showComments, setShowComments] = useState(false);
   const [openReportModal, setOpenReportModal] = useState(false);
   const [openConfirmModal, setOpenConfirmModal] = useState(false);
+  const [refetchTrigger, setRefetchTrigger] = useState(0);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [hasLiked, setHasLiked] = useState(
     hasReacted({ publication: post, reaction: PublicationReactionType.Upvote })
@@ -93,6 +97,8 @@ export default function PublicationDetailMain({
   const router = useRouter();
   const theme = useTheme();
   const { data: sessionData }: ReadResult<ProfileSession> = useSession();
+  const dispatch = useDispatch();
+
   // LENS HOOKS
   const { execute: toggle, loading: loadingLike } = useReactionToggle();
   const { execute: hide } = useHidePublication();
@@ -103,6 +109,8 @@ export default function PublicationDetailMain({
   const variants = theme.direction === 'rtl' ? varFade().inLeft : varFade().inRight;
 
   const toggleReaction = async () => {
+    if (!sessionData?.authenticated) return dispatch(openLoginModal());
+
     try {
       await toggle({
         reaction: PublicationReactionType.Upvote,
@@ -118,7 +126,15 @@ export default function PublicationDetailMain({
   };
 
   const toggleBookMark = async () => {
+    if (!sessionData?.authenticated) return dispatch(openLoginModal());
+
     try {
+      if (!post?.operations?.hasBookmarked) {
+        dispatch(addBookmark(post));
+      } else {
+        dispatch(removeBookmark(post?.id));
+      }
+
       await toggleBookMarkFunction({
         publication: post,
       });
@@ -135,6 +151,10 @@ export default function PublicationDetailMain({
     if (!post?.by?.id) return;
 
     router.push(paths.dashboard.user.root(`${post?.by?.id}`));
+  };
+
+  const handleRefetchComments = () => {
+    setRefetchTrigger((prev) => prev + 1); // cambiará el valor y disparará el useEffect en PostCommentList
   };
 
   if (post.isHidden) return <p>Publication is hidden</p>;
@@ -201,18 +221,20 @@ export default function PublicationDetailMain({
                 {post?.by?.metadata?.displayName}
               </Typography>
             </Box>
-            <Button
-              variant="text"
-              sx={{
-                borderColor: '#FFFFFF',
-                color: '#FFFFFF',
-                height: '40px',
-                minWidth: '40px',
-              }}
-              onClick={(event) => setAnchorEl(event.currentTarget)}
-            >
-              <IconDots size={22} color="#FFFFFF" />
-            </Button>
+            {sessionData?.authenticated ? (
+              <Button
+                variant="text"
+                sx={{
+                  borderColor: '#FFFFFF',
+                  color: '#FFFFFF',
+                  height: '40px',
+                  minWidth: '40px',
+                }}
+                onClick={(event) => setAnchorEl(event.currentTarget)}
+              >
+                <IconDots size={22} color="#FFFFFF" />
+              </Button>
+            ) : <></>}
             <Popover
               open={openMenu}
               anchorEl={anchorEl}
@@ -442,7 +464,7 @@ export default function PublicationDetailMain({
                 )}
               </Box>
               <Box sx={{ display: 'flex', flexDirection: 'column', mt: 2, pr: 1 }}>
-                <PostCommentList publicationId={post?.id} showReplies />
+                <PostCommentList publicationId={post?.id} showReplies refetchTrigger={refetchTrigger} />
               </Box>
             </Box>
           )}

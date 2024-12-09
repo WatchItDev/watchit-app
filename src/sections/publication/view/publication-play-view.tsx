@@ -12,14 +12,6 @@ type Props = {
 // ----------------------------------------------------------------------
 
 export default function PublicationPlayView({ publication, loading }: Props) {
-  // useResponsive('up', 'md');
-  // const router = useRouter();
-
-  // const handleBack = () => {
-  //   router.push(paths.dashboard.publication.details(`${id}`));
-  // }
-
-  // const getMediaUri = (cid: string): string => `https://g.watchit.movie/content/${cid?.replace('ipfs://', '')}/`
   const getMediaUri = (cid: string): string => `https://g.watchit.movie/content/${cid}/`;
 
   const getMovieCid = (): string => publication?.metadata?.asset?.video?.raw?.uri;

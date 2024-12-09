@@ -58,7 +58,7 @@ export default function PublicationDetailsView({ id }: Props) {
   const [showToggle, setShowToggle] = useState(false);
   const [showButton, setShowButton] = useState(false);
   const [openSubscribeModal, setOpenSubscribeModal] = useState(false);
-  const descriptionRef = useRef(null);
+  const descriptionRef: any = useRef(null);
   // REDUX HOOKS
   const dispatch = useDispatch();
   // LOCAL HOOKS
@@ -125,6 +125,26 @@ export default function PublicationDetailsView({ id }: Props) {
   const filteredPublications = publications?.filter((publication) => publication.id !== id) ?? [];
 
   if (loading || accessLoading) return <LoadingScreen />;
+
+  if (data.isHidden) return (
+    <Box sx={{ padding: 2 }}>
+      <Typography
+        sx={{
+          height: '20rem',
+          textAlign: 'center',
+          width: '100%',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          fontWeight: 'bold',
+          background: '#2b2d31',
+          borderRadius: '1rem',
+        }}
+      >
+        Publication is hidden
+      </Typography>
+    </Box>
+  );
 
   return (
     <>
@@ -233,7 +253,7 @@ export default function PublicationDetailsView({ id }: Props) {
                 </Box>
               )}
 
-              <Container sx={{ mb: 8, p: '0 !important' }}>
+              <Box sx={{ mb: 8, p: '0 !important' }}>
                 <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                   <Box
                     sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'end', mt: 3 }}
@@ -286,10 +306,10 @@ export default function PublicationDetailsView({ id }: Props) {
                         <Typography
                           variant="body1"
                           color="textSecondary"
-                          sx={{ fontWeight: 'bold', lineHeight: 1.1, mb: 0.5, width: '100%' }}
+                          sx={{ lineHeight: 1.1, mb: 0.5, width: '100%' }}
                           gutterBottom
                         >
-                          No Sponsors yet. Be the first to support!
+                          No sponsors yet. Be the first to join and support!
                         </Typography>
                       </m.div>
                     </Box>
@@ -311,10 +331,10 @@ export default function PublicationDetailsView({ id }: Props) {
                         <Typography
                           variant="body1"
                           color="textSecondary"
-                          sx={{ fontWeight: 'bold', lineHeight: 1.1, mb: 0.5, width: '100%' }}
+                          sx={{ lineHeight: 1.1, mb: 0.5, width: '100%' }}
                           gutterBottom
                         >
-                          No Bakers yet. Be the first to support!
+                          No bakers yet. Be the first to join and support!
                         </Typography>
                       </m.div>
                     </Box>
@@ -329,7 +349,7 @@ export default function PublicationDetailsView({ id }: Props) {
                     </Box>
                   )}
                 </Box>
-              </Container>
+              </Box>
             </CardContent>
           </Card>
         </Stack>

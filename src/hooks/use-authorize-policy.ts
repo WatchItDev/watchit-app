@@ -1,8 +1,6 @@
 // REACT IMPORTS
 import { useState } from 'react';
 
-// ETHERS IMPORTS
-
 // VIEM IMPORTS
 import { encodeFunctionData } from 'viem';
 

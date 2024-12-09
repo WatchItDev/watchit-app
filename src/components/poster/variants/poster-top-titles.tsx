@@ -11,13 +11,20 @@ import { IconBookmark, IconBookmarkFilled, IconPlayerPlay } from '@tabler/icons-
 import Box from '@mui/material/Box';
 import TextMaxLine from '@src/components/text-max-line';
 import { CircularProgress } from '@mui/material';
-import { useBookmarkToggle } from '@lens-protocol/react-web';
+import { ProfileSession, useBookmarkToggle, useSession } from '@lens-protocol/react-web';
+import { openLoginModal } from '@redux/auth';
+// @ts-ignore
+import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
+import { useDispatch } from 'react-redux';
+import { addBookmark, removeBookmark } from '@redux/bookmark';
 
 // ----------------------------------------------------------------------
 
 const PosterTopTitles = ({ post }: { post: any }) => {
   const router = useRouter();
   const { execute: toggleBookMarkFunction, loading: loadingBookMark } = useBookmarkToggle();
+  const { data: sessionData }: ReadResult<ProfileSession> = useSession();
+  const dispatch = useDispatch();
 
   const handlePosterClick = () => {
     router.push(paths.dashboard.publication.details(post.id));
@@ -32,7 +39,15 @@ const PosterTopTitles = ({ post }: { post: any }) => {
     post?.metadata?.attachments?.find((el: any) => el.altTag === 'poster')?.image?.raw?.uri;
 
   const toggleBookMark = async () => {
+    if (!sessionData?.authenticated) return dispatch(openLoginModal());
+
     try {
+      if (!post?.operations?.hasBookmarked) {
+        dispatch(addBookmark(post));
+      } else {
+        dispatch(removeBookmark(post?.id));
+      }
+
       await toggleBookMarkFunction({
         publication: post,
       });

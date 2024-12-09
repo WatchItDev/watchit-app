@@ -213,7 +213,7 @@ export default function OverviewFilePage() {
           deadline={'03/30/2025 21:30'}
           showDeadline={true}
           content={
-            'Studio will enable creators to generate new content and refine existing creations using AI-driven tools for metadata, images, subtitles, voiceovers, and security verifications. Stay tuned!'
+            "The Studio is evolving! Soon, you'll generate new content and enhance your creations with AI-driven tools for metadata, images, subtitles, voiceovers, and security checks. Stay tuned!"
           }
         />
       </BlankView>

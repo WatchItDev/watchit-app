@@ -235,22 +235,24 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
       <Box sx={{ my: 3, position: 'relative' }}>
         <ProfileCover profile={profile} />
 
-        <Button
-          variant="text"
-          sx={{
-            borderColor: '#FFFFFF',
-            color: '#FFFFFF',
-            height: '40px',
-            minWidth: '40px',
-            position: 'absolute',
-            zIndex: 99,
-            right: 5,
-            top: 5,
-          }}
-          onClick={(event) => setMenuAnchorEl(event.currentTarget)}
-        >
-          <IconDots size={22} color="#FFFFFF" />
-        </Button>
+        {sessionData?.authenticated ? (
+          <Button
+            variant="text"
+            sx={{
+              borderColor: '#FFFFFF',
+              color: '#FFFFFF',
+              height: '40px',
+              minWidth: '40px',
+              position: 'absolute',
+              zIndex: 99,
+              right: 5,
+              top: 5,
+            }}
+            onClick={(event) => setMenuAnchorEl(event.currentTarget)}
+          >
+            <IconDots size={22} color="#FFFFFF" />
+          </Button>
+        ) : <></>}
 
         <Popover
           open={openMenu}
@@ -444,7 +446,7 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
                   </LoadingButton>
                 )}
 
-                {sessionData?.profile?.id === profile?.id ? (
+                {sessionData?.authenticated && sessionData?.profile?.id === profile?.id ? (
                   <>
                     <Button
                       onMouseEnter={handleOpenSettings}
@@ -481,7 +483,7 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
                         pointerEvents: 'none',
                       }}
                     >
-                      <Typography>Configure joining pricing</Typography>
+                      <Typography>Set joining pricing</Typography>
                     </Popover>
                   </>
                 ) : (
@@ -687,7 +689,7 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
                 justifyContent: 'space-between',
               }}
             >
-              <Typography color="text.secondary">Lens id</Typography>
+              <Typography color="text.secondary">Lens ID</Typography>
               <CopyableText label={`${profile?.id}`} text={`${profile?.id}`} />
             </Stack>
             <Divider sx={{ borderColor: 'rgba(255, 255, 255, 0.08)', width: '100%' }} />
@@ -742,7 +744,7 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
                 justifyContent: 'space-between',
               }}
             >
-              <Typography color="text.secondary">Distribution partners</Typography>
+              <Typography color="text.secondary">Distribution Partners</Typography>
               <Box
                 gridTemplateColumns={{
                   xs: 'repeat(3, 1fr)',

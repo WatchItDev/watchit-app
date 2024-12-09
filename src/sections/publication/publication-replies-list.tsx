@@ -1,26 +1,34 @@
-import React from 'react';
+import { useEffect } from 'react';
 import Box from '@mui/material/Box';
-import { usePublications, publicationId } from '@lens-protocol/react-web';
+import { publicationId, useLazyPublications } from '@lens-protocol/react-web';
 import PublicationCommentItem from './publication-comment-item.tsx';
 import LinearProgress from '@mui/material/LinearProgress';
 
 type Props = {
   parentCommentId: string;
   canReply?: boolean;
+  refetchTrigger?: number;
 };
 
-const RepliesList = ({ parentCommentId, canReply }: Props) => {
-  const {
-    data: replies,
-    loading,
-    error,
-  } = usePublications({
-    where: {
-      commentOn: {
-        id: publicationId(parentCommentId),
-      },
-    },
-  });
+const RepliesList = ({ parentCommentId, refetchTrigger }: Props) => {
+  const { data: replies, error, loading, execute } = useLazyPublications();
+
+  useEffect(() => {
+    (async () => {
+      const result = await execute({
+        where: {
+          commentOn: {
+            id: publicationId(parentCommentId),
+          },
+        }
+      });
+
+      if (result.isFailure()) {
+        console.log('Error trying to get replies');
+        return;
+      }
+    })()
+  }, [refetchTrigger]);
 
   if (loading)
     return (

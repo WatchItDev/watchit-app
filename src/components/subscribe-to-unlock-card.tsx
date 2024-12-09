@@ -40,12 +40,11 @@ export const SubscribeToUnlockCard = ({
         <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 2 }}>
           <IconLock fontSize="large" size={20} />
           <Typography variant="h6" fontWeight="bold">
-            Join to play
+            Join to Watch
           </Typography>
         </Stack>
         <Typography variant="body2" sx={{ mb: 3 }}>
-          This content is only available to our subscribers. Join our growing community and gain
-          access to exclusive posts, behind-the-scenes content, and more!
+          This content is exclusively for members. Become part of our growing community to access behind-the-scenes content, exclusive posts, and much more!
         </Typography>
 
         <LoadingButton
@@ -61,7 +60,7 @@ export const SubscribeToUnlockCard = ({
         </LoadingButton>
         <Box sx={{ mt: 3, borderRadius: 1 }}>
           <Typography variant="body2" color="textSecondary">
-            Join now for only <strong>{totalCostMMC} MMC/month</strong> and access to{' '}
+            Join now for just <strong>{totalCostMMC} MMC/month</strong> and access to{' '}
             <strong>{post?.by?.stats?.posts}</strong> exclusive posts from{' '}
             <strong>{post?.by?.metadata?.displayName ?? post?.handle?.localName}!</strong>
           </Typography>

@@ -14,10 +14,20 @@ import {
   IconMessageCircleFilled,
 } from '@tabler/icons-react';
 import Typography from '@mui/material/Typography';
-import { hasReacted, PublicationReactionType, useReactionToggle } from '@lens-protocol/react-web';
+import {
+  hasReacted,
+  ProfileSession,
+  PublicationReactionType,
+  useReactionToggle,
+  useSession,
+} from '@lens-protocol/react-web';
 import { useState } from 'react';
 import RepliesList from '@src/sections/publication/publication-replies-list.tsx';
 import { timeAgo } from '@src/utils/comment.ts';
+import { openLoginModal } from '@redux/auth';
+// @ts-ignore
+import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
+import { useDispatch } from 'react-redux';
 
 // ----------------------------------------------------------------------
 
@@ -28,15 +38,19 @@ type Props = {
 };
 
 export default function PublicationCommentItem({ comment, hasReply, canReply }: Props) {
+  const [refetchRepliesTrigger, setRefetchRepliesTrigger] = useState(0);
   const router = useRouter();
   const { execute: toggle, loading: loadingLike } = useReactionToggle();
   const [hasLiked, setHasLiked] = useState(
     hasReacted({ publication: comment, reaction: PublicationReactionType.Upvote })
   );
-  // const [hasLiked, setHasLiked] = useState(false);
   const [showComments, setShowComments] = useState(false);
+  const { data: sessionData }: ReadResult<ProfileSession> = useSession();
+  const dispatch = useDispatch();
 
   const toggleReaction = async () => {
+    if (!sessionData?.authenticated) return dispatch(openLoginModal());
+
     try {
       await toggle({
         reaction: PublicationReactionType.Upvote,
@@ -52,6 +66,10 @@ export default function PublicationCommentItem({ comment, hasReply, canReply }: 
     if (!comment?.by?.id) return;
 
     router.push(paths.dashboard.user.root(`${comment?.by?.id}`));
+  };
+
+  const handleRefetchReplies = () => {
+    setRefetchRepliesTrigger((prev) => prev + 1);
   };
 
   return (
@@ -189,9 +207,25 @@ export default function PublicationCommentItem({ comment, hasReply, canReply }: 
       {showComments && (
         <>
           <Box sx={{ mt: 1, mb: 2, ml: 8 }}>
-            <PublicationCommentForm commentOn={comment?.id} />
+            {sessionData?.authenticated ? (
+              <PublicationCommentForm commentOn={comment?.id} onCommentSuccess={handleRefetchReplies} />
+            ) : (
+              <Typography
+                variant="body1"
+                color="text.secondary"
+                sx={{
+                  width: '100%',
+                  textAlign: 'center',
+                  backgroundColor: '#2B2D31',
+                  p: 2,
+                  borderRadius: 1,
+                }}
+              >
+                Login to leave a comment
+              </Typography>
+            )}
           </Box>
-          <RepliesList parentCommentId={comment.id} canReply={canReply} />
+          <RepliesList parentCommentId={comment.id} canReply={canReply} refetchTrigger={refetchRepliesTrigger} />
         </>
       )}
     </Stack>
