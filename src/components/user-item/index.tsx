@@ -23,7 +23,7 @@ import Image from '../image';
 import { paths } from '../../routes/paths';
 import { useRouter } from '@src/routes/hooks';
 import {useNotifications} from "@src/hooks/use-notifications.ts";
-import {NOTIFICATION_CATEGORIES} from "@src/layouts/_common/notifications-popover/notification-item.tsx";
+import { useNotificationPayload } from '@src/hooks/use-notification-payload.ts';
 
 // ----------------------------------------------------------------------
 
@@ -57,6 +57,7 @@ export const UserItem = ({
   const router = useRouter();
 
   const { sendNotification } = useNotifications();
+  const { generatePayload } = useNotificationPayload(sessionData);
 
   const goToProfile = () => {
     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
@@ -89,25 +90,13 @@ export const UserItem = ({
         await result.value.waitForCompletion();
 
         // Send a notification to the profile owner using the sendNotification function from useNotifications hook
-        const notificationPayload = {
-          type: 'NOTIFICATION',
-          category: NOTIFICATION_CATEGORIES['FOLLOW'],
-          data: {
-            from : {
-              id: sessionData?.profile?.id,
-              displayName: sessionData?.profile?.metadata?.displayName,
-              avatar: (sessionData?.profile?.metadata?.picture as any)?.optimized?.uri ?? `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${sessionData?.profile?.id}`
-            },
-            to: {
-              id: profile.id,
-              displayName: profile?.metadata?.displayName,
-              avatar: (profile?.metadata?.picture as any)?.optimized?.uri ?? `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${profile?.id}`
-            },
-            content: {
-              rawDescription: `${sessionData?.profile?.metadata?.displayName} now is following you`,
-            }
-          }
-        }
+        const notificationPayload = generatePayload('FOLLOW', {
+          id: profile.id,
+          displayName: profile?.metadata?.displayName ?? 'no name',
+          avatar: (profile?.metadata?.picture as any)?.optimized?.uri,
+        }, {
+          rawDescription: `${sessionData?.profile?.metadata?.displayName} now is following you`,
+        });
 
         await sendNotification(profile.id, sessionData?.profile?.id, notificationPayload);
 

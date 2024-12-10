@@ -21,6 +21,8 @@ import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/r
 import { useLazyProfile } from '@lens-protocol/react';
 import { openLoginModal } from '@redux/auth';
 import { useDispatch } from 'react-redux';
+import {useNotifications} from "@src/hooks/use-notifications.ts";
+import {useNotificationPayload} from "@src/hooks/use-notification-payload.ts";
 
 // ----------------------------------------------------------------------
 
@@ -44,6 +46,10 @@ const FollowUnfollowButton = ({ profileId }: PropsWithChildren<FollowUnfollowBut
   // Hooks for follow and unfollow actions
   const { execute: follow, error: followError, loading: followLoading } = useFollow();
   const { execute: unfollow, error: unfollowError, loading: unfollowLoading } = useUnfollow();
+
+  // Handle notifications for follow
+  const { sendNotification } = useNotifications();
+  const { generatePayload } = useNotificationPayload(sessionData);
 
   useEffect(() => {
     if (profileId && profileId !== sessionData?.profile?.id)
@@ -78,6 +84,17 @@ const FollowUnfollowButton = ({ profileId }: PropsWithChildren<FollowUnfollowBut
         // Wait for transaction confirmation
         await result.value.waitForCompletion();
         handleUpdateProfile();
+
+        // Send notification to the profile being followed
+        const notificationPayload = generatePayload('FOLLOW', {
+          id: profile.id,
+          displayName: profile?.metadata?.displayName ?? 'no name',
+          avatar: (profile?.metadata?.picture as any)?.optimized?.uri,
+        }, {
+          rawDescription: `${sessionData?.profile?.metadata?.displayName} now is following you`,
+        });
+
+        await sendNotification(profile.id, sessionData?.profile?.id, notificationPayload);
       } else {
         // Handle specific follow errors
         handleFollowError(result.error);
@@ -188,7 +205,7 @@ const FollowUnfollowButton = ({ profileId }: PropsWithChildren<FollowUnfollowBut
         autoHideDuration={6000}
         onClose={() => setErrorMessage('')}
         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-        sx={{ zIndex: 1200, top: '80px !important' }}
+        sx={{ zIndex: 99999, top: '80px !important' }}
       >
         <Alert onClose={() => setErrorMessage('')} severity="error" sx={{ width: '100%' }}>
           {errorMessage}
@@ -201,7 +218,7 @@ const FollowUnfollowButton = ({ profileId }: PropsWithChildren<FollowUnfollowBut
         autoHideDuration={6000}
         onClose={() => setSuccessMessage('')}
         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-        sx={{ zIndex: 1200, top: '80px !important' }}
+        sx={{ zIndex: 99999, top: '80px !important' }}
       >
         <Alert onClose={() => setSuccessMessage('')} severity="success" sx={{ width: '100%' }}>
           {successMessage}
