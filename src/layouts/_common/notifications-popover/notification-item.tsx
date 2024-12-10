@@ -30,10 +30,9 @@ export const NOTIFICATION_CATEGORIES_LABELS: { [key: string]: number } = {
 
 export type NotificationColumnsProps = {
   id: string;
-  text: string;
-  readed: boolean;
+  payload: any; // Store all data for notification: type, category, data, description, etc. (can be added as needed)
+  read: boolean;
   sender_id: string;
-  category: number;
   receiver_id: string;
   created_at: string | Date;
 }
@@ -61,7 +60,7 @@ export default function NotificationItem({ notification, onMarkAsRead }: Notific
       disableTypography
       primary={
         <Typography variant="subtitle2" noWrap>
-          {notification.text}
+          {notification?.payload?.data?.description}
         </Typography>
       }
       secondary={
@@ -72,13 +71,13 @@ export default function NotificationItem({ notification, onMarkAsRead }: Notific
           spacing={1}
         >
           <span>{formatDistanceToNow(new Date(notification.created_at), {addSuffix: true})}</span>
-          <span>{NOTIFICATION_CATEGORIES[notification.category]}</span>
+          <span>{NOTIFICATION_CATEGORIES[notification?.payload?.category]}</span>
         </Stack>
       }
     />
   );
 
-  const renderUnReadBadge = !notification.readed && (
+  const renderUnReadBadge = !notification.read && (
     <Box
       sx={{
         top: 26,

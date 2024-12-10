@@ -23,6 +23,8 @@ export default function NotificationsPopover() {
   const drawer = useBoolean();
   const smUp = useResponsive('up', 'sm');
 
+  const unreadNotifications = notifications.filter((notification) => !notification.read);
+
   const renderHead = (
     <Stack direction="row" alignItems="center" sx={{ py: 2, pl: 2.5, pr: 1, minHeight: 68 }}>
       <Typography variant="h6" sx={{ flexGrow: 1 }}>
@@ -55,7 +57,7 @@ export default function NotificationsPopover() {
         color={drawer.value ? 'primary' : 'default'}
         onClick={drawer.onTrue}
       >
-        <Badge badgeContent={notifications.length} color="error">
+        <Badge badgeContent={unreadNotifications.length} color="error">
           <Iconify icon="solar:bell-bing-bold-duotone" width={24} />
         </Badge>
       </IconButton>
@@ -77,13 +79,15 @@ export default function NotificationsPopover() {
 
         <Scrollbar>
           <List disablePadding>
-            {notifications.map((notification: NotificationColumnsProps) => (
-              <NotificationItem
-                key={notification.id}
-                notification={notification}
-                onMarkAsRead={markAsRead}
-              />
-            ))}
+            { !!notifications ? (
+              notifications.map((notification: NotificationColumnsProps) => (
+                <NotificationItem
+                  key={notification.id}
+                  notification={notification}
+                  onMarkAsRead={markAsRead}
+                />
+              ))
+            ) : <></>}
           </List>
         </Scrollbar>
       </Drawer>

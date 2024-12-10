@@ -1,18 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { NotificationColumnsProps } from '@src/layouts/_common/notifications-popover/notification-item.tsx';
 
-type Notification = {
-  id: string;
-  text: string;
-  readed: boolean;
-  sender_id: string;
-  category: number;
-  receiver_id: string;
-  created_at: string | Date;
-};
-
-type NotificationsState = {
-  notifications: Notification[];
-};
+interface NotificationsState {
+  notifications: NotificationColumnsProps[];
+}
 
 const initialState: NotificationsState = {
   notifications: [],
@@ -22,12 +13,19 @@ const notificationsSlice = createSlice({
   name: 'notifications',
   initialState,
   reducers: {
-    setNotifications: (state, action: PayloadAction<Notification[]>) => {
+    setNotifications(state, action: PayloadAction<NotificationColumnsProps[]>) {
       state.notifications = action.payload;
+    },
+    appendNotification(state, action: PayloadAction<NotificationColumnsProps>) {
+      const existingIndex = state.notifications.findIndex(notification => notification.id === action.payload.id);
+      if (existingIndex !== -1) {
+        state.notifications[existingIndex] = action.payload;
+      } else {
+        state.notifications = [action.payload, ...state.notifications];
+      }
     },
   },
 });
 
-export const { setNotifications } = notificationsSlice.actions;
-
+export const { setNotifications, appendNotification } = notificationsSlice.actions;
 export default notificationsSlice.reducer;
