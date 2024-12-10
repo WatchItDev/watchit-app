@@ -1,3 +1,4 @@
+import { useState, lazy, Suspense } from 'react';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
@@ -8,6 +9,7 @@ import { paths } from '../../routes/paths';
 import { useRouter } from '../../routes/hooks';
 import { CircularProgress } from '@mui/material';
 import {
+  IconDots,
   IconHeart,
   IconHeartFilled,
   IconMessageCircle,
@@ -21,13 +23,23 @@ import {
   useReactionToggle,
   useSession,
 } from '@lens-protocol/react-web';
-import { useState } from 'react';
 import RepliesList from '@src/sections/publication/publication-replies-list.tsx';
 import { timeAgo } from '@src/utils/comment.ts';
 import { openLoginModal } from '@redux/auth';
 // @ts-ignore
 import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
 import { useDispatch } from 'react-redux';
+
+import { useHidePublication } from '@lens-protocol/react';
+import { hiddeComment } from '@redux/comments';
+
+// Components Lazy
+const LazyPopover = lazy(() => import('@mui/material/Popover'));
+const LazyMenuItem = lazy(() => import('@mui/material/MenuItem'));
+const LazyDialog = lazy(() => import('@mui/material/Dialog'));
+const LazyDialogTitle = lazy(() => import('@mui/material/DialogTitle'));
+const LazyDialogContent = lazy(() => import('@mui/material/DialogContent'));
+const LazyDialogActions = lazy(() => import('@mui/material/DialogActions'));
 
 // ----------------------------------------------------------------------
 
@@ -38,12 +50,15 @@ type Props = {
 };
 
 export default function PublicationCommentItem({ comment, hasReply, canReply }: Props) {
-  const [refetchRepliesTrigger, setRefetchRepliesTrigger] = useState(0);
+  const [openConfirmModal, setOpenConfirmModal] = useState(false);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const openMenu = Boolean(anchorEl);
   const router = useRouter();
   const { execute: toggle, loading: loadingLike } = useReactionToggle();
   const [hasLiked, setHasLiked] = useState(
     hasReacted({ publication: comment, reaction: PublicationReactionType.Upvote })
   );
+  const { execute: hide } = useHidePublication();
   const [showComments, setShowComments] = useState(false);
   const { data: sessionData }: ReadResult<ProfileSession> = useSession();
   const dispatch = useDispatch();
@@ -68,9 +83,14 @@ export default function PublicationCommentItem({ comment, hasReply, canReply }: 
     router.push(paths.dashboard.user.root(`${comment?.by?.id}`));
   };
 
-  const handleRefetchReplies = () => {
-    setRefetchRepliesTrigger((prev) => prev + 1);
+  const handleHide = async () => {
+    await hide({ publication: comment });
+    dispatch(hiddeComment(comment));
   };
+
+  console.log('hello')
+  console.log(comment)
+  console.log(sessionData)
 
   return (
     <Stack
@@ -86,7 +106,7 @@ export default function PublicationCommentItem({ comment, hasReply, canReply }: 
       spacing={2}
     >
       <Stack direction="column" spacing={1}>
-        <Stack direction="row" spacing={2}>
+        <Stack direction="row" spacing={2} sx={{ position: 'relative' }}>
           <Avatar
             src={
               (comment?.by?.metadata?.picture as any)?.optimized?.uri ??
@@ -101,6 +121,63 @@ export default function PublicationCommentItem({ comment, hasReply, canReply }: 
               border: (theme) => `solid 2px ${theme.palette.background.default}`,
             }}
           />
+
+          {sessionData?.authenticated && comment?.by?.id === sessionData?.profile?.id && (
+            <Button
+              variant="text"
+              sx={{
+                borderColor: '#FFFFFF',
+                color: '#FFFFFF',
+                height: '30px',
+                minWidth: '30px',
+                position: 'absolute',
+                top: 5,
+                right: 5
+              }}
+              onClick={(event) => setAnchorEl(event.currentTarget)}
+            >
+              <IconDots size={22} color="#FFFFFF" />
+            </Button>
+          )}
+
+          {/* Suspense para Popover */}
+          <Suspense fallback={<></>}>
+            {openMenu && (
+              <LazyPopover
+                open={openMenu}
+                anchorEl={anchorEl}
+                onClose={() => setAnchorEl(null)}
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+                transformOrigin={{ vertical: 'top', horizontal: 'center' }}
+                PaperProps={{
+                  sx: {
+                    background: 'linear-gradient(90deg, #1C1C1E, #2C2C2E)',
+                    borderRadius: 1,
+                    p: 1,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    mt: 0,
+                    ml: -3,
+                    alignItems: 'center',
+                    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.5)',
+                  },
+                }}
+              >
+                <Stack direction="column" spacing={0} justifyContent="center">
+                  {comment?.by?.id === sessionData?.profile?.id && (
+                    <LazyMenuItem
+                      onClick={() => {
+                        setOpenConfirmModal(true);
+                        setAnchorEl(null);
+                      }}
+                    >
+                      Hide
+                    </LazyMenuItem>
+                  )}
+                </Stack>
+              </LazyPopover>
+            )}
+          </Suspense>
 
           <Paper
             sx={{
@@ -208,7 +285,7 @@ export default function PublicationCommentItem({ comment, hasReply, canReply }: 
         <>
           <Box sx={{ mt: 1, mb: 2, ml: 8 }}>
             {sessionData?.authenticated ? (
-              <PublicationCommentForm commentOn={comment?.id} onCommentSuccess={handleRefetchReplies} />
+              <PublicationCommentForm commentOn={comment?.id} />
             ) : (
               <Typography
                 variant="body1"
@@ -225,9 +302,40 @@ export default function PublicationCommentItem({ comment, hasReply, canReply }: 
               </Typography>
             )}
           </Box>
-          <RepliesList parentCommentId={comment.id} canReply={canReply} refetchTrigger={refetchRepliesTrigger} />
+          <RepliesList parentCommentId={comment.id} canReply={canReply} />
         </>
       )}
+
+      {/* Suspense para Dialog */}
+      <Suspense fallback={<></>}>
+        {openConfirmModal && (
+          <LazyDialog open={openConfirmModal} onClose={() => setOpenConfirmModal(false)}>
+            <LazyDialogTitle>Confirm Hide</LazyDialogTitle>
+            <LazyDialogContent>
+              <Typography>Are you sure you want to hide this comment?</Typography>
+            </LazyDialogContent>
+            <LazyDialogActions>
+              <Button
+                variant="outlined"
+                sx={{ borderColor: '#fff' }}
+                onClick={() => setOpenConfirmModal(false)}
+              >
+                Cancel
+              </Button>
+              <Button
+                variant="contained"
+                sx={{ backgroundColor: '#fff' }}
+                onClick={() => {
+                  handleHide();
+                  setOpenConfirmModal(false);
+                }}
+              >
+                Confirm
+              </Button>
+            </LazyDialogActions>
+          </LazyDialog>
+        )}
+      </Suspense>
     </Stack>
   );
 }
