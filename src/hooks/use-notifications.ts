@@ -10,7 +10,7 @@ type UseNotificationsReturn = {
   getNotifications: (id: string) => Promise<void>;
   notifications: NotificationColumnsProps[];
   markAsRead: (id: string) => Promise<void>;
-  sendNotification: (receiver_id: string, sender_id: string, text: string, category: number) => Promise<void>;
+  sendNotification: (receiver_id: string, sender_id: string, payload: any) => Promise<void>;
   markAllAsRead: () => Promise<void>;
 };
 

@@ -57,12 +57,10 @@ import Popover from '@mui/material/Popover';
 // @ts-ignore
 import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
 import {useNotifications} from "@src/hooks/use-notifications.ts";
-import {
-  NOTIFICATION_CATEGORIES_LABELS
-} from "@src/layouts/_common/notifications-popover/notification-item.tsx";
 import { openLoginModal } from '@redux/auth';
 import { useDispatch } from 'react-redux';
 import { addBookmark, removeBookmark } from '@redux/bookmark';
+import {NOTIFICATION_CATEGORIES} from "@src/layouts/_common/notifications-popover/notification-item.tsx";
 
 // ----------------------------------------------------------------------
 
@@ -110,13 +108,36 @@ export default function PublicationDetailMain({
   const toggleReaction = async () => {
     if (!sessionData?.authenticated) return dispatch(openLoginModal());
 
+    // Send a notification to the profile owner using the sendNotification function from useNotifications hook
+    const dataForNotification = {
+      type: 'NOTIFICATION',
+      category: NOTIFICATION_CATEGORIES['LIKE'],
+      data: {
+        from : {
+          id: sessionData?.profile?.id,
+          displayName: sessionData?.profile?.metadata?.displayName,
+          avatar: (sessionData?.profile?.metadata?.picture as any)?.optimized?.uri ?? `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${sessionData?.profile?.id}`
+        },
+        to: {
+          id: post.by.id,
+          displayName: post?.by?.metadata?.displayName,
+          avatar: (post?.by?.metadata?.picture as any)?.optimized?.uri ?? `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${post?.by?.id}`
+        },
+        content: {
+          rawDescription: `${sessionData?.profile?.metadata?.displayName} liked ${post?.metadata?.title}`,
+          post_id: post?.id,
+          post_title: post?.metadata?.title
+        }
+      }
+    }
+
     try {
       await toggle({
         reaction: PublicationReactionType.Upvote,
         publication: post,
       }).then(() => {
         // Send notification to the author
-        sendNotification(post.by.id, sessionData.profile.id, `${sessionData?.profile?.metadata?.displayName} liked your post`, NOTIFICATION_CATEGORIES_LABELS['LIKE']);
+        sendNotification(post.by.id, sessionData.profile.id, dataForNotification);
       });
       setHasLiked(!hasLiked); // Toggle the UI based on the reaction state
     } catch (err) {
@@ -441,7 +462,11 @@ export default function PublicationDetailMain({
               >
                 <Divider sx={{ my: 3, mr: 1 }} />
                 {sessionData?.authenticated ? (
-                  <PublicationCommentForm commentOn={post?.id} />
+                  <PublicationCommentForm commentOn={post?.id} owner={{
+                    id: post?.by?.id,
+                    displayName: post?.by?.metadata?.displayName,
+                    avatar: (post?.by?.metadata?.picture as any)?.optimized?.uri ?? `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${post?.by?.id}`
+                  }} />
                 ) : (
                   <Typography
                     variant="body1"

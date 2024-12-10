@@ -36,6 +36,8 @@ import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/r
 import { setBalance } from '@redux/auth';
 import { useDispatch, useSelector } from 'react-redux';
 import { useGetBalance } from '@src/hooks/use-get-balance.ts';
+import {NOTIFICATION_CATEGORIES} from "@src/layouts/_common/notifications-popover/notification-item.tsx";
+import {useNotifications} from "@src/hooks/use-notifications.ts";
 
 // ----------------------------------------------------------------------
 
@@ -63,6 +65,7 @@ export const SubscribeProfileModal = ({
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
+  const { sendNotification } = useNotifications();
   // Hook to get the user's session data
   const { data: sessionData }: ReadResult<ProfileSession> = useSession();
   const { balance: balanceFromContract, refetch } = useGetBalance(sessionData?.address);
@@ -162,6 +165,30 @@ export const SubscribeProfileModal = ({
       await subscribe({
         holderAddress: profile?.ownedBy?.address as Address,
         amount: totalCostMMC,
+      }).then(async() => {
+        // Send notification to the profile owner
+        const notificationPayload = {
+          type: 'NOTIFICATION',
+          category: NOTIFICATION_CATEGORIES['JOIN'],
+          data: {
+            from : {
+              id: sessionData?.profile?.id,
+              displayName: sessionData?.profile?.metadata?.displayName,
+              avatar: (sessionData?.profile?.metadata?.picture as any)?.optimized?.uri ?? `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${sessionData?.profile?.id}`
+            },
+            to: {
+              id: profile.id,
+              displayName: profile?.metadata?.displayName,
+              avatar: (profile?.metadata?.picture as any)?.optimized?.uri ?? `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${profile?.id}`
+            },
+            content: {
+              durationDays,
+              totalCostMMC,
+              rawDescription: `${sessionData?.profile?.metadata?.displayName} has joined to your content`,
+            }
+          }
+        }
+        await sendNotification(profile.id, sessionData?.profile?.id, notificationPayload);
       });
     } catch (err) {
       console.error(err);

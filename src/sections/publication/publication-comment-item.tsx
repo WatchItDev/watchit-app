@@ -285,7 +285,11 @@ export default function PublicationCommentItem({ comment, hasReply, canReply }: 
         <>
           <Box sx={{ mt: 1, mb: 2, ml: 8 }}>
             {sessionData?.authenticated ? (
-              <PublicationCommentForm commentOn={comment?.id} />
+              <PublicationCommentForm commentOn={comment?.id} owner={{
+                id: comment?.by?.id,
+                displayName: comment?.by?.metadata?.displayName,
+                avatar: (comment?.by?.metadata?.picture as any)?.optimized?.uri ?? `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${comment?.by?.id}`
+              }}/>
             ) : (
               <Typography
                 variant="body1"
