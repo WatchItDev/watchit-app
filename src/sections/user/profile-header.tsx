@@ -244,7 +244,7 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
               height: '40px',
               minWidth: '40px',
               position: 'absolute',
-              zIndex: 99,
+              zIndex: 1,
               right: 5,
               top: 5,
             }}
@@ -799,7 +799,7 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
         autoHideDuration={6000}
         onClose={() => setSuccessMessage('')}
         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-        sx={{ zIndex: 1200 }}
+        sx={{ zIndex: 99999 }}
       >
         <Alert onClose={() => setSuccessMessage('')} severity="success" sx={{ width: '100%' }}>
           {successMessage}
