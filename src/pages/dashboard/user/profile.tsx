@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet-async';
 import { UserProfileView } from '@src/sections/user/view';
 import { useParams } from '@src/routes/hooks';
 import Header from '@src/layouts/dashboard/header.tsx';
-import HeaderContent from '@src/layouts/dashboard/HeaderContent.tsx';
+import HeaderContent from '@src/layouts/dashboard/header-content.tsx';
 
 // ----------------------------------------------------------------------
 

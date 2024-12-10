@@ -1,4 +1,3 @@
-// src/components/responsive-overlay/ResetMiniNavOnResize.tsx
 import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { openMinibar, removeMinibar } from '@src/redux/minibar';
