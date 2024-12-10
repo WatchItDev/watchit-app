@@ -40,11 +40,12 @@ export default function NotificationItem({ notification, onMarkAsRead }: Notific
   const handleItemClick = () => {
     onMarkAsRead(notification.id);
 
-    // Verify if is FOLLOW
+    // Verify if is LIKE / COMMENT
     if(notification?.payload?.category === NOTIFICATION_CATEGORIES['LIKE']  || notification?.payload?.category === NOTIFICATION_CATEGORIES['COMMENT']){
       router.push(paths.dashboard.publication.details(notification?.payload?.data?.content?.post_id));
     }
 
+    // Verify if is FOLLOW / JOIN
     if(notification?.payload?.category === NOTIFICATION_CATEGORIES['FOLLOW'] || notification?.payload?.category === NOTIFICATION_CATEGORIES['JOIN']){
       router.push(paths.dashboard.user.root(`${notification?.payload?.data?.from?.id}`))
     }
