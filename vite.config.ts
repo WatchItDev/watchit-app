@@ -30,6 +30,7 @@ export default defineConfig(({ mode }) => {
     resolve: {
       alias: {
         '@src': path.resolve(__dirname, 'src'),
+        '@types': path.resolve(__dirname, 'src/types'),
         '@public': path.resolve(__dirname, 'public'),
         '@redux': path.resolve(__dirname, 'src/redux'),
         'enc-utils': path.resolve(__dirname, 'src/fixes/enc-utils.js'),

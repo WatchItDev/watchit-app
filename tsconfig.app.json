@@ -25,6 +25,7 @@
     /* Aliases */
     "paths": {
       "@src/*": ["./src/*"],
+      "@types/*": ["./src/types/*"],
       "@public/*": ["./public/*"],
       "@redux/*": ["./src/redux/*"],
       "@web3auth/*-adapter": ["./packages/adapters/*-adapter"],
