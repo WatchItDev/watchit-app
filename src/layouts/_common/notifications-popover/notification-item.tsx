@@ -10,25 +10,7 @@ import Box from "@mui/material/Box";
 import TextMaxLine from "@src/components/text-max-line";
 import {useRouter} from "@src/routes/hooks";
 import {paths} from "@src/routes/paths.ts";
-
-// Categories for notifications
-
-export const NOTIFICATION_CATEGORIES: { [key: string]: number } = {
-  'FOLLOW': 1,
-  'LIKE': 2,
-  'COMMENT': 3,
-  'JOIN': 4,
-  'MENTION': 5,
-};
-
-export type NotificationColumnsProps = {
-  id: string;
-  payload: any; // Store all data for notification: type, category, data, description, etc. (can be added as needed)
-  read: boolean;
-  sender_id: string;
-  receiver_id: string;
-  created_at: string | Date;
-}
+import { NotificationCategories, type NotificationColumnsProps } from "@src/types/notification.ts";
 
 type NotificationItemProps = {
   notification: NotificationColumnsProps;
@@ -40,23 +22,25 @@ export default function NotificationItem({ notification, onMarkAsRead }: Notific
   const handleItemClick = () => {
     onMarkAsRead(notification.id);
 
+    const typeOfNotification = notification?.payload?.category;
+
     // Verify if is LIKE / COMMENT
-    if(notification?.payload?.category === NOTIFICATION_CATEGORIES['LIKE']  || notification?.payload?.category === NOTIFICATION_CATEGORIES['COMMENT']){
-      router.push(paths.dashboard.publication.details(notification?.payload?.data?.content?.post_id));
+    if (typeOfNotification === NotificationCategories.LIKE || typeOfNotification === NotificationCategories.COMMENT) {
+      router.push(paths.dashboard.publication.details(notification.payload.data.content.root_id));
     }
 
     // Verify if is FOLLOW / JOIN
-    if(notification?.payload?.category === NOTIFICATION_CATEGORIES['FOLLOW'] || notification?.payload?.category === NOTIFICATION_CATEGORIES['JOIN']){
-      router.push(paths.dashboard.user.root(`${notification?.payload?.data?.from?.id}`))
+    if (typeOfNotification === NotificationCategories.FOLLOW || typeOfNotification === NotificationCategories.JOIN) {
+      router.push(paths.dashboard.user.root(`${notification.payload.data.from.id}`));
     }
   };
 
   const renderAvatar = (
     <ListItemAvatar>
-        <Avatar src={notification?.payload?.data?.from?.avatar}  sx={{ bgcolor: 'background.neutral' }} />
+      <Avatar src={notification.payload.data.from.avatar} sx={{ bgcolor: 'background.neutral' }} />
     </ListItemAvatar>
   );
-  const description: string | null = notification?.payload?.data?.content?.rawDescription;
+  const description: string | null = notification.payload.data.content.rawDescription;
   const renderText = (
     <ListItemText
       disableTypography
@@ -67,11 +51,10 @@ export default function NotificationItem({ notification, onMarkAsRead }: Notific
         <Stack
           direction="row"
           alignItems="center"
-          sx={{typography: 'caption', color: 'text.disabled'}}
+          sx={{ typography: 'caption', color: 'text.disabled' }}
           spacing={1}
         >
-          <span>{formatDistanceToNow(new Date(notification.created_at), {addSuffix: true})}</span>
-          {/*<span>{NOTIFICATION_CATEGORIES[notification?.payload?.category]}</span>*/}
+          <span>{formatDistanceToNow(new Date(notification.created_at), { addSuffix: true })}</span>
         </Stack>
       }
     />

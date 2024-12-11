@@ -15,7 +15,8 @@ import { useResponsive } from '@src/hooks/use-responsive';
 import Iconify from '@src/components/iconify';
 import Scrollbar from '@src/components/scrollbar';
 import { varHover } from '@src/components/animate';
-import NotificationItem, {type NotificationColumnsProps} from './notification-item';
+import NotificationItem from './notification-item';
+import {type NotificationColumnsProps} from '@src/types/notification';
 import { useNotifications } from "@src/hooks/use-notifications.ts";
 
 export default function NotificationsPopover() {

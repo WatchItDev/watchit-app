@@ -60,7 +60,7 @@ import {useNotifications} from "@src/hooks/use-notifications.ts";
 import { openLoginModal } from '@redux/auth';
 import { useDispatch } from 'react-redux';
 import { addBookmark, removeBookmark } from '@redux/bookmark';
-import {NOTIFICATION_CATEGORIES} from "@src/layouts/_common/notifications-popover/notification-item.tsx";
+import { useNotificationPayload } from '@src/hooks/use-notification-payload.ts';
 
 // ----------------------------------------------------------------------
 
@@ -101,6 +101,7 @@ export default function PublicationDetailMain({
   const { execute: hide } = useHidePublication();
   const { execute: toggleBookMarkFunction, loading: loadingBookMark } = useBookmarkToggle();
   const { sendNotification } = useNotifications();
+  const { generatePayload } = useNotificationPayload(sessionData);
 
   // CONSTANTS
   const variants = theme.direction === 'rtl' ? varFade().inLeft : varFade().inRight;
@@ -109,35 +110,25 @@ export default function PublicationDetailMain({
     if (!sessionData?.authenticated) return dispatch(openLoginModal());
 
     // Send a notification to the profile owner using the sendNotification function from useNotifications hook
-    const dataForNotification = {
-      type: 'NOTIFICATION',
-      category: NOTIFICATION_CATEGORIES['LIKE'],
-      data: {
-        from : {
-          id: sessionData?.profile?.id,
-          displayName: sessionData?.profile?.metadata?.displayName,
-          avatar: (sessionData?.profile?.metadata?.picture as any)?.optimized?.uri ?? `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${sessionData?.profile?.id}`
-        },
-        to: {
-          id: post.by.id,
-          displayName: post?.by?.metadata?.displayName,
-          avatar: (post?.by?.metadata?.picture as any)?.optimized?.uri ?? `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${post?.by?.id}`
-        },
-        content: {
-          rawDescription: `${sessionData?.profile?.metadata?.displayName} liked ${post?.metadata?.title}`,
-          post_id: post?.id,
-          post_title: post?.metadata?.title
-        }
-      }
-    }
+    const payloadForNotification = generatePayload('LIKE', {
+      id: post.by.id,
+      displayName: post?.by?.metadata?.displayName,
+      avatar: (post?.by?.metadata?.picture as any)?.optimized?.uri ?? `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${post?.by?.id}`,
+    }, {
+      rawDescription: `${sessionData?.profile?.metadata?.displayName} liked ${post?.metadata?.title}`,
+      root_id: post?.id,
+      post_title: post?.metadata?.title,
+    });
 
     try {
       await toggle({
         reaction: PublicationReactionType.Upvote,
         publication: post,
       }).then(() => {
-        // Send notification to the author
-        sendNotification(post.by.id, sessionData.profile.id, dataForNotification);
+        // Send notification to the author when not already liked
+        if (!hasLiked){
+          sendNotification(post.by.id, sessionData?.profile?.id, payloadForNotification);
+        }
       });
       setHasLiked(!hasLiked); // Toggle the UI based on the reaction state
     } catch (err) {
@@ -344,6 +335,7 @@ export default function PublicationDetailMain({
             }}
           >
             {hasAccess ? (
+              // @ts-ignore
               <LeaveTipCard post={post} />
             ) : (
               <SubscribeToUnlockCard
@@ -462,7 +454,9 @@ export default function PublicationDetailMain({
               >
                 <Divider sx={{ my: 3, mr: 1 }} />
                 {sessionData?.authenticated ? (
-                  <PublicationCommentForm commentOn={post?.id} owner={{
+                  <PublicationCommentForm root={post?.id}
+                                          commentOn={post?.id}
+                                          owner={{
                     id: post?.by?.id,
                     displayName: post?.by?.metadata?.displayName,
                     avatar: (post?.by?.metadata?.picture as any)?.optimized?.uri ?? `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${post?.by?.id}`

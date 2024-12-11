@@ -6,7 +6,7 @@ import Avatar from '@mui/material/Avatar';
 import Paper from '@mui/material/Paper';
 import PublicationCommentForm from './publication-details-comment-form';
 import { paths } from '../../routes/paths';
-import { useRouter } from '../../routes/hooks';
+import { useRouter } from '@src/routes/hooks';
 import { CircularProgress } from '@mui/material';
 import {
   IconDots,
@@ -32,6 +32,8 @@ import { useDispatch } from 'react-redux';
 
 import { useHidePublication } from '@lens-protocol/react';
 import { hiddeComment } from '@redux/comments';
+import {useNotificationPayload} from "@src/hooks/use-notification-payload.ts";
+import {useNotifications} from "@src/hooks/use-notifications.ts";
 
 // Components Lazy
 const LazyPopover = lazy(() => import('@mui/material/Popover'));
@@ -62,14 +64,33 @@ export default function PublicationCommentItem({ comment, hasReply, canReply }: 
   const [showComments, setShowComments] = useState(false);
   const { data: sessionData }: ReadResult<ProfileSession> = useSession();
   const dispatch = useDispatch();
+  const { sendNotification } = useNotifications();
+  const { generatePayload } = useNotificationPayload(sessionData);
 
   const toggleReaction = async () => {
     if (!sessionData?.authenticated) return dispatch(openLoginModal());
 
     try {
+
+      console.log('comment: ', comment)
+
       await toggle({
         reaction: PublicationReactionType.Upvote,
         publication: comment,
+      }).then(() => {
+        // Send notification to the author of the comment
+        const notificationPayload = generatePayload('LIKE', {
+          id: comment?.by?.id,
+          displayName: comment?.by?.metadata?.displayName ?? 'no name',
+          avatar: comment?.by?.metadata?.avatar,
+        }, {
+          root_id: comment?.commentOn?.id,
+          comment_id: comment?.id,
+          rawDescription: `${sessionData?.profile?.metadata?.displayName} liked your comment`,
+        });
+        if(!hasLiked && comment?.by?.id !== sessionData?.profile?.id) {
+          sendNotification(comment?.by?.id, sessionData?.profile?.id, notificationPayload);
+        }
       });
       setHasLiked(!hasLiked); // Toggle the UI based on the reaction state
     } catch (err) {
@@ -285,7 +306,7 @@ export default function PublicationCommentItem({ comment, hasReply, canReply }: 
         <>
           <Box sx={{ mt: 1, mb: 2, ml: 8 }}>
             {sessionData?.authenticated ? (
-              <PublicationCommentForm commentOn={comment?.id} owner={{
+              <PublicationCommentForm root={comment?.root?.id} commentOn={comment?.id} owner={{
                 id: comment?.by?.id,
                 displayName: comment?.by?.metadata?.displayName,
                 avatar: (comment?.by?.metadata?.picture as any)?.optimized?.uri ?? `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${comment?.by?.id}`

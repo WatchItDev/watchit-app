@@ -3,7 +3,7 @@ import { supabase } from '@src/utils/supabase';
 // @ts-ignore
 import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
 import { ProfileSession, useSession } from '@lens-protocol/react-web';
-import { NotificationColumnsProps } from '@src/layouts/_common/notifications-popover/notification-item.tsx';
+import { type NotificationColumnsProps } from '@src/types/notification';
 import { setNotifications } from '@src/redux/notifications';
 
 type UseNotificationsReturn = {
@@ -24,6 +24,7 @@ export function useNotifications(): UseNotificationsReturn {
     const { data, error } = await supabase
       .from('notifications')
       .select('*')
+      .order('created_at', { ascending: false })
       .eq('receiver_id', id);
 
     if (error) {
@@ -34,12 +35,10 @@ export function useNotifications(): UseNotificationsReturn {
   }
 
   async function markAsRead(id: string) {
-    const { error, data } = await supabase
+    const { error } = await supabase
       .from('notifications')
       .update({ read: true })
       .eq('id', id);
-
-    console.log('markAsRead', data);
 
     if (error) {
       console.error('Error marking notification as read:', error);
@@ -78,8 +77,8 @@ export function useNotifications(): UseNotificationsReturn {
   return {
     getNotifications,
     notifications,
+    markAllAsRead,
     markAsRead,
     sendNotification,
-    markAllAsRead,
   };
 }

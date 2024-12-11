@@ -23,11 +23,12 @@ import { uploadMetadataToIPFS, verifyIpfsData } from '@src/utils/ipfs';
 import uuidv4 from '@src/utils/uuidv4.ts';
 import { useDispatch } from 'react-redux';
 import { refetchCommentsByPublication } from '@redux/comments';
-import {NOTIFICATION_CATEGORIES} from "@src/layouts/_common/notifications-popover/notification-item.tsx";
 import {useNotifications} from "@src/hooks/use-notifications.ts";
+import { useNotificationPayload } from '@src/hooks/use-notification-payload.ts';
 
 // Define the props types
 type MovieCommentFormProps = {
+  root?: any; // ID of the root publication (post or comment)
   commentOn: string; // ID of the publication (post or comment) to comment on
   owner: {
     id: string;
@@ -42,7 +43,7 @@ type MovieCommentFormProps = {
  * @param {MovieCommentFormProps} props - Component props.
  * @returns {JSX.Element} - Rendered component.
  */
-const MovieCommentForm = ({ commentOn, owner }: MovieCommentFormProps) => {
+const MovieCommentForm = ({ commentOn, owner, root }: MovieCommentFormProps) => {
   // Define the validation schema using Yup
   const CommentSchema = Yup.object().shape({
     comment: Yup.string().required('Comment is required'),
@@ -69,6 +70,7 @@ const MovieCommentForm = ({ commentOn, owner }: MovieCommentFormProps) => {
   const { data: sessionData }: ReadResult<ProfileSession> = useSession();
   const dispatch = useDispatch();
   const { sendNotification } = useNotifications();
+  const { generatePayload } = useNotificationPayload(sessionData);
 
   const executeCreateCommentWithRetry = async (
     createComment: any,
@@ -145,28 +147,21 @@ const MovieCommentForm = ({ commentOn, owner }: MovieCommentFormProps) => {
         metadata: uri,
       }).then(() => {
         // Send notifications to the author of the publication
-        const notificationPayload = {
-          type: 'NOTIFICATION',
-          category: NOTIFICATION_CATEGORIES['COMMENT'],
-          data: {
-            from : {
-              id: sessionData?.profile?.id,
-              displayName: sessionData?.profile?.metadata?.displayName,
-              avatar: (sessionData?.profile?.metadata?.picture as any)?.optimized?.uri ?? `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${sessionData?.profile?.id}`
-            },
-            to: {
-              id: owner?.id,
-              displayName: owner?.displayName,
-              avatar: owner?.avatar
-            },
-            content: {
-              post_id: commentOn,
-              comment: data.comment,
-              rawDescription: `${sessionData?.profile?.metadata?.displayName} left a comment`,
-            }
-          }
+        const notificationPayload = generatePayload('COMMENT', {
+          id: owner?.id,
+          displayName: owner?.displayName,
+          avatar: owner?.avatar,
+        }, {
+          root_id: root,
+          comment: data.comment,
+          comment_id: commentOn,
+          rawDescription: `${sessionData?.profile?.metadata?.displayName} left a comment`,
+        });
+
+        // Only notify the author if the comment is not on their own publication
+        if (owner?.id !== sessionData?.profile?.id) {
+          sendNotification(owner.id, sessionData?.profile?.id, notificationPayload);
         }
-        sendNotification(owner.id, sessionData?.profile?.id, notificationPayload);
       });
 
       // If execution reaches here, the comment was created successfully

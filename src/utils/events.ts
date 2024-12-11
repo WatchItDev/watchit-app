@@ -1,17 +1,6 @@
 import { Dispatch } from "redux";
 import { appendNotification } from '@src/redux/notifications';
 
-/* Notification payload required items
-{
-    "type" : NOTIFICATION|BALANCE|OTHER|ETC,
-    "data" : {
-      "from": "0x05d0", // The same for sender_id
-      "to": "0x05a0" // The same for receiver_id
-      "description": "Any text"
-      .... // Any other data as needed
-    }
-}
-*/
 export namespace Events {
   export const Handlers = (payload: any, profileId: string, dispatch?: Dispatch) => {
     const evenType: keyof typeof EventsHandlersMap = payload?.new?.payload?.type;

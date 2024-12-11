@@ -1,9 +1,8 @@
 import { ProfileSession } from '@lens-protocol/react-web';
-import { NOTIFICATION_CATEGORIES } from '@src/layouts/_common/notifications-popover/notification-item.tsx';
 
 type NotificationPayload = {
   type: string;
-  category: number;
+  category: string;
   data: {
     from: {
       id: string;
@@ -23,13 +22,13 @@ type NotificationPayload = {
 
 export const useNotificationPayload = (sessionData: ProfileSession | undefined) => {
   const generatePayload = (
-    category: keyof { [p: string]: number },
+    category: string,
     toProfile: { id: string; displayName: string; avatar: any },
     content: { [p: string]: any }
   ): NotificationPayload => {
     return {
       type: 'NOTIFICATION',
-      category: NOTIFICATION_CATEGORIES[category],
+      category: category,
       data: {
         from: {
           id: sessionData?.profile?.id ?? '',
