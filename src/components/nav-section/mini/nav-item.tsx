@@ -62,7 +62,7 @@ const NavItem = forwardRef<HTMLDivElement, Props>(
           />
         </Box>
 
-        <StyledNavContent>
+        <StyledNavContent active={active}>
           {icon && (
             <StyledIcon
               size={config.iconSize}
