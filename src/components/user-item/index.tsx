@@ -1,20 +1,14 @@
-// REACT IMPORTS
-import { useState, useEffect } from 'react';
-
 // MUI IMPORTS
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
-import Alert from '@mui/material/Alert';
 import Avatar from '@mui/material/Avatar';
 import { Theme } from '@mui/material/styles';
-import Snackbar from '@mui/material/Snackbar';
-import LoadingButton from '@mui/lab/LoadingButton';
 import { SxProps } from '@mui/system/styleFunctionSx';
 import ListItemText from '@mui/material/ListItemText';
 
 // LENS IMPORTS
 import { Profile } from '@lens-protocol/api-bindings';
-import { ProfileSession, useFollow, useSession, useUnfollow } from '@lens-protocol/react-web';
+import { ProfileSession, useSession } from '@lens-protocol/react-web';
 // @ts-ignore
 import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
 
@@ -22,6 +16,7 @@ import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/r
 import Image from '../image';
 import { paths } from '../../routes/paths';
 import { useRouter } from '@src/routes/hooks';
+import FollowUnfollowButton from '@src/components/follow-unfollow-button.tsx';
 
 // ----------------------------------------------------------------------
 
@@ -41,131 +36,14 @@ export const UserItem = ({
   sx,
   followButtonMinWidth = 120,
   onClick,
-  onActionFinished,
   canFollow = true,
 }: FollowerItemProps) => {
   const { data: sessionData }: ReadResult<ProfileSession> = useSession();
-  const [isFollowed, setIsFollowed] = useState(false);
-  // State to handle error and success messages
-  const [errorMessage, setErrorMessage] = useState('');
-  const [successMessage, setSuccessMessage] = useState('');
-  // Hooks for follow and unfollow actions
-  const { execute: follow, error: followError, loading: followLoading } = useFollow();
-  const { execute: unfollow, error: unfollowError, loading: unfollowLoading } = useUnfollow();
   const router = useRouter();
 
   const goToProfile = () => {
     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     onClick ? onClick() : router.push(paths.dashboard.user.root(`${profile.id}`));
-  };
-
-  // Handle errors from follow and unfollow actions
-  useEffect(() => {
-    if (followError) {
-      setErrorMessage(followError.message);
-    }
-    if (unfollowError) {
-      setErrorMessage(unfollowError.message);
-    }
-  }, [followError, unfollowError]);
-
-  useEffect(() => {
-    setIsFollowed(!!profile?.operations?.isFollowedByMe?.value);
-  }, [sessionData, profile]);
-
-  // Function to handle following a profile
-  const handleFollow = async () => {
-    if (!profile) return;
-
-    try {
-      const result = await follow({ profile });
-      if (result.isSuccess()) {
-        setSuccessMessage('Successfully followed the profile.');
-        // Wait for transaction confirmation
-        await result.value.waitForCompletion();
-
-        onActionFinished?.();
-      } else {
-        // Handle specific follow errors
-        handleFollowError(result.error);
-      }
-    } catch (error) {
-      setErrorMessage('An error occurred while trying to follow the profile.');
-    }
-  };
-
-  // Function to handle unfollowing a profile
-  const handleUnfollow = async () => {
-    if (!profile) return;
-
-    try {
-      const result = await unfollow({ profile });
-      if (result.isSuccess()) {
-        setSuccessMessage('Successfully unfollowed the profile.');
-        // Wait for transaction confirmation
-        await result.value.waitForCompletion();
-
-        onActionFinished?.();
-      } else {
-        // Handle specific unfollow errors
-        handleUnfollowError(result.error);
-      }
-    } catch (error) {
-      setErrorMessage('An error occurred while trying to unfollow the profile.');
-    }
-  };
-
-  // Function to handle specific follow errors
-  const handleFollowError = (error: any) => {
-    switch (error.name) {
-      case 'BroadcastingError':
-        setErrorMessage('There was an error broadcasting the transaction.');
-        break;
-      case 'PendingSigningRequestError':
-        setErrorMessage('There is a pending signing request in your wallet.');
-        break;
-      case 'InsufficientAllowanceError':
-        setErrorMessage(
-          `You must approve the contract to spend at least: ${error.requestedAmount.asset.symbol} ${error.requestedAmount.toSignificantDigits(6)}`
-        );
-        break;
-      case 'InsufficientFundsError':
-        setErrorMessage(
-          `You do not have enough funds to pay for this follow fee: ${error.requestedAmount.asset.symbol} ${error.requestedAmount.toSignificantDigits(6)}`
-        );
-        break;
-      case 'WalletConnectionError':
-        setErrorMessage('There was an error connecting to your wallet.');
-        break;
-      case 'PrematureFollowError':
-        setErrorMessage('There is a pending unfollow request for this profile.');
-        break;
-      case 'UserRejectedError':
-        // Optionally notify the user that they rejected the action
-        break;
-      default:
-        setErrorMessage('An unknown error occurred.');
-    }
-  };
-
-  // Function to handle specific unfollow errors
-  const handleUnfollowError = (error: any) => {
-    switch (error.name) {
-      case 'BroadcastingError':
-        setErrorMessage('There was an error broadcasting the transaction.');
-        break;
-      case 'PendingSigningRequestError':
-        setErrorMessage('There is a pending signing request in your wallet.');
-        break;
-      case 'WalletConnectionError':
-        setErrorMessage('There was an error connecting to your wallet.');
-        break;
-      case 'UserRejectedError':
-        // Optionally notify the user that they rejected the action
-        break;
-      default:
-        setErrorMessage('An unknown error occurred.');
-    }
   };
 
   return (
@@ -251,63 +129,12 @@ export const UserItem = ({
               }}
             />
 
-            {canFollow && (
-              <LoadingButton
-                size="small"
-                title={isFollowed ? 'Unfollow' : 'Follow'}
-                variant={isFollowed ? 'outlined' : 'contained'}
-                sx={{
-                  minWidth: followButtonMinWidth,
-                  backgroundColor: isFollowed ? '#24262A' : '#fff',
-                }}
-                onClick={(event) => {
-                  event.stopPropagation();
-                  if (isFollowed) {
-                    handleUnfollow();
-                  } else {
-                    handleFollow();
-                  }
-                }}
-                disabled={
-                  followLoading ||
-                  unfollowLoading ||
-                  !sessionData?.authenticated ||
-                  profile?.id === sessionData?.profile?.id
-                }
-                loading={followLoading || unfollowLoading}
-              >
-                {isFollowed ? 'Unfollow' : 'Follow'}
-              </LoadingButton>
+            {canFollow && profile?.id !== sessionData?.profile?.id && (
+              <FollowUnfollowButton profileId={profile?.id} followButtonMinWidth={followButtonMinWidth} size={"small"} />
             )}
           </Box>
         </Card>
       </Box>
-
-      {/* Snackbar for error messages */}
-      <Snackbar
-        open={!!errorMessage}
-        autoHideDuration={6000}
-        onClose={() => setErrorMessage('')}
-        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-        sx={{ zIndex: 1200, top: '80px !important' }}
-      >
-        <Alert onClose={() => setErrorMessage('')} severity="error" sx={{ width: '100%' }}>
-          {errorMessage}
-        </Alert>
-      </Snackbar>
-
-      {/* Snackbar for success messages */}
-      <Snackbar
-        open={!!successMessage}
-        autoHideDuration={6000}
-        onClose={() => setSuccessMessage('')}
-        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-        sx={{ zIndex: 1200, top: '80px !important' }}
-      >
-        <Alert onClose={() => setSuccessMessage('')} severity="success" sx={{ width: '100%' }}>
-          {successMessage}
-        </Alert>
-      </Snackbar>
     </>
   );
 };

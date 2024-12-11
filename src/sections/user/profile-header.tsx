@@ -3,13 +3,11 @@ import { useState, useEffect, PropsWithChildren, useRef, useCallback } from 'rea
 
 // MUI IMPORTS
 import Box from '@mui/material/Box';
-import Alert from '@mui/material/Alert';
 import Stack from '@mui/material/Stack';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
 import Popover from '@mui/material/Popover';
-import Snackbar from '@mui/material/Snackbar';
 import MenuItem from '@mui/material/MenuItem';
 import { styled, useTheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
@@ -52,6 +50,7 @@ import { OpenableText } from '@src/components/openable-text/index.ts';
 import { useGetAttestation } from '@src/hooks/use-get-attestation.ts';
 import { openLoginModal } from '@redux/auth';
 import { useDispatch } from 'react-redux';
+import { useSnackbar } from 'notistack';
 
 // ----------------------------------------------------------------------
 
@@ -104,6 +103,7 @@ const prependProfileIdToUrl = (url: string, profileId: string) => {
 
 const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderProps>) => {
   const dispatch = useDispatch();
+  const { enqueueSnackbar } = useSnackbar();
   const navRef = useRef(null);
   const navRefSocial = useRef(null);
   const navRefSettings = useRef(null);
@@ -121,8 +121,6 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
   const openMenu = Boolean(menuAnchorEl);
 
   // State to handle error and success messages
-  const [errorMessage, setErrorMessage] = useState('');
-  const [successMessage, setSuccessMessage] = useState('');
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
   const [isActivateModalOpen, setIsActivateModalOpen] = useState(false);
 
@@ -138,7 +136,6 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
     hasAccess,
     loading: accessLoading,
     fetching: accessFetchingLoading,
-    error: accessError,
     refetch: refetchAccess,
   } = useHasAccess(profile?.ownedBy?.address as Address);
   const { isAuthorized, loading: authorizedLoading } = useIsPolicyAuthorized(
@@ -188,11 +185,6 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
     },
   });
 
-  // Handle errors from follow and unfollow actions
-  useEffect(() => {
-    if (accessError) setErrorMessage(accessError.shortMessage ?? accessError.message);
-  }, [accessError]);
-
   const socialMediaUrls: SocialMediaUrls =
     profile?.metadata?.attributes?.reduce((acc: SocialMediaUrls, attr) => {
       if (['twitter', 'facebook', 'instagram'].includes(attr.key)) {
@@ -218,9 +210,9 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(urlToShare);
-      setSuccessMessage('Link copied to clipboard!');
+      enqueueSnackbar('Link copied to clipboard!', { variant: 'success' })
     } catch (err) {
-      setErrorMessage('Failed to copy link.');
+      enqueueSnackbar('Failed to copy link.', { variant: 'error' })
     }
   };
 
@@ -778,44 +770,18 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
 
       <UpdateModal open={isUpdateModalOpen} onClose={() => setIsUpdateModalOpen(false)} />
 
-      {/* Snackbar for error messages */}
-      <Snackbar
-        key={`error-${errorMessage}`}
-        open={!!errorMessage}
-        autoHideDuration={6000}
-        onClose={() => setErrorMessage('')}
-        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-        sx={{ zIndex: 1200 }}
-      >
-        <Alert onClose={() => setErrorMessage('')} severity="error" sx={{ width: '100%' }}>
-          {errorMessage}
-        </Alert>
-      </Snackbar>
-
-      {/* Snackbar for success messages */}
-      <Snackbar
-        key={`success-${successMessage}`}
-        open={!!successMessage}
-        autoHideDuration={6000}
-        onClose={() => setSuccessMessage('')}
-        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-        sx={{ zIndex: 1200 }}
-      >
-        <Alert onClose={() => setSuccessMessage('')} severity="success" sx={{ width: '100%' }}>
-          {successMessage}
-        </Alert>
-      </Snackbar>
-
       <SubscribeProfileModal
         isOpen={openSubscribeModal}
         onClose={() => setOpenSubscribeModal(false)}
         onSubscribe={onSubscribe}
         profile={profile}
       />
+
       <ActivateSubscriptionProfileModal
         isOpen={isActivateModalOpen}
         onClose={() => setIsActivateModalOpen(false)}
       />
+
       <ReportProfileModal
         profile={profile}
         isOpen={openReportModal}

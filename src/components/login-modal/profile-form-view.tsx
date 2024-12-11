@@ -9,8 +9,6 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import Avatar from '@mui/material/Avatar';
 import LoadingButton from '@mui/lab/LoadingButton';
-import Snackbar from '@mui/material/Snackbar';
-import Alert from '@mui/material/Alert';
 import { Profile } from '@lens-protocol/api-bindings';
 import Image from '../image';
 // @ts-ignore
@@ -28,6 +26,7 @@ import { ProfileData } from '@src/auth/context/web3Auth/types.ts';
 import { uploadImageToIPFS, uploadMetadataToIPFS } from '@src/utils/ipfs.ts';
 import { buildProfileMetadata } from '@src/utils/profile.ts';
 import TextMaxLine from '@src/components/text-max-line';
+import { useSnackbar } from 'notistack';
 
 // ----------------------------------------------------------------------
 
@@ -38,7 +37,7 @@ export interface ProfileFormProps {
   error?: LoginError;
   onSuccess: () => void;
   onCancel: () => void;
-  login: (profile?: Profile) => Promise<void>;
+  login?: (profile?: Profile) => Promise<void>;
 }
 
 // ----------------------------------------------------------------------
@@ -52,7 +51,7 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
   error,
   mode,
 }) => {
-  const [errorMessage, setErrorMessage] = useState('');
+  const { enqueueSnackbar } = useSnackbar();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [registrationLoading, setRegistrationLoading] = useState(false);
   // Pending metadata update (used when profile creation requires authentication)
@@ -90,17 +89,17 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
   });
 
   useEffect(() => {
-    if (errorCreateProfile) setErrorMessage(errorCreateProfile?.message);
-    if (errorSetProfileMetadata) setErrorMessage(errorSetProfileMetadata?.message);
-    if (error) setErrorMessage(error?.message);
+    if (errorCreateProfile) enqueueSnackbar(errorCreateProfile?.message, { variant: 'error' });
+    if (errorSetProfileMetadata) enqueueSnackbar(errorSetProfileMetadata?.message, { variant: 'error' });
+    if (error) enqueueSnackbar(error?.message, { variant: 'error' });
   }, [errorCreateProfile, errorSetProfileMetadata]);
 
   useEffect(() => {
-    if (isSubmitting && !loading && !errorMessage) {
+    if (isSubmitting && !loading) {
       onSuccess();
       setIsSubmitting(false);
     }
-  }, [isSubmitting, loading, errorMessage]);
+  }, [isSubmitting, loading]);
 
   /**
    * Update profile metadata on the Lens Protocol.
@@ -176,7 +175,7 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
         const newProfile: Profile = result.value;
 
         // Authenticate using the new profile
-        await login(newProfile);
+        await login?.(newProfile);
 
         // Save the pending metadata update
         setPendingMetadataUpdate({ data, profile: newProfile });
@@ -241,11 +240,6 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
         setBackgroundImagePreview(previewUrl);
       }
     }
-  };
-
-  const clearError = () => {
-    setErrorMessage('');
-    setIsSubmitting(false);
   };
 
   // Handle session changes and resume pending metadata updates
@@ -555,18 +549,6 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
           </Grid>
         </Grid>
       </Box>
-
-      {/* Snackbar para mensajes de error */}
-      <Snackbar
-        open={!!errorMessage}
-        autoHideDuration={6000}
-        onClose={clearError}
-        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-      >
-        <Alert onClose={clearError} severity="error" sx={{ width: '100%' }}>
-          {errorMessage}
-        </Alert>
-      </Snackbar>
     </Box>
   );
 };

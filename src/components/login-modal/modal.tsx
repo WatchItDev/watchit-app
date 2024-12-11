@@ -3,8 +3,6 @@ import React, { useState, useEffect } from 'react';
 
 // MUI IMPORTS
 import { Modal, Box, Fade, Backdrop } from '@mui/material';
-import Snackbar from '@mui/material/Snackbar';
-import Alert from '@mui/material/Alert';
 
 // LENS IMPORTS
 import { useLogout, useSession, useLogin, type Profile } from '@lens-protocol/react-web';
@@ -14,6 +12,7 @@ import { useWeb3Auth } from '@src/hooks/use-web3-auth';
 import { ProfileSelectView } from '@src/components/login-modal/profile-select-view.tsx';
 import { ProfileFormView } from '@src/components/login-modal/profile-form-view.tsx';
 import { WatchitLoader } from '../watchit-loader';
+import { useSnackbar } from 'notistack';
 
 // ----------------------------------------------------------------------
 
@@ -27,13 +26,13 @@ interface LoginModalProps {
 export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
   const [loading, setLoading] = useState(true);
   const [view, setView] = useState<'wallet' | 'profile' | 'create'>('wallet');
-  const [successMessage, setSuccessMessage] = useState('');
   const [address, setAddress] = useState('');
 
   const { web3Auth: w3 } = useWeb3Auth();
   const { data: sessionData } = useSession();
   const { execute: logoutExecute } = useLogout();
   const { execute: loginExecute, error } = useLogin();
+  const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
     (async () => {
@@ -75,7 +74,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
   }, [open, view, w3.connected]);
 
   const handleProfileCreateSuccess = () => {
-    setSuccessMessage('Profile created successfully.');
+    enqueueSnackbar('Profile created successfully.', { variant: 'success' })
     setView('profile');
   };
 
@@ -159,17 +158,6 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
           </Box>
         </Fade>
       </Modal>
-
-      <Snackbar
-        open={!!successMessage}
-        autoHideDuration={6000}
-        onClose={() => setSuccessMessage('')}
-        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-      >
-        <Alert onClose={() => setSuccessMessage('')} severity="success" sx={{ width: '100%' }}>
-          {successMessage}
-        </Alert>
-      </Snackbar>
     </>
   );
 };

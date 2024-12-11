@@ -1,16 +1,15 @@
 // REACT IMPORTS
-import React, { useState } from 'react';
+import React from 'react';
 
 // MUI IMPORTS
 import { Modal, Box, Fade, Backdrop } from '@mui/material';
-import Snackbar from '@mui/material/Snackbar';
-import Alert from '@mui/material/Alert';
 
 // LOCAL IMPORTS
 import { ProfileFormView } from '@src/components/login-modal/profile-form-view.tsx';
 // @ts-ignore
 import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
 import { ProfileSession, useSession } from '@lens-protocol/react-web';
+import { useSnackbar } from 'notistack';
 
 // ----------------------------------------------------------------------
 
@@ -23,11 +22,10 @@ interface UpdateModalProps {
 
 export const UpdateModal: React.FC<UpdateModalProps> = ({ open, onClose }) => {
   const { data: sessionData, loading }: ReadResult<ProfileSession> = useSession();
-  // states
-  const [successMessage, setSuccessMessage] = useState('');
+  const { enqueueSnackbar } = useSnackbar();
 
   const handleProfileUpdateSuccess = () => {
-    setSuccessMessage('Profile updated successfully.');
+    enqueueSnackbar('Profile updated successfully.', { variant: 'success' })
     onClose?.();
   };
 
@@ -67,6 +65,7 @@ export const UpdateModal: React.FC<UpdateModalProps> = ({ open, onClose }) => {
               onSuccess={handleProfileUpdateSuccess}
               onCancel={onClose}
               mode="update"
+              address={sessionData?.profile?.ownedBy?.address}
               initialValues={{
                 name: sessionData?.profile?.metadata?.displayName,
                 username: sessionData?.profile?.handle?.localName,
@@ -84,17 +83,6 @@ export const UpdateModal: React.FC<UpdateModalProps> = ({ open, onClose }) => {
           </Box>
         </Fade>
       </Modal>
-
-      <Snackbar
-        open={!!successMessage}
-        autoHideDuration={6000}
-        onClose={() => setSuccessMessage('')}
-        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-      >
-        <Alert onClose={() => setSuccessMessage('')} severity="success" sx={{ width: '100%' }}>
-          {successMessage}
-        </Alert>
-      </Snackbar>
     </>
   );
 };

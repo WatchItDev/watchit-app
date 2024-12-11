@@ -9,12 +9,12 @@ import { truncateAddress } from '@src/utils/wallet';
 import { Profile, useSession, useLazyProfiles, LoginError } from '@lens-protocol/react-web';
 // @ts-ignore
 import Alert from '@mui/material/Alert';
-import Snackbar from '@mui/material/Snackbar';
 
 import { useDispatch } from 'react-redux';
 import { setAuthLoading } from '@redux/auth';
 import { useResponsive } from '@src/hooks/use-responsive.ts';
 import { UserItem } from '../user-item';
+import { useSnackbar } from 'notistack';
 // ----------------------------------------------------------------------
 
 interface ProfileSelectionProps {
@@ -36,18 +36,17 @@ export const ProfileSelectView: React.FC<ProfileSelectionProps> = ({
   onClose,
   login,
 }) => {
+  const { enqueueSnackbar } = useSnackbar();
   const dispatch = useDispatch();
   const lgUp = useResponsive('up', 'lg');
 
   const [profiles, setProfiles] = useState([] as Profile[]);
   const { execute: getProfiles } = useLazyProfiles();
   const { data: sessionData } = useSession();
-  const [successMessage, setSuccessMessage] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
     if (!error) dispatch(setAuthLoading({ isAuthLoading: false }));
-    if (error) setErrorMessage(error.message);
+    if (error) enqueueSnackbar(error.message, { variant: 'error' });
   }, [error]);
 
   useEffect(() => {
@@ -166,29 +165,6 @@ export const ProfileSelectView: React.FC<ProfileSelectionProps> = ({
           </Button>
         </Box>
       )}
-      <Snackbar
-        open={!!successMessage}
-        autoHideDuration={6000}
-        onClose={() => setSuccessMessage('')}
-        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-        sx={{ zIndex: 1200 }}
-      >
-        <Alert onClose={() => setSuccessMessage('')} severity="success" sx={{ width: '100%' }}>
-          {successMessage}
-        </Alert>
-      </Snackbar>
-
-      <Snackbar
-        open={!!errorMessage}
-        autoHideDuration={6000}
-        onClose={() => setErrorMessage('')}
-        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-        sx={{ zIndex: 1200 }}
-      >
-        <Alert onClose={() => setErrorMessage('')} severity="error" sx={{ width: '100%' }}>
-          {errorMessage}
-        </Alert>
-      </Snackbar>
     </>
   );
 };

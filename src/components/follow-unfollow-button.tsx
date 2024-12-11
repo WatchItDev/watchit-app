@@ -2,8 +2,6 @@
 import { useState, useEffect, PropsWithChildren } from 'react';
 
 // MUI IMPORTS
-import Alert from '@mui/material/Alert';
-import Snackbar from '@mui/material/Snackbar';
 import LoadingButton from '@mui/lab/LoadingButton';
 
 // LENS IMPORTS
@@ -14,32 +12,36 @@ import {
   useSession,
   useUnfollow,
 } from '@lens-protocol/react-web';
-
-// LOCAL IMPORTS
 // @ts-ignore
 import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
 import { useLazyProfile } from '@lens-protocol/react';
+
+// REDUX IMPORTS
 import { openLoginModal } from '@redux/auth';
 import { useDispatch } from 'react-redux';
+
+// NOTIFICATIONS IMPORTS
+import { useSnackbar } from 'notistack';
 
 // ----------------------------------------------------------------------
 
 interface FollowUnfollowButtonProps {
   profileId: string;
+  followButtonMinWidth?: number;
+  size?: 'small' | 'medium' | 'large';
 }
 
 // ----------------------------------------------------------------------
 
-const FollowUnfollowButton = ({ profileId }: PropsWithChildren<FollowUnfollowButtonProps>) => {
+const FollowUnfollowButton = ({ profileId, size = 'medium', followButtonMinWidth = 120 }: PropsWithChildren<FollowUnfollowButtonProps>) => {
   const dispatch = useDispatch();
-
+  const { enqueueSnackbar } = useSnackbar();
   const { data: profile, execute: getProfile } = useLazyProfile();
   const { data: sessionData }: ReadResult<ProfileSession> = useSession();
   const [isFollowed, setIsFollowed] = useState(profile?.operations?.isFollowedByMe?.value);
 
   // State to handle error and success messages
-  const [errorMessage, setErrorMessage] = useState('');
-  const [successMessage, setSuccessMessage] = useState('');
+  const [isProcessing, setIsProcessing] = useState(false);
 
   // Hooks for follow and unfollow actions
   const { execute: follow, error: followError, loading: followLoading } = useFollow();
@@ -52,8 +54,8 @@ const FollowUnfollowButton = ({ profileId }: PropsWithChildren<FollowUnfollowBut
 
   // Handle errors from follow and unfollow actions
   useEffect(() => {
-    if (followError) setErrorMessage(followError.message);
-    if (unfollowError) setErrorMessage(unfollowError.message);
+    if (followError) handleActionError(followError);
+    if (unfollowError) handleActionError(unfollowError);
   }, [followError, unfollowError]);
 
   useEffect(() => {
@@ -64,149 +66,72 @@ const FollowUnfollowButton = ({ profileId }: PropsWithChildren<FollowUnfollowBut
     getProfile({ forProfileId: profileId as ProfileId });
   };
 
-  // Function to handle following a profile
-  const handleFollow = async () => {
+  // General function to handle follow/unfollow actions
+  const handleAction = async (action: any, successMsg: string, followState: boolean) => {
     if (!profile) return;
     if (!sessionData?.authenticated) return dispatch(openLoginModal());
 
+    setIsProcessing(true);
     try {
-      const result = await follow({ profile });
+      const result = await action({ profile });
       if (result.isSuccess()) {
-        setSuccessMessage('Successfully followed the profile.');
-        setIsFollowed(true);
+        enqueueSnackbar(successMsg, { variant: 'success' })
+        setIsFollowed(followState);
 
         // Wait for transaction confirmation
         await result.value.waitForCompletion();
         handleUpdateProfile();
       } else {
-        // Handle specific follow errors
-        handleFollowError(result.error);
+        handleActionError(result.error);
       }
-    } catch (error) {
-      setErrorMessage('An error occurred while trying to follow the profile.');
+    } catch (err) {
+      console.log(err);
+      enqueueSnackbar('An error occurred while processing the action.', { variant: 'error' })
+    } finally {
+      setIsProcessing(false);
     }
   };
 
-  // Function to handle unfollowing a profile
-  const handleUnfollow = async () => {
-    if (!profile) return;
+  // Function to handle action errors
+  const handleActionError = (error: any) => {
+    const errorMessages: { [key: string]: string } = {
+      BroadcastingError: 'There was an error broadcasting the transaction.',
+      PendingSigningRequestError: 'There is a pending signing request in your wallet.',
+      InsufficientAllowanceError: `You must approve the contract to spend at least: ${error.requestedAmount.asset.symbol} ${error.requestedAmount.toSignificantDigits(6)}`,
+      InsufficientFundsError: `You do not have enough funds to pay for this follow fee: ${error.requestedAmount.asset.symbol} ${error.requestedAmount.toSignificantDigits(6)}`,
+      WalletConnectionError: 'There was an error connecting to your wallet.',
+      PrematureFollowError: 'There is a pending unfollow request for this profile.',
+    };
 
-    try {
-      const result = await unfollow({ profile });
-      if (result.isSuccess()) {
-        setIsFollowed(false);
-        setSuccessMessage('Successfully unfollowed the profile.');
-
-        // Wait for transaction confirmation
-        await result.value.waitForCompletion();
-        handleUpdateProfile();
-      } else {
-        // Handle specific unfollow errors
-        handleUnfollowError(result.error);
-      }
-    } catch (error) {
-      setErrorMessage('An error occurred while trying to unfollow the profile.');
-    }
+    enqueueSnackbar(errorMessages[error.name] || 'An unknown error occurred.', { variant: 'error' })
   };
 
-  // Function to handle specific follow errors
-  const handleFollowError = (error: any) => {
-    switch (error.name) {
-      case 'BroadcastingError':
-        setErrorMessage('There was an error broadcasting the transaction.');
-        break;
-      case 'PendingSigningRequestError':
-        setErrorMessage('There is a pending signing request in your wallet.');
-        break;
-      case 'InsufficientAllowanceError':
-        setErrorMessage(
-          `You must approve the contract to spend at least: ${
-            error.requestedAmount.asset.symbol
-          } ${error.requestedAmount.toSignificantDigits(6)}`
-        );
-        break;
-      case 'InsufficientFundsError':
-        setErrorMessage(
-          `You do not have enough funds to pay for this follow fee: ${
-            error.requestedAmount.asset.symbol
-          } ${error.requestedAmount.toSignificantDigits(6)}`
-        );
-        break;
-      case 'WalletConnectionError':
-        setErrorMessage('There was an error connecting to your wallet.');
-        break;
-      case 'PrematureFollowError':
-        setErrorMessage('There is a pending unfollow request for this profile.');
-        break;
-      case 'UserRejectedError':
-        // Optionally notify the user that they rejected the action
-        break;
-      default:
-        setErrorMessage('An unknown error occurred.');
-    }
-  };
-
-  // Function to handle specific unfollow errors
-  const handleUnfollowError = (error: any) => {
-    switch (error.name) {
-      case 'BroadcastingError':
-        setErrorMessage('There was an error broadcasting the transaction.');
-        break;
-      case 'PendingSigningRequestError':
-        setErrorMessage('There is a pending signing request in your wallet.');
-        break;
-      case 'WalletConnectionError':
-        setErrorMessage('There was an error connecting to your wallet.');
-        break;
-      case 'UserRejectedError':
-        // Optionally notify the user that they rejected the action
-        break;
-      default:
-        setErrorMessage('An unknown error occurred.');
-    }
-  };
+  const getFollowMessage = (profileName: string, action: string): string => {
+    return `Successfully ${action} ${profileName}.`;
+  }
 
   return (
     <>
       <LoadingButton
+        size={size}
         title={isFollowed ? 'Unfollow' : 'Follow'}
         variant={isFollowed ? 'outlined' : 'contained'}
         sx={{
-          minWidth: 120,
+          minWidth: followButtonMinWidth,
           backgroundColor: isFollowed ? '#24262A' : '#fff',
         }}
-        onClick={isFollowed ? handleUnfollow : handleFollow}
-        disabled={followLoading || unfollowLoading || profile?.id === sessionData?.profile?.id}
+        onClick={(event) => {
+          event.stopPropagation();
+
+          isFollowed
+            ? handleAction(unfollow, getFollowMessage(profile?.handle?.localName ?? '', 'unfollowed'), false)
+            : handleAction(follow, getFollowMessage(profile?.handle?.localName ?? '', 'followed'), true);
+        }}
+        disabled={isProcessing || profile?.id === sessionData?.profile?.id}
         loading={followLoading || unfollowLoading}
       >
         {isFollowed ? 'Unfollow' : 'Follow'}
       </LoadingButton>
-
-      {/* Snackbar for error messages */}
-      <Snackbar
-        open={!!errorMessage}
-        autoHideDuration={6000}
-        onClose={() => setErrorMessage('')}
-        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-        sx={{ zIndex: 1200, top: '80px !important' }}
-      >
-        <Alert onClose={() => setErrorMessage('')} severity="error" sx={{ width: '100%' }}>
-          {errorMessage}
-        </Alert>
-      </Snackbar>
-
-      {/* Snackbar for success messages */}
-      <Snackbar
-        open={!!successMessage}
-        autoHideDuration={6000}
-        onClose={() => setSuccessMessage('')}
-        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-        sx={{ zIndex: 1200, top: '80px !important' }}
-      >
-        <Alert onClose={() => setSuccessMessage('')} severity="success" sx={{ width: '100%' }}>
-          {successMessage}
-        </Alert>
-      </Snackbar>
     </>
   );
 };

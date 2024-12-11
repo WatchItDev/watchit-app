@@ -10,13 +10,13 @@ import { Helmet } from 'react-helmet-async';
 // import { Grid, Modal } from '@mui/material';
 // import Skeleton from '@mui/material/Skeleton';
 // import Box from '@mui/material/Box';
-// import button from '@mui/material/button';
+// import Button from '@mui/material/Button';
 // import Typography from '@mui/material/Typography';
-// @ts-ignore
+// // @ts-ignore
 // import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
 // import HeaderContent from '@src/layouts/dashboard/header-content.tsx';
 // import Header from '@src/layouts/dashboard/header.tsx';
-import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
+// import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 // import { verifyIpfsData } from '@src/utils/ipfs.ts';
 import ComingSoonView from '@src/sections/coming-soon/view.tsx';
 import BlankView from '@src/sections/blank/view.tsx';
@@ -271,12 +271,12 @@ export default function OverviewFilePage() {
       {/*              Do you want other people to see your movies?*/}
       {/*            </Box>*/}
       {/*            <Box>*/}
-      {/*              <button*/}
+      {/*              <Button*/}
       {/*                variant='contained' onClick={handleOpen}*/}
       {/*                sx={{ mt: 3, color: '#FFFFFF', background: 'linear-gradient(to right, #7B61FF 0%, #4A34B8 100%)' }}*/}
       {/*              >*/}
       {/*                Upload Movie*/}
-      {/*              </button>*/}
+      {/*              </Button>*/}
       {/*            </Box>*/}
       {/*          </Box>*/}
       {/*        </Box>*/}
@@ -309,13 +309,13 @@ export default function OverviewFilePage() {
       {/*    >*/}
       {/*      Upload movies*/}
       {/*    </Typography>*/}
-      {/*    <button*/}
+      {/*    <Button*/}
       {/*      variant="contained"*/}
       {/*      sx={{ mt: 3 }}*/}
       {/*      onClick={handleSubmitAll}*/}
       {/*    >*/}
       {/*      Upload*/}
-      {/*    </button>*/}
+      {/*    </Button>*/}
       {/*  </Box>*/}
       {/*</Modal>*/}
     </>
