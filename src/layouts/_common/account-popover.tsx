@@ -24,7 +24,7 @@ import { m } from 'framer-motion';
 import { paths } from '@src/routes/paths';
 import { useRouter } from '@src/routes/hooks';
 import { varHover } from '@src/components/animate';
-import { LoginModal } from '@src/components/loginModal';
+import { LoginModal } from '@src/components/login-modal';
 import CustomPopover, { usePopover } from '@src/components/custom-popover';
 import { useDispatch, useSelector } from 'react-redux';
 import { closeLoginModal, openLoginModal, setAuthLoading } from '@redux/auth';

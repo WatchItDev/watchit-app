@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography';
 import { useCountdownDate } from '@src/hooks/use-countdown';
 // assets
 import { ComingSoonIllustration } from '@src/assets/illustrations';
-import HeaderContent from '@src/layouts/dashboard/HeaderContent.tsx';
+import HeaderContent from '@src/layouts/dashboard/header-content.tsx';
 import Header from '@src/layouts/dashboard/header.tsx';
 
 // ----------------------------------------------------------------------

@@ -25,8 +25,7 @@ import { encodeAbiParameters } from 'viem';
 // LOCAL IMPORTS
 import { GLOBAL_CONSTANTS } from '@src/config-global';
 import { useAuthorizePolicy } from '@src/hooks/use-authorize-policy.ts';
-import Alert from '@mui/material/Alert';
-import Snackbar from '@mui/material/Snackbar';
+import { useSnackbar } from 'notistack';
 
 // ----------------------------------------------------------------------
 
@@ -41,10 +40,10 @@ export const ActivateSubscriptionProfileModal = ({
   isOpen,
   onClose,
 }: ActivateSubscriptionProfileModalProps) => {
+  const { enqueueSnackbar } = useSnackbar();
+
   const [selectedAmount, setSelectedAmount] = useState('10');
   const [customAmount, setCustomAmount] = useState('');
-  const [successMessage, setSuccessMessage] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
 
   const { authorize, loading, error } = useAuthorizePolicy();
 
@@ -55,19 +54,17 @@ export const ActivateSubscriptionProfileModal = ({
   ];
 
   useEffect(() => {
-    if (error) setErrorMessage(error.message);
+    if (error) enqueueSnackbar(error.message, { variant: 'error' });
   }, [error]);
 
   const handleAmountChange = (value: string) => {
     setSelectedAmount(value);
     setCustomAmount('');
-    setSuccessMessage('');
   };
 
   const handleCustomAmountChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedAmount('');
     setCustomAmount(event.target.value);
-    setSuccessMessage('');
   };
 
   const handleAuthorizeSubscription = async () => {
@@ -95,7 +92,7 @@ export const ActivateSubscriptionProfileModal = ({
         data: encodedData,
       });
 
-      setSuccessMessage('Joining price set successfully!');
+      enqueueSnackbar('Joining price set successfully!', { variant: 'success' })
       onClose?.();
     } catch (err) {
       console.error('err');
@@ -242,29 +239,6 @@ export const ActivateSubscriptionProfileModal = ({
           </Button>
         </DialogActions>
       </Dialog>
-      <Snackbar
-        open={!!successMessage}
-        autoHideDuration={6000}
-        onClose={() => setSuccessMessage('')}
-        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-        sx={{ zIndex: 1200 }}
-      >
-        <Alert onClose={() => setSuccessMessage('')} severity="success" sx={{ width: '100%' }}>
-          {successMessage}
-        </Alert>
-      </Snackbar>
-
-      <Snackbar
-        open={!!errorMessage}
-        autoHideDuration={6000}
-        onClose={() => setErrorMessage('')}
-        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-        sx={{ zIndex: 1200 }}
-      >
-        <Alert onClose={() => setErrorMessage('')} severity="error" sx={{ width: '100%' }}>
-          {errorMessage}
-        </Alert>
-      </Snackbar>
     </>
   );
 };

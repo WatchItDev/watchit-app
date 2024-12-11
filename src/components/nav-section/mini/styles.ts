@@ -81,16 +81,17 @@ type StyledNavContentProps = {
   active?: boolean;
 };
 
-export const StyledNavContent = styled(Box)(({ theme }) => ({
+export const StyledNavContent = styled(Box, {
+  shouldForwardProp: (prop) => prop !== 'active'
+})<StyledNavContentProps>(({ theme, active }) => ({
   width: '3rem',
   height: '3rem',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  // margin: 0,
   margin: '0 0 0 0.1rem',
-  // backgroundColor: active ? theme.palette.primary.main : '#313339',
-  // borderRadius: active ? '0.75rem' : '50%',
+  backgroundColor: active ? theme.palette.primary.main : '#313339',
+  borderRadius: active ? '0.75rem' : '50%',
 }));
 
 // ----------------------------------------------------------------------

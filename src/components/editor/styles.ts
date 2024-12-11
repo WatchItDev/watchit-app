@@ -85,7 +85,7 @@ export const StyledEditorToolbar = styled('div')(({ theme }) => {
         },
       },
 
-      // Button
+      // button
       '& button': {
         padding: 0,
         display: 'flex',

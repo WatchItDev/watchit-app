@@ -22,8 +22,6 @@ import { ethers } from 'ethers';
 import { Address } from 'viem';
 
 // LOCAL IMPORTS
-import Alert from '@mui/material/Alert';
-import Snackbar from '@mui/material/Snackbar';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { useSubscribe } from '@src/hooks/use-subscribe.ts';
 import { Profile } from '@lens-protocol/api-bindings';
@@ -36,8 +34,10 @@ import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/r
 import { setBalance } from '@redux/auth';
 import { useDispatch, useSelector } from 'react-redux';
 import { useGetBalance } from '@src/hooks/use-get-balance.ts';
+import { useSnackbar } from 'notistack';
 import {useNotifications} from "@src/hooks/use-notifications.ts";
 import { useNotificationPayload } from '@src/hooks/use-notification-payload.ts';
+
 // ----------------------------------------------------------------------
 
 type SubscribeProfileModalProps = {
@@ -55,13 +55,13 @@ export const SubscribeProfileModal = ({
   profile,
   onSubscribe,
 }: SubscribeProfileModalProps) => {
+  const { enqueueSnackbar } = useSnackbar();
   const dispatch = useDispatch();
   const { balance: balanceFromRedux } = useSelector((state: any) => state.auth);
 
   // State variables for handling durations and messages
   const [selectedDuration, setSelectedDuration] = useState('7');
   const [customDuration, setCustomDuration] = useState('');
-  const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
   // Hook to get the user's session data
@@ -116,13 +116,16 @@ export const SubscribeProfileModal = ({
 
   // Effect to handle subscription errors
   useEffect(() => {
-    if (error) setErrorMessage(error.shortMessage ?? error.message);
+    if (error) {
+      enqueueSnackbar(error.shortMessage ?? error.message, { variant: 'error' })
+      setErrorMessage(error.shortMessage ?? error.message);
+    };
   }, [error]);
 
   // Effect to handle successful subscription
   useEffect(() => {
     if (data?.receipt) {
-      setSuccessMessage('Successfully joined the profile.');
+      enqueueSnackbar('Successfully joined the profile.', { variant: 'success' })
       onSubscribe?.();
       refetch?.();
       onClose?.();
@@ -133,7 +136,6 @@ export const SubscribeProfileModal = ({
   const handleDurationChange = (value: string) => {
     setSelectedDuration(value);
     setCustomDuration('');
-    setSuccessMessage('');
     setErrorMessage('');
   };
 
@@ -141,7 +143,6 @@ export const SubscribeProfileModal = ({
   const handleCustomDurationChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedDuration('');
     setCustomDuration(event.target.value);
-    setSuccessMessage('');
     setErrorMessage('');
   };
 
@@ -181,6 +182,7 @@ export const SubscribeProfileModal = ({
       });
     } catch (err) {
       console.error(err);
+      enqueueSnackbar('Failed to join the profile.', { variant: 'error' })
       setErrorMessage('Failed to join the profile.');
     }
   };
@@ -305,32 +307,6 @@ export const SubscribeProfileModal = ({
           </>
         )}
       </Dialog>
-
-      {/* Success message Snackbar */}
-      <Snackbar
-        open={!!successMessage}
-        autoHideDuration={6000}
-        onClose={() => setSuccessMessage('')}
-        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-        sx={{ zIndex: 1200 }}
-      >
-        <Alert onClose={() => setSuccessMessage('')} severity="success" sx={{ width: '100%' }}>
-          {successMessage}
-        </Alert>
-      </Snackbar>
-
-      {/* Error message Snackbar */}
-      <Snackbar
-        open={!!errorMessage}
-        autoHideDuration={6000}
-        onClose={() => setErrorMessage('')}
-        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-        sx={{ zIndex: 1200 }}
-      >
-        <Alert onClose={() => setErrorMessage('')} severity="error" sx={{ width: '100%' }}>
-          {errorMessage}
-        </Alert>
-      </Snackbar>
     </>
   );
 };
