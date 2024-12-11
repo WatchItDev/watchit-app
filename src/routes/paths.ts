@@ -3,14 +3,7 @@ import { paramCase } from '@src/utils/change-case';
 // ----------------------------------------------------------------------
 
 const MOCK_ID = '0x123';
-
 const MOCK_TITLE = 'Demo title';
-
-const ROOTS = {
-  AUTH: '/auth',
-  AUTH_DEMO: '/auth-demo',
-  DASHBOARD: '/dashboard',
-};
 
 // ----------------------------------------------------------------------
 
@@ -31,51 +24,51 @@ export const paths = {
     'https://www.figma.com/design/DKavGrV30OC0IQowdF4HYu/Watchit?node-id=1601-62&t=dDV5gk9skIVVRavr-1',
   // DASHBOARD
   dashboard: {
-    root: ROOTS.DASHBOARD,
-    community: `${ROOTS.DASHBOARD}/community`,
-    marketplace: `${ROOTS.DASHBOARD}/marketplace`,
-    events: `${ROOTS.DASHBOARD}/events`,
-    achievements: `${ROOTS.DASHBOARD}/achievements`,
-    analytics: `${ROOTS.DASHBOARD}/analytics`,
-    studio: `${ROOTS.DASHBOARD}/studio`,
-    ownership: `${ROOTS.DASHBOARD}/ownership`,
-    finance: `${ROOTS.DASHBOARD}/finance`,
-    marketing: `${ROOTS.DASHBOARD}/marketing`,
+    root: '/',
+    community: `/community`,
+    marketplace: `/marketplace`,
+    events: `/events`,
+    achievements: `/achievements`,
+    analytics: `/analytics`,
+    studio: `/studio`,
+    ownership: `/ownership`,
+    finance: `/finance`,
+    marketing: `/marketing`,
     user: {
-      root: (id: string) => `${ROOTS.DASHBOARD}/profile/${id}`,
-      new: `${ROOTS.DASHBOARD}/user/new`,
-      list: `${ROOTS.DASHBOARD}/user/list`,
-      cards: `${ROOTS.DASHBOARD}/user/cards`,
-      profile: `${ROOTS.DASHBOARD}/user/profile`,
-      account: `${ROOTS.DASHBOARD}/user/account`,
-      edit: (id: string) => `${ROOTS.DASHBOARD}/user/${id}/edit`,
+      root: (id: string) => `/profile/${id}`,
+      new: `/user/new`,
+      list: `/user/list`,
+      cards: `/user/cards`,
+      profile: `/user/profile`,
+      account: `/user/account`,
+      edit: (id: string) => `/user/${id}/edit`,
       demo: {
-        edit: `${ROOTS.DASHBOARD}/user/${MOCK_ID}/edit`,
+        edit: `/user/${MOCK_ID}/edit`,
       },
     },
     governance: {
-      root: `${ROOTS.DASHBOARD}/governance`,
-      new: `${ROOTS.DASHBOARD}/governance/new`,
-      details: (id: string) => `${ROOTS.DASHBOARD}/governance/details/${id}`,
+      root: `/governance`,
+      new: `/governance/new`,
+      details: (id: string) => `/governance/details/${id}`,
     },
     publication: {
-      root: `${ROOTS.DASHBOARD}/publication`,
-      new: `${ROOTS.DASHBOARD}/publication/new`,
-      details: (id: string) => `${ROOTS.DASHBOARD}/publication/${id}`,
-      edit: (id: string) => `${ROOTS.DASHBOARD}/publication/${id}/edit`,
+      root: `/publication`,
+      new: `/publication/new`,
+      details: (id: string) => `/publication/${id}`,
+      edit: (id: string) => `/publication/${id}/edit`,
       demo: {
-        details: `${ROOTS.DASHBOARD}/publication/${MOCK_ID}`,
-        edit: `${ROOTS.DASHBOARD}/publication/${MOCK_ID}/edit`,
+        details: `/publication/${MOCK_ID}`,
+        edit: `/publication/${MOCK_ID}/edit`,
       },
     },
     post: {
-      root: `${ROOTS.DASHBOARD}/post`,
-      new: `${ROOTS.DASHBOARD}/post/new`,
-      details: (title: string) => `${ROOTS.DASHBOARD}/post/${paramCase(title)}`,
-      edit: (title: string) => `${ROOTS.DASHBOARD}/post/${paramCase(title)}/edit`,
+      root: `/post`,
+      new: `/post/new`,
+      details: (title: string) => `/post/${paramCase(title)}`,
+      edit: (title: string) => `/post/${paramCase(title)}/edit`,
       demo: {
-        details: `${ROOTS.DASHBOARD}/post/${paramCase(MOCK_TITLE)}`,
-        edit: `${ROOTS.DASHBOARD}/post/${paramCase(MOCK_TITLE)}/edit`,
+        details: `/post/${paramCase(MOCK_TITLE)}`,
+        edit: `/post/${paramCase(MOCK_TITLE)}/edit`,
       },
     },
   },

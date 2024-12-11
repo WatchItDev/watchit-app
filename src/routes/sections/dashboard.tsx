@@ -39,7 +39,6 @@ const Page404 = lazy(() => import('@src/pages/404'));
 
 export const dashboardRoutes = [
   {
-    path: 'dashboard',
     element: (
       <DashboardLayout>
         <Suspense fallback={<LoadingScreen />}>

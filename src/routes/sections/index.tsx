@@ -13,7 +13,7 @@ export default function Router() {
       path: '/',
       element: <Navigate to={PATH_AFTER_LOGIN} replace />,
     },
-    // Dashboard routes
+
     ...dashboardRoutes,
 
     // No match 404
