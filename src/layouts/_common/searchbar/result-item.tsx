@@ -1,21 +1,33 @@
-// @mui
 import { alpha } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemButton from '@mui/material/ListItemButton';
-// components
 import Label from '@src/components/label';
-
-// ----------------------------------------------------------------------
+import {COLORS} from "@src/layouts/config-layout.ts";
 
 type Props = {
   title: string;
   subtitle: string;
   groupLabel: string;
   onClickItem: VoidFunction;
+  query?: string;
 };
 
-export default function ResultItem({ title, subtitle, groupLabel, onClickItem }: Props) {
+const highlightText = (text: string, query: string) => {
+  if (!query) return text;
+  const parts = text.split(new RegExp(`(${query})`, 'gi'));
+  return parts.map((part, index) =>
+    part.toLowerCase() === query.toLowerCase() ? (
+      <span key={index} style={{ backgroundColor: 'white', color:COLORS.GRAY_DARK, fontWeight: 'bold' }}>
+        {part}
+      </span>
+    ) : (
+      part
+    )
+  );
+};
+
+export default function ResultItem({ title, subtitle, groupLabel, onClickItem, query = '' }: Props) {
   return (
     <ListItemButton
       onClick={onClickItem}
@@ -45,7 +57,7 @@ export default function ResultItem({ title, subtitle, groupLabel, onClickItem }:
               color: '#fff',
             }}
           >
-            {title}
+            {highlightText(title, query)}
           </Box>
         }
         secondary={
@@ -59,7 +71,7 @@ export default function ResultItem({ title, subtitle, groupLabel, onClickItem }:
               WebkitLineClamp: 2,
             }}
           >
-            {subtitle}
+            {highlightText(subtitle, query)}
           </Box>
         }
       />

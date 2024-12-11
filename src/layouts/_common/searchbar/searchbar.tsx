@@ -18,7 +18,8 @@ import { useRouter } from '@src/routes/hooks';
 import SearchNotFound from '@src/components/search-not-found';
 import ResultItem from './result-item';
 import { applyFilter } from './utils';
-import { appId, useSearchProfiles, useSearchPublications } from '@lens-protocol/react-web';
+import { useSearchProfiles} from '@lens-protocol/react-web';
+import { useSearchPublications } from '@src/hooks/use-search-publications';
 import { CircularProgress } from '@mui/material';
 import { paths } from '@src/routes/paths.ts';
 import { useSelector } from 'react-redux';
@@ -63,10 +64,7 @@ function Searchbar() {
   }, []);
 
   const { data: profiles, loading: loadingProfiles } = useSearchProfiles({ query: searchQuery });
-  const { data: publications, loading: loadingPublications } = useSearchPublications({
-    query: searchQuery,
-    where: { metadata: { publishedOn: [appId('watchit')] } },
-  });
+  const { publications, loading: loadingPublications } = useSearchPublications(searchQuery);
 
   const dataFiltered = applyFilter({
     inputData: [],
@@ -124,10 +122,11 @@ function Searchbar() {
           publications.map((publication: any) => (
             <List key={publication.id}>
               <ResultItem
-                title={`${publication?.metadata?.title}`}
-                subtitle={`${publication?.metadata?.content}`}
+                query={searchQuery}
+                title={`${publication?.title}`}
+                subtitle={`${publication?.description}`}
                 groupLabel={'Publication'}
-                onClickItem={() => handleClickPublication(`${publication.id}`)}
+                onClickItem={() => handleClickPublication(`${publication.post_id}`)}
               />
             </List>
           ))}
