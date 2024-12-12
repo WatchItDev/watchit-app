@@ -1,10 +1,9 @@
 // MUI IMPORTS
 import Stack from '@mui/material/Stack';
 import Container from '@mui/material/Container';
-import { supabase } from '@src/utils/supabase';
 // COMPONENTS IMPORTS
 import CarouselPosterMini from '@src/components/carousel/variants/carousel-poster-mini';
-
+import InsertMoviesSupabase from '@src/utils/insert-movies-supabase';
 // LENS IMPORTS
 import {
   appId,
@@ -78,46 +77,8 @@ export default function ExploreView() {
     .slice(0, 10);
 
 
-  // Print in console the publications  (explorePublications)
-  // console.log('Publications:', explorePublications);
-
-  // For each publications in explorePublications, insert title and description in publications table hosted in supabase
-  async function insertPublications() {
-    if (explorePublications) {
-      for (const publication of explorePublications) {
-        if(!publication.isHidden) {
-          const { title, content: description} = publication.metadata;
-          const post_id = publication.id;
-
-          // Check if the publication already exists
-          const { data: existingPublications, error: selectError } = await supabase
-            .from('publications')
-            .select('id')
-            .eq('post_id', post_id);
-
-          if (selectError) {
-            console.error('Error checking existing publication:', selectError);
-            continue;
-          }
-
-          // If the publication does not exist, insert it
-          if (existingPublications.length === 0) {
-            const { error: insertError } = await supabase
-              .from('publications')
-              .insert([{ title, description, post_id}]);
-
-            if (insertError) {
-              console.error('Error inserting publication:', insertError);
-            }
-          }
-        }
-      }
-    }
-  }
   // @TODO Uncomment the following line to insert publications in supabase when needed
-  /*insertPublications().then((data) => {
-    console.log('Inserted publications:', data);
-  });*/
+  // InsertMoviesSupabase(explorePublications);
 
 
 
