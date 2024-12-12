@@ -291,7 +291,6 @@ export default function PublicationDetailMain({
               flexDirection: 'column',
               justifyContent: 'end',
               zIndex: 1,
-              position: 'sticky',
               top: '2.5rem',
               backgroundColor: '#1e1f22',
             }}
@@ -353,8 +352,6 @@ export default function PublicationDetailMain({
               flexDirection: 'column',
               justifyContent: 'end',
               zIndex: 1,
-              position: 'sticky',
-              top: '4.5rem',
               backgroundColor: '#1e1f22',
             }}
           >

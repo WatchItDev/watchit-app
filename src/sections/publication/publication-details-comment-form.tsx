@@ -153,7 +153,6 @@ const MovieCommentForm = ({ commentOn, owner, root }: MovieCommentFormProps) => 
           avatar: owner?.avatar,
         }, {
           root_id: root,
-          comment: data.comment,
           comment_id: commentOn,
           rawDescription: `${sessionData?.profile?.metadata?.displayName} left a comment`,
         });

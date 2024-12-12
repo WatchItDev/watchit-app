@@ -73,6 +73,7 @@ export default function PublicationCommentItem({ comment, hasReply, canReply }: 
     try {
 
       console.log('comment: ', comment)
+      console.log('comment on: ', comment?.commentOn)
 
       await toggle({
         reaction: PublicationReactionType.Upvote,
@@ -84,7 +85,8 @@ export default function PublicationCommentItem({ comment, hasReply, canReply }: 
           displayName: comment?.by?.metadata?.displayName ?? 'no name',
           avatar: comment?.by?.metadata?.avatar,
         }, {
-          root_id: comment?.commentOn?.id,
+          root_id: comment?.commentOn?.root?.id ?? comment?.commentOn?.id,
+          parent_id: comment?.commentOn?.id,
           comment_id: comment?.id,
           rawDescription: `${sessionData?.profile?.metadata?.displayName} liked your comment`,
         });
@@ -108,10 +110,6 @@ export default function PublicationCommentItem({ comment, hasReply, canReply }: 
     await hide({ publication: comment });
     dispatch(hiddeComment(comment));
   };
-
-  console.log('hello')
-  console.log(comment)
-  console.log(sessionData)
 
   return (
     <Stack
