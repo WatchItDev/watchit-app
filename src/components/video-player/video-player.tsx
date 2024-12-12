@@ -42,13 +42,89 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({ src, titleMovie, onBack, sho
     };
   }, [onBack]);
 
+
   useEffect(() => {
     if (player.current) {
-      const provider = player.current?.provider;
-      if (isHLSProvider(provider)) {
-        provider.config = {
+      if (isHLSProvider(player.current.provider)) {
+        console.log("tune provider config")
+        player.current.provider.config = {
+          debug: false,
+          autoStartLoad: true,
+          capLevelOnFPSDrop: false,
+          capLevelToPlayerSize: false,
+          initialLiveManifestSize: 1,
+
+          maxBufferLength: 60,
+          maxMaxBufferLength: 600,
+          backBufferLength: Infinity,
+          frontBufferFlushThreshold: Infinity,
+          maxBufferSize: 80 * 1000 * 1000,
+          maxBufferHole: 0.2,
+          startPosition: -1,
+          nudgeOffset: 0.2,
+          nudgeMaxRetry: 5,
+
+          liveSyncDurationCount: 3,
+          liveSyncOnStallIncrease: 1,
+          liveMaxLatencyDurationCount: Infinity,
+          liveDurationInfinity: false,
+          preferManagedMediaSource: false,
           enableWorker: true,
-          lowLatencyMode: true,
+          enableSoftwareAES: false,
+          startFragPrefetch: true,
+
+          testBandwidth: true,
+          progressive: false,
+          lowLatencyMode: false,
+
+          fpsDroppedMonitoringPeriod: 5000,
+          fpsDroppedMonitoringThreshold: 0.2,
+
+          enableDateRangeMetadataCues: false,
+          enableMetadataCues: false,
+          enableID3MetadataCues: false,
+          enableWebVTT: false, // TODO change when subtitles needed
+          enableIMSC1: false, // TODO change when subtitles needed
+          enableCEA708Captions: false,  // TODO change when subtitles needed
+
+          stretchShortVideoTrack: false,
+          maxAudioFramesDrift: 1,
+          forceKeyFrameOnDiscontinuity: true,
+
+          abrEwmaFastLive: 3.0,
+          abrEwmaSlowLive: 9.0,
+          abrEwmaFastVoD: 2.0,
+          abrEwmaSlowVoD: 6.0,
+          abrEwmaDefaultEstimate: 1_000_000,
+          abrEwmaDefaultEstimateMax: 10_000_000,
+          abrBandWidthFactor: 0.9,
+          abrBandWidthUpFactor: 0.75,
+          abrMaxWithRealBitrate: true,
+
+          maxStarvationDelay: 3,
+          maxLoadingDelay: 3,
+          minAutoBitrate: 0,
+          emeEnabled: false,
+          licenseXhrSetup: undefined,
+          drmSystems: {},
+          drmSystemOptions: {},
+          fragLoadPolicy: {
+            default: {
+              maxTimeToFirstByteMs: 5000,
+              maxLoadTimeMs: 60_000,
+              timeoutRetry: {
+                maxNumRetry: 3,
+                retryDelayMs: 1000,
+                maxRetryDelayMs: 5000,
+              },
+              errorRetry: {
+                maxNumRetry: 5,
+                retryDelayMs: 2000,
+                maxRetryDelayMs: 10000,
+                backoff: 'exponential',
+              },
+            },
+          },
         };
       }
     }
