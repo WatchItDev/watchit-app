@@ -32,13 +32,13 @@ export default function NotificationsPopover() {
         Notifications
       </Typography>
 
-      {notifications.length  && (
+      {notifications.length  ? (
         <Tooltip title="Marcar todas como leídas">
           <IconButton color="info" onClick={markAllAsRead}>
             <Iconify icon="eva:done-all-fill" />
           </IconButton>
         </Tooltip>
-      )}
+      ) : <></>}
 
       {!smUp && (
         <IconButton onClick={drawer.onFalse}>
