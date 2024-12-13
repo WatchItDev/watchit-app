@@ -4,12 +4,14 @@ export type AuthReducerState = {
   isLoginModalOpen: boolean;
   isAuthLoading: boolean;
   balance: number;
+  modalCreationProfile: boolean;
 };
 
 const initialState: AuthReducerState = {
   isLoginModalOpen: false,
   isAuthLoading: false,
   balance: 0,
+  modalCreationProfile: false,
 };
 
 const authSlice = createSlice({
@@ -28,9 +30,14 @@ const authSlice = createSlice({
     setBalance: (state, action: PayloadAction<Pick<AuthReducerState, 'balance'>>) => {
       state.balance = action.payload.balance;
     },
+    toggleModalCreationProfile: (state) => {
+      state.modalCreationProfile = !state.modalCreationProfile;
+    }
+
+
   },
 });
 
-export const { openLoginModal, closeLoginModal, setAuthLoading, setBalance } = authSlice.actions;
+export const { openLoginModal, closeLoginModal, setAuthLoading, setBalance, toggleModalCreationProfile } = authSlice.actions;
 
 export default authSlice.reducer;

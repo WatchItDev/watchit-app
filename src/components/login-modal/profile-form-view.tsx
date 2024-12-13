@@ -27,6 +27,8 @@ import { uploadImageToIPFS, uploadMetadataToIPFS } from '@src/utils/ipfs.ts';
 import { buildProfileMetadata } from '@src/utils/profile.ts';
 import TextMaxLine from '@src/components/text-max-line';
 import { useSnackbar } from 'notistack';
+import {useDispatch} from "react-redux";
+import {toggleModalCreationProfile} from "@redux/auth";
 
 // ----------------------------------------------------------------------
 
@@ -51,6 +53,11 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
   error,
   mode,
 }) => {
+  // const dispatch = useDispatch();
+
+  // set the toggleModalCreationProfile to true
+  // dispatch(toggleModalCreationProfile());
+
   const { enqueueSnackbar } = useSnackbar();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [registrationLoading, setRegistrationLoading] = useState(false);
