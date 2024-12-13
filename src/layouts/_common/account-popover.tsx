@@ -27,7 +27,7 @@ import { varHover } from '@src/components/animate';
 import { LoginModal } from '@src/components/login-modal';
 import CustomPopover, { usePopover } from '@src/components/custom-popover';
 import { useDispatch, useSelector } from 'react-redux';
-import { closeLoginModal, openLoginModal, setAuthLoading } from '@redux/auth';
+import { closeLoginModal, openLoginModal, setAuthLoading, setBalance} from '@redux/auth';
 import { CircularProgress } from '@mui/material';
 import { useWeb3Auth } from '@src/hooks/use-web3-auth.ts';
 
@@ -69,6 +69,10 @@ export default function AccountPopover() {
     try {
       await logoutExecute();
       await web3Auth?.logout();
+
+      // Clear the balance for logged-out users
+      dispatch(setBalance({ balance: 0 }));
+
     } catch (err) {
       console.error('Error during logout:', err);
     }
