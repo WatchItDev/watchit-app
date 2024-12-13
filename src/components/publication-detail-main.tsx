@@ -445,7 +445,7 @@ export default function PublicationDetailMain({
                   pb: 2,
                   zIndex: 1,
                   position: 'sticky',
-                  top: '6.6rem',
+                  top: '2rem',
                   backgroundColor: '#1e1f22',
                 }}
               >
