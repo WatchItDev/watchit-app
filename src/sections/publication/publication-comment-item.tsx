@@ -228,9 +228,10 @@ export default function PublicationCommentItem({ comment, hasReply, canReply }: 
           >
             <Stack
               sx={{ mb: 0.5 }}
-              alignItems={{ sm: 'flex-start' }}
-              justifyContent="space-between"
+              alignItems={{ sm: 'center' }}
+              justifyContent="flex-start"
               direction={ 'row' }
+              gap={1}
             >
               <Box sx={{ typography: 'subtitle2' }}>{comment?.by?.handle?.localName}</Box>
               <Box sx={{ typography: 'caption', color: 'text.disabled' }}>
