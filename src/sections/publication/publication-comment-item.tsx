@@ -96,13 +96,15 @@ export default function PublicationCommentItem({ comment, hasReply, canReply }: 
           comment_id: comment?.id,
           rawDescription: `${sessionData?.profile?.metadata?.displayName} liked your comment`,
         });
+
         if (!hasLiked){
           dispatch(incrementCounterLikes(comment.id));
+        } else {
+          dispatch(decrementCounterLikes(comment.id));
         }
+
         if(!hasLiked && comment?.by?.id !== sessionData?.profile?.id) {
           sendNotification(comment?.by?.id, sessionData?.profile?.id, notificationPayload);
-        }else {
-          dispatch(decrementCounterLikes(comment.id));
         }
       });
       setHasLiked(!hasLiked); // Toggle the UI based on the reaction state
