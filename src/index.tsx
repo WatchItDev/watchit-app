@@ -14,7 +14,11 @@ window.Buffer = Buffer;
 window.process = process;
 window.global = window;
 
+const isDevelopment = GLOBAL_CONSTANTS.ENVIRONMENT === "development"
+
 Sentry.init({
+  environment: GLOBAL_CONSTANTS.ENVIRONMENT,
+  enabled: !isDevelopment,
   dsn: GLOBAL_CONSTANTS.SENTRY_DNS,
   integrations: [Sentry.browserTracingIntegration(), Sentry.replayIntegration()],
   // Tracing
