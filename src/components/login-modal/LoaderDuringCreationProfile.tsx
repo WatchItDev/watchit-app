@@ -5,7 +5,7 @@ import { COLORS } from "@src/layouts/config-layout.ts";
 import Stack from "@mui/material/Stack";
 import TextMaxLine from "@src/components/text-max-line";
 import { IconCheck, IconLoader, IconSquare } from "@tabler/icons-react";
-import styled, { keyframes } from 'styled-components';
+import { styled, keyframes } from '@mui/material/styles';
 
 const spin = keyframes`
   0% {
@@ -38,10 +38,13 @@ const LoaderContainer = styled(Box)`
 
 const InnerBox = styled(Box)`
   width: 90%;
-  max-width: 490px;
-  padding: 16px;
-  border-radius: 8px;
+  max-width: 400px;
+  padding: 32px;
+  border-radius: 32px !important;
   display: flex;
+  border-color: #4a33b8;
+  border-width: 2px;
+  border-style: solid;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -63,26 +66,29 @@ const LoaderDuringCreationProfile = () => {
     // @ts-ignore
     <LoaderContainer show={modalCreationProfile}>
       <InnerBox>
-        <WatchitLoader />
+        <WatchitLoader style={{ paddingTop: 2 }} />
 
-        <Box>
-          <TextMaxLine line={1} sx={{ textAlign:'center', width:'100%', mt: 4 }}>
-            Setting up your profile, please wait...
+        <Box flexDirection={'column'} alignItems={'center'} justifyContent={'center'}>
+          <TextMaxLine variant={'h6'} line={1} sx={{ textAlign:'center', width:'100%', mt: 0 }}>
+            Setting up your profile
+          </TextMaxLine>
+          <TextMaxLine variant={'body1'} color="text.secondary" line={1} sx={{ textAlign:'center', width:'100%', mt: 1 }}>
+            Please wait
           </TextMaxLine>
         </Box>
 
-        <Stack direction={'column'} sx={{ gap: 3, mt: 6 }}>
+        <Stack direction={'column'} sx={{ gap: 3, mt: 6, width: '100%' }}>
           <BoxItem>
-            {profileCreationSteps.step1 === 'running' ? <IconLoaderStyled stroke={2} /> : profileCreationSteps.step1 === 'finished' ? <IconCheck stroke={2} /> : <IconSquaredStyledFullyTransparent />}
-            <TextMaxLine line={1} sx={{ textAlign:'right', width:'100%', opacity: profileCreationSteps.step1 === 'idle' ? 0.3 : 1 }}>Creating your profile</TextMaxLine>
+            {profileCreationSteps.step1 === 'running' ? <IconLoaderStyled stroke={2} /> : profileCreationSteps.step1 === 'finished' ? <IconCheck color={'#4a33b8'} stroke={2} /> : <IconSquaredStyledFullyTransparent />}
+            <TextMaxLine line={1} sx={{ textAlign:'right', width:'100%', opacity: profileCreationSteps.step1 === 'idle' ? 0.3 : 1 }}>Creating your profile.</TextMaxLine>
           </BoxItem>
           <BoxItem>
-            {profileCreationSteps.step2 === 'running' ? <IconLoaderStyled stroke={2} /> : profileCreationSteps.step2 === 'finished' ? <IconCheck stroke={2} /> : <IconSquaredStyledFullyTransparent />}
-            <TextMaxLine line={1} sx={{ textAlign:'right', width:'100%', opacity: profileCreationSteps.step2 === 'idle' ? 0.3 : 1 }}>Storing your data on blockchain</TextMaxLine>
+            {profileCreationSteps.step2 === 'running' ? <IconLoaderStyled stroke={2} /> : profileCreationSteps.step2 === 'finished' ? <IconCheck color={'#4a33b8'} stroke={2} /> : <IconSquaredStyledFullyTransparent />}
+            <TextMaxLine line={1} sx={{ textAlign:'right', width:'100%', opacity: profileCreationSteps.step2 === 'idle' ? 0.3 : 1 }}>Storing your data on blockchain.</TextMaxLine>
           </BoxItem>
-          <BoxItem sx={{ mb: 4 }}>
-            {profileCreationSteps.step3 === 'running' ? <IconLoaderStyled stroke={2} /> : profileCreationSteps.step3 === 'finished' ? <IconCheck stroke={2} /> : <IconSquaredStyledFullyTransparent />}
-            <TextMaxLine line={1} sx={{ textAlign:'right', width:'100%', opacity: profileCreationSteps.step3 === 'idle' ? 0.3 : 1 }}>Done!</TextMaxLine>
+          <BoxItem>
+            {profileCreationSteps.step3 === 'running' ? <IconLoaderStyled stroke={2} /> : profileCreationSteps.step3 === 'finished' ? <IconCheck color={'#4a33b8'} stroke={2} /> : <IconSquaredStyledFullyTransparent />}
+            <TextMaxLine line={1} sx={{ textAlign:'right', width:'100%', opacity: profileCreationSteps.step3 === 'idle' ? 0.3 : 1 }}>Done.</TextMaxLine>
           </BoxItem>
         </Stack>
       </InnerBox>
