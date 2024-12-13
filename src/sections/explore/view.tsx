@@ -59,6 +59,11 @@ export default function ExploreView() {
     orderBy: ExploreProfilesOrderByType.LatestCreated,
     limit: LimitType.Fifty,
   });
+
+  // if a profile has handle property null, it is not a completed profile, so we filter it out
+  const filteredCompletedProfiles = latestCreatedProfiles?.filter((profile: any) => profile.handle !== null);
+
+
   const { data: explorePublications } = useExplorePublications({
     where: {
       publicationTypes: [ExplorePublicationType.Post],
@@ -79,11 +84,6 @@ export default function ExploreView() {
 
   // @TODO Uncomment the following line to insert publications in supabase when needed
   // InsertMoviesSupabase(explorePublications);
-
-
-
-
-
 
   const bookmarksFiltered = [...[...bookmarkPublications].reverse(), ...(bookmark ?? [])]
     .filter((post) => !hiddenBookmarks.some((hidden: any) => hidden.id === post.id))
@@ -107,7 +107,7 @@ export default function ExploreView() {
         )}
 
         <CarouselCreators
-          data={latestCreatedProfiles ?? []}
+          data={filteredCompletedProfiles ?? []}
           title="Latest creators"
           minItemWidth={250}
           maxItemWidth={400}
