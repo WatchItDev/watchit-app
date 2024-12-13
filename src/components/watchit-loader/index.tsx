@@ -6,9 +6,10 @@ import watchitLogo from '@src/assets/animations/watchit-spinner.json';
 
 interface WatchitLoaderProps {
   speed?: number;
+  style?: any;
 }
 
-export const WatchitLoader: FC<WatchitLoaderProps> = ({ speed = 1.5 }) => {
+export const WatchitLoader: FC<WatchitLoaderProps> = ({ speed = 1.5, style }) => {
   const lottieRef = useRef<LottieRefCurrentProps>(null);
 
   useEffect(() => {
@@ -18,7 +19,7 @@ export const WatchitLoader: FC<WatchitLoaderProps> = ({ speed = 1.5 }) => {
   }, [speed]);
 
   return (
-    <Box sx={styles.loader}>
+    <Box sx={[styles.loader, style]}>
       <Lottie
         lottieRef={lottieRef}
         animationData={watchitLogo}

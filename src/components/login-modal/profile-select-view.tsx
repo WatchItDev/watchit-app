@@ -11,7 +11,7 @@ import { Profile, useSession, useLazyProfiles, LoginError } from '@lens-protocol
 import Alert from '@mui/material/Alert';
 
 import { useDispatch } from 'react-redux';
-import { setAuthLoading } from '@redux/auth';
+import { setAuthLoading, setBalance } from '@redux/auth';
 import { useResponsive } from '@src/hooks/use-responsive.ts';
 import { UserItem } from '../user-item';
 import { useSnackbar } from 'notistack';
@@ -61,6 +61,9 @@ export const ProfileSelectView: React.FC<ProfileSelectionProps> = ({
     if (sessionData?.authenticated) {
       onClose?.();
     } else {
+      // Set the balance to 0 to later refetch the balance correctly
+      dispatch(setBalance({ balance: 0 }));
+
       onClose();
       dispatch(setAuthLoading({ isAuthLoading: true }));
       await login(profile);
