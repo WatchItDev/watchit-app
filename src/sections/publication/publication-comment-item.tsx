@@ -1,4 +1,4 @@
-import { useState, lazy, Suspense } from 'react';
+import { useEffect, useState, lazy, Suspense } from 'react';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
@@ -34,6 +34,14 @@ import { useHidePublication } from '@lens-protocol/react';
 import { hiddeComment } from '@redux/comments';
 import {useNotificationPayload} from "@src/hooks/use-notification-payload.ts";
 import {useNotifications} from "@src/hooks/use-notifications.ts";
+import { useSelector } from 'react-redux';
+// @ts-ignore
+import { RootState } from '@redux/store';
+import {
+  incrementCounterLikes,
+  decrementCounterLikes,
+  setCounterLikes,
+} from '@redux/comments';
 
 // Components Lazy
 const LazyPopover = lazy(() => import('@mui/material/Popover'));
@@ -67,14 +75,12 @@ export default function PublicationCommentItem({ comment, hasReply, canReply }: 
   const { sendNotification } = useNotifications();
   const { generatePayload } = useNotificationPayload(sessionData);
 
+  const likes = useSelector((state: RootState) => state.comments.counterLikes[comment.id] ?? 0);
+
   const toggleReaction = async () => {
     if (!sessionData?.authenticated) return dispatch(openLoginModal());
 
     try {
-
-      console.log('comment: ', comment)
-      console.log('comment on: ', comment?.commentOn)
-
       await toggle({
         reaction: PublicationReactionType.Upvote,
         publication: comment,
@@ -92,6 +98,9 @@ export default function PublicationCommentItem({ comment, hasReply, canReply }: 
         });
         if(!hasLiked && comment?.by?.id !== sessionData?.profile?.id) {
           sendNotification(comment?.by?.id, sessionData?.profile?.id, notificationPayload);
+          dispatch(incrementCounterLikes(comment.id));
+        }else {
+          dispatch(decrementCounterLikes(comment.id));
         }
       });
       setHasLiked(!hasLiked); // Toggle the UI based on the reaction state
@@ -110,6 +119,13 @@ export default function PublicationCommentItem({ comment, hasReply, canReply }: 
     await hide({ publication: comment });
     dispatch(hiddeComment(comment));
   };
+
+  useEffect(() => {
+    if (comment?.stats?.upvotes !== undefined) {
+      dispatch(setCounterLikes({ publicationId: comment.id, likes: comment.stats.upvotes }));
+    }
+  }, [comment?.stats?.upvotes, comment.id, dispatch]);
+
 
   return (
     <Stack
@@ -208,22 +224,13 @@ export default function PublicationCommentItem({ comment, hasReply, canReply }: 
           >
             <Stack
               sx={{ mb: 0.5 }}
-              alignItems={{ sm: 'center' }}
-              justifyContent="flex-start"
-              direction={{ xs: 'column', sm: 'row' }}
+              alignItems={{ sm: 'flex-start' }}
+              justifyContent="space-between"
+              direction={ 'row' }
             >
               <Box sx={{ typography: 'subtitle2' }}>{comment?.by?.handle?.localName}</Box>
-
-              <Box
-                display="flex"
-                flexDirection="row"
-                alignItems="center"
-                justifyContent="center"
-                sx={{ ml: 1 }}
-              >
-                <Box sx={{ typography: 'caption', color: 'text.disabled' }}>
-                  {comment?.createdAt ? timeAgo(new Date(comment.createdAt)) : 'Just now'}
-                </Box>
+              <Box sx={{ typography: 'caption', color: 'text.disabled' }}>
+                {comment?.createdAt ? timeAgo(new Date(comment.createdAt)) : 'Just now'}
               </Box>
             </Stack>
 
@@ -258,11 +265,10 @@ export default function PublicationCommentItem({ comment, hasReply, canReply }: 
                   sx={{
                     lineHeight: 1,
                     ml: 1,
-                    fontSize: 'clamp(0.5rem, 0.9vw, 1.1rem)',
                     fontWeight: '700',
                   }}
                 >
-                  {comment?.stats?.upvotes}
+                  {likes}
                 </Typography>
               </>
             )}
@@ -289,7 +295,6 @@ export default function PublicationCommentItem({ comment, hasReply, canReply }: 
                   sx={{
                     lineHeight: 1,
                     ml: 1,
-                    fontSize: 'clamp(0.5rem, 0.9vw, 1.1rem)',
                     fontWeight: '700',
                   }}
                 >
