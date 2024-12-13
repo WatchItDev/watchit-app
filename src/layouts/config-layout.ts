@@ -18,7 +18,7 @@ export const COLORS = {
   GRAY_LIGHT: '#2B2D31',
 
   // Transparency 0.5 for GRAY_LIGHT
-  GRAY_LIGHT_50: 'rgba(43, 45, 49, 0.2)',
+  GRAY_LIGHT_50: 'rgba(43, 45, 49, 0.8)',
 };
 
 // Breakpoints to handle show/hide minibar

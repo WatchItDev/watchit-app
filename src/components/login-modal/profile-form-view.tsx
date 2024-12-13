@@ -27,8 +27,8 @@ import { uploadImageToIPFS, uploadMetadataToIPFS } from '@src/utils/ipfs.ts';
 import { buildProfileMetadata } from '@src/utils/profile.ts';
 import TextMaxLine from '@src/components/text-max-line';
 import { useSnackbar } from 'notistack';
-import {useDispatch} from "react-redux";
-import {toggleModalCreationProfile} from "@redux/auth";
+import {useDispatch } from "react-redux";
+import {toggleModalCreationProfile, setProfileCreationStep} from "@redux/auth";
 
 // ----------------------------------------------------------------------
 
@@ -53,10 +53,7 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
   error,
   mode,
 }) => {
-  // const dispatch = useDispatch();
-
-  // set the toggleModalCreationProfile to true
-  // dispatch(toggleModalCreationProfile());
+  const dispatch = useDispatch();
 
   const { enqueueSnackbar } = useSnackbar();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -95,6 +92,10 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
     }),
   });
 
+  const handleToggle = () => {
+    dispatch(toggleModalCreationProfile());
+  };
+
   useEffect(() => {
     if (errorCreateProfile) enqueueSnackbar(errorCreateProfile?.message, { variant: 'error' });
     if (errorSetProfileMetadata) enqueueSnackbar(errorSetProfileMetadata?.message, { variant: 'error' });
@@ -114,11 +115,12 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
    * @param profile - Profile to update.
    */
   const updateProfileMetadata = useCallback(
-    // async (data: ProfileData, profile: Profile) => {
     async (data: ProfileData) => {
       setRegistrationLoading(true);
 
       try {
+        dispatch(setProfileCreationStep({ step: 2, status: 'running' }));
+
         // Upload images to IPFS
         const profileImageURI =
           typeof data?.profileImage === 'string'
@@ -146,7 +148,16 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
           return;
         }
 
-        setRegistrationLoading(false);
+        dispatch(setProfileCreationStep({ step: 2, status: 'finished' }));
+        dispatch(setProfileCreationStep({ step: 3, status: 'running' }));
+
+        setTimeout(() => {
+          dispatch(setProfileCreationStep({ step: 3, status: 'finished' }));
+          setRegistrationLoading(false);
+          dispatch(toggleModalCreationProfile());
+        }, 3000);
+
+
       } catch (error) {
         console.error('Error updating profile metadata:', error);
         setRegistrationLoading(false);
@@ -167,6 +178,8 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
       }
 
       try {
+        handleToggle();
+        dispatch(setProfileCreationStep({ step: 1, status: 'running' }));
         setRegistrationLoading(true);
 
         const result = await createProfileExecute({
@@ -184,8 +197,12 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
         // Authenticate using the new profile
         await login?.(newProfile);
 
+        dispatch(setProfileCreationStep({ step: 1, status: 'finished' }));
+        dispatch(setProfileCreationStep({ step: 2, status: 'running' }));
+
         // Save the pending metadata update
         setPendingMetadataUpdate({ data, profile: newProfile });
+
       } catch (error) {
         console.error('Error during profile registration:', error);
         setRegistrationLoading(false);
@@ -438,7 +455,7 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
 
         {/* Link Social Networks */}
         <Typography variant="subtitle1" sx={{ mt: 4, mb: 2 }}>
-          Link Social Networks
+          Your social networks links
         </Typography>
 
         <Grid container spacing={2}>

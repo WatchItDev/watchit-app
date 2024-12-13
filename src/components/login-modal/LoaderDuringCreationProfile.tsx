@@ -1,40 +1,93 @@
 import { Box } from "@mui/system";
-import {WatchitLoader} from "@src/components/watchit-loader";
+import { WatchitLoader } from "@src/components/watchit-loader";
+import { useSelector } from 'react-redux';
+import { COLORS } from "@src/layouts/config-layout.ts";
+import Stack from "@mui/material/Stack";
+import TextMaxLine from "@src/components/text-max-line";
+import { IconCheck, IconLoader, IconSquare } from "@tabler/icons-react";
+import styled, { keyframes } from 'styled-components';
 
-// Get redux state from the store
-import { useSelector} from 'react-redux';
-import {COLORS} from "@src/layouts/config-layout.ts";
+const spin = keyframes`
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+`;
+
+const IconLoaderStyled = styled(IconLoader)`
+  animation: ${spin} 2s linear infinite;
+`;
+
+const IconSquaredStyledFullyTransparent = styled(IconSquare)`
+  opacity: 0;
+`;
+
+const LoaderContainer = styled(Box)`
+  display: ${({ show }) => (show ? 'flex' : 'none')};
+  position: fixed;
+  width: 100%;
+  transition: all 1s ease-in-out;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  background-color: ${COLORS.GRAY_LIGHT_50};
+  z-index: 99999;
+`;
+
+const InnerBox = styled(Box)`
+  width: 90%;
+  max-width: 490px;
+  padding: 16px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  background-color: ${COLORS.GRAY_LIGHT};
+  box-shadow: 0 0 16px rgba(0, 0, 0, 0.3);
+`;
+
+const BoxItem = styled(Box)`
+  display: flex;
+  gap: 8px;
+  align-items: center;
+`;
 
 const LoaderDuringCreationProfile = () => {
-
-const show = useSelector((state: any) => state.auth.modalCreationProfile);
+  const { modalCreationProfile, profileCreationSteps } = useSelector((state: any) => state.auth);
 
   return (
-    <Box sx={{
-      display: show ? 'flex' : 'none',
-      position: 'fixed',
-      width: '100%',
-      height: '100%',
-      justifyContent: 'center',
-      alignItems: 'center',
-      backgroundColor: COLORS.GRAY_LIGHT_50,
-      zIndex: 9999,
-    }} >
-      {/*Centered a 50% width box*/}
-      <Box sx={{
-        width: '50%',
-        height: '50%',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderRadius: '8px',
-        boxShadow: '0px 0px 10px 0px rgba(0,0,0,0.1)',
-      }}>
+    // @ts-ignore
+    <LoaderContainer show={modalCreationProfile}>
+      <InnerBox>
         <WatchitLoader />
-      </Box>
 
-    </Box>
-  )
-}
+        <Box>
+          <TextMaxLine line={1} sx={{ textAlign:'center', width:'100%', mt: 4 }}>
+            Setting up your profile, please wait...
+          </TextMaxLine>
+        </Box>
+
+        <Stack direction={'column'} sx={{ gap: 3, mt: 6 }}>
+          <BoxItem>
+            {profileCreationSteps.step1 === 'running' ? <IconLoaderStyled stroke={2} /> : profileCreationSteps.step1 === 'finished' ? <IconCheck stroke={2} /> : <IconSquaredStyledFullyTransparent />}
+            <TextMaxLine line={1} sx={{ textAlign:'right', width:'100%', opacity: profileCreationSteps.step1 === 'idle' ? 0.3 : 1 }}>Creating your profile</TextMaxLine>
+          </BoxItem>
+          <BoxItem>
+            {profileCreationSteps.step2 === 'running' ? <IconLoaderStyled stroke={2} /> : profileCreationSteps.step2 === 'finished' ? <IconCheck stroke={2} /> : <IconSquaredStyledFullyTransparent />}
+            <TextMaxLine line={1} sx={{ textAlign:'right', width:'100%', opacity: profileCreationSteps.step2 === 'idle' ? 0.3 : 1 }}>Storing your data on blockchain</TextMaxLine>
+          </BoxItem>
+          <BoxItem sx={{ mb: 4 }}>
+            {profileCreationSteps.step3 === 'running' ? <IconLoaderStyled stroke={2} /> : profileCreationSteps.step3 === 'finished' ? <IconCheck stroke={2} /> : <IconSquaredStyledFullyTransparent />}
+            <TextMaxLine line={1} sx={{ textAlign:'right', width:'100%', opacity: profileCreationSteps.step3 === 'idle' ? 0.3 : 1 }}>Done!</TextMaxLine>
+          </BoxItem>
+        </Stack>
+      </InnerBox>
+    </LoaderContainer>
+  );
+};
 
 export default LoaderDuringCreationProfile;

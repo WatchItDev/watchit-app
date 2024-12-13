@@ -112,6 +112,7 @@
     "remark-gfm": "^3.0.1",
     "simplebar-react": "^3.2.4",
     "slick-carousel": "^1.8.1",
+    "styled-components": "^6.1.13",
     "stylis": "^4.3.0",
     "stylis-plugin-rtl": "^2.0.2",
     "swr": "^2.2.0",
