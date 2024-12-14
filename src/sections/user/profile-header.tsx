@@ -424,7 +424,7 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
 
                 {isAuthorized && !authorizedLoading && profile?.id !== sessionData?.profile?.id && (
                   <LoadingButton
-                    title={hasAccess ? 'Joined!' : 'Join'}
+                    title={hasAccess ? 'Joined' : 'Join'}
                     variant={hasAccess ? 'outlined' : 'contained'}
                     sx={{
                       minWidth: 120,
@@ -434,7 +434,7 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
                     disabled={accessLoading || hasAccess || accessFetchingLoading}
                     loading={accessLoading || accessFetchingLoading}
                   >
-                    {hasAccess ? 'Joined!' : 'Join'}
+                    {hasAccess ? 'Joined' : 'Join'}
                   </LoadingButton>
                 )}
 

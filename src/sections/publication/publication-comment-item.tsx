@@ -62,16 +62,18 @@ type Props = {
 export default function PublicationCommentItem({ comment, hasReply, canReply }: Props) {
   const [openConfirmModal, setOpenConfirmModal] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const openMenu = Boolean(anchorEl);
-  const router = useRouter();
   const { execute: toggle, loading: loadingLike } = useReactionToggle();
+  const router = useRouter();
+  const dispatch = useDispatch();
+  const openMenu = Boolean(anchorEl);
+
   const [hasLiked, setHasLiked] = useState(
     hasReacted({ publication: comment, reaction: PublicationReactionType.Upvote })
   );
+  
   const { execute: hide } = useHidePublication();
   const [showComments, setShowComments] = useState(false);
   const { data: sessionData }: ReadResult<ProfileSession> = useSession();
-  const dispatch = useDispatch();
   const { sendNotification } = useNotifications();
   const { generatePayload } = useNotificationPayload(sessionData);
 
