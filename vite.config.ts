@@ -21,7 +21,8 @@ export default defineConfig(({ mode }) => {
       }),
       nodePolyfills({
         // To add only specific polyfills, add them here. If no option is passed, adds all polyfills
-        protocolImports: true,
+        // protocolImports: true,
+        include: ['process', "module", "buffer"],
         globals: { global: true, process: true, Buffer: true },
       }),
     ],
@@ -33,7 +34,10 @@ export default defineConfig(({ mode }) => {
         '@redux': path.resolve(__dirname, 'src/redux'),
         'enc-utils': path.resolve(__dirname, 'src/fixes/enc-utils.js'),
         'bip39': path.resolve(__dirname, 'src/fixes/bip39.js'),
-        'crypto': 'crypto-browserify'
+        // 'crypto': 'crypto-browserify',
+        'stream': 'readable-stream',
+        'os': 'os-browserify/browser',
+        'path': 'path-browserify',
       },
     },
     define: {
