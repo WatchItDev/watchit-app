@@ -1,4 +1,5 @@
 import * as Yup from 'yup';
+import uuidv4 from '@src/utils/uuidv4.ts';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Stack, CircularProgress } from '@mui/material';
@@ -20,17 +21,16 @@ import Iconify from '@src/components/iconify';
 // @ts-ignore
 import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
 import { uploadMetadataToIPFS } from '@src/utils/ipfs';
-import uuidv4 from '@src/utils/uuidv4.ts';
 import { useDispatch } from 'react-redux';
 import { refetchCommentsByPublication } from '@redux/comments';
 import { useNotifications } from "@src/hooks/use-notifications.ts";
 import { useNotificationPayload } from '@src/hooks/use-notification-payload.ts';
+import { useWeb3Auth } from '@src/hooks/use-web3-auth';
 
-
-import { ethers } from "ethers";
 import { WebUploader } from "@irys/web-upload";
 import { WebEthereum } from "@irys/web-upload-ethereum";
-import { EthersV6Adapter } from "@irys/web-upload-ethereum-ethers-v6";
+import { ViemV2Adapter } from "@irys/web-upload-ethereum-viem-v2";
+import { publicClient2, createClient } from '@src/clients/viem/publicClient.ts';
 
 // Define the props types
 type MovieCommentFormProps = {
@@ -73,6 +73,7 @@ const MovieCommentForm = ({ commentOn, owner, root }: MovieCommentFormProps) => 
   } = methods;
 
   const dispatch = useDispatch();
+  const { web3Auth: w3 } = useWeb3Auth();
   const { execute: createComment, error, loading } = useCreateComment();
   const { data: sessionData }: ReadResult<ProfileSession> = useSession();
   const { sendNotification } = useNotifications();
@@ -110,15 +111,20 @@ const MovieCommentForm = ({ commentOn, owner, root }: MovieCommentFormProps) => 
     }
 
     const connectIrys = async () => {
+      const publicClient = publicClient2(w3.provider)
+      const adapter = ViemV2Adapter(createClient(w3.provider), { publicClient })
+      return await WebUploader(WebEthereum).withAdapter(adapter);
 
-      const provider = new ethers.BrowserProvider(window.ethereum);
-      const irysUploader = await WebUploader(WebEthereum).withAdapter(EthersV6Adapter(provider));
-      setIrysStatus(`Connected to Irys: ${irysUploader.address}`);
+      // setIrysStatus(`Connected to Irys: ${irysUploader.address}`);
 
     };
 
+    const uploader = await connectIrys();
+    const response =  await uploader.upload(JSON.stringify(metadata));
+    const uri = `ar://${response.id}`
+
     // Upload metadata to IPFS
-    const uri = await uploadMetadataToIPFS(metadata);
+    // const uri = await uploadMetadataToIPFS(metadata);
     // Create comment with retry logic
     const result: any = await createComment({
       commentOn: commentOn as any,

@@ -51,6 +51,7 @@
     "@irys/web-upload": "^0.0.14",
     "@irys/web-upload-ethereum": "^0.0.14",
     "@irys/web-upload-ethereum-ethers-v6": "^0.0.14",
+    "@irys/web-upload-ethereum-viem-v2": "^0.0.15",
     "@lens-protocol/api-bindings": "^0.12.3",
     "@lens-protocol/metadata": "^1.2.0",
     "@lens-protocol/react": "^2.3.2",
