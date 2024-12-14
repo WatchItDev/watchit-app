@@ -1,4 +1,5 @@
 import * as Yup from 'yup';
+import { useDispatch } from 'react-redux';
 import uuidv4 from '@src/utils/uuidv4.ts';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -20,8 +21,6 @@ import { alpha } from '@mui/material/styles';
 import Iconify from '@src/components/iconify';
 // @ts-ignore
 import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
-import { uploadMetadataToIPFS } from '@src/utils/ipfs';
-import { useDispatch } from 'react-redux';
 import { refetchCommentsByPublication } from '@redux/comments';
 import { useNotifications } from "@src/hooks/use-notifications.ts";
 import { useNotificationPayload } from '@src/hooks/use-notification-payload.ts';
@@ -120,7 +119,7 @@ const MovieCommentForm = ({ commentOn, owner, root }: MovieCommentFormProps) => 
     };
 
     const uploader = await connectIrys();
-    const response =  await uploader.upload(JSON.stringify(metadata));
+    const response =  await uploader.upload("hello");
     const uri = `ar://${response.id}`
 
     // Upload metadata to IPFS
