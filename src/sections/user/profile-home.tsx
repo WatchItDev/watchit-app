@@ -1,47 +1,63 @@
 import { useEffect, useRef, useState } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { ProfilePublicationItem } from './profile-publication-item';
-import IconButton from '@mui/material/IconButton';
+import Button from '@mui/material/Button';
 import { IconCaretDown, IconCaretUp } from '@tabler/icons-react';
+import { ProfilePublicationItem } from './profile-publication-item';
+import { useSelector } from 'react-redux';
+import { AnyPublication } from '@lens-protocol/api-bindings';
 
 interface ProfileHomeProps {
-  publications: any;
-  noPaddings?: boolean;
-  showAll?: boolean;
+  publications?: AnyPublication[]; // Array of publications
+  noPaddings?: boolean;           // Flag to remove container paddings
+  minItemWidth?: number;          // Min width per item
+  maxItemWidth?: number;          // Max width per item
+  initialRows?: number;           // Rows to show initially
+  rowsIncrement?: number;         // Rows to add each time "Show more" is clicked
+  maxHeight?: string | number;    // Max height for the parent container (e.g. '29rem', 400, etc.)
+  scrollable?: boolean;           // Whether the container is allowed to scroll or not
+  scrollOnShowMore?: boolean;     // Scroll down when user clicks "Show more"
 }
 
 export default function ProfileHome({
-  publications,
-  noPaddings = false,
-  showAll = false,
-}: ProfileHomeProps) {
+                                      publications = [],
+                                      noPaddings = false,
+                                      minItemWidth = 150,
+                                      maxItemWidth = 250,
+                                      initialRows = 2,
+                                      rowsIncrement = 2,
+                                      maxHeight = '31rem',
+                                      scrollable = true,
+                                      scrollOnShowMore = true,
+                                    }: ProfileHomeProps) {
   const parentRef = useRef<HTMLDivElement>(null);
-  const minItemWidth = 180;
-  const maxItemWidth = 250;
-  const gap = 10; // Space between items
-  const [itemsPerRow, setItemsPerRow] = useState(4); // Default items per row
-  const [rowsToShow, setRowsToShow] = useState(1);
-  const [allItemsShown, setAllItemsShown] = useState(false);
+  const minibarState = useSelector((state: any) => state.minibar.state);
 
-  const calculateItemsPerRow = (parentWidth: number) => {
-    let maxItems = Math.floor(parentWidth / minItemWidth);
-    let minItems = Math.floor(parentWidth / maxItemWidth);
-    let items = maxItems;
+  // Number of items to display per row
+  const [itemsPerRow, setItemsPerRow] = useState<number>(1);
+  // Current number of rows to display
+  const [rowsToShow, setRowsToShow] = useState<number>(initialRows);
 
-    while (items >= minItems) {
+  /**
+   * Calculates how many items can fit in a single row based on
+   * container width + minItemWidth / maxItemWidth constraints.
+   */
+  const calculateItemsPerRow = (parentWidth: number): number => {
+    const maxPossibleItems = Math.floor(parentWidth / minItemWidth);
+    const minPossibleItems = Math.floor(parentWidth / maxItemWidth);
+
+    for (let items = maxPossibleItems; items >= minPossibleItems; items--) {
       const itemWidth = parentWidth / items;
       if (itemWidth >= minItemWidth && itemWidth <= maxItemWidth) {
-        break;
+        return items;
       }
-      items--;
     }
-
-    if (items < 1) items = 1;
-
-    return items;
+    return 1; // Fallback
   };
 
+  /**
+   * Automatically update 'itemsPerRow' when container size changes.
+   */
   useEffect(() => {
     if (!parentRef.current) return;
 
@@ -54,43 +70,68 @@ export default function ProfileHome({
     });
 
     observer.observe(parentRef.current);
-
-    return () => {
-      observer.disconnect();
-    };
+    return () => observer.disconnect();
   }, [minItemWidth, maxItemWidth]);
 
+  /**
+   * Initial calculation on mount.
+   */
   useEffect(() => {
     if (parentRef.current) {
-      const parentWidth = parentRef.current.offsetWidth;
-      const items = calculateItemsPerRow(parentWidth);
+      const width = parentRef.current.offsetWidth;
+      const items = calculateItemsPerRow(width);
       setItemsPerRow(items);
     }
   }, [minItemWidth, maxItemWidth]);
 
-  // Filter publications to show
-  const displayedPublications = showAll
-    ? publications
-    : publications
-      ? publications.slice(0, 10)
-      : [];
+  /**
+   * Recalculate when minibarState changes (e.g., toggling the sidebar).
+   */
+  useEffect(() => {
+    if (parentRef.current) {
+      const width = parentRef.current.offsetWidth;
+      const items = calculateItemsPerRow(width);
+      setItemsPerRow(items);
+    }
+  }, [minibarState]);
 
+  /**
+   * Total number of items displayed at the current row count.
+   */
+  const totalVisibleItems = rowsToShow * itemsPerRow;
+  const publicationsToShow = publications.slice(0, totalVisibleItems);
+  const isShowingAll = publicationsToShow.length === publications.length;
+
+  /**
+   * "Show more / Show less" button handler.
+   */
   const handleShowMore = () => {
-    if (allItemsShown) {
-      setRowsToShow(1);
-      setAllItemsShown(false);
+    if (isShowingAll) {
+      // "Show less": revert to initial rows
+      setRowsToShow(initialRows);
     } else {
-      setRowsToShow((prevRows) => {
-        const newRows = prevRows + 1;
-        if (newRows * itemsPerRow >= displayedPublications.length) {
-          setAllItemsShown(true);
-        }
-        return newRows;
-      });
+      // "Show more": add rows
+      setRowsToShow((prev) => prev + rowsIncrement);
+
+      // Optional scroll-to-bottom after increment
+      if (scrollOnShowMore) {
+        requestAnimationFrame(() => {
+          if (parentRef.current) {
+            parentRef.current.scrollTo({
+              top: parentRef.current.scrollHeight,
+              behavior: 'smooth',
+            });
+          }
+        });
+      }
     }
   };
 
-  const publicationsToShow = displayedPublications.slice(0, rowsToShow * itemsPerRow);
+  const shouldShowButton =
+    publications.length > publicationsToShow.length || isShowingAll;
+
+  // Gap between items
+  const gap = 10;
 
   return (
     <>
@@ -104,6 +145,10 @@ export default function ProfileHome({
           justifyContent: 'flex-start',
           alignItems: 'flex-start',
           padding: noPaddings ? 0 : 2,
+          // Respect maxHeight & scrolling
+          maxHeight: scrollable ? maxHeight : 'auto',
+          overflowY: scrollable ? 'auto' : 'hidden',
+          overflowX: 'hidden',
         }}
       >
         {publicationsToShow.map((publication) => (
@@ -137,15 +182,25 @@ export default function ProfileHome({
           </Typography>
         )}
       </Box>
-      <Box>
-        {publicationsToShow.length < displayedPublications.length || allItemsShown ? (
-          <>
-            <IconButton onClick={handleShowMore} sx={{ mt: 2 }}>
-              {allItemsShown ? <IconCaretUp /> : <IconCaretDown />}
-            </IconButton>
-          </>
-        ) : null}
-      </Box>
+
+      {/* "Show more" / "Show less" button */}
+      {shouldShowButton && publications.length > totalVisibleItems && (
+        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
+          <Button onClick={handleShowMore} variant="outlined">
+            <IconCaretDown />
+            <Typography sx={{ ml: 1 }}>Show more</Typography>
+          </Button>
+        </Box>
+      )}
+
+      {shouldShowButton && isShowingAll && (
+        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
+          <Button onClick={handleShowMore} variant="outlined">
+            <IconCaretUp />
+            <Typography sx={{ ml: 1 }}>Show less</Typography>
+          </Button>
+        </Box>
+      )}
     </>
   );
 }

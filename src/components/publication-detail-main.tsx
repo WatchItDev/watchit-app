@@ -177,7 +177,7 @@ export default function PublicationDetailMain({
         padding: '10px',
         top: '80px',
         height: 'fit-content',
-        maxHeight: '100vh',
+        maxHeight: { xs: 'auto', md: '100vh' },
         flexShrink: 0,
       }}
     >
@@ -190,7 +190,7 @@ export default function PublicationDetailMain({
       >
         <CardContent
           sx={{
-            maxHeight: 'calc(100vh - 10rem)',
+            maxHeight: { xs: 'auto', md: 'calc(100vh - 10rem)' },
             overflowY: 'scroll',
             backgroundColor: '#1e1f22',
             padding: '0 !important',

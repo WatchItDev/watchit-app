@@ -66,7 +66,7 @@ const UserProfileView = ({ id }: any) => {
   if (loadingProfile || loadingPublications) return <LoadingScreen />;
 
   return (
-    <Container maxWidth={settings.themeStretch ? false : 'lg'}>
+    <Container maxWidth={settings.themeStretch ? false : 'lg'} sx={{ overflowX: 'hidden' }}>
       <ProfileHeader profile={profile as any}>
         <Tabs
           key={`tabs-${profile?.id}`}
@@ -90,7 +90,7 @@ const UserProfileView = ({ id }: any) => {
       </ProfileHeader>
 
       {currentTab === 'publications' && profile && (
-        <ProfileHome publications={publications} showAll={true} />
+        <ProfileHome publications={publications} noPaddings={true} scrollable={false} initialRows={3} rowsIncrement={2} />
       )}
       {currentTab === 'followers' && profile && (
         <ProfileFollowers profile={profile} onActionFinished={handleUpdateProfile} />

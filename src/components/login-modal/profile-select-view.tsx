@@ -95,7 +95,7 @@ export const ProfileSelectView: React.FC<ProfileSelectionProps> = ({
         }}
       />
       {profiles?.length > 0 ? (
-        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', maxHeight: 'calc(100% - 8rem)' }}>
           <Box
             sx={{
               display: 'flex',

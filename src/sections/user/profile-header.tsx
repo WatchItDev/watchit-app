@@ -209,7 +209,7 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
 
   const handleCopy = async () => {
     try {
-      await navigator.clipboard.writeText(urlToShare);
+      await navigator.clipboard.writeText(urlToShare.replace('profileId', 'profile/' + profile?.id));
       enqueueSnackbar('Link copied to clipboard!', { variant: 'success' })
     } catch (err) {
       enqueueSnackbar('Failed to copy link.', { variant: 'error' })

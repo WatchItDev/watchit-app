@@ -252,7 +252,7 @@ export default function PublicationDetailsView({ id }: Props) {
                 </Box>
               )}
 
-              <Box sx={{ mb: 8, p: '0 !important' }}>
+              <Box sx={{ mb: { xs: 2, md: 8 }, p: '0 !important' }}>
                 <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                   <Box
                     sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'end', mt: 3 }}

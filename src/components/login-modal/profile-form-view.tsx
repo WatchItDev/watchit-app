@@ -280,8 +280,19 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
   }, [sessionData, pendingMetadataUpdate, updateProfileMetadata]);
 
   return (
-    <Box sx={{ p: 2, overflow: 'hidden', overflowY: 'scroll', zIndex: '1000' }}>
-      <Typography variant="h6" sx={{ pb: 2 }}>
+    <Box sx={{ p: 2, overflow: 'hidden', overflowY: 'scroll', zIndex: '1000', maxHeight: '100%' }}>
+      <Typography
+        variant="h6"
+        sx={{
+          pb: 2,
+          position: 'sticky',
+          top: '-17px',
+          zIndex: 10,
+          background: '#212b36',
+          marginTop: '-17px',
+          paddingTop: '16px',
+        }}
+      >
         {mode === 'register' ? 'Create a new profile' : 'Update profile'}
       </Typography>
       {/* Hidden inputs for image uploads */}
@@ -550,7 +561,18 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
         />
 
         {/* Action Buttons */}
-        <Grid container spacing={2}>
+        <Grid
+          container
+          spacing={2}
+          sx={{
+            position: 'sticky',
+            bottom: '-17px',
+            background: '#212b36',
+            zIndex: 1,
+            paddingBottom: '16px',
+            marginBottom: '-17px',
+          }}
+        >
           <Grid item xs={12} sm={6}>
             <Button
               variant="outlined"
