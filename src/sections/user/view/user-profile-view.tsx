@@ -46,13 +46,13 @@ const UserProfileView = ({ id }: any) => {
 
   const { data: followers } = useProfileFollowers({
     // @ts-ignore
-    of: profile.id,
+    of: profile?.id,
   });
 
 
   const { data: following } = useProfileFollowing({
       // @ts-ignore
-      for: profile.id,
+      for: profile?.id,
     });
 
 
