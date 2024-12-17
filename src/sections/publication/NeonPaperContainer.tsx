@@ -18,7 +18,7 @@ const NeonPaperContainer = styled(Paper, {
   '--gradient-pos-x': '50%',
   '--gradient-pos-y': '50%',
   '--border-radius': '10px',
-  '--border-gap': '3px',
+  '--border-gap': '1px',
   width: '100%',
   position: 'relative',
   padding: 'var(--border-gap)',
@@ -34,7 +34,6 @@ const NeonPaperContainer = styled(Paper, {
     color: '#ffffff',
     borderRadius: 'var(--border-radius)',
     backgroundColor: `${COLORS.GRAY_LIGHT}`,
-    zIndex: 1,
     width: '100%',
   },
   '& .border, & .neon': {
@@ -67,25 +66,9 @@ ${colors?.join(', ') || '#1e87ff, #5c13c4, #ff0033, #ffda00, #64bc26, #1e87ff'}
 }));
 
 const NeonPaper: FC<NeonPaperProps> = ({ children, colors, animationSpeed }) => {
-  const handleMouseMove = (e) => {
-    const rect = e.target.getBoundingClientRect();
-    const x = ((e.clientX - rect.left) / rect.width) * 100;
-    const y = ((e.clientY - rect.top) / rect.height) * 100;
-
-    e.target.style.setProperty('--gradient-pos-x', `${x}%`);
-    e.target.style.setProperty('--gradient-pos-y', `${y}%`);
-  };
-
-  const handleMouseOut = (e) => {
-    e.target.style.setProperty('--gradient-pos-x', '50%');
-    e.target.style.setProperty('--gradient-pos-y', '50%');
-  };
-
   return (
     <NeonPaperContainer
       elevation={3}
-      onMouseMove={handleMouseMove}
-      onMouseOut={handleMouseOut}
       colors={colors}
       animationSpeed={animationSpeed}
     >

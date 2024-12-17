@@ -203,7 +203,7 @@ export default function PublicationDetailMain({
               alignItems: 'center',
               justifyContent: 'space-between',
               mb: 2,
-              zIndex: 1,
+              zIndex: 10,
               position: 'sticky',
               top: '0px',
               backgroundColor: '#1e1f22',
@@ -290,7 +290,7 @@ export default function PublicationDetailMain({
               display: 'flex',
               flexDirection: 'column',
               justifyContent: 'end',
-              zIndex: 1,
+              zIndex: 10,
               top: '2.5rem',
               backgroundColor: '#1e1f22',
             }}
@@ -351,7 +351,7 @@ export default function PublicationDetailMain({
               display: 'flex',
               flexDirection: 'column',
               justifyContent: 'end',
-              zIndex: 1,
+              zIndex: 10,
               backgroundColor: '#1e1f22',
             }}
           >
@@ -443,7 +443,7 @@ export default function PublicationDetailMain({
                   display: 'flex',
                   flexDirection: 'column',
                   pb: 2,
-                  zIndex: 1,
+                  zIndex: 10,
                   position: 'sticky',
                   top: '2rem',
                   backgroundColor: '#1e1f22',

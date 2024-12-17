@@ -63,6 +63,8 @@ type Props = {
 export default function PublicationCommentItem({ comment, hasReply, canReply }: Props) {
   const isPendingComment = comment?.uri
 
+  const ContentContainer = isPendingComment ? NeonPaperContainer : Paper;
+
   const [openConfirmModal, setOpenConfirmModal] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const openMenu = Boolean(anchorEl);
@@ -174,7 +176,8 @@ export default function PublicationCommentItem({ comment, hasReply, canReply }: 
                 minWidth: '30px',
                 position: 'absolute',
                 top: 5,
-                right: 5
+                right: 5,
+                zIndex: 1,
               }}
               onClick={(event) => setAnchorEl(event.currentTarget)}
             >
@@ -221,8 +224,8 @@ export default function PublicationCommentItem({ comment, hasReply, canReply }: 
             )}
           </Suspense>
 
-          <NeonPaperContainer
-            colors={['#1e87ff', '#5c13c4', '#ff0033', '#ffda00', '#64bc26', '#1e87ff']}
+          <ContentContainer
+            colors={['rgba(30,135,255,0.5)', 'rgba(92,19,196,0.5)', 'rgba(255,0,51,0.5)', 'rgba(255,218,0,0.5)', 'rgba(100,188,38,0.5)', 'rgba(30,135,255,0.5)']}
             animationSpeed={'2s'}
             sx={{
               p: 1.5,
@@ -240,14 +243,16 @@ export default function PublicationCommentItem({ comment, hasReply, canReply }: 
             >
               <Box sx={{ typography: 'subtitle2' }}>{comment?.by?.handle?.localName}</Box>
               <Box sx={{ typography: 'caption', color: 'text.disabled' }}>
-                {comment?.createdAt ? timeAgo(new Date(comment.createdAt)) : 'Just now'}
+                {
+                  isPendingComment ? 'Sending ...' : comment?.createdAt ? timeAgo(new Date(comment.createdAt)) : 'Just now'
+                }
               </Box>
             </Stack>
 
             <Box sx={{ typography: 'body2', color: 'text.secondary' }}>
               {comment?.metadata?.content}
             </Box>
-          </NeonPaperContainer>
+          </ContentContainer>
         </Stack>
 
             <Box sx={{ display: 'flex', pl: 7 }}>
@@ -300,7 +305,7 @@ export default function PublicationCommentItem({ comment, hasReply, canReply }: 
                     {showComments ? (
                       <IconMessageCircleFilled size={22} color="#FFFFFF" />
                     ) : (
-                      <IconMessageCircle size={22} color="#FFFFFF" />
+                      <IconMessageCircle size={22} color={isPendingComment ? 'rgba(255,255,255,0.5)': '#FFFFFF'} />
                     )}
                     <Typography
                       variant="body2"

@@ -141,41 +141,17 @@ const MovieCommentForm = ({ commentOn, owner, root }: MovieCommentFormProps) => 
       const pendingComment: AnyPublication = {
         // @ts-ignore
         id: uuid as string,
-        isHidden: false,
-        isHiddenByAuthor: false,
         // @ts-ignore
-        // Add metadata to the comment but replace the content with the original comment
         metadata: {
-          ...metadata,
           content: data.comment,
         },
         // @ts-ignore
         operations: {
           hasUpvoted: false
         },
-        status: 'pending',
+
         by: sessionData?.profile,
         createdAt: new Date().toISOString(),
-        __typename: 'Comment',
-        hashtagsMentioned: [],
-        profilesMentioned: [],
-        quoteOn: {
-          // @ts-ignore
-          __typename: 'CommentFields',
-          // @ts-ignore
-          id: commentOn,
-          createdAt: new Date().toISOString(),
-          // @ts-ignore
-          metadata,
-          by: sessionData?.profile,
-          stats: {
-            // @ts-ignore
-            totalAmountOfMirrors: 0,
-            totalAmountOfCollects: 0,
-            totalAmountOfComments: 0,
-            totalAmountOfUpvotes: 0,
-          },
-        },
       };
 
       // Validate metadata against the schema
