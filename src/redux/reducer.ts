@@ -5,6 +5,7 @@ import authReducer from '@redux/auth/index';
 import notificationsReducer from '@redux/notifications/index';
 import bookmarkReducer from '@redux/bookmark/index';
 import commentsReducer from '@redux/comments/index';
+import followersReducer from '@redux/followers/index';
 
 const appReducer = combineReducers({
   minibar: minibarReducer,
@@ -12,7 +13,8 @@ const appReducer = combineReducers({
   auth: authReducer,
   bookmark: bookmarkReducer,
   comments: commentsReducer,
-  notifications: notificationsReducer
+  notifications: notificationsReducer,
+  followers: followersReducer,
 });
 
 const rootReducer = (state: any, action: any) => {

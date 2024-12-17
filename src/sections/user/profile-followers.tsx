@@ -4,24 +4,21 @@ import Typography from '@mui/material/Typography';
 
 // LENS IMPORTS
 import { Profile } from '@lens-protocol/api-bindings';
-import { useProfileFollowers } from '@lens-protocol/react';
 
 // LOCAL IMPORTS
 import { UserItem } from '@src/components/user-item';
+import { useSelector } from 'react-redux';
 
 // ----------------------------------------------------------------------
 
 interface Props {
-  profile: Profile;
   onActionFinished?: () => void;
 }
 
 // ----------------------------------------------------------------------
 
-const ProfileFollowers = ({ profile, onActionFinished }: Props) => {
-  const { data: followers } = useProfileFollowers({
-    of: profile.id,
-  });
+const ProfileFollowers = ({ onActionFinished }: Props) => {
+  const followers: Profile[] = useSelector((state: any) => state.followers.followers);
 
   return (
     <Box
@@ -42,7 +39,7 @@ const ProfileFollowers = ({ profile, onActionFinished }: Props) => {
       }}
     >
       {followers?.length ? (
-        followers.map((follower, index) => (
+        followers.map((follower: any, index: any) => (
           <UserItem
             key={`follower-${index}`}
             profile={follower}

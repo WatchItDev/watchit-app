@@ -19,6 +19,7 @@ import { useLazyProfile } from '@lens-protocol/react';
 // REDUX IMPORTS
 import { openLoginModal } from '@redux/auth';
 import { useDispatch } from 'react-redux';
+import { removeFollowing, addFollowing } from '@redux/followers';
 
 // NOTIFICATIONS IMPORTS
 import { useSnackbar } from 'notistack';
@@ -90,6 +91,12 @@ const FollowUnfollowButton = ({ profileId, size = 'medium', followButtonMinWidth
         await result.value.waitForCompletion();
         handleUpdateProfile();
 
+        // Update the following list
+        if(action === unfollow) {
+          dispatch(removeFollowing(profileId));
+        }else{
+          dispatch(addFollowing(profile));
+        }
 
         // Send notification to the profile being followed
         const notificationPayload = generatePayload('FOLLOW', {

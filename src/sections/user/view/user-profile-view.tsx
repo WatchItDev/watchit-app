@@ -6,7 +6,7 @@ import Tabs, { tabsClasses } from '@mui/material/Tabs';
 
 // components
 import { useSettingsContext } from '@src/components/settings';
-import { useLazyProfile } from '@lens-protocol/react';
+import {useLazyProfile, useProfileFollowers, useProfileFollowing} from '@lens-protocol/react';
 import { appId, ProfileId, PublicationType, usePublications } from '@lens-protocol/react-web';
 import ProfileHome from '../profile-home';
 import ProfileFollowers from '../profile-followers';
@@ -14,6 +14,12 @@ import ProfileFollowing from '../profile-following';
 import ProfileHeader from '../profile-header';
 import Label from '../../../components/label';
 import { LoadingScreen } from '@src/components/loading-screen';
+
+// redux
+import { useSelector, useDispatch } from 'react-redux';
+// @ts-ignore
+import { RootState } from '@src/redux/store';
+import {setFollowers, setFollowings} from "@redux/followers";
 
 // ----------------------------------------------------------------------
 
@@ -26,6 +32,7 @@ const TABS = [
 // ----------------------------------------------------------------------
 
 const UserProfileView = ({ id }: any) => {
+  const dispatch = useDispatch();
   const settings = useSettingsContext();
   const [currentTab, setCurrentTab] = useState('publications');
   const { called, data: profile, loading: loadingProfile, execute } = useLazyProfile();
@@ -37,16 +44,46 @@ const UserProfileView = ({ id }: any) => {
     },
   });
 
-  useEffect(() => {
+  const { data: followers } = useProfileFollowers({
+    // @ts-ignore
+    of: profile.id,
+  });
+
+
+  const { data: following } = useProfileFollowing({
+      // @ts-ignore
+      for: profile.id,
+    });
+
+
+    useEffect(() => {
     (async () => {
       if (id !== profile?.id || !called) await execute({ forProfileId: id as ProfileId });
     })();
   }, [profile?.id, id]);
 
+
+
+  useEffect(() => {
+    if (profile) {
+      dispatch(setFollowers(followers ?? []));
+    }
+  }, [profile, followers, dispatch]);
+
+  useEffect(() => {
+    if (profile) {
+      dispatch(setFollowings(following ?? []));
+    }
+  }, [profile, following, dispatch]);
+
+
+  const followersStore = useSelector((state: RootState) => state.followers.followers);
+  const followingsStore = useSelector((state: RootState) => state.followers.followings);
+
   const counts: any = {
     publications: publications?.length ?? 0,
-    followers: profile?.stats?.followers ?? 0,
-    following: profile?.stats?.following ?? 0,
+    followers: followersStore.length ?? 0,
+    following: followingsStore.length ?? 0,
   };
 
   const handleChangeTab = (_event: any, newValue: any) => {
@@ -93,9 +130,9 @@ const UserProfileView = ({ id }: any) => {
         <ProfileHome publications={publications} noPaddings={true} scrollable={false} initialRows={3} rowsIncrement={2} />
       )}
       {currentTab === 'followers' && profile && (
-        <ProfileFollowers profile={profile} onActionFinished={handleUpdateProfile} />
+        <ProfileFollowers onActionFinished={handleUpdateProfile} />
       )}
-      {currentTab === 'following' && profile && <ProfileFollowing profile={profile} />}
+      {currentTab === 'following' && profile && <ProfileFollowing />}
     </Container>
   );
 };

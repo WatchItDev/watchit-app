@@ -8,19 +8,12 @@ import { useProfileFollowing } from '@lens-protocol/react';
 
 // LOCAL IMPORTS
 import { UserItem } from '@src/components/user-item';
+import {useSelector} from "react-redux";
 
 // ----------------------------------------------------------------------
 
-interface Props {
-  profile: Profile;
-}
-
-// ----------------------------------------------------------------------
-
-const ProfileFollowing = ({ profile }: Props) => {
-  const { data: following } = useProfileFollowing({
-    for: profile.id,
-  });
+const ProfileFollowing = () => {
+  const following: Profile[] = useSelector((state: any) => state.followers.followings);
 
   return (
     <Box
