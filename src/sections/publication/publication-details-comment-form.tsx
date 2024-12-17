@@ -22,7 +22,12 @@ import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/r
 import { uploadMetadataToIPFS, verifyIpfsData } from '@src/utils/ipfs';
 import uuidv4 from '@src/utils/uuidv4.ts';
 import { useDispatch } from 'react-redux';
-import {refetchCommentsByPublication, addPendingComment, updateCommentStatus} from '@redux/comments';
+import {
+  refetchCommentsByPublication,
+  addPendingComment,
+  updateCommentStatus,
+  removePendingComment
+} from '@redux/comments';
 import {useNotifications} from "@src/hooks/use-notifications.ts";
 import { useNotificationPayload } from '@src/hooks/use-notification-payload.ts';
 import {AnyPublication} from "@lens-protocol/api-bindings";
@@ -107,6 +112,7 @@ const MovieCommentForm = ({ commentOn, owner, root }: MovieCommentFormProps) => 
    */
   const onSubmit = handleSubmit(async (data) => {
     try {
+      // HAbilitar el efecto en el comentario
       const uuid = uuidv4();
 
       const metadata = textOnly({
@@ -172,10 +178,6 @@ const MovieCommentForm = ({ commentOn, owner, root }: MovieCommentFormProps) => 
         },
       };
 
-      reset(); // Reset the form
-      // Dispatch the addPendingComment action
-      dispatch(addPendingComment({ publicationId: commentOn, comment: pendingComment }));
-
       // Validate metadata against the schema
       const validation = PublicationMetadataSchema.safeParse(metadata);
       if (!validation.success) {
@@ -186,7 +188,15 @@ const MovieCommentForm = ({ commentOn, owner, root }: MovieCommentFormProps) => 
       // Upload metadata to IPFS
       const uri = await uploadMetadataToIPFS(metadata);
 
-      // Verify availability of metadata on IPFS
+      // Send to redux the pending comment
+      // Dispatch the addPendingComment action
+      dispatch(addPendingComment({ publicationId: commentOn, comment: {...pendingComment, uri}}));
+      // Reset
+      reset(); // Reset the form
+      // Verify availability of metadata on IPFS / Retries
+
+      // Eliminar el efecto
+
       await verifyIpfsData(uri);
 
       // Create comment with retry logic
@@ -195,7 +205,7 @@ const MovieCommentForm = ({ commentOn, owner, root }: MovieCommentFormProps) => 
         metadata: uri,
       }).then(() => {
         // Update the comment status to confirmed
-        dispatch(updateCommentStatus({ publicationId: commentOn, commentId: pendingComment.id, status: 'confirmed' }));
+        dispatch(removePendingComment({ publicationId: commentOn, commentId: pendingComment.id}));
         // Send notifications to the author of the publication
         const notificationPayload = generatePayload('COMMENT', {
           id: owner?.id,

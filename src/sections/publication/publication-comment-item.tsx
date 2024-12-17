@@ -42,6 +42,7 @@ import {
   decrementCounterLikes,
   setCounterLikes,
 } from '@redux/comments';
+import NeonPaperContainer from "@src/sections/publication/NeonPaperContainer.tsx";
 
 // Components Lazy
 const LazyPopover = lazy(() => import('@mui/material/Popover'));
@@ -60,6 +61,8 @@ type Props = {
 };
 
 export default function PublicationCommentItem({ comment, hasReply, canReply }: Props) {
+  const isPendingComment = comment?.uri
+
   const [openConfirmModal, setOpenConfirmModal] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const openMenu = Boolean(anchorEl);
@@ -161,7 +164,7 @@ export default function PublicationCommentItem({ comment, hasReply, canReply }: 
             }}
           />
 
-          {sessionData?.authenticated && comment?.by?.id === sessionData?.profile?.id && (
+          {sessionData?.authenticated && comment?.by?.id === sessionData?.profile?.id && !isPendingComment && (
             <Button
               variant="text"
               sx={{
@@ -218,7 +221,9 @@ export default function PublicationCommentItem({ comment, hasReply, canReply }: 
             )}
           </Suspense>
 
-          <Paper
+          <NeonPaperContainer
+            colors={['#1e87ff', '#5c13c4', '#ff0033', '#ffda00', '#64bc26', '#1e87ff']}
+            animationSpeed={'2s'}
             sx={{
               p: 1.5,
               pt: 0.7,
@@ -242,73 +247,77 @@ export default function PublicationCommentItem({ comment, hasReply, canReply }: 
             <Box sx={{ typography: 'body2', color: 'text.secondary' }}>
               {comment?.metadata?.content}
             </Box>
-          </Paper>
+          </NeonPaperContainer>
         </Stack>
-        <Box sx={{ display: 'flex', pl: 7 }}>
-          <Button
-            variant="text"
-            sx={{
-              borderColor: '#FFFFFF',
-              color: '#FFFFFF',
-              height: '30px',
-              minWidth: '40px',
-            }}
-            onClick={toggleReaction}
-            disabled={loadingLike}
-          >
-            {loadingLike ? (
-              <CircularProgress size="25px" sx={{ color: '#fff' }} />
-            ) : (
-              <>
-                {hasLiked ? (
-                  <IconHeartFilled size={22} color="#FFFFFF" />
+
+            <Box sx={{ display: 'flex', pl: 7 }}>
+              <Button
+                variant="text"
+                sx={{
+                  borderColor: '#FFFFFF',
+                  color: '#FFFFFF',
+                  height: '30px',
+                  minWidth: '40px',
+                }}
+                onClick={toggleReaction}
+                disabled={loadingLike || isPendingComment}
+              >
+                {loadingLike ? (
+                  <CircularProgress size="25px" sx={{ color: '#fff' }} />
                 ) : (
-                  <IconHeart size={22} color="#FFFFFF" />
+                  <>
+                    {hasLiked ? (
+                      <IconHeartFilled size={22} color="#FFFFFF" />
+                    ) : (
+                      <IconHeart size={22} color="#FFFFFF" />
+                    )}
+                    <Typography
+                      variant="body2"
+                      sx={{
+                        lineHeight: 1,
+                        ml: 1,
+                        fontWeight: '700',
+                      }}
+                    >
+                      {likes}
+                    </Typography>
+                  </>
                 )}
-                <Typography
-                  variant="body2"
+              </Button>
+              {canReply && (
+                <Button
+                  disabled={isPendingComment }
+                  variant="text"
                   sx={{
-                    lineHeight: 1,
-                    ml: 1,
-                    fontWeight: '700',
+                    borderColor: '#FFFFFF',
+                    color: '#FFFFFF',
+                    height: '30px',
+                    minWidth: '40px',
                   }}
+                  onClick={() => setShowComments(!showComments)}
                 >
-                  {likes}
-                </Typography>
-              </>
-            )}
-          </Button>
-          {canReply && (
-            <Button
-              variant="text"
-              sx={{
-                borderColor: '#FFFFFF',
-                color: '#FFFFFF',
-                height: '30px',
-                minWidth: '40px',
-              }}
-              onClick={() => setShowComments(!showComments)}
-            >
-              <>
-                {showComments ? (
-                  <IconMessageCircleFilled size={22} color="#FFFFFF" />
-                ) : (
-                  <IconMessageCircle size={22} color="#FFFFFF" />
-                )}
-                <Typography
-                  variant="body2"
-                  sx={{
-                    lineHeight: 1,
-                    ml: 1,
-                    fontWeight: '700',
-                  }}
-                >
-                  {comment?.stats?.comments}
-                </Typography>
-              </>
-            </Button>
-          )}
-        </Box>
+                  <>
+                    {showComments ? (
+                      <IconMessageCircleFilled size={22} color="#FFFFFF" />
+                    ) : (
+                      <IconMessageCircle size={22} color="#FFFFFF" />
+                    )}
+                    <Typography
+                      variant="body2"
+                      sx={{
+                        lineHeight: 1,
+                        ml: 1,
+                        fontWeight: '700',
+                      }}
+                    >
+                      {comment?.stats?.comments}
+                    </Typography>
+                  </>
+                </Button>
+              )}
+            </Box>
+
+
       </Stack>
       {showComments && (
         <>
