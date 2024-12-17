@@ -274,7 +274,7 @@ export default function PublicationCommentItem({ comment, hasReply, canReply }: 
                     {hasLiked ? (
                       <IconHeartFilled size={22} color="#FFFFFF" />
                     ) : (
-                      <IconHeart size={22} color="#FFFFFF" />
+                      <IconHeart size={22}  color={isPendingComment ? 'rgba(255,255,255,0.5)': '#FFFFFF'} />
                     )}
                     <Typography
                       variant="body2"
