@@ -25,7 +25,6 @@ import { useDispatch } from 'react-redux';
 import {
   refetchCommentsByPublication,
   addPendingComment,
-  updateCommentStatus,
   removePendingComment
 } from '@redux/comments';
 import {useNotifications} from "@src/hooks/use-notifications.ts";
