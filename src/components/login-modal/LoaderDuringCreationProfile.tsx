@@ -1,4 +1,4 @@
-import { Box } from "@mui/system";
+import { Box, BoxProps } from "@mui/system";
 import { WatchitLoader } from "@src/components/watchit-loader";
 import { useSelector } from 'react-redux';
 import { COLORS } from "@src/layouts/config-layout.ts";
@@ -6,6 +6,10 @@ import Stack from "@mui/material/Stack";
 import TextMaxLine from "@src/components/text-max-line";
 import { IconCheck, IconLoader, IconSquare } from "@tabler/icons-react";
 import { styled, keyframes } from '@mui/material/styles';
+
+interface LoaderContainerProps extends BoxProps {
+  show: boolean;
+}
 
 const spin = keyframes`
   0% {
@@ -24,7 +28,7 @@ const IconSquaredStyledFullyTransparent = styled(IconSquare)`
   opacity: 0;
 `;
 
-const LoaderContainer = styled(Box)`
+const LoaderContainer = styled(Box)<LoaderContainerProps>`
   display: ${({ show }) => (show ? 'flex' : 'none')};
   position: fixed;
   width: 100%;
