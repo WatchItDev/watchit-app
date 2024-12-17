@@ -22,9 +22,10 @@ import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/r
 import { uploadMetadataToIPFS, verifyIpfsData } from '@src/utils/ipfs';
 import uuidv4 from '@src/utils/uuidv4.ts';
 import { useDispatch } from 'react-redux';
-import { refetchCommentsByPublication } from '@redux/comments';
+import {refetchCommentsByPublication, addPendingComment, updateCommentStatus} from '@redux/comments';
 import {useNotifications} from "@src/hooks/use-notifications.ts";
 import { useNotificationPayload } from '@src/hooks/use-notification-payload.ts';
+import {AnyPublication} from "@lens-protocol/api-bindings";
 
 // Define the props types
 type MovieCommentFormProps = {
@@ -106,9 +107,11 @@ const MovieCommentForm = ({ commentOn, owner, root }: MovieCommentFormProps) => 
    */
   const onSubmit = handleSubmit(async (data) => {
     try {
+      const uuid = uuidv4();
+
       const metadata = textOnly({
         appId: 'watchit',
-        id: uuidv4(),
+        id: uuid,
         attributes: [
           { type: MetadataAttributeType.STRING, key: 'publication', value: commentOn },
           { type: MetadataAttributeType.STRING, key: 'creator', value: sessionData?.profile?.handle?.localName },
@@ -124,9 +127,54 @@ const MovieCommentForm = ({ commentOn, owner, root }: MovieCommentFormProps) => 
             { display_type: MarketplaceMetadataAttributeDisplayType.STRING, value: 'watchit' },
           ],
           description: data.comment,
-          external_url: `https://watchit.movie/comment/${uuidv4()}`,
+          external_url: `https://watchit.movie/comment/${uuid}`,
         }
       });
+
+      // Create a pending comment object
+      const pendingComment: AnyPublication = {
+        // @ts-ignore
+        id: uuid as string,
+        isHidden: false,
+        isHiddenByAuthor: false,
+        // @ts-ignore
+        // Add metadata to the comment but replace the content with the original comment
+        metadata: {
+          ...metadata,
+          content: data.comment,
+        },
+        // @ts-ignore
+        operations: {
+          hasUpvoted: false
+        },
+        status: 'pending',
+        by: sessionData?.profile,
+        createdAt: new Date().toISOString(),
+        __typename: 'Comment',
+        hashtagsMentioned: [],
+        profilesMentioned: [],
+        quoteOn: {
+          // @ts-ignore
+          __typename: 'CommentFields',
+          // @ts-ignore
+          id: commentOn,
+          createdAt: new Date().toISOString(),
+          // @ts-ignore
+          metadata,
+          by: sessionData?.profile,
+          stats: {
+            // @ts-ignore
+            totalAmountOfMirrors: 0,
+            totalAmountOfCollects: 0,
+            totalAmountOfComments: 0,
+            totalAmountOfUpvotes: 0,
+          },
+        },
+      };
+
+      reset(); // Reset the form
+      // Dispatch the addPendingComment action
+      dispatch(addPendingComment({ publicationId: commentOn, comment: pendingComment }));
 
       // Validate metadata against the schema
       const validation = PublicationMetadataSchema.safeParse(metadata);
@@ -146,6 +194,8 @@ const MovieCommentForm = ({ commentOn, owner, root }: MovieCommentFormProps) => 
         commentOn: commentOn as any,
         metadata: uri,
       }).then(() => {
+        // Update the comment status to confirmed
+        dispatch(updateCommentStatus({ publicationId: commentOn, commentId: pendingComment.id, status: 'confirmed' }));
         // Send notifications to the author of the publication
         const notificationPayload = generatePayload('COMMENT', {
           id: owner?.id,
