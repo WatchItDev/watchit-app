@@ -21,6 +21,7 @@ import {
   PublicationType,
   usePublications,
 } from '@lens-protocol/react-web';
+import { development, LensClient } from '@lens-protocol/client';
 
 // VIEM IMPORTS
 import { Address } from 'viem';
@@ -33,7 +34,7 @@ import ProfileCover from './profile-cover';
 import Iconify from '@src/components/iconify';
 import { truncateAddress } from '@src/utils/wallet';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
-import { UpdateModal } from '../../components/update-modal';
+import { UpdateModal } from '@src/components/update-modal';
 import { useHasAccess } from '@src/hooks/use-has-access.ts';
 import { CopyableText } from '@src/components/copyable-text/index.ts';
 import { ReportProfileModal } from '@src/components/report-profile-modal.tsx';
@@ -219,6 +220,27 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
 
     if (!hasAccess) setOpenSubscribeModal(true);
   };
+  const client = new LensClient({
+    environment: development,
+  });
+
+  const handleHideUnhideProfile = async () => {
+   await client.wallet.hideManagedProfile({
+      profileId: sessionData?.profile?.id,
+    }).then(() => {
+      console.log('Profile hidden');
+   });
+  }
+
+  useEffect(() => {
+    ( async () => {
+      console.log('SESSION', sessionData);
+      const profiles = await client.wallet.profilesManaged({
+        for: sessionData?.address,
+      });
+      console.log(profiles);
+    })()
+  }, [sessionData?.profile?.id]);
 
   return (
     <>
@@ -650,6 +672,15 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
                     </Stack>
                   </Stack>
                 </Popover>
+
+                <Button
+                  size="medium"
+                  variant="outlined"
+                  sx={{ p: 1, minWidth: '44px' }}
+                  onClick={handleHideUnhideProfile}
+                >
+                  <Iconify icon="ion:eye" width={20} />
+                </Button>
               </Stack>
             </Stack>
           </Stack>
