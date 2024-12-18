@@ -57,12 +57,9 @@ export default function AccountPopover() {
   }, [loading]);
 
   useEffect(() => {
-    if(!loading ){
-      console.log('loading', loading)
-      console.log('sessionData', sessionData)
-      dispatch(setSession({ session: sessionData }))
-    }
-  }, [sessionData, loading]);
+    console.log('sessionData', sessionData)
+    dispatch(setSession({ session: sessionData }))
+  }, [JSON.stringify(sessionData)]);
 
   useEffect(() => {
     popover.onClose();
