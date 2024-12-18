@@ -218,9 +218,6 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
    */
   const registerProfile = useCallback(
     async (data: ProfileData) => {
-      setPendingMetadataUpdate({ data });
-      return;
-
       if (!address) {
         console.error('Wallet address not available.');
         return;
