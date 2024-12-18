@@ -30,6 +30,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import {closeLoginModal, openLoginModal, setAuthLoading, setBalance, setSession} from '@redux/auth';
 import { CircularProgress } from '@mui/material';
 import { useWeb3Auth } from '@src/hooks/use-web3-auth.ts';
+import NeonPaper from "@src/sections/publication/NeonPaperContainer.tsx";
 
 // ----------------------------------------------------------------------
 
@@ -99,10 +100,26 @@ export default function AccountPopover() {
     return <CircularProgress size={24} sx={{ color: '#fff' }} />;
   }
 
+  const metadataIsPending = true;
+
+  const EffectPaper = metadataIsPending ? NeonPaper : Box;
+  // Generate an array of colors with rainbow pattern, add 50% opacity to each color
+
+  const rainbowColors = [
+    "rgba(255, 0, 0, 0.5)",    // Red
+    "rgba(255, 127, 0, 0.5)",  // Orange
+    "rgba(255, 255, 0, 0.5)",  // Yellow
+    "rgba(0, 255, 0, 0.5)",    // Green
+    "rgba(0, 0, 255, 0.5)",    // Blue
+    "rgba(75, 0, 130, 0.5)",   // Indigo
+    "rgba(143, 0, 255, 0.5)"   // Violet
+  ];
+
   return (
     <>
-      <Box sx={{ display: 'flex' }} onClick={popover.onOpen}>
+      <Box sx={{ display: 'flex', alignItems: 'center' }} onClick={popover.onOpen}>
         {sessionData?.authenticated ? (
+          <EffectPaper colors={rainbowColors} padding={'0'} borderRadius={'999999px'}>
           <IconButton
             component={m.button}
             whileTap="tap"
@@ -131,6 +148,7 @@ export default function AccountPopover() {
               }}
             />
           </IconButton>
+          </EffectPaper>
         ) : (
           <></>
         )}
