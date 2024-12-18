@@ -7,6 +7,7 @@ import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 import { ProfileSession, useSession } from '@lens-protocol/react-web';
 // @ts-ignore
 import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
+import {useSelector} from "react-redux";
 
 interface HasAccessError {
   message: string;
@@ -31,7 +32,7 @@ export const useIsPolicyAuthorized = (
   policy: Address,
   holder?: Address
 ): UseIsPolicyAuthorizedHook => {
-  const { data: sessionData }: ReadResult<ProfileSession> = useSession();
+  const sessionData = useSelector((state: any) => state.auth.session);
   const userAddress = sessionData?.profile?.ownedBy?.address as Address | undefined;
 
   const [isAuthorized, setIsAuthorized] = useState<boolean | undefined>(undefined);

@@ -10,7 +10,7 @@ import RightsPolicyAuthorizerAbi from '@src/config/abi/RightsPolicyAuthorizer.js
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 // @ts-ignore
 import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
-import { ProfileSession, useSession } from '@lens-protocol/react-web';
+import {useSelector} from "react-redux";
 
 // ----------------------------------------------------------------------
 
@@ -41,7 +41,7 @@ export const useAuthorizePolicy = (): useAuthorizePolicyHook => {
   const [data, setData] = useState();
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<AuthorizeError | null>(null);
-  const { data: sessionData }: ReadResult<ProfileSession> = useSession();
+  const sessionData = useSelector((state: any) => state.auth.session);
   const { web3Auth } = useWeb3Auth();
 
   /**

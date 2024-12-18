@@ -2,7 +2,7 @@ import { useState } from 'react';
 import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
 // import Header from '@src/layouts/dashboard/header';
-import { ProfileSession, useCreatePost, useSession } from '@lens-protocol/react-web';
+import { useCreatePost } from '@lens-protocol/react-web';
 // import { MetadataAttributeType } from '@lens-protocol/metadata';
 import { createHelia } from 'helia';
 import { unixfs } from '@helia/unixfs';
@@ -14,6 +14,7 @@ import PublicationNewWizardSteps from './publication-new-wizard-steps.tsx';
 import { useSettingsContext } from '@src/components/settings';
 // @ts-ignore
 import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
+import {useSelector} from "react-redux";
 
 const steps = ['Movie Information', 'Media Assets & Technical Details', 'Distribution & Rights'];
 
@@ -21,7 +22,7 @@ export default function PublicationNewWizard() {
   const [activeStep, setActiveStep] = useState(0);
   const [formData, setFormData] = useState<any>({});
   const settings = useSettingsContext();
-  const { data: sessionData }: ReadResult<ProfileSession> = useSession();
+  const sessionData = useSelector((state: any) => state.auth.session);
   const { execute: createPost } = useCreatePost();
 
   const handleNext = () => {

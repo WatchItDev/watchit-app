@@ -3,7 +3,7 @@ import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Stack, CircularProgress } from '@mui/material';
 import LoadingButton from '@mui/lab/LoadingButton';
-import { ProfileSession, useCreateComment, useSession } from '@lens-protocol/react-web';
+import { useCreateComment } from '@lens-protocol/react-web';
 import {
   textOnly,
   PublicationMetadataSchema,
@@ -21,7 +21,7 @@ import Iconify from '@src/components/iconify';
 import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
 import { uploadMetadataToIPFS, verifyIpfsData } from '@src/utils/ipfs';
 import uuidv4 from '@src/utils/uuidv4.ts';
-import { useDispatch } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {
   refetchCommentsByPublication,
   addPendingComment,
@@ -72,7 +72,7 @@ const MovieCommentForm = ({ commentOn, owner, root }: MovieCommentFormProps) => 
   } = methods;
 
   const { execute: createComment } = useCreateComment();
-  const { data: sessionData }: ReadResult<ProfileSession> = useSession();
+  const sessionData = useSelector((state: any) => state.auth.session);
   const dispatch = useDispatch();
   const { sendNotification } = useNotifications();
   const { generatePayload } = useNotificationPayload(sessionData);

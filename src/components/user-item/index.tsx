@@ -8,7 +8,6 @@ import ListItemText from '@mui/material/ListItemText';
 
 // LENS IMPORTS
 import { Profile } from '@lens-protocol/api-bindings';
-import { ProfileSession, useSession } from '@lens-protocol/react-web';
 // @ts-ignore
 import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
 
@@ -17,6 +16,7 @@ import Image from '../image';
 import { paths } from '../../routes/paths';
 import { useRouter } from '@src/routes/hooks';
 import FollowUnfollowButton from '@src/components/follow-unfollow-button.tsx';
+import {useSelector} from "react-redux";
 
 // ----------------------------------------------------------------------
 
@@ -38,7 +38,7 @@ export const UserItem = ({
   onClick,
   canFollow = true,
 }: FollowerItemProps) => {
-  const { data: sessionData }: ReadResult<ProfileSession> = useSession();
+  const sessionData = useSelector((state: any) => state.auth.session);
   const router = useRouter();
 
   const goToProfile = () => {

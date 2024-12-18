@@ -18,10 +18,8 @@ import CircularProgress from '@mui/material/CircularProgress';
 // LENS IMPORTS
 import {
   appId,
-  ProfileSession,
   PublicationType,
   usePublications,
-  useSession,
 } from '@lens-protocol/react-web';
 
 // VIEM IMPORTS
@@ -49,7 +47,7 @@ import { randomColors } from '@src/components/poster/variants/poster-latest-cont
 import { OpenableText } from '@src/components/openable-text/index.ts';
 import { useGetAttestation } from '@src/hooks/use-get-attestation.ts';
 import { openLoginModal } from '@redux/auth';
-import { useDispatch } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import { useSnackbar } from 'notistack';
 
 // ----------------------------------------------------------------------
@@ -112,7 +110,7 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
   const [openTooltipSettings, setOpenTooltipSettings] = useState(false);
 
   const theme = useTheme();
-  const { data: sessionData }: ReadResult<ProfileSession> = useSession();
+  const sessionData = useSelector((state: any) => state.auth.session);
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const [menuAnchorEl, setMenuAnchorEl] = useState<HTMLButtonElement | null>(null);
   const [openReportModal, setOpenReportModal] = useState(false);

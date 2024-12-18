@@ -8,6 +8,7 @@ import SubscriptionPolicyAbi from '@src/config/abi/SubscriptionPolicy.json';
 import { ProfileSession, useSession } from '@lens-protocol/react-web';
 // @ts-ignore
 import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
+import {useSelector} from "react-redux";
 
 interface AttestationError {
   message: string;
@@ -30,7 +31,7 @@ interface UseGetAttestationHook {
  * @returns An object containing the attestation data, loading state, error, and a refetch function.
  */
 export function useGetAttestation(recipient: Address, holder?: Address): UseGetAttestationHook {
-  const { data: sessionData }: ReadResult<ProfileSession> = useSession();
+  const sessionData = useSelector((state: any) => state.auth.session);
   const userAddress = sessionData?.profile?.ownedBy?.address as Address | undefined;
 
   const [attestation, setAttestation] = useState<string | undefined>(undefined);

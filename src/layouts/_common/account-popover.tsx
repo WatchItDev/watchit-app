@@ -56,10 +56,11 @@ export default function AccountPopover() {
     dispatch(setAuthLoading({ isSessionLoading: loading }))
   }, [loading]);
 
+  const parsedSessionData = JSON.stringify(sessionData);
+
   useEffect(() => {
-    console.log('sessionData', sessionData)
     dispatch(setSession({ session: sessionData }))
-  }, [JSON.stringify(sessionData)]);
+  }, [parsedSessionData]);
 
   useEffect(() => {
     popover.onClose();

@@ -30,16 +30,14 @@ import PublicationDetailMain from '@src/components/publication-detail-main.tsx';
 import { useHasAccess } from '@src/hooks/use-has-access.ts';
 import { SubscribeProfileModal } from '@src/components/subscribe-profile-modal.tsx';
 import LoadingButton from '@mui/lab/LoadingButton';
-import { useDispatch } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import { openLoginModal } from '@redux/auth';
 // @ts-ignore
 import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
 import {
   appId,
-  ProfileSession,
   PublicationType,
   usePublications,
-  useSession,
 } from '@lens-protocol/react-web';
 
 const MAX_LINES = 5;
@@ -63,7 +61,7 @@ export default function PublicationDetailsView({ id }: Props) {
   // LOCAL HOOKS
   const theme = useTheme();
   // LENS HOOKS
-  const { data: sessionData }: ReadResult<ProfileSession> = useSession();
+  const sessionData = useSelector((state: any) => state.auth.session);
   const { data, loading }: any = usePublication({ forId: id as any });
   // CONSTANTS
   const variants = theme.direction === 'rtl' ? varFade().inLeft : varFade().inRight;

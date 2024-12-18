@@ -13,6 +13,7 @@ import { ProfileSelectView } from '@src/components/login-modal/profile-select-vi
 import { ProfileFormView } from '@src/components/login-modal/profile-form-view.tsx';
 import { WatchitLoader } from '../watchit-loader';
 import { useSnackbar } from 'notistack';
+import {useSelector} from "react-redux";
 
 // ----------------------------------------------------------------------
 
@@ -29,7 +30,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
   const [address, setAddress] = useState('');
 
   const { web3Auth: w3 } = useWeb3Auth();
-  const { data: sessionData } = useSession();
+  const sessionData = useSelector((state: any) => state.auth.session);
   const { execute: logoutExecute } = useLogout();
   const { execute: loginExecute, error } = useLogin();
   const { enqueueSnackbar } = useSnackbar();

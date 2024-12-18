@@ -14,7 +14,7 @@ import AgreementPortalAbi from '@src/config/abi/AgreementPortal.json';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 // @ts-ignore
 import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
-import { ProfileSession, useSession } from '@lens-protocol/react-web';
+import {useSelector} from "react-redux";
 
 // ----------------------------------------------------------------------
 
@@ -50,7 +50,7 @@ export const useSubscribe = (): UseSubscribeHook => {
   const [data, setData] = useState<SubscribeData>();
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<SubscribeError | null>(null);
-  const { data: sessionData }: ReadResult<ProfileSession> = useSession();
+  const sessionData = useSelector((state: any) => state.auth.session);
   const { web3Auth } = useWeb3Auth();
 
   /**

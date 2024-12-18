@@ -6,11 +6,11 @@ import { Box, Typography, List, Button, Avatar } from '@mui/material';
 
 // UTILS IMPORTS
 import { truncateAddress } from '@src/utils/wallet';
-import { Profile, useSession, useLazyProfiles, LoginError } from '@lens-protocol/react-web';
+import { Profile, useLazyProfiles, LoginError } from '@lens-protocol/react-web';
 // @ts-ignore
 import Alert from '@mui/material/Alert';
 
-import { useDispatch } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import { setAuthLoading, setBalance } from '@redux/auth';
 import { useResponsive } from '@src/hooks/use-responsive.ts';
 import { UserItem } from '../user-item';
@@ -42,10 +42,10 @@ export const ProfileSelectView: React.FC<ProfileSelectionProps> = ({
 
   const [profiles, setProfiles] = useState([] as Profile[]);
   const { execute: getProfiles } = useLazyProfiles();
-  const { data: sessionData } = useSession();
+  const sessionData = useSelector((state: any) => state.auth.session);
 
   useEffect(() => {
-    if (!error) dispatch(setAuthLoading({ isAuthLoading: false }));
+    if (!error) dispatch(setAuthLoading({ isSessionLoading: false }));
     if (error) enqueueSnackbar(error.message, { variant: 'error' });
   }, [error]);
 
@@ -65,7 +65,7 @@ export const ProfileSelectView: React.FC<ProfileSelectionProps> = ({
       dispatch(setBalance({ balance: 0 }));
 
       onClose();
-      dispatch(setAuthLoading({ isAuthLoading: true }));
+      dispatch(setAuthLoading({ isSessionLoading: true }));
       await login(profile);
     }
   };

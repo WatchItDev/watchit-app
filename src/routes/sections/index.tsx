@@ -4,15 +4,14 @@ import { dashboardRoutes } from './dashboard';
 import NotFoundPage from '../../pages/404';
 import {useEffect} from "react";
 import { subscribeToNotifications } from '@src/utils/subscribe-notifications-supabase.ts';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 // @ts-ignore
 import {ReadResult} from "@lens-protocol/react/dist/declarations/src/helpers/reads";
-import {ProfileSession, useSession} from "@lens-protocol/react-web";
 import {useNotifications} from "@src/hooks/use-notifications.ts";
 
 export default function Router() {
   const dispatch = useDispatch();
-  const { data: sessionData }: ReadResult<ProfileSession> = useSession();
+  const sessionData = useSelector((state: any) => state.auth.session);
   const { getNotifications } = useNotifications();
   useEffect(() => {
     if (sessionData?.profile?.id) {

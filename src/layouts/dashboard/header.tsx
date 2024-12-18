@@ -19,14 +19,13 @@ import { AccountPopover, HeaderBalance, NotificationsPopover } from '../_common'
 import { PropsWithChildren } from 'react';
 // @ts-ignore
 import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
-import { ProfileSession, useSession } from '@lens-protocol/react-web';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleDrawer } from '@redux/drawer';
 // ----------------------------------------------------------------------
 
 export default function Header({ children }: PropsWithChildren) {
-  const { data: sessionData }: ReadResult<ProfileSession> = useSession();
+  const sessionData = useSelector((state: any) => state.auth.session);
 
   const theme = useTheme();
 

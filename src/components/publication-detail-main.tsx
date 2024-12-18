@@ -24,8 +24,6 @@ import {
   hasReacted,
   useReactionToggle,
   useBookmarkToggle,
-  ProfileSession,
-  useSession,
 } from '@lens-protocol/react-web';
 import { useHidePublication } from '@lens-protocol/react';
 
@@ -58,7 +56,7 @@ import Popover from '@mui/material/Popover';
 import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
 import {useNotifications} from "@src/hooks/use-notifications.ts";
 import { openLoginModal } from '@redux/auth';
-import { useDispatch } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import { addBookmark, removeBookmark } from '@redux/bookmark';
 import { useNotificationPayload } from '@src/hooks/use-notification-payload.ts';
 
@@ -93,7 +91,7 @@ export default function PublicationDetailMain({
   // LOCAL HOOKS
   const router = useRouter();
   const theme = useTheme();
-  const { data: sessionData }: ReadResult<ProfileSession> = useSession();
+  const sessionData = useSelector((state: any) => state.auth.session);
   const dispatch = useDispatch();
 
   // LENS HOOKS

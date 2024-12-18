@@ -8,7 +8,6 @@ import Stack from '@mui/material/Stack';
 import { IconCoinMonero } from '@tabler/icons-react';
 // @ts-ignore
 import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
-import { ProfileSession, useSession } from '@lens-protocol/react-web';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { setBalance } from '@redux/auth';
@@ -19,7 +18,7 @@ import { useGetBalance } from '@src/hooks/use-get-balance.ts';
 export default function HeaderBalance() {
   const dispatch = useDispatch();
   const { balance: balanceFromRedux } = useSelector((state: any) => state.auth);
-  const { data: sessionData }: ReadResult<ProfileSession> = useSession();
+  const sessionData = useSelector((state: any) => state.auth.session);
   const { balance: balanceFromContract } = useGetBalance(sessionData?.address);
 
   useEffect(() => {

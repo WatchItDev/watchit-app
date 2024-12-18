@@ -18,7 +18,7 @@ import { useLazyProfile } from '@lens-protocol/react';
 
 // REDUX IMPORTS
 import { openLoginModal } from '@redux/auth';
-import { useDispatch } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import { removeFollowing, addFollowing } from '@redux/followers';
 
 // NOTIFICATIONS IMPORTS
@@ -42,7 +42,7 @@ const FollowUnfollowButton = ({ profileId, size = 'medium', followButtonMinWidth
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
   const { data: profile, execute: getProfile } = useLazyProfile();
-  const { data: sessionData }: ReadResult<ProfileSession> = useSession();
+  const sessionData = useSelector((state: any) => state.auth.session);
   const [isFollowed, setIsFollowed] = useState(profile?.operations?.isFollowedByMe?.value);
 
   // State to handle error and success messages

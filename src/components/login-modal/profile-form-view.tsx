@@ -85,7 +85,7 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
     profile: Profile;
   } | null>(null);
 
-  const { data: sessionData }: ReadResult<ProfileSession> = useSession();
+  const sessionData = useSelector((state: any) => state.auth.session);
   // Create profile and set profile metadata functions from Lens Protocol
   const {
     execute: createProfileExecute,

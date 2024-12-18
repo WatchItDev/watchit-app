@@ -75,7 +75,7 @@ export default function PublicationCommentItem({ comment, hasReply, canReply }: 
   );
   const { execute: hide } = useHidePublication();
   const [showComments, setShowComments] = useState(false);
-  const { data: sessionData }: ReadResult<ProfileSession> = useSession();
+  const sessionData = useSelector((state: any) => state.auth.session);
   const dispatch = useDispatch();
   const { sendNotification } = useNotifications();
   const { generatePayload } = useNotificationPayload(sessionData);
