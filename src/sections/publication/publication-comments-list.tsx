@@ -41,9 +41,6 @@ export default function PostCommentList({ publicationId: id, showReplies }: Prop
   // Join the comments with the pending comments but append the pending comments at the beginning of the list
   const commentsWithPending = pendingComments[id] ? [...pendingComments[id], ...(comments ?? [])] : comments;
 
-  console.log('comments', comments);
-  console.log('comments pending', pendingComments[id]);
-
   const commentsFiltered = (commentsWithPending ?? [])
     .filter((comment) => !hiddenComments.some((hiddenComment: any) => hiddenComment.id === comment.id))
     .filter((comment) => !comment.isHidden)

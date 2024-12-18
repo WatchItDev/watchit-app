@@ -19,14 +19,9 @@ import { alpha } from '@mui/material/styles';
 import Iconify from '@src/components/iconify';
 // @ts-ignore
 import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
-import { uploadMetadataToIPFS, verifyIpfsData } from '@src/utils/ipfs';
+import { uploadMetadataToIPFS } from '@src/utils/ipfs';
 import uuidv4 from '@src/utils/uuidv4.ts';
 import {useDispatch, useSelector} from 'react-redux';
-import {
-  refetchCommentsByPublication,
-  addPendingComment,
-  removePendingComment
-} from '@redux/comments';
 import {useNotifications} from "@src/hooks/use-notifications.ts";
 import { useNotificationPayload } from '@src/hooks/use-notification-payload.ts';
 import {AnyPublication} from "@lens-protocol/api-bindings";
@@ -77,33 +72,6 @@ const MovieCommentForm = ({ commentOn, owner, root }: MovieCommentFormProps) => 
   const { sendNotification } = useNotifications();
   const { generatePayload } = useNotificationPayload(sessionData);
 
-  const executeCreateCommentWithRetry = async (
-    createComment: any,
-    params: any,
-    retries = 4,
-    delayMs = 3000
-  ): Promise<any> => {
-    for (let attempt = 1; attempt <= retries; attempt++) {
-      try {
-        const result = await createComment(params);
-        if (!result.isFailure()) {
-          return result;
-        } else {
-          console.warn(`Attempt ${attempt}: Failed to create comment. Error: ${result.error.message}`);
-        }
-      } catch (error: any) {
-        console.warn(`Attempt ${attempt}: Error creating comment. Error: ${error.message}`);
-      }
-
-      if (attempt < retries) {
-        console.log(`Retrying in ${delayMs}ms... (${attempt}/${retries})`);
-        await new Promise((resolve) => setTimeout(resolve, delayMs));
-      }
-    }
-
-    throw new Error(`Could not create the comment after ${retries} attempts.`);
-  };
-
   /**
    * Form submission handler.
    *
@@ -111,7 +79,6 @@ const MovieCommentForm = ({ commentOn, owner, root }: MovieCommentFormProps) => 
    */
   const onSubmit = handleSubmit(async (data) => {
     try {
-      // HAbilitar el efecto en el comentario
       const uuid = uuidv4();
 
       const metadata = textOnly({
@@ -148,7 +115,6 @@ const MovieCommentForm = ({ commentOn, owner, root }: MovieCommentFormProps) => 
         operations: {
           hasUpvoted: false
         },
-
         by: sessionData?.profile,
         createdAt: new Date().toISOString(),
       };
@@ -163,63 +129,27 @@ const MovieCommentForm = ({ commentOn, owner, root }: MovieCommentFormProps) => 
       // Upload metadata to IPFS
       const uri = await uploadMetadataToIPFS(metadata);
 
-      // Send to redux the pending comment
-      // Dispatch the addPendingComment action
-      dispatch(addPendingComment({ publicationId: commentOn, comment: {...pendingComment, uri}}));
-      // Reset
-      reset(); // Reset the form
-      // Verify availability of metadata on IPFS / Retries
-
-      // Eliminar el efecto
-
-      await verifyIpfsData(uri);
-
-      // Create comment with retry logic
-      await executeCreateCommentWithRetry(createComment, {
-        commentOn: commentOn as any,
-        metadata: uri,
-      }).then(() => {
-        // Update the comment status to confirmed
-        dispatch(removePendingComment({ publicationId: commentOn, commentId: pendingComment.id}));
-        // Send notifications to the author of the publication
-        const notificationPayload = generatePayload('COMMENT', {
-          id: owner?.id,
-          displayName: owner?.displayName,
-          avatar: owner?.avatar,
-        }, {
-          root_id: root,
-          comment_id: commentOn,
-          rawDescription: `${sessionData?.profile?.metadata?.displayName} left a comment`,
-        });
-
-        // Only notify the author if the comment is not on their own publication
-        if (owner?.id !== sessionData?.profile?.id) {
-          sendNotification(owner.id, sessionData?.profile?.id, notificationPayload);
-        }
+      dispatch({
+        type: 'ADD_TASK_TO_BACKGROUND',
+        payload: {
+          id: uuidv4(),
+          type: 'POST_COMMENT',
+          data: {
+            commentOn,
+            uri,
+            pendingComment,
+            createComment,
+            owner,
+            generatePayload,
+            sendNotification,
+            root,
+          },
+        },
       });
 
-      // If execution reaches here, the comment was created successfully
-      console.log('Comment created successfully');
-      reset(); // Reset the form
-      dispatch(refetchCommentsByPublication(commentOn));
+      reset();
     } catch (e: any) {
       console.error('Error creating the comment:', e.message);
-
-      // Handle specific failure scenarios if necessary
-      if (e.message.includes('BroadcastingError')) {
-        console.log('Error broadcasting the transaction:', e.message);
-      } else if (e.message.includes('PendingSigningRequestError')) {
-        console.log(
-          'There is a pending signature request in your wallet. ' +
-          'Approve it or dismiss it and try again.'
-        );
-      } else if (e.message.includes('WalletConnectionError')) {
-        console.log('Error connecting to the wallet:', e.message);
-      } else if (e.message.includes('UserRejectedError')) {
-        // The user decided not to sign
-      } else {
-        console.log('Error:', e.message);
-      }
     }
   });
 
