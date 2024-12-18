@@ -8,7 +8,6 @@ import { Typography, Button, TextField, Box, Input, Grid } from '@mui/material';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import Avatar from '@mui/material/Avatar';
-import LoadingButton from '@mui/lab/LoadingButton';
 import { Profile } from '@lens-protocol/api-bindings';
 import Image from '../image';
 // @ts-ignore
@@ -27,9 +26,10 @@ import { uploadImageToIPFS, uploadMetadataToIPFS } from '@src/utils/ipfs.ts';
 import { buildProfileMetadata } from '@src/utils/profile.ts';
 import TextMaxLine from '@src/components/text-max-line';
 import { useSnackbar } from 'notistack';
-import {useDispatch } from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {toggleModalCreationProfile, setProfileCreationStep} from "@redux/auth";
-
+import NeonPaper from '@src/sections/publication/NeonPaperContainer';
+import {RootState} from "@reduxjs/toolkit/query";
 // ----------------------------------------------------------------------
 
 export interface ProfileFormProps {
@@ -43,6 +43,22 @@ export interface ProfileFormProps {
 }
 
 // ----------------------------------------------------------------------
+const getButtonLabel = (mode: 'register' | 'update', step: number) => {
+  if (mode === 'register') {
+    switch (step) {
+      case 1:
+        return 'Creating profile...';
+      case 2:
+        return 'Storing data on blockchain...';
+      case 3:
+        return 'Finalizing...';
+      default:
+        return 'Create profile';
+    }
+  } else {
+    return 'Update profile';
+  }
+};
 
 export const ProfileFormView: React.FC<ProfileFormProps> = ({
   onSuccess,
@@ -58,6 +74,11 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
   const { enqueueSnackbar } = useSnackbar();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [registrationLoading, setRegistrationLoading] = useState(false);
+  // @ts-ignore
+  const { currentStep } = useSelector((state: RootState) => state.auth);
+
+  const PaperElement = currentStep !== 0 ? NeonPaper : Box;
+
   // Pending metadata update (used when profile creation requires authentication)
   const [pendingMetadataUpdate, setPendingMetadataUpdate] = useState<{
     data: ProfileData;
@@ -584,14 +605,16 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
             </Button>
           </Grid>
           <Grid item xs={12} sm={6}>
-            <LoadingButton
-              variant="contained"
-              type="submit"
-              loading={loading}
-              sx={{ width: '100%', py: 1 }}
-            >
-              {mode === 'register' ? 'Create profile' : 'Update profile'}
-            </LoadingButton>
+            <PaperElement padding={'0'} colors={['rgba(30,135,255,0.5)', 'rgba(92,19,196,0.5)', 'rgba(255,0,51,0.5)', 'rgba(255,218,0,0.5)', 'rgba(100,188,38,0.5)', 'rgba(30,135,255,0.5)']} animationSpeed="2s">
+              <Button
+                disabled={currentStep !== 0}
+                variant="contained"
+                type="submit"
+                sx={{ width: '100%', py: 1, backgroundColor: 'transparent', color: 'white', border: currentStep ? 'none': '1px solid white' }}
+              >
+                {getButtonLabel(mode, currentStep)}
+              </Button>
+            </PaperElement>
           </Grid>
         </Grid>
       </Box>
