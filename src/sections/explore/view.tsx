@@ -63,6 +63,10 @@ export default function ExploreView() {
   // if a profile has handle property null, it is not a completed profile, so we filter it out
   const filteredCompletedProfiles = latestCreatedProfiles?.filter((profile: any) => profile.handle !== null);
 
+  // FilteredCompletedProfiles is an array of objects, each object has a metadata property and inside exists a displayName en bio property; filter the profiles that not have a displayName and bio property
+  const filteredProfiles = latestCreatedProfiles?.filter((profile: any) => profile.metadata?.displayName && profile.metadata?.bio);
+
+  console.log('filteredCompletedProfiles', filteredCompletedProfiles);
 
   const { data: explorePublications } = useExplorePublications({
     where: {
@@ -107,7 +111,7 @@ export default function ExploreView() {
         )}
 
         <CarouselCreators
-          data={filteredCompletedProfiles ?? []}
+          data={filteredProfiles ?? []}
           title="Latest creators"
           minItemWidth={250}
           maxItemWidth={400}
