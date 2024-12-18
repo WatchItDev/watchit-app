@@ -21,7 +21,6 @@ import {
   PublicationType,
   usePublications,
 } from '@lens-protocol/react-web';
-import { development, LensClient } from '@lens-protocol/client';
 
 // VIEM IMPORTS
 import { Address } from 'viem';
@@ -100,7 +99,7 @@ const prependProfileIdToUrl = (url: string, profileId: string) => {
 
 // ----------------------------------------------------------------------
 
-const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderProps>) => {
+const ProfileHeader = ({ profile: profileData, children }: PropsWithChildren<ProfileHeaderProps>) => {
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
   const navRef = useRef(null);
@@ -118,6 +117,7 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
   const [openSubscribeModal, setOpenSubscribeModal] = useState(false);
   const open = Boolean(anchorEl);
   const openMenu = Boolean(menuAnchorEl);
+  const profile = sessionData && sessionData?.profile?.id === profileData?.id ? sessionData.profile : profileData;
 
   // State to handle error and success messages
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
@@ -185,7 +185,7 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
   });
 
   const socialMediaUrls: SocialMediaUrls =
-    profile?.metadata?.attributes?.reduce((acc: SocialMediaUrls, attr) => {
+    profile?.metadata?.attributes?.reduce((acc: SocialMediaUrls, attr: any) => {
       if (['twitter', 'facebook', 'instagram'].includes(attr.key)) {
         acc[attr.key as keyof SocialMediaUrls] = attr.value;
       }
@@ -220,27 +220,6 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
 
     if (!hasAccess) setOpenSubscribeModal(true);
   };
-  const client = new LensClient({
-    environment: development,
-  });
-
-  const handleHideUnhideProfile = async () => {
-   await client.wallet.hideManagedProfile({
-      profileId: sessionData?.profile?.id,
-    }).then(() => {
-      console.log('Profile hidden');
-   });
-  }
-
-  useEffect(() => {
-    ( async () => {
-      console.log('SESSION', sessionData);
-      const profiles = await client.wallet.profilesManaged({
-        for: sessionData?.address,
-      });
-      console.log(profiles);
-    })()
-  }, [sessionData?.profile?.id]);
 
   return (
     <>
@@ -672,15 +651,6 @@ const ProfileHeader = ({ profile, children }: PropsWithChildren<ProfileHeaderPro
                     </Stack>
                   </Stack>
                 </Popover>
-
-                <Button
-                  size="medium"
-                  variant="outlined"
-                  sx={{ p: 1, minWidth: '44px' }}
-                  onClick={handleHideUnhideProfile}
-                >
-                  <Iconify icon="ion:eye" width={20} />
-                </Button>
               </Stack>
             </Stack>
           </Stack>

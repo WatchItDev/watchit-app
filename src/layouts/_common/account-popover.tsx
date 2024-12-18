@@ -50,17 +50,18 @@ export default function AccountPopover() {
   const { web3Auth } = useWeb3Auth();
   const { isLoginModalOpen, isAuthLoading } = useSelector((state: any) => state.auth);
 
-  const { data: sessionData, loading }: ReadResult<ProfileSession> = useSession();
+  const { data, loading }: ReadResult<ProfileSession> = useSession();
+  const sessionData = useSelector((state: any) => state.auth.session);
   const { execute: logoutExecute } = useLogout();
 
   useEffect(() => {
     dispatch(setAuthLoading({ isSessionLoading: loading }))
   }, [loading]);
 
-  const parsedSessionData = JSON.stringify(sessionData);
+  const parsedSessionData = JSON.stringify(data);
 
   useEffect(() => {
-    dispatch(setSession({ session: sessionData }))
+    dispatch(setSession({ session: data }))
   }, [parsedSessionData]);
 
   useEffect(() => {

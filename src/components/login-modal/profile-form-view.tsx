@@ -13,10 +13,8 @@ import Image from '../image';
 // @ts-ignore
 import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
 import {
-  ProfileSession,
   SessionType,
   useCreateProfile,
-  useSession,
   LoginError,
   useSetProfileMetadata,
 } from '@lens-protocol/react-web';
@@ -27,9 +25,10 @@ import { buildProfileMetadata } from '@src/utils/profile.ts';
 import TextMaxLine from '@src/components/text-max-line';
 import { useSnackbar } from 'notistack';
 import {useDispatch, useSelector} from "react-redux";
-import { setProfileCreationStep, resetCurrentStep, closeLoginModal} from "@redux/auth";
+import { setProfileCreationStep, resetCurrentStep, closeLoginModal, updateProfileData } from "@redux/auth";
 import NeonPaper from '@src/sections/publication/NeonPaperContainer';
 import {RootState} from "@reduxjs/toolkit/query";
+import uuidv4 from '@src/utils/uuidv4.ts';
 // ----------------------------------------------------------------------
 
 export interface ProfileFormProps {
@@ -133,6 +132,7 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
    */
   const updateProfileMetadata = useCallback(
     async (data: ProfileData) => {
+      console.log('hello update')
       setRegistrationLoading(true);
 
       try {
@@ -151,31 +151,54 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
         const metadata = buildProfileMetadata(data, profileImageURI, backgroundImageURI);
         // Upload metadata to IPFS
         const metadataURI = await uploadMetadataToIPFS(metadata);
-        // Update metadata on the Lens Protocol
-        const result = await setProfileMetadataExecute({ metadataURI });
-        if (result.isFailure()) {
-          console.error('Failed to update metadata:', result.error.message);
-          return;
-        }
 
-        // Wait for the transaction to be processed
-        const completion = await result.value.waitForCompletion();
-        if (completion.isFailure()) {
-          console.error('Error processing the transaction:', completion.error.message);
-          return;
-        }
+        dispatch(
+          updateProfileData({
+            name: data.name,
+            bio: data.bio,
+            profileImage: profileImageURI?.replace('ipfs://', 'https://ipfs.io/ipfs/') ?? '',
+            backgroundImage: backgroundImageURI?.replace('ipfs://', 'https://ipfs.io/ipfs/') ?? '',
+            socialLinks: data?.socialLinks ?? [],
+          })
+        );
 
-        dispatch(setProfileCreationStep({ step: 2 }));
-        dispatch(setProfileCreationStep({ step: 3 }));
+        dispatch({
+          type: 'ADD_TASK_TO_BACKGROUND',
+          payload: {
+            id: uuidv4(),
+            type: 'UPDATE_PROFILE_METADATA',
+            data: {
+              metadataURI,
+              setProfileMetadataExecute,
+              onSuccess: () => {
+                enqueueSnackbar('Profile metadata updated successfully', { variant: 'success' });
+              },
+              onError: (error: any) => {
+                enqueueSnackbar(`Error updating profile metadata: ${error.message}`, { variant: 'error' });
+              },
+            },
+          },
+        });
 
         setTimeout(() => {
-          dispatch(setProfileCreationStep({ step: 3 }));
           setRegistrationLoading(false);
           dispatch(resetCurrentStep());
           dispatch(closeLoginModal());
         }, 3000);
 
-
+        // // Update metadata on the Lens Protocol
+        // const result = await setProfileMetadataExecute({ metadataURI });
+        // if (result.isFailure()) {
+        //   console.error('Failed to update metadata:', result.error.message);
+        //   return;
+        // }
+        //
+        // // Wait for the transaction to be processed
+        // const completion = await result.value.waitForCompletion();
+        // if (completion.isFailure()) {
+        //   console.error('Error processing the transaction:', completion.error.message);
+        //   return;
+        // }
       } catch (error) {
         console.error('Error updating profile metadata:', error);
         setRegistrationLoading(false);
@@ -191,6 +214,9 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
    */
   const registerProfile = useCallback(
     async (data: ProfileData) => {
+      setPendingMetadataUpdate({ data });
+      return;
+
       if (!address) {
         console.error('Wallet address not available.');
         return;
@@ -294,10 +320,7 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
       sessionData.type === SessionType.WithProfile &&
       pendingMetadataUpdate
     ) {
-
-
       console.log('data pending', pendingMetadataUpdate);
-
       updateProfileMetadata(pendingMetadataUpdate.data);
       setPendingMetadataUpdate(null); // Clear the pending update
     }

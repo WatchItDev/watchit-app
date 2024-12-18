@@ -29,6 +29,11 @@ const processTask = (store: any, task: Task) => {
           .then(resolve)
           .catch(reject);
         break;
+      case 'UPDATE_PROFILE_METADATA':
+        processUpdateProfileMetadata(store, data)
+          .then(resolve)
+          .catch(reject);
+        break;
       default:
         console.error(`Unknown task type: ${type}`);
         reject(new Error(`Unknown task type: ${type}`));
@@ -94,6 +99,34 @@ const processBackgroundComment = (store: any, data: any) => {
     };
   });
 };
+
+/**
+ * Process a profile metadata update task.
+ */
+const processUpdateProfileMetadata = (store: any, data: any) => {
+  return new Promise<void>(async (resolve, reject) => {
+    const { metadataURI, setProfileMetadataExecute, onSuccess, onError } = data;
+
+    try {
+      const result = await setProfileMetadataExecute({ metadataURI });
+
+      if (result.isFailure()) {
+        throw new Error(result.error.message);
+      }
+
+      await result.value.waitForCompletion();
+
+      console.log('Profile metadata updated successfully');
+      onSuccess();
+      resolve();
+    } catch (error) {
+      console.error('Error updating profile metadata:', error);
+      onError(error);
+      reject(error);
+    }
+  });
+};
+
 
 /**
  * Process the task queue sequentially.
