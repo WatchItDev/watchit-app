@@ -221,6 +221,8 @@ const ProfileHeader = ({ profile: profileData, children }: PropsWithChildren<Pro
     if (!hasAccess) setOpenSubscribeModal(true);
   };
 
+  const profileImage = (profile?.metadata?.picture as any)?.optimized?.uri
+
   return (
     <>
       <Box sx={{ my: 3, position: 'relative' }}>
@@ -313,10 +315,7 @@ const ProfileHeader = ({ profile: profileData, children }: PropsWithChildren<Pro
               }}
             >
               <Avatar
-                src={
-                  (profile?.metadata?.picture as any)?.optimized?.uri ??
-                  `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${profile?.id}`
-                }
+                src={!!profileImage ? profileImage : `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${profile?.id}`}
                 alt={profile?.handle?.localName ?? ''}
                 variant="rounded"
                 sx={{

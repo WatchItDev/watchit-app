@@ -3,7 +3,6 @@ import Stack from '@mui/material/Stack';
 import Container from '@mui/material/Container';
 // COMPONENTS IMPORTS
 import CarouselPosterMini from '@src/components/carousel/variants/carousel-poster-mini';
-import InsertMoviesSupabase from '@src/utils/insert-movies-supabase';
 // LENS IMPORTS
 import {
   appId,
@@ -60,13 +59,8 @@ export default function ExploreView() {
     limit: LimitType.Fifty,
   });
 
-  // if a profile has handle property null, it is not a completed profile, so we filter it out
-  const filteredCompletedProfiles = latestCreatedProfiles?.filter((profile: any) => profile.handle !== null);
-
   // FilteredCompletedProfiles is an array of objects, each object has a metadata property and inside exists a displayName en bio property; filter the profiles that not have a displayName and bio property
   const filteredProfiles = latestCreatedProfiles?.filter((profile: any) => profile.metadata?.displayName && profile.metadata?.bio);
-
-  console.log('filteredCompletedProfiles', filteredCompletedProfiles);
 
   const { data: explorePublications } = useExplorePublications({
     where: {
