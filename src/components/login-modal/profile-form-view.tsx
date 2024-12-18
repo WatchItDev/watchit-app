@@ -27,7 +27,7 @@ import { buildProfileMetadata } from '@src/utils/profile.ts';
 import TextMaxLine from '@src/components/text-max-line';
 import { useSnackbar } from 'notistack';
 import {useDispatch, useSelector} from "react-redux";
-import {toggleModalCreationProfile, setProfileCreationStep} from "@redux/auth";
+import { setProfileCreationStep, resetCurrentStep} from "@redux/auth";
 import NeonPaper from '@src/sections/publication/NeonPaperContainer';
 import {RootState} from "@reduxjs/toolkit/query";
 // ----------------------------------------------------------------------
@@ -113,10 +113,6 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
     }),
   });
 
-  const handleToggle = () => {
-    dispatch(toggleModalCreationProfile());
-  };
-
   useEffect(() => {
     if (errorCreateProfile) enqueueSnackbar(errorCreateProfile?.message, { variant: 'error' });
     if (errorSetProfileMetadata) enqueueSnackbar(errorSetProfileMetadata?.message, { variant: 'error' });
@@ -140,7 +136,7 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
       setRegistrationLoading(true);
 
       try {
-        dispatch(setProfileCreationStep({ step: 2, status: 'running' }));
+        dispatch(setProfileCreationStep({ step: 2 }));
 
         // Upload images to IPFS
         const profileImageURI =
@@ -169,13 +165,13 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
           return;
         }
 
-        dispatch(setProfileCreationStep({ step: 2, status: 'finished' }));
-        dispatch(setProfileCreationStep({ step: 3, status: 'running' }));
+        dispatch(setProfileCreationStep({ step: 2 }));
+        dispatch(setProfileCreationStep({ step: 3 }));
 
         setTimeout(() => {
-          dispatch(setProfileCreationStep({ step: 3, status: 'finished' }));
+          dispatch(setProfileCreationStep({ step: 3 }));
           setRegistrationLoading(false);
-          dispatch(toggleModalCreationProfile());
+          dispatch(resetCurrentStep());
         }, 3000);
 
 
@@ -199,8 +195,7 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
       }
 
       try {
-        handleToggle();
-        dispatch(setProfileCreationStep({ step: 1, status: 'running' }));
+        dispatch(setProfileCreationStep({ step: 1 }));
         setRegistrationLoading(true);
 
         const result = await createProfileExecute({
@@ -218,8 +213,8 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
         // Authenticate using the new profile
         await login?.(newProfile);
 
-        dispatch(setProfileCreationStep({ step: 1, status: 'finished' }));
-        dispatch(setProfileCreationStep({ step: 2, status: 'running' }));
+        dispatch(setProfileCreationStep({ step: 1 }));
+        dispatch(setProfileCreationStep({ step: 2 }));
 
         // Save the pending metadata update
         setPendingMetadataUpdate({ data, profile: newProfile });

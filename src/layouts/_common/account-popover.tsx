@@ -27,7 +27,7 @@ import { varHover } from '@src/components/animate';
 import { LoginModal } from '@src/components/login-modal';
 import CustomPopover, { usePopover } from '@src/components/custom-popover';
 import { useDispatch, useSelector } from 'react-redux';
-import { closeLoginModal, openLoginModal, setAuthLoading, setBalance} from '@redux/auth';
+import {closeLoginModal, openLoginModal, setAuthLoading, setBalance, setSession} from '@redux/auth';
 import { CircularProgress } from '@mui/material';
 import { useWeb3Auth } from '@src/hooks/use-web3-auth.ts';
 
@@ -53,10 +53,16 @@ export default function AccountPopover() {
   const { execute: logoutExecute } = useLogout();
 
   useEffect(() => {
-    if (sessionData?.authenticated){
-      dispatch(setAuthLoading({ isAuthLoading: false }))
+    dispatch(setAuthLoading({ isSessionLoading: loading }))
+  }, [loading]);
+
+  useEffect(() => {
+    if(!loading ){
+      console.log('loading', loading)
+      console.log('sessionData', sessionData)
+      dispatch(setSession({ session: sessionData }))
     }
-  }, [sessionData?.authenticated]);
+  }, [sessionData, loading]);
 
   useEffect(() => {
     popover.onClose();
