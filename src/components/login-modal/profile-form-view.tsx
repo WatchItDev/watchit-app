@@ -27,7 +27,7 @@ import { buildProfileMetadata } from '@src/utils/profile.ts';
 import TextMaxLine from '@src/components/text-max-line';
 import { useSnackbar } from 'notistack';
 import {useDispatch, useSelector} from "react-redux";
-import { setProfileCreationStep, resetCurrentStep} from "@redux/auth";
+import { setProfileCreationStep, resetCurrentStep, closeLoginModal} from "@redux/auth";
 import NeonPaper from '@src/sections/publication/NeonPaperContainer';
 import {RootState} from "@reduxjs/toolkit/query";
 // ----------------------------------------------------------------------
@@ -172,12 +172,14 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
           dispatch(setProfileCreationStep({ step: 3 }));
           setRegistrationLoading(false);
           dispatch(resetCurrentStep());
+          dispatch(closeLoginModal());
         }, 3000);
 
 
       } catch (error) {
         console.error('Error updating profile metadata:', error);
         setRegistrationLoading(false);
+        dispatch(closeLoginModal());
       }
     },
     [setProfileMetadataExecute, address]
@@ -209,6 +211,8 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
 
         console.log('Profile registered');
         const newProfile: Profile = result.value;
+
+        console.log('newProfile', newProfile);
 
         // Authenticate using the new profile
         await login?.(newProfile);
@@ -290,6 +294,10 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
       sessionData.type === SessionType.WithProfile &&
       pendingMetadataUpdate
     ) {
+
+
+      console.log('data pending', pendingMetadataUpdate);
+
       updateProfileMetadata(pendingMetadataUpdate.data);
       setPendingMetadataUpdate(null); // Clear the pending update
     }
