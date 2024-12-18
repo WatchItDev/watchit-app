@@ -5,7 +5,7 @@ import React, { useState, useEffect } from 'react';
 import { Modal, Box, Fade, Backdrop } from '@mui/material';
 
 // LENS IMPORTS
-import { useLogout, useSession, useLogin, type Profile } from '@lens-protocol/react-web';
+import { useLogout, useLogin, type Profile } from '@lens-protocol/react-web';
 import { useWeb3Auth } from '@src/hooks/use-web3-auth';
 
 // LOCAL IMPORTS
@@ -107,7 +107,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
         onClose={onClose}
         closeAfterTransition
         BackdropComponent={Backdrop}
-        BackdropProps={{ timeout: 500 }}
+        BackdropProps={{ timeout: 500, onClick: () => {}}}
       >
         <Fade in={open}>
           <Box
