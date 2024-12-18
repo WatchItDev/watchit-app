@@ -47,7 +47,6 @@
     "@hookform/resolvers": "^3.1.1",
     "@iconify/react": "^4.1.1",
     "@lens-protocol/api-bindings": "^0.12.3",
-    "@lens-protocol/client": "^2.3.2",
     "@lens-protocol/metadata": "^1.2.0",
     "@lens-protocol/react": "^2.3.2",
     "@lens-protocol/react-web": "^2.3.1",
