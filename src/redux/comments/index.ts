@@ -51,7 +51,6 @@ const commentsSlice = createSlice({
         state.counterLikes[publicationId] -= 1;
       }
     },
-
     addPendingComment: (state, action: PayloadAction<{ publicationId: string; comment: PendingComment }>) => {
       const { publicationId, comment } = action.payload;
       if (!state.pendingComments[publicationId]) {
@@ -61,19 +60,10 @@ const commentsSlice = createSlice({
       state.pendingComments[publicationId] = [comment, ...state.pendingComments[publicationId]];
     },
     removePendingComment: (state, action: PayloadAction<{ publicationId: string; commentId: string;}>) => {
-      console.log('publicationID', action.payload.publicationId);
-      console.log('commentID', action.payload.commentId);
-
       const { publicationId, commentId } = action.payload;
-      const comment = state.comments[publicationId]?.find(comment => comment.id === commentId);
-
-      console.log('comment', comment);
 
       // Delete the comment from the pending list
       state.pendingComments[publicationId] = state.pendingComments[publicationId].filter(comment => comment.id !== commentId);
-
-      // Search by uuid and delete from state
-
     },
   },
 });

@@ -73,8 +73,8 @@ export default function App() {
           themeStretch: false,
         }}
       >
-        <Provider store={store}>
-          <AuthProvider>
+        <AuthProvider>
+          <Provider store={store}>
             <ThemeProvider>
               <MotionLazy>
                 <SnackbarProvider>
@@ -85,8 +85,8 @@ export default function App() {
                 </SnackbarProvider>
               </MotionLazy>
             </ThemeProvider>
-          </AuthProvider>
-        </Provider>
+          </Provider>
+        </AuthProvider>
       </SettingsProvider>
     </LocalizationProvider>
   );
