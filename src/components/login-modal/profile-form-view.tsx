@@ -189,11 +189,9 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
           },
         });
 
-        setTimeout(() => {
-          setRegistrationLoading(false);
-          dispatch(resetCurrentStep());
-          dispatch(closeLoginModal());
-        }, 3000);
+        setRegistrationLoading(false);
+        dispatch(resetCurrentStep());
+        dispatch(closeLoginModal());
 
         // // Update metadata on the Lens Protocol
         // const result = await setProfileMetadataExecute({ metadataURI });
