@@ -14,7 +14,6 @@ import { useEffect } from 'react';
 
 // Get the version from package.json
 import { version } from '../../../package.json';
-import LoaderDuringCreationProfile from "@src/components/login-modal/LoaderDuringCreationProfile.tsx";
 // ----------------------------------------------------------------------
 type Props = {
   children: React.ReactNode;
@@ -75,9 +74,6 @@ export default function DashboardLayout({ children }: Props) {
       >
         {lgUp ? renderNavVertical : <NavVertical />}
         <Main>{children}</Main>
-
-        <LoaderDuringCreationProfile  />
-
       </Box>
       {/* Static footer to show version */}
       <Box
