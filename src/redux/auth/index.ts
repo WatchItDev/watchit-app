@@ -6,6 +6,7 @@ export type AuthReducerState = {
   isLoginModalOpen: boolean;
   balance: number;
   currentStep: number;
+  isUpdatingMetadata: boolean;
 };
 
 const initialState: AuthReducerState = {
@@ -14,6 +15,7 @@ const initialState: AuthReducerState = {
   isLoginModalOpen: false,
   balance: 0,
   currentStep: 0,
+  isUpdatingMetadata: false,
 };
 
 const authSlice = createSlice({
@@ -75,6 +77,10 @@ const authSlice = createSlice({
         console.log('updateProfileData 2', state.session.profile.metadata);
       }
     },
+
+    setIsUpdatingMetadata: (state, action: PayloadAction<boolean>) => {
+      state.isUpdatingMetadata = action.payload;
+    }
   },
 });
 
@@ -87,6 +93,7 @@ export const {
   resetCurrentStep,
   setSession,
   updateProfileData,
+  setIsUpdatingMetadata,
 } = authSlice.actions;
 
 export default authSlice.reducer;

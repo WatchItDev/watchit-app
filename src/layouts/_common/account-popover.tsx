@@ -48,7 +48,7 @@ export default function AccountPopover() {
   const router = useRouter();
   const popover = usePopover();
   const { web3Auth } = useWeb3Auth();
-  const { isLoginModalOpen, isAuthLoading } = useSelector((state: any) => state.auth);
+  const { isLoginModalOpen, isAuthLoading, isUpdatingMetadata } = useSelector((state: any) => state.auth);
 
   const { data, loading }: ReadResult<ProfileSession> = useSession();
   const sessionData = useSelector((state: any) => state.auth.session);
@@ -61,8 +61,10 @@ export default function AccountPopover() {
   const parsedSessionData = JSON.stringify(data);
 
   useEffect(() => {
-    dispatch(setSession({ session: data }))
-  }, [parsedSessionData]);
+    if(!isUpdatingMetadata){
+      dispatch(setSession({ session: data }))
+    }
+  }, [parsedSessionData, isUpdatingMetadata]);
 
   useEffect(() => {
     popover.onClose();
@@ -101,9 +103,7 @@ export default function AccountPopover() {
     return <CircularProgress size={24} sx={{ color: '#fff' }} />;
   }
 
-  const metadataIsPending = true;
-
-  const EffectPaper = metadataIsPending ? NeonPaper : Box;
+  const EffectPaper = isUpdatingMetadata ? NeonPaper : Box;
   // Generate an array of colors with rainbow pattern, add 50% opacity to each color
 
   const rainbowColors = [

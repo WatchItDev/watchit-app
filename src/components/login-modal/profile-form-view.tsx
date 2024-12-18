@@ -25,7 +25,7 @@ import { buildProfileMetadata } from '@src/utils/profile.ts';
 import TextMaxLine from '@src/components/text-max-line';
 import { useSnackbar } from 'notistack';
 import {useDispatch, useSelector} from "react-redux";
-import { setProfileCreationStep, resetCurrentStep, closeLoginModal, updateProfileData } from "@redux/auth";
+import { setProfileCreationStep, resetCurrentStep, closeLoginModal, updateProfileData, setIsUpdatingMetadata } from "@redux/auth";
 import NeonPaper from '@src/sections/publication/NeonPaperContainer';
 import {RootState} from "@reduxjs/toolkit/query";
 import uuidv4 from '@src/utils/uuidv4.ts';
@@ -135,6 +135,8 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
       console.log('hello update')
       setRegistrationLoading(true);
 
+      dispatch(setIsUpdatingMetadata(true));
+
       try {
         dispatch(setProfileCreationStep({ step: 2 }));
 
@@ -172,9 +174,11 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
               setProfileMetadataExecute,
               onSuccess: () => {
                 enqueueSnackbar('Profile metadata updated successfully', { variant: 'success' });
+                dispatch(setIsUpdatingMetadata(false));
               },
               onError: (error: any) => {
                 enqueueSnackbar(`Error updating profile metadata: ${error.message}`, { variant: 'error' });
+                dispatch(setIsUpdatingMetadata(false));
               },
             },
           },
