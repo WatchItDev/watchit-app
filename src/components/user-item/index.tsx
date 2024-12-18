@@ -32,7 +32,7 @@ interface FollowerItemProps {
 // ----------------------------------------------------------------------
 
 export const UserItem = ({
-  profile,
+  profile: profileData,
   sx,
   followButtonMinWidth = 120,
   onClick,
@@ -40,6 +40,7 @@ export const UserItem = ({
 }: FollowerItemProps) => {
   const sessionData = useSelector((state: any) => state.auth.session);
   const router = useRouter();
+  const profile = sessionData && sessionData?.profile?.id === profileData?.id ? sessionData.profile : profileData;
 
   const goToProfile = () => {
     // eslint-disable-next-line @typescript-eslint/no-unused-expressions

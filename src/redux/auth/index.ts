@@ -50,34 +50,18 @@ const authSlice = createSlice({
         bio: string;
         profileImage?: string;
         backgroundImage?: string;
-        socialLinks: {
-          twitter: string;
-          instagram: string;
-          orb: string;
-          farcaster: string;
-        };
       }>
     ) => {
-      console.log('updateProfileData', state.session);
       if (state.session && state.session.profile) {
-        console.log('updateProfileData', state.session.profile.metadata);
         state.session.profile.metadata = {
           ...state.session.profile.metadata,
           displayName: action.payload.name,
           bio: action.payload.bio,
           picture: { optimized: { uri: !!action.payload.profileImage ? action.payload.profileImage : undefined } },
           coverPicture: { optimized: { uri: !!action.payload.backgroundImage ? action.payload.backgroundImage : undefined } },
-          attributes: [
-            { key: 'twitter', value: action.payload.socialLinks.twitter },
-            { key: 'instagram', value: action.payload.socialLinks.instagram },
-            { key: 'orb', value: action.payload.socialLinks.orb },
-            { key: 'farcaster', value: action.payload.socialLinks.farcaster },
-          ],
         };
-        console.log('updateProfileData 2', state.session.profile.metadata);
       }
     },
-
     setIsUpdatingMetadata: (state, action: PayloadAction<boolean>) => {
       state.isUpdatingMetadata = action.payload;
     }

@@ -10,8 +10,6 @@ import * as Yup from 'yup';
 import Avatar from '@mui/material/Avatar';
 import { Profile } from '@lens-protocol/api-bindings';
 import Image from '../image';
-// @ts-ignore
-import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
 import {
   SessionType,
   useCreateProfile,
@@ -29,6 +27,7 @@ import { setProfileCreationStep, resetCurrentStep, closeLoginModal, updateProfil
 import NeonPaper from '@src/sections/publication/NeonPaperContainer';
 import {RootState} from "@reduxjs/toolkit/query";
 import uuidv4 from '@src/utils/uuidv4.ts';
+
 // ----------------------------------------------------------------------
 
 export interface ProfileFormProps {
@@ -42,6 +41,7 @@ export interface ProfileFormProps {
 }
 
 // ----------------------------------------------------------------------
+
 const getButtonLabel = (mode: 'register' | 'update', step: number) => {
   if (mode === 'register') {
     switch (step) {
@@ -71,7 +71,6 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
   const dispatch = useDispatch();
 
   const { enqueueSnackbar } = useSnackbar();
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [registrationLoading, setRegistrationLoading] = useState(false);
   // @ts-ignore
   const { currentStep } = useSelector((state: RootState) => state.auth);
@@ -118,13 +117,6 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
     if (error) enqueueSnackbar(error?.message, { variant: 'error' });
   }, [errorCreateProfile, errorSetProfileMetadata]);
 
-  useEffect(() => {
-    if (isSubmitting && !loading) {
-      onSuccess();
-      setIsSubmitting(false);
-    }
-  }, [isSubmitting, loading]);
-
   /**
    * Update profile metadata on the Lens Protocol.
    * @param data - Profile data to update.
@@ -133,7 +125,6 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
   const updateProfileMetadata = useCallback(
     async (data: ProfileData) => {
       setRegistrationLoading(true);
-
       dispatch(setIsUpdatingMetadata(true));
 
       try {
@@ -163,9 +154,8 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
           updateProfileData({
             name: data.name,
             bio: data.bio,
-            profileImage: profileImage,
-            backgroundImage: backgroundImage,
-            socialLinks: data?.socialLinks ?? [],
+            profileImage: profileImage ?? sessionData?.profile?.metadata?.picture?.optimized?.uri,
+            backgroundImage: backgroundImage ?? sessionData?.profile?.metadata?.coverPicture?.optimized?.uri
           })
         );
 
@@ -191,21 +181,7 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
 
         setRegistrationLoading(false);
         dispatch(resetCurrentStep());
-        dispatch(closeLoginModal());
-
-        // // Update metadata on the Lens Protocol
-        // const result = await setProfileMetadataExecute({ metadataURI });
-        // if (result.isFailure()) {
-        //   console.error('Failed to update metadata:', result.error.message);
-        //   return;
-        // }
-        //
-        // // Wait for the transaction to be processed
-        // const completion = await result.value.waitForCompletion();
-        // if (completion.isFailure()) {
-        //   console.error('Error processing the transaction:', completion.error.message);
-        //   return;
-        // }
+        onSuccess();
       } catch (error) {
         console.error('Error updating profile metadata:', error);
         setRegistrationLoading(false);
@@ -239,10 +215,7 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
           throw new Error(result.error.message);
         }
 
-        console.log('Profile registered');
         const newProfile: Profile = result.value;
-
-        console.log('newProfile', newProfile);
 
         // Authenticate using the new profile
         await login?.(newProfile);
@@ -279,7 +252,6 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
     validationSchema,
     onSubmit: async (values) => {
       try {
-        setIsSubmitting(true);
         if (mode === 'register') {
           await registerProfile(values);
         } else if (mode === 'update') {
@@ -324,7 +296,6 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
       sessionData.type === SessionType.WithProfile &&
       pendingMetadataUpdate
     ) {
-      console.log('data pending', pendingMetadataUpdate);
       updateProfileMetadata(pendingMetadataUpdate.data);
       setPendingMetadataUpdate(null); // Clear the pending update
     }

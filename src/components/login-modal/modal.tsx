@@ -13,7 +13,8 @@ import { ProfileSelectView } from '@src/components/login-modal/profile-select-vi
 import { ProfileFormView } from '@src/components/login-modal/profile-form-view.tsx';
 import { WatchitLoader } from '../watchit-loader';
 import { useSnackbar } from 'notistack';
-import {useSelector} from "react-redux";
+import { useDispatch, useSelector } from 'react-redux';
+import { closeLoginModal } from '@redux/auth';
 
 // ----------------------------------------------------------------------
 
@@ -34,6 +35,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
   const { execute: logoutExecute } = useLogout();
   const { execute: loginExecute, error } = useLogin();
   const { enqueueSnackbar } = useSnackbar();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     (async () => {
@@ -76,7 +78,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
 
   const handleProfileCreateSuccess = () => {
     enqueueSnackbar('Profile created successfully.', { variant: 'success' })
-    setView('profile');
+    dispatch(closeLoginModal());
   };
 
   const handleLogin = async (profile?: Profile) => {
