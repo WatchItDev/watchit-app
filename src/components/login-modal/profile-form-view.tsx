@@ -132,7 +132,6 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
    */
   const updateProfileMetadata = useCallback(
     async (data: ProfileData) => {
-      console.log('hello update')
       setRegistrationLoading(true);
 
       dispatch(setIsUpdatingMetadata(true));
@@ -154,12 +153,18 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
         // Upload metadata to IPFS
         const metadataURI = await uploadMetadataToIPFS(metadata);
 
+
+        const profileImage =
+          data.profileImage instanceof File ? URL.createObjectURL(data.profileImage) : profileImagePreview;
+        const backgroundImage =
+          data.backgroundImage instanceof File ? URL.createObjectURL(data.backgroundImage) : backgroundImagePreview;
+
         dispatch(
           updateProfileData({
             name: data.name,
             bio: data.bio,
-            profileImage: profileImageURI?.replace('ipfs://', 'https://ipfs.io/ipfs/') ?? '',
-            backgroundImage: backgroundImageURI?.replace('ipfs://', 'https://ipfs.io/ipfs/') ?? '',
+            profileImage: profileImage,
+            backgroundImage: backgroundImage,
             socialLinks: data?.socialLinks ?? [],
           })
         );

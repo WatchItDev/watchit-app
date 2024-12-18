@@ -48,8 +48,8 @@ const authSlice = createSlice({
       action: PayloadAction<{
         name: string;
         bio: string;
-        profileImage: string;
-        backgroundImage: string;
+        profileImage?: string;
+        backgroundImage?: string;
         socialLinks: {
           twitter: string;
           instagram: string;
@@ -65,7 +65,7 @@ const authSlice = createSlice({
           ...state.session.profile.metadata,
           displayName: action.payload.name,
           bio: action.payload.bio,
-          picture: { optimized: { uri: !!action.payload.backgroundImage ? action.payload.backgroundImage : undefined } },
+          picture: { optimized: { uri: !!action.payload.profileImage ? action.payload.profileImage : undefined } },
           coverPicture: { optimized: { uri: !!action.payload.backgroundImage ? action.payload.backgroundImage : undefined } },
           attributes: [
             { key: 'twitter', value: action.payload.socialLinks.twitter },
