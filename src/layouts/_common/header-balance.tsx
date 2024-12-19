@@ -5,13 +5,11 @@ import IconButton from '@mui/material/IconButton';
 import { varHover } from '@src/components/animate';
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
-import { IconCoinMonero } from '@tabler/icons-react';
-// @ts-ignore
-import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { setBalance } from '@redux/auth';
 import { useGetBalance } from '@src/hooks/use-get-balance.ts';
+import mmcTokenIcon from '@src/assets/mmc_token.ico';
 
 // ----------------------------------------------------------------------
 
@@ -39,11 +37,21 @@ export default function HeaderBalance() {
           whileHover="hover"
           variants={varHover(1.05)}
           sx={{
-            width: 40,
-            height: 40,
+            width: 30,
+            height: 30,
+            marginRight: 1,
+            padding: 0,
+            mt: 0.5,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
           }}
         >
-          <IconCoinMonero style={{ borderRadius: 0.65, width: 64 }} />
+          <img
+            src={mmcTokenIcon}
+            alt="MMC Token"
+            style={{ width: 20, height: 20, borderRadius: '0.65rem' }}
+          />
         </IconButton>
         <Typography variant="subtitle2" sx={{ mt: 0.4 }}>
           {formattedBalance}
