@@ -18,6 +18,10 @@ import { varHover } from '@src/components/animate';
 import NotificationItem from './notification-item';
 import {type NotificationColumnsProps} from '@src/types/notification';
 import { useNotifications } from "@src/hooks/use-notifications.ts";
+import {Box} from "@mui/system";
+import Image from "@src/components/image";
+// @ts-ignore
+import emptyImage from "@public/assets/illustrations/empty-notifications.png";
 
 export default function NotificationsPopover() {
   const { notifications, markAsRead, markAllAsRead } = useNotifications();
@@ -80,7 +84,7 @@ export default function NotificationsPopover() {
 
         <Scrollbar>
           <List disablePadding>
-            { !!notifications ? (
+            { notifications.length > 0 ? (
               notifications.map((notification: NotificationColumnsProps) => (
                 <NotificationItem
                   key={notification.id}
@@ -88,10 +92,41 @@ export default function NotificationsPopover() {
                   onMarkAsRead={markAsRead}
                 />
               ))
-            ) : <></>}
+            ) : <EmptyPlaceholder /> }
           </List>
         </Scrollbar>
       </Drawer>
     </>
+  );
+}
+
+
+export const EmptyPlaceholder = () => {
+  return (
+    <Box sx={{ p: 3, textAlign: 'center' }}>
+      <Image src={emptyImage} sx={{
+        width: 200,
+      }} />
+      <Typography
+        sx={{
+          textAlign: 'center',
+          width: '100%',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          flexDirection: 'column',
+          fontWeight: 'bold',
+          mt: 2,
+        }}
+      >
+        You are up to date!
+        <Typography variant={'caption'}>
+          There are no new notifications
+        </Typography>
+      </Typography>
+
+
+
+    </Box>
   );
 }
