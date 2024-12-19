@@ -159,7 +159,7 @@ export default function AccountPopover() {
         >
           {!sessionData?.authenticated && !loading ? (
             <Button variant="contained" onClick={handleOpenModal}>
-              Easy Login
+              Social Login
             </Button>
           ) : undefined}
 
