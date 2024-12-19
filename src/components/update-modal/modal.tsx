@@ -55,6 +55,7 @@ export const UpdateModal: React.FC<UpdateModalProps> = ({ open, onClose }) => {
                 xs: '90%',
                 sm: 500,
               },
+              height: '85%',
               bgcolor: 'background.paper',
               borderRadius: 2,
               boxShadow: 24,
