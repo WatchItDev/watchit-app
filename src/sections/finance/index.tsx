@@ -163,8 +163,8 @@ export default function OverviewBankingView() {
 
             <BankingContacts
               title="Contacts"
-              subheader={`You have ${following.length ?? 0} contacts`}
-              list={following.slice(-5)}
+              subheader={`You have ${following?.length ?? 0} contacts`}
+              list={following?.slice?.(-5) ?? []}
             />
 
             <BankingInviteFriends
