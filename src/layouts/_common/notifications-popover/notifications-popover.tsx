@@ -21,7 +21,7 @@ import { useNotifications } from "@src/hooks/use-notifications.ts";
 import {Box} from "@mui/system";
 import Image from "@src/components/image";
 // @ts-ignore
-import emptyImage from "@public/assets/illustrations/empty-notifications.png";
+import emptyImage from "@src/assets/illustrations/empty-notifications.png";
 
 export default function NotificationsPopover() {
   const { notifications, markAsRead, markAllAsRead } = useNotifications();
