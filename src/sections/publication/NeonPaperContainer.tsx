@@ -11,17 +11,18 @@ interface NeonPaperProps {
   animationSpeed?: string;
   padding?: string;
   borderRadius?: string;
+  width?: string;
   sx?: SxProps<Theme>;
 }
 
 const NeonPaperContainer = styled(Paper, {
   shouldForwardProp: (prop) => prop !== 'colors' && prop !== 'animationSpeed' && prop !== 'borderRadius' && prop !== 'padding',
-})<PaperProps & {colors?: string[], animationSpeed?: string, padding?: string, borderRadius?: string} >(({ colors, animationSpeed, padding, borderRadius }) => ({
+})<PaperProps & {colors?: string[], animationSpeed?: string, padding?: string, borderRadius?: string, width?: string} >(({ colors, animationSpeed, padding, borderRadius, width }) => ({
   '--gradient-pos-x': '50%',
   '--gradient-pos-y': '50%',
   '--border-radius': `${borderRadius || '10px'}`,
   '--border-gap': '1px',
-  width: '100%',
+  width: `${width || '100%'}`,
   position: 'relative',
   padding: 'var(--border-gap)',
   borderRadius: 'var(--border-radius)',
@@ -67,7 +68,7 @@ ${colors?.join(', ') || '#1e87ff, #5c13c4, #ff0033, #ffda00, #64bc26, #1e87ff'}
   },
 }));
 
-const NeonPaper: FC<NeonPaperProps> = ({ children, colors, animationSpeed, padding='0.7rem', borderRadius='10px' }) => {
+const NeonPaper: FC<NeonPaperProps> = ({ children, colors, animationSpeed, padding='0.7rem', borderRadius='10px', width='100%' }) => {
   return (
     <NeonPaperContainer
       elevation={3}
@@ -75,6 +76,7 @@ const NeonPaper: FC<NeonPaperProps> = ({ children, colors, animationSpeed, paddi
       animationSpeed={animationSpeed}
       padding={padding}
       borderRadius={borderRadius}
+      width={width}
     >
       <div className="neon">
         <div className="gradient"></div>

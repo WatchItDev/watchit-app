@@ -7,9 +7,7 @@ import LoadingButton from '@mui/lab/LoadingButton';
 // LENS IMPORTS
 import {
   ProfileId,
-  ProfileSession,
   useFollow,
-  useSession,
   useUnfollow,
 } from '@lens-protocol/react-web';
 // @ts-ignore
@@ -27,6 +25,8 @@ import { useSnackbar } from 'notistack';
 // LOCAL IMPORTS
 import {useNotifications} from "@src/hooks/use-notifications.ts";
 import {useNotificationPayload} from "@src/hooks/use-notification-payload.ts";
+import NeonPaper from "@src/sections/publication/NeonPaperContainer.tsx";
+import Box from "@mui/material/Box";
 
 // ----------------------------------------------------------------------
 
@@ -137,28 +137,32 @@ const FollowUnfollowButton = ({ profileId, size = 'medium', followButtonMinWidth
     return `Successfully ${action} ${profileName}.`;
   }
 
+  const RainbowEffect = isProcessing ? NeonPaper : Box;
+
   return (
     <>
-      <LoadingButton
-        size={size}
-        title={isFollowed ? 'Unfollow' : 'Follow'}
-        variant={isFollowed ? 'outlined' : 'contained'}
-        sx={{
-          minWidth: followButtonMinWidth,
-          backgroundColor: isFollowed ? '#24262A' : '#fff',
-        }}
-        onClick={(event) => {
-          event.stopPropagation();
+      <RainbowEffect borderRadius={'10px'} animationSpeed={'3s'} padding={'0'} width={'auto'} >
+        <LoadingButton
+          size={size}
+          title={isFollowed ? 'Unfollow' : 'Follow'}
+          variant={isFollowed ? 'outlined' : 'contained'}
+          sx={{
+            minWidth: followButtonMinWidth,
+            backgroundColor: isFollowed ? '#24262A' : '#fff',
+          }}
+          onClick={(event) => {
+            event.stopPropagation();
 
-          isFollowed
-            ? handleAction(unfollow, getFollowMessage(profile?.handle?.localName ?? '', 'unfollowed'), false)
-            : handleAction(follow, getFollowMessage(profile?.handle?.localName ?? '', 'followed'), true);
-        }}
-        disabled={isProcessing || profile?.id === sessionData?.profile?.id}
-        loading={followLoading || unfollowLoading}
-      >
-        {isFollowed ? 'Unfollow' : 'Follow'}
-      </LoadingButton>
+            isFollowed
+              ? handleAction(unfollow, getFollowMessage(profile?.handle?.localName ?? '', 'unfollowed'), false)
+              : handleAction(follow, getFollowMessage(profile?.handle?.localName ?? '', 'followed'), true);
+          }}
+          disabled={isProcessing || profile?.id === sessionData?.profile?.id}
+          loading={followLoading || unfollowLoading}
+        >
+          {isFollowed ? 'Unfollow' : 'Follow'}
+        </LoadingButton>
+    </RainbowEffect>
     </>
   );
 };
