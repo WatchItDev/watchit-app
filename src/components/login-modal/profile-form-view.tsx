@@ -46,7 +46,7 @@ const getButtonLabel = (mode: 'register' | 'update', step: number) => {
   if (mode === 'register') {
     switch (step) {
       case 1:
-        return 'Creating profile...';
+        return 'Creating';
       case 2:
         return 'Storing data on blockchain...';
       case 3:
