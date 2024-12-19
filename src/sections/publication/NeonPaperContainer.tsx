@@ -15,7 +15,7 @@ interface NeonPaperProps {
 }
 
 const NeonPaperContainer = styled(Paper, {
-  shouldForwardProp: (prop) => prop !== 'colors' && prop !== 'animationSpeed',
+  shouldForwardProp: (prop) => prop !== 'colors' && prop !== 'animationSpeed' && prop !== 'borderRadius' && prop !== 'padding',
 })<PaperProps & {colors?: string[], animationSpeed?: string, padding?: string, borderRadius?: string} >(({ colors, animationSpeed, padding, borderRadius }) => ({
   '--gradient-pos-x': '50%',
   '--gradient-pos-y': '50%',

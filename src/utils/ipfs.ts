@@ -127,7 +127,7 @@ export const verifyIpfsData = async (uri: string, retries = 16, delayMs = 2000):
         return true;
       }
     } catch (error: any) {
-      console.log(`Attempt ${attempt}: Could not access ${url}. Error: ${error.message}`);
+      // console.log(`Attempt ${attempt}: Could not access ${url}. Error: ${error.message}`);
     }
     if (attempt < retries) {
       console.log(`Retrying in ${delayMs}ms... (${attempt}/${retries})`);

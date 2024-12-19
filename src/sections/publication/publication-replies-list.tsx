@@ -12,7 +12,7 @@ type Props = {
 
 const RepliesList = ({ parentCommentId }: Props) => {
   const { data: replies, error, loading, execute } = useLazyPublications();
-  const { hiddenComments, refetchTriggerByPublication } = useSelector((state: any) => state.comments);
+  const { hiddenComments, refetchTriggerByPublication, pendingComments } = useSelector((state: any) => state.comments);
   const refetchTrigger = refetchTriggerByPublication[parentCommentId] || 0;
 
   useEffect(() => {
@@ -34,9 +34,14 @@ const RepliesList = ({ parentCommentId }: Props) => {
 
   if (error) return <p>Error loading replies: {error.message}</p>;
 
-  const repliesFiltered = (replies ?? [])
+  // Join the replies with the pending comments but append the pending comments at the beginning of the list
+  const repliesWithPending = pendingComments[parentCommentId]
+    ? [...pendingComments[parentCommentId], ...(replies ?? [])]
+    : replies;
+
+  const repliesFiltered = (repliesWithPending ?? [])
     .filter((comment) => !hiddenComments.some((hiddenComment: any) => hiddenComment.id === comment.id))
-    .filter((comment) => !comment.isHidden)
+    .filter((comment) => !comment.isHidden);
 
   return (
     <Box sx={{ ml: 0, mb: 1 }}>
