@@ -28,7 +28,6 @@ const ProfileFollowers = ({ onActionFinished }: Props) => {
         gap: `${16}px`,
         justifyContent: 'flex-start',
         alignItems: 'flex-start',
-        padding: 2,
       }}
       gap={3}
       display="grid"

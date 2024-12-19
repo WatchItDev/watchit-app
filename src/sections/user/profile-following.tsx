@@ -4,7 +4,6 @@ import Typography from '@mui/material/Typography';
 
 // LENS IMPORTS
 import { Profile } from '@lens-protocol/api-bindings';
-import { useProfileFollowing } from '@lens-protocol/react';
 
 // LOCAL IMPORTS
 import { UserItem } from '@src/components/user-item';
@@ -30,7 +29,6 @@ const ProfileFollowing = () => {
         gap: `${16}px`,
         justifyContent: 'flex-start',
         alignItems: 'flex-start',
-        padding: 2,
       }}
     >
       {following?.length ? (

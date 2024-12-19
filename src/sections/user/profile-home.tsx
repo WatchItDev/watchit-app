@@ -21,7 +21,6 @@ interface ProfileHomeProps {
 
 export default function ProfileHome({
                                       publications = [],
-                                      noPaddings = false,
                                       minItemWidth = 150,
                                       maxItemWidth = 250,
                                       initialRows = 2,
@@ -144,7 +143,7 @@ export default function ProfileHome({
           gap: `${gap}px`,
           justifyContent: 'flex-start',
           alignItems: 'flex-start',
-          padding: noPaddings ? 0 : 2,
+          //padding: noPaddings ? 2 : 2,
           // Respect maxHeight & scrolling
           maxHeight: scrollable ? maxHeight : 'auto',
           overflowY: scrollable ? 'auto' : 'hidden',
