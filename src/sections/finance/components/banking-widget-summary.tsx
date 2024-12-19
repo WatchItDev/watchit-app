@@ -19,6 +19,7 @@ import {m} from "framer-motion";
 import {varHover} from "@src/components/animate";
 import IconButton from "@mui/material/IconButton";
 import {useSelector} from "react-redux";
+import { COLORS } from '@src/layouts/config-layout.ts';
 
 // ----------------------------------------------------------------------
 
@@ -92,6 +93,9 @@ export default function BankingWidgetSummary({
     ...options,
   });
 
+  const totalOptions = { minimumFractionDigits: 1, maximumFractionDigits: 3 };
+  const formattedTotal = new Intl.NumberFormat('en-US', totalOptions).format(total);
+
   return (
     <Stack
       sx={{
@@ -127,32 +131,14 @@ export default function BankingWidgetSummary({
 
       <Stack spacing={1} sx={{ p: 3 }}>
         <Typography variant="subtitle2">{title}</Typography>
-
-        <Box display={'flex'} alignItems={'center'}>
-        <IconButton
-          component={m.button}
-          whileTap="tap"
-          whileHover="hover"
-          variants={varHover(1.05)}
-          sx={{
-            width: 30,
-            height: 30,
-            marginRight: 1,
-            padding: 0,
-            mt: 0.5,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
+        <Stack
+          direction="row"
+          alignItems="flex-end"
+          justifyContent="flex-start"
         >
-          <img
-            src={mmcTokenIcon}
-            alt="MMC Token"
-            style={{ width: 20, height: 20, borderRadius: '0.65rem' }}
-          />
-        </IconButton>
-        <Typography variant="h3">{total}</Typography>
-        </Box>
+          <Box sx={{ typography: 'h3' }}>{formattedTotal}</Box>
+          <Box sx={{ typography: 'h6', opacity: 0.5, ml: 1, mb: 0.6 }}>MMC</Box>
+        </Stack>
 
         <Stack
           spacing={0.5}

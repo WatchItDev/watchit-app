@@ -48,14 +48,12 @@ export default function BankingQuickTransfer({ title, subheader,sx, list, ...oth
 
   const MAX_AMOUNT = balance;
 
-
-
-
   const carousel = useCarousel({
     centerMode: true,
     swipeToSlide: true,
     focusOnSelect: true,
     centerPadding: '0px',
+    rows: 1,
     // @ts-ignore
     slidesToShow: list?.length > 7 ? 7 : list?.length ?? 1,
     responsive: [
@@ -90,7 +88,7 @@ export default function BankingQuickTransfer({ title, subheader,sx, list, ...oth
     ],
   });
 
-  const [autoWidth, setAutoWidth] = useState(24);
+  const [autoWidth, setAutoWidth] = useState(32);
 
   const [amount, setAmount] = useState(0);
 
@@ -104,9 +102,6 @@ export default function BankingQuickTransfer({ title, subheader,sx, list, ...oth
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [amount]);
-
-
-
 
   const handleAutoWidth = useCallback(() => {
     const getNumberLength = amount.toString().length;
@@ -192,6 +187,9 @@ export default function BankingQuickTransfer({ title, subheader,sx, list, ...oth
     </Box>
   );
 
+  const balanceOptions = { minimumFractionDigits: 1, maximumFractionDigits: 3 };
+  const formattedBalance = new Intl.NumberFormat('en-US', balanceOptions).format(balance);
+
   const renderInput = (
     <Stack spacing={3}>
       <Typography variant="overline" sx={{ color: 'text.secondary' }}>
@@ -221,7 +219,7 @@ export default function BankingQuickTransfer({ title, subheader,sx, list, ...oth
         <Box component="span" sx={{ flexGrow: 1 }}>
           Your Balance
         </Box>
-        MMC {balance}
+        {formattedBalance} MMC
       </Stack>
 
       <Button
@@ -295,11 +293,10 @@ interface InputAmountProps extends InputProps {
 function InputAmount({ autoWidth, amount, onBlur, onChange, max, sx,  ...other }: InputAmountProps) {
   return (
     <Stack direction="row" alignItems={'center'} justifyContent="center" spacing={1} sx={sx}>
-      <Typography variant="h5">MMC</Typography>
-
       <Input
         disableUnderline
         size="small"
+        placeholder={'0'}
         value={amount}
         onChange={onChange}
         onBlur={onBlur}
@@ -319,6 +316,8 @@ function InputAmount({ autoWidth, amount, onBlur, onChange, max, sx,  ...other }
         }}
         {...other}
       />
+
+      <Typography variant="h5">MMC</Typography>
     </Stack>
   );
 }

@@ -6,6 +6,8 @@ import InputBase from '@mui/material/InputBase';
 import Box, { BoxProps } from '@mui/material/Box';
 // theme
 import { bgGradient } from '@src/theme/css';
+import Typography from '@mui/material/Typography';
+import { COLORS } from '@src/layouts/config-layout.ts';
 
 // ----------------------------------------------------------------------
 
@@ -45,6 +47,7 @@ export default function BankingInviteFriends({
       <Box
         sx={{
           mt: -15,
+          position: 'relative',
           color: 'common.white',
           borderRadius: 2,
           p: theme.spacing(16, 5, 5, 5),
@@ -56,11 +59,21 @@ export default function BankingInviteFriends({
         }}
       >
         <Stack direction="row" alignItems="center" justifyContent="space-between">
-          <Box sx={{ whiteSpace: 'pre-line', typography: 'h4' }}>{title}</Box>
-          <Box sx={{ typography: 'h2' }}>{price}</Box>
+          <Typography variant={'h3'} textAlign={'center'}>
+            {title}
+            <Stack
+              sx={{ display: 'inline-flex', ml: 2 }}
+              direction="row"
+              alignItems="flex-end"
+              justifyContent="center"
+            >
+              <Box sx={{ typography: 'h2', color: 'warning.main', textShadow: `1px 1px 5px ${COLORS.GRAY_LIGHT}` }}>{price}</Box>
+              <Box sx={{ typography: 'h6', opacity: 0.5, ml: 1, mb: 1 }}>MMC</Box>
+            </Stack>
+          </Typography>
         </Stack>
 
-        <Box sx={{ mt: 2, mb: 3, typography: 'body2' }}>{description}</Box>
+        <Box sx={{ mt: 2, mb: 3, typography: 'body1', fontWeight: 300, opacity: 0.8 }}>{description}</Box>
 
         <InputBase
           fullWidth

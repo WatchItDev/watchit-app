@@ -30,10 +30,13 @@ export default function OverviewBankingView() {
   });
 
   return (
-    <Container sx={{
-      marginTop: '2rem',
-      marginBottom: '2rem',
-    }} maxWidth={settings.themeStretch ? false : 'xl'}>
+    <Container
+      sx={{
+        marginTop: '2rem',
+        marginBottom: '2rem',
+        maxWidth: '100% !important',
+      }}
+    >
       <Grid container spacing={3}>
         <Grid xs={12} md={8}>
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={3}>
@@ -168,7 +171,7 @@ export default function OverviewBankingView() {
             />
 
             <BankingInviteFriends
-              price="MMC 50"
+              price="50"
               title={`Invite friends \n and earn`}
               description="Invite your friends to join our platform and earn MMC 50 for each successful referral."
               img="/assets/illustrations/characters/character_11.png"
