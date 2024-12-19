@@ -56,9 +56,9 @@ export default function HeaderBalance() {
         <Typography variant="subtitle2" sx={{ mt: 0.4 }}>
           {formattedBalance}
         </Typography>
-        <Typography variant="caption" color="text.secondary" sx={{ ml: 1, mt: 0.6, fontSize: 10 }}>
+        {/* <Typography variant="caption" color="text.secondary" sx={{ ml: 1, mt: 0.6, fontSize: 10 }}>
           MMC
-        </Typography>
+        </Typography> */}
       </Stack>
     </>
   );
