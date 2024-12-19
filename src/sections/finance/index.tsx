@@ -2,7 +2,7 @@ import Stack from '@mui/material/Stack';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Unstable_Grid2';
 // _mock
-import { _bankingContacts, _bankingRecentTransitions } from '@src/_mock';
+import { _bankingRecentTransitions } from '@src/_mock';
 // components
 import { useSettingsContext } from '@src/components/settings';
 //

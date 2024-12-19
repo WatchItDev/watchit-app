@@ -3,13 +3,6 @@ import { _mock } from './_mock';
 // BANKING
 // ----------------------------------------------------------------------
 
-export const _bankingContacts = [...Array(12)].map((_, index) => ({
-  id: _mock.id(index),
-  name: _mock.fullName(index),
-  email: _mock.email(index),
-  avatarUrl: _mock.image.avatar(index),
-}));
-
 export const _bankingRecentTransitions = [
   {
     id: _mock.id(2),
