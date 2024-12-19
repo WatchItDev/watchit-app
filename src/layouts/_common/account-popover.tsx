@@ -48,7 +48,7 @@ export default function AccountPopover() {
   const router = useRouter();
   const popover = usePopover();
   const { web3Auth } = useWeb3Auth();
-  const { isLoginModalOpen, isAuthLoading, isUpdatingMetadata } = useSelector((state: any) => state.auth);
+  const { isLoginModalOpen, isUpdatingMetadata, isSessionLoading } = useSelector((state: any) => state.auth);
 
   const { data, loading }: ReadResult<ProfileSession> = useSession();
   const sessionData = useSelector((state: any) => state.auth.session);
@@ -68,7 +68,7 @@ export default function AccountPopover() {
 
   useEffect(() => {
     popover.onClose();
-  }, [sessionData?.authenticated, isLoginModalOpen, isAuthLoading]);
+  }, [sessionData?.authenticated, isLoginModalOpen, isSessionLoading]);
 
   /**
    * Log out from the current session.
@@ -99,7 +99,7 @@ export default function AccountPopover() {
     dispatch(closeLoginModal());
   };
 
-  if (isAuthLoading) {
+  if (isSessionLoading) {
     return <CircularProgress size={24} sx={{ color: '#fff' }} />;
   }
 

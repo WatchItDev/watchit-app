@@ -67,6 +67,7 @@ export const ProfileSelectView: React.FC<ProfileSelectionProps> = ({
       onClose();
       dispatch(setAuthLoading({ isSessionLoading: true }));
       await login(profile);
+      dispatch(setAuthLoading({ isSessionLoading: false }))
     }
   };
 
