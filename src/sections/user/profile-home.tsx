@@ -193,14 +193,14 @@ export default function ProfileHome({
         </Box>
       )}
 
-      {shouldShowButton && isShowingAll && (
+      {(shouldShowButton && isShowingAll && publicationsToShow.length) ? (
         <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
           <Button onClick={handleShowMore} variant="outlined">
             <IconCaretUp />
             <Typography sx={{ ml: 1 }}>Show less</Typography>
           </Button>
         </Box>
-      )}
+      ): null}
     </>
   );
 }
