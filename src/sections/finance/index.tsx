@@ -34,11 +34,11 @@ export default function OverviewBankingView() {
         maxWidth: '100% !important',
       }}
     >
-      <Grid container spacing={3}>
+     <Grid container spacing={3}>
         <Grid xs={12} md={8}>
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={3}>
             <BankingWidgetSummary
-              title="Main Wallet"
+              title="Main Balance"
               icon="eva:diagonal-arrow-left-down-fill"
               percent={2.6}
               total={balanceFromRedux}
@@ -63,7 +63,7 @@ export default function OverviewBankingView() {
             />
 
             <BankingWidgetSummary
-              title="Pool Wallet"
+              title="Pool Balance"
               color="warning"
               icon="eva:diagonal-arrow-right-up-fill"
               percent={-0.5}
