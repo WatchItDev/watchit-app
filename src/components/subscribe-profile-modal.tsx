@@ -28,15 +28,15 @@ import { Profile } from '@lens-protocol/api-bindings';
 import { useResolveTerms } from '@src/hooks/use-resolve-terms.ts';
 import LinearProgress from '@mui/material/LinearProgress';
 
-import { ProfileSession, useSession } from '@lens-protocol/react-web';
 // @ts-ignore
-import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
 import { setBalance } from '@redux/auth';
 import { useDispatch, useSelector } from 'react-redux';
 import { useGetBalance } from '@src/hooks/use-get-balance.ts';
 import { useSnackbar } from 'notistack';
 import {useNotifications} from "@src/hooks/use-notifications.ts";
 import { useNotificationPayload } from '@src/hooks/use-notification-payload.ts';
+import NeonPaper from "@src/sections/publication/NeonPaperContainer.tsx";
+import Box from "@mui/material/Box";
 
 // ----------------------------------------------------------------------
 
@@ -187,6 +187,8 @@ export const SubscribeProfileModal = ({
     }
   };
 
+  const RainbowEffect = loading ? NeonPaper : Box;
+
   return (
     <>
       <Dialog open={isOpen} onClose={onClose} fullWidth maxWidth="xs">
@@ -294,6 +296,8 @@ export const SubscribeProfileModal = ({
               <Button variant="text" onClick={onClose}>
                 Cancel
               </Button>
+
+              <RainbowEffect borderRadius={'10px'} animationSpeed={'3s'} padding={'0'} width={'auto'} >
               <LoadingButton
                 variant="contained"
                 sx={{ backgroundColor: '#fff' }}
@@ -303,6 +307,7 @@ export const SubscribeProfileModal = ({
               >
                 Join
               </LoadingButton>
+              </RainbowEffect>
             </DialogActions>
           </>
         )}
