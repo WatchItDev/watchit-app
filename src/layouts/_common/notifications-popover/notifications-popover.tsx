@@ -22,13 +22,40 @@ import {Box} from "@mui/system";
 import Image from "@src/components/image";
 // @ts-ignore
 import emptyImage from "@src/assets/illustrations/empty-notifications.png";
+import {useCallback, useState} from "react";
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
+import Label from "@src/components/label";
 
 export default function NotificationsPopover() {
   const { notifications, markAsRead, markAllAsRead } = useNotifications();
+  const unreadNotifications = notifications.filter((notification) => !notification.read);
+
   const drawer = useBoolean();
   const smUp = useResponsive('up', 'sm');
 
-  const unreadNotifications = notifications.filter((notification) => !notification.read);
+  const [currentTab, setCurrentTab] = useState('all');
+  const handleChangeTab = useCallback((event: React.SyntheticEvent, newValue: string) => {
+    setCurrentTab(newValue);
+  }, []);
+
+  const TABS = [
+    {
+      value: 'all',
+      label: 'All',
+      count: notifications.length,
+    },
+    {
+      value: 'unread',
+      label: 'Unread',
+      count: unreadNotifications.length,
+    },
+    {
+      value: 'archived',
+      label: 'Archived',
+      count: notifications.length - unreadNotifications.length,
+    },
+  ];
 
   const renderHead = (
     <Stack direction="row" alignItems="center" sx={{ py: 2, pl: 2.5, pr: 1, minHeight: 68 }}>
@@ -37,7 +64,7 @@ export default function NotificationsPopover() {
       </Typography>
 
       {notifications.length  ? (
-        <Tooltip title="Marcar todas como leídas">
+        <Tooltip title="Mark all as read">
           <IconButton color="info" onClick={markAllAsRead}>
             <Iconify icon="eva:done-all-fill" />
           </IconButton>
@@ -50,6 +77,53 @@ export default function NotificationsPopover() {
         </IconButton>
       )}
     </Stack>
+  );
+
+  const renderTabs = (
+    <Tabs value={currentTab} onChange={handleChangeTab}>
+      {TABS.map((tab) => (
+        <Tab
+          key={tab.value}
+          iconPosition="end"
+          value={tab.value}
+          label={tab.label}
+          icon={
+            <Label
+              variant={((tab.value === 'all' || tab.value === currentTab) && 'filled') || 'soft'}
+              color={
+                (tab.value === 'unread' && 'info') ||
+                (tab.value === 'archived' && 'success') ||
+                'default'
+              }
+            >
+              {tab.count}
+            </Label>
+          }
+          sx={{
+            '&:not(:last-of-type)': {
+              mr: 3,
+            },
+          }}
+        />
+      ))}
+    </Tabs>
+  );
+
+
+  const renderNotifications = (notifications: any) => (
+    <Scrollbar>
+      <List disablePadding>
+        { notifications.length > 0 ? (
+          notifications.map((notification: NotificationColumnsProps) => (
+            <NotificationItem
+              key={notification.id}
+              notification={notification}
+              onMarkAsRead={markAsRead}
+            />
+          ))
+        ) : <EmptyPlaceholder /> }
+      </List>
+    </Scrollbar>
   );
 
   return (
@@ -82,19 +156,32 @@ export default function NotificationsPopover() {
 
         <Divider />
 
-        <Scrollbar>
-          <List disablePadding>
-            { notifications.length > 0 ? (
-              notifications.map((notification: NotificationColumnsProps) => (
-                <NotificationItem
-                  key={notification.id}
-                  notification={notification}
-                  onMarkAsRead={markAsRead}
-                />
-              ))
-            ) : <EmptyPlaceholder /> }
-          </List>
-        </Scrollbar>
+        <Stack
+          direction="row"
+          alignItems="center"
+          justifyContent="space-between"
+          sx={{ pl: 2.5, pr: 1 }}
+        >
+          {renderTabs}
+          {/*<IconButton onClick={handleMarkAllAsRead}>
+            <Iconify icon="solar:settings-bold-duotone" />
+          </IconButton>*/}
+        </Stack>
+
+        <Divider />
+
+        {
+          currentTab === 'all' && renderNotifications(notifications)
+        }
+
+        {
+          currentTab === 'unread' && renderNotifications(unreadNotifications)
+        }
+
+        {
+          currentTab === 'archived' && renderNotifications(notifications.filter((notification) => notification.read))
+        }
+
       </Drawer>
     </>
   );

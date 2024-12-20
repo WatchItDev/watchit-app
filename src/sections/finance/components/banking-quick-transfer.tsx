@@ -24,6 +24,12 @@ import Carousel, { CarouselArrows, useCarousel } from '@src/components/carousel'
 import {useSelector} from "react-redux";
 import {truncateAddress} from "@src/utils/wallet.ts";
 import {Profile} from "@lens-protocol/api-bindings";
+import NeonPaper from "@src/sections/publication/NeonPaperContainer.tsx";
+import LoadingButton from "@mui/lab/LoadingButton";
+import { supabase } from '@src/utils/supabase';
+import {useNotificationPayload} from "@src/hooks/use-notification-payload.ts";
+import {useNotifications} from "@src/hooks/use-notifications.ts";
+import {useSnackbar} from "notistack";
 
 // ----------------------------------------------------------------------
 
@@ -94,7 +100,7 @@ export default function BankingQuickTransfer({ title, subheader,sx, list, ...oth
 
   const confirm = useBoolean();
 
-  const getContactInfo = list?.find((_, index) => index === carousel.currentIndex);
+  const getContactInfo: Profile | undefined= list?.find((_, index) => index === carousel.currentIndex);
 
   useEffect(() => {
     if (amount) {
@@ -327,19 +333,7 @@ function InputAmount({ autoWidth, amount, onBlur, onChange, max, sx,  ...other }
 type TConfirmTransferDialogProps = InputAmountProps & DialogProps;
 
 interface ConfirmTransferDialogProps extends TConfirmTransferDialogProps {
-  contactInfo?: {
-    id: string;
-    ownedBy: {address: string}
-    metadata: {
-      displayName: string;
-      picture: {
-        optimized: {
-          uri: string;
-        };
-      };
-    };
-
-  };
+  contactInfo?: Profile;
   onClose: VoidFunction;
 }
 
@@ -353,6 +347,56 @@ function ConfirmTransferDialog({
   onBlur,
   onChange,
 }: ConfirmTransferDialogProps) {
+  const sessionData = useSelector((state: any) => state.auth.session);
+  const { generatePayload } = useNotificationPayload(sessionData);
+  const { sendNotification } = useNotifications();
+  const { enqueueSnackbar } = useSnackbar();
+  const [message, setMessage] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  async function storeTransactionInSupabase(receiver_id?: string, sender_id?: string, payload?: any) {
+    setLoading(true);
+
+    const { error } = await supabase
+      .from('transactions')
+      .insert([{ receiver_id, sender_id, payload }]);
+
+    if (error) {
+      console.error('Error storing transaction:', error);
+    } else {
+      console.log('Transaction stored successfully');
+    }
+  }
+
+  const handleConfirmTransfer = async () => {
+    setLoading(true);
+    const senderId = sessionData?.profile?.id;
+
+    const notificationPayload = generatePayload('TRANSFER', {
+      id: contactInfo.id,
+      displayName: contactInfo?.metadata?.displayName ?? 'no name',
+      avatar: (contactInfo?.metadata?.picture as any)?.optimized?.uri,
+    }, {
+      rawDescription: `${sessionData?.profile?.metadata?.displayName} sent you ${amount} MMC`,
+      message,
+    });
+
+    await storeTransactionInSupabase(contactInfo?.id, senderId, {
+      address: contactInfo?.ownedBy?.address,
+      amount,
+      message,
+      notificationPayload
+    });
+
+    await sendNotification(contactInfo.id, sessionData?.profile?.id, notificationPayload);
+
+    enqueueSnackbar('The transfer has been sent to ' + contactInfo?.metadata?.displayName , { variant: 'success' })
+
+    setLoading(false);
+    onClose();
+  };
+
+  const RainbowEffect = loading ? NeonPaper : Box;
   return (
     <Dialog open={open} fullWidth maxWidth="xs" onClose={onClose}>
       <DialogTitle>Transfer to</DialogTitle>
@@ -384,15 +428,25 @@ function ConfirmTransferDialog({
           sx={{ justifyContent: 'flex-end' }}
         />
 
-        <TextField fullWidth multiline rows={3} placeholder="Write a message..." />
+        <TextField
+          onChange={(e) => setMessage(e.target.value)}
+          fullWidth multiline rows={3} placeholder="Write a message..." />
       </Stack>
 
       <DialogActions>
         <Button onClick={onClose}>Cancel</Button>
 
-        <Button variant="contained" disabled={amount === 0} onClick={onClose}>
-          Confirm & Transfer
-        </Button>
+        <RainbowEffect borderRadius={'10px'} animationSpeed={'3s'} padding={'0'} width={'auto'} >
+          <LoadingButton
+            variant="contained"
+            sx={{ backgroundColor: '#fff' }}
+            onClick={handleConfirmTransfer}
+            disabled={loading}
+            loading={loading}
+          >
+            Confirm & Transfer
+          </LoadingButton>
+        </RainbowEffect>
       </DialogActions>
     </Dialog>
   );
