@@ -73,6 +73,7 @@ const processBackgroundComment = (store: any, data: any) => {
             displayName: owner?.displayName,
             avatar: owner?.avatar,
           }, {
+            comment: pendingComment?.metadata?.content,
             root_id: root,
             comment_id: commentOn,
             rawDescription: `${sessionData?.profile?.metadata?.displayName} left a comment`,
