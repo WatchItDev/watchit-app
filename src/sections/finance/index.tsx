@@ -3,8 +3,7 @@ import Container from '@mui/material/Container';
 import Grid from '@mui/material/Unstable_Grid2';
 // _mock
 import { _bankingRecentTransitions } from '@src/_mock';
-// components
-import { useSettingsContext } from '@src/components/settings';
+
 //
 import BankingContacts from '@src/sections/finance/components/banking-contacts';
 import BankingQuickTransfer from '@src/sections/finance/components/banking-quick-transfer';
@@ -18,8 +17,6 @@ import {useProfileFollowing} from "@lens-protocol/react";
 // ----------------------------------------------------------------------
 
 export default function OverviewBankingView() {
-
-  const settings = useSettingsContext();
 
   const { balance: balanceFromRedux } = useSelector((state: any) => state.auth);
   const sessionData = useSelector((state: any) => state.auth.session);
