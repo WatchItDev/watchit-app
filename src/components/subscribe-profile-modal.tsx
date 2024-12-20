@@ -119,7 +119,7 @@ export const SubscribeProfileModal = ({
     if (error) {
       enqueueSnackbar(error.shortMessage ?? error.message, { variant: 'error' })
       setErrorMessage(error.shortMessage ?? error.message);
-    };
+    }
   }, [error]);
 
   // Effect to handle successful subscription

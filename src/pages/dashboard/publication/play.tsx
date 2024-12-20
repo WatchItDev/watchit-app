@@ -1,7 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 // sections
 import { PublicationPlayView } from '@src/sections/publication/view';
-import { useParams } from '../../../routes/hooks';
+import { useParams } from '@src/routes/hooks';
 
 // ----------------------------------------------------------------------
 

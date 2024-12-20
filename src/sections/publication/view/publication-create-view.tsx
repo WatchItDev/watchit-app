@@ -11,7 +11,7 @@ import { IconChevronLeft } from '@tabler/icons-react';
 import PublicationNewWizard from '../publication-new-wizard.tsx';
 import Header from '../../../layouts/dashboard/header';
 import Label from '../../../components/label';
-import { useResponsive } from '../../../hooks/use-responsive';
+import { useResponsive } from '@src/hooks/use-responsive.ts';
 
 // ----------------------------------------------------------------------
 
