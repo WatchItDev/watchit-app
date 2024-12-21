@@ -30,6 +30,7 @@ import { supabase } from '@src/utils/supabase';
 import {useNotificationPayload} from "@src/hooks/use-notification-payload.ts";
 import {useNotifications} from "@src/hooks/use-notifications.ts";
 import {useSnackbar} from "notistack";
+import InputBase from "@mui/material/InputBase";
 
 // ----------------------------------------------------------------------
 
@@ -254,18 +255,17 @@ export default function BankingQuickTransfer({ title, subheader,sx, list, ...oth
 
         <Stack sx={{ p: 3 }}>
           <Stack direction="row" alignItems="center" justifyContent="space-between">
-            <Typography variant="overline" sx={{ color: 'text.secondary' }}>
-              Recent
-            </Typography>
-
-            <Button
-              size="small"
-              color="inherit"
-              endIcon={<Iconify icon="eva:arrow-ios-forward-fill" width={18} sx={{ ml: -0.5 }} />}
-              sx={{ mr: -1 }}
-            >
-              View All
-            </Button>
+            <InputBase
+              fullWidth
+              placeholder="Enter an address"
+              sx={{
+                pl: 1.5,
+                height: 40,
+                borderRadius: 1,
+                color: 'primary.main',
+                bgcolor: 'common.white',
+              }}
+            />
           </Stack>
 
           {renderCarousel}
@@ -385,7 +385,7 @@ function ConfirmTransferDialog({
       address: contactInfo?.ownedBy?.address,
       amount,
       message,
-      notificationPayload
+      ...notificationPayload,
     });
 
     await sendNotification(contactInfo.id, sessionData?.profile?.id, notificationPayload);
