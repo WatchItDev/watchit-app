@@ -68,7 +68,10 @@ ${colors?.join(', ') || '#1e87ff, #5c13c4, #ff0033, #ffda00, #64bc26, #1e87ff'}
   },
 }));
 
-const NeonPaper: FC<NeonPaperProps> = ({ children, colors, animationSpeed, padding='0.7rem', borderRadius='10px', width='100%' }) => {
+const defaultColors = ['rgba(30,135,255,0.5)', 'rgba(92,19,196,0.5)', 'rgba(255,0,51,0.5)', 'rgba(255,218,0,0.5)', 'rgba(100,188,38,0.5)', 'rgba(30,135,255,0.5)']
+const defaultAnimationSpeed = '2s'
+
+const NeonPaper: FC<NeonPaperProps> = ({ children, colors = defaultColors, animationSpeed = defaultAnimationSpeed, padding='0.7rem', borderRadius='10px', width='100%' }) => {
   return (
     <NeonPaperContainer
       elevation={3}

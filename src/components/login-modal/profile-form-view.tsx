@@ -606,7 +606,11 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
             </Button>
           </Grid>
           <Grid item xs={12} sm={6}>
-            <PaperElement padding={'0'} colors={['rgba(30,135,255,0.5)', 'rgba(92,19,196,0.5)', 'rgba(255,0,51,0.5)', 'rgba(255,218,0,0.5)', 'rgba(100,188,38,0.5)', 'rgba(30,135,255,0.5)']} animationSpeed="2s">
+            <PaperElement
+              {...(currentStep !== 0 && {
+                padding: '0'
+              })}
+            >
               <Button
                 disabled={currentStep !== 0}
                 variant="contained"

@@ -225,10 +225,6 @@ export default function PublicationCommentItem({ comment, hasReply, canReply }: 
           </Suspense>
 
           <ContentContainer
-            {...(isPendingComment && {
-              colors: ['rgba(30,135,255,0.5)', 'rgba(92,19,196,0.5)', 'rgba(255,0,51,0.5)', 'rgba(255,218,0,0.5)', 'rgba(100,188,38,0.5)', 'rgba(30,135,255,0.5)'],
-              animationSpeed: '2s',
-            })}
             sx={{
               p: 1.5,
               pt: 0.7,
