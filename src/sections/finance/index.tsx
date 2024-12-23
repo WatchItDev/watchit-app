@@ -161,11 +161,13 @@ export default function OverviewBankingView() {
           <Stack spacing={3}>
             <BankingQuickTransfer title="Quick transfer" list={following} />
 
-            <BankingContacts
-              title="Contacts"
-              subheader={`You have ${following?.length ?? 0} contacts`}
-              list={following?.slice?.(-5) ?? []}
-            />
+            {following?.length ? (
+              <BankingContacts
+                title="Contacts"
+                subheader={`You have ${following?.length ?? 0} contacts`}
+                list={following?.slice?.(-5) ?? []}
+              />
+            ) : undefined}
 
             <BankingInviteFriends
               price="50"

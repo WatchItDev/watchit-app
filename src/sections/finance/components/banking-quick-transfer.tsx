@@ -9,17 +9,14 @@ import Tooltip from '@mui/material/Tooltip';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import CardHeader from '@mui/material/CardHeader';
-import Typography from '@mui/material/Typography';
 import DialogTitle from '@mui/material/DialogTitle';
 import { CardProps } from '@mui/material/Card';
 import ListItemText from '@mui/material/ListItemText';
 import DialogActions from '@mui/material/DialogActions';
 import Dialog, { DialogProps } from '@mui/material/Dialog';
-import Input, { InputProps, inputClasses } from '@mui/material/Input';
 // hooks
 import { useBoolean } from '@src/hooks/use-boolean';
 // components
-import Iconify from '@src/components/iconify';
 import Carousel, { CarouselArrows, useCarousel } from '@src/components/carousel';
 import {useSelector} from "react-redux";
 import {truncateAddress} from "@src/utils/wallet.ts";
@@ -30,6 +27,8 @@ import { supabase } from '@src/utils/supabase';
 import {useNotificationPayload} from "@src/hooks/use-notification-payload.ts";
 import {useNotifications} from "@src/hooks/use-notifications.ts";
 import {useSnackbar} from "notistack";
+import { InputAmount, InputAmountProps } from '@src/components/input-amount.tsx';
+import { ethers } from 'ethers';
 
 // ----------------------------------------------------------------------
 
@@ -47,13 +46,20 @@ interface Props extends CardProps {
   list: Profile[] | undefined;
 }
 
+// ----------------------------------------------------------------------
+
+const isValidAddress = (address: string): boolean => {
+  return ethers.isAddress(address);
+};
+
+// ----------------------------------------------------------------------
+
 export default function BankingQuickTransfer({ title, subheader,sx, list, ...other }: Props) {
   const theme = useTheme();
-
   const balance = useSelector((state: any) => state.auth.balance);
-
+  const [walletAddress, setWalletAddress] = useState('');
+  const [addressError, setAddressError] = useState(false);
   const MAX_AMOUNT = balance;
-
   const carousel = useCarousel({
     centerMode: true,
     swipeToSlide: true,
@@ -93,26 +99,35 @@ export default function BankingQuickTransfer({ title, subheader,sx, list, ...oth
       },
     ],
   });
-
-  const [autoWidth, setAutoWidth] = useState(32);
-
   const [amount, setAmount] = useState(0);
-
   const confirm = useBoolean();
-
+  const [initialized, setInitialized] = useState(false);
   const getContactInfo: Profile | undefined= list?.find((_, index) => index === carousel.currentIndex);
 
   useEffect(() => {
-    if (amount) {
-      handleAutoWidth();
+    if (!initialized && list?.length && carousel.carouselRef.current) {
+      carousel.setCurrentIndex(list?.length > 5 ? 2 : 0);
+      setInitialized(true);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [amount]);
+  }, [list, carousel, initialized]);
 
-  const handleAutoWidth = useCallback(() => {
-    const getNumberLength = amount.toString().length;
-    setAutoWidth(getNumberLength * 24);
-  }, [amount]);
+  useEffect(() => {
+    const currentProfile = list?.[carousel.currentIndex];
+    if (currentProfile?.ownedBy?.address) {
+      setWalletAddress(currentProfile.ownedBy.address);
+    }
+  }, [carousel.currentIndex, list]);
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+    setWalletAddress(value);
+
+    if (isValidAddress(value)) {
+      setAddressError(false);
+    } else {
+      setAddressError(true);
+    }
+  };
 
   const handleChangeSlider = useCallback((_event: Event, newValue: number | number[]) => {
     setAmount(newValue as number);
@@ -130,8 +145,28 @@ export default function BankingQuickTransfer({ title, subheader,sx, list, ...oth
     }
   }, [amount]);
 
+  const handleTransferFinish = () => {
+    setAmount(0)
+    setWalletAddress('')
+    confirm.onFalse?.();
+  }
+
+  const renderWalletInput = (
+    <Box sx={{ mb: 3 }}>
+      <TextField
+        fullWidth
+        label="Wallet Address"
+        value={walletAddress}
+        onChange={handleInputChange}
+        placeholder="Enter wallet address"
+        error={addressError}
+        helperText={addressError ? 'Invalid wallet address' : ''}
+      />
+    </Box>
+  );
+
   const renderCarousel = (
-    <Box sx={{ position: 'relative' }}>
+    <Box sx={{ position: 'relative', mb: 3 }}>
       <CarouselArrows
         filled
         onPrev={carousel.onPrev}
@@ -164,7 +199,7 @@ export default function BankingQuickTransfer({ title, subheader,sx, list, ...oth
           }}
         >
           {list?.map((profile, index) => (
-            <Box key={profile.id} sx={{ py: 5 }}>
+            <Box key={profile.id} sx={{ py: 2 }}>
               <Tooltip key={profile.id} title={profile?.metadata?.displayName} arrow placement="top">
                 <Avatar
                   src={
@@ -198,15 +233,11 @@ export default function BankingQuickTransfer({ title, subheader,sx, list, ...oth
 
   const renderInput = (
     <Stack spacing={3}>
-      <Typography variant="overline" sx={{ color: 'text.secondary' }}>
-        insert amount
-      </Typography>
 
       <InputAmount
         max={MAX_AMOUNT}
         amount={amount}
         onBlur={handleBlur}
-        autoWidth={autoWidth}
         onChange={handleChangeInput}
       />
 
@@ -232,7 +263,7 @@ export default function BankingQuickTransfer({ title, subheader,sx, list, ...oth
         size="large"
         color="inherit"
         variant="contained"
-        disabled={amount === 0}
+        disabled={amount === 0 || !isValidAddress(walletAddress)}
         onClick={confirm.onTrue}
       >
         Transfer Now
@@ -253,22 +284,9 @@ export default function BankingQuickTransfer({ title, subheader,sx, list, ...oth
         <CardHeader title={title} subheader={subheader} />
 
         <Stack sx={{ p: 3 }}>
-          <Stack direction="row" alignItems="center" justifyContent="space-between">
-            <Typography variant="overline" sx={{ color: 'text.secondary' }}>
-              Recent
-            </Typography>
+          {renderWalletInput}
 
-            <Button
-              size="small"
-              color="inherit"
-              endIcon={<Iconify icon="eva:arrow-ios-forward-fill" width={18} sx={{ ml: -0.5 }} />}
-              sx={{ mr: -1 }}
-            >
-              View All
-            </Button>
-          </Stack>
-
-          {renderCarousel}
+          {!!list?.length ? renderCarousel : undefined}
 
           {renderInput}
         </Stack>
@@ -279,8 +297,8 @@ export default function BankingQuickTransfer({ title, subheader,sx, list, ...oth
         amount={amount}
         onBlur={handleBlur}
         open={confirm.value}
-        autoWidth={autoWidth}
-        onClose={confirm.onFalse}
+        address={walletAddress}
+        onClose={handleTransferFinish}
         contactInfo={getContactInfo}
         onChange={handleChangeInput}
       />
@@ -290,62 +308,20 @@ export default function BankingQuickTransfer({ title, subheader,sx, list, ...oth
 
 // ----------------------------------------------------------------------
 
-interface InputAmountProps extends InputProps {
-  autoWidth: number;
-  max: number;
-  amount: number | number[];
-}
-
-function InputAmount({ autoWidth, amount, onBlur, onChange, max, sx,  ...other }: InputAmountProps) {
-  return (
-    <Stack direction="row" alignItems={'center'} justifyContent="center" spacing={1} sx={sx}>
-      <Input
-        disableUnderline
-        size="small"
-        placeholder={'0'}
-        value={amount}
-        onChange={onChange}
-        onBlur={onBlur}
-        inputProps={{
-          step: STEP,
-          min: MIN_AMOUNT,
-          max: max,
-          type: 'number',
-        }}
-        sx={{
-          [`& .${inputClasses.input}`]: {
-            p: 0,
-            typography: 'h3',
-            textAlign: 'center',
-            width: autoWidth,
-          },
-        }}
-        {...other}
-      />
-
-      <Typography variant="h5">MMC</Typography>
-    </Stack>
-  );
-}
-
-// ----------------------------------------------------------------------
-
 type TConfirmTransferDialogProps = InputAmountProps & DialogProps;
 
 interface ConfirmTransferDialogProps extends TConfirmTransferDialogProps {
   contactInfo?: Profile;
+  address?: string;
   onClose: VoidFunction;
 }
 
 function ConfirmTransferDialog({
   open,
   amount,
-  autoWidth,
   contactInfo,
-  max,
   onClose,
-  onBlur,
-  onChange,
+  address
 }: ConfirmTransferDialogProps) {
   const sessionData = useSelector((state: any) => state.auth.session);
   const { generatePayload } = useNotificationPayload(sessionData);
@@ -353,6 +329,9 @@ function ConfirmTransferDialog({
   const { enqueueSnackbar } = useSnackbar();
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
+  const isSame = contactInfo?.ownedBy?.address === address;
+  const defaultImage = `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${address}`;
+  const defaultName = 'Destination wallet';
 
   async function storeTransactionInSupabase(receiver_id?: string, sender_id?: string, payload?: any) {
     setLoading(true);
@@ -373,7 +352,7 @@ function ConfirmTransferDialog({
     const senderId = sessionData?.profile?.id;
 
     const notificationPayload = generatePayload('TRANSFER', {
-      id: contactInfo.id,
+      id: contactInfo?.id ?? '',
       displayName: contactInfo?.metadata?.displayName ?? 'no name',
       avatar: (contactInfo?.metadata?.picture as any)?.optimized?.uri,
     }, {
@@ -388,7 +367,7 @@ function ConfirmTransferDialog({
       notificationPayload
     });
 
-    await sendNotification(contactInfo.id, sessionData?.profile?.id, notificationPayload);
+    await sendNotification(contactInfo?.id ?? '', sessionData?.profile?.id, notificationPayload);
 
     enqueueSnackbar('The transfer has been sent to ' + contactInfo?.metadata?.displayName , { variant: 'success' })
 
@@ -400,34 +379,28 @@ function ConfirmTransferDialog({
   return (
     <Dialog open={open} fullWidth maxWidth="xs" onClose={onClose}>
       <DialogTitle>Transfer to</DialogTitle>
+      <Stack direction="column" spacing={3} sx={{ px: 3 }}>
+        <Stack direction="row" spacing={3} sx={{ flexWrap: 'wrap', alignItems: 'center', justifyContent: 'center' }}>
+          <Stack direction="row" alignItems="center" spacing={2} sx={{ flexGrow: 1 }}>
+            <Avatar
+             src={isSame ? (contactInfo?.metadata?.picture as any)?.optimized?.uri ?? defaultImage : defaultImage}
+             sx={{ width: 48, height: 48 }} />
 
-      <Stack spacing={3} sx={{ px: 3 }}>
-        <Stack direction="row" alignItems="center" spacing={2}>
-          <Avatar
-            src={
-              (contactInfo?.metadata?.picture as any)?.optimized?.uri ??
-              `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${contactInfo?.id}`
-            }
+            <ListItemText
+              primary={isSame ? contactInfo?.metadata?.displayName ?? defaultName : defaultName}
+              secondary={truncateAddress(address ?? '')}
+              secondaryTypographyProps={{ component: 'span', mt: 0.5 }}
+            />
+          </Stack>
 
-           sx={{ width: 48, height: 48 }} />
-
-          <ListItemText
-            primary={contactInfo?.metadata?.displayName}
-            secondary={truncateAddress(contactInfo?.ownedBy?.address ?? '')}
-            secondaryTypographyProps={{ component: 'span', mt: 0.5 }}
-          />
+          <Stack direction={'column'} spacing={0} sx={{ py: 2, flexGrow: 1 }}>
+            <ListItemText
+              primary={'Amount:'}
+              secondary={`${amount} MMC`}
+              secondaryTypographyProps={{ component: 'span', mt: 0.5 }}
+            />
+          </Stack>
         </Stack>
-
-        <InputAmount
-          max={max}
-          onBlur={onBlur}
-          onChange={onChange}
-          autoWidth={autoWidth}
-          amount={amount}
-          disableUnderline={false}
-          sx={{ justifyContent: 'flex-end' }}
-        />
-
         <TextField
           onChange={(e) => setMessage(e.target.value)}
           fullWidth multiline rows={3} placeholder="Write a message..." />
