@@ -10,6 +10,8 @@ import ListItemText from '@mui/material/ListItemText';
 // components
 import Iconify from '@src/components/iconify';
 import {Profile} from "@lens-protocol/api-bindings";
+import { paths } from '@src/routes/paths.ts';
+import { useRouter } from '@src/routes/hooks';
 
 // ----------------------------------------------------------------------
 
@@ -20,6 +22,13 @@ interface Props extends CardProps {
 }
 
 export default function BankingContacts({ title, subheader, list, ...other }: Props) {
+  const router = useRouter();
+
+  const goToProfile = (id: string) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+    router.push(paths.dashboard.user.root(id));
+  };
+
   return (
     <Card {...other}>
       <CardHeader
@@ -39,14 +48,16 @@ export default function BankingContacts({ title, subheader, list, ...other }: Pr
       <Stack spacing={3} sx={{ p: 3 }}>
         {list.map((profile) => (
           <Stack direction="row" alignItems="center" key={profile.id}>
-            <Avatar
-              src={
-                (profile?.metadata?.picture as any)?.optimized?.uri ??
-                `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${profile?.id}`
-              }
-              sx={{ width: 48, height: 48, mr: 2 }} />
+            <Stack direction="row" alignItems="left" sx={{ cursor: 'pointer', flexGrow: 1 }} onClick={() => goToProfile(profile.id)}>
+              <Avatar
+                src={
+                  (profile?.metadata?.picture as any)?.optimized?.uri ??
+                  `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${profile?.id}`
+                }
+                sx={{ width: 48, height: 48, mr: 2 }} />
 
-            <ListItemText primary={profile.metadata?.displayName} secondary={profile.id} />
+              <ListItemText primary={profile.metadata?.displayName} secondary={profile.id} />
+            </Stack>
 
             <Tooltip title="Quick Transfer">
               <IconButton>
