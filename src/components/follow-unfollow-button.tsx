@@ -41,7 +41,7 @@ interface FollowUnfollowButtonProps {
 const FollowUnfollowButton = ({ profileId, size = 'medium', followButtonMinWidth = 120 }: PropsWithChildren<FollowUnfollowButtonProps>) => {
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
-  const { data: profile, execute: getProfile } = useLazyProfile();
+  const { data: profile, execute: getProfile, loading } = useLazyProfile();
   const sessionData = useSelector((state: any) => state.auth.session);
   const [isFollowed, setIsFollowed] = useState(profile?.operations?.isFollowedByMe?.value);
 
@@ -66,6 +66,10 @@ const FollowUnfollowButton = ({ profileId, size = 'medium', followButtonMinWidth
     if (followError) handleActionError(followError);
     if (unfollowError) handleActionError(unfollowError);
   }, [followError, unfollowError]);
+
+  useEffect(() => {
+    getProfile({ forProfileId: profileId as ProfileId });
+  }, [sessionData?.authenticated]);
 
   useEffect(() => {
     setIsFollowed(profile?.operations?.isFollowedByMe?.value);
@@ -137,11 +141,18 @@ const FollowUnfollowButton = ({ profileId, size = 'medium', followButtonMinWidth
     return `Successfully ${action} ${profileName}.`;
   }
 
-  const RainbowEffect = isProcessing ? NeonPaper : Box;
+  const RainbowEffect = (isProcessing || loading) ? NeonPaper : Box;
 
   return (
     <>
-      <RainbowEffect borderRadius={'10px'} animationSpeed={'3s'} padding={'0'} width={'auto'} >
+      <RainbowEffect
+        {...((isProcessing || loading) && {
+          borderRadius: '10px',
+          animationSpeed: '3s',
+          padding: '0',
+          width: 'auto'
+        })}
+      >
         <LoadingButton
           size={size}
           title={isFollowed ? 'Unfollow' : 'Follow'}
@@ -157,7 +168,7 @@ const FollowUnfollowButton = ({ profileId, size = 'medium', followButtonMinWidth
               ? handleAction(unfollow, getFollowMessage(profile?.handle?.localName ?? '', 'unfollowed'), false)
               : handleAction(follow, getFollowMessage(profile?.handle?.localName ?? '', 'followed'), true);
           }}
-          disabled={isProcessing || profile?.id === sessionData?.profile?.id}
+          disabled={isProcessing || profile?.id === sessionData?.profile?.id || loading}
           loading={followLoading || unfollowLoading}
         >
           {isFollowed ? 'Unfollow' : 'Follow'}

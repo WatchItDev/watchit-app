@@ -104,23 +104,17 @@ export default function AccountPopover() {
   }
 
   const EffectPaper = isUpdatingMetadata ? NeonPaper : Box;
-  // Generate an array of colors with rainbow pattern, add 50% opacity to each color
-
-  const rainbowColors = [
-    "rgba(255, 0, 0, 0.5)",    // Red
-    "rgba(255, 127, 0, 0.5)",  // Orange
-    "rgba(255, 255, 0, 0.5)",  // Yellow
-    "rgba(0, 255, 0, 0.5)",    // Green
-    "rgba(0, 0, 255, 0.5)",    // Blue
-    "rgba(75, 0, 130, 0.5)",   // Indigo
-    "rgba(143, 0, 255, 0.5)"   // Violet
-  ];
 
   return (
     <>
       <Box sx={{ display: 'flex', alignItems: 'center' }} onClick={popover.onOpen}>
         {sessionData?.authenticated ? (
-          <EffectPaper colors={rainbowColors} padding={'0'} borderRadius={'999999px'}>
+          <EffectPaper
+            {...(isUpdatingMetadata && {
+              padding: '0',
+              borderRadius: '999999px'
+            })}
+          >
           <IconButton
             component={m.button}
             whileTap="tap"
