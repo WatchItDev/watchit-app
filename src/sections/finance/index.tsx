@@ -13,6 +13,11 @@ import BankingBalanceStatistics from '@src/sections/finance/components/banking-b
 import BankingRecentTransitions from '@src/sections/finance/components/banking-recent-transitions';
 import {useSelector} from "react-redux";
 import {useProfileFollowing} from "@lens-protocol/react";
+import Iconify from '@src/components/iconify';
+import IconButton from "@mui/material/IconButton";
+import { Box } from '@mui/system';
+import Typography from "@mui/material/Typography";
+import Tooltip from "@mui/material/Tooltip";
 
 // ----------------------------------------------------------------------
 
@@ -36,7 +41,7 @@ export default function OverviewBankingView() {
     >
      <Grid container spacing={3}>
         <Grid xs={12} md={8}>
-          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={3}>
+          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1}>
             <BankingWidgetSummary
               title="Main Balance"
               icon="eva:diagonal-arrow-left-down-fill"
@@ -61,6 +66,20 @@ export default function OverviewBankingView() {
                 ],
               }}
             />
+
+            <Box sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+              <IconButton>
+                <Tooltip key={'some-key'} title={'Transfer between your wallets'} arrow placement="top">
+                  <Stack direction="row" spacing={1} alignItems="center">
+                    <Iconify icon="tabler:transfer" width={20} height={20} />
+                  </Stack>
+                </Tooltip>
+              </IconButton>
+            </Box>
 
             <BankingWidgetSummary
               title="Pool Balance"
