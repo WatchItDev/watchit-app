@@ -5,14 +5,13 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import DialogTitle from '@mui/material/DialogTitle';
-import Card, { CardProps } from '@mui/material/Card';
+import Card from '@mui/material/Card';
 import DialogActions from '@mui/material/DialogActions';
 import Dialog, { DialogProps } from '@mui/material/Dialog';
 // hooks
 import { useBoolean } from '@src/hooks/use-boolean';
 // components
 import { useSelector } from "react-redux";
-import { Profile } from "@lens-protocol/api-bindings";
 import NeonPaper from "@src/sections/publication/NeonPaperContainer.tsx";
 import LoadingButton from "@mui/lab/LoadingButton";
 import { useSnackbar } from "notistack";
@@ -162,7 +161,7 @@ function ConfirmTransferDialog({
     }, 2000);
   };
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (_event: React.ChangeEvent<HTMLInputElement>) => {
     // const value = event.target.value;
   };
 

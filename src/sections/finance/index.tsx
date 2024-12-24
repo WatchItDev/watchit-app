@@ -34,10 +34,7 @@ export default function OverviewBankingView() {
   const processedData = groupedTransactionData(groupedData);
   const dataForBalanceStatistics = processedData.slice(0, -1);
 
-  const daySeriesData = processDayData(processedData).map(item => ({
-    x: parseInt(item.x.replace('-', ''), 10), // Convert x to number
-    y: item.y,
-  }));
+  const daySeriesData = processDayData(processedData);
 
   // Get the difference between daySeriesData[1] and daySeriesData[0] in y value to calculate the percent
   const percent = (daySeriesData[1]?.y - daySeriesData[0]?.y) / daySeriesData[0]?.y * 100;
