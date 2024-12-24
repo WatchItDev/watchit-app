@@ -15,7 +15,6 @@ import Iconify from '@src/components/iconify';
 import Chart, { useChart } from '@src/components/chart';
 // @ts-ignore
 import mmcTokenIcon from '@src/assets/mmc_token.ico';
-import {useSelector} from "react-redux";
 
 // ----------------------------------------------------------------------
 
@@ -27,7 +26,7 @@ interface Props extends CardProps {
   icon: string;
   chart: {
     series: {
-      x: number;
+      x: string;
       y: number;
     }[];
     options?: ApexOptions;
@@ -44,10 +43,6 @@ export default function FinanceWidgetSummary({
   sx,
   ...other
 }: Props) {
-  const sessionData = useSelector((state: any) => state.auth.session);
-
-  console.log('sessionData', sessionData);
-
   const theme = useTheme();
 
   const { series, options } = chart;
@@ -65,6 +60,8 @@ export default function FinanceWidgetSummary({
       },
     },
     yaxis: {
+      min: 0,
+      max: series?.reduce((max, item) => Math.max(max, item.y) + 10, 0),
       labels: {
         show: false,
       },
@@ -156,5 +153,5 @@ export default function FinanceWidgetSummary({
 
       <Chart type="area" series={[{ data: series }]} options={chartOptions} height={120} />
     </Stack>
-  );
+  )
 }

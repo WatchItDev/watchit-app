@@ -1,5 +1,5 @@
 import { ApexOptions } from 'apexcharts';
-import { useState, useCallback } from 'react';
+import {useState, useCallback, useEffect} from 'react';
 // @mui
 import Box from '@mui/material/Box';
 import MenuItem from '@mui/material/MenuItem';
@@ -17,10 +17,10 @@ interface Props extends CardProps {
   title?: string;
   subheader?: string;
   chart: {
-    categories?: string[];
     colors?: string[];
     series: {
       type: string;
+      categories?: string[];
       data: {
         name: string;
         data: number[];
@@ -31,11 +31,12 @@ interface Props extends CardProps {
 }
 
 export default function FinanceBalanceStatistics({ title, subheader, chart, ...other }: Props) {
-  const { categories, colors, series, options } = chart;
+  const { colors, series, options } = chart;
 
   const popover = usePopover();
 
-  const [seriesData, setSeriesData] = useState('Year');
+  const [seriesData, setSeriesData] = useState('Week');
+  const [categories, setCategories] = useState(null);
 
   const chartOptions = useChart({
     colors,
@@ -55,10 +56,21 @@ export default function FinanceBalanceStatistics({ title, subheader, chart, ...o
     ...options,
   });
 
+  useEffect(() => {
+    setCategories(series[0].categories as any)
+  },[series])
+
   const handleChangeSeries = useCallback(
     (newValue: string) => {
       popover.onClose();
       setSeriesData(newValue);
+
+      // Set the categories based on the selected series (Week, Month, Year)
+      const selectedSeries = series.find((item) => item.type === newValue);
+
+      if (selectedSeries) {
+        setCategories(selectedSeries.categories as any);
+      }
     },
     [popover]
   );
