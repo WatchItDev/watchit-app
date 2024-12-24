@@ -4,8 +4,16 @@ import Button from "@mui/material/Button";
 import {COLORS} from "@src/layouts/config-layout.ts";
 import {openLoginModal} from "@redux/auth";
 import {useDispatch, useSelector} from "react-redux";
+import Iconify from "@src/components/iconify";
+import { FC } from "react";
 
-const notLoggedIn = () => {
+// Create a type for the component props to receive the icon and subtitle
+type Props = {
+  icon: string;
+  subtitle: string;
+}
+
+const notLoggedIn: FC<Props> = ({icon, subtitle} ) => {
   const dispatch = useDispatch();
   const sessionData = useSelector((state: any) => state.auth.session);
 
@@ -21,7 +29,6 @@ const notLoggedIn = () => {
         alignItems: 'center',
         height: '100vh',
         flexDirection: 'column',
-        gap: '1rem',
         backgroundColor: COLORS.GRAY_DARK,
         color: 'white',
         position: 'absolute',
@@ -31,10 +38,19 @@ const notLoggedIn = () => {
         zIndex: 10,
       }}
     >
-      <Typography variant="h4">Please log in to view this content</Typography>
+      <Iconify icon={icon} width={200} height={200} sx={{
+        mb: 2,
+        color: COLORS.GRAY_LIGHT,
+      }} />
+      <Typography variant="h4">Please log in </Typography>
+      <Typography variant="caption"  sx={{mb:4, opacity: 0.5}}>
+        {subtitle}
+      </Typography>
       <Button
         onClick={handleClicked}
         sx={{
+          px: 4,
+          py: 1,
         backgroundColor: COLORS.GRAY_LIGHT,
         color: 'white',
         '&:hover': {
