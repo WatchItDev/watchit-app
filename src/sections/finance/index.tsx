@@ -13,11 +13,7 @@ import BankingBalanceStatistics from '@src/sections/finance/components/banking-b
 import BankingRecentTransitions from '@src/sections/finance/components/banking-recent-transitions';
 import {useSelector} from "react-redux";
 import {useProfileFollowing} from "@lens-protocol/react";
-import Iconify from '@src/components/iconify';
-import IconButton from "@mui/material/IconButton";
-import { Box } from '@mui/system';
-import Typography from "@mui/material/Typography";
-import Tooltip from "@mui/material/Tooltip";
+import FinanceTransferAccounts from "@src/sections/finance/components/finance-transfer-accounts.tsx";
 
 // ----------------------------------------------------------------------
 
@@ -67,19 +63,7 @@ export default function OverviewBankingView() {
               }}
             />
 
-            <Box sx={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
-              <IconButton>
-                <Tooltip key={'some-key'} title={'Transfer between your wallets'} arrow placement="top">
-                  <Stack direction="row" spacing={1} alignItems="center">
-                    <Iconify icon="tabler:transfer" width={20} height={20} />
-                  </Stack>
-                </Tooltip>
-              </IconButton>
-            </Box>
+            <FinanceTransferAccounts />
 
             <BankingWidgetSummary
               title="Pool Balance"
