@@ -214,7 +214,7 @@ export default function FinanceQuickTransfer({ title, subheader,sx, list, ...oth
                     transition: theme.transitions.create('all'),
                     ...(index === carousel.currentIndex && {
                       opacity: 1,
-                      transform: 'scale(1.25)',
+                      transform: 'scale(1.50)',
                       boxShadow: '-4px 12px 24px 0 rgb(0,0,0,0.24)',
                     }),
                   }}
