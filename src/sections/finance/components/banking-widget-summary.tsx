@@ -15,11 +15,7 @@ import Iconify from '@src/components/iconify';
 import Chart, { useChart } from '@src/components/chart';
 // @ts-ignore
 import mmcTokenIcon from '@src/assets/mmc_token.ico';
-import {m} from "framer-motion";
-import {varHover} from "@src/components/animate";
-import IconButton from "@mui/material/IconButton";
 import {useSelector} from "react-redux";
-import { COLORS } from '@src/layouts/config-layout.ts';
 
 // ----------------------------------------------------------------------
 
