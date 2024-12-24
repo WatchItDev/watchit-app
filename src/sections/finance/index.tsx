@@ -14,6 +14,8 @@ import FinanceRecentTransitions from '@src/sections/finance/components/finance-r
 import {useSelector} from "react-redux";
 import {useProfileFollowing} from "@lens-protocol/react";
 import FinanceTransferAccounts from "@src/sections/finance/components/finance-transfer-accounts.tsx";
+import {useTransactionData} from "@src/hooks/use-transaction-data";
+import {groupedTransactionData, processDayData} from "@src/utils/finance-graphs/groupedTransactions.ts";
 
 // ----------------------------------------------------------------------
 
@@ -27,6 +29,19 @@ export default function OverviewBankingView() {
     for: sessionData?.profile?.id,
   });
 
+  const groupedData = useTransactionData()
+  // remove the last element as it is the current day
+  const processedData = groupedTransactionData(groupedData);
+  const dataForBalanceStatistics = processedData.slice(0, -1);
+
+  const daySeriesData = processDayData(processedData).map(item => ({
+    x: parseInt(item.x.replace('-', ''), 10), // Convert x to number
+    y: item.y,
+  }));
+
+  // Get the difference between daySeriesData[1] and daySeriesData[0] in y value to calculate the percent
+  const percent = (daySeriesData[1]?.y - daySeriesData[0]?.y) / daySeriesData[0]?.y * 100;
+
   return (
     <Container
       sx={{
@@ -39,55 +54,26 @@ export default function OverviewBankingView() {
         <Grid xs={12} md={8}>
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1}>
             <FinanceWidgetSummary
-              title="Main Balance"
-              icon="eva:diagonal-arrow-left-down-fill"
-              percent={2.6}
+              title="ETH Balance"
+              color="warning"
+              icon={percent > 0 ? 'eva:diagonal-arrow-right-up-fill' : 'eva:diagonal-arrow-left-down-fill'}
+              percent={percent}
               total={balanceFromRedux}
               chart={{
-                series: [
-                  { x: 2010, y: 88 },
-                  { x: 2011, y: 120 },
-                  { x: 2012, y: 156 },
-                  { x: 2013, y: 123 },
-                  { x: 2014, y: 88 },
-                  { x: 2015, y: 66 },
-                  { x: 2016, y: 45 },
-                  { x: 2017, y: 29 },
-                  { x: 2018, y: 45 },
-                  { x: 2019, y: 88 },
-                  { x: 2020, y: 132 },
-                  { x: 2021, y: 146 },
-                  { x: 2022, y: 169 },
-                  { x: 2023, y: 184 },
-                ],
+                series: daySeriesData,
               }}
             />
 
             <FinanceTransferAccounts />
 
             <FinanceWidgetSummary
-              title="Pool Balance"
-              color="warning"
-              icon="eva:diagonal-arrow-right-up-fill"
-              percent={-0.5}
-              total={balanceFromRedux}
+              title="Watchit Balance"
+              color="primary"
+              icon={percent > 0 ? 'eva:diagonal-arrow-right-up-fill' : 'eva:diagonal-arrow-left-down-fill'}
+              percent={percent}
+              total={balanceFromRedux + 1000}
               chart={{
-                series: [
-                  { x: 2010, y: 88 },
-                  { x: 2011, y: 120 },
-                  { x: 2012, y: 156 },
-                  { x: 2013, y: 123 },
-                  { x: 2014, y: 88 },
-                  { x: 2015, y: 166 },
-                  { x: 2016, y: 145 },
-                  { x: 2017, y: 129 },
-                  { x: 2018, y: 145 },
-                  { x: 2019, y: 188 },
-                  { x: 2020, y: 132 },
-                  { x: 2021, y: 146 },
-                  { x: 2022, y: 169 },
-                  { x: 2023, y: 184 },
-                ],
+                series: daySeriesData,
               }}
             />
           </Stack>
@@ -98,51 +84,9 @@ export default function OverviewBankingView() {
                 title="Balance Statistics"
                 subheader="(+43% Income | +12% Expense) than last year"
                 chart={{
-                  categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
-                  series: [
-                    {
-                      type: 'Week',
-                      data: [
-                        {
-                          name: 'Income',
-                          data: [10, 41, 35, 151, 49, 62, 69, 91, 48],
-                        },
-                        {
-                          name: 'Expenses',
-                          data: [10, 34, 13, 56, 77, 88, 99, 77, 45],
-                        },
-                      ],
-                    },
-                    {
-                      type: 'Month',
-                      data: [
-                        {
-                          name: 'Income',
-                          data: [148, 91, 69, 62, 49, 51, 35, 41, 10],
-                        },
-                        {
-                          name: 'Expenses',
-                          data: [45, 77, 99, 88, 77, 56, 13, 34, 10],
-                        },
-                      ],
-                    },
-                    {
-                      type: 'Year',
-                      data: [
-                        {
-                          name: 'Income',
-                          data: [76, 42, 29, 41, 27, 138, 117, 86, 63],
-                        },
-                        {
-                          name: 'Expenses',
-                          data: [80, 55, 34, 114, 80, 130, 15, 28, 55],
-                        },
-                      ],
-                    },
-                  ],
+                  series: dataForBalanceStatistics,
                 }}
               />
-
 
               <FinanceRecentTransitions
                 title="Recent Transitions"
