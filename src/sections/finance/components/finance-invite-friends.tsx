@@ -18,7 +18,7 @@ interface Props extends BoxProps {
   description?: string;
 }
 
-export default function BankingInviteFriends({
+export default function FinanceInviteFriends({
   img,
   price,
   title,

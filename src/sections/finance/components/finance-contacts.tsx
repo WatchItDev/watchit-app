@@ -21,7 +21,7 @@ interface Props extends CardProps {
   list: Profile[];
 }
 
-export default function BankingContacts({ title, subheader, list, ...other }: Props) {
+export default function FinanceContacts({ title, subheader, list, ...other }: Props) {
   const router = useRouter();
 
   const goToProfile = (id: string) => {

@@ -30,7 +30,7 @@ interface Props extends CardProps {
   };
 }
 
-export default function BankingBalanceStatistics({ title, subheader, chart, ...other }: Props) {
+export default function FinanceBalanceStatistics({ title, subheader, chart, ...other }: Props) {
   const { categories, colors, series, options } = chart;
 
   const popover = usePopover();

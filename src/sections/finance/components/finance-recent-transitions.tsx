@@ -46,7 +46,7 @@ interface Props extends CardProps {
   tableLabels: any;
 }
 
-export default function BankingRecentTransitions({
+export default function FinanceRecentTransitions({
   title,
   subheader,
   tableLabels,

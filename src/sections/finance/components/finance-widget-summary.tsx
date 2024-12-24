@@ -34,7 +34,7 @@ interface Props extends CardProps {
   };
 }
 
-export default function BankingWidgetSummary({
+export default function FinanceWidgetSummary({
   title,
   total,
   icon,

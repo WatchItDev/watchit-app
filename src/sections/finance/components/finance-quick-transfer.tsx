@@ -54,7 +54,7 @@ const isValidAddress = (address: string): boolean => {
 
 // ----------------------------------------------------------------------
 
-export default function BankingQuickTransfer({ title, subheader,sx, list, ...other }: Props) {
+export default function FinanceQuickTransfer({ title, subheader,sx, list, ...other }: Props) {
   const theme = useTheme();
   const balance = useSelector((state: any) => state.auth.balance);
   const [walletAddress, setWalletAddress] = useState('');

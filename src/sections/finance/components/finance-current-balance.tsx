@@ -33,7 +33,7 @@ type Props = {
   sx?: SxProps<Theme>;
 };
 
-export default function BankingCurrentBalance({ list, sx }: Props) {
+export default function FinanceCurrentBalance({ list, sx }: Props) {
   const theme = useTheme();
 
   const carousel = useCarousel({

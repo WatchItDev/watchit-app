@@ -5,12 +5,12 @@ import Grid from '@mui/material/Unstable_Grid2';
 import { _bankingRecentTransitions } from '@src/_mock';
 
 //
-import BankingContacts from '@src/sections/finance/components/banking-contacts';
-import BankingQuickTransfer from '@src/sections/finance/components/banking-quick-transfer';
-import BankingInviteFriends from '@src/sections/finance/components/banking-invite-friends';
-import BankingWidgetSummary from '@src/sections/finance/components/banking-widget-summary';
-import BankingBalanceStatistics from '@src/sections/finance/components/banking-balance-statistics';
-import BankingRecentTransitions from '@src/sections/finance/components/banking-recent-transitions';
+import FinanceContacts from '@src/sections/finance/components/finance-contacts.tsx';
+import FinanceQuickTransfer from '@src/sections/finance/components/finance-quick-transfer.tsx';
+import FinanceInviteFriends from '@src/sections/finance/components/finance-invite-friends.tsx';
+import FinanceWidgetSummary from '@src/sections/finance/components/finance-widget-summary.tsx';
+import FinanceBalanceStatistics from '@src/sections/finance/components/finance-balance-statistics.tsx';
+import FinanceRecentTransitions from '@src/sections/finance/components/finance-recent-transitions.tsx';
 import {useSelector} from "react-redux";
 import {useProfileFollowing} from "@lens-protocol/react";
 import FinanceTransferAccounts from "@src/sections/finance/components/finance-transfer-accounts.tsx";
@@ -38,7 +38,7 @@ export default function OverviewBankingView() {
      <Grid container spacing={3}>
         <Grid xs={12} md={8}>
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1}>
-            <BankingWidgetSummary
+            <FinanceWidgetSummary
               title="Main Balance"
               icon="eva:diagonal-arrow-left-down-fill"
               percent={2.6}
@@ -65,7 +65,7 @@ export default function OverviewBankingView() {
 
             <FinanceTransferAccounts />
 
-            <BankingWidgetSummary
+            <FinanceWidgetSummary
               title="Pool Balance"
               color="warning"
               icon="eva:diagonal-arrow-right-up-fill"
@@ -94,7 +94,7 @@ export default function OverviewBankingView() {
 
           <Grid xs={12} md={8}>
             <Stack spacing={3}>
-              <BankingBalanceStatistics
+              <FinanceBalanceStatistics
                 title="Balance Statistics"
                 subheader="(+43% Income | +12% Expense) than last year"
                 chart={{
@@ -144,7 +144,7 @@ export default function OverviewBankingView() {
               />
 
 
-              <BankingRecentTransitions
+              <FinanceRecentTransitions
                 title="Recent Transitions"
                 tableData={_bankingRecentTransitions}
                 tableLabels={[
@@ -162,17 +162,17 @@ export default function OverviewBankingView() {
 
         <Grid xs={12} md={4}>
           <Stack spacing={3}>
-            <BankingQuickTransfer title="Quick transfer" list={following} />
+            <FinanceQuickTransfer title="Quick transfer" list={following} />
 
             {following?.length ? (
-              <BankingContacts
+              <FinanceContacts
                 title="Contacts"
                 subheader={`You have ${following?.length ?? 0} contacts`}
                 list={following?.slice?.(-5) ?? []}
               />
             ) : undefined}
 
-            <BankingInviteFriends
+            <FinanceInviteFriends
               price="50"
               title={`Invite friends \n and earn`}
               description="Invite your friends to join our platform and earn MMC 50 for each successful referral."
