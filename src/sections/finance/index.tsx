@@ -1,8 +1,6 @@
 import Stack from '@mui/material/Stack';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Unstable_Grid2';
-// _mock
-import { _bankingRecentTransitions } from '@src/_mock';
 
 //
 import FinanceContacts from '@src/sections/finance/components/finance-contacts.tsx';
@@ -10,12 +8,19 @@ import FinanceQuickTransfer from '@src/sections/finance/components/finance-quick
 import FinanceInviteFriends from '@src/sections/finance/components/finance-invite-friends.tsx';
 import FinanceWidgetSummary from '@src/sections/finance/components/finance-widget-summary.tsx';
 import FinanceBalanceStatistics from '@src/sections/finance/components/finance-balance-statistics.tsx';
-import FinanceRecentTransitions from '@src/sections/finance/components/finance-recent-transitions.tsx';
+
 import {useSelector} from "react-redux";
 import {useProfileFollowing} from "@lens-protocol/react";
 import FinanceTransferAccounts from "@src/sections/finance/components/finance-transfer-accounts.tsx";
-import {useTransactionData} from "@src/hooks/use-transaction-data";
-import {groupedTransactionData, processDayData} from "@src/utils/finance-graphs/groupedTransactions.ts";
+import {TableRowTransactionType, useTransactionData} from "@src/hooks/use-transaction-data";
+import {
+  groupedTransactionData,
+  processDayData,
+  processTransactionData
+} from "@src/utils/finance-graphs/groupedTransactions.ts";
+import FinanceTransactionsHistory from "@src/sections/finance/components/finance-transactions-history.tsx";
+import Card from "@mui/material/Card";
+import Typography from "@mui/material/Typography";
 
 // ----------------------------------------------------------------------
 
@@ -29,15 +34,18 @@ export default function OverviewBankingView() {
     for: sessionData?.profile?.id,
   });
 
-  const groupedData = useTransactionData()
+  const {data: transactionsData, rawData: transactionsRawData} = useTransactionData()
+
+  console.log(transactionsData, transactionsRawData)
+
   // remove the last element as it is the current day
-  const processedData = groupedTransactionData(groupedData);
+  const processedData = groupedTransactionData(transactionsData);
   const dataForBalanceStatistics = processedData.slice(0, -1);
-
   const daySeriesData = processDayData(processedData);
-
   // Get the difference between daySeriesData[1] and daySeriesData[0] in y value to calculate the percent
   const percent = (daySeriesData[1]?.y - daySeriesData[0]?.y) / daySeriesData[0]?.y * 100;
+
+  const processedTransactions: TableRowTransactionType[] = processTransactionData(transactionsRawData);
 
   return (
     <Container
@@ -84,22 +92,17 @@ export default function OverviewBankingView() {
                   series: dataForBalanceStatistics,
                 }}
               />
-
-              <FinanceRecentTransitions
-                title="Recent Transitions"
-                tableData={_bankingRecentTransitions}
-                tableLabels={[
-                  { id: 'description', label: 'Description' },
-                  { id: 'date', label: 'Date' },
-                  { id: 'amount', label: 'Amount' },
-                  { id: 'status', label: 'Status' },
-                  { id: '' },
-                ]}
-              />
             </Stack>
           </Grid>
 
+            <Typography variant="h6" sx={{ p: 2 }}>
+              Recent Transactions
+            </Typography>
+            <FinanceTransactionsHistory transactionsData={processedTransactions} />
+
         </Grid>
+
+
 
         <Grid xs={12} md={4}>
           <Stack spacing={3}>

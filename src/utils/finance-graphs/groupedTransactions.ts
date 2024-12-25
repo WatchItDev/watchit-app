@@ -1,5 +1,4 @@
-import { TransactionData } from '@src/hooks/use-transaction-data';
-
+import {TransactionData, TransactionType} from '@src/hooks/use-transaction-data';
 type GroupedData = {
   type: string;
   data: {
@@ -98,4 +97,18 @@ export const processDayData = (groupedData: GroupedData[]): { x: string, y: numb
     const monthDay = date.slice(5, 10); // MM-DD
     return { x: monthDay, y: income - expenses };
   });
+};
+
+export const processTransactionData = (data: TransactionType[]) => {
+  return data.map((transaction, _index) => ({
+    id: transaction.id,
+    name: transaction.payload.type === 'Income' ? transaction.payload.data.from.displayName : transaction.payload.data.to.displayName,
+    avatarUrl: transaction.payload.type === 'Income' ? transaction.payload.data.from.avatar : transaction.payload.data.to.avatar,
+    type: transaction.payload.type,
+    message: transaction.payload.type === 'Income' ? 'Receive money from' : 'Payment for',
+    category: transaction.payload.type === 'Income' ? transaction.payload.data.from.displayName : transaction.payload.data.to.displayName,
+    date: transaction.created_at,
+    status: 'completed',
+    amount: transaction.payload.amount,
+  }));
 };
