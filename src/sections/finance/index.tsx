@@ -19,7 +19,6 @@ import {
   processTransactionData
 } from "@src/utils/finance-graphs/groupedTransactions.ts";
 import FinanceTransactionsHistory from "@src/sections/finance/components/finance-transactions-history.tsx";
-import Card from "@mui/material/Card";
 import Typography from "@mui/material/Typography";
 
 // ----------------------------------------------------------------------
@@ -112,7 +111,7 @@ export default function OverviewBankingView() {
               <FinanceContacts
                 title="Contacts"
                 subheader={`You have ${following?.length ?? 0} contacts`}
-                list={following?.slice?.(-5) ?? []}
+                list={following ?? []}
               />
             ) : undefined}
 
