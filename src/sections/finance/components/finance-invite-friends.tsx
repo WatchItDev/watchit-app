@@ -1,15 +1,15 @@
-// @mui
+import React, { useState } from 'react';
 import { useTheme } from '@mui/material/styles';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import InputBase from '@mui/material/InputBase';
 import Box, { BoxProps } from '@mui/material/Box';
-// theme
-import { bgGradient } from '@src/theme/css';
 import Typography from '@mui/material/Typography';
+import { bgGradient } from '@src/theme/css';
 import { COLORS } from '@src/layouts/config-layout.ts';
-
-// ----------------------------------------------------------------------
+import { supabase } from '@src/utils/supabase';
+import { useSelector } from 'react-redux';
+import { useSnackbar } from 'notistack';
 
 interface Props extends BoxProps {
   img?: string;
@@ -19,14 +19,56 @@ interface Props extends BoxProps {
 }
 
 export default function FinanceInviteFriends({
-  img,
-  price,
-  title,
-  description,
-  sx,
-  ...other
-}: Props) {
+                                               img,
+                                               price,
+                                               title,
+                                               description,
+                                               sx,
+                                               ...other
+                                             }: Props) {
   const theme = useTheme();
+  const { enqueueSnackbar } = useSnackbar();
+  const sessionData = useSelector((state: any) => state.auth.session);
+  const [email, setEmail] = useState('');
+
+  async function storeEmailData(destination: string, payload: any) {
+    const { error } = await supabase
+      .from('invitations')
+      .insert([{ destination, sender_id: payload?.data?.from?.id, payload }]);
+
+    if (error) {
+      console.error('Error storing email data:', error);
+    } else {
+      console.log('Email data stored successfully');
+    }
+  }
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(event.target.value);
+  };
+
+  const handleInviteClick = () => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      enqueueSnackbar('Invalid email address', { variant: 'error' });
+      return;
+    }
+    const payload = {
+      data: {
+        from: {
+          id: sessionData?.profile?.id,
+          displayName: sessionData?.profile?.metadata?.displayName,
+          avatar: (sessionData?.profile?.metadata?.picture as any)?.optimized?.uri
+        },
+      }
+    };
+    storeEmailData(email, payload).then(() => {
+      enqueueSnackbar('Invitation sent successfully', { variant: 'success' })
+      setEmail('');
+    });
+
+
+  };
 
   return (
     <Box {...other}>
@@ -78,8 +120,10 @@ export default function FinanceInviteFriends({
         <InputBase
           fullWidth
           placeholder="Email"
+          value={email}
+          onChange={handleInputChange}
           endAdornment={
-            <Button color="warning" variant="contained" size="small" sx={{ mr: 0.5 }}>
+            <Button color="warning" variant="contained" size="small" sx={{ mr: 0.5 }} onClick={handleInviteClick}>
               Invite
             </Button>
           }
