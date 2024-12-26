@@ -35,8 +35,6 @@ export default function OverviewBankingView() {
 
   const {data: transactionsData, rawData: transactionsRawData} = useTransactionData()
 
-  console.log(transactionsData, transactionsRawData)
-
   // remove the last element as it is the current day
   const processedData = groupedTransactionData(transactionsData);
   const dataForBalanceStatistics = processedData.slice(0, -1);

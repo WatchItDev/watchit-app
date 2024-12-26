@@ -19,6 +19,9 @@ import { useRouter } from '@src/routes/hooks';
 
 // lens
 import { Profile } from '@lens-protocol/api-bindings';
+import {useDispatch} from "react-redux";
+import {storeAddress, toggleRainbow} from '@redux/address';
+import React from "react";
 
 // ----------------------------------------------------------------------
 
@@ -37,6 +40,41 @@ export default function FinanceContactsCarousel({
                                                   ...other
                                                 }: Props) {
   const router = useRouter();
+  const dispatch = useDispatch();
+
+
+  function scrollToSmoothly(pos: number, time: number) {
+    let currentPos = window.scrollY;
+    let start:number |null = null;
+    if(time == null) time = 500;
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+    pos = +pos, time = +time;
+    window.requestAnimationFrame(function step(currentTime) {
+      start = !start ? currentTime : start;
+      let progress = currentTime - start;
+      if (currentPos < pos) {
+        window.scrollTo(0, ((pos - currentPos) * progress / time) + currentPos);
+      } else {
+        window.scrollTo(0, currentPos - ((currentPos - pos) * progress / time));
+      }
+      if (progress < time) {
+        window.requestAnimationFrame(step);
+      } else {
+        window.scrollTo(0, pos);
+      }
+    });
+  }
+
+  const handleClick = (address: string, profileId: string) => {
+    dispatch(toggleRainbow());
+    dispatch(storeAddress({address, profileId}));
+
+    // Scroll to top the window with a smooth animation
+    scrollToSmoothly(0, 1000)
+    setTimeout(() => {
+      dispatch(toggleRainbow());
+    },1400)
+  }
 
   const goToProfile = (id: string) => {
     router.push(paths.dashboard.user.root(id));
@@ -75,6 +113,7 @@ export default function FinanceContactsCarousel({
               key={`slide-${index}`}
               chunk={chunk}
               goToProfile={goToProfile}
+              onClickArrow={(address, profileId) => handleClick(address, profileId)}
             />
           ))}
         </Carousel>
@@ -88,9 +127,14 @@ export default function FinanceContactsCarousel({
 type SlideContactsProps = {
   chunk: Profile[];
   goToProfile: (id: string) => void;
+  onClickArrow: (address: string, profileId: string) => void;
 };
 
-function SlideContacts({ chunk, goToProfile }: SlideContactsProps) {
+function SlideContacts({ chunk, goToProfile, onClickArrow}: SlideContactsProps) {
+  const handleArrowClick = (event: React.MouseEvent<HTMLButtonElement>, address: string, profileId: string) => {
+    event.stopPropagation();
+    onClickArrow(address, profileId);
+  };
   return (
     <Stack spacing={3}>
       {chunk.map((profile) => (
@@ -115,7 +159,7 @@ function SlideContacts({ chunk, goToProfile }: SlideContactsProps) {
           </Stack>
 
           <Tooltip title="Quick Transfer">
-            <IconButton>
+            <IconButton onClick={(event) => handleArrowClick(event, profile.ownedBy.address, profile.id)}>
               <Iconify icon="eva:diagonal-arrow-right-up-fill" />
             </IconButton>
           </Tooltip>

@@ -18,7 +18,8 @@ import Dialog, { DialogProps } from '@mui/material/Dialog';
 import { useBoolean } from '@src/hooks/use-boolean';
 // components
 import Carousel, { CarouselArrows, useCarousel } from '@src/components/carousel';
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import { storeAddress } from '@redux/address';
 import {truncateAddress} from "@src/utils/wallet.ts";
 import {Profile} from "@lens-protocol/api-bindings";
 import NeonPaper from "@src/sections/publication/NeonPaperContainer.tsx";
@@ -56,9 +57,13 @@ const isValidAddress = (address: string): boolean => {
 
 export default function FinanceQuickTransfer({ title, subheader,sx, list, ...other }: Props) {
   const theme = useTheme();
+  const dispatch = useDispatch();
+  const storedAddress = useSelector((state: any) => state.address)
+  const showRainbow = useSelector((state: any) => state.address.showRainbow)
   const balance = useSelector((state: any) => state.auth.balance);
-  const [walletAddress, setWalletAddress] = useState('');
+  const [walletAddress, setWalletAddress] = useState(storedAddress.address ?? '');
   const [addressError, setAddressError] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(0);
   const MAX_AMOUNT = balance;
   const carousel = useCarousel({
     centerMode: true,
@@ -115,12 +120,14 @@ export default function FinanceQuickTransfer({ title, subheader,sx, list, ...oth
     const currentProfile = list?.[carousel.currentIndex];
     if (currentProfile?.ownedBy?.address) {
       setWalletAddress(currentProfile.ownedBy.address);
+      dispatch(storeAddress({ address: currentProfile.ownedBy.address, profileId: currentProfile.id }))
     }
   }, [carousel.currentIndex, list]);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
     setWalletAddress(value);
+    dispatch(storeAddress({ address: value, profileId: getContactInfo?.id ?? ''}))
 
     if (isValidAddress(value)) {
       setAddressError(false);
@@ -149,7 +156,26 @@ export default function FinanceQuickTransfer({ title, subheader,sx, list, ...oth
     setAmount(0)
     setWalletAddress('')
     confirm.onFalse?.();
+    dispatch(storeAddress({ address: '', profileId: ''}))
   }
+
+  useEffect(() => {
+    const index = list?.findIndex((profile) => profile.ownedBy?.address === storedAddress?.address && profile.id === storedAddress.profileId);
+
+      if (index !== -1) {
+        setCurrentIndex(index ?? 0)
+      }
+  }, [storedAddress]);
+
+
+  useEffect(() => {
+    if (!showRainbow) {
+      // carousel.setCurrentIndex(currentIndex);
+      if (carousel.carouselRef.current) {
+        carousel.carouselRef.current.slickGoTo(currentIndex);
+      }
+    }
+  }, [showRainbow]);
 
   const renderWalletInput = (
     <Box sx={{ mb: 3 }}>
@@ -272,8 +298,11 @@ export default function FinanceQuickTransfer({ title, subheader,sx, list, ...oth
     </Stack>
   );
 
+  const Wrapper = showRainbow ? NeonPaper : Box;
+
   return (
     <>
+      <Wrapper animationSpeed={'1s'} padding={'0'}>
       <Stack
         sx={{
           borderRadius: 2,
@@ -292,6 +321,7 @@ export default function FinanceQuickTransfer({ title, subheader,sx, list, ...oth
           {renderInput}
         </Stack>
       </Stack>
+      </Wrapper>
 
       <ConfirmTransferDialog
         max={MAX_AMOUNT}
