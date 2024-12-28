@@ -41,6 +41,8 @@ import { ResponsiveOverlay } from '@src/components/responsive-overlay';
 
 import { Buffer } from 'buffer';
 import { Provider } from 'react-redux';
+import { MetaMaskProvider } from '@metamask/sdk-react';
+import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 
 window.Buffer = Buffer;
 
@@ -78,11 +80,20 @@ export default function App() {
             <ThemeProvider>
               <MotionLazy>
                 <SnackbarProvider>
+                  <MetaMaskProvider sdkOptions={{
+                    dappMetadata: {
+                      name: "Watchit App",
+                      url: window.location.href,
+                    },
+                    infuraAPIKey: GLOBAL_CONSTANTS.INFURAMA_API_KEY,
+                  }}>
                   <SettingsDrawer />
                   <ProgressBar />
                   <Router />
                   <ResponsiveOverlay />
+                  </MetaMaskProvider>
                 </SnackbarProvider>
+
               </MotionLazy>
             </ThemeProvider>
           </Provider>
