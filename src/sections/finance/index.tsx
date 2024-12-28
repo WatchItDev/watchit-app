@@ -20,6 +20,7 @@ import {
 } from "@src/utils/finance-graphs/groupedTransactions.ts";
 import FinanceTransactionsHistory from "@src/sections/finance/components/finance-transactions-history.tsx";
 import Typography from "@mui/material/Typography";
+import FinanceQuickActions from "@src/sections/finance/components/finance-quick-actions.tsx";
 
 // ----------------------------------------------------------------------
 
@@ -44,6 +45,8 @@ export default function OverviewBankingView() {
 
   const processedTransactions: TableRowTransactionType[] = processTransactionData(transactionsRawData);
 
+  const externalWalletConnected = false;
+
   return (
     <Container
       sx={{
@@ -56,8 +59,8 @@ export default function OverviewBankingView() {
         <Grid xs={12} md={8}>
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1}>
             <FinanceWidgetSummary
-              title="ETH Balance"
-              color="warning"
+              title="Balance"
+              color="primary"
               icon={percent > 0 ? 'eva:diagonal-arrow-right-up-fill' : 'eva:diagonal-arrow-left-down-fill'}
               percent={percent}
               total={balanceFromRedux}
@@ -66,17 +69,13 @@ export default function OverviewBankingView() {
               }}
             />
 
-            <FinanceTransferAccounts />
+            {/*<FinanceTransferAccounts />*/}
 
-            <FinanceWidgetSummary
-              title="Watchit Balance"
-              color="primary"
-              icon={percent > 0 ? 'eva:diagonal-arrow-right-up-fill' : 'eva:diagonal-arrow-left-down-fill'}
-              percent={percent}
-              total={balanceFromRedux + 1000}
-              chart={{
-                series: daySeriesData,
-              }}
+            <FinanceQuickActions
+              connectedWalllet={externalWalletConnected}
+              title={externalWalletConnected ? 'Balance\'s Vault Metamask.' : 'Connect external wallet'}
+              info={externalWalletConnected ? 'Metamask connected. If you wish to change, click below button.' : 'You can connect Metamask wallet to view your vault balance'}
+              balance={balanceFromRedux + 1000}
             />
           </Stack>
 

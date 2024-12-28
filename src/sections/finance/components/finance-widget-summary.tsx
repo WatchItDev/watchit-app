@@ -13,9 +13,22 @@ import { bgGradient } from '@src/theme/css';
 // components
 import Iconify from '@src/components/iconify';
 import Chart, { useChart } from '@src/components/chart';
-// @ts-ignore
-import mmcTokenIcon from '@src/assets/mmc_token.ico';
+import Button from "@mui/material/Button";
+import {useBoolean} from "@src/hooks/use-boolean.ts";
+import Dialog, {DialogProps} from "@mui/material/Dialog";
+import {useSnackbar} from "notistack";
+import {useState} from "react";
+import NeonPaper from "@src/sections/publication/NeonPaperContainer.tsx";
 
+import DialogTitle from "@mui/material/DialogTitle";
+
+import DialogActions from "@mui/material/DialogActions";
+import LoadingButton from "@mui/lab/LoadingButton";
+import Tabs, {tabsClasses} from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
+import FinanceDepositFromStripe from "@src/sections/finance/components/finance-deposit-from-stripe.tsx";
+import FinanceDepositFromMetamask from "@src/sections/finance/components/finance-deposit-from-metamask.tsx";
+import FinanceDepositFromSmartAccount from "@src/sections/finance/components/finance-deposit-from-smart-account.tsx";
 // ----------------------------------------------------------------------
 
 interface Props extends CardProps {
@@ -43,6 +56,10 @@ export default function FinanceWidgetSummary({
   sx,
   ...other
 }: Props) {
+  const confirmDeposit = useBoolean();
+
+  //const confirmWithdraw = useBoolean();
+
   const theme = useTheme();
 
   const { series, options } = chart;
@@ -89,6 +106,14 @@ export default function FinanceWidgetSummary({
   const totalOptions = { minimumFractionDigits: 1, maximumFractionDigits: 3 };
   const formattedTotal = new Intl.NumberFormat('en-US', totalOptions).format(total);
 
+  const handleFinishDeposit = () => {
+    confirmDeposit.onFalse?.();
+  }
+
+  const handleDepositOpenModal = () => {
+    confirmDeposit.onTrue?.();
+  };
+
   return (
     <Stack
       sx={{
@@ -107,20 +132,38 @@ export default function FinanceWidgetSummary({
       }}
       {...other}
     >
-      <Iconify
-        icon={icon}
+      <Box
         sx={{
           p: 1.5,
-          top: 24,
-          right: 24,
-          width: 48,
+          top: 12,
+          right: 6,
+          width: '100%',
           height: 48,
-          borderRadius: '50%',
           position: 'absolute',
           color: `${color}.lighter`,
-          bgcolor: `${color}.dark`,
+          gap: 1,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'flex-end'
         }}
-      />
+      >
+        <Button
+          onClick={handleDepositOpenModal}
+          variant="contained"
+          color="warning"
+          startIcon={<Iconify icon="eva:diagonal-arrow-left-down-fill" />}
+        >
+          Deposit
+        </Button>
+
+        <Button
+          variant="contained"
+          color="primary"
+          startIcon={<Iconify icon="eva:diagonal-arrow-right-up-fill" />}
+        >
+          Withdraw
+        </Button>
+        </Box>
 
       <Stack spacing={1} sx={{ p: 3 }}>
         <Typography variant="subtitle2">{title}</Typography>
@@ -152,6 +195,98 @@ export default function FinanceWidgetSummary({
       </Stack>
 
       <Chart type="area" series={[{ data: series }]} options={chartOptions} height={120} />
+
+      <ConfirmTransferDialog
+        open={confirmDeposit.value}
+        onClose={handleFinishDeposit}
+      />
+
     </Stack>
   )
+}
+
+
+interface ConfirmTransferDialogProps extends DialogProps {
+  onClose: VoidFunction;
+}
+
+const TABS = [
+  { value: 'fiat', label: 'Stripe', disabled: true },
+  { value: 'metamask', label: 'Metamask', disabled: false },
+  { value: 'smartAccount', label: 'Smart Account', disabled: false },
+];
+
+function ConfirmTransferDialog({
+                                 open,
+                                 onClose
+                               }: ConfirmTransferDialogProps) {
+  const { enqueueSnackbar } = useSnackbar();
+  const [loading, setLoading] = useState(false);
+
+  const [currentTab, setCurrentTab] = useState('metamask');
+
+  const handleChangeTab = (_event: any, newValue: any) => {
+    setCurrentTab(newValue);
+  };
+
+
+  const handleConfirmTransfer = async () => {
+    setLoading(true);
+    setTimeout(() => {
+      // Notification for the user from wallet to wallet
+      enqueueSnackbar(`The deposit was successful`, { variant: 'success' });
+      onClose();
+      setLoading(false);
+    }, 2000);
+  };
+
+  const RainbowEffect = loading ? NeonPaper : Box;
+
+  return (
+    <Dialog open={open} fullWidth maxWidth="xs" onClose={onClose}>
+      <DialogTitle>Deposit to your vault balance</DialogTitle>
+
+      <Tabs
+        key={`tabs-deposit`}
+        value={currentTab}
+        onChange={handleChangeTab}
+        sx={{
+          width: 1,
+          zIndex: 9,
+          borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
+          [`& .${tabsClasses.flexContainer}`]: { justifyContent: 'center' },
+        }}
+      >
+        {TABS.map((tab) => (
+          <Tab
+            disabled={tab.disabled}
+            key={tab.value}
+            value={tab.value}
+            label={tab.label}
+          />
+        ))}
+      </Tabs>
+
+
+      {currentTab === 'fiat'  && (<FinanceDepositFromStripe />)}
+      {currentTab === 'metamask' && (<FinanceDepositFromMetamask />)}
+      {currentTab === 'smartAccount' && (<FinanceDepositFromSmartAccount />)}
+
+     <DialogActions>
+        <Button onClick={onClose}>Cancel</Button>
+
+        <RainbowEffect borderRadius={'10px'} animationSpeed={'3s'} padding={'0'} width={'auto'}>
+          <LoadingButton
+            variant="contained"
+            sx={{ backgroundColor: '#fff' }}
+            onClick={handleConfirmTransfer}
+            disabled={loading}
+            loading={loading}
+          >
+            Confirm & Deposit
+          </LoadingButton>
+        </RainbowEffect>
+      </DialogActions>
+    </Dialog>
+  );
 }
