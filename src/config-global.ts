@@ -10,13 +10,29 @@ export const ASSETS_API = import.meta.env.VITE_ASSETS_API || 'https://default-as
 
 export const GLOBAL_CONSTANTS = {
   MMC_ADDRESS: process.env.VITE_MMC_ADDRESS || import.meta.env.VITE_MMC_ADDRESS || '',
-  AGREEMENT_PORTAL_ADDRESS:
-    process.env.VITE_AGREEMENT_PORTAL_ADDRESS ||
-    import.meta.env.VITE_AGREEMENT_PORTAL_ADDRESS ||
-    '',
   SUBSCRIPTION_POLICY_ADDRESS:
     process.env.VITE_SUBSCRIPTION_POLICY_ADDRESS ||
     import.meta.env.VITE_SUBSCRIPTION_POLICY_ADDRESS ||
+    '',
+  ACCESS_WORKFLOW_ADDRESS:
+    process.env.VITE_ACCESS_WORKFLOW_ADDRESS ||
+    import.meta.env.VITE_ACCESS_WORKFLOW_ADDRESS ||
+    '',
+  ACCESS_AGG_ADDRESS:
+    process.env.VITE_ACCESS_AGG_ADDRESS ||
+    import.meta.env.VITE_ACCESS_AGG_ADDRESS ||
+    '',
+  POLICIES_AGG_ADDRESS:
+    process.env.VITE_POLICIES_AGG_ADDRESS ||
+    import.meta.env.VITE_POLICIES_AGG_ADDRESS ||
+    '',
+  LEDGER_VAULT_ADDRESS:
+    process.env.VITE_LEDGER_VAULT_ADDRESS ||
+    import.meta.env.VITE_LEDGER_VAULT_ADDRESS ||
+    '',
+  OKLINK_API_KEY:
+    process.env.VITE_OKLINK_API_KEY ||
+    import.meta.env.VITE_OKLINK_API_KEY ||
     '',
   RIGHT_POLICY_AUTHORIZER:
     process.env.VITE_RIGHT_POLICY_AUTHORIZER || import.meta.env.VITE_RIGHT_POLICY_AUTHORIZER || '',

@@ -1,10 +1,8 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Address } from 'viem';
 import { publicClient } from '@src/clients/viem/publicClient';
-import SubscriptionPolicyAbi from '@src/config/abi/SubscriptionPolicy.json';
+import AccessAggAbi from '@src/config/abi/AccessAgg.json';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
-// @ts-ignore
-import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
 import {useSelector} from "react-redux";
 
 interface HasAccessError {
@@ -46,11 +44,13 @@ export const useHasAccess = (ownerAddress?: Address): UseHasAccessHook => {
     setFetching(true);
     try {
       const accessData: unknown = await publicClient.readContract({
-        address: GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS,
-        abi: SubscriptionPolicyAbi.abi,
-        functionName: 'isAccessAllowed',
+        address: GLOBAL_CONSTANTS.ACCESS_AGG_ADDRESS,
+        abi: AccessAggAbi.abi,
+        functionName: 'isAccessAllowedByHolder',
         args: [userAddress, ownerAddress],
       });
+
+      console.log('isAccessAllowedByHolder', accessData);
 
       const access = Boolean(accessData);
       setHasAccess(access);
