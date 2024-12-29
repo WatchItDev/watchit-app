@@ -3,6 +3,7 @@ import { store } from '@redux/store';
 import '@src/locales/i18n';
 
 // scrollbar
+// @ts-ignore
 import 'simplebar-react/dist/simplebar.min.css';
 
 // lightbox
@@ -11,13 +12,17 @@ import 'yet-another-react-lightbox/plugins/captions.css';
 import 'yet-another-react-lightbox/plugins/thumbnails.css';
 
 // editor
+// @ts-ignore
 import 'react-quill/dist/quill.snow.css';
 
 // carousel
+// @ts-ignore
 import 'slick-carousel/slick/slick.css';
+// @ts-ignore
 import 'slick-carousel/slick/slick-theme.css';
 
 // image
+// @ts-ignore
 import 'react-lazy-load-image-component/src/effects/blur.css';
 
 // ----------------------------------------------------------------------
@@ -41,8 +46,6 @@ import { ResponsiveOverlay } from '@src/components/responsive-overlay';
 
 import { Buffer } from 'buffer';
 import { Provider } from 'react-redux';
-import { MetaMaskProvider } from '@metamask/sdk-react';
-import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 
 window.Buffer = Buffer;
 
@@ -80,18 +83,10 @@ export default function App() {
             <ThemeProvider>
               <MotionLazy>
                 <SnackbarProvider>
-                  <MetaMaskProvider sdkOptions={{
-                    dappMetadata: {
-                      name: "Watchit App",
-                      url: window.location.href,
-                    },
-                    infuraAPIKey: GLOBAL_CONSTANTS.INFURAMA_API_KEY,
-                  }}>
                   <SettingsDrawer />
                   <ProgressBar />
                   <Router />
                   <ResponsiveOverlay />
-                  </MetaMaskProvider>
                 </SnackbarProvider>
 
               </MotionLazy>
