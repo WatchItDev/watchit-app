@@ -211,9 +211,9 @@ interface ConfirmTransferDialogProps extends DialogProps {
 }
 
 const TABS = [
-  { value: 'fiat', label: 'Stripe', disabled: true },
-  { value: 'metamask', label: 'Metamask', disabled: false },
-  { value: 'smartAccount', label: 'Smart Account', disabled: false },
+  { value: 'fiat', label: 'Stripe', disabled: true, icon: <Iconify icon={'logos:stripe'} /> },
+  { value: 'metamask', label: 'Metamask', disabled: false, icon: <Iconify icon={'logos:metamask-icon'} /> },
+  { value: 'smartAccount', label: 'Smart Account', disabled: false, icon: <Iconify icon={'logos:ethereum-color'} /> },
 ];
 
 function ConfirmTransferDialog({
@@ -259,6 +259,7 @@ function ConfirmTransferDialog({
       >
         {TABS.map((tab) => (
           <Tab
+            icon={tab.icon}
             disabled={tab.disabled}
             key={tab.value}
             value={tab.value}
