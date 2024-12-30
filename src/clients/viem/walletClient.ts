@@ -3,7 +3,6 @@ import {polygonAmoy} from "viem/chains";
 import "viem/window";
 import {publicClient} from "@src/clients/viem/publicClient";
 
-
 export async function ConnectWalletClient() {
   // window.ethereum is an object provided by MetaMask or other web3 wallets
   let transport;

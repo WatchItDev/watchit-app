@@ -1,34 +1,27 @@
-import { ApexOptions } from 'apexcharts';
-// @mui
-import { useTheme, alpha } from '@mui/material/styles';
+// MUI IMPORTS
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
+import Button from "@mui/material/Button";
 import { CardProps } from '@mui/material/Card';
 import Typography from '@mui/material/Typography';
-// utils
-import { fCurrency, fPercent } from '@src/utils/format-number';
-// theme
-import { ColorSchema } from '@src/theme/palette';
+import { useTheme, alpha } from '@mui/material/styles';
+
+// CHARTS IMPORTS
+import { ApexOptions } from 'apexcharts';
+
+// LOCAL IMPORTS
 import { bgGradient } from '@src/theme/css';
-// components
 import Iconify from '@src/components/iconify';
-import Chart, { useChart } from '@src/components/chart';
-import Button from "@mui/material/Button";
+import { ColorSchema } from '@src/theme/palette';
 import {useBoolean} from "@src/hooks/use-boolean.ts";
-import Dialog, {DialogProps} from "@mui/material/Dialog";
-import {useSnackbar} from "notistack";
-import {useState} from "react";
-import NeonPaper from "@src/sections/publication/NeonPaperContainer.tsx";
+import Chart, { useChart } from '@src/components/chart';
+import { fCurrency, fPercent } from '@src/utils/format-number';
+import { FinanceDepositModal } from '@src/sections/finance/components/finance-deposit-modal.tsx';
+import { useWithdraw } from '@src/hooks/use-withdraw.ts';
+import LoadingButton from '@mui/lab/LoadingButton';
+import { useEffect } from 'react';
+import { useSnackbar } from 'notistack';
 
-import DialogTitle from "@mui/material/DialogTitle";
-
-import DialogActions from "@mui/material/DialogActions";
-import LoadingButton from "@mui/lab/LoadingButton";
-import Tabs, {tabsClasses} from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
-import FinanceDepositFromStripe from "@src/sections/finance/components/finance-deposit-from-stripe.tsx";
-import FinanceDepositFromMetamask from "@src/sections/finance/components/finance-deposit-from-metamask.tsx";
-import FinanceDepositFromSmartAccount from "@src/sections/finance/components/finance-deposit-from-smart-account.tsx";
 // ----------------------------------------------------------------------
 
 interface Props extends CardProps {
@@ -46,6 +39,8 @@ interface Props extends CardProps {
   };
 }
 
+// ----------------------------------------------------------------------
+
 export default function FinanceWidgetSummary({
   title,
   total,
@@ -57,12 +52,14 @@ export default function FinanceWidgetSummary({
   ...other
 }: Props) {
   const confirmDeposit = useBoolean();
-
-  //const confirmWithdraw = useBoolean();
-
   const theme = useTheme();
-
   const { series, options } = chart;
+  const { withdraw, loading: withdrawLoading, error } = useWithdraw();
+  const { enqueueSnackbar } = useSnackbar();
+
+  useEffect(() => {
+    if (error) enqueueSnackbar(error.message, { variant: 'error' });
+  }, [error]);
 
   const chartOptions = useChart({
     colors: [theme.palette[color].dark],
@@ -114,6 +111,10 @@ export default function FinanceWidgetSummary({
     confirmDeposit.onTrue?.();
   };
 
+  const handleWithdrawal = () => {
+    withdraw({ amount: 10, recipient: '0x037f2b49721E34296fBD8F9E7e9cc6D5F9ecE7b4' });
+  };
+
   return (
     <Stack
       sx={{
@@ -156,13 +157,15 @@ export default function FinanceWidgetSummary({
           Deposit
         </Button>
 
-        <Button
+        <LoadingButton
           variant="contained"
           color="primary"
           startIcon={<Iconify icon="eva:diagonal-arrow-right-up-fill" />}
+          loading={withdrawLoading}
+          onClick={handleWithdrawal}
         >
           Withdraw
-        </Button>
+        </LoadingButton>
         </Box>
 
       <Stack spacing={1} sx={{ p: 3 }}>
@@ -196,98 +199,10 @@ export default function FinanceWidgetSummary({
 
       <Chart type="area" series={[{ data: series }]} options={chartOptions} height={120} />
 
-      <ConfirmTransferDialog
+      <FinanceDepositModal
         open={confirmDeposit.value}
         onClose={handleFinishDeposit}
       />
-
     </Stack>
   )
-}
-
-
-interface ConfirmTransferDialogProps extends DialogProps {
-  onClose: VoidFunction;
-}
-
-const TABS = [
-  { value: 'fiat', label: 'Stripe', disabled: true, icon: <Iconify icon={'logos:stripe'} /> },
-  { value: 'metamask', label: 'Metamask', disabled: false, icon: <Iconify icon={'logos:metamask-icon'} /> },
-  { value: 'smartAccount', label: 'Smart Account', disabled: false, icon: <Iconify icon={'logos:ethereum-color'} /> },
-];
-
-function ConfirmTransferDialog({
-                                 open,
-                                 onClose
-                               }: ConfirmTransferDialogProps) {
-  const { enqueueSnackbar } = useSnackbar();
-  const [loading, setLoading] = useState(false);
-
-  const [currentTab, setCurrentTab] = useState('metamask');
-
-  const handleChangeTab = (_event: any, newValue: any) => {
-    setCurrentTab(newValue);
-  };
-
-
-  const handleConfirmTransfer = async () => {
-    setLoading(true);
-    setTimeout(() => {
-      // Notification for the user from wallet to wallet
-      enqueueSnackbar(`The deposit was successful`, { variant: 'success' });
-      onClose();
-      setLoading(false);
-    }, 2000);
-  };
-
-  const RainbowEffect = loading ? NeonPaper : Box;
-
-  return (
-    <Dialog open={open} fullWidth maxWidth="xs" onClose={onClose}>
-      <DialogTitle>Deposit to your vault balance</DialogTitle>
-
-      <Tabs
-        key={`tabs-deposit`}
-        value={currentTab}
-        onChange={handleChangeTab}
-        sx={{
-          width: 1,
-          zIndex: 9,
-          borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
-          [`& .${tabsClasses.flexContainer}`]: { justifyContent: 'center' },
-        }}
-      >
-        {TABS.map((tab) => (
-          <Tab
-            icon={tab.icon}
-            disabled={tab.disabled}
-            key={tab.value}
-            value={tab.value}
-            label={tab.label}
-          />
-        ))}
-      </Tabs>
-
-
-      {currentTab === 'fiat'  && (<FinanceDepositFromStripe />)}
-      {currentTab === 'metamask' && (<FinanceDepositFromMetamask />)}
-      {currentTab === 'smartAccount' && (<FinanceDepositFromSmartAccount />)}
-
-     <DialogActions>
-        <Button onClick={onClose}>Cancel</Button>
-
-        <RainbowEffect borderRadius={'10px'} animationSpeed={'3s'} padding={'0'} width={'auto'}>
-          <LoadingButton
-            variant="contained"
-            sx={{ backgroundColor: '#fff' }}
-            onClick={handleConfirmTransfer}
-            disabled={loading}
-            loading={loading}
-          >
-            Confirm & Deposit
-          </LoadingButton>
-        </RainbowEffect>
-      </DialogActions>
-    </Dialog>
-  );
 }

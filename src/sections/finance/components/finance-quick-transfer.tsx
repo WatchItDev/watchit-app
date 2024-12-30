@@ -30,6 +30,7 @@ import {useNotifications} from "@src/hooks/use-notifications.ts";
 import {useSnackbar} from "notistack";
 import { InputAmount, InputAmountProps } from '@src/components/input-amount.tsx';
 import { ethers } from 'ethers';
+import { useTransfer } from '@src/hooks/use-transfer.ts';
 
 // ----------------------------------------------------------------------
 
@@ -345,6 +346,7 @@ interface ConfirmTransferDialogProps extends TConfirmTransferDialogProps {
   contactInfo?: Profile;
   address?: string;
   onClose: VoidFunction;
+  amount: number
 }
 
 function ConfirmTransferDialog({
@@ -359,14 +361,16 @@ function ConfirmTransferDialog({
   const { sendNotification } = useNotifications();
   const { enqueueSnackbar } = useSnackbar();
   const [message, setMessage] = useState('');
-  const [loading, setLoading] = useState(false);
   const isSame = contactInfo?.ownedBy?.address === address;
   const defaultImage = `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${address}`;
   const defaultName = 'Destination wallet';
+  const { transfer, loading: transferLoading, error } = useTransfer();
+
+  useEffect(() => {
+    if (error) enqueueSnackbar(error.message, { variant: 'error' });
+  }, [error]);
 
   async function storeTransactionInSupabase(receiver_id?: string, sender_id?: string, payload?: any) {
-    setLoading(true);
-
     const { error } = await supabase
       .from('transactions')
       .insert([{ receiver_id, sender_id, payload }]);
@@ -379,34 +383,33 @@ function ConfirmTransferDialog({
   }
 
   const handleConfirmTransfer = async () => {
-    setLoading(true);
-    const senderId = sessionData?.profile?.id;
+    await transfer({ amount, recipient: address ?? '' });
 
+    const senderId = sessionData?.profile?.id ?? address;
     const notificationPayload = generatePayload('TRANSFER', {
-      id: contactInfo?.id ?? '',
-      displayName: contactInfo?.metadata?.displayName ?? 'no name',
-      avatar: (contactInfo?.metadata?.picture as any)?.optimized?.uri,
+      id: isSame ? (contactInfo?.id ?? '') : (address ?? ''),
+      displayName: isSame ? (contactInfo?.metadata?.displayName ?? 'no name') : 'External wallet',
+      avatar: (contactInfo?.metadata?.picture as any)?.optimized?.uri ?? '',
     }, {
-      rawDescription: `${sessionData?.profile?.metadata?.displayName} sent you ${amount} MMC`,
+      rawDescription: `${sessionData?.profile?.metadata?.displayName ?? address} sent you ${amount} MMC`,
       message,
     });
 
-    await storeTransactionInSupabase(contactInfo?.id, senderId, {
-      address: contactInfo?.ownedBy?.address,
+    await storeTransactionInSupabase(contactInfo?.id ?? address, senderId, {
+      address: contactInfo?.ownedBy?.address ?? address,
       amount,
       message,
       ...notificationPayload,
     });
 
-    await sendNotification(contactInfo?.id ?? '', sessionData?.profile?.id, notificationPayload);
+    await sendNotification(contactInfo?.id ?? address ?? '', sessionData?.profile?.id, notificationPayload);
 
-    enqueueSnackbar('The transfer has been sent to ' + contactInfo?.metadata?.displayName , { variant: 'success' })
+    enqueueSnackbar('The transfer has been sent to ' + (isSame ? contactInfo?.metadata?.displayName : truncateAddress(address ?? '')) , { variant: 'success' })
 
-    setLoading(false);
     onClose();
   };
 
-  const RainbowEffect = loading ? NeonPaper : Box;
+  const RainbowEffect = transferLoading ? NeonPaper : Box;
   return (
     <Dialog open={open} fullWidth maxWidth="xs" onClose={onClose}>
       <DialogTitle>Transfer to</DialogTitle>
@@ -445,8 +448,8 @@ function ConfirmTransferDialog({
             variant="contained"
             sx={{ backgroundColor: '#fff' }}
             onClick={handleConfirmTransfer}
-            disabled={loading}
-            loading={loading}
+            disabled={transferLoading}
+            loading={transferLoading}
           >
             Confirm & Transfer
           </LoadingButton>

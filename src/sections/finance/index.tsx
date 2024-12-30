@@ -11,7 +11,6 @@ import FinanceBalanceStatistics from '@src/sections/finance/components/finance-b
 
 import {useSelector} from "react-redux";
 import {useProfileFollowing} from "@lens-protocol/react";
-import FinanceTransferAccounts from "@src/sections/finance/components/finance-transfer-accounts.tsx";
 import {TableRowTransactionType, useTransactionData} from "@src/hooks/use-transaction-data";
 import {
   groupedTransactionData,
@@ -25,7 +24,6 @@ import FinanceQuickActions from "@src/sections/finance/components/finance-quick-
 // ----------------------------------------------------------------------
 
 export default function OverviewBankingView() {
-
   const { balance: balanceFromRedux } = useSelector((state: any) => state.auth);
   const sessionData = useSelector((state: any) => state.auth.session);
 
@@ -44,8 +42,6 @@ export default function OverviewBankingView() {
   const percent = (daySeriesData[1]?.y - daySeriesData[0]?.y) / daySeriesData[0]?.y * 100;
 
   const processedTransactions: TableRowTransactionType[] = processTransactionData(transactionsRawData);
-
-  const externalWalletConnected = false;
 
   return (
     <Container
@@ -69,14 +65,7 @@ export default function OverviewBankingView() {
               }}
             />
 
-            {/*<FinanceTransferAccounts />*/}
-
-            <FinanceQuickActions
-              connectedWalllet={externalWalletConnected}
-              title={externalWalletConnected ? 'Balance\'s Vault Metamask.' : 'Connect external wallet'}
-              info={externalWalletConnected ? 'Metamask connected. If you wish to change, click below button.' : 'You can connect Metamask wallet to view your vault balance'}
-              balance={balanceFromRedux + 1000}
-            />
+            <FinanceQuickActions />
           </Stack>
 
           <Grid xs={12} md={8}>
@@ -95,7 +84,6 @@ export default function OverviewBankingView() {
               Recent Transactions
             </Typography>
             <FinanceTransactionsHistory transactionsData={processedTransactions} />
-
         </Grid>
 
 

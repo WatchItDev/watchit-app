@@ -17,16 +17,38 @@ export default function Router() {
 
   useEffect(() => {
     // TODO - Filter events by user
-    const unwatch = publicClientWebSocket.watchContractEvent({
+    const unwatchDeposit = publicClientWebSocket.watchContractEvent({
       address: GLOBAL_CONSTANTS.LEDGER_VAULT_ADDRESS,
       abi: LedgerVaultAbi.abi,
       eventName: 'FundsDeposited',
       onLogs: (logs) => {
-        console.log('New event received:', logs);
+        console.log('New deposit event received:', logs);
         dispatch(setBlockchainEvents(logs));
       },
     });
-    return () => unwatch();
+    const unwatchWithdraw = publicClientWebSocket.watchContractEvent({
+      address: GLOBAL_CONSTANTS.LEDGER_VAULT_ADDRESS,
+      abi: LedgerVaultAbi.abi,
+      eventName: 'FundsWithdrawn',
+      onLogs: (logs) => {
+        console.log('New withdraw event received:', logs);
+        dispatch(setBlockchainEvents(logs));
+      },
+    });
+    const unwatchTransfer = publicClientWebSocket.watchContractEvent({
+      address: GLOBAL_CONSTANTS.LEDGER_VAULT_ADDRESS,
+      abi: LedgerVaultAbi.abi,
+      eventName: 'FundsTransferred',
+      onLogs: (logs) => {
+        console.log('New withdraw event received:', logs);
+        dispatch(setBlockchainEvents(logs));
+      },
+    });
+    return () => {
+      unwatchDeposit();
+      unwatchWithdraw();
+      unwatchTransfer();
+    };
   }, []);
 
   useEffect(() => {
