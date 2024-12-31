@@ -1,5 +1,18 @@
 ## [2.1.1-beta.1](https://github.com/WatchItDev/watchit-app/compare/v2.1.0...v2.1.1-beta.1) (2024-12-31)
 
+
+### Bug Fixes
+
+* **workflow:** removed tmp ci ([5cf0f0a](https://github.com/WatchItDev/watchit-app/commit/5cf0f0a96991a53b6f22d2ce00369a8553e1c189))
+* **workflow:** removed tmp ci ([5855c41](https://github.com/WatchItDev/watchit-app/commit/5855c412c63ea8e941b63788a61ceadc83ada523))
+* **workflow:** removed tmp ci ([03c3cd0](https://github.com/WatchItDev/watchit-app/commit/03c3cd0f68724b117ca2faca51d177ab91b475b5))
+* **workflow:** removed tmp ci ([a6f48d8](https://github.com/WatchItDev/watchit-app/commit/a6f48d8b93d93c8691e6c51b48baab66b3d6d72f))
+* **workflow:** removed tmp ci ([f013b7e](https://github.com/WatchItDev/watchit-app/commit/f013b7e42684bebdbf8a802e55695484602c9ae7))
+* **workflow:** removed tmp ci ([4de6ae2](https://github.com/WatchItDev/watchit-app/commit/4de6ae2cec065299a9767696419a5fd5ddda2d80))
+* **workflow:** removed tmp ci ([876d88e](https://github.com/WatchItDev/watchit-app/commit/876d88ea8b55d5091e7b056c42143e4b4b469ee2))
+
+## [2.1.1-beta.1](https://github.com/WatchItDev/watchit-app/compare/v2.1.0...v2.1.1-beta.1) (2024-12-31)
+
 ## [2.1.1-beta.1](https://github.com/WatchItDev/watchit-app/compare/v2.1.0...v2.1.1-beta.1) (2024-12-31)
 
 ## [2.1.1-beta.1](https://github.com/WatchItDev/watchit-app/compare/v2.1.0...v2.1.1-beta.1) (2024-12-31)
