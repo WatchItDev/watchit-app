@@ -1,7 +1,7 @@
 # WatchIt
-![alt text](image.png)
-
 WatchIt represents a transformative innovation in how audiovisual content is consumed and disseminated. Built on decentralized principles and powered by blockchain technology, the platform ensures secure, equitable, and dynamic content delivery through a network of distributed nodes. This architecture not only enhances system resilience but also fosters meaningful collaboration between creators and audiences, creating a vibrant and sustainable ecosystem.
+
+![alt text](image.png)
 
 By eliminating reliance on centralized servers, WatchIt paves the way for a transparent and efficient content distribution model. It empowers users to actively contribute and benefit from a decentralized network, establishing a future-forward framework for media sharing and interaction on a global scale.
 
