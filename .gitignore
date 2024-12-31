@@ -38,3 +38,8 @@ yarn-error.log*
 
 # Sentry Config File
 .env.sentry-build-plugin
+
+.env*
+.flaskenv*
+!.env.project
+!.env.vault

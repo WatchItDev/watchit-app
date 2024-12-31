@@ -3,7 +3,7 @@ name: Staging CI/CD
 on:
   push:
     branches:
-      - staging
+      - next
 
 jobs:
   Continuous-Integration:
