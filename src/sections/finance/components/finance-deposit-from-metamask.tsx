@@ -18,6 +18,7 @@ import { useSelector } from 'react-redux';
 import { useSnackbar } from 'notistack';
 import { useDepositMetamask } from "@src/hooks/use-deposit-metamask.ts";
 import { truncateAddress } from '@src/utils/wallet.ts';
+import FinanceChangeWallet from "@src/sections/finance/components/finance-change-wallet.tsx";
 
 interface FinanceDepositFromMetamaskProps {
   onClose: () => void;
@@ -127,6 +128,8 @@ const FinanceDepositFromMetamask: FC<FinanceDepositFromMetamaskProps> = ({ onClo
             <Divider  sx={{width: '100%'}}/>
           </Stack>
           <DialogActions sx={{ width: '100%', pt: 1, px: 3 }}>
+            <FinanceChangeWallet onChangingWallet={setAddress} />
+
             <Button onClick={onClose}>Cancel</Button>
 
             <RainbowEffect borderRadius={"10px"} animationSpeed={"3s"} padding={"0"} width={"auto"}>

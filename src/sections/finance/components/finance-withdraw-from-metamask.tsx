@@ -18,6 +18,7 @@ import {Address} from "viem";
 import {ConnectWalletClient} from "@src/clients/viem/walletClient.ts";
 import {truncateAddress} from "@src/utils/wallet.ts";
 import {useGetVaultBalance} from "@src/hooks/use-get-vault-balance.ts";
+import FinanceChangeWallet from "@src/sections/finance/components/finance-change-wallet.tsx";
 
 interface FinanceDepositFromSmartAccountProps {
   onClose: () => void;
@@ -136,7 +137,9 @@ const FinanceWithdrawFromMetamask: FC<FinanceDepositFromSmartAccountProps> = ({ 
           helperText={addressError ? 'Invalid wallet address' : ''}
         />
       </Stack>
-      <DialogActions sx={{ width: '100%', pt: 1 }}>
+      <DialogActions sx={{ width: '100%', pt: 1, alignItems:'center', display: 'flex' }}>
+        <FinanceChangeWallet onChangingWallet={setAddress} />
+
         <Button onClick={onClose}>Cancel</Button>
 
         <RainbowEffect borderRadius={"10px"} animationSpeed={"3s"} padding={"0"} width={"auto"}>
