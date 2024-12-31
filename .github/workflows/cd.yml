@@ -28,28 +28,17 @@ jobs:
         with:
           node-version: "lts/*"
 
-      - name: Set up JDK 17
-        uses: actions/setup-java@v3
-        with:
-          java-version: '17'
-          distribution: 'tem'
-
       - name: Install dependencies
         run: npm ci
 
       - name: Collecting .env from dotenv-vault
         run: npx dotenv-vault@latest pull -m ${{ secrets.DOTENV_ME }} -y
 
-      - uses: ruby/setup-ruby@v1
+      - name: Deploy to production
+        uses: johnbeynon/render-deploy-action@v0.0.8
         with:
-          ruby-version: "3.0"
-          bundler-cache: true
-          working-directory: "android"
-
-      - name: Deploying Android
-        uses: maierj/fastlane-action@v3.0.0
-        with:
-          lane: "beta"
-          subdirectory: "android"
+          service-id: ${{ secrets.MY_RENDER_SERVICE_ID }}
+          api-key: ${{ secrets.MY_RENDER_API_KEY }}
+          wait-for-success: true
 
   
