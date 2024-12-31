@@ -1,3 +1,4 @@
+import "viem/window";
 // @mui
 import Stack from '@mui/material/Stack';
 import { CardProps } from '@mui/material/Card';
@@ -39,9 +40,24 @@ const FinanceQuickActions: FC<CardProps> = ({ sx, ...other }) => {
     }
   };
 
-  // Function to handle wallet changes
+  // Function to handle wallet changes (User can interchange wallets using MetaMask extension)
   const handleChangeWallet = async () => {
-  };
+    setConnectedWallet(false);
+
+    window?.ethereum?.request({
+      method: "wallet_requestPermissions",
+      params: [{
+        eth_accounts: {}
+      }]
+    }).then(() => window?.ethereum?.request({method: 'eth_requestAccounts'}).then((accounts: string[]) => {
+      setWalletAddress(accounts[0]);
+      setConnectedWallet(true);
+    })).catch((error: any) => {
+      console.error('Error changing wallet:', error);
+      enqueueSnackbar(`Failed to change wallet: ${error.message}`, {variant: 'error', autoHideDuration: 5000});
+    })
+  }
+
 
   // Automatically attempt to connect wallet on component mount
   useEffect(() => {
