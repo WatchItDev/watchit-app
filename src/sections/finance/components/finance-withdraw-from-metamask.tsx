@@ -11,10 +11,13 @@ import NeonPaper from "@src/sections/publication/NeonPaperContainer.tsx";
 import Box from "@mui/material/Box";
 import { useSnackbar } from "notistack";
 import React, { FC, useEffect, useState } from 'react';
-import {useWithdraw} from "@src/hooks/use-withdraw.ts";
-import {useGetBalance} from "@src/hooks/use-get-balance.ts";
 import TextField from "@mui/material/TextField";
 import {isValidAddress} from "@src/sections/finance/components/finance-quick-transfer.tsx";
+import {useWithdrawMetamask} from "@src/hooks/use-withdraw-metamask";
+import {Address} from "viem";
+import {ConnectWalletClient} from "@src/clients/viem/walletClient.ts";
+import {truncateAddress} from "@src/utils/wallet.ts";
+import {useGetVaultBalance} from "@src/hooks/use-get-vault-balance.ts";
 
 interface FinanceDepositFromSmartAccountProps {
   onClose: () => void;
@@ -23,9 +26,10 @@ interface FinanceDepositFromSmartAccountProps {
 const FinanceWithdrawFromMetamask: FC<FinanceDepositFromSmartAccountProps> = ({ onClose }) => {
   const [amount, setAmount] = useState<number>(0);
   const [loading, setLoading] = useState(false);
-  const { balance } = useGetBalance();
+  const [address, setAddress] = useState<Address | undefined>();
+  const { balance } = useGetVaultBalance(address);
   const { enqueueSnackbar } = useSnackbar();
-  const { withdraw, loading: withdrawLoading, error } = useWithdraw();
+  const { withdraw, loading: withdrawLoading, error } = useWithdrawMetamask();
   const [destinationAddress, setDestinationAddress] = useState('');
   const [addressError, setAddressError] = useState(false);
 
@@ -35,6 +39,21 @@ const FinanceWithdrawFromMetamask: FC<FinanceDepositFromSmartAccountProps> = ({ 
       enqueueSnackbar(`Deposit failed: ${error?.message}`, { variant: "error" });
     }
   }, [enqueueSnackbar, error]);
+
+
+  useEffect(() => {
+    handleConnectMetamask();
+  }, []);
+
+  async function handleConnectMetamask() {
+    try {
+      const walletClient = await ConnectWalletClient();
+      const [addr] = await walletClient.requestAddresses();
+      setAddress(addr);
+    } catch (error) {
+      alert(`Transaction failed: ${error}`);
+    }
+  }
 
   const handleConfirmWithdraw = async () => {
     if (amount > 0 && amount <= (balance ?? 0)) {
@@ -76,9 +95,16 @@ const FinanceWithdrawFromMetamask: FC<FinanceDepositFromSmartAccountProps> = ({ 
         alignItems={"center"}
         justifyContent={"space-between"}
       >
-
-
-
+        <BoxRow>
+          <TextMaxLine line={1}>Connected Wallet</TextMaxLine>
+          <TextMaxLine
+            line={1}
+            sx={{ fontWeight: "bold", fontSize: "1em", color: "text.secondary" }}
+          >
+            {truncateAddress(address ?? '')}
+          </TextMaxLine>
+        </BoxRow>
+        <Divider sx={{ width: "100%" }} />
         <BoxRow>
           <TextMaxLine line={1}>Balance</TextMaxLine>
           <TextMaxLine
@@ -129,4 +155,4 @@ const FinanceWithdrawFromMetamask: FC<FinanceDepositFromSmartAccountProps> = ({ 
   );
 };
 
-export default FinanceWithdrawFromSmartAccount;
+export default FinanceWithdrawFromMetamask;
