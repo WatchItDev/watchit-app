@@ -17,7 +17,3 @@ jobs:
       pull-requests: write # to be able to comment on released pull requests
       id-token: write # to enable use of OIDC for npm provenance
     secrets: inherit
-  Deploy-Beta:
-    needs: [Create-Release]
-    uses: ./.github/workflows/cd.yml
-    secrets: inherit
