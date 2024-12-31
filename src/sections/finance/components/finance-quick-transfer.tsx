@@ -19,7 +19,7 @@ import { useBoolean } from '@src/hooks/use-boolean';
 // components
 import Carousel, { CarouselArrows, useCarousel } from '@src/components/carousel';
 import {useDispatch, useSelector} from "react-redux";
-import { storeAddress } from '@redux/address';
+import {storeAddress, toggleRainbow} from '@redux/address';
 import {truncateAddress} from "@src/utils/wallet.ts";
 import {Profile} from "@lens-protocol/api-bindings";
 import NeonPaper from "@src/sections/publication/NeonPaperContainer.tsx";
@@ -65,6 +65,7 @@ export default function FinanceQuickTransfer({ title, subheader,sx, list, ...oth
   const [walletAddress, setWalletAddress] = useState(storedAddress.address ?? '');
   const [addressError, setAddressError] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [addressFiltered, setAddressFiltered] = useState<boolean>(false);
   const MAX_AMOUNT = balance;
   const carousel = useCarousel({
     centerMode: true,
@@ -131,10 +132,16 @@ export default function FinanceQuickTransfer({ title, subheader,sx, list, ...oth
     dispatch(storeAddress({ address: value, profileId: getContactInfo?.id ?? ''}))
 
     if (isValidAddress(value)) {
+      setAddressFiltered(true);
+      dispatch(toggleRainbow());
       setAddressError(false);
     } else {
       setAddressError(true);
     }
+
+    setTimeout(() => {
+      dispatch(toggleRainbow());
+    },1400)
   };
 
   const handleChangeSlider = useCallback((_event: Event, newValue: number | number[]) => {
@@ -166,12 +173,26 @@ export default function FinanceQuickTransfer({ title, subheader,sx, list, ...oth
       if (index !== -1) {
         setCurrentIndex(index ?? 0)
       }
+
+      // Verify is only the address is stored(changed)
+      if (addressFiltered) {
+        //find in list only filtering the address
+        const profile = list?.findIndex((profile) => profile.ownedBy?.address === storedAddress?.address);
+
+        // If the address is found, set the current index
+        if (profile !== -1) {
+          setCurrentIndex(profile ?? 0)
+        }
+
+        // Reset the filter
+        setAddressFiltered(false);
+      }
+
   }, [storedAddress]);
 
 
   useEffect(() => {
     if (!showRainbow) {
-      // carousel.setCurrentIndex(currentIndex);
       if (carousel.carouselRef.current) {
         carousel.carouselRef.current.slickGoTo(currentIndex);
       }
