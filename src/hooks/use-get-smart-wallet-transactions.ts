@@ -19,6 +19,7 @@ const useGetSmartWalletTransactions = () => {
       setLoading(true);
       setError(null);
 
+      // Define ABI for events to monitor
       const eventsAbi = {
         FundsTransferred: parseAbiItem(
           createEventSignature(
@@ -36,6 +37,7 @@ const useGetSmartWalletTransactions = () => {
         ),
       };
 
+      // Fetch logs for each event
       const [transfersToMe, transfersFromMe, deposits] = await Promise.all([
         publicClient.getLogs({
           address: GLOBAL_CONSTANTS.LEDGER_VAULT_ADDRESS as Address,
@@ -62,11 +64,12 @@ const useGetSmartWalletTransactions = () => {
 
       const allLogs = [...transfersToMe, ...transfersFromMe, ...deposits];
 
-      // Obtener timestamps y formatear datos
+      // Add timestamps and format details for each log
       const logsWithDetails = await Promise.all(
         allLogs.map(async (log: any) => {
           const block = await publicClient.getBlock({ blockNumber: log.blockNumber });
 
+          // Determine the event type
           const event = (() => {
             switch (log.eventName) {
               case 'FundsTransferred':
@@ -82,15 +85,15 @@ const useGetSmartWalletTransactions = () => {
 
           return {
             ...log,
-            timestamp: block.timestamp, // Timestamp en UNIX
-            readableDate: new Date(Number(block.timestamp) * 1000).toLocaleString(), // Fecha legible
-            formattedAmount: log.args.amount ? formatUnits(log.args.amount, 18) : null, // Conversión de wei a ether
+            timestamp: block.timestamp, // UNIX timestamp of the block
+            readableDate: new Date(Number(block.timestamp) * 1000).toLocaleString(), // Human-readable date
+            formattedAmount: log.args.amount ? formatUnits(log.args.amount, 18) : null, // Convert amount from wei to ether
             event,
           };
         })
       );
 
-      // Ordenar por bloque y transacción
+      // Sort logs by block and transaction index
       const sortedLogs = logsWithDetails.sort((a, b) => {
         const blockDifference = Number(b.blockNumber) - Number(a.blockNumber);
         if (blockDifference !== 0) return blockDifference;
