@@ -331,7 +331,7 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
         sx={{ display: 'none' }}
       />
       <Box component="form" onSubmit={formik.handleSubmit}>
-        <Box sx={{ width: '100%', position: 'relative' }}>
+        <Box sx={{ width: '100%', position: 'relative', pt: 1 }}>
           {/* Background Image */}
           <Image
             src={
