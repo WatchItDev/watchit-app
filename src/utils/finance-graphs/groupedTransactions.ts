@@ -114,7 +114,7 @@ export type ProcessedTransactionData = {
 };
 
 export const processTransactionData = (data: TransactionLog[]): ProcessedTransactionData[] => {
-  return data.map((transaction, _index) => ({
+  return data?.map((transaction, _index) => ({
     id: transaction.transactionHash,
     name: transaction.event === 'transferFrom' ? transaction.args.sender : transaction.args.recipient,
     avatarUrl: '',

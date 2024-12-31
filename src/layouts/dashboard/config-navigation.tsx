@@ -61,7 +61,7 @@ export function useNavData() {
             icon: ICONS.dashboard,
           },
           {
-            title: t('Comunity'),
+            title: t('Community'),
             path: paths.dashboard.community,
             icon: ICONS.userGroup,
           },

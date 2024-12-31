@@ -716,7 +716,7 @@ const ProfileHeader = ({ profile: profileData, children }: PropsWithChildren<Pro
                       justifyContent: 'space-between',
                     }}
                   >
-                    <Typography color="text.secondary">Attestation</Typography>
+                    <Typography color="text.secondary">License</Typography>
                     <OpenableText
                       label={truncateAddress(attestationAddress)}
                       url={`${urlAttestationBase}${attestationAddress}`}

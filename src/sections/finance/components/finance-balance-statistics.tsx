@@ -12,7 +12,7 @@ import CustomPopover, { usePopover } from '@src/components/custom-popover';
 import useGetSmartWalletTransactions from '@src/hooks/use-get-smart-wallet-transactions.ts';
 
 export default function FinanceBalanceStatistics() {
-  const { logs, loading } = useGetSmartWalletTransactions();
+  const { transactions, loading } = useGetSmartWalletTransactions();
   const popover = usePopover();
   const [timeFrame, setTimeFrame] = useState('Week');
   const [incomeData, setIncomeData] = useState<number[]>([]);
@@ -53,7 +53,7 @@ export default function FinanceBalanceStatistics() {
 
   // Generate labels in useEffect
   useEffect(() => {
-    if (!logs || loading) return;
+    if (!transactions || loading) return;
 
     const now = Date.now();
     const oneWeekAgo = now - 7 * 24 * 60 * 60 * 1000;
@@ -65,7 +65,7 @@ export default function FinanceBalanceStatistics() {
 
     if (timeFrame === 'Week') {
       // Group data by each day in the last week
-      groupedData = logs.reduce((acc, log) => {
+      groupedData = transactions.reduce((acc: any, log: any) => {
         const timestamp = Number(log.timestamp) * 1000;
         if (timestamp < oneWeekAgo) return acc;
 
@@ -83,9 +83,9 @@ export default function FinanceBalanceStatistics() {
 
         if (!acc[dateKey]) acc[dateKey] = { label: dayLabel, income: 0, expense: 0 };
 
-        if (eventType === 'transferTo' || eventType === 'deposit') {
+        if (eventType === 'transferFrom' || eventType === 'deposit') {
           acc[dateKey].income += amount;
-        } else if (eventType === 'transferFrom') {
+        } else if (eventType === 'transferTo' || eventType === 'withdraw') {
           acc[dateKey].expense += amount;
         }
 
@@ -93,7 +93,7 @@ export default function FinanceBalanceStatistics() {
       }, {});
     } else if (timeFrame === 'Month') {
       // Group data by week within the last month
-      groupedData = logs.reduce((acc, log) => {
+      groupedData = transactions.reduce((acc: any, log: any) => {
         const timestamp = Number(log.timestamp) * 1000;
         if (timestamp < oneMonthAgo) return acc;
 
@@ -127,7 +127,7 @@ export default function FinanceBalanceStatistics() {
       }, {});
     } else if (timeFrame === 'Year') {
       // Group data by each month in the last year
-      groupedData = logs.reduce((acc, log) => {
+      groupedData = transactions.reduce((acc: any, log: any) => {
         const timestamp = Number(log.timestamp) * 1000;
         if (timestamp < oneYearAgo) return acc;
 
@@ -198,7 +198,7 @@ export default function FinanceBalanceStatistics() {
     setCategories(shortLabels);
     setIncomeData(sortedKeys.map((key) => groupedData[key].income));
     setExpenseData(sortedKeys.map((key) => groupedData[key].expense));
-  }, [logs, timeFrame, loading, ]);
+  }, [transactions, timeFrame, loading, ]);
 
   const handleChangeTimeFrame = (newValue: string) => {
     popover.onClose();

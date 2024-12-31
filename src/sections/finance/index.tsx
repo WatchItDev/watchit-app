@@ -11,19 +11,21 @@ import FinanceBalanceStatistics from '@src/sections/finance/components/finance-b
 
 import {useSelector} from "react-redux";
 import {useProfileFollowing} from "@lens-protocol/react";
-import {TableRowTransactionType, useTransactionData} from "@src/hooks/use-transaction-data";
+import { useTransactionData} from "@src/hooks/use-transaction-data";
 import {
   groupedTransactionData,
   processDayData, ProcessedTransactionData,
   processTransactionData
 } from "@src/utils/finance-graphs/groupedTransactions.ts";
-import FinanceTransactionsHistory from "@src/sections/finance/components/finance-transactions-history.tsx";
 import Typography from "@mui/material/Typography";
 import FinanceQuickActions from "@src/sections/finance/components/finance-quick-actions.tsx";
 import useGetSmartWalletTransactions from "@src/hooks/use-get-smart-wallet-transactions.ts";
 
 // ----------------------------------------------------------------------
+
 type UseGetSmartWalletTransactionsReturn = ReturnType<typeof useGetSmartWalletTransactions>;
+
+// ----------------------------------------------------------------------
 
 export default function OverviewBankingView() {
   const { balance: balanceFromRedux } = useSelector((state: any) => state.auth);
@@ -42,10 +44,10 @@ export default function OverviewBankingView() {
   // Get the difference between daySeriesData[1] and daySeriesData[0] in y value to calculate the percent
   const percent = (daySeriesData[1]?.y - daySeriesData[0]?.y) / daySeriesData[0]?.y * 100;
 
-  const { logs }: UseGetSmartWalletTransactionsReturn = useGetSmartWalletTransactions();
-  const processedTransactions: ProcessedTransactionData[] = processTransactionData(logs)
+  const { transactions }: UseGetSmartWalletTransactionsReturn = useGetSmartWalletTransactions();
+  const processedTransactions: ProcessedTransactionData[] = processTransactionData(transactions)
 
-  console.log('logs:', logs);
+  console.log('logs:', transactions);
   console.log('processedTransactions:', processedTransactions);
 
   return (
