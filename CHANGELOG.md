@@ -1,3 +1,10 @@
+## [0.3.1-next.1](https://github.com/WatchItDev/watchit-app/compare/v0.3.0...v0.3.1-next.1) (2024-12-31)
+
+
+### Bug Fixes
+
+* worflow + test release ([f2f7ee7](https://github.com/WatchItDev/watchit-app/commit/f2f7ee7616814ef40d2e345d6c4e2c2a4ca31b2a))
+
 ## [0.3.1](https://github.com/WatchItDev/watchit-app/compare/v0.3.0...v0.3.1) (2024-12-31)
 
 

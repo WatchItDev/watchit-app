@@ -2,8 +2,8 @@
   "name": "watchit",
   "author": "Watchit",
   "type": "module",
-  "version": "0.3.1",
-  "description": "Open movies everywhere",
+  "version": "0.3.1-next.1",
+  "description": "Open videos everywhere",
   "email": "info@watchit.movie",
   "private": true,
   "repository": {
