@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - next
-
 jobs:
   # Continuous-Integration:
   #   uses: ./.github/workflows/ci.yml
