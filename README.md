@@ -24,7 +24,7 @@ WatchIt leverages the innovative Synapse protocol for its secure and decentraliz
 Embark on your journey with WatchIt and join the decentralized entertainment movement. Here’s how you can get involved:
 
 - Visit our official site: [watchit.movie](https://watchit.movie)
-- Join our community discussions: [Matrix](https://matrix.to/#/#watchit\:matrix.org) | [Discord](https://discord.gg/VdGMqNJgFq) | [Telegram](https://t.me/watchitofficial) | [Reddit](https://www.reddit.com/r/watchitprotocol/)
+- Join our community discussions: [Matrix](https://matrix.to/#/#watchit\:matrix.org) | [Discord](https://discord.gg/VdGMqNJgFq) | [Telegram](https://t.me/watchitofficial) | [Reddit](https://www.reddit.com/user/Watchit_V/)
 - Support us on Open Collective: [Open Collective](https://opencollective.com/watchit)
 - Explore our insights: [WatchIt - Open Movies](https://dev.to/geolffreym/watchit-2b88)
 - Consult our [FAQ](FAQ.md) for detailed guidance.
