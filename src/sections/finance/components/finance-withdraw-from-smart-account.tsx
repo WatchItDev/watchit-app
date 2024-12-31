@@ -4,9 +4,6 @@ import { formatBalanceNumber } from "@src/utils/format-number.ts";
 import Divider from "@mui/material/Divider";
 import { InputAmount } from "@src/components/input-amount.tsx";
 import { BoxRow } from "@src/sections/finance/components/finance-deposit-from-metamask.tsx";
-import Button from "@mui/material/Button";
-import LoadingButton from "@mui/lab/LoadingButton";
-import DialogActions from "@mui/material/DialogActions";
 import NeonPaper from "@src/sections/publication/NeonPaperContainer.tsx";
 import Box from "@mui/material/Box";
 import { useSnackbar } from "notistack";
@@ -15,6 +12,8 @@ import {useWithdraw} from "@src/hooks/use-withdraw.ts";
 import {useGetBalance} from "@src/hooks/use-get-balance.ts";
 import TextField from "@mui/material/TextField";
 import {isValidAddress} from "@src/sections/finance/components/finance-quick-transfer.tsx";
+import FinanceDialogsActions from "@src/sections/finance/components/finance-dialogs-actions.tsx";
+import {useResponsive} from "@src/hooks/use-responsive.ts";
 
 interface FinanceDepositFromSmartAccountProps {
   onClose: () => void;
@@ -67,6 +66,8 @@ const FinanceWithdrawFromSmartAccount: FC<FinanceDepositFromSmartAccountProps> =
 
   const RainbowEffect = loading || withdrawLoading ? NeonPaper : Box;
 
+  const mdUp = useResponsive('up', 'md');
+
   return (
     <>
       <Stack
@@ -101,6 +102,7 @@ const FinanceWithdrawFromSmartAccount: FC<FinanceDepositFromSmartAccountProps> =
           />
         </BoxRow>
         <TextField
+          sx={{ mt: 1 }}
           fullWidth
           label="Wallet Address"
           value={destinationAddress}
@@ -110,21 +112,18 @@ const FinanceWithdrawFromSmartAccount: FC<FinanceDepositFromSmartAccountProps> =
           helperText={addressError ? 'Invalid wallet address' : ''}
         />
       </Stack>
-      <DialogActions sx={{ width: '100%', pt: 1 }}>
-        <Button onClick={onClose}>Cancel</Button>
 
-        <RainbowEffect borderRadius={"10px"} animationSpeed={"3s"} padding={"0"} width={"auto"}>
-          <LoadingButton
-            variant="contained"
-            sx={{ backgroundColor: "#fff" }}
-            onClick={handleConfirmWithdraw}
-            disabled={loading || withdrawLoading || amount <= 0 || amount > (balance ?? 0)}
-            loading={loading || withdrawLoading}
-          >
-            Confirm & Withdraw
-          </LoadingButton>
-        </RainbowEffect>
-      </DialogActions>
+      <FinanceDialogsActions
+        rainbowComponent={RainbowEffect}
+        loading={loading}
+        actionLoading={withdrawLoading}
+        amount={amount}
+        balance={balance}
+        label={mdUp ? 'Confirm & Withdraw' : 'Withdraw'}
+        onConfirmAction={handleConfirmWithdraw}
+        onCloseAction={onClose}
+      />
+
     </>
   );
 };

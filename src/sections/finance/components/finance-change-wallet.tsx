@@ -9,9 +9,10 @@ import Box from "@mui/material/Box";
 import {FC} from "react";
 import {Address} from "viem";
 import TextMaxLine from "@src/components/text-max-line";
+import {useResponsive} from "@src/hooks/use-responsive.ts";
 
 type FinanceChangeWalletProps = {
-  onChangingWallet: (address: Address | undefined) => void;
+  onChangingWallet?: (address: Address ) => void;
 }
 
 const FinanceChangeWallet: FC<FinanceChangeWalletProps> = ({onChangingWallet}) => {
@@ -26,13 +27,15 @@ const FinanceChangeWallet: FC<FinanceChangeWalletProps> = ({onChangingWallet}) =
       }]
     }).then(() => window?.ethereum?.request({method: 'eth_requestAccounts'}).then((accounts: string[]) => {
       console.log('Changed wallet to:', accounts[0]);
-      onChangingWallet(accounts[0] as Address);
+      onChangingWallet?.(accounts[0] as Address);
       enqueueSnackbar('Wallet changed successfully!', { variant: 'success', autoHideDuration: 3000 });
     })).catch((error: any) => {
       console.error('Error changing wallet:', error);
       enqueueSnackbar(`Failed to change wallet: ${error.message}`, {variant: 'error', autoHideDuration: 5000});
     })
   }
+
+  const mdUp = useResponsive('up', 'md');
 
   return (
     <Box sx={{ flexGrow: 1 }} >
@@ -41,7 +44,9 @@ const FinanceChangeWallet: FC<FinanceChangeWalletProps> = ({onChangingWallet}) =
         color="secondary"
         onClick={handleChangeWallet}
       >
-        <TextMaxLine line={1}>Change Wallet</TextMaxLine>
+        <TextMaxLine line={1}>
+          {mdUp ? 'Change Wallet' : 'Change'}
+        </TextMaxLine>
 
       </Button>
     </Box>

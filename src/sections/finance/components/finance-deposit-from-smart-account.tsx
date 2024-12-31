@@ -6,15 +6,14 @@ import { InputAmount } from "@src/components/input-amount.tsx";
 import { BoxRow } from "@src/sections/finance/components/finance-deposit-from-metamask.tsx";
 import { useSelector } from "react-redux";
 import { useGetMmcContractBalance } from "@src/hooks/use-get-mmc-contract-balance.ts";
-import Button from "@mui/material/Button";
-import LoadingButton from "@mui/lab/LoadingButton";
-import DialogActions from "@mui/material/DialogActions";
 import NeonPaper from "@src/sections/publication/NeonPaperContainer.tsx";
 import Box from "@mui/material/Box";
 import { useSnackbar } from "notistack";
 import { FC, useEffect, useState } from 'react';
 import { useDeposit } from "@src/hooks/use-deposit.ts";
 import { truncateAddress } from '@src/utils/wallet.ts';
+import {useResponsive} from "@src/hooks/use-responsive.ts";
+import FinanceDialogsActions from "@src/sections/finance/components/finance-dialogs-actions.tsx";
 
 interface FinanceDepositFromSmartAccountProps {
   onClose: () => void;
@@ -52,6 +51,8 @@ const FinanceDepositFromSmartAccount: FC<FinanceDepositFromSmartAccountProps> = 
   };
 
   const RainbowEffect = loading || depositLoading ? NeonPaper : Box;
+
+  const mdUp = useResponsive('up', 'md');
 
   return (
     <>
@@ -95,21 +96,17 @@ const FinanceDepositFromSmartAccount: FC<FinanceDepositFromSmartAccountProps> = 
           />
         </BoxRow>
       </Stack>
-      <DialogActions sx={{ width: '100%', pt: 1 }}>
-        <Button onClick={onClose}>Cancel</Button>
 
-        <RainbowEffect borderRadius={"10px"} animationSpeed={"3s"} padding={"0"} width={"auto"}>
-          <LoadingButton
-            variant="contained"
-            sx={{ backgroundColor: "#fff" }}
-            onClick={handleConfirmDeposit}
-            disabled={loading || depositLoading || amount <= 0 || amount > (balance ?? 0)}
-            loading={loading || depositLoading}
-          >
-            Confirm & Deposit
-          </LoadingButton>
-        </RainbowEffect>
-      </DialogActions>
+      <FinanceDialogsActions
+        rainbowComponent={RainbowEffect}
+        loading={loading}
+        actionLoading={depositLoading}
+        amount={amount}
+        balance={balance ?? 0}
+        label={mdUp ? 'Confirm & Deposit' : 'Deposit'}
+        onConfirmAction={handleConfirmDeposit}
+        onCloseAction={onClose}
+      />
     </>
   );
 };

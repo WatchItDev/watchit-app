@@ -11,14 +11,13 @@ import TextMaxLine from "@src/components/text-max-line";
 import {InputAmount} from "@src/components/input-amount.tsx";
 import Divider from "@mui/material/Divider";
 import { useGetMmcContractBalance } from '@src/hooks/use-get-mmc-contract-balance.ts';
-import LoadingButton from '@mui/lab/LoadingButton';
-import DialogActions from '@mui/material/DialogActions';
 import NeonPaper from '@src/sections/publication/NeonPaperContainer.tsx';
 import { useSelector } from 'react-redux';
 import { useSnackbar } from 'notistack';
 import { useDepositMetamask } from "@src/hooks/use-deposit-metamask.ts";
 import { truncateAddress } from '@src/utils/wallet.ts';
-import FinanceChangeWallet from "@src/sections/finance/components/finance-change-wallet.tsx";
+import FinanceDialogsActions from "@src/sections/finance/components/finance-dialogs-actions.tsx";
+import {useResponsive} from "@src/hooks/use-responsive.ts";
 
 interface FinanceDepositFromMetamaskProps {
   onClose: () => void;
@@ -79,6 +78,8 @@ const FinanceDepositFromMetamask: FC<FinanceDepositFromMetamaskProps> = ({ onClo
 
   const RainbowEffect = loading || depositLoading ? NeonPaper : Box;
 
+  const mdUp = useResponsive('up', 'md');
+
   return (
     <Stack sx={{
       display: 'flex',
@@ -127,23 +128,18 @@ const FinanceDepositFromMetamask: FC<FinanceDepositFromMetamaskProps> = ({ onClo
             </BoxRow>
             <Divider  sx={{width: '100%'}}/>
           </Stack>
-          <DialogActions sx={{ width: '100%', pt: 1, px: 3 }}>
-            <FinanceChangeWallet onChangingWallet={setAddress} />
 
-            <Button onClick={onClose}>Cancel</Button>
-
-            <RainbowEffect borderRadius={"10px"} animationSpeed={"3s"} padding={"0"} width={"auto"}>
-              <LoadingButton
-                variant="contained"
-                sx={{ backgroundColor: "#fff" }}
-                onClick={handleConfirmDeposit}
-                disabled={loading || depositLoading || amount <= 0 || amount > (balance ?? 0)}
-                loading={loading || depositLoading}
-              >
-                Confirm & Deposit
-              </LoadingButton>
-            </RainbowEffect>
-          </DialogActions>
+          <FinanceDialogsActions
+            rainbowComponent={RainbowEffect}
+            loading={loading}
+            actionLoading={depositLoading}
+            amount={amount}
+            balance={balance ?? 0}
+            label={mdUp ? 'Confirm & Deposit' : 'Deposit'}
+            onConfirmAction={handleConfirmDeposit}
+            onCloseAction={onClose}
+            onChangeWallet={setAddress}
+          />
         </>
       ) : (
         <Button

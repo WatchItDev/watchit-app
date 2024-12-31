@@ -4,9 +4,6 @@ import { formatBalanceNumber } from "@src/utils/format-number.ts";
 import Divider from "@mui/material/Divider";
 import { InputAmount } from "@src/components/input-amount.tsx";
 import { BoxRow } from "@src/sections/finance/components/finance-deposit-from-metamask.tsx";
-import Button from "@mui/material/Button";
-import LoadingButton from "@mui/lab/LoadingButton";
-import DialogActions from "@mui/material/DialogActions";
 import NeonPaper from "@src/sections/publication/NeonPaperContainer.tsx";
 import Box from "@mui/material/Box";
 import { useSnackbar } from "notistack";
@@ -18,8 +15,8 @@ import {Address} from "viem";
 import {ConnectWalletClient} from "@src/clients/viem/walletClient.ts";
 import {truncateAddress} from "@src/utils/wallet.ts";
 import {useGetVaultBalance} from "@src/hooks/use-get-vault-balance.ts";
-import FinanceChangeWallet from "@src/sections/finance/components/finance-change-wallet.tsx";
 import {useResponsive} from "@src/hooks/use-responsive.ts";
+import FinanceDialogsActions from "@src/sections/finance/components/finance-dialogs-actions.tsx";
 
 interface FinanceDepositFromSmartAccountProps {
   onClose: () => void;
@@ -119,7 +116,6 @@ const FinanceWithdrawFromMetamask: FC<FinanceDepositFromSmartAccountProps> = ({ 
 
         <Divider sx={{ width: "100%" }} />
 
-
         <BoxRow>
           <TextMaxLine line={1}>Amount to withdraw</TextMaxLine>
           <InputAmount
@@ -129,6 +125,7 @@ const FinanceWithdrawFromMetamask: FC<FinanceDepositFromSmartAccountProps> = ({ 
           />
         </BoxRow>
         <TextField
+          sx={{ mt: 1 }}
           fullWidth
           label="Wallet Address"
           value={destinationAddress}
@@ -138,27 +135,18 @@ const FinanceWithdrawFromMetamask: FC<FinanceDepositFromSmartAccountProps> = ({ 
           helperText={addressError ? 'Invalid wallet address' : ''}
         />
       </Stack>
-      <DialogActions sx={{width: '100%', pt: 1, alignItems: 'center',
-        display: 'flex',
-        //flexDirection: mdUp ? 'row':'column',
-        justifyContent: 'space-between'}}>
 
-        <FinanceChangeWallet onChangingWallet={setAddress} />
-
-        {/*<Button onClick={onClose}>Cancel</Button>*/}
-
-        <RainbowEffect borderRadius={"10px"} animationSpeed={"3s"} padding={"0"} width={"auto"}>
-          <LoadingButton
-            variant="contained"
-            sx={{ backgroundColor: "#fff", width: '100%'}}
-            onClick={handleConfirmWithdraw}
-            disabled={loading || withdrawLoading || amount <= 0 || amount > (balance ?? 0)}
-            loading={loading || withdrawLoading}
-          >
-            <TextMaxLine line={1}>Confirm & Withdraw</TextMaxLine>
-          </LoadingButton>
-        </RainbowEffect>
-      </DialogActions>
+      <FinanceDialogsActions
+        rainbowComponent={RainbowEffect}
+        loading={loading}
+        actionLoading={withdrawLoading}
+        amount={amount}
+        balance={balance ?? 0}
+        label={mdUp ? 'Confirm & Withdraw' : 'Withdraw'}
+        onConfirmAction={handleConfirmWithdraw}
+        onCloseAction={onClose}
+        onChangeWallet={setAddress}
+      />
     </>
   );
 };
