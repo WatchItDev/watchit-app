@@ -122,10 +122,6 @@ export default function FinanceWidgetSummary({
   };
 
 
-  /*const handleWithdrawal = () => {
-    withdraw({ amount: 10, recipient: '0x037f2b49721E34296fBD8F9E7e9cc6D5F9ecE7b4' });
-  };*/
-
   return (
     <Stack
       sx={{
