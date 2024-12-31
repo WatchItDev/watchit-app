@@ -40,7 +40,7 @@ const FinanceWithdrawFromSmartAccount: FC<FinanceDepositFromSmartAccountProps> =
     if (amount > 0 && amount <= (balance ?? 0)) {
       try {
         setLoading(true);
-        withdraw({ amount: amount, recipient:destinationAddress });
+        await withdraw({amount: amount, recipient: destinationAddress});
         enqueueSnackbar(`The withdraw was successful`, { variant: "success" });
         onClose();
       } catch (err: any) {
