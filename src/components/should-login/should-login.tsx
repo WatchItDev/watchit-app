@@ -13,7 +13,7 @@ type Props = {
   subtitle: string;
 }
 
-const notLoggedIn: FC<Props> = ({icon, subtitle} ) => {
+const NotLoggedIn: FC<Props> = ({icon, subtitle} ) => {
   const dispatch = useDispatch();
   const sessionData = useSelector((state: any) => state.auth.session);
 
@@ -42,8 +42,8 @@ const notLoggedIn: FC<Props> = ({icon, subtitle} ) => {
         mb: 2,
         color: COLORS.GRAY_LIGHT,
       }} />
-      <Typography variant="h4">Please log in </Typography>
-      <Typography variant="caption"  sx={{mb:4, opacity: 0.5}}>
+      <Typography variant="h4">Sign in required</Typography>
+      <Typography variant="body1"  sx={{mb:3, mt: 1, opacity: 0.5}}>
         {subtitle}
       </Typography>
       <Button
@@ -57,10 +57,10 @@ const notLoggedIn: FC<Props> = ({icon, subtitle} ) => {
           backgroundColor: COLORS.GRAY_DARK,
         }
       }}>
-        Log in
+        Sign in now
       </Button>
     </Box>
   );
 }
 
-export default notLoggedIn;
+export default NotLoggedIn;
