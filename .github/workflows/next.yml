@@ -1,0 +1,24 @@
+name: Staging CI/CD
+# https://docs.github.com/en/actions/managing-workflow-runs/skipping-workflow-runs
+on:
+  push:
+    branches:
+      - staging
+
+jobs:
+  Continuous-Integration:
+    uses: ./.github/workflows/ci.yml
+    secrets: inherit
+  Create-Release:
+    needs: [Continuous-Integration]
+    uses: ./.github/workflows/release.yml
+    permissions:
+      contents: write # to be able to publish a GitHub release
+      issues: write # to be able to comment on released issues
+      pull-requests: write # to be able to comment on released pull requests
+      id-token: write # to enable use of OIDC for npm provenance
+    secrets: inherit
+  Deploy-Beta:
+    needs: [Create-Release]
+    uses: ./.github/workflows/cd.yml
+    secrets: inherit
