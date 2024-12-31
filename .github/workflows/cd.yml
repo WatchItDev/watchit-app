@@ -5,7 +5,7 @@ on:
     inputs:
       environment:
         description: "Deploy environment"
-        default: "next"
+        default: next
         required: false
         type: string
 
@@ -15,30 +15,15 @@ concurrency:
 
 jobs:
   app:
-    # if we add in the commit [no android] android build is ignored
-    if: ${{ !contains(github.event.head_commit.message, '[no android]') }}
     environment: ${{ inputs.environment}}
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: "lts/*"
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Collecting .env from dotenv-vault
-        run: npx dotenv-vault@latest pull -m ${{ secrets.DOTENV_ME }} -y
 
       - name: Deploy to production
         uses: johnbeynon/render-deploy-action@v0.0.8
         with:
-          service-id: ${{ secrets.MY_RENDER_SERVICE_ID }}
-          api-key: ${{ secrets.MY_RENDER_API_KEY }}
+          service-id: ${{ secrets.RENDER_SERVICE_ID }}
+          api-key: ${{ secrets.RENDER_API_KEY }}
           wait-for-success: true
 
   
