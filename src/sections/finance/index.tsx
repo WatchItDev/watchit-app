@@ -20,6 +20,7 @@ import {
 import Typography from "@mui/material/Typography";
 import FinanceQuickActions from "@src/sections/finance/components/finance-quick-actions.tsx";
 import useGetSmartWalletTransactions from "@src/hooks/use-get-smart-wallet-transactions.ts";
+import FinanceTransactionsHistory from "@src/sections/finance/components/finance-transactions-history.tsx";
 
 // ----------------------------------------------------------------------
 
@@ -87,7 +88,7 @@ export default function OverviewBankingView() {
             <Typography variant="h6" sx={{ pt: 2 }}>
               Recent Transactions
             </Typography>
-            {/*<FinanceTransactionsHistory transactionsData={processedTransactions} />*/}
+            <FinanceTransactionsHistory transactionData={processedTransactions} />
         </Grid>
 
 

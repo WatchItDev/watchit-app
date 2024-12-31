@@ -13,7 +13,6 @@ export type TransactionLog = {
     currency: string;
     recipient: string;
     origin: string;
-    sender: string;
   };
   blockHash: string;
   blockNumber: bigint;

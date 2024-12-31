@@ -116,13 +116,47 @@ export type ProcessedTransactionData = {
 export const processTransactionData = (data: TransactionLog[]): ProcessedTransactionData[] => {
   return data?.map((transaction, _index) => ({
     id: transaction.transactionHash,
-    name: transaction.event === 'transferFrom' ? transaction.args.sender : transaction.args.recipient,
-    avatarUrl: '',
+    name: transaction.event === 'transferFrom' ? transaction.args.origin : transaction.args.recipient,
+    avatarUrl: `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${transaction.event === 'transferFrom' ? transaction.args.origin : transaction.args.recipient}`,
     type: transaction.event,
-    message: transaction.event === 'transferTo' ? 'Sent money to' : 'Received money from',
-    category: transaction.event === 'transferFrom' ? transaction.args.recipient : transaction.args.sender,
+    message: parseTransactionTypeLabel(transaction.event),
+    category: parseTransactionType(transaction.event),
     date: transaction.timestamp,
     status: 'completed',
     amount: transaction.formattedAmount,
   }));
 };
+
+const parseTransactionTypeLabel = (type: string): string => {
+  switch (type) {
+    case 'transferFrom':
+      return 'Sent money to';
+    case 'transferTo':
+      return 'Received money from';
+    case 'deposit':
+      return 'Deposited';
+    case 'withdraw':
+      return 'Withdraw';
+
+    default:
+      return type;
+  }
+};
+
+
+// Incomes or outcomes depending on the transaction type
+const parseTransactionType = (type: string): string => {
+  switch (type) {
+    case 'transferFrom':
+      return 'outcome';
+    case 'transferTo':
+      return 'income';
+    case 'deposit':
+      return 'income';
+    case 'withdraw':
+      return 'outcome';
+
+    default:
+      return type;
+  }
+}

@@ -6,9 +6,9 @@ import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import ListItemText from '@mui/material/ListItemText';
 // components
-import Label from '@src/components/label';
 import {TableRowTransactionType } from "@src/hooks/use-transaction-data.ts";
 import {truncateAddress} from "@src/utils/wallet.ts";
+import Typography from "@mui/material/Typography";
 
 // ----------------------------------------------------------------------
 
@@ -21,7 +21,7 @@ export default function FinanceTransactionTableRow({
   row,
   selected
 }: Props) {
-  const { date, name, amount, status, type, avatarUrl } = row;
+  const { date, name, amount, type, avatarUrl, message, category } = row;
 
   console.log('TYPE:', type);
 
@@ -35,7 +35,7 @@ export default function FinanceTransactionTableRow({
       <TableCell sx={{ display: 'flex', alignItems: 'center' }}>
         <Avatar alt={name} src={avatarUrl} sx={{ mr: 2 }} />
         <ListItemText
-          primary={type}
+          primary={message}
           secondary={truncateAddress(name)}
           primaryTypographyProps={{ typography: 'body2' }}
           secondaryTypographyProps={{
@@ -58,20 +58,10 @@ export default function FinanceTransactionTableRow({
         />
       </TableCell>
 
-      <TableCell> {amount} MMC </TableCell>
-
       <TableCell>
-        <Label
-          variant="soft"
-          color={
-            (status === 'completed' && 'success') ||
-            (status === 'pending' && 'warning') ||
-            (status === 'cancelled' && 'error') ||
-            'default'
-          }
-        >
-          {status}
-        </Label>
+        <Typography variant="body2" sx={{ color: category === 'income' ? '#00AB55': '#FF4842' }}>
+          {category === 'income' ? '': '-'} {amount} MMC
+        </Typography>
       </TableCell>
     </TableRow>
   );

@@ -9,8 +9,6 @@ import TableBody from '@mui/material/TableBody';
 import TableContainer from '@mui/material/TableContainer';
 // _mock
 import {TRANSACTIONS_TYPES} from '@src/types/transaction';
-// utils
-import { fTimestamp } from '@src/utils/format-time';
 // components
 import Label from '@src/components/label';
 import Scrollbar from '@src/components/scrollbar';
@@ -32,49 +30,45 @@ import FinanceTransactionsTableFiltersResult from '@src/sections/finance/compone
 import {ProcessedTransactionData} from "@src/utils/finance-graphs/groupedTransactions.ts";
 
 // ----------------------------------------------------------------------
-
-const STATUS_OPTIONS = [{ value: 'all', label: 'All' }, ...TRANSACTIONS_TYPES];
+// REmove last 2 elements from the array TRANSACTIONS_TYPES
+const STATUS_OPTIONS = [{ value: 'all', label: 'All' }, ...TRANSACTIONS_TYPES.slice(0, -2)];
 
 const TABLE_HEAD = [
   { id: 'name', label: 'Profile Info', width: 20 },
   { id: 'createdAt', label: 'Date', width: 40 },
   { id: 'amount', label: 'Amount', width: 40 },
-  { id: 'status', label: 'Status', width: 20 },
 ];
 
 const defaultFilters: IOrderTableFilters = {
-  name: '',
-  status: 'all',
-  startDate: null,
-  endDate: null,
+  status: 'all'
 };
 
-export default function FinanceTransactionsHistory(transactionsData: ProcessedTransactionData[]) {
+type TransactionsProcessedData = {
+  transactionData: ProcessedTransactionData[];
+}
 
-  const table = useTable({ defaultOrderBy: 'date' });
+export default function FinanceTransactionsHistory({ transactionData }: TransactionsProcessedData) {
+  console.log('processedTransactions passed:', transactionData);
+  const table = useTable({ defaultOrderBy: 'name' });
 
-  const [tableData, _setTableData] = useState(transactionsData);
+  const [tableData, _setTableData] = useState(transactionData);
 
   const [filters, setFilters] = useState(defaultFilters);
 
-  const dateError =
-    filters.startDate && filters.endDate
-      ? filters.startDate.getTime() > filters.endDate.getTime()
-      : false;
-
   const dataFiltered = applyFilter({
-    inputData: transactionsData,
+    inputData: transactionData,
     comparator: getComparator(table.order, table.orderBy),
-    filters,
-    dateError,
+    filters
   });
 
   const denseHeight = table.dense ? 52 : 72;
 
-  const canReset =
-    !!filters.name || filters.status !== 'all' || (!!filters.startDate && !!filters.endDate);
+  const canReset = filters.status !== 'all';
 
   const notFound = (!dataFiltered.length && canReset) || !dataFiltered.length;
+
+  console.log('Data:', tableData);
+  console.log('Date Filtered:', dataFiltered);
 
   const handleFilters = useCallback(
     (name: string, value: IOrderTableFilterValue) => {
@@ -108,7 +102,7 @@ export default function FinanceTransactionsHistory(transactionsData: ProcessedTr
               boxShadow: (theme) => `inset 0 -2px 0 0 ${alpha(theme.palette.grey[500], 0.08)}`,
             }}
           >
-            {STATUS_OPTIONS.map((tab) => (
+            {Array.isArray(transactionData) &&  STATUS_OPTIONS.map((tab) => (
               <Tab
                 key={tab.value}
                 iconPosition="end"
@@ -125,11 +119,11 @@ export default function FinanceTransactionsHistory(transactionsData: ProcessedTr
                       'default'
                     }
                   >
-                    {tab.value === 'all' && transactionsData.length}
-                    {tab.value === 'transferFrom' &&
-                      transactionsData.filter((t) => t.type.toLowerCase() === 'transferFrom').length}
-                    {tab.value === 'transferTo' &&
-                      transactionsData.filter((t) => t.type.toLowerCase() === 'transferTo').length}
+
+                    {tab.value === 'all' && transactionData.length}
+                    {tab.value === 'transferFrom' && transactionData.filter((t) => t.type.toLowerCase() === 'transferfrom' || t.type.toLowerCase() === 'withdraw').length}
+                    {tab.value === 'transferTo' && transactionData.filter((t) => t.type.toLowerCase() === 'transferto' || t.type.toLowerCase() === 'deposit').length}
+
                   </Label>
                 }
               />
@@ -203,16 +197,19 @@ export default function FinanceTransactionsHistory(transactionsData: ProcessedTr
 function applyFilter({
   inputData,
   comparator,
-  filters,
-  dateError,
+  filters
 }: {
   inputData: ProcessedTransactionData[];
   comparator: (a: any, b: any) => number;
   filters: IOrderTableFilters;
-  dateError: boolean;
 }) {
 
-  const { status, name, startDate, endDate } = filters;
+  //Verify if the input data is an array; otherwise, return an empty array
+  if (!Array.isArray(inputData)) {
+    return [];
+  }
+
+  const { status } = filters;
 
   const stabilizedThis = inputData.map((el, index) => [el, index] as const);
 
@@ -224,26 +221,13 @@ function applyFilter({
 
   inputData = stabilizedThis.map((el) => el[0]);
 
-  if (name) {
-    inputData = inputData.filter(
-      (t) =>
-        t.type.toLowerCase().indexOf(name.toLowerCase()) !== -1 ||
-        t.name.toLowerCase().indexOf(name.toLowerCase()) !== -1 ||
-        String(t.amount).toLowerCase().indexOf(name.toLowerCase()) !== -1
-    );
-  }
-
   if (status !== 'all') {
-    inputData = inputData.filter((t) => t.type.toLowerCase() === status);
-  }
+    if(status === 'transferFrom') {
+      inputData = inputData.filter((t) => t.type.toLowerCase() === 'transferfrom' || t.type.toLowerCase() === 'withdraw');
+    }
 
-  if (!dateError) {
-    if (startDate && endDate) {
-      inputData = inputData.filter(
-        (t) =>
-          fTimestamp(new Date(Number(t.date))) >= fTimestamp(startDate) &&
-          fTimestamp(new Date(Number(t.date))) <= fTimestamp(endDate)
-      );
+    if(status === 'transferTo') {
+      inputData = inputData.filter((t) => t.type.toLowerCase() === 'transferto' || t.type.toLowerCase() === 'deposit');
     }
   }
 

@@ -40,6 +40,8 @@ export type TableRowTransactionType = {
   type: string;
   date: bigint;
   status: string;
+  message: string;
+  category: string;
 }
 
 export type TransactionData = {

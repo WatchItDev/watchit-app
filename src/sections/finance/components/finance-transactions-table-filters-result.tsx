@@ -8,7 +8,6 @@ import Stack, { StackProps } from '@mui/material/Stack';
 import { IOrderTableFilters, IOrderTableFilterValue } from '@src/types/transaction';
 // components
 import Iconify from '@src/components/iconify';
-import { shortDateLabel } from '@src/components/custom-date-range-picker';
 
 // ----------------------------------------------------------------------
 
@@ -30,15 +29,8 @@ export default function FinanceTransactionsTableFiltersResult({
   results,
   ...other
 }: Props) {
-  const shortLabel = shortDateLabel(filters.startDate, filters.endDate);
-
   const handleRemoveStatus = () => {
     onFilters('status', 'all');
-  };
-
-  const handleRemoveDate = () => {
-    onFilters('startDate', null);
-    onFilters('endDate', null);
   };
 
   return (
@@ -53,13 +45,7 @@ export default function FinanceTransactionsTableFiltersResult({
       <Stack flexGrow={1} spacing={1} direction="row" flexWrap="wrap" alignItems="center">
         {filters.status !== 'all' && (
           <Block label="Status:">
-            <Chip size="small" label={filters.status} onDelete={handleRemoveStatus} />
-          </Block>
-        )}
-
-        {filters.startDate && filters.endDate && (
-          <Block label="Date:">
-            <Chip size="small" label={shortLabel} onDelete={handleRemoveDate} />
+            <Chip size="small" label={parseFilterLabel(filters.status)} onDelete={handleRemoveStatus} />
           </Block>
         )}
 
@@ -73,6 +59,13 @@ export default function FinanceTransactionsTableFiltersResult({
       </Stack>
     </Stack>
   );
+}
+
+const parseFilterLabel = (type: string): string => {
+  if (type === 'all') return 'All';
+  if (type === 'transferTo') return 'Incomes';
+  if (type === 'transferFrom') return 'Outcomes';
+  return type;
 }
 
 // ----------------------------------------------------------------------
