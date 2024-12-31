@@ -12,6 +12,7 @@ export type TransactionLog = {
     amount: bigint;
     currency: string;
     recipient: string;
+    origin: string;
     sender: string;
   };
   blockHash: string;
@@ -88,7 +89,7 @@ const useGetSmartWalletTransactions = () => {
         publicClient.getLogs({
           address: GLOBAL_CONSTANTS.LEDGER_VAULT_ADDRESS as Address,
           event: eventsAbi.FundsTransferred as any,
-          args: { sender: sessionData.address },
+          args: { origin: sessionData.address },
           fromBlock: 0n,
           toBlock: 'latest',
         }),
@@ -119,7 +120,7 @@ const useGetSmartWalletTransactions = () => {
           const event = (() => {
             switch (log.eventName) {
               case 'FundsTransferred':
-                return log.args.sender === sessionData.address ? 'transferTo' : 'transferFrom';
+                return log.args.origin === sessionData.address ? 'transferTo' : 'transferFrom';
               case 'FundsDeposited':
                 return 'deposit';
               case 'FundsWithdrawn':
@@ -196,7 +197,7 @@ const useGetSmartWalletTransactions = () => {
         const event = (() => {
           switch (log.eventName) {
             case 'FundsTransferred':
-              return log.args.sender === sessionData.address ? 'transferTo' : 'transferFrom';
+              return log.args.origin === sessionData.address ? 'transferTo' : 'transferFrom';
             case 'FundsDeposited':
               return 'deposit';
             case 'FundsWithdrawn':
