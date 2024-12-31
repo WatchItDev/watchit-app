@@ -36,7 +36,6 @@ export default function OverviewBankingView() {
 
   // remove the last element as it is the current day
   const processedData = groupedTransactionData(transactionsData);
-  const dataForBalanceStatistics = processedData.slice(0, -1);
   const daySeriesData = processDayData(processedData);
   // Get the difference between daySeriesData[1] and daySeriesData[0] in y value to calculate the percent
   const percent = (daySeriesData[1]?.y - daySeriesData[0]?.y) / daySeriesData[0]?.y * 100;
@@ -73,17 +72,11 @@ export default function OverviewBankingView() {
 
           <Grid xs={12} md={8}>
             <Stack spacing={3}>
-              <FinanceBalanceStatistics
-                title="Balance Statistics"
-                subheader="(+43% Income | +12% Expense) than last year"
-                chart={{
-                  series: dataForBalanceStatistics,
-                }}
-              />
+              <FinanceBalanceStatistics />
             </Stack>
           </Grid>
 
-            <Typography variant="h6" sx={{ p: 2 }}>
+            <Typography variant="h6" sx={{ pt: 2 }}>
               Recent Transactions
             </Typography>
             <FinanceTransactionsHistory transactionsData={processedTransactions} />

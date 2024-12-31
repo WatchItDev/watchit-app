@@ -35,10 +35,17 @@ const useGetSmartWalletTransactions = () => {
             )
           )
         ),
+        FundsWithdrawn: parseAbiItem(
+          createEventSignature(
+            LedgerVaultAbi.abi.find(
+              (item: any) => item.type === 'event' && item.name === 'FundsWithdrawn'
+            )
+          )
+        ),
       };
 
       // Fetch logs for each event
-      const [transfersToMe, transfersFromMe, deposits] = await Promise.all([
+      const [transfersToMe, transfersFromMe, deposits, withdraws] = await Promise.all([
         publicClient.getLogs({
           address: GLOBAL_CONSTANTS.LEDGER_VAULT_ADDRESS as Address,
           event: eventsAbi.FundsTransferred as any,
@@ -60,9 +67,16 @@ const useGetSmartWalletTransactions = () => {
           fromBlock: 0n,
           toBlock: 'latest',
         }),
+        publicClient.getLogs({
+          address: GLOBAL_CONSTANTS.LEDGER_VAULT_ADDRESS as Address,
+          event: eventsAbi.FundsWithdrawn as any,
+          args: { origin: sessionData.address },
+          fromBlock: 0n,
+          toBlock: 'latest',
+        }),
       ]);
 
-      const allLogs = [...transfersToMe, ...transfersFromMe, ...deposits];
+      const allLogs = [...transfersToMe, ...transfersFromMe, ...deposits, ...withdraws];
 
       // Add timestamps and format details for each log
       const logsWithDetails = await Promise.all(
@@ -78,6 +92,8 @@ const useGetSmartWalletTransactions = () => {
                   : 'transferFrom';
               case 'FundsDeposited':
                 return 'deposit';
+              case 'FundsWithdrawn':
+                return 'withdraw';
               default:
                 return 'unknown';
             }
