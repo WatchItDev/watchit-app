@@ -54,7 +54,7 @@ export default function Router() {
   useEffect(() => {
     if (sessionData?.profile?.id) {
       // Subscribe to notifications channel
-      subscribeToNotifications(sessionData?.profile?.id, dispatch, ['notifications','transactions']);
+      subscribeToNotifications(sessionData?.profile?.id, dispatch, ['notifications']);
 
       // Set the notifications in first render
       getNotifications(sessionData?.profile?.id).then(() => {});
