@@ -1,8 +1,6 @@
 import "viem/window";
 // @mui
 import Button from "@mui/material/Button";
-// components
-import Iconify from '@src/components/iconify';
 // ----------------------------------------------------------------------
 
 // Import necessary hooks and clients
@@ -10,6 +8,7 @@ import { useSnackbar } from 'notistack';
 import Box from "@mui/material/Box";
 import {FC} from "react";
 import {Address} from "viem";
+import TextMaxLine from "@src/components/text-max-line";
 
 type FinanceChangeWalletProps = {
   onChangingWallet: (address: Address | undefined) => void;
@@ -38,12 +37,12 @@ const FinanceChangeWallet: FC<FinanceChangeWalletProps> = ({onChangingWallet}) =
   return (
     <Box sx={{ flexGrow: 1 }} >
       <Button
-        startIcon={<Iconify icon="solar:wallet-2-outline" />}
         variant="contained"
         color="secondary"
         onClick={handleChangeWallet}
       >
-        Change Wallet
+        <TextMaxLine line={1}>Change Wallet</TextMaxLine>
+
       </Button>
     </Box>
   );

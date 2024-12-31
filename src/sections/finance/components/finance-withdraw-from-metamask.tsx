@@ -19,6 +19,7 @@ import {ConnectWalletClient} from "@src/clients/viem/walletClient.ts";
 import {truncateAddress} from "@src/utils/wallet.ts";
 import {useGetVaultBalance} from "@src/hooks/use-get-vault-balance.ts";
 import FinanceChangeWallet from "@src/sections/finance/components/finance-change-wallet.tsx";
+import {useResponsive} from "@src/hooks/use-responsive.ts";
 
 interface FinanceDepositFromSmartAccountProps {
   onClose: () => void;
@@ -86,7 +87,7 @@ const FinanceWithdrawFromMetamask: FC<FinanceDepositFromSmartAccountProps> = ({ 
   };
 
   const RainbowEffect = loading || withdrawLoading ? NeonPaper : Box;
-
+  const mdUp = useResponsive('up', 'md');
   return (
     <>
       <Stack
@@ -137,20 +138,24 @@ const FinanceWithdrawFromMetamask: FC<FinanceDepositFromSmartAccountProps> = ({ 
           helperText={addressError ? 'Invalid wallet address' : ''}
         />
       </Stack>
-      <DialogActions sx={{ width: '100%', pt: 1, alignItems:'center', display: 'flex' }}>
+      <DialogActions sx={{width: '100%', pt: 1, alignItems: 'center',
+        display: 'flex',
+        //flexDirection: mdUp ? 'row':'column',
+        justifyContent: 'space-between'}}>
+
         <FinanceChangeWallet onChangingWallet={setAddress} />
 
-        <Button onClick={onClose}>Cancel</Button>
+        {/*<Button onClick={onClose}>Cancel</Button>*/}
 
         <RainbowEffect borderRadius={"10px"} animationSpeed={"3s"} padding={"0"} width={"auto"}>
           <LoadingButton
             variant="contained"
-            sx={{ backgroundColor: "#fff" }}
+            sx={{ backgroundColor: "#fff", width: '100%'}}
             onClick={handleConfirmWithdraw}
             disabled={loading || withdrawLoading || amount <= 0 || amount > (balance ?? 0)}
             loading={loading || withdrawLoading}
           >
-            Confirm & Withdraw
+            <TextMaxLine line={1}>Confirm & Withdraw</TextMaxLine>
           </LoadingButton>
         </RainbowEffect>
       </DialogActions>
