@@ -1,13 +1,18 @@
 {
   "repository": {
     "type": "git",
-    "url": "https://github.com/Envios-2224/remis-app.git"
+    "url": "https://github.com/WatchItDev/watchit-app"
   },
   "publishConfig": {
     "access": "restricted"
   },
   "branches": [
-    "staging"
+    "master",
+    "next",
+    {
+      "name": "*beta",
+      "prerelease": true
+    }
   ],
   "plugins": [
     "@semantic-release/release-notes-generator",
@@ -26,6 +31,13 @@
     [
       "@semantic-release/commit-analyzer",
       {
+        "preset": "angular",
+        "parserOpts": {
+          "noteKeywords": [
+            "BREAKING CHANGE",
+            "BREAKING CHANGES"
+          ]
+        },
         "releaseRules": [
           {
             "type": "feat",
@@ -38,6 +50,11 @@
           {
             "type": "perf",
             "release": "patch"
+          },
+          {
+            "type": "docs",
+            "scope": "README",
+            "release": "patch"
           }
         ]
       }
@@ -47,10 +64,7 @@
       {
         "assets": [
           "CHANGELOG.md",
-          "package.json",
-          "ios/remisapp/Info.plist",
-          "ios/remisapp.xcodeproj/project.pbxproj",
-          "android/app/build.gradle"
+          "package.json"
         ],
         "message": "chore(release): ${nextRelease.version} [skip ci]"
       }
