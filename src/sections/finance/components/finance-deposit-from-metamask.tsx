@@ -38,7 +38,7 @@ const FinanceDepositFromMetamask: FC<FinanceDepositFromMetamaskProps> = ({ onClo
 
   useEffect(() => {
     if (error) {
-      enqueueSnackbar(`Deposit failed: ${error?.message}`, { variant: "error" });
+      enqueueSnackbar(`An error occurred during transaction.`, { variant: "error" });
     }
   }, [enqueueSnackbar, error]);
 
