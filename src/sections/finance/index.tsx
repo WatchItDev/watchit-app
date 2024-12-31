@@ -53,7 +53,10 @@ export default function OverviewBankingView() {
     >
      <Grid container spacing={3}>
         <Grid xs={12} md={8}>
-          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1}>
+          <Stack direction={{ lg: 'column', xlg: 'row' }} spacing={{
+            xs: 1,
+            lg: 2,
+          }}>
             <FinanceWidgetSummary
               title="Balance"
               color="primary"
