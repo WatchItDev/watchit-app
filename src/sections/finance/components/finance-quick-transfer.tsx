@@ -50,7 +50,7 @@ interface Props extends CardProps {
 
 // ----------------------------------------------------------------------
 
-const isValidAddress = (address: string): boolean => {
+export const isValidAddress = (address: string): boolean => {
   return ethers.isAddress(address);
 };
 
