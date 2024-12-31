@@ -1,4 +1,5 @@
-import {TransactionData, TransactionType} from '@src/hooks/use-transaction-data';
+import {TransactionData} from '@src/hooks/use-transaction-data';
+import {TransactionLog} from "@src/hooks/use-get-smart-wallet-transactions.ts";
 type GroupedData = {
   type: string;
   data: {
@@ -99,16 +100,29 @@ export const processDayData = (groupedData: GroupedData[]): { x: string, y: numb
   });
 };
 
-export const processTransactionData = (data: TransactionType[]) => {
+
+export type ProcessedTransactionData = {
+  id: string;
+  name: string;
+  avatarUrl: string;
+  type: string;
+  message: string;
+  category: string;
+  date: bigint;
+  status: string;
+  amount: string | null;
+};
+
+export const processTransactionData = (data: TransactionLog[]): ProcessedTransactionData[] => {
   return data.map((transaction, _index) => ({
-    id: transaction.id,
-    name: transaction.payload.type === 'Income' ? transaction.payload.data.from.displayName : transaction.payload.data.to.displayName,
-    avatarUrl: transaction.payload.type === 'Income' ? transaction.payload.data.from.avatar : transaction.payload.data.to.avatar,
-    type: transaction.payload.type,
-    message: transaction.payload.type === 'Income' ? 'Receive money from' : 'Payment for',
-    category: transaction.payload.type === 'Income' ? transaction.payload.data.from.displayName : transaction.payload.data.to.displayName,
-    date: transaction.created_at,
+    id: transaction.transactionHash,
+    name: transaction.event === 'transferFrom' ? transaction.args.sender : transaction.args.recipient,
+    avatarUrl: '',
+    type: transaction.event,
+    message: transaction.event === 'transferTo' ? 'Sent money to' : 'Received money from',
+    category: transaction.event === 'transferFrom' ? transaction.args.recipient : transaction.args.sender,
+    date: transaction.timestamp,
     status: 'completed',
-    amount: transaction.payload.amount,
+    amount: transaction.formattedAmount,
   }));
 };

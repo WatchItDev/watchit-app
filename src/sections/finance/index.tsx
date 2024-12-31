@@ -14,14 +14,16 @@ import {useProfileFollowing} from "@lens-protocol/react";
 import {TableRowTransactionType, useTransactionData} from "@src/hooks/use-transaction-data";
 import {
   groupedTransactionData,
-  processDayData,
+  processDayData, ProcessedTransactionData,
   processTransactionData
 } from "@src/utils/finance-graphs/groupedTransactions.ts";
 import FinanceTransactionsHistory from "@src/sections/finance/components/finance-transactions-history.tsx";
 import Typography from "@mui/material/Typography";
 import FinanceQuickActions from "@src/sections/finance/components/finance-quick-actions.tsx";
+import useGetSmartWalletTransactions from "@src/hooks/use-get-smart-wallet-transactions.ts";
 
 // ----------------------------------------------------------------------
+type UseGetSmartWalletTransactionsReturn = ReturnType<typeof useGetSmartWalletTransactions>;
 
 export default function OverviewBankingView() {
   const { balance: balanceFromRedux } = useSelector((state: any) => state.auth);
@@ -32,7 +34,7 @@ export default function OverviewBankingView() {
     for: sessionData?.profile?.id,
   });
 
-  const {data: transactionsData, rawData: transactionsRawData} = useTransactionData()
+  const {data: transactionsData} = useTransactionData()
 
   // remove the last element as it is the current day
   const processedData = groupedTransactionData(transactionsData);
@@ -40,7 +42,11 @@ export default function OverviewBankingView() {
   // Get the difference between daySeriesData[1] and daySeriesData[0] in y value to calculate the percent
   const percent = (daySeriesData[1]?.y - daySeriesData[0]?.y) / daySeriesData[0]?.y * 100;
 
-  const processedTransactions: TableRowTransactionType[] = processTransactionData(transactionsRawData);
+  const { logs }: UseGetSmartWalletTransactionsReturn = useGetSmartWalletTransactions();
+  const processedTransactions: ProcessedTransactionData[] = processTransactionData(logs)
+
+  console.log('logs:', logs);
+  console.log('processedTransactions:', processedTransactions);
 
   return (
     <Container
@@ -79,7 +85,7 @@ export default function OverviewBankingView() {
             <Typography variant="h6" sx={{ pt: 2 }}>
               Recent Transactions
             </Typography>
-            <FinanceTransactionsHistory transactionsData={processedTransactions} />
+            {/*<FinanceTransactionsHistory transactionsData={processedTransactions} />*/}
         </Grid>
 
 

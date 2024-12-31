@@ -8,7 +8,7 @@ import TableBody from '@mui/material/TableBody';
 
 import TableContainer from '@mui/material/TableContainer';
 // _mock
-import {TRANSACTIONS_TYPES, transactions} from '@src/types/transaction';
+import {TRANSACTIONS_TYPES} from '@src/types/transaction';
 // utils
 import { fTimestamp } from '@src/utils/format-time';
 // components
@@ -29,7 +29,7 @@ import { IOrderTableFilters, IOrderTableFilterValue } from '@src/types/transacti
 //
 import FinanceTransactionTableRow from '@src/sections/finance/components/finance-transactions-table-row';
 import FinanceTransactionsTableFiltersResult from '@src/sections/finance/components/finance-transactions-table-filters-result';
-import {TableRowTransactionType} from "@src/hooks/use-transaction-data.ts";
+import {ProcessedTransactionData} from "@src/utils/finance-graphs/groupedTransactions.ts";
 
 // ----------------------------------------------------------------------
 
@@ -49,16 +49,11 @@ const defaultFilters: IOrderTableFilters = {
   endDate: null,
 };
 
-// ----------------------------------------------------------------------
-type FinanceTransactionsHistoryProps = {
-  transactionsData: TableRowTransactionType[];
-};
-
-export default function FinanceTransactionsHistory({ transactionsData }: FinanceTransactionsHistoryProps) {
+export default function FinanceTransactionsHistory(transactionsData: ProcessedTransactionData[]) {
 
   const table = useTable({ defaultOrderBy: 'date' });
 
-  const [tableData, _setTableData] = useState(transactions(transactionsData));
+  const [tableData, _setTableData] = useState(transactionsData);
 
   const [filters, setFilters] = useState(defaultFilters);
 
@@ -125,16 +120,16 @@ export default function FinanceTransactionsHistory({ transactionsData }: Finance
                       ((tab.value === 'all' || tab.value === filters.status) && 'filled') || 'soft'
                     }
                     color={
-                      (tab.value === 'income' && 'success') ||
-                      (tab.value === 'outcome' && 'warning') ||
+                      (tab.value === 'transferFrom' && 'success') ||
+                      (tab.value === 'transferTo' && 'warning') ||
                       'default'
                     }
                   >
                     {tab.value === 'all' && transactionsData.length}
-                    {tab.value === 'income' &&
-                      transactionsData.filter((t) => t.type.toLowerCase() === 'income').length}
-                    {tab.value === 'outcome' &&
-                      transactionsData.filter((t) => t.type.toLowerCase() === 'outcome').length}
+                    {tab.value === 'transferFrom' &&
+                      transactionsData.filter((t) => t.type.toLowerCase() === 'transferFrom').length}
+                    {tab.value === 'transferTo' &&
+                      transactionsData.filter((t) => t.type.toLowerCase() === 'transferTo').length}
                   </Label>
                 }
               />
@@ -196,7 +191,6 @@ export default function FinanceTransactionsHistory({ transactionsData }: Finance
             rowsPerPage={table.rowsPerPage}
             onPageChange={table.onChangePage}
             onRowsPerPageChange={table.onChangeRowsPerPage}
-            //
             dense={table.dense}
             onChangeDense={table.onChangeDense}
           />
@@ -212,7 +206,7 @@ function applyFilter({
   filters,
   dateError,
 }: {
-  inputData: TableRowTransactionType[];
+  inputData: ProcessedTransactionData[];
   comparator: (a: any, b: any) => number;
   filters: IOrderTableFilters;
   dateError: boolean;
@@ -247,8 +241,8 @@ function applyFilter({
     if (startDate && endDate) {
       inputData = inputData.filter(
         (t) =>
-          fTimestamp(t.date) >= fTimestamp(startDate) &&
-          fTimestamp(t.date) <= fTimestamp(endDate)
+          fTimestamp(new Date(Number(t.date))) >= fTimestamp(startDate) &&
+          fTimestamp(new Date(Number(t.date))) <= fTimestamp(endDate)
       );
     }
   }

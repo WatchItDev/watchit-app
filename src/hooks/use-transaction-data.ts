@@ -33,15 +33,13 @@ export type TransactionType = {
 };
 
 export type TableRowTransactionType = {
-  id: number;
+  id: string;
   name: string;
   avatarUrl: string;
-  amount:number | string;
-  category: string;
-  date: string;
-  message: string;
-  status: string;
+  amount:string | null;
   type: string;
+  date: bigint;
+  status: string;
 }
 
 export type TransactionData = {

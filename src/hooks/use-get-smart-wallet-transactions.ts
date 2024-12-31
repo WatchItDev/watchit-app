@@ -5,9 +5,32 @@ import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 import { useSelector } from 'react-redux';
 import LedgerVaultAbi from '@src/config/abi/LedgerVault.json';
 
+export type TransactionLog = {
+  address: string;
+  args: {
+    amount: bigint;
+    currency: string;
+    recipient: string;
+    sender: string;
+  };
+  blockHash: string;
+  blockNumber: bigint;
+  data: string;
+  event: string;
+  eventName: string;
+  formattedAmount: string;
+  logIndex: number;
+  readableDate: string;
+  removed: boolean;
+  timestamp: bigint;
+  topics: string[];
+  transactionHash: string;
+  transactionIndex: number;
+};
+
 const useGetSmartWalletTransactions = () => {
   const sessionData = useSelector((state: any) => state.auth.session);
-  const [logs, setLogs] = useState<any[]>([]);
+  const [logs, setLogs] = useState<TransactionLog[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
