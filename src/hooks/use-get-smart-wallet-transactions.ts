@@ -1,106 +1,129 @@
-import { useEffect, useState } from 'react'
-import axios from 'axios'
-import { Address } from 'viem';
+import { useState, useEffect } from 'react';
+import { Address, parseAbiItem, formatUnits } from 'viem';
+import { publicClient } from '@src/clients/viem/publicClient.ts';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
+import { useSelector } from 'react-redux';
+import LedgerVaultAbi from '@src/config/abi/LedgerVault.json';
 
-interface SmartWalletTransactionParams {
-  chainShortName?: string; // Blockchain network abbreviation (e.g., 'eth')
-  address: Address; // Address to query
-  protocolType?: string; // Token protocol type (default: 'token_20')
-  tokenContractAddress?: string; // Optional token contract address
-  startBlockHeight?: string; // Optional starting block height
-  endBlockHeight?: string; // Optional ending block height
-  isFromOrTo?: 'from' | 'to'; // Filter transactions by 'from' or 'to'
-  page?: number; // Optional page number
-  limit?: number; // Number of results per request (default: 20, max: 50)
-}
-
-interface UseGetSmartWalletTransactionsReturn {
-  data: any;
-  isLoading: boolean;
-  error: string | null;
-  refetch: () => Promise<void>;
-}
-
-export function useGetSmartWalletTransactions({
-                                                address,
-                                                chainShortName = 'AMOY_TESTNET',
-                                                protocolType = 'token_20',
-                                                tokenContractAddress = GLOBAL_CONSTANTS.MMC_ADDRESS,
-                                                startBlockHeight,
-                                                endBlockHeight,
-                                                isFromOrTo,
-                                                page = 1,
-                                                limit = 20,
-                                              }: SmartWalletTransactionParams): UseGetSmartWalletTransactionsReturn {
-  const [data, setData] = useState<any>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+const useGetSmartWalletTransactions = () => {
+  const sessionData = useSelector((state: any) => state.auth.session);
+  const [logs, setLogs] = useState<any[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Create an axios instance
-  const axiosInstance = axios.create({
-    headers: {
-      'Content-Type': 'application/json;charset=utf-8',
-      Accept: 'application/json',
-      'OK-ACCESS-KEY': GLOBAL_CONSTANTS.OKLINK_API_KEY,
-    },
-    timeout: 5000,
-    validateStatus: (status) => status < 600,
-  });
-
-  // Fetch transactions using GET request
-  const fetchTransactions = async () => {
-    setIsLoading(true);
-    setError(null);
+  const fetchLogs = async () => {
+    console.log('Fetching logs for address:', sessionData?.address);
+    if (!sessionData?.address) return;
 
     try {
-      // Build query string
-      const queryParams = new URLSearchParams({
-        chainShortName,
-        address,
-        protocolType,
-        ...(tokenContractAddress && { tokenContractAddress }),
-        ...(startBlockHeight && { startBlockHeight }),
-        ...(endBlockHeight && { endBlockHeight }),
-        ...(isFromOrTo && { isFromOrTo }),
-        page: page.toString(),
-        limit: limit.toString(),
-      }).toString();
+      setLoading(true);
+      setError(null);
 
-      const url = `https://www.oklink.com/api/v5/explorer/address/token-transaction-list?${queryParams}`;
-      const response = await axiosInstance.get(url);
+      const eventsAbi = {
+        FundsTransferred: parseAbiItem(
+          createEventSignature(
+            LedgerVaultAbi.abi.find(
+              (item: any) => item.type === 'event' && item.name === 'FundsTransferred'
+            )
+          )
+        ),
+        FundsDeposited: parseAbiItem(
+          createEventSignature(
+            LedgerVaultAbi.abi.find(
+              (item: any) => item.type === 'event' && item.name === 'FundsDeposited'
+            )
+          )
+        ),
+      };
 
-      console.log('response', response);
+      const [transfersToMe, transfersFromMe, deposits] = await Promise.all([
+        publicClient.getLogs({
+          address: GLOBAL_CONSTANTS.LEDGER_VAULT_ADDRESS as Address,
+          event: eventsAbi.FundsTransferred as any,
+          args: { recipient: sessionData.address },
+          fromBlock: 0n,
+          toBlock: 'latest',
+        }),
+        publicClient.getLogs({
+          address: GLOBAL_CONSTANTS.LEDGER_VAULT_ADDRESS as Address,
+          event: eventsAbi.FundsTransferred as any,
+          args: { sender: sessionData.address },
+          fromBlock: 0n,
+          toBlock: 'latest',
+        }),
+        publicClient.getLogs({
+          address: GLOBAL_CONSTANTS.LEDGER_VAULT_ADDRESS as Address,
+          event: eventsAbi.FundsDeposited as any,
+          args: { recipient: sessionData.address },
+          fromBlock: 0n,
+          toBlock: 'latest',
+        }),
+      ]);
 
-      // Handle response
-      if (response.data?.code === '0') {
-        setData(response.data.data?.[0]);
-      } else {
-        setError(response.data?.msg || 'Unknown error');
-      }
-    } catch (err: any) {
-      setError(err?.message || 'Unknown error');
+      const allLogs = [...transfersToMe, ...transfersFromMe, ...deposits];
+
+      // Obtener timestamps y formatear datos
+      const logsWithDetails = await Promise.all(
+        allLogs.map(async (log: any) => {
+          const block = await publicClient.getBlock({ blockNumber: log.blockNumber });
+
+          const event = (() => {
+            switch (log.eventName) {
+              case 'FundsTransferred':
+                return log.args.sender === sessionData.address
+                  ? 'transferTo'
+                  : 'transferFrom';
+              case 'FundsDeposited':
+                return 'deposit';
+              default:
+                return 'unknown';
+            }
+          })();
+
+          return {
+            ...log,
+            timestamp: block.timestamp, // Timestamp en UNIX
+            readableDate: new Date(Number(block.timestamp) * 1000).toLocaleString(), // Fecha legible
+            formattedAmount: log.args.amount ? formatUnits(log.args.amount, 18) : null, // Conversión de wei a ether
+            event,
+          };
+        })
+      );
+
+      // Ordenar por bloque y transacción
+      const sortedLogs = logsWithDetails.sort((a, b) => {
+        const blockDifference = Number(b.blockNumber) - Number(a.blockNumber);
+        if (blockDifference !== 0) return blockDifference;
+        return Number(b.transactionIndex) - Number(a.transactionIndex);
+      });
+
+      setLogs(sortedLogs);
+    } catch (err) {
+      console.error('Error fetching logs:', err);
+      setError(err instanceof Error ? err.message : 'An unknown error occurred');
     } finally {
-      setIsLoading(false);
+      setLoading(false);
     }
   };
 
-  // Fetch data on parameter change
+  const createEventSignature = (event: any): string => {
+    if (!event || !event.name || !event.inputs) {
+      throw new Error('Invalid event in ABI');
+    }
+    const inputs = event.inputs
+      .map(
+        (input: any) =>
+          `${input.type}${input.indexed ? ' indexed' : ''} ${input.name}`
+      )
+      .join(', ');
+    return `event ${event.name}(${inputs})`;
+  };
+
   useEffect(() => {
-    if (!address || !chainShortName) return;
-    fetchTransactions();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [chainShortName, address, protocolType, tokenContractAddress, startBlockHeight, endBlockHeight, isFromOrTo, page, limit]);
+    fetchLogs();
+  }, [sessionData?.address]);
 
-  // Refetch function
-  const refetch = async () => {
-    await fetchTransactions();
-  };
+  return { logs, loading, error, refetch: fetchLogs };
+};
 
-  return {
-    data,
-    isLoading,
-    error,
-    refetch,
-  };
-}
+export default useGetSmartWalletTransactions;
