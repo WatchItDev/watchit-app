@@ -28,7 +28,6 @@ import {
 import { IOrderTableFilters, IOrderTableFilterValue } from '@src/types/transaction';
 //
 import FinanceTransactionTableRow from '@src/sections/finance/components/finance-transactions-table-row';
-import FinanceTransactionsTableToolbar from '@src/sections/finance/components/finance-transactions-table-toolbar';
 import FinanceTransactionsTableFiltersResult from '@src/sections/finance/components/finance-transactions-table-filters-result';
 import {TableRowTransactionType} from "@src/hooks/use-transaction-data.ts";
 
@@ -141,14 +140,6 @@ export default function FinanceTransactionsHistory({ transactionsData }: Finance
               />
             ))}
           </Tabs>
-
-          <FinanceTransactionsTableToolbar
-            filters={filters}
-            onFilters={handleFilters}
-            //
-            canReset={canReset}
-            onResetFilters={handleResetFilters}
-          />
 
           {canReset && (
             <FinanceTransactionsTableFiltersResult
