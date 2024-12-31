@@ -2,6 +2,8 @@
 
 ## [2.1.1-beta.1](https://github.com/WatchItDev/watchit-app/compare/v2.1.0...v2.1.1-beta.1) (2024-12-31)
 
+## [2.1.1-beta.1](https://github.com/WatchItDev/watchit-app/compare/v2.1.0...v2.1.1-beta.1) (2024-12-31)
+
 ## [0.3.1-beta.1](https://github.com/WatchItDev/watchit-app/compare/v0.3.0...v0.3.1-beta.1) (2024-12-31)
 
 
