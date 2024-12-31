@@ -21,6 +21,7 @@ import { useWithdraw } from '@src/hooks/use-withdraw.ts';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { useEffect } from 'react';
 import { useSnackbar } from 'notistack';
+import {FinanceWithdrawModal} from "@src/sections/finance/components/finance-withdraw-modal.tsx";
 
 // ----------------------------------------------------------------------
 
@@ -52,9 +53,10 @@ export default function FinanceWidgetSummary({
   ...other
 }: Props) {
   const confirmDeposit = useBoolean();
+  const confirmWithdraw = useBoolean();
   const theme = useTheme();
   const { series, options } = chart;
-  const { withdraw, loading: withdrawLoading, error } = useWithdraw();
+  const { loading: withdrawLoading, error } = useWithdraw();
   const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
@@ -107,13 +109,22 @@ export default function FinanceWidgetSummary({
     confirmDeposit.onFalse?.();
   }
 
+  const handleFinishWithdraw = () => {
+    confirmWithdraw.onFalse?.();
+  }
+
   const handleDepositOpenModal = () => {
     confirmDeposit.onTrue?.();
   };
 
-  const handleWithdrawal = () => {
-    withdraw({ amount: 10, recipient: '0x037f2b49721E34296fBD8F9E7e9cc6D5F9ecE7b4' });
+  const handleWithdrawOpenModal = () => {
+    confirmWithdraw.onTrue?.();
   };
+
+
+  /*const handleWithdrawal = () => {
+    withdraw({ amount: 10, recipient: '0x037f2b49721E34296fBD8F9E7e9cc6D5F9ecE7b4' });
+  };*/
 
   return (
     <Stack
@@ -162,7 +173,7 @@ export default function FinanceWidgetSummary({
           color="primary"
           startIcon={<Iconify icon="eva:diagonal-arrow-right-up-fill" />}
           loading={withdrawLoading}
-          onClick={handleWithdrawal}
+          onClick={handleWithdrawOpenModal}
         >
           Withdraw
         </LoadingButton>
@@ -202,6 +213,11 @@ export default function FinanceWidgetSummary({
       <FinanceDepositModal
         open={confirmDeposit.value}
         onClose={handleFinishDeposit}
+      />
+
+      <FinanceWithdrawModal
+        open={confirmWithdraw.value}
+        onClose={handleFinishWithdraw}
       />
     </Stack>
   )
