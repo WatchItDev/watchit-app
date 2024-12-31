@@ -7,12 +7,7 @@
     "access": "restricted"
   },
   "branches": [
-    "master",
-    "next",
-    {
-      "name": "*beta",
-      "prerelease": true
-    }
+    "next"
   ],
   "plugins": [
     "@semantic-release/release-notes-generator",

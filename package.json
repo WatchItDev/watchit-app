@@ -2,7 +2,7 @@
   "name": "watchit",
   "author": "Watchit",
   "type": "module",
-  "version": "0.3.0",
+  "version": "2.1.0-beta",
   "description": "Open movies everywhere",
   "email": "info@watchit.movie",
   "private": true,
