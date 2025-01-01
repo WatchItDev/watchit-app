@@ -1,58 +1,67 @@
+// TODO Please keep ordered the dependencies
+import { useSnackbar } from "notistack";
+import { useSelector } from "react-redux";
+import { FC, useEffect, useState, useCallback } from 'react';
+
+import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
-import TextMaxLine from "@src/components/text-max-line";
-import { formatBalanceNumber } from "@src/utils/format-number.ts";
 import Divider from "@mui/material/Divider";
+import TextMaxLine from "@src/components/text-max-line";
+import NeonPaper from "@src/sections/publication/NeonPaperContainer.tsx";
+import FinanceDialogsActions from "@src/sections/finance/components/finance-dialogs-actions.tsx";
+
+import { formatBalanceNumber } from "@src/utils/format-number.ts";
 import { InputAmount } from "@src/components/input-amount.tsx";
 import { BoxRow } from "@src/sections/finance/components/finance-deposit-from-metamask.tsx";
-import { useSelector } from "react-redux";
 import { useGetMmcContractBalance } from "@src/hooks/use-get-mmc-contract-balance.ts";
-import NeonPaper from "@src/sections/publication/NeonPaperContainer.tsx";
-import Box from "@mui/material/Box";
-import { useSnackbar } from "notistack";
-import { FC, useEffect, useState } from 'react';
+import { useResponsive } from "@src/hooks/use-responsive.ts";
 import { useDeposit } from "@src/hooks/use-deposit.ts";
 import { truncateAddress } from '@src/utils/wallet.ts';
-import {useResponsive} from "@src/hooks/use-responsive.ts";
-import FinanceDialogsActions from "@src/sections/finance/components/finance-dialogs-actions.tsx";
 
 interface FinanceDepositFromSmartAccountProps {
   onClose: () => void;
 }
 
 const FinanceDepositFromSmartAccount: FC<FinanceDepositFromSmartAccountProps> = ({ onClose }) => {
+  // TODO Please keep declaration on top
   const [amount, setAmount] = useState<number>(0);
   const [loading, setLoading] = useState(false);
-  const sessionData = useSelector((state: any) => state.auth.session);
-  const { balance } = useGetMmcContractBalance(sessionData?.address);
   const { enqueueSnackbar } = useSnackbar();
+
+  const sessionData = useSelector((state: any) => state.auth.session);
   const { deposit, loading: depositLoading, error } = useDeposit();
+  const { balance } = useGetMmcContractBalance(sessionData?.address);
 
-  useEffect(() => {
-    if (error) {
-      enqueueSnackbar(`Deposit failed: ${error?.message}`, { variant: "error" });
-    }
-  }, [enqueueSnackbar, error]);
-
-  const handleConfirmDeposit = async () => {
-    if (amount > 0 && amount <= (balance ?? 0)) {
-      try {
-        setLoading(true);
-        await deposit({ recipient: sessionData?.address, amount });
-        enqueueSnackbar(`The deposit was successful`, { variant: "success" });
-        onClose();
-      } catch (err: any) {
-        enqueueSnackbar(`Deposit failed: ${err?.message}`, { variant: "error" });
-      } finally {
-        setLoading(false);
-      }
-    } else {
-      enqueueSnackbar("Invalid deposit amount", { variant: "warning" });
-    }
-  };
+  // TODO we can have a list of errors centralized in a library to throw, in favor of reutilization
+  const errorDueInvalidAmount = () => enqueueSnackbar("Invalid deposit amount.", { variant: "warning" });
+  const errorDuringDeposit = () => enqueueSnackbar(`Oops! Something went wrong with your deposit. Please try again.`, { variant: "error" });
 
   const RainbowEffect = loading || depositLoading ? NeonPaper : Box;
-
   const mdUp = useResponsive('up', 'md');
+
+  useEffect(() => {
+    if (error) errorDuringDeposit()
+  }, [error]);
+
+  const handleConfirmDeposit = useCallback(async () => {
+    // fail fast
+    if (amount == 0 || amount >= (balance ?? 0))
+      return errorDueInvalidAmount();
+
+    try {
+      setLoading(true);
+      // TODO deposit can return a OK?
+      await deposit({ recipient: sessionData?.address, amount });
+      enqueueSnackbar(`The deposit was successful`, { variant: "success" });
+      onClose();
+    } catch (err: any) {
+      errorDuringDeposit();
+    } finally {
+      setLoading(false);
+    }
+
+  }, [sessionData?.address, amount]);
+
 
   return (
     <>
@@ -73,7 +82,7 @@ const FinanceDepositFromSmartAccount: FC<FinanceDepositFromSmartAccountProps> = 
           </TextMaxLine>
         </BoxRow>
 
-        <Divider  sx={{width: '100%'}}/>
+        <Divider sx={{ width: '100%' }} />
 
         <BoxRow>
           <TextMaxLine line={1}>Balance</TextMaxLine>

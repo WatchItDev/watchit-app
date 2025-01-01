@@ -9,16 +9,16 @@ import FinanceInviteFriends from '@src/sections/finance/components/finance-invit
 import FinanceWidgetSummary from '@src/sections/finance/components/finance-widget-summary.tsx';
 import FinanceBalanceStatistics from '@src/sections/finance/components/finance-balance-statistics.tsx';
 
-import {useSelector} from "react-redux";
-import {useProfileFollowing} from "@lens-protocol/react";
-import { useTransactionData} from "@src/hooks/use-transaction-data";
+import { useSelector } from "react-redux";
+import { useProfileFollowing } from "@lens-protocol/react";
+import { useTransactionData } from "@src/hooks/use-transaction-data";
 import {
   groupedTransactionData,
   processDayData, ProcessedTransactionData,
   processTransactionData
 } from "@src/utils/finance-graphs/groupedTransactions.ts";
 import Typography from "@mui/material/Typography";
-import FinanceQuickActions from "@src/sections/finance/components/finance-quick-actions.tsx";
+// import FinanceQuickActions from "@src/sections/finance/components/finance-quick-actions.tsx";
 import useGetSmartWalletTransactions from "@src/hooks/use-get-smart-wallet-transactions.ts";
 import FinanceTransactionsHistory from "@src/sections/finance/components/finance-transactions-history.tsx";
 
@@ -32,24 +32,19 @@ export default function OverviewBankingView() {
   const { balance: balanceFromRedux } = useSelector((state: any) => state.auth);
   const sessionData = useSelector((state: any) => state.auth.session);
 
+  const { data: transactionsData } = useTransactionData()
   const { data: following } = useProfileFollowing({
     // @ts-ignore
     for: sessionData?.profile?.id,
   });
-
-  const {data: transactionsData} = useTransactionData()
 
   // remove the last element as it is the current day
   const processedData = groupedTransactionData(transactionsData);
   const daySeriesData = processDayData(processedData);
   // Get the difference between daySeriesData[1] and daySeriesData[0] in y value to calculate the percent
   const percent = (daySeriesData[1]?.y - daySeriesData[0]?.y) / daySeriesData[0]?.y * 100;
-
   const { transactions }: UseGetSmartWalletTransactionsReturn = useGetSmartWalletTransactions();
   const processedTransactions: ProcessedTransactionData[] = processTransactionData(transactions)
-
-  console.log('logs:', transactions);
-  console.log('processedTransactions:', processedTransactions);
 
   return (
     <Container
@@ -59,7 +54,7 @@ export default function OverviewBankingView() {
         maxWidth: '100% !important',
       }}
     >
-     <Grid container spacing={3}>
+      <Grid container spacing={3}>
         <Grid xs={12} md={8}>
           <Stack direction={{ lg: 'column', xlg: 'row' }} spacing={{
             xs: 1,
@@ -85,10 +80,10 @@ export default function OverviewBankingView() {
             </Stack>
           </Grid>
 
-            <Typography variant="h6" sx={{ pt: 2 }}>
-              Recent Transactions
-            </Typography>
-            <FinanceTransactionsHistory transactionData={processedTransactions} />
+          <Typography variant="h6" sx={{ pt: 2 }}>
+            Recent Transactions
+          </Typography>
+          <FinanceTransactionsHistory transactionData={processedTransactions} />
         </Grid>
 
 

@@ -29,8 +29,8 @@ export const useDeposit = (): UseDepositHook => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<VaultError | null>(null);
 
-  const sessionData = useSelector((state: any) => state.auth.session);
   const { web3Auth } = useWeb3Auth();
+  const sessionData = useSelector((state: any) => state.auth.session);
 
   const approveMMC = (amount: number): string => {
     // Convert to Wei (assuming 18 decimals)
@@ -50,7 +50,6 @@ export const useDeposit = (): UseDepositHook => {
   const initializeDeposit = ({ recipient, amount }: DepositParams) => {
     // Convert to Wei (assuming 18 decimals)
     const weiAmount = parseUnits(amount.toString(), 18);
-
     return encodeFunctionData({
       abi: LedgerVaultAbi.abi,
       functionName: 'deposit',
@@ -66,6 +65,11 @@ export const useDeposit = (): UseDepositHook => {
     setError(null);
 
     try {
+      // TODO can be abstracted this logic to get this data in a hook?
+      // i can see this code repeated on all te hooks
+      // const [bundler, smart, provider] = useWeb3Session()
+
+
       const accountAbstractionProvider = web3Auth.options.accountAbstractionProvider;
       // @ts-ignore
       const bundlerClient = accountAbstractionProvider.bundlerClient;
@@ -79,6 +83,7 @@ export const useDeposit = (): UseDepositHook => {
       }
 
       if (!bundlerClient) {
+        // TODO improve the message to send back to user
         setError({ message: 'Bundler client not available' });
         setLoading(false);
         return;
@@ -115,6 +120,8 @@ export const useDeposit = (): UseDepositHook => {
       setData(receipt);
       setLoading(false);
     } catch (err: any) {
+      // TODO bad idea send internal error to user
+      console.log(err)
       setError({ message: err.message || 'An error occurred', ...err });
       setLoading(false);
     }

@@ -1,23 +1,24 @@
 import "viem/window";
-import {FC, PropsWithChildren, useEffect, useState} from "react";
+import { Address } from 'viem';
+import { useSnackbar } from 'notistack';
+import { FC, PropsWithChildren, useEffect, useState, useCallback } from "react";
+import { useSelector } from 'react-redux';
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import { ConnectWalletClient } from "@src/clients/viem/walletClient";
-import { Address } from 'viem';
-import Iconify from "@src/components/iconify";
 import Stack from "@mui/material/Stack";
-import {formatBalanceNumber} from "@src/utils/format-number.ts";
-import TextMaxLine from "@src/components/text-max-line";
-import {InputAmount} from "@src/components/input-amount.tsx";
 import Divider from "@mui/material/Divider";
+import Iconify from "@src/components/iconify";
+
+import { ConnectWalletClient } from "@src/clients/viem/walletClient";
+import { formatBalanceNumber } from "@src/utils/format-number.ts";
+import TextMaxLine from "@src/components/text-max-line";
+import { InputAmount } from "@src/components/input-amount.tsx";
 import { useGetMmcContractBalance } from '@src/hooks/use-get-mmc-contract-balance.ts';
 import NeonPaper from '@src/sections/publication/NeonPaperContainer.tsx';
-import { useSelector } from 'react-redux';
-import { useSnackbar } from 'notistack';
 import { useDepositMetamask } from "@src/hooks/use-deposit-metamask.ts";
 import { truncateAddress } from '@src/utils/wallet.ts';
 import FinanceDialogsActions from "@src/sections/finance/components/finance-dialogs-actions.tsx";
-import {useResponsive} from "@src/hooks/use-responsive.ts";
+import { useResponsive } from "@src/hooks/use-responsive.ts";
 
 interface FinanceDepositFromMetamaskProps {
   onClose: () => void;
@@ -40,7 +41,7 @@ const FinanceDepositFromMetamask: FC<FinanceDepositFromMetamaskProps> = ({ onClo
     if (error) {
       enqueueSnackbar(`An error occurred during transaction.`, { variant: "error" });
     }
-  }, [enqueueSnackbar, error]);
+  }, [error]);
 
   useEffect(() => {
     handleConnectMetamask();
@@ -56,14 +57,11 @@ const FinanceDepositFromMetamask: FC<FinanceDepositFromMetamaskProps> = ({ onClo
     }
   }
 
-  const handleConfirmDeposit = async () => {
+  const handleConfirmDeposit = useCallback(async () => {
     if (amount > 0 && amount <= (balance ?? 0)) {
       try {
         setLoading(true);
-        await depositWithMetamask({
-          recipient: sessionData?.address, // o la dirección que quieras
-          amount
-        });
+        await depositWithMetamask({ recipient: sessionData?.address, amount });
         enqueueSnackbar(`The deposit was successful`, { variant: "success" });
         onClose();
       } catch (err: any) {
@@ -74,10 +72,9 @@ const FinanceDepositFromMetamask: FC<FinanceDepositFromMetamaskProps> = ({ onClo
     } else {
       enqueueSnackbar("Invalid deposit amount", { variant: "warning" });
     }
-  };
+  }, [sessionData?.address]);
 
   const RainbowEffect = loading || depositLoading ? NeonPaper : Box;
-
   const mdUp = useResponsive('up', 'md');
 
   return (
@@ -86,10 +83,10 @@ const FinanceDepositFromMetamask: FC<FinanceDepositFromMetamaskProps> = ({ onClo
       alignItems: 'center',
       justifyContent: 'center',
     }}>
-      { address ? (
+      {address ? (
         <>
           <Stack
-            sx={{mt:2, py: 2, px: 3, gap:1, width: '100%'}}
+            sx={{ mt: 2, py: 2, px: 3, gap: 1, width: '100%' }}
             direction={'column'}
             display={'flex'}
             alignItems={'center'}
@@ -104,7 +101,7 @@ const FinanceDepositFromMetamask: FC<FinanceDepositFromMetamaskProps> = ({ onClo
               </TextMaxLine>
             </BoxRow>
 
-            <Divider  sx={{width: '100%'}}/>
+            <Divider sx={{ width: '100%' }} />
 
             <BoxRow>
               <TextMaxLine line={1}>Balance</TextMaxLine>
@@ -116,7 +113,7 @@ const FinanceDepositFromMetamask: FC<FinanceDepositFromMetamaskProps> = ({ onClo
               </TextMaxLine>
             </BoxRow>
 
-            <Divider  sx={{width: '100%'}}/>
+            <Divider sx={{ width: '100%' }} />
 
             <BoxRow>
               <TextMaxLine line={1}>Enter the amount to deposit</TextMaxLine>
@@ -126,7 +123,7 @@ const FinanceDepositFromMetamask: FC<FinanceDepositFromMetamaskProps> = ({ onClo
                 onChange={(e) => setAmount(Number(e.target.value))}
               />
             </BoxRow>
-            <Divider  sx={{width: '100%'}}/>
+            <Divider sx={{ width: '100%' }} />
           </Stack>
 
           <FinanceDialogsActions
@@ -154,7 +151,7 @@ const FinanceDepositFromMetamask: FC<FinanceDepositFromMetamaskProps> = ({ onClo
   );
 }
 
-export const BoxRow: FC<PropsWithChildren> = ({children}) => (
+export const BoxRow: FC<PropsWithChildren> = ({ children }) => (
   <Box sx={{
     width: '100%',
     display: 'flex',
