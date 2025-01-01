@@ -45,6 +45,7 @@ const FinanceDepositFromSmartAccount: FC<FinanceDepositFromSmartAccountProps> = 
 
   const handleConfirmDeposit = useCallback(async () => {
     // fail fast
+    // TODO validation formatUint(amount) > balance
     if (amount == 0 || amount >= (balance ?? 0))
       return errorDueInvalidAmount();
 
@@ -60,7 +61,7 @@ const FinanceDepositFromSmartAccount: FC<FinanceDepositFromSmartAccountProps> = 
       setLoading(false);
     }
 
-  }, [sessionData?.address, amount]);
+  }, [sessionData?.address, amount, balance]);
 
 
   return (
