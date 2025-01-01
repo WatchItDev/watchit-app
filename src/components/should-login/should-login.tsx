@@ -42,7 +42,7 @@ const NotLoggedIn: FC<Props> = ({icon, subtitle} ) => {
         mb: 2,
         color: COLORS.GRAY_LIGHT,
       }} />
-      <Typography variant="h4">Sign in required</Typography>
+      <Typography variant="h4">Finance Dashboard</Typography>
       <Typography variant="body1"  sx={{mb:3, mt: 1, opacity: 0.5}}>
         {subtitle}
       </Typography>
@@ -57,7 +57,7 @@ const NotLoggedIn: FC<Props> = ({icon, subtitle} ) => {
           backgroundColor: COLORS.GRAY_DARK,
         }
       }}>
-        Sign in now
+        Access now
       </Button>
     </Box>
   );
