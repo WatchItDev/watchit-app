@@ -1,3 +1,10 @@
+# [2.2.0-beta.2](https://github.com/WatchItDev/watchit-app/compare/v2.2.0-beta.1...v2.2.0-beta.2) (2025-01-01)
+
+
+### Bug Fixes
+
+* release package-lock deps ([d4cb969](https://github.com/WatchItDev/watchit-app/commit/d4cb969e1bdec2a50e27e45d390f278484786949))
+
 # [2.2.0-beta.1](https://github.com/WatchItDev/watchit-app/compare/v2.1.0...v2.2.0-beta.1) (2025-01-01)
 
 
