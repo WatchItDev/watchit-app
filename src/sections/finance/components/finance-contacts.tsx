@@ -19,8 +19,8 @@ import { useRouter } from '@src/routes/hooks';
 
 // lens
 import { Profile } from '@lens-protocol/api-bindings';
-import {useDispatch} from "react-redux";
-import {storeAddress, toggleRainbow} from '@redux/address';
+import { useDispatch } from "react-redux";
+import { storeAddress, toggleRainbow } from '@redux/address';
 import React from "react";
 
 // ----------------------------------------------------------------------
@@ -33,20 +33,20 @@ interface Props extends CardProps {
 }
 
 export default function FinanceContactsCarousel({
-                                                  title,
-                                                  subheader,
-                                                  list,
-                                                  chunkSize = 5,
-                                                  ...other
-                                                }: Props) {
+  title,
+  subheader,
+  list,
+  chunkSize = 5,
+  ...other
+}: Props) {
   const router = useRouter();
   const dispatch = useDispatch();
 
 
   function scrollToSmoothly(pos: number, time: number) {
     let currentPos = window.scrollY;
-    let start:number |null = null;
-    if(time == null) time = 500;
+    let start: number | null = null;
+    if (time == null) time = 500;
     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     pos = +pos, time = +time;
     window.requestAnimationFrame(function step(currentTime) {
@@ -67,13 +67,13 @@ export default function FinanceContactsCarousel({
 
   const handleClick = (address: string, profileId: string) => {
     dispatch(toggleRainbow());
-    dispatch(storeAddress({address, profileId}));
+    dispatch(storeAddress({ address, profileId }));
 
     // Scroll to top the window with a smooth animation
     scrollToSmoothly(0, 1000)
     setTimeout(() => {
       dispatch(toggleRainbow());
-    },1400)
+    }, 1400)
   }
 
   const goToProfile = (id: string) => {
@@ -130,7 +130,7 @@ type SlideContactsProps = {
   onClickArrow: (address: string, profileId: string) => void;
 };
 
-function SlideContacts({ chunk, goToProfile, onClickArrow}: SlideContactsProps) {
+function SlideContacts({ chunk, goToProfile, onClickArrow }: SlideContactsProps) {
   const handleArrowClick = (event: React.MouseEvent<HTMLButtonElement>, address: string, profileId: string) => {
     event.stopPropagation();
     onClickArrow(address, profileId);

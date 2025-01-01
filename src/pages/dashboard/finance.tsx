@@ -4,7 +4,7 @@ import Header from "@src/layouts/dashboard/header.tsx";
 import HeaderContent from "@src/layouts/dashboard/header-content.tsx";
 import withAuth from '@src/components/should-login/withAuth';
 
-const OverviewBankingViewWithAuth = withAuth(OverviewBankingView, 'iconoir:stats-report', 'Log in to access your balance, transfers, and more.');
+const OverviewBankingViewWithAuth = withAuth(OverviewBankingView, 'iconoir:stats-report', 'Login to access your balance.');
 
 export default function OverviewBankingPage() {
   return (

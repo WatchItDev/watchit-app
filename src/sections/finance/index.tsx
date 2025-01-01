@@ -76,7 +76,7 @@ export default function OverviewBankingView() {
               }}
             />
 
-            <FinanceQuickActions />
+            {/* <FinanceQuickActions /> */}
           </Stack>
 
           <Grid xs={12} md={8}>
@@ -100,6 +100,7 @@ export default function OverviewBankingView() {
             {following?.length ? (
               <FinanceContacts
                 title="Contacts"
+                chunkSize={3}
                 subheader={`You have ${following?.length ?? 0} contacts`}
                 list={following ?? []}
               />
