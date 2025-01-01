@@ -48,11 +48,8 @@ type TransactionsProcessedData = {
 }
 
 export default function FinanceTransactionsHistory({ transactionData }: TransactionsProcessedData) {
-  console.log('processedTransactions passed:', transactionData);
   const table = useTable({ defaultOrderBy: 'name' });
-
   const [tableData, _setTableData] = useState(transactionData);
-
   const [filters, setFilters] = useState(defaultFilters);
 
   const dataFiltered = applyFilter({
@@ -62,13 +59,8 @@ export default function FinanceTransactionsHistory({ transactionData }: Transact
   });
 
   const denseHeight = table.dense ? 52 : 72;
-
   const canReset = filters.status !== 'all';
-
   const notFound = (!dataFiltered.length && canReset) || !dataFiltered.length;
-
-  console.log('Data:', tableData);
-  console.log('Date Filtered:', dataFiltered);
 
   const handleFilters = useCallback(
     (name: string, value: IOrderTableFilterValue) => {

@@ -17,7 +17,7 @@ interface DepositParams {
   amount: number;    // plain number
 }
 
-interface UseDepositHook {
+export interface UseDepositHook {
   data?: any;
   deposit: (params: DepositParams) => Promise<void>;
   loading: boolean;

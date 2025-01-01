@@ -24,6 +24,7 @@ interface FinanceDepositFromMetamaskProps {
   onClose: () => void;
 }
 
+// TODO please finance-deposit.tsx
 const FinanceDepositFromMetamask: FC<FinanceDepositFromMetamaskProps> = ({ onClose }) => {
   const [address, setAddress] = useState<Address | undefined>();
   const { balance } = useGetMmcContractBalance(address);
@@ -72,7 +73,7 @@ const FinanceDepositFromMetamask: FC<FinanceDepositFromMetamaskProps> = ({ onClo
     } else {
       enqueueSnackbar("Invalid deposit amount", { variant: "warning" });
     }
-  }, [sessionData?.address]);
+  }, [sessionData?.address, amount, balance]);
 
   const RainbowEffect = loading || depositLoading ? NeonPaper : Box;
   const mdUp = useResponsive('up', 'md');

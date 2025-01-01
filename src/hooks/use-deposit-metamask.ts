@@ -7,17 +7,21 @@ import { GLOBAL_CONSTANTS } from '@src/config-global';
 import { publicClient } from '@src/clients/viem/publicClient';
 import { useSnackbar } from 'notistack';
 
+// AND HERE
 interface VaultError {
   message: string;
   code?: number;
   [key: string]: any;
 }
 
+// SAME HERE
 interface DepositParams {
   recipient: string; // The address receiving the deposit
   amount: number;    // Amount in "human" format (not in Wei)
 }
 
+// TODO this could be handled in one interface in a type.tsx file
+// is duplicated in use-deposit, this MUST be reusable 
 interface UseDepositHook {
   data?: any;
   deposit: (params: DepositParams) => Promise<void>;

@@ -22,7 +22,9 @@ interface FinanceDepositFromSmartAccountProps {
   onClose: () => void;
 }
 
+// TODO please finance-deposit.tsx
 const FinanceDepositFromSmartAccount: FC<FinanceDepositFromSmartAccountProps> = ({ onClose }) => {
+  // TODO Use this component as generic finance deposit and create new sub components for metamask & smart account
   // TODO Please keep declaration on top
   const [amount, setAmount] = useState<number>(0);
   const [loading, setLoading] = useState(false);
@@ -42,7 +44,7 @@ const FinanceDepositFromSmartAccount: FC<FinanceDepositFromSmartAccountProps> = 
   useEffect(() => {
     if (error) errorDuringDeposit()
   }, [error]);
-
+  
   const handleConfirmDeposit = useCallback(async () => {
     // fail fast
     // TODO validation formatUint(amount) > balance
