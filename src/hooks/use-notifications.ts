@@ -12,6 +12,7 @@ type UseNotificationsReturn = {
   markAsRead: (id: string) => Promise<void>;
   sendNotification: (receiver_id: string, sender_id: string, payload: any) => Promise<void>;
   markAllAsRead: () => Promise<void>;
+  deleteNotification: (id: string) => Promise<void>;
 };
 
 export function useNotifications(): UseNotificationsReturn {
@@ -74,11 +75,27 @@ export function useNotifications(): UseNotificationsReturn {
     }
   }
 
+  // async deleteNotification(id: string)
+  async function deleteNotification(id: string) {
+    const { error } = await supabase
+      .from('notifications')
+      .delete()
+      .eq('id', id);
+
+    if (error) {
+      console.error('Error deleting notification:', error);
+    } else {
+      const updatedNotifications = notifications.filter(notification => notification.id !== id);
+      dispatch(setNotifications(updatedNotifications));
+    }
+  }
+
   return {
     getNotifications,
     notifications,
     markAllAsRead,
     markAsRead,
     sendNotification,
+    deleteNotification
   };
 }

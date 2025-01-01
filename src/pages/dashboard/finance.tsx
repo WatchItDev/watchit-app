@@ -1,8 +1,10 @@
 import { Helmet } from 'react-helmet-async';
-import BlankView from '../../sections/blank/view';
-import ComingSoonView from '../../sections/coming-soon/view';
+import OverviewBankingView from "@src/sections/finance";
+import Header from "@src/layouts/dashboard/header.tsx";
+import HeaderContent from "@src/layouts/dashboard/header-content.tsx";
+import withAuth from '@src/components/should-login/withAuth';
 
-// ----------------------------------------------------------------------
+const OverviewBankingViewWithAuth = withAuth(OverviewBankingView, 'iconoir:stats-report', 'You need to log in to access this page');
 
 export default function OverviewBankingPage() {
   return (
@@ -11,9 +13,10 @@ export default function OverviewBankingPage() {
         <title> WatchIt | Finance</title>
       </Helmet>
 
-      <BlankView>
-        <ComingSoonView />
-      </BlankView>
+      <Header>
+        <HeaderContent title="Finance" />
+      </Header>
+      <OverviewBankingViewWithAuth />
     </>
   );
 }

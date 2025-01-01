@@ -9,7 +9,6 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-  CircularProgress,
   Typography,
   Stack,
   Paper,
@@ -26,6 +25,9 @@ import { encodeAbiParameters } from 'viem';
 import { GLOBAL_CONSTANTS } from '@src/config-global';
 import { useAuthorizePolicy } from '@src/hooks/use-authorize-policy.ts';
 import { useSnackbar } from 'notistack';
+import NeonPaper from "@src/sections/publication/NeonPaperContainer.tsx";
+import Box from "@mui/material/Box";
+import LoadingButton from "@mui/lab/LoadingButton";
 
 // ----------------------------------------------------------------------
 
@@ -107,6 +109,7 @@ export const ActivateSubscriptionProfileModal = ({
   const fifteenDaysCost = (amountNumber * 15).toFixed(2);
   const monthlyCost = (amountNumber * 30).toFixed(2);
 
+  const RainbowEffect = loading ? NeonPaper : Box;
   return (
     <>
       <Dialog open={isOpen} onClose={onClose} fullWidth maxWidth="xs">
@@ -229,14 +232,17 @@ export const ActivateSubscriptionProfileModal = ({
           <Button variant="text" onClick={onClose}>
             Cancel
           </Button>
-          <Button
-            variant="contained"
-            sx={{ backgroundColor: '#fff' }}
-            onClick={handleAuthorizeSubscription}
-            disabled={loading || (!selectedAmount && !customAmount)}
-          >
-            {loading ? <CircularProgress size="25px" sx={{ color: '#fff' }} /> : 'Confirm price'}
-          </Button>
+          <RainbowEffect borderRadius={'10px'} animationSpeed={'3s'} padding={'0'} width={'auto'} >
+            <LoadingButton
+              variant="contained"
+              sx={{ backgroundColor: '#fff' }}
+              onClick={handleAuthorizeSubscription}
+              disabled={loading || (!selectedAmount && !customAmount)}
+              loading={loading}
+            >
+              Confirm price
+            </LoadingButton>
+          </RainbowEffect>
         </DialogActions>
       </Dialog>
     </>

@@ -25,18 +25,19 @@ import { Address } from 'viem';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { useSubscribe } from '@src/hooks/use-subscribe.ts';
 import { Profile } from '@lens-protocol/api-bindings';
-import { useResolveTerms } from '@src/hooks/use-resolve-terms.ts';
+import { useGetPolicyTerms } from '@src/hooks/use-get-policy-terms.ts';
 import LinearProgress from '@mui/material/LinearProgress';
 
-import { ProfileSession, useSession } from '@lens-protocol/react-web';
 // @ts-ignore
-import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
 import { setBalance } from '@redux/auth';
 import { useDispatch, useSelector } from 'react-redux';
 import { useGetBalance } from '@src/hooks/use-get-balance.ts';
 import { useSnackbar } from 'notistack';
 import {useNotifications} from "@src/hooks/use-notifications.ts";
 import { useNotificationPayload } from '@src/hooks/use-notification-payload.ts';
+import NeonPaper from "@src/sections/publication/NeonPaperContainer.tsx";
+import Box from "@mui/material/Box";
+import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 
 // ----------------------------------------------------------------------
 
@@ -70,7 +71,7 @@ export const SubscribeProfileModal = ({
 
   // Hooks for subscription and terms resolution
   const { data, error, loading, subscribe } = useSubscribe();
-  const { terms, loading: loadingTerms } = useResolveTerms(profile?.ownedBy?.address as Address);
+  const { terms, loading: loadingTerms } = useGetPolicyTerms(GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS as Address, profile?.ownedBy?.address as Address);
 
   const { sendNotification } = useNotifications();
   const { generatePayload } = useNotificationPayload(sessionData);
@@ -119,7 +120,7 @@ export const SubscribeProfileModal = ({
     if (error) {
       enqueueSnackbar(error.shortMessage ?? error.message, { variant: 'error' })
       setErrorMessage(error.shortMessage ?? error.message);
-    };
+    }
   }, [error]);
 
   // Effect to handle successful subscription
@@ -186,6 +187,8 @@ export const SubscribeProfileModal = ({
       setErrorMessage('Failed to join the profile.');
     }
   };
+
+  const RainbowEffect = loading ? NeonPaper : Box;
 
   return (
     <>
@@ -294,6 +297,8 @@ export const SubscribeProfileModal = ({
               <Button variant="text" onClick={onClose}>
                 Cancel
               </Button>
+
+              <RainbowEffect borderRadius={'10px'} animationSpeed={'3s'} padding={'0'} width={'auto'} >
               <LoadingButton
                 variant="contained"
                 sx={{ backgroundColor: '#fff' }}
@@ -303,6 +308,7 @@ export const SubscribeProfileModal = ({
               >
                 Join
               </LoadingButton>
+              </RainbowEffect>
             </DialogActions>
           </>
         )}

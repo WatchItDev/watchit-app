@@ -8,8 +8,6 @@ import { encodeFunctionData } from 'viem';
 import { useWeb3Auth } from '@src/hooks/use-web3-auth.ts';
 import RightsPolicyAuthorizerAbi from '@src/config/abi/RightsPolicyAuthorizer.json';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
-// @ts-ignore
-import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
 import {useSelector} from "react-redux";
 
 // ----------------------------------------------------------------------
@@ -69,7 +67,9 @@ export const useAuthorizePolicy = (): useAuthorizePolicyHook => {
     try {
       // Retrieve the account abstraction provider, bundler client, and smart account
       const accountAbstractionProvider = web3Auth.options.accountAbstractionProvider;
+      // @ts-ignore
       const bundlerClient = accountAbstractionProvider.bundlerClient;
+      // @ts-ignore
       const smartAccount = accountAbstractionProvider.smartAccount;
 
       if (!sessionData?.authenticated) {

@@ -37,3 +37,8 @@ function result(format: string, key = '.00') {
 
   return isInteger ? format.replace(key, '') : format;
 }
+
+export function formatBalanceNumber(balance: number) {
+  const balanceOptions = { minimumFractionDigits: 1, maximumFractionDigits: 3 };
+  return new Intl.NumberFormat('en-US', balanceOptions).format(balance as any);
+}

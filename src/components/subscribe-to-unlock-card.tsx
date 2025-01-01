@@ -1,9 +1,10 @@
 import { Box, Card, CardContent, Typography, Stack } from '@mui/material';
 import { IconLock, IconPlayerPlay } from '@tabler/icons-react';
 import { ethers } from 'ethers';
-import { useResolveTerms } from '@src/hooks/use-resolve-terms.ts';
+import { useGetPolicyTerms } from '@src/hooks/use-get-policy-terms.ts';
 import { Address } from 'viem';
 import LoadingButton from '@mui/lab/LoadingButton';
+import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 
 interface Props {
   post: any;
@@ -18,7 +19,7 @@ export const SubscribeToUnlockCard = ({
   subscribeDisabled,
   post,
 }: Props) => {
-  const { terms } = useResolveTerms(post?.by?.ownedBy?.address as Address);
+  const { terms } = useGetPolicyTerms(GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS as Address, post?.by?.ownedBy?.address as Address);
   const durationDays = 30; // a month
   const totalCostWei = terms?.amount ? terms?.amount * BigInt(durationDays) : 0; // Calculate total cost in Wei: DAILY_COST_WEI * durationDays
   const totalCostMMC = ethers.formatUnits(totalCostWei, 18); // Converts Wei to MMC

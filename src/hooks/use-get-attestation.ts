@@ -3,11 +3,6 @@ import { Address } from 'viem';
 import { publicClient } from '@src/clients/viem/publicClient';
 import { GLOBAL_CONSTANTS } from '@src/config-global';
 import SubscriptionPolicyAbi from '@src/config/abi/SubscriptionPolicy.json';
-
-// LENS IMPORTS
-import { ProfileSession, useSession } from '@lens-protocol/react-web';
-// @ts-ignore
-import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
 import {useSelector} from "react-redux";
 
 interface AttestationError {

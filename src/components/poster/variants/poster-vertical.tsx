@@ -11,8 +11,8 @@ import { bgGradient } from '@src/theme/css';
 import Image from '@src/components/image';
 import { IconHeartFilled, IconStarFilled } from '@tabler/icons-react';
 import { Poster } from '../types';
-import { useRouter } from '../../../routes/hooks';
-import { paths } from '../../../routes/paths';
+import { useRouter } from '@src/routes/hooks';
+import { paths } from '@src/routes/paths.ts';
 
 // ----------------------------------------------------------------------
 
