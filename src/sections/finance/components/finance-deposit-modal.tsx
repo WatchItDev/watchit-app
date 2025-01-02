@@ -22,7 +22,7 @@ interface FinanceDepositModalProps extends DialogProps {
 // ----------------------------------------------------------------------
 
 const TABS = [
-  { value: 'fiat', label: 'Stripe', disabled: true, icon: <Iconify icon={'logos:stripe'} /> },
+  { value: 'fiat', label: 'Stripe', disabled: false, icon: <Iconify icon={'logos:stripe'} /> },
   { value: 'metamask', label: 'Metamask', disabled: false, icon: <Iconify icon={'logos:metamask-icon'} /> },
   { value: 'smartAccount', label: 'Smart Account', disabled: false, icon: <Iconify icon={'logos:ethereum-color'} /> },
 ];
