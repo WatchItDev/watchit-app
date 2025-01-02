@@ -110,6 +110,7 @@ export type ProcessedTransactionData = {
   category: string;
   date: bigint;
   status: string;
+  timestamp?: number;
   amount: string | null;
 };
 
@@ -129,9 +130,9 @@ export const processTransactionData = (data: TransactionLog[]): ProcessedTransac
 
 const parseTransactionTypeLabel = (type: string): string => {
   switch (type) {
-    case 'transferFrom':
-      return 'Sent money to';
     case 'transferTo':
+      return 'Sent money to';
+    case 'transferFrom':
       return 'Received money from';
     case 'deposit':
       return 'Deposited';
@@ -148,9 +149,9 @@ const parseTransactionTypeLabel = (type: string): string => {
 const parseTransactionType = (type: string): string => {
   switch (type) {
     case 'transferFrom':
-      return 'outcome';
-    case 'transferTo':
       return 'income';
+    case 'transferTo':
+      return 'outcome';
     case 'deposit':
       return 'income';
     case 'withdraw':
