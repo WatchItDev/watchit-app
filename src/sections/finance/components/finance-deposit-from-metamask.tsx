@@ -141,6 +141,7 @@ const FinanceDepositFromMetamask: FC<FinanceDepositFromMetamaskProps> = ({ onClo
         </>
       ) : (
         <Button
+          sx={{ m: 4 }}
           startIcon={<Iconify icon={'logos:metamask-icon'} />}
           variant={'outlined'}
           onClick={handleConnectMetamask}
