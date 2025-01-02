@@ -1,41 +1,39 @@
 import Stack from '@mui/material/Stack';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Unstable_Grid2';
-
-//
 import FinanceContacts from '@src/sections/finance/components/finance-contacts.tsx';
 import FinanceQuickTransfer from '@src/sections/finance/components/finance-quick-transfer.tsx';
 import FinanceInviteFriends from '@src/sections/finance/components/finance-invite-friends.tsx';
 import FinanceWidgetSummary from '@src/sections/finance/components/finance-widget-summary.tsx';
 import FinanceBalanceStatistics from '@src/sections/finance/components/finance-balance-statistics.tsx';
-
 import { useSelector } from "react-redux";
 import { useProfileFollowing } from "@lens-protocol/react";
-import { useTransactionData } from "@src/hooks/use-transaction-data";
-import {
-  groupedTransactionData,
-  processDayData
-} from "@src/utils/finance-graphs/groupedTransactions.ts";
 import Typography from "@mui/material/Typography";
 import FinanceTransactionsHistory from "@src/sections/finance/components/finance-transactions-history.tsx";
+import useGetSmartWalletTransactions from '@src/hooks/use-get-smart-wallet-transactions.ts';
+import { useEffect, useState } from 'react';
 
 // ----------------------------------------------------------------------
 
 export default function OverviewBankingView() {
   const { balance: balanceFromRedux } = useSelector((state: any) => state.auth);
   const sessionData = useSelector((state: any) => state.auth.session);
-
-  const { data: transactionsData } = useTransactionData()
+  const { transactions, loading } = useGetSmartWalletTransactions();
+  const [widgetSeriesData, setWidgetSeriesData] = useState<{ x: string; y: number }[]>([]);
+  const [percent, setPercent] = useState(0);
   const { data: following } = useProfileFollowing({
     // @ts-ignore
     for: sessionData?.profile?.id,
   });
 
-  // remove the last element as it is the current day
-  const processedData = groupedTransactionData(transactionsData);
-  const daySeriesData = processDayData(processedData);
-  // Get the difference between daySeriesData[1] and daySeriesData[0] in y value to calculate the percent
-  const percent = (daySeriesData[1]?.y - daySeriesData[0]?.y) / daySeriesData[0]?.y * 100;
+  useEffect(() => {
+    if (!transactions || loading) return;
+
+    const { daySeriesData, calculatedPercent } = groupTransactionsForWidget(transactions);
+
+    setWidgetSeriesData(daySeriesData);
+    setPercent(calculatedPercent);
+  }, [transactions, loading]);
 
   return (
     <Container
@@ -58,7 +56,7 @@ export default function OverviewBankingView() {
               percent={percent}
               total={balanceFromRedux}
               chart={{
-                series: daySeriesData,
+                series: widgetSeriesData,
               }}
             />
 
@@ -103,4 +101,43 @@ export default function OverviewBankingView() {
       </Grid>
     </Container>
   );
+}
+
+export function groupTransactionsForWidget(transactions: any[]) {
+  if (!transactions?.length) {
+    return { daySeriesData: [], calculatedPercent: 0 };
+  }
+
+  let grouped: Record<string, number> = {};
+
+  transactions.forEach((tx) => {
+    const timestamp = Number(tx.timestamp) * 1000;
+    const dateKey = new Date(timestamp).toISOString().slice(0, 10);
+    const amount = parseFloat(tx.formattedAmount);
+    const eventType = tx.event;
+
+    if (!grouped[dateKey]) grouped[dateKey] = 0;
+
+    if (eventType === 'deposit' || eventType === 'transferTo') {
+      grouped[dateKey] += amount;
+    } else if (eventType === 'withdraw' || eventType === 'transferFrom') {
+      grouped[dateKey] -= amount;
+    }
+  });
+
+  const daySeriesData = Object.keys(grouped)
+    .sort()
+    .map((day) => ({
+      x: day,
+      y: grouped[day],
+    }));
+
+  let calculatedPercent = 0;
+  if (daySeriesData.length > 1) {
+    const first = daySeriesData[0].y;
+    const second = daySeriesData[1].y;
+    calculatedPercent = ((second - first) / Math.abs(first)) * 100;
+  }
+
+  return { daySeriesData, calculatedPercent };
 }
