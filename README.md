@@ -26,8 +26,7 @@ Embark on your journey with WatchIt and join the decentralized entertainment mov
 - Visit our official site: [watchit.movie](https://watchit.movie)
 - Join our community discussions: [Matrix](https://matrix.to/#/#watchit\:matrix.org) | [Discord](https://discord.gg/VdGMqNJgFq) | [Telegram](https://t.me/watchitofficial) | [Reddit](https://www.reddit.com/user/Watchit_V/)
 - Support us on Open Collective: [Open Collective](https://opencollective.com/watchit)
-- Explore our insights: [WatchIt - Open Movies](https://dev.to/geolffreym/watchit-2b88)
-- Consult our [FAQ](FAQ.md) for detailed guidance.
+- Explore our insights: [WatchIt - Open Movies]([https://dev.to/geolffreym/watchit-2b88](https://watchit.notion.site/A-New-Era-for-Creators-Countdown-to-the-First-Stage-of-Watchit-130c4b73826a80199722fa62137868bd?pvs=4))
 
 
 ## Contributors ✨
