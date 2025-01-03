@@ -138,7 +138,7 @@ export default function FinanceTransactionsHistory() {
 
       <TableContainer sx={{ position: 'relative', overflow: 'unset' }}>
         <Scrollbar>
-          <Table size={table.dense ? 'small' : 'medium'} sx={{ minWidth: 960 }}>
+          <Table size={table.dense ? 'small' : 'medium'}>
             <TableHeadCustom
               order={table.order}
               orderBy={table.orderBy}
