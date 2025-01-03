@@ -19,10 +19,9 @@ const FinanceDepositFromStripe = () => {
         gap: 2,
         textAlign: 'center',
       }}>
+        <ComingSoonIllustration sx={{ mt: 0, mb: 1, height: 120 }} />
         <TextMaxLine variant={'h5'} line={1}>This feature is coming soon.</TextMaxLine>
-        <TextMaxLine color={'text.secondary'} variant={'body2'} line={2}>We’re working hard to bring this section to life. Check back soon!</TextMaxLine>
-        <ComingSoonIllustration sx={{ my: 5, height: 160 }} />
-
+        <TextMaxLine color={'text.secondary'} variant={'body2'} line={2} sx={{ mb: 2 }}>We’re working hard to bring this section to life. Check back soon!</TextMaxLine>
       </Box>
       <Box></Box>
     </Box>

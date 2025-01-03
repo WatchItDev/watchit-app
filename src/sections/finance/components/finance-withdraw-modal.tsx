@@ -47,7 +47,7 @@ export const FinanceWithdrawModal: FC<FinanceWitdrawModalProps> = ({ open, onClo
           width: 1,
           zIndex: 9,
           borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
-          [`& .${tabsClasses.flexContainer}`]: { justifyContent: 'center' },
+          [`& .${tabsClasses.flexContainer}`]: { justifyContent: { xs: 'left', md: 'center' }},
         }}
       >
         {TABS.map((tab) => (
