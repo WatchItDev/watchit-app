@@ -38,15 +38,15 @@ export default function OverviewBankingView() {
   return (
     <Container
       sx={{
-        marginTop: '2rem',
+        marginTop: { xs: '1rem', md: '2rem' },
         marginBottom: '2rem',
         maxWidth: '100% !important',
       }}
     >
-      <Grid container spacing={3}>
+      <Grid container spacing={2}>
         <Grid xs={12} md={8}>
           <Stack direction={{ lg: 'column', xlg: 'row' }} spacing={{
-            xs: 1,
+            xs: 2,
             lg: 2,
           }}>
             <FinanceWidgetSummary
@@ -60,6 +60,13 @@ export default function OverviewBankingView() {
               }}
             />
 
+            <FinanceQuickTransfer
+              title="Quick transfer"
+              list={following}
+              sx={{
+                display: { xs: 'flex', md: 'none' },
+              }}
+            />
             {/* <FinanceQuickActions /> */}
           </Stack>
 
@@ -75,11 +82,15 @@ export default function OverviewBankingView() {
           <FinanceTransactionsHistory />
         </Grid>
 
-
-
         <Grid xs={12} md={4}>
-          <Stack spacing={3}>
-            <FinanceQuickTransfer title="Quick transfer" list={following} />
+          <Stack spacing={2}>
+            <FinanceQuickTransfer
+              title="Quick transfer"
+              list={following}
+              sx={{
+                display: { xs: 'none', md: 'flex' }
+              }}
+            />
 
             {following?.length ? (
               <FinanceContacts
