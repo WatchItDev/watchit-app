@@ -96,6 +96,7 @@ const FinanceWithdrawFromSmartAccount: FC<FinanceDepositFromSmartAccountProps> =
         <BoxRow>
           <TextMaxLine line={1}>Amount to withdraw</TextMaxLine>
           <InputAmount
+            autoFocus
             max={balance ?? 0}
             amount={amount}
             onChange={(e) => setAmount(Number(e.target.value))}

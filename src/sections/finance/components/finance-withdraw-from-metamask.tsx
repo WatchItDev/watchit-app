@@ -17,6 +17,7 @@ import {truncateAddress} from "@src/utils/wallet.ts";
 import {useGetVaultBalance} from "@src/hooks/use-get-vault-balance.ts";
 import {useResponsive} from "@src/hooks/use-responsive.ts";
 import FinanceDialogsActions from "@src/sections/finance/components/finance-dialogs-actions.tsx";
+import {LoadingScreen} from "@src/components/loading-screen";
 
 interface FinanceDepositFromSmartAccountProps {
   onClose: () => void;
@@ -31,6 +32,8 @@ const FinanceWithdrawFromMetamask: FC<FinanceDepositFromSmartAccountProps> = ({ 
   const { withdraw, loading: withdrawLoading, error } = useWithdrawMetamask();
   const [destinationAddress, setDestinationAddress] = useState('');
   const [addressError, setAddressError] = useState(false);
+  const [loadingMetamask, setLoadingMetamask] = useState(false);
+  const mdUp = useResponsive('up', 'md');
 
 
   useEffect(() => {
@@ -40,17 +43,26 @@ const FinanceWithdrawFromMetamask: FC<FinanceDepositFromSmartAccountProps> = ({ 
   }, [enqueueSnackbar, error]);
 
 
+  // Verify if the user has connected the wallet
   useEffect(() => {
-    handleConnectMetamask();
+    (async () => {
+      const walletConnected = localStorage.getItem('walletConnected');
+      if (walletConnected === 'true') {
+        await handleConnectMetamask();
+      }
+    } )()
   }, []);
 
   async function handleConnectMetamask() {
+    setLoadingMetamask(true);
     try {
       const walletClient = await ConnectWalletClient();
       const [addr] = await walletClient.requestAddresses();
       setAddress(addr);
     } catch (error) {
-      alert(`Transaction failed: ${error}`);
+      enqueueSnackbar(`Error connecting to Metamask`, { variant: "error" });
+    } finally {
+      setLoadingMetamask(false);
     }
   }
 
@@ -84,7 +96,10 @@ const FinanceWithdrawFromMetamask: FC<FinanceDepositFromSmartAccountProps> = ({ 
   };
 
   const RainbowEffect = loading || withdrawLoading ? NeonPaper : Box;
-  const mdUp = useResponsive('up', 'md');
+
+
+  if (loadingMetamask) return <Box sx={{m:3}}><LoadingScreen /></Box>;
+
   return (
     <>
       <Stack
@@ -119,6 +134,8 @@ const FinanceWithdrawFromMetamask: FC<FinanceDepositFromSmartAccountProps> = ({ 
         <BoxRow>
           <TextMaxLine line={1}>Amount to withdraw</TextMaxLine>
           <InputAmount
+
+            autoFocus
             max={balance ?? 0}
             amount={amount}
             onChange={(e) => setAmount(Number(e.target.value))}

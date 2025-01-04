@@ -44,7 +44,7 @@ const FinanceDepositFromSmartAccount: FC<FinanceDepositFromSmartAccountProps> = 
   useEffect(() => {
     if (error) errorDuringDeposit()
   }, [error]);
-  
+
   const handleConfirmDeposit = useCallback(async () => {
     // fail fast
     // TODO validation formatUint(amount) > balance
@@ -102,6 +102,7 @@ const FinanceDepositFromSmartAccount: FC<FinanceDepositFromSmartAccountProps> = 
         <BoxRow>
           <TextMaxLine line={1}>Amount to deposit</TextMaxLine>
           <InputAmount
+            autoFocus
             max={balance ?? 0}
             amount={amount}
             onChange={(e) => setAmount(Number(e.target.value))}

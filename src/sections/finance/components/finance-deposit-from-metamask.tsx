@@ -160,6 +160,7 @@ const FinanceDepositFromMetamask: FC<FinanceDepositFromMetamaskProps> = ({ onClo
             <BoxRow>
               <TextMaxLine line={1}>Enter the amount to deposit</TextMaxLine>
               <InputAmount
+                autoFocus
                 max={balance ?? 0}
                 amount={amount}
                 onChange={(e) => setAmount(Number(e.target.value))}
