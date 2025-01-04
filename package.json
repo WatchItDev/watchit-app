@@ -50,6 +50,7 @@
     "@lens-protocol/metadata": "^1.2.0",
     "@lens-protocol/react": "^2.3.2",
     "@lens-protocol/react-web": "^2.3.1",
+    "@metamask/sdk-react": "^0.31.4",
     "@mui/base": "^5.0.0-beta.7",
     "@mui/lab": "^5.0.0-alpha.136",
     "@mui/material": "^5.16.5",
