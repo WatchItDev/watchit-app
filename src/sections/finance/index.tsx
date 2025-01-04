@@ -95,7 +95,7 @@ export default function OverviewBankingView() {
             {following?.length ? (
               <FinanceContacts
                 title="Contacts"
-                chunkSize={3}
+                chunkSize={2}
                 subheader={`You have ${following?.length ?? 0} contacts`}
                 list={following ?? []}
               />
