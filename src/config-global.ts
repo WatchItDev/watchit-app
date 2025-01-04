@@ -47,6 +47,7 @@ export const GLOBAL_CONSTANTS = {
   NEXT_PUBLIC_SUPABASE_URL: process.env.VITE_SUPABASE_URL || import.meta.env.VITE_SUPABASE_URL || '',
   NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.VITE_SUPABASE_API_KEY || import.meta.env.VITE_SUPABASE_API_KEY || '',
   ENVIRONMENT: process.env.NODE_ENV || import.meta.env.VITE_ENVIRONMENT || 'development',
+  INFURA_API_KEY: process.env.VITE_INFURA_API_KEY || import.meta.env.VITE_INFURA_API_KEY || '',
 };
 
 export const MAPBOX_API = import.meta.env.VITE_MAPBOX_API || '';
