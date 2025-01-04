@@ -9,7 +9,6 @@ import Stack from "@mui/material/Stack";
 import Divider from "@mui/material/Divider";
 import Iconify from "@src/components/iconify";
 
-import { ConnectWalletClient } from "@src/clients/viem/walletClient";
 import { formatBalanceNumber } from "@src/utils/format-number.ts";
 import TextMaxLine from "@src/components/text-max-line";
 import { InputAmount } from "@src/components/input-amount.tsx";
@@ -19,6 +18,9 @@ import { useDepositMetamask } from "@src/hooks/use-deposit-metamask.ts";
 import { truncateAddress } from '@src/utils/wallet.ts';
 import FinanceDialogsActions from "@src/sections/finance/components/finance-dialogs-actions.tsx";
 import { useResponsive } from "@src/hooks/use-responsive.ts";
+import { MetaMaskSDK } from "@metamask/sdk";
+import {GLOBAL_CONSTANTS} from "@src/config-global.ts";
+import {LoadingScreen} from "@src/components/loading-screen";
 
 interface FinanceDepositFromMetamaskProps {
   onClose: () => void;
@@ -29,9 +31,12 @@ const FinanceDepositFromMetamask: FC<FinanceDepositFromMetamaskProps> = ({ onClo
   const [address, setAddress] = useState<Address | undefined>();
   const { balance } = useGetMmcContractBalance(address);
   const [amount, setAmount] = useState<number>(0);
+  const [loadingMetamask, setLoadingMetamask] = useState(false);
   const [loading, setLoading] = useState(false);
   const sessionData = useSelector((state: any) => state.auth.session);
   const { enqueueSnackbar } = useSnackbar();
+  const mdUp = useResponsive('up', 'md');
+
   const {
     deposit: depositWithMetamask,
     loading: depositLoading,
@@ -44,20 +49,56 @@ const FinanceDepositFromMetamask: FC<FinanceDepositFromMetamaskProps> = ({ onClo
     }
   }, [error]);
 
+  // Verify if the user has connected the wallet
   useEffect(() => {
-    handleConnectMetamask();
+    (async () => {
+      const walletConnected = localStorage.getItem('walletConnected');
+      if (walletConnected === 'true') {
+        await handleConnectMetamask();
+      }
+    } )()
   }, []);
 
-  async function handleConnectMetamask() {
+  const handleConnectMetamask = async () => {
+    setLoadingMetamask(true);
     try {
-      const walletClient = await ConnectWalletClient();
-      const [addr] = await walletClient.requestAddresses();
-      setAddress(addr);
-    } catch (error) {
-      alert(`Transaction failed: ${error}`);
-    }
-  }
+      const MMSDK = new MetaMaskSDK({
+        infuraAPIKey: GLOBAL_CONSTANTS.INFURA_API_KEY,
+        dappMetadata: {
+          name: "WatchitApp",
+          url: window.location.href,
+        },
+        openDeeplink: (url) => {
+          // @ts-ignore
+          if(window.ethereum === 'undefined' || !window.ethereum.isMetaMask || localStorage.getItem('walletConnected') !== 'true'){
+            setLoadingMetamask(false);
+            window.location.href = 'https://metamask.app.link'
+          }else{
+            window.location.href = url;
+          }
+        },
+      });
 
+      await MMSDK.init();
+
+      const accounts = await MMSDK.connect()
+
+      const ethereum = MMSDK.getProvider();
+
+      // @ts-ignore
+      ethereum.request({ method: "eth_accounts", params: [] });
+
+      setAddress(accounts?.[0] as Address);
+
+      // Store in the local storage a flag to know that the user has connected the wallet
+      localStorage.setItem('walletConnected', 'true');
+
+    } catch (err) {
+      enqueueSnackbar(`An error occurred during transaction.`, { variant: "error" });
+    } finally {
+      setLoadingMetamask(false);
+    }
+  };
   const handleConfirmDeposit = useCallback(async () => {
     if (amount > 0 && amount <= (balance ?? 0)) {
       try {
@@ -76,7 +117,7 @@ const FinanceDepositFromMetamask: FC<FinanceDepositFromMetamaskProps> = ({ onClo
   }, [sessionData?.address, amount, balance]);
 
   const RainbowEffect = loading || depositLoading ? NeonPaper : Box;
-  const mdUp = useResponsive('up', 'md');
+  if (loadingMetamask) return <Box sx={{m:3}}><LoadingScreen /></Box>;
 
   return (
     <Stack sx={{
@@ -139,15 +180,16 @@ const FinanceDepositFromMetamask: FC<FinanceDepositFromMetamaskProps> = ({ onClo
             onChangeWallet={setAddress}
           />
         </>
-      ) : (
+      ) : (<>
         <Button
           sx={{ m: 4 }}
           startIcon={<Iconify icon={'logos:metamask-icon'} />}
           variant={'outlined'}
           onClick={handleConnectMetamask}
         >
-          Connect MetaMask
+          Connect Metamask
         </Button>
+        </>
       )}
     </Stack>
   );
