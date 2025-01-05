@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-// @mui
+// MUI components
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Avatar from '@mui/material/Avatar';
@@ -9,56 +9,86 @@ import DialogTitle from '@mui/material/DialogTitle';
 import ListItemText from '@mui/material/ListItemText';
 import DialogActions from '@mui/material/DialogActions';
 import Dialog, { DialogProps } from '@mui/material/Dialog';
-// hooks
-import { useSelector} from "react-redux";
-import {truncateAddress} from "@src/utils/wallet.ts";
-import {Profile} from "@lens-protocol/api-bindings";
-import NeonPaper from "@src/sections/publication/NeonPaperContainer.tsx";
-import LoadingButton from "@mui/lab/LoadingButton";
+import { useSelector } from 'react-redux';
+import { truncateAddress } from '@src/utils/wallet.ts';
+import { Profile } from '@lens-protocol/api-bindings';
+import NeonPaper from '@src/sections/publication/NeonPaperContainer.tsx';
+import LoadingButton from '@mui/lab/LoadingButton';
 import { supabase } from '@src/utils/supabase';
-import {useNotificationPayload} from "@src/hooks/use-notification-payload.ts";
-import {useNotifications} from "@src/hooks/use-notifications.ts";
-import {useSnackbar} from "notistack";
+import { useNotificationPayload } from '@src/hooks/use-notification-payload.ts';
+import { useNotifications } from '@src/hooks/use-notifications.ts';
+import { useSnackbar } from 'notistack';
 import { InputAmountProps } from '@src/components/input-amount.tsx';
-
 import { useTransfer } from '@src/hooks/use-transfer.ts';
+
 type TConfirmTransferDialogProps = InputAmountProps & DialogProps;
 
 interface ConfirmTransferDialogProps extends TConfirmTransferDialogProps {
   contactInfo?: Profile;
   address?: string;
   onClose: VoidFunction;
-  amount: number
+  onFinish: VoidFunction;
+  amount: number;
 }
 
 function FinanceQuickTransferModal({
-  open,
-  amount,
-  contactInfo,
-  onClose,
-  address
-}: ConfirmTransferDialogProps) {
+                                     open,
+                                     amount,
+                                     contactInfo,
+                                     onClose,
+                                     onFinish,
+                                     address,
+                                   }: ConfirmTransferDialogProps) {
   const sessionData = useSelector((state: any) => state.auth.session);
   const { generatePayload } = useNotificationPayload(sessionData);
   const { sendNotification } = useNotifications();
   const { enqueueSnackbar } = useSnackbar();
   const [message, setMessage] = useState('');
-  const isSame = contactInfo?.ownedBy?.address === address;
-  const defaultImage = `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${address}`;
-  const defaultName = 'Destination wallet';
+
   const { transfer, loading: transferLoading, error } = useTransfer();
 
-  useEffect(() => {
-    if (error) enqueueSnackbar(error.message, { variant: 'error' });
-  }, [error]);
+  // Check if we have a valid profile or not
+  const hasProfile = !!contactInfo;
 
-  async function storeTransactionInSupabase(receiver_id?: string, sender_id?: string, payload?: any) {
-    const { error } = await supabase
+  // Check if the passed address matches the profile's address
+  const isSame =
+    hasProfile &&
+    contactInfo?.ownedBy?.address?.toLowerCase() === address?.toLowerCase();
+
+  // If no valid profile, show "Destination wallet", else use profile’s displayName
+  const displayName = hasProfile
+    ? contactInfo?.metadata?.displayName || contactInfo?.handle?.localName
+    : 'Destination wallet';
+
+  // For the avatar, if no valid profile or if the address doesn't match, use a dicebear fallback
+  const avatarSrc = hasProfile && isSame
+    ? (contactInfo?.metadata?.picture as any)?.optimized?.uri ||
+    `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${contactInfo?.id}`
+    : `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${address}`;
+
+  // For the secondary text under the name, if we have a valid profile that matches, use its address
+  // otherwise show the typed address
+  const secondaryText = hasProfile && isSame
+    ? contactInfo?.ownedBy?.address
+    : address;
+
+  useEffect(() => {
+    if (error) {
+      enqueueSnackbar(error.message, { variant: 'error' });
+    }
+  }, [error, enqueueSnackbar]);
+
+  async function storeTransactionInSupabase(
+    receiver_id?: string,
+    sender_id?: string,
+    payload?: any
+  ) {
+    const { error: supaError } = await supabase
       .from('transactions')
       .insert([{ receiver_id, sender_id, payload }]);
 
-    if (error) {
-      console.error('Error storing transaction:', error);
+    if (supaError) {
+      console.error('Error storing transaction:', supaError);
     } else {
       console.log('Transaction stored successfully');
     }
@@ -68,15 +98,24 @@ function FinanceQuickTransferModal({
     await transfer({ amount, recipient: address ?? '' });
 
     const senderId = sessionData?.profile?.id ?? address;
-    const notificationPayload = generatePayload('TRANSFER', {
-      id: isSame ? (contactInfo?.id ?? '') : (address ?? ''),
-      displayName: isSame ? (contactInfo?.metadata?.displayName ?? 'no name') : 'External wallet',
-      avatar: (contactInfo?.metadata?.picture as any)?.optimized?.uri ?? '',
-    }, {
-      rawDescription: `${sessionData?.profile?.metadata?.displayName ?? address} sent you ${amount} MMC`,
-      message,
-    });
 
+    // Build the notification payload
+    const notificationPayload = generatePayload(
+      'TRANSFER',
+      {
+        id: isSame ? contactInfo?.id ?? '' : address ?? '',
+        displayName: isSame
+          ? contactInfo?.metadata?.displayName ?? 'No name'
+          : 'External wallet',
+        avatar: (contactInfo?.metadata?.picture as any)?.optimized?.uri ?? '',
+      },
+      {
+        rawDescription: `${sessionData?.profile?.metadata?.displayName ?? address} sent you ${amount} MMC`,
+        message,
+      }
+    );
+
+    // Store transaction in supabase
     await storeTransactionInSupabase(contactInfo?.id ?? address, senderId, {
       address: contactInfo?.ownedBy?.address ?? address,
       amount,
@@ -84,48 +123,71 @@ function FinanceQuickTransferModal({
       ...notificationPayload,
     });
 
-    await sendNotification(contactInfo?.id ?? address ?? '', sessionData?.profile?.id, notificationPayload);
+    // Send notification to lens profile or address
+    await sendNotification(
+      contactInfo?.id ?? address ?? '',
+      sessionData?.profile?.id,
+      notificationPayload
+    );
 
-    enqueueSnackbar('The transfer has been sent to ' + (isSame ? contactInfo?.metadata?.displayName : truncateAddress(address ?? '')) , { variant: 'success' })
+    enqueueSnackbar(
+      `Transfer sent to ${
+        isSame
+          ? contactInfo?.metadata?.displayName
+          : truncateAddress(address ?? '')
+      }`,
+      { variant: 'success' }
+    );
 
-    onClose();
+    onFinish();
   };
 
   const RainbowEffect = transferLoading ? NeonPaper : Box;
+
   return (
     <Dialog open={open} fullWidth maxWidth="xs" onClose={onClose}>
       <DialogTitle>Transfer to</DialogTitle>
       <Stack direction="column" spacing={3} sx={{ px: 3 }}>
-        <Stack direction="row" spacing={3} sx={{ flexWrap: 'wrap', alignItems: 'center', justifyContent: 'center' }}>
+        <Stack
+          direction="row"
+          spacing={3}
+          sx={{ flexWrap: 'wrap', alignItems: 'center', justifyContent: 'center' }}
+        >
           <Stack direction="row" alignItems="center" spacing={2} sx={{ flexGrow: 1 }}>
             <Avatar
-             src={isSame ? (contactInfo?.metadata?.picture as any)?.optimized?.uri ?? defaultImage : defaultImage}
-             sx={{ width: 48, height: 48 }} />
+              src={avatarSrc}
+              sx={{ width: 48, height: 48 }}
+            />
 
             <ListItemText
-              primary={isSame ? contactInfo?.metadata?.displayName ?? defaultName : defaultName}
-              secondary={truncateAddress(address ?? '')}
+              primary={displayName}
+              secondary={truncateAddress(secondaryText ?? '')}
               secondaryTypographyProps={{ component: 'span', mt: 0.5 }}
             />
           </Stack>
 
-          <Stack direction={'column'} spacing={0} sx={{ py: 2, flexGrow: 1 }}>
+          <Stack direction="column" spacing={0} sx={{ py: 2, flexGrow: 1 }}>
             <ListItemText
-              primary={'Amount:'}
+              primary="Amount:"
               secondary={`${amount} MMC`}
               secondaryTypographyProps={{ component: 'span', mt: 0.5 }}
             />
           </Stack>
         </Stack>
+
         <TextField
           onChange={(e) => setMessage(e.target.value)}
-          fullWidth multiline rows={3} placeholder="Write a message..." />
+          fullWidth
+          multiline
+          rows={3}
+          placeholder="Write a message..."
+        />
       </Stack>
 
       <DialogActions>
         <Button onClick={onClose}>Cancel</Button>
 
-        <RainbowEffect borderRadius={'10px'} animationSpeed={'3s'} padding={'0'} width={'auto'} >
+        <RainbowEffect borderRadius="10px" animationSpeed="3s" padding="0" width="auto">
           <LoadingButton
             variant="contained"
             sx={{ backgroundColor: '#fff' }}
