@@ -96,9 +96,11 @@ export const ProfileSelectView: React.FC<ProfileSelectionProps> = ({
           backgroundColor: 'rgba(0,0,0,0.1)',
         }}
       />
+
       {loading ? (
         <LoadingScreen sx={{ py: 16 }} />
       ) : <></>}
+
       {profiles?.length > 0 && !loading ? (
         <Box sx={{ display: 'flex', flexDirection: 'column', maxHeight: 'calc(100% - 8rem)' }}>
           <Box
@@ -152,6 +154,7 @@ export const ProfileSelectView: React.FC<ProfileSelectionProps> = ({
           </Box>
         </Box>
       ) : <></>}
+
       {profiles?.length === 0 && !loading ? (
         <Box display="flex" flexDirection="column" alignItems="center" sx={{ mt: 1, p: 3 }}>
           <Typography variant="h6" fontWeight="bold" textAlign="center" sx={{ pt: 2, pb: 1 }}>
