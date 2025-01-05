@@ -15,6 +15,7 @@ import { setAuthLoading, setBalance } from '@redux/auth';
 import { useResponsive } from '@src/hooks/use-responsive.ts';
 import { UserItem } from '../user-item';
 import { useSnackbar } from 'notistack';
+import LoadingScreen from '../loading-screen/loading-screen.tsx';
 // ----------------------------------------------------------------------
 
 interface ProfileSelectionProps {
@@ -41,7 +42,7 @@ export const ProfileSelectView: React.FC<ProfileSelectionProps> = ({
   const lgUp = useResponsive('up', 'lg');
 
   const [profiles, setProfiles] = useState([] as Profile[]);
-  const { execute: getProfiles } = useLazyProfiles();
+  const { execute: getProfiles, loading } = useLazyProfiles();
   const sessionData = useSelector((state: any) => state.auth.session);
 
   useEffect(() => {
@@ -95,7 +96,10 @@ export const ProfileSelectView: React.FC<ProfileSelectionProps> = ({
           backgroundColor: 'rgba(0,0,0,0.1)',
         }}
       />
-      {profiles?.length > 0 ? (
+      {loading ? (
+        <LoadingScreen sx={{ py: 16 }} />
+      ) : <></>}
+      {profiles?.length > 0 && !loading ? (
         <Box sx={{ display: 'flex', flexDirection: 'column', maxHeight: 'calc(100% - 8rem)' }}>
           <Box
             sx={{
@@ -147,7 +151,8 @@ export const ProfileSelectView: React.FC<ProfileSelectionProps> = ({
             </List>
           </Box>
         </Box>
-      ) : (
+      ) : <></>}
+      {profiles?.length === 0 && !loading ? (
         <Box display="flex" flexDirection="column" alignItems="center" sx={{ mt: 1, p: 3 }}>
           <Typography variant="h6" fontWeight="bold" textAlign="center" sx={{ pt: 2, pb: 1 }}>
             No profiles found
@@ -168,7 +173,7 @@ export const ProfileSelectView: React.FC<ProfileSelectionProps> = ({
             Register new profile
           </Button>
         </Box>
-      )}
+      ) : <></>}
     </>
   );
 };
