@@ -10,6 +10,7 @@ import Iconify from '@src/components/iconify';
 import Chart, { useChart } from '@src/components/chart';
 import CustomPopover, { usePopover } from '@src/components/custom-popover';
 import useGetSmartWalletTransactions from '@src/hooks/use-get-smart-wallet-transactions.ts';
+import FinanceOverlayLoader from "@src/sections/finance/components/finance-overlay-loader.tsx";
 
 export default function FinanceBalanceStatistics() {
   const { transactions, loading } = useGetSmartWalletTransactions();
@@ -263,7 +264,8 @@ export default function FinanceBalanceStatistics() {
           }
         />
 
-        <Box sx={{ mt: 3, mx: 0 }}>
+        <Box sx={{ mt: 3, mx: 0, position: 'relative' }}>
+          { loading && <FinanceOverlayLoader /> }
           <Chart
             dir="ltr"
             type="bar"

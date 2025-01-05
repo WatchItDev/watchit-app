@@ -28,6 +28,7 @@ import { IOrderTableFilters, IOrderTableFilterValue } from '@src/types/transacti
 import FinanceTransactionTableRow from '@src/sections/finance/components/finance-transactions-table-row';
 import useGetSmartWalletTransactions from '@src/hooks/use-get-smart-wallet-transactions';
 import { processTransactionData } from '@src/utils/finance-graphs/groupedTransactions';
+import FinanceOverlayLoader from "@src/sections/finance/components/finance-overlay-loader.tsx";
 
 const STATUS_OPTIONS = [
   { value: 'all', label: 'All' },
@@ -47,7 +48,7 @@ const defaultFilters: IOrderTableFilters = {
 // ----------------------------------------------------------------------
 
 export default function FinanceTransactionsHistory() {
-  const { transactions } = useGetSmartWalletTransactions();
+  const { transactions, loading } = useGetSmartWalletTransactions();
   let transactionData = processTransactionData(transactions);
   const table = useTable({
     defaultOrder: 'desc',
@@ -137,6 +138,7 @@ export default function FinanceTransactionsHistory() {
       </Tabs>
 
       <TableContainer sx={{ position: 'relative', overflow: 'unset' }}>
+        { loading && <FinanceOverlayLoader />}
         <Scrollbar>
           <Table size={table.dense ? 'small' : 'medium'}>
             <TableHeadCustom
@@ -167,7 +169,7 @@ export default function FinanceTransactionsHistory() {
                 emptyRows={emptyRows(table.page, table.rowsPerPage, transactionData.length)}
               />
 
-              <TableNoData notFound={notFound} />
+              <TableNoData notFound={notFound} loading={loading} />
             </TableBody>
           </Table>
         </Scrollbar>

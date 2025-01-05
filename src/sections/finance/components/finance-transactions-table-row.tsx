@@ -21,9 +21,7 @@ export default function FinanceTransactionTableRow({
   row,
   selected
 }: Props) {
-  const { date, name, amount, type, avatarUrl, message, category } = row;
-
-  console.log('TYPE:', type);
+  const { date, name, amount, avatarUrl, message, category } = row;
 
   const dateObject = new Date(Number(date) * 1000);
   const dateLbl = format(dateObject, 'dd/MM/yyyy');
