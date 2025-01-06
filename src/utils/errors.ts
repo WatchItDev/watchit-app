@@ -5,6 +5,9 @@ export enum ERRORS {
   NOT_LOGGED_IN = 'NOT_LOGGED_IN',
   BUNDLER_UNAVAILABLE = 'BUNDLER_UNAVAILABLE',
   UNKNOWN_ERROR = 'UNKNOWN_ERROR',
+  METAMASK_CONNECTING_ERROR = 'METAMASK_CONNECTING_ERROR',
+  WITHDRAW_FAILED_ERROR = 'WITHDRAW_FAILED_ERROR',
+  DEPOSIT_ERROR = 'DEPOSIT_ERROR',
 }
 
 /**
@@ -14,33 +17,7 @@ export const ERROR_MESSAGES: Record<ERRORS, string> = {
   [ERRORS.NOT_LOGGED_IN]: 'Please log in to continue.',
   [ERRORS.BUNDLER_UNAVAILABLE]: 'The bundler is currently unavailable.',
   [ERRORS.UNKNOWN_ERROR]: 'An unknown error has occurred.',
+  [ERRORS.METAMASK_CONNECTING_ERROR]: 'Error connecting to MetaMask.',
+  [ERRORS.WITHDRAW_FAILED_ERROR]: 'Error while trying the withdrawals.',
+  [ERRORS.DEPOSIT_ERROR]: 'Error while trying to complete the deposit.',
 };
-
-let globalEnqueueSnackbar: ((message: string, options?: object) => void) | null = null;
-
-/**
- * Allows us to set the globalEnqueueSnackbar function from our App (or any top-level component).
- * Must be called at least once (e.g., in App.tsx) so that notifyError() works.
- */
-export function setGlobalErrorNotifier(
-  enqueueSnackbarFn: (message: string, options?: object) => void
-) {
-  globalEnqueueSnackbar = enqueueSnackbarFn;
-}
-
-/**
- * Global function to notify an error by ERROR_NAMES.
- * If no message is found in the dictionary, it uses 'UNKNOWN_ERROR'.
- */
-export function notifyError(errorName: ERRORS, fallbackMessage?: string) {
-  if (!globalEnqueueSnackbar) {
-    console.error('No globalEnqueueSnackbar is set. Cannot notify error.');
-    return;
-  }
-  const message =
-    ERROR_MESSAGES[errorName] ||
-    fallbackMessage ||
-    ERROR_MESSAGES[ERRORS.UNKNOWN_ERROR];
-
-  globalEnqueueSnackbar(message, { variant: 'error' });
-}

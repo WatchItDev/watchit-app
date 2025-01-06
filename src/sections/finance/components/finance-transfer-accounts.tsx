@@ -68,6 +68,8 @@ export default function FinanceTransferAccounts() {
 
   const [maxBalance, setMaxBalance] = useState<number>(balanceETH);
   const [fromWallet, setFromWallet] = useState(sessionData?.address);
+  // @TODO: JACOB
+  // @TODO: Review this default value
   const [toWallet, setToWallet] = useState('0x4B0897b0513fdc7C541B6d9D7E929C4e5364D2dB');
   const [labelFrom, setLabelFrom] = useState('From ETH Wallet');
   const [labelTo, setLabelTo] = useState('To Watchit Wallet');

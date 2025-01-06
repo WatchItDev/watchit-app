@@ -8,7 +8,7 @@ import Iconify from '../iconify';
 import { useSettingsContext } from '../settings';
 //
 import { StyledIcon, StyledNotistack } from './styles';
-import { setGlobalErrorNotifier } from '@src/utils/errors.ts';
+import { setGlobalNotifier } from '@src/utils/internal-notifications.ts';
 
 // ----------------------------------------------------------------------
 
@@ -26,7 +26,7 @@ export default function SnackbarProvider({ children }: Props) {
 
   useEffect(() => {
     // Set the global reference so we can call notifyError(...) anywhere.
-    setGlobalErrorNotifier(enqueueSnackbar);
+    setGlobalNotifier(enqueueSnackbar);
   }, [enqueueSnackbar]);
 
   return (

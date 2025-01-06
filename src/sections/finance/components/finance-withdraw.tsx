@@ -1,5 +1,5 @@
-import { FC, useEffect, useState, useCallback } from 'react';
-import { useSnackbar } from 'notistack';
+import {FC, useCallback, useEffect, useState} from 'react';
+import {useSnackbar} from 'notistack';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Divider from '@mui/material/Divider';
@@ -7,13 +7,15 @@ import TextField from '@mui/material/TextField';
 import NeonPaper from '@src/sections/publication/NeonPaperContainer';
 import FinanceDialogsActions from '@src/sections/finance/components/finance-dialogs-actions';
 import TextMaxLine from '@src/components/text-max-line';
-import { InputAmount } from '@src/components/input-amount';
-import { formatBalanceNumber } from '@src/utils/format-number';
-import { useResponsive } from '@src/hooks/use-responsive';
+import {InputAmount} from '@src/components/input-amount';
+import {formatBalanceNumber} from '@src/utils/format-number';
+import {useResponsive} from '@src/hooks/use-responsive';
 import BoxRow from '@src/sections/finance/components/box-row';
-import { isValidAddress } from '@src/sections/finance/components/finance-quick-transfer';
-import { Address } from 'viem';
-import { UseWithdrawHook } from '@src/hooks/use-withdraw.ts';
+import {isValidAddress} from '@src/sections/finance/components/finance-quick-transfer';
+import {Address} from 'viem';
+import {UseWithdrawHook} from '@src/hooks/use-withdraw.ts';
+import {ERRORS} from "@src/utils/errors";
+import {notifyError} from "@src/utils/internal-notifications";
 
 interface FinanceWithdrawProps {
   address?: Address; // The connected wallet address
@@ -60,7 +62,7 @@ const FinanceWithdraw: FC<FinanceWithdrawProps> = ({
       enqueueSnackbar('The withdraw was successful.', { variant: 'success' });
       onClose();
     } catch (err: any) {
-      enqueueSnackbar(`Withdraw failed: ${err.message}`, { variant: 'error' });
+      notifyError(ERRORS.WITHDRAW_FAILED_ERROR)
     } finally {
       setLocalLoading(false);
     }

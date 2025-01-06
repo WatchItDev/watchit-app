@@ -1,20 +1,26 @@
-import { FC, useEffect, useState } from 'react';
-import { useSnackbar } from 'notistack';
+// React and libraries imports
+import {FC, useEffect, useState} from 'react';
+import {Address} from 'viem';
+
+// @MUI Imports
 import Button from '@mui/material/Button';
+
+// Import Components
 import Iconify from '@src/components/iconify';
 import FinanceWithdraw from './finance-withdraw.tsx';
-import { useWithdrawMetamask } from '@src/hooks/use-withdraw-metamask';
-import { useGetVaultBalance } from '@src/hooks/use-get-vault-balance';
-import { connectToMetaMask } from '@src/utils/metamask';
-import { LoadingScreen } from '@src/components/loading-screen';
-import { Address } from 'viem';
+import {useWithdrawMetamask} from '@src/hooks/use-withdraw-metamask';
+import {useGetVaultBalance} from '@src/hooks/use-get-vault-balance';
+import {connectToMetaMask} from '@src/utils/metamask';
+import {LoadingScreen} from '@src/components/loading-screen';
+
+import {ERRORS} from "@src/utils/errors";
+import {notifyError} from "@src/utils/internal-notifications";
 
 interface FinanceWithdrawFromMetamaskProps {
   onClose: () => void;
 }
 
 const FinanceWithdrawFromMetamask: FC<FinanceWithdrawFromMetamaskProps> = ({ onClose }) => {
-  const { enqueueSnackbar } = useSnackbar();
   const [address, setAddress] = useState<Address | undefined>();
   const [connecting, setConnecting] = useState(false);
   const { balance } = useGetVaultBalance(address);
@@ -35,7 +41,7 @@ const FinanceWithdrawFromMetamask: FC<FinanceWithdrawFromMetamaskProps> = ({ onC
       setAddress(walletAddress);
       localStorage.setItem('walletConnected', 'true');
     } catch (err) {
-      enqueueSnackbar('Error connecting to MetaMask.', { variant: 'error' });
+      notifyError(ERRORS.METAMASK_CONNECTING_ERROR);
     } finally {
       setConnecting(false);
     }

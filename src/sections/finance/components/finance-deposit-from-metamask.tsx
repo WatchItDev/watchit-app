@@ -1,13 +1,19 @@
-import { FC, useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { useSnackbar } from 'notistack';
+// React and libraries imports
+import {FC, useEffect, useState} from 'react';
+import {useSelector} from 'react-redux';
+import {Address} from 'viem';
+
+// @MUI Imports
 import Button from '@mui/material/Button';
+
+// Project Imports
 import Iconify from '@src/components/iconify';
-import { Address } from 'viem';
-import { connectToMetaMask } from '@src/utils/metamask';
-import { useDepositMetamask } from '@src/hooks/use-deposit-metamask';
-import { LoadingScreen } from '@src/components/loading-screen';
+import {connectToMetaMask} from '@src/utils/metamask';
+import {useDepositMetamask} from '@src/hooks/use-deposit-metamask';
+import {LoadingScreen} from '@src/components/loading-screen';
 import FinanceDeposit from './finance-deposit';
+import {ERRORS} from "@src/utils/errors";
+import {notifyError} from "@src/utils/internal-notifications";
 
 interface FinanceDepositFromMetamaskProps {
   onClose: () => void;
@@ -15,7 +21,6 @@ interface FinanceDepositFromMetamaskProps {
 
 const FinanceDepositFromMetamask: FC<FinanceDepositFromMetamaskProps> = ({ onClose }) => {
   const sessionData = useSelector((state: any) => state.auth.session);
-  const { enqueueSnackbar } = useSnackbar();
 
   const [address, setAddress] = useState<Address | undefined>();
   const [connecting, setConnecting] = useState(false);
@@ -38,7 +43,7 @@ const FinanceDepositFromMetamask: FC<FinanceDepositFromMetamaskProps> = ({ onClo
       setAddress(walletAddress);
       localStorage.setItem('walletConnected', 'true');
     } catch (err) {
-      enqueueSnackbar('Error connecting to MetaMask.', { variant: 'error' });
+      notifyError(ERRORS.METAMASK_CONNECTING_ERROR);
     } finally {
       setConnecting(false);
     }
