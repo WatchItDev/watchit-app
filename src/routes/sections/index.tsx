@@ -16,40 +16,63 @@ export default function Router() {
   const { getNotifications } = useNotifications();
 
   useEffect(() => {
-    // TODO - Filter events by user
+    if (!sessionData?.address) return;
+
+    // FundsDeposited (when i am the recipient)
     const unwatchDeposit = publicClientWebSocket.watchContractEvent({
       address: GLOBAL_CONSTANTS.LEDGER_VAULT_ADDRESS,
       abi: LedgerVaultAbi.abi,
       eventName: 'FundsDeposited',
+      args: { recipient: sessionData?.address },
       onLogs: (logs) => {
-        console.log('New deposit event received:', logs);
+        console.log('New deposit (user as recipient):', logs);
         dispatch(setBlockchainEvents(logs));
       },
     });
+
+    // FundsWithdrawn (when i am the origin)
     const unwatchWithdraw = publicClientWebSocket.watchContractEvent({
       address: GLOBAL_CONSTANTS.LEDGER_VAULT_ADDRESS,
       abi: LedgerVaultAbi.abi,
       eventName: 'FundsWithdrawn',
+      args: { origin: sessionData?.address },
       onLogs: (logs) => {
-        console.log('New withdraw event received:', logs);
+        console.log('New withdraw (user as origin):', logs);
         dispatch(setBlockchainEvents(logs));
       },
     });
-    const unwatchTransfer = publicClientWebSocket.watchContractEvent({
+
+    // FundsTransferred (when I send)
+    const unwatchTransferFrom = publicClientWebSocket.watchContractEvent({
       address: GLOBAL_CONSTANTS.LEDGER_VAULT_ADDRESS,
       abi: LedgerVaultAbi.abi,
       eventName: 'FundsTransferred',
+      args: { origin: sessionData?.address },
       onLogs: (logs) => {
-        console.log('New withdraw event received:', logs);
+        console.log('New transfer from me:', logs);
         dispatch(setBlockchainEvents(logs));
       },
     });
+
+    // FundsTransferred (when I receive)
+    const unwatchTransferTo = publicClientWebSocket.watchContractEvent({
+      address: GLOBAL_CONSTANTS.LEDGER_VAULT_ADDRESS,
+      abi: LedgerVaultAbi.abi,
+      eventName: 'FundsTransferred',
+      args: { recipient: sessionData?.address },
+      onLogs: (logs) => {
+        console.log('New transfer to me:', logs);
+        dispatch(setBlockchainEvents(logs));
+      },
+    });
+
     return () => {
       unwatchDeposit();
       unwatchWithdraw();
-      unwatchTransfer();
+      unwatchTransferFrom();
+      unwatchTransferTo();
     };
-  }, []);
+  }, [sessionData?.address]);
 
   useEffect(() => {
     if (sessionData?.profile?.id) {
