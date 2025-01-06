@@ -1,5 +1,5 @@
-import { useRef } from 'react';
-import { SnackbarProvider as NotistackProvider, closeSnackbar } from 'notistack';
+import { useEffect, useRef } from 'react';
+import { SnackbarProvider as NotistackProvider, closeSnackbar, useSnackbar } from 'notistack';
 // @mui
 import Collapse from '@mui/material/Collapse';
 import IconButton from '@mui/material/IconButton';
@@ -8,6 +8,7 @@ import Iconify from '../iconify';
 import { useSettingsContext } from '../settings';
 //
 import { StyledIcon, StyledNotistack } from './styles';
+import { setGlobalErrorNotifier } from '@src/utils/errors.ts';
 
 // ----------------------------------------------------------------------
 
@@ -16,11 +17,17 @@ type Props = {
 };
 
 export default function SnackbarProvider({ children }: Props) {
+  const { enqueueSnackbar } = useSnackbar();
   const settings = useSettingsContext();
 
   const isRTL = settings.themeDirection === 'rtl';
 
   const notistackRef = useRef<any>(null);
+
+  useEffect(() => {
+    // Set the global reference so we can call notifyError(...) anywhere.
+    setGlobalErrorNotifier(enqueueSnackbar);
+  }, [enqueueSnackbar]);
 
   return (
     <NotistackProvider

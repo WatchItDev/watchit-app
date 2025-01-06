@@ -23,8 +23,14 @@ const FinanceDialogsActions = ({rainbowComponent: RainbowEffect, onConfirmAction
           <FinanceChangeWallet onChangingWallet={onChangeWallet} />
         )
       }
-      {/*<Button onClick={onCloseAction}>Cancel</Button>*/}
-      <RainbowEffect borderRadius={"10px"} animationSpeed={"3s"} padding={"0"} width={"auto"}>
+      <RainbowEffect
+        {...((loading) && {
+          borderRadius: '10px',
+          animationSpeed: '3s',
+          padding: '0',
+          width: 'auto'
+        })}
+      >
         <LoadingButton
           variant="contained"
           sx={{ backgroundColor: "#fff" }}

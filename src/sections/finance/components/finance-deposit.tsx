@@ -153,7 +153,7 @@ const FinanceDeposit: FC<FinanceDepositProps> = ({
 
       <FinanceDialogsActions
         rainbowComponent={RainbowEffect}
-        loading={localLoading}
+        loading={isBusy}
         actionLoading={depositLoading}
         amount={amount}
         balance={balance ?? 0}

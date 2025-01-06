@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { encodeFunctionData, parseUnits } from 'viem';
-import { useWeb3Auth } from '@src/hooks/use-web3-auth.ts';
 import LedgerVaultAbi from '@src/config/abi/LedgerVault.json';
 import MMCAbi from '@src/config/abi/MMC.json';
 import { GLOBAL_CONSTANTS } from '@src/config-global';
+import { useWeb3Session } from '@src/hooks/use-web3-session.ts';
 
 interface VaultError {
   message: string;
@@ -28,8 +28,7 @@ export const useDeposit = (): UseDepositHook => {
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<VaultError | null>(null);
-
-  const { web3Auth } = useWeb3Auth();
+  const { bundlerClient, smartAccount } = useWeb3Session();
   const sessionData = useSelector((state: any) => state.auth.session);
 
   const approveMMC = (amount: number): string => {
@@ -65,17 +64,6 @@ export const useDeposit = (): UseDepositHook => {
     setError(null);
 
     try {
-      // TODO can be abstracted this logic to get this data in a hook?
-      // i can see this code repeated on all te hooks
-      // const [bundler, smart, provider] = useWeb3Session()
-
-
-      const accountAbstractionProvider = web3Auth.options.accountAbstractionProvider;
-      // @ts-ignore
-      const bundlerClient = accountAbstractionProvider.bundlerClient;
-      // @ts-ignore
-      const smartAccount = accountAbstractionProvider.smartAccount;
-
       if (!sessionData?.authenticated) {
         setError({ message: 'Please login to deposit funds' });
         setLoading(false);
@@ -83,7 +71,6 @@ export const useDeposit = (): UseDepositHook => {
       }
 
       if (!bundlerClient) {
-        // TODO improve the message to send back to user
         setError({ message: 'Bundler client not available' });
         setLoading(false);
         return;

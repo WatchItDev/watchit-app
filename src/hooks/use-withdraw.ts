@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { encodeFunctionData, parseUnits } from 'viem';
-import { useWeb3Auth } from '@src/hooks/use-web3-auth.ts';
 import LedgerVaultAbi from '@src/config/abi/LedgerVault.json';
 import { GLOBAL_CONSTANTS } from '@src/config-global';
+import { useWeb3Session } from '@src/hooks/use-web3-session.ts';
 
 interface VaultError {
   message: string;
@@ -16,7 +16,7 @@ interface WithdrawParams {
   amount: number;
 }
 
-interface UseWithdrawHook {
+export interface UseWithdrawHook {
   data?: any;
   withdraw: (params: WithdrawParams) => Promise<void>;
   loading: boolean;
@@ -29,7 +29,7 @@ export const useWithdraw = (): UseWithdrawHook => {
   const [error, setError] = useState<VaultError | null>(null);
 
   const sessionData = useSelector((state: any) => state.auth.session);
-  const { web3Auth } = useWeb3Auth();
+  const { bundlerClient, smartAccount } = useWeb3Session();
 
   const initializeWithdraw = ({ recipient, amount }: WithdrawParams) => {
     const weiAmount = parseUnits(amount.toString(), 18);
@@ -46,12 +46,6 @@ export const useWithdraw = (): UseWithdrawHook => {
     setError(null);
 
     try {
-      const accountAbstractionProvider = web3Auth.options.accountAbstractionProvider;
-      // @ts-ignore
-      const bundlerClient = accountAbstractionProvider.bundlerClient;
-      // @ts-ignore
-      const smartAccount = accountAbstractionProvider.smartAccount;
-
       if (!sessionData?.authenticated) {
         setError({ message: 'Please login to withdraw funds' });
         setLoading(false);

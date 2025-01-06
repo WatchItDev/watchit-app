@@ -8,11 +8,11 @@ import { ethers } from 'ethers';
 import { encodeFunctionData } from 'viem';
 
 // LOCAL IMPORTS
-import { useWeb3Auth } from '@src/hooks/use-web3-auth.ts';
 import AccessWorkflowAbi from '@src/config/abi/AccessWorkflow.json';
 import LedgerVaultabi from '@src/config/abi/LedgerVault.json';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 import {useSelector} from "react-redux";
+import { useWeb3Session } from '@src/hooks/use-web3-session.ts';
 
 // ----------------------------------------------------------------------
 
@@ -49,7 +49,7 @@ export const useSubscribe = (): UseSubscribeHook => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<SubscribeError | null>(null);
   const sessionData = useSelector((state: any) => state.auth.session);
-  const { web3Auth } = useWeb3Auth();
+  const { bundlerClient, smartAccount } = useWeb3Session();
 
   const transferToAccessAgreement = (approvalAmount: bigint): string => {
     return encodeFunctionData({
@@ -91,13 +91,6 @@ export const useSubscribe = (): UseSubscribeHook => {
     setError(null);
 
     try {
-      // Retrieve the account abstraction provider, bundler client, and smart account
-      const accountAbstractionProvider = web3Auth.options.accountAbstractionProvider;
-      // @ts-ignore
-      const bundlerClient = accountAbstractionProvider.bundlerClient;
-      // @ts-ignore
-      const smartAccount = accountAbstractionProvider.smartAccount;
-
       if (!sessionData?.authenticated) {
         setError({ message: 'Please login to subscribe' });
         setLoading(false);

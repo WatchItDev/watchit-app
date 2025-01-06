@@ -2,15 +2,12 @@ import { FC, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useSnackbar } from 'notistack';
 import Button from '@mui/material/Button';
-
-import { MetaMaskSDK } from '@metamask/sdk';
 import Iconify from '@src/components/iconify';
-import { GLOBAL_CONSTANTS } from '@src/config-global';
 import { Address } from 'viem';
-
+import { connectToMetaMask } from '@src/utils/metamask';
 import { useDepositMetamask } from '@src/hooks/use-deposit-metamask';
-import FinanceDeposit from './finance-deposit';
 import { LoadingScreen } from '@src/components/loading-screen';
+import FinanceDeposit from './finance-deposit';
 
 interface FinanceDepositFromMetamaskProps {
   onClose: () => void;
@@ -26,42 +23,22 @@ const FinanceDepositFromMetamask: FC<FinanceDepositFromMetamaskProps> = ({ onClo
   // Specific hook for Metamask
   const depositHook = useDepositMetamask();
 
-  // Try reconnecting if the user connected Metamask before
+  // Try reconnecting if the user connected MetaMask before
   useEffect(() => {
     const walletConnected = localStorage.getItem('walletConnected');
     if (walletConnected === 'true') {
-      handleConnectMetamask();
+      handleConnectMetaMask();
     }
   }, []);
 
-  const handleConnectMetamask = async () => {
+  const handleConnectMetaMask = async () => {
     setConnecting(true);
     try {
-      const MMSDK = new MetaMaskSDK({
-        infuraAPIKey: GLOBAL_CONSTANTS.INFURA_API_KEY,
-        dappMetadata: {
-          name: 'WatchitApp',
-          url: window.location.href,
-        },
-        openDeeplink: (url) => {
-          // @ts-ignore
-          const isMM = window.ethereum.isMetaMask;
-
-          if (typeof window.ethereum === 'undefined' || !isMM || localStorage.getItem('walletConnected') !== 'true') {
-            setConnecting(false);
-            window.location.href = 'https://metamask.app.link';
-          } else {
-            window.location.href = url;
-          }
-        },
-      });
-
-      await MMSDK.init();
-      const accounts = await MMSDK.connect();
-      setAddress(accounts[0] as Address);
+      const walletAddress = await connectToMetaMask();
+      setAddress(walletAddress);
       localStorage.setItem('walletConnected', 'true');
     } catch (err) {
-      enqueueSnackbar('Error connecting to Metamask.', { variant: 'error' });
+      enqueueSnackbar('Error connecting to MetaMask.', { variant: 'error' });
     } finally {
       setConnecting(false);
     }
@@ -78,14 +55,14 @@ const FinanceDepositFromMetamask: FC<FinanceDepositFromMetamaskProps> = ({ onClo
         sx={{ m: 4, p: 1.5 }}
         startIcon={<Iconify icon="logos:metamask-icon" />}
         variant="outlined"
-        onClick={handleConnectMetamask}
+        onClick={handleConnectMetaMask}
       >
-        Connect Metamask
+        Connect MetaMask
       </Button>
     );
   }
 
-  // If the wallet IS connected, render the same FinanceDeposit
+  // If the wallet IS connected, render the deposit component
   return (
     <FinanceDeposit
       address={address}

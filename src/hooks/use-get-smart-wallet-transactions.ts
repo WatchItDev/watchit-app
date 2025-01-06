@@ -41,7 +41,6 @@ const useGetSmartWalletTransactions = () => {
 
   // Function to fetch historical logs
   const fetchLogs = async () => {
-    console.log('Fetching logs for address:', sessionData?.address);
     if (!sessionData?.address) {
       setLoading(false);
       return;

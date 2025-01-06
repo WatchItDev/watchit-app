@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 // MUI
 import { useTheme } from '@mui/material/styles';
 import Stack from '@mui/material/Stack';
@@ -62,9 +62,6 @@ export default function FinanceQuickTransfer({
   const [initialized, setInitialized] = useState(false);
   const [list, setList] = useState<Profile[]>(initialList ?? []);
   const [amount, setAmount] = useState(0);
-
-  // For focusing the amount input after selecting a profile
-  const amountInputRef = useRef<HTMLInputElement | null>(null);
 
   const confirm = useBoolean();
   const MAX_AMOUNT = balance;
@@ -348,7 +345,6 @@ export default function FinanceQuickTransfer({
         amount={amount}
         onBlur={handleBlur}
         onChange={handleChangeInput}
-        inputRef={amountInputRef}
       />
 
       <Slider
