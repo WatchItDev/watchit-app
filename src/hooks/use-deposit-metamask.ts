@@ -21,7 +21,7 @@ interface DepositParams {
 }
 
 // TODO this could be handled in one interface in a type.tsx file
-// is duplicated in use-deposit, this MUST be reusable 
+// is duplicated in use-deposit, this MUST be reusable
 interface UseDepositHook {
   data?: any;
   deposit: (params: DepositParams) => Promise<void>;
@@ -116,6 +116,7 @@ export const useDepositMetamask = (): UseDepositHook => {
     } catch (err: any) {
       // If something fails (either approve or deposit), set an error
       setError({ message: err.message || 'An error occurred', ...err });
+      throw err
     } finally {
       // Reset loading state
       setLoading(false);
