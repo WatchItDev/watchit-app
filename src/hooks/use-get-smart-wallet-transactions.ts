@@ -173,6 +173,9 @@ const useGetSmartWalletTransactions = () => {
   // Effect to fetch historical logs when the address changes
   useEffect(() => {
     fetchLogs();
+
+    // Disable loader if data is already available
+    if (transactions.length) {setLoading(false)}
   }, [sessionData?.address]);
 
   // Effect to handle real-time events from blockchainEvents

@@ -6,12 +6,12 @@ import { CardProps } from '@mui/material/Card';
 // theme
 import { bgGradient } from '@src/theme/css';
 
-// Import necessary hooks and clients
 import { FC } from 'react';
 import Button from "@mui/material/Button";
 import Iconify from "@src/components/iconify";
 import {alpha, useTheme} from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
+// @ts-ignore
 import Earn from "@src/assets/illustrations/earn.svg";
 import Image from "@src/components/image";
 
@@ -71,7 +71,7 @@ const FinanceEarnTokens: FC<FinanceEarnTokensProps> = ({ sx, lgUp, ...other }) =
               textAlign: { xs: 'center', md: 'left' },
             }}
           >
-            <Typography variant="body1" sx={{ maxWidth: lgUp ? 250 : 'auto' , mb: 1, whiteSpace: 'pre-line' }}>
+            <Typography variant="body1" sx={{ display: { xs: 'none', md: 'flex' }, maxWidth: 250, mb: 1, whiteSpace: 'pre-line' }}>
               ¡Complete some tasks and win!
             </Typography>
             <Typography
@@ -103,12 +103,13 @@ const FinanceEarnTokens: FC<FinanceEarnTokensProps> = ({ sx, lgUp, ...other }) =
             flexGrow={1}
             justifyContent="center"
             sx={{
-              p: { xs: 5, md: 1 },
+              p: { xs: 1, md: 1 },
+              mb: { xs: 1, md: 0 },
               mx: 'auto',
             }}
           >
             <Image sx={{
-              height:  240 ,
+              height:  lgUp ? 240 : 180
             }} src={Earn} alt={'Earn MMC tokens'}/>
           </Stack>
         </Stack>

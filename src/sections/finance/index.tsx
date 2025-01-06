@@ -74,6 +74,15 @@ export default function OverviewBankingView() {
             {lgUp ? (<FinanceEarnTokens lgUp={lgUp} />) : null}
           </Stack>
 
+          {following?.length && !lgUp ? (
+            <FinanceContacts
+              title="Contacts"
+              chunkSize={2}
+              subheader={`You have ${following?.length ?? 0} contacts`}
+              list={following ?? []}
+            />
+          ) : undefined}
+
           {
             lgUp ? (
               <><Grid xs={12}>
@@ -100,7 +109,7 @@ export default function OverviewBankingView() {
               }}
             />
 
-            {following?.length ? (
+            {following?.length && lgUp ? (
               <FinanceContacts
                 title="Contacts"
                 chunkSize={2}
@@ -109,14 +118,14 @@ export default function OverviewBankingView() {
               />
             ) : undefined}
 
+            {!lgUp ? (<FinanceEarnTokens lgUp={lgUp} />) : null}
+
             <FinanceInviteFriends
               price="50"
               title={`Invite friends \n and earn`}
               description="Invite your friends to join our platform and earn MMC 50 for each successful referral."
               img="/assets/illustrations/characters/character_11.png"
             />
-
-            {!lgUp ? (<FinanceEarnTokens lgUp={lgUp} />) : null}
           </Stack>
         </Grid>
       </Grid>
