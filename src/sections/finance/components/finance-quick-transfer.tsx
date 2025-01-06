@@ -1,4 +1,14 @@
+// React and libraries imports
 import React, { useCallback, useEffect, useState } from 'react';
+
+import { useDispatch, useSelector } from 'react-redux';
+// Redux
+
+// Redux
+import { storeAddress, toggleRainbow } from '@redux/address';
+
+
+
 // MUI
 import { useTheme } from '@mui/material/styles';
 import Stack from '@mui/material/Stack';
@@ -10,8 +20,7 @@ import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import CardHeader from '@mui/material/CardHeader';
 import { CardProps } from '@mui/material/Card';
-import { useDispatch, useSelector } from 'react-redux';
-import { storeAddress, toggleRainbow } from '@redux/address';
+
 import { Profile } from '@lens-protocol/api-bindings';
 import { ethers } from 'ethers';
 import { useBoolean } from '@src/hooks/use-boolean';
