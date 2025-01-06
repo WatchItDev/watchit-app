@@ -1,6 +1,8 @@
+// React and libraries imports
 import { FC } from 'react';
 import { useSelector } from 'react-redux';
 
+// Project components
 import { useDeposit } from '@src/hooks/use-deposit';
 import FinanceDeposit from './finance-deposit';
 

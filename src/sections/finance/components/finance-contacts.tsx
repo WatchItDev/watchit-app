@@ -1,3 +1,7 @@
+// React and libraries imports
+import React from "react";
+import { useDispatch } from "react-redux";
+
 // @mui
 import Stack from '@mui/material/Stack';
 import CardHeader from '@mui/material/CardHeader';
@@ -8,7 +12,7 @@ import IconButton from '@mui/material/IconButton';
 import ListItemText from '@mui/material/ListItemText';
 import Box from '@mui/material/Box';
 
-// components
+// Project components
 import Iconify from '@src/components/iconify';
 import Carousel, { useCarousel } from '@src/components/carousel/index';
 import NavigationArrows from '@src/components/carousel/NavigationArrows';
@@ -19,9 +23,7 @@ import { useRouter } from '@src/routes/hooks';
 
 // lens
 import { Profile } from '@lens-protocol/api-bindings';
-import { useDispatch } from "react-redux";
 import { storeAddress, toggleRainbow } from '@redux/address';
-import React from "react";
 
 // ----------------------------------------------------------------------
 

@@ -1,4 +1,14 @@
+// React and libraries imports
 import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+
+// Redux
+import { storeAddress, toggleRainbow } from '@redux/address';
+
+// API / LENS
+import { Profile } from '@lens-protocol/api-bindings';
+import { ethers } from 'ethers';
+
 // MUI
 import { useTheme } from '@mui/material/styles';
 import Stack from '@mui/material/Stack';
@@ -10,10 +20,8 @@ import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import CardHeader from '@mui/material/CardHeader';
 import { CardProps } from '@mui/material/Card';
-import { useDispatch, useSelector } from 'react-redux';
-import { storeAddress, toggleRainbow } from '@redux/address';
-import { Profile } from '@lens-protocol/api-bindings';
-import { ethers } from 'ethers';
+
+// Project imports
 import { useBoolean } from '@src/hooks/use-boolean';
 import Carousel, { CarouselArrows, useCarousel } from '@src/components/carousel';
 import NeonPaper from '@src/sections/publication/NeonPaperContainer.tsx';

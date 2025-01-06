@@ -1,10 +1,14 @@
+// React and libraries imports
 import { FC, useEffect, useState, useCallback } from 'react';
 import { useSnackbar } from 'notistack';
+import { Address } from 'viem';
 
+// @mui components
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Divider from '@mui/material/Divider';
 
+// Project components
 import NeonPaper from '@src/sections/publication/NeonPaperContainer';
 import FinanceDialogsActions from '@src/sections/finance/components/finance-dialogs-actions';
 import TextMaxLine from '@src/components/text-max-line';
@@ -15,7 +19,7 @@ import { useGetMmcContractBalance } from '@src/hooks/use-get-mmc-contract-balanc
 import BoxRow from '@src/sections/finance/components/box-row.tsx';
 import { UseDepositHook } from '@src/hooks/use-deposit';
 import { truncateAddress } from '@src/utils/wallet';
-import { Address } from 'viem';
+
 
 interface FinanceDepositProps {
   /**

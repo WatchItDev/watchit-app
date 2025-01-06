@@ -1,4 +1,7 @@
+// @mui
 import Box from "@mui/material/Box";
+
+// Project components
 import TextMaxLine from "@src/components/text-max-line";
 import {ComingSoonIllustration} from "@src/assets/illustrations";
 

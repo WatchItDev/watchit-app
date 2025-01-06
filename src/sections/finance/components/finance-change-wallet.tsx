@@ -1,13 +1,14 @@
+// React and libraries imports
 import "viem/window";
-// @mui
-import Button from "@mui/material/Button";
-// ----------------------------------------------------------------------
-
-// Import necessary hooks and clients
-import { useSnackbar } from 'notistack';
-import Box from "@mui/material/Box";
 import {FC} from "react";
 import {Address} from "viem";
+import { useSnackbar } from 'notistack';
+
+// @mui
+import Button from "@mui/material/Button";
+import Box from "@mui/material/Box";
+
+// Project imports
 import TextMaxLine from "@src/components/text-max-line";
 import {useResponsive} from "@src/hooks/use-responsive.ts";
 

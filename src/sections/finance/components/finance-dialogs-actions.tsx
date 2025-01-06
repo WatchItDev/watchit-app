@@ -1,7 +1,12 @@
+// React and libraries imports
+import {Address} from "viem";
+
+// @mui components
 import DialogActions from "@mui/material/DialogActions";
 import LoadingButton from "@mui/lab/LoadingButton";
+
+// Project imports
 import FinanceChangeWallet from "@src/sections/finance/components/finance-change-wallet.tsx";
-import {Address} from "viem";
 
 type FinanceDialogsActionsProps = {
   rainbowComponent: any;

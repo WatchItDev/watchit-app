@@ -1,13 +1,16 @@
+// React and libraries imports
 import { FC, useEffect, useState } from 'react';
+import { MetaMaskSDK } from '@metamask/sdk';
 import { useSelector } from 'react-redux';
 import { useSnackbar } from 'notistack';
-import Button from '@mui/material/Button';
-
-import { MetaMaskSDK } from '@metamask/sdk';
-import Iconify from '@src/components/iconify';
-import { GLOBAL_CONSTANTS } from '@src/config-global';
 import { Address } from 'viem';
 
+// @mui components
+import Button from '@mui/material/Button';
+
+// Projects imports
+import Iconify from '@src/components/iconify';
+import { GLOBAL_CONSTANTS } from '@src/config-global';
 import { useDepositMetamask } from '@src/hooks/use-deposit-metamask';
 import FinanceDeposit from './finance-deposit';
 import { LoadingScreen } from '@src/components/loading-screen';

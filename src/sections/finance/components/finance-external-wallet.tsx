@@ -1,11 +1,15 @@
+// React and libraries imports
+import React from "react";
+
 // @mui
+import {Box} from "@mui/system";
 import { useTheme, alpha } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import Stack, { StackProps } from '@mui/material/Stack';
+
 // theme
 import { bgGradient } from '@src/theme/css';
-import React from "react";
-import {Box} from "@mui/system";
+
 
 // ----------------------------------------------------------------------
 

@@ -1,3 +1,4 @@
+// React imports
 import { useState, useEffect } from 'react';
 // @mui
 import Box from '@mui/material/Box';
@@ -5,7 +6,8 @@ import MenuItem from '@mui/material/MenuItem';
 import ButtonBase from '@mui/material/ButtonBase';
 import CardHeader from '@mui/material/CardHeader';
 import Card from '@mui/material/Card';
-// Components
+
+// Project imports
 import Iconify from '@src/components/iconify';
 import Chart, { useChart } from '@src/components/chart';
 import CustomPopover, { usePopover } from '@src/components/custom-popover';

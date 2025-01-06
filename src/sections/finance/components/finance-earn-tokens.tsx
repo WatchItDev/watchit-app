@@ -1,16 +1,16 @@
 import "viem/window";
+import { FC } from 'react';
+
 // @mui
 import Stack from '@mui/material/Stack';
 import { CardProps } from '@mui/material/Card';
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
 
 // theme
 import { bgGradient } from '@src/theme/css';
-
-import { FC } from 'react';
-import Button from "@mui/material/Button";
 import Iconify from "@src/components/iconify";
 import {alpha, useTheme} from "@mui/material/styles";
-import Typography from "@mui/material/Typography";
 // @ts-ignore
 import Earn from "@src/assets/illustrations/earn.svg";
 import Image from "@src/components/image";
