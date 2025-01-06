@@ -1,5 +1,5 @@
 // React and libraries imports
-import { FC, useEffect, useState, useCallback } from 'react';
+import { FC, useState, useCallback } from 'react';
 import { useSnackbar } from 'notistack';
 import { Address } from 'viem';
 
@@ -63,20 +63,20 @@ const FinanceDeposit: FC<FinanceDepositProps> = ({
   const [localLoading, setLocalLoading] = useState(false);
 
   const { enqueueSnackbar } = useSnackbar();
-  const { deposit, loading: depositLoading, error } = depositHook;
+  const { deposit, loading: depositLoading } = depositHook;
 
   // Retrieve the balance using the "address" (the connected one)
   const { balance } = useGetMmcContractBalance(address);
 
-  // Show an error if the deposit hook fails
-  useEffect(() => {
-    if (error) {
-      enqueueSnackbar(
-        'Oops! Something went wrong with your deposit. Please try again.',
-        { variant: 'error' }
-      );
-    }
-  }, [error, enqueueSnackbar]);
+  // // Show an error if the deposit hook fails
+  // useEffect(() => {
+  //   if (error) {
+  //     enqueueSnackbar(
+  //       'Oops! Something went wrong with your deposit. Please try again.',
+  //       { variant: 'error' }
+  //     );
+  //   }
+  // }, [error, enqueueSnackbar]);
 
   // Validation and deposit
   const handleConfirmDeposit = useCallback(async () => {
@@ -96,7 +96,7 @@ const FinanceDeposit: FC<FinanceDepositProps> = ({
       enqueueSnackbar('The deposit was successful', { variant: 'success' });
       onClose();
     } catch (err) {
-      // The hook handles the error, but let's be safe
+      enqueueSnackbar('There is an error', { variant: 'warning' });
     } finally {
       setLocalLoading(false);
     }
