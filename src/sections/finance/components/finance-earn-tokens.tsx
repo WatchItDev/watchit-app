@@ -63,6 +63,7 @@ const FinanceEarnTokens: FC<FinanceEarnTokensProps> = ({ sx, lgUp, ...other }) =
             justifyContent="flex-start"
             alignItems={{ xs: 'center', md: 'flex-start' }}
             sx={{
+              maxWidth: { xs: '100%', md: '60%' },
               p: {
                 xs: theme.spacing(5, 3, 0, 3),
                 md: theme.spacing(3),
@@ -70,7 +71,7 @@ const FinanceEarnTokens: FC<FinanceEarnTokensProps> = ({ sx, lgUp, ...other }) =
               textAlign: { xs: 'center', md: 'left' },
             }}
           >
-            <Typography variant="body1" sx={{ maxWidth: lgUp ? 150 : 'auto' , mb: 1, whiteSpace: 'pre-line' }}>
+            <Typography variant="body1" sx={{ maxWidth: lgUp ? 250 : 'auto' , mb: 1, whiteSpace: 'pre-line' }}>
               ¡Complete some tasks and win!
             </Typography>
             <Typography
@@ -96,7 +97,7 @@ const FinanceEarnTokens: FC<FinanceEarnTokensProps> = ({ sx, lgUp, ...other }) =
             >
               Invite your family and friends and claims your rewards.
             </Typography>
-            <Button color={'primary'} variant={'soft'} startIcon={<Iconify icon={'fluent-emoji:trophy'} />} onClick={handleClick}>Earn tokens</Button>
+            <Button sx={{mt:lgUp ? 3: null}} color={'primary'} variant={'soft'} startIcon={<Iconify icon={'fluent-emoji:trophy'} />} onClick={handleClick}>Earn tokens</Button>
           </Stack>
           <Stack
             flexGrow={1}
@@ -107,6 +108,7 @@ const FinanceEarnTokens: FC<FinanceEarnTokensProps> = ({ sx, lgUp, ...other }) =
             }}
           >
             <Image sx={{
+              height:  240 ,
             }} src={Earn} alt={'Earn MMC tokens'}/>
           </Stack>
         </Stack>
