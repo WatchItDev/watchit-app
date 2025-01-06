@@ -106,7 +106,6 @@ export default function FinanceQuickTransfer({
   const carousel = useCarousel({
     centerMode: true,
     swipeToSlide: true,
-    focusOnSelect: true,
     infinite: true,
     centerPadding: '0px',
     rows: 1,
