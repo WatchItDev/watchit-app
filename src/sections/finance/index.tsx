@@ -22,6 +22,7 @@ import FinanceEarnTokens from "@src/sections/finance/components/finance-earn-tok
 
 export default function OverviewBankingView() {
   const lgUp = useResponsive('up', 'lg');
+  const mdUp = useResponsive('up', 'md');
   const { balance: balanceFromRedux } = useSelector((state: any) => state.auth);
   const sessionData = useSelector((state: any) => state.auth.session);
   const { transactions, loading } = useGetSmartWalletTransactions();
@@ -66,13 +67,10 @@ export default function OverviewBankingView() {
               }}
             />
 
-            <FinanceQuickTransfer
-              title="Quick transfer"
-              list={following}
-              sx={{
-                display: { xs: 'flex', md: 'none' },
-              }}
-            />
+            {!mdUp ? <FinanceQuickTransfer
+                title="Quick transfer"
+                list={following}
+              /> : null}
             {lgUp ? (<FinanceEarnTokens lgUp={lgUp} />) : null}
           </Stack>
 
