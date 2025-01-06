@@ -3,7 +3,6 @@ import TextMaxLine from "@src/components/text-max-line";
 import { formatBalanceNumber } from "@src/utils/format-number.ts";
 import Divider from "@mui/material/Divider";
 import { InputAmount } from "@src/components/input-amount.tsx";
-import { BoxRow } from "@src/sections/finance/components/finance-deposit-from-metamask.tsx";
 import NeonPaper from "@src/sections/publication/NeonPaperContainer.tsx";
 import Box from "@mui/material/Box";
 import { useSnackbar } from "notistack";
@@ -14,6 +13,7 @@ import TextField from "@mui/material/TextField";
 import {isValidAddress} from "@src/sections/finance/components/finance-quick-transfer.tsx";
 import FinanceDialogsActions from "@src/sections/finance/components/finance-dialogs-actions.tsx";
 import {useResponsive} from "@src/hooks/use-responsive.ts";
+import BoxRow from '@src/sections/finance/components/box-row.tsx';
 
 interface FinanceDepositFromSmartAccountProps {
   onClose: () => void;
@@ -77,9 +77,6 @@ const FinanceWithdrawFromSmartAccount: FC<FinanceDepositFromSmartAccountProps> =
         alignItems={"center"}
         justifyContent={"space-between"}
       >
-
-
-
         <BoxRow>
           <TextMaxLine line={1}>Balance</TextMaxLine>
           <TextMaxLine

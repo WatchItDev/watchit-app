@@ -385,7 +385,12 @@ export default function FinanceQuickTransfer({
 
   return (
     <>
-      <Wrapper animationSpeed="1s" padding="0">
+      <Wrapper
+        {...((showRainbow) && {
+          animationSpeed: '1s',
+          padding: '0',
+        })}
+      >
         <Stack
           sx={{
             borderRadius: 2,
