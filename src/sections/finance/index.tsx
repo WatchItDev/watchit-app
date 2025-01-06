@@ -16,6 +16,7 @@ import Tabs, {tabsClasses} from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Iconify from "@src/components/iconify";
 import {useResponsive} from "@src/hooks/use-responsive.ts";
+import FinanceEarnTokens from "@src/sections/finance/components/finance-earn-tokens.tsx";
 
 // ----------------------------------------------------------------------
 
@@ -72,7 +73,7 @@ export default function OverviewBankingView() {
                 display: { xs: 'flex', md: 'none' },
               }}
             />
-            {/* <FinanceQuickActions /> */}
+            {lgUp ? (<FinanceEarnTokens lgUp={lgUp} />) : null}
           </Stack>
 
           {
@@ -116,6 +117,8 @@ export default function OverviewBankingView() {
               description="Invite your friends to join our platform and earn MMC 50 for each successful referral."
               img="/assets/illustrations/characters/character_11.png"
             />
+
+            {!lgUp ? (<FinanceEarnTokens lgUp={lgUp} />) : null}
           </Stack>
         </Grid>
       </Grid>

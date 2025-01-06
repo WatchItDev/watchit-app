@@ -11,7 +11,6 @@ import mmcTokenIcon from '@src/assets/mmc_token.ico';
 import { paths } from '@src/routes/paths.ts';
 import { useRouter } from '@src/routes/hooks';
 import { formatBalanceNumber } from '@src/utils/format-number.ts';
-import Iconify from "@src/components/iconify";
 
 // ----------------------------------------------------------------------
 
@@ -23,14 +22,10 @@ export default function HeaderBalance() {
     router.push(paths.dashboard.finance)
   }
 
-  const handleClick = () => {
-    window.open('https://tropee.com/watchit','_BLANK')
-  }
 
   return (
     <Button variant={'text'} sx={{ px: 1.5, py: 1, mr: -0.75 }} onClick={handleGoFinance}>
       <Stack direction="row" alignItems="center" justifyContent="center">
-        <Button sx={{mr:1}} startIcon={<Iconify icon={'fluent-emoji:trophy'} />} onClick={handleClick}>Earn tokens</Button>
         <Box
           sx={{
             width: 20,
