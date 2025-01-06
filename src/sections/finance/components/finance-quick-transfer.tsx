@@ -1,14 +1,4 @@
-// React and libraries imports
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-
-// Redux
-import { storeAddress, toggleRainbow } from '@redux/address';
-
-// API / LENS
-import { Profile } from '@lens-protocol/api-bindings';
-import { ethers } from 'ethers';
-
+import React, { useCallback, useEffect, useState } from 'react';
 // MUI
 import { useTheme } from '@mui/material/styles';
 import Stack from '@mui/material/Stack';
@@ -20,8 +10,10 @@ import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import CardHeader from '@mui/material/CardHeader';
 import { CardProps } from '@mui/material/Card';
-
-// Project imports
+import { useDispatch, useSelector } from 'react-redux';
+import { storeAddress, toggleRainbow } from '@redux/address';
+import { Profile } from '@lens-protocol/api-bindings';
+import { ethers } from 'ethers';
 import { useBoolean } from '@src/hooks/use-boolean';
 import Carousel, { CarouselArrows, useCarousel } from '@src/components/carousel';
 import NeonPaper from '@src/sections/publication/NeonPaperContainer.tsx';
@@ -70,9 +62,6 @@ export default function FinanceQuickTransfer({
   const [initialized, setInitialized] = useState(false);
   const [list, setList] = useState<Profile[]>(initialList ?? []);
   const [amount, setAmount] = useState(0);
-
-  // For focusing the amount input after selecting a profile
-  const amountInputRef = useRef<HTMLInputElement | null>(null);
 
   const confirm = useBoolean();
   const MAX_AMOUNT = balance;
@@ -356,7 +345,6 @@ export default function FinanceQuickTransfer({
         amount={amount}
         onBlur={handleBlur}
         onChange={handleChangeInput}
-        inputRef={amountInputRef}
       />
 
       <Slider

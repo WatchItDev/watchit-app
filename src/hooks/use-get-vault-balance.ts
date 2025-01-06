@@ -10,7 +10,6 @@ export function useGetVaultBalance(address?: Address) {
   const blockchainEvents = useSelector((state: any) => state.blockchainEvents.events);
 
   const fetchBalance = useCallback(async () => {
-    console.log('Fetching balance for address:', address);
     if (!address) return;
 
     try {
