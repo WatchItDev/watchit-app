@@ -141,7 +141,10 @@ const FollowUnfollowButton = ({ profileId, size = 'medium', followButtonMinWidth
 
   const handleActionError = (error: any) => {
     const errorName = ERRORS[error.name as keyof typeof ERRORS] || ERRORS.UNKNOWN_ERROR;
-    notifyError(errorName);
+    notifyError(errorName, {
+      symbol: error.requestedAmount?.asset?.symbol ?? '',
+      amount: error.requestedAmount?.toSignificantDigits(6) ?? '',
+    });
   };
 
   const getFollowMessage = (profileName: string, action: string): string => {
