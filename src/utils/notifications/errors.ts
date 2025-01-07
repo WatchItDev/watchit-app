@@ -19,6 +19,13 @@ export enum ERRORS {
   INSUFFICIENT_FUNDS_ERROR = 'INSUFFICIENT_FUNDS_ERROR',
   WALLET_CONNECTION_ERROR = 'WALLET_CONNECTION_ERROR',
   PREMATURE_ACTION_ERROR = 'PREMATURE_ACTION_ERROR',
+
+  // Login error
+  LOGIN_FAILED_ERROR = 'LOGIN_FAILED_ERROR',
+  FIRST_LOGIN_ERROR = 'FIRST_LOGIN_ERROR',
+
+  // Deposit error
+  DEPOSIT_FAILED_ERROR = 'DEPOSIT_FAILED_ERROR',
 }
 
 /**
@@ -26,7 +33,6 @@ export enum ERRORS {
  */
 export const ERROR_MESSAGES: Record<ERRORS, string> = {
   [ERRORS.NOT_LOGGED_IN]: 'Please log in to continue.',
-  [ERRORS.BUNDLER_UNAVAILABLE]: 'The bundler is currently unavailable.',
   [ERRORS.UNKNOWN_ERROR]: 'An unknown error has occurred.',
   [ERRORS.METAMASK_CONNECTING_ERROR]: 'Error connecting to MetaMask.',
   [ERRORS.WITHDRAW_FAILED_ERROR]: 'Error while trying the withdrawal.',
@@ -43,4 +49,14 @@ export const ERROR_MESSAGES: Record<ERRORS, string> = {
   [ERRORS.INSUFFICIENT_FUNDS_ERROR]: 'You do not have enough funds to pay for this follow fee {symbol} {amount}',
   [ERRORS.WALLET_CONNECTION_ERROR]: 'There was an error connecting to your wallet.',
   [ERRORS.PREMATURE_ACTION_ERROR]: 'There is a pending unfollow request for this profile.',
+
+  // Login error
+  [ERRORS.LOGIN_FAILED_ERROR]: 'The login process failed. Please try again later.',
+
+  // Witdhdraw error
+  [ERRORS.FIRST_LOGIN_ERROR]: 'You must login first to withdraw funds.',
+  [ERRORS.BUNDLER_UNAVAILABLE]: 'Your session is expired. Please re-login to continue.',
+
+  // Deposit error
+  [ERRORS.DEPOSIT_FAILED_ERROR]: 'Please login to deposit funds.',
 };

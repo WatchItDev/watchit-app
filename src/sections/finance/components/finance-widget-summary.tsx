@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 // MUI IMPORTS
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
@@ -6,6 +7,9 @@ import { CardProps } from '@mui/material/Card';
 import Typography from '@mui/material/Typography';
 import { useTheme, alpha } from '@mui/material/styles';
 
+
+// @mui
+import LoadingButton from '@mui/lab/LoadingButton';
 // CHARTS IMPORTS
 import { ApexOptions } from 'apexcharts';
 
@@ -18,10 +22,11 @@ import Chart, { useChart } from '@src/components/chart';
 import { fCurrency, fPercent } from '@src/utils/format-number';
 import { FinanceDepositModal } from '@src/sections/finance/components/finance-deposit-modal.tsx';
 import { useWithdraw } from '@src/hooks/use-withdraw.ts';
-import LoadingButton from '@mui/lab/LoadingButton';
-import { useEffect } from 'react';
-import { useSnackbar } from 'notistack';
 import { FinanceWithdrawModal } from '@src/sections/finance/components/finance-withdraw-modal.tsx';
+
+// Notifications
+import {notifyError} from "@notifications/internal-notifications";
+import {ERRORS} from "@notifications/errors";
 
 // ----------------------------------------------------------------------
 
@@ -57,10 +62,9 @@ export default function FinanceWidgetSummary({
   const theme = useTheme();
   const { series, options } = chart;
   const { loading: withdrawLoading, error } = useWithdraw();
-  const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
-    if (error) enqueueSnackbar(error.message, { variant: 'error' });
+    if (error) notifyError(error as ERRORS);
   }, [error]);
 
   const chartOptions = useChart({

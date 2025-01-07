@@ -1,5 +1,5 @@
 // React and libraries imports
-import { FC, useCallback, useState } from 'react';
+import {FC, useCallback, useEffect, useState} from 'react';
 import { useSnackbar } from 'notistack';
 import { Address } from 'viem';
 
@@ -62,21 +62,21 @@ const FinanceDeposit: FC<FinanceDepositProps> = ({ address, recipient, depositHo
   const [localLoading, setLocalLoading] = useState(false);
 
   const { enqueueSnackbar } = useSnackbar();
-  const { deposit, loading: depositLoading } = depositHook;
+  const { deposit, loading: depositLoading, error } = depositHook;
 
   // Retrieve the balance using the "address" (the connected one)
   const { balance } = useGetMmcContractBalance(address);
 
   // @TODO: When show this?
   // Show an error if the deposit hook fails
-  /*useEffect(() => {
+  useEffect(() => {
      if (error) {
        enqueueSnackbar(
          'Oops! Something went wrong with your deposit. Please try again.',
          { variant: 'error' }
        );
      }
-   }, [error]);*/
+   }, [error]);
 
   // Validation and deposit
   const handleConfirmDeposit = useCallback(async () => {

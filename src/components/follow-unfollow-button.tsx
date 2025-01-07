@@ -29,6 +29,7 @@ import NeonPaper from "@src/sections/publication/NeonPaperContainer.tsx";
 import Box from "@mui/material/Box";
 import {ERRORS} from "@notifications/errors.ts";
 import {notifyError} from "@notifications/internal-notifications.ts";
+import {pascalToUpperSnake} from "@src/utils/text-transform.ts";
 
 // ----------------------------------------------------------------------
 
@@ -126,21 +127,8 @@ const FollowUnfollowButton = ({ profileId, size = 'medium', followButtonMinWidth
   };
 
   // Function to handle action errors
-  /*const handleActionError = (error: any) => {
-    /!*const errorMessages: { [key: string]: string } = {
-      BROADCASTING_TRANSACTION_ERROR: 'There was an error broadcasting the transaction.',
-      PENDING_SIGNING_REQUEST_ERROR: 'There is a pending signing request in your wallet.',
-      INSUFFICIENT_ALLOWANCE_ERROR: `You must approve the contract to spend at least: ${error.requestedAmount.asset.symbol} ${error.requestedAmount.toSignificantDigits(6)}`,
-      INSUFFICIENT_FUNDS_ERROR: `You do not have enough funds to pay for this follow fee: ${error.requestedAmount.asset.symbol} ${error.requestedAmount.toSignificantDigits(6)}`,
-      WALLET_CONNECTION_ERROR: 'There was an error connecting to your wallet.',
-      PREMATURE_ACTION_ERROR: 'There is a pending unfollow request for this profile.',
-    };*!/
-    // enqueueSnackbar(errorMessages[error.name] || ERRORS.UNKNOWN_ERROR, { variant: 'error' })
-    // notifyError(ERRORS[error.name] || ERRORS.UNKNOWN_ERROR);
-  };*/
-
   const handleActionError = (error: any) => {
-    const errorName = ERRORS[error.name as keyof typeof ERRORS] || ERRORS.UNKNOWN_ERROR;
+    const errorName = ERRORS[pascalToUpperSnake(error.name) as keyof typeof ERRORS] || ERRORS.UNKNOWN_ERROR;
     notifyError(errorName, {
       symbol: error.requestedAmount?.asset?.symbol ?? '',
       amount: error.requestedAmount?.toSignificantDigits(6) ?? '',
@@ -150,8 +138,6 @@ const FollowUnfollowButton = ({ profileId, size = 'medium', followButtonMinWidth
   const getFollowMessage = (profileName: string, action: string): string => {
     return `Successfully ${action} ${profileName}.`;
   }
-
-
 
   const RainbowEffect = (isProcessing || loading) ? NeonPaper : Box;
 

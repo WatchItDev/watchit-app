@@ -4,12 +4,7 @@ import { encodeFunctionData, parseUnits } from 'viem';
 import LedgerVaultAbi from '@src/config/abi/LedgerVault.json';
 import { GLOBAL_CONSTANTS } from '@src/config-global';
 import { useWeb3Session } from '@src/hooks/use-web3-session.ts';
-
-interface VaultError {
-  message: string;
-  code?: number;
-  [key: string]: any;
-}
+import {ERRORS} from "@notifications/errors.ts";
 
 interface WithdrawParams {
   recipient: string;
@@ -20,13 +15,13 @@ export interface UseWithdrawHook {
   data?: any;
   withdraw: (params: WithdrawParams) => Promise<void>;
   loading: boolean;
-  error?: VaultError | null;
+  error?: keyof typeof ERRORS | null;
 }
 
 export const useWithdraw = (): UseWithdrawHook => {
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<VaultError | null>(null);
+  const [error, setError] = useState< keyof typeof ERRORS |null >(null);
 
   const sessionData = useSelector((state: any) => state.auth.session);
   const { bundlerClient, smartAccount } = useWeb3Session();
@@ -47,13 +42,13 @@ export const useWithdraw = (): UseWithdrawHook => {
 
     try {
       if (!sessionData?.authenticated) {
-        setError({ message: 'Please login to withdraw funds' });
+        setError(ERRORS.FIRST_LOGIN_ERROR);
         setLoading(false);
         return;
       }
 
       if (!bundlerClient) {
-        setError({ message: 'Bundler client not available' });
+        setError(ERRORS.BUNDLER_UNAVAILABLE);
         setLoading(false);
         return;
       }
@@ -80,7 +75,7 @@ export const useWithdraw = (): UseWithdrawHook => {
       setData(receipt);
       setLoading(false);
     } catch (err: any) {
-      setError({ message: err.message || 'An error occurred', ...err });
+      setError(ERRORS.UNKNOWN_ERROR);
       setLoading(false);
     }
   };

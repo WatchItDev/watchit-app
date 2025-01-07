@@ -1,6 +1,7 @@
 import {ERROR_MESSAGES, ERRORS} from "@src/utils/notifications/errors.ts";
 import { SUCCESS_MESSAGES, SUCCESS} from "@src/utils/notifications/success.ts";
 import { WARNING_MESSAGES, WARNING} from "@src/utils/notifications/warnings.ts";
+import {INFO, INFO_MESSAGES} from "@notifications/info.ts";
 
 type NotificationType = 'error' | 'success' | 'warning' | 'info';
 
@@ -31,7 +32,7 @@ function replaceTemplateTags(message: string, data: Record<string, any>): string
   });
 }
 
-const notify = (typeNotification: NotificationType, text: ERRORS | SUCCESS | WARNING, data?: Record<string, any>, fallbackMessage?: string) => {
+const notify = (typeNotification: NotificationType, text: ERRORS | SUCCESS | WARNING | INFO, data?: Record<string, any>, fallbackMessage?: string) => {
   if (!globalEnqueueSnackbar) {
     console.error('No globalEnqueueSnackbar is set. Cannot notify messages.');
     return;
@@ -48,6 +49,11 @@ const notify = (typeNotification: NotificationType, text: ERRORS | SUCCESS | WAR
     case 'warning':
       message = WARNING_MESSAGES[text as WARNING] || fallbackMessage || 'Warning.';
       break;
+
+    case 'info':
+      message = INFO_MESSAGES[text as INFO] || fallbackMessage || 'Information.';
+      break;
+
     default:
       console.error('Unknown notification type');
       return;
@@ -84,3 +90,12 @@ export function notifySuccess(successName: SUCCESS, data?: Record<string, any>, 
 export function notifyWarning(warningName: WARNING, data?: Record<string, any>, fallbackMessage?: string) {
   notify('warning', warningName, data, fallbackMessage || 'Warning.');
 }
+
+/**
+ * Global function to notify a info by INFO_NAMES.
+ * If no message is found in the dictionary, it uses 'Warning.'.
+ */
+export function notifyInfo(infoName: INFO, data?: Record<string, any>, fallbackMessage?: string) {
+  notify('info', infoName, data, fallbackMessage || 'Information.');
+}
+

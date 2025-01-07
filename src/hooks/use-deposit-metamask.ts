@@ -6,13 +6,7 @@ import MMCAbi from '@src/config/abi/MMC.json';
 import { GLOBAL_CONSTANTS } from '@src/config-global';
 import { publicClient } from '@src/clients/viem/publicClient';
 import { useSnackbar } from 'notistack';
-
-// AND HERE
-interface VaultError {
-  message: string;
-  code?: number;
-  [key: string]: any;
-}
+import {ERRORS} from "@notifications/errors.ts";
 
 // SAME HERE
 interface DepositParams {
@@ -26,7 +20,7 @@ interface UseDepositHook {
   data?: any;
   deposit: (params: DepositParams) => Promise<void>;
   loading: boolean;
-  error?: VaultError | null;
+  error?: keyof typeof ERRORS | null;
 }
 
 /**
@@ -37,7 +31,7 @@ interface UseDepositHook {
 export const useDepositMetamask = (): UseDepositHook => {
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<VaultError | null>(null);
+  const [error, setError] = useState<keyof typeof ERRORS | null>(null);
   const { enqueueSnackbar } = useSnackbar();
 
   const deposit = async ({ recipient, amount }: DepositParams) => {
@@ -115,7 +109,7 @@ export const useDepositMetamask = (): UseDepositHook => {
       });
     } catch (err: any) {
       // If something fails (either approve or deposit), set an error
-      setError({ message: err.message || 'An error occurred', ...err });
+      setError(ERRORS.UNKNOWN_ERROR);
       throw err
     } finally {
       // Reset loading state

@@ -5,12 +5,7 @@ import LedgerVaultAbi from '@src/config/abi/LedgerVault.json';
 import MMCAbi from '@src/config/abi/MMC.json';
 import { GLOBAL_CONSTANTS } from '@src/config-global';
 import { useWeb3Session } from '@src/hooks/use-web3-session.ts';
-
-interface VaultError {
-  message: string;
-  code?: number;
-  [key: string]: any;
-}
+import {ERRORS} from "@notifications/errors.ts";
 
 interface DepositParams {
   recipient: string; // address
@@ -21,13 +16,13 @@ export interface UseDepositHook {
   data?: any;
   deposit: (params: DepositParams) => Promise<void>;
   loading: boolean;
-  error?: VaultError | null;
+  error?: keyof typeof ERRORS | null;
 }
 
 export const useDeposit = (): UseDepositHook => {
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<VaultError | null>(null);
+  const [error, setError] = useState<keyof typeof ERRORS | null>(null);
   const { bundlerClient, smartAccount } = useWeb3Session();
   const sessionData = useSelector((state: any) => state.auth.session);
 
@@ -65,13 +60,13 @@ export const useDeposit = (): UseDepositHook => {
 
     try {
       if (!sessionData?.authenticated) {
-        setError({ message: 'Please login to deposit funds' });
+        setError(ERRORS.DEPOSIT_FAILED_ERROR);
         setLoading(false);
         return;
       }
 
       if (!bundlerClient) {
-        setError({ message: 'Bundler client not available' });
+        setError(ERRORS.BUNDLER_UNAVAILABLE);
         setLoading(false);
         return;
       }
@@ -107,9 +102,7 @@ export const useDeposit = (): UseDepositHook => {
       setData(receipt);
       setLoading(false);
     } catch (err: any) {
-      // TODO bad idea send internal error to user
-      console.log(err)
-      setError({ message: err.message || 'An error occurred', ...err });
+      setError(ERRORS.UNKNOWN_ERROR);
       setLoading(false);
     }
   };

@@ -14,8 +14,9 @@ import {useDispatch, useSelector} from 'react-redux';
 import { setAuthLoading, setBalance } from '@redux/auth';
 import { useResponsive } from '@src/hooks/use-responsive.ts';
 import { UserItem } from '../user-item';
-import { useSnackbar } from 'notistack';
 import LoadingScreen from '../loading-screen/loading-screen.tsx';
+import {notifyError} from "@notifications/internal-notifications.ts";
+import {ERRORS} from "@notifications/errors.ts";
 // ----------------------------------------------------------------------
 
 interface ProfileSelectionProps {
@@ -37,7 +38,6 @@ export const ProfileSelectView: React.FC<ProfileSelectionProps> = ({
   onClose,
   login,
 }) => {
-  const { enqueueSnackbar } = useSnackbar();
   const dispatch = useDispatch();
   const lgUp = useResponsive('up', 'lg');
 
@@ -47,7 +47,7 @@ export const ProfileSelectView: React.FC<ProfileSelectionProps> = ({
 
   useEffect(() => {
     if (!error) dispatch(setAuthLoading({ isSessionLoading: false }));
-    if (error) enqueueSnackbar(error.message, { variant: 'error' });
+    if (error) notifyError(ERRORS.LOGIN_FAILED_ERROR);
   }, [error]);
 
   useEffect(() => {
