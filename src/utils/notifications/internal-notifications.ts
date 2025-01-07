@@ -16,8 +16,22 @@ export function setGlobalNotifier(
   globalEnqueueSnackbar = enqueueSnackbarFn;
 }
 
+/**
+ * Replaces placeholders of type {variable} in a string, with
+ * the values indicated in `data`.
+ *
+ * Ex:
+ * template: "Sent money to {user}, total: {amount}"
+ * data: { user: 'Jacob', amount: '100 USDC' }
+ * -> "Sent money to Jacob, total: 100 USDC"
+ */
+function replaceTemplateTags(message: string, data: Record<string, any>): string {
+  return message.replace(/{(\w+)}/g, (_substring, key) => {
+    return data[key] !== undefined ? data[key] : `{${key}}`;
+  });
+}
 
-const notify = (typeNotification: NotificationType, text: ERRORS | SUCCESS | WARNING, fallbackMessage: string) => {
+const notify = (typeNotification: NotificationType, text: ERRORS | SUCCESS | WARNING, data?: Record<string, any>, fallbackMessage?: string) => {
   if (!globalEnqueueSnackbar) {
     console.error('No globalEnqueueSnackbar is set. Cannot notify messages.');
     return;
@@ -38,6 +52,11 @@ const notify = (typeNotification: NotificationType, text: ERRORS | SUCCESS | WAR
       console.error('Unknown notification type');
       return;
   }
+
+  if (data) {
+    message = replaceTemplateTags(message, data);
+  }
+
   globalEnqueueSnackbar(message, { variant: typeNotification });
 }
 
@@ -46,22 +65,22 @@ const notify = (typeNotification: NotificationType, text: ERRORS | SUCCESS | WAR
  * Global function to notify an error by ERROR_NAMES.
  * If no message is found in the dictionary, it uses 'UNKNOWN_ERROR'.
  */
-export function notifyError(errorName: ERRORS, fallbackMessage?: string) {
-  notify('error', errorName, fallbackMessage || 'An unknown error has occurred.');
+export function notifyError(errorName: ERRORS, data?: Record<string, any>, fallbackMessage?: string) {
+  notify('error', errorName, data, fallbackMessage || 'An unknown error has occurred.');
 }
 
 /**
  * Global function to notify a success by SUCCESS_NAMES.
  * If no message is found in the dictionary, it uses 'Operation successful.'.
  */
-export function notifySuccess(successName: SUCCESS, fallbackMessage?: string) {
-  notify('success', successName, fallbackMessage || 'Operation successful.');
+export function notifySuccess(successName: SUCCESS, data?: Record<string, any>, fallbackMessage?: string) {
+  notify('success', successName, data, fallbackMessage || 'Operation successful.');
 }
 
 /**
  * Global function to notify a warning by WARNING_NAMES.
  * If no message is found in the dictionary, it uses 'Warning.'.
  */
-export function notifyWarning(warningName: WARNING, fallbackMessage?: string) {
-  notify('warning', warningName, fallbackMessage || 'Warning.');
+export function notifyWarning(warningName: WARNING, data?: Record<string, any>, fallbackMessage?: string) {
+  notify('warning', warningName, data, fallbackMessage || 'Warning.');
 }

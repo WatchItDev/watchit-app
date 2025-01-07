@@ -22,7 +22,6 @@ export default function HeaderBalance() {
     router.push(paths.dashboard.finance)
   }
 
-
   return (
     <Button variant={'text'} sx={{ px: 1.5, py: 1, mr: -0.75 }} onClick={handleGoFinance}>
       <Stack direction="row" alignItems="center" justifyContent="center">
