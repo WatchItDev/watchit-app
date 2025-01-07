@@ -1,20 +1,21 @@
 // REACT IMPORTS
-import React, { useState, useEffect } from 'react';
+import React, {useEffect, useState} from 'react';
 
 // MUI IMPORTS
-import { Modal, Box, Fade, Backdrop } from '@mui/material';
+import {Backdrop, Box, Fade, Modal} from '@mui/material';
 
 // LENS IMPORTS
-import { useLogout, useLogin, type Profile } from '@lens-protocol/react-web';
-import { useWeb3Auth } from '@src/hooks/use-web3-auth';
+import {type Profile, useLogin, useLogout} from '@lens-protocol/react-web';
+import {useWeb3Auth} from '@src/hooks/use-web3-auth';
 
 // LOCAL IMPORTS
-import { ProfileSelectView } from '@src/components/login-modal/profile-select-view.tsx';
-import { ProfileFormView } from '@src/components/login-modal/profile-form-view.tsx';
-import { WatchitLoader } from '../watchit-loader';
-import { useSnackbar } from 'notistack';
-import { useDispatch, useSelector } from 'react-redux';
-import { closeLoginModal } from '@redux/auth';
+import {ProfileSelectView} from '@src/components/login-modal/profile-select-view.tsx';
+import {ProfileFormView} from '@src/components/login-modal/profile-form-view.tsx';
+import {WatchitLoader} from '../watchit-loader';
+import {useDispatch, useSelector} from 'react-redux';
+import {closeLoginModal} from '@redux/auth';
+import {notifySuccess} from "@notifications/internal-notifications.ts";
+import {SUCCESS} from "@notifications/success.ts";
 
 // ----------------------------------------------------------------------
 
@@ -34,7 +35,6 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
   const sessionData = useSelector((state: any) => state.auth.session);
   const { execute: logoutExecute } = useLogout();
   const { execute: loginExecute, error } = useLogin();
-  const { enqueueSnackbar } = useSnackbar();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -77,7 +77,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
   }, [open, view, w3.connected]);
 
   const handleProfileCreateSuccess = () => {
-    enqueueSnackbar('Profile created successfully.', { variant: 'success' })
+    notifySuccess(SUCCESS.PROFILE_CREATED_SUCCESSFULLY)
     dispatch(closeLoginModal());
   };
 
