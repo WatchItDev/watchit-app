@@ -8,7 +8,7 @@ import Iconify from '../iconify';
 import { useSettingsContext } from '../settings';
 //
 import { StyledIcon, StyledNotistack } from './styles';
-import { setGlobalNotifier } from '@src/utils/notifications/internal-notifications.ts';
+import { setGlobalNotifier } from '@notifications/internal-notifications.ts';
 
 // ----------------------------------------------------------------------
 
