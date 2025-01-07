@@ -29,6 +29,9 @@ export enum ERRORS {
 
   // Authorization error
   AUTHORIZATION_POLICY_ERROR = 'AUTHORIZATION_POLICY_ERROR',
+
+  // Transfer error
+  TRANSFER_LOGIN_FIRST_ERROR = 'TRANSFER_LOGIN_FIRST_ERROR',
 }
 
 /**
@@ -65,4 +68,7 @@ export const ERROR_MESSAGES: Record<ERRORS, string> = {
 
   // Authorization error
   [ERRORS.AUTHORIZATION_POLICY_ERROR]: 'Please login to authorize policy',
+
+  // Transfer error
+  [ERRORS.TRANSFER_LOGIN_FIRST_ERROR]: 'Please login to transfer funds.',
 };

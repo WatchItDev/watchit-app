@@ -1,6 +1,5 @@
-import { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import { useSnackbar } from 'notistack';
+import {useEffect, useState} from 'react';
+import {useSelector} from 'react-redux';
 
 // MUI components
 import Stack from '@mui/material/Stack';
@@ -11,20 +10,25 @@ import Box from '@mui/material/Box';
 import DialogTitle from '@mui/material/DialogTitle';
 import ListItemText from '@mui/material/ListItemText';
 import DialogActions from '@mui/material/DialogActions';
-import Dialog, { DialogProps } from '@mui/material/Dialog';
-import { truncateAddress } from '@src/utils/wallet.ts';
+import Dialog, {DialogProps} from '@mui/material/Dialog';
+import {truncateAddress} from '@src/utils/wallet.ts';
 
 // LENS
-import { Profile } from '@lens-protocol/api-bindings';
+import {Profile} from '@lens-protocol/api-bindings';
 
 // Project components
 import NeonPaper from '@src/sections/publication/NeonPaperContainer.tsx';
 import LoadingButton from '@mui/lab/LoadingButton';
-import { supabase } from '@src/utils/supabase';
-import { useNotificationPayload } from '@src/hooks/use-notification-payload.ts';
-import { useNotifications } from '@src/hooks/use-notifications.ts';
-import { InputAmountProps } from '@src/components/input-amount.tsx';
-import { useTransfer } from '@src/hooks/use-transfer.ts';
+import {supabase} from '@src/utils/supabase';
+import {useNotificationPayload} from '@src/hooks/use-notification-payload.ts';
+import {useNotifications} from '@src/hooks/use-notifications.ts';
+import {InputAmountProps} from '@src/components/input-amount.tsx';
+import {useTransfer} from '@src/hooks/use-transfer.ts';
+
+// Notifications
+import {notifyError, notifySuccess} from "@notifications/internal-notifications.ts";
+import {SUCCESS} from "@notifications/success.ts";
+import {ERRORS} from "@notifications/errors.ts";
 
 type TConfirmTransferDialogProps = InputAmountProps & DialogProps;
 
@@ -47,7 +51,6 @@ function FinanceQuickTransferModal({
   const sessionData = useSelector((state: any) => state.auth.session);
   const { generatePayload } = useNotificationPayload(sessionData);
   const { sendNotification } = useNotifications();
-  const { enqueueSnackbar } = useSnackbar();
   const [message, setMessage] = useState('');
 
   const { transfer, loading: transferLoading, error } = useTransfer();
@@ -77,9 +80,9 @@ function FinanceQuickTransferModal({
 
   useEffect(() => {
     if (error) {
-      enqueueSnackbar(error.message, { variant: 'error' });
+      notifyError(error as ERRORS);
     }
-  }, [error, enqueueSnackbar]);
+  }, [error]);
 
   async function storeTransactionInSupabase(
     receiver_id?: string,
@@ -131,13 +134,9 @@ function FinanceQuickTransferModal({
       notificationPayload
     );
 
-    enqueueSnackbar(
-      `Transfer sent to ${
-        isSame ? contactInfo?.metadata?.displayName : truncateAddress(address ?? '')
-      }`,
-      { variant: 'success' }
-    );
-
+    notifySuccess(SUCCESS.TRANSFER_CREATED_SUCCESSFULLY, {
+      destination: isSame ? contactInfo?.metadata?.displayName : truncateAddress(address ?? '')
+    })
     onFinish();
   };
 
