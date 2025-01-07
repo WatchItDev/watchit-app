@@ -14,6 +14,7 @@ import { LoadingScreen } from '@src/components/loading-screen';
 import FinanceDeposit from './finance-deposit';
 import { ERRORS } from '@notifications/errors.ts';
 import { notifyError } from '@notifications/internal-notifications.ts';
+import {Box} from "@mui/system";
 
 interface FinanceDepositFromMetamaskProps {
   onClose: () => void;
@@ -50,7 +51,7 @@ const FinanceDepositFromMetamask: FC<FinanceDepositFromMetamaskProps> = ({ onClo
   };
 
   if (connecting) {
-    return <LoadingScreen />;
+    return <Box sx={{m:2}}><LoadingScreen /></Box>;
   }
 
   // If the wallet is NOT connected, show a button
