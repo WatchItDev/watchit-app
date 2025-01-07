@@ -1,32 +1,40 @@
 // REACT IMPORTS
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
+import {useFormik} from 'formik';
+import * as Yup from 'yup';
+
+// Redux
+import {useDispatch, useSelector} from "react-redux";
+import {RootState} from "@reduxjs/toolkit/query";
+import {
+  closeLoginModal,
+  resetCurrentStep,
+  setIsUpdatingMetadata,
+  setProfileCreationStep,
+  updateProfileData
+} from "@redux/auth";
 
 // MUI IMPORTS
-import { Typography, Button, TextField, Box, Input, Grid } from '@mui/material';
-
-// FORM IMPORTS
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
+import {Box, Button, Grid, Input, TextField, Typography} from '@mui/material';
 import Avatar from '@mui/material/Avatar';
-import { Profile } from '@lens-protocol/api-bindings';
-import Image from '../image';
-import {
-  SessionType,
-  useCreateProfile,
-  LoginError,
-  useSetProfileMetadata,
-} from '@lens-protocol/react-web';
 
-import { ProfileData } from '@src/auth/context/web3Auth/types.ts';
-import { uploadImageToIPFS, uploadMetadataToIPFS } from '@src/utils/ipfs.ts';
-import { buildProfileMetadata } from '@src/utils/profile.ts';
+// Project IMPORTS
+import Image from '../image';
+import {ProfileData} from '@src/auth/context/web3Auth/types.ts';
+import {uploadImageToIPFS, uploadMetadataToIPFS} from '@src/utils/ipfs.ts';
+import {buildProfileMetadata} from '@src/utils/profile.ts';
 import TextMaxLine from '@src/components/text-max-line';
-import { useSnackbar } from 'notistack';
-import {useDispatch, useSelector} from "react-redux";
-import { setProfileCreationStep, resetCurrentStep, closeLoginModal, updateProfileData, setIsUpdatingMetadata } from "@redux/auth";
 import NeonPaper from '@src/sections/publication/NeonPaperContainer';
-import {RootState} from "@reduxjs/toolkit/query";
-import uuidv4 from '@src/utils/uuidv4.ts';
+import uuidv4 from '@src/utils/uuidv4';
+
+// Lens
+import {Profile} from '@lens-protocol/api-bindings';
+import {LoginError, SessionType, useCreateProfile, useSetProfileMetadata,} from '@lens-protocol/react-web';
+
+// Notifications
+import {notifyError, notifySuccess} from "@notifications/internal-notifications";
+import {SUCCESS} from "@notifications/success";
+import {ERRORS} from "@notifications/errors.ts";
 
 // ----------------------------------------------------------------------
 
@@ -70,7 +78,6 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
 }) => {
   const dispatch = useDispatch();
 
-  const { enqueueSnackbar } = useSnackbar();
   const [registrationLoading, setRegistrationLoading] = useState(false);
   // @ts-ignore
   const { currentStep } = useSelector((state: RootState) => state.auth);
@@ -112,9 +119,9 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
   });
 
   useEffect(() => {
-    if (errorCreateProfile) enqueueSnackbar(errorCreateProfile?.message, { variant: 'error' });
-    if (errorSetProfileMetadata) enqueueSnackbar(errorSetProfileMetadata?.message, { variant: 'error' });
-    if (error) enqueueSnackbar(error?.message, { variant: 'error' });
+    if (errorCreateProfile) notifyError(ERRORS.CREATING_PROFILE_ERROR);
+    if (errorSetProfileMetadata) notifyError(ERRORS.UPDATING_PROFILE_ERROR);
+    if (error) notifyError(ERRORS.UNKNOWN_ERROR);
   }, [errorCreateProfile, errorSetProfileMetadata]);
 
   /**
@@ -168,11 +175,12 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
               metadataURI,
               setProfileMetadataExecute,
               onSuccess: () => {
-                enqueueSnackbar('Profile metadata updated successfully', { variant: 'success' });
+                notifySuccess(SUCCESS.PROFILE_METADATA_UPDATED);
                 dispatch(setIsUpdatingMetadata(false));
               },
               onError: (error: any) => {
-                enqueueSnackbar(`Error updating profile metadata: ${error.message}`, { variant: 'error' });
+                console.log('Error updating profile metadata:', error);
+                notifyError(ERRORS.UPDATING_PROFILE_ERROR)
                 dispatch(setIsUpdatingMetadata(false));
               },
             },

@@ -11,6 +11,14 @@ export enum ERRORS {
   INVITATION_EMAIL_ERROR = 'INVITATION_EMAIL_ERROR',
   LINK_COPIED_ERROR = 'LINK_COPIED_ERROR',
   FAILED_CHANGE_WALLET_ERROR = 'FAILED_CHANGE_WALLET_ERROR',
+  UPDATING_PROFILE_ERROR = 'UPDATING_PROFILE_ERROR',
+  CREATING_PROFILE_ERROR = 'CREATING_PROFILE_ERROR',
+  BROADCASTING_TRANSACTION_ERROR = 'BROADCASTING_TRANSACTION_ERROR',
+  PENDING_SIGNING_REQUEST_ERROR = 'PENDING_SIGNING_REQUEST_ERROR',
+  INSUFFICIENT_ALLOWANCE_ERROR = 'INSUFFICIENT_ALLOWANCE_ERROR',
+  INSUFFICIENT_FUNDS_ERROR = 'INSUFFICIENT_FUNDS_ERROR',
+  WALLET_CONNECTION_ERROR = 'WALLET_CONNECTION_ERROR',
+  PREMATURE_ACTION_ERROR = 'PREMATURE_ACTION_ERROR',
 }
 
 /**
@@ -26,4 +34,13 @@ export const ERROR_MESSAGES: Record<ERRORS, string> = {
   [ERRORS.INVITATION_EMAIL_ERROR]: 'Error while trying to send the invitation email.',
   [ERRORS.LINK_COPIED_ERROR]: 'Error while trying to copy the link.',
   [ERRORS.FAILED_CHANGE_WALLET_ERROR]: 'Error while trying to change the wallet.',
+  [ERRORS.CREATING_PROFILE_ERROR]: 'Error creating profile.',
+  [ERRORS.UPDATING_PROFILE_ERROR]: 'Error updating profile metadata.',
+
+  [ERRORS.BROADCASTING_TRANSACTION_ERROR]: 'There was an error broadcasting the transaction.',
+  [ERRORS.PENDING_SIGNING_REQUEST_ERROR]: 'There is a pending signing request in your wallet.',
+  [ERRORS.INSUFFICIENT_ALLOWANCE_ERROR]: 'You must approve the contract to spend at least {symbol} {amount}',
+  [ERRORS.INSUFFICIENT_FUNDS_ERROR]: 'You do not have enough funds to pay for this follow fee {symbol} {amount}',
+  [ERRORS.WALLET_CONNECTION_ERROR]: 'There was an error connecting to your wallet.',
+  [ERRORS.PREMATURE_ACTION_ERROR]: 'There is a pending unfollow request for this profile.',
 };
