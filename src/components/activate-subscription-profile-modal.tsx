@@ -1,33 +1,35 @@
 // REACT IMPORTS
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 
 // MUI IMPORTS
 import {
-  Dialog,
   Button,
-  TextField,
-  DialogTitle,
-  DialogContent,
+  Dialog,
   DialogActions,
-  Typography,
-  Stack,
-  Paper,
+  DialogContent,
+  DialogTitle,
   Divider,
+  Paper,
+  Stack,
+  TextField,
+  Typography,
 } from '@mui/material';
 
 // ETHERS IMPORTS
-import { ethers } from 'ethers';
+import {ethers} from 'ethers';
 
 // VIEM IMPORTS
-import { encodeAbiParameters } from 'viem';
+import {encodeAbiParameters} from 'viem';
 
 // LOCAL IMPORTS
-import { GLOBAL_CONSTANTS } from '@src/config-global';
-import { useAuthorizePolicy } from '@src/hooks/use-authorize-policy.ts';
-import { useSnackbar } from 'notistack';
+import {GLOBAL_CONSTANTS} from '@src/config-global';
+import {useAuthorizePolicy} from '@src/hooks/use-authorize-policy.ts';
 import NeonPaper from "@src/sections/publication/NeonPaperContainer.tsx";
 import Box from "@mui/material/Box";
 import LoadingButton from "@mui/lab/LoadingButton";
+import {notifyError, notifySuccess} from "@notifications/internal-notifications.ts";
+import {SUCCESS} from "@notifications/success.ts";
+import {ERRORS} from "@notifications/errors.ts";
 
 // ----------------------------------------------------------------------
 
@@ -42,7 +44,6 @@ export const ActivateSubscriptionProfileModal = ({
   isOpen,
   onClose,
 }: ActivateSubscriptionProfileModalProps) => {
-  const { enqueueSnackbar } = useSnackbar();
 
   const [selectedAmount, setSelectedAmount] = useState('10');
   const [customAmount, setCustomAmount] = useState('');
@@ -56,7 +57,7 @@ export const ActivateSubscriptionProfileModal = ({
   ];
 
   useEffect(() => {
-    if (error) enqueueSnackbar(error.message, { variant: 'error' });
+    if (error) notifyError(error as ERRORS);
   }, [error]);
 
   const handleAmountChange = (value: string) => {
@@ -94,7 +95,8 @@ export const ActivateSubscriptionProfileModal = ({
         data: encodedData,
       });
 
-      enqueueSnackbar('Joining price set successfully!', { variant: 'success' })
+      notifySuccess(SUCCESS.JOINING_PRICE_SUCCESSFULLY)
+
       onClose?.();
     } catch (err) {
       console.error('err');
@@ -220,12 +222,6 @@ export const ActivateSubscriptionProfileModal = ({
               </Stack>
             </Stack>
           </Stack>
-
-          {error && (
-            <Typography variant="body2" color="error" align="center" sx={{ mt: 2 }}>
-              {error.message}
-            </Typography>
-          )}
         </DialogContent>
         <Divider sx={{ mt: 3, borderStyle: 'dashed' }} />
         <DialogActions>

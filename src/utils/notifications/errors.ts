@@ -26,6 +26,9 @@ export enum ERRORS {
 
   // Deposit error
   DEPOSIT_FAILED_ERROR = 'DEPOSIT_FAILED_ERROR',
+
+  // Authorization error
+  AUTHORIZATION_POLICY_ERROR = 'AUTHORIZATION_POLICY_ERROR',
 }
 
 /**
@@ -59,4 +62,7 @@ export const ERROR_MESSAGES: Record<ERRORS, string> = {
 
   // Deposit error
   [ERRORS.DEPOSIT_FAILED_ERROR]: 'Please login to deposit funds.',
+
+  // Authorization error
+  [ERRORS.AUTHORIZATION_POLICY_ERROR]: 'Please login to authorize policy',
 };
