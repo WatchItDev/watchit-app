@@ -8,8 +8,11 @@ import { Modal, Box, Fade, Backdrop } from '@mui/material';
 import { ProfileFormView } from '@src/components/login-modal/profile-form-view.tsx';
 // @ts-ignore
 import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
-import { useSnackbar } from 'notistack';
 import {useSelector} from "react-redux";
+
+// Notifications
+import {notifySuccess} from "@notifications/internal-notifications.ts";
+import {SUCCESS} from "@notifications/success.ts";
 
 // ----------------------------------------------------------------------
 
@@ -23,10 +26,9 @@ interface UpdateModalProps {
 export const UpdateModal: React.FC<UpdateModalProps> = ({ open, onClose }) => {
   const loading = useSelector((state: any) => state.auth.isSessionLoading);
   const sessionData = useSelector((state: any) => state.auth.session);
-  const { enqueueSnackbar } = useSnackbar();
 
   const handleProfileUpdateSuccess = () => {
-    enqueueSnackbar('Profile updated successfully.', { variant: 'success' })
+    notifySuccess(SUCCESS.PROFILE_UPDATED_SUCCESSFULLY)
     onClose?.();
   };
 
