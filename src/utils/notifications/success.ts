@@ -31,7 +31,7 @@ export const SUCCESS_MESSAGES: Record<SUCCESS, string> = {
   [SUCCESS.PROFILE_CREATED_SUCCESSFULLY]: 'Profile created successfully.',
   [SUCCESS.PROFILE_UPDATED_SUCCESSFULLY]: 'Profile updated successfully.',
   [SUCCESS.TRANSFER_CREATED_SUCCESSFULLY]: 'Transfer sent to {destination}.',
-  [SUCCESS.FOLLOW_UNFOLLOW_SUCCESSFULLY]: 'Successfully {action} {profile}.',
+  [SUCCESS.FOLLOW_UNFOLLOW_SUCCESSFULLY]: 'Successfully {profileName} {actionLbl}.',
 
 
 };

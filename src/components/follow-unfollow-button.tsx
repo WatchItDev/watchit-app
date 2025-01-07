@@ -28,8 +28,9 @@ import {useNotificationPayload} from "@src/hooks/use-notification-payload.ts";
 import NeonPaper from "@src/sections/publication/NeonPaperContainer.tsx";
 import Box from "@mui/material/Box";
 import {ERRORS} from "@notifications/errors.ts";
-import {notifyError} from "@notifications/internal-notifications.ts";
+import {notifyError, notifySuccess} from "@notifications/internal-notifications.ts";
 import {pascalToUpperSnake} from "@src/utils/text-transform.ts";
+import {SUCCESS} from "@notifications/success.ts";
 
 // ----------------------------------------------------------------------
 
@@ -83,7 +84,7 @@ const FollowUnfollowButton = ({ profileId, size = 'medium', followButtonMinWidth
   };
 
   // General function to handle follow/unfollow actions
-  const handleAction = async (action: any, successMsg: string, followState: boolean) => {
+  const handleAction = async (action: any, actionLbl: string, profileName: string, followState: boolean) => {
     if (!profile) return;
     if (!sessionData?.authenticated) return dispatch(openLoginModal());
 
@@ -91,7 +92,11 @@ const FollowUnfollowButton = ({ profileId, size = 'medium', followButtonMinWidth
     try {
       const result = await action({ profile });
       if (result.isSuccess()) {
-        enqueueSnackbar(successMsg, { variant: 'success' })
+        notifySuccess(SUCCESS.FOLLOW_UNFOLLOW_SUCCESSFULLY, {
+          actionLbl,
+          profileName
+        })
+
         setIsFollowed(followState);
 
         // Wait for transaction confirmation
@@ -135,10 +140,6 @@ const FollowUnfollowButton = ({ profileId, size = 'medium', followButtonMinWidth
     });
   };
 
-  const getFollowMessage = (profileName: string, action: string): string => {
-    return `Successfully ${action} ${profileName}.`;
-  }
-
   const RainbowEffect = (isProcessing || loading) ? NeonPaper : Box;
 
   return (
@@ -163,8 +164,8 @@ const FollowUnfollowButton = ({ profileId, size = 'medium', followButtonMinWidth
             event.stopPropagation();
 
             isFollowed
-              ? handleAction(unfollow, getFollowMessage(profile?.handle?.localName ?? '', 'unfollowed'), false)
-              : handleAction(follow, getFollowMessage(profile?.handle?.localName ?? '', 'followed'), true);
+              ? handleAction(unfollow, profile?.handle?.localName ?? '', 'unfollowed', false)
+              : handleAction(follow, profile?.handle?.localName ?? '', 'followed', true);
           }}
           disabled={isProcessing || profile?.id === sessionData?.profile?.id || loading}
           loading={followLoading || unfollowLoading}
