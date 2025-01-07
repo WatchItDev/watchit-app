@@ -62,7 +62,6 @@ export function notifySuccess(successName: SUCCESS, fallbackMessage?: string) {
  * Global function to notify a warning by WARNING_NAMES.
  * If no message is found in the dictionary, it uses 'Warning.'.
  */
-
 export function notifyWarning(warningName: WARNING, fallbackMessage?: string) {
   notify('warning', warningName, fallbackMessage || 'Warning.');
 }

@@ -9,11 +9,19 @@ import {useNotifications} from "@src/hooks/use-notifications.ts";
 import { publicClientWebSocket } from '@src/clients/viem/publicClient.ts';
 import LedgerVaultAbi from '@src/config/abi/LedgerVault.json';
 import { setBlockchainEvents } from '@redux/blockchain-events';
+import { setGlobalNotifier } from '@notifications/internal-notifications.ts';
+import { useSnackbar } from 'notistack';
 
 export default function Router() {
   const dispatch = useDispatch();
   const sessionData = useSelector((state: any) => state.auth.session);
   const { getNotifications } = useNotifications();
+  const { enqueueSnackbar } = useSnackbar();
+
+  useEffect(() => {
+    // Set the global reference so we can call notify(...) anywhere.
+    setGlobalNotifier(enqueueSnackbar);
+  }, [enqueueSnackbar]);
 
   useEffect(() => {
     if (!sessionData?.address) return;

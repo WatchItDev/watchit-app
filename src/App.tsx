@@ -88,7 +88,6 @@ export default function App() {
                   <Router />
                   <ResponsiveOverlay />
                 </SnackbarProvider>
-
               </MotionLazy>
             </ThemeProvider>
           </Provider>
