@@ -2,12 +2,13 @@ import {ERROR_MESSAGES, ERRORS} from "@src/utils/notifications/errors.ts";
 import { SUCCESS_MESSAGES, SUCCESS} from "@src/utils/notifications/success.ts";
 import { WARNING_MESSAGES, WARNING} from "@src/utils/notifications/warnings.ts";
 
+type NotificationType = 'error' | 'success' | 'warning' | 'info';
+
 let globalEnqueueSnackbar: ((message: string, options?: object) => void) | null = null;
-type NotificationType = 'error' | 'success' | 'warning';
 
 /**
  * Allows us to set the globalEnqueueSnackbar function from our App (or any top-level component).
- * Must be called at least once (e.g., in App.tsx) so that notifyError() works.
+ * Must be called at least once (e.g., in App.tsx) so that notify methods works.
  */
 export function setGlobalNotifier(
   enqueueSnackbarFn: (message: string, options?: object) => void
@@ -16,14 +17,14 @@ export function setGlobalNotifier(
 }
 
 
-const notify = (type: NotificationType, text: ERRORS | SUCCESS | WARNING, fallbackMessage: string, options?: any) => {
+const notify = (typeNotification: NotificationType, text: ERRORS | SUCCESS | WARNING, fallbackMessage: string) => {
   if (!globalEnqueueSnackbar) {
-    console.error('No globalEnqueueSnackbar is set. Cannot notify error.');
+    console.error('No globalEnqueueSnackbar is set. Cannot notify messages.');
     return;
   }
 
   let message: string;
-  switch (type) {
+  switch (typeNotification) {
     case 'error':
       message = ERROR_MESSAGES[text as ERRORS] || fallbackMessage || ERROR_MESSAGES[ERRORS.UNKNOWN_ERROR];
       break;
@@ -37,8 +38,7 @@ const notify = (type: NotificationType, text: ERRORS | SUCCESS | WARNING, fallba
       console.error('Unknown notification type');
       return;
   }
-
-  globalEnqueueSnackbar(message, { variant: type, ...options });
+  globalEnqueueSnackbar(message, { variant: typeNotification });
 }
 
 
@@ -47,7 +47,7 @@ const notify = (type: NotificationType, text: ERRORS | SUCCESS | WARNING, fallba
  * If no message is found in the dictionary, it uses 'UNKNOWN_ERROR'.
  */
 export function notifyError(errorName: ERRORS, fallbackMessage?: string) {
-  notify('error', errorName, fallbackMessage || 'An unknown error has occurred.', { autoHideDuration: 5000 });
+  notify('error', errorName, fallbackMessage || 'An unknown error has occurred.');
 }
 
 /**
@@ -55,7 +55,7 @@ export function notifyError(errorName: ERRORS, fallbackMessage?: string) {
  * If no message is found in the dictionary, it uses 'Operation successful.'.
  */
 export function notifySuccess(successName: SUCCESS, fallbackMessage?: string) {
-  notify('success', successName, fallbackMessage || 'Operation successful.', { autoHideDuration: 5000 });
+  notify('success', successName, fallbackMessage || 'Operation successful.');
 }
 
 /**
