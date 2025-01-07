@@ -1,31 +1,30 @@
-import "viem/window";
+import 'viem/window';
 import { FC } from 'react';
 
 // @mui
 import Stack from '@mui/material/Stack';
 import { CardProps } from '@mui/material/Card';
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
 
 // theme
 import { bgGradient } from '@src/theme/css';
-import Iconify from "@src/components/iconify";
-import {alpha, useTheme} from "@mui/material/styles";
+import Iconify from '@src/components/iconify';
+import { alpha, useTheme } from '@mui/material/styles';
 // @ts-ignore
-import Earn from "@src/assets/illustrations/earn.svg";
-import Image from "@src/components/image";
+import Earn from '@src/assets/illustrations/earn.svg';
+import Image from '@src/components/image';
 
-interface FinanceEarnTokensProps extends CardProps{
-  lgUp: boolean
+interface FinanceEarnTokensProps extends CardProps {
+  lgUp: boolean;
 }
 
 const FinanceEarnTokens: FC<FinanceEarnTokensProps> = ({ sx, lgUp, ...other }) => {
-
   const theme = useTheme();
 
   const handleClick = () => {
-    window.open('https://tropee.com/watchit','_BLANK')
-  }
+    window.open('https://tropee.com/watchit', '_BLANK');
+  };
 
   return (
     <Stack
@@ -71,20 +70,36 @@ const FinanceEarnTokens: FC<FinanceEarnTokensProps> = ({ sx, lgUp, ...other }) =
               textAlign: { xs: 'center', md: 'left' },
             }}
           >
-            <Typography variant="body1" sx={{ display: { xs: 'none', md: 'flex' }, maxWidth: 250, mb: 1, whiteSpace: 'pre-line' }}>
+            <Typography
+              variant="body1"
+              sx={{
+                display: { xs: 'none', md: 'flex' },
+                maxWidth: 250,
+                mb: 1,
+                whiteSpace: 'pre-line',
+              }}
+            >
               ¡Complete some tasks and win!
             </Typography>
             <Typography
               variant="h3"
               sx={{
-                display:'flex',
+                display: 'flex',
                 alignItems: 'center',
                 mb: { xs: 1, xl: 2 },
               }}
             >
-              Earn <span style={{
-              opacity: 0.5, marginRight: '0.5rem', marginLeft: '0.5rem',
-            }}>MMC</span>tokens
+              Earn{' '}
+              <span
+                style={{
+                  opacity: 0.5,
+                  marginRight: '0.5rem',
+                  marginLeft: '0.5rem',
+                }}
+              >
+                MMC
+              </span>
+              tokens
             </Typography>
 
             <Typography
@@ -97,7 +112,15 @@ const FinanceEarnTokens: FC<FinanceEarnTokensProps> = ({ sx, lgUp, ...other }) =
             >
               Invite your family and friends and claims your rewards.
             </Typography>
-            <Button sx={{mt:lgUp ? 3: null}} color={'primary'} variant={'soft'} startIcon={<Iconify icon={'fluent-emoji:trophy'} />} onClick={handleClick}>Earn tokens</Button>
+            <Button
+              sx={{ mt: lgUp ? 3 : null }}
+              color={'primary'}
+              variant={'soft'}
+              startIcon={<Iconify icon={'fluent-emoji:trophy'} />}
+              onClick={handleClick}
+            >
+              Earn tokens
+            </Button>
           </Stack>
           <Stack
             flexGrow={1}
@@ -108,9 +131,13 @@ const FinanceEarnTokens: FC<FinanceEarnTokensProps> = ({ sx, lgUp, ...other }) =
               mx: 'auto',
             }}
           >
-            <Image sx={{
-              height:  lgUp ? 240 : 180
-            }} src={Earn} alt={'Earn MMC tokens'}/>
+            <Image
+              sx={{
+                height: lgUp ? 240 : 180,
+              }}
+              src={Earn}
+              alt={'Earn MMC tokens'}
+            />
           </Stack>
         </Stack>
       </>

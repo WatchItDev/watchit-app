@@ -8,7 +8,7 @@ import TableBody from '@mui/material/TableBody';
 
 import TableContainer from '@mui/material/TableContainer';
 // _mock
-import {TRANSACTIONS_TYPES} from '@src/types/transaction';
+import { TRANSACTIONS_TYPES } from '@src/types/transaction';
 // components
 import Label from '@src/components/label';
 import Scrollbar from '@src/components/scrollbar';
@@ -28,12 +28,9 @@ import { IOrderTableFilters, IOrderTableFilterValue } from '@src/types/transacti
 import FinanceTransactionTableRow from '@src/sections/finance/components/finance-transactions-table-row';
 import useGetSmartWalletTransactions from '@src/hooks/use-get-smart-wallet-transactions';
 import { processTransactionData } from '@src/utils/finance-graphs/groupedTransactions';
-import FinanceOverlayLoader from "@src/sections/finance/components/finance-overlay-loader.tsx";
+import FinanceOverlayLoader from '@src/sections/finance/components/finance-overlay-loader.tsx';
 
-const STATUS_OPTIONS = [
-  { value: 'all', label: 'All' },
-  ...TRANSACTIONS_TYPES.slice(0, -2),
-];
+const STATUS_OPTIONS = [{ value: 'all', label: 'All' }, ...TRANSACTIONS_TYPES.slice(0, -2)];
 
 const TABLE_HEAD = [
   { id: 'name', label: 'Profile Info', width: 20 },
@@ -65,7 +62,7 @@ export default function FinanceTransactionsHistory() {
   const dataFiltered = applyFilter({
     inputData: transactionData,
     comparator: getComparator(table.order, table.orderBy),
-    filters
+    filters,
   });
 
   const denseHeight = table.dense ? 52 : 72;
@@ -122,8 +119,7 @@ export default function FinanceTransactionsHistory() {
                   {tab.value === 'transferFrom' &&
                     transactionData.filter(
                       (t) =>
-                        t.type.toLowerCase() === 'transferto' ||
-                        t.type.toLowerCase() === 'withdraw'
+                        t.type.toLowerCase() === 'transferto' || t.type.toLowerCase() === 'withdraw'
                     ).length}
                   {tab.value === 'transferTo' &&
                     transactionData.filter(
@@ -138,7 +134,7 @@ export default function FinanceTransactionsHistory() {
       </Tabs>
 
       <TableContainer sx={{ position: 'relative', overflow: 'unset' }}>
-        { loading && <FinanceOverlayLoader />}
+        {loading && <FinanceOverlayLoader />}
         <Scrollbar>
           <Table size={table.dense ? 'small' : 'medium'}>
             <TableHeadCustom
@@ -191,10 +187,10 @@ export default function FinanceTransactionsHistory() {
 // ----------------------------------------------------------------------
 
 function applyFilter({
-                       inputData,
-                       comparator,
-                       filters,
-                     }: {
+  inputData,
+  comparator,
+  filters,
+}: {
   inputData: any[];
   comparator: (a: any, b: any) => number;
   filters: IOrderTableFilters;

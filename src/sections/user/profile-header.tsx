@@ -1,5 +1,9 @@
 // REACT IMPORTS
-import { useState, useEffect, PropsWithChildren, useRef, useCallback } from 'react';
+import {PropsWithChildren, useCallback, useEffect, useRef, useState} from 'react';
+
+// Redux
+import {openLoginModal} from '@redux/auth';
+import {useDispatch, useSelector} from 'react-redux';
 
 // MUI IMPORTS
 import Box from '@mui/material/Box';
@@ -9,46 +13,45 @@ import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
 import Popover from '@mui/material/Popover';
 import MenuItem from '@mui/material/MenuItem';
-import { styled, useTheme } from '@mui/material/styles';
+import {styled, useTheme} from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import LoadingButton from '@mui/lab/LoadingButton';
-import { Profile } from '@lens-protocol/api-bindings';
+import {Profile} from '@lens-protocol/api-bindings';
 import CircularProgress from '@mui/material/CircularProgress';
 
 // LENS IMPORTS
-import {
-  appId,
-  PublicationType,
-  usePublications,
-} from '@lens-protocol/react-web';
+import {appId, PublicationType, usePublications,} from '@lens-protocol/react-web';
 
 // VIEM IMPORTS
-import { Address } from 'viem';
+import {Address} from 'viem';
 
 // ICONS IMPORTS
-import { IconDots, IconRosetteDiscountCheckFilled } from '@tabler/icons-react';
+import {IconDots, IconRosetteDiscountCheckFilled} from '@tabler/icons-react';
 
 // LOCAL IMPORTS
 import ProfileCover from './profile-cover';
 import Iconify from '@src/components/iconify';
-import { truncateAddress } from '@src/utils/wallet';
-import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
-import { UpdateModal } from '@src/components/update-modal';
-import { useHasAccess } from '@src/hooks/use-has-access.ts';
-import { CopyableText } from '@src/components/copyable-text/index.ts';
-import { ReportProfileModal } from '@src/components/report-profile-modal.tsx';
-import { useIsPolicyAuthorized } from '@src/hooks/use-is-policy-authorized.ts';
-import { SubscribeProfileModal } from '@src/components/subscribe-profile-modal.tsx';
-import { ActivateSubscriptionProfileModal } from '@src/components/activate-subscription-profile-modal.tsx';
+import {truncateAddress} from '@src/utils/wallet';
+import {GLOBAL_CONSTANTS} from '@src/config-global.ts';
+import {UpdateModal} from '@src/components/update-modal';
+import {useHasAccess} from '@src/hooks/use-has-access.ts';
+import {CopyableText} from '@src/components/copyable-text/index.ts';
+import {ReportProfileModal} from '@src/components/report-profile-modal.tsx';
+import {useIsPolicyAuthorized} from '@src/hooks/use-is-policy-authorized.ts';
+import {SubscribeProfileModal} from '@src/components/subscribe-profile-modal.tsx';
+import {ActivateSubscriptionProfileModal} from '@src/components/activate-subscription-profile-modal.tsx';
 import FollowUnfollowButton from '@src/components/follow-unfollow-button.tsx';
+
 // @ts-ignore
-import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
-import { randomColors } from '@src/components/poster/variants/poster-latest-content.tsx';
-import { OpenableText } from '@src/components/openable-text/index.ts';
-import { useGetAttestation } from '@src/hooks/use-get-attestation.ts';
-import { openLoginModal } from '@redux/auth';
-import {useDispatch, useSelector} from 'react-redux';
-import { useSnackbar } from 'notistack';
+import {ReadResult} from '@lens-protocol/react/dist/declarations/src/helpers/reads';
+import {randomColors} from '@src/components/poster/variants/poster-latest-content.tsx';
+import {OpenableText} from '@src/components/openable-text/index.ts';
+import {useGetAttestation} from '@src/hooks/use-get-attestation.ts';
+
+// Notifcations
+import {notifyError, notifySuccess} from "@notifications/internal-notifications.ts";
+import {SUCCESS} from "@notifications/success.ts";
+import {ERRORS} from "@notifications/errors.ts";
 
 // ----------------------------------------------------------------------
 
@@ -101,7 +104,6 @@ const prependProfileIdToUrl = (url: string, profileId: string) => {
 
 const ProfileHeader = ({ profile: profileData, children }: PropsWithChildren<ProfileHeaderProps>) => {
   const dispatch = useDispatch();
-  const { enqueueSnackbar } = useSnackbar();
   const navRef = useRef(null);
   const navRefSocial = useRef(null);
   const navRefSettings = useRef(null);
@@ -209,9 +211,9 @@ const ProfileHeader = ({ profile: profileData, children }: PropsWithChildren<Pro
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(urlToShare.replace('profileId', 'profile/' + profile?.id));
-      enqueueSnackbar('Link copied to clipboard!', { variant: 'success' })
+      notifySuccess(SUCCESS.LINK_COPIED_TO_CLIPBOARD)
     } catch (err) {
-      enqueueSnackbar('Failed to copy link.', { variant: 'error' })
+      notifyError(ERRORS.LINK_COPIED_ERROR)
     }
   };
 

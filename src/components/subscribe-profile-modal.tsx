@@ -67,7 +67,7 @@ export const SubscribeProfileModal = ({
 
   // Hook to get the user's session data
   const sessionData = useSelector((state: any) => state.auth.session);
-  const { balance: balanceFromContract, refetch } = useGetBalance(sessionData?.address);
+    const { balance: balanceFromContract, refetch } = useGetBalance();
 
   // Hooks for subscription and terms resolution
   const { data, error, loading, subscribe } = useSubscribe();

@@ -48,12 +48,12 @@ export const isValidAddress = (address: string): boolean => {
 // ----------------------------------------------------------------------
 
 export default function FinanceQuickTransfer({
-                                               title,
-                                               subheader,
-                                               sx,
-                                               list: initialList,
-                                               ...other
-                                             }: Props) {
+  title,
+  subheader,
+  sx,
+  list: initialList,
+  ...other
+}: Props) {
   const theme = useTheme();
   const dispatch = useDispatch();
 
@@ -75,9 +75,7 @@ export default function FinanceQuickTransfer({
   const MAX_AMOUNT = balance;
 
   // This gets the current profile in the carousel
-  const getContactInfo: Profile | undefined = list?.find(
-    (_, index) => index === currentIndex
-  );
+  const getContactInfo: Profile | undefined = list?.find((_, index) => index === currentIndex);
 
   // Callback to handle a profile selection from the search modal
   const handleSelectProfile = (profile: Profile) => {
@@ -109,7 +107,7 @@ export default function FinanceQuickTransfer({
     infinite: true,
     centerPadding: '0px',
     rows: 1,
-    slidesToShow: list?.length > 7 ? 7 : list?.length ?? 1,
+    slidesToShow: list?.length > 7 ? 7 : (list?.length ?? 1),
     responsive: [
       {
         breakpoint: 1600,
@@ -166,8 +164,7 @@ export default function FinanceQuickTransfer({
 
         // Filter duplicates (by id)
         return combined.filter(
-          (profile, index, arr) =>
-            arr.findIndex((p) => p.id === profile.id) === index
+          (profile, index, arr) => arr.findIndex((p) => p.id === profile.id) === index
         );
       });
     }
@@ -237,7 +234,8 @@ export default function FinanceQuickTransfer({
     // If the user typed in an address, check if it's in the list by address only
     if (addressFiltered) {
       const profileIndex = list?.findIndex(
-        (profile) => profile.ownedBy?.address?.toLowerCase() === storedAddress?.address?.toLowerCase()
+        (profile) =>
+          profile.ownedBy?.address?.toLowerCase() === storedAddress?.address?.toLowerCase()
       );
 
       if (profileIndex !== -1 && profileIndex !== undefined) {
@@ -311,7 +309,12 @@ export default function FinanceQuickTransfer({
         >
           {list?.map((profile, index) => (
             <Box key={profile.id} sx={{ py: 2 }}>
-              <Tooltip key={profile.id} title={profile?.metadata?.displayName} arrow placement="top">
+              <Tooltip
+                key={profile.id}
+                title={profile?.metadata?.displayName}
+                arrow
+                placement="top"
+              >
                 <Avatar
                   src={
                     (profile?.metadata?.picture as any)?.optimized?.uri ??
@@ -389,7 +392,7 @@ export default function FinanceQuickTransfer({
   return (
     <>
       <Wrapper
-        {...((showRainbow) && {
+        {...(showRainbow && {
           animationSpeed: '1s',
           padding: '0',
         })}

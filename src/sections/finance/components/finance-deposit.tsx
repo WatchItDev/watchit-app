@@ -1,7 +1,7 @@
 // React and libraries imports
-import {FC, useCallback, useState} from 'react';
-import {useSnackbar} from 'notistack';
-import {Address} from 'viem';
+import { FC, useCallback, useState } from 'react';
+import { useSnackbar } from 'notistack';
+import { Address } from 'viem';
 
 // @mui components
 import Box from '@mui/material/Box';
@@ -12,17 +12,18 @@ import Divider from '@mui/material/Divider';
 import NeonPaper from '@src/sections/publication/NeonPaperContainer';
 import FinanceDialogsActions from '@src/sections/finance/components/finance-dialogs-actions';
 import TextMaxLine from '@src/components/text-max-line';
-import {InputAmount} from '@src/components/input-amount';
-import {formatBalanceNumber} from '@src/utils/format-number';
-import {useResponsive} from '@src/hooks/use-responsive';
-import {useGetMmcContractBalance} from '@src/hooks/use-get-mmc-contract-balance';
+import { InputAmount } from '@src/components/input-amount';
+import { formatBalanceNumber } from '@src/utils/format-number';
+import { useResponsive } from '@src/hooks/use-responsive';
+import { useGetMmcContractBalance } from '@src/hooks/use-get-mmc-contract-balance';
 import BoxRow from '@src/sections/finance/components/box-row.tsx';
-import {UseDepositHook} from '@src/hooks/use-deposit';
-import {truncateAddress} from '@src/utils/wallet';
-import {notifySuccess, notifyWarning} from "@src/utils/internal-notifications";
-import {WARNING} from "@src/utils/warnings";
-import {SUCCESS} from "@src/utils/success.ts";
+import { UseDepositHook } from '@src/hooks/use-deposit';
+import { truncateAddress } from '@src/utils/wallet';
 
+// Notifications
+import { notifySuccess, notifyWarning } from '@notifications/internal-notifications';
+import { WARNING } from '@notifications/warnings';
+import { SUCCESS } from '@notifications/success';
 
 interface FinanceDepositProps {
   /**
@@ -56,12 +57,7 @@ interface FinanceDepositProps {
  * - `depositHook` (generic or Metamask deposit hook)
  * - `onClose`
  */
-const FinanceDeposit: FC<FinanceDepositProps> = ({
-                                                   address,
-                                                   recipient,
-                                                   depositHook,
-                                                   onClose,
-                                                 }) => {
+const FinanceDeposit: FC<FinanceDepositProps> = ({ address, recipient, depositHook, onClose }) => {
   const [amount, setAmount] = useState<number>(0);
   const [localLoading, setLocalLoading] = useState(false);
 
@@ -71,6 +67,7 @@ const FinanceDeposit: FC<FinanceDepositProps> = ({
   // Retrieve the balance using the "address" (the connected one)
   const { balance } = useGetMmcContractBalance(address);
 
+  // @TODO: When show this?
   // Show an error if the deposit hook fails
   /*useEffect(() => {
      if (error) {
@@ -99,7 +96,7 @@ const FinanceDeposit: FC<FinanceDepositProps> = ({
       notifySuccess(SUCCESS.DEPOSIT_SUCCESSFULLY);
       onClose();
     } catch (err) {
-      notifyWarning(WARNING.NO_WALLET_AUTHORIZATION)
+      notifyWarning(WARNING.NO_WALLET_AUTHORIZATION);
     } finally {
       setLocalLoading(false);
     }

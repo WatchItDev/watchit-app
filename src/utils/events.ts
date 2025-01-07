@@ -26,7 +26,6 @@ export namespace Events {
       }
     }
   };
-  // @TODO: Add more event handlers when needed
   // @ts-ignore
   export const Transaction = (payload: any) => {};
   // @ts-ignore

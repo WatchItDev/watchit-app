@@ -1,21 +1,28 @@
-import {FC, useCallback, useEffect, useState} from 'react';
-import {useSnackbar} from 'notistack';
+import { FC, useCallback, useEffect, useState } from 'react';
+import { Address } from 'viem';
+
+// @mui
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Divider from '@mui/material/Divider';
 import TextField from '@mui/material/TextField';
+
+// Project components
 import NeonPaper from '@src/sections/publication/NeonPaperContainer';
 import FinanceDialogsActions from '@src/sections/finance/components/finance-dialogs-actions';
 import TextMaxLine from '@src/components/text-max-line';
-import {InputAmount} from '@src/components/input-amount';
-import {formatBalanceNumber} from '@src/utils/format-number';
-import {useResponsive} from '@src/hooks/use-responsive';
+import { InputAmount } from '@src/components/input-amount';
+import { formatBalanceNumber } from '@src/utils/format-number';
+import { useResponsive } from '@src/hooks/use-responsive';
 import BoxRow from '@src/sections/finance/components/box-row';
-import {isValidAddress} from '@src/sections/finance/components/finance-quick-transfer';
-import {Address} from 'viem';
-import {UseWithdrawHook} from '@src/hooks/use-withdraw.ts';
-import {ERRORS} from "@src/utils/errors";
-import {notifyError} from "@src/utils/internal-notifications";
+import { isValidAddress } from '@src/sections/finance/components/finance-quick-transfer';
+import { UseWithdrawHook } from '@src/hooks/use-withdraw.ts';
+
+// Notifications
+import { notifyError, notifySuccess, notifyWarning } from '@notifications/internal-notifications';
+import { ERRORS } from '@notifications/errors';
+import { WARNING } from '@notifications/warnings';
+import { SUCCESS } from '@notifications/success';
 
 interface FinanceWithdrawProps {
   address?: Address; // The connected wallet address
@@ -24,18 +31,12 @@ interface FinanceWithdrawProps {
   onClose: () => void; // Callback to close the modal/dialog
 }
 
-const FinanceWithdraw: FC<FinanceWithdrawProps> = ({
-                                                     address,
-                                                     withdrawHook,
-                                                     balance,
-                                                     onClose,
-                                                   }) => {
+const FinanceWithdraw: FC<FinanceWithdrawProps> = ({ address, withdrawHook, balance, onClose }) => {
   const [amount, setAmount] = useState<number>(0);
   const [destinationAddress, setDestinationAddress] = useState('');
   const [addressError, setAddressError] = useState(false);
   const [localLoading, setLocalLoading] = useState(false);
 
-  const { enqueueSnackbar } = useSnackbar();
   const { withdraw, loading: withdrawLoading, error } = withdrawHook;
 
   const mdUp = useResponsive('up', 'md');
@@ -43,30 +44,30 @@ const FinanceWithdraw: FC<FinanceWithdrawProps> = ({
 
   useEffect(() => {
     if (error) {
-      enqueueSnackbar(`Withdraw failed: ${error.message}`, { variant: 'error' });
+      notifyError(ERRORS.WITHDRAW_FAILED_ERROR);
     }
-  }, [error, enqueueSnackbar]);
+  }, [error]);
 
   const handleConfirmWithdraw = useCallback(async () => {
     if (!destinationAddress || addressError) {
-      enqueueSnackbar('Invalid wallet address.', { variant: 'warning' });
+      notifyWarning(WARNING.INVALID_WALLET_ADDRESS);
       return;
     }
     if (amount <= 0 || amount > (balance ?? 0)) {
-      enqueueSnackbar('Invalid withdraw amount.', { variant: 'warning' });
+      notifyWarning(WARNING.INVALID_WITHDRAW_AMOUNT);
       return;
     }
     try {
       setLocalLoading(true);
       await withdraw({ amount, recipient: destinationAddress });
-      enqueueSnackbar('The withdraw was successful.', { variant: 'success' });
+      notifySuccess(SUCCESS.WITHDRAW_SUCCESSFULLY);
       onClose();
     } catch (err: any) {
-      notifyError(ERRORS.WITHDRAW_FAILED_ERROR)
+      notifyError(ERRORS.WITHDRAW_FAILED_ERROR);
     } finally {
       setLocalLoading(false);
     }
-  }, [amount, destinationAddress, balance, withdraw, addressError, onClose, enqueueSnackbar]);
+  }, [amount, destinationAddress, balance, withdraw, addressError, onClose]);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;

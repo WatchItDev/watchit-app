@@ -28,6 +28,7 @@
       "@types/*": ["./src/types/*"],
       "@public/*": ["./public/*"],
       "@redux/*": ["./src/redux/*"],
+      "@notifications/*": ["./src/utils/notifications/*"],
       "@web3auth/*-adapter": ["./packages/adapters/*-adapter"],
       "@web3auth/*-provider": ["./packages/providers/*-provider"],
       "@web3auth/*": ["./packages/*"],

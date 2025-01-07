@@ -17,9 +17,9 @@ const FinanceDepositFromSmartAccount: FC<FinanceDepositFromSmartAccountProps> = 
 
   return (
     <FinanceDeposit
-      address={userAddress}      // the connected wallet (smart account)
-      recipient={userAddress}    // who receives the funds
-      depositHook={depositHook}  // the generic hook
+      address={userAddress} // the connected wallet (smart account)
+      recipient={userAddress} // who receives the funds
+      depositHook={depositHook} // the generic hook
       onClose={onClose}
     />
   );

@@ -11,19 +11,19 @@ import Dialog, { DialogProps } from '@mui/material/Dialog';
 // hooks
 import { useBoolean } from '@src/hooks/use-boolean';
 // components
-import { useSelector } from "react-redux";
-import NeonPaper from "@src/sections/publication/NeonPaperContainer.tsx";
-import LoadingButton from "@mui/lab/LoadingButton";
-import { useSnackbar } from "notistack";
+import { useSelector } from 'react-redux';
+import NeonPaper from '@src/sections/publication/NeonPaperContainer.tsx';
+import LoadingButton from '@mui/lab/LoadingButton';
+import { useSnackbar } from 'notistack';
 import { InputAmount, InputAmountProps } from '@src/components/input-amount.tsx';
-import IconButton from "@mui/material/IconButton";
-import Tooltip from "@mui/material/Tooltip";
-import Iconify from "@src/components/iconify";
-import Slider from "@mui/material/Slider";
+import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
+import Iconify from '@src/components/iconify';
+import Slider from '@mui/material/Slider';
 import { Divider, useTheme } from '@mui/material';
 import Scrollbar from '@src/components/scrollbar';
-import FinanceWalletTransferWidgetHorizontal from "@src/sections/finance/components/finance-wallet-transfer-widget-horizontal.tsx";
-import Typography from "@mui/material/Typography";
+import FinanceWalletTransferWidgetHorizontal from '@src/sections/finance/components/finance-wallet-transfer-widget-horizontal.tsx';
+import Typography from '@mui/material/Typography';
 
 // ----------------------------------------------------------------------
 
@@ -32,30 +32,38 @@ type ButtonSwapProps = {
   tooltip?: string;
   onClick?: VoidFunction;
   flipIcon?: boolean;
-}
+};
 
 const ButtonSwap: FC<ButtonSwapProps> = ({ onClick, tooltip, icon, flipIcon }) => {
   return (
-    <IconButton onClick={onClick} sx={{
-      marginX: 'auto',
-      width: 40,
-      height: 40,
-      borderRadius: '50%',
-    }}>
+    <IconButton
+      onClick={onClick}
+      sx={{
+        marginX: 'auto',
+        width: 40,
+        height: 40,
+        borderRadius: '50%',
+      }}
+    >
       <Tooltip key={'some-key'} title={tooltip} arrow placement="top">
         <Stack direction="row" alignItems="center">
-          <Iconify sx={{
-            transform: {
-              xs: flipIcon ? 'rotate(90deg)' : 'rotate(0deg)',
-              sm: 'rotate(0deg)',
-              lg: 'rotate(0deg)',
-            },
-          }} icon={icon} width={30} height={30} />
+          <Iconify
+            sx={{
+              transform: {
+                xs: flipIcon ? 'rotate(90deg)' : 'rotate(0deg)',
+                sm: 'rotate(0deg)',
+                lg: 'rotate(0deg)',
+              },
+            }}
+            icon={icon}
+            width={30}
+            height={30}
+          />
         </Stack>
       </Tooltip>
     </IconButton>
   );
-}
+};
 
 // ----------------------------------------------------------------------
 export default function FinanceTransferAccounts() {
@@ -75,8 +83,8 @@ export default function FinanceTransferAccounts() {
   const [labelTo, setLabelTo] = useState('To Watchit Wallet');
 
   const handleTransferFinish = () => {
-      confirm.onFalse?.();
-  }
+    confirm.onFalse?.();
+  };
 
   const handleOpenModal = () => {
     confirm.onTrue?.();
@@ -88,8 +96,12 @@ export default function FinanceTransferAccounts() {
     setToWallet(fromWallet);
 
     // Swap the labels
-    setLabelFrom((prevLabel) => (prevLabel === 'From ETH Wallet' ? 'From Watchit Wallet' : 'From ETH Wallet'));
-    setLabelTo((prevLabel) => (prevLabel === 'To Watchit Wallet' ? 'To ETH Wallet' : 'To Watchit Wallet'));
+    setLabelFrom((prevLabel) =>
+      prevLabel === 'From ETH Wallet' ? 'From Watchit Wallet' : 'From ETH Wallet'
+    );
+    setLabelTo((prevLabel) =>
+      prevLabel === 'To Watchit Wallet' ? 'To ETH Wallet' : 'To Watchit Wallet'
+    );
 
     // Swap the max balance
     setMaxBalance(() => (labelTo === 'To Watchit Wallet' ? watchitBalance : balanceETH));
@@ -97,12 +109,19 @@ export default function FinanceTransferAccounts() {
 
   return (
     <>
-      <Box sx={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}>
-        <ButtonSwap flipIcon={true} icon={'tabler:transfer'} onClick={handleOpenModal} tooltip={'Transfer between your wallets'} />
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <ButtonSwap
+          flipIcon={true}
+          icon={'tabler:transfer'}
+          onClick={handleOpenModal}
+          tooltip={'Transfer between your wallets'}
+        />
       </Box>
       <ConfirmTransferDialog
         balanceETH={balanceETH}
@@ -138,17 +157,17 @@ interface ConfirmTransferDialogProps extends TConfirmTransferDialogProps {
 }
 
 function ConfirmTransferDialog({
-                                 open,
-                                 onClose,
-                                 fromWallet,
-                                 toWallet,
-                                 labelFrom,
-                                 labelTo,
-                                 max,
-                                 onSwapWallets,
-                                 balanceETH,
-                                 balanceWatchit,
-                               }: ConfirmTransferDialogProps) {
+  open,
+  onClose,
+  fromWallet,
+  toWallet,
+  labelFrom,
+  labelTo,
+  max,
+  onSwapWallets,
+  balanceETH,
+  balanceWatchit,
+}: ConfirmTransferDialogProps) {
   const { enqueueSnackbar } = useSnackbar();
   const [loading, setLoading] = useState(false);
   const [amount, setAmount] = useState(0);
@@ -157,7 +176,10 @@ function ConfirmTransferDialog({
     setLoading(true);
     setTimeout(() => {
       // Notification for the user from wallet to wallet
-      enqueueSnackbar(`The transfer was successful ${labelFrom.toLowerCase()} to ${labelTo.toLowerCase()}`, { variant: 'success' });
+      enqueueSnackbar(
+        `The transfer was successful ${labelFrom.toLowerCase()} to ${labelTo.toLowerCase()}`,
+        { variant: 'success' }
+      );
       onClose();
       setLoading(false);
     }, 2000);
@@ -198,13 +220,7 @@ function ConfirmTransferDialog({
   );
   const renderToWalletInput = (
     <Box sx={{ my: 1 }}>
-      <TextField
-        fullWidth
-        label={labelTo}
-        value={toWallet}
-        onChange={handleInputChange}
-        disabled
-      />
+      <TextField fullWidth label={labelTo} value={toWallet} onChange={handleInputChange} disabled />
     </Box>
   );
 
@@ -213,7 +229,7 @@ function ConfirmTransferDialog({
   return (
     <Dialog open={open} fullWidth maxWidth="xs" onClose={onClose}>
       <DialogTitle>Transfer between your wallets</DialogTitle>
-      <Stack sx={{ px: 3, }}>
+      <Stack sx={{ px: 3 }}>
         <Card
           sx={{
             backgroundColor: theme.palette.background.neutral,
@@ -246,16 +262,15 @@ function ConfirmTransferDialog({
 
       <Stack direction="column" spacing={0} sx={{ px: 3 }}>
         {renderFromWalletInput}
-        <ButtonSwap icon={'tabler:transfer-vertical'} tooltip={'Interchange wallets'} onClick={onSwapWallets} />
+        <ButtonSwap
+          icon={'tabler:transfer-vertical'}
+          tooltip={'Interchange wallets'}
+          onClick={onSwapWallets}
+        />
         {renderToWalletInput}
 
         <Stack direction={'column'} sx={{ py: 1, flexGrow: 1 }}>
-          <InputAmount
-            max={max}
-            amount={amount}
-            onBlur={handleBlur}
-            onChange={handleChangeInput}
-          />
+          <InputAmount max={max} amount={amount} onBlur={handleBlur} onChange={handleChangeInput} />
         </Stack>
 
         <Stack direction={'column'} spacing={0} sx={{ py: 1, flexGrow: 1 }}>
@@ -273,7 +288,7 @@ function ConfirmTransferDialog({
       </Stack>
 
       <DialogActions>
-        <Box sx={{ flexGrow: 1 }} >
+        <Box sx={{ flexGrow: 1 }}>
           <Typography variant="subtitle2" sx={{ opacity: 0.64 }}>
             Max: {max} MMC
           </Typography>

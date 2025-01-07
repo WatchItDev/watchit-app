@@ -1,6 +1,6 @@
-import {ERROR_MESSAGES, ERRORS} from "@src/utils/errors";
-import { SUCCESS_MESSAGES, SUCCESS} from "@src/utils/success";
-import { WARNING_MESSAGES, WARNING} from "@src/utils/warnings";
+import {ERROR_MESSAGES, ERRORS} from "@src/utils/notifications/errors.ts";
+import { SUCCESS_MESSAGES, SUCCESS} from "@src/utils/notifications/success.ts";
+import { WARNING_MESSAGES, WARNING} from "@src/utils/notifications/warnings.ts";
 
 let globalEnqueueSnackbar: ((message: string, options?: object) => void) | null = null;
 type NotificationType = 'error' | 'success' | 'warning';
@@ -16,7 +16,7 @@ export function setGlobalNotifier(
 }
 
 
-const notify = (type: NotificationType, text: ERRORS | SUCCESS | WARNING, fallbackMessage: string) => {
+const notify = (type: NotificationType, text: ERRORS | SUCCESS | WARNING, fallbackMessage: string, options?: any) => {
   if (!globalEnqueueSnackbar) {
     console.error('No globalEnqueueSnackbar is set. Cannot notify error.');
     return;
@@ -37,7 +37,8 @@ const notify = (type: NotificationType, text: ERRORS | SUCCESS | WARNING, fallba
       console.error('Unknown notification type');
       return;
   }
-  globalEnqueueSnackbar(message, { variant: type });
+
+  globalEnqueueSnackbar(message, { variant: type, ...options });
 }
 
 
@@ -46,7 +47,7 @@ const notify = (type: NotificationType, text: ERRORS | SUCCESS | WARNING, fallba
  * If no message is found in the dictionary, it uses 'UNKNOWN_ERROR'.
  */
 export function notifyError(errorName: ERRORS, fallbackMessage?: string) {
-  notify('error', errorName, fallbackMessage || 'An unknown error has occurred.');
+  notify('error', errorName, fallbackMessage || 'An unknown error has occurred.', { autoHideDuration: 5000 });
 }
 
 /**
@@ -54,7 +55,7 @@ export function notifyError(errorName: ERRORS, fallbackMessage?: string) {
  * If no message is found in the dictionary, it uses 'Operation successful.'.
  */
 export function notifySuccess(successName: SUCCESS, fallbackMessage?: string) {
-  notify('success', successName, fallbackMessage || 'Operation successful.');
+  notify('success', successName, fallbackMessage || 'Operation successful.', { autoHideDuration: 5000 });
 }
 
 /**

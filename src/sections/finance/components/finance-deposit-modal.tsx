@@ -2,16 +2,16 @@
 import { FC, useState } from 'react';
 
 // MUI IMPORTS
-import Tab from "@mui/material/Tab";
-import DialogTitle from "@mui/material/DialogTitle";
-import Tabs, {tabsClasses} from "@mui/material/Tabs";
-import Dialog, {DialogProps} from "@mui/material/Dialog";
+import Tab from '@mui/material/Tab';
+import DialogTitle from '@mui/material/DialogTitle';
+import Tabs, { tabsClasses } from '@mui/material/Tabs';
+import Dialog, { DialogProps } from '@mui/material/Dialog';
 
 // LOCAL IMPORTS
 import Iconify from '@src/components/iconify';
-import FinanceDepositFromStripe from "@src/sections/finance/components/finance-deposit-from-stripe.tsx";
-import FinanceDepositFromMetamask from "@src/sections/finance/components/finance-deposit-from-metamask.tsx";
-import FinanceDepositFromSmartAccount from "@src/sections/finance/components/finance-deposit-from-smart-account.tsx";
+import FinanceDepositFromStripe from '@src/sections/finance/components/finance-deposit-from-stripe.tsx';
+import FinanceDepositFromMetamask from '@src/sections/finance/components/finance-deposit-from-metamask.tsx';
+import FinanceDepositFromSmartAccount from '@src/sections/finance/components/finance-deposit-from-smart-account.tsx';
 
 // ----------------------------------------------------------------------
 
@@ -23,8 +23,18 @@ interface FinanceDepositModalProps extends DialogProps {
 
 const TABS = [
   { value: 'fiat', label: 'Stripe', disabled: false, icon: <Iconify icon={'logos:stripe'} /> },
-  { value: 'metamask', label: 'Metamask', disabled: false, icon: <Iconify icon={'logos:metamask-icon'} /> },
-  { value: 'smartAccount', label: 'Smart Account', disabled: false, icon: <Iconify icon={'logos:ethereum-color'} /> },
+  {
+    value: 'metamask',
+    label: 'Metamask',
+    disabled: false,
+    icon: <Iconify icon={'logos:metamask-icon'} />,
+  },
+  {
+    value: 'smartAccount',
+    label: 'Smart Account',
+    disabled: false,
+    icon: <Iconify icon={'logos:ethereum-color'} />,
+  },
 ];
 
 // ----------------------------------------------------------------------
@@ -48,7 +58,7 @@ export const FinanceDepositModal: FC<FinanceDepositModalProps> = ({ open, onClos
           width: 1,
           zIndex: 9,
           borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
-          [`& .${tabsClasses.flexContainer}`]: { justifyContent: { xs: 'left', md: 'center' }},
+          [`& .${tabsClasses.flexContainer}`]: { justifyContent: { xs: 'left', md: 'center' } },
         }}
       >
         {TABS.map((tab) => (
@@ -62,9 +72,9 @@ export const FinanceDepositModal: FC<FinanceDepositModalProps> = ({ open, onClos
         ))}
       </Tabs>
 
-      {currentTab === 'fiat'  && (<FinanceDepositFromStripe />)}
-      {currentTab === 'metamask' && (<FinanceDepositFromMetamask onClose={onClose} />)}
-      {currentTab === 'smartAccount' && (<FinanceDepositFromSmartAccount onClose={onClose} />)}
+      {currentTab === 'fiat' && <FinanceDepositFromStripe />}
+      {currentTab === 'metamask' && <FinanceDepositFromMetamask onClose={onClose} />}
+      {currentTab === 'smartAccount' && <FinanceDepositFromSmartAccount onClose={onClose} />}
     </Dialog>
   );
-}
+};

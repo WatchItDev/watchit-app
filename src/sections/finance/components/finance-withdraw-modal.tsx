@@ -1,23 +1,33 @@
 // REACT IMPORTS
-import {FC, useState} from 'react';
+import { FC, useState } from 'react';
 
 // MUI IMPORTS
 
-import DialogTitle from "@mui/material/DialogTitle";
+import DialogTitle from '@mui/material/DialogTitle';
 
-import Dialog, {DialogProps} from "@mui/material/Dialog";
+import Dialog, { DialogProps } from '@mui/material/Dialog';
 
 // LOCAL IMPORTS
 
-import FinanceWithdrawFromSmartAccount from "@src/sections/finance/components/finance-withdraw-from-smart-account";
-import Iconify from "@src/components/iconify";
-import Tabs, {tabsClasses} from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
-import FinanceWithdrawFromMetamask from "@src/sections/finance/components/finance-withdraw-from-metamask.tsx";
+import FinanceWithdrawFromSmartAccount from '@src/sections/finance/components/finance-withdraw-from-smart-account';
+import Iconify from '@src/components/iconify';
+import Tabs, { tabsClasses } from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+import FinanceWithdrawFromMetamask from '@src/sections/finance/components/finance-withdraw-from-metamask.tsx';
 
 const TABS = [
-  { value: 'metamask', label: 'Metamask', disabled: false, icon: <Iconify icon={'logos:metamask-icon'} /> },
-  { value: 'smartAccount', label: 'Smart Account', disabled: false, icon: <Iconify icon={'logos:ethereum-color'} /> },
+  {
+    value: 'metamask',
+    label: 'Metamask',
+    disabled: false,
+    icon: <Iconify icon={'logos:metamask-icon'} />,
+  },
+  {
+    value: 'smartAccount',
+    label: 'Smart Account',
+    disabled: false,
+    icon: <Iconify icon={'logos:ethereum-color'} />,
+  },
 ];
 
 // ----------------------------------------------------------------------
@@ -47,7 +57,7 @@ export const FinanceWithdrawModal: FC<FinanceWitdrawModalProps> = ({ open, onClo
           width: 1,
           zIndex: 9,
           borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
-          [`& .${tabsClasses.flexContainer}`]: { justifyContent: { xs: 'left', md: 'center' }},
+          [`& .${tabsClasses.flexContainer}`]: { justifyContent: { xs: 'left', md: 'center' } },
         }}
       >
         {TABS.map((tab) => (
@@ -61,9 +71,8 @@ export const FinanceWithdrawModal: FC<FinanceWitdrawModalProps> = ({ open, onClo
         ))}
       </Tabs>
 
-      {currentTab === 'metamask' && (<FinanceWithdrawFromMetamask onClose={onClose} />)}
-      {currentTab === 'smartAccount' && (<FinanceWithdrawFromSmartAccount onClose={onClose} />)}
-
+      {currentTab === 'metamask' && <FinanceWithdrawFromMetamask onClose={onClose} />}
+      {currentTab === 'smartAccount' && <FinanceWithdrawFromSmartAccount onClose={onClose} />}
     </Dialog>
   );
-}
+};

@@ -1,6 +1,6 @@
 // React and libraries imports
-import {FC, useEffect, useState} from 'react';
-import {Address} from 'viem';
+import { FC, useEffect, useState } from 'react';
+import { Address } from 'viem';
 
 // @MUI Imports
 import Button from '@mui/material/Button';
@@ -8,13 +8,14 @@ import Button from '@mui/material/Button';
 // Import Components
 import Iconify from '@src/components/iconify';
 import FinanceWithdraw from './finance-withdraw.tsx';
-import {useWithdrawMetamask} from '@src/hooks/use-withdraw-metamask';
-import {useGetVaultBalance} from '@src/hooks/use-get-vault-balance';
-import {connectToMetaMask} from '@src/utils/metamask';
-import {LoadingScreen} from '@src/components/loading-screen';
+import { useWithdrawMetamask } from '@src/hooks/use-withdraw-metamask';
+import { useGetVaultBalance } from '@src/hooks/use-get-vault-balance';
+import { connectToMetaMask } from '@src/utils/metamask';
+import { LoadingScreen } from '@src/components/loading-screen';
 
-import {ERRORS} from "@src/utils/errors";
-import {notifyError} from "@src/utils/internal-notifications";
+// Notifications
+import { notifyError } from '@src/utils/notifications/internal-notifications';
+import { ERRORS } from '@src/utils/notifications/errors';
 
 interface FinanceWithdrawFromMetamaskProps {
   onClose: () => void;

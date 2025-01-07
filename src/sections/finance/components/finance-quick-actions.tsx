@@ -1,9 +1,9 @@
-import "viem/window";
+import 'viem/window';
 
 // @mui
 import Stack from '@mui/material/Stack';
 import { CardProps } from '@mui/material/Card';
-import Button from "@mui/material/Button";
+import Button from '@mui/material/Button';
 
 // theme
 import { bgGradient } from '@src/theme/css';
@@ -11,7 +11,7 @@ import { bgGradient } from '@src/theme/css';
 // components
 import Iconify from '@src/components/iconify';
 import FinanceExternalWallet from './finance-external-wallet.tsx';
-import SeoIllustration from "@src/assets/illustrations/seo-illustration.tsx";
+import SeoIllustration from '@src/assets/illustrations/seo-illustration.tsx';
 // ----------------------------------------------------------------------
 
 // Import necessary hooks and clients
@@ -34,11 +34,17 @@ const FinanceQuickActions: FC<CardProps> = ({ sx, ...other }) => {
       if (address) {
         setWalletAddress(address);
         setConnectedWallet(true);
-        enqueueSnackbar('MetaMask connected successfully!', { variant: 'success', autoHideDuration: 3000 });
+        enqueueSnackbar('MetaMask connected successfully!', {
+          variant: 'success',
+          autoHideDuration: 3000,
+        });
       }
     } catch (error: any) {
       console.error('Error connecting to wallet:', error);
-      enqueueSnackbar(`Failed to connect wallet: ${error.message}`, { variant: 'error', autoHideDuration: 5000 });
+      enqueueSnackbar(`Failed to connect wallet: ${error.message}`, {
+        variant: 'error',
+        autoHideDuration: 5000,
+      });
     }
   };
 
@@ -46,20 +52,29 @@ const FinanceQuickActions: FC<CardProps> = ({ sx, ...other }) => {
   const handleChangeWallet = async () => {
     setConnectedWallet(false);
 
-    window?.ethereum?.request({
-      method: "wallet_requestPermissions",
-      params: [{
-        eth_accounts: {}
-      }]
-    }).then(() => window?.ethereum?.request({method: 'eth_requestAccounts'}).then((accounts: string[]) => {
-      setWalletAddress(accounts[0]);
-      setConnectedWallet(true);
-    })).catch((error: any) => {
-      console.error('Error changing wallet:', error);
-      enqueueSnackbar(`Failed to change wallet: ${error.message}`, {variant: 'error', autoHideDuration: 5000});
-    })
-  }
-
+    window?.ethereum
+      ?.request({
+        method: 'wallet_requestPermissions',
+        params: [
+          {
+            eth_accounts: {},
+          },
+        ],
+      })
+      .then(() =>
+        window?.ethereum?.request({ method: 'eth_requestAccounts' }).then((accounts: string[]) => {
+          setWalletAddress(accounts[0]);
+          setConnectedWallet(true);
+        })
+      )
+      .catch((error: any) => {
+        console.error('Error changing wallet:', error);
+        enqueueSnackbar(`Failed to change wallet: ${error.message}`, {
+          variant: 'error',
+          autoHideDuration: 5000,
+        });
+      });
+  };
 
   // Automatically attempt to connect wallet on component mount
   useEffect(() => {
@@ -85,7 +100,8 @@ const FinanceQuickActions: FC<CardProps> = ({ sx, ...other }) => {
 
   // Format the balance for display
   const totalOptions = { minimumFractionDigits: 1, maximumFractionDigits: 3 };
-  const formattedTotal = balance !== null ? new Intl.NumberFormat('en-US', totalOptions).format(balance) : '0';
+  const formattedTotal =
+    balance !== null ? new Intl.NumberFormat('en-US', totalOptions).format(balance) : '0';
 
   return (
     <Stack

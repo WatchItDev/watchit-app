@@ -26,8 +26,8 @@ interface FinanceSearchProfileModalProps {
 }
 
 export default function FinanceSearchProfileModal({
-                                                    onSelectProfile,
-                                                  }: FinanceSearchProfileModalProps) {
+  onSelectProfile,
+}: FinanceSearchProfileModalProps) {
   const open = useBoolean();
   const [searchQuery, setSearchQuery] = useState('');
   const theme = useTheme();
@@ -35,16 +35,13 @@ export default function FinanceSearchProfileModal({
     query: searchQuery,
   });
 
-  const handleSearchChange = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      setSearchQuery(event.target.value);
-    },
-    []
-  );
+  const handleSearchChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(event.target.value);
+  }, []);
 
   const handleClose = () => {
     open.onFalse();
-    setSearchQuery('')
+    setSearchQuery('');
   };
 
   const handleSelectProfile = (profile: Profile) => {
@@ -82,21 +79,14 @@ export default function FinanceSearchProfileModal({
               `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${profile.id}`;
 
             return (
-              <ListItemButton
-                key={profile.id}
-                onClick={() => handleSelectProfile(profile)}
-              >
+              <ListItemButton key={profile.id} onClick={() => handleSelectProfile(profile)}>
                 <Avatar
                   src={avatarSrc}
                   alt={profile.metadata?.displayName ?? ''}
                   sx={{ width: 48, height: 48, mr: 2 }}
                 />
                 <ListItemText
-                  primary={
-                    profile.metadata?.displayName ||
-                    profile.handle?.localName ||
-                    'No Name'
-                  }
+                  primary={profile.metadata?.displayName || profile.handle?.localName || 'No Name'}
                   secondary={profile.id}
                 />
               </ListItemButton>

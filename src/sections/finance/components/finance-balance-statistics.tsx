@@ -12,7 +12,7 @@ import Iconify from '@src/components/iconify';
 import Chart, { useChart } from '@src/components/chart';
 import CustomPopover, { usePopover } from '@src/components/custom-popover';
 import useGetSmartWalletTransactions from '@src/hooks/use-get-smart-wallet-transactions.ts';
-import FinanceOverlayLoader from "@src/sections/finance/components/finance-overlay-loader.tsx";
+import FinanceOverlayLoader from '@src/sections/finance/components/finance-overlay-loader.tsx';
 
 export default function FinanceBalanceStatistics() {
   const { transactions, loading } = useGetSmartWalletTransactions();
@@ -64,7 +64,8 @@ export default function FinanceBalanceStatistics() {
     const oneYearAgo = now - 365 * 24 * 60 * 60 * 1000;
 
     // Grouped data structure: key is timestamp for "Week" and "Month", string for "Year"
-    let groupedData: Record<number | string, { label: string; income: number; outcome: number }> = {};
+    let groupedData: Record<number | string, { label: string; income: number; outcome: number }> =
+      {};
 
     if (timeFrame === 'Week') {
       // Group data by each day in the last week
@@ -182,8 +183,12 @@ export default function FinanceBalanceStatistics() {
         if (typeof a === 'number' && typeof b === 'number') {
           return a - b;
         }
-        if (typeof a === 'string' && a.match(/^\d{4}-\d{2}-\d{2}$/)
-          && typeof b === 'string' && b.match(/^\d{4}-\d{2}-\d{2}$/)) {
+        if (
+          typeof a === 'string' &&
+          a.match(/^\d{4}-\d{2}-\d{2}$/) &&
+          typeof b === 'string' &&
+          b.match(/^\d{4}-\d{2}-\d{2}$/)
+        ) {
           return new Date(a).getTime() - new Date(b).getTime();
         }
         if (typeof a === 'string' && typeof b === 'string') {
@@ -267,7 +272,7 @@ export default function FinanceBalanceStatistics() {
         />
 
         <Box sx={{ mt: 3, mx: 0, position: 'relative' }}>
-          { loading && <FinanceOverlayLoader /> }
+          {loading && <FinanceOverlayLoader />}
           <Chart
             dir="ltr"
             type="bar"

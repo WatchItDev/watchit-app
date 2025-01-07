@@ -1,4 +1,7 @@
 import { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { useSnackbar } from 'notistack';
+
 // MUI components
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
@@ -9,15 +12,17 @@ import DialogTitle from '@mui/material/DialogTitle';
 import ListItemText from '@mui/material/ListItemText';
 import DialogActions from '@mui/material/DialogActions';
 import Dialog, { DialogProps } from '@mui/material/Dialog';
-import { useSelector } from 'react-redux';
 import { truncateAddress } from '@src/utils/wallet.ts';
+
+// LENS
 import { Profile } from '@lens-protocol/api-bindings';
+
+// Project components
 import NeonPaper from '@src/sections/publication/NeonPaperContainer.tsx';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { supabase } from '@src/utils/supabase';
 import { useNotificationPayload } from '@src/hooks/use-notification-payload.ts';
 import { useNotifications } from '@src/hooks/use-notifications.ts';
-import { useSnackbar } from 'notistack';
 import { InputAmountProps } from '@src/components/input-amount.tsx';
 import { useTransfer } from '@src/hooks/use-transfer.ts';
 
@@ -32,13 +37,13 @@ interface ConfirmTransferDialogProps extends TConfirmTransferDialogProps {
 }
 
 function FinanceQuickTransferModal({
-                                     open,
-                                     amount,
-                                     contactInfo,
-                                     onClose,
-                                     onFinish,
-                                     address,
-                                   }: ConfirmTransferDialogProps) {
+  open,
+  amount,
+  contactInfo,
+  onClose,
+  onFinish,
+  address,
+}: ConfirmTransferDialogProps) {
   const sessionData = useSelector((state: any) => state.auth.session);
   const { generatePayload } = useNotificationPayload(sessionData);
   const { sendNotification } = useNotifications();
@@ -52,8 +57,7 @@ function FinanceQuickTransferModal({
 
   // Check if the passed address matches the profile's address
   const isSame =
-    hasProfile &&
-    contactInfo?.ownedBy?.address?.toLowerCase() === address?.toLowerCase();
+    hasProfile && contactInfo?.ownedBy?.address?.toLowerCase() === address?.toLowerCase();
 
   // If no valid profile, show "Destination wallet", else use profile’s displayName
   const displayName = hasProfile
@@ -61,16 +65,15 @@ function FinanceQuickTransferModal({
     : 'Destination wallet';
 
   // For the avatar, if no valid profile or if the address doesn't match, use a dicebear fallback
-  const avatarSrc = hasProfile && isSame
-    ? (contactInfo?.metadata?.picture as any)?.optimized?.uri ||
-    `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${contactInfo?.id}`
-    : `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${address}`;
+  const avatarSrc =
+    hasProfile && isSame
+      ? (contactInfo?.metadata?.picture as any)?.optimized?.uri ||
+        `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${contactInfo?.id}`
+      : `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${address}`;
 
   // For the secondary text under the name, if we have a valid profile that matches, use its address
   // otherwise show the typed address
-  const secondaryText = hasProfile && isSame
-    ? contactInfo?.ownedBy?.address
-    : address;
+  const secondaryText = hasProfile && isSame ? contactInfo?.ownedBy?.address : address;
 
   useEffect(() => {
     if (error) {
@@ -103,10 +106,8 @@ function FinanceQuickTransferModal({
     const notificationPayload = generatePayload(
       'TRANSFER',
       {
-        id: isSame ? contactInfo?.id ?? '' : address ?? '',
-        displayName: isSame
-          ? contactInfo?.metadata?.displayName ?? 'No name'
-          : 'External wallet',
+        id: isSame ? (contactInfo?.id ?? '') : (address ?? ''),
+        displayName: isSame ? (contactInfo?.metadata?.displayName ?? 'No name') : 'External wallet',
         avatar: (contactInfo?.metadata?.picture as any)?.optimized?.uri ?? '',
       },
       {
@@ -132,9 +133,7 @@ function FinanceQuickTransferModal({
 
     enqueueSnackbar(
       `Transfer sent to ${
-        isSame
-          ? contactInfo?.metadata?.displayName
-          : truncateAddress(address ?? '')
+        isSame ? contactInfo?.metadata?.displayName : truncateAddress(address ?? '')
       }`,
       { variant: 'success' }
     );
@@ -154,10 +153,7 @@ function FinanceQuickTransferModal({
           sx={{ flexWrap: 'wrap', alignItems: 'center', justifyContent: 'center' }}
         >
           <Stack direction="row" alignItems="center" spacing={2} sx={{ flexGrow: 1 }}>
-            <Avatar
-              src={avatarSrc}
-              sx={{ width: 48, height: 48 }}
-            />
+            <Avatar src={avatarSrc} sx={{ width: 48, height: 48 }} />
 
             <ListItemText
               primary={displayName}
