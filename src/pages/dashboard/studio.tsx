@@ -105,9 +105,16 @@ import {useSelector} from "react-redux";
 // }
 
 // ----------------------------------------------------------------------
+export const canViewSection = (sessionData: any): boolean => {
+  // Allowed profileId to view (temporary) this section
+  const allowedProfilesId = ['0x0563', '0x050d','0x055c','0x0514']; // Russian creator, Carlos, Jacob and Geolffrey
+  // Verify if the current profile is allowed to view this section
+  return allowedProfilesId.includes(sessionData?.profile?.id ?? '');
+}
 
 export default function OverviewFilePage() {
   const sessionData = useSelector((state: any) => state.auth.session);
+
   // const [open, setOpen] = useState(false);
   // const { data: sessionData }: ReadResult<ProfileSession> = useSession();
   //
@@ -218,11 +225,7 @@ export default function OverviewFilePage() {
   // };
 
   // Allowed profileId to view (temporary) this section
-  const allowedProfilesId = ['0x0563', '0x050d','0x055c','0x0514']; // Russian creator, Carlos, Jacob and Geolffrey
 
-  // Verify if the current profile is allowed to view this section
-  console.log(sessionData)
-  const isAllowed = allowedProfilesId.includes(sessionData?.profile?.id ?? '');
 
   return (
     <>
@@ -230,7 +233,7 @@ export default function OverviewFilePage() {
         <title> WatchIt | Studio</title>
       </Helmet>
 
-      {isAllowed ? (<><Header>
+      {canViewSection(sessionData) ? (<><Header>
         <HeaderContent title="Studio" />
       </Header>
         <Studio />
