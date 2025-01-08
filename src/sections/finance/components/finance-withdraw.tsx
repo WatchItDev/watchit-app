@@ -31,6 +31,7 @@ interface FinanceWithdrawProps {
   withdrawHook: UseWithdrawHook; // Generic withdraw hook
   balance: number | null; // Current user balance
   onClose: () => void; // Callback to close the modal/dialog
+  onChangeWallet?: (address: Address) => void; // Callback to change the new address.
 }
 
 // ----------------------------------------------------------------------

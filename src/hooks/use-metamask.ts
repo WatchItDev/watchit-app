@@ -28,5 +28,5 @@ export const useMetaMask = () => {
     }
   };
 
-  return { address, connecting, connect };
+  return { address, connecting, connect, setAddress };
 };
