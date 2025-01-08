@@ -36,7 +36,7 @@ const FinanceChangeWallet: FC<FinanceChangeWalletProps> = ({ onChangingWallet })
           notifySuccess(SUCCESS.WALLET_CHANGED_SUCCESFULLY);
         })
       )
-      .catch((error: any) => {
+      .catch(() => {
         notifyError(ERRORS.FAILED_CHANGE_WALLET_ERROR);
       });
   };
