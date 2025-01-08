@@ -1,12 +1,14 @@
-// React and libraries imports
+// REACT IMPORTS
 import React, { useCallback, useEffect, useState } from 'react';
-// Redux
+
+// REDUX IMPORTS
 import { useDispatch, useSelector } from 'react-redux';
-// Redux
 import { storeAddress, toggleRainbow } from '@redux/address';
 
-// API Lens and ethers
+// LENS IMPORTS
 import { Profile } from '@lens-protocol/api-bindings';
+
+// ETHERS IMPORTS
 import { ethers } from 'ethers';
 
 // MUI

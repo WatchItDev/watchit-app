@@ -234,7 +234,7 @@ const ProfileHeader = ({
   return (
     <>
       <Box sx={{ my: 3, position: 'relative' }}>
-        <ProfileCover profile={profile} />
+        <ProfileCover profile={profile} sx={{ height: { xs: 200, md: 300 }}} />
 
         {sessionData?.authenticated ? (
           <Button
@@ -309,7 +309,7 @@ const ProfileHeader = ({
               width: '100%',
               marginTop: { xs: '-48px', md: '-64px' },
               ml: {
-                xs: 0,
+                xs: 4,
                 md: 4,
               },
             }}
@@ -318,8 +318,8 @@ const ProfileHeader = ({
               direction="row"
               sx={{
                 ml: {
-                  xs: 4,
-                  sm: 4,
+                  xs: 0,
+                  sm: 0,
                   md: 0,
                 },
               }}
@@ -377,10 +377,47 @@ const ProfileHeader = ({
                       </Button>
                     )
                 )}
+                <Button
+                  onMouseEnter={handleOpenShare}
+                  onMouseLeave={handleCloseShare}
+                  ref={navRefSocial}
+                  size="medium"
+                  variant="outlined"
+                  sx={{ p: 1, minWidth: '44px' }}
+                  onClick={handlePopoverOpen}
+                >
+                  <Iconify icon="ion:share-social-outline" width={20} />
+                </Button>
+
+                <Popover
+                  open={openTooltipShare}
+                  anchorEl={navRefSocial.current}
+                  anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+                  transformOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+                  slotProps={{
+                    paper: {
+                      onMouseEnter: handleOpenShare,
+                      onMouseLeave: handleCloseShare,
+                      sx: {
+                        mt: 6,
+                        backgroundColor: 'rgba(0,0,0,0.6)',
+                        padding: '8px 20px',
+                        ...(open && {
+                          pointerEvents: 'auto',
+                        }),
+                      },
+                    },
+                  }}
+                  sx={{
+                    pointerEvents: 'none',
+                  }}
+                >
+                  <Typography>Share Watchit on your social</Typography>
+                </Popover>
               </Stack>
             </Stack>
 
-            <Stack direction="column" sx={{ width: '100%' }}>
+            <Stack direction="column" sx={{ width: '100%', maxWidth: { xs: 'calc(100% - 2rem)', md: '100%' } }}>
               <Box sx={{ mt: 2, width: '80%' }}>
                 <Box
                   sx={{
@@ -413,7 +450,7 @@ const ProfileHeader = ({
                     mt: 0,
                     mb: 2,
                     opacity: 0.7,
-                    minWidth: '400px',
+                    minWidth: { xs: 'auto', md: '400px' },
                   }}
                 >
                   {profile?.metadata?.bio ?? ''}
@@ -497,43 +534,6 @@ const ProfileHeader = ({
                 {profile?.id !== sessionData?.profile?.id && (
                   <FollowUnfollowButton profileId={profile?.id} />
                 )}
-                <Button
-                  onMouseEnter={handleOpenShare}
-                  onMouseLeave={handleCloseShare}
-                  ref={navRefSocial}
-                  size="medium"
-                  variant="outlined"
-                  sx={{ p: 1, minWidth: '44px' }}
-                  onClick={handlePopoverOpen}
-                >
-                  <Iconify icon="ion:share-social-outline" width={20} />
-                </Button>
-
-                <Popover
-                  open={openTooltipShare}
-                  anchorEl={navRefSocial.current}
-                  anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-                  transformOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-                  slotProps={{
-                    paper: {
-                      onMouseEnter: handleOpenShare,
-                      onMouseLeave: handleCloseShare,
-                      sx: {
-                        mt: 6,
-                        backgroundColor: 'rgba(0,0,0,0.6)',
-                        padding: '8px 20px',
-                        ...(open && {
-                          pointerEvents: 'auto',
-                        }),
-                      },
-                    },
-                  }}
-                  sx={{
-                    pointerEvents: 'none',
-                  }}
-                >
-                  <Typography>Share Watchit on your social</Typography>
-                </Popover>
 
                 {sessionData?.profile && profile?.id === sessionData?.profile?.id && (
                   <>

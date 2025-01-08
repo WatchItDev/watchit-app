@@ -1,7 +1,7 @@
-// @mui
+// MUI IMPORTS
 import Box from '@mui/material/Box';
 
-// Project components
+// LOCAL IMPORTS
 import TextMaxLine from '@src/components/text-max-line';
 import { ComingSoonIllustration } from '@src/assets/illustrations';
 

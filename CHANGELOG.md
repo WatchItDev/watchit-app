@@ -1,3 +1,11 @@
+# [2.2.0-beta.6](https://github.com/WatchItDev/watchit-app/compare/v2.2.0-beta.5...v2.2.0-beta.6) (2025-01-08)
+
+
+### Bug Fixes
+
+* coming soon stripe ([9f9ca05](https://github.com/WatchItDev/watchit-app/commit/9f9ca054e392dc2384ecd3758bf8fbe58dcdbc01))
+* deposit and withdraw modals ([360e859](https://github.com/WatchItDev/watchit-app/commit/360e859d17a52ba974fe81c62f430718151bcc26))
+
 # [2.2.0-beta.5](https://github.com/WatchItDev/watchit-app/compare/v2.2.0-beta.4...v2.2.0-beta.5) (2025-01-08)
 
 
