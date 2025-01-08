@@ -1,3 +1,11 @@
+# [2.2.0-beta.4](https://github.com/WatchItDev/watchit-app/compare/v2.2.0-beta.3...v2.2.0-beta.4) (2025-01-08)
+
+
+### Bug Fixes
+
+* mispelling ([acc7717](https://github.com/WatchItDev/watchit-app/commit/acc7717ed680dfcc480c2819aa47827748dd9ad5))
+* the context is already set by the action, avoid adding extra details ([755790f](https://github.com/WatchItDev/watchit-app/commit/755790f88fc476e5553a67c7da221efb27ea244f))
+
 # [2.2.0-beta.3](https://github.com/WatchItDev/watchit-app/compare/v2.2.0-beta.2...v2.2.0-beta.3) (2025-01-08)
 
 
