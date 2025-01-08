@@ -1,28 +1,30 @@
 import { FC, useCallback, useEffect, useState } from 'react';
+
+// VIEM IMPORTS
 import { Address } from 'viem';
 
-// @mui
+// MUI IMPORTS
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
-import Divider from '@mui/material/Divider';
 import TextField from '@mui/material/TextField';
 
-// Project components
+// LOCAL IMPORTS
 import NeonPaper from '@src/sections/publication/NeonPaperContainer';
 import FinanceDialogsActions from '@src/sections/finance/components/finance-dialogs-actions';
 import TextMaxLine from '@src/components/text-max-line';
-import { InputAmount } from '@src/components/input-amount';
 import { formatBalanceNumber } from '@src/utils/format-number';
-import { useResponsive } from '@src/hooks/use-responsive';
 import BoxRow from '@src/sections/finance/components/box-row';
 import { isValidAddress } from '@src/sections/finance/components/finance-quick-transfer';
 import { UseWithdrawHook } from '@src/hooks/use-withdraw.ts';
+import { truncateAddress } from '@src/utils/wallet.ts';
 
-// Notifications
+// NOTIFICATIONS IMPORTS
 import { notifyError, notifySuccess, notifyWarning } from '@notifications/internal-notifications';
 import { ERRORS } from '@notifications/errors';
 import { WARNING } from '@notifications/warnings';
 import { SUCCESS } from '@notifications/success';
+
+// ----------------------------------------------------------------------
 
 interface FinanceWithdrawProps {
   address?: Address; // The connected wallet address
@@ -31,15 +33,16 @@ interface FinanceWithdrawProps {
   onClose: () => void; // Callback to close the modal/dialog
 }
 
+// ----------------------------------------------------------------------
+
 const FinanceWithdraw: FC<FinanceWithdrawProps> = ({ address, withdrawHook, balance, onClose }) => {
-  const [amount, setAmount] = useState<number>(0);
+  const [amount, setAmount] = useState<number>();
   const [destinationAddress, setDestinationAddress] = useState('');
   const [addressError, setAddressError] = useState(false);
+  const [amountError, setAmountError] = useState(false);
+  const [amountHelperText, setAmountHelperText] = useState(''); // Dynamic helper text for amount
   const [localLoading, setLocalLoading] = useState(false);
-
   const { withdraw, loading: withdrawLoading, error } = withdrawHook;
-
-  const mdUp = useResponsive('up', 'md');
   const RainbowEffect = localLoading || withdrawLoading ? NeonPaper : Box;
 
   useEffect(() => {
@@ -49,6 +52,8 @@ const FinanceWithdraw: FC<FinanceWithdrawProps> = ({ address, withdrawHook, bala
   }, [error]);
 
   const handleConfirmWithdraw = useCallback(async () => {
+    if (!amount) return;
+
     if (!destinationAddress || addressError) {
       notifyWarning(WARNING.INVALID_WALLET_ADDRESS);
       return;
@@ -69,6 +74,22 @@ const FinanceWithdraw: FC<FinanceWithdrawProps> = ({ address, withdrawHook, bala
     }
   }, [amount, destinationAddress, balance, withdraw, addressError, onClose]);
 
+  const handleAmountChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = Number(event.target.value);
+    setAmount(value);
+
+    // Update error state and helper text dynamically
+    const errorMessage =
+      value <= 0
+        ? "Amount must be greater than zero"
+        : value > (balance ?? 0)
+          ? "Amount cannot be greater than balance"
+          : "";
+
+    setAmountError(!!errorMessage);
+    setAmountHelperText(errorMessage);
+  };
+
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
     setDestinationAddress(value);
@@ -78,48 +99,71 @@ const FinanceWithdraw: FC<FinanceWithdrawProps> = ({ address, withdrawHook, bala
   return (
     <>
       <Stack
-        sx={{ p: 2, gap: 1 }}
+        sx={{ mt: 1, py: 2, px: 3, gap: 1 }}
         direction="column"
         display="flex"
         alignItems="center"
         justifyContent="space-between"
       >
         <BoxRow>
-          <TextMaxLine line={1}>Connected Wallet</TextMaxLine>
+          <TextMaxLine line={1} fontWeight={"bold"}>Wallet</TextMaxLine>
           <TextMaxLine
             line={1}
-            sx={{ fontWeight: 'bold', fontSize: '1em', color: 'text.secondary' }}
+            sx={{ fontWeight: '400', fontSize: '1em', color: 'text.secondary' }}
           >
-            {address ? address : 'No wallet connected'}
+            {address ? truncateAddress(address) : 'No wallet connected'}
           </TextMaxLine>
         </BoxRow>
 
-        <Divider sx={{ width: '100%' }} />
-
         <BoxRow>
-          <TextMaxLine line={1}>Balance</TextMaxLine>
+          <TextMaxLine line={1} fontWeight={"bold"}>Balance</TextMaxLine>
           <TextMaxLine
             line={1}
-            sx={{ fontWeight: 'bold', fontSize: '1em', color: 'text.secondary' }}
+            sx={{ fontWeight: '400', fontSize: '1em', color: 'text.secondary' }}
           >
             {formatBalanceNumber(balance ?? 0)} MMC
           </TextMaxLine>
         </BoxRow>
 
-        <Divider sx={{ width: '100%' }} />
-
-        <BoxRow>
-          <TextMaxLine line={1}>Amount to withdraw</TextMaxLine>
-          <InputAmount
-            autoFocus
-            max={balance ?? 0}
-            amount={amount}
-            onChange={(e) => setAmount(Number(e.target.value))}
-          />
-        </BoxRow>
-
         <TextField
           sx={{ mt: 1 }}
+          fullWidth
+          autoFocus
+          label="Amount to withdraw"
+          type="number"
+          value={amount}
+          onChange={handleAmountChange}
+          placeholder="Enter an amount"
+          error={amountError}
+          helperText={amountHelperText}
+        />
+
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            position: 'relative',
+            width: '100%',
+            my: 2
+          }}
+        >
+          <Box sx={{ background: 'rgba(255,255,255,0.1)', height: '1px', width: '100%' }} />
+          <Box sx={{
+            position: 'absolute',
+            left: 'calc(50% - 1.5rem)',
+            top: '-22px',
+            width: '3rem',
+            padding: '8px',
+            background: '#212b36',
+            textAlign: 'center',
+            color: 'text.secondary'
+          }}>
+            to
+          </Box>
+        </Box>
+
+        <TextField
           fullWidth
           label="Wallet Address"
           value={destinationAddress}
@@ -134,7 +178,7 @@ const FinanceWithdraw: FC<FinanceWithdrawProps> = ({ address, withdrawHook, bala
         rainbowComponent={RainbowEffect}
         loading={localLoading}
         actionLoading={withdrawLoading}
-        amount={amount}
+        amount={amount ?? 0}
         balance={balance ?? 0}
         label={'Confirm'}
         onConfirmAction={handleConfirmWithdraw}

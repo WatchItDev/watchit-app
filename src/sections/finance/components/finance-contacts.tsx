@@ -102,10 +102,11 @@ export default function FinanceContactsCarousel({
         title={title}
         subheader={subheader}
         action={<NavigationArrows next={carousel.onNext} prev={carousel.onPrev} />}
+        sx={{ px: 0 }}
       />
 
       {/* Main carousel container */}
-      <Box sx={{ p: 3 }}>
+      <Box sx={{ py: 3 }}>
         <Carousel ref={carousel.carouselRef} {...carousel.carouselSettings}>
           {slidesData.map((chunk, index) => (
             <SlideContacts

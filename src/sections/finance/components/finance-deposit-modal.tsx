@@ -1,80 +1,49 @@
 // REACT IMPORTS
-import { FC, useState } from 'react';
-
-// MUI IMPORTS
-import Tab from '@mui/material/Tab';
-import DialogTitle from '@mui/material/DialogTitle';
-import Tabs, { tabsClasses } from '@mui/material/Tabs';
-import Dialog, { DialogProps } from '@mui/material/Dialog';
+import { FC } from 'react';
 
 // LOCAL IMPORTS
 import Iconify from '@src/components/iconify';
-import FinanceDepositFromStripe from '@src/sections/finance/components/finance-deposit-from-stripe.tsx';
-import FinanceDepositFromMetamask from '@src/sections/finance/components/finance-deposit-from-metamask.tsx';
-import FinanceDepositFromSmartAccount from '@src/sections/finance/components/finance-deposit-from-smart-account.tsx';
+import FinanceModal from '@src/sections/finance/components/finance-modal';
+import FinanceDepositFromStripe from '@src/sections/finance/components/finance-deposit-from-stripe';
+import FinanceDepositFromMetamask from '@src/sections/finance/components/finance-deposit-from-metamask';
+import FinanceDepositFromSmartAccount from '@src/sections/finance/components/finance-deposit-from-smart-account';
 
-// ----------------------------------------------------------------------
-
-interface FinanceDepositModalProps extends DialogProps {
+interface FinanceDepositModalProps {
+  open: boolean;
   onClose: VoidFunction;
 }
 
-// ----------------------------------------------------------------------
-
-const TABS = [
+const depositTabs = [
   { value: 'fiat', label: 'Stripe', disabled: false, icon: <Iconify icon={'logos:stripe'} /> },
-  {
-    value: 'metamask',
-    label: 'Metamask',
-    disabled: false,
-    icon: <Iconify icon={'logos:metamask-icon'} />,
-  },
-  {
-    value: 'smartAccount',
-    label: 'Smart Account',
-    disabled: false,
-    icon: <Iconify icon={'logos:ethereum-color'} />,
-  },
+  { value: 'metamask', label: 'Metamask', disabled: false, icon: <Iconify icon={'logos:metamask-icon'} /> },
+  { value: 'smartAccount', label: 'Smart Account', disabled: false, icon: <Iconify icon={'logos:ethereum-color'} /> },
 ];
 
-// ----------------------------------------------------------------------
-
 export const FinanceDepositModal: FC<FinanceDepositModalProps> = ({ open, onClose }) => {
-  const [currentTab, setCurrentTab] = useState('metamask');
-
-  const handleChangeTab = (_event: any, newValue: any) => {
-    setCurrentTab(newValue);
+  const renderContent = (currentTab: string) => {
+    switch (currentTab) {
+      case 'fiat':
+        return <FinanceDepositFromStripe />;
+      case 'metamask':
+        return <FinanceDepositFromMetamask onClose={onClose} />;
+      case 'smartAccount':
+        return <FinanceDepositFromSmartAccount onClose={onClose} />;
+      default:
+        return null;
+    }
   };
 
   return (
-    <Dialog open={open} fullWidth maxWidth="xs" onClose={onClose}>
-      <DialogTitle>Deposit</DialogTitle>
-
-      <Tabs
-        key={`tabs-deposit`}
-        value={currentTab}
-        onChange={handleChangeTab}
-        sx={{
-          width: 1,
-          zIndex: 9,
-          borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
-          [`& .${tabsClasses.flexContainer}`]: { justifyContent: { xs: 'left', md: 'center' } },
-        }}
-      >
-        {TABS.map((tab) => (
-          <Tab
-            icon={tab.icon}
-            disabled={tab.disabled}
-            key={tab.value}
-            value={tab.value}
-            label={tab.label}
-          />
-        ))}
-      </Tabs>
-
-      {currentTab === 'fiat' && <FinanceDepositFromStripe />}
-      {currentTab === 'metamask' && <FinanceDepositFromMetamask onClose={onClose} />}
-      {currentTab === 'smartAccount' && <FinanceDepositFromSmartAccount onClose={onClose} />}
-    </Dialog>
+    <FinanceModal
+      open={open}
+      onClose={onClose}
+      title="Deposit"
+      tabs={depositTabs}
+      renderContent={renderContent}
+      maxWidth="xs"
+      fullWidth
+    />
   );
 };
+
+export default FinanceDepositModal;
