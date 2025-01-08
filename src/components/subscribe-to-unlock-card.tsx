@@ -113,7 +113,7 @@ export const SubscribeToUnlockCard = ({
 
 const StyledBoxGradient = styled(LoadingButton)(() => ({
   width: '100%',
-  background: `linear-gradient(90deg, rgba(240,174,6,0.3) 20%, rgba(212,190,58,1) 57%, rgba(189,119,255,0.6) 100%)`,
+  background: `linear-gradient(90deg, rgba(254,255,118,1) 25%, rgba(212,190,58,1) 50%, rgba(189,119,255,0.5) 100%)`,
   backgroundSize: '400%',
   animation: 'gradientShift 10s infinite',
   padding: '12px',

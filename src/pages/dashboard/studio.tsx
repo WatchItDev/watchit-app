@@ -20,6 +20,10 @@ import { Helmet } from 'react-helmet-async';
 // import { verifyIpfsData } from '@src/utils/ipfs.ts';
 import ComingSoonView from '@src/sections/coming-soon/view.tsx';
 import BlankView from '@src/sections/blank/view.tsx';
+import Studio from "@src/sections/studio";
+import HeaderContent from "@src/layouts/dashboard/header-content.tsx";
+import Header from "@src/layouts/dashboard/header.tsx";
+import {useSelector} from "react-redux";
 
 // const hashes = [
 //   "f0155122018174e2a7079e266bab70f870249dfa50de77bfcd1263a29a7290c9bedad1ba8",
@@ -103,6 +107,7 @@ import BlankView from '@src/sections/blank/view.tsx';
 // ----------------------------------------------------------------------
 
 export default function OverviewFilePage() {
+  const sessionData = useSelector((state: any) => state.auth.session);
   // const [open, setOpen] = useState(false);
   // const { data: sessionData }: ReadResult<ProfileSession> = useSession();
   //
@@ -212,21 +217,35 @@ export default function OverviewFilePage() {
   //   }
   // };
 
+  // Allowed profileId to view (temporary) this section
+  const allowedProfilesId = ['0x0563', '0x050d','0x055c','0x0514']; // Russian creator, Carlos, Jacob and Geolffrey
+
+  // Verify if the current profile is allowed to view this section
+  console.log(sessionData)
+  const isAllowed = allowedProfilesId.includes(sessionData?.profile?.id ?? '');
+
   return (
     <>
       <Helmet>
         <title> WatchIt | Studio</title>
       </Helmet>
 
-      <BlankView>
-        <ComingSoonView
-          deadline={'03/30/2025 21:30'}
-          showDeadline={true}
-          content={
-            "The Studio is evolving! Soon, you'll generate new content and enhance your creations with AI-driven tools for metadata, images, subtitles, voiceovers, and security checks. Stay tuned!"
-          }
-        />
-      </BlankView>
+      {isAllowed ? (<><Header>
+        <HeaderContent title="Studio" />
+      </Header>
+        <Studio />
+      </>) : (
+        <BlankView>
+          <ComingSoonView
+            deadline={'03/30/2025 21:30'}
+            showDeadline={true}
+            content={
+              "The Studio is evolving! Soon, you'll generate new content and enhance your creations with AI-driven tools for metadata, images, subtitles, voiceovers, and security checks. Stay tuned!"
+            }
+          />
+        </BlankView>
+      )}
+
 
       {/*<Header>*/}
       {/*  <HeaderContent title="Studio" />*/}
