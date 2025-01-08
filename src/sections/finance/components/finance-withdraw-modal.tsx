@@ -47,7 +47,7 @@ export const FinanceWithdrawModal: FC<FinanceWithdrawModalProps> = ({ open, onCl
 
   return (
     <Dialog open={open} fullWidth maxWidth="xs" onClose={onClose}>
-      <DialogTitle>Withdraw from your vault balance</DialogTitle>
+      <DialogTitle>Withdraw</DialogTitle>
 
       <Tabs
         key={`tabs-deposit`}

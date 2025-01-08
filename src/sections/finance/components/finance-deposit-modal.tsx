@@ -48,7 +48,7 @@ export const FinanceDepositModal: FC<FinanceDepositModalProps> = ({ open, onClos
 
   return (
     <Dialog open={open} fullWidth maxWidth="xs" onClose={onClose}>
-      <DialogTitle>Deposit to your vault balance</DialogTitle>
+      <DialogTitle>Deposit</DialogTitle>
 
       <Tabs
         key={`tabs-deposit`}
