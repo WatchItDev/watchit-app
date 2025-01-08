@@ -32,13 +32,13 @@ const TABS = [
 
 // ----------------------------------------------------------------------
 
-interface FinanceWitdrawModalProps extends DialogProps {
+interface FinanceWithdrawModalProps extends DialogProps {
   onClose: VoidFunction;
 }
 
 // ----------------------------------------------------------------------
 
-export const FinanceWithdrawModal: FC<FinanceWitdrawModalProps> = ({ open, onClose }) => {
+export const FinanceWithdrawModal: FC<FinanceWithdrawModalProps> = ({ open, onClose }) => {
   const [currentTab, setCurrentTab] = useState('metamask');
 
   const handleChangeTab = (_event: any, newValue: any) => {
@@ -47,7 +47,7 @@ export const FinanceWithdrawModal: FC<FinanceWitdrawModalProps> = ({ open, onClo
 
   return (
     <Dialog open={open} fullWidth maxWidth="xs" onClose={onClose}>
-      <DialogTitle>Withdraw from your vault balance</DialogTitle>
+      <DialogTitle>Withdraw</DialogTitle>
 
       <Tabs
         key={`tabs-deposit`}

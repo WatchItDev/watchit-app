@@ -1,3 +1,50 @@
+# [2.2.0-beta.4](https://github.com/WatchItDev/watchit-app/compare/v2.2.0-beta.3...v2.2.0-beta.4) (2025-01-08)
+
+
+### Bug Fixes
+
+* mispelling ([acc7717](https://github.com/WatchItDev/watchit-app/commit/acc7717ed680dfcc480c2819aa47827748dd9ad5))
+* the context is already set by the action, avoid adding extra details ([755790f](https://github.com/WatchItDev/watchit-app/commit/755790f88fc476e5553a67c7da221efb27ea244f))
+
+# [2.2.0-beta.3](https://github.com/WatchItDev/watchit-app/compare/v2.2.0-beta.2...v2.2.0-beta.3) (2025-01-08)
+
+
+### Bug Fixes
+
+* cancel metamask alerts ([2239675](https://github.com/WatchItDev/watchit-app/commit/22396755e31a37263a0bf058c8d5f06fc7d409ae))
+* duplicated dates on graph and change expense with outcome ([4c30fbc](https://github.com/WatchItDev/watchit-app/commit/4c30fbc732e73ff4fc68a427cde9f793b958ea41))
+* finance mobile ([5ab9235](https://github.com/WatchItDev/watchit-app/commit/5ab92351447162a9fd08ca7e8d08075474a35bc6))
+* **finance:** adjust chunk size for contacts list ([53c1afb](https://github.com/WatchItDev/watchit-app/commit/53c1afb832a501339254c8ad4a7d992ee32d42a8))
+* input amount on quick transfer ([de2cdc7](https://github.com/WatchItDev/watchit-app/commit/de2cdc761a50e74903de4573fbad5568f3400eb1))
+* move quick transfer below balance section on mobile ([f8107ed](https://github.com/WatchItDev/watchit-app/commit/f8107ed4c13b26eae10ff72e91cb130a902185e1))
+* notify execution ([babc9ca](https://github.com/WatchItDev/watchit-app/commit/babc9ca5defdce490cbbcacd2565cfaae3110b20))
+* remove filters from table, fix texts and tabs filters on table ([554daeb](https://github.com/WatchItDev/watchit-app/commit/554daeb725f4c7cf6583f45f6e3f954ac0250457))
+* remove no data image on table and fix table width ([9032206](https://github.com/WatchItDev/watchit-app/commit/9032206dbf184781a7a25e7a04520e8408ede61a))
+* tabs on deposit modals ([cbdf611](https://github.com/WatchItDev/watchit-app/commit/cbdf611b59b32b6e7a3573fe1226bb388984bc45))
+* **ui:** adjust finance earn tokens layout for responsiveness ([74de454](https://github.com/WatchItDev/watchit-app/commit/74de454f2001823bc286d75dbc1daf0c0b0c008a))
+
+
+### Features
+
+* add @metamask/sdk-react dependency ([1721540](https://github.com/WatchItDev/watchit-app/commit/1721540e0defee29d7b86ea88449ffdd257f4a91))
+* add margin around LoadingScreen in deposit flow ([71d5fc0](https://github.com/WatchItDev/watchit-app/commit/71d5fc0cd041a5a640fb557337219afb30a1d873))
+* added loader while loading profiles on login modal ([f4e05f0](https://github.com/WatchItDev/watchit-app/commit/f4e05f01f3b7cfafa2ec0cb6e09a0b537f706c44))
+* added loader while loading profiles on login modal ([8b39944](https://github.com/WatchItDev/watchit-app/commit/8b39944dff97f41db45d86378142f19224eb38ac))
+* added notify data ([ac94bc4](https://github.com/WatchItDev/watchit-app/commit/ac94bc4033c705b3bd7e80a16faffc17f2a0f28c))
+* added notify data ([7fad46f](https://github.com/WatchItDev/watchit-app/commit/7fad46f1896a10a17df8424ee83ff8b53f8d57f4))
+* added notify data ([aaa830a](https://github.com/WatchItDev/watchit-app/commit/aaa830ac189c344f257362dbdd7da0a07faf5721))
+* added profile search to quick transfer ([887b447](https://github.com/WatchItDev/watchit-app/commit/887b447aaaa41faef39e9efd33624625fd21b1aa))
+* **config:** add support for Infura API key ([53ef34f](https://github.com/WatchItDev/watchit-app/commit/53ef34fe71c1b1e59dc66e26ea616fc773a40b39))
+* connect balance card to blockchain data ([e551617](https://github.com/WatchItDev/watchit-app/commit/e551617ecc3f267c89a9867ecf09cd8241dff05d))
+* filter blockchain events by user ([19cdac5](https://github.com/WatchItDev/watchit-app/commit/19cdac591484063751b3220e386ce4452e67df43))
+* **finance:** add "Earn Tokens" functionality ([1b623e3](https://github.com/WatchItDev/watchit-app/commit/1b623e3cb494586cbca04854c7d90838268673a3))
+* **finance:** add margin to Metamask connect button ([6f95562](https://github.com/WatchItDev/watchit-app/commit/6f95562eb4e280e70a1780b72cb53c391b854de3))
+* **finance:** enable Stripe deposit tab and add placeholder UI ([96b00ab](https://github.com/WatchItDev/watchit-app/commit/96b00abb5dab91c568d8514a23f9e3b4d811586f))
+* **finance:** improve wallet connection and UX updates ([72a6467](https://github.com/WatchItDev/watchit-app/commit/72a6467998c4ea9a5f3a01cd86e25d3181499f7f))
+* **finance:** integrate MetaMask SDK for wallet connection ([8e57844](https://github.com/WatchItDev/watchit-app/commit/8e5784484e2892629f777fca68b453eb9eb4ff9f))
+* **header-balance:** add "Earn tokens" button with link ([13316c5](https://github.com/WatchItDev/watchit-app/commit/13316c5d276b0c31b53607eb216cefdc8266e589))
+* improve finance sections with enhanced responsiveness and loaders ([d8b376a](https://github.com/WatchItDev/watchit-app/commit/d8b376acb45e4cb62c6464265166323d26e2027b))
+
 # [2.2.0-beta.2](https://github.com/WatchItDev/watchit-app/compare/v2.2.0-beta.1...v2.2.0-beta.2) (2025-01-01)
 
 
