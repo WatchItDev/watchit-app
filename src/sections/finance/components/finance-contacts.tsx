@@ -50,19 +50,19 @@ export default function FinanceContactsCarousel({
     if (time == null) time = 500;
     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     (pos = +pos), (time = +time);
+    
     window.requestAnimationFrame(function step(currentTime) {
       start = !start ? currentTime : start;
       let progress = currentTime - start;
-      if (currentPos < pos) {
-        window.scrollTo(0, ((pos - currentPos) * progress) / time + currentPos);
-      } else {
-        window.scrollTo(0, currentPos - ((currentPos - pos) * progress) / time);
-      }
-      if (progress < time) {
-        window.requestAnimationFrame(step);
-      } else {
-        window.scrollTo(0, pos);
-      }
+
+      const lgPos = ((pos - currentPos) * progress) / time + currentPos;
+      const gtPos = currentPos - ((currentPos - pos) * progress) / time
+      window.scrollTo(0, currentPos < pos ? lgPos : gtPos);
+
+      progress < time
+        ? window.requestAnimationFrame(step)
+        : window.scrollTo(0, pos);
+
     });
   }
 
