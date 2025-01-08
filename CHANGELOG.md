@@ -1,3 +1,15 @@
+# [2.2.0-beta.5](https://github.com/WatchItDev/watchit-app/compare/v2.2.0-beta.4...v2.2.0-beta.5) (2025-01-08)
+
+
+### Bug Fixes
+
+* **finance:** ensure input focus persistence on amount change ([5d418ad](https://github.com/WatchItDev/watchit-app/commit/5d418ad2aa1d241d63814a2ca2f8519b0cf93386))
+
+
+### Features
+
+* **finance-quick-transfer:** enhance slider and input UX ([1563296](https://github.com/WatchItDev/watchit-app/commit/1563296d7a733cbe826d839b3c94fdb70014baee))
+
 # [2.2.0-beta.4](https://github.com/WatchItDev/watchit-app/compare/v2.2.0-beta.3...v2.2.0-beta.4) (2025-01-08)
 
 

@@ -79,7 +79,7 @@ const FinanceEarnTokens: FC<FinanceEarnTokensProps> = ({ sx, lgUp, ...other }) =
                 whiteSpace: 'pre-line',
               }}
             >
-              ¡Complete some tasks and win!
+              Earn rewards effortlessly!
             </Typography>
             <Typography
               variant="h3"
@@ -110,7 +110,7 @@ const FinanceEarnTokens: FC<FinanceEarnTokensProps> = ({ sx, lgUp, ...other }) =
                 mb: { xs: 1, xl: 2 },
               }}
             >
-              Invite your family and friends and claims your rewards.
+              Invite your friends and complete tasks to grow your balance.
             </Typography>
             <Button
               sx={{ mt: lgUp ? 3 : null }}
@@ -119,7 +119,7 @@ const FinanceEarnTokens: FC<FinanceEarnTokensProps> = ({ sx, lgUp, ...other }) =
               startIcon={<Iconify icon={'fluent-emoji:trophy'} />}
               onClick={handleClick}
             >
-              Earn tokens
+              Earn now!
             </Button>
           </Stack>
           <Stack

@@ -198,7 +198,7 @@ export default function FinanceWidgetSummary({
             {fPercent(percent)}
           </Box>
 
-          <Box sx={{ opacity: 0.8 }}>than last month</Box>
+          <Box sx={{ opacity: 0.8 }}>compared to last month</Box>
         </Stack>
       </Stack>
 
