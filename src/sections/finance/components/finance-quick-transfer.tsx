@@ -105,6 +105,7 @@ export default function FinanceQuickTransfer({
     centerMode: true,
     swipeToSlide: true,
     infinite: true,
+    focusOnSelect: true,
     centerPadding: '0px',
     rows: 1,
     slidesToShow: list?.length > 7 ? 7 : (list?.length ?? 1),
@@ -199,6 +200,11 @@ export default function FinanceQuickTransfer({
   // Handle changes in the input for the amount
   const handleChangeInput = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     setAmount(Number(event.target.value));
+
+    setTimeout(() => {
+      event.target.focus();
+    }, 25);
+
   }, []);
 
   // Validate the amount on blur
