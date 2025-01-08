@@ -9,6 +9,7 @@ export const BoxRow: FC<PropsWithChildren> = ({ children }) => (
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'space-between',
+      my: 0.5
     }}
   >
     {children}

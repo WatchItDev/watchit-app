@@ -51,7 +51,7 @@ const FinanceWithdrawFromMetamask: FC<FinanceWithdrawFromMetamaskProps> = ({ onC
 
   if (connecting) {
     return (
-      <Box sx={{ m: 2 }}>
+      <Box sx={{ mx: 4, my: 8 }}>
         <LoadingScreen />
       </Box>
     );

@@ -40,7 +40,7 @@ const TABS = [
 // ----------------------------------------------------------------------
 
 export const FinanceDepositModal: FC<FinanceDepositModalProps> = ({ open, onClose }) => {
-  const [currentTab, setCurrentTab] = useState('metamask');
+  const [currentTab, setCurrentTab] = useState('smartAccount');
 
   const handleChangeTab = (_event: any, newValue: any) => {
     setCurrentTab(newValue);
@@ -48,17 +48,21 @@ export const FinanceDepositModal: FC<FinanceDepositModalProps> = ({ open, onClos
 
   return (
     <Dialog open={open} fullWidth maxWidth="xs" onClose={onClose}>
-      <DialogTitle>Deposit</DialogTitle>
+      <DialogTitle sx={{ pb: 1 }}>Deposit</DialogTitle>
 
       <Tabs
         key={`tabs-deposit`}
         value={currentTab}
+        variant="scrollable"
+        scrollButtons="auto"
         onChange={handleChangeTab}
+        allowScrollButtonsMobile={true}
         sx={{
           width: 1,
           zIndex: 9,
           borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
-          [`& .${tabsClasses.flexContainer}`]: { justifyContent: { xs: 'left', md: 'center' } },
+          [`& .${tabsClasses.flexContainer}`]: { justifyContent: 'center', px: 1 },
+          [`& .${tabsClasses.scroller}`]: { display: 'flex' },
         }}
       >
         {TABS.map((tab) => (

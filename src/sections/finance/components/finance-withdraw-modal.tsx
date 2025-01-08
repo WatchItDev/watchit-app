@@ -39,7 +39,7 @@ interface FinanceWithdrawModalProps extends DialogProps {
 // ----------------------------------------------------------------------
 
 export const FinanceWithdrawModal: FC<FinanceWithdrawModalProps> = ({ open, onClose }) => {
-  const [currentTab, setCurrentTab] = useState('metamask');
+  const [currentTab, setCurrentTab] = useState('smartAccount');
 
   const handleChangeTab = (_event: any, newValue: any) => {
     setCurrentTab(newValue);
@@ -47,17 +47,21 @@ export const FinanceWithdrawModal: FC<FinanceWithdrawModalProps> = ({ open, onCl
 
   return (
     <Dialog open={open} fullWidth maxWidth="xs" onClose={onClose}>
-      <DialogTitle>Withdraw</DialogTitle>
+      <DialogTitle sx={{ pb: 1 }}>Withdraw</DialogTitle>
 
       <Tabs
         key={`tabs-deposit`}
         value={currentTab}
         onChange={handleChangeTab}
+        variant="scrollable"
+        scrollButtons="auto"
+        allowScrollButtonsMobile={true}
         sx={{
           width: 1,
           zIndex: 9,
           borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
-          [`& .${tabsClasses.flexContainer}`]: { justifyContent: { xs: 'left', md: 'center' } },
+          [`& .${tabsClasses.flexContainer}`]: { justifyContent: 'center', px: 1 },
+          [`& .${tabsClasses.scroller}`]: { display: 'flex' },
         }}
       >
         {TABS.map((tab) => (

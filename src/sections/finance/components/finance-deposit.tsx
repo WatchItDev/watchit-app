@@ -1,29 +1,29 @@
-// React and libraries imports
+// REACT IMPORTS
 import { FC, useCallback, useEffect, useState } from 'react';
+
+// VIEM IMPORTS
 import { Address } from 'viem';
 
-// @mui components
+// MUI IMPORTS
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
-import Divider from '@mui/material/Divider';
 
-// Project components
+// LOCAL IMPORTS
 import NeonPaper from '@src/sections/publication/NeonPaperContainer';
 import FinanceDialogsActions from '@src/sections/finance/components/finance-dialogs-actions';
 import TextMaxLine from '@src/components/text-max-line';
-import { InputAmount } from '@src/components/input-amount';
 import { formatBalanceNumber } from '@src/utils/format-number';
-import { useResponsive } from '@src/hooks/use-responsive';
 import { useGetMmcContractBalance } from '@src/hooks/use-get-mmc-contract-balance';
 import BoxRow from '@src/sections/finance/components/box-row.tsx';
 import { UseDepositHook } from '@src/hooks/use-deposit';
 import { truncateAddress } from '@src/utils/wallet';
 
-// Notifications
+// NOTIFICATIONS IMPORTS
 import { notifyError, notifySuccess, notifyWarning } from '@notifications/internal-notifications';
 import { WARNING } from '@notifications/warnings';
 import { SUCCESS } from '@notifications/success';
 import { ERRORS } from '@notifications/errors.ts';
+import TextField from '@mui/material/TextField';
 
 interface FinanceDepositProps {
   /**
@@ -58,13 +58,14 @@ interface FinanceDepositProps {
  * - `onClose`
  */
 const FinanceDeposit: FC<FinanceDepositProps> = ({ address, recipient, depositHook, onClose }) => {
-  const [amount, setAmount] = useState<number>(0);
+  const [amount, setAmount] = useState<number>();
   const [localLoading, setLocalLoading] = useState(false);
-
+  const [amountError, setAmountError] = useState(false);
+  const [helperText, setHelperText] = useState<string>("");
   const { deposit, loading: depositLoading, error } = depositHook;
-
-  // Retrieve the balance using the "address" (the connected one)
   const { balance } = useGetMmcContractBalance(address);
+  const isBusy = localLoading || depositLoading;
+  const RainbowEffect = isBusy ? NeonPaper : Box;
 
   useEffect(() => {
     if (error) {
@@ -74,6 +75,8 @@ const FinanceDeposit: FC<FinanceDepositProps> = ({ address, recipient, depositHo
 
   // Validation and deposit
   const handleConfirmDeposit = useCallback(async () => {
+    if (!amount) return;
+
     if (!address) {
       // If there's no connected address, we can't deposit
       notifyWarning(WARNING.NO_WALLET_CONNECTED);
@@ -96,64 +99,73 @@ const FinanceDeposit: FC<FinanceDepositProps> = ({ address, recipient, depositHo
     }
   }, [address, recipient, amount, balance, deposit, onClose]);
 
-  // NeonPaper effect if currently loading
-  const isBusy = localLoading || depositLoading;
-  const RainbowEffect = isBusy ? NeonPaper : Box;
-  const mdUp = useResponsive('up', 'md');
+  const handleAmountChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = Number(event.target.value);
 
-  // If there's no address, we could show a fallback,
-  // but here we'll show the same UI (balance: 0, etc.)
-  // or a warning when confirming. It's up to you.
+    setAmount(value ?? undefined);
+
+    // Set appropriate error message
+    const errorMessage =
+      value <= 0
+        ? "No amount entered"
+        : value > (balance ?? 0)
+          ? "Amount cannot be greater than balance"
+          : "";
+
+    setAmountError(!!errorMessage); // Set error state
+    setHelperText(errorMessage); // Update helper text with the error message
+  };
+
+
 
   return (
     <>
       <Stack
-        sx={{ mt: 2, p: 2, gap: 1 }}
+        sx={{ mt: 1, py: 2, px: 3, gap: 1 }}
         direction="column"
         display="flex"
         alignItems="center"
         justifyContent="space-between"
       >
         <BoxRow>
-          <TextMaxLine line={1}>Connected Wallet</TextMaxLine>
+          <TextMaxLine line={1} fontWeight={"bold"}>Connected Wallet</TextMaxLine>
           <TextMaxLine
             line={1}
-            sx={{ fontWeight: 'bold', fontSize: '1em', color: 'text.secondary' }}
+            sx={{ fontWeight: '400', fontSize: '1em', color: 'text.secondary' }}
           >
             {address ? truncateAddress(address) : 'No wallet connected'}
           </TextMaxLine>
         </BoxRow>
 
-        <Divider sx={{ width: '100%' }} />
-
         <BoxRow>
-          <TextMaxLine line={1}>Balance</TextMaxLine>
+          <TextMaxLine line={1} fontWeight={"bold"}>Balance</TextMaxLine>
           <TextMaxLine
             line={1}
-            sx={{ fontWeight: 'bold', fontSize: '1em', color: 'text.secondary' }}
+            sx={{ fontWeight: '400', fontSize: '1em', color: 'text.secondary' }}
           >
             {formatBalanceNumber(balance ?? 0)} MMC
           </TextMaxLine>
         </BoxRow>
 
-        <Divider sx={{ width: '100%' }} />
-
-        <BoxRow>
-          <TextMaxLine line={1}>Amount to deposit</TextMaxLine>
-          <InputAmount
-            autoFocus
-            max={balance ?? 0}
-            amount={amount}
-            onChange={(e) => setAmount(Number(e.target.value))}
-          />
-        </BoxRow>
+        <TextField
+          sx={{ mt: 1 }}
+          fullWidth
+          autoFocus
+          label="Amount to withdraw"
+          type="number"
+          value={amount}
+          onChange={handleAmountChange}
+          placeholder="Enter an amount"
+          error={amountError}
+          helperText={helperText}
+        />
       </Stack>
 
       <FinanceDialogsActions
         rainbowComponent={RainbowEffect}
         loading={isBusy}
         actionLoading={depositLoading}
-        amount={amount}
+        amount={amount ?? 0}
         balance={balance ?? 0}
         label={'Confirm'}
         onConfirmAction={handleConfirmDeposit}
