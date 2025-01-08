@@ -7,9 +7,9 @@ import { encodeFunctionData } from 'viem';
 // LOCAL IMPORTS
 import RightsPolicyAuthorizerAbi from '@src/config/abi/RightsPolicyAuthorizer.json';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
-import {useSelector} from "react-redux";
+import { useSelector } from 'react-redux';
 import { useWeb3Session } from '@src/hooks/use-web3-session.ts';
-import {ERRORS} from "@notifications/errors.ts";
+import { ERRORS } from '@notifications/errors.ts';
 
 // ----------------------------------------------------------------------
 // Define the return type of the useAuthorizePolicy hook
@@ -17,7 +17,7 @@ interface useAuthorizePolicyHook {
   data?: any;
   authorize: (params: AuthorizePolicyParams) => Promise<void>;
   loading: boolean;
-  error?: keyof typeof ERRORS| null;
+  error?: keyof typeof ERRORS | null;
 }
 
 // Parameters to be passed to the subscribe function
@@ -31,7 +31,7 @@ interface AuthorizePolicyParams {
 export const useAuthorizePolicy = (): useAuthorizePolicyHook => {
   const [data, setData] = useState();
   const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<keyof typeof ERRORS| null>(null);
+  const [error, setError] = useState<keyof typeof ERRORS | null>(null);
   const sessionData = useSelector((state: any) => state.auth.session);
   const { bundlerClient, smartAccount } = useWeb3Session();
 

@@ -13,7 +13,7 @@ type Props = {
   sx?: SxProps<Theme>;
 };
 
-export default function TableNoData({loading, notFound, sx }: Props) {
+export default function TableNoData({ loading, notFound, sx }: Props) {
   return (
     <TableRow>
       {notFound ? (

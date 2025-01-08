@@ -14,7 +14,7 @@ import PublicationNewWizardSteps from './publication-new-wizard-steps.tsx';
 import { useSettingsContext } from '@src/components/settings';
 // @ts-ignore
 import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
-import {useSelector} from "react-redux";
+import { useSelector } from 'react-redux';
 
 const steps = ['Movie Information', 'Media Assets & Technical Details', 'Distribution & Rights'];
 

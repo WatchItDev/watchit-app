@@ -7,7 +7,7 @@ import { Profile } from '@lens-protocol/api-bindings';
 
 // LOCAL IMPORTS
 import { UserItem } from '@src/components/user-item';
-import {useSelector} from "react-redux";
+import { useSelector } from 'react-redux';
 
 // ----------------------------------------------------------------------
 

@@ -19,7 +19,10 @@ export const SubscribeToUnlockCard = ({
   subscribeDisabled,
   post,
 }: Props) => {
-  const { terms } = useGetPolicyTerms(GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS as Address, post?.by?.ownedBy?.address as Address);
+  const { terms } = useGetPolicyTerms(
+    GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS as Address,
+    post?.by?.ownedBy?.address as Address
+  );
   const durationDays = 30; // a month
   const totalCostWei = terms?.amount ? terms?.amount * BigInt(durationDays) : 0; // Calculate total cost in Wei: DAILY_COST_WEI * durationDays
   const totalCostMMC = ethers.formatUnits(totalCostWei, 18); // Converts Wei to MMC
@@ -45,7 +48,8 @@ export const SubscribeToUnlockCard = ({
           </Typography>
         </Stack>
         <Typography variant="body2" sx={{ mb: 3 }}>
-          This content is exclusively for members. Become part of our growing community to access behind-the-scenes content, exclusive posts, and much more!
+          This content is exclusively for members. Become part of our growing community to access
+          behind-the-scenes content, exclusive posts, and much more!
         </Typography>
 
         <LoadingButton

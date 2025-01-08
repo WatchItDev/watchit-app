@@ -27,11 +27,12 @@ const followersSlice = createSlice({
     },
 
     removeFollowing: (state, action: PayloadAction<string>) => {
-      state.followings = state.followings.filter(following => following.id !== action.payload);
-  },
+      state.followings = state.followings.filter((following) => following.id !== action.payload);
+    },
   },
 });
 
-export const { setFollowers, setFollowings, removeFollowing, addFollowing } = followersSlice.actions;
+export const { setFollowers, setFollowings, removeFollowing, addFollowing } =
+  followersSlice.actions;
 
 export default followersSlice.reducer;

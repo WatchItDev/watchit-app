@@ -16,6 +16,7 @@ import { LoadingScreen } from '@src/components/loading-screen';
 // Notifications
 import { notifyError } from '@src/utils/notifications/internal-notifications';
 import { ERRORS } from '@src/utils/notifications/errors';
+import { Box } from '@mui/system';
 
 interface FinanceWithdrawFromMetamaskProps {
   onClose: () => void;
@@ -49,7 +50,11 @@ const FinanceWithdrawFromMetamask: FC<FinanceWithdrawFromMetamaskProps> = ({ onC
   };
 
   if (connecting) {
-    return <LoadingScreen />;
+    return (
+      <Box sx={{ m: 2 }}>
+        <LoadingScreen />
+      </Box>
+    );
   }
 
   if (!address) {

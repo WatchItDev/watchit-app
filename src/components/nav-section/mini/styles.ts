@@ -82,7 +82,7 @@ type StyledNavContentProps = {
 };
 
 export const StyledNavContent = styled(Box, {
-  shouldForwardProp: (prop) => prop !== 'active'
+  shouldForwardProp: (prop) => prop !== 'active',
 })<StyledNavContentProps>(({ theme, active }) => ({
   width: '3rem',
   height: '3rem',

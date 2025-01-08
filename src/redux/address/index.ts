@@ -24,7 +24,6 @@ const addressSlice = createSlice({
     toggleRainbow(state) {
       state.showRainbow = !state.showRainbow;
     },
-
   },
 });
 

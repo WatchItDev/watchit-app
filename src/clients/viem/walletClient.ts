@@ -1,7 +1,7 @@
-import {createWalletClient, custom} from "viem";
-import {polygonAmoy} from "viem/chains";
-import "viem/window";
-import {publicClient} from "@src/clients/viem/publicClient";
+import { createWalletClient, custom } from 'viem';
+import { polygonAmoy } from 'viem/chains';
+import 'viem/window';
+import { publicClient } from '@src/clients/viem/publicClient';
 
 export async function ConnectWalletClient() {
   // window.ethereum is an object provided by MetaMask or other web3 wallets
@@ -12,7 +12,7 @@ export async function ConnectWalletClient() {
   } else {
     // If window.ethereum is not available, throw an error
     const errorMessage =
-      "MetaMask or another web3 wallet is not installed. Please install one to proceed.";
+      'MetaMask or another web3 wallet is not installed. Please install one to proceed.';
     throw new Error(errorMessage);
   }
   // Return the wallet client
@@ -23,5 +23,5 @@ export async function ConnectWalletClient() {
 }
 
 export function ConnectPublicClient() {
-  return publicClient
+  return publicClient;
 }

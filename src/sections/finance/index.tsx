@@ -6,17 +6,17 @@ import FinanceQuickTransfer from '@src/sections/finance/components/finance-quick
 import FinanceInviteFriends from '@src/sections/finance/components/finance-invite-friends.tsx';
 import FinanceWidgetSummary from '@src/sections/finance/components/finance-widget-summary.tsx';
 import FinanceBalanceStatistics from '@src/sections/finance/components/finance-balance-statistics.tsx';
-import { useSelector } from "react-redux";
-import { useProfileFollowing } from "@lens-protocol/react";
-import Typography from "@mui/material/Typography";
-import FinanceTransactionsHistory from "@src/sections/finance/components/finance-transactions-history.tsx";
+import { useSelector } from 'react-redux';
+import { useProfileFollowing } from '@lens-protocol/react';
+import Typography from '@mui/material/Typography';
+import FinanceTransactionsHistory from '@src/sections/finance/components/finance-transactions-history.tsx';
 import useGetSmartWalletTransactions from '@src/hooks/use-get-smart-wallet-transactions.ts';
 import { useEffect, useState } from 'react';
-import Tabs, {tabsClasses} from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
-import Iconify from "@src/components/iconify";
-import {useResponsive} from "@src/hooks/use-responsive.ts";
-import FinanceEarnTokens from "@src/sections/finance/components/finance-earn-tokens.tsx";
+import Tabs, { tabsClasses } from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+import Iconify from '@src/components/iconify';
+import { useResponsive } from '@src/hooks/use-responsive.ts';
+import FinanceEarnTokens from '@src/sections/finance/components/finance-earn-tokens.tsx';
 
 // ----------------------------------------------------------------------
 
@@ -52,14 +52,21 @@ export default function OverviewBankingView() {
     >
       <Grid container spacing={2}>
         <Grid xs={12} md={8}>
-          <Stack direction={{ lg: 'column', xlg: 'row' }} spacing={{
-            xs: 2,
-            lg: 2,
-          }}>
+          <Stack
+            direction={{ lg: 'column', xlg: 'row' }}
+            spacing={{
+              xs: 2,
+              lg: 2,
+            }}
+          >
             <FinanceWidgetSummary
               title="Balance"
               color="primary"
-              icon={percent > 0 ? 'eva:diagonal-arrow-right-up-fill' : 'eva:diagonal-arrow-left-down-fill'}
+              icon={
+                percent > 0
+                  ? 'eva:diagonal-arrow-right-up-fill'
+                  : 'eva:diagonal-arrow-left-down-fill'
+              }
               percent={percent}
               total={balanceFromRedux}
               chart={{
@@ -67,11 +74,8 @@ export default function OverviewBankingView() {
               }}
             />
 
-            {!mdUp ? <FinanceQuickTransfer
-                title="Quick transfer"
-                list={following}
-              /> : null}
-            {lgUp ? (<FinanceEarnTokens lgUp={lgUp} />) : null}
+            {!mdUp ? <FinanceQuickTransfer title="Quick transfer" list={following} /> : null}
+            {lgUp ? <FinanceEarnTokens lgUp={lgUp} /> : null}
           </Stack>
 
           {following?.length && !lgUp ? (
@@ -83,20 +87,22 @@ export default function OverviewBankingView() {
             />
           ) : undefined}
 
-          {
-            lgUp ? (
-              <><Grid xs={12}>
+          {lgUp ? (
+            <>
+              <Grid xs={12}>
                 <Stack spacing={3}>
                   <FinanceBalanceStatistics />
                 </Stack>
               </Grid>
 
-                <Typography variant="h6" sx={{ pt: 2 }}>
-                  Recent Transactions
-                </Typography>
-                <FinanceTransactionsHistory /></>
-            ) : <TabsComponent />
-          }
+              <Typography variant="h6" sx={{ pt: 2 }}>
+                Recent Transactions
+              </Typography>
+              <FinanceTransactionsHistory />
+            </>
+          ) : (
+            <TabsComponent />
+          )}
         </Grid>
 
         <Grid xs={12} md={4}>
@@ -105,7 +111,7 @@ export default function OverviewBankingView() {
               title="Quick transfer"
               list={following}
               sx={{
-                display: { xs: 'none', md: 'flex' }
+                display: { xs: 'none', md: 'flex' },
               }}
             />
 
@@ -118,7 +124,7 @@ export default function OverviewBankingView() {
               />
             ) : undefined}
 
-            {!lgUp ? (<FinanceEarnTokens lgUp={lgUp} />) : null}
+            {!lgUp ? <FinanceEarnTokens lgUp={lgUp} /> : null}
 
             <FinanceInviteFriends
               price="50"
@@ -173,7 +179,6 @@ export function groupTransactionsForWidget(transactions: any[]) {
 }
 
 const TabsComponent = () => {
-
   const [currentTab, setCurrentTab] = useState('graph');
 
   const handleChangeTab = (_event: any, newValue: any) => {
@@ -182,40 +187,44 @@ const TabsComponent = () => {
 
   const TABS = [
     { value: 'graph', label: 'Statistics', icon: <Iconify icon={'codicon:graph'} /> },
-    { value: 'table', label: 'Transactions', icon: <Iconify icon={'majesticons:table'} /> }
+    { value: 'table', label: 'Transactions', icon: <Iconify icon={'majesticons:table'} /> },
   ];
 
-
-  return ( <>
-    <Tabs
-      key={`tabs-statistics`}
-      value={currentTab}
-      onChange={handleChangeTab}
-      sx={{
-        mt: 2,
-        width: 1,
-        zIndex: 9,
-        borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
-        [`& .${tabsClasses.flexContainer}`]: { justifyContent: { xs: 'left', md: 'center' }},
-      }}
-    >
-      {TABS.map((tab) => (
-        <Tab
-          icon={tab.icon}
-          key={tab.value}
-          value={tab.value}
-          label={tab.label}
-        />
-      ))}
-    </Tabs>
-    {currentTab === 'graph'  && (<><Grid xs={12} md={8}>
-      <Stack spacing={3}>
-        <FinanceBalanceStatistics />
-      </Stack>
-    </Grid></>)}
-    {currentTab === 'table' && (<><Typography variant="h6" sx={{ pt: 2 }}>
-      Recent Transactions  </Typography>
-      <FinanceTransactionsHistory /></>)}
-      </>
+  return (
+    <>
+      <Tabs
+        key={`tabs-statistics`}
+        value={currentTab}
+        onChange={handleChangeTab}
+        sx={{
+          mt: 2,
+          width: 1,
+          zIndex: 9,
+          borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
+          [`& .${tabsClasses.flexContainer}`]: { justifyContent: { xs: 'left', md: 'center' } },
+        }}
+      >
+        {TABS.map((tab) => (
+          <Tab icon={tab.icon} key={tab.value} value={tab.value} label={tab.label} />
+        ))}
+      </Tabs>
+      {currentTab === 'graph' && (
+        <>
+          <Grid xs={12} md={8}>
+            <Stack spacing={3}>
+              <FinanceBalanceStatistics />
+            </Stack>
+          </Grid>
+        </>
+      )}
+      {currentTab === 'table' && (
+        <>
+          <Typography variant="h6" sx={{ pt: 2 }}>
+            Recent Transactions{' '}
+          </Typography>
+          <FinanceTransactionsHistory />
+        </>
+      )}
+    </>
   );
-}
+};

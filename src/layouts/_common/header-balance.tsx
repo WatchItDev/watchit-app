@@ -19,8 +19,8 @@ export default function HeaderBalance() {
   const router = useRouter();
 
   const handleGoFinance = () => {
-    router.push(paths.dashboard.finance)
-  }
+    router.push(paths.dashboard.finance);
+  };
 
   return (
     <Button variant={'text'} sx={{ px: 1.5, py: 1, mr: -0.75 }} onClick={handleGoFinance}>

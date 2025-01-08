@@ -6,6 +6,6 @@
 export const pascalToUpperSnake = (str: string): string => {
   return str
     .replace(/([A-Z])/g, '_$1') // Inserts an underscore before each uppercase letter
-    .toUpperCase()              // Converts everything to uppercase
-    .replace(/^_/, '');         // Removes the initial underscore if it exists
+    .toUpperCase() // Converts everything to uppercase
+    .replace(/^_/, ''); // Removes the initial underscore if it exists
 };

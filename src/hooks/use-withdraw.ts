@@ -4,7 +4,7 @@ import { encodeFunctionData, parseUnits } from 'viem';
 import LedgerVaultAbi from '@src/config/abi/LedgerVault.json';
 import { GLOBAL_CONSTANTS } from '@src/config-global';
 import { useWeb3Session } from '@src/hooks/use-web3-session.ts';
-import {ERRORS} from "@notifications/errors.ts";
+import { ERRORS } from '@notifications/errors.ts';
 
 interface WithdrawParams {
   recipient: string;
@@ -21,7 +21,7 @@ export interface UseWithdrawHook {
 export const useWithdraw = (): UseWithdrawHook => {
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState< keyof typeof ERRORS |null >(null);
+  const [error, setError] = useState<keyof typeof ERRORS | null>(null);
 
   const sessionData = useSelector((state: any) => state.auth.session);
   const { bundlerClient, smartAccount } = useWeb3Session();

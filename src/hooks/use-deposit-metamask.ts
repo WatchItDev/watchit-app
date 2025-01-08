@@ -5,13 +5,14 @@ import LedgerVaultAbi from '@src/config/abi/LedgerVault.json';
 import MMCAbi from '@src/config/abi/MMC.json';
 import { GLOBAL_CONSTANTS } from '@src/config-global';
 import { publicClient } from '@src/clients/viem/publicClient';
-import { useSnackbar } from 'notistack';
-import {ERRORS} from "@notifications/errors.ts";
+import { ERRORS } from '@notifications/errors.ts';
+import { notifyInfo } from '@notifications/internal-notifications.ts';
+import { INFO } from '@notifications/info.ts';
 
 // SAME HERE
 interface DepositParams {
   recipient: string; // The address receiving the deposit
-  amount: number;    // Amount in "human" format (not in Wei)
+  amount: number; // Amount in "human" format (not in Wei)
 }
 
 // TODO this could be handled in one interface in a type.tsx file
@@ -32,7 +33,6 @@ export const useDepositMetamask = (): UseDepositHook => {
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<keyof typeof ERRORS | null>(null);
-  const { enqueueSnackbar } = useSnackbar();
 
   const deposit = async ({ recipient, amount }: DepositParams) => {
     setLoading(true);
@@ -49,10 +49,7 @@ export const useDepositMetamask = (): UseDepositHook => {
       const weiAmount = parseUnits(amount.toString(), 18);
 
       // Notify the user that we are sending approve transaction to the network
-      enqueueSnackbar('Sending approve transaction to the network...', {
-        variant: 'info',
-        autoHideDuration: 3000,
-      });
+      notifyInfo(INFO.APPROVE_SENDING_CONFIRMATION, { options: { autoHideDuration: 3000 } });
 
       // 4) First transaction: approve
       const approveTxHash = await walletClient.writeContract({
@@ -64,10 +61,7 @@ export const useDepositMetamask = (): UseDepositHook => {
       });
 
       // Notify the user that we are now waiting for the approve transaction to be confirmed
-      enqueueSnackbar('Approve transaction broadcasted. Waiting for confirmation (1/2)...', {
-        variant: 'info',
-        autoHideDuration: 7000,
-      });
+      notifyInfo(INFO.APPROVE_WAITING_CONFIRMATION, { options: { autoHideDuration: 7000 } });
 
       // Wait for the approve transaction to be mined
       const approveReceipt = await publicClient.waitForTransactionReceipt({
@@ -75,10 +69,7 @@ export const useDepositMetamask = (): UseDepositHook => {
       });
 
       // Notify the user that we are now sending the deposit transaction
-      enqueueSnackbar('Sending deposit transaction to the network...', {
-        variant: 'info',
-        autoHideDuration: 3000,
-      });
+      notifyInfo(INFO.DEPOSIT_SENDING_CONFIRMATION, { options: { autoHideDuration: 3000 } });
 
       // 5) Second transaction: deposit
       const depositTxHash = await walletClient.writeContract({
@@ -90,10 +81,7 @@ export const useDepositMetamask = (): UseDepositHook => {
       });
 
       // Notify the user that we are now waiting for the deposit transaction to be confirmed
-      enqueueSnackbar('Deposit transaction broadcasted. Waiting for confirmation (2/2)...', {
-        variant: 'info',
-        autoHideDuration: 7000,
-      });
+      notifyInfo(INFO.DEPOSIT_WAITING_CONFIRMATION, { options: { autoHideDuration: 7000 } });
 
       // Wait for the deposit transaction to be mined
       const depositReceipt = await publicClient.waitForTransactionReceipt({
@@ -110,7 +98,7 @@ export const useDepositMetamask = (): UseDepositHook => {
     } catch (err: any) {
       // If something fails (either approve or deposit), set an error
       setError(ERRORS.UNKNOWN_ERROR);
-      throw err
+      throw err;
     } finally {
       // Reset loading state
       setLoading(false);

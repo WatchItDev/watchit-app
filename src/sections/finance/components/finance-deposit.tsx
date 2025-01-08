@@ -1,6 +1,5 @@
 // React and libraries imports
-import {FC, useCallback, useEffect, useState} from 'react';
-import { useSnackbar } from 'notistack';
+import { FC, useCallback, useEffect, useState } from 'react';
 import { Address } from 'viem';
 
 // @mui components
@@ -21,9 +20,10 @@ import { UseDepositHook } from '@src/hooks/use-deposit';
 import { truncateAddress } from '@src/utils/wallet';
 
 // Notifications
-import { notifySuccess, notifyWarning } from '@notifications/internal-notifications';
+import { notifyError, notifySuccess, notifyWarning } from '@notifications/internal-notifications';
 import { WARNING } from '@notifications/warnings';
 import { SUCCESS } from '@notifications/success';
+import { ERRORS } from '@notifications/errors.ts';
 
 interface FinanceDepositProps {
   /**
@@ -61,7 +61,6 @@ const FinanceDeposit: FC<FinanceDepositProps> = ({ address, recipient, depositHo
   const [amount, setAmount] = useState<number>(0);
   const [localLoading, setLocalLoading] = useState(false);
 
-  const { enqueueSnackbar } = useSnackbar();
   const { deposit, loading: depositLoading, error } = depositHook;
 
   // Retrieve the balance using the "address" (the connected one)
@@ -70,13 +69,10 @@ const FinanceDeposit: FC<FinanceDepositProps> = ({ address, recipient, depositHo
   // @TODO: When show this?
   // Show an error if the deposit hook fails
   useEffect(() => {
-     if (error) {
-       enqueueSnackbar(
-         'Oops! Something went wrong with your deposit. Please try again.',
-         { variant: 'error' }
-       );
-     }
-   }, [error]);
+    if (error) {
+      notifyError(ERRORS.DEPOSIT_WENT_WRONG_ERROR);
+    }
+  }, [error]);
 
   // Validation and deposit
   const handleConfirmDeposit = useCallback(async () => {
@@ -100,7 +96,7 @@ const FinanceDeposit: FC<FinanceDepositProps> = ({ address, recipient, depositHo
     } finally {
       setLocalLoading(false);
     }
-  }, [address, recipient, amount, balance, deposit, enqueueSnackbar, onClose]);
+  }, [address, recipient, amount, balance, deposit, onClose]);
 
   // NeonPaper effect if currently loading
   const isBusy = localLoading || depositLoading;

@@ -12,7 +12,15 @@ export interface InputAmountProps extends InputProps {
   inputRef?: Ref<HTMLInputElement>;
 }
 
-export const InputAmount = ({ amount, onBlur, onChange, max, sx, inputRef, ...other }: InputAmountProps) => {
+export const InputAmount = ({
+  amount,
+  onBlur,
+  onChange,
+  max,
+  sx,
+  inputRef,
+  ...other
+}: InputAmountProps) => {
   const [autoWidth, setAutoWidth] = useState(32);
 
   useEffect(() => {

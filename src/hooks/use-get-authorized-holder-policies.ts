@@ -19,7 +19,7 @@ interface PolicyTerms {
 
 interface Policy {
   policy: string;
-  terms: PolicyTerms
+  terms: PolicyTerms;
 }
 
 interface UseGetAuthorizedHolderPoliciesHook {
@@ -53,12 +53,12 @@ export const useGetAuthorizedHolderPolicies = (
 
     try {
       // Call the contract method
-      const policies: any = await publicClient.readContract({
+      const policies: any = (await publicClient.readContract({
         address: GLOBAL_CONSTANTS.POLICIES_AGG_ADDRESS,
         abi: PoliciesAggAbi.abi,
         functionName: 'getHolderWidePolicies',
         args: [holder],
-      }) as Policy[];
+      })) as Policy[];
 
       // Store the response in state
       setAuthorizedHolderPolicies(policies);

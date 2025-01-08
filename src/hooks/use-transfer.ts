@@ -4,7 +4,7 @@ import { encodeFunctionData, parseUnits } from 'viem';
 import LedgerVaultAbi from '@src/config/abi/LedgerVault.json';
 import { GLOBAL_CONSTANTS } from '@src/config-global';
 import { useWeb3Session } from '@src/hooks/use-web3-session.ts';
-import {ERRORS} from "@notifications/errors.ts";
+import { ERRORS } from '@notifications/errors.ts';
 
 interface TransferParams {
   recipient: string;
@@ -15,7 +15,7 @@ interface UseTransferHook {
   data?: any;
   transfer: (params: TransferParams) => Promise<void>;
   loading: boolean;
-  error?: keyof typeof ERRORS| null;
+  error?: keyof typeof ERRORS | null;
 }
 
 export const useTransfer = (): UseTransferHook => {

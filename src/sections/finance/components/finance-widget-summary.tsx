@@ -7,7 +7,6 @@ import { CardProps } from '@mui/material/Card';
 import Typography from '@mui/material/Typography';
 import { useTheme, alpha } from '@mui/material/styles';
 
-
 // @mui
 import LoadingButton from '@mui/lab/LoadingButton';
 // CHARTS IMPORTS
@@ -25,8 +24,8 @@ import { useWithdraw } from '@src/hooks/use-withdraw.ts';
 import { FinanceWithdrawModal } from '@src/sections/finance/components/finance-withdraw-modal.tsx';
 
 // Notifications
-import {notifyError} from "@notifications/internal-notifications";
-import {ERRORS} from "@notifications/errors";
+import { notifyError } from '@notifications/internal-notifications';
+import { ERRORS } from '@notifications/errors';
 
 // ----------------------------------------------------------------------
 

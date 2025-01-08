@@ -3,7 +3,7 @@ import { Address } from 'viem';
 import { publicClient } from '@src/clients/viem/publicClient';
 import { GLOBAL_CONSTANTS } from '@src/config-global';
 import SubscriptionPolicyAbi from '@src/config/abi/SubscriptionPolicy.json';
-import {useSelector} from "react-redux";
+import { useSelector } from 'react-redux';
 
 interface AttestationError {
   message: string;

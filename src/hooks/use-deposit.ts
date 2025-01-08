@@ -5,11 +5,11 @@ import LedgerVaultAbi from '@src/config/abi/LedgerVault.json';
 import MMCAbi from '@src/config/abi/MMC.json';
 import { GLOBAL_CONSTANTS } from '@src/config-global';
 import { useWeb3Session } from '@src/hooks/use-web3-session.ts';
-import {ERRORS} from "@notifications/errors.ts";
+import { ERRORS } from '@notifications/errors.ts';
 
 interface DepositParams {
   recipient: string; // address
-  amount: number;    // plain number
+  amount: number; // plain number
 }
 
 export interface UseDepositHook {

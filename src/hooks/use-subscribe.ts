@@ -11,8 +11,9 @@ import { encodeFunctionData } from 'viem';
 import AccessWorkflowAbi from '@src/config/abi/AccessWorkflow.json';
 import LedgerVaultabi from '@src/config/abi/LedgerVault.json';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
-import {useSelector} from "react-redux";
+import { useSelector } from 'react-redux';
 import { useWeb3Session } from '@src/hooks/use-web3-session.ts';
+import { ERRORS } from '@notifications/errors.ts';
 
 // ----------------------------------------------------------------------
 
@@ -21,19 +22,12 @@ interface SubscribeData {
   receipt?: any; // The subscribe receipt, to get the transaction hash use receipt.transactionHash
 }
 
-// Define the shape of the error object
-interface SubscribeError {
-  message: string;
-  code?: number;
-  [key: string]: any; // For additional error properties
-}
-
 // Define the return type of the useSubscribe hook
 interface UseSubscribeHook {
   data?: SubscribeData;
   subscribe: (params: SubscribeParams) => Promise<void>;
   loading: boolean;
-  error?: SubscribeError | null;
+  error?: keyof typeof ERRORS | null;
 }
 
 // Parameters to be passed to the subscribe function
@@ -47,7 +41,7 @@ interface SubscribeParams {
 export const useSubscribe = (): UseSubscribeHook => {
   const [data, setData] = useState<SubscribeData>();
   const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<SubscribeError | null>(null);
+  const [error, setError] = useState<keyof typeof ERRORS | null>(null);
   const sessionData = useSelector((state: any) => state.auth.session);
   const { bundlerClient, smartAccount } = useWeb3Session();
 
@@ -92,13 +86,13 @@ export const useSubscribe = (): UseSubscribeHook => {
 
     try {
       if (!sessionData?.authenticated) {
-        setError({ message: 'Please login to subscribe' });
+        setError(ERRORS.SUBSCRIBE_LOGIN_ERROR);
         setLoading(false);
         return;
       }
 
       if (!bundlerClient) {
-        setError({ message: 'Bundler client not available' });
+        setError(ERRORS.BUNDLER_UNAVAILABLE);
         setLoading(false);
         return;
       }
@@ -147,9 +141,9 @@ export const useSubscribe = (): UseSubscribeHook => {
       setData(receipt);
       setLoading(false);
     } catch (err: any) {
-      console.log('err:')
-      console.log(err)
-      // setError({ message: err.message || 'An error occurred', ...err });
+      console.log('err:');
+      console.log(err);
+      setError(ERRORS.UNKNOWN_ERROR);
       setLoading(false);
     }
   };

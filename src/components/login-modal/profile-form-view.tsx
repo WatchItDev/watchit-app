@@ -1,40 +1,45 @@
 // REACT IMPORTS
-import React, {useCallback, useEffect, useRef, useState} from 'react';
-import {useFormik} from 'formik';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
 // Redux
-import {useDispatch, useSelector} from "react-redux";
-import {RootState} from "@reduxjs/toolkit/query";
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '@reduxjs/toolkit/query';
 import {
   closeLoginModal,
   resetCurrentStep,
   setIsUpdatingMetadata,
   setProfileCreationStep,
-  updateProfileData
-} from "@redux/auth";
+  updateProfileData,
+} from '@redux/auth';
 
 // MUI IMPORTS
-import {Box, Button, Grid, Input, TextField, Typography} from '@mui/material';
+import { Box, Button, Grid, Input, TextField, Typography } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 
 // Project IMPORTS
 import Image from '../image';
-import {ProfileData} from '@src/auth/context/web3Auth/types.ts';
-import {uploadImageToIPFS, uploadMetadataToIPFS} from '@src/utils/ipfs.ts';
-import {buildProfileMetadata} from '@src/utils/profile.ts';
+import { ProfileData } from '@src/auth/context/web3Auth/types.ts';
+import { uploadImageToIPFS, uploadMetadataToIPFS } from '@src/utils/ipfs.ts';
+import { buildProfileMetadata } from '@src/utils/profile.ts';
 import TextMaxLine from '@src/components/text-max-line';
 import NeonPaper from '@src/sections/publication/NeonPaperContainer';
 import uuidv4 from '@src/utils/uuidv4';
 
 // Lens
-import {Profile} from '@lens-protocol/api-bindings';
-import {LoginError, SessionType, useCreateProfile, useSetProfileMetadata,} from '@lens-protocol/react-web';
+import { Profile } from '@lens-protocol/api-bindings';
+import {
+  LoginError,
+  SessionType,
+  useCreateProfile,
+  useSetProfileMetadata,
+} from '@lens-protocol/react-web';
 
 // Notifications
-import {notifyError, notifySuccess} from "@notifications/internal-notifications";
-import {SUCCESS} from "@notifications/success";
-import {ERRORS} from "@notifications/errors.ts";
+import { notifyError, notifySuccess } from '@notifications/internal-notifications';
+import { SUCCESS } from '@notifications/success';
+import { ERRORS } from '@notifications/errors.ts';
 
 // ----------------------------------------------------------------------
 
@@ -151,18 +156,22 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
         // Upload metadata to IPFS
         const metadataURI = await uploadMetadataToIPFS(metadata);
 
-
         const profileImage =
-          data.profileImage instanceof File ? URL.createObjectURL(data.profileImage) : profileImagePreview;
+          data.profileImage instanceof File
+            ? URL.createObjectURL(data.profileImage)
+            : profileImagePreview;
         const backgroundImage =
-          data.backgroundImage instanceof File ? URL.createObjectURL(data.backgroundImage) : backgroundImagePreview;
+          data.backgroundImage instanceof File
+            ? URL.createObjectURL(data.backgroundImage)
+            : backgroundImagePreview;
 
         dispatch(
           updateProfileData({
             name: data.name,
             bio: data.bio,
             profileImage: profileImage ?? sessionData?.profile?.metadata?.picture?.optimized?.uri,
-            backgroundImage: backgroundImage ?? sessionData?.profile?.metadata?.coverPicture?.optimized?.uri
+            backgroundImage:
+              backgroundImage ?? sessionData?.profile?.metadata?.coverPicture?.optimized?.uri,
           })
         );
 
@@ -180,7 +189,7 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
               },
               onError: (error: any) => {
                 console.log('Error updating profile metadata:', error);
-                notifyError(ERRORS.UPDATING_PROFILE_ERROR)
+                notifyError(ERRORS.UPDATING_PROFILE_ERROR);
                 dispatch(setIsUpdatingMetadata(false));
               },
             },
@@ -233,7 +242,6 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
 
         // Save the pending metadata update
         setPendingMetadataUpdate({ data, profile: newProfile });
-
       } catch (error) {
         console.error('Error during profile registration:', error);
         setRegistrationLoading(false);
@@ -616,14 +624,20 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
           <Grid item xs={12} sm={6}>
             <PaperElement
               {...(currentStep !== 0 && {
-                padding: '0'
+                padding: '0',
               })}
             >
               <Button
                 disabled={currentStep !== 0}
                 variant="contained"
                 type="submit"
-                sx={{ width: '100%', py: 1, backgroundColor: 'transparent', color: 'white', border: currentStep ? 'none': '1px solid white' }}
+                sx={{
+                  width: '100%',
+                  py: 1,
+                  backgroundColor: 'transparent',
+                  color: 'white',
+                  border: currentStep ? 'none' : '1px solid white',
+                }}
               >
                 {getButtonLabel(mode, currentStep)}
               </Button>

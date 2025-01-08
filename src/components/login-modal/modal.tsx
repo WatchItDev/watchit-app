@@ -1,21 +1,21 @@
 // REACT IMPORTS
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 
 // MUI IMPORTS
-import {Backdrop, Box, Fade, Modal} from '@mui/material';
+import { Backdrop, Box, Fade, Modal } from '@mui/material';
 
 // LENS IMPORTS
-import {type Profile, useLogin, useLogout} from '@lens-protocol/react-web';
-import {useWeb3Auth} from '@src/hooks/use-web3-auth';
+import { type Profile, useLogin, useLogout } from '@lens-protocol/react-web';
+import { useWeb3Auth } from '@src/hooks/use-web3-auth';
 
 // LOCAL IMPORTS
-import {ProfileSelectView} from '@src/components/login-modal/profile-select-view.tsx';
-import {ProfileFormView} from '@src/components/login-modal/profile-form-view.tsx';
-import {WatchitLoader} from '../watchit-loader';
-import {useDispatch, useSelector} from 'react-redux';
-import {closeLoginModal} from '@redux/auth';
-import {notifySuccess} from "@notifications/internal-notifications.ts";
-import {SUCCESS} from "@notifications/success.ts";
+import { ProfileSelectView } from '@src/components/login-modal/profile-select-view.tsx';
+import { ProfileFormView } from '@src/components/login-modal/profile-form-view.tsx';
+import { WatchitLoader } from '../watchit-loader';
+import { useDispatch, useSelector } from 'react-redux';
+import { closeLoginModal } from '@redux/auth';
+import { notifySuccess } from '@notifications/internal-notifications.ts';
+import { SUCCESS } from '@notifications/success.ts';
 
 // ----------------------------------------------------------------------
 
@@ -77,7 +77,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
   }, [open, view, w3.connected]);
 
   const handleProfileCreateSuccess = () => {
-    notifySuccess(SUCCESS.PROFILE_CREATED_SUCCESSFULLY)
+    notifySuccess(SUCCESS.PROFILE_CREATED_SUCCESSFULLY);
     dispatch(closeLoginModal());
   };
 
@@ -109,7 +109,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
         onClose={onClose}
         closeAfterTransition
         BackdropComponent={Backdrop}
-        BackdropProps={{ timeout: 500, onClick: () => {}}}
+        BackdropProps={{ timeout: 500, onClick: () => {} }}
       >
         <Fade in={open}>
           <Box
@@ -128,7 +128,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
               boxShadow: loading ? 0 : 24,
               outline: 'none',
               transition: 'all 0.5s ease-in-out',
-              overflow: 'auto'
+              overflow: 'auto',
             }}
           >
             {loading ? (

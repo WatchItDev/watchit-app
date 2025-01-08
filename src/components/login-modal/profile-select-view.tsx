@@ -10,13 +10,13 @@ import { Profile, useLazyProfiles, LoginError } from '@lens-protocol/react-web';
 // @ts-ignore
 import Alert from '@mui/material/Alert';
 
-import {useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setAuthLoading, setBalance } from '@redux/auth';
 import { useResponsive } from '@src/hooks/use-responsive.ts';
 import { UserItem } from '../user-item';
 import LoadingScreen from '../loading-screen/loading-screen.tsx';
-import {notifyError} from "@notifications/internal-notifications.ts";
-import {ERRORS} from "@notifications/errors.ts";
+import { notifyError } from '@notifications/internal-notifications.ts';
+import { ERRORS } from '@notifications/errors.ts';
 // ----------------------------------------------------------------------
 
 interface ProfileSelectionProps {
@@ -68,7 +68,7 @@ export const ProfileSelectView: React.FC<ProfileSelectionProps> = ({
       onClose();
       dispatch(setAuthLoading({ isSessionLoading: true }));
       await login(profile);
-      dispatch(setAuthLoading({ isSessionLoading: false }))
+      dispatch(setAuthLoading({ isSessionLoading: false }));
     }
   };
 
@@ -97,9 +97,7 @@ export const ProfileSelectView: React.FC<ProfileSelectionProps> = ({
         }}
       />
 
-      {loading ? (
-        <LoadingScreen sx={{ py: 16 }} />
-      ) : <></>}
+      {loading ? <LoadingScreen sx={{ py: 16 }} /> : <></>}
 
       {profiles?.length > 0 && !loading ? (
         <Box sx={{ display: 'flex', flexDirection: 'column', maxHeight: 'calc(100% - 8rem)' }}>
@@ -153,7 +151,9 @@ export const ProfileSelectView: React.FC<ProfileSelectionProps> = ({
             </List>
           </Box>
         </Box>
-      ) : <></>}
+      ) : (
+        <></>
+      )}
 
       {profiles?.length === 0 && !loading ? (
         <Box display="flex" flexDirection="column" alignItems="center" sx={{ mt: 1, p: 3 }}>
@@ -176,7 +176,9 @@ export const ProfileSelectView: React.FC<ProfileSelectionProps> = ({
             Register new profile
           </Button>
         </Box>
-      ) : <></>}
+      ) : (
+        <></>
+      )}
     </>
   );
 };

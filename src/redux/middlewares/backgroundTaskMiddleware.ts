@@ -1,10 +1,14 @@
 import { Middleware } from '@reduxjs/toolkit';
-import { addPendingComment, removePendingComment, refetchCommentsByPublication } from '@redux/comments';
+import {
+  addPendingComment,
+  removePendingComment,
+  refetchCommentsByPublication,
+} from '@redux/comments';
 import BackgroundTaskWorker from '@src/workers/backgroundTaskWorker?worker';
 
 type TaskPayload = {
   type: string; // Task type identifier, e.g., 'POST_COMMENT', 'UPDATE_METADATA'
-  data: any;    // Task-specific data
+  data: any; // Task-specific data
 };
 
 type Task = {
@@ -25,14 +29,10 @@ const processTask = (store: any, task: Task) => {
 
     switch (type) {
       case 'POST_COMMENT':
-        processBackgroundComment(store, data)
-          .then(resolve)
-          .catch(reject);
+        processBackgroundComment(store, data).then(resolve).catch(reject);
         break;
       case 'UPDATE_PROFILE_METADATA':
-        processUpdateProfileMetadata(store, data)
-          .then(resolve)
-          .catch(reject);
+        processUpdateProfileMetadata(store, data).then(resolve).catch(reject);
         break;
       default:
         console.error(`Unknown task type: ${type}`);
@@ -46,7 +46,16 @@ const processTask = (store: any, task: Task) => {
  */
 const processBackgroundComment = (store: any, data: any) => {
   return new Promise<void>((resolve, reject) => {
-    const { commentOn, uri, pendingComment, owner, generatePayload, sendNotification, createComment, root } = data;
+    const {
+      commentOn,
+      uri,
+      pendingComment,
+      owner,
+      generatePayload,
+      sendNotification,
+      createComment,
+      root,
+    } = data;
 
     const sessionData = store.getState().auth.session;
 
@@ -56,7 +65,9 @@ const processBackgroundComment = (store: any, data: any) => {
       payload: { uri, pendingCommentId: pendingComment.id },
     });
 
-    backgroundTaskWorker.onmessage = async (e: MessageEvent<{ success: boolean; pendingCommentId: string; error?: string }>) => {
+    backgroundTaskWorker.onmessage = async (
+      e: MessageEvent<{ success: boolean; pendingCommentId: string; error?: string }>
+    ) => {
       const { success, pendingCommentId, error } = e.data;
 
       if (success) {
@@ -65,19 +76,25 @@ const processBackgroundComment = (store: any, data: any) => {
           await createComment({ commentOn, metadata: uri });
 
           // Remove the pending comment from the store
-          store.dispatch(removePendingComment({ publicationId: commentOn, commentId: pendingCommentId }));
+          store.dispatch(
+            removePendingComment({ publicationId: commentOn, commentId: pendingCommentId })
+          );
 
           // Generate the notification payload
-          const notificationPayload = generatePayload('COMMENT', {
-            id: owner?.id,
-            displayName: owner?.displayName,
-            avatar: owner?.avatar,
-          }, {
-            comment: pendingComment?.metadata?.content,
-            root_id: root,
-            comment_id: commentOn,
-            rawDescription: `${sessionData?.profile?.metadata?.displayName} left a comment`,
-          });
+          const notificationPayload = generatePayload(
+            'COMMENT',
+            {
+              id: owner?.id,
+              displayName: owner?.displayName,
+              avatar: owner?.avatar,
+            },
+            {
+              comment: pendingComment?.metadata?.content,
+              root_id: root,
+              comment_id: commentOn,
+              rawDescription: `${sessionData?.profile?.metadata?.displayName} left a comment`,
+            }
+          );
 
           // Send the notification if the comment is not from the owner
           if (owner?.id !== sessionData?.profile?.id) {
@@ -128,7 +145,6 @@ const processUpdateProfileMetadata = (store: any, data: any) => {
   });
 };
 
-
 /**
  * Process the task queue sequentially.
  */
@@ -156,7 +172,9 @@ export const backgroundTaskMiddleware: Middleware = (store) => (next) => (action
     // Immediately add the pending comment to the store if it's a POST_COMMENT task
     if (action.payload.type === 'POST_COMMENT') {
       const { commentOn, uri, pendingComment } = action.payload.data;
-      store.dispatch(addPendingComment({ publicationId: commentOn, comment: { ...pendingComment, uri } }));
+      store.dispatch(
+        addPendingComment({ publicationId: commentOn, comment: { ...pendingComment, uri } })
+      );
     }
 
     // Start processing the queue if not already processing

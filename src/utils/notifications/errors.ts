@@ -26,12 +26,26 @@ export enum ERRORS {
 
   // Deposit error
   DEPOSIT_FAILED_ERROR = 'DEPOSIT_FAILED_ERROR',
+  DEPOSIT_WENT_WRONG_ERROR = 'DEPOSIT_WENT_WRONG_ERROR',
 
   // Authorization error
   AUTHORIZATION_POLICY_ERROR = 'AUTHORIZATION_POLICY_ERROR',
 
   // Transfer error
   TRANSFER_LOGIN_FIRST_ERROR = 'TRANSFER_LOGIN_FIRST_ERROR',
+
+  // Subscribe error
+  SUBSCRIBE_LOGIN_ERROR = 'SUBSCRIBE_LOGIN_ERROR',
+  SUBSCRIBE_MINIMUN_DAYS_ERROR = 'SUBSCRIBE_MINIMUN_DAYS_ERROR',
+  INSUFICIENT_BALANCE_ERROR = 'INSUFICIENT_BALANCE_ERROR',
+  FAILED_JOIN_PROFILE_ERROR = 'FAILED_JOIN_PROFILE_ERROR',
+
+  // Follow/ unfollow
+  FOLLOW_UNFOLLOW_OCCURRED_ERROR = 'FOLLOW_UNFOLLOW_OCCURRED_ERROR',
+
+  // METAMASK
+  METAMASK_CONNECTING_FAILED_ERROR = 'METAMASK_CONNECTING_FAILED_ERROR',
+  METAMASK_CHANGE_WALLET_ERROR = 'METAMASK_CHANGE_WALLET_ERROR',
 }
 
 /**
@@ -51,24 +65,42 @@ export const ERROR_MESSAGES: Record<ERRORS, string> = {
 
   [ERRORS.BROADCASTING_TRANSACTION_ERROR]: 'There was an error broadcasting the transaction.',
   [ERRORS.PENDING_SIGNING_REQUEST_ERROR]: 'There is a pending signing request in your wallet.',
-  [ERRORS.INSUFFICIENT_ALLOWANCE_ERROR]: 'You must approve the contract to spend at least {symbol} {amount}',
-  [ERRORS.INSUFFICIENT_FUNDS_ERROR]: 'You do not have enough funds to pay for this follow fee {symbol} {amount}',
+  [ERRORS.INSUFFICIENT_ALLOWANCE_ERROR]:
+    'You must approve the contract to spend at least {symbol} {amount}',
+  [ERRORS.INSUFFICIENT_FUNDS_ERROR]:
+    'You do not have enough funds to pay for this follow fee {symbol} {amount}',
   [ERRORS.WALLET_CONNECTION_ERROR]: 'There was an error connecting to your wallet.',
   [ERRORS.PREMATURE_ACTION_ERROR]: 'There is a pending unfollow request for this profile.',
 
   // Login error
   [ERRORS.LOGIN_FAILED_ERROR]: 'The login process failed. Please try again later.',
 
-  // Witdhdraw error
+  // Withdraw error
   [ERRORS.FIRST_LOGIN_ERROR]: 'You must login first to withdraw funds.',
   [ERRORS.BUNDLER_UNAVAILABLE]: 'Your session is expired. Please re-login to continue.',
 
   // Deposit error
   [ERRORS.DEPOSIT_FAILED_ERROR]: 'Please login to deposit funds.',
+  [ERRORS.DEPOSIT_WENT_WRONG_ERROR]:
+    'Oops! Something went wrong with your deposit. Please try again.',
 
   // Authorization error
   [ERRORS.AUTHORIZATION_POLICY_ERROR]: 'Please login to authorize policy',
 
   // Transfer error
   [ERRORS.TRANSFER_LOGIN_FIRST_ERROR]: 'Please login to transfer funds.',
+
+  // Subscribe error
+  [ERRORS.SUBSCRIBE_LOGIN_ERROR]: 'Please login to subscribe.',
+  [ERRORS.SUBSCRIBE_MINIMUN_DAYS_ERROR]:
+    'Please enter a valid number of days (minimum {minDays} days).',
+  [ERRORS.INSUFICIENT_BALANCE_ERROR]: 'Insufficient balance to complete the action.',
+  [ERRORS.FAILED_JOIN_PROFILE_ERROR]: 'Failed to join the profile.',
+
+  // Follow/ unfollow
+  [ERRORS.FOLLOW_UNFOLLOW_OCCURRED_ERROR]: 'An error occurred while processing the action.',
+
+  // METAMASK
+  [ERRORS.METAMASK_CONNECTING_FAILED_ERROR]: 'Failed to connect wallet',
+  [ERRORS.METAMASK_CHANGE_WALLET_ERROR]: 'Failed to change wallet',
 };

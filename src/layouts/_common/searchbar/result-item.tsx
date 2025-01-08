@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemButton from '@mui/material/ListItemButton';
 import Label from '@src/components/label';
-import {COLORS} from "@src/layouts/config-layout.ts";
+import { COLORS } from '@src/layouts/config-layout.ts';
 
 type Props = {
   title: string;
@@ -18,7 +18,10 @@ const highlightText = (text: string, query: string) => {
   const parts = text.split(new RegExp(`(${query})`, 'gi'));
   return parts.map((part, index) =>
     part.toLowerCase() === query.toLowerCase() ? (
-      <span key={index} style={{ backgroundColor: 'white', color:COLORS.GRAY_DARK, fontWeight: 'bold' }}>
+      <span
+        key={index}
+        style={{ backgroundColor: 'white', color: COLORS.GRAY_DARK, fontWeight: 'bold' }}
+      >
         {part}
       </span>
     ) : (
@@ -27,7 +30,13 @@ const highlightText = (text: string, query: string) => {
   );
 };
 
-export default function ResultItem({ title, subtitle, groupLabel, onClickItem, query = '' }: Props) {
+export default function ResultItem({
+  title,
+  subtitle,
+  groupLabel,
+  onClickItem,
+  query = '',
+}: Props) {
   return (
     <ListItemButton
       onClick={onClickItem}

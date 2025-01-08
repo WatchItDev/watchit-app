@@ -161,10 +161,7 @@ const useGetSmartWalletTransactions = () => {
       throw new Error('Invalid event in ABI');
     }
     const inputs = event.inputs
-      .map(
-        (input: any) =>
-          `${input.type}${input.indexed ? ' indexed' : ''} ${input.name}`
-      )
+      .map((input: any) => `${input.type}${input.indexed ? ' indexed' : ''} ${input.name}`)
       .join(', ');
     return `event ${event.name}(${inputs})`;
   };
@@ -174,7 +171,9 @@ const useGetSmartWalletTransactions = () => {
     fetchLogs();
 
     // Disable loader if data is already available
-    if (transactions.length) {setLoading(false)}
+    if (transactions.length) {
+      setLoading(false);
+    }
   }, [sessionData?.address]);
 
   // Effect to handle real-time events from blockchainEvents

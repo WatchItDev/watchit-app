@@ -1,5 +1,5 @@
-import {TransactionData} from '@src/hooks/use-transaction-data';
-import {TransactionLog} from "@src/hooks/use-get-smart-wallet-transactions.ts";
+import { TransactionData } from '@src/hooks/use-transaction-data';
+import { TransactionLog } from '@src/hooks/use-get-smart-wallet-transactions.ts';
 type GroupedData = {
   type: string;
   data: {
@@ -39,57 +39,58 @@ export const groupedTransactionData = (data: TransactionData[]): GroupedData[] =
       if (!dayData[date]) dayData[date] = { income: 0, expenses: 0 };
       dayData[date].income += income;
       dayData[date].expenses += expenses;
-   }
+    }
   });
 
   return [
     {
       type: 'Week',
       data: [
-        { name: 'Income', data: Object.values(weekData).map(d => d.income) },
-        { name: 'Expenses', data: Object.values(weekData).map(d => d.expenses) },
+        { name: 'Income', data: Object.values(weekData).map((d) => d.income) },
+        { name: 'Expenses', data: Object.values(weekData).map((d) => d.expenses) },
       ],
       categories: Object.keys(weekData),
     },
     {
       type: 'Month',
       data: [
-        { name: 'Income', data: Object.values(monthData).map(d => d.income) },
-        { name: 'Expenses', data: Object.values(monthData).map(d => d.expenses) },
+        { name: 'Income', data: Object.values(monthData).map((d) => d.income) },
+        { name: 'Expenses', data: Object.values(monthData).map((d) => d.expenses) },
       ],
       categories: Object.keys(monthData),
     },
     {
       type: 'Year',
       data: [
-        { name: 'Income', data: Object.values(yearData).map(d => d.income) },
-        { name: 'Expenses', data: Object.values(yearData).map(d => d.expenses) },
+        { name: 'Income', data: Object.values(yearData).map((d) => d.income) },
+        { name: 'Expenses', data: Object.values(yearData).map((d) => d.expenses) },
       ],
       categories: Object.keys(yearData),
     },
     {
       type: 'Day',
       data: [
-        { name: 'Income', data: Object.values(dayData).map(d => d.income) },
-        { name: 'Expenses', data: Object.values(dayData).map(d => d.expenses) },
+        { name: 'Income', data: Object.values(dayData).map((d) => d.income) },
+        { name: 'Expenses', data: Object.values(dayData).map((d) => d.expenses) },
       ],
       categories: Object.keys(dayData),
     },
   ];
 };
 
-
 // Helper function to get the week number of a date
 const getWeek = (date: string): string => {
   const d = new Date(date);
   const yearStart = new Date(d.getFullYear(), 0, 1);
-  const weekNumber = Math.ceil(((d.getTime() - yearStart.getTime()) / 86400000 + yearStart.getDay() + 1) / 7);
+  const weekNumber = Math.ceil(
+    ((d.getTime() - yearStart.getTime()) / 86400000 + yearStart.getDay() + 1) / 7
+  );
   return `${d.getFullYear()}-W${weekNumber}`;
 };
 
 // Helper function to process day data to the desired format
-export const processDayData = (groupedData: GroupedData[]): { x: string, y: number }[] => {
-  const dayData = groupedData.find(group => group.type === 'Day');
+export const processDayData = (groupedData: GroupedData[]): { x: string; y: number }[] => {
+  const dayData = groupedData.find((group) => group.type === 'Day');
   if (!dayData) return [];
 
   return dayData.categories.map((date, index) => {
@@ -99,7 +100,6 @@ export const processDayData = (groupedData: GroupedData[]): { x: string, y: numb
     return { x: monthDay, y: income - expenses };
   });
 };
-
 
 export type ProcessedTransactionData = {
   id: string;
@@ -117,7 +117,8 @@ export type ProcessedTransactionData = {
 export const processTransactionData = (data: TransactionLog[]): ProcessedTransactionData[] => {
   return data?.map((transaction, _index) => ({
     id: transaction.transactionHash,
-    name: transaction.event === 'transferFrom' ? transaction.args.origin : transaction.args.recipient,
+    name:
+      transaction.event === 'transferFrom' ? transaction.args.origin : transaction.args.recipient,
     avatarUrl: `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${transaction.event === 'transferFrom' ? transaction.args.origin : transaction.args.recipient}`,
     type: transaction.event,
     message: parseTransactionTypeLabel(transaction.event),
@@ -144,7 +145,6 @@ const parseTransactionTypeLabel = (type: string): string => {
   }
 };
 
-
 // Incomes or outcomes depending on the transaction type
 const parseTransactionType = (type: string): string => {
   switch (type) {
@@ -160,4 +160,4 @@ const parseTransactionType = (type: string): string => {
     default:
       return type;
   }
-}
+};

@@ -1,7 +1,7 @@
-import {ERROR_MESSAGES, ERRORS} from "@src/utils/notifications/errors.ts";
-import { SUCCESS_MESSAGES, SUCCESS} from "@src/utils/notifications/success.ts";
-import { WARNING_MESSAGES, WARNING} from "@src/utils/notifications/warnings.ts";
-import {INFO, INFO_MESSAGES} from "@notifications/info.ts";
+import { ERROR_MESSAGES, ERRORS } from '@src/utils/notifications/errors.ts';
+import { SUCCESS_MESSAGES, SUCCESS } from '@src/utils/notifications/success.ts';
+import { WARNING_MESSAGES, WARNING } from '@src/utils/notifications/warnings.ts';
+import { INFO, INFO_MESSAGES } from '@notifications/info.ts';
 
 type NotificationType = 'error' | 'success' | 'warning' | 'info';
 
@@ -11,9 +11,7 @@ let globalEnqueueSnackbar: ((message: string, options?: object) => void) | null 
  * Allows us to set the globalEnqueueSnackbar function from our App (or any top-level component).
  * Must be called at least once (e.g., in App.tsx) so that notify methods works.
  */
-export function setGlobalNotifier(
-  enqueueSnackbarFn: (message: string, options?: object) => void
-) {
+export function setGlobalNotifier(enqueueSnackbarFn: (message: string, options?: object) => void) {
   globalEnqueueSnackbar = enqueueSnackbarFn;
 }
 
@@ -32,7 +30,13 @@ function replaceTemplateTags(message: string, data: Record<string, any>): string
   });
 }
 
-const notify = (typeNotification: NotificationType, text: ERRORS | SUCCESS | WARNING | INFO, data?: Record<string, any>, fallbackMessage?: string) => {
+const notify = (
+  typeNotification: NotificationType,
+  text: ERRORS | SUCCESS | WARNING | INFO,
+  data?: Record<string, any>,
+  fallbackMessage?: string,
+  options?: any
+) => {
   if (!globalEnqueueSnackbar) {
     console.error('No globalEnqueueSnackbar is set. Cannot notify messages.');
     return;
@@ -41,7 +45,8 @@ const notify = (typeNotification: NotificationType, text: ERRORS | SUCCESS | WAR
   let message: string;
   switch (typeNotification) {
     case 'error':
-      message = ERROR_MESSAGES[text as ERRORS] || fallbackMessage || ERROR_MESSAGES[ERRORS.UNKNOWN_ERROR];
+      message =
+        ERROR_MESSAGES[text as ERRORS] || fallbackMessage || ERROR_MESSAGES[ERRORS.UNKNOWN_ERROR];
       break;
     case 'success':
       message = SUCCESS_MESSAGES[text as SUCCESS] || fallbackMessage || 'Operation successful.';
@@ -63,15 +68,18 @@ const notify = (typeNotification: NotificationType, text: ERRORS | SUCCESS | WAR
     message = replaceTemplateTags(message, data);
   }
 
-  globalEnqueueSnackbar(message, { variant: typeNotification });
-}
-
+  globalEnqueueSnackbar(message, { variant: typeNotification, ...options });
+};
 
 /**
  * Global function to notify an error by ERROR_NAMES.
  * If no message is found in the dictionary, it uses 'UNKNOWN_ERROR'.
  */
-export function notifyError(errorName: ERRORS, data?: Record<string, any>, fallbackMessage?: string) {
+export function notifyError(
+  errorName: ERRORS,
+  data?: Record<string, any>,
+  fallbackMessage?: string
+) {
   notify('error', errorName, data, fallbackMessage || 'An unknown error has occurred.');
 }
 
@@ -79,23 +87,37 @@ export function notifyError(errorName: ERRORS, data?: Record<string, any>, fallb
  * Global function to notify a success by SUCCESS_NAMES.
  * If no message is found in the dictionary, it uses 'Operation successful.'.
  */
-export function notifySuccess(successName: SUCCESS, data?: Record<string, any>, fallbackMessage?: string) {
-  notify('success', successName, data, fallbackMessage || 'Operation successful.');
+export function notifySuccess(
+  successName: SUCCESS,
+  data?: Record<string, any>,
+  fallbackMessage?: string,
+  options?: any
+) {
+  notify('success', successName, data, fallbackMessage || 'Operation successful.', options);
 }
 
 /**
  * Global function to notify a warning by WARNING_NAMES.
  * If no message is found in the dictionary, it uses 'Warning.'.
  */
-export function notifyWarning(warningName: WARNING, data?: Record<string, any>, fallbackMessage?: string) {
-  notify('warning', warningName, data, fallbackMessage || 'Warning.');
+export function notifyWarning(
+  warningName: WARNING,
+  data?: Record<string, any>,
+  fallbackMessage?: string,
+  options?: any
+) {
+  notify('warning', warningName, data, fallbackMessage || 'Warning.', options);
 }
 
 /**
  * Global function to notify a info by INFO_NAMES.
  * If no message is found in the dictionary, it uses 'Warning.'.
  */
-export function notifyInfo(infoName: INFO, data?: Record<string, any>, fallbackMessage?: string) {
-  notify('info', infoName, data, fallbackMessage || 'Information.');
+export function notifyInfo(
+  infoName: INFO,
+  data?: Record<string, any>,
+  fallbackMessage?: string,
+  options?: any
+) {
+  notify('info', infoName, data, fallbackMessage || 'Information.', options);
 }
-

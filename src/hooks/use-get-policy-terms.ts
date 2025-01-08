@@ -96,12 +96,7 @@ export const useGetPolicyTerms = (
     } finally {
       setFetching(false);
     }
-  }, [
-    policyAddress,
-    holderAddress,
-    authorizedHolderPolicies,
-    errorPolicies,
-  ]);
+  }, [policyAddress, holderAddress, authorizedHolderPolicies, errorPolicies]);
 
   // Recompute whenever the authorizedHolderPolicies or errors change
   useEffect(() => {
@@ -127,7 +122,7 @@ export const useGetPolicyTerms = (
   return {
     terms,
     loading: loadingPolicies, // Reflect the loading state of fetching authorized policies
-    fetching,                 // Reflect the local fetching/checking state
+    fetching, // Reflect the local fetching/checking state
     error,
     refetch,
   };

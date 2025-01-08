@@ -3,7 +3,7 @@ import { Address } from 'viem';
 import { publicClient } from '@src/clients/viem/publicClient';
 import AccessAggAbi from '@src/config/abi/AccessAgg.json';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
-import {useSelector} from "react-redux";
+import { useSelector } from 'react-redux';
 
 interface HasAccessError {
   message: string;

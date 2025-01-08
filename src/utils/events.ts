@@ -1,4 +1,4 @@
-import { Dispatch } from "redux";
+import { Dispatch } from 'redux';
 import { appendNotification } from '@src/redux/notifications';
 
 export namespace Events {

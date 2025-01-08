@@ -1,5 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
-import {GLOBAL_CONSTANTS} from "@src/config-global.ts";
+import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 
 // Create a single supabase client for interacting with your database
 export const supabase = createClient(

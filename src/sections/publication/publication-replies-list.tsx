@@ -12,7 +12,9 @@ type Props = {
 
 const RepliesList = ({ parentCommentId }: Props) => {
   const { data: replies, error, loading, execute } = useLazyPublications();
-  const { hiddenComments, refetchTriggerByPublication, pendingComments } = useSelector((state: any) => state.comments);
+  const { hiddenComments, refetchTriggerByPublication, pendingComments } = useSelector(
+    (state: any) => state.comments
+  );
   const refetchTrigger = refetchTriggerByPublication[parentCommentId] || 0;
 
   useEffect(() => {
@@ -22,14 +24,14 @@ const RepliesList = ({ parentCommentId }: Props) => {
           commentOn: {
             id: publicationId(parentCommentId),
           },
-        }
+        },
       });
 
       if (result.isFailure()) {
         console.log('Error trying to get replies');
         return;
       }
-    })()
+    })();
   }, [refetchTrigger]);
 
   if (error) return <p>Error loading replies: {error.message}</p>;
@@ -40,7 +42,9 @@ const RepliesList = ({ parentCommentId }: Props) => {
     : replies;
 
   const repliesFiltered = (repliesWithPending ?? [])
-    .filter((comment) => !hiddenComments.some((hiddenComment: any) => hiddenComment.id === comment.id))
+    .filter(
+      (comment) => !hiddenComments.some((hiddenComment: any) => hiddenComment.id === comment.id)
+    )
     .filter((comment) => !comment.isHidden);
 
   return (
@@ -55,7 +59,7 @@ const RepliesList = ({ parentCommentId }: Props) => {
             marginBottom: '16px',
             marginRight: '16px',
             alignSelf: 'flex-end',
-            marginLeft: 'auto'
+            marginLeft: 'auto',
           }}
         />
       )}

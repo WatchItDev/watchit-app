@@ -5,32 +5,27 @@ import { useState, useEffect, PropsWithChildren } from 'react';
 import LoadingButton from '@mui/lab/LoadingButton';
 
 // LENS IMPORTS
-import {
-  ProfileId,
-  useFollow,
-  useUnfollow,
-} from '@lens-protocol/react-web';
+import { ProfileId, useFollow, useUnfollow } from '@lens-protocol/react-web';
 // @ts-ignore
 import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
 import { useLazyProfile } from '@lens-protocol/react';
 
 // REDUX IMPORTS
 import { openLoginModal } from '@redux/auth';
-import {useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { removeFollowing, addFollowing } from '@redux/followers';
 
-// NOTIFICATIONS IMPORTS
-import { useSnackbar } from 'notistack';
-
 // LOCAL IMPORTS
-import {useNotifications} from "@src/hooks/use-notifications.ts";
-import {useNotificationPayload} from "@src/hooks/use-notification-payload.ts";
-import NeonPaper from "@src/sections/publication/NeonPaperContainer.tsx";
-import Box from "@mui/material/Box";
-import {ERRORS} from "@notifications/errors.ts";
-import {notifyError, notifySuccess} from "@notifications/internal-notifications.ts";
-import {pascalToUpperSnake} from "@src/utils/text-transform.ts";
-import {SUCCESS} from "@notifications/success.ts";
+import { useNotifications } from '@src/hooks/use-notifications.ts';
+import { useNotificationPayload } from '@src/hooks/use-notification-payload.ts';
+import NeonPaper from '@src/sections/publication/NeonPaperContainer.tsx';
+import Box from '@mui/material/Box';
+
+// Notifications
+import { notifyError, notifySuccess } from '@notifications/internal-notifications';
+import { ERRORS } from '@notifications/errors';
+import { SUCCESS } from '@notifications/success';
+import { pascalToUpperSnake } from '@src/utils/text-transform';
 
 // ----------------------------------------------------------------------
 
@@ -42,9 +37,12 @@ interface FollowUnfollowButtonProps {
 
 // ----------------------------------------------------------------------
 
-const FollowUnfollowButton = ({ profileId, size = 'medium', followButtonMinWidth = 120 }: PropsWithChildren<FollowUnfollowButtonProps>) => {
+const FollowUnfollowButton = ({
+  profileId,
+  size = 'medium',
+  followButtonMinWidth = 120,
+}: PropsWithChildren<FollowUnfollowButtonProps>) => {
   const dispatch = useDispatch();
-  const { enqueueSnackbar } = useSnackbar();
   const { data: profile, execute: getProfile, loading } = useLazyProfile();
   const sessionData = useSelector((state: any) => state.auth.session);
   const [isFollowed, setIsFollowed] = useState(profile?.operations?.isFollowedByMe?.value);
@@ -84,7 +82,12 @@ const FollowUnfollowButton = ({ profileId, size = 'medium', followButtonMinWidth
   };
 
   // General function to handle follow/unfollow actions
-  const handleAction = async (action: any, actionLbl: string, profileName: string, followState: boolean) => {
+  const handleAction = async (
+    action: any,
+    actionLbl: string,
+    profileName: string,
+    followState: boolean
+  ) => {
     if (!profile) return;
     if (!sessionData?.authenticated) return dispatch(openLoginModal());
 
@@ -94,8 +97,8 @@ const FollowUnfollowButton = ({ profileId, size = 'medium', followButtonMinWidth
       if (result.isSuccess()) {
         notifySuccess(SUCCESS.FOLLOW_UNFOLLOW_SUCCESSFULLY, {
           actionLbl,
-          profileName
-        })
+          profileName,
+        });
 
         setIsFollowed(followState);
 
@@ -104,28 +107,31 @@ const FollowUnfollowButton = ({ profileId, size = 'medium', followButtonMinWidth
         handleUpdateProfile();
 
         // Update the following list
-        if(action === unfollow) {
+        if (action === unfollow) {
           dispatch(removeFollowing(profileId));
-        }else{
+        } else {
           dispatch(addFollowing(profile));
         }
 
         // Send notification to the profile being followed
-        const notificationPayload = generatePayload('FOLLOW', {
-          id: profile.id,
-          displayName: profile?.metadata?.displayName ?? 'no name',
-          avatar: (profile?.metadata?.picture as any)?.optimized?.uri,
-        }, {
-          rawDescription: `${sessionData?.profile?.metadata?.displayName} now is following you`,
-        });
+        const notificationPayload = generatePayload(
+          'FOLLOW',
+          {
+            id: profile.id,
+            displayName: profile?.metadata?.displayName ?? 'no name',
+            avatar: (profile?.metadata?.picture as any)?.optimized?.uri,
+          },
+          {
+            rawDescription: `${sessionData?.profile?.metadata?.displayName} now is following you`,
+          }
+        );
 
         await sendNotification(profile.id, sessionData?.profile?.id, notificationPayload);
       } else {
         handleActionError(result.error);
       }
     } catch (err) {
-      console.log(err);
-      enqueueSnackbar('An error occurred while processing the action.', { variant: 'error' })
+      notifyError(ERRORS.FOLLOW_UNFOLLOW_OCCURRED_ERROR);
     } finally {
       setIsProcessing(false);
     }
@@ -133,14 +139,15 @@ const FollowUnfollowButton = ({ profileId, size = 'medium', followButtonMinWidth
 
   // Function to handle action errors
   const handleActionError = (error: any) => {
-    const errorName = ERRORS[pascalToUpperSnake(error.name) as keyof typeof ERRORS] || ERRORS.UNKNOWN_ERROR;
+    const errorName =
+      ERRORS[pascalToUpperSnake(error.name) as keyof typeof ERRORS] || ERRORS.UNKNOWN_ERROR;
     notifyError(errorName, {
       symbol: error.requestedAmount?.asset?.symbol ?? '',
       amount: error.requestedAmount?.toSignificantDigits(6) ?? '',
     });
   };
 
-  const RainbowEffect = (isProcessing || loading) ? NeonPaper : Box;
+  const RainbowEffect = isProcessing || loading ? NeonPaper : Box;
 
   return (
     <>
@@ -149,7 +156,7 @@ const FollowUnfollowButton = ({ profileId, size = 'medium', followButtonMinWidth
           borderRadius: '10px',
           animationSpeed: '3s',
           padding: '0',
-          width: 'auto'
+          width: 'auto',
         })}
       >
         <LoadingButton
@@ -172,7 +179,7 @@ const FollowUnfollowButton = ({ profileId, size = 'medium', followButtonMinWidth
         >
           {isFollowed ? 'Unfollow' : 'Follow'}
         </LoadingButton>
-    </RainbowEffect>
+      </RainbowEffect>
     </>
   );
 };

@@ -42,11 +42,10 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({ src, titleMovie, onBack, sho
     };
   }, [onBack]);
 
-
   useEffect(() => {
     if (player.current) {
       if (isHLSProvider(player.current.provider)) {
-        console.log("tune provider config")
+        console.log('tune provider config');
         player.current.provider.config = {
           debug: false,
           autoStartLoad: true,
@@ -85,7 +84,7 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({ src, titleMovie, onBack, sho
           enableID3MetadataCues: false,
           enableWebVTT: false, // TODO change when subtitles needed
           enableIMSC1: false, // TODO change when subtitles needed
-          enableCEA708Captions: false,  // TODO change when subtitles needed
+          enableCEA708Captions: false, // TODO change when subtitles needed
 
           stretchShortVideoTrack: false,
           maxAudioFramesDrift: 1,

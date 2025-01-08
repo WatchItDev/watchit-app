@@ -1,10 +1,14 @@
 import { Helmet } from 'react-helmet-async';
-import OverviewBankingView from "@src/sections/finance";
-import Header from "@src/layouts/dashboard/header.tsx";
-import HeaderContent from "@src/layouts/dashboard/header-content.tsx";
+import OverviewBankingView from '@src/sections/finance';
+import Header from '@src/layouts/dashboard/header.tsx';
+import HeaderContent from '@src/layouts/dashboard/header-content.tsx';
 import withAuth from '@src/components/should-login/withAuth';
 
-const OverviewBankingViewWithAuth = withAuth(OverviewBankingView, 'iconoir:stats-report', 'Login to access your balance.');
+const OverviewBankingViewWithAuth = withAuth(
+  OverviewBankingView,
+  'iconoir:stats-report',
+  'Login to access your balance.'
+);
 
 export default function OverviewBankingPage() {
   return (

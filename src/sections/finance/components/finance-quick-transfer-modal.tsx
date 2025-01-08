@@ -1,5 +1,5 @@
-import {useEffect, useState} from 'react';
-import {useSelector} from 'react-redux';
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 
 // MUI components
 import Stack from '@mui/material/Stack';
@@ -10,25 +10,25 @@ import Box from '@mui/material/Box';
 import DialogTitle from '@mui/material/DialogTitle';
 import ListItemText from '@mui/material/ListItemText';
 import DialogActions from '@mui/material/DialogActions';
-import Dialog, {DialogProps} from '@mui/material/Dialog';
-import {truncateAddress} from '@src/utils/wallet.ts';
+import Dialog, { DialogProps } from '@mui/material/Dialog';
+import { truncateAddress } from '@src/utils/wallet.ts';
 
 // LENS
-import {Profile} from '@lens-protocol/api-bindings';
+import { Profile } from '@lens-protocol/api-bindings';
 
 // Project components
 import NeonPaper from '@src/sections/publication/NeonPaperContainer.tsx';
 import LoadingButton from '@mui/lab/LoadingButton';
-import {supabase} from '@src/utils/supabase';
-import {useNotificationPayload} from '@src/hooks/use-notification-payload.ts';
-import {useNotifications} from '@src/hooks/use-notifications.ts';
-import {InputAmountProps} from '@src/components/input-amount.tsx';
-import {useTransfer} from '@src/hooks/use-transfer.ts';
+import { supabase } from '@src/utils/supabase';
+import { useNotificationPayload } from '@src/hooks/use-notification-payload.ts';
+import { useNotifications } from '@src/hooks/use-notifications.ts';
+import { InputAmountProps } from '@src/components/input-amount.tsx';
+import { useTransfer } from '@src/hooks/use-transfer.ts';
 
 // Notifications
-import {notifyError, notifySuccess} from "@notifications/internal-notifications.ts";
-import {SUCCESS} from "@notifications/success.ts";
-import {ERRORS} from "@notifications/errors.ts";
+import { notifyError, notifySuccess } from '@notifications/internal-notifications.ts';
+import { SUCCESS } from '@notifications/success.ts';
+import { ERRORS } from '@notifications/errors.ts';
 
 type TConfirmTransferDialogProps = InputAmountProps & DialogProps;
 
@@ -135,8 +135,8 @@ function FinanceQuickTransferModal({
     );
 
     notifySuccess(SUCCESS.TRANSFER_CREATED_SUCCESSFULLY, {
-      destination: isSame ? contactInfo?.metadata?.displayName : truncateAddress(address ?? '')
-    })
+      destination: isSame ? contactInfo?.metadata?.displayName : truncateAddress(address ?? ''),
+    });
     onFinish();
   };
 
