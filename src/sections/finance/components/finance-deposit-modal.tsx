@@ -19,7 +19,7 @@ const depositTabs = [
   { value: 'smartAccount', label: 'Smart Account', disabled: false, icon: <Iconify icon={'logos:ethereum-color'} /> },
 ];
 
-const FinanceDepositModal: FC<FinanceDepositModalProps> = ({ open, onClose }) => {
+export const FinanceDepositModal: FC<FinanceDepositModalProps> = ({ open, onClose }) => {
   const renderContent = (currentTab: string) => {
     switch (currentTab) {
       case 'fiat':

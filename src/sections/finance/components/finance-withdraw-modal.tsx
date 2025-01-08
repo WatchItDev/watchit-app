@@ -18,7 +18,7 @@ const withdrawTabs = [
   { value: 'smartAccount', label: 'Smart Account', disabled: false, icon: <Iconify icon={'logos:ethereum-color'} /> },
 ];
 
-const FinanceWithdrawModal: FC<FinanceWithdrawModalProps> = ({ open, onClose }) => {
+export const FinanceWithdrawModal: FC<FinanceWithdrawModalProps> = ({ open, onClose }) => {
   const renderContent = (currentTab: string) => {
     switch (currentTab) {
       case 'metamask':
