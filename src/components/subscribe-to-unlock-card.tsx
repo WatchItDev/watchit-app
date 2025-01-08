@@ -91,7 +91,7 @@ export const SubscribeToUnlockCard = ({
                    padding={'2px'}
                    width={'auto'}>
 
-          <StyledBoxGradient onClick={handleTrial}>
+          <StyledBoxGradient onClick={handleTrial} loading={loadingTrial}>
             <Icon icon="ic:outline-try" width="18" height="18" />
             <Typography variant="body2" sx={{ lineHeight: 1, fontWeight: '700', ml: 1 }}>
               Free trial
@@ -111,7 +111,8 @@ export const SubscribeToUnlockCard = ({
   );
 };
 
-const StyledBoxGradient = styled(Box)(() => ({
+const StyledBoxGradient = styled(LoadingButton)(() => ({
+  width: '100%',
   background: `linear-gradient(90deg, rgba(240,174,6,0.3) 20%, rgba(212,190,58,1) 57%, rgba(189,119,255,0.6) 100%)`,
   backgroundSize: '400%',
   animation: 'gradientShift 10s infinite',
