@@ -245,8 +245,8 @@ export default function FinanceBalanceStatistics() {
     <>
       <Card>
         <CardHeader
-          title="Balance Statistics"
-          subheader="Income vs Outcome over time"
+          title="Statistics"
+          subheader="Income vs outcome"
           sx={{ px: 0 }}
           action={
             <ButtonBase

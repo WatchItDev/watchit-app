@@ -149,12 +149,13 @@ export default function FinanceQuickTransfer({
   useEffect(() => {
     const currentProfile = list?.[carousel.currentIndex];
     if (currentProfile?.ownedBy?.address) {
-      setWalletAddress(currentProfile.ownedBy.address);
-      dispatch(
-        storeAddress({ address: currentProfile.ownedBy.address, profileId: currentProfile.id })
-      );
+      const profileId = currentProfile.id
+      const address = currentProfile.ownedBy.address;
+      
+      setWalletAddress(address);
+      dispatch(storeAddress({ address, profileId }));
     }
-  }, [carousel.currentIndex, list, dispatch]);
+  }, [carousel.currentIndex, list]);
 
   // Merge initialList into local list when it changes
   useEffect(() => {
@@ -311,7 +312,7 @@ export default function FinanceQuickTransfer({
           sx={{
             width: 1,
             mx: 'auto',
-            maxWidth: AVATAR_SIZE * 7 + 160,
+            // maxWidth: AVATAR_SIZE * 7 + 160,
           }}
         >
           {list?.map((profile, index) => (
