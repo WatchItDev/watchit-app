@@ -201,6 +201,7 @@ export default function FinanceQuickTransfer({
   const handleChangeInput = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     setAmount(Number(event.target.value));
 
+    // Send the focus back to the input field, this is a workaround for the slider carousel
     setTimeout(() => {
       event.target.focus();
     }, 25);
