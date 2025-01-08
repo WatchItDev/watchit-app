@@ -62,7 +62,7 @@ export const FinanceDepositModal: FC<FinanceDepositModalProps> = ({ open, onClos
           zIndex: 9,
           borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
           [`& .${tabsClasses.flexContainer}`]: { justifyContent: 'center', px: 1 },
-          [`& .${tabsClasses.scroller}`]: { display: 'flex' },
+          [`& .${tabsClasses.scroller}`]: { display: 'flex', justifyContent: 'center' },
         }}
       >
         {TABS.map((tab) => (
