@@ -105,6 +105,7 @@ export default function FinanceQuickTransfer({
     centerMode: true,
     swipeToSlide: true,
     infinite: true,
+    focusOnSelect: true,
     centerPadding: '0px',
     rows: 1,
     slidesToShow: list?.length > 7 ? 7 : (list?.length ?? 1),
@@ -148,12 +149,13 @@ export default function FinanceQuickTransfer({
   useEffect(() => {
     const currentProfile = list?.[carousel.currentIndex];
     if (currentProfile?.ownedBy?.address) {
-      setWalletAddress(currentProfile.ownedBy.address);
-      dispatch(
-        storeAddress({ address: currentProfile.ownedBy.address, profileId: currentProfile.id })
-      );
+      const profileId = currentProfile.id
+      const address = currentProfile.ownedBy.address;
+      
+      setWalletAddress(address);
+      dispatch(storeAddress({ address, profileId }));
     }
-  }, [carousel.currentIndex, list, dispatch]);
+  }, [carousel.currentIndex, list]);
 
   // Merge initialList into local list when it changes
   useEffect(() => {
@@ -199,6 +201,12 @@ export default function FinanceQuickTransfer({
   // Handle changes in the input for the amount
   const handleChangeInput = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     setAmount(Number(event.target.value));
+
+    // Send the focus back to the input field, this is a workaround for the slider carousel
+    setTimeout(() => {
+      event.target.focus();
+    }, 25);
+
   }, []);
 
   // Validate the amount on blur
@@ -304,7 +312,7 @@ export default function FinanceQuickTransfer({
           sx={{
             width: 1,
             mx: 'auto',
-            maxWidth: AVATAR_SIZE * 7 + 160,
+            // maxWidth: AVATAR_SIZE * 7 + 160,
           }}
         >
           {list?.map((profile, index) => (

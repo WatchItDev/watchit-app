@@ -50,10 +50,9 @@ function FinanceQuickTransferModal({
 }: ConfirmTransferDialogProps) {
   const sessionData = useSelector((state: any) => state.auth.session);
   const { generatePayload } = useNotificationPayload(sessionData);
+  const { transfer, loading: transferLoading, error } = useTransfer();
   const { sendNotification } = useNotifications();
   const [message, setMessage] = useState('');
-
-  const { transfer, loading: transferLoading, error } = useTransfer();
 
   // Check if we have a valid profile or not
   const hasProfile = !!contactInfo;

@@ -32,7 +32,8 @@ const FinanceDepositFromStripe = () => {
             This feature is coming soon.
           </TextMaxLine>
           <TextMaxLine color={'text.secondary'} variant={'body2'} line={2} sx={{ mb: 2 }}>
-            We’re working hard to bring this section to life. Check back soon!
+            We’re working hard to bring this feature to life.
+            <br /> Check back soon!
           </TextMaxLine>
         </Box>
       </Box>
