@@ -66,8 +66,6 @@ const FinanceDeposit: FC<FinanceDepositProps> = ({ address, recipient, depositHo
   // Retrieve the balance using the "address" (the connected one)
   const { balance } = useGetMmcContractBalance(address);
 
-  // @TODO: When show this?
-  // Show an error if the deposit hook fails
   useEffect(() => {
     if (error) {
       notifyError(error as ERRORS);
