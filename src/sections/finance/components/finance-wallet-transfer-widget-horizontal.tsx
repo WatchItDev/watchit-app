@@ -14,7 +14,12 @@ type Props = {
   color?: string;
 };
 
-export default function FinanceWalletTransferWidgetHorizontal({ title, icon, color, value }: Props) {
+export default function FinanceWalletTransferWidgetHorizontal({
+  title,
+  icon,
+  color,
+  value,
+}: Props) {
   return (
     <Stack
       spacing={1}

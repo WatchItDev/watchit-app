@@ -1,15 +1,22 @@
+// React and libraries imports
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
+
+// @MUI components
 import { useTheme } from '@mui/material/styles';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import InputBase from '@mui/material/InputBase';
 import Box, { BoxProps } from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+
+// Project components
 import { bgGradient } from '@src/theme/css';
 import { COLORS } from '@src/layouts/config-layout.ts';
 import { supabase } from '@src/utils/supabase';
-import { useSelector } from 'react-redux';
-import { useSnackbar } from 'notistack';
+import { notifyError, notifySuccess } from '@notifications/internal-notifications.ts';
+import { SUCCESS } from '@notifications/success.ts';
+import { ERRORS } from '@notifications/errors.ts';
 
 interface Props extends BoxProps {
   img?: string;
@@ -19,15 +26,14 @@ interface Props extends BoxProps {
 }
 
 export default function FinanceInviteFriends({
-                                               img,
-                                               price,
-                                               title,
-                                               description,
-                                               sx,
-                                               ...other
-                                             }: Props) {
+  img,
+  price,
+  title,
+  description,
+  sx,
+  ...other
+}: Props) {
   const theme = useTheme();
-  const { enqueueSnackbar } = useSnackbar();
   const sessionData = useSelector((state: any) => state.auth.session);
   const [email, setEmail] = useState('');
 
@@ -50,7 +56,7 @@ export default function FinanceInviteFriends({
   const handleInviteClick = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-      enqueueSnackbar('Invalid email address', { variant: 'error' });
+      notifyError(ERRORS.INVITATION_EMAIL_ERROR);
       return;
     }
     const payload = {
@@ -58,16 +64,14 @@ export default function FinanceInviteFriends({
         from: {
           id: sessionData?.profile?.id,
           displayName: sessionData?.profile?.metadata?.displayName,
-          avatar: (sessionData?.profile?.metadata?.picture as any)?.optimized?.uri
+          avatar: (sessionData?.profile?.metadata?.picture as any)?.optimized?.uri,
         },
-      }
+      },
     };
     storeEmailData(email, payload).then(() => {
-      enqueueSnackbar('Invitation sent successfully', { variant: 'success' })
+      notifySuccess(SUCCESS.INVITATIONS_SUCCESSFULLY);
       setEmail('');
     });
-
-
   };
 
   return (
@@ -109,13 +113,23 @@ export default function FinanceInviteFriends({
               alignItems="flex-end"
               justifyContent="center"
             >
-              <Box sx={{ typography: 'h2', color: 'warning.main', textShadow: `1px 1px 5px ${COLORS.GRAY_LIGHT}` }}>{price}</Box>
+              <Box
+                sx={{
+                  typography: 'h2',
+                  color: 'warning.main',
+                  textShadow: `1px 1px 5px ${COLORS.GRAY_LIGHT}`,
+                }}
+              >
+                {price}
+              </Box>
               <Box sx={{ typography: 'h6', opacity: 0.5, ml: 1, mb: 1 }}>MMC</Box>
             </Stack>
           </Typography>
         </Stack>
 
-        <Box sx={{ mt: 2, mb: 3, typography: 'body1', fontWeight: 300, opacity: 0.8 }}>{description}</Box>
+        <Box sx={{ mt: 2, mb: 3, typography: 'body1', fontWeight: 300, opacity: 0.8 }}>
+          {description}
+        </Box>
 
         <InputBase
           fullWidth
@@ -123,7 +137,13 @@ export default function FinanceInviteFriends({
           value={email}
           onChange={handleInputChange}
           endAdornment={
-            <Button color="warning" variant="contained" size="small" sx={{ mr: 0.5 }} onClick={handleInviteClick}>
+            <Button
+              color="warning"
+              variant="contained"
+              size="small"
+              sx={{ mr: 0.5 }}
+              onClick={handleInviteClick}
+            >
               Invite
             </Button>
           }

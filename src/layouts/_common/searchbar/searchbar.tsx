@@ -18,7 +18,7 @@ import { useRouter } from '@src/routes/hooks';
 import SearchNotFound from '@src/components/search-not-found';
 import ResultItem from './result-item';
 import { applyFilter } from './utils';
-import { useSearchProfiles} from '@lens-protocol/react-web';
+import { useSearchProfiles } from '@lens-protocol/react-web';
 import { useSearchPublications } from '@src/hooks/use-search-publications';
 import { CircularProgress } from '@mui/material';
 import { paths } from '@src/routes/paths.ts';
@@ -36,7 +36,7 @@ function Searchbar() {
     setSearchQuery('');
   }, [search]);
 
-  const handleKeyDown = (event) => {
+  const handleKeyDown = (event: any) => {
     if (event.key === 'k' && event.metaKey) {
       search.onToggle();
       setSearchQuery('');
@@ -59,7 +59,7 @@ function Searchbar() {
     handleClose();
   };
 
-  const handleSearch = useCallback((event) => {
+  const handleSearch = useCallback((event: any) => {
     setSearchQuery(event.target.value);
   }, []);
 

@@ -20,7 +20,9 @@ const notificationsSlice = createSlice({
       state.notifications = action.payload;
     },
     appendNotification(state, action: PayloadAction<NotificationItemProps>) {
-      const existingIndex = state.notifications.findIndex(notification => notification.id === action.payload.id);
+      const existingIndex = state.notifications.findIndex(
+        (notification) => notification.id === action.payload.id
+      );
       if (existingIndex !== -1) {
         state.notifications[existingIndex] = action.payload;
       } else {

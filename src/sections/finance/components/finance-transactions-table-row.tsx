@@ -6,9 +6,9 @@ import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import ListItemText from '@mui/material/ListItemText';
 // components
-import {TableRowTransactionType } from "@src/hooks/use-transaction-data.ts";
-import {truncateAddress} from "@src/utils/wallet.ts";
-import Typography from "@mui/material/Typography";
+import { TableRowTransactionType } from '@src/hooks/use-transaction-data.ts';
+import { truncateAddress } from '@src/utils/wallet.ts';
+import Typography from '@mui/material/Typography';
 
 // ----------------------------------------------------------------------
 
@@ -17,18 +17,12 @@ type Props = {
   selected: boolean;
 };
 
-export default function FinanceTransactionTableRow({
-  row,
-  selected
-}: Props) {
-  const { date, name, amount, type, avatarUrl, message, category } = row;
-
-  console.log('TYPE:', type);
+export default function FinanceTransactionTableRow({ row, selected }: Props) {
+  const { date, name, amount, avatarUrl, message, category } = row;
 
   const dateObject = new Date(Number(date) * 1000);
   const dateLbl = format(dateObject, 'dd/MM/yyyy');
   const timeLbl = format(dateObject, 'p');
-
 
   const renderPrimary = (
     <TableRow hover selected={selected}>
@@ -59,16 +53,12 @@ export default function FinanceTransactionTableRow({
       </TableCell>
 
       <TableCell>
-        <Typography variant="body2" sx={{ color: category === 'income' ? '#00AB55': '#FF4842' }}>
-          {category === 'income' ? '': '-'} {amount} MMC
+        <Typography variant="body2" sx={{ color: category === 'income' ? '#00AB55' : '#FF4842' }}>
+          {category === 'income' ? '' : '-'} {amount} MMC
         </Typography>
       </TableCell>
     </TableRow>
   );
 
-  return (
-    <>
-      {renderPrimary}
-    </>
-  );
+  return <>{renderPrimary}</>;
 }

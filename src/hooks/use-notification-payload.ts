@@ -40,7 +40,9 @@ export const useNotificationPayload = (sessionData: ProfileSession | undefined) 
         to: {
           id: toProfile.id,
           displayName: toProfile.displayName,
-          avatar: toProfile.avatar ?? `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${toProfile.id}`,
+          avatar:
+            toProfile.avatar ??
+            `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${toProfile.id}`,
         },
         content,
       },

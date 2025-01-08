@@ -14,7 +14,7 @@ window.Buffer = Buffer;
 window.process = process;
 window.global = window;
 
-const isDevelopment = GLOBAL_CONSTANTS.ENVIRONMENT === "development"
+const isDevelopment = GLOBAL_CONSTANTS.ENVIRONMENT === 'development';
 
 Sentry.init({
   environment: GLOBAL_CONSTANTS.ENVIRONMENT,

@@ -10,5 +10,5 @@ export const publicClient = createPublicClient({
 
 export const publicClientWebSocket = createPublicClient({
   chain: polygonAmoy,
-  transport: webSocket(WS_URL)
+  transport: webSocket(WS_URL),
 });

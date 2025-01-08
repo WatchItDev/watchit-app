@@ -3,16 +3,16 @@ import React, { useEffect, useState } from 'react';
 
 // MUI IMPORTS
 import {
-  Dialog,
   Button,
-  TextField,
-  DialogTitle,
-  DialogContent,
+  Dialog,
   DialogActions,
-  Typography,
-  Stack,
-  Paper,
+  DialogContent,
+  DialogTitle,
   Divider,
+  Paper,
+  Stack,
+  TextField,
+  Typography,
 } from '@mui/material';
 
 // ETHERS IMPORTS
@@ -24,10 +24,12 @@ import { encodeAbiParameters } from 'viem';
 // LOCAL IMPORTS
 import { GLOBAL_CONSTANTS } from '@src/config-global';
 import { useAuthorizePolicy } from '@src/hooks/use-authorize-policy.ts';
-import { useSnackbar } from 'notistack';
-import NeonPaper from "@src/sections/publication/NeonPaperContainer.tsx";
-import Box from "@mui/material/Box";
-import LoadingButton from "@mui/lab/LoadingButton";
+import NeonPaper from '@src/sections/publication/NeonPaperContainer.tsx';
+import Box from '@mui/material/Box';
+import LoadingButton from '@mui/lab/LoadingButton';
+import { notifyError, notifySuccess } from '@notifications/internal-notifications.ts';
+import { SUCCESS } from '@notifications/success.ts';
+import { ERRORS } from '@notifications/errors.ts';
 
 // ----------------------------------------------------------------------
 
@@ -42,8 +44,6 @@ export const ActivateSubscriptionProfileModal = ({
   isOpen,
   onClose,
 }: ActivateSubscriptionProfileModalProps) => {
-  const { enqueueSnackbar } = useSnackbar();
-
   const [selectedAmount, setSelectedAmount] = useState('10');
   const [customAmount, setCustomAmount] = useState('');
 
@@ -56,7 +56,7 @@ export const ActivateSubscriptionProfileModal = ({
   ];
 
   useEffect(() => {
-    if (error) enqueueSnackbar(error.message, { variant: 'error' });
+    if (error) notifyError(error as ERRORS);
   }, [error]);
 
   const handleAmountChange = (value: string) => {
@@ -94,7 +94,8 @@ export const ActivateSubscriptionProfileModal = ({
         data: encodedData,
       });
 
-      enqueueSnackbar('Joining price set successfully!', { variant: 'success' })
+      notifySuccess(SUCCESS.JOINING_PRICE_SUCCESSFULLY);
+
       onClose?.();
     } catch (err) {
       console.error('err');
@@ -117,7 +118,8 @@ export const ActivateSubscriptionProfileModal = ({
         <Divider sx={{ mb: 2, borderStyle: 'dashed' }} />
         <DialogContent>
           <Typography variant="body2" color="textSecondary" sx={{ mb: 3 }}>
-            Users will pay a <span style={{ fontWeight: 'bolder' }}>daily</span> rate to access your content.
+            Users will pay a <span style={{ fontWeight: 'bolder' }}>daily</span> rate to access your
+            content.
           </Typography>
           <Stack spacing={2}>
             <Stack spacing={2} direction="row">
@@ -220,19 +222,13 @@ export const ActivateSubscriptionProfileModal = ({
               </Stack>
             </Stack>
           </Stack>
-
-          {error && (
-            <Typography variant="body2" color="error" align="center" sx={{ mt: 2 }}>
-              {error.message}
-            </Typography>
-          )}
         </DialogContent>
         <Divider sx={{ mt: 3, borderStyle: 'dashed' }} />
         <DialogActions>
           <Button variant="text" onClick={onClose}>
             Cancel
           </Button>
-          <RainbowEffect borderRadius={'10px'} animationSpeed={'3s'} padding={'0'} width={'auto'} >
+          <RainbowEffect borderRadius={'10px'} animationSpeed={'3s'} padding={'0'} width={'auto'}>
             <LoadingButton
               variant="contained"
               sx={{ backgroundColor: '#fff' }}

@@ -6,22 +6,22 @@ import ListItemButton from '@mui/material/ListItemButton';
 // utils
 import { formatDistanceToNow } from 'date-fns';
 // components
-import Box from "@mui/material/Box";
-import TextMaxLine from "@src/components/text-max-line";
-import {useRouter} from "@src/routes/hooks";
-import {paths} from "@src/routes/paths.ts";
-import { NotificationCategories, type NotificationColumnsProps } from "@src/types/notification.ts";
-import IconButton from "@mui/material/IconButton";
-import Iconify from "@src/components/iconify";
-import {useNotifications} from "@src/hooks/use-notifications.ts";
-import {openLoginModal} from "@redux/auth";
-import {PublicationReactionType, useReactionToggle} from "@lens-protocol/react-web";
-import {decrementCounterLikes, incrementCounterLikes} from "@redux/comments";
-import {useEffect, useState} from "react";
-import {useDispatch, useSelector} from "react-redux";
-import {useNotificationPayload} from "@src/hooks/use-notification-payload.ts";
-import {usePublication} from "@lens-protocol/react";
-import {CircularProgress} from "@mui/material";
+import Box from '@mui/material/Box';
+import TextMaxLine from '@src/components/text-max-line';
+import { useRouter } from '@src/routes/hooks';
+import { paths } from '@src/routes/paths.ts';
+import { NotificationCategories, type NotificationColumnsProps } from '@src/types/notification.ts';
+import IconButton from '@mui/material/IconButton';
+import Iconify from '@src/components/iconify';
+import { useNotifications } from '@src/hooks/use-notifications.ts';
+import { openLoginModal } from '@redux/auth';
+import { PublicationReactionType, useReactionToggle } from '@lens-protocol/react-web';
+import { decrementCounterLikes, incrementCounterLikes } from '@redux/comments';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNotificationPayload } from '@src/hooks/use-notification-payload.ts';
+import { usePublication } from '@lens-protocol/react';
+import { CircularProgress } from '@mui/material';
 
 export type NotificationItemProps = {
   id: any;
@@ -38,8 +38,11 @@ export default function NotificationItem({ notification, onMarkAsRead }: Notific
   const { execute: toggle, loading: loadingLike } = useReactionToggle();
   const typeOfNotification = notification?.payload?.category;
   const receiver = notification?.payload?.data?.to?.displayName;
-  const message = notification?.payload?.data?.content?.message ||notification?.payload?.data?.content?.comment || '';
-  const [hasLiked, setHasLiked] = useState(false)
+  const message =
+    notification?.payload?.data?.content?.message ||
+    notification?.payload?.data?.content?.comment ||
+    '';
+  const [hasLiked, setHasLiked] = useState(false);
   const { sendNotification } = useNotifications();
   const { generatePayload } = useNotificationPayload(sessionData);
   const router = useRouter();
@@ -53,12 +56,18 @@ export default function NotificationItem({ notification, onMarkAsRead }: Notific
     onMarkAsRead(notification.id);
 
     // Verify if is LIKE / COMMENT
-    if (typeOfNotification === NotificationCategories.LIKE || typeOfNotification === NotificationCategories.COMMENT) {
+    if (
+      typeOfNotification === NotificationCategories.LIKE ||
+      typeOfNotification === NotificationCategories.COMMENT
+    ) {
       router.push(paths.dashboard.publication.details(notification.payload.data.content.root_id));
     }
 
     // Verify if is FOLLOW / JOIN
-    if (typeOfNotification === NotificationCategories.FOLLOW || typeOfNotification === NotificationCategories.JOIN) {
+    if (
+      typeOfNotification === NotificationCategories.FOLLOW ||
+      typeOfNotification === NotificationCategories.JOIN
+    ) {
       router.push(paths.dashboard.user.root(`${notification.payload.data.from.id}`));
     }
   };
@@ -72,24 +81,28 @@ export default function NotificationItem({ notification, onMarkAsRead }: Notific
         publication: comment,
       }).then(() => {
         // Send notification to the author of the comment
-        const notificationPayload = generatePayload('LIKE', {
-          id: comment?.by?.id,
-          displayName: comment?.by?.metadata?.displayName ?? 'no name',
-          avatar: comment?.by?.metadata?.avatar,
-        }, {
-          root_id: comment?.commentOn?.root?.id ?? comment?.commentOn?.id,
-          parent_id: comment?.commentOn?.id,
-          comment_id: comment?.id,
-          rawDescription: `${sessionData?.profile?.metadata?.displayName} liked your comment`,
-        });
+        const notificationPayload = generatePayload(
+          'LIKE',
+          {
+            id: comment?.by?.id,
+            displayName: comment?.by?.metadata?.displayName ?? 'no name',
+            avatar: comment?.by?.metadata?.avatar,
+          },
+          {
+            root_id: comment?.commentOn?.root?.id ?? comment?.commentOn?.id,
+            parent_id: comment?.commentOn?.id,
+            comment_id: comment?.id,
+            rawDescription: `${sessionData?.profile?.metadata?.displayName} liked your comment`,
+          }
+        );
 
-        if (!hasLiked){
+        if (!hasLiked) {
           dispatch(incrementCounterLikes(comment.id));
         } else {
           dispatch(decrementCounterLikes(comment.id));
         }
 
-        if(!hasLiked && comment?.by?.id !== sessionData?.profile?.id) {
+        if (!hasLiked && comment?.by?.id !== sessionData?.profile?.id) {
           sendNotification(comment?.by?.id, sessionData?.profile?.id, notificationPayload);
         }
       });
@@ -109,7 +122,9 @@ export default function NotificationItem({ notification, onMarkAsRead }: Notific
     <ListItemText
       disableTypography
       primary={
-        <TextMaxLine line={2} variant="subtitle2">{description}</TextMaxLine>
+        <TextMaxLine line={2} variant="subtitle2">
+          {description}
+        </TextMaxLine>
       }
       secondary={
         <Stack
@@ -125,8 +140,7 @@ export default function NotificationItem({ notification, onMarkAsRead }: Notific
   );
 
   function reader(data: string) {
-    return (
-      data.length > 8 ? (
+    return data.length > 8 ? (
       <Box
         dangerouslySetInnerHTML={{ __html: data }}
         sx={{
@@ -135,8 +149,8 @@ export default function NotificationItem({ notification, onMarkAsRead }: Notific
           '& a': { color: 'inherit', textDecoration: 'none' },
           '& strong': { typography: 'subtitle2' },
         }}
-      />):null
-    );
+      />
+    ) : null;
   }
 
   const transferAction = (
@@ -155,9 +169,7 @@ export default function NotificationItem({ notification, onMarkAsRead }: Notific
     </Stack>
   );
 
-  const messageAction = (
-    message.length > 0 && (
-
+  const messageAction = message.length > 0 && (
     <Stack alignItems="flex-start">
       <Box
         sx={{
@@ -168,31 +180,29 @@ export default function NotificationItem({ notification, onMarkAsRead }: Notific
           bgcolor: 'background.neutral',
         }}
       >
-        {reader(
-          `<p>${message}.</p>`
-        )}
+        {reader(`<p>${message}.</p>`)}
       </Box>
 
       {/*Stack for show IconHeart and Reply icon*/}
       <Stack direction="row" spacing={1}>
-        <IconButton onClick={toggleReaction} size="small" sx={{ p:1, bgcolor: 'background.neutral' }}>
-          {
-            loading ||loadingLike ? (
-              <CircularProgress size="25px" sx={{ color: '#fff' }} />
-              ) : (
-            hasLiked ? (
-              <Iconify icon="eva:heart-fill" width={16} />
-            ) : (
-              <Iconify icon="mdi:heart-outline" width={16} />
-        ))}
+        <IconButton
+          onClick={toggleReaction}
+          size="small"
+          sx={{ p: 1, bgcolor: 'background.neutral' }}
+        >
+          {loading || loadingLike ? (
+            <CircularProgress size="25px" sx={{ color: '#fff' }} />
+          ) : hasLiked ? (
+            <Iconify icon="eva:heart-fill" width={16} />
+          ) : (
+            <Iconify icon="mdi:heart-outline" width={16} />
+          )}
         </IconButton>
         <IconButton size="small" sx={{ p: 1, bgcolor: 'background.neutral' }}>
           <Iconify icon="material-symbols:reply" width={16} />
         </IconButton>
+      </Stack>
     </Stack>
-
-    </Stack>
-    )
   );
 
   const renderUnReadBadge = !notification.read && (
@@ -211,19 +221,30 @@ export default function NotificationItem({ notification, onMarkAsRead }: Notific
 
   const onDelete = async (id: string) => {
     await deleteNotification(id);
-  }
+  };
 
   const renderDeleteButton = () => {
-    return ( notification.read &&
-      <IconButton
-        size="small"
-        onClick={() => onDelete(notification.id)}
-        sx={{ position: 'absolute', right: 20, top: 30, width: 32, height:32, transform: 'translateY(-50%)', borderRadius: '50%', bgcolor: 'background.neutral' }}
-      >
-        <Iconify icon="solar:trash-bin-minimalistic-2-bold" width={16} />
-      </IconButton>
+    return (
+      notification.read && (
+        <IconButton
+          size="small"
+          onClick={() => onDelete(notification.id)}
+          sx={{
+            position: 'absolute',
+            right: 20,
+            top: 30,
+            width: 32,
+            height: 32,
+            transform: 'translateY(-50%)',
+            borderRadius: '50%',
+            bgcolor: 'background.neutral',
+          }}
+        >
+          <Iconify icon="solar:trash-bin-minimalistic-2-bold" width={16} />
+        </IconButton>
+      )
     );
-  }
+  };
 
   return (
     <ListItemButton

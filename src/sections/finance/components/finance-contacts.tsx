@@ -1,3 +1,7 @@
+// React and libraries imports
+import React from 'react';
+import { useDispatch } from 'react-redux';
+
 // @mui
 import Stack from '@mui/material/Stack';
 import CardHeader from '@mui/material/CardHeader';
@@ -8,7 +12,7 @@ import IconButton from '@mui/material/IconButton';
 import ListItemText from '@mui/material/ListItemText';
 import Box from '@mui/material/Box';
 
-// components
+// Project components
 import Iconify from '@src/components/iconify';
 import Carousel, { useCarousel } from '@src/components/carousel/index';
 import NavigationArrows from '@src/components/carousel/NavigationArrows';
@@ -19,9 +23,7 @@ import { useRouter } from '@src/routes/hooks';
 
 // lens
 import { Profile } from '@lens-protocol/api-bindings';
-import { useDispatch } from "react-redux";
 import { storeAddress, toggleRainbow } from '@redux/address';
-import React from "react";
 
 // ----------------------------------------------------------------------
 
@@ -42,20 +44,19 @@ export default function FinanceContactsCarousel({
   const router = useRouter();
   const dispatch = useDispatch();
 
-
   function scrollToSmoothly(pos: number, time: number) {
     let currentPos = window.scrollY;
     let start: number | null = null;
     if (time == null) time = 500;
     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-    pos = +pos, time = +time;
+    (pos = +pos), (time = +time);
     window.requestAnimationFrame(function step(currentTime) {
       start = !start ? currentTime : start;
       let progress = currentTime - start;
       if (currentPos < pos) {
-        window.scrollTo(0, ((pos - currentPos) * progress / time) + currentPos);
+        window.scrollTo(0, ((pos - currentPos) * progress) / time + currentPos);
       } else {
-        window.scrollTo(0, currentPos - ((currentPos - pos) * progress / time));
+        window.scrollTo(0, currentPos - ((currentPos - pos) * progress) / time);
       }
       if (progress < time) {
         window.requestAnimationFrame(step);
@@ -70,11 +71,11 @@ export default function FinanceContactsCarousel({
     dispatch(storeAddress({ address, profileId }));
 
     // Scroll to top the window with a smooth animation
-    scrollToSmoothly(0, 1000)
+    scrollToSmoothly(0, 1000);
     setTimeout(() => {
       dispatch(toggleRainbow());
-    }, 1400)
-  }
+    }, 1400);
+  };
 
   const goToProfile = (id: string) => {
     router.push(paths.dashboard.user.root(id));
@@ -100,9 +101,7 @@ export default function FinanceContactsCarousel({
       <CardHeader
         title={title}
         subheader={subheader}
-        action={
-          <NavigationArrows next={carousel.onNext} prev={carousel.onPrev} />
-        }
+        action={<NavigationArrows next={carousel.onNext} prev={carousel.onPrev} />}
       />
 
       {/* Main carousel container */}
@@ -131,7 +130,11 @@ type SlideContactsProps = {
 };
 
 function SlideContacts({ chunk, goToProfile, onClickArrow }: SlideContactsProps) {
-  const handleArrowClick = (event: React.MouseEvent<HTMLButtonElement>, address: string, profileId: string) => {
+  const handleArrowClick = (
+    event: React.MouseEvent<HTMLButtonElement>,
+    address: string,
+    profileId: string
+  ) => {
     event.stopPropagation();
     onClickArrow(address, profileId);
   };
@@ -159,7 +162,9 @@ function SlideContacts({ chunk, goToProfile, onClickArrow }: SlideContactsProps)
           </Stack>
 
           <Tooltip title="Quick Transfer">
-            <IconButton onClick={(event) => handleArrowClick(event, profile.ownedBy.address, profile.id)}>
+            <IconButton
+              onClick={(event) => handleArrowClick(event, profile.ownedBy.address, profile.id)}
+            >
               <Iconify icon="eva:diagonal-arrow-right-up-fill" />
             </IconButton>
           </Tooltip>

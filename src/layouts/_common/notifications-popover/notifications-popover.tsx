@@ -16,16 +16,16 @@ import Iconify from '@src/components/iconify';
 import Scrollbar from '@src/components/scrollbar';
 import { varHover } from '@src/components/animate';
 import NotificationItem from './notification-item';
-import {type NotificationColumnsProps} from '@src/types/notification';
-import { useNotifications } from "@src/hooks/use-notifications.ts";
-import {Box} from "@mui/system";
-import Image from "@src/components/image";
+import { type NotificationColumnsProps } from '@src/types/notification';
+import { useNotifications } from '@src/hooks/use-notifications.ts';
+import { Box } from '@mui/system';
+import Image from '@src/components/image';
 // @ts-ignore
-import emptyImage from "@src/assets/illustrations/empty-notifications.png";
-import {useCallback, useState} from "react";
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
-import Label from "@src/components/label";
+import emptyImage from '@src/assets/illustrations/empty-notifications.png';
+import { useCallback, useState } from 'react';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+import Label from '@src/components/label';
 
 export default function NotificationsPopover() {
   const { notifications, markAsRead, markAllAsRead } = useNotifications();
@@ -63,13 +63,15 @@ export default function NotificationsPopover() {
         Notifications
       </Typography>
 
-      {notifications.length  ? (
+      {notifications.length ? (
         <Tooltip title="Mark all as read">
           <IconButton color="info" onClick={markAllAsRead}>
             <Iconify icon="eva:done-all-fill" />
           </IconButton>
         </Tooltip>
-      ) : <></>}
+      ) : (
+        <></>
+      )}
 
       {!smUp && (
         <IconButton onClick={drawer.onFalse}>
@@ -109,11 +111,10 @@ export default function NotificationsPopover() {
     </Tabs>
   );
 
-
   const renderNotifications = (notifications: any) => (
     <Scrollbar>
       <List disablePadding>
-        { notifications.length > 0 ? (
+        {notifications.length > 0 ? (
           notifications.map((notification: NotificationColumnsProps) => (
             <NotificationItem
               key={notification.id}
@@ -121,7 +122,9 @@ export default function NotificationsPopover() {
               onMarkAsRead={markAsRead}
             />
           ))
-        ) : <EmptyPlaceholder /> }
+        ) : (
+          <EmptyPlaceholder />
+        )}
       </List>
     </Scrollbar>
   );
@@ -170,30 +173,26 @@ export default function NotificationsPopover() {
 
         <Divider />
 
-        {
-          currentTab === 'all' && renderNotifications(notifications)
-        }
+        {currentTab === 'all' && renderNotifications(notifications)}
 
-        {
-          currentTab === 'unread' && renderNotifications(unreadNotifications)
-        }
+        {currentTab === 'unread' && renderNotifications(unreadNotifications)}
 
-        {
-          currentTab === 'archived' && renderNotifications(notifications.filter((notification) => notification.read))
-        }
-
+        {currentTab === 'archived' &&
+          renderNotifications(notifications.filter((notification) => notification.read))}
       </Drawer>
     </>
   );
 }
 
-
 export const EmptyPlaceholder = () => {
   return (
     <Box sx={{ p: 3, textAlign: 'center' }}>
-      <Image src={emptyImage} sx={{
-        width: 200,
-      }} />
+      <Image
+        src={emptyImage}
+        sx={{
+          width: 200,
+        }}
+      />
       <Typography
         sx={{
           textAlign: 'center',
@@ -207,13 +206,8 @@ export const EmptyPlaceholder = () => {
         }}
       >
         You are up to date!
-        <Typography variant={'caption'}>
-          There are no new notifications
-        </Typography>
+        <Typography variant={'caption'}>There are no new notifications</Typography>
       </Typography>
-
-
-
     </Box>
   );
-}
+};

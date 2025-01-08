@@ -16,7 +16,7 @@ import Image from '../image';
 import { paths } from '../../routes/paths';
 import { useRouter } from '@src/routes/hooks';
 import FollowUnfollowButton from '@src/components/follow-unfollow-button.tsx';
-import {useSelector} from "react-redux";
+import { useSelector } from 'react-redux';
 
 // ----------------------------------------------------------------------
 
@@ -40,7 +40,8 @@ export const UserItem = ({
 }: FollowerItemProps) => {
   const sessionData = useSelector((state: any) => state.auth.session);
   const router = useRouter();
-  const profile = sessionData && sessionData?.profile?.id === profileData?.id ? sessionData.profile : profileData;
+  const profile =
+    sessionData && sessionData?.profile?.id === profileData?.id ? sessionData.profile : profileData;
 
   const goToProfile = () => {
     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
@@ -131,7 +132,11 @@ export const UserItem = ({
             />
 
             {canFollow && profile?.id !== sessionData?.profile?.id && (
-              <FollowUnfollowButton profileId={profile?.id} followButtonMinWidth={followButtonMinWidth} size={"small"} />
+              <FollowUnfollowButton
+                profileId={profile?.id}
+                followButtonMinWidth={followButtonMinWidth}
+                size={'small'}
+              />
             )}
           </Box>
         </Card>

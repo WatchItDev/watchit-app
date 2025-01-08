@@ -3,16 +3,16 @@ import React, { useEffect, useState } from 'react';
 
 // MUI IMPORTS
 import {
-  Dialog,
   Button,
-  TextField,
-  DialogTitle,
-  DialogContent,
+  Dialog,
   DialogActions,
-  Typography,
-  Stack,
-  Paper,
+  DialogContent,
+  DialogTitle,
   Divider,
+  Paper,
+  Stack,
+  TextField,
+  Typography,
 } from '@mui/material';
 
 // ETHERS IMPORTS
@@ -32,12 +32,14 @@ import LinearProgress from '@mui/material/LinearProgress';
 import { setBalance } from '@redux/auth';
 import { useDispatch, useSelector } from 'react-redux';
 import { useGetBalance } from '@src/hooks/use-get-balance.ts';
-import { useSnackbar } from 'notistack';
-import {useNotifications} from "@src/hooks/use-notifications.ts";
+import { useNotifications } from '@src/hooks/use-notifications.ts';
 import { useNotificationPayload } from '@src/hooks/use-notification-payload.ts';
-import NeonPaper from "@src/sections/publication/NeonPaperContainer.tsx";
-import Box from "@mui/material/Box";
+import NeonPaper from '@src/sections/publication/NeonPaperContainer.tsx';
+import Box from '@mui/material/Box';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
+import { notifyError, notifySuccess } from '@notifications/internal-notifications.ts';
+import { SUCCESS } from '@notifications/success.ts';
+import { ERRORS } from '@notifications/errors.ts';
 
 // ----------------------------------------------------------------------
 
@@ -56,22 +58,23 @@ export const SubscribeProfileModal = ({
   profile,
   onSubscribe,
 }: SubscribeProfileModalProps) => {
-  const { enqueueSnackbar } = useSnackbar();
   const dispatch = useDispatch();
   const { balance: balanceFromRedux } = useSelector((state: any) => state.auth);
 
   // State variables for handling durations and messages
   const [selectedDuration, setSelectedDuration] = useState('7');
   const [customDuration, setCustomDuration] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
 
   // Hook to get the user's session data
   const sessionData = useSelector((state: any) => state.auth.session);
-  const { balance: balanceFromContract, refetch } = useGetBalance(sessionData?.address);
+  const { balance: balanceFromContract, refetch } = useGetBalance();
 
   // Hooks for subscription and terms resolution
   const { data, error, loading, subscribe } = useSubscribe();
-  const { terms, loading: loadingTerms } = useGetPolicyTerms(GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS as Address, profile?.ownedBy?.address as Address);
+  const { terms, loading: loadingTerms } = useGetPolicyTerms(
+    GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS as Address,
+    profile?.ownedBy?.address as Address
+  );
 
   const { sendNotification } = useNotifications();
   const { generatePayload } = useNotificationPayload(sessionData);
@@ -118,15 +121,14 @@ export const SubscribeProfileModal = ({
   // Effect to handle subscription errors
   useEffect(() => {
     if (error) {
-      enqueueSnackbar(error.shortMessage ?? error.message, { variant: 'error' })
-      setErrorMessage(error.shortMessage ?? error.message);
+      notifyError(error as ERRORS);
     }
   }, [error]);
 
   // Effect to handle successful subscription
   useEffect(() => {
     if (data?.receipt) {
-      enqueueSnackbar('Successfully joined the profile.', { variant: 'success' })
+      notifySuccess(SUCCESS.PROFILE_JOINED_SUCCESSFULLY);
       onSubscribe?.();
       refetch?.();
       onClose?.();
@@ -137,14 +139,12 @@ export const SubscribeProfileModal = ({
   const handleDurationChange = (value: string) => {
     setSelectedDuration(value);
     setCustomDuration('');
-    setErrorMessage('');
   };
 
   // Handler for changing the custom duration
   const handleCustomDurationChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedDuration('');
     setCustomDuration(event.target.value);
-    setErrorMessage('');
   };
 
   // Handler for the subscribe action
@@ -154,12 +154,12 @@ export const SubscribeProfileModal = ({
     }
 
     if (isCustomDurationInvalid) {
-      setErrorMessage(`Please enter a valid number of days (minimum ${minDays} days).`);
+      notifyError(ERRORS.SUBSCRIBE_MINIMUN_DAYS_ERROR);
       return;
     }
 
     if (!isBalanceSufficient) {
-      setErrorMessage('Insufficient balance to complete the action.');
+      notifyError(ERRORS.INSUFICIENT_BALANCE_ERROR);
       return;
     }
 
@@ -168,23 +168,28 @@ export const SubscribeProfileModal = ({
       await subscribe({
         holderAddress: profile?.ownedBy?.address as Address,
         amount: totalCostMMC,
-      }).then(async() => {
+      }).then(async () => {
         // Send notification to the profile owner
-        const notificationPayload = generatePayload('JOIN', {
-          id: profile.id,
-          displayName: profile?.metadata?.displayName ?? 'no name',
-          avatar: (profile?.metadata?.picture as any)?.optimized?.uri ?? `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${profile?.id}`,
-        }, {
-          durationDays,
-          totalCostMMC,
-          rawDescription: `${sessionData?.profile?.metadata?.displayName} has joined to your content`,
-        });
+        const notificationPayload = generatePayload(
+          'JOIN',
+          {
+            id: profile.id,
+            displayName: profile?.metadata?.displayName ?? 'no name',
+            avatar:
+              (profile?.metadata?.picture as any)?.optimized?.uri ??
+              `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${profile?.id}`,
+          },
+          {
+            durationDays,
+            totalCostMMC,
+            rawDescription: `${sessionData?.profile?.metadata?.displayName} has joined to your content`,
+          }
+        );
         await sendNotification(profile.id, sessionData?.profile?.id, notificationPayload);
       });
     } catch (err) {
       console.error(err);
-      enqueueSnackbar('Failed to join the profile.', { variant: 'error' })
-      setErrorMessage('Failed to join the profile.');
+      notifyError(ERRORS.FAILED_JOIN_PROFILE_ERROR);
     }
   };
 
@@ -273,20 +278,6 @@ export const SubscribeProfileModal = ({
                   </Typography>
                 )}
               </Stack>
-
-              {/* Display error if balance is insufficient */}
-              {/*{balanceFromRedux && !isBalanceSufficient && (*/}
-              {/*  <Typography variant="body2" color="error" align="center" sx={{ mt: 2 }}>*/}
-              {/*    Insufficient balance to complete the action.*/}
-              {/*  </Typography>*/}
-              {/*)}*/}
-
-              {/* Display any error messages */}
-              {errorMessage && (
-                <Typography variant="body2" color="error" align="center" sx={{ mt: 2 }}>
-                  {errorMessage}
-                </Typography>
-              )}
             </>
           )}
         </DialogContent>
@@ -298,16 +289,21 @@ export const SubscribeProfileModal = ({
                 Cancel
               </Button>
 
-              <RainbowEffect borderRadius={'10px'} animationSpeed={'3s'} padding={'0'} width={'auto'} >
-              <LoadingButton
-                variant="contained"
-                sx={{ backgroundColor: '#fff' }}
-                onClick={handleSubscribe}
-                disabled={isButtonDisabled}
-                loading={loading}
+              <RainbowEffect
+                borderRadius={'10px'}
+                animationSpeed={'3s'}
+                padding={'0'}
+                width={'auto'}
               >
-                Join
-              </LoadingButton>
+                <LoadingButton
+                  variant="contained"
+                  sx={{ backgroundColor: '#fff' }}
+                  onClick={handleSubscribe}
+                  disabled={isButtonDisabled}
+                  loading={loading}
+                >
+                  Join
+                </LoadingButton>
               </RainbowEffect>
             </DialogActions>
           </>

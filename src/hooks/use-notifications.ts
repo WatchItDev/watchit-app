@@ -19,7 +19,9 @@ export function useNotifications(): UseNotificationsReturn {
   const { data: sessionData }: ReadResult<ProfileSession> = useSession();
   const dispatch = useDispatch();
   // @ts-ignore
-  const notifications: NotificationColumnsProps[] = useSelector((state) => state.notifications.notifications);
+  const notifications: NotificationColumnsProps[] = useSelector(
+    (state) => state.notifications.notifications
+  );
 
   async function getNotifications(id: string) {
     const { data, error } = await supabase
@@ -36,15 +38,12 @@ export function useNotifications(): UseNotificationsReturn {
   }
 
   async function markAsRead(id: string) {
-    const { error } = await supabase
-      .from('notifications')
-      .update({ read: true })
-      .eq('id', id);
+    const { error } = await supabase.from('notifications').update({ read: true }).eq('id', id);
 
     if (error) {
       console.error('Error marking notification as read:', error);
     } else {
-      const updatedNotifications = notifications.map(notification =>
+      const updatedNotifications = notifications.map((notification) =>
         notification.id === id ? { ...notification, read: true } : notification
       );
       dispatch(setNotifications(updatedNotifications));
@@ -54,7 +53,7 @@ export function useNotifications(): UseNotificationsReturn {
   async function sendNotification(receiver_id: string, sender_id: string, payload: any) {
     const { error } = await supabase
       .from('notifications')
-      .insert([{ receiver_id, sender_id, payload}]);
+      .insert([{ receiver_id, sender_id, payload }]);
 
     if (error) {
       console.error('Error sending notification:', error);
@@ -70,22 +69,22 @@ export function useNotifications(): UseNotificationsReturn {
     if (error) {
       console.error('Error marking all notifications as read:', error);
     } else {
-      const updatedNotifications = notifications.map(notification => ({ ...notification, read: true }));
+      const updatedNotifications = notifications.map((notification) => ({
+        ...notification,
+        read: true,
+      }));
       dispatch(setNotifications(updatedNotifications));
     }
   }
 
   // async deleteNotification(id: string)
   async function deleteNotification(id: string) {
-    const { error } = await supabase
-      .from('notifications')
-      .delete()
-      .eq('id', id);
+    const { error } = await supabase.from('notifications').delete().eq('id', id);
 
     if (error) {
       console.error('Error deleting notification:', error);
     } else {
-      const updatedNotifications = notifications.filter(notification => notification.id !== id);
+      const updatedNotifications = notifications.filter((notification) => notification.id !== id);
       dispatch(setNotifications(updatedNotifications));
     }
   }
@@ -96,6 +95,6 @@ export function useNotifications(): UseNotificationsReturn {
     markAllAsRead,
     markAsRead,
     sendNotification,
-    deleteNotification
+    deleteNotification,
   };
 }

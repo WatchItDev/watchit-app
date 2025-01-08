@@ -45,7 +45,11 @@ export default function FinanceTransactionsTableFiltersResult({
       <Stack flexGrow={1} spacing={1} direction="row" flexWrap="wrap" alignItems="center">
         {filters.status !== 'all' && (
           <Block label="Status:">
-            <Chip size="small" label={parseFilterLabel(filters.status)} onDelete={handleRemoveStatus} />
+            <Chip
+              size="small"
+              label={parseFilterLabel(filters.status)}
+              onDelete={handleRemoveStatus}
+            />
           </Block>
         )}
 
@@ -66,7 +70,7 @@ const parseFilterLabel = (type: string): string => {
   if (type === 'transferTo') return 'Incomes';
   if (type === 'transferFrom') return 'Outcomes';
   return type;
-}
+};
 
 // ----------------------------------------------------------------------
 

@@ -1,3 +1,4 @@
+// React imports
 import { useState, useEffect } from 'react';
 // @mui
 import Box from '@mui/material/Box';
@@ -5,24 +6,26 @@ import MenuItem from '@mui/material/MenuItem';
 import ButtonBase from '@mui/material/ButtonBase';
 import CardHeader from '@mui/material/CardHeader';
 import Card from '@mui/material/Card';
-// Components
+
+// Project imports
 import Iconify from '@src/components/iconify';
 import Chart, { useChart } from '@src/components/chart';
 import CustomPopover, { usePopover } from '@src/components/custom-popover';
 import useGetSmartWalletTransactions from '@src/hooks/use-get-smart-wallet-transactions.ts';
+import FinanceOverlayLoader from '@src/sections/finance/components/finance-overlay-loader.tsx';
 
 export default function FinanceBalanceStatistics() {
   const { transactions, loading } = useGetSmartWalletTransactions();
   const popover = usePopover();
   const [timeFrame, setTimeFrame] = useState('Week');
   const [incomeData, setIncomeData] = useState<number[]>([]);
-  const [expenseData, setExpenseData] = useState<number[]>([]);
+  const [outcomeData, setOutcomeData] = useState<number[]>([]);
   const [categories, setCategories] = useState<string[]>([]);
   const [fullCategories, setFullCategories] = useState<string[]>([]);
 
   // Initialize chart options with short labels and detailed tooltips
   const chartOptions = useChart({
-    colors: ['#00AB55', '#FF4842'], // Green for income, red for expenses
+    colors: ['#00AB55', '#FF4842'], // Green for income, red for outcome
     stroke: {
       show: true,
       width: 2,
@@ -61,7 +64,8 @@ export default function FinanceBalanceStatistics() {
     const oneYearAgo = now - 365 * 24 * 60 * 60 * 1000;
 
     // Grouped data structure: key is timestamp for "Week" and "Month", string for "Year"
-    let groupedData: Record<number | string, { label: string; income: number; expense: number }> = {};
+    let groupedData: Record<number | string, { label: string; income: number; outcome: number }> =
+      {};
 
     if (timeFrame === 'Week') {
       // Group data by each day in the last week
@@ -69,24 +73,27 @@ export default function FinanceBalanceStatistics() {
         const timestamp = Number(log.timestamp) * 1000;
         if (timestamp < oneWeekAgo) return acc;
 
-        // Format date as 'YYYY-MM-DD' for consistent sorting
         const date = new Date(timestamp);
-        const dateKey = date.toISOString().split('T')[0]; // '2024-12-31'
+        const y = date.getFullYear();
+        const m = String(date.getMonth() + 1).padStart(2, '0');
+        const d = String(date.getDate()).padStart(2, '0');
+        const dateKey = `${y}-${m}-${d}`;
+
         const dayLabel = date.toLocaleDateString('en-US', {
           weekday: 'short',
           month: 'short',
           day: 'numeric',
-        }); // e.g., 'Mon Dec 31'
+        });
 
         const amount = parseFloat(log.formattedAmount);
         const eventType = log.event;
 
-        if (!acc[dateKey]) acc[dateKey] = { label: dayLabel, income: 0, expense: 0 };
+        if (!acc[dateKey]) acc[dateKey] = { label: dayLabel, income: 0, outcome: 0 };
 
         if (eventType === 'transferFrom' || eventType === 'deposit') {
           acc[dateKey].income += amount;
         } else if (eventType === 'transferTo' || eventType === 'withdraw') {
-          acc[dateKey].expense += amount;
+          acc[dateKey].outcome += amount;
         }
 
         return acc;
@@ -101,26 +108,28 @@ export default function FinanceBalanceStatistics() {
         const weekStart = new Date(
           date.getFullYear(),
           date.getMonth(),
-          date.getDate() - date.getDay() // Start of the week (Sunday)
+          date.getDate() - date.getDay()
         );
-        const weekEnd = new Date(weekStart.getTime() + 6 * 24 * 60 * 60 * 1000); // End of the week (Saturday)
+        const weekEnd = new Date(weekStart.getTime() + 6 * 24 * 60 * 60 * 1000);
 
         const weekStartTimestamp = weekStart.getTime();
 
         const label = `${weekStart.toLocaleDateString('en-US', {
           month: 'short',
           day: 'numeric',
-        })} - ${weekEnd.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`; // e.g., "Dec 1 - Dec 7"
+        })} - ${weekEnd.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`;
 
         const amount = parseFloat(log.formattedAmount);
         const eventType = log.event;
 
-        if (!acc[weekStartTimestamp]) acc[weekStartTimestamp] = { label, income: 0, expense: 0 };
+        if (!acc[weekStartTimestamp]) {
+          acc[weekStartTimestamp] = { label, income: 0, outcome: 0 };
+        }
 
         if (eventType === 'transferTo' || eventType === 'deposit') {
           acc[weekStartTimestamp].income += amount;
         } else if (eventType === 'transferFrom') {
-          acc[weekStartTimestamp].expense += amount;
+          acc[weekStartTimestamp].outcome += amount;
         }
 
         return acc;
@@ -132,17 +141,20 @@ export default function FinanceBalanceStatistics() {
         if (timestamp < oneYearAgo) return acc;
 
         const date = new Date(timestamp);
-        const monthLabel = date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' }); // e.g., 'Dec 2024'
+        const monthLabel = date.toLocaleDateString('en-US', {
+          month: 'short',
+          year: 'numeric',
+        });
 
         const amount = parseFloat(log.formattedAmount);
         const eventType = log.event;
 
-        if (!acc[monthLabel]) acc[monthLabel] = { label: monthLabel, income: 0, expense: 0 };
+        if (!acc[monthLabel]) acc[monthLabel] = { label: monthLabel, income: 0, outcome: 0 };
 
         if (eventType === 'transferTo' || eventType === 'deposit') {
           acc[monthLabel].income += amount;
         } else if (eventType === 'transferFrom') {
-          acc[monthLabel].expense += amount;
+          acc[monthLabel].outcome += amount;
         }
 
         return acc;
@@ -150,15 +162,39 @@ export default function FinanceBalanceStatistics() {
     }
 
     // Sort keys chronologically
+    // - When the key is a number (timestamp) we can compare directly
+    // - When it is a string of type 'YYYY-MM-DD', we convert to date
+    // - When it is 'Dec 2024' (in Year), we convert to Date with new Date(...).getTime()
     const sortedKeys = Object.keys(groupedData)
-      .map((key) => (typeof key === 'string' && /^\d+$/.test(key) ? Number(key) : key))
+      .map((key) => {
+        // For year: "Dec 2024" => new Date("Dec 1, 2024")
+        // For "YYYY-MM-DD": new Date("YYYY-MM-DD")
+        // For timestamps (number), we convert it to number
+        if (/^\d+$/.test(key)) {
+          return Number(key);
+        }
+        if (/^\d{4}-\d{2}-\d{2}$/.test(key)) {
+          return key; // "2024-12-31" - we sort it as a date string afterwards
+        }
+        // assumes it is e.g. "Dec 2024"
+        return key;
+      })
       .sort((a, b) => {
         if (typeof a === 'number' && typeof b === 'number') {
           return a - b;
         }
-        const dateA = new Date(a as string).getTime();
-        const dateB = new Date(b as string).getTime();
-        return dateA - dateB;
+        if (
+          typeof a === 'string' &&
+          a.match(/^\d{4}-\d{2}-\d{2}$/) &&
+          typeof b === 'string' &&
+          b.match(/^\d{4}-\d{2}-\d{2}$/)
+        ) {
+          return new Date(a).getTime() - new Date(b).getTime();
+        }
+        if (typeof a === 'string' && typeof b === 'string') {
+          return new Date(a).getTime() - new Date(b).getTime();
+        }
+        return 0;
       });
 
     // Extract full labels for tooltips
@@ -182,7 +218,7 @@ export default function FinanceBalanceStatistics() {
           if (startMonth === endMonth) {
             return `${startMonth} ${startDay}-${endDay}`; // "Dec 1-7"
           } else {
-            return `${startMonth} ${startDay}-${endMonth} ${endDay}`; // "Dec 29-Jan 4"
+            return `${startMonth} ${startDay}-${endMonth} ${endDay}`;
           }
         }
       }
@@ -197,8 +233,8 @@ export default function FinanceBalanceStatistics() {
 
     setCategories(shortLabels);
     setIncomeData(sortedKeys.map((key) => groupedData[key].income));
-    setExpenseData(sortedKeys.map((key) => groupedData[key].expense));
-  }, [transactions, timeFrame, loading, ]);
+    setOutcomeData(sortedKeys.map((key) => groupedData[key].outcome));
+  }, [transactions, timeFrame, loading]);
 
   const handleChangeTimeFrame = (newValue: string) => {
     popover.onClose();
@@ -210,7 +246,7 @@ export default function FinanceBalanceStatistics() {
       <Card>
         <CardHeader
           title="Balance Statistics"
-          subheader="Income vs Expenses over time"
+          subheader="Income vs Outcome over time"
           sx={{ px: 0 }}
           action={
             <ButtonBase
@@ -235,13 +271,14 @@ export default function FinanceBalanceStatistics() {
           }
         />
 
-        <Box sx={{ mt: 3, mx: 0 }}>
+        <Box sx={{ mt: 3, mx: 0, position: 'relative' }}>
+          {loading && <FinanceOverlayLoader />}
           <Chart
             dir="ltr"
             type="bar"
             series={[
               { name: 'Income', data: incomeData },
-              { name: 'Expenses', data: expenseData },
+              { name: 'Outcome', data: outcomeData },
             ]}
             options={chartOptions}
             height={364}

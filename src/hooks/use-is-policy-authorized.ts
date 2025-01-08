@@ -84,17 +84,13 @@ export const useIsPolicyAuthorized = (
     } catch (err: any) {
       console.error('Error checking policy authorization:', err);
       setIsAuthorized(undefined);
-      setError({ message: err?.message || 'An error occurred while checking policy authorization.' });
+      setError({
+        message: err?.message || 'An error occurred while checking policy authorization.',
+      });
     } finally {
       setFetching(false);
     }
-  }, [
-    policy,
-    holder,
-    userAddress,
-    authorizedHolderPolicies,
-    errorPolicies,
-  ]);
+  }, [policy, holder, userAddress, authorizedHolderPolicies, errorPolicies]);
 
   // Whenever authorizedHolderPolicies or errorPolicies change, verify again
   useEffect(() => {
@@ -110,7 +106,7 @@ export const useIsPolicyAuthorized = (
   return {
     isAuthorized,
     loading: loadingPolicies, // Indicates if we are still fetching the list of policies
-    fetching,                // Indicates if we are checking authorization in that list
+    fetching, // Indicates if we are checking authorization in that list
     error,
     refetch,
   };

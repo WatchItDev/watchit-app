@@ -11,23 +11,23 @@ export type TransactionItemProps = {
     type: string;
     category: string;
     data: {
-      to : {
+      to: {
         id: string;
         displayName: string;
         avatar: string;
-      },
+      };
       from: {
         id: string;
         displayName: string;
         avatar: string;
-      },
+      };
       content: {
         message: string;
         rawDescription: string;
       };
-}
-  }
-}
+    };
+  };
+};
 
 interface TransactionsState {
   transactions: TransactionItemProps[];
@@ -45,7 +45,9 @@ const transactionsSlice = createSlice({
       state.transactions = action.payload;
     },
     appendTransaction(state, action: PayloadAction<TransactionItemProps>) {
-      const existingIndex = state.transactions.findIndex(transaction => transaction.id === action.payload.id);
+      const existingIndex = state.transactions.findIndex(
+        (transaction) => transaction.id === action.payload.id
+      );
       if (existingIndex !== -1) {
         state.transactions[existingIndex] = action.payload;
       } else {

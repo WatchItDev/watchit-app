@@ -23,7 +23,7 @@ export type TransactionType = {
         message: string;
         rawDescription: string;
       };
-    },
+    };
     type: string;
     amount: number;
     address: string;
@@ -36,13 +36,13 @@ export type TableRowTransactionType = {
   id: string;
   name: string;
   avatarUrl: string;
-  amount:string | null;
+  amount: string | null;
   type: string;
   date: bigint;
   status: string;
   message: string;
   category: string;
-}
+};
 
 export type TransactionData = {
   date: string;
@@ -85,24 +85,27 @@ export const useTransactionData = (): TransactionsDataResponseHook => {
 
       setRawData(processedTransactions);
 
-      const groupedData = transactions.reduce((acc: Record<string, TransactionData>, transaction) => {
-        const date = new Date(transaction.created_at).toISOString().split('T')[0];
-        if (!acc[date]) {
-          acc[date] = { date, income: 0, expenses: 0 };
-        }
-        if (transaction.receiver_id === sessionData.profile.id) {
-          acc[date].income += transaction.payload.amount;
-        }
-        if (transaction.sender_id === sessionData.profile.id) {
-          acc[date].expenses += transaction.payload.amount;
-        }
-        return acc;
-      }, {});
+      const groupedData = transactions.reduce(
+        (acc: Record<string, TransactionData>, transaction) => {
+          const date = new Date(transaction.created_at).toISOString().split('T')[0];
+          if (!acc[date]) {
+            acc[date] = { date, income: 0, expenses: 0 };
+          }
+          if (transaction.receiver_id === sessionData.profile.id) {
+            acc[date].income += transaction.payload.amount;
+          }
+          if (transaction.sender_id === sessionData.profile.id) {
+            acc[date].expenses += transaction.payload.amount;
+          }
+          return acc;
+        },
+        {}
+      );
 
       setData(Object.values(groupedData));
     };
 
-    fetchData().then(r => console.log(r));
+    fetchData().then((r) => console.log(r));
   }, [sessionData]);
 
   return { data, rawData };

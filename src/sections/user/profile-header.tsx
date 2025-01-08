@@ -1,5 +1,9 @@
 // REACT IMPORTS
-import { useState, useEffect, PropsWithChildren, useRef, useCallback } from 'react';
+import { PropsWithChildren, useCallback, useEffect, useRef, useState } from 'react';
+
+// Redux
+import { openLoginModal } from '@redux/auth';
+import { useDispatch, useSelector } from 'react-redux';
 
 // MUI IMPORTS
 import Box from '@mui/material/Box';
@@ -16,11 +20,7 @@ import { Profile } from '@lens-protocol/api-bindings';
 import CircularProgress from '@mui/material/CircularProgress';
 
 // LENS IMPORTS
-import {
-  appId,
-  PublicationType,
-  usePublications,
-} from '@lens-protocol/react-web';
+import { appId, PublicationType, usePublications } from '@lens-protocol/react-web';
 
 // VIEM IMPORTS
 import { Address } from 'viem';
@@ -41,14 +41,17 @@ import { useIsPolicyAuthorized } from '@src/hooks/use-is-policy-authorized.ts';
 import { SubscribeProfileModal } from '@src/components/subscribe-profile-modal.tsx';
 import { ActivateSubscriptionProfileModal } from '@src/components/activate-subscription-profile-modal.tsx';
 import FollowUnfollowButton from '@src/components/follow-unfollow-button.tsx';
+
 // @ts-ignore
 import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
 import { randomColors } from '@src/components/poster/variants/poster-latest-content.tsx';
 import { OpenableText } from '@src/components/openable-text/index.ts';
 import { useGetAttestation } from '@src/hooks/use-get-attestation.ts';
-import { openLoginModal } from '@redux/auth';
-import {useDispatch, useSelector} from 'react-redux';
-import { useSnackbar } from 'notistack';
+
+// Notifcations
+import { notifyError, notifySuccess } from '@notifications/internal-notifications.ts';
+import { SUCCESS } from '@notifications/success.ts';
+import { ERRORS } from '@notifications/errors.ts';
 
 // ----------------------------------------------------------------------
 
@@ -99,9 +102,11 @@ const prependProfileIdToUrl = (url: string, profileId: string) => {
 
 // ----------------------------------------------------------------------
 
-const ProfileHeader = ({ profile: profileData, children }: PropsWithChildren<ProfileHeaderProps>) => {
+const ProfileHeader = ({
+  profile: profileData,
+  children,
+}: PropsWithChildren<ProfileHeaderProps>) => {
   const dispatch = useDispatch();
-  const { enqueueSnackbar } = useSnackbar();
   const navRef = useRef(null);
   const navRefSocial = useRef(null);
   const navRefSettings = useRef(null);
@@ -117,7 +122,8 @@ const ProfileHeader = ({ profile: profileData, children }: PropsWithChildren<Pro
   const [openSubscribeModal, setOpenSubscribeModal] = useState(false);
   const open = Boolean(anchorEl);
   const openMenu = Boolean(menuAnchorEl);
-  const profile = sessionData && sessionData?.profile?.id === profileData?.id ? sessionData.profile : profileData;
+  const profile =
+    sessionData && sessionData?.profile?.id === profileData?.id ? sessionData.profile : profileData;
 
   // State to handle error and success messages
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
@@ -208,10 +214,12 @@ const ProfileHeader = ({ profile: profileData, children }: PropsWithChildren<Pro
 
   const handleCopy = async () => {
     try {
-      await navigator.clipboard.writeText(urlToShare.replace('profileId', 'profile/' + profile?.id));
-      enqueueSnackbar('Link copied to clipboard!', { variant: 'success' })
+      await navigator.clipboard.writeText(
+        urlToShare.replace('profileId', 'profile/' + profile?.id)
+      );
+      notifySuccess(SUCCESS.LINK_COPIED_TO_CLIPBOARD);
     } catch (err) {
-      enqueueSnackbar('Failed to copy link.', { variant: 'error' })
+      notifyError(ERRORS.LINK_COPIED_ERROR);
     }
   };
 
@@ -221,7 +229,7 @@ const ProfileHeader = ({ profile: profileData, children }: PropsWithChildren<Pro
     if (!hasAccess) setOpenSubscribeModal(true);
   };
 
-  const profileImage = (profile?.metadata?.picture as any)?.optimized?.uri
+  const profileImage = (profile?.metadata?.picture as any)?.optimized?.uri;
 
   return (
     <>
@@ -245,7 +253,9 @@ const ProfileHeader = ({ profile: profileData, children }: PropsWithChildren<Pro
           >
             <IconDots size={22} color="#FFFFFF" />
           </Button>
-        ) : <></>}
+        ) : (
+          <></>
+        )}
 
         <Popover
           open={openMenu}
@@ -315,7 +325,11 @@ const ProfileHeader = ({ profile: profileData, children }: PropsWithChildren<Pro
               }}
             >
               <Avatar
-                src={!!profileImage ? profileImage : `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${profile?.id}`}
+                src={
+                  !!profileImage
+                    ? profileImage
+                    : `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${profile?.id}`
+                }
                 alt={profile?.handle?.localName ?? ''}
                 variant="rounded"
                 sx={{

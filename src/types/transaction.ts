@@ -10,5 +10,3 @@ export const TRANSACTIONS_TYPES = [
   { value: 'deposit', label: 'Deposit' },
   { value: 'withdraw', label: 'Withdraw' },
 ];
-
-

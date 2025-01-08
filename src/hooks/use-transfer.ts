@@ -1,15 +1,10 @@
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { encodeFunctionData, parseUnits } from 'viem';
-import { useWeb3Auth } from '@src/hooks/use-web3-auth.ts';
 import LedgerVaultAbi from '@src/config/abi/LedgerVault.json';
 import { GLOBAL_CONSTANTS } from '@src/config-global';
-
-interface VaultError {
-  message: string;
-  code?: number;
-  [key: string]: any;
-}
+import { useWeb3Session } from '@src/hooks/use-web3-session.ts';
+import { ERRORS } from '@notifications/errors.ts';
 
 interface TransferParams {
   recipient: string;
@@ -20,16 +15,16 @@ interface UseTransferHook {
   data?: any;
   transfer: (params: TransferParams) => Promise<void>;
   loading: boolean;
-  error?: VaultError | null;
+  error?: keyof typeof ERRORS | null;
 }
 
 export const useTransfer = (): UseTransferHook => {
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<VaultError | null>(null);
+  const [error, setError] = useState<keyof typeof ERRORS | null>(null);
 
   const sessionData = useSelector((state: any) => state.auth.session);
-  const { web3Auth } = useWeb3Auth();
+  const { bundlerClient, smartAccount } = useWeb3Session();
 
   const initializeTransfer = ({ recipient, amount }: TransferParams) => {
     const weiAmount = parseUnits(amount.toString(), 18);
@@ -46,20 +41,14 @@ export const useTransfer = (): UseTransferHook => {
     setError(null);
 
     try {
-      const accountAbstractionProvider = web3Auth.options.accountAbstractionProvider;
-      // @ts-ignore
-      const bundlerClient = accountAbstractionProvider.bundlerClient;
-      // @ts-ignore
-      const smartAccount = accountAbstractionProvider.smartAccount;
-
       if (!sessionData?.authenticated) {
-        setError({ message: 'Please login to transfer funds' });
+        setError(ERRORS.TRANSFER_LOGIN_FIRST_ERROR);
         setLoading(false);
         return;
       }
 
       if (!bundlerClient) {
-        setError({ message: 'Bundler client not available' });
+        setError(ERRORS.BUNDLER_UNAVAILABLE);
         setLoading(false);
         return;
       }
@@ -86,7 +75,7 @@ export const useTransfer = (): UseTransferHook => {
       setData(receipt);
       setLoading(false);
     } catch (err: any) {
-      setError({ message: err.message || 'An error occurred', ...err });
+      setError(ERRORS.UNKNOWN_ERROR);
       setLoading(false);
     }
   };

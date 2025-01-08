@@ -1,11 +1,14 @@
+import { useEffect } from 'react';
 // MUI IMPORTS
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
-import Button from "@mui/material/Button";
+import Button from '@mui/material/Button';
 import { CardProps } from '@mui/material/Card';
 import Typography from '@mui/material/Typography';
 import { useTheme, alpha } from '@mui/material/styles';
 
+// @mui
+import LoadingButton from '@mui/lab/LoadingButton';
 // CHARTS IMPORTS
 import { ApexOptions } from 'apexcharts';
 
@@ -13,15 +16,16 @@ import { ApexOptions } from 'apexcharts';
 import { bgGradient } from '@src/theme/css';
 import Iconify from '@src/components/iconify';
 import { ColorSchema } from '@src/theme/palette';
-import {useBoolean} from "@src/hooks/use-boolean.ts";
+import { useBoolean } from '@src/hooks/use-boolean.ts';
 import Chart, { useChart } from '@src/components/chart';
 import { fCurrency, fPercent } from '@src/utils/format-number';
 import { FinanceDepositModal } from '@src/sections/finance/components/finance-deposit-modal.tsx';
 import { useWithdraw } from '@src/hooks/use-withdraw.ts';
-import LoadingButton from '@mui/lab/LoadingButton';
-import { useEffect } from 'react';
-import { useSnackbar } from 'notistack';
-import {FinanceWithdrawModal} from "@src/sections/finance/components/finance-withdraw-modal.tsx";
+import { FinanceWithdrawModal } from '@src/sections/finance/components/finance-withdraw-modal.tsx';
+
+// Notifications
+import { notifyError } from '@notifications/internal-notifications';
+import { ERRORS } from '@notifications/errors';
 
 // ----------------------------------------------------------------------
 
@@ -57,10 +61,9 @@ export default function FinanceWidgetSummary({
   const theme = useTheme();
   const { series, options } = chart;
   const { loading: withdrawLoading, error } = useWithdraw();
-  const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
-    if (error) enqueueSnackbar(error.message, { variant: 'error' });
+    if (error) notifyError(error as ERRORS);
   }, [error]);
 
   const chartOptions = useChart({
@@ -107,11 +110,11 @@ export default function FinanceWidgetSummary({
 
   const handleFinishDeposit = () => {
     confirmDeposit.onFalse?.();
-  }
+  };
 
   const handleFinishWithdraw = () => {
     confirmWithdraw.onFalse?.();
-  }
+  };
 
   const handleDepositOpenModal = () => {
     confirmDeposit.onTrue?.();
@@ -120,7 +123,6 @@ export default function FinanceWidgetSummary({
   const handleWithdrawOpenModal = () => {
     confirmWithdraw.onTrue?.();
   };
-
 
   return (
     <Stack
@@ -152,7 +154,7 @@ export default function FinanceWidgetSummary({
           gap: 1,
           display: 'flex',
           alignItems: 'center',
-          justifyContent: 'flex-end'
+          justifyContent: 'flex-end',
         }}
       >
         <Button
@@ -173,15 +175,11 @@ export default function FinanceWidgetSummary({
         >
           Withdraw
         </LoadingButton>
-        </Box>
+      </Box>
 
       <Stack spacing={1} sx={{ p: 3 }}>
         <Typography variant="subtitle2">{title}</Typography>
-        <Stack
-          direction="row"
-          alignItems="flex-end"
-          justifyContent="flex-start"
-        >
+        <Stack direction="row" alignItems="flex-end" justifyContent="flex-start">
           <Box sx={{ typography: 'h3' }}>{formattedTotal}</Box>
           <Box sx={{ typography: 'h6', opacity: 0.5, ml: 1, mb: 0.6 }}>MMC</Box>
         </Stack>
@@ -206,15 +204,9 @@ export default function FinanceWidgetSummary({
 
       <Chart type="area" series={[{ data: series }]} options={chartOptions} height={120} />
 
-      <FinanceDepositModal
-        open={confirmDeposit.value}
-        onClose={handleFinishDeposit}
-      />
+      <FinanceDepositModal open={confirmDeposit.value} onClose={handleFinishDeposit} />
 
-      <FinanceWithdrawModal
-        open={confirmWithdraw.value}
-        onClose={handleFinishWithdraw}
-      />
+      <FinanceWithdrawModal open={confirmWithdraw.value} onClose={handleFinishWithdraw} />
     </Stack>
-  )
+  );
 }

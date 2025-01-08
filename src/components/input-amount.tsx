@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { Ref, useEffect, useState } from 'react';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import Input, { InputProps, inputClasses } from '@mui/material/Input';
@@ -9,9 +9,18 @@ const MIN_AMOUNT = 0;
 export interface InputAmountProps extends InputProps {
   max: number;
   amount: number | number[];
+  inputRef?: Ref<HTMLInputElement>;
 }
 
-export const InputAmount = ({ amount, onBlur, onChange, max, sx, ...other }: InputAmountProps) => {
+export const InputAmount = ({
+  amount,
+  onBlur,
+  onChange,
+  max,
+  sx,
+  inputRef,
+  ...other
+}: InputAmountProps) => {
   const [autoWidth, setAutoWidth] = useState(32);
 
   useEffect(() => {
@@ -22,12 +31,13 @@ export const InputAmount = ({ amount, onBlur, onChange, max, sx, ...other }: Inp
   return (
     <Stack direction="row" alignItems="center" justifyContent="center" spacing={1} sx={sx}>
       <Input
-        disableUnderline
+        // disableUnderline
         size="small"
         placeholder="0"
         value={amount === 0 ? '' : amount}
         onChange={onChange}
         onBlur={onBlur}
+        inputRef={inputRef}
         inputProps={{
           step: STEP,
           min: MIN_AMOUNT,

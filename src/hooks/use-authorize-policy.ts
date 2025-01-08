@@ -5,26 +5,19 @@ import { useState } from 'react';
 import { encodeFunctionData } from 'viem';
 
 // LOCAL IMPORTS
-import { useWeb3Auth } from '@src/hooks/use-web3-auth.ts';
 import RightsPolicyAuthorizerAbi from '@src/config/abi/RightsPolicyAuthorizer.json';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
-import {useSelector} from "react-redux";
+import { useSelector } from 'react-redux';
+import { useWeb3Session } from '@src/hooks/use-web3-session.ts';
+import { ERRORS } from '@notifications/errors.ts';
 
 // ----------------------------------------------------------------------
-
-// Define the shape of the error object
-interface AuthorizeError {
-  message: string;
-  code?: number;
-  [key: string]: any; // For additional error properties
-}
-
 // Define the return type of the useAuthorizePolicy hook
 interface useAuthorizePolicyHook {
   data?: any;
   authorize: (params: AuthorizePolicyParams) => Promise<void>;
   loading: boolean;
-  error?: AuthorizeError | null;
+  error?: keyof typeof ERRORS | null;
 }
 
 // Parameters to be passed to the subscribe function
@@ -38,9 +31,9 @@ interface AuthorizePolicyParams {
 export const useAuthorizePolicy = (): useAuthorizePolicyHook => {
   const [data, setData] = useState();
   const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<AuthorizeError | null>(null);
+  const [error, setError] = useState<keyof typeof ERRORS | null>(null);
   const sessionData = useSelector((state: any) => state.auth.session);
-  const { web3Auth } = useWeb3Auth();
+  const { bundlerClient, smartAccount } = useWeb3Session();
 
   /**
    * Creates the flash policy agreement data.
@@ -65,21 +58,14 @@ export const useAuthorizePolicy = (): useAuthorizePolicyHook => {
     setError(null);
 
     try {
-      // Retrieve the account abstraction provider, bundler client, and smart account
-      const accountAbstractionProvider = web3Auth.options.accountAbstractionProvider;
-      // @ts-ignore
-      const bundlerClient = accountAbstractionProvider.bundlerClient;
-      // @ts-ignore
-      const smartAccount = accountAbstractionProvider.smartAccount;
-
       if (!sessionData?.authenticated) {
-        setError({ message: 'Please login to authorize policy' });
+        setError(ERRORS.AUTHORIZATION_POLICY_ERROR);
         setLoading(false);
         return;
       }
 
       if (!bundlerClient) {
-        setError({ message: 'Bundler client not available' });
+        setError(ERRORS.BUNDLER_UNAVAILABLE);
         setLoading(false);
         return;
       }
@@ -114,7 +100,7 @@ export const useAuthorizePolicy = (): useAuthorizePolicyHook => {
       setData(receipt);
       setLoading(false);
     } catch (err: any) {
-      setError({ message: err.message || 'An error occurred', ...err });
+      setError(ERRORS.UNKNOWN_ERROR);
       setLoading(false);
     }
   };

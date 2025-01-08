@@ -60,7 +60,9 @@ export default function ExploreView() {
   });
 
   // FilteredCompletedProfiles is an array of objects, each object has a metadata property and inside exists a displayName en bio property; filter the profiles that not have a displayName and bio property
-  const filteredProfiles = latestCreatedProfiles?.filter((profile: any) => profile.metadata?.displayName && profile.metadata?.bio);
+  const filteredProfiles = latestCreatedProfiles?.filter(
+    (profile: any) => profile.metadata?.displayName && profile.metadata?.bio
+  );
 
   const { data: explorePublications } = useExplorePublications({
     where: {
@@ -79,16 +81,13 @@ export default function ExploreView() {
     .filter((item, index, self) => self.findIndex((t) => t.id === item.id) === index)
     .slice(0, 10);
 
-
   // @TODO Uncomment the following line to insert publications in supabase when needed
   // InsertMoviesSupabase(explorePublications);
 
   const bookmarksFiltered = [...[...bookmarkPublications].reverse(), ...(bookmark ?? [])]
     .filter((post) => !hiddenBookmarks.some((hidden: any) => hidden.id === post.id))
     .filter((post) => !post.isHidden)
-    .filter((post, index, self) =>
-      index === self.findIndex((p) => p.id === post.id)
-    );
+    .filter((post, index, self) => index === self.findIndex((p) => p.id === post.id));
 
   return (
     <Container sx={{ p: '0 !important', maxWidth: '2000px !important' }}>

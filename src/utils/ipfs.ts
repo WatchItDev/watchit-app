@@ -114,7 +114,11 @@ export const uploadMetadataToIPFS = async (metadata: any): Promise<string> => {
  * @param delayMs - Delay in milliseconds between retries.
  * @returns {Promise<boolean>} - Resolves to true if data is accessible, otherwise throws an error.
  */
-export const verifyIpfsData = async (uri: string, retries = 16, delayMs = 2000): Promise<boolean> => {
+export const verifyIpfsData = async (
+  uri: string,
+  retries = 16,
+  delayMs = 2000
+): Promise<boolean> => {
   const gateway = 'https://gw.ipfs-lens.dev/ipfs/'; // Use only lens's gateway
 
   const hash = uri.replace('ipfs://', '');

@@ -10,11 +10,13 @@ import { Profile, useLazyProfiles, LoginError } from '@lens-protocol/react-web';
 // @ts-ignore
 import Alert from '@mui/material/Alert';
 
-import {useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setAuthLoading, setBalance } from '@redux/auth';
 import { useResponsive } from '@src/hooks/use-responsive.ts';
 import { UserItem } from '../user-item';
-import { useSnackbar } from 'notistack';
+import LoadingScreen from '../loading-screen/loading-screen.tsx';
+import { notifyError } from '@notifications/internal-notifications.ts';
+import { ERRORS } from '@notifications/errors.ts';
 // ----------------------------------------------------------------------
 
 interface ProfileSelectionProps {
@@ -36,17 +38,16 @@ export const ProfileSelectView: React.FC<ProfileSelectionProps> = ({
   onClose,
   login,
 }) => {
-  const { enqueueSnackbar } = useSnackbar();
   const dispatch = useDispatch();
   const lgUp = useResponsive('up', 'lg');
 
   const [profiles, setProfiles] = useState([] as Profile[]);
-  const { execute: getProfiles } = useLazyProfiles();
+  const { execute: getProfiles, loading } = useLazyProfiles();
   const sessionData = useSelector((state: any) => state.auth.session);
 
   useEffect(() => {
     if (!error) dispatch(setAuthLoading({ isSessionLoading: false }));
-    if (error) enqueueSnackbar(error.message, { variant: 'error' });
+    if (error) notifyError(ERRORS.LOGIN_FAILED_ERROR);
   }, [error]);
 
   useEffect(() => {
@@ -67,7 +68,7 @@ export const ProfileSelectView: React.FC<ProfileSelectionProps> = ({
       onClose();
       dispatch(setAuthLoading({ isSessionLoading: true }));
       await login(profile);
-      dispatch(setAuthLoading({ isSessionLoading: false }))
+      dispatch(setAuthLoading({ isSessionLoading: false }));
     }
   };
 
@@ -95,7 +96,10 @@ export const ProfileSelectView: React.FC<ProfileSelectionProps> = ({
           backgroundColor: 'rgba(0,0,0,0.1)',
         }}
       />
-      {profiles?.length > 0 ? (
+
+      {loading ? <LoadingScreen sx={{ py: 16 }} /> : <></>}
+
+      {profiles?.length > 0 && !loading ? (
         <Box sx={{ display: 'flex', flexDirection: 'column', maxHeight: 'calc(100% - 8rem)' }}>
           <Box
             sx={{
@@ -148,6 +152,10 @@ export const ProfileSelectView: React.FC<ProfileSelectionProps> = ({
           </Box>
         </Box>
       ) : (
+        <></>
+      )}
+
+      {profiles?.length === 0 && !loading ? (
         <Box display="flex" flexDirection="column" alignItems="center" sx={{ mt: 1, p: 3 }}>
           <Typography variant="h6" fontWeight="bold" textAlign="center" sx={{ pt: 2, pb: 1 }}>
             No profiles found
@@ -168,6 +176,8 @@ export const ProfileSelectView: React.FC<ProfileSelectionProps> = ({
             Register new profile
           </Button>
         </Box>
+      ) : (
+        <></>
       )}
     </>
   );

@@ -1,166 +1,86 @@
-import "viem/window";
-import { Address } from 'viem';
-import { useSnackbar } from 'notistack';
-import { FC, PropsWithChildren, useEffect, useState, useCallback } from "react";
+// React and libraries imports
+import { FC, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Stack from "@mui/material/Stack";
-import Divider from "@mui/material/Divider";
-import Iconify from "@src/components/iconify";
+import { Address } from 'viem';
 
-import { ConnectWalletClient } from "@src/clients/viem/walletClient";
-import { formatBalanceNumber } from "@src/utils/format-number.ts";
-import TextMaxLine from "@src/components/text-max-line";
-import { InputAmount } from "@src/components/input-amount.tsx";
-import { useGetMmcContractBalance } from '@src/hooks/use-get-mmc-contract-balance.ts';
-import NeonPaper from '@src/sections/publication/NeonPaperContainer.tsx';
-import { useDepositMetamask } from "@src/hooks/use-deposit-metamask.ts";
-import { truncateAddress } from '@src/utils/wallet.ts';
-import FinanceDialogsActions from "@src/sections/finance/components/finance-dialogs-actions.tsx";
-import { useResponsive } from "@src/hooks/use-responsive.ts";
+// @MUI Imports
+import Button from '@mui/material/Button';
+
+// Project Imports
+import Iconify from '@src/components/iconify';
+import { connectToMetaMask } from '@src/utils/metamask';
+import { useDepositMetamask } from '@src/hooks/use-deposit-metamask';
+import { LoadingScreen } from '@src/components/loading-screen';
+import FinanceDeposit from './finance-deposit';
+import { ERRORS } from '@notifications/errors.ts';
+import { notifyError } from '@notifications/internal-notifications.ts';
+import { Box } from '@mui/system';
 
 interface FinanceDepositFromMetamaskProps {
   onClose: () => void;
 }
 
-// TODO please finance-deposit.tsx
 const FinanceDepositFromMetamask: FC<FinanceDepositFromMetamaskProps> = ({ onClose }) => {
-  const [address, setAddress] = useState<Address | undefined>();
-  const { balance } = useGetMmcContractBalance(address);
-  const [amount, setAmount] = useState<number>(0);
-  const [loading, setLoading] = useState(false);
   const sessionData = useSelector((state: any) => state.auth.session);
-  const { enqueueSnackbar } = useSnackbar();
-  const {
-    deposit: depositWithMetamask,
-    loading: depositLoading,
-    error,
-  } = useDepositMetamask();
 
+  const [address, setAddress] = useState<Address | undefined>();
+  const [connecting, setConnecting] = useState(false);
+
+  // Specific hook for Metamask
+  const depositHook = useDepositMetamask();
+
+  // Try reconnecting if the user connected MetaMask before
   useEffect(() => {
-    if (error) {
-      enqueueSnackbar(`An error occurred during transaction.`, { variant: "error" });
+    const walletConnected = localStorage.getItem('walletConnected');
+    if (walletConnected === 'true') {
+      handleConnectMetaMask();
     }
-  }, [error]);
-
-  useEffect(() => {
-    handleConnectMetamask();
   }, []);
 
-  async function handleConnectMetamask() {
+  const handleConnectMetaMask = async () => {
+    setConnecting(true);
     try {
-      const walletClient = await ConnectWalletClient();
-      const [addr] = await walletClient.requestAddresses();
-      setAddress(addr);
-    } catch (error) {
-      alert(`Transaction failed: ${error}`);
+      const walletAddress = await connectToMetaMask();
+      setAddress(walletAddress);
+      localStorage.setItem('walletConnected', 'true');
+    } catch (err) {
+      notifyError(ERRORS.METAMASK_CONNECTING_ERROR);
+    } finally {
+      setConnecting(false);
     }
+  };
+
+  if (connecting) {
+    return (
+      <Box sx={{ m: 2 }}>
+        <LoadingScreen />
+      </Box>
+    );
   }
 
-  const handleConfirmDeposit = useCallback(async () => {
-    if (amount > 0 && amount <= (balance ?? 0)) {
-      try {
-        setLoading(true);
-        await depositWithMetamask({ recipient: sessionData?.address, amount });
-        enqueueSnackbar(`The deposit was successful`, { variant: "success" });
-        onClose();
-      } catch (err: any) {
-        enqueueSnackbar(`Deposit failed: ${err?.message}`, { variant: "error" });
-      } finally {
-        setLoading(false);
-      }
-    } else {
-      enqueueSnackbar("Invalid deposit amount", { variant: "warning" });
-    }
-  }, [sessionData?.address, amount, balance]);
+  // If the wallet is NOT connected, show a button
+  if (!address) {
+    return (
+      <Button
+        sx={{ m: 4, p: 1.5 }}
+        startIcon={<Iconify icon="logos:metamask-icon" />}
+        variant="outlined"
+        onClick={handleConnectMetaMask}
+      >
+        Connect MetaMask
+      </Button>
+    );
+  }
 
-  const RainbowEffect = loading || depositLoading ? NeonPaper : Box;
-  const mdUp = useResponsive('up', 'md');
-
+  // If the wallet IS connected, render the deposit component
   return (
-    <Stack sx={{
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-    }}>
-      {address ? (
-        <>
-          <Stack
-            sx={{ mt: 2, py: 2, px: 3, gap: 1, width: '100%' }}
-            direction={'column'}
-            display={'flex'}
-            alignItems={'center'}
-            justifyContent={'space-between'}>
-            <BoxRow>
-              <TextMaxLine line={1}>Connected Wallet</TextMaxLine>
-              <TextMaxLine
-                line={1}
-                sx={{ fontWeight: "bold", fontSize: "1em", color: "text.secondary" }}
-              >
-                {truncateAddress(address)}
-              </TextMaxLine>
-            </BoxRow>
-
-            <Divider sx={{ width: '100%' }} />
-
-            <BoxRow>
-              <TextMaxLine line={1}>Balance</TextMaxLine>
-              <TextMaxLine
-                line={1}
-                sx={{ fontWeight: "bold", fontSize: "1em", color: "text.secondary" }}
-              >
-                {formatBalanceNumber(balance ?? 0)} MMC
-              </TextMaxLine>
-            </BoxRow>
-
-            <Divider sx={{ width: '100%' }} />
-
-            <BoxRow>
-              <TextMaxLine line={1}>Enter the amount to deposit</TextMaxLine>
-              <InputAmount
-                max={balance ?? 0}
-                amount={amount}
-                onChange={(e) => setAmount(Number(e.target.value))}
-              />
-            </BoxRow>
-            <Divider sx={{ width: '100%' }} />
-          </Stack>
-
-          <FinanceDialogsActions
-            rainbowComponent={RainbowEffect}
-            loading={loading}
-            actionLoading={depositLoading}
-            amount={amount}
-            balance={balance ?? 0}
-            label={mdUp ? 'Confirm & Deposit' : 'Deposit'}
-            onConfirmAction={handleConfirmDeposit}
-            onCloseAction={onClose}
-            onChangeWallet={setAddress}
-          />
-        </>
-      ) : (
-        <Button
-          startIcon={<Iconify icon={'logos:metamask-icon'} />}
-          variant={'outlined'}
-          onClick={handleConnectMetamask}
-        >
-          Connect MetaMask
-        </Button>
-      )}
-    </Stack>
+    <FinanceDeposit
+      address={address}
+      recipient={sessionData?.address}
+      depositHook={depositHook}
+      onClose={onClose}
+    />
   );
-}
-
-export const BoxRow: FC<PropsWithChildren> = ({ children }) => (
-  <Box sx={{
-    width: '100%',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  }}>
-    {children}
-  </Box>
-)
+};
 
 export default FinanceDepositFromMetamask;

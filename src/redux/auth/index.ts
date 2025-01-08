@@ -57,14 +57,22 @@ const authSlice = createSlice({
           ...state.session.profile.metadata,
           displayName: action.payload.name,
           bio: action.payload.bio,
-          picture: { optimized: { uri: !!action.payload.profileImage ? action.payload.profileImage : undefined } },
-          coverPicture: { optimized: { uri: !!action.payload.backgroundImage ? action.payload.backgroundImage : undefined } },
+          picture: {
+            optimized: {
+              uri: !!action.payload.profileImage ? action.payload.profileImage : undefined,
+            },
+          },
+          coverPicture: {
+            optimized: {
+              uri: !!action.payload.backgroundImage ? action.payload.backgroundImage : undefined,
+            },
+          },
         };
       }
     },
     setIsUpdatingMetadata: (state, action: PayloadAction<boolean>) => {
       state.isUpdatingMetadata = action.payload;
-    }
+    },
   },
 });
 

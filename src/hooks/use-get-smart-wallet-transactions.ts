@@ -41,7 +41,6 @@ const useGetSmartWalletTransactions = () => {
 
   // Function to fetch historical logs
   const fetchLogs = async () => {
-    console.log('Fetching logs for address:', sessionData?.address);
     if (!sessionData?.address) {
       setLoading(false);
       return;
@@ -162,10 +161,7 @@ const useGetSmartWalletTransactions = () => {
       throw new Error('Invalid event in ABI');
     }
     const inputs = event.inputs
-      .map(
-        (input: any) =>
-          `${input.type}${input.indexed ? ' indexed' : ''} ${input.name}`
-      )
+      .map((input: any) => `${input.type}${input.indexed ? ' indexed' : ''} ${input.name}`)
       .join(', ');
     return `event ${event.name}(${inputs})`;
   };
@@ -173,6 +169,11 @@ const useGetSmartWalletTransactions = () => {
   // Effect to fetch historical logs when the address changes
   useEffect(() => {
     fetchLogs();
+
+    // Disable loader if data is already available
+    if (transactions.length) {
+      setLoading(false);
+    }
   }, [sessionData?.address]);
 
   // Effect to handle real-time events from blockchainEvents
