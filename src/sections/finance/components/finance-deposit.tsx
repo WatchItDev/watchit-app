@@ -70,7 +70,7 @@ const FinanceDeposit: FC<FinanceDepositProps> = ({ address, recipient, depositHo
   // Show an error if the deposit hook fails
   useEffect(() => {
     if (error) {
-      notifyError(ERRORS.DEPOSIT_WENT_WRONG_ERROR);
+      notifyError(error as ERRORS);
     }
   }, [error]);
 
