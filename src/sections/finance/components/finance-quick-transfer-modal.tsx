@@ -190,7 +190,7 @@ function FinanceQuickTransferModal({
             disabled={transferLoading}
             loading={transferLoading}
           >
-            Confirm & Transfer
+            Confirm
           </LoadingButton>
         </RainbowEffect>
       </DialogActions>

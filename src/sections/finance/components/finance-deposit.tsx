@@ -155,7 +155,7 @@ const FinanceDeposit: FC<FinanceDepositProps> = ({ address, recipient, depositHo
         actionLoading={depositLoading}
         amount={amount}
         balance={balance ?? 0}
-        label={mdUp ? 'Confirm & Deposit' : 'Deposit'}
+        label={'Confirm'}
         onConfirmAction={handleConfirmDeposit}
         onCloseAction={onClose}
       />

@@ -136,7 +136,7 @@ const FinanceWithdraw: FC<FinanceWithdrawProps> = ({ address, withdrawHook, bala
         actionLoading={withdrawLoading}
         amount={amount}
         balance={balance ?? 0}
-        label={mdUp ? 'Confirm & Withdraw' : 'Withdraw'}
+        label={'Confirm'}
         onConfirmAction={handleConfirmWithdraw}
         onCloseAction={onClose}
       />

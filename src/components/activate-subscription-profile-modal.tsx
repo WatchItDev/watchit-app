@@ -236,7 +236,7 @@ export const ActivateSubscriptionProfileModal = ({
               disabled={loading || (!selectedAmount && !customAmount)}
               loading={loading}
             >
-              Confirm price
+              Confirm
             </LoadingButton>
           </RainbowEffect>
         </DialogActions>
