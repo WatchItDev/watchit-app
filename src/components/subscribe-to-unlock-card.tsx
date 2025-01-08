@@ -9,6 +9,7 @@ import {Icon} from "@iconify/react";
 import NeonPaper from "@src/sections/publication/NeonPaperContainer.tsx";
 import {useState} from "react";
 import {COLORS} from "@src/layouts/config-layout.ts";
+import {styled} from "@mui/material/styles";
 
 interface Props {
   post: any;
@@ -89,24 +90,13 @@ export const SubscribeToUnlockCard = ({
                    animationSpeed={'3s'}
                    padding={'2px'}
                    width={'auto'}>
-            <LoadingButton
-            variant="contained"
-            sx={{
-              color: COLORS.GRAY_DARK,
-              background: 'linear-gradient(90deg, rgba(240,174,6,0.3701855742296919) 16%, rgba(212,190,58,1) 49%, rgba(132,4,251,0.22172619047619047) 100%)',
-              height: '35px',
-              padding: 2.8,
-              zIndex: 2,
-              width: '100%',
-            }}
-            onClick={handleTrial}
-            loading={false}
-          >
+
+          <StyledBoxGradient onClick={handleTrial}>
             <Icon icon="ic:outline-try" width="18" height="18" />
             <Typography variant="body2" sx={{ lineHeight: 1, fontWeight: '700', ml: 1 }}>
               Free trial
             </Typography>
-          </LoadingButton>
+          </StyledBoxGradient>
         </RainbowEffect>
         </Box>
         <Box sx={{ mt: 3, borderRadius: 1 }}>
@@ -120,3 +110,20 @@ export const SubscribeToUnlockCard = ({
     </Card>
   );
 };
+
+const StyledBoxGradient = styled(Box)(() => ({
+  background: `linear-gradient(90deg, rgba(240,174,6,0.3) 20%, rgba(212,190,58,1) 57%, rgba(189,119,255,0.6) 100%)`,
+  backgroundSize: '400%',
+  animation: 'gradientShift 10s infinite',
+  padding: '12px',
+  color: COLORS.GRAY_DARK,
+  borderRadius: '8px',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  '@keyframes gradientShift': {
+    '0%': { backgroundPosition: '0% 50%' },
+    '50%': { backgroundPosition: '100% 50%' },
+    '100%': { backgroundPosition: '0% 50%' },
+  },
+}));
