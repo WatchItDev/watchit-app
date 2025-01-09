@@ -1,3 +1,11 @@
+# [2.2.0-beta.8](https://github.com/WatchItDev/watchit-app/compare/v2.2.0-beta.7...v2.2.0-beta.8) (2025-01-09)
+
+
+### Features
+
+* change aproach of withdraw to select destination on tabs ([0528930](https://github.com/WatchItDev/watchit-app/commit/05289307495da69be521ce813d95f470935d6740))
+* **finance-quick-transfer:** enhance slider validation logic ([f60a687](https://github.com/WatchItDev/watchit-app/commit/f60a6879396ac13e644f2d19ddd0f255c6e14952))
+
 # [2.2.0-beta.7](https://github.com/WatchItDev/watchit-app/compare/v2.2.0-beta.6...v2.2.0-beta.7) (2025-01-09)
 
 
