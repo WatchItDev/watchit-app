@@ -62,7 +62,7 @@ interface FinanceDepositProps {
  * - `depositHook` (generic or Metamask deposit hook)
  * - `onClose`
  */
-const FinanceDeposit: FC<FinanceDepositProps> = ({ address, recipient, depositHook, onClose, onChangeWallet }) => {
+const FinanceDeposit: FC<FinanceDepositProps> = ({ address, recipient, depositHook, onClose }) => {
   const [amount, setAmount] = useState<number>();
   const [helperText, setHelperText] = useState<string>("");
   const { balance } = useGetMmcContractBalance(address);
@@ -175,7 +175,6 @@ const FinanceDeposit: FC<FinanceDepositProps> = ({ address, recipient, depositHo
         balance={balance ?? 0}
         label={'Confirm'}
         onConfirmAction={handleConfirmDeposit}
-        onChangeWallet={onChangeWallet}
         onCloseAction={onClose}
       />
     </>

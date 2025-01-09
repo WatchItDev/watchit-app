@@ -36,7 +36,7 @@ interface FinanceWithdrawProps {
 
 // ----------------------------------------------------------------------
 
-const FinanceWithdraw: FC<FinanceWithdrawProps> = ({ address, withdrawHook, onClose, onChangeWallet }) => {
+const FinanceWithdraw: FC<FinanceWithdrawProps> = ({ address, withdrawHook, onClose }) => {
   const [amount, setAmount] = useState<number>();
   const [amountError, setAmountError] = useState(false);
   const [amountHelperText, setAmountHelperText] = useState('');
@@ -138,7 +138,6 @@ const FinanceWithdraw: FC<FinanceWithdrawProps> = ({ address, withdrawHook, onCl
         label={'Confirm'}
         onConfirmAction={handleConfirmWithdraw}
         onCloseAction={onClose}
-        onChangeWallet={onChangeWallet}
       />
     </>
   );

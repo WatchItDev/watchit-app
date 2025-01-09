@@ -1,12 +1,6 @@
-// React and libraries imports
-import { Address } from 'viem';
-
 // @mui components
 import DialogActions from '@mui/material/DialogActions';
 import LoadingButton from '@mui/lab/LoadingButton';
-
-// Project imports
-import FinanceChangeWallet from '@src/sections/finance/components/finance-change-wallet.tsx';
 
 type FinanceDialogsActionsProps = {
   rainbowComponent: any;
@@ -16,8 +10,7 @@ type FinanceDialogsActionsProps = {
   balance: number;
   label: string;
   onConfirmAction: () => void;
-  onCloseAction?: () => void;
-  onChangeWallet?: (address: Address) => void;
+  onCloseAction?: () => void
 };
 
 const FinanceDialogsActions = ({
@@ -27,12 +20,10 @@ const FinanceDialogsActions = ({
   actionLoading,
   amount,
   balance,
-  label,
-  onChangeWallet,
+  label
 }: FinanceDialogsActionsProps) => {
   return (
     <DialogActions sx={{ width: '100%', pt: 1 }}>
-      {onChangeWallet && <FinanceChangeWallet onChangingWallet={onChangeWallet} />}
       <RainbowEffect
         {...(loading && {
           borderRadius: '10px',

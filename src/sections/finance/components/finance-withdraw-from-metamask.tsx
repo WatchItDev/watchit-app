@@ -14,12 +14,12 @@ interface FinanceWithdrawFromMetamaskProps {
 
 const FinanceWithdrawFromMetamask: FC<FinanceWithdrawFromMetamaskProps> = ({ onClose }) => {
   const withdrawHook = useWithdraw();
-  const { address, connecting, connect, setAddress } = useMetaMask();
+  const { address, connecting, connect } = useMetaMask();
 
   if (connecting) return <FinanceMetamaskLoader />;
   if (!address) return <FinanceMetamaskButton connect={connect} />;
 
-  return <FinanceWithdraw address={address} withdrawHook={withdrawHook} onClose={onClose} onChangeWallet={setAddress} />;
+  return <FinanceWithdraw address={address} withdrawHook={withdrawHook} onClose={onClose} />;
 };
 
 export default FinanceWithdrawFromMetamask;
