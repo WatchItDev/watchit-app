@@ -59,11 +59,11 @@ interface FinanceDepositProps {
  */
 const FinanceDeposit: FC<FinanceDepositProps> = ({ address, recipient, depositHook, onClose }) => {
   const [amount, setAmount] = useState<number>();
+  const [helperText, setHelperText] = useState<string>("");
+  const { balance } = useGetMmcContractBalance(address);
+  const { deposit, loading: depositLoading, error } = depositHook;
   const [localLoading, setLocalLoading] = useState(false);
   const [amountError, setAmountError] = useState(false);
-  const [helperText, setHelperText] = useState<string>("");
-  const { deposit, loading: depositLoading, error } = depositHook;
-  const { balance } = useGetMmcContractBalance(address);
   const isBusy = localLoading || depositLoading;
   const RainbowEffect = isBusy ? NeonPaper : Box;
 
