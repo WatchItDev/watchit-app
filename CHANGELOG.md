@@ -1,3 +1,10 @@
+# [2.2.0-beta.7](https://github.com/WatchItDev/watchit-app/compare/v2.2.0-beta.6...v2.2.0-beta.7) (2025-01-09)
+
+
+### Bug Fixes
+
+* typos ([3de0c29](https://github.com/WatchItDev/watchit-app/commit/3de0c293822756ab07210c774a773e71ce9dfab5))
+
 # [2.2.0-beta.6](https://github.com/WatchItDev/watchit-app/compare/v2.2.0-beta.5...v2.2.0-beta.6) (2025-01-08)
 
 
