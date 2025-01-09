@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { encodeFunctionData, parseUnits } from 'viem';
+import { Address, encodeFunctionData, parseUnits } from 'viem';
 import LedgerVaultAbi from '@src/config/abi/LedgerVault.json';
 import { GLOBAL_CONSTANTS } from '@src/config-global';
 import { useWeb3Session } from '@src/hooks/use-web3-session.ts';
 import { ERRORS } from '@notifications/errors.ts';
 
 interface WithdrawParams {
-  recipient: string;
+  recipient: Address;
   amount: number;
 }
 

@@ -23,7 +23,7 @@ import Box from '@mui/material/Box';
 import CardHeader from '@mui/material/CardHeader';
 import { CardProps } from '@mui/material/Card';
 
-// Project components
+// LOCAL IMPORTS
 import { useBoolean } from '@src/hooks/use-boolean';
 import Carousel, { CarouselArrows, useCarousel } from '@src/components/carousel';
 import NeonPaper from '@src/sections/publication/NeonPaperContainer.tsx';
@@ -35,7 +35,6 @@ import FinanceSearchProfileModal from '@src/sections/finance/components/finance-
 
 const STEP = 50;
 const MIN_AMOUNT = 0;
-const AVATAR_SIZE = 40;
 
 interface Props extends CardProps {
   title?: string;
@@ -72,6 +71,7 @@ export default function FinanceQuickTransfer({
   const [initialized, setInitialized] = useState(false);
   const [list, setList] = useState<Profile[]>(initialList ?? []);
   const [amount, setAmount] = useState(0);
+  const [canContinue, setCanContinue] = useState(true);
 
   const confirm = useBoolean();
   const MAX_AMOUNT = balance;
@@ -107,7 +107,6 @@ export default function FinanceQuickTransfer({
     centerMode: true,
     swipeToSlide: true,
     infinite: true,
-    focusOnSelect: true,
     centerPadding: '0px',
     rows: 1,
     slidesToShow: list?.length > 7 ? 7 : (list?.length ?? 1),
@@ -153,7 +152,7 @@ export default function FinanceQuickTransfer({
     if (currentProfile?.ownedBy?.address) {
       const profileId = currentProfile.id
       const address = currentProfile.ownedBy.address;
-      
+
       setWalletAddress(address);
       dispatch(storeAddress({ address, profileId }));
     }
@@ -198,25 +197,31 @@ export default function FinanceQuickTransfer({
   // Handle changes in the slider
   const handleChangeSlider = useCallback((_event: Event, newValue: number | number[]) => {
     setAmount(newValue as number);
-  }, []);
+    if(newValue < MAX_AMOUNT) {
+      setCanContinue(true);
+    }
+  }, [MAX_AMOUNT]);
 
   // Handle changes in the input for the amount
   const handleChangeInput = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     setAmount(Number(event.target.value));
-
-    // Send the focus back to the input field, this is a workaround for the slider carousel
-    setTimeout(() => {
-      event.target.focus();
-    }, 25);
-
+    if(Number(event.target.value) < MAX_AMOUNT) {
+      setCanContinue(true);
+    }else{
+      setCanContinue(false);
+    }
   }, []);
 
   // Validate the amount on blur
   const handleBlur = useCallback(() => {
+    if(amount < MAX_AMOUNT) {
+      setCanContinue(true);
+    }
+
     if (amount < 0) {
       setAmount(0);
     } else if (amount > MAX_AMOUNT) {
-      setAmount(MAX_AMOUNT);
+      setCanContinue(false);
     }
   }, [amount, MAX_AMOUNT]);
 
@@ -226,6 +231,11 @@ export default function FinanceQuickTransfer({
     setWalletAddress('');
     confirm.onFalse?.();
     dispatch(storeAddress({ address: '', profileId: '' }));
+  };
+
+  // Handle onClick for carousel items
+  const handleCarouselClick = (index: number) => {
+    carousel.setCurrentIndex(index);
   };
 
   // If the stored address changes or if we typed a valid custom address, check if it exists in the carousel
@@ -318,7 +328,7 @@ export default function FinanceQuickTransfer({
           }}
         >
           {list?.map((profile, index) => (
-            <Box key={profile.id} sx={{ py: 2 }}>
+            <Box key={profile.id} sx={{ py: 2 }} onClick={ () => handleCarouselClick(index)}>
               <Tooltip
                 key={profile.id}
                 title={profile?.metadata?.displayName}
@@ -368,7 +378,7 @@ export default function FinanceQuickTransfer({
       />
 
       <Slider
-        color="secondary"
+        color={canContinue ? 'secondary' : 'warning'}
         value={amount ?? 0}
         valueLabelDisplay="auto"
         step={STEP}
@@ -389,7 +399,7 @@ export default function FinanceQuickTransfer({
         size="large"
         color="inherit"
         variant="contained"
-        disabled={amount === 0 || !isValidAddress(walletAddress)}
+        disabled={amount === 0 || !isValidAddress(walletAddress) || !canContinue}
         onClick={confirm.onTrue}
       >
         Transfer Now
