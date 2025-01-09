@@ -8,6 +8,7 @@ import { publicClient } from '@src/clients/viem/publicClient';
 import { ERRORS } from '@notifications/errors.ts';
 import { notifyInfo } from '@notifications/internal-notifications.ts';
 import { INFO } from '@notifications/info.ts';
+import { enqueueSnackbar } from 'notistack';
 
 // SAME HERE
 interface DepositParams {
@@ -97,6 +98,7 @@ export const useDepositMetamask = (): UseDepositHook => {
       });
     } catch (err: any) {
       // If something fails (either approve or deposit), set an error
+      enqueueSnackbar(`deposit err 1: ${JSON.stringify(err)}`);
       setError(ERRORS.UNKNOWN_ERROR);
       throw err;
     } finally {

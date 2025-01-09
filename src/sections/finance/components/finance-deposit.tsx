@@ -24,6 +24,7 @@ import { WARNING } from '@notifications/warnings';
 import { SUCCESS } from '@notifications/success';
 import { ERRORS } from '@notifications/errors.ts';
 import TextField from '@mui/material/TextField';
+import { enqueueSnackbar } from 'notistack';
 
 interface FinanceDepositProps {
   /**
@@ -100,6 +101,7 @@ const FinanceDeposit: FC<FinanceDepositProps> = ({ address, recipient, depositHo
       notifySuccess(SUCCESS.DEPOSIT_SUCCESSFULLY);
       onClose();
     } catch (err) {
+      enqueueSnackbar(`deposit err 2: ${JSON.stringify(err)}`);
       notifyWarning(WARNING.NO_WALLET_AUTHORIZATION);
     } finally {
       setLocalLoading(false);
