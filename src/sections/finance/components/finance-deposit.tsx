@@ -87,6 +87,8 @@ const FinanceDeposit: FC<FinanceDepositProps> = ({ address, recipient, depositHo
       notifyWarning(WARNING.INVALID_DEPOSIT_AMOUNT);
       return;
     }
+
+    // TODO refactor this!!!!!
     try {
       setLocalLoading(true);
       await deposit({ recipient: recipient ?? address, amount });
@@ -97,11 +99,10 @@ const FinanceDeposit: FC<FinanceDepositProps> = ({ address, recipient, depositHo
     } finally {
       setLocalLoading(false);
     }
-  }, [address, recipient, amount, balance, deposit, onClose]);
+  }, [address, recipient, amount, balance]);
 
   const handleAmountChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = Number(event.target.value);
-
     setAmount(value ?? undefined);
 
     // Set appropriate error message
