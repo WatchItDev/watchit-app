@@ -35,6 +35,8 @@ import FinanceSearchProfileModal from '@src/sections/finance/components/finance-
 
 const STEP = 50;
 const MIN_AMOUNT = 0;
+// A thousand millions allowed in the pool
+const MAX_POOL: number = 1000000000;
 
 interface Props extends CardProps {
   title?: string;
@@ -202,28 +204,33 @@ export default function FinanceQuickTransfer({
     }
   }, [MAX_AMOUNT]);
 
-  // Handle changes in the input for the amount
+  // Helper function to handle amount constraints
+  const handleAmountConstraints = (value: number, MAX_AMOUNT: number) => {
+    if (value > MAX_POOL) {
+      value = MAX_POOL; // Truncate to a thousand millions
+    }
+    if (value < 0) {
+      value = 0; // Set amount to 0 if lower than 0
+    }
+    setAmount(value);
+    setCanContinue(value <= MAX_AMOUNT);
+
+    // If amount is greater than balance, allow input but setCanContinue to false
+    if (value > MAX_AMOUNT) {
+      setCanContinue(false);
+    }
+  };
+
   const handleChangeInput = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-    setAmount(Number(event.target.value));
-    if(Number(event.target.value) < MAX_AMOUNT) {
-      setCanContinue(true);
-    }else{
-      setCanContinue(false);
-    }
-  }, []);
+    const value = Number(event.target.value);
+    handleAmountConstraints(value, MAX_AMOUNT);
+  }, [MAX_AMOUNT]);
 
-  // Validate the amount on blur
+
   const handleBlur = useCallback(() => {
-    if(amount < MAX_AMOUNT) {
-      setCanContinue(true);
-    }
-
-    if (amount < 0) {
-      setAmount(0);
-    } else if (amount > MAX_AMOUNT) {
-      setCanContinue(false);
-    }
+    handleAmountConstraints(amount, MAX_AMOUNT);
   }, [amount, MAX_AMOUNT]);
+
 
   // Called after finishing a transfer
   const handleTransferFinish = () => {
@@ -371,7 +378,7 @@ export default function FinanceQuickTransfer({
   const renderInput = (
     <Stack spacing={3}>
       <InputAmount
-        max={MAX_AMOUNT}
+        max={MAX_POOL}
         amount={amount}
         onBlur={handleBlur}
         onChange={handleChangeInput}
