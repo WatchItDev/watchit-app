@@ -46,11 +46,11 @@ export const useHasAccess = (ownerAddress?: Address): UseHasAccessHook => {
       const accessData: unknown = await publicClient.readContract({
         address: GLOBAL_CONSTANTS.ACCESS_AGG_ADDRESS,
         abi: AccessAggAbi.abi,
-        functionName: 'isAccessAllowedByHolder',
+        functionName: 'isAccessAllowed',
         args: [userAddress, ownerAddress],
       });
 
-      console.log('isAccessAllowedByHolder', accessData);
+      console.log('isAccessAllowed', accessData);
 
       const access = Boolean(accessData);
       setHasAccess(access);

@@ -56,7 +56,7 @@ export const useGetAuthorizedHolderPolicies = (
       const policies: any = (await publicClient.readContract({
         address: GLOBAL_CONSTANTS.POLICIES_AGG_ADDRESS,
         abi: PoliciesAggAbi.abi,
-        functionName: 'getHolderWidePolicies',
+        functionName: 'getPoliciesTerms',
         args: [holder],
       })) as Policy[];
 

@@ -148,6 +148,9 @@ const ProfileHeader = ({
     profile?.ownedBy?.address as Address
   );
 
+  console.log('is policy authorized')
+  console.log(isAuthorized)
+
   const attestationAddress = `0x${BigInt(attestation ?? '').toString(16)}`;
 
   const handleClose = useCallback(() => {
