@@ -139,7 +139,7 @@ const FinanceDeposit: FC<FinanceDepositProps> = ({ address, recipient, depositHo
         </BoxRow>
 
         <BoxRow>
-          <TextMaxLine line={1} fontWeight={"bold"}>Balance</TextMaxLine>
+          <TextMaxLine line={1} fontWeight={"bold"}>Available</TextMaxLine>
           <TextMaxLine
             line={1}
             sx={{ fontWeight: '400', fontSize: '1em', color: 'text.secondary' }}
