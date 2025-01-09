@@ -47,6 +47,11 @@ interface FinanceDepositProps {
    * Callback for closing the modal / dialog.
    */
   onClose: () => void;
+
+  /**
+   * Callback to change the new address.
+   */
+  onChangeWallet?: (address: Address) => void;
 }
 
 /**
@@ -57,7 +62,7 @@ interface FinanceDepositProps {
  * - `depositHook` (generic or Metamask deposit hook)
  * - `onClose`
  */
-const FinanceDeposit: FC<FinanceDepositProps> = ({ address, recipient, depositHook, onClose }) => {
+const FinanceDeposit: FC<FinanceDepositProps> = ({ address, recipient, depositHook, onClose, onChangeWallet }) => {
   const [amount, setAmount] = useState<number>();
   const [helperText, setHelperText] = useState<string>("");
   const { balance } = useGetMmcContractBalance(address);
@@ -152,7 +157,7 @@ const FinanceDeposit: FC<FinanceDepositProps> = ({ address, recipient, depositHo
           sx={{ mt: 1 }}
           fullWidth
           autoFocus
-          label="Amount to withdraw"
+          label="Amount to deposit"
           type="number"
           value={amount}
           onChange={handleAmountChange}
@@ -170,6 +175,7 @@ const FinanceDeposit: FC<FinanceDepositProps> = ({ address, recipient, depositHo
         balance={balance ?? 0}
         label={'Confirm'}
         onConfirmAction={handleConfirmDeposit}
+        onChangeWallet={onChangeWallet}
         onCloseAction={onClose}
       />
     </>

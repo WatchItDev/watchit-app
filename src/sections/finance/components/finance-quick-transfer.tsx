@@ -23,7 +23,7 @@ import Box from '@mui/material/Box';
 import CardHeader from '@mui/material/CardHeader';
 import { CardProps } from '@mui/material/Card';
 
-// Project components
+// LOCAL IMPORTS
 import { useBoolean } from '@src/hooks/use-boolean';
 import Carousel, { CarouselArrows, useCarousel } from '@src/components/carousel';
 import NeonPaper from '@src/sections/publication/NeonPaperContainer.tsx';
@@ -35,7 +35,6 @@ import FinanceSearchProfileModal from '@src/sections/finance/components/finance-
 
 const STEP = 50;
 const MIN_AMOUNT = 0;
-// const AVATAR_SIZE = 40;
 
 interface Props extends CardProps {
   title?: string;
