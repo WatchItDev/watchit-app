@@ -37,7 +37,7 @@ export const FinanceDepositModal: FC<FinanceDepositModalProps> = ({ open, onClos
     <FinanceModal
       open={open}
       onClose={onClose}
-      title="Deposit"
+      title="Deposit to"
       tabs={depositTabs}
       renderContent={renderContent}
       maxWidth="xs"
