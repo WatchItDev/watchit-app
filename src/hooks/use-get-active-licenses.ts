@@ -1,10 +1,10 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Address } from 'viem';
 import { publicClient } from '@src/clients/viem/publicClient';
-import PoliciesAggAbi from '@src/config/abi/PoliciesAgg.json';
+import AccessAggAbi from '@src/config/abi/AccessAgg.json';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 
-interface HasAccessError {
+interface ActiveLicensesError {
   message: string;
   code?: number;
   [key: string]: any;
@@ -22,28 +22,24 @@ interface Policy {
   terms: PolicyTerms;
 }
 
-interface UseGetAuthorizedHolderPoliciesHook {
-  authorizedHolderPolicies: Policy[];
+interface UseGetActiveLicensesHook {
+  activeLicenses: any[];
   loading: boolean;
-  error?: HasAccessError | null;
+  error?: ActiveLicensesError | null;
   refetch: () => void;
 }
 
-/**
- * Custom hook that fetches the authorized policies for a given holder.
- * @param holder Address of the holder.
- */
-export const useGetAuthorizedHolderPolicies = (
-  holder: Address | undefined
-): UseGetAuthorizedHolderPoliciesHook => {
-  const [authorizedHolderPolicies, setAuthorizedHolderPolicies] = useState<Policy[]>([]);
+export const useGetActiveLicenses = (
+  recipient: Address, holder?: Address
+): UseGetActiveLicensesHook => {
+  const [activeLicenses, setActiveLicenses] = useState<Policy[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<HasAccessError | null>(null);
+  const [error, setError] = useState<ActiveLicensesError | null>(null);
 
   const fetchHolderPolicies = useCallback(async () => {
     // Validate that holder exists
     if (!holder) {
-      setAuthorizedHolderPolicies([]);
+      setActiveLicenses([]);
       setLoading(false);
       setError({ message: 'Holder address is missing.' });
       return;
@@ -53,20 +49,23 @@ export const useGetAuthorizedHolderPolicies = (
 
     try {
       // Call the contract method
-      const policies: any = (await publicClient.readContract({
-        address: GLOBAL_CONSTANTS.POLICIES_AGG_ADDRESS,
-        abi: PoliciesAggAbi.abi,
-        functionName: 'getPoliciesTerms',
-        args: [holder],
+      const licenses: any = (await publicClient.readContract({
+        address: GLOBAL_CONSTANTS.ACCESS_AGG_ADDRESS,
+        abi: AccessAggAbi.abi,
+        functionName: 'getActiveLicenses',
+        args: [recipient, holder],
       })) as Policy[];
 
+      console.log('getActiveLicenses')
+      console.log(licenses)
+
       // Store the response in state
-      setAuthorizedHolderPolicies(policies);
+      setActiveLicenses(licenses);
       setError(null);
     } catch (err: any) {
       console.error('Error fetching holder-wide policies:', err);
-      setAuthorizedHolderPolicies([]);
-      setError({ message: err?.message || 'Error occurred while fetching authorized policies.' });
+      setActiveLicenses([]);
+      setError({ message: err?.message || 'Error occurred while fetching active licenses.' });
     } finally {
       setLoading(false);
     }
@@ -82,7 +81,7 @@ export const useGetAuthorizedHolderPolicies = (
   }, [fetchHolderPolicies]);
 
   return {
-    authorizedHolderPolicies,
+    activeLicenses,
     loading,
     error,
     refetch,

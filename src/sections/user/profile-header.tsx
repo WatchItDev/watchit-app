@@ -41,12 +41,9 @@ import { useIsPolicyAuthorized } from '@src/hooks/use-is-policy-authorized.ts';
 import { SubscribeProfileModal } from '@src/components/subscribe-profile-modal.tsx';
 import { ActivateSubscriptionProfileModal } from '@src/components/activate-subscription-profile-modal.tsx';
 import FollowUnfollowButton from '@src/components/follow-unfollow-button.tsx';
-
-// @ts-ignore
-import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
 import { randomColors } from '@src/components/poster/variants/poster-latest-content.tsx';
 import { OpenableText } from '@src/components/openable-text/index.ts';
-import { useGetAttestation } from '@src/hooks/use-get-attestation.ts';
+import { useGetPolicyAttestation } from '@src/hooks/use-get-policy-attestation.ts';
 
 // Notifcations
 import { notifyError, notifySuccess } from '@notifications/internal-notifications.ts';
@@ -133,7 +130,8 @@ const ProfileHeader = ({
     attestation,
     loading: attestationLoading,
     refetch: refetchAttestation,
-  } = useGetAttestation(
+  } = useGetPolicyAttestation(
+    GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS as Address,
     sessionData?.profile?.ownedBy?.address as Address,
     profile?.ownedBy?.address as Address
   );
@@ -147,9 +145,6 @@ const ProfileHeader = ({
     GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS,
     profile?.ownedBy?.address as Address
   );
-
-  console.log('is policy authorized')
-  console.log(isAuthorized)
 
   const attestationAddress = `0x${BigInt(attestation ?? '').toString(16)}`;
 

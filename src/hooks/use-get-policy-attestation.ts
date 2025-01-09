@@ -1,9 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Address } from 'viem';
-import { publicClient } from '@src/clients/viem/publicClient';
-import { GLOBAL_CONSTANTS } from '@src/config-global';
-import SubscriptionPolicyAbi from '@src/config/abi/SubscriptionPolicy.json';
 import { useSelector } from 'react-redux';
+import { useGetActiveLicenses } from '@src/hooks/use-get-active-licenses';
 
 interface AttestationError {
   message: string;
@@ -11,7 +9,7 @@ interface AttestationError {
   [key: string]: any;
 }
 
-interface UseGetAttestationHook {
+interface UseGetPolicyAttestationHook {
   attestation?: string;
   loading: boolean;
   fetching: boolean;
@@ -20,61 +18,71 @@ interface UseGetAttestationHook {
 }
 
 /**
- * Custom hook to get the attestation of a subscription.
+ * Custom hook to get the attestation for a specific policy.
+ * @param policy The address of the policy to check.
  * @param recipient The address of the recipient of subscription.
  * @param holder The address of the holder of subscription.
  * @returns An object containing the attestation data, loading state, error, and a refetch function.
  */
-export function useGetAttestation(recipient: Address, holder?: Address): UseGetAttestationHook {
+export function useGetPolicyAttestation(policy: Address, recipient: Address, holder?: Address): UseGetPolicyAttestationHook {
   const sessionData = useSelector((state: any) => state.auth.session);
   const userAddress = sessionData?.profile?.ownedBy?.address as Address | undefined;
-
   const [attestation, setAttestation] = useState<string | undefined>(undefined);
   const [loading, setLoading] = useState(true);
   const [fetching, setFetching] = useState(true);
   const [error, setError] = useState<AttestationError | null>(null);
+  const { activeLicenses, loading: licensesLoading, refetch: refetchLicenses } = useGetActiveLicenses(recipient, holder);
 
-  const fetchAttestation = useCallback(async () => {
+  const fetchAttestation = useCallback(() => {
     setFetching(true);
-    try {
-      const attestationData: unknown = await publicClient.readContract({
-        address: GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS,
-        abi: SubscriptionPolicyAbi.abi,
-        functionName: 'getAttestation',
-        args: [recipient, holder ?? (userAddress as Address)],
-      });
 
-      const attestationStr = attestationData ? String(attestationData) : undefined;
-      setAttestation(attestationStr);
-      setError(null);
+    if (!policy || licensesLoading) {
+      setFetching(false);
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const matchedLicense = activeLicenses.find(
+        (license) => license.policy.toLowerCase() === policy.toLowerCase()
+      );
+
+      if (matchedLicense) {
+        setAttestation(matchedLicense.license);
+        setError(null);
+      } else {
+        setAttestation(undefined);
+        setError({ message: 'No matching license found for the specified policy.' });
+      }
     } catch (err: any) {
-      console.error('Error fetching attestation:', err);
+      console.error('Error fetching license:', err);
       setError({ message: err.message || 'An error occurred' });
       setAttestation(undefined);
     } finally {
       setLoading(false);
       setFetching(false);
     }
-  }, [recipient, holder, userAddress]);
+  }, [policy, activeLicenses, licensesLoading]);
 
   useEffect(() => {
-    if (!recipient || !(holder ?? userAddress)) {
+    if (!policy || !recipient || !(holder ?? userAddress)) {
       setLoading(false);
       setFetching(false);
-      setError({ message: 'Recipient or holder address is missing.' });
+      setError({ message: 'Policy, recipient, or holder address is missing.' });
       return;
     }
+
     fetchAttestation();
-  }, [recipient, holder, userAddress, fetchAttestation]);
+  }, [policy, recipient, holder, userAddress, fetchAttestation]);
 
   const refetch = useCallback(() => {
-    setFetching(true);
+    refetchLicenses();
     fetchAttestation();
-  }, [fetchAttestation]);
+  }, [refetchLicenses, fetchAttestation]);
 
   return {
     attestation,
-    loading,
+    loading: licensesLoading || loading,
     fetching,
     error,
     refetch,
