@@ -34,7 +34,7 @@ export const FinanceWithdrawModal: FC<FinanceWithdrawModalProps> = ({ open, onCl
     <FinanceModal
       open={open}
       onClose={onClose}
-      title="Withdraw from"
+      title="Withdraw to"
       tabs={withdrawTabs}
       renderContent={renderContent}
       maxWidth="xs"
