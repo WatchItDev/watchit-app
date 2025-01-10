@@ -118,7 +118,6 @@ const FinanceWithdraw: FC<FinanceWithdrawProps> = ({ address, withdrawHook, onCl
         <TextField
           sx={{ mt: 1 }}
           fullWidth
-          autoFocus
           label="Amount to withdraw"
           type="number"
           value={amount}
