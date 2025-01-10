@@ -1,12 +1,10 @@
 import { createWalletClient, custom } from 'viem';
 import { polygonAmoy } from 'viem/chains';
 import { MetaMaskSDK } from '@metamask/sdk';
-import { GLOBAL_CONSTANTS } from '@src/config-global';
 
 export async function ConnectWalletClient() {
   // 1) Create the MetaMaskSDK instance
   const MMSDK = new MetaMaskSDK({
-    infuraAPIKey: GLOBAL_CONSTANTS.INFURA_API_KEY,
     dappMetadata: {
       name: 'watchit',
       url: window.location.href,
