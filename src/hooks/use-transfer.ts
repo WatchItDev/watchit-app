@@ -75,6 +75,7 @@ export const useTransfer = (): UseTransferHook => {
       setData(receipt);
       setLoading(false);
     } catch (err: any) {
+      console.log(err);
       setError(ERRORS.UNKNOWN_ERROR);
       setLoading(false);
     }

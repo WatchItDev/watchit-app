@@ -1,5 +1,4 @@
 import { MetaMaskSDK } from '@metamask/sdk';
-import { GLOBAL_CONSTANTS } from '@src/config-global';
 import { Address } from 'viem';
 
 /**
@@ -8,18 +7,18 @@ import { Address } from 'viem';
  */
 export const connectToMetaMask = async (): Promise<Address> => {
   const MMSDK = new MetaMaskSDK({
-    infuraAPIKey: GLOBAL_CONSTANTS.INFURA_API_KEY,
     dappMetadata: {
-      name: 'WatchitApp',
+      name: 'watchit',
       url: window.location.href,
     },
     openDeeplink: (url) => {
-      // @ts-ignore
-      const isMM = window.ethereum?.isMetaMask;
-
-      if (typeof window.ethereum === 'undefined' || !isMM) {
+      // redirect to the MetaMask mobile app link
+      const isMM = (window as any).ethereum?.isMetaMask;
+      if (typeof (window as any).ethereum === 'undefined' || !isMM) {
+        // Mobile / no extension
         window.location.href = 'https://metamask.app.link';
       } else {
+        // Desktop with MetaMask extension
         window.location.href = url;
       }
     },
