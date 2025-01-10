@@ -9,6 +9,5 @@ jobs:
   #   uses: ./.github/workflows/ci.yml
   #   secrets: inherit
   Deploy-Beta:
-    needs: [Create-Release]
     uses: ./.github/workflows/cd.yml
     secrets: inherit
