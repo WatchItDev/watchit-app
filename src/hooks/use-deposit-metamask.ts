@@ -98,7 +98,8 @@ export const useDepositMetamask = (): UseDepositHook => {
     } catch (err: any) {
       // If something fails (either approve or deposit), set an error
       console.log('DEPOSIT FAILING ERROR: ', err);
-      enqueueSnackbar(`DEPOSIT FAILING ERROR: ${JSON.stringify(err)}`);
+      const errorMessage = typeof err === 'object' ? JSON.stringify(err) : String(err);
+      enqueueSnackbar(`DEPOSIT FAILING ERROR: ${errorMessage}`);
       // setError(ERRORS.UNKNOWN_ERROR);
       throw err;
     } finally {

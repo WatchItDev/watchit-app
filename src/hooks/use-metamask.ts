@@ -9,7 +9,6 @@ import { polygonAmoy } from 'viem/chains';
 // METAMASK IMPORTS
 import { useSDK } from '@metamask/sdk-react';
 import { enqueueSnackbar } from 'notistack';
-import { useDetectWalletEnvironment, WalletEnvironment } from '@src/hooks/use-detect-wallet-environment.ts';
 
 /**
  * Represents the shape of the object returned by the useMetaMask hook.
@@ -44,16 +43,6 @@ interface UseMetaMaskReturn {
   walletClient?: WalletClient;
 
   /**
-   * The detected environment (mobile, isMetaMaskInstalled, in-app browser).
-   */
-  environment: WalletEnvironment;
-
-  /**
-   * Deeplink or redirect the user to install/open MetaMask if missing.
-   * */
-  deeplinkToMetaMask: () => void;
-
-  /**
    * Indicates if the connection flow is still in progress.
    */
   loading: boolean;
@@ -71,7 +60,6 @@ interface UseMetaMaskReturn {
  * @returns An object with methods and states for handling the MetaMask connection.
  */
 export function useMetaMask(): UseMetaMaskReturn {
-  const environment = useDetectWalletEnvironment();
   const {
     sdk,
     connected,
@@ -84,7 +72,8 @@ export function useMetaMask(): UseMetaMaskReturn {
 
   useEffect(() => {
     if (error) {
-      enqueueSnackbar(`METAMASK ERROR: ${JSON.stringify(error)}`);
+      const errorMessage = typeof error === 'object' ? JSON.stringify(error) : String(error);
+      enqueueSnackbar(`METAMASK ERROR: ${errorMessage}`);
     }
   }, [error]);
 
@@ -107,25 +96,12 @@ export function useMetaMask(): UseMetaMaskReturn {
     })
     : undefined;
 
-  const deeplinkToMetaMask = useCallback(() => {
-    // If on mobile but not in MetaMask in-app
-    if (environment.isMobile && !environment.isMetaMaskInAppBrowser) {
-      // Typically this link either opens or installs the MetaMask app
-      window.location.href = 'https://metamask.app.link';
-    } else {
-      // If on desktop with no extension installed
-      window.open('https://metamask.io/download/', '_blank');
-    }
-  }, [environment.isMobile, environment.isMetaMaskInAppBrowser]);
-
   return {
     connect,
     connected,
     account: account as Address,
     chainId: sdkChainId,
     walletClient,
-    environment,
-    deeplinkToMetaMask,
     loading: connecting,
     error,
   };
