@@ -8,6 +8,8 @@ jobs:
   # Continuous-Integration:
   #   uses: ./.github/workflows/ci.yml
   #   secrets: inherit
-  Deploy-Beta:
+  Deploy:
     uses: ./.github/workflows/cd.yml
     secrets: inherit
+    with:
+      environment: "production"
