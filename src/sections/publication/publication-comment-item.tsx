@@ -18,10 +18,8 @@ import {
 import Typography from '@mui/material/Typography';
 import {
   hasReacted,
-  ProfileSession,
   PublicationReactionType,
   useReactionToggle,
-  useSession,
 } from '@lens-protocol/react-web';
 import RepliesList from '@src/sections/publication/publication-replies-list.tsx';
 import { timeAgo } from '@src/utils/comment.ts';

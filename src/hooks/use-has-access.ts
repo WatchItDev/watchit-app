@@ -43,16 +43,14 @@ export const useHasAccess = (ownerAddress?: Address): UseHasAccessHook => {
 
     setFetching(true);
     try {
-      const accessData: unknown = await publicClient.readContract({
+      const accessData: any = await publicClient.readContract({
         address: GLOBAL_CONSTANTS.ACCESS_AGG_ADDRESS,
         abi: AccessAggAbi.abi,
-        functionName: 'isAccessAllowedByHolder',
+        functionName: 'isAccessAllowed',
         args: [userAddress, ownerAddress],
       });
 
-      console.log('isAccessAllowedByHolder', accessData);
-
-      const access = Boolean(accessData);
+      const access = Boolean(accessData?.[0]);
       setHasAccess(access);
       setError(null);
     } catch (err: any) {
