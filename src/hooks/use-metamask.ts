@@ -1,5 +1,5 @@
 // REACT IMPORTS
-import { useCallback, useEffect } from 'react';
+import { useCallback } from 'react';
 
 // VIEM IMPORTS
 import { createWalletClient, custom, WalletClient } from 'viem';
@@ -8,7 +8,7 @@ import { polygonAmoy } from 'viem/chains';
 
 // METAMASK IMPORTS
 import { useSDK } from '@metamask/sdk-react';
-import { enqueueSnackbar } from 'notistack';
+// import { enqueueSnackbar } from 'notistack';
 
 /**
  * Represents the shape of the object returned by the useMetaMask hook.
@@ -70,12 +70,12 @@ export function useMetaMask(): UseMetaMaskReturn {
     provider,
   } = useSDK();
 
-  useEffect(() => {
-    if (error) {
-      const errorMessage = typeof error === 'object' ? JSON.stringify(error) : String(error);
-      enqueueSnackbar(`METAMASK ERROR: ${errorMessage}`);
-    }
-  }, [error]);
+  // useEffect(() => {
+  //   if (error) {
+  //     const errorMessage = typeof error === 'object' ? JSON.stringify(error) : String(error);
+  //     enqueueSnackbar(`METAMASK ERROR: ${errorMessage}`);
+  //   }
+  // }, [error]);
 
   /**
    * We define 'connect' as a guaranteed function (non-optional).

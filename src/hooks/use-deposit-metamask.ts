@@ -8,7 +8,7 @@ import { ERRORS } from '@notifications/errors.ts';
 import { notifyInfo } from '@notifications/internal-notifications.ts';
 import { INFO } from '@notifications/info.ts';
 import { useMetaMask } from '@src/hooks/use-metamask.ts';
-import { enqueueSnackbar } from 'notistack';
+// import { enqueueSnackbar } from 'notistack';
 
 // SAME HERE
 interface DepositParams {
@@ -98,9 +98,9 @@ export const useDepositMetamask = (): UseDepositHook => {
     } catch (err: any) {
       // If something fails (either approve or deposit), set an error
       console.log('DEPOSIT FAILING ERROR: ', err);
-      const errorMessage = typeof err === 'object' ? JSON.stringify(err) : String(err);
-      enqueueSnackbar(`DEPOSIT FAILING ERROR: ${errorMessage}`);
-      // setError(ERRORS.UNKNOWN_ERROR);
+      // const errorMessage = typeof err === 'object' ? JSON.stringify(err) : String(err);
+      // enqueueSnackbar(`DEPOSIT FAILING ERROR: ${errorMessage}`);
+      setError(ERRORS.UNKNOWN_ERROR);
       throw err;
     } finally {
       // Reset loading state
