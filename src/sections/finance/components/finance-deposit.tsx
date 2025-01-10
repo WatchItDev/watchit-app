@@ -47,6 +47,11 @@ interface FinanceDepositProps {
    * Callback for closing the modal / dialog.
    */
   onClose: () => void;
+
+  /**
+   * Callback to change the new address.
+   */
+  onChangeWallet?: (address: Address) => void;
 }
 
 /**
@@ -58,7 +63,7 @@ interface FinanceDepositProps {
  * - `onClose`
  */
 const FinanceDeposit: FC<FinanceDepositProps> = ({ address, recipient, depositHook, onClose }) => {
-  const [amount, setAmount] = useState<number>();
+  const [amount, setAmount] = useState<number | string>('');
   const [helperText, setHelperText] = useState<string>("");
   const { balance } = useGetMmcContractBalance(address);
   const { deposit, loading: depositLoading, error } = depositHook;
@@ -83,7 +88,7 @@ const FinanceDeposit: FC<FinanceDepositProps> = ({ address, recipient, depositHo
       return;
     }
     // Validate amount > 0 and <= balance
-    if (amount <= 0 || amount > (balance ?? 0)) {
+    if (Number(amount) <= 0 || Number(amount) > (balance ?? 0)) {
       notifyWarning(WARNING.INVALID_DEPOSIT_AMOUNT);
       return;
     }
@@ -91,7 +96,7 @@ const FinanceDeposit: FC<FinanceDepositProps> = ({ address, recipient, depositHo
     // TODO refactor this!!!!!
     try {
       setLocalLoading(true);
-      await deposit({ recipient: recipient ?? address, amount });
+      await deposit({ recipient: recipient ?? address, amount: Number(amount) });
       notifySuccess(SUCCESS.DEPOSIT_SUCCESSFULLY);
       onClose();
     } catch (err) {
@@ -151,8 +156,7 @@ const FinanceDeposit: FC<FinanceDepositProps> = ({ address, recipient, depositHo
         <TextField
           sx={{ mt: 1 }}
           fullWidth
-          autoFocus
-          label="Amount to withdraw"
+          label="Amount to deposit"
           type="number"
           value={amount}
           onChange={handleAmountChange}
@@ -166,7 +170,7 @@ const FinanceDeposit: FC<FinanceDepositProps> = ({ address, recipient, depositHo
         rainbowComponent={RainbowEffect}
         loading={isBusy}
         actionLoading={depositLoading}
-        amount={amount ?? 0}
+        amount={Number(amount) ?? 0}
         balance={balance ?? 0}
         label={'Confirm'}
         onConfirmAction={handleConfirmDeposit}

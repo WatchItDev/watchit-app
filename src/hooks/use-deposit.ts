@@ -102,7 +102,11 @@ export const useDeposit = (): UseDepositHook => {
       setData(receipt);
       setLoading(false);
     } catch (err: any) {
+
       setError(ERRORS.UNKNOWN_ERROR);
+
+      console.error('USE DEPOSIT:', err);
+
       setLoading(false);
     }
   };

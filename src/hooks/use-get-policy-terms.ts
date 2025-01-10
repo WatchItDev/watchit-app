@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Address } from 'viem';
-import { useGetAuthorizedHolderPolicies } from './use-get-authorized-holder-policies';
+import { useGetPoliciesTerms } from './use-get-policies-terms.ts';
 
 interface HasAccessError {
   message: string;
@@ -42,7 +42,7 @@ export const useGetPolicyTerms = (
     loading: loadingPolicies,
     error: errorPolicies,
     refetch: refetchPolicies,
-  } = useGetAuthorizedHolderPolicies(holderAddress);
+  } = useGetPoliciesTerms(holderAddress);
 
   /**
    * Attempt to find `policyAddress` in the array of `authorizedHolderPolicies`

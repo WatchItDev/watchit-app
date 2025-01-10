@@ -1,3 +1,4 @@
+// REACT IMPORTS
 import { FC, useCallback, useEffect, useState } from 'react';
 
 // VIEM IMPORTS
@@ -14,7 +15,6 @@ import FinanceDialogsActions from '@src/sections/finance/components/finance-dial
 import TextMaxLine from '@src/components/text-max-line';
 import { formatBalanceNumber } from '@src/utils/format-number';
 import BoxRow from '@src/sections/finance/components/box-row';
-import { isValidAddress } from '@src/sections/finance/components/finance-quick-transfer';
 import { UseWithdrawHook } from '@src/hooks/use-withdraw.ts';
 import { truncateAddress } from '@src/utils/wallet.ts';
 
@@ -23,25 +23,25 @@ import { notifyError, notifySuccess, notifyWarning } from '@notifications/intern
 import { ERRORS } from '@notifications/errors';
 import { WARNING } from '@notifications/warnings';
 import { SUCCESS } from '@notifications/success';
+import { useGetBalance } from '@src/hooks/use-get-balance.ts';
 
 // ----------------------------------------------------------------------
 
 interface FinanceWithdrawProps {
-  address?: Address; // The connected wallet address
+  address: Address; // The connected wallet address
   withdrawHook: UseWithdrawHook; // Generic withdraw hook
-  balance: number | null; // Current user balance
   onClose: () => void; // Callback to close the modal/dialog
+  onChangeWallet?: (address: Address) => void; // Callback to change the new address.
 }
 
 // ----------------------------------------------------------------------
 
-const FinanceWithdraw: FC<FinanceWithdrawProps> = ({ address, withdrawHook, balance, onClose }) => {
-  const [amount, setAmount] = useState<number>();
-  const [destinationAddress, setDestinationAddress] = useState('');
-  const [addressError, setAddressError] = useState(false);
+const FinanceWithdraw: FC<FinanceWithdrawProps> = ({ address, withdrawHook, onClose }) => {
+  const [amount, setAmount] = useState<number | string>('');
   const [amountError, setAmountError] = useState(false);
-  const [amountHelperText, setAmountHelperText] = useState(''); // Dynamic helper text for amount
+  const [amountHelperText, setAmountHelperText] = useState('');
   const [localLoading, setLocalLoading] = useState(false);
+  const { balance } = useGetBalance();
   const { withdraw, loading: withdrawLoading, error } = withdrawHook;
   const RainbowEffect = localLoading || withdrawLoading ? NeonPaper : Box;
 
@@ -54,17 +54,13 @@ const FinanceWithdraw: FC<FinanceWithdrawProps> = ({ address, withdrawHook, bala
   const handleConfirmWithdraw = useCallback(async () => {
     if (!amount) return;
 
-    if (!destinationAddress || addressError) {
-      notifyWarning(WARNING.INVALID_WALLET_ADDRESS);
-      return;
-    }
-    if (amount <= 0 || amount > (balance ?? 0)) {
+    if (Number(amount) <= 0 || amount > (balance ?? 0)) {
       notifyWarning(WARNING.INVALID_WITHDRAW_AMOUNT);
       return;
     }
     try {
       setLocalLoading(true);
-      await withdraw({ amount, recipient: destinationAddress });
+      await withdraw({ amount: Number(amount), recipient: address });
       notifySuccess(SUCCESS.WITHDRAW_SUCCESSFULLY);
       onClose();
     } catch (err: any) {
@@ -72,7 +68,7 @@ const FinanceWithdraw: FC<FinanceWithdrawProps> = ({ address, withdrawHook, bala
     } finally {
       setLocalLoading(false);
     }
-  }, [amount, destinationAddress, balance, withdraw, addressError, onClose]);
+  }, [amount, balance]);
 
   const handleAmountChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = Number(event.target.value);
@@ -88,12 +84,6 @@ const FinanceWithdraw: FC<FinanceWithdrawProps> = ({ address, withdrawHook, bala
 
     setAmountError(!!errorMessage);
     setAmountHelperText(errorMessage);
-  };
-
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
-    setDestinationAddress(value);
-    setAddressError(!isValidAddress(value));
   };
 
   return (
@@ -128,7 +118,6 @@ const FinanceWithdraw: FC<FinanceWithdrawProps> = ({ address, withdrawHook, bala
         <TextField
           sx={{ mt: 1 }}
           fullWidth
-          autoFocus
           label="Amount to withdraw"
           type="number"
           value={amount}
@@ -137,48 +126,13 @@ const FinanceWithdraw: FC<FinanceWithdrawProps> = ({ address, withdrawHook, bala
           error={amountError}
           helperText={amountHelperText}
         />
-
-        <Box
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            position: 'relative',
-            width: '100%',
-            my: 2
-          }}
-        >
-          <Box sx={{ background: 'rgba(255,255,255,0.1)', height: '1px', width: '100%' }} />
-          <Box sx={{
-            position: 'absolute',
-            left: 'calc(50% - 1.5rem)',
-            top: '-22px',
-            width: '3rem',
-            padding: '8px',
-            background: '#212b36',
-            textAlign: 'center',
-            color: 'text.secondary'
-          }}>
-            to
-          </Box>
-        </Box>
-
-        <TextField
-          fullWidth
-          label="Wallet Address"
-          value={destinationAddress}
-          onChange={handleInputChange}
-          placeholder="Enter wallet address"
-          error={addressError}
-          helperText={addressError ? 'Invalid wallet address' : ''}
-        />
       </Stack>
 
       <FinanceDialogsActions
         rainbowComponent={RainbowEffect}
         loading={localLoading}
         actionLoading={withdrawLoading}
-        amount={amount ?? 0}
+        amount={Number(amount) ?? 0}
         balance={balance ?? 0}
         label={'Confirm'}
         onConfirmAction={handleConfirmWithdraw}
