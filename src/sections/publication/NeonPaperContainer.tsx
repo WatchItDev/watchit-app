@@ -1,9 +1,9 @@
-import {FC, ReactNode} from "react";
+import { FC, ReactNode } from 'react';
 
 import { Paper, styled } from '@mui/material';
-import {PaperProps} from "@mui/material/Paper";
-import {SxProps, Theme} from "@mui/material/styles";
-import {COLORS} from "@src/layouts/config-layout.ts";
+import { PaperProps } from '@mui/material/Paper';
+import { SxProps, Theme } from '@mui/material/styles';
+import { COLORS } from '@src/layouts/config-layout.ts';
 
 interface NeonPaperProps {
   children: ReactNode;
@@ -16,8 +16,17 @@ interface NeonPaperProps {
 }
 
 const NeonPaperContainer = styled(Paper, {
-  shouldForwardProp: (prop) => prop !== 'colors' && prop !== 'animationSpeed' && prop !== 'borderRadius' && prop !== 'padding',
-})<PaperProps & {colors?: string[], animationSpeed?: string, padding?: string, borderRadius?: string, width?: string} >(({ colors, animationSpeed, padding, borderRadius, width }) => ({
+  shouldForwardProp: (prop) =>
+    prop !== 'colors' && prop !== 'animationSpeed' && prop !== 'borderRadius' && prop !== 'padding',
+})<
+  PaperProps & {
+    colors?: string[];
+    animationSpeed?: string;
+    padding?: string;
+    borderRadius?: string;
+    width?: string;
+  }
+>(({ colors, animationSpeed, padding, borderRadius, width }) => ({
   '--gradient-pos-x': '50%',
   '--gradient-pos-y': '50%',
   '--border-radius': `${borderRadius || '10px'}`,
@@ -68,10 +77,24 @@ ${colors?.join(', ') || '#1e87ff, #5c13c4, #ff0033, #ffda00, #64bc26, #1e87ff'}
   },
 }));
 
-const defaultColors = ['rgba(30,135,255,0.5)', 'rgba(92,19,196,0.5)', 'rgba(255,0,51,0.5)', 'rgba(255,218,0,0.5)', 'rgba(100,188,38,0.5)', 'rgba(30,135,255,0.5)']
-const defaultAnimationSpeed = '2s'
+const defaultColors = [
+  'rgba(30,135,255,0.5)',
+  'rgba(92,19,196,0.5)',
+  'rgba(255,0,51,0.5)',
+  'rgba(255,218,0,0.5)',
+  'rgba(100,188,38,0.5)',
+  'rgba(30,135,255,0.5)',
+];
+const defaultAnimationSpeed = '2s';
 
-const NeonPaper: FC<NeonPaperProps> = ({ children, colors = defaultColors, animationSpeed = defaultAnimationSpeed, padding='0.7rem', borderRadius='10px', width='100%' }) => {
+const NeonPaper: FC<NeonPaperProps> = ({
+  children,
+  colors = defaultColors,
+  animationSpeed = defaultAnimationSpeed,
+  padding = '0.7rem',
+  borderRadius = '10px',
+  width = '100%',
+}) => {
   return (
     <NeonPaperContainer
       elevation={3}

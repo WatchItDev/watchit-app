@@ -5,7 +5,7 @@ on:
     inputs:
       environment:
         description: "Deploy environment"
-        default: "staging"
+        default: next
         required: false
         type: string
 
@@ -14,87 +14,14 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  android:
-    # if we add in the commit [no android] android build is ignored
-    if: ${{ !contains(github.event.head_commit.message, '[no android]') }}
+  app:
     environment: ${{ inputs.environment}}
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - name: Deploy app
+        uses: johnbeynon/render-deploy-action@v0.0.8
         with:
-          node-version: "lts/*"
+          service-id: ${{ secrets.RENDER_SERVICE_ID }}
+          api-key: ${{ secrets.RENDER_API_KEY }}
 
-      - name: Set up JDK 17
-        uses: actions/setup-java@v3
-        with:
-          java-version: '17'
-          distribution: 'tem'
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Collecting .env from dotenv-vault
-        run: npx dotenv-vault@latest pull ${{ inputs.environment }} .env -m ${{ secrets.DOTENV_ME }} -y
-
-      - uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: "3.0"
-          bundler-cache: true
-          working-directory: "android"
-
-      - name: Deploying Android
-        uses: maierj/fastlane-action@v3.0.0
-        with:
-          lane: "beta"
-          subdirectory: "android"
-
-  ios:
-    # if we add in the commit [no ios] android build is ignored
-    if: ${{ !contains(github.event.head_commit.message, '[no ios]') }}
-    environment: ${{ inputs.environment}}
-    # https://github.com/actions/runner-images/blob/macos-13/20231218.2/images/macos/macos-13-arm64-Readme.md
-    runs-on: macos-latest-xlarge
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          cache: npm
-          check-latest: true
-          node-version: "latest"
-          registry-url: "http://registry.npmjs.org/"
-          architecture: "arm64" # optional, x64 or x86. If not specified, x64 will be used by default
-          cache-dependency-path: "**/package-lock.json"
-
-      - name: Install dependencies
-        run: |
-          npm install -g npm@latest
-          npm ci
-
-      - name: Collecting .env from dotenv-vault
-        run: npx dotenv-vault@latest pull ${{ inputs.environment }} .env -m ${{ secrets.DOTENV_ME }} -y
-
-      - run: |
-          pod cache clean --all
-          rm -rf Podfile.lock
-          pod repo update
-
-      - uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: "3.3"
-          bundler-cache: true
-          working-directory: "ios"
-
-      - name: Deploying IOS
-        uses: maierj/fastlane-action@v3.0.0
-        with:
-          lane: "ios beta"
-          subdirectory: "ios"
-        env:
-          NO_FLIPPER: 1
+  

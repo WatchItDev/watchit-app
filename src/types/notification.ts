@@ -4,6 +4,7 @@ export enum NotificationCategories {
   COMMENT = 'COMMENT',
   JOIN = 'JOIN',
   MENTION = 'MENTION',
+  TRANSFER = 'TRANSFER',
 }
 
 export type NotificationColumnsProps = {

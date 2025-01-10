@@ -4,15 +4,20 @@ import { alpha } from '@mui/material/styles';
 import { bgGradient } from '@src/theme/css';
 import { Profile } from '@lens-protocol/api-bindings';
 import Image from '../../components/image';
+import { SxProps } from '@mui/system';
+import { Theme } from '@mui/material';
 
 // ----------------------------------------------------------------------
 
 interface ProfileCoverProps {
   profile?: Profile;
+  sx?: SxProps<Theme>;
 }
 
-export default function ProfileCover({ profile }: ProfileCoverProps) {
-  const coverImage = profile?.metadata?.coverPicture?.optimized?.uri
+// ----------------------------------------------------------------------
+
+export default function ProfileCover({ profile, sx }: ProfileCoverProps) {
+  const coverImage = profile?.metadata?.coverPicture?.optimized?.uri;
   return (
     <Image
       src={!!coverImage ? coverImage : `https://picsum.photos/seed/${profile?.id}/1920/820`}
@@ -28,6 +33,7 @@ export default function ProfileCover({ profile }: ProfileCoverProps) {
         justifyContent: 'center',
         borderRadius: 2,
         overflow: 'hidden',
+        ...sx
       }}
     />
   );

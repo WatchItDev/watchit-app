@@ -22,14 +22,14 @@ import { fShortenNumber } from '@src/utils/format-number';
 import Iconify from '@src/components/iconify';
 import Markdown from '@src/components/markdown';
 import LoadingButton from '@mui/lab/LoadingButton';
-import { truncateAddress } from '../../../utils/wallet';
+import { truncateAddress } from '@src/utils/wallet.ts';
 import GovernanceCommentList from '../governance-comment-list';
 import GovernanceCommentForm from '../governance-comment-form';
 import Label from '../../../components/label';
 import Header from '../../../layouts/dashboard/header';
-import { useResponsive } from '../../../hooks/use-responsive';
-import { paths } from '../../../routes/paths';
-import { useRouter } from '../../../routes/hooks';
+import { useResponsive } from '@src/hooks/use-responsive.ts';
+import { paths } from '@src/routes/paths.ts';
+import { useRouter } from '@src/routes/hooks';
 import { ProposalsMockList, proposalVotes as initialProposalVotes } from '../governance-mock';
 
 // ----------------------------------------------------------------------

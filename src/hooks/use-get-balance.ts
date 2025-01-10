@@ -1,34 +1,20 @@
-import { useState, useEffect, useCallback } from 'react';
-import { formatUnits, Address } from 'viem';
-import MMCAbi from '@src/config/abi/MMC.json';
-import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
-import { publicClient } from '@src/clients/viem/publicClient.ts';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useGetVaultBalance } from '@src/hooks/use-get-vault-balance.ts';
+import { setBalance } from '@redux/auth';
 
-export function useGetBalance(address?: Address) {
-  const [balance, setBalance] = useState<number | null>(null);
+export function useGetBalance() {
+  const balance = useSelector((state: any) => state.auth.balance);
+  const sessionData = useSelector((state: any) => state.auth.session);
+  const dispatch = useDispatch();
 
-  const fetchBalance = useCallback(async () => {
-    if (!address) return;
-
-    try {
-      const rawBalance: any = await publicClient.readContract({
-        address: GLOBAL_CONSTANTS.MMC_ADDRESS,
-        abi: MMCAbi.abi,
-        functionName: 'balanceOf',
-        args: [address],
-      });
-
-      const formattedBalance = parseFloat(formatUnits(rawBalance, 18));
-      setBalance(isNaN(formattedBalance) ? 0 : formattedBalance);
-    } catch (error) {
-      console.error('Error fetching balance:', error);
-      setBalance(null);
-    }
-  }, [address]);
+  const { balance: vaultBalance, refetch } = useGetVaultBalance(sessionData?.address);
 
   useEffect(() => {
-    fetchBalance();
-  }, [fetchBalance]);
+    if (vaultBalance !== null && vaultBalance !== undefined) {
+      dispatch(setBalance({ balance: vaultBalance }));
+    }
+  }, [vaultBalance, dispatch]);
 
-  return { balance, refetch: fetchBalance };
+  return { balance, refetch };
 }

@@ -18,6 +18,7 @@ export default function Main({ children, sx, ...other }: BoxProps) {
     <Box
       component="main"
       sx={{
+        position: 'relative',
         padding: '65px 0 12px 0',
         transition: 'all 0.7s ease',
         flexGrow: 1,

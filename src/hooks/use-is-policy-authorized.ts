@@ -1,13 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Address } from 'viem';
-import { publicClient } from '@src/clients/viem/publicClient';
-import RightsPolicyAuthorizerAbi from '@src/config/abi/RightsPolicyAuthorizer.json';
-import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
-// LENS IMPORTS
-import { ProfileSession, useSession } from '@lens-protocol/react-web';
-// @ts-ignore
-import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
-import {useSelector} from "react-redux";
+import { useSelector } from 'react-redux';
+import { useGetPoliciesTerms } from './use-get-policies-terms.ts';
 
 interface HasAccessError {
   message: string;
@@ -24,9 +18,9 @@ interface UseIsPolicyAuthorizedHook {
 }
 
 /**
- * Custom hook to check if a user has a policy authorized.
- * @param policy The address of the policy.
- * @param holder The address of the holder. If not provided, it uses the current logged-in profile's address.
+ * Custom hook to check if a specific policy is authorized for the user (holder).
+ * @param policy Address of the policy.
+ * @param holder Address of the holder (optional). If not provided, it will use the user's address from Redux.
  */
 export const useIsPolicyAuthorized = (
   policy: Address,
@@ -36,53 +30,83 @@ export const useIsPolicyAuthorized = (
   const userAddress = sessionData?.profile?.ownedBy?.address as Address | undefined;
 
   const [isAuthorized, setIsAuthorized] = useState<boolean | undefined>(undefined);
-  const [loading, setLoading] = useState(true);
-  const [fetching, setFetching] = useState(true);
+  // `fetching` indicates if we are currently checking for authorization
+  const [fetching, setFetching] = useState<boolean>(true);
   const [error, setError] = useState<HasAccessError | null>(null);
 
-  const fetchAuthorization = useCallback(async () => {
+  // Use the hook that fetches all authorized policies for the holder
+  const {
+    authorizedHolderPolicies,
+    loading: loadingPolicies,
+    error: errorPolicies,
+    refetch: refetchPolicies,
+  } = useGetPoliciesTerms(holder ?? userAddress);
+
+  /**
+   * Checks if the given policy exists in the holder's authorized policies.
+   */
+  const fetchAuthorization = useCallback(() => {
+    setFetching(true);
+
+    // Validate that policy and holder exist
     if (!policy || !(holder ?? userAddress)) {
-      setLoading(false);
-      setFetching(false);
+      setIsAuthorized(false);
       setError({ message: 'Policy or holder address is missing.' });
+      setFetching(false);
       return;
     }
 
-    setFetching(true);
+    // If there's an error from the other hook, propagate it
+    if (errorPolicies) {
+      setIsAuthorized(false);
+      setError(errorPolicies);
+      setFetching(false);
+      return;
+    }
+
+    // If no policies have been fetched yet, we cannot check
+    if (!authorizedHolderPolicies) {
+      setIsAuthorized(false);
+      setError(null);
+      setFetching(false);
+      return;
+    }
 
     try {
-      const authorizedData = await publicClient.readContract({
-        address: GLOBAL_CONSTANTS.RIGHT_POLICY_AUTHORIZER,
-        abi: RightsPolicyAuthorizerAbi.abi,
-        functionName: 'isPolicyAuthorized',
-        args: [policy, holder ?? userAddress],
-      });
+      // Check if the given policy is in the list
+      // Assume that each element looks like { policy: string, terms: {...} }
+      const isPolicyInList = authorizedHolderPolicies.some(
+        (p: any) => p.policy.toLowerCase() === policy.toLowerCase()
+      );
 
-      const authorized = Boolean(authorizedData);
-      setIsAuthorized(authorized);
+      setIsAuthorized(isPolicyInList);
       setError(null);
     } catch (err: any) {
       console.error('Error checking policy authorization:', err);
       setIsAuthorized(undefined);
-      setError({ message: err?.message || 'An error occurred' });
+      setError({
+        message: err?.message || 'An error occurred while checking policy authorization.',
+      });
     } finally {
-      setLoading(false);
       setFetching(false);
     }
-  }, [policy, holder, userAddress]);
+  }, [policy, holder, userAddress, authorizedHolderPolicies, errorPolicies]);
 
+  // Whenever authorizedHolderPolicies or errorPolicies change, verify again
   useEffect(() => {
     fetchAuthorization();
   }, [fetchAuthorization]);
 
+  // Allows re-triggering the fetch
   const refetch = useCallback(() => {
-    fetchAuthorization();
-  }, [fetchAuthorization]);
+    // Refetch policies from the contract
+    refetchPolicies();
+  }, [refetchPolicies]);
 
   return {
     isAuthorized,
-    loading,
-    fetching,
+    loading: loadingPolicies, // Indicates if we are still fetching the list of policies
+    fetching, // Indicates if we are checking authorization in that list
     error,
     refetch,
   };

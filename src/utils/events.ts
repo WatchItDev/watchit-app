@@ -1,4 +1,4 @@
-import { Dispatch } from "redux";
+import { Dispatch } from 'redux';
 import { appendNotification } from '@src/redux/notifications';
 
 export namespace Events {
@@ -26,7 +26,6 @@ export namespace Events {
       }
     }
   };
-  // @TODO: Add more event handlers when needed
   // @ts-ignore
   export const Transaction = (payload: any) => {};
   // @ts-ignore

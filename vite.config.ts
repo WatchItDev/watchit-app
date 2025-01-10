@@ -10,9 +10,6 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
 
   return {
-    build: {
-      sourcemap: true
-    },
     plugins: [
       react(),
       preserveDirectives(),
@@ -33,6 +30,7 @@ export default defineConfig(({ mode }) => {
         '@types': path.resolve(__dirname, 'src/types'),
         '@public': path.resolve(__dirname, 'public'),
         '@redux': path.resolve(__dirname, 'src/redux'),
+        '@notifications': path.resolve(__dirname, 'src/utils/notifications'),
         'enc-utils': path.resolve(__dirname, 'src/fixes/enc-utils.js'),
         'bip39': path.resolve(__dirname, 'src/fixes/bip39.js'),
       },

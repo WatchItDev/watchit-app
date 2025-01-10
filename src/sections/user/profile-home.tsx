@@ -9,26 +9,26 @@ import { AnyPublication } from '@lens-protocol/api-bindings';
 
 interface ProfileHomeProps {
   publications?: AnyPublication[]; // Array of publications
-  noPaddings?: boolean;           // Flag to remove container paddings
-  minItemWidth?: number;          // Min width per item
-  maxItemWidth?: number;          // Max width per item
-  initialRows?: number;           // Rows to show initially
-  rowsIncrement?: number;         // Rows to add each time "Show more" is clicked
-  maxHeight?: string | number;    // Max height for the parent container (e.g. '29rem', 400, etc.)
-  scrollable?: boolean;           // Whether the container is allowed to scroll or not
-  scrollOnShowMore?: boolean;     // Scroll down when user clicks "Show more"
+  noPaddings?: boolean; // Flag to remove container paddings
+  minItemWidth?: number; // Min width per item
+  maxItemWidth?: number; // Max width per item
+  initialRows?: number; // Rows to show initially
+  rowsIncrement?: number; // Rows to add each time "Show more" is clicked
+  maxHeight?: string | number; // Max height for the parent container (e.g. '29rem', 400, etc.)
+  scrollable?: boolean; // Whether the container is allowed to scroll or not
+  scrollOnShowMore?: boolean; // Scroll down when user clicks "Show more"
 }
 
 export default function ProfileHome({
-                                      publications = [],
-                                      minItemWidth = 150,
-                                      maxItemWidth = 250,
-                                      initialRows = 2,
-                                      rowsIncrement = 2,
-                                      maxHeight = '31rem',
-                                      scrollable = true,
-                                      scrollOnShowMore = true,
-                                    }: ProfileHomeProps) {
+  publications = [],
+  minItemWidth = 150,
+  maxItemWidth = 250,
+  initialRows = 2,
+  rowsIncrement = 2,
+  maxHeight = '31rem',
+  scrollable = true,
+  scrollOnShowMore = true,
+}: ProfileHomeProps) {
   const parentRef = useRef<HTMLDivElement>(null);
   const minibarState = useSelector((state: any) => state.minibar.state);
 
@@ -126,8 +126,7 @@ export default function ProfileHome({
     }
   };
 
-  const shouldShowButton =
-    publications.length > publicationsToShow.length || isShowingAll;
+  const shouldShowButton = publications.length > publicationsToShow.length || isShowingAll;
 
   // Gap between items
   const gap = 10;
@@ -192,14 +191,14 @@ export default function ProfileHome({
         </Box>
       )}
 
-      {(shouldShowButton && isShowingAll && publicationsToShow.length) ? (
+      {shouldShowButton && isShowingAll && publicationsToShow.length ? (
         <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
           <Button onClick={handleShowMore} variant="outlined">
             <IconCaretUp />
             <Typography sx={{ ml: 1 }}>Show less</Typography>
           </Button>
         </Box>
-      ): null}
+      ) : null}
     </>
   );
 }

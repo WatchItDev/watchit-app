@@ -3,14 +3,13 @@ name: Staging CI/CD
 on:
   push:
     branches:
-      - staging
-
+      - next
 jobs:
-  Continuous-Integration:
-    uses: ./.github/workflows/ci.yml
-    secrets: inherit
+  # Continuous-Integration:
+  #   uses: ./.github/workflows/ci.yml
+  #   secrets: inherit
   Create-Release:
-    needs: [Continuous-Integration]
+    # needs: [Continuous-Integration]
     uses: ./.github/workflows/release.yml
     permissions:
       contents: write # to be able to publish a GitHub release
@@ -18,7 +17,7 @@ jobs:
       pull-requests: write # to be able to comment on released pull requests
       id-token: write # to enable use of OIDC for npm provenance
     secrets: inherit
-  Deploy-Beta:
+  Deploy-Next:
     needs: [Create-Release]
     uses: ./.github/workflows/cd.yml
     secrets: inherit

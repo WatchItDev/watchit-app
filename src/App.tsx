@@ -3,6 +3,7 @@ import { store } from '@redux/store';
 import '@src/locales/i18n';
 
 // scrollbar
+// @ts-ignore
 import 'simplebar-react/dist/simplebar.min.css';
 
 // lightbox
@@ -11,13 +12,17 @@ import 'yet-another-react-lightbox/plugins/captions.css';
 import 'yet-another-react-lightbox/plugins/thumbnails.css';
 
 // editor
+// @ts-ignore
 import 'react-quill/dist/quill.snow.css';
 
 // carousel
+// @ts-ignore
 import 'slick-carousel/slick/slick.css';
+// @ts-ignore
 import 'slick-carousel/slick/slick-theme.css';
 
 // image
+// @ts-ignore
 import 'react-lazy-load-image-component/src/effects/blur.css';
 
 // ----------------------------------------------------------------------
@@ -41,6 +46,7 @@ import { ResponsiveOverlay } from '@src/components/responsive-overlay';
 
 import { Buffer } from 'buffer';
 import { Provider } from 'react-redux';
+import { MetaMaskProvider } from '@metamask/sdk-react';
 
 window.Buffer = Buffer;
 
@@ -62,32 +68,52 @@ export default function App() {
   useScrollToTop();
 
   return (
-    <LocalizationProvider dateAdapter={AdapterDateFns}>
-      <SettingsProvider
-        defaultSettings={{
-          themeMode: 'dark', // 'light' | 'dark'
-          themeDirection: 'ltr', //  'rtl' | 'ltr'
-          themeContrast: 'default', // 'default' | 'bold'
-          themeLayout: 'vertical', // 'vertical' | 'horizontal' | 'mini'
-          themeColorPresets: 'default', // 'default' | 'cyan' | 'purple' | 'blue' | 'orange' | 'red'
-          themeStretch: false,
-        }}
-      >
-        <AuthProvider>
-          <Provider store={store}>
-            <ThemeProvider>
-              <MotionLazy>
-                <SnackbarProvider>
-                  <SettingsDrawer />
-                  <ProgressBar />
-                  <Router />
-                  <ResponsiveOverlay />
-                </SnackbarProvider>
-              </MotionLazy>
-            </ThemeProvider>
-          </Provider>
-        </AuthProvider>
-      </SettingsProvider>
-    </LocalizationProvider>
+    <MetaMaskProvider
+      sdkOptions={{
+        dappMetadata: {
+          name: 'Watchit Dapp',
+          url: window.location.href,
+        },
+        openDeeplink: (url) => {
+          const isMM = (window as any).ethereum?.isMetaMask;
+          if (typeof (window as any).ethereum === 'undefined' || !isMM) {
+            // Mobile version / no extension
+            window.location.href = 'https://metamask.app.link';
+          } else {
+            // Desktop with MetaMask extension
+            window.location.href = url;
+          }
+        },
+        // headless: true,  // If we wanted to personalize our own modals
+      }}
+    >
+      <LocalizationProvider dateAdapter={AdapterDateFns}>
+        <SettingsProvider
+          defaultSettings={{
+            themeMode: 'dark', // 'light' | 'dark'
+            themeDirection: 'ltr', //  'rtl' | 'ltr'
+            themeContrast: 'default', // 'default' | 'bold'
+            themeLayout: 'vertical', // 'vertical' | 'horizontal' | 'mini'
+            themeColorPresets: 'default', // 'default' | 'cyan' | 'purple' | 'blue' | 'orange' | 'red'
+            themeStretch: false,
+          }}
+        >
+          <AuthProvider>
+            <Provider store={store}>
+              <ThemeProvider>
+                <MotionLazy>
+                  <SnackbarProvider>
+                    <SettingsDrawer />
+                    <ProgressBar />
+                    <Router />
+                    <ResponsiveOverlay />
+                  </SnackbarProvider>
+                </MotionLazy>
+              </ThemeProvider>
+            </Provider>
+          </AuthProvider>
+        </SettingsProvider>
+      </LocalizationProvider>
+    </MetaMaskProvider>
   );
 }

@@ -11,11 +11,11 @@ import { IconBookmark, IconBookmarkFilled, IconPlayerPlay } from '@tabler/icons-
 import Box from '@mui/material/Box';
 import TextMaxLine from '@src/components/text-max-line';
 import { CircularProgress } from '@mui/material';
-import { useBookmarkToggle} from '@lens-protocol/react-web';
+import { useBookmarkToggle } from '@lens-protocol/react-web';
 import { openLoginModal } from '@redux/auth';
 // @ts-ignore
 import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
-import {useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addBookmark, removeBookmark } from '@redux/bookmark';
 
 // ----------------------------------------------------------------------

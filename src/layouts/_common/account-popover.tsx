@@ -27,10 +27,16 @@ import { varHover } from '@src/components/animate';
 import { LoginModal } from '@src/components/login-modal';
 import CustomPopover, { usePopover } from '@src/components/custom-popover';
 import { useDispatch, useSelector } from 'react-redux';
-import {closeLoginModal, openLoginModal, setAuthLoading, setBalance, setSession} from '@redux/auth';
+import {
+  closeLoginModal,
+  openLoginModal,
+  setAuthLoading,
+  setBalance,
+  setSession,
+} from '@redux/auth';
 import { CircularProgress } from '@mui/material';
 import { useWeb3Auth } from '@src/hooks/use-web3-auth.ts';
-import NeonPaper from "@src/sections/publication/NeonPaperContainer.tsx";
+import NeonPaper from '@src/sections/publication/NeonPaperContainer.tsx';
 
 // ----------------------------------------------------------------------
 
@@ -48,21 +54,23 @@ export default function AccountPopover() {
   const router = useRouter();
   const popover = usePopover();
   const { web3Auth } = useWeb3Auth();
-  const { isLoginModalOpen, isUpdatingMetadata, isSessionLoading } = useSelector((state: any) => state.auth);
+  const { isLoginModalOpen, isUpdatingMetadata, isSessionLoading } = useSelector(
+    (state: any) => state.auth
+  );
 
   const { data, loading }: ReadResult<ProfileSession> = useSession();
   const sessionData = useSelector((state: any) => state.auth.session);
   const { execute: logoutExecute } = useLogout();
 
   useEffect(() => {
-    dispatch(setAuthLoading({ isSessionLoading: loading }))
+    dispatch(setAuthLoading({ isSessionLoading: loading }));
   }, [loading]);
 
   const parsedSessionData = JSON.stringify(data);
 
   useEffect(() => {
-    if(!isUpdatingMetadata){
-      dispatch(setSession({ session: data }))
+    if (!isUpdatingMetadata) {
+      dispatch(setSession({ session: data }));
     }
   }, [parsedSessionData, isUpdatingMetadata]);
 
@@ -80,7 +88,6 @@ export default function AccountPopover() {
 
       // Clear the balance for logged-out users
       dispatch(setBalance({ balance: 0 }));
-
     } catch (err) {
       console.error('Error during logout:', err);
     }
@@ -112,37 +119,37 @@ export default function AccountPopover() {
           <EffectPaper
             {...(isUpdatingMetadata && {
               padding: '0',
-              borderRadius: '999999px'
+              borderRadius: '999999px',
             })}
           >
-          <IconButton
-            component={m.button}
-            whileTap="tap"
-            whileHover="hover"
-            variants={varHover(1.05)}
-            sx={{
-              width: 40,
-              height: 40,
-              background: (theme) => alpha(theme.palette.grey[500], 0.08),
-              ...(popover.open && {
-                background: (theme) =>
-                  `linear-gradient(135deg, ${theme.palette.primary.light} 0%, ${theme.palette.primary.main} 100%)`,
-              }),
-            }}
-          >
-            <Avatar
-              src={
-                (sessionData?.profile?.metadata?.picture as any)?.optimized?.uri ??
-                `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${sessionData?.profile?.id}`
-              }
-              alt={'avatar'}
+            <IconButton
+              component={m.button}
+              whileTap="tap"
+              whileHover="hover"
+              variants={varHover(1.05)}
               sx={{
-                width: 36,
-                height: 36,
-                border: (theme) => `solid 2px ${theme.palette.background.default}`,
+                width: 40,
+                height: 40,
+                background: (theme) => alpha(theme.palette.grey[500], 0.08),
+                ...(popover.open && {
+                  background: (theme) =>
+                    `linear-gradient(135deg, ${theme.palette.primary.light} 0%, ${theme.palette.primary.main} 100%)`,
+                }),
               }}
-            />
-          </IconButton>
+            >
+              <Avatar
+                src={
+                  (sessionData?.profile?.metadata?.picture as any)?.optimized?.uri ??
+                  `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${sessionData?.profile?.id}`
+                }
+                alt={'avatar'}
+                sx={{
+                  width: 36,
+                  height: 36,
+                  border: (theme) => `solid 2px ${theme.palette.background.default}`,
+                }}
+              />
+            </IconButton>
           </EffectPaper>
         ) : (
           <></>

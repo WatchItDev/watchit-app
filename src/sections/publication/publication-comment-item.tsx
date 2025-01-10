@@ -18,10 +18,8 @@ import {
 import Typography from '@mui/material/Typography';
 import {
   hasReacted,
-  ProfileSession,
   PublicationReactionType,
   useReactionToggle,
-  useSession,
 } from '@lens-protocol/react-web';
 import RepliesList from '@src/sections/publication/publication-replies-list.tsx';
 import { timeAgo } from '@src/utils/comment.ts';
@@ -32,17 +30,13 @@ import { useDispatch } from 'react-redux';
 
 import { useHidePublication } from '@lens-protocol/react';
 import { hiddeComment } from '@redux/comments';
-import {useNotificationPayload} from "@src/hooks/use-notification-payload.ts";
-import {useNotifications} from "@src/hooks/use-notifications.ts";
+import { useNotificationPayload } from '@src/hooks/use-notification-payload.ts';
+import { useNotifications } from '@src/hooks/use-notifications.ts';
 import { useSelector } from 'react-redux';
 // @ts-ignore
 import { RootState } from '@redux/store';
-import {
-  incrementCounterLikes,
-  decrementCounterLikes,
-  setCounterLikes,
-} from '@redux/comments';
-import NeonPaperContainer from "@src/sections/publication/NeonPaperContainer.tsx";
+import { incrementCounterLikes, decrementCounterLikes, setCounterLikes } from '@redux/comments';
+import NeonPaperContainer from '@src/sections/publication/NeonPaperContainer.tsx';
 
 // Components Lazy
 const LazyPopover = lazy(() => import('@mui/material/Popover'));
@@ -61,7 +55,7 @@ type Props = {
 };
 
 export default function PublicationCommentItem({ comment, hasReply, canReply }: Props) {
-  const isPendingComment = !!comment?.uri
+  const isPendingComment = !!comment?.uri;
 
   const ContentContainer = isPendingComment ? NeonPaperContainer : Paper;
 
@@ -91,24 +85,28 @@ export default function PublicationCommentItem({ comment, hasReply, canReply }: 
         publication: comment,
       }).then(() => {
         // Send notification to the author of the comment
-        const notificationPayload = generatePayload('LIKE', {
-          id: comment?.by?.id,
-          displayName: comment?.by?.metadata?.displayName ?? 'no name',
-          avatar: comment?.by?.metadata?.avatar,
-        }, {
-          root_id: comment?.commentOn?.root?.id ?? comment?.commentOn?.id,
-          parent_id: comment?.commentOn?.id,
-          comment_id: comment?.id,
-          rawDescription: `${sessionData?.profile?.metadata?.displayName} liked your comment`,
-        });
+        const notificationPayload = generatePayload(
+          'LIKE',
+          {
+            id: comment?.by?.id,
+            displayName: comment?.by?.metadata?.displayName ?? 'no name',
+            avatar: comment?.by?.metadata?.avatar,
+          },
+          {
+            root_id: comment?.commentOn?.root?.id ?? comment?.commentOn?.id,
+            parent_id: comment?.commentOn?.id,
+            comment_id: comment?.id,
+            rawDescription: `${sessionData?.profile?.metadata?.displayName} liked your comment`,
+          }
+        );
 
-        if (!hasLiked){
+        if (!hasLiked) {
           dispatch(incrementCounterLikes(comment.id));
         } else {
           dispatch(decrementCounterLikes(comment.id));
         }
 
-        if(!hasLiked && comment?.by?.id !== sessionData?.profile?.id) {
+        if (!hasLiked && comment?.by?.id !== sessionData?.profile?.id) {
           sendNotification(comment?.by?.id, sessionData?.profile?.id, notificationPayload);
         }
       });
@@ -134,7 +132,6 @@ export default function PublicationCommentItem({ comment, hasReply, canReply }: 
       dispatch(setCounterLikes({ publicationId: comment.id, likes: comment.stats.upvotes }));
     }
   }, [comment?.stats?.upvotes, comment.id, dispatch]);
-
 
   return (
     <Stack
@@ -166,24 +163,26 @@ export default function PublicationCommentItem({ comment, hasReply, canReply }: 
             }}
           />
 
-          {sessionData?.authenticated && comment?.by?.id === sessionData?.profile?.id && !isPendingComment && (
-            <Button
-              variant="text"
-              sx={{
-                borderColor: '#FFFFFF',
-                color: '#FFFFFF',
-                height: '30px',
-                minWidth: '30px',
-                position: 'absolute',
-                top: 5,
-                right: 5,
-                zIndex: 1,
-              }}
-              onClick={(event) => setAnchorEl(event.currentTarget)}
-            >
-              <IconDots size={22} color="#FFFFFF" />
-            </Button>
-          )}
+          {sessionData?.authenticated &&
+            comment?.by?.id === sessionData?.profile?.id &&
+            !isPendingComment && (
+              <Button
+                variant="text"
+                sx={{
+                  borderColor: '#FFFFFF',
+                  color: '#FFFFFF',
+                  height: '30px',
+                  minWidth: '30px',
+                  position: 'absolute',
+                  top: 5,
+                  right: 5,
+                  zIndex: 1,
+                }}
+                onClick={(event) => setAnchorEl(event.currentTarget)}
+              >
+                <IconDots size={22} color="#FFFFFF" />
+              </Button>
+            )}
 
           {/* Suspense para Popover */}
           <Suspense fallback={<></>}>
@@ -236,14 +235,16 @@ export default function PublicationCommentItem({ comment, hasReply, canReply }: 
               sx={{ mb: 0.5 }}
               alignItems={{ sm: 'center' }}
               justifyContent="flex-start"
-              direction={ 'row' }
+              direction={'row'}
               gap={1}
             >
               <Box sx={{ typography: 'subtitle2' }}>{comment?.by?.handle?.localName}</Box>
               <Box sx={{ typography: 'caption', color: 'text.disabled' }}>
-                {
-                  isPendingComment ? 'Sending ...' : comment?.createdAt ? timeAgo(new Date(comment.createdAt)) : 'Just now'
-                }
+                {isPendingComment
+                  ? 'Sending ...'
+                  : comment?.createdAt
+                    ? timeAgo(new Date(comment.createdAt))
+                    : 'Just now'}
               </Box>
             </Stack>
 
@@ -253,84 +254,94 @@ export default function PublicationCommentItem({ comment, hasReply, canReply }: 
           </ContentContainer>
         </Stack>
 
-            <Box sx={{ display: 'flex', pl: 7 }}>
-              <Button
-                variant="text"
-                sx={{
-                  borderColor: '#FFFFFF',
-                  color: '#FFFFFF',
-                  height: '30px',
-                  minWidth: '40px',
-                }}
-                onClick={toggleReaction}
-                disabled={loadingLike || isPendingComment}
-              >
-                {loadingLike ? (
-                  <CircularProgress size="25px" sx={{ color: '#fff' }} />
+        <Box sx={{ display: 'flex', pl: 7 }}>
+          <Button
+            variant="text"
+            sx={{
+              borderColor: '#FFFFFF',
+              color: '#FFFFFF',
+              height: '30px',
+              minWidth: '40px',
+            }}
+            onClick={toggleReaction}
+            disabled={loadingLike || isPendingComment}
+          >
+            {loadingLike ? (
+              <CircularProgress size="25px" sx={{ color: '#fff' }} />
+            ) : (
+              <>
+                {hasLiked ? (
+                  <IconHeartFilled size={22} color="#FFFFFF" />
                 ) : (
-                  <>
-                    {hasLiked ? (
-                      <IconHeartFilled size={22} color="#FFFFFF" />
-                    ) : (
-                      <IconHeart size={22}  color={isPendingComment ? 'rgba(255,255,255,0.5)': '#FFFFFF'} />
-                    )}
-                    <Typography
-                      variant="body2"
-                      sx={{
-                        lineHeight: 1,
-                        ml: 1,
-                        fontWeight: '700',
-                      }}
-                    >
-                      {likes}
-                    </Typography>
-                  </>
+                  <IconHeart
+                    size={22}
+                    color={isPendingComment ? 'rgba(255,255,255,0.5)' : '#FFFFFF'}
+                  />
                 )}
-              </Button>
-              {canReply && (
-                <Button
-                  disabled={isPendingComment }
-                  variant="text"
+                <Typography
+                  variant="body2"
                   sx={{
-                    borderColor: '#FFFFFF',
-                    color: '#FFFFFF',
-                    height: '30px',
-                    minWidth: '40px',
+                    lineHeight: 1,
+                    ml: 1,
+                    fontWeight: '700',
                   }}
-                  onClick={() => setShowComments(!showComments)}
                 >
-                  <>
-                    {showComments ? (
-                      <IconMessageCircleFilled size={22} color="#FFFFFF" />
-                    ) : (
-                      <IconMessageCircle size={22} color={isPendingComment ? 'rgba(255,255,255,0.5)': '#FFFFFF'} />
-                    )}
-                    <Typography
-                      variant="body2"
-                      sx={{
-                        lineHeight: 1,
-                        ml: 1,
-                        fontWeight: '700',
-                      }}
-                    >
-                      {comment?.stats?.comments}
-                    </Typography>
-                  </>
-                </Button>
-              )}
-            </Box>
-
-
+                  {likes}
+                </Typography>
+              </>
+            )}
+          </Button>
+          {canReply && (
+            <Button
+              disabled={isPendingComment}
+              variant="text"
+              sx={{
+                borderColor: '#FFFFFF',
+                color: '#FFFFFF',
+                height: '30px',
+                minWidth: '40px',
+              }}
+              onClick={() => setShowComments(!showComments)}
+            >
+              <>
+                {showComments ? (
+                  <IconMessageCircleFilled size={22} color="#FFFFFF" />
+                ) : (
+                  <IconMessageCircle
+                    size={22}
+                    color={isPendingComment ? 'rgba(255,255,255,0.5)' : '#FFFFFF'}
+                  />
+                )}
+                <Typography
+                  variant="body2"
+                  sx={{
+                    lineHeight: 1,
+                    ml: 1,
+                    fontWeight: '700',
+                  }}
+                >
+                  {comment?.stats?.comments}
+                </Typography>
+              </>
+            </Button>
+          )}
+        </Box>
       </Stack>
       {showComments && (
         <>
           <Box sx={{ mt: 1, mb: 2, ml: 8 }}>
             {sessionData?.authenticated ? (
-              <PublicationCommentForm root={comment?.root?.id} commentOn={comment?.id} owner={{
-                id: comment?.by?.id,
-                displayName: comment?.by?.metadata?.displayName,
-                avatar: (comment?.by?.metadata?.picture as any)?.optimized?.uri ?? `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${comment?.by?.id}`
-              }}/>
+              <PublicationCommentForm
+                root={comment?.root?.id}
+                commentOn={comment?.id}
+                owner={{
+                  id: comment?.by?.id,
+                  displayName: comment?.by?.metadata?.displayName,
+                  avatar:
+                    (comment?.by?.metadata?.picture as any)?.optimized?.uri ??
+                    `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${comment?.by?.id}`,
+                }}
+              />
             ) : (
               <Typography
                 variant="body1"

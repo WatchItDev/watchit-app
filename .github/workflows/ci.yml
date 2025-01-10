@@ -26,7 +26,7 @@ jobs:
         run: npm ci
 
       - name: Run static analysis
-        run: make lint
+        run: npm run lint
 
       - name: Test 
         run: make test

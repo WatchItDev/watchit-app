@@ -8,13 +8,12 @@ import { ethers } from 'ethers';
 import { encodeFunctionData } from 'viem';
 
 // LOCAL IMPORTS
-import { useWeb3Auth } from '@src/hooks/use-web3-auth.ts';
-import MMCAbi from '@src/config/abi/MMC.json';
-import AgreementPortalAbi from '@src/config/abi/AgreementPortal.json';
+import AccessWorkflowAbi from '@src/config/abi/AccessWorkflow.json';
+import LedgerVaultabi from '@src/config/abi/LedgerVault.json';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
-// @ts-ignore
-import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
-import {useSelector} from "react-redux";
+import { useSelector } from 'react-redux';
+import { useWeb3Session } from '@src/hooks/use-web3-session.ts';
+import { ERRORS } from '@notifications/errors.ts';
 
 // ----------------------------------------------------------------------
 
@@ -23,19 +22,12 @@ interface SubscribeData {
   receipt?: any; // The subscribe receipt, to get the transaction hash use receipt.transactionHash
 }
 
-// Define the shape of the error object
-interface SubscribeError {
-  message: string;
-  code?: number;
-  [key: string]: any; // For additional error properties
-}
-
 // Define the return type of the useSubscribe hook
 interface UseSubscribeHook {
   data?: SubscribeData;
   subscribe: (params: SubscribeParams) => Promise<void>;
   loading: boolean;
-  error?: SubscribeError | null;
+  error?: keyof typeof ERRORS | null;
 }
 
 // Parameters to be passed to the subscribe function
@@ -49,42 +41,31 @@ interface SubscribeParams {
 export const useSubscribe = (): UseSubscribeHook => {
   const [data, setData] = useState<SubscribeData>();
   const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<SubscribeError | null>(null);
+  const [error, setError] = useState<keyof typeof ERRORS | null>(null);
   const sessionData = useSelector((state: any) => state.auth.session);
-  const { web3Auth } = useWeb3Auth();
+  const { bundlerClient, smartAccount } = useWeb3Session();
 
-  /**
-   * Approves MMC tokens for the Agreement Portal.
-   * @param amountInWei The amount of MMC tokens to approve (in Wei).
-   * @returns The encoded function data for the approve call.
-   */
-  const approveMMC = (amountInWei: bigint): string => {
-    // Encode the approve function call data
+  const transferToAccessAgreement = (approvalAmount: bigint): string => {
     return encodeFunctionData({
-      abi: MMCAbi.abi,
-      functionName: 'approve',
-      args: [GLOBAL_CONSTANTS.AGREEMENT_PORTAL_ADDRESS, amountInWei],
+      abi: LedgerVaultabi.abi,
+      functionName: 'reserve',
+      args: [
+        GLOBAL_CONSTANTS.ACCESS_WORKFLOW_ADDRESS,
+        approvalAmount,
+        GLOBAL_CONSTANTS.MMC_ADDRESS,
+      ],
     });
   };
 
-  /**
-   * Creates the flash policy agreement data.
-   * @param approvalAmount The amount approved for the agreement (in Wei).
-   * @param holderAddress The owner address (e.g., 'holderAddress' parameter).
-   * @param parties The parties involved in the agreement.
-   * @param payload Additional payload data.
-   * @returns The encoded function data for the flashPolicyAgreement call.
-   */
-  const createFlashPolicyAgreement = (
+  const registerAccessAgreement = (
     approvalAmount: bigint,
     holderAddress: string,
     parties: string[],
     payload: string
   ): string => {
-    // Encode the flashPolicyAgreement function call data
     return encodeFunctionData({
-      abi: AgreementPortalAbi.abi,
-      functionName: 'flashPolicyAgreement',
+      abi: AccessWorkflowAbi.abi,
+      functionName: 'registerAccessAgreement',
       args: [
         approvalAmount,
         holderAddress,
@@ -104,19 +85,14 @@ export const useSubscribe = (): UseSubscribeHook => {
     setError(null);
 
     try {
-      // Retrieve the account abstraction provider, bundler client, and smart account
-      const accountAbstractionProvider = web3Auth.options.accountAbstractionProvider;
-      const bundlerClient = accountAbstractionProvider.bundlerClient;
-      const smartAccount = accountAbstractionProvider.smartAccount;
-
       if (!sessionData?.authenticated) {
-        setError({ message: 'Please login to subscribe' });
+        setError(ERRORS.SUBSCRIBE_LOGIN_ERROR);
         setLoading(false);
         return;
       }
 
       if (!bundlerClient) {
-        setError({ message: 'Bundler client not available' });
+        setError(ERRORS.BUNDLER_UNAVAILABLE);
         setLoading(false);
         return;
       }
@@ -125,11 +101,11 @@ export const useSubscribe = (): UseSubscribeHook => {
       const parties = [sessionData?.profile?.ownedBy.address]; // The parties involved in the agreement (e.g., the user's address)
       const payload = '0x'; // Additional payload data if needed
 
-      // Prepare the approve MMC data
-      const approveData = approveMMC(approvalAmountInWei);
+      // Prepare the transfer to access agreement
+      const transferToAccessAgreementData = transferToAccessAgreement(approvalAmountInWei);
 
-      // Prepare the flash policy agreement data
-      const flashPolicyAgreementData = createFlashPolicyAgreement(
+      // Prepare the access agreement data
+      const registerAccessAgreementData = registerAccessAgreement(
         approvalAmountInWei,
         holderAddress,
         parties,
@@ -139,14 +115,14 @@ export const useSubscribe = (): UseSubscribeHook => {
       // Create the array of calls to be included in the user operation
       const calls = [
         {
-          to: GLOBAL_CONSTANTS.MMC_ADDRESS,
+          to: GLOBAL_CONSTANTS.LEDGER_VAULT_ADDRESS,
           value: 0,
-          data: approveData,
+          data: transferToAccessAgreementData,
         },
         {
-          to: GLOBAL_CONSTANTS.AGREEMENT_PORTAL_ADDRESS,
+          to: GLOBAL_CONSTANTS.ACCESS_WORKFLOW_ADDRESS,
           value: 0,
-          data: flashPolicyAgreementData,
+          data: registerAccessAgreementData,
         },
       ];
 
@@ -165,7 +141,9 @@ export const useSubscribe = (): UseSubscribeHook => {
       setData(receipt);
       setLoading(false);
     } catch (err: any) {
-      setError({ message: err.message || 'An error occurred', ...err });
+      console.log('err:');
+      console.log(err);
+      setError(ERRORS.UNKNOWN_ERROR);
       setLoading(false);
     }
   };

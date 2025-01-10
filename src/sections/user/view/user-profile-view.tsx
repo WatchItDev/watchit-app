@@ -6,7 +6,7 @@ import Tabs, { tabsClasses } from '@mui/material/Tabs';
 
 // components
 import { useSettingsContext } from '@src/components/settings';
-import {useLazyProfile, useProfileFollowers, useProfileFollowing} from '@lens-protocol/react';
+import { useLazyProfile, useProfileFollowers, useProfileFollowing } from '@lens-protocol/react';
 import { appId, ProfileId, PublicationType, usePublications } from '@lens-protocol/react-web';
 import ProfileHome from '../profile-home';
 import ProfileFollowers from '../profile-followers';
@@ -19,7 +19,7 @@ import { LoadingScreen } from '@src/components/loading-screen';
 import { useSelector, useDispatch } from 'react-redux';
 // @ts-ignore
 import { RootState } from '@src/redux/store';
-import {setFollowers, setFollowings} from "@redux/followers";
+import { setFollowers, setFollowings } from '@redux/followers';
 
 // ----------------------------------------------------------------------
 
@@ -49,20 +49,16 @@ const UserProfileView = ({ id }: any) => {
     of: profile?.id,
   });
 
-
   const { data: following } = useProfileFollowing({
-      // @ts-ignore
-      for: profile?.id,
-    });
+    // @ts-ignore
+    for: profile?.id,
+  });
 
-
-    useEffect(() => {
+  useEffect(() => {
     (async () => {
       if (id !== profile?.id || !called) await execute({ forProfileId: id as ProfileId });
     })();
   }, [profile?.id, id]);
-
-
 
   useEffect(() => {
     if (profile) {
@@ -75,7 +71,6 @@ const UserProfileView = ({ id }: any) => {
       dispatch(setFollowings(following ?? []));
     }
   }, [profile, following, dispatch]);
-
 
   const followersStore = useSelector((state: RootState) => state.followers.followers);
   const followingsStore = useSelector((state: RootState) => state.followers.followings);
@@ -127,7 +122,13 @@ const UserProfileView = ({ id }: any) => {
       </ProfileHeader>
 
       {currentTab === 'publications' && profile && (
-        <ProfileHome publications={publications} noPaddings={true} scrollable={false} initialRows={3} rowsIncrement={2} />
+        <ProfileHome
+          publications={publications}
+          noPaddings={true}
+          scrollable={false}
+          initialRows={3}
+          rowsIncrement={2}
+        />
       )}
       {currentTab === 'followers' && profile && (
         <ProfileFollowers onActionFinished={handleUpdateProfile} />

@@ -54,9 +54,9 @@ import { ReportPublicationModal } from '@src/components/report-publication-modal
 import Popover from '@mui/material/Popover';
 // @ts-ignore
 import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
-import {useNotifications} from "@src/hooks/use-notifications.ts";
+import { useNotifications } from '@src/hooks/use-notifications.ts';
 import { openLoginModal } from '@redux/auth';
-import {useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addBookmark, removeBookmark } from '@redux/bookmark';
 import { useNotificationPayload } from '@src/hooks/use-notification-payload.ts';
 
@@ -108,15 +108,21 @@ export default function PublicationDetailMain({
     if (!sessionData?.authenticated) return dispatch(openLoginModal());
 
     // Send a notification to the profile owner using the sendNotification function from useNotifications hook
-    const payloadForNotification = generatePayload('LIKE', {
-      id: post.by.id,
-      displayName: post?.by?.metadata?.displayName,
-      avatar: (post?.by?.metadata?.picture as any)?.optimized?.uri ?? `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${post?.by?.id}`,
-    }, {
-      rawDescription: `${sessionData?.profile?.metadata?.displayName} liked ${post?.metadata?.title}`,
-      root_id: post?.id,
-      post_title: post?.metadata?.title,
-    });
+    const payloadForNotification = generatePayload(
+      'LIKE',
+      {
+        id: post.by.id,
+        displayName: post?.by?.metadata?.displayName,
+        avatar:
+          (post?.by?.metadata?.picture as any)?.optimized?.uri ??
+          `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${post?.by?.id}`,
+      },
+      {
+        rawDescription: `${sessionData?.profile?.metadata?.displayName} liked ${post?.metadata?.title}`,
+        root_id: post?.id,
+        post_title: post?.metadata?.title,
+      }
+    );
 
     try {
       await toggle({
@@ -124,7 +130,7 @@ export default function PublicationDetailMain({
         publication: post,
       }).then(() => {
         // Send notification to the author when not already liked
-        if (!hasLiked){
+        if (!hasLiked) {
           sendNotification(post.by.id, sessionData?.profile?.id, payloadForNotification);
         }
       });
@@ -239,7 +245,9 @@ export default function PublicationDetailMain({
               >
                 <IconDots size={22} color="#FFFFFF" />
               </Button>
-            ) : <></>}
+            ) : (
+              <></>
+            )}
             <Popover
               open={openMenu}
               anchorEl={anchorEl}
@@ -449,13 +457,17 @@ export default function PublicationDetailMain({
               >
                 <Divider sx={{ my: 3, mr: 1 }} />
                 {sessionData?.authenticated ? (
-                  <PublicationCommentForm root={post?.id}
-                                          commentOn={post?.id}
-                                          owner={{
-                    id: post?.by?.id,
-                    displayName: post?.by?.metadata?.displayName,
-                    avatar: (post?.by?.metadata?.picture as any)?.optimized?.uri ?? `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${post?.by?.id}`
-                  }} />
+                  <PublicationCommentForm
+                    root={post?.id}
+                    commentOn={post?.id}
+                    owner={{
+                      id: post?.by?.id,
+                      displayName: post?.by?.metadata?.displayName,
+                      avatar:
+                        (post?.by?.metadata?.picture as any)?.optimized?.uri ??
+                        `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${post?.by?.id}`,
+                    }}
+                  />
                 ) : (
                   <Typography
                     variant="body1"

@@ -21,10 +21,10 @@ import Iconify from '@src/components/iconify';
 import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
 import { uploadMetadataToIPFS } from '@src/utils/ipfs';
 import uuidv4 from '@src/utils/uuidv4.ts';
-import {useDispatch, useSelector} from 'react-redux';
-import {useNotifications} from "@src/hooks/use-notifications.ts";
+import { useDispatch, useSelector } from 'react-redux';
+import { useNotifications } from '@src/hooks/use-notifications.ts';
 import { useNotificationPayload } from '@src/hooks/use-notification-payload.ts';
-import {AnyPublication} from "@lens-protocol/api-bindings";
+import { AnyPublication } from '@lens-protocol/api-bindings';
 
 // Define the props types
 type MovieCommentFormProps = {
@@ -34,7 +34,7 @@ type MovieCommentFormProps = {
     id: string;
     displayName: string;
     avatar?: string;
-  }
+  };
 };
 
 /**
@@ -86,7 +86,11 @@ const MovieCommentForm = ({ commentOn, owner, root }: MovieCommentFormProps) => 
         id: uuid,
         attributes: [
           { type: MetadataAttributeType.STRING, key: 'publication', value: commentOn },
-          { type: MetadataAttributeType.STRING, key: 'creator', value: sessionData?.profile?.handle?.localName },
+          {
+            type: MetadataAttributeType.STRING,
+            key: 'creator',
+            value: sessionData?.profile?.handle?.localName,
+          },
           { type: MetadataAttributeType.STRING, key: 'app', value: 'watchit' },
         ],
         content: data.comment,
@@ -95,12 +99,15 @@ const MovieCommentForm = ({ commentOn, owner, root }: MovieCommentFormProps) => 
           name: `Comment by ${sessionData?.profile?.handle?.localName}`,
           attributes: [
             { display_type: MarketplaceMetadataAttributeDisplayType.STRING, value: commentOn },
-            { display_type: MarketplaceMetadataAttributeDisplayType.STRING, value: sessionData?.profile?.handle?.localName },
+            {
+              display_type: MarketplaceMetadataAttributeDisplayType.STRING,
+              value: sessionData?.profile?.handle?.localName,
+            },
             { display_type: MarketplaceMetadataAttributeDisplayType.STRING, value: 'watchit' },
           ],
           description: data.comment,
           external_url: `https://watchit.movie/comment/${uuid}`,
-        }
+        },
       });
 
       // Create a pending comment object
@@ -113,7 +120,7 @@ const MovieCommentForm = ({ commentOn, owner, root }: MovieCommentFormProps) => 
         },
         // @ts-ignore
         operations: {
-          hasUpvoted: false
+          hasUpvoted: false,
         },
         by: sessionData?.profile,
         createdAt: new Date().toISOString(),

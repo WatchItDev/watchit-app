@@ -13,8 +13,8 @@ import Typography from '@mui/material/Typography';
 import GovernanceNewEditForm from '../governance-new-edit-form';
 import Label from '../../../components/label';
 import Header from '../../../layouts/dashboard/header';
-import { useResponsive } from '../../../hooks/use-responsive';
-import { useRouter } from '../../../routes/hooks';
+import { useResponsive } from '@src/hooks/use-responsive.ts';
+import { useRouter } from '@src/routes/hooks';
 
 // ----------------------------------------------------------------------
 

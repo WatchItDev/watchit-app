@@ -10,14 +10,21 @@ export const ASSETS_API = import.meta.env.VITE_ASSETS_API || 'https://default-as
 
 export const GLOBAL_CONSTANTS = {
   MMC_ADDRESS: process.env.VITE_MMC_ADDRESS || import.meta.env.VITE_MMC_ADDRESS || '',
-  AGREEMENT_PORTAL_ADDRESS:
-    process.env.VITE_AGREEMENT_PORTAL_ADDRESS ||
-    import.meta.env.VITE_AGREEMENT_PORTAL_ADDRESS ||
-    '',
   SUBSCRIPTION_POLICY_ADDRESS:
     process.env.VITE_SUBSCRIPTION_POLICY_ADDRESS ||
     import.meta.env.VITE_SUBSCRIPTION_POLICY_ADDRESS ||
     '',
+  ACCESS_WORKFLOW_ADDRESS:
+    process.env.VITE_ACCESS_WORKFLOW_ADDRESS || import.meta.env.VITE_ACCESS_WORKFLOW_ADDRESS || '',
+  ACCESS_AGG_ADDRESS:
+    process.env.VITE_ACCESS_AGG_ADDRESS || import.meta.env.VITE_ACCESS_AGG_ADDRESS || '',
+  POLICIES_AGG_ADDRESS:
+    process.env.VITE_POLICIES_AGG_ADDRESS || import.meta.env.VITE_POLICIES_AGG_ADDRESS || '',
+  LEDGER_VAULT_ADDRESS:
+    process.env.VITE_LEDGER_VAULT_ADDRESS || import.meta.env.VITE_LEDGER_VAULT_ADDRESS || '',
+  SUBSCRIPTION_CAMPAIGN_ADDRESS:
+    process.env.VITE_SUBSCRIPTION_CAMPAIGN_ADDRESS || import.meta.env.VITE_SUBSCRIPTION_CAMPAIGN_ADDRESS || '',
+  OKLINK_API_KEY: process.env.VITE_OKLINK_API_KEY || import.meta.env.VITE_OKLINK_API_KEY || '',
   RIGHT_POLICY_AUTHORIZER:
     process.env.VITE_RIGHT_POLICY_AUTHORIZER || import.meta.env.VITE_RIGHT_POLICY_AUTHORIZER || '',
   SENTRY_AUTH_TOKEN:
@@ -28,9 +35,12 @@ export const GLOBAL_CONSTANTS = {
     process.env.VITE_PINATA_SECRET_API_KEY || import.meta.env.VITE_PINATA_SECRET_API_KEY || '',
   WEB3_CLIENT_ID: process.env.VITE_WEB3_CLIENT_ID || import.meta.env.VITE_WEB3_CLIENT_ID || '',
   PIMLICO: process.env.VITE_PIMLICO || import.meta.env.VITE_PIMLICO || '',
-  NEXT_PUBLIC_SUPABASE_URL: process.env.VITE_SUPABASE_URL || import.meta.env.VITE_SUPABASE_URL || '',
-  NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.VITE_SUPABASE_API_KEY || import.meta.env.VITE_SUPABASE_API_KEY || '',
+  NEXT_PUBLIC_SUPABASE_URL:
+    process.env.VITE_SUPABASE_URL || import.meta.env.VITE_SUPABASE_URL || '',
+  NEXT_PUBLIC_SUPABASE_ANON_KEY:
+    process.env.VITE_SUPABASE_API_KEY || import.meta.env.VITE_SUPABASE_API_KEY || '',
   ENVIRONMENT: process.env.NODE_ENV || import.meta.env.VITE_ENVIRONMENT || 'development',
+  INFURA_API_KEY: process.env.VITE_INFURA_API_KEY || import.meta.env.VITE_INFURA_API_KEY || '',
 };
 
 export const MAPBOX_API = import.meta.env.VITE_MAPBOX_API || '';

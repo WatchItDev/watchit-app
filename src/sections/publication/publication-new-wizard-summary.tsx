@@ -14,10 +14,8 @@ export default function ReviewFinalizeForm({ onSubmit, onBack, data }: any) {
         <Card>
           <Stack spacing={3} sx={{ p: 3 }}>
             <Typography variant="h6">Review Information</Typography>
-            {/* Aquí puedes mostrar un resumen de todos los datos capturados en los pasos anteriores */}
             <Typography variant="body1">Title: {data.title}</Typography>
             <Typography variant="body1">Description: {data.description}</Typography>
-            {/* Agrega más campos según tus necesidades */}
           </Stack>
         </Card>
       </Grid>

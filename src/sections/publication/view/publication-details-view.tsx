@@ -30,15 +30,11 @@ import PublicationDetailMain from '@src/components/publication-detail-main.tsx';
 import { useHasAccess } from '@src/hooks/use-has-access.ts';
 import { SubscribeProfileModal } from '@src/components/subscribe-profile-modal.tsx';
 import LoadingButton from '@mui/lab/LoadingButton';
-import {useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { openLoginModal } from '@redux/auth';
 // @ts-ignore
 import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
-import {
-  appId,
-  PublicationType,
-  usePublications,
-} from '@lens-protocol/react-web';
+import { appId, PublicationType, usePublications } from '@lens-protocol/react-web';
 
 const MAX_LINES = 5;
 
@@ -123,25 +119,26 @@ export default function PublicationDetailsView({ id }: Props) {
 
   if (loading || accessLoading) return <LoadingScreen />;
 
-  if (data.isHidden) return (
-    <Box sx={{ padding: 2 }}>
-      <Typography
-        sx={{
-          height: '20rem',
-          textAlign: 'center',
-          width: '100%',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          fontWeight: 'bold',
-          background: '#2b2d31',
-          borderRadius: '1rem',
-        }}
-      >
-        Publication is hidden
-      </Typography>
-    </Box>
-  );
+  if (data.isHidden)
+    return (
+      <Box sx={{ padding: 2 }}>
+        <Typography
+          sx={{
+            height: '20rem',
+            textAlign: 'center',
+            width: '100%',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontWeight: 'bold',
+            background: '#2b2d31',
+            borderRadius: '1rem',
+          }}
+        >
+          Publication is hidden
+        </Typography>
+      </Box>
+    );
 
   return (
     <>
