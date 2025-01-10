@@ -1,5 +1,5 @@
 // REACT IMPORTS
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 
 // VIEM IMPORTS
 import { createWalletClient, custom, WalletClient } from 'viem';
@@ -8,6 +8,8 @@ import { polygonAmoy } from 'viem/chains';
 
 // METAMASK IMPORTS
 import { useSDK } from '@metamask/sdk-react';
+import { enqueueSnackbar } from 'notistack';
+import { useDetectWalletEnvironment, WalletEnvironment } from '@src/hooks/use-detect-wallet-environment.ts';
 
 /**
  * Represents the shape of the object returned by the useMetaMask hook.
@@ -42,6 +44,16 @@ interface UseMetaMaskReturn {
   walletClient?: WalletClient;
 
   /**
+   * The detected environment (mobile, isMetaMaskInstalled, in-app browser).
+   */
+  environment: WalletEnvironment;
+
+  /**
+   * Deeplink or redirect the user to install/open MetaMask if missing.
+   * */
+  deeplinkToMetaMask: () => void;
+
+  /**
    * Indicates if the connection flow is still in progress.
    */
   loading: boolean;
@@ -59,7 +71,7 @@ interface UseMetaMaskReturn {
  * @returns An object with methods and states for handling the MetaMask connection.
  */
 export function useMetaMask(): UseMetaMaskReturn {
-  // Destructure relevant data from the useSDK hook.
+  const environment = useDetectWalletEnvironment();
   const {
     sdk,
     connected,
@@ -69,6 +81,12 @@ export function useMetaMask(): UseMetaMaskReturn {
     error,
     provider,
   } = useSDK();
+
+  useEffect(() => {
+    if (error) {
+      enqueueSnackbar(`METAMASK ERROR: ${JSON.stringify(error)}`);
+    }
+  }, [error]);
 
   /**
    * We define 'connect' as a guaranteed function (non-optional).
@@ -89,12 +107,25 @@ export function useMetaMask(): UseMetaMaskReturn {
     })
     : undefined;
 
+  const deeplinkToMetaMask = useCallback(() => {
+    // If on mobile but not in MetaMask in-app
+    if (environment.isMobile && !environment.isMetaMaskInAppBrowser) {
+      // Typically this link either opens or installs the MetaMask app
+      window.location.href = 'https://metamask.app.link';
+    } else {
+      // If on desktop with no extension installed
+      window.open('https://metamask.io/download/', '_blank');
+    }
+  }, [environment.isMobile, environment.isMetaMaskInAppBrowser]);
+
   return {
     connect,
     connected,
     account: account as Address,
     chainId: sdkChainId,
     walletClient,
+    environment,
+    deeplinkToMetaMask,
     loading: connecting,
     error,
   };
