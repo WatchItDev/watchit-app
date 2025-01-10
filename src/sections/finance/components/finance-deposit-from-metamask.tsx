@@ -18,9 +18,9 @@ interface FinanceDepositFromMetamaskProps {
 const FinanceDepositFromMetamask: FC<FinanceDepositFromMetamaskProps> = ({ onClose }) => {
   const sessionData = useSelector((state: any) => state.auth.session);
   const depositHook = useDepositMetamask();
-  const { address, connecting, connect } = useMetaMask();
+  const { account: address, loading, connect } = useMetaMask();
 
-  if (connecting) return <FinanceMetamaskLoader />;
+  if (loading) return <FinanceMetamaskLoader />;
   if (!address) return <FinanceMetamaskButton connect={connect} />;
 
   return <FinanceDeposit address={address} recipient={sessionData?.address} depositHook={depositHook} onClose={onClose} />;
