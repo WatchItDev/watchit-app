@@ -242,7 +242,8 @@ export default function FinanceQuickTransfer({
 
   // Handle onClick for carousel items
   const handleCarouselClick = (index: number) => {
-    carousel.setCurrentIndex(index);
+    // When user clicks on a profile, set the currentIndex to that index in the carousel
+    setCurrentIndex(index);
   };
 
   // If the stored address changes or if we typed a valid custom address, check if it exists in the carousel
