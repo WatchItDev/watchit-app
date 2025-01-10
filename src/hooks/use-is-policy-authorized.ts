@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Address } from 'viem';
 import { useSelector } from 'react-redux';
-import { useGetAuthorizedHolderPolicies } from './use-get-authorized-holder-policies.ts';
+import { useGetPoliciesTerms } from './use-get-policies-terms.ts';
 
 interface HasAccessError {
   message: string;
@@ -40,7 +40,7 @@ export const useIsPolicyAuthorized = (
     loading: loadingPolicies,
     error: errorPolicies,
     refetch: refetchPolicies,
-  } = useGetAuthorizedHolderPolicies(holder ?? userAddress);
+  } = useGetPoliciesTerms(holder ?? userAddress);
 
   /**
    * Checks if the given policy exists in the holder's authorized policies.

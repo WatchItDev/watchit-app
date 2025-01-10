@@ -48,7 +48,7 @@ export const useSubscribe = (): UseSubscribeHook => {
   const transferToAccessAgreement = (approvalAmount: bigint): string => {
     return encodeFunctionData({
       abi: LedgerVaultabi.abi,
-      functionName: 'transfer', // reserve
+      functionName: 'reserve',
       args: [
         GLOBAL_CONSTANTS.ACCESS_WORKFLOW_ADDRESS,
         approvalAmount,
