@@ -37,7 +37,7 @@ interface FinanceWithdrawProps {
 // ----------------------------------------------------------------------
 
 const FinanceWithdraw: FC<FinanceWithdrawProps> = ({ address, withdrawHook, onClose }) => {
-  const [amount, setAmount] = useState<number>();
+  const [amount, setAmount] = useState<number | string>('');
   const [amountError, setAmountError] = useState(false);
   const [amountHelperText, setAmountHelperText] = useState('');
   const [localLoading, setLocalLoading] = useState(false);
@@ -54,13 +54,13 @@ const FinanceWithdraw: FC<FinanceWithdrawProps> = ({ address, withdrawHook, onCl
   const handleConfirmWithdraw = useCallback(async () => {
     if (!amount) return;
 
-    if (amount <= 0 || amount > (balance ?? 0)) {
+    if (Number(amount) <= 0 || amount > (balance ?? 0)) {
       notifyWarning(WARNING.INVALID_WITHDRAW_AMOUNT);
       return;
     }
     try {
       setLocalLoading(true);
-      await withdraw({ amount, recipient: address });
+      await withdraw({ amount: Number(amount), recipient: address });
       notifySuccess(SUCCESS.WITHDRAW_SUCCESSFULLY);
       onClose();
     } catch (err: any) {
@@ -132,7 +132,7 @@ const FinanceWithdraw: FC<FinanceWithdrawProps> = ({ address, withdrawHook, onCl
         rainbowComponent={RainbowEffect}
         loading={localLoading}
         actionLoading={withdrawLoading}
-        amount={amount ?? 0}
+        amount={Number(amount) ?? 0}
         balance={balance ?? 0}
         label={'Confirm'}
         onConfirmAction={handleConfirmWithdraw}
