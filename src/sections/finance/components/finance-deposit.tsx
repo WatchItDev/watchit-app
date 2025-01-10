@@ -19,11 +19,10 @@ import { UseDepositHook } from '@src/hooks/use-deposit';
 import { truncateAddress } from '@src/utils/wallet';
 
 // NOTIFICATIONS IMPORTS
-// import { notifyError, notifySuccess, notifyWarning } from '@notifications/internal-notifications';
-import { notifySuccess, notifyWarning } from '@notifications/internal-notifications';
+import { notifyError, notifySuccess, notifyWarning } from '@notifications/internal-notifications';
 import { WARNING } from '@notifications/warnings';
 import { SUCCESS } from '@notifications/success';
-// import { ERRORS } from '@notifications/errors.ts';
+import { ERRORS } from '@notifications/errors.ts';
 import TextField from '@mui/material/TextField';
 
 interface FinanceDepositProps {
@@ -75,7 +74,7 @@ const FinanceDeposit: FC<FinanceDepositProps> = ({ address, recipient, depositHo
 
   useEffect(() => {
     if (error) {
-      // notifyError(error as ERRORS);
+      notifyError(error as ERRORS);
     }
   }, [error]);
 
