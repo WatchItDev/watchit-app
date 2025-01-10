@@ -1,3 +1,10 @@
+# [2.2.0-beta.11](https://github.com/WatchItDev/watchit-app/compare/v2.2.0-beta.10...v2.2.0-beta.11) (2025-01-10)
+
+
+### Features
+
+* adapt new protocol contracts ([08888eb](https://github.com/WatchItDev/watchit-app/commit/08888eb71981aba1cae9193490320d3d2230f067))
+
 # [2.2.0-beta.10](https://github.com/WatchItDev/watchit-app/compare/v2.2.0-beta.9...v2.2.0-beta.10) (2025-01-10)
 
 
