@@ -10,6 +10,7 @@ import { useDepositMetamask } from '@src/hooks/use-deposit-metamask';
 import FinanceDeposit from '@src/sections/finance/components/finance-deposit';
 import FinanceMetamaskLoader from '@src/sections/finance/components/finance-metamask-loader.tsx';
 import FinanceMetamaskButton from '@src/sections/finance/components/finance-metamask-button.tsx';
+import FinanceMetamaskHelper from "@src/sections/finance/components/finance-metamask-helper.tsx";
 
 interface FinanceDepositFromMetamaskProps {
   onClose: () => void;
@@ -21,7 +22,7 @@ const FinanceDepositFromMetamask: FC<FinanceDepositFromMetamaskProps> = ({ onClo
   const { account: address, loading, connect } = useMetaMask();
 
   if (loading) return <FinanceMetamaskLoader />;
-  if (!address) return <FinanceMetamaskButton connect={connect} />;
+  if (!address) return <><FinanceMetamaskButton connect={connect} /><FinanceMetamaskHelper /></>;
 
   return <FinanceDeposit address={address} recipient={sessionData?.address} depositHook={depositHook} onClose={onClose} />;
 };
