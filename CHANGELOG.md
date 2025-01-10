@@ -1,3 +1,42 @@
+# [2.2.0-beta.11](https://github.com/WatchItDev/watchit-app/compare/v2.2.0-beta.10...v2.2.0-beta.11) (2025-01-10)
+
+
+### Features
+
+* adapt new protocol contracts ([08888eb](https://github.com/WatchItDev/watchit-app/commit/08888eb71981aba1cae9193490320d3d2230f067))
+
+# [2.2.0-beta.10](https://github.com/WatchItDev/watchit-app/compare/v2.2.0-beta.9...v2.2.0-beta.10) (2025-01-10)
+
+
+### Bug Fixes
+
+* ensure consistent handling of numeric input for finance forms ([86e84be](https://github.com/WatchItDev/watchit-app/commit/86e84be1feede66394967fe16dc794624bac7b5c))
+* remove some extra error notifications ([d9686a9](https://github.com/WatchItDev/watchit-app/commit/d9686a9105a32389a71673b63356c3060213185a))
+* remove wallet environment detection ([cff1edc](https://github.com/WatchItDev/watchit-app/commit/cff1edc1f27007494787d878d8ee78207e1c75b3))
+
+
+### Features
+
+* added detect wallet environment hook ([aca7dc6](https://github.com/WatchItDev/watchit-app/commit/aca7dc635937c248f5fc774d06530e9471aea57f))
+* added detect wallet environment hook ([247f005](https://github.com/WatchItDev/watchit-app/commit/247f005068ae34a5d7ff66ef5c56c0767f2b9891))
+* **finance:** add helper component for MetaMask guidance ([e42ec9f](https://github.com/WatchItDev/watchit-app/commit/e42ec9f3dbb7c389869d0143eb095930da4b259f))
+
+# [2.2.0-beta.9](https://github.com/WatchItDev/watchit-app/compare/v2.2.0-beta.8...v2.2.0-beta.9) (2025-01-09)
+
+
+### Bug Fixes
+
+* typo ([4fbfa56](https://github.com/WatchItDev/watchit-app/commit/4fbfa5611e8b9134ed5109ec7cd57ad57c3750bf))
+* typo ([ad11871](https://github.com/WatchItDev/watchit-app/commit/ad11871225820785efc63daae9dd027e7c98e6cf))
+
+# [2.2.0-beta.8](https://github.com/WatchItDev/watchit-app/compare/v2.2.0-beta.7...v2.2.0-beta.8) (2025-01-09)
+
+
+### Features
+
+* change aproach of withdraw to select destination on tabs ([0528930](https://github.com/WatchItDev/watchit-app/commit/05289307495da69be521ce813d95f470935d6740))
+* **finance-quick-transfer:** enhance slider validation logic ([f60a687](https://github.com/WatchItDev/watchit-app/commit/f60a6879396ac13e644f2d19ddd0f255c6e14952))
+
 # [2.2.0-beta.7](https://github.com/WatchItDev/watchit-app/compare/v2.2.0-beta.6...v2.2.0-beta.7) (2025-01-09)
 
 

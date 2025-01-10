@@ -85,7 +85,7 @@ export const ProfileSelectView: React.FC<ProfileSelectionProps> = ({
           </Box>
         </Box>
         <Button onClick={onDisconnect} sx={{ ml: 'auto' }}>
-          Change wallet
+          Change Wallet
         </Button>
       </Box>
 
