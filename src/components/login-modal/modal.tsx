@@ -100,6 +100,12 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
     setAddress('');
   };
 
+  const handleBackdropClick = () => {
+    if (view === 'profile') {
+      onClose();
+    }
+  };
+
   return (
     <>
       <Modal
@@ -109,7 +115,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
         onClose={onClose}
         closeAfterTransition
         BackdropComponent={Backdrop}
-        BackdropProps={{ timeout: 500, onClick: () => {} }}
+        BackdropProps={{ timeout: 500, onClick: handleBackdropClick }}
       >
         <Fade in={open}>
           <Box
