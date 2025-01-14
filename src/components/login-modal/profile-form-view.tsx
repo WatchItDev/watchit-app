@@ -16,7 +16,6 @@ import {
 
 // MUI IMPORTS
 import { Box, Button, Grid, Input, TextField, Typography } from '@mui/material';
-import Avatar from '@mui/material/Avatar';
 
 // Project IMPORTS
 import Image from '../image';
@@ -40,6 +39,8 @@ import {
 import { notifyError, notifySuccess } from '@notifications/internal-notifications';
 import { SUCCESS } from '@notifications/success';
 import { ERRORS } from '@notifications/errors.ts';
+import {dicebear} from "@src/utils/dicebear.ts";
+import AvatarProfile from "@src/components/avatar/avatar.tsx";
 
 // ----------------------------------------------------------------------
 
@@ -378,12 +379,12 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
             }}
           />
           {/* Avatar */}
-          <Avatar
+          <AvatarProfile
             src={
               profileImagePreview ??
               (initialValues?.profileImage
                 ? `https://ipfs.io/ipfs/${initialValues?.profileImage?.replaceAll?.('ipfs://', '')}`
-                : `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${mode === 'update' && sessionData?.authenticated ? sessionData?.profile?.id : 'new'}`)
+                : mode === 'update' && sessionData?.authenticated ? sessionData?.profile?.id : 'new')
             }
             alt=""
             onClick={() => profileImageInputRef.current?.click()}

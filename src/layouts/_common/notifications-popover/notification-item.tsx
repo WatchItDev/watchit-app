@@ -1,5 +1,4 @@
 import Stack from '@mui/material/Stack';
-import Avatar from '@mui/material/Avatar';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import ListItemButton from '@mui/material/ListItemButton';
@@ -22,6 +21,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNotificationPayload } from '@src/hooks/use-notification-payload.ts';
 import { usePublication } from '@lens-protocol/react';
 import { CircularProgress } from '@mui/material';
+import AvatarProfile from "@src/components/avatar/avatar.tsx";
 
 export type NotificationItemProps = {
   id: any;
@@ -114,7 +114,7 @@ export default function NotificationItem({ notification, onMarkAsRead }: Notific
 
   const renderAvatar = (
     <ListItemAvatar>
-      <Avatar src={notification.payload.data.from.avatar} sx={{ bgcolor: 'background.neutral' }} />
+      <AvatarProfile src={notification.payload.data.from.avatar} sx={{ bgcolor: 'background.neutral' }} />
     </ListItemAvatar>
   );
   const description: string | null = notification.payload.data.content.rawDescription;

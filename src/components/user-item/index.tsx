@@ -1,7 +1,6 @@
 // MUI IMPORTS
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
-import Avatar from '@mui/material/Avatar';
 import { Theme } from '@mui/material/styles';
 import { SxProps } from '@mui/system/styleFunctionSx';
 import ListItemText from '@mui/material/ListItemText';
@@ -17,6 +16,7 @@ import { paths } from '../../routes/paths';
 import { useRouter } from '@src/routes/hooks';
 import FollowUnfollowButton from '@src/components/follow-unfollow-button.tsx';
 import { useSelector } from 'react-redux';
+import AvatarProfile from "@src/components/avatar/avatar.tsx";
 
 // ----------------------------------------------------------------------
 
@@ -92,11 +92,8 @@ export const UserItem = ({
             p: (theme) => theme.spacing(0, 2, 1, 2),
           }}
         >
-          <Avatar
-            src={
-              (profile?.metadata?.picture as any)?.optimized?.uri ??
-              `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${profile?.id}`
-            }
+          <AvatarProfile
+            src={(profile?.metadata?.picture as any)?.optimized?.uri ?? profile?.id}
             alt={profile?.handle?.localName ?? ''}
             sx={{ width: 48, height: 48, mr: 2 }}
             variant="rounded"

@@ -2,7 +2,6 @@ import { useState } from 'react';
 import Chip from '@mui/material/Chip';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
-import Avatar from '@mui/material/Avatar';
 import Divider from '@mui/material/Divider';
 import Checkbox from '@mui/material/Checkbox';
 import Container from '@mui/material/Container';
@@ -31,6 +30,8 @@ import { useResponsive } from '@src/hooks/use-responsive.ts';
 import { paths } from '@src/routes/paths.ts';
 import { useRouter } from '@src/routes/hooks';
 import { ProposalsMockList, proposalVotes as initialProposalVotes } from '../governance-mock';
+import AvatarProfile from "@src/components/avatar/avatar.tsx";
+import {dicebear} from "@src/utils/dicebear.ts";
 
 // ----------------------------------------------------------------------
 
@@ -110,8 +111,8 @@ export default function GovernanceDetailsView({ title }: Props) {
           </Typography>
           <Stack direction="row" alignItems="center" justifyContent="space-start" sx={{ mb: 4 }}>
             <Box sx={{ display: 'flex' }}>
-              <Avatar
-                src={`https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${post?.author?.wallet}`}
+              <AvatarProfile
+                src={dicebear(post?.author?.wallet)}
                 alt={post?.author?.name}
                 sx={{
                   width: 20,
@@ -165,7 +166,7 @@ export default function GovernanceDetailsView({ title }: Props) {
                 }}
               >
                 {post.favoritePerson.map((person) => (
-                  <Avatar key={person.name} alt={person.name} src={person.avatarUrl} />
+                  <AvatarProfile key={person.name} alt={person.name} src={person.avatarUrl} />
                 ))}
               </AvatarGroup>
             </Stack>

@@ -1,14 +1,15 @@
 import { format } from 'date-fns';
-// @mui
-import Avatar from '@mui/material/Avatar';
-import TableRow from '@mui/material/TableRow';
 
+// @MUI
+import Typography from '@mui/material/Typography';
+import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import ListItemText from '@mui/material/ListItemText';
-// components
+
+// Project components
 import { TableRowTransactionType } from '@src/hooks/use-transaction-data.ts';
 import { truncateAddress } from '@src/utils/wallet.ts';
-import Typography from '@mui/material/Typography';
+import AvatarProfile from "@src/components/avatar/avatar.tsx";
 
 // ----------------------------------------------------------------------
 
@@ -27,7 +28,7 @@ export default function FinanceTransactionTableRow({ row, selected }: Props) {
   const renderPrimary = (
     <TableRow hover selected={selected}>
       <TableCell sx={{ display: 'flex', alignItems: 'center' }}>
-        <Avatar alt={name} src={avatarUrl} sx={{ mr: 2 }} />
+        <AvatarProfile src={avatarUrl} alt={name} sx={{mr: 2}} />
         <ListItemText
           primary={message}
           secondary={truncateAddress(name)}

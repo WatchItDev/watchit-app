@@ -15,7 +15,6 @@ import { ethers } from 'ethers';
 import { useTheme } from '@mui/material/styles';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
-import Avatar from '@mui/material/Avatar';
 import Slider from '@mui/material/Slider';
 import Tooltip from '@mui/material/Tooltip';
 import TextField from '@mui/material/TextField';
@@ -30,6 +29,7 @@ import NeonPaper from '@src/sections/publication/NeonPaperContainer.tsx';
 import { InputAmount } from '@src/components/input-amount.tsx';
 import FinanceQuickTransferModal from '@src/sections/finance/components/finance-quick-transfer-modal.tsx';
 import FinanceSearchProfileModal from '@src/sections/finance/components/finance-search-profile-modal.tsx';
+import AvatarProfile from "@src/components/avatar/avatar.tsx";
 
 // ----------------------------------------------------------------------
 
@@ -343,11 +343,8 @@ export default function FinanceQuickTransfer({
                 arrow
                 placement="top"
               >
-                <Avatar
-                  src={
-                    (profile?.metadata?.picture as any)?.optimized?.uri ??
-                    `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${profile?.id}`
-                  }
+                <AvatarProfile
+                  src={(profile?.metadata?.picture as any)?.optimized?.uri ?? profile?.id}
                   alt={profile?.handle?.localName ?? ''}
                   sx={{
                     mx: 'auto',

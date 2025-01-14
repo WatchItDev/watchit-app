@@ -17,6 +17,7 @@ import { openLoginModal } from '@redux/auth';
 import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
 import { useDispatch, useSelector } from 'react-redux';
 import { addBookmark, removeBookmark } from '@redux/bookmark';
+import {dicebear} from "@src/utils/dicebear.ts";
 
 // ----------------------------------------------------------------------
 
@@ -171,8 +172,7 @@ const PosterTopTitles = ({ post }: { post: any }) => {
                       ratio={'1/1'}
                       style={{ width: '20px', height: '20px', borderRadius: '50%' }}
                       src={
-                        (post?.by?.metadata?.picture as any)?.optimized?.uri ??
-                        `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${post?.by?.id}`
+                        (post?.by?.metadata?.picture as any)?.optimized?.uri ?? dicebear(post?.by?.id)
                       }
                     />
                     {post?.by?.metadata?.displayName ?? post?.by?.handle?.localName}

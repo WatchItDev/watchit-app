@@ -8,7 +8,6 @@ import { useDispatch, useSelector } from 'react-redux';
 // MUI IMPORTS
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
 import Popover from '@mui/material/Popover';
@@ -49,6 +48,8 @@ import { useGetPolicyAttestation } from '@src/hooks/use-get-policy-attestation.t
 import { notifyError, notifySuccess } from '@notifications/internal-notifications.ts';
 import { SUCCESS } from '@notifications/success.ts';
 import { ERRORS } from '@notifications/errors.ts';
+import AvatarProfile from "@src/components/avatar/avatar.tsx";
+import {dicebear} from "@src/utils/dicebear.ts";
 
 // ----------------------------------------------------------------------
 
@@ -322,11 +323,11 @@ const ProfileHeader = ({
                 },
               }}
             >
-              <Avatar
+              <AvatarProfile
                 src={
                   !!profileImage
                     ? profileImage
-                    : `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${profile?.id}`
+                    : dicebear(profile?.id)
                 }
                 alt={profile?.handle?.localName ?? ''}
                 variant="rounded"

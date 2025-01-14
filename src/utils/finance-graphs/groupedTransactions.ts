@@ -1,5 +1,6 @@
 import { TransactionData } from '@src/hooks/use-transaction-data';
 import { TransactionLog } from '@src/hooks/use-get-smart-wallet-transactions.ts';
+import {dicebear} from "@src/utils/dicebear.ts";
 type GroupedData = {
   type: string;
   data: {
@@ -119,7 +120,7 @@ export const processTransactionData = (data: TransactionLog[]): ProcessedTransac
     id: transaction.transactionHash,
     name:
       transaction.event === 'transferFrom' ? transaction.args.origin : transaction.args.recipient,
-    avatarUrl: `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${transaction.event === 'transferFrom' ? transaction.args.origin : transaction.args.recipient}`,
+    avatarUrl: dicebear(transaction.event === 'transferFrom' ? transaction.args.origin : transaction.args.recipient),
     type: transaction.event,
     message: parseTransactionTypeLabel(transaction.event),
     category: parseTransactionType(transaction.event),

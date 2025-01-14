@@ -20,6 +20,7 @@ import Scrollbar from '@src/components/scrollbar/scrollbar.tsx';
 import SearchNotFound from '@src/components/search-not-found';
 import { useTheme } from '@mui/material/styles';
 import { useBoolean } from '@src/hooks/use-boolean.ts';
+import {dicebear} from "@src/utils/dicebear.ts";
 
 interface FinanceSearchProfileModalProps {
   onSelectProfile: (profile: Profile) => void;
@@ -75,8 +76,7 @@ export default function FinanceSearchProfileModal({
         {profiles &&
           profiles.map((profile: Profile) => {
             const avatarSrc =
-              (profile?.metadata?.picture as any)?.optimized?.uri ??
-              `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${profile.id}`;
+              (profile?.metadata?.picture as any)?.optimized?.uri ?? dicebear(profile.id);
 
             return (
               <ListItemButton key={profile.id} onClick={() => handleSelectProfile(profile)}>

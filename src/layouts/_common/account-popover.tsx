@@ -9,7 +9,6 @@ import { ProfileSession, useLogout, useSession } from '@lens-protocol/react-web'
 // MUI IMPORTS
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
 import { alpha } from '@mui/material/styles';
@@ -37,6 +36,7 @@ import {
 import { CircularProgress } from '@mui/material';
 import { useWeb3Auth } from '@src/hooks/use-web3-auth.ts';
 import NeonPaper from '@src/sections/publication/NeonPaperContainer.tsx';
+import AvatarProfile from "@src/components/avatar/avatar.tsx";
 
 // ----------------------------------------------------------------------
 
@@ -137,10 +137,9 @@ export default function AccountPopover() {
                 }),
               }}
             >
-              <Avatar
+              <AvatarProfile
                 src={
-                  (sessionData?.profile?.metadata?.picture as any)?.optimized?.uri ??
-                  `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${sessionData?.profile?.id}`
+                  (sessionData?.profile?.metadata?.picture as any)?.optimized?.uri ?? sessionData?.profile?.id
                 }
                 alt={'avatar'}
                 sx={{
