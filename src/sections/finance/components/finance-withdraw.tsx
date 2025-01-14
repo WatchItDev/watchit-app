@@ -14,7 +14,7 @@ import NeonPaper from '@src/sections/publication/NeonPaperContainer';
 import FinanceDialogsActions from '@src/sections/finance/components/finance-dialogs-actions';
 import TextMaxLine from '@src/components/text-max-line';
 import { formatBalanceNumber } from '@src/utils/format-number';
-import BoxRow from '@src/sections/finance/components/box-row';
+import FinanceBoxRow from '@src/sections/finance/components/finance-box-row.tsx';
 import { UseWithdrawHook } from '@src/hooks/use-withdraw.ts';
 import { truncateAddress } from '@src/utils/wallet.ts';
 
@@ -95,7 +95,7 @@ const FinanceWithdraw: FC<FinanceWithdrawProps> = ({ address, withdrawHook, onCl
         alignItems="center"
         justifyContent="space-between"
       >
-        <BoxRow>
+        <FinanceBoxRow>
           <TextMaxLine line={1} fontWeight={"bold"}>Wallet</TextMaxLine>
           <TextMaxLine
             line={1}
@@ -103,9 +103,9 @@ const FinanceWithdraw: FC<FinanceWithdrawProps> = ({ address, withdrawHook, onCl
           >
             {address ? truncateAddress(address) : 'No wallet connected'}
           </TextMaxLine>
-        </BoxRow>
+        </FinanceBoxRow>
 
-        <BoxRow>
+        <FinanceBoxRow>
           <TextMaxLine line={1} fontWeight={"bold"}>Available</TextMaxLine>
           <TextMaxLine
             line={1}
@@ -113,7 +113,7 @@ const FinanceWithdraw: FC<FinanceWithdrawProps> = ({ address, withdrawHook, onCl
           >
             {formatBalanceNumber(balance ?? 0)} MMC
           </TextMaxLine>
-        </BoxRow>
+        </FinanceBoxRow>
 
         <TextField
           sx={{ mt: 1 }}
