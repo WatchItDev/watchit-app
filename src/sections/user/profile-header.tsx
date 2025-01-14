@@ -49,7 +49,6 @@ import { notifyError, notifySuccess } from '@notifications/internal-notification
 import { SUCCESS } from '@notifications/success.ts';
 import { ERRORS } from '@notifications/errors.ts';
 import AvatarProfile from "@src/components/avatar/avatar.tsx";
-import {dicebear} from "@src/utils/dicebear.ts";
 
 // ----------------------------------------------------------------------
 
@@ -327,7 +326,7 @@ const ProfileHeader = ({
                 src={
                   !!profileImage
                     ? profileImage
-                    : dicebear(profile?.id)
+                    : profile?.id
                 }
                 alt={profile?.handle?.localName ?? ''}
                 variant="rounded"

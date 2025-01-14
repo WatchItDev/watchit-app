@@ -37,7 +37,6 @@ import { RootState } from '@redux/store';
 import { incrementCounterLikes, decrementCounterLikes, setCounterLikes } from '@redux/comments';
 import NeonPaperContainer from '@src/sections/publication/NeonPaperContainer.tsx';
 import AvatarProfile from "@src/components/avatar/avatar.tsx";
-import {dicebear} from "@src/utils/dicebear.ts";
 
 // Components Lazy
 const LazyPopover = lazy(() => import('@mui/material/Popover'));
@@ -151,7 +150,7 @@ export default function PublicationCommentItem({ comment, hasReply, canReply }: 
         <Stack direction="row" spacing={2} sx={{ position: 'relative' }}>
           <AvatarProfile
             src={
-              (comment?.by?.metadata?.picture as any)?.optimized?.uri ?? dicebear(comment?.by?.id)
+              (comment?.by?.metadata?.picture as any)?.optimized?.uri ?? comment?.by?.id
             }
             alt={comment?.by?.id}
             onClick={goToProfile}
@@ -337,7 +336,7 @@ export default function PublicationCommentItem({ comment, hasReply, canReply }: 
                 owner={{
                   id: comment?.by?.id,
                   displayName: comment?.by?.metadata?.displayName,
-                  avatar: (comment?.by?.metadata?.picture as any)?.optimized?.uri ?? dicebear(comment?.by?.id),
+                  avatar: (comment?.by?.metadata?.picture as any)?.optimized?.uri ?? comment?.by?.id,
                 }}
               />
             ) : (
