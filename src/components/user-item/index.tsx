@@ -17,6 +17,9 @@ import { useRouter } from '@src/routes/hooks';
 import FollowUnfollowButton from '@src/components/follow-unfollow-button.tsx';
 import { useSelector } from 'react-redux';
 import AvatarProfile from "@src/components/avatar/avatar.tsx";
+import {FC} from "react";
+import Typography from "@mui/material/Typography";
+import BadgeVerified from "@src/components/user-item/BadgeVerified.tsx";
 
 // ----------------------------------------------------------------------
 
@@ -109,7 +112,7 @@ export const UserItem = ({
             }}
           >
             <ListItemText
-              primary={profile?.handle?.localName ?? ''}
+              primary={<UserNameAndBadge id={profile?.id} name={profile?.handle?.localName ?? ''} />}
               secondary={
                 <>{profile?.id !== sessionData?.profile?.id ? profile?.id : 'This is you!'}</>
               }
@@ -141,3 +144,30 @@ export const UserItem = ({
     </>
   );
 };
+
+interface UserNameAndBadgeProps {
+  name: string;
+  id: string;
+}
+
+export const UserNameAndBadge : FC<UserNameAndBadgeProps> = ({ name, id}) => {
+  return (
+    <Box sx={{
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'flex-start',
+    }}>
+
+      <Typography sx={{mr:'2px'}}>{name}</Typography>
+      <Box sx={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: '50%',
+      }}>
+        <BadgeVerified id={id} />
+      </Box>
+    </Box>
+
+  );
+}

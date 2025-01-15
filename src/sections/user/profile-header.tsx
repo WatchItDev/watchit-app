@@ -49,6 +49,7 @@ import { notifyError, notifySuccess } from '@notifications/internal-notification
 import { SUCCESS } from '@notifications/success.ts';
 import { ERRORS } from '@notifications/errors.ts';
 import AvatarProfile from "@src/components/avatar/avatar.tsx";
+import BadgeVerified from "@src/components/user-item/BadgeVerified.tsx";
 
 // ----------------------------------------------------------------------
 
@@ -426,8 +427,12 @@ const ProfileHeader = ({
                     mb: 1,
                   }}
                 >
-                  <Typography variant="h4" color="text.primary">
-                    {profile?.metadata?.displayName ?? ''}
+                  <Typography sx={{
+                    display: 'flex',
+                    gap: 1,
+                    alignItems: 'center'
+                  }} variant="h4" color="text.primary">
+                    {profile?.metadata?.displayName ?? ''} <BadgeVerified id={profile?.id} />
                   </Typography>
                   <Typography
                     variant="body2"
