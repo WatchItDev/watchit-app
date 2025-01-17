@@ -133,9 +133,9 @@ export const processTransactionData = (data: TransactionLog[]): ProcessedTransac
 const parseTransactionTypeLabel = (type: string): string => {
   switch (type) {
     case 'transferTo':
-      return 'Sent money to';
+      return 'Transfer to';
     case 'transferFrom':
-      return 'Received money from';
+      return 'Transfer from';
     case 'deposit':
       return 'Deposited';
     case 'withdraw':

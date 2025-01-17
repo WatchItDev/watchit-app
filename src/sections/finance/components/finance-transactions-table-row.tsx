@@ -10,6 +10,7 @@ import ListItemText from '@mui/material/ListItemText';
 import { TableRowTransactionType } from '@src/hooks/use-transaction-data.ts';
 import { truncateAddress } from '@src/utils/wallet.ts';
 import AvatarProfile from "@src/components/avatar/avatar.tsx";
+import { OpenableText } from '@src/components/openable-text';
 
 // ----------------------------------------------------------------------
 
@@ -18,8 +19,14 @@ type Props = {
   selected: boolean;
 };
 
+// ----------------------------------------------------------------------
+
+const urlTxBase = 'https://www.oklink.com/es-la/amoy/tx/';
+
+// ----------------------------------------------------------------------
+
 export default function FinanceTransactionTableRow({ row, selected }: Props) {
-  const { date, name, amount, avatarUrl, message, category } = row;
+  const { date, name, amount, avatarUrl, message, category, id } = row;
 
   const dateObject = new Date(Number(date) * 1000);
   const dateLbl = format(dateObject, 'dd/MM/yyyy');
@@ -57,6 +64,15 @@ export default function FinanceTransactionTableRow({ row, selected }: Props) {
         <Typography variant="body2" sx={{ color: category === 'income' ? '#00AB55' : '#FF4842' }}>
           {category === 'income' ? '' : '-'} {amount} MMC
         </Typography>
+      </TableCell>
+
+      <TableCell>
+        <OpenableText
+          label={truncateAddress(id, 3, 3)}
+          url={`${urlTxBase}${id}`}
+          sx={{ alignItems: 'flex-start' }}
+          labelSx={{ ml: 0 }}
+        />
       </TableCell>
     </TableRow>
   );

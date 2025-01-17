@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
-// Redux
+// REDUX IMPORTS
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@reduxjs/toolkit/query';
 import {
@@ -17,7 +17,7 @@ import {
 // MUI IMPORTS
 import { Box, Button, Grid, Input, TextField, Typography } from '@mui/material';
 
-// Project IMPORTS
+// PROJECTS IMPORTS
 import Image from '../image';
 import { ProfileData } from '@src/auth/context/web3Auth/types.ts';
 import { uploadImageToIPFS, uploadMetadataToIPFS } from '@src/utils/ipfs.ts';
@@ -26,7 +26,7 @@ import TextMaxLine from '@src/components/text-max-line';
 import NeonPaper from '@src/sections/publication/NeonPaperContainer';
 import uuidv4 from '@src/utils/uuidv4';
 
-// Lens
+// LENS IMPORTS
 import { Profile } from '@lens-protocol/api-bindings';
 import {
   LoginError,
@@ -35,11 +35,10 @@ import {
   useSetProfileMetadata,
 } from '@lens-protocol/react-web';
 
-// Notifications
+// NOTIFICATIONS IMPORTS
 import { notifyError, notifySuccess } from '@notifications/internal-notifications';
 import { SUCCESS } from '@notifications/success';
 import { ERRORS } from '@notifications/errors.ts';
-import {dicebear} from "@src/utils/dicebear.ts";
 import AvatarProfile from "@src/components/avatar/avatar.tsx";
 
 // ----------------------------------------------------------------------
@@ -114,8 +113,8 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
     username: Yup.string()
       .min(5, 'Username must be at least 5 characters')
       .required('Username is required'),
-    name: Yup.string().required('Name is required'),
-    bio: Yup.string().required('Bio is required'),
+    name: Yup.string().min(3, 'Name must be at least 3 characters').required('Name is required'),
+    bio: Yup.string().min(10, 'Bio must be at least 10 characters').required('Bio is required'),
     socialLinks: Yup.object({
       twitter: Yup.string().url('Enter a valid URL'),
       instagram: Yup.string().url('Enter a valid URL'),
