@@ -41,11 +41,6 @@ export const useHasRole = (): UseHasRoleHook => {
         args: [roleId, account],
       });
 
-      console.log('has role')
-      console.log(roleId)
-      console.log(roleData)
-      console.log(account)
-
       const role = Boolean(roleData?.[0]);
       setHasRole(role);
       setError(null);

@@ -48,8 +48,6 @@ export const useGetActiveLicenses = (
     setLoading(true);
 
     try {
-      console.log('getActiveLicenses')
-      console.log(GLOBAL_CONSTANTS.ACCESS_AGG_ADDRESS)
       // Call the contract method
       const licenses: any = (await publicClient.readContract({
         address: GLOBAL_CONSTANTS.ACCESS_AGG_ADDRESS,
@@ -57,10 +55,6 @@ export const useGetActiveLicenses = (
         functionName: 'getActiveLicenses',
         args: [recipient, holder],
       })) as Policy[];
-
-      console.log('getActiveLicenses')
-      console.log(licenses)
-      console.log(GLOBAL_CONSTANTS.ACCESS_AGG_ADDRESS)
 
       // Store the response in state
       setActiveLicenses(licenses);
