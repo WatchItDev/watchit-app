@@ -20,6 +20,8 @@ import { useSelector, useDispatch } from 'react-redux';
 // @ts-ignore
 import { RootState } from '@src/redux/store';
 import { setFollowers, setFollowings } from '@redux/followers';
+import ProfileReferrals from "@src/sections/user/profile-referrals.tsx";
+import useReferrals from "@src/hooks/use-referrals.ts";
 
 // ----------------------------------------------------------------------
 
@@ -27,6 +29,7 @@ const TABS = [
   { value: 'publications', label: 'Publications' },
   { value: 'followers', label: 'Followers' },
   { value: 'following', label: 'Following' },
+  { value: 'referrals', label: 'Referrals' },
 ];
 
 // ----------------------------------------------------------------------
@@ -43,6 +46,8 @@ const UserProfileView = ({ id }: any) => {
       metadata: { publishedOn: [appId('watchit')] },
     },
   });
+
+  const { invitations: referrals, fetchInvitations, loading: loadingReferrals } = useReferrals();
 
   const { data: followers } = useProfileFollowers({
     // @ts-ignore
@@ -72,6 +77,13 @@ const UserProfileView = ({ id }: any) => {
     }
   }, [profile, following, dispatch]);
 
+  // Call the fetchInvitations function
+  useEffect(() => {
+    if (profile) {
+      fetchInvitations(profile.id);
+    }
+  }, [profile]);
+
   const followersStore = useSelector((state: RootState) => state.followers.followers);
   const followingsStore = useSelector((state: RootState) => state.followers.followings);
 
@@ -79,6 +91,7 @@ const UserProfileView = ({ id }: any) => {
     publications: publications?.length ?? 0,
     followers: followersStore.length ?? 0,
     following: followingsStore.length ?? 0,
+    referrals: referrals?.length ?? 0,
   };
 
   const handleChangeTab = (_event: any, newValue: any) => {
@@ -130,10 +143,9 @@ const UserProfileView = ({ id }: any) => {
           rowsIncrement={2}
         />
       )}
-      {currentTab === 'followers' && profile && (
-        <ProfileFollowers onActionFinished={handleUpdateProfile} />
-      )}
+      {currentTab === 'followers' && profile && (<ProfileFollowers onActionFinished={handleUpdateProfile} />)}
       {currentTab === 'following' && profile && <ProfileFollowing />}
+      {currentTab === 'referrals' && profile && <ProfileReferrals referrals={referrals} loading={loadingReferrals}  />}
     </Container>
   );
 };
