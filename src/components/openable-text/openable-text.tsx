@@ -21,7 +21,7 @@ const OpenableText: FC<OpenableTextProps> = ({ label, url, sx, labelSx }) => {
   return (
     <Stack direction="row" alignItems="center" sx={{...sx}}>
       <Typography sx={{ ml: 3, ...labelSx }}>{label}</Typography>
-      <Tooltip title="Abrir en una nueva ventana" arrow placement="top">
+      <Tooltip title="Open in new window" arrow placement="top">
         <IconButton onClick={handleOpen} sx={{ ml: 1 }}>
           <Icon icon={openIcon} width={16} height={16} />
         </IconButton>
