@@ -46,6 +46,8 @@ export const GLOBAL_CONSTANTS = {
   EMAIL_API_KEY: process.env.VITE_EMAILJS_PUBLIC_KEY || import.meta.env.VITE_EMAILJS_PUBLIC_KEY || '',
   EMAIL_SERVICE_ID: process.env.VITE_EMAILJS_SERVICE_ID || import.meta.env.VITE_EMAILJS_SERVICE_ID || '',
   EMAIL_TEMPLATE_ID: process.env.VITE_EMAILJS_TEMPLATE_ID || import.meta.env.VITE_EMAILJS_TEMPLATE_ID || '',
+  BASE_URL: 'https://app.watchit.movie',
+  LOGO_URL: 'https://app.watchit.movie',
 };
 
 export const MAPBOX_API = import.meta.env.VITE_MAPBOX_API || '';

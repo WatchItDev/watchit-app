@@ -38,10 +38,10 @@ export const useGetActiveLicenses = (
 
   const fetchHolderPolicies = useCallback(async () => {
     // Validate that holder exists
-    if (!holder) {
+    if (!holder || !recipient) {
       setActiveLicenses([]);
       setLoading(false);
-      setError({ message: 'Holder address is missing.' });
+      setError({ message: 'Holder or recipient address is missing.' });
       return;
     }
 
