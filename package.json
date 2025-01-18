@@ -43,6 +43,7 @@
     ]
   },
   "dependencies": {
+    "@emailjs/browser": "^4.4.1",
     "@helia/unixfs": "^4.0.1",
     "@hookform/resolvers": "^3.1.1",
     "@iconify/react": "^4.1.1",
