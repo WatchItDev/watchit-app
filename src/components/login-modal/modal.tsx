@@ -13,9 +13,11 @@ import { ProfileSelectView } from '@src/components/login-modal/profile-select-vi
 import { ProfileFormView } from '@src/components/login-modal/profile-form-view.tsx';
 import { WatchitLoader } from '../watchit-loader';
 import { useDispatch, useSelector } from 'react-redux';
-import { closeLoginModal } from '@redux/auth';
+import {closeLoginModal, setEmail} from '@redux/auth';
 import { notifySuccess } from '@notifications/internal-notifications.ts';
 import { SUCCESS } from '@notifications/success.ts';
+// @ts-ignore
+import {type AuthUserInfo} from "@web3auth/auth/dist/types/utils/interfaces";
 
 // ----------------------------------------------------------------------
 
@@ -44,6 +46,9 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
         const accounts: any = await w3.provider.request({
           method: 'eth_accounts',
         });
+
+        // Obtain user info from the provider to get the email
+        await w3.getUserInfo().then((r:Partial<AuthUserInfo>) => dispatch(setEmail(r?.email)));
 
         if (accounts && accounts.length > 0) {
           setAddress(accounts[0]);
