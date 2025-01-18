@@ -40,6 +40,7 @@ const UserProfileView = ({ id }: any) => {
   const dispatch = useDispatch();
   const settings = useSettingsContext();
   const [currentTab, setCurrentTab] = useState('publications');
+  const sessionData = useSelector((state: any) => state.auth.session);
   const { called, data: profile, loading: loadingProfile, execute } = useLazyProfile();
   const { data: publications, loading: loadingPublications } = usePublications({
     where: {
@@ -104,7 +105,9 @@ const UserProfileView = ({ id }: any) => {
     execute({ forProfileId: id as ProfileId });
   };
 
-  const tabsWithCounts = TABS.map((tab: any) => ({
+  const tabsWithCounts = TABS.filter((tab) => {
+    return !(tab.value === 'referrals' && sessionData?.profile?.id !== id);
+  }).map((tab: any) => ({
     ...tab,
     key: tab.value,
     count: counts[tab.value],
@@ -152,7 +155,7 @@ const UserProfileView = ({ id }: any) => {
         )}
         {currentTab === 'followers' && profile && (<ProfileFollowers onActionFinished={handleUpdateProfile} />)}
         {currentTab === 'following' && profile && <ProfileFollowing />}
-        {currentTab === 'referrals' && profile && <ProfileReferrals referrals={referrals} loading={loadingReferrals}  />}
+        {currentTab === 'referrals' && sessionData?.profile?.id === id && <ProfileReferrals referrals={referrals} loading={loadingReferrals}  />}
       </Container>
     </ProfileTags>
   );

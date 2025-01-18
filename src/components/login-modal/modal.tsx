@@ -1,5 +1,5 @@
 // REACT IMPORTS
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 // MUI IMPORTS
 import { Backdrop, Box, Fade, Modal } from '@mui/material';
@@ -18,6 +18,7 @@ import { notifySuccess } from '@notifications/internal-notifications.ts';
 import { SUCCESS } from '@notifications/success.ts';
 // @ts-ignore
 import {type AuthUserInfo} from "@web3auth/auth/dist/types/utils/interfaces";
+import useReferrals from '@src/hooks/use-referrals.ts';
 
 // ----------------------------------------------------------------------
 
@@ -37,6 +38,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
   const sessionData = useSelector((state: any) => state.auth.session);
   const { execute: logoutExecute } = useLogout();
   const { execute: loginExecute, error } = useLogin();
+  const { acceptOrCreateInvitationForUser } = useReferrals();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -87,10 +89,11 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
     }
   }, [open, view, w3.connected]);
 
-  const handleProfileCreateSuccess = () => {
+  const handleProfileCreateSuccess = useCallback(() => {
+    acceptOrCreateInvitationForUser();
     notifySuccess(SUCCESS.PROFILE_CREATED_SUCCESSFULLY);
     dispatch(closeLoginModal());
-  };
+  }, []);
 
   const handleLogin = async (profile?: Profile) => {
     if (!profile || !address) return;
