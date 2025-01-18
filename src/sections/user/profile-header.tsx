@@ -432,7 +432,7 @@ const ProfileHeader = ({
                     gap: 1,
                     alignItems: 'center'
                   }} variant="h4" color="text.primary">
-                    {profile?.metadata?.displayName ?? ''} <BadgeVerified id={profile?.id} />
+                    {profile?.metadata?.displayName ?? ''} <BadgeVerified address={profile?.ownedBy?.address} />
                   </Typography>
                   <Typography
                     variant="body2"

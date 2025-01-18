@@ -1,25 +1,23 @@
-import {Icon} from "@iconify/react";
-import {FC} from "react";
+import { Icon } from "@iconify/react";
+import { FC } from "react";
+import { Address } from "viem";
+import { useIsVerified } from "@src/hooks/use-is-verified.ts";
 
 interface BadgeVerifiedProps {
-  id: string;
+  address: Address;
 }
 
-const BadgeVerified: FC<BadgeVerifiedProps> = ({id}) => {
+const BadgeVerified: FC<BadgeVerifiedProps> = ({ address }) => {
+  // Use the useIsVerified hook to check if the user is verified
+  const { isVerified, loading } = useIsVerified(address);
 
-  // Make validation to check if the user is verified taking the id as a parameter
-  const verified = true;
+  // While loading, do not render anything
+  if (loading) return null;
 
-  // Check if the user is verified
-  console.log('verified', verified, id);
+  // If the user is not verified, do not render the badge
+  if (!isVerified) return null;
 
-
-  if (!verified) return null;
-
-
-  return (
-    <Icon width={20} color={'#FFF'} icon={'ic:round-verified'} />
-  )
-}
+  return <Icon width={20} color={"#FFF"} icon={"ic:round-verified"} />;
+};
 
 export default BadgeVerified;

@@ -20,6 +20,7 @@ import AvatarProfile from "@src/components/avatar/avatar.tsx";
 import {FC} from "react";
 import Typography from "@mui/material/Typography";
 import BadgeVerified from "@src/components/user-item/BadgeVerified.tsx";
+import { Address } from 'viem';
 
 // ----------------------------------------------------------------------
 
@@ -112,7 +113,7 @@ export const UserItem = ({
             }}
           >
             <ListItemText
-              primary={<UserNameAndBadge id={profile?.id} name={profile?.handle?.localName ?? ''} />}
+              primary={<UserNameAndBadge address={profile?.ownedBy?.address} name={profile?.handle?.localName ?? ''} />}
               secondary={
                 <>{profile?.id !== sessionData?.profile?.id ? profile?.id : 'This is you!'}</>
               }
@@ -147,10 +148,10 @@ export const UserItem = ({
 
 interface UserNameAndBadgeProps {
   name: string;
-  id: string;
+  address: Address;
 }
 
-export const UserNameAndBadge : FC<UserNameAndBadgeProps> = ({ name, id}) => {
+export const UserNameAndBadge : FC<UserNameAndBadgeProps> = ({ name, address}) => {
   return (
     <Box sx={{
       display: 'flex',
@@ -165,7 +166,7 @@ export const UserNameAndBadge : FC<UserNameAndBadgeProps> = ({ name, id}) => {
         justifyContent: 'center',
         borderRadius: '50%',
       }}>
-        <BadgeVerified id={id} />
+        <BadgeVerified address={address} />
       </Box>
     </Box>
 

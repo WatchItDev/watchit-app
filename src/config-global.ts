@@ -27,6 +27,8 @@ export const GLOBAL_CONSTANTS = {
   OKLINK_API_KEY: process.env.VITE_OKLINK_API_KEY || import.meta.env.VITE_OKLINK_API_KEY || '',
   RIGHT_POLICY_AUTHORIZER:
     process.env.VITE_RIGHT_POLICY_AUTHORIZER || import.meta.env.VITE_RIGHT_POLICY_AUTHORIZER || '',
+  ACCESS_MANAGER_ADDRESS:
+    process.env.VITE_ACCESS_MANAGER_ADDRESS || import.meta.env.VITE_ACCESS_MANAGER_ADDRESS || '',
   SENTRY_AUTH_TOKEN:
     process.env.VITE_SENTRY_AUTH_TOKEN || import.meta.env.VITE_SENTRY_AUTH_TOKEN || '',
   SENTRY_DNS: process.env.VITE_SENTRY_DNS || import.meta.env.VITE_SENTRY_DNS || '',
