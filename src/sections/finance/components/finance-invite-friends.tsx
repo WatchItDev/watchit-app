@@ -13,10 +13,12 @@ import Typography from '@mui/material/Typography';
 // Project components
 import { bgGradient } from '@src/theme/css';
 import { COLORS } from '@src/layouts/config-layout.ts';
-import { supabase } from '@src/utils/supabase';
+
 import { notifyError, notifySuccess } from '@notifications/internal-notifications.ts';
 import { SUCCESS } from '@notifications/success.ts';
 import { ERRORS } from '@notifications/errors.ts';
+
+import useReferrals from "@src/hooks/use-referrals";
 
 interface Props extends BoxProps {
   img?: string;
@@ -33,21 +35,11 @@ export default function FinanceInviteFriends({
   sx,
   ...other
 }: Props) {
+  const { sendInvitation } = useReferrals()
   const theme = useTheme();
   const sessionData = useSelector((state: any) => state.auth.session);
   const [email, setEmail] = useState('');
 
-  async function storeEmailData(destination: string, payload: any) {
-    const { error } = await supabase
-      .from('invitations')
-      .insert([{ destination, sender_id: payload?.data?.from?.id, payload }]);
-
-    if (error) {
-      console.error('Error storing email data:', error);
-    } else {
-      console.log('Email data stored successfully');
-    }
-  }
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value);
@@ -68,7 +60,7 @@ export default function FinanceInviteFriends({
         },
       },
     };
-    storeEmailData(email, payload).then(() => {
+    sendInvitation(email, payload).then(() => {
       notifySuccess(SUCCESS.INVITATIONS_SUCCESSFULLY);
       setEmail('');
     });
