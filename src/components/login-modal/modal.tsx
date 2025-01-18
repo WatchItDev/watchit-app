@@ -71,6 +71,12 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
           await w3?.connect();
           setView('profile');
           setLoading(false);
+
+          // Once the user is authenticated, store the session expiration
+          const sessionTimeMs = 60 * 60 * 24 * 30 * 1000; // 30 days
+          const expirationTimestamp = Date.now() + sessionTimeMs;
+          localStorage.setItem("sessionExpiration", expirationTimestamp.toString());
+
         } catch (err) {
           onClose();
           w3?.loginModal.closeModal();
