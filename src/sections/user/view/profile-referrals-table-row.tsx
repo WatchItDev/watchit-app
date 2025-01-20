@@ -1,20 +1,18 @@
+// DATE IMPORTS
 import { formatDistance } from 'date-fns';
 
-// @MUI
+// MUI IMPORTS
 import Typography from '@mui/material/Typography';
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import ListItemText from '@mui/material/ListItemText';
-
-// Project components
-import useReferrals, {Invitation} from "@src/hooks/use-referrals.ts";
 import Button from "@mui/material/Button";
+
+// LOCAL IMPORTS
+import {Invitation} from "@src/hooks/use-referrals.ts";
 import AvatarProfile from "@src/components/avatar/avatar.tsx";
 import {useRouter} from "@src/routes/hooks";
 import {paths} from "@src/routes/paths.ts";
-import {useSelector} from "react-redux";
-import {notifySuccess} from "@notifications/internal-notifications.ts";
-import {SUCCESS} from "@notifications/success.ts";
 
 // ----------------------------------------------------------------------
 
@@ -32,24 +30,11 @@ const capitalizeFirstLetter = (string: string) => {
 
 export default function ProfileReferralsTableRow({ row, selected }: Props) {
   const { destination, status, created_at: date, id, receiver_id } = row;
-  const sessionData = useSelector((state: any) => state.auth.session);
-  const userEmail = useSelector((state: any) => state.auth.email);
   const router = useRouter();
-  const { sendEmail } = useReferrals();
 
   // If receiver_id is null, send again; otherwise, view profile as link
   const handleClick = () => {
-    if (receiver_id === null) {
-      sendEmail({
-        from_name: sessionData?.profile?.metadata?.displayName ?? 'Watchit Web3xAI',
-        to_email: destination,
-        from_email:  userEmail ?? 'contact@watchit.movie'
-      }).then((_r) => {
-        notifySuccess(SUCCESS.INVITATIONS_SUCCESSFULLY);
-      })
-    } else {
-      router.push(paths.dashboard.user.root(receiver_id));
-    }
+    receiver_id && router.push(paths.dashboard.user.root(receiver_id));
   }
 
   const dateObject = new Date(date);
@@ -77,11 +62,13 @@ export default function ProfileReferralsTableRow({ row, selected }: Props) {
       </TableCell>
 
       <TableCell>
-        <Button variant="outlined" size="small" onClick={handleClick}>
-          {
-            receiver_id === null ? 'Resend' : 'View profile'
-          }
-        </Button>
+        {
+          receiver_id ?  (
+            <Button variant="outlined" size="small" onClick={handleClick}>
+              View profile
+            </Button>
+          ) : <></>
+        }
       </TableCell>
     </TableRow>
   );

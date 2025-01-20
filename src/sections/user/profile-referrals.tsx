@@ -26,7 +26,7 @@ interface ProfileReferralsProps {
 const TABLE_HEAD = [
   { id: 'email', label: 'Email'},
   { id: 'status', label: 'Status' },
-  { id: 'resend', label: 'Resend' },
+  { id: 'profile', label: 'Profile' },
 ];
 
 const ProfileReferrals : FC<ProfileReferralsProps> = ({ referrals, loading }) => {
