@@ -60,9 +60,6 @@ export const useGetPoliciesTerms = (
         args: [holder],
       })) as Policy[];
 
-      console.log('getPoliciesTerms')
-      console.log(policies)
-
       // Store the response in state
       setAuthorizedHolderPolicies(policies);
       setError(null);

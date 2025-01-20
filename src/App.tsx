@@ -98,20 +98,20 @@ export default function App() {
             themeStretch: false,
           }}
         >
-          <AuthProvider>
-            <Provider store={store}>
-              <ThemeProvider>
-                <MotionLazy>
-                  <SnackbarProvider>
-                    <SettingsDrawer />
-                    <ProgressBar />
-                    <Router />
-                    <ResponsiveOverlay />
-                  </SnackbarProvider>
-                </MotionLazy>
-              </ThemeProvider>
-            </Provider>
-          </AuthProvider>
+          <Provider store={store}>
+            <AuthProvider>
+                <ThemeProvider>
+                  <MotionLazy>
+                    <SnackbarProvider>
+                      <SettingsDrawer />
+                      <ProgressBar />
+                      <Router />
+                      <ResponsiveOverlay />
+                    </SnackbarProvider>
+                  </MotionLazy>
+                </ThemeProvider>
+            </AuthProvider>
+          </Provider>
         </SettingsProvider>
       </LocalizationProvider>
     </MetaMaskProvider>

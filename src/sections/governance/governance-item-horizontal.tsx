@@ -2,7 +2,6 @@
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
-import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 // routes
 import { paths } from '@src/routes/paths';
@@ -15,6 +14,7 @@ import Label from '@src/components/label';
 import TextMaxLine from '@src/components/text-max-line';
 import { usePopover } from '@src/components/custom-popover';
 import { truncateAddress } from '../../utils/wallet';
+import AvatarProfile from "@src/components/avatar/avatar.tsx";
 
 // ----------------------------------------------------------------------
 
@@ -79,8 +79,8 @@ export default function GovernanceItemHorizontal({ post }: Props) {
       >
         <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ mb: 2 }}>
           <Box sx={{ display: 'flex' }} onClick={popover.onOpen}>
-            <Avatar
-              src={`https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${author?.wallet}`}
+            <AvatarProfile
+              src={author?.wallet}
               alt={author?.name}
               sx={{
                 width: 20,

@@ -2,7 +2,6 @@
 import { alpha, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
-import Avatar from '@mui/material/Avatar';
 import Container from '@mui/material/Container';
 import SpeedDial from '@mui/material/SpeedDial';
 import Typography from '@mui/material/Typography';
@@ -17,6 +16,7 @@ import { bgGradient } from '@src/theme/css';
 import Iconify from '@src/components/iconify';
 // types
 import { IPostHero } from '@src/types/blog';
+import AvatarProfile from "@src/components/avatar/avatar.tsx";
 
 // ----------------------------------------------------------------------
 
@@ -69,7 +69,7 @@ export default function GovernanceDetailsHero({ title, author, coverUrl, created
                 pb: { xs: 3, md: 8 },
               }}
             >
-              <Avatar
+              <AvatarProfile
                 alt={author.name}
                 src={author.avatarUrl}
                 sx={{ width: 64, height: 64, mr: 2 }}

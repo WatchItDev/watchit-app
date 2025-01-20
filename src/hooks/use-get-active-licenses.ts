@@ -38,18 +38,16 @@ export const useGetActiveLicenses = (
 
   const fetchHolderPolicies = useCallback(async () => {
     // Validate that holder exists
-    if (!holder) {
+    if (!holder || !recipient) {
       setActiveLicenses([]);
       setLoading(false);
-      setError({ message: 'Holder address is missing.' });
+      setError({ message: 'Holder or recipient address is missing.' });
       return;
     }
 
     setLoading(true);
 
     try {
-      console.log('getActiveLicenses')
-      console.log(GLOBAL_CONSTANTS.ACCESS_AGG_ADDRESS)
       // Call the contract method
       const licenses: any = (await publicClient.readContract({
         address: GLOBAL_CONSTANTS.ACCESS_AGG_ADDRESS,
@@ -57,10 +55,6 @@ export const useGetActiveLicenses = (
         functionName: 'getActiveLicenses',
         args: [recipient, holder],
       })) as Policy[];
-
-      console.log('getActiveLicenses')
-      console.log(licenses)
-      console.log(GLOBAL_CONSTANTS.ACCESS_AGG_ADDRESS)
 
       // Store the response in state
       setActiveLicenses(licenses);
