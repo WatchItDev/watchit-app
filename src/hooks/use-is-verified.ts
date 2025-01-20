@@ -34,6 +34,6 @@ export const useIsVerified = (account: Address): UseIsVerifiedHook => {
   return {
     isVerified,
     loading,
-    error: error?.message || null,
+    error: error?.message ?? null,
   };
 };

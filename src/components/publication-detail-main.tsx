@@ -115,7 +115,7 @@ export default function PublicationDetailMain({
         id: post.by.id,
         displayName: post?.by?.metadata?.displayName,
         avatar:
-          (post?.by?.metadata?.picture as any)?.optimized?.uri ?? dicebear(post?.by?.id),
+          post?.by?.metadata?.picture?.optimized?.uri ?? dicebear(post?.by?.id),
       },
       {
         rawDescription: `${sessionData?.profile?.metadata?.displayName} liked ${post?.metadata?.title}`,
@@ -463,7 +463,7 @@ export default function PublicationDetailMain({
                       id: post?.by?.id,
                       displayName: post?.by?.metadata?.displayName,
                       avatar:
-                        (post?.by?.metadata?.picture as any)?.optimized?.uri ?? dicebear(post?.by?.id),
+                        post?.by?.metadata?.picture?.optimized?.uri ?? dicebear(post?.by?.id),
                     }}
                   />
                 ) : (

@@ -380,11 +380,11 @@ interface PublicationDetailsTagsProps {
   publicationId: string
 }
 
-const PublicationDetailsTags: FC<PropsWithChildren<PublicationDetailsTagsProps>> = ({ title, publicationId, children }) => {
+const PublicationDetailsTags: FC<PropsWithChildren<PublicationDetailsTagsProps>> = ({ title, publicationId, image: customImage, children }) => {
   // OG META TAGS DATA
   const metaTitle = `Watchit: ${title}`
   const description = 'Check out this amazing publication on Watchit, where content meets Web3 & AI.'
-  const image = GLOBAL_CONSTANTS.LOGO_URL
+  const image = customImage ?? GLOBAL_CONSTANTS.LOGO_URL
   const url = `${GLOBAL_CONSTANTS.BASE_URL}/publication/${publicationId}`
 
   return <OgMetaTags

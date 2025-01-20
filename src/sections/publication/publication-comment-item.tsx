@@ -336,7 +336,7 @@ export default function PublicationCommentItem({ comment, hasReply, canReply }: 
                 owner={{
                   id: comment?.by?.id,
                   displayName: comment?.by?.metadata?.displayName,
-                  avatar: (comment?.by?.metadata?.picture as any)?.optimized?.uri ?? comment?.by?.id,
+                  avatar: comment?.by?.metadata?.picture?.optimized?.uri ?? comment?.by?.id,
                 }}
               />
             ) : (
