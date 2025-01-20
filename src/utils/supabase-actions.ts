@@ -118,7 +118,7 @@ export const acceptOrCreateInvitationForUser = async (userEmail: string, session
             receiver_id: sessionData?.profile?.id ?? null,
             sender_email: userEmail,
             payload: {
-              self_invite: true
+              self_register: true
             },
             status: 'accepted',
           },
