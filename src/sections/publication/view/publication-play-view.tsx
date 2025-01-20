@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { LoadingScreen } from '../../../components/loading-screen';
 import VideoPlayer from '../../../components/video-player';
 import Box from '@mui/material/Box';
