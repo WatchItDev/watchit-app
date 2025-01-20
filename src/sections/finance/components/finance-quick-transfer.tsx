@@ -78,6 +78,13 @@ export default function FinanceQuickTransfer({
   const confirm = useBoolean();
   const MAX_AMOUNT = balance;
 
+
+  interface ProfilePicture {
+    optimized: {
+      uri: string;
+    };
+  }
+
   // This gets the current profile in the carousel
   const getContactInfo: Profile | undefined = list?.find((_, index) => index === currentIndex);
 
@@ -344,7 +351,11 @@ export default function FinanceQuickTransfer({
                 placement="top"
               >
                 <AvatarProfile
-                  src={(profile?.metadata?.picture as any)?.optimized?.uri ?? profile?.id}
+                  src={
+                    profile?.metadata?.picture && 'optimized' in profile.metadata.picture
+                      ? (profile.metadata.picture as ProfilePicture).optimized.uri
+                      : profile?.id
+                  }
                   alt={profile?.handle?.localName ?? ''}
                   sx={{
                     mx: 'auto',

@@ -32,14 +32,11 @@ import { useRouter } from '@src/routes/hooks';
 import { ProposalsMockList, proposalVotes as initialProposalVotes } from '../governance-mock';
 import AvatarProfile from "@src/components/avatar/avatar.tsx";
 import {dicebear} from "@src/utils/dicebear.ts";
+import Avatar from '@src/components/avatar/avatar.tsx';
 
 // ----------------------------------------------------------------------
 
-type Props = {
-  title: string;
-};
-
-export default function GovernanceDetailsView({ title }: Props) {
+export default function GovernanceDetailsView() {
   const post = ProposalsMockList[0];
   const mdUp = useResponsive('up', 'md');
   const router = useRouter();

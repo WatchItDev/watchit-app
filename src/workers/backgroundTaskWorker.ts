@@ -5,6 +5,7 @@ export type CommentPayload = {
   pendingCommentId: string;
 };
 
+// eslint-disable-next-line no-restricted-globals
 self.onmessage = async (event: MessageEvent<{ type: string; payload: CommentPayload }>) => {
   const { type, payload } = event.data;
 
@@ -16,9 +17,11 @@ self.onmessage = async (event: MessageEvent<{ type: string; payload: CommentPayl
       await verifyIpfsData(uri);
 
       // Send a success message to main thread
+      // eslint-disable-next-line no-restricted-globals
       self.postMessage({ success: true, pendingCommentId });
     } catch (error) {
       // Send a error message to main thread
+      // eslint-disable-next-line no-restricted-globals
       self.postMessage({ success: false, error: (error as Error).message, pendingCommentId });
     }
   }

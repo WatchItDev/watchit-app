@@ -172,7 +172,7 @@ const PosterTopTitles = ({ post }: { post: any }) => {
                       ratio={'1/1'}
                       style={{ width: '20px', height: '20px', borderRadius: '50%' }}
                       src={
-                        (post?.by?.metadata?.picture as any)?.optimized?.uri ?? dicebear(post?.by?.id)
+                        post?.by?.metadata?.picture?.optimized?.uri ?? dicebear(post?.by?.id)
                       }
                     />
                     {post?.by?.metadata?.displayName ?? post?.by?.handle?.localName}

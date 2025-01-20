@@ -28,7 +28,7 @@ const capitalizeFirstLetter = (string: string) => {
 
 // ----------------------------------------------------------------------
 
-export default function ProfileReferralsTableRow({ row, selected }: Props) {
+export default function ProfileReferralsTableRow({ row, selected }: Readonly<Props>) {
   const { destination, status, created_at: date, id, receiver_id } = row;
   const router = useRouter();
 
