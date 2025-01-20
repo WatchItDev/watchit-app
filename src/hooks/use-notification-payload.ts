@@ -1,4 +1,5 @@
 import { ProfileSession } from '@lens-protocol/react-web';
+import {dicebear} from "@src/utils/dicebear.ts";
 
 type NotificationPayload = {
   type: string;
@@ -35,15 +36,12 @@ export const useNotificationPayload = (sessionData: ProfileSession | undefined) 
           displayName: sessionData?.profile?.metadata?.displayName ?? '',
           avatar:
             (sessionData?.profile?.metadata?.picture as any)?.optimized?.uri ??
-            `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${sessionData?.profile?.id}`,
+            dicebear(sessionData?.profile?.id as string),
         },
         to: {
           id: toProfile.id,
           displayName: toProfile.displayName,
-          avatar:
-            toProfile.avatar ??
-            `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${toProfile.id}`,
-        },
+          avatar: toProfile.avatar ?? dicebear(toProfile.id)},
         content,
       },
     };

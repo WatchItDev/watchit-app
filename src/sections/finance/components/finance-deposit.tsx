@@ -14,7 +14,7 @@ import FinanceDialogsActions from '@src/sections/finance/components/finance-dial
 import TextMaxLine from '@src/components/text-max-line';
 import { formatBalanceNumber } from '@src/utils/format-number';
 import { useGetMmcContractBalance } from '@src/hooks/use-get-mmc-contract-balance';
-import BoxRow from '@src/sections/finance/components/box-row.tsx';
+import FinanceBoxRow from '@src/sections/finance/components/finance-box-row.tsx';
 import { UseDepositHook } from '@src/hooks/use-deposit';
 import { truncateAddress } from '@src/utils/wallet';
 
@@ -133,7 +133,7 @@ const FinanceDeposit: FC<FinanceDepositProps> = ({ address, recipient, depositHo
         alignItems="center"
         justifyContent="space-between"
       >
-        <BoxRow>
+        <FinanceBoxRow>
           <TextMaxLine line={1} fontWeight={"bold"}>Connected Wallet</TextMaxLine>
           <TextMaxLine
             line={1}
@@ -141,9 +141,9 @@ const FinanceDeposit: FC<FinanceDepositProps> = ({ address, recipient, depositHo
           >
             {address ? truncateAddress(address) : 'No wallet connected'}
           </TextMaxLine>
-        </BoxRow>
+        </FinanceBoxRow>
 
-        <BoxRow>
+        <FinanceBoxRow>
           <TextMaxLine line={1} fontWeight={"bold"}>Available</TextMaxLine>
           <TextMaxLine
             line={1}
@@ -151,7 +151,7 @@ const FinanceDeposit: FC<FinanceDepositProps> = ({ address, recipient, depositHo
           >
             {formatBalanceNumber(balance ?? 0)} MMC
           </TextMaxLine>
-        </BoxRow>
+        </FinanceBoxRow>
 
         <TextField
           sx={{ mt: 1 }}

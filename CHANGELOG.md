@@ -1,3 +1,10 @@
+# [2.2.0-beta.12](https://github.com/WatchItDev/watchit-app/compare/v2.2.0-beta.11...v2.2.0-beta.12) (2025-01-10)
+
+
+### Bug Fixes
+
+* correct carousel index update on profile selection ([012dfe4](https://github.com/WatchItDev/watchit-app/commit/012dfe4618a588d9a364c6a6b6461216349dfdca))
+
 # [2.2.0-beta.11](https://github.com/WatchItDev/watchit-app/compare/v2.2.0-beta.10...v2.2.0-beta.11) (2025-01-10)
 
 

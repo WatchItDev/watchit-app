@@ -45,7 +45,6 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({ src, titleMovie, onBack, sho
   useEffect(() => {
     if (player.current) {
       if (isHLSProvider(player.current.provider)) {
-        console.log('tune provider config');
         player.current.provider.config = {
           debug: false,
           autoStartLoad: true,

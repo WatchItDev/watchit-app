@@ -12,7 +12,6 @@ import {
   MarketplaceMetadataAttributeDisplayType,
 } from '@lens-protocol/metadata';
 import FormProvider from '@src/components/hook-form';
-import Avatar from '@mui/material/Avatar';
 import InputBase from '@mui/material/InputBase';
 import InputAdornment from '@mui/material/InputAdornment';
 import { alpha } from '@mui/material/styles';
@@ -25,6 +24,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNotifications } from '@src/hooks/use-notifications.ts';
 import { useNotificationPayload } from '@src/hooks/use-notification-payload.ts';
 import { AnyPublication } from '@lens-protocol/api-bindings';
+import AvatarProfile from "@src/components/avatar/avatar.tsx";
+import {dicebear} from "@src/utils/dicebear.ts";
 
 // Define the props types
 type MovieCommentFormProps = {
@@ -162,10 +163,9 @@ const MovieCommentForm = ({ commentOn, owner, root }: MovieCommentFormProps) => 
 
   const renderInput = (
     <Stack sx={{ pr: 1 }} spacing={2} direction="row" alignItems="center">
-      <Avatar
+      <AvatarProfile
         src={
-          (sessionData?.profile?.metadata?.picture as any)?.optimized?.uri ??
-          `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${sessionData?.profile?.id}`
+          (sessionData?.profile?.metadata?.picture as any)?.optimized?.uri ?? dicebear(sessionData?.profile?.id)
         }
         alt={sessionData?.profile?.handle?.localName ?? ''}
       />

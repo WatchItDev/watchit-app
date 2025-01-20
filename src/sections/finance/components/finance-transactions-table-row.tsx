@@ -1,14 +1,16 @@
 import { format } from 'date-fns';
-// @mui
-import Avatar from '@mui/material/Avatar';
-import TableRow from '@mui/material/TableRow';
 
+// @MUI
+import Typography from '@mui/material/Typography';
+import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import ListItemText from '@mui/material/ListItemText';
-// components
+
+// Project components
 import { TableRowTransactionType } from '@src/hooks/use-transaction-data.ts';
 import { truncateAddress } from '@src/utils/wallet.ts';
-import Typography from '@mui/material/Typography';
+import AvatarProfile from "@src/components/avatar/avatar.tsx";
+import { OpenableText } from '@src/components/openable-text';
 
 // ----------------------------------------------------------------------
 
@@ -17,8 +19,14 @@ type Props = {
   selected: boolean;
 };
 
+// ----------------------------------------------------------------------
+
+const urlTxBase = 'https://www.oklink.com/es-la/amoy/tx/';
+
+// ----------------------------------------------------------------------
+
 export default function FinanceTransactionTableRow({ row, selected }: Props) {
-  const { date, name, amount, avatarUrl, message, category } = row;
+  const { date, name, amount, avatarUrl, message, category, id } = row;
 
   const dateObject = new Date(Number(date) * 1000);
   const dateLbl = format(dateObject, 'dd/MM/yyyy');
@@ -27,7 +35,7 @@ export default function FinanceTransactionTableRow({ row, selected }: Props) {
   const renderPrimary = (
     <TableRow hover selected={selected}>
       <TableCell sx={{ display: 'flex', alignItems: 'center' }}>
-        <Avatar alt={name} src={avatarUrl} sx={{ mr: 2 }} />
+        <AvatarProfile src={avatarUrl} alt={name} sx={{mr: 2}} />
         <ListItemText
           primary={message}
           secondary={truncateAddress(name)}
@@ -56,6 +64,15 @@ export default function FinanceTransactionTableRow({ row, selected }: Props) {
         <Typography variant="body2" sx={{ color: category === 'income' ? '#00AB55' : '#FF4842' }}>
           {category === 'income' ? '' : '-'} {amount} MMC
         </Typography>
+      </TableCell>
+
+      <TableCell>
+        <OpenableText
+          label={truncateAddress(id, 3, 3)}
+          url={`${urlTxBase}${id}`}
+          sx={{ alignItems: 'flex-start' }}
+          labelSx={{ ml: 0 }}
+        />
       </TableCell>
     </TableRow>
   );

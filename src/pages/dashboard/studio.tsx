@@ -1,4 +1,3 @@
-import { Helmet } from 'react-helmet-async';
 // import { useState } from 'react';
 // import {
 //   ProfileSession,
@@ -20,6 +19,8 @@ import { Helmet } from 'react-helmet-async';
 // import { verifyIpfsData } from '@src/utils/ipfs.ts';
 import ComingSoonView from '@src/sections/coming-soon/view.tsx';
 import BlankView from '@src/sections/blank/view.tsx';
+import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
+import { OgMetaTags } from '@src/components/og-meta-tags.tsx';
 
 // const hashes = [
 //   "f0155122018174e2a7079e266bab70f870249dfa50de77bfcd1263a29a7290c9bedad1ba8",
@@ -213,11 +214,11 @@ export default function OverviewFilePage() {
   // };
 
   return (
-    <>
-      <Helmet>
-        <title> WatchIt | Studio</title>
-      </Helmet>
-
+    <OgMetaTags
+      title="Watchit: Studio (COMING SOON)"
+      description="Explore our evolving Studio! Soon, you’ll generate fresh content and enhance your projects with AI-driven metadata, images, subtitles, voiceovers, and security checks."
+      url={`${GLOBAL_CONSTANTS.BASE_URL}/studio/`}
+    >
       <BlankView>
         <ComingSoonView
           deadline={'03/30/2025 21:30'}
@@ -318,6 +319,6 @@ export default function OverviewFilePage() {
       {/*    </Button>*/}
       {/*  </Box>*/}
       {/*</Modal>*/}
-    </>
+    </OgMetaTags>
   );
 }

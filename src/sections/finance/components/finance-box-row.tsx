@@ -2,7 +2,7 @@ import { FC, PropsWithChildren } from 'react';
 
 import Box from '@mui/material/Box';
 
-export const BoxRow: FC<PropsWithChildren> = ({ children }) => (
+export const FinanceBoxRow: FC<PropsWithChildren> = ({ children }) => (
   <Box
     sx={{
       width: '100%',
@@ -16,4 +16,4 @@ export const BoxRow: FC<PropsWithChildren> = ({ children }) => (
   </Box>
 );
 
-export default BoxRow;
+export default FinanceBoxRow;

@@ -2,7 +2,7 @@
   "name": "watchit",
   "author": "Watchit",
   "type": "module",
-  "version": "2.2.0-beta.11",
+  "version": "2.2.0-beta.12",
   "description": "Open videos everywhere",
   "email": "info@watchit.movie",
   "private": true,
@@ -43,6 +43,7 @@
     ]
   },
   "dependencies": {
+    "@emailjs/browser": "^4.4.1",
     "@helia/unixfs": "^4.0.1",
     "@hookform/resolvers": "^3.1.1",
     "@iconify/react": "^4.1.1",

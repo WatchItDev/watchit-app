@@ -1,7 +1,6 @@
 // MUI IMPORTS
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
-import Avatar from '@mui/material/Avatar';
 import { Theme } from '@mui/material/styles';
 import { SxProps } from '@mui/system/styleFunctionSx';
 import ListItemText from '@mui/material/ListItemText';
@@ -17,6 +16,11 @@ import { paths } from '../../routes/paths';
 import { useRouter } from '@src/routes/hooks';
 import FollowUnfollowButton from '@src/components/follow-unfollow-button.tsx';
 import { useSelector } from 'react-redux';
+import AvatarProfile from "@src/components/avatar/avatar.tsx";
+import {FC} from "react";
+import Typography from "@mui/material/Typography";
+import BadgeVerified from "@src/components/user-item/BadgeVerified.tsx";
+import { Address } from 'viem';
 
 // ----------------------------------------------------------------------
 
@@ -92,11 +96,8 @@ export const UserItem = ({
             p: (theme) => theme.spacing(0, 2, 1, 2),
           }}
         >
-          <Avatar
-            src={
-              (profile?.metadata?.picture as any)?.optimized?.uri ??
-              `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${profile?.id}`
-            }
+          <AvatarProfile
+            src={(profile?.metadata?.picture as any)?.optimized?.uri ?? profile?.id}
             alt={profile?.handle?.localName ?? ''}
             sx={{ width: 48, height: 48, mr: 2 }}
             variant="rounded"
@@ -112,7 +113,7 @@ export const UserItem = ({
             }}
           >
             <ListItemText
-              primary={profile?.handle?.localName ?? ''}
+              primary={<UserNameAndBadge address={profile?.ownedBy?.address} name={profile?.handle?.localName ?? ''} />}
               secondary={
                 <>{profile?.id !== sessionData?.profile?.id ? profile?.id : 'This is you!'}</>
               }
@@ -144,3 +145,30 @@ export const UserItem = ({
     </>
   );
 };
+
+interface UserNameAndBadgeProps {
+  name: string;
+  address: Address;
+}
+
+export const UserNameAndBadge : FC<UserNameAndBadgeProps> = ({ name, address}) => {
+  return (
+    <Box sx={{
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'flex-start',
+    }}>
+
+      <Typography sx={{mr:'2px'}}>{name}</Typography>
+      <Box sx={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: '50%',
+      }}>
+        <BadgeVerified address={address} />
+      </Box>
+    </Box>
+
+  );
+}

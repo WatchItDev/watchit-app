@@ -1,5 +1,5 @@
 // REACT IMPORTS
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
 // MUI IMPORTS
 import { Backdrop, Box, Fade, Modal } from '@mui/material';
@@ -13,9 +13,12 @@ import { ProfileSelectView } from '@src/components/login-modal/profile-select-vi
 import { ProfileFormView } from '@src/components/login-modal/profile-form-view.tsx';
 import { WatchitLoader } from '../watchit-loader';
 import { useDispatch, useSelector } from 'react-redux';
-import { closeLoginModal } from '@redux/auth';
+import {closeLoginModal, setEmail} from '@redux/auth';
 import { notifySuccess } from '@notifications/internal-notifications.ts';
 import { SUCCESS } from '@notifications/success.ts';
+// @ts-ignore
+import {type AuthUserInfo} from "@web3auth/auth/dist/types/utils/interfaces";
+import useReferrals from '@src/hooks/use-referrals.ts';
 
 // ----------------------------------------------------------------------
 
@@ -35,6 +38,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
   const sessionData = useSelector((state: any) => state.auth.session);
   const { execute: logoutExecute } = useLogout();
   const { execute: loginExecute, error } = useLogin();
+  const { acceptOrCreateInvitationForUser } = useReferrals();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -44,6 +48,9 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
         const accounts: any = await w3.provider.request({
           method: 'eth_accounts',
         });
+
+        // Obtain user info from the provider to get the email
+        await w3.getUserInfo().then((r:Partial<AuthUserInfo>) => dispatch(setEmail(r?.email)));
 
         if (accounts && accounts.length > 0) {
           setAddress(accounts[0]);
@@ -66,6 +73,12 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
           await w3?.connect();
           setView('profile');
           setLoading(false);
+
+          // Once the user is authenticated, store the session expiration
+          const sessionTimeMs = 60 * 60 * 24 * 30 * 1000; // 30 days
+          const expirationTimestamp = Date.now() + sessionTimeMs;
+          localStorage.setItem("sessionExpiration", expirationTimestamp.toString());
+
         } catch (err) {
           onClose();
           w3?.loginModal.closeModal();
@@ -76,10 +89,11 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
     }
   }, [open, view, w3.connected]);
 
-  const handleProfileCreateSuccess = () => {
+  const handleProfileCreateSuccess = useCallback(() => {
+    acceptOrCreateInvitationForUser();
     notifySuccess(SUCCESS.PROFILE_CREATED_SUCCESSFULLY);
     dispatch(closeLoginModal());
-  };
+  }, []);
 
   const handleLogin = async (profile?: Profile) => {
     if (!profile || !address) return;
@@ -100,6 +114,12 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
     setAddress('');
   };
 
+  const handleBackdropClick = () => {
+    if (view === 'profile') {
+      onClose();
+    }
+  };
+
   return (
     <>
       <Modal
@@ -109,7 +129,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
         onClose={onClose}
         closeAfterTransition
         BackdropComponent={Backdrop}
-        BackdropProps={{ timeout: 500, onClick: () => {} }}
+        BackdropProps={{ timeout: 500, onClick: handleBackdropClick }}
       >
         <Fade in={open}>
           <Box

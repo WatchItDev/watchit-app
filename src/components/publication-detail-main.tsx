@@ -6,7 +6,6 @@ import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
-import Avatar from '@mui/material/Avatar';
 import Dialog from '@mui/material/Dialog';
 import Divider from '@mui/material/Divider';
 import MenuItem from '@mui/material/MenuItem';
@@ -59,6 +58,8 @@ import { openLoginModal } from '@redux/auth';
 import { useDispatch, useSelector } from 'react-redux';
 import { addBookmark, removeBookmark } from '@redux/bookmark';
 import { useNotificationPayload } from '@src/hooks/use-notification-payload.ts';
+import {dicebear} from "@src/utils/dicebear.ts";
+import AvatarProfile from "@src/components/avatar/avatar.tsx";
 
 // ----------------------------------------------------------------------
 
@@ -114,8 +115,7 @@ export default function PublicationDetailMain({
         id: post.by.id,
         displayName: post?.by?.metadata?.displayName,
         avatar:
-          (post?.by?.metadata?.picture as any)?.optimized?.uri ??
-          `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${post?.by?.id}`,
+          post?.by?.metadata?.picture?.optimized?.uri ?? dicebear(post?.by?.id),
       },
       {
         rawDescription: `${sessionData?.profile?.metadata?.displayName} liked ${post?.metadata?.title}`,
@@ -217,10 +217,9 @@ export default function PublicationDetailMain({
               sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
               onClick={goToProfile}
             >
-              <Avatar
+              <AvatarProfile
                 src={
-                  (post?.by?.metadata?.picture as any)?.optimized?.uri ??
-                  `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${post?.by?.id}`
+                  (post?.by?.metadata?.picture as any)?.optimized?.uri ?? post?.by?.id
                 }
                 sx={{
                   width: 26,
@@ -464,8 +463,7 @@ export default function PublicationDetailMain({
                       id: post?.by?.id,
                       displayName: post?.by?.metadata?.displayName,
                       avatar:
-                        (post?.by?.metadata?.picture as any)?.optimized?.uri ??
-                        `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${post?.by?.id}`,
+                        post?.by?.metadata?.picture?.optimized?.uri ?? dicebear(post?.by?.id),
                     }}
                   />
                 ) : (

@@ -106,14 +106,17 @@ const FinanceEarnTokens: FC<FinanceEarnTokensProps> = ({ sx, lgUp, ...other }) =
               variant="body1"
               sx={{
                 opacity: 0.8,
-                maxWidth: 220,
+                maxWidth: lgUp ? 220 : 'auto',
                 mb: { xs: 1, xl: 2 },
               }}
             >
               Invite your friends and complete tasks to grow your balance.
             </Typography>
             <Button
-              sx={{ mt: lgUp ? 3 : null }}
+              sx={{
+                mt: lgUp ? 3 : null,
+                mb: !lgUp ? 3 : null
+              }}
               color={'primary'}
               variant={'soft'}
               startIcon={<Iconify icon={'fluent-emoji:trophy'} />}
@@ -126,6 +129,7 @@ const FinanceEarnTokens: FC<FinanceEarnTokensProps> = ({ sx, lgUp, ...other }) =
             flexGrow={1}
             justifyContent="center"
             sx={{
+              display: { xs: 'none', md: 'flex' },
               p: { xs: 1, md: 1 },
               mb: { xs: 1, md: 0 },
               mx: 'auto',

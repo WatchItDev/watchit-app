@@ -8,8 +8,9 @@ import { paths } from '@src/routes/paths.ts';
 import { TrendingTopicsType } from '@src/sections/explore/view.tsx';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
-import Avatar from '@mui/material/Avatar';
 import ListItemText from '@mui/material/ListItemText';
+import AvatarProfile from "@src/components/avatar/avatar.tsx";
+import {dicebear} from "@src/utils/dicebear.ts";
 
 const randomImages = [
   'https://storage.needpix.com/rsynced_images/banner-header-1449745071UBW.jpg',
@@ -77,9 +78,9 @@ const PosterCreators = ({ id }: TrendingTopicsType) => {
             p: (theme) => theme.spacing(0, 2, 1, 2),
           }}
         >
-          <Avatar
-            src={'https://api.dicebear.com/9.x/bottts-neutral/svg?seed=1'}
-            alt={'Alt value'}
+          <AvatarProfile
+            src={dicebear("1")}
+            alt={'Creator Profile'}
             sx={{ width: 48, height: 48, mr: 2 }}
             variant="rounded"
           />

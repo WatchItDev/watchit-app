@@ -7,6 +7,7 @@ export type AuthReducerState = {
   balance: number;
   currentStep: number;
   isUpdatingMetadata: boolean;
+  email: string;
 };
 
 const initialState: AuthReducerState = {
@@ -16,6 +17,7 @@ const initialState: AuthReducerState = {
   balance: 0,
   currentStep: 0,
   isUpdatingMetadata: false,
+  email: '',
 };
 
 const authSlice = createSlice({
@@ -42,6 +44,9 @@ const authSlice = createSlice({
     },
     setSession: (state, action: PayloadAction<{ session: any }>) => {
       state.session = action.payload.session;
+    },
+    setEmail: (state, action: PayloadAction<string>) => {
+      state.email = action.payload;
     },
     updateProfileData: (
       state,
@@ -86,6 +91,7 @@ export const {
   setSession,
   updateProfileData,
   setIsUpdatingMetadata,
+  setEmail
 } = authSlice.actions;
 
 export default authSlice.reducer;

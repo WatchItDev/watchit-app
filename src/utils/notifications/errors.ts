@@ -46,6 +46,11 @@ export enum ERRORS {
   // METAMASK
   METAMASK_CONNECTING_FAILED_ERROR = 'METAMASK_CONNECTING_FAILED_ERROR',
   METAMASK_CHANGE_WALLET_ERROR = 'METAMASK_CHANGE_WALLET_ERROR',
+
+  // REFERALS
+  ALREADY_SENT_INVITATION = 'ALREADY_SENT_INVITATION',
+  ALREADY_ENROLLED = 'ALREADY_ENROLLED',
+  INVITATION_SEND_ERROR = 'INVITATION_SEND_ERROR',
 }
 
 /**
@@ -103,4 +108,9 @@ export const ERROR_MESSAGES: Record<ERRORS, string> = {
   // METAMASK
   [ERRORS.METAMASK_CONNECTING_FAILED_ERROR]: 'Failed to connect wallet',
   [ERRORS.METAMASK_CHANGE_WALLET_ERROR]: 'Failed to change wallet',
+
+  // REFERALS
+  [ERRORS.ALREADY_SENT_INVITATION]: 'You have already sent an invitation to this email address!',
+  [ERRORS.ALREADY_ENROLLED]: 'This user is already enrolled!',
+  [ERRORS.INVITATION_SEND_ERROR]: 'An error occurred while sending the invitation.',
 };
