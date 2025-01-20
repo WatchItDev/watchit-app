@@ -32,7 +32,6 @@ import { useRouter } from '@src/routes/hooks';
 import { ProposalsMockList, proposalVotes as initialProposalVotes } from '../governance-mock';
 import AvatarProfile from "@src/components/avatar/avatar.tsx";
 import {dicebear} from "@src/utils/dicebear.ts";
-import Avatar from '@src/components/avatar/avatar.tsx';
 
 // ----------------------------------------------------------------------
 
@@ -318,7 +317,7 @@ export default function GovernanceDetailsView() {
                         alignItems="center"
                         sx={{ width: '40%', minWidth: '40%', maxWidth: '40%', mr: 3 }}
                       >
-                        <Avatar
+                        <AvatarProfile
                           src={`https://api.dicebear.com/6.x/identicon/svg?seed=${vote.user}`}
                           alt={vote.user}
                           sx={{ width: 20, height: 20, mr: 1 }}
