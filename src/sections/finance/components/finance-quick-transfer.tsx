@@ -79,7 +79,7 @@ export default function FinanceQuickTransfer({
   const MAX_AMOUNT = balance;
 
 
-  interface ProfilePicture_ImageSet_ {
+  interface ProfilePicture {
     optimized: {
       uri: string;
     };
@@ -353,7 +353,7 @@ export default function FinanceQuickTransfer({
                 <AvatarProfile
                   src={
                     profile?.metadata?.picture && 'optimized' in profile.metadata.picture
-                      ? (profile.metadata.picture as ProfilePicture_ImageSet_).optimized.uri
+                      ? (profile.metadata.picture as ProfilePicture).optimized.uri
                       : profile?.id
                   }
                   alt={profile?.handle?.localName ?? ''}
