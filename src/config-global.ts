@@ -49,6 +49,8 @@ export const GLOBAL_CONSTANTS = {
   SENDER_EMAIL: process.env.VITE_SENDER_EMAIL || import.meta.env.VITE_SENDER_EMAIL || '',
   BASE_URL: process.env.VITE_BASE_URL || import.meta.env.VITE_BASE_URL || '',
   LOGO_URL: process.env.VITE_LOGO_URL || import.meta.env.VITE_LOGO_URL || '',
+  IPIFY_URL: process.env.VITE_IPIFY_URL || import.meta.env.VITE_IPIFY_URL || '',
+  IPINFO_URL: process.env.VITE_IPINFO_URL || import.meta.env.VITE_IPINFO_URL || '',
 };
 
 export const MAPBOX_API = import.meta.env.VITE_MAPBOX_API || '';
