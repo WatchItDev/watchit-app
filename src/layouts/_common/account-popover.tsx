@@ -198,6 +198,7 @@ export default function AccountPopover() {
                 }
                 alt="avatar"
                 sx={{
+                  fontSize: '1.25rem',
                   width: 36,
                   height: 36,
                   border: (theme: any) => `solid 2px ${theme.palette.background.default}`,

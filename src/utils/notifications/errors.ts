@@ -51,6 +51,8 @@ export enum ERRORS {
   ALREADY_SENT_INVITATION = 'ALREADY_SENT_INVITATION',
   ALREADY_ENROLLED = 'ALREADY_ENROLLED',
   INVITATION_SEND_ERROR = 'INVITATION_SEND_ERROR',
+  INVITATION_USER_ALREADY_INVITED = 'INVITATION_USER_ALREADY_INVITED',
+  INVITATION_USER_CANT_INVITE_SELF = 'INVITATION_USER_CANT_INVITE_SELF',
 }
 
 /**
@@ -113,4 +115,6 @@ export const ERROR_MESSAGES: Record<ERRORS, string> = {
   [ERRORS.ALREADY_SENT_INVITATION]: 'You have already sent an invitation to this email address!',
   [ERRORS.ALREADY_ENROLLED]: 'This user is already enrolled!',
   [ERRORS.INVITATION_SEND_ERROR]: 'An error occurred while sending the invitation.',
+  [ERRORS.INVITATION_USER_ALREADY_INVITED]: 'This user has already been invited!',
+  [ERRORS.INVITATION_USER_CANT_INVITE_SELF]: 'You cannot invite yourself!',
 };

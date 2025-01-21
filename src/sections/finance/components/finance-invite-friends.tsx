@@ -19,6 +19,7 @@ import { ERRORS } from '@notifications/errors.ts';
 
 import useReferrals from "@src/hooks/use-referrals";
 import LoadingButton from '@mui/lab/LoadingButton';
+import {checkIfEmailAlreadyInvited} from "@src/utils/supabase-actions.ts";
 
 interface Props extends BoxProps {
   img?: string;
@@ -42,6 +43,7 @@ export default function FinanceInviteFriends({
   } = useReferrals();
   const theme = useTheme();
   const sessionData = useSelector((state: any) => state.auth.session);
+  const userLoggedEmail = useSelector((state: any) => state.auth.email);
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -49,10 +51,17 @@ export default function FinanceInviteFriends({
     setEmail(event.target.value);
   };
 
-  const handleInviteClick = async () => {
-    // Basic email format check
+  /*
+  * Return true if the email is valid, false otherwise.
+  * */
+  const handleValidEmail = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
+    return emailRegex.test(email);
+  }
+
+  const handleInviteClick = async () => {
+
+    if (!handleValidEmail()) {
       notifyError(ERRORS.INVITATION_EMAIL_ERROR);
       return;
     }
@@ -61,6 +70,23 @@ export default function FinanceInviteFriends({
 
     // Check if there's an existing invitation from the current user to this email
     const alreadySent = await checkIfInvitationSent(email);
+
+    // Check if the user has already been invited but someone else
+    const { invited } = await checkIfEmailAlreadyInvited(email);
+
+    if (invited) {
+      notifyError(ERRORS.INVITATION_USER_ALREADY_INVITED);
+      setLoading(false);
+      return;
+    }
+
+    // Check if the email entered is the same as the logged user's email
+    if (email === userLoggedEmail) {
+      notifyError(ERRORS.INVITATION_USER_CANT_INVITE_SELF);
+      setLoading(false);
+      return;
+    }
+
     if (alreadySent) {
       // You can adapt the notification message to match your requirements
       notifyError(ERRORS.ALREADY_SENT_INVITATION);
@@ -165,6 +191,7 @@ export default function FinanceInviteFriends({
           onChange={handleInputChange}
           endAdornment={
             <LoadingButton
+              disabled={!email || loading || !handleValidEmail()}
               color="warning"
               variant="contained"
               size="small"

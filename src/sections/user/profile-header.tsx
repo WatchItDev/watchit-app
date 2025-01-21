@@ -62,7 +62,7 @@ const shareLinks = [
   {
     icon: 'mingcute:social-x-line',
     label: 'X',
-    url: `https://x.com/share/?url=${encodeURIComponent(urlToShare)}&text=Visit%20my%20profile%20in%20Watchit&hashtags=Watchit`,
+    url: `https://x.com/share/?url=${encodeURIComponent(urlToShare)}&text=Visit%20my%20profile%20on%20Watchit&hashtags=Watchit,Crypto,Blockchain`,
   },
   {
     icon: 'mdi:facebook',
@@ -332,6 +332,7 @@ const ProfileHeader = ({
                 alt={profile?.handle?.localName ?? ''}
                 variant="rounded"
                 sx={{
+                  fontSize: '3em',
                   width: { xs: 96, md: 128 },
                   height: { xs: 96, md: 128 },
                   border: `solid 2px ${theme.palette.common.white}`,

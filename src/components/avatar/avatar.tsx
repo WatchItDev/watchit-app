@@ -2,6 +2,7 @@
 import Avatar from '@mui/material/Avatar';
 import {FC} from "react";
 import {dicebear} from "@src/utils/dicebear.ts";
+import {COLORS} from "@src/layouts/config-layout.ts";
 
 interface AvatarProfileProps {
   src: string;
@@ -11,12 +12,19 @@ interface AvatarProfileProps {
 }
 
 const AvatarProfile: FC<AvatarProfileProps> = ({ src, alt, sx, ...other }) => {
-
   //Check if src is a valid URL starting with http or https; if not, use the dicebear API to generate a random avatar
-  if (!src.startsWith('http') && !src.startsWith('https')) { src = dicebear(src)  }
+  const imageSrc = src.startsWith('http') || src.startsWith('https') ? src : dicebear(src);
+
+  // Default styles for the Avatar component
+  sx = {
+    backgroundColor: COLORS.GRAY_DARK,
+    fontWeight: 'bold',
+    ...sx,
+  };
+
 
   return (
-    <Avatar alt={alt ?? 'Avatar profile'} src={src} sx={sx} {...other}  />
+    <Avatar alt={alt?.toUpperCase() ?? 'Avatar profile'} src={imageSrc} sx={sx} {...other}  />
   )
 }
 
