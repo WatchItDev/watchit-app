@@ -1,3 +1,49 @@
+# [2.2.0-beta.14](https://github.com/WatchItDev/watchit-app/compare/v2.2.0-beta.13...v2.2.0-beta.14) (2025-01-21)
+
+
+### Bug Fixes
+
+* update typo in Sentry DSN and adjust minor details ([9c83319](https://github.com/WatchItDev/watchit-app/commit/9c8331977a036e3a87ac587dc47972fda8486d56))
+
+
+### Features
+
+* add validation for email invitations and improve UX ([bc3f9ce](https://github.com/WatchItDev/watchit-app/commit/bc3f9cea2bf7ff6ab8cc2beb714299ccb70fee36))
+* enhance avatar styling with font and background changes ([2a7ce4c](https://github.com/WatchItDev/watchit-app/commit/2a7ce4c918d666a19494ab2fb5bdf4acb34be848))
+* **profile-header:** update social share hashtags on X ([f6e2c36](https://github.com/WatchItDev/watchit-app/commit/f6e2c36b2bed772d8eff5fb39df8c8c066052693))
+* update verified badge color to gold ([428ae78](https://github.com/WatchItDev/watchit-app/commit/428ae78c6fe12b24f83d1d1467bb13bbb77368ab)), closes [#cca421](https://github.com/WatchItDev/watchit-app/issues/cca421)
+
+# [2.2.0-beta.13](https://github.com/WatchItDev/watchit-app/compare/v2.2.0-beta.12...v2.2.0-beta.13) (2025-01-20)
+
+
+### Bug Fixes
+
+* auth loader HOC ([d3810e0](https://github.com/WatchItDev/watchit-app/commit/d3810e0087d909fb1b64455f9339c2e40911b577))
+* correct interface usage in finance-quick-transfer ([40e0055](https://github.com/WatchItDev/watchit-app/commit/40e00551e4c58c81c12dd772dec4a65d1294a677))
+* eslint warnings ([f7cf3e6](https://github.com/WatchItDev/watchit-app/commit/f7cf3e617e7a41abc4d6acc308d2964029be5c3c))
+* **i18n:** update tooltip text to English ([32b5233](https://github.com/WatchItDev/watchit-app/commit/32b5233a1a0ea4e150b88f442f73b45d11970604))
+* sonar cloud ([434aaef](https://github.com/WatchItDev/watchit-app/commit/434aaefadfd8a6519e93e0246e9792d9b55f14ba))
+* update payload key for self registration ([dc82897](https://github.com/WatchItDev/watchit-app/commit/dc82897ca48d29d81125a2f6e2698b23f609850a))
+
+
+### Features
+
+* add emailjs/browser dependency ([7a557db](https://github.com/WatchItDev/watchit-app/commit/7a557dbe089c236fb53fbfc19d63b4bd483261c7))
+* add verified badge to user profiles and items ([9b2b495](https://github.com/WatchItDev/watchit-app/commit/9b2b495711b0fd52dc39ffc8e6f03a56c9fca67d))
+* added dynamic og tags ([c01dd5e](https://github.com/WatchItDev/watchit-app/commit/c01dd5ed09be1a9dc329761aed052a91b91369a6))
+* added metamask required, adapt earn tokens on mobile, add transfer to/from to history table, added tx row to history table, added padding to deposit modal, added min to register form and edit ([ac99f55](https://github.com/WatchItDev/watchit-app/commit/ac99f55af9a2a094aab6edd348c7be2d1158ad6b))
+* added session validation, once the session is expired logout user and show a local notification informing the status ([295ab9a](https://github.com/WatchItDev/watchit-app/commit/295ab9a12b97031e0c4320f8a54b2a1b316563b3))
+* added verified connection ([323cc66](https://github.com/WatchItDev/watchit-app/commit/323cc663ccb02a3d83afd6f29b571ab188597d6d))
+* **auth:** add email field and setEmail action to auth slice ([1bfa5cf](https://github.com/WatchItDev/watchit-app/commit/1bfa5cf6f26c31afdb52de97b5ac49d62ec1c42e))
+* **auth:** retrieve and store user email on login ([328f9da](https://github.com/WatchItDev/watchit-app/commit/328f9da0bc211efe0488eb86196819108d879a13))
+* **config:** add email-related environment variables ([910dbf9](https://github.com/WatchItDev/watchit-app/commit/910dbf92c2a44aa9af03dac494b09dac85dd5a01))
+* email invites accept logic ([a0dc1c0](https://github.com/WatchItDev/watchit-app/commit/a0dc1c0f4e88699d321a0427615ed6177e506425))
+* remove resend button ([716cc8f](https://github.com/WatchItDev/watchit-app/commit/716cc8fe5a63491747e46195e42638dddfa4dc3d))
+* separate Supabase actions into dedicated utilities ([b8a1b81](https://github.com/WatchItDev/watchit-app/commit/b8a1b81ba0b40d15483f3c5a0136a5788f945029))
+* **table:** adjust pagination container to full width ([035e1d2](https://github.com/WatchItDev/watchit-app/commit/035e1d2fa6c70af2ccc5fe33dccc03bf311970c5))
+* **user-profile:** add referrals section to user profile ([ae48721](https://github.com/WatchItDev/watchit-app/commit/ae48721b0df2f03f81cf6a32247005f20bcea0a2))
+* **web3Auth:** add session time configuration ([b96a088](https://github.com/WatchItDev/watchit-app/commit/b96a088c9f43c52475bbb99426bb82e9fb85678a))
+
 # [2.2.0-beta.12](https://github.com/WatchItDev/watchit-app/compare/v2.2.0-beta.11...v2.2.0-beta.12) (2025-01-10)
 
 
