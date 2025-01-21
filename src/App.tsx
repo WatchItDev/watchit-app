@@ -133,8 +133,6 @@ const AppContent = () => {
   const { getNotifications } = useNotifications();
   const { enqueueSnackbar } = useSnackbar();
 
-  console.log(sessionData)
-
   useEffect(() => {
     // Set the global reference so we can call notify(...) anywhere.
     setGlobalNotifier(enqueueSnackbar);
