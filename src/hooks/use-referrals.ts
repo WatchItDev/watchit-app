@@ -1,7 +1,9 @@
 import { useState } from 'react';
-import emailjs from '@emailjs/browser';
-import { GLOBAL_CONSTANTS } from '@src/config-global';
 import { useSelector } from 'react-redux';
+import emailjs from '@emailjs/browser';
+
+import { GLOBAL_CONSTANTS } from '@src/config-global';
+import { Invitation } from '@src/types/invitation'; // <-- Importing from separate types file
 import {
   fetchInvitations as fetchInvitationsAction,
   checkIfMyEmailHasPendingInvite as checkIfMyEmailHasPendingInviteAction,
@@ -9,20 +11,12 @@ import {
   checkIfInvitationSent as checkIfInvitationSentAction,
   checkIfEmailAlreadyAccepted as checkIfEmailAlreadyAcceptedAction,
   sendInvitation as sendInvitationAction,
-  acceptOrCreateInvitationForUser as acceptOrCreateInvitationForUserAction
+  acceptOrCreateInvitationForUser as acceptOrCreateInvitationForUserAction,
 } from '@src/utils/supabase-actions';
 
-export interface Invitation {
-  id: string;
-  status: 'pending' | 'accepted' | 'rejected';
-  sender_email: string;
-  destination: string;
-  sender_id: string;
-  receiver_id: string | null;
-  payload: any;
-  created_at: string;
-}
-
+/**
+ * The type for sending emails through EmailJS.
+ */
 export type EmailParams = {
   to_email: string;
   from_name: string;
@@ -94,7 +88,10 @@ const useReferrals = () => {
     setLoading(true);
     setError(null);
 
-    const { data, error } = await acceptInvitationAction(invitationId, sessionData?.profile?.id);
+    const { data, error } = await acceptInvitationAction(
+      invitationId,
+      sessionData?.profile?.id
+    );
 
     if (error) {
       setError(error);
@@ -102,6 +99,7 @@ const useReferrals = () => {
       return null;
     }
 
+    // Update local state to reflect the accepted status
     setInvitations((prev) =>
       prev.map((inv) =>
         inv.id === invitationId
@@ -168,6 +166,7 @@ const useReferrals = () => {
    * @returns {Promise<void>} - Throws an error if something goes wrong.
    */
   const sendInvitation = async (destination: string, payload: any): Promise<void> => {
+    // Insert a new invitation into Supabase
     const { error } = await sendInvitationAction(destination, payload, userEmail, sessionData);
 
     if (error) {
@@ -176,7 +175,7 @@ const useReferrals = () => {
     } else {
       console.log('Invitation stored successfully in Supabase.');
 
-      // Send the email using EmailJS
+      // Send the email via EmailJS
       await sendEmail({
         to_email: destination,
         from_name: payload?.data?.from?.displayName ?? 'Watchit Web3xAI',
@@ -201,13 +200,17 @@ const useReferrals = () => {
     }
   };
 
+  /**
+   * Send an email with EmailJS.
+   */
   const sendEmail = async (data: EmailParams) => {
     const { from_name, to_email } = data;
 
+    // Set the template parameters for EmailJS
     const templateParams = {
       to_email,
       from_name,
-      from_email: GLOBAL_CONSTANTS.SENDER_EMAIL,
+      from_email: GLOBAL_CONSTANTS.SENDER_EMAIL, // <-- Enforcing the global from_email
     };
 
     try {
@@ -233,17 +236,15 @@ const useReferrals = () => {
     loading,
     error,
 
-    // Fetch/CRUD Methods
+    // CRUD/Fetch Methods
     fetchInvitations,
-    sendInvitation,
-    sendEmail,
-
-    // Additional Validation/Check Methods
     checkIfMyEmailHasPendingInvite,
     acceptInvitation,
     checkIfInvitationSent,
     checkIfEmailAlreadyAccepted,
-    acceptOrCreateInvitationForUser
+    sendInvitation,
+    acceptOrCreateInvitationForUser,
+    sendEmail,
   };
 };
 
