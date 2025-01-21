@@ -17,7 +17,7 @@ const BadgeVerified: FC<BadgeVerifiedProps> = ({ address }) => {
   // If the user is not verified, do not render the badge
   if (!isVerified) return null;
 
-  return <Icon width={20} color={"#FFF"} icon={"ic:round-verified"} />;
+  return <Icon width={20} color={"#cca421"} icon={"ic:round-verified"} />;
 };
 
 export default BadgeVerified;
