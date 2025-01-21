@@ -110,7 +110,7 @@ const FinanceEarnTokens: FC<FinanceEarnTokensProps> = ({ sx, lgUp, ...other }) =
                 mb: { xs: 2, xl: 2 },
               }}
             >
-              Invite your friends and complete tasks to grow your balance.
+              Complete tasks, grow your balance, and unlock exciting rewards.
             </Typography>
             <Button
               sx={{
@@ -122,7 +122,7 @@ const FinanceEarnTokens: FC<FinanceEarnTokensProps> = ({ sx, lgUp, ...other }) =
               startIcon={<Iconify icon={'fluent-emoji:trophy'} />}
               onClick={handleClick}
             >
-              Earn now!
+              Start earning now!
             </Button>
           </Stack>
           <Stack

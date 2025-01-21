@@ -129,7 +129,7 @@ export default function OverviewBankingView() {
             <FinanceInviteFriends
               price="50"
               title={`Refer and Earn!`}
-              description="Invite your friends to join our platform and earn MMC 50 for each successful referral."
+              description="Get 50 MMC for every friend who signs up using your referral link."
               img="/assets/illustrations/characters/character_11.png"
             />
           </Stack>
