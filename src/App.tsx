@@ -45,8 +45,19 @@ import { AuthProvider } from '@src/auth/context/web3Auth';
 import { ResponsiveOverlay } from '@src/components/responsive-overlay';
 
 import { Buffer } from 'buffer';
-import { Provider } from 'react-redux';
+import {Provider, useDispatch, useSelector} from 'react-redux';
 import { MetaMaskProvider } from '@metamask/sdk-react';
+import {useNotifications} from "@src/hooks/use-notifications.ts";
+import {useSnackbar} from "notistack";
+import {useEffect} from "react";
+import {setGlobalNotifier} from "@notifications/internal-notifications.ts";
+import {publicClientWebSocket} from "@src/clients/viem/publicClient.ts";
+import {GLOBAL_CONSTANTS} from "@src/config-global.ts";
+import LedgerVaultAbi from "@src/config/abi/LedgerVault.json";
+import {setBlockchainEvents} from "@redux/blockchain-events";
+import {subscribeToNotifications} from "@src/utils/subscribe-notifications-supabase.ts";
+import {getIPInfo, getUserIP} from "@src/utils/get-user-ip.ts";
+import {storeIpInfoInSupabase} from "@src/utils/supabase-actions.ts";
 
 window.Buffer = Buffer;
 
@@ -103,10 +114,7 @@ export default function App() {
                 <ThemeProvider>
                   <MotionLazy>
                     <SnackbarProvider>
-                      <SettingsDrawer />
-                      <ProgressBar />
-                      <Router />
-                      <ResponsiveOverlay />
+                      <AppContent />
                     </SnackbarProvider>
                   </MotionLazy>
                 </ThemeProvider>
@@ -116,4 +124,109 @@ export default function App() {
       </LocalizationProvider>
     </MetaMaskProvider>
   );
+}
+
+
+const AppContent = () => {
+  const dispatch = useDispatch();
+  const sessionData = useSelector((state: any) => state.auth.session);
+  const { getNotifications } = useNotifications();
+  const { enqueueSnackbar } = useSnackbar();
+
+  console.log(sessionData)
+
+  useEffect(() => {
+    // Set the global reference so we can call notify(...) anywhere.
+    setGlobalNotifier(enqueueSnackbar);
+  }, [enqueueSnackbar]);
+
+
+  useEffect(() => {
+    const fetchIP = async () => {
+      const ip = await getUserIP();
+
+      // Get IP info
+      const ipInfo = await getIPInfo(ip);
+
+      await storeIpInfoInSupabase(ip,ipInfo, sessionData?.address);
+    };
+    fetchIP();
+  }, []);
+
+  useEffect(() => {
+    if (!sessionData?.address) return;
+
+    // FundsDeposited (when i am the recipient)
+    const unwatchDeposit = publicClientWebSocket.watchContractEvent({
+      address: GLOBAL_CONSTANTS.LEDGER_VAULT_ADDRESS,
+      abi: LedgerVaultAbi.abi,
+      eventName: 'FundsDeposited',
+      args: { recipient: sessionData?.address },
+      onLogs: (logs) => {
+        console.log('New deposit (user as recipient):', logs);
+        dispatch(setBlockchainEvents(logs));
+      },
+    });
+
+    // FundsWithdrawn (when i am the origin)
+    const unwatchWithdraw = publicClientWebSocket.watchContractEvent({
+      address: GLOBAL_CONSTANTS.LEDGER_VAULT_ADDRESS,
+      abi: LedgerVaultAbi.abi,
+      eventName: 'FundsWithdrawn',
+      args: { origin: sessionData?.address },
+      onLogs: (logs) => {
+        console.log('New withdraw (user as origin):', logs);
+        dispatch(setBlockchainEvents(logs));
+      },
+    });
+
+    // FundsTransferred (when I send)
+    const unwatchTransferFrom = publicClientWebSocket.watchContractEvent({
+      address: GLOBAL_CONSTANTS.LEDGER_VAULT_ADDRESS,
+      abi: LedgerVaultAbi.abi,
+      eventName: 'FundsTransferred',
+      args: { origin: sessionData?.address },
+      onLogs: (logs) => {
+        console.log('New transfer from me:', logs);
+        dispatch(setBlockchainEvents(logs));
+      },
+    });
+
+    // FundsTransferred (when I receive)
+    const unwatchTransferTo = publicClientWebSocket.watchContractEvent({
+      address: GLOBAL_CONSTANTS.LEDGER_VAULT_ADDRESS,
+      abi: LedgerVaultAbi.abi,
+      eventName: 'FundsTransferred',
+      args: { recipient: sessionData?.address },
+      onLogs: (logs) => {
+        console.log('New transfer to me:', logs);
+        dispatch(setBlockchainEvents(logs));
+      },
+    });
+
+    return () => {
+      unwatchDeposit();
+      unwatchWithdraw();
+      unwatchTransferFrom();
+      unwatchTransferTo();
+    };
+  }, [sessionData?.address]);
+
+  useEffect(() => {
+    if (sessionData?.profile?.id) {
+      // Subscribe to notifications channel
+      subscribeToNotifications(sessionData?.profile?.id, dispatch, ['notifications']);
+
+      // Set the notifications in first render
+      getNotifications(sessionData?.profile?.id).then(() => {});
+    }
+  }, [sessionData?.profile?.id, dispatch]);
+  return (
+    <>
+      <SettingsDrawer />
+      <ProgressBar />
+      <Router />
+      <ResponsiveOverlay />
+    </>
+  )
 }
