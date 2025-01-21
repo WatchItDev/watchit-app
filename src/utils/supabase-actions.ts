@@ -194,3 +194,27 @@ export const acceptOrCreateInvitationForUser = async (
     return { error: err.message };
   }
 };
+
+
+/*
+* Verify if the email has already been invited.
+* Find in supabase if the email has already been invited, taking the destination email as a parameter.
+* */
+
+export const checkIfEmailAlreadyInvited = async (
+  destinationEmail: string
+): Promise<{ invited: boolean; error: string | null }> => {
+  try {
+    const { data, error } = await supabase
+      .from('invitations')
+      .select('id')
+      .eq('destination', destinationEmail);
+
+    return {
+      invited: !!data && data.length > 0,
+      error: error ? error.message : null,
+    };
+  } catch (err: any) {
+    return { invited: false, error: err.message };
+  }
+};
