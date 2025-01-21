@@ -31,7 +31,7 @@ export const GLOBAL_CONSTANTS = {
     process.env.VITE_ACCESS_MANAGER_ADDRESS || import.meta.env.VITE_ACCESS_MANAGER_ADDRESS || '',
   SENTRY_AUTH_TOKEN:
     process.env.VITE_SENTRY_AUTH_TOKEN || import.meta.env.VITE_SENTRY_AUTH_TOKEN || '',
-  SENTRY_DNS: process.env.VITE_SENTRY_DNS || import.meta.env.VITE_SENTRY_DNS || '',
+  SENTRY_DSN: process.env.VITE_SENTRY_DSN || import.meta.env.VITE_SENTRY_DSN || '',
   PINATA_API_KEY: process.env.VITE_PINATA_API_KEY || import.meta.env.VITE_PINATA_API_KEY || '',
   PINATA_SECRET_API_KEY:
     process.env.VITE_PINATA_SECRET_API_KEY || import.meta.env.VITE_PINATA_SECRET_API_KEY || '',

@@ -56,13 +56,11 @@ import BadgeVerified from "@src/components/user-item/BadgeVerified.tsx";
 const urlToShare = 'https://app.watchit.movie/profileId';
 const urlAttestationBase = 'https://polygon-amoy.easscan.org/attestation/view/';
 
-// const GeoAddress = '0xEFBBD14082cF2FbCf5Badc7ee619F0f4e36D0A5B'
-
 const shareLinks = [
   {
     icon: 'mingcute:social-x-line',
     label: 'X',
-    url: `https://x.com/share/?url=${encodeURIComponent(urlToShare)}&text=Visit%20my%20profile%20in%20Watchit&hashtags=Watchit`,
+    url: `https://x.com/share/?url=${encodeURIComponent(urlToShare)}&text=Visit%20my%20profile%20on%20Watchit&hashtags=Watchit,Crypto,Blockchain`,
   },
   {
     icon: 'mdi:facebook',
@@ -332,6 +330,7 @@ const ProfileHeader = ({
                 alt={profile?.handle?.localName ?? ''}
                 variant="rounded"
                 sx={{
+                  fontSize: '3em',
                   width: { xs: 96, md: 128 },
                   height: { xs: 96, md: 128 },
                   border: `solid 2px ${theme.palette.common.white}`,
