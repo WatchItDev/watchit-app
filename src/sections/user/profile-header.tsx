@@ -332,6 +332,7 @@ const ProfileHeader = ({
                 alt={profile?.handle?.localName ?? ''}
                 variant="rounded"
                 sx={{
+                  fontSize: '3em',
                   width: { xs: 96, md: 128 },
                   height: { xs: 96, md: 128 },
                   border: `solid 2px ${theme.palette.common.white}`,
