@@ -319,7 +319,7 @@ export const storeIpInfoInSupabase = async (ip: string, data: any, address: stri
 
     const { error: updateError } = await supabase
       .from('geolocations')
-      .update({ payload: newPayload, visits: visits + 1 })
+      .update({ payload: newPayload, visits: visits + 1, updated_at: new Date() })
       .eq('id', id);
 
     if (updateError) {
