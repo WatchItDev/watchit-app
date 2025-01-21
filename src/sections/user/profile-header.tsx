@@ -411,7 +411,7 @@ const ProfileHeader = ({
                     pointerEvents: 'none',
                   }}
                 >
-                  <Typography>Share Watchit on your social</Typography>
+                  <Typography>Share</Typography>
                 </Popover>
               </Stack>
             </Stack>
