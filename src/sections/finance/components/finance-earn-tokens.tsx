@@ -73,7 +73,7 @@ const FinanceEarnTokens: FC<FinanceEarnTokensProps> = ({ sx, lgUp, ...other }) =
             <Typography
               variant="body1"
               sx={{
-                display: { xs: 'none', md: 'flex' },
+                display: {  md: 'flex' },
                 maxWidth: 250,
                 mb: 1,
                 whiteSpace: 'pre-line',
@@ -107,7 +107,7 @@ const FinanceEarnTokens: FC<FinanceEarnTokensProps> = ({ sx, lgUp, ...other }) =
               sx={{
                 opacity: 0.8,
                 maxWidth: lgUp ? 220 : 'auto',
-                mb: { xs: 1, xl: 2 },
+                mb: { xs: 2, xl: 2 },
               }}
             >
               Invite your friends and complete tasks to grow your balance.
