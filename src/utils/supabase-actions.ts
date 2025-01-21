@@ -288,51 +288,96 @@ export const checkIfEmailAlreadyInvited = async (
 
 
 /**
- * Asynchronously stores or updates IP information in a Supabase database.
+ * Stores or updates IP and related geolocation information in Supabase.
  *
- * This function checks if the specified IP address already exists in the database.
- * If it exists, it updates the associated data and increments the visit count.
- * If it does not exist, it inserts a new record with the provided IP and data.
+ * This function checks if a record exists in Supabase for the provided address or IP.
+ * If an address exists, it updates the geolocation payload and visit count, and updates the IP if it has changed.
+ * If the address does not exist, it checks for an existing record by IP and updates the payload and visit count.
+ * If neither the address nor the IP exists in the database, a new record is created.
  *
- * @param {string} ip - The IP address to store or update in the database.
- * @param {any} data - The data to associate with the given IP address. This data
- *                     will be merged with existing data if the entry already exists.
- * @param {string} address - The address associated with the IP address.
- *
- * @returns {Promise<void>} Resolves when the operation is complete, logs any
- *                          errors encountered during the process.
+ * @async
+ * @function
+ * @param {string} ip - The IP address to be stored or updated in the database.
+ * @param {any} data - The geolocation data to be stored or merged with existing data.
+ * @param {string} address - The address associated with the geolocation information.
+ * @returns {Promise<void>} A promise that resolves when the operation is complete.
+ * @throws Will log errors to the console if any issues occur during database operations.
  */
 export const storeIpInfoInSupabase = async (ip: string, data: any, address: string): Promise<void> => {
-  const { data: existingData, error } = await supabase
-    .from('geolocations')
-    .select('*')
-    .eq('ip', ip);
-
-  if (error) {
-    console.error('Error fetching IP info:', error);
-    return;
-  }
-
-  if (existingData && existingData.length > 0) {
-    const { id, payload, visits } = existingData[0];
-    const newPayload = { ...payload, ...data };
-
-    const { error: updateError } = await supabase
+  try {
+    // Check if the address exists
+    const { data: addressData, error: addressError } = await supabase
       .from('geolocations')
-      .update({ payload: newPayload, visits: visits + 1, updated_at: new Date() })
-      .eq('id', id);
+      .select('*')
+      .eq('address', address);
 
-    if (updateError) {
-      console.error('Error updating IP info:', updateError);
+    if (addressError) {
+      console.error('Error fetching address info:', addressError);
+      return;
     }
-  } else {
-    const { error: insertError } = await supabase.from('geolocations').insert([
-      { ip, payload: data, visits: 1, address },
-    ]);
 
-    if (insertError) {
-      console.error('Error inserting IP info:', insertError);
+    // If the address exists, update the payload and visits
+    if (addressData && addressData.length > 0) {
+      const { id, payload, visits, ip: existingIp } = addressData[0];
+      const newPayload = { ...payload, ...data };
+
+      // Update IP if it has changed
+      if (existingIp !== ip) {
+        const { error: updateError } = await supabase
+          .from('geolocations')
+          .update({ ip, payload: newPayload, visits: visits + 1, updated_at: new Date() })
+          .eq('id', id);
+
+        if (updateError) {
+          console.error('Error updating IP info:', updateError);
+        }
+      } else {
+        // Update payload and visits if IP has not changed
+        const { error: updateError } = await supabase
+          .from('geolocations')
+          .update({ payload: newPayload, visits: visits + 1, updated_at: new Date() })
+          .eq('id', id);
+
+        if (updateError) {
+          console.error('Error updating payload info:', updateError);
+        }
+      }
+    } else {
+      // Check if the IP exists
+      const { data: ipData, error: ipError } = await supabase
+        .from('geolocations')
+        .select('*')
+        .eq('ip', ip);
+
+      if (ipError) {
+        console.error('Error fetching IP info:', ipError);
+        return;
+      }
+
+      if (ipData && ipData.length > 0) {
+        const { id, payload, visits } = ipData[0];
+        const newPayload = { ...payload, ...data };
+
+        const { error: updateError } = await supabase
+          .from('geolocations')
+          .update({ payload: newPayload, visits: visits + 1, updated_at: new Date() })
+          .eq('id', id);
+
+        if (updateError) {
+          console.error('Error updating IP info:', updateError);
+        }
+      } else {
+        // Insert new record if neither address nor IP exists
+        const { error: insertError } = await supabase.from('geolocations').insert([
+          { ip, payload: data, visits: 1, address },
+        ]);
+
+        if (insertError) {
+          console.error('Error inserting IP info:', insertError);
+        }
+      }
     }
+  } catch (err: any) {
+    console.error('Error in storeIpInfoInSupabase:', err.message);
   }
 };
-
