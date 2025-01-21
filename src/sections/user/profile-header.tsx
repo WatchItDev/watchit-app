@@ -56,8 +56,6 @@ import BadgeVerified from "@src/components/user-item/BadgeVerified.tsx";
 const urlToShare = 'https://app.watchit.movie/profileId';
 const urlAttestationBase = 'https://polygon-amoy.easscan.org/attestation/view/';
 
-// const GeoAddress = '0xEFBBD14082cF2FbCf5Badc7ee619F0f4e36D0A5B'
-
 const shareLinks = [
   {
     icon: 'mingcute:social-x-line',
