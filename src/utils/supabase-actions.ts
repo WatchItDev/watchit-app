@@ -154,6 +154,9 @@ export const acceptOrCreateInvitationForUser = async (
       throw new Error(`Error fetching pending invites: ${pendingError.message}`);
     }
 
+    console.log('acceptOrCreateInvitationForUser invites')
+    console.log(invites)
+
     // If we already have at least one invitation, accept the first.
     if (invites && invites.length > 0) {
       const invitationId = invites[0].id;
