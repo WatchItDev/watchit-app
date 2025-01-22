@@ -1,3 +1,11 @@
+# [2.2.0-beta.16](https://github.com/WatchItDev/watchit-app/compare/v2.2.0-beta.15...v2.2.0-beta.16) (2025-01-22)
+
+
+### Bug Fixes
+
+* dynamic og tags ([bfc151b](https://github.com/WatchItDev/watchit-app/commit/bfc151baa36910cd57a443549a7682422b770e5f))
+* sonarcloud errors ([54c7340](https://github.com/WatchItDev/watchit-app/commit/54c7340cc1690fd5ee5633d26766a63729805315))
+
 # [2.2.0-beta.15](https://github.com/WatchItDev/watchit-app/compare/v2.2.0-beta.14...v2.2.0-beta.15) (2025-01-22)
 
 
