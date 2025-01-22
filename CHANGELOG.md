@@ -1,3 +1,17 @@
+# [2.2.0-beta.15](https://github.com/WatchItDev/watchit-app/compare/v2.2.0-beta.14...v2.2.0-beta.15) (2025-01-22)
+
+
+### Bug Fixes
+
+* sonarcloud errors ([28953cb](https://github.com/WatchItDev/watchit-app/commit/28953cb07c91416304108760bdfee24a226941fe))
+* use account session and fix errors when the session is invalid ([1a9de20](https://github.com/WatchItDev/watchit-app/commit/1a9de20a42327960caa17695c825a473efa99bca))
+* web3auth session expiration, and refactor account-popover ([40e1359](https://github.com/WatchItDev/watchit-app/commit/40e13599b3f580bf68a3f7743ea5e69949093c15))
+
+
+### Features
+
+* added new events to transactions table ('locked', 'claimed', 'reserved', 'collected', 'released') ([dbd2767](https://github.com/WatchItDev/watchit-app/commit/dbd27679a115632b4fa74c2b2863fb4208ca5229))
+
 # [2.2.0-beta.14](https://github.com/WatchItDev/watchit-app/compare/v2.2.0-beta.13...v2.2.0-beta.14) (2025-01-21)
 
 
