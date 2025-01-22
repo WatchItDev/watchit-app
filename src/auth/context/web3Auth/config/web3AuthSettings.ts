@@ -126,6 +126,7 @@ export function web3AuthFactory(): Web3Auth {
     privateKeyProvider,
     accountAbstractionProvider,
     chainConfig: chain.polygonAmoy,
+    storageKey: 'local',
     clientId: GLOBAL_CONSTANTS.WEB3_CLIENT_ID,
     uiConfig: {
       appName: 'Watchit',

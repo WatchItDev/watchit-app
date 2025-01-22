@@ -12,6 +12,7 @@ const OverviewBankingViewWithAuth = withAuth(
 );
 
 export default function OverviewBankingPage() {
+
   return (
     <OgMetaTags
       title="Watchit: Finance Overview"

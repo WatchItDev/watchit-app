@@ -6,6 +6,7 @@ import MMCAbi from '@src/config/abi/MMC.json';
 import { GLOBAL_CONSTANTS } from '@src/config-global';
 import { useWeb3Session } from '@src/hooks/use-web3-session.ts';
 import { ERRORS } from '@notifications/errors.ts';
+import { useAccountSession } from '@src/hooks/use-account-session.ts';
 
 interface DepositParams {
   recipient: string; // address
@@ -25,6 +26,7 @@ export const useDeposit = (): UseDepositHook => {
   const [error, setError] = useState<keyof typeof ERRORS | null>(null);
   const { bundlerClient, smartAccount } = useWeb3Session();
   const sessionData = useSelector((state: any) => state.auth.session);
+  const { checkSessionValidity } = useAccountSession({ autoCheck: false });
 
   const approveMMC = (amount: number): string => {
     // Convert to Wei (assuming 18 decimals)
@@ -58,19 +60,19 @@ export const useDeposit = (): UseDepositHook => {
     setLoading(true);
     setError(null);
 
+    if (!sessionData?.authenticated) {
+      setError(ERRORS.DEPOSIT_FAILED_ERROR);
+      setLoading(false);
+      return;
+    }
+
+    if (!bundlerClient) {
+      checkSessionValidity();
+      setLoading(false);
+      throw new Error('Invalid Web3Auth session');
+    }
+
     try {
-      if (!sessionData?.authenticated) {
-        setError(ERRORS.DEPOSIT_FAILED_ERROR);
-        setLoading(false);
-        return;
-      }
-
-      if (!bundlerClient) {
-        setError(ERRORS.BUNDLER_UNAVAILABLE);
-        setLoading(false);
-        return;
-      }
-
       const approveData = approveMMC(amount);
       const depositData = initializeDeposit({ recipient, amount });
 
@@ -102,11 +104,8 @@ export const useDeposit = (): UseDepositHook => {
       setData(receipt);
       setLoading(false);
     } catch (err: any) {
-
+      console.error('USE DEPOSIT ERR:', err);
       setError(ERRORS.UNKNOWN_ERROR);
-
-      console.error('USE DEPOSIT:', err);
-
       setLoading(false);
     }
   };

@@ -98,8 +98,7 @@ export const ActivateSubscriptionProfileModal = ({
 
       onClose?.();
     } catch (err) {
-      console.error('err');
-      console.error(err);
+      notifyError(ERRORS.ACTIVATE_SUBSCRIPTION_FAILED_ERROR);
     }
   };
 

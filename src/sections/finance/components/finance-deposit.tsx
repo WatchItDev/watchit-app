@@ -100,7 +100,7 @@ const FinanceDeposit: FC<FinanceDepositProps> = ({ address, recipient, depositHo
       notifySuccess(SUCCESS.DEPOSIT_SUCCESSFULLY);
       onClose();
     } catch (err) {
-      notifyWarning(WARNING.NO_WALLET_AUTHORIZATION);
+      notifyError(ERRORS.DEPOSIT_ERROR);
     } finally {
       setLocalLoading(false);
     }
