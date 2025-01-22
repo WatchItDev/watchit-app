@@ -122,10 +122,12 @@ export function web3AuthFactory(): Web3Auth {
   });
 
   const web3AuthOptions: Web3AuthOptions = {
-    sessionTime: 60 * 60 * 24 * 30, // 30 days
+    // sessionTime: 60 * 60 * 24 * 30, // 30 days
+    sessionTime: 10, // 10 seconds
     privateKeyProvider,
     accountAbstractionProvider,
     chainConfig: chain.polygonAmoy,
+    // storageKey: 'local',
     clientId: GLOBAL_CONSTANTS.WEB3_CLIENT_ID,
     uiConfig: {
       appName: 'Watchit',
