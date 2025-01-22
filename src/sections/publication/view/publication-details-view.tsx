@@ -1,5 +1,5 @@
 // REACT IMPORTS
-import { FC, PropsWithChildren, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 // MUI IMPORTS
 import Box from '@mui/material/Box';
@@ -32,11 +32,7 @@ import { SubscribeProfileModal } from '@src/components/subscribe-profile-modal.t
 import LoadingButton from '@mui/lab/LoadingButton';
 import { useDispatch, useSelector } from 'react-redux';
 import { openLoginModal } from '@redux/auth';
-// @ts-ignore
-import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
 import { appId, PublicationType, usePublications } from '@lens-protocol/react-web';
-import { OgMetaTags } from '@src/components/og-meta-tags.tsx';
-import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 
 const MAX_LINES = 5;
 
@@ -120,36 +116,32 @@ export default function PublicationDetailsView({ id }: Props) {
   const filteredPublications = publications?.filter((publication) => publication.id !== id) ?? [];
 
   if (loading || accessLoading) return (
-    <PublicationDetailsTags image={getMediaUri(getPosterCid())} publicationId={id} title={data?.metadata?.title ?? 'publication'}>
-      <LoadingScreen />
-    </PublicationDetailsTags>
+    <LoadingScreen />
   );
 
   if (data.isHidden)
     return (
-      <PublicationDetailsTags image={getMediaUri(getPosterCid())} publicationId={id} title={data?.metadata?.title ?? 'publication'}>
-        <Box sx={{ padding: 2 }}>
-          <Typography
-            sx={{
-              height: '20rem',
-              textAlign: 'center',
-              width: '100%',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontWeight: 'bold',
-              background: '#2b2d31',
-              borderRadius: '1rem',
-            }}
-          >
-            Publication is hidden
-          </Typography>
-        </Box>
-      </PublicationDetailsTags>
+      <Box sx={{ padding: 2 }}>
+        <Typography
+          sx={{
+            height: '20rem',
+            textAlign: 'center',
+            width: '100%',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontWeight: 'bold',
+            background: '#2b2d31',
+            borderRadius: '1rem',
+          }}
+        >
+          Publication is hidden
+        </Typography>
+      </Box>
     );
 
   return (
-    <PublicationDetailsTags image={getMediaUri(getPosterCid())} publicationId={id} title={data?.metadata?.title ?? 'publication'}>
+    <>
       <Box
         sx={{
           flexDirection: {
@@ -370,29 +362,6 @@ export default function PublicationDetailsView({ id }: Props) {
         onSubscribe={onSubscribe}
         profile={data?.by}
       />
-    </PublicationDetailsTags>
+    </>
   );
-}
-
-interface PublicationDetailsTagsProps {
-  title: string
-  image: string
-  publicationId: string
-}
-
-const PublicationDetailsTags: FC<PropsWithChildren<PublicationDetailsTagsProps>> = ({ title, publicationId, image: customImage, children }) => {
-  // OG META TAGS DATA
-  const metaTitle = `Watchit: ${title}`
-  const description = 'Check out this amazing publication on Watchit, where content meets Web3 & AI.'
-  const image = customImage ?? GLOBAL_CONSTANTS.LOGO_URL
-  const url = `${GLOBAL_CONSTANTS.BASE_URL}/publication/${publicationId}`
-
-  return <OgMetaTags
-    title={metaTitle}
-    description={description}
-    image={image}
-    url={url}
-  >
-    {children}
-  </OgMetaTags>
 }

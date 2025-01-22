@@ -22,15 +22,36 @@ type Props = {
 // ----------------------------------------------------------------------
 
 const urlTxBase = 'https://www.oklink.com/es-la/amoy/tx/';
+const COLORS = {
+  success: '#00AB55',
+  danger: '#FF4842',
+  warning: '#dc9f00',
+  info: '#3a7dd5',
+}
+
+const TX_COLORS: any = {
+  'transferTo': COLORS.danger,
+  'transferFrom': COLORS.success,
+  'deposit': COLORS.success,
+  'withdraw': COLORS.danger,
+  'locked': COLORS.info,
+  'claimed': COLORS.success,
+  'reserved': COLORS.warning,
+  'collected': COLORS.success,
+  'released': COLORS.success,
+}
 
 // ----------------------------------------------------------------------
 
 export default function FinanceTransactionTableRow({ row, selected }: Props) {
-  const { date, name, amount, avatarUrl, message, category, id } = row;
+  const { date, name, amount, avatarUrl, message, category, id, type } = row;
 
   const dateObject = new Date(Number(date) * 1000);
   const dateLbl = format(dateObject, 'dd/MM/yyyy');
   const timeLbl = format(dateObject, 'p');
+
+  console.log('row')
+  console.log(row)
 
   const renderPrimary = (
     <TableRow hover selected={selected}>
@@ -61,7 +82,7 @@ export default function FinanceTransactionTableRow({ row, selected }: Props) {
       </TableCell>
 
       <TableCell>
-        <Typography variant="body2" sx={{ color: category === 'income' ? '#00AB55' : '#FF4842' }}>
+        <Typography variant="body2" sx={{ color: `${TX_COLORS?.[type]}` }}>
           {category === 'income' ? '' : '-'} {amount} MMC
         </Typography>
       </TableCell>

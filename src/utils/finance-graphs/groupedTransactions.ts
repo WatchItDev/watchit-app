@@ -115,19 +115,79 @@ export type ProcessedTransactionData = {
   amount: string | null;
 };
 
+type EventName =
+  | 'transferFrom'
+  | 'transferTo'
+  | 'deposit'
+  | 'withdraw'
+  | 'locked'
+  | 'claimed'
+  | 'reserved'
+  | 'collected'
+  | 'released';
+
+type EventConfig = {
+  getName: (args: any) => string;
+  getAvatarUrl: (args: any) => string;
+};
+
+const eventConfig: Record<EventName, EventConfig> = {
+  transferFrom: {
+    getName: (args) => args.origin,
+    getAvatarUrl: (args) => dicebear(args.origin),
+  },
+  transferTo: {
+    getName: (args) => args.recipient,
+    getAvatarUrl: (args) => dicebear(args.recipient),
+  },
+  deposit: {
+    getName: (args) => args.recipient,
+    getAvatarUrl: (args) => dicebear(args.recipient),
+  },
+  withdraw: {
+    getName: (args) => args.origin,
+    getAvatarUrl: (args) => dicebear(args.origin),
+  },
+  locked: {
+    getName: (args) => args.account,
+    getAvatarUrl: (args) => dicebear(args.account),
+  },
+  claimed: {
+    getName: (args) => args.claimer,
+    getAvatarUrl: (args) => dicebear(args.claimer),
+  },
+  reserved: {
+    getName: (args) => args.from,
+    getAvatarUrl: (args) => dicebear(args.from),
+  },
+  collected: {
+    getName: (args) => args.from,
+    getAvatarUrl: (args) => dicebear(args.from),
+  },
+  released: {
+    getName: (args) => args.to,
+    getAvatarUrl: (args) => dicebear(args.to),
+  },
+};
+
 export const processTransactionData = (data: TransactionLog[]): ProcessedTransactionData[] => {
-  return data?.map((transaction, _index) => ({
-    id: transaction.transactionHash,
-    name:
-      transaction.event === 'transferFrom' ? transaction.args.origin : transaction.args.recipient,
-    avatarUrl: dicebear(transaction.event === 'transferFrom' ? transaction.args.origin : transaction.args.recipient),
-    type: transaction.event,
-    message: parseTransactionTypeLabel(transaction.event),
-    category: parseTransactionType(transaction.event),
-    date: transaction.timestamp,
-    status: 'completed',
-    amount: transaction.formattedAmount,
-  }));
+  return data.map((transaction) => {
+    const config = eventConfig[transaction.event as EventName];
+    const name = config ? config.getName(transaction.args) : 'Unknown';
+    const avatarUrl = config ? config.getAvatarUrl(transaction.args) : dicebear('default');
+
+    return {
+      id: transaction.transactionHash,
+      name,
+      avatarUrl,
+      type: transaction.event,
+      message: parseTransactionTypeLabel(transaction.event),
+      category: parseTransactionType(transaction.event),
+      date: transaction.timestamp,
+      status: 'completed',
+      amount: transaction.formattedAmount,
+    };
+  });
 };
 
 const parseTransactionTypeLabel = (type: string): string => {
@@ -140,6 +200,16 @@ const parseTransactionTypeLabel = (type: string): string => {
       return 'Deposited';
     case 'withdraw':
       return 'Withdraw';
+    case 'locked':
+      return 'Locked';
+    case 'claimed':
+      return 'Claimed';
+    case 'reserved':
+      return 'Reserved';
+    case 'collected':
+      return 'Collected';
+    case 'released':
+      return 'Released';
 
     default:
       return type;
@@ -157,6 +227,16 @@ const parseTransactionType = (type: string): string => {
       return 'income';
     case 'withdraw':
       return 'outcome';
+    case 'locked':
+      return 'other';
+    case 'claimed':
+      return 'other';
+    case 'reserved':
+      return 'other';
+    case 'collected':
+      return 'other';
+    case 'released':
+      return 'other';
 
     default:
       return type;

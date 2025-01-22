@@ -99,43 +99,47 @@ function FinanceQuickTransferModal({
   }
 
   const handleConfirmTransfer = async () => {
-    await transfer({ amount, recipient: address ?? '' });
+    try {
+      await transfer({ amount, recipient: address ?? '' });
 
-    const senderId = sessionData?.profile?.id ?? address;
+      const senderId = sessionData?.profile?.id ?? address;
 
-    // Build the notification payload
-    const notificationPayload = generatePayload(
-      'TRANSFER',
-      {
-        id: isSame ? (contactInfo?.id ?? '') : (address ?? ''),
-        displayName: isSame ? (contactInfo?.metadata?.displayName ?? 'No name') : 'External wallet',
-        avatar: (contactInfo?.metadata?.picture as any)?.optimized?.uri ?? '',
-      },
-      {
-        rawDescription: `${sessionData?.profile?.metadata?.displayName ?? address} sent you ${amount} MMC`,
+      // Build the notification payload
+      const notificationPayload = generatePayload(
+        'TRANSFER',
+        {
+          id: isSame ? (contactInfo?.id ?? '') : (address ?? ''),
+          displayName: isSame ? (contactInfo?.metadata?.displayName ?? 'No name') : 'External wallet',
+          avatar: (contactInfo?.metadata?.picture as any)?.optimized?.uri ?? '',
+        },
+        {
+          rawDescription: `${sessionData?.profile?.metadata?.displayName ?? address} sent you ${amount} MMC`,
+          message,
+        }
+      );
+
+      // Store transaction in supabase
+      await storeTransactionInSupabase(contactInfo?.id ?? address, senderId, {
+        address: contactInfo?.ownedBy?.address ?? address,
+        amount,
         message,
-      }
-    );
+        ...notificationPayload,
+      });
 
-    // Store transaction in supabase
-    await storeTransactionInSupabase(contactInfo?.id ?? address, senderId, {
-      address: contactInfo?.ownedBy?.address ?? address,
-      amount,
-      message,
-      ...notificationPayload,
-    });
+      // Send notification to lens profile or address
+      await sendNotification(
+        contactInfo?.id ?? address ?? '',
+        sessionData?.profile?.id,
+        notificationPayload
+      );
 
-    // Send notification to lens profile or address
-    await sendNotification(
-      contactInfo?.id ?? address ?? '',
-      sessionData?.profile?.id,
-      notificationPayload
-    );
-
-    notifySuccess(SUCCESS.TRANSFER_CREATED_SUCCESSFULLY, {
-      destination: isSame ? contactInfo?.metadata?.displayName : truncateAddress(address ?? ''),
-    });
-    onFinish();
+      notifySuccess(SUCCESS.TRANSFER_CREATED_SUCCESSFULLY, {
+        destination: isSame ? contactInfo?.metadata?.displayName : truncateAddress(address ?? ''),
+      });
+      onFinish();
+    } catch (err: any) {
+      notifyError(ERRORS.TRANSFER_FAILED_ERROR);
+    }
   };
 
   const RainbowEffect = transferLoading ? NeonPaper : Box;
