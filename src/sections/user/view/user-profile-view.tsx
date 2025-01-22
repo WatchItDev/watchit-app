@@ -1,4 +1,4 @@
-import { FC, PropsWithChildren, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 // @mui
 import Tab from '@mui/material/Tab';
 import Container from '@mui/material/Container';
@@ -22,8 +22,6 @@ import { RootState } from '@src/redux/store';
 import { setFollowers, setFollowings } from '@redux/followers';
 import ProfileReferrals from "@src/sections/user/profile-referrals.tsx";
 import useReferrals from "@src/hooks/use-referrals.ts";
-import { OgMetaTags } from '@src/components/og-meta-tags.tsx';
-import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 
 // ----------------------------------------------------------------------
 
@@ -114,13 +112,11 @@ const UserProfileView = ({ id }: any) => {
   }));
 
   if (loadingProfile || loadingPublications) return (
-    <ProfileTags profile={profile}>
-      <LoadingScreen />
-    </ProfileTags>
+    <LoadingScreen />
   );
 
   return (
-    <ProfileTags profile={profile}>
+    <>
       <Container maxWidth={settings.themeStretch ? false : 'lg'} sx={{ overflowX: 'hidden' }}>
         <ProfileHeader profile={profile as any}>
           <Tabs
@@ -157,7 +153,7 @@ const UserProfileView = ({ id }: any) => {
         {currentTab === 'following' && profile && <ProfileFollowing />}
         {currentTab === 'referrals' && sessionData?.profile?.id === id && <ProfileReferrals referrals={referrals} loading={loadingReferrals}  />}
       </Container>
-    </ProfileTags>
+    </>
   );
 };
 
@@ -169,25 +165,5 @@ const TabLabel = ({ label, count }: any) => (
     )}
   </>
 );
-
-interface ProfileTagsProps {
-  profile: any
-}
-
-const ProfileTags: FC<PropsWithChildren<ProfileTagsProps>> = ({ profile, children }) => {
-  // OG META TAGS DATA
-  const title = `Watchit: Profile of "${profile?.metadata?.displayName}"`
-  const description = 'Discover this user’s profile on Watchit, a decentralized platform powered by Web3 & AI.'
-  const url = `${GLOBAL_CONSTANTS.BASE_URL}/profile/${profile?.id}`
-
-  return <OgMetaTags
-    title={title}
-    description={description}
-    url={url}
-  >
-    {children}
-  </OgMetaTags>
-}
-
 
 export default UserProfileView;

@@ -16,7 +16,7 @@ export default function ProductDetailsPage() {
       description="Discover the latest decentralized creations on Watchit. Powered by Web3 & AI."
       url={`${GLOBAL_CONSTANTS.BASE_URL}/governance`}
     >
-      <GovernanceDetailsView title="" />
+      <GovernanceDetailsView />
     </OgMetaTags>
   )
 }
