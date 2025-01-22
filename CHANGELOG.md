@@ -1,3 +1,18 @@
+# [2.2.0-beta.14](https://github.com/WatchItDev/watchit-app/compare/v2.2.0-beta.13...v2.2.0-beta.14) (2025-01-21)
+
+
+### Bug Fixes
+
+* update typo in Sentry DSN and adjust minor details ([9c83319](https://github.com/WatchItDev/watchit-app/commit/9c8331977a036e3a87ac587dc47972fda8486d56))
+
+
+### Features
+
+* add validation for email invitations and improve UX ([bc3f9ce](https://github.com/WatchItDev/watchit-app/commit/bc3f9cea2bf7ff6ab8cc2beb714299ccb70fee36))
+* enhance avatar styling with font and background changes ([2a7ce4c](https://github.com/WatchItDev/watchit-app/commit/2a7ce4c918d666a19494ab2fb5bdf4acb34be848))
+* **profile-header:** update social share hashtags on X ([f6e2c36](https://github.com/WatchItDev/watchit-app/commit/f6e2c36b2bed772d8eff5fb39df8c8c066052693))
+* update verified badge color to gold ([428ae78](https://github.com/WatchItDev/watchit-app/commit/428ae78c6fe12b24f83d1d1467bb13bbb77368ab)), closes [#cca421](https://github.com/WatchItDev/watchit-app/issues/cca421)
+
 # [2.2.0-beta.13](https://github.com/WatchItDev/watchit-app/compare/v2.2.0-beta.12...v2.2.0-beta.13) (2025-01-20)
 
 
