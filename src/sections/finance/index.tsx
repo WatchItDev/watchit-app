@@ -42,6 +42,8 @@ export default function OverviewBankingView() {
     setPercent(calculatedPercent);
   }, [transactions, loading]);
 
+
+
   return (
     <Container
       sx={{
