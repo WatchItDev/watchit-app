@@ -158,42 +158,20 @@ const AppContent = () => {
     return results;
   };
 
-/**
-  * Deposit    Deposited    Verde    Fuente, monto, TX.
-  * Transfer From    Transfer from    Verde    Origen, monto, TX.
-  * Transfer To    Transfer to    Rojo    Destino, monto, TX.
-  * Withdraw To    Withdraw to    Rojo    Destino, monto, TX.
-  * Reserve To    Reserved    Amarillo    Propósito, monto, TX.
-  * Collect From    Collected    Verde    Origen, monto, TX.
-  * Locked    Locked    Azul    Propósito, monto, TX.
-  * Release    Released    Verde    Destino (si aplica), monto, TX.
-  * Claim    Claimed    Verde    Propósito/acuerdo, monto, TX.
-*/
-
   useEffect(() => {
     if (!sessionData?.address) return;
-
-    // @TODO Add the rest of the events
-    // Analiazed taking care of the user as the recipient or origin
-    const newEvents = [
-      { name: 'FundsDeposited', args: { recipient: sessionData?.address }, logText: 'Deposited' },
-      { name: 'FundsTransferFrom', args: { origin: sessionData?.address }, logText: 'Transfer from' },
-      { name: 'FundsTransferTo', args: { recipient: sessionData?.address }, logText: 'Transfer to' },
-      { name: 'FundsWithdrawTo', args: { recipient: sessionData?.address }, logText: 'Withdraw to' },
-      { name: 'FundsReserved', args: { recipient: sessionData?.address }, logText: 'Reserved' },
-      { name: 'FundsCollected', args: { origin: sessionData?.address }, logText: 'Collected' },
-      { name: 'FundsLocked', args: { recipient: sessionData?.address }, logText: 'Locked' },
-      { name: 'FundsReleased', args: { origin: sessionData?.address }, logText: 'Released' },
-      { name: 'FundsClaimed', args: { recipient: sessionData?.address }, logText: 'Claimed' },
-    ]
 
     const events = [
       { name: 'FundsDeposited', args: { recipient: sessionData?.address }, logText: 'New deposit (user as recipient):' },
       { name: 'FundsWithdrawn', args: { origin: sessionData?.address }, logText: 'New withdraw (user as origin):' },
       { name: 'FundsTransferred', args: { origin: sessionData?.address }, logText: 'New transfer from me:' },
       { name: 'FundsTransferred', args: { recipient: sessionData?.address }, logText: 'New transfer to me:' },
+      { name: 'FundsLocked', args: { account: sessionData?.address }, logText: 'New funds locked:' },
+      { name: 'FundsClaimed', args: { claimer: sessionData?.address }, logText: 'New funds claimed:' },
+      { name: 'FundsReserved', args: { from: sessionData?.address }, logText: 'New funds reserved:' },
+      { name: 'FundsCollected', args: { from: sessionData?.address }, logText: 'New funds collected:' },
+      { name: 'FundsReleased', args: { to: sessionData?.address }, logText: 'New funds released:' },
     ];
-
 
     const unwatchers = events.map(event => watchEvent(event.name, event.args, event.logText));
 

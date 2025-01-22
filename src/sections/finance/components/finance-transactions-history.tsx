@@ -30,7 +30,11 @@ import useGetSmartWalletTransactions from '@src/hooks/use-get-smart-wallet-trans
 import { processTransactionData } from '@src/utils/finance-graphs/groupedTransactions';
 import FinanceOverlayLoader from '@src/sections/finance/components/finance-overlay-loader.tsx';
 
-const STATUS_OPTIONS = [{ value: 'all', label: 'All' }, ...TRANSACTIONS_TYPES.slice(0, -2)];
+const STATUS_OPTIONS = [
+  { value: 'all', label: 'All' },
+  ...TRANSACTIONS_TYPES,
+  { value: 'other', label: 'Other' }
+];
 
 const TABLE_HEAD = [
   { id: 'name', label: 'Transaction Info', width: 20 },
@@ -88,6 +92,10 @@ export default function FinanceTransactionsHistory() {
     [handleFilters]
   );
 
+  const removeDuplicatesById = (array: any[]) => {
+    return Array.from(new Map(array.map((item) => [item.id, item])).values());
+  }
+
   return (
     <>
       <Tabs
@@ -113,21 +121,43 @@ export default function FinanceTransactionsHistory() {
                   color={
                     (tab.value === 'transferFrom' && 'success') ||
                     (tab.value === 'transferTo' && 'warning') ||
+                    (tab.value === 'other' && 'info') ||
                     'default'
                   }
                 >
-                  {tab.value === 'all' && transactionData.length}
+                  {tab.value === 'all' &&
+                    removeDuplicatesById(transactionData).length
+                  }
                   {tab.value === 'transferFrom' &&
-                    transactionData.filter(
-                      (t) =>
-                        t.type.toLowerCase() === 'transferto' || t.type.toLowerCase() === 'withdraw'
-                    ).length}
+                    removeDuplicatesById(
+                      transactionData.filter(
+                        (t) =>
+                          t.type.toLowerCase() === 'transferto' ||
+                          t.type.toLowerCase() === 'withdraw'
+                      )
+                    ).length
+                  }
                   {tab.value === 'transferTo' &&
-                    transactionData.filter(
-                      (t) =>
-                        t.type.toLowerCase() === 'transferfrom' ||
-                        t.type.toLowerCase() === 'deposit'
-                    ).length}
+                    removeDuplicatesById(
+                      transactionData.filter(
+                        (t) =>
+                          t.type.toLowerCase() === 'transferfrom' ||
+                          t.type.toLowerCase() === 'deposit'
+                      )
+                    ).length
+                  }
+                  {tab.value === 'other' &&
+                    removeDuplicatesById(
+                      transactionData.filter(
+                        (t) =>
+                          t.type.toLowerCase() === 'locked' ||
+                          t.type.toLowerCase() === 'claimed' ||
+                          t.type.toLowerCase() === 'reserved' ||
+                          t.type.toLowerCase() === 'collected' ||
+                          t.type.toLowerCase() === 'released'
+                      )
+                    ).length
+                  }
                 </Label>
               }
             />
@@ -224,7 +254,23 @@ function applyFilter({
         (t) => t.type.toLowerCase() === 'transferfrom' || t.type.toLowerCase() === 'deposit'
       );
     }
+
+    if (status === 'other') {
+      filteredData = filteredData.filter(
+        (t) =>
+          t.type.toLowerCase() === 'locked' ||
+          t.type.toLowerCase() === 'claimed' ||
+          t.type.toLowerCase() === 'reserved' ||
+          t.type.toLowerCase() === 'collected' ||
+          t.type.toLowerCase() === 'released'
+      );
+    }
   }
+
+  // delete duplicated items
+  filteredData = Array.from(
+    new Map(filteredData.map((item) => [item.id, item])).values()
+  );
 
   return filteredData;
 }

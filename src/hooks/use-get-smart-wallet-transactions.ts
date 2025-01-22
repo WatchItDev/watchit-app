@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { parseAbiItem, formatUnits, Address } from 'viem';
 import { useDispatch, useSelector } from 'react-redux';
+import { parseAbiItem, formatUnits, Address } from 'viem';
 import { publicClient } from '@src/clients/viem/publicClient.ts';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 import LedgerVaultAbi from '@src/config/abi/LedgerVault.json';
@@ -29,133 +29,71 @@ export type TransactionLog = {
   transactionIndex: number;
 };
 
-const useGetSmartWalletTransactions = () => {
+type EventConfig = {
+  eventName: string;
+  args: Record<string, string | bigint>;
+  getEventType: (log: any, userAddress: string) => string;
+};
+
+export const useGetSmartWalletTransactions = () => {
   const dispatch = useDispatch();
   const sessionData = useSelector((state: any) => state.auth.session);
   const blockchainEvents = useSelector((state: any) => state.blockchainEvents.events);
   const transactions = useSelector((state: any) => state.transactions.transactions);
 
-  // Local states for loading and error
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Function to fetch historical logs
-  const fetchLogs = async () => {
-    if (!sessionData?.address) {
-      setLoading(false);
-      return;
-    }
+  const eventConfigs: EventConfig[] = [
+    {
+      eventName: 'FundsTransferred',
+      args: { recipient: sessionData?.address || '' },
+      getEventType: (log, userAddress) =>
+        log.args.origin === userAddress ? 'transferTo' : 'transferFrom',
+    },
+    {
+      eventName: 'FundsTransferred',
+      args: { origin: sessionData?.address || '' },
+      getEventType: (log, userAddress) =>
+        log.args.origin === userAddress ? 'transferTo' : 'transferFrom',
+    },
+    {
+      eventName: 'FundsDeposited',
+      args: { recipient: sessionData?.address || '' },
+      getEventType: () => 'deposit',
+    },
+    {
+      eventName: 'FundsWithdrawn',
+      args: { origin: sessionData?.address || '' },
+      getEventType: () => 'withdraw',
+    },
+    {
+      eventName: 'FundsLocked',
+      args: { account: sessionData?.address || '' },
+      getEventType: () => 'locked',
+    },
+    {
+      eventName: 'FundsClaimed',
+      args: { claimer: sessionData?.address || '' },
+      getEventType: () => 'claimed',
+    },
+    {
+      eventName: 'FundsReserved',
+      args: { from: sessionData?.address || '' },
+      getEventType: () => 'reserved',
+    },
+    {
+      eventName: 'FundsCollected',
+      args: { from: sessionData?.address || '' },
+      getEventType: () => 'collected',
+    },
+    {
+      eventName: 'FundsReleased',
+      args: { to: sessionData?.address || '' },
+      getEventType: () => 'released',
+    },
+  ];
 
-    try {
-      setLoading(true);
-      setError(null);
-
-      // Define ABI for events to monitor
-      const eventsAbi = {
-        FundsTransferred: parseAbiItem(
-          createEventSignature(
-            LedgerVaultAbi.abi.find(
-              (item: any) => item.type === 'event' && item.name === 'FundsTransferred'
-            )
-          )
-        ),
-        FundsDeposited: parseAbiItem(
-          createEventSignature(
-            LedgerVaultAbi.abi.find(
-              (item: any) => item.type === 'event' && item.name === 'FundsDeposited'
-            )
-          )
-        ),
-        FundsWithdrawn: parseAbiItem(
-          createEventSignature(
-            LedgerVaultAbi.abi.find(
-              (item: any) => item.type === 'event' && item.name === 'FundsWithdrawn'
-            )
-          )
-        ),
-      };
-
-      // Fetch logs for each event
-      const [transfersToMe, transfersFromMe, deposits, withdraws] = await Promise.all([
-        publicClient.getLogs({
-          address: GLOBAL_CONSTANTS.LEDGER_VAULT_ADDRESS as Address,
-          event: eventsAbi.FundsTransferred as any,
-          args: { recipient: sessionData.address },
-          fromBlock: 0n,
-          toBlock: 'latest',
-        }),
-        publicClient.getLogs({
-          address: GLOBAL_CONSTANTS.LEDGER_VAULT_ADDRESS as Address,
-          event: eventsAbi.FundsTransferred as any,
-          args: { origin: sessionData.address },
-          fromBlock: 0n,
-          toBlock: 'latest',
-        }),
-        publicClient.getLogs({
-          address: GLOBAL_CONSTANTS.LEDGER_VAULT_ADDRESS as Address,
-          event: eventsAbi.FundsDeposited as any,
-          args: { recipient: sessionData.address },
-          fromBlock: 0n,
-          toBlock: 'latest',
-        }),
-        publicClient.getLogs({
-          address: GLOBAL_CONSTANTS.LEDGER_VAULT_ADDRESS as Address,
-          event: eventsAbi.FundsWithdrawn as any,
-          args: { origin: sessionData.address },
-          fromBlock: 0n,
-          toBlock: 'latest',
-        }),
-      ]);
-
-      const allLogs = [...transfersToMe, ...transfersFromMe, ...deposits, ...withdraws];
-
-      // Add timestamps and format details for each log
-      const logsWithDetails = await Promise.all(
-        allLogs.map(async (log: any) => {
-          const block = await publicClient.getBlock({ blockNumber: log.blockNumber });
-
-          // Determine the event type
-          const event = (() => {
-            switch (log.eventName) {
-              case 'FundsTransferred':
-                return log.args.origin === sessionData.address ? 'transferTo' : 'transferFrom';
-              case 'FundsDeposited':
-                return 'deposit';
-              case 'FundsWithdrawn':
-                return 'withdraw';
-              default:
-                return 'unknown';
-            }
-          })();
-
-          return {
-            ...log,
-            timestamp: block.timestamp, // UNIX timestamp of the block
-            readableDate: new Date(Number(block.timestamp) * 1000).toLocaleString(), // Human-readable date
-            formattedAmount: log.args.amount ? formatUnits(log.args.amount, 18) : '0', // Convert amount from wei to ether
-            event,
-          };
-        })
-      );
-
-      // Sort logs by block number and transaction index
-      const sortedLogs = logsWithDetails.sort((a, b) => {
-        const blockDifference = Number(b.blockNumber) - Number(a.blockNumber);
-        if (blockDifference !== 0) return blockDifference;
-        return Number(b.transactionIndex) - Number(a.transactionIndex);
-      });
-
-      // Dispatch the setTransactions action to store the logs in Redux
-      dispatch(setTransactions(sortedLogs));
-    } catch (err) {
-      console.error('Error fetching logs:', err);
-      setError(err instanceof Error ? err.message : 'An unknown error occurred');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // Helper function to create event signatures
   const createEventSignature = (event: any): string => {
     if (!event || !event.name || !event.inputs) {
       throw new Error('Invalid event in ABI');
@@ -166,65 +104,121 @@ const useGetSmartWalletTransactions = () => {
     return `event ${event.name}(${inputs})`;
   };
 
-  // Effect to fetch historical logs when the address changes
+  const uniqueEventNames = Array.from(
+    new Set(eventConfigs.map((config) => config.eventName))
+  );
+
+  const parsedAbis = uniqueEventNames.reduce((acc, eventName) => {
+    const eventAbi = LedgerVaultAbi.abi.find(
+      (item: any) => item.type === 'event' && item.name === eventName
+    );
+    if (!eventAbi) {
+      throw new Error(`The event is not fund ${eventName} on the ABI`);
+    }
+    acc[eventName] = parseAbiItem(createEventSignature(eventAbi));
+    return acc;
+  }, {} as Record<string, ReturnType<typeof parseAbiItem>>);
+
+  const fetchLogs = async () => {
+    if (!sessionData?.address) {
+      setLoading(false);
+      return;
+    }
+
+    try {
+      setLoading(true);
+      setError(null);
+
+      const promises = eventConfigs.map(({ eventName, args }) => {
+        return publicClient.getLogs({
+          address: GLOBAL_CONSTANTS.LEDGER_VAULT_ADDRESS as Address,
+          event: parsedAbis[eventName] as any,
+          args,
+          fromBlock: 0n,
+          toBlock: 'latest',
+        });
+      });
+
+      const results = await Promise.all(promises);
+
+      const allLogs = results.flat();
+
+      const logsWithDetails = await Promise.all(
+        allLogs.map(async (log: any) => {
+          const block = await publicClient.getBlock({ blockNumber: log.blockNumber });
+
+          const foundConfig = eventConfigs.find((c) => c.eventName === log.eventName);
+          const eventType = foundConfig
+            ? foundConfig.getEventType(log, sessionData?.address)
+            : 'unknown';
+
+          return {
+            ...log,
+            timestamp: block.timestamp,
+            readableDate: new Date(Number(block.timestamp) * 1000).toLocaleString(),
+            formattedAmount: log.args.amount ? formatUnits(log.args.amount, 18) : '0',
+            event: eventType,
+          };
+        })
+      );
+
+      const sortedLogs = logsWithDetails.sort((a, b) => {
+        const blockDifference = Number(b.blockNumber) - Number(a.blockNumber);
+        if (blockDifference !== 0) return blockDifference;
+        return Number(b.transactionIndex) - Number(a.transactionIndex);
+      });
+
+      dispatch(setTransactions(sortedLogs));
+    } catch (err) {
+      console.error('Error fetching logs:', err);
+      setError(err instanceof Error ? err.message : 'An unknown error occurred');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     fetchLogs();
-
-    // Disable loader if data is already available
     if (transactions.length) {
       setLoading(false);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sessionData?.address]);
 
-  // Effect to handle real-time events from blockchainEvents
   useEffect(() => {
-    if (!blockchainEvents || blockchainEvents.length === 0) return;
+    if (!blockchainEvents?.length) return;
 
-    // Iterate over new blockchain events
     blockchainEvents.forEach(async (log: any) => {
-      // Process only relevant events
       if (
         log.address !== GLOBAL_CONSTANTS.LEDGER_VAULT_ADDRESS ||
-        !['FundsTransferred', 'FundsDeposited', 'FundsWithdrawn'].includes(log.eventName)
+        !uniqueEventNames.includes(log.eventName)
       ) {
         return;
       }
 
       try {
         const block = await publicClient.getBlock({ blockNumber: log.blockNumber });
+        const foundConfig = eventConfigs.find((c) => c.eventName === log.eventName);
+        const eventType = foundConfig
+          ? foundConfig.getEventType(log, sessionData?.address)
+          : 'unknown';
 
-        // Determine the event type
-        const event = (() => {
-          switch (log.eventName) {
-            case 'FundsTransferred':
-              return log.args.origin === sessionData.address ? 'transferTo' : 'transferFrom';
-            case 'FundsDeposited':
-              return 'deposit';
-            case 'FundsWithdrawn':
-              return 'withdraw';
-            default:
-              return 'unknown';
-          }
-        })();
-
-        // Create a formatted transaction log
         const formattedLog = {
           ...log,
-          timestamp: block.timestamp, // UNIX timestamp of the block
-          readableDate: new Date(Number(block.timestamp) * 1000).toLocaleString(), // Human-readable date
-          formattedAmount: log.args.amount ? formatUnits(log.args.amount, 18) : '0', // Convert amount from wei to ether
-          event,
+          timestamp: block.timestamp,
+          readableDate: new Date(Number(block.timestamp) * 1000).toLocaleString(),
+          formattedAmount: log.args.amount ? formatUnits(log.args.amount, 18) : '0',
+          event: eventType,
         };
 
-        // Dispatch the addTransaction action to add the new log to Redux
         dispatch(addTransaction(formattedLog));
       } catch (err) {
         console.error('Error processing real-time log:', err);
       }
     });
-  }, [blockchainEvents, sessionData?.address, dispatch]);
+  }, [blockchainEvents, sessionData?.address, dispatch, uniqueEventNames, eventConfigs]);
 
   return { transactions, loading, error };
-};
+}
 
 export default useGetSmartWalletTransactions;
