@@ -36,7 +36,7 @@ interface AccountPopoverButtonProps {
 export function AccountPopoverButton({
                                        popover,
                                        onOpenLoginModal,
-                                     }: AccountPopoverButtonProps) {
+                                     }: Readonly<AccountPopoverButtonProps>) {
   const sessionData = useSelector((state: any) => state.auth.session);
   const isAuthenticated = Boolean(sessionData?.authenticated);
   const isUpdatingMetadata: boolean = useSelector((state: any) => state.auth.isUpdatingMetadata);

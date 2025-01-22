@@ -45,7 +45,7 @@ const OPTIONS = [
  *  - Profile link(s)
  *  - Logout
  */
-export function AccountPopoverMenu({ popover, router }: AccountPopoverMenuProps) {
+export function AccountPopoverMenu({ popover, router }: Readonly<AccountPopoverMenuProps>) {
   const sessionData = useSelector((state: any) => state.auth.session);
   const isAuthenticated = Boolean(sessionData?.authenticated);
   // Redux states: login modal open and session loading status
