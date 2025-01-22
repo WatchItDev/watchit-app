@@ -45,8 +45,17 @@ import { AuthProvider } from '@src/auth/context/web3Auth';
 import { ResponsiveOverlay } from '@src/components/responsive-overlay';
 
 import { Buffer } from 'buffer';
-import { Provider } from 'react-redux';
+import {Provider, useDispatch, useSelector} from 'react-redux';
 import { MetaMaskProvider } from '@metamask/sdk-react';
+import {useNotifications} from "@src/hooks/use-notifications.ts";
+import {useSnackbar} from "notistack";
+import {useEffect} from "react";
+import {setGlobalNotifier} from "@notifications/internal-notifications.ts";
+import {publicClientWebSocket} from "@src/clients/viem/publicClient.ts";
+import {GLOBAL_CONSTANTS} from "@src/config-global.ts";
+import LedgerVaultAbi from "@src/config/abi/LedgerVault.json";
+import {setBlockchainEvents} from "@redux/blockchain-events";
+import {subscribeToNotifications} from "@src/utils/subscribe-notifications-supabase.ts";
 
 window.Buffer = Buffer;
 
@@ -103,10 +112,7 @@ export default function App() {
                 <ThemeProvider>
                   <MotionLazy>
                     <SnackbarProvider>
-                      <SettingsDrawer />
-                      <ProgressBar />
-                      <Router />
-                      <ResponsiveOverlay />
+                     <AppContent />
                     </SnackbarProvider>
                   </MotionLazy>
                 </ThemeProvider>
@@ -116,4 +122,103 @@ export default function App() {
       </LocalizationProvider>
     </MetaMaskProvider>
   );
+}
+
+
+interface EventArgs {
+  recipient?: string;
+  origin?: string;
+}
+const AppContent = () => {
+  const dispatch = useDispatch();
+  const sessionData = useSelector((state: any) => state.auth.session);
+  const { getNotifications } = useNotifications();
+  const { enqueueSnackbar } = useSnackbar();
+
+  useEffect(() => {
+    // Set the global reference so we can call notify(...) anywhere.
+    setGlobalNotifier(enqueueSnackbar);
+  }, [enqueueSnackbar]);
+
+  const watchEvent = (eventName: string, args: EventArgs, logText: string) => {
+    const results = publicClientWebSocket.watchContractEvent({
+      address: GLOBAL_CONSTANTS.LEDGER_VAULT_ADDRESS,
+      abi: LedgerVaultAbi.abi,
+      eventName,
+      args,
+      onLogs: (logs) => {
+        console.log(logText, logs);
+        dispatch(setBlockchainEvents(logs));
+      },
+    });
+
+    console.log('Watching', eventName, 'events');
+    console.log('Results', results);
+
+    return results;
+  };
+
+/**
+  * Deposit    Deposited    Verde    Fuente, monto, TX.
+  * Transfer From    Transfer from    Verde    Origen, monto, TX.
+  * Transfer To    Transfer to    Rojo    Destino, monto, TX.
+  * Withdraw To    Withdraw to    Rojo    Destino, monto, TX.
+  * Reserve To    Reserved    Amarillo    Propósito, monto, TX.
+  * Collect From    Collected    Verde    Origen, monto, TX.
+  * Locked    Locked    Azul    Propósito, monto, TX.
+  * Release    Released    Verde    Destino (si aplica), monto, TX.
+  * Claim    Claimed    Verde    Propósito/acuerdo, monto, TX.
+*/
+
+  useEffect(() => {
+    if (!sessionData?.address) return;
+
+    // @TODO Add the rest of the events
+    // Analiazed taking care of the user as the recipient or origin
+    const newEvents = [
+      { name: 'FundsDeposited', args: { recipient: sessionData?.address }, logText: 'Deposited' },
+      { name: 'FundsTransferFrom', args: { origin: sessionData?.address }, logText: 'Transfer from' },
+      { name: 'FundsTransferTo', args: { recipient: sessionData?.address }, logText: 'Transfer to' },
+      { name: 'FundsWithdrawTo', args: { recipient: sessionData?.address }, logText: 'Withdraw to' },
+      { name: 'FundsReserved', args: { recipient: sessionData?.address }, logText: 'Reserved' },
+      { name: 'FundsCollected', args: { origin: sessionData?.address }, logText: 'Collected' },
+      { name: 'FundsLocked', args: { recipient: sessionData?.address }, logText: 'Locked' },
+      { name: 'FundsReleased', args: { origin: sessionData?.address }, logText: 'Released' },
+      { name: 'FundsClaimed', args: { recipient: sessionData?.address }, logText: 'Claimed' },
+    ]
+
+    const events = [
+      { name: 'FundsDeposited', args: { recipient: sessionData?.address }, logText: 'New deposit (user as recipient):' },
+      { name: 'FundsWithdrawn', args: { origin: sessionData?.address }, logText: 'New withdraw (user as origin):' },
+      { name: 'FundsTransferred', args: { origin: sessionData?.address }, logText: 'New transfer from me:' },
+      { name: 'FundsTransferred', args: { recipient: sessionData?.address }, logText: 'New transfer to me:' },
+    ];
+
+
+    const unwatchers = events.map(event => watchEvent(event.name, event.args, event.logText));
+
+    return () => {
+      unwatchers.forEach(unwatch => unwatch());
+    };
+  }, [sessionData?.address]);
+
+
+  useEffect(() => {
+    if (sessionData?.profile?.id) {
+      // Subscribe to notifications channel
+      subscribeToNotifications(sessionData?.profile?.id, dispatch, ['notifications']);
+
+      // Set the notifications in first render
+      getNotifications(sessionData?.profile?.id).then(() => {});
+    }
+  }, [sessionData?.profile?.id, dispatch]);
+
+  return (
+    <>
+      <SettingsDrawer />
+      <ProgressBar />
+      <Router />
+      <ResponsiveOverlay />
+    </>
+  )
 }
