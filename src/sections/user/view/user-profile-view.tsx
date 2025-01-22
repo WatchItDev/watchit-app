@@ -116,44 +116,42 @@ const UserProfileView = ({ id }: any) => {
   );
 
   return (
-    <>
-      <Container maxWidth={settings.themeStretch ? false : 'lg'} sx={{ overflowX: 'hidden' }}>
-        <ProfileHeader profile={profile as any}>
-          <Tabs
-            key={`tabs-${profile?.id}`}
-            value={currentTab}
-            onChange={handleChangeTab}
-            sx={{
-              width: 1,
-              zIndex: 9,
-              borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
-              [`& .${tabsClasses.flexContainer}`]: { justifyContent: 'center' },
-            }}
-          >
-            {tabsWithCounts.map((tab) => (
-              <Tab
-                key={tab.value}
-                value={tab.value}
-                label={<TabLabel label={tab.label} count={tab.count} />}
-              />
-            ))}
-          </Tabs>
-        </ProfileHeader>
+    <Container maxWidth={settings.themeStretch ? false : 'lg'} sx={{ overflowX: 'hidden' }}>
+      <ProfileHeader profile={profile as any}>
+        <Tabs
+          key={`tabs-${profile?.id}`}
+          value={currentTab}
+          onChange={handleChangeTab}
+          sx={{
+            width: 1,
+            zIndex: 9,
+            borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
+            [`& .${tabsClasses.flexContainer}`]: { justifyContent: 'center' },
+          }}
+        >
+          {tabsWithCounts.map((tab) => (
+            <Tab
+              key={tab.value}
+              value={tab.value}
+              label={<TabLabel label={tab.label} count={tab.count} />}
+            />
+          ))}
+        </Tabs>
+      </ProfileHeader>
 
-        {currentTab === 'publications' && profile && (
-          <ProfileHome
-            publications={publications}
-            noPaddings={true}
-            scrollable={false}
-            initialRows={3}
-            rowsIncrement={2}
-          />
-        )}
-        {currentTab === 'followers' && profile && (<ProfileFollowers onActionFinished={handleUpdateProfile} />)}
-        {currentTab === 'following' && profile && <ProfileFollowing />}
-        {currentTab === 'referrals' && sessionData?.profile?.id === id && <ProfileReferrals referrals={referrals} loading={loadingReferrals}  />}
-      </Container>
-    </>
+      {currentTab === 'publications' && profile && (
+        <ProfileHome
+          publications={publications}
+          noPaddings={true}
+          scrollable={false}
+          initialRows={3}
+          rowsIncrement={2}
+        />
+      )}
+      {currentTab === 'followers' && profile && (<ProfileFollowers onActionFinished={handleUpdateProfile} />)}
+      {currentTab === 'following' && profile && <ProfileFollowing />}
+      {currentTab === 'referrals' && sessionData?.profile?.id === id && <ProfileReferrals referrals={referrals} loading={loadingReferrals}  />}
+    </Container>
   );
 };
 
