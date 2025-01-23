@@ -23,8 +23,8 @@ interface UseAccountSessionHook {
    * Combined logout for Lens + Web3Auth
    */
   logout: (silent?: boolean) => void;
-  loading: boolean;
   isAuthenticated: () => boolean;
+  loading: boolean;
 }
 
 // ----------------------------------------------------------------------
