@@ -141,7 +141,7 @@ const AppContent = () => {
   }, [enqueueSnackbar]);
 
   const watchEvent = (eventName: string, args: EventArgs, logText: string) => {
-    const results = publicClientWebSocket.watchContractEvent({
+    return publicClientWebSocket.watchContractEvent({
       address: GLOBAL_CONSTANTS.LEDGER_VAULT_ADDRESS,
       abi: LedgerVaultAbi.abi,
       eventName,
@@ -151,11 +151,6 @@ const AppContent = () => {
         dispatch(setBlockchainEvents(logs));
       },
     });
-
-    console.log('Watching', eventName, 'events');
-    console.log('Results', results);
-
-    return results;
   };
 
   useEffect(() => {
