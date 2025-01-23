@@ -72,7 +72,7 @@ export const useAccountSession = (): UseAccountSessionHook => {
       return;
     }
 
-    // wait for web3auth ready state
+    // wait for web3auth ready state and allow bypass if 
     if ((isPending() || loading) && !data?.authenticated) return;
     // is authenticated avoid re-run code below
     if (sessionData?.authenticated) return;
@@ -84,6 +84,6 @@ export const useAccountSession = (): UseAccountSessionHook => {
   return {
     logout: handleSessionExpired,
     loading: isSessionLoading,
-    isAuthenticated: sessionData?.authenticated
+    isAuthenticated: ()=> sessionData?.authenticated && isValidWeb3AuthSession()
   };
 };
