@@ -32,8 +32,7 @@ import FinanceOverlayLoader from '@src/sections/finance/components/finance-overl
 
 const STATUS_OPTIONS = [
   { value: 'all', label: 'All' },
-  ...TRANSACTIONS_TYPES,
-  { value: 'other', label: 'Other' }
+  ...TRANSACTIONS_TYPES
 ];
 
 const TABLE_HEAD = [
@@ -143,18 +142,6 @@ export default function FinanceTransactionsHistory() {
                         (t) =>
                           t.type.toLowerCase() === 'transferfrom' ||
                           t.type.toLowerCase() === 'deposit'
-                      )
-                    ).length
-                  }
-                  {tab.value === 'other' &&
-                    removeDuplicatesById(
-                      transactionData.filter(
-                        (t) =>
-                          t.type.toLowerCase() === 'locked' ||
-                          t.type.toLowerCase() === 'claimed' ||
-                          t.type.toLowerCase() === 'approved' ||
-                          t.type.toLowerCase() === 'collected' ||
-                          t.type.toLowerCase() === 'released'
                       )
                     ).length
                   }
