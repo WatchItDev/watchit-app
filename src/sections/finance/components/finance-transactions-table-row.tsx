@@ -50,9 +50,6 @@ export default function FinanceTransactionTableRow({ row, selected }: Props) {
   const dateLbl = format(dateObject, 'dd/MM/yyyy');
   const timeLbl = format(dateObject, 'p');
 
-  console.log('row')
-  console.log(row)
-
   const renderPrimary = (
     <TableRow hover selected={selected}>
       <TableCell sx={{ display: 'flex', alignItems: 'center' }}>

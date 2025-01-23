@@ -200,16 +200,16 @@ const parseTransactionTypeLabel = (type: string): string => {
       return 'Deposited';
     case 'withdraw':
       return 'Withdraw';
-    case 'locked':
-      return 'Locked';
-    case 'claimed':
-      return 'Claimed';
+    // case 'locked':
+    //   return 'Locked';
+    // case 'claimed':
+    //   return 'Paid';
     case 'approved':
       return 'Approved';
     case 'collected':
-      return 'Collected';
-    case 'released':
-      return 'Released';
+      return 'Paid';
+    // case 'released':
+    //   return 'Released';
 
     default:
       return type;
@@ -227,16 +227,16 @@ const parseTransactionType = (type: string): string => {
       return 'income';
     case 'withdraw':
       return 'outcome';
-    case 'locked':
-      return 'other';
-    case 'claimed':
-      return 'other';
-    case 'approved':
-      return 'other';
     case 'collected':
-      return 'other';
-    case 'released':
-      return 'other';
+      return 'outcome';
+    // case 'locked':
+    //   return 'other';
+    // case 'claimed':
+    //   return 'outcome';
+    // case 'approved':
+    //   return 'other';
+    // case 'released':
+    //   return 'income';
 
     default:
       return type;
