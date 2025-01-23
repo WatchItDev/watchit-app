@@ -169,7 +169,7 @@ export default function PublicationDetailsView({ id }: Props) {
                 justifyContent: 'center',
               }}
             >
-              {hasAccess ? (
+              {hasAccess && sessionData?.authenticated ? (
                 <MoviePlayView publication={data} loading={loading} />
               ) : (
                 <Box
