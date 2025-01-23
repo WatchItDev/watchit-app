@@ -168,7 +168,7 @@ export default function FinanceInviteFriends({
             >
               <Box
                 sx={{
-                  typography: 'h2',
+                  typography: 'h1',
                   color: 'warning.main',
                   textShadow: `1px 1px 5px ${COLORS.GRAY_LIGHT}`,
                 }}

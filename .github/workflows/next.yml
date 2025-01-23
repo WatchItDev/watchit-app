@@ -1,4 +1,4 @@
-name: Staging CI/CD
+name: Next CI/CD
 # https://docs.github.com/en/actions/managing-workflow-runs/skipping-workflow-runs
 on:
   push:

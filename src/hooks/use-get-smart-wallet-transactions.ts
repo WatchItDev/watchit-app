@@ -87,31 +87,31 @@ export default function useGetSmartWalletTransactions() {
       args: { origin: sessionData?.address || '' },
       getEventType: () => 'withdraw',
     },
-    {
-      eventName: 'FundsLocked',
-      args: { account: sessionData?.address || '' },
-      getEventType: () => 'locked',
-    },
-    {
+    // {
+    //   eventName: 'FundsLocked',
+    //   args: { account: sessionData?.address || '' },
+    //   getEventType: () => 'locked',
+    // },
+    /*{
       eventName: 'FundsClaimed',
       args: { claimer: sessionData?.address || '' },
       getEventType: () => 'claimed',
-    },
+    },*/
+    // {
+    //   eventName: 'FundsApproved',
+    //   args: { from: sessionData?.address || '' },
+    //   getEventType: () => 'approved',
+    // },
     {
-      eventName: 'FundsReserved',
-      args: { from: sessionData?.address || '' },
-      getEventType: () => 'reserved',
+    eventName: 'FundsCollected',
+    args: { from: sessionData?.address || '' },
+    getEventType: () => 'collected',
     },
-    {
-      eventName: 'FundsCollected',
-      args: { from: sessionData?.address || '' },
-      getEventType: () => 'collected',
-    },
-    {
+    /*{
       eventName: 'FundsReleased',
       args: { to: sessionData?.address || '' },
-      getEventType: () => 'released',
-    },
+       getEventType: () => 'released',
+    },*/
   ];
 
   /**
@@ -267,7 +267,7 @@ export default function useGetSmartWalletTransactions() {
         console.error('Error processing real-time log:', err);
       }
     });
-  }, [blockchainEvents, sessionData?.address, dispatch, uniqueEventNames, eventConfigs]);
+  }, [blockchainEvents, sessionData?.address, uniqueEventNames, eventConfigs]);
 
   return { transactions, loading, error };
 }

@@ -36,8 +36,8 @@ const TX_COLORS: any = {
   'withdraw': COLORS.danger,
   'locked': COLORS.info,
   'claimed': COLORS.success,
-  'reserved': COLORS.warning,
-  'collected': COLORS.success,
+  'approved': COLORS.warning,
+  'collected': COLORS.danger,
   'released': COLORS.success,
 }
 
@@ -49,9 +49,6 @@ export default function FinanceTransactionTableRow({ row, selected }: Props) {
   const dateObject = new Date(Number(date) * 1000);
   const dateLbl = format(dateObject, 'dd/MM/yyyy');
   const timeLbl = format(dateObject, 'p');
-
-  console.log('row')
-  console.log(row)
 
   const renderPrimary = (
     <TableRow hover selected={selected}>

@@ -122,7 +122,7 @@ type EventName =
   | 'withdraw'
   | 'locked'
   | 'claimed'
-  | 'reserved'
+  | 'approved'
   | 'collected'
   | 'released';
 
@@ -156,7 +156,7 @@ const eventConfig: Record<EventName, EventConfig> = {
     getName: (args) => args.claimer,
     getAvatarUrl: (args) => dicebear(args.claimer),
   },
-  reserved: {
+  approved: {
     getName: (args) => args.from,
     getAvatarUrl: (args) => dicebear(args.from),
   },
@@ -200,16 +200,16 @@ const parseTransactionTypeLabel = (type: string): string => {
       return 'Deposited';
     case 'withdraw':
       return 'Withdraw';
-    case 'locked':
-      return 'Locked';
-    case 'claimed':
-      return 'Claimed';
-    case 'reserved':
-      return 'Reserved';
+    // case 'locked':
+    //   return 'Locked';
+    // case 'claimed':
+    //   return 'Paid';
+    case 'approved':
+      return 'Approved';
     case 'collected':
-      return 'Collected';
-    case 'released':
-      return 'Released';
+      return 'Paid';
+    // case 'released':
+    //   return 'Released';
 
     default:
       return type;
@@ -227,16 +227,16 @@ const parseTransactionType = (type: string): string => {
       return 'income';
     case 'withdraw':
       return 'outcome';
-    case 'locked':
-      return 'other';
-    case 'claimed':
-      return 'other';
-    case 'reserved':
-      return 'other';
     case 'collected':
-      return 'other';
-    case 'released':
-      return 'other';
+      return 'outcome';
+    // case 'locked':
+    //   return 'other';
+    // case 'claimed':
+    //   return 'outcome';
+    // case 'approved':
+    //   return 'other';
+    // case 'released':
+    //   return 'income';
 
     default:
       return type;

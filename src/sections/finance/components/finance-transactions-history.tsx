@@ -32,8 +32,7 @@ import FinanceOverlayLoader from '@src/sections/finance/components/finance-overl
 
 const STATUS_OPTIONS = [
   { value: 'all', label: 'All' },
-  ...TRANSACTIONS_TYPES,
-  { value: 'other', label: 'Other' }
+  ...TRANSACTIONS_TYPES
 ];
 
 const TABLE_HEAD = [
@@ -133,7 +132,7 @@ export default function FinanceTransactionsHistory() {
                       transactionData.filter(
                         (t) =>
                           t.type.toLowerCase() === 'transferto' ||
-                          t.type.toLowerCase() === 'withdraw'
+                          t.type.toLowerCase() === 'withdraw' || t.type.toLowerCase() === 'collected'
                       )
                     ).length
                   }
@@ -143,18 +142,6 @@ export default function FinanceTransactionsHistory() {
                         (t) =>
                           t.type.toLowerCase() === 'transferfrom' ||
                           t.type.toLowerCase() === 'deposit'
-                      )
-                    ).length
-                  }
-                  {tab.value === 'other' &&
-                    removeDuplicatesById(
-                      transactionData.filter(
-                        (t) =>
-                          t.type.toLowerCase() === 'locked' ||
-                          t.type.toLowerCase() === 'claimed' ||
-                          t.type.toLowerCase() === 'reserved' ||
-                          t.type.toLowerCase() === 'collected' ||
-                          t.type.toLowerCase() === 'released'
                       )
                     ).length
                   }
@@ -245,24 +232,14 @@ function applyFilter({
   if (status !== 'all') {
     if (status === 'transferFrom') {
       filteredData = filteredData.filter(
-        (t) => t.type.toLowerCase() === 'transferto' || t.type.toLowerCase() === 'withdraw'
+        (t) => t.type.toLowerCase() === 'transferto' || t.type.toLowerCase() === 'withdraw' || t.type.toLowerCase() === 'collected'
       );
     }
 
     if (status === 'transferTo') {
+      console.log('filteredData', filteredData);
       filteredData = filteredData.filter(
         (t) => t.type.toLowerCase() === 'transferfrom' || t.type.toLowerCase() === 'deposit'
-      );
-    }
-
-    if (status === 'other') {
-      filteredData = filteredData.filter(
-        (t) =>
-          t.type.toLowerCase() === 'locked' ||
-          t.type.toLowerCase() === 'claimed' ||
-          t.type.toLowerCase() === 'reserved' ||
-          t.type.toLowerCase() === 'collected' ||
-          t.type.toLowerCase() === 'released'
       );
     }
   }
