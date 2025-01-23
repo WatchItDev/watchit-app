@@ -1,12 +1,12 @@
 // REACT IMPORTS
-import { useEffect, useCallback, useState } from 'react';
+import { useEffect, useCallback } from 'react';
 
 // REDUX IMPORTS
 import { useDispatch, useSelector } from 'react-redux';
 import { setAuthLoading, setSession, setBalance } from '@redux/auth';
 
 // LENS IMPORTS
-import { useSession, useLogout } from '@lens-protocol/react-web';
+import { useSession } from '@lens-protocol/react-web';
 
 // NOTIFICATIONS IMPORTS
 import { ERRORS } from '@notifications/errors';
