@@ -35,7 +35,7 @@ export const useAuthorizePolicy = (): useAuthorizePolicyHook => {
   const [error, setError] = useState<keyof typeof ERRORS | null>(null);
   const sessionData = useSelector((state: any) => state.auth.session);
   const { bundlerClient, smartAccount } = useWeb3Session();
-  const { checkSessionValidity } = useAccountSession({ autoCheck: false });
+  const { isAuthenticated, logout } = useAccountSession();
 
   /**
    * Creates the flash policy agreement data.
@@ -65,8 +65,8 @@ export const useAuthorizePolicy = (): useAuthorizePolicyHook => {
       return;
     }
 
-    if (!bundlerClient) {
-      checkSessionValidity();
+    if (!isAuthenticated()) {
+      logout();
       setLoading(false);
       throw new Error('Invalid Web3Auth session');
     }

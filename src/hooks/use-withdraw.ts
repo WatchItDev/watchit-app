@@ -26,7 +26,7 @@ export const useWithdraw = (): UseWithdrawHook => {
 
   const sessionData = useSelector((state: any) => state.auth.session);
   const { bundlerClient, smartAccount } = useWeb3Session();
-  const { checkSessionValidity } = useAccountSession({ autoCheck: false });
+  const { isAuthenticated, logout } = useAccountSession();
 
   const initializeWithdraw = ({ recipient, amount }: WithdrawParams) => {
     const weiAmount = parseUnits(amount.toString(), 18);
@@ -48,8 +48,8 @@ export const useWithdraw = (): UseWithdrawHook => {
       return;
     }
 
-    if (!bundlerClient) {
-      checkSessionValidity();
+    if (!isAuthenticated()) {
+      logout();
       setLoading(false);
       throw new Error('Invalid Web3Auth session');
     }
