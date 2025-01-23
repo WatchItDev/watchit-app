@@ -19,9 +19,6 @@ import { useWeb3Session } from '@src/hooks/use-web3-session';
 // ----------------------------------------------------------------------
 
 interface UseAccountSessionHook {
-  /**
-   * Combined logout for Lens + Web3Auth
-   */
   logout: (silent?: boolean) => void;
   isAuthenticated: () => boolean;
   loading: boolean;
@@ -29,15 +26,6 @@ interface UseAccountSessionHook {
 
 // ----------------------------------------------------------------------
 
-/**
- * This hook consolidates:
- * 1. Lens session fetching & Redux updates.
- * 2. Web3Auth session validation (connected, bundler, smartAccount).
- * 3. LocalStorage expiration checks + auto-logout (optionally).
- *
- * If `autoCheck` is false, the hook won't run the checks automatically,
- * but you can still call `checkSessionValidity()` manually.
- */
 export const useAccountSession = (): UseAccountSessionHook => {
   const dispatch = useDispatch();
   const { web3Auth } = useWeb3Auth();
@@ -47,13 +35,13 @@ export const useAccountSession = (): UseAccountSessionHook => {
   const { data, loading } = useSession();
   const { bundlerClient, smartAccount } = useWeb3Session();
 
+  // Decide if Web3Auth is in a connecting state
   const isPending = () => {
     return web3Auth.status === 'connecting' || web3Auth.status === 'not_ready';
   }
 
-  // Decide if Web3Auth is in a valid/connecting state
+  // Decide if Web3Auth is in a valid state
   const isValidWeb3AuthSession = useCallback((): boolean => {
-    // is connecting no update loading
     return web3Auth.connected && web3Auth.status === 'connected' && !!bundlerClient && !!smartAccount;
   }, [web3Auth.connected, web3Auth.status, bundlerClient, smartAccount]);
 
@@ -69,7 +57,7 @@ export const useAccountSession = (): UseAccountSessionHook => {
 
   // Automatic checks on mount + interval
   useEffect(() => {
-    // 1) If Web3Auth isn't valid (and not just connecting), expire
+    // If Web3Auth isn't valid (and not just connecting), expire
     if (!isValidWeb3AuthSession() && !isPending()) {
       handleSessionExpired(false);
       return;
@@ -79,7 +67,7 @@ export const useAccountSession = (): UseAccountSessionHook => {
     if ((isPending() || loading) && !data?.authenticated) return;
     // is authenticated avoid re-run code below
     if (sessionData?.authenticated) return;
-    // 2) Otherwise, check localStorage for expiration
+    // dispatch the session data and turn off the loading
     dispatch(setSession({ session: data }))
     dispatch(setAuthLoading({ isSessionLoading: false }));
   }, [isSessionLoading]);
