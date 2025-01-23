@@ -98,9 +98,9 @@ export default function useGetSmartWalletTransactions() {
       getEventType: () => 'claimed',
     },
     {
-      eventName: 'FundsReserved',
+      eventName: 'FundsApproved',
       args: { from: sessionData?.address || '' },
-      getEventType: () => 'reserved',
+      getEventType: () => 'approved',
     },
     {
       eventName: 'FundsCollected',
@@ -267,7 +267,7 @@ export default function useGetSmartWalletTransactions() {
         console.error('Error processing real-time log:', err);
       }
     });
-  }, [blockchainEvents, sessionData?.address, dispatch, uniqueEventNames, eventConfigs]);
+  }, [blockchainEvents, sessionData?.address, uniqueEventNames, eventConfigs]);
 
   return { transactions, loading, error };
 }

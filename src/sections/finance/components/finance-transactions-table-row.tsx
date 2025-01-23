@@ -36,8 +36,8 @@ const TX_COLORS: any = {
   'withdraw': COLORS.danger,
   'locked': COLORS.info,
   'claimed': COLORS.success,
-  'reserved': COLORS.warning,
-  'collected': COLORS.success,
+  'approved': COLORS.warning,
+  'collected': COLORS.danger,
   'released': COLORS.success,
 }
 

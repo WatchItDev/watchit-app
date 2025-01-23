@@ -45,17 +45,17 @@ import { AuthProvider } from '@src/auth/context/web3Auth';
 import { ResponsiveOverlay } from '@src/components/responsive-overlay';
 
 import { Buffer } from 'buffer';
-import {Provider, useDispatch, useSelector} from 'react-redux';
+import { Provider, useDispatch, useSelector } from 'react-redux';
 import { MetaMaskProvider } from '@metamask/sdk-react';
-import {useNotifications} from "@src/hooks/use-notifications.ts";
-import {useSnackbar} from "notistack";
-import {useEffect} from "react";
-import {setGlobalNotifier} from "@notifications/internal-notifications.ts";
-import {publicClientWebSocket} from "@src/clients/viem/publicClient.ts";
-import {GLOBAL_CONSTANTS} from "@src/config-global.ts";
+import { useNotifications } from "@src/hooks/use-notifications.ts";
+import { useSnackbar } from "notistack";
+import { useEffect } from "react";
+import { setGlobalNotifier } from "@notifications/internal-notifications.ts";
+import { publicClientWebSocket } from "@src/clients/viem/publicClient.ts";
+import { GLOBAL_CONSTANTS } from "@src/config-global.ts";
 import LedgerVaultAbi from "@src/config/abi/LedgerVault.json";
-import {setBlockchainEvents} from "@redux/blockchain-events";
-import {subscribeToNotifications} from "@src/utils/subscribe-notifications-supabase.ts";
+import { setBlockchainEvents } from "@redux/blockchain-events";
+import { subscribeToNotifications } from "@src/utils/subscribe-notifications-supabase.ts";
 
 window.Buffer = Buffer;
 
@@ -109,13 +109,13 @@ export default function App() {
         >
           <Provider store={store}>
             <AuthProvider>
-                <ThemeProvider>
-                  <MotionLazy>
-                    <SnackbarProvider>
-                     <AppContent />
-                    </SnackbarProvider>
-                  </MotionLazy>
-                </ThemeProvider>
+              <ThemeProvider>
+                <MotionLazy>
+                  <SnackbarProvider>
+                    <AppContent />
+                  </SnackbarProvider>
+                </MotionLazy>
+              </ThemeProvider>
             </AuthProvider>
           </Provider>
         </SettingsProvider>
@@ -141,7 +141,7 @@ const AppContent = () => {
   }, [enqueueSnackbar]);
 
   const watchEvent = (eventName: string, args: EventArgs, logText: string) => {
-    const results = publicClientWebSocket.watchContractEvent({
+    return publicClientWebSocket.watchContractEvent({
       address: GLOBAL_CONSTANTS.LEDGER_VAULT_ADDRESS,
       abi: LedgerVaultAbi.abi,
       eventName,
@@ -151,11 +151,6 @@ const AppContent = () => {
         dispatch(setBlockchainEvents(logs));
       },
     });
-
-    console.log('Watching', eventName, 'events');
-    console.log('Results', results);
-
-    return results;
   };
 
   useEffect(() => {
@@ -168,7 +163,7 @@ const AppContent = () => {
       { name: 'FundsTransferred', args: { recipient: sessionData?.address }, logText: 'New transfer to me:' },
       { name: 'FundsLocked', args: { account: sessionData?.address }, logText: 'New funds locked:' },
       { name: 'FundsClaimed', args: { claimer: sessionData?.address }, logText: 'New funds claimed:' },
-      { name: 'FundsReserved', args: { from: sessionData?.address }, logText: 'New funds reserved:' },
+      { name: 'FundsApproved', args: { from: sessionData?.address }, logText: 'New funds approved:' },
       { name: 'FundsCollected', args: { from: sessionData?.address }, logText: 'New funds collected:' },
       { name: 'FundsReleased', args: { to: sessionData?.address }, logText: 'New funds released:' },
     ];
@@ -187,7 +182,7 @@ const AppContent = () => {
       subscribeToNotifications(sessionData?.profile?.id, dispatch, ['notifications']);
 
       // Set the notifications in first render
-      getNotifications(sessionData?.profile?.id).then(() => {});
+      getNotifications(sessionData?.profile?.id).then(() => { });
     }
   }, [sessionData?.profile?.id, dispatch]);
 

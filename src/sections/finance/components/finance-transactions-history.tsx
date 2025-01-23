@@ -152,7 +152,7 @@ export default function FinanceTransactionsHistory() {
                         (t) =>
                           t.type.toLowerCase() === 'locked' ||
                           t.type.toLowerCase() === 'claimed' ||
-                          t.type.toLowerCase() === 'reserved' ||
+                          t.type.toLowerCase() === 'approved' ||
                           t.type.toLowerCase() === 'collected' ||
                           t.type.toLowerCase() === 'released'
                       )
@@ -260,7 +260,7 @@ function applyFilter({
         (t) =>
           t.type.toLowerCase() === 'locked' ||
           t.type.toLowerCase() === 'claimed' ||
-          t.type.toLowerCase() === 'reserved' ||
+          t.type.toLowerCase() === 'approved' ||
           t.type.toLowerCase() === 'collected' ||
           t.type.toLowerCase() === 'released'
       );
