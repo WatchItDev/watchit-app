@@ -8,8 +8,10 @@ import { nodePolyfills } from 'vite-plugin-node-polyfills'
 export default defineConfig(({ mode }) => {
   // Load environment variables based on the current mode
   const env = loadEnv(mode, process.cwd(), '');
-
+  const pure = mode === 'production' ? ['console.log', 'console.info'] : []
+  
   return {
+    esbuild: { pure },
     plugins: [
       react(),
       preserveDirectives(),
