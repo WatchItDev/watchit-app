@@ -73,7 +73,7 @@ export const useAccountSession = (): UseAccountSessionHook => {
     }
 
     // wait for web3auth ready state
-    if (isPending() || loading) return;
+    if ((isPending() || loading) && !data?.authenticated) return;
     // is authenticated avoid re-run code below
     if (sessionData?.authenticated) return;
     // 2) Otherwise, check localStorage for expiration
