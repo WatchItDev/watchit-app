@@ -1,3 +1,16 @@
+# [2.2.0-beta.17](https://github.com/WatchItDev/watchit-app/compare/v2.2.0-beta.16...v2.2.0-beta.17) (2025-01-23)
+
+
+### Bug Fixes
+
+* events ([984a8ce](https://github.com/WatchItDev/watchit-app/commit/984a8ced3d83ebd854bf5b5c472c11316d3c4084))
+* finance statistics graph data ([054d98a](https://github.com/WatchItDev/watchit-app/commit/054d98aadf6eca0fe6a9cf7dec2bfdccc287070a))
+
+
+### Features
+
+* change "reserve" with "approve" and update the ledger vault abi ([ad265e6](https://github.com/WatchItDev/watchit-app/commit/ad265e62de49914ee3235f6fc3658a48ed2256b8))
+
 # [2.2.0-beta.16](https://github.com/WatchItDev/watchit-app/compare/v2.2.0-beta.15...v2.2.0-beta.16) (2025-01-22)
 
 
