@@ -22,7 +22,7 @@ interface UseAccountSessionHook {
   /**
    * Combined logout for Lens + Web3Auth
    */
-  logout: () => Promise<void>;
+  logout: (silent?: boolean) => void;
   loading: boolean;
   isAuthenticated: boolean;
 }
@@ -43,16 +43,8 @@ export const useAccountSession = (): UseAccountSessionHook => {
   const { web3Auth } = useWeb3Auth();
   const sessionData = useSelector((state: any) => state.auth.session);
   const isSessionLoading = useSelector((state: any) => state.auth.isSessionLoading);
-
   const { data, loading } = useSession();
   const { bundlerClient, smartAccount } = useWeb3Session();
-
-  // LOGOUT (Lens + Web3Auth)
-  const logout = useCallback(async () => {
-    dispatch(setBalance({ balance: 0 }));
-    dispatch(setSession({ session: { ...data, authenticated: false } }));
-    dispatch(setAuthLoading({ isSessionLoading: false }));
-  }, [web3Auth.status]);
 
   const isPending = () => {
     return web3Auth.status === 'connecting' || web3Auth.status === 'not_ready';
@@ -65,16 +57,18 @@ export const useAccountSession = (): UseAccountSessionHook => {
   }, [web3Auth.connected, web3Auth.status, bundlerClient, smartAccount]);
 
   // If session is invalid or expired, do logout + show error
-  const handleSessionExpired = () => {
-    logout(); // logout first and notify about expiration
-    notifyError(ERRORS.BUNDLER_UNAVAILABLE);
-  };
+  const handleSessionExpired = useCallback((silent: boolean = true) => {
+    dispatch(setBalance({ balance: 0 }));
+    dispatch(setSession({ session: { ...data, authenticated: false } }));
+    dispatch(setAuthLoading({ isSessionLoading: false }));
+    if (silent) notifyError(ERRORS.BUNDLER_UNAVAILABLE);
+  }, [web3Auth.status]);
 
   // Automatic checks on mount + interval
   useEffect(() => {
     // 1) If Web3Auth isn't valid (and not just connecting), expire
     if (!isValidWeb3AuthSession() && !isPending()) {
-      handleSessionExpired();
+      handleSessionExpired(false);
       return;
     }
 
@@ -88,7 +82,7 @@ export const useAccountSession = (): UseAccountSessionHook => {
   }, [isSessionLoading]);
 
   return {
-    logout,
+    logout: handleSessionExpired,
     loading: isSessionLoading,
     isAuthenticated: sessionData?.authenticated
   };
