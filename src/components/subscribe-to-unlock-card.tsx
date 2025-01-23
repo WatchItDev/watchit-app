@@ -16,7 +16,6 @@ interface Props {
 export const SubscribeToUnlockCard = ({
   onSubscribe,
   loadingSubscribe,
-  subscribeDisabled,
   post,
 }: Props) => {
   const { terms } = useGetPolicyTerms(
@@ -58,7 +57,7 @@ export const SubscribeToUnlockCard = ({
           sx={{ width: '100%', py: 1.5 }}
           onClick={onSubscribe}
           loading={loadingSubscribe}
-          disabled={subscribeDisabled}
+          // disabled={subscribeDisabled}
         >
           <IconPlayerPlay size={20} style={{ marginRight: 5 }} />
           Join
