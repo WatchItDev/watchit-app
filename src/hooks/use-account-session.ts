@@ -59,11 +59,10 @@ export const useAccountSession = (): UseAccountSessionHook => {
 
   // If session is invalid or expired, do logout + show error
   const handleSessionExpired = useCallback(async (silent: boolean = true) => {
+    await lensLogout();
     dispatch(setBalance({ balance: 0 }));
     dispatch(setSession({ session: { ...data, authenticated: false } }));
     dispatch(setAuthLoading({ isSessionLoading: false }));
-    // Logout from Lens
-    await lensLogout();
     if (!silent) notifyError(ERRORS.BUNDLER_UNAVAILABLE);
   }, [web3Auth.status]);
 
