@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setAuthLoading, setSession, setBalance } from '@redux/auth';
 
 // LENS IMPORTS
-import { useSession } from '@lens-protocol/react-web';
+import { useSession, useLogout } from '@lens-protocol/react-web';
 
 // NOTIFICATIONS IMPORTS
 import { ERRORS } from '@notifications/errors';
@@ -41,6 +41,7 @@ interface UseAccountSessionHook {
 export const useAccountSession = (): UseAccountSessionHook => {
   const dispatch = useDispatch();
   const { web3Auth } = useWeb3Auth();
+  const { execute: lensLogout } = useLogout();
   const sessionData = useSelector((state: any) => state.auth.session);
   const isSessionLoading = useSelector((state: any) => state.auth.isSessionLoading);
   const { data, loading } = useSession();
@@ -57,11 +58,13 @@ export const useAccountSession = (): UseAccountSessionHook => {
   }, [web3Auth.connected, web3Auth.status, bundlerClient, smartAccount]);
 
   // If session is invalid or expired, do logout + show error
-  const handleSessionExpired = useCallback((silent: boolean = true) => {
+  const handleSessionExpired = useCallback(async (silent: boolean = true) => {
     dispatch(setBalance({ balance: 0 }));
     dispatch(setSession({ session: { ...data, authenticated: false } }));
     dispatch(setAuthLoading({ isSessionLoading: false }));
-    if (silent) notifyError(ERRORS.BUNDLER_UNAVAILABLE);
+    // Logout from Lens
+    await lensLogout();
+    if (!silent) notifyError(ERRORS.BUNDLER_UNAVAILABLE);
   }, [web3Auth.status]);
 
   // Automatic checks on mount + interval
