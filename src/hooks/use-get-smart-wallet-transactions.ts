@@ -92,26 +92,26 @@ export default function useGetSmartWalletTransactions() {
     //   args: { account: sessionData?.address || '' },
     //   getEventType: () => 'locked',
     // },
-    {
+    /*{
       eventName: 'FundsClaimed',
       args: { claimer: sessionData?.address || '' },
       getEventType: () => 'claimed',
-    },
+    },*/
     // {
     //   eventName: 'FundsApproved',
     //   args: { from: sessionData?.address || '' },
     //   getEventType: () => 'approved',
     // },
-    // {
-    //   eventName: 'FundsCollected',
-    //   args: { from: sessionData?.address || '' },
-    //   getEventType: () => 'collected',
-    // },
-    // {
-    //   eventName: 'FundsReleased',
-    //   args: { to: sessionData?.address || '' },
-    //   getEventType: () => 'released',
-    // },
+    {
+    eventName: 'FundsCollected',
+    args: { from: sessionData?.address || '' },
+    getEventType: () => 'collected',
+    },
+    /*{
+      eventName: 'FundsReleased',
+      args: { to: sessionData?.address || '' },
+       getEventType: () => 'released',
+    },*/
   ];
 
   /**
