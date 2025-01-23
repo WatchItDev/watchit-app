@@ -1,23 +1,31 @@
-// React imports
+// REACT IMPORTS
 import { useState, useEffect } from 'react';
-// @mui
+
+// MUI IMPORTS
 import Box from '@mui/material/Box';
 import MenuItem from '@mui/material/MenuItem';
 import ButtonBase from '@mui/material/ButtonBase';
 import CardHeader from '@mui/material/CardHeader';
 import Card from '@mui/material/Card';
 
-// Project imports
+// LOCAL IMPORTS
 import Iconify from '@src/components/iconify';
 import Chart, { useChart } from '@src/components/chart';
 import CustomPopover, { usePopover } from '@src/components/custom-popover';
 import useGetSmartWalletTransactions from '@src/hooks/use-get-smart-wallet-transactions.ts';
 import FinanceOverlayLoader from '@src/sections/finance/components/finance-overlay-loader.tsx';
 
+// ----------------------------------------------------------------------
+
+const INCOME_EVENTS = ['transferFrom', 'deposit'];
+const OUTCOME_EVENTS = ['transferTo', 'withdraw', 'collected', 'paid'];
+
+// ----------------------------------------------------------------------
+
 export default function FinanceBalanceStatistics() {
   const { transactions, loading } = useGetSmartWalletTransactions();
   const popover = usePopover();
-  const [timeFrame, setTimeFrame] = useState('Week');
+  const [timeFrame, setTimeFrame] = useState<'Week' | 'Month' | 'Year'>('Week');
   const [incomeData, setIncomeData] = useState<number[]>([]);
   const [outcomeData, setOutcomeData] = useState<number[]>([]);
   const [categories, setCategories] = useState<string[]>([]);
@@ -54,7 +62,6 @@ export default function FinanceBalanceStatistics() {
     },
   });
 
-  // Generate labels in useEffect
   useEffect(() => {
     if (!transactions || loading) return;
 
@@ -63,180 +70,128 @@ export default function FinanceBalanceStatistics() {
     const oneMonthAgo = now - 30 * 24 * 60 * 60 * 1000;
     const oneYearAgo = now - 365 * 24 * 60 * 60 * 1000;
 
-    // Grouped data structure: key is timestamp for "Week" and "Month", string for "Year"
-    let groupedData: Record<number | string, { label: string; income: number; outcome: number }> =
-      {};
+    // Grouped data structure
+    let groupedData: Record<string, { label: string; income: number; outcome: number }> = {};
 
-    if (timeFrame === 'Week') {
-      // Group data by each day in the last week
-      groupedData = transactions.reduce((acc: any, log: any) => {
-        const timestamp = Number(log.timestamp) * 1000;
-        if (timestamp < oneWeekAgo) return acc;
+    transactions.forEach((log: any) => {
+      const timestamp = Number(log.timestamp) * 1000;
 
-        const date = new Date(timestamp);
-        const y = date.getFullYear();
-        const m = String(date.getMonth() + 1).padStart(2, '0');
-        const d = String(date.getDate()).padStart(2, '0');
-        const dateKey = `${y}-${m}-${d}`;
-
-        const dayLabel = date.toLocaleDateString('en-US', {
-          weekday: 'short',
-          month: 'short',
-          day: 'numeric',
-        });
-
-        const amount = parseFloat(log.formattedAmount);
-        const eventType = log.event;
-
-        if (!acc[dateKey]) acc[dateKey] = { label: dayLabel, income: 0, outcome: 0 };
-
-        if (eventType === 'transferFrom' || eventType === 'deposit') {
-          acc[dateKey].income += amount;
-        } else if (eventType === 'transferTo' || eventType === 'withdraw') {
-          acc[dateKey].outcome += amount;
-        }
-
-        return acc;
-      }, {});
-    } else if (timeFrame === 'Month') {
-      // Group data by week within the last month
-      groupedData = transactions.reduce((acc: any, log: any) => {
-        const timestamp = Number(log.timestamp) * 1000;
-        if (timestamp < oneMonthAgo) return acc;
-
-        const date = new Date(timestamp);
-        const weekStart = new Date(
-          date.getFullYear(),
-          date.getMonth(),
-          date.getDate() - date.getDay()
-        );
-        const weekEnd = new Date(weekStart.getTime() + 6 * 24 * 60 * 60 * 1000);
-
-        const weekStartTimestamp = weekStart.getTime();
-
-        const label = `${weekStart.toLocaleDateString('en-US', {
-          month: 'short',
-          day: 'numeric',
-        })} - ${weekEnd.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`;
-
-        const amount = parseFloat(log.formattedAmount);
-        const eventType = log.event;
-
-        if (!acc[weekStartTimestamp]) {
-          acc[weekStartTimestamp] = { label, income: 0, outcome: 0 };
-        }
-
-        if (eventType === 'transferTo' || eventType === 'deposit') {
-          acc[weekStartTimestamp].income += amount;
-        } else if (eventType === 'transferFrom') {
-          acc[weekStartTimestamp].outcome += amount;
-        }
-
-        return acc;
-      }, {});
-    } else if (timeFrame === 'Year') {
-      // Group data by each month in the last year
-      groupedData = transactions.reduce((acc: any, log: any) => {
-        const timestamp = Number(log.timestamp) * 1000;
-        if (timestamp < oneYearAgo) return acc;
-
-        const date = new Date(timestamp);
-        const monthLabel = date.toLocaleDateString('en-US', {
-          month: 'short',
-          year: 'numeric',
-        });
-
-        const amount = parseFloat(log.formattedAmount);
-        const eventType = log.event;
-
-        if (!acc[monthLabel]) acc[monthLabel] = { label: monthLabel, income: 0, outcome: 0 };
-
-        if (eventType === 'transferTo' || eventType === 'deposit') {
-          acc[monthLabel].income += amount;
-        } else if (eventType === 'transferFrom') {
-          acc[monthLabel].outcome += amount;
-        }
-
-        return acc;
-      }, {});
-    }
-
-    // Sort keys chronologically
-    // - When the key is a number (timestamp) we can compare directly
-    // - When it is a string of type 'YYYY-MM-DD', we convert to date
-    // - When it is 'Dec 2024' (in Year), we convert to Date with new Date(...).getTime()
-    const sortedKeys = Object.keys(groupedData)
-      .map((key) => {
-        // For year: "Dec 2024" => new Date("Dec 1, 2024")
-        // For "YYYY-MM-DD": new Date("YYYY-MM-DD")
-        // For timestamps (number), we convert it to number
-        if (/^\d+$/.test(key)) {
-          return Number(key);
-        }
-        if (/^\d{4}-\d{2}-\d{2}$/.test(key)) {
-          return key; // "2024-12-31" - we sort it as a date string afterwards
-        }
-        // assumes it is e.g. "Dec 2024"
-        return key;
-      })
-      .sort((a, b) => {
-        if (typeof a === 'number' && typeof b === 'number') {
-          return a - b;
-        }
-        if (
-          typeof a === 'string' &&
-          a.match(/^\d{4}-\d{2}-\d{2}$/) &&
-          typeof b === 'string' &&
-          b.match(/^\d{4}-\d{2}-\d{2}$/)
-        ) {
-          return new Date(a).getTime() - new Date(b).getTime();
-        }
-        if (typeof a === 'string' && typeof b === 'string') {
-          return new Date(a).getTime() - new Date(b).getTime();
-        }
-        return 0;
-      });
-
-    // Extract full labels for tooltips
-    const sortedFullCategories = sortedKeys.map((key) => groupedData[key].label);
-    setFullCategories(sortedFullCategories);
-
-    // Generate short labels for the X-axis
-    const shortLabels = sortedKeys.map((key) => {
-      const label = groupedData[key].label;
-      if (timeFrame === 'Month') {
-        if (label && label.includes('-')) {
-          const [start, end] = label.split('-').map((part) => part.trim());
-          const startParts = start.split(' '); // ['Dec', '1']
-          const endParts = end.split(' '); // ['Dec', '7'] or ['Jan', '4']
-
-          const startMonth = startParts[0];
-          const startDay = startParts[1];
-          const endMonth = endParts[0];
-          const endDay = endParts[1];
-
-          if (startMonth === endMonth) {
-            return `${startMonth} ${startDay}-${endDay}`; // "Dec 1-7"
-          } else {
-            return `${startMonth} ${startDay}-${endMonth} ${endDay}`;
-          }
-        }
+      // Filter transactions based on the selected timeframe
+      if (
+        (timeFrame === 'Week' && timestamp < oneWeekAgo) ||
+        (timeFrame === 'Month' && timestamp < oneMonthAgo) ||
+        (timeFrame === 'Year' && timestamp < oneYearAgo)
+      ) {
+        return; // Ignore transactions outside the range
       }
-      if (timeFrame === 'Week') {
-        return label || '';
+
+      const date = new Date(timestamp);
+      let key: string;
+      let label: string;
+
+      const weekStart = new Date(date.getFullYear(), date.getMonth(), date.getDate() - date.getDay());
+      const weekEnd = new Date(weekStart.getTime() + 6 * 24 * 60 * 60 * 1000);
+
+      switch (timeFrame) {
+        case 'Week':
+          // Group by day
+          key = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+          label = date.toLocaleDateString('en-US', {
+            weekday: 'short',
+            month: 'short',
+            day: 'numeric',
+          });
+          break;
+
+        case 'Month':
+          // Group by week
+          key = weekStart.getTime().toString();
+          label = `${weekStart.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} - ${weekEnd.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`;
+          break;
+
+        case 'Year':
+          // Group by month
+          key = date.toLocaleDateString('en-US', {
+            month: 'short',
+            year: 'numeric',
+          });
+          label = key;
+          break;
+
+        default:
+          throw new Error(`Unknown timeframe: ${timeFrame}`);
       }
-      if (timeFrame === 'Year') {
-        return label || '';
+
+      // Initialize group if it does not exist
+      if (!groupedData[key]) {
+        groupedData[key] = { label, income: 0, outcome: 0 };
       }
-      return label;
+
+      const amount = parseFloat(log.formattedAmount);
+      const eventType = log.event;
+
+      // Sort the event using the defined lists
+      if (INCOME_EVENTS.includes(eventType)) {
+        groupedData[key].income += amount;
+      } else if (OUTCOME_EVENTS.includes(eventType)) {
+        groupedData[key].outcome += amount;
+      } else {
+        console.warn(`Unclassified event: ${eventType}`);
+      }
     });
 
+    // Sort the keys chronologically
+    const sortedKeys = Object.keys(groupedData).sort((a, b) => {
+      let dateA: number;
+      let dateB: number;
+
+      // Convert keys to timestamps for comparison
+      if (/^\d+$/.test(a)) {
+        dateA = Number(a);
+      } else if (/^\d{4}-\d{2}-\d{2}$/.test(a) || /^[A-Za-z]{3} \d{4}$/.test(a)) {
+        dateA = new Date(a).getTime();
+      } else {
+        dateA = new Date(a).getTime();
+      }
+
+      if (/^\d+$/.test(b)) {
+        dateB = Number(b);
+      } else if (/^\d{4}-\d{2}-\d{2}$/.test(b) || /^[A-Za-z]{3} \d{4}$/.test(b)) {
+        dateB = new Date(b).getTime();
+      } else {
+        dateB = new Date(b).getTime();
+      }
+
+      return dateA - dateB;
+    });
+
+    // Extract full tags for tooltips
+    const sortedFullCategories = sortedKeys.map((key) => groupedData[key]?.label || '');
+
+    // Generate short labels for the X axis
+    const shortLabels = sortedKeys.map((key) => {
+      const label = groupedData[key]?.label || '';
+      if (timeFrame === 'Month' && label.includes('-')) {
+        const [start, end] = label.split('-').map((part) => part.trim());
+        const [startMonth, startDay] = start.split(' ');
+        const [endMonth, endDay] = end.split(' ');
+
+        if (startMonth === endMonth) {
+          return `${startMonth} ${startDay}-${endDay}`; // "Dec 1-7"
+        } else {
+          return `${startMonth} ${startDay}-${endMonth} ${endDay}`; // "Dec 29-Jan 4"
+        }
+      }
+      return label || '';
+    });
+
+    setFullCategories(sortedFullCategories);
     setCategories(shortLabels);
-    setIncomeData(sortedKeys.map((key) => groupedData[key].income));
-    setOutcomeData(sortedKeys.map((key) => groupedData[key].outcome));
+    setIncomeData(sortedKeys.map((key) => groupedData[key]?.income || 0));
+    setOutcomeData(sortedKeys.map((key) => groupedData[key]?.outcome || 0));
   }, [transactions, timeFrame, loading]);
 
-  const handleChangeTimeFrame = (newValue: string) => {
+  const handleChangeTimeFrame = (newValue: 'Week' | 'Month' | 'Year') => {
     popover.onClose();
     setTimeFrame(newValue);
   };
@@ -287,7 +242,7 @@ export default function FinanceBalanceStatistics() {
       </Card>
 
       <CustomPopover open={popover.open} onClose={popover.onClose} sx={{ width: 140 }}>
-        {['Week', 'Month', 'Year'].map((option) => (
+        {(['Week', 'Month', 'Year'] as const).map((option) => (
           <MenuItem
             key={option}
             selected={option === timeFrame}
