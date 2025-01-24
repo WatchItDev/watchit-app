@@ -69,7 +69,7 @@ export const useAccountSession = (): UseAccountSessionHook => {
     // dispatch the session data and turn off the loading
     dispatch(setSession({ session: data }))
     dispatch(setAuthLoading({ isSessionLoading: false }));
-  }, [isSessionLoading, data]);
+  }, [isSessionLoading, data?.authenticated, data?.type]);
 
   return {
     logout: handleSessionExpired,

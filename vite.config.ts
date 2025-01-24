@@ -41,4 +41,5 @@ export default defineConfig(({ mode }) => {
       'process.env': env, // Make sure to define process.env for compatibility
     },
   };
+  
 });
