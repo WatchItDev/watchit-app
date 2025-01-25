@@ -102,6 +102,8 @@ function FinanceQuickTransferModal({
     try {
       await transfer({ amount, recipient: address ?? '' });
 
+      onFinish();
+
       const senderId = sessionData?.profile?.id ?? address;
 
       // Build the notification payload
@@ -136,7 +138,6 @@ function FinanceQuickTransferModal({
       notifySuccess(SUCCESS.TRANSFER_CREATED_SUCCESSFULLY, {
         destination: isSame ? contactInfo?.metadata?.displayName : truncateAddress(address ?? ''),
       });
-      onFinish();
     } catch (err: any) {
       notifyError(ERRORS.TRANSFER_FAILED_ERROR);
     }
