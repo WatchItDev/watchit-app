@@ -86,53 +86,51 @@ const ProfileHeader = ({
   const profileImage = (profile?.metadata?.picture as any)?.optimized?.uri;
 
   return (
-    <>
-      <Box sx={{ my: 3, position: 'relative' }}>
-        <ProfileCover profile={profile} sx={{ height: { xs: 200, md: 300 } }} />
+    <Box sx={{ my: 3, position: 'relative' }}>
+      <ProfileCover profile={profile} sx={{ height: { xs: 200, md: 300 } }} />
 
-        {sessionData?.authenticated ? <ProfileReport profile={profile} /> : <></>}
+      {sessionData?.authenticated ? <ProfileReport profile={profile} /> : <></>}
 
-        <ProfileWrapper sidebar={<ProfileRightSidebar profile={profile} sidebarProps={{
-          attestationLoading, attestation, hasAccess, accessLoading, isAuthorized, authorizedLoading
-        }} />}>
+      <ProfileWrapper sidebar={<ProfileRightSidebar profile={profile} sidebarProps={{
+        attestationLoading, attestation, hasAccess, accessLoading, isAuthorized, authorizedLoading
+      }} />}>
 
-          <ProfileToolbar profile={profile} profileImage={profileImage} />
+        <ProfileToolbar profile={profile} profileImage={profileImage} />
 
-            <Stack
-              direction="column"
-              sx={{ width: '100%', maxWidth: { xs: 'calc(100% - 2rem)', md: '100%' } }}
-            >
+        <Stack
+          direction="column"
+          sx={{ width: '100%', maxWidth: { xs: 'calc(100% - 2rem)', md: '100%' } }}
+        >
 
-              <ProfileUserInfo profile={profile} />
+          <ProfileUserInfo profile={profile} />
 
-              <Stack direction="row" sx={{ width: '100%', mb: 2, gap: 2, flexWrap: 'wrap' }}>
-                {authorizedLoading && (
-                  <Box
-                    sx={{
-                      display: 'flex',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      maxWidth: '100%',
-                      flexWrap: 'wrap',
-                    }}
-                  >
-                    <CircularProgress size={24} sx={{ color: '#fff' }} />
-                  </Box>
-                )}
+          <Stack direction="row" sx={{ width: '100%', mb: 2, gap: 2, flexWrap: 'wrap' }}>
+            {authorizedLoading && (
+              <Box
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  maxWidth: '100%',
+                  flexWrap: 'wrap',
+                }}
+              >
+                <CircularProgress size={24} sx={{ color: '#fff' }} />
+              </Box>
+            )}
 
-                {isAuthorized && !authorizedLoading && profile?.id !== sessionData?.profile?.id && <ProfileJoin profile={profile} profileJoinProps={{
-                hasAccess, accessLoading, accessFetchingLoading, onSubscribe
-                }} />}
+            {isAuthorized && !authorizedLoading && profile?.id !== sessionData?.profile?.id && <ProfileJoin profile={profile} profileJoinProps={{
+              hasAccess, accessLoading, accessFetchingLoading, onSubscribe
+            }} />}
 
-                {profile?.id !== sessionData?.profile?.id && (
-                  <FollowUnfollowButton profileId={profile?.id} />
-                )}
-              </Stack>
-            </Stack>
-        </ProfileWrapper>
-        {children}
-      </Box>
-    </>
+            {profile?.id !== sessionData?.profile?.id && (
+              <FollowUnfollowButton profileId={profile?.id} />
+            )}
+          </Stack>
+        </Stack>
+      </ProfileWrapper>
+      {children}
+    </Box>
   );
 };
 

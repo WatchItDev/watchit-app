@@ -28,7 +28,7 @@ const ProfileToolbar: FC<ProfileToolbarProps> = ({profile, profileImage}) => {
       }}
     >
       <AvatarProfile
-        src={!!profileImage ? profileImage : profile?.id}
+        src={profileImage ?? profile?.id}
         alt={profile?.handle?.localName ?? ''}
         variant="rounded"
         sx={{

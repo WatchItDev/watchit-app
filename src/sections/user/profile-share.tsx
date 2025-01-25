@@ -191,9 +191,9 @@ const ProfileShare: FC<ProfileShareProps> = ({ profile }) => {
             Share link to this page
           </Typography>
           <Stack direction="row" spacing={2} justifyContent="center">
-            {shareLinks.map((item, index) => (
+            {shareLinks.map((item) => (
               <Stack
-                key={`share-link-item-${index}`}
+                key={`share-link-item-${item.label}`}
                 direction="column"
                 sx={{
                   display: 'flex',

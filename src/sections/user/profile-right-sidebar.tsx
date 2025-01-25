@@ -30,7 +30,7 @@ const ProfileRightSidebar: FC<ProfileRightSidebarProps> = ({profile, sidebarProp
   const {isAuthorized, authorizedLoading, accessLoading, hasAccess, attestation, attestationLoading} = sidebarProps;
   const attestationAddress = `0x${BigInt(attestation ?? '').toString(16)}`;
 
-  return (<>
+  return (
     <Stack
       direction="column"
       gap={2}
@@ -126,7 +126,7 @@ const ProfileRightSidebar: FC<ProfileRightSidebarProps> = ({profile, sidebarProp
         >
           {['Watchit'].map((partner, index) => (
             <StyledBoxGradient
-              key={`partner-${index}`}
+              key={`partner-${partner}`}
               color1={randomColors[randomColors.length - index]}
               color2={randomColors[index]}
             >
@@ -139,7 +139,7 @@ const ProfileRightSidebar: FC<ProfileRightSidebarProps> = ({profile, sidebarProp
         </Box>
       </Stack>
     </Stack>
-  </>);
+  );
 }
 
 const StyledBoxGradient = styled(Box)<{ color1?: string; color2?: string }>(({
