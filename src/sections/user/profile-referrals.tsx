@@ -3,7 +3,7 @@ import {FC} from "react";
 
 import Typography from "@mui/material/Typography";
 
-import {Invitation} from "@src/hooks/use-referrals.ts";
+import {Invitation} from "@src/types/invitation";
 import TableContainer from "@mui/material/TableContainer";
 import Scrollbar from "@src/components/scrollbar";
 import {
@@ -25,8 +25,7 @@ interface ProfileReferralsProps {
 
 const TABLE_HEAD = [
   { id: 'email', label: 'Email'},
-  { id: 'status', label: 'Status' },
-  { id: 'profile', label: 'Profile' },
+  { id: 'status', label: 'Status' }
 ];
 
 const ProfileReferrals : FC<ProfileReferralsProps> = ({ referrals, loading }) => {

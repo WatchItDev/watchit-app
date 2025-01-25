@@ -9,7 +9,7 @@ import ListItemText from '@mui/material/ListItemText';
 import Button from "@mui/material/Button";
 
 // LOCAL IMPORTS
-import {Invitation} from "@src/hooks/use-referrals.ts";
+import {Invitation} from "@src/types/invitation";
 import AvatarProfile from "@src/components/avatar/avatar.tsx";
 import {useRouter} from "@src/routes/hooks";
 import {paths} from "@src/routes/paths.ts";
@@ -56,19 +56,16 @@ export default function ProfileReferralsTableRow({ row, selected }: Readonly<Pro
       </TableCell>
 
       <TableCell>
-        <Typography variant="body2" sx={{ color: status === 'accepted' ? '#00AB55' : '#FF4842' }}>
-          {capitalizeFirstLetter(status)}
-        </Typography>
-      </TableCell>
-
-      <TableCell>
         {
           receiver_id ?  (
             <Button variant="outlined" size="small" onClick={handleClick}>
               View profile
             </Button>
-          ) : <></>
+          ) :  <Typography variant="body2" sx={{ color: '#FF4842' }}>
+            {capitalizeFirstLetter(status)}
+          </Typography>
         }
+
       </TableCell>
     </TableRow>
   );
