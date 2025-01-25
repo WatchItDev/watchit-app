@@ -17,21 +17,18 @@ interface ProfileJoinProps extends ProfileHeaderProps{
 const ProfileJoin: FC<ProfileJoinProps> = ({profile, profileJoinProps}) => {
   const dispatch = useDispatch();
   const sessionData = useSelector((state: any) => state.auth.session);
-
   const {hasAccess, accessLoading, accessFetchingLoading, onSubscribe} = profileJoinProps;
-
   const [openSubscribeModal, setOpenSubscribeModal] = useState(false);
 
   const handleSubscription = async () => {
     if (!sessionData?.authenticated) return dispatch(openLoginModal());
-
     if (!hasAccess) setOpenSubscribeModal(true);
   };
 
 
   return (<>
     <LoadingButton
-      title={hasAccess ? 'Joined!' : 'Join'}
+      title={hasAccess ? 'Joined' : 'Join'}
       variant={hasAccess ? 'outlined' : 'contained'}
       sx={{
         minWidth: 120,
@@ -41,7 +38,7 @@ const ProfileJoin: FC<ProfileJoinProps> = ({profile, profileJoinProps}) => {
       disabled={accessLoading || hasAccess || accessFetchingLoading}
       loading={accessLoading || accessFetchingLoading}
     >
-      {hasAccess ? 'Joined!' : 'Join'}
+      {hasAccess ? 'Joined' : 'Join'}
     </LoadingButton>
 
     <SubscribeProfileModal
