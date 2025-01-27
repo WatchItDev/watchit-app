@@ -73,13 +73,13 @@ const FinanceEarnTokens: FC<FinanceEarnTokensProps> = ({ sx, lgUp, ...other }) =
             <Typography
               variant="body1"
               sx={{
-                display: { xs: 'none', md: 'flex' },
+                display: {  md: 'flex' },
                 maxWidth: 250,
                 mb: 1,
                 whiteSpace: 'pre-line',
               }}
             >
-              ¡Complete some tasks and win!
+              Earn rewards effortlessly!
             </Typography>
             <Typography
               variant="h3"
@@ -106,26 +106,30 @@ const FinanceEarnTokens: FC<FinanceEarnTokensProps> = ({ sx, lgUp, ...other }) =
               variant="body1"
               sx={{
                 opacity: 0.8,
-                maxWidth: 220,
-                mb: { xs: 1, xl: 2 },
+                maxWidth: lgUp ? 220 : 'auto',
+                mb: { xs: 2, xl: 2 },
               }}
             >
-              Invite your family and friends and claims your rewards.
+              Complete tasks, grow your balance, and unlock exciting rewards.
             </Typography>
             <Button
-              sx={{ mt: lgUp ? 3 : null }}
+              sx={{
+                mt: lgUp ? 3 : null,
+                mb: !lgUp ? 3 : null
+              }}
               color={'primary'}
               variant={'soft'}
               startIcon={<Iconify icon={'fluent-emoji:trophy'} />}
               onClick={handleClick}
             >
-              Earn tokens
+              Start earning now!
             </Button>
           </Stack>
           <Stack
             flexGrow={1}
             justifyContent="center"
             sx={{
+              display: { xs: 'none', md: 'flex' },
               p: { xs: 1, md: 1 },
               mb: { xs: 1, md: 0 },
               mx: 'auto',

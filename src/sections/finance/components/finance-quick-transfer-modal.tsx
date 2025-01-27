@@ -4,7 +4,6 @@ import { useSelector } from 'react-redux';
 // MUI components
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
-import Avatar from '@mui/material/Avatar';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import DialogTitle from '@mui/material/DialogTitle';
@@ -29,6 +28,8 @@ import { useTransfer } from '@src/hooks/use-transfer.ts';
 import { notifyError, notifySuccess } from '@notifications/internal-notifications.ts';
 import { SUCCESS } from '@notifications/success.ts';
 import { ERRORS } from '@notifications/errors.ts';
+import {dicebear} from "@src/utils/dicebear.ts";
+import AvatarProfile from "@src/components/avatar/avatar.tsx";
 
 type TConfirmTransferDialogProps = InputAmountProps & DialogProps;
 
@@ -69,9 +70,7 @@ function FinanceQuickTransferModal({
   // For the avatar, if no valid profile or if the address doesn't match, use a dicebear fallback
   const avatarSrc =
     hasProfile && isSame
-      ? (contactInfo?.metadata?.picture as any)?.optimized?.uri ||
-        `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${contactInfo?.id}`
-      : `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${address}`;
+      ? (contactInfo?.metadata?.picture as any)?.optimized?.uri || dicebear(contactInfo?.id) : dicebear(address as string);
 
   // For the secondary text under the name, if we have a valid profile that matches, use its address
   // otherwise show the typed address
@@ -100,43 +99,47 @@ function FinanceQuickTransferModal({
   }
 
   const handleConfirmTransfer = async () => {
-    await transfer({ amount, recipient: address ?? '' });
+    try {
+      await transfer({ amount, recipient: address ?? '' });
 
-    const senderId = sessionData?.profile?.id ?? address;
+      const senderId = sessionData?.profile?.id ?? address;
 
-    // Build the notification payload
-    const notificationPayload = generatePayload(
-      'TRANSFER',
-      {
-        id: isSame ? (contactInfo?.id ?? '') : (address ?? ''),
-        displayName: isSame ? (contactInfo?.metadata?.displayName ?? 'No name') : 'External wallet',
-        avatar: (contactInfo?.metadata?.picture as any)?.optimized?.uri ?? '',
-      },
-      {
-        rawDescription: `${sessionData?.profile?.metadata?.displayName ?? address} sent you ${amount} MMC`,
+      // Build the notification payload
+      const notificationPayload = generatePayload(
+        'TRANSFER',
+        {
+          id: isSame ? (contactInfo?.id ?? '') : (address ?? ''),
+          displayName: isSame ? (contactInfo?.metadata?.displayName ?? 'No name') : 'External wallet',
+          avatar: (contactInfo?.metadata?.picture as any)?.optimized?.uri ?? '',
+        },
+        {
+          rawDescription: `${sessionData?.profile?.metadata?.displayName ?? address} sent you ${amount} MMC`,
+          message,
+        }
+      );
+
+      // Store transaction in supabase
+      await storeTransactionInSupabase(contactInfo?.id ?? address, senderId, {
+        address: contactInfo?.ownedBy?.address ?? address,
+        amount,
         message,
-      }
-    );
+        ...notificationPayload,
+      });
 
-    // Store transaction in supabase
-    await storeTransactionInSupabase(contactInfo?.id ?? address, senderId, {
-      address: contactInfo?.ownedBy?.address ?? address,
-      amount,
-      message,
-      ...notificationPayload,
-    });
+      // Send notification to lens profile or address
+      await sendNotification(
+        contactInfo?.id ?? address ?? '',
+        sessionData?.profile?.id,
+        notificationPayload
+      );
 
-    // Send notification to lens profile or address
-    await sendNotification(
-      contactInfo?.id ?? address ?? '',
-      sessionData?.profile?.id,
-      notificationPayload
-    );
-
-    notifySuccess(SUCCESS.TRANSFER_CREATED_SUCCESSFULLY, {
-      destination: isSame ? contactInfo?.metadata?.displayName : truncateAddress(address ?? ''),
-    });
-    onFinish();
+      notifySuccess(SUCCESS.TRANSFER_CREATED_SUCCESSFULLY, {
+        destination: isSame ? contactInfo?.metadata?.displayName : truncateAddress(address ?? ''),
+      });
+      onFinish();
+    } catch (err: any) {
+      notifyError(ERRORS.TRANSFER_FAILED_ERROR);
+    }
   };
 
   const RainbowEffect = transferLoading ? NeonPaper : Box;
@@ -151,7 +154,7 @@ function FinanceQuickTransferModal({
           sx={{ flexWrap: 'wrap', alignItems: 'center', justifyContent: 'center' }}
         >
           <Stack direction="row" alignItems="center" spacing={2} sx={{ flexGrow: 1 }}>
-            <Avatar src={avatarSrc} sx={{ width: 48, height: 48 }} />
+            <AvatarProfile src={avatarSrc} sx={{ width: 48, height: 48 }} />
 
             <ListItemText
               primary={displayName}

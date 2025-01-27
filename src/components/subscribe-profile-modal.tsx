@@ -40,6 +40,7 @@ import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 import { notifyError, notifySuccess } from '@notifications/internal-notifications.ts';
 import { SUCCESS } from '@notifications/success.ts';
 import { ERRORS } from '@notifications/errors.ts';
+import {dicebear} from "@src/utils/dicebear.ts";
 
 // ----------------------------------------------------------------------
 
@@ -176,8 +177,7 @@ export const SubscribeProfileModal = ({
             id: profile.id,
             displayName: profile?.metadata?.displayName ?? 'no name',
             avatar:
-              (profile?.metadata?.picture as any)?.optimized?.uri ??
-              `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${profile?.id}`,
+              (profile?.metadata?.picture as any)?.optimized?.uri ??dicebear(profile?.id)
           },
           {
             durationDays,

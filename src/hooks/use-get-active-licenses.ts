@@ -38,10 +38,10 @@ export const useGetActiveLicenses = (
 
   const fetchHolderPolicies = useCallback(async () => {
     // Validate that holder exists
-    if (!holder) {
+    if (!holder || !recipient) {
       setActiveLicenses([]);
       setLoading(false);
-      setError({ message: 'Holder address is missing.' });
+      setError({ message: 'Holder or recipient address is missing.' });
       return;
     }
 
@@ -56,14 +56,11 @@ export const useGetActiveLicenses = (
         args: [recipient, holder],
       })) as Policy[];
 
-      console.log('getActiveLicenses')
-      console.log(licenses)
-
       // Store the response in state
       setActiveLicenses(licenses);
       setError(null);
     } catch (err: any) {
-      console.error('Error fetching holder-wide policies:', err);
+      console.error('Error fetching active licenses:', err);
       setActiveLicenses([]);
       setError({ message: err?.message || 'Error occurred while fetching active licenses.' });
     } finally {

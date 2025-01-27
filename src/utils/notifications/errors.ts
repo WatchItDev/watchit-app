@@ -7,6 +7,8 @@ export enum ERRORS {
   UNKNOWN_ERROR = 'UNKNOWN_ERROR',
   METAMASK_CONNECTING_ERROR = 'METAMASK_CONNECTING_ERROR',
   WITHDRAW_FAILED_ERROR = 'WITHDRAW_FAILED_ERROR',
+  TRANSFER_FAILED_ERROR = 'TRANSFER_FAILED_ERROR',
+  ACTIVATE_SUBSCRIPTION_FAILED_ERROR = 'ACTIVATE_SUBSCRIPTION_FAILED_ERROR',
   DEPOSIT_ERROR = 'DEPOSIT_ERROR',
   INVITATION_EMAIL_ERROR = 'INVITATION_EMAIL_ERROR',
   LINK_COPIED_ERROR = 'LINK_COPIED_ERROR',
@@ -46,6 +48,13 @@ export enum ERRORS {
   // METAMASK
   METAMASK_CONNECTING_FAILED_ERROR = 'METAMASK_CONNECTING_FAILED_ERROR',
   METAMASK_CHANGE_WALLET_ERROR = 'METAMASK_CHANGE_WALLET_ERROR',
+
+  // REFERALS
+  ALREADY_SENT_INVITATION = 'ALREADY_SENT_INVITATION',
+  ALREADY_ENROLLED = 'ALREADY_ENROLLED',
+  INVITATION_SEND_ERROR = 'INVITATION_SEND_ERROR',
+  INVITATION_USER_ALREADY_INVITED = 'INVITATION_USER_ALREADY_INVITED',
+  INVITATION_USER_CANT_INVITE_SELF = 'INVITATION_USER_CANT_INVITE_SELF',
 }
 
 /**
@@ -56,7 +65,9 @@ export const ERROR_MESSAGES: Record<ERRORS, string> = {
   [ERRORS.UNKNOWN_ERROR]: 'An unknown error has occurred.',
   [ERRORS.METAMASK_CONNECTING_ERROR]: 'Error connecting to MetaMask.',
   [ERRORS.WITHDRAW_FAILED_ERROR]: 'Error while trying the withdrawal.',
+  [ERRORS.TRANSFER_FAILED_ERROR]: 'Error while trying to complete the transfer.',
   [ERRORS.DEPOSIT_ERROR]: 'Error while trying to complete the deposit.',
+  [ERRORS.ACTIVATE_SUBSCRIPTION_FAILED_ERROR]: 'Error while trying to activate the subscription.',
   [ERRORS.INVITATION_EMAIL_ERROR]: 'Error while trying to send the invitation email.',
   [ERRORS.LINK_COPIED_ERROR]: 'Error while trying to copy the link.',
   [ERRORS.FAILED_CHANGE_WALLET_ERROR]: 'Error while trying to change the wallet.',
@@ -103,4 +114,11 @@ export const ERROR_MESSAGES: Record<ERRORS, string> = {
   // METAMASK
   [ERRORS.METAMASK_CONNECTING_FAILED_ERROR]: 'Failed to connect wallet',
   [ERRORS.METAMASK_CHANGE_WALLET_ERROR]: 'Failed to change wallet',
+
+  // REFERALS
+  [ERRORS.ALREADY_SENT_INVITATION]: 'You have already sent an invitation to this email address!',
+  [ERRORS.ALREADY_ENROLLED]: 'This user is already enrolled!',
+  [ERRORS.INVITATION_SEND_ERROR]: 'An error occurred while sending the invitation.',
+  [ERRORS.INVITATION_USER_ALREADY_INVITED]: 'This user has already been invited!',
+  [ERRORS.INVITATION_USER_CANT_INVITE_SELF]: 'You cannot invite yourself!',
 };

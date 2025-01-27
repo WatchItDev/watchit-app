@@ -1,5 +1,6 @@
 import { TransactionData } from '@src/hooks/use-transaction-data';
 import { TransactionLog } from '@src/hooks/use-get-smart-wallet-transactions.ts';
+import {dicebear} from "@src/utils/dicebear.ts";
 type GroupedData = {
   type: string;
   data: {
@@ -114,31 +115,101 @@ export type ProcessedTransactionData = {
   amount: string | null;
 };
 
+type EventName =
+  | 'transferFrom'
+  | 'transferTo'
+  | 'deposit'
+  | 'withdraw'
+  | 'locked'
+  | 'claimed'
+  | 'approved'
+  | 'collected'
+  | 'released';
+
+type EventConfig = {
+  getName: (args: any) => string;
+  getAvatarUrl: (args: any) => string;
+};
+
+const eventConfig: Record<EventName, EventConfig> = {
+  transferFrom: {
+    getName: (args) => args.origin,
+    getAvatarUrl: (args) => dicebear(args.origin),
+  },
+  transferTo: {
+    getName: (args) => args.recipient,
+    getAvatarUrl: (args) => dicebear(args.recipient),
+  },
+  deposit: {
+    getName: (args) => args.recipient,
+    getAvatarUrl: (args) => dicebear(args.recipient),
+  },
+  withdraw: {
+    getName: (args) => args.origin,
+    getAvatarUrl: (args) => dicebear(args.origin),
+  },
+  locked: {
+    getName: (args) => args.account,
+    getAvatarUrl: (args) => dicebear(args.account),
+  },
+  claimed: {
+    getName: (args) => args.claimer,
+    getAvatarUrl: (args) => dicebear(args.claimer),
+  },
+  approved: {
+    getName: (args) => args.from,
+    getAvatarUrl: (args) => dicebear(args.from),
+  },
+  collected: {
+    getName: (args) => args.from,
+    getAvatarUrl: (args) => dicebear(args.from),
+  },
+  released: {
+    getName: (args) => args.to,
+    getAvatarUrl: (args) => dicebear(args.to),
+  },
+};
+
 export const processTransactionData = (data: TransactionLog[]): ProcessedTransactionData[] => {
-  return data?.map((transaction, _index) => ({
-    id: transaction.transactionHash,
-    name:
-      transaction.event === 'transferFrom' ? transaction.args.origin : transaction.args.recipient,
-    avatarUrl: `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${transaction.event === 'transferFrom' ? transaction.args.origin : transaction.args.recipient}`,
-    type: transaction.event,
-    message: parseTransactionTypeLabel(transaction.event),
-    category: parseTransactionType(transaction.event),
-    date: transaction.timestamp,
-    status: 'completed',
-    amount: transaction.formattedAmount,
-  }));
+  return data.map((transaction) => {
+    const config = eventConfig[transaction.event as EventName];
+    const name = config ? config.getName(transaction.args) : 'Unknown';
+    const avatarUrl = config ? config.getAvatarUrl(transaction.args) : dicebear('default');
+
+    return {
+      id: transaction.transactionHash,
+      name,
+      avatarUrl,
+      type: transaction.event,
+      message: parseTransactionTypeLabel(transaction.event),
+      category: parseTransactionType(transaction.event),
+      date: transaction.timestamp,
+      status: 'completed',
+      amount: transaction.formattedAmount,
+    };
+  });
 };
 
 const parseTransactionTypeLabel = (type: string): string => {
   switch (type) {
     case 'transferTo':
-      return 'Sent money to';
+      return 'Transfer to';
     case 'transferFrom':
-      return 'Received money from';
+      return 'Transfer from';
     case 'deposit':
       return 'Deposited';
     case 'withdraw':
       return 'Withdraw';
+    // case 'locked':
+    //   return 'Locked';
+    // case 'claimed':
+    //   return 'Paid';
+    case 'approved':
+      return 'Approved';
+    case 'collected':
+      return 'Paid';
+    // case 'released':
+    //   return 'Released';
 
     default:
       return type;
@@ -156,6 +227,16 @@ const parseTransactionType = (type: string): string => {
       return 'income';
     case 'withdraw':
       return 'outcome';
+    case 'collected':
+      return 'outcome';
+    // case 'locked':
+    //   return 'other';
+    // case 'claimed':
+    //   return 'outcome';
+    // case 'approved':
+    //   return 'other';
+    // case 'released':
+    //   return 'income';
 
     default:
       return type;

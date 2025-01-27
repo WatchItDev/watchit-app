@@ -5,6 +5,7 @@ import LedgerVaultAbi from '@src/config/abi/LedgerVault.json';
 import { GLOBAL_CONSTANTS } from '@src/config-global';
 import { useWeb3Session } from '@src/hooks/use-web3-session.ts';
 import { ERRORS } from '@notifications/errors.ts';
+import { useAccountSession } from '@src/hooks/use-account-session.ts';
 
 interface TransferParams {
   recipient: string;
@@ -25,6 +26,7 @@ export const useTransfer = (): UseTransferHook => {
 
   const sessionData = useSelector((state: any) => state.auth.session);
   const { bundlerClient, smartAccount } = useWeb3Session();
+  const { isAuthenticated, logout } = useAccountSession();
 
   const initializeTransfer = ({ recipient, amount }: TransferParams) => {
     const weiAmount = parseUnits(amount.toString(), 18);
@@ -40,19 +42,19 @@ export const useTransfer = (): UseTransferHook => {
     setLoading(true);
     setError(null);
 
+    if (!sessionData?.authenticated) {
+      setError(ERRORS.TRANSFER_LOGIN_FIRST_ERROR);
+      setLoading(false);
+      return;
+    }
+
+    if (!isAuthenticated()) {
+      logout();
+      setLoading(false);
+      throw new Error('Invalid Web3Auth session');
+    }
+
     try {
-      if (!sessionData?.authenticated) {
-        setError(ERRORS.TRANSFER_LOGIN_FIRST_ERROR);
-        setLoading(false);
-        return;
-      }
-
-      if (!bundlerClient) {
-        setError(ERRORS.BUNDLER_UNAVAILABLE);
-        setLoading(false);
-        return;
-      }
-
       const transferData = initializeTransfer({ recipient, amount });
 
       const calls = [
@@ -75,6 +77,7 @@ export const useTransfer = (): UseTransferHook => {
       setData(receipt);
       setLoading(false);
     } catch (err: any) {
+      console.error('USE TRANSFER ERR:', err);
       setError(ERRORS.UNKNOWN_ERROR);
       setLoading(false);
     }

@@ -126,7 +126,9 @@ export default function PublicationDetailsView({ id }: Props) {
   // Remove from publications the current publication
   const filteredPublications = publications?.filter((publication) => publication.id !== id) ?? [];
 
-  if (loading || accessLoading) return <LoadingScreen />;
+  if (loading || accessLoading) return (
+    <LoadingScreen />
+  );
 
   if (data.isHidden)
     return (

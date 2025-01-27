@@ -10,6 +10,7 @@ import { useDepositMetamask } from '@src/hooks/use-deposit-metamask';
 import FinanceDeposit from '@src/sections/finance/components/finance-deposit';
 import FinanceMetamaskLoader from '@src/sections/finance/components/finance-metamask-loader.tsx';
 import FinanceMetamaskButton from '@src/sections/finance/components/finance-metamask-button.tsx';
+import FinanceMetamaskHelper from "@src/sections/finance/components/finance-metamask-helper.tsx";
 
 interface FinanceDepositFromMetamaskProps {
   onClose: () => void;
@@ -18,12 +19,12 @@ interface FinanceDepositFromMetamaskProps {
 const FinanceDepositFromMetamask: FC<FinanceDepositFromMetamaskProps> = ({ onClose }) => {
   const sessionData = useSelector((state: any) => state.auth.session);
   const depositHook = useDepositMetamask();
-  const { address, connecting, connect, setAddress } = useMetaMask();
+  const { account: address, loading, connect } = useMetaMask();
 
-  if (connecting) return <FinanceMetamaskLoader />;
-  if (!address) return <FinanceMetamaskButton connect={connect} />;
+  if (loading) return <FinanceMetamaskLoader />;
+  if (!address) return <><FinanceMetamaskButton connect={connect} /><FinanceMetamaskHelper /></>;
 
-  return <FinanceDeposit address={address} recipient={sessionData?.address} depositHook={depositHook} onClose={onClose} onChangeWallet={setAddress} />;
+  return <FinanceDeposit address={address} recipient={sessionData?.address} depositHook={depositHook} onClose={onClose} />;
 };
 
 export default FinanceDepositFromMetamask;

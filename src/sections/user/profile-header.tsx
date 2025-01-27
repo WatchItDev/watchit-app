@@ -8,7 +8,6 @@ import { useDispatch, useSelector } from 'react-redux';
 // MUI IMPORTS
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
 import Popover from '@mui/material/Popover';
@@ -49,19 +48,19 @@ import { useGetPolicyAttestation } from '@src/hooks/use-get-policy-attestation.t
 import { notifyError, notifySuccess } from '@notifications/internal-notifications.ts';
 import { SUCCESS } from '@notifications/success.ts';
 import { ERRORS } from '@notifications/errors.ts';
+import AvatarProfile from "@src/components/avatar/avatar.tsx";
+import BadgeVerified from "@src/components/user-item/BadgeVerified.tsx";
 
 // ----------------------------------------------------------------------
 
 const urlToShare = 'https://app.watchit.movie/profileId';
 const urlAttestationBase = 'https://polygon-amoy.easscan.org/attestation/view/';
 
-// const GeoAddress = '0xEFBBD14082cF2FbCf5Badc7ee619F0f4e36D0A5B'
-
 const shareLinks = [
   {
     icon: 'mingcute:social-x-line',
     label: 'X',
-    url: `https://x.com/share/?url=${encodeURIComponent(urlToShare)}&text=Visit%20my%20profile%20in%20Watchit&hashtags=Watchit`,
+    url: `https://x.com/share/?url=${encodeURIComponent(urlToShare)}&text=Visit%20my%20profile%20on%20Watchit&hashtags=Watchit,Blockchain,Crypto`,
   },
   {
     icon: 'mdi:facebook',
@@ -322,15 +321,16 @@ const ProfileHeader = ({
                 },
               }}
             >
-              <Avatar
+              <AvatarProfile
                 src={
                   !!profileImage
                     ? profileImage
-                    : `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${profile?.id}`
+                    : profile?.id
                 }
                 alt={profile?.handle?.localName ?? ''}
                 variant="rounded"
                 sx={{
+                  fontSize: '3em',
                   width: { xs: 96, md: 128 },
                   height: { xs: 96, md: 128 },
                   border: `solid 2px ${theme.palette.common.white}`,
@@ -410,7 +410,7 @@ const ProfileHeader = ({
                     pointerEvents: 'none',
                   }}
                 >
-                  <Typography>Share Watchit on your social</Typography>
+                  <Typography>Share</Typography>
                 </Popover>
               </Stack>
             </Stack>
@@ -426,8 +426,12 @@ const ProfileHeader = ({
                     mb: 1,
                   }}
                 >
-                  <Typography variant="h4" color="text.primary">
-                    {profile?.metadata?.displayName ?? ''}
+                  <Typography sx={{
+                    display: 'flex',
+                    gap: 1,
+                    alignItems: 'center'
+                  }} variant="h4" color="text.primary">
+                    {profile?.metadata?.displayName ?? ''} <BadgeVerified address={profile?.ownedBy?.address} />
                   </Typography>
                   <Typography
                     variant="body2"

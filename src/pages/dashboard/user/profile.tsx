@@ -1,9 +1,10 @@
-import { Helmet } from 'react-helmet-async';
-// sections
+// LOCAL IMPORTS
 import { UserProfileView } from '@src/sections/user/view';
 import { useParams } from '@src/routes/hooks';
 import Header from '@src/layouts/dashboard/header.tsx';
 import HeaderContent from '@src/layouts/dashboard/header-content.tsx';
+import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
+import { OgMetaTags } from '@src/components/og-meta-tags.tsx';
 
 // ----------------------------------------------------------------------
 
@@ -12,36 +13,16 @@ export default function UserProfilePage() {
   const { id } = params;
 
   return (
-    <>
-      <Helmet>
-        <title> Dashboard: User Profile | {id}</title>
-        {/*OG*/}
-        <meta property="og:title" content={`Watchit | ${id}`} />
-        <meta
-          property="og:description"
-          content="Visit my profile in Watchit | Discover stories, art, and experiences like never before, connecting you with creators in a decentralized, space built just for you."
-        />
-        <meta property="og:image" content={`https://app.watchit.movie/default.jpg`} />
-        <meta property="og:url" content={`https://app.watchit.movie/${id}`} />
-        {/*Twitter*/}
-        <meta
-          name="twitter:title"
-          content={`Watchit: A New Era of Video Content with Web3 x AI | ${id}`}
-        />
-        <meta
-          name="twitter:description"
-          content="Visit my profile in Watchit | Discover stories, art, and experiences like never before, connecting you with creators in a decentralized, space built just for you."
-        />
-        <meta name="twitter:image" content={`https://app.watchit.movie/default.jpg`} />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:site" content="@app_watchit" />
-      </Helmet>
-
+    <OgMetaTags
+      title="Watchit: Explore Profiles"
+      description="Discover creators and their contributions on Watchit. Connect, explore, and support their journey in decentralized content powered by Web3 and AI."
+      url={`${GLOBAL_CONSTANTS.BASE_URL}/profile/${id}`}
+    >
       <Header>
         <HeaderContent title="Profile" />
       </Header>
 
       <UserProfileView id={id} />
-    </>
+    </OgMetaTags>
   );
 }

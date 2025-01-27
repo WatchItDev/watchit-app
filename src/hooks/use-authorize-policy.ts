@@ -10,6 +10,7 @@ import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 import { useSelector } from 'react-redux';
 import { useWeb3Session } from '@src/hooks/use-web3-session.ts';
 import { ERRORS } from '@notifications/errors.ts';
+import { useAccountSession } from '@src/hooks/use-account-session.ts';
 
 // ----------------------------------------------------------------------
 // Define the return type of the useAuthorizePolicy hook
@@ -34,6 +35,7 @@ export const useAuthorizePolicy = (): useAuthorizePolicyHook => {
   const [error, setError] = useState<keyof typeof ERRORS | null>(null);
   const sessionData = useSelector((state: any) => state.auth.session);
   const { bundlerClient, smartAccount } = useWeb3Session();
+  const { isAuthenticated, logout } = useAccountSession();
 
   /**
    * Creates the flash policy agreement data.
@@ -57,19 +59,19 @@ export const useAuthorizePolicy = (): useAuthorizePolicyHook => {
     setLoading(true);
     setError(null);
 
+    if (!sessionData?.authenticated) {
+      setError(ERRORS.AUTHORIZATION_POLICY_ERROR);
+      setLoading(false);
+      return;
+    }
+
+    if (!isAuthenticated()) {
+      logout();
+      setLoading(false);
+      throw new Error('Invalid Web3Auth session');
+    }
+
     try {
-      if (!sessionData?.authenticated) {
-        setError(ERRORS.AUTHORIZATION_POLICY_ERROR);
-        setLoading(false);
-        return;
-      }
-
-      if (!bundlerClient) {
-        setError(ERRORS.BUNDLER_UNAVAILABLE);
-        setLoading(false);
-        return;
-      }
-
       // Prepare the authorize policy data
       const rightPolicyAuthorizerData = initializeAuthorizePolicy({
         policyAddress,
@@ -100,8 +102,7 @@ export const useAuthorizePolicy = (): useAuthorizePolicyHook => {
       setData(receipt);
       setLoading(false);
     } catch (err: any) {
-      console.log('err')
-      console.log(err)
+      console.error('USE AUTHORIZE POLICY ERR:', err);
       setError(ERRORS.UNKNOWN_ERROR);
       setLoading(false);
     }

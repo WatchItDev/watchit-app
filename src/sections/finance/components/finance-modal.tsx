@@ -4,7 +4,7 @@ import { FC, useState, ReactNode } from 'react';
 import Tab from '@mui/material/Tab';
 import DialogTitle from '@mui/material/DialogTitle';
 import Tabs, { tabsClasses } from '@mui/material/Tabs';
-import Dialog, { DialogProps } from '@mui/material/Dialog';
+import Dialog, { dialogClasses, DialogProps } from '@mui/material/Dialog';
 
 interface TabConfig {
   value: string;
@@ -28,7 +28,18 @@ const FinanceModal: FC<FinanceModalProps> = ({ open, onClose, title, tabs, rende
   };
 
   return (
-    <Dialog open={open} fullWidth maxWidth="xs" onClose={onClose} {...dialogProps}>
+    <Dialog
+      open={open}
+      fullWidth
+      onClose={onClose}
+      sx={{
+        [`& .${dialogClasses.paper}`]: {
+          maxWidth: { xs: '100%', md: '444px' },
+          width: { xs: 'calc(100% - 34px)', md: 'calc(100% - 64px)' },
+        }
+      }}
+      {...dialogProps}
+    >
       <DialogTitle sx={{ pb: 1 }}>{title}</DialogTitle>
 
       <Tabs

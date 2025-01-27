@@ -1,3 +1,157 @@
+# [2.2.0-beta.17](https://github.com/WatchItDev/watchit-app/compare/v2.2.0-beta.16...v2.2.0-beta.17) (2025-01-23)
+
+
+### Bug Fixes
+
+* events ([984a8ce](https://github.com/WatchItDev/watchit-app/commit/984a8ced3d83ebd854bf5b5c472c11316d3c4084))
+* finance statistics graph data ([054d98a](https://github.com/WatchItDev/watchit-app/commit/054d98aadf6eca0fe6a9cf7dec2bfdccc287070a))
+
+
+### Features
+
+* change "reserve" with "approve" and update the ledger vault abi ([ad265e6](https://github.com/WatchItDev/watchit-app/commit/ad265e62de49914ee3235f6fc3658a48ed2256b8))
+
+# [2.2.0-beta.16](https://github.com/WatchItDev/watchit-app/compare/v2.2.0-beta.15...v2.2.0-beta.16) (2025-01-22)
+
+
+### Bug Fixes
+
+* dynamic og tags ([bfc151b](https://github.com/WatchItDev/watchit-app/commit/bfc151baa36910cd57a443549a7682422b770e5f))
+* sonarcloud errors ([54c7340](https://github.com/WatchItDev/watchit-app/commit/54c7340cc1690fd5ee5633d26766a63729805315))
+
+# [2.2.0-beta.15](https://github.com/WatchItDev/watchit-app/compare/v2.2.0-beta.14...v2.2.0-beta.15) (2025-01-22)
+
+
+### Bug Fixes
+
+* sonarcloud errors ([28953cb](https://github.com/WatchItDev/watchit-app/commit/28953cb07c91416304108760bdfee24a226941fe))
+* use account session and fix errors when the session is invalid ([1a9de20](https://github.com/WatchItDev/watchit-app/commit/1a9de20a42327960caa17695c825a473efa99bca))
+* web3auth session expiration, and refactor account-popover ([40e1359](https://github.com/WatchItDev/watchit-app/commit/40e13599b3f580bf68a3f7743ea5e69949093c15))
+
+
+### Features
+
+* added new events to transactions table ('locked', 'claimed', 'reserved', 'collected', 'released') ([dbd2767](https://github.com/WatchItDev/watchit-app/commit/dbd27679a115632b4fa74c2b2863fb4208ca5229))
+
+# [2.2.0-beta.14](https://github.com/WatchItDev/watchit-app/compare/v2.2.0-beta.13...v2.2.0-beta.14) (2025-01-21)
+
+
+### Bug Fixes
+
+* update typo in Sentry DSN and adjust minor details ([9c83319](https://github.com/WatchItDev/watchit-app/commit/9c8331977a036e3a87ac587dc47972fda8486d56))
+
+
+### Features
+
+* add validation for email invitations and improve UX ([bc3f9ce](https://github.com/WatchItDev/watchit-app/commit/bc3f9cea2bf7ff6ab8cc2beb714299ccb70fee36))
+* enhance avatar styling with font and background changes ([2a7ce4c](https://github.com/WatchItDev/watchit-app/commit/2a7ce4c918d666a19494ab2fb5bdf4acb34be848))
+* **profile-header:** update social share hashtags on X ([f6e2c36](https://github.com/WatchItDev/watchit-app/commit/f6e2c36b2bed772d8eff5fb39df8c8c066052693))
+* update verified badge color to gold ([428ae78](https://github.com/WatchItDev/watchit-app/commit/428ae78c6fe12b24f83d1d1467bb13bbb77368ab)), closes [#cca421](https://github.com/WatchItDev/watchit-app/issues/cca421)
+
+# [2.2.0-beta.13](https://github.com/WatchItDev/watchit-app/compare/v2.2.0-beta.12...v2.2.0-beta.13) (2025-01-20)
+
+
+### Bug Fixes
+
+* auth loader HOC ([d3810e0](https://github.com/WatchItDev/watchit-app/commit/d3810e0087d909fb1b64455f9339c2e40911b577))
+* correct interface usage in finance-quick-transfer ([40e0055](https://github.com/WatchItDev/watchit-app/commit/40e00551e4c58c81c12dd772dec4a65d1294a677))
+* eslint warnings ([f7cf3e6](https://github.com/WatchItDev/watchit-app/commit/f7cf3e617e7a41abc4d6acc308d2964029be5c3c))
+* **i18n:** update tooltip text to English ([32b5233](https://github.com/WatchItDev/watchit-app/commit/32b5233a1a0ea4e150b88f442f73b45d11970604))
+* sonar cloud ([434aaef](https://github.com/WatchItDev/watchit-app/commit/434aaefadfd8a6519e93e0246e9792d9b55f14ba))
+* update payload key for self registration ([dc82897](https://github.com/WatchItDev/watchit-app/commit/dc82897ca48d29d81125a2f6e2698b23f609850a))
+
+
+### Features
+
+* add emailjs/browser dependency ([7a557db](https://github.com/WatchItDev/watchit-app/commit/7a557dbe089c236fb53fbfc19d63b4bd483261c7))
+* add verified badge to user profiles and items ([9b2b495](https://github.com/WatchItDev/watchit-app/commit/9b2b495711b0fd52dc39ffc8e6f03a56c9fca67d))
+* added dynamic og tags ([c01dd5e](https://github.com/WatchItDev/watchit-app/commit/c01dd5ed09be1a9dc329761aed052a91b91369a6))
+* added metamask required, adapt earn tokens on mobile, add transfer to/from to history table, added tx row to history table, added padding to deposit modal, added min to register form and edit ([ac99f55](https://github.com/WatchItDev/watchit-app/commit/ac99f55af9a2a094aab6edd348c7be2d1158ad6b))
+* added session validation, once the session is expired logout user and show a local notification informing the status ([295ab9a](https://github.com/WatchItDev/watchit-app/commit/295ab9a12b97031e0c4320f8a54b2a1b316563b3))
+* added verified connection ([323cc66](https://github.com/WatchItDev/watchit-app/commit/323cc663ccb02a3d83afd6f29b571ab188597d6d))
+* **auth:** add email field and setEmail action to auth slice ([1bfa5cf](https://github.com/WatchItDev/watchit-app/commit/1bfa5cf6f26c31afdb52de97b5ac49d62ec1c42e))
+* **auth:** retrieve and store user email on login ([328f9da](https://github.com/WatchItDev/watchit-app/commit/328f9da0bc211efe0488eb86196819108d879a13))
+* **config:** add email-related environment variables ([910dbf9](https://github.com/WatchItDev/watchit-app/commit/910dbf92c2a44aa9af03dac494b09dac85dd5a01))
+* email invites accept logic ([a0dc1c0](https://github.com/WatchItDev/watchit-app/commit/a0dc1c0f4e88699d321a0427615ed6177e506425))
+* remove resend button ([716cc8f](https://github.com/WatchItDev/watchit-app/commit/716cc8fe5a63491747e46195e42638dddfa4dc3d))
+* separate Supabase actions into dedicated utilities ([b8a1b81](https://github.com/WatchItDev/watchit-app/commit/b8a1b81ba0b40d15483f3c5a0136a5788f945029))
+* **table:** adjust pagination container to full width ([035e1d2](https://github.com/WatchItDev/watchit-app/commit/035e1d2fa6c70af2ccc5fe33dccc03bf311970c5))
+* **user-profile:** add referrals section to user profile ([ae48721](https://github.com/WatchItDev/watchit-app/commit/ae48721b0df2f03f81cf6a32247005f20bcea0a2))
+* **web3Auth:** add session time configuration ([b96a088](https://github.com/WatchItDev/watchit-app/commit/b96a088c9f43c52475bbb99426bb82e9fb85678a))
+
+# [2.2.0-beta.12](https://github.com/WatchItDev/watchit-app/compare/v2.2.0-beta.11...v2.2.0-beta.12) (2025-01-10)
+
+
+### Bug Fixes
+
+* correct carousel index update on profile selection ([012dfe4](https://github.com/WatchItDev/watchit-app/commit/012dfe4618a588d9a364c6a6b6461216349dfdca))
+
+# [2.2.0-beta.11](https://github.com/WatchItDev/watchit-app/compare/v2.2.0-beta.10...v2.2.0-beta.11) (2025-01-10)
+
+
+### Features
+
+* adapt new protocol contracts ([08888eb](https://github.com/WatchItDev/watchit-app/commit/08888eb71981aba1cae9193490320d3d2230f067))
+
+# [2.2.0-beta.10](https://github.com/WatchItDev/watchit-app/compare/v2.2.0-beta.9...v2.2.0-beta.10) (2025-01-10)
+
+
+### Bug Fixes
+
+* ensure consistent handling of numeric input for finance forms ([86e84be](https://github.com/WatchItDev/watchit-app/commit/86e84be1feede66394967fe16dc794624bac7b5c))
+* remove some extra error notifications ([d9686a9](https://github.com/WatchItDev/watchit-app/commit/d9686a9105a32389a71673b63356c3060213185a))
+* remove wallet environment detection ([cff1edc](https://github.com/WatchItDev/watchit-app/commit/cff1edc1f27007494787d878d8ee78207e1c75b3))
+
+
+### Features
+
+* added detect wallet environment hook ([aca7dc6](https://github.com/WatchItDev/watchit-app/commit/aca7dc635937c248f5fc774d06530e9471aea57f))
+* added detect wallet environment hook ([247f005](https://github.com/WatchItDev/watchit-app/commit/247f005068ae34a5d7ff66ef5c56c0767f2b9891))
+* **finance:** add helper component for MetaMask guidance ([e42ec9f](https://github.com/WatchItDev/watchit-app/commit/e42ec9f3dbb7c389869d0143eb095930da4b259f))
+
+# [2.2.0-beta.9](https://github.com/WatchItDev/watchit-app/compare/v2.2.0-beta.8...v2.2.0-beta.9) (2025-01-09)
+
+
+### Bug Fixes
+
+* typo ([4fbfa56](https://github.com/WatchItDev/watchit-app/commit/4fbfa5611e8b9134ed5109ec7cd57ad57c3750bf))
+* typo ([ad11871](https://github.com/WatchItDev/watchit-app/commit/ad11871225820785efc63daae9dd027e7c98e6cf))
+
+# [2.2.0-beta.8](https://github.com/WatchItDev/watchit-app/compare/v2.2.0-beta.7...v2.2.0-beta.8) (2025-01-09)
+
+
+### Features
+
+* change aproach of withdraw to select destination on tabs ([0528930](https://github.com/WatchItDev/watchit-app/commit/05289307495da69be521ce813d95f470935d6740))
+* **finance-quick-transfer:** enhance slider validation logic ([f60a687](https://github.com/WatchItDev/watchit-app/commit/f60a6879396ac13e644f2d19ddd0f255c6e14952))
+
+# [2.2.0-beta.7](https://github.com/WatchItDev/watchit-app/compare/v2.2.0-beta.6...v2.2.0-beta.7) (2025-01-09)
+
+
+### Bug Fixes
+
+* typos ([3de0c29](https://github.com/WatchItDev/watchit-app/commit/3de0c293822756ab07210c774a773e71ce9dfab5))
+
+# [2.2.0-beta.6](https://github.com/WatchItDev/watchit-app/compare/v2.2.0-beta.5...v2.2.0-beta.6) (2025-01-08)
+
+
+### Bug Fixes
+
+* coming soon stripe ([9f9ca05](https://github.com/WatchItDev/watchit-app/commit/9f9ca054e392dc2384ecd3758bf8fbe58dcdbc01))
+* deposit and withdraw modals ([360e859](https://github.com/WatchItDev/watchit-app/commit/360e859d17a52ba974fe81c62f430718151bcc26))
+
+# [2.2.0-beta.5](https://github.com/WatchItDev/watchit-app/compare/v2.2.0-beta.4...v2.2.0-beta.5) (2025-01-08)
+
+
+### Bug Fixes
+
+* **finance:** ensure input focus persistence on amount change ([5d418ad](https://github.com/WatchItDev/watchit-app/commit/5d418ad2aa1d241d63814a2ca2f8519b0cf93386))
+
+
+### Features
+
+* **finance-quick-transfer:** enhance slider and input UX ([1563296](https://github.com/WatchItDev/watchit-app/commit/1563296d7a733cbe826d839b3c94fdb70014baee))
+
 # [2.2.0-beta.4](https://github.com/WatchItDev/watchit-app/compare/v2.2.0-beta.3...v2.2.0-beta.4) (2025-01-08)
 
 

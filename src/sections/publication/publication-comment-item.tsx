@@ -2,7 +2,6 @@ import { useEffect, useState, lazy, Suspense } from 'react';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
-import Avatar from '@mui/material/Avatar';
 import Paper from '@mui/material/Paper';
 import PublicationCommentForm from './publication-details-comment-form';
 import { paths } from '../../routes/paths';
@@ -37,6 +36,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@redux/store';
 import { incrementCounterLikes, decrementCounterLikes, setCounterLikes } from '@redux/comments';
 import NeonPaperContainer from '@src/sections/publication/NeonPaperContainer.tsx';
+import AvatarProfile from "@src/components/avatar/avatar.tsx";
 
 // Components Lazy
 const LazyPopover = lazy(() => import('@mui/material/Popover'));
@@ -148,10 +148,9 @@ export default function PublicationCommentItem({ comment, hasReply, canReply }: 
     >
       <Stack direction="column" spacing={1}>
         <Stack direction="row" spacing={2} sx={{ position: 'relative' }}>
-          <Avatar
+          <AvatarProfile
             src={
-              (comment?.by?.metadata?.picture as any)?.optimized?.uri ??
-              `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${comment?.by?.id}`
+              (comment?.by?.metadata?.picture as any)?.optimized?.uri ?? comment?.by?.id
             }
             alt={comment?.by?.id}
             onClick={goToProfile}
@@ -337,9 +336,7 @@ export default function PublicationCommentItem({ comment, hasReply, canReply }: 
                 owner={{
                   id: comment?.by?.id,
                   displayName: comment?.by?.metadata?.displayName,
-                  avatar:
-                    (comment?.by?.metadata?.picture as any)?.optimized?.uri ??
-                    `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${comment?.by?.id}`,
+                  avatar: comment?.by?.metadata?.picture?.optimized?.uri ?? comment?.by?.id,
                 }}
               />
             ) : (

@@ -7,7 +7,6 @@ import Stack from '@mui/material/Stack';
 import CardHeader from '@mui/material/CardHeader';
 import Card, { CardProps } from '@mui/material/Card';
 import Tooltip from '@mui/material/Tooltip';
-import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
 import ListItemText from '@mui/material/ListItemText';
 import Box from '@mui/material/Box';
@@ -16,6 +15,7 @@ import Box from '@mui/material/Box';
 import Iconify from '@src/components/iconify';
 import Carousel, { useCarousel } from '@src/components/carousel/index';
 import NavigationArrows from '@src/components/carousel/NavigationArrows';
+import AvatarProfile from "@src/components/avatar/avatar.tsx";
 
 // routes
 import { paths } from '@src/routes/paths';
@@ -50,7 +50,7 @@ export default function FinanceContactsCarousel({
     if (time == null) time = 500;
     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     (pos = +pos), (time = +time);
-    
+
     window.requestAnimationFrame(function step(currentTime) {
       start = !start ? currentTime : start;
       let progress = currentTime - start;
@@ -149,11 +149,9 @@ function SlideContacts({ chunk, goToProfile, onClickArrow }: SlideContactsProps)
             sx={{ cursor: 'pointer', flexGrow: 1 }}
             onClick={() => goToProfile(profile.id)}
           >
-            <Avatar
-              src={
-                (profile?.metadata?.picture as any)?.optimized?.uri ??
-                `https://api.dicebear.com/9.x/bottts-neutral/svg?seed=${profile?.id}`
-              }
+            <AvatarProfile
+              alt={profile.metadata?.displayName || 'No Name'}
+              src={(profile?.metadata?.picture as any)?.optimized?.uri ?? profile?.id}
               sx={{ width: 48, height: 48, mr: 2 }}
             />
             <ListItemText

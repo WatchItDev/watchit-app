@@ -2,7 +2,6 @@
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
-import Avatar from '@mui/material/Avatar';
 import ListItem from '@mui/material/ListItem';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
@@ -12,6 +11,7 @@ import { useBoolean } from '@src/hooks/use-boolean';
 import { fDate } from '@src/utils/format-time';
 // components
 import Iconify from '@src/components/iconify';
+import AvatarProfile from "@src/components/avatar/avatar.tsx";
 
 // ----------------------------------------------------------------------
 
@@ -45,7 +45,8 @@ export default function GovernanceCommentItem({
         }),
       }}
     >
-      <Avatar alt={name} src={avatarUrl} sx={{ mr: 2, width: 48, height: 48 }} />
+      <AvatarProfile
+        alt={name} src={avatarUrl} sx={{ mr: 2, width: 48, height: 48 }} />
 
       <Stack
         flexGrow={1}

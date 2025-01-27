@@ -14,7 +14,7 @@ import FinanceDialogsActions from '@src/sections/finance/components/finance-dial
 import TextMaxLine from '@src/components/text-max-line';
 import { formatBalanceNumber } from '@src/utils/format-number';
 import { useGetMmcContractBalance } from '@src/hooks/use-get-mmc-contract-balance';
-import BoxRow from '@src/sections/finance/components/box-row.tsx';
+import FinanceBoxRow from '@src/sections/finance/components/finance-box-row.tsx';
 import { UseDepositHook } from '@src/hooks/use-deposit';
 import { truncateAddress } from '@src/utils/wallet';
 
@@ -62,13 +62,13 @@ interface FinanceDepositProps {
  * - `depositHook` (generic or Metamask deposit hook)
  * - `onClose`
  */
-const FinanceDeposit: FC<FinanceDepositProps> = ({ address, recipient, depositHook, onClose, onChangeWallet }) => {
-  const [amount, setAmount] = useState<number>();
+const FinanceDeposit: FC<FinanceDepositProps> = ({ address, recipient, depositHook, onClose }) => {
+  const [amount, setAmount] = useState<number | string>('');
+  const [helperText, setHelperText] = useState<string>("");
+  const { balance } = useGetMmcContractBalance(address);
+  const { deposit, loading: depositLoading, error } = depositHook;
   const [localLoading, setLocalLoading] = useState(false);
   const [amountError, setAmountError] = useState(false);
-  const [helperText, setHelperText] = useState<string>("");
-  const { deposit, loading: depositLoading, error } = depositHook;
-  const { balance } = useGetMmcContractBalance(address);
   const isBusy = localLoading || depositLoading;
   const RainbowEffect = isBusy ? NeonPaper : Box;
 
@@ -88,25 +88,26 @@ const FinanceDeposit: FC<FinanceDepositProps> = ({ address, recipient, depositHo
       return;
     }
     // Validate amount > 0 and <= balance
-    if (amount <= 0 || amount > (balance ?? 0)) {
+    if (Number(amount) <= 0 || Number(amount) > (balance ?? 0)) {
       notifyWarning(WARNING.INVALID_DEPOSIT_AMOUNT);
       return;
     }
+
+    // TODO refactor this!!!!!
     try {
       setLocalLoading(true);
-      await deposit({ recipient: recipient ?? address, amount });
+      await deposit({ recipient: recipient ?? address, amount: Number(amount) });
       notifySuccess(SUCCESS.DEPOSIT_SUCCESSFULLY);
       onClose();
     } catch (err) {
-      notifyWarning(WARNING.NO_WALLET_AUTHORIZATION);
+      notifyError(ERRORS.DEPOSIT_ERROR);
     } finally {
       setLocalLoading(false);
     }
-  }, [address, recipient, amount, balance, deposit, onClose]);
+  }, [address, recipient, amount, balance]);
 
   const handleAmountChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = Number(event.target.value);
-
     setAmount(value ?? undefined);
 
     // Set appropriate error message
@@ -132,7 +133,7 @@ const FinanceDeposit: FC<FinanceDepositProps> = ({ address, recipient, depositHo
         alignItems="center"
         justifyContent="space-between"
       >
-        <BoxRow>
+        <FinanceBoxRow>
           <TextMaxLine line={1} fontWeight={"bold"}>Connected Wallet</TextMaxLine>
           <TextMaxLine
             line={1}
@@ -140,23 +141,22 @@ const FinanceDeposit: FC<FinanceDepositProps> = ({ address, recipient, depositHo
           >
             {address ? truncateAddress(address) : 'No wallet connected'}
           </TextMaxLine>
-        </BoxRow>
+        </FinanceBoxRow>
 
-        <BoxRow>
-          <TextMaxLine line={1} fontWeight={"bold"}>Balance</TextMaxLine>
+        <FinanceBoxRow>
+          <TextMaxLine line={1} fontWeight={"bold"}>Available</TextMaxLine>
           <TextMaxLine
             line={1}
             sx={{ fontWeight: '400', fontSize: '1em', color: 'text.secondary' }}
           >
             {formatBalanceNumber(balance ?? 0)} MMC
           </TextMaxLine>
-        </BoxRow>
+        </FinanceBoxRow>
 
         <TextField
           sx={{ mt: 1 }}
           fullWidth
-          autoFocus
-          label="Amount to withdraw"
+          label="Amount to deposit"
           type="number"
           value={amount}
           onChange={handleAmountChange}
@@ -170,11 +170,10 @@ const FinanceDeposit: FC<FinanceDepositProps> = ({ address, recipient, depositHo
         rainbowComponent={RainbowEffect}
         loading={isBusy}
         actionLoading={depositLoading}
-        amount={amount ?? 0}
+        amount={Number(amount) ?? 0}
         balance={balance ?? 0}
         label={'Confirm'}
         onConfirmAction={handleConfirmDeposit}
-        onChangeWallet={onChangeWallet}
         onCloseAction={onClose}
       />
     </>

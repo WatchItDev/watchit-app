@@ -67,7 +67,7 @@ export const useGetPoliciesTerms = (
       setAuthorizedHolderPolicies(policies);
       setError(null);
     } catch (err: any) {
-      console.error('Error fetching holder-wide policies:', err);
+      console.error('Error fetching policies terms:', err);
       setAuthorizedHolderPolicies([]);
       setError({ message: err?.message || 'Error occurred while fetching authorized policies.' });
     } finally {

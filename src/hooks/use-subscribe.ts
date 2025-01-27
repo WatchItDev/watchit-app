@@ -14,6 +14,7 @@ import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 import { useSelector } from 'react-redux';
 import { useWeb3Session } from '@src/hooks/use-web3-session.ts';
 import { ERRORS } from '@notifications/errors.ts';
+import { useAccountSession } from '@src/hooks/use-account-session.ts';
 
 // ----------------------------------------------------------------------
 
@@ -44,11 +45,12 @@ export const useSubscribe = (): UseSubscribeHook => {
   const [error, setError] = useState<keyof typeof ERRORS | null>(null);
   const sessionData = useSelector((state: any) => state.auth.session);
   const { bundlerClient, smartAccount } = useWeb3Session();
+  const { isAuthenticated, logout } = useAccountSession();
 
-  const transferToAccessAgreement = (approvalAmount: bigint): string => {
+  const approveToAccessAgreement = (approvalAmount: bigint): string => {
     return encodeFunctionData({
       abi: LedgerVaultabi.abi,
-      functionName: 'reserve',
+      functionName: 'approve',
       args: [
         GLOBAL_CONSTANTS.ACCESS_WORKFLOW_ADDRESS,
         approvalAmount,
@@ -84,25 +86,25 @@ export const useSubscribe = (): UseSubscribeHook => {
     setLoading(true);
     setError(null);
 
+    if (!sessionData?.authenticated) {
+      setError(ERRORS.SUBSCRIBE_LOGIN_ERROR);
+      setLoading(false);
+      return;
+    }
+
+    if (!isAuthenticated()) {
+      logout();
+      setLoading(false);
+      throw new Error('Invalid Web3Auth session');
+    }
+
     try {
-      if (!sessionData?.authenticated) {
-        setError(ERRORS.SUBSCRIBE_LOGIN_ERROR);
-        setLoading(false);
-        return;
-      }
-
-      if (!bundlerClient) {
-        setError(ERRORS.BUNDLER_UNAVAILABLE);
-        setLoading(false);
-        return;
-      }
-
       const approvalAmountInWei = ethers.parseUnits(amount, 18); // Convert amount to BigInt (in Wei)
       const parties = [sessionData?.profile?.ownedBy.address]; // The parties involved in the agreement (e.g., the user's address)
       const payload = '0x'; // Additional payload data if needed
 
-      // Prepare the transfer to access agreement
-      const transferToAccessAgreementData = transferToAccessAgreement(approvalAmountInWei);
+      // Prepare the approve to access agreement
+      const approveToAccessAgreementData = approveToAccessAgreement(approvalAmountInWei);
 
       // Prepare the access agreement data
       const registerAccessAgreementData = registerAccessAgreement(
@@ -117,7 +119,7 @@ export const useSubscribe = (): UseSubscribeHook => {
         {
           to: GLOBAL_CONSTANTS.LEDGER_VAULT_ADDRESS,
           value: 0,
-          data: transferToAccessAgreementData,
+          data: approveToAccessAgreementData,
         },
         {
           to: GLOBAL_CONSTANTS.ACCESS_WORKFLOW_ADDRESS,
@@ -141,8 +143,7 @@ export const useSubscribe = (): UseSubscribeHook => {
       setData(receipt);
       setLoading(false);
     } catch (err: any) {
-      console.log('err:');
-      console.log(err);
+      console.error('USE SUBSCRIBE ERR:', err);
       setError(ERRORS.UNKNOWN_ERROR);
       setLoading(false);
     }

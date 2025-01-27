@@ -22,6 +22,7 @@ import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/r
 
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleDrawer } from '@redux/drawer';
+
 // ----------------------------------------------------------------------
 
 export default function Header({ children }: PropsWithChildren) {

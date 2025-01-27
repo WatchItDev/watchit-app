@@ -1,13 +1,14 @@
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { encodeFunctionData, parseUnits } from 'viem';
+import { Address, encodeFunctionData, parseUnits } from 'viem';
 import LedgerVaultAbi from '@src/config/abi/LedgerVault.json';
 import { GLOBAL_CONSTANTS } from '@src/config-global';
 import { useWeb3Session } from '@src/hooks/use-web3-session.ts';
 import { ERRORS } from '@notifications/errors.ts';
+import { useAccountSession } from '@src/hooks/use-account-session.ts';
 
 interface WithdrawParams {
-  recipient: string;
+  recipient: Address;
   amount: number;
 }
 
@@ -25,6 +26,7 @@ export const useWithdraw = (): UseWithdrawHook => {
 
   const sessionData = useSelector((state: any) => state.auth.session);
   const { bundlerClient, smartAccount } = useWeb3Session();
+  const { isAuthenticated, logout } = useAccountSession();
 
   const initializeWithdraw = ({ recipient, amount }: WithdrawParams) => {
     const weiAmount = parseUnits(amount.toString(), 18);
@@ -40,19 +42,19 @@ export const useWithdraw = (): UseWithdrawHook => {
     setLoading(true);
     setError(null);
 
+    if (!sessionData?.authenticated) {
+      setError(ERRORS.FIRST_LOGIN_ERROR);
+      setLoading(false);
+      return;
+    }
+
+    if (!isAuthenticated()) {
+      logout();
+      setLoading(false);
+      throw new Error('Invalid Web3Auth session');
+    }
+
     try {
-      if (!sessionData?.authenticated) {
-        setError(ERRORS.FIRST_LOGIN_ERROR);
-        setLoading(false);
-        return;
-      }
-
-      if (!bundlerClient) {
-        setError(ERRORS.BUNDLER_UNAVAILABLE);
-        setLoading(false);
-        return;
-      }
-
       const withdrawData = initializeWithdraw({ recipient, amount });
 
       const calls = [
@@ -75,6 +77,7 @@ export const useWithdraw = (): UseWithdrawHook => {
       setData(receipt);
       setLoading(false);
     } catch (err: any) {
+      console.error('USE WITHDRAW ERR:', err);
       setError(ERRORS.UNKNOWN_ERROR);
       setLoading(false);
     }
