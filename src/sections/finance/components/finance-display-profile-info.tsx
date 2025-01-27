@@ -5,6 +5,7 @@ import {Profile} from "@lens-protocol/api-bindings";
 import {truncateAddress} from "@src/utils/wallet.ts";
 
 interface FinanceDisplayNameProps {
+  mode: 'profile' | 'wallet';
   initialList?: Profile[];
   carousel: any;
 }
@@ -18,13 +19,14 @@ interface FinanceDisplayNameProps {
  * Props:
  * @param {Object} initialList - Array of profiles containing details such as the local name.
  * @param {Object} carousel - Object containing the current index used to determine the selected profile.
+ * @param {string} mode - Determines whether to display the profile name or wallet address.
  *
  * Behavior:
  * - If initialList is empty or null, the component does not render anything.
  * - It selects a profile based on the carousel's currentIndex and renders the localName of that profile.
  * - If no profile is selected, it falls back to a default message ('No profile selected').
  */
-const FinanceDisplayName: FC<FinanceDisplayNameProps> = ({initialList, carousel}) => {
+const FinanceDisplayProfileInfo: FC<FinanceDisplayNameProps> = ({initialList, carousel, mode}) => {
   // If the initial list is empty, return
   if (!initialList?.length) {
     return null;
@@ -33,15 +35,20 @@ const FinanceDisplayName: FC<FinanceDisplayNameProps> = ({initialList, carousel}
   const selectedProfile = initialList?.[carousel.currentIndex];
   return (
     <Box sx={{ textAlign: 'center',mt:-2, mb: 1 }}>
-      <Typography variant="body2" color="text.primary">
-        {selectedProfile?.metadata?.displayName ?? 'No profile selected'}
-      </Typography>
-      <Typography variant="body2" color="text.secondary">
-        {truncateAddress(selectedProfile?.ownedBy?.address)}
-      </Typography>
-
+      {
+        mode === 'profile' ?
+          (<Box component="span" sx={{ flexGrow: 1, typography: 'subtitle1' }}>
+            {selectedProfile?.metadata?.displayName ?? 'No profile selected'}
+          </Box>) : null
+      }
+      {
+        mode === 'wallet' ?
+          <Typography variant="body2" color="text.secondary">
+            {truncateAddress(selectedProfile?.ownedBy?.address)}
+          </Typography> : null
+      }
     </Box>
   );
 }
 
-export default FinanceDisplayName;
+export default FinanceDisplayProfileInfo;
