@@ -31,6 +31,7 @@ import ProfileJoin from "@src/sections/user/profile-join.tsx";
 import ProfileUserInfo from "@src/sections/user/profile-user-info.tsx";
 import ProfileWrapper from './profile-wrapper';
 import ProfileToolbar from "@src/sections/user/profile-toolbar.tsx";
+import ProfileTransfer from "@src/sections/user/profile-transfer.tsx";
 
 // ----------------------------------------------------------------------
 export interface ProfileHeaderProps {
@@ -125,6 +126,9 @@ const ProfileHeader = ({
 
             {profile?.id !== sessionData?.profile?.id && (
               <FollowUnfollowButton profileId={profile?.id} />
+            )}
+            {profile?.id !== sessionData?.profile?.id && (
+              <ProfileTransfer profile={profile} />
             )}
           </Stack>
         </Stack>
