@@ -30,6 +30,9 @@ import { InputAmount } from '@src/components/input-amount.tsx';
 import FinanceQuickTransferModal from '@src/sections/finance/components/finance-quick-transfer-modal.tsx';
 import FinanceSearchProfileModal from '@src/sections/finance/components/finance-search-profile-modal.tsx';
 import AvatarProfile from "@src/components/avatar/avatar.tsx";
+import FinanceDisplayName from "@src/sections/finance/components/finance-display-name.tsx";
+import FinanceNoFollowingsQuickTransfer
+  from "@src/sections/finance/components/finance-no-followings-quick-transfer.tsx";
 
 // ----------------------------------------------------------------------
 
@@ -294,6 +297,7 @@ export default function FinanceQuickTransfer({
   const contactInfoToPass = currentIndex === -1 ? undefined : getContactInfo;
 
   // Render the wallet address input
+  // @ts-ignore
   const renderWalletInput = (
     <Box sx={{ mb: 3 }}>
       <TextField
@@ -425,6 +429,7 @@ export default function FinanceQuickTransfer({
 
   const Wrapper = showRainbow ? NeonPaper : Box;
 
+  console.log(list);
   return (
     <>
       <Wrapper
@@ -449,8 +454,9 @@ export default function FinanceQuickTransfer({
 
           {/* Content */}
           <Stack sx={{ p: 3 }}>
-            {renderWalletInput}
-            {!!list?.length && renderCarousel}
+            {/*{renderWalletInput}*/}
+            <FinanceDisplayName initialList={initialList} carousel={carousel} />
+            {!!list?.length ? renderCarousel : <FinanceNoFollowingsQuickTransfer />}
             {renderInput}
           </Stack>
         </Stack>
@@ -471,3 +477,4 @@ export default function FinanceQuickTransfer({
     </>
   );
 }
+

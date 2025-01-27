@@ -110,7 +110,7 @@ export default function OverviewBankingView() {
         <Grid xs={12} md={4}>
           <Stack spacing={2}>
             <FinanceQuickTransfer
-              title="Quick transfer"
+              title="Quick transfer to"
               list={following}
               sx={{
                 display: { xs: 'none', md: 'flex' },
