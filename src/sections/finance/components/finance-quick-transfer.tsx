@@ -30,16 +30,17 @@ import { InputAmount } from '@src/components/input-amount.tsx';
 import FinanceQuickTransferModal from '@src/sections/finance/components/finance-quick-transfer-modal.tsx';
 import FinanceSearchProfileModal from '@src/sections/finance/components/finance-search-profile-modal.tsx';
 import AvatarProfile from "@src/components/avatar/avatar.tsx";
-import FinanceDisplayName from "@src/sections/finance/components/finance-display-name.tsx";
 import FinanceNoFollowingsQuickTransfer
-  from "@src/sections/finance/components/finance-no-followings-quick-transfer.tsx";
+  from "@src/sections/finance/components/finance-no-followings-quick-transfer";
+import FinanceDisplayProfileInfo from "@src/sections/finance/components/finance-display-profile-info";
+import {handleAmountConstraints} from "@src/utils/format-number.ts";
 
 // ----------------------------------------------------------------------
 
 const STEP = 50;
 const MIN_AMOUNT = 0;
 // A thousand millions allowed in the pool
-const MAX_POOL: number = 1000000000;
+export const MAX_POOL: number = 1000000000;
 
 interface Props extends CardProps {
   title?: string;
@@ -214,31 +215,14 @@ export default function FinanceQuickTransfer({
     }
   }, [MAX_AMOUNT]);
 
-  // Helper function to handle amount constraints
-  const handleAmountConstraints = (value: number, MAX_AMOUNT: number) => {
-    if (value > MAX_POOL) {
-      value = MAX_POOL; // Truncate to a thousand millions
-    }
-    if (value < 0) {
-      value = 0; // Set amount to 0 if lower than 0
-    }
-    setAmount(value);
-    setCanContinue(value <= MAX_AMOUNT);
-
-    // If amount is greater than balance, allow input but setCanContinue to false
-    if (value > MAX_AMOUNT) {
-      setCanContinue(false);
-    }
-  };
-
   const handleChangeInput = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     const value = Number(event.target.value);
-    handleAmountConstraints(value, MAX_AMOUNT);
+    handleAmountConstraints({value, MAX_AMOUNT, MAX_POOL, setAmount, setCanContinue});
   }, [MAX_AMOUNT]);
 
 
   const handleBlur = useCallback(() => {
-    handleAmountConstraints(amount, MAX_AMOUNT);
+    handleAmountConstraints({value: amount, MAX_AMOUNT, MAX_POOL, setAmount, setCanContinue});
   }, [amount, MAX_AMOUNT]);
 
 
@@ -422,7 +406,7 @@ export default function FinanceQuickTransfer({
         disabled={amount === 0 || !isValidAddress(walletAddress) || !canContinue}
         onClick={confirm.onTrue}
       >
-        Transfer Now
+        Quick transfer
       </Button>
     </Stack>
   );
@@ -447,6 +431,7 @@ export default function FinanceQuickTransfer({
           {...other}
         >
           <CardHeader
+            sx={{ p: '12px 16px 0 0' }}
             title={title}
             subheader={subheader}
             action={<FinanceSearchProfileModal onSelectProfile={handleSelectProfile} />}
@@ -455,8 +440,9 @@ export default function FinanceQuickTransfer({
           {/* Content */}
           <Stack sx={{ p: 3 }}>
             {/*{renderWalletInput}*/}
-            <FinanceDisplayName initialList={initialList} carousel={carousel} />
+            <FinanceDisplayProfileInfo mode={'profile'} initialList={initialList} carousel={carousel} />
             {!!list?.length ? renderCarousel : <FinanceNoFollowingsQuickTransfer />}
+            <FinanceDisplayProfileInfo mode={'wallet'} initialList={initialList} carousel={carousel} />
             {renderInput}
           </Stack>
         </Stack>
