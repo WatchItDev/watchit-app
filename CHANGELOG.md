@@ -1,3 +1,21 @@
+# [2.2.0-beta.18](https://github.com/WatchItDev/watchit-app/compare/v2.2.0-beta.17...v2.2.0-beta.18) (2025-01-28)
+
+
+### Bug Fixes
+
+* bundler client null ([3beeb4e](https://github.com/WatchItDev/watchit-app/commit/3beeb4e71c91c61c50e2ae8fdbca268d95ed2e71))
+* delay after quick transfer ([8682f5f](https://github.com/WatchItDev/watchit-app/commit/8682f5fce986f3758514c9f0f1fa916222fcc85c))
+* infinite loop in session ([7c85c89](https://github.com/WatchItDev/watchit-app/commit/7c85c89c383540bf7f97ab496f08eea56061d157))
+* profile tabs on mobile ([fe7ee41](https://github.com/WatchItDev/watchit-app/commit/fe7ee419ceb82444166fed3dd1b81d40bb4c8fb9))
+* session data anonymous ([f02fbe9](https://github.com/WatchItDev/watchit-app/commit/f02fbe9ea55b6531245a33e74c5c579e16d257c3))
+* sonarcloud ([ed1a8aa](https://github.com/WatchItDev/watchit-app/commit/ed1a8aa4864d53a5f51c046167d213a9b14c85ad))
+
+
+### Features
+
+* added truncate text to name in user card ([e2f3026](https://github.com/WatchItDev/watchit-app/commit/e2f302650d1663f085b94584d2e54428a3459d66))
+* **profile:** refactor profile header with modular components ([d963910](https://github.com/WatchItDev/watchit-app/commit/d963910a075363aa9a6a2b2e7adf511d92178232))
+
 # [2.2.0-beta.17](https://github.com/WatchItDev/watchit-app/compare/v2.2.0-beta.16...v2.2.0-beta.17) (2025-01-23)
 
 
