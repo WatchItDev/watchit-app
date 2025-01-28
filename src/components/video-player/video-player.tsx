@@ -35,10 +35,10 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({ src, titleMovie, onBack, sho
       if (event.key === 'Escape' || event.key === 'Esc') onBack?.();
     };
 
-    document.addEventListener('keydown', handleKeyDown);
+    document?.addEventListener('keydown', handleKeyDown);
 
     return () => {
-      document.removeEventListener('keydown', handleKeyDown);
+      document?.removeEventListener('keydown', handleKeyDown);
     };
   }, [onBack]);
 
