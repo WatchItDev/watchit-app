@@ -10,10 +10,11 @@ import { FC } from 'react';
 // Create a type for the component props to receive the icon and subtitle
 type Props = {
   icon: string;
-  subtitle: string;
+  title: string;
+  description: string;
 };
 
-const NotLoggedIn: FC<Props> = ({ icon, subtitle }) => {
+const NotLoggedIn: FC<Props> = ({ icon, title, description }) => {
   const dispatch = useDispatch();
   const sessionData = useSelector((state: any) => state.auth.session);
 
@@ -47,9 +48,9 @@ const NotLoggedIn: FC<Props> = ({ icon, subtitle }) => {
           color: COLORS.GRAY_LIGHT,
         }}
       />
-      <Typography variant="h4">Finance Dashboard</Typography>
+      <Typography variant="h4">{title}</Typography>
       <Typography variant="body1" sx={{ mb: 3, mt: 1, opacity: 0.5 }}>
-        {subtitle}
+        {description}
       </Typography>
       <Button
         onClick={handleClicked}

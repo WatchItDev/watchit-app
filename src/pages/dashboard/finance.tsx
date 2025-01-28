@@ -1,18 +1,11 @@
 import OverviewBankingView from '@src/sections/finance';
 import Header from '@src/layouts/dashboard/header.tsx';
 import HeaderContent from '@src/layouts/dashboard/header-content.tsx';
-import withAuth from '@src/components/should-login/withAuth';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 import { OgMetaTags } from '@src/components/og-meta-tags.tsx';
+import {WithAuth} from "@src/components/should-login/withAuth.tsx";
 
-const OverviewBankingViewWithAuth = withAuth(
-  OverviewBankingView,
-  'iconoir:stats-report',
-  'Login to access your balance.'
-);
-
-export default function OverviewBankingPage() {
-
+const OverviewBankingPage = () => {
   return (
     <OgMetaTags
       title="Watchit: Finance Overview"
@@ -22,7 +15,9 @@ export default function OverviewBankingPage() {
       <Header>
         <HeaderContent title="Finance" />
       </Header>
-      <OverviewBankingViewWithAuth />
+      <WithAuth component={OverviewBankingView} description={'Login to access your balance.'} icon={'iconoir:stats-report'} header={'Finance Dashboard'} />
     </OgMetaTags>
   );
 }
+
+export default OverviewBankingPage;
