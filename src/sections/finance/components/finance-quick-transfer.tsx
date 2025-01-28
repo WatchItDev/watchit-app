@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 
 // REDUX IMPORTS
 import { useDispatch, useSelector } from 'react-redux';
-import { storeAddress, toggleRainbow } from '@redux/address';
+import { storeAddress } from '@redux/address';
 
 // LENS IMPORTS
 import { Profile } from '@lens-protocol/api-bindings';
@@ -17,7 +17,6 @@ import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Slider from '@mui/material/Slider';
 import Tooltip from '@mui/material/Tooltip';
-import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import CardHeader from '@mui/material/CardHeader';
 import { CardProps } from '@mui/material/Card';
@@ -71,7 +70,6 @@ export default function FinanceQuickTransfer({
 
   // Local states
   const [walletAddress, setWalletAddress] = useState(storedAddress.address ?? '');
-  const [addressError, setAddressError] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [addressFiltered, setAddressFiltered] = useState<boolean>(false);
   const [initialized, setInitialized] = useState(false);
@@ -185,27 +183,6 @@ export default function FinanceQuickTransfer({
       });
     }
   }, [initialList]);
-
-  // Handle changes in the input field for the wallet address
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
-    setWalletAddress(value);
-    dispatch(storeAddress({ address: value, profileId: getContactInfo?.id ?? '' }));
-
-    // If it's a valid address, let the next effect handle searching in the list
-    if (isValidAddress(value)) {
-      setAddressFiltered(true); // We set a flag that we typed a valid address
-      dispatch(toggleRainbow());
-      setAddressError(false);
-    } else {
-      setAddressError(true);
-    }
-
-    // Rainbow effect trigger
-    setTimeout(() => {
-      dispatch(toggleRainbow());
-    }, 1400);
-  };
 
   // Handle changes in the slider
   const handleChangeSlider = useCallback((_event: Event, newValue: number | number[]) => {
