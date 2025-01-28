@@ -280,22 +280,6 @@ export default function FinanceQuickTransfer({
   // We pick the contactInfo to pass to the modal. If currentIndex is -1, there's no matched profile
   const contactInfoToPass = currentIndex === -1 ? undefined : getContactInfo;
 
-  // Render the wallet address input
-  // @ts-ignore
-  const renderWalletInput = (
-    <Box sx={{ mb: 3 }}>
-      <TextField
-        fullWidth
-        label="Wallet Address"
-        value={walletAddress}
-        onChange={handleInputChange}
-        placeholder="Enter wallet address"
-        error={addressError}
-        helperText={addressError ? 'Invalid wallet address' : ''}
-      />
-    </Box>
-  );
-
   // Render the carousel of profiles
   const renderCarousel = (
     <Box sx={{ position: 'relative', mb: 3 }}>
@@ -439,9 +423,8 @@ export default function FinanceQuickTransfer({
 
           {/* Content */}
           <Stack sx={{ p: 3 }}>
-            {/*{renderWalletInput}*/}
             <FinanceDisplayProfileInfo mode={'profile'} initialList={initialList} carousel={carousel} />
-            {!!list?.length ? renderCarousel : <FinanceNoFollowingsQuickTransfer />}
+            {list?.length > 0 ? renderCarousel : <FinanceNoFollowingsQuickTransfer />}
             <FinanceDisplayProfileInfo mode={'wallet'} initialList={initialList} carousel={carousel} />
             {renderInput}
           </Stack>
