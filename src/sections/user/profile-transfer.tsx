@@ -21,7 +21,10 @@ const ProfileTransfer: FC<ProfileTransferProps> = ({profile}) => {
 
   return (
     <>
-      <LoadingButton variant={'soft'} onClick={handleOpen}>
+      <LoadingButton sx={{
+        minWidth: 120,
+        backgroundColor: '#24262A',
+      }} variant={'outlined'} onClick={handleOpen}>
         Transfer
       </LoadingButton>
 

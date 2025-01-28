@@ -127,9 +127,11 @@ const ProfileHeader = ({
             {profile?.id !== sessionData?.profile?.id && (
               <FollowUnfollowButton profileId={profile?.id} />
             )}
-            {profile?.id !== sessionData?.profile?.id && (
-              <ProfileTransfer profile={profile} />
-            )}
+            {
+              sessionData?.authenticated && profile?.id !== sessionData?.profile?.id && (
+                  <ProfileTransfer profile={profile} />
+              )
+            }
           </Stack>
         </Stack>
       </ProfileWrapper>
