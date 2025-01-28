@@ -4,13 +4,13 @@ import { FC  } from 'react';
 import DialogTitle from '@mui/material/DialogTitle';
 import Dialog, { DialogProps } from '@mui/material/Dialog';
 
-interface StudioPublishModalProps extends DialogProps {
+interface ModalProps extends DialogProps {
   onClose: VoidFunction;
   title: string;
   renderContent?: JSX.Element;
 }
 
-const Modal: FC<StudioPublishModalProps> = ({ open, onClose, title, renderContent, ...dialogProps }) => {
+const Modal: FC<ModalProps> = ({ open, onClose, title, renderContent, ...dialogProps }) => {
   return (
     <Dialog open={open} fullWidth maxWidth="xs" onClose={onClose} {...dialogProps}>
       <DialogTitle sx={{ pb: 1 }}>{title}</DialogTitle>
