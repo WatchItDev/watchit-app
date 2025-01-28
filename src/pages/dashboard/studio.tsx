@@ -242,60 +242,60 @@ export default function OverviewFilePage() {
         </BlankView>
       )}
 
-      <Grid container spacing={2} style={{ height: 'calc(100vh - 5rem)', width: '100%', padding: '2rem 1.5rem 2rem 2rem' }}>
-        <Grid item xs={4} style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-          <Grid container spacing={2} style={{ flexGrow: 1 }}>
-            <Grid item xs={12}>
-              <Box sx={{ height: '9rem' }}>
-                <Box sx={{ width: '100%', height: '100%', padding: '25px 15px', display: 'flex', flexDirection: 'column', borderRadius: '10px', background: 'black', justifyContent: 'center', alignItems: 'center' }}>
-                  <Box sx={{ textAlign: 'center', fontWeight: 'bold' }}>
-                    Do you want other people to see your movies?
-                  </Box>
-                  <Box>
-                    <Button
-                      variant='contained' onClick={handleOpen}
-                      sx={{ mt: 3, color: '#FFFFFF', background: 'linear-gradient(to right, #7B61FF 0%, #4A34B8 100%)' }}
-                    >
-                      Upload Movie
-                    </Button>
-                  </Box>
-                </Box>
-              </Box>
-            </Grid>
-          </Grid>
-        </Grid>
-      </Grid>
+      {/*<Grid container spacing={2} style={{ height: 'calc(100vh - 5rem)', width: '100%', padding: '2rem 1.5rem 2rem 2rem' }}>*/}
+      {/*  <Grid item xs={4} style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>*/}
+      {/*    <Grid container spacing={2} style={{ flexGrow: 1 }}>*/}
+      {/*      <Grid item xs={12}>*/}
+      {/*        <Box sx={{ height: '9rem' }}>*/}
+      {/*          <Box sx={{ width: '100%', height: '100%', padding: '25px 15px', display: 'flex', flexDirection: 'column', borderRadius: '10px', background: 'black', justifyContent: 'center', alignItems: 'center' }}>*/}
+      {/*            <Box sx={{ textAlign: 'center', fontWeight: 'bold' }}>*/}
+      {/*              Do you want other people to see your movies?*/}
+      {/*            </Box>*/}
+      {/*            <Box>*/}
+      {/*              <Button*/}
+      {/*                variant='contained' onClick={handleOpen}*/}
+      {/*                sx={{ mt: 3, color: '#FFFFFF', background: 'linear-gradient(to right, #7B61FF 0%, #4A34B8 100%)' }}*/}
+      {/*              >*/}
+      {/*                Upload Movie*/}
+      {/*              </Button>*/}
+      {/*            </Box>*/}
+      {/*          </Box>*/}
+      {/*        </Box>*/}
+      {/*      </Grid>*/}
+      {/*    </Grid>*/}
+      {/*  </Grid>*/}
+      {/*</Grid>*/}
 
-      <Modal open={open} onClose={handleClose}>
-        <Box
-          sx={{
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            width: 400,
-            bgcolor: '#2B2D31',
-            borderRadius: '10px',
-            boxShadow: 24,
-            p: 4,
-          }}
-        >
-          <Typography
-            variant="h6"
-            component="h2"
-            sx={{ mb: 2, color: '#fff' }}
-          >
-            Upload movies
-          </Typography>
-          <Button
-            variant="contained"
-            sx={{ mt: 3 }}
-            onClick={handleSubmitAll}
-          >
-            Upload
-          </Button>
-        </Box>
-      </Modal>
+      {/*<Modal open={open} onClose={handleClose}>*/}
+      {/*  <Box*/}
+      {/*    sx={{*/}
+      {/*      position: 'absolute',*/}
+      {/*      top: '50%',*/}
+      {/*      left: '50%',*/}
+      {/*      transform: 'translate(-50%, -50%)',*/}
+      {/*      width: 400,*/}
+      {/*      bgcolor: '#2B2D31',*/}
+      {/*      borderRadius: '10px',*/}
+      {/*      boxShadow: 24,*/}
+      {/*      p: 4,*/}
+      {/*    }}*/}
+      {/*  >*/}
+      {/*    <Typography*/}
+      {/*      variant="h6"*/}
+      {/*      component="h2"*/}
+      {/*      sx={{ mb: 2, color: '#fff' }}*/}
+      {/*    >*/}
+      {/*      Upload movies*/}
+      {/*    </Typography>*/}
+      {/*    <Button*/}
+      {/*      variant="contained"*/}
+      {/*      sx={{ mt: 3 }}*/}
+      {/*      onClick={handleSubmitAll}*/}
+      {/*    >*/}
+      {/*      Upload*/}
+      {/*    </Button>*/}
+      {/*  </Box>*/}
+      {/*</Modal>*/}
     </>
   );
 }

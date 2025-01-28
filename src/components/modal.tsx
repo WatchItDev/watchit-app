@@ -10,7 +10,7 @@ interface StudioPublishModalProps extends DialogProps {
   renderContent?: JSX.Element;
 }
 
-const StudioPublishModal: FC<StudioPublishModalProps> = ({ open, onClose, title, renderContent, ...dialogProps }) => {
+const Modal: FC<StudioPublishModalProps> = ({ open, onClose, title, renderContent, ...dialogProps }) => {
   return (
     <Dialog open={open} fullWidth maxWidth="xs" onClose={onClose} {...dialogProps}>
       <DialogTitle sx={{ pb: 1 }}>{title}</DialogTitle>
@@ -19,4 +19,4 @@ const StudioPublishModal: FC<StudioPublishModalProps> = ({ open, onClose, title,
   );
 };
 
-export default StudioPublishModal;
+export default Modal;

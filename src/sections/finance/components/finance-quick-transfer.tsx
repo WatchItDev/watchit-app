@@ -221,12 +221,13 @@ export default function FinanceQuickTransfer({
     }
     setAmount(value);
     setCanContinue(value <= MAX_AMOUNT);
+
     // If amount is greater than balance, allow input but setCanContinue to false
     if (value > MAX_AMOUNT) {
       setCanContinue(false);
     }
+  };
 
-  // Handle changes in the input for the amount
   const handleChangeInput = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     const value = Number(event.target.value);
     handleAmountConstraints(value, MAX_AMOUNT);

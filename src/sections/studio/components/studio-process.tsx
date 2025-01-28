@@ -2,8 +2,6 @@
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-
-// theme
 import { bgGradient } from '@src/theme/css';
 import Iconify from '@src/components/iconify';
 import { alpha, useTheme } from '@mui/material/styles';
@@ -11,14 +9,15 @@ import { alpha, useTheme } from '@mui/material/styles';
 import Process from '@src/assets/illustrations/process.svg';
 import Image from '@src/components/image';
 import {useBoolean} from "@src/hooks/use-boolean.ts";
-import StudioProcessModal from "@src/sections/studio/components/studio-process-modal.tsx";
+import StudioProcessModal from "@src/components/modal.tsx";
 import {Box} from "@mui/system";
 import TextField from "@mui/material/TextField";
 import LoadingButton from "@mui/lab/LoadingButton";
 import {useState} from "react";
+import { useResponsive } from '@src/hooks/use-responsive.ts';
 
 const StudioProcess = () => {
-
+  const lgUp = useResponsive('up', 'lg');
   const confirmPublish = useBoolean();
   const theme = useTheme();
 
@@ -44,106 +43,124 @@ const StudioProcess = () => {
     >
       <>
         <Stack
-          flexDirection={{ xs: 'column', md: 'row' }}
           sx={{
             ...bgGradient({
               direction: '135deg',
-              startColor: alpha(theme.palette.primary.light, 0.2),
-              endColor: alpha(theme.palette.primary.main, 0.2),
             }),
-            height: { md: 1 },
-            borderTopRightRadius: 2,
-            borderTopLeftRadius: 2,
+            width: '60%',
+            borderRadius: 2,
+            overflow: 'hidden',
             position: 'relative',
-            color: 'primary.darker',
-            backgroundColor: 'common.white',
           }}
         >
-          <Stack
-            justifyContent="flex-start"
-            alignItems={{ xs: 'center', md: 'flex-start' }}
-            sx={{
-              maxWidth: { xs: '100%', md: '60%' },
-              p: {
-                xs: theme.spacing(5, 3, 0, 3),
-                md: theme.spacing(3),
-              },
-              textAlign: { xs: 'center', md: 'left' },
-            }}
-          >
-            <Typography
-              variant="body1"
+          <>
+            <Stack
+              flexDirection={{ xs: 'column', md: 'row' }}
               sx={{
-                display: { xs: 'none', md: 'flex' },
-                maxWidth: 350,
-                mb: 1,
-                whiteSpace: 'pre-line',
+                ...bgGradient({
+                  direction: '135deg',
+                  startColor: alpha(theme.palette.primary.light, 0.2),
+                  endColor: alpha(theme.palette.primary.main, 0.2),
+                }),
+                height: { md: 1 },
+                borderTopRightRadius: 2,
+                borderTopLeftRadius: 2,
+                position: 'relative',
+                color: 'primary.darker',
+                backgroundColor: 'common.white',
               }}
             >
-              Share your content to the community
-            </Typography>
-            <Typography
-              variant="h3"
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-                mb: { xs: 1, xl: 2 },
-              }}
-            >
-              Share{' '}your content and start to earn
-            </Typography>
+              <Stack
+                justifyContent="flex-start"
+                alignItems={{ xs: 'center', md: 'flex-start' }}
+                sx={{
+                  width: '100%',
+                  flexShrink: 0,
+                  maxWidth: { xs: '100%', md: '50%' },
+                  p: {
+                    xs: theme.spacing(5, 3, 0, 3),
+                    md: theme.spacing(3),
+                  },
+                  textAlign: { xs: 'center', md: 'left' },
+                }}
+              >
+                <Typography
+                  variant="body1"
+                  sx={{
+                    display: {  md: 'flex' },
+                    maxWidth: 250,
+                    mb: 1,
+                    whiteSpace: 'pre-line',
+                  }}
+                >
+                  Bring your story to the screen
+                </Typography>
+                <Typography
+                  variant="h3"
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    mb: { xs: 1, xl: 2 },
+                  }}
+                >
+                  Publish your content!
+                </Typography>
 
-            <Typography
-              variant="body1"
-              sx={{
-                opacity: 0.8,
-                maxWidth: 450,
-                mb: { xs: 1, xl: 2 },
-              }}
-            >
-              Publish your content and distribute to the community
-            </Typography>
-            <Button
-              sx={{ mt:  5 }}
-              color={'primary'}
-              variant={'soft'}
-              startIcon={<Iconify icon={'material-symbols:publish'} />}
-              onClick={handleClick}
-            >
-              Publish
-            </Button>
-          </Stack>
-          <Stack
-            flexGrow={1}
-            justifyContent="center"
-            sx={{
-              p: { xs: 1, md: 1 },
-              mb: { xs: 1, md: 0 },
-              mx: 'auto',
-            }}
-          >
-            <Image
-              sx={{
-                margin: 'auto',
-                width: '50%',
-                height: 'auto',
-              }}
-              src={Process}
-              alt={'Publish your content'}
-            />
-          </Stack>
+                <Typography
+                  variant="body1"
+                  sx={{
+                    opacity: 0.8,
+                    maxWidth: lgUp ? 220 : 'auto',
+                    mb: { xs: 2, xl: 2 },
+                  }}
+                >
+                  Captivate your audience, share your vision and expand your reach.
+                </Typography>
+                <Button
+                  sx={{
+                    mt: lgUp ? 1 : null,
+                    mb: !lgUp ? 3 : null
+                  }}
+                  color={'primary'}
+                  variant={'soft'}
+                  startIcon={<Iconify icon={'material-symbols:campaign-outline-rounded'} />}
+                  onClick={handleClick}
+                >
+                  Publish now!
+                </Button>
+              </Stack>
+              <Stack
+                flexGrow={1}
+                justifyContent="center"
+                sx={{
+                  display: { xs: 'none', md: 'flex' },
+                  p: { xs: 1, md: 1 },
+                  mb: { xs: 1, md: 0 },
+                  mx: 'auto',
+                }}
+              >
+                <Image
+                  sx={{
+                    height: lgUp ? 240 : 180
+                  }}
+                  src={Process}
+                  alt={'publish movie'}
+                />
+              </Stack>
+            </Stack>
+          </>
         </Stack>
         <StudioProcessModal title={'Publish your content'}
                             open={confirmPublish.value}
                             onClose={handleFinishPublish}
-                            renderContent={<ProcessContent />} />
+                            renderContent={<ProcessContent onClose={handleFinishPublish} />} />
       </>
     </Stack>
   );
 };
 
 
-const ProcessContent = () => {
+const ProcessContent = ({ onClose }: { onClose: () => void }) => {
   const [loading, setLoading] = useState(false);
   const [hashes, setHashes] = useState<string>('');
 
@@ -159,8 +176,8 @@ const ProcessContent = () => {
   }
 
   return (
-    <Stack direction={'column'}>
-      <Box sx={{p:3}}>
+    <Stack direction={'column'} sx={{ pb: 3, pt: 2, mt: 1, borderTop: `1px dashed rgb(145, 158, 171, 0.5)` }}>
+      <Box sx={{px: 3}}>
         <Typography variant="body1">
           Enter the hash of the content you want to publish
         </Typography>
@@ -178,17 +195,26 @@ const ProcessContent = () => {
           onChange={handleHashesChange}
           placeholder="Enter the hash (or hashes) of the content"
         />
-
+      </Box>
+      <Stack
+        direction="row"
+        spacing={2}
+        justifyContent="flex-end"
+        sx={{ mt: 2, px: 3, pt: 3, borderTop: `1px dashed rgb(145, 158, 171, 0.5)` }}
+      >
+        <Button variant="outlined" onClick={onClose}>
+          Cancel
+        </Button>
         <LoadingButton
           variant="contained"
-          color="primary"
-          loading={loading}
+          type="submit"
           onClick={handleProcess}
-          startIcon={<Iconify icon={'material-symbols:publish'} />}
+          startIcon={<Iconify icon="material-symbols:publish" />}
+          disabled={!hashes || loading}
         >
           Publish
         </LoadingButton>
-      </Box>
+      </Stack>
     </Stack>
   )
 }
