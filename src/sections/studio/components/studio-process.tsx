@@ -1,25 +1,26 @@
-// @mui
-import Stack from '@mui/material/Stack';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import { bgGradient } from '@src/theme/css';
-import Iconify from '@src/components/iconify';
-import { alpha, useTheme } from '@mui/material/styles';
+import { useState } from "react";
+// @MUI
+import LoadingButton from '@mui/lab/LoadingButton';
+import { Stack, Box, Typography, TextField, Button } from '@mui/material';
+
+// Project Imports
+import { useBoolean } from "@src/hooks/use-boolean.ts";
+import ProcessSectionCard from '@src/components/process-section-card.tsx';
+import StudioProcessModal from "@src/components/modal.tsx";
 // @ts-ignore
 import Process from '@src/assets/illustrations/process.svg';
-import Image from '@src/components/image';
-import {useBoolean} from "@src/hooks/use-boolean.ts";
-import StudioProcessModal from "@src/components/modal.tsx";
-import {Box} from "@mui/system";
-import TextField from "@mui/material/TextField";
-import LoadingButton from "@mui/lab/LoadingButton";
-import {useState} from "react";
-import { useResponsive } from '@src/hooks/use-responsive.ts';
+import Iconify from '@src/components/iconify';
 
+/**
+ * `StudioProcess` is a React functional component that provides a user interface for publishing content.
+ * It includes a primary call-to-action button and a modal for confirmation of publishing actions.
+ *
+ * The component uses the `useBoolean` hook to manage the modal's open/close state:
+ * - Clicking the primary button triggers the display of the modal.
+ * - Closing the modal resets the state.
+ */
 const StudioProcess = () => {
-  const lgUp = useResponsive('up', 'lg');
   const confirmPublish = useBoolean();
-  const theme = useTheme();
 
   const handleFinishPublish = () => {
     confirmPublish.onFalse?.();
@@ -30,135 +31,24 @@ const StudioProcess = () => {
   };
 
   return (
-    <Stack
-      sx={{
-        ...bgGradient({
-          direction: '135deg',
-        }),
-        width: 1,
-        borderRadius: 2,
-        overflow: 'hidden',
-        position: 'relative',
-      }}
-    >
-      <>
-        <Stack
-          sx={{
-            ...bgGradient({
-              direction: '135deg',
-            }),
-            width: '60%',
-            borderRadius: 2,
-            overflow: 'hidden',
-            position: 'relative',
-          }}
-        >
-          <>
-            <Stack
-              flexDirection={{ xs: 'column', md: 'row' }}
-              sx={{
-                ...bgGradient({
-                  direction: '135deg',
-                  startColor: alpha(theme.palette.primary.light, 0.2),
-                  endColor: alpha(theme.palette.primary.main, 0.2),
-                }),
-                height: { md: 1 },
-                borderTopRightRadius: 2,
-                borderTopLeftRadius: 2,
-                position: 'relative',
-                color: 'primary.darker',
-                backgroundColor: 'common.white',
-              }}
-            >
-              <Stack
-                justifyContent="flex-start"
-                alignItems={{ xs: 'center', md: 'flex-start' }}
-                sx={{
-                  width: '100%',
-                  flexShrink: 0,
-                  maxWidth: { xs: '100%', md: '50%' },
-                  p: {
-                    xs: theme.spacing(5, 3, 0, 3),
-                    md: theme.spacing(3),
-                  },
-                  textAlign: { xs: 'center', md: 'left' },
-                }}
-              >
-                <Typography
-                  variant="body1"
-                  sx={{
-                    display: {  md: 'flex' },
-                    maxWidth: 250,
-                    mb: 1,
-                    whiteSpace: 'pre-line',
-                  }}
-                >
-                  Bring your story to the screen
-                </Typography>
-                <Typography
-                  variant="h3"
-                  sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    mb: { xs: 1, xl: 2 },
-                  }}
-                >
-                  Publish your content!
-                </Typography>
-
-                <Typography
-                  variant="body1"
-                  sx={{
-                    opacity: 0.8,
-                    maxWidth: lgUp ? 220 : 'auto',
-                    mb: { xs: 2, xl: 2 },
-                  }}
-                >
-                  Captivate your audience, share your vision and expand your reach.
-                </Typography>
-                <Button
-                  sx={{
-                    mt: lgUp ? 1 : null,
-                    mb: !lgUp ? 3 : null
-                  }}
-                  color={'primary'}
-                  variant={'soft'}
-                  startIcon={<Iconify icon={'material-symbols:campaign-outline-rounded'} />}
-                  onClick={handleClick}
-                >
-                  Publish now!
-                </Button>
-              </Stack>
-              <Stack
-                flexGrow={1}
-                justifyContent="center"
-                sx={{
-                  display: { xs: 'none', md: 'flex' },
-                  p: { xs: 1, md: 1 },
-                  mb: { xs: 1, md: 0 },
-                  mx: 'auto',
-                }}
-              >
-                <Image
-                  sx={{
-                    height: lgUp ? 240 : 180
-                  }}
-                  src={Process}
-                  alt={'publish movie'}
-                />
-              </Stack>
-            </Stack>
-          </>
-        </Stack>
-        <StudioProcessModal title={'Publish your content'}
-                            open={confirmPublish.value}
-                            onClose={handleFinishPublish}
-                            renderContent={<ProcessContent onClose={handleFinishPublish} />} />
-      </>
-    </Stack>
+    <>
+      <ProcessSectionCard
+        title="Publish your content!"
+        description="Bring your story to the screen. Captivate your audience, share your vision and expand your reach."
+        buttonText="Publish now!"
+        illustration={Process}
+        illustrationAlt="Watchit Studio"
+        onClick={handleClick}
+      />
+      <StudioProcessModal
+        title="Publish your content"
+        open={confirmPublish.value}
+        onClose={handleFinishPublish}
+        renderContent={<ProcessContent onClose={handleFinishPublish} />}
+      />
+    </>
   );
 };
-
 
 const ProcessContent = ({ onClose }: { onClose: () => void }) => {
   const [loading, setLoading] = useState(false);
