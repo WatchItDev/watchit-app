@@ -31,7 +31,7 @@ const ProfileJoin: FC<ProfileJoinProps> = ({profile, profileJoinProps}) => {
       title={hasAccess ? 'Joined' : 'Join'}
       variant={hasAccess ? 'outlined' : 'contained'}
       sx={{
-        minWidth: 120,
+        minWidth: { xs: 90, md: 120 },
         backgroundColor: hasAccess ? '#24262A' : '#fff',
       }}
       onClick={handleSubscription}

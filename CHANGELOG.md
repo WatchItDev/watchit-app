@@ -1,3 +1,12 @@
+# [2.2.0-beta.20](https://github.com/WatchItDev/watchit-app/compare/v2.2.0-beta.19...v2.2.0-beta.20) (2025-01-29)
+
+
+### Bug Fixes
+
+* sonarcloud ([d50d699](https://github.com/WatchItDev/watchit-app/commit/d50d69931e5ff46336e92a51dd063647e87658e7))
+* text send ([d4143c9](https://github.com/WatchItDev/watchit-app/commit/d4143c96e90a1444dd127c5e2ee99700d62c9644))
+* transfer modal from profile and change "transfer" with "send" ([67ef446](https://github.com/WatchItDev/watchit-app/commit/67ef446d6bed004845d82947988d884018fc992d))
+
 # [2.2.0-beta.19](https://github.com/WatchItDev/watchit-app/compare/v2.2.0-beta.18...v2.2.0-beta.19) (2025-01-29)
 
 
