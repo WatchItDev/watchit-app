@@ -156,7 +156,7 @@ const UserProfileView = ({ id }: any) => {
   );
 };
 
-const TabLabel = ({ label, count }: any) => (
+export const TabLabel = ({ label, count }: any) => (
   <>
     {label}
     {count > 0 && (
