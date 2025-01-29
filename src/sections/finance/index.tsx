@@ -76,7 +76,7 @@ export default function OverviewBankingView() {
               }}
             />
 
-            {!mdUp ? <FinanceQuickTransfer title="Quick transfer" list={following} /> : null}
+            {!mdUp ? <FinanceQuickTransfer list={following} /> : null}
             {lgUp ? <FinanceEarnTokens lgUp={lgUp} /> : null}
           </Stack>
 
@@ -110,7 +110,6 @@ export default function OverviewBankingView() {
         <Grid xs={12} md={4}>
           <Stack spacing={2}>
             <FinanceQuickTransfer
-              title="Quick transfer"
               list={following}
               sx={{
                 display: { xs: 'none', md: 'flex' },
