@@ -164,7 +164,7 @@ const FollowUnfollowButton = ({
           title={isFollowed ? 'Unfollow' : 'Follow'}
           variant={isFollowed ? 'outlined' : 'contained'}
           sx={{
-            minWidth: followButtonMinWidth,
+            minWidth: { xs: 90, md: followButtonMinWidth },
             backgroundColor: isFollowed ? '#24262A' : '#fff',
           }}
           onClick={(event) => {
