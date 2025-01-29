@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
 // MUI components
@@ -21,17 +21,18 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import { supabase } from '@src/utils/supabase';
 import { useNotificationPayload } from '@src/hooks/use-notification-payload.ts';
 import { useNotifications } from '@src/hooks/use-notifications.ts';
-import {InputAmount, InputAmountProps} from '@src/components/input-amount.tsx';
+import { InputAmount, InputAmountProps } from '@src/components/input-amount.tsx';
 import { useTransfer } from '@src/hooks/use-transfer.ts';
 
 // Notifications
 import { notifyError, notifySuccess } from '@notifications/internal-notifications.ts';
 import { SUCCESS } from '@notifications/success.ts';
 import { ERRORS } from '@notifications/errors.ts';
-import {dicebear} from "@src/utils/dicebear.ts";
-import AvatarProfile from "@src/components/avatar/avatar.tsx";
-import {MAX_POOL} from "@src/sections/finance/components/finance-quick-transfer.tsx";
-import {handleAmountConstraints} from "@src/utils/format-number.ts";
+import { dicebear } from '@src/utils/dicebear.ts';
+import AvatarProfile from '@src/components/avatar/avatar.tsx';
+import { MAX_POOL } from '@src/sections/finance/components/finance-quick-transfer.tsx';
+import { handleAmountConstraints } from '@src/utils/format-number.ts';
+import { useTheme } from '@mui/material/styles';
 
 type TConfirmTransferDialogProps = InputAmountProps & DialogProps;
 
@@ -51,6 +52,7 @@ function FinanceQuickTransferModal({
   onFinish,
   address,
 }: ConfirmTransferDialogProps) {
+  const theme = useTheme();
   const sessionData = useSelector((state: any) => state.auth.session);
   const { generatePayload } = useNotificationPayload(sessionData);
   const { transfer, loading: transferLoading, error } = useTransfer();
@@ -58,8 +60,7 @@ function FinanceQuickTransferModal({
   const [message, setMessage] = useState('');
 
   // For transfer button is clicked in some profile
-  const balance = useSelector((state: any) => state.auth.balance);
-  const MAX_AMOUNT = balance;
+  const MAX_AMOUNT = useSelector((state: any) => state.auth.balance);
   const [value, setValue] = useState(0);
   const [canContinue, setCanContinue] = useState(true);
 
@@ -165,7 +166,13 @@ function FinanceQuickTransferModal({
 
   return (
     <Dialog open={open} fullWidth maxWidth="xs" onClose={onClose}>
-      <DialogTitle>Transfer to</DialogTitle>
+      <DialogTitle sx={{
+        borderBottom: `dashed 1px ${theme.palette.divider}`,
+        padding: '16px 24px',
+        marginBottom: '8px'
+      }}>
+        Send to
+      </DialogTitle>
       <Stack direction="column" spacing={3} sx={{ px: 3 }}>
         <Stack
           direction="row"
@@ -208,15 +215,28 @@ function FinanceQuickTransferModal({
         />
       </Stack>
 
-      <DialogActions>
+      <DialogActions
+        sx={{
+          borderTop: `dashed 1px ${theme.palette.divider}`,
+          padding: '16px 24px',
+          marginTop: '24px'
+        }}
+      >
         <Button onClick={onClose}>Cancel</Button>
 
-        <RainbowEffect borderRadius="10px" animationSpeed="3s" padding="0" width="auto">
+        <RainbowEffect
+          {...(transferLoading && {
+            borderRadius: '10px',
+            animationSpeed: '3s',
+            padding: '0',
+            width: 'auto',
+          })}
+        >
           <LoadingButton
             variant="contained"
             sx={{ backgroundColor: '#fff' }}
             onClick={handleConfirmTransfer}
-            disabled={transferLoading || !canContinue}
+            disabled={transferLoading || !canContinue || !(amount > 0)}
             loading={transferLoading}
           >
             Confirm

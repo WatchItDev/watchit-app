@@ -290,10 +290,12 @@ export const SubscribeProfileModal = ({
               </Button>
 
               <RainbowEffect
-                borderRadius={'10px'}
-                animationSpeed={'3s'}
-                padding={'0'}
-                width={'auto'}
+                {...(loading && {
+                  borderRadius: '10px',
+                  animationSpeed: '3s',
+                  padding: '0',
+                  width: 'auto',
+                })}
               >
                 <LoadingButton
                   variant="contained"

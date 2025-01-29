@@ -22,10 +22,10 @@ const ProfileTransfer: FC<ProfileTransferProps> = ({profile}) => {
   return (
     <>
       <LoadingButton sx={{
-        minWidth: 120,
+        minWidth: { xs: 90, md: 120 },
         backgroundColor: '#24262A',
       }} variant={'outlined'} onClick={handleOpen}>
-        Transfer
+        Send
       </LoadingButton>
 
       <FinanceQuickTransferModal
