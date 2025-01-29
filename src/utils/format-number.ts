@@ -42,3 +42,34 @@ export function formatBalanceNumber(balance: number) {
   const balanceOptions = { minimumFractionDigits: 1, maximumFractionDigits: 3 };
   return new Intl.NumberFormat('en-US', balanceOptions).format(balance as any);
 }
+
+interface AmountConstraintsProps {
+  value: number;
+  MAX_AMOUNT: number;
+  MAX_POOL: number;
+  setAmount: (value: number) => void;
+  setCanContinue: (canContinue: boolean) => void;
+}
+
+export const handleAmountConstraints = ({
+                                          value,
+                                          MAX_AMOUNT,
+                                          MAX_POOL,
+                                          setAmount,
+                                          setCanContinue,
+                                        }: AmountConstraintsProps) => {
+  if (value > MAX_POOL) {
+    value = MAX_POOL; // Truncate to a thousand millions
+  }
+  if (value < 0) {
+    value = 0; // Set amount to 0 if lower than 0
+  }
+  setAmount(value);
+  setCanContinue(value <= MAX_AMOUNT);
+
+  // If amount is greater than balance, allow input but setCanContinue to false
+  if (value > MAX_AMOUNT || value <= 0) {
+    setCanContinue(false);
+  }
+  console.log('value', value);
+};

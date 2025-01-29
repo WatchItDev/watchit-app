@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import { useSelector } from 'react-redux';
 
 // MUI components
@@ -21,7 +21,7 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import { supabase } from '@src/utils/supabase';
 import { useNotificationPayload } from '@src/hooks/use-notification-payload.ts';
 import { useNotifications } from '@src/hooks/use-notifications.ts';
-import { InputAmountProps } from '@src/components/input-amount.tsx';
+import {InputAmount, InputAmountProps} from '@src/components/input-amount.tsx';
 import { useTransfer } from '@src/hooks/use-transfer.ts';
 
 // Notifications
@@ -30,6 +30,8 @@ import { SUCCESS } from '@notifications/success.ts';
 import { ERRORS } from '@notifications/errors.ts';
 import {dicebear} from "@src/utils/dicebear.ts";
 import AvatarProfile from "@src/components/avatar/avatar.tsx";
+import {MAX_POOL} from "@src/sections/finance/components/finance-quick-transfer.tsx";
+import {handleAmountConstraints} from "@src/utils/format-number.ts";
 
 type TConfirmTransferDialogProps = InputAmountProps & DialogProps;
 
@@ -54,6 +56,12 @@ function FinanceQuickTransferModal({
   const { transfer, loading: transferLoading, error } = useTransfer();
   const { sendNotification } = useNotifications();
   const [message, setMessage] = useState('');
+
+  // For transfer button is clicked in some profile
+  const balance = useSelector((state: any) => state.auth.balance);
+  const MAX_AMOUNT = balance;
+  const [value, setValue] = useState(0);
+  const [canContinue, setCanContinue] = useState(true);
 
   // Check if we have a valid profile or not
   const hasProfile = !!contactInfo;
@@ -100,7 +108,7 @@ function FinanceQuickTransferModal({
 
   const handleConfirmTransfer = async () => {
     try {
-      await transfer({ amount, recipient: address ?? '' });
+      await transfer({ amount: amount > 0 ? amount: value, recipient: address ?? '' });
 
       onFinish();
 
@@ -123,7 +131,7 @@ function FinanceQuickTransferModal({
       // Store transaction in supabase
       await storeTransactionInSupabase(contactInfo?.id ?? address, senderId, {
         address: contactInfo?.ownedBy?.address ?? address,
-        amount,
+        amount: amount > 0 ? amount : value,
         message,
         ...notificationPayload,
       });
@@ -142,6 +150,16 @@ function FinanceQuickTransferModal({
       notifyError(ERRORS.TRANSFER_FAILED_ERROR);
     }
   };
+
+  const handleChangeInput = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = Number(event.target.value);
+    handleAmountConstraints({value, MAX_AMOUNT, MAX_POOL, setAmount: setValue, setCanContinue});
+  }, [MAX_AMOUNT]);
+
+
+  const handleBlur = useCallback(() => {
+    handleAmountConstraints({value, MAX_AMOUNT, MAX_POOL, setAmount: setValue, setCanContinue});
+  }, [value, MAX_AMOUNT]);
 
   const RainbowEffect = transferLoading ? NeonPaper : Box;
 
@@ -165,11 +183,19 @@ function FinanceQuickTransferModal({
           </Stack>
 
           <Stack direction="column" spacing={0} sx={{ py: 2, flexGrow: 1 }}>
-            <ListItemText
-              primary="Amount:"
-              secondary={`${amount} MMC`}
-              secondaryTypographyProps={{ component: 'span', mt: 0.5 }}
-            />
+          {amount > 0 ? (
+
+              <ListItemText
+                primary="Amount:"
+                secondary={`${amount} MMC`}
+                secondaryTypographyProps={{ component: 'span', mt: 0.5 }}
+              />
+            ) : <InputAmount
+            max={MAX_POOL}
+            amount={value}
+            onBlur={handleBlur}
+            onChange={handleChangeInput}
+          />}
           </Stack>
         </Stack>
 
@@ -190,7 +216,7 @@ function FinanceQuickTransferModal({
             variant="contained"
             sx={{ backgroundColor: '#fff' }}
             onClick={handleConfirmTransfer}
-            disabled={transferLoading}
+            disabled={transferLoading || !canContinue}
             loading={transferLoading}
           >
             Confirm
