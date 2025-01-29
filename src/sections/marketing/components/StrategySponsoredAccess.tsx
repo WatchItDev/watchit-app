@@ -20,7 +20,8 @@ const StrategySponsoredAccess: FC<StrategySponsoredAccessProps> = ({data}) => {
     }, 0);
   }
 
-  return (<Stack spacing={2} sx={{
+  return (<Stack spacing={{xs: 0, md: 2}}
+  sx={{
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between',
@@ -30,7 +31,10 @@ const StrategySponsoredAccess: FC<StrategySponsoredAccessProps> = ({data}) => {
     borderRadius: 1.5,
   }}>
     <Typography variant="body1" sx={{
-      padding: 3,
+      padding: {
+        xs: 0.8,
+        md: 3,
+      },
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
@@ -40,11 +44,19 @@ const StrategySponsoredAccess: FC<StrategySponsoredAccessProps> = ({data}) => {
       Sponsored access
     </Typography>
 
-    <Typography fontSize={'1.8em'} color="text.secondary" sx={{
+    <Typography fontWeight={'bold'} fontSize={
+      {
+        xs: '1.5rem',
+        md: '2rem'
+      }
+    } color="text.secondary" sx={{
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      py: 2,
+      py: {
+        xs: .5,
+        md: 2,
+      },
       flexGrow: 1
     }}>
       {sumSponsoredAccess()}
