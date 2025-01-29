@@ -367,7 +367,7 @@ export default function FinanceQuickTransfer({
         disabled={amount === 0 || !isValidAddress(walletAddress) || !canContinue}
         onClick={confirm.onTrue}
       >
-        Quick send
+        Send
       </Button>
     </Stack>
   );
