@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 
 // REDUX IMPORTS
 import { useDispatch, useSelector } from 'react-redux';
-import { storeAddress, toggleRainbow } from '@redux/address';
+import { storeAddress } from '@redux/address';
 
 // LENS IMPORTS
 import { Profile } from '@lens-protocol/api-bindings';
@@ -17,7 +17,6 @@ import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Slider from '@mui/material/Slider';
 import Tooltip from '@mui/material/Tooltip';
-import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import CardHeader from '@mui/material/CardHeader';
 import { CardProps } from '@mui/material/Card';
@@ -30,13 +29,17 @@ import { InputAmount } from '@src/components/input-amount.tsx';
 import FinanceQuickTransferModal from '@src/sections/finance/components/finance-quick-transfer-modal.tsx';
 import FinanceSearchProfileModal from '@src/sections/finance/components/finance-search-profile-modal.tsx';
 import AvatarProfile from "@src/components/avatar/avatar.tsx";
+import FinanceNoFollowingsQuickTransfer
+  from "@src/sections/finance/components/finance-no-followings-quick-transfer";
+import FinanceDisplayProfileInfo from "@src/sections/finance/components/finance-display-profile-info";
+import {handleAmountConstraints} from "@src/utils/format-number.ts";
 
 // ----------------------------------------------------------------------
 
 const STEP = 50;
 const MIN_AMOUNT = 0;
 // A thousand millions allowed in the pool
-const MAX_POOL: number = 1000000000;
+export const MAX_POOL: number = 1000000000;
 
 interface Props extends CardProps {
   title?: string;
@@ -67,7 +70,6 @@ export default function FinanceQuickTransfer({
 
   // Local states
   const [walletAddress, setWalletAddress] = useState(storedAddress.address ?? '');
-  const [addressError, setAddressError] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [addressFiltered, setAddressFiltered] = useState<boolean>(false);
   const [initialized, setInitialized] = useState(false);
@@ -182,27 +184,6 @@ export default function FinanceQuickTransfer({
     }
   }, [initialList]);
 
-  // Handle changes in the input field for the wallet address
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
-    setWalletAddress(value);
-    dispatch(storeAddress({ address: value, profileId: getContactInfo?.id ?? '' }));
-
-    // If it's a valid address, let the next effect handle searching in the list
-    if (isValidAddress(value)) {
-      setAddressFiltered(true); // We set a flag that we typed a valid address
-      dispatch(toggleRainbow());
-      setAddressError(false);
-    } else {
-      setAddressError(true);
-    }
-
-    // Rainbow effect trigger
-    setTimeout(() => {
-      dispatch(toggleRainbow());
-    }, 1400);
-  };
-
   // Handle changes in the slider
   const handleChangeSlider = useCallback((_event: Event, newValue: number | number[]) => {
     setAmount(newValue as number);
@@ -211,31 +192,14 @@ export default function FinanceQuickTransfer({
     }
   }, [MAX_AMOUNT]);
 
-  // Helper function to handle amount constraints
-  const handleAmountConstraints = (value: number, MAX_AMOUNT: number) => {
-    if (value > MAX_POOL) {
-      value = MAX_POOL; // Truncate to a thousand millions
-    }
-    if (value < 0) {
-      value = 0; // Set amount to 0 if lower than 0
-    }
-    setAmount(value);
-    setCanContinue(value <= MAX_AMOUNT);
-
-    // If amount is greater than balance, allow input but setCanContinue to false
-    if (value > MAX_AMOUNT) {
-      setCanContinue(false);
-    }
-  };
-
   const handleChangeInput = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     const value = Number(event.target.value);
-    handleAmountConstraints(value, MAX_AMOUNT);
+    handleAmountConstraints({value, MAX_AMOUNT, MAX_POOL, setAmount, setCanContinue});
   }, [MAX_AMOUNT]);
 
 
   const handleBlur = useCallback(() => {
-    handleAmountConstraints(amount, MAX_AMOUNT);
+    handleAmountConstraints({value: amount, MAX_AMOUNT, MAX_POOL, setAmount, setCanContinue});
   }, [amount, MAX_AMOUNT]);
 
 
@@ -292,21 +256,6 @@ export default function FinanceQuickTransfer({
 
   // We pick the contactInfo to pass to the modal. If currentIndex is -1, there's no matched profile
   const contactInfoToPass = currentIndex === -1 ? undefined : getContactInfo;
-
-  // Render the wallet address input
-  const renderWalletInput = (
-    <Box sx={{ mb: 3 }}>
-      <TextField
-        fullWidth
-        label="Wallet Address"
-        value={walletAddress}
-        onChange={handleInputChange}
-        placeholder="Enter wallet address"
-        error={addressError}
-        helperText={addressError ? 'Invalid wallet address' : ''}
-      />
-    </Box>
-  );
 
   // Render the carousel of profiles
   const renderCarousel = (
@@ -418,13 +367,14 @@ export default function FinanceQuickTransfer({
         disabled={amount === 0 || !isValidAddress(walletAddress) || !canContinue}
         onClick={confirm.onTrue}
       >
-        Transfer Now
+        Quick transfer
       </Button>
     </Stack>
   );
 
   const Wrapper = showRainbow ? NeonPaper : Box;
 
+  console.log(list);
   return (
     <>
       <Wrapper
@@ -442,6 +392,7 @@ export default function FinanceQuickTransfer({
           {...other}
         >
           <CardHeader
+            sx={{ p: '12px 16px 0 0' }}
             title={title}
             subheader={subheader}
             action={<FinanceSearchProfileModal onSelectProfile={handleSelectProfile} />}
@@ -449,8 +400,9 @@ export default function FinanceQuickTransfer({
 
           {/* Content */}
           <Stack sx={{ p: 3 }}>
-            {renderWalletInput}
-            {!!list?.length && renderCarousel}
+            <FinanceDisplayProfileInfo mode={'profile'} initialList={initialList} carousel={carousel} />
+            {list?.length > 0 ? renderCarousel : <FinanceNoFollowingsQuickTransfer />}
+            <FinanceDisplayProfileInfo mode={'wallet'} initialList={initialList} carousel={carousel} />
             {renderInput}
           </Stack>
         </Stack>
@@ -471,3 +423,4 @@ export default function FinanceQuickTransfer({
     </>
   );
 }
+
