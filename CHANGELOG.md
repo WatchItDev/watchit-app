@@ -1,3 +1,19 @@
+# [2.2.0-beta.19](https://github.com/WatchItDev/watchit-app/compare/v2.2.0-beta.18...v2.2.0-beta.19) (2025-01-29)
+
+
+### Bug Fixes
+
+* enhance profile transfer behavior and button styling ([56fc8ae](https://github.com/WatchItDev/watchit-app/commit/56fc8aefb825b17de74c5ff3de1d5b74d990c593))
+
+
+### Features
+
+* add profile transfer component ([1e4dfb8](https://github.com/WatchItDev/watchit-app/commit/1e4dfb8365dd7aa35142aec2027aa78d4857179b))
+* add profile transfer component and clean up quick transfer ([5a95a99](https://github.com/WatchItDev/watchit-app/commit/5a95a99c061e8a3cbe33b6d7d6020b9948dd3599))
+* enhance transfer modal with input validation and constraints ([681dd59](https://github.com/WatchItDev/watchit-app/commit/681dd5958868a11beeee690980a0ecb88b03c68e))
+* **finance:** enhance quick transfer UI with new components ([dc1a013](https://github.com/WatchItDev/watchit-app/commit/dc1a0131fcda240a76f821015a11d039e7e5eeba))
+* **ui:** update tabs alignment and scroll button behavior ([ec0cad7](https://github.com/WatchItDev/watchit-app/commit/ec0cad7761abfd70aeb2cde5d6ce9fcfdefd7b9e))
+
 # [2.2.0-beta.18](https://github.com/WatchItDev/watchit-app/compare/v2.2.0-beta.17...v2.2.0-beta.18) (2025-01-28)
 
 
