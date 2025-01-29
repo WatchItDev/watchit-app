@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from 'react';
 
 // MUI Imports
 import LoadingButton from '@mui/lab/LoadingButton';
@@ -11,6 +11,10 @@ import OwnershipProcessModal from "@src/components/modal.tsx";
 // @ts-ignore
 import Ownership from '@src/assets/illustrations/ownership.svg';
 import Iconify from '@src/components/iconify';
+import { useRegisterAsset } from '@src/hooks/use-register-asset';
+import { notifyError, notifySuccess } from '@notifications/internal-notifications.ts';
+import { SUCCESS } from '@notifications/success.ts';
+import { ERRORS } from '@notifications/errors.ts';
 
 /**
  * OwnershipProcess is a React functional component that manages the process of registering ownership.
@@ -55,15 +59,24 @@ const OwnershipProcess = () => {
 };
 
 const OwnershipProcessContent = ({ onClose }: { onClose: () => void }) => {
-  const [loading, setLoading] = useState(false);
   const [hashes, setHashes] = useState<string>('');
+  const { registerAsset, loading, error } = useRegisterAsset();
 
-  const handleRegister = () => {
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
+  useEffect(() => {
+    if (!error) return;
+
+    notifyError(ERRORS.ASSET_OWNERSHIP_REGISTER_ERROR);
+  }, [error])
+
+  const handleRegister = async () => {
+    if (!hashes) return;
+    try {
+      await registerAsset(hashes);
+      notifySuccess(SUCCESS.OWNERSHIP_REGISTERED_SUCCESSFULLY);
       onClose();
-    }, 2000);
+    } catch (e) {
+      notifyError(ERRORS.ASSET_OWNERSHIP_REGISTER_ERROR);
+    }
   };
 
   const handleHashesChange = (event: React.ChangeEvent<HTMLInputElement>) => {

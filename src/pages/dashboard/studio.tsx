@@ -98,7 +98,7 @@ const sanitizeDescription = (description: any): string => {
 // ----------------------------------------------------------------------
 export const canViewSection = (sessionData: any): boolean => {
   // Allowed profileId to view (temporary) this section
-  const allowedProfilesId = ['0x0563', '0x050d','0x055c','0x0514']; // Russian creator, Carlos, Jacob and Geolffrey
+  const allowedProfilesId = ['0x0563', '0x050d','0x055c','0x0514', '0x0510']; // Russian creator, Carlos, Jacob, Geolffrey and Watchit Open
   // Verify if the current profile is allowed to view this section
   return allowedProfilesId.includes(sessionData?.profile?.id ?? '');
 }

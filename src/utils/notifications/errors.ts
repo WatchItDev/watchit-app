@@ -21,6 +21,7 @@ export enum ERRORS {
   INSUFFICIENT_FUNDS_ERROR = 'INSUFFICIENT_FUNDS_ERROR',
   WALLET_CONNECTION_ERROR = 'WALLET_CONNECTION_ERROR',
   PREMATURE_ACTION_ERROR = 'PREMATURE_ACTION_ERROR',
+  ASSET_OWNERSHIP_REGISTER_ERROR = 'ASSET_OWNERSHIP_REGISTER_ERROR',
 
   // Login error
   LOGIN_FAILED_ERROR = 'LOGIN_FAILED_ERROR',
@@ -73,6 +74,7 @@ export const ERROR_MESSAGES: Record<ERRORS, string> = {
   [ERRORS.FAILED_CHANGE_WALLET_ERROR]: 'Error while trying to change the wallet.',
   [ERRORS.CREATING_PROFILE_ERROR]: 'Error creating profile.',
   [ERRORS.UPDATING_PROFILE_ERROR]: 'Error updating profile metadata.',
+  [ERRORS.ASSET_OWNERSHIP_REGISTER_ERROR]: 'An error occurred while registering your asset. Please try again.',
 
   [ERRORS.BROADCASTING_TRANSACTION_ERROR]: 'There was an error broadcasting the transaction.',
   [ERRORS.PENDING_SIGNING_REQUEST_ERROR]: 'There is a pending signing request in your wallet.',
