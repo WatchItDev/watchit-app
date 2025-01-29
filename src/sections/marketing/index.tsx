@@ -1,14 +1,15 @@
+import { useState } from "react";
+// MUI components
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
-import {Accumulator, CampaignStatusTypes, StrategyType } from "@src/types/marketing";
 import { Tabs } from "@mui/material";
 import Tab from "@mui/material/Tab";
-import { useState } from "react";
+
+import {Accumulator, CampaignStatusTypes, StrategyType } from "@src/types/marketing";
 import Label from "@src/components/label";
-import Button from "@mui/material/Button";
-import Iconify from "@src/components/iconify";
 import {generateRandomData} from "@src/sections/marketing/fakeData.ts";
 import StrategyList from "@src/sections/marketing/components/StrategyList.tsx";
+import StrategyCreate from "@src/sections/marketing/components/StrategyCreate.tsx";
 
 const TABS = [
   { value: 'all', label: 'All' },
@@ -40,14 +41,6 @@ const MarketingView = () => {
   };
 
   const filteredData = currentTab === 'all' ? fakeData : fakeData.filter(item => item.status === currentTab);
-
-  const AddStrategyButton = () => {
-    return (
-      <Button startIcon={<Iconify icon={'typcn:plus'}/>} variant="contained" sx={{
-        color: 'white',
-        background: '#8E33FF'}}>New strategy</Button>
-    )
-  }
 
   return (
     <Container
@@ -84,7 +77,7 @@ const MarketingView = () => {
           </Tabs>
         </Grid>
         <Grid item>
-          <AddStrategyButton />
+          <StrategyCreate />
         </Grid>
       </Grid>
 
