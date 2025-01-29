@@ -25,7 +25,6 @@ const StrategyGraphIndicators: FC<StrategyGraphIndicatorsProps> = ({index, strat
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'space-around',
-      px: 2,
       position: 'relative',
       overflow: 'hidden',
     }}>
@@ -43,21 +42,24 @@ const StrategyGraphIndicators: FC<StrategyGraphIndicatorsProps> = ({index, strat
           ]
         }}
       />
-      <Typography  color="text.white" fontSize={'2rem'} >
-        <Box component={'small'} sx={{fontSize:'1.2rem', color: '#CCC'}}>Budget</Box>
-        <br/>
-        <Box sx={{fontWeight:'bold'}}>{strategy.budget}</Box>
-      </Typography>
-
-      <Typography color="text.white" fontSize={'2rem'} sx={{zIndex: 2}}>
-        <Box component={'small'} sx={{fontSize:'1.2rem', color: '#CCC'}}>Available</Box>
-        <br/>
-        <Box sx={{fontWeight:'bold'}}>{strategy.available}</Box>
-      </Typography>
+      <IndicatorWidget label="Budget" value={strategy.budget.toString()} />
+      <IndicatorWidget label="Available" value={strategy.available.toString()} />
       <StrategyCircles color={darken(COLORS_LIST_MARKETING[index])} />
     </Box>
   )
-
 }
+
+interface IndicatorWidgetProps {
+  label: string;
+  value: string;
+}
+
+const IndicatorWidget: FC<IndicatorWidgetProps> = ({label,value}) => {
+  return (<Typography  color="text.white" fontSize={'2rem'} >
+    <Box component={'small'} sx={{fontSize:'1.2rem', color: '#CCC'}}>{label}</Box>
+    <br/>
+    <Box sx={{fontWeight:'bold'}}>{value}</Box>
+  </Typography>)
+};
 
 export default StrategyGraphIndicators;
