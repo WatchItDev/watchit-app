@@ -1,3 +1,5 @@
+import React from "react";
+
 export type ICampaignTableFilters = {
   status: string;
 };
@@ -26,3 +28,13 @@ export interface CampaignType {
 }
 
 export type Accumulator = Record<string, number>;
+
+export interface StrategyListProps {
+  data: StrategyType[];
+}
+
+export interface CounterItemProps {
+  icon: React.ReactNode;
+  number: number;
+  label: string;
+}
