@@ -6,25 +6,31 @@ import {FC, useState} from "react";
 import DialogActions from "@mui/material/DialogActions";
 import StrategyColorPicker from "@src/sections/marketing/components/StrategyColorPicker";
 
-
 interface StrategyModalContentProps {
   onClose: () => void;
   onConfirm: () => void;
 }
 
 const StrategyModalContent: FC<StrategyModalContentProps> = ({onClose, onConfirm}) => {
-  const [description, setDescription] = useState<string>('');
+  const [formValues, setFormValues] = useState<{ description: string; budget: string }>({
+    description: '',
+    budget: ''
+  });
 
-  const handleDescriptionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setDescription(event.target.value);
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    setFormValues({
+      ...formValues,
+      [name]: value
+    });
   };
 
   return(<>
-  <Divider sx={{
-    padding: '0.3rem 0',
-    mb: 4,
-    borderStyle:'dashed'
-  }} />
+    <Divider sx={{
+      padding: '0.3rem 0',
+      mb: 4,
+      borderStyle:'dashed'
+    }} />
 
     <Grid container spacing={2} sx={{mb: 2, px:5}}>
       <Typography sx={{opacity: 0.7}} variant="body1" color="text.secondary">A strategy is a set of campaigns to promote your content. Complete all the information required.</Typography>
@@ -36,9 +42,11 @@ const StrategyModalContent: FC<StrategyModalContentProps> = ({onClose, onConfirm
         autoFocus
         label="Enter a description"
         type="text"
-        value={description}
-        onChange={handleDescriptionChange}
+        name="description"
+        value={formValues.description}
+        onChange={handleInputChange}
         placeholder="e.g., 'Promote my new album'"
+        helperText={'This description will help you identify the strategy.'}
       />
 
       {/*Input for budget*/}
@@ -47,10 +55,12 @@ const StrategyModalContent: FC<StrategyModalContentProps> = ({onClose, onConfirm
         fullWidth
         autoFocus
         label="Enter a budget"
-        type="text"
-        value={description}
-        onChange={handleDescriptionChange}
+        type="number"
+        name="budget"
+        value={formValues.budget}
+        onChange={handleInputChange}
         placeholder="e.g., 5000"
+        helperText={'This budget will be distributed among the campaigns.'}
       />
 
       {/*Widget to choose a color*/}
