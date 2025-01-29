@@ -236,7 +236,7 @@ function FinanceQuickTransferModal({
             variant="contained"
             sx={{ backgroundColor: '#fff' }}
             onClick={handleConfirmTransfer}
-            disabled={transferLoading || !canContinue || !(amount > 0)}
+            disabled={transferLoading || !canContinue || value <= 0}
             loading={transferLoading}
           >
             Confirm
