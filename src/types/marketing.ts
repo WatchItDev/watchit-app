@@ -9,6 +9,7 @@ export const CampaignStatusTypes = [
 ];
 
 export interface StrategyType {
+  id: string;
   name: string;
   status: string;
   budget: number;
@@ -17,6 +18,7 @@ export interface StrategyType {
 }
 
 export interface CampaignType {
+  id: string;
   name: string;
   status: string;
   startDate: string;
@@ -38,3 +40,10 @@ export interface CounterItemProps {
   number: number;
   label: string;
 }
+
+export const CampaignCategories = [
+  { value: 'subscription', label: 'Subscription based' },
+  { value: 'rental', label: 'Rental based' },
+  { value: 'trial', label: 'Trial based' },
+  { value: 'custom', label: 'Custom' },
+]
