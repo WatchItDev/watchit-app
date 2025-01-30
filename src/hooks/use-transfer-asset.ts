@@ -14,25 +14,25 @@ import { useAccountSession } from '@src/hooks/use-account-session.ts';
 
 // ----------------------------------------------------------------------
 
-interface RegisterAssetData {
+interface TransferAssetData {
   receipt?: any;
 }
 
-interface UseRegisterAssetHook {
-  data?: RegisterAssetData;
-  registerAsset: (assetId: string) => Promise<void>;
+interface UseTransferAssetHook {
+  data?: TransferAssetData;
+  transferAsset: (destinationAddress: string, assetId: string) => Promise<void>;
   loading: boolean;
   error?: keyof typeof ERRORS | null;
 }
 
 /**
- * Hook to register a new asset in the Asset Ownership contract
- * using Account Abstraction (Bundler Client).
+ * Hook to transfer an asset using the Asset Ownership contract
+ * with Account Abstraction (Bundler Client).
  *
- * @returns {UseRegisterAssetHook} data, registerAsset, loading y error
+ * @returns {UseTransferAssetHook} data, transferAsset, loading, and error
  */
-export const useRegisterAsset = (): UseRegisterAssetHook => {
-  const [data, setData] = useState<RegisterAssetData>();
+export const useTransferAsset = (): UseTransferAssetHook => {
+  const [data, setData] = useState<TransferAssetData>();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<keyof typeof ERRORS | null>(null);
   const sessionData = useSelector((state: any) => state.auth.session);
@@ -40,11 +40,12 @@ export const useRegisterAsset = (): UseRegisterAssetHook => {
   const { isAuthenticated, logout } = useAccountSession();
 
   /**
-   * Performs the operation of registering an asset using the `AssetOwnership` contract.
+   * Performs the operation of transferring an asset using the `AssetOwnership` contract.
    *
-   * @param assetId The ID of the asset you want to register
+   * @param destinationAddress The address to which the asset will be transferred
+   * @param assetId The ID of the asset to transfer
    */
-  const registerAsset = async (assetId: string): Promise<void> => {
+  const transferAsset = async (destinationAddress: string, assetId: string): Promise<void> => {
     setLoading(true);
     setError(null);
 
@@ -61,22 +62,25 @@ export const useRegisterAsset = (): UseRegisterAssetHook => {
     }
 
     try {
-      const toAddress = sessionData?.profile?.ownedBy.address;
-      if (!toAddress) {
+      const fromAddress = sessionData?.profile?.ownedBy.address;
+      if (!fromAddress) {
         throw new Error('The active account address was not found in the session.');
       }
 
-      const registerAssetData = encodeFunctionData({
+      console.log('destinationAddress:', destinationAddress);
+      console.log('asset:', assetId);
+
+      const transferAssetData = encodeFunctionData({
         abi: AssetOwnershipAbi.abi,
-        functionName: 'register',
-        args: [toAddress, assetId],
+        functionName: 'transfer',
+        args: [destinationAddress, assetId],
       });
 
       const calls = [
         {
           to: GLOBAL_CONSTANTS.ASSET_OWNERSHIP_ADDRESS,
           value: 0,
-          data: registerAssetData,
+          data: transferAssetData,
         },
       ];
 
@@ -92,15 +96,15 @@ export const useRegisterAsset = (): UseRegisterAssetHook => {
       setData({ receipt });
       setLoading(false);
     } catch (err: any) {
-      console.error('USE REGISTER ASSET ERR:', err);
+      console.error('USE TRANSFER ASSET ERROR:', err);
       setLoading(false);
-      throw new Error('There is an error while registering the asset');
+      setError(ERRORS.ASSET_OWNERSHIP_TRANSFER_ERROR);
     }
   };
 
   return {
     data,
-    registerAsset,
+    transferAsset,
     loading,
     error,
   };

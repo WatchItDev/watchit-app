@@ -22,6 +22,8 @@ export enum ERRORS {
   WALLET_CONNECTION_ERROR = 'WALLET_CONNECTION_ERROR',
   PREMATURE_ACTION_ERROR = 'PREMATURE_ACTION_ERROR',
   ASSET_OWNERSHIP_REGISTER_ERROR = 'ASSET_OWNERSHIP_REGISTER_ERROR',
+  ASSET_ALREADY_REGISTERED_ERROR = 'ASSET_ALREADY_REGISTERED_ERROR',
+  ASSET_OWNERSHIP_TRANSFER_ERROR = 'ASSET_OWNERSHIP_TRANSFER_ERROR',
 
   // Login error
   LOGIN_FAILED_ERROR = 'LOGIN_FAILED_ERROR',
@@ -78,6 +80,8 @@ export const ERROR_MESSAGES: Record<ERRORS, string> = {
   [ERRORS.CREATING_PROFILE_ERROR]: 'Error creating profile.',
   [ERRORS.UPDATING_PROFILE_ERROR]: 'Error updating profile metadata.',
   [ERRORS.ASSET_OWNERSHIP_REGISTER_ERROR]: 'Error processing hash: {hash}',
+  [ERRORS.ASSET_OWNERSHIP_TRANSFER_ERROR]: 'Error transferring IP',
+  [ERRORS.ASSET_ALREADY_REGISTERED_ERROR]: 'The asset is already registered, you cannot register it again.',
 
   [ERRORS.BROADCASTING_TRANSACTION_ERROR]: 'There was an error broadcasting the transaction.',
   [ERRORS.PENDING_SIGNING_REQUEST_ERROR]: 'There is a pending signing request in your wallet.',

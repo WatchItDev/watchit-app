@@ -30,6 +30,7 @@ export default function PublicationPlayView({ publication, loading }: Props) {
       {getMovieCid() && (
         <VideoPlayer
           src={getMediaUri(getMovieCid())}
+          cid={getMovieCid()}
           titleMovie={publication?.metadata?.title}
           // onBack={handleBack}
         />
