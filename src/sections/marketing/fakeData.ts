@@ -1,5 +1,6 @@
-import { StrategyType, CampaignType, CampaignStatusTypes } from '@src/types/marketing';
 import {sha256} from "viem";
+
+import { StrategyType, CampaignType, CampaignStatusTypes, CampaignCategoryType, CampaignCategories } from '@src/types/marketing';
 
 const getRandomStatus = () => {
   const statuses = CampaignStatusTypes.map(status => status.value);
@@ -14,16 +15,22 @@ const getRandomDate = (start: Date, end: Date) => {
   return date.toISOString().split('T')[0];
 };
 
-const getRandomCampaign = (id: string): CampaignType => ({
+const getRandomCategoryType = (): CampaignCategoryType => {
+  const categories = CampaignCategories.map(category => category.value) as CampaignCategoryType[];
+  return categories[Math.floor(Math.random() * categories.length)];
+};
+
+const getRandomCampaign = (id: string): CampaignType => <CampaignType>({
   id,
-  name: `Campaign ${Math.floor(Math.random() * 100)}`,
+  name: getRandomCampaignName(),
   status: getRandomStatus(),
   startDate: getRandomDate(new Date(2024, 0, 1), new Date(2024, 11, 31)),
   endDate: getRandomDate(new Date(2025, 0, 1), new Date(2025, 11, 31)),
-  sponsoredAccess: Math.floor(Math.random() * 1000),
-  budget: getRandomBudget(),
-  budgetAvailable: getRandomBudget(),
-  typeOfCampaign: 'sponsored'
+  access: String(Math.floor(Math.random() * 1000)),
+  budget: String(getRandomBudget()),
+  available: String(getRandomBudget()),
+  type: getRandomCategoryType(),
+  perUser: String(Math.floor(Math.random() * 100)),
 });
 
 export const generateRandomData = (items: number): StrategyType[] => {
@@ -43,3 +50,17 @@ export const generateRandomData = (items: number): StrategyType[] => {
   }
   return data;
 };
+
+const CampaignNames = [
+  'Access for premium users',
+  'Free trial for 30 days',
+  'Discount for new users',
+  'Free access for 1 year',
+  'Free access for 6 months',
+  'Free access for 3 months',
+  'Discount for 1 year',
+  ]
+
+const getRandomCampaignName = (): string => {
+  return CampaignNames[Math.floor(Math.random() * CampaignNames.length)];
+}

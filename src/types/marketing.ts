@@ -8,6 +8,9 @@ export const CampaignStatusTypes = [
   { value: 'paused', label: 'Paused' },
 ];
 
+export type CampaignCategoryType = 'subscription' | 'rental' | 'trial' | 'custom';
+export type CampaignStatusType = 'active' | 'paused';
+
 export interface StrategyType {
   id: string;
   name: string;
@@ -20,13 +23,14 @@ export interface StrategyType {
 export interface CampaignType {
   id: string;
   name: string;
-  status: string;
+  status: CampaignStatusType;
   startDate: string;
   endDate: string;
-  sponsoredAccess: number;
-  budget: number;
-  budgetAvailable: number;
-  typeOfCampaign: string;
+  access: string;
+  budget: string;
+  available: string;
+  perUser: string;
+  type: CampaignCategoryType;
 }
 
 export type Accumulator = Record<string, number>;
@@ -47,3 +51,15 @@ export const CampaignCategories = [
   { value: 'trial', label: 'Trial based' },
   { value: 'custom', label: 'Custom' },
 ]
+
+
+export const CAMPAIGN_TABLE_HEAD = [
+  { id: 'name', label: 'Name', width: 400 },
+  { id: 'budget', label: 'Budget'},
+  { id: 'available', label: 'Available'},
+  { id: 'type', label: 'Type'},
+  { id: 'access', label: 'Access' },
+  { id: 'status', label: 'Status' },
+];
+
+export interface CampaignTableRowType extends CampaignType {}
