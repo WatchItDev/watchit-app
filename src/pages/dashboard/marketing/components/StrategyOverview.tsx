@@ -8,6 +8,7 @@ import StrategyItem from '@src/sections/marketing/components/StrategyItem.tsx';
 import CampaignCreate from '@src/sections/marketing/components/CampaignCreate.tsx';
 import Iconify from '@src/components/iconify';
 import { COLORS } from '@src/layouts/config-layout.ts';
+import CampaignTable from '@src/sections/marketing/components/CampaignTable';
 
 const StrategyOverview = () => {
   const strategy: StrategyType[] = generateRandomData(1);
@@ -45,6 +46,16 @@ const StrategyOverview = () => {
         }}
       >
         <StrategyItem strategy={strategy[0]} index={0} key={`key-some-strategy`} />
+      </Grid>
+
+      <Grid
+        container
+        spacing={0}
+        sx={{
+          mt: 1,
+        }}
+      >
+        <CampaignTable strategy={strategy[0]} key={`key-table-strategy-campaigns`} />
       </Grid>
     </Container>
   );
