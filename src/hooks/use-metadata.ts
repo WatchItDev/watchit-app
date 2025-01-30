@@ -17,7 +17,7 @@ export interface MetadataData {
   title: string;
   description: string;
   attachments: Attachment[];
-  custom_fields: any | null;
+  custom_fields: any;
 }
 
 /**

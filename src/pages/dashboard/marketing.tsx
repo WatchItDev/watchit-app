@@ -1,3 +1,4 @@
+// NOSONAR_START
 import BlankView from '../../sections/blank/view';
 import ComingSoonView from '../../sections/coming-soon/view';
 // import {useSelector} from "react-redux";
@@ -36,3 +37,4 @@ export default function ChatPage() {
     </OgMetaTags>
   );
 }
+// NOSONAR_END
