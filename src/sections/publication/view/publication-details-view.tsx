@@ -33,8 +33,6 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import { useDispatch, useSelector } from 'react-redux';
 import { openLoginModal } from '@redux/auth';
 import { appId, PublicationType, usePublications } from '@lens-protocol/react-web';
-// NOSONAR_START
-// import { useIsActiveCampaign } from '@src/hooks/use-is-active-campaign.ts';
 
 const MAX_LINES = 5;
 
@@ -70,12 +68,7 @@ export default function PublicationDetailsView({ id }: Props) {
     fetching: accessFetchingLoading,
     refetch: refetchAccess,
   } = useHasAccess(ownerAddress);
-  // const {
-  //   isActive,
-  //   loading: activeLoading,
-  //   refetch: refetchActive,
-  // } = useIsActiveCampaign(ownerAddress);
-  // NOSONAR_END
+
   const getMediaUri = (cid: string): string => `${cid}`;
 
   const getWallpaperCid = (): string =>
