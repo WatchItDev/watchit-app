@@ -56,8 +56,6 @@ export const ActivateSubscriptionProfileModal = ({
   ];
 
   useEffect(() => {
-    console.log('hello error')
-    console.log(error)
     if (error) notifyError(error as ERRORS);
   }, [error]);
 

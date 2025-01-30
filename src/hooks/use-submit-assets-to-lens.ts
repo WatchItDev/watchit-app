@@ -39,7 +39,7 @@ export function useSubmitAssetToLens(): UseSubmitAssetToLensReturn {
     let sanitized = description.replace(/"/g, "'");
     sanitized = sanitized.replace(/\\/g, "");
     // eslint-disable-next-line no-control-regex
-    sanitized = sanitized.replace(/[\x00-\x1F\x7F]/g, "");
+    sanitized = sanitized.replace(/[\x00-\x1F\x7F]/g, ""); // NOSONAR
     return sanitized;
   }, []);
 
