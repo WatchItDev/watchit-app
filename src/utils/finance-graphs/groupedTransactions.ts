@@ -207,7 +207,7 @@ const parseTransactionTypeLabel = (type: string): string => {
     case 'approved':
       return 'Approved';
     case 'collected':
-      return 'Settled';
+      return 'Paid';
     // case 'released':
     //   return 'Released';
 
