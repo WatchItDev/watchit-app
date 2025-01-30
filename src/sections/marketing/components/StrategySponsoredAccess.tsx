@@ -16,7 +16,7 @@ const StrategySponsoredAccess: FC<StrategySponsoredAccessProps> = ({data}) => {
 
   const sumSponsoredAccess = () => {
     return data.reduce((acc, campaign) => {
-      return acc + campaign.sponsoredAccess;
+      return acc + parseInt(campaign.access);
     }, 0);
   }
 
