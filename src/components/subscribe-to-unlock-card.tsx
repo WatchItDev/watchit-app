@@ -50,7 +50,6 @@ export const SubscribeToUnlockCard = ({
           This content is exclusively for members. Become part of our growing community to access
           behind-the-scenes content, exclusive posts, and much more!
         </Typography>
-
         <LoadingButton
           variant="contained"
           color="primary"

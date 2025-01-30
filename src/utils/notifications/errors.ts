@@ -21,6 +21,9 @@ export enum ERRORS {
   INSUFFICIENT_FUNDS_ERROR = 'INSUFFICIENT_FUNDS_ERROR',
   WALLET_CONNECTION_ERROR = 'WALLET_CONNECTION_ERROR',
   PREMATURE_ACTION_ERROR = 'PREMATURE_ACTION_ERROR',
+  ASSET_OWNERSHIP_REGISTER_ERROR = 'ASSET_OWNERSHIP_REGISTER_ERROR',
+  ASSET_ALREADY_REGISTERED_ERROR = 'ASSET_ALREADY_REGISTERED_ERROR',
+  ASSET_OWNERSHIP_TRANSFER_ERROR = 'ASSET_OWNERSHIP_TRANSFER_ERROR',
 
   // Login error
   LOGIN_FAILED_ERROR = 'LOGIN_FAILED_ERROR',
@@ -55,6 +58,9 @@ export enum ERRORS {
   INVITATION_SEND_ERROR = 'INVITATION_SEND_ERROR',
   INVITATION_USER_ALREADY_INVITED = 'INVITATION_USER_ALREADY_INVITED',
   INVITATION_USER_CANT_INVITE_SELF = 'INVITATION_USER_CANT_INVITE_SELF',
+
+  // SUBMIT
+  SUBMIT_ASSET_ERROR = 'SUBMIT_ASSET_ERROR',
 }
 
 /**
@@ -73,6 +79,9 @@ export const ERROR_MESSAGES: Record<ERRORS, string> = {
   [ERRORS.FAILED_CHANGE_WALLET_ERROR]: 'Error while trying to change the wallet.',
   [ERRORS.CREATING_PROFILE_ERROR]: 'Error creating profile.',
   [ERRORS.UPDATING_PROFILE_ERROR]: 'Error updating profile metadata.',
+  [ERRORS.ASSET_OWNERSHIP_REGISTER_ERROR]: 'Error processing hash: {hash}',
+  [ERRORS.ASSET_OWNERSHIP_TRANSFER_ERROR]: 'Error transferring IP',
+  [ERRORS.ASSET_ALREADY_REGISTERED_ERROR]: 'The asset is already registered, you cannot register it again.',
 
   [ERRORS.BROADCASTING_TRANSACTION_ERROR]: 'There was an error broadcasting the transaction.',
   [ERRORS.PENDING_SIGNING_REQUEST_ERROR]: 'There is a pending signing request in your wallet.',
@@ -81,6 +90,7 @@ export const ERROR_MESSAGES: Record<ERRORS, string> = {
   [ERRORS.INSUFFICIENT_FUNDS_ERROR]:
     'You do not have enough funds to pay for this follow fee {symbol} {amount}',
   [ERRORS.WALLET_CONNECTION_ERROR]: 'There was an error connecting to your wallet.',
+  [ERRORS.SUBMIT_ASSET_ERROR]: 'There was an error submitting your asset.',
   [ERRORS.PREMATURE_ACTION_ERROR]: 'There is a pending unfollow request for this profile.',
 
   // Login error

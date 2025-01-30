@@ -6,7 +6,7 @@ import {
   MediaPlayerInstance,
   MediaProvider,
   useMediaState,
-  isHLSProvider,
+  isHLSProvider, Track
 } from '@vidstack/react';
 import { DefaultVideoLayout, defaultLayoutIcons } from '@vidstack/react/player/layouts/default';
 import Label from '../label';
@@ -17,18 +17,25 @@ import '@vidstack/react/player/styles/default/theme.css';
 import '@vidstack/react/player/styles/default/layouts/audio.css';
 // @ts-ignore
 import '@vidstack/react/player/styles/default/layouts/video.css';
+import useGetSubtitles from '@src/hooks/use-get-subtitles.ts';
 
 export type VideoPlayerProps = {
   src: string;
+  cid: string;
   titleMovie: string;
   onBack?: () => void;
   showBack?: boolean;
 };
 
-export const VideoPlayer: FC<VideoPlayerProps> = ({ src, titleMovie, onBack, showBack }) => {
+export const VideoPlayer: FC<VideoPlayerProps> = ({ src, cid, titleMovie, onBack, showBack }) => {
   const mdUp = useResponsive('up', 'md');
   const player = useRef<MediaPlayerInstance>(null);
   const controlsVisible = useMediaState('controlsVisible', player);
+  const { tracks, getSubtitles } = useGetSubtitles();
+
+  useEffect(() => {
+    if (cid) getSubtitles(cid);
+  }, [cid, getSubtitles]);
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -81,7 +88,7 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({ src, titleMovie, onBack, sho
           enableDateRangeMetadataCues: false,
           enableMetadataCues: false,
           enableID3MetadataCues: false,
-          enableWebVTT: false, // TODO change when subtitles needed
+          enableWebVTT: true,
           enableIMSC1: false, // TODO change when subtitles needed
           enableCEA708Captions: false, // TODO change when subtitles needed
 
@@ -188,6 +195,9 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({ src, titleMovie, onBack, sho
       )}
       <MediaProvider />
       <DefaultVideoLayout icons={defaultLayoutIcons} />
+      {tracks.map((track) => (
+        <Track key={track.src} {...track} />
+      ))}
     </MediaPlayer>
   );
 };

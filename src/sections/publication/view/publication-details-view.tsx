@@ -69,7 +69,6 @@ export default function PublicationDetailsView({ id }: Props) {
     refetch: refetchAccess,
   } = useHasAccess(ownerAddress);
 
-  // const getMediaUri = (cid: string): string => `https://ipfs.io/ipfs/${cid?.replace('ipfs://', '')}`
   const getMediaUri = (cid: string): string => `${cid}`;
 
   const getWallpaperCid = (): string =>

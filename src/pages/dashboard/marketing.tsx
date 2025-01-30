@@ -9,7 +9,7 @@ export default function ChatPage() {
   return (
     <OgMetaTags
       title="Watchit: Marketing (COMING SOON)"
-      description="Promote your content, engage audiences, and maximize visibility on Watchit."
+      description="Promote your content, engage audiences, and maximize visibility with AI-powered marketing tools. Stay tuned!"
       url={`${GLOBAL_CONSTANTS.BASE_URL}/marketing/`}
     >
       <BlankView>
