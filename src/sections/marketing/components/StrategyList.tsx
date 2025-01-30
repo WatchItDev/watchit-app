@@ -1,16 +1,12 @@
 import React from 'react';
 
 // MUI components
-import { Card, CardContent, Grid } from '@mui/material';
-import { styled } from '@mui/system';
+import { Grid } from '@mui/material';
 
 // Project components
-import { darken } from '@src/utils/colors';
-import StrategySponsoredAccess from '@src/sections/marketing/components/StrategySponsoredAccess.tsx';
-import StrategyGraphIndicators from '@src/sections/marketing/components/StrategyGraphIndicators.tsx';
 import { StrategyListProps } from '@src/types/marketing';
-import { COLORS } from '@src/layouts/config-layout.ts';
-import StrategyGeneralInfo from '@src/sections/marketing/components/SrategyGeneralInfo.tsx';
+
+import StrategyItem from "@src/sections/marketing/components/StrategyItem.tsx";
 
 const StrategyList: React.FC<StrategyListProps> = ({ data }) => {
   return (
@@ -18,96 +14,14 @@ const StrategyList: React.FC<StrategyListProps> = ({ data }) => {
       container
       spacing={1}
       sx={{
-
+        mt: 0,
       }}
     >
-      {data.map((strategy, index) => (
-        <Grid
-          item
-          xs={12}
-          key={index}
-          sx={{
-            background: COLORS.GRAY_DARK,
-          }}
-        >
-          <Card
-            sx={{
-              cursor: 'pointer',
-              background: COLORS.GRAY_LIGHT,
-              '&:hover': {
-                background: darken(COLORS.GRAY_LIGHT, 5),
-              },
-            }}
-          >
-            <CustomCardContent
-              sx={{
-                p: 0,
-                display: {
-                  xs: 'block',
-                  md: 'flex',
-                },
-                justifyContent: 'space-between',
-              }}
-            >
-              <Grid
-                sm={12}
-                md={4}
-                direction="column"
-                sx={{
-                  borderRight: {
-                    xs: 'none',
-                    md: `1px dashed rgba(255, 255, 255, 0.2)`,
-                  },
-                }}
-              >
-                <StrategyGeneralInfo strategy={strategy} />
-              </Grid>
-
-              <Grid
-                sm={12}
-                md={8}
-                sx={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                }}
-                direction={{
-                  xs: 'column',
-                  md: 'row',
-                }}
-              >
-                <Grid
-                  spacing={2}
-                  sx={{
-                    display: 'flex',
-                    flexDirection: {
-                      xs: 'column',
-                      md: 'row',
-                    },
-                    flexGrow: 1,
-                    justifyContent: 'space-between',
-                    textAlign: 'center',
-                    borderRadius: 1.5,
-                    p: 2,
-                    gap: 2,
-                  }}
-                >
-                  <StrategySponsoredAccess data={strategy.campaigns} />
-                  <StrategyGraphIndicators index={index} strategy={strategy} />
-                </Grid>
-              </Grid>
-            </CustomCardContent>
-          </Card>
-        </Grid>
-      ))}
+      {data.map((strategy, index) => <StrategyItem key={`key-strategy-${index}`} strategy={strategy} index={index} />)}
     </Grid>
   );
 };
 
-const CustomCardContent = styled(CardContent)(`
-  padding: 0;
-  &:last-child {
-    padding-bottom: 0;
-  }
-`);
+
 
 export default StrategyList;
