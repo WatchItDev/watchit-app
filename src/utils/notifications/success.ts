@@ -38,7 +38,7 @@ export const SUCCESS_MESSAGES: Record<SUCCESS, string> = {
   [SUCCESS.TRANSFER_CREATED_SUCCESSFULLY]: 'Transfer sent to {destination}.',
   [SUCCESS.FOLLOW_UNFOLLOW_SUCCESSFULLY]: 'Successfully {profileName} {actionLbl}.',
   [SUCCESS.PROFILE_JOINED_SUCCESSFULLY]: 'Successfully joined the profile.',
-  [SUCCESS.OWNERSHIP_REGISTERED_SUCCESSFULLY]: 'Your ownership has been registered successfully!',
+  [SUCCESS.OWNERSHIP_REGISTERED_SUCCESSFULLY]: 'Asset {count} successfully processed',
 
   // Metamask
   [SUCCESS.METAMASK_CONNECTED_SUCCESSFULLY]: 'MetaMask connected successfully!',

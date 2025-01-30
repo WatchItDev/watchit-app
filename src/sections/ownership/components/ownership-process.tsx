@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 // MUI Imports
 import LoadingButton from '@mui/lab/LoadingButton';
@@ -12,9 +12,12 @@ import OwnershipProcessModal from "@src/components/modal.tsx";
 import Ownership from '@src/assets/illustrations/ownership.svg';
 import Iconify from '@src/components/iconify';
 import { useRegisterAsset } from '@src/hooks/use-register-asset';
-import { notifyError, notifySuccess } from '@notifications/internal-notifications.ts';
+import { notifyError, notifyInfo, notifySuccess } from '@notifications/internal-notifications.ts';
 import { SUCCESS } from '@notifications/success.ts';
 import { ERRORS } from '@notifications/errors.ts';
+import { INFO } from '@notifications/info.ts';
+import { useSubmitAssetToLens } from '@src/hooks/use-submit-assets-to-lens.ts';
+import NeonPaper from '@src/sections/publication/NeonPaperContainer.tsx';
 
 /**
  * OwnershipProcess is a React functional component that manages the process of registering ownership.
@@ -60,28 +63,52 @@ const OwnershipProcess = () => {
 
 const OwnershipProcessContent = ({ onClose }: { onClose: () => void }) => {
   const [hashes, setHashes] = useState<string>('');
-  const { registerAsset, loading, error } = useRegisterAsset();
-
-  useEffect(() => {
-    if (!error) return;
-
-    notifyError(ERRORS.ASSET_OWNERSHIP_REGISTER_ERROR);
-  }, [error])
+  const { registerAsset } = useRegisterAsset();
+  const { submitAssetToLens } = useSubmitAssetToLens();
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const hashesArray = hashes.split(',')
+    .map(h => h.trim())
+    .filter(Boolean);
 
   const handleRegister = async () => {
     if (!hashes) return;
+
+    setProgress(1);
+    setIsProcessing(true);
+
     try {
-      await registerAsset(hashes);
-      notifySuccess(SUCCESS.OWNERSHIP_REGISTERED_SUCCESSFULLY);
-      onClose();
-    } catch (e) {
+      for (const [index, hash] of hashesArray.entries()) {
+        try {
+          // 1. Report progress
+          notifyInfo(INFO.REGISTER_OWNERSHIP_PROGRESS, {
+            index: index + 1,
+            total: hashesArray.length,
+            options: { autoHideDuration: 3000 }
+          }, '', { autoHideDuration: 3000 });
+          setProgress(index + 1);
+
+          // 2. Register ownership (if it fails, it does not continue)
+          await registerAsset(hash);
+
+          // 3. Upload to Lens only if registration was successful
+          await submitAssetToLens(hash);
+
+          notifySuccess(SUCCESS.OWNERSHIP_REGISTERED_SUCCESSFULLY, { count: index + 1 });
+        } catch (error) {
+          notifyError(ERRORS.ASSET_OWNERSHIP_REGISTER_ERROR, { hash: `${index + 1}/${hashesArray.length}` });
+          continue; // Continue with the next hash
+        }
+      }
+    } catch (error) {
       notifyError(ERRORS.ASSET_OWNERSHIP_REGISTER_ERROR);
+    } finally {
+      setIsProcessing(false);
+      onClose();
     }
   };
 
-  const handleHashesChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setHashes(event.target.value);
-  };
+  const RainbowEffect = isProcessing ? NeonPaper : Box;
 
   return (
     <Stack direction="column" sx={{ pb: 3, pt: 2, mt: 1, borderTop: '1px dashed rgba(145, 158, 171, 0.5)' }}>
@@ -100,25 +127,39 @@ const OwnershipProcessContent = ({ onClose }: { onClose: () => void }) => {
           label="Content Hash(es)"
           type="text"
           value={hashes}
-          onChange={handleHashesChange}
+          onChange={(e) => setHashes(e.target.value)}
           placeholder="e.g., hash1,hash2,hash3"
+          disabled={isProcessing}
         />
       </Box>
 
       <Stack direction="row" spacing={2} justifyContent="flex-end" sx={{ mt: 2, px: 3, pt: 3, borderTop: '1px dashed rgba(145, 158, 171, 0.5)' }}>
-        <Button variant="outlined" onClick={onClose}>
+        <Button
+          variant="outlined"
+          onClick={onClose}
+          disabled={isProcessing}
+        >
           Cancel
         </Button>
-        <LoadingButton
-          variant="contained"
-          type="submit"
-          onClick={handleRegister}
-          startIcon={<Iconify icon="material-symbols:publish" />}
-          disabled={!hashes || loading}
-          loading={loading}
+        <RainbowEffect
+          {...((isProcessing) && {
+            borderRadius: '10px',
+            animationSpeed: '3s',
+            padding: '0',
+            width: 'auto',
+          })}
         >
-          Register
-        </LoadingButton>
+          <LoadingButton
+            variant="contained"
+            onClick={handleRegister}
+            loading={isProcessing}
+            disabled={!hashes || isProcessing}
+            loadingPosition="start"
+            startIcon={<Iconify icon="material-symbols:publish" />}
+          >
+            {isProcessing ? `Processing... (${progress}/${hashesArray.length})` : 'Start Process'}
+          </LoadingButton>
+        </RainbowEffect>
       </Stack>
     </Stack>
   );

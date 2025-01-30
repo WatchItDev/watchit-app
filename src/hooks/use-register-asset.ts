@@ -63,16 +63,10 @@ export const useRegisterAsset = (): UseRegisterAssetHook => {
     try {
       const toAddress = sessionData?.profile?.ownedBy.address;
       // const asset = BigInt(assetId).toString(10)
-      const asset = BigInt(assetId)
+      const asset = assetId.replace(/^f0/, '0x');
       if (!toAddress) {
         throw new Error('The active account address was not found in the session.');
       }
-
-      console.log('address')
-      console.log(toAddress)
-      console.log('asset')
-      console.log(assetId)
-      console.log(asset)
 
       const registerAssetData = encodeFunctionData({
         abi: AssetOwnershipAbi.abi,

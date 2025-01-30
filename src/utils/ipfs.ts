@@ -98,8 +98,7 @@ export const uploadImagesToIPFS = async (
  */
 export const uploadMetadataToIPFS = async (metadata: any): Promise<string> => {
   try {
-    const metadataURI = await uploadToIPFS(metadata);
-    return metadataURI;
+    return await uploadToIPFS(metadata);
   } catch (error) {
     console.error('Error uploading metadata to IPFS:', error);
     throw error;

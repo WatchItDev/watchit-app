@@ -1,24 +1,21 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 // @MUI
-import LoadingButton from '@mui/lab/LoadingButton';
-import { Stack, Box, Typography, TextField, Button } from '@mui/material';
+import LoadingButton from "@mui/lab/LoadingButton";
+import { Stack, Box, Typography, TextField, Button } from "@mui/material";
 
 // Project Imports
 import { useBoolean } from "@src/hooks/use-boolean.ts";
-import ProcessSectionCard from '@src/components/process-section-card.tsx';
+import ProcessSectionCard from "@src/components/process-section-card.tsx";
 import StudioProcessModal from "@src/components/modal.tsx";
 // @ts-ignore
-import Process from '@src/assets/illustrations/process.svg';
-import Iconify from '@src/components/iconify';
+import Process from "@src/assets/illustrations/process.svg";
+import Iconify from "@src/components/iconify";
 
-/**
- * `StudioProcess` is a React functional component that provides a user interface for publishing content.
- * It includes a primary call-to-action button and a modal for confirmation of publishing actions.
- *
- * The component uses the `useBoolean` hook to manage the modal's open/close state:
- * - Clicking the primary button triggers the display of the modal.
- * - Closing the modal resets the state.
- */
+// Hook Import
+import { useSubmitAssetToLens } from "@src/hooks/use-submit-assets-to-lens";
+import { notifyError, notifySuccess } from '@notifications/internal-notifications.ts';
+import { SUCCESS } from '@notifications/success.ts';
+
 const StudioProcess = () => {
   const confirmPublish = useBoolean();
 
@@ -51,23 +48,41 @@ const StudioProcess = () => {
 };
 
 const ProcessContent = ({ onClose }: { onClose: () => void }) => {
-  const [loading, setLoading] = useState(false);
-  const [hashes, setHashes] = useState<string>('');
+  const [hashes, setHashes] = useState<string>("");
+  const { data, errors, loading, submitAssetToLens } = useSubmitAssetToLens();
 
-  const handleProcess = () => {
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-    }, 2000);
+  const handleHashesChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setHashes(event.target.value);
   };
 
-  const handleHashesChange = (_event: React.ChangeEvent<HTMLInputElement>) => {
-    setHashes(_event.target.value);
-  }
+  const handleProcess = async () => {
+    await submitAssetToLens(hashes);
+  };
+
+  useEffect(() => {
+    if (errors.length > 0) {
+      notifyError(errors[0]?.message as any);
+    }
+  }, [errors]);
+
+  useEffect(() => {
+    if (data.length > 0) {
+      notifySuccess(SUCCESS.OWNERSHIP_REGISTERED_SUCCESSFULLY);
+      onClose();
+    }
+  }, [data]);
 
   return (
-    <Stack direction={'column'} sx={{ pb: 3, pt: 2, mt: 1, borderTop: `1px dashed rgb(145, 158, 171, 0.5)` }}>
-      <Box sx={{px: 3}}>
+    <Stack
+      direction={"column"}
+      sx={{
+        pb: 3,
+        pt: 2,
+        mt: 1,
+        borderTop: `1px dashed rgb(145, 158, 171, 0.5)`,
+      }}
+    >
+      <Box sx={{ px: 3 }}>
         <Typography variant="body1">
           Enter the hash of the content you want to publish
         </Typography>
@@ -76,7 +91,7 @@ const ProcessContent = ({ onClose }: { onClose: () => void }) => {
         </Typography>
 
         <TextField
-          sx={{ mt: 1, mb:2 }}
+          sx={{ mt: 1, mb: 2 }}
           fullWidth
           autoFocus
           label="Content Hash(es)"
@@ -86,13 +101,19 @@ const ProcessContent = ({ onClose }: { onClose: () => void }) => {
           placeholder="Enter the hash (or hashes) of the content"
         />
       </Box>
+
       <Stack
         direction="row"
         spacing={2}
         justifyContent="flex-end"
-        sx={{ mt: 2, px: 3, pt: 3, borderTop: `1px dashed rgb(145, 158, 171, 0.5)` }}
+        sx={{
+          mt: 2,
+          px: 3,
+          pt: 3,
+          borderTop: `1px dashed rgb(145, 158, 171, 0.5)`,
+        }}
       >
-        <Button variant="outlined" onClick={onClose}>
+        <Button variant="outlined" onClick={onClose} disabled={loading}>
           Cancel
         </Button>
         <LoadingButton
@@ -101,12 +122,13 @@ const ProcessContent = ({ onClose }: { onClose: () => void }) => {
           onClick={handleProcess}
           startIcon={<Iconify icon="material-symbols:publish" />}
           disabled={!hashes || loading}
+          loading={loading}
         >
           Publish
         </LoadingButton>
       </Stack>
     </Stack>
-  )
-}
+  );
+};
 
 export default StudioProcess;

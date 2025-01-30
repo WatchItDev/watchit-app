@@ -6,8 +6,16 @@ import { OgMetaTags } from '@src/components/og-meta-tags.tsx';
 import Header from '@src/layouts/dashboard/header.tsx';
 import HeaderContent from '@src/layouts/dashboard/header-content.tsx';
 import Ownership from '@src/sections/ownership';
-import { canViewSection } from '@src/pages/dashboard/studio.tsx';
 import { useSelector } from 'react-redux';
+
+// ----------------------------------------------------------------------
+
+export const canViewSection = (sessionData: any): boolean => {
+  // Allowed profileId to view (temporary) this section
+  const allowedProfilesId = ['0x0563', '0x050d','0x055c','0x0514', '0x0510']; // Mihail, Carlos, Jacob, Geolffrey and Watchit Open
+  // Verify if the current profile is allowed to view this section
+  return allowedProfilesId.includes(sessionData?.profile?.id ?? '');
+}
 
 // ----------------------------------------------------------------------
 
