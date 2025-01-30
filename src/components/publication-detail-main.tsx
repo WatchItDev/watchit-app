@@ -224,7 +224,7 @@ export default function PublicationDetailMain({
                 sx={{
                   width: 26,
                   height: 26,
-                  border: (theme) => `solid 2px ${theme.palette.background.default}`,
+                  border: (theme: any) => `solid 2px ${theme.palette.background.default}`,
                 }}
               />
               <Typography variant="subtitle2" noWrap sx={{ ml: 1 }}>
@@ -338,7 +338,7 @@ export default function PublicationDetailMain({
               pr: 1,
             }}
           >
-            {hasAccess ? (
+            {hasAccess && sessionData?.authenticated ? (
               // @ts-ignore
               <LeaveTipCard post={post} />
             ) : (

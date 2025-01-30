@@ -1,3 +1,46 @@
+# [2.2.0-beta.20](https://github.com/WatchItDev/watchit-app/compare/v2.2.0-beta.19...v2.2.0-beta.20) (2025-01-29)
+
+
+### Bug Fixes
+
+* sonarcloud ([d50d699](https://github.com/WatchItDev/watchit-app/commit/d50d69931e5ff46336e92a51dd063647e87658e7))
+* text send ([d4143c9](https://github.com/WatchItDev/watchit-app/commit/d4143c96e90a1444dd127c5e2ee99700d62c9644))
+* transfer modal from profile and change "transfer" with "send" ([67ef446](https://github.com/WatchItDev/watchit-app/commit/67ef446d6bed004845d82947988d884018fc992d))
+
+# [2.2.0-beta.19](https://github.com/WatchItDev/watchit-app/compare/v2.2.0-beta.18...v2.2.0-beta.19) (2025-01-29)
+
+
+### Bug Fixes
+
+* enhance profile transfer behavior and button styling ([56fc8ae](https://github.com/WatchItDev/watchit-app/commit/56fc8aefb825b17de74c5ff3de1d5b74d990c593))
+
+
+### Features
+
+* add profile transfer component ([1e4dfb8](https://github.com/WatchItDev/watchit-app/commit/1e4dfb8365dd7aa35142aec2027aa78d4857179b))
+* add profile transfer component and clean up quick transfer ([5a95a99](https://github.com/WatchItDev/watchit-app/commit/5a95a99c061e8a3cbe33b6d7d6020b9948dd3599))
+* enhance transfer modal with input validation and constraints ([681dd59](https://github.com/WatchItDev/watchit-app/commit/681dd5958868a11beeee690980a0ecb88b03c68e))
+* **finance:** enhance quick transfer UI with new components ([dc1a013](https://github.com/WatchItDev/watchit-app/commit/dc1a0131fcda240a76f821015a11d039e7e5eeba))
+* **ui:** update tabs alignment and scroll button behavior ([ec0cad7](https://github.com/WatchItDev/watchit-app/commit/ec0cad7761abfd70aeb2cde5d6ce9fcfdefd7b9e))
+
+# [2.2.0-beta.18](https://github.com/WatchItDev/watchit-app/compare/v2.2.0-beta.17...v2.2.0-beta.18) (2025-01-28)
+
+
+### Bug Fixes
+
+* bundler client null ([3beeb4e](https://github.com/WatchItDev/watchit-app/commit/3beeb4e71c91c61c50e2ae8fdbca268d95ed2e71))
+* delay after quick transfer ([8682f5f](https://github.com/WatchItDev/watchit-app/commit/8682f5fce986f3758514c9f0f1fa916222fcc85c))
+* infinite loop in session ([7c85c89](https://github.com/WatchItDev/watchit-app/commit/7c85c89c383540bf7f97ab496f08eea56061d157))
+* profile tabs on mobile ([fe7ee41](https://github.com/WatchItDev/watchit-app/commit/fe7ee419ceb82444166fed3dd1b81d40bb4c8fb9))
+* session data anonymous ([f02fbe9](https://github.com/WatchItDev/watchit-app/commit/f02fbe9ea55b6531245a33e74c5c579e16d257c3))
+* sonarcloud ([ed1a8aa](https://github.com/WatchItDev/watchit-app/commit/ed1a8aa4864d53a5f51c046167d213a9b14c85ad))
+
+
+### Features
+
+* added truncate text to name in user card ([e2f3026](https://github.com/WatchItDev/watchit-app/commit/e2f302650d1663f085b94584d2e54428a3459d66))
+* **profile:** refactor profile header with modular components ([d963910](https://github.com/WatchItDev/watchit-app/commit/d963910a075363aa9a6a2b2e7adf511d92178232))
+
 # [2.2.0-beta.17](https://github.com/WatchItDev/watchit-app/compare/v2.2.0-beta.16...v2.2.0-beta.17) (2025-01-23)
 
 

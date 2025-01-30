@@ -151,24 +151,37 @@ interface UserNameAndBadgeProps {
   address: Address;
 }
 
-export const UserNameAndBadge : FC<UserNameAndBadgeProps> = ({ name, address}) => {
+export const UserNameAndBadge: FC<UserNameAndBadgeProps> = ({ name, address }) => {
   return (
-    <Box sx={{
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'flex-start',
-    }}>
-
-      <Typography sx={{mr:'2px'}}>{name}</Typography>
-      <Box sx={{
+    <Box
+      sx={{
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'center',
-        borderRadius: '50%',
-      }}>
+        justifyContent: 'flex-start',
+      }}
+    >
+      <Typography
+        sx={{
+          mr: '2px',
+          whiteSpace: 'nowrap',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          maxWidth: '100px',
+        }}
+      >
+        {name}
+      </Typography>
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          borderRadius: '50%',
+        }}
+      >
         <BadgeVerified address={address} />
       </Box>
     </Box>
-
   );
-}
+};
+

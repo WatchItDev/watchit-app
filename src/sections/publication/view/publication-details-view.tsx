@@ -180,7 +180,7 @@ export default function PublicationDetailsView({ id }: Props) {
                 justifyContent: 'center',
               }}
             >
-              {hasAccess ? (
+              {hasAccess && sessionData?.authenticated ? (
                 <MoviePlayView publication={data} loading={loading} />
               ) : (
                 <Box
@@ -247,7 +247,7 @@ export default function PublicationDetailsView({ id }: Props) {
                       zIndex: 2,
                     }}
                     onClick={handleSubscribe}
-                    disabled={accessLoading || hasAccess || accessFetchingLoading}
+                    // disabled={accessLoading || hasAccess || accessFetchingLoading}
                     loading={accessLoading || accessFetchingLoading}
                   >
                     <IconPlayerPlay fontSize="large" size={18} />

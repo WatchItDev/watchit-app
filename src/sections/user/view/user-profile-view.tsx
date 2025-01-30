@@ -126,7 +126,12 @@ const UserProfileView = ({ id }: any) => {
             width: 1,
             zIndex: 9,
             borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
-            [`& .${tabsClasses.flexContainer}`]: { justifyContent: 'center' },
+            [`& .${tabsClasses.flexContainer}`]: { justifyContent: 'flex-start', px: 0 },
+            [`& .${tabsClasses.scroller}`]: { display: 'flex', justifyContent: {xs: 'flex-start', sm: 'center'} },
+            [`& .${tabsClasses.scrollButtons}`]: {
+              '&.MuiTabs-scrollButtons.Mui-disabled': { display: 'none' },
+              '&:first-of-type': { display: currentTab === 'publications' ? 'none' : 'flex' },
+            },
           }}
         >
           {tabsWithCounts.map((tab) => (
