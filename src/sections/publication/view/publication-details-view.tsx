@@ -33,6 +33,7 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import { useDispatch, useSelector } from 'react-redux';
 import { openLoginModal } from '@redux/auth';
 import { appId, PublicationType, usePublications } from '@lens-protocol/react-web';
+import {trimPublicationContentExtraText} from "@src/utils/text-transform.ts";
 
 const MAX_LINES = 5;
 
@@ -272,7 +273,7 @@ export default function PublicationDetailsView({ id }: Props) {
                             opacity: 0.8,
                           }}
                         >
-                          <Markdown children={data?.metadata?.content} />
+                          <Markdown children={trimPublicationContentExtraText(data?.metadata?.content)} />
                         </Box>
                         {showButton && (
                           <Button variant="outlined" onClick={toggleDescription} sx={{ mt: 2 }}>
