@@ -29,6 +29,8 @@ export const GLOBAL_CONSTANTS = {
     process.env.VITE_RIGHT_POLICY_AUTHORIZER || import.meta.env.VITE_RIGHT_POLICY_AUTHORIZER || '',
   ACCESS_MANAGER_ADDRESS:
     process.env.VITE_ACCESS_MANAGER_ADDRESS || import.meta.env.VITE_ACCESS_MANAGER_ADDRESS || '',
+  ASSET_OWNERSHIP_ADDRESS:
+    process.env.VITE_ASSET_OWNERSHIP_ADDRESS || import.meta.env.VITE_ASSET_OWNERSHIP_ADDRESS || '',
   SENTRY_AUTH_TOKEN:
     process.env.VITE_SENTRY_AUTH_TOKEN || import.meta.env.VITE_SENTRY_AUTH_TOKEN || '',
   SENTRY_DSN: process.env.VITE_SENTRY_DSN || import.meta.env.VITE_SENTRY_DSN || '',

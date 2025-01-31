@@ -1,3 +1,41 @@
+# [2.2.0-beta.21](https://github.com/WatchItDev/watchit-app/compare/v2.2.0-beta.20...v2.2.0-beta.21) (2025-01-30)
+
+
+### Bug Fixes
+
+* sonarcloud ([2652eea](https://github.com/WatchItDev/watchit-app/commit/2652eea08b52cdac2ce8ceaaebba0232041d1179))
+
+
+### Features
+
+* add free trial button with neon effect and loading state ([c613371](https://github.com/WatchItDev/watchit-app/commit/c613371795f7c3c9f3ac22e7d13560ee886b16b9))
+* add ownership illustration SVG to assets ([8d7b4d7](https://github.com/WatchItDev/watchit-app/commit/8d7b4d78481fa789e204db626b93084b37f5b832))
+* add ProcessIllustrationCard component implementation ([baedf9b](https://github.com/WatchItDev/watchit-app/commit/baedf9b64effb308eb4b9df1fd59c61833dc80b1))
+* add ProcessSectionCard component ([27c3844](https://github.com/WatchItDev/watchit-app/commit/27c3844944a4043daece6afc6c6b0a4834e36e2b))
+* added asset owner validation before register ownership, added subtitles handle to videos ([f541a6d](https://github.com/WatchItDev/watchit-app/commit/f541a6d5c6cdddfb4c08b7c92e3cf55649233bf0))
+* added change wallet feature on deposit/withdraw modals ([f7e7d3e](https://github.com/WatchItDev/watchit-app/commit/f7e7d3e1e065edea72860a3476a2fc1f5f2cdbbe))
+* added modals and cards ([562fb98](https://github.com/WatchItDev/watchit-app/commit/562fb982ac032633304d18737d5f3c616a6a7e42))
+* added new AssetOwnership abi ([137b7de](https://github.com/WatchItDev/watchit-app/commit/137b7de6e122ae81de726e509a50ee1c16554c9d))
+* added ownership registration ([c29773b](https://github.com/WatchItDev/watchit-app/commit/c29773b9fed96c398609cc13c41e3bab1f034687))
+* added ownership registration ([6489c2a](https://github.com/WatchItDev/watchit-app/commit/6489c2a60811303422c311416bc7298937f4755e))
+* added ownership registration ([a057b1d](https://github.com/WatchItDev/watchit-app/commit/a057b1d4829ebefb2e8e035f7b12e891cd22f50a))
+* added terms and licenses handling, update subscription campaign abi also added is active campaign hook ([7dbf47e](https://github.com/WatchItDev/watchit-app/commit/7dbf47e135c6cdabae70b1424e70fd29a2a67ead))
+* connect register ownership to the contract ([0ac9a6f](https://github.com/WatchItDev/watchit-app/commit/0ac9a6f7f632e7e50c90958aa3f5404aa795f010))
+* make free trial as button ([e7a42d3](https://github.com/WatchItDev/watchit-app/commit/e7a42d35512a78ab13d26c31cc4027eb668d7a5f))
+* **marketing:** add marketing components and assets ([e3f89a3](https://github.com/WatchItDev/watchit-app/commit/e3f89a3a54c97f7d9e2c0165d356adcc3862cdcb))
+* **marketing:** add modular campaign content modal component ([bfbb36d](https://github.com/WatchItDev/watchit-app/commit/bfbb36d7c6c19a67bab5b219531e07bcf953334f))
+* **studio:** implement Studio section with publishing process ([aa4949a](https://github.com/WatchItDev/watchit-app/commit/aa4949ad0caf6700595d20ca73367dab8fe5e94a))
+* update contracts ([aa92b43](https://github.com/WatchItDev/watchit-app/commit/aa92b43a490b1a6d4e2c65b5f4664f385b9be941))
+
+# [2.2.0-beta.20](https://github.com/WatchItDev/watchit-app/compare/v2.2.0-beta.19...v2.2.0-beta.20) (2025-01-29)
+
+
+### Bug Fixes
+
+* sonarcloud ([d50d699](https://github.com/WatchItDev/watchit-app/commit/d50d69931e5ff46336e92a51dd063647e87658e7))
+* text send ([d4143c9](https://github.com/WatchItDev/watchit-app/commit/d4143c96e90a1444dd127c5e2ee99700d62c9644))
+* transfer modal from profile and change "transfer" with "send" ([67ef446](https://github.com/WatchItDev/watchit-app/commit/67ef446d6bed004845d82947988d884018fc992d))
+
 # [2.2.0-beta.19](https://github.com/WatchItDev/watchit-app/compare/v2.2.0-beta.18...v2.2.0-beta.19) (2025-01-29)
 
 
