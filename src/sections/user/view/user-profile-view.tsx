@@ -22,6 +22,10 @@ import { RootState } from '@src/redux/store';
 import { setFollowers, setFollowings } from '@redux/followers';
 import ProfileReferrals from "@src/sections/user/profile-referrals.tsx";
 import useReferrals from "@src/hooks/use-referrals.ts";
+import Alert from '@mui/material/Alert';
+import { useIsPolicyAuthorized } from '@src/hooks/use-is-policy-authorized.ts';
+import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
+import { Address } from 'viem';
 
 // ----------------------------------------------------------------------
 
@@ -47,6 +51,10 @@ const UserProfileView = ({ id }: any) => {
       metadata: { publishedOn: [appId('watchit')] },
     },
   });
+  const { isAuthorized, loading: authorizedLoading } = useIsPolicyAuthorized(
+    GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS,
+    profile?.ownedBy?.address as Address
+  );
 
   const { invitations: referrals, fetchInvitations, loading: loadingReferrals } = useReferrals();
 
@@ -115,8 +123,20 @@ const UserProfileView = ({ id }: any) => {
     <LoadingScreen />
   );
 
+  const showSubscriptionAlert =
+    sessionData?.authenticated &&
+    sessionData?.profile?.id === profile?.id &&
+    (publications?.length ?? 0) >= 1 &&
+    !isAuthorized &&
+    !authorizedLoading;
+
   return (
     <Container maxWidth={settings.themeStretch ? false : 'lg'} sx={{ overflowX: 'hidden' }}>
+      {showSubscriptionAlert && (
+        <Alert severity="warning" sx={{ mt: 2, mb: -1 }}>
+          Set your subscription prices so users can access your content. Click 'Set Joining Prices' next to your profile picture.
+        </Alert>
+      )}
       <ProfileHeader profile={profile as any}>
         <Tabs
           key={`tabs-${profile?.id}`}
