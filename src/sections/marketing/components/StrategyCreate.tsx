@@ -16,7 +16,7 @@ const StrategyCreate = () => {
 
   // @TODO Implement onConfirm
   const handleConfirm = () => {
-    console.log('Confirm');
+    confirmPublish.onFalse?.();
   }
 
   return (

@@ -55,6 +55,9 @@ export enum ERRORS {
   INVITATION_SEND_ERROR = 'INVITATION_SEND_ERROR',
   INVITATION_USER_ALREADY_INVITED = 'INVITATION_USER_ALREADY_INVITED',
   INVITATION_USER_CANT_INVITE_SELF = 'INVITATION_USER_CANT_INVITE_SELF',
+
+  // Marketing
+  STRATEGY_STORED_ERROR = 'STRATEGY_STORED_ERROR',
 }
 
 /**
@@ -121,4 +124,7 @@ export const ERROR_MESSAGES: Record<ERRORS, string> = {
   [ERRORS.INVITATION_SEND_ERROR]: 'An error occurred while sending the invitation.',
   [ERRORS.INVITATION_USER_ALREADY_INVITED]: 'This user has already been invited!',
   [ERRORS.INVITATION_USER_CANT_INVITE_SELF]: 'You cannot invite yourself!',
+
+  //Marketing
+  [ERRORS.STRATEGY_STORED_ERROR]: 'Error storing the strategy.',
 };
