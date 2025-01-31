@@ -124,7 +124,7 @@ function FinanceQuickTransferModal({
           avatar: (contactInfo?.metadata?.picture as any)?.optimized?.uri ?? '',
         },
         {
-          rawDescription: `${sessionData?.profile?.metadata?.displayName ?? address} sent you ${amount} MMC`,
+          rawDescription: `${sessionData?.profile?.metadata?.displayName ?? address} sent you ${amount > 0? amount : value} MMC`,
           message,
         }
       );
