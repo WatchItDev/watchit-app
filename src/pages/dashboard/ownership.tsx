@@ -28,7 +28,7 @@ export default function FileManagerPage() {
       description="Manage digital rights, track licensing, and unlock the power of decentralized ownership."
       url={`${GLOBAL_CONSTANTS.BASE_URL}/ownership/`}
     >
-      {canViewSection(sessionData) ? (
+      {canViewSection(sessionData) && sessionData?.authenticated ? (
         <>
           <Header>
             <HeaderContent title="Ownership" />

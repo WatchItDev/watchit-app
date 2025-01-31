@@ -11,6 +11,7 @@ interface ProcessSectionCardProps {
   title: string;
   description: string;
   buttonText: string;
+  buttonIcon?: string;
   illustration: string;
   illustrationAlt: string;
   onClick: () => void;
@@ -20,6 +21,7 @@ const ProcessSectionCard: FC<ProcessSectionCardProps> = ({
                                                    title,
                                                    description,
                                                    buttonText,
+                                                   buttonIcon = 'material-symbols:campaign-outline-rounded',
                                                    illustration,
                                                    illustrationAlt,
                                                    onClick
@@ -106,7 +108,7 @@ const ProcessSectionCard: FC<ProcessSectionCardProps> = ({
             }}
             color="primary"
             variant="soft"
-            startIcon={<Iconify icon="material-symbols:campaign-outline-rounded" />}
+            startIcon={<Iconify icon={buttonIcon} />}
             onClick={onClick}
           >
             {buttonText}

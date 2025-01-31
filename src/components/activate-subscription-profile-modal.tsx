@@ -44,7 +44,7 @@ export const ActivateSubscriptionProfileModal = ({
   isOpen,
   onClose,
 }: ActivateSubscriptionProfileModalProps) => {
-  const [selectedAmount, setSelectedAmount] = useState('10');
+  const [selectedAmount, setSelectedAmount] = useState('1');
   const [customAmount, setCustomAmount] = useState('');
 
   const { authorize, loading, error } = useAuthorizePolicy();

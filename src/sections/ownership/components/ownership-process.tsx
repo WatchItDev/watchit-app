@@ -21,6 +21,11 @@ import NeonPaper from '@src/sections/publication/NeonPaperContainer.tsx';
 import { useSelector } from 'react-redux';
 import { useGetAssetOwner } from '@src/hooks/use-get-asset-owner.ts';
 import { replacePrefix } from '@src/utils/wallet.ts';
+import { useIsPolicyAuthorized } from '@src/hooks/use-is-policy-authorized.ts';
+import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
+import { Address } from 'viem';
+import { ActivateSubscriptionProfileModal } from '@src/components/activate-subscription-profile-modal.tsx';
+import { SubscriptionWarningModal } from '@src/sections/ownership/components/pricing-warning-modal.tsx';
 
 /**
  * OwnershipProcess is a React functional component that manages the process of registering ownership.
@@ -35,30 +40,70 @@ import { replacePrefix } from '@src/utils/wallet.ts';
  */
 const OwnershipProcess = () => {
   const confirmOwnership = useBoolean();
-
-  const handleFinishOwnership = () => {
-    confirmOwnership.onFalse?.();
-  };
+  const [isSetPricesModalOpen, setIsSetPricesModalOpen] = useState(false);
+  const [showWarningModal, setShowWarningModal] = useState(false);
+  const sessionData = useSelector((state: any) => state.auth.session);
+  const userAddress = sessionData?.profile?.ownedBy?.address as Address | undefined;
+  const {
+    isAuthorized,
+    loading: authorizedLoading,
+    refetch,
+  } = useIsPolicyAuthorized(GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS, userAddress);
 
   const handleClickRegister = () => {
-    confirmOwnership.onTrue?.();
+    if (authorizedLoading) return;
+
+    if (isAuthorized) {
+      confirmOwnership.onTrue();
+    } else {
+      setShowWarningModal(true);
+    }
+  };
+
+  const handleConfirmPriceSetup = () => {
+    setShowWarningModal(false);
+    setIsSetPricesModalOpen(true);
+  };
+
+  const handleSetPricesClose = () => {
+    setIsSetPricesModalOpen(false);
+    refetch();
   };
 
   return (
     <>
       <ProcessSectionCard
-        title="Register your ownership!"
-        description="Secure your copyrights and prove your authorship."
-        buttonText="Register now"
+        title={isAuthorized ? "Register your ownership!" : "Set up prices first"}
+        description={
+          isAuthorized
+            ? "Secure your copyrights and prove your authorship."
+            : "Set subscription prices before registering your content."
+        }
+        buttonText={
+          authorizedLoading ? "Checking..." : isAuthorized ? "Register now" : "Setting prices"
+        }
+        buttonIcon={!isAuthorized ? 'ion:logo-usd' : undefined}
         illustration={Ownership}
         illustrationAlt="Watchit Ownership"
         onClick={handleClickRegister}
       />
+
+      <SubscriptionWarningModal
+        open={showWarningModal}
+        onClose={() => setShowWarningModal(false)}
+        onConfirm={handleConfirmPriceSetup}
+      />
+
+      <ActivateSubscriptionProfileModal
+        isOpen={isSetPricesModalOpen}
+        onClose={handleSetPricesClose}
+      />
+
       <OwnershipProcessModal
         title="Intellectual Property Registration"
         open={confirmOwnership.value}
-        onClose={handleFinishOwnership}
-        renderContent={<OwnershipProcessContent onClose={handleFinishOwnership} />}
+        onClose={confirmOwnership.onFalse}
+        renderContent={<OwnershipProcessContent onClose={confirmOwnership.onFalse} />}
       />
     </>
   );
@@ -76,9 +121,18 @@ const OwnershipProcessContent = ({ onClose }: { onClose: () => void }) => {
   const hashesArray = hashes.split(',')
     .map(h => h.trim())
     .filter(Boolean);
+  const { isAuthorized } = useIsPolicyAuthorized(
+    GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS,
+    userAddress as Address
+  );
 
   const handleRegister = async () => {
     if (!hashes) return;
+
+    if (!isAuthorized) {
+      notifyError(ERRORS.SUBSCRIPTION_POLICY_NO_AUTORIZED);
+      return;
+    }
 
     setProgress(1);
     setIsProcessing(true);
