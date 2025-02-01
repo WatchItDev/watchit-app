@@ -316,7 +316,7 @@ export default function PublicationDetailsView({ id }: Props) {
                         sx={{ fontWeight: 'bold', lineHeight: 1.1, mb: 0.5, width: '100%' }}
                         gutterBottom
                       >
-                        Bakers
+                        Backers
                       </Typography>
                     </m.div>
                     <Box sx={{ mt: 2, opacity: 0.8 }}>
@@ -327,7 +327,7 @@ export default function PublicationDetailsView({ id }: Props) {
                           sx={{ lineHeight: 1.1, mb: 0.5, width: '100%' }}
                           gutterBottom
                         >
-                          No bakers yet. Be the first to join and support!
+                          No backers yet. Be the first to join and support!
                         </Typography>
                       </m.div>
                     </Box>
