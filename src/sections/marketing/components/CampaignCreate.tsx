@@ -18,7 +18,8 @@ const CampaignCreate = () => {
 
   // @TODO Implement onConfirm
   const handleConfirm = () => {
-    console.log('Confirm');
+    // Close the modal after succeeded the action for stored in blockchain
+    confirmPublish.onFalse?.();
   }
 
   return (

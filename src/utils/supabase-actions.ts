@@ -1,4 +1,8 @@
 import { supabase } from '@src/utils/supabase';
+import { notifyError, notifySuccess } from '@notifications/internal-notifications.ts';
+import { ERRORS } from '@notifications/errors.ts';
+import { SUCCESS } from '@notifications/success.ts';
+
 import { Invitation } from '@src/types/invitation';
 
 /**
@@ -217,4 +221,34 @@ export const checkIfEmailAlreadyInvited = async (
   } catch (err: any) {
     return { invited: false, error: err.message };
   }
+};
+
+export const storeCampaign = async (campaignData: {
+  address: string;
+  description: string;
+  budget: string;
+  type: string;
+  budgetUser: string;
+  strategyId: string;
+}) => {
+  const { address, description, budget, type, budgetUser, strategyId } = campaignData;
+
+  const { error } = await supabase.from('campaigns').insert([
+    {
+      address,
+      description,
+      budget,
+      type,
+      budgetUser,
+      strategyId,
+    },
+  ]);
+
+  if (error) {
+    notifyError(ERRORS.CAMPAIGN_STORED_ERROR);
+    return false;
+  }
+
+  notifySuccess(SUCCESS.CAMPAIGN_STORED_SUCCESSFULLY);
+  return true;
 };

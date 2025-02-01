@@ -1,3 +1,7 @@
+import React, { FC, useState } from 'react';
+import { sha256 } from 'viem';
+import { useSelector } from 'react-redux';
+
 import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
@@ -10,9 +14,10 @@ import {
   FormControl,
   SelectChangeEvent,
 } from '@mui/material';
-import React, { FC, useState } from 'react';
 import DialogActions from '@mui/material/DialogActions';
-import {CampaignCategories} from "@src/types/marketing.ts";
+
+import { CampaignCategories } from '@src/types/marketing.ts';
+import { storeCampaign } from '@src/utils/supabase-actions.ts';
 
 interface CampaignModalContentProps {
   onClose: () => void;
@@ -20,6 +25,7 @@ interface CampaignModalContentProps {
 }
 
 const CampaignModalContent: FC<CampaignModalContentProps> = ({ onClose, onConfirm }) => {
+  const sessionData = useSelector((state: any) => state.auth.session);
   const [formValues, setFormValues] = useState<{
     description: string;
     budget: string;
@@ -43,6 +49,26 @@ const CampaignModalContent: FC<CampaignModalContentProps> = ({ onClose, onConfir
       ...formValues,
       [name]: value,
     });
+  };
+
+  const handleOnConfirm = async () => {
+    const address = sessionData?.profile?.ownedBy?.address;
+    const { description, budget, type, budgetUser } = formValues;
+
+    const strategyId = sha256(`0x + ${address}${description}${budget}`);
+
+    const success = await storeCampaign({
+      address,
+      description,
+      budget,
+      type,
+      budgetUser,
+      strategyId,
+    });
+
+    if (success) {
+      onConfirm?.();
+    }
   };
 
   return (
@@ -70,56 +96,56 @@ const CampaignModalContent: FC<CampaignModalContentProps> = ({ onClose, onConfir
             name="type"
             onChange={handleInputChange}
           >
-            {
-              CampaignCategories.map((category) => (
-                <MenuItem key={`${category.label}`} value={category.value}>{category.label}</MenuItem>
-              ))
-            }
+            {CampaignCategories.map((category) => (
+              <MenuItem key={`${category.label}`} value={category.value}>
+                {category.label}
+              </MenuItem>
+            ))}
           </Select>
         </FormControl>
 
         {/*Input for description*/}
         <FormControl fullWidth sx={{ mt: 3, mb: 3 }}>
-        <TextField
-          fullWidth
-          autoFocus
-          label="Enter a description"
-          type="text"
-          name="description"
-          value={formValues.description}
-          onChange={handleInputChange}
-          placeholder="e.g., 'Promote my new album'"
-          helperText={'This description will help you identify the campaign.'}
-        />
+          <TextField
+            fullWidth
+            autoFocus
+            label="Enter a description"
+            type="text"
+            name="description"
+            value={formValues.description}
+            onChange={handleInputChange}
+            placeholder="e.g., 'Promote my new album'"
+            helperText={'This description will help you identify the campaign.'}
+          />
         </FormControl>
 
         {/*Input for budget*/}
         <FormControl fullWidth sx={{ mb: 3 }}>
-        <TextField
-          fullWidth
-          autoFocus
-          label="Enter a budget for campaign"
-          type="number"
-          name="budget"
-          value={formValues.budget}
-          onChange={handleInputChange}
-          placeholder="e.g., 5000"
-          helperText={'This budget will be distributed among the campaign.'}
-        />
+          <TextField
+            fullWidth
+            autoFocus
+            label="Enter a budget for campaign"
+            type="number"
+            name="budget"
+            value={formValues.budget}
+            onChange={handleInputChange}
+            placeholder="e.g., 5000"
+            helperText={'This budget will be distributed among the campaign.'}
+          />
         </FormControl>
 
         <FormControl fullWidth sx={{ mb: 3 }}>
-        <TextField
-          fullWidth
-          autoFocus
-          label="Enter a budget per user"
-          type="number"
-          name="budgetUser"
-          value={formValues.budget}
-          onChange={handleInputChange}
-          placeholder="e.g., 250"
-          helperText={'This budget will be distributed among the campaign.'}
-        />
+          <TextField
+            fullWidth
+            autoFocus
+            label="Enter a budget per user"
+            type="number"
+            name="budgetUser"
+            value={formValues.budgetUser}
+            onChange={handleInputChange}
+            placeholder="e.g., 250"
+            helperText={'This budget will be distributed among the campaign.'}
+          />
         </FormControl>
       </Grid>
 
@@ -136,7 +162,7 @@ const CampaignModalContent: FC<CampaignModalContentProps> = ({ onClose, onConfir
         </Button>
         <Button
           variant={'contained'}
-          onClick={onConfirm}
+          onClick={handleOnConfirm}
           sx={{ backgroundColor: 'white', color: 'black' }}
         >
           Confirm

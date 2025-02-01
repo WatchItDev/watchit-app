@@ -21,6 +21,7 @@ export enum SUCCESS {
 
   // Marketing
   STRATEGY_STORED_SUCCESSFULLY = 'STRATEGY_STORED_SUCCESSFULLY',
+  CAMPAIGN_STORED_SUCCESSFULLY = 'CAMPAIGN_STORED_SUCCESSFULLY',
 }
 
 /**
@@ -46,4 +47,5 @@ export const SUCCESS_MESSAGES: Record<SUCCESS, string> = {
 
   // Marketing
   [SUCCESS.STRATEGY_STORED_SUCCESSFULLY]: 'Strategy stored successfully!',
+  [SUCCESS.CAMPAIGN_STORED_SUCCESSFULLY]: 'Campaign stored successfully!',
 };

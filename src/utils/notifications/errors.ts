@@ -58,6 +58,7 @@ export enum ERRORS {
 
   // Marketing
   STRATEGY_STORED_ERROR = 'STRATEGY_STORED_ERROR',
+  CAMPAIGN_STORED_ERROR = 'CAMPAIGN_STORED_ERROR',
 }
 
 /**
@@ -127,4 +128,5 @@ export const ERROR_MESSAGES: Record<ERRORS, string> = {
 
   //Marketing
   [ERRORS.STRATEGY_STORED_ERROR]: 'Error storing the strategy.',
+  [ERRORS.CAMPAIGN_STORED_ERROR]: 'Error storing the campaign.',
 };
