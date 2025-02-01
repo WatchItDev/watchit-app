@@ -17,7 +17,7 @@ export const CarouselSection: FC<PropsWithChildren<CarouselSectionProps>> = ({
   children,
 }) => (
   <Card>
-    <CardHeader title={title} sx={{ px: '50px', fontSize: 'clamp(2rem, 1vw, 3rem)' }} />
+    {/* <CardHeader title={title} sx={{ px: '50px', fontSize: 'clamp(2rem, 1vw, 3rem)' }} /> */}
     <CardContent sx={{ px: '50px', pt: '1rem', pb: '0 !important' }}>{children}</CardContent>
   </Card>
 );
