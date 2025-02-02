@@ -154,7 +154,7 @@ function FinanceQuickTransferModal({
 
       notifySuccess(SUCCESS.TRANSFER_CREATED_SUCCESSFULLY, {
         destination: isSame
-          ? contactInfo?.metadata?.displayName
+          ? contactInfo?.metadata?.displayName ?? contactInfo?.handle?.localName
           : truncateAddress(address ?? ''),
       });
     } catch (err: any) {

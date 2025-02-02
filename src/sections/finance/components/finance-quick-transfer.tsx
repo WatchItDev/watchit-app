@@ -103,6 +103,7 @@ export default function FinanceQuickTransfer({
 
       // 3) Move the carousel right now
       carousel.setCurrentIndex(finalIndex);
+      setCurrentIndex(finalIndex);
 
       // 4) Update the wallet address & Redux
       setWalletAddress(profile.ownedBy?.address ?? '');
@@ -254,9 +255,6 @@ export default function FinanceQuickTransfer({
     }
   }, [showRainbow, currentIndex, carousel]);
 
-  // We pick the contactInfo to pass to the modal. If currentIndex is -1, there's no matched profile
-  const contactInfoToPass = currentIndex === -1 ? undefined : getContactInfo;
-
   // Render the carousel of profiles
   const renderCarousel = (
     <Box sx={{ position: 'relative', mb: 3 }}>
@@ -374,7 +372,6 @@ export default function FinanceQuickTransfer({
 
   const Wrapper = showRainbow ? NeonPaper : Box;
 
-  console.log(list);
   return (
     <>
       <Wrapper
@@ -400,9 +397,9 @@ export default function FinanceQuickTransfer({
 
           {/* Content */}
           <Stack sx={{ p: 3 }}>
-            <FinanceDisplayProfileInfo mode={'profile'} initialList={initialList} carousel={carousel} />
+            <FinanceDisplayProfileInfo mode={'profile'} initialList={list} carousel={carousel} />
             {list?.length > 0 ? renderCarousel : <FinanceNoFollowingsQuickTransfer />}
-            <FinanceDisplayProfileInfo mode={'wallet'} initialList={initialList} carousel={carousel} />
+            <FinanceDisplayProfileInfo mode={'wallet'} initialList={list} carousel={carousel} />
             {renderInput}
           </Stack>
         </Stack>
@@ -417,7 +414,7 @@ export default function FinanceQuickTransfer({
         address={walletAddress}
         onClose={confirm.onFalse}
         onFinish={handleTransferFinish}
-        contactInfo={contactInfoToPass} // If currentIndex is -1, this is undefined
+        contactInfo={getContactInfo}
         onChange={handleChangeInput}
       />
     </>
