@@ -1,3 +1,16 @@
+# [2.2.0-beta.22](https://github.com/WatchItDev/watchit-app/compare/v2.2.0-beta.21...v2.2.0-beta.22) (2025-02-02)
+
+
+### Bug Fixes
+
+* search and select profile on transfer ([37abe06](https://github.com/WatchItDev/watchit-app/commit/37abe068c3364875f7e3d46ca54eed61d6db57db))
+* transfer modal, send button disabled ([df1aa7c](https://github.com/WatchItDev/watchit-app/commit/df1aa7c6b1e0aaae57a9324e7d944fbf22e2bf19))
+
+
+### Features
+
+* added alert on profile to notify when a user has content and the subscription policy is not set, also added the condition to hide the join button on movie details ([111e8ec](https://github.com/WatchItDev/watchit-app/commit/111e8ecd468927500c689800323dc3283063ca2f))
+
 # [2.2.0-beta.21](https://github.com/WatchItDev/watchit-app/compare/v2.2.0-beta.20...v2.2.0-beta.21) (2025-01-30)
 
 
