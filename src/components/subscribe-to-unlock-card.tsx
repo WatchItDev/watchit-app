@@ -5,6 +5,7 @@ import { useGetPolicyTerms } from '@src/hooks/use-get-policy-terms.ts';
 import { Address } from 'viem';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
+import { useIsPolicyAuthorized } from '@src/hooks/use-is-policy-authorized.ts';
 
 interface Props {
   post: any;
@@ -18,10 +19,12 @@ export const SubscribeToUnlockCard = ({
   loadingSubscribe,
   post,
 }: Props) => {
+  const ownerAddress = post?.by?.ownedBy?.address as Address
   const { terms } = useGetPolicyTerms(
     GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS as Address,
-    post?.by?.ownedBy?.address as Address
+    ownerAddress
   );
+  const { isAuthorized } = useIsPolicyAuthorized(GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS, ownerAddress);
   const durationDays = 30; // a month
   const totalCostWei = terms?.amount ? terms?.amount * BigInt(durationDays) : 0; // Calculate total cost in Wei: DAILY_COST_WEI * durationDays
   const totalCostMMC = ethers.formatUnits(totalCostWei, 18); // Converts Wei to MMC
@@ -50,25 +53,28 @@ export const SubscribeToUnlockCard = ({
           This content is exclusively for members. Become part of our growing community to access
           behind-the-scenes content, exclusive posts, and much more!
         </Typography>
-
-        <LoadingButton
-          variant="contained"
-          color="primary"
-          sx={{ width: '100%', py: 1.5 }}
-          onClick={onSubscribe}
-          loading={loadingSubscribe}
-          // disabled={subscribeDisabled}
-        >
-          <IconPlayerPlay size={20} style={{ marginRight: 5 }} />
-          Join
-        </LoadingButton>
-        <Box sx={{ mt: 3, borderRadius: 1 }}>
-          <Typography variant="body2" color="textSecondary">
-            Join now for just <strong>{totalCostMMC} MMC/month</strong> and access to{' '}
-            <strong>{post?.by?.stats?.posts}</strong> exclusive posts from{' '}
-            <strong>{post?.by?.metadata?.displayName ?? post?.handle?.localName}!</strong>
-          </Typography>
-        </Box>
+        {isAuthorized && (
+          <>
+            <LoadingButton
+              variant="contained"
+              color="primary"
+              sx={{ width: '100%', py: 1.5 }}
+              onClick={onSubscribe}
+              loading={loadingSubscribe}
+              // disabled={subscribeDisabled}
+            >
+              <IconPlayerPlay size={20} style={{ marginRight: 5 }} />
+              Join
+            </LoadingButton>
+            <Box sx={{ mt: 3, borderRadius: 1 }}>
+              <Typography variant="body2" color="textSecondary">
+                Join now for just <strong>{totalCostMMC} MMC/month</strong> and access to{' '}
+                <strong>{post?.by?.stats?.posts}</strong> exclusive posts from{' '}
+                <strong>{post?.by?.metadata?.displayName ?? post?.handle?.localName}!</strong>
+              </Typography>
+            </Box>
+          </>
+        )}
       </CardContent>
     </Card>
   );

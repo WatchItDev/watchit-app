@@ -9,6 +9,7 @@ export enum INFO {
   APPROVE_WAITING_CONFIRMATION = 'APPROVE_WAITING_CONFIRMATION',
   DEPOSIT_SENDING_CONFIRMATION = 'DEPOSIT_SENDING_CONFIRMATION',
   DEPOSIT_WAITING_CONFIRMATION = 'DEPOSIT_WAITING_CONFIRMATION',
+  REGISTER_OWNERSHIP_PROGRESS = 'REGISTER_OWNERSHIP_PROGRESS',
 }
 
 /**
@@ -26,4 +27,5 @@ export const INFO_MESSAGES: Record<INFO, string> = {
     'Approve transaction broadcasted. Waiting for confirmation (1/2)...',
   [INFO.DEPOSIT_WAITING_CONFIRMATION]:
     'Deposit transaction broadcasted. Waiting for confirmation (2/2)...',
+  [INFO.REGISTER_OWNERSHIP_PROGRESS]: 'Processing asset {index} of {total}',
 };

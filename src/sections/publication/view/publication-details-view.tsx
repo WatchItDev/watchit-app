@@ -33,6 +33,8 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import { useDispatch, useSelector } from 'react-redux';
 import { openLoginModal } from '@redux/auth';
 import { appId, PublicationType, usePublications } from '@lens-protocol/react-web';
+import { useIsPolicyAuthorized } from '@src/hooks/use-is-policy-authorized.ts';
+import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 
 const MAX_LINES = 5;
 
@@ -68,8 +70,8 @@ export default function PublicationDetailsView({ id }: Props) {
     fetching: accessFetchingLoading,
     refetch: refetchAccess,
   } = useHasAccess(ownerAddress);
+  const { isAuthorized } = useIsPolicyAuthorized(GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS, ownerAddress);
 
-  // const getMediaUri = (cid: string): string => `https://ipfs.io/ipfs/${cid?.replace('ipfs://', '')}`
   const getMediaUri = (cid: string): string => `${cid}`;
 
   const getWallpaperCid = (): string =>
@@ -224,26 +226,28 @@ export default function PublicationDetailsView({ id }: Props) {
                     }}
                   />
 
-                  <LoadingButton
-                    variant="contained"
-                    sx={{
-                      color: '#1E1F22',
-                      background: '#FFFFFF',
-                      height: '35px',
-                      bottom: 16,
-                      left: 16,
-                      position: 'absolute',
-                      zIndex: 2,
-                    }}
-                    onClick={handleSubscribe}
-                    // disabled={accessLoading || hasAccess || accessFetchingLoading}
-                    loading={accessLoading || accessFetchingLoading}
-                  >
-                    <IconPlayerPlay fontSize="large" size={18} />
-                    <Typography variant="body2" sx={{ lineHeight: 1, fontWeight: '700', ml: 1 }}>
-                      Join
-                    </Typography>
-                  </LoadingButton>
+                  {isAuthorized && (
+                    <LoadingButton
+                      variant="contained"
+                      sx={{
+                        color: '#1E1F22',
+                        background: '#FFFFFF',
+                        height: '35px',
+                        bottom: 16,
+                        left: 16,
+                        position: 'absolute',
+                        zIndex: 2,
+                      }}
+                      onClick={handleSubscribe}
+                      // disabled={accessLoading || hasAccess || accessFetchingLoading}
+                      loading={accessLoading || accessFetchingLoading}
+                    >
+                      <IconPlayerPlay fontSize="large" size={18} />
+                      <Typography variant="body2" sx={{ lineHeight: 1, fontWeight: '700', ml: 1 }}>
+                        Join
+                      </Typography>
+                    </LoadingButton>
+                  )}
                 </Box>
               )}
 
