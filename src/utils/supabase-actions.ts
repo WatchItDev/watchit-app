@@ -252,3 +252,32 @@ export const storeCampaign = async (campaignData: {
   notifySuccess(SUCCESS.CAMPAIGN_STORED_SUCCESSFULLY);
   return true;
 };
+
+
+export const storeStrategy = async (strategyData: {
+  address: string;
+  description: string;
+  budget: string;
+  color: string;
+  strategyId: string;
+}) => {
+  const { address, description, budget, color, strategyId } = strategyData;
+
+  const { error } = await supabase.from('strategies').insert([
+    {
+      address,
+      description,
+      budget,
+      color,
+      strategyId,
+    },
+  ]);
+
+  if (error) {
+    notifyError(ERRORS.STRATEGY_STORED_ERROR);
+    return false;
+  }
+
+  notifySuccess(SUCCESS.STRATEGY_STORED_SUCCESSFULLY);
+  return true;
+};

@@ -11,13 +11,8 @@ import { Button, TextField } from '@mui/material';
 // Project imports
 import DialogActions from '@mui/material/DialogActions';
 import StrategyColorPicker from '@src/sections/marketing/components/StrategyColorPicker';
-import { supabase } from '@src/utils/supabase';
-import { RootState } from '@redux/store.ts';
-
-// Notifications
-import { notifyError, notifySuccess } from '@notifications/internal-notifications.ts';
-import { SUCCESS } from '@notifications/success.ts';
-import { ERRORS } from '@notifications/errors.ts';
+import { RootState } from '@redux/store';
+import { storeStrategy } from '@src/utils/supabase-actions';
 
 interface StrategyModalContentProps {
   onClose: () => void;
@@ -50,21 +45,16 @@ const StrategyModalContent: FC<StrategyModalContentProps> = ({ onClose, onConfir
     // @TODO
 
     //After stored in blockchain, store in supabase
-    const { error } = await supabase.from('strategies').insert([
-      {
-        address,
-        description,
-        budget,
-        color,
-        strategyId,
-      },
-    ]);
+    const success = await storeStrategy({
+      address,
+      description,
+      budget,
+      color,
+      strategyId,
+    });
 
-    notifySuccess(SUCCESS.STRATEGY_STORED_SUCCESSFULLY);
-
-    if (error) {
-      notifyError(ERRORS.STRATEGY_STORED_ERROR);
-      return;
+    if (success) {
+      onConfirm?.();
     }
 
     // Call the onConfirm function passed as a prop
