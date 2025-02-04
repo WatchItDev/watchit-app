@@ -57,7 +57,9 @@ const specialChars = [
  * - The "g" flag enables global matching, allowing multiple occurrences
  *   of email addresses to be matched in a single string.
  */
-const emailRegex = /[a-zA-Z0-9][a-zA-Z0-9._%+-]*@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}/g;
+const emailRegex = /\b[a-zA-Z0-9][a-zA-Z0-9._%+-]*@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}\b/g;
+
+
 /**
  * Removes special characters from the given text string and returns the cleaned string.
  *
