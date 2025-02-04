@@ -10,34 +10,93 @@ export const pascalToUpperSnake = (str: string): string => {
     .replace(/^_/, ''); // Removes the initial underscore if it exists
 };
 
+
 /**
- * Trims additional content from a publication string based on specific special characters.
+ * An array of strings containing various special character patterns and names.
+ * The strings in this array include names or identifiers preceded by
+ * special characters such as dashes, question marks, or periods.
+ * Some entries also contain only special characters or brace-like structures.
+ */
+const specialChars = [
+  '—Huggo',
+  '?—Nick Riganas',
+  '.—Rhino',
+  '—Eric Johnson',
+  '—Jwelch5742',
+  '—yusufpiskin',
+  '—Maths Jesperson',
+  '—Mark Logan',
+  '—Snow Leopard',
+  '—Claudio Carvalho, Rio de Janeiro, Brazil',
+  '—Johnny-the-Film-Sentinel-2187',
+  '—grantss',
+  '—Ed Stephan',
+  '—filmfactsman',
+  '—Col Needham',
+  '—Tony Fontana',
+  '—garykmcd',
+  '—',
+  '?—',
+  '.—',
+  '{}',
+];
+
+/**
+ * Removes special characters from the given text string and returns the cleaned string.
  *
- * This function searches the input string for specific special characters
- * (e.g., ".—", "?—"). If one of these characters is found, the function
- * returns the portion of the string that appears before the special character,
- * appending a period (".") at the end. If none of the special characters are
- * found, the original string is returned unchanged.
+ * @param {string} text - The input string from which special characters will be removed.
+ * @return {string} - The resulting string after special characters are removed.
+ */
+function removeSpecialChars(text: string): string {
+  // Loop through the special characters and replace them with spaces
+  for (const char of specialChars) {
+    text = text.replace(char, '').trim();
+  }
+  return text;
+}
+
+/**
+ * Detects whether the given text contains a valid email address pattern.
  *
- * @param {string} text - The input string to be trimmed or returned as-is.
- * @returns {string} - The trimmed string if a special character is found; otherwise, the original string.
+ * @param {string} text - The string to be checked for an email address.
+ * @return {boolean} Returns `true` if the text contains a valid email address, otherwise `false`.
+ */
+function detectEmail(text: string): boolean {
+  const emailRegex = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/;
+  return emailRegex.test(text);
+}
+
+/**
+ * Removes an email address from the provided text string, if present.
+ *
+ * @param {string} text - The input string potentially containing an email address.
+ * @return {string} The modified string with the email address removed and trimmed of extra spaces.
+ */
+function removeEmail(text: string): string {
+  const emailRegex = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/;
+  return text.replace(emailRegex, '').trim(); // Remove the email and trim any extra spaces
+}
+
+/**
+ * Processes and trims extra content from a publication text, including special characters,
+ * email addresses, and patterns at the end of the text.
+ *
+ * @param {string} text - The input string representing the publication content to be processed.
+ * @returns {string} The processed and cleaned text after applying trimming rules.
  */
 export const trimPublicationContentExtraText = (text: string): string => {
-  // Define the special characters to look for
-  const specialChars = ['.—', '?—'];
+  const hasEmail = detectEmail(text);
 
-  // Iterate over each special character
-  for (const specialChar of specialChars) {
-    // Find the index of the special character in the input string
-    const index = text.indexOf(specialChar);
-
-    // If the special character is found
-    if (index !== -1) {
-      // Return the text before the special character and add a period at the end
-      return `${text.substring(0, index)}.`
-    }
+  if (hasEmail) {
+    text = removeEmail(text);
   }
 
-  // If none of the special characters are found, return the original text
-  return text;
+  let cleanedText = removeSpecialChars(text);
+
+  // Verify if the last character is a period, if not, add one
+  if (cleanedText.charAt(cleanedText.length - 1) !== '.') {
+    cleanedText += '.';
+  }
+
+  return `${cleanedText}`;
 };
