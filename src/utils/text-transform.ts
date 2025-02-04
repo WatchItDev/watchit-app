@@ -41,6 +41,23 @@ const specialChars = [
   '{}',
 ];
 
+
+/**
+ * A regular expression pattern used for matching and validating email addresses.
+ *
+ * This pattern supports common email formats, where:
+ * - The local part can contain alphanumeric characters, dots, underscores,
+ *   percent signs, plus signs, and hyphens.
+ * - The domain part is structured as one or more labels separated by dots,
+ *   with each label containing alphanumeric characters or hyphens.
+ * - The top-level domain must be at least two characters long and consist
+ *   only of alphabetic characters.
+ *
+ * Flags:
+ * - The "g" flag enables global matching, allowing multiple occurrences
+ *   of email addresses to be matched in a single string.
+ */
+const emailRegex = /[a-zA-Z0-9][a-zA-Z0-9._%+-]*@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}/g;
 /**
  * Removes special characters from the given text string and returns the cleaned string.
  *
@@ -62,7 +79,6 @@ function removeSpecialChars(text: string): string {
  * @return {boolean} Returns `true` if the text contains a valid email address, otherwise `false`.
  */
 function detectEmail(text: string): boolean {
-  const emailRegex = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/;
   return emailRegex.test(text);
 }
 
@@ -73,8 +89,7 @@ function detectEmail(text: string): boolean {
  * @return {string} The modified string with the email address removed and trimmed of extra spaces.
  */
 function removeEmail(text: string): string {
-  const emailRegex = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/;
-  return text.replace(emailRegex, '').trim(); // Remove the email and trim any extra spaces
+  return text.replace(emailRegex, '').trim();
 }
 
 /**
