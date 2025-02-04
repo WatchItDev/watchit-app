@@ -111,7 +111,7 @@ export const trimPublicationContentExtraText = (text: string): string => {
   let cleanedText = removeSpecialChars(text);
 
   // Verify if the last character is a period, if not, add one
-  if (cleanedText.charAt(cleanedText.length - 1) !== '.') {
+  if (!cleanedText.endsWith('.')) {
     cleanedText += '.';
   }
 
