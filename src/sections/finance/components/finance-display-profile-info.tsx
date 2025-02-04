@@ -37,8 +37,8 @@ const FinanceDisplayProfileInfo: FC<FinanceDisplayNameProps> = ({initialList, ca
     <Box sx={{ textAlign: 'center',mt:-2, mb: 1 }}>
       {
         mode === 'profile' ?
-          (<Box component="span" sx={{ flexGrow: 1, typography: 'subtitle1', fontSize:'1.3rem'}}>
-            {selectedProfile?.metadata?.displayName ?? 'No profile selected'}
+          (<Box component="span" sx={{ flexGrow: 1, typography: 'subtitle1' }}>
+            {selectedProfile?.metadata?.displayName ?? selectedProfile?.handle?.localName ?? 'No profile selected'}
           </Box>) : null
       }
       {

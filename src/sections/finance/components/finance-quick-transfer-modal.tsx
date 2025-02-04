@@ -59,17 +59,18 @@ function FinanceQuickTransferModal({
   const { sendNotification } = useNotifications();
   const [message, setMessage] = useState('');
 
-  // For transfer button is clicked in some profile
+  // For the transfer button when using user input
   const MAX_AMOUNT = useSelector((state: any) => state.auth.balance);
   const [value, setValue] = useState(0);
   const [canContinue, setCanContinue] = useState(true);
 
-  // Check if we have a valid profile or not
+  // Check if we have a valid profile
   const hasProfile = !!contactInfo;
 
   // Check if the passed address matches the profile's address
   const isSame =
-    hasProfile && contactInfo?.ownedBy?.address?.toLowerCase() === address?.toLowerCase();
+    hasProfile &&
+    contactInfo?.ownedBy?.address?.toLowerCase() === address?.toLowerCase();
 
   // If no valid profile, show "Destination wallet", else use profile’s displayName
   const displayName = hasProfile
@@ -107,9 +108,14 @@ function FinanceQuickTransferModal({
     }
   }
 
+  // Define the transfer amount: if a positive 'amount' is passed, use it; otherwise, use the entered value
+  const transferAmount = amount > 0 ? amount : value;
+  // Validation: if 'amount' is passed, assume it's valid; otherwise, ensure that the value is greater than 0 and input validation (canContinue) passes.
+  const isTransferValid = transferAmount > 0 && (amount > 0 || canContinue);
+
   const handleConfirmTransfer = async () => {
     try {
-      await transfer({ amount: amount > 0 ? amount: value, recipient: address ?? '' });
+      await transfer({ amount: transferAmount, recipient: address ?? '' });
 
       onFinish();
 
@@ -120,24 +126,26 @@ function FinanceQuickTransferModal({
         'TRANSFER',
         {
           id: isSame ? (contactInfo?.id ?? '') : (address ?? ''),
-          displayName: isSame ? (contactInfo?.metadata?.displayName ?? 'No name') : 'External wallet',
+          displayName: isSame
+            ? (contactInfo?.metadata?.displayName ?? 'No name')
+            : 'External wallet',
           avatar: (contactInfo?.metadata?.picture as any)?.optimized?.uri ?? '',
         },
         {
-          rawDescription: `${sessionData?.profile?.metadata?.displayName ?? address} sent you ${amount > 0? amount : value} MMC`,
+          rawDescription: `${sessionData?.profile?.metadata?.displayName ?? address} sent you ${transferAmount} MMC`,
           message,
         }
       );
 
-      // Store transaction in supabase
+      // Store transaction in Supabase
       await storeTransactionInSupabase(contactInfo?.id ?? address, senderId, {
         address: contactInfo?.ownedBy?.address ?? address,
-        amount: amount > 0 ? amount : value,
+        amount: transferAmount,
         message,
         ...notificationPayload,
       });
 
-      // Send notification to lens profile or address
+      // Send notification to the Lens profile or address
       await sendNotification(
         contactInfo?.id ?? address ?? '',
         sessionData?.profile?.id,
@@ -145,32 +153,38 @@ function FinanceQuickTransferModal({
       );
 
       notifySuccess(SUCCESS.TRANSFER_CREATED_SUCCESSFULLY, {
-        destination: isSame ? contactInfo?.metadata?.displayName : truncateAddress(address ?? ''),
+        destination: isSame
+          ? contactInfo?.metadata?.displayName ?? contactInfo?.handle?.localName
+          : truncateAddress(address ?? ''),
       });
     } catch (err: any) {
       notifyError(ERRORS.TRANSFER_FAILED_ERROR);
     }
   };
 
-  const handleChangeInput = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = Number(event.target.value);
-    handleAmountConstraints({value, MAX_AMOUNT, MAX_POOL, setAmount: setValue, setCanContinue});
-  }, [MAX_AMOUNT]);
-
+  const handleChangeInput = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      const value = Number(event.target.value);
+      handleAmountConstraints({ value, MAX_AMOUNT, MAX_POOL, setAmount: setValue, setCanContinue });
+    },
+    [MAX_AMOUNT]
+  );
 
   const handleBlur = useCallback(() => {
-    handleAmountConstraints({value, MAX_AMOUNT, MAX_POOL, setAmount: setValue, setCanContinue});
+    handleAmountConstraints({ value, MAX_AMOUNT, MAX_POOL, setAmount: setValue, setCanContinue });
   }, [value, MAX_AMOUNT]);
 
   const RainbowEffect = transferLoading ? NeonPaper : Box;
 
   return (
     <Dialog open={open} fullWidth maxWidth="xs" onClose={onClose}>
-      <DialogTitle sx={{
-        borderBottom: `dashed 1px ${theme.palette.divider}`,
-        padding: '16px 24px',
-        marginBottom: '8px'
-      }}>
+      <DialogTitle
+        sx={{
+          borderBottom: `dashed 1px ${theme.palette.divider}`,
+          padding: '16px 24px',
+          marginBottom: '8px',
+        }}
+      >
         Send to
       </DialogTitle>
       <Stack direction="column" spacing={3} sx={{ px: 3 }}>
@@ -190,19 +204,20 @@ function FinanceQuickTransferModal({
           </Stack>
 
           <Stack direction="column" spacing={0} sx={{ py: 2, flexGrow: 1 }}>
-          {amount > 0 ? (
-
+            {amount > 0 ? (
               <ListItemText
                 primary="Amount:"
                 secondary={`${amount} MMC`}
                 secondaryTypographyProps={{ component: 'span', mt: 0.5 }}
               />
-            ) : <InputAmount
-            max={MAX_POOL}
-            amount={value}
-            onBlur={handleBlur}
-            onChange={handleChangeInput}
-          />}
+            ) : (
+              <InputAmount
+                max={MAX_POOL}
+                amount={value}
+                onBlur={handleBlur}
+                onChange={handleChangeInput}
+              />
+            )}
           </Stack>
         </Stack>
 
@@ -219,7 +234,7 @@ function FinanceQuickTransferModal({
         sx={{
           borderTop: `dashed 1px ${theme.palette.divider}`,
           padding: '16px 24px',
-          marginTop: '24px'
+          marginTop: '24px',
         }}
       >
         <Button onClick={onClose}>Cancel</Button>
@@ -236,7 +251,7 @@ function FinanceQuickTransferModal({
             variant="contained"
             sx={{ backgroundColor: '#fff' }}
             onClick={handleConfirmTransfer}
-            disabled={transferLoading || !canContinue || value <= 0}
+            disabled={transferLoading || !isTransferValid}
             loading={transferLoading}
           >
             Confirm
