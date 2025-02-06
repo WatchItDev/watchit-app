@@ -1,3 +1,10 @@
+# [2.2.0-beta.24](https://github.com/WatchItDev/watchit-app/compare/v2.2.0-beta.23...v2.2.0-beta.24) (2025-02-06)
+
+
+### Bug Fixes
+
+* improve message on expired session ([0db6364](https://github.com/WatchItDev/watchit-app/commit/0db6364185fb16de4afbc2751d1e8f9e396e8ce9))
+
 # [2.2.0-beta.23](https://github.com/WatchItDev/watchit-app/compare/v2.2.0-beta.22...v2.2.0-beta.23) (2025-02-06)
 
 
