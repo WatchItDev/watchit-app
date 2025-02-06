@@ -7,6 +7,7 @@ import {FC} from "react";
 import {Profile} from "@lens-protocol/api-bindings";
 import {useTheme} from "@mui/material/styles";
 import {useSelector} from "react-redux";
+import ProfileTransfer from "@src/sections/user/profile-transfer.tsx";
 
 interface ProfileToolbarProps {
   profile: Profile;
@@ -60,6 +61,14 @@ const ProfileToolbar: FC<ProfileToolbarProps> = ({profile, profileImage}) => {
         {sessionData?.profile && profile?.id === sessionData?.profile?.id && (
           <ProfileUpdateButton />
         )}
+
+        {
+          sessionData?.authenticated && profile?.id !== sessionData?.profile?.id && (
+            <ProfileTransfer profile={profile} />
+          )
+        }
+
+
       </Stack>
     </Stack>
   )

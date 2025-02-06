@@ -33,6 +33,7 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import { useDispatch, useSelector } from 'react-redux';
 import { openLoginModal } from '@redux/auth';
 import { appId, PublicationType, usePublications } from '@lens-protocol/react-web';
+import {trimPublicationContentExtraText} from "@src/utils/text-transform.ts";
 import { useIsPolicyAuthorized } from '@src/hooks/use-is-policy-authorized.ts';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 
@@ -277,7 +278,7 @@ export default function PublicationDetailsView({ id }: Props) {
                             opacity: 0.8,
                           }}
                         >
-                          <Markdown children={data?.metadata?.content} />
+                          <Markdown children={trimPublicationContentExtraText(data?.metadata?.content)} />
                         </Box>
                         {showButton && (
                           <Button variant="outlined" onClick={toggleDescription} sx={{ mt: 2 }}>
@@ -321,7 +322,7 @@ export default function PublicationDetailsView({ id }: Props) {
                         sx={{ fontWeight: 'bold', lineHeight: 1.1, mb: 0.5, width: '100%' }}
                         gutterBottom
                       >
-                        Bakers
+                        Backers
                       </Typography>
                     </m.div>
                     <Box sx={{ mt: 2, opacity: 0.8 }}>
@@ -332,7 +333,7 @@ export default function PublicationDetailsView({ id }: Props) {
                           sx={{ lineHeight: 1.1, mb: 0.5, width: '100%' }}
                           gutterBottom
                         >
-                          No bakers yet. Be the first to join and support!
+                          No backers yet. Be the first to join and support!
                         </Typography>
                       </m.div>
                     </Box>

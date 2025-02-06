@@ -108,7 +108,6 @@ export default function CarouselMixed({ data }: Props) {
                 genre: getMovieGenres(post).split(', '),
                 images: {
                   vertical: getMediaUri(getPosterCid(post)),
-                  horizontal: getMediaUri(getPosterHorizontalCid(post)),
                   wallpaper: getMediaUri(getWallpaperCid(post)),
                 },
                 likes: post?.stats?.upvotes ?? 0,
@@ -139,7 +138,6 @@ export default function CarouselMixed({ data }: Props) {
                 genre: getMovieGenres(post).split(', '),
                 images: {
                   vertical: getMediaUri(getPosterCid(post)),
-                  horizontal: getMediaUri(getPosterHorizontalCid(post)),
                   wallpaper: getMediaUri(getWallpaperCid(post)),
                 },
                 likes: post?.stats?.upvotes ?? 0,
