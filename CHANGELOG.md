@@ -1,3 +1,32 @@
+# [2.2.0-beta.25](https://github.com/WatchItDev/watchit-app/compare/v2.2.0-beta.24...v2.2.0-beta.25) (2025-02-06)
+
+
+### Bug Fixes
+
+* update metadata ([b361028](https://github.com/WatchItDev/watchit-app/commit/b361028b9566581f9b1565d5509dbde1a1babffc))
+
+# [2.2.0-beta.24](https://github.com/WatchItDev/watchit-app/compare/v2.2.0-beta.23...v2.2.0-beta.24) (2025-02-06)
+
+
+### Bug Fixes
+
+* improve message on expired session ([0db6364](https://github.com/WatchItDev/watchit-app/commit/0db6364185fb16de4afbc2751d1e8f9e396e8ce9))
+
+# [2.2.0-beta.23](https://github.com/WatchItDev/watchit-app/compare/v2.2.0-beta.22...v2.2.0-beta.23) (2025-02-06)
+
+
+### Bug Fixes
+
+* **finance:** correct MMC amount in transfer message ([e2f47b5](https://github.com/WatchItDev/watchit-app/commit/e2f47b539918c71260cea36bb2cd460380c2abce))
+* fullfill padding on attestations ([1920718](https://github.com/WatchItDev/watchit-app/commit/19207189548057eb73843c1669ba06853520bea7))
+* mispelling ([9109afa](https://github.com/WatchItDev/watchit-app/commit/9109afa9f24a72351f20d1a1789bac3f0edc1a82))
+* **utils:** improve email regex to avoid partial matches ([df33aff](https://github.com/WatchItDev/watchit-app/commit/df33aff15b4729f7eca71a924b45d26909701ee9))
+
+
+### Features
+
+* add trimming utility and integrate in publication view ([7e37fbc](https://github.com/WatchItDev/watchit-app/commit/7e37fbc583d1327d81e392e4cffb8ae7083875e5))
+
 # [2.2.0-beta.22](https://github.com/WatchItDev/watchit-app/compare/v2.2.0-beta.21...v2.2.0-beta.22) (2025-02-02)
 
 
