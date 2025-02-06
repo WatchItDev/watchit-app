@@ -45,7 +45,7 @@ const ProfileTransfer: FC<ProfileTransferProps> = ({ profile }) => {
         onMouseEnter={handleOpenSend}
         onMouseLeave={handleCloseSend}
       >
-        <Iconify icon="streamline:arrow-transfer-diagonal-3" color="#fff" />
+        <Iconify icon="hugeicons:money-send-circle" color="#fff" />
       </LoadingButton>
 
       <FinanceQuickTransferModal
