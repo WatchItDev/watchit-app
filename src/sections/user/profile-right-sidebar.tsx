@@ -12,7 +12,7 @@ import { ProfileHeaderProps } from "@src/sections/user/profile-header.tsx";
 import { styled } from "@mui/material/styles";
 import { useSelector } from "react-redux";
 
-// ----------------------------------------------------------------------
+// ---------------------------------------------------------------- ------
 // TODO: move to envs
 const urlAttestationBase = 'https://polygon-amoy.easscan.org/attestation/view/';
 
