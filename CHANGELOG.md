@@ -1,3 +1,19 @@
+# [2.2.0-beta.26](https://github.com/WatchItDev/watchit-app/compare/v2.2.0-beta.25...v2.2.0-beta.26) (2025-02-07)
+
+
+### Bug Fixes
+
+* **ci:** update test command in workflow ([8edaa0e](https://github.com/WatchItDev/watchit-app/commit/8edaa0ec49e916c4d07592c5d70f7aa9919135c8))
+* improve message on expired session ([d8e131e](https://github.com/WatchItDev/watchit-app/commit/d8e131ed250aa93d8eeacf385ae306cd4760a347))
+* improve message on expired session ([16319fa](https://github.com/WatchItDev/watchit-app/commit/16319fae95129c6d3b4f550b444d1e8082353314))
+
+
+### Features
+
+* **ci:** add test coverage collection to CI workflow ([280d1a8](https://github.com/WatchItDev/watchit-app/commit/280d1a8a31fe65e886ffb00307caf95899a71422))
+* **ci:** streamline CI workflow steps for testing ([3d30a07](https://github.com/WatchItDev/watchit-app/commit/3d30a078f43d085ff4c21cf6c4ab81130db894cf))
+* integrate Vitest for testing and coverage setup ([7a9af55](https://github.com/WatchItDev/watchit-app/commit/7a9af55033710c87a1e700fce76e97ef96a0685b))
+
 # [2.2.0-beta.25](https://github.com/WatchItDev/watchit-app/compare/v2.2.0-beta.24...v2.2.0-beta.25) (2025-02-06)
 
 
