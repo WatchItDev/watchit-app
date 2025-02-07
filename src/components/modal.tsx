@@ -4,7 +4,7 @@ import { FC  } from 'react';
 import DialogTitle from '@mui/material/DialogTitle';
 import Dialog, { DialogProps } from '@mui/material/Dialog';
 
-interface ModalProps extends DialogProps {
+export interface ModalProps extends DialogProps {
   onClose: VoidFunction;
   title: string;
   renderContent?: JSX.Element;
