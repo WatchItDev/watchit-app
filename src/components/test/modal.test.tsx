@@ -1,20 +1,19 @@
-import { MemoryRouter } from 'react-router';
-
 // Testing libraries
-import { describe, it, expect, afterEach } from 'vitest';
-import { cleanup, render } from '@testing-library/react';
+import { describe, it, expect, afterEach, vi } from 'vitest';
+import { cleanup, render, fireEvent } from '@testing-library/react';
 
 // Base testing component
-import Modal, {ModalProps} from "@src/components/modal.tsx";
+import Modal, { ModalProps } from "@src/components/modal.tsx";
 
-const RenderComponent = (props: ModalProps) => render(<MemoryRouter><Modal {...props} /></MemoryRouter>);
+const fn = vi.fn();
+const renderComponent = (props: ModalProps) => render(<Modal {...props} />);
 
-describe('Modal component testing', () => {
+describe('Components: modal component testing', () => {
   const modalProps = {
-    onClose: () => {},
+    onClose: fn,
     title: 'Modal title',
     open: true,
-    renderContent: <div>Modal content</div>
+    renderContent: <div>This is the body of the modal</div>
   }
 
   afterEach(() => {
@@ -22,19 +21,30 @@ describe('Modal component testing', () => {
   })
 
   it('to match snapshot', () => {
-    const { asFragment } = RenderComponent(modalProps);
-    expect(asFragment()).toMatchSnapshot();
+    const { baseElement } = renderComponent(modalProps);
+    expect(baseElement).toMatchSnapshot()
   });
 
-  // Test if title is equal to 'Modal title'
   it('title is equal to "Modal title"', () => {
-    const { getByText } = RenderComponent(modalProps);
+    const { getByText } = renderComponent(modalProps);
     expect(getByText('Modal title')).toBeInTheDocument();
   });
 
-  // Pass false to open prop and check if not "Modal title" is in the document
-  it('title is not in the document', () => {
-    const { queryByText } = RenderComponent({ ...modalProps, open: false });
+  it('title is not in the document when open is false', () => {
+    const { queryByText } = renderComponent({ ...modalProps, open: false });
     expect(queryByText('Modal title')).not.toBeInTheDocument();
+  });
+
+  it('content is equal to "Modal content"', () => {
+    const { getByText } = renderComponent(modalProps);
+    expect(getByText(/This is the body of the modal/i)).toBeInTheDocument();
+  });
+
+  it('onClose is called when the modal is closed', async () => {
+    renderComponent(modalProps);
+    const backdrop = document.querySelector('.MuiModal-backdrop');
+    // @ts-ignore
+    fireEvent.click(backdrop);
+    expect(modalProps.onClose).toHaveBeenCalledTimes(1);
   });
 });
