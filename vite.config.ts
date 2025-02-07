@@ -23,7 +23,7 @@ export default defineConfig(({ mode }) => {
         authToken: process.env.VITE_SENTRY_AUTH_TOKEN,
       }),
       codecovVitePlugin({
-        bundleName: "WatchItDev/watchit-app",
+        bundleName: "watchit-app",
         enableBundleAnalysis: process.env.VITE_CODECOV_TOKEN !== undefined,
         uploadToken: process.env.VITE_CODECOV_TOKEN,
       }),
