@@ -38,4 +38,4 @@ jobs:
         uses: codecov/codecov-action@v5.0.6
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          # slug: WatchItDev/watchit-app
+          slug: WatchItDev/watchit-app
