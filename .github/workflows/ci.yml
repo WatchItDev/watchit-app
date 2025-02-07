@@ -30,11 +30,8 @@ jobs:
 
       - name: Test
         run: npm run test
-      
-      - name: Generate coverage report
-        run: npm run test:coverage
 
-      - name: Coverage
+      - name: Generate coverage report
         run: npm run test:coverage
 
       - name: Upload coverage reports to Codecov
