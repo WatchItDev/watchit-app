@@ -28,8 +28,10 @@ jobs:
       - name: Run static analysis
         run: npm run lint
 
-      - name: Test with coverage
-        run: npm run test -- --coverage --silent
+      - name: Test
+        run: npm run test
 
-      #- name: Generate report
-      #  run: make testcov
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
