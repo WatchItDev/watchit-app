@@ -30,6 +30,9 @@ jobs:
 
       - name: Test
         run: npm run test
+      
+      - name: Generate coverage report
+        run: npm run test:coverage
 
       - name: Coverage
         run: npm run test:coverage
@@ -38,3 +41,4 @@ jobs:
         uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
+          slug: WatchItDev/watchit-app
