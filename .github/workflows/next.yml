@@ -9,7 +9,7 @@ jobs:
     uses: ./.github/workflows/ci.yml
     secrets: inherit
   Create-Release:
-    # needs: [Continuous-Integration]
+    needs: [Continuous-Integration]
     uses: ./.github/workflows/release.yml
     permissions:
       contents: write # to be able to publish a GitHub release

@@ -9,6 +9,7 @@ jobs:
     uses: ./.github/workflows/ci.yml
     secrets: inherit
   Deploy-App:
+    needs: [Continuous-Integration]
     uses: ./.github/workflows/cd.yml
     secrets: inherit
     with:
