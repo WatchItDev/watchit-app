@@ -36,7 +36,7 @@ jobs:
         run: npm run lint
 
       - name: Test with coverage
-        run: npm run test -- --coverage
+        run: npm run test -- --coverage --silent
 
-      - name: Generate report
-        run: make testcov
+      #- name: Generate report
+      #  run: make testcov
