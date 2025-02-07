@@ -1,3 +1,4 @@
+/// <reference types="vitest" />
 import path from 'path';
 import react from '@vitejs/plugin-react';
 import { defineConfig, loadEnv } from 'vite';
@@ -9,7 +10,7 @@ export default defineConfig(({ mode }) => {
   // Load environment variables based on the current mode
   const env = loadEnv(mode, process.cwd(), '');
   const pure = mode === 'production' ? ['console.log', 'console.info', 'console.warn'] : []
-  
+
   return {
     esbuild: { pure },
     plugins: [
@@ -40,6 +41,15 @@ export default defineConfig(({ mode }) => {
     define: {
       'process.env': env, // Make sure to define process.env for compatibility
     },
+
+    test: {
+      global: true,
+      environment: 'jsdom',
+      setupFiles: ['./setupTest.ts'],
+      coverage: {
+        provider: 'v8'
+      }
+    },
   };
-  
+
 });
