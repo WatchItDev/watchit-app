@@ -28,8 +28,8 @@ jobs:
       - name: Run static analysis
         run: npm run lint
 
-      - name: Test
-        run: npm run test
+      - name: Test with coverage
+        run: npm run test -- --coverage
 
       - name: Generate report
         run: make testcov
