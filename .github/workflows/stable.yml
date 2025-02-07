@@ -1,13 +1,13 @@
-name: Release CI/CD
+name: Main CI/CD
 # https://docs.github.com/en/actions/managing-workflow-runs/skipping-workflow-runs
 on:
   push:
     branches:
       - main
 jobs:
-  # Continuous-Integration:
-  #   uses: ./.github/workflows/ci.yml
-  #   secrets: inherit
+  Continuous-Integration:
+    uses: ./.github/workflows/ci.yml
+    secrets: inherit
   Deploy-App:
     uses: ./.github/workflows/cd.yml
     secrets: inherit
