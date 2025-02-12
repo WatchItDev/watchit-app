@@ -36,6 +36,7 @@ import { appId, PublicationType, usePublications } from '@lens-protocol/react-we
 import {trimPublicationContentExtraText} from "@src/utils/text-transform.ts";
 import { useIsPolicyAuthorized } from '@src/hooks/use-is-policy-authorized.ts';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
+import { useIsActiveCampaign } from '@src/hooks/use-is-active-campaign.ts';
 
 const MAX_LINES = 5;
 
@@ -71,6 +72,11 @@ export default function PublicationDetailsView({ id }: Props) {
     fetching: accessFetchingLoading,
     refetch: refetchAccess,
   } = useHasAccess(ownerAddress);
+  // const {
+  //   isActive,
+  //   loading: activeLoading,
+  //   refetch: refetchActive,
+  // } = useIsActiveCampaign(ownerAddress);
   const { isAuthorized } = useIsPolicyAuthorized(GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS, ownerAddress);
 
   const getMediaUri = (cid: string): string => `${cid}`;
