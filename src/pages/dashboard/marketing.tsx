@@ -3,7 +3,7 @@ import { OgMetaTags } from '@src/components/og-meta-tags.tsx';
 import Header from "@src/layouts/dashboard/header.tsx";
 import HeaderContent from "@src/layouts/dashboard/header-content.tsx";
 import {WithAuth} from "@src/components/should-login/withAuth.tsx";
-import MarketingView from "@src/sections/marketing";
+import StrategyOverview from "@src/pages/dashboard/marketing/components/StrategyOverview.tsx";
 
 // ----------------------------------------------------------------------
 
@@ -18,7 +18,7 @@ export default function ChatPage() {
         <HeaderContent title="Marketing" />
       </Header>
       <WithAuth
-        component={MarketingView}
+        component={StrategyOverview}
         header={'Marketing Dashboard'}
         description={'Login to access your marketing overview.'}
         icon={'iconoir:megaphone'} />
