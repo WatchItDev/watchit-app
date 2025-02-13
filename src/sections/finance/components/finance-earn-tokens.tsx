@@ -15,6 +15,9 @@ import { alpha, useTheme } from '@mui/material/styles';
 import Earn from '@src/assets/illustrations/earn.svg';
 import Image from '@src/components/image';
 
+// Global constants
+import { GLOBAL_CONSTANTS } from '@src/config-global';
+
 interface FinanceEarnTokensProps extends CardProps {
   lgUp: boolean;
 }
@@ -23,8 +26,7 @@ const FinanceEarnTokens: FC<FinanceEarnTokensProps> = ({ sx, lgUp, ...other }) =
   const theme = useTheme();
 
   const handleClick = () => {
-    // TODO move to envs
-    window.open('https://zealy.io/cw/watchit', '_BLANK');
+    window.open(GLOBAL_CONSTANTS.EARN_TOKEN_SERVICE_URL, '_BLANK');
   };
 
   return (
