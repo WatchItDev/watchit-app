@@ -18,7 +18,7 @@ import Image from '@src/components/image';
 // Global constants
 import { GLOBAL_CONSTANTS } from '@src/config-global';
 
-interface FinanceEarnTokensProps extends CardProps {
+export interface FinanceEarnTokensProps extends CardProps {
   lgUp: boolean;
 }
 
@@ -129,6 +129,7 @@ const FinanceEarnTokens: FC<FinanceEarnTokensProps> = ({ sx, lgUp, ...other }) =
             </Button>
           </Stack>
           <Stack
+            data-testid="earn-tokens-image"
             flexGrow={1}
             justifyContent="center"
             sx={{
