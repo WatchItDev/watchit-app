@@ -15,6 +15,7 @@ import Iconify from '@src/components/iconify';
 import CustomPopover, { usePopover } from '@src/components/custom-popover';
 import { useBoolean } from '@src/hooks/use-boolean';
 import { ConfirmDialog } from '@src/components/custom-dialog';
+import CampaignSettingsModal from "@src/sections/marketing/components/CampaignSettingsModal.tsx";
 
 // ----------------------------------------------------------------------
 
@@ -38,9 +39,15 @@ const LBL_STATUS_COLORS = {
 // ----------------------------------------------------------------------
 export default function CampaignTableRow({ row, selected }: Props) {
   const popover = usePopover();
+
   const confirm = useBoolean();
+  const settingsModal = useBoolean();
 
   const { name, budget, available, type, access, id, status, perUser } = row;
+
+  const onSettingRow = () => {
+    settingsModal.onTrue();
+  };
 
   const onViewRow = () => {};
 
@@ -134,6 +141,15 @@ export default function CampaignTableRow({ row, selected }: Props) {
         sx={{ width: 160 }}
       >
         <MenuItem
+          onClick={() => {
+            onSettingRow();
+            popover.onClose();
+          }}
+        >
+          <Iconify icon="mdi:settings-outline" />
+          Configure
+        </MenuItem>
+        <MenuItem
           sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
           onClick={() => {
             onViewRow();
@@ -179,6 +195,8 @@ export default function CampaignTableRow({ row, selected }: Props) {
           </Button>
         }
       />
+
+      <CampaignSettingsModal open={settingsModal.value} onClose={settingsModal.onFalse} onConfirm={()=>{}} />
     </>
   );
 
