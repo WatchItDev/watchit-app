@@ -1,16 +1,17 @@
-import { Box, Card, CardContent, Typography, Stack } from '@mui/material';
-import { IconLock, IconPlayerPlay } from '@tabler/icons-react';
-import { ethers } from 'ethers';
-import { useGetPolicyTerms } from '@src/hooks/use-get-policy-terms.ts';
+import {useState} from "react";
 import { Address } from 'viem';
+import { ethers } from 'ethers';
+import { IconLock, IconPlayerPlay } from '@tabler/icons-react';
+import {Icon} from "@iconify/react";
+
 import LoadingButton from '@mui/lab/LoadingButton';
+import {styled} from "@mui/material/styles";
+import { Box, Card, CardContent, Typography, Stack } from '@mui/material';
+
+import { useGetPolicyTerms } from '@src/hooks/use-get-policy-terms.ts';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 import { useIsPolicyAuthorized } from '@src/hooks/use-is-policy-authorized.ts';
-import {Icon} from "@iconify/react";
 import NeonPaper from "@src/sections/publication/NeonPaperContainer.tsx";
-import {useState} from "react";
-import {COLORS} from "@src/layouts/config-layout.ts";
-import {styled} from "@mui/material/styles";
 
 interface Props {
   post: any;
@@ -136,11 +137,15 @@ export const SubscribeToUnlockCard = ({
 
 const StyledBoxGradient = styled(LoadingButton)(() => ({
   width: '100%',
-  background: `linear-gradient(90deg, rgba(254,255,118,1) 25%, rgba(212,190,58,1) 50%, rgba(189,119,255,0.5) 100%)`,
+  /* @TODO Choose one of this bg options*/
+  background: `linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(70,31,97,1) 50%, rgba(149,17,238,1) 100%)`,
+  /*background: `linear-gradient(90deg, rgba(6,20,205,1) 0%, rgba(42,1,146,1) 37%, rgba(155,119,201,1) 100%)`,*/
+  /*background: `linear-gradient(90deg, rgba(36,2,0,1) 0%, rgba(146,22,1,1) 50%, rgba(255,85,0,1) 100%)`,*/
+  /*background: `linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 34%, rgba(0,212,255,1) 100%)`,*/
   backgroundSize: '400%',
   animation: 'gradientShift 10s infinite',
-  padding: '12px',
-  color: COLORS.GRAY_DARK,
+  padding: '16px',
+  color: 'white',
   borderRadius: '8px',
   display: 'flex',
   alignItems: 'center',
