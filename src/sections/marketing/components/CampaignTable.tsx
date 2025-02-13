@@ -62,7 +62,7 @@ const CampaignTable: FC<CampaignTableProps> = ({ strategy }) => {
                   emptyRows={emptyRows(table.page, table.rowsPerPage, strategy.campaigns.length)}
                 />
 
-                <TableNoData notFound={notFound} loading={false} />
+                <TableNoData notFound={notFound} loading={false} emptyText={'Still haven\'t registered any campaigns'} />
               </TableBody>
             </Table>
           </Box>
