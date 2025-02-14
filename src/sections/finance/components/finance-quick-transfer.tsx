@@ -44,7 +44,7 @@ export const MAX_POOL: number = 1000000000;
 interface Props extends CardProps {
   title?: string;
   subheader?: string;
-  list: Profile[] | undefined;
+  list: Profile[] | null | undefined;
 }
 
 export const isValidAddress = (address: string): boolean => {
