@@ -26,6 +26,7 @@ import Alert from '@mui/material/Alert';
 import { useIsPolicyAuthorized } from '@src/hooks/use-is-policy-authorized.ts';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 import { Address } from 'viem';
+import {filterHiddenProfiles} from "@src/utils/profile.ts";
 
 // ----------------------------------------------------------------------
 
@@ -76,13 +77,13 @@ const UserProfileView = ({ id }: any) => {
 
   useEffect(() => {
     if (profile) {
-      dispatch(setFollowers(followers ?? []));
+      dispatch(setFollowers(filterHiddenProfiles(followers) ?? []));
     }
   }, [profile, followers, dispatch]);
 
   useEffect(() => {
     if (profile) {
-      dispatch(setFollowings(following ?? []));
+      dispatch(setFollowings(filterHiddenProfiles(following) ?? []));
     }
   }, [profile, following, dispatch]);
 
