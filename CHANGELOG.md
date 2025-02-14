@@ -1,3 +1,10 @@
+# [2.2.0-beta.27](https://github.com/WatchItDev/watchit-app/compare/v2.2.0-beta.26...v2.2.0-beta.27) (2025-02-14)
+
+
+### Bug Fixes
+
+* ownership verification process ([4cd5e93](https://github.com/WatchItDev/watchit-app/commit/4cd5e93fa0bfc631af4988161a2d8dc95f6c4311))
+
 # [2.2.0-beta.26](https://github.com/WatchItDev/watchit-app/compare/v2.2.0-beta.25...v2.2.0-beta.26) (2025-02-07)
 
 
