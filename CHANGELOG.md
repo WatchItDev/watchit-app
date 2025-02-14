@@ -1,3 +1,10 @@
+# [2.2.0-beta.28](https://github.com/WatchItDev/watchit-app/compare/v2.2.0-beta.27...v2.2.0-beta.28) (2025-02-14)
+
+
+### Features
+
+* **utils:** add filtering function for hidden profiles ([c54bf81](https://github.com/WatchItDev/watchit-app/commit/c54bf816e1b5b0c81f4a9f71b7f49c1aab75f583))
+
 # [2.2.0-beta.27](https://github.com/WatchItDev/watchit-app/compare/v2.2.0-beta.26...v2.2.0-beta.27) (2025-02-14)
 
 
