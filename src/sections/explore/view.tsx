@@ -23,6 +23,7 @@ import CarouselTopTitles from '@src/components/carousel/variants/carousel-top-ti
 import CarouselCreators from '@src/components/carousel/variants/carousel-creators.tsx';
 import { useResponsive } from '@src/hooks/use-responsive.ts';
 import { useSelector } from 'react-redux';
+import { filterHiddenProfiles } from '@src/utils/profile';
 
 // ----------------------------------------------------------------------
 
@@ -60,9 +61,12 @@ export default function ExploreView() {
   });
 
   // FilteredCompletedProfiles is an array of objects, each object has a metadata property and inside exists a displayName en bio property; filter the profiles that not have a displayName and bio property
-  const filteredProfiles = latestCreatedProfiles?.filter(
+  const filtered = latestCreatedProfiles?.filter(
     (profile: any) => profile.metadata?.displayName && profile.metadata?.bio
   );
+
+  // Clear ###HIDDEN### profiles
+  const filteredProfiles = filterHiddenProfiles(filtered);
 
   const { data: explorePublications } = useExplorePublications({
     where: {
