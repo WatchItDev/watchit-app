@@ -18,7 +18,6 @@ import { ERRORS } from '@notifications/errors.ts';
 import { INFO } from '@notifications/info.ts';
 import { useSubmitAssetToLens } from '@src/hooks/use-submit-assets-to-lens.ts';
 import NeonPaper from '@src/sections/publication/NeonPaperContainer.tsx';
-import { useSelector } from 'react-redux';
 import { useGetAssetOwner } from '@src/hooks/use-get-asset-owner.ts';
 import { replacePrefix } from '@src/utils/wallet.ts';
 
@@ -71,8 +70,6 @@ const OwnershipProcessContent = ({ onClose }: { onClose: () => void }) => {
   const { fetchOwnerAddress } = useGetAssetOwner();
   const [isProcessing, setIsProcessing] = useState(false);
   const [progress, setProgress] = useState(0);
-  const sessionData = useSelector((state: any) => state.auth.session);
-  const userAddress = sessionData?.profile?.ownedBy?.address as string | undefined;
   const hashesArray = hashes.split(',')
     .map(h => h.trim())
     .filter(Boolean);
@@ -94,15 +91,14 @@ const OwnershipProcessContent = ({ onClose }: { onClose: () => void }) => {
           }, '', { autoHideDuration: 3000 });
           setProgress(index + 1);
 
-          const owner = await fetchOwnerAddress(hash);
-          const isAssetMine = userAddress === owner
+          const isTaken = await fetchOwnerAddress(hash);
 
-          if (!isAssetMine) {
+          if (isTaken) {
             notifyError(ERRORS.ASSET_ALREADY_REGISTERED_ERROR);
             continue;
           }
 
-          if (!owner) {
+          if (!isTaken) {
             // 2. Register ownership (if it fails, it does not continue)
             await registerAsset(hash);
           }

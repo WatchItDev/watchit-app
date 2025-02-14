@@ -10,7 +10,7 @@ on:
 
 jobs:
   release:
-    name: Release
+    name: Semver Release
     runs-on: ubuntu-latest
     concurrency: release
     environment: ${{ inputs.environment }}

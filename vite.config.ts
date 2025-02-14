@@ -22,15 +22,15 @@ export default defineConfig(({ mode }) => {
         project: "watchit-app",
         authToken: process.env.VITE_SENTRY_AUTH_TOKEN,
       }),
-      codecovVitePlugin({
-        bundleName: "WatchItDev/watchit-app",
-        enableBundleAnalysis: process.env.VITE_CODECOV_TOKEN !== undefined,
-        uploadToken: process.env.VITE_CODECOV_TOKEN,
-      }),
       nodePolyfills({
         // To add only specific polyfills, add them here. If no option is passed, adds all polyfills
         include: ['process', "module", "buffer"],
         globals: { global: true, process: true, Buffer: true },
+      }),
+      codecovVitePlugin({
+        bundleName: "watchit-app",
+        enableBundleAnalysis: process.env.VITE_CODECOV_TOKEN !== undefined,
+        uploadToken: process.env.VITE_CODECOV_TOKEN,
       }),
     ],
     resolve: {
