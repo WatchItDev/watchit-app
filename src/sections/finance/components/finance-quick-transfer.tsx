@@ -33,6 +33,7 @@ import FinanceNoFollowingsQuickTransfer
   from "@src/sections/finance/components/finance-no-followings-quick-transfer";
 import FinanceDisplayProfileInfo from "@src/sections/finance/components/finance-display-profile-info";
 import {handleAmountConstraints} from "@src/utils/format-number.ts";
+import {LoadingScreen} from "@src/components/loading-screen";
 
 // ----------------------------------------------------------------------
 
@@ -45,6 +46,7 @@ interface Props extends CardProps {
   title?: string;
   subheader?: string;
   list: Profile[] | null | undefined;
+  loading: boolean;
 }
 
 export const isValidAddress = (address: string): boolean => {
@@ -58,8 +60,10 @@ export default function FinanceQuickTransfer({
   subheader,
   sx,
   list: initialList,
+  loading,
   ...other
 }: Props) {
+  console.log('Loading', typeof loading);
   const theme = useTheme();
   const dispatch = useDispatch();
 
@@ -396,12 +400,12 @@ export default function FinanceQuickTransfer({
           />
 
           {/* Content */}
-          <Stack sx={{ p: 3 }}>
+          { loading ? <LoadingScreen sx={{marginBottom: 5}} /> : (<Stack sx={{ p: 3 }}>
             <FinanceDisplayProfileInfo mode={'profile'} initialList={list} carousel={carousel} />
             {list?.length > 0 ? renderCarousel : <FinanceNoFollowingsQuickTransfer />}
             <FinanceDisplayProfileInfo mode={'wallet'} initialList={list} carousel={carousel} />
             {renderInput}
-          </Stack>
+          </Stack>) }
         </Stack>
       </Wrapper>
 
