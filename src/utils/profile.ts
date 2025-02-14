@@ -40,14 +40,11 @@ export const buildProfileMetadata = (
 };
 
 /**
- * Filters an array of profiles to exclude any profiles with hidden indicators.
+ * Filters out profiles that contain a specific hidden indicator in their "displayName", "bio", or "id" properties.
  *
- * This function removes profiles that have a "displayName" or "bio" property containing
- * the substring '###HIDDEN###'. Any profiles containing this substring in either property are excluded
- * from the returned array.
- *
- * @param {Profile[]} profiles - The array of profile objects to filter.
- * @return {any[]} An array of filtered profiles excluding those marked as hidden.
+ * @param {Profile[]} [profiles] - An optional array of Profile objects to be filtered.
+ * @returns {Profile[] | null | undefined} An array of profiles excluding those with hidden indicators,
+ *                                         or `null`/`undefined` if the input is `null`/`undefined`.
  */
 export const filterHiddenProfiles = (profiles?: Profile[]): Profile[] | null | undefined => {
   // displayName, bio and lens id properties are checked for the hidden indicator
@@ -55,7 +52,4 @@ export const filterHiddenProfiles = (profiles?: Profile[]): Profile[] | null | u
 
   // Filter profiles that do not contain the hidden indicator in the "displayName" or "bio" properties using the patterns array
   return profiles?.filter((profile: Profile) => !patterns.some((pattern) => profile?.metadata?.displayName?.includes(pattern) || profile?.metadata?.bio?.includes(pattern) || profile?.id.includes(pattern)));
-
-  // @ts-ignore
-  //return profiles.filter((profile) => !profile?.metadata?.displayName?.includes('###HIDDEN###') && !profile?.metadata?.bio.includes('###HIDDEN###'));
 };
