@@ -17,6 +17,7 @@ import Tab from '@mui/material/Tab';
 import Iconify from '@src/components/iconify';
 import { useResponsive } from '@src/hooks/use-responsive.ts';
 import FinanceEarnTokens from '@src/sections/finance/components/finance-earn-tokens.tsx';
+import {filterHiddenProfiles} from "@src/utils/profile.ts";
 
 // ----------------------------------------------------------------------
 
@@ -28,10 +29,13 @@ export default function OverviewBankingView() {
   const { transactions, loading } = useGetSmartWalletTransactions();
   const [widgetSeriesData, setWidgetSeriesData] = useState<{ x: string; y: number }[]>([]);
   const [percent, setPercent] = useState(0);
-  const { data: following } = useProfileFollowing({
+  const { data: results } = useProfileFollowing({
     // @ts-ignore
     for: sessionData?.profile?.id,
   });
+
+  // Filter hidden profiles(unwanted profiles) from the results
+  const following = filterHiddenProfiles(results);
 
   useEffect(() => {
     if (!transactions || loading) return;
