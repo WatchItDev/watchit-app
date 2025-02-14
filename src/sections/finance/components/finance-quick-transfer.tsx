@@ -63,7 +63,6 @@ export default function FinanceQuickTransfer({
   loading,
   ...other
 }: Props) {
-  console.log('Loading', typeof loading);
   const theme = useTheme();
   const dispatch = useDispatch();
 
