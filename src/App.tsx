@@ -96,30 +96,30 @@ export default function App() {
     //     // headless: true,  // If we wanted to personalize our own modals
     //   }}
     // >
-      <LocalizationProvider dateAdapter={AdapterDateFns}>
-        <SettingsProvider
-          defaultSettings={{
-            themeMode: 'dark', // 'light' | 'dark'
-            themeDirection: 'ltr', //  'rtl' | 'ltr'
-            themeContrast: 'default', // 'default' | 'bold'
-            themeLayout: 'vertical', // 'vertical' | 'horizontal' | 'mini'
-            themeColorPresets: 'default', // 'default' | 'cyan' | 'purple' | 'blue' | 'orange' | 'red'
-            themeStretch: false,
-          }}
-        >
-          <Provider store={store}>
-            <AuthProvider>
-              <ThemeProvider>
-                {/* <MotionLazy> */}
-                  <SnackbarProvider>
-                    <AppContent />
-                  </SnackbarProvider>
-                {/* </MotionLazy> */}
-              </ThemeProvider>
-            </AuthProvider>
-          </Provider>
-        </SettingsProvider>
-      </LocalizationProvider>
+    <LocalizationProvider dateAdapter={AdapterDateFns}>
+      <SettingsProvider
+        defaultSettings={{
+          themeMode: 'dark', // 'light' | 'dark'
+          themeDirection: 'ltr', //  'rtl' | 'ltr'
+          themeContrast: 'default', // 'default' | 'bold'
+          themeLayout: 'vertical', // 'vertical' | 'horizontal' | 'mini'
+          themeColorPresets: 'default', // 'default' | 'cyan' | 'purple' | 'blue' | 'orange' | 'red'
+          themeStretch: false,
+        }}
+      >
+        <Provider store={store}>
+          <AuthProvider>
+            <ThemeProvider>
+              {/* <MotionLazy> */}
+              <SnackbarProvider>
+                <AppContent />
+              </SnackbarProvider>
+              {/* </MotionLazy> */}
+            </ThemeProvider>
+          </AuthProvider>
+        </Provider>
+      </SettingsProvider>
+    </LocalizationProvider>
     // </MetaMaskProvider>
   );
 }
@@ -140,35 +140,40 @@ const AppContent = () => {
     setGlobalNotifier(enqueueSnackbar);
   }, []);
 
-  const watchEvent = (eventName: string, args: EventArgs, logText: string) => {
+  const EVENT_POLLING_INTERVAL = 2_000
+  const GENESIS_LEDGER_BLOCK = 16651439n
+  const watchEvent = (eventName: string, args: EventArgs) => {
     return publicClientWebSocket.watchContractEvent({
       address: GLOBAL_CONSTANTS.LEDGER_VAULT_ADDRESS,
+      fromBlock: GENESIS_LEDGER_BLOCK,
+      pollingInterval: EVENT_POLLING_INTERVAL,
       abi: LedgerVaultAbi.abi,
+      batch: false,
       eventName,
       args,
       onLogs: (logs) => {
-        console.log(logText, logs);
         dispatch(setBlockchainEvents(logs));
       },
     });
   };
 
   useEffect(() => {
-    if (!sessionData?.address) return;
+    if (!sessionData?.address) {
+      // if the user is not logged in we cannot retrieve events..
+      return;
+    }
 
     const events = [
-      { name: 'FundsDeposited', args: { recipient: sessionData?.address }, logText: 'New deposit (user as recipient):' },
-      { name: 'FundsWithdrawn', args: { origin: sessionData?.address }, logText: 'New withdraw (user as origin):' },
-      { name: 'FundsTransferred', args: { origin: sessionData?.address }, logText: 'New transfer from me:' },
-      { name: 'FundsTransferred', args: { recipient: sessionData?.address }, logText: 'New transfer to me:' },
-      { name: 'FundsClaimed', args: { claimer: sessionData?.address }, logText: 'New funds claimed:' },
+      { name: 'FundsDeposited', args: { recipient: sessionData?.address } },
+      { name: 'FundsWithdrawn', args: { origin: sessionData?.address } },
+      { name: 'FundsTransferred', args: { origin: sessionData?.address } },
+      { name: 'FundsTransferred', args: { recipient: sessionData?.address } },
+      { name: 'FundsClaimed', args: { claimer: sessionData?.address } },
     ];
 
-    const unwatchers = events.map(event => watchEvent(event.name, event.args, event.logText));
-
-    return () => {
-      unwatchers.forEach(unwatch => unwatch());
-    };
+    // each event start a long-polling to collect we need to clean intervals during unmount
+    const cleanup = events.map(event => watchEvent(event.name, event.args));
+    return () => cleanup.forEach(unwatch => unwatch());
   }, [sessionData?.address]);
 
 
