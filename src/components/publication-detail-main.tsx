@@ -186,10 +186,10 @@ export default function PublicationDetailMain({
       }}
     >
       <Card
-        component={m.div}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.5 }}
+        // component={m.div}
+        // initial={{ opacity: 0 }}
+        // animate={{ opacity: 1 }}
+        // transition={{ duration: 0.5 }}
         sx={{ border: '1px solid rgba(255, 255, 255, 0.08)' }}
       >
         <CardContent

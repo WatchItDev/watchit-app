@@ -77,25 +77,25 @@ export default function App() {
   useScrollToTop();
 
   return (
-    <MetaMaskProvider
-      sdkOptions={{
-        dappMetadata: {
-          name: 'Watchit Dapp',
-          url: window.location.href,
-        },
-        openDeeplink: (url) => {
-          const isMM = (window as any).ethereum?.isMetaMask;
-          if (typeof (window as any).ethereum === 'undefined' || !isMM) {
-            // Mobile version / no extension
-            window.location.href = 'https://metamask.app.link';
-          } else {
-            // Desktop with MetaMask extension
-            window.location.href = url;
-          }
-        },
-        // headless: true,  // If we wanted to personalize our own modals
-      }}
-    >
+    // <MetaMaskProvider
+    //   sdkOptions={{
+    //     dappMetadata: {
+    //       name: 'Watchit Dapp',
+    //       url: window.location.href,
+    //     },
+    //     openDeeplink: (url) => {
+    //       const isMM = (window as any).ethereum?.isMetaMask;
+    //       if (typeof (window as any).ethereum === 'undefined' || !isMM) {
+    //         // Mobile version / no extension
+    //         window.location.href = 'https://metamask.app.link';
+    //       } else {
+    //         // Desktop with MetaMask extension
+    //         window.location.href = url;
+    //       }
+    //     },
+    //     // headless: true,  // If we wanted to personalize our own modals
+    //   }}
+    // >
       <LocalizationProvider dateAdapter={AdapterDateFns}>
         <SettingsProvider
           defaultSettings={{
@@ -110,17 +110,17 @@ export default function App() {
           <Provider store={store}>
             <AuthProvider>
               <ThemeProvider>
-                <MotionLazy>
+                {/* <MotionLazy> */}
                   <SnackbarProvider>
                     <AppContent />
                   </SnackbarProvider>
-                </MotionLazy>
+                {/* </MotionLazy> */}
               </ThemeProvider>
             </AuthProvider>
           </Provider>
         </SettingsProvider>
       </LocalizationProvider>
-    </MetaMaskProvider>
+    // </MetaMaskProvider>
   );
 }
 
@@ -131,14 +131,14 @@ interface EventArgs {
 }
 const AppContent = () => {
   const dispatch = useDispatch();
-  const sessionData = useSelector((state: any) => state.auth.session);
-  const { getNotifications } = useNotifications();
   const { enqueueSnackbar } = useSnackbar();
+  const { getNotifications } = useNotifications();
+  const sessionData = useSelector((state: any) => state.auth.session);
 
   useEffect(() => {
     // Set the global reference so we can call notify(...) anywhere.
     setGlobalNotifier(enqueueSnackbar);
-  }, [enqueueSnackbar]);
+  }, []);
 
   const watchEvent = (eventName: string, args: EventArgs, logText: string) => {
     return publicClientWebSocket.watchContractEvent({
@@ -161,11 +161,7 @@ const AppContent = () => {
       { name: 'FundsWithdrawn', args: { origin: sessionData?.address }, logText: 'New withdraw (user as origin):' },
       { name: 'FundsTransferred', args: { origin: sessionData?.address }, logText: 'New transfer from me:' },
       { name: 'FundsTransferred', args: { recipient: sessionData?.address }, logText: 'New transfer to me:' },
-      // { name: 'FundsLocked', args: { account: sessionData?.address }, logText: 'New funds locked:' },
       { name: 'FundsClaimed', args: { claimer: sessionData?.address }, logText: 'New funds claimed:' },
-      // { name: 'FundsApproved', args: { from: sessionData?.address }, logText: 'New funds approved:' },
-      // { name: 'FundsCollected', args: { from: sessionData?.address }, logText: 'New funds collected:' },
-      // { name: 'FundsReleased', args: { to: sessionData?.address }, logText: 'New funds released:' },
     ];
 
     const unwatchers = events.map(event => watchEvent(event.name, event.args, event.logText));
@@ -180,7 +176,6 @@ const AppContent = () => {
     if (sessionData?.profile?.id) {
       // Subscribe to notifications channel
       subscribeToNotifications(sessionData?.profile?.id, dispatch, ['notifications']);
-
       // Set the notifications in first render
       getNotifications(sessionData?.profile?.id).then(() => { });
     }

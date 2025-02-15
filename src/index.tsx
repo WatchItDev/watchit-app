@@ -15,6 +15,7 @@ window.process = process;
 window.global = window;
 
 const isDevelopment = GLOBAL_CONSTANTS.ENVIRONMENT === 'development';
+const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 
 Sentry.init({
   environment: GLOBAL_CONSTANTS.ENVIRONMENT,
@@ -29,14 +30,14 @@ Sentry.init({
   replaysOnErrorSampleRate: 1.0, // If you're not already sampling the entire session, change the sample rate to 100% when sampling sessions where errors occur.
 });
 
-const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
+
 
 root.render(
   <HelmetProvider>
     <BrowserRouter>
-      <Suspense>
+      {/* <Suspense> */}
         <App />
-      </Suspense>
+      {/* </Suspense> */}
     </BrowserRouter>
   </HelmetProvider>
 );

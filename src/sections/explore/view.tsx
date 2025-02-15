@@ -45,6 +45,7 @@ export default function ExploreView() {
     maxItemWidth = 250;
   }
 
+  const { data: bookmark } = useBookmarks();
   const { data, loading }: any = usePublications({
     where: {
       publicationTypes: [PublicationType.Post],
@@ -53,11 +54,15 @@ export default function ExploreView() {
       },
     },
   });
-  const { data: bookmark } = useBookmarks();
+
+
   const { data: latestCreatedProfiles } = useExploreProfiles({
     orderBy: ExploreProfilesOrderByType.LatestCreated,
     limit: LimitType.Fifty,
   });
+
+  console.log('repeat')
+  console.log(latestCreatedProfiles)
 
   // FilteredCompletedProfiles is an array of objects, each object has a metadata property and inside exists a displayName en bio property; filter the profiles that not have a displayName and bio property
   const filteredProfiles = latestCreatedProfiles?.filter(
