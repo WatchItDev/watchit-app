@@ -1,23 +1,14 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-
-export type AuthReducerState = {
-  session: any;
-  isSessionLoading: boolean;
-  isLoginModalOpen: boolean;
-  balance: number;
-  currentStep: number;
-  isUpdatingMetadata: boolean;
-  email: string;
-};
+import { AuthReducerState, Session } from '@src/redux/types';
 
 const initialState: AuthReducerState = {
-  session: null,
-  isSessionLoading: false,
-  isLoginModalOpen: false,
   balance: 0,
   currentStep: 0,
+  session: {} as Session,
+  isSessionLoading: false,
+  isLoginModalOpen: false,
   isUpdatingMetadata: false,
-  email: '',
+  email: ''
 };
 
 const authSlice = createSlice({

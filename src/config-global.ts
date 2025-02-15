@@ -51,6 +51,8 @@ export const GLOBAL_CONSTANTS = {
   SENDER_EMAIL: process.env.VITE_SENDER_EMAIL || import.meta.env.VITE_SENDER_EMAIL || '',
   BASE_URL: process.env.VITE_BASE_URL || import.meta.env.VITE_BASE_URL || '',
   LOGO_URL: process.env.VITE_LOGO_URL || import.meta.env.VITE_LOGO_URL || '',
+  EVENT_POLLING_INTERVAL: process.env.VITE_EVENT_POLLING_INTERVAL || import.meta.env.VITE_EVENT_POLLING_INTERVAL || '',
+  GENESIS_LEDGER_BLOCK: process.env.VITE_GENESIS_LEDGER_BLOCK || import.meta.env.VITE_GENESIS_LEDGER_BLOCK || '',
 };
 
 export const MAPBOX_API = import.meta.env.VITE_MAPBOX_API || '';
