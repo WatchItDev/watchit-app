@@ -42,7 +42,7 @@ const MIN_AMOUNT = 0;
 // A thousand millions allowed in the pool
 export const MAX_POOL: number = 1000000000;
 
-interface Props extends CardProps {
+export interface FinanceQuickTransferProps extends CardProps {
   title?: string;
   subheader?: string;
   list: Profile[] | null | undefined;
@@ -62,7 +62,7 @@ export default function FinanceQuickTransfer({
   list: initialList,
   loading,
   ...other
-}: Props) {
+}: FinanceQuickTransferProps) {
   const theme = useTheme();
   const dispatch = useDispatch();
 
