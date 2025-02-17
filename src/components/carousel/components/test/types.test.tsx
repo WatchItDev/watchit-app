@@ -1,6 +1,9 @@
+import React from 'react';
+import Carousel from 'react-slick';
+
 import { describe, it, expect } from 'vitest';
+
 import {
-  CarouselReturnType,
   NavigationArrowsProps,
   CarouselDotsStyledRootProps,
   CarouselArrowsStyledIconButtonProps,
@@ -8,8 +11,7 @@ import {
   CarouselArrowIndexProps,
   ArrowIconProps,
 } from '../types';
-import React from 'react';
-import Carousel from 'react-slick';
+import {CarouselReturnType} from "@src/hooks/components/types.ts";
 
 describe('CarouselReturnType', () => {
   it('should have correct default values', () => {

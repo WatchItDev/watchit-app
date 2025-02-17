@@ -8,7 +8,7 @@ import { bgBlur } from '@src/theme/css.ts';
 
 //
 import { LeftIcon, RightIcon } from './CarouselArrowIcons.tsx';
-import {CarouselArrowIndexProps} from "@src/components/carousel/types.ts";
+import { CarouselArrowIndexProps } from '@src/components/carousel/components/types';
 
 // ----------------------------------------------------------------------
 

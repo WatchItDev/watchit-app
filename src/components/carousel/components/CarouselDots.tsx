@@ -1,11 +1,13 @@
+import React from 'react';
 /* eslint-disable react/jsx-no-useless-fragment */
 // @mui
-import { styled, Theme, SxProps } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 import Stack from '@mui/material/Stack';
-import Box, { BoxProps } from '@mui/material/Box';
 
+import Box from '@mui/material/Box';
 // Local Imports
-import {CarouselDotsStyledRootProps} from "@src/components/carousel/types.ts";
+import { CarouselDotsStyledRootProps } from '@src/components/carousel/components/types';
+import { CarouselDotsProps } from '@src/components/carousel/components/types';
 
 // ----------------------------------------------------------------------
 const StyledRoot = styled(Box, {
@@ -50,12 +52,7 @@ const StyledDot = styled('span')(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-export interface Props extends BoxProps {
-  rounded?: boolean;
-  sx?: SxProps<Theme>;
-}
-
-export default function CarouselDots(props?: Props) {
+export default function CarouselDots(props?: CarouselDotsProps) {
   const rounded = props?.rounded || false;
 
   const sx = props?.sx;
