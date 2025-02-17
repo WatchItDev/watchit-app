@@ -8,8 +8,6 @@ import { CarouselTopTitlesProps } from './types';
 
 // ----------------------------------------------------------------------
 
-
-
 export default function CarouselTopTitles({ posts, category }: CarouselTopTitlesProps) {
   const carousel = useCarousel({
     slidesToShow: 1,
@@ -50,7 +48,7 @@ export default function CarouselTopTitles({ posts, category }: CarouselTopTitles
       >
         <Carousel ref={carousel.carouselRef} {...carousel.carouselSettings}>
           {posts.map((post: any) => (
-            <Box key={`${category}-${post.id}`} sx={{ px: 0.75, /*display: 'flex !important'*/ }}>
+            <Box key={`${category}-${post.id}`} sx={{ px: 0.75 }}>
               <PosterTopTitles post={post} />
             </Box>
           ))}
