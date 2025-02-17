@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 import { Profile } from '@lens-protocol/api-bindings';
 
 // MUI
@@ -10,6 +9,7 @@ import { CarouselSection } from '@src/components/poster/carousel-section.tsx';
 import CarouselNavigationArrows from '@src/components/carousel/components/CarouselNavigationArrows.tsx';
 import { useItemsPerSlide } from '@src/hooks/components/use-item-per-slide.ts';
 import CarouselCreatorsSlide from "@src/components/carousel/components/CarouselCreatorsSlide.tsx";
+import { useChunkedData } from '@src/hooks/components/use-chunked-data';
 
 // Types
 import { CarouselCreatorsProps } from './types';
@@ -22,7 +22,7 @@ export default function CarouselCreators({
                                            maxItemWidth,
                                          }: CarouselCreatorsProps) {
   const { itemsPerSlide, parentRef } = useItemsPerSlide({ minItemWidth, maxItemWidth });
-  const [slideData, setSlideData] = useState<Profile[][]>([]);
+  const slideData = useChunkedData<Profile>(data, itemsPerSlide);
 
   const carousel = useCarousel({
     infinite: false,
@@ -32,15 +32,6 @@ export default function CarouselCreators({
     slidesPerRow: 1,
     lazyLoad: 'progressive',
   });
-
-  useEffect(() => {
-    const chunkSize = itemsPerSlide * 2;
-    const chunks: Profile[][] = [];
-    for (let i = 0; i < data.length; i += chunkSize) {
-      chunks.push(data.slice(i, i + chunkSize));
-    }
-    setSlideData(chunks);
-  }, [itemsPerSlide, data]);
 
   return (
     <CarouselSection

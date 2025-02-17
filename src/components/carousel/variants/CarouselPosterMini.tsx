@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 // @ts-ignore
 import {Post} from "@lens-protocol/api-bindings/dist/declarations/src/lens/graphql/generated";
 
@@ -9,7 +8,9 @@ import CarouselNavigationArrows from '@src/components/carousel/components/Carous
 import { CarouselSection } from '@src/components/poster/carousel-section.tsx';
 import { useItemsPerSlide } from '@src/hooks/components/use-item-per-slide.ts';
 import CarouselPosterSlide from "@src/components/carousel/components/CarouselPosterMIniSlide.tsx";
+import { useChunkedData } from '@src/hooks/components/use-chunked-data';
 
+// Types
 import { CarouselPosterMiniProps } from './types';
 
 // ----------------------------------------------------------------------
@@ -21,7 +22,7 @@ export default function CarouselPosterMini({
                                              maxItemWidth,
                                            }: CarouselPosterMiniProps) {
   const { itemsPerSlide, parentRef } = useItemsPerSlide({ minItemWidth, maxItemWidth });
-  const [slideData, setSlideData] = useState<Post[][]>([]);
+  const slideData = useChunkedData<Post>(data, itemsPerSlide);
 
   const carousel = useCarousel({
     infinite: false,
@@ -34,15 +35,6 @@ export default function CarouselPosterMini({
     swipeToSlide: true,
     lazyLoad: 'progressive',
   });
-
-  useEffect(() => {
-    const chunkSize = itemsPerSlide * 2;
-    const chunks: Post[][] = [];
-    for (let i = 0; i < data.length; i += chunkSize) {
-      chunks.push(data.slice(i, i + chunkSize));
-    }
-    setSlideData(chunks);
-  }, [itemsPerSlide, data]);
 
   return (
     <CarouselSection
