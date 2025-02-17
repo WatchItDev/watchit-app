@@ -1,13 +1,18 @@
 import { useState, useEffect } from 'react';
+import { Profile } from '@lens-protocol/api-bindings';
+
+// MUI
 import Box from '@mui/material/Box';
+
+// Project imports
 import Carousel, { useCarousel } from '@src/components/carousel/index';
 import { CarouselSection } from '@src/components/poster/carousel-section.tsx';
 import CarouselNavigationArrows from '@src/components/carousel/components/CarouselNavigationArrows.tsx';
-import { Profile } from '@lens-protocol/api-bindings';
-import { UserItem } from '@src/components/user-item';
-import { CarouselCreatorsProps, CarouselSlideProps } from './types';
 import { useItemsPerSlide } from '@src/hooks/components/use-item-per-slide.ts';
+import CarouselCreatorsSlide from "@src/components/carousel/components/CarouselCreatorsSlide.tsx";
 
+// Types
+import { CarouselCreatorsProps } from './types';
 // ----------------------------------------------------------------------
 
 export default function CarouselCreators({
@@ -60,37 +65,10 @@ export default function CarouselCreators({
       >
         <Carousel ref={carousel.carouselRef} {...carousel.carouselSettings}>
           {slideData.map((slideItems, index) => (
-            <Slide key={`slide-${index}`} items={slideItems} itemsPerRow={itemsPerSlide} />
+            <CarouselCreatorsSlide key={`slide-${index}`} items={slideItems} itemsPerRow={itemsPerSlide} />
           ))}
         </Carousel>
       </Box>
     </CarouselSection>
-  );
-}
-
-function Slide({ items, itemsPerRow }: CarouselSlideProps) {
-  const row1 = items.slice(0, itemsPerRow);
-  const row2 = items.slice(itemsPerRow, itemsPerRow * 2);
-  const itemWidthPercent = 100 / itemsPerRow;
-
-  return (
-    <Box>
-      {[row1, row2].map((rowItems, rowIndex) => (
-        <Box key={`row-${rowIndex}`} sx={{ display: 'flex' }}>
-          {rowItems.map((item) => (
-            <Box
-              key={item.id}
-              sx={{
-                flexBasis: `${itemWidthPercent}%`,
-                maxWidth: `${itemWidthPercent}%`,
-                p: 1,
-              }}
-            >
-              <UserItem profile={item} onActionFinished={() => {}} followButtonMinWidth={90} />
-            </Box>
-          ))}
-        </Box>
-      ))}
-    </Box>
   );
 }
