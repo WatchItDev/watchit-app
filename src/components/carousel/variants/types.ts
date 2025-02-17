@@ -1,7 +1,18 @@
 import {Profile} from "@lens-protocol/api-bindings";
 // @ts-ignore
 import type {Post} from "@lens-protocol/api-bindings/dist/declarations/src/lens/graphql/generated";
+import React from "react";
 
+export interface CarouselWrapperProps<T> {
+  data: T[];
+  title?: string;
+  minItemWidth: number;
+  maxItemWidth: number;
+  renderSlide: (slideItems: T[], itemsPerRow: number, index: number) => React.ReactNode;
+  carouselSettings: any;
+  boxStyle?: any; // Update this to accept any style object
+  boxClassName?: string;
+}
 
 export type CarouselSlideProps = {
   items: Profile[];

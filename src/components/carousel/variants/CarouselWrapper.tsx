@@ -1,21 +1,12 @@
-import React from 'react';
 import Box from '@mui/material/Box';
+
 import Carousel, { useCarousel } from '@src/components/carousel/index';
 import CarouselNavigationArrows from '@src/components/carousel/components/CarouselNavigationArrows.tsx';
 import { CarouselSection } from '@src/components/poster/carousel-section.tsx';
-import { useItemsPerSlide } from '@src/hooks/components/use-item-per-slide.ts';
+import { useItemsPerSlide } from '@src/hooks/components/use-item-per-slide';
 import { useChunkedData } from '@src/hooks/components/use-chunked-data';
 
-interface CarouselWrapperProps<T> {
-  data: T[];
-  title?: string;
-  minItemWidth: number;
-  maxItemWidth: number;
-  renderSlide: (slideItems: T[], itemsPerRow: number, index: number) => React.ReactNode;
-  carouselSettings: any;
-  boxStyle?: any; // Update this to accept any style object
-  boxClassName?: string;
-}
+import { CarouselWrapperProps } from './types';
 
 export default function CarouselWrapper<T>({
                                              data,
