@@ -7,7 +7,7 @@ import Typography from '@mui/material/Typography';
 import { bgBlur } from '@src/theme/css';
 
 //
-import { LeftIcon, RightIcon } from './arrow-icons';
+import { LeftIcon, RightIcon } from './CarouselArrowIcons.tsx';
 import {CarouselArrowIndexProps} from "@src/components/carousel/types";
 
 // ----------------------------------------------------------------------

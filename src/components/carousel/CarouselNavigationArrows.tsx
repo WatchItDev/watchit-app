@@ -5,7 +5,7 @@ import IconButton from '@mui/material/IconButton';
 
 import {NavigationArrowsProps} from "@src/components/carousel/types";
 
-const NavigationArrows: FC<NavigationArrowsProps> = ({ next, prev }) => (
+const CarouselNavigationArrows: FC<NavigationArrowsProps> = ({ next, prev }) => (
   <>
     <IconButton onClick={prev}>
       <IconChevronLeft />
@@ -16,4 +16,4 @@ const NavigationArrows: FC<NavigationArrowsProps> = ({ next, prev }) => (
   </>
 );
 
-export default NavigationArrows;
+export default CarouselNavigationArrows;

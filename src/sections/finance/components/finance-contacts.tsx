@@ -14,7 +14,7 @@ import Box from '@mui/material/Box';
 // Project components
 import Iconify from '@src/components/iconify';
 import Carousel, { useCarousel } from '@src/components/carousel/index';
-import NavigationArrows from '@src/components/carousel/NavigationArrows';
+import CarouselNavigationArrows from '@src/components/carousel/CarouselNavigationArrows.tsx';
 import AvatarProfile from "@src/components/avatar/avatar.tsx";
 
 // routes
@@ -101,7 +101,7 @@ export default function FinanceContactsCarousel({
       <CardHeader
         title={title}
         subheader={subheader}
-        action={<NavigationArrows next={carousel.onNext} prev={carousel.onPrev} />}
+        action={<CarouselNavigationArrows next={carousel.onNext} prev={carousel.onPrev} />}
         sx={{ px: 0 }}
       />
 

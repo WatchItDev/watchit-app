@@ -4,7 +4,7 @@ import Stack from '@mui/material/Stack';
 import IconButton from '@mui/material/IconButton';
 
 //
-import { LeftIcon, RightIcon } from './arrow-icons';
+import { LeftIcon, RightIcon } from './CarouselArrowIcons.tsx';
 import {CarouselArrowsProps, CarouselArrowsStyledIconButtonProps} from "@src/components/carousel/types";
 
 // ----------------------------------------------------------------------

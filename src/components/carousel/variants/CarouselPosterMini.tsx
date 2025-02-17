@@ -1,23 +1,19 @@
+import { useEffect, useRef, useState } from 'react';
 // @mui
 import Box from '@mui/material/Box';
 import Carousel, { useCarousel } from '@src/components/carousel/index';
 // @ts-ignore
 import { type Post } from '@lens-protocol/api-bindings/dist/declarations/src/lens/graphql/generated';
-
 import PosterHorizontal from '@src/components/poster/variants/poster-horizontal.tsx';
-import NavigationArrows from '@src/components/carousel/NavigationArrows.tsx';
+import CarouselNavigationArrows from '@src/components/carousel/CarouselNavigationArrows.tsx';
 import { CarouselSection } from '@src/components/poster/carousel-section.tsx';
-import { useEffect, useRef, useState } from 'react';
+
+// Types
+import { CarouselPosterMiniProps } from './types';
 
 // ----------------------------------------------------------------------
-type Props = {
-  data: Post[];
-  title?: string;
-  minItemWidth: number;
-  maxItemWidth: number;
-};
 
-export default function CarouselPosterMini({ data, title, minItemWidth, maxItemWidth }: Props) {
+export default function CarouselPosterMini({ data, title, minItemWidth, maxItemWidth }: CarouselPosterMiniProps) {
   const [itemsPerSlide, setItemsPerSlide] = useState(1);
   const [slideData, setSlideData] = useState<Post[][]>([]);
   const parentRef = useRef<HTMLDivElement>(null);
@@ -90,7 +86,7 @@ export default function CarouselPosterMini({ data, title, minItemWidth, maxItemW
   return (
     <CarouselSection
       title={title}
-      action={<NavigationArrows next={carousel.onNext} prev={carousel.onPrev} />}
+      action={<CarouselNavigationArrows next={carousel.onNext} prev={carousel.onPrev} />}
     >
       <Box
         ref={parentRef}

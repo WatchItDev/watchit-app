@@ -2,20 +2,14 @@ import { useState, useEffect, useRef } from 'react';
 import Box from '@mui/material/Box';
 import Carousel, { useCarousel } from '@src/components/carousel/index';
 import { CarouselSection } from '@src/components/poster/carousel-section.tsx';
-import NavigationArrows from '@src/components/carousel/NavigationArrows.tsx';
+import CarouselNavigationArrows from '@src/components/carousel/CarouselNavigationArrows.tsx';
 import { Profile } from '@lens-protocol/api-bindings';
 import { UserItem } from '@src/components/user-item';
+import {CarouselCreatorsProps, CarouselSlideProps } from './types';
 
 // ----------------------------------------------------------------------
 
-type Props = {
-  data: Profile[];
-  title?: string;
-  minItemWidth: number;
-  maxItemWidth: number;
-};
-
-export default function CarouselCreators({ data, title, minItemWidth, maxItemWidth }: Props) {
+export default function CarouselCreators({ data, title, minItemWidth, maxItemWidth }: CarouselCreatorsProps) {
   const [itemsPerSlide, setItemsPerSlide] = useState(1);
   const [slideData, setSlideData] = useState<Profile[][]>([]);
   const parentRef = useRef<HTMLDivElement>(null);
@@ -85,7 +79,7 @@ export default function CarouselCreators({ data, title, minItemWidth, maxItemWid
   return (
     <CarouselSection
       title={title}
-      action={<NavigationArrows next={carousel.onNext} prev={carousel.onPrev} />}
+      action={<CarouselNavigationArrows next={carousel.onNext} prev={carousel.onPrev} />}
     >
       <Box
         ref={parentRef}
@@ -113,12 +107,9 @@ export default function CarouselCreators({ data, title, minItemWidth, maxItemWid
   );
 }
 
-type SlideProps = {
-  items: Profile[];
-  itemsPerRow: number;
-};
 
-function Slide({ items, itemsPerRow }: SlideProps) {
+
+function Slide({ items, itemsPerRow }: CarouselSlideProps) {
   const row1 = items.slice(0, itemsPerRow);
   const row2 = items.slice(itemsPerRow, itemsPerRow * 2);
   const itemWidthPercent = 100 / itemsPerRow;
