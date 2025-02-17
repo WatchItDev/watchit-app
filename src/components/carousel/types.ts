@@ -5,9 +5,6 @@ import {StackProps} from "@mui/material/Stack";
 import {IconifyProps} from "@src/components/iconify";
 import {SxProps, Theme} from "@mui/material/styles";
 
-/*
-* CarouselReturnType
-* */
 export type CarouselReturnType = {
   currentIndex: number;
   nav: Carousel | undefined;
