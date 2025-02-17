@@ -5,11 +5,17 @@ import { CarouselSection } from '@src/components/poster/carousel-section.tsx';
 import CarouselNavigationArrows from '@src/components/carousel/CarouselNavigationArrows.tsx';
 import { Profile } from '@lens-protocol/api-bindings';
 import { UserItem } from '@src/components/user-item';
-import {CarouselCreatorsProps, CarouselSlideProps } from './types';
+import { CarouselCreatorsProps, CarouselSlideProps } from './types';
+import { calculateItemsPerSlide } from './utils';
 
 // ----------------------------------------------------------------------
 
-export default function CarouselCreators({ data, title, minItemWidth, maxItemWidth }: CarouselCreatorsProps) {
+export default function CarouselCreators({
+  data,
+  title,
+  minItemWidth,
+  maxItemWidth,
+}: CarouselCreatorsProps) {
   const [itemsPerSlide, setItemsPerSlide] = useState(1);
   const [slideData, setSlideData] = useState<Profile[][]>([]);
   const parentRef = useRef<HTMLDivElement>(null);
@@ -23,31 +29,13 @@ export default function CarouselCreators({ data, title, minItemWidth, maxItemWid
     lazyLoad: 'progressive',
   });
 
-  const calculateItemsPerSlide = (parentWidth: number) => {
-    let maxItems = Math.floor(parentWidth / minItemWidth);
-    let minItems = Math.floor(parentWidth / maxItemWidth);
-    let items = maxItems;
-
-    while (items >= minItems) {
-      const itemWidth = parentWidth / items;
-      if (itemWidth >= minItemWidth && itemWidth <= maxItemWidth) {
-        break;
-      }
-      items--;
-    }
-
-    if (items < 1) items = 1;
-
-    return items;
-  };
-
   useEffect(() => {
     if (!parentRef.current) return;
 
     const observer = new ResizeObserver((entries) => {
       for (let entry of entries) {
         const parentWidth = entry.contentRect.width;
-        const items = calculateItemsPerSlide(parentWidth);
+        const items = calculateItemsPerSlide({ parentWidth, minItemWidth, maxItemWidth });
         setItemsPerSlide(items);
       }
     });
@@ -62,7 +50,7 @@ export default function CarouselCreators({ data, title, minItemWidth, maxItemWid
   useEffect(() => {
     if (parentRef.current) {
       const parentWidth = parentRef.current.offsetWidth;
-      const items = calculateItemsPerSlide(parentWidth);
+      const items = calculateItemsPerSlide({ parentWidth, minItemWidth, maxItemWidth });
       setItemsPerSlide(items);
     }
   }, [minItemWidth, maxItemWidth]);
@@ -106,8 +94,6 @@ export default function CarouselCreators({ data, title, minItemWidth, maxItemWid
     </CarouselSection>
   );
 }
-
-
 
 function Slide({ items, itemsPerRow }: CarouselSlideProps) {
   const row1 = items.slice(0, itemsPerRow);
