@@ -1,7 +1,6 @@
 import {Profile} from "@lens-protocol/api-bindings";
 // @ts-ignore
 import type {Post} from "@lens-protocol/api-bindings/dist/declarations/src/lens/graphql/generated";
-import React from "react";
 
 export interface CarouselWrapperProps<T> {
   data: T[];
