@@ -10,7 +10,7 @@ export interface CarouselWrapperProps<T> {
   maxItemWidth: number;
   renderSlide: (slideItems: T[], itemsPerRow: number, index: number) => React.ReactNode;
   carouselSettings: any;
-  boxStyle?: any; // Update this to accept any style object
+  boxStyle?: any;
   boxClassName?: string;
 }
 
