@@ -1,4 +1,4 @@
-import {calculateItemsPerSlideProps} from "@src/components/carousel/variants/utils/types.ts";
+import {calculateItemsPerSlideProps} from "@src/utils/components/carousel/types.ts";
 
 export const calculateItemsPerSlide = ({parentWidth, minItemWidth, maxItemWidth} : calculateItemsPerSlideProps) => {
   let maxItems = Math.floor(parentWidth / minItemWidth);

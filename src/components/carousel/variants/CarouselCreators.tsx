@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import Box from '@mui/material/Box';
 import Carousel, { useCarousel } from '@src/components/carousel/index';
 import { CarouselSection } from '@src/components/poster/carousel-section.tsx';
-import CarouselNavigationArrows from '@src/components/carousel/CarouselNavigationArrows.tsx';
+import CarouselNavigationArrows from '@src/components/carousel/components/CarouselNavigationArrows.tsx';
 import { Profile } from '@lens-protocol/api-bindings';
 import { UserItem } from '@src/components/user-item';
 import { CarouselCreatorsProps, CarouselSlideProps } from './types';

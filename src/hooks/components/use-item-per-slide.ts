@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { calculateItemsPerSlide } from '@src/components/carousel/variants/utils';
+import { calculateItemsPerSlide } from '@src/utils/components/carousel';
 
 interface UseItemsPerSlideProps {
   minItemWidth: number;

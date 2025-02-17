@@ -5,7 +5,7 @@ import Carousel, { useCarousel } from '@src/components/carousel/index';
 // @ts-ignore
 import { type Post } from '@lens-protocol/api-bindings/dist/declarations/src/lens/graphql/generated';
 import PosterHorizontal from '@src/components/poster/variants/poster-horizontal.tsx';
-import CarouselNavigationArrows from '@src/components/carousel/CarouselNavigationArrows.tsx';
+import CarouselNavigationArrows from '@src/components/carousel/components/CarouselNavigationArrows.tsx';
 import { CarouselSection } from '@src/components/poster/carousel-section.tsx';
 
 // Types

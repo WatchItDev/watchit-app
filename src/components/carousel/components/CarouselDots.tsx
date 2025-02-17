@@ -5,7 +5,7 @@ import Stack from '@mui/material/Stack';
 import Box, { BoxProps } from '@mui/material/Box';
 
 // Local Imports
-import {CarouselDotsStyledRootProps} from "@src/components/carousel/types";
+import {CarouselDotsStyledRootProps} from "@src/components/carousel/types.ts";
 
 // ----------------------------------------------------------------------
 const StyledRoot = styled(Box, {

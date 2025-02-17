@@ -5,7 +5,7 @@ import IconButton from '@mui/material/IconButton';
 
 //
 import { LeftIcon, RightIcon } from './CarouselArrowIcons.tsx';
-import {CarouselArrowsProps, CarouselArrowsStyledIconButtonProps} from "@src/components/carousel/types";
+import {CarouselArrowsProps, CarouselArrowsStyledIconButtonProps} from "@src/components/carousel/types.ts";
 
 // ----------------------------------------------------------------------
 

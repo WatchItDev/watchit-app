@@ -1,6 +1,6 @@
 //
-import Iconify from '../iconify';
-import {ArrowIconProps} from "@src/components/carousel/types";
+import Iconify from '../../iconify';
+import {ArrowIconProps} from "@src/components/carousel/types.ts";
 
 // ----------------------------------------------------------------------
 
