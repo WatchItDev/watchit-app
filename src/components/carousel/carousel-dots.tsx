@@ -4,15 +4,13 @@ import { styled, Theme, SxProps } from '@mui/material/styles';
 import Stack from '@mui/material/Stack';
 import Box, { BoxProps } from '@mui/material/Box';
 
+// Local Imports
+import {CarouselDotsStyledRootProps} from "@src/components/carousel/types.ts";
+
 // ----------------------------------------------------------------------
-
-type StyledRootProps = {
-  rounded: boolean;
-};
-
 const StyledRoot = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'rounded',
-})<StyledRootProps>(({ rounded, theme }) => ({
+})<CarouselDotsStyledRootProps>(({ rounded, theme }) => ({
   zIndex: 9,
   margin: 0,
   padding: 0,

@@ -1,14 +1,14 @@
 // @mui
-import { useTheme, styled, Theme, SxProps } from '@mui/material/styles';
+import { useTheme, styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 // theme
 import { bgBlur } from '@src/theme/css';
-//
-import { IconifyProps } from '../iconify';
+
 //
 import { LeftIcon, RightIcon } from './arrow-icons';
+import {CarouselArrowIndexProps} from "@src/components/carousel/types.ts";
 
 // ----------------------------------------------------------------------
 
@@ -38,15 +38,6 @@ const StyledIconButton = styled(IconButton)({
 
 // ----------------------------------------------------------------------
 
-type Props = {
-  index: number;
-  total: number;
-  icon?: IconifyProps; // Right icon
-  onNext?: VoidFunction;
-  onPrev?: VoidFunction;
-  sx?: SxProps<Theme>;
-};
-
 export default function CarouselArrowIndex({
   index,
   total,
@@ -55,7 +46,7 @@ export default function CarouselArrowIndex({
   icon,
   sx,
   ...other
-}: Props) {
+}: CarouselArrowIndexProps) {
   const theme = useTheme();
 
   const isRTL = theme.direction === 'rtl';

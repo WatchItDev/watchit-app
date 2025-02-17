@@ -1,23 +1,17 @@
 // @mui
 import { useTheme, styled, alpha } from '@mui/material/styles';
-import Stack, { StackProps } from '@mui/material/Stack';
-import IconButton, { IconButtonProps } from '@mui/material/IconButton';
-//
-import { IconifyProps } from '../iconify';
+import Stack from '@mui/material/Stack';
+import IconButton from '@mui/material/IconButton';
+
 //
 import { LeftIcon, RightIcon } from './arrow-icons';
+import {CarouselArrowsProps, CarouselArrowsStyledIconButtonProps} from "@src/components/carousel/types.ts";
 
 // ----------------------------------------------------------------------
 
-interface StyledIconButtonProps extends IconButtonProps {
-  filled?: boolean;
-  shape?: 'circular' | 'rounded';
-  hasChild?: boolean;
-}
-
 const StyledIconButton = styled(IconButton, {
   shouldForwardProp: (prop) => prop !== 'filled' && prop !== 'hasChild' && prop !== 'shape',
-})<StyledIconButtonProps>(({ filled, shape, hasChild, theme }) => ({
+})<CarouselArrowsStyledIconButtonProps>(({ filled, shape, hasChild, theme }) => ({
   color: 'inherit',
   transition: theme.transitions.create('all', {
     duration: theme.transitions.duration.shorter,
@@ -49,17 +43,6 @@ const StyledIconButton = styled(IconButton, {
 
 // ----------------------------------------------------------------------
 
-interface Props extends StackProps {
-  shape?: 'circular' | 'rounded';
-  filled?: boolean;
-  children?: React.ReactNode;
-  icon?: IconifyProps; // Right icon
-  onNext?: VoidFunction;
-  onPrev?: VoidFunction;
-  leftButtonProps?: IconButtonProps;
-  rightButtonProps?: IconButtonProps;
-}
-
 export default function CarouselArrows({
   shape = 'circular',
   filled = false,
@@ -71,7 +54,7 @@ export default function CarouselArrows({
   rightButtonProps,
   sx,
   ...other
-}: Props) {
+}: CarouselArrowsProps) {
   const theme = useTheme();
 
   const isRTL = theme.direction === 'rtl';

@@ -2,25 +2,11 @@ import Carousel, { Settings } from 'react-slick';
 import { useRef, useCallback, useState } from 'react';
 // @mui
 import { useTheme } from '@mui/material/styles';
+import {CarouselReturnType} from "@src/components/carousel/types.ts";
 
 // ----------------------------------------------------------------------
 
-type ReturnType = {
-  currentIndex: number;
-  nav: Carousel | undefined;
-  carouselSettings: Settings;
-  carouselRef: React.MutableRefObject<Carousel | null>;
-  //
-  onPrev: VoidFunction;
-  onNext: VoidFunction;
-  onSetNav: VoidFunction;
-  onTogo: (index: number) => void;
-  //
-  setNav: React.Dispatch<React.SetStateAction<Carousel | undefined>>;
-  setCurrentIndex: React.Dispatch<React.SetStateAction<number>>;
-};
-
-export default function useCarousel(props?: Settings): ReturnType {
+export default function useCarousel(props?: Settings): CarouselReturnType {
   const theme = useTheme();
 
   const carouselRef = useRef<Carousel | null>(null);
