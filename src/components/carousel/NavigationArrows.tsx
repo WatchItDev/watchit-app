@@ -3,7 +3,7 @@ import { IconChevronLeft, IconChevronRight } from '@tabler/icons-react';
 
 import IconButton from '@mui/material/IconButton';
 
-import {NavigationArrowsProps} from "@src/components/carousel/types.ts";
+import {NavigationArrowsProps} from "@src/components/carousel/types";
 
 const NavigationArrows: FC<NavigationArrowsProps> = ({ next, prev }) => (
   <>

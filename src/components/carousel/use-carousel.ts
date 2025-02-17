@@ -1,8 +1,8 @@
-import Carousel, { Settings } from 'react-slick';
 import { useRef, useCallback, useState } from 'react';
+import Carousel, { Settings } from 'react-slick';
 // @mui
 import { useTheme } from '@mui/material/styles';
-import {CarouselReturnType} from "@src/components/carousel/types.ts";
+import {CarouselReturnType} from "@src/components/carousel/types";
 
 // ----------------------------------------------------------------------
 
