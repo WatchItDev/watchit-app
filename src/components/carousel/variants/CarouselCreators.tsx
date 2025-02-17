@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import Box from '@mui/material/Box';
 import Carousel, { useCarousel } from '@src/components/carousel/index';
 import { CarouselSection } from '@src/components/poster/carousel-section.tsx';
@@ -6,19 +6,18 @@ import CarouselNavigationArrows from '@src/components/carousel/CarouselNavigatio
 import { Profile } from '@lens-protocol/api-bindings';
 import { UserItem } from '@src/components/user-item';
 import { CarouselCreatorsProps, CarouselSlideProps } from './types';
-import { calculateItemsPerSlide } from './utils';
+import { useItemsPerSlide } from '@src/hooks/components/use-item-per-slide.ts';
 
 // ----------------------------------------------------------------------
 
 export default function CarouselCreators({
-  data,
-  title,
-  minItemWidth,
-  maxItemWidth,
-}: CarouselCreatorsProps) {
-  const [itemsPerSlide, setItemsPerSlide] = useState(1);
+                                           data,
+                                           title,
+                                           minItemWidth,
+                                           maxItemWidth,
+                                         }: CarouselCreatorsProps) {
+  const { itemsPerSlide, parentRef } = useItemsPerSlide({ minItemWidth, maxItemWidth });
   const [slideData, setSlideData] = useState<Profile[][]>([]);
-  const parentRef = useRef<HTMLDivElement>(null);
 
   const carousel = useCarousel({
     infinite: false,
@@ -28,32 +27,6 @@ export default function CarouselCreators({
     slidesPerRow: 1,
     lazyLoad: 'progressive',
   });
-
-  useEffect(() => {
-    if (!parentRef.current) return;
-
-    const observer = new ResizeObserver((entries) => {
-      for (let entry of entries) {
-        const parentWidth = entry.contentRect.width;
-        const items = calculateItemsPerSlide({ parentWidth, minItemWidth, maxItemWidth });
-        setItemsPerSlide(items);
-      }
-    });
-
-    observer.observe(parentRef.current);
-
-    return () => {
-      observer.disconnect();
-    };
-  }, [minItemWidth, maxItemWidth]);
-
-  useEffect(() => {
-    if (parentRef.current) {
-      const parentWidth = parentRef.current.offsetWidth;
-      const items = calculateItemsPerSlide({ parentWidth, minItemWidth, maxItemWidth });
-      setItemsPerSlide(items);
-    }
-  }, [minItemWidth, maxItemWidth]);
 
   useEffect(() => {
     const chunkSize = itemsPerSlide * 2;
