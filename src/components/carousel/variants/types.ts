@@ -26,3 +26,8 @@ export type CarouselTopTitlesProps = {
   posts: Post[];
   category?: string;
 };
+
+export type CarouselPosterSlideProps = {
+  items: Post[];
+  itemsPerRow: number;
+};

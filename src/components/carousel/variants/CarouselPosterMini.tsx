@@ -9,7 +9,7 @@ import CarouselNavigationArrows from '@src/components/carousel/components/Carous
 import { CarouselSection } from '@src/components/poster/carousel-section.tsx';
 
 // Types
-import { CarouselPosterMiniProps } from './types';
+import { CarouselPosterMiniProps, CarouselPosterSlideProps } from './types';
 import { useItemsPerSlide } from '@src/hooks/components/use-item-per-slide.ts';
 
 // ----------------------------------------------------------------------
@@ -86,12 +86,7 @@ export default function CarouselPosterMini({
   );
 }
 
-type SlideProps = {
-  items: Post[];
-  itemsPerRow: number;
-};
-
-function Slide({ items, itemsPerRow }: SlideProps) {
+function Slide({ items, itemsPerRow }: CarouselPosterSlideProps) {
   const row1 = items.slice(0, itemsPerRow);
   const row2 = items.slice(itemsPerRow, itemsPerRow * 2);
   const itemWidthPercent = 100 / itemsPerRow;
