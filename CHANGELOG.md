@@ -1,3 +1,10 @@
+# [2.2.0-beta.29](https://github.com/WatchItDev/watchit-app/compare/v2.2.0-beta.28...v2.2.0-beta.29) (2025-02-18)
+
+
+### Features
+
+* **finance:** add loading state to FinanceQuickTransfer ([c956686](https://github.com/WatchItDev/watchit-app/commit/c956686f0e53aa52273f5003456c7242594c988f))
+
 # [2.2.0-beta.28](https://github.com/WatchItDev/watchit-app/compare/v2.2.0-beta.27...v2.2.0-beta.28) (2025-02-14)
 
 
