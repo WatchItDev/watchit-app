@@ -10,8 +10,9 @@ import {
   CarouselArrowsProps,
   CarouselArrowIndexProps,
   ArrowIconProps,
-} from '../types';
-import {CarouselReturnType} from "@src/hooks/components/types.ts";
+} from '../types.ts';
+import {CarouselReturnType} from "@src/hooks/components/types";
+import {CarouselWrapperProps} from "@src/components/carousel/types";
 
 describe('CarouselReturnType', () => {
   it('should have correct default values', () => {
@@ -125,5 +126,40 @@ describe('ArrowIconProps', () => {
 
     expect(props.icon).toBe('<path d="90"/>');
     expect(props.isRTL).toBe(true);
+  });
+});
+
+describe('CarouselWrapperProps', () => {
+  it('should have data, minItemWidth, maxItemWidth, renderSlide, and carouselSettings properties', () => {
+    const props: CarouselWrapperProps<any> = {
+      data: [],
+      minItemWidth: 100,
+      maxItemWidth: 200,
+      renderSlide: (_slideItems, _itemsPerRow, index) => <div key={index}>{index}</div>,
+      carouselSettings: {},
+    };
+
+    expect(props.data).toBeInstanceOf(Array);
+    expect(props.minItemWidth).toBe(100);
+    expect(props.maxItemWidth).toBe(200);
+    expect(typeof props.renderSlide).toBe('function');
+    expect(props.carouselSettings).toBeInstanceOf(Object);
+  });
+
+  it('should have optional title, boxStyle, and boxClassName properties', () => {
+    const props: CarouselWrapperProps<any> = {
+      data: [],
+      minItemWidth: 100,
+      maxItemWidth: 200,
+      renderSlide: (_slideItems, _itemsPerRow, index) => <div key={index}>{index}</div>,
+      carouselSettings: {},
+      title: 'Test Title',
+      boxStyle: { backgroundColor: 'red' },
+      boxClassName: 'test-class',
+    };
+
+    expect(props.title).toBe('Test Title');
+    expect(props.boxStyle).toEqual({ backgroundColor: 'red' });
+    expect(props.boxClassName).toBe('test-class');
   });
 });

@@ -1,5 +1,5 @@
 import Iconify from '@src/components/iconify';
-import { ArrowIconProps } from '@src/components/carousel/components/types';
+import { ArrowIconProps } from '@src/components/carousel/types.ts';
 
 // ----------------------------------------------------------------------
 

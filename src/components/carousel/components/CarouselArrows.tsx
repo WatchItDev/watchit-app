@@ -8,7 +8,7 @@ import { LeftIcon, RightIcon } from './CarouselArrowIcons.tsx';
 import {
   CarouselArrowsProps,
   CarouselArrowsStyledIconButtonProps,
-} from '@src/components/carousel/components/types';
+} from '@src/components/carousel/types.ts';
 
 // ----------------------------------------------------------------------
 
