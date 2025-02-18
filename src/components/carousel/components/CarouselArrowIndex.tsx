@@ -1,5 +1,5 @@
 // @mui
-import { useTheme, styled } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
@@ -48,8 +48,6 @@ export default function CarouselArrowIndex({
   sx,
   ...other
 }: CarouselArrowIndexProps) {
-  const theme = useTheme();
-
   const isRTL = useIsRTL();
 
   return (

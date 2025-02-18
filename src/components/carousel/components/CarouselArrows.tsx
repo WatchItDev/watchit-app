@@ -1,5 +1,5 @@
 // @mui
-import { useTheme, styled, alpha } from '@mui/material/styles';
+import { styled, alpha } from '@mui/material/styles';
 import Stack from '@mui/material/Stack';
 import IconButton from '@mui/material/IconButton';
 
@@ -59,8 +59,6 @@ export default function CarouselArrows({
   sx,
   ...other
 }: CarouselArrowsProps) {
-  const theme = useTheme();
-
   const isRTL = useIsRTL();
 
   const hasChild = !!children;
