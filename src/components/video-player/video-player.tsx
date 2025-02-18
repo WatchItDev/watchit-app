@@ -53,80 +53,73 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({ src, cid, titleMovie, onBack
     if (player.current) {
       if (isHLSProvider(player.current.provider)) {
         player.current.provider.config = {
-          debug: false,
-          autoStartLoad: true,
-          capLevelOnFPSDrop: false,
-          capLevelToPlayerSize: false,
-          initialLiveManifestSize: 1,
+          debug: false, // Disable debug logs
+          autoStartLoad: true, // Start loading video automatically
+          initialLiveManifestSize: 3, // Initial fragment size for playback
 
-          maxBufferLength: 60,
-          maxMaxBufferLength: 600,
-          backBufferLength: Infinity,
-          frontBufferFlushThreshold: Infinity,
-          maxBufferSize: 80 * 1000 * 1000,
-          maxBufferHole: 0.2,
-          startPosition: -1,
-          nudgeOffset: 0.2,
-          nudgeMaxRetry: 5,
+          maxBufferLength: 30, // Max video buffer length in seconds
+          maxMaxBufferLength: 120, // Absolute max buffer length
+          // backBufferLength: 15, // Keep 15s of past video in buffer
+          // frontBufferFlushThreshold: 30, // Flush buffer if ahead of 30s
+          // maxBufferSize: 20 * 1000 * 1000, // Max buffer size in bytes (20MB)
+          maxBufferHole: 0.2, // Allowed gap between buffered segments
+          startPosition: -1, // Start at the beginning if -1
+          nudgeOffset: 0.2, // Small seek adjustment for stalled playback
+          nudgeMaxRetry: 5, // Max retries to nudge playback
 
-          liveSyncDurationCount: 3,
-          liveSyncOnStallIncrease: 1,
-          liveMaxLatencyDurationCount: Infinity,
-          liveDurationInfinity: false,
-          preferManagedMediaSource: false,
-          enableWorker: true,
-          enableSoftwareAES: false,
-          startFragPrefetch: true,
+          preferManagedMediaSource: true, // Prefer MSE for playback
+          enableWorker: true, // Use web worker for processing
+          enableSoftwareAES: false, // Disable software AES decryption
+          startFragPrefetch: true, // Preload next fragment before needed
 
-          testBandwidth: true,
-          progressive: false,
-          lowLatencyMode: false,
+          testBandwidth: true, // Measure bandwidth for adaptive streaming
+          progressive: false, // Do not enable progressive loading
+          lowLatencyMode: false, // Disable low latency mode for VOD
 
-          fpsDroppedMonitoringPeriod: 5000,
-          fpsDroppedMonitoringThreshold: 0.2,
+          fpsDroppedMonitoringPeriod: 3000, // Monitor FPS drops every 3s
+          fpsDroppedMonitoringThreshold: 0.1, // Allow 10% FPS drop before action
 
-          enableDateRangeMetadataCues: false,
-          enableMetadataCues: false,
-          enableID3MetadataCues: false,
-          enableWebVTT: true,
-          enableIMSC1: false, // TODO change when subtitles needed
-          enableCEA708Captions: false, // TODO change when subtitles needed
+          enableDateRangeMetadataCues: false, // Disable metadata cues
+          enableMetadataCues: false, // Disable metadata cues
+          enableID3MetadataCues: false, // Disable ID3 metadata cues
+          enableWebVTT: true, // Enable WebVTT subtitles
+          enableIMSC1: false, // Disable IMSC1 subtitles
+          enableCEA708Captions: false, // Disable CEA-708 captions
 
-          stretchShortVideoTrack: false,
-          maxAudioFramesDrift: 1,
-          forceKeyFrameOnDiscontinuity: true,
+          stretchShortVideoTrack: false, // Do not stretch short video tracks
+          maxAudioFramesDrift: 0.5, // Allow small drift in audio sync
+          forceKeyFrameOnDiscontinuity: true, // Ensure keyframe on segment change
 
-          abrEwmaFastLive: 3.0,
-          abrEwmaSlowLive: 9.0,
-          abrEwmaFastVoD: 2.0,
-          abrEwmaSlowVoD: 6.0,
-          abrEwmaDefaultEstimate: 1_000_000,
-          abrEwmaDefaultEstimateMax: 10_000_000,
-          abrBandWidthFactor: 0.9,
-          abrBandWidthUpFactor: 0.75,
-          abrMaxWithRealBitrate: true,
+          abrEwmaFastVoD: 2.0, // Fast averaging window for ABR
+          abrEwmaSlowVoD: 6.0, // Slow averaging window for ABR
+          abrEwmaDefaultEstimate: 2_000_000, // Default bandwidth estimate (bps)
+          abrEwmaDefaultEstimateMax: 8_000_000, // Max default estimate (bps)
+          abrBandWidthFactor: 0.9, // Factor applied to bandwidth estimation
+          abrBandWidthUpFactor: 0.8, // Factor applied when increasing bitrate
+          abrMaxWithRealBitrate: true, // Use real bitrate for ABR decisions
 
-          maxStarvationDelay: 3,
-          maxLoadingDelay: 3,
-          minAutoBitrate: 0,
-          emeEnabled: false,
-          licenseXhrSetup: undefined,
-          drmSystems: {},
-          drmSystemOptions: {},
+          maxStarvationDelay: 3, // Max delay before switching down quality
+          maxLoadingDelay: 3, // Max delay before switching down quality
+          minAutoBitrate: 500_000, // Minimum auto bitrate (500kbps)
+          emeEnabled: false, // Disable DRM by default
+          licenseXhrSetup: undefined, // No custom DRM license handling
+          drmSystems: {}, // No DRM systems configured
+          drmSystemOptions: {}, // No DRM options specified
+
           fragLoadPolicy: {
             default: {
-              maxTimeToFirstByteMs: 5000,
-              maxLoadTimeMs: 60_000,
+              maxTimeToFirstByteMs: 3000, // Max time to receive first byte
+              maxLoadTimeMs: 30_000, // Max fragment load time
               timeoutRetry: {
-                maxNumRetry: 3,
-                retryDelayMs: 1000,
-                maxRetryDelayMs: 5000,
+                maxNumRetry: 3, // Max retries for timeout
+                retryDelayMs: 500, // Initial retry delay
+                maxRetryDelayMs: 3000, // Max retry delay
               },
               errorRetry: {
-                maxNumRetry: 5,
-                retryDelayMs: 2000,
-                maxRetryDelayMs: 10000,
-                backoff: 'exponential',
+                maxNumRetry: 4, // Max retries for errors
+                retryDelayMs: 1000, // Initial retry delay
+                maxRetryDelayMs: 5000, // Max retry delay
+                backoff: 'exponential', // Exponential backoff strategy
               },
             },
           },
