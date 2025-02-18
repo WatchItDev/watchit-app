@@ -1,6 +1,8 @@
 import Box from '@mui/material/Box';
 import PosterHorizontal from '@src/components/poster/variants/poster-horizontal.tsx';
 import {CarouselPosterSlideProps} from "@src/components/carousel/variants/types.ts";
+// @ts-ignore
+import {Post} from "@lens-protocol/api-bindings/dist/declarations/src/lens/graphql/generated";
 
 export default function CarouselPosterSlide({ items, itemsPerRow }: CarouselPosterSlideProps) {
   const row1 = items.slice(0, itemsPerRow);
@@ -8,10 +10,10 @@ export default function CarouselPosterSlide({ items, itemsPerRow }: CarouselPost
   const itemWidthPercent = 100 / itemsPerRow;
 
   const getMediaUri = (cid: string): string => `${cid}`;
-  const getWallpaperCid = (post: any): string =>
-    post?.metadata?.attachments?.find((el: any) => el.altTag === 'wallpaper')?.image?.raw?.uri;
-  const getPosterCid = (post: any): string =>
-    post?.metadata?.attachments?.find((el: any) => el.altTag === 'poster')?.image?.raw?.uri;
+  const getWallpaperCid = (post: Post): string =>
+    post?.metadata?.attachments?.find((el: Post) => el.altTag === 'wallpaper')?.image?.raw?.uri;
+  const getPosterCid = (post: Post): string =>
+    post?.metadata?.attachments?.find((el: Post) => el.altTag === 'poster')?.image?.raw?.uri;
 
   return (
     <Box>
