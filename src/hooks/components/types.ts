@@ -16,3 +16,13 @@ export type CarouselReturnType = {
   setCurrentIndex: React.Dispatch<React.SetStateAction<number>>;
 };
 
+export interface UseItemsPerSlideProps {
+  minItemWidth: number;
+  maxItemWidth: number;
+}
+
+export interface UseItemsPerSlideReturn {
+  itemsPerSlide: number;
+  parentRef: React.RefObject<HTMLDivElement>;
+}
+

@@ -4,9 +4,9 @@ import {IconifyProps} from "@src/components/iconify";
 import {StackProps} from "@mui/material/Stack";
 import React from "react";
 import {IconButtonProps} from "@mui/material/IconButton";
-import {Profile} from "@lens-protocol/api-bindings";
+import {Profile, VideoMetadataV3} from "@lens-protocol/api-bindings";
 // @ts-ignore
-import type {Post} from "@lens-protocol/api-bindings/dist/declarations/src/lens/graphql/generated";
+import { Post,PublicationMetadataMediaVideoFieldPolicy } from "@lens-protocol/api-bindings/dist/declarations/src/lens/graphql/generated";
 
 export interface CarouselDotsProps extends BoxProps {
   rounded?: boolean;
@@ -14,14 +14,14 @@ export interface CarouselDotsProps extends BoxProps {
 }
 
 export type ArrowIconProps = {
-  icon?: IconifyProps; // Right icon
+  icon?: IconifyProps;
   isRTL?: boolean;
 };
 
 export type CarouselArrowIndexProps = {
   index: number;
   total: number;
-  icon?: IconifyProps; // Right icon
+  icon?: IconifyProps;
   onNext?: VoidFunction;
   onPrev?: VoidFunction;
   sx?: SxProps<Theme>;
@@ -64,10 +64,11 @@ export interface CarouselWrapperProps<T> {
   boxClassName?: string;
 }
 
-export type CarouselSlideProps = {
-  items: Profile[];
+export interface CarouselSlideProps<T> {
+  items: T[];
   itemsPerRow: number;
-};
+  renderItem: (item: T) => React.ReactNode;
+}
 
 export type CarouselCreatorsProps = {
   data: Profile[];
@@ -92,3 +93,8 @@ export type CarouselPosterSlideProps = {
   items: Post[];
   itemsPerRow: number;
 };
+
+export interface PublicationType extends Post {
+  altTag: string;
+  metadata: VideoMetadataV3 | PublicationMetadataMediaVideoFieldPolicy;
+}

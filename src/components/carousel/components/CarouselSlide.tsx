@@ -1,9 +1,11 @@
 import Box from '@mui/material/Box';
-import { UserItem } from '@src/components/user-item';
-import { CarouselSlideProps } from '../variants/types';
-import {Profile} from "@lens-protocol/api-bindings";
+import { CarouselSlideProps } from '../types';
 
-export default function CarouselCreatorsSlide({ items, itemsPerRow }: CarouselSlideProps) {
+export default function CarouselSlide<T>({
+                                           items,
+                                           itemsPerRow,
+                                           renderItem,
+                                         }: CarouselSlideProps<T>) {
   const row1 = items.slice(0, itemsPerRow);
   const row2 = items.slice(itemsPerRow, itemsPerRow * 2);
   const itemWidthPercent = 100 / itemsPerRow;
@@ -12,16 +14,16 @@ export default function CarouselCreatorsSlide({ items, itemsPerRow }: CarouselSl
     <Box>
       {[row1, row2].map((rowItems, rowIndex) => (
         <Box key={`row-${rowIndex}`} sx={{ display: 'flex' }}>
-          {rowItems.map((item: Profile) => (
+          {rowItems.map((item, itemIndex) => (
             <Box
-              key={item.id}
+              key={`item-${itemIndex}`}
               sx={{
                 flexBasis: `${itemWidthPercent}%`,
                 maxWidth: `${itemWidthPercent}%`,
                 p: 1,
               }}
             >
-              <UserItem profile={item} onActionFinished={() => {}} followButtonMinWidth={90} />
+              {renderItem(item)}
             </Box>
           ))}
         </Box>

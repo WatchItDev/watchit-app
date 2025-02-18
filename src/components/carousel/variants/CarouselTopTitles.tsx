@@ -4,7 +4,7 @@ import Carousel, { CarouselArrows, useCarousel } from '@src/components/carousel/
 // @ts-ignore
 import { type Post } from '@lens-protocol/api-bindings/dist/declarations/src/lens/graphql/generated';
 import PosterTopTitles from '@src/components/poster/variants/poster-top-titles.tsx';
-import { CarouselTopTitlesProps } from './types';
+import { CarouselTopTitlesProps } from '../types';
 
 // ----------------------------------------------------------------------
 
