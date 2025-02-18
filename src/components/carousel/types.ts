@@ -13,27 +13,28 @@ export interface CarouselDotsProps extends BoxProps {
   sx?: SxProps<Theme>;
 }
 
+interface CarouselNavigationActions {
+  onNext?: VoidFunction;
+  onPrev?: VoidFunction;
+}
+
 export type ArrowIconProps = {
   icon?: IconifyProps;
   isRTL?: boolean;
 };
 
-export type CarouselArrowIndexProps = {
+export type CarouselArrowIndexProps = CarouselNavigationActions & {
   index: number;
   total: number;
   icon?: IconifyProps;
-  onNext?: VoidFunction;
-  onPrev?: VoidFunction;
   sx?: SxProps<Theme>;
 };
 
-export interface CarouselArrowsProps extends StackProps {
+export interface CarouselArrowsProps extends StackProps, CarouselNavigationActions {
   shape?: 'circular' | 'rounded';
   filled?: boolean;
   children?: React.ReactNode;
   icon?: IconifyProps; // Right icon
-  onNext?: VoidFunction;
-  onPrev?: VoidFunction;
   leftButtonProps?: IconButtonProps;
   rightButtonProps?: IconButtonProps;
 }
@@ -53,11 +54,14 @@ export type CarouselDotsStyledRootProps = {
   rounded: boolean;
 };
 
-export interface CarouselWrapperProps<T> {
-  data: T[];
-  title?: string;
+interface CarouselResizable {
   minItemWidth: number;
   maxItemWidth: number;
+}
+
+export interface CarouselWrapperProps<T> extends CarouselResizable{
+  data: T[];
+  title?: string;
   renderSlide: (slideItems: T[], itemsPerRow: number, index: number) => React.ReactNode;
   carouselSettings: any;
   boxStyle?: any;
@@ -70,18 +74,14 @@ export interface CarouselSlideProps<T> {
   renderItem: (item: T) => React.ReactNode;
 }
 
-export type CarouselCreatorsProps = {
+export type CarouselCreatorsProps = CarouselResizable & {
   data: Profile[];
   title?: string;
-  minItemWidth: number;
-  maxItemWidth: number;
 };
 
-export type CarouselPosterMiniProps = {
+export type CarouselPosterMiniProps = CarouselResizable & {
   data: Post[];
   title?: string;
-  minItemWidth: number;
-  maxItemWidth: number;
 };
 
 export type CarouselTopTitlesProps = {
