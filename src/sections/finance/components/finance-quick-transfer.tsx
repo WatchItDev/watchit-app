@@ -33,6 +33,7 @@ import FinanceNoFollowingsQuickTransfer
   from "@src/sections/finance/components/finance-no-followings-quick-transfer";
 import FinanceDisplayProfileInfo from "@src/sections/finance/components/finance-display-profile-info";
 import {handleAmountConstraints} from "@src/utils/format-number.ts";
+import {LoadingScreen} from "@src/components/loading-screen";
 
 // ----------------------------------------------------------------------
 
@@ -41,10 +42,11 @@ const MIN_AMOUNT = 0;
 // A thousand millions allowed in the pool
 export const MAX_POOL: number = 1000000000;
 
-interface Props extends CardProps {
+export interface FinanceQuickTransferProps extends CardProps {
   title?: string;
   subheader?: string;
   list: Profile[] | null | undefined;
+  loading: boolean;
 }
 
 export const isValidAddress = (address: string): boolean => {
@@ -58,8 +60,9 @@ export default function FinanceQuickTransfer({
   subheader,
   sx,
   list: initialList,
+  loading,
   ...other
-}: Props) {
+}: FinanceQuickTransferProps) {
   const theme = useTheme();
   const dispatch = useDispatch();
 
@@ -396,12 +399,12 @@ export default function FinanceQuickTransfer({
           />
 
           {/* Content */}
-          <Stack sx={{ p: 3 }}>
+          { loading ? <LoadingScreen sx={{marginBottom: 5}} /> : (<Stack sx={{ p: 3 }}>
             <FinanceDisplayProfileInfo mode={'profile'} initialList={list} carousel={carousel} />
             {list?.length > 0 ? renderCarousel : <FinanceNoFollowingsQuickTransfer />}
             <FinanceDisplayProfileInfo mode={'wallet'} initialList={list} carousel={carousel} />
             {renderInput}
-          </Stack>
+          </Stack>) }
         </Stack>
       </Wrapper>
 
