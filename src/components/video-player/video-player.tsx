@@ -70,7 +70,7 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({ src, cid, titleMovie, onBack
           preferManagedMediaSource: true, // Prefer MSE for playback
           enableWorker: true, // Use web worker for processing
           enableSoftwareAES: false, // Disable software AES decryption
-          startFragPrefetch: true, // Preload next fragment before needed
+          startFragPrefetch: false, // Preload next fragment before needed
 
           testBandwidth: true, // Measure bandwidth for adaptive streaming
           progressive: false, // Do not enable progressive loading
