@@ -108,8 +108,8 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({ src, cid, titleMovie, onBack
 
           fragLoadPolicy: {
             default: {
-              maxTimeToFirstByteMs: 3000, // Max time to receive first byte
-              maxLoadTimeMs: 30_000, // Max fragment load time
+              maxTimeToFirstByteMs: 5000, // Max time to receive first byte
+              maxLoadTimeMs: 60_000, // Max fragment load time
               timeoutRetry: {
                 maxNumRetry: 3, // Max retries for timeout
                 retryDelayMs: 500, // Initial retry delay
