@@ -1,12 +1,16 @@
-import {BoxProps} from "@mui/material/Box";
-import {SxProps, Theme} from "@mui/material/styles";
-import {IconifyProps} from "@src/components/iconify";
-import {StackProps} from "@mui/material/Stack";
 import React from "react";
-import {IconButtonProps} from "@mui/material/IconButton";
+
 import {Profile, VideoMetadataV3} from "@lens-protocol/api-bindings";
 // @ts-ignore
 import { Post,PublicationMetadataMediaVideoFieldPolicy } from "@lens-protocol/api-bindings/dist/declarations/src/lens/graphql/generated";
+
+import {StackProps} from "@mui/material/Stack";
+import {IconButtonProps} from "@mui/material/IconButton";
+
+import {BoxProps} from "@mui/material/Box";
+import {SxProps, Theme} from "@mui/material/styles";
+import {IconifyProps} from "@src/components/iconify";
+
 
 export interface CarouselDotsProps extends BoxProps {
   rounded?: boolean;

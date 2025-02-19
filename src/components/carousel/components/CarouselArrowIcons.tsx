@@ -3,7 +3,7 @@ import { ArrowIconProps } from '@src/components/carousel/types.ts';
 
 // ----------------------------------------------------------------------
 
-export function LeftIcon({ icon = 'eva:arrow-ios-forward-fill', isRTL }: ArrowIconProps) {
+export function LeftIcon({ icon = 'eva:arrow-ios-forward-fill', isRTL }: Readonly<ArrowIconProps>) {
   return (
     <Iconify
       icon={icon}
@@ -17,7 +17,7 @@ export function LeftIcon({ icon = 'eva:arrow-ios-forward-fill', isRTL }: ArrowIc
   );
 }
 
-export function RightIcon({ icon = 'eva:arrow-ios-forward-fill', isRTL }: ArrowIconProps) {
+export function RightIcon({ icon = 'eva:arrow-ios-forward-fill', isRTL }: Readonly<ArrowIconProps>) {
   return (
     <Iconify
       icon={icon}
