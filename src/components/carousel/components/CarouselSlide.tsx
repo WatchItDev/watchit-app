@@ -1,11 +1,12 @@
 import Box from '@mui/material/Box';
 import { CarouselSlideProps } from '../types';
 
-export default function CarouselSlide<T>({
-                                           items,
-                                           itemsPerRow,
-                                           renderItem,
-                                         }: CarouselSlideProps<T>) {
+export default function CarouselSlide<T>( props: CarouselSlideProps<T>) {
+  const {
+    items,
+      itemsPerRow,
+      renderItem,
+  } = props;
   const row1 = items.slice(0, itemsPerRow);
   const row2 = items.slice(itemsPerRow, itemsPerRow * 2);
   const itemWidthPercent = 100 / itemsPerRow;
