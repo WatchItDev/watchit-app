@@ -98,8 +98,8 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({ src, cid, titleMovie, onBack
           abrBandWidthUpFactor: 0.8, // Factor applied when increasing bitrate
           abrMaxWithRealBitrate: true, // Use real bitrate for ABR decisions
 
-          maxStarvationDelay: 3, // Max delay before switching down quality
-          maxLoadingDelay: 3, // Max delay before switching down quality
+          maxStarvationDelay: 2, // Max delay before switching down quality
+          maxLoadingDelay: 2, // Max delay before switching down quality
           minAutoBitrate: 500_000, // Minimum auto bitrate (500kbps)
           emeEnabled: false, // Disable DRM by default
           licenseXhrSetup: undefined, // No custom DRM license handling
