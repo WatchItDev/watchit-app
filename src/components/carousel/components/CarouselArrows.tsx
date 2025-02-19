@@ -8,7 +8,7 @@ import {
 } from '@src/components/carousel/types.ts';
 
 import {useIsRTL} from "@src/hooks/components/use-rtl.ts";
-import { LeftIcon, RightIcon } from './CarouselArrowIcons.tsx';v
+import { LeftIcon, RightIcon } from './CarouselArrowIcons.tsx';
 
 // ----------------------------------------------------------------------
 
