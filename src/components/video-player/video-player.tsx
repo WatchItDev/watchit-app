@@ -90,10 +90,10 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({ src, cid, titleMovie, onBack
           maxAudioFramesDrift: 0.5, // Allow small drift in audio sync
           forceKeyFrameOnDiscontinuity: true, // Ensure keyframe on segment change
 
-          abrEwmaFastVoD: 2.0, // Fast averaging window for ABR
+          abrEwmaFastVoD: 3.0, // Fast averaging window for ABR
           abrEwmaSlowVoD: 6.0, // Slow averaging window for ABR
-          abrEwmaDefaultEstimate: 2_500_000, // Default bandwidth estimate (bps)
-          abrEwmaDefaultEstimateMax: 9_000_000, // Max default estimate (bps)
+          abrEwmaDefaultEstimate: 2_000_000, // Default bandwidth estimate (bps)
+          abrEwmaDefaultEstimateMax: 8_000_000, // Max default estimate (bps)
           abrBandWidthFactor: 0.85, // Factor applied to bandwidth estimation
           abrBandWidthUpFactor: 0.75, // Factor applied when increasing bitrate
           abrMaxWithRealBitrate: true, // Use real bitrate for ABR decisions
