@@ -55,7 +55,7 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({ src, cid, titleMovie, onBack
         player.current.provider.config = {
           debug: false, // Disable debug logs
           autoStartLoad: true, // Start loading video automatically
-          initialLiveManifestSize: 3, // Initial fragment size for playback
+          initialLiveManifestSize: 2, // Initial fragment size for playback
 
           maxBufferLength: 60, // Max video buffer length in seconds
           maxMaxBufferLength: 120, // Absolute max buffer length
