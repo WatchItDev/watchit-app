@@ -57,11 +57,9 @@ export default function CarouselDots(props?: CarouselDotsProps) {
 
   return {
     appendDots: (dots: React.ReactNode) => (
-      <>
         <StyledRoot component="ul" rounded={rounded} sx={{ ...sx }} {...props}>
           {dots}
         </StyledRoot>
-      </>
     ),
     customPaging: () => (
       <Stack

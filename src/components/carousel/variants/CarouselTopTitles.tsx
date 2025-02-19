@@ -7,7 +7,7 @@ import { CarouselTopTitlesProps } from '../types';
 
 // ----------------------------------------------------------------------
 
-export default function CarouselTopTitles({ posts, category }: CarouselTopTitlesProps) {
+export default function CarouselTopTitles({ posts, category }: Readonly<CarouselTopTitlesProps>) {
   const carousel = useCarousel({
     slidesToShow: 1,
     adaptiveHeight: true,

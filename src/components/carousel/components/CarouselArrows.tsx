@@ -46,7 +46,7 @@ const StyledIconButton = styled(IconButton, {
 
 // ----------------------------------------------------------------------
 
-export default function CarouselArrows(props: CarouselArrowsProps) {
+export default function CarouselArrows(props: Readonly<CarouselArrowsProps>) {
   const {
     shape = 'circular',
     filled = false,

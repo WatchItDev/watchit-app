@@ -8,7 +8,7 @@ import { useChunkedData } from '@src/hooks/components/use-chunked-data';
 
 import { CarouselWrapperProps } from '../types';
 
-export default function CarouselWrapper<T>(props: CarouselWrapperProps<T>) {
+export default function CarouselWrapper<T>(props: Readonly<CarouselWrapperProps<T>>) {
   const {
     data,
     title,
