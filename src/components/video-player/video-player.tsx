@@ -55,13 +55,13 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({ src, cid, titleMovie, onBack
         player.current.provider.config = {
           debug: false, // Disable debug logs
           autoStartLoad: true, // Start loading video automatically
-          initialLiveManifestSize: 1, // Initial fragment size for playback
+          initialLiveManifestSize: 2, // Initial fragment size for playback
 
-          maxBufferLength: 90, // Max video buffer length in seconds
-          maxMaxBufferLength: 180, // Absolute max buffer length
+          maxBufferLength: 60, // Max video buffer length in seconds
+          maxMaxBufferLength: 300, // Absolute max buffer length
           // backBufferLength: 15, // Keep 15s of past video in buffer
           // frontBufferFlushThreshold: 30, // Flush buffer if ahead of 30s
-          // maxBufferSize: 20 * 1000 * 1000, // Max buffer size in bytes (20MB)
+          maxBufferSize: 80 * 1000 * 1000, // Max buffer size in bytes (20MB)
           maxBufferHole: 0.2, // Allowed gap between buffered segments
           startPosition: -1, // Start at the beginning if -1
           nudgeOffset: 0.2, // Small seek adjustment for stalled playback
@@ -90,17 +90,17 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({ src, cid, titleMovie, onBack
           maxAudioFramesDrift: 0.5, // Allow small drift in audio sync
           forceKeyFrameOnDiscontinuity: true, // Ensure keyframe on segment change
 
-          abrEwmaFastVoD: 4.0, // Fast averaging window for ABR
-          abrEwmaSlowVoD: 8.0, // Slow averaging window for ABR
-          abrEwmaDefaultEstimate: 2_000_000, // Default bandwidth estimate (bps)
-          abrEwmaDefaultEstimateMax: 8_000_000, // Max default estimate (bps)
-          abrBandWidthFactor: 0.85, // Factor applied to bandwidth estimation
+          abrEwmaFastVoD: 3.0, // Fast averaging window for ABR
+          abrEwmaSlowVoD: 9.0, // Slow averaging window for ABR
+          abrEwmaDefaultEstimate: 1_000_000, // Default bandwidth estimate (bps)
+          abrEwmaDefaultEstimateMax: 10_000_000, // Max default estimate (bps)
+          abrBandWidthFactor: 0.9, // Factor applied to bandwidth estimation
           abrBandWidthUpFactor: 0.75, // Factor applied when increasing bitrate
           abrMaxWithRealBitrate: true, // Use real bitrate for ABR decisions
 
           maxStarvationDelay: 3, // Max delay before switching down quality
           maxLoadingDelay: 3, // Max delay before switching down quality
-          minAutoBitrate: 500_000, // Minimum auto bitrate (500kbps)
+          minAutoBitrate: 0, // Minimum auto bitrate (500kbps)
           emeEnabled: false, // Disable DRM by default
           licenseXhrSetup: undefined, // No custom DRM license handling
           drmSystems: {}, // No DRM systems configured
