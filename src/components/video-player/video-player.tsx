@@ -55,7 +55,7 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({ src, cid, titleMovie, onBack
         player.current.provider.config = {
           debug: false, // Disable debug logs
           autoStartLoad: true, // Start loading video automatically
-          initialLiveManifestSize: 2, // Initial fragment size for playback
+          initialLiveManifestSize: 1, // Initial fragment size for playback
 
           maxBufferLength: 60, // Max video buffer length in seconds
           maxMaxBufferLength: 120, // Absolute max buffer length
@@ -70,7 +70,7 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({ src, cid, titleMovie, onBack
           preferManagedMediaSource: true, // Prefer MSE for playback
           enableWorker: true, // Use web worker for processing
           enableSoftwareAES: false, // Disable software AES decryption
-          startFragPrefetch: false, // Preload next fragment before needed
+          startFragPrefetch: true, // Preload next fragment before needed
 
           testBandwidth: true, // Measure bandwidth for adaptive streaming
           progressive: false, // Do not enable progressive loading
@@ -90,8 +90,8 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({ src, cid, titleMovie, onBack
           maxAudioFramesDrift: 0.5, // Allow small drift in audio sync
           forceKeyFrameOnDiscontinuity: true, // Ensure keyframe on segment change
 
-          abrEwmaFastVoD: 2.0, // Fast averaging window for ABR
-          abrEwmaSlowVoD: 6.0, // Slow averaging window for ABR
+          abrEwmaFastVoD: 3.0, // Fast averaging window for ABR
+          abrEwmaSlowVoD: 8.0, // Slow averaging window for ABR
           abrEwmaDefaultEstimate: 2_000_000, // Default bandwidth estimate (bps)
           abrEwmaDefaultEstimateMax: 8_000_000, // Max default estimate (bps)
           abrBandWidthFactor: 0.9, // Factor applied to bandwidth estimation
