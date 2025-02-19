@@ -47,18 +47,19 @@ const StyledIconButton = styled(IconButton, {
 
 // ----------------------------------------------------------------------
 
-export default function CarouselArrows({
-  shape = 'circular',
-  filled = false,
-  icon,
-  onNext,
-  onPrev,
-  children,
-  leftButtonProps,
-  rightButtonProps,
-  sx,
-  ...other
-}: CarouselArrowsProps) {
+export default function CarouselArrows(props: CarouselArrowsProps) {
+  const {
+    shape = 'circular',
+    filled = false,
+    icon,
+    onNext,
+    onPrev,
+    children,
+    leftButtonProps,
+    rightButtonProps,
+    sx,
+    ...other
+  } = props;
   const isRTL = useIsRTL();
 
   const hasChild = !!children;
