@@ -55,7 +55,7 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({ src, cid, titleMovie, onBack
         player.current.provider.config = {
           debug: false, // Disable debug logs
           autoStartLoad: true, // Start loading video automatically
-          initialLiveManifestSize: 2, // Initial fragment size for playback
+          initialLiveManifestSize: 1, // Initial fragment size for playback
 
           maxBufferLength: 60, // Max video buffer length in seconds
           maxMaxBufferLength: 300, // Absolute max buffer length
@@ -74,7 +74,7 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({ src, cid, titleMovie, onBack
 
           testBandwidth: true, // Measure bandwidth for adaptive streaming
           progressive: false, // Do not enable progressive loading
-          lowLatencyMode: false, // Disable low latency mode for VOD
+          lowLatencyMode: true, // Disable low latency mode for VOD
 
           fpsDroppedMonitoringPeriod: 3000, // Monitor FPS drops every 3s
           fpsDroppedMonitoringThreshold: 0.1, // Allow 10% FPS drop before action
