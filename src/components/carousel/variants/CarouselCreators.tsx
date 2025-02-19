@@ -1,9 +1,12 @@
+import {PublicationType} from "@lens-protocol/react-web";
 import { Profile } from '@lens-protocol/api-bindings';
-import CarouselWrapper from './CarouselWrapper';
+
 import CarouselSlide from '@src/components/carousel/components/CarouselSlide';
 import { UserItem } from '@src/components/user-item';
+
 import { CarouselCreatorsProps } from '../types';
-import {PublicationType} from "@lens-protocol/react-web";
+import CarouselWrapper from './CarouselWrapper';
+
 
 export default function CarouselCreators(params: CarouselCreatorsProps) {
   const { data, title, minItemWidth, maxItemWidth } = params;

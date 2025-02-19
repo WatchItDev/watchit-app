@@ -1,10 +1,9 @@
 import React from 'react';
-/* eslint-disable react/jsx-no-useless-fragment */
-// @mui
+
 import { styled } from '@mui/material/styles';
 import Stack from '@mui/material/Stack';
-
 import Box from '@mui/material/Box';
+
 // Local Imports
 import { CarouselDotsStyledRootProps, CarouselDotsProps } from '@src/components/carousel/types.ts';
 

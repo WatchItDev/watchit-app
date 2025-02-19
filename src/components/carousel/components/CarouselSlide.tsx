@@ -1,4 +1,5 @@
 import Box from '@mui/material/Box';
+
 import { CarouselSlideProps } from '../types';
 
 export default function CarouselSlide<T>( props: CarouselSlideProps<T>) {
