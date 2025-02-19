@@ -57,8 +57,8 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({ src, cid, titleMovie, onBack
           autoStartLoad: true, // Start loading video automatically
           initialLiveManifestSize: 1, // Initial fragment size for playback
 
-          maxBufferLength: 60, // Max video buffer length in seconds
-          maxMaxBufferLength: 120, // Absolute max buffer length
+          maxBufferLength: 120, // Max video buffer length in seconds
+          maxMaxBufferLength: 300, // Absolute max buffer length
           // backBufferLength: 15, // Keep 15s of past video in buffer
           // frontBufferFlushThreshold: 30, // Flush buffer if ahead of 30s
           // maxBufferSize: 20 * 1000 * 1000, // Max buffer size in bytes (20MB)
