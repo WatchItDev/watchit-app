@@ -14,8 +14,8 @@ export default function CarouselSlide<T>( props: CarouselSlideProps<T>) {
 
   return (
     <Box>
-      {[row1, row2].map((rowItems, rowIndex) => (
-        <Box key={`row-${rowIndex}`} sx={{ display: 'flex' }}>
+      {[row1, row2].map((rowItems, _rowIndex) => (
+        <Box key={`row-${rowItems[0]}`} sx={{ display: 'flex' }}>
           {rowItems.map((item, _item) => (
             <Box
               key={`item-${item}`}
