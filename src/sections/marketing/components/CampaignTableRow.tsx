@@ -50,7 +50,7 @@ const LBL_STATUS_COLORS = {
 
 // ----------------------------------------------------------------------
 export default function CampaignTableRow({ row, selected }: Props) {
-  const { campaign, name, policy } = row;
+  const { campaign, name, policy, expiration } = row;
   const popover = usePopover();
   const confirm = useBoolean();
   const settingsModal = useBoolean();
@@ -109,12 +109,12 @@ export default function CampaignTableRow({ row, selected }: Props) {
     }, 1000);
   };
 
-  // Aseguramos que ambos valores estén disponibles y sean válidos
   const totalUsageBigInt = BigInt(totalUsage || "0");
   const fundsAllocationBigInt = BigInt(fundsAllocation || "0");
-
-// Multiplicamos y formateamos el resultado (asumiendo 18 decimales)
   const totalUsageMMCFormatted = formatUnits(totalUsageBigInt * fundsAllocationBigInt, 18);
+  const formattedExpiration = expiration
+    ? new Date(Number(expiration) * 1000).toLocaleDateString('es-ES')
+    : 'No Expiration';
 
   const renderPrimary = (
     <>
@@ -160,7 +160,11 @@ export default function CampaignTableRow({ row, selected }: Props) {
         </TableCell>
 
         <TableCell>
-          <Typography variant="body2">{'access'}</Typography>
+          <Typography variant="body2">{`${totalUsage} Users`}</Typography>
+        </TableCell>
+
+        <TableCell>
+          <Typography variant="body2">{formattedExpiration}</Typography>
         </TableCell>
 
         <TableCell>

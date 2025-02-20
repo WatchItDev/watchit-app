@@ -43,6 +43,7 @@ const CampaignTable: FC = () => {
     campaign: item.args?.campaign || item.transactionHash,
     name: item?.args?.description || 'Campaign Name',
     policy: item?.args?.policy,
+    expiration: item?.args?.expireAt,
   }));
 
   const notFound = !formattedCampaigns.length && !loading;

@@ -25,6 +25,7 @@ export interface CampaignType {
   campaign: Address;
   name: string;
   policy: Address;
+  expiration: number;
 }
 
 export type Accumulator = Record<string, number>;
@@ -53,6 +54,7 @@ export const CAMPAIGN_TABLE_HEAD = [
   { id: 'budget', label: 'Budget'},
   { id: 'usage', label: 'Usage'},
   { id: 'access', label: 'Access' },
+  { id: 'expiration', label: 'Expiration' },
   { id: 'type', label: 'Type'},
   { id: 'status', label: 'Status' },
 ];
