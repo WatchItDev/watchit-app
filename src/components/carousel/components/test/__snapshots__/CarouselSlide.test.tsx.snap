@@ -1,0 +1,46 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`[COMPONENTS]: CarouselSlide > to match snapshot 1`] = `
+<body>
+  <div>
+    <div
+      class="MuiBox-root css-0"
+    >
+      <div
+        class="MuiBox-root css-k008qs"
+        data-testid="row-0"
+      >
+        <div
+          class="MuiBox-root css-2mh0az"
+          data-testid="item-0-0"
+        >
+          <div>
+            item1
+          </div>
+        </div>
+        <div
+          class="MuiBox-root css-2mh0az"
+          data-testid="item-0-1"
+        >
+          <div>
+            item2
+          </div>
+        </div>
+      </div>
+      <div
+        class="MuiBox-root css-k008qs"
+        data-testid="row-1"
+      >
+        <div
+          class="MuiBox-root css-2mh0az"
+          data-testid="item-1-0"
+        >
+          <div>
+            item3
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+`;

@@ -15,10 +15,10 @@ export default function CarouselSlide<T>( props: Readonly<CarouselSlideProps<T>>
   return (
     <Box>
       {[row1, row2].map((rowItems, _rowIndex) => (
-        <Box key={`row-${rowItems[0]}`} sx={{ display: 'flex' }}>
+        <Box key={`row-${_rowIndex}`} sx={{ display: 'flex' }}>
           {rowItems.map((item, _item) => (
             <Box
-              key={`item-${item}`}
+              key={`item-${_rowIndex}-${_item}`}
               sx={{
                 flexBasis: `${itemWidthPercent}%`,
                 maxWidth: `${itemWidthPercent}%`,
