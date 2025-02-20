@@ -8,10 +8,10 @@ import { NavigationArrowsProps } from '@src/components/carousel/types.ts';
 
 const CarouselNavigationArrows: FC<NavigationArrowsProps> = ({ next, prev }) => (
   <>
-    <IconButton onClick={prev}>
+    <IconButton data-testid={'leftButton'} onClick={prev}>
       <IconChevronLeft />
     </IconButton>
-    <IconButton onClick={next}>
+    <IconButton data-testid={'rightButton'} onClick={next}>
       <IconChevronRight />
     </IconButton>
   </>
