@@ -12,6 +12,7 @@ import {
   Select,
   MenuItem,
   FormHelperText,
+  Box,
 } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -19,6 +20,8 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { useCreateCampaign } from '@src/hooks/use-create-campaign';
 import { GLOBAL_CONSTANTS } from '@src/config-global';
 import { SelectChangeEvent } from '@mui/material/Select';
+import LoadingButton from "@mui/lab/LoadingButton";
+import NeonPaper from '@src/sections/publication/NeonPaperContainer';
 
 interface CampaignModalContentProps {
   onClose: () => void;
@@ -90,6 +93,7 @@ const CampaignModalContent: FC<CampaignModalContentProps> = ({ onClose, onConfir
     // Close the modal if the creation was successful
     onConfirm();
   };
+  const RainbowEffect = loading ? NeonPaper : Box;
 
   return (
     <>
@@ -161,18 +165,28 @@ const CampaignModalContent: FC<CampaignModalContentProps> = ({ onClose, onConfir
 
       <Divider sx={{ padding: '0.3rem 0', mt: 2, borderStyle: 'dashed' }} />
 
-      <DialogActions sx={{ px: 2 }}>
+      <DialogActions sx={{ px: 2, display: 'flex', justifyContent: 'flex-end', gap: 1 }}>
         <Button variant="outlined" onClick={onClose} disabled={loading}>
           Cancel
         </Button>
-        <Button
-          variant="contained"
-          onClick={handleOnConfirm}
-          disabled={loading}
-          sx={{ backgroundColor: 'white', color: 'black' }}
+        <RainbowEffect
+          {...(loading && {
+            borderRadius: '10px',
+            animationSpeed: '3s',
+            padding: '0',
+            width: 'auto',
+          })}
         >
-          {loading ? 'Creating...' : 'Confirm'}
-        </Button>
+          <LoadingButton
+            variant="contained"
+            sx={{ backgroundColor: 'white', color: 'black' }}
+            onClick={handleOnConfirm}
+            disabled={loading}
+            loading={loading}
+          >
+            {loading ? 'Configuring...' : 'Confirm'}
+          </LoadingButton>
+        </RainbowEffect>
       </DialogActions>
     </>
   );
