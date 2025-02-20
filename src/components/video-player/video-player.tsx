@@ -54,15 +54,14 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({ src, cid, titleMovie, onBack
       if (isHLSProvider(player.current.provider)) {
         player.current.provider.config = {
           // https://github.com/video-dev/hls.js/blob/master/docs/API.md
-          maxBufferLength: 60, // Max video buffer length in seconds
-          maxMaxBufferLength: 600, // Absolute max buffer length
-          enableWorker: true, // Use web worker for processing
-          enableSoftwareAES: false, // Disable software AES decryption
-          enableMetadataCues: false, // Disable metadata cues
-          enableID3MetadataCues: false, // Disable ID3 metadata cues
-          enableWebVTT: true, // Enable WebVTT subtitles
-          enableIMSC1: false, // Disable IMSC1 subtitles
-          enableCEA708Captions: false, // Disable CEA-708 captions
+          "maxBufferLength": 30, // Max video buffer length in seconds
+          "maxMaxBufferLength": 600, // Absolute max buffer length
+          "enableSoftwareAES": false, // Disable software AES decryption
+          "enableMetadataCues": false, // Disable metadata cues
+          "enableID3MetadataCues": false, // Disable ID3 metadata cues
+          "enableWebVTT": true, // Enable WebVTT subtitles
+          "enableIMSC1": false, // Disable IMSC1 subtitles
+          "enableCEA708Captions": false // Disable CEA-708 captions
         };
       }
     }
