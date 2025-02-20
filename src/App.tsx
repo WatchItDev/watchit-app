@@ -38,6 +38,7 @@ import ThemeProvider from '@src/theme';
 import { useScrollToTop } from '@src/hooks/use-scroll-to-top';
 // components
 import ProgressBar from '@src/components/progress-bar';
+import MotionLazy from '@src/components/animate/motion-lazy';
 import SnackbarProvider from '@src/components/snackbar/snackbar-provider';
 import { SettingsProvider, SettingsDrawer } from '@src/components/settings';
 import { AuthProvider } from '@src/auth/context/web3Auth';
@@ -109,9 +110,11 @@ export default function App() {
           <Provider store={store}>
             <AuthProvider>
               <ThemeProvider>
+                <MotionLazy>
                   <SnackbarProvider>
                     <AppContent />
                   </SnackbarProvider>
+                </MotionLazy>
               </ThemeProvider>
             </AuthProvider>
           </Provider>
