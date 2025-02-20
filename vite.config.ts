@@ -6,10 +6,13 @@ import { sentryVitePlugin } from "@sentry/vite-plugin";
 import preserveDirectives from 'rollup-preserve-directives'
 import { codecovVitePlugin } from "@codecov/vite-plugin";
 import { nodePolyfills } from 'vite-plugin-node-polyfills'
+import dotenv from "dotenv";
+
+dotenv.config();
 
 export default defineConfig(({ mode }) => {
   // Load environment variables based on the current mode
-  const env = loadEnv(mode, process.cwd(), '');
+  const env = loadEnv(mode, process.cwd(), 'VITE_');
   const pure = mode === 'production' ? ['console.log', 'console.info', 'console.warn'] : []
 
   return {
