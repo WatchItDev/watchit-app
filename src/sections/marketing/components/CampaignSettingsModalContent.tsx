@@ -10,6 +10,9 @@ import { Address } from 'viem';
 import { useConfigureCampaign } from '@src/hooks/use-configure-campaign';
 import { useGetPolicyTerms } from '@src/hooks/use-get-policy-terms';
 import { GLOBAL_CONSTANTS } from '@src/config-global';
+import NeonPaper from "@src/sections/publication/NeonPaperContainer.tsx";
+import Box from "@mui/material/Box";
+import LoadingButton from "@mui/lab/LoadingButton";
 
 interface CampaignSettingsModalContentProps {
   onClose: () => void;
@@ -55,7 +58,7 @@ const CampaignSettingsModalContent: FC<CampaignSettingsModalContentProps> = ({
   }, [fundsAllocationAmount, dailyPriceInMMC]);
 
   // Custom hook to configure the campaign
-  const { configure, loading } = useConfigureCampaign();
+  const { configure, loading: loadingConfigure } = useConfigureCampaign();
 
   /**
    * Main handler for confirming the campaign configuration.
@@ -79,6 +82,8 @@ const CampaignSettingsModalContent: FC<CampaignSettingsModalContentProps> = ({
       console.error('Error configuring campaign:', err);
     }
   };
+
+  const RainbowEffect = loadingConfigure ? NeonPaper : Box;
 
   return (
     <>
@@ -155,18 +160,29 @@ const CampaignSettingsModalContent: FC<CampaignSettingsModalContentProps> = ({
 
       <Divider sx={{ padding: '0.3rem 0', borderStyle: 'dashed' }} />
 
-      <DialogActions>
+      <DialogActions sx={{ px: 2, display: 'flex', justifyContent: 'flex-end', gap: 1 }}>
         <Button variant="outlined" onClick={onClose}>
           Cancel
         </Button>
-        <Button
-          variant="contained"
-          onClick={handleOnConfirm}
-          disabled={loading}
-          sx={{ backgroundColor: 'white', color: 'black' }}
+
+        <RainbowEffect
+          {...(loadingConfigure && {
+            borderRadius: '10px',
+            animationSpeed: '3s',
+            padding: '0',
+            width: 'auto',
+          })}
         >
-          {loading ? 'Configuring...' : 'Confirm'}
-        </Button>
+          <LoadingButton
+            variant="contained"
+            sx={{ backgroundColor: '#fff' }}
+            onClick={handleOnConfirm}
+            disabled={loadingConfigure || loadingTerms}
+            loading={loadingConfigure || loadingTerms}
+          >
+            Confirm
+          </LoadingButton>
+        </RainbowEffect>
       </DialogActions>
     </>
   );
