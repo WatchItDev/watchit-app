@@ -100,7 +100,8 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({ src, cid, titleMovie, onBack
           "enableWebVTT": true, // Enable WebVTT subtitles
           "enableIMSC1": false, // Disable IMSC1 subtitles
           "enableCEA708Captions": false, // Disable CEA-708 captions,
-          "lowLatencyMode": true
+          "lowLatencyMode": true,
+          "backBufferLength": 120 // 3 * bufferLength
         };
       }
     }
