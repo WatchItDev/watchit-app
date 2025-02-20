@@ -3,7 +3,7 @@ import { render } from '@testing-library/react';
 import {CarouselArrows} from "@src/components/carousel";
 
 
-describe('CarouselArrows component testing', () => {
+describe('[COMPONENTS]: CarouselArrows component testing', () => {
   it('to match snapshot', () => {
     const{baseElement} = render(<CarouselArrows onNext={() => {}} onPrev={() => {}} />);
     expect(baseElement).toMatchSnapshot();

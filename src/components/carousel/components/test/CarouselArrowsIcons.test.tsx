@@ -2,7 +2,7 @@ import { it, describe, expect } from 'vitest';
 import { render } from '@testing-library/react';
 import {LeftIcon, RightIcon} from '@src/components/carousel/components/CarouselArrowIcons';
 
-describe('LeftIcon component', () => {
+describe('[COMPONENTS]: LeftIcon component', () => {
   it('to match snapshot', () => {
     const { baseElement } = render(<LeftIcon icon="eva:arrow-ios-forward-fill" isRTL={false} />);
     expect(baseElement).toMatchSnapshot();

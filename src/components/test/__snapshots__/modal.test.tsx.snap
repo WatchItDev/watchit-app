@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Components: modal component testing > to match snapshot 1`] = `
+exports[`[COMPONENTS]: Modal component testing > to match snapshot 1`] = `
 <body
   style="padding-right: 1024px; overflow: hidden;"
 >

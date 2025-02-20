@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`LeftIcon component > to match snapshot 1`] = `
+exports[`[COMPONENTS]: LeftIcon component > to match snapshot 1`] = `
 <body>
   <div>
     <span

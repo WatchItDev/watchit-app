@@ -8,7 +8,7 @@ import Modal, { ModalProps } from "@src/components/modal.tsx";
 const fn = vi.fn();
 const renderComponent = (props: ModalProps) => render(<Modal {...props} />);
 
-describe('Components: modal component testing', () => {
+describe('[COMPONENTS]: Modal component testing', () => {
   const modalProps = {
     onClose: fn,
     title: 'Modal title',

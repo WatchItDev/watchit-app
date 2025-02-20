@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`CarouselArrows component testing > to match snapshot 1`] = `
+exports[`[COMPONENTS]: CarouselArrows component testing > to match snapshot 1`] = `
 <body>
   <div>
     <div
