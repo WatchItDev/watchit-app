@@ -59,15 +59,26 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({ src, cid, titleMovie, onBack
           // A larger buffer reduces rebuffering risk but may delay quality switches, while a smaller buffer
           // allows faster adaptation but increases the chance of playback interruptions.
           // Finding the right balance ensures smooth playback without unnecessary network congestion.
-          // (hls_time = 6 + maxBufferLength = 30) = 5 frag
+          // (hls_time = 6 + maxBufferLength = 30) = 5 fragments in buffer
           "maxBufferLength": 30, // Max video buffer length in seconds
           "maxMaxBufferLength": 600, // Absolute max buffer length
+          // maxStarvationDelay defines the maximum acceptable time (in seconds) a fragment can take to download.
+          // If a fragment is estimated to take longer than this value, the player switches to a lower quality
+          // to prevent buffering. The player selects the best quality that matches this time constraint.
+          "maxStarvationDelay": 3,
+          // maxLoadingDelay defines the maximum time allowed for initial video loading.
+          // - The ABR controller ensures:
+          //   - That the time to fetch the first low-quality fragment (420)
+          //   - + the time to fetch the optimal-quality fragment is below this value. (720)
+          // - If the total time exceeds maxLoadingDelay, the player starts with a lower quality 
+          //   to ensure fast playback start.
+          "maxLoadingDelay": 4,
           "enableSoftwareAES": false, // Disable software AES decryption
           "enableMetadataCues": false, // Disable metadata cues
           "enableID3MetadataCues": false, // Disable ID3 metadata cues
           "enableWebVTT": true, // Enable WebVTT subtitles
           "enableIMSC1": false, // Disable IMSC1 subtitles
-          "enableCEA708Captions": false // Disable CEA-708 captions
+          "enableCEA708Captions": false // Disable CEA-708 captions,
         };
       }
     }
