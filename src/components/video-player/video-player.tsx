@@ -53,76 +53,16 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({ src, cid, titleMovie, onBack
     if (player.current) {
       if (isHLSProvider(player.current.provider)) {
         player.current.provider.config = {
-          debug: false, // Disable debug logs
-          autoStartLoad: true, // Start loading video automatically
-          initialLiveManifestSize: 1, // Initial fragment size for playback
-
+          // https://github.com/video-dev/hls.js/blob/master/docs/API.md
           maxBufferLength: 60, // Max video buffer length in seconds
-          maxMaxBufferLength: 300, // Absolute max buffer length
-          // backBufferLength: 15, // Keep 15s of past video in buffer
-          // frontBufferFlushThreshold: 30, // Flush buffer if ahead of 30s
-          maxBufferSize: 80 * 1000 * 1000, // Max buffer size in bytes (20MB)
-          maxBufferHole: 0.2, // Allowed gap between buffered segments
-          startPosition: -1, // Start at the beginning if -1
-          nudgeOffset: 0.2, // Small seek adjustment for stalled playback
-          nudgeMaxRetry: 5, // Max retries to nudge playback
-
-          preferManagedMediaSource: true, // Prefer MSE for playback
+          maxMaxBufferLength: 600, // Absolute max buffer length
           enableWorker: true, // Use web worker for processing
           enableSoftwareAES: false, // Disable software AES decryption
-          startFragPrefetch: true, // Preload next fragment before needed
-
-          testBandwidth: true, // Measure bandwidth for adaptive streaming
-          progressive: false, // Do not enable progressive loading
-          lowLatencyMode: true, // Disable low latency mode for VOD
-
-          fpsDroppedMonitoringPeriod: 3000, // Monitor FPS drops every 3s
-          fpsDroppedMonitoringThreshold: 0.1, // Allow 10% FPS drop before action
-
-          enableDateRangeMetadataCues: false, // Disable metadata cues
           enableMetadataCues: false, // Disable metadata cues
           enableID3MetadataCues: false, // Disable ID3 metadata cues
           enableWebVTT: true, // Enable WebVTT subtitles
           enableIMSC1: false, // Disable IMSC1 subtitles
           enableCEA708Captions: false, // Disable CEA-708 captions
-
-          stretchShortVideoTrack: false, // Do not stretch short video tracks
-          maxAudioFramesDrift: 0.5, // Allow small drift in audio sync
-          forceKeyFrameOnDiscontinuity: true, // Ensure keyframe on segment change
-
-          abrEwmaFastVoD: 3.0, // Fast averaging window for ABR
-          abrEwmaSlowVoD: 9.0, // Slow averaging window for ABR
-          abrEwmaDefaultEstimate: 1_000_000, // Default bandwidth estimate (bps)
-          abrEwmaDefaultEstimateMax: 10_000_000, // Max default estimate (bps)
-          abrBandWidthFactor: 0.9, // Factor applied to bandwidth estimation
-          abrBandWidthUpFactor: 0.75, // Factor applied when increasing bitrate
-          abrMaxWithRealBitrate: true, // Use real bitrate for ABR decisions
-
-          maxStarvationDelay: 3, // Max delay before switching down quality
-          maxLoadingDelay: 3, // Max delay before switching down quality
-          minAutoBitrate: 0, // Minimum auto bitrate (500kbps)
-          emeEnabled: false, // Disable DRM by default
-          licenseXhrSetup: undefined, // No custom DRM license handling
-          drmSystems: {}, // No DRM systems configured
-          drmSystemOptions: {}, // No DRM options specified
-
-          fragLoadPolicy: {
-            default: {
-              maxTimeToFirstByteMs: 5000, // Max time to receive first byte
-              maxLoadTimeMs: 60_000, // Max fragment load time
-              timeoutRetry: {
-                maxNumRetry: 3, // Max retries for timeout
-                retryDelayMs: 500, // Initial retry delay
-                maxRetryDelayMs: 3000, // Max retry delay
-              },
-              errorRetry: {
-                maxNumRetry: 4, // Max retries for errors
-                retryDelayMs: 1000, // Initial retry delay
-                maxRetryDelayMs: 5000, // Max retry delay
-                backoff: 'exponential', // Exponential backoff strategy
-              },
-            },
-          },
         };
       }
     }
