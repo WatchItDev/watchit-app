@@ -184,7 +184,7 @@ const CampaignModalContent: FC<CampaignModalContentProps> = ({ onClose, onConfir
             disabled={loading}
             loading={loading}
           >
-            {loading ? 'Configuring...' : 'Confirm'}
+            Confirm
           </LoadingButton>
         </RainbowEffect>
       </DialogActions>

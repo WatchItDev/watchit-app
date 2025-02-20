@@ -180,18 +180,9 @@ const CampaignSettingsModalContent: FC<CampaignSettingsModalContentProps> = ({
             disabled={loadingConfigure || loadingTerms}
             loading={loadingConfigure || loadingTerms}
           >
-            {loadingConfigure ? 'Configuring...' : 'Confirm'}
+            Confirm
           </LoadingButton>
         </RainbowEffect>
-
-        {/*<Button
-          variant="contained"
-          onClick={handleOnConfirm}
-          disabled={loading}
-          sx={{ backgroundColor: 'white', color: 'black' }}
-        >
-
-        </Button>*/}
       </DialogActions>
     </>
   );
