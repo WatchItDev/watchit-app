@@ -11,7 +11,11 @@ exports[`CarouselArrows component testing > to match snapshot 1`] = `
         tabindex="0"
         type="button"
       >
-        <span />
+        <span
+          data-icon="eva:arrow-ios-forward-fill"
+          data-sx="{"transform":" scaleX(-1)"}"
+          data-testid="iconify"
+        />
         <span
           class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
         />
@@ -21,7 +25,11 @@ exports[`CarouselArrows component testing > to match snapshot 1`] = `
         tabindex="0"
         type="button"
       >
-        <span />
+        <span
+          data-icon="eva:arrow-ios-forward-fill"
+          data-sx="{}"
+          data-testid="iconify"
+        />
         <span
           class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
         />
