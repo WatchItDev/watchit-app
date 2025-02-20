@@ -77,7 +77,7 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({ src, cid, titleMovie, onBack
           //   to minimize startup delay and ensure fast playback.
           // - Unlike maxStarvationDelay, this setting only applies at the **start** of playback,
           //   ensuring the video loads quickly even if it means initially using a lower quality.
-          "maxLoadingDelay": 4,
+          "maxLoadingDelay": 3,
           "enableSoftwareAES": false, // Disable software AES decryption
           "enableMetadataCues": false, // Disable metadata cues
           "enableID3MetadataCues": false, // Disable ID3 metadata cues
