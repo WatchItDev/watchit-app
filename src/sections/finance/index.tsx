@@ -29,7 +29,7 @@ export default function OverviewBankingView() {
   const { transactions, loading } = useGetSmartWalletTransactions();
   const [widgetSeriesData, setWidgetSeriesData] = useState<{ x: string; y: number }[]>([]);
   const [percent, setPercent] = useState(0);
-  const { data: results } = useProfileFollowing({
+  const { data: results, loading: loadingProfiles } = useProfileFollowing({
     // @ts-ignore
     for: sessionData?.profile?.id,
   });
@@ -80,7 +80,7 @@ export default function OverviewBankingView() {
               }}
             />
 
-            {!mdUp ? <FinanceQuickTransfer list={following} /> : null}
+            {!mdUp ? <FinanceQuickTransfer list={following} loading={loadingProfiles} /> : null}
             {lgUp ? <FinanceEarnTokens lgUp={lgUp} /> : null}
           </Stack>
 
@@ -114,6 +114,7 @@ export default function OverviewBankingView() {
         <Grid xs={12} md={4}>
           <Stack spacing={2}>
             <FinanceQuickTransfer
+              loading={loadingProfiles}
               list={following}
               sx={{
                 display: { xs: 'none', md: 'flex' },
