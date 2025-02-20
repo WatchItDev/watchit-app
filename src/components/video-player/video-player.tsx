@@ -54,10 +54,11 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({ src, cid, titleMovie, onBack
       if (isHLSProvider(player.current.provider)) {
         player.current.provider.config = {
           // https://github.com/video-dev/hls.js/blob/master/docs/API.md
-          // maxBufferLength controls how much video (in seconds) the player tries to keep buffered.
-          // Increasing this value can reduce buffering issues on unstable networks but may also
-          // consume more bandwidth and memory. A very high value might overload the network, causing
-          // additional buffering instead of preventing it. Adjust based on network conditions.
+          // maxBufferLength defines the target amount of video (in seconds) the player tries to keep buffered.
+          // The buffer plays a crucial role in balancing playback stability and adaptive bitrate (ABR) decisions.
+          // A larger buffer reduces rebuffering risk but may delay quality switches, while a smaller buffer
+          // allows faster adaptation but increases the chance of playback interruptions.
+          // Finding the right balance ensures smooth playback without unnecessary network congestion.
           // (hls_time = 6 + maxBufferLength = 30) = 5 frag
           "maxBufferLength": 30, // Max video buffer length in seconds
           "maxMaxBufferLength": 600, // Absolute max buffer length
