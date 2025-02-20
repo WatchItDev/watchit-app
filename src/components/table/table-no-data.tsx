@@ -18,7 +18,7 @@ export default function TableNoData({ loading, notFound, sx, emptyText= 'No data
   return (
     <TableRow>
       {notFound ? (
-        <TableCell colSpan={12} sx={{ p: 0, pt: 2 }}>
+        <TableCell colSpan={12} sx={{ p: 0 }}>
           <EmptyContent
             filled
             title={loading ? 'Loading ...' : emptyText}

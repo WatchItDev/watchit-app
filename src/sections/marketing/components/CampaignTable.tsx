@@ -18,6 +18,9 @@ import Scrollbar from '@src/components/scrollbar';
 import CampaignTableRow from '@src/sections/marketing/components/CampaignTableRow';
 import { COLORS } from '@src/layouts/config-layout';
 import useGetCampaings from '@src/hooks/use-get-campaings';
+import {LoadingScreen} from "@src/components/loading-screen";
+import TableCell from "@mui/material/TableCell";
+import TableRow from "@mui/material/TableRow";
 
 const CampaignTable: FC = () => {
   const { campaigns, loading, fetchLogs, error } = useGetCampaings();
@@ -59,30 +62,38 @@ const CampaignTable: FC = () => {
                 numSelected={table.selected.length}
                 onSort={table.onSort}
               />
-              <TableBody>
-                {formattedCampaigns
-                  .slice(
-                    table.page * table.rowsPerPage,
-                    table.page * table.rowsPerPage + table.rowsPerPage
-                  )
-                  .map((row: any) => (
-                    <CampaignTableRow
-                      key={row.id}
-                      row={row}
-                      selected={table.selected.includes(String(row.id))}
-                    />
-                  ))}
-                <TableEmptyRows
-                  height={denseHeight}
-                  emptyRows={emptyRows(table.page, table.rowsPerPage, formattedCampaigns.length)}
-                />
+              { loading ? (
+                  <TableRow sx={{height: denseHeight}}>
+                    <TableCell colSpan={9} >
+                      <LoadingScreen />
+                    </TableCell>
+                  </TableRow>
+                ) : (
+                <TableBody>
+                  {formattedCampaigns
+                    .slice(
+                      table.page * table.rowsPerPage,
+                      table.page * table.rowsPerPage + table.rowsPerPage
+                    )
+                    .map((row: any) => (
+                      <CampaignTableRow
+                        key={row.id}
+                        row={row}
+                        selected={table.selected.includes(String(row.id))}
+                      />
+                    ))}
+                  <TableEmptyRows
+                    height={denseHeight}
+                    emptyRows={emptyRows(table.page, table.rowsPerPage, formattedCampaigns.length)}
+                  />
 
-                <TableNoData
-                  notFound={notFound}
-                  loading={loading}
-                  emptyText={"No campaigns have been registered yet"}
-                />
-              </TableBody>
+                  <TableNoData
+                    notFound={notFound}
+                    loading={loading}
+                    emptyText={"No campaigns have been registered yet"}
+                  />
+                </TableBody>
+              )}
             </Table>
           </Box>
         </Scrollbar>
