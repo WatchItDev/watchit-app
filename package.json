@@ -86,6 +86,7 @@
     "framer-motion": "^10.12.21",
     "helia": "^5.1.1",
     "history": "^5.3.0",
+    "hls.js": "^1.5.20",
     "i": "^0.3.7",
     "i18next": "^23.2.11",
     "i18next-browser-languagedetector": "^7.1.0",
