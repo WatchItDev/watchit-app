@@ -1,11 +1,11 @@
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 
 // MUI components
 import TableBody from '@mui/material/TableBody';
 import { Box, Table, TableContainer } from '@mui/material';
 
 // Project components
-import { CAMPAIGN_TABLE_HEAD, StrategyType } from '@src/types/marketing';
+import { CAMPAIGN_TABLE_HEAD } from '@src/types/marketing';
 import {
   emptyRows,
   TableEmptyRows,
@@ -15,19 +15,34 @@ import {
   useTable,
 } from '@src/components/table';
 import Scrollbar from '@src/components/scrollbar';
-import CampaignTableRow from '@src/sections/marketing/components/CampaignTableRow.tsx';
-import { COLORS } from '@src/layouts/config-layout.ts';
+import CampaignTableRow from '@src/sections/marketing/components/CampaignTableRow';
+import { COLORS } from '@src/layouts/config-layout';
+import useGetCampaings from '@src/hooks/use-get-campaings';
 
-interface CampaignTableProps {
-  strategy: StrategyType;
-}
-const CampaignTable: FC<CampaignTableProps> = ({ strategy }) => {
+const CampaignTable: FC = () => {
+  const { campaigns, loading, fetchLogs, error } = useGetCampaings();
+
+  console.log('campaigns data', campaigns);
+  console.log('loading', loading);
+  console.log('error', error);
+
+  useEffect(() => {
+    fetchLogs();
+  }, []);
+
   const table = useTable({
     defaultOrder: 'desc',
     defaultOrderBy: 'createdAt',
   });
 
-  const notFound = !strategy.campaigns.length;
+  // Map each contract log to the structure required by CampaignTableRow.
+  const formattedCampaigns = campaigns.map((item: any) => ({
+    campaign: item.args?.campaign || item.transactionHash,
+    name: item?.args?.description || 'Campaign Name',
+    policy: item?.args?.policy,
+  }));
+
+  const notFound = !formattedCampaigns.length && !loading;
   const denseHeight = table.dense ? 52 : 72;
 
   return (
@@ -40,17 +55,17 @@ const CampaignTable: FC<CampaignTableProps> = ({ strategy }) => {
                 order={table.order}
                 orderBy={table.orderBy}
                 headLabel={CAMPAIGN_TABLE_HEAD}
-                rowCount={strategy.campaigns.length}
+                rowCount={formattedCampaigns.length}
                 numSelected={table.selected.length}
                 onSort={table.onSort}
               />
               <TableBody>
-                {strategy.campaigns
+                {formattedCampaigns
                   .slice(
                     table.page * table.rowsPerPage,
                     table.page * table.rowsPerPage + table.rowsPerPage
                   )
-                  .map((row) => (
+                  .map((row: any) => (
                     <CampaignTableRow
                       key={row.id}
                       row={row}
@@ -59,10 +74,14 @@ const CampaignTable: FC<CampaignTableProps> = ({ strategy }) => {
                   ))}
                 <TableEmptyRows
                   height={denseHeight}
-                  emptyRows={emptyRows(table.page, table.rowsPerPage, strategy.campaigns.length)}
+                  emptyRows={emptyRows(table.page, table.rowsPerPage, formattedCampaigns.length)}
                 />
 
-                <TableNoData notFound={notFound} loading={false} emptyText={'Still haven\'t registered any campaigns'} />
+                <TableNoData
+                  notFound={notFound}
+                  loading={loading}
+                  emptyText={"No campaigns have been registered yet"}
+                />
               </TableBody>
             </Table>
           </Box>
@@ -70,7 +89,7 @@ const CampaignTable: FC<CampaignTableProps> = ({ strategy }) => {
       </TableContainer>
 
       <TablePaginationCustom
-        count={strategy.campaigns.length}
+        count={formattedCampaigns.length}
         page={table.page}
         rowsPerPage={table.rowsPerPage}
         onPageChange={table.onChangePage}

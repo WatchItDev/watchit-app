@@ -1,4 +1,5 @@
 import React from "react";
+import { Address } from 'viem';
 
 export type ICampaignTableFilters = {
   status: string;
@@ -21,16 +22,9 @@ export interface StrategyType {
 }
 
 export interface CampaignType {
-  id: string;
+  campaign: Address;
   name: string;
-  status: CampaignStatusType;
-  startDate: string;
-  endDate: string;
-  access: string;
-  budget: string;
-  available: string;
-  perUser: string;
-  type: CampaignCategoryType;
+  policy: Address;
 }
 
 export type Accumulator = Record<string, number>;
@@ -54,11 +48,12 @@ export const CampaignCategories = [
 
 
 export const CAMPAIGN_TABLE_HEAD = [
-  { id: 'name', label: 'Name', width: 400 },
+  { id: 'name', label: 'Name' },
+  { id: 'limit', label: 'Limit'},
   { id: 'budget', label: 'Budget'},
-  { id: 'available', label: 'Available'},
-  { id: 'type', label: 'Type'},
+  { id: 'usage', label: 'Usage'},
   { id: 'access', label: 'Access' },
+  { id: 'type', label: 'Type'},
   { id: 'status', label: 'Status' },
 ];
 

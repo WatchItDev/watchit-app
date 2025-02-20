@@ -16,6 +16,14 @@ import CustomPopover, { usePopover } from '@src/components/custom-popover';
 import { useBoolean } from '@src/hooks/use-boolean';
 import { ConfirmDialog } from '@src/components/custom-dialog';
 import CampaignSettingsModal from "@src/sections/marketing/components/CampaignSettingsModal.tsx";
+import { useGetCampaignFundsBalance } from '@src/hooks/use-get-campaign-funds-balance.ts';
+import { useEffect } from 'react';
+import { Address, formatUnits } from 'viem';
+import { useGetCampaignFundsAllocation } from '@src/hooks/use-get-campaign-funds-allocation.ts';
+import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
+import { useCampaignPaused } from '@src/hooks/use-campaign-paused.ts';
+import { useGetCampaignQuotaLimit } from '@src/hooks/use-get-campaign-quota-limit.ts';
+import { useGetCampaignTotalUsage } from '@src/hooks/use-get-campaign-total-usage.ts';
 
 // ----------------------------------------------------------------------
 
@@ -24,8 +32,12 @@ type Props = {
   selected: boolean;
 };
 
+const POLICY_TEXTS: Record<string, string> = {
+  [`${GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS.toLowerCase()}`]: "Subscription",
+};
+
 const LBL_COLORS = {
-  subscription: COLORS.success,
+  subscription: COLORS.info,
   rental: COLORS.info,
   trial: COLORS.warning,
   custom: COLORS.danger,
@@ -38,12 +50,48 @@ const LBL_STATUS_COLORS = {
 
 // ----------------------------------------------------------------------
 export default function CampaignTableRow({ row, selected }: Props) {
+  const { campaign, name, policy } = row;
   const popover = usePopover();
-
   const confirm = useBoolean();
   const settingsModal = useBoolean();
+  const { fundsBalance, loading, fetchCampaignFundsBalance, error } = useGetCampaignFundsBalance();
+  const { fundsAllocation, loading: loadingAllocation, fetchFundsAllocation, error: errorAllocation } = useGetCampaignFundsAllocation();
+  const { paused, loading: loadingPaused, fetchCampaignPaused, error: errorPaused } = useCampaignPaused();
+  const { quotaLimit, loading: loadingQuotaLimit, fetchQuotaLimit, error: errorQuotaLimit } = useGetCampaignQuotaLimit();
+  const { totalUsage, loading: loadingTotalUsage, fetchTotalUsage, error: errorTotalUsage } = useGetCampaignTotalUsage();
+  const type = POLICY_TEXTS[`${policy.toLowerCase()}`].toLowerCase();
+  const status = paused ? 'paused' : 'active';
 
-  const { name, budget, available, type, access, id, status, perUser } = row;
+  // console.log('hello campaign balance')
+  // console.log(fundsBalance)
+  // console.log(loading)
+  // console.log(error)
+  //
+  // console.log('hello campaign balance allocation')
+  // console.log(fundsAllocation)
+  // console.log(loadingAllocation)
+  // console.log(errorAllocation)
+  //
+  // console.log('hello campaign paused')
+  // console.log(paused)
+  // console.log(loadingPaused)
+  // console.log(errorPaused)
+  // console.log('hello quota limit')
+  // console.log(quotaLimit)
+  // console.log(loadingQuotaLimit)
+  // console.log(errorQuotaLimit)
+  console.log('hello total usage')
+  console.log(totalUsage)
+  console.log(loadingTotalUsage)
+  console.log(errorTotalUsage)
+
+  useEffect(() => {
+    fetchCampaignFundsBalance(campaign as Address)
+    fetchFundsAllocation(campaign as Address)
+    fetchCampaignPaused(campaign as Address)
+    fetchQuotaLimit(campaign as Address)
+    fetchTotalUsage(campaign as Address)
+  }, []);
 
   const onSettingRow = () => {
     settingsModal.onTrue();
@@ -61,13 +109,20 @@ export default function CampaignTableRow({ row, selected }: Props) {
     }, 1000);
   };
 
+  // Aseguramos que ambos valores estén disponibles y sean válidos
+  const totalUsageBigInt = BigInt(totalUsage || "0");
+  const fundsAllocationBigInt = BigInt(fundsAllocation || "0");
+
+// Multiplicamos y formateamos el resultado (asumiendo 18 decimales)
+  const totalUsageMMCFormatted = formatUnits(totalUsageBigInt * fundsAllocationBigInt, 18);
+
   const renderPrimary = (
     <>
-      <TableRow hover selected={selected} key={id}>
+      <TableRow hover selected={selected} key={campaign}>
         <TableCell sx={{ display: 'flex', alignItems: 'center' }}>
           <ListItemText
             primary={name}
-            secondary={`${perUser} MMC per user`}
+            secondary={`${fundsAllocation} MMC per user`}
             primaryTypographyProps={{ typography: 'body2' }}
             secondaryTypographyProps={{
               component: 'span',
@@ -78,7 +133,7 @@ export default function CampaignTableRow({ row, selected }: Props) {
 
         <TableCell>
           <ListItemText
-            primary={budget}
+            primary={`${quotaLimit}`}
             primaryTypographyProps={{ typography: 'body2' }}
             secondaryTypographyProps={{
               mt: 0.5,
@@ -89,7 +144,23 @@ export default function CampaignTableRow({ row, selected }: Props) {
         </TableCell>
 
         <TableCell>
-          <Typography variant="body2">{available}</Typography>
+          <ListItemText
+            primary={`${fundsBalance ? formatUnits(fundsBalance, 18) : "0"} MMC`}
+            primaryTypographyProps={{ typography: 'body2' }}
+            secondaryTypographyProps={{
+              mt: 0.5,
+              component: 'span',
+              typography: 'caption',
+            }}
+          />
+        </TableCell>
+
+        <TableCell>
+          <Typography variant="body2">{totalUsageMMCFormatted} MMC</Typography>
+        </TableCell>
+
+        <TableCell>
+          <Typography variant="body2">{'access'}</Typography>
         </TableCell>
 
         <TableCell>
@@ -109,10 +180,6 @@ export default function CampaignTableRow({ row, selected }: Props) {
         </TableCell>
 
         <TableCell>
-          <Typography variant="body2">{access}</Typography>
-        </TableCell>
-
-        <TableCell>
           <Grid display="flex" alignItems="center" justifyContent="space-between">
             <Typography
               component={'span'}
@@ -125,7 +192,7 @@ export default function CampaignTableRow({ row, selected }: Props) {
                 py: '2px',
               }}
             >
-              {capitalizeFirstLetter(status)}
+              {status}
             </Typography>
 
             <IconButton color={popover.open ? 'inherit' : 'default'} onClick={popover.onOpen}>
@@ -196,7 +263,15 @@ export default function CampaignTableRow({ row, selected }: Props) {
         }
       />
 
-      <CampaignSettingsModal open={settingsModal.value} onClose={settingsModal.onFalse} onConfirm={()=>{}} />
+      <CampaignSettingsModal
+        open={settingsModal.value}
+        onClose={settingsModal.onFalse}
+        onConfirm={() => {}}
+        campaignData={{
+          address: campaign,
+          description: name,
+        }}
+      />
     </>
   );
 

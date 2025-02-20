@@ -1,14 +1,9 @@
 import Grid from '@mui/material/Grid';
-
-import { generateRandomData } from '@src/sections/marketing/fakeData';
-import { StrategyType } from '@src/types/marketing';
 import Container from '@mui/material/Container';
 import CampaignCreate from '@src/sections/marketing/components/CampaignCreate.tsx';
 import CampaignTable from '@src/sections/marketing/components/CampaignTable';
 
 const StrategyOverview = () => {
-  const strategy: StrategyType[] = generateRandomData(1);
-
   return (
     <Container
       sx={{
@@ -28,7 +23,7 @@ const StrategyOverview = () => {
           mt: 1,
         }}
       >
-        <CampaignTable strategy={strategy[0]} key={`key-table-strategy-campaigns`} />
+        <CampaignTable />
       </Grid>
     </Container>
   );

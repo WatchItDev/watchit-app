@@ -1,171 +1,177 @@
+// CampaignModalContent.tsx
 import React, { FC, useState } from 'react';
-import { sha256 } from 'viem';
-import { useSelector } from 'react-redux';
-
-import Divider from '@mui/material/Divider';
-import Typography from '@mui/material/Typography';
-import Grid from '@mui/material/Grid';
 import {
   Button,
   TextField,
-  Select,
-  InputLabel,
-  MenuItem,
+  DialogActions,
+  Grid,
+  Typography,
+  Divider,
   FormControl,
-  SelectChangeEvent,
+  InputLabel,
+  Select,
+  MenuItem,
+  FormHelperText,
 } from '@mui/material';
-import DialogActions from '@mui/material/DialogActions';
-
-import { CampaignCategories } from '@src/types/marketing.ts';
-import { storeCampaign } from '@src/utils/supabase-actions.ts';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { useCreateCampaign } from '@src/hooks/use-create-campaign';
+import { GLOBAL_CONSTANTS } from '@src/config-global';
+import { SelectChangeEvent } from '@mui/material/Select';
 
 interface CampaignModalContentProps {
   onClose: () => void;
   onConfirm: () => void;
 }
 
+// Policy options array for easy extension in the future
+const policyOptions = [
+  { label: 'Subscription', value: GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS },
+];
+
 const CampaignModalContent: FC<CampaignModalContentProps> = ({ onClose, onConfirm }) => {
-  const sessionData = useSelector((state: any) => state.auth.session);
-  const [formValues, setFormValues] = useState<{
-    description: string;
-    budget: string;
-    type: string;
-    budgetUser: string;
-  }>({
+  const { create, loading, error } = useCreateCampaign();
+
+  // State to hold form values for policy and description
+  const [formValues, setFormValues] = useState({
+    policy: '',
     description: '',
-    budget: '',
-    type: 'subscription',
-    budgetUser: '',
   });
 
-  const handleInputChange = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | SelectChangeEvent<unknown>
-  ) => {
-    const { name, value } = event.target as
-      | HTMLInputElement
-      | HTMLTextAreaElement
-      | { name: string; value: unknown };
-    setFormValues({
-      ...formValues,
+  // State for the selected expiration date (Date object)
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+
+  // Handler for text field changes
+  const handleTextChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    setFormValues((prev) => ({
+      ...prev,
       [name]: value,
-    });
+    }));
   };
 
+  // Handler for select changes
+  const handleSelectChange = (event: SelectChangeEvent<string>) => {
+    const { name, value } = event.target;
+    setFormValues((prev) => ({
+      ...prev,
+      [name as string]: value,
+    }));
+  };
+
+  // Validate fields, calculate expiration in seconds, and call the create function from the hook
   const handleOnConfirm = async () => {
-    const address = sessionData?.profile?.ownedBy?.address;
-    const { description, budget, type, budgetUser } = formValues;
+    const { policy, description } = formValues;
+    if (!policy || !description || !selectedDate) {
+      // You could add further validation or show an error message here
+      return;
+    }
 
-    const strategyId = sha256(`0x + ${address}${description}${budget}`);
+    // Calculate expiration in seconds from now until the selected date
+    const now = new Date();
+    const expirationSeconds = Math.floor((selectedDate.getTime() - now.getTime()) / 1000);
+    if (expirationSeconds <= 0) {
+      // If expirationSeconds is not positive, do not proceed
+      return;
+    }
 
-    const success = await storeCampaign({
-      address,
+    console.log('hello create campaign');
+    console.log(policy);
+    console.log(expirationSeconds);
+    console.log(description);
+
+    await create({
+      policy,
+      expiration: expirationSeconds,
       description,
-      budget,
-      type,
-      budgetUser,
-      strategyId,
     });
 
-    if (success) {
-      onConfirm?.();
-    }
+    // Close the modal if the creation was successful
+    onConfirm();
   };
 
   return (
     <>
-      <Divider
-        sx={{
-          padding: '0.3rem 0',
-          mb: 4,
-          borderStyle: 'dashed',
-        }}
-      />
+      <Divider sx={{ padding: '0.3rem 0', mb: 2, borderStyle: 'dashed' }} />
 
-      <Grid container spacing={2} sx={{ mb: 2, px: 5 }}>
-        <Typography sx={{ opacity: 0.7 }} variant="body1" color="text.secondary">
-          A campaign is a way to promote your content as part of strategy. Complete all the
-          information required.
+      <Grid container spacing={2} sx={{ mb: 2, px: 2, m: 0, width: '100%' }}>
+        <Typography variant="body1" color="text.secondary" sx={{ opacity: 0.7 }}>
+          Complete the required information to create the campaign.
         </Typography>
+
+        {/* Policy select with helper text */}
         <FormControl fullWidth sx={{ mt: 3 }}>
-          <InputLabel id="campaingType">Campaign type</InputLabel>
+          <InputLabel id="policy-select-label">Policy</InputLabel>
           <Select
-            labelId="campaingType"
-            id="campaignType"
-            value={formValues.type}
-            label="Campaign type"
-            name="type"
-            onChange={handleInputChange}
+            labelId="policy-select-label"
+            id="policy"
+            name="policy"
+            value={formValues.policy}
+            label="Policy"
+            onChange={handleSelectChange}
           >
-            {CampaignCategories.map((category) => (
-              <MenuItem key={`${category.label}`} value={category.value}>
-                {category.label}
+            {policyOptions.map((option) => (
+              <MenuItem key={option.value} value={option.value}>
+                {option.label}
               </MenuItem>
             ))}
           </Select>
+          <FormHelperText>
+            Select a policy for your campaign.
+          </FormHelperText>
         </FormControl>
 
-        {/*Input for description*/}
-        <FormControl fullWidth sx={{ mt: 3, mb: 3 }}>
-          <TextField
-            fullWidth
-            autoFocus
-            label="Enter a description"
-            type="text"
-            name="description"
-            value={formValues.description}
-            onChange={handleInputChange}
-            placeholder="e.g., 'Promote my new album'"
-            helperText={'This description will help you identify the campaign.'}
+        {/* DatePicker for expiration with helper text via slotProps */}
+        <LocalizationProvider dateAdapter={AdapterDateFns}>
+          <DatePicker
+            label="Expiration Date"
+            value={selectedDate}
+            onChange={(newValue) => setSelectedDate(newValue)}
+            minDate={new Date()}
+            slotProps={{
+              textField: {
+                helperText: "Please select the duration of your campaign.",
+                fullWidth: true,
+                sx: { mt: 2 },
+              },
+            }}
           />
-        </FormControl>
+        </LocalizationProvider>
 
-        {/*Input for budget*/}
-        <FormControl fullWidth sx={{ mb: 3 }}>
-          <TextField
-            fullWidth
-            autoFocus
-            label="Enter a budget for campaign"
-            type="number"
-            name="budget"
-            value={formValues.budget}
-            onChange={handleInputChange}
-            placeholder="e.g., 5000"
-            helperText={'This budget will be distributed among the campaign.'}
-          />
-        </FormControl>
-
-        <FormControl fullWidth sx={{ mb: 3 }}>
-          <TextField
-            fullWidth
-            autoFocus
-            label="Enter a budget per user"
-            type="number"
-            name="budgetUser"
-            value={formValues.budgetUser}
-            onChange={handleInputChange}
-            placeholder="e.g., 250"
-            helperText={'This budget will be distributed among the campaign.'}
-          />
-        </FormControl>
+        {/* Text field for description with helper text */}
+        <TextField
+          fullWidth
+          label="Description"
+          type="text"
+          name="description"
+          value={formValues.description}
+          onChange={handleTextChange}
+          sx={{ mt: 2 }}
+          placeholder="e.g., New product promotion"
+          helperText="This description will help you identify the campaign."
+        />
       </Grid>
 
-      <Divider
-        sx={{
-          padding: '0.3rem 0',
-          borderStyle: 'dashed',
-        }}
-      />
+      {error && (
+        <Typography color="error" variant="body2" sx={{ px: 5 }}>
+          {error}
+        </Typography>
+      )}
 
-      <DialogActions>
-        <Button variant={'outlined'} onClick={onClose}>
+      <Divider sx={{ padding: '0.3rem 0', mt: 2, borderStyle: 'dashed' }} />
+
+      <DialogActions sx={{ px: 2 }}>
+        <Button variant="outlined" onClick={onClose} disabled={loading}>
           Cancel
         </Button>
         <Button
-          variant={'contained'}
+          variant="contained"
           onClick={handleOnConfirm}
+          disabled={loading}
           sx={{ backgroundColor: 'white', color: 'black' }}
         >
-          Confirm
+          {loading ? 'Creating...' : 'Confirm'}
         </Button>
       </DialogActions>
     </>
