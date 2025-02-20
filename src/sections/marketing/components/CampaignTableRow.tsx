@@ -25,6 +25,9 @@ import { useGetCampaignQuotaLimit } from '@src/hooks/use-get-campaign-quota-limi
 import { useGetCampaignTotalUsage } from '@src/hooks/use-get-campaign-total-usage.ts';
 import { useCampaignPause } from '@src/hooks/use-campaign-pause';
 import { useCampaignUnPause } from '@src/hooks/use-campaign-unpause';
+import {
+  CampaignConfiguredIndicatorState
+} from "@src/sections/marketing/components/CampaignConfiguredIndicatorState.tsx";
 
 // ----------------------------------------------------------------------
 
@@ -96,6 +99,7 @@ export default function CampaignTableRow({ row, selected }: Props) {
     <>
       <TableRow hover selected={selected} key={campaign}>
         <TableCell sx={{ display: 'flex', alignItems: 'center' }}>
+          <CampaignConfiguredIndicatorState quotaLimit={quotaLimit} />
           <ListItemText
             primary={name}
             secondary={`${fundsAllocation} MMC per user`}
