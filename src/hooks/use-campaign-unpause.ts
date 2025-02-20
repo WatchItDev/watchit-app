@@ -40,7 +40,7 @@ export const useCampaignUnPause = (): UseCampaignUnPauseHook => {
     try {
       const unPauseData = encodeFunctionData({
         abi: CampaignSubscriptionTplAbi.abi,
-        functionName: 'unPause',
+        functionName: 'unpause',
         args: [],
       });
 
