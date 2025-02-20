@@ -14,7 +14,7 @@ exports[`[COMPONENTS]: CarouselArrowIndex component testing > to match snapshot 
         <span
           data-icon="fas fa-arrow-right"
           data-sx="{"transform":" scaleX(-1)"}"
-          data-testid="iconify"
+          data-testid="leftButton"
         />
         <span
           class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
@@ -35,7 +35,7 @@ exports[`[COMPONENTS]: CarouselArrowIndex component testing > to match snapshot 
         <span
           data-icon="fas fa-arrow-right"
           data-sx="{}"
-          data-testid="iconify"
+          data-testid="rightButton"
         />
         <span
           class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"

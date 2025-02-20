@@ -65,7 +65,7 @@ export default function CarouselArrows(props: Readonly<CarouselArrowsProps>) {
 
   if (hasChild) {
     return (
-      <Stack sx={sx} {...other}>
+      <Stack data-testid={'carouselArrowsContainer'} sx={sx} {...other}>
         {onNext && (
           <StyledIconButton
             filled={filled}
