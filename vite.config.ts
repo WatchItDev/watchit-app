@@ -24,6 +24,7 @@ export default defineConfig(({ mode }) => {
         org: "watchit",
         project: "watchit-app",
         authToken: process.env.VITE_SENTRY_AUTH_TOKEN,
+        telemetry: false,
       }),
       nodePolyfills({
         // To add only specific polyfills, add them here. If no option is passed, adds all polyfills
