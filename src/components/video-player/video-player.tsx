@@ -99,7 +99,8 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({ src, cid, titleMovie, onBack
           "enableID3MetadataCues": false, // Disable ID3 metadata cues
           "enableWebVTT": true, // Enable WebVTT subtitles
           "enableIMSC1": false, // Disable IMSC1 subtitles
-          "enableCEA708Captions": false // Disable CEA-708 captions,
+          "enableCEA708Captions": false, // Disable CEA-708 captions,
+          "lowLatencyMode": true
         };
       }
     }
