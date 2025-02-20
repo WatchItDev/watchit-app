@@ -62,16 +62,21 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({ src, cid, titleMovie, onBack
           // (hls_time = 6 + maxBufferLength = 30) = 5 fragments in buffer
           "maxBufferLength": 30, // Max video buffer length in seconds
           "maxMaxBufferLength": 600, // Absolute max buffer length
-          // maxStarvationDelay defines the maximum acceptable time (in seconds) a fragment can take to download.
-          // If a fragment is estimated to take longer than this value, the player switches to a lower quality
-          // to prevent buffering. The player selects the best quality that matches this time constraint.
+          // maxStarvationDelay defines the maximum acceptable time (in seconds) a fragment can take to download 
+          // while playback is already in progress.
+          // - If a fragment is estimated to take longer than this value and the buffer is running low, 
+          //   the player switches the best quality that matches this time constraint.
+          // - This ensures a continuous playback experience by adapting the quality to network conditions in real-time.
           "maxStarvationDelay": 3,
-          // maxLoadingDelay defines the maximum time allowed for initial video loading.
+          // maxLoadingDelay defines the maximum allowed time (in seconds) to load the initial fragments when starting playback.
           // - The ABR controller ensures:
-          //   - That the time to fetch the first low-quality fragment (420)
-          //   - + the time to fetch the optimal-quality fragment is below this value. (720)
-          // - If the total time exceeds maxLoadingDelay, the player starts with a lower quality 
-          //   to ensure fast playback start.
+          //   - The time to fetch the first low-quality fragment (e.g., 420p)
+          //   - + The time to fetch the estimated optimal-quality fragment (e.g., 720p)
+          //   - is below this value.
+          // - If the total loading time exceeds maxLoadingDelay, the player starts with a lower quality 
+          //   to minimize startup delay and ensure fast playback.
+          // - Unlike maxStarvationDelay, this setting only applies at the **start** of playback,
+          //   ensuring the video loads quickly even if it means initially using a lower quality.
           "maxLoadingDelay": 4,
           "enableSoftwareAES": false, // Disable software AES decryption
           "enableMetadataCues": false, // Disable metadata cues
