@@ -43,10 +43,7 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({ src, cid, titleMovie, onBack
     };
 
     document?.addEventListener('keydown', handleKeyDown);
-
-    return () => {
-      document?.removeEventListener('keydown', handleKeyDown);
-    };
+    return () => document?.removeEventListener('keydown', handleKeyDown);
   }, [onBack]);
 
   useEffect(() => {
@@ -106,7 +103,7 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({ src, cid, titleMovie, onBack
         };
       }
     }
-  }, []);
+  }, [player.current]);
 
   return (
     <MediaPlayer
