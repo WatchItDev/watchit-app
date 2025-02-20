@@ -4,7 +4,7 @@ import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import ListItemText from '@mui/material/ListItemText';
 import Grid from '@mui/material/Grid';
-import { Button, Divider, IconButton, MenuItem } from '@mui/material';
+import { IconButton, MenuItem } from '@mui/material';
 import Switch from '@mui/material/Switch';
 
 // Project components
@@ -14,7 +14,6 @@ import { COLORS } from '@src/utils/colors.ts';
 import Iconify from '@src/components/iconify';
 import CustomPopover, { usePopover } from '@src/components/custom-popover';
 import { useBoolean } from '@src/hooks/use-boolean';
-import { ConfirmDialog } from '@src/components/custom-dialog';
 import CampaignSettingsModal from "@src/sections/marketing/components/CampaignSettingsModal.tsx";
 import { useGetCampaignFundsBalance } from '@src/hooks/use-get-campaign-funds-balance.ts';
 import { useEffect } from 'react';
@@ -24,6 +23,8 @@ import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 import { useCampaignPaused } from '@src/hooks/use-campaign-paused.ts';
 import { useGetCampaignQuotaLimit } from '@src/hooks/use-get-campaign-quota-limit.ts';
 import { useGetCampaignTotalUsage } from '@src/hooks/use-get-campaign-total-usage.ts';
+import { useCampaignPause } from '@src/hooks/use-campaign-pause';
+import { useCampaignUnPause } from '@src/hooks/use-campaign-unpause';
 
 // ----------------------------------------------------------------------
 
@@ -52,38 +53,22 @@ const LBL_STATUS_COLORS = {
 export default function CampaignTableRow({ row, selected }: Props) {
   const { campaign, name, policy, expiration } = row;
   const popover = usePopover();
-  const confirm = useBoolean();
   const settingsModal = useBoolean();
   const { fundsBalance, loading, fetchCampaignFundsBalance, error } = useGetCampaignFundsBalance();
   const { fundsAllocation, loading: loadingAllocation, fetchFundsAllocation, error: errorAllocation } = useGetCampaignFundsAllocation();
   const { paused, loading: loadingPaused, fetchCampaignPaused, error: errorPaused } = useCampaignPaused();
   const { quotaLimit, loading: loadingQuotaLimit, fetchQuotaLimit, error: errorQuotaLimit } = useGetCampaignQuotaLimit();
   const { totalUsage, loading: loadingTotalUsage, fetchTotalUsage, error: errorTotalUsage } = useGetCampaignTotalUsage();
+  const { pause, loading: loadingPause } = useCampaignPause();
+  const { unPause, loading: loadingUnPause } = useCampaignUnPause();
   const type = POLICY_TEXTS[`${policy.toLowerCase()}`].toLowerCase();
   const status = paused ? 'paused' : 'active';
-
-  // console.log('hello campaign balance')
-  // console.log(fundsBalance)
-  // console.log(loading)
-  // console.log(error)
-  //
-  // console.log('hello campaign balance allocation')
-  // console.log(fundsAllocation)
-  // console.log(loadingAllocation)
-  // console.log(errorAllocation)
-  //
-  // console.log('hello campaign paused')
-  // console.log(paused)
-  // console.log(loadingPaused)
-  // console.log(errorPaused)
-  // console.log('hello quota limit')
-  // console.log(quotaLimit)
-  // console.log(loadingQuotaLimit)
-  // console.log(errorQuotaLimit)
-  console.log('hello total usage')
-  console.log(totalUsage)
-  console.log(loadingTotalUsage)
-  console.log(errorTotalUsage)
+  const totalUsageBigInt = BigInt(totalUsage || "0");
+  const fundsAllocationBigInt = BigInt(fundsAllocation || "0");
+  const totalUsageMMCFormatted = formatUnits(totalUsageBigInt * fundsAllocationBigInt, 18);
+  const formattedExpiration = expiration
+    ? new Date(Number(expiration) * 1000).toLocaleDateString('es-ES')
+    : 'No Expiration';
 
   useEffect(() => {
     fetchCampaignFundsBalance(campaign as Address)
@@ -97,24 +82,15 @@ export default function CampaignTableRow({ row, selected }: Props) {
     settingsModal.onTrue();
   };
 
-  const onViewRow = () => {};
+  const handlePauseToggle = async (checked: boolean) => {
+    try {
+      checked ? await pause(campaign) : await unPause(campaign);
 
-  const onEditRow = () => {};
-
-  const onDeleteRow = () => {};
-
-  const onChange = () => {
-    setTimeout(() => {
-      popover.onClose();
-    }, 1000);
+      fetchCampaignPaused(campaign as Address);
+    } catch (error) {
+      console.error(error);
+    }
   };
-
-  const totalUsageBigInt = BigInt(totalUsage || "0");
-  const fundsAllocationBigInt = BigInt(fundsAllocation || "0");
-  const totalUsageMMCFormatted = formatUnits(totalUsageBigInt * fundsAllocationBigInt, 18);
-  const formattedExpiration = expiration
-    ? new Date(Number(expiration) * 1000).toLocaleDateString('es-ES')
-    : 'No Expiration';
 
   const renderPrimary = (
     <>
@@ -222,50 +198,23 @@ export default function CampaignTableRow({ row, selected }: Props) {
         </MenuItem>
         <MenuItem
           sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
-          onClick={() => {
-            onViewRow();
-          }}
+          onClick={(e) => e.stopPropagation()}
         >
           <Iconify icon="iconoir:pause" />
-          Pause
-          <Switch color={'secondary'} defaultChecked onChange={onChange} />
-        </MenuItem>
+          <Typography variant="body2">
+            {paused ? 'Unpause' : 'Pause'}
+          </Typography>
 
-        <MenuItem
-          onClick={() => {
-            onEditRow();
-            popover.onClose();
-          }}
-        >
-          <Iconify icon="mage:edit" />
-          Edit
-        </MenuItem>
-
-        <Divider sx={{ borderStyle: 'dashed' }} />
-
-        <MenuItem
-          onClick={() => {
-            confirm.onTrue();
-            popover.onClose();
-          }}
-          sx={{ color: 'error.main' }}
-        >
-          <Iconify icon="solar:eye-linear" />
-          Deactivate
+          <Switch
+            color="secondary"
+            checked={paused}
+            onChange={async (event) => {
+              await handlePauseToggle(event.target.checked);
+            }}
+            disabled={loadingPause || loadingUnPause}
+          />
         </MenuItem>
       </CustomPopover>
-
-      <ConfirmDialog
-        open={confirm.value}
-        onClose={confirm.onFalse}
-        title={`Deactivate ${name}`}
-        content="Are you sure want to deactivate the campaign?"
-        action={
-          <Button variant="contained" color="error" onClick={onDeleteRow}>
-            Deactivate
-          </Button>
-        }
-      />
 
       <CampaignSettingsModal
         open={settingsModal.value}
