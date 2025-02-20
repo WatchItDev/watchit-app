@@ -67,7 +67,7 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({ src, cid, titleMovie, onBack
           // - If a fragment is estimated to take longer than this value and the buffer is running low, 
           //   the player switches the best quality that matches this time constraint.
           // - This ensures a continuous playback experience by adapting the quality to network conditions in real-time.
-          "maxStarvationDelay": 3,
+          "maxStarvationDelay": 2,
           // maxLoadingDelay defines the maximum allowed time (in seconds) to load the initial fragments when starting playback.
           // - The ABR controller ensures:
           //   - The time to fetch the first low-quality fragment (e.g., 420p)
