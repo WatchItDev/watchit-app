@@ -53,6 +53,7 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({ src, cid, titleMovie, onBack
   // when the provider has changed, setup config..
   const onProviderChange = (provider: MediaProviderAdapter | null) => {
     if (isHLSProvider(provider)) {
+      console.log("load")
       provider.library = HLS;
       provider.config = {
         // https://github.com/video-dev/hls.js/blob/master/docs/API.md
