@@ -10,11 +10,14 @@ import {
   CarouselArrowsProps,
   CarouselArrowIndexProps,
   ArrowIconProps,
+  CarouselCreatorsProps,
+  CarouselPosterSlideProps,
+  PublicationType,
 } from '../types.ts';
 import {CarouselReturnType} from "@src/hooks/components/types";
 import {CarouselWrapperProps} from "@src/components/carousel/types";
 
-describe('CarouselReturnType', () => {
+describe('[TYPES]: CarouselReturnType', () => {
   it('should have correct default values', () => {
     const carouselRef = React.createRef<Carousel>();
     const carouselReturnType: CarouselReturnType = {
@@ -36,7 +39,7 @@ describe('CarouselReturnType', () => {
   });
 });
 
-describe('NavigationArrowsProps', () => {
+describe('[TYPES]: NavigationArrowsProps', () => {
   it('should have next and prev functions', () => {
     const props: NavigationArrowsProps = {
       next: () => {},
@@ -48,7 +51,7 @@ describe('NavigationArrowsProps', () => {
   });
 });
 
-describe('CarouselDotsStyledRootProps', () => {
+describe('[TYPES]: CarouselDotsStyledRootProps', () => {
   it('should have rounded property', () => {
     const props: CarouselDotsStyledRootProps = {
       rounded: true,
@@ -58,7 +61,7 @@ describe('CarouselDotsStyledRootProps', () => {
   });
 });
 
-describe('CarouselArrowsStyledIconButtonProps', () => {
+describe('[TYPES]: CarouselArrowsStyledIconButtonProps', () => {
   it('should have optional properties', () => {
     const props: CarouselArrowsStyledIconButtonProps = {
       filled: true,
@@ -72,7 +75,7 @@ describe('CarouselArrowsStyledIconButtonProps', () => {
   });
 });
 
-describe('CarouselArrowsProps', () => {
+describe('[TYPES]: CarouselArrowsProps', () => {
   it('should have optional properties and children', () => {
     const props: CarouselArrowsProps = {
       shape: 'rounded',
@@ -96,7 +99,7 @@ describe('CarouselArrowsProps', () => {
   });
 });
 
-describe('CarouselArrowIndexProps', () => {
+describe('[TYPES]: CarouselArrowIndexProps', () => {
   it('should have index and total properties', () => {
     const props: CarouselArrowIndexProps = {
       index: 1,
@@ -117,7 +120,7 @@ describe('CarouselArrowIndexProps', () => {
   });
 });
 
-describe('ArrowIconProps', () => {
+describe('[TYPES]: ArrowIconProps', () => {
   it('should have optional icon and isRTL properties', () => {
     const props: ArrowIconProps = {
       icon:  '<path d="90"/>',
@@ -129,7 +132,7 @@ describe('ArrowIconProps', () => {
   });
 });
 
-describe('CarouselWrapperProps', () => {
+describe('[TYPES]: CarouselWrapperProps', () => {
   it('should have data, minItemWidth, maxItemWidth, renderSlide, and carouselSettings properties', () => {
     const props: CarouselWrapperProps<any> = {
       data: [],
@@ -161,5 +164,98 @@ describe('CarouselWrapperProps', () => {
     expect(props.title).toBe('Test Title');
     expect(props.boxStyle).toEqual({ backgroundColor: 'red' });
     expect(props.boxClassName).toBe('test-class');
+  });
+});
+
+describe('[TYPES]: CarouselCreatorsProps', () => {
+  it('should have data, minItemWidth, maxItemWidth properties', () => {
+    const props: CarouselCreatorsProps = {
+      data: [],
+      minItemWidth: 100,
+      maxItemWidth: 200,
+    };
+
+    expect(props.data).toBeInstanceOf(Array);
+    expect(props.minItemWidth).toBe(100);
+    expect(props.maxItemWidth).toBe(200);
+  });
+
+  it('should have optional title property', () => {
+    const props: CarouselCreatorsProps = {
+      data: [],
+      minItemWidth: 100,
+      maxItemWidth: 200,
+      title: 'Test Title',
+    };
+
+    expect(props.title).toBe('Test Title');
+  });
+});
+
+describe('CarouselPosterMiniProps', () => {
+  it('should have data, minItemWidth, maxItemWidth properties', () => {
+    const props: CarouselPosterMiniProps = {
+      data: [],
+      minItemWidth: 100,
+      maxItemWidth: 200,
+    };
+
+    expect(props.data).toBeInstanceOf(Array);
+    expect(props.minItemWidth).toBe(100);
+    expect(props.maxItemWidth).toBe(200);
+  });
+
+  it('should have optional title property', () => {
+    const props: CarouselPosterMiniProps = {
+      data: [],
+      minItemWidth: 100,
+      maxItemWidth: 200,
+      title: 'Test Title',
+    };
+
+    expect(props.title).toBe('Test Title');
+  });
+});
+
+describe('CarouselTopTitlesProps', () => {
+  it('should have posts property', () => {
+    const props: CarouselTopTitlesProps = {
+      posts: [],
+    };
+
+    expect(props.posts).toBeInstanceOf(Array);
+  });
+
+  it('should have optional category property', () => {
+    const props: CarouselTopTitlesProps = {
+      posts: [],
+      category: 'Test Category',
+    };
+
+    expect(props.category).toBe('Test Category');
+  });
+});
+
+describe('CarouselPosterSlideProps', () => {
+  it('should have items and itemsPerRow properties', () => {
+    const props: CarouselPosterSlideProps = {
+      items: [],
+      itemsPerRow: 3,
+    };
+
+    expect(props.items).toBeInstanceOf(Array);
+    expect(props.itemsPerRow).toBe(3);
+  });
+});
+
+describe('PublicationType', () => {
+  it('should have altTag and metadata properties', () => {
+    const props: PublicationType = {
+      altTag: 'Test Alt Tag',
+      metadata: { title: 'Test Title' },
+    };
+
+    expect(props.altTag).toBe('Test Alt Tag');
+    expect(props.metadata).toBeDefined();
   });
 });
