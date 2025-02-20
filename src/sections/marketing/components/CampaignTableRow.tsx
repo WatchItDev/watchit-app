@@ -200,7 +200,7 @@ export default function CampaignTableRow({ row, selected }: Props) {
           sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
           onClick={(e) => e.stopPropagation()}
         >
-          <Iconify icon="iconoir:pause" />
+          <Iconify icon={loadingPause ? 'eos-icons:loading': 'iconoir:pause'} />
           <Typography variant="body2">
             {paused ? 'Unpause' : 'Pause'}
           </Typography>
