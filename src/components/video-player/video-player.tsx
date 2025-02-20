@@ -78,6 +78,22 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({ src, cid, titleMovie, onBack
           // - Unlike maxStarvationDelay, this setting only applies at the **start** of playback,
           //   ensuring the video loads quickly even if it means initially using a lower quality.
           "maxLoadingDelay": 3,
+          // abrEwmaFastVod: Controls how quickly the algorithm reacts to bandwidth changes in VOD (Video On Demand).
+          // A higher value makes the algorithm less sensitive to short-term fluctuations, smoothing out rapid changes.
+          // Recommended range: 2.0 - 5.0 (Higher = Smoother)
+          "abrEwmaFastVod": 4.0,
+          // abrEwmaSlowVod: Controls the long-term average bandwidth estimation for adaptive bitrate switching.
+          // A higher value averages the bandwidth over a longer period, reducing frequent quality switches.
+          // Recommended range: 10.0 - 20.0 (Higher = More stable, but slower adaptation)
+          "abrEwmaSlowVod": 12.0,
+          // abrBandWidthFactor: Determines how conservatively HLS estimates available bandwidth.
+          // A value < 1.0 ensures HLS.js does not use the full estimated bandwidth, preventing aggressive quality changes.
+          // Recommended range: 0.7 - 0.9 (Lower = More cautious, fewer quality switches)
+          "abrBandWidthFactor": 0.8,
+          // abrBandWidthUpFactor: Controls how aggressively the player upgrades to a higher bitrate.
+          // A lower value prevents HLS.js from switching to a higher quality too quickly, reducing unnecessary upscaling.
+          // Recommended range: 0.5 - 0.8 (Lower = More stable, avoids excessive upscaling)
+          "abrBandWidthUpFactor": 0.6,
           "enableSoftwareAES": false, // Disable software AES decryption
           "enableMetadataCues": false, // Disable metadata cues
           "enableID3MetadataCues": false, // Disable ID3 metadata cues
