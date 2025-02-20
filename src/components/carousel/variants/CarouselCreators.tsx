@@ -4,8 +4,8 @@ import { Profile } from '@lens-protocol/api-bindings';
 import CarouselSlide from '@src/components/carousel/components/CarouselSlide';
 import { UserItem } from '@src/components/user-item';
 
-import { CarouselCreatorsProps } from '../types';
 import CarouselWrapper from './CarouselWrapper';
+import { CarouselCreatorsProps } from '../types';
 
 
 export default function CarouselCreators(params: CarouselCreatorsProps) {

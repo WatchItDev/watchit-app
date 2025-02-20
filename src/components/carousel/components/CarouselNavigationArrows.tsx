@@ -1,8 +1,8 @@
 import { FC } from 'react';
 
-import { IconChevronLeft, IconChevronRight } from '@tabler/icons-react';
-
 import IconButton from '@mui/material/IconButton';
+
+import { IconChevronLeft, IconChevronRight } from '@tabler/icons-react';
 
 import { NavigationArrowsProps } from '@src/components/carousel/types.ts';
 
