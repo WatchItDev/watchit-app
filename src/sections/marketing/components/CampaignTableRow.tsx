@@ -60,7 +60,7 @@ export default function CampaignTableRow({ row, selected }: Props) {
   const { quotaLimit, loading: loadingQuotaLimit, fetchQuotaLimit, error: errorQuotaLimit } = useGetCampaignQuotaLimit();
   const { totalUsage, loading: loadingTotalUsage, fetchTotalUsage, error: errorTotalUsage } = useGetCampaignTotalUsage();
   const { pause, loading: loadingPause } = useCampaignPause();
-  const { unPause, loading: loadingUnPause } = useCampaignUnPause();
+  const { unPause, loading: loadingResume } = useCampaignUnPause();
   const type = POLICY_TEXTS[`${policy.toLowerCase()}`].toLowerCase();
   const status = paused ? 'paused' : 'active';
   const totalUsageBigInt = BigInt(totalUsage || "0");
@@ -183,7 +183,11 @@ export default function CampaignTableRow({ row, selected }: Props) {
       </TableRow>
       <CustomPopover
         open={popover.open}
-        onClose={popover.onClose}
+        onClose={() => {
+          if (!loadingPause && !loadingResume) {
+            popover.onClose();
+          }
+        }}
         arrow="right-top"
         sx={{ width: 160 }}
       >
@@ -200,9 +204,9 @@ export default function CampaignTableRow({ row, selected }: Props) {
           sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
           onClick={(e) => e.stopPropagation()}
         >
-          <Iconify icon={loadingPause || loadingUnPause ? 'eos-icons:loading': 'iconoir:pause'} />
+          <Iconify icon={loadingPause || loadingResume ? 'eos-icons:loading': paused ? 'iconoir:play' : 'iconoir:pause'} />
           <Typography variant="body2">
-            {paused ? 'Unpause' : 'Pause'}
+            {paused ? 'Resume' : 'Pause'}
           </Typography>
 
           <Switch
@@ -211,7 +215,7 @@ export default function CampaignTableRow({ row, selected }: Props) {
             onChange={async (event) => {
               await handlePauseToggle(event.target.checked);
             }}
-            disabled={loadingPause || loadingUnPause}
+            disabled={loadingPause || loadingResume}
           />
         </MenuItem>
       </CustomPopover>
