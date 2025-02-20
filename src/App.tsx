@@ -168,23 +168,17 @@ const AppContent = () => {
       // { name: 'FundsReleased', args: { to: sessionData?.address }, logText: 'New funds released:' },
     ];
 
-    const unwatchers = events.map(event => watchEvent(event.name, event.args, event.logText));
-
-    return () => {
-      unwatchers.forEach(unwatch => unwatch());
-    };
+    const cleanup = events.map(event => watchEvent(event.name, event.args, event.logText));
+    return () => cleanup.forEach(unwatch => unwatch());
   }, [sessionData?.address]);
 
 
   useEffect(() => {
     if (sessionData?.profile?.id) {
-      // Subscribe to notifications channel
       subscribeToNotifications(sessionData?.profile?.id, dispatch, ['notifications']);
-
-      // Set the notifications in first render
       getNotifications(sessionData?.profile?.id).then(() => { });
     }
-  }, [sessionData?.profile?.id, dispatch]);
+  }, [sessionData?.profile?.id]);
 
   return (
     <>
