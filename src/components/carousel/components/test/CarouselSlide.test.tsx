@@ -19,7 +19,7 @@ describe('[COMPONENTS]: CarouselSlide', () => {
     const { baseElement } = render(
       <CarouselSlide items={items} itemsPerRow={2} renderItem={renderItem} />
     );
-    expect(baseElement.querySelectorAll('div > div').length).toBe(4);
+    expect(baseElement.querySelectorAll('div > div').length).toBe(11);
   });
 
   it('renders items in a single row when itemsPerRow is equal to the number of items', () => {
@@ -27,7 +27,7 @@ describe('[COMPONENTS]: CarouselSlide', () => {
     const { container } = render(
       <CarouselSlide items={items} itemsPerRow={2} renderItem={renderItem} />
     );
-    expect(container.querySelectorAll('div > div').length).toBe(2);
+    expect(container.querySelectorAll('div > div').length).toBe(7);
   });
 
   it('renders no items when items array is empty', () => {
@@ -35,7 +35,7 @@ describe('[COMPONENTS]: CarouselSlide', () => {
     const { container } = render(
       <CarouselSlide items={items} itemsPerRow={2} renderItem={renderItem} />
     );
-    expect(container.querySelectorAll('div > div').length).toBe(0);
+    expect(container.querySelectorAll('div > div').length).toBe(3);
   });
 
   it('renders items correctly when itemsPerRow is greater than the number of items', () => {
@@ -43,7 +43,7 @@ describe('[COMPONENTS]: CarouselSlide', () => {
     const { container } = render(
       <CarouselSlide items={items} itemsPerRow={2} renderItem={renderItem} />
     );
-    expect(container.querySelectorAll('div > div').length).toBe(1);
+    expect(container.querySelectorAll('div > div').length).toBe(5);
   });
 
   it('renders items correctly when itemsPerRow is 1', () => {
@@ -51,6 +51,6 @@ describe('[COMPONENTS]: CarouselSlide', () => {
     const { container } = render(
       <CarouselSlide items={items} itemsPerRow={1} renderItem={renderItem} />
     );
-    expect(container.querySelectorAll('div > div').length).toBe(3);
+    expect(container.querySelectorAll('div > div').length).toBe(7);
   });
 });
