@@ -50,10 +50,26 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({ src, cid, titleMovie, onBack
     return () => document?.removeEventListener('keydown', handleKeyDown);
   }, []);
 
+  // on provider (HLS) initialization
+  const onProviderSetup = (provider: MediaProviderAdapter) => {
+    if (isHLSProvider(provider)) {
+      provider.instance?.on(HLS.Events.ERROR, (_, data: any) => {
+        if (data.details === HLS.ErrorDetails.BUFFER_STALLED_ERROR) {
+          console.log("Seek Stalling Detected, Adjusting Buffer...");
+          provider.instance?.startLoad();
+        }
+
+        if (data.fatal && data.type === HLS.ErrorTypes.MEDIA_ERROR) {
+          console.warn("Recovering from Media Error...");
+          provider.instance?.recoverMediaError();
+        }
+      });
+    }
+  }
+
   // when the provider has changed, setup config..
   const onProviderChange = (provider: MediaProviderAdapter | null) => {
     if (isHLSProvider(provider)) {
-      console.log("load")
       provider.library = HLS;
       provider.config = {
         // https://github.com/video-dev/hls.js/blob/master/docs/API.md
@@ -63,14 +79,14 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({ src, cid, titleMovie, onBack
         // allows faster adaptation but increases the chance of playback interruptions.
         // Finding the right balance ensures smooth playback without unnecessary network congestion.
         // (hls_time = 6 + maxBufferLength = 30) = 5 fragments in buffer
-        "maxBufferLength": 30, // Max video buffer length in seconds
+        "maxBufferLength": 60, // Max video buffer length in seconds
         "maxMaxBufferLength": 600, // Absolute max buffer length
         // maxStarvationDelay defines the maximum acceptable time (in seconds) a fragment can take to download 
         // while playback is already in progress.
         // - If a fragment is estimated to take longer than this value and the buffer is running low, 
         //   the player switches the best quality that matches this time constraint.
         // - This ensures a continuous playback experience by adapting the quality to network conditions in real-time.
-        "maxStarvationDelay": 3,
+        "maxStarvationDelay": 2,
         // maxLoadingDelay defines the maximum allowed time (in seconds) to load the initial fragments when starting playback.
         // - The ABR controller ensures:
         //   - The time to fetch the first low-quality fragment (e.g., 420p)
@@ -84,15 +100,15 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({ src, cid, titleMovie, onBack
         // abrEwmaFastVod: Controls how quickly the algorithm reacts to bandwidth changes in VOD (Video On Demand).
         // A higher value makes the algorithm less sensitive to short-term fluctuations, smoothing out rapid changes.
         // Recommended range: 2.0 - 5.0 (Higher = Smoother)
-        "abrEwmaFastVoD": 4.0,
+        "abrEwmaFastVoD": 2,
         // abrEwmaSlowVod: Controls the long-term average bandwidth estimation for adaptive bitrate switching.
         // A higher value averages the bandwidth over a longer period, reducing frequent quality switches.
         // Recommended range: 10.0 - 20.0 (Higher = More stable, but slower adaptation)
-        "abrEwmaSlowVoD": 10.0,
+        "abrEwmaSlowVoD": 9,
         // abrBandWidthFactor: Determines how conservatively HLS estimates available bandwidth.
         // A value < 1.0 ensures HLS.js does not use the full estimated bandwidth, preventing aggressive quality changes.
         // Recommended range: 0.7 - 0.9 (Lower = More cautious, fewer quality switches)
-        "abrBandWidthFactor": 0.8,
+        "abrBandWidthFactor": 0.9,
         // abrBandWidthUpFactor: Controls how aggressively the player upgrades to a higher bitrate.
         // A lower value prevents HLS.js from switching to a higher quality too quickly, reducing unnecessary upscaling.
         // Recommended range: 0.5 - 0.8 (Lower = More stable, avoids excessive upscaling)
@@ -102,10 +118,15 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({ src, cid, titleMovie, onBack
         "enableWebVTT": true, // Enable WebVTT subtitles
         "enableIMSC1": false, // Disable IMSC1 subtitles
         "enableCEA708Captions": false, // Disable CEA-708 captions,
-        "lowLatencyMode": true,
+        "lowLatencyMode": false,
         "enableWorker": true,
-        "backBufferLength": 120 // 3 * bufferLength
+        "nudgeOffset": 0.4,
+        "nudgeMaxRetry": 2,
+        // "maxFragLookUpTolerance": 0.4,
+        "startFragPrefetch": true
       };
+
+
     }
   }
 
@@ -114,6 +135,7 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({ src, cid, titleMovie, onBack
       ref={player}
       src={{ src, type: 'application/x-mpegurl' }}
       onProviderChange={onProviderChange}
+      onProviderSetup={onProviderSetup}
       viewType="video"
       streamType="on-demand"
       logLevel="warn"
@@ -175,5 +197,5 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({ src, cid, titleMovie, onBack
 };
 
 export default memo(VideoPlayer, (prevProps, nextProps) => {
-  return prevProps.cid === nextProps.cid; 
+  return prevProps.cid === nextProps.cid;
 });
