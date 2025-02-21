@@ -96,7 +96,7 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({ src, cid, titleMovie, onBack
         //   to minimize startup delay and ensure fast playback.
         // - Unlike maxStarvationDelay, this setting only applies at the **start** of playback,
         //   ensuring the video loads quickly even if it means initially using a lower quality.
-        "maxLoadingDelay": 1.5,
+        "maxLoadingDelay": 3,
         // abrEwmaFastVod: Controls how quickly the algorithm reacts to bandwidth changes in VOD (Video On Demand).
         // A higher value makes the algorithm less sensitive to short-term fluctuations, smoothing out rapid changes.
         // Recommended range: 2.0 - 5.0 (Higher = Smoother)
@@ -104,7 +104,7 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({ src, cid, titleMovie, onBack
         // abrEwmaSlowVod: Controls the long-term average bandwidth estimation for adaptive bitrate switching.
         // A higher value averages the bandwidth over a longer period, reducing frequent quality switches.
         // Recommended range: 10.0 - 20.0 (Higher = More stable, but slower adaptation)
-        "abrEwmaSlowVoD": 15,
+        "abrEwmaSlowVoD": 9,
         // abrBandWidthFactor: Determines how conservatively HLS estimates available bandwidth.
         // A value < 1.0 ensures HLS.js does not use the full estimated bandwidth, preventing aggressive quality changes.
         // Recommended range: 0.7 - 0.9 (Lower = More cautious, fewer quality switches)
@@ -118,13 +118,12 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({ src, cid, titleMovie, onBack
         "enableWebVTT": true, // Enable WebVTT subtitles
         "enableIMSC1": false, // Disable IMSC1 subtitles
         "enableCEA708Captions": false, // Disable CEA-708 captions,
-        "lowLatencyMode": false,
+        "lowLatencyMode": true,
         "enableWorker": true,
-        "nudgeOffset": 0.2,
+        "nudgeOffset": 0.4,
         "nudgeMaxRetry": 4,
-        "maxFragLookUpTolerance": 1,
-        "startFragPrefetch": true,
-        "backBufferLength": 180
+        // "maxFragLookUpTolerance": 0.4,
+        "startFragPrefetch": true
       };
 
 
