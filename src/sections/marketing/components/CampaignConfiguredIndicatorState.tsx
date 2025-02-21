@@ -39,7 +39,8 @@ const CampaignConfiguredIndicatorState = ({ quotaLimit }: CampaignConfiguredIndi
           display: "grid",
           alignItems: "center",
           justifyContent: "center",
-          marginRight: 1,
+          marginLeft: 0.5,
+          marginRight: 3,
           position: "relative",
           animation: isNotConfigured ? `${ripple} 1.5s infinite ease-out` : "none",
           "&::before, &::after": isNotConfigured

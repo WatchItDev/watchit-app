@@ -2,8 +2,20 @@ import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
 import CampaignCreate from '@src/sections/marketing/components/CampaignCreate.tsx';
 import CampaignTable from '@src/sections/marketing/components/CampaignTable';
+import { useEffect } from 'react';
+import useGetCampaings from '@src/hooks/use-get-campaings.ts';
 
 const StrategyOverview = () => {
+  const { campaigns, loading, fetchLogs } = useGetCampaings();
+
+  useEffect(() => {
+    fetchLogs();
+  }, []);
+
+  const handleRefreshTable = () => {
+    fetchLogs()
+  };
+
   return (
     <Container
       sx={{
@@ -13,7 +25,7 @@ const StrategyOverview = () => {
       }}
     >
       <Grid container spacing={1} justifyContent={'flex-end'} alignItems="center" gap={1}>
-        <CampaignCreate />
+        <CampaignCreate onSuccess={handleRefreshTable} />
       </Grid>
 
       <Grid
@@ -23,7 +35,10 @@ const StrategyOverview = () => {
           mt: 1,
         }}
       >
-        <CampaignTable />
+        <CampaignTable
+          campaigns={campaigns}
+          loading={loading}
+        />
       </Grid>
     </Container>
   );

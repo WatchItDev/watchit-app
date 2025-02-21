@@ -1,53 +1,48 @@
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { encodeFunctionData } from 'viem';
-import CampaignRegistryAbi from '@src/config/abi/CampaignRegistry.json';
+import { Address, encodeFunctionData, Hex } from 'viem';
+import AccessWorkflowAbi from '@src/config/abi/AccessWorkflow.json';
 import { GLOBAL_CONSTANTS } from '@src/config-global';
 import { useWeb3Session } from '@src/hooks/use-web3-session.ts';
 import { ERRORS } from '@notifications/errors.ts';
 import { useAccountSession } from '@src/hooks/use-account-session.ts';
 
-interface CreateCampaignParams {
-  policy: string;
-  expiration: number;
-  description: string;
+interface SponsoredAccessParams {
+  holder: Address;
+  campaignAddress: Address;
+  policyAddress: Address;
+  parties: Address[];
+  payload: Hex;
 }
 
-interface UseCreateCampaignHook {
+interface UseSponsoredAccessAgreementHook {
   data?: any;
-  create: (params: CreateCampaignParams) => Promise<void>;
+  sponsoredAccessAgreement: (params: SponsoredAccessParams) => Promise<void>;
   loading: boolean;
   error?: keyof typeof ERRORS | null;
 }
 
-export const useCreateCampaign = (): UseCreateCampaignHook => {
+export const useSponsoredAccessAgreement = (): UseSponsoredAccessAgreementHook => {
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<keyof typeof ERRORS | null>(null);
-
   const sessionData = useSelector((state: any) => state.auth.session);
   const { bundlerClient, smartAccount } = useWeb3Session();
   const { isAuthenticated, logout } = useAccountSession();
 
-  const initializeCampaign = ({ policy, expiration, description }: CreateCampaignParams) => {
-    return encodeFunctionData({
-      abi: CampaignRegistryAbi.abi,
-      functionName: 'createCampaign',
-      args: [
-        GLOBAL_CONSTANTS.CAMPAIGN_SUBSCRIPTION_TPL_ADDRESS, // TEMPLATE
-        policy, // POLICY ADDRESS
-        expiration, // EXPIRATION IN SECONDS
-        description // DESCRIPTION
-      ],
-    });
-  };
 
-  const create = async ({ policy, expiration, description }: CreateCampaignParams) => {
+  const sponsoredAccessAgreement = async ({
+                                            holder,
+                                            campaignAddress,
+                                            policyAddress,
+                                            parties,
+                                            payload
+                                          }: SponsoredAccessParams) => {
     setLoading(true);
     setError(null);
 
     if (!sessionData?.authenticated) {
-      setError(ERRORS.TRANSFER_LOGIN_FIRST_ERROR);
+      setError(ERRORS.UNKNOWN_ERROR);
       setLoading(false);
       return;
     }
@@ -58,19 +53,24 @@ export const useCreateCampaign = (): UseCreateCampaignHook => {
       throw new Error('Invalid Web3Auth session');
     }
 
-    console.log('hello create')
-    console.log(policy)
-    console.log(expiration)
-    console.log(description)
-
     try {
-      const campaignData = initializeCampaign({ policy, expiration, description });
+      const sponsoredAccessData = encodeFunctionData({
+        abi: AccessWorkflowAbi.abi,
+        functionName: 'sponsoredAccessAgreement',
+        args: [
+          holder,
+          campaignAddress,
+          policyAddress,
+          parties,
+          payload
+        ],
+      });
 
       const calls = [
         {
-          to: GLOBAL_CONSTANTS.CAMPAIGN_REGISTRY_ADDRESS,
+          to: GLOBAL_CONSTANTS.ACCESS_WORKFLOW_ADDRESS,
           value: 0,
-          data: campaignData,
+          data: sponsoredAccessData,
         },
       ];
 
@@ -86,11 +86,11 @@ export const useCreateCampaign = (): UseCreateCampaignHook => {
       setData(receipt);
       setLoading(false);
     } catch (err: any) {
-      console.error('USE CREATE CAMPAIGN ERR:', err);
+      console.error('USE SPONSORED ACCESS AGREEMENT ERR:', err);
       setError(ERRORS.UNKNOWN_ERROR);
       setLoading(false);
     }
   };
 
-  return { data, create, loading, error };
+  return { data, sponsoredAccessAgreement, loading, error };
 };

@@ -1,20 +1,21 @@
 import { FC } from "react";
 import SettingsModal from '@src/components/modal';
 import CampaignSettingsModalContent from "./CampaignSettingsModalContent";
+import { Address } from 'viem';
 
 interface CampaignSettingsModalProps {
   open: boolean;
   onClose?: () => void;
-  onConfirm?: () => void;
+  onSuccess?: () => void;
   campaignData: {
-    address: string;
+    address: Address;
     description: string;
   };
 }
 
 const CampaignSettingsModal: FC<CampaignSettingsModalProps> = ({
                                                                  open,
-                                                                 onConfirm,
+                                                                 onSuccess,
                                                                  onClose,
                                                                  campaignData
                                                                }) => {
@@ -23,10 +24,10 @@ const CampaignSettingsModal: FC<CampaignSettingsModalProps> = ({
     onClose?.();
   };
 
-  // @TODO Implement onConfirm
-  const handleConfirm = () => {
-    onConfirm?.();
-  }
+  const handlSuccess = () => {
+    onSuccess?.();
+    handleClose();
+  };
 
   return (
     <SettingsModal
@@ -35,7 +36,7 @@ const CampaignSettingsModal: FC<CampaignSettingsModalProps> = ({
       onClose={handleClose}
       renderContent={
         <CampaignSettingsModalContent
-          onConfirm={handleConfirm}
+          onConfirm={handlSuccess}
           onClose={handleClose}
           campaignData={campaignData}
         />

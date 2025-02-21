@@ -1,17 +1,22 @@
-import {useState} from "react";
+import { useEffect } from 'react';
 import { Address } from 'viem';
 import { ethers } from 'ethers';
 import { IconLock, IconPlayerPlay } from '@tabler/icons-react';
-import {Icon} from "@iconify/react";
-
+import { Icon } from '@iconify/react';
+import { useDispatch, useSelector } from 'react-redux';
 import LoadingButton from '@mui/lab/LoadingButton';
-import {styled} from "@mui/material/styles";
+import { styled } from '@mui/material/styles';
 import { Box, Card, CardContent, Typography, Stack } from '@mui/material';
 
 import { useGetPolicyTerms } from '@src/hooks/use-get-policy-terms.ts';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 import { useIsPolicyAuthorized } from '@src/hooks/use-is-policy-authorized.ts';
-import NeonPaper from "@src/sections/publication/NeonPaperContainer.tsx";
+import NeonPaper from '@src/sections/publication/NeonPaperContainer.tsx';
+import { useGetSubscriptionCampaign } from '@src/hooks/use-get-subscription-campaign.ts';
+import { useGetCampaignIsActive } from '@src/hooks/use-get-campaign-is-active.ts';
+
+import { useSponsoredAccessAgreement } from '@src/hooks/use-sponsored-access-agreement.ts';
+import { openLoginModal } from '@redux/auth';
 
 interface Props {
   post: any;
@@ -25,25 +30,50 @@ export const SubscribeToUnlockCard = ({
                                         loadingSubscribe,
                                         post,
                                       }: Props) => {
-  const [loadingTrial, setLoadingTrial] = useState(false);
-  const ownerAddress = post?.by?.ownedBy?.address as Address
+  const sessionData = useSelector((state: any) => state.auth.session);
+  const ownerAddress = post?.by?.ownedBy?.address as Address;
   const { terms } = useGetPolicyTerms(
     GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS as Address,
     ownerAddress
   );
-  const { isAuthorized } = useIsPolicyAuthorized(GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS, ownerAddress);
-  const durationDays = 30; // a month
-  const totalCostWei = terms?.amount ? terms?.amount * BigInt(durationDays) : 0; // Calculate total cost in Wei: DAILY_COST_WEI * durationDays
-  const totalCostMMC = ethers.formatUnits(totalCostWei, 18); // Converts Wei to MMC
+  const { isAuthorized } = useIsPolicyAuthorized(
+    GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS,
+    ownerAddress
+  );
+  const { campaign, fetchSubscriptionCampaign } = useGetSubscriptionCampaign();
+  const { isActive, fetchIsActive } = useGetCampaignIsActive();
+  const { sponsoredAccessAgreement, loading } = useSponsoredAccessAgreement();
+  const durationDays = 30; // un mes
+  const totalCostWei = terms?.amount ? terms?.amount * BigInt(durationDays) : 0;
+  const totalCostMMC = ethers.formatUnits(totalCostWei, 18);
+  const dispatch = useDispatch();
 
-  const handleTrial = () => {
-    setLoadingTrial(true);
-    setTimeout(() => {
-      setLoadingTrial(false);
-    }, 2000);
+  useEffect(() => {
+    fetchSubscriptionCampaign(ownerAddress);
+  }, [fetchSubscriptionCampaign, ownerAddress]);
+
+  useEffect(() => {
+    if (!campaign || !ownerAddress) return;
+    fetchIsActive(campaign, ownerAddress);
+  }, [campaign, ownerAddress, fetchIsActive]);
+
+  const handleTrial = async () => {
+    try {
+      if (!sessionData?.authenticated) return dispatch(openLoginModal());
+
+      await sponsoredAccessAgreement({
+        holder: ownerAddress,
+        campaignAddress: campaign,
+        policyAddress: GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS,
+        parties: [sessionData?.address],
+        payload: '0x',
+      });
+    } catch (e) {
+      console.error('Error en handleTrial:', e);
+    }
   };
 
-  const RainbowEffect = loadingTrial ? NeonPaper : Box;
+  const RainbowEffect = loading ? NeonPaper : Box;
 
   return (
     <Card
@@ -69,6 +99,8 @@ export const SubscribeToUnlockCard = ({
           This content is exclusively for members. Become part of our growing community to access
           behind-the-scenes content, exclusive posts, and much more!
         </Typography>
+
+        {/* Botón de suscripción normal */}
         {isAuthorized && (
           <>
             <LoadingButton
@@ -77,7 +109,6 @@ export const SubscribeToUnlockCard = ({
               sx={{ width: '100%', py: 1.5 }}
               onClick={onSubscribe}
               loading={loadingSubscribe}
-              // disabled={subscribeDisabled}
             >
               <IconPlayerPlay size={20} style={{ marginRight: 5 }} />
               Join
@@ -92,36 +123,36 @@ export const SubscribeToUnlockCard = ({
           </>
         )}
 
-        <Box sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: 1.5,
-        }}>
-
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 1.5,
+          }}
+        >
           <LoadingButton
             variant="contained"
             color="primary"
             sx={{ width: '100%', py: 1.5 }}
             onClick={onSubscribe}
             loading={loadingSubscribe}
-            // disabled={subscribeDisabled}
           >
             <IconPlayerPlay size={20} style={{ marginRight: 5 }} />
             Join
           </LoadingButton>
-          <RainbowEffect borderRadius={'10px'}
-                         animationSpeed={'3s'}
-                         padding={'2px'}
-                         width={'auto'}>
 
-            <StyledBoxGradient onClick={handleTrial} loading={loadingTrial}>
-              <Icon icon="ic:outline-try" width="18" height="18" />
-              <Typography variant="body2" sx={{ lineHeight: 1, fontWeight: '700', ml: 1 }}>
-                Free trial
-              </Typography>
-            </StyledBoxGradient>
-          </RainbowEffect>
+          {isActive && (
+            <RainbowEffect borderRadius={'10px'} animationSpeed={'3s'} padding={'2px'} width={'auto'}>
+              <StyledBoxGradient onClick={handleTrial} loading={loading}>
+                <Icon icon="ic:outline-try" width="18" height="18" />
+                <Typography variant="body2" sx={{ lineHeight: 1, fontWeight: '700', ml: 1 }}>
+                  Free trial
+                </Typography>
+              </StyledBoxGradient>
+            </RainbowEffect>
+          )}
         </Box>
+
         <Box sx={{ mt: 3, borderRadius: 1 }}>
           <Typography variant="body2" color="textSecondary">
             Join now for just <strong>{totalCostMMC} MMC/month</strong> and access to{' '}
@@ -129,7 +160,6 @@ export const SubscribeToUnlockCard = ({
             <strong>{post?.by?.metadata?.displayName ?? post?.handle?.localName}!</strong>
           </Typography>
         </Box>
-
       </CardContent>
     </Card>
   );
@@ -137,11 +167,7 @@ export const SubscribeToUnlockCard = ({
 
 const StyledBoxGradient = styled(LoadingButton)(() => ({
   width: '100%',
-  /* @TODO Choose one of this bg options*/
   background: `linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(70,31,97,1) 50%, rgba(149,17,238,1) 100%)`,
-  /*background: `linear-gradient(90deg, rgba(6,20,205,1) 0%, rgba(42,1,146,1) 37%, rgba(155,119,201,1) 100%)`,*/
-  /*background: `linear-gradient(90deg, rgba(36,2,0,1) 0%, rgba(146,22,1,1) 50%, rgba(255,85,0,1) 100%)`,*/
-  /*background: `linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 34%, rgba(0,212,255,1) 100%)`,*/
   backgroundSize: '400%',
   animation: 'gradientShift 10s infinite',
   padding: '16px',

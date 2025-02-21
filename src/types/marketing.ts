@@ -49,13 +49,13 @@ export const CampaignCategories = [
 
 
 export const CAMPAIGN_TABLE_HEAD = [
-  { id: 'name', label: 'Name', width: 400 },
-  { id: 'limit', label: 'Limit'},
-  { id: 'budget', label: 'Budget'},
-  { id: 'usage', label: 'Usage'},
-  { id: 'expiration', label: 'Expiration' },
-  { id: 'type', label: 'Type'},
-  { id: 'status', label: 'Status' },
+  { id: 'name', label: 'Name', minWidth: 300 },
+  { id: 'limit', label: 'Limit', minWidth: 100},
+  { id: 'budget', label: 'Budget', minWidth: 100},
+  { id: 'usage', label: 'Usage', minWidth: 100},
+  { id: 'expiration', label: 'Expiration', minWidth: 100 },
+  { id: 'type', label: 'Type', minWidth: 100},
+  { id: 'status', label: 'Status', minWidth: 100 },
 ];
 
 export interface CampaignTableRowType extends CampaignType {}

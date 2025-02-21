@@ -15,8 +15,8 @@ import Box from "@mui/material/Box";
 import LoadingButton from "@mui/lab/LoadingButton";
 
 interface CampaignSettingsModalContentProps {
-  onClose: () => void;
-  onConfirm: () => void;
+  onClose?: () => void;
+  onConfirm?: () => void;
   campaignData: {
     address: Address;
     description: string;
@@ -30,41 +30,51 @@ const CampaignSettingsModalContent: FC<CampaignSettingsModalContentProps> = ({
                                                                              }) => {
   const { address, description } = campaignData;
 
-  // Local states for each input field
+  // Local state for each input field
   const [addFundsAmount, setAddFundsAmount] = useState<string>('');
   const [fundsAllocationAmount, setFundsAllocationAmount] = useState<string>('');
   const [quotaLimit, setQuotaLimit] = useState<string>('');
 
-  // Grab session data from Redux (adjust this path as needed)
+  // Get session data from Redux
   const sessionData = useSelector((state: any) => state.auth.session);
 
-  // 1. Use the hook to get the subscription terms (and thus the daily price in Wei)
+  // Get policy terms (and thus the daily price in Wei)
   const { terms, loading: loadingTerms } = useGetPolicyTerms(
     GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS as Address,
     sessionData?.address as Address
   );
 
-  // 2. Convert the daily price from Wei to a float in MMC
+  // Convert the daily price from Wei to MMC (float)
   const dailyPriceInMMC = useMemo(() => {
     if (!terms?.amount) return 0;
-    return parseFloat(ethers.formatUnits(terms.amount, 18)); // Wei -> MMC
+    return parseFloat(ethers.formatUnits(terms.amount, 18));
   }, [terms]);
 
-  // 3. Calculate how many days of access the fundsAllocationAmount would provide,
-  //    based on the dailyPriceInMMC
+  // Calculate how many days of access the fundsAllocationAmount provides
   const daysEquivalent = useMemo(() => {
     const allocationNum = parseFloat(fundsAllocationAmount) || 0;
     return dailyPriceInMMC > 0 ? allocationNum / dailyPriceInMMC : 0;
   }, [fundsAllocationAmount, dailyPriceInMMC]);
 
+  // Validate that each field has a value greater or equal to 1
+  const isFormValid = useMemo(() => {
+    return (
+      Number(addFundsAmount) >= 1 &&
+      Number(fundsAllocationAmount) >= 1 &&
+      Number(quotaLimit) >= 1
+    );
+  }, [addFundsAmount, fundsAllocationAmount, quotaLimit]);
+
   // Custom hook to configure the campaign
   const { configure, loading: loadingConfigure } = useConfigureCampaign();
 
-  /**
-   * Main handler for confirming the campaign configuration.
-   * Converts string values to numbers and calls our configure function.
-   */
   const handleOnConfirm = async () => {
+    // Prevent proceeding if form validation fails
+    if (!isFormValid) {
+      console.error("Validation failed. Please check the input fields.");
+      return;
+    }
+
     try {
       const numericAddFundsAmount = Number(addFundsAmount);
       const numericFundsAllocationAmount = Number(fundsAllocationAmount);
@@ -77,7 +87,7 @@ const CampaignSettingsModalContent: FC<CampaignSettingsModalContentProps> = ({
         quotaLimit: numericQuotaLimit,
       });
 
-      onConfirm();
+      onConfirm?.();
     } catch (err) {
       console.error('Error configuring campaign:', err);
     }
@@ -87,19 +97,16 @@ const CampaignSettingsModalContent: FC<CampaignSettingsModalContentProps> = ({
 
   return (
     <>
-      {/* Loading spinner for terms, if needed */}
       {loadingTerms && <LinearProgress sx={{ mb: 2 }} />}
 
       <Typography variant="body2" color="text.secondary" sx={{ px: 3 }}>
-        This will help define how much each user receives and how many times they can access
-        your subscription.
+        This will help define how much each user receives and how many times they can access your subscription.
       </Typography>
 
       <Divider sx={{ padding: '0.3rem 0', mb: 4, borderStyle: 'dashed' }} />
 
       <Grid container spacing={2} sx={{ mb: 2, px: 2, m: 0, width: '100%' }}>
-        {/* Campaign description */}
-        <Typography variant="body2" color="text.secondary" sx={{ mb: 4 }}>
+        <Typography variant="body2" color="text.secondary" sx={{ mb: 4, textAlign: 'center', width: '100%' }}>
           {description || 'No description provided for this campaign.'}
         </Typography>
 
@@ -112,7 +119,12 @@ const CampaignSettingsModalContent: FC<CampaignSettingsModalContentProps> = ({
             value={addFundsAmount}
             onChange={(e) => setAddFundsAmount(e.target.value)}
             placeholder="e.g. 1000"
-            helperText="The total amount of MMC you want to allocate to this campaign."
+            error={addFundsAmount !== '' && Number(addFundsAmount) < 1}
+            helperText={
+              addFundsAmount !== '' && Number(addFundsAmount) < 1
+                ? "Total Funds must be at least 1."
+                : "The total amount of MMC you want to allocate to this campaign."
+            }
           />
         </FormControl>
 
@@ -125,15 +137,13 @@ const CampaignSettingsModalContent: FC<CampaignSettingsModalContentProps> = ({
             value={fundsAllocationAmount}
             onChange={(e) => setFundsAllocationAmount(e.target.value)}
             placeholder="e.g. 7"
+            error={fundsAllocationAmount !== '' && Number(fundsAllocationAmount) < 1}
             helperText={
-              dailyPriceInMMC > 0
-                ? `Amount of MMC each user can claim. For instance, if the daily subscription
-                   costs ${dailyPriceInMMC} MMC/day, then an allocation of ${
-                  fundsAllocationAmount || 0
-                } MMC would provide ~${daysEquivalent.toFixed(
-                  2
-                )} days of access.`
-                : 'Amount of MMC each user can claim.'
+              fundsAllocationAmount !== '' && Number(fundsAllocationAmount) < 1
+                ? "Funds allocation must be at least 1."
+                : dailyPriceInMMC > 0
+                  ? `Each user can claim this amount of MMC. For example, if your daily subscription costs ${dailyPriceInMMC} MMC/day, an allocation of ${fundsAllocationAmount || 0} MMC would provide ${daysEquivalent.toFixed(2)} days of access.`
+                  : 'Amount of MMC each user can claim.'
             }
           />
         </FormControl>
@@ -147,7 +157,12 @@ const CampaignSettingsModalContent: FC<CampaignSettingsModalContentProps> = ({
             value={quotaLimit}
             onChange={(e) => setQuotaLimit(e.target.value)}
             placeholder="e.g. 1"
-            helperText="Number of times a user can claim this campaign (must be at least 1)."
+            error={quotaLimit !== '' && Number(quotaLimit) < 1}
+            helperText={
+              quotaLimit !== '' && Number(quotaLimit) < 1
+                ? "Maximum claims must be at least 1."
+                : "Number of times a user can claim this campaign (must be at least 1)."
+            }
           />
         </FormControl>
       </Grid>
@@ -171,7 +186,7 @@ const CampaignSettingsModalContent: FC<CampaignSettingsModalContentProps> = ({
             variant="contained"
             sx={{ backgroundColor: '#fff' }}
             onClick={handleOnConfirm}
-            disabled={loadingConfigure || loadingTerms}
+            disabled={loadingConfigure || loadingTerms || !isFormValid}
             loading={loadingConfigure || loadingTerms}
           >
             Confirm

@@ -8,7 +8,7 @@ import { useAccountSession } from '@src/hooks/use-account-session';
 
 export interface CampaignRemoveFundsParams {
   campaignAddress: Address;
-  amount: number;
+  amount: bigint;
 }
 
 export interface UseCampaignRemoveFundsHook {

@@ -1,10 +1,13 @@
-import { FC, useEffect } from 'react';
+// REACT IMPORTS
+import { FC } from 'react';
 
-// MUI components
+// MUI IMPORTS
 import TableBody from '@mui/material/TableBody';
 import { Box, Table, TableContainer } from '@mui/material';
+import TableCell from "@mui/material/TableCell";
+import TableRow from "@mui/material/TableRow";
 
-// Project components
+// LOCAL IMPORTS
 import { CAMPAIGN_TABLE_HEAD } from '@src/types/marketing';
 import {
   emptyRows,
@@ -17,21 +20,15 @@ import {
 import Scrollbar from '@src/components/scrollbar';
 import CampaignTableRow from '@src/sections/marketing/components/CampaignTableRow';
 import { COLORS } from '@src/layouts/config-layout';
-import useGetCampaings from '@src/hooks/use-get-campaings';
 import {LoadingScreen} from "@src/components/loading-screen";
-import TableCell from "@mui/material/TableCell";
-import TableRow from "@mui/material/TableRow";
 
-const CampaignTable: FC = () => {
-  const { campaigns, loading, fetchLogs, error } = useGetCampaings();
+type CampaignTableProps = {
+  campaigns: any[];
+  loading: boolean;
+};
 
-  console.log('campaigns data', campaigns);
-  console.log('loading', loading);
-  console.log('error', error);
-
-  useEffect(() => {
-    fetchLogs();
-  }, []);
+const CampaignTable: FC<CampaignTableProps> = (args) => {
+  const { campaigns, loading } = args;
 
   const table = useTable({
     defaultOrder: 'desc',

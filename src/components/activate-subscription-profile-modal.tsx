@@ -113,7 +113,7 @@ export const ActivateSubscriptionProfileModal = ({
   return (
     <>
       <Dialog open={isOpen} onClose={onClose} fullWidth maxWidth="xs">
-        <DialogTitle sx={{ pb: 2 }}>Set joining prices</DialogTitle>
+        <DialogTitle sx={{ pb: 2 }}>Set join price</DialogTitle>
         <Divider sx={{ mb: 2, borderStyle: 'dashed' }} />
         <DialogContent>
           <Typography variant="body2" color="textSecondary" sx={{ mb: 3 }}>

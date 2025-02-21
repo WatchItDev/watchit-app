@@ -1,4 +1,7 @@
-// @MUI
+// LOCAL IMPORTS
+import { useEffect } from 'react';
+
+// MUI IMPORTS
 import Typography from '@mui/material/Typography';
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
@@ -7,7 +10,10 @@ import Grid from '@mui/material/Grid';
 import { IconButton, MenuItem } from '@mui/material';
 import Switch from '@mui/material/Switch';
 
-// Project components
+// VIEM IMPORTS
+import { Address, formatUnits } from 'viem';
+
+// LOCAL IMPORTS
 import { CampaignTableRowType } from '@src/types/marketing';
 import { capitalizeFirstLetter } from '@src/utils/text-transform.ts';
 import { COLORS } from '@src/utils/colors.ts';
@@ -16,8 +22,6 @@ import CustomPopover, { usePopover } from '@src/components/custom-popover';
 import { useBoolean } from '@src/hooks/use-boolean';
 import CampaignSettingsModal from "@src/sections/marketing/components/CampaignSettingsModal.tsx";
 import { useGetCampaignFundsBalance } from '@src/hooks/use-get-campaign-funds-balance.ts';
-import { useEffect } from 'react';
-import { Address, formatUnits } from 'viem';
 import { useGetCampaignFundsAllocation } from '@src/hooks/use-get-campaign-funds-allocation.ts';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 import { useCampaignPaused } from '@src/hooks/use-campaign-paused.ts';
@@ -29,6 +33,7 @@ import {
   CampaignConfiguredIndicatorState
 } from "@src/sections/marketing/components/CampaignConfiguredIndicatorState.tsx";
 import TextMaxLine from "@src/components/text-max-line";
+import CampaignWithdrawFundsModal from '@src/sections/marketing/components/CampaignWithdrawFundsModal';
 
 // ----------------------------------------------------------------------
 
@@ -37,8 +42,10 @@ type Props = {
   selected: boolean;
 };
 
+// ----------------------------------------------------------------------
+
 const POLICY_TEXTS: Record<string, string> = {
-  [`${GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS.toLowerCase()}`]: "Subscription",
+  [`${GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS?.toLowerCase?.()}`]: "Subscription",
 };
 
 const LBL_COLORS = {
@@ -47,6 +54,7 @@ const LBL_COLORS = {
   trial: COLORS.warning,
   custom: COLORS.danger,
 };
+
 const LBL_STATUS_COLORS = {
   active: COLORS.success,
   paused: COLORS.warning,
@@ -54,18 +62,20 @@ const LBL_STATUS_COLORS = {
 };
 
 // ----------------------------------------------------------------------
+
 export default function CampaignTableRow({ row, selected }: Props) {
   const { campaign, name, policy, expiration } = row;
   const popover = usePopover();
   const settingsModal = useBoolean();
-  const { fundsBalance, loading, fetchCampaignFundsBalance, error } = useGetCampaignFundsBalance();
-  const { fundsAllocation, loading: loadingAllocation, fetchFundsAllocation, error: errorAllocation } = useGetCampaignFundsAllocation();
-  const { paused, loading: loadingPaused, fetchCampaignPaused, error: errorPaused } = useCampaignPaused();
-  const { quotaLimit, loading: loadingQuotaLimit, fetchQuotaLimit, error: errorQuotaLimit } = useGetCampaignQuotaLimit();
-  const { totalUsage, loading: loadingTotalUsage, fetchTotalUsage, error: errorTotalUsage } = useGetCampaignTotalUsage();
+  const withdrawModal = useBoolean();
+  const { fundsBalance, fetchCampaignFundsBalance } = useGetCampaignFundsBalance();
+  const { fundsAllocation, fetchFundsAllocation } = useGetCampaignFundsAllocation();
+  const { paused, fetchCampaignPaused } = useCampaignPaused();
+  const { quotaLimit, fetchQuotaLimit } = useGetCampaignQuotaLimit();
+  const { totalUsage, fetchTotalUsage } = useGetCampaignTotalUsage();
   const { pause, loading: loadingPause } = useCampaignPause();
   const { unPause, loading: loadingResume } = useCampaignUnPause();
-  const type = POLICY_TEXTS[`${policy.toLowerCase()}`].toLowerCase();
+  const type = POLICY_TEXTS[`${policy?.toLowerCase?.()}`]?.toLowerCase?.();
   const status = paused ? 'paused' : 'active';
   const totalUsageBigInt = BigInt(totalUsage || "0");
   const fundsAllocationBigInt = BigInt(fundsAllocation || "0");
@@ -77,8 +87,8 @@ export default function CampaignTableRow({ row, selected }: Props) {
   useEffect(() => {
     fetchCampaignFundsBalance(campaign as Address)
     fetchFundsAllocation(campaign as Address)
-    fetchCampaignPaused(campaign as Address)
     fetchQuotaLimit(campaign as Address)
+    fetchCampaignPaused(campaign as Address)
     fetchTotalUsage(campaign as Address)
   }, []);
 
@@ -95,6 +105,20 @@ export default function CampaignTableRow({ row, selected }: Props) {
       console.error(error);
     }
   };
+
+  const handleSuccessConfigure = async () => {
+    fetchCampaignFundsBalance(campaign as Address)
+    fetchFundsAllocation(campaign as Address)
+    fetchQuotaLimit(campaign as Address)
+  };
+
+  const handleSuccessWithdraw = async () => {
+    await fetchCampaignFundsBalance(campaign as Address);
+  };
+
+  console.log('policies')
+  console.log(POLICY_TEXTS)
+  console.log(policy)
 
   const renderPrimary = (
     <>
@@ -126,7 +150,7 @@ export default function CampaignTableRow({ row, selected }: Props) {
 
         <TableCell>
           <ListItemText
-            primary={`${fundsBalance ? formatUnits(fundsBalance, 18) : "0"} MMC`}
+            primary={`${fundsBalance ? Number(formatUnits(fundsBalance, 18)).toFixed(2) : "0"} MMC`}
             primaryTypographyProps={{ typography: 'body2' }}
             secondaryTypographyProps={{
               mt: 0.5,
@@ -166,7 +190,7 @@ export default function CampaignTableRow({ row, selected }: Props) {
               py: '2px',
             }}
           >
-            {capitalizeFirstLetter(type)}
+            {capitalizeFirstLetter(type ?? '')}
           </Typography>
         </TableCell>
 
@@ -183,7 +207,7 @@ export default function CampaignTableRow({ row, selected }: Props) {
                 py: '2px',
               }}
             >
-              {capitalizeFirstLetter(status)}
+              {capitalizeFirstLetter(status ?? '')}
             </Typography>
 
             <IconButton color={popover.open ? 'inherit' : 'default'} onClick={popover.onOpen}>
@@ -212,6 +236,15 @@ export default function CampaignTableRow({ row, selected }: Props) {
           Configure
         </MenuItem>
         <MenuItem
+          onClick={() => {
+            withdrawModal.onTrue();
+            popover.onClose();
+          }}
+        >
+          <Iconify icon="ic:outline-account-balance-wallet" />
+          Withdraw
+        </MenuItem>
+        <MenuItem
           sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
           onClick={(e) => e.stopPropagation()}
         >
@@ -222,9 +255,9 @@ export default function CampaignTableRow({ row, selected }: Props) {
 
           <Switch
             color="secondary"
-            checked={paused}
+            checked={!paused}
             onChange={async (event) => {
-              await handlePauseToggle(event.target.checked);
+              await handlePauseToggle(!event.target.checked);
             }}
             disabled={loadingPause || loadingResume}
           />
@@ -234,10 +267,21 @@ export default function CampaignTableRow({ row, selected }: Props) {
       <CampaignSettingsModal
         open={settingsModal.value}
         onClose={settingsModal.onFalse}
-        onConfirm={() => {}}
+        onSuccess={handleSuccessConfigure}
         campaignData={{
           address: campaign,
           description: name,
+        }}
+      />
+
+      <CampaignWithdrawFundsModal
+        open={withdrawModal.value}
+        onClose={withdrawModal.onFalse}
+        onSuccess={handleSuccessWithdraw}
+        campaignData={{
+          address: campaign as Address,
+          description: name,
+          currentFundsBalance: fundsBalance ? formatUnits(fundsBalance, 18) : '0',
         }}
       />
     </>

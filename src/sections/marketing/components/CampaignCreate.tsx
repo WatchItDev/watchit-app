@@ -1,11 +1,18 @@
+// MUI IMPORTS
 import Button from '@mui/material/Button';
 
+// LOCAL IMPORTS
 import Iconify from '@src/components/iconify';
 import StrategyModal from '@src/components/modal';
 import { useBoolean } from '@src/hooks/use-boolean';
 import CampaignModalContent from "@src/sections/marketing/components/CampaignModalContent.tsx";
+import { FC } from 'react';
 
-const CampaignCreate = () => {
+type CampaignCreateProps = {
+  onSuccess?: () => void;
+};
+
+const CampaignCreate: FC<CampaignCreateProps> = ({ onSuccess }) => {
   const confirmPublish = useBoolean();
 
   const handleClose = () => {
@@ -16,11 +23,10 @@ const CampaignCreate = () => {
     confirmPublish.onTrue?.();
   };
 
-  // @TODO Implement onConfirm
   const handleConfirm = () => {
-    // Close the modal after succeeded the action for stored in blockchain
-    confirmPublish.onFalse?.();
-  }
+    onSuccess?.();
+    confirmPublish.onFalse();
+  };
 
   return (
     <>
