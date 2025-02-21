@@ -49,11 +49,10 @@ export const CampaignCategories = [
 
 
 export const CAMPAIGN_TABLE_HEAD = [
-  { id: 'name', label: 'Name' },
+  { id: 'name', label: 'Name', width: 400 },
   { id: 'limit', label: 'Limit'},
   { id: 'budget', label: 'Budget'},
   { id: 'usage', label: 'Usage'},
-  { id: 'access', label: 'Access' },
   { id: 'expiration', label: 'Expiration' },
   { id: 'type', label: 'Type'},
   { id: 'status', label: 'Status' },

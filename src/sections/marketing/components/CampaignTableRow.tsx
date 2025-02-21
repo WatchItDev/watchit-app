@@ -28,6 +28,7 @@ import { useCampaignUnPause } from '@src/hooks/use-campaign-unpause';
 import {
   CampaignConfiguredIndicatorState
 } from "@src/sections/marketing/components/CampaignConfiguredIndicatorState.tsx";
+import TextMaxLine from "@src/components/text-max-line";
 
 // ----------------------------------------------------------------------
 
@@ -101,8 +102,8 @@ export default function CampaignTableRow({ row, selected }: Props) {
         <TableCell sx={{ display: 'flex', alignItems: 'center' }}>
           <CampaignConfiguredIndicatorState quotaLimit={quotaLimit} />
           <ListItemText
-            primary={name}
-            secondary={`${fundsAllocation} MMC per user`}
+            primary={<TextMaxLine line={1}>{name}</TextMaxLine>}
+            secondary={<TextMaxLine line={1}>{`${fundsAllocation} MMC per user`}</TextMaxLine>}
             primaryTypographyProps={{ typography: 'body2' }}
             secondaryTypographyProps={{
               component: 'span',
@@ -136,11 +137,17 @@ export default function CampaignTableRow({ row, selected }: Props) {
         </TableCell>
 
         <TableCell>
-          <Typography variant="body2">{totalUsageMMCFormatted} MMC</Typography>
-        </TableCell>
-
-        <TableCell>
-          <Typography variant="body2">{`${totalUsage} Users`}</Typography>
+          <ListItemText
+            primary={<TextMaxLine line={1}>{`${totalUsageMMCFormatted} MMC`}</TextMaxLine>}
+            secondary={<TextMaxLine line={1}>{`${totalUsage} Users`}</TextMaxLine>}
+            primaryTypographyProps={{ typography: 'body2' }}
+            secondaryTypographyProps={{
+              mt: 0.5,
+              component: 'span',
+              typography: 'caption',
+            }}
+          />
+          <Typography variant="body2"></Typography>
         </TableCell>
 
         <TableCell>
@@ -176,7 +183,7 @@ export default function CampaignTableRow({ row, selected }: Props) {
                 py: '2px',
               }}
             >
-              {status}
+              {capitalizeFirstLetter(status)}
             </Typography>
 
             <IconButton color={popover.open ? 'inherit' : 'default'} onClick={popover.onOpen}>

@@ -90,13 +90,7 @@ const CampaignSettingsModalContent: FC<CampaignSettingsModalContentProps> = ({
       {/* Loading spinner for terms, if needed */}
       {loadingTerms && <LinearProgress sx={{ mb: 2 }} />}
 
-      {/* Descriptive text at the top */}
-      <Typography variant="body1" sx={{ mb: 2 }}>
-        Configure your campaign by specifying the total funds, the amount each user can claim,
-        and how many times a user is allowed to claim.
-      </Typography>
-
-      <Typography variant="body2" color="text.secondary" sx={{ mb: 4 }}>
+      <Typography variant="body2" color="text.secondary" sx={{ px: 3 }}>
         This will help define how much each user receives and how many times they can access
         your subscription.
       </Typography>
