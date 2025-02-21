@@ -52,7 +52,7 @@ export default function CarouselTopTitles({ posts, category }: Props) {
       >
         <Carousel ref={carousel.carouselRef} {...carousel.carouselSettings}>
           {posts.map((post: any) => (
-            <Box key={`${category}-${post.id}`} sx={{ px: 0.75, display: 'flex !important' }}>
+            <Box key={`${category}-${post.id}`} sx={{ px: 0.75, /*display: 'flex !important'*/ }}>
               <PosterTopTitles post={post} />
             </Box>
           ))}

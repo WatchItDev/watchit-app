@@ -3,7 +3,6 @@
  */
 export enum ERRORS {
   NOT_LOGGED_IN = 'NOT_LOGGED_IN',
-  BUNDLER_UNAVAILABLE = 'BUNDLER_UNAVAILABLE',
   UNKNOWN_ERROR = 'UNKNOWN_ERROR',
   METAMASK_CONNECTING_ERROR = 'METAMASK_CONNECTING_ERROR',
   WITHDRAW_FAILED_ERROR = 'WITHDRAW_FAILED_ERROR',
@@ -102,7 +101,6 @@ export const ERROR_MESSAGES: Record<ERRORS, string> = {
 
   // Withdraw error
   [ERRORS.FIRST_LOGIN_ERROR]: 'You must login first to withdraw funds.',
-  [ERRORS.BUNDLER_UNAVAILABLE]: 'Your session is expired. Please re-login to continue.',
 
   // Deposit error
   [ERRORS.DEPOSIT_FAILED_ERROR]: 'Please login to deposit funds.',

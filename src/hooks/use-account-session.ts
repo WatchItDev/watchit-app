@@ -9,12 +9,12 @@ import { setAuthLoading, setSession, setBalance } from '@redux/auth';
 import { useSession, useLogout } from '@lens-protocol/react-web';
 
 // NOTIFICATIONS IMPORTS
-import { ERRORS } from '@notifications/errors';
-import { notifyError } from '@notifications/internal-notifications';
+import { notifyWarning } from '@notifications/internal-notifications';
 
 // WEB3AUTH IMPORTS
 import { useWeb3Auth } from '@src/hooks/use-web3-auth';
 import { useWeb3Session } from '@src/hooks/use-web3-session';
+import {WARNING} from "@notifications/warnings.ts";
 
 // ----------------------------------------------------------------------
 
@@ -51,7 +51,7 @@ export const useAccountSession = (): UseAccountSessionHook => {
     dispatch(setBalance({ balance: 0 }));
     dispatch(setSession({ session: { ...data, authenticated: false } }));
     dispatch(setAuthLoading({ isSessionLoading: false }));
-    if (!silent) notifyError(ERRORS.BUNDLER_UNAVAILABLE);
+    if (!silent) notifyWarning(WARNING.BUNDLER_UNAVAILABLE);
   }, [web3Auth.status]);
 
   // Automatic checks on mount + interval

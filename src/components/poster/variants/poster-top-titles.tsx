@@ -79,6 +79,7 @@ const PosterTopTitles = ({ post }: { post: any }) => {
           width: '100%',
           height: '100%',
           opacity: 0.2,
+          filter: "blur(5px) !important",
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',

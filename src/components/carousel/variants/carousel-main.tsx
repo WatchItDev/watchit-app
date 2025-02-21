@@ -214,7 +214,7 @@ function CarouselItem({ post }: Readonly<CarouselItemProps>) {
               }}
             >
               <IconFlagFilled style={{ marginRight: '4px' }} size={22} color="#FFFFFF" />
-              Add watchlist
+              Add Watchlist
             </Button>
           </Stack>
         </m.div>

@@ -23,7 +23,8 @@ const FinanceEarnTokens: FC<FinanceEarnTokensProps> = ({ sx, lgUp, ...other }) =
   const theme = useTheme();
 
   const handleClick = () => {
-    window.open('https://tropee.com/watchit', '_BLANK');
+    // TODO move to envs
+    window.open('https://zealy.io/cw/watchit', '_BLANK');
   };
 
   return (

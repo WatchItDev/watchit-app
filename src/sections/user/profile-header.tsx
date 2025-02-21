@@ -93,12 +93,6 @@ const ProfileHeader = ({
     },
   });
 
-  console.log('is active?')
-  console.log(campaign)
-  console.log(isActive)
-  console.log(GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS)
-  console.log(profile?.ownedBy?.address)
-
   useEffect(() => {
     fetchSubscriptionCampaign(profile?.ownedBy?.address);
   }, []);
@@ -195,11 +189,7 @@ const ProfileHeader = ({
             {profile?.id !== sessionData?.profile?.id && (
               <FollowUnfollowButton profileId={profile?.id} />
             )}
-            {
-              sessionData?.authenticated && profile?.id !== sessionData?.profile?.id && (
-                  <ProfileTransfer profile={profile} />
-              )
-            }
+
           </Stack>
         </Stack>
       </ProfileWrapper>

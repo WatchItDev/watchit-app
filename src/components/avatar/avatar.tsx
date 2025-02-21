@@ -13,7 +13,7 @@ interface AvatarProfileProps {
 
 const AvatarProfile: FC<AvatarProfileProps> = ({ src, alt, sx, ...other }) => {
   //Check if src is a valid URL starting with http or https; if not, use the dicebear API to generate a random avatar
-  const imageSrc = src.startsWith('http') || src.startsWith('https') ? src : dicebear(src);
+  const imageSrc = src.startsWith('http') || src.startsWith('blob') || src.startsWith('https') ? src : dicebear(src);
 
   // Default styles for the Avatar component
   sx = {

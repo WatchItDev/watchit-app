@@ -1,21 +1,22 @@
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-import {CopyableText} from "@src/components/copyable-text";
+import { CopyableText } from "@src/components/copyable-text";
 import Divider from "@mui/material/Divider";
-import {truncateAddress} from "@src/utils/wallet.ts";
-import {OpenableText} from "@src/components/openable-text";
+import { truncateAddress } from "@src/utils/wallet.ts";
+import { OpenableText } from "@src/components/openable-text";
 import Box from "@mui/material/Box";
-import {randomColors} from "@src/components/poster/variants/poster-latest-content.tsx";
-import {IconRosetteDiscountCheckFilled} from "@tabler/icons-react";
-import {FC} from "react";
-import {ProfileHeaderProps} from "@src/sections/user/profile-header.tsx";
-import {styled} from "@mui/material/styles";
-import {useSelector} from "react-redux";
+import { randomColors } from "@src/components/poster/variants/poster-latest-content.tsx";
+import { IconRosetteDiscountCheckFilled } from "@tabler/icons-react";
+import { FC } from "react";
+import { ProfileHeaderProps } from "@src/sections/user/profile-header.tsx";
+import { styled } from "@mui/material/styles";
+import { useSelector } from "react-redux";
 
-// ----------------------------------------------------------------------
+// ---------------------------------------------------------------- ------
+// TODO: move to envs
 const urlAttestationBase = 'https://polygon-amoy.easscan.org/attestation/view/';
 
-interface ProfileRightSidebarProps extends ProfileHeaderProps{
+interface ProfileRightSidebarProps extends ProfileHeaderProps {
   sidebarProps: {
     isAuthorized?: boolean;
     attestation?: string;
@@ -25,10 +26,14 @@ interface ProfileRightSidebarProps extends ProfileHeaderProps{
     attestationLoading: boolean;
   }
 }
-const ProfileRightSidebar: FC<ProfileRightSidebarProps> = ({profile, sidebarProps}) => {
+
+const ProfileRightSidebar: FC<ProfileRightSidebarProps> = ({ profile, sidebarProps }) => {
   const sessionData = useSelector((state: any) => state.auth.session);
-  const {isAuthorized, authorizedLoading, accessLoading, hasAccess, attestation, attestationLoading} = sidebarProps;
-  const attestationAddress = `0x${BigInt(attestation ?? '').toString(16)}`;
+  const { isAuthorized, authorizedLoading, accessLoading, hasAccess, attestation, attestationLoading } = sidebarProps;
+  const hex = BigInt(attestation ?? '').toString(16)
+  // add padding to attestation smaller than 256 bits
+  const cleanedHex = hex.length < 64 ? `${'0'.repeat(64 - hex.length)}${hex}` : hex;
+  const attestationAddress = `0x${cleanedHex}`;
 
   return (
     <Stack
@@ -143,10 +148,10 @@ const ProfileRightSidebar: FC<ProfileRightSidebarProps> = ({profile, sidebarProp
 }
 
 const StyledBoxGradient = styled(Box)<{ color1?: string; color2?: string }>(({
-                                                                               theme,
-                                                                               color1,
-                                                                               color2,
-                                                                             }) => {
+  theme,
+  color1,
+  color2,
+}) => {
   const defaultColor1 = theme.palette.primary.main;
   const defaultColor2 = theme.palette.secondary.main;
 
