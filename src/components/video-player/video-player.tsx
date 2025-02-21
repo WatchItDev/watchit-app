@@ -118,10 +118,10 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({ src, cid, titleMovie, onBack
         "enableWebVTT": true, // Enable WebVTT subtitles
         "enableIMSC1": false, // Disable IMSC1 subtitles
         "enableCEA708Captions": false, // Disable CEA-708 captions,
-        "lowLatencyMode": true,
+        "lowLatencyMode": false,
         "enableWorker": true,
         "nudgeOffset": 0.4,
-        "nudgeMaxRetry": 4,
+        "nudgeMaxRetry": 2,
         // "maxFragLookUpTolerance": 0.4,
         "startFragPrefetch": true
       };
