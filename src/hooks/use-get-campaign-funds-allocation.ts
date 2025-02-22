@@ -3,6 +3,7 @@ import { Address } from 'viem';
 import { publicClient } from '@src/clients/viem/publicClient';
 import CampaignSubscriptionTplAbi from '@src/config/abi/CampaignSubscriptionTpl.json';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
+import { useSelector } from 'react-redux';
 
 interface HasAccessError {
   message: string;
@@ -23,6 +24,7 @@ export const useGetCampaignFundsAllocation = (): UseGetCampaignFundsAllocationHo
   const [fundsAllocation, setFundsAllocation] = useState<string>('0');
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<HasAccessError | null>(null);
+  const sessionData = useSelector((state: any) => state.auth.session);
 
   const fetchFundsAllocation = useCallback(
     async (
@@ -38,7 +40,8 @@ export const useGetCampaignFundsAllocation = (): UseGetCampaignFundsAllocationHo
           address: campaignAddress,
           abi: CampaignSubscriptionTplAbi.abi,
           functionName: 'getFundsAllocation',
-          args: [GLOBAL_CONSTANTS.ACCESS_WORKFLOW_ADDRESS],
+          // args: [GLOBAL_CONSTANTS.ACCESS_WORKFLOW_ADDRESS],
+          args: [sessionData?.address],
         }) as bigint;
         const allocationStr = allocation.toString();
         setFundsAllocation(allocationStr);

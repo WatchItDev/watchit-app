@@ -3,6 +3,7 @@ import { Address } from 'viem';
 import { publicClient } from '@src/clients/viem/publicClient';
 import CampaignSubscriptionTplAbi from '@src/config/abi/CampaignSubscriptionTpl.json';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
+import { useSelector } from 'react-redux';
 
 interface HasAccessError {
   message: string;
@@ -24,6 +25,7 @@ export const useGetCampaignIsActive = (): UseGetCampaignIsActiveHook => {
   const [isActive, setIsActive] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<HasAccessError | null>(null);
+  const sessionData = useSelector((state: any) => state.auth.session);
 
   const fetchIsActive = useCallback(
     async (
@@ -44,7 +46,8 @@ export const useGetCampaignIsActive = (): UseGetCampaignIsActiveHook => {
           address: campaignAddress,
           abi: CampaignSubscriptionTplAbi.abi,
           functionName: 'isActive',
-          args: [GLOBAL_CONSTANTS.ACCESS_WORKFLOW_ADDRESS, account],
+          // args: [GLOBAL_CONSTANTS.ACCESS_WORKFLOW_ADDRESS, account],
+          args: ['0xbB97F1234282ff8f74c7d091CB2eDC4F82A311C0', account],
         }) as bigint;
         setIsActive(active);
         setError(null);

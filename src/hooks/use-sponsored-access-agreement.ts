@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { Address, encodeFunctionData, Hex } from 'viem';
-import AccessWorkflowAbi from '@src/config/abi/AccessWorkflow.json';
-import { GLOBAL_CONSTANTS } from '@src/config-global';
+import { Address, encodeFunctionData } from 'viem';
+// import AccessWorkflowAbi from '@src/config/abi/AccessWorkflow.json';
+// import { GLOBAL_CONSTANTS } from '@src/config-global';
+import CampaignSubscriptionTplAbi from '@src/config/abi/CampaignSubscriptionTpl.json';
 import { useWeb3Session } from '@src/hooks/use-web3-session.ts';
 import { ERRORS } from '@notifications/errors.ts';
 import { useAccountSession } from '@src/hooks/use-account-session.ts';
@@ -12,7 +13,7 @@ interface SponsoredAccessParams {
   campaignAddress: Address;
   policyAddress: Address;
   parties: Address[];
-  payload: Hex;
+  payload: string;
 }
 
 interface UseSponsoredAccessAgreementHook {
@@ -31,13 +32,14 @@ export const useSponsoredAccessAgreement = (): UseSponsoredAccessAgreementHook =
   const { isAuthenticated, logout } = useAccountSession();
 
 
-  const sponsoredAccessAgreement = async ({
-                                            holder,
-                                            campaignAddress,
-                                            policyAddress,
-                                            parties,
-                                            payload
-                                          }: SponsoredAccessParams) => {
+  const sponsoredAccessAgreement = async (args: SponsoredAccessParams) => {
+    const {
+      holder,
+      campaignAddress,
+      policyAddress,
+      parties,
+      payload
+    } = args;
     setLoading(true);
     setError(null);
 
@@ -53,22 +55,46 @@ export const useSponsoredAccessAgreement = (): UseSponsoredAccessAgreementHook =
       throw new Error('Invalid Web3Auth session');
     }
 
+    // console.log('sponsored access args')
+    // console.log([
+    //   holder,
+    //   campaignAddress,
+    //   policyAddress,
+    //   parties,
+    //   payload
+    // ])
+
     try {
+      // const sponsoredAccessData = encodeFunctionData({
+      //   abi: AccessWorkflowAbi.abi,
+      //   functionName: 'sponsoredAccessAgreement',
+      //   args: [
+      //     holder,
+      //     campaignAddress,
+      //     policyAddress,
+      //     parties,
+      //     payload
+      //   ],
+      // });
+
+      console.log('run')
+      console.log(campaignAddress)
+      console.log(sessionData?.address)
+
       const sponsoredAccessData = encodeFunctionData({
-        abi: AccessWorkflowAbi.abi,
-        functionName: 'sponsoredAccessAgreement',
-        args: [
-          holder,
-          campaignAddress,
-          policyAddress,
-          parties,
-          payload
-        ],
+        abi: CampaignSubscriptionTplAbi.abi,
+        functionName: 'run',
+        args: [sessionData?.address],
       });
 
       const calls = [
+        // {
+        //   to: GLOBAL_CONSTANTS.ACCESS_WORKFLOW_ADDRESS,
+        //   value: 0,
+        //   data: sponsoredAccessData,
+        // },
         {
-          to: GLOBAL_CONSTANTS.ACCESS_WORKFLOW_ADDRESS,
+          to: campaignAddress,
           value: 0,
           data: sponsoredAccessData,
         },
