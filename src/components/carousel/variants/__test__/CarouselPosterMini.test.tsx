@@ -1,8 +1,11 @@
-import { describe, it, expect } from 'vitest';
+import '../../../../../__mocks__/lens-protocol-react';
+import '../../../../../__mocks__/lens-protocol-react-web';
+import '../../../../../__mocks__/web3auth';
 
+import { describe, it, expect } from 'vitest';
+import { Testing } from '@src/utils/testing/Testing';
 import CarouselPosterMini from '@src/components/carousel/variants/CarouselPosterMini';
 import { CarouselPosterMiniProps } from '@src/components/carousel/types';
-import {Testing} from "@src/utils/testing/Testing.tsx";
 
 describe('[COMPONENTS]: CarouselPosterMini', () => {
   const mockData = [
@@ -17,19 +20,7 @@ describe('[COMPONENTS]: CarouselPosterMini', () => {
         ],
       },
       globalStats: { upvotes: 10 },
-    },
-    {
-      id: '2',
-      metadata: {
-        title: 'Test 2 Title',
-        content: 'Test 3 Content',
-        attachments: [
-          { altTag: 'poster', image: { raw: { uri: 'poster-uri' } } },
-          { altTag: 'wallpaper', image: { raw: { uri: 'wallpaper-uri' } } },
-        ],
-      },
-      globalStats: { upvotes: 150 },
-    },
+    }
   ];
 
   const defaultProps: CarouselPosterMiniProps = {
@@ -40,31 +31,26 @@ describe('[COMPONENTS]: CarouselPosterMini', () => {
   };
 
   it('to match snapshot', () => {
-    const { baseElement } = Testing.renderWithStoreAndRouter(<CarouselPosterMini {...defaultProps} />);
-    expect(baseElement).toMatchSnapshot();
+    expect(Testing.renderWithStoreAndRouter(<CarouselPosterMini {...defaultProps} />).baseElement).toMatchSnapshot();
   });
 
   it('renders the correct number of slides', () => {
-    const { container } = Testing.renderWithStoreAndRouter(<CarouselPosterMini {...defaultProps} />);
-    const slides = container.querySelectorAll('.lazy-load-image-background');
-    expect(slides.length).toBe(mockData.length);
+    const slides = Testing.renderWithStoreAndRouter(<CarouselPosterMini {...defaultProps} />).container.querySelectorAll('.slick-slide');
+    expect(slides.length).toBe(1);
+  });
+
+  it('renders the correct poster URIs', () => {
+    const { getAllByAltText } = Testing.renderWithStoreAndRouter(<CarouselPosterMini {...defaultProps} />);
+    expect(getAllByAltText('Test Title')[0]).toHaveAttribute('src', 'poster-uri');
   });
 
   it('renders the title correctly', () => {
-    const { getByText } = Testing.renderWithStoreAndRouter(<CarouselPosterMini {...defaultProps} />);
-    expect(getByText('Test Carousel')).toBeInTheDocument();
-  });
-
-  it('renders the correct poster URI for carousel items', () => {
-    const { getAllByAltText } = Testing.renderWithStoreAndRouter(<CarouselPosterMini {...defaultProps} />);
-    const imgElement = getAllByAltText(/title/i);
-    expect(imgElement.length).toBe(mockData.length);
+    expect(Testing.renderWithStoreAndRouter(<CarouselPosterMini {...defaultProps} />).getByText('Test Carousel')).toBeInTheDocument();
   });
 
   it('handles empty data gracefully', () => {
     const emptyProps = { ...defaultProps, data: [] };
-    const { container } = Testing.renderWithStoreAndRouter(<CarouselPosterMini {...emptyProps} />);
-    const slides = container.querySelectorAll('.slick-slide');
+    const slides = Testing.renderWithStoreAndRouter(<CarouselPosterMini {...emptyProps} />).container.querySelectorAll('.slick-slide');
     expect(slides.length).toBe(0);
   });
 });

@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import { Provider } from 'react-redux';
+import { Provider as ReduxProvider } from 'react-redux';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { createStore } from 'redux';
 import rootReducer from '@redux/reducer';
@@ -38,14 +38,14 @@ export namespace Testing {
    */
   export const renderWithStoreAndRouter = (ui: React.ReactElement) => {
     return render(
-      <Provider store={store}>
+      <ReduxProvider store={store}>
         <Router future={{
           v7_relativeSplatPath: true,
           v7_startTransition: true,
         }}>
           {ui}
         </Router>
-      </Provider>
+      </ReduxProvider>
     );
   };
 
@@ -60,14 +60,14 @@ export namespace Testing {
   export const renderWithLensProvider = (ui: React.ReactElement) => {
     return render(
       <LensProvider config={lensConfig}>
-        <Provider store={store}>
+        <ReduxProvider store={store}>
           <Router future={{
             v7_relativeSplatPath: true,
             v7_startTransition: true,
           }}>
             {ui}
           </Router>
-        </Provider>
+        </ReduxProvider>
       </LensProvider>
     );
   };

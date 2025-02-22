@@ -1,6 +1,6 @@
-import '../../../../../__mocks__/lens-protocol-react.ts';
-import '../../../../../__mocks__/lens-protocol-react-web.ts';
-import '../../../../../__mocks__/web3auth.ts';
+import '../../../../../__mocks__/lens-protocol-react';
+import '../../../../../__mocks__/lens-protocol-react-web';
+import '../../../../../__mocks__/web3auth';
 
 import { describe, it, expect } from 'vitest';
 import { URI } from '@lens-protocol/react';
