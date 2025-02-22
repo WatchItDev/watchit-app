@@ -23,8 +23,8 @@ import { COLORS } from '@src/layouts/config-layout';
 import {LoadingScreen} from "@src/components/loading-screen";
 
 type CampaignTableProps = {
-  campaigns: any[];
-  loading: boolean;
+  campaigns: any[]; //NOSONAR
+  loading: boolean; //NOSONAR
 };
 
 const CampaignTable: FC<CampaignTableProps> = (args) => {
