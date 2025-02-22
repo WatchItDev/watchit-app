@@ -36,12 +36,15 @@ const CampaignTable: FC<CampaignTableProps> = (args) => {
   });
 
   // Map each contract log to the structure required by CampaignTableRow.
-  const formattedCampaigns = campaigns.map((item: any) => ({
-    campaign: item.args?.campaign || item.transactionHash,
-    name: item?.args?.description || 'Campaign Name',
-    policy: item?.args?.policy,
-    expiration: item?.args?.expireAt,
-  }));
+  const formattedCampaigns = campaigns
+    .slice()
+    .reverse()
+    .map((item: any) => ({
+      campaign: item.args?.campaign || item.transactionHash,
+      name: item?.args?.description || 'Campaign Name',
+      policy: item?.args?.policy,
+      expiration: item?.args?.expireAt,
+    }));
 
   const notFound = !formattedCampaigns.length && !loading;
   const denseHeight = table.dense ? 52 : 72;
@@ -60,38 +63,39 @@ const CampaignTable: FC<CampaignTableProps> = (args) => {
                 numSelected={table.selected.length}
                 onSort={table.onSort}
               />
-              { loading ? (
-                  <TableRow sx={{height: denseHeight}}>
-                    <TableCell colSpan={9} >
+              <TableBody>
+                {loading ? (
+                  <TableRow sx={{ height: denseHeight }}>
+                    <TableCell colSpan={9}>
                       <LoadingScreen />
                     </TableCell>
                   </TableRow>
                 ) : (
-                <TableBody>
-                  {formattedCampaigns
-                    .slice(
-                      table.page * table.rowsPerPage,
-                      table.page * table.rowsPerPage + table.rowsPerPage
-                    )
-                    .map((row: any) => (
-                      <CampaignTableRow
-                        key={row.id}
-                        row={row}
-                        selected={table.selected.includes(String(row.id))}
-                      />
-                    ))}
-                  <TableEmptyRows
-                    height={denseHeight}
-                    emptyRows={emptyRows(table.page, table.rowsPerPage, formattedCampaigns.length)}
-                  />
-
-                  <TableNoData
-                    notFound={notFound}
-                    loading={loading}
-                    emptyText={"No campaigns have been registered yet"}
-                  />
-                </TableBody>
-              )}
+                  <>
+                    {formattedCampaigns
+                      .slice(
+                        table.page * table.rowsPerPage,
+                        table.page * table.rowsPerPage + table.rowsPerPage
+                      )
+                      .map((row: any) => (
+                        <CampaignTableRow
+                          key={row.campaign}
+                          row={row}
+                          selected={table.selected.includes(String(row.id))}
+                        />
+                      ))}
+                    <TableEmptyRows
+                      height={denseHeight}
+                      emptyRows={emptyRows(table.page, table.rowsPerPage, formattedCampaigns.length)}
+                    />
+                    <TableNoData
+                      notFound={notFound}
+                      loading={loading}
+                      emptyText="No campaigns have been registered yet"
+                    />
+                  </>
+                )}
+              </TableBody>
             </Table>
           </Box>
         </Scrollbar>

@@ -34,6 +34,7 @@ import {
 } from "@src/sections/marketing/components/CampaignConfiguredIndicatorState.tsx";
 import TextMaxLine from "@src/components/text-max-line";
 import CampaignWithdrawFundsModal from '@src/sections/marketing/components/CampaignWithdrawFundsModal';
+import { useGetCampaignIsReady } from '@src/hooks/use-get-campaign-is-ready.ts';
 
 // ----------------------------------------------------------------------
 
@@ -73,6 +74,7 @@ export default function CampaignTableRow({ row, selected }: Props) {
   const { paused, fetchCampaignPaused } = useCampaignPaused();
   const { quotaLimit, fetchQuotaLimit } = useGetCampaignQuotaLimit();
   const { totalUsage, fetchTotalUsage } = useGetCampaignTotalUsage();
+  const { isReady, fetchIsReady } = useGetCampaignIsReady();
   const { pause, loading: loadingPause } = useCampaignPause();
   const { unPause, loading: loadingResume } = useCampaignUnPause();
   const type = POLICY_TEXTS[`${policy?.toLowerCase?.()}`]?.toLowerCase?.();
@@ -90,7 +92,8 @@ export default function CampaignTableRow({ row, selected }: Props) {
     fetchQuotaLimit(campaign as Address)
     fetchCampaignPaused(campaign as Address)
     fetchTotalUsage(campaign as Address)
-  }, []);
+    fetchIsReady(campaign as Address)
+  }, [campaign]);
 
   const onSettingRow = () => {
     settingsModal.onTrue();
@@ -120,7 +123,7 @@ export default function CampaignTableRow({ row, selected }: Props) {
     <>
       <TableRow hover selected={selected} key={campaign}>
         <TableCell sx={{ display: 'flex', alignItems: 'center' }}>
-          <CampaignConfiguredIndicatorState quotaLimit={quotaLimit} />
+          <CampaignConfiguredIndicatorState isReady={isReady} />
           <ListItemText
             primary={<TextMaxLine line={1}>{name}</TextMaxLine>}
             secondary={<TextMaxLine line={1}>{`${fundsAllocation ? Number(formatUnits(fundsAllocationBigInt, 18)).toFixed(2) : "0"} MMC per user`}</TextMaxLine>}
