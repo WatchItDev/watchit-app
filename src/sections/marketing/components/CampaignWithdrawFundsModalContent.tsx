@@ -23,11 +23,12 @@ interface CampaignWithdrawFundsModalContentProps {
   };
 }
 
-const CampaignWithdrawFundsModalContent: FC<CampaignWithdrawFundsModalContentProps> = ({
-                                                                                         onClose,
-                                                                                         onConfirm,
-                                                                                         campaignData,
-                                                                                       }) => {
+const CampaignWithdrawFundsModalContent: FC<CampaignWithdrawFundsModalContentProps> = (props) => {
+  const {
+    onClose,
+    onConfirm,
+    campaignData,
+  } = props;
   const { address, description, currentFundsBalance } = campaignData;
   const [withdrawAmount, setWithdrawAmount] = useState<string>('');
   const { removeFunds, loading } = useCampaignRemoveFunds();
