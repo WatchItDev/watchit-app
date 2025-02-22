@@ -119,6 +119,7 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({ src, cid, titleMovie, onBack
         "enableIMSC1": false, // Disable IMSC1 subtitles
         "enableCEA708Captions": false, // Disable CEA-708 captions,
         "enableWorker": true,
+        "backBufferLength": 90
         // "startFragPrefetch": true
       };
 
