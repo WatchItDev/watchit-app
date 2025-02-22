@@ -70,6 +70,7 @@ export const UserItem = ({
         onClick={goToProfile}
       >
         <Image
+          alt={profile?.handle?.localName ?? 'Profile Cover'}
           src={
             profile?.metadata?.coverPicture?.optimized?.uri ??
             `https://picsum.photos/seed/${profile?.id}/1920/820`
