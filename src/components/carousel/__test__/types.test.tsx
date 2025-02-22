@@ -12,7 +12,7 @@ import {
   ArrowIconProps,
   CarouselCreatorsProps,
   CarouselPosterSlideProps,
-  PublicationType,
+  PublicationType, CarouselTopTitlesProps, CarouselPosterMiniProps,
 } from '../types.ts';
 import {CarouselReturnType} from "@src/hooks/components/types";
 import {CarouselWrapperProps} from "@src/components/carousel/types";

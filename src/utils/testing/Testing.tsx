@@ -4,15 +4,17 @@ import { Provider } from 'react-redux';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { createStore } from 'redux';
 import rootReducer from '@redux/reducer';
-import {development, LensConfig, LensProvider} from '@lens-protocol/react-web';
+import {LensProvider, staging} from '@lens-protocol/react-web';
 import {bindings} from "@src/auth/context/web3Auth/config/bindings.ts";
 
 const store = createStore(rootReducer);
 
-const lensConfig: LensConfig = {
-  environment: development,
+const lensConfig = {
+  environment: staging,
   bindings: bindings,
-  debug: true,
+  sharedDependencies: {
+    pollingInterval: 5000,
+  },
 };
 
 
