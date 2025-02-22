@@ -108,6 +108,7 @@ export default function CampaignTableRow({ row, selected }: Props) {
       checked ? await pause(campaign) : await unPause(campaign);
 
       fetchCampaignPaused(campaign as Address);
+      popover.onClose();
     } catch (error) {
       console.error(error);
     }
@@ -115,6 +116,7 @@ export default function CampaignTableRow({ row, selected }: Props) {
 
   const handleSuccessWithdraw = async () => {
     await fetchCampaignFundsBalance(campaign as Address);
+    await fetchIsReady(campaign as Address)
   };
 
   const renderPrimary = (
