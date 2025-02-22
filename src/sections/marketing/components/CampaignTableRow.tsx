@@ -116,10 +116,6 @@ export default function CampaignTableRow({ row, selected }: Props) {
     await fetchCampaignFundsBalance(campaign as Address);
   };
 
-  console.log('policies')
-  console.log(POLICY_TEXTS)
-  console.log(policy)
-
   const renderPrimary = (
     <>
       <TableRow hover selected={selected} key={campaign}>
@@ -127,7 +123,7 @@ export default function CampaignTableRow({ row, selected }: Props) {
           <CampaignConfiguredIndicatorState quotaLimit={quotaLimit} />
           <ListItemText
             primary={<TextMaxLine line={1}>{name}</TextMaxLine>}
-            secondary={<TextMaxLine line={1}>{`${fundsAllocation} MMC per user`}</TextMaxLine>}
+            secondary={<TextMaxLine line={1}>{`${fundsAllocation ? Number(formatUnits(fundsAllocationBigInt, 18)).toFixed(2) : "0"} MMC per user`}</TextMaxLine>}
             primaryTypographyProps={{ typography: 'body2' }}
             secondaryTypographyProps={{
               component: 'span',

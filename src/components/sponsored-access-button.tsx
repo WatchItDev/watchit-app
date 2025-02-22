@@ -5,7 +5,7 @@ import { FC } from 'react';
 import { Address } from 'viem';
 
 // REDUX IMPORTS
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { openLoginModal } from '@redux/auth';
 
 // MUI IMPORTS
@@ -19,6 +19,7 @@ import { Icon } from '@iconify/react';
 // LOCAL IMPORTS
 import NeonPaper from '@src/sections/publication/NeonPaperContainer.tsx';
 import { useSponsoredAccessAgreement } from '@src/hooks/use-sponsored-access-agreement.ts';
+import { useAccountSession } from '@src/hooks/use-account-session.ts';
 
 interface SponsoredAccessProps {
   holderAddress: Address;
@@ -26,27 +27,28 @@ interface SponsoredAccessProps {
   policyAddress: Address;
   userAddress?: Address;
   isActive: boolean;
-  neonPaperProps?: object;
+  neonPaperProps?: any;
   buttonProps?: LoadingButtonProps;
 }
 
-export const SponsoredAccessTrialButton: FC<SponsoredAccessProps> = ({
-                                                                       holderAddress,
-                                                                       campaignAddress,
-                                                                       policyAddress,
-                                                                       userAddress,
-                                                                       isActive,
-                                                                       neonPaperProps,
-                                                                       buttonProps
-                                                                     }) => {
+export const SponsoredAccessTrialButton: FC<SponsoredAccessProps> = (props) => {
+  const {
+    holderAddress,
+    campaignAddress,
+    policyAddress,
+    userAddress,
+    isActive,
+    neonPaperProps,
+    buttonProps
+  } = props
   const dispatch = useDispatch();
-  const sessionData = useSelector((state: any) => state.auth.session);
+  const { isAuthenticated } = useAccountSession()
 
   const { sponsoredAccessAgreement, loading } = useSponsoredAccessAgreement();
 
   const handleTrial = async () => {
     try {
-      if (!sessionData?.authenticated) {
+      if (!isAuthenticated) {
         return dispatch(openLoginModal());
       }
 
@@ -55,7 +57,7 @@ export const SponsoredAccessTrialButton: FC<SponsoredAccessProps> = ({
         campaignAddress,
         policyAddress,
         parties: userAddress ? [userAddress] : [],
-        payload: '0x',
+        payload: '',
       });
     } catch (error) {
       console.error('Error trying to execute sponsored access agreement', error);
@@ -64,7 +66,7 @@ export const SponsoredAccessTrialButton: FC<SponsoredAccessProps> = ({
 
   const RainbowEffect = loading ? NeonPaper : Box;
 
-  if (!isActive) return null;
+  if (!isActive) return undefined;
 
   return (
     <RainbowEffect {...neonPaperProps}>

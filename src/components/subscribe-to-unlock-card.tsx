@@ -66,7 +66,7 @@ export const SubscribeToUnlockCard = ({
         campaignAddress: campaign,
         policyAddress: GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS,
         parties: [sessionData?.address],
-        payload: '0x',
+        payload: '',
       });
     } catch (e) {
       console.error('Error en handleTrial:', e);

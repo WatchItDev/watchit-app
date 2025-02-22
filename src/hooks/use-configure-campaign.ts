@@ -43,6 +43,7 @@ export const useConfigureCampaign = (): UseConfigureCampaignHook => {
                              quotaLimit
                            }: ConfigureCampaignParams) => {
     const weiAmount = parseUnits(addFundsAmount.toString(), 18);
+    const weiAllocation = parseUnits(fundsAllocationAmount.toString(), 18);
 
     setLoading(true);
     setError(null);
@@ -82,7 +83,7 @@ export const useConfigureCampaign = (): UseConfigureCampaignHook => {
       const setFundsAllocationData = encodeFunctionData({
         abi: SubscriptionCampaignTplAbi.abi,
         functionName: 'setFundsAllocation',
-        args: [fundsAllocationAmount, GLOBAL_CONSTANTS.ACCESS_WORKFLOW_ADDRESS],
+        args: [weiAllocation, GLOBAL_CONSTANTS.ACCESS_WORKFLOW_ADDRESS],
       });
 
       const setMaxRateLimitData = encodeFunctionData({
