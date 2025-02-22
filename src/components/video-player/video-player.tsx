@@ -100,7 +100,7 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({ src, cid, titleMovie, onBack
         // abrEwmaFastVod: Controls how quickly the algorithm reacts to bandwidth changes in VOD (Video On Demand).
         // A higher value makes the algorithm less sensitive to short-term fluctuations, smoothing out rapid changes.
         // Recommended range: 2.0 - 5.0 (Higher = Smoother)
-        // "abrEwmaFastVoD": 3,
+        //  "abrEwmaFastVoD": 3,
         // abrEwmaSlowVod: Controls the long-term average bandwidth estimation for adaptive bitrate switching.
         // A higher value averages the bandwidth over a longer period, reducing frequent quality switches.
         // Recommended range: 10.0 - 20.0 (Higher = More stable, but slower adaptation)
@@ -120,7 +120,6 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({ src, cid, titleMovie, onBack
         "enableCEA708Captions": false, // Disable CEA-708 captions,
         "enableWorker": true,
         "backBufferLength": 90,
-        "enableWorker": true,
         "lowLatencyMode": true
         // "startFragPrefetch": true
       };
