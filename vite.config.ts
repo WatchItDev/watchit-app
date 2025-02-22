@@ -56,6 +56,7 @@ export default defineConfig(({ mode }) => {
       global: true,
       environment: 'jsdom',
       setupFiles: ['./setupTest.tsx'],
+      include: ['**/__test__/**/*.test.{js,ts,jsx,tsx}'],
       coverage: {
         provider: 'v8'
       }
