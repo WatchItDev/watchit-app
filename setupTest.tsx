@@ -7,11 +7,17 @@ expect.extend(matchers);
 // Test Hooks
 beforeAll(() => {
   global.ResizeObserver = class {
-    observe() {}
-    unobserve() {}
-    disconnect() {}
+    observe() {
+      // Intentionally left empty for mocking purposes
+    }
+    unobserve() {
+      // Intentionally left empty for mocking purposes
+    }
+    disconnect() {
+      // Intentionally left empty for mocking purposes
+    }
   };
-})
+});
 
 afterEach(() => {
   cleanup();

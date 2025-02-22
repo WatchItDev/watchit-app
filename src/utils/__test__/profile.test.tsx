@@ -119,7 +119,7 @@ describe('testing filterHiddenProfiles', () => {
   });
 
   it('returns undefined if input is undefined', () => {
-    const result = filterHiddenProfiles(undefined);
+    const result = filterHiddenProfiles();
 
     expect(result).toBeUndefined();
   });

@@ -117,3 +117,9 @@ export const trimPublicationContentExtraText = (text: string): string => {
 
   return `${cleanedText}`;
 };
+
+export const createIndexForElement = () => {
+  const randomString = Math.random().toString(36).substring(4);
+  console.log(randomString);
+  return randomString;
+}

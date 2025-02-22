@@ -1,10 +1,14 @@
 import Box from '@mui/material/Box';
 
 import { CarouselSlideProps } from '../types';
+// @ts-ignore
+import {Post} from "@lens-protocol/api-bindings/dist/declarations/src/lens/graphql/generated";
+import {Profile } from '@lens-protocol/api-bindings';
+import {createIndexForElement} from "@src/utils/text-transform.ts";
 
-export default function CarouselSlide<T>( props: Readonly<CarouselSlideProps<T>>) {
+export default function CarouselSlide( props: Readonly<CarouselSlideProps<Profile | Post>>) {
   const {
-    items,
+      items,
       itemsPerRow,
       renderItem,
   } = props;
@@ -15,10 +19,10 @@ export default function CarouselSlide<T>( props: Readonly<CarouselSlideProps<T>>
   return (
     <Box>
       {[row1, row2].map((rowItems, _rowIndex) => (
-        <Box key={`row-${_rowIndex}`} sx={{ display: 'flex' }}>
+        <Box key={`loop-one-${createIndexForElement()}`} sx={{ display: 'flex' }}>
           {rowItems.map((item, _item) => (
             <Box
-              key={`item-${_rowIndex}-${_item}`}
+              key={`loop-two-${createIndexForElement()}`}
               sx={{
                 flexBasis: `${itemWidthPercent}%`,
                 maxWidth: `${itemWidthPercent}%`,
