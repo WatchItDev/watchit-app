@@ -40,8 +40,6 @@ export const useGetCampaignIsReady = (): UseGetCampaignIsReadyHook => {
           functionName: 'isReady',
           args: [GLOBAL_CONSTANTS.ACCESS_WORKFLOW_ADDRESS],
         });
-        console.log('hello ready')
-        console.log(ready)
         setIsReady(ready);
         setError(null);
         return ready;

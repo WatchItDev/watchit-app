@@ -73,9 +73,6 @@ const ProfileHeader = ({
   const { campaign, fetchSubscriptionCampaign } = useGetSubscriptionCampaign();
   const { isActive, loading: isActiveLoading, fetchIsActive } = useGetCampaignIsActive();
 
-  console.log('is active')
-  console.log(isActive)
-
   usePublications({
     where: {
       from: [...(profile?.id ? [profile.id] : [])],

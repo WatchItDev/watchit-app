@@ -79,11 +79,6 @@ const CampaignModalContent: FC<CampaignModalContentProps> = ({ onClose, onConfir
       return;
     }
 
-    console.log('hello create campaign');
-    console.log(policy);
-    console.log(expirationSeconds);
-    console.log(description);
-
     await create({
       policy,
       expiration: expirationSeconds,
