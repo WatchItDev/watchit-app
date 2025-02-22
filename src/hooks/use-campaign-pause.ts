@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
 import { Address, encodeFunctionData } from 'viem';
 import CampaignSubscriptionTplAbi from '@src/config/abi/CampaignSubscriptionTpl.json';
 import { useWeb3Session } from '@src/hooks/use-web3-session';
@@ -17,8 +16,6 @@ export const useCampaignPause = (): UseCampaignPauseHook => {
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<keyof typeof ERRORS | null>(null);
-
-  const sessionData = useSelector((state: any) => state.auth.session);
   const { bundlerClient, smartAccount } = useWeb3Session();
   const { isAuthenticated, logout } = useAccountSession();
 
@@ -26,12 +23,8 @@ export const useCampaignPause = (): UseCampaignPauseHook => {
     setLoading(true);
     setError(null);
 
-    if (!sessionData?.authenticated) {
-      setError(ERRORS.TRANSFER_LOGIN_FIRST_ERROR);
-      setLoading(false);
-      return;
-    }
     if (!isAuthenticated()) {
+      setError(ERRORS.FIRST_LOGIN_ERROR);
       logout();
       setLoading(false);
       throw new Error('Invalid Web3Auth session');

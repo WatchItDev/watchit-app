@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
 import { Address, encodeFunctionData, parseUnits } from 'viem';
 import SubscriptionCampaignTplAbi from '@src/config/abi/CampaignSubscriptionTpl.json';
 import LedgerVaultAbi from '@src/config/abi/LedgerVault.json';
@@ -26,9 +25,6 @@ export const useConfigureCampaign = (): UseConfigureCampaignHook => {
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<keyof typeof ERRORS | null>(null);
-
-  // Session data (same as in your original hook)
-  const sessionData = useSelector((state: any) => state.auth.session);
   const { bundlerClient, smartAccount } = useWeb3Session();
   const { isAuthenticated, logout } = useAccountSession();
 
@@ -48,14 +44,8 @@ export const useConfigureCampaign = (): UseConfigureCampaignHook => {
     setLoading(true);
     setError(null);
 
-    // Session checks
-    if (!sessionData?.authenticated) {
-      setError(ERRORS.TRANSFER_LOGIN_FIRST_ERROR);
-      setLoading(false);
-      return;
-    }
-
     if (!isAuthenticated()) {
+      setError(ERRORS.FIRST_LOGIN_ERROR);
       logout();
       setLoading(false);
       throw new Error('Invalid Web3Auth session');
