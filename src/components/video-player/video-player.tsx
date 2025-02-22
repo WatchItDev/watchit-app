@@ -120,6 +120,7 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({ src, cid, titleMovie, onBack
         "enableCEA708Captions": false, // Disable CEA-708 captions,
         "lowLatencyMode": false,
         "enableWorker": true,
+        "backBufferLength": 120,
         "startFragPrefetch": true
       };
 
