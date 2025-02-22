@@ -100,19 +100,19 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({ src, cid, titleMovie, onBack
         // abrEwmaFastVod: Controls how quickly the algorithm reacts to bandwidth changes in VOD (Video On Demand).
         // A higher value makes the algorithm less sensitive to short-term fluctuations, smoothing out rapid changes.
         // Recommended range: 2.0 - 5.0 (Higher = Smoother)
-        "abrEwmaFastVoD": 2,
+        "abrEwmaFastVoD": 4,
         // abrEwmaSlowVod: Controls the long-term average bandwidth estimation for adaptive bitrate switching.
         // A higher value averages the bandwidth over a longer period, reducing frequent quality switches.
         // Recommended range: 10.0 - 20.0 (Higher = More stable, but slower adaptation)
-        "abrEwmaSlowVoD": 9,
+        "abrEwmaSlowVoD": 15,
         // abrBandWidthFactor: Determines how conservatively HLS estimates available bandwidth.
         // A value < 1.0 ensures HLS.js does not use the full estimated bandwidth, preventing aggressive quality changes.
         // Recommended range: 0.7 - 0.9 (Lower = More cautious, fewer quality switches)
-        "abrBandWidthFactor": 0.9,
+        "abrBandWidthFactor": 0.7,
         // abrBandWidthUpFactor: Controls how aggressively the player upgrades to a higher bitrate.
         // A lower value prevents HLS.js from switching to a higher quality too quickly, reducing unnecessary upscaling.
         // Recommended range: 0.5 - 0.8 (Lower = More stable, avoids excessive upscaling)
-        "abrBandWidthUpFactor": 0.7,
+        "abrBandWidthUpFactor": 0.5,
         "enableSoftwareAES": false, // Disable software AES decryption
         "enableID3MetadataCues": false, // Disable ID3 metadata cues
         "enableWebVTT": true, // Enable WebVTT subtitles
@@ -120,9 +120,6 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({ src, cid, titleMovie, onBack
         "enableCEA708Captions": false, // Disable CEA-708 captions,
         "lowLatencyMode": false,
         "enableWorker": true,
-        "nudgeOffset": 0.4,
-        "nudgeMaxRetry": 2,
-        // "maxFragLookUpTolerance": 0.4,
         "startFragPrefetch": true
       };
 
