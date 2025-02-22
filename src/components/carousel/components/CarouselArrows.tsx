@@ -1,12 +1,10 @@
 import Stack from '@mui/material/Stack';
-import { styled, alpha } from '@mui/material/styles';
 import IconButton from '@mui/material/IconButton';
-
+import { styled, alpha } from '@mui/material/styles';
 import {
   CarouselArrowsProps,
   CarouselArrowsStyledIconButtonProps,
 } from '@src/components/carousel/types.ts';
-
 import {useIsRTL} from "@src/hooks/components/use-rtl.ts";
 import { LeftIcon, RightIcon } from './CarouselArrowIcons.tsx';
 

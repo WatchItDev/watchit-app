@@ -1,12 +1,10 @@
-import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-
+import { styled } from '@mui/material/styles';
 import { bgBlur } from '@src/theme/css.ts';
 import { CarouselArrowIndexProps } from '@src/components/carousel/types.ts';
 import {useIsRTL} from "@src/hooks/components/use-rtl.ts";
-
 import { LeftIcon, RightIcon } from './CarouselArrowIcons.tsx';
 
 const StyledRoot = styled(Box)(({ theme }) => ({

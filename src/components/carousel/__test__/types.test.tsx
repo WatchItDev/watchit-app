@@ -1,8 +1,6 @@
 import React from 'react';
 import Carousel from 'react-slick';
-
 import { describe, it, expect } from 'vitest';
-
 import {
   NavigationArrowsProps,
   CarouselDotsStyledRootProps,

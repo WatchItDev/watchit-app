@@ -1,6 +1,5 @@
 import CarouselSlide from '@src/components/carousel/components/CarouselSlide';
 import PosterHorizontal from '@src/components/poster/variants/poster-horizontal';
-
 import { CarouselPosterMiniProps, PublicationType } from '../types';
 import CarouselWrapper from './CarouselWrapper';
 

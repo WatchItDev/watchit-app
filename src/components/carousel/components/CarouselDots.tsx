@@ -1,9 +1,7 @@
 import React from 'react';
-
 import Stack from '@mui/material/Stack';
-import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
-
+import { styled } from '@mui/material/styles';
 // Local Imports
 import { CarouselDotsStyledRootProps, CarouselDotsProps } from '@src/components/carousel/types.ts';
 

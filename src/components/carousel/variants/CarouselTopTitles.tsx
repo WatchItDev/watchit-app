@@ -1,11 +1,7 @@
 import Box from '@mui/material/Box';
-
 import Carousel, { CarouselArrows, useCarousel } from '@src/components/carousel/index';
 import PosterTopTitles from '@src/components/poster/variants/poster-top-titles.tsx';
-
 import { CarouselTopTitlesProps } from '../types';
-
-// ----------------------------------------------------------------------
 
 export default function CarouselTopTitles({ posts, category }: Readonly<CarouselTopTitlesProps>) {
   const carousel = useCarousel({
