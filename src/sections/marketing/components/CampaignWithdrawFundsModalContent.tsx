@@ -1,5 +1,5 @@
 // REACT IMPORTS
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 
 // MUI IMPORTS
 import { DialogActions, Divider, Button, TextField, FormControl, Grid, Typography } from '@mui/material';
@@ -12,6 +12,9 @@ import { Address, parseUnits } from 'viem';
 // LOCAL IMPORTS
 import { useCampaignRemoveFunds } from '@src/hooks/use-campaign-remove-funds';
 import NeonPaper from "@src/sections/publication/NeonPaperContainer";
+import { notifyError, notifySuccess } from '@notifications/internal-notifications.ts';
+import { ERRORS } from '@notifications/errors.ts';
+import { SUCCESS } from '@notifications/success.ts';
 
 interface CampaignWithdrawFundsModalContentProps {
   onClose: () => void;
@@ -31,8 +34,12 @@ const CampaignWithdrawFundsModalContent: FC<CampaignWithdrawFundsModalContentPro
   } = props;
   const { address, description, currentFundsBalance } = campaignData;
   const [withdrawAmount, setWithdrawAmount] = useState<string>('');
-  const { removeFunds, loading } = useCampaignRemoveFunds();
+  const { removeFunds, loading, error } = useCampaignRemoveFunds();
   const canWithdraw = Number(withdrawAmount) > 0 && Number(withdrawAmount) <= Number(currentFundsBalance);
+
+  useEffect(() => {
+    if (error) notifyError(ERRORS.CAMPAIGN_WITHDRAWAL_ERROR);
+  }, [error]);
 
   const handleWithdraw = async () => {
     if (!canWithdraw) return;
@@ -44,6 +51,7 @@ const CampaignWithdrawFundsModalContent: FC<CampaignWithdrawFundsModalContentPro
         campaignAddress: address,
         amount: amountInWei,
       });
+      notifySuccess(SUCCESS.CAMPAIGN_WITHDRAWN_SUCCESSFULLY);
       onConfirm();
     } catch (err) {
       console.error('Error withdrawing funds => ', err);

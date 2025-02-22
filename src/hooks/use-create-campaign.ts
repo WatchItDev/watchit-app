@@ -24,10 +24,8 @@ export const useCreateCampaign = (): UseCreateCampaignHook => {
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<keyof typeof ERRORS | null>(null);
-
-  const sessionData = useSelector((state: any) => state.auth.session);
   const { bundlerClient, smartAccount } = useWeb3Session();
-  const { isAuthenticated, logout } = useAccountSession();
+  const { isAuthenticated } = useAccountSession();
 
   const initializeCampaign = ({ policy, expiration, description }: CreateCampaignParams) => {
     return encodeFunctionData({
@@ -46,14 +44,8 @@ export const useCreateCampaign = (): UseCreateCampaignHook => {
     setLoading(true);
     setError(null);
 
-    if (!sessionData?.authenticated) {
-      setError(ERRORS.TRANSFER_LOGIN_FIRST_ERROR);
-      setLoading(false);
-      return;
-    }
-
     if (!isAuthenticated()) {
-      logout();
+      setError(ERRORS.CAMPAIGN_CREATION_ERROR);
       setLoading(false);
       throw new Error('Invalid Web3Auth session');
     }
@@ -82,7 +74,7 @@ export const useCreateCampaign = (): UseCreateCampaignHook => {
       setLoading(false);
     } catch (err: any) {
       console.error('USE CREATE CAMPAIGN ERR:', err);
-      setError(ERRORS.UNKNOWN_ERROR);
+      setError(ERRORS.CAMPAIGN_CREATION_ERROR);
       setLoading(false);
     }
   };

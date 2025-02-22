@@ -1,4 +1,4 @@
-import { FC, useState, useMemo } from 'react';
+import { FC, useState, useMemo, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
@@ -13,6 +13,9 @@ import { GLOBAL_CONSTANTS } from '@src/config-global';
 import NeonPaper from "@src/sections/publication/NeonPaperContainer.tsx";
 import Box from "@mui/material/Box";
 import LoadingButton from "@mui/lab/LoadingButton";
+import { notifyError, notifySuccess } from '@notifications/internal-notifications.ts';
+import { ERRORS } from '@notifications/errors.ts';
+import { SUCCESS } from '@notifications/success.ts';
 
 interface CampaignSettingsModalContentProps {
   onClose?: () => void;
@@ -30,19 +33,21 @@ const CampaignSettingsModalContent: FC<CampaignSettingsModalContentProps> = ({
                                                                              }) => {
   const { address, description } = campaignData;
 
-  // Local state for each input field
   const [addFundsAmount, setAddFundsAmount] = useState<string>('');
   const [fundsAllocationAmount, setFundsAllocationAmount] = useState<string>('');
   const [quotaLimit, setQuotaLimit] = useState<string>('');
 
   // Get session data from Redux
   const sessionData = useSelector((state: any) => state.auth.session);
-
-  // Get policy terms (and thus the daily price in Wei)
   const { terms, loading: loadingTerms } = useGetPolicyTerms(
     GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS as Address,
     sessionData?.address as Address
   );
+  const { configure, loading: loadingConfigure, error } = useConfigureCampaign();
+
+  useEffect(() => {
+    if (error) notifyError(ERRORS.CAMPAIGN_CONFIGURATION_ERROR);
+  }, [error]);
 
   // Convert the daily price from Wei to MMC (float)
   const dailyPriceInMMC = useMemo(() => {
@@ -65,9 +70,6 @@ const CampaignSettingsModalContent: FC<CampaignSettingsModalContentProps> = ({
     );
   }, [addFundsAmount, fundsAllocationAmount, quotaLimit]);
 
-  // Custom hook to configure the campaign
-  const { configure, loading: loadingConfigure } = useConfigureCampaign();
-
   const handleOnConfirm = async () => {
     // Prevent proceeding if form validation fails
     if (!isFormValid) {
@@ -86,6 +88,8 @@ const CampaignSettingsModalContent: FC<CampaignSettingsModalContentProps> = ({
         fundsAllocationAmount: numericFundsAllocationAmount,
         quotaLimit: numericQuotaLimit,
       });
+
+      notifySuccess(SUCCESS.CAMPAIGN_CONFIGURED_SUCCESSFULLY);
 
       onConfirm?.();
     } catch (err) {

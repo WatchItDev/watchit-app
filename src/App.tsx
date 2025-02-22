@@ -164,7 +164,7 @@ const AppContent = () => {
       // { name: 'FundsLocked', args: { account: sessionData?.address }, logText: 'New funds locked:' },
       { name: 'FundsClaimed', args: { claimer: sessionData?.address }, logText: 'New funds claimed:' },
       // { name: 'FundsApproved', args: { from: sessionData?.address }, logText: 'New funds approved:' },
-      // { name: 'FundsCollected', args: { from: sessionData?.address }, logText: 'New funds collected:' },
+      { name: 'FundsCollected', args: { from: sessionData?.address }, logText: 'New funds collected:' },
       // { name: 'FundsReleased', args: { to: sessionData?.address }, logText: 'New funds released:' },
     ];
 

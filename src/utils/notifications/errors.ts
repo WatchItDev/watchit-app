@@ -64,6 +64,9 @@ export enum ERRORS {
   // Marketing
   STRATEGY_STORED_ERROR = 'STRATEGY_STORED_ERROR',
   CAMPAIGN_STORED_ERROR = 'CAMPAIGN_STORED_ERROR',
+  CAMPAIGN_CREATION_ERROR = 'CAMPAIGN_CREATION_ERROR',
+  CAMPAIGN_CONFIGURATION_ERROR = 'CAMPAIGN_CONFIGURATION_ERROR',
+  CAMPAIGN_WITHDRAWAL_ERROR = 'CAMPAIGN_WITHDRAWAL_ERROR',
 }
 
 /**
@@ -137,4 +140,7 @@ export const ERROR_MESSAGES: Record<ERRORS, string> = {
   //Marketing
   [ERRORS.STRATEGY_STORED_ERROR]: 'Error storing the strategy.',
   [ERRORS.CAMPAIGN_STORED_ERROR]: 'Error storing the campaign.',
+  [ERRORS.CAMPAIGN_CREATION_ERROR]: 'Error creating the campaign.',
+  [ERRORS.CAMPAIGN_CONFIGURATION_ERROR]: 'Error configuring the campaign.',
+  [ERRORS.CAMPAIGN_WITHDRAWAL_ERROR]: 'Error withdrawing funds from the campaign.',
 };

@@ -1,5 +1,5 @@
 // CampaignModalContent.tsx
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import {
   Button,
   TextField,
@@ -22,6 +22,9 @@ import { GLOBAL_CONSTANTS } from '@src/config-global';
 import { SelectChangeEvent } from '@mui/material/Select';
 import LoadingButton from "@mui/lab/LoadingButton";
 import NeonPaper from '@src/sections/publication/NeonPaperContainer';
+import { notifyError, notifySuccess } from '@notifications/internal-notifications.ts';
+import { SUCCESS } from '@notifications/success.ts';
+import { ERRORS } from '@notifications/errors.ts';
 
 interface CampaignModalContentProps {
   onClose: () => void;
@@ -35,15 +38,15 @@ const policyOptions = [
 
 const CampaignModalContent: FC<CampaignModalContentProps> = ({ onClose, onConfirm }) => {
   const { create, loading, error } = useCreateCampaign();
-
-  // State to hold form values for policy and description
   const [formValues, setFormValues] = useState({
     policy: '',
     description: '',
   });
-
-  // State for the selected expiration date (Date object)
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+
+  useEffect(() => {
+    if (error) notifyError(ERRORS.CAMPAIGN_CREATION_ERROR);
+  }, [error]);
 
   // Handler for text field changes
   const handleTextChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -84,6 +87,8 @@ const CampaignModalContent: FC<CampaignModalContentProps> = ({ onClose, onConfir
       expiration: expirationSeconds,
       description,
     });
+
+    notifySuccess(SUCCESS.CAMPAIGN_CREATED_SUCCESSFULLY);
 
     // Close the modal if the creation was successful
     onConfirm();

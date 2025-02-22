@@ -86,13 +86,17 @@ export default function CampaignTableRow({ row, selected }: Props) {
     ? new Date(Number(expiration) * 1000).toLocaleDateString('es-ES')
     : 'No Expiration';
 
-  useEffect(() => {
+  const handleFetchCampaignData = () => {
     fetchCampaignFundsBalance(campaign as Address)
     fetchFundsAllocation(campaign as Address)
     fetchQuotaLimit(campaign as Address)
     fetchCampaignPaused(campaign as Address)
     fetchTotalUsage(campaign as Address)
     fetchIsReady(campaign as Address)
+  };
+
+  useEffect(() => {
+    handleFetchCampaignData()
   }, [campaign]);
 
   const onSettingRow = () => {
@@ -107,12 +111,6 @@ export default function CampaignTableRow({ row, selected }: Props) {
     } catch (error) {
       console.error(error);
     }
-  };
-
-  const handleSuccessConfigure = async () => {
-    fetchCampaignFundsBalance(campaign as Address)
-    fetchFundsAllocation(campaign as Address)
-    fetchQuotaLimit(campaign as Address)
   };
 
   const handleSuccessWithdraw = async () => {
@@ -266,7 +264,7 @@ export default function CampaignTableRow({ row, selected }: Props) {
       <CampaignSettingsModal
         open={settingsModal.value}
         onClose={settingsModal.onFalse}
-        onSuccess={handleSuccessConfigure}
+        onSuccess={handleFetchCampaignData}
         campaignData={{
           address: campaign,
           description: name,
