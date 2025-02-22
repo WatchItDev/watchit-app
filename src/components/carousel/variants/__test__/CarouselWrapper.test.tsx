@@ -14,7 +14,7 @@ describe('[COMPONENTS]: CarouselWrapper', () => {
     title: 'Test Carousel',
     minItemWidth: 100,
     maxItemWidth: 200,
-    renderSlide: (slideItems, itemsPerRow, index) => (
+    renderSlide: (slideItems, _itemsPerRow, index) => (
       <div key={`slide-${index}`} data-testid="slide">
         {slideItems.map((item) => (
           <div key={item.id} data-testid="item">

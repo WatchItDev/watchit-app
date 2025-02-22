@@ -1,9 +1,7 @@
 import { describe, it, expect } from 'vitest';
-import { render } from '@testing-library/react';
 import { Testing } from '@src/utils/testing/Testing';
 import CarouselTopTitles from '@src/components/carousel/variants/CarouselTopTitles';
 import { CarouselTopTitlesProps } from '@src/components/carousel/types';
-import {renderWithLensProvider} from "@src/utils/testing/Testing.tsx";
 
 describe('[COMPONENTS]: CarouselTopTitles', () => {
   const mockPosts = [
