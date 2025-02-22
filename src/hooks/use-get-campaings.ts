@@ -20,7 +20,7 @@ export default function useGetCampaings() {
   ];
 
   const createEventSignature = (event: any): string => {
-    if (!event || !event.name || !event.inputs) {
+    if (!event?.name || !event.inputs) {
       throw new Error('Invalid event in ABI');
     }
     const inputs = event.inputs

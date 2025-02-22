@@ -14,7 +14,7 @@ type Props = {
   emptyText?: string;
 };
 
-export default function TableNoData({ loading, notFound, sx, emptyText= 'No data found' }: Props) {
+export default function TableNoData({ loading, notFound, sx, emptyText= 'No data found' }: Readonly<Props>) {
   return (
     <TableRow>
       {notFound ? (

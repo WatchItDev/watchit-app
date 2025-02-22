@@ -1,5 +1,5 @@
 // LOCAL IMPORTS
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 
 // MUI IMPORTS
 import Typography from '@mui/material/Typography';
@@ -11,7 +11,7 @@ import { IconButton, MenuItem } from '@mui/material';
 import Switch from '@mui/material/Switch';
 
 // VIEM IMPORTS
-import { Address, formatUnits } from 'viem';
+import { formatUnits } from 'viem';
 
 // LOCAL IMPORTS
 import { CampaignTableRowType } from '@src/types/marketing';
@@ -64,7 +64,7 @@ const LBL_STATUS_COLORS = {
 
 // ----------------------------------------------------------------------
 
-export default function CampaignTableRow({ row, selected }: Props) {
+export default function CampaignTableRow({ row, selected }: Readonly<Props>) {
   const { campaign, name, policy, expiration } = row;
   const popover = usePopover();
   const settingsModal = useBoolean();
@@ -87,12 +87,12 @@ export default function CampaignTableRow({ row, selected }: Props) {
     : 'No Expiration';
 
   const handleFetchCampaignData = () => {
-    fetchCampaignFundsBalance(campaign as Address)
-    fetchFundsAllocation(campaign as Address)
-    fetchQuotaLimit(campaign as Address)
-    fetchCampaignPaused(campaign as Address)
-    fetchTotalUsage(campaign as Address)
-    fetchIsReady(campaign as Address)
+    fetchCampaignFundsBalance(campaign)
+    fetchFundsAllocation(campaign)
+    fetchQuotaLimit(campaign)
+    fetchCampaignPaused(campaign)
+    fetchTotalUsage(campaign)
+    fetchIsReady(campaign)
   };
 
   useEffect(() => {
@@ -107,7 +107,7 @@ export default function CampaignTableRow({ row, selected }: Props) {
     try {
       checked ? await pause(campaign) : await unPause(campaign);
 
-      fetchCampaignPaused(campaign as Address);
+      fetchCampaignPaused(campaign);
       popover.onClose();
     } catch (error) {
       console.error(error);
@@ -115,9 +115,19 @@ export default function CampaignTableRow({ row, selected }: Props) {
   };
 
   const handleSuccessWithdraw = async () => {
-    await fetchCampaignFundsBalance(campaign as Address);
-    await fetchIsReady(campaign as Address)
+    await fetchCampaignFundsBalance(campaign);
+    await fetchIsReady(campaign)
   };
+
+  const pauseIcon = useMemo(() => {
+    if (loadingPause || loadingResume) {
+      return 'eos-icons:loading';
+    }
+    if (paused) {
+      return 'iconoir:play';
+    }
+    return 'iconoir:pause';
+  }, [loadingPause, loadingResume, paused]);
 
   const renderPrimary = (
     <>
@@ -247,7 +257,7 @@ export default function CampaignTableRow({ row, selected }: Props) {
           sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
           onClick={(e) => e.stopPropagation()}
         >
-          <Iconify icon={loadingPause || loadingResume ? 'eos-icons:loading': paused ? 'iconoir:play' : 'iconoir:pause'} />
+          <Iconify icon={pauseIcon} />
           <Typography variant="body2">
             {paused ? 'Resume' : 'Pause'}
           </Typography>
@@ -278,7 +288,7 @@ export default function CampaignTableRow({ row, selected }: Props) {
         onClose={withdrawModal.onFalse}
         onSuccess={handleSuccessWithdraw}
         campaignData={{
-          address: campaign as Address,
+          address: campaign,
           description: name,
           currentFundsBalance: fundsBalance ? formatUnits(fundsBalance, 18) : '0',
         }}

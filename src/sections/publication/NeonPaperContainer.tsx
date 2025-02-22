@@ -12,7 +12,6 @@ interface NeonPaperProps {
   padding?: string;
   borderRadius?: string;
   width?: string;
-  height?: string;
   sx?: SxProps<Theme>;
 }
 

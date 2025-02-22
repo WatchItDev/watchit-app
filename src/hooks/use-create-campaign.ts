@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
 import { encodeFunctionData } from 'viem';
 import CampaignRegistryAbi from '@src/config/abi/CampaignRegistry.json';
 import { GLOBAL_CONSTANTS } from '@src/config-global';

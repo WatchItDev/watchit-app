@@ -97,6 +97,16 @@ const CampaignSettingsModalContent: FC<CampaignSettingsModalContentProps> = ({
     }
   };
 
+  const fundsAllocationHelperText = useMemo(() => {
+    if (fundsAllocationAmount !== '' && Number(fundsAllocationAmount) < 1) {
+      return "Funds allocation must be at least 1.";
+    }
+    if (dailyPriceInMMC > 0) {
+      return `Each user can claim this amount of MMC. For example, if your daily subscription costs ${dailyPriceInMMC} MMC/day, an allocation of ${fundsAllocationAmount || 0} MMC would provide ${daysEquivalent.toFixed(2)} days of access.`;
+    }
+    return "Amount of MMC each user can claim.";
+  }, [fundsAllocationAmount, dailyPriceInMMC, daysEquivalent]);
+
   const RainbowEffect = loadingConfigure ? NeonPaper : Box;
 
   return (
@@ -142,13 +152,7 @@ const CampaignSettingsModalContent: FC<CampaignSettingsModalContentProps> = ({
             onChange={(e) => setFundsAllocationAmount(e.target.value)}
             placeholder="e.g. 7"
             error={fundsAllocationAmount !== '' && Number(fundsAllocationAmount) < 1}
-            helperText={
-              fundsAllocationAmount !== '' && Number(fundsAllocationAmount) < 1
-                ? "Funds allocation must be at least 1."
-                : dailyPriceInMMC > 0
-                  ? `Each user can claim this amount of MMC. For example, if your daily subscription costs ${dailyPriceInMMC} MMC/day, an allocation of ${fundsAllocationAmount || 0} MMC would provide ${daysEquivalent.toFixed(2)} days of access.`
-                  : 'Amount of MMC each user can claim.'
-            }
+            helperText={fundsAllocationHelperText}
           />
         </FormControl>
 
