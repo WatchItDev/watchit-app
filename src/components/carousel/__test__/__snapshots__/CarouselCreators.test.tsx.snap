@@ -119,6 +119,7 @@ exports[`[COMPONENTS]: CarouselCreators > to match snapshot 1`] = `
                                 style="background-image: url(/assets/placeholder.svg); background-size: 100% 100%; color: transparent; display: inline-block;"
                               >
                                 <img
+                                  alt="Profile Cover"
                                   class="MuiBox-root css-3j6ntj"
                                   src="https://picsum.photos/seed/1/1920/820"
                                 />

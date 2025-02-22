@@ -399,19 +399,19 @@ describe('[COMPONENTS]: CarouselCreators', () => {
   });
 
   it('renders the correct number of slides', () => {
-    const { getAllByRole } = render(RenderComponent());
-    const slides = getAllByRole('listitem');
+    const { container } = RenderComponent();
+    const slides = container.querySelectorAll('.slick-slide');
     expect(slides.length).toBe(mockData.length);
   });
 
   it('applies the correct carousel settings', () => {
-    const { container } = render(<CarouselCreators {...defaultProps} />);
+    const { container } = RenderComponent();
     const slickTrack = container.querySelector('.slick-track');
     expect(slickTrack).toHaveStyle('height: 100%');
   });
 
   it('renders the title correctly', () => {
-    const { getByText } = render(<CarouselCreators {...defaultProps} />);
+    const { getByText } = RenderComponent();
     expect(getByText('Test Carousel')).toBeInTheDocument();
   });
 
