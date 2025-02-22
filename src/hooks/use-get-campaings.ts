@@ -147,6 +147,9 @@ export default function useGetCampaings() {
         })
       );
 
+      console.log('campaigns')
+      console.log(logsWithDetails)
+
       setCampaigns(logsWithDetails as any)
     } catch (err) {
       console.error('Error fetching logs:', err);

@@ -41,7 +41,7 @@ export const useGetCampaignFundsAllocation = (): UseGetCampaignFundsAllocationHo
           abi: CampaignSubscriptionTplAbi.abi,
           functionName: 'getFundsAllocation',
           // args: [GLOBAL_CONSTANTS.ACCESS_WORKFLOW_ADDRESS],
-          args: [sessionData?.address],
+          args: ['0x61Cad4F0fd9F93482095b4882111f953e563b404'],
         }) as bigint;
         const allocationStr = allocation.toString();
         setFundsAllocation(allocationStr);

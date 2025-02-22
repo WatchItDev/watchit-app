@@ -64,7 +64,10 @@ export const useConfigureCampaign = (): UseConfigureCampaignHook => {
     console.log('configura campaign data')
     console.log(addFundsAmount)
     console.log(weiAmount)
+    console.log(weiAllocation)
     console.log(campaignAddress)
+    console.log(quotaLimit)
+    console.log(sessionData?.address)
 
     try {
       // Prepare the data for each contract call
@@ -83,7 +86,7 @@ export const useConfigureCampaign = (): UseConfigureCampaignHook => {
       const setFundsAllocationData = encodeFunctionData({
         abi: SubscriptionCampaignTplAbi.abi,
         functionName: 'setFundsAllocation',
-        args: [weiAllocation, GLOBAL_CONSTANTS.ACCESS_WORKFLOW_ADDRESS],
+        args: [weiAllocation, '0x61Cad4F0fd9F93482095b4882111f953e563b404'],
       });
 
       const setMaxRateLimitData = encodeFunctionData({

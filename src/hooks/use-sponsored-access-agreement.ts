@@ -84,7 +84,7 @@ export const useSponsoredAccessAgreement = (): UseSponsoredAccessAgreementHook =
       const sponsoredAccessData = encodeFunctionData({
         abi: CampaignSubscriptionTplAbi.abi,
         functionName: 'run',
-        args: [sessionData?.address],
+        args: ['0x61Cad4F0fd9F93482095b4882111f953e563b404'],
       });
 
       const calls = [
