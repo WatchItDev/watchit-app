@@ -79,8 +79,8 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({ src, cid, titleMovie, onBack
         // allows faster adaptation but increases the chance of playback interruptions.
         // Finding the right balance ensures smooth playback without unnecessary network congestion.
         // (hls_time = 6 + maxBufferLength = 30) = 5 fragments in buffer
-        // "maxBufferLength": 30, // Max video buffer length in seconds
-        // "maxMaxBufferLength": 600, // Absolute max buffer length
+        "maxBufferLength": 30, // Max video buffer length in seconds
+        "maxMaxBufferLength": 600, // Absolute max buffer length
         // maxStarvationDelay defines the maximum acceptable time (in seconds) a fragment can take to download 
         // while playback is already in progress.
         // - If a fragment is estimated to take longer than this value and the buffer is running low, 
@@ -120,8 +120,8 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({ src, cid, titleMovie, onBack
         "enableCEA708Captions": false, // Disable CEA-708 captions,
         "enableWorker": true,
         "backBufferLength": 90,
-        "lowLatencyMode": true
-        // "startFragPrefetch": true
+        "lowLatencyMode": false,
+        "startFragPrefetch": true
       };
 
 
