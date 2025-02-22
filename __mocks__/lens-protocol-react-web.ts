@@ -138,6 +138,6 @@ vi.mock('@lens-protocol/react-web', () => ({
   PublicationReactionType: { LIKE: 'LIKE', DISLIKE: 'DISLIKE' },
   hasReacted: vi.fn(() => false),
   createSharedDependencies: (config: any) => ({
-    pollingInterval: (config.sharedDependencies && config.sharedDependencies.pollingInterval) || 5000,
+    pollingInterval: config.sharedDependencies?.pollingInterval || 5000,
   }),
 }));
