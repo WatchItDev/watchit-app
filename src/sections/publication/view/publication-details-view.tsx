@@ -356,6 +356,7 @@ export default function PublicationDetailsView({ id }: Props) {
         <PublicationDetailMain
           post={data}
           handleSubscribe={handleSubscribe}
+          handleRefetchAccess={onSubscribe}
           loadingSubscribe={accessLoading || accessFetchingLoading}
           subscribeDisabled={accessLoading || hasAccess || accessFetchingLoading}
           hasAccess={!!hasAccess}

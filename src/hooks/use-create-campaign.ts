@@ -58,11 +58,6 @@ export const useCreateCampaign = (): UseCreateCampaignHook => {
       throw new Error('Invalid Web3Auth session');
     }
 
-    console.log('hello create')
-    console.log(policy)
-    console.log(expiration)
-    console.log(description)
-
     try {
       const campaignData = initializeCampaign({ policy, expiration, description });
 

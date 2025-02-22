@@ -71,7 +71,7 @@ const ProfileHeader = ({
     profile?.ownedBy?.address as Address
   );
   const { campaign, fetchSubscriptionCampaign } = useGetSubscriptionCampaign();
-  const { isActive, fetchIsActive } = useGetCampaignIsActive();
+  const { isActive, loading: isActiveLoading, fetchIsActive } = useGetCampaignIsActive();
 
   console.log('is active')
   console.log(isActive)
@@ -138,25 +138,27 @@ const ProfileHeader = ({
               </Box>
             )}
 
-            {isAuthorized && !authorizedLoading && profile?.id !== sessionData?.profile?.id && <ProfileJoin profile={profile} profileJoinProps={{
+            {isAuthorized && (!isActive || hasAccess) && !isActiveLoading && !authorizedLoading && profile?.id !== sessionData?.profile?.id && <ProfileJoin profile={profile} profileJoinProps={{
               hasAccess, accessLoading, accessFetchingLoading, onSubscribe
             }} />}
 
             {
-              // isActive && isAuthorized && !authorizedLoading && !hasAccess && (
-              isActive && isAuthorized && !authorizedLoading && (
+              isActive && isAuthorized && !isActiveLoading && !authorizedLoading && !hasAccess && (
                 <SponsoredAccessTrialButton
                   isActive={isActive}
                   holderAddress={profile?.ownedBy?.address as Address}
                   campaignAddress={campaign}
                   policyAddress={GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS}
                   userAddress={sessionData?.address}
+                  onSuccess={onSubscribe}
                   neonPaperProps={{
                     borderRadius: '10px',
                     animationSpeed: '3s',
-                    padding: '2px',
                     width: 'auto',
-                    height: '38px !important'
+                    height: '38px',
+                    sx: {
+                      height: '38px',
+                    }
                   }}
                   buttonProps={{
                     sx: {

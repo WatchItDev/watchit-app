@@ -29,6 +29,7 @@ interface SponsoredAccessProps {
   isActive: boolean;
   neonPaperProps?: any;
   buttonProps?: LoadingButtonProps;
+  onSuccess?: () => void;
 }
 
 export const SponsoredAccessTrialButton: FC<SponsoredAccessProps> = (props) => {
@@ -39,7 +40,8 @@ export const SponsoredAccessTrialButton: FC<SponsoredAccessProps> = (props) => {
     userAddress,
     isActive,
     neonPaperProps,
-    buttonProps
+    buttonProps,
+    onSuccess
   } = props
   const dispatch = useDispatch();
   const { isAuthenticated } = useAccountSession()
@@ -48,7 +50,7 @@ export const SponsoredAccessTrialButton: FC<SponsoredAccessProps> = (props) => {
 
   const handleTrial = async () => {
     try {
-      if (!isAuthenticated) {
+      if (!isAuthenticated()) {
         return dispatch(openLoginModal());
       }
 
@@ -59,6 +61,7 @@ export const SponsoredAccessTrialButton: FC<SponsoredAccessProps> = (props) => {
         parties: userAddress ? [userAddress] : [],
         payload: '',
       });
+      onSuccess?.();
     } catch (error) {
       console.error('Error trying to execute sponsored access agreement', error);
     }
@@ -69,7 +72,7 @@ export const SponsoredAccessTrialButton: FC<SponsoredAccessProps> = (props) => {
   if (!isActive) return undefined;
 
   return (
-    <RainbowEffect {...neonPaperProps}>
+    <RainbowEffect {...neonPaperProps} padding={loading ? '2px' : '0'}>
       <StyledBoxGradient onClick={handleTrial} loading={loading} {...buttonProps}>
         <Icon icon="ic:outline-try" width="18" height="18" />
         <Typography variant="body2" sx={{ lineHeight: 1, fontWeight: '700', ml: 1 }}>

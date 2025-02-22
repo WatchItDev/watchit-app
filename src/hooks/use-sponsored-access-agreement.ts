@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { Address, encodeFunctionData, Hex } from 'viem';
+import { Address, encodeFunctionData } from 'viem';
 import AccessWorkflowAbi from '@src/config/abi/AccessWorkflow.json';
 import { GLOBAL_CONSTANTS } from '@src/config-global';
 import { useWeb3Session } from '@src/hooks/use-web3-session.ts';
@@ -12,7 +12,7 @@ interface SponsoredAccessParams {
   campaignAddress: Address;
   policyAddress: Address;
   parties: Address[];
-  payload: Hex;
+  payload: string;
 }
 
 interface UseSponsoredAccessAgreementHook {

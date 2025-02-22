@@ -66,6 +66,7 @@ import AvatarProfile from "@src/components/avatar/avatar.tsx";
 type Props = {
   post: any;
   handleSubscribe: () => void;
+  handleRefetchAccess: () => void;
   loadingSubscribe: boolean;
   subscribeDisabled: boolean;
   hasAccess: boolean;
@@ -76,6 +77,7 @@ type Props = {
 export default function PublicationDetailMain({
   post,
   handleSubscribe,
+  handleRefetchAccess,
   loadingSubscribe,
   subscribeDisabled,
   hasAccess,
@@ -345,6 +347,7 @@ export default function PublicationDetailMain({
               <SubscribeToUnlockCard
                 loadingSubscribe={loadingSubscribe}
                 subscribeDisabled={subscribeDisabled}
+                handleRefetchAccess={handleRefetchAccess}
                 onSubscribe={handleSubscribe}
                 post={post}
               />

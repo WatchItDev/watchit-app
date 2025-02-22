@@ -61,11 +61,6 @@ export const useConfigureCampaign = (): UseConfigureCampaignHook => {
       throw new Error('Invalid Web3Auth session');
     }
 
-    console.log('configura campaign data')
-    console.log(addFundsAmount)
-    console.log(weiAmount)
-    console.log(campaignAddress)
-
     try {
       // Prepare the data for each contract call
       const approveFundsData = encodeFunctionData({
@@ -91,7 +86,6 @@ export const useConfigureCampaign = (): UseConfigureCampaignHook => {
         functionName: 'setQuotaLimit',
         args: [quotaLimit],
       });
-
 
       // Group the calls to send them in a single user operation
       const calls = [

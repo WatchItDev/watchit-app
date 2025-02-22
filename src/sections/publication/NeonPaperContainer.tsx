@@ -12,6 +12,7 @@ interface NeonPaperProps {
   padding?: string;
   borderRadius?: string;
   width?: string;
+  height?: string;
   sx?: SxProps<Theme>;
 }
 
@@ -47,6 +48,7 @@ const NeonPaperContainer = styled(Paper, {
     borderRadius: 'var(--border-radius)',
     backgroundColor: `${COLORS.GRAY_LIGHT}`,
     width: '100%',
+    height: '100%',
   },
   '& .border, & .neon': {
     position: 'absolute',
@@ -94,6 +96,7 @@ const NeonPaper: FC<NeonPaperProps> = ({
   padding = '0.7rem',
   borderRadius = '10px',
   width = '100%',
+  sx,
 }) => {
   return (
     <NeonPaperContainer
@@ -103,6 +106,7 @@ const NeonPaper: FC<NeonPaperProps> = ({
       padding={padding}
       borderRadius={borderRadius}
       width={width}
+      sx={sx}
     >
       <div className="neon">
         <div className="gradient"></div>
