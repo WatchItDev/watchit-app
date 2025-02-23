@@ -1,5 +1,5 @@
-import HLS from 'hls.js';
 import { FC, useRef, useEffect, memo } from 'react';
+import { Hls, FetchLoader, XhrLoader } from 'hls.js/dist/hls.mjs';
 import { Typography, IconButton, Button } from '@mui/material';
 import { IconChevronLeft } from '@tabler/icons-react';
 import {
@@ -53,13 +53,13 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({ src, cid, titleMovie, onBack
   // on provider (HLS) initialization
   const onProviderSetup = (provider: MediaProviderAdapter) => {
     if (isHLSProvider(provider)) {
-      provider.instance?.on(HLS.Events.ERROR, (_, data: any) => {
-        if (data.details === HLS.ErrorDetails.BUFFER_STALLED_ERROR) {
+      provider.instance?.on(Hls.Events.ERROR, (_, data: any) => {
+        if (data.details === Hls.ErrorDetails.BUFFER_STALLED_ERROR) {
           console.log("Seek Stalling Detected, Adjusting Buffer...");
           provider.instance?.startLoad();
         }
 
-        if (data.fatal && data.type === HLS.ErrorTypes.MEDIA_ERROR) {
+        if (data.fatal && data.type === Hls.ErrorTypes.MEDIA_ERROR) {
           console.warn("Recovering from Media Error...");
           provider.instance?.recoverMediaError();
         }
@@ -70,7 +70,7 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({ src, cid, titleMovie, onBack
   // when the provider has changed, setup config..
   const onProviderChange = (provider: MediaProviderAdapter | null) => {
     if (isHLSProvider(provider)) {
-      provider.library = HLS;
+      provider.library = Hls;
       provider.config = {
         // https://github.com/video-dev/hls.js/blob/master/docs/API.md
         // maxBufferLength defines the target amount of video (in seconds) the player tries to keep buffered.
@@ -79,7 +79,7 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({ src, cid, titleMovie, onBack
         // allows faster adaptation but increases the chance of playback interruptions.
         // Finding the right balance ensures smooth playback without unnecessary network congestion.
         // (hls_time = 6 + maxBufferLength = 30) = 5 fragments in buffer
-        "maxBufferLength": 30, // Max video buffer length in seconds
+        "maxBufferLength": 60, // Max video buffer length in seconds
         "maxMaxBufferLength": 600, // Absolute max buffer length
         // maxStarvationDelay defines the maximum acceptable time (in seconds) a fragment can take to download 
         // while playback is already in progress.
@@ -100,11 +100,11 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({ src, cid, titleMovie, onBack
         // abrEwmaFastVod: Controls how quickly the algorithm reacts to bandwidth changes in VOD (Video On Demand).
         // A higher value makes the algorithm less sensitive to short-term fluctuations, smoothing out rapid changes.
         // Recommended range: 2.0 - 5.0 (Higher = Smoother)
-        //  "abrEwmaFastVoD": 3,
+        "abrEwmaFastVoD": 3,
         // abrEwmaSlowVod: Controls the long-term average bandwidth estimation for adaptive bitrate switching.
         // A higher value averages the bandwidth over a longer period, reducing frequent quality switches.
         // Recommended range: 10.0 - 20.0 (Higher = More stable, but slower adaptation)
-        // "abrEwmaSlowVoD": 9,
+        "abrEwmaSlowVoD": 8,
         // abrBandWidthFactor: Determines how conservatively HLS estimates available bandwidth.
         // A value < 1.0 ensures HLS.js does not use the full estimated bandwidth, preventing aggressive quality changes.
         // Recommended range: 0.7 - 0.9 (Lower = More cautious, fewer quality switches)
@@ -119,9 +119,11 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({ src, cid, titleMovie, onBack
         "enableIMSC1": false, // Disable IMSC1 subtitles
         "enableCEA708Captions": false, // Disable CEA-708 captions,
         "enableWorker": true,
-        "backBufferLength": 120,
-        "lowLatencyMode": false,
-        "startFragPrefetch": true
+        "backBufferLength": 90,
+        "lowLatencyMode": false, // Not needed in VOD
+        "startFragPrefetch": true,
+        "fLoader": FetchLoader,
+        "pLoader": XhrLoader
       };
 
 
