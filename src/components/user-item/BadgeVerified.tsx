@@ -1,7 +1,7 @@
 import { Icon } from "@iconify/react";
 import { FC } from "react";
 import { Address } from "viem";
-import { useIsVerified } from "@src/hooks/use-is-verified.ts";
+import { useIsVerified } from "@src/hooks/protocol/use-is-verified.ts";
 
 interface BadgeVerifiedProps {
   address: Address;

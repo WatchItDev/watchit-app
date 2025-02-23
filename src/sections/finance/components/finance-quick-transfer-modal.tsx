@@ -22,7 +22,7 @@ import { supabase } from '@src/utils/supabase';
 import { useNotificationPayload } from '@src/hooks/use-notification-payload.ts';
 import { useNotifications } from '@src/hooks/use-notifications.ts';
 import { InputAmount, InputAmountProps } from '@src/components/input-amount.tsx';
-import { useTransfer } from '@src/hooks/use-transfer.ts';
+import { useTransfer } from '@src/hooks/protocol/use-transfer.ts';
 
 // Notifications
 import { notifyError, notifySuccess } from '@notifications/internal-notifications.ts';

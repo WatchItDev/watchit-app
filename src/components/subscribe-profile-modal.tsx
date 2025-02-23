@@ -23,15 +23,15 @@ import { Address } from 'viem';
 
 // LOCAL IMPORTS
 import LoadingButton from '@mui/lab/LoadingButton';
-import { useSubscribe } from '@src/hooks/use-subscribe.ts';
+import { useSubscribe } from '@src/hooks/protocol/use-subscribe.ts';
 import { Profile } from '@lens-protocol/api-bindings';
-import { useGetPolicyTerms } from '@src/hooks/use-get-policy-terms.ts';
+import { useGetPolicyTerms } from '@src/hooks/protocol/use-get-policy-terms.ts';
 import LinearProgress from '@mui/material/LinearProgress';
 
 // @ts-ignore
 import { setBalance } from '@redux/auth';
 import { useDispatch, useSelector } from 'react-redux';
-import { useGetBalance } from '@src/hooks/use-get-balance.ts';
+import { useGetBalance } from '@src/hooks/protocol/use-get-balance.ts';
 import { useNotifications } from '@src/hooks/use-notifications.ts';
 import { useNotificationPayload } from '@src/hooks/use-notification-payload.ts';
 import NeonPaper from '@src/sections/publication/NeonPaperContainer.tsx';

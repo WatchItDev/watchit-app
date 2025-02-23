@@ -3,7 +3,7 @@ import Container from '@mui/material/Container';
 import CampaignCreate from '@src/sections/marketing/components/CampaignCreate.tsx';
 import CampaignTable from '@src/sections/marketing/components/CampaignTable';
 import { useEffect } from 'react';
-import useGetCampaings from '@src/hooks/use-get-campaings.ts';
+import useGetCampaings from '@src/hooks/protocol/use-get-campaings.ts';
 
 const StrategyOverview = () => {
   const { campaigns, loading, fetchLogs } = useGetCampaings();

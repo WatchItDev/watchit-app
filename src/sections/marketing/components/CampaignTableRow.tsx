@@ -14,57 +14,31 @@ import Switch from '@mui/material/Switch';
 import { formatUnits } from 'viem';
 
 // LOCAL IMPORTS
-import { CampaignTableRowType } from '@src/types/marketing';
 import { capitalizeFirstLetter } from '@src/utils/text-transform.ts';
-import { COLORS } from '@src/utils/colors.ts';
+
 import Iconify from '@src/components/iconify';
 import CustomPopover, { usePopover } from '@src/components/custom-popover';
 import { useBoolean } from '@src/hooks/use-boolean';
 import CampaignSettingsModal from "@src/sections/marketing/components/CampaignSettingsModal.tsx";
-import { useGetCampaignFundsBalance } from '@src/hooks/use-get-campaign-funds-balance.ts';
-import { useGetCampaignFundsAllocation } from '@src/hooks/use-get-campaign-funds-allocation.ts';
-import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
-import { useCampaignPaused } from '@src/hooks/use-campaign-paused.ts';
-import { useGetCampaignQuotaLimit } from '@src/hooks/use-get-campaign-quota-limit.ts';
-import { useGetCampaignTotalUsage } from '@src/hooks/use-get-campaign-total-usage.ts';
-import { useCampaignPause } from '@src/hooks/use-campaign-pause';
-import { useCampaignUnPause } from '@src/hooks/use-campaign-unpause';
+import { useGetCampaignFundsBalance } from '@src/hooks/protocol/use-get-campaign-funds-balance.ts';
+import { useGetCampaignFundsAllocation } from '@src/hooks/protocol/use-get-campaign-funds-allocation.ts';
+import { useCampaignPaused } from '@src/hooks/protocol/use-campaign-paused.ts';
+import { useGetCampaignQuotaLimit } from '@src/hooks/protocol/use-get-campaign-quota-limit.ts';
+import { useGetCampaignTotalUsage } from '@src/hooks/protocol/use-get-campaign-total-usage.ts';
+import { useCampaignPause } from '@src/hooks/protocol/use-campaign-pause.ts';
+import { useCampaignUnPause } from '@src/hooks/protocol/use-campaign-unpause.ts';
 import {
   CampaignConfiguredIndicatorState
 } from "@src/sections/marketing/components/CampaignConfiguredIndicatorState.tsx";
 import TextMaxLine from "@src/components/text-max-line";
 import CampaignWithdrawFundsModal from '@src/sections/marketing/components/CampaignWithdrawFundsModal';
-import { useGetCampaignIsReady } from '@src/hooks/use-get-campaign-is-ready.ts';
+import { useGetCampaignIsReady } from '@src/hooks/protocol/use-get-campaign-is-ready.ts';
+import { LBL_COLORS, LBL_STATUS_COLORS, POLICY_TEXTS } from '@src/sections/marketing/components/CONSTANTS.tsx';
+import { CampaignTableRowProps } from '@src/sections/marketing/components/types.ts';
 
 // ----------------------------------------------------------------------
 
-type Props = {
-  row: CampaignTableRowType;
-  selected: boolean;
-};
-
-// ----------------------------------------------------------------------
-
-const POLICY_TEXTS: Record<string, string> = {
-  [`${GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS?.toLowerCase?.()}`]: "Subscription",
-};
-
-const LBL_COLORS = {
-  subscription: COLORS.info,
-  rental: COLORS.info,
-  trial: COLORS.warning,
-  custom: COLORS.danger,
-};
-
-const LBL_STATUS_COLORS = {
-  active: COLORS.success,
-  paused: COLORS.warning,
-  completed: COLORS.warning,
-};
-
-// ----------------------------------------------------------------------
-
-export default function CampaignTableRow({ row, selected }: Readonly<Props>) {
+export default function CampaignTableRow({ row, selected }: Readonly<CampaignTableRowProps>) {
   const { campaign, name, policy, expiration } = row;
   const popover = usePopover();
   const settingsModal = useBoolean();

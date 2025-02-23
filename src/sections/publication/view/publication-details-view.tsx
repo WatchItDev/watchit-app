@@ -26,15 +26,15 @@ import { varFade } from '@src/components/animate';
 import ProfileHome from '@src/sections/user/profile-home.tsx';
 import { LoadingScreen } from '@src/components/loading-screen';
 import MoviePlayView from '@src/sections/publication/view/publication-play-view.tsx';
-import PublicationDetailMain from '@src/components/publication-detail-main.tsx';
-import { useHasAccess } from '@src/hooks/use-has-access.ts';
+import Index from '@src/components/publication-detail-main';
+import { useHasAccess } from '@src/hooks/protocol/use-has-access.ts';
 import { SubscribeProfileModal } from '@src/components/subscribe-profile-modal.tsx';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { useDispatch, useSelector } from 'react-redux';
 import { openLoginModal } from '@redux/auth';
 import { appId, PublicationType, usePublications } from '@lens-protocol/react-web';
 import {trimPublicationContentExtraText} from "@src/utils/text-transform.ts";
-import { useIsPolicyAuthorized } from '@src/hooks/use-is-policy-authorized.ts';
+import { useIsPolicyAuthorized } from '@src/hooks/protocol/use-is-policy-authorized.ts';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 
 const MAX_LINES = 5;
@@ -353,7 +353,7 @@ export default function PublicationDetailsView({ id }: Props) {
           </Card>
         </Stack>
 
-        <PublicationDetailMain
+        <Index
           post={data}
           handleSubscribe={handleSubscribe}
           handleRefetchAccess={onSubscribe}

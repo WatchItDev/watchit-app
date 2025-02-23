@@ -19,10 +19,10 @@ import { Address } from 'viem';
 // LOCAL IMPORTS
 import ProfileCover from './profile-cover';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
-import { useHasAccess } from '@src/hooks/use-has-access.ts';
-import { useIsPolicyAuthorized } from '@src/hooks/use-is-policy-authorized.ts';
+import { useHasAccess } from '@src/hooks/protocol/use-has-access.ts';
+import { useIsPolicyAuthorized } from '@src/hooks/protocol/use-is-policy-authorized.ts';
 import FollowUnfollowButton from '@src/components/follow-unfollow-button.tsx';
-import { useGetPolicyAttestation } from '@src/hooks/use-get-policy-attestation.ts';
+import { useGetPolicyAttestation } from '@src/hooks/protocol/use-get-policy-attestation.ts';
 
 // Profile Components
 import ProfileReport from '@src/sections/user/profile-report.tsx';
@@ -31,9 +31,9 @@ import ProfileJoin from "@src/sections/user/profile-join.tsx";
 import ProfileUserInfo from "@src/sections/user/profile-user-info.tsx";
 import ProfileWrapper from './profile-wrapper';
 import ProfileToolbar from "@src/sections/user/profile-toolbar.tsx";
-import { useGetSubscriptionCampaign } from '@src/hooks/use-get-subscription-campaign.ts';
-import { useGetCampaignIsActive } from '@src/hooks/use-get-campaign-is-active.ts';
-import { SponsoredAccessTrialButton } from '@src/components/sponsored-access-button.tsx';
+import { useGetSubscriptionCampaign } from '@src/hooks/protocol/use-get-subscription-campaign.ts';
+import { useGetCampaignIsActive } from '@src/hooks/protocol/use-get-campaign-is-active.ts';
+import { SponsoredAccessTrialButton } from '@src/components/sponsored-access-button/sponsored-access-button.tsx';
 
 // ----------------------------------------------------------------------
 
@@ -145,25 +145,7 @@ const ProfileHeader = ({
                   isActive={isActive}
                   holderAddress={profile?.ownedBy?.address as Address}
                   campaignAddress={campaign}
-                  policyAddress={GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS}
-                  userAddress={sessionData?.address}
                   onSuccess={onSubscribe}
-                  neonPaperProps={{
-                    borderRadius: '10px',
-                    animationSpeed: '3s',
-                    width: 'auto',
-                    height: '38px',
-                    sx: {
-                      height: '38px',
-                    }
-                  }}
-                  buttonProps={{
-                    sx: {
-                      width: '100%',
-                      height: '100%',
-                      maxHeight: '38px',
-                    },
-                  }}
                 />
               )
             }

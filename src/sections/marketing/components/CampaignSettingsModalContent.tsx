@@ -1,4 +1,4 @@
-import { FC, useState, useMemo, useEffect } from 'react';
+import { FC, useState, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
@@ -7,8 +7,8 @@ import { Button, TextField, FormControl, DialogActions, LinearProgress } from '@
 import { ethers } from 'ethers';
 import { Address } from 'viem';
 
-import { useConfigureCampaign } from '@src/hooks/use-configure-campaign';
-import { useGetPolicyTerms } from '@src/hooks/use-get-policy-terms';
+import { useConfigureCampaign } from '@src/hooks/protocol/use-configure-campaign.ts';
+import { useGetPolicyTerms } from '@src/hooks/protocol/use-get-policy-terms.ts';
 import { GLOBAL_CONSTANTS } from '@src/config-global';
 import NeonPaper from "@src/sections/publication/NeonPaperContainer.tsx";
 import Box from "@mui/material/Box";
@@ -26,11 +26,12 @@ interface CampaignSettingsModalContentProps {
   };
 }
 
-const CampaignSettingsModalContent: FC<CampaignSettingsModalContentProps> = ({
-                                                                               onClose,
-                                                                               onConfirm,
-                                                                               campaignData,
-                                                                             }) => {
+const CampaignSettingsModalContent: FC<CampaignSettingsModalContentProps> = (props) => {
+  const {
+    onClose,
+    onConfirm,
+    campaignData,
+  } = props;
   const { address, description } = campaignData;
 
   const [addFundsAmount, setAddFundsAmount] = useState<string>('');
@@ -43,11 +44,7 @@ const CampaignSettingsModalContent: FC<CampaignSettingsModalContentProps> = ({
     GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS as Address,
     sessionData?.address as Address
   );
-  const { configure, loading: loadingConfigure, error } = useConfigureCampaign();
-
-  useEffect(() => {
-    if (error) notifyError(ERRORS.CAMPAIGN_CONFIGURATION_ERROR);
-  }, [error]);
+  const { configure, loading: loadingConfigure } = useConfigureCampaign();
 
   // Convert the daily price from Wei to MMC (float)
   const dailyPriceInMMC = useMemo(() => {
@@ -94,6 +91,7 @@ const CampaignSettingsModalContent: FC<CampaignSettingsModalContentProps> = ({
       onConfirm?.();
     } catch (err) {
       console.error('Error configuring campaign:', err);
+      notifyError(ERRORS.CAMPAIGN_CONFIGURATION_ERROR);
     }
   };
 

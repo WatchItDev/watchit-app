@@ -14,12 +14,14 @@ interface CampaignWithdrawFundsModalProps {
   };
 }
 
-const CampaignWithdrawFundsModal: FC<CampaignWithdrawFundsModalProps> = ({
-                                                                           open,
-                                                                           onClose,
-                                                                           onSuccess,
-                                                                           campaignData,
-                                                                         }) => {
+const CampaignWithdrawFundsModal: FC<CampaignWithdrawFundsModalProps> = (props) => {
+  const {
+    open,
+    onClose,
+    onSuccess,
+    campaignData,
+  } = props;
+
   const handleClose = () => {
     onClose();
   };

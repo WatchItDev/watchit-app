@@ -17,7 +17,7 @@ import {
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import { useCreateCampaign } from '@src/hooks/use-create-campaign';
+import { useCreateCampaign } from '@src/hooks/protocol/use-create-campaign.ts';
 import { GLOBAL_CONSTANTS } from '@src/config-global';
 import { SelectChangeEvent } from '@mui/material/Select';
 import LoadingButton from "@mui/lab/LoadingButton";

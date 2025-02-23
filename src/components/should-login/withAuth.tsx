@@ -2,6 +2,7 @@ import React, {FC} from 'react';
 import { useSelector } from 'react-redux';
 import ShouldLogin from '@src/components/should-login/should-login';
 import { LoadingScreen } from '@src/components/loading-screen';
+import { WithAuthProps } from '@src/components/should-login/types.ts';
 
 const withAuth  = (WrappedComponent: React.ComponentType, header: string,  icon: string, description: string) => {
   return (props: any) => {
@@ -19,13 +20,6 @@ const withAuth  = (WrappedComponent: React.ComponentType, header: string,  icon:
     return <WrappedComponent {...props} />;
   };
 };
-
-interface WithAuthProps {
-  component: React.ComponentType;
-  header: string;
-  icon: string
-  description: string;
-}
 
 export const WithAuth: FC<WithAuthProps> = ({ component: Component, header, icon, description}) => {
   const AuthComponent = withAuth(Component, header, icon, description);

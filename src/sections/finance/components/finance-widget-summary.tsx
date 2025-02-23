@@ -20,7 +20,7 @@ import { useBoolean } from '@src/hooks/use-boolean.ts';
 import Chart, { useChart } from '@src/components/chart';
 import { fCurrency, fPercent } from '@src/utils/format-number';
 import { FinanceDepositModal } from '@src/sections/finance/components/finance-deposit-modal.tsx';
-import { useWithdraw } from '@src/hooks/use-withdraw.ts';
+import { useWithdraw } from '@src/hooks/protocol/use-withdraw.ts';
 import { FinanceWithdrawModal } from '@src/sections/finance/components/finance-withdraw-modal.tsx';
 
 // Notifications

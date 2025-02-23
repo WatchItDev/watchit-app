@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 
 // LOCAL IMPORTS
 import { useMetaMask } from '@src/hooks/use-metamask';
-import { useDepositMetamask } from '@src/hooks/use-deposit-metamask';
+import { useDepositMetamask } from '@src/hooks/protocol/use-deposit-metamask.ts';
 import FinanceDeposit from '@src/sections/finance/components/finance-deposit';
 import FinanceMetamaskLoader from '@src/sections/finance/components/finance-metamask-loader.tsx';
 import FinanceMetamaskButton from '@src/sections/finance/components/finance-metamask-button.tsx';

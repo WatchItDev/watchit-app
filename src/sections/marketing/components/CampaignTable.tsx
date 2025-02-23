@@ -8,7 +8,7 @@ import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 
 // LOCAL IMPORTS
-import { CAMPAIGN_TABLE_HEAD } from '@src/types/marketing';
+import { CAMPAIGN_TABLE_HEAD } from '@src/sections/marketing/components/CONSTANTS.tsx';
 import {
   emptyRows,
   TableEmptyRows,

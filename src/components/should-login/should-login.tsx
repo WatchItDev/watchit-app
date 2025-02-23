@@ -6,15 +6,9 @@ import { openLoginModal } from '@redux/auth';
 import { useDispatch, useSelector } from 'react-redux';
 import Iconify from '@src/components/iconify';
 import { FC } from 'react';
+import { NotLoggedInProps } from '@src/components/should-login/types.ts';
 
-// Create a type for the component props to receive the icon and subtitle
-type Props = {
-  icon: string;
-  title: string;
-  description: string;
-};
-
-const NotLoggedIn: FC<Props> = ({ icon, title, description }) => {
+const NotLoggedIn: FC<NotLoggedInProps> = ({ icon, title, description }) => {
   const dispatch = useDispatch();
   const sessionData = useSelector((state: any) => state.auth.session);
 
