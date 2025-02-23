@@ -13,7 +13,7 @@ import { HasAccessError, UseGetPolicyAttestationHook } from '@src/hooks/protocol
  */
 export function useGetPolicyAttestation(policy: Address, recipient: Address, holder?: Address): UseGetPolicyAttestationHook {
   const sessionData = useSelector((state: any) => state.auth.session);
-  const userAddress = sessionData?.profile?.ownedBy?.address as Address | undefined;
+  const userAddress = sessionData?.profile?.ownedBy?.address;
   const [attestation, setAttestation] = useState<string | undefined>(undefined);
   const [loading, setLoading] = useState(true);
   const [fetching, setFetching] = useState(true);

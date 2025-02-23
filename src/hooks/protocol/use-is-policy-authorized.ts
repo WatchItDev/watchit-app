@@ -14,7 +14,7 @@ export const useIsPolicyAuthorized = (
   holder?: Address
 ): UseIsPolicyAuthorizedHook => {
   const sessionData = useSelector((state: any) => state.auth.session);
-  const userAddress = sessionData?.profile?.ownedBy?.address as Address | undefined;
+  const userAddress = sessionData?.profile?.ownedBy?.address;
 
   const [isAuthorized, setIsAuthorized] = useState<boolean | undefined>(undefined);
   // `fetching` indicates if we are currently checking for authorization

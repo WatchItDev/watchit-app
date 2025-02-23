@@ -51,8 +51,6 @@ import PublicationCommentForm from '@src/sections/publication/publication-detail
 import { SubscribeToUnlockCard } from '@src/components/subscribe-to-unlock-card/subscribe-to-unlock-card.tsx';
 import { ReportPublicationModal } from '@src/components/report-publication-modal.tsx';
 import Popover from '@mui/material/Popover';
-// @ts-ignore
-import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
 import { useNotifications } from '@src/hooks/use-notifications.ts';
 import { openLoginModal } from '@redux/auth';
 import { useDispatch, useSelector } from 'react-redux';
@@ -71,7 +69,7 @@ export default function PublicationDetailMain({
   loadingSubscribe,
   subscribeDisabled,
   hasAccess,
-}: PublicationDetailProps) {
+}: Readonly<PublicationDetailProps>) {
   // STATES HOOKS
   const [showComments, setShowComments] = useState(false);
   const [openReportModal, setOpenReportModal] = useState(false);
@@ -211,7 +209,7 @@ export default function PublicationDetailMain({
             >
               <AvatarProfile
                 src={
-                  (post?.by?.metadata?.picture as any)?.optimized?.uri ?? post?.by?.id
+                  (post?.by?.metadata?.picture)?.optimized?.uri ?? post?.by?.id
                 }
                 sx={{
                   width: 26,

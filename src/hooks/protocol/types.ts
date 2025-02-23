@@ -37,7 +37,7 @@ export interface AuthorizePolicyParams {
 }
 
 // Define the return type of the useAuthorizePolicy hook
-export interface useAuthorizePolicyHook {
+export interface UseAuthorizePolicyHook {
   data?: any;
   authorize: (params: AuthorizePolicyParams) => Promise<void>;
   loading: boolean;

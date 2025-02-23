@@ -13,7 +13,7 @@ import { HasAccessError, UseHasAccessHook } from '@src/hooks/protocol/types.ts';
  */
 export const useHasAccess = (ownerAddress?: Address): UseHasAccessHook => {
   const sessionData = useSelector((state: any) => state.auth.session);
-  const userAddress = sessionData?.profile?.ownedBy?.address as Address | undefined;
+  const userAddress = sessionData?.profile?.ownedBy?.address;
 
   const [hasAccess, setHasAccess] = useState<boolean | undefined>(undefined);
   const [loading, setLoading] = useState(true);

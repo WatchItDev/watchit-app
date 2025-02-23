@@ -11,11 +11,11 @@ import { useSelector } from 'react-redux';
 import { useWeb3Session } from '@src/hooks/use-web3-session.ts';
 import { ERRORS } from '@notifications/errors.ts';
 import { useAccountSession } from '@src/hooks/use-account-session.ts';
-import { AuthorizePolicyParams, useAuthorizePolicyHook } from '@src/hooks/protocol/types.ts';
+import { AuthorizePolicyParams, UseAuthorizePolicyHook } from '@src/hooks/protocol/types.ts';
 
 // ----------------------------------------------------------------------
 
-export const useAuthorizePolicy = (): useAuthorizePolicyHook => {
+export const useAuthorizePolicy = (): UseAuthorizePolicyHook => {
   const [data, setData] = useState();
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<keyof typeof ERRORS | null>(null);
