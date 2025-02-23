@@ -1,4 +1,5 @@
 import { FC, useRef, useEffect, memo } from 'react';
+// @ts-ignore
 import { Hls, FetchLoader, XhrLoader } from 'hls.js/dist/hls.mjs';
 import { Typography, IconButton, Button } from '@mui/material';
 import { IconChevronLeft } from '@tabler/icons-react';
@@ -72,6 +73,7 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({ src, cid, titleMovie, onBack
     if (isHLSProvider(provider)) {
       provider.library = Hls;
       provider.config = {
+        // "capLevelToPlayerSize": true, // avoid more resolution if doest not fit in the current viewport
         // https://github.com/video-dev/hls.js/blob/master/docs/API.md
         // maxBufferLength defines the target amount of video (in seconds) the player tries to keep buffered.
         // The buffer plays a crucial role in balancing playback stability and adaptive bitrate (ABR) decisions.
