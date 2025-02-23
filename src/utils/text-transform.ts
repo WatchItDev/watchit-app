@@ -131,3 +131,9 @@ export const trimPublicationContentExtraText = (text: string): string => {
 export const capitalizeFirstLetter = (string: string) => {
   return string.charAt(0).toUpperCase() + string.slice(1);
 };
+
+export const createIndexForElement = (): string => {
+  const array = new Uint8Array(8);
+  window.crypto.getRandomValues(array);
+  return Array.from(array, byte => byte.toString(16).padStart(2, '0')).join('');
+};

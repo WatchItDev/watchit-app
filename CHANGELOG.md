@@ -1,3 +1,59 @@
+# [2.2.0-beta.30](https://github.com/WatchItDev/watchit-app/compare/v2.2.0-beta.29...v2.2.0-beta.30) (2025-02-23)
+
+
+### Bug Fixes
+
+* buffering tune for video player ([957cc35](https://github.com/WatchItDev/watchit-app/commit/957cc35da250e297d7185c7c159aafe170b2b5e6))
+* buffering tune for video player ([e0fedfe](https://github.com/WatchItDev/watchit-app/commit/e0fedfe3273caed374ae08568da7e502731eb31b))
+* buffering tune for video player ([a30cec2](https://github.com/WatchItDev/watchit-app/commit/a30cec2a664d758ea1d6b97e9b22bc07d8e3ca83))
+* buffering tune for video player ([0ea4b2c](https://github.com/WatchItDev/watchit-app/commit/0ea4b2cf174668858cd0b46eba2e94468098e55b))
+* buffering tune for video player ([3fa2baa](https://github.com/WatchItDev/watchit-app/commit/3fa2baa01c82ca26b7796d0537e35ca4dccff4d1))
+* buffering tune for video player ([3cdef83](https://github.com/WatchItDev/watchit-app/commit/3cdef83f184dff15f459734a5f4c608580c82e83))
+* buffering tune for video player ([0ef0588](https://github.com/WatchItDev/watchit-app/commit/0ef0588d289a07b270284f5ed125722438518444))
+* carousel creators ([b49d2f5](https://github.com/WatchItDev/watchit-app/commit/b49d2f5cbf838ed5f42fddd7131e7eb3d26d88a2))
+* **carousel:** resolve incorrect map parameters in CarouselSlide ([9c7cfc5](https://github.com/WatchItDev/watchit-app/commit/9c7cfc57ec33d8ec429f650ee69f82728b7154d6))
+* **config:** update test setup file extension ([1e741ab](https://github.com/WatchItDev/watchit-app/commit/1e741ab90cc67f3ed351d8ecdb5df79b5416ccbc))
+* correct import path for Iconify in CarouselArrowIcons ([bf58355](https://github.com/WatchItDev/watchit-app/commit/bf58355a6145847fdddc03f2fb04ce181db599c6))
+* lens and web3auth mocks ([88becc8](https://github.com/WatchItDev/watchit-app/commit/88becc8e5c73f516e2e1d526b8ea1b82ca2104cb))
+* **mocks:** update sharedDependencies pollingInterval logic ([d006399](https://github.com/WatchItDev/watchit-app/commit/d00639926fb4ef4113f33f391fcaae4a4e84040d))
+* remove typo in CarouselArrows component import ([0a8be72](https://github.com/WatchItDev/watchit-app/commit/0a8be72c9961c88a25bd933bd3b4b11d12004ff3))
+* remove unnecessary ".ts" extension from imports ([c5027a0](https://github.com/WatchItDev/watchit-app/commit/c5027a0d4f8850efea525f50ba87e37f738aa452))
+* reorder imports across carousel components for clarity ([78a8d83](https://github.com/WatchItDev/watchit-app/commit/78a8d830ec0d24f71b2fdb7ede44a76ea589f95f))
+
+
+### Features
+
+* **App:** wrap AppContent with MotionLazy component ([12246ab](https://github.com/WatchItDev/watchit-app/commit/12246ab521b46d2eb6da6cb4c2650807a6243aad))
+* **carousel:** add types for calculateItemsPerSlide ([a94f2a1](https://github.com/WatchItDev/watchit-app/commit/a94f2a125e683f5904d3cbebc47942c6fab546af))
+* **carousel:** add utility to calculate items per slide ([185b30f](https://github.com/WatchItDev/watchit-app/commit/185b30f85321c404fbd8e0591b066ec82454e7bb))
+* **carousel:** improve type definition for boxStyle property ([fb439bd](https://github.com/WatchItDev/watchit-app/commit/fb439bdd7d28cc525ff41b9d9dc929a8708eb83d))
+* **config:** disable Sentry telemetry in Vite config ([e975f08](https://github.com/WatchItDev/watchit-app/commit/e975f08bbe6d9329c4b31757387f736536f345b4))
+* **mocks:** add mock for Iconify component ([f608604](https://github.com/WatchItDev/watchit-app/commit/f608604ab6836a8a7f6d7bf9031b7fcc226fd050))
+* **testing, carousel:** extend testing utilities and add tests ([945feb0](https://github.com/WatchItDev/watchit-app/commit/945feb00a84675fb486c30bdf1cf79c1f9e37c16))
+* **user-item:** add alt attribute for profile cover image ([5a2f107](https://github.com/WatchItDev/watchit-app/commit/5a2f1075b6d41cb48101593c2be4320f055f5c24))
+* **utils:** add testing utility with store and router ([b547f7b](https://github.com/WatchItDev/watchit-app/commit/b547f7bf84bdfb81fe1380cc72496666e76f0050))
+
+# [2.2.0-beta.29](https://github.com/WatchItDev/watchit-app/compare/v2.2.0-beta.28...v2.2.0-beta.29) (2025-02-18)
+
+
+### Features
+
+* **finance:** add loading state to FinanceQuickTransfer ([c956686](https://github.com/WatchItDev/watchit-app/commit/c956686f0e53aa52273f5003456c7242594c988f))
+
+# [2.2.0-beta.28](https://github.com/WatchItDev/watchit-app/compare/v2.2.0-beta.27...v2.2.0-beta.28) (2025-02-14)
+
+
+### Features
+
+* **utils:** add filtering function for hidden profiles ([c54bf81](https://github.com/WatchItDev/watchit-app/commit/c54bf816e1b5b0c81f4a9f71b7f49c1aab75f583))
+
+# [2.2.0-beta.27](https://github.com/WatchItDev/watchit-app/compare/v2.2.0-beta.26...v2.2.0-beta.27) (2025-02-14)
+
+
+### Bug Fixes
+
+* ownership verification process ([4cd5e93](https://github.com/WatchItDev/watchit-app/commit/4cd5e93fa0bfc631af4988161a2d8dc95f6c4311))
+
 # [2.2.0-beta.26](https://github.com/WatchItDev/watchit-app/compare/v2.2.0-beta.25...v2.2.0-beta.26) (2025-02-07)
 
 

@@ -6,10 +6,13 @@ import { sentryVitePlugin } from "@sentry/vite-plugin";
 import preserveDirectives from 'rollup-preserve-directives'
 import { codecovVitePlugin } from "@codecov/vite-plugin";
 import { nodePolyfills } from 'vite-plugin-node-polyfills'
+import dotenv from "dotenv";
+
+dotenv.config();
 
 export default defineConfig(({ mode }) => {
   // Load environment variables based on the current mode
-  const env = loadEnv(mode, process.cwd(), '');
+  const env = loadEnv(mode, process.cwd(), 'VITE_');
   const pure = mode === 'production' ? ['console.log', 'console.info', 'console.warn'] : []
 
   return {
@@ -21,6 +24,7 @@ export default defineConfig(({ mode }) => {
         org: "watchit",
         project: "watchit-app",
         authToken: process.env.VITE_SENTRY_AUTH_TOKEN,
+        telemetry: false,
       }),
       nodePolyfills({
         // To add only specific polyfills, add them here. If no option is passed, adds all polyfills
@@ -51,7 +55,8 @@ export default defineConfig(({ mode }) => {
     test: {
       global: true,
       environment: 'jsdom',
-      setupFiles: ['./setupTest.ts'],
+      setupFiles: ['./setupTest.tsx'],
+      include: ['**/__test__/**/*.test.{js,ts,jsx,tsx}'],
       coverage: {
         provider: 'v8'
       }

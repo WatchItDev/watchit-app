@@ -17,6 +17,7 @@ import { UserItem } from '../user-item';
 import LoadingScreen from '../loading-screen/loading-screen.tsx';
 import { notifyError } from '@notifications/internal-notifications.ts';
 import { ERRORS } from '@notifications/errors.ts';
+import {filterHiddenProfiles} from "@src/utils/profile.ts";
 // ----------------------------------------------------------------------
 
 interface ProfileSelectionProps {
@@ -54,7 +55,7 @@ export const ProfileSelectView: React.FC<ProfileSelectionProps> = ({
     (async () => {
       // @ts-ignore
       const results = await getProfiles({ where: { ownedBy: address as string } });
-      if (!results.isFailure()) setProfiles(results?.value as Profile[]);
+      if (!results.isFailure()) setProfiles(filterHiddenProfiles(results?.value) as Profile[]);
     })();
   }, [address]);
 
