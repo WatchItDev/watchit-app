@@ -42,7 +42,10 @@ exports[`Components: FinanceEarnTokens component testing > to match snapshot 1`]
             <span
               class="MuiButton-icon MuiButton-startIcon MuiButton-iconSizeMedium css-gcc2o7-MuiButton-startIcon"
             >
-              <span />
+              <span
+                data-icon="fluent-emoji:trophy"
+                data-testid="iconify"
+              />
             </span>
             Start earning now!
             <span

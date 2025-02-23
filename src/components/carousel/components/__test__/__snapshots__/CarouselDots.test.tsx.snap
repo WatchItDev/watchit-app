@@ -1,0 +1,57 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`[COMPONENTS]: CarouselDots component testing > appendDots renders correctly with custom sx prop 1`] = `
+<body>
+  <div>
+    <ul
+      class="MuiBox-root css-1aqhrfm"
+    >
+      <li>
+        dot
+      </li>
+    </ul>
+  </div>
+</body>
+`;
+
+exports[`[COMPONENTS]: CarouselDots component testing > appendDots renders correctly with default props 1`] = `
+<body>
+  <div>
+    <ul
+      class="MuiBox-root css-4t6qcz"
+    >
+      <li>
+        dot
+      </li>
+    </ul>
+  </div>
+</body>
+`;
+
+exports[`[COMPONENTS]: CarouselDots component testing > appendDots renders correctly with rounded prop 1`] = `
+<body>
+  <div>
+    <ul
+      class="MuiBox-root css-edfq31"
+    >
+      <li>
+        dot
+      </li>
+    </ul>
+  </div>
+</body>
+`;
+
+exports[`[COMPONENTS]: CarouselDots component testing > customPaging renders correctly 1`] = `
+<body>
+  <div>
+    <div
+      class="MuiStack-root css-1wxwoiw-MuiStack-root"
+    >
+      <span
+        class="css-mkgmya"
+      />
+    </div>
+  </div>
+</body>
+`;
