@@ -1,5 +1,6 @@
-import HLS from 'hls.js';
 import { FC, useRef, useEffect, memo } from 'react';
+// @ts-ignore
+import { Hls, FetchLoader, XhrLoader } from 'hls.js/dist/hls.mjs';
 import { Typography, IconButton, Button } from '@mui/material';
 import { IconChevronLeft } from '@tabler/icons-react';
 import {
@@ -53,13 +54,13 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({ src, cid, titleMovie, onBack
   // on provider (HLS) initialization
   const onProviderSetup = (provider: MediaProviderAdapter) => {
     if (isHLSProvider(provider)) {
-      provider.instance?.on(HLS.Events.ERROR, (_, data: any) => {
-        if (data.details === HLS.ErrorDetails.BUFFER_STALLED_ERROR) {
+      provider.instance?.on(Hls.Events.ERROR, (_, data: any) => {
+        if (data.details === Hls.ErrorDetails.BUFFER_STALLED_ERROR) {
           console.log("Seek Stalling Detected, Adjusting Buffer...");
           provider.instance?.startLoad();
         }
 
-        if (data.fatal && data.type === HLS.ErrorTypes.MEDIA_ERROR) {
+        if (data.fatal && data.type === Hls.ErrorTypes.MEDIA_ERROR) {
           console.warn("Recovering from Media Error...");
           provider.instance?.recoverMediaError();
         }
@@ -70,8 +71,9 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({ src, cid, titleMovie, onBack
   // when the provider has changed, setup config..
   const onProviderChange = (provider: MediaProviderAdapter | null) => {
     if (isHLSProvider(provider)) {
-      provider.library = HLS;
+      provider.library = Hls;
       provider.config = {
+        // "capLevelToPlayerSize": true, // avoid more resolution if doest not fit in the current viewport
         // https://github.com/video-dev/hls.js/blob/master/docs/API.md
         // maxBufferLength defines the target amount of video (in seconds) the player tries to keep buffered.
         // The buffer plays a crucial role in balancing playback stability and adaptive bitrate (ABR) decisions.
@@ -86,7 +88,7 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({ src, cid, titleMovie, onBack
         // - If a fragment is estimated to take longer than this value and the buffer is running low, 
         //   the player switches the best quality that matches this time constraint.
         // - This ensures a continuous playback experience by adapting the quality to network conditions in real-time.
-        "maxStarvationDelay": 2,
+        // "maxStarvationDelay": 4,
         // maxLoadingDelay defines the maximum allowed time (in seconds) to load the initial fragments when starting playback.
         // - The ABR controller ensures:
         //   - The time to fetch the first low-quality fragment (e.g., 420p)
@@ -96,34 +98,34 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({ src, cid, titleMovie, onBack
         //   to minimize startup delay and ensure fast playback.
         // - Unlike maxStarvationDelay, this setting only applies at the **start** of playback,
         //   ensuring the video loads quickly even if it means initially using a lower quality.
-        "maxLoadingDelay": 3,
+        // "maxLoadingDelay": 4,
         // abrEwmaFastVod: Controls how quickly the algorithm reacts to bandwidth changes in VOD (Video On Demand).
         // A higher value makes the algorithm less sensitive to short-term fluctuations, smoothing out rapid changes.
         // Recommended range: 2.0 - 5.0 (Higher = Smoother)
-        "abrEwmaFastVoD": 2,
+        "abrEwmaFastVoD": 3,
         // abrEwmaSlowVod: Controls the long-term average bandwidth estimation for adaptive bitrate switching.
         // A higher value averages the bandwidth over a longer period, reducing frequent quality switches.
         // Recommended range: 10.0 - 20.0 (Higher = More stable, but slower adaptation)
-        "abrEwmaSlowVoD": 9,
+        "abrEwmaSlowVoD": 8,
         // abrBandWidthFactor: Determines how conservatively HLS estimates available bandwidth.
         // A value < 1.0 ensures HLS.js does not use the full estimated bandwidth, preventing aggressive quality changes.
         // Recommended range: 0.7 - 0.9 (Lower = More cautious, fewer quality switches)
-        "abrBandWidthFactor": 0.9,
+        // "abrBandWidthFactor": 0.9,
         // abrBandWidthUpFactor: Controls how aggressively the player upgrades to a higher bitrate.
         // A lower value prevents HLS.js from switching to a higher quality too quickly, reducing unnecessary upscaling.
         // Recommended range: 0.5 - 0.8 (Lower = More stable, avoids excessive upscaling)
-        "abrBandWidthUpFactor": 0.7,
+        // "abrBandWidthUpFactor": 0.7,
         "enableSoftwareAES": false, // Disable software AES decryption
         "enableID3MetadataCues": false, // Disable ID3 metadata cues
         "enableWebVTT": true, // Enable WebVTT subtitles
         "enableIMSC1": false, // Disable IMSC1 subtitles
         "enableCEA708Captions": false, // Disable CEA-708 captions,
-        "lowLatencyMode": false,
         "enableWorker": true,
-        "nudgeOffset": 0.4,
-        "nudgeMaxRetry": 2,
-        // "maxFragLookUpTolerance": 0.4,
-        "startFragPrefetch": true
+        "backBufferLength": 90,
+        "lowLatencyMode": false, // Not needed in VOD
+        "startFragPrefetch": true,
+        "fLoader": FetchLoader,
+        "pLoader": XhrLoader
       };
 
 
