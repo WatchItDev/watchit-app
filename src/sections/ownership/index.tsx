@@ -1,7 +1,7 @@
-import Container from "@mui/material/Container";
-import Grid from "@mui/material/Unstable_Grid2";
-import Stack from "@mui/material/Stack";
-import OwnershipProcess from "@src/sections/ownership/components/ownership-process.tsx";
+import Container from "@mui/material/Container"
+import Stack from "@mui/material/Stack"
+import Grid from "@mui/material/Unstable_Grid2"
+import OwnershipProcess from "@src/sections/ownership/components/ownership-process.tsx"
 
 const Ownership = () => {
   return (
@@ -30,4 +30,4 @@ const Ownership = () => {
   )
 }
 
-export default Ownership;
+export default Ownership

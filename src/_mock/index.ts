@@ -1,2 +1,2 @@
-export * from './assets';
-export * from './_overview';
+export * from './assets'
+export * from './_overview'

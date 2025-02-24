@@ -1,6 +1,6 @@
-import { Helmet } from 'react-helmet-async';
-import { PropsWithChildren } from 'react';
-import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
+import { PropsWithChildren } from 'react'
+import { Helmet } from 'react-helmet-async'
+import { GLOBAL_CONSTANTS } from '@src/config-global.ts'
 
 interface OgMetaTagsProps {
   title: string;
@@ -44,5 +44,5 @@ export function OgMetaTags({
       </Helmet>
       {children}
     </>
-  );
+  )
 }

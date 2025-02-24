@@ -1,9 +1,9 @@
-import { useState, FC } from 'react';
-import { Tooltip, IconButton, Typography, Stack } from '@mui/material';
-import { Icon } from '@iconify/react';
+import { useState, FC } from 'react'
+import { Icon } from '@iconify/react'
+import { Tooltip, IconButton, Typography, Stack } from '@mui/material'
 
-const copyIcon = 'mdi:content-copy';
-const checkIcon = 'mdi:check';
+const copyIcon = 'mdi:content-copy'
+const checkIcon = 'mdi:check'
 
 interface CopyableTextProps {
   label: string;
@@ -11,13 +11,13 @@ interface CopyableTextProps {
 }
 
 const CopyableText: FC<CopyableTextProps> = ({ label, text }) => {
-  const [copied, setCopied] = useState(false);
+  const [copied, setCopied] = useState(false)
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(text);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 1000);
-  };
+    navigator.clipboard.writeText(text)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 1000)
+  }
 
   return (
     <Stack direction="row" alignItems="center">
@@ -28,7 +28,7 @@ const CopyableText: FC<CopyableTextProps> = ({ label, text }) => {
         </IconButton>
       </Tooltip>
     </Stack>
-  );
-};
+  )
+}
 
-export default CopyableText;
+export default CopyableText

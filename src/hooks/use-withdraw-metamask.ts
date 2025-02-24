@@ -1,16 +1,12 @@
-import { useState } from 'react';
-import { Address, parseUnits } from 'viem';
-
-// Project imports
-import LedgerVaultAbi from '@src/config/abi/LedgerVault.json';
-import { GLOBAL_CONSTANTS } from '@src/config-global';
-import { publicClient } from '@src/clients/viem/publicClient';
-
-// Notifications
-import { ERRORS } from '@notifications/errors.ts';
-import { notifyInfo } from '@notifications/internal-notifications.ts';
-import { INFO } from '@notifications/info.ts';
-import { useMetaMask } from '@src/hooks/use-metamask.ts';
+import { useState } from 'react'
+import { ERRORS } from '@notifications/errors.ts'
+import { INFO } from '@notifications/info.ts'
+import { notifyInfo } from '@notifications/internal-notifications.ts'
+import { Address, parseUnits } from 'viem'
+import { publicClient } from '@src/clients/viem/publicClient'
+import LedgerVaultAbi from '@src/config/abi/LedgerVault.json'
+import { GLOBAL_CONSTANTS } from '@src/config-global'
+import { useMetaMask } from '@src/hooks/use-metamask.ts'
 
 interface WithdrawParams {
   recipient: string; // Address receiving the funds
@@ -30,25 +26,25 @@ interface UseWithdrawHook {
  * of the smart wallet.
  */
 export const useWithdrawMetamask = (): UseWithdrawHook => {
-  const [data, setData] = useState<any>(null);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<keyof typeof ERRORS | null>(null);
-  const { walletClient, account: address } = useMetaMask();
+  const [data, setData] = useState<any>(null)
+  const [loading, setLoading] = useState<boolean>(false)
+  const [error, setError] = useState<keyof typeof ERRORS | null>(null)
+  const { walletClient, account: address } = useMetaMask()
 
   const withdraw = async ({ recipient, amount }: WithdrawParams) => {
-    if (!address) return;
+    if (!address) return
 
-    setLoading(true);
-    setError(null);
+    setLoading(true)
+    setError(null)
 
     try {
       // 3) Convert the amount to Wei (18 decimals)
-      const weiAmount = parseUnits(amount.toString(), 18);
+      const weiAmount = parseUnits(amount.toString(), 18)
 
       // Notify the user that we are sending the withdraw transaction
       notifyInfo(INFO.WITHDRAW_SENDING_CONFIRMATION, {
         options: { autoHideDuration: 3000 },
-      });
+      })
 
       // 4) Send the withdraw transaction
       const withdrawTxHash = await walletClient?.writeContract({
@@ -58,36 +54,36 @@ export const useWithdrawMetamask = (): UseWithdrawHook => {
         args: [recipient, weiAmount, GLOBAL_CONSTANTS.MMC_ADDRESS],
         chain: undefined,
         account: address as Address,
-      });
+      })
 
       // Notify the user that we are waiting for confirmation
       notifyInfo(INFO.WITHDRAW_WAITING_CONFIRMATION, {
         options: { autoHideDuration: 7000 },
-      });
+      })
 
       // Wait for the withdraw transaction to be mined
       const withdrawReceipt = await publicClient.waitForTransactionReceipt({
         hash: withdrawTxHash as Address,
-      });
+      })
 
       // Store the transaction data
       setData({
         withdrawTxHash,
         withdrawReceipt,
-      });
+      })
     } catch (err: any) {
       // If something fails, set an error
-      setError(ERRORS.UNKNOWN_ERROR);
+      setError(ERRORS.UNKNOWN_ERROR)
     } finally {
       // Reset loading state
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   return {
     data,
     withdraw,
     loading,
     error,
-  };
-};
+  }
+}

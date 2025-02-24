@@ -1,17 +1,12 @@
-import { useDropzone } from 'react-dropzone';
-// @mui
-import { alpha } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
-//
-import Iconify from '../iconify';
-import Image from '../image';
-//
-import { UploadProps } from './types';
-import RejectionFiles from './errors-rejection-files';
-
-// ----------------------------------------------------------------------
+import { useDropzone } from 'react-dropzone'
+import Box from '@mui/material/Box'
+import Stack from '@mui/material/Stack'
+import { alpha } from '@mui/material/styles'
+import Typography from '@mui/material/Typography'
+import Iconify from '../iconify'
+import Image from '../image'
+import RejectionFiles from './errors-rejection-files'
+import { UploadProps } from './types'
 
 export default function UploadAvatar({
   error,
@@ -28,13 +23,13 @@ export default function UploadAvatar({
       'image/*': [],
     },
     ...other,
-  });
+  })
 
-  const hasFile = !!file;
+  const hasFile = !!file
 
-  const hasError = isDragReject || !!error;
+  const hasError = isDragReject || !!error
 
-  const imgUrl = typeof file === 'string' ? file : file?.preview;
+  const imgUrl = typeof file === 'string' ? file : file?.preview
 
   const renderPreview = hasFile && (
     <Image
@@ -46,7 +41,7 @@ export default function UploadAvatar({
         borderRadius: '50%',
       }}
     />
-  );
+  )
 
   const renderPlaceholder = (
     <Stack
@@ -87,7 +82,7 @@ export default function UploadAvatar({
 
       <Typography variant="caption">{file ? 'Update photo' : 'Upload photo'}</Typography>
     </Stack>
-  );
+  )
 
   const renderContent = (
     <Box
@@ -102,7 +97,7 @@ export default function UploadAvatar({
       {renderPreview}
       {renderPlaceholder}
     </Box>
-  );
+  )
 
   return (
     <>
@@ -147,5 +142,5 @@ export default function UploadAvatar({
 
       <RejectionFiles fileRejections={fileRejections} />
     </>
-  );
+  )
 }

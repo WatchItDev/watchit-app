@@ -1,16 +1,13 @@
-// @mui
-import Paper from '@mui/material/Paper';
-
-// components
-import Image from '@src/components/image';
-import { useRouter } from '@src/routes/hooks';
-import { paths } from '@src/routes/paths.ts';
-import { TrendingTopicsType } from '@src/sections/explore/view.tsx';
-import Box from '@mui/material/Box';
-import Card from '@mui/material/Card';
-import ListItemText from '@mui/material/ListItemText';
-import AvatarProfile from "@src/components/avatar/avatar.tsx";
-import {dicebear} from "@src/utils/dicebear.ts";
+import Box from '@mui/material/Box'
+import Card from '@mui/material/Card'
+import ListItemText from '@mui/material/ListItemText'
+import Paper from '@mui/material/Paper'
+import AvatarProfile from "@src/components/avatar/avatar.tsx"
+import Image from '@src/components/image'
+import { useRouter } from '@src/routes/hooks'
+import { paths } from '@src/routes/paths.ts'
+import { TrendingTopicsType } from '@src/sections/explore/view.tsx'
+import {dicebear} from "@src/utils/dicebear.ts"
 
 const randomImages = [
   'https://storage.needpix.com/rsynced_images/banner-header-1449745071UBW.jpg',
@@ -19,14 +16,14 @@ const randomImages = [
   'https://storage.needpix.com/rsynced_images/banner-header-tapete-1463227719cPu.jpg',
   'https://cdn12.picryl.com/photo/2016/12/31/banner-header-background-backgrounds-textures-b8d9b9-1024.jpg',
   'https://cdn12.picryl.com/photo/2016/12/31/banner-header-christmas-13e7dc-1024.jpg',
-];
+]
 
 const PosterCreators = ({ id }: TrendingTopicsType) => {
-  const router = useRouter();
+  const router = useRouter()
 
   const handlePosterClick = () => {
-    router.push(paths.dashboard.publication.details(String(id)));
-  };
+    router.push(paths.dashboard.publication.details(String(id)))
+  }
 
   return (
     <Paper
@@ -115,7 +112,7 @@ const PosterCreators = ({ id }: TrendingTopicsType) => {
         </Card>
       </Box>
     </Paper>
-  );
-};
+  )
+}
 
-export default PosterCreators;
+export default PosterCreators

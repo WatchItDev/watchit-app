@@ -1,16 +1,11 @@
-import { memo, useState, useCallback } from 'react';
-// @mui
-import List from '@mui/material/List';
-import Stack from '@mui/material/Stack';
-import Collapse from '@mui/material/Collapse';
-//
-import { NavSectionProps, NavListProps, NavConfigProps } from '../types';
-import { navVerticalConfig } from '../config';
-import { StyledSubheader } from './styles';
-
-import NavList from './nav-list';
-
-// ----------------------------------------------------------------------
+import { memo, useState, useCallback } from 'react'
+import Collapse from '@mui/material/Collapse'
+import List from '@mui/material/List'
+import Stack from '@mui/material/Stack'
+import { navVerticalConfig } from '../config'
+import { NavSectionProps, NavListProps, NavConfigProps } from '../types'
+import NavList from './nav-list'
+import { StyledSubheader } from './styles'
 
 function NavSectionVertical({ data, config, sx, ...other }: NavSectionProps) {
   return (
@@ -24,12 +19,10 @@ function NavSectionVertical({ data, config, sx, ...other }: NavSectionProps) {
         />
       ))}
     </Stack>
-  );
+  )
 }
 
-export default memo(NavSectionVertical);
-
-// ----------------------------------------------------------------------
+export default memo(NavSectionVertical)
 
 type GroupProps = {
   subheader: string;
@@ -38,11 +31,11 @@ type GroupProps = {
 };
 
 function Group({ subheader, items, config }: GroupProps) {
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(true)
 
   const handleToggle = useCallback(() => {
-    setOpen((prev) => !prev);
-  }, []);
+    setOpen((prev) => !prev)
+  }, [])
 
   const renderContent = items.map((list) => (
     <NavList
@@ -52,7 +45,7 @@ function Group({ subheader, items, config }: GroupProps) {
       hasChild={!!list.children}
       config={config}
     />
-  ));
+  ))
 
   return (
     <List disablePadding sx={{ px: 2 }}>
@@ -68,5 +61,5 @@ function Group({ subheader, items, config }: GroupProps) {
         renderContent
       )}
     </List>
-  );
+  )
 }

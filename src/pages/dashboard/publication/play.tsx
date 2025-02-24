@@ -1,14 +1,11 @@
-// sections
-import { PublicationPlayView } from '@src/sections/publication/view';
-import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
-import { OgMetaTags } from '@src/components/og-meta-tags.tsx';
-import { useParams } from '@src/routes/hooks';
-
-// ----------------------------------------------------------------------
+import { OgMetaTags } from '@src/components/og-meta-tags.tsx'
+import { GLOBAL_CONSTANTS } from '@src/config-global.ts'
+import { useParams } from '@src/routes/hooks'
+import { PublicationPlayView } from '@src/sections/publication/view'
 
 export default function MovieCreatePage() {
-  const params = useParams();
-  const { id } = params;
+  const params = useParams()
+  const { id } = params
 
   return (
     <OgMetaTags
@@ -18,5 +15,5 @@ export default function MovieCreatePage() {
     >
       <PublicationPlayView  publication={undefined} loading={false} />
     </OgMetaTags>
-  );
+  )
 }

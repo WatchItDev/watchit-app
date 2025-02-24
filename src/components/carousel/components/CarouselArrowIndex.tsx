@@ -1,11 +1,11 @@
-import Box from '@mui/material/Box';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import { styled } from '@mui/material/styles';
-import { bgBlur } from '@src/theme/css.ts';
-import { CarouselArrowIndexProps } from '@src/components/carousel/types.ts';
-import {useIsRTL} from "@src/hooks/components/use-rtl.ts";
-import { LeftIcon, RightIcon } from './CarouselArrowIcons.tsx';
+import Box from '@mui/material/Box'
+import IconButton from '@mui/material/IconButton'
+import { styled } from '@mui/material/styles'
+import Typography from '@mui/material/Typography'
+import { LeftIcon, RightIcon } from './CarouselArrowIcons.tsx'
+import { CarouselArrowIndexProps } from '@src/components/carousel/types.ts'
+import {useIsRTL} from "@src/hooks/components/use-rtl.ts"
+import { bgBlur } from '@src/theme/css.ts'
 
 const StyledRoot = styled(Box)(({ theme }) => ({
   ...bgBlur({
@@ -21,7 +21,7 @@ const StyledRoot = styled(Box)(({ theme }) => ({
   padding: theme.spacing(0.25),
   color: theme.palette.common.white,
   borderRadius: theme.shape.borderRadius,
-}));
+}))
 
 const StyledIconButton = styled(IconButton)({
   width: 28,
@@ -29,9 +29,7 @@ const StyledIconButton = styled(IconButton)({
   padding: 0,
   opacity: 0.48,
   '&:hover': { opacity: 1 },
-});
-
-// ----------------------------------------------------------------------
+})
 
 export default function CarouselArrowIndex({
   index,
@@ -42,7 +40,7 @@ export default function CarouselArrowIndex({
   sx,
   ...other
 }: CarouselArrowIndexProps) {
-  const isRTL = useIsRTL();
+  const isRTL = useIsRTL()
 
   return (
     <StyledRoot sx={sx} {...other}>
@@ -58,5 +56,5 @@ export default function CarouselArrowIndex({
         <RightIcon icon={icon} isRTL={isRTL} />
       </StyledIconButton>
     </StyledRoot>
-  );
+  )
 }

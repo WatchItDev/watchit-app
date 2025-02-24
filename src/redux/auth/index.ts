@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 export type AuthReducerState = {
   session: any;
@@ -18,35 +18,35 @@ const initialState: AuthReducerState = {
   currentStep: 0,
   isUpdatingMetadata: false,
   email: '',
-};
+}
 
 const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
     openLoginModal: (state) => {
-      state.isLoginModalOpen = true;
+      state.isLoginModalOpen = true
     },
     closeLoginModal: (state) => {
-      state.isLoginModalOpen = false;
+      state.isLoginModalOpen = false
     },
     setAuthLoading: (state, action: PayloadAction<Pick<AuthReducerState, 'isSessionLoading'>>) => {
-      state.isSessionLoading = action.payload.isSessionLoading;
+      state.isSessionLoading = action.payload.isSessionLoading
     },
     setBalance: (state, action: PayloadAction<Pick<AuthReducerState, 'balance'>>) => {
-      state.balance = action.payload.balance;
+      state.balance = action.payload.balance
     },
     setProfileCreationStep: (state, action: PayloadAction<{ step: number }>) => {
-      state.currentStep = action.payload.step;
+      state.currentStep = action.payload.step
     },
     resetCurrentStep: (state) => {
-      state.currentStep = 0;
+      state.currentStep = 0
     },
     setSession: (state, action: PayloadAction<{ session: any }>) => {
-      state.session = action.payload.session;
+      state.session = action.payload.session
     },
     setEmail: (state, action: PayloadAction<string>) => {
-      state.email = action.payload;
+      state.email = action.payload
     },
     updateProfileData: (
       state,
@@ -72,14 +72,14 @@ const authSlice = createSlice({
               uri: !!action.payload.backgroundImage ? action.payload.backgroundImage : undefined,
             },
           },
-        };
+        }
       }
     },
     setIsUpdatingMetadata: (state, action: PayloadAction<boolean>) => {
-      state.isUpdatingMetadata = action.payload;
+      state.isUpdatingMetadata = action.payload
     },
   },
-});
+})
 
 export const {
   openLoginModal,
@@ -92,6 +92,6 @@ export const {
   updateProfileData,
   setIsUpdatingMetadata,
   setEmail
-} = authSlice.actions;
+} = authSlice.actions
 
-export default authSlice.reducer;
+export default authSlice.reducer

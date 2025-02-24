@@ -1,31 +1,20 @@
-// REACT IMPORTS
-import { FC, useCallback, useEffect, useState } from 'react';
-
-// VIEM IMPORTS
-import { Address } from 'viem';
-
-// MUI IMPORTS
-import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
-import TextField from '@mui/material/TextField';
-
-// LOCAL IMPORTS
-import NeonPaper from '@src/sections/publication/NeonPaperContainer';
-import FinanceDialogsActions from '@src/sections/finance/components/finance-dialogs-actions';
-import TextMaxLine from '@src/components/text-max-line';
-import { formatBalanceNumber } from '@src/utils/format-number';
-import FinanceBoxRow from '@src/sections/finance/components/finance-box-row.tsx';
-import { UseWithdrawHook } from '@src/hooks/use-withdraw.ts';
-import { truncateAddress } from '@src/utils/wallet.ts';
-
-// NOTIFICATIONS IMPORTS
-import { notifyError, notifySuccess, notifyWarning } from '@notifications/internal-notifications';
-import { ERRORS } from '@notifications/errors';
-import { WARNING } from '@notifications/warnings';
-import { SUCCESS } from '@notifications/success';
-import { useGetBalance } from '@src/hooks/use-get-balance.ts';
-
-// ----------------------------------------------------------------------
+import { FC, useCallback, useEffect, useState } from 'react'
+import { ERRORS } from '@notifications/errors'
+import { notifyError, notifySuccess, notifyWarning } from '@notifications/internal-notifications'
+import { SUCCESS } from '@notifications/success'
+import { WARNING } from '@notifications/warnings'
+import { Address } from 'viem'
+import Box from '@mui/material/Box'
+import Stack from '@mui/material/Stack'
+import TextField from '@mui/material/TextField'
+import TextMaxLine from '@src/components/text-max-line'
+import { useGetBalance } from '@src/hooks/use-get-balance.ts'
+import { UseWithdrawHook } from '@src/hooks/use-withdraw.ts'
+import FinanceBoxRow from '@src/sections/finance/components/finance-box-row.tsx'
+import FinanceDialogsActions from '@src/sections/finance/components/finance-dialogs-actions'
+import NeonPaper from '@src/sections/publication/NeonPaperContainer'
+import { formatBalanceNumber } from '@src/utils/format-number'
+import { truncateAddress } from '@src/utils/wallet.ts'
 
 interface FinanceWithdrawProps {
   address: Address; // The connected wallet address
@@ -34,45 +23,43 @@ interface FinanceWithdrawProps {
   onChangeWallet?: (address: Address) => void; // Callback to change the new address.
 }
 
-// ----------------------------------------------------------------------
-
 const FinanceWithdraw: FC<FinanceWithdrawProps> = ({ address, withdrawHook, onClose }) => {
-  const [amount, setAmount] = useState<number | string>('');
-  const [amountError, setAmountError] = useState(false);
-  const [amountHelperText, setAmountHelperText] = useState('');
-  const [localLoading, setLocalLoading] = useState(false);
-  const { balance } = useGetBalance();
-  const { withdraw, loading: withdrawLoading, error } = withdrawHook;
-  const RainbowEffect = localLoading || withdrawLoading ? NeonPaper : Box;
+  const [amount, setAmount] = useState<number | string>('')
+  const [amountError, setAmountError] = useState(false)
+  const [amountHelperText, setAmountHelperText] = useState('')
+  const [localLoading, setLocalLoading] = useState(false)
+  const { balance } = useGetBalance()
+  const { withdraw, loading: withdrawLoading, error } = withdrawHook
+  const RainbowEffect = localLoading || withdrawLoading ? NeonPaper : Box
 
   useEffect(() => {
     if (error) {
-      notifyError(ERRORS.WITHDRAW_FAILED_ERROR);
+      notifyError(ERRORS.WITHDRAW_FAILED_ERROR)
     }
-  }, [error]);
+  }, [error])
 
   const handleConfirmWithdraw = useCallback(async () => {
-    if (!amount) return;
+    if (!amount) return
 
     if (Number(amount) <= 0 || amount > (balance ?? 0)) {
-      notifyWarning(WARNING.INVALID_WITHDRAW_AMOUNT);
-      return;
+      notifyWarning(WARNING.INVALID_WITHDRAW_AMOUNT)
+      return
     }
     try {
-      setLocalLoading(true);
-      await withdraw({ amount: Number(amount), recipient: address });
-      notifySuccess(SUCCESS.WITHDRAW_SUCCESSFULLY);
-      onClose();
+      setLocalLoading(true)
+      await withdraw({ amount: Number(amount), recipient: address })
+      notifySuccess(SUCCESS.WITHDRAW_SUCCESSFULLY)
+      onClose()
     } catch (err: any) {
-      notifyError(ERRORS.WITHDRAW_FAILED_ERROR);
+      notifyError(ERRORS.WITHDRAW_FAILED_ERROR)
     } finally {
-      setLocalLoading(false);
+      setLocalLoading(false)
     }
-  }, [amount, balance]);
+  }, [amount, balance])
 
   const handleAmountChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = Number(event.target.value);
-    setAmount(value);
+    const value = Number(event.target.value)
+    setAmount(value)
 
     // Update error state and helper text dynamically
     const errorMessage =
@@ -80,11 +67,11 @@ const FinanceWithdraw: FC<FinanceWithdrawProps> = ({ address, withdrawHook, onCl
         ? "Amount must be greater than zero"
         : value > (balance ?? 0)
           ? "Amount cannot be greater than balance"
-          : "";
+          : ""
 
-    setAmountError(!!errorMessage);
-    setAmountHelperText(errorMessage);
-  };
+    setAmountError(!!errorMessage)
+    setAmountHelperText(errorMessage)
+  }
 
   return (
     <>
@@ -139,7 +126,7 @@ const FinanceWithdraw: FC<FinanceWithdrawProps> = ({ address, withdrawHook, onCl
         onCloseAction={onClose}
       />
     </>
-  );
-};
+  )
+}
 
-export default FinanceWithdraw;
+export default FinanceWithdraw

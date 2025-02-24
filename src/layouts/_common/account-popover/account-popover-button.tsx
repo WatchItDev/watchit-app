@@ -1,32 +1,21 @@
-// REDUX IMPORTS
-import { useSelector } from 'react-redux';
-
-// MUI IMPORTS
+import { m } from 'framer-motion'
+import { useSelector } from 'react-redux'
 import {
   Box,
   Button,
   IconButton,
   Typography,
-} from '@mui/material';
-import { alpha } from '@mui/material/styles';
-
-// ANIMATIONS IMPORTS
-import { m } from 'framer-motion';
-
-// LOCAL IMPORTS
-import { varHover } from '@src/components/animate';
-import AvatarProfile from '@src/components/avatar/avatar';
-import NeonPaper from '@src/sections/publication/NeonPaperContainer';
-import { UsePopoverReturnType } from '@src/components/custom-popover/use-popover.ts';
-
-// ----------------------------------------------------------------------
+} from '@mui/material'
+import { alpha } from '@mui/material/styles'
+import { varHover } from '@src/components/animate'
+import AvatarProfile from '@src/components/avatar/avatar'
+import { UsePopoverReturnType } from '@src/components/custom-popover/use-popover.ts'
+import NeonPaper from '@src/sections/publication/NeonPaperContainer'
 
 interface AccountPopoverButtonProps {
   popover: UsePopoverReturnType;
   onOpenLoginModal: () => void;
 }
-
-// ----------------------------------------------------------------------
 
 /**
  * This component renders either:
@@ -37,12 +26,12 @@ export function AccountPopoverButton({
                                        popover,
                                        onOpenLoginModal,
                                      }: Readonly<AccountPopoverButtonProps>) {
-  const sessionData = useSelector((state: any) => state.auth.session);
-  const isAuthenticated = Boolean(sessionData?.authenticated);
-  const isUpdatingMetadata: boolean = useSelector((state: any) => state.auth.isUpdatingMetadata);
+  const sessionData = useSelector((state: any) => state.auth.session)
+  const isAuthenticated = Boolean(sessionData?.authenticated)
+  const isUpdatingMetadata: boolean = useSelector((state: any) => state.auth.isUpdatingMetadata)
 
   // Use NeonPaper while metadata is updating
-  const EffectPaper = isUpdatingMetadata ? NeonPaper : Box;
+  const EffectPaper = isUpdatingMetadata ? NeonPaper : Box
 
   return (
     <Box sx={{ display: 'flex', alignItems: 'center' }} onClick={popover.onOpen}>
@@ -117,5 +106,5 @@ export function AccountPopoverButton({
         )}
       </Box>
     </Box>
-  );
+  )
 }

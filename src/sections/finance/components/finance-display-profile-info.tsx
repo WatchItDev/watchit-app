@@ -1,8 +1,8 @@
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import {FC} from "react";
-import {Profile} from "@lens-protocol/api-bindings";
-import {truncateAddress} from "@src/utils/wallet.ts";
+import {FC} from "react"
+import {Profile} from "@lens-protocol/api-bindings"
+import Box from "@mui/material/Box"
+import Typography from "@mui/material/Typography"
+import {truncateAddress} from "@src/utils/wallet.ts"
 
 interface FinanceDisplayNameProps {
   mode: 'profile' | 'wallet';
@@ -29,10 +29,10 @@ interface FinanceDisplayNameProps {
 const FinanceDisplayProfileInfo: FC<FinanceDisplayNameProps> = ({initialList, carousel, mode}) => {
   // If the initial list is empty, return
   if (!initialList?.length) {
-    return null;
+    return null
   }
 
-  const selectedProfile = initialList?.[carousel.currentIndex];
+  const selectedProfile = initialList?.[carousel.currentIndex]
   return (
     <Box sx={{ textAlign: 'center',mt:-2, mb: 1 }}>
       {
@@ -48,7 +48,7 @@ const FinanceDisplayProfileInfo: FC<FinanceDisplayNameProps> = ({initialList, ca
           </Typography> : null
       }
     </Box>
-  );
+  )
 }
 
-export default FinanceDisplayProfileInfo;
+export default FinanceDisplayProfileInfo

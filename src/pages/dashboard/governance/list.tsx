@@ -1,11 +1,7 @@
-// sections
-// import { GovernanceListView } from '../../../sections/governance/view';
-import ComingSoonView from '@src/sections/coming-soon/view.tsx';
-import BlankView from '@src/sections/blank/view.tsx';
-import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
-import { OgMetaTags } from '@src/components/og-meta-tags.tsx';
-
-// ----------------------------------------------------------------------
+import { OgMetaTags } from '@src/components/og-meta-tags.tsx'
+import { GLOBAL_CONSTANTS } from '@src/config-global.ts'
+import BlankView from '@src/sections/blank/view.tsx'
+import ComingSoonView from '@src/sections/coming-soon/view.tsx'
 
 export default function GovernanceList() {
   return (
@@ -18,5 +14,5 @@ export default function GovernanceList() {
         <ComingSoonView />
       </BlankView>
     </OgMetaTags>
-  );
+  )
 }

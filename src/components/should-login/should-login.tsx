@@ -1,11 +1,11 @@
-import Box from '@mui/material/Box';
-import { Typography } from '@mui/material';
-import Button from '@mui/material/Button';
-import { COLORS } from '@src/layouts/config-layout.ts';
-import { openLoginModal } from '@redux/auth';
-import { useDispatch, useSelector } from 'react-redux';
-import Iconify from '@src/components/iconify';
-import { FC } from 'react';
+import { FC } from 'react'
+import { openLoginModal } from '@redux/auth'
+import { useDispatch, useSelector } from 'react-redux'
+import { Typography } from '@mui/material'
+import Box from '@mui/material/Box'
+import Button from '@mui/material/Button'
+import Iconify from '@src/components/iconify'
+import { COLORS } from '@src/layouts/config-layout.ts'
 
 // Create a type for the component props to receive the icon and subtitle
 type Props = {
@@ -14,12 +14,12 @@ type Props = {
 };
 
 const NotLoggedIn: FC<Props> = ({ icon, subtitle }) => {
-  const dispatch = useDispatch();
-  const sessionData = useSelector((state: any) => state.auth.session);
+  const dispatch = useDispatch()
+  const sessionData = useSelector((state: any) => state.auth.session)
 
   const handleClicked = () => {
-    if (!sessionData?.authenticated) return dispatch(openLoginModal());
-  };
+    if (!sessionData?.authenticated) return dispatch(openLoginModal())
+  }
 
   return (
     <Box
@@ -66,7 +66,7 @@ const NotLoggedIn: FC<Props> = ({ icon, subtitle }) => {
         Access now
       </Button>
     </Box>
-  );
-};
+  )
+}
 
-export default NotLoggedIn;
+export default NotLoggedIn

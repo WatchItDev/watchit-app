@@ -1,9 +1,5 @@
-// @mui
-import { alpha } from '@mui/material/styles';
-//
-import { palette as themePalette } from './palette';
-
-// ----------------------------------------------------------------------
+import { alpha } from '@mui/material/styles'
+import { palette as themePalette } from './palette'
 
 interface CustomShadowOptions {
   z1: string;
@@ -35,16 +31,14 @@ declare module '@mui/material/styles' {
   }
 }
 
-// ----------------------------------------------------------------------
+const palette = themePalette('light')
 
-const palette = themePalette('light');
+const LIGHT_MODE = palette.grey[500]
 
-const LIGHT_MODE = palette.grey[500];
-
-const DARK_MODE = palette.common.black;
+const DARK_MODE = palette.common.black
 
 function createShadow(color: string) {
-  const transparent = alpha(color, 0.16);
+  const transparent = alpha(color, 0.16)
   return {
     z1: `0 1px 2px 0 ${transparent}`,
     z4: `0 4px 8px 0 ${transparent}`,
@@ -64,9 +58,9 @@ function createShadow(color: string) {
     success: `0 8px 16px 0 ${alpha(palette.success.main, 0.24)}`,
     warning: `0 8px 16px 0 ${alpha(palette.warning.main, 0.24)}`,
     error: `0 8px 16px 0 ${alpha(palette.error.main, 0.24)}`,
-  };
+  }
 }
 
 export function customShadows(mode: 'light' | 'dark') {
-  return mode === 'light' ? createShadow(LIGHT_MODE) : createShadow(DARK_MODE);
+  return mode === 'light' ? createShadow(LIGHT_MODE) : createShadow(DARK_MODE)
 }

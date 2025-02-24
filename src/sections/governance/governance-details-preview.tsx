@@ -1,20 +1,15 @@
-// @mui
-import LoadingButton from '@mui/lab/LoadingButton';
-import Stack from '@mui/material/Stack';
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import Divider from '@mui/material/Divider';
-import Container from '@mui/material/Container';
-import Typography from '@mui/material/Typography';
-import DialogActions from '@mui/material/DialogActions';
-// components
-import Markdown from '@src/components/markdown';
-import Scrollbar from '@src/components/scrollbar';
-import EmptyContent from '@src/components/empty-content';
-//
-import GovernanceDetailsHero from './governance-details-hero';
-
-// ----------------------------------------------------------------------
+import LoadingButton from '@mui/lab/LoadingButton'
+import Button from '@mui/material/Button'
+import Container from '@mui/material/Container'
+import Dialog from '@mui/material/Dialog'
+import DialogActions from '@mui/material/DialogActions'
+import Divider from '@mui/material/Divider'
+import Stack from '@mui/material/Stack'
+import Typography from '@mui/material/Typography'
+import GovernanceDetailsHero from './governance-details-hero'
+import EmptyContent from '@src/components/empty-content'
+import Markdown from '@src/components/markdown'
+import Scrollbar from '@src/components/scrollbar'
 
 type Props = {
   title: string;
@@ -41,9 +36,9 @@ export default function GovernanceDetailsPreview({
   onSubmit,
   isSubmitting,
 }: Props) {
-  const hasContent = title || description || content || coverUrl;
+  const hasContent = title || description || content || coverUrl
 
-  const hasHero = title || coverUrl;
+  const hasHero = title || coverUrl
 
   return (
     <Dialog fullScreen open={open} onClose={onClose}>
@@ -92,5 +87,5 @@ export default function GovernanceDetailsPreview({
         <EmptyContent filled title="Empty Content!" />
       )}
     </Dialog>
-  );
+  )
 }

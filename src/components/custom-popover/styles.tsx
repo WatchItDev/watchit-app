@@ -1,36 +1,31 @@
-// @mui
-import { styled, alpha } from '@mui/material/styles';
-// theme
-import { bgBlur } from '@src/theme/css';
-//
-import { MenuPopoverArrowValue } from './types';
-
-// ----------------------------------------------------------------------
+import { styled, alpha } from '@mui/material/styles'
+import { MenuPopoverArrowValue } from './types'
+import { bgBlur } from '@src/theme/css'
 
 export const StyledArrow = styled('span')<{ arrow: MenuPopoverArrowValue }>(({ arrow, theme }) => {
-  const SIZE = 14;
+  const SIZE = 14
 
-  const POSITION = -(SIZE / 2) + 0.5;
+  const POSITION = -(SIZE / 2) + 0.5
 
   const topStyle = {
     top: POSITION,
     transform: 'rotate(135deg)',
-  };
+  }
 
   const bottomStyle = {
     bottom: POSITION,
     transform: 'rotate(-45deg)',
-  };
+  }
 
   const leftStyle = {
     left: POSITION,
     transform: 'rotate(45deg)',
-  };
+  }
 
   const rightStyle = {
     right: POSITION,
     transform: 'rotate(-135deg)',
-  };
+  }
 
   return {
     width: SIZE,
@@ -81,5 +76,5 @@ export const StyledArrow = styled('span')<{ arrow: MenuPopoverArrowValue }>(({ a
       margin: 'auto',
     }),
     ...(arrow === 'right-bottom' && { ...rightStyle, bottom: 20 }),
-  };
-});
+  }
+})

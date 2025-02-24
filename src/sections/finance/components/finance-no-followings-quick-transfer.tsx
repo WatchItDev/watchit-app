@@ -1,6 +1,6 @@
-import Box from "@mui/material/Box";
-import Stack from "@mui/material/Stack";
-import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box"
+import Stack from "@mui/material/Stack"
+import Typography from "@mui/material/Typography"
 
 /**
  * FinanceNoFollowingsQuickTransfer is a React functional component that serves as a user interface element
@@ -63,7 +63,7 @@ const FinanceNoFollowingsQuickTransfer = () => {
         </Typography>
       </Stack>
     </Box>
-  );
+  )
 }
 
-export default FinanceNoFollowingsQuickTransfer;
+export default FinanceNoFollowingsQuickTransfer

@@ -1,11 +1,8 @@
-import { alpha, Theme } from '@mui/material/styles';
-import { FabProps, fabClasses } from '@mui/material/Fab';
+import { FabProps, fabClasses } from '@mui/material/Fab'
+import { alpha, Theme } from '@mui/material/styles'
 
-// ----------------------------------------------------------------------
+const COLORS = ['primary', 'secondary', 'info', 'success', 'warning', 'error'] as const
 
-const COLORS = ['primary', 'secondary', 'info', 'success', 'warning', 'error'] as const;
-
-// NEW VARIANT
 declare module '@mui/material/Fab' {
   interface FabPropsVariantOverrides {
     outlined: true;
@@ -15,27 +12,25 @@ declare module '@mui/material/Fab' {
   }
 }
 
-// ----------------------------------------------------------------------
-
 export function fab(theme: Theme) {
-  const lightMode = theme.palette.mode === 'light';
+  const lightMode = theme.palette.mode === 'light'
 
   const rootStyles = (ownerState: FabProps) => {
-    const defaultColor = ownerState.color === 'default';
+    const defaultColor = ownerState.color === 'default'
 
-    const inheritColor = ownerState.color === 'inherit';
+    const inheritColor = ownerState.color === 'inherit'
 
-    const circularVariant = ownerState.variant === 'circular';
+    const circularVariant = ownerState.variant === 'circular'
 
-    const extendedVariant = ownerState.variant === 'extended';
+    const extendedVariant = ownerState.variant === 'extended'
 
-    const outlinedVariant = ownerState.variant === 'outlined';
+    const outlinedVariant = ownerState.variant === 'outlined'
 
-    const outlinedExtendedVariant = ownerState.variant === 'outlinedExtended';
+    const outlinedExtendedVariant = ownerState.variant === 'outlinedExtended'
 
-    const softVariant = ownerState.variant === 'soft';
+    const softVariant = ownerState.variant === 'soft'
 
-    const softExtendedVariant = ownerState.variant === 'softExtended';
+    const softExtendedVariant = ownerState.variant === 'softExtended'
 
     const defaultStyle = {
       '&:hover, &:active': {
@@ -90,7 +85,7 @@ export function fab(theme: Theme) {
           },
         }),
       }),
-    };
+    }
 
     const colorStyle = COLORS.map((color) => ({
       ...(ownerState.color === color && {
@@ -118,7 +113,7 @@ export function fab(theme: Theme) {
           },
         }),
       }),
-    }));
+    }))
 
     const disabledState = {
       [`&.${fabClasses.disabled}`]: {
@@ -127,7 +122,7 @@ export function fab(theme: Theme) {
           border: `solid 1px ${theme.palette.action.disabledBackground}`,
         }),
       },
-    };
+    }
 
     const size = {
       ...((extendedVariant || outlinedExtendedVariant || softExtendedVariant) && {
@@ -154,10 +149,10 @@ export function fab(theme: Theme) {
           padding: theme.spacing(0, 2),
         }),
       }),
-    };
+    }
 
-    return [defaultStyle, ...colorStyle, disabledState, size];
-  };
+    return [defaultStyle, ...colorStyle, disabledState, size]
+  }
 
   return {
     MuiFab: {
@@ -165,5 +160,5 @@ export function fab(theme: Theme) {
         root: ({ ownerState }: { ownerState: FabProps }) => rootStyles(ownerState),
       },
     },
-  };
+  }
 }

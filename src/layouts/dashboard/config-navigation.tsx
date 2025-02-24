@@ -1,19 +1,11 @@
-import { useMemo } from 'react';
-// routes
-import { paths } from '@src/routes/paths';
-// locales
-import { useLocales } from '@src/locales';
-import SvgColor from '@src/components/svg-color';
-
-// ----------------------------------------------------------------------
+import { useMemo } from 'react'
+import SvgColor from '@src/components/svg-color'
+import { useLocales } from '@src/locales'
+import { paths } from '@src/routes/paths'
 
 const icon = (name: string) => (
   <SvgColor src={`/assets/icons/navbar/${name}.svg`} sx={{ width: 1, height: 1 }} />
-  // OR
-  // <Iconify icon="fluent:mail-24-filled" />
-  // https://icon-sets.iconify.design/solar/
-  // https://www.streamlinehq.com/icons
-);
+)
 
 const ICONS = {
   job: icon('ic_job'),
@@ -41,17 +33,14 @@ const ICONS = {
   analytics: icon('ic_analytics'),
   dashboard: icon('ic_dashboard'),
   userGroup: icon('ic_user_group'),
-};
-
-// ----------------------------------------------------------------------
+}
 
 export function useNavData() {
-  const { t } = useLocales();
+  const { t } = useLocales()
 
   const data = useMemo(
     () => [
       // OVERVIEW
-      // ----------------------------------------------------------------------
       {
         subheader: t('overview'),
         items: [
@@ -89,7 +78,6 @@ export function useNavData() {
       },
 
       // MANAGEMENT
-      // ----------------------------------------------------------------------
       {
         subheader: t('management'),
         items: [
@@ -131,7 +119,7 @@ export function useNavData() {
       },
     ],
     [t]
-  );
+  )
 
-  return data;
+  return data
 }

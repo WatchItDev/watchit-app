@@ -1,9 +1,9 @@
-import { useEffect } from 'react';
-import Box from '@mui/material/Box';
-import { publicationId, useLazyPublications } from '@lens-protocol/react-web';
-import PublicationCommentItem from './publication-comment-item.tsx';
-import LinearProgress from '@mui/material/LinearProgress';
-import { useSelector } from 'react-redux';
+import { useEffect } from 'react'
+import { publicationId, useLazyPublications } from '@lens-protocol/react-web'
+import { useSelector } from 'react-redux'
+import Box from '@mui/material/Box'
+import LinearProgress from '@mui/material/LinearProgress'
+import PublicationCommentItem from './publication-comment-item.tsx'
 
 type Props = {
   parentCommentId: string;
@@ -11,11 +11,11 @@ type Props = {
 };
 
 const RepliesList = ({ parentCommentId }: Props) => {
-  const { data: replies, error, loading, execute } = useLazyPublications();
+  const { data: replies, error, loading, execute } = useLazyPublications()
   const { hiddenComments, refetchTriggerByPublication, pendingComments } = useSelector(
     (state: any) => state.comments
-  );
-  const refetchTrigger = refetchTriggerByPublication[parentCommentId] || 0;
+  )
+  const refetchTrigger = refetchTriggerByPublication[parentCommentId] || 0
 
   useEffect(() => {
     (async () => {
@@ -25,27 +25,27 @@ const RepliesList = ({ parentCommentId }: Props) => {
             id: publicationId(parentCommentId),
           },
         },
-      });
+      })
 
       if (result.isFailure()) {
-        console.log('Error trying to get replies');
-        return;
+        console.log('Error trying to get replies')
+        return
       }
-    })();
-  }, [refetchTrigger]);
+    })()
+  }, [refetchTrigger])
 
-  if (error) return <p>Error loading replies: {error.message}</p>;
+  if (error) return <p>Error loading replies: {error.message}</p>
 
   // Join the replies with the pending comments but append the pending comments at the beginning of the list
   const repliesWithPending = pendingComments[parentCommentId]
     ? [...pendingComments[parentCommentId], ...(replies ?? [])]
-    : replies;
+    : replies
 
   const repliesFiltered = (repliesWithPending ?? [])
     .filter(
       (comment) => !hiddenComments.some((hiddenComment: any) => hiddenComment.id === comment.id)
     )
-    .filter((comment) => !comment.isHidden);
+    .filter((comment) => !comment.isHidden)
 
   return (
     <Box sx={{ ml: 0, mb: 1 }}>
@@ -64,7 +64,7 @@ const RepliesList = ({ parentCommentId }: Props) => {
         />
       )}
       {repliesFiltered?.map((reply: any) => {
-        const { id: replyId } = reply;
+        const { id: replyId } = reply
 
         return (
           <Box key={replyId} sx={{ mb: 1 }}>
@@ -75,10 +75,10 @@ const RepliesList = ({ parentCommentId }: Props) => {
             {/* Render more levels of replies if necessary */}
             {/*<RepliesList parentCommentId={replyId} canReply={canReply} />*/}
           </Box>
-        );
+        )
       })}
     </Box>
-  );
-};
+  )
+}
 
-export default RepliesList;
+export default RepliesList

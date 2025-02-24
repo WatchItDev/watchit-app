@@ -1,11 +1,11 @@
-import Grid from '@mui/material/Grid';
-import Card from '@mui/material/Card';
-import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
-import LoadingButton from '@mui/lab/LoadingButton';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import { Button } from '@mui/material';
+import LoadingButton from '@mui/lab/LoadingButton'
+import { Button } from '@mui/material'
+import Card from '@mui/material/Card'
+import Checkbox from '@mui/material/Checkbox'
+import FormControlLabel from '@mui/material/FormControlLabel'
+import Grid from '@mui/material/Grid'
+import Stack from '@mui/material/Stack'
+import Typography from '@mui/material/Typography'
 
 export default function ReviewFinalizeForm({ onSubmit, onBack, data }: any) {
   return (
@@ -37,5 +37,5 @@ export default function ReviewFinalizeForm({ onSubmit, onBack, data }: any) {
         </LoadingButton>
       </Grid>
     </Grid>
-  );
+  )
 }

@@ -1,7 +1,5 @@
-import { sub } from 'date-fns';
+import { sub } from 'date-fns'
 // config
-import { ASSETS_API } from '@src/config-global';
-//
 import {
   _id,
   _ages,
@@ -27,7 +25,8 @@ import {
   _productNames,
   _descriptions,
   _phoneNumbers,
-} from './assets';
+} from './assets'
+import { ASSETS_API } from '@src/config-global'
 
 export const _mock = {
   id: (index: number) => _id[index],
@@ -70,4 +69,4 @@ export const _mock = {
     product: (index: number) => `${ASSETS_API}/assets/images/m_product/product_${index + 1}.jpg`,
     portrait: (index: number) => `${ASSETS_API}/assets/images/portrait/portrait_${index + 1}.jpg`,
   },
-};
+}

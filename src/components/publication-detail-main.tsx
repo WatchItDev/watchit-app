@@ -1,32 +1,15 @@
-// REACT IMPORTS
-import { useState } from 'react';
-
-// MUI IMPORTS
-import Box from '@mui/material/Box';
-import Card from '@mui/material/Card';
-import Stack from '@mui/material/Stack';
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import Divider from '@mui/material/Divider';
-import MenuItem from '@mui/material/MenuItem';
-import { useTheme, styled } from '@mui/material/styles';
-import { CircularProgress } from '@mui/material';
-import Typography from '@mui/material/Typography';
-import CardContent from '@mui/material/CardContent';
-import DialogTitle from '@mui/material/DialogTitle';
-import DialogContent from '@mui/material/DialogContent';
-import DialogActions from '@mui/material/DialogActions';
-
-// LENS IMPORTS
+import { useState } from 'react'
+import { useHidePublication } from '@lens-protocol/react'
+// @ts-ignore
+import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads'
 import {
   PublicationReactionType,
   hasReacted,
   useReactionToggle,
   useBookmarkToggle,
-} from '@lens-protocol/react-web';
-import { useHidePublication } from '@lens-protocol/react';
-
-// ICONS IMPORTS
+} from '@lens-protocol/react-web'
+import { openLoginModal } from '@redux/auth'
+import { addBookmark, removeBookmark } from '@redux/bookmark'
 import {
   IconMessageCircle,
   IconMessageCircleFilled,
@@ -36,32 +19,36 @@ import {
   IconBookmark,
   IconBookmarkFilled,
   IconRosetteDiscountCheckFilled,
-} from '@tabler/icons-react';
-
-// MOTION IMPORTS
-import { m } from 'framer-motion';
-
-// LOCAL IMPORTS
-import { paths } from '@src/routes/paths.ts';
-import { useRouter } from '@src/routes/hooks';
-import { varFade } from '@src/components/animate';
-import { LeaveTipCard } from '@src/components/leave-tip-card.tsx';
-import PostCommentList from '@src/sections/publication/publication-comments-list.tsx';
-import PublicationCommentForm from '@src/sections/publication/publication-details-comment-form.tsx';
-import { SubscribeToUnlockCard } from '@src/components/subscribe-to-unlock-card.tsx';
-import { ReportPublicationModal } from '@src/components/report-publication-modal.tsx';
-import Popover from '@mui/material/Popover';
-// @ts-ignore
-import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
-import { useNotifications } from '@src/hooks/use-notifications.ts';
-import { openLoginModal } from '@redux/auth';
-import { useDispatch, useSelector } from 'react-redux';
-import { addBookmark, removeBookmark } from '@redux/bookmark';
-import { useNotificationPayload } from '@src/hooks/use-notification-payload.ts';
-import {dicebear} from "@src/utils/dicebear.ts";
-import AvatarProfile from "@src/components/avatar/avatar.tsx";
-
-// ----------------------------------------------------------------------
+} from '@tabler/icons-react'
+import { m } from 'framer-motion'
+import { useDispatch, useSelector } from 'react-redux'
+import { CircularProgress } from '@mui/material'
+import Box from '@mui/material/Box'
+import Button from '@mui/material/Button'
+import Card from '@mui/material/Card'
+import CardContent from '@mui/material/CardContent'
+import Dialog from '@mui/material/Dialog'
+import DialogActions from '@mui/material/DialogActions'
+import DialogContent from '@mui/material/DialogContent'
+import DialogTitle from '@mui/material/DialogTitle'
+import Divider from '@mui/material/Divider'
+import MenuItem from '@mui/material/MenuItem'
+import Popover from '@mui/material/Popover'
+import Stack from '@mui/material/Stack'
+import { useTheme, styled } from '@mui/material/styles'
+import Typography from '@mui/material/Typography'
+import { varFade } from '@src/components/animate'
+import AvatarProfile from "@src/components/avatar/avatar.tsx"
+import { LeaveTipCard } from '@src/components/leave-tip-card.tsx'
+import { ReportPublicationModal } from '@src/components/report-publication-modal.tsx'
+import { SubscribeToUnlockCard } from '@src/components/subscribe-to-unlock-card.tsx'
+import { useNotificationPayload } from '@src/hooks/use-notification-payload.ts'
+import { useNotifications } from '@src/hooks/use-notifications.ts'
+import { useRouter } from '@src/routes/hooks'
+import { paths } from '@src/routes/paths.ts'
+import PostCommentList from '@src/sections/publication/publication-comments-list.tsx'
+import PublicationCommentForm from '@src/sections/publication/publication-details-comment-form.tsx'
+import {dicebear} from "@src/utils/dicebear.ts"
 
 type Props = {
   post: any;
@@ -71,8 +58,6 @@ type Props = {
   hasAccess: boolean;
 };
 
-// ----------------------------------------------------------------------
-
 export default function PublicationDetailMain({
   post,
   handleSubscribe,
@@ -81,32 +66,32 @@ export default function PublicationDetailMain({
   hasAccess,
 }: Props) {
   // STATES HOOKS
-  const [showComments, setShowComments] = useState(false);
-  const [openReportModal, setOpenReportModal] = useState(false);
-  const [openConfirmModal, setOpenConfirmModal] = useState(false);
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [showComments, setShowComments] = useState(false)
+  const [openReportModal, setOpenReportModal] = useState(false)
+  const [openConfirmModal, setOpenConfirmModal] = useState(false)
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const [hasLiked, setHasLiked] = useState(
     hasReacted({ publication: post, reaction: PublicationReactionType.Upvote })
-  );
-  const openMenu = Boolean(anchorEl);
+  )
+  const openMenu = Boolean(anchorEl)
   // LOCAL HOOKS
-  const router = useRouter();
-  const theme = useTheme();
-  const sessionData = useSelector((state: any) => state.auth.session);
-  const dispatch = useDispatch();
+  const router = useRouter()
+  const theme = useTheme()
+  const sessionData = useSelector((state: any) => state.auth.session)
+  const dispatch = useDispatch()
 
   // LENS HOOKS
-  const { execute: toggle, loading: loadingLike } = useReactionToggle();
-  const { execute: hide } = useHidePublication();
-  const { execute: toggleBookMarkFunction, loading: loadingBookMark } = useBookmarkToggle();
-  const { sendNotification } = useNotifications();
-  const { generatePayload } = useNotificationPayload(sessionData);
+  const { execute: toggle, loading: loadingLike } = useReactionToggle()
+  const { execute: hide } = useHidePublication()
+  const { execute: toggleBookMarkFunction, loading: loadingBookMark } = useBookmarkToggle()
+  const { sendNotification } = useNotifications()
+  const { generatePayload } = useNotificationPayload(sessionData)
 
   // CONSTANTS
-  const variants = theme.direction === 'rtl' ? varFade().inLeft : varFade().inRight;
+  const variants = theme.direction === 'rtl' ? varFade().inLeft : varFade().inRight
 
   const toggleReaction = async () => {
-    if (!sessionData?.authenticated) return dispatch(openLoginModal());
+    if (!sessionData?.authenticated) return dispatch(openLoginModal())
 
     // Send a notification to the profile owner using the sendNotification function from useNotifications hook
     const payloadForNotification = generatePayload(
@@ -122,7 +107,7 @@ export default function PublicationDetailMain({
         root_id: post?.id,
         post_title: post?.metadata?.title,
       }
-    );
+    )
 
     try {
       await toggle({
@@ -131,44 +116,44 @@ export default function PublicationDetailMain({
       }).then(() => {
         // Send notification to the author when not already liked
         if (!hasLiked) {
-          sendNotification(post.by.id, sessionData?.profile?.id, payloadForNotification);
+          sendNotification(post.by.id, sessionData?.profile?.id, payloadForNotification)
         }
-      });
-      setHasLiked(!hasLiked); // Toggle the UI based on the reaction state
+      })
+      setHasLiked(!hasLiked) // Toggle the UI based on the reaction state
     } catch (err) {
-      console.error('Error toggling reaction:', err);
+      console.error('Error toggling reaction:', err)
     }
-  };
+  }
 
   const toggleBookMark = async () => {
-    if (!sessionData?.authenticated) return dispatch(openLoginModal());
+    if (!sessionData?.authenticated) return dispatch(openLoginModal())
 
     try {
       if (!post?.operations?.hasBookmarked) {
-        dispatch(addBookmark(post));
+        dispatch(addBookmark(post))
       } else {
-        dispatch(removeBookmark(post?.id));
+        dispatch(removeBookmark(post?.id))
       }
 
       await toggleBookMarkFunction({
         publication: post,
-      });
+      })
     } catch (err) {
-      console.error('Error toggling bookmark:', err);
+      console.error('Error toggling bookmark:', err)
     }
-  };
+  }
 
   const handleHide = async () => {
-    await hide({ publication: post });
-  };
+    await hide({ publication: post })
+  }
 
   const goToProfile = () => {
-    if (!post?.by?.id) return;
+    if (!post?.by?.id) return
 
-    router.push(paths.dashboard.user.root(`${post?.by?.id}`));
-  };
+    router.push(paths.dashboard.user.root(`${post?.by?.id}`))
+  }
 
-  if (post.isHidden) return <p>Publication is hidden</p>;
+  if (post.isHidden) return <p>Publication is hidden</p>
 
   return (
     <Box
@@ -271,8 +256,8 @@ export default function PublicationDetailMain({
                 {post?.by?.ownedBy?.address === sessionData?.profile?.ownedBy?.address && (
                   <MenuItem
                     onClick={() => {
-                      setOpenConfirmModal(true);
-                      setAnchorEl(null);
+                      setOpenConfirmModal(true)
+                      setAnchorEl(null)
                     }}
                   >
                     Hide
@@ -280,8 +265,8 @@ export default function PublicationDetailMain({
                 )}
                 <MenuItem
                   onClick={() => {
-                    setOpenReportModal(true);
-                    setAnchorEl(null);
+                    setOpenReportModal(true)
+                    setAnchorEl(null)
                   }}
                 >
                   Report
@@ -505,8 +490,8 @@ export default function PublicationDetailMain({
                 variant="contained"
                 sx={{ backgroundColor: '#fff' }}
                 onClick={() => {
-                  handleHide();
-                  setOpenConfirmModal(false);
+                  handleHide()
+                  setOpenConfirmModal(false)
                 }}
               >
                 Confirm
@@ -523,7 +508,7 @@ export default function PublicationDetailMain({
         </CardContent>
       </Card>
     </Box>
-  );
+  )
 }
 
 const StyledBoxGradient = styled(Box)(({ theme }) => ({
@@ -540,4 +525,4 @@ const StyledBoxGradient = styled(Box)(({ theme }) => ({
     '50%': { backgroundPosition: '100% 50%' },
     '100%': { backgroundPosition: '0% 50%' },
   },
-}));
+}))

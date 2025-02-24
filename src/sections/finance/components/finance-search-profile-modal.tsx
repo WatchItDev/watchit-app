@@ -1,4 +1,6 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback } from 'react'
+import { Profile } from '@lens-protocol/api-bindings'
+import { useSearchProfiles } from '@lens-protocol/react-web'
 import {
   Box,
   Dialog,
@@ -7,20 +9,18 @@ import {
   Avatar,
   CircularProgress,
   IconButton,
-} from '@mui/material';
-import Iconify from '@src/components/iconify';
-import { Profile } from '@lens-protocol/api-bindings';
-import { useSearchProfiles } from '@lens-protocol/react-web';
-import Typography from '@mui/material/Typography';
-import Label from '@src/components/label';
-import { dialogClasses } from '@mui/material/Dialog';
-import InputBase from '@mui/material/InputBase';
-import InputAdornment from '@mui/material/InputAdornment';
-import Scrollbar from '@src/components/scrollbar/scrollbar.tsx';
-import SearchNotFound from '@src/components/search-not-found';
-import { useTheme } from '@mui/material/styles';
-import { useBoolean } from '@src/hooks/use-boolean.ts';
-import {dicebear} from "@src/utils/dicebear.ts";
+} from '@mui/material'
+import { dialogClasses } from '@mui/material/Dialog'
+import InputAdornment from '@mui/material/InputAdornment'
+import InputBase from '@mui/material/InputBase'
+import { useTheme } from '@mui/material/styles'
+import Typography from '@mui/material/Typography'
+import Iconify from '@src/components/iconify'
+import Label from '@src/components/label'
+import Scrollbar from '@src/components/scrollbar/scrollbar.tsx'
+import SearchNotFound from '@src/components/search-not-found'
+import { useBoolean } from '@src/hooks/use-boolean.ts'
+import {dicebear} from "@src/utils/dicebear.ts"
 
 interface FinanceSearchProfileModalProps {
   onSelectProfile: (profile: Profile) => void;
@@ -29,26 +29,26 @@ interface FinanceSearchProfileModalProps {
 export default function FinanceSearchProfileModal({
   onSelectProfile,
 }: FinanceSearchProfileModalProps) {
-  const open = useBoolean();
-  const [searchQuery, setSearchQuery] = useState('');
-  const theme = useTheme();
+  const open = useBoolean()
+  const [searchQuery, setSearchQuery] = useState('')
+  const theme = useTheme()
   const { data: profiles, loading } = useSearchProfiles({
     query: searchQuery,
-  });
+  })
 
   const handleSearchChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(event.target.value);
-  }, []);
+    setSearchQuery(event.target.value)
+  }, [])
 
   const handleClose = () => {
-    open.onFalse();
-    setSearchQuery('');
-  };
+    open.onFalse()
+    setSearchQuery('')
+  }
 
   const handleSelectProfile = (profile: Profile) => {
-    onSelectProfile(profile);
-    handleClose();
-  };
+    onSelectProfile(profile)
+    handleClose()
+  }
 
   const renderItems = () => {
     if (!searchQuery && !profiles?.length) {
@@ -68,7 +68,7 @@ export default function FinanceSearchProfileModal({
         >
           You can search for profiles to transfer here.
         </Typography>
-      );
+      )
     }
 
     return (
@@ -76,7 +76,7 @@ export default function FinanceSearchProfileModal({
         {profiles &&
           profiles.map((profile: Profile) => {
             const avatarSrc =
-              (profile?.metadata?.picture as any)?.optimized?.uri ?? dicebear(profile.id);
+              (profile?.metadata?.picture as any)?.optimized?.uri ?? dicebear(profile.id)
 
             return (
               <ListItemButton key={profile.id} onClick={() => handleSelectProfile(profile)}>
@@ -90,19 +90,19 @@ export default function FinanceSearchProfileModal({
                   secondary={profile.id}
                 />
               </ListItemButton>
-            );
+            )
           })}
       </>
-    );
-  };
+    )
+  }
 
   const renderButton = (
     <IconButton component={'div'} onClick={open.onTrue}>
       <Iconify icon="eva:search-fill" />
     </IconButton>
-  );
+  )
 
-  const notFound = searchQuery && !profiles?.length;
+  const notFound = searchQuery && !profiles?.length
 
   return (
     <>
@@ -154,5 +154,5 @@ export default function FinanceSearchProfileModal({
         </Scrollbar>
       </Dialog>
     </>
-  );
+  )
 }

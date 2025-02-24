@@ -1,68 +1,53 @@
-// REACT IMPORTS
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react'
+import { usePublication } from '@lens-protocol/react'
+import { appId, PublicationType, usePublications } from '@lens-protocol/react-web'
+import { openLoginModal } from '@redux/auth'
+import { IconPlayerPlay } from '@tabler/icons-react'
+import { m } from 'framer-motion'
+import { useDispatch, useSelector } from 'react-redux'
+import LoadingButton from '@mui/lab/LoadingButton'
+import Box from '@mui/material/Box'
+import Button from '@mui/material/Button'
+import Card from '@mui/material/Card'
+import CardContent from '@mui/material/CardContent'
+import Stack from '@mui/material/Stack'
+import { useTheme } from '@mui/material/styles'
+import Typography from '@mui/material/Typography'
+import { varFade } from '@src/components/animate'
+import Image from '@src/components/image'
+import { LoadingScreen } from '@src/components/loading-screen'
+import Markdown from '@src/components/markdown'
+import PublicationDetailMain from '@src/components/publication-detail-main.tsx'
+import { SubscribeProfileModal } from '@src/components/subscribe-profile-modal.tsx'
+import { GLOBAL_CONSTANTS } from '@src/config-global.ts'
+import { useHasAccess } from '@src/hooks/use-has-access.ts'
+import { useIsPolicyAuthorized } from '@src/hooks/use-is-policy-authorized.ts'
+import MoviePlayView from '@src/sections/publication/view/publication-play-view.tsx'
+import ProfileHome from '@src/sections/user/profile-home.tsx'
+import {trimPublicationContentExtraText} from "@src/utils/text-transform.ts"
 
-// MUI IMPORTS
-import Box from '@mui/material/Box';
-import Card from '@mui/material/Card';
-import Stack from '@mui/material/Stack';
-import Button from '@mui/material/Button';
-import { useTheme } from '@mui/material/styles';
-import Typography from '@mui/material/Typography';
-import CardContent from '@mui/material/CardContent';
-
-// LENS IMPORTS
-import { usePublication } from '@lens-protocol/react';
-
-// MOTION IMPORTS
-import { m } from 'framer-motion';
-
-// ICONS IMPORTS
-import { IconPlayerPlay } from '@tabler/icons-react';
-
-// LOCAL IMPORTS
-import Image from '@src/components/image';
-import Markdown from '@src/components/markdown';
-import { varFade } from '@src/components/animate';
-import ProfileHome from '@src/sections/user/profile-home.tsx';
-import { LoadingScreen } from '@src/components/loading-screen';
-import MoviePlayView from '@src/sections/publication/view/publication-play-view.tsx';
-import PublicationDetailMain from '@src/components/publication-detail-main.tsx';
-import { useHasAccess } from '@src/hooks/use-has-access.ts';
-import { SubscribeProfileModal } from '@src/components/subscribe-profile-modal.tsx';
-import LoadingButton from '@mui/lab/LoadingButton';
-import { useDispatch, useSelector } from 'react-redux';
-import { openLoginModal } from '@redux/auth';
-import { appId, PublicationType, usePublications } from '@lens-protocol/react-web';
-import {trimPublicationContentExtraText} from "@src/utils/text-transform.ts";
-import { useIsPolicyAuthorized } from '@src/hooks/use-is-policy-authorized.ts';
-import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
-
-const MAX_LINES = 5;
-
-// ----------------------------------------------------------------------
+const MAX_LINES = 5
 
 type Props = {
   id: string;
 };
 
-// ----------------------------------------------------------------------
-
 export default function PublicationDetailsView({ id }: Props) {
   // STATES HOOKS
-  const [showToggle, setShowToggle] = useState(false);
-  const [showButton, setShowButton] = useState(false);
-  const [openSubscribeModal, setOpenSubscribeModal] = useState(false);
-  const descriptionRef: any = useRef(null);
+  const [showToggle, setShowToggle] = useState(false)
+  const [showButton, setShowButton] = useState(false)
+  const [openSubscribeModal, setOpenSubscribeModal] = useState(false)
+  const descriptionRef: any = useRef(null)
   // REDUX HOOKS
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
   // LOCAL HOOKS
-  const theme = useTheme();
+  const theme = useTheme()
   // LENS HOOKS
-  const sessionData = useSelector((state: any) => state.auth.session);
-  const { data, loading }: any = usePublication({ forId: id as any });
+  const sessionData = useSelector((state: any) => state.auth.session)
+  const { data, loading }: any = usePublication({ forId: id as any })
   // CONSTANTS
-  const variants = theme.direction === 'rtl' ? varFade().inLeft : varFade().inRight;
-  const ownerAddress = data?.by?.ownedBy?.address;
+  const variants = theme.direction === 'rtl' ? varFade().inLeft : varFade().inRight
+  const ownerAddress = data?.by?.ownedBy?.address
 
   // PROTOCOL HOOKS
   const {
@@ -70,41 +55,41 @@ export default function PublicationDetailsView({ id }: Props) {
     loading: accessLoading,
     fetching: accessFetchingLoading,
     refetch: refetchAccess,
-  } = useHasAccess(ownerAddress);
-  const { isAuthorized } = useIsPolicyAuthorized(GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS, ownerAddress);
+  } = useHasAccess(ownerAddress)
+  const { isAuthorized } = useIsPolicyAuthorized(GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS, ownerAddress)
 
-  const getMediaUri = (cid: string): string => `${cid}`;
+  const getMediaUri = (cid: string): string => `${cid}`
 
   const getWallpaperCid = (): string =>
-    data?.metadata?.attachments?.find((el: any) => el?.altTag === 'wallpaper')?.image?.raw?.uri;
+    data?.metadata?.attachments?.find((el: any) => el?.altTag === 'wallpaper')?.image?.raw?.uri
 
   const getPosterCid = (): string =>
-    data?.metadata?.attachments?.find((el: any) => el?.altTag === 'poster')?.image?.raw?.uri;
+    data?.metadata?.attachments?.find((el: any) => el?.altTag === 'poster')?.image?.raw?.uri
 
   const toggleDescription = () => {
-    setShowToggle(!showToggle);
-  };
+    setShowToggle(!showToggle)
+  }
 
   const handleSubscribe = () => {
-    if (!sessionData?.authenticated) return dispatch(openLoginModal());
+    if (!sessionData?.authenticated) return dispatch(openLoginModal())
 
-    setOpenSubscribeModal(true);
-  };
+    setOpenSubscribeModal(true)
+  }
 
   // Function to handle following a profile
   const onSubscribe = async () => {
-    refetchAccess();
-  };
+    refetchAccess()
+  }
 
   useEffect(() => {
     if (descriptionRef.current) {
-      const lineHeight = parseInt(window.getComputedStyle(descriptionRef.current).lineHeight, 10);
-      const maxHeight = lineHeight * MAX_LINES;
+      const lineHeight = parseInt(window.getComputedStyle(descriptionRef.current).lineHeight, 10)
+      const maxHeight = lineHeight * MAX_LINES
       if (descriptionRef.current.scrollHeight > maxHeight) {
-        setShowButton(true);
+        setShowButton(true)
       }
     }
-  }, [descriptionRef.current, data?.metadata?.content]);
+  }, [descriptionRef.current, data?.metadata?.content])
 
   // Load publications from current user to show in More from section
   const { data: publications } = usePublications({
@@ -113,14 +98,14 @@ export default function PublicationDetailsView({ id }: Props) {
       publicationTypes: [PublicationType.Post],
       metadata: { publishedOn: [appId('watchit')] },
     },
-  });
+  })
 
   // Remove from publications the current publication
-  const filteredPublications = publications?.filter((publication) => publication.id !== id) ?? [];
+  const filteredPublications = publications?.filter((publication) => publication.id !== id) ?? []
 
   if (loading || accessLoading) return (
     <LoadingScreen />
-  );
+  )
 
   if (data.isHidden)
     return (
@@ -141,7 +126,7 @@ export default function PublicationDetailsView({ id }: Props) {
           Publication is hidden
         </Typography>
       </Box>
-    );
+    )
 
   return (
     <>
@@ -368,5 +353,5 @@ export default function PublicationDetailsView({ id }: Props) {
         profile={data?.by}
       />
     </>
-  );
+  )
 }

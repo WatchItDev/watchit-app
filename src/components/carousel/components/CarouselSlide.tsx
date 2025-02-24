@@ -1,18 +1,18 @@
-import Box from '@mui/material/Box';
-import { CarouselSlideProps } from '../types';
+import {Profile } from '@lens-protocol/api-bindings'
 // @ts-ignore
-import {Post} from "@lens-protocol/api-bindings/dist/declarations/src/lens/graphql/generated";
-import {Profile } from '@lens-protocol/api-bindings';
-import {createIndexForElement} from "@src/utils/text-transform.ts";
+import {Post} from "@lens-protocol/api-bindings/dist/declarations/src/lens/graphql/generated"
+import Box from '@mui/material/Box'
+import { CarouselSlideProps } from '../types'
+import {createIndexForElement} from "@src/utils/text-transform.ts"
 export default function CarouselSlide( props: Readonly<CarouselSlideProps<Profile | Post>>) {
   const {
       items,
       itemsPerRow,
       renderItem,
-  } = props;
-  const row1 = items.slice(0, itemsPerRow);
-  const row2 = items.slice(itemsPerRow, itemsPerRow * 2);
-  const itemWidthPercent = 100 / itemsPerRow;
+  } = props
+  const row1 = items.slice(0, itemsPerRow)
+  const row2 = items.slice(itemsPerRow, itemsPerRow * 2)
+  const itemWidthPercent = 100 / itemsPerRow
 
   return (
     <Box>
@@ -33,5 +33,5 @@ export default function CarouselSlide( props: Readonly<CarouselSlideProps<Profil
         </Box>
       ))}
     </Box>
-  );
+  )
 }

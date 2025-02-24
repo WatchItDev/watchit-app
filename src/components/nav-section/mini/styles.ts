@@ -1,12 +1,8 @@
-// @mui
-import { styled } from '@mui/material/styles';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemButton from '@mui/material/ListItemButton';
-import Box from '@mui/material/Box';
-//
-import { NavItemProps, NavConfigProps } from '../types';
-
-// ----------------------------------------------------------------------
+import Box from '@mui/material/Box'
+import ListItemButton from '@mui/material/ListItemButton'
+import ListItemIcon from '@mui/material/ListItemIcon'
+import { styled } from '@mui/material/styles'
+import { NavItemProps, NavConfigProps } from '../types'
 
 type StyledItemProps = Omit<NavItemProps, 'item'> & {
   config: NavConfigProps;
@@ -16,7 +12,7 @@ type StyledItemProps = Omit<NavItemProps, 'item'> & {
 export const StyledItem = styled(ListItemButton, {
   shouldForwardProp: (prop) => prop !== 'active' && prop !== 'bgColor',
 })<StyledItemProps>(({ active, depth, config, theme, bgColor }) => {
-  const subItem = depth !== 1;
+  const subItem = depth !== 1
 
   const activeStyles = {
     root: {
@@ -29,7 +25,7 @@ export const StyledItem = styled(ListItemButton, {
         backgroundColor: theme.palette.action.hover,
       },
     },
-  };
+  }
 
   return {
     // Root item
@@ -72,10 +68,8 @@ export const StyledItem = styled(ListItemButton, {
         ...activeStyles.sub,
       }),
     }),
-  };
-});
-
-// ----------------------------------------------------------------------
+  }
+})
 
 type StyledNavContentProps = {
   active?: boolean;
@@ -92,9 +86,7 @@ export const StyledNavContent = styled(Box, {
   margin: '0 0 0 0.1rem',
   backgroundColor: active ? theme.palette.primary.main : '#313339',
   borderRadius: active ? '0.75rem' : '50%',
-}));
-
-// ----------------------------------------------------------------------
+}))
 
 type StyledIconProps = {
   size?: number;
@@ -104,4 +96,4 @@ export const StyledIcon = styled(ListItemIcon)<StyledIconProps>(({ size }) => ({
   width: size,
   height: size,
   marginRight: 0,
-}));
+}))

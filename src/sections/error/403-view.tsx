@@ -1,14 +1,9 @@
-import { m } from 'framer-motion';
-// @mui
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-// assets
-import { ForbiddenIllustration } from '@src/assets/illustrations';
-// components
-import { RouterLink } from '@src/routes/components';
-import { MotionContainer, varBounce } from '@src/components/animate';
-
-// ----------------------------------------------------------------------
+import { m } from 'framer-motion'
+import Button from '@mui/material/Button'
+import Typography from '@mui/material/Typography'
+import { ForbiddenIllustration } from '@src/assets/illustrations'
+import { MotionContainer, varBounce } from '@src/components/animate'
+import { RouterLink } from '@src/routes/components'
 
 export default function View403() {
   return (
@@ -35,5 +30,5 @@ export default function View403() {
         Go to Home
       </Button>
     </MotionContainer>
-  );
+  )
 }

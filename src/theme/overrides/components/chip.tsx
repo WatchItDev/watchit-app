@@ -1,9 +1,7 @@
-import { alpha, Theme } from '@mui/material/styles';
-import { ChipProps, chipClasses } from '@mui/material/Chip';
+import { ChipProps, chipClasses } from '@mui/material/Chip'
+import { alpha, Theme } from '@mui/material/styles'
 
-// ----------------------------------------------------------------------
-
-const COLORS = ['primary', 'secondary', 'info', 'success', 'warning', 'error'] as const;
+const COLORS = ['primary', 'secondary', 'info', 'success', 'warning', 'error'] as const
 
 // NEW VARIANT
 declare module '@mui/material/Chip' {
@@ -12,19 +10,17 @@ declare module '@mui/material/Chip' {
   }
 }
 
-// ----------------------------------------------------------------------
-
 export function chip(theme: Theme) {
-  const lightMode = theme.palette.mode === 'light';
+  const lightMode = theme.palette.mode === 'light'
 
   const rootStyles = (ownerState: ChipProps) => {
-    const defaultColor = ownerState.color === 'default';
+    const defaultColor = ownerState.color === 'default'
 
-    const filledVariant = ownerState.variant === 'filled';
+    const filledVariant = ownerState.variant === 'filled'
 
-    const outlinedVariant = ownerState.variant === 'outlined';
+    const outlinedVariant = ownerState.variant === 'outlined'
 
-    const softVariant = ownerState.variant === 'soft';
+    const softVariant = ownerState.variant === 'soft'
 
     const defaultStyle = {
       [`& .${chipClasses.deleteIcon}`]: {
@@ -64,7 +60,7 @@ export function chip(theme: Theme) {
           },
         }),
       }),
-    };
+    }
 
     const colorStyle = COLORS.map((color) => ({
       ...(ownerState.color === color && {
@@ -81,7 +77,7 @@ export function chip(theme: Theme) {
           },
         }),
       }),
-    }));
+    }))
 
     const disabledState = {
       [`&.${chipClasses.disabled}`]: {
@@ -107,7 +103,7 @@ export function chip(theme: Theme) {
           backgroundColor: theme.palette.action.disabledBackground,
         }),
       },
-    };
+    }
 
     return [
       defaultStyle,
@@ -117,8 +113,8 @@ export function chip(theme: Theme) {
         fontWeight: 500,
         borderRadius: theme.shape.borderRadius,
       },
-    ];
-  };
+    ]
+  }
 
   return {
     MuiChip: {
@@ -126,5 +122,5 @@ export function chip(theme: Theme) {
         root: ({ ownerState }: { ownerState: ChipProps }) => rootStyles(ownerState),
       },
     },
-  };
+  }
 }

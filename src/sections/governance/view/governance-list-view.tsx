@@ -1,56 +1,49 @@
-import { useCallback, useState } from 'react';
-// @mui
-import Stack from '@mui/material/Stack';
-import Button from '@mui/material/Button';
-import Container from '@mui/material/Container';
-import Typography from '@mui/material/Typography';
-import IconButton from '@mui/material/IconButton';
-import Grid from '@mui/material/Grid';
-import Card from '@mui/material/Card';
-import Box from '@mui/material/Box';
-import CardContent from '@mui/material/CardContent';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-// routes
-import { paths } from '@src/routes/paths';
-import { RouterLink } from '@src/routes/components';
-// hooks
-import { useDebounce } from '@src/hooks/use-debounce';
-import { useResponsive } from '@src/hooks/use-responsive';
-// components
-import Iconify from '@src/components/iconify';
-import { useSettingsContext } from '@src/components/settings';
-import SvgColor from '@src/components/svg-color';
-import GovernanceSearch from '../governance-search';
-import GovernanceListHorizontal from '../governance-list-horizontal';
-import Label from '../../../components/label';
-import Header from '../../../layouts/dashboard/header';
-import { useRouter } from '@src/routes/hooks';
-import { ProposalsMockList } from '../governance-mock';
-// import { useSearchPosts } from '../../../api/blog';
-
-// ----------------------------------------------------------------------
+import { useCallback, useState } from 'react'
+import Box from '@mui/material/Box'
+import Button from '@mui/material/Button'
+import Card from '@mui/material/Card'
+import CardContent from '@mui/material/CardContent'
+import Container from '@mui/material/Container'
+import Grid from '@mui/material/Grid'
+import IconButton from '@mui/material/IconButton'
+import Stack from '@mui/material/Stack'
+import Tab from '@mui/material/Tab'
+import Tabs from '@mui/material/Tabs'
+import Typography from '@mui/material/Typography'
+import Label from '../../../components/label'
+import Header from '../../../layouts/dashboard/header'
+import GovernanceListHorizontal from '../governance-list-horizontal'
+import { ProposalsMockList } from '../governance-mock'
+import GovernanceSearch from '../governance-search'
+import Iconify from '@src/components/iconify'
+import { useSettingsContext } from '@src/components/settings'
+import SvgColor from '@src/components/svg-color'
+import { useDebounce } from '@src/hooks/use-debounce'
+import { useResponsive } from '@src/hooks/use-responsive'
+import { RouterLink } from '@src/routes/components'
+import { useRouter } from '@src/routes/hooks'
+import { paths } from '@src/routes/paths'
 
 export default function GovernanceListView() {
-  const settings = useSettingsContext();
+  const settings = useSettingsContext()
 
-  const router = useRouter();
+  const router = useRouter()
 
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState('')
 
-  const debouncedQuery = useDebounce(searchQuery);
+  const debouncedQuery = useDebounce(searchQuery)
 
   // const { searchResults, searchLoading } = useSearchPosts(debouncedQuery);
 
-  const mdUp = useResponsive('up', 'md');
+  const mdUp = useResponsive('up', 'md')
 
   const handleSearch = useCallback((inputValue: string) => {
-    setSearchQuery(inputValue);
-  }, []);
+    setSearchQuery(inputValue)
+  }, [])
 
   const handleBack = () => {
-    router.push(paths.dashboard.root);
-  };
+    router.push(paths.dashboard.root)
+  }
 
   const governanceSteps = [
     {
@@ -68,13 +61,13 @@ export default function GovernanceListView() {
       title: 'Voting Process',
       description: `After the discussion, the proposal moves to a vote. Token holders cast their votes based on the number of MMC tokens they hold. The voting process is transparent and secure, conducted through smart contracts to ensure fairness. If the majority approves the proposal, it is automatically implemented on the blockchain, making it an official part of the protocol.`,
     },
-  ];
+  ]
 
-  const [selectedTab, setSelectedTab] = useState(0);
+  const [selectedTab, setSelectedTab] = useState(0)
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
-    setSelectedTab(newValue);
-  };
+    setSelectedTab(newValue)
+  }
 
   return (
     <>
@@ -184,11 +177,11 @@ export default function GovernanceListView() {
         </Grid>
       </Container>
     </>
-  );
+  )
 }
 
 // import { useCallback, useState } from 'react';
-// // @mui
+//
 // import Stack from '@mui/material/Stack';
 // import button from '@mui/material/button';
 // import Container from '@mui/material/Container';

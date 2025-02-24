@@ -1,20 +1,15 @@
-// REACT IMPORTS
-import { useState } from 'react';
-
-// MUI IMPORTS
-import Dialog from '@mui/material/Dialog';
-import Button from '@mui/material/Button';
-import Select from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
-import TextField from '@mui/material/TextField';
-import { CircularProgress } from '@mui/material';
-import InputLabel from '@mui/material/InputLabel';
-import FormControl from '@mui/material/FormControl';
-import DialogTitle from '@mui/material/DialogTitle';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-
-// ----------------------------------------------------------------------
+import { useState } from 'react'
+import { CircularProgress } from '@mui/material'
+import Button from '@mui/material/Button'
+import Dialog from '@mui/material/Dialog'
+import DialogActions from '@mui/material/DialogActions'
+import DialogContent from '@mui/material/DialogContent'
+import DialogTitle from '@mui/material/DialogTitle'
+import FormControl from '@mui/material/FormControl'
+import InputLabel from '@mui/material/InputLabel'
+import MenuItem from '@mui/material/MenuItem'
+import Select from '@mui/material/Select'
+import TextField from '@mui/material/TextField'
 
 type ReportModalBaseProps = {
   title: string;
@@ -27,8 +22,6 @@ type ReportModalBaseProps = {
   onClose: () => void;
 };
 
-// ----------------------------------------------------------------------
-
 export const ReportModalBase = ({
   title,
   reasons,
@@ -36,27 +29,27 @@ export const ReportModalBase = ({
   isOpen,
   onClose,
 }: ReportModalBaseProps) => {
-  const [additionalComments, setAdditionalComments] = useState('');
-  const [reportReason, setReportReason] = useState<string | ''>('');
-  const [loading, setLoading] = useState(false);
+  const [additionalComments, setAdditionalComments] = useState('')
+  const [reportReason, setReportReason] = useState<string | ''>('')
+  const [loading, setLoading] = useState(false)
 
   const handleReportSubmit = async () => {
     if (!reportReason) {
-      alert('Please select a reason for reporting.');
-      return;
+      alert('Please select a reason for reporting.')
+      return
     }
-    setLoading(true);
-    const result = await onSubmit(reportReason, additionalComments);
-    setLoading(false);
+    setLoading(true)
+    const result = await onSubmit(reportReason, additionalComments)
+    setLoading(false)
 
     if (result.isSuccess()) {
-      onClose();
-      setReportReason('');
-      setAdditionalComments('');
+      onClose()
+      setReportReason('')
+      setAdditionalComments('')
     } else {
-      alert(`Error reporting ${title.toLowerCase()}: ${result.error?.message}`);
+      alert(`Error reporting ${title.toLowerCase()}: ${result.error?.message}`)
     }
-  };
+  }
 
   return (
     <Dialog open={isOpen} onClose={onClose} fullWidth maxWidth="sm">
@@ -106,5 +99,5 @@ export const ReportModalBase = ({
         </Button>
       </DialogActions>
     </Dialog>
-  );
-};
+  )
+}

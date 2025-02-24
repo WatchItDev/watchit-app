@@ -1,9 +1,6 @@
-import { Theme } from '@mui/material/styles';
-import { BadgeProps, badgeClasses } from '@mui/material/Badge';
+import { BadgeProps, badgeClasses } from '@mui/material/Badge'
+import { Theme } from '@mui/material/styles'
 
-// ----------------------------------------------------------------------
-
-// NEW VARIANT
 declare module '@mui/material/Badge' {
   interface BadgePropsVariantOverrides {
     alway: true;
@@ -22,15 +19,15 @@ export function badge(theme: Theme) {
           borderRadius: '50%',
         },
         root: ({ ownerState }: { ownerState: BadgeProps }) => {
-          const alway = ownerState.variant === 'alway';
+          const alway = ownerState.variant === 'alway'
 
-          const online = ownerState.variant === 'online';
+          const online = ownerState.variant === 'online'
 
-          const busy = ownerState.variant === 'busy';
+          const busy = ownerState.variant === 'busy'
 
-          const offline = ownerState.variant === 'offline';
+          const offline = ownerState.variant === 'offline'
 
-          const invisible = ownerState.variant === 'invisible';
+          const invisible = ownerState.variant === 'invisible'
 
           const baseStyles = {
             [`&.${badgeClasses.invisible}`]: {
@@ -46,7 +43,7 @@ export function badge(theme: Theme) {
               borderRadius: 1,
               backgroundColor: theme.palette.common.white,
             },
-          };
+          }
 
           return {
             ...(online && {
@@ -94,9 +91,9 @@ export function badge(theme: Theme) {
                 display: 'none',
               },
             }),
-          };
+          }
         },
       },
     },
-  };
+  }
 }

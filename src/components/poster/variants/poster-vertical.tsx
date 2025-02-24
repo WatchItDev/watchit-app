@@ -1,37 +1,32 @@
-// @mui
-import { alpha } from '@mui/material/styles';
-import Paper from '@mui/material/Paper';
-import Box from '@mui/material/Box';
-import CardContent from '@mui/material/CardContent';
-import Typography from '@mui/material/Typography';
-import Stack from '@mui/material/Stack';
-
-// components
-import { bgGradient } from '@src/theme/css';
-import Image from '@src/components/image';
-import { IconHeartFilled, IconStarFilled } from '@tabler/icons-react';
-import { Poster } from '../types';
-import { useRouter } from '@src/routes/hooks';
-import { paths } from '@src/routes/paths.ts';
-
-// ----------------------------------------------------------------------
+import { IconHeartFilled, IconStarFilled } from '@tabler/icons-react'
+import Box from '@mui/material/Box'
+import CardContent from '@mui/material/CardContent'
+import Paper from '@mui/material/Paper'
+import Stack from '@mui/material/Stack'
+import { alpha } from '@mui/material/styles'
+import Typography from '@mui/material/Typography'
+import { Poster } from '../types'
+import Image from '@src/components/image'
+import { useRouter } from '@src/routes/hooks'
+import { paths } from '@src/routes/paths.ts'
+import { bgGradient } from '@src/theme/css'
 
 const PosterVertical = ({ id, title, images, rating, year, likes, price, genre }: Poster) => {
-  const router = useRouter();
+  const router = useRouter()
 
   const handlePosterClick = () => {
-    router.push(paths.dashboard.publication.details(id));
-  };
+    router.push(paths.dashboard.publication.details(id))
+  }
 
   const formatLikes = (totalLikes: number) => {
     if (totalLikes >= 1000000) {
-      return `${(totalLikes / 1000000).toFixed(1)}M`;
+      return `${(totalLikes / 1000000).toFixed(1)}M`
     }
     if (totalLikes >= 1000) {
-      return `${(totalLikes / 1000).toFixed(1)}K`;
+      return `${(totalLikes / 1000).toFixed(1)}K`
     }
-    return totalLikes;
-  };
+    return totalLikes
+  }
 
   return (
     <Paper
@@ -181,7 +176,7 @@ const PosterVertical = ({ id, title, images, rating, year, likes, price, genre }
         </Stack>
       </CardContent>
     </Paper>
-  );
-};
+  )
+}
 
-export default PosterVertical;
+export default PosterVertical

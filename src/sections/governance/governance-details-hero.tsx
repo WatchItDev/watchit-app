@@ -1,29 +1,21 @@
-// @mui
-import { alpha, useTheme } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
-import Container from '@mui/material/Container';
-import SpeedDial from '@mui/material/SpeedDial';
-import Typography from '@mui/material/Typography';
-import ListItemText from '@mui/material/ListItemText';
-// hooks
-import { useResponsive } from '@src/hooks/use-responsive';
-// utils
-import { fDate } from '@src/utils/format-time';
-// theme
-import { bgGradient } from '@src/theme/css';
-// components
-import Iconify from '@src/components/iconify';
-// types
-import { IPostHero } from '@src/types/blog';
-import AvatarProfile from "@src/components/avatar/avatar.tsx";
-
-// ----------------------------------------------------------------------
+import Box from '@mui/material/Box'
+import Container from '@mui/material/Container'
+import ListItemText from '@mui/material/ListItemText'
+import SpeedDial from '@mui/material/SpeedDial'
+import Stack from '@mui/material/Stack'
+import { alpha, useTheme } from '@mui/material/styles'
+import Typography from '@mui/material/Typography'
+import AvatarProfile from "@src/components/avatar/avatar.tsx"
+import Iconify from '@src/components/iconify'
+import { useResponsive } from '@src/hooks/use-responsive'
+import { bgGradient } from '@src/theme/css'
+import { IPostHero } from '@src/types/blog'
+import { fDate } from '@src/utils/format-time'
 
 export default function GovernanceDetailsHero({ title, author, coverUrl, createdAt }: IPostHero) {
-  const theme = useTheme();
+  const theme = useTheme()
 
-  const smUp = useResponsive('up', 'sm');
+  const smUp = useResponsive('up', 'sm')
 
   return (
     <Box
@@ -102,5 +94,5 @@ export default function GovernanceDetailsHero({ title, author, coverUrl, created
         </Stack>
       </Container>
     </Box>
-  );
+  )
 }

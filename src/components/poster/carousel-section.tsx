@@ -1,12 +1,7 @@
-// REACT IMPORTS
-import React, { FC, PropsWithChildren } from 'react';
-
-// MUI IMPORTS
-import CardHeader from '@mui/material/CardHeader';
-import CardContent from '@mui/material/CardContent';
-import Card from '@mui/material/Card';
-
-// ----------------------------------------------------------------------
+import React, { FC, PropsWithChildren } from 'react'
+import Card from '@mui/material/Card'
+import CardContent from '@mui/material/CardContent'
+import CardHeader from '@mui/material/CardHeader'
 
 type CarouselSectionProps = {
   action?: React.ReactNode;
@@ -31,4 +26,4 @@ export const CarouselSection: FC<PropsWithChildren<CarouselSectionProps>> = ({
       {children}
     </CardContent>
   </Card>
-);
+)

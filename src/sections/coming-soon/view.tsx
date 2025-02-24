@@ -1,15 +1,10 @@
-// @mui
-import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
-// hooks
-import { useCountdownDate } from '@src/hooks/use-countdown';
-// assets
-import { ComingSoonIllustration } from '@src/assets/illustrations';
-import HeaderContent from '@src/layouts/dashboard/header-content.tsx';
-import Header from '@src/layouts/dashboard/header.tsx';
-
-// ----------------------------------------------------------------------
+import Box from '@mui/material/Box'
+import Stack from '@mui/material/Stack'
+import Typography from '@mui/material/Typography'
+import { ComingSoonIllustration } from '@src/assets/illustrations'
+import { useCountdownDate } from '@src/hooks/use-countdown'
+import HeaderContent from '@src/layouts/dashboard/header-content.tsx'
+import Header from '@src/layouts/dashboard/header.tsx'
 
 interface props {
   deadline?: string;
@@ -24,7 +19,7 @@ export const ComingSoonView = ({
   title = 'New Features Coming Soon!',
   content = 'We’re working hard to bring this section to life. Check back soon!',
 }: props) => {
-  const { days, hours, minutes, seconds } = useCountdownDate(new Date(deadline));
+  const { days, hours, minutes, seconds } = useCountdownDate(new Date(deadline))
 
   return (
     <>
@@ -67,10 +62,8 @@ export const ComingSoonView = ({
         </Stack>
       )}
     </>
-  );
-};
-
-// ----------------------------------------------------------------------
+  )
+}
 
 type TimeBlockProps = {
   label: string;
@@ -83,7 +76,7 @@ function TimeBlock({ label, value }: TimeBlockProps) {
       <Box> {value} </Box>
       <Box sx={{ color: 'text.secondary', typography: 'body1' }}>{label}</Box>
     </div>
-  );
+  )
 }
 
-export default ComingSoonView;
+export default ComingSoonView

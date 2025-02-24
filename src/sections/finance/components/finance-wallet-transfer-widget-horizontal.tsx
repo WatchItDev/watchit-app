@@ -1,11 +1,8 @@
-import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
-import CircularProgress from '@mui/material/CircularProgress';
-// components
-import Iconify from '@src/components/iconify';
-
-// ----------------------------------------------------------------------
+import Box from '@mui/material/Box'
+import CircularProgress from '@mui/material/CircularProgress'
+import Stack from '@mui/material/Stack'
+import Typography from '@mui/material/Typography'
+import Iconify from '@src/components/iconify'
 
 type Props = {
   icon: string;
@@ -50,5 +47,5 @@ export default function FinanceWalletTransferWidgetHorizontal({
         <Typography variant="subtitle2">{value} MMC</Typography>
       </Stack>
     </Stack>
-  );
+  )
 }

@@ -1,16 +1,13 @@
-// LOCAL IMPORTS
-import { UserProfileView } from '@src/sections/user/view';
-import { useParams } from '@src/routes/hooks';
-import Header from '@src/layouts/dashboard/header.tsx';
-import HeaderContent from '@src/layouts/dashboard/header-content.tsx';
-import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
-import { OgMetaTags } from '@src/components/og-meta-tags.tsx';
-
-// ----------------------------------------------------------------------
+import { OgMetaTags } from '@src/components/og-meta-tags.tsx'
+import { GLOBAL_CONSTANTS } from '@src/config-global.ts'
+import HeaderContent from '@src/layouts/dashboard/header-content.tsx'
+import Header from '@src/layouts/dashboard/header.tsx'
+import { useParams } from '@src/routes/hooks'
+import { UserProfileView } from '@src/sections/user/view'
 
 export default function UserProfilePage() {
-  const params = useParams();
-  const { id } = params;
+  const params = useParams()
+  const { id } = params
 
   return (
     <OgMetaTags
@@ -24,5 +21,5 @@ export default function UserProfilePage() {
 
       <UserProfileView id={id} />
     </OgMetaTags>
-  );
+  )
 }

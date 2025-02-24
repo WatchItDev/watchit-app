@@ -1,15 +1,9 @@
-import { m } from 'framer-motion';
-// @mui
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-// routes
-import { RouterLink } from '@src/routes/components';
-// components
-import { MotionContainer, varBounce } from '@src/components/animate';
-// assets
-import { PageNotFoundIllustration } from '@src/assets/illustrations';
-
-// ----------------------------------------------------------------------
+import { m } from 'framer-motion'
+import Button from '@mui/material/Button'
+import Typography from '@mui/material/Typography'
+import { PageNotFoundIllustration } from '@src/assets/illustrations'
+import { MotionContainer, varBounce } from '@src/components/animate'
+import { RouterLink } from '@src/routes/components'
 
 export default function NotFoundView() {
   return (
@@ -40,5 +34,5 @@ export default function NotFoundView() {
         Go to Home
       </Button>
     </MotionContainer>
-  );
+  )
 }

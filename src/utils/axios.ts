@@ -1,29 +1,23 @@
-import axios, { AxiosRequestConfig } from 'axios';
+import axios, { AxiosRequestConfig } from 'axios'
 // config
-import { HOST_API } from '@src/config-global';
+import { HOST_API } from '@src/config-global'
 
-// ----------------------------------------------------------------------
-
-const axiosInstance = axios.create({ baseURL: HOST_API });
+const axiosInstance = axios.create({ baseURL: HOST_API })
 
 axiosInstance.interceptors.response.use(
   (res) => res,
   (error) => Promise.reject((error.response && error.response.data) || 'Something went wrong')
-);
+)
 
-export default axiosInstance;
-
-// ----------------------------------------------------------------------
+export default axiosInstance
 
 export const fetcher = async (args: string | [string, AxiosRequestConfig]) => {
-  const [url, config] = Array.isArray(args) ? args : [args];
+  const [url, config] = Array.isArray(args) ? args : [args]
 
-  const res = await axiosInstance.get(url, { ...config });
+  const res = await axiosInstance.get(url, { ...config })
 
-  return res.data;
-};
-
-// ----------------------------------------------------------------------
+  return res.data
+}
 
 export const endpoints = {
   chat: '/api/chat',
@@ -50,4 +44,4 @@ export const endpoints = {
     details: '/api/product/details',
     search: '/api/product/search',
   },
-};
+}

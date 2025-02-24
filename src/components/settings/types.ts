@@ -1,4 +1,3 @@
-// ----------------------------------------------------------------------
 
 export type SettingsValueProps = {
   themeStretch: boolean;

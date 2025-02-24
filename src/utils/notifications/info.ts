@@ -28,4 +28,4 @@ export const INFO_MESSAGES: Record<INFO, string> = {
   [INFO.DEPOSIT_WAITING_CONFIRMATION]:
     'Deposit transaction broadcasted. Waiting for confirmation (2/2)...',
   [INFO.REGISTER_OWNERSHIP_PROGRESS]: 'Processing asset {index} of {total}',
-};
+}

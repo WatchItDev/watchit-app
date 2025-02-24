@@ -1,11 +1,7 @@
-// @mui
-import { styled } from '@mui/material/styles';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemButton from '@mui/material/ListItemButton';
-//
-import { NavItemProps, NavConfigProps } from '../types';
-
-// ----------------------------------------------------------------------
+import ListItemButton from '@mui/material/ListItemButton'
+import ListItemIcon from '@mui/material/ListItemIcon'
+import { styled } from '@mui/material/styles'
+import { NavItemProps, NavConfigProps } from '../types'
 
 type StyledItemProps = Omit<NavItemProps, 'item'> & {
   config: NavConfigProps;
@@ -14,12 +10,12 @@ type StyledItemProps = Omit<NavItemProps, 'item'> & {
 export const StyledItem = styled(ListItemButton, {
   shouldForwardProp: (prop) => prop !== 'active',
 })<StyledItemProps>(({ active, open, depth, config, theme }) => {
-  const subItem = depth !== 1;
+  const subItem = depth !== 1
 
   const activeStyles = {
     color: theme.palette.text.primary,
     backgroundColor: theme.palette.action.selected,
-  };
+  }
 
   return {
     // Root item
@@ -48,10 +44,8 @@ export const StyledItem = styled(ListItemButton, {
         color: theme.palette.text.primary,
         backgroundColor: theme.palette.action.hover,
       }),
-  };
-});
-
-// ----------------------------------------------------------------------
+  }
+})
 
 type StyledIconProps = {
   size?: number;
@@ -62,4 +56,4 @@ export const StyledIcon = styled(ListItemIcon)<StyledIconProps>(({ size }) => ({
   height: size,
   flexShrink: 0,
   marginRight: 0,
-}));
+}))

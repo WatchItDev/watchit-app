@@ -7,9 +7,8 @@ export const pascalToUpperSnake = (str: string): string => {
   return str
     .replace(/([A-Z])/g, '_$1') // Inserts an underscore before each uppercase letter
     .toUpperCase() // Converts everything to uppercase
-    .replace(/^_/, ''); // Removes the initial underscore if it exists
-};
-
+    .replace(/^_/, '') // Removes the initial underscore if it exists
+}
 
 /**
  * An array of strings containing various special character patterns and names.
@@ -39,8 +38,7 @@ const specialChars = [
   '?—',
   '.—',
   '{}',
-];
-
+]
 
 /**
  * A regular expression pattern used for matching and validating email addresses.
@@ -57,8 +55,7 @@ const specialChars = [
  * - The "g" flag enables global matching, allowing multiple occurrences
  *   of email addresses to be matched in a single string.
  */
-const emailRegex = /\b[a-zA-Z0-9][a-zA-Z0-9._%+-]*@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}\b/g;
-
+const emailRegex = /\b[a-zA-Z0-9][a-zA-Z0-9._%+-]*@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}\b/g
 
 /**
  * Removes special characters from the given text string and returns the cleaned string.
@@ -69,9 +66,9 @@ const emailRegex = /\b[a-zA-Z0-9][a-zA-Z0-9._%+-]*@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{
 function removeSpecialChars(text: string): string {
   // Loop through the special characters and replace them with spaces
   for (const char of specialChars) {
-    text = text.replace(char, '').trim();
+    text = text.replace(char, '').trim()
   }
-  return text;
+  return text
 }
 
 /**
@@ -81,7 +78,7 @@ function removeSpecialChars(text: string): string {
  * @return {boolean} Returns `true` if the text contains a valid email address, otherwise `false`.
  */
 function detectEmail(text: string): boolean {
-  return emailRegex.test(text);
+  return emailRegex.test(text)
 }
 
 /**
@@ -91,7 +88,7 @@ function detectEmail(text: string): boolean {
  * @return {string} The modified string with the email address removed and trimmed of extra spaces.
  */
 function removeEmail(text: string): string {
-  return text.replace(emailRegex, '').trim();
+  return text.replace(emailRegex, '').trim()
 }
 
 /**
@@ -102,24 +99,24 @@ function removeEmail(text: string): string {
  * @returns {string} The processed and cleaned text after applying trimming rules.
  */
 export const trimPublicationContentExtraText = (text: string): string => {
-  const hasEmail = detectEmail(text);
+  const hasEmail = detectEmail(text)
 
   if (hasEmail) {
-    text = removeEmail(text);
+    text = removeEmail(text)
   }
 
-  let cleanedText = removeSpecialChars(text);
+  let cleanedText = removeSpecialChars(text)
 
   // Verify if the last character is a period, if not, add one
   if (!cleanedText.endsWith('.')) {
-    cleanedText += '.';
+    cleanedText += '.'
   }
 
-  return `${cleanedText}`;
-};
+  return `${cleanedText}`
+}
 
 export const createIndexForElement = (): string => {
-  const array = new Uint8Array(8);
-  window.crypto.getRandomValues(array);
-  return Array.from(array, byte => byte.toString(16).padStart(2, '0')).join('');
-};
+  const array = new Uint8Array(8)
+  window.crypto.getRandomValues(array)
+  return Array.from(array, byte => byte.toString(16).padStart(2, '0')).join('')
+}

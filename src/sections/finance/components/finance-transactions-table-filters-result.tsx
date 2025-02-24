@@ -1,16 +1,10 @@
-// @mui
-import Box from '@mui/material/Box';
-import Chip from '@mui/material/Chip';
-import Paper from '@mui/material/Paper';
-import Button from '@mui/material/Button';
-import Stack, { StackProps } from '@mui/material/Stack';
-// types
-import { IOrderTableFilters, IOrderTableFilterValue } from '@src/types/transaction';
-// components
-import Iconify from '@src/components/iconify';
-
-// ----------------------------------------------------------------------
-
+import Box from '@mui/material/Box'
+import Button from '@mui/material/Button'
+import Chip from '@mui/material/Chip'
+import Paper from '@mui/material/Paper'
+import Stack, { StackProps } from '@mui/material/Stack'
+import Iconify from '@src/components/iconify'
+import { IOrderTableFilters, IOrderTableFilterValue } from '@src/types/transaction'
 type Props = StackProps & {
   filters: IOrderTableFilters;
   onFilters: (name: string, value: IOrderTableFilterValue) => void;
@@ -30,8 +24,8 @@ export default function FinanceTransactionsTableFiltersResult({
   ...other
 }: Props) {
   const handleRemoveStatus = () => {
-    onFilters('status', 'all');
-  };
+    onFilters('status', 'all')
+  }
 
   return (
     <Stack spacing={1.5} {...other}>
@@ -62,17 +56,15 @@ export default function FinanceTransactionsTableFiltersResult({
         </Button>
       </Stack>
     </Stack>
-  );
+  )
 }
 
 const parseFilterLabel = (type: string): string => {
-  if (type === 'all') return 'All';
-  if (type === 'transferTo') return 'Incomes';
-  if (type === 'transferFrom') return 'Outcomes';
-  return type;
-};
-
-// ----------------------------------------------------------------------
+  if (type === 'all') return 'All'
+  if (type === 'transferTo') return 'Incomes'
+  if (type === 'transferFrom') return 'Outcomes'
+  return type
+}
 
 type BlockProps = StackProps & {
   label: string;
@@ -102,5 +94,5 @@ function Block({ label, children, sx, ...other }: BlockProps) {
         {children}
       </Stack>
     </Stack>
-  );
+  )
 }

@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback } from 'react'
 
 /**
  * Interface representing each attachment in the metadata.
@@ -46,8 +46,8 @@ export interface UseMetadataReturn {
  *  - getMetadata: An asynchronous function to fetch the metadata.
  */
 const useMetadata = (): UseMetadataReturn => {
-  const [metadata, setMetadata] = useState<Metadata | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [metadata, setMetadata] = useState<Metadata | null>(null)
+  const [loading, setLoading] = useState<boolean>(false)
 
   /**
    * Asynchronous function to fetch metadata using the provided CID.
@@ -57,27 +57,27 @@ const useMetadata = (): UseMetadataReturn => {
    * @throws Will throw an error if the fetch operation fails.
    */
   const getMetadata = useCallback(async (cid: string): Promise<Metadata> => {
-    setLoading(true);
+    setLoading(true)
     try {
-      const response = await fetch(`https://g.watchit.movie/metadata/${cid}/`);
+      const response = await fetch(`https://g.watchit.movie/metadata/${cid}/`)
 
       if (!response.ok) {
-        throw new Error(`Error fetching metadata: ${response.statusText}`);
+        throw new Error(`Error fetching metadata: ${response.statusText}`)
       }
 
-      const data: Metadata = await response.json();
-      setMetadata(data);
-      return data;
+      const data: Metadata = await response.json()
+      setMetadata(data)
+      return data
     } catch (error) {
-      console.error(error);
-      setMetadata(null);
-      throw error;
+      console.error(error)
+      setMetadata(null)
+      throw error
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  }, []);
+  }, [])
 
-  return { metadata, loading, getMetadata };
-};
+  return { metadata, loading, getMetadata }
+}
 
-export default useMetadata;
+export default useMetadata

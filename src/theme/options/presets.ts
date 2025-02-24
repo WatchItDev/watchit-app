@@ -1,12 +1,8 @@
-// @mui
-import { alpha } from '@mui/material/styles';
-// theme
-import { palette as themePalette } from '@src/theme/palette';
-
-// ----------------------------------------------------------------------
+import { alpha } from '@mui/material/styles'
+import { palette as themePalette } from '@src/theme/palette'
 
 export function presets(presetsColor: string) {
-  const primary = primaryPresets.find((i) => i.name === presetsColor);
+  const primary = primaryPresets.find((i) => i.name === presetsColor)
 
   const theme = {
     palette: {
@@ -15,14 +11,12 @@ export function presets(presetsColor: string) {
     customShadows: {
       primary: `0 8px 16px 0 ${alpha(`${primary?.main}`, 0.24)}`,
     },
-  };
+  }
 
-  return theme;
+  return theme
 }
 
-// ----------------------------------------------------------------------
-
-const palette = themePalette('light');
+const palette = themePalette('light')
 
 export const primaryPresets = [
   // DEFAULT
@@ -80,4 +74,4 @@ export const primaryPresets = [
     darker: '#7A0930',
     contrastText: '#FFFFFF',
   },
-];
+]

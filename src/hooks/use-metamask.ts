@@ -1,13 +1,8 @@
-// REACT IMPORTS
-import { useCallback } from 'react';
-
-// VIEM IMPORTS
-import { createWalletClient, custom, WalletClient } from 'viem';
-import type { Address } from 'viem';
-import { polygonAmoy } from 'viem/chains';
-
-// METAMASK IMPORTS
-import { useSDK } from '@metamask/sdk-react';
+import { useCallback } from 'react'
+import { useSDK } from '@metamask/sdk-react'
+import { createWalletClient, custom, WalletClient } from 'viem'
+import type { Address } from 'viem'
+import { polygonAmoy } from 'viem/chains'
 
 /**
  * Represents the shape of the object returned by the useMetaMask hook.
@@ -67,7 +62,7 @@ export function useMetaMask(): UseMetaMaskReturn {
     connecting,
     error,
     provider,
-  } = useSDK();
+  } = useSDK()
 
   /**
    * We define 'connect' as a guaranteed function (non-optional).
@@ -75,10 +70,10 @@ export function useMetaMask(): UseMetaMaskReturn {
    */
   const connect = useCallback(async (): Promise<string[] | undefined> => {
     if (!sdk) {
-      throw new Error('MetaMask SDK is not initialized.');
+      throw new Error('MetaMask SDK is not initialized.')
     }
-    return sdk.connect();
-  }, [sdk]);
+    return sdk.connect()
+  }, [sdk])
 
   // Generate a viem wallet client using the MetaMask provider, if available.
   const walletClient = provider
@@ -86,7 +81,7 @@ export function useMetaMask(): UseMetaMaskReturn {
       chain: polygonAmoy,
       transport: custom(provider),
     })
-    : undefined;
+    : undefined
 
   return {
     connect,
@@ -96,5 +91,5 @@ export function useMetaMask(): UseMetaMaskReturn {
     walletClient,
     loading: connecting,
     error,
-  };
+  }
 }

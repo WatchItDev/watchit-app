@@ -1,11 +1,7 @@
-import { paramCase } from '@src/utils/change-case';
+import { paramCase } from '@src/utils/change-case'
 
-// ----------------------------------------------------------------------
-
-const MOCK_ID = '0x123';
-const MOCK_TITLE = 'Demo title';
-
-// ----------------------------------------------------------------------
+const MOCK_ID = '0x123'
+const MOCK_TITLE = 'Demo title'
 
 export const paths = {
   comingSoon: '/coming-soon',
@@ -88,4 +84,4 @@ export const paths = {
       details: `/post/${paramCase(MOCK_TITLE)}`,
     },
   },
-};
+}

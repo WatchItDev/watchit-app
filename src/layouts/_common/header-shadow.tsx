@@ -1,7 +1,4 @@
-// @mui
-import Box, { BoxProps } from '@mui/material/Box';
-
-// ----------------------------------------------------------------------
+import Box, { BoxProps } from '@mui/material/Box'
 
 export default function HeaderShadow({ sx, ...other }: BoxProps) {
   return (
@@ -22,5 +19,5 @@ export default function HeaderShadow({ sx, ...other }: BoxProps) {
       }}
       {...other}
     />
-  );
+  )
 }

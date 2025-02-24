@@ -1,18 +1,18 @@
-import { ERROR_MESSAGES, ERRORS } from '@src/utils/notifications/errors.ts';
-import { SUCCESS_MESSAGES, SUCCESS } from '@src/utils/notifications/success.ts';
-import { WARNING_MESSAGES, WARNING } from '@src/utils/notifications/warnings.ts';
-import { INFO, INFO_MESSAGES } from '@notifications/info.ts';
+import { INFO, INFO_MESSAGES } from '@notifications/info.ts'
+import { ERROR_MESSAGES, ERRORS } from '@src/utils/notifications/errors.ts'
+import { SUCCESS_MESSAGES, SUCCESS } from '@src/utils/notifications/success.ts'
+import { WARNING_MESSAGES, WARNING } from '@src/utils/notifications/warnings.ts'
 
 type NotificationType = 'error' | 'success' | 'warning' | 'info';
 
-let globalEnqueueSnackbar: ((message: string, options?: object) => void) | null = null;
+let globalEnqueueSnackbar: ((message: string, options?: object) => void) | null = null
 
 /**
  * Allows us to set the globalEnqueueSnackbar function from our App (or any top-level component).
  * Must be called at least once (e.g., in App.tsx) so that notify methods works.
  */
 export function setGlobalNotifier(enqueueSnackbarFn: (message: string, options?: object) => void) {
-  globalEnqueueSnackbar = enqueueSnackbarFn;
+  globalEnqueueSnackbar = enqueueSnackbarFn
 }
 
 /**
@@ -26,8 +26,8 @@ export function setGlobalNotifier(enqueueSnackbarFn: (message: string, options?:
  */
 function replaceTemplateTags(message: string, data: Record<string, any>): string {
   return message.replace(/{(\w+)}/g, (_substring, key) => {
-    return data[key] !== undefined ? data[key] : `{${key}}`;
-  });
+    return data[key] !== undefined ? data[key] : `{${key}}`
+  })
 }
 
 const notify = (
@@ -38,38 +38,38 @@ const notify = (
   options?: any
 ) => {
   if (!globalEnqueueSnackbar) {
-    console.error('No globalEnqueueSnackbar is set. Cannot notify messages.');
-    return;
+    console.error('No globalEnqueueSnackbar is set. Cannot notify messages.')
+    return
   }
 
-  let message: string;
+  let message: string
   switch (typeNotification) {
     case 'error':
       message =
-        ERROR_MESSAGES[text as ERRORS] || fallbackMessage || ERROR_MESSAGES[ERRORS.UNKNOWN_ERROR];
-      break;
+        ERROR_MESSAGES[text as ERRORS] || fallbackMessage || ERROR_MESSAGES[ERRORS.UNKNOWN_ERROR]
+      break
     case 'success':
-      message = SUCCESS_MESSAGES[text as SUCCESS] || fallbackMessage || 'Operation successful.';
-      break;
+      message = SUCCESS_MESSAGES[text as SUCCESS] || fallbackMessage || 'Operation successful.'
+      break
     case 'warning':
-      message = WARNING_MESSAGES[text as WARNING] || fallbackMessage || 'Warning.';
-      break;
+      message = WARNING_MESSAGES[text as WARNING] || fallbackMessage || 'Warning.'
+      break
 
     case 'info':
-      message = INFO_MESSAGES[text as INFO] || fallbackMessage || 'Information.';
-      break;
+      message = INFO_MESSAGES[text as INFO] || fallbackMessage || 'Information.'
+      break
 
     default:
-      console.error('Unknown notification type');
-      return;
+      console.error('Unknown notification type')
+      return
   }
 
   if (data) {
-    message = replaceTemplateTags(message, data);
+    message = replaceTemplateTags(message, data)
   }
 
-  globalEnqueueSnackbar(message, { variant: typeNotification, ...options });
-};
+  globalEnqueueSnackbar(message, { variant: typeNotification, ...options })
+}
 
 /**
  * Global function to notify an error by ERROR_NAMES.
@@ -80,7 +80,7 @@ export function notifyError(
   data?: Record<string, any>,
   fallbackMessage?: string
 ) {
-  notify('error', errorName, data, fallbackMessage || 'An unknown error has occurred.');
+  notify('error', errorName, data, fallbackMessage || 'An unknown error has occurred.')
 }
 
 /**
@@ -93,7 +93,7 @@ export function notifySuccess(
   fallbackMessage?: string,
   options?: any
 ) {
-  notify('success', successName, data, fallbackMessage || 'Operation successful.', options);
+  notify('success', successName, data, fallbackMessage || 'Operation successful.', options)
 }
 
 /**
@@ -106,7 +106,7 @@ export function notifyWarning(
   fallbackMessage?: string,
   options?: any
 ) {
-  notify('warning', warningName, data, fallbackMessage || 'Warning.', options);
+  notify('warning', warningName, data, fallbackMessage || 'Warning.', options)
 }
 
 /**
@@ -119,5 +119,5 @@ export function notifyInfo(
   fallbackMessage?: string,
   options?: any
 ) {
-  notify('info', infoName, data, fallbackMessage || 'Information.', options);
+  notify('info', infoName, data, fallbackMessage || 'Information.', options)
 }

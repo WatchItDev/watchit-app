@@ -1,15 +1,11 @@
-// @mui
-import { styled } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import Step from '@mui/material/Step';
-import Stack from '@mui/material/Stack';
-import Stepper, { StepperProps } from '@mui/material/Stepper';
-import StepLabel, { stepLabelClasses } from '@mui/material/StepLabel';
-import MuiStepConnector, { stepConnectorClasses } from '@mui/material/StepConnector';
-// components
-import { StepIconProps } from '@mui/material/StepIcon';
-
-// ----------------------------------------------------------------------
+import Box from '@mui/material/Box'
+import Stack from '@mui/material/Stack'
+import Step from '@mui/material/Step'
+import MuiStepConnector, { stepConnectorClasses } from '@mui/material/StepConnector'
+import { StepIconProps } from '@mui/material/StepIcon'
+import StepLabel, { stepLabelClasses } from '@mui/material/StepLabel'
+import Stepper, { StepperProps } from '@mui/material/Stepper'
+import { styled } from '@mui/material/styles'
 
 const StepConnector = styled(MuiStepConnector)(({ theme }) => ({
   top: 10,
@@ -24,9 +20,7 @@ const StepConnector = styled(MuiStepConnector)(({ theme }) => ({
       borderColor: theme.palette.success.main,
     },
   },
-}));
-
-// ----------------------------------------------------------------------
+}))
 
 interface Props extends StepperProps {
   steps: string[];
@@ -42,8 +36,8 @@ export default function PublicationNewWizardSteps({
   ...other
 }: Props) {
   const handleStepClick = (step: number) => {
-    if (step <= activeStep) goToStep(step);
-  };
+    if (step <= activeStep) goToStep(step)
+  }
 
   return (
     <Stepper
@@ -60,7 +54,7 @@ export default function PublicationNewWizardSteps({
         <Step
           key={label}
           onClick={() => {
-            handleStepClick(index);
+            handleStepClick(index)
           }}
           sx={{ cursor: 'pointer' }}
         >
@@ -77,10 +71,8 @@ export default function PublicationNewWizardSteps({
         </Step>
       ))}
     </Stepper>
-  );
+  )
 }
-
-// ----------------------------------------------------------------------
 
 function StepIcon({ active, completed }: StepIconProps) {
   return (
@@ -105,5 +97,5 @@ function StepIcon({ active, completed }: StepIconProps) {
         }}
       />
     </Stack>
-  );
+  )
 }

@@ -1,10 +1,7 @@
-// @mui
-import { styled, alpha } from '@mui/material/styles';
-
-// ----------------------------------------------------------------------
+import { styled, alpha } from '@mui/material/styles'
 
 const StyledMarkdown = styled('div')(({ theme }) => {
-  const isLight = theme.palette.mode === 'light';
+  const isLight = theme.palette.mode === 'light'
 
   return {
     // Text
@@ -141,7 +138,7 @@ const StyledMarkdown = styled('div')(({ theme }) => {
         },
       },
     },
-  };
-});
+  }
+})
 
-export default StyledMarkdown;
+export default StyledMarkdown

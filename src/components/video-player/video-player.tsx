@@ -1,8 +1,6 @@
-import { FC, useRef, useEffect, memo } from 'react';
+import { FC, useRef, useEffect, memo } from 'react'
 // @ts-ignore
-import { Hls, FetchLoader, XhrLoader } from 'hls.js/dist/hls.mjs';
-import { Typography, IconButton, Button } from '@mui/material';
-import { IconChevronLeft } from '@tabler/icons-react';
+import { IconChevronLeft } from '@tabler/icons-react'
 import {
   MediaPlayer,
   MediaPlayerInstance,
@@ -10,19 +8,19 @@ import {
   useMediaState,
   MediaProviderAdapter,
   isHLSProvider, Track
-} from '@vidstack/react';
-
-import { DefaultVideoLayout, defaultLayoutIcons } from '@vidstack/react/player/layouts/default';
+} from '@vidstack/react'
+import { DefaultVideoLayout, defaultLayoutIcons } from '@vidstack/react/player/layouts/default'
+import { Hls, FetchLoader, XhrLoader } from 'hls.js/dist/hls.mjs'
+import { Typography, IconButton, Button } from '@mui/material'
 // @ts-ignore
-import '@vidstack/react/player/styles/default/theme.css';
+import '@vidstack/react/player/styles/default/theme.css'
 // @ts-ignore
-import '@vidstack/react/player/styles/default/layouts/audio.css';
+import '@vidstack/react/player/styles/default/layouts/audio.css'
 // @ts-ignore
-import '@vidstack/react/player/styles/default/layouts/video.css';
-
-import useGetSubtitles from '@src/hooks/use-get-subtitles.ts';
-import { useResponsive } from '@src/hooks/use-responsive';
-import Label from '../label';
+import '@vidstack/react/player/styles/default/layouts/video.css'
+import Label from '../label'
+import useGetSubtitles from '@src/hooks/use-get-subtitles.ts'
+import { useResponsive } from '@src/hooks/use-responsive'
 
 export type VideoPlayerProps = {
   src: string;
@@ -33,45 +31,45 @@ export type VideoPlayerProps = {
 };
 
 export const VideoPlayer: FC<VideoPlayerProps> = ({ src, cid, titleMovie, onBack, showBack }) => {
-  const mdUp = useResponsive('up', 'md');
-  const player = useRef<MediaPlayerInstance>(null);
-  const controlsVisible = useMediaState('controlsVisible', player);
-  const { tracks, getSubtitles } = useGetSubtitles();
+  const mdUp = useResponsive('up', 'md')
+  const player = useRef<MediaPlayerInstance>(null)
+  const controlsVisible = useMediaState('controlsVisible', player)
+  const { tracks, getSubtitles } = useGetSubtitles()
 
   useEffect(() => {
-    if (cid) getSubtitles(cid);
-  }, [cid]);
+    if (cid) getSubtitles(cid)
+  }, [cid])
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape' || event.key === 'Esc') onBack?.();
-    };
+      if (event.key === 'Escape' || event.key === 'Esc') onBack?.()
+    }
 
-    document?.addEventListener('keydown', handleKeyDown);
-    return () => document?.removeEventListener('keydown', handleKeyDown);
-  }, []);
+    document?.addEventListener('keydown', handleKeyDown)
+    return () => document?.removeEventListener('keydown', handleKeyDown)
+  }, [])
 
   // on provider (HLS) initialization
   const onProviderSetup = (provider: MediaProviderAdapter) => {
     if (isHLSProvider(provider)) {
       provider.instance?.on(Hls.Events.ERROR, (_, data: any) => {
         if (data.details === Hls.ErrorDetails.BUFFER_STALLED_ERROR) {
-          console.log("Seek Stalling Detected, Adjusting Buffer...");
-          provider.instance?.startLoad();
+          console.log("Seek Stalling Detected, Adjusting Buffer...")
+          provider.instance?.startLoad()
         }
 
         if (data.fatal && data.type === Hls.ErrorTypes.MEDIA_ERROR) {
-          console.warn("Recovering from Media Error...");
-          provider.instance?.recoverMediaError();
+          console.warn("Recovering from Media Error...")
+          provider.instance?.recoverMediaError()
         }
-      });
+      })
     }
   }
 
   // when the provider has changed, setup config..
   const onProviderChange = (provider: MediaProviderAdapter | null) => {
     if (isHLSProvider(provider)) {
-      provider.library = Hls;
+      provider.library = Hls
       provider.config = {
         // "capLevelToPlayerSize": true, // avoid more resolution if doest not fit in the current viewport
         // https://github.com/video-dev/hls.js/blob/master/docs/API.md
@@ -83,9 +81,9 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({ src, cid, titleMovie, onBack
         // (hls_time = 6 + maxBufferLength = 30) = 5 fragments in buffer
         "maxBufferLength": 60, // Max video buffer length in seconds
         "maxMaxBufferLength": 600, // Absolute max buffer length
-        // maxStarvationDelay defines the maximum acceptable time (in seconds) a fragment can take to download 
+        // maxStarvationDelay defines the maximum acceptable time (in seconds) a fragment can take to download
         // while playback is already in progress.
-        // - If a fragment is estimated to take longer than this value and the buffer is running low, 
+        // - If a fragment is estimated to take longer than this value and the buffer is running low,
         //   the player switches the best quality that matches this time constraint.
         // - This ensures a continuous playback experience by adapting the quality to network conditions in real-time.
         // "maxStarvationDelay": 4,
@@ -94,7 +92,7 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({ src, cid, titleMovie, onBack
         //   - The time to fetch the first low-quality fragment (e.g., 420p)
         //   - + The time to fetch the estimated optimal-quality fragment (e.g., 720p)
         //   - is below this value.
-        // - If the total loading time exceeds maxLoadingDelay, the player starts with a lower quality 
+        // - If the total loading time exceeds maxLoadingDelay, the player starts with a lower quality
         //   to minimize startup delay and ensure fast playback.
         // - Unlike maxStarvationDelay, this setting only applies at the **start** of playback,
         //   ensuring the video loads quickly even if it means initially using a lower quality.
@@ -126,8 +124,7 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({ src, cid, titleMovie, onBack
         "startFragPrefetch": true,
         "fLoader": FetchLoader,
         "pLoader": XhrLoader
-      };
-
+      }
 
     }
   }
@@ -195,9 +192,9 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({ src, cid, titleMovie, onBack
         <Track key={track.src} {...track} />
       ))}
     </MediaPlayer>
-  );
-};
+  )
+}
 
 export default memo(VideoPlayer, (prevProps, nextProps) => {
-  return prevProps.cid === nextProps.cid;
-});
+  return prevProps.cid === nextProps.cid
+})

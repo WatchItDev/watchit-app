@@ -1,26 +1,21 @@
-// MUI IMPORTS
-import Typography from '@mui/material/Typography';
-import Stack from '@mui/material/Stack';
-import Button from '@mui/material/Button';
-import Box from '@mui/material/Box';
-
-// LOCAL IMPORTS
-import { useGetBalance } from '@src/hooks/use-get-balance.ts';
+import Box from '@mui/material/Box'
+import Button from '@mui/material/Button'
+import Stack from '@mui/material/Stack'
+import Typography from '@mui/material/Typography'
 // @ts-ignore
-import mmcTokenIcon from '@src/assets/mmc_token.ico';
-import { paths } from '@src/routes/paths.ts';
-import { useRouter } from '@src/routes/hooks';
-import { formatBalanceNumber } from '@src/utils/format-number.ts';
-
-// ----------------------------------------------------------------------
+import mmcTokenIcon from '@src/assets/mmc_token.ico'
+import { useGetBalance } from '@src/hooks/use-get-balance.ts'
+import { useRouter } from '@src/routes/hooks'
+import { paths } from '@src/routes/paths.ts'
+import { formatBalanceNumber } from '@src/utils/format-number.ts'
 
 export default function HeaderBalance() {
-  const { balance } = useGetBalance();
-  const router = useRouter();
+  const { balance } = useGetBalance()
+  const router = useRouter()
 
   const handleGoFinance = () => {
-    router.push(paths.dashboard.finance);
-  };
+    router.push(paths.dashboard.finance)
+  }
 
   return (
     <Button variant={'text'} sx={{ px: 1.5, py: 1, mr: -0.75 }} onClick={handleGoFinance}>
@@ -47,5 +42,5 @@ export default function HeaderBalance() {
         </Typography>
       </Stack>
     </Button>
-  );
+  )
 }

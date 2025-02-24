@@ -1,48 +1,34 @@
-// REACT IMPORTS
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
-
-// REDUX IMPORTS
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '@reduxjs/toolkit/query';
+import React, { useCallback, useEffect, useRef, useState } from 'react'
+import { Profile } from '@lens-protocol/api-bindings'
+import {
+  LoginError,
+  SessionType,
+  useCreateProfile,
+  useSetProfileMetadata,
+} from '@lens-protocol/react-web'
+import { ERRORS } from '@notifications/errors.ts'
+import { notifyError, notifySuccess } from '@notifications/internal-notifications'
+import { SUCCESS } from '@notifications/success'
 import {
   closeLoginModal,
   resetCurrentStep,
   setIsUpdatingMetadata,
   setProfileCreationStep,
   updateProfileData,
-} from '@redux/auth';
-
-// MUI IMPORTS
-import { Box, Button, Grid, Input, TextField, Typography } from '@mui/material';
-
-// PROJECTS IMPORTS
-import Image from '../image';
-import { ProfileData } from '@src/auth/context/web3Auth/types.ts';
-import { uploadImageToIPFS, uploadMetadataToIPFS } from '@src/utils/ipfs.ts';
-import { buildProfileMetadata } from '@src/utils/profile.ts';
-import TextMaxLine from '@src/components/text-max-line';
-import NeonPaper from '@src/sections/publication/NeonPaperContainer';
-import uuidv4 from '@src/utils/uuidv4';
-
-// LENS IMPORTS
-import { Profile } from '@lens-protocol/api-bindings';
-import {
-  LoginError,
-  SessionType,
-  useCreateProfile,
-  useSetProfileMetadata,
-} from '@lens-protocol/react-web';
-
-// NOTIFICATIONS IMPORTS
-import { notifyError, notifySuccess } from '@notifications/internal-notifications';
-import { SUCCESS } from '@notifications/success';
-import { ERRORS } from '@notifications/errors.ts';
-import AvatarProfile from "@src/components/avatar/avatar.tsx";
-
-// ----------------------------------------------------------------------
-
+} from '@redux/auth'
+import { RootState } from '@reduxjs/toolkit/query'
+import { useFormik } from 'formik'
+import { useDispatch, useSelector } from 'react-redux'
+import * as Yup from 'yup'
+import { Box, Button, Grid, Input, TextField, Typography } from '@mui/material'
+import Image from '../image'
+import { ProfileData } from '@src/auth/context/web3Auth/types.ts'
+import AvatarProfile from "@src/components/avatar/avatar.tsx"
+import TextMaxLine from '@src/components/text-max-line'
+import NeonPaper from '@src/sections/publication/NeonPaperContainer'
+import { uploadImageToIPFS, uploadMetadataToIPFS } from '@src/utils/ipfs.ts'
+import { buildProfileMetadata } from '@src/utils/profile.ts'
+import uuidv4 from '@src/utils/uuidv4'
 export interface ProfileFormProps {
   address: string;
   initialValues?: any;
@@ -53,24 +39,22 @@ export interface ProfileFormProps {
   login?: (profile?: Profile) => Promise<void>;
 }
 
-// ----------------------------------------------------------------------
-
 const getButtonLabel = (mode: 'register' | 'update', step: number) => {
   if (mode === 'register') {
     switch (step) {
       case 1:
-        return 'Creating';
+        return 'Creating'
       case 2:
-        return 'Storing data on blockchain...';
+        return 'Storing data on blockchain...'
       case 3:
-        return 'Finalizing...';
+        return 'Finalizing...'
       default:
-        return 'Create profile';
+        return 'Create profile'
     }
   } else {
-    return 'Update profile';
+    return 'Update profile'
   }
-};
+}
 
 export const ProfileFormView: React.FC<ProfileFormProps> = ({
   onSuccess,
@@ -81,33 +65,33 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
   error,
   mode,
 }) => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
 
-  const [registrationLoading, setRegistrationLoading] = useState(false);
+  const [registrationLoading, setRegistrationLoading] = useState(false)
   // @ts-ignore
-  const { currentStep } = useSelector((state: RootState) => state.auth);
+  const { currentStep } = useSelector((state: RootState) => state.auth)
 
-  const PaperElement = currentStep !== 0 ? NeonPaper : Box;
+  const PaperElement = currentStep !== 0 ? NeonPaper : Box
 
   // Pending metadata update (used when profile creation requires authentication)
   const [pendingMetadataUpdate, setPendingMetadataUpdate] = useState<{
     data: ProfileData;
     profile: Profile;
-  } | null>(null);
+  } | null>(null)
 
-  const sessionData = useSelector((state: any) => state.auth.session);
+  const sessionData = useSelector((state: any) => state.auth.session)
   // Create profile and set profile metadata functions from Lens Protocol
   const {
     execute: createProfileExecute,
     error: errorCreateProfile,
     loading: createProfileLoading,
-  } = useCreateProfile();
+  } = useCreateProfile()
   const {
     execute: setProfileMetadataExecute,
     error: errorSetProfileMetadata,
     loading: setProfileMetadataLoading,
-  } = useSetProfileMetadata();
-  const loading = createProfileLoading || setProfileMetadataLoading || registrationLoading;
+  } = useSetProfileMetadata()
+  const loading = createProfileLoading || setProfileMetadataLoading || registrationLoading
 
   const validationSchema = Yup.object({
     username: Yup.string()
@@ -121,13 +105,13 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
       orb: Yup.string().url('Enter a valid URL'),
       farcaster: Yup.string().url('Enter a valid URL'),
     }),
-  });
+  })
 
   useEffect(() => {
-    if (errorCreateProfile) notifyError(ERRORS.CREATING_PROFILE_ERROR);
-    if (errorSetProfileMetadata) notifyError(ERRORS.UPDATING_PROFILE_ERROR);
-    if (error) notifyError(ERRORS.UNKNOWN_ERROR);
-  }, [errorCreateProfile, errorSetProfileMetadata]);
+    if (errorCreateProfile) notifyError(ERRORS.CREATING_PROFILE_ERROR)
+    if (errorSetProfileMetadata) notifyError(ERRORS.UPDATING_PROFILE_ERROR)
+    if (error) notifyError(ERRORS.UNKNOWN_ERROR)
+  }, [errorCreateProfile, errorSetProfileMetadata])
 
   /**
    * Update profile metadata on the Lens Protocol.
@@ -136,34 +120,34 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
    */
   const updateProfileMetadata = useCallback(
     async (data: ProfileData) => {
-      setRegistrationLoading(true);
-      dispatch(setIsUpdatingMetadata(true));
+      setRegistrationLoading(true)
+      dispatch(setIsUpdatingMetadata(true))
 
       try {
-        dispatch(setProfileCreationStep({ step: 2 }));
+        dispatch(setProfileCreationStep({ step: 2 }))
 
         // Upload images to IPFS
         const profileImageURI =
           typeof data?.profileImage === 'string'
             ? data?.profileImage
-            : await uploadImageToIPFS(data.profileImage);
+            : await uploadImageToIPFS(data.profileImage)
         const backgroundImageURI =
           typeof data?.backgroundImage === 'string'
             ? data?.backgroundImage
-            : await uploadImageToIPFS(data.backgroundImage);
+            : await uploadImageToIPFS(data.backgroundImage)
         // Build profile metadata
-        const metadata = buildProfileMetadata(data, profileImageURI, backgroundImageURI);
+        const metadata = buildProfileMetadata(data, profileImageURI, backgroundImageURI)
         // Upload metadata to IPFS
-        const metadataURI = await uploadMetadataToIPFS(metadata);
+        const metadataURI = await uploadMetadataToIPFS(metadata)
 
         const profileImage =
           data.profileImage instanceof File
             ? URL.createObjectURL(data.profileImage)
-            : profileImagePreview;
+            : profileImagePreview
         const backgroundImage =
           data.backgroundImage instanceof File
             ? URL.createObjectURL(data.backgroundImage)
-            : backgroundImagePreview;
+            : backgroundImagePreview
 
         dispatch(
           updateProfileData({
@@ -173,7 +157,7 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
             backgroundImage:
               backgroundImage ?? sessionData?.profile?.metadata?.coverPicture?.optimized?.uri,
           })
-        );
+        )
 
         dispatch({
           type: 'ADD_TASK_TO_BACKGROUND',
@@ -184,29 +168,29 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
               metadataURI,
               setProfileMetadataExecute,
               onSuccess: () => {
-                notifySuccess(SUCCESS.PROFILE_METADATA_UPDATED);
-                dispatch(setIsUpdatingMetadata(false));
+                notifySuccess(SUCCESS.PROFILE_METADATA_UPDATED)
+                dispatch(setIsUpdatingMetadata(false))
               },
               onError: (error: any) => {
-                console.log('Error updating profile metadata:', error);
-                notifyError(ERRORS.UPDATING_PROFILE_ERROR);
-                dispatch(setIsUpdatingMetadata(false));
+                console.log('Error updating profile metadata:', error)
+                notifyError(ERRORS.UPDATING_PROFILE_ERROR)
+                dispatch(setIsUpdatingMetadata(false))
               },
             },
           },
-        });
+        })
 
-        setRegistrationLoading(false);
-        dispatch(resetCurrentStep());
-        onSuccess();
+        setRegistrationLoading(false)
+        dispatch(resetCurrentStep())
+        onSuccess()
       } catch (error) {
-        console.error('Error updating profile metadata:', error);
-        setRegistrationLoading(false);
-        dispatch(closeLoginModal());
+        console.error('Error updating profile metadata:', error)
+        setRegistrationLoading(false)
+        dispatch(closeLoginModal())
       }
     },
     [setProfileMetadataExecute, address]
-  );
+  )
 
   /**
    * Register a new profile on the Lens Protocol.
@@ -215,41 +199,41 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
   const registerProfile = useCallback(
     async (data: ProfileData) => {
       if (!address) {
-        console.error('Wallet address not available.');
-        return;
+        console.error('Wallet address not available.')
+        return
       }
 
       try {
-        dispatch(setProfileCreationStep({ step: 1 }));
-        setRegistrationLoading(true);
+        dispatch(setProfileCreationStep({ step: 1 }))
+        setRegistrationLoading(true)
 
         const result = await createProfileExecute({
           localName: data.username,
           to: address,
-        });
+        })
 
         if (result.isFailure()) {
-          throw new Error(result.error.message);
+          throw new Error(result.error.message)
         }
 
-        const newProfile: Profile = result.value;
+        const newProfile: Profile = result.value
 
         // Authenticate using the new profile
-        await login?.(newProfile);
+        await login?.(newProfile)
 
-        dispatch(setProfileCreationStep({ step: 1 }));
-        dispatch(setProfileCreationStep({ step: 2 }));
+        dispatch(setProfileCreationStep({ step: 1 }))
+        dispatch(setProfileCreationStep({ step: 2 }))
 
         // Save the pending metadata update
-        setPendingMetadataUpdate({ data, profile: newProfile });
+        setPendingMetadataUpdate({ data, profile: newProfile })
       } catch (error) {
-        console.error('Error during profile registration:', error);
-        setRegistrationLoading(false);
-        throw error;
+        console.error('Error during profile registration:', error)
+        setRegistrationLoading(false)
+        throw error
       }
     },
     [address, createProfileExecute]
-  );
+  )
 
   const formik: any = useFormik({
     initialValues: initialValues ?? {
@@ -269,40 +253,40 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
     onSubmit: async (values) => {
       try {
         if (mode === 'register') {
-          await registerProfile(values);
+          await registerProfile(values)
         } else if (mode === 'update') {
-          await updateProfileMetadata(values);
+          await updateProfileMetadata(values)
         }
       } catch (error) {
-        console.error('Error registering profile', error);
+        console.error('Error registering profile', error)
         // @ts-ignore
-        console.error(error.message);
+        console.error(error.message)
         // @ts-ignore
-        setErrorMessage(error.message || 'Ocurrió un error durante el registro.');
+        setErrorMessage(error.message || 'Ocurrió un error durante el registro.')
       }
     },
-  });
+  })
 
-  const profileImageInputRef = useRef<HTMLInputElement>(null);
-  const backgroundImageInputRef = useRef<HTMLInputElement>(null);
-  const [profileImagePreview, setProfileImagePreview] = useState<string | null>(null);
-  const [backgroundImagePreview, setBackgroundImagePreview] = useState<string | null>(null);
+  const profileImageInputRef = useRef<HTMLInputElement>(null)
+  const backgroundImageInputRef = useRef<HTMLInputElement>(null)
+  const [profileImagePreview, setProfileImagePreview] = useState<string | null>(null)
+  const [backgroundImagePreview, setBackgroundImagePreview] = useState<string | null>(null)
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>, field: string) => {
     if (event.currentTarget.files && event.currentTarget.files[0]) {
-      const file = event.currentTarget.files[0];
-      formik.setFieldValue(field, file);
+      const file = event.currentTarget.files[0]
+      formik.setFieldValue(field, file)
 
       // Create an object URL for preview
-      const previewUrl = URL.createObjectURL(file);
+      const previewUrl = URL.createObjectURL(file)
 
       if (field === 'profileImage') {
-        setProfileImagePreview(previewUrl);
+        setProfileImagePreview(previewUrl)
       } else if (field === 'backgroundImage') {
-        setBackgroundImagePreview(previewUrl);
+        setBackgroundImagePreview(previewUrl)
       }
     }
-  };
+  }
 
   // Handle session changes and resume pending metadata updates
   useEffect(() => {
@@ -312,10 +296,10 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
       sessionData.type === SessionType.WithProfile &&
       pendingMetadataUpdate
     ) {
-      updateProfileMetadata(pendingMetadataUpdate.data);
-      setPendingMetadataUpdate(null); // Clear the pending update
+      updateProfileMetadata(pendingMetadataUpdate.data)
+      setPendingMetadataUpdate(null) // Clear the pending update
     }
-  }, [sessionData, pendingMetadataUpdate, updateProfileMetadata]);
+  }, [sessionData, pendingMetadataUpdate, updateProfileMetadata])
 
   return (
     <Box sx={{ p: 2, overflow: 'hidden', overflowY: 'scroll', zIndex: '1000', maxHeight: '100%' }}>
@@ -474,8 +458,8 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
               disabled={mode === 'update' || loading}
               value={formik.values.username}
               onChange={(event) => {
-                const lowercaseValue = event.target.value.toLowerCase();
-                formik.setFieldValue('username', lowercaseValue);
+                const lowercaseValue = event.target.value.toLowerCase()
+                formik.setFieldValue('username', lowercaseValue)
               }}
               onBlur={formik.handleBlur}
               error={formik.touched.username && Boolean(formik.errors.username)}
@@ -646,5 +630,5 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
         </Grid>
       </Box>
     </Box>
-  );
-};
+  )
+}

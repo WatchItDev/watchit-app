@@ -1,12 +1,12 @@
-import {PublicationType} from "@lens-protocol/react-web";
-import { Profile } from '@lens-protocol/api-bindings';
-import CarouselSlide from '@src/components/carousel/components/CarouselSlide';
-import { UserItem } from '@src/components/user-item';
-import CarouselWrapper from './CarouselWrapper';
-import { CarouselCreatorsProps } from '../types';
+import { Profile } from '@lens-protocol/api-bindings'
+import {PublicationType} from "@lens-protocol/react-web"
+import CarouselWrapper from './CarouselWrapper'
+import { CarouselCreatorsProps } from '../types'
+import CarouselSlide from '@src/components/carousel/components/CarouselSlide'
+import { UserItem } from '@src/components/user-item'
 
 export default function CarouselCreators(params: CarouselCreatorsProps) {
-  const { data, title, minItemWidth, maxItemWidth } = params;
+  const { data, title, minItemWidth, maxItemWidth } = params
 
   const carouselSettings = {
     infinite: false,
@@ -15,7 +15,7 @@ export default function CarouselCreators(params: CarouselCreatorsProps) {
     rows: 1,
     slidesPerRow: 1,
     lazyLoad: 'progressive',
-  };
+  }
 
   const boxStyle = {
     '.slick-track': {
@@ -27,11 +27,11 @@ export default function CarouselCreators(params: CarouselCreatorsProps) {
     '.slick-slide > div': {
       height: '100%',
     },
-  };
+  }
 
   const renderItem = (profile: Profile) => (
     <UserItem profile={profile} onActionFinished={() => {}} followButtonMinWidth={90} />
-  );
+  )
 
   const carouselParams = {
     data,
@@ -52,5 +52,5 @@ export default function CarouselCreators(params: CarouselCreatorsProps) {
 
   return (
     <CarouselWrapper{... carouselParams} />
-  );
+  )
 }

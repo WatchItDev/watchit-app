@@ -1,6 +1,5 @@
-// types.ts
-import React from 'react';
-import { Web3Auth } from '@web3auth/modal/dist/types/modalManager';
+import React from 'react'
+import { Web3Auth } from '@web3auth/modal/dist/types/modalManager'
 /**
  * Interface for profile data used in profile creation and updates.
  */

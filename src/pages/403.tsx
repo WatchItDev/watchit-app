@@ -1,8 +1,5 @@
-import { Helmet } from 'react-helmet-async';
-// sections
-import { View403 } from '@src/sections/error';
-
-// ----------------------------------------------------------------------
+import { Helmet } from 'react-helmet-async'
+import { View403 } from '@src/sections/error'
 
 export default function Page403() {
   return (
@@ -13,5 +10,5 @@ export default function Page403() {
 
       <View403 />
     </>
-  );
+  )
 }

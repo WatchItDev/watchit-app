@@ -1,29 +1,29 @@
-import Button from "@mui/material/Button";
-import Iconify from "@src/components/iconify";
-import Popover from "@mui/material/Popover";
-import Typography from "@mui/material/Typography";
-import {UpdateModal} from "@src/components/update-modal";
-import {useCallback, useEffect, useRef, useState} from "react";
+import {useCallback, useEffect, useRef, useState} from "react"
+import Button from "@mui/material/Button"
+import Popover from "@mui/material/Popover"
+import Typography from "@mui/material/Typography"
+import Iconify from "@src/components/iconify"
+import {UpdateModal} from "@src/components/update-modal"
 
 const ProfileUpdateButton = () => {
-  const open = Boolean();
-  const navRef = useRef(null);
-  const [openTooltip, setOpenTooltip] = useState(false);
-  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
+  const open = Boolean()
+  const navRef = useRef(null)
+  const [openTooltip, setOpenTooltip] = useState(false)
+  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false)
 
   const handleOpen = useCallback(() => {
-    setOpenTooltip(true);
-  }, []);
+    setOpenTooltip(true)
+  }, [])
 
   const handleClose = useCallback(() => {
-    setOpenTooltip(false);
-  }, []);
+    setOpenTooltip(false)
+  }, [])
 
   useEffect(() => {
     if (open) {
-      handleClose();
+      handleClose()
     }
-  }, [handleClose, open]);
+  }, [handleClose, open])
 
   return  (<>
     <Button

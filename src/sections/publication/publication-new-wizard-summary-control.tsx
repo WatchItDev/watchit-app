@@ -1,17 +1,13 @@
-// @mui
-import Box from '@mui/material/Box';
-import Card from '@mui/material/Card';
-import Stack from '@mui/material/Stack';
-import Divider from '@mui/material/Divider';
-import CardHeader from '@mui/material/CardHeader';
-import Typography from '@mui/material/Typography';
-import CardContent from '@mui/material/CardContent';
-// utils
-import { fCurrency } from '@src/utils/format-number';
-import { IconCheck } from '@tabler/icons-react';
-import Scrollbar from '../../components/scrollbar';
-
-// ----------------------------------------------------------------------
+import { IconCheck } from '@tabler/icons-react'
+import Box from '@mui/material/Box'
+import Card from '@mui/material/Card'
+import CardContent from '@mui/material/CardContent'
+import CardHeader from '@mui/material/CardHeader'
+import Divider from '@mui/material/Divider'
+import Stack from '@mui/material/Stack'
+import Typography from '@mui/material/Typography'
+import Scrollbar from '../../components/scrollbar'
+import { fCurrency } from '@src/utils/format-number'
 
 type Props = {
   data: any;
@@ -19,10 +15,10 @@ type Props = {
 
 export default function PublicationNewWizardSummaryControl({ data }: Props) {
   const renderSection = (title: string, items: any) => {
-    const filteredItems = items.filter((item: any) => item.value);
+    const filteredItems = items.filter((item: any) => item.value)
 
     if (filteredItems.length === 0) {
-      return null;
+      return null
     }
 
     return (
@@ -31,8 +27,8 @@ export default function PublicationNewWizardSummaryControl({ data }: Props) {
           <InfoItem key={index} label={item.label} value={item.value} />
         ))}
       </Section>
-    );
-  };
+    )
+  }
 
   function formatDate(date: any) {
     if (date)
@@ -40,9 +36,9 @@ export default function PublicationNewWizardSummaryControl({ data }: Props) {
         day: '2-digit',
         month: '2-digit',
         year: 'numeric',
-      });
+      })
 
-    return undefined as any;
+    return undefined as any
   }
 
   const basicInfoItems = [
@@ -69,7 +65,7 @@ export default function PublicationNewWizardSummaryControl({ data }: Props) {
     { label: 'Lead Actor', value: data?.leadActor },
     { label: 'Supporting Actor', value: data?.supportingActor },
     { label: 'Supporting Actress', value: data?.supportingActress },
-  ];
+  ]
 
   const mediaAssetsItems = [
     {
@@ -105,7 +101,7 @@ export default function PublicationNewWizardSummaryControl({ data }: Props) {
     { label: 'Audio Bitrate', value: data?.audioBitrate ? `${data?.audioBitrate} kbps` : null },
     { label: 'Subtitle Format', value: data?.subtitleFormat },
     { label: 'Subtitle Language', value: data?.subtitleLanguage },
-  ];
+  ]
 
   const distributionItems = [
     { label: 'License Type', value: data?.licenseType },
@@ -117,10 +113,10 @@ export default function PublicationNewWizardSummaryControl({ data }: Props) {
       label: 'Terms of Service URL',
       value: data?.termsOfServiceURL && <IconCheck color="success" style={{ stroke: '#22C55E' }} />,
     },
-  ];
+  ]
 
-  const hasCreators = data?.creators && data?.creators.length > 0;
-  const hasDistribution = data?.distribution && data?.distribution.length > 0;
+  const hasCreators = data?.creators && data?.creators.length > 0
+  const hasDistribution = data?.distribution && data?.distribution.length > 0
 
   return (
     <Card sx={{ mt: 3, backgroundColor: '#2B2D31' }}>
@@ -181,7 +177,7 @@ export default function PublicationNewWizardSummaryControl({ data }: Props) {
         </Scrollbar>
       </CardContent>
     </Card>
-  );
+  )
 }
 
 // Component for each section
@@ -197,7 +193,7 @@ function Section({ title, children }: any) {
       </Typography>
       <Stack spacing={1}>{children}</Stack>
     </Box>
-  );
+  )
 }
 
 // Component for each info item
@@ -209,5 +205,5 @@ function InfoItem({ label, value }: any) {
       </Typography>
       <Typography variant="subtitle2">{value}</Typography>
     </Stack>
-  );
+  )
 }

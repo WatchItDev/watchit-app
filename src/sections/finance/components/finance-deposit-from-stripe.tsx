@@ -1,9 +1,6 @@
-// MUI IMPORTS
-import Box from '@mui/material/Box';
-
-// LOCAL IMPORTS
-import TextMaxLine from '@src/components/text-max-line';
-import { ComingSoonIllustration } from '@src/assets/illustrations';
+import Box from '@mui/material/Box'
+import { ComingSoonIllustration } from '@src/assets/illustrations'
+import TextMaxLine from '@src/components/text-max-line'
 
 const FinanceDepositFromStripe = () => {
   return (
@@ -38,7 +35,7 @@ const FinanceDepositFromStripe = () => {
         </Box>
       </Box>
     </Box>
-  );
-};
+  )
+}
 
-export default FinanceDepositFromStripe;
+export default FinanceDepositFromStripe

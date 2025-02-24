@@ -1,18 +1,11 @@
-// MUI IMPORTS
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-
-// LENS IMPORTS
-import { Profile } from '@lens-protocol/api-bindings';
-
-// LOCAL IMPORTS
-import { UserItem } from '@src/components/user-item';
-import { useSelector } from 'react-redux';
-
-// ----------------------------------------------------------------------
+import { Profile } from '@lens-protocol/api-bindings'
+import { useSelector } from 'react-redux'
+import Box from '@mui/material/Box'
+import Typography from '@mui/material/Typography'
+import { UserItem } from '@src/components/user-item'
 
 const ProfileFollowing = () => {
-  const following: Profile[] = useSelector((state: any) => state.followers.followings);
+  const following: Profile[] = useSelector((state: any) => state.followers.followings)
 
   return (
     <Box
@@ -53,7 +46,7 @@ const ProfileFollowing = () => {
         </Typography>
       )}
     </Box>
-  );
-};
+  )
+}
 
-export default ProfileFollowing;
+export default ProfileFollowing

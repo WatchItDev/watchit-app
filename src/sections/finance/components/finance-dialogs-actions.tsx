@@ -1,6 +1,5 @@
-// @mui components
-import DialogActions from '@mui/material/DialogActions';
-import LoadingButton from '@mui/lab/LoadingButton';
+import LoadingButton from '@mui/lab/LoadingButton'
+import DialogActions from '@mui/material/DialogActions'
 
 type FinanceDialogsActionsProps = {
   rainbowComponent: any;
@@ -43,6 +42,6 @@ const FinanceDialogsActions = ({
         </LoadingButton>
       </RainbowEffect>
     </DialogActions>
-  );
-};
-export default FinanceDialogsActions;
+  )
+}
+export default FinanceDialogsActions

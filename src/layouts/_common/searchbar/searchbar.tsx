@@ -1,90 +1,90 @@
-import { useState, memo, useCallback } from 'react';
-import { useTheme } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import List from '@mui/material/List';
-import Button from '@mui/material/Button';
-import InputBase from '@mui/material/InputBase';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import InputAdornment from '@mui/material/InputAdornment';
-import Dialog, { dialogClasses } from '@mui/material/Dialog';
-import { useBoolean } from '@src/hooks/use-boolean';
-import { useResponsive } from '@src/hooks/use-responsive';
-import { useEventListener } from '@src/hooks/use-event-listener';
-import Label from '@src/components/label';
-import Iconify from '@src/components/iconify';
-import Scrollbar from '@src/components/scrollbar';
-import { useRouter } from '@src/routes/hooks';
-import SearchNotFound from '@src/components/search-not-found';
-import ResultItem from './result-item';
-import { applyFilter } from './utils';
-import { useSearchProfiles } from '@lens-protocol/react-web';
-import { useSearchPublications } from '@src/hooks/use-search-publications';
-import { CircularProgress } from '@mui/material';
-import { paths } from '@src/routes/paths.ts';
-import { useSelector } from 'react-redux';
-import {filterHiddenProfiles} from "@src/utils/profile.ts";
+import { useState, memo, useCallback } from 'react'
+import { useSearchProfiles } from '@lens-protocol/react-web'
+import { useSelector } from 'react-redux'
+import { CircularProgress } from '@mui/material'
+import Box from '@mui/material/Box'
+import Button from '@mui/material/Button'
+import Dialog, { dialogClasses } from '@mui/material/Dialog'
+import IconButton from '@mui/material/IconButton'
+import InputAdornment from '@mui/material/InputAdornment'
+import InputBase from '@mui/material/InputBase'
+import List from '@mui/material/List'
+import { useTheme } from '@mui/material/styles'
+import Typography from '@mui/material/Typography'
+import ResultItem from './result-item'
+import { applyFilter } from './utils'
+import Iconify from '@src/components/iconify'
+import Label from '@src/components/label'
+import Scrollbar from '@src/components/scrollbar'
+import SearchNotFound from '@src/components/search-not-found'
+import { useBoolean } from '@src/hooks/use-boolean'
+import { useEventListener } from '@src/hooks/use-event-listener'
+import { useResponsive } from '@src/hooks/use-responsive'
+import { useSearchPublications } from '@src/hooks/use-search-publications'
+import { useRouter } from '@src/routes/hooks'
+import { paths } from '@src/routes/paths.ts'
+import {filterHiddenProfiles} from "@src/utils/profile.ts"
 
 function Searchbar() {
-  const theme = useTheme();
-  const router = useRouter();
-  const search = useBoolean();
-  const mdUp = useResponsive('up', 'md');
-  const [searchQuery, setSearchQuery] = useState('');
+  const theme = useTheme()
+  const router = useRouter()
+  const search = useBoolean()
+  const mdUp = useResponsive('up', 'md')
+  const [searchQuery, setSearchQuery] = useState('')
 
   const handleClose = useCallback(() => {
-    search.onFalse();
-    setSearchQuery('');
-  }, [search]);
+    search.onFalse()
+    setSearchQuery('')
+  }, [search])
 
   const handleKeyDown = (event: any) => {
     if (event.key === 'k' && event.metaKey) {
-      search.onToggle();
-      setSearchQuery('');
+      search.onToggle()
+      setSearchQuery('')
     }
-  };
+  }
 
-  useEventListener('keydown', handleKeyDown);
+  useEventListener('keydown', handleKeyDown)
 
   const handleClickPublication = (publicationId: string) => {
-    if (!publicationId) return;
+    if (!publicationId) return
 
-    router.push(paths.dashboard.publication.details(publicationId));
-    handleClose();
-  };
+    router.push(paths.dashboard.publication.details(publicationId))
+    handleClose()
+  }
 
   const handleClickProfile = (profileId: string) => {
-    if (!profileId) return;
+    if (!profileId) return
 
-    router.push(paths.dashboard.user.root(profileId));
-    handleClose();
-  };
+    router.push(paths.dashboard.user.root(profileId))
+    handleClose()
+  }
 
   const handleSearch = useCallback((event: any) => {
-    setSearchQuery(event.target.value);
-  }, []);
+    setSearchQuery(event.target.value)
+  }, [])
 
-  const { data: results, loading: loadingProfiles } = useSearchProfiles({ query: searchQuery });
-  const { publications, loading: loadingPublications } = useSearchPublications(searchQuery);
+  const { data: results, loading: loadingProfiles } = useSearchProfiles({ query: searchQuery })
+  const { publications, loading: loadingPublications } = useSearchPublications(searchQuery)
 
   const profiles = filterHiddenProfiles(results)
 
   const dataFiltered = applyFilter({
     inputData: [],
     query: searchQuery,
-  });
+  })
 
   const notFound =
-    searchQuery && !dataFiltered.length && !profiles?.length && !publications?.length;
+    searchQuery && !dataFiltered.length && !profiles?.length && !publications?.length
 
   // @ts-ignore
-  const minibarState = useSelector((state) => state.minibar.state);
+  const minibarState = useSelector((state) => state.minibar.state)
 
-  const isMini = minibarState === 'mini';
-  const lgUp = useResponsive('up', 'lg');
+  const isMini = minibarState === 'mini'
+  const lgUp = useResponsive('up', 'lg')
 
   // If isMini and isLgUp, hide the Search text
-  const hideSearchText = isMini && lgUp;
+  const hideSearchText = isMini && lgUp
 
   const renderItems = () => {
     if (!searchQuery && !profiles?.length && !publications?.length) {
@@ -104,7 +104,7 @@ function Searchbar() {
         >
           You can search for profiles and publications here.
         </Typography>
-      );
+      )
     }
 
     return (
@@ -134,8 +134,8 @@ function Searchbar() {
             </List>
           ))}
       </>
-    );
-  };
+    )
+  }
 
   const renderButton = (
     <Button
@@ -173,9 +173,9 @@ function Searchbar() {
         <Label sx={{ px: 0.75, mr: 1, fontSize: 12, color: 'text.secondary' }}>⌘K</Label>
       )}
     </Button>
-  );
+  )
 
-  const loading = loadingProfiles || loadingPublications;
+  const loading = loadingProfiles || loadingPublications
 
   return (
     <>
@@ -227,7 +227,7 @@ function Searchbar() {
         </Scrollbar>
       </Dialog>
     </>
-  );
+  )
 }
 
-export default memo(Searchbar);
+export default memo(Searchbar)

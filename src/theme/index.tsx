@@ -1,42 +1,35 @@
-import merge from 'lodash/merge';
-import { useMemo } from 'react';
-// @mui
-import CssBaseline from '@mui/material/CssBaseline';
-import { createTheme, ThemeProvider as MuiThemeProvider, ThemeOptions } from '@mui/material/styles';
-// locales
-import { useLocales } from '@src/locales';
-// components
-import { useSettingsContext } from '@src/components/settings';
-// system
-import { palette } from './palette';
-import { shadows } from './shadows';
-import { typography } from './typography';
-import { customShadows } from './custom-shadows';
-import { componentsOverrides } from './overrides';
-// options
-import { presets } from './options/presets';
-import { darkMode } from './options/dark-mode';
-import { contrast } from './options/contrast';
-import RTL, { direction } from './options/right-to-left';
-
-// ----------------------------------------------------------------------
+import { useMemo } from 'react'
+import merge from 'lodash/merge'
+import CssBaseline from '@mui/material/CssBaseline'
+import { createTheme, ThemeProvider as MuiThemeProvider, ThemeOptions } from '@mui/material/styles'
+import { customShadows } from './custom-shadows'
+import { contrast } from './options/contrast'
+import { darkMode } from './options/dark-mode'
+import { presets } from './options/presets'
+import RTL, { direction } from './options/right-to-left'
+import { componentsOverrides } from './overrides'
+import { palette } from './palette'
+import { shadows } from './shadows'
+import { typography } from './typography'
+import { useSettingsContext } from '@src/components/settings'
+import { useLocales } from '@src/locales'
 
 type Props = {
   children: React.ReactNode;
 };
 
 export default function ThemeProvider({ children }: Props) {
-  const { currentLang } = useLocales();
+  const { currentLang } = useLocales()
 
-  const settings = useSettingsContext();
+  const settings = useSettingsContext()
 
-  const darkModeOption = darkMode(settings.themeMode);
+  const darkModeOption = darkMode(settings.themeMode)
 
-  const presetsOption = presets(settings.themeColorPresets);
+  const presetsOption = presets(settings.themeColorPresets)
 
-  const contrastOption = contrast(settings.themeContrast === 'bold', settings.themeMode);
+  const contrastOption = contrast(settings.themeContrast === 'bold', settings.themeMode)
 
-  const directionOption = direction(settings.themeDirection);
+  const directionOption = direction(settings.themeDirection)
 
   const baseOption = useMemo(
     () => ({
@@ -57,7 +50,7 @@ export default function ThemeProvider({ children }: Props) {
       },
     }),
     []
-  );
+  )
 
   const memoizedValue = useMemo(
     () =>
@@ -74,16 +67,16 @@ export default function ThemeProvider({ children }: Props) {
         contrastOption.theme
       ),
     [baseOption, directionOption, darkModeOption, presetsOption, contrastOption.theme]
-  );
+  )
 
-  const theme = createTheme(memoizedValue as ThemeOptions);
+  const theme = createTheme(memoizedValue as ThemeOptions)
 
-  theme.components = merge(componentsOverrides(theme), contrastOption.components);
+  theme.components = merge(componentsOverrides(theme), contrastOption.components)
 
   const themeWithLocale = useMemo(
     () => createTheme(theme, currentLang.systemValue),
     [currentLang.systemValue, theme]
-  );
+  )
 
   return (
     <MuiThemeProvider theme={themeWithLocale}>
@@ -92,5 +85,5 @@ export default function ThemeProvider({ children }: Props) {
         {children}
       </RTL>
     </MuiThemeProvider>
-  );
+  )
 }

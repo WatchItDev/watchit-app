@@ -1,9 +1,6 @@
-import { useFormContext, Controller } from 'react-hook-form';
-// @mui
-import FormHelperText from '@mui/material/FormHelperText';
-import Slider, { SliderProps } from '@mui/material/Slider';
-
-// ----------------------------------------------------------------------
+import { useFormContext, Controller } from 'react-hook-form'
+import FormHelperText from '@mui/material/FormHelperText'
+import Slider, { SliderProps } from '@mui/material/Slider'
 
 type Props = SliderProps & {
   name: string;
@@ -11,7 +8,7 @@ type Props = SliderProps & {
 };
 
 export default function RHFSlider({ name, helperText, ...other }: Props) {
-  const { control } = useFormContext();
+  const { control } = useFormContext()
 
   return (
     <Controller
@@ -27,5 +24,5 @@ export default function RHFSlider({ name, helperText, ...other }: Props) {
         </>
       )}
     />
-  );
+  )
 }

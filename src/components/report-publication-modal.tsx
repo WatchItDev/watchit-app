@@ -1,8 +1,5 @@
-// LENS IMPORTS
-import { useReportPublication, PublicationReportReason } from '@lens-protocol/react-web';
-import { ReportModalBase } from '@src/components/report-modal-base.tsx';
-
-// ----------------------------------------------------------------------
+import { useReportPublication, PublicationReportReason } from '@lens-protocol/react-web'
+import { ReportModalBase } from '@src/components/report-modal-base.tsx'
 
 type PublicationReportModalProps = {
   post: any;
@@ -10,18 +7,16 @@ type PublicationReportModalProps = {
   onClose: () => void;
 };
 
-// ----------------------------------------------------------------------
-
 export const ReportPublicationModal = ({ post, isOpen, onClose }: PublicationReportModalProps) => {
-  const { execute: report } = useReportPublication();
+  const { execute: report } = useReportPublication()
 
   const handleSubmit = async (reason: string, comments: string) => {
     return report({
       publicationId: post.id,
       reason: reason,
       additionalComments: comments,
-    } as any);
-  };
+    } as any)
+  }
 
   return (
     <ReportModalBase
@@ -31,5 +26,5 @@ export const ReportPublicationModal = ({ post, isOpen, onClose }: PublicationRep
       isOpen={isOpen}
       onClose={onClose}
     />
-  );
-};
+  )
+}

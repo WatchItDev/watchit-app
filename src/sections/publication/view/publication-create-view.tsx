@@ -1,25 +1,19 @@
-// @mui
-import Container from '@mui/material/Container';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-
-// components
-import { useSettingsContext } from '@src/components/settings';
-//
-import { IconChevronLeft } from '@tabler/icons-react';
-import PublicationNewWizard from '../publication-new-wizard.tsx';
-import Header from '../../../layouts/dashboard/header';
-import Label from '../../../components/label';
-import { useResponsive } from '@src/hooks/use-responsive.ts';
-
-// ----------------------------------------------------------------------
+import { IconChevronLeft } from '@tabler/icons-react'
+import Button from '@mui/material/Button'
+import Container from '@mui/material/Container'
+import IconButton from '@mui/material/IconButton'
+import Typography from '@mui/material/Typography'
+import Label from '../../../components/label'
+import Header from '../../../layouts/dashboard/header'
+import PublicationNewWizard from '../publication-new-wizard.tsx'
+import { useSettingsContext } from '@src/components/settings'
+import { useResponsive } from '@src/hooks/use-responsive.ts'
 
 export default function PublicationCreateView() {
-  const settings = useSettingsContext();
-  const mdUp = useResponsive('up', 'md');
+  const settings = useSettingsContext()
+  const mdUp = useResponsive('up', 'md')
 
-  const handleBack = () => {};
+  const handleBack = () => {}
 
   return (
     <>
@@ -60,5 +54,5 @@ export default function PublicationCreateView() {
         <PublicationNewWizard />
       </Container>
     </>
-  );
+  )
 }

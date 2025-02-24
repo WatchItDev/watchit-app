@@ -1,10 +1,10 @@
-import Box from '@mui/material/Box';
-import Carousel, { useCarousel } from '@src/components/carousel/index';
-import CarouselNavigationArrows from '@src/components/carousel/components/CarouselNavigationArrows.tsx';
-import { CarouselSection } from '@src/components/poster/carousel-section.tsx';
-import { useItemsPerSlide } from '@src/hooks/components/use-item-per-slide';
-import { useChunkedData } from '@src/hooks/components/use-chunked-data';
-import { CarouselWrapperProps } from '../types';
+import Box from '@mui/material/Box'
+import { CarouselWrapperProps } from '../types'
+import CarouselNavigationArrows from '@src/components/carousel/components/CarouselNavigationArrows.tsx'
+import Carousel, { useCarousel } from '@src/components/carousel/index'
+import { CarouselSection } from '@src/components/poster/carousel-section.tsx'
+import { useChunkedData } from '@src/hooks/components/use-chunked-data'
+import { useItemsPerSlide } from '@src/hooks/components/use-item-per-slide'
 
 export default function CarouselWrapper<T>(props: Readonly<CarouselWrapperProps<T>>) {
   const {
@@ -16,14 +16,14 @@ export default function CarouselWrapper<T>(props: Readonly<CarouselWrapperProps<
     carouselSettings,
     boxStyle,
     boxClassName,
-  } = props;
+  } = props
 
-  const { itemsPerSlide, parentRef } = useItemsPerSlide({ minItemWidth, maxItemWidth });
-  const slideData = useChunkedData<T>(data, itemsPerSlide);
+  const { itemsPerSlide, parentRef } = useItemsPerSlide({ minItemWidth, maxItemWidth })
+  const slideData = useChunkedData<T>(data, itemsPerSlide)
 
   const carousel = useCarousel({
     ...carouselSettings,
-  });
+  })
 
   return (
     <CarouselSection
@@ -44,5 +44,5 @@ export default function CarouselWrapper<T>(props: Readonly<CarouselWrapperProps<
         </Carousel>
       </Box>
     </CarouselSection>
-  );
+  )
 }

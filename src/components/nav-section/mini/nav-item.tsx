@@ -1,15 +1,10 @@
-import { forwardRef } from 'react';
-// @mui
-import Link from '@mui/material/Link';
-import Box from '@mui/material/Box';
-import ListItemText from '@mui/material/ListItemText';
-// routes
-import { RouterLink } from '@src/routes/components';
-//
-import { NavItemProps, NavConfigProps } from '../types';
-import { StyledItem, StyledIcon, StyledNavContent } from './styles';
-
-// ----------------------------------------------------------------------
+import { forwardRef } from 'react'
+import Box from '@mui/material/Box'
+import Link from '@mui/material/Link'
+import ListItemText from '@mui/material/ListItemText'
+import { NavItemProps, NavConfigProps } from '../types'
+import { StyledItem, StyledIcon, StyledNavContent } from './styles'
+import { RouterLink } from '@src/routes/components'
 
 type Props = NavItemProps & {
   config: NavConfigProps;
@@ -17,9 +12,9 @@ type Props = NavItemProps & {
 
 const NavItem = forwardRef<HTMLDivElement, Props>(
   ({ item, depth, open, active, externalLink, config, ...other }, ref) => {
-    const { title, path, icon, disabled, roles } = item;
+    const { title, path, icon, disabled, roles } = item
 
-    const subItem = depth !== 1;
+    const subItem = depth !== 1
 
     const renderContent = (
       <StyledItem
@@ -98,11 +93,11 @@ const NavItem = forwardRef<HTMLDivElement, Props>(
           )}
         </StyledNavContent>
       </StyledItem>
-    );
+    )
 
     // Hidden item by role
     if (roles && !roles.includes(`${config.currentRole}`)) {
-      return null;
+      return null
     }
 
     // External link
@@ -122,7 +117,7 @@ const NavItem = forwardRef<HTMLDivElement, Props>(
         >
           {renderContent}
         </Link>
-      );
+      )
 
     // Default
     return (
@@ -139,8 +134,8 @@ const NavItem = forwardRef<HTMLDivElement, Props>(
       >
         {renderContent}
       </Link>
-    );
+    )
   }
-);
+)
 
-export default NavItem;
+export default NavItem

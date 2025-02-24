@@ -1,3 +1,3 @@
-export * from './types';
+export * from './types'
 
-export { default } from './label';
+export { default } from './label'

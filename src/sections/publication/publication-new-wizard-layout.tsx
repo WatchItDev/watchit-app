@@ -1,10 +1,10 @@
-import { type FC, type PropsWithChildren } from 'react';
-import Grid from '@mui/material/Grid';
-import Card from '@mui/material/Card';
-import LoadingButton from '@mui/lab/LoadingButton';
-import Box from '@mui/material/Box';
-import { Button } from '@mui/material';
-import PublicationNewWizardSummaryControl from './publication-new-wizard-summary-control.tsx';
+import { type FC, type PropsWithChildren } from 'react'
+import LoadingButton from '@mui/lab/LoadingButton'
+import { Button } from '@mui/material'
+import Box from '@mui/material/Box'
+import Card from '@mui/material/Card'
+import Grid from '@mui/material/Grid'
+import PublicationNewWizardSummaryControl from './publication-new-wizard-summary-control.tsx'
 
 interface MovieWizardContentLayoutProps {
   data: any;
@@ -56,6 +56,6 @@ const PublicationWizardContentLayout: FC<PropsWithChildren<MovieWizardContentLay
       </Box>
     </Grid>
   </Grid>
-);
+)
 
-export default PublicationWizardContentLayout;
+export default PublicationWizardContentLayout

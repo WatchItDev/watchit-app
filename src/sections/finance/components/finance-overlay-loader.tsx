@@ -1,9 +1,6 @@
-// @MUI Imports
-import Box from '@mui/material/Box';
-
-// Project imports
-import { LoadingScreen } from '@src/components/loading-screen';
-import { COLORS } from '@src/layouts/config-layout.ts';
+import Box from '@mui/material/Box'
+import { LoadingScreen } from '@src/components/loading-screen'
+import { COLORS } from '@src/layouts/config-layout.ts'
 
 const FinanceOverlayLoader = () => {
   return (
@@ -24,7 +21,7 @@ const FinanceOverlayLoader = () => {
     >
       <LoadingScreen />
     </Box>
-  );
-};
+  )
+}
 
-export default FinanceOverlayLoader;
+export default FinanceOverlayLoader

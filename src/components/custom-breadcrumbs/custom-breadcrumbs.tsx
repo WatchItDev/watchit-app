@@ -1,14 +1,10 @@
-// @mui
-import Box from '@mui/material/Box';
-import Link from '@mui/material/Link';
-import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
-import Breadcrumbs from '@mui/material/Breadcrumbs';
-//
-import { CustomBreadcrumbsProps } from './types';
-import LinkItem from './link-item';
-
-// ----------------------------------------------------------------------
+import Box from '@mui/material/Box'
+import Breadcrumbs from '@mui/material/Breadcrumbs'
+import Link from '@mui/material/Link'
+import Stack from '@mui/material/Stack'
+import Typography from '@mui/material/Typography'
+import LinkItem from './link-item'
+import { CustomBreadcrumbsProps } from './types'
 
 export default function CustomBreadcrumbs({
   links,
@@ -19,7 +15,7 @@ export default function CustomBreadcrumbs({
   sx,
   ...other
 }: CustomBreadcrumbsProps) {
-  const lastLink = links[links.length - 1].name;
+  const lastLink = links[links.length - 1].name
 
   return (
     <Box sx={{ ...sx }}>
@@ -68,10 +64,8 @@ export default function CustomBreadcrumbs({
         </Box>
       )}
     </Box>
-  );
+  )
 }
-
-// ----------------------------------------------------------------------
 
 function Separator() {
   return (
@@ -84,5 +78,5 @@ function Separator() {
         bgcolor: 'text.disabled',
       }}
     />
-  );
+  )
 }

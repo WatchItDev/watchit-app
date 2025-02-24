@@ -1,5 +1,5 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Log } from 'viem';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { Log } from 'viem'
 
 interface BlockchainEventsState {
   events: Log[];
@@ -7,25 +7,25 @@ interface BlockchainEventsState {
 
 const initialState: BlockchainEventsState = {
   events: [],
-};
+}
 
 const blockchainEventsSlice = createSlice({
   name: 'blockchainEvents',
   initialState,
   reducers: {
     addBlockchainEvent(state, action: PayloadAction<Log>) {
-      state.events.push(action.payload);
+      state.events.push(action.payload)
     },
     setBlockchainEvents(state, action: PayloadAction<Log[]>) {
-      state.events = action.payload;
+      state.events = action.payload
     },
     clearBlockchainEvents(state) {
-      state.events = [];
+      state.events = []
     },
   },
-});
+})
 
 export const { addBlockchainEvent, setBlockchainEvents, clearBlockchainEvents } =
-  blockchainEventsSlice.actions;
+  blockchainEventsSlice.actions
 
-export default blockchainEventsSlice.reducer;
+export default blockchainEventsSlice.reducer

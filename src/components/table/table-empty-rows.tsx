@@ -1,8 +1,5 @@
-// @mui
-import TableRow from '@mui/material/TableRow';
-import TableCell from '@mui/material/TableCell';
-
-// ----------------------------------------------------------------------
+import TableCell from '@mui/material/TableCell'
+import TableRow from '@mui/material/TableRow'
 
 type Props = {
   height?: number;
@@ -11,7 +8,7 @@ type Props = {
 
 export default function TableEmptyRows({ emptyRows, height }: Props) {
   if (!emptyRows) {
-    return null;
+    return null
   }
 
   return (
@@ -24,5 +21,5 @@ export default function TableEmptyRows({ emptyRows, height }: Props) {
     >
       <TableCell colSpan={9} />
     </TableRow>
-  );
+  )
 }

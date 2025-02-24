@@ -1,18 +1,12 @@
-// @mui
-import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
-// theme
-import { hideScroll } from '@src/theme/css';
-// import { IconCloudDownload, IconGridDots, IconPlus } from '@tabler/icons-react';
-// components
-import { NAV } from '../config-layout';
-import { NavSectionMini } from '../../components/nav-section';
-import { data } from './config-navigation-mini';
-import { paths } from '../../routes/paths';
-import NavList from '../../components/nav-section/mini/nav-list';
-import SvgColor from '../../components/svg-color';
-
-// ----------------------------------------------------------------------
+import Box from '@mui/material/Box'
+import Stack from '@mui/material/Stack'
+import { data } from './config-navigation-mini'
+import { NavSectionMini } from '../../components/nav-section'
+import NavList from '../../components/nav-section/mini/nav-list'
+import SvgColor from '../../components/svg-color'
+import { paths } from '../../routes/paths'
+import { NAV } from '../config-layout'
+import { hideScroll } from '@src/theme/css'
 
 export default function NavMini() {
   return (
@@ -91,5 +85,5 @@ export default function NavMini() {
         />*/}
       </Stack>
     </Box>
-  );
+  )
 }

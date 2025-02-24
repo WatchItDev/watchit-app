@@ -1,9 +1,9 @@
-import { profile as profileBuilder, MetadataAttributeType } from '@lens-protocol/metadata';
-import { ProfileData } from '@src/auth/context/web3Auth/types';
-import {Profile} from "@lens-protocol/api-bindings";
+import {Profile} from "@lens-protocol/api-bindings"
+import { profile as profileBuilder, MetadataAttributeType } from '@lens-protocol/metadata'
+import { ProfileData } from '@src/auth/context/web3Auth/types'
 
 const removeEmptyValues = (obj: any): any =>
-  Object.fromEntries(Object.entries(obj).filter(([_, v]) => v !== '' && v !== null));
+  Object.fromEntries(Object.entries(obj).filter(([_, v]) => v !== '' && v !== null))
 
 /**
  * Build profile metadata object.
@@ -26,18 +26,18 @@ export const buildProfileMetadata = (
           value,
           type: MetadataAttributeType.STRING,
         }) as any
-    );
+    )
   const metadata = {
     name: data.name ?? '',
     bio: data.bio ?? '',
     picture: profileImageURI ?? '',
     coverPicture: backgroundImageURI ?? '',
     ...(cleanSocialLinks.length > 0 && { attributes: cleanSocialLinks }),
-  };
-  const cleanedMetadata = removeEmptyValues(metadata);
+  }
+  const cleanedMetadata = removeEmptyValues(metadata)
 
-  return profileBuilder(cleanedMetadata);
-};
+  return profileBuilder(cleanedMetadata)
+}
 
 /**
  * Filters out profiles that contain a specific hidden indicator in their "displayName", "bio", or "id" properties.
@@ -48,8 +48,8 @@ export const buildProfileMetadata = (
  */
 export const filterHiddenProfiles = (profiles?: Profile[]): Profile[] | null | undefined => {
   // displayName, bio and lens id properties are checked for the hidden indicator
-  const patterns = ['###HIDDEN###'];
+  const patterns = ['###HIDDEN###']
 
   // Filter profiles that do not contain the hidden indicator in the "displayName" or "bio" properties using the patterns array
-  return profiles?.filter((profile: Profile) => !patterns.some((pattern) => profile?.metadata?.displayName?.includes(pattern) || profile?.metadata?.bio?.includes(pattern) || profile?.id.includes(pattern)));
-};
+  return profiles?.filter((profile: Profile) => !patterns.some((pattern) => profile?.metadata?.displayName?.includes(pattern) || profile?.metadata?.bio?.includes(pattern) || profile?.id.includes(pattern)))
+}

@@ -1,19 +1,13 @@
-// @mui
-import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
-import Button from '@mui/material/Button';
-import ListItem from '@mui/material/ListItem';
-import TextField from '@mui/material/TextField';
-import Typography from '@mui/material/Typography';
-// hooks
-import { useBoolean } from '@src/hooks/use-boolean';
-// utils
-import { fDate } from '@src/utils/format-time';
-// components
-import Iconify from '@src/components/iconify';
-import AvatarProfile from "@src/components/avatar/avatar.tsx";
-
-// ----------------------------------------------------------------------
+import Box from '@mui/material/Box'
+import Button from '@mui/material/Button'
+import ListItem from '@mui/material/ListItem'
+import Stack from '@mui/material/Stack'
+import TextField from '@mui/material/TextField'
+import Typography from '@mui/material/Typography'
+import AvatarProfile from "@src/components/avatar/avatar.tsx"
+import Iconify from '@src/components/iconify'
+import { useBoolean } from '@src/hooks/use-boolean'
+import { fDate } from '@src/utils/format-time'
 
 type Props = {
   name: string;
@@ -32,7 +26,7 @@ export default function GovernanceCommentItem({
   postedAt,
   hasReply,
 }: Props) {
-  const reply = useBoolean();
+  const reply = useBoolean()
 
   return (
     <ListItem
@@ -91,5 +85,5 @@ export default function GovernanceCommentItem({
         </Button>
       )}
     </ListItem>
-  );
+  )
 }

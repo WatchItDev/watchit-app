@@ -1,24 +1,19 @@
-// routes
-import { useParams, useRouter } from '@src/routes/hooks';
-// sections
-import { PublicationDetailsView } from '@src/sections/publication/view';
-import Header from '@src/layouts/dashboard/header.tsx';
-import { paths } from '@src/routes/paths.ts';
-
-import HeaderContent from '@src/layouts/dashboard/header-content.tsx';
-import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
-import { OgMetaTags } from '@src/components/og-meta-tags.tsx';
-
-// ----------------------------------------------------------------------
+import { OgMetaTags } from '@src/components/og-meta-tags.tsx'
+import { GLOBAL_CONSTANTS } from '@src/config-global.ts'
+import HeaderContent from '@src/layouts/dashboard/header-content.tsx'
+import Header from '@src/layouts/dashboard/header.tsx'
+import { useParams, useRouter } from '@src/routes/hooks'
+import { paths } from '@src/routes/paths.ts'
+import { PublicationDetailsView } from '@src/sections/publication/view'
 
 export default function ProductDetailsPage() {
-  const params = useParams();
-  const router = useRouter();
-  const { id } = params;
+  const params = useParams()
+  const router = useRouter()
+  const { id } = params
 
   const handleBack = () => {
-    router.push(paths.dashboard.root);
-  };
+    router.push(paths.dashboard.root)
+  }
 
   return (
     <OgMetaTags
@@ -32,5 +27,5 @@ export default function ProductDetailsPage() {
 
       <PublicationDetailsView id={`${id}`} />
     </OgMetaTags>
-  );
+  )
 }

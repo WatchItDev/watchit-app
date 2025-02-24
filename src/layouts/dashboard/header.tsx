@@ -1,56 +1,48 @@
-// @mui
-import { useTheme } from '@mui/material/styles';
-import Stack from '@mui/material/Stack';
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-// theme
-import { bgBlur } from '@src/theme/css';
-// hooks
-import { useOffSetTop } from '@src/hooks/use-off-set-top';
-import { useResponsive } from '@src/hooks/use-responsive';
-// components
-import Logo from '@src/components/logo';
-import SvgColor from '@src/components/svg-color';
-import { useSettingsContext } from '@src/components/settings';
-//
-import { HEADER, NAV } from '../config-layout';
-import { AccountPopover, HeaderBalance, NotificationsPopover } from '../_common';
-import { PropsWithChildren } from 'react';
+import { PropsWithChildren } from 'react'
 // @ts-ignore
-import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
-
-import { useDispatch, useSelector } from 'react-redux';
-import { toggleDrawer } from '@redux/drawer';
-
-// ----------------------------------------------------------------------
+import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads'
+import { toggleDrawer } from '@redux/drawer'
+import { useDispatch, useSelector } from 'react-redux'
+import AppBar from '@mui/material/AppBar'
+import IconButton from '@mui/material/IconButton'
+import Stack from '@mui/material/Stack'
+import { useTheme } from '@mui/material/styles'
+import Toolbar from '@mui/material/Toolbar'
+import { AccountPopover, HeaderBalance, NotificationsPopover } from '../_common'
+import { HEADER, NAV } from '../config-layout'
+import Logo from '@src/components/logo'
+import { useSettingsContext } from '@src/components/settings'
+import SvgColor from '@src/components/svg-color'
+import { useOffSetTop } from '@src/hooks/use-off-set-top'
+import { useResponsive } from '@src/hooks/use-responsive'
+import { bgBlur } from '@src/theme/css'
 
 export default function Header({ children }: PropsWithChildren) {
-  const sessionData = useSelector((state: any) => state.auth.session);
+  const sessionData = useSelector((state: any) => state.auth.session)
 
-  const theme = useTheme();
+  const theme = useTheme()
 
-  const settings = useSettingsContext();
+  const settings = useSettingsContext()
 
-  const isNavHorizontal = settings.themeLayout === 'horizontal';
+  const isNavHorizontal = settings.themeLayout === 'horizontal'
 
-  const lgUp = useResponsive('up', 'lg');
+  const lgUp = useResponsive('up', 'lg')
 
-  const offset = useOffSetTop(HEADER.H_DESKTOP);
+  const offset = useOffSetTop(HEADER.H_DESKTOP)
 
-  const offsetTop = offset && !isNavHorizontal;
+  const offsetTop = offset && !isNavHorizontal
 
   // Inside the Header component
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
 
   const handleToggleDrawer = () => {
-    dispatch(toggleDrawer());
-  };
+    dispatch(toggleDrawer())
+  }
 
   // @ts-ignore
-  const minibarState = useSelector((state) => state.minibar.state);
+  const minibarState = useSelector((state) => state.minibar.state)
 
-  const isNavMini = minibarState === 'mini';
+  const isNavMini = minibarState === 'mini'
 
   const renderContent = (
     <>
@@ -82,7 +74,7 @@ export default function Header({ children }: PropsWithChildren) {
         <AccountPopover />
       </Stack>
     </>
-  );
+  )
 
   return (
     <AppBar
@@ -118,5 +110,5 @@ export default function Header({ children }: PropsWithChildren) {
         {renderContent}
       </Toolbar>
     </AppBar>
-  );
+  )
 }

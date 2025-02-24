@@ -1,19 +1,19 @@
-import * as Yup from 'yup';
-import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import Grid from '@mui/material/Grid';
-import Card from '@mui/material/Card';
-import Stack from '@mui/material/Stack';
-import CardHeader from '@mui/material/CardHeader';
-import FormProvider, { RHFTextField, RHFSelect, RHFUpload } from '@src/components/hook-form';
-import Typography from '@mui/material/Typography';
-import { useCallback } from 'react';
-import MenuItem from '@mui/material/MenuItem';
-import Box from '@mui/material/Box';
-import Divider from '@mui/material/Divider';
-import PublicationWizardContentLayout from './publication-new-wizard-layout';
-import Image from '../../components/image';
-import SingleFilePreviewCustom from '../../components/upload/preview-single-file-custom';
+import { useCallback } from 'react'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { useForm } from 'react-hook-form'
+import * as Yup from 'yup'
+import Box from '@mui/material/Box'
+import Card from '@mui/material/Card'
+import CardHeader from '@mui/material/CardHeader'
+import Divider from '@mui/material/Divider'
+import Grid from '@mui/material/Grid'
+import MenuItem from '@mui/material/MenuItem'
+import Stack from '@mui/material/Stack'
+import Typography from '@mui/material/Typography'
+import PublicationWizardContentLayout from './publication-new-wizard-layout'
+import Image from '../../components/image'
+import SingleFilePreviewCustom from '../../components/upload/preview-single-file-custom'
+import FormProvider, { RHFTextField, RHFSelect, RHFUpload } from '@src/components/hook-form'
 
 type MediaAssetFields =
   | 'verticalPoster'
@@ -48,7 +48,7 @@ const MediaAssetsSchema = Yup.object().shape({
   subtitles: Yup.mixed().required('Subtitle file is required'),
   subtitleFormat: Yup.string().required('Subtitle format is required'),
   subtitleLanguage: Yup.string().required('Subtitle language is required'),
-});
+})
 
 export default function MediaAssetsForm({ onSubmit, onBack, data }: any) {
   const methods = useForm({
@@ -69,62 +69,62 @@ export default function MediaAssetsForm({ onSubmit, onBack, data }: any) {
       subtitleFormat: data.subtitleFormat ?? '',
       subtitleLanguage: data.subtitleLanguage ?? '',
     },
-  });
+  })
 
-  const { watch, setValue } = methods;
+  const { watch, setValue } = methods
 
-  const values = watch();
+  const values = watch()
 
   const videoFormatOptions = [
     { value: 'mp4', label: 'MP4' },
     { value: 'mkv', label: 'MKV' },
     { value: 'mov', label: 'MOV' },
-  ];
+  ]
 
   const resolutionOptions = [
     { value: '1920x1080', label: '1920x1080' },
     { value: '3840x2160', label: '3840x2160' },
-  ];
+  ]
 
   const codecOptions = [
     { value: 'h264', label: 'H.264' },
     { value: 'h265', label: 'H.265' },
-  ];
+  ]
 
   const audioFormatOptions = [
     { value: 'aac', label: 'AAC' },
     { value: 'mp3', label: 'MP3' },
-  ];
+  ]
 
   const audioChannelsOptions = [
     { value: 'stereo', label: 'Stereo' },
     { value: 'surround51', label: '5.1 Surround' },
-  ];
+  ]
 
   const subtitleFormatOptions = [
     { value: 'vtt', label: 'VTT' },
     { value: 'srt', label: 'SRT' },
-  ];
+  ]
 
   const subtitleLanguageOptions = [
     { value: 'english', label: 'English' },
     { value: 'spanish', label: 'Spanish' },
-  ];
+  ]
 
   const handleDropSingleFile = useCallback(
     (input: MediaAssetFields, acceptedFiles: File[]) => {
-      const file = acceptedFiles[0];
+      const file = acceptedFiles[0]
 
       const newFile = Object.assign(file, {
         preview: URL.createObjectURL(file),
-      });
+      })
 
       if (newFile) {
-        setValue(input, newFile, { shouldValidate: true });
+        setValue(input, newFile, { shouldValidate: true })
       }
     },
     [setValue]
-  );
+  )
 
   return (
     <FormProvider methods={methods} onSubmit={methods.handleSubmit(onSubmit)}>
@@ -148,15 +148,15 @@ export default function MediaAssetsForm({ onSubmit, onBack, data }: any) {
                     thumbnailRatio="4/6"
                     name="verticalPoster"
                     onDrop={(acceptedFiles) => {
-                      handleDropSingleFile('verticalPoster', acceptedFiles);
+                      handleDropSingleFile('verticalPoster', acceptedFiles)
                     }}
                     helperText="Upload the vertical poster image"
                     accept={{ 'image/*': [] }}
                     onRemove={(inputFile) => {
-                      console.log('on remove: ', inputFile);
+                      console.log('on remove: ', inputFile)
                     }}
                     onRemoveAll={() => {
-                      console.log('on remove all');
+                      console.log('on remove all')
                     }}
                     onUpload={() => console.info('ON UPLOAD')}
                     singleFilePreview={SingleFilePreviewCustom}
@@ -186,15 +186,15 @@ export default function MediaAssetsForm({ onSubmit, onBack, data }: any) {
                     thumbnailRatio="16/9"
                     name="horizontalPoster"
                     onDrop={(acceptedFiles) => {
-                      handleDropSingleFile('horizontalPoster', acceptedFiles);
+                      handleDropSingleFile('horizontalPoster', acceptedFiles)
                     }}
                     helperText="Upload the horizontal poster image"
                     accept={{ 'image/*': [] }}
                     onRemove={(inputFile) => {
-                      console.log('on remove: ', inputFile);
+                      console.log('on remove: ', inputFile)
                     }}
                     onRemoveAll={() => {
-                      console.log('on remove all');
+                      console.log('on remove all')
                     }}
                     onUpload={() => console.info('ON UPLOAD')}
                     singleFilePreview={SingleFilePreviewCustom}
@@ -224,15 +224,15 @@ export default function MediaAssetsForm({ onSubmit, onBack, data }: any) {
                     thumbnailRatio="21/9"
                     name="wallpaper"
                     onDrop={(acceptedFiles) => {
-                      handleDropSingleFile('wallpaper', acceptedFiles);
+                      handleDropSingleFile('wallpaper', acceptedFiles)
                     }}
                     helperText="Upload the wallpaper image"
                     accept={{ 'image/*': [] }}
                     onRemove={(inputFile) => {
-                      console.log('on remove: ', inputFile);
+                      console.log('on remove: ', inputFile)
                     }}
                     onRemoveAll={() => {
-                      console.log('on remove all');
+                      console.log('on remove all')
                     }}
                     onUpload={() => console.info('ON UPLOAD')}
                     singleFilePreview={SingleFilePreviewCustom}
@@ -264,15 +264,15 @@ export default function MediaAssetsForm({ onSubmit, onBack, data }: any) {
                     thumbnail
                     name="fullMovie"
                     onDrop={(acceptedFiles) => {
-                      handleDropSingleFile('fullMovie', acceptedFiles);
+                      handleDropSingleFile('fullMovie', acceptedFiles)
                     }}
                     helperText="Upload the full movie file"
                     accept={{ 'video/*': [] }}
                     onRemove={(inputFile) => {
-                      console.log('on remove: ', inputFile);
+                      console.log('on remove: ', inputFile)
                     }}
                     onRemoveAll={() => {
-                      console.log('on remove all');
+                      console.log('on remove all')
                     }}
                     onUpload={() => console.info('ON UPLOAD')}
                     placeholder={
@@ -298,15 +298,15 @@ export default function MediaAssetsForm({ onSubmit, onBack, data }: any) {
                     thumbnail
                     name="trailer"
                     onDrop={(acceptedFiles) => {
-                      handleDropSingleFile('trailer', acceptedFiles);
+                      handleDropSingleFile('trailer', acceptedFiles)
                     }}
                     helperText="Upload the trailer file"
                     accept={{ 'video/*': [] }}
                     onRemove={(inputFile) => {
-                      console.log('on remove: ', inputFile);
+                      console.log('on remove: ', inputFile)
                     }}
                     onRemoveAll={() => {
-                      console.log('on remove all');
+                      console.log('on remove all')
                     }}
                     onUpload={() => console.info('ON UPLOAD')}
                     placeholder={
@@ -332,15 +332,15 @@ export default function MediaAssetsForm({ onSubmit, onBack, data }: any) {
                     thumbnail
                     name="subtitles"
                     onDrop={(acceptedFiles) => {
-                      handleDropSingleFile('subtitles', acceptedFiles);
+                      handleDropSingleFile('subtitles', acceptedFiles)
                     }}
                     helperText="Upload the subtitle file"
                     accept={{ 'text/vtt': ['.vtt'], 'application/x-subrip': ['.srt'] }}
                     onRemove={(inputFile) => {
-                      console.log('on remove: ', inputFile);
+                      console.log('on remove: ', inputFile)
                     }}
                     onRemoveAll={() => {
-                      console.log('on remove all');
+                      console.log('on remove all')
                     }}
                     onUpload={() => console.info('ON UPLOAD')}
                     placeholder={
@@ -442,5 +442,5 @@ export default function MediaAssetsForm({ onSubmit, onBack, data }: any) {
         </Grid>
       </PublicationWizardContentLayout>
     </FormProvider>
-  );
+  )
 }

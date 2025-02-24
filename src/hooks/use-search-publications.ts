@@ -1,36 +1,36 @@
-import { useState, useEffect } from 'react';
-import { supabase } from '@src/utils/supabase';
+import { useState, useEffect } from 'react'
+import { supabase } from '@src/utils/supabase'
 
 export const useSearchPublications = (query: string) => {
-  const [publications, setPublications] = useState<any[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
+  const [publications, setPublications] = useState<any[]>([])
+  const [loading, setLoading] = useState<boolean>(false)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     const fetchPublications = async () => {
-      setLoading(true);
-      setError(null);
+      setLoading(true)
+      setError(null)
 
       const { data, error } = await supabase
         .from('publications')
         .select('post_id, title, description')
-        .or(`title.ilike.%${query}%,description.ilike.%${query}%`);
+        .or(`title.ilike.%${query}%,description.ilike.%${query}%`)
 
       if (error) {
-        setError(error.message);
+        setError(error.message)
       } else {
-        setPublications(data);
+        setPublications(data)
       }
 
-      setLoading(false);
-    };
+      setLoading(false)
+    }
 
     if (query) {
-      fetchPublications().then(() => {});
+      fetchPublications().then(() => {})
     } else {
-      setPublications([]);
+      setPublications([])
     }
-  }, [query]);
+  }, [query])
 
-  return { publications, loading, error };
-};
+  return { publications, loading, error }
+}

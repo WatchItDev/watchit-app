@@ -1,5 +1,3 @@
-// ----------------------------------------------------------------------
-
 export type DateRangePickerProps = {
   startDate: Date | null;
   endDate: Date | null;

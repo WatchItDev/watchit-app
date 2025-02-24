@@ -1,4 +1,4 @@
-import { verifyIpfsData } from '@src/utils/ipfs';
+import { verifyIpfsData } from '@src/utils/ipfs'
 
 export type CommentPayload = {
   uri: string;
@@ -7,22 +7,22 @@ export type CommentPayload = {
 
 // eslint-disable-next-line no-restricted-globals
 self.onmessage = async (event: MessageEvent<{ type: string; payload: CommentPayload }>) => {
-  const { type, payload } = event.data;
+  const { type, payload } = event.data
 
   if (type === 'VERIFY_IPFS') {
-    const { uri, pendingCommentId } = payload;
+    const { uri, pendingCommentId } = payload
 
     try {
       // Verify metadata on IPFS
-      await verifyIpfsData(uri);
+      await verifyIpfsData(uri)
 
       // Send a success message to main thread
       // eslint-disable-next-line no-restricted-globals
-      self.postMessage({ success: true, pendingCommentId });
+      self.postMessage({ success: true, pendingCommentId })
     } catch (error) {
       // Send a error message to main thread
       // eslint-disable-next-line no-restricted-globals
-      self.postMessage({ success: false, error: (error as Error).message, pendingCommentId });
+      self.postMessage({ success: false, error: (error as Error).message, pendingCommentId })
     }
   }
-};
+}

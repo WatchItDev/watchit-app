@@ -1,16 +1,11 @@
-import { useState, useEffect, useRef } from 'react';
-// @mui
-import Stack from '@mui/material/Stack';
-import Popover from '@mui/material/Popover';
-import { appBarClasses } from '@mui/material/AppBar';
-// routes
-import { usePathname } from '@src/routes/hooks';
-import { useActiveLink } from '@src/routes/hooks/use-active-link';
-//
-import { NavListProps, NavConfigProps } from '../types';
-import NavItem from './nav-item';
-
-// ----------------------------------------------------------------------
+import { useState, useEffect, useRef } from 'react'
+import { appBarClasses } from '@mui/material/AppBar'
+import Popover from '@mui/material/Popover'
+import Stack from '@mui/material/Stack'
+import { NavListProps, NavConfigProps } from '../types'
+import NavItem from './nav-item'
+import { usePathname } from '@src/routes/hooks'
+import { useActiveLink } from '@src/routes/hooks/use-active-link'
 
 type NavListRootProps = {
   data: NavListProps;
@@ -20,52 +15,52 @@ type NavListRootProps = {
 };
 
 export default function NavList({ data, depth, hasChild, config }: NavListRootProps) {
-  const navRef = useRef(null);
+  const navRef = useRef(null)
 
-  const pathname = usePathname();
+  const pathname = usePathname()
 
-  const active = useActiveLink(data?.path ?? '', hasChild);
+  const active = useActiveLink(data?.path ?? '', hasChild)
 
-  const externalLink = data?.path?.includes('http');
+  const externalLink = data?.path?.includes('http')
 
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false)
 
   useEffect(() => {
     if (open) {
-      handleClose();
+      handleClose()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pathname]);
+  }, [pathname])
 
   useEffect(() => {
     const appBarEl = Array.from(
       document.querySelectorAll(`.${appBarClasses.root}`)
-    ) as Array<HTMLElement>;
+    ) as Array<HTMLElement>
 
     // Reset styles when hover
     const styles = () => {
-      document.body.style.overflow = '';
-      document.body.style.padding = '';
+      document.body.style.overflow = ''
+      document.body.style.padding = ''
       // Apply for Window
       appBarEl.forEach((elem) => {
-        elem.style.padding = '';
-      });
-    };
+        elem.style.padding = ''
+      })
+    }
 
     if (open) {
-      styles();
+      styles()
     } else {
-      styles();
+      styles()
     }
-  }, [open]);
+  }, [open])
 
   const handleOpen = () => {
-    setOpen(true);
-  };
+    setOpen(true)
+  }
 
   const handleClose = () => {
-    setOpen(false);
-  };
+    setOpen(false)
+  }
 
   return (
     <>
@@ -115,10 +110,8 @@ export default function NavList({ data, depth, hasChild, config }: NavListRootPr
         </Popover>
       )}
     </>
-  );
+  )
 }
-
-// ----------------------------------------------------------------------
 
 type NavListSubProps = {
   data: NavListProps[];
@@ -139,5 +132,5 @@ function NavSubList({ data, depth, config }: NavListSubProps) {
         />
       ))}
     </Stack>
-  );
+  )
 }

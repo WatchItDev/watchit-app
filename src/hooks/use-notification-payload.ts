@@ -1,5 +1,5 @@
-import { ProfileSession } from '@lens-protocol/react-web';
-import {dicebear} from "@src/utils/dicebear.ts";
+import { ProfileSession } from '@lens-protocol/react-web'
+import {dicebear} from "@src/utils/dicebear.ts"
 
 type NotificationPayload = {
   type: string;
@@ -44,8 +44,8 @@ export const useNotificationPayload = (sessionData: ProfileSession | undefined) 
           avatar: toProfile.avatar ?? dicebear(toProfile.id)},
         content,
       },
-    };
-  };
+    }
+  }
 
-  return { generatePayload };
-};
+  return { generatePayload }
+}

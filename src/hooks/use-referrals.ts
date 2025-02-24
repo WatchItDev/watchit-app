@@ -1,9 +1,8 @@
-import { useState } from 'react';
-import { useSelector } from 'react-redux';
-import emailjs from '@emailjs/browser';
-
-import { GLOBAL_CONSTANTS } from '@src/config-global';
-import { Invitation } from '@src/types/invitation'; // <-- Importing from separate types file
+import { useState } from 'react'
+import emailjs from '@emailjs/browser'
+import { useSelector } from 'react-redux'
+import { GLOBAL_CONSTANTS } from '@src/config-global'
+import { Invitation } from '@src/types/invitation'
 import {
   fetchInvitations as fetchInvitationsAction,
   checkIfMyEmailHasPendingInvite as checkIfMyEmailHasPendingInviteAction,
@@ -12,7 +11,7 @@ import {
   checkIfEmailAlreadyAccepted as checkIfEmailAlreadyAcceptedAction,
   sendInvitation as sendInvitationAction,
   acceptOrCreateInvitationForUser as acceptOrCreateInvitationForUserAction,
-} from '@src/utils/supabase-actions';
+} from '@src/utils/supabase-actions'
 
 /**
  * The type for sending emails through EmailJS.
@@ -26,16 +25,16 @@ const useReferrals = () => {
   /**
    * State variables to manage invitations, loading state, and error messages.
    */
-  const [invitations, setInvitations] = useState<Invitation[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
+  const [invitations, setInvitations] = useState<Invitation[]>([])
+  const [loading, setLoading] = useState<boolean>(false)
+  const [error, setError] = useState<string | null>(null)
 
   /**
    * Retrieve the current user's email and session data from Redux (or your global state).
    * Adjust according to how you store user data in your application.
    */
-  const userEmail = useSelector((state: any) => state.auth.email);
-  const sessionData = useSelector((state: any) => state.auth.session);
+  const userEmail = useSelector((state: any) => state.auth.email)
+  const sessionData = useSelector((state: any) => state.auth.session)
 
   /**
    * Fetches all invitations from the Supabase 'invitations' table filtered by senderId.
@@ -44,19 +43,19 @@ const useReferrals = () => {
    * @param {string} senderId - The ID of the user who sent the invitations.
    */
   const fetchInvitations = async (senderId: string) => {
-    setLoading(true);
-    setError(null);
+    setLoading(true)
+    setError(null)
 
-    const { data, error } = await fetchInvitationsAction(senderId);
+    const { data, error } = await fetchInvitationsAction(senderId)
 
     if (error) {
-      setError(error);
+      setError(error)
     } else {
-      setInvitations(data || []);
+      setInvitations(data || [])
     }
 
-    setLoading(false);
-  };
+    setLoading(false)
+  }
 
   /**
    * Checks whether the current user's email has a pending invitation in the 'invitations' table.
@@ -64,18 +63,18 @@ const useReferrals = () => {
    * @returns {Promise<boolean>} - Returns true if there is at least one pending invitation for the current user's email, otherwise false.
    */
   const checkIfMyEmailHasPendingInvite = async (): Promise<boolean> => {
-    setLoading(true);
-    setError(null);
+    setLoading(true)
+    setError(null)
 
-    const { hasPending, error } = await checkIfMyEmailHasPendingInviteAction(userEmail);
+    const { hasPending, error } = await checkIfMyEmailHasPendingInviteAction(userEmail)
 
     if (error) {
-      setError(error);
+      setError(error)
     }
 
-    setLoading(false);
-    return hasPending;
-  };
+    setLoading(false)
+    return hasPending
+  }
 
   /**
    * Accepts an existing invitation by updating its status from 'pending' to 'accepted'.
@@ -85,18 +84,18 @@ const useReferrals = () => {
    * @returns {Promise<Invitation | null>} - Returns the updated invitation if successful, otherwise null.
    */
   const acceptInvitation = async (invitationId: string): Promise<Invitation | null> => {
-    setLoading(true);
-    setError(null);
+    setLoading(true)
+    setError(null)
 
     const { data, error } = await acceptInvitationAction(
       invitationId,
       sessionData?.profile?.id
-    );
+    )
 
     if (error) {
-      setError(error);
-      setLoading(false);
-      return null;
+      setError(error)
+      setLoading(false)
+      return null
     }
 
     // Update local state to reflect the accepted status
@@ -110,11 +109,11 @@ const useReferrals = () => {
           }
           : inv
       )
-    );
+    )
 
-    setLoading(false);
-    return data;
-  };
+    setLoading(false)
+    return data
+  }
 
   /**
    * Checks if there is already an invitation from the current user (userEmail) to the given destinationEmail.
@@ -123,18 +122,18 @@ const useReferrals = () => {
    * @returns {Promise<boolean>} - Returns true if there is an existing invitation, false otherwise.
    */
   const checkIfInvitationSent = async (destinationEmail: string): Promise<boolean> => {
-    setLoading(true);
-    setError(null);
+    setLoading(true)
+    setError(null)
 
-    const { exists, error } = await checkIfInvitationSentAction(userEmail, destinationEmail);
+    const { exists, error } = await checkIfInvitationSentAction(userEmail, destinationEmail)
 
     if (error) {
-      setError(error);
+      setError(error)
     }
 
-    setLoading(false);
-    return exists;
-  };
+    setLoading(false)
+    return exists
+  }
 
   /**
    * Checks if the specified email already has an accepted invitation.
@@ -144,18 +143,18 @@ const useReferrals = () => {
    * @returns {Promise<boolean>} - Returns true if there's an invitation with status 'accepted' for this email, otherwise false.
    */
   const checkIfEmailAlreadyAccepted = async (destinationEmail: string): Promise<boolean> => {
-    setLoading(true);
-    setError(null);
+    setLoading(true)
+    setError(null)
 
-    const { accepted, error } = await checkIfEmailAlreadyAcceptedAction(destinationEmail);
+    const { accepted, error } = await checkIfEmailAlreadyAcceptedAction(destinationEmail)
 
     if (error) {
-      setError(error);
+      setError(error)
     }
 
-    setLoading(false);
-    return accepted;
-  };
+    setLoading(false)
+    return accepted
+  }
 
   /**
    * Sends a new invitation. Inserts a record into the 'invitations' table in Supabase,
@@ -167,21 +166,21 @@ const useReferrals = () => {
    */
   const sendInvitation = async (destination: string, payload: any): Promise<void> => {
     // Insert a new invitation into Supabase
-    const { error } = await sendInvitationAction(destination, payload, userEmail, sessionData);
+    const { error } = await sendInvitationAction(destination, payload, userEmail, sessionData)
 
     if (error) {
-      console.error('Error storing invitation in Supabase:', error);
-      throw new Error(error);
+      console.error('Error storing invitation in Supabase:', error)
+      throw new Error(error)
     } else {
-      console.log('Invitation stored successfully in Supabase.');
+      console.log('Invitation stored successfully in Supabase.')
 
       // Send the email via EmailJS
       await sendEmail({
         to_email: destination,
         from_name: payload?.data?.from?.displayName ?? 'Watchit Web3xAI',
-      });
+      })
     }
-  };
+  }
 
   /**
    * ------------------------------------------------------------------
@@ -193,25 +192,25 @@ const useReferrals = () => {
    * ------------------------------------------------------------------
    */
   const acceptOrCreateInvitationForUser = async () => {
-    const { error } = await acceptOrCreateInvitationForUserAction(userEmail, sessionData);
+    const { error } = await acceptOrCreateInvitationForUserAction(userEmail, sessionData)
 
     if (error) {
-      console.error('Error in acceptOrCreateInvitationForUser:', error);
+      console.error('Error in acceptOrCreateInvitationForUser:', error)
     }
-  };
+  }
 
   /**
    * Send an email with EmailJS.
    */
   const sendEmail = async (data: EmailParams) => {
-    const { from_name, to_email } = data;
+    const { from_name, to_email } = data
 
     // Set the template parameters for EmailJS
     const templateParams = {
       to_email,
       from_name,
       from_email: GLOBAL_CONSTANTS.SENDER_EMAIL, // <-- Enforcing the global from_email
-    };
+    }
 
     try {
       const result = await emailjs.send(
@@ -219,13 +218,13 @@ const useReferrals = () => {
         GLOBAL_CONSTANTS.EMAIL_TEMPLATE_ID,
         templateParams,
         GLOBAL_CONSTANTS.EMAIL_API_KEY
-      );
-      console.log('Email sent successfully:', result.text);
+      )
+      console.log('Email sent successfully:', result.text)
     } catch (err) {
-      console.error('Error sending email:', err);
-      throw err;
+      console.error('Error sending email:', err)
+      throw err
     }
-  };
+  }
 
   /**
    * Return all state variables and methods so they can be used in any component that imports this hook.
@@ -245,7 +244,7 @@ const useReferrals = () => {
     sendInvitation,
     acceptOrCreateInvitationForUser,
     sendEmail,
-  };
-};
+  }
+}
 
-export default useReferrals;
+export default useReferrals

@@ -1,31 +1,31 @@
-import { FC, useState } from 'react';
-import { Typography, Box, TextField, Stack, Paper } from '@mui/material';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import LoadingButton from '@mui/lab/LoadingButton';
+import { FC, useState } from 'react'
+import LoadingButton from '@mui/lab/LoadingButton'
+import { Typography, Box, TextField, Stack, Paper } from '@mui/material'
+import Card from '@mui/material/Card'
+import CardContent from '@mui/material/CardContent'
 
 const tipOptions = [
   { value: '10', title: '10', subtitle: 'A token of appreciation' },
   { value: '50', title: '50', subtitle: 'Show more support' },
   { value: '100', title: '100', subtitle: 'Go the extra mile' },
-];
+]
 
 export const LeaveTipCard: FC = () => {
-  const [selectedTip, setSelectedTip] = useState('10');
-  const [customTip, setCustomTip] = useState('');
-  const [successMessage, setSuccessMessage] = useState(false);
+  const [selectedTip, setSelectedTip] = useState('10')
+  const [customTip, setCustomTip] = useState('')
+  const [successMessage, setSuccessMessage] = useState(false)
 
   const handleTipChange = (value: string) => {
-    setSelectedTip(value);
-    setCustomTip('');
-    setSuccessMessage(false);
-  };
+    setSelectedTip(value)
+    setCustomTip('')
+    setSuccessMessage(false)
+  }
 
   const handleCustomTipChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSelectedTip('');
-    setCustomTip(event.target.value);
-    setSuccessMessage(false);
-  };
+    setSelectedTip('')
+    setCustomTip(event.target.value)
+    setSuccessMessage(false)
+  }
 
   return (
     <Card sx={{ width: '100%', maxWidth: { lg: 400 }, margin: 'auto', backgroundColor: '#2B2D31' }}>
@@ -108,5 +108,5 @@ export const LeaveTipCard: FC = () => {
         )}
       </CardContent>
     </Card>
-  );
-};
+  )
+}

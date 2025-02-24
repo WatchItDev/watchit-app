@@ -1,21 +1,18 @@
-import { useRef, useCallback, useState } from 'react';
-import Carousel, { Settings } from 'react-slick';
-// @mui
-import { useTheme } from '@mui/material/styles';
-import {CarouselReturnType} from "@src/hooks/components/types.ts";
-
-// ----------------------------------------------------------------------
+import { useRef, useCallback, useState } from 'react'
+import Carousel, { Settings } from 'react-slick'
+import { useTheme } from '@mui/material/styles'
+import {CarouselReturnType} from "@src/hooks/components/types.ts"
 
 export default function useCarousel(props?: Settings): CarouselReturnType {
-  const theme = useTheme();
+  const theme = useTheme()
 
-  const carouselRef = useRef<Carousel | null>(null);
+  const carouselRef = useRef<Carousel | null>(null)
 
-  const [currentIndex, setCurrentIndex] = useState(props?.initialSlide || 0);
+  const [currentIndex, setCurrentIndex] = useState(props?.initialSlide || 0)
 
-  const [nav, setNav] = useState<Carousel | undefined>(undefined);
+  const [nav, setNav] = useState<Carousel | undefined>(undefined)
 
-  const rtl = theme.direction === 'rtl';
+  const rtl = theme.direction === 'rtl'
 
   const carouselSettings = {
     arrows: false,
@@ -25,31 +22,31 @@ export default function useCarousel(props?: Settings): CarouselReturnType {
     beforeChange: (current: number, next: number) => setCurrentIndex(next),
     ...props,
     fade: !!(props?.fade && !rtl),
-  };
+  }
 
   const onSetNav = useCallback(() => {
     if (carouselRef.current) {
-      setNav(carouselRef.current);
+      setNav(carouselRef.current)
     }
-  }, []);
+  }, [])
 
   const onPrev = useCallback(() => {
     if (carouselRef.current) {
-      carouselRef.current.slickPrev();
+      carouselRef.current.slickPrev()
     }
-  }, []);
+  }, [])
 
   const onNext = useCallback(() => {
     if (carouselRef.current) {
-      carouselRef.current.slickNext();
+      carouselRef.current.slickNext()
     }
-  }, []);
+  }, [])
 
   const onTogo = useCallback((index: number) => {
     if (carouselRef.current) {
-      carouselRef.current.slickGoTo(index);
+      carouselRef.current.slickGoTo(index)
     }
-  }, []);
+  }, [])
 
   return {
     nav,
@@ -64,5 +61,5 @@ export default function useCarousel(props?: Settings): CarouselReturnType {
     //
     setNav,
     setCurrentIndex,
-  };
+  }
 }

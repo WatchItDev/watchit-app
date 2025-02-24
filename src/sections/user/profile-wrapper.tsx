@@ -1,5 +1,5 @@
-import {FC, PropsWithChildren} from "react";
-import Stack from "@mui/material/Stack";
+import {FC, PropsWithChildren} from "react"
+import Stack from "@mui/material/Stack"
 
 interface ProfileWrapperProps extends  PropsWithChildren {
   sidebar: React.ReactNode;
@@ -38,7 +38,7 @@ const ProfileWrapper: FC<ProfileWrapperProps> = ({children, sidebar}) => {
       {sidebar}
 
     </Stack>
-  );
+  )
 }
 
-export default ProfileWrapper;
+export default ProfileWrapper

@@ -42,4 +42,4 @@ export const SUCCESS_MESSAGES: Record<SUCCESS, string> = {
 
   // Metamask
   [SUCCESS.METAMASK_CONNECTED_SUCCESSFULLY]: 'MetaMask connected successfully!',
-};
+}

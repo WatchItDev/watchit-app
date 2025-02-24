@@ -1,31 +1,20 @@
-// React and libraries imports
-import React from 'react';
-import { useDispatch } from 'react-redux';
-
-// @mui
-import Stack from '@mui/material/Stack';
-import CardHeader from '@mui/material/CardHeader';
-import Card, { CardProps } from '@mui/material/Card';
-import Tooltip from '@mui/material/Tooltip';
-import IconButton from '@mui/material/IconButton';
-import ListItemText from '@mui/material/ListItemText';
-import Box from '@mui/material/Box';
-
-// Project components
-import Iconify from '@src/components/iconify';
-import Carousel, { useCarousel } from '@src/components/carousel/index';
-import CarouselNavigationArrows from '@src/components/carousel/components/CarouselNavigationArrows.tsx';
-import AvatarProfile from "@src/components/avatar/avatar.tsx";
-
-// routes
-import { paths } from '@src/routes/paths';
-import { useRouter } from '@src/routes/hooks';
-
-// lens
-import { Profile } from '@lens-protocol/api-bindings';
-import { storeAddress, toggleRainbow } from '@redux/address';
-
-// ----------------------------------------------------------------------
+import React from 'react'
+import { Profile } from '@lens-protocol/api-bindings'
+import { storeAddress, toggleRainbow } from '@redux/address'
+import { useDispatch } from 'react-redux'
+import Box from '@mui/material/Box'
+import Card, { CardProps } from '@mui/material/Card'
+import CardHeader from '@mui/material/CardHeader'
+import IconButton from '@mui/material/IconButton'
+import ListItemText from '@mui/material/ListItemText'
+import Stack from '@mui/material/Stack'
+import Tooltip from '@mui/material/Tooltip'
+import AvatarProfile from "@src/components/avatar/avatar.tsx"
+import CarouselNavigationArrows from '@src/components/carousel/components/CarouselNavigationArrows.tsx'
+import Carousel, { useCarousel } from '@src/components/carousel/index'
+import Iconify from '@src/components/iconify'
+import { useRouter } from '@src/routes/hooks'
+import { paths } from '@src/routes/paths'
 
 interface Props extends CardProps {
   title?: string;
@@ -41,45 +30,45 @@ export default function FinanceContactsCarousel({
   chunkSize = 5,
   ...other
 }: Props) {
-  const router = useRouter();
-  const dispatch = useDispatch();
+  const router = useRouter()
+  const dispatch = useDispatch()
 
   function scrollToSmoothly(pos: number, time: number) {
-    let currentPos = window.scrollY;
-    let start: number | null = null;
+    let currentPos = window.scrollY
+    let start: number | null = null
     if (time == null) time = 500;
     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-    (pos = +pos), (time = +time);
+    (pos = +pos), (time = +time)
 
     window.requestAnimationFrame(function step(currentTime) {
-      start = !start ? currentTime : start;
-      let progress = currentTime - start;
+      start = !start ? currentTime : start
+      let progress = currentTime - start
 
-      const lgPos = ((pos - currentPos) * progress) / time + currentPos;
+      const lgPos = ((pos - currentPos) * progress) / time + currentPos
       const gtPos = currentPos - ((currentPos - pos) * progress) / time
-      window.scrollTo(0, currentPos < pos ? lgPos : gtPos);
+      window.scrollTo(0, currentPos < pos ? lgPos : gtPos)
 
       progress < time
         ? window.requestAnimationFrame(step)
-        : window.scrollTo(0, pos);
+        : window.scrollTo(0, pos)
 
-    });
+    })
   }
 
   const handleClick = (address: string, profileId: string) => {
-    dispatch(toggleRainbow());
-    dispatch(storeAddress({ address, profileId }));
+    dispatch(toggleRainbow())
+    dispatch(storeAddress({ address, profileId }))
 
     // Scroll to top the window with a smooth animation
-    scrollToSmoothly(0, 1000);
+    scrollToSmoothly(0, 1000)
     setTimeout(() => {
-      dispatch(toggleRainbow());
-    }, 1400);
-  };
+      dispatch(toggleRainbow())
+    }, 1400)
+  }
 
   const goToProfile = (id: string) => {
-    router.push(paths.dashboard.user.root(id));
-  };
+    router.push(paths.dashboard.user.root(id))
+  }
 
   const carousel = useCarousel({
     infinite: false,
@@ -88,12 +77,12 @@ export default function FinanceContactsCarousel({
     dots: false,
     arrows: false,
     adaptiveHeight: true,
-  });
+  })
 
   // Split the array of contacts into chunks (each chunk is a "slide")
-  const slidesData: Profile[][] = [];
+  const slidesData: Profile[][] = []
   for (let i = 0; i < list.length; i += chunkSize) {
-    slidesData.push(list.slice(i, i + chunkSize));
+    slidesData.push(list.slice(i, i + chunkSize))
   }
 
   return (
@@ -119,10 +108,8 @@ export default function FinanceContactsCarousel({
         </Carousel>
       </Box>
     </Card>
-  );
+  )
 }
-
-// ----------------------------------------------------------------------
 
 type SlideContactsProps = {
   chunk: Profile[];
@@ -136,9 +123,9 @@ function SlideContacts({ chunk, goToProfile, onClickArrow }: SlideContactsProps)
     address: string,
     profileId: string
   ) => {
-    event.stopPropagation();
-    onClickArrow(address, profileId);
-  };
+    event.stopPropagation()
+    onClickArrow(address, profileId)
+  }
   return (
     <Stack spacing={3}>
       {chunk.map((profile) => (
@@ -170,5 +157,5 @@ function SlideContacts({ chunk, goToProfile, onClickArrow }: SlideContactsProps)
         </Stack>
       ))}
     </Stack>
-  );
+  )
 }

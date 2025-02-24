@@ -1,25 +1,19 @@
-// @mui
-import Paper from '@mui/material/Paper';
-import { styled } from '@mui/system';
-
-import Typography from '@mui/material/Typography';
-import Stack from '@mui/material/Stack';
-
-// components
-import Image from '@src/components/image';
-import { useRouter } from '@src/routes/hooks';
-import { paths } from '@src/routes/paths.ts';
-import { TrendingTopicsType } from '@src/sections/explore/view.tsx';
-import Box from '@mui/material/Box';
-
-// ----------------------------------------------------------------------
+import Box from '@mui/material/Box'
+import Paper from '@mui/material/Paper'
+import Stack from '@mui/material/Stack'
+import Typography from '@mui/material/Typography'
+import { styled } from '@mui/system'
+import Image from '@src/components/image'
+import { useRouter } from '@src/routes/hooks'
+import { paths } from '@src/routes/paths.ts'
+import { TrendingTopicsType } from '@src/sections/explore/view.tsx'
 
 const PosterTrendingTopic = ({ id, title, image, desc }: TrendingTopicsType) => {
-  const router = useRouter();
+  const router = useRouter()
 
   const handlePosterClick = () => {
-    router.push(paths.dashboard.publication.details(String(id)));
-  };
+    router.push(paths.dashboard.publication.details(String(id)))
+  }
 
   return (
     <Paper
@@ -70,10 +64,10 @@ const PosterTrendingTopic = ({ id, title, image, desc }: TrendingTopicsType) => 
         </StackItem>
       </Stack>
     </Paper>
-  );
-};
+  )
+}
 
-export default PosterTrendingTopic;
+export default PosterTrendingTopic
 
 export const StackItem = styled('div')(({ theme }) => ({
   backgroundColor: '#fff',
@@ -82,4 +76,4 @@ export const StackItem = styled('div')(({ theme }) => ({
   ...theme.applyStyles('dark', {
     backgroundColor: '#262B32',
   }),
-}));
+}))

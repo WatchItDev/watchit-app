@@ -1,31 +1,25 @@
-// @mui
-import Container from '@mui/material/Container';
-// routes
-import { paths } from '@src/routes/paths';
-// components
-import { useSettingsContext } from '@src/components/settings';
-import CustomBreadcrumbs from '@src/components/custom-breadcrumbs';
-//
-import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
-import { IconChevronLeft } from '@tabler/icons-react';
-import Typography from '@mui/material/Typography';
-import GovernanceNewEditForm from '../governance-new-edit-form';
-import Label from '../../../components/label';
-import Header from '../../../layouts/dashboard/header';
-import { useResponsive } from '@src/hooks/use-responsive.ts';
-import { useRouter } from '@src/routes/hooks';
-
-// ----------------------------------------------------------------------
+import { IconChevronLeft } from '@tabler/icons-react'
+import Button from '@mui/material/Button'
+import Container from '@mui/material/Container'
+import IconButton from '@mui/material/IconButton'
+import Typography from '@mui/material/Typography'
+import Label from '../../../components/label'
+import Header from '../../../layouts/dashboard/header'
+import GovernanceNewEditForm from '../governance-new-edit-form'
+import CustomBreadcrumbs from '@src/components/custom-breadcrumbs'
+import { useSettingsContext } from '@src/components/settings'
+import { useResponsive } from '@src/hooks/use-responsive.ts'
+import { useRouter } from '@src/routes/hooks'
+import { paths } from '@src/routes/paths'
 
 export default function GovernanceCreateView() {
-  const settings = useSettingsContext();
-  const mdUp = useResponsive('up', 'md');
-  const router = useRouter();
+  const settings = useSettingsContext()
+  const mdUp = useResponsive('up', 'md')
+  const router = useRouter()
 
   const handleBack = () => {
-    router.push(paths.dashboard.governance.root);
-  };
+    router.push(paths.dashboard.governance.root)
+  }
 
   return (
     <>
@@ -82,5 +76,5 @@ export default function GovernanceCreateView() {
         <GovernanceNewEditForm />
       </Container>
     </>
-  );
+  )
 }

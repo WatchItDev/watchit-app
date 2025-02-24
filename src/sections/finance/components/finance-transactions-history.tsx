@@ -1,18 +1,13 @@
-import React, { useState, useCallback } from 'react';
-// @mui
-import { alpha } from '@mui/material/styles';
-import Tab from '@mui/material/Tab';
-import Tabs from '@mui/material/Tabs';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
+import React, { useState, useCallback } from 'react'
+import { alpha } from '@mui/material/styles'
+import Tab from '@mui/material/Tab'
+import Table from '@mui/material/Table'
+import TableBody from '@mui/material/TableBody'
 
-import TableContainer from '@mui/material/TableContainer';
-// _mock
-import { TRANSACTIONS_TYPES } from '@src/types/transaction';
-// components
-import Label from '@src/components/label';
-import Scrollbar from '@src/components/scrollbar';
-
+import TableContainer from '@mui/material/TableContainer'
+import Tabs from '@mui/material/Tabs'
+import Label from '@src/components/label'
+import Scrollbar from '@src/components/scrollbar'
 import {
   useTable,
   getComparator,
@@ -21,78 +16,75 @@ import {
   TableEmptyRows,
   TableHeadCustom,
   TablePaginationCustom,
-} from '@src/components/table';
-// types
-import { IOrderTableFilters, IOrderTableFilterValue } from '@src/types/transaction';
-//
-import FinanceTransactionTableRow from '@src/sections/finance/components/finance-transactions-table-row';
-import useGetSmartWalletTransactions from '@src/hooks/use-get-smart-wallet-transactions';
-import { processTransactionData } from '@src/utils/finance-graphs/groupedTransactions';
-import FinanceOverlayLoader from '@src/sections/finance/components/finance-overlay-loader.tsx';
+} from '@src/components/table'
+import useGetSmartWalletTransactions from '@src/hooks/use-get-smart-wallet-transactions'
+import FinanceOverlayLoader from '@src/sections/finance/components/finance-overlay-loader.tsx'
+import FinanceTransactionTableRow from '@src/sections/finance/components/finance-transactions-table-row'
+import { IOrderTableFilters, IOrderTableFilterValue } from '@src/types/transaction'
+import { TRANSACTIONS_TYPES } from '@src/types/transaction'
+import { processTransactionData } from '@src/utils/finance-graphs/groupedTransactions'
 
 const STATUS_OPTIONS = [
   { value: 'all', label: 'All' },
   ...TRANSACTIONS_TYPES
-];
+]
 
 const TABLE_HEAD = [
   { id: 'name', label: 'Transaction Info', width: 20 },
   { id: 'createdAt', label: 'Date', width: 40 },
   { id: 'amount', label: 'Amount', width: 40 },
   { id: 'tx', label: 'TX', width: 40 },
-];
+]
 
 const defaultFilters: IOrderTableFilters = {
   status: 'all',
-};
-
-// ----------------------------------------------------------------------
+}
 
 export default function FinanceTransactionsHistory() {
-  const { transactions, loading } = useGetSmartWalletTransactions();
-  let transactionData = processTransactionData(transactions);
+  const { transactions, loading } = useGetSmartWalletTransactions()
+  let transactionData = processTransactionData(transactions)
   const table = useTable({
     defaultOrder: 'desc',
     defaultOrderBy: 'createdAt',
-  });
+  })
 
   transactionData = transactionData.map((item) => ({
     ...item,
     createdAt: Number(item.timestamp) * 1000,
-  }));
+  }))
 
-  const [filters, setFilters] = useState(defaultFilters);
+  const [filters, setFilters] = useState(defaultFilters)
 
   const dataFiltered = applyFilter({
     inputData: transactionData,
     comparator: getComparator(table.order, table.orderBy),
     filters,
-  });
+  })
 
-  const denseHeight = table.dense ? 52 : 72;
-  const canReset = filters.status !== 'all';
-  const notFound = (!dataFiltered.length && canReset) || !dataFiltered.length;
+  const denseHeight = table.dense ? 52 : 72
+  const canReset = filters.status !== 'all'
+  const notFound = (!dataFiltered.length && canReset) || !dataFiltered.length
 
   const handleFilters = useCallback(
     (name: string, value: IOrderTableFilterValue) => {
-      table.onResetPage();
+      table.onResetPage()
       setFilters((prevState) => ({
         ...prevState,
         [name]: value,
-      }));
+      }))
     },
     [table]
-  );
+  )
 
   const handleFilterStatus = useCallback(
     (_event: React.SyntheticEvent, newValue: string) => {
-      handleFilters('status', newValue);
+      handleFilters('status', newValue)
     },
     [handleFilters]
-  );
+  )
 
   const removeDuplicatesById = (array: any[]) => {
-    return Array.from(new Map(array.map((item) => [item.id, item])).values());
+    return Array.from(new Map(array.map((item) => [item.id, item])).values())
   }
 
   return (
@@ -199,10 +191,8 @@ export default function FinanceTransactionsHistory() {
         onChangeDense={table.onChangeDense}
       />
     </>
-  );
+  )
 }
-
-// ----------------------------------------------------------------------
 
 function applyFilter({
   inputData,
@@ -214,40 +204,40 @@ function applyFilter({
   filters: IOrderTableFilters;
 }) {
   if (!Array.isArray(inputData)) {
-    return [];
+    return []
   }
 
-  const { status } = filters;
+  const { status } = filters
 
-  const stabilizedThis = inputData.map((el, index) => [el, index] as const);
+  const stabilizedThis = inputData.map((el, index) => [el, index] as const)
 
   stabilizedThis.sort((a, b) => {
-    const order = comparator(a[0], b[0]);
-    if (order !== 0) return order;
-    return a[1] - b[1];
-  });
+    const order = comparator(a[0], b[0])
+    if (order !== 0) return order
+    return a[1] - b[1]
+  })
 
-  let filteredData = stabilizedThis.map((el) => el[0]);
+  let filteredData = stabilizedThis.map((el) => el[0])
 
   if (status !== 'all') {
     if (status === 'transferFrom') {
       filteredData = filteredData.filter(
         (t) => t.type.toLowerCase() === 'transferto' || t.type.toLowerCase() === 'withdraw' || t.type.toLowerCase() === 'collected'
-      );
+      )
     }
 
     if (status === 'transferTo') {
-      console.log('filteredData', filteredData);
+      console.log('filteredData', filteredData)
       filteredData = filteredData.filter(
         (t) => t.type.toLowerCase() === 'transferfrom' || t.type.toLowerCase() === 'deposit'
-      );
+      )
     }
   }
 
   // delete duplicated items
   filteredData = Array.from(
     new Map(filteredData.map((item) => [item.id, item])).values()
-  );
+  )
 
-  return filteredData;
+  return filteredData
 }

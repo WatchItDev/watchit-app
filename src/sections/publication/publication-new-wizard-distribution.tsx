@@ -1,20 +1,20 @@
-import * as Yup from 'yup';
-import { useForm, Controller, useFieldArray, useWatch } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import Grid from '@mui/material/Grid';
-import Card from '@mui/material/Card';
-import Stack from '@mui/material/Stack';
-import CardHeader from '@mui/material/CardHeader';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import FormProvider, { RHFTextField, RHFSelect } from '@src/components/hook-form';
-import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
-import { IconTrash } from '@tabler/icons-react';
-import Divider from '@mui/material/Divider';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import MenuItem from '@mui/material/MenuItem';
-import MovieWizardContentLayout from './publication-new-wizard-layout';
+import { yupResolver } from '@hookform/resolvers/yup'
+import { IconTrash } from '@tabler/icons-react'
+import { useForm, Controller, useFieldArray, useWatch } from 'react-hook-form'
+import * as Yup from 'yup'
+import Box from '@mui/material/Box'
+import Button from '@mui/material/Button'
+import Card from '@mui/material/Card'
+import CardHeader from '@mui/material/CardHeader'
+import Divider from '@mui/material/Divider'
+import Grid from '@mui/material/Grid'
+import IconButton from '@mui/material/IconButton'
+import MenuItem from '@mui/material/MenuItem'
+import Stack from '@mui/material/Stack'
+import Typography from '@mui/material/Typography'
+import { DatePicker } from '@mui/x-date-pickers/DatePicker'
+import MovieWizardContentLayout from './publication-new-wizard-layout'
+import FormProvider, { RHFTextField, RHFSelect } from '@src/components/hook-form'
 
 const DistributionSchema = Yup.object().shape({
   creators: Yup.array()
@@ -45,7 +45,7 @@ const DistributionSchema = Yup.object().shape({
   termsOfServiceURL: Yup.string()
     .url('Must be a valid URL')
     .required('Terms of service URL is required'),
-});
+})
 
 export default function DistributionForm({ onSubmit, onBack, data }: any) {
   const methods = useForm({
@@ -60,35 +60,35 @@ export default function DistributionForm({ onSubmit, onBack, data }: any) {
       copyrightRegistrationNumber: data.copyrightRegistrationNumber ?? '',
       termsOfServiceURL: data.termsOfServiceURL ?? '',
     },
-  });
+  })
 
   const {
     formState: { errors },
     watch,
-  } = methods;
+  } = methods
 
-  const values = watch();
+  const values = watch()
 
   const licenseTypeOptions = [
     { value: 'full', label: 'Full License' },
     { value: 'partial', label: 'Partial License' },
-  ];
+  ]
 
   const territoryOptions = [
     { value: 'worldwide', label: 'Worldwide' },
     { value: 'regional', label: 'Regional' },
-  ];
+  ]
 
   const distributionTypeOptions = [
     { value: 'rent', label: 'Rent' },
     { value: 'buy', label: 'Buy' },
-  ];
+  ]
 
   const currenciesOptions = [
     { value: 'eth', label: 'ETH' },
     { value: 'wvc', label: 'WVC' },
     { value: 'usd', label: 'USD' },
-  ];
+  ]
 
   const {
     fields: creatorsFields,
@@ -97,7 +97,7 @@ export default function DistributionForm({ onSubmit, onBack, data }: any) {
   } = useFieldArray({
     control: methods.control,
     name: 'creators',
-  });
+  })
 
   const {
     fields: distributionFields,
@@ -106,14 +106,14 @@ export default function DistributionForm({ onSubmit, onBack, data }: any) {
   } = useFieldArray({
     control: methods.control,
     name: 'distribution',
-  });
+  })
 
-  const creators = useWatch({ control: methods.control, name: 'creators' });
+  const creators = useWatch({ control: methods.control, name: 'creators' })
   const totalRevenueShare = creators.reduce(
     (total: any, creator: any) => total + (creator.revenueShare || 0),
     0
-  );
-  const remainingPercentage = 100 - totalRevenueShare;
+  )
+  const remainingPercentage = 100 - totalRevenueShare
 
   return (
     <FormProvider methods={methods} onSubmit={methods.handleSubmit(onSubmit)}>
@@ -295,5 +295,5 @@ export default function DistributionForm({ onSubmit, onBack, data }: any) {
         </Grid>
       </MovieWizardContentLayout>
     </FormProvider>
-  );
+  )
 }

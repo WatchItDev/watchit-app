@@ -1,49 +1,45 @@
-import { useState, useCallback } from 'react';
-// utils
-import { fDate } from '@src/utils/format-time';
-//
-import { shortDateLabel } from './utils';
-import { DateRangePickerProps } from './types';
-
-// ----------------------------------------------------------------------
+import { useState, useCallback } from 'react'
+import { DateRangePickerProps } from './types'
+import { shortDateLabel } from './utils'
+import { fDate } from '@src/utils/format-time'
 
 type ReturnType = DateRangePickerProps;
 
 export default function useDateRangePicker(start: Date | null, end: Date | null): ReturnType {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false)
 
-  const [endDate, setEndDate] = useState(end);
+  const [endDate, setEndDate] = useState(end)
 
-  const [startDate, setStartDate] = useState(start);
+  const [startDate, setStartDate] = useState(start)
 
-  const error = start && end ? new Date(start).getTime() > new Date(end).getTime() : false;
+  const error = start && end ? new Date(start).getTime() > new Date(end).getTime() : false
 
   const onOpen = useCallback(() => {
-    setOpen(true);
-  }, []);
+    setOpen(true)
+  }, [])
 
   const onClose = useCallback(() => {
-    setOpen(false);
-  }, []);
+    setOpen(false)
+  }, [])
 
   const onChangeStartDate = useCallback((newValue: Date | null) => {
-    setStartDate(newValue);
-  }, []);
+    setStartDate(newValue)
+  }, [])
 
   const onChangeEndDate = useCallback(
     (newValue: Date | null) => {
       if (error) {
-        setEndDate(null);
+        setEndDate(null)
       }
-      setEndDate(newValue);
+      setEndDate(newValue)
     },
     [error]
-  );
+  )
 
   const onReset = useCallback(() => {
-    setStartDate(null);
-    setEndDate(null);
-  }, []);
+    setStartDate(null)
+    setEndDate(null)
+  }, [])
 
   return {
     startDate,
@@ -64,5 +60,5 @@ export default function useDateRangePicker(start: Date | null, end: Date | null)
     //
     setStartDate,
     setEndDate,
-  };
+  }
 }

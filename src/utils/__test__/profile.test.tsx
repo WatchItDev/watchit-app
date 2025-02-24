@@ -1,10 +1,10 @@
-import { describe, it, expect } from 'vitest';
+import { Profile } from '@lens-protocol/api-bindings'
+import {URI} from "@lens-protocol/react"
+import {ProfileId} from "@lens-protocol/react-web"
+import { describe, it, expect } from 'vitest'
 
-import { buildProfileMetadata, filterHiddenProfiles } from '@src/utils/profile';
-import { ProfileData } from '@src/auth/context/web3Auth/types';
-import { Profile } from '@lens-protocol/api-bindings';
-import {ProfileId} from "@lens-protocol/react-web";
-import {URI} from "@lens-protocol/react";
+import { ProfileData } from '@src/auth/context/web3Auth/types'
+import { buildProfileMetadata, filterHiddenProfiles } from '@src/utils/profile'
 
 describe('testing buildProfileMetadata', () => {
   it('returns metadata object with cleaned social links', () => {
@@ -13,11 +13,11 @@ describe('testing buildProfileMetadata', () => {
       name: 'Cswni Inc',
       bio: 'Developer',
       socialLinks: { twitter: '_cswni', instagram: '', orb: '', farcaster: '' }
-    };
-    const profileImageURI = 'http://example.com/profile.jpg';
-    const backgroundImageURI = 'http://example.com/background.jpg';
+    }
+    const profileImageURI = 'http://example.com/profile.jpg'
+    const backgroundImageURI = 'http://example.com/background.jpg'
 
-    const result = buildProfileMetadata(data, profileImageURI, backgroundImageURI);
+    const result = buildProfileMetadata(data, profileImageURI, backgroundImageURI)
 
     expect(result).toEqual({
       $schema: "https://json-schemas.lens.dev/profile/2.0.0.json",
@@ -29,8 +29,8 @@ describe('testing buildProfileMetadata', () => {
         coverPicture: 'http://example.com/background.jpg',
         attributes: [{ key: 'twitter', value: '_cswni', type: 'String' }],
       },
-    });
-  });
+    })
+  })
 
   it('removes empty values from metadata object', () => {
     const data: ProfileData = {
@@ -38,9 +38,9 @@ describe('testing buildProfileMetadata', () => {
       name: '',
       bio: 'null',
       socialLinks: { twitter: '', farcaster: '', orb: '', instagram: '' }
-    };
+    }
 
-    const result = buildProfileMetadata(data);
+    const result = buildProfileMetadata(data)
 
     expect(result).toEqual({
       $schema: "https://json-schemas.lens.dev/profile/2.0.0.json",
@@ -48,9 +48,9 @@ describe('testing buildProfileMetadata', () => {
         id: expect.any(String),
         bio: 'null',
       },
-    });
-  });
-});
+    })
+  })
+})
 
 const profile = {
   id: '0x0555' as ProfileId,
@@ -68,8 +68,7 @@ const profile = {
   invitedBy: null,
   txHash: '',
   createdAt: '',
-} as Partial<Profile>;
-
+} as Partial<Profile>
 
 describe('testing filterHiddenProfiles', () => {
   it('filters out profiles with hidden indicators', () => {
@@ -101,9 +100,9 @@ describe('testing filterHiddenProfiles', () => {
           bio: 'Developer',
         },
       },
-    ];
+    ]
 
-    const result = filterHiddenProfiles(profiles as Profile[]);
+    const result = filterHiddenProfiles(profiles as Profile[])
 
     expect(result).toEqual([
       {
@@ -115,18 +114,18 @@ describe('testing filterHiddenProfiles', () => {
           bio: 'Developer',
         },
       },
-    ]);
-  });
+    ])
+  })
 
   it('returns undefined if input is undefined', () => {
-    const result = filterHiddenProfiles();
+    const result = filterHiddenProfiles()
 
-    expect(result).toBeUndefined();
-  });
+    expect(result).toBeUndefined()
+  })
 
   it('returns empty array if filtered all profiles', () => {
-    const result = filterHiddenProfiles([profile] as Profile[]);
+    const result = filterHiddenProfiles([profile] as Profile[])
 
-    expect(result).toEqual([]);
-  });
-});
+    expect(result).toEqual([])
+  })
+})

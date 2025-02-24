@@ -1,16 +1,16 @@
-import { FC } from 'react';
-import { useWithdraw } from '@src/hooks/use-withdraw';
-import { useSelector } from 'react-redux';
-import FinanceWithdraw from './finance-withdraw';
+import { FC } from 'react'
+import { useSelector } from 'react-redux'
+import FinanceWithdraw from './finance-withdraw'
+import { useWithdraw } from '@src/hooks/use-withdraw'
 
 interface FinanceWithdrawFromSmartAccountProps {
   onClose: () => void;
 }
 
 const FinanceWithdrawFromSmartAccount: FC<FinanceWithdrawFromSmartAccountProps> = ({ onClose }) => {
-  const sessionData = useSelector((state: any) => state.auth.session);
-  const userAddress = sessionData?.address;
-  const withdrawHook = useWithdraw();
+  const sessionData = useSelector((state: any) => state.auth.session)
+  const userAddress = sessionData?.address
+  const withdrawHook = useWithdraw()
 
   return (
     <FinanceWithdraw
@@ -18,7 +18,7 @@ const FinanceWithdrawFromSmartAccount: FC<FinanceWithdrawFromSmartAccountProps> 
       withdrawHook={withdrawHook}
       onClose={onClose}
     />
-  );
-};
+  )
+}
 
-export default FinanceWithdrawFromSmartAccount;
+export default FinanceWithdrawFromSmartAccount

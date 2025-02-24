@@ -1,5 +1,3 @@
-// ----------------------------------------------------------------------
-
 export type Props = {
   staggerIn?: number;
   delayIn?: number;
@@ -7,9 +5,9 @@ export type Props = {
 };
 
 export const varContainer = (props?: Props) => {
-  const staggerIn = props?.staggerIn || 0.05;
-  const delayIn = props?.staggerIn || 0.05;
-  const staggerOut = props?.staggerIn || 0.05;
+  const staggerIn = props?.staggerIn || 0.05
+  const delayIn = props?.staggerIn || 0.05
+  const staggerOut = props?.staggerIn || 0.05
 
   return {
     animate: {
@@ -24,5 +22,5 @@ export const varContainer = (props?: Props) => {
         staggerDirection: -1,
       },
     },
-  };
-};
+  }
+}

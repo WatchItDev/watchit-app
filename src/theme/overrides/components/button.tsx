@@ -1,9 +1,7 @@
-import { alpha, Theme } from '@mui/material/styles';
-import { ButtonProps, buttonClasses } from '@mui/material/Button';
+import { ButtonProps, buttonClasses } from '@mui/material/Button'
+import { alpha, Theme } from '@mui/material/styles'
 
-// ----------------------------------------------------------------------
-
-const COLORS = ['primary', 'secondary', 'info', 'success', 'warning', 'error'] as const;
+const COLORS = ['primary', 'secondary', 'info', 'success', 'warning', 'error'] as const
 
 // NEW VARIANT
 declare module '@mui/material/Button' {
@@ -12,27 +10,25 @@ declare module '@mui/material/Button' {
   }
 }
 
-// ----------------------------------------------------------------------
-
 export function button(theme: Theme) {
-  const lightMode = theme.palette.mode === 'light';
+  const lightMode = theme.palette.mode === 'light'
 
   const rootStyles = (ownerState: ButtonProps) => {
-    const inheritColor = ownerState.color === 'inherit';
+    const inheritColor = ownerState.color === 'inherit'
 
-    const containedVariant = ownerState.variant === 'contained';
+    const containedVariant = ownerState.variant === 'contained'
 
-    const outlinedVariant = ownerState.variant === 'outlined';
+    const outlinedVariant = ownerState.variant === 'outlined'
 
-    const textVariant = ownerState.variant === 'text';
+    const textVariant = ownerState.variant === 'text'
 
-    const softVariant = ownerState.variant === 'soft';
+    const softVariant = ownerState.variant === 'soft'
 
-    const smallSize = ownerState.size === 'small';
+    const smallSize = ownerState.size === 'small'
 
-    const mediumSize = ownerState.size === 'medium';
+    const mediumSize = ownerState.size === 'medium'
 
-    const largeSize = ownerState.size === 'large';
+    const largeSize = ownerState.size === 'large'
 
     const defaultStyle = {
       ...(inheritColor && {
@@ -72,7 +68,7 @@ export function button(theme: Theme) {
           boxShadow: '0 0 0 0.5px currentColor',
         },
       }),
-    };
+    }
 
     const colorStyle = COLORS.map((color) => ({
       ...(ownerState.color === color && {
@@ -91,7 +87,7 @@ export function button(theme: Theme) {
           },
         }),
       }),
-    }));
+    }))
 
     const disabledState = {
       [`&.${buttonClasses.disabled}`]: {
@@ -100,7 +96,7 @@ export function button(theme: Theme) {
           backgroundColor: theme.palette.action.disabledBackground,
         }),
       },
-    };
+    }
 
     const size = {
       ...(smallSize && {
@@ -131,10 +127,10 @@ export function button(theme: Theme) {
           paddingRight: 10,
         }),
       }),
-    };
+    }
 
-    return [defaultStyle, ...colorStyle, disabledState, size];
-  };
+    return [defaultStyle, ...colorStyle, disabledState, size]
+  }
 
   return {
     MuiButton: {
@@ -142,5 +138,5 @@ export function button(theme: Theme) {
         root: ({ ownerState }: { ownerState: ButtonProps }) => rootStyles(ownerState),
       },
     },
-  };
+  }
 }

@@ -4,7 +4,7 @@ import {
   IconFolderBolt,
   IconHeadphones,
   IconPolaroidFilled,
-} from '@tabler/icons-react';
+} from '@tabler/icons-react'
 
 export const data = [
   {
@@ -42,4 +42,4 @@ export const data = [
     badge: 'Ideas for Builders',
     bgColor: '#2f7ee4',
   },
-];
+]

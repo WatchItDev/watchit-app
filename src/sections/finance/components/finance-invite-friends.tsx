@@ -1,25 +1,19 @@
-// React and libraries imports
-import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useState } from 'react'
+import { ERRORS } from '@notifications/errors.ts'
+import { notifyError, notifySuccess } from '@notifications/internal-notifications.ts'
+import { SUCCESS } from '@notifications/success.ts'
+import { useSelector } from 'react-redux'
+import LoadingButton from '@mui/lab/LoadingButton'
+import Box, { BoxProps } from '@mui/material/Box'
+import InputBase from '@mui/material/InputBase'
+import Stack from '@mui/material/Stack'
+import { useTheme } from '@mui/material/styles'
+import Typography from '@mui/material/Typography'
+import useReferrals from "@src/hooks/use-referrals"
+import { COLORS } from '@src/layouts/config-layout.ts'
+import { bgGradient } from '@src/theme/css'
 
-// @MUI components
-import { useTheme } from '@mui/material/styles';
-import Stack from '@mui/material/Stack';
-import InputBase from '@mui/material/InputBase';
-import Box, { BoxProps } from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-
-// Project components
-import { bgGradient } from '@src/theme/css';
-import { COLORS } from '@src/layouts/config-layout.ts';
-
-import { notifyError, notifySuccess } from '@notifications/internal-notifications.ts';
-import { SUCCESS } from '@notifications/success.ts';
-import { ERRORS } from '@notifications/errors.ts';
-
-import useReferrals from "@src/hooks/use-referrals";
-import LoadingButton from '@mui/lab/LoadingButton';
-import {checkIfEmailAlreadyInvited} from "@src/utils/supabase-actions.ts";
+import {checkIfEmailAlreadyInvited} from "@src/utils/supabase-actions.ts"
 
 interface Props extends BoxProps {
   img?: string;
@@ -40,66 +34,66 @@ export default function FinanceInviteFriends({
     sendInvitation,
     checkIfInvitationSent,
     checkIfEmailAlreadyAccepted,
-  } = useReferrals();
-  const theme = useTheme();
-  const sessionData = useSelector((state: any) => state.auth.session);
-  const userLoggedEmail = useSelector((state: any) => state.auth.email);
-  const [email, setEmail] = useState('');
-  const [loading, setLoading] = useState(false);
+  } = useReferrals()
+  const theme = useTheme()
+  const sessionData = useSelector((state: any) => state.auth.session)
+  const userLoggedEmail = useSelector((state: any) => state.auth.email)
+  const [email, setEmail] = useState('')
+  const [loading, setLoading] = useState(false)
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(event.target.value);
-  };
+    setEmail(event.target.value)
+  }
 
   /*
   * Return true if the email is valid, false otherwise.
   * */
   const handleValidEmail = () => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    return emailRegex.test(email)
   }
 
   const handleInviteClick = async () => {
 
     if (!handleValidEmail()) {
-      notifyError(ERRORS.INVITATION_EMAIL_ERROR);
-      return;
+      notifyError(ERRORS.INVITATION_EMAIL_ERROR)
+      return
     }
 
-    setLoading(true);
+    setLoading(true)
 
     // Check if there's an existing invitation from the current user to this email
-    const alreadySent = await checkIfInvitationSent(email);
+    const alreadySent = await checkIfInvitationSent(email)
 
     // Check if the user has already been invited but someone else
-    const { invited } = await checkIfEmailAlreadyInvited(email);
+    const { invited } = await checkIfEmailAlreadyInvited(email)
 
     if (invited) {
-      notifyError(ERRORS.INVITATION_USER_ALREADY_INVITED);
-      setLoading(false);
-      return;
+      notifyError(ERRORS.INVITATION_USER_ALREADY_INVITED)
+      setLoading(false)
+      return
     }
 
     // Check if the email entered is the same as the logged user's email
     if (email === userLoggedEmail) {
-      notifyError(ERRORS.INVITATION_USER_CANT_INVITE_SELF);
-      setLoading(false);
-      return;
+      notifyError(ERRORS.INVITATION_USER_CANT_INVITE_SELF)
+      setLoading(false)
+      return
     }
 
     if (alreadySent) {
       // You can adapt the notification message to match your requirements
-      notifyError(ERRORS.ALREADY_SENT_INVITATION);
-      setLoading(false);
-      return;
+      notifyError(ERRORS.ALREADY_SENT_INVITATION)
+      setLoading(false)
+      return
     }
 
     // Check if the user (the email) already has an accepted invitation (i.e., is enrolled)
-    const alreadyAccepted = await checkIfEmailAlreadyAccepted(email);
+    const alreadyAccepted = await checkIfEmailAlreadyAccepted(email)
     if (alreadyAccepted) {
-      notifyError(ERRORS.ALREADY_ENROLLED);
-      setLoading(false);
-      return;
+      notifyError(ERRORS.ALREADY_ENROLLED)
+      setLoading(false)
+      return
     }
 
     // Build the payload
@@ -111,21 +105,21 @@ export default function FinanceInviteFriends({
           avatar: (sessionData?.profile?.metadata?.picture as any)?.optimized?.uri,
         },
       },
-    };
+    }
 
     // Send the invitation
     try {
-      await sendInvitation(email, payload);
-      notifySuccess(SUCCESS.INVITATIONS_SUCCESSFULLY);
-      setEmail('');
-      setLoading(false);
+      await sendInvitation(email, payload)
+      notifySuccess(SUCCESS.INVITATIONS_SUCCESSFULLY)
+      setEmail('')
+      setLoading(false)
     } catch (err) {
       // Handle any errors coming from sendInvitation
-      console.error(err);
-      notifyError(ERRORS.INVITATION_SEND_ERROR);
-      setLoading(false);
+      console.error(err)
+      notifyError(ERRORS.INVITATION_SEND_ERROR)
+      setLoading(false)
     }
-  };
+  }
 
   return (
     <Box {...other}>
@@ -212,5 +206,5 @@ export default function FinanceInviteFriends({
         />
       </Box>
     </Box>
-  );
+  )
 }

@@ -1,8 +1,5 @@
-import { useState, useCallback } from 'react';
-//
-import { TableProps } from './types';
-
-// ----------------------------------------------------------------------
+import { useState, useCallback } from 'react'
+import { TableProps } from './types'
 
 type ReturnType = TableProps;
 
@@ -16,76 +13,76 @@ export type UseTableProps = {
 };
 
 export default function useTable(props?: UseTableProps): ReturnType {
-  const [dense, setDense] = useState(!!props?.defaultDense);
+  const [dense, setDense] = useState(!!props?.defaultDense)
 
-  const [page, setPage] = useState(props?.defaultCurrentPage || 0);
+  const [page, setPage] = useState(props?.defaultCurrentPage || 0)
 
-  const [orderBy, setOrderBy] = useState(props?.defaultOrderBy || 'name');
+  const [orderBy, setOrderBy] = useState(props?.defaultOrderBy || 'name')
 
-  const [rowsPerPage, setRowsPerPage] = useState(props?.defaultRowsPerPage || 5);
+  const [rowsPerPage, setRowsPerPage] = useState(props?.defaultRowsPerPage || 5)
 
-  const [order, setOrder] = useState<'asc' | 'desc'>(props?.defaultOrder || 'asc');
+  const [order, setOrder] = useState<'asc' | 'desc'>(props?.defaultOrder || 'asc')
 
-  const [selected, setSelected] = useState<string[]>(props?.defaultSelected || []);
+  const [selected, setSelected] = useState<string[]>(props?.defaultSelected || [])
 
   const onSort = useCallback(
     (id: string) => {
-      const isAsc = orderBy === id && order === 'asc';
+      const isAsc = orderBy === id && order === 'asc'
       if (id !== '') {
-        setOrder(isAsc ? 'desc' : 'asc');
-        setOrderBy(id);
+        setOrder(isAsc ? 'desc' : 'asc')
+        setOrderBy(id)
       }
     },
     [order, orderBy]
-  );
+  )
 
   const onSelectRow = useCallback(
     (inputValue: string) => {
       const newSelected = selected.includes(inputValue)
         ? selected.filter((value) => value !== inputValue)
-        : [...selected, inputValue];
+        : [...selected, inputValue]
 
-      setSelected(newSelected);
+      setSelected(newSelected)
     },
     [selected]
-  );
+  )
 
   const onChangeRowsPerPage = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-    setPage(0);
-    setRowsPerPage(parseInt(event.target.value, 10));
-  }, []);
+    setPage(0)
+    setRowsPerPage(parseInt(event.target.value, 10))
+  }, [])
 
   const onChangeDense = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-    setDense(event.target.checked);
-  }, []);
+    setDense(event.target.checked)
+  }, [])
 
   const onSelectAllRows = useCallback((checked: boolean, inputValue: string[]) => {
     if (checked) {
-      setSelected(inputValue);
-      return;
+      setSelected(inputValue)
+      return
     }
-    setSelected([]);
-  }, []);
+    setSelected([])
+  }, [])
 
   const onChangePage = useCallback((event: unknown, newPage: number) => {
-    setPage(newPage);
-  }, []);
+    setPage(newPage)
+  }, [])
 
   const onResetPage = useCallback(() => {
-    setPage(0);
-  }, []);
+    setPage(0)
+  }, [])
 
   const onUpdatePageDeleteRow = useCallback(
     (totalRowsInPage: number) => {
-      setSelected([]);
+      setSelected([])
       if (page) {
         if (totalRowsInPage < 2) {
-          setPage(page - 1);
+          setPage(page - 1)
         }
       }
     },
     [page]
-  );
+  )
 
   const onUpdatePageDeleteRows = useCallback(
     ({
@@ -97,23 +94,23 @@ export default function useTable(props?: UseTableProps): ReturnType {
       totalRowsInPage: number;
       totalRowsFiltered: number;
     }) => {
-      const totalSelected = selected.length;
+      const totalSelected = selected.length
 
-      setSelected([]);
+      setSelected([])
 
       if (page) {
         if (totalSelected === totalRowsInPage) {
-          setPage(page - 1);
+          setPage(page - 1)
         } else if (totalSelected === totalRowsFiltered) {
-          setPage(0);
+          setPage(0)
         } else if (totalSelected > totalRowsInPage) {
-          const newPage = Math.ceil((totalRows - totalSelected) / rowsPerPage) - 1;
-          setPage(newPage);
+          const newPage = Math.ceil((totalRows - totalSelected) / rowsPerPage) - 1
+          setPage(newPage)
         }
       }
     },
     [page, rowsPerPage, selected.length]
-  );
+  )
 
   return {
     dense,
@@ -140,5 +137,5 @@ export default function useTable(props?: UseTableProps): ReturnType {
     setOrderBy,
     setSelected,
     setRowsPerPage,
-  };
+  }
 }

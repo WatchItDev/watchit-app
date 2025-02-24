@@ -1,7 +1,13 @@
-// REACT IMPORTS
-import React, { useEffect, useState } from 'react';
-
-// MUI IMPORTS
+import React, { useEffect, useState } from 'react'
+import { Profile } from '@lens-protocol/api-bindings'
+import { ERRORS } from '@notifications/errors.ts'
+import { notifyError, notifySuccess } from '@notifications/internal-notifications.ts'
+import { SUCCESS } from '@notifications/success.ts'
+import { setBalance } from '@redux/auth'
+import { ethers } from 'ethers'
+import { useDispatch, useSelector } from 'react-redux'
+import { Address } from 'viem'
+import LoadingButton from '@mui/lab/LoadingButton'
 import {
   Button,
   Dialog,
@@ -13,36 +19,18 @@ import {
   Stack,
   TextField,
   Typography,
-} from '@mui/material';
-
-// ETHERS IMPORTS
-import { ethers } from 'ethers';
-
-// VIEM IMPORTS
-import { Address } from 'viem';
-
-// LOCAL IMPORTS
-import LoadingButton from '@mui/lab/LoadingButton';
-import { useSubscribe } from '@src/hooks/use-subscribe.ts';
-import { Profile } from '@lens-protocol/api-bindings';
-import { useGetPolicyTerms } from '@src/hooks/use-get-policy-terms.ts';
-import LinearProgress from '@mui/material/LinearProgress';
-
+} from '@mui/material'
+import Box from '@mui/material/Box'
+import LinearProgress from '@mui/material/LinearProgress'
+import { GLOBAL_CONSTANTS } from '@src/config-global.ts'
+import { useGetBalance } from '@src/hooks/use-get-balance.ts'
+import { useGetPolicyTerms } from '@src/hooks/use-get-policy-terms.ts'
+import { useNotificationPayload } from '@src/hooks/use-notification-payload.ts'
+import { useNotifications } from '@src/hooks/use-notifications.ts'
+import { useSubscribe } from '@src/hooks/use-subscribe.ts'
 // @ts-ignore
-import { setBalance } from '@redux/auth';
-import { useDispatch, useSelector } from 'react-redux';
-import { useGetBalance } from '@src/hooks/use-get-balance.ts';
-import { useNotifications } from '@src/hooks/use-notifications.ts';
-import { useNotificationPayload } from '@src/hooks/use-notification-payload.ts';
-import NeonPaper from '@src/sections/publication/NeonPaperContainer.tsx';
-import Box from '@mui/material/Box';
-import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
-import { notifyError, notifySuccess } from '@notifications/internal-notifications.ts';
-import { SUCCESS } from '@notifications/success.ts';
-import { ERRORS } from '@notifications/errors.ts';
-import {dicebear} from "@src/utils/dicebear.ts";
-
-// ----------------------------------------------------------------------
+import NeonPaper from '@src/sections/publication/NeonPaperContainer.tsx'
+import {dicebear} from "@src/utils/dicebear.ts"
 
 type SubscribeProfileModalProps = {
   isOpen: boolean;
@@ -51,117 +39,115 @@ type SubscribeProfileModalProps = {
   profile: Profile;
 };
 
-// ----------------------------------------------------------------------
-
 export const SubscribeProfileModal = ({
   isOpen,
   onClose,
   profile,
   onSubscribe,
 }: SubscribeProfileModalProps) => {
-  const dispatch = useDispatch();
-  const { balance: balanceFromRedux } = useSelector((state: any) => state.auth);
+  const dispatch = useDispatch()
+  const { balance: balanceFromRedux } = useSelector((state: any) => state.auth)
 
   // State variables for handling durations and messages
-  const [selectedDuration, setSelectedDuration] = useState('7');
-  const [customDuration, setCustomDuration] = useState('');
+  const [selectedDuration, setSelectedDuration] = useState('7')
+  const [customDuration, setCustomDuration] = useState('')
 
   // Hook to get the user's session data
-  const sessionData = useSelector((state: any) => state.auth.session);
-  const { balance: balanceFromContract, refetch } = useGetBalance();
+  const sessionData = useSelector((state: any) => state.auth.session)
+  const { balance: balanceFromContract, refetch } = useGetBalance()
 
   // Hooks for subscription and terms resolution
-  const { data, error, loading, subscribe } = useSubscribe();
+  const { data, error, loading, subscribe } = useSubscribe()
   const { terms, loading: loadingTerms } = useGetPolicyTerms(
     GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS as Address,
     profile?.ownedBy?.address as Address
-  );
+  )
 
-  const { sendNotification } = useNotifications();
-  const { generatePayload } = useNotificationPayload(sessionData);
+  const { sendNotification } = useNotifications()
+  const { generatePayload } = useNotificationPayload(sessionData)
 
   useEffect(() => {
     if (balanceFromContract) {
-      dispatch(setBalance({ balance: balanceFromContract }));
+      dispatch(setBalance({ balance: balanceFromContract }))
     }
-  }, [balanceFromContract]);
+  }, [balanceFromContract])
 
   // Options for predefined durations
   const durationOptions = [
     { value: '7', title: '1 week' },
     { value: '15', title: '15 days' },
     { value: '30', title: '1 month' },
-  ];
+  ]
 
   // Calculate total cost and check if the balance is sufficient
-  const duration = customDuration || selectedDuration || '0';
-  const durationDays = parseInt(duration);
-  const minDays = 7;
-  const isCustomDurationInvalid = customDuration && (isNaN(durationDays) || durationDays < minDays);
+  const duration = customDuration || selectedDuration || '0'
+  const durationDays = parseInt(duration)
+  const minDays = 7
+  const isCustomDurationInvalid = customDuration && (isNaN(durationDays) || durationDays < minDays)
 
-  let totalCostWei = BigInt(0);
-  let totalCostMMC = '0.00';
+  let totalCostWei = BigInt(0)
+  let totalCostMMC = '0.00'
 
   if (!isCustomDurationInvalid && durationDays >= minDays && terms?.amount) {
-    totalCostWei = terms.amount * BigInt(durationDays);
-    totalCostMMC = ethers.formatUnits(totalCostWei, 18); // Convert Wei to MMC
+    totalCostWei = terms.amount * BigInt(durationDays)
+    totalCostMMC = ethers.formatUnits(totalCostWei, 18) // Convert Wei to MMC
   }
 
   const balanceWei = balanceFromRedux
     ? ethers.parseUnits(balanceFromRedux.toString(), 18)
-    : BigInt(0);
-  const isBalanceSufficient = balanceWei && totalCostWei && balanceWei >= totalCostWei;
+    : BigInt(0)
+  const isBalanceSufficient = balanceWei && totalCostWei && balanceWei >= totalCostWei
 
   // Determine if the subscribe button should be disabled
   const isButtonDisabled =
     loading ||
     (!selectedDuration && !customDuration) ||
     isCustomDurationInvalid ||
-    !isBalanceSufficient;
+    !isBalanceSufficient
 
   // Effect to handle subscription errors
   useEffect(() => {
     if (error) {
-      notifyError(error as ERRORS);
+      notifyError(error as ERRORS)
     }
-  }, [error]);
+  }, [error])
 
   // Effect to handle successful subscription
   useEffect(() => {
     if (data?.receipt) {
-      notifySuccess(SUCCESS.PROFILE_JOINED_SUCCESSFULLY);
-      onSubscribe?.();
-      refetch?.();
-      onClose?.();
+      notifySuccess(SUCCESS.PROFILE_JOINED_SUCCESSFULLY)
+      onSubscribe?.()
+      refetch?.()
+      onClose?.()
     }
-  }, [data]);
+  }, [data])
 
   // Handler for changing the selected duration
   const handleDurationChange = (value: string) => {
-    setSelectedDuration(value);
-    setCustomDuration('');
-  };
+    setSelectedDuration(value)
+    setCustomDuration('')
+  }
 
   // Handler for changing the custom duration
   const handleCustomDurationChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSelectedDuration('');
-    setCustomDuration(event.target.value);
-  };
+    setSelectedDuration('')
+    setCustomDuration(event.target.value)
+  }
 
   // Handler for the subscribe action
   const handleSubscribe = async () => {
     if (!duration) {
-      return;
+      return
     }
 
     if (isCustomDurationInvalid) {
-      notifyError(ERRORS.SUBSCRIBE_MINIMUN_DAYS_ERROR);
-      return;
+      notifyError(ERRORS.SUBSCRIBE_MINIMUN_DAYS_ERROR)
+      return
     }
 
     if (!isBalanceSufficient) {
-      notifyError(ERRORS.INSUFICIENT_BALANCE_ERROR);
-      return;
+      notifyError(ERRORS.INSUFICIENT_BALANCE_ERROR)
+      return
     }
 
     try {
@@ -184,16 +170,16 @@ export const SubscribeProfileModal = ({
             totalCostMMC,
             rawDescription: `${sessionData?.profile?.metadata?.displayName} has joined to your content`,
           }
-        );
-        await sendNotification(profile.id, sessionData?.profile?.id, notificationPayload);
-      });
+        )
+        await sendNotification(profile.id, sessionData?.profile?.id, notificationPayload)
+      })
     } catch (err) {
-      console.error(err);
-      notifyError(ERRORS.FAILED_JOIN_PROFILE_ERROR);
+      console.error(err)
+      notifyError(ERRORS.FAILED_JOIN_PROFILE_ERROR)
     }
-  };
+  }
 
-  const RainbowEffect = loading ? NeonPaper : Box;
+  const RainbowEffect = loading ? NeonPaper : Box
 
   return (
     <>
@@ -312,5 +298,5 @@ export const SubscribeProfileModal = ({
         )}
       </Dialog>
     </>
-  );
-};
+  )
+}

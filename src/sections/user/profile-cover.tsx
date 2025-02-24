@@ -1,23 +1,17 @@
-// @mui
-import { alpha } from '@mui/material/styles';
-// theme
-import { bgGradient } from '@src/theme/css';
-import { Profile } from '@lens-protocol/api-bindings';
-import Image from '../../components/image';
-import { SxProps } from '@mui/system';
-import { Theme } from '@mui/material';
-
-// ----------------------------------------------------------------------
+import { Profile } from '@lens-protocol/api-bindings'
+import { Theme } from '@mui/material'
+import { alpha } from '@mui/material/styles'
+import { SxProps } from '@mui/system'
+import Image from '../../components/image'
+import { bgGradient } from '@src/theme/css'
 
 interface ProfileCoverProps {
   profile?: Profile;
   sx?: SxProps<Theme>;
 }
 
-// ----------------------------------------------------------------------
-
 export default function ProfileCover({ profile, sx }: ProfileCoverProps) {
-  const coverImage = profile?.metadata?.coverPicture?.optimized?.uri;
+  const coverImage = profile?.metadata?.coverPicture?.optimized?.uri
   return (
     <Image
       src={!!coverImage ? coverImage : `https://picsum.photos/seed/${profile?.id}/1920/820`}
@@ -36,5 +30,5 @@ export default function ProfileCover({ profile, sx }: ProfileCoverProps) {
         ...sx
       }}
     />
-  );
+  )
 }

@@ -1,18 +1,14 @@
-import { memo } from 'react';
-// @mui
-import { useTheme } from '@mui/material/styles';
-import Box, { BoxProps } from '@mui/material/Box';
-//
-import BackgroundShape from './background-shape';
-
-// ----------------------------------------------------------------------
+import { memo } from 'react'
+import Box, { BoxProps } from '@mui/material/Box'
+import { useTheme } from '@mui/material/styles'
+import BackgroundShape from './background-shape'
 
 function SeoIllustration({ ...other }: BoxProps) {
-  const theme = useTheme();
+  const theme = useTheme()
 
-  const PRIMARY_LIGHT = theme.palette.primary.light;
+  const PRIMARY_LIGHT = theme.palette.primary.light
 
-  const PRIMARY_DARK = theme.palette.primary.dark;
+  const PRIMARY_DARK = theme.palette.primary.dark
 
   return (
     <Box
@@ -228,7 +224,7 @@ function SeoIllustration({ ...other }: BoxProps) {
 
       <image href="/assets/illustrations/characters/character_3.png" height="300" x="312" y="30" />
     </Box>
-  );
+  )
 }
 
-export default memo(SeoIllustration);
+export default memo(SeoIllustration)

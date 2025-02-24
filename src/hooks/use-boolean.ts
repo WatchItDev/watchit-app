@@ -1,6 +1,4 @@
-import { useCallback, useState } from 'react';
-
-// ----------------------------------------------------------------------
+import { useCallback, useState } from 'react'
 
 interface ReturnType {
   value: boolean;
@@ -11,19 +9,19 @@ interface ReturnType {
 }
 
 export function useBoolean(defaultValue?: boolean): ReturnType {
-  const [value, setValue] = useState(!!defaultValue);
+  const [value, setValue] = useState(!!defaultValue)
 
   const onTrue = useCallback(() => {
-    setValue(true);
-  }, []);
+    setValue(true)
+  }, [])
 
   const onFalse = useCallback(() => {
-    setValue(false);
-  }, []);
+    setValue(false)
+  }, [])
 
   const onToggle = useCallback(() => {
-    setValue((prev) => !prev);
-  }, []);
+    setValue((prev) => !prev)
+  }, [])
 
   return {
     value,
@@ -31,5 +29,5 @@ export function useBoolean(defaultValue?: boolean): ReturnType {
     onFalse,
     onToggle,
     setValue,
-  };
+  }
 }

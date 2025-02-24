@@ -1,5 +1,5 @@
-import React from "react";
-import Carousel, {Settings} from "react-slick";
+import React from "react"
+import Carousel, {Settings} from "react-slick"
 
 export type CarouselReturnType = {
   currentIndex: number;

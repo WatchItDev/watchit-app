@@ -1,12 +1,7 @@
-// @mui
-import Box from '@mui/material/Box';
-import Pagination from '@mui/material/Pagination';
-// types
-import { IPostComment } from '@src/types/blog';
-//
-import GovernanceCommentItem from './governance-comment-item';
-
-// ----------------------------------------------------------------------
+import Box from '@mui/material/Box'
+import Pagination from '@mui/material/Pagination'
+import GovernanceCommentItem from './governance-comment-item'
+import { IPostComment } from '@src/types/blog'
 
 type Props = {
   comments: IPostComment[];
@@ -17,9 +12,9 @@ export default function GovernanceCommentList({ comments }: Props) {
     <>
       <>
         {comments.map((comment) => {
-          const { id, replyComment, name, users, message, avatarUrl, postedAt } = comment;
+          const { id, replyComment, name, users, message, avatarUrl, postedAt } = comment
 
-          const hasReply = !!replyComment.length;
+          const hasReply = !!replyComment.length
 
           return (
             <Box key={id}>
@@ -31,7 +26,7 @@ export default function GovernanceCommentList({ comments }: Props) {
               />
               {hasReply &&
                 replyComment.map((reply) => {
-                  const userReply = users.find((user) => user.id === reply.userId);
+                  const userReply = users.find((user) => user.id === reply.userId)
 
                   return (
                     <GovernanceCommentItem
@@ -43,14 +38,14 @@ export default function GovernanceCommentList({ comments }: Props) {
                       tagUser={reply.tagUser}
                       hasReply
                     />
-                  );
+                  )
                 })}
             </Box>
-          );
+          )
         })}
       </>
 
       <Pagination count={8} sx={{ my: 5, mx: 'auto' }} />
     </>
-  );
+  )
 }

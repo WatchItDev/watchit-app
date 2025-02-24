@@ -1,28 +1,21 @@
-// MUI IMPORTS
-import Box from '@mui/material/Box';
-import Card from '@mui/material/Card';
-import { Theme } from '@mui/material/styles';
-import { SxProps } from '@mui/system/styleFunctionSx';
-import ListItemText from '@mui/material/ListItemText';
-
-// LENS IMPORTS
-import { Profile } from '@lens-protocol/api-bindings';
+import {FC} from "react"
+import { Profile } from '@lens-protocol/api-bindings'
 // @ts-ignore
-import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
-
-// LOCAL IMPORTS
-import Image from '../image';
-import { paths } from '../../routes/paths';
-import { useRouter } from '@src/routes/hooks';
-import FollowUnfollowButton from '@src/components/follow-unfollow-button.tsx';
-import { useSelector } from 'react-redux';
-import AvatarProfile from "@src/components/avatar/avatar.tsx";
-import {FC} from "react";
-import Typography from "@mui/material/Typography";
-import BadgeVerified from "@src/components/user-item/BadgeVerified.tsx";
-import { Address } from 'viem';
-
-// ----------------------------------------------------------------------
+import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads'
+import { useSelector } from 'react-redux'
+import { Address } from 'viem'
+import Box from '@mui/material/Box'
+import Card from '@mui/material/Card'
+import ListItemText from '@mui/material/ListItemText'
+import { Theme } from '@mui/material/styles'
+import Typography from "@mui/material/Typography"
+import { SxProps } from '@mui/system/styleFunctionSx'
+import { paths } from '../../routes/paths'
+import Image from '../image'
+import AvatarProfile from "@src/components/avatar/avatar.tsx"
+import FollowUnfollowButton from '@src/components/follow-unfollow-button.tsx'
+import BadgeVerified from "@src/components/user-item/BadgeVerified.tsx"
+import { useRouter } from '@src/routes/hooks'
 
 interface FollowerItemProps {
   profile: Profile;
@@ -33,8 +26,6 @@ interface FollowerItemProps {
   followButtonMinWidth?: number;
 }
 
-// ----------------------------------------------------------------------
-
 export const UserItem = ({
   profile: profileData,
   sx,
@@ -42,15 +33,15 @@ export const UserItem = ({
   onClick,
   canFollow = true,
 }: FollowerItemProps) => {
-  const sessionData = useSelector((state: any) => state.auth.session);
-  const router = useRouter();
+  const sessionData = useSelector((state: any) => state.auth.session)
+  const router = useRouter()
   const profile =
-    sessionData && sessionData?.profile?.id === profileData?.id ? sessionData.profile : profileData;
+    sessionData && sessionData?.profile?.id === profileData?.id ? sessionData.profile : profileData
 
   const goToProfile = () => {
     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-    onClick ? onClick() : router.push(paths.dashboard.user.root(`${profile.id}`));
-  };
+    onClick ? onClick() : router.push(paths.dashboard.user.root(`${profile.id}`))
+  }
 
   return (
     <>
@@ -144,8 +135,8 @@ export const UserItem = ({
         </Card>
       </Box>
     </>
-  );
-};
+  )
+}
 
 interface UserNameAndBadgeProps {
   name: string;
@@ -183,6 +174,6 @@ export const UserNameAndBadge: FC<UserNameAndBadgeProps> = ({ name, address }) =
         <BadgeVerified address={address} />
       </Box>
     </Box>
-  );
-};
+  )
+}
 

@@ -1,7 +1,7 @@
-import Box from '@mui/material/Box';
-import Carousel, { CarouselArrows, useCarousel } from '@src/components/carousel/index';
-import PosterTopTitles from '@src/components/poster/variants/poster-top-titles.tsx';
-import { CarouselTopTitlesProps } from '../types';
+import Box from '@mui/material/Box'
+import { CarouselTopTitlesProps } from '../types'
+import Carousel, { CarouselArrows, useCarousel } from '@src/components/carousel/index'
+import PosterTopTitles from '@src/components/poster/variants/poster-top-titles.tsx'
 
 export default function CarouselTopTitles({ posts, category }: Readonly<CarouselTopTitlesProps>) {
   const carousel = useCarousel({
@@ -10,7 +10,7 @@ export default function CarouselTopTitles({ posts, category }: Readonly<Carousel
     focusOnSelect: true,
     swipeToSlide: true,
     lazyLoad: 'progressive',
-  });
+  })
 
   return (
     <Box
@@ -50,5 +50,5 @@ export default function CarouselTopTitles({ posts, category }: Readonly<Carousel
         </Carousel>
       </CarouselArrows>
     </Box>
-  );
+  )
 }

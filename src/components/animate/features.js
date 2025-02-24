@@ -1,3 +1,3 @@
-import { domMax } from 'framer-motion';
+import { domMax } from 'framer-motion'
 
-export default domMax;
+export default domMax

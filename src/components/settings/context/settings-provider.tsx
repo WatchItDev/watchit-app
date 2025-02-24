@@ -1,14 +1,9 @@
-import isEqual from 'lodash/isEqual';
-import { useEffect, useMemo, useCallback, useState } from 'react';
-// hooks
-import { useLocalStorage } from '@src/hooks/use-local-storage';
-// utils
-import { localStorageGetItem } from '@src/utils/storage-available';
-//
-import { SettingsValueProps } from '../types';
-import { SettingsContext } from './settings-context';
-
-// ----------------------------------------------------------------------
+import { useEffect, useMemo, useCallback, useState } from 'react'
+import isEqual from 'lodash/isEqual'
+import { SettingsValueProps } from '../types'
+import { SettingsContext } from './settings-context'
+import { useLocalStorage } from '@src/hooks/use-local-storage'
+import { localStorageGetItem } from '@src/utils/storage-available'
 
 type SettingsProviderProps = {
   children: React.ReactNode;
@@ -16,52 +11,52 @@ type SettingsProviderProps = {
 };
 
 export function SettingsProvider({ children, defaultSettings }: SettingsProviderProps) {
-  const [openDrawer, setOpenDrawer] = useState(false);
+  const [openDrawer, setOpenDrawer] = useState(false)
 
-  const [settings, setSettings] = useLocalStorage('settings', defaultSettings);
+  const [settings, setSettings] = useLocalStorage('settings', defaultSettings)
 
-  const isArabic = localStorageGetItem('i18nextLng') === 'ar';
+  const isArabic = localStorageGetItem('i18nextLng') === 'ar'
 
   useEffect(() => {
     if (isArabic) {
-      onChangeDirectionByLang('ar');
+      onChangeDirectionByLang('ar')
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isArabic]);
+  }, [isArabic])
 
   const onUpdate = useCallback(
     (name: string, value: string | boolean) => {
       setSettings((prevState: SettingsValueProps) => ({
         ...prevState,
         [name]: value,
-      }));
+      }))
     },
     [setSettings]
-  );
+  )
 
   // Direction by lang
   const onChangeDirectionByLang = useCallback(
     (lang: string) => {
-      onUpdate('themeDirection', lang === 'ar' ? 'rtl' : 'ltr');
+      onUpdate('themeDirection', lang === 'ar' ? 'rtl' : 'ltr')
     },
     [onUpdate]
-  );
+  )
 
   // Reset
   const onReset = useCallback(() => {
-    setSettings(defaultSettings);
-  }, [defaultSettings, setSettings]);
+    setSettings(defaultSettings)
+  }, [defaultSettings, setSettings])
 
   // Drawer
   const onToggleDrawer = useCallback(() => {
-    setOpenDrawer((prev) => !prev);
-  }, []);
+    setOpenDrawer((prev) => !prev)
+  }, [])
 
   const onCloseDrawer = useCallback(() => {
-    setOpenDrawer(false);
-  }, []);
+    setOpenDrawer(false)
+  }, [])
 
-  const canReset = !isEqual(settings, defaultSettings);
+  const canReset = !isEqual(settings, defaultSettings)
 
   const memoizedValue = useMemo(
     () => ({
@@ -87,7 +82,7 @@ export function SettingsProvider({ children, defaultSettings }: SettingsProvider
       onToggleDrawer,
       onChangeDirectionByLang,
     ]
-  );
+  )
 
-  return <SettingsContext.Provider value={memoizedValue}>{children}</SettingsContext.Provider>;
+  return <SettingsContext.Provider value={memoizedValue}>{children}</SettingsContext.Provider>
 }

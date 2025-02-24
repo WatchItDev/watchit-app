@@ -1,9 +1,6 @@
-import { memo } from 'react';
-//
-import { NavListProps, NavConfigProps } from '../types';
-import NavList from './nav-list';
-
-// ----------------------------------------------------------------------
+import { memo } from 'react'
+import { NavListProps, NavConfigProps } from '../types'
+import NavList from './nav-list'
 
 type GroupProps = {
   items: NavListProps[];
@@ -23,12 +20,12 @@ function NavSectionMini({ items, activeId, config, onClick }: GroupProps) {
           depth={1}
           config={config}
           onClick={() => {
-            onClick?.(list.id ?? '');
+            onClick?.(list.id ?? '')
           }}
         />
       ))}
     </>
-  );
+  )
 }
 
-export default memo(NavSectionMini);
+export default memo(NavSectionMini)

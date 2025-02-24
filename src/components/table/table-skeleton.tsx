@@ -1,10 +1,7 @@
-// @mui
-import Stack from '@mui/material/Stack';
-import Skeleton from '@mui/material/Skeleton';
-import TableCell from '@mui/material/TableCell';
-import TableRow, { TableRowProps } from '@mui/material/TableRow';
-
-// ----------------------------------------------------------------------
+import Skeleton from '@mui/material/Skeleton'
+import Stack from '@mui/material/Stack'
+import TableCell from '@mui/material/TableCell'
+import TableRow, { TableRowProps } from '@mui/material/TableRow'
 
 export default function TableSkeleton({ ...other }: TableRowProps) {
   return (
@@ -20,5 +17,5 @@ export default function TableSkeleton({ ...other }: TableRowProps) {
         </Stack>
       </TableCell>
     </TableRow>
-  );
+  )
 }

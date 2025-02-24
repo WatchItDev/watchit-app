@@ -1,8 +1,6 @@
-import { alpha, Theme } from '@mui/material/styles';
-import { ratingClasses } from '@mui/material/Rating';
-import { svgIconClasses } from '@mui/material/SvgIcon';
-
-// ----------------------------------------------------------------------
+import { ratingClasses } from '@mui/material/Rating'
+import { alpha, Theme } from '@mui/material/styles'
+import { svgIconClasses } from '@mui/material/SvgIcon'
 
 export function rating(theme: Theme) {
   return {
@@ -36,5 +34,5 @@ export function rating(theme: Theme) {
         },
       },
     },
-  };
+  }
 }

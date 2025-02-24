@@ -1,11 +1,11 @@
-import { useEffect, useRef, useState } from 'react';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import { IconCaretDown, IconCaretUp } from '@tabler/icons-react';
-import { ProfilePublicationItem } from './profile-publication-item';
-import { useSelector } from 'react-redux';
-import { AnyPublication } from '@lens-protocol/api-bindings';
+import { useEffect, useRef, useState } from 'react'
+import { AnyPublication } from '@lens-protocol/api-bindings'
+import { IconCaretDown, IconCaretUp } from '@tabler/icons-react'
+import { useSelector } from 'react-redux'
+import Box from '@mui/material/Box'
+import Button from '@mui/material/Button'
+import Typography from '@mui/material/Typography'
+import { ProfilePublicationItem } from './profile-publication-item'
 
 interface ProfileHomeProps {
   publications?: AnyPublication[]; // Array of publications
@@ -29,77 +29,77 @@ export default function ProfileHome({
   scrollable = true,
   scrollOnShowMore = true,
 }: ProfileHomeProps) {
-  const parentRef = useRef<HTMLDivElement>(null);
-  const minibarState = useSelector((state: any) => state.minibar.state);
+  const parentRef = useRef<HTMLDivElement>(null)
+  const minibarState = useSelector((state: any) => state.minibar.state)
 
   // Number of items to display per row
-  const [itemsPerRow, setItemsPerRow] = useState<number>(1);
+  const [itemsPerRow, setItemsPerRow] = useState<number>(1)
   // Current number of rows to display
-  const [rowsToShow, setRowsToShow] = useState<number>(initialRows);
+  const [rowsToShow, setRowsToShow] = useState<number>(initialRows)
 
   /**
    * Calculates how many items can fit in a single row based on
    * container width + minItemWidth / maxItemWidth constraints.
    */
   const calculateItemsPerRow = (parentWidth: number): number => {
-    const maxPossibleItems = Math.floor(parentWidth / minItemWidth);
-    const minPossibleItems = Math.floor(parentWidth / maxItemWidth);
+    const maxPossibleItems = Math.floor(parentWidth / minItemWidth)
+    const minPossibleItems = Math.floor(parentWidth / maxItemWidth)
 
     for (let items = maxPossibleItems; items >= minPossibleItems; items--) {
-      const itemWidth = parentWidth / items;
+      const itemWidth = parentWidth / items
       if (itemWidth >= minItemWidth && itemWidth <= maxItemWidth) {
-        return items;
+        return items
       }
     }
-    return 1; // Fallback
-  };
+    return 1 // Fallback
+  }
 
   /**
    * Automatically update 'itemsPerRow' when container size changes.
    */
   useEffect(() => {
-    if (!parentRef.current) return;
+    if (!parentRef.current) return
 
     const observer = new ResizeObserver((entries) => {
       for (let entry of entries) {
-        const parentWidth = entry.contentRect.width;
-        const items = calculateItemsPerRow(parentWidth);
-        setItemsPerRow(items);
+        const parentWidth = entry.contentRect.width
+        const items = calculateItemsPerRow(parentWidth)
+        setItemsPerRow(items)
       }
-    });
+    })
 
-    observer.observe(parentRef.current);
-    return () => observer.disconnect();
-  }, [minItemWidth, maxItemWidth]);
+    observer.observe(parentRef.current)
+    return () => observer.disconnect()
+  }, [minItemWidth, maxItemWidth])
 
   /**
    * Initial calculation on mount.
    */
   useEffect(() => {
     if (parentRef.current) {
-      const width = parentRef.current.offsetWidth;
-      const items = calculateItemsPerRow(width);
-      setItemsPerRow(items);
+      const width = parentRef.current.offsetWidth
+      const items = calculateItemsPerRow(width)
+      setItemsPerRow(items)
     }
-  }, [minItemWidth, maxItemWidth]);
+  }, [minItemWidth, maxItemWidth])
 
   /**
    * Recalculate when minibarState changes (e.g., toggling the sidebar).
    */
   useEffect(() => {
     if (parentRef.current) {
-      const width = parentRef.current.offsetWidth;
-      const items = calculateItemsPerRow(width);
-      setItemsPerRow(items);
+      const width = parentRef.current.offsetWidth
+      const items = calculateItemsPerRow(width)
+      setItemsPerRow(items)
     }
-  }, [minibarState]);
+  }, [minibarState])
 
   /**
    * Total number of items displayed at the current row count.
    */
-  const totalVisibleItems = rowsToShow * itemsPerRow;
-  const publicationsToShow = publications.slice(0, totalVisibleItems);
-  const isShowingAll = publicationsToShow.length === publications.length;
+  const totalVisibleItems = rowsToShow * itemsPerRow
+  const publicationsToShow = publications.slice(0, totalVisibleItems)
+  const isShowingAll = publicationsToShow.length === publications.length
 
   /**
    * "Show more / Show less" button handler.
@@ -107,10 +107,10 @@ export default function ProfileHome({
   const handleShowMore = () => {
     if (isShowingAll) {
       // "Show less": revert to initial rows
-      setRowsToShow(initialRows);
+      setRowsToShow(initialRows)
     } else {
       // "Show more": add rows
-      setRowsToShow((prev) => prev + rowsIncrement);
+      setRowsToShow((prev) => prev + rowsIncrement)
 
       // Optional scroll-to-bottom after increment
       if (scrollOnShowMore) {
@@ -119,17 +119,17 @@ export default function ProfileHome({
             parentRef.current.scrollTo({
               top: parentRef.current.scrollHeight,
               behavior: 'smooth',
-            });
+            })
           }
-        });
+        })
       }
     }
-  };
+  }
 
-  const shouldShowButton = publications.length > publicationsToShow.length || isShowingAll;
+  const shouldShowButton = publications.length > publicationsToShow.length || isShowingAll
 
   // Gap between items
-  const gap = 10;
+  const gap = 10
 
   return (
     <>
@@ -200,5 +200,5 @@ export default function ProfileHome({
         </Box>
       ) : null}
     </>
-  );
+  )
 }

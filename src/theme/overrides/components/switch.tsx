@@ -1,10 +1,8 @@
-import { Theme, alpha } from '@mui/material/styles';
-import { SwitchProps, switchClasses } from '@mui/material/Switch';
-
-// ----------------------------------------------------------------------
+import { Theme, alpha } from '@mui/material/styles'
+import { SwitchProps, switchClasses } from '@mui/material/Switch'
 
 export function switches(theme: Theme) {
-  const lightMode = theme.palette.mode === 'light';
+  const lightMode = theme.palette.mode === 'light'
 
   const rootStyles = (ownerState: SwitchProps) => ({
     padding: '9px 13px 9px 12px',
@@ -54,7 +52,7 @@ export function switches(theme: Theme) {
         },
       },
     },
-  });
+  })
 
   return {
     MuiSwitch: {
@@ -62,5 +60,5 @@ export function switches(theme: Theme) {
         root: ({ ownerState }: { ownerState: SwitchProps }) => rootStyles(ownerState),
       },
     },
-  };
+  }
 }

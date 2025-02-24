@@ -1,22 +1,20 @@
-import { alpha, Theme } from '@mui/material/styles';
-import { AvatarProps } from '@mui/material/Avatar';
-import { avatarGroupClasses, AvatarGroupProps } from '@mui/material/AvatarGroup';
+import { AvatarProps } from '@mui/material/Avatar'
+import { avatarGroupClasses, AvatarGroupProps } from '@mui/material/AvatarGroup'
+import { alpha, Theme } from '@mui/material/styles'
 
-// ----------------------------------------------------------------------
-
-const COLORS = ['default', 'primary', 'secondary', 'info', 'success', 'warning', 'error'] as const;
+const COLORS = ['default', 'primary', 'secondary', 'info', 'success', 'warning', 'error'] as const
 
 const colorByName = (name: string) => {
-  const charAt = name.charAt(0);
+  const charAt = name.charAt(0)
 
-  if (['A', 'C', 'F'].includes(charAt)) return 'primary';
-  if (['E', 'D', 'H'].includes(charAt)) return 'secondary';
-  if (['I', 'K', 'L'].includes(charAt)) return 'info';
-  if (['M', 'N', 'P'].includes(charAt)) return 'success';
-  if (['Q', 'S', 'T'].includes(charAt)) return 'warning';
-  if (['V', 'X', 'Y'].includes(charAt)) return 'error';
-  return 'default';
-};
+  if (['A', 'C', 'F'].includes(charAt)) return 'primary'
+  if (['E', 'D', 'H'].includes(charAt)) return 'secondary'
+  if (['I', 'K', 'L'].includes(charAt)) return 'info'
+  if (['M', 'N', 'P'].includes(charAt)) return 'success'
+  if (['Q', 'S', 'T'].includes(charAt)) return 'warning'
+  if (['V', 'X', 'Y'].includes(charAt)) return 'error'
+  return 'default'
+}
 
 // NEW VARIANT
 declare module '@mui/material/AvatarGroup' {
@@ -24,8 +22,6 @@ declare module '@mui/material/AvatarGroup' {
     compact: true;
   }
 }
-
-// ----------------------------------------------------------------------
 
 export function avatar(theme: Theme) {
   return {
@@ -53,7 +49,7 @@ export function avatar(theme: Theme) {
           borderRadius: theme.shape.borderRadius * 1.5,
         },
         colorDefault: ({ ownerState }: { ownerState: AvatarProps }) => {
-          const color = colorByName(`${ownerState.alt}`);
+          const color = colorByName(`${ownerState.alt}`)
 
           return {
             ...(!!ownerState.alt && {
@@ -67,7 +63,7 @@ export function avatar(theme: Theme) {
                     backgroundColor: alpha(theme.palette.grey[500], 0.24),
                   }),
             }),
-          };
+          }
         },
       },
     },
@@ -107,5 +103,5 @@ export function avatar(theme: Theme) {
         },
       },
     },
-  };
+  }
 }

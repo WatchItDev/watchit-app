@@ -1,9 +1,5 @@
-// @mui
-import Box from '@mui/material/Box';
-//
-import Image, { ImageRatio } from '../image';
-
-// ----------------------------------------------------------------------
+import Box from '@mui/material/Box'
+import Image, { ImageRatio } from '../image'
 
 export interface SingleFilePreviewProps {
   imgUrl?: string;
@@ -33,5 +29,5 @@ export default function SingleFilePreview({ imgUrl = '', ratio }: SingleFilePrev
         ratio={ratio}
       />
     </Box>
-  );
+  )
 }

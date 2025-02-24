@@ -1,15 +1,11 @@
-// @mui
-import { alpha } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import Container from '@mui/material/Container';
-import Typography from '@mui/material/Typography';
-// components
-import { useSettingsContext } from '@src/components/settings';
-
-// ----------------------------------------------------------------------
+import Box from '@mui/material/Box'
+import Container from '@mui/material/Container'
+import { alpha } from '@mui/material/styles'
+import Typography from '@mui/material/Typography'
+import { useSettingsContext } from '@src/components/settings'
 
 export default function BlankView({ children }: any) {
-  const settings = useSettingsContext();
+  const settings = useSettingsContext()
 
   return (
     <Container maxWidth={settings.themeStretch ? false : 'xl'}>
@@ -29,5 +25,5 @@ export default function BlankView({ children }: any) {
         {children}
       </Box>
     </Container>
-  );
+  )
 }

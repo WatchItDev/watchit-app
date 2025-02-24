@@ -1,11 +1,7 @@
-// @mui
-import { Theme, SxProps } from '@mui/material/styles';
-import TableRow from '@mui/material/TableRow';
-import TableCell from '@mui/material/TableCell';
-//
-import EmptyContent from '../empty-content';
-
-// ----------------------------------------------------------------------
+import { Theme, SxProps } from '@mui/material/styles'
+import TableCell from '@mui/material/TableCell'
+import TableRow from '@mui/material/TableRow'
+import EmptyContent from '../empty-content'
 
 type Props = {
   loading: boolean;
@@ -31,5 +27,5 @@ export default function TableNoData({ loading, notFound, sx }: Props) {
         <TableCell colSpan={12} sx={{ p: 0 }} />
       )}
     </TableRow>
-  );
+  )
 }

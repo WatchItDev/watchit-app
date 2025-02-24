@@ -1,11 +1,11 @@
-import { FC } from 'react';
-import { Stack, Typography} from '@mui/material';
-import LoadingButton from '@mui/lab/LoadingButton';
-import { alpha, useTheme } from '@mui/material/styles';
-import { bgGradient } from '@src/theme/css';
-import Iconify from '@src/components/iconify';
-import { useResponsive } from '@src/hooks/use-responsive';
-import ProcessIllustrationCard from '@src/components/process-illustration-card.tsx';
+import { FC } from 'react'
+import LoadingButton from '@mui/lab/LoadingButton'
+import { Stack, Typography} from '@mui/material'
+import { alpha, useTheme } from '@mui/material/styles'
+import Iconify from '@src/components/iconify'
+import ProcessIllustrationCard from '@src/components/process-illustration-card.tsx'
+import { useResponsive } from '@src/hooks/use-responsive'
+import { bgGradient } from '@src/theme/css'
 
 interface ProcessSectionCardProps {
   title: string;
@@ -24,9 +24,8 @@ const ProcessSectionCard: FC<ProcessSectionCardProps> = ({
                                                    illustrationAlt,
                                                    onClick
                                                  }) => {
-  const lgUp = useResponsive('up', 'lg');
-  const theme = useTheme();
-
+  const lgUp = useResponsive('up', 'lg')
+  const theme = useTheme()
 
   return (
     <Stack
@@ -115,7 +114,7 @@ const ProcessSectionCard: FC<ProcessSectionCardProps> = ({
         <ProcessIllustrationCard illustration={illustration} alt={illustrationAlt} />
       </Stack>
     </Stack>
-  );
-};
+  )
+}
 
-export default ProcessSectionCard;
+export default ProcessSectionCard

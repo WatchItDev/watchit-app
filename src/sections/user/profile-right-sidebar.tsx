@@ -1,20 +1,19 @@
-import Stack from "@mui/material/Stack";
-import Typography from "@mui/material/Typography";
-import { CopyableText } from "@src/components/copyable-text";
-import Divider from "@mui/material/Divider";
-import { truncateAddress } from "@src/utils/wallet.ts";
-import { OpenableText } from "@src/components/openable-text";
-import Box from "@mui/material/Box";
-import { randomColors } from "@src/components/poster/variants/poster-latest-content.tsx";
-import { IconRosetteDiscountCheckFilled } from "@tabler/icons-react";
-import { FC } from "react";
-import { ProfileHeaderProps } from "@src/sections/user/profile-header.tsx";
-import { styled } from "@mui/material/styles";
-import { useSelector } from "react-redux";
+import { FC } from "react"
+import { IconRosetteDiscountCheckFilled } from "@tabler/icons-react"
+import { useSelector } from "react-redux"
+import Box from "@mui/material/Box"
+import Divider from "@mui/material/Divider"
+import Stack from "@mui/material/Stack"
+import { styled } from "@mui/material/styles"
+import Typography from "@mui/material/Typography"
+import { CopyableText } from "@src/components/copyable-text"
+import { OpenableText } from "@src/components/openable-text"
+import { randomColors } from "@src/components/poster/variants/poster-latest-content.tsx"
+import { ProfileHeaderProps } from "@src/sections/user/profile-header.tsx"
+import { truncateAddress } from "@src/utils/wallet.ts"
 
-// ---------------------------------------------------------------- ------
 // TODO: move to envs
-const urlAttestationBase = 'https://polygon-amoy.easscan.org/attestation/view/';
+const urlAttestationBase = 'https://polygon-amoy.easscan.org/attestation/view/'
 
 interface ProfileRightSidebarProps extends ProfileHeaderProps {
   sidebarProps: {
@@ -28,12 +27,12 @@ interface ProfileRightSidebarProps extends ProfileHeaderProps {
 }
 
 const ProfileRightSidebar: FC<ProfileRightSidebarProps> = ({ profile, sidebarProps }) => {
-  const sessionData = useSelector((state: any) => state.auth.session);
-  const { isAuthorized, authorizedLoading, accessLoading, hasAccess, attestation, attestationLoading } = sidebarProps;
+  const sessionData = useSelector((state: any) => state.auth.session)
+  const { isAuthorized, authorizedLoading, accessLoading, hasAccess, attestation, attestationLoading } = sidebarProps
   const hex = BigInt(attestation ?? '').toString(16)
   // add padding to attestation smaller than 256 bits
-  const cleanedHex = hex.length < 64 ? `${'0'.repeat(64 - hex.length)}${hex}` : hex;
-  const attestationAddress = `0x${cleanedHex}`;
+  const cleanedHex = hex.length < 64 ? `${'0'.repeat(64 - hex.length)}${hex}` : hex
+  const attestationAddress = `0x${cleanedHex}`
 
   return (
     <Stack
@@ -144,7 +143,7 @@ const ProfileRightSidebar: FC<ProfileRightSidebarProps> = ({ profile, sidebarPro
         </Box>
       </Stack>
     </Stack>
-  );
+  )
 }
 
 const StyledBoxGradient = styled(Box)<{ color1?: string; color2?: string }>(({
@@ -152,8 +151,8 @@ const StyledBoxGradient = styled(Box)<{ color1?: string; color2?: string }>(({
   color1,
   color2,
 }) => {
-  const defaultColor1 = theme.palette.primary.main;
-  const defaultColor2 = theme.palette.secondary.main;
+  const defaultColor1 = theme.palette.primary.main
+  const defaultColor2 = theme.palette.secondary.main
 
   return {
     background: `linear-gradient(300deg, ${color1 || defaultColor1} 0%, ${color2 || defaultColor2} 25%, ${color1 || defaultColor1} 50%, ${color2 || defaultColor2} 75%, ${color1 || defaultColor1} 100%)`,
@@ -170,7 +169,7 @@ const StyledBoxGradient = styled(Box)<{ color1?: string; color2?: string }>(({
       '50%': { backgroundPosition: '100% 50%' },
       '100%': { backgroundPosition: '0% 50%' },
     },
-  };
-});
+  }
+})
 
-export default ProfileRightSidebar;
+export default ProfileRightSidebar

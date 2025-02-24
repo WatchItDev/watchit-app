@@ -1,73 +1,71 @@
-import { useState } from 'react';
-import Chip from '@mui/material/Chip';
-import Stack from '@mui/material/Stack';
-import Button from '@mui/material/Button';
-import Divider from '@mui/material/Divider';
-import Checkbox from '@mui/material/Checkbox';
-import Container from '@mui/material/Container';
-import Typography from '@mui/material/Typography';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import AvatarGroup, { avatarGroupClasses } from '@mui/material/AvatarGroup';
-import IconButton from '@mui/material/IconButton';
-import { IconChevronLeft } from '@tabler/icons-react';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import CardContent from '@mui/material/CardContent';
-import Card from '@mui/material/Card';
-import { styled } from '@mui/material/styles';
-import LinearProgress, { linearProgressClasses } from '@mui/material/LinearProgress';
-import { m } from 'framer-motion';
-import { fShortenNumber } from '@src/utils/format-number';
-import Iconify from '@src/components/iconify';
-import Markdown from '@src/components/markdown';
-import LoadingButton from '@mui/lab/LoadingButton';
-import { truncateAddress } from '@src/utils/wallet.ts';
-import GovernanceCommentList from '../governance-comment-list';
-import GovernanceCommentForm from '../governance-comment-form';
-import Label from '../../../components/label';
-import Header from '../../../layouts/dashboard/header';
-import { useResponsive } from '@src/hooks/use-responsive.ts';
-import { paths } from '@src/routes/paths.ts';
-import { useRouter } from '@src/routes/hooks';
-import { ProposalsMockList, proposalVotes as initialProposalVotes } from '../governance-mock';
-import AvatarProfile from "@src/components/avatar/avatar.tsx";
-import {dicebear} from "@src/utils/dicebear.ts";
-
-// ----------------------------------------------------------------------
+import { useState } from 'react'
+import { IconChevronLeft } from '@tabler/icons-react'
+import { m } from 'framer-motion'
+import LoadingButton from '@mui/lab/LoadingButton'
+import AvatarGroup, { avatarGroupClasses } from '@mui/material/AvatarGroup'
+import Box from '@mui/material/Box'
+import Button from '@mui/material/Button'
+import Card from '@mui/material/Card'
+import CardContent from '@mui/material/CardContent'
+import Checkbox from '@mui/material/Checkbox'
+import Chip from '@mui/material/Chip'
+import Container from '@mui/material/Container'
+import Divider from '@mui/material/Divider'
+import FormControlLabel from '@mui/material/FormControlLabel'
+import Grid from '@mui/material/Grid'
+import IconButton from '@mui/material/IconButton'
+import LinearProgress, { linearProgressClasses } from '@mui/material/LinearProgress'
+import Stack from '@mui/material/Stack'
+import { styled } from '@mui/material/styles'
+import Typography from '@mui/material/Typography'
+import Label from '../../../components/label'
+import Header from '../../../layouts/dashboard/header'
+import GovernanceCommentForm from '../governance-comment-form'
+import GovernanceCommentList from '../governance-comment-list'
+import { ProposalsMockList, proposalVotes as initialProposalVotes } from '../governance-mock'
+import AvatarProfile from "@src/components/avatar/avatar.tsx"
+import Iconify from '@src/components/iconify'
+import Markdown from '@src/components/markdown'
+import { useResponsive } from '@src/hooks/use-responsive.ts'
+import { useRouter } from '@src/routes/hooks'
+import { paths } from '@src/routes/paths.ts'
+import {dicebear} from "@src/utils/dicebear.ts"
+import { fShortenNumber } from '@src/utils/format-number'
+import { truncateAddress } from '@src/utils/wallet.ts'
 
 export default function GovernanceDetailsView() {
-  const post = ProposalsMockList[0];
-  const mdUp = useResponsive('up', 'md');
-  const router = useRouter();
+  const post = ProposalsMockList[0]
+  const mdUp = useResponsive('up', 'md')
+  const router = useRouter()
 
   const handleBack = () => {
-    router.push(paths.dashboard.governance.root);
-  };
+    router.push(paths.dashboard.governance.root)
+  }
 
-  const [userVote, setUserVote] = useState<string | null>(null);
-  const [proposalVotes, setProposalVotes] = useState(initialProposalVotes);
-  const [loadingVoteType, setLoadingVoteType] = useState<string | null>(null);
+  const [userVote, setUserVote] = useState<string | null>(null)
+  const [proposalVotes, setProposalVotes] = useState(initialProposalVotes)
+  const [loadingVoteType, setLoadingVoteType] = useState<string | null>(null)
 
   const totalVotes =
     proposalVotes.results.forVotes +
     proposalVotes.results.againstVotes +
-    proposalVotes.results.abstainVotes;
+    proposalVotes.results.abstainVotes
 
   const handleVote = (voteType: 'for' | 'against' | 'abstain') => {
-    setLoadingVoteType(voteType);
+    setLoadingVoteType(voteType)
 
     setTimeout(() => {
-      setLoadingVoteType(null);
-      setUserVote(voteType);
+      setLoadingVoteType(null)
+      setUserVote(voteType)
 
       // Adjust votes results
-      const updatedResults = { ...proposalVotes.results };
+      const updatedResults = { ...proposalVotes.results }
       if (voteType === 'for') {
-        updatedResults.forVotes += 100000;
+        updatedResults.forVotes += 100000
       } else if (voteType === 'against') {
-        updatedResults.againstVotes += 100000;
+        updatedResults.againstVotes += 100000
       } else if (voteType === 'abstain') {
-        updatedResults.abstainVotes += 100000;
+        updatedResults.abstainVotes += 100000
       }
 
       // Update the list with the new vote
@@ -78,15 +76,15 @@ export default function GovernanceDetailsView() {
           amount: 100000,
         },
         ...proposalVotes.votes,
-      ];
+      ]
 
       setProposalVotes({
         ...proposalVotes,
         results: updatedResults,
         votes: updatedVotes,
-      });
-    }, 2000);
-  };
+      })
+    }, 2000)
+  }
 
   const renderPost = post && (
     <Grid container spacing={1} sx={{ margin: '0 !important', width: '100% !important', pt: 5 }}>
@@ -339,7 +337,7 @@ export default function GovernanceDetailsView() {
         </Box>
       </Grid>
     </Grid>
-  );
+  )
 
   return (
     <>
@@ -374,7 +372,7 @@ export default function GovernanceDetailsView() {
       </Header>
       <Container>{post && renderPost}</Container>
     </>
-  );
+  )
 }
 
 const CustomLinearProgress = styled(LinearProgress)(({ theme }) => ({
@@ -393,4 +391,4 @@ const CustomLinearProgress = styled(LinearProgress)(({ theme }) => ({
       backgroundColor: '#fff',
     }),
   },
-}));
+}))

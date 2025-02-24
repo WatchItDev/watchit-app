@@ -1,3 +1,2 @@
-// ----------------------------------------------------------------------
 
-export { default as CopyableText } from './copyable-text.tsx';
+export { default as CopyableText } from './copyable-text.tsx'

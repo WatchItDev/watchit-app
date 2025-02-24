@@ -1,13 +1,9 @@
-import '@src/utils/highlight';
-import ReactQuill from 'react-quill';
-// @mui
-import { alpha } from '@mui/material/styles';
-//
-import { EditorProps } from './types';
-import { StyledEditor } from './styles';
-import Toolbar, { formats } from './toolbar';
-
-// ----------------------------------------------------------------------
+import '@src/utils/highlight'
+import ReactQuill from 'react-quill'
+import { alpha } from '@mui/material/styles'
+import { StyledEditor } from './styles'
+import Toolbar, { formats } from './toolbar'
+import { EditorProps } from './types'
 
 export default function Editor({
   id = 'watchit-quill',
@@ -30,7 +26,7 @@ export default function Editor({
     clipboard: {
       matchVisual: false,
     },
-  };
+  }
 
   return (
     <>
@@ -57,5 +53,5 @@ export default function Editor({
 
       {helperText && helperText}
     </>
-  );
+  )
 }

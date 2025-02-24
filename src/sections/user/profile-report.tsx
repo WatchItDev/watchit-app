@@ -1,12 +1,12 @@
-import { IconDots } from "@tabler/icons-react";
-import Button from "@mui/material/Button";
-import Stack from "@mui/material/Stack";
-import MenuItem from "@mui/material/MenuItem";
-import Popover from "@mui/material/Popover";
-import { FC, useState } from "react";
-import { ReportProfileModal } from "@src/components/report-profile-modal.tsx";
-import { Profile } from "@lens-protocol/api-bindings";
-import styled from "@emotion/styled";
+import { FC, useState } from "react"
+import styled from "@emotion/styled"
+import { Profile } from "@lens-protocol/api-bindings"
+import { IconDots } from "@tabler/icons-react"
+import Button from "@mui/material/Button"
+import MenuItem from "@mui/material/MenuItem"
+import Popover from "@mui/material/Popover"
+import Stack from "@mui/material/Stack"
+import { ReportProfileModal } from "@src/components/report-profile-modal.tsx"
 
 interface ProfileReportProps {
   profile: Profile;
@@ -21,7 +21,7 @@ const StyledButton = styled(Button)`
   z-index: 1;
   right: 5px;
   top: 5px;
-`;
+`
 
 const StyledPopover = styled(Popover)`
   .MuiPaper-root {
@@ -34,16 +34,16 @@ const StyledPopover = styled(Popover)`
     align-items: center;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
   }
-`;
+`
 
 const StyledMenuItem = styled(MenuItem)`
   padding: 8px;
-`;
+`
 
 const ProfileReport: FC<ProfileReportProps> = ({ profile }) => {
-  const [openReportModal, setOpenReportModal] = useState(false);
-  const [menuAnchorEl, setMenuAnchorEl] = useState<HTMLButtonElement | null>(null);
-  const openMenu = Boolean(menuAnchorEl);
+  const [openReportModal, setOpenReportModal] = useState(false)
+  const [menuAnchorEl, setMenuAnchorEl] = useState<HTMLButtonElement | null>(null)
+  const openMenu = Boolean(menuAnchorEl)
 
   return (
     <>
@@ -64,8 +64,8 @@ const ProfileReport: FC<ProfileReportProps> = ({ profile }) => {
         <Stack direction="column" spacing={0} justifyContent="center">
           <StyledMenuItem
             onClick={() => {
-              setOpenReportModal(true);
-              setMenuAnchorEl(null);
+              setOpenReportModal(true)
+              setMenuAnchorEl(null)
             }}
           >
             Report
@@ -79,7 +79,7 @@ const ProfileReport: FC<ProfileReportProps> = ({ profile }) => {
         onClose={() => setOpenReportModal(false)}
       />
     </>
-  );
-};
+  )
+}
 
-export default ProfileReport;
+export default ProfileReport

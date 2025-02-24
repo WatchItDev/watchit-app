@@ -1,11 +1,8 @@
-import { memo } from 'react';
-import Stack from '@mui/material/Stack';
-//
-import { NavSectionProps, NavListProps, NavConfigProps } from '../types';
-import { navMiniConfig } from '../config';
-import NavListVerticalMini from '@src/components/nav-section/mini/nav-list-vertical-mini.tsx';
-
-// ----------------------------------------------------------------------
+import { memo } from 'react'
+import Stack from '@mui/material/Stack'
+import { navMiniConfig } from '../config'
+import { NavSectionProps, NavListProps, NavConfigProps } from '../types'
+import NavListVerticalMini from '@src/components/nav-section/mini/nav-list-vertical-mini.tsx'
 
 export function NavSectionVerticalMini({ data, config, sx, ...other }: NavSectionProps) {
   return (
@@ -14,12 +11,10 @@ export function NavSectionVerticalMini({ data, config, sx, ...other }: NavSectio
         <Group key={group.subheader || index} items={group.items} config={navMiniConfig(config)} />
       ))}
     </Stack>
-  );
+  )
 }
 
-export default memo(NavSectionVerticalMini);
-
-// ----------------------------------------------------------------------
+export default memo(NavSectionVerticalMini)
 
 type GroupProps = {
   items: NavListProps[];
@@ -39,5 +34,5 @@ function Group({ items, config }: GroupProps) {
         />
       ))}
     </>
-  );
+  )
 }

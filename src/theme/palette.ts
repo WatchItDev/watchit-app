@@ -1,7 +1,4 @@
-import { alpha } from '@mui/material/styles';
-
-// ----------------------------------------------------------------------
-
+import { alpha } from '@mui/material/styles'
 export type ColorSchema = 'primary' | 'secondary' | 'info' | 'success' | 'warning' | 'error';
 
 declare module '@mui/material/styles/createPalette' {
@@ -31,7 +28,7 @@ const GREY = {
   700: '#454F5B',
   800: '#212B36',
   900: '#161C24',
-};
+}
 
 const PRIMARY = {
   lighter: '#bcb2ea',
@@ -40,7 +37,7 @@ const PRIMARY = {
   dark: '#362396',
   darker: '#2a1a6e',
   contrastText: '#FFFFFF',
-};
+}
 
 const SECONDARY = {
   lighter: '#C8FAD6',
@@ -49,7 +46,7 @@ const SECONDARY = {
   dark: '#007867',
   darker: '#004B50',
   contrastText: '#FFFFFF',
-};
+}
 
 const INFO = {
   lighter: '#CAFDF5',
@@ -58,7 +55,7 @@ const INFO = {
   dark: '#006C9C',
   darker: '#003768',
   contrastText: '#FFFFFF',
-};
+}
 
 const SUCCESS = {
   lighter: '#D3FCD2',
@@ -67,7 +64,7 @@ const SUCCESS = {
   dark: '#118D57',
   darker: '#065E49',
   contrastText: '#ffffff',
-};
+}
 
 const WARNING = {
   lighter: '#FFF5CC',
@@ -76,7 +73,7 @@ const WARNING = {
   dark: '#B76E00',
   darker: '#7A4100',
   contrastText: GREY[800],
-};
+}
 
 const ERROR = {
   lighter: '#FFE9D5',
@@ -85,7 +82,7 @@ const ERROR = {
   dark: '#B71D18',
   darker: '#7A0916',
   contrastText: '#FFFFFF',
-};
+}
 
 const COMMON = {
   common: {
@@ -109,7 +106,7 @@ const COMMON = {
     hoverOpacity: 0.08,
     disabledOpacity: 0.48,
   },
-};
+}
 
 export function palette(mode: 'light' | 'dark') {
   const light = {
@@ -129,7 +126,7 @@ export function palette(mode: 'light' | 'dark') {
       ...COMMON.action,
       active: GREY[600],
     },
-  };
+  }
 
   const dark = {
     ...COMMON,
@@ -148,7 +145,7 @@ export function palette(mode: 'light' | 'dark') {
       ...COMMON.action,
       active: GREY[500],
     },
-  };
+  }
 
-  return mode === 'light' ? light : dark;
+  return mode === 'light' ? light : dark
 }

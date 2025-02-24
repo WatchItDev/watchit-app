@@ -1,20 +1,16 @@
-// @mui
-import { alpha, Shadows } from '@mui/material/styles';
-//
-import { palette as themePalette } from './palette';
+import { alpha, Shadows } from '@mui/material/styles'
+import { palette as themePalette } from './palette'
 
-// ----------------------------------------------------------------------
+const palette = themePalette('light')
 
-const palette = themePalette('light');
+const LIGHT_MODE = palette.grey[500]
 
-const LIGHT_MODE = palette.grey[500];
-
-const DARK_MODE = palette.common.black;
+const DARK_MODE = palette.common.black
 
 function createShadow(color: string): Shadows {
-  const transparent1 = alpha(color, 0.2);
-  const transparent2 = alpha(color, 0.14);
-  const transparent3 = alpha(color, 0.12);
+  const transparent1 = alpha(color, 0.2)
+  const transparent2 = alpha(color, 0.14)
+  const transparent3 = alpha(color, 0.12)
   return [
     'none',
     `0px 2px 1px -1px ${transparent1},0px 1px 1px 0px ${transparent2},0px 1px 3px 0px ${transparent3}`,
@@ -41,9 +37,9 @@ function createShadow(color: string): Shadows {
     `0px 10px 14px -6px ${transparent1},0px 22px 35px 3px ${transparent2},0px 8px 42px 7px ${transparent3}`,
     `0px 11px 14px -7px ${transparent1},0px 23px 36px 3px ${transparent2},0px 9px 44px 8px ${transparent3}`,
     `0px 11px 15px -7px ${transparent1},0px 24px 38px 3px ${transparent2},0px 9px 46px 8px ${transparent3}`,
-  ];
+  ]
 }
 
 export function shadows(mode: 'light' | 'dark') {
-  return mode === 'light' ? createShadow(LIGHT_MODE) : createShadow(DARK_MODE);
+  return mode === 'light' ? createShadow(LIGHT_MODE) : createShadow(DARK_MODE)
 }

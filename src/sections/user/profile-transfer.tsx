@@ -1,36 +1,36 @@
-import { Profile } from '@lens-protocol/api-bindings';
-import { FC, useCallback, useRef, useState } from 'react';
-import FinanceQuickTransferModal from '@src/sections/finance/components/finance-quick-transfer-modal.tsx';
-import LoadingButton from '@mui/lab/LoadingButton';
-import { useBoolean } from '@src/hooks/use-boolean.ts';
-import Iconify from '@src/components/iconify';
-import Typography from '@mui/material/Typography';
-import Popover from '@mui/material/Popover';
+import { FC, useCallback, useRef, useState } from 'react'
+import { Profile } from '@lens-protocol/api-bindings'
+import LoadingButton from '@mui/lab/LoadingButton'
+import Popover from '@mui/material/Popover'
+import Typography from '@mui/material/Typography'
+import Iconify from '@src/components/iconify'
+import { useBoolean } from '@src/hooks/use-boolean.ts'
+import FinanceQuickTransferModal from '@src/sections/finance/components/finance-quick-transfer-modal.tsx'
 
 interface ProfileTransferProps {
   profile: Profile;
 }
 
 const ProfileTransfer: FC<ProfileTransferProps> = ({ profile }) => {
-  const [openTooltipSend, setOpenTooltipSend] = useState(false);
-  const navRefSend = useRef(null);
-  const confirm = useBoolean();
+  const [openTooltipSend, setOpenTooltipSend] = useState(false)
+  const navRefSend = useRef(null)
+  const confirm = useBoolean()
 
   const handleOpen = () => {
-    confirm.onTrue();
-  };
+    confirm.onTrue()
+  }
 
   const handleTransferFinish = () => {
-    confirm.onFalse();
-  };
+    confirm.onFalse()
+  }
 
   const handleOpenSend = useCallback(() => {
-    setOpenTooltipSend(true);
-  }, []);
+    setOpenTooltipSend(true)
+  }, [])
 
   const handleCloseSend = useCallback(() => {
-    setOpenTooltipSend(false);
-  }, []);
+    setOpenTooltipSend(false)
+  }, [])
 
   return (
     <>
@@ -81,7 +81,7 @@ const ProfileTransfer: FC<ProfileTransferProps> = ({ profile }) => {
         <Typography>Send</Typography>
       </Popover>
     </>
-  );
-};
+  )
+}
 
-export default ProfileTransfer;
+export default ProfileTransfer

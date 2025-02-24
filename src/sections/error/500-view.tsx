@@ -1,14 +1,9 @@
-import { m } from 'framer-motion';
-// @mui
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-// assets
-import { SeverErrorIllustration } from '@src/assets/illustrations';
-// components
-import { RouterLink } from '@src/routes/components';
-import { MotionContainer, varBounce } from '@src/components/animate';
-
-// ----------------------------------------------------------------------
+import { m } from 'framer-motion'
+import Button from '@mui/material/Button'
+import Typography from '@mui/material/Typography'
+import { SeverErrorIllustration } from '@src/assets/illustrations'
+import { MotionContainer, varBounce } from '@src/components/animate'
+import { RouterLink } from '@src/routes/components'
 
 export default function Page500() {
   return (
@@ -33,5 +28,5 @@ export default function Page500() {
         Go to Home
       </Button>
     </MotionContainer>
-  );
+  )
 }

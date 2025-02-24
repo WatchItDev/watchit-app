@@ -1,26 +1,21 @@
-// sections
-import BlankView from '../../sections/blank/view';
-import ComingSoonView from '../../sections/coming-soon/view';
-import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
-import { OgMetaTags } from '@src/components/og-meta-tags.tsx';
-import Header from '@src/layouts/dashboard/header.tsx';
-import HeaderContent from '@src/layouts/dashboard/header-content.tsx';
-import Ownership from '@src/sections/ownership';
-import { useSelector } from 'react-redux';
-
-// ----------------------------------------------------------------------
+import { useSelector } from 'react-redux'
+import BlankView from '../../sections/blank/view'
+import ComingSoonView from '../../sections/coming-soon/view'
+import { OgMetaTags } from '@src/components/og-meta-tags.tsx'
+import { GLOBAL_CONSTANTS } from '@src/config-global.ts'
+import HeaderContent from '@src/layouts/dashboard/header-content.tsx'
+import Header from '@src/layouts/dashboard/header.tsx'
+import Ownership from '@src/sections/ownership'
 
 export const canViewSection = (sessionData: any): boolean => {
   // Allowed profileId to view (temporary) this section
-  const allowedProfilesId = ['0x0563', '0x050d','0x055c','0x0514', '0x0510']; // Mihail, Carlos, Jacob, Geolffrey and Watchit Open
+  const allowedProfilesId = ['0x0563', '0x050d','0x055c','0x0514', '0x0510'] // Mihail, Carlos, Jacob, Geolffrey and Watchit Open
   // Verify if the current profile is allowed to view this section
-  return allowedProfilesId.includes(sessionData?.profile?.id ?? '');
+  return allowedProfilesId.includes(sessionData?.profile?.id ?? '')
 }
 
-// ----------------------------------------------------------------------
-
 export default function FileManagerPage() {
-  const sessionData = useSelector((state: any) => state.auth.session);
+  const sessionData = useSelector((state: any) => state.auth.session)
 
   return (
     <OgMetaTags
@@ -47,5 +42,5 @@ export default function FileManagerPage() {
         </BlankView>
       )}
     </OgMetaTags>
-  );
+  )
 }

@@ -1,8 +1,6 @@
-import { FC  } from 'react';
-
-// MUI IMPORTS
-import DialogTitle from '@mui/material/DialogTitle';
-import Dialog, { DialogProps } from '@mui/material/Dialog';
+import { FC  } from 'react'
+import Dialog, { DialogProps } from '@mui/material/Dialog'
+import DialogTitle from '@mui/material/DialogTitle'
 
 export interface ModalProps extends DialogProps {
   onClose: VoidFunction;
@@ -16,7 +14,7 @@ const Modal: FC<ModalProps> = ({ open, onClose, title, renderContent, ...dialogP
       <DialogTitle sx={{ pb: 1 }}>{title}</DialogTitle>
       {renderContent}
     </Dialog>
-  );
-};
+  )
+}
 
-export default Modal;
+export default Modal

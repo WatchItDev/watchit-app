@@ -1,9 +1,6 @@
-// sections
-import { GovernanceCreateView } from '@src/sections/governance/view';
-import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
-import { OgMetaTags } from '@src/components/og-meta-tags.tsx';
-
-// ----------------------------------------------------------------------
+import { OgMetaTags } from '@src/components/og-meta-tags.tsx'
+import { GLOBAL_CONSTANTS } from '@src/config-global.ts'
+import { GovernanceCreateView } from '@src/sections/governance/view'
 
 export default function UserCreatePage() {
   return (
@@ -14,5 +11,5 @@ export default function UserCreatePage() {
     >
       <GovernanceCreateView />
     </OgMetaTags>
-  );
+  )
 }

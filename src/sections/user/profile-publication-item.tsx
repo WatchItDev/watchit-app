@@ -1,11 +1,10 @@
-// ProfilePublicationItem.js
-import { useState, useEffect } from 'react';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import { PublicationReactionType, hasReacted } from '@lens-protocol/react-web';
-import Image from '../../components/image';
-import { paths } from '../../routes/paths';
-import { useRouter } from '@src/routes/hooks';
+import { useState, useEffect } from 'react'
+import { PublicationReactionType, hasReacted } from '@lens-protocol/react-web'
+import Box from '@mui/material/Box'
+import Typography from '@mui/material/Typography'
+import Image from '../../components/image'
+import { paths } from '../../routes/paths'
+import { useRouter } from '@src/routes/hooks'
 
 interface Props {
   publication: any;
@@ -14,23 +13,23 @@ interface Props {
 export const ProfilePublicationItem = ({ publication }: Props) => {
   // @ts-ignore
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [hasLiked, setHasLiked] = useState(false);
-  const router = useRouter();
+  const [hasLiked, setHasLiked] = useState(false)
+  const router = useRouter()
 
   useEffect(() => {
     if (publication) {
-      setHasLiked(hasReacted({ publication, reaction: PublicationReactionType.Upvote }));
+      setHasLiked(hasReacted({ publication, reaction: PublicationReactionType.Upvote }))
     }
-  }, [publication]);
+  }, [publication])
 
   // const getMediaUri = (cid: string): string => `https://ipfs.io/ipfs/${cid.replace('ipfs://', '')}`;
-  const getMediaUri = (cid: string): string => `${cid}`;
+  const getMediaUri = (cid: string): string => `${cid}`
   const getPosterCid = (): string =>
-    publication?.metadata?.attachments?.find((el: any) => el.altTag === 'poster')?.image?.raw?.uri;
+    publication?.metadata?.attachments?.find((el: any) => el.altTag === 'poster')?.image?.raw?.uri
 
   const handleClick = () => {
-    router.push(paths.dashboard.publication.details(publication.id));
-  };
+    router.push(paths.dashboard.publication.details(publication.id))
+  }
   // @TODO review this
   return (
     <Box
@@ -78,7 +77,7 @@ export const ProfilePublicationItem = ({ publication }: Props) => {
         {/*</Typography>*/}
       </Box>
     </Box>
-  );
-};
+  )
+}
 
-export default ProfilePublicationItem;
+export default ProfilePublicationItem

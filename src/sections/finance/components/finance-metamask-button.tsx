@@ -1,11 +1,6 @@
-// REACT IMPORTS
-import { FC } from 'react';
-
-// MUI IMPORTS
-import Button from '@mui/material/Button';
-
-// LOCAL IMPORTS
-import Iconify from '@src/components/iconify';
+import { FC } from 'react'
+import Button from '@mui/material/Button'
+import Iconify from '@src/components/iconify'
 
 const FinanceMetamaskButton: FC<{ connect: () => void }> = ({ connect }) => {
   return <Button
@@ -15,7 +10,7 @@ const FinanceMetamaskButton: FC<{ connect: () => void }> = ({ connect }) => {
     onClick={connect}
   >
     Connect MetaMask
-  </Button>;
-};
+  </Button>
+}
 
-export default FinanceMetamaskButton;
+export default FinanceMetamaskButton

@@ -1,1 +1,1 @@
-export { default } from './empty-content';
+export { default } from './empty-content'

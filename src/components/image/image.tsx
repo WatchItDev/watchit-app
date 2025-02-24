@@ -1,13 +1,9 @@
-import { forwardRef } from 'react';
-import { LazyLoadImage } from 'react-lazy-load-image-component';
-// @mui
-import { alpha, useTheme } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-//
-import { getRatio } from './utils';
-import { ImageProps } from './types';
-
-// ----------------------------------------------------------------------
+import { forwardRef } from 'react'
+import { LazyLoadImage } from 'react-lazy-load-image-component'
+import Box from '@mui/material/Box'
+import { alpha, useTheme } from '@mui/material/styles'
+import { ImageProps } from './types'
+import { getRatio } from './utils'
 
 const Image = forwardRef<HTMLSpanElement, ImageProps>(
   (
@@ -35,7 +31,7 @@ const Image = forwardRef<HTMLSpanElement, ImageProps>(
     },
     ref
   ) => {
-    const theme = useTheme();
+    const theme = useTheme()
 
     const overlayStyles = !!overlay && {
       '&:before': {
@@ -48,7 +44,7 @@ const Image = forwardRef<HTMLSpanElement, ImageProps>(
         position: 'absolute',
         background: overlay || alpha(theme.palette.grey[900], 0.48),
       },
-    };
+    }
 
     const content = (
       <Box
@@ -82,7 +78,7 @@ const Image = forwardRef<HTMLSpanElement, ImageProps>(
           }),
         }}
       />
-    );
+    )
 
     return (
       <Box
@@ -113,8 +109,8 @@ const Image = forwardRef<HTMLSpanElement, ImageProps>(
       >
         {content}
       </Box>
-    );
+    )
   }
-);
+)
 
-export default Image;
+export default Image

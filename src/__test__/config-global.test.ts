@@ -1,5 +1,5 @@
-import { describe, it, expect } from 'vitest';
-import { GLOBAL_CONSTANTS } from '@src/config-global';
+import { describe, it, expect } from 'vitest'
+import { GLOBAL_CONSTANTS } from '@src/config-global'
 
 describe('GLOBAL_CONSTANTS', () => {
   const expectedProperties = [
@@ -31,11 +31,11 @@ describe('GLOBAL_CONSTANTS', () => {
     'BASE_URL',
     'LOGO_URL',
     'EARN_TOKEN_SERVICE_URL',
-  ];
+  ]
 
   expectedProperties.forEach((property) => {
     it(`should have property ${property}`, () => {
-      expect(GLOBAL_CONSTANTS).toHaveProperty(property);
-    });
-  });
-});
+      expect(GLOBAL_CONSTANTS).toHaveProperty(property)
+    })
+  })
+})

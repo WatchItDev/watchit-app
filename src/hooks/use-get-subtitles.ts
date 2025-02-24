@@ -1,5 +1,5 @@
-import { useCallback, useState } from 'react';
-import useMetadata from '@src/hooks/use-metadata';
+import { useCallback, useState } from 'react'
+import useMetadata from '@src/hooks/use-metadata'
 
 /**
  * Represents a subtitle track configuration for media players.
@@ -28,30 +28,30 @@ export interface UseGetSubtitlesReturn {
  * Maps common language names to standard language codes
  */
 const getLanguageCode = (label: string): string => {
-  const normalized = label.trim().toLowerCase();
+  const normalized = label.trim().toLowerCase()
   switch (normalized) {
     case 'english':
-      return 'en-US';
+      return 'en-US'
     case 'spanish':
-      return 'es-ES';
+      return 'es-ES'
     case 'french':
-      return 'fr-FR';
+      return 'fr-FR'
     case 'german':
-      return 'de-DE';
+      return 'de-DE'
     case 'portuguese':
-      return 'pt-BR';
+      return 'pt-BR'
     default:
-      return 'en-US'; // Fallback to English
+      return 'en-US' // Fallback to English
   }
-};
+}
 
 /**
  * Custom hook to fetch and format subtitle tracks for media players
  */
 const useGetSubtitles = (): UseGetSubtitlesReturn => {
-  const { getMetadata } = useMetadata();
-  const [tracks, setTracks] = useState<SubtitleTrack[]>([]);
-  const [loading, setLoading] = useState(false);
+  const { getMetadata } = useMetadata()
+  const [tracks, setTracks] = useState<SubtitleTrack[]>([])
+  const [loading, setLoading] = useState(false)
 
   /**
    * Fetches and processes subtitles for a given CID
@@ -59,17 +59,17 @@ const useGetSubtitles = (): UseGetSubtitlesReturn => {
    * @returns Formatted subtitle tracks
    */
   const getSubtitles = useCallback(async (cid: string): Promise<SubtitleTrack[]> => {
-    setLoading(true);
+    setLoading(true)
     try {
-      const metadata = await getMetadata(cid);
+      const metadata = await getMetadata(cid)
       const subtitleAttachments = metadata.Data.attachments.filter(
         (attachment) => attachment.type === 'text/vtt'
-      );
+      )
 
-      let hasDefault = false;
+      let hasDefault = false
       const processedTracks = subtitleAttachments.map((attachment) => {
-        const isEnglish = attachment.title.toLowerCase() === 'english';
-        const language = getLanguageCode(attachment.title);
+        const isEnglish = attachment.title.toLowerCase() === 'english'
+        const language = getLanguageCode(attachment.title)
 
         const track: SubtitleTrack = {
           src: `https://g.watchit.movie/content/${attachment.cid}/`,
@@ -77,28 +77,28 @@ const useGetSubtitles = (): UseGetSubtitlesReturn => {
           language,
           kind: 'subtitles',
           default: !hasDefault && isEnglish
-        };
+        }
 
-        if (track.default) hasDefault = true;
-        return track;
-      });
+        if (track.default) hasDefault = true
+        return track
+      })
 
       // Fallback to first track if no English found
       if (!hasDefault && processedTracks.length > 0) {
-        processedTracks[0].default = true;
+        processedTracks[0].default = true
       }
 
-      setTracks(processedTracks);
-      return processedTracks;
+      setTracks(processedTracks)
+      return processedTracks
     } catch (error) {
-      setTracks([]);
-      return [];
+      setTracks([])
+      return []
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  }, [getMetadata]);
+  }, [getMetadata])
 
-  return { tracks, loading, getSubtitles };
-};
+  return { tracks, loading, getSubtitles }
+}
 
-export default useGetSubtitles;
+export default useGetSubtitles

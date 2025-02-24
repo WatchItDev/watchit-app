@@ -1,25 +1,23 @@
-// @mui
-import Paper from '@mui/material/Paper';
-import Box from '@mui/material/Box';
-import CardContent from '@mui/material/CardContent';
-import Typography from '@mui/material/Typography';
-import Stack from '@mui/material/Stack';
+
+import { IconStarFilled } from '@tabler/icons-react'
+import Box from '@mui/material/Box'
+import CardContent from '@mui/material/CardContent'
+import Paper from '@mui/material/Paper'
+import Stack from '@mui/material/Stack'
+import Typography from '@mui/material/Typography'
 
 // components
-import Image from '@src/components/image';
-import { IconStarFilled } from '@tabler/icons-react';
-import { Poster } from '../types';
-import { useRouter } from '@src/routes/hooks';
-import { paths } from '@src/routes/paths.ts';
-
-// ----------------------------------------------------------------------
+import { Poster } from '../types'
+import Image from '@src/components/image'
+import { useRouter } from '@src/routes/hooks'
+import { paths } from '@src/routes/paths.ts'
 
 const PosterMini = ({ id, title, images, rating, year, price, genre }: Poster) => {
-  const router = useRouter();
+  const router = useRouter()
 
   const handlePosterClick = () => {
-    router.push(paths.dashboard.publication.details(id));
-  };
+    router.push(paths.dashboard.publication.details(id))
+  }
 
   return (
     <Paper
@@ -151,7 +149,7 @@ const PosterMini = ({ id, title, images, rating, year, price, genre }: Poster) =
         </Box>
       </Box>
     </Paper>
-  );
-};
+  )
+}
 
-export default PosterMini;
+export default PosterMini

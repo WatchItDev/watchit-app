@@ -1,13 +1,13 @@
-import AvatarProfile from "@src/components/avatar/avatar.tsx";
-import Stack from "@mui/material/Stack";
-import ProfileShare from "@src/sections/user/profile-share.tsx";
-import ProfileSetJoiningPrice from "@src/sections/user/profile-set-joining-price.tsx";
-import ProfileUpdateButton from "@src/sections/user/profile-update-button.tsx";
-import {FC} from "react";
-import {Profile} from "@lens-protocol/api-bindings";
-import {useTheme} from "@mui/material/styles";
-import {useSelector} from "react-redux";
-import ProfileTransfer from "@src/sections/user/profile-transfer.tsx";
+import {FC} from "react"
+import {Profile} from "@lens-protocol/api-bindings"
+import {useSelector} from "react-redux"
+import Stack from "@mui/material/Stack"
+import {useTheme} from "@mui/material/styles"
+import AvatarProfile from "@src/components/avatar/avatar.tsx"
+import ProfileSetJoiningPrice from "@src/sections/user/profile-set-joining-price.tsx"
+import ProfileShare from "@src/sections/user/profile-share.tsx"
+import ProfileTransfer from "@src/sections/user/profile-transfer.tsx"
+import ProfileUpdateButton from "@src/sections/user/profile-update-button.tsx"
 
 interface ProfileToolbarProps {
   profile: Profile;
@@ -15,8 +15,8 @@ interface ProfileToolbarProps {
 }
 
 const ProfileToolbar: FC<ProfileToolbarProps> = ({profile, profileImage}) => {
-  const theme = useTheme();
-  const sessionData = useSelector((state: any) => state.auth.session);
+  const theme = useTheme()
+  const sessionData = useSelector((state: any) => state.auth.session)
   return (
     <Stack
       direction="row"
@@ -68,10 +68,9 @@ const ProfileToolbar: FC<ProfileToolbarProps> = ({profile, profileImage}) => {
           )
         }
 
-
       </Stack>
     </Stack>
   )
 }
 
-export default ProfileToolbar;
+export default ProfileToolbar

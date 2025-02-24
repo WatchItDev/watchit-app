@@ -1,52 +1,48 @@
-import Stack from '@mui/material/Stack';
-import Container from '@mui/material/Container';
-import Grid from '@mui/material/Unstable_Grid2';
-import FinanceContacts from '@src/sections/finance/components/finance-contacts.tsx';
-import FinanceQuickTransfer from '@src/sections/finance/components/finance-quick-transfer.tsx';
-import FinanceInviteFriends from '@src/sections/finance/components/finance-invite-friends.tsx';
-import FinanceWidgetSummary from '@src/sections/finance/components/finance-widget-summary.tsx';
-import FinanceBalanceStatistics from '@src/sections/finance/components/finance-balance-statistics.tsx';
-import { useSelector } from 'react-redux';
-import { useProfileFollowing } from '@lens-protocol/react';
-import Typography from '@mui/material/Typography';
-import FinanceTransactionsHistory from '@src/sections/finance/components/finance-transactions-history.tsx';
-import useGetSmartWalletTransactions from '@src/hooks/use-get-smart-wallet-transactions.ts';
-import { useEffect, useState } from 'react';
-import Tabs, { tabsClasses } from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-import Iconify from '@src/components/iconify';
-import { useResponsive } from '@src/hooks/use-responsive.ts';
-import FinanceEarnTokens from '@src/sections/finance/components/finance-earn-tokens.tsx';
-import {filterHiddenProfiles} from "@src/utils/profile.ts";
-
-// ----------------------------------------------------------------------
+import { useEffect, useState } from 'react'
+import { useProfileFollowing } from '@lens-protocol/react'
+import { useSelector } from 'react-redux'
+import Container from '@mui/material/Container'
+import Stack from '@mui/material/Stack'
+import Tab from '@mui/material/Tab'
+import Tabs, { tabsClasses } from '@mui/material/Tabs'
+import Typography from '@mui/material/Typography'
+import Grid from '@mui/material/Unstable_Grid2'
+import Iconify from '@src/components/iconify'
+import useGetSmartWalletTransactions from '@src/hooks/use-get-smart-wallet-transactions.ts'
+import { useResponsive } from '@src/hooks/use-responsive.ts'
+import FinanceBalanceStatistics from '@src/sections/finance/components/finance-balance-statistics.tsx'
+import FinanceContacts from '@src/sections/finance/components/finance-contacts.tsx'
+import FinanceEarnTokens from '@src/sections/finance/components/finance-earn-tokens.tsx'
+import FinanceInviteFriends from '@src/sections/finance/components/finance-invite-friends.tsx'
+import FinanceQuickTransfer from '@src/sections/finance/components/finance-quick-transfer.tsx'
+import FinanceTransactionsHistory from '@src/sections/finance/components/finance-transactions-history.tsx'
+import FinanceWidgetSummary from '@src/sections/finance/components/finance-widget-summary.tsx'
+import {filterHiddenProfiles} from "@src/utils/profile.ts"
 
 export default function OverviewBankingView() {
-  const lgUp = useResponsive('up', 'lg');
-  const mdUp = useResponsive('up', 'md');
-  const { balance: balanceFromRedux } = useSelector((state: any) => state.auth);
-  const sessionData = useSelector((state: any) => state.auth.session);
-  const { transactions, loading } = useGetSmartWalletTransactions();
-  const [widgetSeriesData, setWidgetSeriesData] = useState<{ x: string; y: number }[]>([]);
-  const [percent, setPercent] = useState(0);
+  const lgUp = useResponsive('up', 'lg')
+  const mdUp = useResponsive('up', 'md')
+  const { balance: balanceFromRedux } = useSelector((state: any) => state.auth)
+  const sessionData = useSelector((state: any) => state.auth.session)
+  const { transactions, loading } = useGetSmartWalletTransactions()
+  const [widgetSeriesData, setWidgetSeriesData] = useState<{ x: string; y: number }[]>([])
+  const [percent, setPercent] = useState(0)
   const { data: results, loading: loadingProfiles } = useProfileFollowing({
     // @ts-ignore
     for: sessionData?.profile?.id,
-  });
+  })
 
   // Filter hidden profiles(unwanted profiles) from the results
-  const following = filterHiddenProfiles(results);
+  const following = filterHiddenProfiles(results)
 
   useEffect(() => {
-    if (!transactions || loading) return;
+    if (!transactions || loading) return
 
-    const { daySeriesData, calculatedPercent } = groupTransactionsForWidget(transactions);
+    const { daySeriesData, calculatedPercent } = groupTransactionsForWidget(transactions)
 
-    setWidgetSeriesData(daySeriesData);
-    setPercent(calculatedPercent);
-  }, [transactions, loading]);
-
-
+    setWidgetSeriesData(daySeriesData)
+    setPercent(calculatedPercent)
+  }, [transactions, loading])
 
   return (
     <Container
@@ -142,59 +138,59 @@ export default function OverviewBankingView() {
         </Grid>
       </Grid>
     </Container>
-  );
+  )
 }
 
 export function groupTransactionsForWidget(transactions: any[]) {
   if (!transactions?.length) {
-    return { daySeriesData: [], calculatedPercent: 0 };
+    return { daySeriesData: [], calculatedPercent: 0 }
   }
 
-  let grouped: Record<string, number> = {};
+  let grouped: Record<string, number> = {}
 
   transactions.forEach((tx) => {
-    const timestamp = Number(tx.timestamp) * 1000;
-    const dateKey = new Date(timestamp).toISOString().slice(0, 10);
-    const amount = parseFloat(tx.formattedAmount);
-    const eventType = tx.event;
+    const timestamp = Number(tx.timestamp) * 1000
+    const dateKey = new Date(timestamp).toISOString().slice(0, 10)
+    const amount = parseFloat(tx.formattedAmount)
+    const eventType = tx.event
 
-    if (!grouped[dateKey]) grouped[dateKey] = 0;
+    if (!grouped[dateKey]) grouped[dateKey] = 0
 
     if (eventType === 'deposit' || eventType === 'transferTo') {
-      grouped[dateKey] += amount;
+      grouped[dateKey] += amount
     } else if (eventType === 'withdraw' || eventType === 'transferFrom') {
-      grouped[dateKey] -= amount;
+      grouped[dateKey] -= amount
     }
-  });
+  })
 
   const daySeriesData = Object.keys(grouped)
     .sort()
     .map((day) => ({
       x: day,
       y: grouped[day],
-    }));
+    }))
 
-  let calculatedPercent = 0;
+  let calculatedPercent = 0
   if (daySeriesData.length > 1) {
-    const first = daySeriesData[0].y;
-    const second = daySeriesData[1].y;
-    calculatedPercent = ((second - first) / Math.abs(first)) * 100;
+    const first = daySeriesData[0].y
+    const second = daySeriesData[1].y
+    calculatedPercent = ((second - first) / Math.abs(first)) * 100
   }
 
-  return { daySeriesData, calculatedPercent };
+  return { daySeriesData, calculatedPercent }
 }
 
 const TabsComponent = () => {
-  const [currentTab, setCurrentTab] = useState('graph');
+  const [currentTab, setCurrentTab] = useState('graph')
 
   const handleChangeTab = (_event: any, newValue: any) => {
-    setCurrentTab(newValue);
-  };
+    setCurrentTab(newValue)
+  }
 
   const TABS = [
     { value: 'graph', label: 'Statistics', icon: <Iconify icon={'codicon:graph'} /> },
     { value: 'table', label: 'Transactions', icon: <Iconify icon={'majesticons:table'} /> },
-  ];
+  ]
 
   return (
     <>
@@ -232,5 +228,5 @@ const TabsComponent = () => {
         </>
       )}
     </>
-  );
-};
+  )
+}

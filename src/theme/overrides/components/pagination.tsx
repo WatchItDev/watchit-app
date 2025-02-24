@@ -1,10 +1,8 @@
-import { alpha, Theme } from '@mui/material/styles';
-import { PaginationProps } from '@mui/material/Pagination';
-import { paginationItemClasses } from '@mui/material/PaginationItem';
+import { PaginationProps } from '@mui/material/Pagination'
+import { paginationItemClasses } from '@mui/material/PaginationItem'
+import { alpha, Theme } from '@mui/material/styles'
 
-// ----------------------------------------------------------------------
-
-const COLORS = ['primary', 'secondary', 'info', 'success', 'warning', 'error'] as const;
+const COLORS = ['primary', 'secondary', 'info', 'success', 'warning', 'error'] as const
 
 // NEW VARIANT
 declare module '@mui/material/Pagination' {
@@ -20,19 +18,17 @@ declare module '@mui/material/Pagination' {
   }
 }
 
-// ----------------------------------------------------------------------
-
 export function pagination(theme: Theme) {
-  const lightMode = theme.palette.mode === 'light';
+  const lightMode = theme.palette.mode === 'light'
 
   const rootStyles = (ownerState: PaginationProps) => {
-    const defaultColor = ownerState.color === 'standard';
+    const defaultColor = ownerState.color === 'standard'
 
-    const filledVariant = ownerState.variant === 'text';
+    const filledVariant = ownerState.variant === 'text'
 
-    const outlinedVariant = ownerState.variant === 'outlined';
+    const outlinedVariant = ownerState.variant === 'outlined'
 
-    const softVariant = ownerState.variant === 'soft';
+    const softVariant = ownerState.variant === 'soft'
 
     const defaultStyle = {
       [`& .${paginationItemClasses.root}`]: {
@@ -58,7 +54,7 @@ export function pagination(theme: Theme) {
           }),
         },
       },
-    };
+    }
 
     const colorStyle = COLORS.map((color) => ({
       ...(ownerState.color === color && {
@@ -77,10 +73,10 @@ export function pagination(theme: Theme) {
           },
         },
       }),
-    }));
+    }))
 
-    return [defaultStyle, ...colorStyle];
-  };
+    return [defaultStyle, ...colorStyle]
+  }
 
   return {
     MuiPagination: {
@@ -88,5 +84,5 @@ export function pagination(theme: Theme) {
         root: ({ ownerState }: { ownerState: PaginationProps }) => rootStyles(ownerState),
       },
     },
-  };
+  }
 }

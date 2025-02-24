@@ -1,15 +1,11 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
-// @mui
-import Popover from '@mui/material/Popover';
-import { appBarClasses } from '@mui/material/AppBar';
-// routes
-import { usePathname } from '@src/routes/hooks';
-//
-import { NavListProps, NavConfigProps } from '../types';
-import NavItem from './nav-item';
-import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
-// ----------------------------------------------------------------------
+import { useState, useEffect, useRef, useCallback } from 'react'
+import { appBarClasses } from '@mui/material/AppBar'
+import Box from '@mui/material/Box'
+import Popover from '@mui/material/Popover'
+import Stack from '@mui/material/Stack'
+import NavItem from './nav-item'
+import { NavListProps, NavConfigProps } from '../types'
+import { usePathname } from '@src/routes/hooks'
 
 type NavListRootProps = {
   data: NavListProps;
@@ -20,48 +16,48 @@ type NavListRootProps = {
 };
 
 export default function NavList({ data, active, depth, config, onClick }: NavListRootProps) {
-  const navRef = useRef(null);
+  const navRef = useRef(null)
 
-  const pathname = usePathname();
+  const pathname = usePathname()
 
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false)
 
   useEffect(() => {
     if (open) {
-      handleClose();
+      handleClose()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pathname]);
+  }, [pathname])
 
   useEffect(() => {
     const appBarEl = Array.from(
       document.querySelectorAll(`.${appBarClasses.root}`)
-    ) as Array<HTMLElement>;
+    ) as Array<HTMLElement>
 
     // Reset styles when hover
     const styles = () => {
-      document.body.style.overflow = '';
-      document.body.style.padding = '';
+      document.body.style.overflow = ''
+      document.body.style.padding = ''
       // Apply for Window
       appBarEl.forEach((elem) => {
-        elem.style.padding = '';
-      });
-    };
+        elem.style.padding = ''
+      })
+    }
 
     if (open) {
-      styles();
+      styles()
     } else {
-      styles();
+      styles()
     }
-  }, [open]);
+  }, [open])
 
   const handleOpen = useCallback(() => {
-    setOpen(true);
-  }, []);
+    setOpen(true)
+  }, [])
 
   const handleClose = useCallback(() => {
-    setOpen(false);
-  }, []);
+    setOpen(false)
+  }, [])
 
   return (
     <>
@@ -121,5 +117,5 @@ export default function NavList({ data, active, depth, config, onClick }: NavLis
         </Stack>
       </Popover>
     </>
-  );
+  )
 }

@@ -1,5 +1,5 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { AnyPublication } from '@lens-protocol/api-bindings';
+import { AnyPublication } from '@lens-protocol/api-bindings'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 export type BookmarkReducerState = {
   bookmarkPublications: AnyPublication[];
@@ -9,7 +9,7 @@ export type BookmarkReducerState = {
 const initialState: BookmarkReducerState = {
   bookmarkPublications: [],
   hiddenBookmarks: [],
-};
+}
 
 const bookmarkSlice = createSlice({
   name: 'bookmark',
@@ -19,14 +19,14 @@ const bookmarkSlice = createSlice({
     addBookmark: (state, action: PayloadAction<AnyPublication>) => {
       const isAlreadyBookmarked = state.bookmarkPublications.some(
         (publication) => publication.id === action.payload.id
-      );
+      )
 
       if (!isAlreadyBookmarked) {
-        state.bookmarkPublications.push(action.payload);
+        state.bookmarkPublications.push(action.payload)
         // Remove from hiddenBookmarks if exists
         state.hiddenBookmarks = state.hiddenBookmarks.filter(
           (publication) => publication.id !== action.payload.id
-        );
+        )
       }
     },
 
@@ -34,18 +34,18 @@ const bookmarkSlice = createSlice({
     removeBookmark: (state, action: PayloadAction<string>) => {
       const publicationToHide = state.bookmarkPublications.find(
         (publication) => publication.id === action.payload
-      );
+      )
 
       if (publicationToHide) {
-        state.hiddenBookmarks.push(publicationToHide);
+        state.hiddenBookmarks.push(publicationToHide)
         state.bookmarkPublications = state.bookmarkPublications.filter(
           (publication) => publication.id !== action.payload
-        );
+        )
       }
     },
   },
-});
+})
 
-export const { addBookmark, removeBookmark } = bookmarkSlice.actions;
+export const { addBookmark, removeBookmark } = bookmarkSlice.actions
 
-export default bookmarkSlice.reducer;
+export default bookmarkSlice.reducer

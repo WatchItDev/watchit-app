@@ -1,12 +1,12 @@
-import { Web3Auth, Web3AuthOptions } from '@web3auth/modal';
-import { EthereumPrivateKeyProvider } from '@web3auth/ethereum-provider';
 import {
   AccountAbstractionProvider,
   KernelSmartAccount,
-} from '@web3auth/account-abstraction-provider';
-import { CHAIN_NAMESPACES, WALLET_ADAPTERS, WEB3AUTH_NETWORK } from '@web3auth/base';
-import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
-import { polygonAmoy } from 'viem/chains';
+} from '@web3auth/account-abstraction-provider'
+import { CHAIN_NAMESPACES, WALLET_ADAPTERS, WEB3AUTH_NETWORK } from '@web3auth/base'
+import { EthereumPrivateKeyProvider } from '@web3auth/ethereum-provider'
+import { Web3Auth, Web3AuthOptions } from '@web3auth/modal'
+import { polygonAmoy } from 'viem/chains'
+import { GLOBAL_CONSTANTS } from '@src/config-global.ts'
 
 export const chain = {
   polygonAmoy: {
@@ -20,7 +20,7 @@ export const chain = {
     ticker: polygonAmoy.nativeCurrency.symbol,
     logo: 'https://web3auth.io/images/web3authlog.png',
   },
-};
+}
 
 export const modalConfig = {
   [WALLET_ADAPTERS.AUTH]: {
@@ -103,7 +103,7 @@ export const modalConfig = {
     // setting it to false will hide all social login methods from modal.
     showOnModal: true,
   },
-};
+}
 
 export function web3AuthFactory(): Web3Auth {
   // account abstraction setup
@@ -114,12 +114,12 @@ export function web3AuthFactory(): Web3Auth {
       bundlerConfig: { url: GLOBAL_CONSTANTS.PIMLICO },
       paymasterConfig: { url: GLOBAL_CONSTANTS.PIMLICO },
     },
-  });
+  })
 
   // ethereum prover for web3 auth
   const privateKeyProvider = new EthereumPrivateKeyProvider({
     config: { chainConfig: chain.polygonAmoy },
-  });
+  })
 
   const web3AuthOptions: Web3AuthOptions = {
     sessionTime: 86400 * 1, // 1 days
@@ -143,7 +143,7 @@ export function web3AuthFactory(): Web3Auth {
     // external wallets, while use the AccountAbstractionProvider
     // for Web3Auth embedded wallets.
     useAAWithExternalWallet: false,
-  };
+  }
 
-  return new Web3Auth(web3AuthOptions);
+  return new Web3Auth(web3AuthOptions)
 }

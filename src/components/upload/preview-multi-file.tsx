@@ -1,27 +1,21 @@
-import { m, AnimatePresence } from 'framer-motion';
-// @mui
-import { alpha } from '@mui/material/styles';
-import Stack from '@mui/material/Stack';
-import IconButton from '@mui/material/IconButton';
-import ListItemText from '@mui/material/ListItemText';
-// utils
-import { fData } from '@src/utils/format-number';
-//
-import Iconify from '../iconify';
-import { varFade } from '../animate';
-import FileThumbnail, { fileData } from '../file-thumbnail';
-//
-import { UploadProps } from './types';
-
-// ----------------------------------------------------------------------
+import { m, AnimatePresence } from 'framer-motion'
+import IconButton from '@mui/material/IconButton'
+import ListItemText from '@mui/material/ListItemText'
+import Stack from '@mui/material/Stack'
+import { alpha } from '@mui/material/styles'
+import { varFade } from '../animate'
+import FileThumbnail, { fileData } from '../file-thumbnail'
+import Iconify from '../iconify'
+import { UploadProps } from './types'
+import { fData } from '@src/utils/format-number'
 
 export default function MultiFilePreview({ thumbnail, files, onRemove, sx }: UploadProps) {
   return (
     <AnimatePresence initial={false}>
       {files?.map((file) => {
-        const { key, name = '', size = 0 } = fileData(file);
+        const { key, name = '', size = 0 } = fileData(file)
 
-        const isNotFormatFile = typeof file === 'string';
+        const isNotFormatFile = typeof file === 'string'
 
         if (thumbnail) {
           return (
@@ -71,7 +65,7 @@ export default function MultiFilePreview({ thumbnail, files, onRemove, sx }: Upl
                 </IconButton>
               )}
             </Stack>
-          );
+          )
         }
 
         return (
@@ -108,8 +102,8 @@ export default function MultiFilePreview({ thumbnail, files, onRemove, sx }: Upl
               </IconButton>
             )}
           </Stack>
-        );
+        )
       })}
     </AnimatePresence>
-  );
+  )
 }

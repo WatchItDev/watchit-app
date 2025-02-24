@@ -1,24 +1,16 @@
-// REACT IMPORTS
-import React, { useEffect, useState } from 'react';
-
-// MUI IMPORTS
-import { Box, Typography, List, Button, Avatar } from '@mui/material';
-
-// UTILS IMPORTS
-import { truncateAddress } from '@src/utils/wallet';
-import { Profile, useLazyProfiles, LoginError } from '@lens-protocol/react-web';
+import React, { useEffect, useState } from 'react'
+import { Profile, useLazyProfiles, LoginError } from '@lens-protocol/react-web'
 // @ts-ignore
-import Alert from '@mui/material/Alert';
-
-import { useDispatch, useSelector } from 'react-redux';
-import { setAuthLoading, setBalance } from '@redux/auth';
-import { useResponsive } from '@src/hooks/use-responsive.ts';
-import { UserItem } from '../user-item';
-import LoadingScreen from '../loading-screen/loading-screen.tsx';
-import { notifyError } from '@notifications/internal-notifications.ts';
-import { ERRORS } from '@notifications/errors.ts';
-import {filterHiddenProfiles} from "@src/utils/profile.ts";
-// ----------------------------------------------------------------------
+import { ERRORS } from '@notifications/errors.ts'
+import { notifyError } from '@notifications/internal-notifications.ts'
+import { setAuthLoading, setBalance } from '@redux/auth'
+import { useDispatch, useSelector } from 'react-redux'
+import { Box, Typography, List, Button, Avatar } from '@mui/material'
+import LoadingScreen from '../loading-screen/loading-screen.tsx'
+import { UserItem } from '../user-item'
+import { useResponsive } from '@src/hooks/use-responsive.ts'
+import {filterHiddenProfiles} from "@src/utils/profile.ts"
+import { truncateAddress } from '@src/utils/wallet'
 
 interface ProfileSelectionProps {
   address: string;
@@ -29,8 +21,6 @@ interface ProfileSelectionProps {
   login: (profile?: Profile) => Promise<void>;
 }
 
-// ----------------------------------------------------------------------
-
 export const ProfileSelectView: React.FC<ProfileSelectionProps> = ({
   address,
   error,
@@ -39,39 +29,39 @@ export const ProfileSelectView: React.FC<ProfileSelectionProps> = ({
   onClose,
   login,
 }) => {
-  const dispatch = useDispatch();
-  const lgUp = useResponsive('up', 'lg');
+  const dispatch = useDispatch()
+  const lgUp = useResponsive('up', 'lg')
 
-  const [profiles, setProfiles] = useState([] as Profile[]);
-  const { execute: getProfiles, loading } = useLazyProfiles();
-  const sessionData = useSelector((state: any) => state.auth.session);
+  const [profiles, setProfiles] = useState([] as Profile[])
+  const { execute: getProfiles, loading } = useLazyProfiles()
+  const sessionData = useSelector((state: any) => state.auth.session)
 
   useEffect(() => {
-    if (!error) dispatch(setAuthLoading({ isSessionLoading: false }));
-    if (error) notifyError(ERRORS.LOGIN_FAILED_ERROR);
-  }, [error]);
+    if (!error) dispatch(setAuthLoading({ isSessionLoading: false }))
+    if (error) notifyError(ERRORS.LOGIN_FAILED_ERROR)
+  }, [error])
 
   useEffect(() => {
     (async () => {
       // @ts-ignore
-      const results = await getProfiles({ where: { ownedBy: address as string } });
-      if (!results.isFailure()) setProfiles(filterHiddenProfiles(results?.value) as Profile[]);
-    })();
-  }, [address]);
+      const results = await getProfiles({ where: { ownedBy: address as string } })
+      if (!results.isFailure()) setProfiles(filterHiddenProfiles(results?.value) as Profile[])
+    })()
+  }, [address])
 
   const handleProfileClick = async (profile: any) => {
     if (sessionData?.authenticated) {
-      onClose?.();
+      onClose?.()
     } else {
       // Set the balance to 0 to later refetch the balance correctly
-      dispatch(setBalance({ balance: 0 }));
+      dispatch(setBalance({ balance: 0 }))
 
-      onClose();
-      dispatch(setAuthLoading({ isSessionLoading: true }));
-      await login(profile);
-      dispatch(setAuthLoading({ isSessionLoading: false }));
+      onClose()
+      dispatch(setAuthLoading({ isSessionLoading: true }))
+      await login(profile)
+      dispatch(setAuthLoading({ isSessionLoading: false }))
     }
-  };
+  }
 
   return (
     <>
@@ -137,7 +127,7 @@ export const ProfileSelectView: React.FC<ProfileSelectionProps> = ({
               }}
             >
               {profiles.map((profile, index) => {
-                const isLastOddItem = profiles.length % 2 !== 0 && index === profiles.length - 1;
+                const isLastOddItem = profiles.length % 2 !== 0 && index === profiles.length - 1
 
                 return (
                   <UserItem
@@ -147,7 +137,7 @@ export const ProfileSelectView: React.FC<ProfileSelectionProps> = ({
                     canFollow={false}
                     sx={{ width: !lgUp ? '100%' : isLastOddItem ? '100%' : '48%' }}
                   />
-                );
+                )
               })}
             </List>
           </Box>
@@ -181,5 +171,5 @@ export const ProfileSelectView: React.FC<ProfileSelectionProps> = ({
         <></>
       )}
     </>
-  );
-};
+  )
+}

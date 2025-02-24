@@ -1,27 +1,19 @@
-import { format } from 'date-fns';
-
-// @MUI
-import Typography from '@mui/material/Typography';
-import TableRow from '@mui/material/TableRow';
-import TableCell from '@mui/material/TableCell';
-import ListItemText from '@mui/material/ListItemText';
-
-// Project components
-import { TableRowTransactionType } from '@src/hooks/use-transaction-data.ts';
-import { truncateAddress } from '@src/utils/wallet.ts';
-import AvatarProfile from "@src/components/avatar/avatar.tsx";
-import { OpenableText } from '@src/components/openable-text';
-
-// ----------------------------------------------------------------------
+import { format } from 'date-fns'
+import ListItemText from '@mui/material/ListItemText'
+import TableCell from '@mui/material/TableCell'
+import TableRow from '@mui/material/TableRow'
+import Typography from '@mui/material/Typography'
+import AvatarProfile from "@src/components/avatar/avatar.tsx"
+import { OpenableText } from '@src/components/openable-text'
+import { TableRowTransactionType } from '@src/hooks/use-transaction-data.ts'
+import { truncateAddress } from '@src/utils/wallet.ts'
 
 type Props = {
   row: TableRowTransactionType;
   selected: boolean;
 };
 
-// ----------------------------------------------------------------------
-
-const urlTxBase = 'https://www.oklink.com/es-la/amoy/tx/';
+const urlTxBase = 'https://www.oklink.com/es-la/amoy/tx/'
 const COLORS = {
   success: '#00AB55',
   danger: '#FF4842',
@@ -41,14 +33,12 @@ const TX_COLORS: any = {
   'released': COLORS.success,
 }
 
-// ----------------------------------------------------------------------
-
 export default function FinanceTransactionTableRow({ row, selected }: Props) {
-  const { date, name, amount, avatarUrl, message, category, id, type } = row;
+  const { date, name, amount, avatarUrl, message, category, id, type } = row
 
-  const dateObject = new Date(Number(date) * 1000);
-  const dateLbl = format(dateObject, 'dd/MM/yyyy');
-  const timeLbl = format(dateObject, 'p');
+  const dateObject = new Date(Number(date) * 1000)
+  const dateLbl = format(dateObject, 'dd/MM/yyyy')
+  const timeLbl = format(dateObject, 'p')
 
   const renderPrimary = (
     <TableRow hover selected={selected}>
@@ -93,7 +83,7 @@ export default function FinanceTransactionTableRow({ row, selected }: Props) {
         />
       </TableCell>
     </TableRow>
-  );
+  )
 
-  return <>{renderPrimary}</>;
+  return <>{renderPrimary}</>
 }

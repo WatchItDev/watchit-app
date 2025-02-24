@@ -1,11 +1,11 @@
-import axios from 'axios';
-import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
+import axios from 'axios'
+import { GLOBAL_CONSTANTS } from '@src/config-global.ts'
 
 /**
  * Pinata API keys from global constants.
  */
-const pinataApiKey = GLOBAL_CONSTANTS.PINATA_API_KEY;
-const pinataSecretApiKey = GLOBAL_CONSTANTS.PINATA_SECRET_API_KEY;
+const pinataApiKey = GLOBAL_CONSTANTS.PINATA_API_KEY
+const pinataSecretApiKey = GLOBAL_CONSTANTS.PINATA_SECRET_API_KEY
 
 /**
  * Uploads data to IPFS using Pinata.
@@ -16,43 +16,43 @@ const pinataSecretApiKey = GLOBAL_CONSTANTS.PINATA_SECRET_API_KEY;
  */
 export const uploadToIPFS = async (data: File | object): Promise<string> => {
   try {
-    let url = '';
+    let url = ''
     let headers: any = {
       pinata_api_key: pinataApiKey,
       pinata_secret_api_key: pinataSecretApiKey,
-    };
-    let body: any;
+    }
+    let body: any
 
     if (data instanceof File) {
       // Uploading a file
-      url = 'https://api.pinata.cloud/pinning/pinFileToIPFS';
-      const formData = new FormData();
-      formData.append('file', data);
+      url = 'https://api.pinata.cloud/pinning/pinFileToIPFS'
+      const formData = new FormData()
+      formData.append('file', data)
 
-      body = formData;
+      body = formData
       // Do not set 'Content-Type'; the browser will set it automatically
     } else {
       // Uploading JSON
-      url = 'https://api.pinata.cloud/pinning/pinJSONToIPFS';
-      body = data; // Send as an object; adjust if necessary
+      url = 'https://api.pinata.cloud/pinning/pinJSONToIPFS'
+      body = data // Send as an object; adjust if necessary
 
       headers = {
         ...headers,
         'Content-Type': 'application/json',
-      };
+      }
     }
 
     const response = await axios.post(url, body, {
       maxContentLength: Infinity,
       headers,
-    });
+    })
 
-    return `ipfs://${response.data.IpfsHash}`;
+    return `ipfs://${response.data.IpfsHash}`
   } catch (error) {
-    console.error('Error uploading to IPFS:', error);
-    throw error;
+    console.error('Error uploading to IPFS:', error)
+    throw error
   }
-};
+}
 
 /**
  * Uploads an image to IPFS.
@@ -62,12 +62,12 @@ export const uploadToIPFS = async (data: File | object): Promise<string> => {
  */
 export const uploadImageToIPFS = async (image: File | null): Promise<string | null> => {
   try {
-    return image ? await uploadToIPFS(image) : null;
+    return image ? await uploadToIPFS(image) : null
   } catch (error) {
-    console.error('Error uploading image to IPFS:', error);
-    throw error;
+    console.error('Error uploading image to IPFS:', error)
+    throw error
   }
-};
+}
 
 /**
  * Uploads profile and background images to IPFS.
@@ -81,14 +81,14 @@ export const uploadImagesToIPFS = async (
   backgroundImage: File | null
 ): Promise<{ profileImageURI: string | null; backgroundImageURI: string | null }> => {
   try {
-    const profileImageURI = profileImage ? await uploadToIPFS(profileImage) : null;
-    const backgroundImageURI = backgroundImage ? await uploadToIPFS(backgroundImage) : null;
-    return { profileImageURI, backgroundImageURI };
+    const profileImageURI = profileImage ? await uploadToIPFS(profileImage) : null
+    const backgroundImageURI = backgroundImage ? await uploadToIPFS(backgroundImage) : null
+    return { profileImageURI, backgroundImageURI }
   } catch (error) {
-    console.error('Error uploading images to IPFS:', error);
-    throw error;
+    console.error('Error uploading images to IPFS:', error)
+    throw error
   }
-};
+}
 
 /**
  * Uploads metadata to IPFS.
@@ -98,12 +98,12 @@ export const uploadImagesToIPFS = async (
  */
 export const uploadMetadataToIPFS = async (metadata: any): Promise<string> => {
   try {
-    return await uploadToIPFS(metadata);
+    return await uploadToIPFS(metadata)
   } catch (error) {
-    console.error('Error uploading metadata to IPFS:', error);
-    throw error;
+    console.error('Error uploading metadata to IPFS:', error)
+    throw error
   }
-};
+}
 
 /**
  * Verifies the availability of data on IPFS.
@@ -118,25 +118,25 @@ export const verifyIpfsData = async (
   retries = 16,
   delayMs = 2000
 ): Promise<boolean> => {
-  const gateway = 'https://gw.ipfs-lens.dev/ipfs/'; // Use only lens's gateway
+  const gateway = 'https://gw.ipfs-lens.dev/ipfs/' // Use only lens's gateway
 
-  const hash = uri.replace('ipfs://', '');
-  const url = `${gateway}${hash}`;
+  const hash = uri.replace('ipfs://', '')
+  const url = `${gateway}${hash}`
 
   for (let attempt = 1; attempt <= retries; attempt++) {
     try {
-      const response = await axios.get(url, { timeout: 4000 });
+      const response = await axios.get(url, { timeout: 4000 })
       if (response.status === 200) {
-        return true;
+        return true
       }
     } catch (error: any) {
       // console.log(`Attempt ${attempt}: Could not access ${url}. Error: ${error.message}`);
     }
     if (attempt < retries) {
-      console.log(`Retrying in ${delayMs}ms... (${attempt}/${retries})`);
-      await new Promise((resolve) => setTimeout(resolve, delayMs));
+      console.log(`Retrying in ${delayMs}ms... (${attempt}/${retries})`)
+      await new Promise((resolve) => setTimeout(resolve, delayMs))
     }
   }
 
-  throw new Error('Could not verify the availability of metadata on IPFS.');
-};
+  throw new Error('Could not verify the availability of metadata on IPFS.')
+}

@@ -1,13 +1,13 @@
-import { describe, it, expect } from 'vitest';
-import { render } from '@testing-library/react';
-import CarouselWrapper from '@src/components/carousel/variants/CarouselWrapper';
-import { CarouselWrapperProps } from '@src/components/carousel/types';
+import { render } from '@testing-library/react'
+import { describe, it, expect } from 'vitest'
+import { CarouselWrapperProps } from '@src/components/carousel/types'
+import CarouselWrapper from '@src/components/carousel/variants/CarouselWrapper'
 
 describe('[COMPONENTS]: CarouselWrapper', () => {
   const mockData = [
     { id: '1', metadata: { title: 'Test Title 1', content: 'Test Content 1' } },
     { id: '2', metadata: { title: 'Test Title 2', content: 'Test Content 2' } },
-  ];
+  ]
 
   const defaultProps: CarouselWrapperProps<typeof mockData[0]> = {
     data: mockData,
@@ -36,34 +36,34 @@ describe('[COMPONENTS]: CarouselWrapper', () => {
     },
     boxStyle: {},
     boxClassName: '',
-  };
+  }
 
   it('to match snapshot', () => {
-    const { baseElement } = render(<CarouselWrapper {...defaultProps} />);
-    expect(baseElement).toMatchSnapshot();
-  });
+    const { baseElement } = render(<CarouselWrapper {...defaultProps} />)
+    expect(baseElement).toMatchSnapshot()
+  })
 
   it('renders the correct number of slides', () => {
-    const { getAllByTestId } = render(<CarouselWrapper {...defaultProps} />);
-    const slides = getAllByTestId('slide');
-    expect(slides.length).toBe(1);
-  });
+    const { getAllByTestId } = render(<CarouselWrapper {...defaultProps} />)
+    const slides = getAllByTestId('slide')
+    expect(slides.length).toBe(1)
+  })
 
   it('renders the correct number of items per slide', () => {
-    const { getAllByTestId } = render(<CarouselWrapper {...defaultProps} />);
-    const items = getAllByTestId('item');
-    expect(items.length).toBe(mockData.length);
-  });
+    const { getAllByTestId } = render(<CarouselWrapper {...defaultProps} />)
+    const items = getAllByTestId('item')
+    expect(items.length).toBe(mockData.length)
+  })
 
   it('renders the title correctly', () => {
-    const { getByText } = render(<CarouselWrapper {...defaultProps} />);
-    expect(getByText('Test Carousel')).toBeInTheDocument();
-  });
+    const { getByText } = render(<CarouselWrapper {...defaultProps} />)
+    expect(getByText('Test Carousel')).toBeInTheDocument()
+  })
 
   it('handles empty data gracefully', () => {
-    const emptyProps = { ...defaultProps, data: [] };
-    const { container } = render(<CarouselWrapper {...emptyProps} />);
-    const slides = container.querySelectorAll('.slick-slide');
-    expect(slides.length).toBe(0);
-  });
-});
+    const emptyProps = { ...defaultProps, data: [] }
+    const { container } = render(<CarouselWrapper {...emptyProps} />)
+    const slides = container.querySelectorAll('.slick-slide')
+    expect(slides.length).toBe(0)
+  })
+})

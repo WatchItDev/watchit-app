@@ -1,15 +1,10 @@
-import { FileRejection } from 'react-dropzone';
-// @mui
-import { alpha } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import Paper from '@mui/material/Paper';
-import Typography from '@mui/material/Typography';
-// utils
-import { fData } from '@src/utils/format-number';
-//
-import { fileData } from '../file-thumbnail';
-
-// ----------------------------------------------------------------------
+import { FileRejection } from 'react-dropzone'
+import Box from '@mui/material/Box'
+import Paper from '@mui/material/Paper'
+import { alpha } from '@mui/material/styles'
+import Typography from '@mui/material/Typography'
+import { fileData } from '../file-thumbnail'
+import { fData } from '@src/utils/format-number'
 
 type Props = {
   fileRejections: FileRejection[];
@@ -17,7 +12,7 @@ type Props = {
 
 export default function RejectionFiles({ fileRejections }: Props) {
   if (!fileRejections.length) {
-    return null;
+    return null
   }
 
   return (
@@ -32,7 +27,7 @@ export default function RejectionFiles({ fileRejections }: Props) {
       }}
     >
       {fileRejections.map(({ file, errors }) => {
-        const { path, size } = fileData(file);
+        const { path, size } = fileData(file)
 
         return (
           <Box key={path} sx={{ my: 1 }}>
@@ -46,8 +41,8 @@ export default function RejectionFiles({ fileRejections }: Props) {
               </Box>
             ))}
           </Box>
-        );
+        )
       })}
     </Paper>
-  );
+  )
 }

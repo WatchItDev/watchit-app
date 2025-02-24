@@ -1,10 +1,10 @@
-import { Ref, useEffect, useState } from 'react';
-import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
-import Input, { InputProps, inputClasses } from '@mui/material/Input';
+import { Ref, useEffect, useState } from 'react'
+import Input, { InputProps, inputClasses } from '@mui/material/Input'
+import Stack from '@mui/material/Stack'
+import Typography from '@mui/material/Typography'
 
-const STEP = 50;
-const MIN_AMOUNT = 0;
+const STEP = 50
+const MIN_AMOUNT = 0
 
 export interface InputAmountProps extends InputProps {
   max: number;
@@ -21,12 +21,12 @@ export const InputAmount = ({
   inputRef,
   ...other
 }: InputAmountProps) => {
-  const [autoWidth, setAutoWidth] = useState(32);
+  const [autoWidth, setAutoWidth] = useState(32)
 
   useEffect(() => {
-    const getNumberLength = amount.toString().length || 1;
-    setAutoWidth(getNumberLength * 24);
-  }, [amount]);
+    const getNumberLength = amount.toString().length || 1
+    setAutoWidth(getNumberLength * 24)
+  }, [amount])
 
   return (
     <Stack direction="row" alignItems="center" justifyContent="center" spacing={1} sx={sx}>
@@ -58,5 +58,5 @@ export const InputAmount = ({
 
       <Typography variant="h5">MMC</Typography>
     </Stack>
-  );
-};
+  )
+}

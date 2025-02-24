@@ -1,52 +1,45 @@
-// @mui
-import Box from '@mui/material/Box';
-// hooks
-import { useResponsive } from '@src/hooks/use-responsive';
-//
-import Main from './main';
-import NavMini from './nav-mini';
-import NavVertical from './nav-vertical';
-import NavVerticalMini from '@src/layouts/dashboard/nav-vertical-mini';
-
-import { useSelector, useDispatch } from 'react-redux';
-import { toggleMinibar, removeMinibar } from '@redux/minibar';
-import { useEffect } from 'react';
-
-// Get the version from package.json
-import { version } from '../../../package.json';
-// ----------------------------------------------------------------------
+import { useEffect } from 'react'
+import { toggleMinibar, removeMinibar } from '@redux/minibar'
+import { useSelector, useDispatch } from 'react-redux'
+import Box from '@mui/material/Box'
+import Main from './main'
+import NavMini from './nav-mini'
+import NavVertical from './nav-vertical'
+import { version } from '../../../package.json'
+import { useResponsive } from '@src/hooks/use-responsive'
+import NavVerticalMini from '@src/layouts/dashboard/nav-vertical-mini'
 type Props = {
   children: React.ReactNode;
 };
 
 export default function DashboardLayout({ children }: Props) {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
   // @ts-ignore
-  const minibarState = useSelector((state) => state.minibar.state);
+  const minibarState = useSelector((state) => state.minibar.state)
   // @ts-ignore
-  const wasCollapse = useSelector((state) => state.minibar.wasCollapsed);
+  const wasCollapse = useSelector((state) => state.minibar.wasCollapsed)
 
-  const lgUp = useResponsive('up', 'lg');
+  const lgUp = useResponsive('up', 'lg')
 
   useEffect(() => {
     if (lgUp && !wasCollapse) {
-      dispatch(removeMinibar());
+      dispatch(removeMinibar())
     } else if (!lgUp && minibarState !== 'vertical') {
-      dispatch(toggleMinibar());
+      dispatch(toggleMinibar())
     }
-  }, [lgUp, minibarState, dispatch, wasCollapse]);
+  }, [lgUp, minibarState, dispatch, wasCollapse])
 
   const renderNavMini = (
     <>
       <NavMini /> <NavVerticalMini />
     </>
-  );
+  )
   const renderNavVertical = (
     <>
       <NavMini />
       <NavVertical />
     </>
-  );
+  )
 
   if (minibarState === 'mini') {
     return (
@@ -60,7 +53,7 @@ export default function DashboardLayout({ children }: Props) {
         {lgUp ? renderNavMini : renderNavVertical}
         <Main>{children}</Main>
       </Box>
-    );
+    )
   }
 
   return (
@@ -93,5 +86,5 @@ export default function DashboardLayout({ children }: Props) {
         {`v${version}`}
       </Box>
     </>
-  );
+  )
 }

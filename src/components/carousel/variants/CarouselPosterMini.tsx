@@ -1,10 +1,10 @@
-import CarouselSlide from '@src/components/carousel/components/CarouselSlide';
-import PosterHorizontal from '@src/components/poster/variants/poster-horizontal';
-import { CarouselPosterMiniProps, PublicationType } from '../types';
-import CarouselWrapper from './CarouselWrapper';
+import { CarouselPosterMiniProps, PublicationType } from '../types'
+import CarouselWrapper from './CarouselWrapper'
+import CarouselSlide from '@src/components/carousel/components/CarouselSlide'
+import PosterHorizontal from '@src/components/poster/variants/poster-horizontal'
 
 export default function CarouselPosterMini(params: CarouselPosterMiniProps) {
-  const { data, title, minItemWidth, maxItemWidth } = params;
+  const { data, title, minItemWidth, maxItemWidth } = params
 
   const carouselSettings = {
     infinite: false,
@@ -16,7 +16,7 @@ export default function CarouselPosterMini(params: CarouselPosterMiniProps) {
     focusOnSelect: true,
     swipeToSlide: true,
     lazyLoad: 'progressive',
-  };
+  }
 
   const boxStyle = {
     '.slick-list': {
@@ -35,14 +35,14 @@ export default function CarouselPosterMini(params: CarouselPosterMiniProps) {
       minHeight: '100%',
       maxHeight: '100%',
     },
-  };
+  }
 
   const renderItem = (post: PublicationType) => {
-    const getMediaUri = (cid: string): string => `${cid}`;
+    const getMediaUri = (cid: string): string => `${cid}`
     const getWallpaperCid = (post: PublicationType): string =>
-      post?.metadata?.attachments?.find((el: PublicationType) => el.altTag === 'wallpaper')?.image?.raw?.uri;
+      post?.metadata?.attachments?.find((el: PublicationType) => el.altTag === 'wallpaper')?.image?.raw?.uri
     const getPosterCid = (post: PublicationType): string =>
-      post?.metadata?.attachments?.find((el: PublicationType) => el.altTag === 'poster')?.image?.raw?.uri;
+      post?.metadata?.attachments?.find((el: PublicationType) => el.altTag === 'poster')?.image?.raw?.uri
 
     return (
       <PosterHorizontal
@@ -55,8 +55,8 @@ export default function CarouselPosterMini(params: CarouselPosterMiniProps) {
         likes={post.globalStats.upvotes}
         synopsis={post.metadata.content}
       />
-    );
-  };
+    )
+  }
 
   return (
     <CarouselWrapper
@@ -77,5 +77,5 @@ export default function CarouselPosterMini(params: CarouselPosterMiniProps) {
         boxStyle,
       }}
     />
-  );
+  )
 }

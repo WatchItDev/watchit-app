@@ -1,33 +1,28 @@
-import 'viem/window';
-import { FC } from 'react';
-
-// @mui
-import Stack from '@mui/material/Stack';
-import { CardProps } from '@mui/material/Card';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-
-// theme
-import { bgGradient } from '@src/theme/css';
-import Iconify from '@src/components/iconify';
-import { alpha, useTheme } from '@mui/material/styles';
+import 'viem/window'
+import { FC } from 'react'
+import Button from '@mui/material/Button'
+import { CardProps } from '@mui/material/Card'
+import Stack from '@mui/material/Stack'
+import { alpha, useTheme } from '@mui/material/styles'
+import Typography from '@mui/material/Typography'
 // @ts-ignore
-import Earn from '@src/assets/illustrations/earn.svg';
-import Image from '@src/components/image';
+import Earn from '@src/assets/illustrations/earn.svg'
+import Iconify from '@src/components/iconify'
 
-// Global constants
-import { GLOBAL_CONSTANTS } from '@src/config-global';
+import Image from '@src/components/image'
+import { GLOBAL_CONSTANTS } from '@src/config-global'
+import { bgGradient } from '@src/theme/css'
 
 export interface FinanceEarnTokensProps extends CardProps {
   lgUp: boolean;
 }
 
 const FinanceEarnTokens: FC<FinanceEarnTokensProps> = ({ sx, lgUp, ...other }) => {
-  const theme = useTheme();
+  const theme = useTheme()
 
   const handleClick = () => {
-    window.open(GLOBAL_CONSTANTS.EARN_TOKEN_SERVICE_URL, '_BLANK');
-  };
+    window.open(GLOBAL_CONSTANTS.EARN_TOKEN_SERVICE_URL, '_BLANK')
+  }
 
   return (
     <Stack
@@ -150,7 +145,7 @@ const FinanceEarnTokens: FC<FinanceEarnTokensProps> = ({ sx, lgUp, ...other }) =
         </Stack>
       </>
     </Stack>
-  );
-};
+  )
+}
 
-export default FinanceEarnTokens;
+export default FinanceEarnTokens

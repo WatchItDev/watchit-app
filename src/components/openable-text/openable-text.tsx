@@ -1,10 +1,10 @@
-import { FC } from 'react';
-import { Tooltip, IconButton, Typography, Stack } from '@mui/material';
-import { Icon } from '@iconify/react';
-import { SxProps } from '@mui/system';
-import { Theme } from '@mui/material/styles/createTheme';
+import { FC } from 'react'
+import { Icon } from '@iconify/react'
+import { Tooltip, IconButton, Typography, Stack } from '@mui/material'
+import { Theme } from '@mui/material/styles/createTheme'
+import { SxProps } from '@mui/system'
 
-const openIcon = 'mdi:open-in-new';
+const openIcon = 'mdi:open-in-new'
 
 interface OpenableTextProps {
   label: string;
@@ -15,8 +15,8 @@ interface OpenableTextProps {
 
 const OpenableText: FC<OpenableTextProps> = ({ label, url, sx, labelSx }) => {
   const handleOpen = () => {
-    window.open(url, '_blank');
-  };
+    window.open(url, '_blank')
+  }
 
   return (
     <Stack direction="row" alignItems="center" sx={{...sx}}>
@@ -27,7 +27,7 @@ const OpenableText: FC<OpenableTextProps> = ({ label, url, sx, labelSx }) => {
         </IconButton>
       </Tooltip>
     </Stack>
-  );
-};
+  )
+}
 
-export default OpenableText;
+export default OpenableText

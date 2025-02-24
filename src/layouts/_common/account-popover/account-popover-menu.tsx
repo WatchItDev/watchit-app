@@ -1,25 +1,16 @@
-// REACT IMPORTS
-import { useEffect } from 'react';
-
-// REDUX IMPORTS
-import { useSelector } from 'react-redux';
-
-// MUI IMPORTS
+import { useEffect } from 'react'
+import { useSelector } from 'react-redux'
 import {
   Box,
   Divider,
   MenuItem,
   Stack,
   Typography
-} from '@mui/material';
-
-// LOCAL IMPORTS
-import CustomPopover from '@src/components/custom-popover';
-import { useAccountSession } from '@src/hooks/use-account-session';
-import { paths } from '@src/routes/paths';
-import { UsePopoverReturnType } from '@src/components/custom-popover/use-popover.ts';
-
-// ----------------------------------------------------------------------
+} from '@mui/material'
+import CustomPopover from '@src/components/custom-popover'
+import { UsePopoverReturnType } from '@src/components/custom-popover/use-popover.ts'
+import { useAccountSession } from '@src/hooks/use-account-session'
+import { paths } from '@src/routes/paths'
 
 interface AccountPopoverMenuProps {
   popover: UsePopoverReturnType;
@@ -28,17 +19,12 @@ interface AccountPopoverMenuProps {
   };
 }
 
-// ----------------------------------------------------------------------
-
 const OPTIONS = [
   {
     label: 'Profile',
     linkTo: paths.dashboard.user.root,
   },
-];
-
-// ----------------------------------------------------------------------
-
+]
 /**
  * This component shows the popover menu for:
  *  - User's display name
@@ -46,26 +32,26 @@ const OPTIONS = [
  *  - Logout
  */
 export function AccountPopoverMenu({ popover, router }: Readonly<AccountPopoverMenuProps>) {
-  const sessionData = useSelector((state: any) => state.auth.session);
-  const isAuthenticated = Boolean(sessionData?.authenticated);
+  const sessionData = useSelector((state: any) => state.auth.session)
+  const isAuthenticated = Boolean(sessionData?.authenticated)
   // Redux states: login modal open and session loading status
-  const { isLoginModalOpen, isSessionLoading } = useSelector((state: any) => state.auth);
+  const { isLoginModalOpen, isSessionLoading } = useSelector((state: any) => state.auth)
   // We call the custom hook for the logout function only
-  const { logout } = useAccountSession();
+  const { logout } = useAccountSession()
 
   // Close popover when session status or login modal changes
   useEffect(() => {
-    popover.onClose();
-  }, [sessionData?.authenticated, isLoginModalOpen, isSessionLoading]);
+    popover.onClose()
+  }, [sessionData?.authenticated, isLoginModalOpen, isSessionLoading])
 
   const handleClickItem = (path: string) => {
-    popover.onClose();
-    router.push(path);
-  };
+    popover.onClose()
+    router.push(path)
+  }
 
   // If not authenticated, no menu is shown
   if (!isAuthenticated) {
-    return null;
+    return null
   }
 
   return (
@@ -106,5 +92,5 @@ export function AccountPopoverMenu({ popover, router }: Readonly<AccountPopoverM
         Logout
       </MenuItem>
     </CustomPopover>
-  );
+  )
 }

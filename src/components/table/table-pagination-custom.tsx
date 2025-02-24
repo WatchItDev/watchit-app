@@ -1,11 +1,8 @@
-// @mui
-import { Theme, SxProps } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import Switch from '@mui/material/Switch';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import TablePagination, { TablePaginationProps } from '@mui/material/TablePagination';
-
-// ----------------------------------------------------------------------
+import Box from '@mui/material/Box'
+import FormControlLabel from '@mui/material/FormControlLabel'
+import { Theme, SxProps } from '@mui/material/styles'
+import Switch from '@mui/material/Switch'
+import TablePagination, { TablePaginationProps } from '@mui/material/TablePagination'
 
 type Props = {
   dense?: boolean;
@@ -46,5 +43,5 @@ export default function TablePaginationCustom({
         />
       )}
     </Box>
-  );
+  )
 }

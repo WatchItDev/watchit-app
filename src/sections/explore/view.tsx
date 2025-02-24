@@ -1,9 +1,3 @@
-// MUI IMPORTS
-import Stack from '@mui/material/Stack';
-import Container from '@mui/material/Container';
-// COMPONENTS IMPORTS
-import CarouselPosterMini from '@src/components/carousel/variants/CarouselPosterMini.tsx';
-// LENS IMPORTS
 import {
   appId,
   ExploreProfilesOrderByType,
@@ -15,17 +9,16 @@ import {
   useExploreProfiles,
   useExplorePublications,
   usePublications,
-} from '@lens-protocol/react-web';
-
-// LOCAL IMPORTS
-import { LoadingScreen } from '@src/components/loading-screen';
-import CarouselTopTitles from '@src/components/carousel/variants/CarouselTopTitles.tsx';
-import CarouselCreators from '@src/components/carousel/variants/CarouselCreators.tsx';
-import { useResponsive } from '@src/hooks/use-responsive.ts';
-import { useSelector } from 'react-redux';
-import { filterHiddenProfiles } from '@src/utils/profile';
-
-// ----------------------------------------------------------------------
+} from '@lens-protocol/react-web'
+import { useSelector } from 'react-redux'
+import Container from '@mui/material/Container'
+import Stack from '@mui/material/Stack'
+import CarouselCreators from '@src/components/carousel/variants/CarouselCreators.tsx'
+import CarouselPosterMini from '@src/components/carousel/variants/CarouselPosterMini.tsx'
+import CarouselTopTitles from '@src/components/carousel/variants/CarouselTopTitles.tsx'
+import { LoadingScreen } from '@src/components/loading-screen'
+import { useResponsive } from '@src/hooks/use-responsive.ts'
+import { filterHiddenProfiles } from '@src/utils/profile'
 
 export type TrendingTopicsType = {
   id: number;
@@ -35,15 +28,15 @@ export type TrendingTopicsType = {
 };
 
 export default function ExploreView() {
-  const lgUp = useResponsive('up', 'lg');
-  const { bookmarkPublications, hiddenBookmarks } = useSelector((state: any) => state.bookmark);
+  const lgUp = useResponsive('up', 'lg')
+  const { bookmarkPublications, hiddenBookmarks } = useSelector((state: any) => state.bookmark)
 
-  let minItemWidth = 250;
-  let maxItemWidth = 350;
+  let minItemWidth = 250
+  let maxItemWidth = 350
 
   if (!lgUp) {
-    minItemWidth = 170;
-    maxItemWidth = 250;
+    minItemWidth = 170
+    maxItemWidth = 250
   }
 
   const { data, loading }: any = usePublications({
@@ -53,20 +46,20 @@ export default function ExploreView() {
         publishedOn: [appId('watchit')],
       },
     },
-  });
-  const { data: bookmark } = useBookmarks();
+  })
+  const { data: bookmark } = useBookmarks()
   const { data: latestCreatedProfiles } = useExploreProfiles({
     orderBy: ExploreProfilesOrderByType.LatestCreated,
     limit: LimitType.Fifty,
-  });
+  })
 
   // FilteredCompletedProfiles is an array of objects, each object has a metadata property and inside exists a displayName en bio property; filter the profiles that not have a displayName and bio property
   const filtered = latestCreatedProfiles?.filter(
     (profile: any) => profile.metadata?.displayName && profile.metadata?.bio
-  );
+  )
 
   // Clear ###HIDDEN### profiles
-  const filteredProfiles = filterHiddenProfiles(filtered);
+  const filteredProfiles = filterHiddenProfiles(filtered)
 
   const { data: explorePublications } = useExplorePublications({
     where: {
@@ -77,13 +70,13 @@ export default function ExploreView() {
     },
     limit: LimitType.Ten,
     orderBy: ExplorePublicationsOrderByType.TopCommented,
-  });
+  })
 
-  if (loading) return <LoadingScreen />;
+  if (loading) return <LoadingScreen />
 
   const combinedPosts = [...(explorePublications ?? []), ...(data ?? [])]
     .filter((item, index, self) => self.findIndex((t) => t.id === item.id) === index)
-    .slice(0, 10);
+    .slice(0, 10)
 
   // @TODO Uncomment the following line to insert publications in supabase when needed
   // InsertMoviesSupabase(explorePublications);
@@ -91,7 +84,7 @@ export default function ExploreView() {
   const bookmarksFiltered = [...[...bookmarkPublications].reverse(), ...(bookmark ?? [])]
     .filter((post) => !hiddenBookmarks.some((hidden: any) => hidden.id === post.id))
     .filter((post) => !post.isHidden)
-    .filter((post, index, self) => index === self.findIndex((p) => p.id === post.id));
+    .filter((post, index, self) => index === self.findIndex((p) => p.id === post.id))
 
   return (
     <Container sx={{ p: '0 !important', maxWidth: '2000px !important' }}>
@@ -122,5 +115,5 @@ export default function ExploreView() {
         />
       </Stack>
     </Container>
-  );
+  )
 }

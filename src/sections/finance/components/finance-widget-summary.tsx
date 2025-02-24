@@ -1,33 +1,23 @@
-import { useEffect } from 'react';
-// MUI IMPORTS
-import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
-import Button from '@mui/material/Button';
-import { CardProps } from '@mui/material/Card';
-import Typography from '@mui/material/Typography';
-import { useTheme, alpha } from '@mui/material/styles';
-
-// @mui
-import LoadingButton from '@mui/lab/LoadingButton';
-// CHARTS IMPORTS
-import { ApexOptions } from 'apexcharts';
-
-// LOCAL IMPORTS
-import { bgGradient } from '@src/theme/css';
-import Iconify from '@src/components/iconify';
-import { ColorSchema } from '@src/theme/palette';
-import { useBoolean } from '@src/hooks/use-boolean.ts';
-import Chart, { useChart } from '@src/components/chart';
-import { fCurrency, fPercent } from '@src/utils/format-number';
-import { FinanceDepositModal } from '@src/sections/finance/components/finance-deposit-modal.tsx';
-import { useWithdraw } from '@src/hooks/use-withdraw.ts';
-import { FinanceWithdrawModal } from '@src/sections/finance/components/finance-withdraw-modal.tsx';
-
-// Notifications
-import { notifyError } from '@notifications/internal-notifications';
-import { ERRORS } from '@notifications/errors';
-
-// ----------------------------------------------------------------------
+import { useEffect } from 'react'
+import { ERRORS } from '@notifications/errors'
+import { notifyError } from '@notifications/internal-notifications'
+import { ApexOptions } from 'apexcharts'
+import LoadingButton from '@mui/lab/LoadingButton'
+import Box from '@mui/material/Box'
+import Button from '@mui/material/Button'
+import { CardProps } from '@mui/material/Card'
+import Stack from '@mui/material/Stack'
+import { useTheme, alpha } from '@mui/material/styles'
+import Typography from '@mui/material/Typography'
+import Chart, { useChart } from '@src/components/chart'
+import Iconify from '@src/components/iconify'
+import { useBoolean } from '@src/hooks/use-boolean.ts'
+import { useWithdraw } from '@src/hooks/use-withdraw.ts'
+import { FinanceDepositModal } from '@src/sections/finance/components/finance-deposit-modal.tsx'
+import { FinanceWithdrawModal } from '@src/sections/finance/components/finance-withdraw-modal.tsx'
+import { bgGradient } from '@src/theme/css'
+import { ColorSchema } from '@src/theme/palette'
+import { fCurrency, fPercent } from '@src/utils/format-number'
 
 interface Props extends CardProps {
   title: string;
@@ -44,8 +34,6 @@ interface Props extends CardProps {
   };
 }
 
-// ----------------------------------------------------------------------
-
 export default function FinanceWidgetSummary({
   title,
   total,
@@ -56,15 +44,15 @@ export default function FinanceWidgetSummary({
   sx,
   ...other
 }: Props) {
-  const confirmDeposit = useBoolean();
-  const confirmWithdraw = useBoolean();
-  const theme = useTheme();
-  const { series, options } = chart;
-  const { loading: withdrawLoading, error } = useWithdraw();
+  const confirmDeposit = useBoolean()
+  const confirmWithdraw = useBoolean()
+  const theme = useTheme()
+  const { series, options } = chart
+  const { loading: withdrawLoading, error } = useWithdraw()
 
   useEffect(() => {
-    if (error) notifyError(error as ERRORS);
-  }, [error]);
+    if (error) notifyError(error as ERRORS)
+  }, [error])
 
   const chartOptions = useChart({
     colors: [theme.palette[color].dark],
@@ -103,26 +91,26 @@ export default function FinanceWidgetSummary({
       },
     },
     ...options,
-  });
+  })
 
-  const totalOptions = { minimumFractionDigits: 1, maximumFractionDigits: 3 };
-  const formattedTotal = new Intl.NumberFormat('en-US', totalOptions).format(total);
+  const totalOptions = { minimumFractionDigits: 1, maximumFractionDigits: 3 }
+  const formattedTotal = new Intl.NumberFormat('en-US', totalOptions).format(total)
 
   const handleFinishDeposit = () => {
-    confirmDeposit.onFalse?.();
-  };
+    confirmDeposit.onFalse?.()
+  }
 
   const handleFinishWithdraw = () => {
-    confirmWithdraw.onFalse?.();
-  };
+    confirmWithdraw.onFalse?.()
+  }
 
   const handleDepositOpenModal = () => {
-    confirmDeposit.onTrue?.();
-  };
+    confirmDeposit.onTrue?.()
+  }
 
   const handleWithdrawOpenModal = () => {
-    confirmWithdraw.onTrue?.();
-  };
+    confirmWithdraw.onTrue?.()
+  }
 
   return (
     <Stack
@@ -208,5 +196,5 @@ export default function FinanceWidgetSummary({
 
       <FinanceWithdrawModal open={confirmWithdraw.value} onClose={handleFinishWithdraw} />
     </Stack>
-  );
+  )
 }

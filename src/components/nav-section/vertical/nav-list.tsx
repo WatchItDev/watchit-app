@@ -1,14 +1,9 @@
-import { useState, useEffect, useCallback } from 'react';
-// @mui
-import Collapse from '@mui/material/Collapse';
-// routes
-import { usePathname } from '@src/routes/hooks';
-import { useActiveLink } from '@src/routes/hooks/use-active-link';
-//
-import { NavListProps, NavConfigProps } from '../types';
-import NavItem from './nav-item';
-
-// ----------------------------------------------------------------------
+import { useState, useEffect, useCallback } from 'react'
+import Collapse from '@mui/material/Collapse'
+import { NavListProps, NavConfigProps } from '../types'
+import NavItem from './nav-item'
+import { usePathname } from '@src/routes/hooks'
+import { useActiveLink } from '@src/routes/hooks/use-active-link'
 
 type NavListRootProps = {
   data: NavListProps;
@@ -18,28 +13,28 @@ type NavListRootProps = {
 };
 
 export default function NavList({ data, depth, hasChild, config }: NavListRootProps) {
-  const pathname = usePathname();
+  const pathname = usePathname()
 
-  const active = useActiveLink(data?.path ?? '', hasChild);
+  const active = useActiveLink(data?.path ?? '', hasChild)
 
-  const externalLink = data?.path?.includes('http');
+  const externalLink = data?.path?.includes('http')
 
-  const [open, setOpen] = useState(active);
+  const [open, setOpen] = useState(active)
 
   useEffect(() => {
     if (!active) {
-      handleClose();
+      handleClose()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pathname]);
+  }, [pathname])
 
   const handleToggle = useCallback(() => {
-    setOpen((prev) => !prev);
-  }, []);
+    setOpen((prev) => !prev)
+  }, [])
 
   const handleClose = useCallback(() => {
-    setOpen(false);
-  }, []);
+    setOpen(false)
+  }, [])
 
   return (
     <>
@@ -59,10 +54,8 @@ export default function NavList({ data, depth, hasChild, config }: NavListRootPr
         </Collapse>
       )}
     </>
-  );
+  )
 }
-
-// ----------------------------------------------------------------------
 
 type NavListSubProps = {
   data: NavListProps[];
@@ -83,5 +76,5 @@ function NavSubList({ data, depth, config }: NavListSubProps) {
         />
       ))}
     </>
-  );
+  )
 }

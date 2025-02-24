@@ -1,9 +1,6 @@
-// @mui
-import Paper from '@mui/material/Paper';
-import Skeleton from '@mui/material/Skeleton';
-import Stack, { StackProps } from '@mui/material/Stack';
-
-// ----------------------------------------------------------------------
+import Paper from '@mui/material/Paper'
+import Skeleton from '@mui/material/Skeleton'
+import Stack, { StackProps } from '@mui/material/Stack'
 
 type PostItemSkeletonProps = StackProps & {
   variant?: 'vertical' | 'horizontal';
@@ -41,7 +38,7 @@ export function GovernanceItemSkeleton({
           <Skeleton sx={{ width: 170, height: 240, flexShrink: 0 }} />
         </Stack>
       </Stack>
-    );
+    )
   }
 
   return (
@@ -66,10 +63,8 @@ export function GovernanceItemSkeleton({
         </Stack>
       </Stack>
     </Stack>
-  );
+  )
 }
-
-// ----------------------------------------------------------------------
 
 export function GovernanceDetailsSkeleton({ ...other }: StackProps) {
   return (
@@ -90,5 +85,5 @@ export function GovernanceDetailsSkeleton({ ...other }: StackProps) {
         <Skeleton sx={{ height: 720 }} />
       </Stack>
     </Stack>
-  );
+  )
 }

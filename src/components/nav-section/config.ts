@@ -1,6 +1,4 @@
-import { NavConfigProps } from './types';
-
-// ----------------------------------------------------------------------
+import { NavConfigProps } from './types'
 
 export const navVerticalConfig = (config?: NavConfigProps) => ({
   itemGap: config?.itemGap || 4,
@@ -11,7 +9,7 @@ export const navVerticalConfig = (config?: NavConfigProps) => ({
   itemPadding: config?.itemPadding || '4px 8px 4px 12px',
   itemRadius: config?.itemRadius || 8,
   hiddenLabel: config?.hiddenLabel || false,
-});
+})
 
 export const navMiniConfig = (config?: NavConfigProps) => ({
   itemGap: config?.itemGap || 4,
@@ -22,7 +20,7 @@ export const navMiniConfig = (config?: NavConfigProps) => ({
   itemPadding: config?.itemPadding || '6px 0 0 0',
   itemRadius: config?.itemRadius || 6,
   hiddenLabel: config?.hiddenLabel || false,
-});
+})
 
 export const navHorizontalConfig = (config?: NavConfigProps) => ({
   itemGap: config?.itemGap || 6,
@@ -33,4 +31,4 @@ export const navHorizontalConfig = (config?: NavConfigProps) => ({
   itemPadding: config?.itemPadding || '0 6px 0 6px',
   itemRadius: config?.itemRadius || 6,
   hiddenLabel: config?.hiddenLabel || false,
-});
+})

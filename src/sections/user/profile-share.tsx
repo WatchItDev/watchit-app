@@ -1,15 +1,15 @@
-import Iconify from '@src/components/iconify';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import Popover from '@mui/material/Popover';
-import { FC, useCallback, useEffect, useRef, useState } from 'react';
-import Stack from '@mui/material/Stack';
-import { notifyError, notifySuccess } from '@notifications/internal-notifications.ts';
-import { SUCCESS } from '@notifications/success.ts';
-import { ERRORS } from '@notifications/errors.ts';
-import { Profile } from '@lens-protocol/api-bindings';
+import { FC, useCallback, useEffect, useRef, useState } from 'react'
+import { Profile } from '@lens-protocol/api-bindings'
+import { ERRORS } from '@notifications/errors.ts'
+import { notifyError, notifySuccess } from '@notifications/internal-notifications.ts'
+import { SUCCESS } from '@notifications/success.ts'
+import Button from '@mui/material/Button'
+import Popover from '@mui/material/Popover'
+import Stack from '@mui/material/Stack'
+import Typography from '@mui/material/Typography'
+import Iconify from '@src/components/iconify'
 
-export const urlToShare = 'https://app.watchit.movie/profileId';
+export const urlToShare = 'https://app.watchit.movie/profileId'
 
 const shareLinks = [
   {
@@ -27,13 +27,13 @@ const shareLinks = [
     label: 'Telegram',
     url: `https://telegram.me/share/?url=${encodeURIComponent(urlToShare)}&title=Watchit`,
   },
-];
+]
 
 const socialMedia = [
   { key: 'twitter', icon: 'mingcute:social-x-line' },
   { key: 'facebook', icon: 'mdi:facebook' },
   { key: 'instagram', icon: 'mdi:instagram' },
-];
+]
 
 interface SocialMediaUrls {
   twitter?: string;
@@ -46,59 +46,59 @@ interface ProfileShareProps {
 }
 
 const ProfileShare: FC<ProfileShareProps> = ({ profile }) => {
-  const [openTooltipShare, setOpenTooltipShare] = useState(false);
-  const navRefSocial = useRef(null);
-  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
-  const open = Boolean(anchorEl);
+  const [openTooltipShare, setOpenTooltipShare] = useState(false)
+  const navRefSocial = useRef(null)
+  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null)
+  const open = Boolean(anchorEl)
 
   const socialMediaUrls: SocialMediaUrls =
     profile?.metadata?.attributes?.reduce((acc: SocialMediaUrls, attr: any) => {
       if (['twitter', 'facebook', 'instagram'].includes(attr.key)) {
-        acc[attr.key as keyof SocialMediaUrls] = attr.value;
+        acc[attr.key as keyof SocialMediaUrls] = attr.value
       }
-      return acc;
-    }, {} as SocialMediaUrls) || {};
+      return acc
+    }, {} as SocialMediaUrls) || {}
 
   const prependProfileIdToUrl = (url: string, profileId: string) => {
-    return url.replace('profileId', 'profile/' + profileId);
-  };
+    return url.replace('profileId', 'profile/' + profileId)
+  }
 
   const handlePopoverOpen = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
+    setAnchorEl(event.currentTarget)
+  }
 
   const handleOpenShare = useCallback(() => {
-    setOpenTooltipShare(true);
-  }, []);
+    setOpenTooltipShare(true)
+  }, [])
 
   const handleCloseShare = useCallback(() => {
-    setOpenTooltipShare(false);
-  }, []);
+    setOpenTooltipShare(false)
+  }, [])
 
   const handlePopoverClose = () => {
-    setAnchorEl(null);
-  };
+    setAnchorEl(null)
+  }
 
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(
         urlToShare.replace('profileId', 'profile/' + profile?.id)
-      );
-      notifySuccess(SUCCESS.LINK_COPIED_TO_CLIPBOARD);
+      )
+      notifySuccess(SUCCESS.LINK_COPIED_TO_CLIPBOARD)
     } catch (err) {
-      notifyError(ERRORS.LINK_COPIED_ERROR);
+      notifyError(ERRORS.LINK_COPIED_ERROR)
     }
-  };
+  }
 
   const handleClose = useCallback(() => {
-    setOpenTooltipShare(false);
-  }, []);
+    setOpenTooltipShare(false)
+  }, [])
 
   useEffect(() => {
     if (open) {
-      handleClose();
+      handleClose()
     }
-  }, [handleClose, open]);
+  }, [handleClose, open])
 
   return (
     <>
@@ -253,7 +253,7 @@ const ProfileShare: FC<ProfileShareProps> = ({ profile }) => {
           </Stack>
         </Popover>
     </>
-  );
-};
+  )
+}
 
-export default ProfileShare;
+export default ProfileShare

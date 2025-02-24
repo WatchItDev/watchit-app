@@ -1,1 +1,1 @@
-export { default as ShouldLogin } from './should-login';
+export { default as ShouldLogin } from './should-login'

@@ -1,31 +1,31 @@
-import * as Yup from 'yup';
-import { useForm, Controller } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { Stack, CircularProgress } from '@mui/material';
-import LoadingButton from '@mui/lab/LoadingButton';
-import { useCreateComment } from '@lens-protocol/react-web';
+import { yupResolver } from '@hookform/resolvers/yup'
+import { AnyPublication } from '@lens-protocol/api-bindings'
 import {
   textOnly,
   PublicationMetadataSchema,
   formatZodError,
   MetadataAttributeType,
   MarketplaceMetadataAttributeDisplayType,
-} from '@lens-protocol/metadata';
-import FormProvider from '@src/components/hook-form';
-import InputBase from '@mui/material/InputBase';
-import InputAdornment from '@mui/material/InputAdornment';
-import { alpha } from '@mui/material/styles';
-import Iconify from '@src/components/iconify';
+} from '@lens-protocol/metadata'
 // @ts-ignore
-import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
-import { uploadMetadataToIPFS } from '@src/utils/ipfs';
-import uuidv4 from '@src/utils/uuidv4.ts';
-import { useDispatch, useSelector } from 'react-redux';
-import { useNotifications } from '@src/hooks/use-notifications.ts';
-import { useNotificationPayload } from '@src/hooks/use-notification-payload.ts';
-import { AnyPublication } from '@lens-protocol/api-bindings';
-import AvatarProfile from "@src/components/avatar/avatar.tsx";
-import {dicebear} from "@src/utils/dicebear.ts";
+import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads'
+import { useCreateComment } from '@lens-protocol/react-web'
+import { useForm, Controller } from 'react-hook-form'
+import { useDispatch, useSelector } from 'react-redux'
+import * as Yup from 'yup'
+import LoadingButton from '@mui/lab/LoadingButton'
+import { Stack, CircularProgress } from '@mui/material'
+import InputAdornment from '@mui/material/InputAdornment'
+import InputBase from '@mui/material/InputBase'
+import { alpha } from '@mui/material/styles'
+import AvatarProfile from "@src/components/avatar/avatar.tsx"
+import FormProvider from '@src/components/hook-form'
+import Iconify from '@src/components/iconify'
+import { useNotificationPayload } from '@src/hooks/use-notification-payload.ts'
+import { useNotifications } from '@src/hooks/use-notifications.ts'
+import {dicebear} from "@src/utils/dicebear.ts"
+import { uploadMetadataToIPFS } from '@src/utils/ipfs'
+import uuidv4 from '@src/utils/uuidv4.ts'
 
 // Define the props types
 type MovieCommentFormProps = {
@@ -48,30 +48,30 @@ const MovieCommentForm = ({ commentOn, owner, root }: MovieCommentFormProps) => 
   // Define the validation schema using Yup
   const CommentSchema = Yup.object().shape({
     comment: Yup.string().required('Comment is required'),
-  });
+  })
 
   // Define default form values
   const defaultValues = {
     comment: '',
-  };
+  }
 
   // Initialize the form methods
   const methods = useForm({
     resolver: yupResolver(CommentSchema),
     defaultValues,
-  });
+  })
 
   const {
     reset,
     handleSubmit,
     formState: { isSubmitting },
-  } = methods;
+  } = methods
 
-  const { execute: createComment } = useCreateComment();
-  const sessionData = useSelector((state: any) => state.auth.session);
-  const dispatch = useDispatch();
-  const { sendNotification } = useNotifications();
-  const { generatePayload } = useNotificationPayload(sessionData);
+  const { execute: createComment } = useCreateComment()
+  const sessionData = useSelector((state: any) => state.auth.session)
+  const dispatch = useDispatch()
+  const { sendNotification } = useNotifications()
+  const { generatePayload } = useNotificationPayload(sessionData)
 
   /**
    * Form submission handler.
@@ -80,7 +80,7 @@ const MovieCommentForm = ({ commentOn, owner, root }: MovieCommentFormProps) => 
    */
   const onSubmit = handleSubmit(async (data) => {
     try {
-      const uuid = uuidv4();
+      const uuid = uuidv4()
 
       const metadata = textOnly({
         appId: 'watchit',
@@ -109,7 +109,7 @@ const MovieCommentForm = ({ commentOn, owner, root }: MovieCommentFormProps) => 
           description: data.comment,
           external_url: `https://watchit.movie/comment/${uuid}`,
         },
-      });
+      })
 
       // Create a pending comment object
       const pendingComment: AnyPublication = {
@@ -125,17 +125,17 @@ const MovieCommentForm = ({ commentOn, owner, root }: MovieCommentFormProps) => 
         },
         by: sessionData?.profile,
         createdAt: new Date().toISOString(),
-      };
+      }
 
       // Validate metadata against the schema
-      const validation = PublicationMetadataSchema.safeParse(metadata);
+      const validation = PublicationMetadataSchema.safeParse(metadata)
       if (!validation.success) {
-        console.error('Metadata validation error:', formatZodError(validation.error));
-        return;
+        console.error('Metadata validation error:', formatZodError(validation.error))
+        return
       }
 
       // Upload metadata to IPFS
-      const uri = await uploadMetadataToIPFS(metadata);
+      const uri = await uploadMetadataToIPFS(metadata)
 
       dispatch({
         type: 'ADD_TASK_TO_BACKGROUND',
@@ -153,13 +153,13 @@ const MovieCommentForm = ({ commentOn, owner, root }: MovieCommentFormProps) => 
             root,
           },
         },
-      });
+      })
 
-      reset();
+      reset()
     } catch (e: any) {
-      console.error('Error creating the comment:', e.message);
+      console.error('Error creating the comment:', e.message)
     }
-  });
+  })
 
   const renderInput = (
     <Stack sx={{ pr: 1 }} spacing={2} direction="row" alignItems="center">
@@ -204,13 +204,13 @@ const MovieCommentForm = ({ commentOn, owner, root }: MovieCommentFormProps) => 
         )}
       />
     </Stack>
-  );
+  )
 
   return (
     <FormProvider methods={methods} onSubmit={onSubmit}>
       {renderInput}
     </FormProvider>
-  );
-};
+  )
+}
 
-export default MovieCommentForm;
+export default MovieCommentForm

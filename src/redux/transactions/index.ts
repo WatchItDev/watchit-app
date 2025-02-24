@@ -1,6 +1,5 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-// Define the type for a transaction log
 export type TransactionLog = {
   address: string;
   args: {
@@ -31,7 +30,7 @@ interface TransactionsState {
 
 const initialState: TransactionsState = {
   transactions: [],
-};
+}
 
 // Create the slice
 const transactionsSlice = createSlice({
@@ -40,21 +39,21 @@ const transactionsSlice = createSlice({
   reducers: {
     // Action to set all transactions (e.g., from history)
     setTransactions: (state, action: PayloadAction<TransactionLog[]>) => {
-      state.transactions = action.payload;
+      state.transactions = action.payload
     },
     // Action to add a new transaction in real-time
     addTransaction: (state, action: PayloadAction<TransactionLog>) => {
       // Avoid duplicates based on transactionHash
       const exists = state.transactions.find(
         (tx) => tx.transactionHash === action.payload.transactionHash
-      );
+      )
       if (!exists) {
-        state.transactions.unshift(action.payload); // Add to the beginning to maintain order
+        state.transactions.unshift(action.payload) // Add to the beginning to maintain order
       }
     },
   },
-});
+})
 
-export const { setTransactions, addTransaction } = transactionsSlice.actions;
+export const { setTransactions, addTransaction } = transactionsSlice.actions
 
-export default transactionsSlice.reducer;
+export default transactionsSlice.reducer

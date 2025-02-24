@@ -1,8 +1,6 @@
-import { RefObject, useEffect, useRef, useLayoutEffect } from 'react';
+import { RefObject, useEffect, useRef, useLayoutEffect } from 'react'
 
-// ----------------------------------------------------------------------
-
-const useIsomorphicLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect;
+const useIsomorphicLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect
 
 // Window Event based useEventListener interface
 export function useEventListener<K extends keyof WindowEventMap>(
@@ -42,28 +40,28 @@ export function useEventListener<
   options?: boolean | AddEventListenerOptions
 ) {
   // Create a ref that stores handler
-  const savedHandler = useRef(handler);
+  const savedHandler = useRef(handler)
 
   useIsomorphicLayoutEffect(() => {
-    savedHandler.current = handler;
-  }, [handler]);
+    savedHandler.current = handler
+  }, [handler])
 
   useEffect(() => {
     // Define the listening target
-    const targetElement: T | Window = element?.current || window;
+    const targetElement: T | Window = element?.current || window
     if (!(targetElement && targetElement.addEventListener)) {
-      return;
+      return
     }
 
     // Create event listener that calls handler function stored in ref
-    const eventListener: typeof handler = (event) => savedHandler.current(event);
+    const eventListener: typeof handler = (event) => savedHandler.current(event)
 
-    targetElement.addEventListener(eventName, eventListener, options);
+    targetElement.addEventListener(eventName, eventListener, options)
 
     // Remove event listener on cleanup
     // eslint-disable-next-line consistent-return
     return () => {
-      targetElement.removeEventListener(eventName, eventListener);
-    };
-  }, [eventName, element, options]);
+      targetElement.removeEventListener(eventName, eventListener)
+    }
+  }, [eventName, element, options])
 }

@@ -1,12 +1,7 @@
 // @ts-nocheck
-// routes
-import { paths } from '@src/routes/paths';
-
-// API
-// ----------------------------------------------------------------------
-
-export const HOST_API = import.meta.env.VITE_HOST_API || 'https://default-api.example.com';
-export const ASSETS_API = import.meta.env.VITE_ASSETS_API || 'https://default-assets.example.com';
+import { paths } from '@src/routes/paths'
+export const HOST_API = import.meta.env.VITE_HOST_API || 'https://default-api.example.com'
+export const ASSETS_API = import.meta.env.VITE_ASSETS_API || 'https://default-assets.example.com'
 
 export const GLOBAL_CONSTANTS = {
   MMC_ADDRESS: process.env.VITE_MMC_ADDRESS || import.meta.env.VITE_MMC_ADDRESS || '',
@@ -52,8 +47,8 @@ export const GLOBAL_CONSTANTS = {
   BASE_URL: process.env.VITE_BASE_URL || import.meta.env.VITE_BASE_URL || '',
   LOGO_URL: process.env.VITE_LOGO_URL || import.meta.env.VITE_LOGO_URL || '',
   EARN_TOKEN_SERVICE_URL: process.env.VITE_EARN_TOKEN_SERVICE_URL || import.meta.env.VITE_EARN_TOKEN_SERVICE_URL || '',
-};
+}
 
-export const MAPBOX_API = import.meta.env.VITE_MAPBOX_API || '';
-export const PATH_AFTER_LOGIN = paths.dashboard.root;
-export const PATH_BEFORE_LOGIN = '/login';
+export const MAPBOX_API = import.meta.env.VITE_MAPBOX_API || ''
+export const PATH_AFTER_LOGIN = paths.dashboard.root
+export const PATH_BEFORE_LOGIN = '/login'

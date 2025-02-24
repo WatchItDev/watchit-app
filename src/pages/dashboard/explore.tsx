@@ -1,10 +1,8 @@
-import { ExploreView } from '@src/sections/explore';
-import HeaderContent from '@src/layouts/dashboard/header-content.tsx';
-import Header from '@src/layouts/dashboard/header.tsx';
-import { OgMetaTags } from '@src/components/og-meta-tags.tsx';
-import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
-
-// ----------------------------------------------------------------------
+import { OgMetaTags } from '@src/components/og-meta-tags.tsx'
+import { GLOBAL_CONSTANTS } from '@src/config-global.ts'
+import HeaderContent from '@src/layouts/dashboard/header-content.tsx'
+import Header from '@src/layouts/dashboard/header.tsx'
+import { ExploreView } from '@src/sections/explore'
 
 export default function OverviewAppPage() {
   return (
@@ -18,5 +16,5 @@ export default function OverviewAppPage() {
       </Header>
       <ExploreView />
     </ OgMetaTags>
-  );
+  )
 }

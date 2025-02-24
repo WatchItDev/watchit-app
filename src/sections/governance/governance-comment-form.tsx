@@ -1,49 +1,45 @@
-import * as Yup from 'yup';
-import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-// @mui
-import LoadingButton from '@mui/lab/LoadingButton';
-import Stack from '@mui/material/Stack';
-import IconButton from '@mui/material/IconButton';
-// components
-import Iconify from '@src/components/iconify';
-import FormProvider, { RHFTextField } from '@src/components/hook-form';
-
-// ----------------------------------------------------------------------
+import { yupResolver } from '@hookform/resolvers/yup'
+import { useForm } from 'react-hook-form'
+import * as Yup from 'yup'
+import LoadingButton from '@mui/lab/LoadingButton'
+import IconButton from '@mui/material/IconButton'
+import Stack from '@mui/material/Stack'
+import FormProvider, { RHFTextField } from '@src/components/hook-form'
+import Iconify from '@src/components/iconify'
 
 export default function GovernanceCommentForm() {
   const CommentSchema = Yup.object().shape({
     comment: Yup.string().required('Comment is required'),
     name: Yup.string().required('Name is required'),
     email: Yup.string().required('Email is required').email('Email must be a valid email address'),
-  });
+  })
 
   const defaultValues = {
     comment: '',
     name: '',
     email: '',
-  };
+  }
 
   const methods = useForm({
     resolver: yupResolver(CommentSchema),
     defaultValues,
-  });
+  })
 
   const {
     reset,
     handleSubmit,
     formState: { isSubmitting },
-  } = methods;
+  } = methods
 
   const onSubmit = handleSubmit(async (data) => {
     try {
-      await new Promise((resolve) => setTimeout(resolve, 500));
-      reset();
-      console.info('DATA', data);
+      await new Promise((resolve) => setTimeout(resolve, 500))
+      reset()
+      console.info('DATA', data)
     } catch (error) {
-      console.error(error);
+      console.error(error)
     }
-  });
+  })
 
   return (
     <FormProvider methods={methods} onSubmit={onSubmit}>
@@ -76,5 +72,5 @@ export default function GovernanceCommentForm() {
         </Stack>
       </Stack>
     </FormProvider>
-  );
+  )
 }

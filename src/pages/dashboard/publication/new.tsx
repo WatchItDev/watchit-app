@@ -1,9 +1,6 @@
-// sections
-import { PublicationCreateView } from '@src/sections/publication/view';
-import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
-import { OgMetaTags } from '@src/components/og-meta-tags.tsx';
-
-// ----------------------------------------------------------------------
+import { OgMetaTags } from '@src/components/og-meta-tags.tsx'
+import { GLOBAL_CONSTANTS } from '@src/config-global.ts'
+import { PublicationCreateView } from '@src/sections/publication/view'
 
 export default function MovieCreatePage() {
   return (
@@ -14,5 +11,5 @@ export default function MovieCreatePage() {
     >
       <PublicationCreateView />
     </OgMetaTags>
-  );
+  )
 }

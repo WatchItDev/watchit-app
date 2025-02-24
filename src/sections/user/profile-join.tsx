@@ -1,9 +1,9 @@
-import LoadingButton from "@mui/lab/LoadingButton";
-import {SubscribeProfileModal} from "@src/components/subscribe-profile-modal.tsx";
-import {ProfileHeaderProps} from "@src/sections/user/profile-header.tsx";
-import {FC, useState} from "react";
-import {openLoginModal} from "@redux/auth";
-import {useDispatch, useSelector} from "react-redux";
+import {FC, useState} from "react"
+import {openLoginModal} from "@redux/auth"
+import {useDispatch, useSelector} from "react-redux"
+import LoadingButton from "@mui/lab/LoadingButton"
+import {SubscribeProfileModal} from "@src/components/subscribe-profile-modal.tsx"
+import {ProfileHeaderProps} from "@src/sections/user/profile-header.tsx"
 
 interface ProfileJoinProps extends ProfileHeaderProps{
   profileJoinProps: {
@@ -15,16 +15,15 @@ interface ProfileJoinProps extends ProfileHeaderProps{
 }
 
 const ProfileJoin: FC<ProfileJoinProps> = ({profile, profileJoinProps}) => {
-  const dispatch = useDispatch();
-  const sessionData = useSelector((state: any) => state.auth.session);
-  const {hasAccess, accessLoading, accessFetchingLoading, onSubscribe} = profileJoinProps;
-  const [openSubscribeModal, setOpenSubscribeModal] = useState(false);
+  const dispatch = useDispatch()
+  const sessionData = useSelector((state: any) => state.auth.session)
+  const {hasAccess, accessLoading, accessFetchingLoading, onSubscribe} = profileJoinProps
+  const [openSubscribeModal, setOpenSubscribeModal] = useState(false)
 
   const handleSubscription = async () => {
-    if (!sessionData?.authenticated) return dispatch(openLoginModal());
-    if (!hasAccess) setOpenSubscribeModal(true);
-  };
-
+    if (!sessionData?.authenticated) return dispatch(openLoginModal())
+    if (!hasAccess) setOpenSubscribeModal(true)
+  }
 
   return (<>
     <LoadingButton

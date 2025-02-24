@@ -1,6 +1,4 @@
-import { Theme } from '@mui/material/styles';
-
-// ----------------------------------------------------------------------
+import { Theme } from '@mui/material/styles'
 
 export function checkbox(theme: Theme) {
   return {
@@ -11,5 +9,5 @@ export function checkbox(theme: Theme) {
         },
       },
     },
-  };
+  }
 }

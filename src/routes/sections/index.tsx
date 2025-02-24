@@ -1,9 +1,8 @@
-import { Navigate, useRoutes } from 'react-router-dom';
-import { PATH_AFTER_LOGIN } from '@src/config-global';
-import { dashboardRoutes } from './dashboard';
-import NotFoundPage from '../../pages/404';
+import { Navigate, useRoutes } from 'react-router-dom'
+import { dashboardRoutes } from './dashboard'
+import NotFoundPage from '../../pages/404'
+import { PATH_AFTER_LOGIN } from '@src/config-global'
 export default function Router() {
-
 
   return useRoutes([
     {
@@ -16,5 +15,5 @@ export default function Router() {
     // No match 404
     { path: '404', element: <NotFoundPage /> },
     { path: '*', element: <Navigate to="/404" replace /> },
-  ]);
+  ])
 }

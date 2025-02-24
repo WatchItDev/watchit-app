@@ -1,51 +1,36 @@
-// REACT IMPORTS
-import { PropsWithChildren } from 'react';
+import { PropsWithChildren } from 'react'
+import { Profile } from '@lens-protocol/api-bindings'
+import { appId, PublicationType, usePublications } from '@lens-protocol/react-web'
+import { useSelector } from 'react-redux'
+import { Address } from 'viem'
+import Box from '@mui/material/Box'
+import CircularProgress from '@mui/material/CircularProgress'
+import Stack from '@mui/material/Stack'
+import ProfileCover from './profile-cover'
+import ProfileWrapper from './profile-wrapper'
+import FollowUnfollowButton from '@src/components/follow-unfollow-button.tsx'
+import { GLOBAL_CONSTANTS } from '@src/config-global.ts'
+import { useGetPolicyAttestation } from '@src/hooks/use-get-policy-attestation.ts'
+import { useHasAccess } from '@src/hooks/use-has-access.ts'
+import { useIsPolicyAuthorized } from '@src/hooks/use-is-policy-authorized.ts'
+import ProfileJoin from "@src/sections/user/profile-join.tsx"
+import ProfileReport from '@src/sections/user/profile-report.tsx'
+import ProfileRightSidebar from "@src/sections/user/profile-right-sidebar.tsx"
+import ProfileToolbar from "@src/sections/user/profile-toolbar.tsx"
+import ProfileUserInfo from "@src/sections/user/profile-user-info.tsx"
 
-// Redux
-import { useSelector } from 'react-redux';
-
-// MUI IMPORTS
-import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
-import { Profile } from '@lens-protocol/api-bindings';
-import CircularProgress from '@mui/material/CircularProgress';
-
-// LENS IMPORTS
-import { appId, PublicationType, usePublications } from '@lens-protocol/react-web';
-
-// VIEM IMPORTS
-import { Address } from 'viem';
-
-// LOCAL IMPORTS
-import ProfileCover from './profile-cover';
-import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
-import { useHasAccess } from '@src/hooks/use-has-access.ts';
-import { useIsPolicyAuthorized } from '@src/hooks/use-is-policy-authorized.ts';
-import FollowUnfollowButton from '@src/components/follow-unfollow-button.tsx';
-import { useGetPolicyAttestation } from '@src/hooks/use-get-policy-attestation.ts';
-
-// Profile Components
-import ProfileReport from '@src/sections/user/profile-report.tsx';
-import ProfileRightSidebar from "@src/sections/user/profile-right-sidebar.tsx";
-import ProfileJoin from "@src/sections/user/profile-join.tsx";
-import ProfileUserInfo from "@src/sections/user/profile-user-info.tsx";
-import ProfileWrapper from './profile-wrapper';
-import ProfileToolbar from "@src/sections/user/profile-toolbar.tsx";
-
-// ----------------------------------------------------------------------
 export interface ProfileHeaderProps {
   profile: Profile;
 }
 
-// ----------------------------------------------------------------------
 const ProfileHeader = ({
   profile: profileData,
   children,
 }: PropsWithChildren<ProfileHeaderProps>) => {
-  const sessionData = useSelector((state: any) => state.auth.session);
+  const sessionData = useSelector((state: any) => state.auth.session)
 
   const profile =
-    sessionData && sessionData?.profile?.id === profileData?.id ? sessionData.profile : profileData;
+    sessionData && sessionData?.profile?.id === profileData?.id ? sessionData.profile : profileData
 
   const {
     attestation,
@@ -55,17 +40,17 @@ const ProfileHeader = ({
     GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS as Address,
     sessionData?.profile?.ownedBy?.address as Address,
     profile?.ownedBy?.address as Address
-  );
+  )
   const {
     hasAccess,
     loading: accessLoading,
     fetching: accessFetchingLoading,
     refetch: refetchAccess,
-  } = useHasAccess(profile?.ownedBy?.address as Address);
+  } = useHasAccess(profile?.ownedBy?.address as Address)
   const { isAuthorized, loading: authorizedLoading } = useIsPolicyAuthorized(
     GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS,
     profile?.ownedBy?.address as Address
-  );
+  )
 
   usePublications({
     where: {
@@ -75,15 +60,15 @@ const ProfileHeader = ({
         publishedOn: [appId('watchit')],
       },
     },
-  });
+  })
 
   // Function to handle following a profile
   const onSubscribe = async () => {
-    refetchAccess();
-    refetchAttestation();
-  };
+    refetchAccess()
+    refetchAttestation()
+  }
 
-  const profileImage = (profile?.metadata?.picture as any)?.optimized?.uri;
+  const profileImage = (profile?.metadata?.picture as any)?.optimized?.uri
 
   return (
     <Box sx={{ my: 3, position: 'relative' }}>
@@ -132,7 +117,7 @@ const ProfileHeader = ({
       </ProfileWrapper>
       {children}
     </Box>
-  );
-};
+  )
+}
 
-export default ProfileHeader;
+export default ProfileHeader

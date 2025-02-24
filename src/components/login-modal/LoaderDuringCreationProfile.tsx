@@ -1,11 +1,11 @@
-import { Box, BoxProps } from '@mui/system';
-import { WatchitLoader } from '@src/components/watchit-loader';
-import { useSelector } from 'react-redux';
-import { COLORS } from '@src/layouts/config-layout.ts';
-import Stack from '@mui/material/Stack';
-import TextMaxLine from '@src/components/text-max-line';
-import { IconCheck, IconLoader, IconSquare } from '@tabler/icons-react';
-import { styled, keyframes } from '@mui/material/styles';
+import { IconCheck, IconLoader, IconSquare } from '@tabler/icons-react'
+import { useSelector } from 'react-redux'
+import Stack from '@mui/material/Stack'
+import { styled, keyframes } from '@mui/material/styles'
+import { Box, BoxProps } from '@mui/system'
+import TextMaxLine from '@src/components/text-max-line'
+import { WatchitLoader } from '@src/components/watchit-loader'
+import { COLORS } from '@src/layouts/config-layout.ts'
 
 interface LoaderContainerProps extends BoxProps {
   show: boolean;
@@ -18,15 +18,15 @@ const spin = keyframes`
   100% {
     transform: rotate(360deg);
   }
-`;
+`
 
 const IconLoaderStyled = styled(IconLoader)`
   animation: ${spin} 2s linear infinite;
-`;
+`
 
 const IconSquaredStyledFullyTransparent = styled(IconSquare)`
   opacity: 0;
-`;
+`
 
 const LoaderContainer = styled(Box)<LoaderContainerProps>`
   display: ${({ show }) => (show ? 'flex' : 'none')};
@@ -38,7 +38,7 @@ const LoaderContainer = styled(Box)<LoaderContainerProps>`
   align-items: center;
   background-color: ${COLORS.GRAY_LIGHT_50};
   z-index: 99999;
-`;
+`
 
 const InnerBox = styled(Box)`
   width: 90%;
@@ -55,16 +55,16 @@ const InnerBox = styled(Box)`
   color: white;
   background-color: ${COLORS.GRAY_LIGHT};
   box-shadow: 0 0 16px rgba(0, 0, 0, 0.3);
-`;
+`
 
 const BoxItem = styled(Box)`
   display: flex;
   gap: 8px;
   align-items: center;
-`;
+`
 
 const LoaderDuringCreationProfile = () => {
-  const { modalCreationProfile, profileCreationSteps } = useSelector((state: any) => state.auth);
+  const { modalCreationProfile, profileCreationSteps } = useSelector((state: any) => state.auth)
 
   return (
     // @ts-ignore
@@ -147,7 +147,7 @@ const LoaderDuringCreationProfile = () => {
         </Stack>
       </InnerBox>
     </LoaderContainer>
-  );
-};
+  )
+}
 
-export default LoaderDuringCreationProfile;
+export default LoaderDuringCreationProfile

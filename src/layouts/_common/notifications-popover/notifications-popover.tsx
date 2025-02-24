@@ -1,43 +1,40 @@
-import { m } from 'framer-motion';
-// @mui
-import List from '@mui/material/List';
-import Stack from '@mui/material/Stack';
-import Badge from '@mui/material/Badge';
-import Drawer from '@mui/material/Drawer';
-import Divider from '@mui/material/Divider';
-import Tooltip from '@mui/material/Tooltip';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-// hooks
-import { useBoolean } from '@src/hooks/use-boolean';
-import { useResponsive } from '@src/hooks/use-responsive';
-// components
-import Iconify from '@src/components/iconify';
-import Scrollbar from '@src/components/scrollbar';
-import { varHover } from '@src/components/animate';
-import NotificationItem from './notification-item';
-import { type NotificationColumnsProps } from '@src/types/notification';
-import { useNotifications } from '@src/hooks/use-notifications.ts';
-import { Box } from '@mui/system';
-import Image from '@src/components/image';
+import { useCallback, useState } from 'react'
+import { m } from 'framer-motion'
+import Badge from '@mui/material/Badge'
+import Divider from '@mui/material/Divider'
+import Drawer from '@mui/material/Drawer'
+import IconButton from '@mui/material/IconButton'
+import List from '@mui/material/List'
+import Stack from '@mui/material/Stack'
+import Tab from '@mui/material/Tab'
+import Tabs from '@mui/material/Tabs'
+import Tooltip from '@mui/material/Tooltip'
+import Typography from '@mui/material/Typography'
+import { Box } from '@mui/system'
+import NotificationItem from './notification-item'
 // @ts-ignore
-import emptyImage from '@src/assets/illustrations/empty-notifications.png';
-import { useCallback, useState } from 'react';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-import Label from '@src/components/label';
+import emptyImage from '@src/assets/illustrations/empty-notifications.png'
+import { varHover } from '@src/components/animate'
+import Iconify from '@src/components/iconify'
+import Image from '@src/components/image'
+import Label from '@src/components/label'
+import Scrollbar from '@src/components/scrollbar'
+import { useBoolean } from '@src/hooks/use-boolean'
+import { useNotifications } from '@src/hooks/use-notifications.ts'
+import { useResponsive } from '@src/hooks/use-responsive'
+import { type NotificationColumnsProps } from '@src/types/notification'
 
 export default function NotificationsPopover() {
-  const { notifications, markAsRead, markAllAsRead } = useNotifications();
-  const unreadNotifications = notifications.filter((notification) => !notification.read);
+  const { notifications, markAsRead, markAllAsRead } = useNotifications()
+  const unreadNotifications = notifications.filter((notification) => !notification.read)
 
-  const drawer = useBoolean();
-  const smUp = useResponsive('up', 'sm');
+  const drawer = useBoolean()
+  const smUp = useResponsive('up', 'sm')
 
-  const [currentTab, setCurrentTab] = useState('all');
+  const [currentTab, setCurrentTab] = useState('all')
   const handleChangeTab = useCallback((event: React.SyntheticEvent, newValue: string) => {
-    setCurrentTab(newValue);
-  }, []);
+    setCurrentTab(newValue)
+  }, [])
 
   const TABS = [
     {
@@ -55,7 +52,7 @@ export default function NotificationsPopover() {
       label: 'Archived',
       count: notifications.length - unreadNotifications.length,
     },
-  ];
+  ]
 
   const renderHead = (
     <Stack direction="row" alignItems="center" sx={{ py: 2, pl: 2.5, pr: 1, minHeight: 68 }}>
@@ -79,7 +76,7 @@ export default function NotificationsPopover() {
         </IconButton>
       )}
     </Stack>
-  );
+  )
 
   const renderTabs = (
     <Tabs value={currentTab} onChange={handleChangeTab}>
@@ -109,7 +106,7 @@ export default function NotificationsPopover() {
         />
       ))}
     </Tabs>
-  );
+  )
 
   const renderNotifications = (notifications: any) => (
     <Scrollbar>
@@ -127,7 +124,7 @@ export default function NotificationsPopover() {
         )}
       </List>
     </Scrollbar>
-  );
+  )
 
   return (
     <>
@@ -181,7 +178,7 @@ export default function NotificationsPopover() {
           renderNotifications(notifications.filter((notification) => notification.read))}
       </Drawer>
     </>
-  );
+  )
 }
 
 export const EmptyPlaceholder = () => {
@@ -209,5 +206,5 @@ export const EmptyPlaceholder = () => {
         <Typography variant={'caption'}>There are no new notifications</Typography>
       </Typography>
     </Box>
-  );
-};
+  )
+}

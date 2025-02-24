@@ -1,10 +1,8 @@
-import { FC, useState, ReactNode } from 'react';
-
-// MUI IMPORTS
-import Tab from '@mui/material/Tab';
-import DialogTitle from '@mui/material/DialogTitle';
-import Tabs, { tabsClasses } from '@mui/material/Tabs';
-import Dialog, { dialogClasses, DialogProps } from '@mui/material/Dialog';
+import { FC, useState, ReactNode } from 'react'
+import Dialog, { dialogClasses, DialogProps } from '@mui/material/Dialog'
+import DialogTitle from '@mui/material/DialogTitle'
+import Tab from '@mui/material/Tab'
+import Tabs, { tabsClasses } from '@mui/material/Tabs'
 
 interface TabConfig {
   value: string;
@@ -21,11 +19,11 @@ interface FinanceModalProps extends DialogProps {
 }
 
 const FinanceModal: FC<FinanceModalProps> = ({ open, onClose, title, tabs, renderContent, ...dialogProps }) => {
-  const [currentTab, setCurrentTab] = useState('smartAccount');
+  const [currentTab, setCurrentTab] = useState('smartAccount')
 
   const handleChangeTab = (_event: React.SyntheticEvent, newValue: string) => {
-    setCurrentTab(newValue);
-  };
+    setCurrentTab(newValue)
+  }
 
   return (
     <Dialog
@@ -70,7 +68,7 @@ const FinanceModal: FC<FinanceModalProps> = ({ open, onClose, title, tabs, rende
 
       {renderContent(currentTab)}
     </Dialog>
-  );
-};
+  )
+}
 
-export default FinanceModal;
+export default FinanceModal

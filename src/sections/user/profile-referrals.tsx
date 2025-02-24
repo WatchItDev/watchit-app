@@ -1,11 +1,10 @@
-import Box from "@mui/material/Box";
-import {FC} from "react";
-
-import Typography from "@mui/material/Typography";
-
-import {Invitation} from "@src/types/invitation";
-import TableContainer from "@mui/material/TableContainer";
-import Scrollbar from "@src/components/scrollbar";
+import {FC} from "react"
+import Box from "@mui/material/Box"
+import Table from "@mui/material/Table"
+import TableBody from "@mui/material/TableBody"
+import TableContainer from "@mui/material/TableContainer"
+import Typography from "@mui/material/Typography"
+import Scrollbar from "@src/components/scrollbar"
 import {
   emptyRows,
   TableEmptyRows,
@@ -13,10 +12,9 @@ import {
   TableNoData,
   TablePaginationCustom,
   useTable
-} from "@src/components/table";
-import TableBody from "@mui/material/TableBody";
-import ProfileReferralsTableRow from "@src/sections/user/view/profile-referrals-table-row.tsx";
-import Table from "@mui/material/Table";
+} from "@src/components/table"
+import ProfileReferralsTableRow from "@src/sections/user/view/profile-referrals-table-row.tsx"
+import {Invitation} from "@src/types/invitation"
 
 interface ProfileReferralsProps {
   referrals: Invitation[];
@@ -26,16 +24,16 @@ interface ProfileReferralsProps {
 const TABLE_HEAD = [
   { id: 'email', label: 'Email'},
   { id: 'status', label: 'Status' }
-];
+]
 
 const ProfileReferrals : FC<ProfileReferralsProps> = ({ referrals, loading }) => {
   const table = useTable({
     defaultOrder: 'desc',
     defaultOrderBy: 'createdAt',
-  });
+  })
 
-  const notFound = !referrals.length;
-  const denseHeight = table.dense ? 52 : 72;
+  const notFound = !referrals.length
+  const denseHeight = table.dense ? 52 : 72
 
   return (
     <Box

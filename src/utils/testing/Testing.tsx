@@ -1,13 +1,13 @@
-import React from 'react';
-import { render } from '@testing-library/react';
-import { Provider as ReduxProvider } from 'react-redux';
-import { BrowserRouter as Router } from 'react-router-dom';
-import { createStore } from 'redux';
-import rootReducer from '@redux/reducer';
-import {LensProvider, staging} from '@lens-protocol/react-web';
-import {bindings} from "@src/auth/context/web3Auth/config/bindings.ts";
+import React from 'react'
+import {LensProvider, staging} from '@lens-protocol/react-web'
+import rootReducer from '@redux/reducer'
+import { render } from '@testing-library/react'
+import { Provider as ReduxProvider } from 'react-redux'
+import { BrowserRouter as Router } from 'react-router-dom'
+import { createStore } from 'redux'
+import {bindings} from "@src/auth/context/web3Auth/config/bindings.ts"
 
-const store = createStore(rootReducer);
+const store = createStore(rootReducer)
 
 const lensConfig = {
   environment: staging,
@@ -15,8 +15,7 @@ const lensConfig = {
   sharedDependencies: {
     pollingInterval: 5000,
   },
-};
-
+}
 
 export namespace Testing {
 
@@ -46,8 +45,8 @@ export namespace Testing {
           {ui}
         </Router>
       </ReduxProvider>
-    );
-  };
+    )
+  }
 
   /**
    * A utility function to render a React component wrapped with the necessary providers.
@@ -69,6 +68,6 @@ export namespace Testing {
           </Router>
         </ReduxProvider>
       </LensProvider>
-    );
-  };
+    )
+  }
 }

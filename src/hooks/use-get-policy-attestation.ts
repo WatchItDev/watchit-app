@@ -1,7 +1,7 @@
-import { useState, useEffect, useCallback } from 'react';
-import { Address } from 'viem';
-import { useSelector } from 'react-redux';
-import { useGetActiveLicenses } from '@src/hooks/use-get-active-licenses';
+import { useState, useEffect, useCallback } from 'react'
+import { useSelector } from 'react-redux'
+import { Address } from 'viem'
+import { useGetActiveLicenses } from '@src/hooks/use-get-active-licenses'
 
 interface AttestationError {
   message: string;
@@ -25,60 +25,60 @@ interface UseGetPolicyAttestationHook {
  * @returns An object containing the attestation data, loading state, error, and a refetch function.
  */
 export function useGetPolicyAttestation(policy: Address, recipient: Address, holder?: Address): UseGetPolicyAttestationHook {
-  const sessionData = useSelector((state: any) => state.auth.session);
-  const userAddress = sessionData?.profile?.ownedBy?.address as Address | undefined;
-  const [attestation, setAttestation] = useState<string | undefined>(undefined);
-  const [loading, setLoading] = useState(true);
-  const [fetching, setFetching] = useState(true);
-  const [error, setError] = useState<AttestationError | null>(null);
-  const { activeLicenses, loading: licensesLoading, refetch: refetchLicenses } = useGetActiveLicenses(recipient, holder);
+  const sessionData = useSelector((state: any) => state.auth.session)
+  const userAddress = sessionData?.profile?.ownedBy?.address as Address | undefined
+  const [attestation, setAttestation] = useState<string | undefined>(undefined)
+  const [loading, setLoading] = useState(true)
+  const [fetching, setFetching] = useState(true)
+  const [error, setError] = useState<AttestationError | null>(null)
+  const { activeLicenses, loading: licensesLoading, refetch: refetchLicenses } = useGetActiveLicenses(recipient, holder)
 
   const fetchAttestation = useCallback(() => {
-    setFetching(true);
+    setFetching(true)
 
     if (!policy || licensesLoading) {
-      setFetching(false);
-      setLoading(false);
-      return;
+      setFetching(false)
+      setLoading(false)
+      return
     }
 
     try {
       const matchedLicense = activeLicenses.find(
         (license) => license.policy.toLowerCase() === policy.toLowerCase()
-      );
+      )
 
       if (matchedLicense) {
-        setAttestation(matchedLicense.license);
-        setError(null);
+        setAttestation(matchedLicense.license)
+        setError(null)
       } else {
-        setAttestation(undefined);
-        setError({ message: 'No matching license found for the specified policy.' });
+        setAttestation(undefined)
+        setError({ message: 'No matching license found for the specified policy.' })
       }
     } catch (err: any) {
-      console.error('Error fetching license:', err);
-      setError({ message: err.message || 'An error occurred' });
-      setAttestation(undefined);
+      console.error('Error fetching license:', err)
+      setError({ message: err.message || 'An error occurred' })
+      setAttestation(undefined)
     } finally {
-      setLoading(false);
-      setFetching(false);
+      setLoading(false)
+      setFetching(false)
     }
-  }, [policy, activeLicenses, licensesLoading]);
+  }, [policy, activeLicenses, licensesLoading])
 
   useEffect(() => {
     if (!policy || !recipient || !(holder ?? userAddress)) {
-      setLoading(false);
-      setFetching(false);
-      setError({ message: 'Policy, recipient, or holder address is missing.' });
-      return;
+      setLoading(false)
+      setFetching(false)
+      setError({ message: 'Policy, recipient, or holder address is missing.' })
+      return
     }
 
-    fetchAttestation();
-  }, [policy, recipient, holder, userAddress, fetchAttestation]);
+    fetchAttestation()
+  }, [policy, recipient, holder, userAddress, fetchAttestation])
 
   const refetch = useCallback(() => {
-    refetchLicenses();
-    fetchAttestation();
-  }, [refetchLicenses, fetchAttestation]);
+    refetchLicenses()
+    fetchAttestation()
+  }, [refetchLicenses, fetchAttestation])
 
   return {
     attestation,
@@ -86,5 +86,5 @@ export function useGetPolicyAttestation(policy: Address, recipient: Address, hol
     fetching,
     error,
     refetch,
-  };
+  }
 }

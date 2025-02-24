@@ -1,13 +1,3 @@
-// ----------------------------------------------------------------------
-
-export type IPostFilterValue = string;
-
-export type IPostFilters = {
-  publish: string;
-};
-
-// ----------------------------------------------------------------------
-
 export type IPostHero = {
   title: string;
   coverUrl: string;

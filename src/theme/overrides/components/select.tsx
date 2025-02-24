@@ -1,6 +1,4 @@
-import { Theme } from '@mui/material/styles';
-
-// ----------------------------------------------------------------------
+import { Theme } from '@mui/material/styles'
 
 export function select(theme: Theme) {
   return {
@@ -24,5 +22,5 @@ export function select(theme: Theme) {
         },
       },
     },
-  };
+  }
 }

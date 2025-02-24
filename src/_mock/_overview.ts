@@ -1,7 +1,6 @@
-import { _mock } from './_mock';
+import { _mock } from './_mock'
 
 // BANKING
-// ----------------------------------------------------------------------
 
 export const _bankingRecentTransitions = [
   {
@@ -59,4 +58,4 @@ export const _bankingRecentTransitions = [
     status: 'progress',
     amount: _mock.number.price(6),
   },
-];
+]

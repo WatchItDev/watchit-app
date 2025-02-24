@@ -1,51 +1,40 @@
-import { useSelector, useDispatch } from 'react-redux';
-import { closeDrawer } from '@src/redux/drawer';
-
-// REACT IMPORTS
-import { useEffect } from 'react';
-
-// MUI IMPORTS
-import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
-import Drawer from '@mui/material/Drawer';
-
-// COMPONENTS IMPORTS
-import Scrollbar from '@src/components/scrollbar';
-import { NavSectionVertical } from '@src/components/nav-section';
-
-// HOOKS IMPORTS
-import { useResponsive } from '@src/hooks/use-responsive';
-import { usePathname } from '@src/routes/hooks';
-import { useNavData } from './config-navigation';
-
-// LAYOUT IMPORTS
-import { Searchbar } from '../_common';
-import { NavToggleButton } from '../_common';
-import { COLORS, NAV } from '@src/layouts/config-layout.ts';
-import NavMini from '@src/layouts/dashboard/nav-mini.tsx';
-// ----------------------------------------------------------------------
+import { useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import Box from '@mui/material/Box'
+import Drawer from '@mui/material/Drawer'
+import Stack from '@mui/material/Stack'
+import { useNavData } from './config-navigation'
+import { Searchbar } from '../_common'
+import { NavToggleButton } from '../_common'
+import { NavSectionVertical } from '@src/components/nav-section'
+import Scrollbar from '@src/components/scrollbar'
+import { useResponsive } from '@src/hooks/use-responsive'
+import { COLORS, NAV } from '@src/layouts/config-layout.ts'
+import NavMini from '@src/layouts/dashboard/nav-mini.tsx'
+import { closeDrawer } from '@src/redux/drawer'
+import { usePathname } from '@src/routes/hooks'
 
 export default function NavVertical() {
-  const pathname = usePathname();
-  const lgUp = useResponsive('up', 'lg');
-  const navData = useNavData();
+  const pathname = usePathname()
+  const lgUp = useResponsive('up', 'lg')
+  const navData = useNavData()
 
   // Inside the NavVertical component
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
   // @ts-ignore
-  const openNav = useSelector((state) => state.drawer.open);
+  const openNav = useSelector((state) => state.drawer.open)
 
   const handleCloseNav = () => {
-    dispatch(closeDrawer());
-  };
+    dispatch(closeDrawer())
+  }
 
   // Replace the onCloseNav prop with handleCloseNav
   useEffect(() => {
     if (openNav) {
-      handleCloseNav();
+      handleCloseNav()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pathname]);
+  }, [pathname])
 
   const renderContent = (
     <Scrollbar
@@ -74,7 +63,7 @@ export default function NavVertical() {
 
       <Box sx={{ flexGrow: 1 }} />
     </Scrollbar>
-  );
+  )
 
   return (
     <Box
@@ -136,5 +125,5 @@ export default function NavVertical() {
         </Drawer>
       )}
     </Box>
-  );
+  )
 }

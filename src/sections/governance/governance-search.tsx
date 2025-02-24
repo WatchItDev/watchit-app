@@ -1,20 +1,15 @@
-import parse from 'autosuggest-highlight/parse';
-import match from 'autosuggest-highlight/match';
-// @mui
-import Link from '@mui/material/Link';
-import TextField from '@mui/material/TextField';
-import Typography from '@mui/material/Typography';
-import InputAdornment from '@mui/material/InputAdornment';
-import Autocomplete, { autocompleteClasses } from '@mui/material/Autocomplete';
-// components
-import Iconify from '@src/components/iconify';
-import { useRouter } from '@src/routes/hooks';
-import SearchNotFound from '@src/components/search-not-found';
-// types
-import { IPostItem } from '@src/types/blog';
-import AvatarProfile from "@src/components/avatar/avatar.tsx";
-
-// ----------------------------------------------------------------------
+import match from 'autosuggest-highlight/match'
+import parse from 'autosuggest-highlight/parse'
+import Autocomplete, { autocompleteClasses } from '@mui/material/Autocomplete'
+import InputAdornment from '@mui/material/InputAdornment'
+import Link from '@mui/material/Link'
+import TextField from '@mui/material/TextField'
+import Typography from '@mui/material/Typography'
+import AvatarProfile from "@src/components/avatar/avatar.tsx"
+import Iconify from '@src/components/iconify'
+import SearchNotFound from '@src/components/search-not-found'
+import { useRouter } from '@src/routes/hooks'
+import { IPostItem } from '@src/types/blog'
 
 type Props = {
   query: string;
@@ -25,19 +20,19 @@ type Props = {
 };
 
 export default function GovernanceSearch({ query, results, onSearch, hrefItem, loading }: Props) {
-  const router = useRouter();
+  const router = useRouter()
 
   const handleClick = (title: string) => {
-    router.push(hrefItem(title));
-  };
+    router.push(hrefItem(title))
+  }
 
   const handleKeyUp = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (query) {
       if (event.key === 'Enter') {
-        handleClick(query);
+        handleClick(query)
       }
     }
-  };
+  }
 
   return (
     <Autocomplete
@@ -87,8 +82,8 @@ export default function GovernanceSearch({ query, results, onSearch, hrefItem, l
         />
       )}
       renderOption={(props, post, { inputValue }) => {
-        const matches = match(post.title, inputValue);
-        const parts = parse(post.title, matches);
+        const matches = match(post.title, inputValue)
+        const parts = parse(post.title, matches)
 
         return (
           <li {...props} key={post.id}>
@@ -122,8 +117,8 @@ export default function GovernanceSearch({ query, results, onSearch, hrefItem, l
               ))}
             </Link>
           </li>
-        );
+        )
       }}
     />
-  );
+  )
 }

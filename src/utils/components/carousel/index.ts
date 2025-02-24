@@ -1,4 +1,4 @@
-import {CalculateItemsPerSlideProps} from "@src/utils/components/carousel/types.ts";
+import {CalculateItemsPerSlideProps} from "@src/utils/components/carousel/types.ts"
 
 /**
  * Calculates the optimal number of items per slide based on the width of the parent container
@@ -11,19 +11,19 @@ import {CalculateItemsPerSlideProps} from "@src/utils/components/carousel/types.
  * @returns {number} The optimal number of items that can fit within the parent container.
  */
 export const calculateItemsPerSlide = ({parentWidth, minItemWidth, maxItemWidth} : CalculateItemsPerSlideProps): number => {
-  let maxItems = Math.floor(parentWidth / minItemWidth);
-  let minItems = Math.floor(parentWidth / maxItemWidth);
-  let items = maxItems;
+  let maxItems = Math.floor(parentWidth / minItemWidth)
+  let minItems = Math.floor(parentWidth / maxItemWidth)
+  let items = maxItems
 
   while (items >= minItems) {
-    const itemWidth = parentWidth / items;
+    const itemWidth = parentWidth / items
     if (itemWidth >= minItemWidth && itemWidth <= maxItemWidth) {
-      break;
+      break
     }
-    items--;
+    items--
   }
 
-  if (items < 1) items = 1;
+  if (items < 1) items = 1
 
-  return items;
-};
+  return items
+}

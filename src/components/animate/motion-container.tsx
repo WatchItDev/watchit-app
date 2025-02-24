@@ -1,10 +1,6 @@
-import { m, MotionProps } from 'framer-motion';
-// @mui
-import Box, { BoxProps } from '@mui/material/Box';
-//
-import { varContainer } from './variants';
-
-// ----------------------------------------------------------------------
+import { m, MotionProps } from 'framer-motion'
+import Box, { BoxProps } from '@mui/material/Box'
+import { varContainer } from './variants'
 
 type IProps = BoxProps & MotionProps;
 
@@ -25,7 +21,7 @@ export default function MotionContainer({ animate, action = false, children, ...
       >
         {children}
       </Box>
-    );
+    )
   }
 
   return (
@@ -39,5 +35,5 @@ export default function MotionContainer({ animate, action = false, children, ...
     >
       {children}
     </Box>
-  );
+  )
 }

@@ -1,9 +1,9 @@
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import BadgeVerified from "@src/components/user-item/BadgeVerified.tsx";
-import {FC} from "react";
-import {ProfileHeaderProps} from "@src/sections/user/profile-header.tsx";
-import { Address } from "viem";
+import {FC} from "react"
+import { Address } from "viem"
+import Box from "@mui/material/Box"
+import Typography from "@mui/material/Typography"
+import BadgeVerified from "@src/components/user-item/BadgeVerified.tsx"
+import {ProfileHeaderProps} from "@src/sections/user/profile-header.tsx"
 
 const ProfileUserInfo: FC<ProfileHeaderProps> = ({profile}) => {
   return (
@@ -57,4 +57,4 @@ const ProfileUserInfo: FC<ProfileHeaderProps> = ({profile}) => {
   )
 }
 
-export default ProfileUserInfo;
+export default ProfileUserInfo

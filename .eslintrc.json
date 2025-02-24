@@ -78,7 +78,8 @@
           "caseInsensitive": true
         }
       }
-    ]
+    ],
+    "semi": ["error", "never"]
   },
   "settings": {
     "react": {

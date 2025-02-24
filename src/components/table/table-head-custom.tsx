@@ -1,13 +1,10 @@
-// @mui
-import { Theme, SxProps } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import TableRow from '@mui/material/TableRow';
-import Checkbox from '@mui/material/Checkbox';
-import TableHead from '@mui/material/TableHead';
-import TableCell from '@mui/material/TableCell';
-import TableSortLabel from '@mui/material/TableSortLabel';
-
-// ----------------------------------------------------------------------
+import Box from '@mui/material/Box'
+import Checkbox from '@mui/material/Checkbox'
+import { Theme, SxProps } from '@mui/material/styles'
+import TableCell from '@mui/material/TableCell'
+import TableHead from '@mui/material/TableHead'
+import TableRow from '@mui/material/TableRow'
+import TableSortLabel from '@mui/material/TableSortLabel'
 
 const visuallyHidden = {
   border: 0,
@@ -19,9 +16,7 @@ const visuallyHidden = {
   position: 'absolute',
   whiteSpace: 'nowrap',
   clip: 'rect(0 0 0 0)',
-} as const;
-
-// ----------------------------------------------------------------------
+} as const
 
 type Props = {
   order?: 'asc' | 'desc';
@@ -88,5 +83,5 @@ export default function TableHeadCustom({
         ))}
       </TableRow>
     </TableHead>
-  );
+  )
 }

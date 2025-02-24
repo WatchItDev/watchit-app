@@ -1,12 +1,8 @@
-// @mui
-import { alpha, styled } from '@mui/material/styles';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListSubheader from '@mui/material/ListSubheader';
-import ListItemButton from '@mui/material/ListItemButton';
-//
-import { NavItemProps, NavConfigProps } from '../types';
-
-// ----------------------------------------------------------------------
+import ListItemButton from '@mui/material/ListItemButton'
+import ListItemIcon from '@mui/material/ListItemIcon'
+import ListSubheader from '@mui/material/ListSubheader'
+import { alpha, styled } from '@mui/material/styles'
+import { NavItemProps, NavConfigProps } from '../types'
 
 type StyledItemProps = Omit<NavItemProps, 'item'> & {
   config: NavConfigProps;
@@ -15,9 +11,9 @@ type StyledItemProps = Omit<NavItemProps, 'item'> & {
 export const StyledItem = styled(ListItemButton, {
   shouldForwardProp: (prop) => prop !== 'active',
 })<StyledItemProps>(({ active, depth, config, theme }) => {
-  const subItem = depth !== 1;
+  const subItem = depth !== 1
 
-  const deepSubItem = depth > 2;
+  const deepSubItem = depth > 2
 
   const activeStyles = {
     root: {
@@ -34,7 +30,7 @@ export const StyledItem = styled(ListItemButton, {
         backgroundColor: theme.palette.action.hover,
       },
     },
-  };
+  }
 
   return {
     // Root item
@@ -62,10 +58,8 @@ export const StyledItem = styled(ListItemButton, {
     ...(deepSubItem && {
       paddingLeft: theme.spacing(depth),
     }),
-  };
-});
-
-// ----------------------------------------------------------------------
+  }
+})
 
 type StyledIconProps = {
   size?: number;
@@ -76,7 +70,7 @@ export const StyledIcon = styled(ListItemIcon)<StyledIconProps>(({ size }) => ({
   height: size,
   alignItems: 'center',
   justifyContent: 'center',
-}));
+}))
 
 type StyledDotIconProps = {
   active?: boolean;
@@ -94,9 +88,7 @@ export const StyledDotIcon = styled('span')<StyledDotIconProps>(({ active, theme
     transform: 'scale(2)',
     backgroundColor: theme.palette.primary.main,
   }),
-}));
-
-// ----------------------------------------------------------------------
+}))
 
 type StyledSubheaderProps = {
   config: NavConfigProps;
@@ -118,4 +110,4 @@ export const StyledSubheader = styled(ListSubheader)<StyledSubheaderProps>(({ co
   '&:hover': {
     color: theme.palette.text.primary,
   },
-}));
+}))

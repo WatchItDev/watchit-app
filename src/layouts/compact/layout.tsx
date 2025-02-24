@@ -1,10 +1,6 @@
-// @mui
-import Stack from '@mui/material/Stack';
-import Container from '@mui/material/Container';
-//
-import { HeaderSimple as Header } from '../_common';
-
-// ----------------------------------------------------------------------
+import Container from '@mui/material/Container'
+import Stack from '@mui/material/Stack'
+import { HeaderSimple as Header } from '../_common'
 
 type Props = {
   children: React.ReactNode;
@@ -30,5 +26,5 @@ export default function CompactLayout({ children }: Props) {
         </Stack>
       </Container>
     </>
-  );
+  )
 }

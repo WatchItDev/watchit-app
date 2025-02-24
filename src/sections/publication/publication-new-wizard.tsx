@@ -1,107 +1,102 @@
-import { useState } from 'react';
-import Grid from '@mui/material/Grid';
-import Container from '@mui/material/Container';
-// import Header from '@src/layouts/dashboard/header';
-import { useCreatePost } from '@lens-protocol/react-web';
-// import { MetadataAttributeType } from '@lens-protocol/metadata';
-import { createHelia } from 'helia';
-import { unixfs } from '@helia/unixfs';
-import MovieInformationForm from './publication-new-wizard-information';
-import MediaAssetsForm from './publication-new-wizard-assets';
-import DistributionForm from './publication-new-wizard-distribution';
-// import ReviewFinalizeForm from './movie-new-wizard-summary';
-import PublicationNewWizardSteps from './publication-new-wizard-steps.tsx';
-import { useSettingsContext } from '@src/components/settings';
-// @ts-ignore
-import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
-import { useSelector } from 'react-redux';
+import { useState } from 'react'
+import { unixfs } from '@helia/unixfs'
+import { useCreatePost } from '@lens-protocol/react-web'
+import { createHelia } from 'helia'
+import { useSelector } from 'react-redux'
+import Container from '@mui/material/Container'
+import Grid from '@mui/material/Grid'
+import MediaAssetsForm from './publication-new-wizard-assets'
+import DistributionForm from './publication-new-wizard-distribution'
+import MovieInformationForm from './publication-new-wizard-information'
+import PublicationNewWizardSteps from './publication-new-wizard-steps.tsx'
+import { useSettingsContext } from '@src/components/settings'
 
-const steps = ['Movie Information', 'Media Assets & Technical Details', 'Distribution & Rights'];
+const steps = ['Movie Information', 'Media Assets & Technical Details', 'Distribution & Rights']
 
 export default function PublicationNewWizard() {
-  const [activeStep, setActiveStep] = useState(0);
-  const [formData, setFormData] = useState<any>({});
-  const settings = useSettingsContext();
-  const sessionData = useSelector((state: any) => state.auth.session);
-  const { execute: createPost } = useCreatePost();
+  const [activeStep, setActiveStep] = useState(0)
+  const [formData, setFormData] = useState<any>({})
+  const settings = useSettingsContext()
+  const sessionData = useSelector((state: any) => state.auth.session)
+  const { execute: createPost } = useCreatePost()
 
   const handleNext = () => {
-    setActiveStep((prevStep) => prevStep + 1);
-  };
+    setActiveStep((prevStep) => prevStep + 1)
+  }
 
   const handleBack = () => {
-    setActiveStep((prevStep) => prevStep - 1);
-  };
+    setActiveStep((prevStep) => prevStep - 1)
+  }
 
   const goToStep = (step: number) => {
-    setActiveStep(step);
-  };
+    setActiveStep(step)
+  }
 
   const handleFormSubmit = (data: any) => {
-    setFormData((prevData: any) => ({ ...prevData, ...data }));
+    setFormData((prevData: any) => ({ ...prevData, ...data }))
     if (activeStep === steps.length - 1) {
-      handleFinalSubmit();
+      handleFinalSubmit()
     } else {
-      handleNext();
+      handleNext()
     }
-  };
+  }
 
   const uploadFileToIpfs = async (file: File) => {
-    const helia = await createHelia();
-    const fs = unixfs(helia);
+    const helia = await createHelia()
+    const fs = unixfs(helia)
 
     // Convertir ArrayBuffer a Uint8Array
-    const arrayBuffer = await file.arrayBuffer();
-    const uint8Array = new Uint8Array(arrayBuffer);
+    const arrayBuffer = await file.arrayBuffer()
+    const uint8Array = new Uint8Array(arrayBuffer)
 
     // Subir archivo a IPFS
-    const cid = await fs.addBytes(uint8Array);
+    const cid = await fs.addBytes(uint8Array)
 
-    console.log('file ipfs');
-    console.log(cid);
-    console.log(cid?.toString?.());
+    console.log('file ipfs')
+    console.log(cid)
+    console.log(cid?.toString?.())
 
     // Retornar la URI de IPFS
-    return `ipfs://${cid?.toString?.()}`;
-  };
+    return `ipfs://${cid?.toString?.()}`
+  }
 
   const submitMoviePost = async () => {
     if (!sessionData?.profile) {
-      console.error('No active profile found');
-      return;
+      console.error('No active profile found')
+      return
     }
 
     // Crear y subir los metadatos a IPFS
-    const metadataUri = await createAndUploadMovieMetadata();
+    const metadataUri = await createAndUploadMovieMetadata()
 
     // Crear la publicación en Lens
     const result = await createPost({
       metadata: metadataUri,
       sponsored: false,
-    });
+    })
 
     if (result.isFailure()) {
-      console.error('Error creating post', result.error);
+      console.error('Error creating post', result.error)
     } else {
-      console.log('Post created successfully:', result.value);
+      console.log('Post created successfully:', result.value)
     }
-  };
+  }
 
   const createAndUploadMovieMetadata = async () => {
-    const fileUploads: any = {};
+    const fileUploads: any = {}
 
     // Identificar y subir archivos a IPFS
     await Promise.all(
       Object.keys(formData).map(async (key) => {
-        const value = formData[key];
+        const value = formData[key]
         if (value instanceof File) {
-          const fileUri = await uploadFileToIpfs(value);
-          fileUploads[key] = fileUri;
+          const fileUri = await uploadFileToIpfs(value)
+          fileUploads[key] = fileUri
         }
       })
-    );
+    )
 
-    console.log('file uploads');
+    console.log('file uploads')
 
     // Construir metadatos con los hashes de los archivos en IPFS
     const metadata = {
@@ -177,26 +172,26 @@ export default function PublicationNewWizard() {
       distribution: formData.distribution,
       creators: formData.creators,
       licenseDuration: formData.licenseDuration,
-    };
+    }
 
     // Subir los metadatos a IPFS
     const metadataUri = await uploadFileToIpfs(
       new File([JSON.stringify(metadata)], 'metadata.json', { type: 'application/json' })
-    );
+    )
 
-    return metadataUri; // Devolver la URI de los metadatos
-  };
+    return metadataUri // Devolver la URI de los metadatos
+  }
 
   const handleFinalSubmit = async () => {
     try {
-      console.log('Final Data:', formData);
-      await submitMoviePost(); // Crear y enviar la publicación a Lens
-      alert('Movie data successfully submitted to Lens!');
+      console.log('Final Data:', formData)
+      await submitMoviePost() // Crear y enviar la publicación a Lens
+      alert('Movie data successfully submitted to Lens!')
     } catch (error) {
-      console.error('Error submitting movie to Lens:', error);
-      alert('Failed to submit movie data to Lens');
+      console.error('Error submitting movie to Lens:', error)
+      alert('Failed to submit movie data to Lens')
     }
-  };
+  }
 
   return (
     <Container maxWidth={settings.themeStretch ? false : 'lg'} sx={{ mb: 5, mt: 5 }}>
@@ -214,5 +209,5 @@ export default function PublicationNewWizard() {
         <DistributionForm onSubmit={handleFormSubmit} onBack={handleBack} data={formData} />
       )}
     </Container>
-  );
+  )
 }

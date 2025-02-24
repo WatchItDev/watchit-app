@@ -1,10 +1,10 @@
-import { type Store, type Middleware } from 'redux';
-import { configureStore } from '@reduxjs/toolkit';
-import rootReducer from '@src/redux/reducer';
-import { backgroundTaskMiddleware } from '@redux/middlewares/backgroundTaskMiddleware.ts';
+import { backgroundTaskMiddleware } from '@redux/middlewares/backgroundTaskMiddleware.ts'
+import { configureStore } from '@reduxjs/toolkit'
+import { type Store, type Middleware } from 'redux'
+import rootReducer from '@src/redux/reducer'
 
 export const createStore = (initialState = {}): Store => {
-  const middlewares: Middleware[] = [backgroundTaskMiddleware];
+  const middlewares: Middleware[] = [backgroundTaskMiddleware]
 
   return configureStore({
     reducer: rootReducer,
@@ -14,7 +14,7 @@ export const createStore = (initialState = {}): Store => {
       getDefaultMiddleware({
         serializableCheck: false,
       }).concat(middlewares),
-  });
-};
+  })
+}
 
-export const store = createStore();
+export const store = createStore()

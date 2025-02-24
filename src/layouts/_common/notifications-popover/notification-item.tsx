@@ -1,27 +1,25 @@
-import Stack from '@mui/material/Stack';
-import ListItemText from '@mui/material/ListItemText';
-import ListItemAvatar from '@mui/material/ListItemAvatar';
-import ListItemButton from '@mui/material/ListItemButton';
-// utils
-import { formatDistanceToNow } from 'date-fns';
-// components
-import Box from '@mui/material/Box';
-import TextMaxLine from '@src/components/text-max-line';
-import { useRouter } from '@src/routes/hooks';
-import { paths } from '@src/routes/paths.ts';
-import { NotificationCategories, type NotificationColumnsProps } from '@src/types/notification.ts';
-import IconButton from '@mui/material/IconButton';
-import Iconify from '@src/components/iconify';
-import { useNotifications } from '@src/hooks/use-notifications.ts';
-import { openLoginModal } from '@redux/auth';
-import { PublicationReactionType, useReactionToggle } from '@lens-protocol/react-web';
-import { decrementCounterLikes, incrementCounterLikes } from '@redux/comments';
-import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useNotificationPayload } from '@src/hooks/use-notification-payload.ts';
-import { usePublication } from '@lens-protocol/react';
-import { CircularProgress } from '@mui/material';
-import AvatarProfile from "@src/components/avatar/avatar.tsx";
+import { useEffect, useState } from 'react'
+import { usePublication } from '@lens-protocol/react'
+import { PublicationReactionType, useReactionToggle } from '@lens-protocol/react-web'
+import { openLoginModal } from '@redux/auth'
+import { decrementCounterLikes, incrementCounterLikes } from '@redux/comments'
+import { formatDistanceToNow } from 'date-fns'
+import { useDispatch, useSelector } from 'react-redux'
+import { CircularProgress } from '@mui/material'
+import Box from '@mui/material/Box'
+import IconButton from '@mui/material/IconButton'
+import ListItemAvatar from '@mui/material/ListItemAvatar'
+import ListItemButton from '@mui/material/ListItemButton'
+import ListItemText from '@mui/material/ListItemText'
+import Stack from '@mui/material/Stack'
+import AvatarProfile from "@src/components/avatar/avatar.tsx"
+import Iconify from '@src/components/iconify'
+import TextMaxLine from '@src/components/text-max-line'
+import { useNotificationPayload } from '@src/hooks/use-notification-payload.ts'
+import { useNotifications } from '@src/hooks/use-notifications.ts'
+import { useRouter } from '@src/routes/hooks'
+import { paths } from '@src/routes/paths.ts'
+import { NotificationCategories, type NotificationColumnsProps } from '@src/types/notification.ts'
 
 export type NotificationItemProps = {
   id: any;
@@ -30,37 +28,37 @@ export type NotificationItemProps = {
 };
 
 export default function NotificationItem({ notification, onMarkAsRead }: NotificationItemProps) {
-  const commentId = notification?.payload?.data?.content?.comment_id;
+  const commentId = notification?.payload?.data?.content?.comment_id
 
-  const sessionData = useSelector((state: any) => state.auth.session);
-  const { deleteNotification } = useNotifications();
-  const dispatch = useDispatch();
-  const { execute: toggle, loading: loadingLike } = useReactionToggle();
-  const typeOfNotification = notification?.payload?.category;
-  const receiver = notification?.payload?.data?.to?.displayName;
+  const sessionData = useSelector((state: any) => state.auth.session)
+  const { deleteNotification } = useNotifications()
+  const dispatch = useDispatch()
+  const { execute: toggle, loading: loadingLike } = useReactionToggle()
+  const typeOfNotification = notification?.payload?.category
+  const receiver = notification?.payload?.data?.to?.displayName
   const message =
     notification?.payload?.data?.content?.message ||
     notification?.payload?.data?.content?.comment ||
-    '';
-  const [hasLiked, setHasLiked] = useState(false);
-  const { sendNotification } = useNotifications();
-  const { generatePayload } = useNotificationPayload(sessionData);
-  const router = useRouter();
-  const { data: comment, loading }: any = usePublication({ forId: commentId as any });
+    ''
+  const [hasLiked, setHasLiked] = useState(false)
+  const { sendNotification } = useNotifications()
+  const { generatePayload } = useNotificationPayload(sessionData)
+  const router = useRouter()
+  const { data: comment, loading }: any = usePublication({ forId: commentId as any })
 
   useEffect(() => {
-    setHasLiked(comment?.operations?.hasUpvoted);
-  }, [comment]);
+    setHasLiked(comment?.operations?.hasUpvoted)
+  }, [comment])
 
   const handleItemClick = () => {
-    onMarkAsRead(notification.id);
+    onMarkAsRead(notification.id)
 
     // Verify if is LIKE / COMMENT
     if (
       typeOfNotification === NotificationCategories.LIKE ||
       typeOfNotification === NotificationCategories.COMMENT
     ) {
-      router.push(paths.dashboard.publication.details(notification.payload.data.content.root_id));
+      router.push(paths.dashboard.publication.details(notification.payload.data.content.root_id))
     }
 
     // Verify if is FOLLOW / JOIN
@@ -68,12 +66,12 @@ export default function NotificationItem({ notification, onMarkAsRead }: Notific
       typeOfNotification === NotificationCategories.FOLLOW ||
       typeOfNotification === NotificationCategories.JOIN
     ) {
-      router.push(paths.dashboard.user.root(`${notification.payload.data.from.id}`));
+      router.push(paths.dashboard.user.root(`${notification.payload.data.from.id}`))
     }
-  };
+  }
 
   const toggleReaction = async () => {
-    if (!sessionData?.authenticated) return dispatch(openLoginModal());
+    if (!sessionData?.authenticated) return dispatch(openLoginModal())
 
     try {
       await toggle({
@@ -94,30 +92,30 @@ export default function NotificationItem({ notification, onMarkAsRead }: Notific
             comment_id: comment?.id,
             rawDescription: `${sessionData?.profile?.metadata?.displayName} liked your comment`,
           }
-        );
+        )
 
         if (!hasLiked) {
-          dispatch(incrementCounterLikes(comment.id));
+          dispatch(incrementCounterLikes(comment.id))
         } else {
-          dispatch(decrementCounterLikes(comment.id));
+          dispatch(decrementCounterLikes(comment.id))
         }
 
         if (!hasLiked && comment?.by?.id !== sessionData?.profile?.id) {
-          sendNotification(comment?.by?.id, sessionData?.profile?.id, notificationPayload);
+          sendNotification(comment?.by?.id, sessionData?.profile?.id, notificationPayload)
         }
-      });
-      setHasLiked(!hasLiked); // Toggle the UI based on the reaction state
+      })
+      setHasLiked(!hasLiked) // Toggle the UI based on the reaction state
     } catch (err) {
-      console.error('Error toggling reaction:', err);
+      console.error('Error toggling reaction:', err)
     }
-  };
+  }
 
   const renderAvatar = (
     <ListItemAvatar>
       <AvatarProfile src={notification.payload.data.from.avatar} sx={{ bgcolor: 'background.neutral' }} />
     </ListItemAvatar>
-  );
-  const description: string | null = notification.payload.data.content.rawDescription;
+  )
+  const description: string | null = notification.payload.data.content.rawDescription
   const renderText = (
     <ListItemText
       disableTypography
@@ -137,7 +135,7 @@ export default function NotificationItem({ notification, onMarkAsRead }: Notific
         </Stack>
       }
     />
-  );
+  )
 
   function reader(data: string) {
     return data.length > 8 ? (
@@ -150,7 +148,7 @@ export default function NotificationItem({ notification, onMarkAsRead }: Notific
           '& strong': { typography: 'subtitle2' },
         }}
       />
-    ) : null;
+    ) : null
   }
 
   const transferAction = (
@@ -167,7 +165,7 @@ export default function NotificationItem({ notification, onMarkAsRead }: Notific
         {reader(`<p><strong>@${receiver}</strong> ${message}.</p>`)}
       </Box>
     </Stack>
-  );
+  )
 
   const messageAction = message.length > 0 && (
     <Stack alignItems="flex-start">
@@ -203,7 +201,7 @@ export default function NotificationItem({ notification, onMarkAsRead }: Notific
         </IconButton>
       </Stack>
     </Stack>
-  );
+  )
 
   const renderUnReadBadge = !notification.read && (
     <Box
@@ -217,11 +215,11 @@ export default function NotificationItem({ notification, onMarkAsRead }: Notific
         position: 'absolute',
       }}
     />
-  );
+  )
 
   const onDelete = async (id: string) => {
-    await deleteNotification(id);
-  };
+    await deleteNotification(id)
+  }
 
   const renderDeleteButton = () => {
     return (
@@ -243,8 +241,8 @@ export default function NotificationItem({ notification, onMarkAsRead }: Notific
           <Iconify icon="solar:trash-bin-minimalistic-2-bold" width={16} />
         </IconButton>
       )
-    );
-  };
+    )
+  }
 
   return (
     <ListItemButton
@@ -268,5 +266,5 @@ export default function NotificationItem({ notification, onMarkAsRead }: Notific
         {typeOfNotification === NotificationCategories.COMMENT && messageAction}
       </Stack>
     </ListItemButton>
-  );
+  )
 }

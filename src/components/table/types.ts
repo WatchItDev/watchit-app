@@ -1,5 +1,3 @@
-// ----------------------------------------------------------------------
-
 export type TableProps = {
   dense: boolean;
   page: number;

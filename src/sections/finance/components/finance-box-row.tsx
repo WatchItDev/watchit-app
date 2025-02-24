@@ -1,6 +1,6 @@
-import { FC, PropsWithChildren } from 'react';
+import { FC, PropsWithChildren } from 'react'
 
-import Box from '@mui/material/Box';
+import Box from '@mui/material/Box'
 
 export const FinanceBoxRow: FC<PropsWithChildren> = ({ children }) => (
   <Box
@@ -14,6 +14,6 @@ export const FinanceBoxRow: FC<PropsWithChildren> = ({ children }) => (
   >
     {children}
   </Box>
-);
+)
 
-export default FinanceBoxRow;
+export default FinanceBoxRow

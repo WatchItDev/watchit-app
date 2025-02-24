@@ -1,29 +1,20 @@
-// REACT IMPORTS
-import { FC, useCallback, useEffect, useState } from 'react';
-
-// VIEM IMPORTS
-import { Address } from 'viem';
-
-// MUI IMPORTS
-import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
-
-// LOCAL IMPORTS
-import NeonPaper from '@src/sections/publication/NeonPaperContainer';
-import FinanceDialogsActions from '@src/sections/finance/components/finance-dialogs-actions';
-import TextMaxLine from '@src/components/text-max-line';
-import { formatBalanceNumber } from '@src/utils/format-number';
-import { useGetMmcContractBalance } from '@src/hooks/use-get-mmc-contract-balance';
-import FinanceBoxRow from '@src/sections/finance/components/finance-box-row.tsx';
-import { UseDepositHook } from '@src/hooks/use-deposit';
-import { truncateAddress } from '@src/utils/wallet';
-
-// NOTIFICATIONS IMPORTS
-import { notifyError, notifySuccess, notifyWarning } from '@notifications/internal-notifications';
-import { WARNING } from '@notifications/warnings';
-import { SUCCESS } from '@notifications/success';
-import { ERRORS } from '@notifications/errors.ts';
-import TextField from '@mui/material/TextField';
+import { FC, useCallback, useEffect, useState } from 'react'
+import { ERRORS } from '@notifications/errors.ts'
+import { notifyError, notifySuccess, notifyWarning } from '@notifications/internal-notifications'
+import { SUCCESS } from '@notifications/success'
+import { WARNING } from '@notifications/warnings'
+import { Address } from 'viem'
+import Box from '@mui/material/Box'
+import Stack from '@mui/material/Stack'
+import TextField from '@mui/material/TextField'
+import TextMaxLine from '@src/components/text-max-line'
+import { UseDepositHook } from '@src/hooks/use-deposit'
+import { useGetMmcContractBalance } from '@src/hooks/use-get-mmc-contract-balance'
+import FinanceBoxRow from '@src/sections/finance/components/finance-box-row.tsx'
+import FinanceDialogsActions from '@src/sections/finance/components/finance-dialogs-actions'
+import NeonPaper from '@src/sections/publication/NeonPaperContainer'
+import { formatBalanceNumber } from '@src/utils/format-number'
+import { truncateAddress } from '@src/utils/wallet'
 
 interface FinanceDepositProps {
   /**
@@ -63,52 +54,52 @@ interface FinanceDepositProps {
  * - `onClose`
  */
 const FinanceDeposit: FC<FinanceDepositProps> = ({ address, recipient, depositHook, onClose }) => {
-  const [amount, setAmount] = useState<number | string>('');
-  const [helperText, setHelperText] = useState<string>("");
-  const { balance } = useGetMmcContractBalance(address);
-  const { deposit, loading: depositLoading, error } = depositHook;
-  const [localLoading, setLocalLoading] = useState(false);
-  const [amountError, setAmountError] = useState(false);
-  const isBusy = localLoading || depositLoading;
-  const RainbowEffect = isBusy ? NeonPaper : Box;
+  const [amount, setAmount] = useState<number | string>('')
+  const [helperText, setHelperText] = useState<string>("")
+  const { balance } = useGetMmcContractBalance(address)
+  const { deposit, loading: depositLoading, error } = depositHook
+  const [localLoading, setLocalLoading] = useState(false)
+  const [amountError, setAmountError] = useState(false)
+  const isBusy = localLoading || depositLoading
+  const RainbowEffect = isBusy ? NeonPaper : Box
 
   useEffect(() => {
     if (error) {
-      notifyError(error as ERRORS);
+      notifyError(error as ERRORS)
     }
-  }, [error]);
+  }, [error])
 
   // Validation and deposit
   const handleConfirmDeposit = useCallback(async () => {
-    if (!amount) return;
+    if (!amount) return
 
     if (!address) {
       // If there's no connected address, we can't deposit
-      notifyWarning(WARNING.NO_WALLET_CONNECTED);
-      return;
+      notifyWarning(WARNING.NO_WALLET_CONNECTED)
+      return
     }
     // Validate amount > 0 and <= balance
     if (Number(amount) <= 0 || Number(amount) > (balance ?? 0)) {
-      notifyWarning(WARNING.INVALID_DEPOSIT_AMOUNT);
-      return;
+      notifyWarning(WARNING.INVALID_DEPOSIT_AMOUNT)
+      return
     }
 
     // TODO refactor this!!!!!
     try {
-      setLocalLoading(true);
-      await deposit({ recipient: recipient ?? address, amount: Number(amount) });
-      notifySuccess(SUCCESS.DEPOSIT_SUCCESSFULLY);
-      onClose();
+      setLocalLoading(true)
+      await deposit({ recipient: recipient ?? address, amount: Number(amount) })
+      notifySuccess(SUCCESS.DEPOSIT_SUCCESSFULLY)
+      onClose()
     } catch (err) {
-      notifyError(ERRORS.DEPOSIT_ERROR);
+      notifyError(ERRORS.DEPOSIT_ERROR)
     } finally {
-      setLocalLoading(false);
+      setLocalLoading(false)
     }
-  }, [address, recipient, amount, balance]);
+  }, [address, recipient, amount, balance])
 
   const handleAmountChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = Number(event.target.value);
-    setAmount(value ?? undefined);
+    const value = Number(event.target.value)
+    setAmount(value ?? undefined)
 
     // Set appropriate error message
     const errorMessage =
@@ -116,13 +107,11 @@ const FinanceDeposit: FC<FinanceDepositProps> = ({ address, recipient, depositHo
         ? "No amount entered"
         : value > (balance ?? 0)
           ? "Amount cannot be greater than balance"
-          : "";
+          : ""
 
-    setAmountError(!!errorMessage); // Set error state
-    setHelperText(errorMessage); // Update helper text with the error message
-  };
-
-
+    setAmountError(!!errorMessage) // Set error state
+    setHelperText(errorMessage) // Update helper text with the error message
+  }
 
   return (
     <>
@@ -177,7 +166,7 @@ const FinanceDeposit: FC<FinanceDepositProps> = ({ address, recipient, depositHo
         onCloseAction={onClose}
       />
     </>
-  );
-};
+  )
+}
 
-export default FinanceDeposit;
+export default FinanceDeposit

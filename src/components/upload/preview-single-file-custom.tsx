@@ -1,10 +1,6 @@
-// @mui
-import Box from '@mui/material/Box';
-//
-import Image from '../image';
-import { SingleFilePreviewProps } from './preview-single-file';
-
-// ----------------------------------------------------------------------
+import Box from '@mui/material/Box'
+import Image from '../image'
+import { SingleFilePreviewProps } from './preview-single-file'
 
 export default function SingleFilePreviewCustom({ imgUrl = '', ratio }: SingleFilePreviewProps) {
   return (
@@ -28,5 +24,5 @@ export default function SingleFilePreviewCustom({ imgUrl = '', ratio }: SingleFi
         ratio={ratio}
       />
     </Box>
-  );
+  )
 }

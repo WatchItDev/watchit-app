@@ -1,10 +1,7 @@
-import { DropzoneOptions } from 'react-dropzone';
-// @mui
-import { Theme, SxProps } from '@mui/material/styles';
-import { ImageRatio } from '../image';
-import SingleFilePreview from './preview-single-file';
-
-// ----------------------------------------------------------------------
+import { DropzoneOptions } from 'react-dropzone'
+import { Theme, SxProps } from '@mui/material/styles'
+import { ImageRatio } from '../image'
+import SingleFilePreview from './preview-single-file'
 
 export interface CustomFile extends File {
   path?: string;

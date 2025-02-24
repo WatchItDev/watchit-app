@@ -1,15 +1,7 @@
-// sections
-import { GovernanceDetailsView } from '../../../sections/governance/view';
-import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
-import { OgMetaTags } from '@src/components/og-meta-tags.tsx';
-
-// ----------------------------------------------------------------------
-
+import { GovernanceDetailsView } from '../../../sections/governance/view'
+import { OgMetaTags } from '@src/components/og-meta-tags.tsx'
+import { GLOBAL_CONSTANTS } from '@src/config-global.ts'
 export default function ProductDetailsPage() {
-  // const params = useParams();
-  //
-  // const { id } = params;
-
   return (
     <OgMetaTags
       title="Watchit: Governance (COMING SOON)"

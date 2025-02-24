@@ -1,8 +1,5 @@
-import { Theme } from '@mui/material/styles';
-//
-import { menuItem } from '../../css';
-
-// ----------------------------------------------------------------------
+import { Theme } from '@mui/material/styles'
+import { menuItem } from '../../css'
 
 export function menu(theme: Theme) {
   return {
@@ -13,5 +10,5 @@ export function menu(theme: Theme) {
         },
       },
     },
-  };
+  }
 }

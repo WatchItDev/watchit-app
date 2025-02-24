@@ -1,16 +1,10 @@
-// React and libraries imports
-import React from 'react';
+import React from 'react'
 
-// @mui
-import { Box } from '@mui/system';
-import { useTheme, alpha } from '@mui/material/styles';
-import Typography from '@mui/material/Typography';
-import Stack, { StackProps } from '@mui/material/Stack';
-
-// theme
-import { bgGradient } from '@src/theme/css';
-
-// ----------------------------------------------------------------------
+import Stack, { StackProps } from '@mui/material/Stack'
+import { useTheme, alpha } from '@mui/material/styles'
+import Typography from '@mui/material/Typography'
+import { Box } from '@mui/system'
+import { bgGradient } from '@src/theme/css'
 
 interface Props extends StackProps {
   connectedWallet: boolean;
@@ -30,7 +24,7 @@ export default function FinanceExternalWallet({
   img,
   ...other
 }: Props) {
-  const theme = useTheme();
+  const theme = useTheme()
   return (
     <>
       <Stack
@@ -123,6 +117,6 @@ export default function FinanceExternalWallet({
         )}
       </Stack>
     </>
-  );
+  )
 }
 //

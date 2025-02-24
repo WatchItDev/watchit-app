@@ -1,9 +1,9 @@
-import Button from '@mui/material/Button';
-import { IconChevronLeft } from '@tabler/icons-react';
-import Typography from '@mui/material/Typography';
-import Label from '@src/components/label';
-import { FC } from 'react';
-import { useResponsive } from '@src/hooks/use-responsive.ts';
+import { FC } from 'react'
+import { IconChevronLeft } from '@tabler/icons-react'
+import Button from '@mui/material/Button'
+import Typography from '@mui/material/Typography'
+import Label from '@src/components/label'
+import { useResponsive } from '@src/hooks/use-responsive.ts'
 
 interface HeaderContentProps {
   handleBack?: () => void;
@@ -11,9 +11,9 @@ interface HeaderContentProps {
 }
 
 const HeaderContent: FC<HeaderContentProps> = ({ handleBack, title }) => {
-  const mdUp = useResponsive('up', 'md');
+  const mdUp = useResponsive('up', 'md')
 
-  if (!mdUp) return <></>;
+  if (!mdUp) return <></>
 
   return (
     <>
@@ -49,7 +49,7 @@ const HeaderContent: FC<HeaderContentProps> = ({ handleBack, title }) => {
         </Typography>
       )}
     </>
-  );
-};
+  )
+}
 
-export default HeaderContent;
+export default HeaderContent

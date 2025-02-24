@@ -1,9 +1,6 @@
-import { useFormContext, Controller } from 'react-hook-form';
-// @mui
-import TextField from '@mui/material/TextField';
-import Autocomplete, { AutocompleteProps } from '@mui/material/Autocomplete';
-
-// ----------------------------------------------------------------------
+import { useFormContext, Controller } from 'react-hook-form'
+import Autocomplete, { AutocompleteProps } from '@mui/material/Autocomplete'
+import TextField from '@mui/material/TextField'
 
 interface Props<
   T,
@@ -29,7 +26,7 @@ export default function RHFAutocomplete<
   helperText,
   ...other
 }: Omit<Props<T, Multiple, DisableClearable, FreeSolo>, 'renderInput'>) {
-  const { control, setValue } = useFormContext();
+  const { control, setValue } = useFormContext()
 
   return (
     <Controller
@@ -52,5 +49,5 @@ export default function RHFAutocomplete<
         />
       )}
     />
-  );
+  )
 }

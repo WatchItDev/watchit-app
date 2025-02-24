@@ -1,54 +1,45 @@
-import * as Yup from 'yup';
-import { useCallback, useMemo, useEffect } from 'react';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { useForm } from 'react-hook-form';
-// @mui
-import LoadingButton from '@mui/lab/LoadingButton';
-import Chip from '@mui/material/Chip';
-import Card from '@mui/material/Card';
-import Stack from '@mui/material/Stack';
-import Button from '@mui/material/Button';
-import Switch from '@mui/material/Switch';
-import Grid from '@mui/material/Unstable_Grid2';
-import CardHeader from '@mui/material/CardHeader';
-import Typography from '@mui/material/Typography';
-import FormControlLabel from '@mui/material/FormControlLabel';
-// hooks
-import { useBoolean } from '@src/hooks/use-boolean';
-import { useResponsive } from '@src/hooks/use-responsive';
-// routes
-import { paths } from '@src/routes/paths';
-import { useRouter } from '@src/routes/hooks';
-// _mock
-import { _tags } from '@src/_mock';
-// types
-import { IPostItem } from '@src/types/blog';
-// components
-import { CustomFile } from '@src/components/upload';
-import { useSnackbar } from '@src/components/snackbar';
+import { useCallback, useMemo, useEffect } from 'react'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { useForm } from 'react-hook-form'
+import * as Yup from 'yup'
+import LoadingButton from '@mui/lab/LoadingButton'
+import Button from '@mui/material/Button'
+import Card from '@mui/material/Card'
+import CardHeader from '@mui/material/CardHeader'
+import Chip from '@mui/material/Chip'
+import FormControlLabel from '@mui/material/FormControlLabel'
+import Stack from '@mui/material/Stack'
+import Switch from '@mui/material/Switch'
+import Typography from '@mui/material/Typography'
+import Grid from '@mui/material/Unstable_Grid2'
+import GovernanceDetailsPreview from './governance-details-preview'
+import { _tags } from '@src/_mock'
 import FormProvider, {
   RHFEditor,
   RHFUpload,
   RHFTextField,
   RHFAutocomplete,
-} from '@src/components/hook-form';
-//
-import GovernanceDetailsPreview from './governance-details-preview';
-
-// ----------------------------------------------------------------------
+} from '@src/components/hook-form'
+import { useSnackbar } from '@src/components/snackbar'
+import { CustomFile } from '@src/components/upload'
+import { useBoolean } from '@src/hooks/use-boolean'
+import { useResponsive } from '@src/hooks/use-responsive'
+import { useRouter } from '@src/routes/hooks'
+import { paths } from '@src/routes/paths'
+import { IPostItem } from '@src/types/blog'
 
 type Props = {
   currentPost?: IPostItem;
 };
 
 export default function GovernanceNewEditForm({ currentPost }: Props) {
-  const router = useRouter();
+  const router = useRouter()
 
-  const mdUp = useResponsive('up', 'md');
+  const mdUp = useResponsive('up', 'md')
 
-  const { enqueueSnackbar } = useSnackbar();
+  const { enqueueSnackbar } = useSnackbar()
 
-  const preview = useBoolean();
+  const preview = useBoolean()
 
   const NewBlogSchema = Yup.object().shape({
     title: Yup.string().required('Title is required'),
@@ -60,7 +51,7 @@ export default function GovernanceNewEditForm({ currentPost }: Props) {
     // not required
     metaTitle: Yup.string(),
     metaDescription: Yup.string(),
-  });
+  })
 
   const defaultValues = useMemo(
     () => ({
@@ -74,12 +65,12 @@ export default function GovernanceNewEditForm({ currentPost }: Props) {
       metaDescription: currentPost?.metaDescription || '',
     }),
     [currentPost]
-  );
+  )
 
   const methods = useForm({
     resolver: yupResolver(NewBlogSchema),
     defaultValues,
-  });
+  })
 
   const {
     reset,
@@ -87,47 +78,47 @@ export default function GovernanceNewEditForm({ currentPost }: Props) {
     setValue,
     handleSubmit,
     formState: { isSubmitting, isValid },
-  } = methods;
+  } = methods
 
-  const values = watch();
+  const values = watch()
 
   useEffect(() => {
     if (currentPost) {
-      reset(defaultValues);
+      reset(defaultValues)
     }
-  }, [currentPost, defaultValues, reset]);
+  }, [currentPost, defaultValues, reset])
 
   const onSubmit = handleSubmit(async (data) => {
     try {
-      await new Promise((resolve) => setTimeout(resolve, 500));
-      reset();
-      preview.onFalse();
-      enqueueSnackbar(currentPost ? 'Update success!' : 'Create success!');
-      router.push(paths.dashboard.post.root);
-      console.info('DATA', data);
+      await new Promise((resolve) => setTimeout(resolve, 500))
+      reset()
+      preview.onFalse()
+      enqueueSnackbar(currentPost ? 'Update success!' : 'Create success!')
+      router.push(paths.dashboard.post.root)
+      console.info('DATA', data)
     } catch (error) {
-      console.error(error);
+      console.error(error)
     }
-  });
+  })
 
   const handleDrop = useCallback(
     (acceptedFiles: File[]) => {
-      const file = acceptedFiles[0];
+      const file = acceptedFiles[0]
 
       const newFile = Object.assign(file, {
         preview: URL.createObjectURL(file),
-      });
+      })
 
       if (file) {
-        setValue('coverUrl', newFile, { shouldValidate: true });
+        setValue('coverUrl', newFile, { shouldValidate: true })
       }
     },
     [setValue]
-  );
+  )
 
   const handleRemoveFile = useCallback(() => {
-    setValue('coverUrl', null);
-  }, [setValue]);
+    setValue('coverUrl', null)
+  }, [setValue])
 
   const renderDetails = (
     <>
@@ -169,7 +160,7 @@ export default function GovernanceNewEditForm({ currentPost }: Props) {
         </Card>
       </Grid>
     </>
-  );
+  )
 
   const renderProperties = (
     <>
@@ -259,7 +250,7 @@ export default function GovernanceNewEditForm({ currentPost }: Props) {
         </Card>
       </Grid>
     </>
-  );
+  )
 
   const renderActions = (
     <>
@@ -286,7 +277,7 @@ export default function GovernanceNewEditForm({ currentPost }: Props) {
         </LoadingButton>
       </Grid>
     </>
-  );
+  )
 
   return (
     <FormProvider methods={methods} onSubmit={onSubmit}>
@@ -315,5 +306,5 @@ export default function GovernanceNewEditForm({ currentPost }: Props) {
         onSubmit={onSubmit}
       />
     </FormProvider>
-  );
+  )
 }

@@ -1,12 +1,8 @@
-// @mui
-import { alpha } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
-import ButtonBase from '@mui/material/ButtonBase';
-//
-import Iconify from '../../iconify';
-
-// ----------------------------------------------------------------------
+import Box from '@mui/material/Box'
+import ButtonBase from '@mui/material/ButtonBase'
+import Stack from '@mui/material/Stack'
+import { alpha } from '@mui/material/styles'
+import Iconify from '../../iconify'
 
 type Props = {
   value: boolean;
@@ -65,5 +61,5 @@ export default function StretchOptions({ value, onChange }: Props) {
         />
       </Stack>
     </ButtonBase>
-  );
+  )
 }

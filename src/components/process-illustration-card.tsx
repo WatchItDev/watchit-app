@@ -1,6 +1,6 @@
-import Image from "@src/components/image";
-import Stack from "@mui/material/Stack";
-import {FC} from "react";
+import {FC} from "react"
+import Stack from "@mui/material/Stack"
+import Image from "@src/components/image"
 
 interface ProcessIllustrationCardProps {
   illustration: string;
@@ -32,4 +32,4 @@ const ProcessIllustrationCard: FC<ProcessIllustrationCardProps> = ({illustration
   )
 }
 
-export default ProcessIllustrationCard;
+export default ProcessIllustrationCard

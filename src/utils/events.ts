@@ -1,14 +1,14 @@
-import { Dispatch } from 'redux';
-import { appendNotification } from '@src/redux/notifications';
+import { Dispatch } from 'redux'
+import { appendNotification } from '@src/redux/notifications'
 
 export namespace Events {
   export const Handlers = (payload: any, profileId: string, dispatch?: Dispatch) => {
-    const evenType: keyof typeof EventsHandlersMap = payload?.new?.payload?.type;
+    const evenType: keyof typeof EventsHandlersMap = payload?.new?.payload?.type
 
     if (EventsHandlersMap[evenType]) {
-      EventsHandlersMap[evenType](payload, profileId, dispatch);
+      EventsHandlersMap[evenType](payload, profileId, dispatch)
     }
-  };
+  }
 
   /**
    * Handle notification event for internal popover.
@@ -18,22 +18,22 @@ export namespace Events {
    * @constructor
    */
   export const Notification = (payload: any, profileId: string, dispatch?: Dispatch) => {
-    const notification = payload.new;
+    const notification = payload.new
 
     if (notification?.receiver_id === profileId) {
       if (dispatch) {
-        dispatch(appendNotification(notification));
+        dispatch(appendNotification(notification))
       }
     }
-  };
+  }
   // @ts-ignore
-  export const Transaction = (payload: any) => {};
+  export const Transaction = (payload: any) => {}
   // @ts-ignore
-  export const Publication = (payload: any) => {};
+  export const Publication = (payload: any) => {}
   // @ts-ignore
-  export const Subscription = (payload: any) => {};
+  export const Subscription = (payload: any) => {}
   // @ts-ignore
-  export const Follower = (payload: any) => {};
+  export const Follower = (payload: any) => {}
 }
 
 export const EventsHandlersMap = {
@@ -42,4 +42,4 @@ export const EventsHandlersMap = {
   PUBLICATION: Events.Publication,
   SUBSCRIPTION: Events.Subscription,
   FOLLOWER: Events.Follower,
-};
+}

@@ -1,9 +1,9 @@
-import { alpha } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import ListItemText from '@mui/material/ListItemText';
-import ListItemButton from '@mui/material/ListItemButton';
-import Label from '@src/components/label';
-import { COLORS } from '@src/layouts/config-layout.ts';
+import Box from '@mui/material/Box'
+import ListItemButton from '@mui/material/ListItemButton'
+import ListItemText from '@mui/material/ListItemText'
+import { alpha } from '@mui/material/styles'
+import Label from '@src/components/label'
+import { COLORS } from '@src/layouts/config-layout.ts'
 
 type Props = {
   title: string;
@@ -14,8 +14,8 @@ type Props = {
 };
 
 const highlightText = (text: string, query: string) => {
-  if (!query) return text;
-  const parts = text.split(new RegExp(`(${query})`, 'gi'));
+  if (!query) return text
+  const parts = text.split(new RegExp(`(${query})`, 'gi'))
   return parts.map((part, index) =>
     part.toLowerCase() === query.toLowerCase() ? (
       <span
@@ -27,8 +27,8 @@ const highlightText = (text: string, query: string) => {
     ) : (
       part
     )
-  );
-};
+  )
+}
 
 export default function ResultItem({
   title,
@@ -91,5 +91,5 @@ export default function ResultItem({
         </Label>
       )}
     </ListItemButton>
-  );
+  )
 }

@@ -1,18 +1,12 @@
-import { forwardRef } from 'react';
-// @mui
-import { useTheme } from '@mui/material/styles';
-import Link from '@mui/material/Link';
-import Tooltip from '@mui/material/Tooltip';
-import ListItemText from '@mui/material/ListItemText';
-// routes
-import { RouterLink } from '@src/routes/components';
-//
-import Iconify from '../../iconify';
-//
-import { NavItemProps, NavConfigProps } from '../types';
-import { StyledItem, StyledIcon } from './styles-mini';
-
-// ----------------------------------------------------------------------
+import { forwardRef } from 'react'
+import Link from '@mui/material/Link'
+import ListItemText from '@mui/material/ListItemText'
+import { useTheme } from '@mui/material/styles'
+import Tooltip from '@mui/material/Tooltip'
+import Iconify from '../../iconify'
+import { NavItemProps, NavConfigProps } from '../types'
+import { StyledItem, StyledIcon } from './styles-mini'
+import { RouterLink } from '@src/routes/components'
 
 type Props = NavItemProps & {
   config: NavConfigProps;
@@ -20,11 +14,11 @@ type Props = NavItemProps & {
 
 const NavItemVerticalMini = forwardRef<HTMLDivElement, Props>(
   ({ item, depth, open, active, externalLink, config, ...other }, ref) => {
-    const theme = useTheme();
+    const theme = useTheme()
 
-    const { title, path, icon, children, disabled, caption, roles } = item;
+    const { title, path, icon, children, disabled, caption, roles } = item
 
-    const subItem = depth !== 1;
+    const subItem = depth !== 1
 
     const renderContent = (
       <StyledItem
@@ -105,11 +99,11 @@ const NavItemVerticalMini = forwardRef<HTMLDivElement, Props>(
           />
         )}
       </StyledItem>
-    );
+    )
 
     // Hidden item by role
     if (roles && !roles.includes(`${config.currentRole}`)) {
-      return null;
+      return null
     }
 
     // External link
@@ -129,7 +123,7 @@ const NavItemVerticalMini = forwardRef<HTMLDivElement, Props>(
         >
           {renderContent}
         </Link>
-      );
+      )
 
     // Default
     return (
@@ -146,8 +140,8 @@ const NavItemVerticalMini = forwardRef<HTMLDivElement, Props>(
       >
         {renderContent}
       </Link>
-    );
+    )
   }
-);
+)
 
-export default NavItemVerticalMini;
+export default NavItemVerticalMini

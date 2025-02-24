@@ -1,15 +1,15 @@
-import * as Yup from 'yup';
-import { useForm, Controller } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import Grid from '@mui/material/Grid';
-import Card from '@mui/material/Card';
-import Stack from '@mui/material/Stack';
-import CardHeader from '@mui/material/CardHeader';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import FormProvider, { RHFTextField, RHFSelect, RHFMultiSelect } from '@src/components/hook-form';
-import MenuItem from '@mui/material/MenuItem';
-import Typography from '@mui/material/Typography';
-import MovieWizardContentLayout from './publication-new-wizard-layout';
+import { yupResolver } from '@hookform/resolvers/yup'
+import { useForm, Controller } from 'react-hook-form'
+import * as Yup from 'yup'
+import Card from '@mui/material/Card'
+import CardHeader from '@mui/material/CardHeader'
+import Grid from '@mui/material/Grid'
+import MenuItem from '@mui/material/MenuItem'
+import Stack from '@mui/material/Stack'
+import Typography from '@mui/material/Typography'
+import { DatePicker } from '@mui/x-date-pickers/DatePicker'
+import MovieWizardContentLayout from './publication-new-wizard-layout'
+import FormProvider, { RHFTextField, RHFSelect, RHFMultiSelect } from '@src/components/hook-form'
 
 const MovieInformationSchema = Yup.object().shape({
   title: Yup.string().required('Title is required'),
@@ -35,7 +35,7 @@ const MovieInformationSchema = Yup.object().shape({
   leadActor: Yup.string().required('Lead actor name is required'),
   supportingActor: Yup.string().required('Supporting actor name is required'),
   supportingActress: Yup.string().required('Supporting actress name is required'),
-});
+})
 
 export default function PublicationInformationForm({ onSubmit, data }: any) {
   const methods = useForm({
@@ -65,14 +65,14 @@ export default function PublicationInformationForm({ onSubmit, data }: any) {
       supportingActor: data.supportingActor ?? '',
       supportingActress: data.supportingActress ?? '',
     },
-  });
+  })
 
   const {
     watch,
     formState: { errors },
-  } = methods;
+  } = methods
 
-  const values = watch();
+  const values = watch()
 
   const genreOptions = [
     { value: 'drama', label: 'Drama' },
@@ -80,13 +80,13 @@ export default function PublicationInformationForm({ onSubmit, data }: any) {
     { value: 'action', label: 'Action' },
     { value: 'comedy', label: 'Comedy' },
     { value: 'horror', label: 'Horror' },
-  ];
+  ]
 
   const languageOptions = [
     { value: 'english', label: 'English' },
     { value: 'spanish', label: 'Spanish' },
     { value: 'french', label: 'French' },
-  ];
+  ]
 
   return (
     <FormProvider methods={methods} onSubmit={methods.handleSubmit(onSubmit)}>
@@ -252,5 +252,5 @@ export default function PublicationInformationForm({ onSubmit, data }: any) {
         </Grid>
       </MovieWizardContentLayout>
     </FormProvider>
-  );
+  )
 }

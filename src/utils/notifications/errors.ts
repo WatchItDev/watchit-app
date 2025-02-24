@@ -129,4 +129,4 @@ export const ERROR_MESSAGES: Record<ERRORS, string> = {
   [ERRORS.INVITATION_SEND_ERROR]: 'An error occurred while sending the invitation.',
   [ERRORS.INVITATION_USER_ALREADY_INVITED]: 'This user has already been invited!',
   [ERRORS.INVITATION_USER_CANT_INVITE_SELF]: 'You cannot invite yourself!',
-};
+}

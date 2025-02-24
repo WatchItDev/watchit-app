@@ -1,24 +1,23 @@
-import Button from "@mui/material/Button";
-import Iconify from "@src/components/iconify";
-import Popover from "@mui/material/Popover";
-import Typography from "@mui/material/Typography";
-import { useCallback, useRef, useState} from "react";
-import {ActivateSubscriptionProfileModal} from "@src/components/activate-subscription-profile-modal.tsx";
+import { useCallback, useRef, useState} from "react"
+import Button from "@mui/material/Button"
+import Popover from "@mui/material/Popover"
+import Typography from "@mui/material/Typography"
+import {ActivateSubscriptionProfileModal} from "@src/components/activate-subscription-profile-modal.tsx"
+import Iconify from "@src/components/iconify"
 
 const ProfileSetJoiningPrice = () => {
-  const [isActivateModalOpen, setIsActivateModalOpen] = useState(false);
-  const navRefSettings = useRef(null);
-  const [openTooltipSettings, setOpenTooltipSettings] = useState(false);
-  const open = Boolean();
+  const [isActivateModalOpen, setIsActivateModalOpen] = useState(false)
+  const navRefSettings = useRef(null)
+  const [openTooltipSettings, setOpenTooltipSettings] = useState(false)
+  const open = Boolean()
 
   const handleOpenSettings = useCallback(() => {
-    setOpenTooltipSettings(true);
-  }, []);
+    setOpenTooltipSettings(true)
+  }, [])
 
   const handleCloseSettings = useCallback(() => {
-    setOpenTooltipSettings(false);
-  }, []);
-
+    setOpenTooltipSettings(false)
+  }, [])
 
   return (<>
     <Button

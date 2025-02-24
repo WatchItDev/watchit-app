@@ -1,25 +1,21 @@
-import { useState } from 'react';
-
-// MUI Imports
-import LoadingButton from '@mui/lab/LoadingButton';
-import { Stack, Box, Typography, TextField, Button } from '@mui/material';
-
-// Project Imports
-import { useBoolean } from "@src/hooks/use-boolean.ts";
-import ProcessSectionCard from '@src/components/process-section-card.tsx';
-import OwnershipProcessModal from "@src/components/modal.tsx";
+import { useState } from 'react'
+import { ERRORS } from '@notifications/errors.ts'
+import { INFO } from '@notifications/info.ts'
+import { notifyError, notifyInfo, notifySuccess } from '@notifications/internal-notifications.ts'
+import { SUCCESS } from '@notifications/success.ts'
+import LoadingButton from '@mui/lab/LoadingButton'
+import { Stack, Box, Typography, TextField, Button } from '@mui/material'
 // @ts-ignore
-import Ownership from '@src/assets/illustrations/ownership.svg';
-import Iconify from '@src/components/iconify';
-import { useRegisterAsset } from '@src/hooks/use-register-asset';
-import { notifyError, notifyInfo, notifySuccess } from '@notifications/internal-notifications.ts';
-import { SUCCESS } from '@notifications/success.ts';
-import { ERRORS } from '@notifications/errors.ts';
-import { INFO } from '@notifications/info.ts';
-import { useSubmitAssetToLens } from '@src/hooks/use-submit-assets-to-lens.ts';
-import NeonPaper from '@src/sections/publication/NeonPaperContainer.tsx';
-import { useGetAssetOwner } from '@src/hooks/use-get-asset-owner.ts';
-import { replacePrefix } from '@src/utils/wallet.ts';
+import Ownership from '@src/assets/illustrations/ownership.svg'
+import Iconify from '@src/components/iconify'
+import OwnershipProcessModal from "@src/components/modal.tsx"
+import ProcessSectionCard from '@src/components/process-section-card.tsx'
+import { useBoolean } from "@src/hooks/use-boolean.ts"
+import { useGetAssetOwner } from '@src/hooks/use-get-asset-owner.ts'
+import { useRegisterAsset } from '@src/hooks/use-register-asset'
+import { useSubmitAssetToLens } from '@src/hooks/use-submit-assets-to-lens.ts'
+import NeonPaper from '@src/sections/publication/NeonPaperContainer.tsx'
+import { replacePrefix } from '@src/utils/wallet.ts'
 
 /**
  * OwnershipProcess is a React functional component that manages the process of registering ownership.
@@ -33,15 +29,15 @@ import { replacePrefix } from '@src/utils/wallet.ts';
  * - Managing the modal visibility to handle the ownership registration process.
  */
 const OwnershipProcess = () => {
-  const confirmOwnership = useBoolean();
+  const confirmOwnership = useBoolean()
 
   const handleFinishOwnership = () => {
-    confirmOwnership.onFalse?.();
-  };
+    confirmOwnership.onFalse?.()
+  }
 
   const handleClickRegister = () => {
-    confirmOwnership.onTrue?.();
-  };
+    confirmOwnership.onTrue?.()
+  }
 
   return (
     <>
@@ -60,25 +56,25 @@ const OwnershipProcess = () => {
         renderContent={<OwnershipProcessContent onClose={handleFinishOwnership} />}
       />
     </>
-  );
-};
+  )
+}
 
 const OwnershipProcessContent = ({ onClose }: { onClose: () => void }) => {
-  const [hashes, setHashes] = useState<string>('');
-  const { registerAsset } = useRegisterAsset();
-  const { submitAssetToLens } = useSubmitAssetToLens();
-  const { fetchOwnerAddress } = useGetAssetOwner();
-  const [isProcessing, setIsProcessing] = useState(false);
-  const [progress, setProgress] = useState(0);
+  const [hashes, setHashes] = useState<string>('')
+  const { registerAsset } = useRegisterAsset()
+  const { submitAssetToLens } = useSubmitAssetToLens()
+  const { fetchOwnerAddress } = useGetAssetOwner()
+  const [isProcessing, setIsProcessing] = useState(false)
+  const [progress, setProgress] = useState(0)
   const hashesArray = hashes.split(',')
     .map(h => h.trim())
-    .filter(Boolean);
+    .filter(Boolean)
 
   const handleRegister = async () => {
-    if (!hashes) return;
+    if (!hashes) return
 
-    setProgress(1);
-    setIsProcessing(true);
+    setProgress(1)
+    setIsProcessing(true)
 
     try {
       for (const [index, hash] of hashesArray.entries()) {
@@ -88,38 +84,38 @@ const OwnershipProcessContent = ({ onClose }: { onClose: () => void }) => {
             index: index + 1,
             total: hashesArray.length,
             options: { autoHideDuration: 3000 }
-          }, '', { autoHideDuration: 3000 });
-          setProgress(index + 1);
+          }, '', { autoHideDuration: 3000 })
+          setProgress(index + 1)
 
-          const isTaken = await fetchOwnerAddress(hash);
+          const isTaken = await fetchOwnerAddress(hash)
 
           if (isTaken) {
-            notifyError(ERRORS.ASSET_ALREADY_REGISTERED_ERROR);
-            continue;
+            notifyError(ERRORS.ASSET_ALREADY_REGISTERED_ERROR)
+            continue
           }
 
           if (!isTaken) {
             // 2. Register ownership (if it fails, it does not continue)
-            await registerAsset(hash);
+            await registerAsset(hash)
           }
 
           // 3. Upload to Lens only if registration was successful
-          await submitAssetToLens(replacePrefix(hash));
-          notifySuccess(SUCCESS.OWNERSHIP_REGISTERED_SUCCESSFULLY, { count: index + 1 });
+          await submitAssetToLens(replacePrefix(hash))
+          notifySuccess(SUCCESS.OWNERSHIP_REGISTERED_SUCCESSFULLY, { count: index + 1 })
         } catch (error) {
-          notifyError(ERRORS.ASSET_OWNERSHIP_REGISTER_ERROR, { hash: `${index + 1}/${hashesArray.length}` });
-          continue; // Continue with the next hash
+          notifyError(ERRORS.ASSET_OWNERSHIP_REGISTER_ERROR, { hash: `${index + 1}/${hashesArray.length}` })
+          continue // Continue with the next hash
         }
       }
     } catch (error) {
-      notifyError(ERRORS.ASSET_OWNERSHIP_REGISTER_ERROR);
+      notifyError(ERRORS.ASSET_OWNERSHIP_REGISTER_ERROR)
     } finally {
-      setIsProcessing(false);
-      onClose();
+      setIsProcessing(false)
+      onClose()
     }
-  };
+  }
 
-  const RainbowEffect = isProcessing ? NeonPaper : Box;
+  const RainbowEffect = isProcessing ? NeonPaper : Box
 
   return (
     <Stack direction="column" sx={{ pb: 3, pt: 2, mt: 1, borderTop: '1px dashed rgba(145, 158, 171, 0.5)' }}>
@@ -173,7 +169,7 @@ const OwnershipProcessContent = ({ onClose }: { onClose: () => void }) => {
         </RainbowEffect>
       </Stack>
     </Stack>
-  );
-};
+  )
+}
 
-export default OwnershipProcess;
+export default OwnershipProcess

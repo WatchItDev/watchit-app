@@ -1,36 +1,25 @@
-// REACT IMPORTS
-import React from 'react';
-
-// MUI IMPORTS
-import { Modal, Box, Fade, Backdrop } from '@mui/material';
-
-// LOCAL IMPORTS
-import { ProfileFormView } from '@src/components/login-modal/profile-form-view.tsx';
+import React from 'react'
 // @ts-ignore
-import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
-import { useSelector } from 'react-redux';
-
-// Notifications
-import { notifySuccess } from '@notifications/internal-notifications.ts';
-import { SUCCESS } from '@notifications/success.ts';
-
-// ----------------------------------------------------------------------
+import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads'
+import { notifySuccess } from '@notifications/internal-notifications.ts'
+import { SUCCESS } from '@notifications/success.ts'
+import { useSelector } from 'react-redux'
+import { Modal, Box, Fade, Backdrop } from '@mui/material'
+import { ProfileFormView } from '@src/components/login-modal/profile-form-view.tsx'
 
 interface UpdateModalProps {
   open: boolean;
   onClose: () => void;
 }
 
-// ----------------------------------------------------------------------
-
 export const UpdateModal: React.FC<UpdateModalProps> = ({ open, onClose }) => {
-  const loading = useSelector((state: any) => state.auth.isSessionLoading);
-  const sessionData = useSelector((state: any) => state.auth.session);
+  const loading = useSelector((state: any) => state.auth.isSessionLoading)
+  const sessionData = useSelector((state: any) => state.auth.session)
 
   const handleProfileUpdateSuccess = () => {
-    notifySuccess(SUCCESS.PROFILE_UPDATED_SUCCESSFULLY);
-    onClose?.();
-  };
+    notifySuccess(SUCCESS.PROFILE_UPDATED_SUCCESSFULLY)
+    onClose?.()
+  }
 
   return (
     <>
@@ -88,5 +77,5 @@ export const UpdateModal: React.FC<UpdateModalProps> = ({ open, onClose }) => {
         </Fade>
       </Modal>
     </>
-  );
-};
+  )
+}

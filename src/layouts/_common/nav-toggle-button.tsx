@@ -1,34 +1,27 @@
-// @mui
-import { useTheme } from '@mui/material/styles';
-import IconButton, { IconButtonProps } from '@mui/material/IconButton';
-// hooks
-import { useResponsive } from '@src/hooks/use-responsive';
-// theme
-import { bgBlur } from '@src/theme/css';
-// components
-import Iconify from '@src/components/iconify';
-// redux
-import { useDispatch, useSelector } from 'react-redux';
-import { setCollapsed, toggleMinibar } from '@redux/minibar';
-import { NAV } from '../config-layout';
-
-// ----------------------------------------------------------------------
+import { setCollapsed, toggleMinibar } from '@redux/minibar'
+import { useDispatch, useSelector } from 'react-redux'
+import IconButton, { IconButtonProps } from '@mui/material/IconButton'
+import { useTheme } from '@mui/material/styles'
+import { NAV } from '../config-layout'
+import Iconify from '@src/components/iconify'
+import { useResponsive } from '@src/hooks/use-responsive'
+import { bgBlur } from '@src/theme/css'
 
 export default function NavToggleButton({ sx, ...other }: IconButtonProps) {
-  const theme = useTheme();
-  const dispatch = useDispatch();
-  const lgUp = useResponsive('up', 'lg');
+  const theme = useTheme()
+  const dispatch = useDispatch()
+  const lgUp = useResponsive('up', 'lg')
   // @ts-ignore
-  const minibarState = useSelector((state) => state.minibar.state);
+  const minibarState = useSelector((state) => state.minibar.state)
 
   if (!lgUp) {
-    return null;
+    return null
   }
 
   const handleToggleMinibar = () => {
-    dispatch(setCollapsed(true));
-    dispatch(toggleMinibar());
-  };
+    dispatch(setCollapsed(true))
+    dispatch(toggleMinibar())
+  }
 
   return (
     <IconButton
@@ -56,5 +49,5 @@ export default function NavToggleButton({ sx, ...other }: IconButtonProps) {
         }
       />
     </IconButton>
-  );
+  )
 }

@@ -1,135 +1,127 @@
-import { useEffect, useState } from 'react';
-// @mui
-import Tab from '@mui/material/Tab';
-import Container from '@mui/material/Container';
-import Tabs, { tabsClasses } from '@mui/material/Tabs';
+import { useEffect, useState } from 'react'
+import { useLazyProfile, useProfileFollowers, useProfileFollowing } from '@lens-protocol/react'
+import { appId, ProfileId, PublicationType, usePublications } from '@lens-protocol/react-web'
+import { setFollowers, setFollowings } from '@redux/followers'
+import { useSelector, useDispatch } from 'react-redux'
+import { Address } from 'viem'
+import Alert from '@mui/material/Alert'
+import Container from '@mui/material/Container'
+import Tab from '@mui/material/Tab'
+import Tabs, { tabsClasses } from '@mui/material/Tabs'
+import Label from '../../../components/label'
+import ProfileFollowers from '../profile-followers'
+import ProfileFollowing from '../profile-following'
+import ProfileHeader from '../profile-header'
+import ProfileHome from '../profile-home'
+import { LoadingScreen } from '@src/components/loading-screen'
+import { useSettingsContext } from '@src/components/settings'
 
-// components
-import { useSettingsContext } from '@src/components/settings';
-import { useLazyProfile, useProfileFollowers, useProfileFollowing } from '@lens-protocol/react';
-import { appId, ProfileId, PublicationType, usePublications } from '@lens-protocol/react-web';
-import ProfileHome from '../profile-home';
-import ProfileFollowers from '../profile-followers';
-import ProfileFollowing from '../profile-following';
-import ProfileHeader from '../profile-header';
-import Label from '../../../components/label';
-import { LoadingScreen } from '@src/components/loading-screen';
-
-// redux
-import { useSelector, useDispatch } from 'react-redux';
+import { GLOBAL_CONSTANTS } from '@src/config-global.ts'
+import { useIsPolicyAuthorized } from '@src/hooks/use-is-policy-authorized.ts'
+import useReferrals from "@src/hooks/use-referrals.ts"
 // @ts-ignore
-import { RootState } from '@src/redux/store';
-import { setFollowers, setFollowings } from '@redux/followers';
-import ProfileReferrals from "@src/sections/user/profile-referrals.tsx";
-import useReferrals from "@src/hooks/use-referrals.ts";
-import Alert from '@mui/material/Alert';
-import { useIsPolicyAuthorized } from '@src/hooks/use-is-policy-authorized.ts';
-import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
-import { Address } from 'viem';
-import {filterHiddenProfiles} from "@src/utils/profile.ts";
-
-// ----------------------------------------------------------------------
+import { RootState } from '@src/redux/store'
+import ProfileReferrals from "@src/sections/user/profile-referrals.tsx"
+import {filterHiddenProfiles} from "@src/utils/profile.ts"
 
 const TABS = [
   { value: 'publications', label: 'Publications' },
   { value: 'followers', label: 'Followers' },
   { value: 'following', label: 'Following' },
   { value: 'referrals', label: 'Referrals' },
-];
-
-// ----------------------------------------------------------------------
+]
 
 const UserProfileView = ({ id }: any) => {
-  const dispatch = useDispatch();
-  const settings = useSettingsContext();
-  const [currentTab, setCurrentTab] = useState('publications');
-  const sessionData = useSelector((state: any) => state.auth.session);
-  const { called, data: profile, loading: loadingProfile, execute } = useLazyProfile();
+  const dispatch = useDispatch()
+  const settings = useSettingsContext()
+  const [currentTab, setCurrentTab] = useState('publications')
+  const sessionData = useSelector((state: any) => state.auth.session)
+  const { called, data: profile, loading: loadingProfile, execute } = useLazyProfile()
   const { data: publications, loading: loadingPublications } = usePublications({
     where: {
       from: profile?.id ? [profile.id] : [],
       publicationTypes: [PublicationType.Post],
       metadata: { publishedOn: [appId('watchit')] },
     },
-  });
+  })
   const { isAuthorized, loading: authorizedLoading } = useIsPolicyAuthorized(
     GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS,
     profile?.ownedBy?.address as Address
-  );
+  )
 
-  const { invitations: referrals, fetchInvitations, loading: loadingReferrals } = useReferrals();
+  const { invitations: referrals, fetchInvitations, loading: loadingReferrals } = useReferrals()
 
   const { data: followers } = useProfileFollowers({
     // @ts-ignore
     of: profile?.id,
-  });
+  })
 
   const { data: following } = useProfileFollowing({
     // @ts-ignore
     for: profile?.id,
-  });
+  })
 
   useEffect(() => {
     (async () => {
-      if (id !== profile?.id || !called) await execute({ forProfileId: id as ProfileId });
-    })();
-  }, [profile?.id, id]);
+      if (id !== profile?.id || !called) await execute({ forProfileId: id as ProfileId })
+    })()
+  }, [profile?.id, id])
 
   useEffect(() => {
     if (profile) {
-      dispatch(setFollowers(filterHiddenProfiles(followers) ?? []));
+      dispatch(setFollowers(filterHiddenProfiles(followers) ?? []))
     }
-  }, [profile, followers, dispatch]);
+  }, [profile, followers, dispatch])
 
   useEffect(() => {
     if (profile) {
-      dispatch(setFollowings(filterHiddenProfiles(following) ?? []));
+      dispatch(setFollowings(filterHiddenProfiles(following) ?? []))
     }
-  }, [profile, following, dispatch]);
+  }, [profile, following, dispatch])
 
   // Call the fetchInvitations function
   useEffect(() => {
     if (profile) {
-      fetchInvitations(profile.id);
+      fetchInvitations(profile.id)
     }
-  }, [profile]);
+  }, [profile])
 
-  const followersStore = useSelector((state: RootState) => state.followers.followers);
-  const followingsStore = useSelector((state: RootState) => state.followers.followings);
+  const followersStore = useSelector((state: RootState) => state.followers.followers)
+  const followingsStore = useSelector((state: RootState) => state.followers.followings)
 
   const counts: any = {
     publications: publications?.length ?? 0,
     followers: followersStore.length ?? 0,
     following: followingsStore.length ?? 0,
     referrals: referrals?.length ?? 0,
-  };
+  }
 
   const handleChangeTab = (_event: any, newValue: any) => {
-    setCurrentTab(newValue);
-  };
+    setCurrentTab(newValue)
+  }
 
   const handleUpdateProfile = () => {
-    execute({ forProfileId: id as ProfileId });
-  };
+    execute({ forProfileId: id as ProfileId })
+  }
 
   const tabsWithCounts = TABS.filter((tab) => {
-    return !(tab.value === 'referrals' && sessionData?.profile?.id !== id);
+    return !(tab.value === 'referrals' && sessionData?.profile?.id !== id)
   }).map((tab: any) => ({
     ...tab,
     key: tab.value,
     count: counts[tab.value],
-  }));
+  }))
 
   if (loadingProfile || loadingPublications) return (
     <LoadingScreen />
-  );
+  )
 
   const showSubscriptionAlert =
     sessionData?.authenticated &&
     sessionData?.profile?.id === profile?.id &&
     (publications?.length ?? 0) >= 1 &&
     !isAuthorized &&
-    !authorizedLoading;
+    !authorizedLoading
 
   return (
     <Container maxWidth={settings.themeStretch ? false : 'lg'} sx={{ overflowX: 'hidden' }}>
@@ -178,8 +170,8 @@ const UserProfileView = ({ id }: any) => {
       {currentTab === 'following' && profile && <ProfileFollowing />}
       {currentTab === 'referrals' && sessionData?.profile?.id === id && <ProfileReferrals referrals={referrals} loading={loadingReferrals}  />}
     </Container>
-  );
-};
+  )
+}
 
 const TabLabel = ({ label, count }: any) => (
   <>
@@ -188,6 +180,6 @@ const TabLabel = ({ label, count }: any) => (
       <Label sx={{ px: 0.75, ml: 1, fontSize: 12, color: 'text.secondary' }}>{count}</Label>
     )}
   </>
-);
+)
 
-export default UserProfileView;
+export default UserProfileView

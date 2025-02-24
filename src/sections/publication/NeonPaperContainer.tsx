@@ -1,9 +1,8 @@
-import { FC, ReactNode } from 'react';
-
-import { Paper, styled } from '@mui/material';
-import { PaperProps } from '@mui/material/Paper';
-import { SxProps, Theme } from '@mui/material/styles';
-import { COLORS } from '@src/layouts/config-layout.ts';
+import { FC, ReactNode } from 'react'
+import { Paper, styled } from '@mui/material'
+import { PaperProps } from '@mui/material/Paper'
+import { SxProps, Theme } from '@mui/material/styles'
+import { COLORS } from '@src/layouts/config-layout.ts'
 
 interface NeonPaperProps {
   children: ReactNode;
@@ -75,7 +74,7 @@ ${colors?.join(', ') || '#1e87ff, #5c13c4, #ff0033, #ffda00, #64bc26, #1e87ff'}
     '0%': { transform: 'rotate(0deg)' },
     '100%': { transform: 'rotate(360deg)' },
   },
-}));
+}))
 
 const defaultColors = [
   'rgba(30,135,255,0.5)',
@@ -84,8 +83,8 @@ const defaultColors = [
   'rgba(255,218,0,0.5)',
   'rgba(100,188,38,0.5)',
   'rgba(30,135,255,0.5)',
-];
-const defaultAnimationSpeed = '2s';
+]
+const defaultAnimationSpeed = '2s'
 
 const NeonPaper: FC<NeonPaperProps> = ({
   children,
@@ -112,7 +111,7 @@ const NeonPaper: FC<NeonPaperProps> = ({
       </div>
       <div className="content">{children}</div>
     </NeonPaperContainer>
-  );
-};
+  )
+}
 
-export default NeonPaper;
+export default NeonPaper

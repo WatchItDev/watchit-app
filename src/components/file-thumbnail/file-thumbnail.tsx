@@ -1,12 +1,9 @@
-import { Theme, SxProps } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
-import Tooltip from '@mui/material/Tooltip';
-//
-import { fileData, fileFormat, fileThumb } from './utils';
-import DownloadButton from './download-button';
-
-// ----------------------------------------------------------------------
+import Box from '@mui/material/Box'
+import Stack from '@mui/material/Stack'
+import { Theme, SxProps } from '@mui/material/styles'
+import Tooltip from '@mui/material/Tooltip'
+import DownloadButton from './download-button'
+import { fileData, fileFormat, fileThumb } from './utils'
 
 type FileIconProps = {
   file: File | string;
@@ -25,9 +22,9 @@ export default function FileThumbnail({
   sx,
   imgSx,
 }: FileIconProps) {
-  const { name = '', path = '', preview = '' } = fileData(file);
+  const { name = '', path = '', preview = '' } = fileData(file)
 
-  const format = fileFormat(path || preview);
+  const format = fileFormat(path || preview)
 
   const renderContent =
     format === 'image' && imageView ? (
@@ -53,7 +50,7 @@ export default function FileThumbnail({
           ...sx,
         }}
       />
-    );
+    )
 
   if (tooltip) {
     return (
@@ -72,7 +69,7 @@ export default function FileThumbnail({
           {onDownload && <DownloadButton onDownload={onDownload} />}
         </Stack>
       </Tooltip>
-    );
+    )
   }
 
   return (
@@ -80,5 +77,5 @@ export default function FileThumbnail({
       {renderContent}
       {onDownload && <DownloadButton onDownload={onDownload} />}
     </>
-  );
+  )
 }

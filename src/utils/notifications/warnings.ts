@@ -20,4 +20,4 @@ export const WARNING_MESSAGES: Record<WARNING, string> = {
   [WARNING.INVALID_WITHDRAW_AMOUNT]: 'Invalid withdraw amount.',
   [WARNING.INVALID_WALLET_ADDRESS]: 'Invalid wallet address.',
   [WARNING.BUNDLER_UNAVAILABLE]: 'Session expired. Please login again.',
-};
+}

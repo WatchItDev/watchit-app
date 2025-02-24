@@ -1,6 +1,4 @@
-import { Theme } from '@mui/material/styles';
-
-// ----------------------------------------------------------------------
+import { Theme } from '@mui/material/styles'
 
 export function skeleton(theme: Theme) {
   return {
@@ -14,5 +12,5 @@ export function skeleton(theme: Theme) {
         },
       },
     },
-  };
+  }
 }

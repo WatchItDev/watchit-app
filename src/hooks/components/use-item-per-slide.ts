@@ -1,6 +1,6 @@
-import { useState, useEffect, useRef } from 'react';
-import { calculateItemsPerSlide } from '@src/utils/components/carousel';
-import { UseItemsPerSlideProps, UseItemsPerSlideReturn } from './types';
+import { useState, useEffect, useRef } from 'react'
+import { UseItemsPerSlideProps, UseItemsPerSlideReturn } from './types'
+import { calculateItemsPerSlide } from '@src/utils/components/carousel'
 
 /**
  * Hook that calculates the optimal number of items per slide based on the width of the parent container
@@ -21,34 +21,34 @@ import { UseItemsPerSlideProps, UseItemsPerSlideReturn } from './types';
  */
 
 export function useItemsPerSlide({ minItemWidth, maxItemWidth }: UseItemsPerSlideProps): UseItemsPerSlideReturn {
-  const [itemsPerSlide, setItemsPerSlide] = useState(1);
-  const parentRef = useRef<HTMLDivElement>(null);
+  const [itemsPerSlide, setItemsPerSlide] = useState(1)
+  const parentRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    if (!parentRef.current) return;
+    if (!parentRef.current) return
 
     const observer = new ResizeObserver((entries) => {
       for (let entry of entries) {
-        const parentWidth = entry.contentRect.width;
-        const items = calculateItemsPerSlide({ parentWidth, minItemWidth, maxItemWidth });
-        setItemsPerSlide(items);
+        const parentWidth = entry.contentRect.width
+        const items = calculateItemsPerSlide({ parentWidth, minItemWidth, maxItemWidth })
+        setItemsPerSlide(items)
       }
-    });
+    })
 
-    observer.observe(parentRef.current);
+    observer.observe(parentRef.current)
 
     return () => {
-      observer.disconnect();
-    };
-  }, [minItemWidth, maxItemWidth]);
+      observer.disconnect()
+    }
+  }, [minItemWidth, maxItemWidth])
 
   useEffect(() => {
     if (parentRef.current) {
-      const parentWidth = parentRef.current.offsetWidth;
-      const items = calculateItemsPerSlide({ parentWidth, minItemWidth, maxItemWidth });
-      setItemsPerSlide(items);
+      const parentWidth = parentRef.current.offsetWidth
+      const items = calculateItemsPerSlide({ parentWidth, minItemWidth, maxItemWidth })
+      setItemsPerSlide(items)
     }
-  }, [minItemWidth, maxItemWidth]);
+  }, [minItemWidth, maxItemWidth])
 
-  return { itemsPerSlide, parentRef };
+  return { itemsPerSlide, parentRef }
 }

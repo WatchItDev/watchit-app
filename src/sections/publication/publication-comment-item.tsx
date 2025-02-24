@@ -1,52 +1,50 @@
-import { useEffect, useState, lazy, Suspense } from 'react';
-import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
-import Button from '@mui/material/Button';
-import Paper from '@mui/material/Paper';
-import PublicationCommentForm from './publication-details-comment-form';
-import { paths } from '../../routes/paths';
-import { useRouter } from '@src/routes/hooks';
-import { CircularProgress } from '@mui/material';
+import { useEffect, useState, lazy, Suspense } from 'react'
+import { useHidePublication } from '@lens-protocol/react'
+import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads'
+import {
+  hasReacted,
+  PublicationReactionType,
+  useReactionToggle,
+} from '@lens-protocol/react-web'
+import { openLoginModal } from '@redux/auth'
+import { hiddeComment } from '@redux/comments'
+import { incrementCounterLikes, decrementCounterLikes, setCounterLikes } from '@redux/comments'
+import { RootState } from '@redux/store'
 import {
   IconDots,
   IconHeart,
   IconHeartFilled,
   IconMessageCircle,
   IconMessageCircleFilled,
-} from '@tabler/icons-react';
-import Typography from '@mui/material/Typography';
-import {
-  hasReacted,
-  PublicationReactionType,
-  useReactionToggle,
-} from '@lens-protocol/react-web';
-import RepliesList from '@src/sections/publication/publication-replies-list.tsx';
-import { timeAgo } from '@src/utils/comment.ts';
-import { openLoginModal } from '@redux/auth';
+} from '@tabler/icons-react'
+import { useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
+import { CircularProgress } from '@mui/material'
+import Box from '@mui/material/Box'
+import Button from '@mui/material/Button'
+import Paper from '@mui/material/Paper'
+import Stack from '@mui/material/Stack'
+import Typography from '@mui/material/Typography'
+import PublicationCommentForm from './publication-details-comment-form'
+import { paths } from '../../routes/paths'
+import AvatarProfile from "@src/components/avatar/avatar.tsx"
+import { useNotificationPayload } from '@src/hooks/use-notification-payload.ts'
+import { useNotifications } from '@src/hooks/use-notifications.ts'
+import { useRouter } from '@src/routes/hooks'
+import NeonPaperContainer from '@src/sections/publication/NeonPaperContainer.tsx'
+import RepliesList from '@src/sections/publication/publication-replies-list.tsx'
+import { timeAgo } from '@src/utils/comment.ts'
 // @ts-ignore
-import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
-import { useDispatch } from 'react-redux';
 
-import { useHidePublication } from '@lens-protocol/react';
-import { hiddeComment } from '@redux/comments';
-import { useNotificationPayload } from '@src/hooks/use-notification-payload.ts';
-import { useNotifications } from '@src/hooks/use-notifications.ts';
-import { useSelector } from 'react-redux';
 // @ts-ignore
-import { RootState } from '@redux/store';
-import { incrementCounterLikes, decrementCounterLikes, setCounterLikes } from '@redux/comments';
-import NeonPaperContainer from '@src/sections/publication/NeonPaperContainer.tsx';
-import AvatarProfile from "@src/components/avatar/avatar.tsx";
 
 // Components Lazy
-const LazyPopover = lazy(() => import('@mui/material/Popover'));
-const LazyMenuItem = lazy(() => import('@mui/material/MenuItem'));
-const LazyDialog = lazy(() => import('@mui/material/Dialog'));
-const LazyDialogTitle = lazy(() => import('@mui/material/DialogTitle'));
-const LazyDialogContent = lazy(() => import('@mui/material/DialogContent'));
-const LazyDialogActions = lazy(() => import('@mui/material/DialogActions'));
-
-// ----------------------------------------------------------------------
+const LazyPopover = lazy(() => import('@mui/material/Popover'))
+const LazyMenuItem = lazy(() => import('@mui/material/MenuItem'))
+const LazyDialog = lazy(() => import('@mui/material/Dialog'))
+const LazyDialogTitle = lazy(() => import('@mui/material/DialogTitle'))
+const LazyDialogContent = lazy(() => import('@mui/material/DialogContent'))
+const LazyDialogActions = lazy(() => import('@mui/material/DialogActions'))
 
 type Props = {
   comment: any;
@@ -55,29 +53,29 @@ type Props = {
 };
 
 export default function PublicationCommentItem({ comment, hasReply, canReply }: Props) {
-  const isPendingComment = !!comment?.uri;
+  const isPendingComment = !!comment?.uri
 
-  const ContentContainer = isPendingComment ? NeonPaperContainer : Paper;
+  const ContentContainer = isPendingComment ? NeonPaperContainer : Paper
 
-  const [openConfirmModal, setOpenConfirmModal] = useState(false);
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const openMenu = Boolean(anchorEl);
-  const router = useRouter();
-  const { execute: toggle, loading: loadingLike } = useReactionToggle();
+  const [openConfirmModal, setOpenConfirmModal] = useState(false)
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+  const openMenu = Boolean(anchorEl)
+  const router = useRouter()
+  const { execute: toggle, loading: loadingLike } = useReactionToggle()
   const [hasLiked, setHasLiked] = useState(
     hasReacted({ publication: comment, reaction: PublicationReactionType.Upvote })
-  );
-  const { execute: hide } = useHidePublication();
-  const [showComments, setShowComments] = useState(false);
-  const sessionData = useSelector((state: any) => state.auth.session);
-  const dispatch = useDispatch();
-  const { sendNotification } = useNotifications();
-  const { generatePayload } = useNotificationPayload(sessionData);
+  )
+  const { execute: hide } = useHidePublication()
+  const [showComments, setShowComments] = useState(false)
+  const sessionData = useSelector((state: any) => state.auth.session)
+  const dispatch = useDispatch()
+  const { sendNotification } = useNotifications()
+  const { generatePayload } = useNotificationPayload(sessionData)
 
-  const likes = useSelector((state: RootState) => state.comments.counterLikes[comment.id] ?? 0);
+  const likes = useSelector((state: RootState) => state.comments.counterLikes[comment.id] ?? 0)
 
   const toggleReaction = async () => {
-    if (!sessionData?.authenticated) return dispatch(openLoginModal());
+    if (!sessionData?.authenticated) return dispatch(openLoginModal())
 
     try {
       await toggle({
@@ -98,40 +96,40 @@ export default function PublicationCommentItem({ comment, hasReply, canReply }: 
             comment_id: comment?.id,
             rawDescription: `${sessionData?.profile?.metadata?.displayName} liked your comment`,
           }
-        );
+        )
 
         if (!hasLiked) {
-          dispatch(incrementCounterLikes(comment.id));
+          dispatch(incrementCounterLikes(comment.id))
         } else {
-          dispatch(decrementCounterLikes(comment.id));
+          dispatch(decrementCounterLikes(comment.id))
         }
 
         if (!hasLiked && comment?.by?.id !== sessionData?.profile?.id) {
-          sendNotification(comment?.by?.id, sessionData?.profile?.id, notificationPayload);
+          sendNotification(comment?.by?.id, sessionData?.profile?.id, notificationPayload)
         }
-      });
-      setHasLiked(!hasLiked); // Toggle the UI based on the reaction state
+      })
+      setHasLiked(!hasLiked) // Toggle the UI based on the reaction state
     } catch (err) {
-      console.error('Error toggling reaction:', err);
+      console.error('Error toggling reaction:', err)
     }
-  };
+  }
 
   const goToProfile = () => {
-    if (!comment?.by?.id) return;
+    if (!comment?.by?.id) return
 
-    router.push(paths.dashboard.user.root(`${comment?.by?.id}`));
-  };
+    router.push(paths.dashboard.user.root(`${comment?.by?.id}`))
+  }
 
   const handleHide = async () => {
-    await hide({ publication: comment });
-    dispatch(hiddeComment(comment));
-  };
+    await hide({ publication: comment })
+    dispatch(hiddeComment(comment))
+  }
 
   useEffect(() => {
     if (comment?.stats?.upvotes !== undefined) {
-      dispatch(setCounterLikes({ publicationId: comment.id, likes: comment.stats.upvotes }));
+      dispatch(setCounterLikes({ publicationId: comment.id, likes: comment.stats.upvotes }))
     }
-  }, [comment?.stats?.upvotes, comment.id, dispatch]);
+  }, [comment?.stats?.upvotes, comment.id, dispatch])
 
   return (
     <Stack
@@ -210,8 +208,8 @@ export default function PublicationCommentItem({ comment, hasReply, canReply }: 
                   {comment?.by?.id === sessionData?.profile?.id && (
                     <LazyMenuItem
                       onClick={() => {
-                        setOpenConfirmModal(true);
-                        setAnchorEl(null);
+                        setOpenConfirmModal(true)
+                        setAnchorEl(null)
                       }}
                     >
                       Hide
@@ -379,8 +377,8 @@ export default function PublicationCommentItem({ comment, hasReply, canReply }: 
                 variant="contained"
                 sx={{ backgroundColor: '#fff' }}
                 onClick={() => {
-                  handleHide();
-                  setOpenConfirmModal(false);
+                  handleHide()
+                  setOpenConfirmModal(false)
                 }}
               >
                 Confirm
@@ -390,5 +388,5 @@ export default function PublicationCommentItem({ comment, hasReply, canReply }: 
         )}
       </Suspense>
     </Stack>
-  );
+  )
 }

@@ -1,11 +1,7 @@
-import { m } from 'framer-motion';
-// @mui
-import { alpha } from '@mui/material/styles';
-import Box, { BoxProps } from '@mui/material/Box';
-//
-import Logo from '../logo';
-
-// ----------------------------------------------------------------------
+import { m } from 'framer-motion'
+import Box, { BoxProps } from '@mui/material/Box'
+import { alpha } from '@mui/material/styles'
+import Logo from '../logo'
 
 export default function SplashScreen({ sx, ...other }: BoxProps) {
   return (
@@ -80,5 +76,5 @@ export default function SplashScreen({ sx, ...other }: BoxProps) {
         />
       </>
     </Box>
-  );
+  )
 }

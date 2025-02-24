@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
-import { supabase } from '@src/utils/supabase';
-import { useSelector } from 'react-redux';
+import { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
+import { supabase } from '@src/utils/supabase'
 
 export type TransactionType = {
   id: number;
@@ -56,23 +56,23 @@ export type TransactionsDataResponseHook = {
 };
 
 export const useTransactionData = (): TransactionsDataResponseHook => {
-  const [data, setData] = useState<TransactionData[]>([]);
-  const [rawData, setRawData] = useState<TransactionType[]>([]);
-  const sessionData = useSelector((state: any) => state.auth.session);
+  const [data, setData] = useState<TransactionData[]>([])
+  const [rawData, setRawData] = useState<TransactionType[]>([])
+  const sessionData = useSelector((state: any) => state.auth.session)
 
   useEffect(() => {
     const fetchData = async () => {
-      if (!sessionData?.profile?.id) return;
+      if (!sessionData?.profile?.id) return
 
       const { data: transactions, error } = await supabase
         .from('transactions')
         .select('*')
         .or(`receiver_id.eq.${sessionData?.profile?.id},sender_id.eq.${sessionData?.profile?.id}`)
-        .order('created_at', { ascending: true });
+        .order('created_at', { ascending: true })
 
       if (error) {
-        console.error('Error fetching transactions:', error);
-        return;
+        console.error('Error fetching transactions:', error)
+        return
       }
 
       const processedTransactions = transactions.map((transaction: TransactionType) => ({
@@ -81,32 +81,32 @@ export const useTransactionData = (): TransactionsDataResponseHook => {
           ...transaction.payload,
           type: transaction.sender_id === sessionData?.profile?.id ? 'Outcome' : 'Income',
         },
-      }));
+      }))
 
-      setRawData(processedTransactions);
+      setRawData(processedTransactions)
 
       const groupedData = transactions.reduce(
         (acc: Record<string, TransactionData>, transaction) => {
-          const date = new Date(transaction.created_at).toISOString().split('T')[0];
+          const date = new Date(transaction.created_at).toISOString().split('T')[0]
           if (!acc[date]) {
-            acc[date] = { date, income: 0, expenses: 0 };
+            acc[date] = { date, income: 0, expenses: 0 }
           }
           if (transaction.receiver_id === sessionData.profile.id) {
-            acc[date].income += transaction.payload.amount;
+            acc[date].income += transaction.payload.amount
           }
           if (transaction.sender_id === sessionData.profile.id) {
-            acc[date].expenses += transaction.payload.amount;
+            acc[date].expenses += transaction.payload.amount
           }
-          return acc;
+          return acc
         },
         {}
-      );
+      )
 
-      setData(Object.values(groupedData));
-    };
+      setData(Object.values(groupedData))
+    }
 
-    fetchData().then((r) => console.log(r));
-  }, [sessionData]);
+    fetchData().then((r) => console.log(r))
+  }, [sessionData])
 
-  return { data, rawData };
-};
+  return { data, rawData }
+}

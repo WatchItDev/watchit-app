@@ -1,16 +1,11 @@
-// REACT IMPORTS
-import { FC } from 'react';
-
-// MUI IMPORTS
-import { Box } from '@mui/system';
-
-// LOCAL IMPORTS
-import { LoadingScreen } from '@src/components/loading-screen';
+import { FC } from 'react'
+import { Box } from '@mui/system'
+import { LoadingScreen } from '@src/components/loading-screen'
 
 const FinanceMetamaskLoader: FC = () => {
   return <Box sx={{ mx: 4, my: 8 }}>
     <LoadingScreen />
-  </Box>;
-};
+  </Box>
+}
 
-export default FinanceMetamaskLoader;
+export default FinanceMetamaskLoader

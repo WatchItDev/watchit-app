@@ -1,7 +1,4 @@
-// @mui
-import { Theme, SxProps } from '@mui/material/styles';
-
-// ----------------------------------------------------------------------
+import { Theme, SxProps } from '@mui/material/styles'
 
 export interface Poster {
   id: string;

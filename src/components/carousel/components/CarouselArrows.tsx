@@ -1,14 +1,12 @@
-import Stack from '@mui/material/Stack';
-import IconButton from '@mui/material/IconButton';
-import { styled, alpha } from '@mui/material/styles';
+import IconButton from '@mui/material/IconButton'
+import Stack from '@mui/material/Stack'
+import { styled, alpha } from '@mui/material/styles'
+import { LeftIcon, RightIcon } from './CarouselArrowIcons.tsx'
 import {
   CarouselArrowsProps,
   CarouselArrowsStyledIconButtonProps,
-} from '@src/components/carousel/types.ts';
-import {useIsRTL} from "@src/hooks/components/use-rtl.ts";
-import { LeftIcon, RightIcon } from './CarouselArrowIcons.tsx';
-
-// ----------------------------------------------------------------------
+} from '@src/components/carousel/types.ts'
+import {useIsRTL} from "@src/hooks/components/use-rtl.ts"
 
 const StyledIconButton = styled(IconButton, {
   shouldForwardProp: (prop) => prop !== 'filled' && prop !== 'hasChild' && prop !== 'shape',
@@ -40,9 +38,7 @@ const StyledIconButton = styled(IconButton, {
     position: 'absolute',
     marginTop: theme.spacing(-2.5),
   }),
-}));
-
-// ----------------------------------------------------------------------
+}))
 
 export default function CarouselArrows(props: Readonly<CarouselArrowsProps>) {
   const {
@@ -56,10 +52,10 @@ export default function CarouselArrows(props: Readonly<CarouselArrowsProps>) {
     rightButtonProps,
     sx,
     ...other
-  } = props;
-  const isRTL = useIsRTL();
+  } = props
+  const isRTL = useIsRTL()
 
-  const hasChild = !!children;
+  const hasChild = !!children
 
   if (hasChild) {
     return (
@@ -98,7 +94,7 @@ export default function CarouselArrows(props: Readonly<CarouselArrowsProps>) {
           </StyledIconButton>
         )}
       </Stack>
-    );
+    )
   }
 
   return (
@@ -111,5 +107,5 @@ export default function CarouselArrows(props: Readonly<CarouselArrowsProps>) {
         <RightIcon icon={icon} isRTL={isRTL} />
       </StyledIconButton>
     </Stack>
-  );
+  )
 }

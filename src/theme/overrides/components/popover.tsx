@@ -1,9 +1,6 @@
-import { Theme } from '@mui/material/styles';
-import { listClasses } from '@mui/material/List';
-//
-import { paper } from '../../css';
-
-// ----------------------------------------------------------------------
+import { listClasses } from '@mui/material/List'
+import { Theme } from '@mui/material/styles'
+import { paper } from '../../css'
 
 export function popover(theme: Theme) {
   return {
@@ -18,5 +15,5 @@ export function popover(theme: Theme) {
         },
       },
     },
-  };
+  }
 }
