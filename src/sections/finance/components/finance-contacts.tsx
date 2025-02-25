@@ -24,12 +24,12 @@ interface Props extends CardProps {
 }
 
 export default function FinanceContactsCarousel({
-  title,
-  subheader,
-  list,
-  chunkSize = 5,
-  ...other
-}: Props) {
+                                                  title,
+                                                  subheader,
+                                                  list,
+                                                  chunkSize = 5,
+                                                  ...other
+                                                }: Props) {
   const router = useRouter()
   const dispatch = useDispatch()
 
@@ -55,19 +55,19 @@ export default function FinanceContactsCarousel({
     })
   }
 
-  const handleClick = (address: string, profileId: string) => {
-    dispatch(toggleRainbow())
-    dispatch(storeAddress({ address, profileId }))
+  const handleClick = (address: string, profileId: string, dispatchParam: any) => {
+    dispatchParam(toggleRainbow())
+    dispatchParam(storeAddress({ address, profileId }))
 
     // Scroll to top the window with a smooth animation
     scrollToSmoothly(0, 1000)
     setTimeout(() => {
-      dispatch(toggleRainbow())
+      dispatchParam(toggleRainbow())
     }, 1400)
   }
 
-  const goToProfile = (id: string) => {
-    router.push(paths.dashboard.user.root(id))
+  const goToProfile = (id: string, routerParam: any) => {
+    routerParam.push(paths.dashboard.user.root(id))
   }
 
   const carousel = useCarousel({
@@ -101,8 +101,8 @@ export default function FinanceContactsCarousel({
             <SlideContacts
               key={`slide-${index}`}
               chunk={chunk}
-              goToProfile={goToProfile}
-              onClickArrow={(address, profileId) => handleClick(address, profileId)}
+              goToProfile={(profileId) => goToProfile(profileId, router)}
+              onClickArrow={(address, profileId) => handleClick(address, profileId, dispatch)}
             />
           ))}
         </Carousel>
@@ -126,6 +126,7 @@ function SlideContacts({ chunk, goToProfile, onClickArrow }: SlideContactsProps)
     event.stopPropagation()
     onClickArrow(address, profileId)
   }
+
   return (
     <Stack spacing={3}>
       {chunk.map((profile) => (
