@@ -1,24 +1,12 @@
 import { FC } from "react";
 import SettingsModal from '@src/components/modal';
 import CampaignSettingsModalContent from "./CampaignSettingsModalContent";
-import { Address } from 'viem';
+import { CampaignSettingsModalProps } from '@src/sections/marketing/components/types.ts';
 
-interface CampaignSettingsModalProps {
-  open: boolean;
-  onClose?: () => void;
-  onSuccess?: () => void;
-  campaignData: {
-    address: Address;
-    description: string;
-  };
-}
+// ----------------------------------------------------------------------
 
-const CampaignSettingsModal: FC<CampaignSettingsModalProps> = ({
-                                                                 open,
-                                                                 onSuccess,
-                                                                 onClose,
-                                                                 campaignData
-                                                               }) => {
+const CampaignSettingsModal: FC<CampaignSettingsModalProps> = (props) => {
+  const { open, onSuccess, onClose, campaignData } = props;
 
   const handleClose = () => {
     onClose?.();

@@ -6,6 +6,7 @@ import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 import LedgerVaultAbi from '@src/config/abi/LedgerVault.json';
 import { addTransaction, setTransactions } from '@redux/transactions';
 import { EventConfig } from '@src/hooks/protocol/types.ts';
+import { RootState } from '@redux/store.ts';
 
 /**
  * Hook to retrieve smart wallet transactions by querying logs from the LedgerVault contract.
@@ -13,10 +14,9 @@ import { EventConfig } from '@src/hooks/protocol/types.ts';
  */
 export default function useGetSmartWalletTransactions() {
   const dispatch = useDispatch();
-  const sessionData = useSelector((state: any) => state.auth.session);
-  const blockchainEvents = useSelector((state: any) => state.blockchainEvents.events);
-  const transactions = useSelector((state: any) => state.transactions.transactions);
-
+  const sessionData = useSelector((state: RootState) => state.auth.session);
+  const blockchainEvents = useSelector((state: RootState) => state.blockchainEvents.events);
+  const transactions = useSelector((state: RootState) => state.transactions.transactions);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -30,7 +30,7 @@ export default function useGetSmartWalletTransactions() {
   const eventConfigs: EventConfig[] = [
     {
       eventName: 'FundsTransferred',
-      args: { recipient: sessionData?.address || '' },
+      args: { recipient: sessionData.address || '' },
       getEventType: (log, userAddress) =>
         log.args.origin === userAddress ? 'transferTo' : 'transferFrom',
     },

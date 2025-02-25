@@ -6,11 +6,11 @@ import { useWeb3Session } from '@src/hooks/use-web3-session.ts';
 import { ERRORS } from '@notifications/errors.ts';
 import { useAccountSession } from '@src/hooks/use-account-session.ts';
 import { CreateCampaignParams, UseCreateCampaignHook } from '@src/hooks/protocol/types.ts';
+import { notifyError } from '@notifications/internal-notifications.ts';
 
 export const useCreateCampaign = (): UseCreateCampaignHook => {
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<keyof typeof ERRORS | null>(null);
   const { bundlerClient, smartAccount } = useWeb3Session();
   const { isAuthenticated } = useAccountSession();
 
@@ -29,10 +29,9 @@ export const useCreateCampaign = (): UseCreateCampaignHook => {
 
   const create = async ({ policy, expiration, description }: CreateCampaignParams) => {
     setLoading(true);
-    setError(null);
 
     if (!isAuthenticated()) {
-      setError(ERRORS.CAMPAIGN_CREATION_ERROR);
+      notifyError(ERRORS.FIRST_LOGIN_ERROR);
       setLoading(false);
       throw new Error('Invalid Web3Auth session');
     }
@@ -61,10 +60,10 @@ export const useCreateCampaign = (): UseCreateCampaignHook => {
       setLoading(false);
     } catch (err: any) {
       console.error('USE CREATE CAMPAIGN ERR:', err);
-      setError(ERRORS.CAMPAIGN_CREATION_ERROR);
+      notifyError(ERRORS.CAMPAIGN_CREATION_ERROR)
       setLoading(false);
     }
   };
 
-  return { data, create, loading, error };
+  return { data, create, loading };
 };

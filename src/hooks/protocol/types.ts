@@ -98,7 +98,6 @@ export interface UseConfigureCampaignHook {
   data?: any;
   configure: (params: ConfigureCampaignParams) => Promise<void>;
   loading: boolean;
-  error?: keyof typeof ERRORS | null;
 }
 
 // ----------------------------------------------------------------------
@@ -165,7 +164,6 @@ export interface UseGetAssetOwnerHook {
 export interface UseGetCampaignHook {
   campaign: boolean;
   loading: boolean;
-  error: HasAccessError | null;
   fetchCampaign: (
     account: Address,
     policy: Address
@@ -199,7 +197,6 @@ export interface UseGetCampaignFundsBalanceHook {
 export interface UseGetCampaignIsActiveHook {
   isActive: boolean;
   loading: boolean;
-  error: HasAccessError | null;
   fetchIsActive: (
     campaignAddress: Address,
     account: Address
@@ -316,7 +313,6 @@ export type EventConfig = {
 export interface UseGetSubscriptionCampaignHook {
   campaign: any;
   loading: boolean;
-  error: HasAccessError | null;
   fetchSubscriptionCampaign: (account: Address) => Promise<any>;
 }
 

@@ -20,12 +20,10 @@ import {
 import Scrollbar from '@src/components/scrollbar';
 import CampaignTableRow from '@src/sections/marketing/components/CampaignTableRow';
 import { COLORS } from '@src/layouts/config-layout';
-import {LoadingScreen} from "@src/components/loading-screen";
+import { LoadingScreen } from "@src/components/loading-screen";
+import { CampaignTableProps } from '@src/sections/marketing/components/types.ts';
 
-type CampaignTableProps = {
-  campaigns: any[]; //NOSONAR
-  loading: boolean; //NOSONAR
-};
+// ----------------------------------------------------------------------
 
 const CampaignTable: FC<CampaignTableProps> = (args) => {
   const { campaigns, loading } = args;

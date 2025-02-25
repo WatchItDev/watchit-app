@@ -1,5 +1,4 @@
-// CampaignModalContent.tsx
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useState } from 'react';
 import {
   Button,
   TextField,
@@ -18,35 +17,23 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { useCreateCampaign } from '@src/hooks/protocol/use-create-campaign.ts';
-import { GLOBAL_CONSTANTS } from '@src/config-global';
 import { SelectChangeEvent } from '@mui/material/Select';
 import LoadingButton from "@mui/lab/LoadingButton";
 import NeonPaper from '@src/sections/publication/NeonPaperContainer';
-import { notifyError, notifySuccess } from '@notifications/internal-notifications.ts';
+import { notifySuccess } from '@notifications/internal-notifications.ts';
 import { SUCCESS } from '@notifications/success.ts';
-import { ERRORS } from '@notifications/errors.ts';
+import { NEW_CAMPAIGN_POLICIES_OPTIONS } from '@src/sections/marketing/components/CONSTANTS.tsx';
+import { CampaignModalContentProps } from '@src/sections/marketing/components/types.ts';
 
-interface CampaignModalContentProps {
-  onClose: () => void;
-  onConfirm: () => void;
-}
-
-// Policy options array for easy extension in the future
-const policyOptions = [
-  { label: 'Subscription', value: GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS },
-];
+// ----------------------------------------------------------------------
 
 const CampaignModalContent: FC<CampaignModalContentProps> = ({ onClose, onConfirm }) => {
-  const { create, loading, error } = useCreateCampaign();
+  const { create, loading } = useCreateCampaign();
   const [formValues, setFormValues] = useState({
     policy: '',
     description: '',
   });
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-
-  useEffect(() => {
-    if (error) notifyError(ERRORS.CAMPAIGN_CREATION_ERROR);
-  }, [error]);
 
   // Handler for text field changes
   const handleTextChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -115,7 +102,7 @@ const CampaignModalContent: FC<CampaignModalContentProps> = ({ onClose, onConfir
             label="Policy"
             onChange={handleSelectChange}
           >
-            {policyOptions.map((option) => (
+            {NEW_CAMPAIGN_POLICIES_OPTIONS.map((option) => (
               <MenuItem key={option.value} value={option.value}>
                 {option.label}
               </MenuItem>
@@ -156,12 +143,6 @@ const CampaignModalContent: FC<CampaignModalContentProps> = ({ onClose, onConfir
           helperText="This description will help you identify the campaign."
         />
       </Grid>
-
-      {error && (
-        <Typography color="error" variant="body2" sx={{ px: 5 }}>
-          {error}
-        </Typography>
-      )}
 
       <Divider sx={{ padding: '0.3rem 0', mt: 2, borderStyle: 'dashed' }} />
 

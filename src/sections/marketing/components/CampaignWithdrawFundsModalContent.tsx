@@ -7,7 +7,7 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import Box from "@mui/material/Box";
 
 // VIEM IMPORTS
-import { Address, parseUnits } from 'viem';
+import {  parseUnits } from 'viem';
 
 // LOCAL IMPORTS
 import { useCampaignRemoveFunds } from '@src/hooks/protocol/use-campaign-remove-funds.ts';
@@ -15,23 +15,10 @@ import NeonPaper from "@src/sections/publication/NeonPaperContainer";
 import { notifyError, notifySuccess } from '@notifications/internal-notifications.ts';
 import { ERRORS } from '@notifications/errors.ts';
 import { SUCCESS } from '@notifications/success.ts';
-
-interface CampaignWithdrawFundsModalContentProps {
-  onClose: () => void;
-  onConfirm: () => void;
-  campaignData: {
-    address: Address;
-    description: string;
-    currentFundsBalance: string;
-  };
-}
+import { CampaignWithdrawFundsModalContentProps } from '@src/sections/marketing/components/types.ts';
 
 const CampaignWithdrawFundsModalContent: FC<CampaignWithdrawFundsModalContentProps> = (props) => {
-  const {
-    onClose,
-    onConfirm,
-    campaignData,
-  } = props;
+  const { campaignData, onClose, onConfirm } = props;
   const { address, description, currentFundsBalance } = campaignData;
   const [withdrawAmount, setWithdrawAmount] = useState<string>('');
   const { removeFunds, loading } = useCampaignRemoveFunds();

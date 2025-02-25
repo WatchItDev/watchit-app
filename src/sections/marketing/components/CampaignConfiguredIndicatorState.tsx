@@ -2,10 +2,9 @@ import Box from "@mui/material/Box";
 import { useTheme } from "@mui/material/styles";
 import Tooltip from "@mui/material/Tooltip";
 import { keyframes } from "@emotion/react";
+import { CampaignConfiguredIndicatorStateProps } from '@src/sections/marketing/components/types.ts';
 
-interface CampaignConfiguredIndicatorStateProps {
-  isReady: boolean;
-}
+// ----------------------------------------------------------------------
 
 // Ripple effect (only when quotaLimit is 0)
 const ripple = keyframes`
@@ -22,6 +21,8 @@ const ripple = keyframes`
     transform: scale(1);
   }
 `;
+
+// ----------------------------------------------------------------------
 
 const CampaignConfiguredIndicatorState = ({ isReady }: CampaignConfiguredIndicatorStateProps) => {
   const theme = useTheme();

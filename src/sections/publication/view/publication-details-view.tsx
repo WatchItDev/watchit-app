@@ -26,7 +26,7 @@ import { varFade } from '@src/components/animate';
 import ProfileHome from '@src/sections/user/profile-home.tsx';
 import { LoadingScreen } from '@src/components/loading-screen';
 import MoviePlayView from '@src/sections/publication/view/publication-play-view.tsx';
-import Index from '@src/components/publication-detail-main';
+import PublicationDetailMain from '@src/components/publication-detail-main';
 import { useHasAccess } from '@src/hooks/protocol/use-has-access.ts';
 import { SubscribeProfileModal } from '@src/components/subscribe-profile-modal.tsx';
 import LoadingButton from '@mui/lab/LoadingButton';
@@ -36,6 +36,9 @@ import { appId, PublicationType, usePublications } from '@lens-protocol/react-we
 import {trimPublicationContentExtraText} from "@src/utils/text-transform.ts";
 import { useIsPolicyAuthorized } from '@src/hooks/protocol/use-is-policy-authorized.ts';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
+// @ts-ignore
+import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
+import { AnyPublication } from '@lens-protocol/api-bindings';
 
 const MAX_LINES = 5;
 
@@ -59,11 +62,10 @@ export default function PublicationDetailsView({ id }: Props) {
   const theme = useTheme();
   // LENS HOOKS
   const sessionData = useSelector((state: any) => state.auth.session);
-  const { data, loading }: any = usePublication({ forId: id as any });
+  const { data, loading }: ReadResult<AnyPublication> = usePublication({ forId: id as any });
   // CONSTANTS
   const variants = theme.direction === 'rtl' ? varFade().inLeft : varFade().inRight;
   const ownerAddress = data?.by?.ownedBy?.address;
-
   // PROTOCOL HOOKS
   const {
     hasAccess,
@@ -72,6 +74,14 @@ export default function PublicationDetailsView({ id }: Props) {
     refetch: refetchAccess,
   } = useHasAccess(ownerAddress);
   const { isAuthorized } = useIsPolicyAuthorized(GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS, ownerAddress);
+  // Load publications from current user to show in More from section
+  const { data: publications } = usePublications({
+    where: {
+      from: [data?.by?.id],
+      publicationTypes: [PublicationType.Post],
+      metadata: { publishedOn: [appId('watchit')] },
+    },
+  });
 
   const getMediaUri = (cid: string): string => `${cid}`;
 
@@ -105,15 +115,6 @@ export default function PublicationDetailsView({ id }: Props) {
       }
     }
   }, [descriptionRef.current, data?.metadata?.content]);
-
-  // Load publications from current user to show in More from section
-  const { data: publications } = usePublications({
-    where: {
-      from: [data?.by?.id],
-      publicationTypes: [PublicationType.Post],
-      metadata: { publishedOn: [appId('watchit')] },
-    },
-  });
 
   // Remove from publications the current publication
   const filteredPublications = publications?.filter((publication) => publication.id !== id) ?? [];
@@ -353,7 +354,7 @@ export default function PublicationDetailsView({ id }: Props) {
           </Card>
         </Stack>
 
-        <Index
+        <PublicationDetailMain
           post={data}
           handleSubscribe={handleSubscribe}
           handleRefetchAccess={onSubscribe}

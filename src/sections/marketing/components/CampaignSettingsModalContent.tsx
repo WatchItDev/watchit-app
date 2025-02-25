@@ -16,25 +16,15 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import { notifyError, notifySuccess } from '@notifications/internal-notifications.ts';
 import { ERRORS } from '@notifications/errors.ts';
 import { SUCCESS } from '@notifications/success.ts';
+import { CampaignSettingsModalContentProps } from '@src/sections/marketing/components/types.ts';
 
-interface CampaignSettingsModalContentProps {
-  onClose?: () => void;
-  onConfirm?: () => void;
-  campaignData: {
-    address: Address;
-    description: string;
-  };
-}
+// ----------------------------------------------------------------------
 
 const CampaignSettingsModalContent: FC<CampaignSettingsModalContentProps> = (props) => {
-  const {
-    onClose,
-    onConfirm,
-    campaignData,
-  } = props;
+  const { onClose, onConfirm, campaignData, } = props;
   const { address, description } = campaignData;
 
-  const [addFundsAmount, setAddFundsAmount] = useState<string>('');
+  const [fundsAmount, setFundsAmount] = useState<string>('');
   const [fundsAllocationAmount, setFundsAllocationAmount] = useState<string>('');
   const [quotaLimit, setQuotaLimit] = useState<string>('');
 
@@ -61,11 +51,11 @@ const CampaignSettingsModalContent: FC<CampaignSettingsModalContentProps> = (pro
   // Validate that each field has a value greater or equal to 1
   const isFormValid = useMemo(() => {
     return (
-      Number(addFundsAmount) >= 1 &&
+      Number(fundsAmount) >= 1 &&
       Number(fundsAllocationAmount) >= 1 &&
       Number(quotaLimit) >= 1
     );
-  }, [addFundsAmount, fundsAllocationAmount, quotaLimit]);
+  }, [fundsAmount, fundsAllocationAmount, quotaLimit]);
 
   const handleOnConfirm = async () => {
     // Prevent proceeding if form validation fails
@@ -75,13 +65,13 @@ const CampaignSettingsModalContent: FC<CampaignSettingsModalContentProps> = (pro
     }
 
     try {
-      const numericAddFundsAmount = Number(addFundsAmount);
+      const numericFundsAmount = Number(fundsAmount);
       const numericFundsAllocationAmount = Number(fundsAllocationAmount);
       const numericQuotaLimit = Number(quotaLimit);
 
       await configure({
         campaignAddress: address,
-        addFundsAmount: numericAddFundsAmount,
+        addFundsAmount: numericFundsAmount,
         fundsAllocationAmount: numericFundsAllocationAmount,
         quotaLimit: numericQuotaLimit,
       });
@@ -128,12 +118,12 @@ const CampaignSettingsModalContent: FC<CampaignSettingsModalContentProps> = (pro
             label="Total Funds"
             type="number"
             name="addFundsAmount"
-            value={addFundsAmount}
-            onChange={(e) => setAddFundsAmount(e.target.value)}
+            value={fundsAmount}
+            onChange={(e) => setFundsAmount(e.target.value)}
             placeholder="e.g. 1000"
-            error={addFundsAmount !== '' && Number(addFundsAmount) < 1}
+            error={fundsAmount !== '' && Number(fundsAmount) < 1}
             helperText={
-              addFundsAmount !== '' && Number(addFundsAmount) < 1
+              fundsAmount !== '' && Number(fundsAmount) < 1
                 ? "Total Funds must be at least 1."
                 : "The total amount of MMC you want to allocate to this campaign."
             }

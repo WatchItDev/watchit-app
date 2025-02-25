@@ -6,26 +6,20 @@ import { useWeb3Session } from '@src/hooks/use-web3-session.ts';
 import { ERRORS } from '@notifications/errors.ts';
 import { useAccountSession } from '@src/hooks/use-account-session.ts';
 import { SponsoredAccessParams, UseSponsoredAccessAgreementHook } from '@src/hooks/protocol/types.ts';
+import { notifyError } from '@notifications/internal-notifications.ts';
 
 export const useSponsoredAccessAgreement = (): UseSponsoredAccessAgreementHook => {
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<keyof typeof ERRORS | null>(null);
   const { bundlerClient, smartAccount } = useWeb3Session();
   const { isAuthenticated, logout } = useAccountSession();
 
-  const sponsoredAccessAgreement = async ({
-                                            holder,
-                                            campaignAddress,
-                                            policyAddress,
-                                            parties,
-                                            payload
-                                          }: SponsoredAccessParams) => {
+  const sponsoredAccessAgreement = async (props: SponsoredAccessParams) => {
+    const { holder, campaignAddress, policyAddress, parties, payload } = props;
     setLoading(true);
-    setError(null);
 
     if (!isAuthenticated()) {
-      setError(ERRORS.FIRST_LOGIN_ERROR);
+      notifyError(ERRORS.FIRST_LOGIN_ERROR);
       logout();
       setLoading(false);
       throw new Error('Invalid Web3Auth session');
@@ -65,10 +59,10 @@ export const useSponsoredAccessAgreement = (): UseSponsoredAccessAgreementHook =
       setLoading(false);
     } catch (err: any) {
       console.error('USE SPONSORED ACCESS AGREEMENT ERR:', err);
-      setError(ERRORS.UNKNOWN_ERROR);
+      notifyError(ERRORS.SPONSORED_ACCESS_ERROR);
       setLoading(false);
     }
   };
 
-  return { data, sponsoredAccessAgreement, loading, error };
+  return { data, sponsoredAccessAgreement, loading };
 };

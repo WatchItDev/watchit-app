@@ -7,11 +7,11 @@ import { useWeb3Session } from '@src/hooks/use-web3-session.ts';
 import { ERRORS } from '@notifications/errors.ts';
 import { useAccountSession } from '@src/hooks/use-account-session.ts';
 import { ConfigureCampaignParams, UseConfigureCampaignHook } from '@src/hooks/protocol/types.ts';
+import { notifyError } from '@notifications/internal-notifications.ts';
 
 export const useConfigureCampaign = (): UseConfigureCampaignHook => {
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<keyof typeof ERRORS | null>(null);
   const { bundlerClient, smartAccount } = useWeb3Session();
   const { isAuthenticated, logout } = useAccountSession();
 
@@ -19,20 +19,15 @@ export const useConfigureCampaign = (): UseConfigureCampaignHook => {
    * Main function to configure the campaign.
    * Calls addFunds, setFundsAllocation, and setMaxRateLimit on the specified campaign contract.
    */
-  const configure = async ({
-                             campaignAddress,
-                             addFundsAmount,
-                             fundsAllocationAmount,
-                             quotaLimit
-                           }: ConfigureCampaignParams) => {
+  const configure = async (props: ConfigureCampaignParams) => {
+    const { campaignAddress, addFundsAmount, fundsAllocationAmount, quotaLimit } = props;
     const weiAmount = parseUnits(addFundsAmount.toString(), 18);
     const weiAllocation = parseUnits(fundsAllocationAmount.toString(), 18);
 
     setLoading(true);
-    setError(null);
 
     if (!isAuthenticated()) {
-      setError(ERRORS.FIRST_LOGIN_ERROR);
+      notifyError(ERRORS.FIRST_LOGIN_ERROR);
       logout();
       setLoading(false);
       throw new Error('Invalid Web3Auth session');
@@ -103,10 +98,10 @@ export const useConfigureCampaign = (): UseConfigureCampaignHook => {
       setLoading(false);
     } catch (err: any) {
       console.error('USE CONFIGURE CAMPAIGN ERR:', err);
-      setError(ERRORS.UNKNOWN_ERROR);
+      notifyError(ERRORS.CONFIGURE_CAMPAIGN_ERROR);
       setLoading(false);
     }
   };
 
-  return { data, configure, loading, error };
+  return { data, configure, loading };
 };

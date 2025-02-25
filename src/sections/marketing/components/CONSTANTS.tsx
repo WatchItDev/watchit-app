@@ -27,3 +27,7 @@ export const LBL_STATUS_COLORS = {
   paused: COLORS.warning,
   completed: COLORS.warning,
 };
+
+export const NEW_CAMPAIGN_POLICIES_OPTIONS = [
+  { label: 'Subscription', value: GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS },
+];

@@ -1,26 +1,10 @@
 import { FC } from 'react';
-import { Address } from 'viem';
 import SettingsModal from '@src/components/modal';
 import CampaignWithdrawFundsModalContent from './CampaignWithdrawFundsModalContent';
-
-interface CampaignWithdrawFundsModalProps {
-  open: boolean;
-  onClose: () => void;
-  onSuccess?: () => void;
-  campaignData: {
-    address: Address;
-    description: string;
-    currentFundsBalance: string;
-  };
-}
+import { CampaignWithdrawFundsModalProps } from '@src/sections/marketing/components/types.ts';
 
 const CampaignWithdrawFundsModal: FC<CampaignWithdrawFundsModalProps> = (props) => {
-  const {
-    open,
-    onClose,
-    onSuccess,
-    campaignData,
-  } = props;
+  const { open, onClose, onSuccess, campaignData, } = props;
 
   const handleClose = () => {
     onClose();

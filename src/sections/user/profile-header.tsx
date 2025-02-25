@@ -7,7 +7,6 @@ import { useSelector } from 'react-redux';
 // MUI IMPORTS
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
-import { Profile } from '@lens-protocol/api-bindings';
 import CircularProgress from '@mui/material/CircularProgress';
 
 // LENS IMPORTS
@@ -34,19 +33,12 @@ import ProfileToolbar from "@src/sections/user/profile-toolbar.tsx";
 import { useGetSubscriptionCampaign } from '@src/hooks/protocol/use-get-subscription-campaign.ts';
 import { useGetCampaignIsActive } from '@src/hooks/protocol/use-get-campaign-is-active.ts';
 import { SponsoredAccessTrialButton } from '@src/components/sponsored-access-button/sponsored-access-button.tsx';
+import { ProfileHeaderProps } from '@src/sections/user/types.ts';
 
 // ----------------------------------------------------------------------
 
-export interface ProfileHeaderProps {
-  profile: Profile;
-}
-
-// ----------------------------------------------------------------------
-
-const ProfileHeader = ({
-  profile: profileData,
-  children,
-}: PropsWithChildren<ProfileHeaderProps>) => {
+const ProfileHeader = (props: PropsWithChildren<ProfileHeaderProps>) => {
+  const { profile: profileData, children } = props;
   const sessionData = useSelector((state: any) => state.auth.session);
   const profile =
     sessionData && sessionData?.profile?.id === profileData?.id ? sessionData.profile : profileData;
@@ -72,6 +64,8 @@ const ProfileHeader = ({
   );
   const { campaign, fetchSubscriptionCampaign } = useGetSubscriptionCampaign();
   const { isActive, loading: isActiveLoading, fetchIsActive } = useGetCampaignIsActive();
+  const showJoinButton = isAuthorized && (!isActive || hasAccess) && !isActiveLoading && !authorizedLoading && profile?.id !== sessionData?.profile?.id;
+  const showSponsoredAccessButton = isActive && isAuthorized && !isActiveLoading && !authorizedLoading && !hasAccess;
 
   usePublications({
     where: {
@@ -135,12 +129,14 @@ const ProfileHeader = ({
               </Box>
             )}
 
-            {isAuthorized && (!isActive || hasAccess) && !isActiveLoading && !authorizedLoading && profile?.id !== sessionData?.profile?.id && <ProfileJoin profile={profile} profileJoinProps={{
-              hasAccess, accessLoading, accessFetchingLoading, onSubscribe
-            }} />}
+            { showJoinButton && (
+              <ProfileJoin profile={profile} profileJoinProps={{
+                hasAccess, accessLoading, accessFetchingLoading, onSubscribe
+              }} />
+            )}
 
             {
-              isActive && isAuthorized && !isActiveLoading && !authorizedLoading && !hasAccess && (
+              showSponsoredAccessButton && (
                 <SponsoredAccessTrialButton
                   isActive={isActive}
                   holderAddress={profile?.ownedBy?.address as Address}
