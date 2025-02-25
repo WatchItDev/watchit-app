@@ -1,13 +1,13 @@
-import { forwardRef } from 'react';
+import {forwardRef} from "react";
 // @mui
-import Link from '@mui/material/Link';
-import Box from '@mui/material/Box';
-import ListItemText from '@mui/material/ListItemText';
+import Link from "@mui/material/Link";
+import Box from "@mui/material/Box";
+import ListItemText from "@mui/material/ListItemText";
 // routes
-import { RouterLink } from '@src/routes/components';
+import {RouterLink} from "@src/routes/components";
 //
-import { NavItemProps, NavConfigProps } from '../types';
-import { StyledItem, StyledIcon, StyledNavContent } from './styles';
+import {NavItemProps, NavConfigProps} from "../types";
+import {StyledItem, StyledIcon, StyledNavContent} from "./styles";
 
 // ----------------------------------------------------------------------
 
@@ -16,8 +16,8 @@ type Props = NavItemProps & {
 };
 
 const NavItem = forwardRef<HTMLDivElement, Props>(
-  ({ item, depth, open, active, externalLink, config, ...other }, ref) => {
-    const { title, path, icon, disabled, roles } = item;
+  ({item, depth, open, active, externalLink, config, ...other}, ref) => {
+    const {title, path, icon, disabled, roles} = item;
 
     const subItem = depth !== 1;
 
@@ -31,33 +31,31 @@ const NavItem = forwardRef<HTMLDivElement, Props>(
         disabled={disabled}
         config={config}
         bgColor={item.bgColor}
-        {...other}
-      >
+        {...other}>
         <Box
           className="menu-pill"
           sx={{
-            position: 'absolute',
+            position: "absolute",
             top: 0,
             left: 0,
-            width: '4px',
-            height: '100%',
-            display: 'flex',
-            overflow: 'hidden',
-            alignItems: 'center',
-            justifyContent: 'flex-start',
-            transition: 'all 0.2s ease-in-out',
-          }}
-        >
+            width: "4px",
+            height: "100%",
+            display: "flex",
+            overflow: "hidden",
+            alignItems: "center",
+            justifyContent: "flex-start",
+            transition: "all 0.2s ease-in-out",
+          }}>
           <Box
             className="pill"
             sx={{
-              width: active ? '4px' : 0,
-              height: active ? '60%' : 0,
+              width: active ? "4px" : 0,
+              height: active ? "60%" : 0,
               borderRadius: 0,
-              borderTopRightRadius: '1rem',
-              borderBottomRightRadius: '1rem',
+              borderTopRightRadius: "1rem",
+              borderBottomRightRadius: "1rem",
               backgroundColor: item.bgColor,
-              transition: 'all 0.3s ease-in-out',
+              transition: "all 0.3s ease-in-out",
             }}
           />
         </Box>
@@ -67,14 +65,13 @@ const NavItem = forwardRef<HTMLDivElement, Props>(
             <StyledIcon
               size={config.iconSize}
               sx={{
-                width: '1.7rem',
-                height: '1.7rem',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                ...(subItem && { mr: 1.5 }),
-              }}
-            >
+                width: "1.7rem",
+                height: "1.7rem",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                ...(subItem && {mr: 1.5}),
+              }}>
               {icon}
             </StyledIcon>
           )}
@@ -83,16 +80,16 @@ const NavItem = forwardRef<HTMLDivElement, Props>(
             <ListItemText
               sx={{
                 width: 1,
-                flex: 'unset',
+                flex: "unset",
               }}
               primary={title.slice(0, 4)}
               primaryTypographyProps={{
                 noWrap: true,
                 fontSize: 14,
                 lineHeight: 1,
-                textAlign: 'center',
-                textTransform: 'capitalize',
-                fontWeight: active ? 'fontWeightBold' : 'fontWeightSemiBold',
+                textAlign: "center",
+                textTransform: "capitalize",
+                fontWeight: active ? "fontWeightBold" : "fontWeightSemiBold",
               }}
             />
           )}
@@ -116,10 +113,9 @@ const NavItem = forwardRef<HTMLDivElement, Props>(
           sx={{
             width: 1,
             ...(disabled && {
-              cursor: 'default',
+              cursor: "default",
             }),
-          }}
-        >
+          }}>
           {renderContent}
         </Link>
       );
@@ -128,19 +124,18 @@ const NavItem = forwardRef<HTMLDivElement, Props>(
     return (
       <Link
         component={RouterLink}
-        href={path ?? '#'}
+        href={path ?? "#"}
         underline="none"
         sx={{
           width: 1,
           ...(disabled && {
-            cursor: 'default',
+            cursor: "default",
           }),
-        }}
-      >
+        }}>
         {renderContent}
       </Link>
     );
-  }
+  },
 );
 
 export default NavItem;

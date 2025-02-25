@@ -1,9 +1,9 @@
-import { useState, useEffect, useCallback } from 'react';
-import { formatUnits, Address } from 'viem';
-import MMCAbi from '@src/config/abi/MMC.json';
-import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
-import { publicClient } from '@src/clients/viem/publicClient.ts';
-import { useSelector } from 'react-redux';
+import {useState, useEffect, useCallback} from "react";
+import {formatUnits, Address} from "viem";
+import MMCAbi from "@src/config/abi/MMC.json";
+import {GLOBAL_CONSTANTS} from "@src/config-global.ts";
+import {publicClient} from "@src/clients/viem/publicClient.ts";
+import {useSelector} from "react-redux";
 
 export function useGetMmcContractBalance(address?: Address) {
   const [balance, setBalance] = useState<number | null>(null);
@@ -16,14 +16,14 @@ export function useGetMmcContractBalance(address?: Address) {
       const rawBalance: any = await publicClient.readContract({
         address: GLOBAL_CONSTANTS.MMC_ADDRESS,
         abi: MMCAbi.abi,
-        functionName: 'balanceOf',
+        functionName: "balanceOf",
         args: [address],
       });
 
       const formattedBalance = parseFloat(formatUnits(rawBalance, 18));
       setBalance(isNaN(formattedBalance) ? 0 : formattedBalance);
     } catch (error) {
-      console.error('Error fetching balance:', error);
+      console.error("Error fetching balance:", error);
       setBalance(null);
     }
   }, [address]);
@@ -32,5 +32,5 @@ export function useGetMmcContractBalance(address?: Address) {
     fetchBalance();
   }, [fetchBalance, address, blockchainEvents]);
 
-  return { balance, refetch: fetchBalance };
+  return {balance, refetch: fetchBalance};
 }

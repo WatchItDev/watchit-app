@@ -1,25 +1,25 @@
-import { useState } from 'react';
+import {useState} from "react";
 
 // MUI Imports
-import LoadingButton from '@mui/lab/LoadingButton';
-import { Stack, Box, Typography, TextField, Button } from '@mui/material';
+import LoadingButton from "@mui/lab/LoadingButton";
+import {Stack, Box, Typography, TextField, Button} from "@mui/material";
 
 // Project Imports
-import { useBoolean } from "@src/hooks/use-boolean.ts";
-import ProcessSectionCard from '@src/components/process-section-card.tsx';
+import {useBoolean} from "@src/hooks/use-boolean.ts";
+import ProcessSectionCard from "@src/components/process-section-card.tsx";
 import OwnershipProcessModal from "@src/components/modal.tsx";
 // @ts-ignore
-import Ownership from '@src/assets/illustrations/ownership.svg';
-import Iconify from '@src/components/iconify';
-import { useRegisterAsset } from '@src/hooks/use-register-asset';
-import { notifyError, notifyInfo, notifySuccess } from '@notifications/internal-notifications.ts';
-import { SUCCESS } from '@notifications/success.ts';
-import { ERRORS } from '@notifications/errors.ts';
-import { INFO } from '@notifications/info.ts';
-import { useSubmitAssetToLens } from '@src/hooks/use-submit-assets-to-lens.ts';
-import NeonPaper from '@src/sections/publication/NeonPaperContainer.tsx';
-import { useGetAssetOwner } from '@src/hooks/use-get-asset-owner.ts';
-import { replacePrefix } from '@src/utils/wallet.ts';
+import Ownership from "@src/assets/illustrations/ownership.svg";
+import Iconify from "@src/components/iconify";
+import {useRegisterAsset} from "@src/hooks/use-register-asset";
+import {notifyError, notifyInfo, notifySuccess} from "@notifications/internal-notifications.ts";
+import {SUCCESS} from "@notifications/success.ts";
+import {ERRORS} from "@notifications/errors.ts";
+import {INFO} from "@notifications/info.ts";
+import {useSubmitAssetToLens} from "@src/hooks/use-submit-assets-to-lens.ts";
+import NeonPaper from "@src/sections/publication/NeonPaperContainer.tsx";
+import {useGetAssetOwner} from "@src/hooks/use-get-asset-owner.ts";
+import {replacePrefix} from "@src/utils/wallet.ts";
 
 /**
  * OwnershipProcess is a React functional component that manages the process of registering ownership.
@@ -63,15 +63,16 @@ const OwnershipProcess = () => {
   );
 };
 
-const OwnershipProcessContent = ({ onClose }: { onClose: () => void }) => {
-  const [hashes, setHashes] = useState<string>('');
-  const { registerAsset } = useRegisterAsset();
-  const { submitAssetToLens } = useSubmitAssetToLens();
-  const { fetchOwnerAddress } = useGetAssetOwner();
+const OwnershipProcessContent = ({onClose}: {onClose: () => void}) => {
+  const [hashes, setHashes] = useState<string>("");
+  const {registerAsset} = useRegisterAsset();
+  const {submitAssetToLens} = useSubmitAssetToLens();
+  const {fetchOwnerAddress} = useGetAssetOwner();
   const [isProcessing, setIsProcessing] = useState(false);
   const [progress, setProgress] = useState(0);
-  const hashesArray = hashes.split(',')
-    .map(h => h.trim())
+  const hashesArray = hashes
+    .split(",")
+    .map((h) => h.trim())
     .filter(Boolean);
 
   const handleRegister = async () => {
@@ -84,11 +85,16 @@ const OwnershipProcessContent = ({ onClose }: { onClose: () => void }) => {
       for (const [index, hash] of hashesArray.entries()) {
         try {
           // 1. Report progress
-          notifyInfo(INFO.REGISTER_OWNERSHIP_PROGRESS, {
-            index: index + 1,
-            total: hashesArray.length,
-            options: { autoHideDuration: 3000 }
-          }, '', { autoHideDuration: 3000 });
+          notifyInfo(
+            INFO.REGISTER_OWNERSHIP_PROGRESS,
+            {
+              index: index + 1,
+              total: hashesArray.length,
+              options: {autoHideDuration: 3000},
+            },
+            "",
+            {autoHideDuration: 3000},
+          );
           setProgress(index + 1);
 
           const isTaken = await fetchOwnerAddress(hash);
@@ -105,9 +111,11 @@ const OwnershipProcessContent = ({ onClose }: { onClose: () => void }) => {
 
           // 3. Upload to Lens only if registration was successful
           await submitAssetToLens(replacePrefix(hash));
-          notifySuccess(SUCCESS.OWNERSHIP_REGISTERED_SUCCESSFULLY, { count: index + 1 });
+          notifySuccess(SUCCESS.OWNERSHIP_REGISTERED_SUCCESSFULLY, {count: index + 1});
         } catch (error) {
-          notifyError(ERRORS.ASSET_OWNERSHIP_REGISTER_ERROR, { hash: `${index + 1}/${hashesArray.length}` });
+          notifyError(ERRORS.ASSET_OWNERSHIP_REGISTER_ERROR, {
+            hash: `${index + 1}/${hashesArray.length}`,
+          });
           continue; // Continue with the next hash
         }
       }
@@ -122,17 +130,19 @@ const OwnershipProcessContent = ({ onClose }: { onClose: () => void }) => {
   const RainbowEffect = isProcessing ? NeonPaper : Box;
 
   return (
-    <Stack direction="column" sx={{ pb: 3, pt: 2, mt: 1, borderTop: '1px dashed rgba(145, 158, 171, 0.5)' }}>
-      <Box sx={{ px: 3 }}>
+    <Stack
+      direction="column"
+      sx={{pb: 3, pt: 2, mt: 1, borderTop: "1px dashed rgba(145, 158, 171, 0.5)"}}>
+      <Box sx={{px: 3}}>
         <Typography variant="body1">
           Enter the hash(es) of the content you want to register
         </Typography>
-        <Typography variant="body2" sx={{ mb: 2, opacity: 0.7 }}>
+        <Typography variant="body2" sx={{mb: 2, opacity: 0.7}}>
           You can enter multiple hashes separated by commas.
         </Typography>
 
         <TextField
-          sx={{ mt: 1, mb: 2 }}
+          sx={{mt: 1, mb: 2}}
           fullWidth
           autoFocus
           label="Content Hash(es)"
@@ -144,31 +154,29 @@ const OwnershipProcessContent = ({ onClose }: { onClose: () => void }) => {
         />
       </Box>
 
-      <Stack direction="row" spacing={2} justifyContent="flex-end" sx={{ mt: 2, px: 3, pt: 3, borderTop: '1px dashed rgba(145, 158, 171, 0.5)' }}>
-        <Button
-          variant="outlined"
-          onClick={onClose}
-          disabled={isProcessing}
-        >
+      <Stack
+        direction="row"
+        spacing={2}
+        justifyContent="flex-end"
+        sx={{mt: 2, px: 3, pt: 3, borderTop: "1px dashed rgba(145, 158, 171, 0.5)"}}>
+        <Button variant="outlined" onClick={onClose} disabled={isProcessing}>
           Cancel
         </Button>
         <RainbowEffect
-          {...((isProcessing) && {
-            borderRadius: '10px',
-            animationSpeed: '3s',
-            padding: '0',
-            width: 'auto',
-          })}
-        >
+          {...(isProcessing && {
+            borderRadius: "10px",
+            animationSpeed: "3s",
+            padding: "0",
+            width: "auto",
+          })}>
           <LoadingButton
             variant="contained"
             onClick={handleRegister}
             loading={isProcessing}
             disabled={!hashes || isProcessing}
             loadingPosition="start"
-            startIcon={<Iconify icon="material-symbols:publish" />}
-          >
-            {isProcessing ? `Processing... (${progress}/${hashesArray.length})` : 'Start Process'}
+            startIcon={<Iconify icon="material-symbols:publish" />}>
+            {isProcessing ? `Processing... (${progress}/${hashesArray.length})` : "Start Process"}
           </LoadingButton>
         </RainbowEffect>
       </Stack>

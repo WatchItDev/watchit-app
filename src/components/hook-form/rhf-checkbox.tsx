@@ -1,30 +1,30 @@
-import { useFormContext, Controller } from 'react-hook-form';
+import {useFormContext, Controller} from "react-hook-form";
 // @mui
-import Checkbox from '@mui/material/Checkbox';
-import FormGroup from '@mui/material/FormGroup';
-import FormLabel from '@mui/material/FormLabel';
-import FormControl from '@mui/material/FormControl';
-import FormHelperText from '@mui/material/FormHelperText';
+import Checkbox from "@mui/material/Checkbox";
+import FormGroup from "@mui/material/FormGroup";
+import FormLabel from "@mui/material/FormLabel";
+import FormControl from "@mui/material/FormControl";
+import FormHelperText from "@mui/material/FormHelperText";
 import FormControlLabel, {
   FormControlLabelProps,
   formControlLabelClasses,
-} from '@mui/material/FormControlLabel';
+} from "@mui/material/FormControlLabel";
 
 // ----------------------------------------------------------------------
 
-interface RHFCheckboxProps extends Omit<FormControlLabelProps, 'control'> {
+interface RHFCheckboxProps extends Omit<FormControlLabelProps, "control"> {
   name: string;
   helperText?: React.ReactNode;
 }
 
-export function RHFCheckbox({ name, helperText, ...other }: RHFCheckboxProps) {
-  const { control } = useFormContext();
+export function RHFCheckbox({name, helperText, ...other}: RHFCheckboxProps) {
+  const {control} = useFormContext();
 
   return (
     <Controller
       name={name}
       control={control}
-      render={({ field, fieldState: { error } }) => (
+      render={({field, fieldState: {error}}) => (
         <div>
           <FormControlLabel control={<Checkbox {...field} checked={field.value} />} {...other} />
 
@@ -39,9 +39,9 @@ export function RHFCheckbox({ name, helperText, ...other }: RHFCheckboxProps) {
 
 // ----------------------------------------------------------------------
 
-interface RHFMultiCheckboxProps extends Omit<FormControlLabelProps, 'control' | 'label'> {
+interface RHFMultiCheckboxProps extends Omit<FormControlLabelProps, "control" | "label"> {
   name: string;
-  options: { label: string; value: any }[];
+  options: {label: string; value: any}[];
   row?: boolean;
   label?: string;
   spacing?: number;
@@ -58,7 +58,7 @@ export function RHFMultiCheckbox({
   sx,
   ...other
 }: RHFMultiCheckboxProps) {
-  const { control } = useFormContext();
+  const {control} = useFormContext();
 
   const getSelected = (selectedItems: string[], item: string) =>
     selectedItems.includes(item)
@@ -69,10 +69,10 @@ export function RHFMultiCheckbox({
     <Controller
       name={name}
       control={control}
-      render={({ field, fieldState: { error } }) => (
+      render={({field, fieldState: {error}}) => (
         <FormControl component="fieldset">
           {label && (
-            <FormLabel component="legend" sx={{ typography: 'body2' }}>
+            <FormLabel component="legend" sx={{typography: "body2"}}>
               {label}
             </FormLabel>
           )}
@@ -80,22 +80,21 @@ export function RHFMultiCheckbox({
           <FormGroup
             sx={{
               ...(row && {
-                flexDirection: 'row',
+                flexDirection: "row",
               }),
               [`& .${formControlLabelClasses.root}`]: {
-                '&:not(:last-of-type)': {
+                "&:not(:last-of-type)": {
                   mb: spacing || 0,
                 },
                 ...(row && {
                   mr: 0,
-                  '&:not(:last-of-type)': {
+                  "&:not(:last-of-type)": {
                     mr: spacing || 2,
                   },
                 }),
               },
               ...sx,
-            }}
-          >
+            }}>
             {options.map((option) => (
               <FormControlLabel
                 key={option.value}
@@ -112,7 +111,7 @@ export function RHFMultiCheckbox({
           </FormGroup>
 
           {(!!error || helperText) && (
-            <FormHelperText error={!!error} sx={{ mx: 0 }}>
+            <FormHelperText error={!!error} sx={{mx: 0}}>
               {error ? error?.message : helperText}
             </FormHelperText>
           )}

@@ -1,22 +1,22 @@
 // @mui
-import { menuItemClasses } from '@mui/material/MenuItem';
-import Popover, { PopoverOrigin } from '@mui/material/Popover';
+import {menuItemClasses} from "@mui/material/MenuItem";
+import Popover, {PopoverOrigin} from "@mui/material/Popover";
 //
-import { getPosition } from './utils';
-import { StyledArrow } from './styles';
-import { MenuPopoverProps } from './types';
+import {getPosition} from "./utils";
+import {StyledArrow} from "./styles";
+import {MenuPopoverProps} from "./types";
 
 // ----------------------------------------------------------------------
 
 export default function CustomPopover({
   open,
   children,
-  arrow = 'top-right',
+  arrow = "top-right",
   hiddenArrow,
   sx,
   ...other
 }: MenuPopoverProps) {
-  const { style, anchorOrigin, transformOrigin } = getPosition(arrow);
+  const {style, anchorOrigin, transformOrigin} = getPosition(arrow);
 
   return (
     <Popover
@@ -27,11 +27,11 @@ export default function CustomPopover({
       slotProps={{
         paper: {
           sx: {
-            width: 'auto',
-            overflow: 'inherit',
+            width: "auto",
+            overflow: "inherit",
             ...style,
             [`& .${menuItemClasses.root}`]: {
-              '& svg': {
+              "& svg": {
                 mr: 2,
                 flexShrink: 0,
               },
@@ -40,8 +40,7 @@ export default function CustomPopover({
           },
         },
       }}
-      {...other}
-    >
+      {...other}>
       {!hiddenArrow && <StyledArrow arrow={arrow} />}
 
       {children}

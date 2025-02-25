@@ -1,23 +1,23 @@
 // @mui
-import { useTheme } from '@mui/material/styles';
-import IconButton, { IconButtonProps } from '@mui/material/IconButton';
+import {useTheme} from "@mui/material/styles";
+import IconButton, {IconButtonProps} from "@mui/material/IconButton";
 // hooks
-import { useResponsive } from '@src/hooks/use-responsive';
+import {useResponsive} from "@src/hooks/use-responsive";
 // theme
-import { bgBlur } from '@src/theme/css';
+import {bgBlur} from "@src/theme/css";
 // components
-import Iconify from '@src/components/iconify';
+import Iconify from "@src/components/iconify";
 // redux
-import { useDispatch, useSelector } from 'react-redux';
-import { setCollapsed, toggleMinibar } from '@redux/minibar';
-import { NAV } from '../config-layout';
+import {useDispatch, useSelector} from "react-redux";
+import {setCollapsed, toggleMinibar} from "@redux/minibar";
+import {NAV} from "../config-layout";
 
 // ----------------------------------------------------------------------
 
-export default function NavToggleButton({ sx, ...other }: IconButtonProps) {
+export default function NavToggleButton({sx, ...other}: IconButtonProps) {
   const theme = useTheme();
   const dispatch = useDispatch();
-  const lgUp = useResponsive('up', 'lg');
+  const lgUp = useResponsive("up", "lg");
   // @ts-ignore
   const minibarState = useSelector((state) => state.minibar.state);
 
@@ -37,22 +37,21 @@ export default function NavToggleButton({ sx, ...other }: IconButtonProps) {
       sx={{
         p: 0.5,
         top: NAV.TOGGLE_TOP,
-        position: 'fixed',
+        position: "fixed",
         left: NAV.W_VERTICAL + NAV.W_MINI - 12,
         zIndex: theme.zIndex.appBar + 2,
         border: `dashed 1px ${theme.palette.divider}`,
-        ...bgBlur({ opacity: 0.48, color: theme.palette.background.default }),
-        '&:hover': {
-          bgcolor: 'background.default',
+        ...bgBlur({opacity: 0.48, color: theme.palette.background.default}),
+        "&:hover": {
+          bgcolor: "background.default",
         },
         ...sx,
       }}
-      {...other}
-    >
+      {...other}>
       <Iconify
         width={16}
         icon={
-          minibarState === 'vertical' ? 'eva:arrow-ios-back-fill' : 'eva:arrow-ios-forward-fill'
+          minibarState === "vertical" ? "eva:arrow-ios-back-fill" : "eva:arrow-ios-forward-fill"
         }
       />
     </IconButton>

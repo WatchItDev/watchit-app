@@ -1,5 +1,5 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Profile } from '@lens-protocol/api-bindings';
+import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {Profile} from "@lens-protocol/api-bindings";
 
 interface FollowersState {
   followers: Profile[];
@@ -12,7 +12,7 @@ const initialState: FollowersState = {
 };
 
 const followersSlice = createSlice({
-  name: 'followers',
+  name: "followers",
   initialState,
   reducers: {
     setFollowers: (state, action: PayloadAction<Profile[]>) => {
@@ -32,7 +32,6 @@ const followersSlice = createSlice({
   },
 });
 
-export const { setFollowers, setFollowings, removeFollowing, addFollowing } =
-  followersSlice.actions;
+export const {setFollowers, setFollowings, removeFollowing, addFollowing} = followersSlice.actions;
 
 export default followersSlice.reducer;

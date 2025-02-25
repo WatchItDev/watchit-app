@@ -1,11 +1,11 @@
-import { useEffect, useRef, useState } from 'react';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import { IconCaretDown, IconCaretUp } from '@tabler/icons-react';
-import { ProfilePublicationItem } from './profile-publication-item';
-import { useSelector } from 'react-redux';
-import { AnyPublication } from '@lens-protocol/api-bindings';
+import {useEffect, useRef, useState} from "react";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
+import {IconCaretDown, IconCaretUp} from "@tabler/icons-react";
+import {ProfilePublicationItem} from "./profile-publication-item";
+import {useSelector} from "react-redux";
+import {AnyPublication} from "@lens-protocol/api-bindings";
 
 interface ProfileHomeProps {
   publications?: AnyPublication[]; // Array of publications
@@ -25,7 +25,7 @@ export default function ProfileHome({
   maxItemWidth = 250,
   initialRows = 2,
   rowsIncrement = 2,
-  maxHeight = '31rem',
+  maxHeight = "31rem",
   scrollable = true,
   scrollOnShowMore = true,
 }: ProfileHomeProps) {
@@ -118,7 +118,7 @@ export default function ProfileHome({
           if (parentRef.current) {
             parentRef.current.scrollTo({
               top: parentRef.current.scrollHeight,
-              behavior: 'smooth',
+              behavior: "smooth",
             });
           }
         });
@@ -136,28 +136,26 @@ export default function ProfileHome({
       <Box
         ref={parentRef}
         sx={{
-          display: publicationsToShow.length ? 'grid' : 'flex',
+          display: publicationsToShow.length ? "grid" : "flex",
           gridTemplateColumns: `repeat(auto-fill, minmax(${minItemWidth}px, 1fr))`,
-          flexWrap: 'wrap',
+          flexWrap: "wrap",
           gap: `${gap}px`,
-          justifyContent: 'flex-start',
-          alignItems: 'flex-start',
+          justifyContent: "flex-start",
+          alignItems: "flex-start",
           //padding: noPaddings ? 2 : 2,
           // Respect maxHeight & scrolling
-          maxHeight: scrollable ? maxHeight : 'auto',
-          overflowY: scrollable ? 'auto' : 'hidden',
-          overflowX: 'hidden',
-        }}
-      >
+          maxHeight: scrollable ? maxHeight : "auto",
+          overflowY: scrollable ? "auto" : "hidden",
+          overflowX: "hidden",
+        }}>
         {publicationsToShow.map((publication) => (
           <Box
             key={publication.id}
             sx={{
-              display: 'grid',
+              display: "grid",
               gap: `${gap}px`,
-              gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))',
-            }}
-          >
+              gridTemplateColumns: "repeat(auto-fill, minmax(150px, 1fr))",
+            }}>
             <ProfilePublicationItem publication={publication} />
           </Box>
         ))}
@@ -165,17 +163,16 @@ export default function ProfileHome({
         {!publicationsToShow.length && (
           <Typography
             sx={{
-              height: '20rem',
-              textAlign: 'center',
-              width: '100%',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontWeight: 'bold',
-              background: '#2b2d31',
-              borderRadius: '1rem',
-            }}
-          >
+              height: "20rem",
+              textAlign: "center",
+              width: "100%",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              fontWeight: "bold",
+              background: "#2b2d31",
+              borderRadius: "1rem",
+            }}>
             This profile has no posts
           </Typography>
         )}
@@ -183,19 +180,19 @@ export default function ProfileHome({
 
       {/* "Show more" / "Show less" button */}
       {shouldShowButton && publications.length > totalVisibleItems && (
-        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
+        <Box sx={{display: "flex", justifyContent: "center", mt: 2}}>
           <Button onClick={handleShowMore} variant="outlined">
             <IconCaretDown />
-            <Typography sx={{ ml: 1 }}>Show more</Typography>
+            <Typography sx={{ml: 1}}>Show more</Typography>
           </Button>
         </Box>
       )}
 
       {shouldShowButton && isShowingAll && publicationsToShow.length ? (
-        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
+        <Box sx={{display: "flex", justifyContent: "center", mt: 2}}>
           <Button onClick={handleShowMore} variant="outlined">
             <IconCaretUp />
-            <Typography sx={{ ml: 1 }}>Show less</Typography>
+            <Typography sx={{ml: 1}}>Show less</Typography>
           </Button>
         </Box>
       ) : null}

@@ -1,9 +1,9 @@
-import { useState, useEffect, useCallback } from 'react';
-import { Address } from 'viem';
-import { publicClient } from '@src/clients/viem/publicClient';
-import SubscriptionCampaignAbi from '@src/config/abi/SubscriptionCampaign.json';
-import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
-import { useSelector } from 'react-redux';
+import {useState, useEffect, useCallback} from "react";
+import {Address} from "viem";
+import {publicClient} from "@src/clients/viem/publicClient";
+import SubscriptionCampaignAbi from "@src/config/abi/SubscriptionCampaign.json";
+import {GLOBAL_CONSTANTS} from "@src/config-global.ts";
+import {useSelector} from "react-redux";
 
 interface IsActiveCampaignError {
   message: string;
@@ -29,7 +29,7 @@ export const useIsActiveCampaign = (ownerAddress?: Address): UseIsActiveCampaign
   const fetchIsActive = useCallback(async () => {
     if (!userAddress || !ownerAddress) {
       setLoading(false);
-      setError({ message: 'User address or owner address is missing.' });
+      setError({message: "User address or owner address is missing."});
       return;
     }
 
@@ -38,20 +38,20 @@ export const useIsActiveCampaign = (ownerAddress?: Address): UseIsActiveCampaign
       const activeData: any = await publicClient.readContract({
         address: GLOBAL_CONSTANTS.SUBSCRIPTION_CAMPAIGN_ADDRESS,
         abi: SubscriptionCampaignAbi.abi,
-        functionName: 'isActiveCampaign',
+        functionName: "isActiveCampaign",
         args: [ownerAddress, GLOBAL_CONSTANTS.ACCESS_WORKFLOW_ADDRESS],
       });
 
-      console.log('is active campaign')
-      console.log(activeData)
+      console.log("is active campaign");
+      console.log(activeData);
 
       const access = Boolean(activeData?.[0]);
       setIsActive(access);
       setError(null);
     } catch (err: any) {
-      console.error('Error checking access:', err);
+      console.error("Error checking access:", err);
       setIsActive(undefined);
-      setError({ message: err?.message || 'An error occurred' });
+      setError({message: err?.message || "An error occurred"});
     } finally {
       setLoading(false);
     }

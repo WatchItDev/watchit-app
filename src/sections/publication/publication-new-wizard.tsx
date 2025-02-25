@@ -1,29 +1,29 @@
-import { useState } from 'react';
-import Grid from '@mui/material/Grid';
-import Container from '@mui/material/Container';
+import {useState} from "react";
+import Grid from "@mui/material/Grid";
+import Container from "@mui/material/Container";
 // import Header from '@src/layouts/dashboard/header';
-import { useCreatePost } from '@lens-protocol/react-web';
+import {useCreatePost} from "@lens-protocol/react-web";
 // import { MetadataAttributeType } from '@lens-protocol/metadata';
-import { createHelia } from 'helia';
-import { unixfs } from '@helia/unixfs';
-import MovieInformationForm from './publication-new-wizard-information';
-import MediaAssetsForm from './publication-new-wizard-assets';
-import DistributionForm from './publication-new-wizard-distribution';
+import {createHelia} from "helia";
+import {unixfs} from "@helia/unixfs";
+import MovieInformationForm from "./publication-new-wizard-information";
+import MediaAssetsForm from "./publication-new-wizard-assets";
+import DistributionForm from "./publication-new-wizard-distribution";
 // import ReviewFinalizeForm from './movie-new-wizard-summary';
-import PublicationNewWizardSteps from './publication-new-wizard-steps.tsx';
-import { useSettingsContext } from '@src/components/settings';
+import PublicationNewWizardSteps from "./publication-new-wizard-steps.tsx";
+import {useSettingsContext} from "@src/components/settings";
 // @ts-ignore
-import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
-import { useSelector } from 'react-redux';
+import {ReadResult} from "@lens-protocol/react/dist/declarations/src/helpers/reads";
+import {useSelector} from "react-redux";
 
-const steps = ['Movie Information', 'Media Assets & Technical Details', 'Distribution & Rights'];
+const steps = ["Movie Information", "Media Assets & Technical Details", "Distribution & Rights"];
 
 export default function PublicationNewWizard() {
   const [activeStep, setActiveStep] = useState(0);
   const [formData, setFormData] = useState<any>({});
   const settings = useSettingsContext();
   const sessionData = useSelector((state: any) => state.auth.session);
-  const { execute: createPost } = useCreatePost();
+  const {execute: createPost} = useCreatePost();
 
   const handleNext = () => {
     setActiveStep((prevStep) => prevStep + 1);
@@ -38,7 +38,7 @@ export default function PublicationNewWizard() {
   };
 
   const handleFormSubmit = (data: any) => {
-    setFormData((prevData: any) => ({ ...prevData, ...data }));
+    setFormData((prevData: any) => ({...prevData, ...data}));
     if (activeStep === steps.length - 1) {
       handleFinalSubmit();
     } else {
@@ -57,7 +57,7 @@ export default function PublicationNewWizard() {
     // Subir archivo a IPFS
     const cid = await fs.addBytes(uint8Array);
 
-    console.log('file ipfs');
+    console.log("file ipfs");
     console.log(cid);
     console.log(cid?.toString?.());
 
@@ -67,7 +67,7 @@ export default function PublicationNewWizard() {
 
   const submitMoviePost = async () => {
     if (!sessionData?.profile) {
-      console.error('No active profile found');
+      console.error("No active profile found");
       return;
     }
 
@@ -81,9 +81,9 @@ export default function PublicationNewWizard() {
     });
 
     if (result.isFailure()) {
-      console.error('Error creating post', result.error);
+      console.error("Error creating post", result.error);
     } else {
-      console.log('Post created successfully:', result.value);
+      console.log("Post created successfully:", result.value);
     }
   };
 
@@ -98,10 +98,10 @@ export default function PublicationNewWizard() {
           const fileUri = await uploadFileToIpfs(value);
           fileUploads[key] = fileUri;
         }
-      })
+      }),
     );
 
-    console.log('file uploads');
+    console.log("file uploads");
 
     // Construir metadatos con los hashes de los archivos en IPFS
     const metadata = {
@@ -130,34 +130,34 @@ export default function PublicationNewWizard() {
       supportingActress: formData.supportingActress,
       media: [
         {
-          item: fileUploads.verticalPoster || '',
-          type: 'image/jpeg',
-          altTag: 'Vertical Poster',
+          item: fileUploads.verticalPoster || "",
+          type: "image/jpeg",
+          altTag: "Vertical Poster",
         },
         {
-          item: fileUploads.horizontalPoster || '',
-          type: 'image/jpeg',
-          altTag: 'Horizontal Poster',
+          item: fileUploads.horizontalPoster || "",
+          type: "image/jpeg",
+          altTag: "Horizontal Poster",
         },
         {
-          item: fileUploads.wallpaper || '',
-          type: 'image/jpeg',
-          altTag: 'Wallpaper',
+          item: fileUploads.wallpaper || "",
+          type: "image/jpeg",
+          altTag: "Wallpaper",
         },
         {
-          item: fileUploads.trailer || '',
-          type: 'video/mp4',
-          altTag: 'Movie Trailer',
+          item: fileUploads.trailer || "",
+          type: "video/mp4",
+          altTag: "Movie Trailer",
         },
         {
-          item: fileUploads.fullMovie || '',
-          type: 'video/mp4',
-          altTag: 'Full Movie',
+          item: fileUploads.fullMovie || "",
+          type: "video/mp4",
+          altTag: "Full Movie",
         },
         {
-          item: fileUploads.subtitles || '',
-          type: 'text/vtt',
-          altTag: 'Subtitles',
+          item: fileUploads.subtitles || "",
+          type: "text/vtt",
+          altTag: "Subtitles",
         },
       ],
       videoFormat: formData.videoFormat,
@@ -181,7 +181,7 @@ export default function PublicationNewWizard() {
 
     // Subir los metadatos a IPFS
     const metadataUri = await uploadFileToIpfs(
-      new File([JSON.stringify(metadata)], 'metadata.json', { type: 'application/json' })
+      new File([JSON.stringify(metadata)], "metadata.json", {type: "application/json"}),
     );
 
     return metadataUri; // Devolver la URI de los metadatos
@@ -189,17 +189,17 @@ export default function PublicationNewWizard() {
 
   const handleFinalSubmit = async () => {
     try {
-      console.log('Final Data:', formData);
+      console.log("Final Data:", formData);
       await submitMoviePost(); // Crear y enviar la publicación a Lens
-      alert('Movie data successfully submitted to Lens!');
+      alert("Movie data successfully submitted to Lens!");
     } catch (error) {
-      console.error('Error submitting movie to Lens:', error);
-      alert('Failed to submit movie data to Lens');
+      console.error("Error submitting movie to Lens:", error);
+      alert("Failed to submit movie data to Lens");
     }
   };
 
   return (
-    <Container maxWidth={settings.themeStretch ? false : 'lg'} sx={{ mb: 5, mt: 5 }}>
+    <Container maxWidth={settings.themeStretch ? false : "lg"} sx={{mb: 5, mt: 5}}>
       <Grid container justifyContent="flex-start">
         <Grid xs={12} md={12}>
           <PublicationNewWizardSteps activeStep={activeStep} steps={steps} goToStep={goToStep} />

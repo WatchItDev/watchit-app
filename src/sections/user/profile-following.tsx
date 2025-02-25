@@ -1,13 +1,13 @@
 // MUI IMPORTS
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
 
 // LENS IMPORTS
-import { Profile } from '@lens-protocol/api-bindings';
+import {Profile} from "@lens-protocol/api-bindings";
 
 // LOCAL IMPORTS
-import { UserItem } from '@src/components/user-item';
-import { useSelector } from 'react-redux';
+import {UserItem} from "@src/components/user-item";
+import {useSelector} from "react-redux";
 
 // ----------------------------------------------------------------------
 
@@ -19,18 +19,17 @@ const ProfileFollowing = () => {
       gap={3}
       display="grid"
       gridTemplateColumns={{
-        xs: 'repeat(1, 1fr)',
-        sm: 'repeat(2, 1fr)',
-        md: 'repeat(3, 1fr)',
+        xs: "repeat(1, 1fr)",
+        sm: "repeat(2, 1fr)",
+        md: "repeat(3, 1fr)",
       }}
       sx={{
-        display: following?.length ? 'grid' : 'flex',
-        flexWrap: 'wrap',
+        display: following?.length ? "grid" : "flex",
+        flexWrap: "wrap",
         gap: `${16}px`,
-        justifyContent: 'flex-start',
-        alignItems: 'flex-start',
-      }}
-    >
+        justifyContent: "flex-start",
+        alignItems: "flex-start",
+      }}>
       {following?.length ? (
         following.map((follower, index) => (
           <UserItem key={`following-${index}`} profile={follower} />
@@ -38,17 +37,16 @@ const ProfileFollowing = () => {
       ) : (
         <Typography
           sx={{
-            height: '20rem',
-            textAlign: 'center',
-            width: '100%',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            fontWeight: 'bold',
-            background: '#2b2d31',
-            borderRadius: '1rem',
-          }}
-        >
+            height: "20rem",
+            textAlign: "center",
+            width: "100%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            fontWeight: "bold",
+            background: "#2b2d31",
+            borderRadius: "1rem",
+          }}>
           This profile has no following
         </Typography>
       )}

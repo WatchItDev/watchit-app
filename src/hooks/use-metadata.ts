@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import {useState, useCallback} from "react";
 
 /**
  * Interface representing each attachment in the metadata.
@@ -77,7 +77,7 @@ const useMetadata = (): UseMetadataReturn => {
     }
   }, []);
 
-  return { metadata, loading, getMetadata };
+  return {metadata, loading, getMetadata};
 };
 
 export default useMetadata;

@@ -1,1 +1,1 @@
-export { default } from './video-player.tsx';
+export {default} from "./video-player.tsx";

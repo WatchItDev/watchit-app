@@ -1,7 +1,7 @@
 // @mui
-import Box from '@mui/material/Box';
+import Box from "@mui/material/Box";
 //
-import Image, { ImageRatio } from '../image';
+import Image, {ImageRatio} from "../image";
 
 // ----------------------------------------------------------------------
 
@@ -10,7 +10,7 @@ export interface SingleFilePreviewProps {
   ratio?: ImageRatio;
 }
 
-export default function SingleFilePreview({ imgUrl = '', ratio }: SingleFilePreviewProps) {
+export default function SingleFilePreview({imgUrl = "", ratio}: SingleFilePreviewProps) {
   return (
     <Box
       sx={{
@@ -19,9 +19,8 @@ export default function SingleFilePreview({ imgUrl = '', ratio }: SingleFilePrev
         left: 0,
         width: 1,
         height: 1,
-        position: 'absolute',
-      }}
-    >
+        position: "absolute",
+      }}>
       <Image
         alt="file preview"
         src={imgUrl}

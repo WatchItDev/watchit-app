@@ -4,7 +4,7 @@ export interface TableProps {
   dense: boolean;
   page: number;
   rowsPerPage: number;
-  order: 'asc' | 'desc';
+  order: "asc" | "desc";
   orderBy: string;
   //
   selected: string[];
@@ -29,7 +29,7 @@ export interface TableProps {
   //
   setPage: React.Dispatch<React.SetStateAction<number>>;
   setDense: React.Dispatch<React.SetStateAction<boolean>>;
-  setOrder: React.Dispatch<React.SetStateAction<'desc' | 'asc'>>;
+  setOrder: React.Dispatch<React.SetStateAction<"desc" | "asc">>;
   setOrderBy: React.Dispatch<React.SetStateAction<string>>;
   setSelected: React.Dispatch<React.SetStateAction<string[]>>;
   setRowsPerPage: React.Dispatch<React.SetStateAction<number>>;

@@ -1,6 +1,6 @@
 // LENS IMPORTS
-import { useReportPublication, PublicationReportReason } from '@lens-protocol/react-web';
-import { ReportModalBase } from '@src/components/report-modal-base.tsx';
+import {useReportPublication, PublicationReportReason} from "@lens-protocol/react-web";
+import {ReportModalBase} from "@src/components/report-modal-base.tsx";
 
 // ----------------------------------------------------------------------
 
@@ -12,8 +12,8 @@ interface PublicationReportModalProps {
 
 // ----------------------------------------------------------------------
 
-export const ReportPublicationModal = ({ post, isOpen, onClose }: PublicationReportModalProps) => {
-  const { execute: report } = useReportPublication();
+export const ReportPublicationModal = ({post, isOpen, onClose}: PublicationReportModalProps) => {
+  const {execute: report} = useReportPublication();
 
   const handleSubmit = async (reason: string, comments: string) => {
     return report({

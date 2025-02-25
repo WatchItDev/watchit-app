@@ -1,24 +1,24 @@
 // React and libraries imports
-import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import React, {useState} from "react";
+import {useSelector} from "react-redux";
 
 // @MUI components
-import { useTheme } from '@mui/material/styles';
-import Stack from '@mui/material/Stack';
-import InputBase from '@mui/material/InputBase';
-import Box, { BoxProps } from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
+import {useTheme} from "@mui/material/styles";
+import Stack from "@mui/material/Stack";
+import InputBase from "@mui/material/InputBase";
+import Box, {BoxProps} from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
 
 // Project components
-import { bgGradient } from '@src/theme/css';
-import { COLORS } from '@src/layouts/config-layout.ts';
+import {bgGradient} from "@src/theme/css";
+import {COLORS} from "@src/layouts/config-layout.ts";
 
-import { notifyError, notifySuccess } from '@notifications/internal-notifications.ts';
-import { SUCCESS } from '@notifications/success.ts';
-import { ERRORS } from '@notifications/errors.ts';
+import {notifyError, notifySuccess} from "@notifications/internal-notifications.ts";
+import {SUCCESS} from "@notifications/success.ts";
+import {ERRORS} from "@notifications/errors.ts";
 
 import useReferrals from "@src/hooks/use-referrals";
-import LoadingButton from '@mui/lab/LoadingButton';
+import LoadingButton from "@mui/lab/LoadingButton";
 import {checkIfEmailAlreadyInvited} from "@src/utils/supabase-actions.ts";
 
 interface Props extends BoxProps {
@@ -36,15 +36,11 @@ export default function FinanceInviteFriends({
   sx,
   ...other
 }: Props) {
-  const {
-    sendInvitation,
-    checkIfInvitationSent,
-    checkIfEmailAlreadyAccepted,
-  } = useReferrals();
+  const {sendInvitation, checkIfInvitationSent, checkIfEmailAlreadyAccepted} = useReferrals();
   const theme = useTheme();
   const sessionData = useSelector((state: any) => state.auth.session);
   const userLoggedEmail = useSelector((state: any) => state.auth.email);
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -52,15 +48,14 @@ export default function FinanceInviteFriends({
   };
 
   /*
-  * Return true if the email is valid, false otherwise.
-  * */
+   * Return true if the email is valid, false otherwise.
+   * */
   const handleValidEmail = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
-  }
+  };
 
   const handleInviteClick = async () => {
-
     if (!handleValidEmail()) {
       notifyError(ERRORS.INVITATION_EMAIL_ERROR);
       return;
@@ -72,7 +67,7 @@ export default function FinanceInviteFriends({
     const alreadySent = await checkIfInvitationSent(email);
 
     // Check if the user has already been invited but someone else
-    const { invited } = await checkIfEmailAlreadyInvited(email);
+    const {invited} = await checkIfEmailAlreadyInvited(email);
 
     if (invited) {
       notifyError(ERRORS.INVITATION_USER_ALREADY_INVITED);
@@ -117,7 +112,7 @@ export default function FinanceInviteFriends({
     try {
       await sendInvitation(email, payload);
       notifySuccess(SUCCESS.INVITATIONS_SUCCESSFULLY);
-      setEmail('');
+      setEmail("");
       setLoading(false);
     } catch (err) {
       // Handle any errors coming from sendInvitation
@@ -137,8 +132,8 @@ export default function FinanceInviteFriends({
           left: 40,
           zIndex: 9,
           width: 140,
-          position: 'relative',
-          filter: 'drop-shadow(0 12px 24px rgba(0,0,0,0.24))',
+          position: "relative",
+          filter: "drop-shadow(0 12px 24px rgba(0,0,0,0.24))",
           ...sx,
         }}
       />
@@ -146,41 +141,38 @@ export default function FinanceInviteFriends({
       <Box
         sx={{
           mt: -15,
-          position: 'relative',
-          color: 'common.white',
+          position: "relative",
+          color: "common.white",
           borderRadius: 2,
           p: theme.spacing(16, 5, 5, 5),
           ...bgGradient({
-            direction: '135deg',
+            direction: "135deg",
             startColor: theme.palette.primary.main,
             endColor: theme.palette.primary.dark,
           }),
-        }}
-      >
+        }}>
         <Stack direction="row" alignItems="center" justifyContent="space-between">
-          <Typography variant={'h3'} textAlign={'center'}>
+          <Typography variant={"h3"} textAlign={"center"}>
             {title}
             <Stack
-              sx={{ display: 'inline-flex', ml: 2 }}
+              sx={{display: "inline-flex", ml: 2}}
               direction="row"
               alignItems="flex-end"
-              justifyContent="center"
-            >
+              justifyContent="center">
               <Box
                 sx={{
-                  typography: 'h1',
-                  color: 'warning.main',
+                  typography: "h1",
+                  color: "warning.main",
                   textShadow: `1px 1px 5px ${COLORS.GRAY_LIGHT}`,
-                }}
-              >
+                }}>
                 {price}
               </Box>
-              <Box sx={{ typography: 'h6', opacity: 0.5, ml: 1, mb: 1 }}>MMC</Box>
+              <Box sx={{typography: "h6", opacity: 0.5, ml: 1, mb: 1}}>MMC</Box>
             </Stack>
           </Typography>
         </Stack>
 
-        <Box sx={{ mt: 2, mb: 3, typography: 'body1', fontWeight: 300, opacity: 0.8 }}>
+        <Box sx={{mt: 2, mb: 3, typography: "body1", fontWeight: 300, opacity: 0.8}}>
           {description}
         </Box>
 
@@ -195,10 +187,9 @@ export default function FinanceInviteFriends({
               color="warning"
               variant="contained"
               size="small"
-              sx={{ mr: 0.5 }}
+              sx={{mr: 0.5}}
               onClick={handleInviteClick}
-              loading={loading}
-            >
+              loading={loading}>
               Invite
             </LoadingButton>
           }
@@ -206,8 +197,8 @@ export default function FinanceInviteFriends({
             pl: 1.5,
             height: 40,
             borderRadius: 1,
-            color: 'primary.main',
-            bgcolor: 'common.white',
+            color: "primary.main",
+            bgcolor: "common.white",
           }}
         />
       </Box>

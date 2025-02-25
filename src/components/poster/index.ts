@@ -1,1 +1,1 @@
-export { default as PosterVertical } from './variants/poster-vertical';
+export {default as PosterVertical} from "./variants/poster-vertical";

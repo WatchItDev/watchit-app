@@ -1,18 +1,18 @@
 // REACT IMPORTS
-import React from 'react';
+import React from "react";
 
 // MUI IMPORTS
-import { Modal, Box, Fade, Backdrop } from '@mui/material';
+import {Modal, Box, Fade, Backdrop} from "@mui/material";
 
 // LOCAL IMPORTS
-import { ProfileFormView } from '@src/components/login-modal/profile-form-view.tsx';
+import {ProfileFormView} from "@src/components/login-modal/profile-form-view.tsx";
 // @ts-ignore
-import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
-import { useSelector } from 'react-redux';
+import {ReadResult} from "@lens-protocol/react/dist/declarations/src/helpers/reads";
+import {useSelector} from "react-redux";
 
 // Notifications
-import { notifySuccess } from '@notifications/internal-notifications.ts';
-import { SUCCESS } from '@notifications/success.ts';
+import {notifySuccess} from "@notifications/internal-notifications.ts";
+import {SUCCESS} from "@notifications/success.ts";
 
 // ----------------------------------------------------------------------
 
@@ -23,7 +23,7 @@ interface UpdateModalProps {
 
 // ----------------------------------------------------------------------
 
-export const UpdateModal: React.FC<UpdateModalProps> = ({ open, onClose }) => {
+export const UpdateModal: React.FC<UpdateModalProps> = ({open, onClose}) => {
   const loading = useSelector((state: any) => state.auth.isSessionLoading);
   const sessionData = useSelector((state: any) => state.auth.session);
 
@@ -35,7 +35,7 @@ export const UpdateModal: React.FC<UpdateModalProps> = ({ open, onClose }) => {
   return (
     <>
       <Modal
-        style={{ overflow: 'scroll' }}
+        style={{overflow: "scroll"}}
         disableScrollLock={true}
         open={open}
         onClose={onClose}
@@ -43,28 +43,26 @@ export const UpdateModal: React.FC<UpdateModalProps> = ({ open, onClose }) => {
         BackdropComponent={Backdrop}
         BackdropProps={{
           timeout: 500,
-          sx: { pointerEvents: loading ? 'none' : 'all' },
-        }}
-      >
+          sx: {pointerEvents: loading ? "none" : "all"},
+        }}>
         <Fade in={open}>
           <Box
             sx={{
-              position: 'absolute',
-              top: '50%',
-              left: '50%',
-              transform: 'translate(-50%, -50%)',
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
               width: {
-                xs: '90%',
+                xs: "90%",
                 sm: 500,
               },
-              height: '85%',
-              bgcolor: 'background.paper',
+              height: "85%",
+              bgcolor: "background.paper",
               borderRadius: 2,
               boxShadow: 24,
-              outline: 'none',
-              transition: 'all 0.5s easy-in-out',
-            }}
-          >
+              outline: "none",
+              transition: "all 0.5s easy-in-out",
+            }}>
             <ProfileFormView
               onSuccess={handleProfileUpdateSuccess}
               onCancel={onClose}
@@ -77,10 +75,10 @@ export const UpdateModal: React.FC<UpdateModalProps> = ({ open, onClose }) => {
                 profileImage: (sessionData?.profile?.metadata?.picture as any)?.raw?.uri,
                 backgroundImage: (sessionData?.profile?.metadata?.coverPicture as any)?.raw?.uri,
                 socialLinks: {
-                  twitter: '',
-                  instagram: '',
-                  orb: '',
-                  farcaster: '',
+                  twitter: "",
+                  instagram: "",
+                  orb: "",
+                  farcaster: "",
                 },
               }}
             />

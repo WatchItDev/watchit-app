@@ -1,30 +1,30 @@
-import { Theme, alpha } from '@mui/material/styles';
-import { AlertProps, alertClasses } from '@mui/material/Alert';
+import {Theme, alpha} from "@mui/material/styles";
+import {AlertProps, alertClasses} from "@mui/material/Alert";
 
 // ----------------------------------------------------------------------
 
-const COLORS = ['info', 'success', 'warning', 'error'] as const;
+const COLORS = ["info", "success", "warning", "error"] as const;
 
 // ----------------------------------------------------------------------
 
 export function alert(theme: Theme) {
-  const lightMode = theme.palette.mode === 'light';
+  const lightMode = theme.palette.mode === "light";
 
   const rootStyles = (ownerState: AlertProps) => {
-    const standardVariant = ownerState.variant === 'standard';
+    const standardVariant = ownerState.variant === "standard";
 
-    const filledVariant = ownerState.variant === 'filled';
+    const filledVariant = ownerState.variant === "filled";
 
-    const outlinedVariant = ownerState.variant === 'outlined';
+    const outlinedVariant = ownerState.variant === "outlined";
 
     const colorStyle = COLORS.map((color) => ({
       ...(ownerState.severity === color && {
         // STANDARD
         ...(standardVariant && {
-          color: theme.palette[color][lightMode ? 'darker' : 'lighter'],
-          backgroundColor: theme.palette[color][lightMode ? 'lighter' : 'darker'],
+          color: theme.palette[color][lightMode ? "darker" : "lighter"],
+          backgroundColor: theme.palette[color][lightMode ? "lighter" : "darker"],
           [`& .${alertClasses.icon}`]: {
-            color: theme.palette[color][lightMode ? 'main' : 'light'],
+            color: theme.palette[color][lightMode ? "main" : "light"],
           },
         }),
         // FILLED
@@ -35,7 +35,7 @@ export function alert(theme: Theme) {
         // OUTLINED
         ...(outlinedVariant && {
           backgroundColor: alpha(theme.palette[color].main, 0.08),
-          color: theme.palette[color][lightMode ? 'dark' : 'light'],
+          color: theme.palette[color][lightMode ? "dark" : "light"],
           border: `solid 1px ${alpha(theme.palette[color].main, 0.16)}`,
           [`& .${alertClasses.icon}`]: {
             color: theme.palette[color].main,
@@ -50,7 +50,7 @@ export function alert(theme: Theme) {
   return {
     MuiAlert: {
       styleOverrides: {
-        root: ({ ownerState }: { ownerState: AlertProps }) => rootStyles(ownerState),
+        root: ({ownerState}: {ownerState: AlertProps}) => rootStyles(ownerState),
         icon: {
           opacity: 1,
         },

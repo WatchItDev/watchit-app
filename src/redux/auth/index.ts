@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 
 export interface AuthReducerState {
   session: any;
@@ -17,11 +17,11 @@ const initialState: AuthReducerState = {
   balance: 0,
   currentStep: 0,
   isUpdatingMetadata: false,
-  email: '',
+  email: "",
 };
 
 const authSlice = createSlice({
-  name: 'auth',
+  name: "auth",
   initialState,
   reducers: {
     openLoginModal: (state) => {
@@ -30,19 +30,19 @@ const authSlice = createSlice({
     closeLoginModal: (state) => {
       state.isLoginModalOpen = false;
     },
-    setAuthLoading: (state, action: PayloadAction<Pick<AuthReducerState, 'isSessionLoading'>>) => {
+    setAuthLoading: (state, action: PayloadAction<Pick<AuthReducerState, "isSessionLoading">>) => {
       state.isSessionLoading = action.payload.isSessionLoading;
     },
-    setBalance: (state, action: PayloadAction<Pick<AuthReducerState, 'balance'>>) => {
+    setBalance: (state, action: PayloadAction<Pick<AuthReducerState, "balance">>) => {
       state.balance = action.payload.balance;
     },
-    setProfileCreationStep: (state, action: PayloadAction<{ step: number }>) => {
+    setProfileCreationStep: (state, action: PayloadAction<{step: number}>) => {
       state.currentStep = action.payload.step;
     },
     resetCurrentStep: (state) => {
       state.currentStep = 0;
     },
-    setSession: (state, action: PayloadAction<{ session: any }>) => {
+    setSession: (state, action: PayloadAction<{session: any}>) => {
       state.session = action.payload.session;
     },
     setEmail: (state, action: PayloadAction<string>) => {
@@ -55,7 +55,7 @@ const authSlice = createSlice({
         bio: string;
         profileImage?: string;
         backgroundImage?: string;
-      }>
+      }>,
     ) => {
       if (state.session && state.session.profile) {
         state.session.profile.metadata = {
@@ -91,7 +91,7 @@ export const {
   setSession,
   updateProfileData,
   setIsUpdatingMetadata,
-  setEmail
+  setEmail,
 } = authSlice.actions;
 
 export default authSlice.reducer;

@@ -1,9 +1,9 @@
-import { useState, useCallback } from 'react';
+import {useState, useCallback} from "react";
 // utils
-import { fDate } from '@src/utils/format-time';
+import {fDate} from "@src/utils/format-time";
 //
-import { shortDateLabel } from './utils';
-import { DateRangePickerProps } from './types';
+import {shortDateLabel} from "./utils";
+import {DateRangePickerProps} from "./types";
 
 // ----------------------------------------------------------------------
 
@@ -37,7 +37,7 @@ export default function useDateRangePicker(start: Date | null, end: Date | null)
       }
       setEndDate(newValue);
     },
-    [error]
+    [error],
   );
 
   const onReset = useCallback(() => {

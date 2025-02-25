@@ -1,11 +1,11 @@
-import { memo } from 'react';
+import {memo} from "react";
 // @mui
-import { useTheme } from '@mui/material/styles';
-import Box, { BoxProps } from '@mui/material/Box';
+import {useTheme} from "@mui/material/styles";
+import Box, {BoxProps} from "@mui/material/Box";
 
 // ----------------------------------------------------------------------
 
-function CheckoutIllustration({ ...other }: BoxProps) {
+function CheckoutIllustration({...other}: BoxProps) {
   const theme = useTheme();
 
   const PRIMARY_LIGHT = theme.palette.primary.light;
@@ -23,8 +23,7 @@ function CheckoutIllustration({ ...other }: BoxProps) {
       height="100%"
       viewBox="0 0 200 200"
       xmlns="http://www.w3.org/2000/svg"
-      {...other}
-    >
+      {...other}>
       <path
         fill="url(#a)"
         d="M85.6 134.7c-3.7-5.5-33-10.5-35.3-12 0 0-5.4-2-7.8 3.4-2.4 5.4-16.6 49.8-16.6 49.8s27.8 14.9 36 16.5c3.3.4 6.9-1.1 9.7-2.9l15.8-47.2c-.1 0 2.1-5.2-1.8-7.6z"
@@ -56,8 +55,7 @@ function CheckoutIllustration({ ...other }: BoxProps) {
           x2="25.9"
           y1="122.338"
           y2="192.465"
-          gradientUnits="userSpaceOnUse"
-        >
+          gradientUnits="userSpaceOnUse">
           <stop stopColor={PRIMARY_LIGHT} />
           <stop offset="1" stopColor={PRIMARY_DARK} />
         </linearGradient>

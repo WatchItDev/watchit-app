@@ -1,13 +1,13 @@
-import { memo } from 'react';
-import Stack from '@mui/material/Stack';
+import {memo} from "react";
+import Stack from "@mui/material/Stack";
 //
-import { NavSectionProps, NavListProps, NavConfigProps } from '../types';
-import { navMiniConfig } from '../config';
-import NavListVerticalMini from '@src/components/nav-section/mini/nav-list-vertical-mini.tsx';
+import {NavSectionProps, NavListProps, NavConfigProps} from "../types";
+import {navMiniConfig} from "../config";
+import NavListVerticalMini from "@src/components/nav-section/mini/nav-list-vertical-mini.tsx";
 
 // ----------------------------------------------------------------------
 
-export function NavSectionVerticalMini({ data, config, sx, ...other }: NavSectionProps) {
+export function NavSectionVerticalMini({data, config, sx, ...other}: NavSectionProps) {
   return (
     <Stack sx={sx} {...other}>
       {data.map((group, index) => (
@@ -26,7 +26,7 @@ interface GroupProps {
   config: NavConfigProps;
 }
 
-function Group({ items, config }: GroupProps) {
+function Group({items, config}: GroupProps) {
   return (
     <>
       {items.map((list) => (

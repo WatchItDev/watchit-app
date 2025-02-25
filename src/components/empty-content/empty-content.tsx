@@ -1,7 +1,7 @@
 // @mui
-import { alpha } from '@mui/material/styles';
-import Typography from '@mui/material/Typography';
-import Stack, { StackProps } from '@mui/material/Stack';
+import {alpha} from "@mui/material/styles";
+import Typography from "@mui/material/Typography";
+import Stack, {StackProps} from "@mui/material/Stack";
 
 // ----------------------------------------------------------------------
 
@@ -37,20 +37,18 @@ export default function EmptyContent({
         }),
         ...sx,
       }}
-      {...other}
-    >
+      {...other}>
       {title && (
         <Typography
           variant="h6"
           component="span"
-          sx={{ mt: 1, color: 'text.disabled', textAlign: 'center' }}
-        >
+          sx={{mt: 1, color: "text.disabled", textAlign: "center"}}>
           {title}
         </Typography>
       )}
 
       {description && (
-        <Typography variant="caption" sx={{ mt: 1, color: 'text.disabled', textAlign: 'center' }}>
+        <Typography variant="caption" sx={{mt: 1, color: "text.disabled", textAlign: "center"}}>
           {description}
         </Typography>
       )}

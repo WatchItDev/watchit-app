@@ -1,11 +1,11 @@
-import { useState } from 'react';
-import { useSelector } from 'react-redux';
-import { encodeFunctionData, parseUnits } from 'viem';
-import LedgerVaultAbi from '@src/config/abi/LedgerVault.json';
-import { GLOBAL_CONSTANTS } from '@src/config-global';
-import { useWeb3Session } from '@src/hooks/use-web3-session.ts';
-import { ERRORS } from '@notifications/errors.ts';
-import { useAccountSession } from '@src/hooks/use-account-session.ts';
+import {useState} from "react";
+import {useSelector} from "react-redux";
+import {encodeFunctionData, parseUnits} from "viem";
+import LedgerVaultAbi from "@src/config/abi/LedgerVault.json";
+import {GLOBAL_CONSTANTS} from "@src/config-global";
+import {useWeb3Session} from "@src/hooks/use-web3-session.ts";
+import {ERRORS} from "@notifications/errors.ts";
+import {useAccountSession} from "@src/hooks/use-account-session.ts";
 
 interface TransferParams {
   recipient: string;
@@ -25,20 +25,20 @@ export const useTransfer = (): UseTransferHook => {
   const [error, setError] = useState<keyof typeof ERRORS | null>(null);
 
   const sessionData = useSelector((state: any) => state.auth.session);
-  const { bundlerClient, smartAccount } = useWeb3Session();
-  const { isAuthenticated, logout } = useAccountSession();
+  const {bundlerClient, smartAccount} = useWeb3Session();
+  const {isAuthenticated, logout} = useAccountSession();
 
-  const initializeTransfer = ({ recipient, amount }: TransferParams) => {
+  const initializeTransfer = ({recipient, amount}: TransferParams) => {
     const weiAmount = parseUnits(amount.toString(), 18);
 
     return encodeFunctionData({
       abi: LedgerVaultAbi.abi,
-      functionName: 'transfer',
+      functionName: "transfer",
       args: [recipient, weiAmount, GLOBAL_CONSTANTS.MMC_ADDRESS],
     });
   };
 
-  const transfer = async ({ recipient, amount }: TransferParams) => {
+  const transfer = async ({recipient, amount}: TransferParams) => {
     setLoading(true);
     setError(null);
 
@@ -51,11 +51,11 @@ export const useTransfer = (): UseTransferHook => {
     if (!isAuthenticated()) {
       logout();
       setLoading(false);
-      throw new Error('Invalid Web3Auth session');
+      throw new Error("Invalid Web3Auth session");
     }
 
     try {
-      const transferData = initializeTransfer({ recipient, amount });
+      const transferData = initializeTransfer({recipient, amount});
 
       const calls = [
         {
@@ -77,11 +77,11 @@ export const useTransfer = (): UseTransferHook => {
       setData(receipt);
       setLoading(false);
     } catch (err: any) {
-      console.error('USE TRANSFER ERR:', err);
+      console.error("USE TRANSFER ERR:", err);
       setError(ERRORS.UNKNOWN_ERROR);
       setLoading(false);
     }
   };
 
-  return { data, transfer, loading, error };
+  return {data, transfer, loading, error};
 };

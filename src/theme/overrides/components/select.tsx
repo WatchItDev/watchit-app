@@ -1,4 +1,4 @@
-import { Theme } from '@mui/material/styles';
+import {Theme} from "@mui/material/styles";
 
 // ----------------------------------------------------------------------
 
@@ -10,7 +10,7 @@ export function select(theme: Theme) {
           right: 10,
           width: 18,
           height: 18,
-          top: 'calc(50% - 9px)',
+          top: "calc(50% - 9px)",
         },
       },
     },
@@ -20,7 +20,7 @@ export function select(theme: Theme) {
           right: 10,
           width: 18,
           height: 18,
-          top: 'calc(50% - 9px)',
+          top: "calc(50% - 9px)",
         },
       },
     },

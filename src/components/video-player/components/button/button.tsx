@@ -1,8 +1,8 @@
-import React, { FC, PropsWithChildren } from 'react';
-import { ButtonProps as MuiButtonProps, Button as MuiButton, Box } from '@mui/material';
+import React, {FC, PropsWithChildren} from "react";
+import {ButtonProps as MuiButtonProps, Button as MuiButton, Box} from "@mui/material";
 /* import { withTheme } from '../../../hoc/withTheme' */
 
-type ButtonVariant = 'primary' | 'secondary' | 'flat';
+type ButtonVariant = "primary" | "secondary" | "flat";
 
 export interface ButtonProps {
   variant: ButtonVariant;
@@ -19,8 +19,8 @@ export interface ButtonProps {
 
 export const ButtonCustom: FC<PropsWithChildren<ButtonProps>> = (props): JSX.Element => {
   const getButtonVariant = (v: ButtonVariant) => {
-    const variants = { primary: 'contained', secondary: 'outlined', flat: 'text' };
-    return variants[v] as MuiButtonProps['variant'];
+    const variants = {primary: "contained", secondary: "outlined", flat: "text"};
+    return variants[v] as MuiButtonProps["variant"];
   };
 
   return (
@@ -36,17 +36,15 @@ export const ButtonCustom: FC<PropsWithChildren<ButtonProps>> = (props): JSX.Ele
         height: props?.height,
         width: props?.width,
         margin: props?.margin,
-      }}
-    >
+      }}>
       <Box display="flex" alignItems="center" justifyContent="center">
         {props?.icon ? (
           <Box
             display="flex"
             alignItems="center"
             justifyContent="center"
-            sx={{ mr: props?.children ? '0.5rem' : '0' }}
-            data-testid="icon"
-          >
+            sx={{mr: props?.children ? "0.5rem" : "0"}}
+            data-testid="icon">
             {props?.icon}
           </Box>
         ) : (

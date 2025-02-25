@@ -1,7 +1,7 @@
 // @mui
-import { alpha } from '@mui/material/styles';
+import {alpha} from "@mui/material/styles";
 //
-import { palette as themePalette } from './palette';
+import {palette as themePalette} from "./palette";
 
 // ----------------------------------------------------------------------
 
@@ -26,7 +26,7 @@ interface CustomShadowOptions {
   dropdown: string;
 }
 
-declare module '@mui/material/styles' {
+declare module "@mui/material/styles" {
   interface Theme {
     customShadows: CustomShadowOptions;
   }
@@ -37,7 +37,7 @@ declare module '@mui/material/styles' {
 
 // ----------------------------------------------------------------------
 
-const palette = themePalette('light');
+const palette = themePalette("light");
 
 const LIGHT_MODE = palette.grey[500];
 
@@ -67,6 +67,6 @@ function createShadow(color: string) {
   };
 }
 
-export function customShadows(mode: 'light' | 'dark') {
-  return mode === 'light' ? createShadow(LIGHT_MODE) : createShadow(DARK_MODE);
+export function customShadows(mode: "light" | "dark") {
+  return mode === "light" ? createShadow(LIGHT_MODE) : createShadow(DARK_MODE);
 }

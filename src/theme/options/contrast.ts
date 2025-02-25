@@ -1,12 +1,12 @@
-import { palette } from '../palette';
-import { customShadows } from '../custom-shadows';
+import {palette} from "../palette";
+import {customShadows} from "../custom-shadows";
 
 // ----------------------------------------------------------------------
 
-export function contrast(contrastBold: boolean, mode: 'light' | 'dark') {
+export function contrast(contrastBold: boolean, mode: "light" | "dark") {
   const theme = {
     ...(contrastBold &&
-      mode === 'light' && {
+      mode === "light" && {
         palette: {
           background: {
             default: palette(mode).grey[100],

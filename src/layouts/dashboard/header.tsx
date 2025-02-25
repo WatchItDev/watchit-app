@@ -1,40 +1,40 @@
 // @mui
-import { useTheme } from '@mui/material/styles';
-import Stack from '@mui/material/Stack';
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
+import {useTheme} from "@mui/material/styles";
+import Stack from "@mui/material/Stack";
+import AppBar from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
+import IconButton from "@mui/material/IconButton";
 // theme
-import { bgBlur } from '@src/theme/css';
+import {bgBlur} from "@src/theme/css";
 // hooks
-import { useOffSetTop } from '@src/hooks/use-off-set-top';
-import { useResponsive } from '@src/hooks/use-responsive';
+import {useOffSetTop} from "@src/hooks/use-off-set-top";
+import {useResponsive} from "@src/hooks/use-responsive";
 // components
-import Logo from '@src/components/logo';
-import SvgColor from '@src/components/svg-color';
-import { useSettingsContext } from '@src/components/settings';
+import Logo from "@src/components/logo";
+import SvgColor from "@src/components/svg-color";
+import {useSettingsContext} from "@src/components/settings";
 //
-import { HEADER, NAV } from '../config-layout';
-import { AccountPopover, HeaderBalance, NotificationsPopover } from '../_common';
-import { PropsWithChildren } from 'react';
+import {HEADER, NAV} from "../config-layout";
+import {AccountPopover, HeaderBalance, NotificationsPopover} from "../_common";
+import {PropsWithChildren} from "react";
 // @ts-ignore
-import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
+import {ReadResult} from "@lens-protocol/react/dist/declarations/src/helpers/reads";
 
-import { useDispatch, useSelector } from 'react-redux';
-import { toggleDrawer } from '@redux/drawer';
+import {useDispatch, useSelector} from "react-redux";
+import {toggleDrawer} from "@redux/drawer";
 
 // ----------------------------------------------------------------------
 
-export default function Header({ children }: PropsWithChildren) {
+export default function Header({children}: PropsWithChildren) {
   const sessionData = useSelector((state: any) => state.auth.session);
 
   const theme = useTheme();
 
   const settings = useSettingsContext();
 
-  const isNavHorizontal = settings.themeLayout === 'horizontal';
+  const isNavHorizontal = settings.themeLayout === "horizontal";
 
-  const lgUp = useResponsive('up', 'lg');
+  const lgUp = useResponsive("up", "lg");
 
   const offset = useOffSetTop(HEADER.H_DESKTOP);
 
@@ -50,11 +50,11 @@ export default function Header({ children }: PropsWithChildren) {
   // @ts-ignore
   const minibarState = useSelector((state) => state.minibar.state);
 
-  const isNavMini = minibarState === 'mini';
+  const isNavMini = minibarState === "mini";
 
   const renderContent = (
     <>
-      {lgUp && isNavHorizontal && <Logo sx={{ mr: 2.5 }} />}
+      {lgUp && isNavHorizontal && <Logo sx={{mr: 2.5}} />}
 
       {!lgUp && (
         <IconButton onClick={handleToggleDrawer}>
@@ -69,9 +69,8 @@ export default function Header({ children }: PropsWithChildren) {
         direction="row"
         alignItems="center"
         justifyContent="flex-end"
-        spacing={{ xs: 0.5, sm: 1 }}
-        sx={{ pr: { xs: 0, md: 2 } }}
-      >
+        spacing={{xs: 0.5, sm: 1}}
+        sx={{pr: {xs: 0, md: 2}}}>
         {sessionData?.authenticated && (
           <>
             <HeaderBalance />
@@ -92,7 +91,7 @@ export default function Header({ children }: PropsWithChildren) {
         ...bgBlur({
           color: theme.palette.background.default,
         }),
-        transition: theme.transitions.create(['height'], {
+        transition: theme.transitions.create(["height"], {
           duration: theme.transitions.duration.shorter,
         }),
         ...(lgUp && {
@@ -105,16 +104,14 @@ export default function Header({ children }: PropsWithChildren) {
             width: `calc(100% - ${NAV.W_MINI + NAV.W_VERTICAL_MINI + 2}px)`,
           }),
         }),
-      }}
-    >
+      }}>
       <Toolbar
         sx={{
-          backgroundColor: '#1E1F22',
+          backgroundColor: "#1E1F22",
           height: 1,
-          px: { lg: 1 },
+          px: {lg: 1},
           borderBottom: (theme) => `dashed 1px ${theme.palette.divider}`,
-        }}
-      >
+        }}>
         {renderContent}
       </Toolbar>
     </AppBar>

@@ -1,14 +1,14 @@
 // @mui
-import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
+import Box from "@mui/material/Box";
+import Stack from "@mui/material/Stack";
 // theme
-import { hideScroll } from '@src/theme/css';
+import {hideScroll} from "@src/theme/css";
 // components
-import { NavSectionVerticalMini } from '@src/components/nav-section/mini/nav-section-vertical-mini.tsx';
+import {NavSectionVerticalMini} from "@src/components/nav-section/mini/nav-section-vertical-mini.tsx";
 // Projects
-import { NAV } from '../config-layout';
-import { useNavData } from './config-navigation';
-import { NavToggleButton, Searchbar } from '../_common';
+import {NAV} from "../config-layout";
+import {useNavData} from "./config-navigation";
+import {NavToggleButton, Searchbar} from "../_common";
 
 // ----------------------------------------------------------------------
 
@@ -19,13 +19,12 @@ export default function NavVerticalMini() {
     <Box
       component="nav"
       sx={{
-        flexShrink: { lg: 0 },
-        width: { lg: NAV.W_VERTICAL_MINI },
-        backgroundColor: '#2b2d31',
+        flexShrink: {lg: 0},
+        width: {lg: NAV.W_VERTICAL_MINI},
+        backgroundColor: "#2b2d31",
         left: NAV.W_MINI + NAV.W_VERTICAL_MINI - 12,
-        zIndex: '1300 !important',
-      }}
-    >
+        zIndex: "1300 !important",
+      }}>
       <NavToggleButton
         sx={{
           top: NAV.TOGGLE_TOP,
@@ -37,17 +36,16 @@ export default function NavVerticalMini() {
         sx={{
           pb: 2,
           height: 1,
-          position: 'fixed',
+          position: "fixed",
           width: NAV.W_VERTICAL_MINI,
           borderRight: (theme) => `dashed 1px ${theme.palette.divider}`,
           ...hideScroll.x,
-        }}
-      >
+        }}>
         <Searchbar />
         <NavSectionVerticalMini
           data={navData}
           config={{
-            currentRole: 'admin',
+            currentRole: "admin",
           }}
         />
       </Stack>

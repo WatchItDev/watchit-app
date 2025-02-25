@@ -1,9 +1,9 @@
-import { Theme, alpha } from '@mui/material/styles';
-import { ToggleButtonProps, toggleButtonClasses } from '@mui/material/ToggleButton';
+import {Theme, alpha} from "@mui/material/styles";
+import {ToggleButtonProps, toggleButtonClasses} from "@mui/material/ToggleButton";
 
 // ----------------------------------------------------------------------
 
-const COLORS = ['primary', 'secondary', 'info', 'success', 'warning', 'error'] as const;
+const COLORS = ["primary", "secondary", "info", "success", "warning", "error"] as const;
 
 // ----------------------------------------------------------------------
 
@@ -11,14 +11,14 @@ export function toggleButton(theme: Theme) {
   const rootStyles = (ownerState: ToggleButtonProps) => {
     const defaultStyle = {
       [`&.${toggleButtonClasses.selected}`]: {
-        borderColor: 'currentColor',
-        boxShadow: '0 0 0 0.5px currentColor',
+        borderColor: "currentColor",
+        boxShadow: "0 0 0 0.5px currentColor",
       },
     };
 
     const colorStyle = COLORS.map((color) => ({
       ...(ownerState.color === color && {
-        '&:hover': {
+        "&:hover": {
           borderColor: alpha(theme.palette[color].main, 0.48),
           backgroundColor: alpha(theme.palette[color].main, theme.palette.action.hoverOpacity),
         },
@@ -41,7 +41,7 @@ export function toggleButton(theme: Theme) {
   return {
     MuiToggleButton: {
       styleOverrides: {
-        root: ({ ownerState }: { ownerState: ToggleButtonProps }) => rootStyles(ownerState),
+        root: ({ownerState}: {ownerState: ToggleButtonProps}) => rootStyles(ownerState),
       },
     },
     MuiToggleButtonGroup: {
@@ -54,11 +54,11 @@ export function toggleButton(theme: Theme) {
         grouped: {
           margin: 4,
           [`&.${toggleButtonClasses.selected}`]: {
-            boxShadow: 'none',
+            boxShadow: "none",
           },
-          '&:not(:first-of-type), &:not(:last-of-type)': {
+          "&:not(:first-of-type), &:not(:last-of-type)": {
             borderRadius: theme.shape.borderRadius,
-            borderColor: 'transparent',
+            borderColor: "transparent",
           },
         },
       },

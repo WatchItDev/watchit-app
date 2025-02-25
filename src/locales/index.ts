@@ -1,3 +1,3 @@
-export * from './config-lang';
+export * from "./config-lang";
 
-export { default as useLocales } from './use-locales';
+export {default as useLocales} from "./use-locales";

@@ -1,7 +1,7 @@
 // utils
-import { flattenArray } from '@src/utils/flatten-array';
+import {flattenArray} from "@src/utils/flatten-array";
 // components
-import { NavListProps, NavSectionProps } from '@src/components/nav-section';
+import {NavListProps, NavSectionProps} from "@src/components/nav-section";
 
 // ----------------------------------------------------------------------
 
@@ -11,7 +11,7 @@ interface ItemProps {
   path: string;
 }
 
-export function getAllItems({ data }: NavSectionProps) {
+export function getAllItems({data}: NavSectionProps) {
   const reduceItems = data.map((list) => handleLoop(list.items, list.subheader)).flat();
 
   const items = flattenArray(reduceItems).map((option) => {
@@ -34,12 +34,12 @@ interface FilterProps {
   query: string;
 }
 
-export function applyFilter({ inputData, query }: FilterProps) {
+export function applyFilter({inputData, query}: FilterProps) {
   if (query) {
     inputData = inputData.filter(
       (item) =>
         item.title.toLowerCase().indexOf(query.toLowerCase()) !== -1 ||
-        item.path.toLowerCase().indexOf(query.toLowerCase()) !== -1
+        item.path.toLowerCase().indexOf(query.toLowerCase()) !== -1,
     );
   }
 
@@ -55,7 +55,7 @@ export function splitPath(array: NavListProps[], key: string) {
   }));
 
   while (stack.length) {
-    const { path, currItem } = stack.pop() as {
+    const {path, currItem} = stack.pop() as {
       path: string[];
       currItem: NavListProps;
     };
@@ -69,7 +69,7 @@ export function splitPath(array: NavListProps[], key: string) {
         currItem.children.map((item: NavListProps) => ({
           path: path.concat(item.title),
           currItem: item,
-        }))
+        })),
       );
     }
   }

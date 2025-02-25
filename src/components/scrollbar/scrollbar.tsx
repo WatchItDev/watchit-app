@@ -1,20 +1,20 @@
-import { memo, forwardRef } from 'react';
+import {memo, forwardRef} from "react";
 // @mui
-import Box from '@mui/material/Box';
+import Box from "@mui/material/Box";
 //
-import { StyledRootScrollbar, StyledScrollbar } from './styles';
-import { ScrollbarProps } from './types';
+import {StyledRootScrollbar, StyledScrollbar} from "./styles";
+import {ScrollbarProps} from "./types";
 
 // ----------------------------------------------------------------------
 
-const Scrollbar = forwardRef<HTMLDivElement, ScrollbarProps>(({ children, sx, ...other }, ref) => {
-  const userAgent = typeof navigator === 'undefined' ? 'SSR' : navigator.userAgent;
+const Scrollbar = forwardRef<HTMLDivElement, ScrollbarProps>(({children, sx, ...other}, ref) => {
+  const userAgent = typeof navigator === "undefined" ? "SSR" : navigator.userAgent;
 
   const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
 
   if (isMobile) {
     return (
-      <Box ref={ref} sx={{ overflow: 'auto', ...sx }} {...other}>
+      <Box ref={ref} sx={{overflow: "auto", ...sx}} {...other}>
         {children}
       </Box>
     );
@@ -28,8 +28,7 @@ const Scrollbar = forwardRef<HTMLDivElement, ScrollbarProps>(({ children, sx, ..
         }}
         clickOnTrack={false}
         sx={sx}
-        {...other}
-      >
+        {...other}>
         {children}
       </StyledScrollbar>
     </StyledRootScrollbar>

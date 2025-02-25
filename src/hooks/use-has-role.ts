@@ -1,13 +1,13 @@
 // REACT IMPORTS
-import { useCallback, useState } from 'react';
+import {useCallback, useState} from "react";
 
 // VIEM IMPORTS
-import { Address } from 'viem';
+import {Address} from "viem";
 
 // LOCAL IMPORTS
-import { publicClient } from '@src/clients/viem/publicClient';
-import AccessManagerAbi from '@src/config/abi/AccessManager.json';
-import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
+import {publicClient} from "@src/clients/viem/publicClient";
+import AccessManagerAbi from "@src/config/abi/AccessManager.json";
+import {GLOBAL_CONSTANTS} from "@src/config-global.ts";
 
 // ----------------------------------------------------------------------
 
@@ -37,7 +37,7 @@ export const useHasRole = (): UseHasRoleHook => {
       const roleData: any = await publicClient.readContract({
         address: GLOBAL_CONSTANTS.ACCESS_MANAGER_ADDRESS,
         abi: AccessManagerAbi.abi,
-        functionName: 'hasRole',
+        functionName: "hasRole",
         args: [roleId, account],
       });
 
@@ -45,9 +45,9 @@ export const useHasRole = (): UseHasRoleHook => {
       setHasRole(role);
       setError(null);
     } catch (err: any) {
-      console.error('Error checking access:', err);
+      console.error("Error checking access:", err);
       setHasRole(undefined);
-      setError({ message: err?.message || 'An error occurred' });
+      setError({message: err?.message || "An error occurred"});
     } finally {
       setLoading(false);
     }

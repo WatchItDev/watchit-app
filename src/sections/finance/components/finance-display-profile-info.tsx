@@ -5,7 +5,7 @@ import {Profile} from "@lens-protocol/api-bindings";
 import {truncateAddress} from "@src/utils/wallet.ts";
 
 interface FinanceDisplayNameProps {
-  mode: 'profile' | 'wallet';
+  mode: "profile" | "wallet";
   initialList?: Profile[];
   carousel: any;
 }
@@ -34,21 +34,21 @@ const FinanceDisplayProfileInfo: FC<FinanceDisplayNameProps> = ({initialList, ca
 
   const selectedProfile = initialList?.[carousel.currentIndex];
   return (
-    <Box sx={{ textAlign: 'center',mt:-2, mb: 1 }}>
-      {
-        mode === 'profile' ?
-          (<Box component="span" sx={{ flexGrow: 1, typography: 'subtitle1' }}>
-            {selectedProfile?.metadata?.displayName ?? selectedProfile?.handle?.localName ?? 'No profile selected'}
-          </Box>) : null
-      }
-      {
-        mode === 'wallet' ?
-          <Typography variant="body2" color="text.secondary">
-            {truncateAddress(selectedProfile?.ownedBy?.address)}
-          </Typography> : null
-      }
+    <Box sx={{textAlign: "center", mt: -2, mb: 1}}>
+      {mode === "profile" ? (
+        <Box component="span" sx={{flexGrow: 1, typography: "subtitle1"}}>
+          {selectedProfile?.metadata?.displayName ??
+            selectedProfile?.handle?.localName ??
+            "No profile selected"}
+        </Box>
+      ) : null}
+      {mode === "wallet" ? (
+        <Typography variant="body2" color="text.secondary">
+          {truncateAddress(selectedProfile?.ownedBy?.address)}
+        </Typography>
+      ) : null}
     </Box>
   );
-}
+};
 
 export default FinanceDisplayProfileInfo;

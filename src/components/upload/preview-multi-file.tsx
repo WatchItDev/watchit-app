@@ -1,27 +1,27 @@
-import { m, AnimatePresence } from 'framer-motion';
+import {m, AnimatePresence} from "framer-motion";
 // @mui
-import { alpha } from '@mui/material/styles';
-import Stack from '@mui/material/Stack';
-import IconButton from '@mui/material/IconButton';
-import ListItemText from '@mui/material/ListItemText';
+import {alpha} from "@mui/material/styles";
+import Stack from "@mui/material/Stack";
+import IconButton from "@mui/material/IconButton";
+import ListItemText from "@mui/material/ListItemText";
 // utils
-import { fData } from '@src/utils/format-number';
+import {fData} from "@src/utils/format-number";
 //
-import Iconify from '../iconify';
-import { varFade } from '../animate';
-import FileThumbnail, { fileData } from '../file-thumbnail';
+import Iconify from "../iconify";
+import {varFade} from "../animate";
+import FileThumbnail, {fileData} from "../file-thumbnail";
 //
-import { UploadProps } from './types';
+import {UploadProps} from "./types";
 
 // ----------------------------------------------------------------------
 
-export default function MultiFilePreview({ thumbnail, files, onRemove, sx }: UploadProps) {
+export default function MultiFilePreview({thumbnail, files, onRemove, sx}: UploadProps) {
   return (
     <AnimatePresence initial={false}>
       {files?.map((file) => {
-        const { key, name = '', size = 0 } = fileData(file);
+        const {key, name = "", size = 0} = fileData(file);
 
-        const isNotFormatFile = typeof file === 'string';
+        const isNotFormatFile = typeof file === "string";
 
         if (thumbnail) {
           return (
@@ -37,18 +37,17 @@ export default function MultiFilePreview({ thumbnail, files, onRemove, sx }: Upl
                 width: 80,
                 height: 80,
                 borderRadius: 1.25,
-                overflow: 'hidden',
-                position: 'relative',
+                overflow: "hidden",
+                position: "relative",
                 border: (theme) => `solid 1px ${alpha(theme.palette.grey[500], 0.16)}`,
                 ...sx,
-              }}
-            >
+              }}>
               <FileThumbnail
                 tooltip
                 imageView
                 file={file}
-                sx={{ position: 'absolute' }}
-                imgSx={{ position: 'absolute' }}
+                sx={{position: "absolute"}}
+                imgSx={{position: "absolute"}}
               />
 
               {onRemove && (
@@ -59,14 +58,13 @@ export default function MultiFilePreview({ thumbnail, files, onRemove, sx }: Upl
                     p: 0.5,
                     top: 4,
                     right: 4,
-                    position: 'absolute',
-                    color: 'common.white',
+                    position: "absolute",
+                    color: "common.white",
                     bgcolor: (theme) => alpha(theme.palette.grey[900], 0.48),
-                    '&:hover': {
+                    "&:hover": {
                       bgcolor: (theme) => alpha(theme.palette.grey[900], 0.72),
                     },
-                  }}
-                >
+                  }}>
                   <Iconify icon="mingcute:close-line" width={14} />
                 </IconButton>
               )}
@@ -89,16 +87,15 @@ export default function MultiFilePreview({ thumbnail, files, onRemove, sx }: Upl
               borderRadius: 1,
               border: (theme) => `solid 1px ${alpha(theme.palette.grey[500], 0.16)}`,
               ...sx,
-            }}
-          >
+            }}>
             <FileThumbnail file={file} />
 
             <ListItemText
               primary={isNotFormatFile ? file : name}
-              secondary={isNotFormatFile ? '' : fData(size)}
+              secondary={isNotFormatFile ? "" : fData(size)}
               secondaryTypographyProps={{
-                component: 'span',
-                typography: 'caption',
+                component: "span",
+                typography: "caption",
               }}
             />
 

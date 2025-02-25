@@ -1,16 +1,16 @@
 // REACT IMPORTS
-import { useState } from 'react';
+import {useState} from "react";
 
 // VIEM IMPORTS
-import { encodeFunctionData } from 'viem';
+import {encodeFunctionData} from "viem";
 
 // LOCAL IMPORTS
-import RightsPolicyAuthorizerAbi from '@src/config/abi/RightsPolicyAuthorizer.json';
-import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
-import { useSelector } from 'react-redux';
-import { useWeb3Session } from '@src/hooks/use-web3-session.ts';
-import { ERRORS } from '@notifications/errors.ts';
-import { useAccountSession } from '@src/hooks/use-account-session.ts';
+import RightsPolicyAuthorizerAbi from "@src/config/abi/RightsPolicyAuthorizer.json";
+import {GLOBAL_CONSTANTS} from "@src/config-global.ts";
+import {useSelector} from "react-redux";
+import {useWeb3Session} from "@src/hooks/use-web3-session.ts";
+import {ERRORS} from "@notifications/errors.ts";
+import {useAccountSession} from "@src/hooks/use-account-session.ts";
 
 // ----------------------------------------------------------------------
 // Define the return type of the useAuthorizePolicy hook
@@ -34,8 +34,8 @@ export const useAuthorizePolicy = (): useAuthorizePolicyHook => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<keyof typeof ERRORS | null>(null);
   const sessionData = useSelector((state: any) => state.auth.session);
-  const { bundlerClient, smartAccount } = useWeb3Session();
-  const { isAuthenticated, logout } = useAccountSession();
+  const {bundlerClient, smartAccount} = useWeb3Session();
+  const {isAuthenticated, logout} = useAccountSession();
 
   /**
    * Creates the flash policy agreement data.
@@ -43,10 +43,10 @@ export const useAuthorizePolicy = (): useAuthorizePolicyHook => {
    * @param data The coded (Price per day, address mmc).
    * @returns The encoded function data for the flashPolicyAgreement call.
    */
-  const initializeAuthorizePolicy = ({ policyAddress, data }: AuthorizePolicyParams): string => {
+  const initializeAuthorizePolicy = ({policyAddress, data}: AuthorizePolicyParams): string => {
     return encodeFunctionData({
       abi: RightsPolicyAuthorizerAbi.abi,
-      functionName: 'authorizePolicy',
+      functionName: "authorizePolicy",
       args: [policyAddress, data],
     });
   };
@@ -55,7 +55,7 @@ export const useAuthorizePolicy = (): useAuthorizePolicyHook => {
    * Initiates the authorization process.
    * @param params The parameters including 'amount'.
    */
-  const authorize = async ({ policyAddress, data }: AuthorizePolicyParams): Promise<void> => {
+  const authorize = async ({policyAddress, data}: AuthorizePolicyParams): Promise<void> => {
     setLoading(true);
     setError(null);
 
@@ -68,7 +68,7 @@ export const useAuthorizePolicy = (): useAuthorizePolicyHook => {
     if (!isAuthenticated()) {
       logout();
       setLoading(false);
-      throw new Error('Invalid Web3Auth session');
+      throw new Error("Invalid Web3Auth session");
     }
 
     try {
@@ -102,11 +102,11 @@ export const useAuthorizePolicy = (): useAuthorizePolicyHook => {
       setData(receipt);
       setLoading(false);
     } catch (err: any) {
-      console.error('USE AUTHORIZE POLICY ERR:', err);
+      console.error("USE AUTHORIZE POLICY ERR:", err);
       setError(ERRORS.UNKNOWN_ERROR);
       setLoading(false);
     }
   };
 
-  return { data, authorize, loading, error };
+  return {data, authorize, loading, error};
 };

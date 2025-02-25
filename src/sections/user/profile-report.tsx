@@ -1,11 +1,11 @@
-import { IconDots } from "@tabler/icons-react";
+import {IconDots} from "@tabler/icons-react";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import MenuItem from "@mui/material/MenuItem";
 import Popover from "@mui/material/Popover";
-import { FC, useState } from "react";
-import { ReportProfileModal } from "@src/components/report-profile-modal.tsx";
-import { Profile } from "@lens-protocol/api-bindings";
+import {FC, useState} from "react";
+import {ReportProfileModal} from "@src/components/report-profile-modal.tsx";
+import {Profile} from "@lens-protocol/api-bindings";
 import styled from "@emotion/styled";
 
 interface ProfileReportProps {
@@ -40,17 +40,14 @@ const StyledMenuItem = styled(MenuItem)`
   padding: 8px;
 `;
 
-const ProfileReport: FC<ProfileReportProps> = ({ profile }) => {
+const ProfileReport: FC<ProfileReportProps> = ({profile}) => {
   const [openReportModal, setOpenReportModal] = useState(false);
   const [menuAnchorEl, setMenuAnchorEl] = useState<HTMLButtonElement | null>(null);
   const openMenu = Boolean(menuAnchorEl);
 
   return (
     <>
-      <StyledButton
-        variant="text"
-        onClick={(event) => setMenuAnchorEl(event.currentTarget)}
-      >
+      <StyledButton variant="text" onClick={(event) => setMenuAnchorEl(event.currentTarget)}>
         <IconDots size={22} color="#FFFFFF" />
       </StyledButton>
 
@@ -58,16 +55,14 @@ const ProfileReport: FC<ProfileReportProps> = ({ profile }) => {
         open={openMenu}
         anchorEl={menuAnchorEl}
         onClose={() => setMenuAnchorEl(null)}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'center' }}
-      >
+        anchorOrigin={{vertical: "bottom", horizontal: "center"}}
+        transformOrigin={{vertical: "top", horizontal: "center"}}>
         <Stack direction="column" spacing={0} justifyContent="center">
           <StyledMenuItem
             onClick={() => {
               setOpenReportModal(true);
               setMenuAnchorEl(null);
-            }}
-          >
+            }}>
             Report
           </StyledMenuItem>
         </Stack>

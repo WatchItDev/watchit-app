@@ -1,16 +1,16 @@
-import { useFormContext, Controller } from 'react-hook-form';
+import {useFormContext, Controller} from "react-hook-form";
 // @mui
-import { Theme, SxProps } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import Chip from '@mui/material/Chip';
-import MenuItem from '@mui/material/MenuItem';
-import Checkbox from '@mui/material/Checkbox';
-import InputLabel from '@mui/material/InputLabel';
-import FormControl from '@mui/material/FormControl';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import FormHelperText from '@mui/material/FormHelperText';
-import Select, { SelectProps } from '@mui/material/Select';
-import TextField, { TextFieldProps } from '@mui/material/TextField';
+import {Theme, SxProps} from "@mui/material/styles";
+import Box from "@mui/material/Box";
+import Chip from "@mui/material/Chip";
+import MenuItem from "@mui/material/MenuItem";
+import Checkbox from "@mui/material/Checkbox";
+import InputLabel from "@mui/material/InputLabel";
+import FormControl from "@mui/material/FormControl";
+import OutlinedInput from "@mui/material/OutlinedInput";
+import FormHelperText from "@mui/material/FormHelperText";
+import Select, {SelectProps} from "@mui/material/Select";
+import TextField, {TextFieldProps} from "@mui/material/TextField";
 
 // ----------------------------------------------------------------------
 
@@ -31,13 +31,13 @@ export function RHFSelect({
   PaperPropsSx,
   ...other
 }: RHFSelectProps) {
-  const { control } = useFormContext();
+  const {control} = useFormContext();
 
   return (
     <Controller
       name={name}
       control={control}
-      render={({ field, fieldState: { error } }) => (
+      render={({field, fieldState: {error}}) => (
         <TextField
           {...field}
           select
@@ -48,18 +48,17 @@ export function RHFSelect({
               PaperProps: {
                 sx: {
                   ...(!native && {
-                    maxHeight: typeof maxHeight === 'number' ? maxHeight : 'unset',
+                    maxHeight: typeof maxHeight === "number" ? maxHeight : "unset",
                   }),
                   ...PaperPropsSx,
                 },
               },
             },
-            sx: { textTransform: 'capitalize' },
+            sx: {textTransform: "capitalize"},
           }}
           error={!!error}
           helperText={error ? error?.message : helperText}
-          {...other}
-        >
+          {...other}>
           {children}
         </TextField>
       )}
@@ -93,14 +92,14 @@ export function RHFMultiSelect({
   sx,
   ...other
 }: RHFMultiSelectProps) {
-  const { control } = useFormContext();
+  const {control} = useFormContext();
 
   const renderValues = (selectedIds: string[]) => {
     const selectedItems = options.filter((item) => selectedIds.includes(item.value));
 
     if (!selectedItems.length && placeholder) {
       return (
-        <Box component="em" sx={{ color: 'text.disabled' }}>
+        <Box component="em" sx={{color: "text.disabled"}}>
           {placeholder}
         </Box>
       );
@@ -108,7 +107,7 @@ export function RHFMultiSelect({
 
     if (chip) {
       return (
-        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+        <Box sx={{display: "flex", flexWrap: "wrap", gap: 0.5}}>
           {selectedItems.map((item) => (
             <Chip key={item.value} size="small" label={item.label} />
           ))}
@@ -116,14 +115,14 @@ export function RHFMultiSelect({
       );
     }
 
-    return selectedItems.map((item) => item.label).join(', ');
+    return selectedItems.map((item) => item.label).join(", ");
   };
 
   return (
     <Controller
       name={name}
       control={control}
-      render={({ field, fieldState: { error } }) => (
+      render={({field, fieldState: {error}}) => (
         <FormControl sx={sx}>
           {label && <InputLabel id={name}> {label} </InputLabel>}
 
@@ -134,8 +133,7 @@ export function RHFMultiSelect({
             labelId={name}
             input={<OutlinedInput fullWidth label={label} error={!!error} />}
             renderValue={renderValues}
-            {...other}
-          >
+            {...other}>
             {placeholder && (
               <MenuItem disabled value="">
                 <em> {placeholder} </em>

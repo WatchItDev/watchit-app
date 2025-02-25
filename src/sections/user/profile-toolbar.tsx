@@ -26,16 +26,15 @@ const ProfileToolbar: FC<ProfileToolbarProps> = ({profile, profileImage}) => {
           sm: 0,
           md: 0,
         },
-      }}
-    >
+      }}>
       <AvatarProfile
         src={profileImage ?? profile?.id}
-        alt={profile?.handle?.localName ?? ''}
+        alt={profile?.handle?.localName ?? ""}
         variant="rounded"
         sx={{
-          fontSize: '3em',
-          width: { xs: 96, md: 128 },
-          height: { xs: 96, md: 128 },
+          fontSize: "3em",
+          width: {xs: 96, md: 128},
+          height: {xs: 96, md: 128},
           border: `solid 2px ${theme.palette.common.white}`,
         }}
       />
@@ -50,8 +49,7 @@ const ProfileToolbar: FC<ProfileToolbarProps> = ({profile, profileImage}) => {
             md: 11,
           },
           ml: 2,
-        }}
-      >
+        }}>
         <ProfileShare profile={profile} />
         {sessionData?.authenticated && sessionData?.profile?.id === profile?.id ? (
           <ProfileSetJoiningPrice />
@@ -62,16 +60,12 @@ const ProfileToolbar: FC<ProfileToolbarProps> = ({profile, profileImage}) => {
           <ProfileUpdateButton />
         )}
 
-        {
-          sessionData?.authenticated && profile?.id !== sessionData?.profile?.id && (
-            <ProfileTransfer profile={profile} />
-          )
-        }
-
-
+        {sessionData?.authenticated && profile?.id !== sessionData?.profile?.id && (
+          <ProfileTransfer profile={profile} />
+        )}
       </Stack>
     </Stack>
-  )
-}
+  );
+};
 
 export default ProfileToolbar;

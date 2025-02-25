@@ -1,6 +1,6 @@
-import { sub } from 'date-fns';
+import {sub} from "date-fns";
 // config
-import { ASSETS_API } from '@src/config-global';
+import {ASSETS_API} from "@src/config-global";
 //
 import {
   _id,
@@ -27,11 +27,11 @@ import {
   _productNames,
   _descriptions,
   _phoneNumbers,
-} from './assets';
+} from "./assets";
 
 export const _mock = {
   id: (index: number) => _id[index],
-  time: (index: number) => sub(new Date(), { days: index, hours: index }),
+  time: (index: number) => sub(new Date(), {days: index, hours: index}),
   boolean: (index: number) => _booleans[index],
   role: (index: number) => _roles[index],
   // Text

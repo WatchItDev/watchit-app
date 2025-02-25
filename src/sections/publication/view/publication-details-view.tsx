@@ -1,41 +1,41 @@
 // REACT IMPORTS
-import { useEffect, useRef, useState } from 'react';
+import {useEffect, useRef, useState} from "react";
 
 // MUI IMPORTS
-import Box from '@mui/material/Box';
-import Card from '@mui/material/Card';
-import Stack from '@mui/material/Stack';
-import Button from '@mui/material/Button';
-import { useTheme } from '@mui/material/styles';
-import Typography from '@mui/material/Typography';
-import CardContent from '@mui/material/CardContent';
+import Box from "@mui/material/Box";
+import Card from "@mui/material/Card";
+import Stack from "@mui/material/Stack";
+import Button from "@mui/material/Button";
+import {useTheme} from "@mui/material/styles";
+import Typography from "@mui/material/Typography";
+import CardContent from "@mui/material/CardContent";
 
 // LENS IMPORTS
-import { usePublication } from '@lens-protocol/react';
+import {usePublication} from "@lens-protocol/react";
 
 // MOTION IMPORTS
-import { m } from 'framer-motion';
+import {m} from "framer-motion";
 
 // ICONS IMPORTS
-import { IconPlayerPlay } from '@tabler/icons-react';
+import {IconPlayerPlay} from "@tabler/icons-react";
 
 // LOCAL IMPORTS
-import Image from '@src/components/image';
-import Markdown from '@src/components/markdown';
-import { varFade } from '@src/components/animate';
-import ProfileHome from '@src/sections/user/profile-home.tsx';
-import { LoadingScreen } from '@src/components/loading-screen';
-import MoviePlayView from '@src/sections/publication/view/publication-play-view.tsx';
-import PublicationDetailMain from '@src/components/publication-detail-main.tsx';
-import { useHasAccess } from '@src/hooks/use-has-access.ts';
-import { SubscribeProfileModal } from '@src/components/subscribe-profile-modal.tsx';
-import LoadingButton from '@mui/lab/LoadingButton';
-import { useDispatch, useSelector } from 'react-redux';
-import { openLoginModal } from '@redux/auth';
-import { appId, PublicationType, usePublications } from '@lens-protocol/react-web';
+import Image from "@src/components/image";
+import Markdown from "@src/components/markdown";
+import {varFade} from "@src/components/animate";
+import ProfileHome from "@src/sections/user/profile-home.tsx";
+import {LoadingScreen} from "@src/components/loading-screen";
+import MoviePlayView from "@src/sections/publication/view/publication-play-view.tsx";
+import PublicationDetailMain from "@src/components/publication-detail-main.tsx";
+import {useHasAccess} from "@src/hooks/use-has-access.ts";
+import {SubscribeProfileModal} from "@src/components/subscribe-profile-modal.tsx";
+import LoadingButton from "@mui/lab/LoadingButton";
+import {useDispatch, useSelector} from "react-redux";
+import {openLoginModal} from "@redux/auth";
+import {appId, PublicationType, usePublications} from "@lens-protocol/react-web";
 import {trimPublicationContentExtraText} from "@src/utils/text-transform.ts";
-import { useIsPolicyAuthorized } from '@src/hooks/use-is-policy-authorized.ts';
-import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
+import {useIsPolicyAuthorized} from "@src/hooks/use-is-policy-authorized.ts";
+import {GLOBAL_CONSTANTS} from "@src/config-global.ts";
 
 const MAX_LINES = 5;
 
@@ -47,7 +47,7 @@ interface Props {
 
 // ----------------------------------------------------------------------
 
-export default function PublicationDetailsView({ id }: Props) {
+export default function PublicationDetailsView({id}: Props) {
   // STATES HOOKS
   const [showToggle, setShowToggle] = useState(false);
   const [showButton, setShowButton] = useState(false);
@@ -59,9 +59,9 @@ export default function PublicationDetailsView({ id }: Props) {
   const theme = useTheme();
   // LENS HOOKS
   const sessionData = useSelector((state: any) => state.auth.session);
-  const { data, loading }: any = usePublication({ forId: id as any });
+  const {data, loading}: any = usePublication({forId: id as any});
   // CONSTANTS
-  const variants = theme.direction === 'rtl' ? varFade().inLeft : varFade().inRight;
+  const variants = theme.direction === "rtl" ? varFade().inLeft : varFade().inRight;
   const ownerAddress = data?.by?.ownedBy?.address;
 
   // PROTOCOL HOOKS
@@ -71,15 +71,18 @@ export default function PublicationDetailsView({ id }: Props) {
     fetching: accessFetchingLoading,
     refetch: refetchAccess,
   } = useHasAccess(ownerAddress);
-  const { isAuthorized } = useIsPolicyAuthorized(GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS, ownerAddress);
+  const {isAuthorized} = useIsPolicyAuthorized(
+    GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS,
+    ownerAddress,
+  );
 
   const getMediaUri = (cid: string): string => `${cid}`;
 
   const getWallpaperCid = (): string =>
-    data?.metadata?.attachments?.find((el: any) => el?.altTag === 'wallpaper')?.image?.raw?.uri;
+    data?.metadata?.attachments?.find((el: any) => el?.altTag === "wallpaper")?.image?.raw?.uri;
 
   const getPosterCid = (): string =>
-    data?.metadata?.attachments?.find((el: any) => el?.altTag === 'poster')?.image?.raw?.uri;
+    data?.metadata?.attachments?.find((el: any) => el?.altTag === "poster")?.image?.raw?.uri;
 
   const toggleDescription = () => {
     setShowToggle(!showToggle);
@@ -107,37 +110,34 @@ export default function PublicationDetailsView({ id }: Props) {
   }, [descriptionRef.current, data?.metadata?.content]);
 
   // Load publications from current user to show in More from section
-  const { data: publications } = usePublications({
+  const {data: publications} = usePublications({
     where: {
       from: [data?.by?.id],
       publicationTypes: [PublicationType.Post],
-      metadata: { publishedOn: [appId('watchit')] },
+      metadata: {publishedOn: [appId("watchit")]},
     },
   });
 
   // Remove from publications the current publication
   const filteredPublications = publications?.filter((publication) => publication.id !== id) ?? [];
 
-  if (loading || accessLoading) return (
-    <LoadingScreen />
-  );
+  if (loading || accessLoading) return <LoadingScreen />;
 
   if (data.isHidden)
     return (
-      <Box sx={{ padding: 2 }}>
+      <Box sx={{padding: 2}}>
         <Typography
           sx={{
-            height: '20rem',
-            textAlign: 'center',
-            width: '100%',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            fontWeight: 'bold',
-            background: '#2b2d31',
-            borderRadius: '1rem',
-          }}
-        >
+            height: "20rem",
+            textAlign: "center",
+            width: "100%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            fontWeight: "bold",
+            background: "#2b2d31",
+            borderRadius: "1rem",
+          }}>
           Publication is hidden
         </Typography>
       </Box>
@@ -148,56 +148,52 @@ export default function PublicationDetailsView({ id }: Props) {
       <Box
         sx={{
           flexDirection: {
-            xs: 'column',
-            lg: 'row',
+            xs: "column",
+            lg: "row",
           },
-          display: 'flex',
-          width: '100%',
-          maxHeight: '100%',
-          position: 'relative',
-        }}
-      >
+          display: "flex",
+          width: "100%",
+          maxHeight: "100%",
+          position: "relative",
+        }}>
         <Stack
           sx={{
-            display: 'flex',
+            display: "flex",
             flexGrow: 1,
-          }}
-        >
-          <Card sx={{ width: '100%' }}>
+          }}>
+          <Card sx={{width: "100%"}}>
             <CardContent
               sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-            >
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+              }}>
               {hasAccess && sessionData?.authenticated ? (
                 <MoviePlayView publication={data} loading={loading} />
               ) : (
                 <Box
                   sx={{
-                    position: 'relative',
-                    width: '100%',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                >
+                    position: "relative",
+                    width: "100%",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}>
                   <Box
                     sx={{
-                      position: 'absolute',
+                      position: "absolute",
                       left: 0,
                       top: 0,
-                      height: '100%',
-                      width: '100%',
+                      height: "100%",
+                      width: "100%",
                       zIndex: 1,
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      borderRadius: '15px',
-                      backdropFilter: 'blur(8px)',
-                      background: 'rgba(25, 28, 31, 0.5)',
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      borderRadius: "15px",
+                      backdropFilter: "blur(8px)",
+                      background: "rgba(25, 28, 31, 0.5)",
                     }}
                   />
 
@@ -209,7 +205,7 @@ export default function PublicationDetailsView({ id }: Props) {
                     sx={{
                       borderRadius: 2,
                       zIndex: 0,
-                      border: '1px solid rgba(255, 255, 255, 0.08)',
+                      border: "1px solid rgba(255, 255, 255, 0.08)",
                     }}
                   />
 
@@ -219,11 +215,11 @@ export default function PublicationDetailsView({ id }: Props) {
                     ratio="1/1"
                     sx={{
                       borderRadius: 1,
-                      objectFit: 'cover',
-                      maxWidth: '30%',
-                      position: 'absolute',
+                      objectFit: "cover",
+                      maxWidth: "30%",
+                      position: "absolute",
                       zIndex: 2,
-                      border: '2px solid rgba(255, 255, 255, 0.08)',
+                      border: "2px solid rgba(255, 255, 255, 0.08)",
                     }}
                   />
 
@@ -231,20 +227,19 @@ export default function PublicationDetailsView({ id }: Props) {
                     <LoadingButton
                       variant="contained"
                       sx={{
-                        color: '#1E1F22',
-                        background: '#FFFFFF',
-                        height: '35px',
+                        color: "#1E1F22",
+                        background: "#FFFFFF",
+                        height: "35px",
                         bottom: 16,
                         left: 16,
-                        position: 'absolute',
+                        position: "absolute",
                         zIndex: 2,
                       }}
                       onClick={handleSubscribe}
                       // disabled={accessLoading || hasAccess || accessFetchingLoading}
-                      loading={accessLoading || accessFetchingLoading}
-                    >
+                      loading={accessLoading || accessFetchingLoading}>
                       <IconPlayerPlay fontSize="large" size={18} />
-                      <Typography variant="body2" sx={{ lineHeight: 1, fontWeight: '700', ml: 1 }}>
+                      <Typography variant="body2" sx={{lineHeight: 1, fontWeight: "700", ml: 1}}>
                         Join
                       </Typography>
                     </LoadingButton>
@@ -252,87 +247,80 @@ export default function PublicationDetailsView({ id }: Props) {
                 </Box>
               )}
 
-              <Box sx={{ mb: { xs: 2, md: 8 }, p: '0 !important' }}>
-                <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+              <Box sx={{mb: {xs: 2, md: 8}, p: "0 !important"}}>
+                <Box sx={{display: "flex", flexDirection: "column"}}>
                   <Box
-                    sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'end', mt: 3 }}
-                  >
+                    sx={{display: "flex", flexDirection: "column", justifyContent: "end", mt: 3}}>
                     <m.div variants={variants}>
                       <Typography
                         variant="h5"
-                        sx={{ fontWeight: 'bold', lineHeight: 1.1, mb: 0.5, width: '100%' }}
-                        gutterBottom
-                      >
+                        sx={{fontWeight: "bold", lineHeight: 1.1, mb: 0.5, width: "100%"}}
+                        gutterBottom>
                         {data?.metadata?.title}
                       </Typography>
                     </m.div>
-                    <Box sx={{ mt: 2, position: 'relative' }}>
+                    <Box sx={{mt: 2, position: "relative"}}>
                       <m.div variants={variants}>
                         <Box
                           ref={descriptionRef}
                           sx={{
-                            display: '-webkit-box',
-                            WebkitLineClamp: showToggle ? 'none' : MAX_LINES,
-                            WebkitBoxOrient: 'vertical',
-                            overflow: 'hidden',
+                            display: "-webkit-box",
+                            WebkitLineClamp: showToggle ? "none" : MAX_LINES,
+                            WebkitBoxOrient: "vertical",
+                            overflow: "hidden",
                             opacity: 0.8,
-                          }}
-                        >
-                          <Markdown children={trimPublicationContentExtraText(data?.metadata?.content)} />
+                          }}>
+                          <Markdown
+                            children={trimPublicationContentExtraText(data?.metadata?.content)}
+                          />
                         </Box>
                         {showButton && (
-                          <Button variant="outlined" onClick={toggleDescription} sx={{ mt: 2 }}>
-                            {showToggle ? 'Show less' : 'Show more'}
+                          <Button variant="outlined" onClick={toggleDescription} sx={{mt: 2}}>
+                            {showToggle ? "Show less" : "Show more"}
                           </Button>
                         )}
                       </m.div>
                     </Box>
                   </Box>
                   <Box
-                    sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'end', mt: 4 }}
-                  >
+                    sx={{display: "flex", flexDirection: "column", justifyContent: "end", mt: 4}}>
                     <m.div variants={variants}>
                       <Typography
                         variant="h5"
-                        sx={{ fontWeight: 'bold', lineHeight: 1.1, mb: 0.5, width: '100%' }}
-                        gutterBottom
-                      >
+                        sx={{fontWeight: "bold", lineHeight: 1.1, mb: 0.5, width: "100%"}}
+                        gutterBottom>
                         Sponsors
                       </Typography>
                     </m.div>
-                    <Box sx={{ mt: 2, opacity: 0.8 }}>
+                    <Box sx={{mt: 2, opacity: 0.8}}>
                       <m.div variants={variants}>
                         <Typography
                           variant="body1"
                           color="textSecondary"
-                          sx={{ lineHeight: 1.1, mb: 0.5, width: '100%' }}
-                          gutterBottom
-                        >
+                          sx={{lineHeight: 1.1, mb: 0.5, width: "100%"}}
+                          gutterBottom>
                           No sponsors yet. Be the first to join and support!
                         </Typography>
                       </m.div>
                     </Box>
                   </Box>
                   <Box
-                    sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'end', mt: 4 }}
-                  >
+                    sx={{display: "flex", flexDirection: "column", justifyContent: "end", mt: 4}}>
                     <m.div variants={variants}>
                       <Typography
                         variant="h5"
-                        sx={{ fontWeight: 'bold', lineHeight: 1.1, mb: 0.5, width: '100%' }}
-                        gutterBottom
-                      >
+                        sx={{fontWeight: "bold", lineHeight: 1.1, mb: 0.5, width: "100%"}}
+                        gutterBottom>
                         Backers
                       </Typography>
                     </m.div>
-                    <Box sx={{ mt: 2, opacity: 0.8 }}>
+                    <Box sx={{mt: 2, opacity: 0.8}}>
                       <m.div variants={variants}>
                         <Typography
                           variant="body1"
                           color="textSecondary"
-                          sx={{ lineHeight: 1.1, mb: 0.5, width: '100%' }}
-                          gutterBottom
-                        >
+                          sx={{lineHeight: 1.1, mb: 0.5, width: "100%"}}
+                          gutterBottom>
                           No backers yet. Be the first to join and support!
                         </Typography>
                       </m.div>
@@ -340,9 +328,9 @@ export default function PublicationDetailsView({ id }: Props) {
                   </Box>
 
                   {filteredPublications?.length > 0 && (
-                    <Box sx={{ display: 'flex', flexDirection: 'column', mt: 6 }}>
-                      <Typography variant="h5" sx={{ mb: 2, width: '100%' }}>
-                        More from {data?.by?.metadata?.displayName.split(' ')[0]}
+                    <Box sx={{display: "flex", flexDirection: "column", mt: 6}}>
+                      <Typography variant="h5" sx={{mb: 2, width: "100%"}}>
+                        More from {data?.by?.metadata?.displayName.split(" ")[0]}
                       </Typography>
                       <ProfileHome publications={[...filteredPublications]} noPaddings={true} />
                     </Box>

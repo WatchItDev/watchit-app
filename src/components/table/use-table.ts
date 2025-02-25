@@ -1,6 +1,6 @@
-import { useState, useCallback } from 'react';
+import {useState, useCallback} from "react";
 //
-import { TableProps } from './types';
+import {TableProps} from "./types";
 
 // ----------------------------------------------------------------------
 
@@ -8,7 +8,7 @@ type ReturnType = TableProps;
 
 export interface UseTableProps {
   defaultDense?: boolean;
-  defaultOrder?: 'asc' | 'desc';
+  defaultOrder?: "asc" | "desc";
   defaultOrderBy?: string;
   defaultSelected?: string[];
   defaultRowsPerPage?: number;
@@ -20,23 +20,23 @@ export default function useTable(props?: UseTableProps): ReturnType {
 
   const [page, setPage] = useState(props?.defaultCurrentPage || 0);
 
-  const [orderBy, setOrderBy] = useState(props?.defaultOrderBy || 'name');
+  const [orderBy, setOrderBy] = useState(props?.defaultOrderBy || "name");
 
   const [rowsPerPage, setRowsPerPage] = useState(props?.defaultRowsPerPage || 5);
 
-  const [order, setOrder] = useState<'asc' | 'desc'>(props?.defaultOrder || 'asc');
+  const [order, setOrder] = useState<"asc" | "desc">(props?.defaultOrder || "asc");
 
   const [selected, setSelected] = useState<string[]>(props?.defaultSelected || []);
 
   const onSort = useCallback(
     (id: string) => {
-      const isAsc = orderBy === id && order === 'asc';
-      if (id !== '') {
-        setOrder(isAsc ? 'desc' : 'asc');
+      const isAsc = orderBy === id && order === "asc";
+      if (id !== "") {
+        setOrder(isAsc ? "desc" : "asc");
         setOrderBy(id);
       }
     },
-    [order, orderBy]
+    [order, orderBy],
   );
 
   const onSelectRow = useCallback(
@@ -47,7 +47,7 @@ export default function useTable(props?: UseTableProps): ReturnType {
 
       setSelected(newSelected);
     },
-    [selected]
+    [selected],
   );
 
   const onChangeRowsPerPage = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
@@ -84,7 +84,7 @@ export default function useTable(props?: UseTableProps): ReturnType {
         }
       }
     },
-    [page]
+    [page],
   );
 
   const onUpdatePageDeleteRows = useCallback(
@@ -112,7 +112,7 @@ export default function useTable(props?: UseTableProps): ReturnType {
         }
       }
     },
-    [page, rowsPerPage, selected.length]
+    [page, rowsPerPage, selected.length],
   );
 
   return {

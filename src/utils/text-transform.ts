@@ -5,11 +5,10 @@
  */
 export const pascalToUpperSnake = (str: string): string => {
   return str
-    .replace(/([A-Z])/g, '_$1') // Inserts an underscore before each uppercase letter
+    .replace(/([A-Z])/g, "_$1") // Inserts an underscore before each uppercase letter
     .toUpperCase() // Converts everything to uppercase
-    .replace(/^_/, ''); // Removes the initial underscore if it exists
+    .replace(/^_/, ""); // Removes the initial underscore if it exists
 };
-
 
 /**
  * An array of strings containing various special character patterns and names.
@@ -18,29 +17,28 @@ export const pascalToUpperSnake = (str: string): string => {
  * Some entries also contain only special characters or brace-like structures.
  */
 const specialChars = [
-  '—Huggo',
-  '?—Nick Riganas',
-  '.—Rhino',
-  '—Eric Johnson',
-  '—Jwelch5742',
-  '—yusufpiskin',
-  '—Maths Jesperson',
-  '—Mark Logan',
-  '—Snow Leopard',
-  '—Claudio Carvalho, Rio de Janeiro, Brazil',
-  '—Johnny-the-Film-Sentinel-2187',
-  '—grantss',
-  '—Ed Stephan',
-  '—filmfactsman',
-  '—Col Needham',
-  '—Tony Fontana',
-  '—garykmcd',
-  '—',
-  '?—',
-  '.—',
-  '{}',
+  "—Huggo",
+  "?—Nick Riganas",
+  ".—Rhino",
+  "—Eric Johnson",
+  "—Jwelch5742",
+  "—yusufpiskin",
+  "—Maths Jesperson",
+  "—Mark Logan",
+  "—Snow Leopard",
+  "—Claudio Carvalho, Rio de Janeiro, Brazil",
+  "—Johnny-the-Film-Sentinel-2187",
+  "—grantss",
+  "—Ed Stephan",
+  "—filmfactsman",
+  "—Col Needham",
+  "—Tony Fontana",
+  "—garykmcd",
+  "—",
+  "?—",
+  ".—",
+  "{}",
 ];
-
 
 /**
  * A regular expression pattern used for matching and validating email addresses.
@@ -59,7 +57,6 @@ const specialChars = [
  */
 const emailRegex = /\b[a-zA-Z0-9][a-zA-Z0-9._%+-]*@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}\b/g;
 
-
 /**
  * Removes special characters from the given text string and returns the cleaned string.
  *
@@ -69,7 +66,7 @@ const emailRegex = /\b[a-zA-Z0-9][a-zA-Z0-9._%+-]*@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{
 function removeSpecialChars(text: string): string {
   // Loop through the special characters and replace them with spaces
   for (const char of specialChars) {
-    text = text.replace(char, '').trim();
+    text = text.replace(char, "").trim();
   }
   return text;
 }
@@ -91,7 +88,7 @@ function detectEmail(text: string): boolean {
  * @return {string} The modified string with the email address removed and trimmed of extra spaces.
  */
 function removeEmail(text: string): string {
-  return text.replace(emailRegex, '').trim();
+  return text.replace(emailRegex, "").trim();
 }
 
 /**
@@ -111,8 +108,8 @@ export const trimPublicationContentExtraText = (text: string): string => {
   let cleanedText = removeSpecialChars(text);
 
   // Verify if the last character is a period, if not, add one
-  if (!cleanedText.endsWith('.')) {
-    cleanedText += '.';
+  if (!cleanedText.endsWith(".")) {
+    cleanedText += ".";
   }
 
   return `${cleanedText}`;

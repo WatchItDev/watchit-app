@@ -1,7 +1,7 @@
-import merge from 'lodash/merge';
-import { ApexOptions } from 'apexcharts';
+import merge from "lodash/merge";
+import {ApexOptions} from "apexcharts";
 // @mui
-import { useTheme, alpha } from '@mui/material/styles';
+import {useTheme, alpha} from "@mui/material/styles";
 
 // ----------------------------------------------------------------------
 
@@ -10,7 +10,7 @@ export default function useChart(options?: ApexOptions) {
 
   const LABEL_TOTAL = {
     show: true,
-    label: 'Total',
+    label: "Total",
     color: theme.palette.text.secondary,
     fontSize: theme.typography.subtitle2.fontSize,
     fontWeight: theme.typography.subtitle2.fontWeight,
@@ -41,8 +41,8 @@ export default function useChart(options?: ApexOptions) {
 
     // Chart
     chart: {
-      toolbar: { show: false },
-      zoom: { enabled: false },
+      toolbar: {show: false},
+      zoom: {enabled: false},
       // animations: { enabled: false },
       foreColor: theme.palette.text.disabled,
       fontFamily: theme.typography.fontFamily,
@@ -52,13 +52,13 @@ export default function useChart(options?: ApexOptions) {
     states: {
       hover: {
         filter: {
-          type: 'lighten',
+          type: "lighten",
           value: 0.04,
         },
       },
       active: {
         filter: {
-          type: 'darken',
+          type: "darken",
           value: 0.88,
         },
       },
@@ -68,7 +68,7 @@ export default function useChart(options?: ApexOptions) {
     fill: {
       opacity: 1,
       gradient: {
-        type: 'vertical',
+        type: "vertical",
         shadeIntensity: 0,
         opacityFrom: 0.4,
         opacityTo: 0,
@@ -84,8 +84,8 @@ export default function useChart(options?: ApexOptions) {
     // Stroke
     stroke: {
       width: 3,
-      curve: 'smooth',
-      lineCap: 'round',
+      curve: "smooth",
+      lineCap: "round",
     },
 
     // Grid
@@ -101,8 +101,8 @@ export default function useChart(options?: ApexOptions) {
 
     // Xaxis
     xaxis: {
-      axisBorder: { show: false },
-      axisTicks: { show: false },
+      axisBorder: {show: false},
+      axisTicks: {show: false},
     },
 
     // Markers
@@ -123,8 +123,8 @@ export default function useChart(options?: ApexOptions) {
     legend: {
       show: true,
       fontSize: 13,
-      position: 'top',
-      horizontalAlign: 'right',
+      position: "top",
+      horizontalAlign: "right",
       markers: {
         radius: 12,
       },
@@ -142,9 +142,9 @@ export default function useChart(options?: ApexOptions) {
       // Bar
       bar: {
         borderRadius: 4,
-        columnWidth: '28%',
-        borderRadiusApplication: 'end',
-        borderRadiusWhenStacked: 'last',
+        columnWidth: "28%",
+        borderRadiusApplication: "end",
+        borderRadiusWhenStacked: "last",
       },
 
       // Pie + Donut
@@ -161,7 +161,7 @@ export default function useChart(options?: ApexOptions) {
       // Radialbar
       radialBar: {
         track: {
-          strokeWidth: '100%',
+          strokeWidth: "100%",
           background: alpha(theme.palette.grey[500], 0.16),
         },
         dataLabels: {
@@ -173,7 +173,7 @@ export default function useChart(options?: ApexOptions) {
       // Radar
       radar: {
         polygons: {
-          fill: { colors: ['transparent'] },
+          fill: {colors: ["transparent"]},
           strokeColors: theme.palette.divider,
           connectorColors: theme.palette.divider,
         },
@@ -196,14 +196,14 @@ export default function useChart(options?: ApexOptions) {
         // sm
         breakpoint: theme.breakpoints.values.sm,
         options: {
-          plotOptions: { bar: { columnWidth: '40%' } },
+          plotOptions: {bar: {columnWidth: "40%"}},
         },
       },
       {
         // md
         breakpoint: theme.breakpoints.values.md,
         options: {
-          plotOptions: { bar: { columnWidth: '32%' } },
+          plotOptions: {bar: {columnWidth: "32%"}},
         },
       },
     ],

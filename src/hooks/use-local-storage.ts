@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
+import {useState, useEffect} from "react";
 // utils
-import { localStorageAvailable } from '@src/utils/storage-available';
+import {localStorageAvailable} from "@src/utils/storage-available";
 
 // ----------------------------------------------------------------------
 
@@ -19,16 +19,16 @@ export function useLocalStorage<ValueType>(key: string, defaultValue: ValueType)
         setValue(e.newValue ? JSON.parse(e.newValue) : e.newValue);
       }
     };
-    window.addEventListener('storage', listener);
+    window.addEventListener("storage", listener);
 
     return () => {
-      window.removeEventListener('storage', listener);
+      window.removeEventListener("storage", listener);
     };
   }, [key, defaultValue]);
 
   const setValueInLocalStorage = (newValue: ValueType) => {
     setValue((currentValue: ValueType) => {
-      const result = typeof newValue === 'function' ? newValue(currentValue) : newValue;
+      const result = typeof newValue === "function" ? newValue(currentValue) : newValue;
 
       if (storageAvailable) {
         localStorage.setItem(key, JSON.stringify(result));

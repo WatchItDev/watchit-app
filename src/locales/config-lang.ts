@@ -1,39 +1,39 @@
 // @mui
-import { enUS, frFR, zhCN, viVN, arSA } from '@mui/material/locale';
+import {enUS, frFR, zhCN, viVN, arSA} from "@mui/material/locale";
 
 // PLEASE REMOVE `LOCAL STORAGE` WHEN YOU CHANGE SETTINGS.
 // ----------------------------------------------------------------------
 
 export const allLangs = [
   {
-    label: 'English',
-    value: 'en',
+    label: "English",
+    value: "en",
     systemValue: enUS,
-    icon: 'flagpack:gb-nir',
+    icon: "flagpack:gb-nir",
   },
   {
-    label: 'French',
-    value: 'fr',
+    label: "French",
+    value: "fr",
     systemValue: frFR,
-    icon: 'flagpack:fr',
+    icon: "flagpack:fr",
   },
   {
-    label: 'Vietnamese',
-    value: 'vi',
+    label: "Vietnamese",
+    value: "vi",
     systemValue: viVN,
-    icon: 'flagpack:vn',
+    icon: "flagpack:vn",
   },
   {
-    label: 'Chinese',
-    value: 'cn',
+    label: "Chinese",
+    value: "cn",
     systemValue: zhCN,
-    icon: 'flagpack:cn',
+    icon: "flagpack:cn",
   },
   {
-    label: 'Arabic',
-    value: 'ar',
+    label: "Arabic",
+    value: "ar",
     systemValue: arSA,
-    icon: 'flagpack:sa',
+    icon: "flagpack:sa",
   },
 ];
 

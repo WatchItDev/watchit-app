@@ -1,23 +1,23 @@
 // @mui
-import { alpha } from '@mui/material/styles';
-import Paper from '@mui/material/Paper';
-import Box from '@mui/material/Box';
-import CardContent from '@mui/material/CardContent';
-import Typography from '@mui/material/Typography';
-import Stack from '@mui/material/Stack';
+import {alpha} from "@mui/material/styles";
+import Paper from "@mui/material/Paper";
+import Box from "@mui/material/Box";
+import CardContent from "@mui/material/CardContent";
+import Typography from "@mui/material/Typography";
+import Stack from "@mui/material/Stack";
 
 // components
-import { bgGradient } from '@src/theme/css';
-import Image from '@src/components/image';
-import { IconHeartFilled } from '@tabler/icons-react';
-import { Poster } from '../types';
-import { useRouter } from '@src/routes/hooks';
-import { paths } from '@src/routes/paths.ts';
-import TextMaxLine from '@src/components/text-max-line';
+import {bgGradient} from "@src/theme/css";
+import Image from "@src/components/image";
+import {IconHeartFilled} from "@tabler/icons-react";
+import {Poster} from "../types";
+import {useRouter} from "@src/routes/hooks";
+import {paths} from "@src/routes/paths.ts";
+import TextMaxLine from "@src/components/text-max-line";
 
 // ----------------------------------------------------------------------
 
-const PosterHorizontal = ({ title, images, likes, id, synopsis }: Poster) => {
+const PosterHorizontal = ({title, images, likes, id, synopsis}: Poster) => {
   const router = useRouter();
 
   const handlePosterClick = () => {
@@ -38,40 +38,38 @@ const PosterHorizontal = ({ title, images, likes, id, synopsis }: Poster) => {
     <Paper
       sx={{
         borderRadius: 2,
-        overflow: 'hidden',
-        position: 'relative',
-        backgroundColor: 'transparent',
-        cursor: 'pointer',
+        overflow: "hidden",
+        position: "relative",
+        backgroundColor: "transparent",
+        cursor: "pointer",
       }}
-      onClick={handlePosterClick}
-    >
+      onClick={handlePosterClick}>
       {/* Poster image */}
-      <Image style={{ borderRadius: '10px' }} alt={title} src={images.vertical} ratio="1/1" />
+      <Image style={{borderRadius: "10px"}} alt={title} src={images.vertical} ratio="1/1" />
 
       {/* Upper side: Likes & prices */}
       <Box
         sx={{
-          position: 'absolute',
+          position: "absolute",
           top: 0,
-          width: '100%',
+          width: "100%",
           p: 1,
-          display: 'flex',
-          flexDirection: 'column',
+          display: "flex",
+          flexDirection: "column",
           /* justifyContent: 'space-between',
           alignItems:'center', */
-          color: 'common.white',
+          color: "common.white",
           zIndex: 9,
           ...bgGradient({
-            direction: 'to bottom',
-            startColor: alpha('#000', 0.8),
-            endColor: alpha('#000', 0),
+            direction: "to bottom",
+            startColor: alpha("#000", 0.8),
+            endColor: alpha("#000", 0),
           }),
-        }}
-      >
+        }}>
         {/* Likes */}
-        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <Box sx={{display: "flex", alignItems: "center", justifyContent: "space-between"}}>
           <Stack direction="row" spacing={0.5} alignItems="center" textAlign="center">
-            <IconHeartFilled style={{ marginBottom: '2px' }} size={16} color="#F2F3F5" />
+            <IconHeartFilled style={{marginBottom: "2px"}} size={16} color="#F2F3F5" />
             <TextMaxLine line={1} variant="body2">
               {formatLikes(likes ?? 0)}
             </TextMaxLine>
@@ -82,15 +80,14 @@ const PosterHorizontal = ({ title, images, likes, id, synopsis }: Poster) => {
       {/* Downside: Title & details */}
       <CardContent
         sx={{
-          width: '100%',
-          padding: '0px 8px 0px 8px !important',
-          textAlign: 'left',
-          color: 'common.white',
-          marginTop: '10px',
-        }}
-      >
+          width: "100%",
+          padding: "0px 8px 0px 8px !important",
+          textAlign: "left",
+          color: "common.white",
+          marginTop: "10px",
+        }}>
         {/* Title */}
-        <TextMaxLine line={2} noWrap variant="h6" sx={{ mb: 1 }}>
+        <TextMaxLine line={2} noWrap variant="h6" sx={{mb: 1}}>
           {title}
         </TextMaxLine>
 
@@ -100,10 +97,9 @@ const PosterHorizontal = ({ title, images, likes, id, synopsis }: Poster) => {
             {synopsis}
           </TextMaxLine>
           <Typography
-            sx={{ fontSize: 'clamp(0.1rem, 0.8vw, 2rem)', fontWeight: '500' }}
+            sx={{fontSize: "clamp(0.1rem, 0.8vw, 2rem)", fontWeight: "500"}}
             noWrap
-            variant="body2"
-          ></Typography>
+            variant="body2"></Typography>
         </Stack>
       </CardContent>
     </Paper>

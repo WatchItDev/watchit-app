@@ -1,13 +1,13 @@
 // MUI IMPORTS
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
 
 // LENS IMPORTS
-import { Profile } from '@lens-protocol/api-bindings';
+import {Profile} from "@lens-protocol/api-bindings";
 
 // LOCAL IMPORTS
-import { UserItem } from '@src/components/user-item';
-import { useSelector } from 'react-redux';
+import {UserItem} from "@src/components/user-item";
+import {useSelector} from "react-redux";
 
 // ----------------------------------------------------------------------
 
@@ -17,26 +17,25 @@ interface Props {
 
 // ----------------------------------------------------------------------
 
-const ProfileFollowers = ({ onActionFinished }: Props) => {
+const ProfileFollowers = ({onActionFinished}: Props) => {
   const followers: Profile[] = useSelector((state: any) => state.followers.followers);
 
   return (
     <Box
       sx={{
-        display: followers?.length ? 'grid' : 'flex',
-        flexWrap: 'wrap',
+        display: followers?.length ? "grid" : "flex",
+        flexWrap: "wrap",
         gap: `${16}px`,
-        justifyContent: 'flex-start',
-        alignItems: 'flex-start',
+        justifyContent: "flex-start",
+        alignItems: "flex-start",
       }}
       gap={3}
       display="grid"
       gridTemplateColumns={{
-        xs: 'repeat(1, 1fr)',
-        sm: 'repeat(2, 1fr)',
-        md: 'repeat(3, 1fr)',
-      }}
-    >
+        xs: "repeat(1, 1fr)",
+        sm: "repeat(2, 1fr)",
+        md: "repeat(3, 1fr)",
+      }}>
       {followers?.length ? (
         followers.map((follower: any, index: any) => (
           <UserItem
@@ -48,17 +47,16 @@ const ProfileFollowers = ({ onActionFinished }: Props) => {
       ) : (
         <Typography
           sx={{
-            height: '20rem',
-            textAlign: 'center',
-            width: '100%',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            fontWeight: 'bold',
-            background: '#2b2d31',
-            borderRadius: '1rem',
-          }}
-        >
+            height: "20rem",
+            textAlign: "center",
+            width: "100%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            fontWeight: "bold",
+            background: "#2b2d31",
+            borderRadius: "1rem",
+          }}>
           This profile has no followers
         </Typography>
       )}

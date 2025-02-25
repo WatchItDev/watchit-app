@@ -1,5 +1,5 @@
-import axios from 'axios';
-import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
+import axios from "axios";
+import {GLOBAL_CONSTANTS} from "@src/config-global.ts";
 
 /**
  * Pinata API keys from global constants.
@@ -16,7 +16,7 @@ const pinataSecretApiKey = GLOBAL_CONSTANTS.PINATA_SECRET_API_KEY;
  */
 export const uploadToIPFS = async (data: File | object): Promise<string> => {
   try {
-    let url = '';
+    let url = "";
     let headers: any = {
       pinata_api_key: pinataApiKey,
       pinata_secret_api_key: pinataSecretApiKey,
@@ -25,20 +25,20 @@ export const uploadToIPFS = async (data: File | object): Promise<string> => {
 
     if (data instanceof File) {
       // Uploading a file
-      url = 'https://api.pinata.cloud/pinning/pinFileToIPFS';
+      url = "https://api.pinata.cloud/pinning/pinFileToIPFS";
       const formData = new FormData();
-      formData.append('file', data);
+      formData.append("file", data);
 
       body = formData;
       // Do not set 'Content-Type'; the browser will set it automatically
     } else {
       // Uploading JSON
-      url = 'https://api.pinata.cloud/pinning/pinJSONToIPFS';
+      url = "https://api.pinata.cloud/pinning/pinJSONToIPFS";
       body = data; // Send as an object; adjust if necessary
 
       headers = {
         ...headers,
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       };
     }
 
@@ -49,7 +49,7 @@ export const uploadToIPFS = async (data: File | object): Promise<string> => {
 
     return `ipfs://${response.data.IpfsHash}`;
   } catch (error) {
-    console.error('Error uploading to IPFS:', error);
+    console.error("Error uploading to IPFS:", error);
     throw error;
   }
 };
@@ -64,7 +64,7 @@ export const uploadImageToIPFS = async (image: File | null): Promise<string | nu
   try {
     return image ? await uploadToIPFS(image) : null;
   } catch (error) {
-    console.error('Error uploading image to IPFS:', error);
+    console.error("Error uploading image to IPFS:", error);
     throw error;
   }
 };
@@ -78,14 +78,14 @@ export const uploadImageToIPFS = async (image: File | null): Promise<string | nu
  */
 export const uploadImagesToIPFS = async (
   profileImage: File | null,
-  backgroundImage: File | null
-): Promise<{ profileImageURI: string | null; backgroundImageURI: string | null }> => {
+  backgroundImage: File | null,
+): Promise<{profileImageURI: string | null; backgroundImageURI: string | null}> => {
   try {
     const profileImageURI = profileImage ? await uploadToIPFS(profileImage) : null;
     const backgroundImageURI = backgroundImage ? await uploadToIPFS(backgroundImage) : null;
-    return { profileImageURI, backgroundImageURI };
+    return {profileImageURI, backgroundImageURI};
   } catch (error) {
-    console.error('Error uploading images to IPFS:', error);
+    console.error("Error uploading images to IPFS:", error);
     throw error;
   }
 };
@@ -100,7 +100,7 @@ export const uploadMetadataToIPFS = async (metadata: any): Promise<string> => {
   try {
     return await uploadToIPFS(metadata);
   } catch (error) {
-    console.error('Error uploading metadata to IPFS:', error);
+    console.error("Error uploading metadata to IPFS:", error);
     throw error;
   }
 };
@@ -116,16 +116,16 @@ export const uploadMetadataToIPFS = async (metadata: any): Promise<string> => {
 export const verifyIpfsData = async (
   uri: string,
   retries = 16,
-  delayMs = 2000
+  delayMs = 2000,
 ): Promise<boolean> => {
-  const gateway = 'https://gw.ipfs-lens.dev/ipfs/'; // Use only lens's gateway
+  const gateway = "https://gw.ipfs-lens.dev/ipfs/"; // Use only lens's gateway
 
-  const hash = uri.replace('ipfs://', '');
+  const hash = uri.replace("ipfs://", "");
   const url = `${gateway}${hash}`;
 
   for (let attempt = 1; attempt <= retries; attempt++) {
     try {
-      const response = await axios.get(url, { timeout: 4000 });
+      const response = await axios.get(url, {timeout: 4000});
       if (response.status === 200) {
         return true;
       }
@@ -138,5 +138,5 @@ export const verifyIpfsData = async (
     }
   }
 
-  throw new Error('Could not verify the availability of metadata on IPFS.');
+  throw new Error("Could not verify the availability of metadata on IPFS.");
 };

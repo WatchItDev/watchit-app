@@ -1,13 +1,13 @@
-import { memo } from 'react';
+import {memo} from "react";
 // @mui
-import { useTheme } from '@mui/material/styles';
-import Box, { BoxProps } from '@mui/material/Box';
+import {useTheme} from "@mui/material/styles";
+import Box, {BoxProps} from "@mui/material/Box";
 //
-import BackgroundShape from './background-shape';
+import BackgroundShape from "./background-shape";
 
 // ----------------------------------------------------------------------
 
-function ComingSoonIllustration({ ...other }: BoxProps) {
+function ComingSoonIllustration({...other}: BoxProps) {
   const theme = useTheme();
 
   const PRIMARY_LIGHT = theme.palette.primary.light;
@@ -25,8 +25,7 @@ function ComingSoonIllustration({ ...other }: BoxProps) {
       height="100%"
       viewBox="0 0 480 360"
       xmlns="http://www.w3.org/2000/svg"
-      {...other}
-    >
+      {...other}>
       <BackgroundShape />
 
       <image href="/assets/illustrations/characters/character_1.png" height="300" x="320" y="30" />
@@ -105,8 +104,7 @@ function ComingSoonIllustration({ ...other }: BoxProps) {
           x2="105.126"
           y1="186.371"
           y2="167.19"
-          gradientUnits="userSpaceOnUse"
-        >
+          gradientUnits="userSpaceOnUse">
           <stop stopColor={PRIMARY_MAIN} />
           <stop offset="1" stopColor={PRIMARY_DARK} />
         </linearGradient>

@@ -1,10 +1,10 @@
-import Box from '@mui/material/Box';
-import { publicationId, useLazyPublications } from '@lens-protocol/react-web';
+import Box from "@mui/material/Box";
+import {publicationId, useLazyPublications} from "@lens-protocol/react-web";
 
-import PublicationCommentItem from './publication-comment-item.tsx';
-import LinearProgress from '@mui/material/LinearProgress';
-import { useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import PublicationCommentItem from "./publication-comment-item.tsx";
+import LinearProgress from "@mui/material/LinearProgress";
+import {useEffect} from "react";
+import {useSelector} from "react-redux";
 
 // ----------------------------------------------------------------------
 
@@ -13,12 +13,10 @@ interface Props {
   showReplies?: boolean;
 }
 
-export default function PostCommentList({ publicationId: id, showReplies }: Props) {
+export default function PostCommentList({publicationId: id, showReplies}: Props) {
   const pendingComments = useSelector((state: any) => state.comments.pendingComments);
-  const { data: comments, error, loading, execute } = useLazyPublications();
-  const { hiddenComments, refetchTriggerByPublication } = useSelector(
-    (state: any) => state.comments
-  );
+  const {data: comments, error, loading, execute} = useLazyPublications();
+  const {hiddenComments, refetchTriggerByPublication} = useSelector((state: any) => state.comments);
   const refetchTrigger = refetchTriggerByPublication[id] || 0;
 
   useEffect(() => {
@@ -32,7 +30,7 @@ export default function PostCommentList({ publicationId: id, showReplies }: Prop
       });
 
       if (result.isFailure()) {
-        console.log('Error trying to get comments');
+        console.log("Error trying to get comments");
         return;
       }
     })();
@@ -47,7 +45,7 @@ export default function PostCommentList({ publicationId: id, showReplies }: Prop
 
   const commentsFiltered = (commentsWithPending ?? [])
     .filter(
-      (comment) => !hiddenComments.some((hiddenComment: any) => hiddenComment.id === comment.id)
+      (comment) => !hiddenComments.some((hiddenComment: any) => hiddenComment.id === comment.id),
     )
     .filter((comment) => !comment.isHidden);
 
@@ -56,12 +54,12 @@ export default function PostCommentList({ publicationId: id, showReplies }: Prop
       {loading && (
         <LinearProgress
           color="inherit"
-          sx={{ width: 1, maxWidth: 360, marginBottom: '16px', alignSelf: 'center' }}
+          sx={{width: 1, maxWidth: 360, marginBottom: "16px", alignSelf: "center"}}
         />
       )}
       {commentsFiltered?.map((comment: any) => {
         // Destructure necessary data from the comment
-        const { id: commentId } = comment;
+        const {id: commentId} = comment;
 
         return (
           <Box key={commentId} width="100%">

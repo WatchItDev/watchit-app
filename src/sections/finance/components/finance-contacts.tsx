@@ -1,29 +1,29 @@
 // React and libraries imports
-import React from 'react';
-import { useDispatch } from 'react-redux';
+import React from "react";
+import {useDispatch} from "react-redux";
 
 // @mui
-import Stack from '@mui/material/Stack';
-import CardHeader from '@mui/material/CardHeader';
-import Card, { CardProps } from '@mui/material/Card';
-import Tooltip from '@mui/material/Tooltip';
-import IconButton from '@mui/material/IconButton';
-import ListItemText from '@mui/material/ListItemText';
-import Box from '@mui/material/Box';
+import Stack from "@mui/material/Stack";
+import CardHeader from "@mui/material/CardHeader";
+import Card, {CardProps} from "@mui/material/Card";
+import Tooltip from "@mui/material/Tooltip";
+import IconButton from "@mui/material/IconButton";
+import ListItemText from "@mui/material/ListItemText";
+import Box from "@mui/material/Box";
 
 // Project components
-import Iconify from '@src/components/iconify';
-import Carousel, { useCarousel } from '@src/components/carousel/index';
-import NavigationArrows from '@src/components/carousel/NavigationArrows';
+import Iconify from "@src/components/iconify";
+import Carousel, {useCarousel} from "@src/components/carousel/index";
+import NavigationArrows from "@src/components/carousel/NavigationArrows";
 import AvatarProfile from "@src/components/avatar/avatar.tsx";
 
 // routes
-import { paths } from '@src/routes/paths';
-import { useRouter } from '@src/routes/hooks';
+import {paths} from "@src/routes/paths";
+import {useRouter} from "@src/routes/hooks";
 
 // lens
-import { Profile } from '@lens-protocol/api-bindings';
-import { storeAddress, toggleRainbow } from '@redux/address';
+import {Profile} from "@lens-protocol/api-bindings";
+import {storeAddress, toggleRainbow} from "@redux/address";
 
 // ----------------------------------------------------------------------
 
@@ -56,19 +56,16 @@ export default function FinanceContactsCarousel({
       const progress = currentTime - start;
 
       const lgPos = ((pos - currentPos) * progress) / time + currentPos;
-      const gtPos = currentPos - ((currentPos - pos) * progress) / time
+      const gtPos = currentPos - ((currentPos - pos) * progress) / time;
       window.scrollTo(0, currentPos < pos ? lgPos : gtPos);
 
-      progress < time
-        ? window.requestAnimationFrame(step)
-        : window.scrollTo(0, pos);
-
+      progress < time ? window.requestAnimationFrame(step) : window.scrollTo(0, pos);
     });
   }
 
   const handleClick = (address: string, profileId: string) => {
     dispatch(toggleRainbow());
-    dispatch(storeAddress({ address, profileId }));
+    dispatch(storeAddress({address, profileId}));
 
     // Scroll to top the window with a smooth animation
     scrollToSmoothly(0, 1000);
@@ -102,11 +99,11 @@ export default function FinanceContactsCarousel({
         title={title}
         subheader={subheader}
         action={<NavigationArrows next={carousel.onNext} prev={carousel.onPrev} />}
-        sx={{ px: 0 }}
+        sx={{px: 0}}
       />
 
       {/* Main carousel container */}
-      <Box sx={{ py: 3 }}>
+      <Box sx={{py: 3}}>
         <Carousel ref={carousel.carouselRef} {...carousel.carouselSettings}>
           {slidesData.map((chunk, index) => (
             <SlideContacts
@@ -130,11 +127,11 @@ interface SlideContactsProps {
   onClickArrow: (address: string, profileId: string) => void;
 }
 
-function SlideContacts({ chunk, goToProfile, onClickArrow }: SlideContactsProps) {
+function SlideContacts({chunk, goToProfile, onClickArrow}: SlideContactsProps) {
   const handleArrowClick = (
     event: React.MouseEvent<HTMLButtonElement>,
     address: string,
-    profileId: string
+    profileId: string,
   ) => {
     event.stopPropagation();
     onClickArrow(address, profileId);
@@ -146,24 +143,22 @@ function SlideContacts({ chunk, goToProfile, onClickArrow }: SlideContactsProps)
           <Stack
             direction="row"
             alignItems="flex-start"
-            sx={{ cursor: 'pointer', flexGrow: 1 }}
-            onClick={() => goToProfile(profile.id)}
-          >
+            sx={{cursor: "pointer", flexGrow: 1}}
+            onClick={() => goToProfile(profile.id)}>
             <AvatarProfile
-              alt={profile.metadata?.displayName || 'No Name'}
+              alt={profile.metadata?.displayName || "No Name"}
               src={(profile?.metadata?.picture as any)?.optimized?.uri ?? profile?.id}
-              sx={{ width: 48, height: 48, mr: 2 }}
+              sx={{width: 48, height: 48, mr: 2}}
             />
             <ListItemText
-              primary={profile.metadata?.displayName || 'No Name'}
+              primary={profile.metadata?.displayName || "No Name"}
               secondary={profile.id}
             />
           </Stack>
 
           <Tooltip title="Quick Transfer">
             <IconButton
-              onClick={(event) => handleArrowClick(event, profile.ownedBy.address, profile.id)}
-            >
+              onClick={(event) => handleArrowClick(event, profile.ownedBy.address, profile.id)}>
               <Iconify icon="eva:diagonal-arrow-right-up-fill" />
             </IconButton>
           </Tooltip>

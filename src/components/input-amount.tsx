@@ -1,7 +1,7 @@
-import { Ref, useEffect, useState } from 'react';
-import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
-import Input, { InputProps, inputClasses } from '@mui/material/Input';
+import {Ref, useEffect, useState} from "react";
+import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
+import Input, {InputProps, inputClasses} from "@mui/material/Input";
 
 const STEP = 50;
 const MIN_AMOUNT = 0;
@@ -34,7 +34,7 @@ export const InputAmount = ({
         // disableUnderline
         size="small"
         placeholder="0"
-        value={amount === 0 ? '' : amount}
+        value={amount === 0 ? "" : amount}
         onChange={onChange}
         onBlur={onBlur}
         inputRef={inputRef}
@@ -42,15 +42,15 @@ export const InputAmount = ({
           step: STEP,
           min: MIN_AMOUNT,
           max: max,
-          type: 'number',
+          type: "number",
         }}
         sx={{
           [`& .${inputClasses.input}`]: {
             p: 0,
-            typography: 'h3',
-            textAlign: 'center',
+            typography: "h3",
+            textAlign: "center",
             width: `${autoWidth}px`,
-            transition: 'width 0.2s ease-in-out',
+            transition: "width 0.2s ease-in-out",
           },
         }}
         {...other}

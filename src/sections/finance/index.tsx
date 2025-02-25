@@ -1,34 +1,34 @@
-import Stack from '@mui/material/Stack';
-import Container from '@mui/material/Container';
-import Grid from '@mui/material/Unstable_Grid2';
-import FinanceContacts from '@src/sections/finance/components/finance-contacts.tsx';
-import FinanceQuickTransfer from '@src/sections/finance/components/finance-quick-transfer.tsx';
-import FinanceInviteFriends from '@src/sections/finance/components/finance-invite-friends.tsx';
-import FinanceWidgetSummary from '@src/sections/finance/components/finance-widget-summary.tsx';
-import FinanceBalanceStatistics from '@src/sections/finance/components/finance-balance-statistics.tsx';
-import { useSelector } from 'react-redux';
-import { useProfileFollowing } from '@lens-protocol/react';
-import Typography from '@mui/material/Typography';
-import FinanceTransactionsHistory from '@src/sections/finance/components/finance-transactions-history.tsx';
-import useGetSmartWalletTransactions from '@src/hooks/use-get-smart-wallet-transactions.ts';
-import { useEffect, useState } from 'react';
-import Tabs, { tabsClasses } from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-import Iconify from '@src/components/iconify';
-import { useResponsive } from '@src/hooks/use-responsive.ts';
-import FinanceEarnTokens from '@src/sections/finance/components/finance-earn-tokens.tsx';
+import Stack from "@mui/material/Stack";
+import Container from "@mui/material/Container";
+import Grid from "@mui/material/Unstable_Grid2";
+import FinanceContacts from "@src/sections/finance/components/finance-contacts.tsx";
+import FinanceQuickTransfer from "@src/sections/finance/components/finance-quick-transfer.tsx";
+import FinanceInviteFriends from "@src/sections/finance/components/finance-invite-friends.tsx";
+import FinanceWidgetSummary from "@src/sections/finance/components/finance-widget-summary.tsx";
+import FinanceBalanceStatistics from "@src/sections/finance/components/finance-balance-statistics.tsx";
+import {useSelector} from "react-redux";
+import {useProfileFollowing} from "@lens-protocol/react";
+import Typography from "@mui/material/Typography";
+import FinanceTransactionsHistory from "@src/sections/finance/components/finance-transactions-history.tsx";
+import useGetSmartWalletTransactions from "@src/hooks/use-get-smart-wallet-transactions.ts";
+import {useEffect, useState} from "react";
+import Tabs, {tabsClasses} from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
+import Iconify from "@src/components/iconify";
+import {useResponsive} from "@src/hooks/use-responsive.ts";
+import FinanceEarnTokens from "@src/sections/finance/components/finance-earn-tokens.tsx";
 
 // ----------------------------------------------------------------------
 
 export default function OverviewBankingView() {
-  const lgUp = useResponsive('up', 'lg');
-  const mdUp = useResponsive('up', 'md');
-  const { balance: balanceFromRedux } = useSelector((state: any) => state.auth);
+  const lgUp = useResponsive("up", "lg");
+  const mdUp = useResponsive("up", "md");
+  const {balance: balanceFromRedux} = useSelector((state: any) => state.auth);
   const sessionData = useSelector((state: any) => state.auth.session);
-  const { transactions, loading } = useGetSmartWalletTransactions();
-  const [widgetSeriesData, setWidgetSeriesData] = useState<{ x: string; y: number }[]>([]);
+  const {transactions, loading} = useGetSmartWalletTransactions();
+  const [widgetSeriesData, setWidgetSeriesData] = useState<{x: string; y: number}[]>([]);
   const [percent, setPercent] = useState(0);
-  const { data: following } = useProfileFollowing({
+  const {data: following} = useProfileFollowing({
     // @ts-ignore
     for: sessionData?.profile?.id,
   });
@@ -36,38 +36,34 @@ export default function OverviewBankingView() {
   useEffect(() => {
     if (!transactions || loading) return;
 
-    const { daySeriesData, calculatedPercent } = groupTransactionsForWidget(transactions);
+    const {daySeriesData, calculatedPercent} = groupTransactionsForWidget(transactions);
 
     setWidgetSeriesData(daySeriesData);
     setPercent(calculatedPercent);
   }, [transactions, loading]);
 
-
-
   return (
     <Container
       sx={{
-        marginTop: { xs: '1rem', md: '2rem' },
-        marginBottom: '2rem',
-        maxWidth: '100% !important',
-      }}
-    >
+        marginTop: {xs: "1rem", md: "2rem"},
+        marginBottom: "2rem",
+        maxWidth: "100% !important",
+      }}>
       <Grid container spacing={2}>
         <Grid xs={12} md={8}>
           <Stack
-            direction={{ lg: 'column', xlg: 'row' }}
+            direction={{lg: "column", xlg: "row"}}
             spacing={{
               xs: 2,
               lg: 2,
-            }}
-          >
+            }}>
             <FinanceWidgetSummary
               title="Balance"
               color="primary"
               icon={
                 percent > 0
-                  ? 'eva:diagonal-arrow-right-up-fill'
-                  : 'eva:diagonal-arrow-left-down-fill'
+                  ? "eva:diagonal-arrow-right-up-fill"
+                  : "eva:diagonal-arrow-left-down-fill"
               }
               percent={percent}
               total={balanceFromRedux}
@@ -97,7 +93,7 @@ export default function OverviewBankingView() {
                 </Stack>
               </Grid>
 
-              <Typography variant="h6" sx={{ pt: 2 }}>
+              <Typography variant="h6" sx={{pt: 2}}>
                 Recent Transactions
               </Typography>
               <FinanceTransactionsHistory />
@@ -112,7 +108,7 @@ export default function OverviewBankingView() {
             <FinanceQuickTransfer
               list={following}
               sx={{
-                display: { xs: 'none', md: 'flex' },
+                display: {xs: "none", md: "flex"},
               }}
             />
 
@@ -142,7 +138,7 @@ export default function OverviewBankingView() {
 
 export function groupTransactionsForWidget(transactions: any[]) {
   if (!transactions?.length) {
-    return { daySeriesData: [], calculatedPercent: 0 };
+    return {daySeriesData: [], calculatedPercent: 0};
   }
 
   const grouped: Record<string, number> = {};
@@ -155,9 +151,9 @@ export function groupTransactionsForWidget(transactions: any[]) {
 
     if (!grouped[dateKey]) grouped[dateKey] = 0;
 
-    if (eventType === 'deposit' || eventType === 'transferTo') {
+    if (eventType === "deposit" || eventType === "transferTo") {
       grouped[dateKey] += amount;
-    } else if (eventType === 'withdraw' || eventType === 'transferFrom') {
+    } else if (eventType === "withdraw" || eventType === "transferFrom") {
       grouped[dateKey] -= amount;
     }
   });
@@ -176,19 +172,19 @@ export function groupTransactionsForWidget(transactions: any[]) {
     calculatedPercent = ((second - first) / Math.abs(first)) * 100;
   }
 
-  return { daySeriesData, calculatedPercent };
+  return {daySeriesData, calculatedPercent};
 }
 
 const TabsComponent = () => {
-  const [currentTab, setCurrentTab] = useState('graph');
+  const [currentTab, setCurrentTab] = useState("graph");
 
   const handleChangeTab = (_event: any, newValue: any) => {
     setCurrentTab(newValue);
   };
 
   const TABS = [
-    { value: 'graph', label: 'Statistics', icon: <Iconify icon={'codicon:graph'} /> },
-    { value: 'table', label: 'Transactions', icon: <Iconify icon={'majesticons:table'} /> },
+    {value: "graph", label: "Statistics", icon: <Iconify icon={"codicon:graph"} />},
+    {value: "table", label: "Transactions", icon: <Iconify icon={"majesticons:table"} />},
   ];
 
   return (
@@ -201,15 +197,14 @@ const TabsComponent = () => {
           mt: 2,
           width: 1,
           zIndex: 9,
-          borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
-          [`& .${tabsClasses.flexContainer}`]: { justifyContent: { xs: 'left', md: 'center' } },
-        }}
-      >
+          borderBottom: "1px solid rgba(255, 255, 255, 0.08)",
+          [`& .${tabsClasses.flexContainer}`]: {justifyContent: {xs: "left", md: "center"}},
+        }}>
         {TABS.map((tab) => (
           <Tab icon={tab.icon} key={tab.value} value={tab.value} label={tab.label} />
         ))}
       </Tabs>
-      {currentTab === 'graph' && (
+      {currentTab === "graph" && (
         <>
           <Grid xs={12} md={8}>
             <Stack spacing={3}>
@@ -218,10 +213,10 @@ const TabsComponent = () => {
           </Grid>
         </>
       )}
-      {currentTab === 'table' && (
+      {currentTab === "table" && (
         <>
-          <Typography variant="h6" sx={{ pt: 2 }}>
-            Recent Transactions{' '}
+          <Typography variant="h6" sx={{pt: 2}}>
+            Recent Transactions{" "}
           </Typography>
           <FinanceTransactionsHistory />
         </>

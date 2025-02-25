@@ -1,16 +1,16 @@
-import '@src/utils/highlight';
-import ReactQuill from 'react-quill';
+import "@src/utils/highlight";
+import ReactQuill from "react-quill";
 // @mui
-import { alpha } from '@mui/material/styles';
+import {alpha} from "@mui/material/styles";
 //
-import { EditorProps } from './types';
-import { StyledEditor } from './styles';
-import Toolbar, { formats } from './toolbar';
+import {EditorProps} from "./types";
+import {StyledEditor} from "./styles";
+import Toolbar, {formats} from "./toolbar";
 
 // ----------------------------------------------------------------------
 
 export default function Editor({
-  id = 'watchit-quill',
+  id = "watchit-quill",
   error,
   simple = false,
   helperText,
@@ -38,13 +38,12 @@ export default function Editor({
         sx={{
           ...(error && {
             border: (theme) => `solid 1px ${theme.palette.error.main}`,
-            '& .ql-editor': {
+            "& .ql-editor": {
               bgcolor: (theme) => alpha(theme.palette.error.main, 0.08),
             },
           }),
           ...sx,
-        }}
-      >
+        }}>
         <Toolbar id={id} isSimple={simple} />
 
         <ReactQuill

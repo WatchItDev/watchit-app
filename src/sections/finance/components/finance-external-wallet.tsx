@@ -1,14 +1,14 @@
 // React and libraries imports
-import React from 'react';
+import React from "react";
 
 // @mui
-import { Box } from '@mui/system';
-import { useTheme, alpha } from '@mui/material/styles';
-import Typography from '@mui/material/Typography';
-import Stack, { StackProps } from '@mui/material/Stack';
+import {Box} from "@mui/system";
+import {useTheme, alpha} from "@mui/material/styles";
+import Typography from "@mui/material/Typography";
+import Stack, {StackProps} from "@mui/material/Stack";
 
 // theme
-import { bgGradient } from '@src/theme/css';
+import {bgGradient} from "@src/theme/css";
 
 // ----------------------------------------------------------------------
 
@@ -34,35 +34,33 @@ export default function FinanceExternalWallet({
   return (
     <>
       <Stack
-        flexDirection={{ xs: 'column', md: 'row' }}
+        flexDirection={{xs: "column", md: "row"}}
         sx={{
           ...bgGradient({
-            direction: '135deg',
+            direction: "135deg",
             startColor: alpha(theme.palette.primary.light, 0.2),
             endColor: alpha(theme.palette.primary.main, 0.2),
           }),
-          height: { md: 1 },
+          height: {md: 1},
           borderTopRightRadius: 2,
           borderTopLeftRadius: 2,
-          position: 'relative',
-          color: 'primary.darker',
-          backgroundColor: 'common.white',
+          position: "relative",
+          color: "primary.darker",
+          backgroundColor: "common.white",
         }}
-        {...other}
-      >
+        {...other}>
         <Stack
           flexGrow={1}
           justifyContent="flex-start"
-          alignItems={{ xs: 'center', md: 'flex-start' }}
+          alignItems={{xs: "center", md: "flex-start"}}
           sx={{
             p: {
               xs: theme.spacing(5, 3, 0, 3),
               md: theme.spacing(3),
             },
-            textAlign: { xs: 'center', md: 'left' },
-          }}
-        >
-          <Typography variant="body1" sx={{ mb: connectedWallet ? 1 : 2, whiteSpace: 'pre-line' }}>
+            textAlign: {xs: "center", md: "left"},
+          }}>
+          <Typography variant="body1" sx={{mb: connectedWallet ? 1 : 2, whiteSpace: "pre-line"}}>
             {title}
           </Typography>
 
@@ -70,23 +68,21 @@ export default function FinanceExternalWallet({
             <Typography
               variant="h3"
               sx={{
-                display: 'flex',
-                alignItems: 'center',
+                display: "flex",
+                alignItems: "center",
                 maxWidth: 250,
-                mb: { xs: 1, xl: 2 },
-              }}
-            >
-              {description}{' '}
+                mb: {xs: 1, xl: 2},
+              }}>
+              {description}{" "}
               <Box
-                component={'small'}
+                component={"small"}
                 sx={{
-                  display: 'inline',
+                  display: "inline",
                   opacity: 0.5,
-                  fontSize: '0.7em',
-                  ml: '0.5rem',
+                  fontSize: "0.7em",
+                  ml: "0.5rem",
                   mt: 1,
-                }}
-              >
+                }}>
                 MMC
               </Box>
             </Typography>
@@ -99,9 +95,8 @@ export default function FinanceExternalWallet({
             sx={{
               opacity: 0.8,
               maxWidth: 250,
-              mb: { xs: 1, xl: 2 },
-            }}
-          >
+              mb: {xs: 1, xl: 2},
+            }}>
             {info}
           </Typography>
 
@@ -113,11 +108,10 @@ export default function FinanceExternalWallet({
             component="span"
             justifyContent="center"
             sx={{
-              p: { xs: 5, md: 1 },
+              p: {xs: 5, md: 1},
               maxWidth: 360,
-              mx: 'auto',
-            }}
-          >
+              mx: "auto",
+            }}>
             {img}
           </Stack>
         )}

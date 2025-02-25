@@ -1,18 +1,18 @@
-import { memo, useState, useCallback } from 'react';
+import {memo, useState, useCallback} from "react";
 // @mui
-import List from '@mui/material/List';
-import Stack from '@mui/material/Stack';
-import Collapse from '@mui/material/Collapse';
+import List from "@mui/material/List";
+import Stack from "@mui/material/Stack";
+import Collapse from "@mui/material/Collapse";
 //
-import { NavSectionProps, NavListProps, NavConfigProps } from '../types';
-import { navVerticalConfig } from '../config';
-import { StyledSubheader } from './styles';
+import {NavSectionProps, NavListProps, NavConfigProps} from "../types";
+import {navVerticalConfig} from "../config";
+import {StyledSubheader} from "./styles";
 
-import NavList from './nav-list';
+import NavList from "./nav-list";
 
 // ----------------------------------------------------------------------
 
-function NavSectionVertical({ data, config, sx, ...other }: NavSectionProps) {
+function NavSectionVertical({data, config, sx, ...other}: NavSectionProps) {
   return (
     <Stack sx={sx} {...other}>
       {data.map((group, index) => (
@@ -20,7 +20,7 @@ function NavSectionVertical({ data, config, sx, ...other }: NavSectionProps) {
           key={group.subheader || index}
           items={group.items}
           config={navVerticalConfig(config)}
-          subheader={group?.subheader || ''}
+          subheader={group?.subheader || ""}
         />
       ))}
     </Stack>
@@ -37,7 +37,7 @@ interface GroupProps {
   config: NavConfigProps;
 }
 
-function Group({ subheader, items, config }: GroupProps) {
+function Group({subheader, items, config}: GroupProps) {
   const [open, setOpen] = useState(true);
 
   const handleToggle = useCallback(() => {
@@ -55,7 +55,7 @@ function Group({ subheader, items, config }: GroupProps) {
   ));
 
   return (
-    <List disablePadding sx={{ px: 2 }}>
+    <List disablePadding sx={{px: 2}}>
       {subheader ? (
         <>
           <StyledSubheader disableGutters disableSticky onClick={handleToggle} config={config}>

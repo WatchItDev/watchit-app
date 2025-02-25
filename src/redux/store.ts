@@ -1,7 +1,7 @@
-import { type Store, type Middleware } from 'redux';
-import { configureStore } from '@reduxjs/toolkit';
-import rootReducer from '@src/redux/reducer';
-import { backgroundTaskMiddleware } from '@redux/middlewares/backgroundTaskMiddleware.ts';
+import {type Store, type Middleware} from "redux";
+import {configureStore} from "@reduxjs/toolkit";
+import rootReducer from "@src/redux/reducer";
+import {backgroundTaskMiddleware} from "@redux/middlewares/backgroundTaskMiddleware.ts";
 
 export const createStore = (initialState = {}): Store => {
   const middlewares: Middleware[] = [backgroundTaskMiddleware];

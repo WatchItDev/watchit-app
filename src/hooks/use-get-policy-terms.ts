@@ -1,6 +1,6 @@
-import { useState, useEffect, useCallback } from 'react';
-import { Address } from 'viem';
-import { useGetPoliciesTerms } from './use-get-policies-terms.ts';
+import {useState, useEffect, useCallback} from "react";
+import {Address} from "viem";
+import {useGetPoliciesTerms} from "./use-get-policies-terms.ts";
 
 interface HasAccessError {
   message: string;
@@ -30,7 +30,7 @@ interface UseGetPolicyTermsHook {
  */
 export const useGetPolicyTerms = (
   policyAddress?: Address,
-  holderAddress?: Address
+  holderAddress?: Address,
 ): UseGetPolicyTermsHook => {
   const [terms, setTerms] = useState<Terms | undefined>(undefined);
   const [fetching, setFetching] = useState<boolean>(true);
@@ -54,7 +54,7 @@ export const useGetPolicyTerms = (
     // Validate inputs
     if (!policyAddress || !holderAddress) {
       setTerms(undefined);
-      setError({ message: 'Policy address or holder address is missing.' });
+      setError({message: "Policy address or holder address is missing."});
       setFetching(false);
       return;
     }
@@ -78,7 +78,7 @@ export const useGetPolicyTerms = (
     try {
       // Find the policy object with a matching address
       const foundPolicy = authorizedHolderPolicies.find(
-        (p) => p.policy.toLowerCase() === policyAddress.toLowerCase()
+        (p) => p.policy.toLowerCase() === policyAddress.toLowerCase(),
       );
 
       if (foundPolicy) {
@@ -90,9 +90,9 @@ export const useGetPolicyTerms = (
         setError(null); // or setError({ message: 'Policy not found among authorized ones.' })
       }
     } catch (err: any) {
-      console.error('Error filtering policy terms:', err);
+      console.error("Error filtering policy terms:", err);
       setTerms(undefined);
-      setError({ message: err?.message || 'An error occurred while filtering policy terms.' });
+      setError({message: err?.message || "An error occurred while filtering policy terms."});
     } finally {
       setFetching(false);
     }
@@ -114,7 +114,7 @@ export const useGetPolicyTerms = (
       terms: undefined,
       loading: false,
       fetching: false,
-      error: { message: 'Policy address or holder address is missing.' },
+      error: {message: "Policy address or holder address is missing."},
       refetch: () => {},
     };
   }

@@ -1,23 +1,18 @@
 // REDUX IMPORTS
-import { useSelector } from 'react-redux';
+import {useSelector} from "react-redux";
 
 // MUI IMPORTS
-import {
-  Box,
-  Button,
-  IconButton,
-  Typography,
-} from '@mui/material';
-import { alpha } from '@mui/material/styles';
+import {Box, Button, IconButton, Typography} from "@mui/material";
+import {alpha} from "@mui/material/styles";
 
 // ANIMATIONS IMPORTS
-import { m } from 'framer-motion';
+import {m} from "framer-motion";
 
 // LOCAL IMPORTS
-import { varHover } from '@src/components/animate';
-import AvatarProfile from '@src/components/avatar/avatar';
-import NeonPaper from '@src/sections/publication/NeonPaperContainer';
-import { UsePopoverReturnType } from '@src/components/custom-popover/use-popover.ts';
+import {varHover} from "@src/components/animate";
+import AvatarProfile from "@src/components/avatar/avatar";
+import NeonPaper from "@src/sections/publication/NeonPaperContainer";
+import {UsePopoverReturnType} from "@src/components/custom-popover/use-popover.ts";
 
 // ----------------------------------------------------------------------
 
@@ -34,9 +29,9 @@ interface AccountPopoverButtonProps {
  *  - Or a "Social Login" button (if not authenticated)
  */
 export function AccountPopoverButton({
-                                       popover,
-                                       onOpenLoginModal,
-                                     }: Readonly<AccountPopoverButtonProps>) {
+  popover,
+  onOpenLoginModal,
+}: Readonly<AccountPopoverButtonProps>) {
   const sessionData = useSelector((state: any) => state.auth.session);
   const isAuthenticated = Boolean(sessionData?.authenticated);
   const isUpdatingMetadata: boolean = useSelector((state: any) => state.auth.isUpdatingMetadata);
@@ -45,15 +40,14 @@ export function AccountPopoverButton({
   const EffectPaper = isUpdatingMetadata ? NeonPaper : Box;
 
   return (
-    <Box sx={{ display: 'flex', alignItems: 'center' }} onClick={popover.onOpen}>
+    <Box sx={{display: "flex", alignItems: "center"}} onClick={popover.onOpen}>
       {/* If user is authenticated, show their avatar */}
       {isAuthenticated && (
         <EffectPaper
           {...(isUpdatingMetadata && {
-            padding: '0',
-            borderRadius: '999999px',
-          })}
-        >
+            padding: "0",
+            borderRadius: "999999px",
+          })}>
           <IconButton
             component={m.button}
             whileTap="tap"
@@ -67,8 +61,7 @@ export function AccountPopoverButton({
                 background: (theme) =>
                   `linear-gradient(135deg, ${theme.palette.primary.light} 0%, ${theme.palette.primary.main} 100%)`,
               }),
-            }}
-          >
+            }}>
             <AvatarProfile
               src={
                 (sessionData?.profile?.metadata?.picture as any)?.optimized?.uri ??
@@ -76,7 +69,7 @@ export function AccountPopoverButton({
               }
               alt="avatar"
               sx={{
-                fontSize: '1.25rem',
+                fontSize: "1.25rem",
                 width: 36,
                 height: 36,
                 border: (theme: any) => `solid 2px ${theme.palette.background.default}`,
@@ -87,9 +80,7 @@ export function AccountPopoverButton({
       )}
 
       {/* If user is not authenticated, show the "Social Login" button */}
-      <Box
-        sx={{ display: 'flex', flexDirection: 'column', ml: { xs: 0, md: 1 }, cursor: 'pointer' }}
-      >
+      <Box sx={{display: "flex", flexDirection: "column", ml: {xs: 0, md: 1}, cursor: "pointer"}}>
         {!isAuthenticated && (
           <Button variant="contained" onClick={onOpenLoginModal}>
             Social Login
@@ -101,16 +92,15 @@ export function AccountPopoverButton({
           <Box
             sx={{
               display: {
-                xs: 'none',
-                md: 'flex',
+                xs: "none",
+                md: "flex",
               },
-              flexDirection: 'column',
-            }}
-          >
+              flexDirection: "column",
+            }}>
             <Typography variant="subtitle2" noWrap>
               {sessionData?.profile?.handle?.localName}
             </Typography>
-            <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
+            <Typography variant="body2" sx={{color: "text.secondary"}} noWrap>
               {sessionData?.profile?.id}
             </Typography>
           </Box>

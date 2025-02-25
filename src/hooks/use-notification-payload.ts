@@ -1,4 +1,4 @@
-import { ProfileSession } from '@lens-protocol/react-web';
+import {ProfileSession} from "@lens-protocol/react-web";
 import {dicebear} from "@src/utils/dicebear.ts";
 
 interface NotificationPayload {
@@ -22,16 +22,16 @@ interface NotificationPayload {
 export const useNotificationPayload = (sessionData: ProfileSession | undefined) => {
   const generatePayload = (
     category: string,
-    toProfile: { id: string; displayName: string; avatar: any },
-    content: Record<string, any>
+    toProfile: {id: string; displayName: string; avatar: any},
+    content: Record<string, any>,
   ): NotificationPayload => {
     return {
-      type: 'NOTIFICATION',
+      type: "NOTIFICATION",
       category: category,
       data: {
         from: {
-          id: sessionData?.profile?.id ?? '',
-          displayName: sessionData?.profile?.metadata?.displayName ?? '',
+          id: sessionData?.profile?.id ?? "",
+          displayName: sessionData?.profile?.metadata?.displayName ?? "",
           avatar:
             (sessionData?.profile?.metadata?.picture as any)?.optimized?.uri ??
             dicebear(sessionData?.profile?.id as string),
@@ -39,11 +39,12 @@ export const useNotificationPayload = (sessionData: ProfileSession | undefined) 
         to: {
           id: toProfile.id,
           displayName: toProfile.displayName,
-          avatar: toProfile.avatar ?? dicebear(toProfile.id)},
+          avatar: toProfile.avatar ?? dicebear(toProfile.id),
+        },
         content,
       },
     };
   };
 
-  return { generatePayload };
+  return {generatePayload};
 };

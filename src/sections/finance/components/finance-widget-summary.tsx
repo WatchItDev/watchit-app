@@ -1,31 +1,31 @@
-import { useEffect } from 'react';
+import {useEffect} from "react";
 // MUI IMPORTS
-import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
-import Button from '@mui/material/Button';
-import { CardProps } from '@mui/material/Card';
-import Typography from '@mui/material/Typography';
-import { useTheme, alpha } from '@mui/material/styles';
+import Box from "@mui/material/Box";
+import Stack from "@mui/material/Stack";
+import Button from "@mui/material/Button";
+import {CardProps} from "@mui/material/Card";
+import Typography from "@mui/material/Typography";
+import {useTheme, alpha} from "@mui/material/styles";
 
 // @mui
-import LoadingButton from '@mui/lab/LoadingButton';
+import LoadingButton from "@mui/lab/LoadingButton";
 // CHARTS IMPORTS
-import { ApexOptions } from 'apexcharts';
+import {ApexOptions} from "apexcharts";
 
 // LOCAL IMPORTS
-import { bgGradient } from '@src/theme/css';
-import Iconify from '@src/components/iconify';
-import { ColorSchema } from '@src/theme/palette';
-import { useBoolean } from '@src/hooks/use-boolean.ts';
-import Chart, { useChart } from '@src/components/chart';
-import { fCurrency, fPercent } from '@src/utils/format-number';
-import { FinanceDepositModal } from '@src/sections/finance/components/finance-deposit-modal.tsx';
-import { useWithdraw } from '@src/hooks/use-withdraw.ts';
-import { FinanceWithdrawModal } from '@src/sections/finance/components/finance-withdraw-modal.tsx';
+import {bgGradient} from "@src/theme/css";
+import Iconify from "@src/components/iconify";
+import {ColorSchema} from "@src/theme/palette";
+import {useBoolean} from "@src/hooks/use-boolean.ts";
+import Chart, {useChart} from "@src/components/chart";
+import {fCurrency, fPercent} from "@src/utils/format-number";
+import {FinanceDepositModal} from "@src/sections/finance/components/finance-deposit-modal.tsx";
+import {useWithdraw} from "@src/hooks/use-withdraw.ts";
+import {FinanceWithdrawModal} from "@src/sections/finance/components/finance-withdraw-modal.tsx";
 
 // Notifications
-import { notifyError } from '@notifications/internal-notifications';
-import { ERRORS } from '@notifications/errors';
+import {notifyError} from "@notifications/internal-notifications";
+import {ERRORS} from "@notifications/errors";
 
 // ----------------------------------------------------------------------
 
@@ -51,7 +51,7 @@ export default function FinanceWidgetSummary({
   total,
   icon,
   percent,
-  color = 'primary',
+  color = "primary",
   chart,
   sx,
   ...other
@@ -59,8 +59,8 @@ export default function FinanceWidgetSummary({
   const confirmDeposit = useBoolean();
   const confirmWithdraw = useBoolean();
   const theme = useTheme();
-  const { series, options } = chart;
-  const { loading: withdrawLoading, error } = useWithdraw();
+  const {series, options} = chart;
+  const {loading: withdrawLoading, error} = useWithdraw();
 
   useEffect(() => {
     if (error) notifyError(error as ERRORS);
@@ -98,15 +98,15 @@ export default function FinanceWidgetSummary({
       y: {
         formatter: (value: number) => fCurrency(value),
         title: {
-          formatter: () => '',
+          formatter: () => "",
         },
       },
     },
     ...options,
   });
 
-  const totalOptions = { minimumFractionDigits: 1, maximumFractionDigits: 3 };
-  const formattedTotal = new Intl.NumberFormat('en-US', totalOptions).format(total);
+  const totalOptions = {minimumFractionDigits: 1, maximumFractionDigits: 3};
+  const formattedTotal = new Intl.NumberFormat("en-US", totalOptions).format(total);
 
   const handleFinishDeposit = () => {
     confirmDeposit.onFalse?.();
@@ -128,41 +128,38 @@ export default function FinanceWidgetSummary({
     <Stack
       sx={{
         ...bgGradient({
-          direction: '135deg',
+          direction: "135deg",
           startColor: alpha(theme.palette[color].light, 0.2),
           endColor: alpha(theme.palette[color].main, 0.2),
         }),
         width: 1,
         borderRadius: 2,
-        overflow: 'hidden',
-        position: 'relative',
+        overflow: "hidden",
+        position: "relative",
         color: `${color}.darker`,
-        backgroundColor: 'common.white',
+        backgroundColor: "common.white",
         ...sx,
       }}
-      {...other}
-    >
+      {...other}>
       <Box
         sx={{
           p: 1.5,
           top: 12,
           right: 6,
-          width: '100%',
+          width: "100%",
           height: 48,
-          position: 'absolute',
+          position: "absolute",
           color: `${color}.lighter`,
           gap: 1,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'flex-end',
-        }}
-      >
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "flex-end",
+        }}>
         <Button
           onClick={handleDepositOpenModal}
           variant="contained"
           color="warning"
-          startIcon={<Iconify icon="eva:diagonal-arrow-left-down-fill" />}
-        >
+          startIcon={<Iconify icon="eva:diagonal-arrow-left-down-fill" />}>
           Deposit
         </Button>
 
@@ -171,17 +168,16 @@ export default function FinanceWidgetSummary({
           color="primary"
           startIcon={<Iconify icon="eva:diagonal-arrow-right-up-fill" />}
           loading={withdrawLoading}
-          onClick={handleWithdrawOpenModal}
-        >
+          onClick={handleWithdrawOpenModal}>
           Withdraw
         </LoadingButton>
       </Box>
 
-      <Stack spacing={1} sx={{ p: 3 }}>
+      <Stack spacing={1} sx={{p: 3}}>
         <Typography variant="subtitle2">{title}</Typography>
         <Stack direction="row" alignItems="flex-end" justifyContent="flex-start">
-          <Box sx={{ typography: 'h3' }}>{formattedTotal}</Box>
-          <Box sx={{ typography: 'h6', opacity: 0.5, ml: 1, mb: 0.6 }}>MMC</Box>
+          <Box sx={{typography: "h3"}}>{formattedTotal}</Box>
+          <Box sx={{typography: "h6", opacity: 0.5, ml: 1, mb: 0.6}}>MMC</Box>
         </Stack>
 
         <Stack
@@ -189,20 +185,19 @@ export default function FinanceWidgetSummary({
           direction="row"
           flexWrap="wrap"
           alignItems="center"
-          sx={{ typography: 'body2' }}
-        >
-          <Iconify icon={percent < 0 ? 'eva:trending-down-fill' : 'eva:trending-up-fill'} />
+          sx={{typography: "body2"}}>
+          <Iconify icon={percent < 0 ? "eva:trending-down-fill" : "eva:trending-up-fill"} />
 
-          <Box sx={{ typography: 'subtitle2' }}>
-            {percent > 0 && '+'}
+          <Box sx={{typography: "subtitle2"}}>
+            {percent > 0 && "+"}
             {fPercent(percent)}
           </Box>
 
-          <Box sx={{ opacity: 0.8 }}>compared to last month</Box>
+          <Box sx={{opacity: 0.8}}>compared to last month</Box>
         </Stack>
       </Stack>
 
-      <Chart type="area" series={[{ data: series }]} options={chartOptions} height={120} />
+      <Chart type="area" series={[{data: series}]} options={chartOptions} height={120} />
 
       <FinanceDepositModal open={confirmDeposit.value} onClose={handleFinishDeposit} />
 

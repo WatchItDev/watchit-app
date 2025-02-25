@@ -1,12 +1,12 @@
-import { useState } from 'react';
-import { useSelector } from 'react-redux';
-import { encodeFunctionData, parseUnits } from 'viem';
-import LedgerVaultAbi from '@src/config/abi/LedgerVault.json';
-import MMCAbi from '@src/config/abi/MMC.json';
-import { GLOBAL_CONSTANTS } from '@src/config-global';
-import { useWeb3Session } from '@src/hooks/use-web3-session.ts';
-import { ERRORS } from '@notifications/errors.ts';
-import { useAccountSession } from '@src/hooks/use-account-session.ts';
+import {useState} from "react";
+import {useSelector} from "react-redux";
+import {encodeFunctionData, parseUnits} from "viem";
+import LedgerVaultAbi from "@src/config/abi/LedgerVault.json";
+import MMCAbi from "@src/config/abi/MMC.json";
+import {GLOBAL_CONSTANTS} from "@src/config-global";
+import {useWeb3Session} from "@src/hooks/use-web3-session.ts";
+import {ERRORS} from "@notifications/errors.ts";
+import {useAccountSession} from "@src/hooks/use-account-session.ts";
 
 interface DepositParams {
   recipient: string; // address
@@ -24,9 +24,9 @@ export const useDeposit = (): UseDepositHook => {
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<keyof typeof ERRORS | null>(null);
-  const { bundlerClient, smartAccount } = useWeb3Session();
+  const {bundlerClient, smartAccount} = useWeb3Session();
   const sessionData = useSelector((state: any) => state.auth.session);
-  const { isAuthenticated, logout } = useAccountSession();
+  const {isAuthenticated, logout} = useAccountSession();
 
   const approveMMC = (amount: number): string => {
     // Convert to Wei (assuming 18 decimals)
@@ -35,7 +35,7 @@ export const useDeposit = (): UseDepositHook => {
     // Encode the approve function call data
     return encodeFunctionData({
       abi: MMCAbi.abi,
-      functionName: 'approve',
+      functionName: "approve",
       args: [GLOBAL_CONSTANTS.LEDGER_VAULT_ADDRESS, weiAmount],
     });
   };
@@ -43,12 +43,12 @@ export const useDeposit = (): UseDepositHook => {
   /**
    * Encodes the call to LedgerVault’s `deposit` function.
    */
-  const initializeDeposit = ({ recipient, amount }: DepositParams) => {
+  const initializeDeposit = ({recipient, amount}: DepositParams) => {
     // Convert to Wei (assuming 18 decimals)
     const weiAmount = parseUnits(amount.toString(), 18);
     return encodeFunctionData({
       abi: LedgerVaultAbi.abi,
-      functionName: 'deposit',
+      functionName: "deposit",
       args: [recipient, weiAmount, GLOBAL_CONSTANTS.MMC_ADDRESS],
     });
   };
@@ -56,7 +56,7 @@ export const useDeposit = (): UseDepositHook => {
   /**
    * Main function to perform a deposit.
    */
-  const deposit = async ({ recipient, amount }: DepositParams) => {
+  const deposit = async ({recipient, amount}: DepositParams) => {
     setLoading(true);
     setError(null);
 
@@ -69,12 +69,12 @@ export const useDeposit = (): UseDepositHook => {
     if (!isAuthenticated()) {
       logout();
       setLoading(false);
-      throw new Error('Invalid Web3Auth session');
+      throw new Error("Invalid Web3Auth session");
     }
 
     try {
       const approveData = approveMMC(amount);
-      const depositData = initializeDeposit({ recipient, amount });
+      const depositData = initializeDeposit({recipient, amount});
 
       // Create the calls array
       const calls = [
@@ -104,11 +104,11 @@ export const useDeposit = (): UseDepositHook => {
       setData(receipt);
       setLoading(false);
     } catch (err: any) {
-      console.error('USE DEPOSIT ERR:', err);
+      console.error("USE DEPOSIT ERR:", err);
       setError(ERRORS.UNKNOWN_ERROR);
       setLoading(false);
     }
   };
 
-  return { data, deposit, loading, error };
+  return {data, deposit, loading, error};
 };

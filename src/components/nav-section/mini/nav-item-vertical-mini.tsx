@@ -1,16 +1,16 @@
-import { forwardRef } from 'react';
+import {forwardRef} from "react";
 // @mui
-import { useTheme } from '@mui/material/styles';
-import Link from '@mui/material/Link';
-import Tooltip from '@mui/material/Tooltip';
-import ListItemText from '@mui/material/ListItemText';
+import {useTheme} from "@mui/material/styles";
+import Link from "@mui/material/Link";
+import Tooltip from "@mui/material/Tooltip";
+import ListItemText from "@mui/material/ListItemText";
 // routes
-import { RouterLink } from '@src/routes/components';
+import {RouterLink} from "@src/routes/components";
 //
-import Iconify from '../../iconify';
+import Iconify from "../../iconify";
 //
-import { NavItemProps, NavConfigProps } from '../types';
-import { StyledItem, StyledIcon } from './styles-mini';
+import {NavItemProps, NavConfigProps} from "../types";
+import {StyledItem, StyledIcon} from "./styles-mini";
 
 // ----------------------------------------------------------------------
 
@@ -19,10 +19,10 @@ type Props = NavItemProps & {
 };
 
 const NavItemVerticalMini = forwardRef<HTMLDivElement, Props>(
-  ({ item, depth, open, active, externalLink, config, ...other }, ref) => {
+  ({item, depth, open, active, externalLink, config, ...other}, ref) => {
     const theme = useTheme();
 
-    const { title, path, icon, children, disabled, caption, roles } = item;
+    const {title, path, icon, children, disabled, caption, roles} = item;
 
     const subItem = depth !== 1;
 
@@ -35,15 +35,13 @@ const NavItemVerticalMini = forwardRef<HTMLDivElement, Props>(
         active={active}
         disabled={disabled}
         config={config}
-        {...other}
-      >
+        {...other}>
         {icon && (
           <StyledIcon
             size={config.iconSize}
             sx={{
-              ...(subItem && { mr: 1.5 }),
-            }}
-          >
+              ...(subItem && {mr: 1.5}),
+            }}>
             {icon}
           </StyledIcon>
         )}
@@ -52,7 +50,7 @@ const NavItemVerticalMini = forwardRef<HTMLDivElement, Props>(
           <ListItemText
             sx={{
               width: 1,
-              flex: 'unset',
+              flex: "unset",
               ...(!subItem && {
                 px: 0.5,
                 mt: 0.5,
@@ -62,15 +60,15 @@ const NavItemVerticalMini = forwardRef<HTMLDivElement, Props>(
             primaryTypographyProps={{
               noWrap: true,
               fontSize: 10,
-              lineHeight: '16px',
-              textAlign: 'center',
-              textTransform: 'capitalize',
-              fontWeight: active ? 'fontWeightBold' : 'fontWeightSemiBold',
+              lineHeight: "16px",
+              textAlign: "center",
+              textTransform: "capitalize",
+              fontWeight: active ? "fontWeightBold" : "fontWeightSemiBold",
               ...(subItem && {
-                textAlign: 'unset',
+                textAlign: "unset",
                 fontSize: theme.typography.body2.fontSize,
                 lineHeight: theme.typography.body2.lineHeight,
-                fontWeight: active ? 'fontWeightSemiBold' : 'fontWeightMedium',
+                fontWeight: active ? "fontWeightSemiBold" : "fontWeightMedium",
               }),
             }}
           />
@@ -82,11 +80,11 @@ const NavItemVerticalMini = forwardRef<HTMLDivElement, Props>(
               width={16}
               icon="eva:info-outline"
               sx={{
-                color: 'text.disabled',
+                color: "text.disabled",
                 ...(!subItem && {
                   top: 11,
                   left: 6,
-                  position: 'absolute',
+                  position: "absolute",
                 }),
               }}
             />
@@ -100,7 +98,7 @@ const NavItemVerticalMini = forwardRef<HTMLDivElement, Props>(
             sx={{
               top: 11,
               right: 6,
-              position: 'absolute',
+              position: "absolute",
             }}
           />
         )}
@@ -123,10 +121,9 @@ const NavItemVerticalMini = forwardRef<HTMLDivElement, Props>(
           sx={{
             width: 1,
             ...(disabled && {
-              cursor: 'default',
+              cursor: "default",
             }),
-          }}
-        >
+          }}>
           {renderContent}
         </Link>
       );
@@ -140,14 +137,13 @@ const NavItemVerticalMini = forwardRef<HTMLDivElement, Props>(
         sx={{
           width: 1,
           ...(disabled && {
-            cursor: 'default',
+            cursor: "default",
           }),
-        }}
-      >
+        }}>
         {renderContent}
       </Link>
     );
-  }
+  },
 );
 
 export default NavItemVerticalMini;

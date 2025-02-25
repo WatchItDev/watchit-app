@@ -1,29 +1,29 @@
 // REACT IMPORTS
-import { FC, useCallback, useEffect, useState } from 'react';
+import {FC, useCallback, useEffect, useState} from "react";
 
 // VIEM IMPORTS
-import { Address } from 'viem';
+import {Address} from "viem";
 
 // MUI IMPORTS
-import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
+import Box from "@mui/material/Box";
+import Stack from "@mui/material/Stack";
 
 // LOCAL IMPORTS
-import NeonPaper from '@src/sections/publication/NeonPaperContainer';
-import FinanceDialogsActions from '@src/sections/finance/components/finance-dialogs-actions';
-import TextMaxLine from '@src/components/text-max-line';
-import { formatBalanceNumber } from '@src/utils/format-number';
-import { useGetMmcContractBalance } from '@src/hooks/use-get-mmc-contract-balance';
-import FinanceBoxRow from '@src/sections/finance/components/finance-box-row.tsx';
-import { UseDepositHook } from '@src/hooks/use-deposit';
-import { truncateAddress } from '@src/utils/wallet';
+import NeonPaper from "@src/sections/publication/NeonPaperContainer";
+import FinanceDialogsActions from "@src/sections/finance/components/finance-dialogs-actions";
+import TextMaxLine from "@src/components/text-max-line";
+import {formatBalanceNumber} from "@src/utils/format-number";
+import {useGetMmcContractBalance} from "@src/hooks/use-get-mmc-contract-balance";
+import FinanceBoxRow from "@src/sections/finance/components/finance-box-row.tsx";
+import {UseDepositHook} from "@src/hooks/use-deposit";
+import {truncateAddress} from "@src/utils/wallet";
 
 // NOTIFICATIONS IMPORTS
-import { notifyError, notifySuccess, notifyWarning } from '@notifications/internal-notifications';
-import { WARNING } from '@notifications/warnings';
-import { SUCCESS } from '@notifications/success';
-import { ERRORS } from '@notifications/errors.ts';
-import TextField from '@mui/material/TextField';
+import {notifyError, notifySuccess, notifyWarning} from "@notifications/internal-notifications";
+import {WARNING} from "@notifications/warnings";
+import {SUCCESS} from "@notifications/success";
+import {ERRORS} from "@notifications/errors.ts";
+import TextField from "@mui/material/TextField";
 
 interface FinanceDepositProps {
   /**
@@ -62,11 +62,11 @@ interface FinanceDepositProps {
  * - `depositHook` (generic or Metamask deposit hook)
  * - `onClose`
  */
-const FinanceDeposit: FC<FinanceDepositProps> = ({ address, recipient, depositHook, onClose }) => {
-  const [amount, setAmount] = useState<number | string>('');
+const FinanceDeposit: FC<FinanceDepositProps> = ({address, recipient, depositHook, onClose}) => {
+  const [amount, setAmount] = useState<number | string>("");
   const [helperText, setHelperText] = useState<string>("");
-  const { balance } = useGetMmcContractBalance(address);
-  const { deposit, loading: depositLoading, error } = depositHook;
+  const {balance} = useGetMmcContractBalance(address);
+  const {deposit, loading: depositLoading, error} = depositHook;
   const [localLoading, setLocalLoading] = useState(false);
   const [amountError, setAmountError] = useState(false);
   const isBusy = localLoading || depositLoading;
@@ -96,7 +96,7 @@ const FinanceDeposit: FC<FinanceDepositProps> = ({ address, recipient, depositHo
     // TODO refactor this!!!!!
     try {
       setLocalLoading(true);
-      await deposit({ recipient: recipient ?? address, amount: Number(amount) });
+      await deposit({recipient: recipient ?? address, amount: Number(amount)});
       notifySuccess(SUCCESS.DEPOSIT_SUCCESSFULLY);
       onClose();
     } catch (err) {
@@ -122,39 +122,34 @@ const FinanceDeposit: FC<FinanceDepositProps> = ({ address, recipient, depositHo
     setHelperText(errorMessage); // Update helper text with the error message
   };
 
-
-
   return (
     <>
       <Stack
-        sx={{ mt: 1, py: 2, px: 3, gap: 1 }}
+        sx={{mt: 1, py: 2, px: 3, gap: 1}}
         direction="column"
         display="flex"
         alignItems="center"
-        justifyContent="space-between"
-      >
+        justifyContent="space-between">
         <FinanceBoxRow>
-          <TextMaxLine line={1} fontWeight={"bold"}>Connected Wallet</TextMaxLine>
-          <TextMaxLine
-            line={1}
-            sx={{ fontWeight: '400', fontSize: '1em', color: 'text.secondary' }}
-          >
-            {address ? truncateAddress(address) : 'No wallet connected'}
+          <TextMaxLine line={1} fontWeight={"bold"}>
+            Connected Wallet
+          </TextMaxLine>
+          <TextMaxLine line={1} sx={{fontWeight: "400", fontSize: "1em", color: "text.secondary"}}>
+            {address ? truncateAddress(address) : "No wallet connected"}
           </TextMaxLine>
         </FinanceBoxRow>
 
         <FinanceBoxRow>
-          <TextMaxLine line={1} fontWeight={"bold"}>Available</TextMaxLine>
-          <TextMaxLine
-            line={1}
-            sx={{ fontWeight: '400', fontSize: '1em', color: 'text.secondary' }}
-          >
+          <TextMaxLine line={1} fontWeight={"bold"}>
+            Available
+          </TextMaxLine>
+          <TextMaxLine line={1} sx={{fontWeight: "400", fontSize: "1em", color: "text.secondary"}}>
             {formatBalanceNumber(balance ?? 0)} MMC
           </TextMaxLine>
         </FinanceBoxRow>
 
         <TextField
-          sx={{ mt: 1 }}
+          sx={{mt: 1}}
           fullWidth
           label="Amount to deposit"
           type="number"
@@ -172,7 +167,7 @@ const FinanceDeposit: FC<FinanceDepositProps> = ({ address, recipient, depositHo
         actionLoading={depositLoading}
         amount={Number(amount) ?? 0}
         balance={balance ?? 0}
-        label={'Confirm'}
+        label={"Confirm"}
         onConfirmAction={handleConfirmDeposit}
         onCloseAction={onClose}
       />

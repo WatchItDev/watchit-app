@@ -1,5 +1,5 @@
-import { Dispatch } from 'redux';
-import { appendNotification } from '@src/redux/notifications';
+import {Dispatch} from "redux";
+import {appendNotification} from "@src/redux/notifications";
 
 export namespace Events {
   export const Handlers = (payload: any, profileId: string, dispatch?: Dispatch) => {

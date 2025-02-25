@@ -18,7 +18,7 @@ export interface DateRangePickerProps {
   shortLabel?: string;
   //
   title?: string;
-  variant?: 'calendar' | 'input';
+  variant?: "calendar" | "input";
   //
   setStartDate?: React.Dispatch<React.SetStateAction<Date | null>>;
   setEndDate?: React.Dispatch<React.SetStateAction<Date | null>>;

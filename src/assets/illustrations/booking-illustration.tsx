@@ -1,11 +1,11 @@
-import { memo } from 'react';
+import {memo} from "react";
 // @mui
-import { useTheme } from '@mui/material/styles';
-import Box, { BoxProps } from '@mui/material/Box';
+import {useTheme} from "@mui/material/styles";
+import Box, {BoxProps} from "@mui/material/Box";
 
 // ----------------------------------------------------------------------
 
-function BookingIllustration({ ...other }: BoxProps) {
+function BookingIllustration({...other}: BoxProps) {
   const theme = useTheme();
 
   const PRIMARY_LIGHTER = theme.palette.primary.lighter;
@@ -25,8 +25,7 @@ function BookingIllustration({ ...other }: BoxProps) {
       height="100%"
       viewBox="0 0 200 200"
       xmlns="http://www.w3.org/2000/svg"
-      {...other}
-    >
+      {...other}>
       <path
         fill="#FFFFFF"
         d="M141.968 167.139H48.764a11.932 11.932 0 01-11.921-11.921V45.758a11.935 11.935 0 0111.921-11.922h86.712l18.414 14.677v106.705a11.937 11.937 0 01-11.922 11.921z"

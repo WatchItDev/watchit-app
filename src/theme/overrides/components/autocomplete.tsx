@@ -1,8 +1,8 @@
-import { alpha, Theme } from '@mui/material/styles';
-import { autocompleteClasses } from '@mui/material/Autocomplete';
-import { svgIconClasses } from '@mui/material/SvgIcon';
+import {alpha, Theme} from "@mui/material/styles";
+import {autocompleteClasses} from "@mui/material/Autocomplete";
+import {svgIconClasses} from "@mui/material/SvgIcon";
 //
-import { paper, menuItem } from '../../css';
+import {paper, menuItem} from "../../css";
 
 // ----------------------------------------------------------------------
 
@@ -15,8 +15,8 @@ export function autocomplete(theme: Theme) {
             ...theme.typography.subtitle2,
             height: 24,
             minWidth: 24,
-            lineHeight: '24px',
-            textAlign: 'center',
+            lineHeight: "24px",
+            textAlign: "center",
             padding: theme.spacing(0, 0.75),
             color: theme.palette.text.secondary,
             borderRadius: theme.shape.borderRadius,
@@ -24,7 +24,7 @@ export function autocomplete(theme: Theme) {
           },
         },
         paper: {
-          ...paper({ theme, dropdown: true }),
+          ...paper({theme, dropdown: true}),
         },
         listbox: {
           padding: 0,

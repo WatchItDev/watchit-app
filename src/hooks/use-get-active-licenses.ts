@@ -1,8 +1,8 @@
-import { useState, useEffect, useCallback } from 'react';
-import { Address } from 'viem';
-import { publicClient } from '@src/clients/viem/publicClient';
-import AccessAggAbi from '@src/config/abi/AccessAgg.json';
-import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
+import {useState, useEffect, useCallback} from "react";
+import {Address} from "viem";
+import {publicClient} from "@src/clients/viem/publicClient";
+import AccessAggAbi from "@src/config/abi/AccessAgg.json";
+import {GLOBAL_CONSTANTS} from "@src/config-global.ts";
 
 interface ActiveLicensesError {
   message: string;
@@ -30,7 +30,8 @@ interface UseGetActiveLicensesHook {
 }
 
 export const useGetActiveLicenses = (
-  recipient: Address, holder?: Address
+  recipient: Address,
+  holder?: Address,
 ): UseGetActiveLicensesHook => {
   const [activeLicenses, setActiveLicenses] = useState<Policy[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -41,7 +42,7 @@ export const useGetActiveLicenses = (
     if (!holder || !recipient) {
       setActiveLicenses([]);
       setLoading(false);
-      setError({ message: 'Holder or recipient address is missing.' });
+      setError({message: "Holder or recipient address is missing."});
       return;
     }
 
@@ -52,7 +53,7 @@ export const useGetActiveLicenses = (
       const licenses: any = (await publicClient.readContract({
         address: GLOBAL_CONSTANTS.ACCESS_AGG_ADDRESS,
         abi: AccessAggAbi.abi,
-        functionName: 'getActiveLicenses',
+        functionName: "getActiveLicenses",
         args: [recipient, holder],
       })) as Policy[];
 
@@ -60,9 +61,9 @@ export const useGetActiveLicenses = (
       setActiveLicenses(licenses);
       setError(null);
     } catch (err: any) {
-      console.error('Error fetching active licenses:', err);
+      console.error("Error fetching active licenses:", err);
       setActiveLicenses([]);
-      setError({ message: err?.message || 'Error occurred while fetching active licenses.' });
+      setError({message: err?.message || "Error occurred while fetching active licenses."});
     } finally {
       setLoading(false);
     }

@@ -1,20 +1,20 @@
 // @mui
-import { styled } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import Step from '@mui/material/Step';
-import Stack from '@mui/material/Stack';
-import Stepper, { StepperProps } from '@mui/material/Stepper';
-import StepLabel, { stepLabelClasses } from '@mui/material/StepLabel';
-import MuiStepConnector, { stepConnectorClasses } from '@mui/material/StepConnector';
+import {styled} from "@mui/material/styles";
+import Box from "@mui/material/Box";
+import Step from "@mui/material/Step";
+import Stack from "@mui/material/Stack";
+import Stepper, {StepperProps} from "@mui/material/Stepper";
+import StepLabel, {stepLabelClasses} from "@mui/material/StepLabel";
+import MuiStepConnector, {stepConnectorClasses} from "@mui/material/StepConnector";
 // components
-import { StepIconProps } from '@mui/material/StepIcon';
+import {StepIconProps} from "@mui/material/StepIcon";
 
 // ----------------------------------------------------------------------
 
-const StepConnector = styled(MuiStepConnector)(({ theme }) => ({
+const StepConnector = styled(MuiStepConnector)(({theme}) => ({
   top: 10,
-  left: 'calc(-50% + 20px)',
-  right: 'calc(50% + 20px)',
+  left: "calc(-50% + 20px)",
+  right: "calc(50% + 20px)",
   [`& .${stepConnectorClasses.line}`]: {
     borderTopWidth: 2,
     borderColor: theme.palette.divider,
@@ -51,27 +51,24 @@ export default function PublicationNewWizardSteps({
       activeStep={activeStep}
       connector={<StepConnector />}
       sx={{
-        mb: { xs: 3, md: 5 },
+        mb: {xs: 3, md: 5},
         ...sx,
       }}
-      {...other}
-    >
+      {...other}>
       {steps.map((label, index) => (
         <Step
           key={label}
           onClick={() => {
             handleStepClick(index);
           }}
-          sx={{ cursor: 'pointer' }}
-        >
+          sx={{cursor: "pointer"}}>
           <StepLabel
             StepIconComponent={StepIcon}
             sx={{
               [`& .${stepLabelClasses.label}`]: {
-                fontWeight: 'fontWeightSemiBold',
+                fontWeight: "fontWeightSemiBold",
               },
-            }}
-          >
+            }}>
             {label}
           </StepLabel>
         </Step>
@@ -82,7 +79,7 @@ export default function PublicationNewWizardSteps({
 
 // ----------------------------------------------------------------------
 
-function StepIcon({ active, completed }: StepIconProps) {
+function StepIcon({active, completed}: StepIconProps) {
   return (
     <Stack
       alignItems="center"
@@ -90,18 +87,17 @@ function StepIcon({ active, completed }: StepIconProps) {
       sx={{
         width: 24,
         height: 24,
-        color: 'text.disabled',
+        color: "text.disabled",
         ...((active || completed) && {
-          color: 'success.main',
+          color: "success.main",
         }),
-      }}
-    >
+      }}>
       <Box
         sx={{
           width: 8,
           height: 8,
-          borderRadius: '50%',
-          backgroundColor: 'currentColor',
+          borderRadius: "50%",
+          backgroundColor: "currentColor",
         }}
       />
     </Stack>

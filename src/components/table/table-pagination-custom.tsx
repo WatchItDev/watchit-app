@@ -1,9 +1,9 @@
 // @mui
-import { Theme, SxProps } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import Switch from '@mui/material/Switch';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import TablePagination, { TablePaginationProps } from '@mui/material/TablePagination';
+import {Theme, SxProps} from "@mui/material/styles";
+import Box from "@mui/material/Box";
+import Switch from "@mui/material/Switch";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import TablePagination, {TablePaginationProps} from "@mui/material/TablePagination";
 
 // ----------------------------------------------------------------------
 
@@ -21,13 +21,13 @@ export default function TablePaginationCustom({
   ...other
 }: Props & TablePaginationProps) {
   return (
-    <Box sx={{ width:'100%', position: 'relative', ...sx }}>
+    <Box sx={{width: "100%", position: "relative", ...sx}}>
       <TablePagination
         rowsPerPageOptions={rowsPerPageOptions}
         component="div"
         {...other}
         sx={{
-          borderTopColor: 'transparent',
+          borderTopColor: "transparent",
         }}
       />
 
@@ -40,7 +40,7 @@ export default function TablePaginationCustom({
             py: 1.5,
             top: 0,
             position: {
-              sm: 'absolute',
+              sm: "absolute",
             },
           }}
         />

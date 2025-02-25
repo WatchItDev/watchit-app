@@ -1,13 +1,13 @@
-import { memo } from 'react';
+import {memo} from "react";
 // @mui
-import { useTheme } from '@mui/material/styles';
-import Box, { BoxProps } from '@mui/material/Box';
+import {useTheme} from "@mui/material/styles";
+import Box, {BoxProps} from "@mui/material/Box";
 //
-import BackgroundShape from './background-shape';
+import BackgroundShape from "./background-shape";
 
 // ----------------------------------------------------------------------
 
-function SeverErrorIllustration({ ...other }: BoxProps) {
+function SeverErrorIllustration({...other}: BoxProps) {
   const theme = useTheme();
 
   const PRIMARY_LIGHTER = theme.palette.primary.lighter;
@@ -27,8 +27,7 @@ function SeverErrorIllustration({ ...other }: BoxProps) {
       height="100%"
       viewBox="0 0 480 360"
       xmlns="http://www.w3.org/2000/svg"
-      {...other}
-    >
+      {...other}>
       <BackgroundShape />
 
       <image href="/assets/illustrations/characters/character_8.png" height="300" x="340" y="30" />
@@ -123,8 +122,7 @@ function SeverErrorIllustration({ ...other }: BoxProps) {
           x2="255.652"
           y1="143.24"
           y2="187.057"
-          gradientUnits="userSpaceOnUse"
-        >
+          gradientUnits="userSpaceOnUse">
           <stop stopColor={PRIMARY_MAIN} />
           <stop offset="1" stopColor={PRIMARY_DARK} />
         </linearGradient>
@@ -135,8 +133,7 @@ function SeverErrorIllustration({ ...other }: BoxProps) {
           x2="138"
           y1="164"
           y2="287.9"
-          gradientUnits="userSpaceOnUse"
-        >
+          gradientUnits="userSpaceOnUse">
           <stop stopColor={PRIMARY_LIGHT} />
           <stop offset="1" stopColor={PRIMARY_DARK} />
         </linearGradient>

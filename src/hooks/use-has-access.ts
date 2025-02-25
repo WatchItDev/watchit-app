@@ -1,9 +1,9 @@
-import { useState, useEffect, useCallback } from 'react';
-import { Address } from 'viem';
-import { publicClient } from '@src/clients/viem/publicClient';
-import AccessAggAbi from '@src/config/abi/AccessAgg.json';
-import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
-import { useSelector } from 'react-redux';
+import {useState, useEffect, useCallback} from "react";
+import {Address} from "viem";
+import {publicClient} from "@src/clients/viem/publicClient";
+import AccessAggAbi from "@src/config/abi/AccessAgg.json";
+import {GLOBAL_CONSTANTS} from "@src/config-global.ts";
+import {useSelector} from "react-redux";
 
 interface HasAccessError {
   message: string;
@@ -37,7 +37,7 @@ export const useHasAccess = (ownerAddress?: Address): UseHasAccessHook => {
     if (!userAddress || !ownerAddress) {
       setLoading(false);
       setFetching(false);
-      setError({ message: 'User address or owner address is missing.' });
+      setError({message: "User address or owner address is missing."});
       return;
     }
 
@@ -46,7 +46,7 @@ export const useHasAccess = (ownerAddress?: Address): UseHasAccessHook => {
       const accessData: any = await publicClient.readContract({
         address: GLOBAL_CONSTANTS.ACCESS_AGG_ADDRESS,
         abi: AccessAggAbi.abi,
-        functionName: 'isAccessAllowed',
+        functionName: "isAccessAllowed",
         args: [userAddress, ownerAddress],
       });
 
@@ -54,9 +54,9 @@ export const useHasAccess = (ownerAddress?: Address): UseHasAccessHook => {
       setHasAccess(access);
       setError(null);
     } catch (err: any) {
-      console.error('Error checking access:', err);
+      console.error("Error checking access:", err);
       setHasAccess(undefined);
-      setError({ message: err?.message || 'An error occurred' });
+      setError({message: err?.message || "An error occurred"});
     } finally {
       setLoading(false);
       setFetching(false);

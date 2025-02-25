@@ -1,22 +1,22 @@
 // @mui
-import { useTheme } from '@mui/material/styles';
-import Stack from '@mui/material/Stack';
-import Badge from '@mui/material/Badge';
-import Divider from '@mui/material/Divider';
-import Tooltip from '@mui/material/Tooltip';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import Drawer, { drawerClasses } from '@mui/material/Drawer';
+import {useTheme} from "@mui/material/styles";
+import Stack from "@mui/material/Stack";
+import Badge from "@mui/material/Badge";
+import Divider from "@mui/material/Divider";
+import Tooltip from "@mui/material/Tooltip";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
+import Drawer, {drawerClasses} from "@mui/material/Drawer";
 // theme
-import { paper } from '@src/theme/css';
+import {paper} from "@src/theme/css";
 //
-import Iconify from '../../iconify';
-import Scrollbar from '../../scrollbar';
+import Iconify from "../../iconify";
+import Scrollbar from "../../scrollbar";
 //
-import { useSettingsContext } from '../context';
-import BaseOptions from './base-option';
-import PresetsOptions from './presets-options';
-import FullScreenOption from './fullscreen-option';
+import {useSettingsContext} from "../context";
+import BaseOptions from "./base-option";
+import PresetsOptions from "./presets-options";
+import FullScreenOption from "./fullscreen-option";
 
 // ----------------------------------------------------------------------
 
@@ -27,8 +27,8 @@ export default function SettingsDrawer() {
 
   const labelStyles = {
     mb: 1.5,
-    color: 'text.disabled',
-    fontWeight: 'fontWeightSemiBold',
+    color: "text.disabled",
+    fontWeight: "fontWeightSemiBold",
   };
 
   const renderHead = (
@@ -36,9 +36,8 @@ export default function SettingsDrawer() {
       direction="row"
       alignItems="center"
       justifyContent="space-between"
-      sx={{ py: 2, pr: 1, pl: 2.5 }}
-    >
-      <Typography variant="h6" sx={{ flexGrow: 1 }}>
+      sx={{py: 2, pr: 1, pl: 2.5}}>
+      <Typography variant="h6" sx={{flexGrow: 1}}>
         Settings
       </Typography>
 
@@ -58,28 +57,28 @@ export default function SettingsDrawer() {
 
   const renderMode = (
     <div>
-      <Typography variant="caption" component="div" sx={{ ...labelStyles }}>
+      <Typography variant="caption" component="div" sx={{...labelStyles}}>
         Mode
       </Typography>
 
       <BaseOptions
         value={settings.themeMode}
-        onChange={(newValue: string) => settings.onUpdate('themeMode', newValue)}
-        options={['light', 'dark']}
-        icons={['sun', 'moon']}
+        onChange={(newValue: string) => settings.onUpdate("themeMode", newValue)}
+        options={["light", "dark"]}
+        icons={["sun", "moon"]}
       />
     </div>
   );
 
   const renderPresets = (
     <div>
-      <Typography variant="caption" component="div" sx={{ ...labelStyles }}>
+      <Typography variant="caption" component="div" sx={{...labelStyles}}>
         Presets
       </Typography>
 
       <PresetsOptions
         value={settings.themeColorPresets}
-        onChange={(newValue: string) => settings.onUpdate('themeColorPresets', newValue)}
+        onChange={(newValue: string) => settings.onUpdate("themeColorPresets", newValue)}
       />
     </div>
   );
@@ -90,21 +89,20 @@ export default function SettingsDrawer() {
       open={settings.open}
       onClose={settings.onClose}
       slotProps={{
-        backdrop: { invisible: true },
+        backdrop: {invisible: true},
       }}
       sx={{
         [`& .${drawerClasses.paper}`]: {
-          ...paper({ theme, bgcolor: theme.palette.background.default }),
+          ...paper({theme, bgcolor: theme.palette.background.default}),
           width: 280,
         },
-      }}
-    >
+      }}>
       {renderHead}
 
-      <Divider sx={{ borderStyle: 'dashed' }} />
+      <Divider sx={{borderStyle: "dashed"}} />
 
       <Scrollbar>
-        <Stack spacing={3} sx={{ p: 3 }}>
+        <Stack spacing={3} sx={{p: 3}}>
           {renderMode}
 
           {renderPresets}

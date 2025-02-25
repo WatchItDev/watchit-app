@@ -1,20 +1,20 @@
 // REACT IMPORTS
-import { useState } from 'react';
+import {useState} from "react";
 
 // ETHERS IMPORTS
-import { ethers } from 'ethers';
+import {ethers} from "ethers";
 
 // VIEM IMPORTS
-import { encodeFunctionData } from 'viem';
+import {encodeFunctionData} from "viem";
 
 // LOCAL IMPORTS
-import AccessWorkflowAbi from '@src/config/abi/AccessWorkflow.json';
-import LedgerVaultabi from '@src/config/abi/LedgerVault.json';
-import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
-import { useSelector } from 'react-redux';
-import { useWeb3Session } from '@src/hooks/use-web3-session.ts';
-import { ERRORS } from '@notifications/errors.ts';
-import { useAccountSession } from '@src/hooks/use-account-session.ts';
+import AccessWorkflowAbi from "@src/config/abi/AccessWorkflow.json";
+import LedgerVaultabi from "@src/config/abi/LedgerVault.json";
+import {GLOBAL_CONSTANTS} from "@src/config-global.ts";
+import {useSelector} from "react-redux";
+import {useWeb3Session} from "@src/hooks/use-web3-session.ts";
+import {ERRORS} from "@notifications/errors.ts";
+import {useAccountSession} from "@src/hooks/use-account-session.ts";
 
 // ----------------------------------------------------------------------
 
@@ -44,13 +44,13 @@ export const useSubscribe = (): UseSubscribeHook => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<keyof typeof ERRORS | null>(null);
   const sessionData = useSelector((state: any) => state.auth.session);
-  const { bundlerClient, smartAccount } = useWeb3Session();
-  const { isAuthenticated, logout } = useAccountSession();
+  const {bundlerClient, smartAccount} = useWeb3Session();
+  const {isAuthenticated, logout} = useAccountSession();
 
   const approveToAccessAgreement = (approvalAmount: bigint): string => {
     return encodeFunctionData({
       abi: LedgerVaultabi.abi,
-      functionName: 'approve',
+      functionName: "approve",
       args: [
         GLOBAL_CONSTANTS.ACCESS_WORKFLOW_ADDRESS,
         approvalAmount,
@@ -63,11 +63,11 @@ export const useSubscribe = (): UseSubscribeHook => {
     approvalAmount: bigint,
     holderAddress: string,
     parties: string[],
-    payload: string
+    payload: string,
   ): string => {
     return encodeFunctionData({
       abi: AccessWorkflowAbi.abi,
-      functionName: 'registerAccessAgreement',
+      functionName: "registerAccessAgreement",
       args: [
         approvalAmount,
         holderAddress,
@@ -82,7 +82,7 @@ export const useSubscribe = (): UseSubscribeHook => {
    * Initiates the subscription process.
    * @param params The parameters including 'holderAddress' and 'amount'.
    */
-  const subscribe = async ({ holderAddress, amount }: SubscribeParams): Promise<void> => {
+  const subscribe = async ({holderAddress, amount}: SubscribeParams): Promise<void> => {
     setLoading(true);
     setError(null);
 
@@ -95,13 +95,13 @@ export const useSubscribe = (): UseSubscribeHook => {
     if (!isAuthenticated()) {
       logout();
       setLoading(false);
-      throw new Error('Invalid Web3Auth session');
+      throw new Error("Invalid Web3Auth session");
     }
 
     try {
       const approvalAmountInWei = ethers.parseUnits(amount, 18); // Convert amount to BigInt (in Wei)
       const parties = [sessionData?.profile?.ownedBy.address]; // The parties involved in the agreement (e.g., the user's address)
-      const payload = '0x'; // Additional payload data if needed
+      const payload = "0x"; // Additional payload data if needed
 
       // Prepare the approve to access agreement
       const approveToAccessAgreementData = approveToAccessAgreement(approvalAmountInWei);
@@ -111,7 +111,7 @@ export const useSubscribe = (): UseSubscribeHook => {
         approvalAmountInWei,
         holderAddress,
         parties,
-        payload
+        payload,
       );
 
       // Create the array of calls to be included in the user operation
@@ -143,11 +143,11 @@ export const useSubscribe = (): UseSubscribeHook => {
       setData(receipt);
       setLoading(false);
     } catch (err: any) {
-      console.error('USE SUBSCRIBE ERR:', err);
+      console.error("USE SUBSCRIBE ERR:", err);
       setError(ERRORS.UNKNOWN_ERROR);
       setLoading(false);
     }
   };
 
-  return { data, subscribe, loading, error };
+  return {data, subscribe, loading, error};
 };

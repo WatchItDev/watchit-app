@@ -1,6 +1,6 @@
 // @mui
-import TableRow from '@mui/material/TableRow';
-import TableCell from '@mui/material/TableCell';
+import TableRow from "@mui/material/TableRow";
+import TableCell from "@mui/material/TableCell";
 
 // ----------------------------------------------------------------------
 
@@ -9,7 +9,7 @@ interface Props {
   emptyRows: number;
 }
 
-export default function TableEmptyRows({ emptyRows, height }: Props) {
+export default function TableEmptyRows({emptyRows, height}: Props) {
   if (!emptyRows) {
     return null;
   }
@@ -20,8 +20,7 @@ export default function TableEmptyRows({ emptyRows, height }: Props) {
         ...(height && {
           height: height * emptyRows,
         }),
-      }}
-    >
+      }}>
       <TableCell colSpan={9} />
     </TableRow>
   );

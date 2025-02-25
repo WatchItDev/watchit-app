@@ -1,10 +1,10 @@
-import { m, MotionProps } from 'framer-motion';
+import {m, MotionProps} from "framer-motion";
 // @mui
-import Box, { BoxProps } from '@mui/material/Box';
+import Box, {BoxProps} from "@mui/material/Box";
 // hooks
-import { useResponsive } from '@src/hooks/use-responsive';
+import {useResponsive} from "@src/hooks/use-responsive";
 //
-import { varContainer } from './variants';
+import {varContainer} from "./variants";
 
 // ----------------------------------------------------------------------
 
@@ -15,12 +15,8 @@ interface Props extends IProps {
   disableAnimatedMobile?: boolean;
 }
 
-export default function MotionViewport({
-  children,
-  disableAnimatedMobile = true,
-  ...other
-}: Props) {
-  const smDown = useResponsive('down', 'sm');
+export default function MotionViewport({children, disableAnimatedMobile = true, ...other}: Props) {
+  const smDown = useResponsive("down", "sm");
 
   if (smDown && disableAnimatedMobile) {
     return <Box {...other}>{children}</Box>;
@@ -31,10 +27,9 @@ export default function MotionViewport({
       component={m.div}
       initial="initial"
       whileInView="animate"
-      viewport={{ once: true, amount: 0.3 }}
+      viewport={{once: true, amount: 0.3}}
       variants={varContainer()}
-      {...other}
-    >
+      {...other}>
       {children}
     </Box>
   );

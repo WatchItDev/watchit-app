@@ -1,14 +1,14 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
+import {useState, useEffect, useRef, useCallback} from "react";
 // @mui
-import Popover from '@mui/material/Popover';
-import { appBarClasses } from '@mui/material/AppBar';
+import Popover from "@mui/material/Popover";
+import {appBarClasses} from "@mui/material/AppBar";
 // routes
-import { usePathname } from '@src/routes/hooks';
+import {usePathname} from "@src/routes/hooks";
 //
-import { NavListProps, NavConfigProps } from '../types';
-import NavItem from './nav-item';
-import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
+import {NavListProps, NavConfigProps} from "../types";
+import NavItem from "./nav-item";
+import Box from "@mui/material/Box";
+import Stack from "@mui/material/Stack";
 // ----------------------------------------------------------------------
 
 interface NavListRootProps {
@@ -19,7 +19,7 @@ interface NavListRootProps {
   onClick?: () => void;
 }
 
-export default function NavList({ data, active, depth, config, onClick }: NavListRootProps) {
+export default function NavList({data, active, depth, config, onClick}: NavListRootProps) {
   const navRef = useRef(null);
 
   const pathname = usePathname();
@@ -35,16 +35,16 @@ export default function NavList({ data, active, depth, config, onClick }: NavLis
 
   useEffect(() => {
     const appBarEl = Array.from(
-      document.querySelectorAll(`.${appBarClasses.root}`)
+      document.querySelectorAll(`.${appBarClasses.root}`),
     ) as HTMLElement[];
 
     // Reset styles when hover
     const styles = () => {
-      document.body.style.overflow = '';
-      document.body.style.padding = '';
+      document.body.style.overflow = "";
+      document.body.style.padding = "";
       // Apply for Window
       appBarEl.forEach((elem) => {
-        elem.style.padding = '';
+        elem.style.padding = "";
       });
     };
 
@@ -80,41 +80,39 @@ export default function NavList({ data, active, depth, config, onClick }: NavLis
       <Popover
         open={open}
         anchorEl={navRef.current}
-        anchorOrigin={{ vertical: 'center', horizontal: 'right' }}
-        transformOrigin={{ vertical: 'center', horizontal: 'left' }}
+        anchorOrigin={{vertical: "center", horizontal: "right"}}
+        transformOrigin={{vertical: "center", horizontal: "left"}}
         slotProps={{
           paper: {
             onMouseEnter: handleOpen,
             onMouseLeave: handleClose,
             sx: {
-              backgroundColor: 'rgba(0,0,0,0.6)',
-              padding: '8px 8px',
+              backgroundColor: "rgba(0,0,0,0.6)",
+              padding: "8px 8px",
               ...(open && {
-                pointerEvents: 'auto',
+                pointerEvents: "auto",
               }),
             },
           },
         }}
         sx={{
-          pointerEvents: 'none',
-        }}
-      >
-        <Stack spacing={1} direction={'row'}>
+          pointerEvents: "none",
+        }}>
+        <Stack spacing={1} direction={"row"}>
           <small>{data.title}</small>
           {data.badge && (
             <Box
               sx={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                backgroundColor: '#FFAB00',
-                borderRadius: '8px',
-                padding: '2px 4px',
-                color: 'black',
-                fontSize: '0.75rem',
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                backgroundColor: "#FFAB00",
+                borderRadius: "8px",
+                padding: "2px 4px",
+                color: "black",
+                fontSize: "0.75rem",
                 fontWeight: 500,
-              }}
-            >
+              }}>
               {data.badge}
             </Box>
           )}

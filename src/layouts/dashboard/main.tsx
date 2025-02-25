@@ -1,7 +1,7 @@
 // @mui
-import Box, { BoxProps } from '@mui/material/Box';
+import Box, {BoxProps} from "@mui/material/Box";
 // hooks
-import { useResponsive } from '@src/hooks/use-responsive';
+import {useResponsive} from "@src/hooks/use-responsive";
 // components
 // import { useSettingsContext } from '@src/components/settings';
 //
@@ -11,21 +11,21 @@ import { useResponsive } from '@src/hooks/use-responsive';
 
 // const SPACING = 8;
 
-export default function Main({ children, sx, ...other }: BoxProps) {
-  const lgUp = useResponsive('up', 'lg');
+export default function Main({children, sx, ...other}: BoxProps) {
+  const lgUp = useResponsive("up", "lg");
 
   return (
     <Box
       component="main"
       sx={{
-        position: 'relative',
-        padding: '65px 0 12px 0',
-        transition: 'all 0.7s ease',
+        position: "relative",
+        padding: "65px 0 12px 0",
+        transition: "all 0.7s ease",
         flexGrow: 1,
         minHeight: 1,
-        display: 'flex',
-        flexDirection: 'column',
-        backgroundColor: '#1E1F22',
+        display: "flex",
+        flexDirection: "column",
+        backgroundColor: "#1E1F22",
         // py: `${HEADER.H_MOBILE + SPACING}px`,
         ...(lgUp && {
           // px: 2,
@@ -34,8 +34,7 @@ export default function Main({ children, sx, ...other }: BoxProps) {
         }),
         ...sx,
       }}
-      {...other}
-    >
+      {...other}>
       {children}
     </Box>
   );

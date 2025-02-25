@@ -1,16 +1,16 @@
 // MUI IMPORTS
-import { CircularProgress } from '@mui/material';
+import {CircularProgress} from "@mui/material";
 
 // REDUX IMPORTS
-import { useDispatch, useSelector } from 'react-redux';
-import { closeLoginModal, openLoginModal } from '@redux/auth';
+import {useDispatch, useSelector} from "react-redux";
+import {closeLoginModal, openLoginModal} from "@redux/auth";
 
 // LOCAL IMPORTS
-import { usePopover } from '@src/components/custom-popover';
-import { useRouter } from '@src/routes/hooks';
-import { LoginModal } from '@src/components/login-modal';
-import { AccountPopoverButton } from '@src/layouts/_common/account-popover/account-popover-button';
-import { AccountPopoverMenu } from '@src/layouts/_common/account-popover/account-popover-menu';
+import {usePopover} from "@src/components/custom-popover";
+import {useRouter} from "@src/routes/hooks";
+import {LoginModal} from "@src/components/login-modal";
+import {AccountPopoverButton} from "@src/layouts/_common/account-popover/account-popover-button";
+import {AccountPopoverMenu} from "@src/layouts/_common/account-popover/account-popover-menu";
 
 // ----------------------------------------------------------------------
 
@@ -31,7 +31,7 @@ export function AccountPopover() {
 
   // If the Lens session is still loading, show a spinner.
   if (isSessionLoading) {
-    return <CircularProgress size={24} sx={{ color: '#fff' }} />;
+    return <CircularProgress size={24} sx={{color: "#fff"}} />;
   }
 
   // Handlers for opening/closing the login modal
@@ -42,16 +42,10 @@ export function AccountPopover() {
   return (
     <>
       {/* The area that toggles the popover (avatar or Social Login button) */}
-      <AccountPopoverButton
-        popover={popover}
-        onOpenLoginModal={handleOpenModal}
-      />
+      <AccountPopoverButton popover={popover} onOpenLoginModal={handleOpenModal} />
 
       {/* The popover menu itself */}
-      <AccountPopoverMenu
-        popover={popover}
-        router={router}
-      />
+      <AccountPopoverMenu popover={popover} router={router} />
 
       {/* The login modal */}
       <LoginModal open={isLoginModalOpen} onClose={handleCloseModal} />
@@ -59,4 +53,4 @@ export function AccountPopover() {
   );
 }
 
-export default AccountPopover
+export default AccountPopover;

@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { supabase } from '@src/utils/supabase';
+import {useState, useEffect} from "react";
+import {supabase} from "@src/utils/supabase";
 
 export const useSearchPublications = (query: string) => {
   const [publications, setPublications] = useState<any[]>([]);
@@ -11,9 +11,9 @@ export const useSearchPublications = (query: string) => {
       setLoading(true);
       setError(null);
 
-      const { data, error } = await supabase
-        .from('publications')
-        .select('post_id, title, description')
+      const {data, error} = await supabase
+        .from("publications")
+        .select("post_id, title, description")
         .or(`title.ilike.%${query}%,description.ilike.%${query}%`);
 
       if (error) {
@@ -32,5 +32,5 @@ export const useSearchPublications = (query: string) => {
     }
   }, [query]);
 
-  return { publications, loading, error };
+  return {publications, loading, error};
 };

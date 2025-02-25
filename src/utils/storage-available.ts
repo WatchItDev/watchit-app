@@ -2,7 +2,7 @@
 
 export function localStorageAvailable() {
   try {
-    const key = '__some_random_key_you_are_not_going_to_use__';
+    const key = "__some_random_key_you_are_not_going_to_use__";
     window.localStorage.setItem(key, key);
     window.localStorage.removeItem(key);
     return true;
@@ -11,7 +11,7 @@ export function localStorageAvailable() {
   }
 }
 
-export function localStorageGetItem(key: string, defaultValue = '') {
+export function localStorageGetItem(key: string, defaultValue = "") {
   const storageAvailable = localStorageAvailable();
 
   let value;

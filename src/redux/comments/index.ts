@@ -1,7 +1,7 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { AnyPublication } from '@lens-protocol/api-bindings';
+import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {AnyPublication} from "@lens-protocol/api-bindings";
 
-type PendingComment = AnyPublication & { uri: string };
+type PendingComment = AnyPublication & {uri: string};
 
 export interface CommentsReducerState {
   refetchTriggerByPublication: Record<string, number>;
@@ -20,7 +20,7 @@ const initialState: CommentsReducerState = {
 };
 
 const commentsSlice = createSlice({
-  name: 'comments',
+  name: "comments",
   initialState,
   reducers: {
     refetchCommentsByPublication: (state, action: PayloadAction<string>) => {
@@ -34,7 +34,7 @@ const commentsSlice = createSlice({
     hiddeComment: (state, action: PayloadAction<AnyPublication>) => {
       state.hiddenComments.push(action.payload);
     },
-    setCounterLikes: (state, action: PayloadAction<{ publicationId: string; likes: number }>) => {
+    setCounterLikes: (state, action: PayloadAction<{publicationId: string; likes: number}>) => {
       state.counterLikes[action.payload.publicationId] = action.payload.likes;
     },
     incrementCounterLikes: (state, action: PayloadAction<string>) => {
@@ -51,9 +51,9 @@ const commentsSlice = createSlice({
     },
     addPendingComment: (
       state,
-      action: PayloadAction<{ publicationId: string; comment: PendingComment }>
+      action: PayloadAction<{publicationId: string; comment: PendingComment}>,
     ) => {
-      const { publicationId, comment } = action.payload;
+      const {publicationId, comment} = action.payload;
       if (!state.pendingComments[publicationId]) {
         state.pendingComments[publicationId] = [];
       }
@@ -62,13 +62,13 @@ const commentsSlice = createSlice({
     },
     removePendingComment: (
       state,
-      action: PayloadAction<{ publicationId: string; commentId: string }>
+      action: PayloadAction<{publicationId: string; commentId: string}>,
     ) => {
-      const { publicationId, commentId } = action.payload;
+      const {publicationId, commentId} = action.payload;
 
       // Delete the comment from the pending list
       state.pendingComments[publicationId] = state.pendingComments[publicationId].filter(
-        (comment) => comment.id !== commentId
+        (comment) => comment.id !== commentId,
       );
     },
   },

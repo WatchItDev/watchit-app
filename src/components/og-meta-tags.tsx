@@ -1,27 +1,27 @@
-import { Helmet } from 'react-helmet-async';
-import { PropsWithChildren } from 'react';
-import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
+import {Helmet} from "react-helmet-async";
+import {PropsWithChildren} from "react";
+import {GLOBAL_CONSTANTS} from "@src/config-global.ts";
 
 interface OgMetaTagsProps {
   title: string;
   description: string;
   image?: string;
   url: string;
-  type?: string;          // e.g. "website", "article", "profile", ...
-  twitterCard?: string;   // default usually "summary_large_image"
-  siteName?: string;      // optional: e.g. "Watchit App"
+  type?: string; // e.g. "website", "article", "profile", ...
+  twitterCard?: string; // default usually "summary_large_image"
+  siteName?: string; // optional: e.g. "Watchit App"
 }
 
 export function OgMetaTags({
-    title,
-    description,
-    image = GLOBAL_CONSTANTS.LOGO_URL,
-    url,
-    type = 'website',
-    twitterCard = 'summary_large_image',
-    siteName,
-    children
-  }: PropsWithChildren<OgMetaTagsProps>) {
+  title,
+  description,
+  image = GLOBAL_CONSTANTS.LOGO_URL,
+  url,
+  type = "website",
+  twitterCard = "summary_large_image",
+  siteName,
+  children,
+}: PropsWithChildren<OgMetaTagsProps>) {
   return (
     <>
       <Helmet>

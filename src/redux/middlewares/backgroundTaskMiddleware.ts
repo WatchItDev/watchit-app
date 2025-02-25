@@ -1,10 +1,10 @@
-import { Middleware } from '@reduxjs/toolkit';
+import {Middleware} from "@reduxjs/toolkit";
 import {
   addPendingComment,
   removePendingComment,
   refetchCommentsByPublication,
-} from '@redux/comments';
-import BackgroundTaskWorker from '@src/workers/backgroundTaskWorker?worker';
+} from "@redux/comments";
+import BackgroundTaskWorker from "@src/workers/backgroundTaskWorker?worker";
 
 interface TaskPayload {
   type: string; // Task type identifier, e.g., 'POST_COMMENT', 'UPDATE_METADATA'
@@ -25,13 +25,13 @@ let isProcessing = false;
  */
 const processTask = (store: any, task: Task) => {
   return new Promise<void>((resolve, reject) => {
-    const { type, data } = task.payload;
+    const {type, data} = task.payload;
 
     switch (type) {
-      case 'POST_COMMENT':
+      case "POST_COMMENT":
         processBackgroundComment(store, data).then(resolve).catch(reject);
         break;
-      case 'UPDATE_PROFILE_METADATA':
+      case "UPDATE_PROFILE_METADATA":
         processUpdateProfileMetadata(store, data).then(resolve).catch(reject);
         break;
       default:
@@ -61,28 +61,28 @@ const processBackgroundComment = (store: any, data: any) => {
 
     // Send the IPFS verification task to the worker
     backgroundTaskWorker.postMessage({
-      type: 'VERIFY_IPFS',
-      payload: { uri, pendingCommentId: pendingComment.id },
+      type: "VERIFY_IPFS",
+      payload: {uri, pendingCommentId: pendingComment.id},
     });
 
     backgroundTaskWorker.onmessage = async (
-      e: MessageEvent<{ success: boolean; pendingCommentId: string; error?: string }>
+      e: MessageEvent<{success: boolean; pendingCommentId: string; error?: string}>,
     ) => {
-      const { success, pendingCommentId, error } = e.data;
+      const {success, pendingCommentId, error} = e.data;
 
       if (success) {
         try {
           // Create the comment after IPFS verification
-          await createComment({ commentOn, metadata: uri });
+          await createComment({commentOn, metadata: uri});
 
           // Remove the pending comment from the store
           store.dispatch(
-            removePendingComment({ publicationId: commentOn, commentId: pendingCommentId })
+            removePendingComment({publicationId: commentOn, commentId: pendingCommentId}),
           );
 
           // Generate the notification payload
           const notificationPayload = generatePayload(
-            'COMMENT',
+            "COMMENT",
             {
               id: owner?.id,
               displayName: owner?.displayName,
@@ -93,7 +93,7 @@ const processBackgroundComment = (store: any, data: any) => {
               root_id: root,
               comment_id: commentOn,
               rawDescription: `${sessionData?.profile?.metadata?.displayName} left a comment`,
-            }
+            },
           );
 
           // Send the notification if the comment is not from the owner
@@ -104,14 +104,14 @@ const processBackgroundComment = (store: any, data: any) => {
           // Refetch the comments
           store.dispatch(refetchCommentsByPublication(commentOn));
 
-          console.log('Comment created successfully');
+          console.log("Comment created successfully");
           resolve();
         } catch (createError) {
-          console.error('Error creating comment:', createError);
+          console.error("Error creating comment:", createError);
           reject(createError);
         }
       } else {
-        console.error('Error verifying IPFS data:', error);
+        console.error("Error verifying IPFS data:", error);
         reject(new Error(error));
       }
     };
@@ -123,10 +123,10 @@ const processBackgroundComment = (store: any, data: any) => {
  */
 const processUpdateProfileMetadata = (store: any, data: any) => {
   return new Promise<void>(async (resolve, reject) => {
-    const { metadataURI, setProfileMetadataExecute, onSuccess, onError } = data;
+    const {metadataURI, setProfileMetadataExecute, onSuccess, onError} = data;
 
     try {
-      const result = await setProfileMetadataExecute({ metadataURI });
+      const result = await setProfileMetadataExecute({metadataURI});
 
       if (result.isFailure()) {
         throw new Error(result.error.message);
@@ -134,11 +134,11 @@ const processUpdateProfileMetadata = (store: any, data: any) => {
 
       await result.value.waitForCompletion();
 
-      console.log('Profile metadata updated successfully');
+      console.log("Profile metadata updated successfully");
       onSuccess();
       resolve();
     } catch (error) {
-      console.error('Error updating profile metadata:', error);
+      console.error("Error updating profile metadata:", error);
       onError(error);
       reject(error);
     }
@@ -156,7 +156,7 @@ const processQueue = (store: any) => {
 
   processTask(store, task)
     .catch((error) => {
-      console.error('Error processing task:', error);
+      console.error("Error processing task:", error);
     })
     .finally(() => {
       isProcessing = false;
@@ -165,15 +165,15 @@ const processQueue = (store: any) => {
 };
 
 export const backgroundTaskMiddleware: Middleware = (store) => (next) => (action: any) => {
-  if (action.type === 'ADD_TASK_TO_BACKGROUND') {
+  if (action.type === "ADD_TASK_TO_BACKGROUND") {
     // Add the task to the queue
-    taskQueue.push({ id: action.payload.id, payload: action.payload });
+    taskQueue.push({id: action.payload.id, payload: action.payload});
 
     // Immediately add the pending comment to the store if it's a POST_COMMENT task
-    if (action.payload.type === 'POST_COMMENT') {
-      const { commentOn, uri, pendingComment } = action.payload.data;
+    if (action.payload.type === "POST_COMMENT") {
+      const {commentOn, uri, pendingComment} = action.payload.data;
       store.dispatch(
-        addPendingComment({ publicationId: commentOn, comment: { ...pendingComment, uri } })
+        addPendingComment({publicationId: commentOn, comment: {...pendingComment, uri}}),
       );
     }
 

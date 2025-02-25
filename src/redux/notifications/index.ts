@@ -1,8 +1,8 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { NotificationItemProps } from '@src/layouts/_common/notifications-popover/notification-item.tsx';
+import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {NotificationItemProps} from "@src/layouts/_common/notifications-popover/notification-item.tsx";
 
 // @ts-ignore
-import Ding from '@src/assets/audio/notify.mp3';
+import Ding from "@src/assets/audio/notify.mp3";
 
 interface NotificationsState {
   notifications: NotificationItemProps[];
@@ -13,7 +13,7 @@ const initialState: NotificationsState = {
 };
 
 const notificationsSlice = createSlice({
-  name: 'notifications',
+  name: "notifications",
   initialState,
   reducers: {
     setNotifications(state, action: PayloadAction<NotificationItemProps[]>) {
@@ -21,7 +21,7 @@ const notificationsSlice = createSlice({
     },
     appendNotification(state, action: PayloadAction<NotificationItemProps>) {
       const existingIndex = state.notifications.findIndex(
-        (notification) => notification.id === action.payload.id
+        (notification) => notification.id === action.payload.id,
       );
       if (existingIndex !== -1) {
         state.notifications[existingIndex] = action.payload;
@@ -35,5 +35,5 @@ const notificationsSlice = createSlice({
   },
 });
 
-export const { setNotifications, appendNotification } = notificationsSlice.actions;
+export const {setNotifications, appendNotification} = notificationsSlice.actions;
 export default notificationsSlice.reducer;

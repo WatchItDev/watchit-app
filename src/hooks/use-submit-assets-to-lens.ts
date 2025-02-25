@@ -1,9 +1,9 @@
-import { useState, useCallback } from "react";
-import { useCreatePost } from "@lens-protocol/react-web";
-import { AnyMedia, MediaVideoMimeType, video } from "@lens-protocol/metadata";
-import { uploadMetadataToIPFS, verifyIpfsData } from "@src/utils/ipfs.ts";
+import {useState, useCallback} from "react";
+import {useCreatePost} from "@lens-protocol/react-web";
+import {AnyMedia, MediaVideoMimeType, video} from "@lens-protocol/metadata";
+import {uploadMetadataToIPFS, verifyIpfsData} from "@src/utils/ipfs.ts";
 import uuidv4 from "@src/utils/uuidv4.ts";
-import { ERRORS } from "@notifications/errors.ts";
+import {ERRORS} from "@notifications/errors.ts";
 
 interface SuccessResult {
   hash: string;
@@ -27,7 +27,7 @@ export function useSubmitAssetToLens(): UseSubmitAssetToLensReturn {
   const [data, setData] = useState<SuccessResult[]>([]);
   const [errors, setErrors] = useState<ErrorResult[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
-  const { execute: createPost } = useCreatePost();
+  const {execute: createPost} = useCreatePost();
 
   /**
    * Sanitize the description to avoid strange characters
@@ -157,7 +157,7 @@ export function useSubmitAssetToLens(): UseSubmitAssetToLensReturn {
         };
       }
     },
-    [createPost, sanitizeDescription]
+    [createPost, sanitizeDescription],
   );
 
   /**
@@ -209,7 +209,7 @@ export function useSubmitAssetToLens(): UseSubmitAssetToLensReturn {
       setErrors(errorResults);
       setLoading(false);
     },
-    [processHash]
+    [processHash],
   );
 
   return {

@@ -1,18 +1,18 @@
 // @mui
-import LoadingButton from '@mui/lab/LoadingButton';
-import Stack from '@mui/material/Stack';
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import Divider from '@mui/material/Divider';
-import Container from '@mui/material/Container';
-import Typography from '@mui/material/Typography';
-import DialogActions from '@mui/material/DialogActions';
+import LoadingButton from "@mui/lab/LoadingButton";
+import Stack from "@mui/material/Stack";
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import Divider from "@mui/material/Divider";
+import Container from "@mui/material/Container";
+import Typography from "@mui/material/Typography";
+import DialogActions from "@mui/material/DialogActions";
 // components
-import Markdown from '@src/components/markdown';
-import Scrollbar from '@src/components/scrollbar';
-import EmptyContent from '@src/components/empty-content';
+import Markdown from "@src/components/markdown";
+import Scrollbar from "@src/components/scrollbar";
+import EmptyContent from "@src/components/empty-content";
 //
-import GovernanceDetailsHero from './governance-details-hero';
+import GovernanceDetailsHero from "./governance-details-hero";
 
 // ----------------------------------------------------------------------
 
@@ -47,8 +47,8 @@ export default function GovernanceDetailsPreview({
 
   return (
     <Dialog fullScreen open={open} onClose={onClose}>
-      <DialogActions sx={{ py: 2, px: 3 }}>
-        <Typography variant="h6" sx={{ flexGrow: 1 }}>
+      <DialogActions sx={{py: 2, px: 3}}>
+        <Typography variant="h6" sx={{flexGrow: 1}}>
           Preview
         </Typography>
 
@@ -61,8 +61,7 @@ export default function GovernanceDetailsPreview({
           variant="contained"
           disabled={!isValid}
           loading={isSubmitting}
-          onClick={onSubmit}
-        >
+          onClick={onSubmit}>
           Post
         </LoadingButton>
       </DialogActions>
@@ -73,14 +72,13 @@ export default function GovernanceDetailsPreview({
         <Scrollbar>
           {hasHero && <GovernanceDetailsHero title={title} coverUrl={coverUrl} />}
 
-          <Container sx={{ mt: 5, mb: 10 }}>
+          <Container sx={{mt: 5, mb: 10}}>
             <Stack
               sx={{
                 maxWidth: 720,
-                mx: 'auto',
-              }}
-            >
-              <Typography variant="h6" sx={{ mb: 5 }}>
+                mx: "auto",
+              }}>
+              <Typography variant="h6" sx={{mb: 5}}>
                 {description}
               </Typography>
 

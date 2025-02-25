@@ -1,8 +1,8 @@
-import { useState, useEffect, useCallback } from 'react';
-import { Address } from 'viem';
-import { publicClient } from '@src/clients/viem/publicClient';
-import PoliciesAggAbi from '@src/config/abi/PoliciesAgg.json';
-import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
+import {useState, useEffect, useCallback} from "react";
+import {Address} from "viem";
+import {publicClient} from "@src/clients/viem/publicClient";
+import PoliciesAggAbi from "@src/config/abi/PoliciesAgg.json";
+import {GLOBAL_CONSTANTS} from "@src/config-global.ts";
 
 interface HasAccessError {
   message: string;
@@ -34,7 +34,7 @@ interface UseGetAuthorizedHolderPoliciesHook {
  * @param holder Address of the holder.
  */
 export const useGetPoliciesTerms = (
-  holder: Address | undefined
+  holder: Address | undefined,
 ): UseGetAuthorizedHolderPoliciesHook => {
   const [authorizedHolderPolicies, setAuthorizedHolderPolicies] = useState<Policy[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -45,7 +45,7 @@ export const useGetPoliciesTerms = (
     if (!holder) {
       setAuthorizedHolderPolicies([]);
       setLoading(false);
-      setError({ message: 'Holder address is missing.' });
+      setError({message: "Holder address is missing."});
       return;
     }
 
@@ -56,7 +56,7 @@ export const useGetPoliciesTerms = (
       const policies: any = (await publicClient.readContract({
         address: GLOBAL_CONSTANTS.POLICIES_AGG_ADDRESS,
         abi: PoliciesAggAbi.abi,
-        functionName: 'getPoliciesTerms',
+        functionName: "getPoliciesTerms",
         args: [holder],
       })) as Policy[];
 
@@ -64,9 +64,9 @@ export const useGetPoliciesTerms = (
       setAuthorizedHolderPolicies(policies);
       setError(null);
     } catch (err: any) {
-      console.error('Error fetching policies terms:', err);
+      console.error("Error fetching policies terms:", err);
       setAuthorizedHolderPolicies([]);
-      setError({ message: err?.message || 'Error occurred while fetching authorized policies.' });
+      setError({message: err?.message || "Error occurred while fetching authorized policies."});
     } finally {
       setLoading(false);
     }

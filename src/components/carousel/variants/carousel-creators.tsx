@@ -1,10 +1,10 @@
-import { useState, useEffect, useRef } from 'react';
-import Box from '@mui/material/Box';
-import Carousel, { useCarousel } from '@src/components/carousel/index';
-import { CarouselSection } from '@src/components/poster/carousel-section.tsx';
-import NavigationArrows from '@src/components/carousel/NavigationArrows.tsx';
-import { Profile } from '@lens-protocol/api-bindings';
-import { UserItem } from '@src/components/user-item';
+import {useState, useEffect, useRef} from "react";
+import Box from "@mui/material/Box";
+import Carousel, {useCarousel} from "@src/components/carousel/index";
+import {CarouselSection} from "@src/components/poster/carousel-section.tsx";
+import NavigationArrows from "@src/components/carousel/NavigationArrows.tsx";
+import {Profile} from "@lens-protocol/api-bindings";
+import {UserItem} from "@src/components/user-item";
 
 // ----------------------------------------------------------------------
 
@@ -15,7 +15,7 @@ interface Props {
   maxItemWidth: number;
 }
 
-export default function CarouselCreators({ data, title, minItemWidth, maxItemWidth }: Props) {
+export default function CarouselCreators({data, title, minItemWidth, maxItemWidth}: Props) {
   const [itemsPerSlide, setItemsPerSlide] = useState(1);
   const [slideData, setSlideData] = useState<Profile[][]>([]);
   const parentRef = useRef<HTMLDivElement>(null);
@@ -26,7 +26,7 @@ export default function CarouselCreators({ data, title, minItemWidth, maxItemWid
     speed: 500,
     rows: 1,
     slidesPerRow: 1,
-    lazyLoad: 'progressive',
+    lazyLoad: "progressive",
   });
 
   const calculateItemsPerSlide = (parentWidth: number) => {
@@ -85,24 +85,22 @@ export default function CarouselCreators({ data, title, minItemWidth, maxItemWid
   return (
     <CarouselSection
       title={title}
-      action={<NavigationArrows next={carousel.onNext} prev={carousel.onPrev} />}
-    >
+      action={<NavigationArrows next={carousel.onNext} prev={carousel.onPrev} />}>
       <Box
         ref={parentRef}
         sx={{
-          overflow: 'hidden',
-          position: 'relative',
-          '.slick-track': {
-            height: '100%',
+          overflow: "hidden",
+          position: "relative",
+          ".slick-track": {
+            height: "100%",
           },
-          '.slick-slide': {
-            height: '100%',
+          ".slick-slide": {
+            height: "100%",
           },
-          '.slick-slide > div': {
-            height: '100%',
+          ".slick-slide > div": {
+            height: "100%",
           },
-        }}
-      >
+        }}>
         <Carousel ref={carousel.carouselRef} {...carousel.carouselSettings}>
           {slideData.map((slideItems, index) => (
             <Slide key={`slide-${index}`} items={slideItems} itemsPerRow={itemsPerSlide} />
@@ -118,7 +116,7 @@ interface SlideProps {
   itemsPerRow: number;
 }
 
-function Slide({ items, itemsPerRow }: SlideProps) {
+function Slide({items, itemsPerRow}: SlideProps) {
   const row1 = items.slice(0, itemsPerRow);
   const row2 = items.slice(itemsPerRow, itemsPerRow * 2);
   const itemWidthPercent = 100 / itemsPerRow;
@@ -126,7 +124,7 @@ function Slide({ items, itemsPerRow }: SlideProps) {
   return (
     <Box>
       {[row1, row2].map((rowItems, rowIndex) => (
-        <Box key={`row-${rowIndex}`} sx={{ display: 'flex' }}>
+        <Box key={`row-${rowIndex}`} sx={{display: "flex"}}>
           {rowItems.map((item) => (
             <Box
               key={item.id}
@@ -134,8 +132,7 @@ function Slide({ items, itemsPerRow }: SlideProps) {
                 flexBasis: `${itemWidthPercent}%`,
                 maxWidth: `${itemWidthPercent}%`,
                 p: 1,
-              }}
-            >
+              }}>
               <UserItem profile={item} onActionFinished={() => {}} followButtonMinWidth={90} />
             </Box>
           ))}

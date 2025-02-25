@@ -2,11 +2,11 @@
 
 export interface SettingsValueProps {
   themeStretch: boolean;
-  themeMode: 'light' | 'dark';
-  themeDirection: 'rtl' | 'ltr';
-  themeContrast: 'default' | 'bold';
-  themeLayout: 'vertical' | 'horizontal' | 'mini';
-  themeColorPresets: 'default' | 'cyan' | 'green' | 'blue' | 'orange' | 'red';
+  themeMode: "light" | "dark";
+  themeDirection: "rtl" | "ltr";
+  themeContrast: "default" | "bold";
+  themeLayout: "vertical" | "horizontal" | "mini";
+  themeColorPresets: "default" | "cyan" | "green" | "blue" | "orange" | "red";
 }
 
 export type SettingsContextProps = SettingsValueProps & {

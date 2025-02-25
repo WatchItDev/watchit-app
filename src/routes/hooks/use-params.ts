@@ -1,5 +1,5 @@
-import { useMemo } from 'react';
-import { useParams as _useParams } from 'react-router-dom';
+import {useMemo} from "react";
+import {useParams as _useParams} from "react-router-dom";
 
 // ----------------------------------------------------------------------
 

@@ -1,5 +1,5 @@
-import { Theme } from '@mui/material/styles';
-import { DialogProps } from '@mui/material/Dialog';
+import {Theme} from "@mui/material/styles";
+import {DialogProps} from "@mui/material/Dialog";
 
 // ----------------------------------------------------------------------
 
@@ -7,7 +7,7 @@ export function dialog(theme: Theme) {
   return {
     MuiDialog: {
       styleOverrides: {
-        paper: ({ ownerState }: { ownerState: DialogProps }) => ({
+        paper: ({ownerState}: {ownerState: DialogProps}) => ({
           boxShadow: theme.customShadows.dialog,
           borderRadius: theme.shape.borderRadius * 2,
           ...(!ownerState.fullScreen && {
@@ -33,7 +33,7 @@ export function dialog(theme: Theme) {
         },
         dividers: {
           borderTop: 0,
-          borderBottomStyle: 'dashed',
+          borderBottomStyle: "dashed",
           paddingBottom: theme.spacing(3),
         },
       },
@@ -42,7 +42,7 @@ export function dialog(theme: Theme) {
       styleOverrides: {
         root: {
           padding: theme.spacing(3),
-          '& > :not(:first-of-type)': {
+          "& > :not(:first-of-type)": {
             marginLeft: theme.spacing(1.5),
           },
         },

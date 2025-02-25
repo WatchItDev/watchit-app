@@ -1,22 +1,22 @@
-import { Theme } from '@mui/material/styles';
-import { buttonClasses } from '@mui/material/Button';
+import {Theme} from "@mui/material/styles";
+import {buttonClasses} from "@mui/material/Button";
 // components
-import Iconify from '@src/components/iconify';
+import Iconify from "@src/components/iconify";
 
 // ----------------------------------------------------------------------
 
 const dateList = [
-  'DatePicker',
-  'DateTimePicker',
-  'StaticDatePicker',
-  'DesktopDatePicker',
-  'DesktopDateTimePicker',
+  "DatePicker",
+  "DateTimePicker",
+  "StaticDatePicker",
+  "DesktopDatePicker",
+  "DesktopDateTimePicker",
   //
-  'MobileDatePicker',
-  'MobileDateTimePicker',
+  "MobileDatePicker",
+  "MobileDateTimePicker",
 ];
 
-const timeList = ['TimePicker', 'MobileTimePicker', 'StaticTimePicker', 'DesktopTimePicker'];
+const timeList = ["TimePicker", "MobileTimePicker", "StaticTimePicker", "DesktopTimePicker"];
 
 const switchIcon = () => <Iconify icon="eva:chevron-down-fill" width={24} />;
 
@@ -62,11 +62,11 @@ export function datePicker(theme: Theme) {
     MuiPickersLayout: {
       styleOverrides: {
         root: {
-          '& .MuiPickersLayout-actionBar': {
+          "& .MuiPickersLayout-actionBar": {
             [`& .${buttonClasses.root}:last-of-type`]: {
               backgroundColor: theme.palette.text.primary,
               color:
-                theme.palette.mode === 'light'
+                theme.palette.mode === "light"
                   ? theme.palette.common.white
                   : theme.palette.grey[800],
             },

@@ -1,5 +1,5 @@
-import { StackProps } from '@mui/material/Stack';
-import { ListItemButtonProps } from '@mui/material/ListItemButton';
+import {StackProps} from "@mui/material/Stack";
+import {ListItemButtonProps} from "@mui/material/ListItemButton";
 
 // ----------------------------------------------------------------------
 
@@ -42,5 +42,5 @@ export type NavSectionProps = StackProps & {
     items: NavListProps[];
   }[];
   config?: NavConfigProps;
-  size?: 'collapsed' | 'full';
+  size?: "collapsed" | "full";
 };

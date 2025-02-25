@@ -1,11 +1,11 @@
 // @mui
-import Card from '@mui/material/Card';
-import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
-import CardContent from '@mui/material/CardContent';
+import Card from "@mui/material/Card";
+import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
+import CardContent from "@mui/material/CardContent";
 // components
-import Image from '@src/components/image';
-import Carousel, { CarouselArrowIndex, useCarousel } from '@src/components/carousel';
+import Image from "@src/components/image";
+import Carousel, {CarouselArrowIndex, useCarousel} from "@src/components/carousel";
 
 // ----------------------------------------------------------------------
 
@@ -18,7 +18,7 @@ interface Props {
   }[];
 }
 
-export default function CarouselBasic2({ data }: Props) {
+export default function CarouselBasic2({data}: Props) {
   const carousel = useCarousel({
     fade: true,
     autoplay: true,
@@ -32,12 +32,12 @@ export default function CarouselBasic2({ data }: Props) {
           <Stack key={item.id}>
             <Image alt={item.title} src={item.coverUrl} ratio="4/3" />
 
-            <CardContent sx={{ textAlign: 'left' }}>
+            <CardContent sx={{textAlign: "left"}}>
               <Typography variant="h6" noWrap gutterBottom>
                 {item.title}
               </Typography>
 
-              <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
+              <Typography variant="body2" sx={{color: "text.secondary"}} noWrap>
                 {item.description}
               </Typography>
             </CardContent>
@@ -50,7 +50,7 @@ export default function CarouselBasic2({ data }: Props) {
         total={data.length}
         onNext={carousel.onNext}
         onPrev={carousel.onPrev}
-        sx={{ bottom: 120 }}
+        sx={{bottom: 120}}
       />
     </Card>
   );

@@ -1,12 +1,12 @@
 // @mui
-import Box from '@mui/material/Box';
-import Link from '@mui/material/Link';
-import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
-import Breadcrumbs from '@mui/material/Breadcrumbs';
+import Box from "@mui/material/Box";
+import Link from "@mui/material/Link";
+import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
+import Breadcrumbs from "@mui/material/Breadcrumbs";
 //
-import { CustomBreadcrumbsProps } from './types';
-import LinkItem from './link-item';
+import {CustomBreadcrumbsProps} from "./types";
+import LinkItem from "./link-item";
 
 // ----------------------------------------------------------------------
 
@@ -22,9 +22,9 @@ export default function CustomBreadcrumbs({
   const lastLink = links[links.length - 1].name;
 
   return (
-    <Box sx={{ ...sx }}>
+    <Box sx={{...sx}}>
       <Stack direction="row" alignItems="center">
-        <Box sx={{ flexGrow: 1 }}>
+        <Box sx={{flexGrow: 1}}>
           {/* HEADING */}
           {heading && (
             <Typography variant="h4" gutterBottom>
@@ -37,7 +37,7 @@ export default function CustomBreadcrumbs({
             <Breadcrumbs separator={<Separator />} {...other}>
               {links.map((link) => (
                 <LinkItem
-                  key={link.name || ''}
+                  key={link.name || ""}
                   link={link}
                   activeLast={activeLast}
                   disabled={link.name === lastLink}
@@ -47,12 +47,12 @@ export default function CustomBreadcrumbs({
           )}
         </Box>
 
-        {action && <Box sx={{ flexShrink: 0 }}> {action} </Box>}
+        {action && <Box sx={{flexShrink: 0}}> {action} </Box>}
       </Stack>
 
       {/* MORE LINK */}
       {!!moreLink && (
-        <Box sx={{ mt: 2 }}>
+        <Box sx={{mt: 2}}>
           {moreLink.map((href) => (
             <Link
               key={href}
@@ -60,8 +60,7 @@ export default function CustomBreadcrumbs({
               variant="body2"
               target="_blank"
               rel="noopener"
-              sx={{ display: 'table' }}
-            >
+              sx={{display: "table"}}>
               {href}
             </Link>
           ))}
@@ -80,8 +79,8 @@ function Separator() {
       sx={{
         width: 4,
         height: 4,
-        borderRadius: '50%',
-        bgcolor: 'text.disabled',
+        borderRadius: "50%",
+        bgcolor: "text.disabled",
       }}
     />
   );

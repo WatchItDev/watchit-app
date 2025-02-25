@@ -1,11 +1,11 @@
-import { useState } from 'react';
-import { useSelector } from 'react-redux';
-import { Address, encodeFunctionData, parseUnits } from 'viem';
-import LedgerVaultAbi from '@src/config/abi/LedgerVault.json';
-import { GLOBAL_CONSTANTS } from '@src/config-global';
-import { useWeb3Session } from '@src/hooks/use-web3-session.ts';
-import { ERRORS } from '@notifications/errors.ts';
-import { useAccountSession } from '@src/hooks/use-account-session.ts';
+import {useState} from "react";
+import {useSelector} from "react-redux";
+import {Address, encodeFunctionData, parseUnits} from "viem";
+import LedgerVaultAbi from "@src/config/abi/LedgerVault.json";
+import {GLOBAL_CONSTANTS} from "@src/config-global";
+import {useWeb3Session} from "@src/hooks/use-web3-session.ts";
+import {ERRORS} from "@notifications/errors.ts";
+import {useAccountSession} from "@src/hooks/use-account-session.ts";
 
 interface WithdrawParams {
   recipient: Address;
@@ -25,20 +25,20 @@ export const useWithdraw = (): UseWithdrawHook => {
   const [error, setError] = useState<keyof typeof ERRORS | null>(null);
 
   const sessionData = useSelector((state: any) => state.auth.session);
-  const { bundlerClient, smartAccount } = useWeb3Session();
-  const { isAuthenticated, logout } = useAccountSession();
+  const {bundlerClient, smartAccount} = useWeb3Session();
+  const {isAuthenticated, logout} = useAccountSession();
 
-  const initializeWithdraw = ({ recipient, amount }: WithdrawParams) => {
+  const initializeWithdraw = ({recipient, amount}: WithdrawParams) => {
     const weiAmount = parseUnits(amount.toString(), 18);
 
     return encodeFunctionData({
       abi: LedgerVaultAbi.abi,
-      functionName: 'withdraw',
+      functionName: "withdraw",
       args: [recipient, weiAmount, GLOBAL_CONSTANTS.MMC_ADDRESS],
     });
   };
 
-  const withdraw = async ({ recipient, amount }: WithdrawParams) => {
+  const withdraw = async ({recipient, amount}: WithdrawParams) => {
     setLoading(true);
     setError(null);
 
@@ -51,11 +51,11 @@ export const useWithdraw = (): UseWithdrawHook => {
     if (!isAuthenticated()) {
       logout();
       setLoading(false);
-      throw new Error('Invalid Web3Auth session');
+      throw new Error("Invalid Web3Auth session");
     }
 
     try {
-      const withdrawData = initializeWithdraw({ recipient, amount });
+      const withdrawData = initializeWithdraw({recipient, amount});
 
       const calls = [
         {
@@ -77,11 +77,11 @@ export const useWithdraw = (): UseWithdrawHook => {
       setData(receipt);
       setLoading(false);
     } catch (err: any) {
-      console.error('USE WITHDRAW ERR:', err);
+      console.error("USE WITHDRAW ERR:", err);
       setError(ERRORS.UNKNOWN_ERROR);
       setLoading(false);
     }
   };
 
-  return { data, withdraw, loading, error };
+  return {data, withdraw, loading, error};
 };

@@ -1,19 +1,19 @@
 // @mui
-import { styled } from '@mui/material/styles';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemButton from '@mui/material/ListItemButton';
+import {styled} from "@mui/material/styles";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemButton from "@mui/material/ListItemButton";
 //
-import { NavItemProps, NavConfigProps } from '../types';
+import {NavItemProps, NavConfigProps} from "../types";
 
 // ----------------------------------------------------------------------
 
-type StyledItemProps = Omit<NavItemProps, 'item'> & {
+type StyledItemProps = Omit<NavItemProps, "item"> & {
   config: NavConfigProps;
 };
 
 export const StyledItem = styled(ListItemButton, {
-  shouldForwardProp: (prop) => prop !== 'active',
-})<StyledItemProps>(({ active, open, depth, config, theme }) => {
+  shouldForwardProp: (prop) => prop !== "active",
+})<StyledItemProps>(({active, open, depth, config, theme}) => {
   const subItem = depth !== 1;
 
   const activeStyles = {
@@ -57,7 +57,7 @@ interface StyledIconProps {
   size?: number;
 }
 
-export const StyledIcon = styled(ListItemIcon)<StyledIconProps>(({ size }) => ({
+export const StyledIcon = styled(ListItemIcon)<StyledIconProps>(({size}) => ({
   width: size,
   height: size,
   flexShrink: 0,

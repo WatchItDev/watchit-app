@@ -1,8 +1,8 @@
 // @mui
-import Card from '@mui/material/Card';
+import Card from "@mui/material/Card";
 // components
-import Image from '@src/components/image';
-import Carousel, { CarouselArrowIndex, useCarousel } from '@src/components/carousel';
+import Image from "@src/components/image";
+import Carousel, {CarouselArrowIndex, useCarousel} from "@src/components/carousel";
 
 // ----------------------------------------------------------------------
 
@@ -15,7 +15,7 @@ interface Props {
   }[];
 }
 
-export default function CarouselBasic1({ data }: Props) {
+export default function CarouselBasic1({data}: Props) {
   const carousel = useCarousel({
     autoplay: true,
   });

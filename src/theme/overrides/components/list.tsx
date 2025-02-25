@@ -1,4 +1,4 @@
-import { Theme } from '@mui/material/styles';
+import {Theme} from "@mui/material/styles";
 
 // ----------------------------------------------------------------------
 
@@ -7,8 +7,8 @@ export function list(theme: Theme) {
     MuiListItemIcon: {
       styleOverrides: {
         root: {
-          color: 'inherit',
-          minWidth: 'auto',
+          color: "inherit",
+          minWidth: "auto",
           marginRight: theme.spacing(2),
         },
       },
@@ -16,7 +16,7 @@ export function list(theme: Theme) {
     MuiListItemAvatar: {
       styleOverrides: {
         root: {
-          minWidth: 'auto',
+          minWidth: "auto",
           marginRight: theme.spacing(2),
         },
       },

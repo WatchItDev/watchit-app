@@ -1,6 +1,6 @@
-import { isSameDay, isSameMonth, getYear } from 'date-fns';
+import {isSameDay, isSameMonth, getYear} from "date-fns";
 // utils
-import { fDate } from '@src/utils/format-time';
+import {fDate} from "@src/utils/format-time";
 
 // ----------------------------------------------------------------------
 
@@ -21,12 +21,12 @@ export function shortDateLabel(startDate: Date | null, endDate: Date | null) {
   if (currentYear) {
     if (sameMonth) {
       if (sameDay) {
-        return fDate(endDate, 'dd MMM yy');
+        return fDate(endDate, "dd MMM yy");
       }
-      return `${fDate(startDate, 'dd')} - ${fDate(endDate, 'dd MMM yy')}`;
+      return `${fDate(startDate, "dd")} - ${fDate(endDate, "dd MMM yy")}`;
     }
-    return `${fDate(startDate, 'dd MMM')} - ${fDate(endDate, 'dd MMM yy')}`;
+    return `${fDate(startDate, "dd MMM")} - ${fDate(endDate, "dd MMM yy")}`;
   }
 
-  return `${fDate(startDate, 'dd MMM yy')} - ${fDate(endDate, 'dd MMM yy')}`;
+  return `${fDate(startDate, "dd MMM yy")} - ${fDate(endDate, "dd MMM yy")}`;
 }

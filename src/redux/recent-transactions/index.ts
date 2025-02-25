@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 
 export interface TransactionItemProps {
   id: string;
@@ -38,7 +38,7 @@ const initialState: TransactionsState = {
 };
 
 const transactionsSlice = createSlice({
-  name: 'notifications',
+  name: "notifications",
   initialState,
   reducers: {
     setTransactions(state, action: PayloadAction<TransactionItemProps[]>) {
@@ -46,7 +46,7 @@ const transactionsSlice = createSlice({
     },
     appendTransaction(state, action: PayloadAction<TransactionItemProps>) {
       const existingIndex = state.transactions.findIndex(
-        (transaction) => transaction.id === action.payload.id
+        (transaction) => transaction.id === action.payload.id,
       );
       if (existingIndex !== -1) {
         state.transactions[existingIndex] = action.payload;
@@ -58,5 +58,5 @@ const transactionsSlice = createSlice({
   },
 });
 
-export const { setTransactions, appendTransaction } = transactionsSlice.actions;
+export const {setTransactions, appendTransaction} = transactionsSlice.actions;
 export default transactionsSlice.reducer;

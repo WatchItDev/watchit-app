@@ -1,7 +1,7 @@
-import { createPublicClient, http, webSocket } from 'viem';
-import { polygonAmoy } from 'viem/chains';
+import {createPublicClient, http, webSocket} from "viem";
+import {polygonAmoy} from "viem/chains";
 
-const WS_URL = 'wss://polygon-amoy-bor-rpc.publicnode.com';
+const WS_URL = "wss://polygon-amoy-bor-rpc.publicnode.com";
 
 export const publicClient = createPublicClient({
   chain: polygonAmoy,

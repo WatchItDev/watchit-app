@@ -1,27 +1,27 @@
-import * as Yup from 'yup';
-import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
+import * as Yup from "yup";
+import {useForm} from "react-hook-form";
+import {yupResolver} from "@hookform/resolvers/yup";
 // @mui
-import LoadingButton from '@mui/lab/LoadingButton';
-import Stack from '@mui/material/Stack';
-import IconButton from '@mui/material/IconButton';
+import LoadingButton from "@mui/lab/LoadingButton";
+import Stack from "@mui/material/Stack";
+import IconButton from "@mui/material/IconButton";
 // components
-import Iconify from '@src/components/iconify';
-import FormProvider, { RHFTextField } from '@src/components/hook-form';
+import Iconify from "@src/components/iconify";
+import FormProvider, {RHFTextField} from "@src/components/hook-form";
 
 // ----------------------------------------------------------------------
 
 export default function GovernanceCommentForm() {
   const CommentSchema = Yup.object().shape({
-    comment: Yup.string().required('Comment is required'),
-    name: Yup.string().required('Name is required'),
-    email: Yup.string().required('Email is required').email('Email must be a valid email address'),
+    comment: Yup.string().required("Comment is required"),
+    name: Yup.string().required("Name is required"),
+    email: Yup.string().required("Email is required").email("Email must be a valid email address"),
   });
 
   const defaultValues = {
-    comment: '',
-    name: '',
-    email: '',
+    comment: "",
+    name: "",
+    email: "",
   };
 
   const methods = useForm({
@@ -32,14 +32,14 @@ export default function GovernanceCommentForm() {
   const {
     reset,
     handleSubmit,
-    formState: { isSubmitting },
+    formState: {isSubmitting},
   } = methods;
 
   const onSubmit = handleSubmit(async (data) => {
     try {
       await new Promise((resolve) => setTimeout(resolve, 500));
       reset();
-      console.info('DATA', data);
+      console.info("DATA", data);
     } catch (error) {
       console.error(error);
     }

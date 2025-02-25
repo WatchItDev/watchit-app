@@ -1,8 +1,8 @@
 // @mui
-import { useTheme } from '@mui/material/styles';
-import { Variant } from '@mui/material/styles/createTypography';
+import {useTheme} from "@mui/material/styles";
+import {Variant} from "@mui/material/styles/createTypography";
 // hooks
-import { useWidth } from '@src/hooks/use-responsive';
+import {useWidth} from "@src/hooks/use-responsive";
 
 // ----------------------------------------------------------------------
 
@@ -15,15 +15,15 @@ export default function useTypography(variant: Variant) {
 
   const breakpoints = useWidth();
 
-  const key = theme.breakpoints.up(breakpoints === 'xl' ? 'lg' : breakpoints);
+  const key = theme.breakpoints.up(breakpoints === "xl" ? "lg" : breakpoints);
 
   const hasResponsive =
-    variant === 'h1' ||
-    variant === 'h2' ||
-    variant === 'h3' ||
-    variant === 'h4' ||
-    variant === 'h5' ||
-    variant === 'h6';
+    variant === "h1" ||
+    variant === "h2" ||
+    variant === "h3" ||
+    variant === "h4" ||
+    variant === "h5" ||
+    variant === "h6";
 
   const getFont: any =
     hasResponsive && theme.typography[variant][key]
@@ -34,7 +34,7 @@ export default function useTypography(variant: Variant) {
 
   const lineHeight = Number(theme.typography[variant].lineHeight) * fontSize;
 
-  const { fontWeight, letterSpacing } = theme.typography[variant];
+  const {fontWeight, letterSpacing} = theme.typography[variant];
 
-  return { fontSize, lineHeight, fontWeight, letterSpacing };
+  return {fontSize, lineHeight, fontWeight, letterSpacing};
 }

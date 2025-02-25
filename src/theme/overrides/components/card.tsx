@@ -1,4 +1,4 @@
-import { Theme } from '@mui/material/styles';
+import {Theme} from "@mui/material/styles";
 
 // ----------------------------------------------------------------------
 
@@ -7,8 +7,8 @@ export function card(theme: Theme) {
     MuiCard: {
       styleOverrides: {
         root: {
-          position: 'relative',
-          backgroundColor: '#1E1F22',
+          position: "relative",
+          backgroundColor: "#1E1F22",
           // boxShadow: theme.customShadows.card,
           borderRadius: theme.shape.borderRadius * 2,
           zIndex: 0, // Fix Safari overflow: hidden with border radius

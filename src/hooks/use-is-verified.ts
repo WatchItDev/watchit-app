@@ -1,9 +1,9 @@
 // REACT IMPORTS
-import { useEffect, useState } from 'react';
-import { Address } from 'viem';
+import {useEffect, useState} from "react";
+import {Address} from "viem";
 
 // LOCAL IMPORTS
-import { useHasRole } from './use-has-role.ts';
+import {useHasRole} from "./use-has-role.ts";
 
 // ----------------------------------------------------------------------
 
@@ -16,7 +16,7 @@ interface UseIsVerifiedHook {
 // ----------------------------------------------------------------------
 
 export const useIsVerified = (account: Address): UseIsVerifiedHook => {
-  const { hasRole, loading, error, fetchHasRole } = useHasRole();
+  const {hasRole, loading, error, fetchHasRole} = useHasRole();
   const [isVerified, setIsVerified] = useState<boolean | undefined>(undefined);
 
   useEffect(() => {

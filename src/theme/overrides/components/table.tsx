@@ -1,6 +1,6 @@
-import { Theme, alpha } from '@mui/material/styles';
-import { tableCellClasses } from '@mui/material/TableCell';
-import { tableRowClasses } from '@mui/material/TableRow';
+import {Theme, alpha} from "@mui/material/styles";
+import {tableCellClasses} from "@mui/material/TableCell";
+import {tableRowClasses} from "@mui/material/TableRow";
 
 // ----------------------------------------------------------------------
 
@@ -9,7 +9,7 @@ export function table(theme: Theme) {
     MuiTableContainer: {
       styleOverrides: {
         root: {
-          position: 'relative',
+          position: "relative",
         },
       },
     },
@@ -18,13 +18,13 @@ export function table(theme: Theme) {
         root: {
           [`&.${tableRowClasses.selected}`]: {
             backgroundColor: alpha(theme.palette.primary.dark, 0.04),
-            '&:hover': {
+            "&:hover": {
               backgroundColor: alpha(theme.palette.primary.dark, 0.08),
             },
           },
-          '&:last-of-type': {
+          "&:last-of-type": {
             [`& .${tableCellClasses.root}`]: {
-              borderColor: 'transparent',
+              borderColor: "transparent",
             },
           },
         },
@@ -33,7 +33,7 @@ export function table(theme: Theme) {
     MuiTableCell: {
       styleOverrides: {
         root: {
-          borderBottomStyle: 'dashed',
+          borderBottomStyle: "dashed",
         },
         head: {
           fontSize: 14,
@@ -53,7 +53,7 @@ export function table(theme: Theme) {
     MuiTablePagination: {
       styleOverrides: {
         root: {
-          width: '100%',
+          width: "100%",
         },
         toolbar: {
           height: 64,
@@ -63,7 +63,7 @@ export function table(theme: Theme) {
         },
         select: {
           paddingLeft: 8,
-          '&:focus': {
+          "&:focus": {
             borderRadius: theme.shape.borderRadius,
           },
         },
@@ -71,7 +71,7 @@ export function table(theme: Theme) {
           right: 4,
           width: 16,
           height: 16,
-          top: 'calc(50% - 8px)',
+          top: "calc(50% - 8px)",
         },
       },
     },

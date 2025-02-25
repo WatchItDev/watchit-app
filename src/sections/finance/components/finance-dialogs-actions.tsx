@@ -1,6 +1,6 @@
 // @mui components
-import DialogActions from '@mui/material/DialogActions';
-import LoadingButton from '@mui/lab/LoadingButton';
+import DialogActions from "@mui/material/DialogActions";
+import LoadingButton from "@mui/lab/LoadingButton";
 
 interface FinanceDialogsActionsProps {
   rainbowComponent: any;
@@ -10,7 +10,7 @@ interface FinanceDialogsActionsProps {
   balance: number;
   label: string;
   onConfirmAction: () => void;
-  onCloseAction?: () => void
+  onCloseAction?: () => void;
 }
 
 const FinanceDialogsActions = ({
@@ -20,25 +20,23 @@ const FinanceDialogsActions = ({
   actionLoading,
   amount,
   balance,
-  label
+  label,
 }: FinanceDialogsActionsProps) => {
   return (
-    <DialogActions sx={{ width: '100%', pt: 1 }}>
+    <DialogActions sx={{width: "100%", pt: 1}}>
       <RainbowEffect
         {...(loading && {
-          borderRadius: '10px',
-          animationSpeed: '3s',
-          padding: '0',
-          width: 'auto',
-        })}
-      >
+          borderRadius: "10px",
+          animationSpeed: "3s",
+          padding: "0",
+          width: "auto",
+        })}>
         <LoadingButton
           variant="contained"
-          sx={{ backgroundColor: '#fff' }}
+          sx={{backgroundColor: "#fff"}}
           onClick={onConfirmAction}
           disabled={loading || actionLoading || amount <= 0 || amount > (balance ?? 0)}
-          loading={loading || actionLoading}
-        >
+          loading={loading || actionLoading}>
           {label}
         </LoadingButton>
       </RainbowEffect>

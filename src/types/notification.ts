@@ -1,10 +1,10 @@
 export enum NotificationCategories {
-  FOLLOW = 'FOLLOW',
-  LIKE = 'LIKE',
-  COMMENT = 'COMMENT',
-  JOIN = 'JOIN',
-  MENTION = 'MENTION',
-  TRANSFER = 'TRANSFER',
+  FOLLOW = "FOLLOW",
+  LIKE = "LIKE",
+  COMMENT = "COMMENT",
+  JOIN = "JOIN",
+  MENTION = "MENTION",
+  TRANSFER = "TRANSFER",
 }
 
 export interface NotificationColumnsProps {

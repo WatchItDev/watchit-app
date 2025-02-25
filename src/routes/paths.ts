@@ -1,30 +1,30 @@
-import { paramCase } from '@src/utils/change-case';
+import {paramCase} from "@src/utils/change-case";
 
 // ----------------------------------------------------------------------
 
-const MOCK_ID = '0x123';
-const MOCK_TITLE = 'Demo title';
+const MOCK_ID = "0x123";
+const MOCK_TITLE = "Demo title";
 
 // ----------------------------------------------------------------------
 
 export const paths = {
-  comingSoon: '/coming-soon',
-  maintenance: '/maintenance',
-  pricing: '/pricing',
-  payment: '/payment',
-  about: '/about-us',
-  contact: '/contact-us',
-  faqs: '/faqs',
-  page403: '/403',
-  page404: '/404',
-  page500: '/500',
-  components: '/components',
-  docs: 'https://watchit.notion.site/WatchIT-d8a242d26292414991ed1d8fc5e918d3',
+  comingSoon: "/coming-soon",
+  maintenance: "/maintenance",
+  pricing: "/pricing",
+  payment: "/payment",
+  about: "/about-us",
+  contact: "/contact-us",
+  faqs: "/faqs",
+  page403: "/403",
+  page404: "/404",
+  page500: "/500",
+  components: "/components",
+  docs: "https://watchit.notion.site/WatchIT-d8a242d26292414991ed1d8fc5e918d3",
   figma:
-    'https://www.figma.com/design/DKavGrV30OC0IQowdF4HYu/Watchit?node-id=1601-62&t=dDV5gk9skIVVRavr-1',
+    "https://www.figma.com/design/DKavGrV30OC0IQowdF4HYu/Watchit?node-id=1601-62&t=dDV5gk9skIVVRavr-1",
   // DASHBOARD
   dashboard: {
-    root: '/',
+    root: "/",
     community: `/community`,
     marketplace: `/marketplace`,
     events: `/events`,

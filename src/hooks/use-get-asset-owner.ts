@@ -1,13 +1,13 @@
 // REACT IMPORTS
-import { useState, useCallback } from 'react';
+import {useState, useCallback} from "react";
 
 // VIEM IMPORTS
-import { Address } from 'viem';
-import { publicClient } from '@src/clients/viem/publicClient';
+import {Address} from "viem";
+import {publicClient} from "@src/clients/viem/publicClient";
 
 // LOCAL IMPORTS
-import AssetOwnershipAbi from '@src/config/abi/AssetOwnership.json';
-import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
+import AssetOwnershipAbi from "@src/config/abi/AssetOwnership.json";
+import {GLOBAL_CONSTANTS} from "@src/config-global.ts";
 
 // ----------------------------------------------------------------------
 
@@ -49,7 +49,7 @@ export const useGetAssetOwner = (): UseGetAssetOwnerHook => {
    */
   const convertHexToDecimal = (hexId: string): string => {
     // Remove '0x' prefix if present
-    const cleanHex = hexId.startsWith('0x') ? hexId.slice(2) : hexId;
+    const cleanHex = hexId.startsWith("0x") ? hexId.slice(2) : hexId;
     return BigInt(`0x${cleanHex}`).toString(10);
   };
 
@@ -59,41 +59,44 @@ export const useGetAssetOwner = (): UseGetAssetOwnerHook => {
    * @param assetIdHex - The asset ID in hexadecimal format.
    * @returns {Promise<Address | undefined>} The owner's address if successful, otherwise undefined.
    */
-  const fetchOwnerAddress = useCallback(async (assetIdHex: string): Promise<Address | undefined> => {
-    if (!assetIdHex) {
-      setError({ message: 'Asset ID is missing.' });
-      return undefined;
-    }
+  const fetchOwnerAddress = useCallback(
+    async (assetIdHex: string): Promise<Address | undefined> => {
+      if (!assetIdHex) {
+        setError({message: "Asset ID is missing."});
+        return undefined;
+      }
 
-    setLoading(true);
-    setError(null);
-
-    try {
-      // Convert assetId from hexadecimal to decimal
-      const assetIdDecimal = convertHexToDecimal(assetIdHex);
-
-      // Call the 'ownerOf' function on the AssetOwnership contract
-      const owner: any = await publicClient.readContract({
-        address: GLOBAL_CONSTANTS.ASSET_OWNERSHIP_ADDRESS,
-        abi: AssetOwnershipAbi.abi,
-        functionName: 'ownerOf',
-        args: [assetIdDecimal],
-      });
-
-      setOwnerAddress(owner);
+      setLoading(true);
       setError(null);
-      return owner;
-    } catch (err: any) {
-      console.error('USE GET ASSET OWNER ERROR:', err);
-      setOwnerAddress(undefined);
-      setError({
-        message: err?.message || 'An error occurred while retrieving the asset owner.',
-      });
-      return undefined;
-    } finally {
-      setLoading(false);
-    }
-  }, []);
+
+      try {
+        // Convert assetId from hexadecimal to decimal
+        const assetIdDecimal = convertHexToDecimal(assetIdHex);
+
+        // Call the 'ownerOf' function on the AssetOwnership contract
+        const owner: any = await publicClient.readContract({
+          address: GLOBAL_CONSTANTS.ASSET_OWNERSHIP_ADDRESS,
+          abi: AssetOwnershipAbi.abi,
+          functionName: "ownerOf",
+          args: [assetIdDecimal],
+        });
+
+        setOwnerAddress(owner);
+        setError(null);
+        return owner;
+      } catch (err: any) {
+        console.error("USE GET ASSET OWNER ERROR:", err);
+        setOwnerAddress(undefined);
+        setError({
+          message: err?.message || "An error occurred while retrieving the asset owner.",
+        });
+        return undefined;
+      } finally {
+        setLoading(false);
+      }
+    },
+    [],
+  );
 
   return {
     ownerAddress,

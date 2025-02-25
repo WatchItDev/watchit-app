@@ -1,33 +1,33 @@
-import { useSelector, useDispatch } from 'react-redux';
-import { closeDrawer } from '@src/redux/drawer';
+import {useSelector, useDispatch} from "react-redux";
+import {closeDrawer} from "@src/redux/drawer";
 
 // REACT IMPORTS
-import { useEffect } from 'react';
+import {useEffect} from "react";
 
 // MUI IMPORTS
-import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
-import Drawer from '@mui/material/Drawer';
+import Box from "@mui/material/Box";
+import Stack from "@mui/material/Stack";
+import Drawer from "@mui/material/Drawer";
 
 // COMPONENTS IMPORTS
-import Scrollbar from '@src/components/scrollbar';
-import { NavSectionVertical } from '@src/components/nav-section';
+import Scrollbar from "@src/components/scrollbar";
+import {NavSectionVertical} from "@src/components/nav-section";
 
 // HOOKS IMPORTS
-import { useResponsive } from '@src/hooks/use-responsive';
-import { usePathname } from '@src/routes/hooks';
-import { useNavData } from './config-navigation';
+import {useResponsive} from "@src/hooks/use-responsive";
+import {usePathname} from "@src/routes/hooks";
+import {useNavData} from "./config-navigation";
 
 // LAYOUT IMPORTS
-import { Searchbar } from '../_common';
-import { NavToggleButton } from '../_common';
-import { COLORS, NAV } from '@src/layouts/config-layout.ts';
-import NavMini from '@src/layouts/dashboard/nav-mini.tsx';
+import {Searchbar} from "../_common";
+import {NavToggleButton} from "../_common";
+import {COLORS, NAV} from "@src/layouts/config-layout.ts";
+import NavMini from "@src/layouts/dashboard/nav-mini.tsx";
 // ----------------------------------------------------------------------
 
 export default function NavVertical() {
   const pathname = usePathname();
-  const lgUp = useResponsive('up', 'lg');
+  const lgUp = useResponsive("up", "lg");
   const navData = useNavData();
 
   // Inside the NavVertical component
@@ -50,29 +50,28 @@ export default function NavVertical() {
   const renderContent = (
     <Scrollbar
       sx={{
-        transition: 'all 0.7s ease',
-        position: 'relative',
+        transition: "all 0.7s ease",
+        position: "relative",
         height: 1,
-        backgroundColor: '#2B2D31',
-        display: 'flex',
-        flexDirection: 'column',
-        '& .simplebar-content': {
+        backgroundColor: "#2B2D31",
+        display: "flex",
+        flexDirection: "column",
+        "& .simplebar-content": {
           height: 1,
-          display: 'flex',
-          flexDirection: 'column',
+          display: "flex",
+          flexDirection: "column",
         },
-      }}
-    >
+      }}>
       <Searchbar />
 
       <NavSectionVertical
         data={navData}
         config={{
-          currentRole: 'admin',
+          currentRole: "admin",
         }}
       />
 
-      <Box sx={{ flexGrow: 1 }} />
+      <Box sx={{flexGrow: 1}} />
     </Scrollbar>
   );
 
@@ -80,22 +79,20 @@ export default function NavVertical() {
     <Box
       component="nav"
       sx={{
-        flexShrink: { lg: 0 },
-        width: { lg: NAV.W_VERTICAL },
-      }}
-    >
+        flexShrink: {lg: 0},
+        width: {lg: NAV.W_VERTICAL},
+      }}>
       <NavToggleButton />
 
       {lgUp ? (
         <Stack
           sx={{
-            transition: 'all 0.7s ease',
+            transition: "all 0.7s ease",
             height: 1,
-            position: 'fixed',
+            position: "fixed",
             width: NAV.W_VERTICAL,
             borderRight: (theme) => `dashed 1px ${theme.palette.divider}`,
-          }}
-        >
+          }}>
           {renderContent}
         </Stack>
       ) : (
@@ -106,21 +103,18 @@ export default function NavVertical() {
             sx: {
               width: NAV.W_VERTICAL + NAV.W_MINI,
             },
-          }}
-        >
+          }}>
           <Stack
-            direction={'row'}
+            direction={"row"}
             sx={{
               backgroundColor: COLORS.GRAY_LIGHT,
-              height: '100%',
-            }}
-          >
+              height: "100%",
+            }}>
             <Box
               sx={{
                 width: NAV.W_MINI,
                 backgroundColor: COLORS.GRAY_DARK,
-              }}
-            >
+              }}>
               <NavMini />
             </Box>
             <Box
@@ -128,8 +122,7 @@ export default function NavVertical() {
                 flex: 1,
                 flexGrow: 1,
                 width: NAV.W_VERTICAL,
-              }}
-            >
+              }}>
               {renderContent}
             </Box>
           </Stack>

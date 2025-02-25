@@ -1,13 +1,13 @@
-import { memo } from 'react';
+import {memo} from "react";
 // @mui
-import { useTheme } from '@mui/material/styles';
-import Box, { BoxProps } from '@mui/material/Box';
+import {useTheme} from "@mui/material/styles";
+import Box, {BoxProps} from "@mui/material/Box";
 //
-import BackgroundShape from './background-shape';
+import BackgroundShape from "./background-shape";
 
 // ----------------------------------------------------------------------
 
-function UploadIllustration({ ...other }: BoxProps) {
+function UploadIllustration({...other}: BoxProps) {
   const theme = useTheme();
 
   const PRIMARY_MAIN = theme.palette.primary.main;
@@ -23,8 +23,7 @@ function UploadIllustration({ ...other }: BoxProps) {
       height="100%"
       viewBox="0 0 480 360"
       xmlns="http://www.w3.org/2000/svg"
-      {...other}
-    >
+      {...other}>
       <BackgroundShape />
 
       <defs>

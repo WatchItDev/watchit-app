@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 
 interface AddressState {
   address: string;
@@ -7,16 +7,16 @@ interface AddressState {
 }
 
 const initialState: AddressState = {
-  address: '',
-  profileId: '',
+  address: "",
+  profileId: "",
   showRainbow: false,
 };
 
 const addressSlice = createSlice({
-  name: 'address',
+  name: "address",
   initialState,
   reducers: {
-    storeAddress(state, action: PayloadAction<{ address: string; profileId: string }>) {
+    storeAddress(state, action: PayloadAction<{address: string; profileId: string}>) {
       state.address = action.payload.address;
       state.profileId = action.payload.profileId;
     },
@@ -27,5 +27,5 @@ const addressSlice = createSlice({
   },
 });
 
-export const { storeAddress, toggleRainbow } = addressSlice.actions;
+export const {storeAddress, toggleRainbow} = addressSlice.actions;
 export default addressSlice.reducer;

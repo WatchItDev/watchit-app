@@ -1,9 +1,9 @@
-import { ERROR_MESSAGES, ERRORS } from '@src/utils/notifications/errors.ts';
-import { SUCCESS_MESSAGES, SUCCESS } from '@src/utils/notifications/success.ts';
-import { WARNING_MESSAGES, WARNING } from '@src/utils/notifications/warnings.ts';
-import { INFO, INFO_MESSAGES } from '@notifications/info.ts';
+import {ERROR_MESSAGES, ERRORS} from "@src/utils/notifications/errors.ts";
+import {SUCCESS_MESSAGES, SUCCESS} from "@src/utils/notifications/success.ts";
+import {WARNING_MESSAGES, WARNING} from "@src/utils/notifications/warnings.ts";
+import {INFO, INFO_MESSAGES} from "@notifications/info.ts";
 
-type NotificationType = 'error' | 'success' | 'warning' | 'info';
+type NotificationType = "error" | "success" | "warning" | "info";
 
 let globalEnqueueSnackbar: ((message: string, options?: object) => void) | null = null;
 
@@ -35,32 +35,32 @@ const notify = (
   text: ERRORS | SUCCESS | WARNING | INFO,
   data?: Record<string, any>,
   fallbackMessage?: string,
-  options?: any
+  options?: any,
 ) => {
   if (!globalEnqueueSnackbar) {
-    console.error('No globalEnqueueSnackbar is set. Cannot notify messages.');
+    console.error("No globalEnqueueSnackbar is set. Cannot notify messages.");
     return;
   }
 
   let message: string;
   switch (typeNotification) {
-    case 'error':
+    case "error":
       message =
         ERROR_MESSAGES[text as ERRORS] || fallbackMessage || ERROR_MESSAGES[ERRORS.UNKNOWN_ERROR];
       break;
-    case 'success':
-      message = SUCCESS_MESSAGES[text as SUCCESS] || fallbackMessage || 'Operation successful.';
+    case "success":
+      message = SUCCESS_MESSAGES[text as SUCCESS] || fallbackMessage || "Operation successful.";
       break;
-    case 'warning':
-      message = WARNING_MESSAGES[text as WARNING] || fallbackMessage || 'Warning.';
+    case "warning":
+      message = WARNING_MESSAGES[text as WARNING] || fallbackMessage || "Warning.";
       break;
 
-    case 'info':
-      message = INFO_MESSAGES[text as INFO] || fallbackMessage || 'Information.';
+    case "info":
+      message = INFO_MESSAGES[text as INFO] || fallbackMessage || "Information.";
       break;
 
     default:
-      console.error('Unknown notification type');
+      console.error("Unknown notification type");
       return;
   }
 
@@ -68,7 +68,7 @@ const notify = (
     message = replaceTemplateTags(message, data);
   }
 
-  globalEnqueueSnackbar(message, { variant: typeNotification, ...options });
+  globalEnqueueSnackbar(message, {variant: typeNotification, ...options});
 };
 
 /**
@@ -78,9 +78,9 @@ const notify = (
 export function notifyError(
   errorName: ERRORS,
   data?: Record<string, any>,
-  fallbackMessage?: string
+  fallbackMessage?: string,
 ) {
-  notify('error', errorName, data, fallbackMessage || 'An unknown error has occurred.');
+  notify("error", errorName, data, fallbackMessage || "An unknown error has occurred.");
 }
 
 /**
@@ -91,9 +91,9 @@ export function notifySuccess(
   successName: SUCCESS,
   data?: Record<string, any>,
   fallbackMessage?: string,
-  options?: any
+  options?: any,
 ) {
-  notify('success', successName, data, fallbackMessage || 'Operation successful.', options);
+  notify("success", successName, data, fallbackMessage || "Operation successful.", options);
 }
 
 /**
@@ -104,9 +104,9 @@ export function notifyWarning(
   warningName: WARNING,
   data?: Record<string, any>,
   fallbackMessage?: string,
-  options?: any
+  options?: any,
 ) {
-  notify('warning', warningName, data, fallbackMessage || 'Warning.', options);
+  notify("warning", warningName, data, fallbackMessage || "Warning.", options);
 }
 
 /**
@@ -117,7 +117,7 @@ export function notifyInfo(
   infoName: INFO,
   data?: Record<string, any>,
   fallbackMessage?: string,
-  options?: any
+  options?: any,
 ) {
-  notify('info', infoName, data, fallbackMessage || 'Information.', options);
+  notify("info", infoName, data, fallbackMessage || "Information.", options);
 }

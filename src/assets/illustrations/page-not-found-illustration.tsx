@@ -1,13 +1,13 @@
-import { memo } from 'react';
+import {memo} from "react";
 // @mui
-import { useTheme } from '@mui/material/styles';
-import Box, { BoxProps } from '@mui/material/Box';
+import {useTheme} from "@mui/material/styles";
+import Box, {BoxProps} from "@mui/material/Box";
 //
-import BackgroundShape from './background-shape';
+import BackgroundShape from "./background-shape";
 
 // ----------------------------------------------------------------------
 
-function PageNotFoundIllustration({ ...other }: BoxProps) {
+function PageNotFoundIllustration({...other}: BoxProps) {
   const theme = useTheme();
 
   const PRIMARY_LIGHT = theme.palette.primary.light;
@@ -25,8 +25,7 @@ function PageNotFoundIllustration({ ...other }: BoxProps) {
       height="100%"
       viewBox="0 0 480 360"
       xmlns="http://www.w3.org/2000/svg"
-      {...other}
-    >
+      {...other}>
       <BackgroundShape />
 
       <image href="/assets/illustrations/characters/character_6.png" height="300" x="205" y="30" />
@@ -61,8 +60,7 @@ function PageNotFoundIllustration({ ...other }: BoxProps) {
           x2="78.3"
           y1="187.77"
           y2="305.935"
-          gradientUnits="userSpaceOnUse"
-        >
+          gradientUnits="userSpaceOnUse">
           <stop stopColor={PRIMARY_LIGHT} />
           <stop offset="1" stopColor={PRIMARY_DARK} />
         </linearGradient>

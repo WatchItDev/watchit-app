@@ -1,35 +1,35 @@
 // REACT IMPORTS
-import { PropsWithChildren } from 'react';
+import {PropsWithChildren} from "react";
 
 // Redux
-import { useSelector } from 'react-redux';
+import {useSelector} from "react-redux";
 
 // MUI IMPORTS
-import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
-import { Profile } from '@lens-protocol/api-bindings';
-import CircularProgress from '@mui/material/CircularProgress';
+import Box from "@mui/material/Box";
+import Stack from "@mui/material/Stack";
+import {Profile} from "@lens-protocol/api-bindings";
+import CircularProgress from "@mui/material/CircularProgress";
 
 // LENS IMPORTS
-import { appId, PublicationType, usePublications } from '@lens-protocol/react-web';
+import {appId, PublicationType, usePublications} from "@lens-protocol/react-web";
 
 // VIEM IMPORTS
-import { Address } from 'viem';
+import {Address} from "viem";
 
 // LOCAL IMPORTS
-import ProfileCover from './profile-cover';
-import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
-import { useHasAccess } from '@src/hooks/use-has-access.ts';
-import { useIsPolicyAuthorized } from '@src/hooks/use-is-policy-authorized.ts';
-import FollowUnfollowButton from '@src/components/follow-unfollow-button.tsx';
-import { useGetPolicyAttestation } from '@src/hooks/use-get-policy-attestation.ts';
+import ProfileCover from "./profile-cover";
+import {GLOBAL_CONSTANTS} from "@src/config-global.ts";
+import {useHasAccess} from "@src/hooks/use-has-access.ts";
+import {useIsPolicyAuthorized} from "@src/hooks/use-is-policy-authorized.ts";
+import FollowUnfollowButton from "@src/components/follow-unfollow-button.tsx";
+import {useGetPolicyAttestation} from "@src/hooks/use-get-policy-attestation.ts";
 
 // Profile Components
-import ProfileReport from '@src/sections/user/profile-report.tsx';
+import ProfileReport from "@src/sections/user/profile-report.tsx";
 import ProfileRightSidebar from "@src/sections/user/profile-right-sidebar.tsx";
 import ProfileJoin from "@src/sections/user/profile-join.tsx";
 import ProfileUserInfo from "@src/sections/user/profile-user-info.tsx";
-import ProfileWrapper from './profile-wrapper';
+import ProfileWrapper from "./profile-wrapper";
 import ProfileToolbar from "@src/sections/user/profile-toolbar.tsx";
 
 // ----------------------------------------------------------------------
@@ -38,10 +38,7 @@ export interface ProfileHeaderProps {
 }
 
 // ----------------------------------------------------------------------
-const ProfileHeader = ({
-  profile: profileData,
-  children,
-}: PropsWithChildren<ProfileHeaderProps>) => {
+const ProfileHeader = ({profile: profileData, children}: PropsWithChildren<ProfileHeaderProps>) => {
   const sessionData = useSelector((state: any) => state.auth.session);
 
   const profile =
@@ -54,7 +51,7 @@ const ProfileHeader = ({
   } = useGetPolicyAttestation(
     GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS as Address,
     sessionData?.profile?.ownedBy?.address as Address,
-    profile?.ownedBy?.address as Address
+    profile?.ownedBy?.address as Address,
   );
   const {
     hasAccess,
@@ -62,9 +59,9 @@ const ProfileHeader = ({
     fetching: accessFetchingLoading,
     refetch: refetchAccess,
   } = useHasAccess(profile?.ownedBy?.address as Address);
-  const { isAuthorized, loading: authorizedLoading } = useIsPolicyAuthorized(
+  const {isAuthorized, loading: authorizedLoading} = useIsPolicyAuthorized(
     GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS,
-    profile?.ownedBy?.address as Address
+    profile?.ownedBy?.address as Address,
   );
 
   usePublications({
@@ -72,7 +69,7 @@ const ProfileHeader = ({
       from: [...(profile?.id ? [profile.id] : [])],
       publicationTypes: [PublicationType.Post],
       metadata: {
-        publishedOn: [appId('watchit')],
+        publishedOn: [appId("watchit")],
       },
     },
   });
@@ -86,47 +83,61 @@ const ProfileHeader = ({
   const profileImage = (profile?.metadata?.picture as any)?.optimized?.uri;
 
   return (
-    <Box sx={{ my: 3, position: 'relative' }}>
-      <ProfileCover profile={profile} sx={{ height: { xs: 200, md: 300 } }} />
+    <Box sx={{my: 3, position: "relative"}}>
+      <ProfileCover profile={profile} sx={{height: {xs: 200, md: 300}}} />
 
       {sessionData?.authenticated ? <ProfileReport profile={profile} /> : <></>}
 
-      <ProfileWrapper sidebar={<ProfileRightSidebar profile={profile} sidebarProps={{
-        attestationLoading, attestation, hasAccess, accessLoading, isAuthorized, authorizedLoading
-      }} />}>
-
+      <ProfileWrapper
+        sidebar={
+          <ProfileRightSidebar
+            profile={profile}
+            sidebarProps={{
+              attestationLoading,
+              attestation,
+              hasAccess,
+              accessLoading,
+              isAuthorized,
+              authorizedLoading,
+            }}
+          />
+        }>
         <ProfileToolbar profile={profile} profileImage={profileImage} />
 
         <Stack
           direction="column"
-          sx={{ width: '100%', maxWidth: { xs: 'calc(100% - 2rem)', md: '100%' } }}
-        >
-
+          sx={{width: "100%", maxWidth: {xs: "calc(100% - 2rem)", md: "100%"}}}>
           <ProfileUserInfo profile={profile} />
 
-          <Stack direction="row" sx={{ width: '100%', mb: 2, gap: 2, flexWrap: 'wrap' }}>
+          <Stack direction="row" sx={{width: "100%", mb: 2, gap: 2, flexWrap: "wrap"}}>
             {authorizedLoading && (
               <Box
                 sx={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  maxWidth: '100%',
-                  flexWrap: 'wrap',
-                }}
-              >
-                <CircularProgress size={24} sx={{ color: '#fff' }} />
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  maxWidth: "100%",
+                  flexWrap: "wrap",
+                }}>
+                <CircularProgress size={24} sx={{color: "#fff"}} />
               </Box>
             )}
 
-            {isAuthorized && !authorizedLoading && profile?.id !== sessionData?.profile?.id && <ProfileJoin profile={profile} profileJoinProps={{
-              hasAccess, accessLoading, accessFetchingLoading, onSubscribe
-            }} />}
+            {isAuthorized && !authorizedLoading && profile?.id !== sessionData?.profile?.id && (
+              <ProfileJoin
+                profile={profile}
+                profileJoinProps={{
+                  hasAccess,
+                  accessLoading,
+                  accessFetchingLoading,
+                  onSubscribe,
+                }}
+              />
+            )}
 
             {profile?.id !== sessionData?.profile?.id && (
               <FollowUnfollowButton profileId={profile?.id} />
             )}
-
           </Stack>
         </Stack>
       </ProfileWrapper>

@@ -1,26 +1,25 @@
-import { memo } from 'react';
+import {memo} from "react";
 // @mui
-import Stack from '@mui/material/Stack';
+import Stack from "@mui/material/Stack";
 // theme
-import { hideScroll } from '@src/theme/css';
+import {hideScroll} from "@src/theme/css";
 //
-import { NavSectionProps, NavListProps, NavConfigProps } from '../types';
-import { navHorizontalConfig } from '../config';
-import NavList from './nav-list';
+import {NavSectionProps, NavListProps, NavConfigProps} from "../types";
+import {navHorizontalConfig} from "../config";
+import NavList from "./nav-list";
 
 // ----------------------------------------------------------------------
 
-function NavSectionHorizontal({ data, config, sx, ...other }: NavSectionProps) {
+function NavSectionHorizontal({data, config, sx, ...other}: NavSectionProps) {
   return (
     <Stack
       direction="row"
       sx={{
-        mx: 'auto',
+        mx: "auto",
         ...hideScroll.y,
         ...sx,
       }}
-      {...other}
-    >
+      {...other}>
       {data.map((group, index) => (
         <Group
           key={group.subheader || index}
@@ -41,7 +40,7 @@ interface GroupProps {
   config: NavConfigProps;
 }
 
-function Group({ items, config }: GroupProps) {
+function Group({items, config}: GroupProps) {
   return (
     <>
       {items.map((list) => (

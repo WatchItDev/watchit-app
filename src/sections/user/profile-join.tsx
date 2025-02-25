@@ -5,13 +5,13 @@ import {FC, useState} from "react";
 import {openLoginModal} from "@redux/auth";
 import {useDispatch, useSelector} from "react-redux";
 
-interface ProfileJoinProps extends ProfileHeaderProps{
+interface ProfileJoinProps extends ProfileHeaderProps {
   profileJoinProps: {
     hasAccess?: boolean;
     accessLoading: boolean;
     accessFetchingLoading: boolean;
     onSubscribe: () => void;
-  }
+  };
 }
 
 const ProfileJoin: FC<ProfileJoinProps> = ({profile, profileJoinProps}) => {
@@ -25,30 +25,29 @@ const ProfileJoin: FC<ProfileJoinProps> = ({profile, profileJoinProps}) => {
     if (!hasAccess) setOpenSubscribeModal(true);
   };
 
+  return (
+    <>
+      <LoadingButton
+        title={hasAccess ? "Joined" : "Join"}
+        variant={hasAccess ? "outlined" : "contained"}
+        sx={{
+          minWidth: {xs: 90, md: 120},
+          backgroundColor: hasAccess ? "#24262A" : "#fff",
+        }}
+        onClick={handleSubscription}
+        disabled={accessLoading || hasAccess || accessFetchingLoading}
+        loading={accessLoading || accessFetchingLoading}>
+        {hasAccess ? "Joined" : "Join"}
+      </LoadingButton>
 
-  return (<>
-    <LoadingButton
-      title={hasAccess ? 'Joined' : 'Join'}
-      variant={hasAccess ? 'outlined' : 'contained'}
-      sx={{
-        minWidth: { xs: 90, md: 120 },
-        backgroundColor: hasAccess ? '#24262A' : '#fff',
-      }}
-      onClick={handleSubscription}
-      disabled={accessLoading || hasAccess || accessFetchingLoading}
-      loading={accessLoading || accessFetchingLoading}
-    >
-      {hasAccess ? 'Joined' : 'Join'}
-    </LoadingButton>
+      <SubscribeProfileModal
+        isOpen={openSubscribeModal}
+        onClose={() => setOpenSubscribeModal(false)}
+        onSubscribe={onSubscribe}
+        profile={profile}
+      />
+    </>
+  );
+};
 
-    <SubscribeProfileModal
-      isOpen={openSubscribeModal}
-      onClose={() => setOpenSubscribeModal(false)}
-      onSubscribe={onSubscribe}
-      profile={profile}
-    />
-
-  </>)
-}
-
-export default ProfileJoin
+export default ProfileJoin;

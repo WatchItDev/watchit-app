@@ -1,7 +1,7 @@
-import { useState, useEffect, useCallback } from 'react';
-import { Address } from 'viem';
-import { useSelector } from 'react-redux';
-import { useGetPoliciesTerms } from './use-get-policies-terms.ts';
+import {useState, useEffect, useCallback} from "react";
+import {Address} from "viem";
+import {useSelector} from "react-redux";
+import {useGetPoliciesTerms} from "./use-get-policies-terms.ts";
 
 interface HasAccessError {
   message: string;
@@ -24,7 +24,7 @@ interface UseIsPolicyAuthorizedHook {
  */
 export const useIsPolicyAuthorized = (
   policy: Address,
-  holder?: Address
+  holder?: Address,
 ): UseIsPolicyAuthorizedHook => {
   const sessionData = useSelector((state: any) => state.auth.session);
   const userAddress = sessionData?.profile?.ownedBy?.address as Address | undefined;
@@ -51,7 +51,7 @@ export const useIsPolicyAuthorized = (
     // Validate that policy and holder exist
     if (!policy || !(holder ?? userAddress)) {
       setIsAuthorized(false);
-      setError({ message: 'Policy or holder address is missing.' });
+      setError({message: "Policy or holder address is missing."});
       setFetching(false);
       return;
     }
@@ -76,16 +76,16 @@ export const useIsPolicyAuthorized = (
       // Check if the given policy is in the list
       // Assume that each element looks like { policy: string, terms: {...} }
       const isPolicyInList = authorizedHolderPolicies.some(
-        (p: any) => p.policy.toLowerCase() === policy.toLowerCase()
+        (p: any) => p.policy.toLowerCase() === policy.toLowerCase(),
       );
 
       setIsAuthorized(isPolicyInList);
       setError(null);
     } catch (err: any) {
-      console.error('Error checking policy authorization:', err);
+      console.error("Error checking policy authorization:", err);
       setIsAuthorized(undefined);
       setError({
-        message: err?.message || 'An error occurred while checking policy authorization.',
+        message: err?.message || "An error occurred while checking policy authorization.",
       });
     } finally {
       setFetching(false);

@@ -1,11 +1,11 @@
-import { memo } from 'react';
+import {memo} from "react";
 // @mui
-import { useTheme } from '@mui/material/styles';
-import Box, { BoxProps } from '@mui/material/Box';
+import {useTheme} from "@mui/material/styles";
+import Box, {BoxProps} from "@mui/material/Box";
 
 // ----------------------------------------------------------------------
 
-function CheckInIllustration({ ...other }: BoxProps) {
+function CheckInIllustration({...other}: BoxProps) {
   const theme = useTheme();
 
   const PRIMARY_LIGHTER = theme.palette.primary.lighter;
@@ -25,8 +25,7 @@ function CheckInIllustration({ ...other }: BoxProps) {
       height="100%"
       viewBox="0 0 200 200"
       xmlns="http://www.w3.org/2000/svg"
-      {...other}
-    >
+      {...other}>
       <path
         fill="url(#a)"
         d="M134.926 133.612c-1.2-3.2-5.8-4.1-8.1-1.6-1.3-7.8 5-32.3-8.9-32-72.8-.5-48.2-8-52.4 77.7-.1 4.8 4.1 9 8.9 8.9h43.5c14 .4 7.6-24.5 8.9-32.4 2.9 3.2 8.7.8 8.5-3.5-.1-1 .4-16.5-.4-17.1zm-2.5 18.3h-5.6v-17.4h5.6v17.4z"
@@ -71,8 +70,7 @@ function CheckInIllustration({ ...other }: BoxProps) {
           x2="64.751"
           y1="99.643"
           y2="186.617"
-          gradientUnits="userSpaceOnUse"
-        >
+          gradientUnits="userSpaceOnUse">
           <stop stopColor={PRIMARY_LIGHT} />
           <stop offset="1" stopColor={PRIMARY_DARK} />
         </linearGradient>
@@ -83,8 +81,7 @@ function CheckInIllustration({ ...other }: BoxProps) {
           x2="95.286"
           y1="280.421"
           y2="185.693"
-          gradientUnits="userSpaceOnUse"
-        >
+          gradientUnits="userSpaceOnUse">
           <stop stopColor={PRIMARY_LIGHT} />
           <stop offset="1" stopColor={PRIMARY_DARK} />
         </linearGradient>

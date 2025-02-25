@@ -1,20 +1,20 @@
 // @mui
-import { alpha, styled } from '@mui/material/styles';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListSubheader from '@mui/material/ListSubheader';
-import ListItemButton from '@mui/material/ListItemButton';
+import {alpha, styled} from "@mui/material/styles";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListSubheader from "@mui/material/ListSubheader";
+import ListItemButton from "@mui/material/ListItemButton";
 //
-import { NavItemProps, NavConfigProps } from '../types';
+import {NavItemProps, NavConfigProps} from "../types";
 
 // ----------------------------------------------------------------------
 
-type StyledItemProps = Omit<NavItemProps, 'item'> & {
+type StyledItemProps = Omit<NavItemProps, "item"> & {
   config: NavConfigProps;
 };
 
 export const StyledItem = styled(ListItemButton, {
-  shouldForwardProp: (prop) => prop !== 'active',
-})<StyledItemProps>(({ active, depth, config, theme }) => {
+  shouldForwardProp: (prop) => prop !== "active",
+})<StyledItemProps>(({active, depth, config, theme}) => {
   const subItem = depth !== 1;
 
   const deepSubItem = depth > 2;
@@ -22,15 +22,15 @@ export const StyledItem = styled(ListItemButton, {
   const activeStyles = {
     root: {
       color: theme.palette.text.primary,
-      backgroundColor: alpha('#fff', 0.05),
-      '&:hover': {
-        backgroundColor: alpha('#fff', 0.1),
+      backgroundColor: alpha("#fff", 0.05),
+      "&:hover": {
+        backgroundColor: alpha("#fff", 0.1),
       },
     },
     sub: {
       color: theme.palette.text.primary,
-      backgroundColor: 'transparent',
-      '&:hover': {
+      backgroundColor: "transparent",
+      "&:hover": {
         backgroundColor: theme.palette.action.hover,
       },
     },
@@ -71,27 +71,27 @@ interface StyledIconProps {
   size?: number;
 }
 
-export const StyledIcon = styled(ListItemIcon)<StyledIconProps>(({ size }) => ({
+export const StyledIcon = styled(ListItemIcon)<StyledIconProps>(({size}) => ({
   width: size,
   height: size,
-  alignItems: 'center',
-  justifyContent: 'center',
+  alignItems: "center",
+  justifyContent: "center",
 }));
 
 interface StyledDotIconProps {
   active?: boolean;
 }
 
-export const StyledDotIcon = styled('span')<StyledDotIconProps>(({ active, theme }) => ({
+export const StyledDotIcon = styled("span")<StyledDotIconProps>(({active, theme}) => ({
   width: 4,
   height: 4,
-  borderRadius: '50%',
+  borderRadius: "50%",
   backgroundColor: theme.palette.text.disabled,
-  transition: theme.transitions.create(['transform'], {
+  transition: theme.transitions.create(["transform"], {
     duration: theme.transitions.duration.shorter,
   }),
   ...(active && {
-    transform: 'scale(2)',
+    transform: "scale(2)",
     backgroundColor: theme.palette.primary.main,
   }),
 }));
@@ -102,20 +102,20 @@ interface StyledSubheaderProps {
   config: NavConfigProps;
 }
 
-export const StyledSubheader = styled(ListSubheader)<StyledSubheaderProps>(({ config, theme }) => ({
+export const StyledSubheader = styled(ListSubheader)<StyledSubheaderProps>(({config, theme}) => ({
   ...theme.typography.overline,
   fontSize: 11,
-  cursor: 'pointer',
-  display: 'inline-flex',
+  cursor: "pointer",
+  display: "inline-flex",
   padding: config.itemPadding,
   paddingTop: theme.spacing(2),
   marginBottom: config.itemGap,
   paddingBottom: theme.spacing(1),
   color: theme.palette.text.disabled,
-  transition: theme.transitions.create(['color'], {
+  transition: theme.transitions.create(["color"], {
     duration: theme.transitions.duration.shortest,
   }),
-  '&:hover': {
+  "&:hover": {
     color: theme.palette.text.primary,
   },
 }));

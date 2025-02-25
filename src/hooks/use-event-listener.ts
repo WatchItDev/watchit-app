@@ -1,15 +1,15 @@
-import { RefObject, useEffect, useRef, useLayoutEffect } from 'react';
+import {RefObject, useEffect, useRef, useLayoutEffect} from "react";
 
 // ----------------------------------------------------------------------
 
-const useIsomorphicLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect;
+const useIsomorphicLayoutEffect = typeof window !== "undefined" ? useLayoutEffect : useEffect;
 
 // Window Event based useEventListener interface
 export function useEventListener<K extends keyof WindowEventMap>(
   eventName: K,
   handler: (event: WindowEventMap[K]) => void,
   element?: undefined,
-  options?: boolean | AddEventListenerOptions
+  options?: boolean | AddEventListenerOptions,
 ): void;
 
 // Element Event based useEventListener interface
@@ -20,7 +20,7 @@ export function useEventListener<
   eventName: K,
   handler: (event: HTMLElementEventMap[K]) => void,
   element: RefObject<T>,
-  options?: boolean | AddEventListenerOptions
+  options?: boolean | AddEventListenerOptions,
 ): void;
 
 // Document Event based useEventListener interface
@@ -28,7 +28,7 @@ export function useEventListener<K extends keyof DocumentEventMap>(
   eventName: K,
   handler: (event: DocumentEventMap[K]) => void,
   element: RefObject<Document>,
-  options?: boolean | AddEventListenerOptions
+  options?: boolean | AddEventListenerOptions,
 ): void;
 
 export function useEventListener<
@@ -39,7 +39,7 @@ export function useEventListener<
   eventName: KW | KH,
   handler: (event: WindowEventMap[KW] | HTMLElementEventMap[KH] | Event) => void,
   element?: RefObject<T>,
-  options?: boolean | AddEventListenerOptions
+  options?: boolean | AddEventListenerOptions,
 ) {
   // Create a ref that stores handler
   const savedHandler = useRef(handler);
@@ -61,7 +61,7 @@ export function useEventListener<
     targetElement.addEventListener(eventName, eventListener, options);
 
     // Remove event listener on cleanup
-     
+
     return () => {
       targetElement.removeEventListener(eventName, eventListener);
     };

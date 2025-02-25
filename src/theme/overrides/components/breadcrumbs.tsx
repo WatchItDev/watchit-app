@@ -1,4 +1,4 @@
-import { Theme } from '@mui/material/styles';
+import {Theme} from "@mui/material/styles";
 
 // ----------------------------------------------------------------------
 
@@ -11,9 +11,9 @@ export function breadcrumbs(theme: Theme) {
           marginRight: theme.spacing(2),
         },
         li: {
-          display: 'inline-flex',
+          display: "inline-flex",
           margin: theme.spacing(0.25, 0),
-          '& > *': {
+          "& > *": {
             ...theme.typography.body2,
           },
         },

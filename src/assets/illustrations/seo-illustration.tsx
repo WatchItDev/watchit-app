@@ -1,13 +1,13 @@
-import { memo } from 'react';
+import {memo} from "react";
 // @mui
-import { useTheme } from '@mui/material/styles';
-import Box, { BoxProps } from '@mui/material/Box';
+import {useTheme} from "@mui/material/styles";
+import Box, {BoxProps} from "@mui/material/Box";
 //
-import BackgroundShape from './background-shape';
+import BackgroundShape from "./background-shape";
 
 // ----------------------------------------------------------------------
 
-function SeoIllustration({ ...other }: BoxProps) {
+function SeoIllustration({...other}: BoxProps) {
   const theme = useTheme();
 
   const PRIMARY_LIGHT = theme.palette.primary.light;
@@ -21,8 +21,7 @@ function SeoIllustration({ ...other }: BoxProps) {
       height="100%"
       viewBox="0 0 480 360"
       xmlns="http://www.w3.org/2000/svg"
-      {...other}
-    >
+      {...other}>
       <BackgroundShape />
 
       <path
@@ -122,8 +121,7 @@ function SeoIllustration({ ...other }: BoxProps) {
           x="232.807"
           y="109.722"
           colorInterpolationFilters="sRGB"
-          filterUnits="userSpaceOnUse"
-        >
+          filterUnits="userSpaceOnUse">
           <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
           <feGaussianBlur result="effect1_foregroundBlur_1_51" stdDeviation="10" />
@@ -135,8 +133,7 @@ function SeoIllustration({ ...other }: BoxProps) {
           x2="47.397"
           y1="107.95"
           y2="281.395"
-          gradientUnits="userSpaceOnUse"
-        >
+          gradientUnits="userSpaceOnUse">
           <stop stopColor={PRIMARY_LIGHT} />
           <stop offset="1" stopColor={PRIMARY_DARK} />
         </linearGradient>
@@ -147,8 +144,7 @@ function SeoIllustration({ ...other }: BoxProps) {
           x2="248.43"
           y1="128.061"
           y2="169.533"
-          gradientUnits="userSpaceOnUse"
-        >
+          gradientUnits="userSpaceOnUse">
           <stop stopColor={PRIMARY_LIGHT} />
           <stop offset="1" stopColor={PRIMARY_DARK} />
         </linearGradient>
@@ -159,8 +155,7 @@ function SeoIllustration({ ...other }: BoxProps) {
           x2="248.43"
           y1="128.061"
           y2="169.533"
-          gradientUnits="userSpaceOnUse"
-        >
+          gradientUnits="userSpaceOnUse">
           <stop stopColor={PRIMARY_LIGHT} />
           <stop offset="1" stopColor={PRIMARY_DARK} />
         </linearGradient>
@@ -171,8 +166,7 @@ function SeoIllustration({ ...other }: BoxProps) {
           x2="248.43"
           y1="128.061"
           y2="169.533"
-          gradientUnits="userSpaceOnUse"
-        >
+          gradientUnits="userSpaceOnUse">
           <stop stopColor={PRIMARY_LIGHT} />
           <stop offset="1" stopColor={PRIMARY_DARK} />
         </linearGradient>
@@ -183,8 +177,7 @@ function SeoIllustration({ ...other }: BoxProps) {
           x2="248.43"
           y1="128.061"
           y2="169.533"
-          gradientUnits="userSpaceOnUse"
-        >
+          gradientUnits="userSpaceOnUse">
           <stop stopColor={PRIMARY_LIGHT} />
           <stop offset="1" stopColor={PRIMARY_DARK} />
         </linearGradient>
@@ -195,8 +188,7 @@ function SeoIllustration({ ...other }: BoxProps) {
           x2="109.604"
           y1="76"
           y2="104.047"
-          gradientUnits="userSpaceOnUse"
-        >
+          gradientUnits="userSpaceOnUse">
           <stop stopColor={PRIMARY_LIGHT} />
           <stop offset="1" stopColor={PRIMARY_DARK} />
         </linearGradient>
@@ -207,8 +199,7 @@ function SeoIllustration({ ...other }: BoxProps) {
           x2="109.604"
           y1="76"
           y2="104.047"
-          gradientUnits="userSpaceOnUse"
-        >
+          gradientUnits="userSpaceOnUse">
           <stop stopColor={PRIMARY_LIGHT} />
           <stop offset="1" stopColor={PRIMARY_DARK} />
         </linearGradient>
@@ -219,8 +210,7 @@ function SeoIllustration({ ...other }: BoxProps) {
           x2="109.604"
           y1="76"
           y2="104.047"
-          gradientUnits="userSpaceOnUse"
-        >
+          gradientUnits="userSpaceOnUse">
           <stop stopColor={PRIMARY_LIGHT} />
           <stop offset="1" stopColor={PRIMARY_DARK} />
         </linearGradient>

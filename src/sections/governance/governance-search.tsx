@@ -1,17 +1,17 @@
-import parse from 'autosuggest-highlight/parse';
-import match from 'autosuggest-highlight/match';
+import parse from "autosuggest-highlight/parse";
+import match from "autosuggest-highlight/match";
 // @mui
-import Link from '@mui/material/Link';
-import TextField from '@mui/material/TextField';
-import Typography from '@mui/material/Typography';
-import InputAdornment from '@mui/material/InputAdornment';
-import Autocomplete, { autocompleteClasses } from '@mui/material/Autocomplete';
+import Link from "@mui/material/Link";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
+import InputAdornment from "@mui/material/InputAdornment";
+import Autocomplete, {autocompleteClasses} from "@mui/material/Autocomplete";
 // components
-import Iconify from '@src/components/iconify';
-import { useRouter } from '@src/routes/hooks';
-import SearchNotFound from '@src/components/search-not-found';
+import Iconify from "@src/components/iconify";
+import {useRouter} from "@src/routes/hooks";
+import SearchNotFound from "@src/components/search-not-found";
 // types
-import { IPostItem } from '@src/types/blog';
+import {IPostItem} from "@src/types/blog";
 import AvatarProfile from "@src/components/avatar/avatar.tsx";
 
 // ----------------------------------------------------------------------
@@ -24,7 +24,7 @@ interface Props {
   loading?: boolean;
 }
 
-export default function GovernanceSearch({ query, results, onSearch, hrefItem, loading }: Props) {
+export default function GovernanceSearch({query, results, onSearch, hrefItem, loading}: Props) {
   const router = useRouter();
 
   const handleClick = (title: string) => {
@@ -33,7 +33,7 @@ export default function GovernanceSearch({ query, results, onSearch, hrefItem, l
 
   const handleKeyUp = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (query) {
-      if (event.key === 'Enter') {
+      if (event.key === "Enter") {
         handleClick(query);
       }
     }
@@ -41,18 +41,18 @@ export default function GovernanceSearch({ query, results, onSearch, hrefItem, l
 
   return (
     <Autocomplete
-      sx={{ width: { xs: 1, sm: 260 } }}
+      sx={{width: {xs: 1, sm: 260}}}
       loading={loading}
       autoHighlight
       popupIcon={null}
       options={results}
       onInputChange={(event, newValue) => onSearch(newValue)}
       getOptionLabel={(option) => option.title}
-      noOptionsText={<SearchNotFound query={query} sx={{ bgcolor: 'unset' }} />}
+      noOptionsText={<SearchNotFound query={query} sx={{bgcolor: "unset"}} />}
       isOptionEqualToValue={(option, value) => option.id === value.id}
       slotProps={{
         popper: {
-          placement: 'bottom-start',
+          placement: "bottom-start",
           sx: {
             minWidth: 320,
           },
@@ -74,19 +74,19 @@ export default function GovernanceSearch({ query, results, onSearch, hrefItem, l
             ...params.InputProps,
             startAdornment: (
               <InputAdornment position="start">
-                <Iconify icon="eva:search-fill" sx={{ ml: 1, color: 'text.disabled' }} />
+                <Iconify icon="eva:search-fill" sx={{ml: 1, color: "text.disabled"}} />
               </InputAdornment>
             ),
             endAdornment: (
               <>
-                {loading ? <Iconify icon="svg-spinners:8-dots-rotate" sx={{ mr: -3 }} /> : null}
+                {loading ? <Iconify icon="svg-spinners:8-dots-rotate" sx={{mr: -3}} /> : null}
                 {params.InputProps.endAdornment}
               </>
             ),
           }}
         />
       )}
-      renderOption={(props, post, { inputValue }) => {
+      renderOption={(props, post, {inputValue}) => {
         const matches = match(post.title, inputValue);
         const parts = parse(post.title, matches);
 
@@ -111,12 +111,11 @@ export default function GovernanceSearch({ query, results, onSearch, hrefItem, l
                 <Typography
                   key={index}
                   component="span"
-                  color={part.highlight ? 'primary' : 'textPrimary'}
+                  color={part.highlight ? "primary" : "textPrimary"}
                   sx={{
-                    typography: 'body2',
-                    fontWeight: part.highlight ? 'fontWeightSemiBold' : 'fontWeightMedium',
-                  }}
-                >
+                    typography: "body2",
+                    fontWeight: part.highlight ? "fontWeightSemiBold" : "fontWeightMedium",
+                  }}>
                   {part.text}
                 </Typography>
               ))}

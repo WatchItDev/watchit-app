@@ -1,5 +1,5 @@
 // REACT IMPORTS
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from "react";
 
 // MUI IMPORTS
 import {
@@ -13,23 +13,23 @@ import {
   Stack,
   TextField,
   Typography,
-} from '@mui/material';
+} from "@mui/material";
 
 // ETHERS IMPORTS
-import { ethers } from 'ethers';
+import {ethers} from "ethers";
 
 // VIEM IMPORTS
-import { encodeAbiParameters } from 'viem';
+import {encodeAbiParameters} from "viem";
 
 // LOCAL IMPORTS
-import { GLOBAL_CONSTANTS } from '@src/config-global';
-import { useAuthorizePolicy } from '@src/hooks/use-authorize-policy.ts';
-import NeonPaper from '@src/sections/publication/NeonPaperContainer.tsx';
-import Box from '@mui/material/Box';
-import LoadingButton from '@mui/lab/LoadingButton';
-import { notifyError, notifySuccess } from '@notifications/internal-notifications.ts';
-import { SUCCESS } from '@notifications/success.ts';
-import { ERRORS } from '@notifications/errors.ts';
+import {GLOBAL_CONSTANTS} from "@src/config-global";
+import {useAuthorizePolicy} from "@src/hooks/use-authorize-policy.ts";
+import NeonPaper from "@src/sections/publication/NeonPaperContainer.tsx";
+import Box from "@mui/material/Box";
+import LoadingButton from "@mui/lab/LoadingButton";
+import {notifyError, notifySuccess} from "@notifications/internal-notifications.ts";
+import {SUCCESS} from "@notifications/success.ts";
+import {ERRORS} from "@notifications/errors.ts";
 
 // ----------------------------------------------------------------------
 
@@ -44,15 +44,15 @@ export const ActivateSubscriptionProfileModal = ({
   isOpen,
   onClose,
 }: ActivateSubscriptionProfileModalProps) => {
-  const [selectedAmount, setSelectedAmount] = useState('10');
-  const [customAmount, setCustomAmount] = useState('');
+  const [selectedAmount, setSelectedAmount] = useState("10");
+  const [customAmount, setCustomAmount] = useState("");
 
-  const { authorize, loading, error } = useAuthorizePolicy();
+  const {authorize, loading, error} = useAuthorizePolicy();
 
   const amountOptions = [
-    { value: '1', title: '1' },
-    { value: '5', title: '5' },
-    { value: '10', title: '10' },
+    {value: "1", title: "1"},
+    {value: "5", title: "5"},
+    {value: "10", title: "10"},
   ];
 
   useEffect(() => {
@@ -61,11 +61,11 @@ export const ActivateSubscriptionProfileModal = ({
 
   const handleAmountChange = (value: string) => {
     setSelectedAmount(value);
-    setCustomAmount('');
+    setCustomAmount("");
   };
 
   const handleCustomAmountChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSelectedAmount('');
+    setSelectedAmount("");
     setCustomAmount(event.target.value);
   };
 
@@ -82,8 +82,8 @@ export const ActivateSubscriptionProfileModal = ({
 
       // Encode parameters: amount in Wei and MMC address
       const types = [
-        { name: 'amount', type: 'uint256' },
-        { name: 'token', type: 'address' },
+        {name: "amount", type: "uint256"},
+        {name: "token", type: "address"},
       ];
       const values = [amountInWei, GLOBAL_CONSTANTS.MMC_ADDRESS];
       // @ts-ignore
@@ -103,7 +103,7 @@ export const ActivateSubscriptionProfileModal = ({
   };
 
   // Calculate estimated costs
-  const amountNumber = parseFloat(customAmount || selectedAmount || '0');
+  const amountNumber = parseFloat(customAmount || selectedAmount || "0");
 
   const weeklyCost = (amountNumber * 7).toFixed(2);
   const fifteenDaysCost = (amountNumber * 15).toFixed(2);
@@ -113,11 +113,11 @@ export const ActivateSubscriptionProfileModal = ({
   return (
     <>
       <Dialog open={isOpen} onClose={onClose} fullWidth maxWidth="xs">
-        <DialogTitle sx={{ pb: 2 }}>Set joining prices</DialogTitle>
-        <Divider sx={{ mb: 2, borderStyle: 'dashed' }} />
+        <DialogTitle sx={{pb: 2}}>Set joining prices</DialogTitle>
+        <Divider sx={{mb: 2, borderStyle: "dashed"}} />
         <DialogContent>
-          <Typography variant="body2" color="textSecondary" sx={{ mb: 3 }}>
-            Users will pay a <span style={{ fontWeight: 'bolder' }}>daily</span> rate to access your
+          <Typography variant="body2" color="textSecondary" sx={{mb: 3}}>
+            Users will pay a <span style={{fontWeight: "bolder"}}>daily</span> rate to access your
             content.
           </Typography>
           <Stack spacing={2}>
@@ -127,26 +127,25 @@ export const ActivateSubscriptionProfileModal = ({
                   key={option.value}
                   onClick={() => handleAmountChange(option.value)}
                   sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'center',
-                    alignItems: 'center',
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                    alignItems: "center",
                     p: 1.5,
-                    cursor: 'pointer',
-                    width: '33%',
-                    backgroundColor: 'transparent',
+                    cursor: "pointer",
+                    width: "33%",
+                    backgroundColor: "transparent",
                     opacity: selectedAmount === option.value ? 1 : 0.4,
                     border:
                       selectedAmount === option.value
-                        ? '2px solid rgba(255,255,255,0.3)'
-                        : '1px solid rgba(255,255,255,0.3)',
-                    '&:hover': { opacity: 1 },
-                  }}
-                >
+                        ? "2px solid rgba(255,255,255,0.3)"
+                        : "1px solid rgba(255,255,255,0.3)",
+                    "&:hover": {opacity: 1},
+                  }}>
                   <Typography variant="body1" fontWeight="bold">
                     {option.title}
                   </Typography>
-                  <Typography variant="caption" textAlign={'center'}>
+                  <Typography variant="caption" textAlign={"center"}>
                     MMC
                   </Typography>
                 </Paper>
@@ -159,15 +158,15 @@ export const ActivateSubscriptionProfileModal = ({
               value={customAmount}
               onChange={handleCustomAmountChange}
               InputProps={{
-                inputProps: { min: 1 },
+                inputProps: {min: 1},
               }}
             />
           </Stack>
 
-          <Divider sx={{ my: 2, borderStyle: 'dashed' }} />
+          <Divider sx={{my: 2, borderStyle: "dashed"}} />
 
           <Stack spacing={1}>
-            <Typography variant="body2" color="textSecondary" sx={{ mb: 1 }}>
+            <Typography variant="body2" color="textSecondary" sx={{mb: 1}}>
               Users will pay:
             </Typography>
             <Stack spacing={1} direction="row">
@@ -175,11 +174,10 @@ export const ActivateSubscriptionProfileModal = ({
                 spacing={0}
                 sx={{
                   p: 1,
-                  backgroundColor: 'rgba(255,255,255,0.05)',
+                  backgroundColor: "rgba(255,255,255,0.05)",
                   borderRadius: 1,
                   flexGrow: 1,
-                }}
-              >
+                }}>
                 <Typography variant="body1" textAlign="center">
                   {weeklyCost} MMC
                 </Typography>
@@ -191,11 +189,10 @@ export const ActivateSubscriptionProfileModal = ({
                 spacing={0}
                 sx={{
                   p: 1,
-                  backgroundColor: 'rgba(255,255,255,0.05)',
+                  backgroundColor: "rgba(255,255,255,0.05)",
                   borderRadius: 1,
                   flexGrow: 1,
-                }}
-              >
+                }}>
                 <Typography variant="body1" textAlign="center">
                   {fifteenDaysCost} MMC
                 </Typography>
@@ -207,11 +204,10 @@ export const ActivateSubscriptionProfileModal = ({
                 spacing={0}
                 sx={{
                   p: 1,
-                  backgroundColor: 'rgba(255,255,255,0.05)',
+                  backgroundColor: "rgba(255,255,255,0.05)",
                   borderRadius: 1,
                   flexGrow: 1,
-                }}
-              >
+                }}>
                 <Typography variant="body1" textAlign="center">
                   {monthlyCost} MMC
                 </Typography>
@@ -222,26 +218,24 @@ export const ActivateSubscriptionProfileModal = ({
             </Stack>
           </Stack>
         </DialogContent>
-        <Divider sx={{ mt: 3, borderStyle: 'dashed' }} />
+        <Divider sx={{mt: 3, borderStyle: "dashed"}} />
         <DialogActions>
           <Button variant="text" onClick={onClose}>
             Cancel
           </Button>
           <RainbowEffect
             {...(loading && {
-              borderRadius: '10px',
-              animationSpeed: '3s',
-              padding: '0',
-              width: 'auto',
-            })}
-          >
+              borderRadius: "10px",
+              animationSpeed: "3s",
+              padding: "0",
+              width: "auto",
+            })}>
             <LoadingButton
               variant="contained"
-              sx={{ backgroundColor: '#fff' }}
+              sx={{backgroundColor: "#fff"}}
               onClick={handleAuthorizeSubscription}
               disabled={loading || (!selectedAmount && !customAmount)}
-              loading={loading}
-            >
+              loading={loading}>
               Confirm
             </LoadingButton>
           </RainbowEffect>

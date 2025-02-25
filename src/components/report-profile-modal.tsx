@@ -1,6 +1,6 @@
 // LENS IMPORTS
-import { useReportProfile, ProfileReportReason } from '@lens-protocol/react-web';
-import { ReportModalBase } from '@src/components/report-modal-base.tsx';
+import {useReportProfile, ProfileReportReason} from "@lens-protocol/react-web";
+import {ReportModalBase} from "@src/components/report-modal-base.tsx";
 
 // ----------------------------------------------------------------------
 
@@ -12,8 +12,8 @@ interface ProfileReportModalProps {
 
 // ----------------------------------------------------------------------
 
-export const ReportProfileModal = ({ profile, isOpen, onClose }: ProfileReportModalProps) => {
-  const { execute: report } = useReportProfile();
+export const ReportProfileModal = ({profile, isOpen, onClose}: ProfileReportModalProps) => {
+  const {execute: report} = useReportProfile();
 
   const handleSubmit = async (reason: string, comments: string) => {
     return report({

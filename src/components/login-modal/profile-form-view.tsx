@@ -1,44 +1,44 @@
 // REACT IMPORTS
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
+import React, {useCallback, useEffect, useRef, useState} from "react";
+import {useFormik} from "formik";
+import * as Yup from "yup";
 
 // REDUX IMPORTS
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '@reduxjs/toolkit/query';
+import {useDispatch, useSelector} from "react-redux";
+import {RootState} from "@reduxjs/toolkit/query";
 import {
   closeLoginModal,
   resetCurrentStep,
   setIsUpdatingMetadata,
   setProfileCreationStep,
   updateProfileData,
-} from '@redux/auth';
+} from "@redux/auth";
 
 // MUI IMPORTS
-import { Box, Button, Grid, Input, TextField, Typography } from '@mui/material';
+import {Box, Button, Grid, Input, TextField, Typography} from "@mui/material";
 
 // PROJECTS IMPORTS
-import Image from '../image';
-import { ProfileData } from '@src/auth/context/web3Auth/types.ts';
-import { uploadImageToIPFS, uploadMetadataToIPFS } from '@src/utils/ipfs.ts';
-import { buildProfileMetadata } from '@src/utils/profile.ts';
-import TextMaxLine from '@src/components/text-max-line';
-import NeonPaper from '@src/sections/publication/NeonPaperContainer';
-import uuidv4 from '@src/utils/uuidv4';
+import Image from "../image";
+import {ProfileData} from "@src/auth/context/web3Auth/types.ts";
+import {uploadImageToIPFS, uploadMetadataToIPFS} from "@src/utils/ipfs.ts";
+import {buildProfileMetadata} from "@src/utils/profile.ts";
+import TextMaxLine from "@src/components/text-max-line";
+import NeonPaper from "@src/sections/publication/NeonPaperContainer";
+import uuidv4 from "@src/utils/uuidv4";
 
 // LENS IMPORTS
-import { Profile } from '@lens-protocol/api-bindings';
+import {Profile} from "@lens-protocol/api-bindings";
 import {
   LoginError,
   SessionType,
   useCreateProfile,
   useSetProfileMetadata,
-} from '@lens-protocol/react-web';
+} from "@lens-protocol/react-web";
 
 // NOTIFICATIONS IMPORTS
-import { notifyError, notifySuccess } from '@notifications/internal-notifications';
-import { SUCCESS } from '@notifications/success';
-import { ERRORS } from '@notifications/errors.ts';
+import {notifyError, notifySuccess} from "@notifications/internal-notifications";
+import {SUCCESS} from "@notifications/success";
+import {ERRORS} from "@notifications/errors.ts";
 import AvatarProfile from "@src/components/avatar/avatar.tsx";
 
 // ----------------------------------------------------------------------
@@ -46,7 +46,7 @@ import AvatarProfile from "@src/components/avatar/avatar.tsx";
 export interface ProfileFormProps {
   address: string;
   initialValues?: any;
-  mode: 'register' | 'update';
+  mode: "register" | "update";
   error?: LoginError;
   onSuccess: () => void;
   onCancel: () => void;
@@ -55,20 +55,20 @@ export interface ProfileFormProps {
 
 // ----------------------------------------------------------------------
 
-const getButtonLabel = (mode: 'register' | 'update', step: number) => {
-  if (mode === 'register') {
+const getButtonLabel = (mode: "register" | "update", step: number) => {
+  if (mode === "register") {
     switch (step) {
       case 1:
-        return 'Creating';
+        return "Creating";
       case 2:
-        return 'Storing data on blockchain...';
+        return "Storing data on blockchain...";
       case 3:
-        return 'Finalizing...';
+        return "Finalizing...";
       default:
-        return 'Create profile';
+        return "Create profile";
     }
   } else {
-    return 'Update profile';
+    return "Update profile";
   }
 };
 
@@ -85,7 +85,7 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
 
   const [registrationLoading, setRegistrationLoading] = useState(false);
   // @ts-ignore
-  const { currentStep } = useSelector((state: RootState) => state.auth);
+  const {currentStep} = useSelector((state: RootState) => state.auth);
 
   const PaperElement = currentStep !== 0 ? NeonPaper : Box;
 
@@ -111,15 +111,15 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
 
   const validationSchema = Yup.object({
     username: Yup.string()
-      .min(5, 'Username must be at least 5 characters')
-      .required('Username is required'),
-    name: Yup.string().min(3, 'Name must be at least 3 characters').required('Name is required'),
-    bio: Yup.string().min(10, 'Bio must be at least 10 characters').required('Bio is required'),
+      .min(5, "Username must be at least 5 characters")
+      .required("Username is required"),
+    name: Yup.string().min(3, "Name must be at least 3 characters").required("Name is required"),
+    bio: Yup.string().min(10, "Bio must be at least 10 characters").required("Bio is required"),
     socialLinks: Yup.object({
-      twitter: Yup.string().url('Enter a valid URL'),
-      instagram: Yup.string().url('Enter a valid URL'),
-      orb: Yup.string().url('Enter a valid URL'),
-      farcaster: Yup.string().url('Enter a valid URL'),
+      twitter: Yup.string().url("Enter a valid URL"),
+      instagram: Yup.string().url("Enter a valid URL"),
+      orb: Yup.string().url("Enter a valid URL"),
+      farcaster: Yup.string().url("Enter a valid URL"),
     }),
   });
 
@@ -140,15 +140,15 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
       dispatch(setIsUpdatingMetadata(true));
 
       try {
-        dispatch(setProfileCreationStep({ step: 2 }));
+        dispatch(setProfileCreationStep({step: 2}));
 
         // Upload images to IPFS
         const profileImageURI =
-          typeof data?.profileImage === 'string'
+          typeof data?.profileImage === "string"
             ? data?.profileImage
             : await uploadImageToIPFS(data.profileImage);
         const backgroundImageURI =
-          typeof data?.backgroundImage === 'string'
+          typeof data?.backgroundImage === "string"
             ? data?.backgroundImage
             : await uploadImageToIPFS(data.backgroundImage);
         // Build profile metadata
@@ -172,14 +172,14 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
             profileImage: profileImage ?? sessionData?.profile?.metadata?.picture?.optimized?.uri,
             backgroundImage:
               backgroundImage ?? sessionData?.profile?.metadata?.coverPicture?.optimized?.uri,
-          })
+          }),
         );
 
         dispatch({
-          type: 'ADD_TASK_TO_BACKGROUND',
+          type: "ADD_TASK_TO_BACKGROUND",
           payload: {
             id: uuidv4(),
-            type: 'UPDATE_PROFILE_METADATA',
+            type: "UPDATE_PROFILE_METADATA",
             data: {
               metadataURI,
               setProfileMetadataExecute,
@@ -188,7 +188,7 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
                 dispatch(setIsUpdatingMetadata(false));
               },
               onError: (error: any) => {
-                console.log('Error updating profile metadata:', error);
+                console.log("Error updating profile metadata:", error);
                 notifyError(ERRORS.UPDATING_PROFILE_ERROR);
                 dispatch(setIsUpdatingMetadata(false));
               },
@@ -200,12 +200,12 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
         dispatch(resetCurrentStep());
         onSuccess();
       } catch (error) {
-        console.error('Error updating profile metadata:', error);
+        console.error("Error updating profile metadata:", error);
         setRegistrationLoading(false);
         dispatch(closeLoginModal());
       }
     },
-    [setProfileMetadataExecute, address]
+    [setProfileMetadataExecute, address],
   );
 
   /**
@@ -215,12 +215,12 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
   const registerProfile = useCallback(
     async (data: ProfileData) => {
       if (!address) {
-        console.error('Wallet address not available.');
+        console.error("Wallet address not available.");
         return;
       }
 
       try {
-        dispatch(setProfileCreationStep({ step: 1 }));
+        dispatch(setProfileCreationStep({step: 1}));
         setRegistrationLoading(true);
 
         const result = await createProfileExecute({
@@ -237,48 +237,48 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
         // Authenticate using the new profile
         await login?.(newProfile);
 
-        dispatch(setProfileCreationStep({ step: 1 }));
-        dispatch(setProfileCreationStep({ step: 2 }));
+        dispatch(setProfileCreationStep({step: 1}));
+        dispatch(setProfileCreationStep({step: 2}));
 
         // Save the pending metadata update
-        setPendingMetadataUpdate({ data, profile: newProfile });
+        setPendingMetadataUpdate({data, profile: newProfile});
       } catch (error) {
-        console.error('Error during profile registration:', error);
+        console.error("Error during profile registration:", error);
         setRegistrationLoading(false);
         throw error;
       }
     },
-    [address, createProfileExecute]
+    [address, createProfileExecute],
   );
 
   const formik: any = useFormik({
     initialValues: initialValues ?? {
-      username: '',
-      name: '',
-      bio: '',
+      username: "",
+      name: "",
+      bio: "",
       profileImage: null,
       backgroundImage: null,
       socialLinks: {
-        twitter: '',
-        instagram: '',
-        orb: '',
-        farcaster: '',
+        twitter: "",
+        instagram: "",
+        orb: "",
+        farcaster: "",
       },
     },
     validationSchema,
     onSubmit: async (values) => {
       try {
-        if (mode === 'register') {
+        if (mode === "register") {
           await registerProfile(values);
-        } else if (mode === 'update') {
+        } else if (mode === "update") {
           await updateProfileMetadata(values);
         }
       } catch (error) {
-        console.error('Error registering profile', error);
+        console.error("Error registering profile", error);
         // @ts-ignore
         console.error(error.message);
         // @ts-ignore
-        setErrorMessage(error.message || 'Ocurrió un error durante el registro.');
+        setErrorMessage(error.message || "Ocurrió un error durante el registro.");
       }
     },
   });
@@ -296,9 +296,9 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
       // Create an object URL for preview
       const previewUrl = URL.createObjectURL(file);
 
-      if (field === 'profileImage') {
+      if (field === "profileImage") {
         setProfileImagePreview(previewUrl);
-      } else if (field === 'backgroundImage') {
+      } else if (field === "backgroundImage") {
         setBackgroundImagePreview(previewUrl);
       }
     }
@@ -318,61 +318,60 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
   }, [sessionData, pendingMetadataUpdate, updateProfileMetadata]);
 
   return (
-    <Box sx={{ p: 2, overflow: 'hidden', overflowY: 'scroll', zIndex: '1000', maxHeight: '100%' }}>
+    <Box sx={{p: 2, overflow: "hidden", overflowY: "scroll", zIndex: "1000", maxHeight: "100%"}}>
       <Typography
         variant="h6"
         sx={{
           pb: 2,
-          position: 'sticky',
-          top: '-17px',
+          position: "sticky",
+          top: "-17px",
           zIndex: 10,
-          background: '#212b36',
-          marginTop: '-17px',
-          paddingTop: '16px',
-        }}
-      >
-        {mode === 'register' ? 'Create a new profile' : 'Update profile'}
+          background: "#212b36",
+          marginTop: "-17px",
+          paddingTop: "16px",
+        }}>
+        {mode === "register" ? "Create a new profile" : "Update profile"}
       </Typography>
       {/* Hidden inputs for image uploads */}
       <Input
         type="file"
-        onChange={(event: any) => handleFileChange(event, 'backgroundImage')}
+        onChange={(event: any) => handleFileChange(event, "backgroundImage")}
         inputRef={backgroundImageInputRef}
-        sx={{ display: 'none' }}
+        sx={{display: "none"}}
       />
       <Input
         type="file"
-        onChange={(event: any) => handleFileChange(event, 'profileImage')}
+        onChange={(event: any) => handleFileChange(event, "profileImage")}
         inputRef={profileImageInputRef}
-        sx={{ display: 'none' }}
+        sx={{display: "none"}}
       />
       <Box component="form" onSubmit={formik.handleSubmit}>
-        <Box sx={{ width: '100%', position: 'relative', pt: 1 }}>
+        <Box sx={{width: "100%", position: "relative", pt: 1}}>
           {/* Background Image */}
           <Image
             src={
               backgroundImagePreview ??
               (initialValues?.backgroundImage
-                ? `https://ipfs.io/ipfs/${initialValues?.backgroundImage?.replaceAll?.('ipfs://', '')}`
-                : `https://picsum.photos/seed/${mode === 'update' && sessionData?.authenticated ? sessionData?.profile?.id : 'new'}/1920/820`)
+                ? `https://ipfs.io/ipfs/${initialValues?.backgroundImage?.replaceAll?.("ipfs://", "")}`
+                : `https://picsum.photos/seed/${mode === "update" && sessionData?.authenticated ? sessionData?.profile?.id : "new"}/1920/820`)
             }
             onClick={() => backgroundImageInputRef.current?.click()}
             sx={{
               height: 120,
-              width: '100%',
+              width: "100%",
               opacity: 0.7,
-              color: 'common.white',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
+              color: "common.white",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
               borderRadius: 2,
-              overflow: 'hidden',
-              cursor: 'pointer',
-              border: '1px solid #fff',
-              transition: 'transform 0.2s ease-in-out',
-              '&:hover': {
-                transform: 'scale(1.03)',
-                border: '2px solid #fff',
+              overflow: "hidden",
+              cursor: "pointer",
+              border: "1px solid #fff",
+              transition: "transform 0.2s ease-in-out",
+              "&:hover": {
+                transform: "scale(1.03)",
+                border: "2px solid #fff",
                 opacity: 1,
               },
             }}
@@ -382,8 +381,10 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
             src={
               profileImagePreview ??
               (initialValues?.profileImage
-                ? `https://ipfs.io/ipfs/${initialValues?.profileImage?.replaceAll?.('ipfs://', '')}`
-                : mode === 'update' && sessionData?.authenticated ? sessionData?.profile?.id : 'new')
+                ? `https://ipfs.io/ipfs/${initialValues?.profileImage?.replaceAll?.("ipfs://", "")}`
+                : mode === "update" && sessionData?.authenticated
+                  ? sessionData?.profile?.id
+                  : "new")
             }
             alt=""
             onClick={() => profileImageInputRef.current?.click()}
@@ -393,12 +394,12 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
               opacity: 0.9,
               ml: 2,
               mt: -3,
-              cursor: 'pointer',
-              border: '1px solid #fff',
-              transition: 'transform 0.2s ease-in-out',
-              '&:hover': {
-                transform: 'scale(1.1)',
-                border: '2px solid #fff',
+              cursor: "pointer",
+              border: "1px solid #fff",
+              transition: "transform 0.2s ease-in-out",
+              "&:hover": {
+                transform: "scale(1.1)",
+                border: "2px solid #fff",
                 opacity: 1,
               },
             }}
@@ -406,27 +407,26 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
           />
           <Box
             sx={{
-              display: 'flex',
+              display: "flex",
               marginTop: 10,
-              flexDirection: 'column',
+              flexDirection: "column",
               alignItems: {
-                xs: 'flex-start',
-                sm: 'flex-end',
+                xs: "flex-start",
+                sm: "flex-end",
               },
               justifyContent: {
-                xs: 'flex-start',
-                sm: 'flex-end',
+                xs: "flex-start",
+                sm: "flex-end",
               },
-              position: 'absolute',
-              width: '100%',
+              position: "absolute",
+              width: "100%",
               bottom: {
                 xs: -50,
                 sm: -8,
               },
               right: 0,
               opacity: 0.7,
-            }}
-          >
+            }}>
             <TextMaxLine line={1} variant="caption" fontWeight="bold" color="text.secondary">
               * Click the profile or cover image to select one
             </TextMaxLine>
@@ -445,8 +445,7 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
               xs: 6,
               sm: 2,
             },
-          }}
-        >
+          }}>
           <Grid item xs={12} sm={6}>
             <TextField
               fullWidth
@@ -460,7 +459,7 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
               onBlur={formik.handleBlur}
               disabled={loading}
               error={formik.touched.name && Boolean(formik.errors.name)}
-              helperText={formik.touched.name ? formik.errors.name : 'e.g., John Doe'}
+              helperText={formik.touched.name ? formik.errors.name : "e.g., John Doe"}
             />
           </Grid>
           <Grid item xs={12} sm={6}>
@@ -471,15 +470,15 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
               id="username"
               name="username"
               placeholder="Enter a username"
-              disabled={mode === 'update' || loading}
+              disabled={mode === "update" || loading}
               value={formik.values.username}
               onChange={(event) => {
                 const lowercaseValue = event.target.value.toLowerCase();
-                formik.setFieldValue('username', lowercaseValue);
+                formik.setFieldValue("username", lowercaseValue);
               }}
               onBlur={formik.handleBlur}
               error={formik.touched.username && Boolean(formik.errors.username)}
-              helperText={formik.touched.username ? formik.errors.username : 'e.g., johndoe123'}
+              helperText={formik.touched.username ? formik.errors.username : "e.g., johndoe123"}
             />
           </Grid>
         </Grid>
@@ -497,13 +496,13 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
           disabled={loading}
           multiline
           rows={4}
-          sx={{ mt: 2 }}
+          sx={{mt: 2}}
           error={formik.touched.bio && Boolean(formik.errors.bio)}
-          helperText={formik.touched.bio ? formik.errors.bio : 'Share something about yourself'}
+          helperText={formik.touched.bio ? formik.errors.bio : "Share something about yourself"}
         />
 
         {/* Link Social Networks */}
-        <Typography variant="subtitle1" sx={{ mt: 4, mb: 2 }}>
+        <Typography variant="subtitle1" sx={{mt: 4, mb: 2}}>
           Your social networks links
         </Typography>
 
@@ -524,7 +523,7 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
                 formik.touched.socialLinks?.twitter && Boolean(formik.errors.socialLinks?.twitter)
               }
               helperText={
-                formik.touched.socialLinks?.twitter ? formik.errors.socialLinks?.twitter : ''
+                formik.touched.socialLinks?.twitter ? formik.errors.socialLinks?.twitter : ""
               }
             />
           </Grid>
@@ -545,7 +544,7 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
                 Boolean(formik.errors.socialLinks?.instagram)
               }
               helperText={
-                formik.touched.socialLinks?.instagram ? formik.errors.socialLinks?.instagram : ''
+                formik.touched.socialLinks?.instagram ? formik.errors.socialLinks?.instagram : ""
               }
             />
           </Grid>
@@ -562,7 +561,7 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
               onBlur={formik.handleBlur}
               disabled={loading}
               error={formik.touched.socialLinks?.orb && Boolean(formik.errors.socialLinks?.orb)}
-              helperText={formik.touched.socialLinks?.orb ? formik.errors.socialLinks?.orb : ''}
+              helperText={formik.touched.socialLinks?.orb ? formik.errors.socialLinks?.orb : ""}
             />
           </Grid>
           <Grid item xs={12} sm={6}>
@@ -582,7 +581,7 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
                 Boolean(formik.errors.socialLinks?.farcaster)
               }
               helperText={
-                formik?.touched?.socialLinks?.farcaster ? formik.errors.socialLinks?.farcaster : ''
+                formik?.touched?.socialLinks?.farcaster ? formik.errors.socialLinks?.farcaster : ""
               }
             />
           </Grid>
@@ -590,9 +589,9 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
 
         <Box
           sx={{
-            width: '100%',
-            height: '1px',
-            backgroundColor: 'rgba(0,0,0,0.1)',
+            width: "100%",
+            height: "1px",
+            backgroundColor: "rgba(0,0,0,0.1)",
             mb: 2,
             mt: 4,
           }}
@@ -603,42 +602,38 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
           container
           spacing={2}
           sx={{
-            position: 'sticky',
-            bottom: '-17px',
-            background: '#212b36',
+            position: "sticky",
+            bottom: "-17px",
+            background: "#212b36",
             zIndex: 1,
-            paddingBottom: '16px',
-            marginBottom: '-17px',
-          }}
-        >
+            paddingBottom: "16px",
+            marginBottom: "-17px",
+          }}>
           <Grid item xs={12} sm={6}>
             <Button
               variant="outlined"
               onClick={onCancel}
               disabled={loading}
-              sx={{ width: '100%', py: 1 }}
-            >
+              sx={{width: "100%", py: 1}}>
               Cancel
             </Button>
           </Grid>
           <Grid item xs={12} sm={6}>
             <PaperElement
               {...(currentStep !== 0 && {
-                padding: '0',
-              })}
-            >
+                padding: "0",
+              })}>
               <Button
                 disabled={currentStep !== 0}
                 variant="contained"
                 type="submit"
                 sx={{
-                  width: '100%',
+                  width: "100%",
                   py: 1,
-                  backgroundColor: 'transparent',
-                  color: 'white',
-                  border: currentStep ? 'none' : '1px solid white',
-                }}
-              >
+                  backgroundColor: "transparent",
+                  color: "white",
+                  border: currentStep ? "none" : "1px solid white",
+                }}>
                 {getButtonLabel(mode, currentStep)}
               </Button>
             </PaperElement>

@@ -18,42 +18,44 @@ import Typography from "@mui/material/Typography";
  */
 const FinanceNoFollowingsQuickTransfer = () => {
   return (
-    <Box sx={{ textAlign: 'center', mb: 3, backgroundColor: 'rgba(0,0,0,0.1)', p: 1, borderRadius: 1 }}>
+    <Box
+      sx={{textAlign: "center", mb: 3, backgroundColor: "rgba(0,0,0,0.1)", p: 1, borderRadius: 1}}>
       <Stack direction="column" alignItems="center" spacing={1}>
         <Typography variant="body2" color="text.primary">
           Here appear your followings. Follow one to transfer.
         </Typography>
-        <Box sx={{ opacity:0.7, position: 'relative', display: 'flex', alignItems: 'center', my: 2 }}>
+        <Box
+          sx={{opacity: 0.7, position: "relative", display: "flex", alignItems: "center", my: 2}}>
           <Box
             sx={{
-              position: 'absolute',
-              top: '50%',
-              transform: 'translateX(-50%)',
+              position: "absolute",
+              top: "50%",
+              transform: "translateX(-50%)",
               width: 200,
               height: 25,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              borderTop: '1px dashed',
-              borderColor: 'text.secondary',
-            }} />
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              borderTop: "1px dashed",
+              borderColor: "text.secondary",
+            }}
+          />
           <Box
             sx={{
-              position: 'absolute',
-              left: '50%',
-              transform: 'translateX(-50%)',
-              backgroundColor: 'rgb(44,46,51)',
-              borderRadius: '50%',
+              position: "absolute",
+              left: "50%",
+              transform: "translateX(-50%)",
+              backgroundColor: "rgb(44,46,51)",
+              borderRadius: "50%",
               width: 30,
               height: 30,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              border: '1px dashed',
-              borderColor: 'text.secondary',
-            }}
-          >
-            <Typography color="text.secondary" sx={{ fontSize: 12 }}>
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              border: "1px dashed",
+              borderColor: "text.secondary",
+            }}>
+            <Typography color="text.secondary" sx={{fontSize: 12}}>
               OR
             </Typography>
           </Box>
@@ -64,6 +66,6 @@ const FinanceNoFollowingsQuickTransfer = () => {
       </Stack>
     </Box>
   );
-}
+};
 
 export default FinanceNoFollowingsQuickTransfer;

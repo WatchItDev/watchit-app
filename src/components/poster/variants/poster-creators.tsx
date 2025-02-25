@@ -1,27 +1,27 @@
 // @mui
-import Paper from '@mui/material/Paper';
+import Paper from "@mui/material/Paper";
 
 // components
-import Image from '@src/components/image';
-import { useRouter } from '@src/routes/hooks';
-import { paths } from '@src/routes/paths.ts';
-import { TrendingTopicsType } from '@src/sections/explore/view.tsx';
-import Box from '@mui/material/Box';
-import Card from '@mui/material/Card';
-import ListItemText from '@mui/material/ListItemText';
+import Image from "@src/components/image";
+import {useRouter} from "@src/routes/hooks";
+import {paths} from "@src/routes/paths.ts";
+import {TrendingTopicsType} from "@src/sections/explore/view.tsx";
+import Box from "@mui/material/Box";
+import Card from "@mui/material/Card";
+import ListItemText from "@mui/material/ListItemText";
 import AvatarProfile from "@src/components/avatar/avatar.tsx";
 import {dicebear} from "@src/utils/dicebear.ts";
 
 const randomImages = [
-  'https://storage.needpix.com/rsynced_images/banner-header-1449745071UBW.jpg',
-  'https://storage.needpix.com/rsynced_images/banner-header-tapete-1450368431G3V.jpg',
-  'https://i1.pickpik.com/photos/989/475/826/banner-header-points-circle-preview.jpg',
-  'https://storage.needpix.com/rsynced_images/banner-header-tapete-1463227719cPu.jpg',
-  'https://cdn12.picryl.com/photo/2016/12/31/banner-header-background-backgrounds-textures-b8d9b9-1024.jpg',
-  'https://cdn12.picryl.com/photo/2016/12/31/banner-header-christmas-13e7dc-1024.jpg',
+  "https://storage.needpix.com/rsynced_images/banner-header-1449745071UBW.jpg",
+  "https://storage.needpix.com/rsynced_images/banner-header-tapete-1450368431G3V.jpg",
+  "https://i1.pickpik.com/photos/989/475/826/banner-header-points-circle-preview.jpg",
+  "https://storage.needpix.com/rsynced_images/banner-header-tapete-1463227719cPu.jpg",
+  "https://cdn12.picryl.com/photo/2016/12/31/banner-header-background-backgrounds-textures-b8d9b9-1024.jpg",
+  "https://cdn12.picryl.com/photo/2016/12/31/banner-header-christmas-13e7dc-1024.jpg",
 ];
 
-const PosterCreators = ({ id }: TrendingTopicsType) => {
+const PosterCreators = ({id}: TrendingTopicsType) => {
   const router = useRouter();
 
   const handlePosterClick = () => {
@@ -31,84 +31,80 @@ const PosterCreators = ({ id }: TrendingTopicsType) => {
   return (
     <Paper
       sx={{
-        width: '100%',
+        width: "100%",
         borderRadius: 2,
-        overflow: 'hidden',
-        position: 'relative',
-        backgroundColor: 'transparent',
-        cursor: 'pointer',
+        overflow: "hidden",
+        position: "relative",
+        backgroundColor: "transparent",
+        cursor: "pointer",
       }}
-      onClick={handlePosterClick}
-    >
+      onClick={handlePosterClick}>
       <Box
         sx={{
-          width: '99%',
-          border: '1px solid rgba(255, 255, 255, 0.12)',
+          width: "99%",
+          border: "1px solid rgba(255, 255, 255, 0.12)",
           borderRadius: 2,
-          overflow: 'hidden',
-          cursor: 'pointer',
+          overflow: "hidden",
+          cursor: "pointer",
           boxShadow: 1,
           padding: 1,
-          transition: 'transform 0.2s ease-in-out',
-          '&:hover': { transform: 'scale(1.03)' },
+          transition: "transform 0.2s ease-in-out",
+          "&:hover": {transform: "scale(1.03)"},
         }}
-        onClick={() => {}}
-      >
+        onClick={() => {}}>
         <Image
           src={randomImages[Math.floor(Math.random() * randomImages.length)]}
           sx={{
             height: 120,
             opacity: 0.7,
-            color: 'common.white',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
+            color: "common.white",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
             borderRadius: 2,
-            overflow: 'hidden',
+            overflow: "hidden",
           }}
         />
         <Card
           sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'flex-start',
-            cursor: 'pointer',
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "flex-start",
+            cursor: "pointer",
             mt: -3,
-            backgroundColor: 'transparent',
+            backgroundColor: "transparent",
             p: (theme) => theme.spacing(0, 2, 1, 2),
-          }}
-        >
+          }}>
           <AvatarProfile
             src={dicebear("1")}
-            alt={'Creator Profile'}
-            sx={{ width: 48, height: 48, mr: 2 }}
+            alt={"Creator Profile"}
+            sx={{width: 48, height: 48, mr: 2}}
             variant="rounded"
           />
 
           <Box
             sx={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
               mt: 1,
-              width: '100%',
-            }}
-          >
+              width: "100%",
+            }}>
             <ListItemText
-              primary={'Name'}
-              secondary={<>{'x0000'}</>}
+              primary={"Name"}
+              secondary={<>{"x0000"}</>}
               primaryTypographyProps={{
                 noWrap: true,
-                typography: 'subtitle2',
+                typography: "subtitle2",
               }}
               secondaryTypographyProps={{
                 mt: 0.5,
                 noWrap: true,
-                display: 'flex',
-                component: 'span',
-                alignItems: 'center',
-                typography: 'caption',
-                color: 'text.disabled',
+                display: "flex",
+                component: "span",
+                alignItems: "center",
+                typography: "caption",
+                color: "text.disabled",
               }}
             />
           </Box>

@@ -1,8 +1,8 @@
 // MUI IMPORTS
-import Stack from '@mui/material/Stack';
-import Container from '@mui/material/Container';
+import Stack from "@mui/material/Stack";
+import Container from "@mui/material/Container";
 // COMPONENTS IMPORTS
-import CarouselPosterMini from '@src/components/carousel/variants/carousel-poster-mini';
+import CarouselPosterMini from "@src/components/carousel/variants/carousel-poster-mini";
 // LENS IMPORTS
 import {
   appId,
@@ -15,14 +15,14 @@ import {
   useExploreProfiles,
   useExplorePublications,
   usePublications,
-} from '@lens-protocol/react-web';
+} from "@lens-protocol/react-web";
 
 // LOCAL IMPORTS
-import { LoadingScreen } from '@src/components/loading-screen';
-import CarouselTopTitles from '@src/components/carousel/variants/carousel-top-titles.tsx';
-import CarouselCreators from '@src/components/carousel/variants/carousel-creators.tsx';
-import { useResponsive } from '@src/hooks/use-responsive.ts';
-import { useSelector } from 'react-redux';
+import {LoadingScreen} from "@src/components/loading-screen";
+import CarouselTopTitles from "@src/components/carousel/variants/carousel-top-titles.tsx";
+import CarouselCreators from "@src/components/carousel/variants/carousel-creators.tsx";
+import {useResponsive} from "@src/hooks/use-responsive.ts";
+import {useSelector} from "react-redux";
 
 // ----------------------------------------------------------------------
 
@@ -34,8 +34,8 @@ export interface TrendingTopicsType {
 }
 
 export default function ExploreView() {
-  const lgUp = useResponsive('up', 'lg');
-  const { bookmarkPublications, hiddenBookmarks } = useSelector((state: any) => state.bookmark);
+  const lgUp = useResponsive("up", "lg");
+  const {bookmarkPublications, hiddenBookmarks} = useSelector((state: any) => state.bookmark);
 
   let minItemWidth = 250;
   let maxItemWidth = 350;
@@ -45,30 +45,30 @@ export default function ExploreView() {
     maxItemWidth = 250;
   }
 
-  const { data, loading }: any = usePublications({
+  const {data, loading}: any = usePublications({
     where: {
       publicationTypes: [PublicationType.Post],
       metadata: {
-        publishedOn: [appId('watchit')],
+        publishedOn: [appId("watchit")],
       },
     },
   });
-  const { data: bookmark } = useBookmarks();
-  const { data: latestCreatedProfiles } = useExploreProfiles({
+  const {data: bookmark} = useBookmarks();
+  const {data: latestCreatedProfiles} = useExploreProfiles({
     orderBy: ExploreProfilesOrderByType.LatestCreated,
     limit: LimitType.Fifty,
   });
 
   // FilteredCompletedProfiles is an array of objects, each object has a metadata property and inside exists a displayName en bio property; filter the profiles that not have a displayName and bio property
   const filteredProfiles = latestCreatedProfiles?.filter(
-    (profile: any) => profile.metadata?.displayName && profile.metadata?.bio
+    (profile: any) => profile.metadata?.displayName && profile.metadata?.bio,
   );
 
-  const { data: explorePublications } = useExplorePublications({
+  const {data: explorePublications} = useExplorePublications({
     where: {
       publicationTypes: [ExplorePublicationType.Post],
       metadata: {
-        publishedOn: [appId('watchit')],
+        publishedOn: [appId("watchit")],
       },
     },
     limit: LimitType.Ten,
@@ -90,8 +90,8 @@ export default function ExploreView() {
     .filter((post, index, self) => index === self.findIndex((p) => p.id === post.id));
 
   return (
-    <Container sx={{ p: '0 !important', maxWidth: '2000px !important' }}>
-      <Stack direction={'column'} spacing={1} sx={{ maxWidth: '100vw !important' }}>
+    <Container sx={{p: "0 !important", maxWidth: "2000px !important"}}>
+      <Stack direction={"column"} spacing={1} sx={{maxWidth: "100vw !important"}}>
         <CarouselTopTitles posts={combinedPosts} />
 
         {!!bookmarksFiltered?.length && (

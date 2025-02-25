@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { openMinibar, removeMinibar } from '@src/redux/minibar';
-import { BREAKPOINTS_MINIBAR } from '@src/layouts/config-layout.ts';
+import {useState, useEffect} from "react";
+import {useDispatch} from "react-redux";
+import {openMinibar, removeMinibar} from "@src/redux/minibar";
+import {BREAKPOINTS_MINIBAR} from "@src/layouts/config-layout.ts";
 
 const ResetMiniNavOnResize = () => {
   const [isSmallScreen, setIsSmallScreen] = useState(false);
@@ -24,10 +24,10 @@ const ResetMiniNavOnResize = () => {
       }
     };
 
-    window.addEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
     handleResize();
 
-    return () => window.removeEventListener('resize', handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, [dispatch]);
 
   if (!isSmallScreen) {

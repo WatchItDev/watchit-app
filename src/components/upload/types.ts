@@ -1,8 +1,8 @@
-import { DropzoneOptions } from 'react-dropzone';
+import {DropzoneOptions} from "react-dropzone";
 // @mui
-import { Theme, SxProps } from '@mui/material/styles';
-import { ImageRatio } from '../image';
-import SingleFilePreview from './preview-single-file';
+import {Theme, SxProps} from "@mui/material/styles";
+import {ImageRatio} from "../image";
+import SingleFilePreview from "./preview-single-file";
 
 // ----------------------------------------------------------------------
 

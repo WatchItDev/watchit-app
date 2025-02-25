@@ -1,26 +1,26 @@
 // MUI IMPORTS
-import Box from '@mui/material/Box';
-import Card from '@mui/material/Card';
-import { Theme } from '@mui/material/styles';
-import { SxProps } from '@mui/system/styleFunctionSx';
-import ListItemText from '@mui/material/ListItemText';
+import Box from "@mui/material/Box";
+import Card from "@mui/material/Card";
+import {Theme} from "@mui/material/styles";
+import {SxProps} from "@mui/system/styleFunctionSx";
+import ListItemText from "@mui/material/ListItemText";
 
 // LENS IMPORTS
-import { Profile } from '@lens-protocol/api-bindings';
+import {Profile} from "@lens-protocol/api-bindings";
 // @ts-ignore
-import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
+import {ReadResult} from "@lens-protocol/react/dist/declarations/src/helpers/reads";
 
 // LOCAL IMPORTS
-import Image from '../image';
-import { paths } from '../../routes/paths';
-import { useRouter } from '@src/routes/hooks';
-import FollowUnfollowButton from '@src/components/follow-unfollow-button.tsx';
-import { useSelector } from 'react-redux';
+import Image from "../image";
+import {paths} from "../../routes/paths";
+import {useRouter} from "@src/routes/hooks";
+import FollowUnfollowButton from "@src/components/follow-unfollow-button.tsx";
+import {useSelector} from "react-redux";
 import AvatarProfile from "@src/components/avatar/avatar.tsx";
 import {FC} from "react";
 import Typography from "@mui/material/Typography";
 import BadgeVerified from "@src/components/user-item/BadgeVerified.tsx";
-import { Address } from 'viem';
+import {Address} from "viem";
 
 // ----------------------------------------------------------------------
 
@@ -56,19 +56,18 @@ export const UserItem = ({
     <>
       <Box
         sx={{
-          width: '100%',
-          border: '1px solid rgba(255, 255, 255, 0.12)',
+          width: "100%",
+          border: "1px solid rgba(255, 255, 255, 0.12)",
           borderRadius: 2,
-          overflow: 'hidden',
-          cursor: 'pointer',
+          overflow: "hidden",
+          cursor: "pointer",
           boxShadow: 1,
           padding: 1,
-          transition: 'transform 0.2s ease-in-out',
-          '&:hover': { transform: 'scale(1.03)' },
+          transition: "transform 0.2s ease-in-out",
+          "&:hover": {transform: "scale(1.03)"},
           ...sx,
         }}
-        onClick={goToProfile}
-      >
+        onClick={goToProfile}>
         <Image
           src={
             profile?.metadata?.coverPicture?.optimized?.uri ??
@@ -77,58 +76,61 @@ export const UserItem = ({
           sx={{
             height: 120,
             opacity: 0.7,
-            color: 'common.white',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
+            color: "common.white",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
             borderRadius: 2,
-            overflow: 'hidden',
+            overflow: "hidden",
           }}
         />
         <Card
           sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'flex-start',
-            cursor: 'pointer',
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "flex-start",
+            cursor: "pointer",
             mt: -3,
-            backgroundColor: 'transparent',
+            backgroundColor: "transparent",
             p: (theme) => theme.spacing(0, 2, 1, 2),
-          }}
-        >
+          }}>
           <AvatarProfile
             src={(profile?.metadata?.picture as any)?.optimized?.uri ?? profile?.id}
-            alt={profile?.handle?.localName ?? ''}
-            sx={{ width: 48, height: 48, mr: 2 }}
+            alt={profile?.handle?.localName ?? ""}
+            sx={{width: 48, height: 48, mr: 2}}
             variant="rounded"
           />
 
           <Box
             sx={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
               mt: 1,
-              width: '100%',
-            }}
-          >
+              width: "100%",
+            }}>
             <ListItemText
-              primary={<UserNameAndBadge address={profile?.ownedBy?.address} name={profile?.handle?.localName ?? ''} />}
+              primary={
+                <UserNameAndBadge
+                  address={profile?.ownedBy?.address}
+                  name={profile?.handle?.localName ?? ""}
+                />
+              }
               secondary={
-                <>{profile?.id !== sessionData?.profile?.id ? profile?.id : 'This is you!'}</>
+                <>{profile?.id !== sessionData?.profile?.id ? profile?.id : "This is you!"}</>
               }
               primaryTypographyProps={{
                 noWrap: true,
-                typography: 'subtitle2',
+                typography: "subtitle2",
               }}
               secondaryTypographyProps={{
                 mt: 0.5,
                 noWrap: true,
-                display: 'flex',
-                component: 'span',
-                alignItems: 'center',
-                typography: 'caption',
-                color: 'text.disabled',
+                display: "flex",
+                component: "span",
+                alignItems: "center",
+                typography: "caption",
+                color: "text.disabled",
               }}
             />
 
@@ -136,7 +138,7 @@ export const UserItem = ({
               <FollowUnfollowButton
                 profileId={profile?.id}
                 followButtonMinWidth={followButtonMinWidth}
-                size={'small'}
+                size={"small"}
               />
             )}
           </Box>
@@ -151,37 +153,33 @@ interface UserNameAndBadgeProps {
   address: Address;
 }
 
-export const UserNameAndBadge: FC<UserNameAndBadgeProps> = ({ name, address }) => {
+export const UserNameAndBadge: FC<UserNameAndBadgeProps> = ({name, address}) => {
   return (
     <Box
       sx={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'flex-start',
-      }}
-    >
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "flex-start",
+      }}>
       <Typography
         sx={{
-          mr: '2px',
-          whiteSpace: 'nowrap',
-          overflow: 'hidden',
-          textOverflow: 'ellipsis',
-          maxWidth: '100px',
-        }}
-      >
+          mr: "2px",
+          whiteSpace: "nowrap",
+          overflow: "hidden",
+          textOverflow: "ellipsis",
+          maxWidth: "100px",
+        }}>
         {name}
       </Typography>
       <Box
         sx={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          borderRadius: '50%',
-        }}
-      >
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          borderRadius: "50%",
+        }}>
         <BadgeVerified address={address} />
       </Box>
     </Box>
   );
 };
-

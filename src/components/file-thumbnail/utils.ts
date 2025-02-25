@@ -1,20 +1,20 @@
 //
-import { ExtendFile } from './types';
+import {ExtendFile} from "./types";
 
 // ----------------------------------------------------------------------
 
 // Define more types here
-const FORMAT_PDF = ['pdf'];
-const FORMAT_TEXT = ['txt'];
-const FORMAT_PHOTOSHOP = ['psd'];
-const FORMAT_WORD = ['doc', 'docx'];
-const FORMAT_EXCEL = ['xls', 'xlsx'];
-const FORMAT_ZIP = ['zip', 'rar', 'iso'];
-const FORMAT_ILLUSTRATOR = ['ai', 'esp'];
-const FORMAT_POWERPOINT = ['ppt', 'pptx'];
-const FORMAT_AUDIO = ['wav', 'aif', 'mp3', 'aac'];
-const FORMAT_IMG = ['jpg', 'jpeg', 'gif', 'bmp', 'png', 'svg'];
-const FORMAT_VIDEO = ['m4v', 'avi', 'mpg', 'mp4', 'webm'];
+const FORMAT_PDF = ["pdf"];
+const FORMAT_TEXT = ["txt"];
+const FORMAT_PHOTOSHOP = ["psd"];
+const FORMAT_WORD = ["doc", "docx"];
+const FORMAT_EXCEL = ["xls", "xlsx"];
+const FORMAT_ZIP = ["zip", "rar", "iso"];
+const FORMAT_ILLUSTRATOR = ["ai", "esp"];
+const FORMAT_POWERPOINT = ["ppt", "pptx"];
+const FORMAT_AUDIO = ["wav", "aif", "mp3", "aac"];
+const FORMAT_IMG = ["jpg", "jpeg", "gif", "bmp", "png", "svg"];
+const FORMAT_VIDEO = ["m4v", "avi", "mpg", "mp4", "webm"];
 
 const iconUrl = (icon: string) => `/assets/icons/files/${icon}.svg`;
 
@@ -25,37 +25,37 @@ export function fileFormat(fileUrl: string | undefined) {
 
   switch (fileUrl?.includes(fileTypeByUrl(fileUrl))) {
     case FORMAT_TEXT.includes(fileTypeByUrl(fileUrl)):
-      format = 'txt';
+      format = "txt";
       break;
     case FORMAT_ZIP.includes(fileTypeByUrl(fileUrl)):
-      format = 'zip';
+      format = "zip";
       break;
     case FORMAT_AUDIO.includes(fileTypeByUrl(fileUrl)):
-      format = 'audio';
+      format = "audio";
       break;
     case FORMAT_IMG.includes(fileTypeByUrl(fileUrl)):
-      format = 'image';
+      format = "image";
       break;
     case FORMAT_VIDEO.includes(fileTypeByUrl(fileUrl)):
-      format = 'video';
+      format = "video";
       break;
     case FORMAT_WORD.includes(fileTypeByUrl(fileUrl)):
-      format = 'word';
+      format = "word";
       break;
     case FORMAT_EXCEL.includes(fileTypeByUrl(fileUrl)):
-      format = 'excel';
+      format = "excel";
       break;
     case FORMAT_POWERPOINT.includes(fileTypeByUrl(fileUrl)):
-      format = 'powerpoint';
+      format = "powerpoint";
       break;
     case FORMAT_PDF.includes(fileTypeByUrl(fileUrl)):
-      format = 'pdf';
+      format = "pdf";
       break;
     case FORMAT_PHOTOSHOP.includes(fileTypeByUrl(fileUrl)):
-      format = 'photoshop';
+      format = "photoshop";
       break;
     case FORMAT_ILLUSTRATOR.includes(fileTypeByUrl(fileUrl)):
-      format = 'illustrator';
+      format = "illustrator";
       break;
     default:
       format = fileTypeByUrl(fileUrl);
@@ -70,65 +70,65 @@ export function fileThumb(fileUrl: string) {
   let thumb;
 
   switch (fileFormat(fileUrl)) {
-    case 'folder':
-      thumb = iconUrl('ic_folder');
+    case "folder":
+      thumb = iconUrl("ic_folder");
       break;
-    case 'txt':
-      thumb = iconUrl('ic_txt');
+    case "txt":
+      thumb = iconUrl("ic_txt");
       break;
-    case 'zip':
-      thumb = iconUrl('ic_zip');
+    case "zip":
+      thumb = iconUrl("ic_zip");
       break;
-    case 'audio':
-      thumb = iconUrl('ic_audio');
+    case "audio":
+      thumb = iconUrl("ic_audio");
       break;
-    case 'video':
-      thumb = iconUrl('ic_video');
+    case "video":
+      thumb = iconUrl("ic_video");
       break;
-    case 'word':
-      thumb = iconUrl('ic_word');
+    case "word":
+      thumb = iconUrl("ic_word");
       break;
-    case 'excel':
-      thumb = iconUrl('ic_excel');
+    case "excel":
+      thumb = iconUrl("ic_excel");
       break;
-    case 'powerpoint':
-      thumb = iconUrl('ic_power_point');
+    case "powerpoint":
+      thumb = iconUrl("ic_power_point");
       break;
-    case 'pdf':
-      thumb = iconUrl('ic_pdf');
+    case "pdf":
+      thumb = iconUrl("ic_pdf");
       break;
-    case 'photoshop':
-      thumb = iconUrl('ic_pts');
+    case "photoshop":
+      thumb = iconUrl("ic_pts");
       break;
-    case 'illustrator':
-      thumb = iconUrl('ic_ai');
+    case "illustrator":
+      thumb = iconUrl("ic_ai");
       break;
-    case 'image':
-      thumb = iconUrl('ic_img');
+    case "image":
+      thumb = iconUrl("ic_img");
       break;
     default:
-      thumb = iconUrl('ic_file');
+      thumb = iconUrl("ic_file");
   }
   return thumb;
 }
 
 // ----------------------------------------------------------------------
 
-export function fileTypeByUrl(fileUrl = '') {
-  return (fileUrl && fileUrl.split('.').pop()) || '';
+export function fileTypeByUrl(fileUrl = "") {
+  return (fileUrl && fileUrl.split(".").pop()) || "";
 }
 
 // ----------------------------------------------------------------------
 
 export function fileNameByUrl(fileUrl: string) {
-  return fileUrl.split('/').pop();
+  return fileUrl.split("/").pop();
 }
 
 // ----------------------------------------------------------------------
 
 export function fileData(file: ExtendFile | string) {
   // Url
-  if (typeof file === 'string') {
+  if (typeof file === "string") {
     return {
       key: file,
       preview: file,

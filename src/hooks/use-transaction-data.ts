@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
-import { supabase } from '@src/utils/supabase';
-import { useSelector } from 'react-redux';
+import {useEffect, useState} from "react";
+import {supabase} from "@src/utils/supabase";
+import {useSelector} from "react-redux";
 
 export interface TransactionType {
   id: number;
@@ -64,14 +64,14 @@ export const useTransactionData = (): TransactionsDataResponseHook => {
     const fetchData = async () => {
       if (!sessionData?.profile?.id) return;
 
-      const { data: transactions, error } = await supabase
-        .from('transactions')
-        .select('*')
+      const {data: transactions, error} = await supabase
+        .from("transactions")
+        .select("*")
         .or(`receiver_id.eq.${sessionData?.profile?.id},sender_id.eq.${sessionData?.profile?.id}`)
-        .order('created_at', { ascending: true });
+        .order("created_at", {ascending: true});
 
       if (error) {
-        console.error('Error fetching transactions:', error);
+        console.error("Error fetching transactions:", error);
         return;
       }
 
@@ -79,7 +79,7 @@ export const useTransactionData = (): TransactionsDataResponseHook => {
         ...transaction,
         payload: {
           ...transaction.payload,
-          type: transaction.sender_id === sessionData?.profile?.id ? 'Outcome' : 'Income',
+          type: transaction.sender_id === sessionData?.profile?.id ? "Outcome" : "Income",
         },
       }));
 
@@ -87,9 +87,9 @@ export const useTransactionData = (): TransactionsDataResponseHook => {
 
       const groupedData = transactions.reduce(
         (acc: Record<string, TransactionData>, transaction) => {
-          const date = new Date(transaction.created_at).toISOString().split('T')[0];
+          const date = new Date(transaction.created_at).toISOString().split("T")[0];
           if (!acc[date]) {
-            acc[date] = { date, income: 0, expenses: 0 };
+            acc[date] = {date, income: 0, expenses: 0};
           }
           if (transaction.receiver_id === sessionData.profile.id) {
             acc[date].income += transaction.payload.amount;
@@ -99,7 +99,7 @@ export const useTransactionData = (): TransactionsDataResponseHook => {
           }
           return acc;
         },
-        {}
+        {},
       );
 
       setData(Object.values(groupedData));
@@ -108,5 +108,5 @@ export const useTransactionData = (): TransactionsDataResponseHook => {
     fetchData().then((r) => console.log(r));
   }, [sessionData]);
 
-  return { data, rawData };
+  return {data, rawData};
 };
