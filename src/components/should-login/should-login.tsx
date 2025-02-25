@@ -8,10 +8,10 @@ import Iconify from '@src/components/iconify';
 import { FC } from 'react';
 
 // Create a type for the component props to receive the icon and subtitle
-type Props = {
+interface Props {
   icon: string;
   subtitle: string;
-};
+}
 
 const NotLoggedIn: FC<Props> = ({ icon, subtitle }) => {
   const dispatch = useDispatch();

@@ -30,10 +30,10 @@ export const formats = [
   'video',
 ];
 
-type EditorToolbarProps = {
+interface EditorToolbarProps {
   id: string;
   isSimple?: boolean;
-};
+}
 
 export default function Toolbar({ id, isSimple, ...other }: EditorToolbarProps) {
   return (

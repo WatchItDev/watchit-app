@@ -6,7 +6,7 @@ export function localStorageAvailable() {
     window.localStorage.setItem(key, key);
     window.localStorage.removeItem(key);
     return true;
-  } catch (error) {
+  } catch {
     return false;
   }
 }

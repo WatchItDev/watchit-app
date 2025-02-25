@@ -21,10 +21,10 @@ import { varFade } from '@src/components/animate';
 
 // ----------------------------------------------------------------------
 
-type Props = {
+interface Props {
   data: Poster[];
-  title: String;
-};
+  title: string;
+}
 
 export default function CarouselSlider({ data, title }: Props) {
   const [currentIndex, setCurrentIndex] = useState(0);

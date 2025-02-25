@@ -8,9 +8,9 @@ import Card from '@mui/material/Card';
 
 // ----------------------------------------------------------------------
 
-type CarouselSectionProps = {
+interface CarouselSectionProps {
   title?: string;
-};
+}
 
 export const CarouselSection: FC<PropsWithChildren<CarouselSectionProps>> = ({
   title,

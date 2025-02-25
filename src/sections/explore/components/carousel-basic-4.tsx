@@ -30,14 +30,14 @@ const StyledContentItem = styled('div')(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-type Props = {
+interface Props {
   data: {
     id: string;
     title: string;
     coverUrl: string;
     description: string;
   }[];
-};
+}
 
 export default function CarouselBasic4({ data }: Props) {
   const carousel = useCarousel({
@@ -60,11 +60,11 @@ export default function CarouselBasic4({ data }: Props) {
 
 // ----------------------------------------------------------------------
 
-type CarouselItemProps = {
+interface CarouselItemProps {
   title: string;
   description: string;
   coverUrl: string;
-};
+}
 
 function CarouselItem({ item }: { item: CarouselItemProps }) {
   const { coverUrl, title } = item;

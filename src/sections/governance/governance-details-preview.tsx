@@ -16,7 +16,7 @@ import GovernanceDetailsHero from './governance-details-hero';
 
 // ----------------------------------------------------------------------
 
-type Props = {
+interface Props {
   title: string;
   content: string;
   description: string;
@@ -27,7 +27,7 @@ type Props = {
   isSubmitting: boolean;
   onClose: VoidFunction;
   onSubmit: VoidFunction;
-};
+}
 
 export default function GovernanceDetailsPreview({
   title,

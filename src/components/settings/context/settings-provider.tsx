@@ -10,10 +10,10 @@ import { SettingsContext } from './settings-context';
 
 // ----------------------------------------------------------------------
 
-type SettingsProviderProps = {
+interface SettingsProviderProps {
   children: React.ReactNode;
   defaultSettings: SettingsValueProps;
-};
+}
 
 export function SettingsProvider({ children, defaultSettings }: SettingsProviderProps) {
   const [openDrawer, setOpenDrawer] = useState(false);

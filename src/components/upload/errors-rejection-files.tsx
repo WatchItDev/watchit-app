@@ -11,9 +11,9 @@ import { fileData } from '../file-thumbnail';
 
 // ----------------------------------------------------------------------
 
-type Props = {
+interface Props {
   fileRejections: FileRejection[];
-};
+}
 
 export default function RejectionFiles({ fileRejections }: Props) {
   if (!fileRejections.length) {

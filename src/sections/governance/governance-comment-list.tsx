@@ -8,9 +8,9 @@ import GovernanceCommentItem from './governance-comment-item';
 
 // ----------------------------------------------------------------------
 
-type Props = {
+interface Props {
   comments: IPostComment[];
-};
+}
 
 export default function GovernanceCommentList({ comments }: Props) {
   return (

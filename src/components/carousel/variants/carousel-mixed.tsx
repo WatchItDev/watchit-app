@@ -40,9 +40,9 @@ const StyledThumbnailsContainer = styled('div')<{ length: number }>(() => ({
 
 // ----------------------------------------------------------------------
 
-type Props = {
+interface Props {
   data: Post[];
-};
+}
 
 export default function CarouselMixed({ data }: Props) {
   const carouselLarge = useCarousel({
@@ -161,10 +161,10 @@ export default function CarouselMixed({ data }: Props) {
   );
 }
 
-type CarouselThumbItemProps = {
+interface CarouselThumbItemProps {
   active: boolean;
   poster: Poster;
-};
+}
 
 function CarouselThumbItem({ poster, active }: CarouselThumbItemProps) {
   const theme = useTheme();
@@ -189,10 +189,10 @@ function CarouselThumbItem({ poster, active }: CarouselThumbItemProps) {
   );
 }
 
-type CarouselLargeItemProps = {
+interface CarouselLargeItemProps {
   poster: Poster;
   active: boolean;
-};
+}
 
 function CarouselLargeItem({ poster }: Readonly<CarouselLargeItemProps>) {
   const theme = useTheme();

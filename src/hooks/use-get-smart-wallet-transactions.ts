@@ -9,7 +9,7 @@ import { addTransaction, setTransactions } from '@redux/transactions';
 /**
  * Type definition for a transaction log, including event data and relevant block/transaction metadata.
  */
-export type TransactionLog = {
+export interface TransactionLog {
   address: string;
   args: {
     amount: bigint;
@@ -30,7 +30,7 @@ export type TransactionLog = {
   topics: string[];
   transactionHash: string;
   transactionIndex: number;
-};
+}
 
 /**
  * Configuration object for each event:
@@ -38,11 +38,11 @@ export type TransactionLog = {
  * - args: Address-related arguments used to filter logs (e.g., recipient, origin).
  * - getEventType: Function to determine a custom "event type" (e.g., transferTo, transferFrom) based on the log contents and the user's address.
  */
-type EventConfig = {
+interface EventConfig {
   eventName: string;
   args: Record<string, string | bigint>;
   getEventType: (log: any, userAddress: string) => string;
-};
+}
 
 /**
  * Hook to retrieve smart wallet transactions by querying logs from the LedgerVault contract.

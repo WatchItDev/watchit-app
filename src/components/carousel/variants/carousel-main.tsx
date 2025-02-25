@@ -22,9 +22,9 @@ import { useRouter } from '@src/routes/hooks';
 
 // ----------------------------------------------------------------------
 
-type Props = {
+interface Props {
   data: Post[];
-};
+}
 
 export default function CarouselMain({ data }: Props) {
   const carousel = useCarousel({
@@ -49,10 +49,10 @@ export default function CarouselMain({ data }: Props) {
 
 // ----------------------------------------------------------------------
 
-type CarouselItemProps = {
+interface CarouselItemProps {
   post: any;
   active: boolean;
-};
+}
 
 function CarouselItem({ post }: Readonly<CarouselItemProps>) {
   const theme = useTheme();

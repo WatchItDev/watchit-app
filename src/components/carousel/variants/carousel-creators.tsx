@@ -8,12 +8,12 @@ import { UserItem } from '@src/components/user-item';
 
 // ----------------------------------------------------------------------
 
-type Props = {
+interface Props {
   data: Profile[];
   title?: string;
   minItemWidth: number;
   maxItemWidth: number;
-};
+}
 
 export default function CarouselCreators({ data, title, minItemWidth, maxItemWidth }: Props) {
   const [itemsPerSlide, setItemsPerSlide] = useState(1);
@@ -30,8 +30,8 @@ export default function CarouselCreators({ data, title, minItemWidth, maxItemWid
   });
 
   const calculateItemsPerSlide = (parentWidth: number) => {
-    let maxItems = Math.floor(parentWidth / minItemWidth);
-    let minItems = Math.floor(parentWidth / maxItemWidth);
+    const maxItems = Math.floor(parentWidth / minItemWidth);
+    const minItems = Math.floor(parentWidth / maxItemWidth);
     let items = maxItems;
 
     while (items >= minItems) {
@@ -51,7 +51,7 @@ export default function CarouselCreators({ data, title, minItemWidth, maxItemWid
     if (!parentRef.current) return;
 
     const observer = new ResizeObserver((entries) => {
-      for (let entry of entries) {
+      for (const entry of entries) {
         const parentWidth = entry.contentRect.width;
         const items = calculateItemsPerSlide(parentWidth);
         setItemsPerSlide(items);
@@ -113,10 +113,10 @@ export default function CarouselCreators({ data, title, minItemWidth, maxItemWid
   );
 }
 
-type SlideProps = {
+interface SlideProps {
   items: Profile[];
   itemsPerRow: number;
-};
+}
 
 function Slide({ items, itemsPerRow }: SlideProps) {
   const row1 = items.slice(0, itemsPerRow);

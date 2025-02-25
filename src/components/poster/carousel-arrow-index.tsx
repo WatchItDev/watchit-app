@@ -38,14 +38,14 @@ const StyledIconButton = styled(IconButton)({
 
 // ----------------------------------------------------------------------
 
-type Props = {
+interface Props {
   index: number;
   total: number;
   icon?: IconifyProps; // Right icon
   onNext?: VoidFunction;
   onPrev?: VoidFunction;
   sx?: SxProps<Theme>;
-};
+}
 
 export default function CarouselArrowIndex({
   index,

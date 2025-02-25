@@ -16,13 +16,13 @@ import AvatarProfile from "@src/components/avatar/avatar.tsx";
 
 // ----------------------------------------------------------------------
 
-type Props = {
+interface Props {
   query: string;
   results: IPostItem[];
   onSearch: (inputValue: string) => void;
   hrefItem: (title: string) => string;
   loading?: boolean;
-};
+}
 
 export default function GovernanceSearch({ query, results, onSearch, hrefItem, loading }: Props) {
   const router = useRouter();

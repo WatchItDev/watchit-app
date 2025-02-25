@@ -6,9 +6,9 @@ import Box, { BoxProps } from '@mui/material/Box';
 
 // ----------------------------------------------------------------------
 
-type StyledRootProps = {
+interface StyledRootProps {
   rounded: boolean;
-};
+}
 
 const StyledRoot = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'rounded',

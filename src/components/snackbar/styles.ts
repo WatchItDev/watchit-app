@@ -35,9 +35,9 @@ export const StyledNotistack = styled(MaterialDesignContent)(({ theme }) => {
 
 // ----------------------------------------------------------------------
 
-type StyledIconProps = {
+interface StyledIconProps {
   color: 'info' | 'success' | 'warning' | 'error';
-};
+}
 
 export const StyledIcon = styled('span')<StyledIconProps>(({ color, theme }) => ({
   width: 44,

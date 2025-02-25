@@ -18,9 +18,9 @@ import AvatarProfile from "@src/components/avatar/avatar.tsx";
 
 // ----------------------------------------------------------------------
 
-type Props = {
+interface Props {
   post: IPostItem;
-};
+}
 
 export default function GovernanceItemHorizontal({ post }: Props) {
   const popover = usePopover();

@@ -145,7 +145,7 @@ export function groupTransactionsForWidget(transactions: any[]) {
     return { daySeriesData: [], calculatedPercent: 0 };
   }
 
-  let grouped: Record<string, number> = {};
+  const grouped: Record<string, number> = {};
 
   transactions.forEach((tx) => {
     const timestamp = Number(tx.timestamp) * 1000;

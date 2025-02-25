@@ -15,9 +15,9 @@ import { useEffect } from 'react';
 // Get the version from package.json
 import { version } from '../../../package.json';
 // ----------------------------------------------------------------------
-type Props = {
+interface Props {
   children: React.ReactNode;
-};
+}
 
 export default function DashboardLayout({ children }: Props) {
   const dispatch = useDispatch();

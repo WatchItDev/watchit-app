@@ -9,14 +9,14 @@ import Carousel, { CarouselArrowIndex, useCarousel } from '@src/components/carou
 
 // ----------------------------------------------------------------------
 
-type Props = {
+interface Props {
   data: {
     id: string;
     title: string;
     coverUrl: string;
     description: string;
   }[];
-};
+}
 
 export default function CarouselBasic2({ data }: Props) {
   const carousel = useCarousel({

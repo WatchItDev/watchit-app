@@ -8,9 +8,9 @@ import moment from 'moment/moment';
 import { PosterVertical } from '../../poster';
 // ----------------------------------------------------------------------
 
-type Props = {
+interface Props {
   data: Post[];
-};
+}
 
 export default function CarouselPoster({ data }: Props) {
   const carousel = useCarousel({

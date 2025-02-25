@@ -28,7 +28,7 @@ import AvatarProfile from "@src/components/avatar/avatar.tsx";
 import {dicebear} from "@src/utils/dicebear.ts";
 
 // Define the props types
-type MovieCommentFormProps = {
+interface MovieCommentFormProps {
   root?: any; // ID of the root publication (post or comment)
   commentOn: string; // ID of the publication (post or comment) to comment on
   owner: {
@@ -36,7 +36,7 @@ type MovieCommentFormProps = {
     displayName: string;
     avatar?: string;
   };
-};
+}
 
 /**
  * MovieCommentForm Component

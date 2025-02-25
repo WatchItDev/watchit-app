@@ -71,7 +71,7 @@ export default function FinanceBalanceStatistics() {
     const oneYearAgo = now - 365 * 24 * 60 * 60 * 1000;
 
     // Grouped data structure
-    let groupedData: Record<string, { label: string; income: number; outcome: number }> = {};
+    const groupedData: Record<string, { label: string; income: number; outcome: number }> = {};
 
     transactions.forEach((log: any) => {
       const timestamp = Number(log.timestamp) * 1000;

@@ -14,10 +14,10 @@ import { OpenableText } from '@src/components/openable-text';
 
 // ----------------------------------------------------------------------
 
-type Props = {
+interface Props {
   row: TableRowTransactionType;
   selected: boolean;
-};
+}
 
 // ----------------------------------------------------------------------
 

@@ -26,12 +26,12 @@ import { useSelector } from 'react-redux';
 
 // ----------------------------------------------------------------------
 
-export type TrendingTopicsType = {
+export interface TrendingTopicsType {
   id: number;
   image: string;
   title: string;
   desc: string;
-};
+}
 
 export default function ExploreView() {
   const lgUp = useResponsive('up', 'lg');

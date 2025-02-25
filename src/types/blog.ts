@@ -2,13 +2,13 @@
 
 export type IPostFilterValue = string;
 
-export type IPostFilters = {
+export interface IPostFilters {
   publish: string;
-};
+}
 
 // ----------------------------------------------------------------------
 
-export type IPostHero = {
+export interface IPostHero {
   title: string;
   coverUrl: string;
   createdAt?: Date;
@@ -16,9 +16,9 @@ export type IPostHero = {
     name: string;
     avatarUrl: string;
   };
-};
+}
 
-export type IPostComment = {
+export interface IPostComment {
   id: string;
   name: string;
   avatarUrl: string;
@@ -36,9 +36,9 @@ export type IPostComment = {
     postedAt: Date;
     tagUser?: string;
   }[];
-};
+}
 
-export type IPostItem = {
+export interface IPostItem {
   id: string;
   title: string;
   tags: string[];
@@ -64,4 +64,4 @@ export type IPostItem = {
     avatarUrl: string;
     wallet: string;
   };
-};
+}

@@ -16,10 +16,10 @@ import {paths} from "@src/routes/paths.ts";
 
 // ----------------------------------------------------------------------
 
-type Props = {
+interface Props {
   row: Invitation;
   selected: boolean;
-};
+}
 
 
 const capitalizeFirstLetter = (string: string) => {

@@ -7,14 +7,14 @@ import Carousel, { CarouselDots, CarouselArrows, useCarousel } from '@src/compon
 
 // ----------------------------------------------------------------------
 
-type Props = {
+interface Props {
   data: {
     id: string;
     title: string;
     coverUrl: string;
     description: string;
   }[];
-};
+}
 
 export default function CarouselBasic3({ data }: Props) {
   const theme = useTheme();
@@ -50,11 +50,11 @@ export default function CarouselBasic3({ data }: Props) {
 
 // ----------------------------------------------------------------------
 
-type CarouselItemProps = {
+interface CarouselItemProps {
   title: string;
   description: string;
   coverUrl: string;
-};
+}
 
 function CarouselItem({ item }: { item: CarouselItemProps }) {
   const { coverUrl, title } = item;

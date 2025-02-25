@@ -10,12 +10,12 @@ import NavItem from './nav-item';
 
 // ----------------------------------------------------------------------
 
-type NavListRootProps = {
+interface NavListRootProps {
   data: NavListProps;
   depth: number;
   hasChild: boolean;
   config: NavConfigProps;
-};
+}
 
 export default function NavList({ data, depth, hasChild, config }: NavListRootProps) {
   const pathname = usePathname();
@@ -64,11 +64,11 @@ export default function NavList({ data, depth, hasChild, config }: NavListRootPr
 
 // ----------------------------------------------------------------------
 
-type NavListSubProps = {
+interface NavListSubProps {
   data: NavListProps[];
   depth: number;
   config: NavConfigProps;
-};
+}
 
 function NavSubList({ data, depth, config }: NavListSubProps) {
   return (

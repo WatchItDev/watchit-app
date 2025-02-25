@@ -12,12 +12,12 @@ import NavItemVerticalMini from '@src/components/nav-section/mini/nav-item-verti
 
 // ----------------------------------------------------------------------
 
-type NavListRootProps = {
+interface NavListRootProps {
   data: NavListProps;
   depth: number;
   hasChild: boolean;
   config: NavConfigProps;
-};
+}
 
 export default function NavListVerticalMini({ data, depth, hasChild, config }: NavListRootProps) {
   const navRef = useRef(null);
@@ -40,7 +40,7 @@ export default function NavListVerticalMini({ data, depth, hasChild, config }: N
   useEffect(() => {
     const appBarEl = Array.from(
       document.querySelectorAll(`.${appBarClasses.root}`)
-    ) as Array<HTMLElement>;
+    ) as HTMLElement[];
 
     // Reset styles when hover
     const styles = () => {
@@ -113,11 +113,11 @@ export default function NavListVerticalMini({ data, depth, hasChild, config }: N
 
 // ----------------------------------------------------------------------
 
-type NavListSubProps = {
+interface NavListSubProps {
   data: NavListProps[];
   depth: number;
   config: NavConfigProps;
-};
+}
 
 function NavSubList({ data, depth, config }: NavListSubProps) {
   return (

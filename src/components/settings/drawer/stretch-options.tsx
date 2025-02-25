@@ -8,10 +8,10 @@ import Iconify from '../../iconify';
 
 // ----------------------------------------------------------------------
 
-type Props = {
+interface Props {
   value: boolean;
   onChange: VoidFunction;
-};
+}
 
 export default function StretchOptions({ value, onChange }: Props) {
   return (

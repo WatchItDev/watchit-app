@@ -5,9 +5,9 @@ import { LazyMotion, m } from 'framer-motion';
 // @ts-ignore
 const loadFeatures = () => import('./features.js').then((res) => res.default);
 
-type Props = {
+interface Props {
   children: React.ReactNode;
-};
+}
 
 function MotionLazy({ children }: Props) {
   return (

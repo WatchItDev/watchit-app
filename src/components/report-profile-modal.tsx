@@ -4,11 +4,11 @@ import { ReportModalBase } from '@src/components/report-modal-base.tsx';
 
 // ----------------------------------------------------------------------
 
-type ProfileReportModalProps = {
+interface ProfileReportModalProps {
   profile: any;
   isOpen: boolean;
   onClose: () => void;
-};
+}
 
 // ----------------------------------------------------------------------
 

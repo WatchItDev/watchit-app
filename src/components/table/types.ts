@@ -1,6 +1,6 @@
 // ----------------------------------------------------------------------
 
-export type TableProps = {
+export interface TableProps {
   dense: boolean;
   page: number;
   rowsPerPage: number;
@@ -33,4 +33,4 @@ export type TableProps = {
   setOrderBy: React.Dispatch<React.SetStateAction<string>>;
   setSelected: React.Dispatch<React.SetStateAction<string[]>>;
   setRowsPerPage: React.Dispatch<React.SetStateAction<number>>;
-};
+}

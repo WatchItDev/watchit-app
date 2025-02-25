@@ -44,12 +44,12 @@ import {dicebear} from "@src/utils/dicebear.ts";
 
 // ----------------------------------------------------------------------
 
-type SubscribeProfileModalProps = {
+interface SubscribeProfileModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSubscribe: () => void;
   profile: Profile;
-};
+}
 
 // ----------------------------------------------------------------------
 

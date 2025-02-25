@@ -8,11 +8,11 @@ import { BreadcrumbsLinkProps } from './types';
 
 // ----------------------------------------------------------------------
 
-type Props = {
+interface Props {
   link: BreadcrumbsLinkProps;
   activeLast?: boolean;
   disabled: boolean;
-};
+}
 
 export default function BreadcrumbsLink({ link, activeLast, disabled }: Props) {
   const { name, href, icon } = link;

@@ -8,9 +8,9 @@ import { PosterVertical } from '../../poster';
 
 // ----------------------------------------------------------------------
 
-type Props = {
+interface Props {
   data: Post[];
-};
+}
 
 export default function CarouselPosterHorizontal({ data }: Props) {
   const carousel = useCarousel({

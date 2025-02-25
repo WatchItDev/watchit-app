@@ -5,11 +5,11 @@ import { NavListProps, NavSectionProps } from '@src/components/nav-section';
 
 // ----------------------------------------------------------------------
 
-type ItemProps = {
+interface ItemProps {
   group: string;
   title: string;
   path: string;
-};
+}
 
 export function getAllItems({ data }: NavSectionProps) {
   const reduceItems = data.map((list) => handleLoop(list.items, list.subheader)).flat();
@@ -29,10 +29,10 @@ export function getAllItems({ data }: NavSectionProps) {
 
 // ----------------------------------------------------------------------
 
-type FilterProps = {
+interface FilterProps {
   inputData: ItemProps[];
   query: string;
-};
+}
 
 export function applyFilter({ inputData, query }: FilterProps) {
   if (query) {
@@ -90,9 +90,7 @@ export function handleLoop(array: any, subheader?: string) {
 
 // ----------------------------------------------------------------------
 
-type GroupsProps = {
-  [key: string]: ItemProps[];
-};
+type GroupsProps = Record<string, ItemProps[]>;
 
 export function groupedData(array: ItemProps[]) {
   const group = array.reduce((groups: GroupsProps, item) => {

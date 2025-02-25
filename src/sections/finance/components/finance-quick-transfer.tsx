@@ -39,7 +39,7 @@ import {handleAmountConstraints} from "@src/utils/format-number.ts";
 const STEP = 50;
 const MIN_AMOUNT = 0;
 // A thousand millions allowed in the pool
-export const MAX_POOL: number = 1000000000;
+export const MAX_POOL = 1000000000;
 
 interface Props extends CardProps {
   title?: string;

@@ -11,9 +11,9 @@ import { StyledIcon, StyledNotistack } from './styles';
 
 // ----------------------------------------------------------------------
 
-type Props = {
+interface Props {
   children: React.ReactNode;
-};
+}
 
 export default function SnackbarProvider({ children }: Props) {
   const settings = useSettingsContext();

@@ -63,13 +63,13 @@ import AvatarProfile from "@src/components/avatar/avatar.tsx";
 
 // ----------------------------------------------------------------------
 
-type Props = {
+interface Props {
   post: any;
   handleSubscribe: () => void;
   loadingSubscribe: boolean;
   subscribeDisabled: boolean;
   hasAccess: boolean;
-};
+}
 
 // ----------------------------------------------------------------------
 

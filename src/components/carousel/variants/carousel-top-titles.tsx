@@ -7,10 +7,10 @@ import PosterTopTitles from '@src/components/poster/variants/poster-top-titles.t
 
 // ----------------------------------------------------------------------
 
-type Props = {
+interface Props {
   posts: Post[];
   category?: string;
-};
+}
 
 export default function CarouselTopTitles({ posts, category }: Props) {
   const carousel = useCarousel({

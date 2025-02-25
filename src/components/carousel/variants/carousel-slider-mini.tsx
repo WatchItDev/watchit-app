@@ -13,10 +13,10 @@ import PosterMini from '@src/components/poster/variants/poster-mini';
 
 // ----------------------------------------------------------------------
 
-type Props = {
+interface Props {
   data: Poster[];
-  title: String;
-};
+  title: string;
+}
 
 export default function CarouselSliderMini({ data, title }: Props) {
   const [currentIndex, setCurrentIndex] = useState(0);

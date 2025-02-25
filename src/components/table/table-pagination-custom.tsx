@@ -7,11 +7,11 @@ import TablePagination, { TablePaginationProps } from '@mui/material/TablePagina
 
 // ----------------------------------------------------------------------
 
-type Props = {
+interface Props {
   dense?: boolean;
   onChangeDense?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   sx?: SxProps<Theme>;
-};
+}
 
 export default function TablePaginationCustom({
   dense,

@@ -67,9 +67,9 @@ export const StyledItem = styled(ListItemButton, {
 
 // ----------------------------------------------------------------------
 
-type StyledIconProps = {
+interface StyledIconProps {
   size?: number;
-};
+}
 
 export const StyledIcon = styled(ListItemIcon)<StyledIconProps>(({ size }) => ({
   width: size,
@@ -78,9 +78,9 @@ export const StyledIcon = styled(ListItemIcon)<StyledIconProps>(({ size }) => ({
   justifyContent: 'center',
 }));
 
-type StyledDotIconProps = {
+interface StyledDotIconProps {
   active?: boolean;
-};
+}
 
 export const StyledDotIcon = styled('span')<StyledDotIconProps>(({ active, theme }) => ({
   width: 4,
@@ -98,9 +98,9 @@ export const StyledDotIcon = styled('span')<StyledDotIconProps>(({ active, theme
 
 // ----------------------------------------------------------------------
 
-type StyledSubheaderProps = {
+interface StyledSubheaderProps {
   config: NavConfigProps;
-};
+}
 
 export const StyledSubheader = styled(ListSubheader)<StyledSubheaderProps>(({ config, theme }) => ({
   ...theme.typography.overline,

@@ -11,13 +11,13 @@ import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 // ----------------------------------------------------------------------
 
-type NavListRootProps = {
+interface NavListRootProps {
   data: NavListProps;
   active?: boolean;
   depth: number;
   config: NavConfigProps;
   onClick?: () => void;
-};
+}
 
 export default function NavList({ data, active, depth, config, onClick }: NavListRootProps) {
   const navRef = useRef(null);
@@ -36,7 +36,7 @@ export default function NavList({ data, active, depth, config, onClick }: NavLis
   useEffect(() => {
     const appBarEl = Array.from(
       document.querySelectorAll(`.${appBarClasses.root}`)
-    ) as Array<HTMLElement>;
+    ) as HTMLElement[];
 
     // Reset styles when hover
     const styles = () => {

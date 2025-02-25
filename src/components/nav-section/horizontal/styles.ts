@@ -53,9 +53,9 @@ export const StyledItem = styled(ListItemButton, {
 
 // ----------------------------------------------------------------------
 
-type StyledIconProps = {
+interface StyledIconProps {
   size?: number;
-};
+}
 
 export const StyledIcon = styled(ListItemIcon)<StyledIconProps>(({ size }) => ({
   width: size,

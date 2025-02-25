@@ -5,7 +5,7 @@ import { useTheme } from '@mui/material/styles';
 
 // ----------------------------------------------------------------------
 
-type ReturnType = {
+interface ReturnType {
   currentIndex: number;
   nav: Carousel | undefined;
   carouselSettings: Settings;
@@ -18,7 +18,7 @@ type ReturnType = {
   //
   setNav: React.Dispatch<React.SetStateAction<Carousel | undefined>>;
   setCurrentIndex: React.Dispatch<React.SetStateAction<number>>;
-};
+}
 
 export default function useCarousel(props?: Settings): ReturnType {
   const theme = useTheme();
