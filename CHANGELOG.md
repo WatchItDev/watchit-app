@@ -1,3 +1,59 @@
+# [2.2.0-beta.31](https://github.com/WatchItDev/watchit-app/compare/v2.2.0-beta.30...v2.2.0-beta.31) (2025-02-26)
+
+
+### Bug Fixes
+
+* allocation with wei ([a13bc92](https://github.com/WatchItDev/watchit-app/commit/a13bc92e2f93b6d10232a0d2050d8a6e0f46b6d7))
+* **CampaignTableRow:** improve pause/resume button behavior ([bae50f4](https://github.com/WatchItDev/watchit-app/commit/bae50f489bfcafcc2b824fc95abbe114bad96506))
+* **CampaignTableRow:** update loading icon logic for pause/unpause ([7ee21e2](https://github.com/WatchItDev/watchit-app/commit/7ee21e2941854cba484b3eda4be78037fa14b76a))
+* clear console.log ([fec1b14](https://github.com/WatchItDev/watchit-app/commit/fec1b14160accff687a49ac87d2c508fd420a4ed))
+* correct data aggregation in sponsored access calculation ([27ca5c2](https://github.com/WatchItDev/watchit-app/commit/27ca5c2704f0b1f2e013f83f196a29d091b1027a))
+* eslint errors ([d18282b](https://github.com/WatchItDev/watchit-app/commit/d18282bd61d571ad95c2b70815fbbb7b0d845340))
+* pr observations ([a313b5f](https://github.com/WatchItDev/watchit-app/commit/a313b5faf248f15238cf80539ba56b54fc677bfe))
+* props ([c8ddeec](https://github.com/WatchItDev/watchit-app/commit/c8ddeec87fb30d55f74fa13911ec617457197999))
+* remove unused code ([00af035](https://github.com/WatchItDev/watchit-app/commit/00af035ba1b5c09e69fa50e00aa30e3c033d7c71))
+* some hooks ([b8802ec](https://github.com/WatchItDev/watchit-app/commit/b8802ec3166cfbd36496e63bdd3489fab8dfd08a))
+* sonarcloud errors ([91092c5](https://github.com/WatchItDev/watchit-app/commit/91092c5bed650e373f5cffb8bfe013daf137e18b))
+* sonarcloud errors ([907900e](https://github.com/WatchItDev/watchit-app/commit/907900ef5aba07c8d4b6d23835db1dfa2089b0d3))
+* sponsored access button ([4fe990a](https://github.com/WatchItDev/watchit-app/commit/4fe990adf4dc71e133a391e6dfe37f673c487641))
+* **UI:** standardize button label to "Confirm" ([fe5b16f](https://github.com/WatchItDev/watchit-app/commit/fe5b16f3bf3436e10f1e7538e4a6bdc8d50f1d05))
+* unpause campaign ([1395b66](https://github.com/WatchItDev/watchit-app/commit/1395b66b3f9f96c04f84fd10ed0ed987c64a5e03))
+
+
+### Features
+
+* add "Free trial" button with loading state and styling ([806061d](https://github.com/WatchItDev/watchit-app/commit/806061d966c131a7618f3d2d4f04a526edac4aae))
+* add `storeStrategy` function and integrate in modal ([4836299](https://github.com/WatchItDev/watchit-app/commit/4836299d83d4544ebf2af598c2a9101777c0e5e6))
+* add campaign configuration indicator component ([921dbaf](https://github.com/WatchItDev/watchit-app/commit/921dbafa31c62d53c67a0547d8adc30704d39664))
+* add campaign creation and storage functionality ([d027f50](https://github.com/WatchItDev/watchit-app/commit/d027f5025a19204ad452b5b8234f29ae49470939))
+* add campaign settings modal for marketing configuration ([ba0bea1](https://github.com/WatchItDev/watchit-app/commit/ba0bea158c0c69519ffaa493218d1e2f0b43a915))
+* add CampaignTable component to StrategyOverview ([bc4f3ee](https://github.com/WatchItDev/watchit-app/commit/bc4f3ee8bfeff79a07400d935cd4053ae004a0f4))
+* add responsiveness to StrategyCircles component ([b6558a2](https://github.com/WatchItDev/watchit-app/commit/b6558a2316b8f70eb0470fb950eaee11cd70c36e))
+* add strategy creation workflow and color picker feature ([a771382](https://github.com/WatchItDev/watchit-app/commit/a771382fd86135f8914d78e473d3b724b43d9e16))
+* added access workflow abi and campaignRegistry abi ([a01d55f](https://github.com/WatchItDev/watchit-app/commit/a01d55fed3b59401c99beb1d6adf7ce17aef5965))
+* added campaign is ready, table load and last rows first on table ([df820dc](https://github.com/WatchItDev/watchit-app/commit/df820dc9e1680f23e2961cd8dfb6201c6c60c0ee))
+* added marketing campaign expiration ([d0c091e](https://github.com/WatchItDev/watchit-app/commit/d0c091e8628a37fa480f3b571d89d51b08f9e279))
+* added marketing connection ([7b3ee55](https://github.com/WatchItDev/watchit-app/commit/7b3ee55506e89366fd3bf42b6f8fc05a558fed8b))
+* added notifications ([3548392](https://github.com/WatchItDev/watchit-app/commit/3548392a5e482eb11f53e28bf9f5fa2c5a08db2f))
+* added pause/unpause campaign ([36c26fc](https://github.com/WatchItDev/watchit-app/commit/36c26fcc5380ec5116b6e25f4f6b207ecdb545bc))
+* added sponsored access button to profile and content details ([b30cba8](https://github.com/WatchItDev/watchit-app/commit/b30cba8e5a415e6337ee7a1462676b468b9b93dd))
+* **CampaignTableRow:** add loading icon for pause action ([17916a4](https://github.com/WatchItDev/watchit-app/commit/17916a48ede39433770bfb7c0a435dfc3692b9c3))
+* close popup when pause camapign and refetch ready when withdraw from campaign ([fea4f0a](https://github.com/WatchItDev/watchit-app/commit/fea4f0a21f814746cb45f7b98ea6631ee35d68c9))
+* **components:** add reusable ConfirmDialog component ([439d5d5](https://github.com/WatchItDev/watchit-app/commit/439d5d584b95739de42549728aa0b5ed24acbf03))
+* **fakeData:** add unique IDs to strategies and campaigns ([866885e](https://github.com/WatchItDev/watchit-app/commit/866885ed6686995189b26879730786206205dfd7))
+* **generator:** add fake data generator for strategies ([a59b262](https://github.com/WatchItDev/watchit-app/commit/a59b262862a002a0035fed390820916ef8fb1282))
+* improve loading UI with dynamic effects and loading button ([e9b7529](https://github.com/WatchItDev/watchit-app/commit/e9b7529c4d8311694aa209a0cde0874ba0f5f856))
+* **marketing:** add campaign and strategy type definitions ([46f8a94](https://github.com/WatchItDev/watchit-app/commit/46f8a946d53a797e6c0131b041fe67e961fedb1a))
+* **marketing:** add CampaignTable and CampaignTableRow ([b091d2f](https://github.com/WatchItDev/watchit-app/commit/b091d2f1ff6052fd25ea0859ff3f6761f0ddd6d6))
+* **marketing:** add IDs and campaign categories ([10eb2e1](https://github.com/WatchItDev/watchit-app/commit/10eb2e1b4c1cf2cf2994569ae99c590b80d2e2a6))
+* **marketing:** add loading state to CampaignTable ([8a72f23](https://github.com/WatchItDev/watchit-app/commit/8a72f23a2508013f4f7ea36f23c6e7c88119a97b))
+* **marketing:** add strategy dashboard and campaign creation ([54aea3c](https://github.com/WatchItDev/watchit-app/commit/54aea3c768cdd443b5809a5e5952cbea31285886))
+* **marketing:** enhance marketing view with strategy features ([b39ac3a](https://github.com/WatchItDev/watchit-app/commit/b39ac3a61d10b9dbcf605f0cede77a7cac96b3d6))
+* **marketing:** modularize strategy components ([b548c53](https://github.com/WatchItDev/watchit-app/commit/b548c53dc811b16eab8190c239901ded56306dc8))
+* **strategy:** implement strategy creation with notifications ([5be1083](https://github.com/WatchItDev/watchit-app/commit/5be108379cbb8c2ad64cc46d013e887ea634c959))
+* **ui:** improve responsive design for StrategySponsoredAccess ([fa19782](https://github.com/WatchItDev/watchit-app/commit/fa19782d5554fc4d3a9ce86de650307a05189f3a))
+* **utils:** add capitalizeFirstLetter function ([c28b190](https://github.com/WatchItDev/watchit-app/commit/c28b190f4d640fa90ce9afd8f65369a6aa338002))
+
 # [2.2.0-beta.30](https://github.com/WatchItDev/watchit-app/compare/v2.2.0-beta.29...v2.2.0-beta.30) (2025-02-23)
 
 
