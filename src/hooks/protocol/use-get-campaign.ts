@@ -4,8 +4,6 @@ import { publicClient } from '@src/clients/viem/publicClient.ts';
 import CampaignRegistryAbi from '@src/config/abi/CampaignRegistry.json';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 import { UseGetCampaignHook } from '@src/hooks/protocol/types.ts';
-import { notifyError } from '@notifications/internal-notifications.ts';
-import { ERRORS } from '@notifications/errors.ts';
 
 export const useGetCampaign = (): UseGetCampaignHook => {
   const [campaign, setCampaign] = useState<any>();
@@ -32,7 +30,6 @@ export const useGetCampaign = (): UseGetCampaignHook => {
       } catch (err: any) {
         console.error('Error fetching is active:', err);
         setCampaign(null);
-        notifyError(ERRORS.GET_CAMPAIGN_ERROR);
       } finally {
         setLoading(false);
       }

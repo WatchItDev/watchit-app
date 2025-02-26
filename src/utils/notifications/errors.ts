@@ -73,6 +73,7 @@ export enum ERRORS {
   GET_CAMPAIGN_ERROR = 'GET_CAMPAIGN_ERROR',
   SPONSORED_ACCESS_ERROR = 'SPONSORED_ACCESS_ERROR',
   CONFIGURE_CAMPAIGN_ERROR = 'CONFIGURE_CAMPAIGN_ERROR',
+  VERIFY_ACCESS_ERROR = 'VERIFY_ACCESS_ERROR',
 }
 
 /**
@@ -155,5 +156,6 @@ export const ERROR_MESSAGES: Record<ERRORS, string> = {
   [ERRORS.GET_CAMPAIGN_ERROR]: 'Error getting the campaign.',
   [ERRORS.SPONSORED_ACCESS_ERROR]: 'Error processing the sponsored access.',
   [ERRORS.CONFIGURE_CAMPAIGN_ERROR]: 'Error configuring the campaign.',
+  [ERRORS.VERIFY_ACCESS_ERROR]: 'Error verifying access.',
 
 };
