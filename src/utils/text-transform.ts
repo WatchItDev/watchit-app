@@ -118,6 +118,20 @@ export const trimPublicationContentExtraText = (text: string): string => {
   return `${cleanedText}`;
 };
 
+/**
+ * A function that capitalizes the first letter of a given string.
+ *
+ * This function takes a string as input and returns a new string
+ * with the first character converted to uppercase while keeping
+ * the rest of the string unchanged.
+ *
+ * @param {string} string - The input string to be processed.
+ * @returns {string} A new string with its first letter capitalized.
+ */
+export const capitalizeFirstLetter = (string: string) => {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+};
+
 export const createIndexForElement = (): string => {
   const array = new Uint8Array(8);
   window.crypto.getRandomValues(array);

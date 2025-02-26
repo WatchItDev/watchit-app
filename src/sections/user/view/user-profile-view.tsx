@@ -23,7 +23,7 @@ import { setFollowers, setFollowings } from '@redux/followers';
 import ProfileReferrals from "@src/sections/user/profile-referrals.tsx";
 import useReferrals from "@src/hooks/use-referrals.ts";
 import Alert from '@mui/material/Alert';
-import { useIsPolicyAuthorized } from '@src/hooks/use-is-policy-authorized.ts';
+import { useIsPolicyAuthorized } from '@src/hooks/protocol/use-is-policy-authorized.ts';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 import { Address } from 'viem';
 import {filterHiddenProfiles} from "@src/utils/profile.ts";
@@ -181,7 +181,7 @@ const UserProfileView = ({ id }: any) => {
   );
 };
 
-const TabLabel = ({ label, count }: any) => (
+export const TabLabel = ({ label, count }: any) => (
   <>
     {label}
     {count > 0 && (

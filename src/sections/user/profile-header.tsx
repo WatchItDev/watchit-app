@@ -1,5 +1,5 @@
 // REACT IMPORTS
-import { PropsWithChildren } from 'react';
+import { PropsWithChildren, useEffect } from 'react';
 
 // Redux
 import { useSelector } from 'react-redux';
@@ -7,7 +7,6 @@ import { useSelector } from 'react-redux';
 // MUI IMPORTS
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
-import { Profile } from '@lens-protocol/api-bindings';
 import CircularProgress from '@mui/material/CircularProgress';
 
 // LENS IMPORTS
@@ -19,10 +18,10 @@ import { Address } from 'viem';
 // LOCAL IMPORTS
 import ProfileCover from './profile-cover';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
-import { useHasAccess } from '@src/hooks/use-has-access.ts';
-import { useIsPolicyAuthorized } from '@src/hooks/use-is-policy-authorized.ts';
+import { useHasAccess } from '@src/hooks/protocol/use-has-access.ts';
+import { useIsPolicyAuthorized } from '@src/hooks/protocol/use-is-policy-authorized.ts';
 import FollowUnfollowButton from '@src/components/follow-unfollow-button.tsx';
-import { useGetPolicyAttestation } from '@src/hooks/use-get-policy-attestation.ts';
+import { useGetPolicyAttestation } from '@src/hooks/protocol/use-get-policy-attestation.ts';
 
 // Profile Components
 import ProfileReport from '@src/sections/user/profile-report.tsx';
@@ -31,19 +30,16 @@ import ProfileJoin from "@src/sections/user/profile-join.tsx";
 import ProfileUserInfo from "@src/sections/user/profile-user-info.tsx";
 import ProfileWrapper from './profile-wrapper';
 import ProfileToolbar from "@src/sections/user/profile-toolbar.tsx";
+import { useGetSubscriptionCampaign } from '@src/hooks/protocol/use-get-subscription-campaign.ts';
+import { useGetCampaignIsActive } from '@src/hooks/protocol/use-get-campaign-is-active.ts';
+import { SponsoredAccessTrialButton } from '@src/components/sponsored-access-button/sponsored-access-button.tsx';
+import { ProfileHeaderProps } from '@src/sections/user/types.ts';
 
 // ----------------------------------------------------------------------
-export interface ProfileHeaderProps {
-  profile: Profile;
-}
 
-// ----------------------------------------------------------------------
-const ProfileHeader = ({
-  profile: profileData,
-  children,
-}: PropsWithChildren<ProfileHeaderProps>) => {
+const ProfileHeader = (props: PropsWithChildren<ProfileHeaderProps>) => {
+  const { profile: profileData, children } = props;
   const sessionData = useSelector((state: any) => state.auth.session);
-
   const profile =
     sessionData && sessionData?.profile?.id === profileData?.id ? sessionData.profile : profileData;
 
@@ -66,6 +62,10 @@ const ProfileHeader = ({
     GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS,
     profile?.ownedBy?.address as Address
   );
+  const { campaign, fetchSubscriptionCampaign } = useGetSubscriptionCampaign();
+  const { isActive, loading: isActiveLoading, fetchIsActive } = useGetCampaignIsActive();
+  const showJoinButton = isAuthorized && (!isActive || hasAccess) && !isActiveLoading && !authorizedLoading && profile?.id !== sessionData?.profile?.id;
+  const showSponsoredAccessButton = isActive && isAuthorized && !isActiveLoading && !authorizedLoading && !hasAccess;
 
   usePublications({
     where: {
@@ -76,6 +76,16 @@ const ProfileHeader = ({
       },
     },
   });
+
+  useEffect(() => {
+    fetchSubscriptionCampaign(profile?.ownedBy?.address);
+  }, []);
+
+  useEffect(() => {
+    if (!campaign || !profile?.ownedBy?.address) return;
+
+    fetchIsActive(campaign, profile?.ownedBy?.address);
+  }, [campaign, profile?.ownedBy?.address]);
 
   // Function to handle following a profile
   const onSubscribe = async () => {
@@ -119,9 +129,22 @@ const ProfileHeader = ({
               </Box>
             )}
 
-            {isAuthorized && !authorizedLoading && profile?.id !== sessionData?.profile?.id && <ProfileJoin profile={profile} profileJoinProps={{
-              hasAccess, accessLoading, accessFetchingLoading, onSubscribe
-            }} />}
+            { showJoinButton && (
+              <ProfileJoin profile={profile} profileJoinProps={{
+                hasAccess, accessLoading, accessFetchingLoading, onSubscribe
+              }} />
+            )}
+
+            {
+              showSponsoredAccessButton && (
+                <SponsoredAccessTrialButton
+                  isActive={isActive}
+                  holderAddress={profile?.ownedBy?.address as Address}
+                  campaignAddress={campaign}
+                  onSuccess={onSubscribe}
+                />
+              )
+            }
 
             {profile?.id !== sessionData?.profile?.id && (
               <FollowUnfollowButton profileId={profile?.id} />

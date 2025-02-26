@@ -161,11 +161,8 @@ const AppContent = () => {
       { name: 'FundsWithdrawn', args: { origin: sessionData?.address }, logText: 'New withdraw (user as origin):' },
       { name: 'FundsTransferred', args: { origin: sessionData?.address }, logText: 'New transfer from me:' },
       { name: 'FundsTransferred', args: { recipient: sessionData?.address }, logText: 'New transfer to me:' },
-      // { name: 'FundsLocked', args: { account: sessionData?.address }, logText: 'New funds locked:' },
       { name: 'FundsClaimed', args: { claimer: sessionData?.address }, logText: 'New funds claimed:' },
-      // { name: 'FundsApproved', args: { from: sessionData?.address }, logText: 'New funds approved:' },
-      // { name: 'FundsCollected', args: { from: sessionData?.address }, logText: 'New funds collected:' },
-      // { name: 'FundsReleased', args: { to: sessionData?.address }, logText: 'New funds released:' },
+      { name: 'FundsCollected', args: { from: sessionData?.address }, logText: 'New funds collected:' },
     ];
 
     const cleanup = events.map(event => watchEvent(event.name, event.args, event.logText));

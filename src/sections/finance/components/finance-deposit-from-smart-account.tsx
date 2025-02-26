@@ -3,7 +3,7 @@ import { FC } from 'react';
 import { useSelector } from 'react-redux';
 
 // Project components
-import { useDeposit } from '@src/hooks/use-deposit';
+import { useDeposit } from '@src/hooks/protocol/use-deposit.ts';
 import FinanceDeposit from './finance-deposit';
 
 interface FinanceDepositFromSmartAccountProps {

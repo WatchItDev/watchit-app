@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { useWithdraw } from '@src/hooks/use-withdraw';
+import { useWithdraw } from '@src/hooks/protocol/use-withdraw.ts';
 import { useSelector } from 'react-redux';
 import FinanceWithdraw from './finance-withdraw';
 

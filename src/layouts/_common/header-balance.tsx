@@ -5,7 +5,7 @@ import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 
 // LOCAL IMPORTS
-import { useGetBalance } from '@src/hooks/use-get-balance.ts';
+import { useGetBalance } from '@src/hooks/protocol/use-get-balance.ts';
 // @ts-ignore
 import mmcTokenIcon from '@src/assets/mmc_token.ico';
 import { paths } from '@src/routes/paths.ts';

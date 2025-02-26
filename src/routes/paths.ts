@@ -41,6 +41,7 @@ export const paths = {
       cards: `/user/cards`,
       profile: `/user/profile`,
       account: `/user/account`,
+      strategy: (id: string) => `/marketing/strategy/${id}`,
       edit: (id: string) => `/user/${id}/edit`,
       demo: {
         edit: `/user/${MOCK_ID}/edit`,

@@ -10,7 +10,7 @@ import { useSelector } from 'react-redux';
 import { useProfileFollowing } from '@lens-protocol/react';
 import Typography from '@mui/material/Typography';
 import FinanceTransactionsHistory from '@src/sections/finance/components/finance-transactions-history.tsx';
-import useGetSmartWalletTransactions from '@src/hooks/use-get-smart-wallet-transactions.ts';
+import useGetSmartWalletTransactions from '@src/hooks/protocol/use-get-smart-wallet-transactions.ts';
 import { useEffect, useState } from 'react';
 import Tabs, { tabsClasses } from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';

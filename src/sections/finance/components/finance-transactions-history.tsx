@@ -26,7 +26,7 @@ import {
 import { IOrderTableFilters, IOrderTableFilterValue } from '@src/types/transaction';
 //
 import FinanceTransactionTableRow from '@src/sections/finance/components/finance-transactions-table-row';
-import useGetSmartWalletTransactions from '@src/hooks/use-get-smart-wallet-transactions';
+import useGetSmartWalletTransactions from '@src/hooks/protocol/use-get-smart-wallet-transactions.ts';
 import { processTransactionData } from '@src/utils/finance-graphs/groupedTransactions';
 import FinanceOverlayLoader from '@src/sections/finance/components/finance-overlay-loader.tsx';
 

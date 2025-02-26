@@ -13,9 +13,9 @@ import NeonPaper from '@src/sections/publication/NeonPaperContainer';
 import FinanceDialogsActions from '@src/sections/finance/components/finance-dialogs-actions';
 import TextMaxLine from '@src/components/text-max-line';
 import { formatBalanceNumber } from '@src/utils/format-number';
-import { useGetMmcContractBalance } from '@src/hooks/use-get-mmc-contract-balance';
+import { useGetMmcContractBalance } from '@src/hooks/protocol/use-get-mmc-contract-balance.ts';
 import FinanceBoxRow from '@src/sections/finance/components/finance-box-row.tsx';
-import { UseDepositHook } from '@src/hooks/use-deposit';
+import { UseDepositHook } from '@src/hooks/protocol/use-deposit.ts';
 import { truncateAddress } from '@src/utils/wallet';
 
 // NOTIFICATIONS IMPORTS

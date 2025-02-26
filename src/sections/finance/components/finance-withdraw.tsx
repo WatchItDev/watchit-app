@@ -15,7 +15,7 @@ import FinanceDialogsActions from '@src/sections/finance/components/finance-dial
 import TextMaxLine from '@src/components/text-max-line';
 import { formatBalanceNumber } from '@src/utils/format-number';
 import FinanceBoxRow from '@src/sections/finance/components/finance-box-row.tsx';
-import { UseWithdrawHook } from '@src/hooks/use-withdraw.ts';
+import { UseWithdrawHook } from '@src/hooks/protocol/use-withdraw.ts';
 import { truncateAddress } from '@src/utils/wallet.ts';
 
 // NOTIFICATIONS IMPORTS
@@ -23,7 +23,7 @@ import { notifyError, notifySuccess, notifyWarning } from '@notifications/intern
 import { ERRORS } from '@notifications/errors';
 import { WARNING } from '@notifications/warnings';
 import { SUCCESS } from '@notifications/success';
-import { useGetBalance } from '@src/hooks/use-get-balance.ts';
+import { useGetBalance } from '@src/hooks/protocol/use-get-balance.ts';
 
 // ----------------------------------------------------------------------
 

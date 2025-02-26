@@ -11,6 +11,7 @@ import { TableRowTransactionType } from '@src/hooks/use-transaction-data.ts';
 import { truncateAddress } from '@src/utils/wallet.ts';
 import AvatarProfile from "@src/components/avatar/avatar.tsx";
 import { OpenableText } from '@src/components/openable-text';
+import {TX_COLORS} from "@src/sections/finance/components/CONSTANTS.tsx";
 
 // ----------------------------------------------------------------------
 
@@ -22,25 +23,6 @@ type Props = {
 // ----------------------------------------------------------------------
 
 const urlTxBase = 'https://www.oklink.com/es-la/amoy/tx/';
-const COLORS = {
-  success: '#00AB55',
-  danger: '#FF4842',
-  warning: '#dc9f00',
-  info: '#3a7dd5',
-}
-
-const TX_COLORS: any = {
-  'transferTo': COLORS.danger,
-  'transferFrom': COLORS.success,
-  'deposit': COLORS.success,
-  'withdraw': COLORS.danger,
-  'locked': COLORS.info,
-  'claimed': COLORS.success,
-  'approved': COLORS.warning,
-  'collected': COLORS.danger,
-  'released': COLORS.success,
-}
-
 // ----------------------------------------------------------------------
 
 export default function FinanceTransactionTableRow({ row, selected }: Props) {

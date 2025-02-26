@@ -6,6 +6,7 @@ import DashboardLayout from '@src/layouts/dashboard';
 import { LoadingScreen, SplashScreen } from '@src/components/loading-screen';
 import CompactLayout from '@src/layouts/compact';
 
+
 // ----------------------------------------------------------------------
 
 // OVERVIEW
@@ -23,7 +24,9 @@ const AnalyticsPage = lazy(() => import('@src/pages/dashboard/analytics'));
 const StudioPage = lazy(() => import('@src/pages/dashboard/studio'));
 const OwnershipPage = lazy(() => import('@src/pages/dashboard/ownership'));
 const FinancePage = lazy(() => import('@src/pages/dashboard/finance'));
+// MARKETING
 const MarketingPage = lazy(() => import('@src/pages/dashboard/marketing'));
+const StrategyPage = lazy(() => import('@src/pages/dashboard/marketing/index.tsx'));
 // USER
 const UserProfilePage = lazy(() => import('@src/pages/dashboard/user/profile'));
 // MOVIE
@@ -57,6 +60,7 @@ export const dashboardRoutes = [
       { path: 'ownership', element: <OwnershipPage /> },
       { path: 'finance', element: <FinancePage /> },
       { path: 'marketing', element: <MarketingPage /> },
+      { path: 'marketing/strategy/:id', element: <StrategyPage /> },
       { path: 'profile/:id', element: <UserProfilePage /> },
       {
         path: 'governance',

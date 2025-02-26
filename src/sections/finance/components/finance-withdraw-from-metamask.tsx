@@ -6,7 +6,7 @@ import { useMetaMask } from '@src/hooks/use-metamask';
 import FinanceWithdraw from '@src/sections/finance/components/finance-withdraw';
 import FinanceMetamaskLoader from '@src/sections/finance/components/finance-metamask-loader.tsx';
 import FinanceMetamaskButton from '@src/sections/finance/components/finance-metamask-button.tsx';
-import { useWithdraw } from '@src/hooks/use-withdraw.ts';
+import { useWithdraw } from '@src/hooks/protocol/use-withdraw.ts';
 import FinanceMetamaskHelper from "@src/sections/finance/components/finance-metamask-helper.tsx";
 
 interface FinanceWithdrawFromMetamaskProps {
