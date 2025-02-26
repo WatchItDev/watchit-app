@@ -3,7 +3,7 @@ import {store} from "@redux/store";
 import "@src/locales/i18n";
 
 // scrollbar
-// @ts-ignore
+// @ts-expect-error loading css from simpler
 import "simplebar-react/dist/simplebar.min.css";
 
 // lightbox
@@ -12,17 +12,17 @@ import "yet-another-react-lightbox/plugins/captions.css";
 import "yet-another-react-lightbox/plugins/thumbnails.css";
 
 // editor
-// @ts-ignore
+// @ts-expect-error loading css from quill
 import "react-quill/dist/quill.snow.css";
 
 // carousel
-// @ts-ignore
+// @ts-expect-error loading css from slick-carousel
 import "slick-carousel/slick/slick.css";
-// @ts-ignore
+// @ts-expect-error loading css from slick-carousel
 import "slick-carousel/slick/slick-theme.css";
 
 // image
-// @ts-ignore
+// @ts-expect-error loading css from react-lazy-load-image-component
 import "react-lazy-load-image-component/src/effects/blur.css";
 
 // ----------------------------------------------------------------------
@@ -56,6 +56,7 @@ import {GLOBAL_CONSTANTS} from "@src/config-global.ts";
 import LedgerVaultAbi from "@src/config/abi/LedgerVault.json";
 import {setBlockchainEvents} from "@redux/blockchain-events";
 import {subscribeToNotifications} from "@src/utils/subscribe-notifications-supabase.ts";
+import {RootState} from "@redux/reducer.ts"
 
 window.Buffer = Buffer;
 
@@ -84,8 +85,8 @@ export default function App() {
           url: window.location.href,
         },
         openDeeplink: (url) => {
-          const isMM = (window as any).ethereum?.isMetaMask;
-          if (typeof (window as any).ethereum === "undefined" || !isMM) {
+          const isMM = (window as unknown as { ethereum?: { isMetaMask?: boolean } }).ethereum?.isMetaMask;
+          if (typeof (window as unknown as { ethereum?: unknown }).ethereum === "undefined" || !isMM) {
             // Mobile version / no extension
             window.location.href = "https://metamask.app.link";
           } else {
@@ -128,7 +129,7 @@ interface EventArgs {
 }
 const AppContent = () => {
   const dispatch = useDispatch();
-  const sessionData = useSelector((state: any) => state.auth.session);
+  const sessionData = useSelector((state: RootState) => state.auth.session);
   const {getNotifications} = useNotifications();
   const {enqueueSnackbar} = useSnackbar();
 
@@ -174,11 +175,7 @@ const AppContent = () => {
         args: {recipient: sessionData?.address},
         logText: "New transfer to me:",
       },
-      // { name: 'FundsLocked', args: { account: sessionData?.address }, logText: 'New funds locked:' },
       {name: "FundsClaimed", args: {claimer: sessionData?.address}, logText: "New funds claimed:"},
-      // { name: 'FundsApproved', args: { from: sessionData?.address }, logText: 'New funds approved:' },
-      // { name: 'FundsCollected', args: { from: sessionData?.address }, logText: 'New funds collected:' },
-      // { name: 'FundsReleased', args: { to: sessionData?.address }, logText: 'New funds released:' },
     ];
 
     const cleanup = events.map((event) => watchEvent(event.name, event.args, event.logText));
