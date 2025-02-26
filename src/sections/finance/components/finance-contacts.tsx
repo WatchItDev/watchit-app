@@ -30,8 +30,8 @@ export default function FinanceContactsCarousel({
   chunkSize = 5,
   ...other
 }: Props) {
-  const router = useRouter()
-  const dispatch = useDispatch()
+  const router = useRouter() //NOSONAR
+  const dispatch = useDispatch() //NOSONAR
 
   function scrollToSmoothly(pos: number, time: number) {
     let currentPos = window.scrollY
