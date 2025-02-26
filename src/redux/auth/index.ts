@@ -10,7 +10,7 @@ export interface AuthReducerState {
   email: string;
 }
 
-const initialState: AuthReducerState = {
+export const authInitialState: AuthReducerState = {
   session: null,
   isSessionLoading: false,
   isLoginModalOpen: false,
@@ -22,7 +22,7 @@ const initialState: AuthReducerState = {
 
 const authSlice = createSlice({
   name: "auth",
-  initialState,
+  initialState: authInitialState,
   reducers: {
     openLoginModal: (state) => {
       state.isLoginModalOpen = true;

@@ -6,7 +6,7 @@ interface AddressState {
   showRainbow: boolean;
 }
 
-const initialState: AddressState = {
+export const addressInitialState: AddressState = {
   address: "",
   profileId: "",
   showRainbow: false,
@@ -14,7 +14,7 @@ const initialState: AddressState = {
 
 const addressSlice = createSlice({
   name: "address",
-  initialState,
+  initialState: addressInitialState,
   reducers: {
     storeAddress(state, action: PayloadAction<{address: string; profileId: string}>) {
       state.address = action.payload.address;

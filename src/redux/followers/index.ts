@@ -6,14 +6,14 @@ interface FollowersState {
   followings: Profile[];
 }
 
-const initialState: FollowersState = {
+export const followersInitialState: FollowersState = {
   followers: [],
   followings: [],
 };
 
 const followersSlice = createSlice({
   name: "followers",
-  initialState,
+  initialState: followersInitialState,
   reducers: {
     setFollowers: (state, action: PayloadAction<Profile[]>) => {
       state.followers = action.payload;

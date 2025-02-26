@@ -5,13 +5,13 @@ interface BlockchainEventsState {
   events: Log[];
 }
 
-const initialState: BlockchainEventsState = {
+export const blockchainEventsInitialState: BlockchainEventsState = {
   events: [],
 };
 
 const blockchainEventsSlice = createSlice({
   name: "blockchainEvents",
-  initialState,
+  initialState: blockchainEventsInitialState,
   reducers: {
     addBlockchainEvent(state, action: PayloadAction<Log>) {
       state.events.push(action.payload);

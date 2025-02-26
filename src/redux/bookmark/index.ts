@@ -6,14 +6,14 @@ export interface BookmarkReducerState {
   hiddenBookmarks: AnyPublication[];
 }
 
-const initialState: BookmarkReducerState = {
+export const bookmarkInitialState: BookmarkReducerState = {
   bookmarkPublications: [],
   hiddenBookmarks: [],
 };
 
 const bookmarkSlice = createSlice({
   name: "bookmark",
-  initialState,
+  initialState: bookmarkInitialState,
   reducers: {
     // Add a post to bookmarks and remove it from hidden if it is
     addBookmark: (state, action: PayloadAction<AnyPublication>) => {

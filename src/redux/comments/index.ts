@@ -11,7 +11,7 @@ export interface CommentsReducerState {
   pendingComments: Record<string, PendingComment[]>;
 }
 
-const initialState: CommentsReducerState = {
+export const commentsInitialState: CommentsReducerState = {
   refetchTriggerByPublication: {},
   hiddenComments: [],
   counterLikes: {},
@@ -21,7 +21,7 @@ const initialState: CommentsReducerState = {
 
 const commentsSlice = createSlice({
   name: "comments",
-  initialState,
+  initialState: commentsInitialState,
   reducers: {
     refetchCommentsByPublication: (state, action: PayloadAction<string>) => {
       const publicationId = action.payload;

@@ -1,4 +1,4 @@
-import {Action, combineReducers} from "redux"
+import { Reducer, Action, combineReducers } from "redux";
 import minibarReducer from "@redux/minibar/index";
 import drawerReducer from "@redux/drawer/index";
 import authReducer from "@redux/auth/index";
@@ -23,10 +23,9 @@ const appReducer = combineReducers({
   transactions: transactionsReducer,
 });
 
-
 export type RootState = ReturnType<typeof appReducer>;
 
-const rootReducer = (state: RootState, action: Action) => {
+const rootReducer: Reducer<RootState, Action> = (state: RootState | undefined, action: Action) => {
   return appReducer(state, action);
 };
 

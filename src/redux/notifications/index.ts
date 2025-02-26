@@ -8,13 +8,13 @@ interface NotificationsState {
   notifications: NotificationItemProps[];
 }
 
-const initialState: NotificationsState = {
+export const notificationsInitialState: NotificationsState = {
   notifications: [],
 };
 
 const notificationsSlice = createSlice({
   name: "notifications",
-  initialState,
+  initialState: notificationsInitialState,
   reducers: {
     setNotifications(state, action: PayloadAction<NotificationItemProps[]>) {
       state.notifications = action.payload;

@@ -29,14 +29,14 @@ interface TransactionsState {
   transactions: TransactionLog[];
 }
 
-const initialState: TransactionsState = {
+export const transactionInitialState: TransactionsState = {
   transactions: [],
 };
 
 // Create the slice
 const transactionsSlice = createSlice({
   name: "transactions",
-  initialState,
+  initialState: transactionInitialState,
   reducers: {
     // Action to set all transactions (e.g., from history)
     setTransactions: (state, action: PayloadAction<TransactionLog[]>) => {

@@ -2,14 +2,14 @@ import {createSlice} from "@reduxjs/toolkit";
 
 export type StateType = "mini" | "vertical";
 
-const initialState = {
+export const minibarInitialState = {
   state: "vertical" as StateType,
   wasCollapsed: false,
 };
 
 const minibarSlice = createSlice({
   name: "minibar",
-  initialState,
+  initialState: minibarInitialState,
   reducers: {
     toggleMinibar: (state) => {
       state.state = state.state === "mini" ? "vertical" : "mini";
