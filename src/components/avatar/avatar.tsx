@@ -3,12 +3,13 @@ import Avatar from "@mui/material/Avatar";
 import {FC} from "react";
 import {dicebear} from "@src/utils/dicebear.ts";
 import {COLORS} from "@src/layouts/config-layout.ts";
+import {SxProps} from "@mui/system"
 
 interface AvatarProfileProps {
   src: string;
   alt?: string;
-  sx?: any;
-  [x: string]: any;
+  sx?: SxProps;
+  [x: string]: unknown;
 }
 
 const AvatarProfile: FC<AvatarProfileProps> = ({src, alt, sx, ...other}) => {
