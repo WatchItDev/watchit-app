@@ -4,7 +4,10 @@ import { publicClient } from '@src/clients/viem/publicClient.ts';
 import AccessAggAbi from '@src/config/abi/AccessAgg.json';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 import { useSelector } from 'react-redux';
-import { HasAccessError, UseHasAccessHook } from '@src/hooks/protocol/types.ts';
+import { UseHasAccessHook } from '@src/hooks/protocol/types.ts';
+import { useAccountSession } from '@src/hooks/use-account-session.ts';
+import { notifyError } from '@notifications/internal-notifications.ts';
+import { ERRORS } from '@notifications/errors.ts';
 
 /**
  * Custom hook to check if the user has access to a publication.
@@ -14,17 +17,17 @@ import { HasAccessError, UseHasAccessHook } from '@src/hooks/protocol/types.ts';
 export const useHasAccess = (ownerAddress?: Address): UseHasAccessHook => {
   const sessionData = useSelector((state: any) => state.auth.session);
   const userAddress = sessionData?.profile?.ownedBy?.address;
-
+  const { isAuthenticated } = useAccountSession();
   const [hasAccess, setHasAccess] = useState<boolean | undefined>(undefined);
   const [loading, setLoading] = useState(true);
   const [fetching, setFetching] = useState(true);
-  const [error, setError] = useState<HasAccessError | null>(null);
 
   const fetchAccess = useCallback(async () => {
     if (!userAddress || !ownerAddress) {
       setLoading(false);
       setFetching(false);
-      setError({ message: 'User address or owner address is missing.' });
+
+      throw new Error('User address or owner address is missing while verifying user access.');
       return;
     }
 
@@ -39,11 +42,10 @@ export const useHasAccess = (ownerAddress?: Address): UseHasAccessHook => {
 
       const access = Boolean(accessData?.[0]);
       setHasAccess(access);
-      setError(null);
     } catch (err: any) {
       console.error('Error checking access:', err);
-      setHasAccess(undefined);
-      setError({ message: err?.message || 'An error occurred' });
+      setHasAccess(false);
+      notifyError(ERRORS.VERIFY_ACCESS_ERROR);
     } finally {
       setLoading(false);
       setFetching(false);
@@ -52,13 +54,9 @@ export const useHasAccess = (ownerAddress?: Address): UseHasAccessHook => {
 
   useEffect(() => {
     fetchAccess();
-  }, [fetchAccess]);
+  }, []);
 
-  const refetch = useCallback(() => {
-    fetchAccess();
-  }, [fetchAccess]);
-
-  if (!userAddress) {
+  if (!isAuthenticated()) {
     return {
       hasAccess: false,
       loading: false,
@@ -72,7 +70,6 @@ export const useHasAccess = (ownerAddress?: Address): UseHasAccessHook => {
     hasAccess,
     loading,
     fetching,
-    error,
-    refetch,
+    refetch: fetchAccess,
   };
 };
