@@ -10,13 +10,14 @@ import { useSelector } from 'react-redux';
 import { useProfileFollowing } from '@lens-protocol/react';
 import Typography from '@mui/material/Typography';
 import FinanceTransactionsHistory from '@src/sections/finance/components/finance-transactions-history.tsx';
-import useGetSmartWalletTransactions from '@src/hooks/use-get-smart-wallet-transactions.ts';
+import useGetSmartWalletTransactions from '@src/hooks/protocol/use-get-smart-wallet-transactions.ts';
 import { useEffect, useState } from 'react';
 import Tabs, { tabsClasses } from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Iconify from '@src/components/iconify';
 import { useResponsive } from '@src/hooks/use-responsive.ts';
 import FinanceEarnTokens from '@src/sections/finance/components/finance-earn-tokens.tsx';
+import {filterHiddenProfiles} from "@src/utils/profile.ts";
 
 // ----------------------------------------------------------------------
 
@@ -28,10 +29,13 @@ export default function OverviewBankingView() {
   const { transactions, loading } = useGetSmartWalletTransactions();
   const [widgetSeriesData, setWidgetSeriesData] = useState<{ x: string; y: number }[]>([]);
   const [percent, setPercent] = useState(0);
-  const { data: following } = useProfileFollowing({
+  const { data: results, loading: loadingProfiles } = useProfileFollowing({
     // @ts-ignore
     for: sessionData?.profile?.id,
   });
+
+  // Filter hidden profiles(unwanted profiles) from the results
+  const following = filterHiddenProfiles(results);
 
   useEffect(() => {
     if (!transactions || loading) return;
@@ -76,7 +80,7 @@ export default function OverviewBankingView() {
               }}
             />
 
-            {!mdUp ? <FinanceQuickTransfer list={following} /> : null}
+            {!mdUp ? <FinanceQuickTransfer list={following} loading={loadingProfiles} /> : null}
             {lgUp ? <FinanceEarnTokens lgUp={lgUp} /> : null}
           </Stack>
 
@@ -110,6 +114,7 @@ export default function OverviewBankingView() {
         <Grid xs={12} md={4}>
           <Stack spacing={2}>
             <FinanceQuickTransfer
+              loading={loadingProfiles}
               list={following}
               sx={{
                 display: { xs: 'none', md: 'flex' },

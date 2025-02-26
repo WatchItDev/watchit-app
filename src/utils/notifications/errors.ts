@@ -60,6 +60,20 @@ export enum ERRORS {
 
   // SUBMIT
   SUBMIT_ASSET_ERROR = 'SUBMIT_ASSET_ERROR',
+
+  // Marketing
+  STRATEGY_STORED_ERROR = 'STRATEGY_STORED_ERROR',
+  CAMPAIGN_STORED_ERROR = 'CAMPAIGN_STORED_ERROR',
+  CAMPAIGN_CREATION_ERROR = 'CAMPAIGN_CREATION_ERROR',
+  CAMPAIGN_CONFIGURATION_ERROR = 'CAMPAIGN_CONFIGURATION_ERROR',
+  CAMPAIGN_WITHDRAWAL_ERROR = 'CAMPAIGN_WITHDRAWAL_ERROR',
+
+  // HOOKS
+  GET_CAMPAIGN_IS_ACTIVE_ERROR = 'GET_CAMPAIGN_IS_ACTIVE_ERROR',
+  GET_CAMPAIGN_ERROR = 'GET_CAMPAIGN_ERROR',
+  SPONSORED_ACCESS_ERROR = 'SPONSORED_ACCESS_ERROR',
+  CONFIGURE_CAMPAIGN_ERROR = 'CONFIGURE_CAMPAIGN_ERROR',
+  VERIFY_ACCESS_ERROR = 'VERIFY_ACCESS_ERROR',
 }
 
 /**
@@ -129,4 +143,19 @@ export const ERROR_MESSAGES: Record<ERRORS, string> = {
   [ERRORS.INVITATION_SEND_ERROR]: 'An error occurred while sending the invitation.',
   [ERRORS.INVITATION_USER_ALREADY_INVITED]: 'This user has already been invited!',
   [ERRORS.INVITATION_USER_CANT_INVITE_SELF]: 'You cannot invite yourself!',
+
+  //Marketing
+  [ERRORS.STRATEGY_STORED_ERROR]: 'Error storing the strategy.',
+  [ERRORS.CAMPAIGN_STORED_ERROR]: 'Error storing the campaign.',
+  [ERRORS.CAMPAIGN_CREATION_ERROR]: 'Error creating the campaign.',
+  [ERRORS.CAMPAIGN_CONFIGURATION_ERROR]: 'Error configuring the campaign.',
+  [ERRORS.CAMPAIGN_WITHDRAWAL_ERROR]: 'Error withdrawing funds from the campaign.',
+
+  // HOOKS
+  [ERRORS.GET_CAMPAIGN_IS_ACTIVE_ERROR]: 'Error getting the campaign status.',
+  [ERRORS.GET_CAMPAIGN_ERROR]: 'Error getting the campaign.',
+  [ERRORS.SPONSORED_ACCESS_ERROR]: 'Error processing the sponsored access.',
+  [ERRORS.CONFIGURE_CAMPAIGN_ERROR]: 'Error configuring the campaign.',
+  [ERRORS.VERIFY_ACCESS_ERROR]: 'Error verifying access.',
+
 };

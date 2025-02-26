@@ -23,7 +23,7 @@ import { encodeAbiParameters } from 'viem';
 
 // LOCAL IMPORTS
 import { GLOBAL_CONSTANTS } from '@src/config-global';
-import { useAuthorizePolicy } from '@src/hooks/use-authorize-policy.ts';
+import { useAuthorizePolicy } from '@src/hooks/protocol/use-authorize-policy.ts';
 import NeonPaper from '@src/sections/publication/NeonPaperContainer.tsx';
 import Box from '@mui/material/Box';
 import LoadingButton from '@mui/lab/LoadingButton';
@@ -113,7 +113,7 @@ export const ActivateSubscriptionProfileModal = ({
   return (
     <>
       <Dialog open={isOpen} onClose={onClose} fullWidth maxWidth="xs">
-        <DialogTitle sx={{ pb: 2 }}>Set joining prices</DialogTitle>
+        <DialogTitle sx={{ pb: 2 }}>Set join price</DialogTitle>
         <Divider sx={{ mb: 2, borderStyle: 'dashed' }} />
         <DialogContent>
           <Typography variant="body2" color="textSecondary" sx={{ mb: 3 }}>

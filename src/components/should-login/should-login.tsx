@@ -6,14 +6,9 @@ import { openLoginModal } from '@redux/auth';
 import { useDispatch, useSelector } from 'react-redux';
 import Iconify from '@src/components/iconify';
 import { FC } from 'react';
+import { NotLoggedInProps } from '@src/components/should-login/types.ts';
 
-// Create a type for the component props to receive the icon and subtitle
-type Props = {
-  icon: string;
-  subtitle: string;
-};
-
-const NotLoggedIn: FC<Props> = ({ icon, subtitle }) => {
+const NotLoggedIn: FC<NotLoggedInProps> = ({ icon, title, description }) => {
   const dispatch = useDispatch();
   const sessionData = useSelector((state: any) => state.auth.session);
 
@@ -47,9 +42,9 @@ const NotLoggedIn: FC<Props> = ({ icon, subtitle }) => {
           color: COLORS.GRAY_LIGHT,
         }}
       />
-      <Typography variant="h4">Finance Dashboard</Typography>
+      <Typography variant="h4">{title}</Typography>
       <Typography variant="body1" sx={{ mb: 3, mt: 1, opacity: 0.5 }}>
-        {subtitle}
+        {description}
       </Typography>
       <Button
         onClick={handleClicked}

@@ -1,0 +1,47 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`[COMPONENTS]: CarouselArrowIndex component testing > to match snapshot 1`] = `
+<body>
+  <div>
+    <div
+      class="MuiBox-root css-1e3h5oa"
+    >
+      <button
+        class="MuiButtonBase-root MuiIconButton-root MuiIconButton-colorInherit MuiIconButton-sizeMedium css-9vx9xh-MuiButtonBase-root-MuiIconButton-root"
+        tabindex="0"
+        type="button"
+      >
+        <span
+          data-icon="fas fa-arrow-right"
+          data-sx="{"transform":" scaleX(-1)"}"
+          data-testid="leftButton"
+        />
+        <span
+          class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
+        />
+      </button>
+      <span
+        class="MuiTypography-root MuiTypography-subtitle2 css-h09xw-MuiTypography-root"
+      >
+        2
+        /
+        3
+      </span>
+      <button
+        class="MuiButtonBase-root MuiIconButton-root MuiIconButton-colorInherit MuiIconButton-sizeMedium css-9vx9xh-MuiButtonBase-root-MuiIconButton-root"
+        tabindex="0"
+        type="button"
+      >
+        <span
+          data-icon="fas fa-arrow-right"
+          data-sx="{}"
+          data-testid="rightButton"
+        />
+        <span
+          class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
+        />
+      </button>
+    </div>
+  </div>
+</body>
+`;

@@ -1,5 +1,5 @@
 import { TransactionData } from '@src/hooks/use-transaction-data';
-import { TransactionLog } from '@src/hooks/use-get-smart-wallet-transactions.ts';
+import { TransactionLog } from '@src/hooks/protocol/use-get-smart-wallet-transactions.ts';
 import {dicebear} from "@src/utils/dicebear.ts";
 type GroupedData = {
   type: string;

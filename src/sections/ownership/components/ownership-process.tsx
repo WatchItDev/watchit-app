@@ -11,14 +11,14 @@ import OwnershipProcessModal from "@src/components/modal.tsx";
 // @ts-ignore
 import Ownership from '@src/assets/illustrations/ownership.svg';
 import Iconify from '@src/components/iconify';
-import { useRegisterAsset } from '@src/hooks/use-register-asset';
+import { useRegisterAsset } from '@src/hooks/protocol/use-register-asset.ts';
 import { notifyError, notifyInfo, notifySuccess } from '@notifications/internal-notifications.ts';
 import { SUCCESS } from '@notifications/success.ts';
 import { ERRORS } from '@notifications/errors.ts';
 import { INFO } from '@notifications/info.ts';
 import { useSubmitAssetToLens } from '@src/hooks/use-submit-assets-to-lens.ts';
 import NeonPaper from '@src/sections/publication/NeonPaperContainer.tsx';
-import { useGetAssetOwner } from '@src/hooks/use-get-asset-owner.ts';
+import { useGetAssetOwner } from '@src/hooks/protocol/use-get-asset-owner.ts';
 import { replacePrefix } from '@src/utils/wallet.ts';
 
 /**

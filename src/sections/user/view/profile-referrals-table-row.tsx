@@ -13,6 +13,7 @@ import {Invitation} from "@src/types/invitation";
 import AvatarProfile from "@src/components/avatar/avatar.tsx";
 import {useRouter} from "@src/routes/hooks";
 import {paths} from "@src/routes/paths.ts";
+import { capitalizeFirstLetter } from '@src/utils/text-transform';
 
 // ----------------------------------------------------------------------
 
@@ -21,10 +22,6 @@ type Props = {
   selected: boolean;
 };
 
-
-const capitalizeFirstLetter = (string: string) => {
-  return string.charAt(0).toUpperCase() + string.slice(1);
-};
 
 // ----------------------------------------------------------------------
 

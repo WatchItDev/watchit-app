@@ -17,4 +17,6 @@ export const createStore = (initialState = {}): Store => {
   });
 };
 
+export type RootState = ReturnType<typeof store.getState>;
+
 export const store = createStore();

@@ -1,0 +1,25 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`[COMPONENTS]: LeftIcon component > to match snapshot 1`] = `
+<body>
+  <div>
+    <span
+      data-icon="eva:arrow-ios-forward-fill"
+      data-sx="{"transform":" scaleX(-1)"}"
+      data-testid="leftButton"
+    />
+  </div>
+</body>
+`;
+
+exports[`RightIcon component > to match snapshot 1`] = `
+<body>
+  <div>
+    <span
+      data-icon="eva:arrow-ios-forward-fill"
+      data-sx="{}"
+      data-testid="rightButton"
+    />
+  </div>
+</body>
+`;

@@ -31,6 +31,10 @@ export const GLOBAL_CONSTANTS = {
     process.env.VITE_ACCESS_MANAGER_ADDRESS || import.meta.env.VITE_ACCESS_MANAGER_ADDRESS || '',
   ASSET_OWNERSHIP_ADDRESS:
     process.env.VITE_ASSET_OWNERSHIP_ADDRESS || import.meta.env.VITE_ASSET_OWNERSHIP_ADDRESS || '',
+  CAMPAIGN_REGISTRY_ADDRESS:
+    process.env.VITE_CAMPAIGN_REGISTRY_ADDRESS || import.meta.env.VITE_CAMPAIGN_REGISTRY_ADDRESS || '',
+  CAMPAIGN_SUBSCRIPTION_TPL_ADDRESS:
+    process.env.VITE_CAMPAIGN_SUBSCRIPTION_TPL_ADDRESS || import.meta.env.VITE_CAMPAIGN_SUBSCRIPTION_TPL_ADDRESS || '',
   SENTRY_AUTH_TOKEN:
     process.env.VITE_SENTRY_AUTH_TOKEN || import.meta.env.VITE_SENTRY_AUTH_TOKEN || '',
   SENTRY_DSN: process.env.VITE_SENTRY_DSN || import.meta.env.VITE_SENTRY_DSN || '',
@@ -51,6 +55,7 @@ export const GLOBAL_CONSTANTS = {
   SENDER_EMAIL: process.env.VITE_SENDER_EMAIL || import.meta.env.VITE_SENDER_EMAIL || '',
   BASE_URL: process.env.VITE_BASE_URL || import.meta.env.VITE_BASE_URL || '',
   LOGO_URL: process.env.VITE_LOGO_URL || import.meta.env.VITE_LOGO_URL || '',
+  EARN_TOKEN_SERVICE_URL: process.env.VITE_EARN_TOKEN_SERVICE_URL || import.meta.env.VITE_EARN_TOKEN_SERVICE_URL || '',
 };
 
 export const MAPBOX_API = import.meta.env.VITE_MAPBOX_API || '';

@@ -23,6 +23,7 @@ import { useSearchPublications } from '@src/hooks/use-search-publications';
 import { CircularProgress } from '@mui/material';
 import { paths } from '@src/routes/paths.ts';
 import { useSelector } from 'react-redux';
+import {filterHiddenProfiles} from "@src/utils/profile.ts";
 
 function Searchbar() {
   const theme = useTheme();
@@ -63,8 +64,10 @@ function Searchbar() {
     setSearchQuery(event.target.value);
   }, []);
 
-  const { data: profiles, loading: loadingProfiles } = useSearchProfiles({ query: searchQuery });
+  const { data: results, loading: loadingProfiles } = useSearchProfiles({ query: searchQuery });
   const { publications, loading: loadingPublications } = useSearchPublications(searchQuery);
+
+  const profiles = filterHiddenProfiles(results)
 
   const dataFiltered = applyFilter({
     inputData: [],

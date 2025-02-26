@@ -12,7 +12,7 @@ import Card from '@mui/material/Card';
 import Iconify from '@src/components/iconify';
 import Chart, { useChart } from '@src/components/chart';
 import CustomPopover, { usePopover } from '@src/components/custom-popover';
-import useGetSmartWalletTransactions from '@src/hooks/use-get-smart-wallet-transactions.ts';
+import useGetSmartWalletTransactions from '@src/hooks/protocol/use-get-smart-wallet-transactions.ts';
 import FinanceOverlayLoader from '@src/sections/finance/components/finance-overlay-loader.tsx';
 
 // ----------------------------------------------------------------------

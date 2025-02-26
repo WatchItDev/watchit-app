@@ -20,7 +20,7 @@ import '@vidstack/react/player/styles/default/layouts/audio.css';
 // @ts-ignore
 import '@vidstack/react/player/styles/default/layouts/video.css';
 
-import useGetSubtitles from '@src/hooks/use-get-subtitles.ts';
+import useGetSubtitles from '@src/hooks/protocol/use-get-subtitles.ts';
 import { useResponsive } from '@src/hooks/use-responsive';
 import Label from '../label';
 
@@ -85,7 +85,7 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({ src, cid, titleMovie, onBack
         // "maxMaxBufferLength": 600, // Absolute max buffer length
         // maxStarvationDelay defines the maximum acceptable time (in seconds) a fragment can take to download 
         // while playback is already in progress.
-        // - If a fragment is estimated to take longer than this value and the buffer is running low, 
+        // - If a fragment is estimated to take longer than this value and the buffer is running low,
         //   the player switches the best quality that matches this time constraint.
         // - This ensures a continuous playback experience by adapting the quality to network conditions in real-time.
         // "maxStarvationDelay": 4,
@@ -94,7 +94,7 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({ src, cid, titleMovie, onBack
         //   - The time to fetch the first low-quality fragment (e.g., 420p)
         //   - + The time to fetch the estimated optimal-quality fragment (e.g., 720p)
         //   - is below this value.
-        // - If the total loading time exceeds maxLoadingDelay, the player starts with a lower quality 
+        // - If the total loading time exceeds maxLoadingDelay, the player starts with a lower quality
         //   to minimize startup delay and ensure fast playback.
         // - Unlike maxStarvationDelay, this setting only applies at the **start** of playback,
         //   ensuring the video loads quickly even if it means initially using a lower quality.
