@@ -6,13 +6,11 @@ import CarouselPosterMini from '@src/components/carousel/variants/CarouselPoster
 // LENS IMPORTS
 import {
   appId,
-  ExploreProfilesOrderByType,
   ExplorePublicationsOrderByType,
   ExplorePublicationType,
   LimitType,
   PublicationType,
   useBookmarks,
-  useExploreProfiles,
   useExplorePublications,
   usePublications,
 } from '@lens-protocol/react-web';
@@ -23,7 +21,6 @@ import CarouselTopTitles from '@src/components/carousel/variants/CarouselTopTitl
 import CarouselCreators from '@src/components/carousel/variants/CarouselCreators.tsx';
 import { useResponsive } from '@src/hooks/use-responsive.ts';
 import { useSelector } from 'react-redux';
-import { filterHiddenProfiles } from '@src/utils/profile';
 
 // ----------------------------------------------------------------------
 
@@ -55,18 +52,7 @@ export default function ExploreView() {
     },
   });
   const { data: bookmark } = useBookmarks();
-  const { data: latestCreatedProfiles } = useExploreProfiles({
-    orderBy: ExploreProfilesOrderByType.LatestCreated,
-    limit: LimitType.Fifty,
-  });
 
-  // FilteredCompletedProfiles is an array of objects, each object has a metadata property and inside exists a displayName en bio property; filter the profiles that not have a displayName and bio property
-  const filtered = latestCreatedProfiles?.filter(
-    (profile: any) => profile.metadata?.displayName && profile.metadata?.bio
-  );
-
-  // Clear ###HIDDEN### profiles
-  const filteredProfiles = filterHiddenProfiles(filtered);
 
   const { data: explorePublications } = useExplorePublications({
     where: {
@@ -108,7 +94,6 @@ export default function ExploreView() {
         )}
 
         <CarouselCreators
-          data={filteredProfiles ?? []}
           title="Latest creators"
           minItemWidth={250}
           maxItemWidth={400}
