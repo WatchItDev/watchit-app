@@ -1,3 +1,4 @@
+import { memo, FC } from 'react';
 import {PublicationType} from "@lens-protocol/react-web";
 import { Profile } from '@lens-protocol/api-bindings';
 import CarouselSlide from '@src/components/carousel/components/CarouselSlide';
@@ -5,7 +6,7 @@ import { UserItem } from '@src/components/user-item';
 import CarouselWrapper from './CarouselWrapper';
 import { CarouselCreatorsProps } from '../types';
 
-export default function CarouselCreators(params: CarouselCreatorsProps) {
+ const CarouselCreators: FC<CarouselCreatorsProps> = (params) => {
   const { data, title, minItemWidth, maxItemWidth } = params;
 
   const carouselSettings = {
@@ -51,6 +52,8 @@ export default function CarouselCreators(params: CarouselCreatorsProps) {
   }
 
   return (
-    <CarouselWrapper{... carouselParams} />
+    <CarouselWrapper {... carouselParams} />
   );
 }
+
+export default memo(CarouselCreators);
