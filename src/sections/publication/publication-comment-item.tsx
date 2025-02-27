@@ -223,15 +223,14 @@ export default function PublicationCommentItem({ comment, hasReply, canReply }: 
           </Suspense>
 
           <ContentContainer
+            padding={'1px'}
             sx={{
-              p: 1.5,
-              pt: 0.7,
               flexGrow: 1,
               bgcolor: 'background.neutral',
             }}
           >
             <Stack
-              sx={{ mb: 0.5 }}
+              sx={{ mb: 0.5, p: 1 }}
               alignItems={{ sm: 'center' }}
               justifyContent="flex-start"
               direction={'row'}
@@ -247,7 +246,7 @@ export default function PublicationCommentItem({ comment, hasReply, canReply }: 
               </Box>
             </Stack>
 
-            <Box sx={{ typography: 'body2', color: 'text.secondary' }}>
+            <Box sx={{ typography: 'body2', color: 'text.secondary', p: 1 }}>
               {comment?.metadata?.content}
             </Box>
           </ContentContainer>
