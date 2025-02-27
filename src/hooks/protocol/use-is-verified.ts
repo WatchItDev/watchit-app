@@ -16,7 +16,7 @@ export const useIsVerified = (account: Address): UseIsVerifiedHook => {
     if (account) {
       fetchHasRole(3, account); // Role ID 3 for verified
     }
-  }, [account, fetchHasRole]);
+  }, [account]);
 
   useEffect(() => {
     if (!loading && hasRole !== undefined) {
