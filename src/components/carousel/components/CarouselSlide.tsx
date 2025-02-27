@@ -1,10 +1,12 @@
+import { memo, FC } from 'react';
 import Box from '@mui/material/Box';
 import { CarouselSlideProps } from '../types';
 // @ts-ignore
 import {Post} from "@lens-protocol/api-bindings/dist/declarations/src/lens/graphql/generated";
 import {Profile } from '@lens-protocol/api-bindings';
 import {createIndexForElement} from "@src/utils/text-transform.ts";
-export default function CarouselSlide( props: Readonly<CarouselSlideProps<Profile | Post>>) {
+
+const CarouselSlide: FC<Readonly<CarouselSlideProps<Profile | Post>>> = ( props ) => {
   const {
       items,
       itemsPerRow,
@@ -35,3 +37,5 @@ export default function CarouselSlide( props: Readonly<CarouselSlideProps<Profil
     </Box>
   );
 }
+
+export default memo(CarouselSlide);
