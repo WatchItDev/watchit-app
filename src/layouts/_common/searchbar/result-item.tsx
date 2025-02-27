@@ -5,13 +5,13 @@ import ListItemButton from '@mui/material/ListItemButton';
 import Label from '@src/components/label';
 import { COLORS } from '@src/layouts/config-layout.ts';
 
-type Props = {
+interface Props {
   title: string;
   subtitle: string;
   groupLabel: string;
   onClickItem: VoidFunction;
   query?: string;
-};
+}
 
 const highlightText = (text: string, query: string) => {
   if (!query) return text;

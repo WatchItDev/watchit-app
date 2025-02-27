@@ -2,7 +2,7 @@
 import DialogActions from '@mui/material/DialogActions';
 import LoadingButton from '@mui/lab/LoadingButton';
 
-type FinanceDialogsActionsProps = {
+interface FinanceDialogsActionsProps {
   rainbowComponent: any;
   loading: boolean;
   actionLoading: boolean;
@@ -11,7 +11,7 @@ type FinanceDialogsActionsProps = {
   label: string;
   onConfirmAction: () => void;
   onCloseAction?: () => void
-};
+}
 
 const FinanceDialogsActions = ({
   rainbowComponent: RainbowEffect,

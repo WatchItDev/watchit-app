@@ -17,10 +17,10 @@ import {
 /**
  * The type for sending emails through EmailJS.
  */
-export type EmailParams = {
+export interface EmailParams {
   to_email: string;
   from_name: string;
-};
+}
 
 const useReferrals = () => {
   /**

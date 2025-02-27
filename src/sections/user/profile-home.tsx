@@ -61,7 +61,7 @@ export default function ProfileHome({
     if (!parentRef.current) return;
 
     const observer = new ResizeObserver((entries) => {
-      for (let entry of entries) {
+      for (const entry of entries) {
         const parentWidth = entry.contentRect.width;
         const items = calculateItemsPerRow(parentWidth);
         setItemsPerRow(items);

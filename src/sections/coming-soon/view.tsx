@@ -72,10 +72,10 @@ export const ComingSoonView = ({
 
 // ----------------------------------------------------------------------
 
-type TimeBlockProps = {
+interface TimeBlockProps {
   label: string;
   value: string;
-};
+}
 
 function TimeBlock({ label, value }: TimeBlockProps) {
   return (

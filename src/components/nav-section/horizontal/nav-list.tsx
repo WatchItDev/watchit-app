@@ -12,12 +12,12 @@ import NavItem from './nav-item';
 
 // ----------------------------------------------------------------------
 
-type NavListRootProps = {
+interface NavListRootProps {
   data: NavListProps;
   depth: number;
   hasChild: boolean;
   config: NavConfigProps;
-};
+}
 
 export default function NavList({ data, depth, hasChild, config }: NavListRootProps) {
   const navRef = useRef(null);
@@ -40,7 +40,7 @@ export default function NavList({ data, depth, hasChild, config }: NavListRootPr
   useEffect(() => {
     const appBarEl = Array.from(
       document.querySelectorAll(`.${appBarClasses.root}`)
-    ) as Array<HTMLElement>;
+    ) as HTMLElement[];
 
     // Reset styles when hover
     const styles = () => {
@@ -120,11 +120,11 @@ export default function NavList({ data, depth, hasChild, config }: NavListRootPr
 
 // ----------------------------------------------------------------------
 
-type NavListSubProps = {
+interface NavListSubProps {
   data: NavListProps[];
   depth: number;
   config: NavConfigProps;
-};
+}
 
 function NavSubList({ data, depth, config }: NavListSubProps) {
   return (

@@ -5,12 +5,12 @@ import NavList from './nav-list';
 
 // ----------------------------------------------------------------------
 
-type GroupProps = {
+interface GroupProps {
   items: NavListProps[];
   activeId?: string;
   config: NavConfigProps;
   onClick?: (id: string) => void;
-};
+}
 
 function NavSectionMini({ items, activeId, config, onClick }: GroupProps) {
   return (

@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-export type AuthReducerState = {
+export interface AuthReducerState {
   session: any;
   isSessionLoading: boolean;
   isLoginModalOpen: boolean;
@@ -8,7 +8,7 @@ export type AuthReducerState = {
   currentStep: number;
   isUpdatingMetadata: boolean;
   email: string;
-};
+}
 
 const initialState: AuthReducerState = {
   session: null,
@@ -64,12 +64,12 @@ const authSlice = createSlice({
           bio: action.payload.bio,
           picture: {
             optimized: {
-              uri: !!action.payload.profileImage ? action.payload.profileImage : undefined,
+              uri: action.payload.profileImage ? action.payload.profileImage : undefined,
             },
           },
           coverPicture: {
             optimized: {
-              uri: !!action.payload.backgroundImage ? action.payload.backgroundImage : undefined,
+              uri: action.payload.backgroundImage ? action.payload.backgroundImage : undefined,
             },
           },
         };

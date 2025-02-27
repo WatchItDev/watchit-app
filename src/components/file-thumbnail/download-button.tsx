@@ -8,9 +8,9 @@ import Iconify from '../iconify';
 
 // ----------------------------------------------------------------------
 
-type Props = {
+interface Props {
   onDownload?: VoidFunction;
-};
+}
 
 export default function DownloadButton({ onDownload }: Props) {
   const theme = useTheme();

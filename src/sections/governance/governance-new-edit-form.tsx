@@ -37,9 +37,9 @@ import GovernanceDetailsPreview from './governance-details-preview';
 
 // ----------------------------------------------------------------------
 
-type Props = {
+interface Props {
   currentPost?: IPostItem;
-};
+}
 
 export default function GovernanceNewEditForm({ currentPost }: Props) {
   const router = useRouter();

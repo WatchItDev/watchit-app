@@ -77,9 +77,9 @@ export const StyledItem = styled(ListItemButton, {
 
 // ----------------------------------------------------------------------
 
-type StyledNavContentProps = {
+interface StyledNavContentProps {
   active?: boolean;
-};
+}
 
 export const StyledNavContent = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'active',
@@ -96,9 +96,9 @@ export const StyledNavContent = styled(Box, {
 
 // ----------------------------------------------------------------------
 
-type StyledIconProps = {
+interface StyledIconProps {
   size?: number;
-};
+}
 
 export const StyledIcon = styled(ListItemIcon)<StyledIconProps>(({ size }) => ({
   width: size,

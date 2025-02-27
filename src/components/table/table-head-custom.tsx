@@ -23,7 +23,7 @@ const visuallyHidden = {
 
 // ----------------------------------------------------------------------
 
-type Props = {
+interface Props {
   order?: 'asc' | 'desc';
   orderBy?: string;
   headLabel: any[];
@@ -32,7 +32,7 @@ type Props = {
   onSort?: (id: string) => void;
   onSelectAllRows?: (checked: boolean) => void;
   sx?: SxProps<Theme>;
-};
+}
 
 export default function TableHeadCustom({
   order,

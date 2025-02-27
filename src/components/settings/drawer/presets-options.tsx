@@ -7,10 +7,10 @@ import { primaryPresets } from '@src/theme/options/presets';
 
 // ----------------------------------------------------------------------
 
-type PresetsOptionsProps = {
+interface PresetsOptionsProps {
   value: string;
   onChange: (newValue: string) => void;
-};
+}
 
 export default function PresetsOptions({ value, onChange }: PresetsOptionsProps) {
   const options = primaryPresets.map((color) => ({

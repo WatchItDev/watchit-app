@@ -1,4 +1,4 @@
-/* eslint-disable */
+ 
 // ----------------------------------------------------------------------
 
 export const truncateAddress = (text: string, startChars: number = 6, endChars: number = 6) => {

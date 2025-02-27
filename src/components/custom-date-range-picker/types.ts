@@ -1,6 +1,6 @@
 // ----------------------------------------------------------------------
 
-export type DateRangePickerProps = {
+export interface DateRangePickerProps {
   startDate: Date | null;
   endDate: Date | null;
   onChangeStartDate: (newValue: Date | null) => void;
@@ -22,4 +22,4 @@ export type DateRangePickerProps = {
   //
   setStartDate?: React.Dispatch<React.SetStateAction<Date | null>>;
   setEndDate?: React.Dispatch<React.SetStateAction<Date | null>>;
-};
+}

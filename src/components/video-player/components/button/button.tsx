@@ -4,7 +4,7 @@ import { ButtonProps as MuiButtonProps, Button as MuiButton, Box } from '@mui/ma
 
 type ButtonVariant = 'primary' | 'secondary' | 'flat';
 
-export type ButtonProps = {
+export interface ButtonProps {
   variant: ButtonVariant;
   icon?: JSX.Element;
   borderRadius?: string;
@@ -15,7 +15,7 @@ export type ButtonProps = {
   width?: string;
   height?: string;
   margin?: string;
-};
+}
 
 export const ButtonCustom: FC<PropsWithChildren<ButtonProps>> = (props): JSX.Element => {
   const getButtonVariant = (v: ButtonVariant) => {

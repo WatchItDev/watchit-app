@@ -17,10 +17,10 @@ import { capitalizeFirstLetter } from '@src/utils/text-transform';
 
 // ----------------------------------------------------------------------
 
-type Props = {
+interface Props {
   row: Invitation;
   selected: boolean;
-};
+}
 
 
 // ----------------------------------------------------------------------

@@ -6,9 +6,9 @@ import { HeaderSimple as Header } from '../_common';
 
 // ----------------------------------------------------------------------
 
-type Props = {
+interface Props {
   children: React.ReactNode;
-};
+}
 
 export default function CompactLayout({ children }: Props) {
   return (

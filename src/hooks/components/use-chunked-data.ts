@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-export function useChunkedData<T>(data: T[], itemsPerSlide: number, chunkMultiplier: number = 2): T[][] {
+export function useChunkedData<T>(data: T[], itemsPerSlide: number, chunkMultiplier = 2): T[][] {
   const [chunkedData, setChunkedData] = useState<T[][]>([]);
 
   useEffect(() => {

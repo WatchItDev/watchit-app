@@ -13,9 +13,9 @@ import Scrollbar from '../../components/scrollbar';
 
 // ----------------------------------------------------------------------
 
-type Props = {
+interface Props {
   data: any;
-};
+}
 
 export default function PublicationNewWizardSummaryControl({ data }: Props) {
   const renderSection = (title: string, items: any) => {

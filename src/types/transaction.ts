@@ -1,8 +1,8 @@
 export type IOrderTableFilterValue = string | Date | null;
 
-export type IOrderTableFilters = {
+export interface IOrderTableFilters {
   status: string;
-};
+}
 
 export const TRANSACTIONS_TYPES = [
   { value: 'transferTo', label: 'Income' },

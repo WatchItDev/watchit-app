@@ -1,7 +1,7 @@
 import { ProfileSession } from '@lens-protocol/react-web';
 import {dicebear} from "@src/utils/dicebear.ts";
 
-type NotificationPayload = {
+interface NotificationPayload {
   type: string;
   category: string;
   data: {
@@ -15,17 +15,15 @@ type NotificationPayload = {
       displayName?: string;
       avatar?: string;
     };
-    content: {
-      [key: string]: any;
-    };
+    content: Record<string, any>;
   };
-};
+}
 
 export const useNotificationPayload = (sessionData: ProfileSession | undefined) => {
   const generatePayload = (
     category: string,
     toProfile: { id: string; displayName: string; avatar: any },
-    content: { [p: string]: any }
+    content: Record<string, any>
   ): NotificationPayload => {
     return {
       type: 'NOTIFICATION',

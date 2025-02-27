@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 // Define the type for a transaction log
-export type TransactionLog = {
+export interface TransactionLog {
   address: string;
   args: {
     amount: bigint;
@@ -22,7 +22,7 @@ export type TransactionLog = {
   topics: string[];
   transactionHash: string;
   transactionIndex: number;
-};
+}
 
 // Define the initial state
 interface TransactionsState {

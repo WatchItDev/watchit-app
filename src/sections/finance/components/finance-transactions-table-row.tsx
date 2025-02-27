@@ -15,10 +15,10 @@ import {TX_COLORS} from "@src/sections/finance/components/CONSTANTS.tsx";
 
 // ----------------------------------------------------------------------
 
-type Props = {
+interface Props {
   row: TableRowTransactionType;
   selected: boolean;
-};
+}
 
 // ----------------------------------------------------------------------
 

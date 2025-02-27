@@ -7,10 +7,10 @@ import { CacheProvider } from '@emotion/react';
 
 // ----------------------------------------------------------------------
 
-type Props = {
+interface Props {
   themeDirection: 'rtl' | 'ltr';
   children: React.ReactNode;
-};
+}
 
 export default function RTL({ children, themeDirection }: Props) {
   useEffect(() => {

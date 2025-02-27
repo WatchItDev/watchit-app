@@ -72,12 +72,12 @@ export const menuItem = (theme: Theme) => ({
 
 // ----------------------------------------------------------------------
 
-type BgBlurProps = {
+interface BgBlurProps {
   blur?: number;
   opacity?: number;
   color?: string;
   imgUrl?: string;
-};
+}
 
 export function bgBlur(props?: BgBlurProps) {
   const color = props?.color || '#000000';
@@ -113,13 +113,13 @@ export function bgBlur(props?: BgBlurProps) {
 
 // ----------------------------------------------------------------------
 
-type BgGradientProps = {
+interface BgGradientProps {
   direction?: string;
   color?: string;
   startColor?: string;
   endColor?: string;
   imgUrl?: string;
-};
+}
 
 export function bgGradient(props?: BgGradientProps) {
   const direction = props?.direction || 'to bottom';

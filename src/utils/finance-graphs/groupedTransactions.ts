@@ -1,14 +1,14 @@
 import { TransactionData } from '@src/hooks/use-transaction-data';
 import { TransactionLog } from '@src/hooks/protocol/use-get-smart-wallet-transactions.ts';
 import {dicebear} from "@src/utils/dicebear.ts";
-type GroupedData = {
+interface GroupedData {
   type: string;
   data: {
     name: string;
     data: number[];
   }[];
   categories: string[];
-};
+}
 
 export const groupedTransactionData = (data: TransactionData[]): GroupedData[] => {
   const weekData: Record<string, { income: number; expenses: number }> = {};
@@ -102,7 +102,7 @@ export const processDayData = (groupedData: GroupedData[]): { x: string; y: numb
   });
 };
 
-export type ProcessedTransactionData = {
+export interface ProcessedTransactionData {
   id: string;
   name: string;
   avatarUrl: string;
@@ -113,7 +113,7 @@ export type ProcessedTransactionData = {
   status: string;
   timestamp?: number;
   amount: string | null;
-};
+}
 
 type EventName =
   | 'transferFrom'
@@ -126,10 +126,10 @@ type EventName =
   | 'collected'
   | 'released';
 
-type EventConfig = {
+interface EventConfig {
   getName: (args: any) => string;
   getAvatarUrl: (args: any) => string;
-};
+}
 
 const eventConfig: Record<EventName, EventConfig> = {
   transferFrom: {

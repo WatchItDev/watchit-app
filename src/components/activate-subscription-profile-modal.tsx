@@ -33,10 +33,10 @@ import { ERRORS } from '@notifications/errors.ts';
 
 // ----------------------------------------------------------------------
 
-type ActivateSubscriptionProfileModalProps = {
+interface ActivateSubscriptionProfileModalProps {
   isOpen: boolean;
   onClose: () => void;
-};
+}
 
 // ----------------------------------------------------------------------
 

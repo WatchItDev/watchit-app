@@ -46,7 +46,7 @@ export const useAccountSession = (): UseAccountSessionHook => {
   }, [web3Auth.connected, web3Auth.status, bundlerClient, smartAccount]);
 
   // If session is invalid or expired, do logout + show error
-  const handleSessionExpired = useCallback(async (silent: boolean = true) => {
+  const handleSessionExpired = useCallback(async (silent = true) => {
     await lensLogout();
     dispatch(setBalance({ balance: 0 }));
     dispatch(setSession({ session: { ...data, authenticated: false } }));

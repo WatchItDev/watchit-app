@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { supabase } from '@src/utils/supabase';
 import { useSelector } from 'react-redux';
 
-export type TransactionType = {
+export interface TransactionType {
   id: number;
   receiver_id: string;
   sender_id: string;
@@ -30,9 +30,9 @@ export type TransactionType = {
     message?: string;
     category: string;
   };
-};
+}
 
-export type TableRowTransactionType = {
+export interface TableRowTransactionType {
   id: string;
   name: string;
   avatarUrl: string;
@@ -42,18 +42,18 @@ export type TableRowTransactionType = {
   status: string;
   message: string;
   category: string;
-};
+}
 
-export type TransactionData = {
+export interface TransactionData {
   date: string;
   income: number;
   expenses: number;
-};
+}
 
-export type TransactionsDataResponseHook = {
+export interface TransactionsDataResponseHook {
   data: TransactionData[];
   rawData: TransactionType[];
-};
+}
 
 export const useTransactionData = (): TransactionsDataResponseHook => {
   const [data, setData] = useState<TransactionData[]>([]);

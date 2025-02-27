@@ -7,12 +7,12 @@ import EmptyContent from '../empty-content';
 
 // ----------------------------------------------------------------------
 
-type Props = {
+interface Props {
   loading: boolean;
   notFound: boolean;
   sx?: SxProps<Theme>;
   emptyText?: string;
-};
+}
 
 export default function TableNoData({ loading, notFound, sx, emptyText= 'No data found' }: Readonly<Props>) {
   return (
