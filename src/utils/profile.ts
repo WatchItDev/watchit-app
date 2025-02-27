@@ -3,7 +3,7 @@ import { ProfileData } from '@src/auth/context/web3Auth/types';
 import {Profile} from "@lens-protocol/api-bindings";
 
 const removeEmptyValues = (obj: any): any =>
-  Object.fromEntries(Object.entries(obj).filter(([_, v]) => v !== '' && v !== null));
+  Object.fromEntries(Object.entries(obj).filter(([, v]) => v !== '' && v !== null));
 
 /**
  * Build profile metadata object.
@@ -18,7 +18,7 @@ export const buildProfileMetadata = (
   backgroundImageURI?: string | null
 ): any => {
   const cleanSocialLinks = Object.entries(data.socialLinks ?? {})
-    .filter(([_, value]) => value !== '' && value !== null)
+    .filter(([, value]) => value !== '' && value !== null)
     .map(
       ([key, value]) =>
         ({

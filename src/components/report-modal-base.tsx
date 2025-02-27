@@ -16,7 +16,7 @@ import DialogContent from '@mui/material/DialogContent';
 
 // ----------------------------------------------------------------------
 
-type ReportModalBaseProps = {
+interface ReportModalBaseProps {
   title: string;
   reasons: string[];
   onSubmit: (
@@ -25,7 +25,7 @@ type ReportModalBaseProps = {
   ) => Promise<{ isSuccess: () => boolean; error?: { message: string } }>;
   isOpen: boolean;
   onClose: () => void;
-};
+}
 
 // ----------------------------------------------------------------------
 

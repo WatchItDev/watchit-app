@@ -1,7 +1,7 @@
 import React from "react";
 import Carousel, {Settings} from "react-slick";
 
-export type CarouselReturnType = {
+export interface CarouselReturnType {
   currentIndex: number;
   nav: Carousel | undefined;
   carouselSettings: Settings;
@@ -14,7 +14,7 @@ export type CarouselReturnType = {
   //
   setNav: React.Dispatch<React.SetStateAction<Carousel | undefined>>;
   setCurrentIndex: React.Dispatch<React.SetStateAction<number>>;
-};
+}
 
 export interface UseItemsPerSlideProps {
   minItemWidth: number;

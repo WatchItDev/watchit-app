@@ -11,8 +11,8 @@ import {CalculateItemsPerSlideProps} from "@src/utils/components/carousel/types.
  * @returns {number} The optimal number of items that can fit within the parent container.
  */
 export const calculateItemsPerSlide = ({parentWidth, minItemWidth, maxItemWidth} : CalculateItemsPerSlideProps): number => {
-  let maxItems = Math.floor(parentWidth / minItemWidth);
-  let minItems = Math.floor(parentWidth / maxItemWidth);
+  const maxItems = Math.floor(parentWidth / minItemWidth);
+  const minItems = Math.floor(parentWidth / maxItemWidth);
   let items = maxItems;
 
   while (items >= minItems) {

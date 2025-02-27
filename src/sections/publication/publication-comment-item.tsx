@@ -48,11 +48,11 @@ const LazyDialogActions = lazy(() => import('@mui/material/DialogActions'));
 
 // ----------------------------------------------------------------------
 
-type Props = {
+interface Props {
   comment: any;
   hasReply?: boolean;
   canReply?: boolean;
-};
+}
 
 export default function PublicationCommentItem({ comment, hasReply, canReply }: Props) {
   const isPendingComment = !!comment?.uri;

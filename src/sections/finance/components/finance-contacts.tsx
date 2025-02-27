@@ -45,7 +45,7 @@ export default function FinanceContactsCarousel({
   const dispatch = useDispatch();
 
   function scrollToSmoothly(pos: number, time: number) {
-    let currentPos = window.scrollY;
+    const currentPos = window.scrollY;
     let start: number | null = null;
     if (time == null) time = 500;
     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
@@ -53,7 +53,7 @@ export default function FinanceContactsCarousel({
 
     window.requestAnimationFrame(function step(currentTime) {
       start = !start ? currentTime : start;
-      let progress = currentTime - start;
+      const progress = currentTime - start;
 
       const lgPos = ((pos - currentPos) * progress) / time + currentPos;
       const gtPos = currentPos - ((currentPos - pos) * progress) / time
@@ -124,11 +124,11 @@ export default function FinanceContactsCarousel({
 
 // ----------------------------------------------------------------------
 
-type SlideContactsProps = {
+interface SlideContactsProps {
   chunk: Profile[];
   goToProfile: (id: string) => void;
   onClickArrow: (address: string, profileId: string) => void;
-};
+}
 
 function SlideContacts({ chunk, goToProfile, onClickArrow }: SlideContactsProps) {
   const handleArrowClick = (

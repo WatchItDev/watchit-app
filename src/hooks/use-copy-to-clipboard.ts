@@ -6,10 +6,10 @@ type CopiedValue = string | null;
 
 type CopyFn = (text: string) => Promise<boolean>;
 
-type ReturnType = {
+interface ReturnType {
   copy: CopyFn;
   copiedText: CopiedValue;
-};
+}
 
 export function useCopyToClipboard(): ReturnType {
   const [copiedText, setCopiedText] = useState<CopiedValue>(null);

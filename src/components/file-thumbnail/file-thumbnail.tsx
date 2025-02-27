@@ -8,14 +8,14 @@ import DownloadButton from './download-button';
 
 // ----------------------------------------------------------------------
 
-type FileIconProps = {
+interface FileIconProps {
   file: File | string;
   tooltip?: boolean;
   imageView?: boolean;
   onDownload?: VoidFunction;
   sx?: SxProps<Theme>;
   imgSx?: SxProps<Theme>;
-};
+}
 
 export default function FileThumbnail({
   file,

@@ -14,31 +14,31 @@ type EaseType =
   | 'anticipate'
   | number[];
 
-export type VariantsType = {
+export interface VariantsType {
   distance?: number;
   durationIn?: number;
   durationOut?: number;
   easeIn?: EaseType;
   easeOut?: EaseType;
-};
+}
 
-export type TranHoverType = {
+export interface TranHoverType {
   duration?: number;
   ease?: EaseType;
-};
+}
 
-export type TranEnterType = {
+export interface TranEnterType {
   durationIn?: number;
   easeIn?: EaseType;
-};
+}
 
-export type TranExitType = {
+export interface TranExitType {
   durationOut?: number;
   easeOut?: EaseType;
-};
+}
 
-export type BackgroundType = {
+export interface BackgroundType {
   colors?: string[];
   duration?: number;
   ease?: EaseType;
-};
+}

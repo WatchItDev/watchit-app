@@ -6,15 +6,15 @@ import {
 } from '@redux/comments';
 import BackgroundTaskWorker from '@src/workers/backgroundTaskWorker?worker';
 
-type TaskPayload = {
+interface TaskPayload {
   type: string; // Task type identifier, e.g., 'POST_COMMENT', 'UPDATE_METADATA'
   data: any; // Task-specific data
-};
+}
 
-type Task = {
+interface Task {
   id: string;
   payload: TaskPayload;
-};
+}
 
 const backgroundTaskWorker = new BackgroundTaskWorker();
 const taskQueue: Task[] = [];

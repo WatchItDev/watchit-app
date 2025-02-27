@@ -3,15 +3,13 @@ import { AnyPublication } from '@lens-protocol/api-bindings';
 
 type PendingComment = AnyPublication & { uri: string };
 
-export type CommentsReducerState = {
-  refetchTriggerByPublication: {
-    [publicationId: string]: number;
-  };
+export interface CommentsReducerState {
+  refetchTriggerByPublication: Record<string, number>;
   hiddenComments: AnyPublication[];
-  counterLikes: { [publicationId: string]: number };
-  comments: { [publicationId: string]: AnyPublication[] };
-  pendingComments: { [publicationId: string]: PendingComment[] };
-};
+  counterLikes: Record<string, number>;
+  comments: Record<string, AnyPublication[]>;
+  pendingComments: Record<string, PendingComment[]>;
+}
 
 const initialState: CommentsReducerState = {
   refetchTriggerByPublication: {},

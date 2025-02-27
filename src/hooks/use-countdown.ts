@@ -2,12 +2,12 @@ import { useState, useEffect, useCallback } from 'react';
 
 // ----------------------------------------------------------------------
 
-type ReturnDateType = {
+interface ReturnDateType {
   days: string;
   hours: string;
   minutes: string;
   seconds: string;
-};
+}
 
 export function useCountdownDate(date: Date): ReturnDateType {
   const [countdown, setCountdown] = useState({
@@ -61,12 +61,12 @@ export function useCountdownDate(date: Date): ReturnDateType {
 
 // ----------------------------------------------------------------------
 
-type ReturnSecondsType = {
+interface ReturnSecondsType {
   counting: boolean;
   countdown: number;
   startCountdown: VoidFunction;
   setCountdown: React.Dispatch<React.SetStateAction<number>>;
-};
+}
 
 export function useCountdownSeconds(initCountdown: number): ReturnSecondsType {
   const [countdown, setCountdown] = useState(initCountdown);

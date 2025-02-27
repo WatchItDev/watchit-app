@@ -3,7 +3,7 @@ import { ListItemButtonProps } from '@mui/material/ListItemButton';
 
 // ----------------------------------------------------------------------
 
-export type NavConfigProps = {
+export interface NavConfigProps {
   hiddenLabel?: boolean;
   itemGap?: number;
   iconSize?: number;
@@ -12,7 +12,7 @@ export type NavConfigProps = {
   currentRole?: string;
   itemSubHeight?: number;
   itemRootHeight?: number;
-};
+}
 
 export type NavItemProps = ListItemButtonProps & {
   item: NavListProps;
@@ -22,7 +22,7 @@ export type NavItemProps = ListItemButtonProps & {
   externalLink?: boolean;
 };
 
-export type NavListProps = {
+export interface NavListProps {
   id?: string;
   title: string;
   path?: string;
@@ -34,7 +34,7 @@ export type NavListProps = {
   badge?: string | number | React.ReactElement;
   bgColor?: string;
   children?: any;
-};
+}
 
 export type NavSectionProps = StackProps & {
   data: {

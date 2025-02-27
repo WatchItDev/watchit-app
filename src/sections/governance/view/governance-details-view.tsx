@@ -284,7 +284,7 @@ export default function GovernanceDetailsView() {
                   {userVote && (
                     <Box sx={{ mt: 2 }}>
                       <Typography variant="body2" color="success.main">
-                        {/* eslint-disable-next-line no-nested-ternary */}
+                        { }
                         You have already voted:{' '}
                         {userVote === 'for'
                           ? 'In Favor'

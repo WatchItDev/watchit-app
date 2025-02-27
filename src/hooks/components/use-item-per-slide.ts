@@ -28,7 +28,7 @@ export function useItemsPerSlide({ minItemWidth, maxItemWidth }: UseItemsPerSlid
     if (!parentRef.current) return;
 
     const observer = new ResizeObserver((entries) => {
-      for (let entry of entries) {
+      for (const entry of entries) {
         const parentWidth = entry.contentRect.width;
         const items = calculateItemsPerSlide({ parentWidth, minItemWidth, maxItemWidth });
         setItemsPerSlide(items);

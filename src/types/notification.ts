@@ -7,7 +7,7 @@ export enum NotificationCategories {
   TRANSFER = 'TRANSFER',
 }
 
-export type NotificationColumnsProps = {
+export interface NotificationColumnsProps {
   id: string;
   created_at: string | Date;
   category: NotificationCategories;
@@ -15,4 +15,4 @@ export type NotificationColumnsProps = {
   read: boolean;
   receiver_id: string;
   sender_id: string;
-};
+}

@@ -4,11 +4,11 @@ import { ReportModalBase } from '@src/components/report-modal-base.tsx';
 
 // ----------------------------------------------------------------------
 
-type PublicationReportModalProps = {
+interface PublicationReportModalProps {
   post: any;
   isOpen: boolean;
   onClose: () => void;
-};
+}
 
 // ----------------------------------------------------------------------
 

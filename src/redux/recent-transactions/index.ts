@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-export type TransactionItemProps = {
+export interface TransactionItemProps {
   id: string;
   receiver_id: string;
   sender_id: string;
@@ -27,7 +27,7 @@ export type TransactionItemProps = {
       };
     };
   };
-};
+}
 
 interface TransactionsState {
   transactions: TransactionItemProps[];

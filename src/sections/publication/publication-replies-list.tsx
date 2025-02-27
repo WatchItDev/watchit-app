@@ -5,10 +5,10 @@ import PublicationCommentItem from './publication-comment-item.tsx';
 import LinearProgress from '@mui/material/LinearProgress';
 import { useSelector } from 'react-redux';
 
-type Props = {
+interface Props {
   parentCommentId: string;
   canReply?: boolean;
-};
+}
 
 const RepliesList = ({ parentCommentId }: Props) => {
   const { data: replies, error, loading, execute } = useLazyPublications();

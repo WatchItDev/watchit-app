@@ -6,14 +6,14 @@ import { ProfileSession, useSession } from '@lens-protocol/react-web';
 import { type NotificationColumnsProps } from '@src/types/notification';
 import { setNotifications } from '@src/redux/notifications';
 
-type UseNotificationsReturn = {
+interface UseNotificationsReturn {
   getNotifications: (id: string) => Promise<void>;
   notifications: NotificationColumnsProps[];
   markAsRead: (id: string) => Promise<void>;
   sendNotification: (receiver_id: string, sender_id: string, payload: any) => Promise<void>;
   markAllAsRead: () => Promise<void>;
   deleteNotification: (id: string) => Promise<void>;
-};
+}
 
 export function useNotifications(): UseNotificationsReturn {
   const { data: sessionData }: ReadResult<ProfileSession> = useSession();

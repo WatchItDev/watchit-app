@@ -8,10 +8,10 @@ import { useSelector } from 'react-redux';
 
 // ----------------------------------------------------------------------
 
-type Props = {
+interface Props {
   publicationId: string;
   showReplies?: boolean;
-};
+}
 
 export default function PostCommentList({ publicationId: id, showReplies }: Props) {
   const pendingComments = useSelector((state: any) => state.comments.pendingComments);

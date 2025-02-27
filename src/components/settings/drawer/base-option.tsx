@@ -7,12 +7,12 @@ import SvgColor from '../../svg-color';
 
 // ----------------------------------------------------------------------
 
-type Props = {
+interface Props {
   icons: string[];
   options: string[];
   value: string;
   onChange: (newValue: string) => void;
-};
+}
 
 export default function BaseOptions({ icons, options, value, onChange }: Props) {
   return (

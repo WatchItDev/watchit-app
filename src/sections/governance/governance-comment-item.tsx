@@ -15,14 +15,14 @@ import AvatarProfile from "@src/components/avatar/avatar.tsx";
 
 // ----------------------------------------------------------------------
 
-type Props = {
+interface Props {
   name: string;
   avatarUrl: string;
   message: string;
   tagUser?: string;
   postedAt: Date;
   hasReply?: boolean;
-};
+}
 
 export default function GovernanceCommentItem({
   name,

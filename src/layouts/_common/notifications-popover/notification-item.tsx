@@ -23,11 +23,11 @@ import { usePublication } from '@lens-protocol/react';
 import { CircularProgress } from '@mui/material';
 import AvatarProfile from "@src/components/avatar/avatar.tsx";
 
-export type NotificationItemProps = {
+export interface NotificationItemProps {
   id: any;
   notification: NotificationColumnsProps;
   onMarkAsRead: (id: string) => void;
-};
+}
 
 export default function NotificationItem({ notification, onMarkAsRead }: NotificationItemProps) {
   const commentId = notification?.payload?.data?.content?.comment_id;

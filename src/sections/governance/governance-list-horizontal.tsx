@@ -5,10 +5,10 @@ import GovernanceItemHorizontal from './governance-item-horizontal';
 
 // ----------------------------------------------------------------------
 
-type Props = {
+interface Props {
   posts: any[];
   loading?: boolean;
-};
+}
 
 export default function GovernanceListHorizontal({ posts, loading }: Props) {
   const renderSkeleton = (

@@ -22,10 +22,10 @@ interface CarouselNavigationActions {
   onPrev?: VoidFunction;
 }
 
-export type ArrowIconProps = {
+export interface ArrowIconProps {
   icon?: IconifyProps;
   isRTL?: boolean;
-};
+}
 
 export type CarouselArrowIndexProps = CarouselNavigationActions & {
   index: number;
@@ -54,9 +54,9 @@ export interface NavigationArrowsProps {
   prev: () => void;
 }
 
-export type CarouselDotsStyledRootProps = {
+export interface CarouselDotsStyledRootProps {
   rounded: boolean;
-};
+}
 
 interface CarouselResizable {
   minItemWidth: number;
@@ -88,15 +88,15 @@ export type CarouselPosterMiniProps = CarouselResizable & {
   title?: string;
 };
 
-export type CarouselTopTitlesProps = {
+export interface CarouselTopTitlesProps {
   posts: Post[];
   category?: string;
-};
+}
 
-export type CarouselPosterSlideProps = {
+export interface CarouselPosterSlideProps {
   items: Post[];
   itemsPerRow: number;
-};
+}
 
 export interface PublicationType extends Post {
   altTag: string;

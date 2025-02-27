@@ -7,12 +7,12 @@ import Iconify from '@src/components/iconify';
 
 // ----------------------------------------------------------------------
 
-type Props = {
+interface Props {
   icon: string;
   title: string;
   value: number;
   color?: string;
-};
+}
 
 export default function FinanceWalletTransferWidgetHorizontal({
   title,

@@ -21,9 +21,9 @@ import RTL, { direction } from './options/right-to-left';
 
 // ----------------------------------------------------------------------
 
-type Props = {
+interface Props {
   children: React.ReactNode;
-};
+}
 
 export default function ThemeProvider({ children }: Props) {
   const { currentLang } = useLocales();

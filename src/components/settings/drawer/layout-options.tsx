@@ -6,11 +6,11 @@ import ButtonBase from '@mui/material/ButtonBase';
 
 // ----------------------------------------------------------------------
 
-type Props = {
+interface Props {
   options: string[];
   value: string;
   onChange: (newValue: string) => void;
-};
+}
 
 export default function LayoutOptions({ options, value, onChange }: Props) {
   const theme = useTheme();

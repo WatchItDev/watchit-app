@@ -1,10 +1,10 @@
 // ----------------------------------------------------------------------
 
-export type Props = {
+export interface Props {
   staggerIn?: number;
   delayIn?: number;
   staggerOut?: number;
-};
+}
 
 export const varContainer = (props?: Props) => {
   const staggerIn = props?.staggerIn || 0.05;

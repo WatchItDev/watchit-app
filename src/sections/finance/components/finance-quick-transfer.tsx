@@ -40,7 +40,7 @@ import {LoadingScreen} from "@src/components/loading-screen";
 const STEP = 50;
 const MIN_AMOUNT = 0;
 // A thousand millions allowed in the pool
-export const MAX_POOL: number = 1000000000;
+export const MAX_POOL = 1000000000;
 
 export interface FinanceQuickTransferProps extends CardProps {
   title?: string;

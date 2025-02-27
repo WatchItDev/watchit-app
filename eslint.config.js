@@ -13,6 +13,7 @@ export default tseslint.config(
       "public/*",
       "node_modules/*",
       "vite.config.js",
+      "src/renderer/*",
       "src/setupTests.js",
       "src/serviceWorkerRegistration.js",
       "src/service-worker.js",

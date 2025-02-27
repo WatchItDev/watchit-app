@@ -24,13 +24,13 @@ import useGetSubtitles from '@src/hooks/protocol/use-get-subtitles.ts';
 import { useResponsive } from '@src/hooks/use-responsive';
 import Label from '../label';
 
-export type VideoPlayerProps = {
+export interface VideoPlayerProps {
   src: string;
   cid: string;
   titleMovie: string;
   onBack?: () => void;
   showBack?: boolean;
-};
+}
 
 export const VideoPlayer: FC<VideoPlayerProps> = ({ src, cid, titleMovie, onBack, showBack }) => {
   const mdUp = useResponsive('up', 'md');

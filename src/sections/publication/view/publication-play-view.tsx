@@ -4,10 +4,10 @@ import { LoadingScreen } from '../../../components/loading-screen';
 import VideoPlayer from '../../../components/video-player';
 
 // ----------------------------------------------------------------------
-type Props = {
+interface Props {
   publication: any;
   loading: boolean;
-};
+}
 
 // ----------------------------------------------------------------------
 

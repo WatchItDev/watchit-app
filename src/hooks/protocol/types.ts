@@ -279,7 +279,7 @@ export interface UseGetPolicyTermsHook {
 
 // ----------------------------------------------------------------------
 
-export type TransactionLog = {
+export interface TransactionLog {
   address: string;
   args: {
     amount: bigint;
@@ -300,13 +300,13 @@ export type TransactionLog = {
   topics: string[];
   transactionHash: string;
   transactionIndex: number;
-};
+}
 
-export type EventConfig = {
+export interface EventConfig {
   eventName: string;
   args: Record<string, string | bigint>;
   getEventType: (log: any, userAddress: string) => string;
-};
+}
 
 // ----------------------------------------------------------------------
 

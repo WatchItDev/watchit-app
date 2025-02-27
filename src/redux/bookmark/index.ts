@@ -1,10 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { AnyPublication } from '@lens-protocol/api-bindings';
 
-export type BookmarkReducerState = {
+export interface BookmarkReducerState {
   bookmarkPublications: AnyPublication[];
   hiddenBookmarks: AnyPublication[];
-};
+}
 
 const initialState: BookmarkReducerState = {
   bookmarkPublications: [],

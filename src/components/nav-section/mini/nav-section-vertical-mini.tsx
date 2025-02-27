@@ -21,10 +21,10 @@ export default memo(NavSectionVerticalMini);
 
 // ----------------------------------------------------------------------
 
-type GroupProps = {
+interface GroupProps {
   items: NavListProps[];
   config: NavConfigProps;
-};
+}
 
 function Group({ items, config }: GroupProps) {
   return (

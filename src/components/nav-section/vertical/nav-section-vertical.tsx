@@ -31,11 +31,11 @@ export default memo(NavSectionVertical);
 
 // ----------------------------------------------------------------------
 
-type GroupProps = {
+interface GroupProps {
   subheader: string;
   items: NavListProps[];
   config: NavConfigProps;
-};
+}
 
 function Group({ subheader, items, config }: GroupProps) {
   const [open, setOpen] = useState(true);

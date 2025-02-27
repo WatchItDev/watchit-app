@@ -4,10 +4,10 @@ import TableCell from '@mui/material/TableCell';
 
 // ----------------------------------------------------------------------
 
-type Props = {
+interface Props {
   height?: number;
   emptyRows: number;
-};
+}
 
 export default function TableEmptyRows({ emptyRows, height }: Props) {
   if (!emptyRows) {
