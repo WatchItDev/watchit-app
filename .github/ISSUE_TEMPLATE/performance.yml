@@ -1,0 +1,33 @@
+name: Performance Issue
+description: Issues related to performance
+title: "performance: "
+type: performance
+labels:
+  - performance
+assignees:
+  - cswni
+  - jadapema
+projects:
+  - WatchItDev/9
+body:
+  - type: input
+    id: performance-title
+    attributes:
+      label: Performance Issue Title
+      description: Describe the performance issue
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Include the details of the performance issue
+    validations:
+      required: false
+  - type: input
+    id: filename
+    attributes:
+      label: Filename / Path
+      description: Add the file or path where the issue is located
+    validations:
+      required: false
