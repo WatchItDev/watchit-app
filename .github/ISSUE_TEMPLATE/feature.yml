@@ -10,13 +10,6 @@ assignees:
 projects:
   - WatchItDev/9
 body:
-  - type: input
-    id: feature-title
-    attributes:
-      label: Feature Title
-      description: Describe the new feature
-    validations:
-      required: true
   - type: textarea
     id: description
     attributes:

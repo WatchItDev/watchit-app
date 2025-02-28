@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { Address } from 'viem';
 import { publicClient } from '@src/clients/viem/publicClient.ts';
 import AccessAggAbi from '@src/config/abi/AccessAgg.json';
@@ -22,13 +22,12 @@ export const useHasAccess = (ownerAddress?: Address): UseHasAccessHook => {
   const [loading, setLoading] = useState(true);
   const [fetching, setFetching] = useState(true);
 
-  const fetchAccess = useCallback(async () => {
+  const fetchAccess = async () => {
     if (!userAddress || !ownerAddress) {
       setLoading(false);
       setFetching(false);
 
       throw new Error('User address or owner address is missing while verifying user access.');
-      return;
     }
 
     setFetching(true);
@@ -50,11 +49,11 @@ export const useHasAccess = (ownerAddress?: Address): UseHasAccessHook => {
       setLoading(false);
       setFetching(false);
     }
-  }, [userAddress, ownerAddress]);
+  };
 
   useEffect(() => {
     fetchAccess();
-  }, []);
+  }, [userAddress, ownerAddress]);
 
   if (!isAuthenticated()) {
     return {

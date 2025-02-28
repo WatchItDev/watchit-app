@@ -3,7 +3,6 @@ import Card from '@mui/material/Card';
 import ListItemText from '@mui/material/ListItemText';
 import Typography from "@mui/material/Typography";
 import BadgeVerified from "@src/components/user-item/BadgeVerified.tsx";
-import FollowUnfollowButton from '@src/components/follow-unfollow-button.tsx';
 import Image from '../image';
 import AvatarProfile from "@src/components/avatar/avatar.tsx";
 import { memo, FC } from 'react';
@@ -14,6 +13,7 @@ import { useRouter } from '@src/routes/hooks';
 import { useSelector } from 'react-redux';
 import { paths } from '../../routes/paths';
 import { Profile } from '@lens-protocol/api-bindings';
+import {capitalizeFirstLetter} from "@src/utils/text-transform.ts"
 
 // ----------------------------------------------------------------------
 
@@ -22,8 +22,6 @@ interface FollowerItemProps {
   onClick?: () => void;
   onActionFinished?: () => void;
   sx?: SxProps<Theme>;
-  canFollow?: boolean;
-  followButtonMinWidth?: number;
 }
 
 // ----------------------------------------------------------------------
@@ -32,9 +30,7 @@ export const UserItem = memo(
   ({
     profile: profileData,
     sx,
-    followButtonMinWidth = 120,
     onClick,
-    canFollow = true,
   }: FollowerItemProps) => {
     const sessionData = useSelector((state: any) => state.auth.session);
     const router = useRouter();
@@ -108,9 +104,9 @@ export const UserItem = memo(
               }}
             >
               <ListItemText
-                primary={<UserNameAndBadge address={profile?.ownedBy?.address} name={profile?.handle?.localName ?? ''} />}
+                primary={<UserNameAndBadge address={profile?.ownedBy?.address} name={capitalizeFirstLetter(profile?.metadata?.displayName) ?? profile?.handle?.localName} />}
                 secondary={
-                  <>{profile?.id !== sessionData?.profile?.id ? profile?.id : 'This is you!'}</>
+                  <>{profile?.id !== sessionData?.profile?.id ? profile?.metadata?.bio ?? profile?.id : 'This is you!'}</>
                 }
                 primaryTypographyProps={{
                   noWrap: true,
@@ -126,21 +122,13 @@ export const UserItem = memo(
                   color: 'text.disabled',
                 }}
               />
-
-              {canFollow && profile?.id !== sessionData?.profile?.id && (
-                <FollowUnfollowButton
-                  profileId={profile?.id}
-                  followButtonMinWidth={followButtonMinWidth}
-                  size={'small'}
-                />
-              )}
             </Box>
           </Card>
         </Box>
       </>
     );
   }
-);
+, (prevProps, nextProps) => prevProps.profile.id === nextProps.profile.id);
 
 interface UserNameAndBadgeProps {
   name: string;
@@ -181,4 +169,4 @@ export const UserNameAndBadge: FC<UserNameAndBadgeProps> = memo(
       </Box>
     );
   }
-);
+, (prevProps, nextProps) => prevProps.address === nextProps.address);

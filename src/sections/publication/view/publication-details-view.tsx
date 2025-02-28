@@ -43,6 +43,7 @@ import { SponsoredAccessTrialButton } from '@src/components/sponsored-access-but
 import { useGetSubscriptionCampaign } from '@src/hooks/protocol/use-get-subscription-campaign.ts';
 import { useGetCampaignIsActive } from '@src/hooks/protocol/use-get-campaign-is-active.ts';
 import {MAX_LINES} from "@src/sections/publication/CONSTANTS.ts"
+import { useAccountSession } from '@src/hooks/use-account-session.ts';
 
 // ----------------------------------------------------------------------
 
@@ -62,7 +63,8 @@ export default function PublicationDetailsView({ id }: Props) {
   const dispatch = useDispatch();
   // LOCAL HOOKS
   const theme = useTheme();
-  // LENS HOOKS
+  // HOOKS
+  const { isAuthenticated, loading: sessionLoading } = useAccountSession();
   const sessionData = useSelector((state: any) => state.auth.session);
   const { data, loading }: ReadResult<AnyPublication> = usePublication({ forId: id as any });
   // CONSTANTS
@@ -75,7 +77,7 @@ export default function PublicationDetailsView({ id }: Props) {
     fetching: accessFetchingLoading,
     refetch: refetchAccess,
   } = useHasAccess(ownerAddress);
-  const { isAuthorized } = useIsPolicyAuthorized(GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS, ownerAddress);
+  const { isAuthorized, loading: isAuthorizedLoading } = useIsPolicyAuthorized(GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS, ownerAddress);
   const { campaign, fetchSubscriptionCampaign } = useGetSubscriptionCampaign();
   const { isActive, loading: isActiveLoading, fetchIsActive } = useGetCampaignIsActive();
   // Load publications from current user to show in More from section
@@ -86,8 +88,10 @@ export default function PublicationDetailsView({ id }: Props) {
       metadata: { publishedOn: [appId('watchit')] },
     },
   });
-  const showJoinButton = isAuthorized && !isActive && !isActiveLoading;
-  const showSponsoredAccessButton = isActive && isAuthorized && !isActiveLoading;
+  const isAccessLoaded = !isActiveLoading && !isAuthorizedLoading;
+  const isJoinButtonVisible = isAuthorized && !isActive && isAccessLoaded;
+  const isSponsoredButtonVisible = isActive && isAuthorized && isAccessLoaded;
+  const isPlayerVisible = hasAccess && isAuthenticated() && !accessLoading && !sessionLoading && !accessFetchingLoading;
 
   useEffect(() => {
     fetchSubscriptionCampaign(ownerAddress);
@@ -189,7 +193,7 @@ export default function PublicationDetailsView({ id }: Props) {
                 justifyContent: 'center',
               }}
             >
-              {hasAccess && sessionData?.authenticated ? (
+              {isPlayerVisible ? (
                 <MoviePlayView publication={data} loading={loading} />
               ) : (
                 <Box
@@ -245,7 +249,7 @@ export default function PublicationDetailsView({ id }: Props) {
                   />
 
                   {
-                    showSponsoredAccessButton && (
+                    isSponsoredButtonVisible && (
                       <SponsoredAccessTrialButton
                         isActive={isActive}
                         holderAddress={ownerAddress}
@@ -269,28 +273,30 @@ export default function PublicationDetailsView({ id }: Props) {
                     )
                   }
 
-                  {showJoinButton && (
-                    <LoadingButton
-                      variant="contained"
-                      sx={{
-                        color: '#1E1F22',
-                        background: '#FFFFFF',
-                        height: '35px',
-                        bottom: 16,
-                        left: 16,
-                        position: 'absolute',
-                        zIndex: 2,
-                      }}
-                      onClick={handleSubscribe}
-                      // disabled={accessLoading || hasAccess || accessFetchingLoading}
-                      loading={accessLoading || accessFetchingLoading}
-                    >
-                      <IconPlayerPlay fontSize="large" size={18} />
-                      <Typography variant="body2" sx={{ lineHeight: 1, fontWeight: '700', ml: 1 }}>
-                        Join
-                      </Typography>
-                    </LoadingButton>
-                  )}
+                  {
+                    isJoinButtonVisible && (
+                      <LoadingButton
+                        variant="contained"
+                        sx={{
+                          color: '#1E1F22',
+                          background: '#FFFFFF',
+                          height: '35px',
+                          bottom: 16,
+                          left: 16,
+                          position: 'absolute',
+                          zIndex: 2,
+                        }}
+                        onClick={handleSubscribe}
+                        // disabled={accessLoading || hasAccess || accessFetchingLoading}
+                        loading={accessLoading || accessFetchingLoading}
+                      >
+                        <IconPlayerPlay fontSize="large" size={18} />
+                        <Typography variant="body2" sx={{ lineHeight: 1, fontWeight: '700', ml: 1 }}>
+                          Join
+                        </Typography>
+                      </LoadingButton>
+                    )
+                  }
                 </Box>
               )}
 

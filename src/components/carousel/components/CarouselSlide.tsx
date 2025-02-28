@@ -19,10 +19,10 @@ const CarouselSlide: FC<Readonly<CarouselSlideProps<Profile | Post>>> = ( props 
   return (
     <Box>
       {[row1, row2].map((rowItems, _rowIndex) => (
-        <Box key={`loop-one-${createIndexForElement()}`} sx={{ display: 'flex' }}>
+        <Box key={`loop-one-${rowItems[_rowIndex]?.id}`} sx={{ display: 'flex' }}>
           {rowItems.map((item, _item) => (
             <Box
-              key={`loop-two-${createIndexForElement()}`}
+              key={`loop-two-${item?.id}`}
               sx={{
                 flexBasis: `${itemWidthPercent}%`,
                 maxWidth: `${itemWidthPercent}%`,
@@ -38,4 +38,4 @@ const CarouselSlide: FC<Readonly<CarouselSlideProps<Profile | Post>>> = ( props 
   );
 }
 
-export default memo(CarouselSlide);
+export default memo(CarouselSlide, (prevProps, nextProps) => prevProps.items === nextProps.items);
