@@ -21,27 +21,19 @@ describe('pascalToUpperSnake', () => {
 
 describe('trimPublicationContentExtraText', () => {
   it('removes special characters and adds a period if missing', () => {
-    const input = 'Hello—World';
-    const expected = 'HelloWorld.';
-    expect(trimPublicationContentExtraText(input)).toBe(expected);
+    expect(trimPublicationContentExtraText('Hello—World')).toBe('HelloWorld.');
   });
 
   it('removes email addresses and trims extra spaces', () => {
-    const input = 'Contact me at example@example.com for more info.';
-    const expected = 'Contact me at  for more info.';
-    expect(trimPublicationContentExtraText(input)).toBe(expected);
+    expect(trimPublicationContentExtraText('Contact me at example@example.com for more info.')).toBe('Contact me at  for more info.');
   });
 
   it('handles text without special characters or email', () => {
-    const input = 'This is a simple text';
-    const expected = 'This is a simple text.';
-    expect(trimPublicationContentExtraText(input)).toBe(expected);
+    expect(trimPublicationContentExtraText('This is a simple text')).toBe('This is a simple text.');
   });
 
   it('handles text with only special characters', () => {
-    const input = '—';
-    const expected = '.';
-    expect(trimPublicationContentExtraText(input)).toBe(expected);
+    expect(trimPublicationContentExtraText('—')).toBe('.');
   });
 });
 
