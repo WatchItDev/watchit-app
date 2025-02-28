@@ -14,7 +14,7 @@ body:
     id: feature-title
     attributes:
       label: Test title
-      description: Añadir de que se trata el test
+      description: Describe the test scope
     validations:
       required: true
   - type: textarea
