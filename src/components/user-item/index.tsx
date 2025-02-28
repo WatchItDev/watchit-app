@@ -111,7 +111,7 @@ export const UserItem = memo(
               <ListItemText
                 primary={<UserNameAndBadge address={profile?.ownedBy?.address} name={capitalizeFirstLetter(profile?.metadata?.displayName) ?? profile?.handle?.localName} />}
                 secondary={
-                  <>{profile?.id !== sessionData?.profile?.id ? profile?.metadata?.bio : 'This is you!'}</>
+                  <>{profile?.id !== sessionData?.profile?.id ? profile?.metadata?.bio ?? profile?.id : 'This is you!'}</>
                 }
                 primaryTypographyProps={{
                   noWrap: true,
