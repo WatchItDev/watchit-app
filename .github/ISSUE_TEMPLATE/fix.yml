@@ -10,13 +10,6 @@ assignees:
 projects:
   - WatchItDev/9
 body:
-  - type: input
-    id: fix-title
-    attributes:
-      label: Bug Fix Title
-      description: Describe the bug fix
-    validations:
-      required: true
   - type: textarea
     id: description
     attributes:
