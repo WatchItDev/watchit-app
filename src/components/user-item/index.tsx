@@ -1,26 +1,19 @@
-// REACT IMPORTS
-import { memo, FC } from 'react';
-
-// MUI IMPORTS
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
-import { Theme } from '@mui/material/styles';
-import { SxProps } from '@mui/system/styleFunctionSx';
 import ListItemText from '@mui/material/ListItemText';
-
-// LENS IMPORTS
-import { Profile } from '@lens-protocol/api-bindings';
-
-// LOCAL IMPORTS
-import Image from '../image';
-import { paths } from '../../routes/paths';
-import { useRouter } from '@src/routes/hooks';
-import FollowUnfollowButton from '@src/components/follow-unfollow-button.tsx';
-import { useSelector } from 'react-redux';
-import AvatarProfile from "@src/components/avatar/avatar.tsx";
 import Typography from "@mui/material/Typography";
 import BadgeVerified from "@src/components/user-item/BadgeVerified.tsx";
+import FollowUnfollowButton from '@src/components/follow-unfollow-button.tsx';
+import Image from '../image';
+import AvatarProfile from "@src/components/avatar/avatar.tsx";
+import { memo, FC } from 'react';
+import { Theme } from '@mui/material/styles';
+import { SxProps } from '@mui/system/styleFunctionSx';
 import { Address } from 'viem';
+import { useRouter } from '@src/routes/hooks';
+import { useSelector } from 'react-redux';
+import { paths } from '../../routes/paths';
+import { Profile } from '@lens-protocol/api-bindings';
 
 // ----------------------------------------------------------------------
 

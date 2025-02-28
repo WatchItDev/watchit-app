@@ -42,8 +42,7 @@ import { AnyPublication } from '@lens-protocol/api-bindings';
 import { SponsoredAccessTrialButton } from '@src/components/sponsored-access-button';
 import { useGetSubscriptionCampaign } from '@src/hooks/protocol/use-get-subscription-campaign.ts';
 import { useGetCampaignIsActive } from '@src/hooks/protocol/use-get-campaign-is-active.ts';
-
-const MAX_LINES = 5;
+import {MAX_LINES} from "@src/sections/publication/CONSTANTS.ts"
 
 // ----------------------------------------------------------------------
 

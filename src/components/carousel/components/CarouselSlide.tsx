@@ -1,5 +1,5 @@
-import { memo, FC } from 'react';
 import Box from '@mui/material/Box';
+import { memo, FC } from 'react';
 import { CarouselSlideProps } from '../types';
 // @ts-ignore
 import {Post} from "@lens-protocol/api-bindings/dist/declarations/src/lens/graphql/generated";
