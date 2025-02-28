@@ -129,7 +129,6 @@ export const trimPublicationContentExtraText = (text: string): string => {
  * @returns {string} A new string with its first letter capitalized.
  */
 export const capitalizeFirstLetter = (string: string) => {
-  console.log('string', string);
   if (!string?.length) return string;
   return string.charAt(0).toUpperCase() + string.slice(1);
 };
