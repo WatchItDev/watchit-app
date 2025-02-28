@@ -109,7 +109,7 @@ export const UserItem = memo(
               }}
             >
               <ListItemText
-                primary={<UserNameAndBadge address={profile?.ownedBy?.address} name={capitalizeFirstLetter(profile?.handle?.localName) ?? ''} />}
+                primary={<UserNameAndBadge address={profile?.ownedBy?.address} name={capitalizeFirstLetter(profile?.metadata?.displayName) ?? ''} />}
                 secondary={
                   <>{profile?.id !== sessionData?.profile?.id ? profile?.metadata?.bio : 'This is you!'}</>
                 }
