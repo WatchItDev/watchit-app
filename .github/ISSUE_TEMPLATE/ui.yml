@@ -10,13 +10,6 @@ assignees:
 projects:
   - WatchItDev/9
 body:
-  - type: input
-    id: ui-title
-    attributes:
-      label: UI Issue Title
-      description: Describe the UI issue
-    validations:
-      required: true
   - type: textarea
     id: description
     attributes:
