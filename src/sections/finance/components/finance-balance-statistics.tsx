@@ -42,6 +42,11 @@ export default function FinanceBalanceStatistics() {
     xaxis: {
       categories: categories, // Short labels
     },
+    yaxis: {
+      labels: {
+        formatter: (value: number) => Math.round(value).toString(),
+      },
+    },
     tooltip: {
       y: {
         formatter: (value: number) => `${value} MMC`, // Value format
