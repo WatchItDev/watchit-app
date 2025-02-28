@@ -39,8 +39,10 @@ import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 // @ts-ignore
 import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
 import { AnyPublication } from '@lens-protocol/api-bindings';
-
-const MAX_LINES = 5;
+import { SponsoredAccessTrialButton } from '@src/components/sponsored-access-button';
+import { useGetSubscriptionCampaign } from '@src/hooks/protocol/use-get-subscription-campaign.ts';
+import { useGetCampaignIsActive } from '@src/hooks/protocol/use-get-campaign-is-active.ts';
+import {MAX_LINES} from "@src/sections/publication/CONSTANTS.ts"
 
 // ----------------------------------------------------------------------
 
@@ -74,6 +76,8 @@ export default function PublicationDetailsView({ id }: Props) {
     refetch: refetchAccess,
   } = useHasAccess(ownerAddress);
   const { isAuthorized } = useIsPolicyAuthorized(GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS, ownerAddress);
+  const { campaign, fetchSubscriptionCampaign } = useGetSubscriptionCampaign();
+  const { isActive, loading: isActiveLoading, fetchIsActive } = useGetCampaignIsActive();
   // Load publications from current user to show in More from section
   const { data: publications } = usePublications({
     where: {
@@ -82,6 +86,18 @@ export default function PublicationDetailsView({ id }: Props) {
       metadata: { publishedOn: [appId('watchit')] },
     },
   });
+  const showJoinButton = isAuthorized && !isActive && !isActiveLoading;
+  const showSponsoredAccessButton = isActive && isAuthorized && !isActiveLoading;
+
+  useEffect(() => {
+    fetchSubscriptionCampaign(ownerAddress);
+  }, [ownerAddress]);
+
+  useEffect(() => {
+    if (!campaign || !ownerAddress) return;
+
+    fetchIsActive(campaign, ownerAddress);
+  }, [campaign, ownerAddress]);
 
   const getMediaUri = (cid: string): string => `${cid}`;
 
@@ -228,7 +244,32 @@ export default function PublicationDetailsView({ id }: Props) {
                     }}
                   />
 
-                  {isAuthorized && (
+                  {
+                    showSponsoredAccessButton && (
+                      <SponsoredAccessTrialButton
+                        isActive={isActive}
+                        holderAddress={ownerAddress}
+                        campaignAddress={campaign}
+                        onSuccess={onSubscribe}
+                        neonPaperProps={{
+                          height: '35px',
+                          bottom: 16,
+                          left: 16,
+                          position: 'absolute',
+                          zIndex: 2,
+                          sx: {
+                            height: '36px',
+                            bottom: 16,
+                            left: 16,
+                            position: 'absolute',
+                            zIndex: 2,
+                          }
+                        }}
+                      />
+                    )
+                  }
+
+                  {showJoinButton && (
                     <LoadingButton
                       variant="contained"
                       sx={{
