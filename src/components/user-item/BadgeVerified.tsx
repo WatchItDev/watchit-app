@@ -1,5 +1,5 @@
 import { Icon } from "@iconify/react";
-import { FC } from "react";
+import { FC, memo } from "react";
 import { Address } from "viem";
 import { useIsVerified } from "@src/hooks/protocol/use-is-verified.ts";
 
@@ -20,4 +20,4 @@ const BadgeVerified: FC<BadgeVerifiedProps> = ({ address }) => {
   return <Icon width={20} color={"#cca421"} icon={"ic:round-verified"} />;
 };
 
-export default BadgeVerified;
+export default memo(BadgeVerified, (prevProps, nextProps) => prevProps.address === nextProps.address);

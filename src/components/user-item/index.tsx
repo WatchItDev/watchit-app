@@ -14,6 +14,7 @@ import { useRouter } from '@src/routes/hooks';
 import { useSelector } from 'react-redux';
 import { paths } from '../../routes/paths';
 import { Profile } from '@lens-protocol/api-bindings';
+import {capitalizeFirstLetter} from "@src/utils/text-transform.ts"
 
 // ----------------------------------------------------------------------
 
@@ -108,9 +109,9 @@ export const UserItem = memo(
               }}
             >
               <ListItemText
-                primary={<UserNameAndBadge address={profile?.ownedBy?.address} name={profile?.handle?.localName ?? ''} />}
+                primary={<UserNameAndBadge address={profile?.ownedBy?.address} name={capitalizeFirstLetter(profile?.handle?.localName) ?? ''} />}
                 secondary={
-                  <>{profile?.id !== sessionData?.profile?.id ? profile?.id : 'This is you!'}</>
+                  <>{profile?.id !== sessionData?.profile?.id ? profile?.metadata?.bio : 'This is you!'}</>
                 }
                 primaryTypographyProps={{
                   noWrap: true,
@@ -127,20 +128,20 @@ export const UserItem = memo(
                 }}
               />
 
-              {canFollow && profile?.id !== sessionData?.profile?.id && (
+             {/* {canFollow && profile?.id !== sessionData?.profile?.id && (
                 <FollowUnfollowButton
                   profileId={profile?.id}
                   followButtonMinWidth={followButtonMinWidth}
                   size={'small'}
                 />
-              )}
+              )}*/}
             </Box>
           </Card>
         </Box>
       </>
     );
   }
-);
+, (prevProps, nextProps) => prevProps.profile.id === nextProps.profile.id);
 
 interface UserNameAndBadgeProps {
   name: string;
@@ -181,4 +182,4 @@ export const UserNameAndBadge: FC<UserNameAndBadgeProps> = memo(
       </Box>
     );
   }
-);
+, (prevProps, nextProps) => prevProps.address === nextProps.address);
