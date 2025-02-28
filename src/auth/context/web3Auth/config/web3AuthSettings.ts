@@ -122,7 +122,7 @@ export function web3AuthFactory(): Web3Auth {
   });
 
   const web3AuthOptions: Web3AuthOptions = {
-    sessionTime: 86400 * 1, // 1 days
+    sessionTime: 86400 * 7, // 7 days
     privateKeyProvider,
     accountAbstractionProvider,
     chainConfig: chain.polygonAmoy,

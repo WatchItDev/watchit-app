@@ -10,13 +10,6 @@ assignees:
 projects:
   - WatchItDev/9
 body:
-  - type: input
-    id: performance-title
-    attributes:
-      label: Performance Issue Title
-      description: Describe the performance issue
-    validations:
-      required: true
   - type: textarea
     id: description
     attributes:
