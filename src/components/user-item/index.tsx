@@ -3,7 +3,6 @@ import Card from '@mui/material/Card';
 import ListItemText from '@mui/material/ListItemText';
 import Typography from "@mui/material/Typography";
 import BadgeVerified from "@src/components/user-item/BadgeVerified.tsx";
-import FollowUnfollowButton from '@src/components/follow-unfollow-button.tsx';
 import Image from '../image';
 import AvatarProfile from "@src/components/avatar/avatar.tsx";
 import { memo, FC } from 'react';
@@ -23,8 +22,6 @@ interface FollowerItemProps {
   onClick?: () => void;
   onActionFinished?: () => void;
   sx?: SxProps<Theme>;
-  canFollow?: boolean;
-  followButtonMinWidth?: number;
 }
 
 // ----------------------------------------------------------------------
@@ -33,9 +30,7 @@ export const UserItem = memo(
   ({
     profile: profileData,
     sx,
-    followButtonMinWidth = 120,
     onClick,
-    canFollow = true,
   }: FollowerItemProps) => {
     const sessionData = useSelector((state: any) => state.auth.session);
     const router = useRouter();
@@ -127,14 +122,6 @@ export const UserItem = memo(
                   color: 'text.disabled',
                 }}
               />
-
-             {/* {canFollow && profile?.id !== sessionData?.profile?.id && (
-                <FollowUnfollowButton
-                  profileId={profile?.id}
-                  followButtonMinWidth={followButtonMinWidth}
-                  size={'small'}
-                />
-              )}*/}
             </Box>
           </Card>
         </Box>
