@@ -1,0 +1,33 @@
+name: UI Issue
+description: Issues related to the user interface
+title: "ui: "
+type: ui
+labels:
+  - ui
+assignees:
+  - cswni
+  - jadapema
+projects:
+  - WatchItDev/9
+body:
+  - type: input
+    id: ui-title
+    attributes:
+      label: UI Issue Title
+      description: Describe the UI issue
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Include the details of the UI issue
+    validations:
+      required: true
+  - type: input
+    id: filename
+    attributes:
+      label: Filename / Path
+      description: Add the file or path where the issue is located
+    validations:
+      required: false

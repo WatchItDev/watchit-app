@@ -1,0 +1,33 @@
+name: New Feature
+description: Proposals for new features
+title: "feat: "
+type: feature
+labels:
+  - feature
+assignees:
+  - cswni
+  - jadapema
+projects:
+  - WatchItDev/9
+body:
+  - type: input
+    id: feature-title
+    attributes:
+      label: Feature Title
+      description: Describe the new feature
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Include the details of the new feature
+    validations:
+      required: true
+  - type: input
+    id: filename
+    attributes:
+      label: Filename / Path
+      description: Add the file or path where the feature will be implemented
+    validations:
+      required: false
