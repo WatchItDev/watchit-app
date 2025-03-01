@@ -50,7 +50,6 @@ const StyledDot = styled('span')(({ theme }) => ({
 
 export default function CarouselDots(props?: CarouselDotsProps) {
   const rounded = props?.rounded || false;
-
   const sx = props?.sx;
 
   return {

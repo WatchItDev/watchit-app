@@ -57,8 +57,8 @@ export default function CarouselArrows(props: Readonly<CarouselArrowsProps>) {
     sx,
     ...other
   } = props;
+  
   const isRTL = useIsRTL();
-
   const hasChild = !!children;
 
   if (hasChild) {
