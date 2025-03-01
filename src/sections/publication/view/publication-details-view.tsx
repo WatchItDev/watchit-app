@@ -59,7 +59,7 @@ export default function PublicationDetailsView({ id }: Props) {
   const [showButton, setShowButton] = useState(false);
   const [openSubscribeModal, setOpenSubscribeModal] = useState(false);
   const descriptionRef: any = useRef(null);
-  
+
   const theme = useTheme();
   const dispatch = useDispatch();
   const { isAuthenticated, loading: sessionLoading } = useAccountSession();
@@ -86,12 +86,15 @@ export default function PublicationDetailsView({ id }: Props) {
       metadata: { publishedOn: [appId('watchit')] },
     },
   });
-  const isAccessLoaded = !isActiveLoading && !isAuthorizedLoading;
-  const isJoinButtonVisible = isAuthorized && !isActive && isAccessLoaded;
+
+  const isAccessLoaded = !isActiveLoading && !isAuthorizedLoading && !accessLoading;
   const isSponsoredButtonVisible = isActive && isAuthorized && isAccessLoaded;
+  const isJoinButtonVisible = isAuthorized && !isActive && isAccessLoaded && !isSponsoredButtonVisible;
   const isPlayerVisible = hasAccess && isAuthenticated() && !accessLoading && !sessionLoading && !accessFetchingLoading;
 
   useEffect(() => {
+    if (!ownerAddress) return;
+
     fetchSubscriptionCampaign(ownerAddress);
   }, [ownerAddress]);
 
