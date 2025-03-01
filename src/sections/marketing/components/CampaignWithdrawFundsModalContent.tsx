@@ -7,7 +7,7 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import Box from "@mui/material/Box";
 
 // VIEM IMPORTS
-import {  parseUnits } from 'viem';
+import { parseUnits } from 'viem';
 
 // LOCAL IMPORTS
 import { useCampaignRemoveFunds } from '@src/hooks/protocol/use-campaign-remove-funds.ts';
@@ -20,13 +20,12 @@ import { CampaignWithdrawFundsModalContentProps } from '@src/sections/marketing/
 const CampaignWithdrawFundsModalContent: FC<CampaignWithdrawFundsModalContentProps> = (props) => {
   const { campaignData, onClose, onConfirm } = props;
   const { address, description, currentFundsBalance } = campaignData;
-  const [withdrawAmount, setWithdrawAmount] = useState<string>('');
   const { removeFunds, loading } = useCampaignRemoveFunds();
+  const [withdrawAmount, setWithdrawAmount] = useState<string>('');
   const canWithdraw = Number(withdrawAmount) > 0 && Number(withdrawAmount) <= Number(currentFundsBalance);
 
   const handleWithdraw = async () => {
     if (!canWithdraw) return;
-
     const amountInWei = parseUnits(withdrawAmount, 18);
 
     try {

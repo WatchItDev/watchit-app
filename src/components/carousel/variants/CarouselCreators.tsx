@@ -45,7 +45,7 @@ import {filterHiddenProfiles} from "@src/utils/profile.ts"
   };
 
   const renderItem = (profile: Profile) => (
-    <UserItem profile={profile} onActionFinished={() => {}} followButtonMinWidth={90} />
+    <UserItem profile={profile} onActionFinished={() => {}} />
   );
 
   const carouselParams = {

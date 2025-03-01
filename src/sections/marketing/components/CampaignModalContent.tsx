@@ -28,12 +28,12 @@ import { CampaignModalContentProps } from '@src/sections/marketing/components/ty
 // ----------------------------------------------------------------------
 
 const CampaignModalContent: FC<CampaignModalContentProps> = ({ onClose, onConfirm }) => {
+
   const { create, loading } = useCreateCampaign();
-  const [formValues, setFormValues] = useState({
-    policy: '',
-    description: '',
-  });
+  const [formValues, setFormValues] = useState({ policy: '', description: '' });
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+
+  const RainbowEffect = loading ? NeonPaper : Box;
 
   // Handler for text field changes
   const handleTextChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -55,32 +55,20 @@ const CampaignModalContent: FC<CampaignModalContentProps> = ({ onClose, onConfir
 
   // Validate fields, calculate expiration in seconds, and call the create function from the hook
   const handleOnConfirm = async () => {
-    const { policy, description } = formValues;
-    if (!policy || !description || !selectedDate) {
-      // You could add further validation or show an error message here
-      return;
-    }
-
-    // Calculate expiration in seconds from now until the selected date
     const now = new Date();
+    const { policy, description } = formValues;
+    // You could add further validation or show an error message here
+    if (!policy || !description || !selectedDate) return;
+    // Calculate expiration in seconds from now until the selected date
     const expirationSeconds = Math.floor((selectedDate.getTime() - now.getTime()) / 1000);
-    if (expirationSeconds <= 0) {
-      // If expirationSeconds is not positive, do not proceed
-      return;
-    }
+    // If expirationSeconds is not positive, do not proceed
+    if (expirationSeconds <= 0) return;
 
-    await create({
-      policy,
-      expiration: expirationSeconds,
-      description,
-    });
-
+    await create({ policy, expiration: expirationSeconds, description });
     notifySuccess(SUCCESS.CAMPAIGN_CREATED_SUCCESSFULLY);
-
     // Close the modal if the creation was successful
     onConfirm();
   };
-  const RainbowEffect = loading ? NeonPaper : Box;
 
   return (
     <>

@@ -1,22 +1,24 @@
-import { FC, useState, useMemo } from 'react';
-import { useSelector } from 'react-redux';
+import Box from "@mui/material/Box";
+import Grid from '@mui/material/Grid';
 import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
-import Grid from '@mui/material/Grid';
-import { Button, TextField, FormControl, DialogActions, LinearProgress } from '@mui/material';
+import LoadingButton from "@mui/lab/LoadingButton";
+import NeonPaper from "@src/sections/publication/NeonPaperContainer.tsx";
+
 import { ethers } from 'ethers';
 import { Address } from 'viem';
+import { useSelector } from 'react-redux';
+import { FC, useState, useMemo } from 'react';
+import { Button, TextField, FormControl, DialogActions, LinearProgress } from '@mui/material';
 
-import { useConfigureCampaign } from '@src/hooks/protocol/use-configure-campaign.ts';
 import { useGetPolicyTerms } from '@src/hooks/protocol/use-get-policy-terms.ts';
-import { GLOBAL_CONSTANTS } from '@src/config-global';
-import NeonPaper from "@src/sections/publication/NeonPaperContainer.tsx";
-import Box from "@mui/material/Box";
-import LoadingButton from "@mui/lab/LoadingButton";
+import { useConfigureCampaign } from '@src/hooks/protocol/use-configure-campaign.ts';
+import { CampaignSettingsModalContentProps } from '@src/sections/marketing/components/types.ts';
 import { notifyError, notifySuccess } from '@notifications/internal-notifications.ts';
+
+import { GLOBAL_CONSTANTS } from '@src/config-global';
 import { ERRORS } from '@notifications/errors.ts';
 import { SUCCESS } from '@notifications/success.ts';
-import { CampaignSettingsModalContentProps } from '@src/sections/marketing/components/types.ts';
 
 // ----------------------------------------------------------------------
 
@@ -29,12 +31,16 @@ const CampaignSettingsModalContent: FC<CampaignSettingsModalContentProps> = (pro
   const [quotaLimit, setQuotaLimit] = useState<string>('');
 
   // Get session data from Redux
+  const { configure, loading: loadingConfigure } = useConfigureCampaign();
   const sessionData = useSelector((state: any) => state.auth.session);
   const { terms, loading: loadingTerms } = useGetPolicyTerms(
     GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS as Address,
     sessionData?.address as Address
   );
-  const { configure, loading: loadingConfigure } = useConfigureCampaign();
+
+  // Neon is a component showing colors during configure is loading
+  // otherwise the box is used.
+  const RainbowEffect = loadingConfigure ? NeonPaper : Box;
 
   // Convert the daily price from Wei to MMC (float)
   const dailyPriceInMMC = useMemo(() => {
@@ -59,10 +65,7 @@ const CampaignSettingsModalContent: FC<CampaignSettingsModalContentProps> = (pro
 
   const handleOnConfirm = async () => {
     // Prevent proceeding if form validation fails
-    if (!isFormValid) {
-      console.error("Validation failed. Please check the input fields.");
-      return;
-    }
+    if (!isFormValid) return;
 
     try {
       const numericFundsAmount = Number(fundsAmount);
@@ -77,7 +80,6 @@ const CampaignSettingsModalContent: FC<CampaignSettingsModalContentProps> = (pro
       });
 
       notifySuccess(SUCCESS.CAMPAIGN_CONFIGURED_SUCCESSFULLY);
-
       onConfirm?.();
     } catch (err) {
       console.error('Error configuring campaign:', err);
@@ -86,16 +88,19 @@ const CampaignSettingsModalContent: FC<CampaignSettingsModalContentProps> = (pro
   };
 
   const fundsAllocationHelperText = useMemo(() => {
-    if (fundsAllocationAmount !== '' && Number(fundsAllocationAmount) < 1) {
-      return "Funds allocation must be at least 1.";
-    }
-    if (dailyPriceInMMC > 0) {
-      return `Each user can claim this amount of MMC. For example, if your daily subscription costs ${dailyPriceInMMC} MMC/day, an allocation of ${fundsAllocationAmount || 0} MMC would provide ${daysEquivalent.toFixed(2)} days of access.`;
-    }
+    const isNotValidAllocationAmount = fundsAllocationAmount !== '' && Number(fundsAllocationAmount) < 1;
+    if (isNotValidAllocationAmount) return "Funds allocation must be at least 1.";
+
+    if (dailyPriceInMMC > 0)
+      return `
+            Each user can claim this amount of MMC. For example, 
+            if your daily subscription costs ${dailyPriceInMMC} MMC/day, 
+            an allocation of ${fundsAllocationAmount || 0} 
+            MMC would provide ${daysEquivalent.toFixed(2)} days of access.
+            `;
+
     return "Amount of MMC each user can claim.";
   }, [fundsAllocationAmount, dailyPriceInMMC, daysEquivalent]);
-
-  const RainbowEffect = loadingConfigure ? NeonPaper : Box;
 
   return (
     <>

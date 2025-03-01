@@ -59,15 +59,13 @@ export default function PublicationDetailsView({ id }: Props) {
   const [showButton, setShowButton] = useState(false);
   const [openSubscribeModal, setOpenSubscribeModal] = useState(false);
   const descriptionRef: any = useRef(null);
-  // REDUX HOOKS
-  const dispatch = useDispatch();
-  // LOCAL HOOKS
+  
   const theme = useTheme();
-  // HOOKS
+  const dispatch = useDispatch();
   const { isAuthenticated, loading: sessionLoading } = useAccountSession();
   const sessionData = useSelector((state: any) => state.auth.session);
   const { data, loading }: ReadResult<AnyPublication> = usePublication({ forId: id as any });
-  // CONSTANTS
+
   const variants = theme.direction === 'rtl' ? varFade().inLeft : varFade().inRight;
   const ownerAddress = data?.by?.ownedBy?.address;
   // PROTOCOL HOOKS

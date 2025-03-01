@@ -2,16 +2,11 @@ import Box from '@mui/material/Box';
 import { memo, FC } from 'react';
 import { CarouselSlideProps } from '../types';
 // @ts-ignore
-import {Post} from "@lens-protocol/api-bindings/dist/declarations/src/lens/graphql/generated";
-import {Profile } from '@lens-protocol/api-bindings';
-import {createIndexForElement} from "@src/utils/text-transform.ts";
+import { Post } from "@lens-protocol/api-bindings/dist/declarations/src/lens/graphql/generated";
+import { Profile } from '@lens-protocol/api-bindings';
 
-const CarouselSlide: FC<Readonly<CarouselSlideProps<Profile | Post>>> = ( props ) => {
-  const {
-      items,
-      itemsPerRow,
-      renderItem,
-  } = props;
+const CarouselSlide: FC<Readonly<CarouselSlideProps<Profile | Post>>> = (props) => {
+  const { items, itemsPerRow, renderItem, } = props;
   const row1 = items.slice(0, itemsPerRow);
   const row2 = items.slice(itemsPerRow, itemsPerRow * 2);
   const itemWidthPercent = 100 / itemsPerRow;
