@@ -47,20 +47,15 @@ export const useGetPoliciesTerms = (
       setLoading(false);
     }
   }, [holder]);
-
+ 
   useEffect(() => {
-    fetchHolderPolicies();
-  }, [fetchHolderPolicies]);
-
-  // Allows to refetch the data on demand
-  const refetch = useCallback(() => {
     fetchHolderPolicies();
   }, [fetchHolderPolicies]);
 
   return {
     authorizedHolderPolicies,
+    refetch: fetchHolderPolicies,
     loading,
     error,
-    refetch,
   };
 };

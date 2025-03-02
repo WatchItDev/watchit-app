@@ -1,22 +1,25 @@
-import { FC, useState, useMemo } from 'react';
-import { useSelector } from 'react-redux';
+import Grid from '@mui/material/Grid';
 import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
-import Grid from '@mui/material/Grid';
-import { Button, TextField, FormControl, DialogActions, LinearProgress } from '@mui/material';
-import { ethers } from 'ethers';
+
 import { Address } from 'viem';
+import { ethers } from 'ethers';
+import { FC, useState, useMemo } from 'react';
+import { useSelector } from 'react-redux';
+import { Button, TextField, FormControl, DialogActions, LinearProgress } from '@mui/material';
+
+import Box from "@mui/material/Box";
+import LoadingButton from "@mui/lab/LoadingButton";
+import NeonPaper from "@src/sections/publication/NeonPaperContainer.tsx";
 
 import { useConfigureCampaign } from '@src/hooks/protocol/use-configure-campaign.ts';
 import { useGetPolicyTerms } from '@src/hooks/protocol/use-get-policy-terms.ts';
-import { GLOBAL_CONSTANTS } from '@src/config-global';
-import NeonPaper from "@src/sections/publication/NeonPaperContainer.tsx";
-import Box from "@mui/material/Box";
-import LoadingButton from "@mui/lab/LoadingButton";
 import { notifyError, notifySuccess } from '@notifications/internal-notifications.ts';
+import { CampaignSettingsModalContentProps } from '@src/sections/marketing/components/types.ts';
+
 import { ERRORS } from '@notifications/errors.ts';
 import { SUCCESS } from '@notifications/success.ts';
-import { CampaignSettingsModalContentProps } from '@src/sections/marketing/components/types.ts';
+import { GLOBAL_CONSTANTS } from '@src/config-global';
 
 // ----------------------------------------------------------------------
 
@@ -28,17 +31,18 @@ const CampaignSettingsModalContent: FC<CampaignSettingsModalContentProps> = (pro
   const [fundsAllocationAmount, setFundsAllocationAmount] = useState<string>('');
   const [quotaLimit, setQuotaLimit] = useState<string>('');
 
-  // Get session data from Redux
+  // TODO this could be get from useAuth hook?
   const sessionData = useSelector((state: any) => state.auth.session);
+  const { configure, loading: loadingConfigure } = useConfigureCampaign();
   const { terms, loading: loadingTerms } = useGetPolicyTerms(
     GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS as Address,
     sessionData?.address as Address
   );
-  const { configure, loading: loadingConfigure } = useConfigureCampaign();
 
+  const RainbowEffect = loadingConfigure ? NeonPaper : Box;
   // Convert the daily price from Wei to MMC (float)
   const dailyPriceInMMC = useMemo(() => {
-    if (!terms?.amount) return 0;
+    if (!terms?.amount) return 0; // TODO use a Terms type to avoid to much use of safe navigation
     return parseFloat(ethers.formatUnits(terms.amount, 18));
   }, [terms]);
 
@@ -77,7 +81,6 @@ const CampaignSettingsModalContent: FC<CampaignSettingsModalContentProps> = (pro
       });
 
       notifySuccess(SUCCESS.CAMPAIGN_CONFIGURED_SUCCESSFULLY);
-
       onConfirm?.();
     } catch (err) {
       console.error('Error configuring campaign:', err);
@@ -85,47 +88,54 @@ const CampaignSettingsModalContent: FC<CampaignSettingsModalContentProps> = (pro
     }
   };
 
+  // check if the expected number input is valid
+  const isNotValidNumberInput = (rawInput: string): boolean => {
+    return rawInput !== '' && Number(rawInput) < 1
+  }
+
   const fundsAllocationHelperText = useMemo(() => {
-    if (fundsAllocationAmount !== '' && Number(fundsAllocationAmount) < 1) {
-      return "Funds allocation must be at least 1.";
-    }
-    if (dailyPriceInMMC > 0) {
-      return `Each user can claim this amount of MMC. For example, if your daily subscription costs ${dailyPriceInMMC} MMC/day, an allocation of ${fundsAllocationAmount || 0} MMC would provide ${daysEquivalent.toFixed(2)} days of access.`;
-    }
-    return "Amount of MMC each user can claim.";
+    if (isNotValidNumberInput(fundsAllocationAmount))
+      return "Funds allocation must be at least 1."
+
+    if (dailyPriceInMMC > 0)
+      return ` Each user receive this amount of MMC. For example, 
+      if your daily subscription costs ${dailyPriceInMMC} MMC/day, 
+      an allocation of ${fundsAllocationAmount || 0} MMC would provide
+      ${daysEquivalent.toFixed(1)} days of access.`;
+
+
+    return "Maximum amount of MMC a user can receive per access.";
   }, [fundsAllocationAmount, dailyPriceInMMC, daysEquivalent]);
 
-  const RainbowEffect = loadingConfigure ? NeonPaper : Box;
 
   return (
     <>
       {loadingTerms && <LinearProgress sx={{ mb: 2 }} />}
 
       <Typography variant="body2" color="text.secondary" sx={{ px: 3 }}>
-        This will help define how much each user receives and how many times they can access your subscription.
+        Set the total budget and how users can benefit from this campaign.
       </Typography>
 
       <Divider sx={{ padding: '0.3rem 0', mb: 4, borderStyle: 'dashed' }} />
 
       <Grid container spacing={2} sx={{ mb: 2, px: 2, m: 0, width: '100%' }}>
-        <Typography variant="body2" color="text.secondary" sx={{ mb: 4, textAlign: 'center', width: '100%' }}>
-          {description || 'No description provided for this campaign.'}
+        <Typography variant="body1" color="text.primary" sx={{ mb: 4, textAlign: 'center', width: '100%' }}>
+          {`"${description}"` || 'No description provided for this campaign.'}
         </Typography>
 
         {/* Total Funds Input */}
         <FormControl fullWidth sx={{ mb: 3 }}>
           <TextField
-            label="Total Funds"
+            label="Total budget"
             type="number"
             name="addFundsAmount"
             value={fundsAmount}
             onChange={(e) => setFundsAmount(e.target.value)}
             placeholder="e.g. 1000"
-            error={fundsAmount !== '' && Number(fundsAmount) < 1}
-            helperText={
-              fundsAmount !== '' && Number(fundsAmount) < 1
-                ? "Total Funds must be at least 1."
-                : "The total amount of MMC you want to allocate to this campaign."
+            error={isNotValidNumberInput(fundsAmount)}
+            helperText={isNotValidNumberInput(fundsAmount)
+              ? "Total budget must be at least 1."
+              : "Total amount of MMC allocated to this campaign."
             }
           />
         </FormControl>
@@ -133,13 +143,14 @@ const CampaignSettingsModalContent: FC<CampaignSettingsModalContentProps> = (pro
         {/* Funds Allocation Input */}
         <FormControl fullWidth sx={{ mb: 3 }}>
           <TextField
-            label="Funds Allocation per User"
+            label="Allocation per user"
             type="number"
             name="fundsAllocationAmount"
+            InputProps={{ inputProps: { min: 1 } }}
             value={fundsAllocationAmount}
             onChange={(e) => setFundsAllocationAmount(e.target.value)}
             placeholder="e.g. 7"
-            error={fundsAllocationAmount !== '' && Number(fundsAllocationAmount) < 1}
+            error={isNotValidNumberInput(fundsAllocationAmount)}
             helperText={fundsAllocationHelperText}
           />
         </FormControl>
@@ -147,17 +158,17 @@ const CampaignSettingsModalContent: FC<CampaignSettingsModalContentProps> = (pro
         {/* Quota Limit Input */}
         <FormControl fullWidth sx={{ mb: 3 }}>
           <TextField
-            label="Maximum Claims per User"
+            label="Access limit per User"
             type="number"
             name="quotaLimit"
             value={quotaLimit}
+            InputProps={{ inputProps: { min: 1 } }}
             onChange={(e) => setQuotaLimit(e.target.value)}
             placeholder="e.g. 1"
-            error={quotaLimit !== '' && Number(quotaLimit) < 1}
-            helperText={
-              quotaLimit !== '' && Number(quotaLimit) < 1
-                ? "Maximum claims must be at least 1."
-                : "Number of times a user can claim this campaign (must be at least 1)."
+            error={isNotValidNumberInput(quotaLimit)}
+            helperText={isNotValidNumberInput(quotaLimit)
+              ? "Access limit must be at least 1."
+              : "Maximum number of times a user can benefit from this campaign."
             }
           />
         </FormControl>
