@@ -89,7 +89,7 @@ const CampaignTable: FC<CampaignTableProps> = (args) => {
                     <TableNoData
                       notFound={notFound}
                       loading={loading}
-                      emptyText="No campaigns have been registered yet"
+                      emptyText="No campaigns found"
                     />
                   </>
                 )}
