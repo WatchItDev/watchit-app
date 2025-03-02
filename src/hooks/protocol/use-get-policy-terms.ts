@@ -30,7 +30,7 @@ export const useGetPolicyTerms = (
    */
   const fetchTerms = useCallback(() => {
     setFetching(true);
-    
+
     // Validate inputs
     if (!policyAddress || !holderAddress) {
       // TODO change the approach here to handle errors?
@@ -77,11 +77,11 @@ export const useGetPolicyTerms = (
     } finally {
       setFetching(false);
     }
-  }, [policyAddress, holderAddress]);
+  }, [loadingPolicies, authorizedHolderPolicies]);
 
   // Recompute whenever the authorizedHolderPolicies or errors change
   useEffect(fetchTerms, [fetchTerms]);
-  
+
   // If no addresses are provided, return an immediate error (optional approach)
   if (!policyAddress || !holderAddress) {
     return {
@@ -89,7 +89,7 @@ export const useGetPolicyTerms = (
       loading: false,
       fetching: false,
       error: { message: 'Policy address or holder address is missing.' },
-      refetch: () => {},
+      refetch: () => { },
     };
   }
 

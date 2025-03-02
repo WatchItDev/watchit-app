@@ -27,9 +27,9 @@ const CampaignSettingsModalContent: FC<CampaignSettingsModalContentProps> = (pro
   const { onClose, onConfirm, campaignData, } = props;
   const { address, description } = campaignData;
 
-  const [fundsAmount, setFundsAmount] = useState<string>('');
-  const [fundsAllocationAmount, setFundsAllocationAmount] = useState<string>('');
-  const [quotaLimit, setQuotaLimit] = useState<string>('');
+  const [quotaLimit, setQuotaLimit] = useState<number>(NaN);
+  const [fundsAmount, setFundsAmount] = useState<number>(NaN);
+  const [fundsAllocationAmount, setFundsAllocationAmount] = useState<number>(NaN);
 
   // TODO this could be get from useAuth hook?
   const sessionData = useSelector((state: any) => state.auth.session);
@@ -41,24 +41,20 @@ const CampaignSettingsModalContent: FC<CampaignSettingsModalContentProps> = (pro
 
   const RainbowEffect = loadingConfigure ? NeonPaper : Box;
   // Convert the daily price from Wei to MMC (float)
-  const dailyPriceInMMC = useMemo(() => {
+  const dailyPriceInMMC = useMemo((): number => {
     if (!terms?.amount) return 0; // TODO use a Terms type to avoid to much use of safe navigation
     return parseFloat(ethers.formatUnits(terms.amount, 18));
   }, [terms]);
 
   // Calculate how many days of access the fundsAllocationAmount provides
-  const daysEquivalent = useMemo(() => {
-    const allocationNum = parseFloat(fundsAllocationAmount) || 0;
+  const daysEquivalent = useMemo((): number => {
+    const allocationNum = fundsAllocationAmount || 0;
     return dailyPriceInMMC > 0 ? allocationNum / dailyPriceInMMC : 0;
   }, [fundsAllocationAmount, dailyPriceInMMC]);
 
   // Validate that each field has a value greater or equal to 1
   const isFormValid = useMemo(() => {
-    return (
-      Number(fundsAmount) >= 1 &&
-      Number(fundsAllocationAmount) >= 1 &&
-      Number(quotaLimit) >= 1
-    );
+    return (fundsAmount >= 1 && fundsAllocationAmount >= 1 && quotaLimit >= 1);
   }, [fundsAmount, fundsAllocationAmount, quotaLimit]);
 
   const handleOnConfirm = async () => {
@@ -69,15 +65,12 @@ const CampaignSettingsModalContent: FC<CampaignSettingsModalContentProps> = (pro
     }
 
     try {
-      const numericFundsAmount = Number(fundsAmount);
-      const numericFundsAllocationAmount = Number(fundsAllocationAmount);
-      const numericQuotaLimit = Number(quotaLimit);
-
+      // send the conf to blockchain campaign registry
       await configure({
         campaignAddress: address,
-        addFundsAmount: numericFundsAmount,
-        fundsAllocationAmount: numericFundsAllocationAmount,
-        quotaLimit: numericQuotaLimit,
+        addFundsAmount: fundsAmount,
+        fundsAllocationAmount: fundsAllocationAmount,
+        quotaLimit: quotaLimit,
       });
 
       notifySuccess(SUCCESS.CAMPAIGN_CONFIGURED_SUCCESSFULLY);
@@ -89,15 +82,15 @@ const CampaignSettingsModalContent: FC<CampaignSettingsModalContentProps> = (pro
   };
 
   // check if the expected number input is valid
-  const isNotValidNumberInput = (rawInput: string): boolean => {
-    return rawInput !== '' && Number(rawInput) < 1
+  const isNotValidNumberInput = (value: number): boolean => {
+    return value < 1
   }
 
   const fundsAllocationHelperText = useMemo(() => {
     if (isNotValidNumberInput(fundsAllocationAmount))
       return "Funds allocation must be at least 1."
 
-    if (dailyPriceInMMC > 0)
+    if (dailyPriceInMMC > 0 && fundsAllocationAmount > 0)
       return ` Each user receive this amount of MMC. For example, 
       if your daily subscription costs ${dailyPriceInMMC} MMC/day, 
       an allocation of ${fundsAllocationAmount || 0} MMC would provide
@@ -120,7 +113,7 @@ const CampaignSettingsModalContent: FC<CampaignSettingsModalContentProps> = (pro
 
       <Grid container spacing={2} sx={{ mb: 2, px: 2, m: 0, width: '100%' }}>
         <Typography variant="body1" color="text.primary" sx={{ mb: 4, textAlign: 'center', width: '100%' }}>
-          {`"${description}"` || 'No description provided for this campaign.'}
+          {description || 'No description provided for this campaign.'}
         </Typography>
 
         {/* Total Funds Input */}
@@ -130,7 +123,7 @@ const CampaignSettingsModalContent: FC<CampaignSettingsModalContentProps> = (pro
             type="number"
             name="addFundsAmount"
             value={fundsAmount}
-            onChange={(e) => setFundsAmount(e.target.value)}
+            onChange={(e) => setFundsAmount(Number(e.target.value))}
             placeholder="e.g. 1000"
             error={isNotValidNumberInput(fundsAmount)}
             helperText={isNotValidNumberInput(fundsAmount)
@@ -148,7 +141,7 @@ const CampaignSettingsModalContent: FC<CampaignSettingsModalContentProps> = (pro
             name="fundsAllocationAmount"
             InputProps={{ inputProps: { min: 1 } }}
             value={fundsAllocationAmount}
-            onChange={(e) => setFundsAllocationAmount(e.target.value)}
+            onChange={(e) => setFundsAllocationAmount(Number(e.target.value))}
             placeholder="e.g. 7"
             error={isNotValidNumberInput(fundsAllocationAmount)}
             helperText={fundsAllocationHelperText}
@@ -163,7 +156,7 @@ const CampaignSettingsModalContent: FC<CampaignSettingsModalContentProps> = (pro
             name="quotaLimit"
             value={quotaLimit}
             InputProps={{ inputProps: { min: 1 } }}
-            onChange={(e) => setQuotaLimit(e.target.value)}
+            onChange={(e) => setQuotaLimit(Number(e.target.value))}
             placeholder="e.g. 1"
             error={isNotValidNumberInput(quotaLimit)}
             helperText={isNotValidNumberInput(quotaLimit)
