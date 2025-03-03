@@ -1,4 +1,4 @@
-import { forwardRef } from 'react';
+import {forwardRef, memo} from 'react'
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 // @mui
 import { alpha, useTheme } from '@mui/material/styles';
@@ -117,4 +117,4 @@ const Image = forwardRef<HTMLSpanElement, ImageProps>(
   }
 );
 
-export default Image;
+export default memo(Image,  (prevProps, nextProps) => prevProps.src === nextProps.src  );

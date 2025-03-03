@@ -3,7 +3,7 @@ import { store } from '@redux/store';
 import '@src/locales/i18n';
 
 // scrollbar
-// @ts-ignore
+// @ts-expect-error import styles
 import 'simplebar-react/dist/simplebar.min.css';
 
 // lightbox
@@ -12,17 +12,17 @@ import 'yet-another-react-lightbox/plugins/captions.css';
 import 'yet-another-react-lightbox/plugins/thumbnails.css';
 
 // editor
-// @ts-ignore
+// @ts-expect-error import styles
 import 'react-quill/dist/quill.snow.css';
 
 // carousel
-// @ts-ignore
+// @ts-expect-error import styles
 import 'slick-carousel/slick/slick.css';
-// @ts-ignore
+// @ts-expect-error import styles
 import 'slick-carousel/slick/slick-theme.css';
 
 // image
-// @ts-ignore
+// @ts-expect-error import styles
 import 'react-lazy-load-image-component/src/effects/blur.css';
 
 // ----------------------------------------------------------------------
@@ -74,7 +74,7 @@ export default function App() {
 
   console.info(`%c${charAt}`, 'color: #4A34B8');
 
-  useScrollToTop();
+ // useScrollToTop();
 
   return (
     <MetaMaskProvider
