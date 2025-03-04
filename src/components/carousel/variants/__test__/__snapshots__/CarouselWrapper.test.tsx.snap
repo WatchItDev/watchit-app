@@ -7,7 +7,7 @@ exports[`[COMPONENTS]: CarouselWrapper > to match snapshot 1`] = `
       class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 MuiCard-root css-bhp9pd-MuiPaper-root-MuiCard-root"
     >
       <div
-        class="MuiCardHeader-root css-12jpqf3-MuiCardHeader-root"
+        class="MuiCardHeader-root css-1pkklwm-MuiCardHeader-root"
       >
         <div
           class="MuiCardHeader-content css-1qbkelo-MuiCardHeader-content"
@@ -76,7 +76,7 @@ exports[`[COMPONENTS]: CarouselWrapper > to match snapshot 1`] = `
         </div>
       </div>
       <div
-        class="MuiCardContent-root css-10jug1b-MuiCardContent-root"
+        class="MuiCardContent-root css-fd8ij7-MuiCardContent-root"
       >
         <div
           class="MuiBox-root css-kdwx3d"
