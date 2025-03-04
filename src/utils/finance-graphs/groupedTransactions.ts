@@ -151,7 +151,7 @@ export function groupTransactionsForWidget(transactions: any[]) {
   });
 
   const daySeriesData = Object.keys(grouped)
-    .sort()
+    .sort((a, b) => a.localeCompare(b))
     .map((day) => ({
       x: day,
       y: grouped[day],
