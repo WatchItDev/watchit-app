@@ -1,5 +1,5 @@
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
-import { COLORS } from '@src/sections/finance/components/CONSTANTS.tsx';
+import { COLORS } from '@src/sections/finance/CONSTANTS.tsx';
 
 export const CAMPAIGN_TABLE_HEAD = [
   { id: 'name', label: 'Name', minWidth: 300 },

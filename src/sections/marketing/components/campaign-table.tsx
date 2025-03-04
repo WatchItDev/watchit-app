@@ -8,7 +8,7 @@ import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 
 // LOCAL IMPORTS
-import { CAMPAIGN_TABLE_HEAD } from '@src/sections/marketing/components/CONSTANTS.tsx';
+import { CAMPAIGN_TABLE_HEAD } from '@src/sections/marketing/CONSTANTS.tsx';
 import {
   emptyRows,
   TableEmptyRows,
@@ -18,10 +18,10 @@ import {
   useTable,
 } from '@src/components/table';
 import Scrollbar from '@src/components/scrollbar';
-import CampaignTableRow from '@src/sections/marketing/components/CampaignTableRow';
+import CampaignTableRow from '@src/sections/marketing/components/campaign-table-row.tsx';
 import { COLORS } from '@src/layouts/config-layout';
 import { LoadingScreen } from "@src/components/loading-screen";
-import { CampaignTableProps } from '@src/sections/marketing/components/types.ts';
+import { CampaignTableProps } from '@src/sections/marketing/types.ts';
 
 // ----------------------------------------------------------------------
 

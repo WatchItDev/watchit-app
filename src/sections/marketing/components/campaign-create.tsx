@@ -5,9 +5,9 @@ import Button from '@mui/material/Button';
 import Iconify from '@src/components/iconify';
 import StrategyModal from '@src/components/modal';
 import { useBoolean } from '@src/hooks/use-boolean';
-import CampaignModalContent from "@src/sections/marketing/components/CampaignModalContent.tsx";
+import CampaignModalContent from "@src/sections/marketing/components/campaign-modal-content.tsx";
 import { FC } from 'react';
-import { CampaignCreateProps } from '@src/sections/marketing/components/types.ts';
+import { CampaignCreateProps } from '@src/sections/marketing/types.ts';
 
 // ----------------------------------------------------------------------
 

@@ -2,7 +2,7 @@ import Box from "@mui/material/Box";
 import { useTheme } from "@mui/material/styles";
 import Tooltip from "@mui/material/Tooltip";
 import { keyframes } from "@emotion/react";
-import { CampaignConfiguredIndicatorStateProps } from '@src/sections/marketing/components/types.ts';
+import { CampaignConfiguredIndicatorStateProps } from '@src/sections/marketing/types.ts';
 
 // ----------------------------------------------------------------------
 

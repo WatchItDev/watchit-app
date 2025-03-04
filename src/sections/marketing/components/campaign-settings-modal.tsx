@@ -1,7 +1,7 @@
 import { FC } from "react";
 import SettingsModal from '@src/components/modal';
-import CampaignSettingsModalContent from "./CampaignSettingsModalContent";
-import { CampaignSettingsModalProps } from '@src/sections/marketing/components/types.ts';
+import CampaignSettingsModalContent from "./campaign-settings-modal-content.tsx";
+import { CampaignSettingsModalProps } from '@src/sections/marketing/types.ts';
 
 // ----------------------------------------------------------------------
 

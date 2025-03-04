@@ -1,11 +1,11 @@
+import { useEffect } from 'react';
 import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
-import CampaignCreate from '@src/sections/marketing/components/CampaignCreate.tsx';
-import CampaignTable from '@src/sections/marketing/components/CampaignTable';
-import { useEffect } from 'react';
+import CampaignCreate from '@src/sections/marketing/components/campaign-create.tsx';
+import CampaignTable from '@src/sections/marketing/components/campaign-table.tsx';
 import useGetCampaings from '@src/hooks/protocol/use-get-campaings.ts';
 
-const StrategyOverview = () => {
+const MarketingView = () => {
   const { campaigns, loading, fetchLogs } = useGetCampaings();
 
   useEffect(() => {
@@ -44,4 +44,4 @@ const StrategyOverview = () => {
   );
 };
 
-export default StrategyOverview;
+export default MarketingView;

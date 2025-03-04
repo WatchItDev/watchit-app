@@ -19,7 +19,7 @@ import { capitalizeFirstLetter } from '@src/utils/text-transform.ts';
 import Iconify from '@src/components/iconify';
 import CustomPopover, { usePopover } from '@src/components/custom-popover';
 import { useBoolean } from '@src/hooks/use-boolean';
-import CampaignSettingsModal from "@src/sections/marketing/components/CampaignSettingsModal.tsx";
+import CampaignSettingsModal from "@src/sections/marketing/components/campaign-settings-modal.tsx";
 import { useGetCampaignFundsBalance } from '@src/hooks/protocol/use-get-campaign-funds-balance.ts';
 import { useGetCampaignFundsAllocation } from '@src/hooks/protocol/use-get-campaign-funds-allocation.ts';
 import { useCampaignPaused } from '@src/hooks/protocol/use-campaign-paused.ts';
@@ -29,12 +29,12 @@ import { useCampaignPause } from '@src/hooks/protocol/use-campaign-pause.ts';
 import { useCampaignUnPause } from '@src/hooks/protocol/use-campaign-unpause.ts';
 import {
   CampaignConfiguredIndicatorState
-} from "@src/sections/marketing/components/CampaignConfiguredIndicatorState.tsx";
+} from "@src/sections/marketing/components/campaign-configured-indicator-state.tsx";
 import TextMaxLine from "@src/components/text-max-line";
-import CampaignWithdrawFundsModal from '@src/sections/marketing/components/CampaignWithdrawFundsModal';
+import CampaignWithdrawFundsModal from '@src/sections/marketing/components/campaign-withdraw-funds-modal.tsx';
 import { useGetCampaignIsReady } from '@src/hooks/protocol/use-get-campaign-is-ready.ts';
-import { LBL_COLORS, LBL_STATUS_COLORS, POLICY_TEXTS } from '@src/sections/marketing/components/CONSTANTS.tsx';
-import { CampaignTableRowProps } from '@src/sections/marketing/components/types.ts';
+import { LBL_COLORS, LBL_STATUS_COLORS, POLICY_TEXTS } from '@src/sections/marketing/CONSTANTS.tsx';
+import { CampaignTableRowProps } from '@src/sections/marketing/types.ts';
 
 // ----------------------------------------------------------------------
 

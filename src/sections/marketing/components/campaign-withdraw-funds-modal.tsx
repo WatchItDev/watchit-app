@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import SettingsModal from '@src/components/modal';
-import CampaignWithdrawFundsModalContent from './CampaignWithdrawFundsModalContent';
-import { CampaignWithdrawFundsModalProps } from '@src/sections/marketing/components/types.ts';
+import CampaignWithdrawFundsModalContent from './campaign-withdraw-funds-modal-content.tsx';
+import { CampaignWithdrawFundsModalProps } from '@src/sections/marketing/types.ts';
 
 const CampaignWithdrawFundsModal: FC<CampaignWithdrawFundsModalProps> = (props) => {
   const { open, onClose, onSuccess, campaignData, } = props;

@@ -3,7 +3,7 @@ import Grid from '@mui/material/Grid';
 import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
 import LoadingButton from "@mui/lab/LoadingButton";
-import NeonPaper from "@src/sections/publication/NeonPaperContainer.tsx";
+import NeonPaper from "@src/sections/publication/components/neon-paper-container.tsx";
 
 import { ethers } from 'ethers';
 import { Address } from 'viem';
@@ -13,7 +13,7 @@ import { Button, TextField, FormControl, DialogActions, LinearProgress } from '@
 
 import { useGetPolicyTerms } from '@src/hooks/protocol/use-get-policy-terms.ts';
 import { useConfigureCampaign } from '@src/hooks/protocol/use-configure-campaign.ts';
-import { CampaignSettingsModalContentProps } from '@src/sections/marketing/components/types.ts';
+import { CampaignSettingsModalContentProps } from '@src/sections/marketing/types.ts';
 import { notifyError, notifySuccess } from '@notifications/internal-notifications.ts';
 
 import { GLOBAL_CONSTANTS } from '@src/config-global';
@@ -93,9 +93,9 @@ const CampaignSettingsModalContent: FC<CampaignSettingsModalContentProps> = (pro
 
     if (dailyPriceInMMC > 0)
       return `
-            Each user can claim this amount of MMC. For example, 
-            if your daily subscription costs ${dailyPriceInMMC} MMC/day, 
-            an allocation of ${fundsAllocationAmount || 0} 
+            Each user can claim this amount of MMC. For example,
+            if your daily subscription costs ${dailyPriceInMMC} MMC/day,
+            an allocation of ${fundsAllocationAmount || 0}
             MMC would provide ${daysEquivalent.toFixed(2)} days of access.
             `;
 
