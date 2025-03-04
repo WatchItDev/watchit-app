@@ -1,7 +1,7 @@
 // routes
 import { useParams, useRouter } from '@src/routes/hooks';
 // sections
-import { PublicationDetailsView } from '@src/sections/publication/view';
+import { PublicationDetailsView } from '@src/sections/publication';
 import Header from '@src/layouts/dashboard/header.tsx';
 import { paths } from '@src/routes/paths.ts';
 

@@ -5,15 +5,11 @@ import PublicationCommentItem from './publication-comment-item.tsx';
 import LinearProgress from '@mui/material/LinearProgress';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import { PostCommentListProps } from '@src/sections/publication/types.ts';
 
 // ----------------------------------------------------------------------
 
-interface Props {
-  publicationId: string;
-  showReplies?: boolean;
-}
-
-export default function PostCommentList({ publicationId: id, showReplies }: Props) {
+export default function PostCommentList({ publicationId: id, showReplies }: PostCommentListProps) {
   const pendingComments = useSelector((state: any) => state.comments.pendingComments);
   const { data: comments, error, loading, execute } = useLazyPublications();
   const { hiddenComments, refetchTriggerByPublication } = useSelector(

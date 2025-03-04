@@ -1,13 +1,13 @@
-// @mui
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Step from '@mui/material/Step';
 import Stack from '@mui/material/Stack';
-import Stepper, { StepperProps } from '@mui/material/Stepper';
+import Stepper from '@mui/material/Stepper';
 import StepLabel, { stepLabelClasses } from '@mui/material/StepLabel';
 import MuiStepConnector, { stepConnectorClasses } from '@mui/material/StepConnector';
-// components
 import { StepIconProps } from '@mui/material/StepIcon';
+import { PUBLICATION_NEW_WIZARD_STEPS } from '@src/sections/publication/CONSTANTS.ts';
+import { PublicationNewWizardStepsProps } from '@src/sections/publication/types.ts';
 
 // ----------------------------------------------------------------------
 
@@ -28,19 +28,12 @@ const StepConnector = styled(MuiStepConnector)(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-interface Props extends StepperProps {
-  steps: string[];
-  activeStep: number;
-  goToStep: (step: number) => void;
-}
-
 export default function PublicationNewWizardSteps({
-  steps,
   activeStep,
   goToStep,
   sx,
   ...other
-}: Props) {
+}: PublicationNewWizardStepsProps) {
   const handleStepClick = (step: number) => {
     if (step <= activeStep) goToStep(step);
   };
@@ -56,7 +49,7 @@ export default function PublicationNewWizardSteps({
       }}
       {...other}
     >
-      {steps.map((label, index) => (
+      {PUBLICATION_NEW_WIZARD_STEPS.map((label, index) => (
         <Step
           key={label}
           onClick={() => {

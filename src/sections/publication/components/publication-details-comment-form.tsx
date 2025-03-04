@@ -18,7 +18,7 @@ import { alpha } from '@mui/material/styles';
 import Iconify from '@src/components/iconify';
 // @ts-ignore
 import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
-import { uploadMetadataToIPFS } from '@src/utils/ipfs';
+import { uploadMetadataToIPFS } from '@src/utils/ipfs.ts';
 import uuidv4 from '@src/utils/uuidv4.ts';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNotifications } from '@src/hooks/use-notifications.ts';
@@ -26,17 +26,7 @@ import { useNotificationPayload } from '@src/hooks/use-notification-payload.ts';
 import { AnyPublication } from '@lens-protocol/api-bindings';
 import AvatarProfile from "@src/components/avatar/avatar.tsx";
 import {dicebear} from "@src/utils/dicebear.ts";
-
-// Define the props types
-interface MovieCommentFormProps {
-  root?: any; // ID of the root publication (post or comment)
-  commentOn: string; // ID of the publication (post or comment) to comment on
-  owner: {
-    id: string;
-    displayName: string;
-    avatar?: string;
-  };
-}
+import { MovieCommentFormProps } from '@src/sections/publication/types.ts';
 
 /**
  * MovieCommentForm Component

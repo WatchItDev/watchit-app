@@ -3,8 +3,8 @@ import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
-import PublicationCommentForm from './publication-details-comment-form';
-import { paths } from '../../routes/paths';
+import PublicationCommentForm from './publication-details-comment-form.tsx';
+import { paths } from '../../../routes/paths.ts';
 import { useRouter } from '@src/routes/hooks';
 import { CircularProgress } from '@mui/material';
 import {
@@ -20,11 +20,9 @@ import {
   PublicationReactionType,
   useReactionToggle,
 } from '@lens-protocol/react-web';
-import RepliesList from '@src/sections/publication/publication-replies-list.tsx';
+import RepliesList from '@src/sections/publication/components/publication-replies-list.tsx';
 import { timeAgo } from '@src/utils/comment.ts';
 import { openLoginModal } from '@redux/auth';
-// @ts-ignore
-import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
 import { useDispatch } from 'react-redux';
 
 import { useHidePublication } from '@lens-protocol/react';
@@ -32,11 +30,11 @@ import { hiddeComment } from '@redux/comments';
 import { useNotificationPayload } from '@src/hooks/use-notification-payload.ts';
 import { useNotifications } from '@src/hooks/use-notifications.ts';
 import { useSelector } from 'react-redux';
-// @ts-ignore
-import { RootState } from '@redux/store';
+import { RootState } from '@redux/store.ts';
 import { incrementCounterLikes, decrementCounterLikes, setCounterLikes } from '@redux/comments';
-import NeonPaperContainer from '@src/sections/publication/NeonPaperContainer.tsx';
+import NeonPaperContainer from '@src/sections/publication/components/neon-paper-container.tsx';
 import AvatarProfile from "@src/components/avatar/avatar.tsx";
+import { PublicationCommentItemProps } from '@src/sections/publication/types.ts';
 
 // Components Lazy
 const LazyPopover = lazy(() => import('@mui/material/Popover'));
@@ -48,13 +46,7 @@ const LazyDialogActions = lazy(() => import('@mui/material/DialogActions'));
 
 // ----------------------------------------------------------------------
 
-interface Props {
-  comment: any;
-  hasReply?: boolean;
-  canReply?: boolean;
-}
-
-export default function PublicationCommentItem({ comment, hasReply, canReply }: Props) {
+export default function PublicationCommentItem({ comment, hasReply, canReply }: PublicationCommentItemProps) {
   const isPendingComment = !!comment?.uri;
 
   const ContentContainer = isPendingComment ? NeonPaperContainer : Paper;

@@ -4,13 +4,9 @@ import { publicationId, useLazyPublications } from '@lens-protocol/react-web';
 import PublicationCommentItem from './publication-comment-item.tsx';
 import LinearProgress from '@mui/material/LinearProgress';
 import { useSelector } from 'react-redux';
+import { RepliesListProps } from '@src/sections/publication/types.ts';
 
-interface Props {
-  parentCommentId: string;
-  canReply?: boolean;
-}
-
-const RepliesList = ({ parentCommentId }: Props) => {
+const RepliesList = ({ parentCommentId }: RepliesListProps) => {
   const { data: replies, error, loading, execute } = useLazyPublications();
   const { hiddenComments, refetchTriggerByPublication, pendingComments } = useSelector(
     (state: any) => state.comments

@@ -14,7 +14,7 @@ import Divider from '@mui/material/Divider';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import MenuItem from '@mui/material/MenuItem';
-import MovieWizardContentLayout from './publication-new-wizard-layout';
+import MovieWizardContentLayout from './publication-new-wizard-layout.tsx';
 
 const DistributionSchema = Yup.object().shape({
   creators: Yup.array()

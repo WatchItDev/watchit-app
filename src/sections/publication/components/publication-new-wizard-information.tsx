@@ -9,7 +9,7 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import FormProvider, { RHFTextField, RHFSelect, RHFMultiSelect } from '@src/components/hook-form';
 import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
-import MovieWizardContentLayout from './publication-new-wizard-layout';
+import MovieWizardContentLayout from './publication-new-wizard-layout.tsx';
 
 const MovieInformationSchema = Yup.object().shape({
   title: Yup.string().required('Title is required'),

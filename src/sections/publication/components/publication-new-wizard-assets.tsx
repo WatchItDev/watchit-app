@@ -11,9 +11,9 @@ import { useCallback } from 'react';
 import MenuItem from '@mui/material/MenuItem';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
-import PublicationWizardContentLayout from './publication-new-wizard-layout';
-import Image from '../../components/image';
-import SingleFilePreviewCustom from '../../components/upload/preview-single-file-custom';
+import PublicationWizardContentLayout from './publication-new-wizard-layout.tsx';
+import Image from '../../../components/image';
+import SingleFilePreviewCustom from '../../../components/upload/preview-single-file-custom.tsx';
 
 type MediaAssetFields =
   | 'verticalPoster'

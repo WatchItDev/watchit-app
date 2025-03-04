@@ -6,17 +6,16 @@ import { useCreatePost } from '@lens-protocol/react-web';
 // import { MetadataAttributeType } from '@lens-protocol/metadata';
 import { createHelia } from 'helia';
 import { unixfs } from '@helia/unixfs';
-import MovieInformationForm from './publication-new-wizard-information';
-import MediaAssetsForm from './publication-new-wizard-assets';
-import DistributionForm from './publication-new-wizard-distribution';
+import MovieInformationForm from './publication-new-wizard-information.tsx';
+import MediaAssetsForm from './publication-new-wizard-assets.tsx';
+import DistributionForm from './publication-new-wizard-distribution.tsx';
 // import ReviewFinalizeForm from './movie-new-wizard-summary';
 import PublicationNewWizardSteps from './publication-new-wizard-steps.tsx';
 import { useSettingsContext } from '@src/components/settings';
 // @ts-ignore
 import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
 import { useSelector } from 'react-redux';
-
-const steps = ['Movie Information', 'Media Assets & Technical Details', 'Distribution & Rights'];
+import { PUBLICATION_NEW_WIZARD_STEPS } from '@src/sections/publication/CONSTANTS.ts';
 
 export default function PublicationNewWizard() {
   const [activeStep, setActiveStep] = useState(0);
@@ -39,7 +38,7 @@ export default function PublicationNewWizard() {
 
   const handleFormSubmit = (data: any) => {
     setFormData((prevData: any) => ({ ...prevData, ...data }));
-    if (activeStep === steps.length - 1) {
+    if (activeStep === PUBLICATION_NEW_WIZARD_STEPS.length - 1) {
       handleFinalSubmit();
     } else {
       handleNext();
@@ -202,7 +201,7 @@ export default function PublicationNewWizard() {
     <Container maxWidth={settings.themeStretch ? false : 'lg'} sx={{ mb: 5, mt: 5 }}>
       <Grid container justifyContent="flex-start">
         <Grid xs={12} md={12}>
-          <PublicationNewWizardSteps activeStep={activeStep} steps={steps} goToStep={goToStep} />
+          <PublicationNewWizardSteps activeStep={activeStep} goToStep={goToStep} />
         </Grid>
       </Grid>
 
