@@ -9,7 +9,7 @@ import Stack from '@mui/material/Stack';
 import Image from '@src/components/image';
 import { useRouter } from '@src/routes/hooks';
 import { paths } from '@src/routes/paths.ts';
-import { TrendingTopicsType } from '@src/sections/explore/view.tsx';
+import { TrendingTopicsType } from '@src/sections/explore/types.ts';
 import Box from '@mui/material/Box';
 
 // ----------------------------------------------------------------------

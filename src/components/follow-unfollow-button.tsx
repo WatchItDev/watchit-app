@@ -18,7 +18,7 @@ import { removeFollowing, addFollowing } from '@redux/followers';
 // LOCAL IMPORTS
 import { useNotifications } from '@src/hooks/use-notifications.ts';
 import { useNotificationPayload } from '@src/hooks/use-notification-payload.ts';
-import NeonPaper from '@src/sections/publication/NeonPaperContainer.tsx';
+import NeonPaper from '@src/sections/publication/components/neon-paper-container.tsx';
 import Box from '@mui/material/Box';
 
 // Notifications

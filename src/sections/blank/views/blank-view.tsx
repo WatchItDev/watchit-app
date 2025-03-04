@@ -1,14 +1,18 @@
-// @mui
+// REACT IMPORTS
+import { FC, PropsWithChildren } from 'react';
+
+// MUI IMPORTS
 import { alpha } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
-// components
+
+// LOCAL IMPORTS
 import { useSettingsContext } from '@src/components/settings';
 
 // ----------------------------------------------------------------------
 
-export default function BlankView({ children }: any) {
+const BlankView: FC<PropsWithChildren> = ({ children }) => {
   const settings = useSettingsContext();
 
   return (
@@ -31,3 +35,5 @@ export default function BlankView({ children }: any) {
     </Container>
   );
 }
+
+export default BlankView;

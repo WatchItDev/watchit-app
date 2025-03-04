@@ -34,7 +34,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useGetBalance } from '@src/hooks/protocol/use-get-balance.ts';
 import { useNotifications } from '@src/hooks/use-notifications.ts';
 import { useNotificationPayload } from '@src/hooks/use-notification-payload.ts';
-import NeonPaper from '@src/sections/publication/NeonPaperContainer.tsx';
+import NeonPaper from '@src/sections/publication/components/neon-paper-container.tsx';
 import Box from '@mui/material/Box';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 import { notifyError, notifySuccess } from '@notifications/internal-notifications.ts';

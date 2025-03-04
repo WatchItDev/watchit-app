@@ -14,7 +14,7 @@ import { styled } from '@mui/material/styles';
 import { Icon } from '@iconify/react';
 
 // LOCAL IMPORTS
-import NeonPaper from '@src/sections/publication/NeonPaperContainer.tsx';
+import NeonPaper from '@src/sections/publication/components/neon-paper-container.tsx';
 import { useSponsoredAccessAgreement } from '@src/hooks/protocol/use-sponsored-access-agreement.ts';
 import { useAccountSession } from '@src/hooks/use-account-session.ts';
 import { ExtendedSponsoredAccessProps } from '@src/components/sponsored-access-button/types.ts';

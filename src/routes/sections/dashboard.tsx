@@ -10,29 +10,27 @@ import CompactLayout from '@src/layouts/compact';
 // ----------------------------------------------------------------------
 
 // OVERVIEW
-const ExplorePage = lazy(() => import('@src/pages/dashboard/explore'));
-const CommunityPage = lazy(() => import('@src/pages/dashboard/community'));
-const MarketplacePage = lazy(() => import('@src/pages/dashboard/marketplace'));
-const EventsPage = lazy(() => import('@src/pages/dashboard/events'));
-const AchievementsPage = lazy(() => import('@src/pages/dashboard/achievements'));
+const ExplorePage = lazy(() => import('@src/pages/explore.tsx'));
+const CommunityPage = lazy(() => import('@src/pages/community.tsx'));
+const MarketplacePage = lazy(() => import('@src/pages/marketplace.tsx'));
+const EventsPage = lazy(() => import('@src/pages/events.tsx'));
+const AchievementsPage = lazy(() => import('@src/pages/achievements.tsx'));
 // GOVERNANCE
-const GovernancePage = lazy(() => import('@src/pages/dashboard/governance/list'));
-const GovernanceNewPage = lazy(() => import('@src/pages/dashboard/governance/new'));
-const GovernanceDetailPage = lazy(() => import('@src/pages/dashboard/governance/details'));
+const GovernancePage = lazy(() => import('@src/pages/governance/list'));
+const GovernanceNewPage = lazy(() => import('@src/pages/governance/new'));
+const GovernanceDetailPage = lazy(() => import('@src/pages/governance/details'));
 // MANAGEMENT
-const AnalyticsPage = lazy(() => import('@src/pages/dashboard/analytics'));
-const StudioPage = lazy(() => import('@src/pages/dashboard/studio'));
-const OwnershipPage = lazy(() => import('@src/pages/dashboard/ownership'));
-const FinancePage = lazy(() => import('@src/pages/dashboard/finance'));
+const AnalyticsPage = lazy(() => import('@src/pages/analytics.tsx'));
+const StudioPage = lazy(() => import('@src/pages/studio.tsx'));
+const OwnershipPage = lazy(() => import('@src/pages/ownership.tsx'));
+const FinancePage = lazy(() => import('@src/pages/finance.tsx'));
 // MARKETING
-const MarketingPage = lazy(() => import('@src/pages/dashboard/marketing'));
-const StrategyPage = lazy(() => import('@src/pages/dashboard/marketing/index.tsx'));
+const MarketingPage = lazy(() => import('@src/pages/marketing.tsx'));
+const StrategyPage = lazy(() => import('@src/pages/marketing/index.tsx'));
 // USER
-const UserProfilePage = lazy(() => import('@src/pages/dashboard/user/profile'));
+const UserProfilePage = lazy(() => import('@src/pages/user/profile'));
 // MOVIE
-const PublicationDetailsPage = lazy(() => import('@src/pages/dashboard/publication/details'));
-const PublicationCreatePage = lazy(() => import('@src/pages/dashboard/publication/new'));
-const PublicationPlayPage = lazy(() => import('@src/pages/dashboard/publication/play'));
+const PublicationDetailsPage = lazy(() => import('@src/pages/publication/details'));
 
 const Page500 = lazy(() => import('@src/pages/500'));
 const Page403 = lazy(() => import('@src/pages/403'));
@@ -81,18 +79,9 @@ export const dashboardRoutes = [
         path: 'publication',
         children: [
           { path: ':id', element: <PublicationDetailsPage /> },
-          { path: 'new', element: <PublicationCreatePage /> },
         ],
       },
     ],
-  },
-  {
-    path: 'publication/play/:id',
-    element: (
-      <Suspense fallback={<SplashScreen />}>
-        <PublicationPlayPage />
-      </Suspense>
-    ),
   },
   {
     element: (

@@ -1,6 +1,6 @@
 // sections
-import BlankView from '../../sections/blank/view';
-import ComingSoonView from '../../sections/coming-soon/view';
+import BlankView from '../sections/blank/views/blank-view.tsx';
+import { ComingSoonView } from '../sections/coming-soon';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 import { OgMetaTags } from '@src/components/og-meta-tags.tsx';
 import Header from '@src/layouts/dashboard/header.tsx';
@@ -11,9 +11,9 @@ import { useSelector } from 'react-redux';
 // ----------------------------------------------------------------------
 
 export const canViewSection = (sessionData: any): boolean => {
-  // Allowed profileId to view (temporary) this section
+  // Allowed profileId to views (temporary) this section
   const allowedProfilesId = ['0x0563', '0x050d','0x055c','0x0514', '0x0510']; // Mihail, Carlos, Jacob, Geolffrey and Watchit Open
-  // Verify if the current profile is allowed to view this section
+  // Verify if the current profile is allowed to views this section
   return allowedProfilesId.includes(sessionData?.profile?.id ?? '');
 }
 

@@ -17,7 +17,7 @@ import { SUCCESS } from '@notifications/success.ts';
 import { ERRORS } from '@notifications/errors.ts';
 import { INFO } from '@notifications/info.ts';
 import { useSubmitAssetToLens } from '@src/hooks/use-submit-assets-to-lens.ts';
-import NeonPaper from '@src/sections/publication/NeonPaperContainer.tsx';
+import NeonPaper from '@src/sections/publication/components/neon-paper-container.tsx';
 import { useGetAssetOwner } from '@src/hooks/protocol/use-get-asset-owner.ts';
 import { replacePrefix } from '@src/utils/wallet.ts';
 

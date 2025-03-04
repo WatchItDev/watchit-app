@@ -8,22 +8,19 @@ import { useCountdownDate } from '@src/hooks/use-countdown';
 import { ComingSoonIllustration } from '@src/assets/illustrations';
 import HeaderContent from '@src/layouts/dashboard/header-content.tsx';
 import Header from '@src/layouts/dashboard/header.tsx';
+import { TimeBlock } from '@src/sections/coming-soon/components/explore-time-block.tsx';
+import { ComingSoonViewProps } from '@src/sections/coming-soon/types.ts';
+import { FC } from 'react';
 
 // ----------------------------------------------------------------------
 
-interface props {
-  deadline?: string;
-  showDeadline?: boolean;
-  title?: string;
-  content?: string;
-}
-
-export const ComingSoonView = ({
-  deadline = '01/12/2025 21:30',
-  showDeadline,
-  title = 'New Features Coming Soon!',
-  content = 'We’re working hard to bring this section to life. Check back soon!',
-}: props) => {
+export const ComingSoonView: FC<ComingSoonViewProps> = (props) => {
+  const {
+    deadline = '01/12/2025 21:30',
+    showDeadline,
+    title = 'New Features Coming Soon!',
+    content = 'We’re working hard to bring this section to life. Check back soon!',
+  } = props;
   const { days, hours, minutes, seconds } = useCountdownDate(new Date(deadline));
 
   return (
@@ -69,21 +66,5 @@ export const ComingSoonView = ({
     </>
   );
 };
-
-// ----------------------------------------------------------------------
-
-interface TimeBlockProps {
-  label: string;
-  value: string;
-}
-
-function TimeBlock({ label, value }: TimeBlockProps) {
-  return (
-    <div>
-      <Box> {value} </Box>
-      <Box sx={{ color: 'text.secondary', typography: 'body1' }}>{label}</Box>
-    </div>
-  );
-}
 
 export default ComingSoonView;

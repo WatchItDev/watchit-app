@@ -1,31 +1,62 @@
-import { FC, ReactNode } from 'react';
-
+import { FC } from 'react';
 import { Paper, styled } from '@mui/material';
 import { PaperProps } from '@mui/material/Paper';
-import { SxProps, Theme } from '@mui/material/styles';
 import { COLORS } from '@src/layouts/config-layout.ts';
+import { NeonPaperProps } from '@src/sections/publication/types.ts';;
 
-interface NeonPaperProps {
-  children: ReactNode;
-  colors?: string[];
-  animationSpeed?: string;
-  padding?: string;
-  borderRadius?: string;
-  width?: string;
-  sx?: SxProps<Theme>;
-}
+const defaultColors = [
+  'rgba(30,135,255,0.5)',
+  'rgba(92,19,196,0.5)',
+  'rgba(255,0,51,0.5)',
+  'rgba(255,218,0,0.5)',
+  'rgba(100,188,38,0.5)',
+  'rgba(30,135,255,0.5)',
+];
+const defaultAnimationSpeed = '2s';
+
+const NeonPaper: FC<NeonPaperProps> = ({
+  children,
+  colors = defaultColors,
+  animationSpeed = defaultAnimationSpeed,
+  padding = '0.7rem',
+  borderRadius = '10px',
+  width = '100%',
+  sx,
+}) => {
+  return (
+    <NeonPaperContainer
+      elevation={3}
+      colors={colors}
+      animationSpeed={animationSpeed}
+      padding={padding}
+      borderRadius={borderRadius}
+      width={width}
+      sx={sx}
+    >
+      <div className="neon">
+        <div className="gradient"></div>
+      </div>
+      <div className="border">
+        <div className="gradient"></div>
+      </div>
+      <div className="content">{children}</div>
+    </NeonPaperContainer>
+  );
+};
+
+export default NeonPaper;
 
 const NeonPaperContainer = styled(Paper, {
   shouldForwardProp: (prop) =>
     prop !== 'colors' && prop !== 'animationSpeed' && prop !== 'borderRadius' && prop !== 'padding',
 })<
   PaperProps & {
-    colors?: string[];
-    animationSpeed?: string;
-    padding?: string;
-    borderRadius?: string;
-    width?: string;
-  }
+  colors?: string[];
+  animationSpeed?: string;
+  padding?: string;
+  borderRadius?: string;
+  width?: string;
+}
 >(({ colors, animationSpeed, padding, borderRadius, width }) => ({
   '--gradient-pos-x': '50%',
   '--gradient-pos-y': '50%',
@@ -76,46 +107,4 @@ ${colors?.join(', ') || '#1e87ff, #5c13c4, #ff0033, #ffda00, #64bc26, #1e87ff'}
     '0%': { transform: 'rotate(0deg)' },
     '100%': { transform: 'rotate(360deg)' },
   },
-}));
-
-const defaultColors = [
-  'rgba(30,135,255,0.5)',
-  'rgba(92,19,196,0.5)',
-  'rgba(255,0,51,0.5)',
-  'rgba(255,218,0,0.5)',
-  'rgba(100,188,38,0.5)',
-  'rgba(30,135,255,0.5)',
-];
-const defaultAnimationSpeed = '2s';
-
-const NeonPaper: FC<NeonPaperProps> = ({
-  children,
-  colors = defaultColors,
-  animationSpeed = defaultAnimationSpeed,
-  padding = '0.7rem',
-  borderRadius = '10px',
-  width = '100%',
-  sx,
-}) => {
-  return (
-    <NeonPaperContainer
-      elevation={3}
-      colors={colors}
-      animationSpeed={animationSpeed}
-      padding={padding}
-      borderRadius={borderRadius}
-      width={width}
-      sx={sx}
-    >
-      <div className="neon">
-        <div className="gradient"></div>
-      </div>
-      <div className="border">
-        <div className="gradient"></div>
-      </div>
-      <div className="content">{children}</div>
-    </NeonPaperContainer>
-  );
-};
-
-export default NeonPaper;
+}))
