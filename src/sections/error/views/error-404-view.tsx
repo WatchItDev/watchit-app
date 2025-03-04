@@ -1,17 +1,18 @@
-import { m } from 'framer-motion';
-// @mui
+// MUI IMPORTS
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-// routes
+
+// MOTION IMPORTS
+import { m } from 'framer-motion';
+
+// LOCAL IMPORTS
 import { RouterLink } from '@src/routes/components';
-// components
 import { MotionContainer, varBounce } from '@src/components/animate';
-// assets
 import { PageNotFoundIllustration } from '@src/assets/illustrations';
 
 // ----------------------------------------------------------------------
 
-export default function NotFoundView() {
+const Error404View = () => {
   return (
     <MotionContainer>
       <m.div variants={varBounce().in}>
@@ -42,3 +43,5 @@ export default function NotFoundView() {
     </MotionContainer>
   );
 }
+
+export default Error404View;

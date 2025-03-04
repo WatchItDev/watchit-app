@@ -1,16 +1,18 @@
-import { m } from 'framer-motion';
-// @mui
+// MUI IMPORTS
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-// assets
-import { ForbiddenIllustration } from '@src/assets/illustrations';
-// components
+
+// MOTION IMPORTS
+import { m } from 'framer-motion';
+
+// LOCAL IMPORTS
 import { RouterLink } from '@src/routes/components';
+import { ForbiddenIllustration } from '@src/assets/illustrations';
 import { MotionContainer, varBounce } from '@src/components/animate';
 
 // ----------------------------------------------------------------------
 
-export default function View403() {
+const Error403View = () => {
   return (
     <MotionContainer>
       <m.div variants={varBounce().in}>
@@ -37,3 +39,5 @@ export default function View403() {
     </MotionContainer>
   );
 }
+
+export default Error403View;

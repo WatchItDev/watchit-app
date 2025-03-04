@@ -1,16 +1,18 @@
-import { m } from 'framer-motion';
-// @mui
+// MUI IMPORTS
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-// assets
-import { SeverErrorIllustration } from '@src/assets/illustrations';
-// components
+
+// MOTION IMPORTS
+import { m } from 'framer-motion';
+
+// LOCAL IMPORTS
 import { RouterLink } from '@src/routes/components';
+import { SeverErrorIllustration } from '@src/assets/illustrations';
 import { MotionContainer, varBounce } from '@src/components/animate';
 
 // ----------------------------------------------------------------------
 
-export default function Page500() {
+const Error500View = () => {
   return (
     <MotionContainer>
       <m.div variants={varBounce().in}>
@@ -35,3 +37,5 @@ export default function Page500() {
     </MotionContainer>
   );
 }
+
+export default Error500View;
