@@ -1,4 +1,4 @@
-import OverviewBankingView from '@src/sections/finance';
+import { FinanceView } from '@src/sections/finance';
 import Header from '@src/layouts/dashboard/header.tsx';
 import HeaderContent from '@src/layouts/dashboard/header-content.tsx';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
@@ -15,7 +15,7 @@ const OverviewBankingPage = () => {
       <Header>
         <HeaderContent title="Finance" />
       </Header>
-      <WithAuth component={OverviewBankingView} description={'Login to access your balance.'} icon={'iconoir:stats-report'} header={'Finance Dashboard'} />
+      <WithAuth component={FinanceView} description={'Login to access your balance.'} icon={'iconoir:stats-report'} header={'Finance Dashboard'} />
     </OgMetaTags>
   );
 }

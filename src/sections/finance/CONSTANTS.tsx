@@ -5,7 +5,7 @@ export const COLORS = {
   info: '#3a7dd5',
 }
 
-export const TX_COLORS: any = {
+export const TX_COLORS = {
   'transferTo': COLORS.danger,
   'transferFrom': COLORS.success,
   'deposit': COLORS.success,
@@ -16,3 +16,6 @@ export const TX_COLORS: any = {
   'collected': COLORS.danger,
   'released': COLORS.success,
 }
+
+export const FINANCE_STATISTICS_INCOME_EVENTS = ['transferFrom', 'deposit'];
+export const FINANCE_STATISTICS_OUTCOME_EVENTS = ['transferTo', 'withdraw', 'collected', 'paid'];
