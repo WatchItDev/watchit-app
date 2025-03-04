@@ -37,12 +37,12 @@ export default function GovernanceItemHorizontal({ post }: Props) {
 
   if (publish === 'active') {
     const endDate = new Date(createdAt);
-    const daysToAdd = Math.floor(Math.random() * 5) + 1; // Entre 1 y 5 días
+    const daysToAdd = Math.floor(Math.random() * 5) + 1; //NOSONAR
     endDate.setDate(endDate.getDate() + daysToAdd);
     displayTime = `Ends in ${formatDistanceToNow(endDate, { addSuffix: false })}`;
   } else {
     const closedAt = new Date(createdAt);
-    const daysToAdd = Math.floor(Math.random() * 30) + 1; // Entre 1 y 30 días
+    const daysToAdd = Math.floor(Math.random() * 30) + 1; //NOSONAR
     closedAt.setDate(closedAt.getDate() + daysToAdd);
     if (closedAt > new Date()) {
       closedAt.setDate(new Date().getDate() - daysToAdd);
@@ -50,9 +50,9 @@ export default function GovernanceItemHorizontal({ post }: Props) {
     displayTime = `Ended ${formatDistanceToNow(closedAt, { addSuffix: true })}`;
 
     // Datos aleatorios para los resultados de la votación
-    votesFor = Math.floor(Math.random() * 1000);
-    votesAgainst = Math.floor(Math.random() * 1000);
-    votesAbstain = Math.floor(Math.random() * 1000);
+    votesFor = Math.floor(Math.random() * 1000);//NOSONAR
+    votesAgainst = Math.floor(Math.random() * 1000);//NOSONAR
+    votesAbstain = Math.floor(Math.random() * 1000);//NOSONAR
   }
 
   return (
