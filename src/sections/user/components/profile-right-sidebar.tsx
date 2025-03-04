@@ -8,7 +8,7 @@ import Box from "@mui/material/Box";
 import { randomColors } from "@src/components/poster/variants/poster-latest-content.tsx";
 import { IconRosetteDiscountCheckFilled } from "@tabler/icons-react";
 import { FC } from "react";
-import { ProfileHeaderProps } from "@src/sections/user/profile-header.tsx";
+import { ProfileHeaderProps } from "@src/sections/user/components/profile-header.tsx";
 import { styled } from "@mui/material/styles";
 import { useSelector } from "react-redux";
 

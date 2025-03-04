@@ -8,10 +8,10 @@ import Tabs, { tabsClasses } from '@mui/material/Tabs';
 import { useSettingsContext } from '@src/components/settings';
 import { useLazyProfile, useProfileFollowers, useProfileFollowing } from '@lens-protocol/react';
 import { appId, ProfileId, PublicationType, usePublications } from '@lens-protocol/react-web';
-import ProfileHome from '../profile-home';
-import ProfileFollowers from '../profile-followers';
-import ProfileFollowing from '../profile-following';
-import ProfileHeader from '../profile-header';
+import ProfileHome from '../components/profile-home.tsx';
+import ProfileFollowers from '../components/profile-followers.tsx';
+import ProfileFollowing from '../components/profile-following.tsx';
+import ProfileHeader from '../components/profile-header.tsx';
 import Label from '../../../components/label';
 import { LoadingScreen } from '@src/components/loading-screen';
 
@@ -20,7 +20,7 @@ import { useSelector, useDispatch } from 'react-redux';
 // @ts-ignore
 import { RootState } from '@src/redux/store';
 import { setFollowers, setFollowings } from '@redux/followers';
-import ProfileReferrals from "@src/sections/user/profile-referrals.tsx";
+import ProfileReferrals from "@src/sections/user/components/profile-referrals.tsx";
 import useReferrals from "@src/hooks/use-referrals.ts";
 import Alert from '@mui/material/Alert';
 import { useIsPolicyAuthorized } from '@src/hooks/protocol/use-is-policy-authorized.ts';

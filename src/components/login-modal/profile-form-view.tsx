@@ -23,7 +23,7 @@ import { ProfileData } from '@src/auth/context/web3Auth/types.ts';
 import { uploadImageToIPFS, uploadMetadataToIPFS } from '@src/utils/ipfs.ts';
 import { buildProfileMetadata } from '@src/utils/profile.ts';
 import TextMaxLine from '@src/components/text-max-line';
-import NeonPaper from '@src/sections/publication/NeonPaperContainer';
+import NeonPaper from '@src/sections/publication/components/neon-paper-container.tsx';
 import uuidv4 from '@src/utils/uuidv4';
 
 // LENS IMPORTS

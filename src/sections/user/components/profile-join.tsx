@@ -1,11 +1,11 @@
 import LoadingButton from "@mui/lab/LoadingButton";
 import {SubscribeProfileModal} from "@src/components/subscribe-profile-modal.tsx";
-import {ProfileHeaderProps} from "@src/sections/user/profile-header.tsx";
 import {FC, useState} from "react";
 import {openLoginModal} from "@redux/auth";
 import {useDispatch, useSelector} from "react-redux";
+import { ProfileHeaderProps } from '@src/sections/user/types.ts';
 
-interface ProfileJoinProps extends ProfileHeaderProps{
+interface ProfileJoinProps extends ProfileHeaderProps {
   profileJoinProps: {
     hasAccess?: boolean;
     accessLoading: boolean;
@@ -17,14 +17,13 @@ interface ProfileJoinProps extends ProfileHeaderProps{
 const ProfileJoin: FC<ProfileJoinProps> = ({profile, profileJoinProps}) => {
   const dispatch = useDispatch();
   const sessionData = useSelector((state: any) => state.auth.session);
-  const {hasAccess, accessLoading, accessFetchingLoading, onSubscribe} = profileJoinProps;
+  const {hasAccess, accessLoading, onSubscribe} = profileJoinProps;
   const [openSubscribeModal, setOpenSubscribeModal] = useState(false);
 
   const handleSubscription = async () => {
     if (!sessionData?.authenticated) return dispatch(openLoginModal());
     if (!hasAccess) setOpenSubscribeModal(true);
   };
-
 
   return (<>
     <LoadingButton
@@ -35,8 +34,8 @@ const ProfileJoin: FC<ProfileJoinProps> = ({profile, profileJoinProps}) => {
         backgroundColor: hasAccess ? '#24262A' : '#fff',
       }}
       onClick={handleSubscription}
-      disabled={accessLoading || hasAccess || accessFetchingLoading}
-      loading={accessLoading || accessFetchingLoading}
+      disabled={accessLoading || hasAccess}
+      loading={accessLoading}
     >
       {hasAccess ? 'Joined' : 'Join'}
     </LoadingButton>

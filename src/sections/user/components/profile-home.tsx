@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import { IconCaretDown, IconCaretUp } from '@tabler/icons-react';
-import { ProfilePublicationItem } from './profile-publication-item';
+import { ProfilePublicationItem } from './profile-publication-item.tsx';
 import { useSelector } from 'react-redux';
 import { AnyPublication } from '@lens-protocol/api-bindings';
 

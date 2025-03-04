@@ -1,5 +1,5 @@
 // LOCAL IMPORTS
-import { UserProfileView } from '@src/sections/user/view';
+import { UserProfileView } from '../../sections/user';
 import { useParams } from '@src/routes/hooks';
 import Header from '@src/layouts/dashboard/header.tsx';
 import HeaderContent from '@src/layouts/dashboard/header-content.tsx';

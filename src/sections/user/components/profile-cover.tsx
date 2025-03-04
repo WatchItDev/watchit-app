@@ -1,9 +1,9 @@
 // @mui
 import { alpha } from '@mui/material/styles';
 // theme
-import { bgGradient } from '@src/theme/css';
+import { bgGradient } from '@src/theme/css.ts';
 import { Profile } from '@lens-protocol/api-bindings';
-import Image from '../../components/image';
+import Image from '../../../components/image';
 import { SxProps } from '@mui/system';
 import { Theme } from '@mui/material';
 

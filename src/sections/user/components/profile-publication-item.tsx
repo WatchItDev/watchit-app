@@ -3,8 +3,8 @@ import { useState, useEffect } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { PublicationReactionType, hasReacted } from '@lens-protocol/react-web';
-import Image from '../../components/image';
-import { paths } from '../../routes/paths';
+import Image from '../../../components/image';
+import { paths } from '../../../routes/paths.ts';
 import { useRouter } from '@src/routes/hooks';
 
 interface Props {

@@ -9,11 +9,11 @@ import ListItemText from '@mui/material/ListItemText';
 import Button from "@mui/material/Button";
 
 // LOCAL IMPORTS
-import {Invitation} from "@src/types/invitation";
+import {Invitation} from "@types/invitation.ts";
 import AvatarProfile from "@src/components/avatar/avatar.tsx";
 import {useRouter} from "@src/routes/hooks";
 import {paths} from "@src/routes/paths.ts";
-import { capitalizeFirstLetter } from '@src/utils/text-transform';
+import { capitalizeFirstLetter } from '@src/utils/text-transform.ts';
 
 // ----------------------------------------------------------------------
 
@@ -29,7 +29,7 @@ export default function ProfileReferralsTableRow({ row, selected }: Readonly<Pro
   const { destination, status, created_at: date, id, receiver_id } = row;
   const router = useRouter();
 
-  // If receiver_id is null, send again; otherwise, view profile as link
+  // If receiver_id is null, send again; otherwise, views profile as link
   const handleClick = () => {
     receiver_id && router.push(paths.dashboard.user.root(receiver_id));
   }

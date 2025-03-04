@@ -1,13 +1,13 @@
 import AvatarProfile from "@src/components/avatar/avatar.tsx";
 import Stack from "@mui/material/Stack";
-import ProfileShare from "@src/sections/user/profile-share.tsx";
-import ProfileSetJoiningPrice from "@src/sections/user/profile-set-joining-price.tsx";
-import ProfileUpdateButton from "@src/sections/user/profile-update-button.tsx";
+import ProfileShare from "@src/sections/user/components/profile-share.tsx";
+import ProfileSetJoiningPrice from "@src/sections/user/components/profile-set-joining-price.tsx";
+import ProfileUpdateButton from "@src/sections/user/components/profile-update-button.tsx";
 import {FC} from "react";
 import {Profile} from "@lens-protocol/api-bindings";
 import {useTheme} from "@mui/material/styles";
 import {useSelector} from "react-redux";
-import ProfileTransfer from "@src/sections/user/profile-transfer.tsx";
+import ProfileTransfer from "@src/sections/user/components/profile-transfer.tsx";
 
 interface ProfileToolbarProps {
   profile: Profile;

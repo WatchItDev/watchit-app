@@ -16,7 +16,7 @@ import { appId, PublicationType, usePublications } from '@lens-protocol/react-we
 import { Address } from 'viem';
 
 // LOCAL IMPORTS
-import ProfileCover from './profile-cover';
+import ProfileCover from './profile-cover.tsx';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 import { useHasAccess } from '@src/hooks/protocol/use-has-access.ts';
 import { useIsPolicyAuthorized } from '@src/hooks/protocol/use-is-policy-authorized.ts';
@@ -24,12 +24,12 @@ import FollowUnfollowButton from '@src/components/follow-unfollow-button.tsx';
 import { useGetPolicyAttestation } from '@src/hooks/protocol/use-get-policy-attestation.ts';
 
 // Profile Components
-import ProfileReport from '@src/sections/user/profile-report.tsx';
-import ProfileRightSidebar from "@src/sections/user/profile-right-sidebar.tsx";
-import ProfileJoin from "@src/sections/user/profile-join.tsx";
-import ProfileUserInfo from "@src/sections/user/profile-user-info.tsx";
-import ProfileWrapper from './profile-wrapper';
-import ProfileToolbar from "@src/sections/user/profile-toolbar.tsx";
+import ProfileReport from '@src/sections/user/components/profile-report.tsx';
+import ProfileRightSidebar from "@src/sections/user/components/profile-right-sidebar.tsx";
+import ProfileJoin from "@src/sections/user/components/profile-join.tsx";
+import ProfileUserInfo from "@src/sections/user/components/profile-user-info.tsx";
+import ProfileWrapper from './profile-wrapper.tsx';
+import ProfileToolbar from "@src/sections/user/components/profile-toolbar.tsx";
 import { useGetSubscriptionCampaign } from '@src/hooks/protocol/use-get-subscription-campaign.ts';
 import { useGetCampaignIsActive } from '@src/hooks/protocol/use-get-campaign-is-active.ts';
 import { SponsoredAccessTrialButton } from '@src/components/sponsored-access-button/sponsored-access-button.tsx';
@@ -55,8 +55,7 @@ const ProfileHeader = (props: PropsWithChildren<ProfileHeaderProps>) => {
   const {
     hasAccess,
     loading: accessLoading,
-    fetching: accessFetchingLoading,
-    refetch: refetchAccess,
+    fetch: refetchAccess,
   } = useHasAccess(profile?.ownedBy?.address as Address);
   const { isAuthorized, loading: authorizedLoading } = useIsPolicyAuthorized(
     GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS,
@@ -131,7 +130,7 @@ const ProfileHeader = (props: PropsWithChildren<ProfileHeaderProps>) => {
 
             { showJoinButton && (
               <ProfileJoin profile={profile} profileJoinProps={{
-                hasAccess, accessLoading, accessFetchingLoading, onSubscribe
+                hasAccess, accessLoading, onSubscribe
               }} />
             )}
 

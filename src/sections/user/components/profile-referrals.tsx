@@ -3,7 +3,7 @@ import {FC} from "react";
 
 import Typography from "@mui/material/Typography";
 
-import {Invitation} from "@src/types/invitation";
+import {Invitation} from "@types/invitation.ts";
 import TableContainer from "@mui/material/TableContainer";
 import Scrollbar from "@src/components/scrollbar";
 import {
@@ -15,7 +15,7 @@ import {
   useTable
 } from "@src/components/table";
 import TableBody from "@mui/material/TableBody";
-import ProfileReferralsTableRow from "@src/sections/user/view/profile-referrals-table-row.tsx";
+import ProfileReferralsTableRow from "@src/sections/user/components/profile-referrals-table-row.tsx";
 import Table from "@mui/material/Table";
 
 interface ProfileReferralsProps {
