@@ -38,7 +38,7 @@ describe('[COMPONENTS]: CarouselCreators', () => {
   });
 
   it('renders the correct number of slides', () => {
-    const slides = Testing.renderWithStoreAndRouter(<CarouselCreators {...defaultProps} />).container.querySelectorAll('.slick-slide');
+    const slides = Testing.renderWithStoreAndRouter(<CarouselCreators {...defaultProps} />).container.querySelectorAll('.slick-slider');
     expect(slides.length).toBe(mockData.length);
   });
 

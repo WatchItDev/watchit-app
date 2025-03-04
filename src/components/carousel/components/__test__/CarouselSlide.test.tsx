@@ -7,7 +7,7 @@ describe('[COMPONENTS]: CarouselSlide', () => {
   const renderItem = (item: any) => <div>{item}</div>;
 
   it('to match snapshot', () => {
-    const items = ['item1', 'item2', 'item3'];
+    const items = ['item1', 'item2', 'item3', 'item4', 'item5', 'item6'];
     const { baseElement } = render(
       <CarouselSlide items={items} itemsPerRow={2} renderItem={renderItem} />
     );

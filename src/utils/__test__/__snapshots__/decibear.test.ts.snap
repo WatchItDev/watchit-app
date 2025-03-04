@@ -1,0 +1,10 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`[UTILS]: dicebear > matches the snapshot for various seeds 1`] = `
+[
+  "https://api.dicebear.com/9.x/bottts-neutral/svg?seed=user1",
+  "https://api.dicebear.com/9.x/bottts-neutral/svg?seed=user2",
+  "https://api.dicebear.com/9.x/bottts-neutral/svg?seed=admin",
+  "https://api.dicebear.com/9.x/bottts-neutral/svg?seed=123456",
+]
+`;
