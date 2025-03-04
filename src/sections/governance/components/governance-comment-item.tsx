@@ -6,9 +6,9 @@ import ListItem from '@mui/material/ListItem';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 // hooks
-import { useBoolean } from '@src/hooks/use-boolean';
+import { useBoolean } from '@src/hooks/use-boolean.ts';
 // utils
-import { fDate } from '@src/utils/format-time';
+import { fDate } from '@src/utils/format-time.ts';
 // components
 import Iconify from '@src/components/iconify';
 import AvatarProfile from "@src/components/avatar/avatar.tsx";

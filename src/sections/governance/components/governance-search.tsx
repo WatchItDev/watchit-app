@@ -11,7 +11,7 @@ import Iconify from '@src/components/iconify';
 import { useRouter } from '@src/routes/hooks';
 import SearchNotFound from '@src/components/search-not-found';
 // types
-import { IPostItem } from '@src/types/blog';
+import { IPostItem } from '@types/blog.ts';
 import AvatarProfile from "@src/components/avatar/avatar.tsx";
 
 // ----------------------------------------------------------------------

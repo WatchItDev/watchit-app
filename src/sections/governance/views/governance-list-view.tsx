@@ -21,12 +21,12 @@ import { useResponsive } from '@src/hooks/use-responsive';
 import Iconify from '@src/components/iconify';
 import { useSettingsContext } from '@src/components/settings';
 import SvgColor from '@src/components/svg-color';
-import GovernanceSearch from '../governance-search';
-import GovernanceListHorizontal from '../governance-list-horizontal';
+import GovernanceSearch from '../components/governance-search.tsx';
+import GovernanceListHorizontal from '../components/governance-list-horizontal.tsx';
 import Label from '../../../components/label';
 import Header from '../../../layouts/dashboard/header';
 import { useRouter } from '@src/routes/hooks';
-import { ProposalsMockList } from '../governance-mock';
+import { ProposalsMockList } from '../components/governance-mock.ts';
 // import { useSearchPosts } from '../../../api/blog';
 
 // ----------------------------------------------------------------------

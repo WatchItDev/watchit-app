@@ -10,7 +10,7 @@ import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import { IconChevronLeft } from '@tabler/icons-react';
 import Typography from '@mui/material/Typography';
-import GovernanceNewEditForm from '../governance-new-edit-form';
+import GovernanceNewEditForm from '../components/governance-new-edit-form.tsx';
 import Label from '../../../components/label';
 import Header from '../../../layouts/dashboard/header';
 import { useResponsive } from '@src/hooks/use-responsive.ts';

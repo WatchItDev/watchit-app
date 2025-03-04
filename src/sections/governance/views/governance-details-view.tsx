@@ -22,14 +22,14 @@ import Iconify from '@src/components/iconify';
 import Markdown from '@src/components/markdown';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { truncateAddress } from '@src/utils/wallet.ts';
-import GovernanceCommentList from '../governance-comment-list';
-import GovernanceCommentForm from '../governance-comment-form';
+import GovernanceCommentList from '../components/governance-comment-list.tsx';
+import GovernanceCommentForm from '../components/governance-comment-form.tsx';
 import Label from '../../../components/label';
 import Header from '../../../layouts/dashboard/header';
 import { useResponsive } from '@src/hooks/use-responsive.ts';
 import { paths } from '@src/routes/paths.ts';
 import { useRouter } from '@src/routes/hooks';
-import { ProposalsMockList, proposalVotes as initialProposalVotes } from '../governance-mock';
+import { ProposalsMockList, proposalVotes as initialProposalVotes } from '../components/governance-mock.ts';
 import AvatarProfile from "@src/components/avatar/avatar.tsx";
 import {dicebear} from "@src/utils/dicebear.ts";
 

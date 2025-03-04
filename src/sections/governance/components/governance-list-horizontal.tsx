@@ -1,7 +1,7 @@
 // @mui
 import Box from '@mui/material/Box';
-import { GovernanceItemSkeleton } from './governance-skeleton';
-import GovernanceItemHorizontal from './governance-item-horizontal';
+import { GovernanceItemSkeleton } from './governance-skeleton.tsx';
+import GovernanceItemHorizontal from './governance-item-horizontal.tsx';
 
 // ----------------------------------------------------------------------
 

@@ -4,16 +4,16 @@ import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 // routes
-import { paths } from '@src/routes/paths';
+import { paths } from '@src/routes/paths.ts';
 import { useRouter } from '@src/routes/hooks';
 import { formatDistanceToNow } from 'date-fns';
 // types
-import { IPostItem } from '@src/types/blog';
+import { IPostItem } from '@types/blog.ts';
 // components
 import Label from '@src/components/label';
 import TextMaxLine from '@src/components/text-max-line';
 import { usePopover } from '@src/components/custom-popover';
-import { truncateAddress } from '../../utils/wallet';
+import { truncateAddress } from '../../../utils/wallet.ts';
 import AvatarProfile from "@src/components/avatar/avatar.tsx";
 
 // ----------------------------------------------------------------------

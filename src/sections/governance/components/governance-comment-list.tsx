@@ -2,9 +2,9 @@
 import Box from '@mui/material/Box';
 import Pagination from '@mui/material/Pagination';
 // types
-import { IPostComment } from '@src/types/blog';
+import { IPostComment } from '@types/blog.ts';
 //
-import GovernanceCommentItem from './governance-comment-item';
+import GovernanceCommentItem from './governance-comment-item.tsx';
 
 // ----------------------------------------------------------------------
 

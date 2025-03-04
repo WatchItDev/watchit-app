@@ -14,15 +14,15 @@ import CardHeader from '@mui/material/CardHeader';
 import Typography from '@mui/material/Typography';
 import FormControlLabel from '@mui/material/FormControlLabel';
 // hooks
-import { useBoolean } from '@src/hooks/use-boolean';
-import { useResponsive } from '@src/hooks/use-responsive';
+import { useBoolean } from '@src/hooks/use-boolean.ts';
+import { useResponsive } from '@src/hooks/use-responsive.ts';
 // routes
-import { paths } from '@src/routes/paths';
+import { paths } from '@src/routes/paths.ts';
 import { useRouter } from '@src/routes/hooks';
 // _mock
 import { _tags } from '@src/_mock';
 // types
-import { IPostItem } from '@src/types/blog';
+import { IPostItem } from '@types/blog.ts';
 // components
 import { CustomFile } from '@src/components/upload';
 import { useSnackbar } from '@src/components/snackbar';
@@ -33,7 +33,7 @@ import FormProvider, {
   RHFAutocomplete,
 } from '@src/components/hook-form';
 //
-import GovernanceDetailsPreview from './governance-details-preview';
+import GovernanceDetailsPreview from './governance-details-preview.tsx';
 
 // ----------------------------------------------------------------------
 

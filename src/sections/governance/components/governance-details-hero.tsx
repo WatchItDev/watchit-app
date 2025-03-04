@@ -7,15 +7,15 @@ import SpeedDial from '@mui/material/SpeedDial';
 import Typography from '@mui/material/Typography';
 import ListItemText from '@mui/material/ListItemText';
 // hooks
-import { useResponsive } from '@src/hooks/use-responsive';
+import { useResponsive } from '@src/hooks/use-responsive.ts';
 // utils
-import { fDate } from '@src/utils/format-time';
+import { fDate } from '@src/utils/format-time.ts';
 // theme
-import { bgGradient } from '@src/theme/css';
+import { bgGradient } from '@src/theme/css.ts';
 // components
 import Iconify from '@src/components/iconify';
 // types
-import { IPostHero } from '@src/types/blog';
+import { IPostHero } from '@types/blog.ts';
 import AvatarProfile from "@src/components/avatar/avatar.tsx";
 
 // ----------------------------------------------------------------------
