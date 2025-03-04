@@ -1,25 +1,12 @@
-import { FC } from 'react';
-import { Typography } from '@mui/material';
-import LoadingButton from '@mui/lab/LoadingButton';
-import { IconPlayerPlay } from '@tabler/icons-react';
-import { styled } from '@mui/material/styles';
+import { FC, PropsWithChildren } from 'react';
 import { Box } from '@mui/material';
+import { styled } from '@mui/material/styles';
 import Image from '@src/components/image';
-import { SponsoredAccessTrialButton } from '@src/components/sponsored-access-button';
-import { getAttachmentCid } from '@src/utils/publication.ts';
-import { PublicationPosterWallpaperProps } from '@src/sections/publication/types.ts';
+import { getAttachmentCid } from '@src/utils/publication';
+import { PublicationPosterWallpaperProps } from '@src/sections/publication/types';
 
-export const PublicationPosterWallpaper: FC<PublicationPosterWallpaperProps> = (props) => {
-  const {
-    publication,
-    isSponsoredButtonVisible,
-    isJoinButtonVisible,
-    joinButtonLoading,
-    onJoin,
-    onSponsorSuccess,
-    campaign,
-    isActive,
-  } = props;
+export const PublicationPosterWallpaper: FC<PropsWithChildren<PublicationPosterWallpaperProps>> = (props) => {
+  const { publication, children } = props;
 
   return (
     <HeroPosterContainer>
@@ -51,55 +38,10 @@ export const PublicationPosterWallpaper: FC<PublicationPosterWallpaperProps> = (
         }}
       />
 
-      {isSponsoredButtonVisible && (
-        <SponsoredAccessTrialButton
-          isActive={isActive}
-          holderAddress={publication?.by?.ownedBy?.address}
-          campaignAddress={campaign}
-          onSuccess={onSponsorSuccess}
-          neonPaperProps={{
-            height: '35px',
-            bottom: 16,
-            left: 16,
-            position: 'absolute',
-            zIndex: 2,
-            sx: {
-              height: '36px',
-              bottom: 16,
-              left: 16,
-              position: 'absolute',
-              zIndex: 2,
-            }
-          }}
-        />
-      )}
-
-      {isJoinButtonVisible && (
-        <LoadingButton
-          variant="contained"
-          sx={{
-            color: '#1E1F22',
-            background: '#FFFFFF',
-            height: '35px',
-            bottom: 16,
-            left: 16,
-            position: 'absolute',
-            zIndex: 2,
-          }}
-          onClick={onJoin}
-          loading={joinButtonLoading}
-        >
-          <IconPlayerPlay fontSize="large" size={18} />
-          <Typography variant="body2" sx={{ lineHeight: 1, fontWeight: '700', ml: 1 }}>
-            Join
-          </Typography>
-        </LoadingButton>
-      )}
+      {children}
     </HeroPosterContainer>
   );
-}
-
-// ----------------------------------------------------------------------
+};
 
 const HeroPosterContainer = styled(Box)(() => ({
   width: '100%',

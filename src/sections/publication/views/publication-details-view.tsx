@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 
 // REDUX IMPORTS
 import { openLoginModal } from '@redux/auth';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 // MUI IMPORTS
 import Box from '@mui/material/Box';
@@ -36,6 +36,8 @@ import { PublicationTitleDescription } from '@src/sections/publication/component
 import { PublicationRecommendations } from '@src/sections/publication/components/publication-recommendations.tsx';
 import { PublicationPosterWallpaper } from '@src/sections/publication/components/publication-poster-wallpaper.tsx';
 import { PublicationSponsorsAndBackers } from '@src/sections/publication/components/publication-sponsors-and-bakers.tsx';
+import { PublicationSponsoredButton } from '@src/sections/publication/components/publication-sponsored-button.tsx';
+import { PublicationJoinButton } from '@src/sections/publication/components/publication-join-button.tsx';
 
 // ----------------------------------------------------------------------
 
@@ -44,7 +46,6 @@ export default function PublicationDetailsView({ id }: PublicationDetailsViewPro
   const dispatch = useDispatch();
   const [openSubscribeModal, setOpenSubscribeModal] = useState(false);
   const { isAuthenticated, loading: sessionLoading } = useAccountSession();
-  const sessionData = useSelector((state: any) => state.auth.session);
 
   const { data: publicationData, loading: publicationLoading }: ReadResult<AnyPublication> = usePublication({ forId: id });
   const ownerAddress = publicationData?.by?.ownedBy?.address;
@@ -78,7 +79,7 @@ export default function PublicationDetailsView({ id }: PublicationDetailsViewPro
   }, [campaign, ownerAddress]);
 
   const handleSubscribe = () => {
-    if (!sessionData?.authenticated) {
+    if (!isAuthenticated()) {
       dispatch(openLoginModal());
       return;
     }
@@ -103,11 +104,22 @@ export default function PublicationDetailsView({ id }: PublicationDetailsViewPro
               {isPlayerVisible ? (
                 <MoviePlayView publication={publicationData} loading={publicationLoading} />
               ) : (
-                <PublicationPosterWallpaper
-                  publication={publicationData} isActive={isActive} campaign={campaign}
-                  isJoinButtonVisible={isJoinButtonVisible} isSponsoredButtonVisible={isSponsoredButtonVisible}
-                  onJoin={handleSubscribe} onSponsorSuccess={handleSubscribe} joinButtonLoading={accessLoading}
-                />
+                <PublicationPosterWallpaper publication={publicationData}>
+                  {isSponsoredButtonVisible && (
+                    <PublicationSponsoredButton
+                      isActive={isActive}
+                      publication={publicationData}
+                      campaign={campaign}
+                      onSponsorSuccess={handleSubscribe}
+                    />
+                  )}
+                  {isJoinButtonVisible && (
+                    <PublicationJoinButton
+                      joinButtonLoading={accessLoading}
+                      onJoin={handleSubscribe}
+                    />
+                  )}
+                </PublicationPosterWallpaper>
               )}
               <StyledInnerBox>
                 <PublicationTitleDescription publication={publicationData} />

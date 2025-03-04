@@ -7,19 +7,20 @@ import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import ListItemText from '@mui/material/ListItemText';
 import Grid from '@mui/material/Grid';
-import { IconButton, MenuItem } from '@mui/material';
 import Switch from '@mui/material/Switch';
+import { IconButton, MenuItem } from '@mui/material';
 
 // VIEM IMPORTS
 import { formatUnits } from 'viem';
 
 // LOCAL IMPORTS
-import { capitalizeFirstLetter } from '@src/utils/text-transform.ts';
-
 import Iconify from '@src/components/iconify';
-import CustomPopover, { usePopover } from '@src/components/custom-popover';
-import { useBoolean } from '@src/hooks/use-boolean';
+import TextMaxLine from "@src/components/text-max-line";
 import CampaignSettingsModal from "@src/sections/marketing/components/campaign-settings-modal.tsx";
+import CampaignWithdrawFundsModal from '@src/sections/marketing/components/campaign-withdraw-funds-modal.tsx';
+import CustomPopover, { usePopover } from '@src/components/custom-popover';
+import { capitalizeFirstLetter } from '@src/utils/text-transform.ts';
+import { useBoolean } from '@src/hooks/use-boolean';
 import { useGetCampaignFundsBalance } from '@src/hooks/protocol/use-get-campaign-funds-balance.ts';
 import { useGetCampaignFundsAllocation } from '@src/hooks/protocol/use-get-campaign-funds-allocation.ts';
 import { useCampaignPaused } from '@src/hooks/protocol/use-campaign-paused.ts';
@@ -30,11 +31,9 @@ import { useCampaignUnPause } from '@src/hooks/protocol/use-campaign-unpause.ts'
 import {
   CampaignConfiguredIndicatorState
 } from "@src/sections/marketing/components/campaign-configured-indicator-state.tsx";
-import TextMaxLine from "@src/components/text-max-line";
-import CampaignWithdrawFundsModal from '@src/sections/marketing/components/campaign-withdraw-funds-modal.tsx';
 import { useGetCampaignIsReady } from '@src/hooks/protocol/use-get-campaign-is-ready.ts';
-import { LBL_COLORS, LBL_STATUS_COLORS, POLICY_TEXTS } from '@src/sections/marketing/CONSTANTS.tsx';
 import { CampaignTableRowProps } from '@src/sections/marketing/types.ts';
+import { LBL_COLORS, LBL_STATUS_COLORS, POLICY_TEXTS } from '@src/sections/marketing/CONSTANTS.tsx';
 
 // ----------------------------------------------------------------------
 

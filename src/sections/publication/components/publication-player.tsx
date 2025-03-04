@@ -1,16 +1,14 @@
 import Box from '@mui/material/Box';
 import { FC, memo } from 'react';
-import { LoadingScreen } from '../../../components/loading-screen';
-import VideoPlayer from '../../../components/video-player';
+import { LoadingScreen } from '@src/components/loading-screen';
+import VideoPlayer from '@src/components/video-player';
 import { PublicationPlayerProps } from '@src/sections/publication/types.ts';
+import { getMediaUri, getMovieCid } from '@src/utils/publication.ts';
 
 // ----------------------------------------------------------------------
 
 const PublicationPlayer: FC<PublicationPlayerProps> = (props) =>  {
   const { publication, loading } = props;
-  // TODO move to envs..
-  const getMediaUri = (cid: string): string => `https://g.watchit.movie/content/${cid}/`;
-  const getMovieCid = (): string => publication?.metadata?.asset?.video?.raw?.uri;
 
   if (loading) return <LoadingScreen />;
 
@@ -24,10 +22,10 @@ const PublicationPlayer: FC<PublicationPlayerProps> = (props) =>  {
         border: '1px solid rgba(255, 255, 255, 0.08)',
       }}
     >
-      {getMovieCid() && (
+      {getMovieCid(publication) && (
         <VideoPlayer
-          src={getMediaUri(getMovieCid())}
-          cid={getMovieCid()}
+          src={getMediaUri(getMovieCid(publication))}
+          cid={getMovieCid(publication)}
           titleMovie={publication?.metadata?.title}
           // onBack={handleBack}
         />

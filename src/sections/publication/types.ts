@@ -58,13 +58,6 @@ export interface RepliesListProps {
 
 export interface PublicationPosterWallpaperProps {
   publication?: ReadResult<AnyPublication>;
-  isSponsoredButtonVisible?: boolean;
-  isJoinButtonVisible?: boolean;
-  isActive?: boolean;
-  joinButtonLoading: boolean;
-  onJoin: () => void;
-  onSponsorSuccess: () => void;
-  campaign: Address;
 }
 
 export interface PublicationTitleDescriptionProps {
@@ -74,4 +67,16 @@ export interface PublicationTitleDescriptionProps {
 export interface MorePublicationsSectionProps {
   author: string;
   publications: ReadResult<AnyPublication>[];
+}
+
+export interface PublicationJoinButtonProps {
+  joinButtonLoading: boolean;
+  onJoin: () => void;
+}
+
+export interface PublicationSponsoredButtonProps {
+  isActive: boolean;
+  publication: ReadResult<AnyPublication>;
+  campaign: Address;
+  onSponsorSuccess: () => void;
 }

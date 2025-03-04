@@ -3,12 +3,13 @@ import { FC } from 'react';
 
 // MUI IMPORTS
 import TableBody from '@mui/material/TableBody';
-import { Box, Table, TableContainer } from '@mui/material';
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
+import { Box, Table, TableContainer } from '@mui/material';
 
 // LOCAL IMPORTS
-import { CAMPAIGN_TABLE_HEAD } from '@src/sections/marketing/CONSTANTS.tsx';
+import Scrollbar from '@src/components/scrollbar';
+import CampaignTableRow from '@src/sections/marketing/components/campaign-table-row.tsx';
 import {
   emptyRows,
   TableEmptyRows,
@@ -17,11 +18,10 @@ import {
   TablePaginationCustom,
   useTable,
 } from '@src/components/table';
-import Scrollbar from '@src/components/scrollbar';
-import CampaignTableRow from '@src/sections/marketing/components/campaign-table-row.tsx';
-import { COLORS } from '@src/layouts/config-layout';
 import { LoadingScreen } from "@src/components/loading-screen";
 import { CampaignTableProps } from '@src/sections/marketing/types.ts';
+import { COLORS } from '@src/layouts/config-layout';
+import { CAMPAIGN_TABLE_HEAD } from '@src/sections/marketing/CONSTANTS.tsx';
 
 // ----------------------------------------------------------------------
 

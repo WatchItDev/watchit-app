@@ -18,13 +18,10 @@ const ExploreView = () => {
     <Container sx={{ p: '0 !important', maxWidth: '2000px !important' }}>
       <Stack direction={'column'} spacing={1} sx={{ maxWidth: '100vw !important' }}>
         <ExploreTopPublications />
-
         {isAuthenticated() && (
           <ExploreBookmarks />
         )}
-
         <ExploreCreators />
-
         <ExplorePublications />
       </Stack>
     </Container>

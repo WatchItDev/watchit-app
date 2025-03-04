@@ -20,16 +20,26 @@ export const ExploreBookmarks = () => {
     maxItemWidth = 250;
   }
 
-  const bookmarksFiltered = [...[...bookmarkPublications].reverse(), ...(bookmark ?? [])]
-    .filter((post) => !hiddenBookmarks.some((hidden: any) => hidden.id === post.id))
-    .filter((post) => !post.isHidden)
-    .filter((post, index, self) => index === self.findIndex((p) => p.id === post.id));
+  // Reverse the order of bookmarkPublications
+  const reversedBookmarkPublications = [...bookmarkPublications].reverse();
+  // Merge reversed publications with the ones from useBookmarks
+  const mergedBookmarks = [...reversedBookmarkPublications, ...(bookmark ?? [])];
+  // Filter out hidden bookmarks
+  const visibleBookmarks = mergedBookmarks.filter(
+    (post) => !hiddenBookmarks.some((hidden: any) => hidden.id === post.id)
+  );
+  // Remove posts explicitly marked as hidden
+  const nonHiddenBookmarks = visibleBookmarks.filter((post) => !post.isHidden);
+  // Remove duplicates based on the id
+  const uniqueBookmarks = nonHiddenBookmarks.filter(
+    (post, index, self) => index === self.findIndex((p) => p.id === post.id)
+  );
 
   return (
     <>
-      {!!bookmarksFiltered?.length && (
+      {!!uniqueBookmarks?.length && (
         <CarouselPosterMini
-          data={bookmarksFiltered ?? []}
+          data={uniqueBookmarks ?? []}
           title="Bookmarks"
           minItemWidth={minItemWidth}
           maxItemWidth={maxItemWidth}
