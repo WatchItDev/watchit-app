@@ -13,6 +13,7 @@ import { useSelector } from 'react-redux';
 // Notifications
 import { notifySuccess } from '@notifications/internal-notifications.ts';
 import { SUCCESS } from '@notifications/success.ts';
+import {RootState} from "@redux/store.ts"
 
 // ----------------------------------------------------------------------
 
@@ -24,8 +25,8 @@ interface UpdateModalProps {
 // ----------------------------------------------------------------------
 
 export const UpdateModal: React.FC<UpdateModalProps> = ({ open, onClose }) => {
-  const loading = useSelector((state: any) => state.auth.isSessionLoading);
-  const sessionData = useSelector((state: any) => state.auth.session);
+  const loading = useSelector((state: RootState) => state.auth.isSessionLoading);
+  const sessionData = useSelector((state: RootState) => state.auth.session);
 
   const handleProfileUpdateSuccess = () => {
     notifySuccess(SUCCESS.PROFILE_UPDATED_SUCCESSFULLY);
