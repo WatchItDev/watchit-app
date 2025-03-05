@@ -1,9 +1,9 @@
 import { memo, FC } from 'react';
 import { PublicationType} from "@lens-protocol/react-web"
 import { Profile } from '@lens-protocol/api-bindings';
-import CarouselSlide from '@src/components/carousel/components/CarouselSlide';
+import CarouselSlide from '@src/components/carousel/components/carousel-slide.tsx';
 import { UserItem } from '@src/components/user-item';
-import CarouselWrapper from './CarouselWrapper';
+import CarouselWrapper from './carousel-wrapper.tsx';
 import { CarouselCreatorsProps } from '../types';
 
  const CarouselCreators: FC<CarouselCreatorsProps> = (params) => {

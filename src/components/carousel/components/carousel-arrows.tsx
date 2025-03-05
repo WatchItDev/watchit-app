@@ -6,7 +6,7 @@ import {
   CarouselArrowsStyledIconButtonProps,
 } from '@src/components/carousel/types.ts';
 import {useIsRTL} from "@src/hooks/components/use-rtl.ts";
-import { LeftIcon, RightIcon } from './CarouselArrowIcons.tsx';
+import { LeftIcon, RightIcon } from './carousel-arrow-icons.tsx';
 
 // ----------------------------------------------------------------------
 
@@ -57,7 +57,7 @@ export default function CarouselArrows(props: Readonly<CarouselArrowsProps>) {
     sx,
     ...other
   } = props;
-  
+
   const isRTL = useIsRTL();
   const hasChild = !!children;
 

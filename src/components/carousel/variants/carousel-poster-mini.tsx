@@ -1,7 +1,7 @@
-import CarouselSlide from '@src/components/carousel/components/CarouselSlide';
+import CarouselSlide from '@src/components/carousel/components/carousel-slide.tsx';
 import PosterHorizontal from '@src/components/poster/variants/poster-horizontal';
 import { CarouselPosterMiniProps, PublicationType } from '../types';
-import CarouselWrapper from './CarouselWrapper';
+import CarouselWrapper from './carousel-wrapper.tsx';
 
 export default function CarouselPosterMini(params: CarouselPosterMiniProps) {
   const { data, title, minItemWidth, maxItemWidth } = params;

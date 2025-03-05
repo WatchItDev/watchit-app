@@ -1,13 +1,17 @@
-import CarouselPosterMini from '@src/components/carousel/variants/CarouselPosterMini.tsx';
+import CarouselPosterMini from '@src/components/carousel/variants/carousel-poster-mini.tsx';
 
 import { appId, PublicationType, usePublications } from '@lens-protocol/react-web';
 
 import { useResponsive } from '@src/hooks/use-responsive.ts';
-import { ExplorePublicationsSkeleton } from '@src/sections/explore/components/explore-publications.skeleton.tsx';
+import {useEffect} from "react"
+import {setExploreLoading} from "@redux/loading"
+import { useDispatch } from 'react-redux';
+// import { ExplorePublicationsSkeleton } from '@src/sections/explore/components/explore-publications.skeleton.tsx';
 
 // ----------------------------------------------------------------------
 
 export const ExplorePublications = () => {
+  const dispatch = useDispatch();
   const lgUp = useResponsive('up', 'lg');
   const { data, loading } = usePublications({
     where: {
@@ -26,7 +30,12 @@ export const ExplorePublications = () => {
     maxItemWidth = 250;
   }
 
-  if (loading) return <ExplorePublicationsSkeleton />;
+  useEffect(() => {
+    dispatch(setExploreLoading({ key: 'posts', isLoading: loading }));
+  }, [loading])
+
+
+  // if (loading) return <ExplorePublicationsSkeleton />;
 
   return (
     <CarouselPosterMini

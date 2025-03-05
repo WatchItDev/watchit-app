@@ -1,4 +1,4 @@
-import CarouselTopTitles from '@src/components/carousel/variants/CarouselTopTitles.tsx';
+import CarouselTopTitles from '@src/components/carousel/variants/carousel-top-titles.tsx';
 import {
   appId,
   ExplorePublicationsOrderByType,
@@ -8,11 +8,15 @@ import {
   useExplorePublications,
   usePublications,
 } from '@lens-protocol/react-web';
-import { ExploreTopPublicationsSkeleton } from '@src/sections/explore/components/explore-top-publications.skeleton.tsx';
+import {useEffect} from "react"
+import { useDispatch } from 'react-redux';
+import { setExploreLoading } from '@redux/loading/index.ts';
+// import { ExploreTopPublicationsSkeleton } from '@src/sections/explore/components/explore-top-publications.skeleton.tsx';
 
 // ----------------------------------------------------------------------
 
 export const ExploreTopPublications = () => {
+  const dispatch = useDispatch();
   const { data, loading } = usePublications({
     where: {
       publicationTypes: [PublicationType.Post],
@@ -32,7 +36,12 @@ export const ExploreTopPublications = () => {
     orderBy: ExplorePublicationsOrderByType.TopCommented,
   });
 
-  if (loading) return <ExploreTopPublicationsSkeleton/>;
+  // Update loading state in Redux store
+  useEffect(() => {
+    dispatch(setExploreLoading({ key: 'top', isLoading: loading }));
+  }, [loading])
+
+  //if (loading) return <ExploreTopPublicationsSkeleton/>;
 
   const combinedPosts = [...(explorePublications ?? []), ...(data ?? [])]
     .filter((item, index, self) => self.findIndex((t) => t.id === item.id) === index)

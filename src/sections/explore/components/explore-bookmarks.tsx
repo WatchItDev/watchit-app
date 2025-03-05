@@ -1,4 +1,4 @@
-import CarouselPosterMini from '@src/components/carousel/variants/CarouselPosterMini.tsx';
+import CarouselPosterMini from '@src/components/carousel/variants/carousel-poster-mini.tsx';
 
 import { useBookmarks } from '@lens-protocol/react-web';
 import { useSelector } from 'react-redux';

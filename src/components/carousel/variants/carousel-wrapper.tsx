@@ -1,6 +1,6 @@
 import Box from '@mui/material/Box';
 import Carousel, { useCarousel } from '@src/components/carousel/index';
-import CarouselNavigationArrows from '@src/components/carousel/components/CarouselNavigationArrows.tsx';
+import CarouselNavigationArrows from '@src/components/carousel/components/carousel-navigation-arrows.tsx';
 import { CarouselSection } from '@src/components/poster/carousel-section.tsx';
 import { useItemsPerSlide } from '@src/hooks/components/use-item-per-slide';
 import { useChunkedData } from '@src/hooks/components/use-chunked-data';

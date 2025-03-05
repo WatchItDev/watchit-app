@@ -1,11 +1,16 @@
 import { ExploreProfilesOrderByType, LimitType, useExploreProfiles } from '@lens-protocol/react-web';
-import CarouselCreators from '@src/components/carousel/variants/CarouselCreators.tsx';
+import CarouselCreators from '@src/components/carousel/variants/carousel-creators.tsx';
 import { filterHiddenProfiles } from '@src/utils/profile.ts';
-import { ExploreCreatorsSkeleton } from '@src/sections/explore/components/explore-creators.skeleton.tsx';
+import {useEffect} from "react"
+import {setExploreLoading} from "@redux/loading"
+import { useDispatch } from 'react-redux';
+// import { ExploreCreatorsSkeleton } from '@src/sections/explore/components/explore-creators.skeleton.tsx';
+
 
 // ----------------------------------------------------------------------
 
 export const ExploreCreators = () => {
+  const dispatch = useDispatch();
   const { data: latestCreatedProfiles, loading } = useExploreProfiles({
     orderBy: ExploreProfilesOrderByType.LatestCreated,
     limit: LimitType.Fifty,
@@ -19,7 +24,12 @@ export const ExploreCreators = () => {
   // Clear ###HIDDEN### profiles
   const filteredProfiles = filterHiddenProfiles(filtered);
 
-  if (loading) return <ExploreCreatorsSkeleton />;
+  useEffect(() => {
+    dispatch(setExploreLoading({ key: 'creators', isLoading: loading }));
+  }, [loading])
+
+
+  /*if (loading) return <ExploreCreatorsSkeleton />;*/
 
   return (
     <>
