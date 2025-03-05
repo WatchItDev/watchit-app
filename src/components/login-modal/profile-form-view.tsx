@@ -336,11 +336,17 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
       {/* Hidden inputs for image uploads */}
       <Input
         type="file"
+        inputProps={{
+          accept: 'image/*',
+        }}
         onChange={(event: any) => handleFileChange(event, 'backgroundImage')}
         inputRef={backgroundImageInputRef}
         sx={{ display: 'none' }}
       />
       <Input
+        inputProps={{
+          accept: 'image/*',
+        }}
         type="file"
         onChange={(event: any) => handleFileChange(event, 'profileImage')}
         inputRef={profileImageInputRef}
