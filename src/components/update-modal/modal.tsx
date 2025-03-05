@@ -75,8 +75,8 @@ export const UpdateModal: React.FC<UpdateModalProps> = ({ open, onClose }) => {
                 name: sessionData?.profile?.metadata?.displayName,
                 username: sessionData?.profile?.handle?.localName,
                 bio: sessionData?.profile?.metadata?.bio,
-                profileImage: (sessionData?.profile?.metadata?.picture as any)?.raw?.uri,
-                backgroundImage: (sessionData?.profile?.metadata?.coverPicture as any)?.raw?.uri,
+                profileImage: (sessionData?.profile?.metadata?.picture as any)?.optimized?.uri,
+                backgroundImage: (sessionData?.profile?.metadata?.coverPicture as any)?.optimized?.uri,
                 socialLinks: {
                   twitter: '',
                   instagram: '',

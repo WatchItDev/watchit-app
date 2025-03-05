@@ -359,7 +359,7 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
             src={
               backgroundImagePreview ??
               (initialValues?.backgroundImage
-                ? `https://ipfs.io/ipfs/${initialValues?.backgroundImage?.replaceAll?.('ipfs://', '')}`
+                ? initialValues?.backgroundImage
                 : `https://picsum.photos/seed/${mode === 'update' && sessionData?.authenticated ? sessionData?.profile?.id : 'new'}/1920/820`)
             }
             onClick={() => backgroundImageInputRef.current?.click()}
@@ -388,7 +388,7 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
             src={
               profileImagePreview ??
               (initialValues?.profileImage
-                ? `https://ipfs.io/ipfs/${initialValues?.profileImage?.replaceAll?.('ipfs://', '')}`
+                ? initialValues?.profileImage
                 : mode === 'update' && sessionData?.authenticated ? sessionData?.profile?.id : 'new')
             }
             alt=""
