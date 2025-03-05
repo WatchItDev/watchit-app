@@ -8,7 +8,7 @@ import { UseHasAccessHook } from '@src/hooks/protocol/types.ts';
 import { useAccountSession } from '@src/hooks/use-account-session.ts';
 import { notifyError } from '@notifications/internal-notifications.ts';
 import { ERRORS } from '@notifications/errors.ts';
-import { USE_HAS_ACCESS_DEFAULT_RESPONSE } from '@src/hooks/protocol/CONSTANTS.tsx';
+import { UseHasAccessDefaultResponse } from '@src/hooks/protocol/DEFAULTS.tsx';
 
 /**
  * Custom hook to check if the user has access to a publication.
@@ -25,7 +25,7 @@ export const useHasAccess = (ownerAddress?: Address): UseHasAccessHook => {
   const fetchAccess = useCallback(async () => {
     if (!userAddress || !ownerAddress) {
       setLoading(false);
-      return USE_HAS_ACCESS_DEFAULT_RESPONSE;
+      return UseHasAccessDefaultResponse;
     }
 
     setLoading(true);
@@ -53,7 +53,7 @@ export const useHasAccess = (ownerAddress?: Address): UseHasAccessHook => {
   }, [fetchAccess]);
 
   if (!isAuthenticated()) {
-    return USE_HAS_ACCESS_DEFAULT_RESPONSE;
+    return UseHasAccessDefaultResponse;
   }
 
   return {
