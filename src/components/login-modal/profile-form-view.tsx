@@ -130,6 +130,16 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
   }, [errorCreateProfile, errorSetProfileMetadata]);
 
 
+  /**
+   * Asynchronously converts a blob URL string to a File object and uploads it to IPFS.
+   *
+   * This function fetches the content from the provided blob URL, converts it to a Blob object,
+   * creates a File object from that Blob, and uploads the File to IPFS using the `uploadImageToIPFS` method.
+   *
+   * @param {string} blobString - A string representing the blob URL to be converted and uploaded.
+   * @returns {Promise<string|null>} A Promise that resolves to the IPFS URL or identifier of the uploaded file if successful,
+   * or `null` if the operation fails.
+   */
   const getBlobFileAndUploadToIPFS = async (blobString: string): Promise<string | null> => {
     try {
       const response = await fetch(blobString);
