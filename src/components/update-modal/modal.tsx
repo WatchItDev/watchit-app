@@ -13,6 +13,7 @@ import { useSelector } from 'react-redux';
 // Notifications
 import { notifySuccess } from '@notifications/internal-notifications.ts';
 import { SUCCESS } from '@notifications/success.ts';
+import {RootState} from "@redux/store.ts"
 
 // ----------------------------------------------------------------------
 
@@ -24,8 +25,8 @@ interface UpdateModalProps {
 // ----------------------------------------------------------------------
 
 export const UpdateModal: React.FC<UpdateModalProps> = ({ open, onClose }) => {
-  const loading = useSelector((state: any) => state.auth.isSessionLoading);
-  const sessionData = useSelector((state: any) => state.auth.session);
+  const loading = useSelector((state: RootState) => state.auth.isSessionLoading);
+  const sessionData = useSelector((state: RootState) => state.auth.session);
 
   const handleProfileUpdateSuccess = () => {
     notifySuccess(SUCCESS.PROFILE_UPDATED_SUCCESSFULLY);
@@ -74,8 +75,8 @@ export const UpdateModal: React.FC<UpdateModalProps> = ({ open, onClose }) => {
                 name: sessionData?.profile?.metadata?.displayName,
                 username: sessionData?.profile?.handle?.localName,
                 bio: sessionData?.profile?.metadata?.bio,
-                profileImage: (sessionData?.profile?.metadata?.picture as any)?.raw?.uri,
-                backgroundImage: (sessionData?.profile?.metadata?.coverPicture as any)?.raw?.uri,
+                profileImage: (sessionData?.profile?.metadata?.picture as any)?.optimized?.uri,
+                backgroundImage: (sessionData?.profile?.metadata?.coverPicture as any)?.optimized?.uri,
                 socialLinks: {
                   twitter: '',
                   instagram: '',

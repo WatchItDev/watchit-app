@@ -20,7 +20,7 @@ import { Box, Button, Grid, Input, TextField, Typography } from '@mui/material';
 // PROJECTS IMPORTS
 import Image from '../image';
 import { ProfileData } from '@src/auth/context/web3Auth/types.ts';
-import { uploadImageToIPFS, uploadMetadataToIPFS } from '@src/utils/ipfs.ts';
+import { uploadImageToIPFS, uploadMetadataToIPFS} from '@src/utils/ipfs.ts'
 import { buildProfileMetadata } from '@src/utils/profile.ts';
 import TextMaxLine from '@src/components/text-max-line';
 import NeonPaper from '@src/sections/publication/NeonPaperContainer';
@@ -129,6 +129,29 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
     if (error) notifyError(ERRORS.UNKNOWN_ERROR);
   }, [errorCreateProfile, errorSetProfileMetadata]);
 
+
+  /**
+   * Asynchronously converts a blob URL string to a File object and uploads it to IPFS.
+   *
+   * This function fetches the content from the provided blob URL, converts it to a Blob object,
+   * creates a File object from that Blob, and uploads the File to IPFS using the `uploadImageToIPFS` method.
+   *
+   * @param {string} blobString - A string representing the blob URL to be converted and uploaded.
+   * @returns {Promise<string|null>} A Promise that resolves to the IPFS URL or identifier of the uploaded file if successful,
+   * or `null` if the operation fails.
+   */
+  const getBlobFileAndUploadToIPFS = async (blobString: string): Promise<string | null> => {
+    try {
+      const response = await fetch(blobString);
+      const blob = await response.blob();
+      const file = new File([blob], 'image-file', { type: blob.type });
+      return await uploadImageToIPFS(file);
+    } catch (error) {
+      console.error('Error converting blob to File and uploading:', error);
+      return null;
+    }
+  };
+
   /**
    * Update profile metadata on the Lens Protocol.
    * @param data - Profile data to update.
@@ -143,14 +166,14 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
         dispatch(setProfileCreationStep({ step: 2 }));
 
         // Upload images to IPFS
-        const profileImageURI =
-          typeof data?.profileImage === 'string'
-            ? data?.profileImage
-            : await uploadImageToIPFS(data.profileImage);
-        const backgroundImageURI =
-          typeof data?.backgroundImage === 'string'
-            ? data?.backgroundImage
-            : await uploadImageToIPFS(data.backgroundImage);
+        const profileImageURI = await (typeof data?.profileImage === 'string'
+          ? getBlobFileAndUploadToIPFS(data.profileImage)
+          : uploadImageToIPFS(data.profileImage));
+
+        const backgroundImageURI = await (typeof data?.backgroundImage === 'string'
+          ? getBlobFileAndUploadToIPFS(data.backgroundImage)
+          : uploadImageToIPFS(data.backgroundImage));
+
         // Build profile metadata
         const metadata = buildProfileMetadata(data, profileImageURI, backgroundImageURI);
         // Upload metadata to IPFS
@@ -336,11 +359,17 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
       {/* Hidden inputs for image uploads */}
       <Input
         type="file"
+        inputProps={{
+          accept: 'image/*',
+        }}
         onChange={(event: any) => handleFileChange(event, 'backgroundImage')}
         inputRef={backgroundImageInputRef}
         sx={{ display: 'none' }}
       />
       <Input
+        inputProps={{
+          accept: 'image/*',
+        }}
         type="file"
         onChange={(event: any) => handleFileChange(event, 'profileImage')}
         inputRef={profileImageInputRef}
@@ -353,7 +382,7 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
             src={
               backgroundImagePreview ??
               (initialValues?.backgroundImage
-                ? `https://ipfs.io/ipfs/${initialValues?.backgroundImage?.replaceAll?.('ipfs://', '')}`
+                ? initialValues?.backgroundImage
                 : `https://picsum.photos/seed/${mode === 'update' && sessionData?.authenticated ? sessionData?.profile?.id : 'new'}/1920/820`)
             }
             onClick={() => backgroundImageInputRef.current?.click()}
@@ -382,7 +411,7 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
             src={
               profileImagePreview ??
               (initialValues?.profileImage
-                ? `https://ipfs.io/ipfs/${initialValues?.profileImage?.replaceAll?.('ipfs://', '')}`
+                ? initialValues?.profileImage
                 : mode === 'update' && sessionData?.authenticated ? sessionData?.profile?.id : 'new')
             }
             alt=""
