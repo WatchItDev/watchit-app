@@ -24,6 +24,13 @@ import { CircularProgress } from '@mui/material';
 import { paths } from '@src/routes/paths.ts';
 import { useSelector } from 'react-redux';
 import {filterHiddenProfiles} from "@src/utils/profile.ts";
+import {RootState} from "@redux/store.ts"
+interface Publication {
+  id: string;
+  title: string;
+  description: string;
+  post_id: string;
+}
 
 function Searchbar() {
   const theme = useTheme();
@@ -32,13 +39,17 @@ function Searchbar() {
   const mdUp = useResponsive('up', 'md');
   const [searchQuery, setSearchQuery] = useState('');
 
+  const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
+  const shortcutLabel = isMac ? '⌘K' : 'Ctrl+K';
   const handleClose = useCallback(() => {
     search.onFalse();
     setSearchQuery('');
   }, [search]);
 
-  const handleKeyDown = (event: any) => {
-    if (event.key === 'k' && event.metaKey) {
+  const handleKeyDown = (event: KeyboardEvent) => {
+    // Check for Ctrl+K on Windows or Command+K on Mac
+    if (event.key === 'k' && ((isMac && event.metaKey) || (!isMac && event.ctrlKey))) {
+      event.preventDefault(); // Prevent browser's default action
       search.onToggle();
       setSearchQuery('');
     }
@@ -60,7 +71,7 @@ function Searchbar() {
     handleClose();
   };
 
-  const handleSearch = useCallback((event: any) => {
+  const handleSearch = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value);
   }, []);
 
@@ -77,8 +88,7 @@ function Searchbar() {
   const notFound =
     searchQuery && !dataFiltered.length && !profiles?.length && !publications?.length;
 
-  // @ts-ignore
-  const minibarState = useSelector((state) => state.minibar.state);
+  const minibarState = useSelector((state: RootState) => state.minibar.state);
 
   const isMini = minibarState === 'mini';
   const lgUp = useResponsive('up', 'lg');
@@ -122,7 +132,7 @@ function Searchbar() {
           ))}
 
         {publications &&
-          publications.map((publication: any) => (
+          publications.map((publication: Publication) => (
             <List key={publication.id}>
               <ResultItem
                 query={searchQuery}
@@ -168,9 +178,9 @@ function Searchbar() {
           </Typography>
         )}
       </IconButton>
-      {mdUp && <Label sx={{ px: 0.75, mr: 1, fontSize: 12, color: 'text.secondary' }}>⌘K</Label>}
+      {mdUp && <Label sx={{ px: 0.75, mr: 1, fontSize: 12, color: 'text.secondary' }}>{shortcutLabel}</Label>}
       {!isMini && !mdUp && (
-        <Label sx={{ px: 0.75, mr: 1, fontSize: 12, color: 'text.secondary' }}>⌘K</Label>
+        <Label sx={{ px: 0.75, mr: 1, fontSize: 12, color: 'text.secondary' }}>{shortcutLabel}</Label>
       )}
     </Button>
   );
