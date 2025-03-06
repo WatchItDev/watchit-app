@@ -20,7 +20,7 @@ import { Box, Button, Grid, Input, TextField, Typography } from '@mui/material';
 // PROJECTS IMPORTS
 import Image from '../image';
 import { ProfileData } from '@src/auth/context/web3Auth/types.ts';
-import {getFileFromBlob, uploadImageToIPFS, uploadMetadataToIPFS} from '@src/utils/ipfs.ts'
+import { uploadImageToIPFS, uploadMetadataToIPFS} from '@src/utils/ipfs.ts'
 import { buildProfileMetadata } from '@src/utils/profile.ts';
 import TextMaxLine from '@src/components/text-max-line';
 import NeonPaper from '@src/sections/publication/NeonPaperContainer';
