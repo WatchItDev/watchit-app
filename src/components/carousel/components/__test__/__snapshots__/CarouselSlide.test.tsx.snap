@@ -34,6 +34,13 @@ exports[`[COMPONENTS]: CarouselSlide > to match snapshot 1`] = `
             item3
           </div>
         </div>
+        <div
+          class="MuiBox-root css-2mh0az"
+        >
+          <div>
+            item4
+          </div>
+        </div>
       </div>
     </div>
   </div>
