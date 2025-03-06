@@ -8,9 +8,11 @@ import Box from "@mui/material/Box";
 import { randomColors } from "@src/components/poster/variants/poster-latest-content.tsx";
 import { IconRosetteDiscountCheckFilled } from "@tabler/icons-react";
 import { FC } from "react";
-import { ProfileHeaderProps } from "@src/sections/user/profile-header.tsx";
+import { ProfileHeaderProps } from "@src/sections/user/types";
 import { styled } from "@mui/material/styles";
 import { useSelector } from "react-redux";
+import Tooltip from "@mui/material/Tooltip"
+import {RootState} from "@redux/store.ts"
 
 // ---------------------------------------------------------------- ------
 // TODO: move to envs
@@ -28,7 +30,7 @@ interface ProfileRightSidebarProps extends ProfileHeaderProps {
 }
 
 const ProfileRightSidebar: FC<ProfileRightSidebarProps> = ({ profile, sidebarProps }) => {
-  const sessionData = useSelector((state: any) => state.auth.session);
+  const sessionData = useSelector((state: RootState) => state.auth.session);
   const { isAuthorized, authorizedLoading, accessLoading, hasAccess, attestation, attestationLoading } = sidebarProps;
   const hex = BigInt(attestation ?? '').toString(16)
   // add padding to attestation smaller than 256 bits
@@ -53,6 +55,7 @@ const ProfileRightSidebar: FC<ProfileRightSidebarProps> = ({ profile, sidebarPro
         marginBottom: 3,
       }}
     >
+      <Tooltip title="Identifier for each profile as Watchit member">
       <Stack
         direction="row"
         sx={{
@@ -62,9 +65,12 @@ const ProfileRightSidebar: FC<ProfileRightSidebarProps> = ({ profile, sidebarPro
           justifyContent: 'space-between',
         }}
       >
+
         <Typography color="text.secondary">Lens ID</Typography>
+
         <CopyableText label={`${profile?.id}`} text={`${profile?.id}`} />
       </Stack>
+      </Tooltip>
       <Divider sx={{ borderColor: 'rgba(255, 255, 255, 0.08)', width: '100%' }} />
       <Stack
         direction="row"
@@ -90,6 +96,7 @@ const ProfileRightSidebar: FC<ProfileRightSidebarProps> = ({ profile, sidebarPro
         profile?.id !== sessionData?.profile?.id && (
           <>
             <Divider sx={{ borderColor: 'rgba(255, 255, 255, 0.08)', width: '100%' }} />
+            <Tooltip title="This License address validates the authenticity of a license using blockchain technology between the creator and the user.">
             <Stack
               direction="row"
               sx={{
@@ -105,6 +112,7 @@ const ProfileRightSidebar: FC<ProfileRightSidebarProps> = ({ profile, sidebarPro
                 url={`${urlAttestationBase}${attestationAddress}`}
               />
             </Stack>
+            </Tooltip>
           </>
         )}
       <Divider sx={{ borderColor: 'rgba(255, 255, 255, 0.08)', width: '100%' }} />
