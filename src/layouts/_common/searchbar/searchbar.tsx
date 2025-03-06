@@ -28,6 +28,7 @@ import { useSelector } from 'react-redux';
 import {filterHiddenProfiles} from "@src/utils/profile.ts";
 import {RootState} from "@redux/store.ts"
 import {SearchPublicationResult} from "@src/layouts/_common/searchbar/types.ts"
+import { useOperatingSystem } from '@src/hooks/use-operating-system';
 
 function Searchbar() {
   const theme = useTheme();
@@ -36,7 +37,7 @@ function Searchbar() {
   const mdUp = useResponsive('up', 'md');
   const [searchQuery, setSearchQuery] = useState('');
 
-  const isMac = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
+  const { isMac } = useOperatingSystem();
   const shortcutLabel = isMac ? '⌘K' : 'Ctrl+K';
   const handleClose = useCallback(() => {
     search.onFalse();
@@ -44,9 +45,8 @@ function Searchbar() {
   }, [search]);
 
   const handleKeyDown = (event: KeyboardEvent) => {
-    // Check for Ctrl+K on Windows or Command+K on Mac
     if (event.key === 'k' && ((isMac && event.metaKey) || (!isMac && event.ctrlKey))) {
-      event.preventDefault(); // Prevent browser's default action
+      event.preventDefault();
       search.onToggle();
       setSearchQuery('');
     }
