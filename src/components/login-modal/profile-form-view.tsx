@@ -20,7 +20,7 @@ import { Box, Button, Grid, Input, TextField, Typography } from '@mui/material';
 // PROJECTS IMPORTS
 import Image from '../image';
 import { ProfileData } from '@src/auth/context/web3Auth/types.ts';
-import { uploadImageToIPFS, uploadMetadataToIPFS } from '@src/utils/ipfs.ts';
+import {getFileFromBlob, uploadImageToIPFS, uploadMetadataToIPFS} from '@src/utils/ipfs.ts'
 import { buildProfileMetadata } from '@src/utils/profile.ts';
 import TextMaxLine from '@src/components/text-max-line';
 import NeonPaper from '@src/sections/publication/NeonPaperContainer';
@@ -129,6 +129,19 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
     if (error) notifyError(ERRORS.UNKNOWN_ERROR);
   }, [errorCreateProfile, errorSetProfileMetadata]);
 
+
+  const getBlobFileAndUploadToIPFS = async (blobString: string): Promise<string | null> => {
+    try {
+      const response = await fetch(blobString);
+      const blob = await response.blob();
+      const file = new File([blob], 'image-file', { type: blob.type });
+      return await uploadImageToIPFS(file);
+    } catch (error) {
+      console.error('Error converting blob to File and uploading:', error);
+      return null;
+    }
+  };
+
   /**
    * Update profile metadata on the Lens Protocol.
    * @param data - Profile data to update.
@@ -143,14 +156,20 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
         dispatch(setProfileCreationStep({ step: 2 }));
 
         // Upload images to IPFS
-        const profileImageURI =
-          typeof data?.profileImage === 'string'
-            ? data?.profileImage
-            : await uploadImageToIPFS(data.profileImage);
-        const backgroundImageURI =
-          typeof data?.backgroundImage === 'string'
-            ? data?.backgroundImage
-            : await uploadImageToIPFS(data.backgroundImage);
+        const profileImageURI = await (typeof data?.profileImage === 'string'
+          ? getBlobFileAndUploadToIPFS(data.profileImage)
+          : uploadImageToIPFS(data.profileImage));
+
+        const backgroundImageURI = await (typeof data?.backgroundImage === 'string'
+          ? getBlobFileAndUploadToIPFS(data.backgroundImage)
+          : uploadImageToIPFS(data.backgroundImage));
+
+        console.log('hello update metadata profile')
+        console.log(typeof data?.profileImage === 'string')
+        console.log(data)
+        console.log(data?.profileImage)
+        console.log(profileImageURI)
+
         // Build profile metadata
         const metadata = buildProfileMetadata(data, profileImageURI, backgroundImageURI);
         // Upload metadata to IPFS
