@@ -8,7 +8,8 @@ import { fireEvent } from "@testing-library/react"
 import { act } from 'react';
 import { useSearchProfiles } from "@lens-protocol/react-web";
 import { useSearchPublications } from "@src/hooks/use-search-publications";
-import { vi } from 'vitest';
+import { vi, Mock } from 'vitest';
+import { useOperatingSystem } from "@src/hooks/use-operating-system.ts";
 
 vi.mock('@src/components/scrollbar', () => ({
   default: ({ children }: { children: React.ReactNode }) => <div data-testid="mock-scrollbar">{children}</div>,
@@ -22,26 +23,27 @@ vi.mock('@src/hooks/use-search-publications', () => ({
   useSearchPublications: vi.fn()
 }));
 
+vi.mock('@src/hooks/use-operating-system', () => ({
+  useOperatingSystem: vi.fn()
+}));
+
 describe("[COMPONENTS]: Searchbar Component", () => {
   beforeEach(() => {
     vi.clearAllMocks();
 
-    (useSearchProfiles as any).mockReturnValue({
+    (useSearchProfiles as Mock).mockReturnValue({
       data: [],
       loading: false,
       result: { items: [] }
     });
 
-    (useSearchPublications as any).mockReturnValue({
+    (useSearchPublications as Mock).mockReturnValue({
       publications: [],
       loading: false,
       error: null
     });
 
-    Object.defineProperty(navigator, "platform", {
-      value: "MacIntel",
-      configurable: true,
-    });
+    (useOperatingSystem as Mock).mockReturnValue({ isMac: true });
   });
 
   it("displays correct shortcut label for mac", () => {
@@ -50,10 +52,7 @@ describe("[COMPONENTS]: Searchbar Component", () => {
   });
 
   it("displays correct shortcut Label for windows", () => {
-    Object.defineProperty(navigator, "platform", {
-      value: "Win32",
-      configurable: true,
-    });
+    (useOperatingSystem as Mock).mockReturnValue({ isMac: false });
 
     const { getByText } = Testing.renderWithStoreAndRouter(<Searchbar />);
 
@@ -61,11 +60,6 @@ describe("[COMPONENTS]: Searchbar Component", () => {
   });
 
   it("should open search on CMD+K", async () => {
-    Object.defineProperty(navigator, "platform", {
-      value: "MacIntel",
-      configurable: true,
-    });
-
     const { baseElement } = Testing.renderWithStoreAndRouter(<Searchbar />);
 
     act(() => {
@@ -79,10 +73,7 @@ describe("[COMPONENTS]: Searchbar Component", () => {
   });
 
   it("should open search on CTRL+K", async () => {
-    Object.defineProperty(navigator, "platform", {
-      value: "Win32",
-      configurable: true,
-    });
+    (useOperatingSystem as Mock).mockReturnValue({ isMac: false });
 
     const { baseElement } = Testing.renderWithStoreAndRouter(<Searchbar />);
 
@@ -118,7 +109,7 @@ describe("[COMPONENTS]: Searchbar Component", () => {
   });
 
   it("should display search results when profiles and publications are found", async () => {
-    (useSearchProfiles as any).mockReturnValue({
+    (useSearchProfiles as Mock).mockReturnValue({
       data: [
         {
           id: 'profile-1',
@@ -148,7 +139,7 @@ describe("[COMPONENTS]: Searchbar Component", () => {
       }
     });
 
-    (useSearchPublications as any).mockReturnValue({
+    (useSearchPublications as Mock).mockReturnValue({
       publications: [
         {
           id: 'pub-1',
@@ -183,7 +174,7 @@ describe("[COMPONENTS]: Searchbar Component", () => {
   });
 
   it("should display not found message when no results are found", async () => {
-    (useSearchProfiles as any).mockReturnValue({
+    (useSearchProfiles as Mock).mockReturnValue({
       data: [],
       loading: false,
       result: {
@@ -191,7 +182,7 @@ describe("[COMPONENTS]: Searchbar Component", () => {
       }
     });
 
-    (useSearchPublications as any).mockReturnValue({
+    (useSearchPublications as Mock).mockReturnValue({
       publications: [],
       loading: false,
       error: null
