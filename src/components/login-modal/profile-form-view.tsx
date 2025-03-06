@@ -164,12 +164,6 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
           ? getBlobFileAndUploadToIPFS(data.backgroundImage)
           : uploadImageToIPFS(data.backgroundImage));
 
-        console.log('hello update metadata profile')
-        console.log(typeof data?.profileImage === 'string')
-        console.log(data)
-        console.log(data?.profileImage)
-        console.log(profileImageURI)
-
         // Build profile metadata
         const metadata = buildProfileMetadata(data, profileImageURI, backgroundImageURI);
         // Upload metadata to IPFS
