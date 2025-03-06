@@ -3,6 +3,7 @@ import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
+import Tooltip from '@mui/material/Tooltip';
 
 // LOCAL IMPORTS
 import { useGetBalance } from '@src/hooks/protocol/use-get-balance.ts';
@@ -36,15 +37,19 @@ export default function HeaderBalance() {
             justifyContent: 'center',
           }}
         >
-          <img
-            src={mmcTokenIcon}
-            alt="MMC Token"
-            style={{ width: 230, height: 20, borderRadius: '0.65rem' }}
-          />
+          <Tooltip title="Native currency of Watchit's ecosystem">
+            <img
+              src={mmcTokenIcon}
+              alt="MMC Token"
+              style={{ width: 230, height: 20, borderRadius: '0.65rem' }}
+            />
+          </Tooltip>
         </Box>
-        <Typography variant="subtitle2" sx={{ textAlign: 'left' }} noWrap>
-          {formatBalanceNumber(balance)}
-        </Typography>
+        <Tooltip title="Balance of MMC tokens">
+          <Typography variant="subtitle2" sx={{ textAlign: 'left' }} noWrap>
+            {formatBalanceNumber(balance)}
+          </Typography>
+        </Tooltip>
       </Stack>
     </Button>
   );
