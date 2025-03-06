@@ -489,7 +489,7 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
               onBlur={formik.handleBlur}
               disabled={loading}
               error={formik.touched.name && Boolean(formik.errors.name)}
-              helperText={formik.touched.name ? formik.errors.name : 'e.g., John Doe'}
+              helperText={formik.touched.name && formik.errors.name ? formik.errors.name : 'e.g., John Doe'}
             />
           </Grid>
           <Grid item xs={12} sm={6}>
@@ -508,7 +508,7 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
               }}
               onBlur={formik.handleBlur}
               error={formik.touched.username && Boolean(formik.errors.username)}
-              helperText={formik.touched.username ? formik.errors.username : 'e.g., johndoe123'}
+              helperText={formik.touched.username && formik.errors.userName ? formik.errors.username : 'e.g., johndoe123'}
             />
           </Grid>
         </Grid>
@@ -528,7 +528,7 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
           rows={4}
           sx={{ mt: 2 }}
           error={formik.touched.bio && Boolean(formik.errors.bio)}
-          helperText={formik.touched.bio ? formik.errors.bio : 'Share something about yourself'}
+          helperText={formik.touched.bio && formik.errors.bio ? formik.errors.bio : 'Share something about yourself'}
         />
 
         {/* Link Social Networks */}
