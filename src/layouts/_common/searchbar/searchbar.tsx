@@ -1,4 +1,5 @@
 import { useState, memo, useCallback } from 'react';
+
 import { useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import List from '@mui/material/List';
@@ -8,15 +9,16 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import InputAdornment from '@mui/material/InputAdornment';
 import Dialog, { dialogClasses } from '@mui/material/Dialog';
+
+import SearchNotFound from '@src/components/search-not-found';
+import ResultItem from './result-item';
+import Scrollbar from '@src/components/scrollbar';
+import Label from '@src/components/label';
+import Iconify from '@src/components/iconify';
 import { useBoolean } from '@src/hooks/use-boolean';
 import { useResponsive } from '@src/hooks/use-responsive';
 import { useEventListener } from '@src/hooks/use-event-listener';
-import Label from '@src/components/label';
-import Iconify from '@src/components/iconify';
-import Scrollbar from '@src/components/scrollbar';
 import { useRouter } from '@src/routes/hooks';
-import SearchNotFound from '@src/components/search-not-found';
-import ResultItem from './result-item';
 import { applyFilter } from './utils';
 import { useSearchProfiles } from '@lens-protocol/react-web';
 import { useSearchPublications } from '@src/hooks/use-search-publications';
@@ -25,12 +27,7 @@ import { paths } from '@src/routes/paths.ts';
 import { useSelector } from 'react-redux';
 import {filterHiddenProfiles} from "@src/utils/profile.ts";
 import {RootState} from "@redux/store.ts"
-interface Publication {
-  id: string;
-  title: string;
-  description: string;
-  post_id: string;
-}
+import {SearchPublicationResult} from "@src/layouts/_common/searchbar/types.ts"
 
 function Searchbar() {
   const theme = useTheme();
@@ -132,7 +129,7 @@ function Searchbar() {
           ))}
 
         {publications &&
-          publications.map((publication: Publication) => (
+          publications.map((publication: SearchPublicationResult) => (
             <List key={publication.id}>
               <ResultItem
                 query={searchQuery}
