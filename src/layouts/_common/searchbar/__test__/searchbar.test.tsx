@@ -9,12 +9,11 @@ import { act } from 'react';
 import { useSearchProfiles } from "@lens-protocol/react-web";
 import { useSearchPublications } from "@src/hooks/use-search-publications";
 import { vi } from 'vitest';
-// Fix the scrollbar mock typing
+
 vi.mock('@src/components/scrollbar', () => ({
   default: ({ children }: { children: React.ReactNode }) => <div data-testid="mock-scrollbar">{children}</div>,
 }));
 
-/// Correct mock implementation with vi.fn()
 vi.mock('@lens-protocol/react-web', () => ({
   useSearchProfiles: vi.fn()
 }));
@@ -27,8 +26,6 @@ describe("[COMPONENTS]: Searchbar Component", () => {
   beforeEach(() => {
     vi.clearAllMocks();
 
-    // Set up default mocks for the search hooks
-    // Set up default mocks for the search hooks with proper return types
     (useSearchProfiles as any).mockReturnValue({
       data: [],
       loading: false,
@@ -121,7 +118,6 @@ describe("[COMPONENTS]: Searchbar Component", () => {
   });
 
   it("should display search results when profiles and publications are found", async () => {
-    // Mock search results
     (useSearchProfiles as any).mockReturnValue({
       data: [
         {
@@ -178,11 +174,9 @@ describe("[COMPONENTS]: Searchbar Component", () => {
       });
     }
 
-// Use regex or partial matching since elements are split due to highlighting
     expect(queryAllByText(/profile/i)).toHaveLength(2);
     expect(queryAllByText(/publication/i)).toHaveLength(2)
 
-    // Check for the highlighted text separately
     const highlightedTexts = baseElement.querySelectorAll('[style*="font-weight: bold"]');
     expect(highlightedTexts.length).toBeGreaterThan(0);
     expect(highlightedTexts[0].textContent).toBe('Test');
@@ -205,12 +199,10 @@ describe("[COMPONENTS]: Searchbar Component", () => {
 
     const { baseElement, getByText } = Testing.renderWithStoreAndRouter(<Searchbar />);
 
-    // Open search dialog
     act(() => {
       fireEvent.keyDown(document, { key: "k", metaKey: true });
     });
 
-    // Enter search query
     const searchInput = baseElement.querySelector('input[placeholder="Search..."]');
     if (searchInput) {
       act(() => {
