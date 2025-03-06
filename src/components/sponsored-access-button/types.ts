@@ -4,7 +4,7 @@ import { LoadingButtonProps } from '@mui/lab/LoadingButton';
 export interface SponsoredAccessProps {
   holderAddress: Address;
   campaignAddress: Address;
-  isActive: boolean;
+  isActive?: boolean;
   neonPaperProps?: any;
   buttonProps?: LoadingButtonProps;
   onSuccess?: () => void;

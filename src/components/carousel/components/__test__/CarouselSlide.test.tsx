@@ -1,7 +1,7 @@
 import { it, expect, describe } from 'vitest';
 import { render } from '@testing-library/react';
 
-import CarouselSlide from "@src/components/carousel/components/CarouselSlide";
+import CarouselSlide from "@src/components/carousel/components/carousel-slide.tsx";
 
 describe('[COMPONENTS]: CarouselSlide', () => {
   const renderItem = (item: any) => <div>{item}</div>;

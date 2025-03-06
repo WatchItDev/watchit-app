@@ -337,9 +337,8 @@ export interface UseGetSubtitlesReturn {
 export interface UseHasAccessHook {
   hasAccess?: boolean;
   loading: boolean;
-  fetching: boolean;
   error?: HasAccessError | null;
-  refetch: () => void;
+  fetch: () => void;
 }
 
 // ----------------------------------------------------------------------

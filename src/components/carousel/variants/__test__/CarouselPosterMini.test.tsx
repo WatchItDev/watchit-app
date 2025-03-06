@@ -3,7 +3,7 @@ import '../../../../../__mocks__/lens-protocol-react-web';
 import '../../../../../__mocks__/web3auth';
 import { describe, it, expect } from 'vitest';
 import { Testing } from '@src/utils/testing/Testing';
-import CarouselPosterMini from '@src/components/carousel/variants/CarouselPosterMini';
+import CarouselPosterMini from '@src/components/carousel/variants/carousel-poster-mini.tsx';
 import { CarouselPosterMiniProps } from '@src/components/carousel/types';
 
 describe('[COMPONENTS]: CarouselPosterMini', () => {

@@ -19,16 +19,17 @@ export const useGetCampaign = (): UseGetCampaignHook => {
       }
       setLoading(true);
       try {
-        const active: any = await publicClient.readContract({
+        const campaignAddress: any = await publicClient.readContract({
           address: GLOBAL_CONSTANTS.CAMPAIGN_REGISTRY_ADDRESS,
           abi: CampaignRegistryAbi.abi,
           functionName: 'getCampaign',
           args: [account, policy],
         });
-        setCampaign(active);
-        return active;
+        setCampaign(campaignAddress);
+        //
+        return campaignAddress;
       } catch (err: any) {
-        console.error('Error fetching is active:', err);
+        console.error('Error fetching campaign address:', err);
         setCampaign(null);
       } finally {
         setLoading(false);

@@ -9,7 +9,7 @@ import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 
 // LOCAL IMPORTS
-import NeonPaper from '@src/sections/publication/NeonPaperContainer';
+import NeonPaper from '@src/sections/publication/components/neon-paper-container.tsx';
 import FinanceDialogsActions from '@src/sections/finance/components/finance-dialogs-actions';
 import TextMaxLine from '@src/components/text-max-line';
 import { formatBalanceNumber } from '@src/utils/format-number';

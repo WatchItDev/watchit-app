@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { render } from '@testing-library/react';
-import CarouselWrapper from '@src/components/carousel/variants/CarouselWrapper';
+import CarouselWrapper from '@src/components/carousel/variants/carousel-wrapper.tsx';
 import { CarouselWrapperProps } from '@src/components/carousel/types';
 
 describe('[COMPONENTS]: CarouselWrapper', () => {

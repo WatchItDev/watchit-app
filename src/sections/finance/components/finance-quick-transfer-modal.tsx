@@ -16,7 +16,7 @@ import { truncateAddress } from '@src/utils/wallet.ts';
 import { Profile } from '@lens-protocol/api-bindings';
 
 // Project components
-import NeonPaper from '@src/sections/publication/NeonPaperContainer.tsx';
+import NeonPaper from '@src/sections/publication/components/neon-paper-container.tsx';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { supabase } from '@src/utils/supabase';
 import { useNotificationPayload } from '@src/hooks/use-notification-payload.ts';

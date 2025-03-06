@@ -5,7 +5,7 @@ import Paper from '@mui/material/Paper';
 import Image from '@src/components/image';
 import { useRouter } from '@src/routes/hooks';
 import { paths } from '@src/routes/paths.ts';
-import { TrendingTopicsType } from '@src/sections/explore/view.tsx';
+import { TrendingTopicsType } from '@src/sections/explore/types.ts';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import ListItemText from '@mui/material/ListItemText';

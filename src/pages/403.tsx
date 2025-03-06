@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 // sections
-import { View403 } from '@src/sections/error';
+import { Error403View } from '@src/sections/error';
 
 // ----------------------------------------------------------------------
 
@@ -11,7 +11,7 @@ export default function Page403() {
         <title> 403 Forbidden</title>
       </Helmet>
 
-      <View403 />
+      <Error403View />
     </>
   );
 }

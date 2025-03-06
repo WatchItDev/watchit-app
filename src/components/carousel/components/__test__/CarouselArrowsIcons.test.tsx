@@ -1,6 +1,6 @@
 import { it, describe, expect } from 'vitest';
 import { render } from '@testing-library/react';
-import {LeftIcon, RightIcon} from '@src/components/carousel/components/CarouselArrowIcons';
+import {LeftIcon, RightIcon} from '@src/components/carousel/components/carousel-arrow-icons.tsx';
 
 describe('[COMPONENTS]: LeftIcon component', () => {
   it('to match snapshot', () => {

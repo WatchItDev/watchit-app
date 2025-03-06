@@ -4,6 +4,6 @@ export interface PublicationDetailProps {
   handleSubscribe: () => void;
   handleRefetchAccess: () => void;
   loadingSubscribe: boolean;
-  subscribeDisabled: boolean;
+  subscribeDisabled?: boolean;
   hasAccess: boolean;
 }

@@ -14,7 +14,7 @@ import Box from '@mui/material/Box';
 // Project components
 import Iconify from '@src/components/iconify';
 import Carousel, { useCarousel } from '@src/components/carousel/index';
-import CarouselNavigationArrows from '@src/components/carousel/components/CarouselNavigationArrows.tsx';
+import CarouselNavigationArrows from '@src/components/carousel/components/carousel-navigation-arrows.tsx';
 import AvatarProfile from "@src/components/avatar/avatar.tsx";
 
 // routes

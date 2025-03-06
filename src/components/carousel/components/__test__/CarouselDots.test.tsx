@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { render } from '@testing-library/react';
-import CarouselDots from '@src/components/carousel/components/CarouselDots';
+import CarouselDots from '@src/components/carousel/components/carousel-dots.tsx';
 
 describe('[COMPONENTS]: CarouselDots component testing', () => {
   it('appendDots renders correctly with default props', () => {
