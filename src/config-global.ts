@@ -56,6 +56,7 @@ export const GLOBAL_CONSTANTS = {
   BASE_URL: process.env.VITE_BASE_URL || import.meta.env.VITE_BASE_URL || '',
   LOGO_URL: process.env.VITE_LOGO_URL || import.meta.env.VITE_LOGO_URL || '',
   EARN_TOKEN_SERVICE_URL: process.env.VITE_EARN_TOKEN_SERVICE_URL || import.meta.env.VITE_EARN_TOKEN_SERVICE_URL || '',
+  FROM_BLOCK: process.env.VITE_BLOCK_FROM || import.meta.env.VITE_BLOCK_FROM || 0n,
 };
 
 export const MAPBOX_API = import.meta.env.VITE_MAPBOX_API || '';
