@@ -5,6 +5,10 @@ describe('[UTILS]: Errors', () => {
     const containsPlaceholders = (message: string): boolean =>
       message.includes('{') && message.includes('}');
 
+    it('should match the snapshot of all error messages', () => {
+      expect(ERROR_MESSAGES).toMatchSnapshot();
+    });
+
     it('should have a message for every error type', () => {
       Object.values(ERRORS).forEach(errorKey => {
         expect(ERROR_MESSAGES[errorKey as ERRORS]).toBeDefined();
