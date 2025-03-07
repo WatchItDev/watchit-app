@@ -120,7 +120,7 @@ export default function useGetSmartWalletTransactions() {
           address: GLOBAL_CONSTANTS.LEDGER_VAULT_ADDRESS as Address,
           event: parsedAbis[eventName] as any,
           args,
-          fromBlock: fromBlock,
+          fromBlock: fromBlock ?? 0n,
           toBlock: 'latest',
         });
       });
