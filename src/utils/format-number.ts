@@ -71,5 +71,4 @@ export const handleAmountConstraints = ({
   if (value > MAX_AMOUNT || value <= 0) {
     setCanContinue(false);
   }
-  console.log('value', value);
 };
