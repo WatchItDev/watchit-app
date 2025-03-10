@@ -34,10 +34,10 @@ export const ExploreCarouselSkeleton: React.FC<ExploreCarouselSkeletonProps> = (
       <CardContent sx={{ px: 0.5 }}>
         <Box ref={parentRef} sx={{ overflow: 'hidden' }}>
           {[row1, row2].map((rowItems, rowIndex) => (
-            <Box key={`row-${rowIndex}`} sx={{ display: 'flex' }}> //NOSONAR
+            <Box key={`row-${rowIndex}`} sx={{ display: 'flex' }}>
               {rowItems.map((_, itemIndex) => (
                 <Box
-                  key={`item-${itemIndex}`} //NOSONAR
+                  key={`item-${itemIndex}`}
                   sx={{
                     flexBasis: `${itemWidthPercent}%`,
                     maxWidth: `${itemWidthPercent}%`,
