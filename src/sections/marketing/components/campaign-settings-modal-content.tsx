@@ -31,7 +31,7 @@ const CampaignSettingsModalContent: FC<CampaignSettingsModalContentProps> = (pro
   const [fundsAmount, setFundsAmount] = useState<number>(NaN);
   const [fundsAllocationAmount, setFundsAllocationAmount] = useState<number>(NaN);
 
-  // TODO this could be get from useAuth hook?
+  // This could be get from useAuth hook? view issue #604
   const sessionData = useSelector((state: any) => state.auth.session);
   const { configure, loading: loadingConfigure } = useConfigureCampaign();
   const { terms, loading: loadingTerms } = useGetPolicyTerms(
