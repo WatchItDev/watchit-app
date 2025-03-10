@@ -1,4 +1,3 @@
-// ProfilePublicationItem.js
 import { useState, useEffect } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -31,7 +30,6 @@ export const ProfilePublicationItem = ({ publication }: Props) => {
   const handleClick = () => {
     router.push(paths.dashboard.publication.details(publication.id));
   };
-  // @TODO review this
   return (
     <Box
       sx={{
