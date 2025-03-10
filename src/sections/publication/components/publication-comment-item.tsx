@@ -23,15 +23,13 @@ import {
 import RepliesList from '@src/sections/publication/components/publication-replies-list.tsx';
 import { timeAgo } from '@src/utils/comment.ts';
 import { openLoginModal } from '@redux/auth';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { useHidePublication } from '@lens-protocol/react';
-import { hiddeComment } from '@redux/comments';
 import { useNotificationPayload } from '@src/hooks/use-notification-payload.ts';
 import { useNotifications } from '@src/hooks/use-notifications.ts';
-import { useSelector } from 'react-redux';
 import { RootState } from '@redux/store.ts';
-import { incrementCounterLikes, decrementCounterLikes, setCounterLikes } from '@redux/comments';
+import { incrementCounterLikes, decrementCounterLikes, setCounterLikes, hiddeComment } from '@redux/comments';
 import NeonPaperContainer from '@src/sections/publication/components/neon-paper-container.tsx';
 import AvatarProfile from "@src/components/avatar/avatar.tsx";
 import { PublicationCommentItemProps } from '@src/sections/publication/types.ts';
@@ -143,7 +141,7 @@ const PublicationCommentItem:FC<PublicationCommentItemProps> = (props) => {
         <Stack direction="row" spacing={2} sx={{ position: 'relative' }}>
           <AvatarProfile
             src={
-              (comment?.by?.metadata?.picture as any)?.optimized?.uri ?? comment?.by?.id
+              comment?.by?.metadata?.picture?.optimized?.uri ?? comment?.by?.id
             }
             alt={comment?.by?.id}
             onClick={goToProfile}
