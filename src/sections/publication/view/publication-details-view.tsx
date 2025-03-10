@@ -93,6 +93,7 @@ export default function PublicationDetailsView({ id }: Props) {
   const isJoinButtonVisible = isAuthorized && !isActive && isAccessLoaded && !isSponsoredButtonVisible;
   const isPlayerVisible = hasAccess && isAuthenticated() && !accessLoading && !sessionLoading && !accessFetchingLoading;
   const poster = getAttachmentCid(data, 'square') || getAttachmentCid(data, 'poster')
+  const wallpaper = getAttachmentCid(data, 'wallpaper');
 
   useEffect(() => {
     if (!ownerAddress) return;
@@ -220,7 +221,7 @@ export default function PublicationDetailsView({ id }: Props) {
                   <Image
                     dir="ltr"
                     alt={data?.metadata?.title}
-                    src={getAttachmentCid(data, 'wallpaper')}
+                    src={wallpaper}
                     ratio="21/9"
                     sx={{
                       borderRadius: 2,

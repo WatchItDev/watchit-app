@@ -75,9 +75,7 @@ export function useSubmitAssetToLens(): UseSubmitAssetToLensReturn {
         const { wallpaperCid, posterCid, squareCid } = responseData.Data.attachments.reduce(
           (acc, attachment) => {
             const key = cidMapping[attachment.title];
-            if (key) {
-              acc[key] = attachment.cid;
-            }
+            acc[key] = attachment.cid;
             return acc;
           },
           { wallpaperCid: "", posterCid: "", squareCid: "" }

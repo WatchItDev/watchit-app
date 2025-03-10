@@ -21,6 +21,7 @@ const PosterTopTitles = ({ post }: { post: any }) => {
   const sessionData = useSelector((state: any) => state.auth.session);
   const dispatch = useDispatch();
   const poster = getAttachmentCid(post, 'square') || getAttachmentCid(post, 'poster');
+  const wallpaper = getAttachmentCid(post, 'wallpaper');
 
   const handlePosterClick = () => {
     router.push(paths.dashboard.publication.details(post.id));
@@ -56,7 +57,7 @@ const PosterTopTitles = ({ post }: { post: any }) => {
     >
       <Image
         alt={post?.metadata?.title}
-        src={getAttachmentCid(post, 'wallpaper')}
+        src={wallpaper}
         ratio="16/9"
         sx={{
           zIndex: 0,
