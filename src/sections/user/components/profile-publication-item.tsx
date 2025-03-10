@@ -73,9 +73,6 @@ export const ProfilePublicationItem = ({ publication }: Props) => {
         >
           {publication?.metadata?.title}
         </Typography>
-        {/*<Typography variant="subtitle2" color="text.secondary">*/}
-        {/*  {`Price: ${publication?.openActionModules?.[0]?.amount?.value ?? 0} MMC`}*/}
-        {/*</Typography>*/}
       </Box>
     </Box>
   );
