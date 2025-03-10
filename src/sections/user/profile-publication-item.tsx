@@ -16,6 +16,7 @@ export const ProfilePublicationItem = ({ publication }: Props) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [hasLiked, setHasLiked] = useState(false);
   const router = useRouter();
+  const poster = getAttachmentCid(publication, 'square') || getAttachmentCid(publication, 'poster');
 
   useEffect(() => {
     if (publication) {
@@ -47,7 +48,7 @@ export const ProfilePublicationItem = ({ publication }: Props) => {
     >
       <Image
         alt={publication.id}
-        src={getAttachmentCid(publication, 'square') || getAttachmentCid(publication, 'poster')}
+        src={poster}
         ratio="1/1"
         sx={{
           borderRadius: 1,

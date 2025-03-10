@@ -92,6 +92,7 @@ export default function PublicationDetailsView({ id }: Props) {
   const isSponsoredButtonVisible = isActive && isAuthorized && isAccessLoaded;
   const isJoinButtonVisible = isAuthorized && !isActive && isAccessLoaded && !isSponsoredButtonVisible;
   const isPlayerVisible = hasAccess && isAuthenticated() && !accessLoading && !sessionLoading && !accessFetchingLoading;
+  const poster = getAttachmentCid(data, 'square') || getAttachmentCid(data, 'poster')
 
   useEffect(() => {
     if (!ownerAddress) return;
@@ -230,7 +231,7 @@ export default function PublicationDetailsView({ id }: Props) {
 
                   <Image
                     alt={data?.id}
-                    src={getAttachmentCid(data, 'square') || getAttachmentCid(data, 'poster')}
+                    src={poster}
                     ratio="1/1"
                     sx={{
                       borderRadius: 1,

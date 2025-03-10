@@ -66,21 +66,24 @@ export function useSubmitAssetToLens(): UseSubmitAssetToLensReturn {
         const description = sanitizeDescription(descriptionRaw);
 
         // 2. Search for wallpaper and poster/large CIDs
-        let wallpaperCid = "";
-        let largeCid = "";
-        let squareCid = "";
+        const cidMapping: Record<string, string> = {
+          wallpaper: "wallpaperCid",
+          poster: "posterCid",
+          square: "squareCid",
+        };
 
-        for (const attachment of responseData.Data.attachments) {
-          if (attachment.title === "wallpaper") {
-            wallpaperCid = attachment.cid;
-          } else if (attachment.title === "poster") {
-            largeCid = attachment.cid;
-          } else if (attachment.title === "square") {
-            squareCid = attachment.cid;
-          }
-        }
+        const { wallpaperCid, posterCid, squareCid } = responseData.Data.attachments.reduce(
+          (acc, attachment) => {
+            const key = cidMapping[attachment.title];
+            if (key) {
+              acc[key] = attachment.cid;
+            }
+            return acc;
+          },
+          { wallpaperCid: "", posterCid: "", squareCid: "" }
+        );
 
-        if (!wallpaperCid || !largeCid || !squareCid) {
+        if (!wallpaperCid || !posterCid || !squareCid) {
           return {
             hash: asset,
             status: "error",
@@ -91,23 +94,17 @@ export function useSubmitAssetToLens(): UseSubmitAssetToLensReturn {
         const getMediaUri = (cid: string) => `https://g.watchit.movie/content/${cid}/`;
 
         // 3. Assemble the attachments (media)
-        const mediaItems: AnyMedia[] = [
-          {
-            item: getMediaUri(largeCid) as any,
-            type: "image/jpeg" as any,
-            altTag: "poster" as any,
-          },
-          {
-            item: getMediaUri(squareCid) as any,
-            type: "image/png" as any,
-            altTag: "square" as any,
-          },
-          {
-            item: getMediaUri(wallpaperCid) as any,
-            type: "image/png" as any,
-            altTag: "wallpaper" as any,
-          },
+        const mediaConfig = [
+          { cid: posterCid, type: "image/jpeg", altTag: "poster" },
+          { cid: squareCid, type: "image/png", altTag: "square" },
+          { cid: wallpaperCid, type: "image/png", altTag: "wallpaper" },
         ];
+
+        const mediaItems: AnyMedia[] = mediaConfig.map(({ cid, type, altTag }) => ({
+          item: getMediaUri(cid) as any,
+          type: type as any,
+          altTag: altTag as any,
+        }));
 
         // 4. Create the metadata for Lens with @lens-protocol/metadata
         const metadata = video({

@@ -20,6 +20,7 @@ const PosterTopTitles = ({ post }: { post: any }) => {
   const { execute: toggleBookMarkFunction, loading: loadingBookMark } = useBookmarkToggle();
   const sessionData = useSelector((state: any) => state.auth.session);
   const dispatch = useDispatch();
+  const poster = getAttachmentCid(post, 'square') || getAttachmentCid(post, 'poster');
 
   const handlePosterClick = () => {
     router.push(paths.dashboard.publication.details(post.id));
@@ -113,7 +114,7 @@ const PosterTopTitles = ({ post }: { post: any }) => {
                 width: '100%',
               }}
               alt={post?.metadata?.title}
-              src={getAttachmentCid(post, 'square') || getAttachmentCid(post, 'poster')}
+              src={poster}
               ratio="1/1"
             />
           </Box>

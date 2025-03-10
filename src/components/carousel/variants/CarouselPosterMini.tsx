@@ -39,12 +39,14 @@ export default function CarouselPosterMini(params: CarouselPosterMiniProps) {
   };
 
   const renderItem = (post: PublicationType) => {
+    const poster = getAttachmentCid(post, 'square') || getAttachmentCid(post, 'poster');
+
     return (
       <PosterHorizontal
         id={post.id}
         title={post?.metadata?.title}
         images={{
-          vertical: getAttachmentCid(post, 'square') || getAttachmentCid(post, 'poster'),
+          vertical: poster,
           wallpaper: getAttachmentCid(post, 'wallpaper'),
         }}
         likes={post.globalStats.upvotes}
