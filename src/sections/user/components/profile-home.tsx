@@ -9,7 +9,6 @@ import { AnyPublication } from '@lens-protocol/api-bindings';
 
 interface ProfileHomeProps {
   publications?: AnyPublication[]; // Array of publications
-  noPaddings?: boolean; // Flag to remove container paddings
   minItemWidth?: number; // Min width per item
   maxItemWidth?: number; // Max width per item
   initialRows?: number; // Rows to show initially
