@@ -8,6 +8,7 @@ import { Profile } from '@lens-protocol/api-bindings';
 // LOCAL IMPORTS
 import { UserItem } from '@src/components/user-item';
 import { useSelector } from 'react-redux';
+import {randomKey} from "@src/utils/uuidv4.ts"
 
 // ----------------------------------------------------------------------
 
@@ -40,7 +41,7 @@ const ProfileFollowers = ({ onActionFinished }: Props) => {
       {followers?.length ? (
         followers.map((follower: any, index: any) => (
           <UserItem
-            key={`follower-${index}`}
+            key={`${randomKey(index, 'follower-')}`}
             profile={follower}
             onActionFinished={onActionFinished}
           />
