@@ -27,6 +27,7 @@ import Label from '../../../components/label';
 import Header from '../../../layouts/dashboard/header';
 import { useRouter } from '@src/routes/hooks';
 import { ProposalsMockList } from '../components/governance-mock.ts';
+import {randomKey} from "@src/utils/uuidv4.ts"
 // import { useSearchPosts } from '../../../api/blog';
 
 // ----------------------------------------------------------------------
@@ -132,7 +133,7 @@ export default function GovernanceListView() {
                     sx={{ mt: 2 }}
                   >
                     {governanceSteps.map((step, index) => (
-                      <Tab key={index} label={step.label} />
+                      <Tab key={randomKey(index, 'item-')} label={step.label} />
                     ))}
                   </Tabs>
                   <Box sx={{ mt: 2 }}>

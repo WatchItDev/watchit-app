@@ -10,6 +10,7 @@ import CardContent from '@mui/material/CardContent';
 import { fCurrency } from '@src/utils/format-number.ts';
 import { IconCheck } from '@tabler/icons-react';
 import Scrollbar from '../../../components/scrollbar';
+import {randomKey} from "@src/utils/uuidv4.ts"
 
 // ----------------------------------------------------------------------
 
@@ -28,7 +29,7 @@ export default function PublicationNewWizardSummaryControl({ data }: Props) {
     return (
       <Section title={title}>
         {filteredItems.map((item: any, index: number) => (
-          <InfoItem key={index} label={item.label} value={item.value} />
+          <InfoItem key={randomKey(index, 'section')} label={item.label} value={item.value} />
         ))}
       </Section>
     );
@@ -145,7 +146,7 @@ export default function PublicationNewWizardSummaryControl({ data }: Props) {
               <Section title="Creators">
                 <ul>
                   {data?.creators.map((creator: any, index: number) => (
-                    <li key={index}>
+                    <li key={randomKey(index, 'ulli-')}>
                       <InfoItem label="Role" value={creator.role} />
                       <InfoItem label="Name" value={creator.name} />
                       <InfoItem label="Wallet Address" value={creator.walletAddress} />
@@ -159,7 +160,7 @@ export default function PublicationNewWizardSummaryControl({ data }: Props) {
               <Section title="Distribution">
                 <ul>
                   {data?.distribution.map((dist: any, index: number) => (
-                    <li key={index}>
+                    <li key={randomKey(index, 'ul-li-item-')}>
                       <InfoItem label="Type" value={dist.type} />
                       <InfoItem label="Currency" value={dist.currency} />
                       <InfoItem label="Price" value={fCurrency(dist.price)} />
