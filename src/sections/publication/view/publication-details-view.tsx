@@ -44,6 +44,7 @@ import { useGetSubscriptionCampaign } from '@src/hooks/protocol/use-get-subscrip
 import { useGetCampaignIsActive } from '@src/hooks/protocol/use-get-campaign-is-active.ts';
 import {MAX_LINES} from "@src/sections/publication/CONSTANTS.ts"
 import { useAccountSession } from '@src/hooks/use-account-session.ts';
+import { getAttachmentCid } from '@src/utils/publication.ts';
 
 // ----------------------------------------------------------------------
 
@@ -103,14 +104,6 @@ export default function PublicationDetailsView({ id }: Props) {
 
     fetchIsActive(campaign, ownerAddress);
   }, [campaign, ownerAddress]);
-
-  const getMediaUri = (cid: string): string => `${cid}`;
-
-  const getWallpaperCid = (): string =>
-    data?.metadata?.attachments?.find((el: any) => el?.altTag === 'wallpaper')?.image?.raw?.uri;
-
-  const getPosterCid = (): string =>
-    data?.metadata?.attachments?.find((el: any) => el?.altTag === 'poster')?.image?.raw?.uri;
 
   const toggleDescription = () => {
     setShowToggle(!showToggle);
@@ -226,7 +219,7 @@ export default function PublicationDetailsView({ id }: Props) {
                   <Image
                     dir="ltr"
                     alt={data?.metadata?.title}
-                    src={getMediaUri(getWallpaperCid())}
+                    src={getAttachmentCid(data, 'wallpaper')}
                     ratio="21/9"
                     sx={{
                       borderRadius: 2,
@@ -237,7 +230,7 @@ export default function PublicationDetailsView({ id }: Props) {
 
                   <Image
                     alt={data?.id}
-                    src={getMediaUri(getPosterCid())}
+                    src={getAttachmentCid(data, 'square') || getAttachmentCid(data, 'poster')}
                     ratio="1/1"
                     sx={{
                       borderRadius: 1,

@@ -68,16 +68,19 @@ export function useSubmitAssetToLens(): UseSubmitAssetToLensReturn {
         // 2. Search for wallpaper and poster/large CIDs
         let wallpaperCid = "";
         let largeCid = "";
+        let squareCid = "";
 
         for (const attachment of responseData.Data.attachments) {
           if (attachment.title === "wallpaper") {
             wallpaperCid = attachment.cid;
-          } else if (attachment.title === "large") {
+          } else if (attachment.title === "poster") {
             largeCid = attachment.cid;
+          } else if (attachment.title === "square") {
+            squareCid = attachment.cid;
           }
         }
 
-        if (!wallpaperCid || !largeCid) {
+        if (!wallpaperCid || !largeCid || !squareCid) {
           return {
             hash: asset,
             status: "error",
@@ -93,6 +96,11 @@ export function useSubmitAssetToLens(): UseSubmitAssetToLensReturn {
             item: getMediaUri(largeCid) as any,
             type: "image/jpeg" as any,
             altTag: "poster" as any,
+          },
+          {
+            item: getMediaUri(squareCid) as any,
+            type: "image/png" as any,
+            altTag: "square" as any,
           },
           {
             item: getMediaUri(wallpaperCid) as any,

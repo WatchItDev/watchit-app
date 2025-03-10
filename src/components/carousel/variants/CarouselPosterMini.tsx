@@ -2,6 +2,7 @@ import CarouselSlide from '@src/components/carousel/components/CarouselSlide';
 import PosterHorizontal from '@src/components/poster/variants/poster-horizontal';
 import { CarouselPosterMiniProps, PublicationType } from '../types';
 import CarouselWrapper from './CarouselWrapper';
+import { getAttachmentCid } from '@src/utils/publication.ts';
 
 export default function CarouselPosterMini(params: CarouselPosterMiniProps) {
   const { data, title, minItemWidth, maxItemWidth } = params;
@@ -38,19 +39,13 @@ export default function CarouselPosterMini(params: CarouselPosterMiniProps) {
   };
 
   const renderItem = (post: PublicationType) => {
-    const getMediaUri = (cid: string): string => `${cid}`;
-    const getWallpaperCid = (post: PublicationType): string =>
-      post?.metadata?.attachments?.find((el: PublicationType) => el.altTag === 'wallpaper')?.image?.raw?.uri;
-    const getPosterCid = (post: PublicationType): string =>
-      post?.metadata?.attachments?.find((el: PublicationType) => el.altTag === 'poster')?.image?.raw?.uri;
-
     return (
       <PosterHorizontal
         id={post.id}
         title={post?.metadata?.title}
         images={{
-          vertical: getMediaUri(getPosterCid(post)),
-          wallpaper: getMediaUri(getWallpaperCid(post)),
+          vertical: getAttachmentCid(post, 'square') || getAttachmentCid(post, 'poster'),
+          wallpaper: getAttachmentCid(post, 'wallpaper'),
         }}
         likes={post.globalStats.upvotes}
         synopsis={post.metadata.content}
