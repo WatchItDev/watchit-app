@@ -16,11 +16,11 @@ interface ProfileCoverProps {
 
 // ----------------------------------------------------------------------
 
-export default function ProfileCover({ profile, sx }: ProfileCoverProps) {
+export default function ProfileCover({ profile, sx }: Readonly<ProfileCoverProps>) {
   const coverImage = profile?.metadata?.coverPicture?.optimized?.uri;
   return (
     <Image
-      src={coverImage ? coverImage : `https://picsum.photos/seed/${profile?.id}/1920/820`}
+      src={coverImage ?? `https://picsum.photos/seed/${profile?.id}/1920/820`}
       sx={{
         ...bgGradient({
           color: alpha('#000', 0.6),
