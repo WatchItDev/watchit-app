@@ -2,12 +2,11 @@ import {useEffect, useState} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
 import {Address, formatUnits, parseAbiItem} from 'viem'
 import {publicClient} from '@src/clients/viem/publicClient.ts'
-import {GLOBAL_CONSTANTS} from '@src/config-global.ts'
-import LedgerVaultAbi from '@src/config/abi/LedgerVault.json'
 import {addTransaction, setTransactions} from '@redux/transactions'
 import {EventConfig} from '@src/hooks/protocol/types.ts'
 import {RootState} from '@redux/store.ts'
-
+import {GLOBAL_CONSTANTS} from '@src/config-global.ts'
+import LedgerVaultAbi from '@src/config/abi/LedgerVault.json'
 /**
  * Hook to retrieve smart wallet transactions by querying logs from the LedgerVault contract.
  * It also manages live updates when new events are detected in real time.
@@ -103,7 +102,7 @@ export default function useGetSmartWalletTransactions() {
 
     const fetchBlockNumber = async () => {
       try {
-        return await publicClient.getBlockNumber().then((block) => BigInt(block  - BigInt(GLOBAL_CONSTANTS.FROM_BLOCK)));
+        return publicClient.getBlockNumber().then((block) => BigInt(block  - BigInt(GLOBAL_CONSTANTS.FROM_BLOCK)));
       } catch (error) {
         console.error('Failed to fetch block number:', error);
       }
