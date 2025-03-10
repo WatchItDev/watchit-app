@@ -42,7 +42,7 @@ const CampaignSettingsModalContent: FC<CampaignSettingsModalContentProps> = (pro
   const RainbowEffect = loadingConfigure ? NeonPaper : Box;
   // Convert the daily price from Wei to MMC (float)
   const dailyPriceInMMC = useMemo((): number => {
-    if (!terms?.amount) return 0; // TODO use a Terms type to avoid to much use of safe navigation
+    if (!terms?.amount) return 0; // use a Terms type to avoid to much use of safe navigation view issue #604
     return parseFloat(ethers.formatUnits(terms.amount, 18));
   }, [terms]);
 
