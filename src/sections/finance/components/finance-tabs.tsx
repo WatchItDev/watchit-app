@@ -44,13 +44,11 @@ export const FinanceTabs = () => {
         ))}
       </Tabs>
       {currentTab === 'graph' && (
-        <>
-          <Grid xs={12} md={8}>
-            <Stack spacing={3}>
-              <FinanceBalanceStatistics />
-            </Stack>
-          </Grid>
-        </>
+        <Grid xs={12} md={8}>
+          <Stack spacing={3}>
+            <FinanceBalanceStatistics />
+          </Stack>
+        </Grid>
       )}
       {currentTab === 'table' && (
         <>

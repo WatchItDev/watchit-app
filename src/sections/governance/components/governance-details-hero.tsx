@@ -1,11 +1,11 @@
 // @mui
-import { alpha, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Container from '@mui/material/Container';
 import SpeedDial from '@mui/material/SpeedDial';
 import Typography from '@mui/material/Typography';
 import ListItemText from '@mui/material/ListItemText';
+import { alpha, useTheme } from '@mui/material/styles';
 // hooks
 import { useResponsive } from '@src/hooks/use-responsive.ts';
 // utils
@@ -15,14 +15,13 @@ import { bgGradient } from '@src/theme/css.ts';
 // components
 import Iconify from '@src/components/iconify';
 // types
-import { IPostHero } from '@types/blog.ts';
 import AvatarProfile from "@src/components/avatar/avatar.tsx";
+import { IPostHero } from '@src/types/blog.ts';
 
 // ----------------------------------------------------------------------
 
-export default function GovernanceDetailsHero({ title, author, coverUrl, createdAt }: IPostHero) {
+export default function GovernanceDetailsHero({ title, author, coverUrl, createdAt }: Readonly<IPostHero>) {
   const theme = useTheme();
-
   const smUp = useResponsive('up', 'sm');
 
   return (

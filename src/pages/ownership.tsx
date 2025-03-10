@@ -5,7 +5,7 @@ import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 import { OgMetaTags } from '@src/components/og-meta-tags.tsx';
 import Header from '@src/layouts/dashboard/header.tsx';
 import HeaderContent from '@src/layouts/dashboard/header-content.tsx';
-import Ownership from '@src/sections/ownership';
+import { OwnershipView } from '@src/sections/ownership/index';
 import { useSelector } from 'react-redux';
 
 // ----------------------------------------------------------------------
@@ -33,7 +33,7 @@ export default function FileManagerPage() {
           <Header>
             <HeaderContent title="Ownership" />
           </Header>
-          <Ownership />
+          <OwnershipView />
         </>
       ) : (
         <BlankView>

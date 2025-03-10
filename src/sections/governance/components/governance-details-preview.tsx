@@ -29,20 +29,19 @@ interface Props {
   onSubmit: VoidFunction;
 }
 
-export default function GovernanceDetailsPreview({
-  title,
-  coverUrl,
-  content,
-  description,
-  //
-  open,
-  isValid,
-  onClose,
-  onSubmit,
-  isSubmitting,
-}: Props) {
+export default function GovernanceDetailsPreview(props: Readonly<Props>) {
+  const {
+    title,
+    coverUrl,
+    content,
+    description,
+    open,
+    isValid,
+    onClose,
+    onSubmit,
+    isSubmitting,
+  } = props;
   const hasContent = title || description || content || coverUrl;
-
   const hasHero = title || coverUrl;
 
   return (

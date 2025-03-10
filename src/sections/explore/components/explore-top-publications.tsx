@@ -11,7 +11,6 @@ import {
 import {useEffect} from "react"
 import { useDispatch } from 'react-redux';
 import { setExploreLoading } from '@redux/loading/index.ts';
-// import { ExploreTopPublicationsSkeleton } from '@src/sections/explore/components/explore-top-publications.skeleton.tsx';
 
 // ----------------------------------------------------------------------
 
@@ -40,8 +39,6 @@ export const ExploreTopPublications = () => {
   useEffect(() => {
     dispatch(setExploreLoading({ key: 'top', isLoading: loading }));
   }, [loading])
-
-  //if (loading) return <ExploreTopPublicationsSkeleton/>;
 
   const combinedPosts = [...(explorePublications ?? []), ...(data ?? [])]
     .filter((item, index, self) => self.findIndex((t) => t.id === item.id) === index)

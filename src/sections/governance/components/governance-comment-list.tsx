@@ -12,7 +12,7 @@ interface Props {
   comments: IPostComment[];
 }
 
-export default function GovernanceCommentList({ comments }: Props) {
+export default function GovernanceCommentList({ comments }: Readonly<Props>) {
   return (
     <>
       <>
@@ -36,10 +36,10 @@ export default function GovernanceCommentList({ comments }: Props) {
                   return (
                     <GovernanceCommentItem
                       key={reply.id}
-                      name={userReply?.name || ''}
+                      name={userReply?.name ?? ''}
                       message={reply.message}
                       postedAt={reply.postedAt}
-                      avatarUrl={userReply?.avatarUrl || ''}
+                      avatarUrl={userReply?.avatarUrl ?? ''}
                       tagUser={reply.tagUser}
                       hasReply
                     />

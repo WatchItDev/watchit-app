@@ -31,7 +31,7 @@ export default function GovernanceCommentItem({
   tagUser,
   postedAt,
   hasReply,
-}: Props) {
+}: Readonly<Props>) {
   const reply = useBoolean();
 
   return (

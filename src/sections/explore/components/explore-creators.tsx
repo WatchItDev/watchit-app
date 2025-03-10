@@ -4,7 +4,6 @@ import { filterHiddenProfiles } from '@src/utils/profile.ts';
 import {useEffect} from "react"
 import {setExploreLoading} from "@redux/loading"
 import { useDispatch } from 'react-redux';
-// import { ExploreCreatorsSkeleton } from '@src/sections/explore/components/explore-creators.skeleton.tsx';
 
 
 // ----------------------------------------------------------------------
@@ -27,9 +26,6 @@ export const ExploreCreators = () => {
   useEffect(() => {
     dispatch(setExploreLoading({ key: 'creators', isLoading: loading }));
   }, [loading])
-
-
-  /*if (loading) return <ExploreCreatorsSkeleton />;*/
 
   return (
     <>

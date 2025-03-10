@@ -1,4 +1,4 @@
-import { useEffect, useState, lazy, Suspense } from 'react';
+import { useEffect, useState, lazy, Suspense, FC } from 'react';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
@@ -46,7 +46,8 @@ const LazyDialogActions = lazy(() => import('@mui/material/DialogActions'));
 
 // ----------------------------------------------------------------------
 
-export default function PublicationCommentItem({ comment, hasReply, canReply }: PublicationCommentItemProps) {
+const PublicationCommentItem:FC<PublicationCommentItemProps> = (props) => {
+  const { comment, hasReply, canReply } = props;
   const isPendingComment = !!comment?.uri;
 
   const ContentContainer = isPendingComment ? NeonPaperContainer : Paper;
@@ -383,3 +384,5 @@ export default function PublicationCommentItem({ comment, hasReply, canReply }: 
     </Stack>
   );
 }
+
+export default PublicationCommentItem;

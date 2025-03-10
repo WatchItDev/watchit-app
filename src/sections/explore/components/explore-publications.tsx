@@ -6,7 +6,6 @@ import { useResponsive } from '@src/hooks/use-responsive.ts';
 import {useEffect} from "react"
 import {setExploreLoading} from "@redux/loading"
 import { useDispatch } from 'react-redux';
-// import { ExplorePublicationsSkeleton } from '@src/sections/explore/components/explore-publications.skeleton.tsx';
 
 // ----------------------------------------------------------------------
 
@@ -33,9 +32,6 @@ export const ExplorePublications = () => {
   useEffect(() => {
     dispatch(setExploreLoading({ key: 'posts', isLoading: loading }));
   }, [loading])
-
-
-  // if (loading) return <ExplorePublicationsSkeleton />;
 
   return (
     <CarouselPosterMini
