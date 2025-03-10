@@ -28,7 +28,7 @@ export default function ProfileHome({
   maxHeight = '31rem',
   scrollable = true,
   scrollOnShowMore = true,
-}: ProfileHomeProps) {
+}: Readonly<ProfileHomeProps>) {
   const parentRef = useRef<HTMLDivElement>(null);
   const minibarState = useSelector((state: any) => state.minibar.state);
 
