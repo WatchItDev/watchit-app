@@ -9,7 +9,7 @@ import { PostCommentListProps } from '@src/sections/publication/types.ts';
 
 // ----------------------------------------------------------------------
 
-export default function PostCommentList({ publicationId: id, showReplies }: PostCommentListProps) {
+export default function PostCommentList({ publicationId: id, showReplies }: Readonly<PostCommentListProps>) {
   const pendingComments = useSelector((state: any) => state.comments.pendingComments);
   const { data: comments, error, loading, execute } = useLazyPublications();
   const { hiddenComments, refetchTriggerByPublication } = useSelector(
@@ -29,7 +29,6 @@ export default function PostCommentList({ publicationId: id, showReplies }: Post
 
       if (result.isFailure()) {
         console.log('Error trying to get comments');
-        return;
       }
     })();
   }, [refetchTrigger]);

@@ -9,15 +9,13 @@ import {
   PublicationMetadataSchema,
   formatZodError,
   MetadataAttributeType,
-  MarketplaceMetadataAttributeDisplayType,
-} from '@lens-protocol/metadata';
+  MarketplaceMetadataAttributeDisplayType, PublicationId,
+} from '@lens-protocol/metadata'
 import FormProvider from '@src/components/hook-form';
 import InputBase from '@mui/material/InputBase';
 import InputAdornment from '@mui/material/InputAdornment';
 import { alpha } from '@mui/material/styles';
 import Iconify from '@src/components/iconify';
-// @ts-ignore
-import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
 import { uploadMetadataToIPFS } from '@src/utils/ipfs.ts';
 import uuidv4 from '@src/utils/uuidv4.ts';
 import { useDispatch, useSelector } from 'react-redux';
@@ -103,13 +101,12 @@ const MovieCommentForm = ({ commentOn, owner, root }: MovieCommentFormProps) => 
 
       // Create a pending comment object
       const pendingComment: AnyPublication = {
-        // @ts-ignore
-        id: uuid as string,
-        // @ts-ignore
+        id: uuid as PublicationId,
+        // @ts-expect-error Only set the content
         metadata: {
           content: data.comment,
         },
-        // @ts-ignore
+        // @ts-expect-error Only set the hasUpvoted
         operations: {
           hasUpvoted: false,
         },
