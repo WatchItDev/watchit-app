@@ -22,7 +22,7 @@ import { useRouter } from '@src/routes/hooks';
 // _mock
 import { _tags } from '@src/_mock';
 // types
-import { IPostItem } from '@types/blog.ts';
+import { IPostItem } from '@src/types/blog.ts';
 // components
 import { CustomFile } from '@src/components/upload';
 import { useSnackbar } from '@src/components/snackbar';
@@ -41,13 +41,10 @@ interface Props {
   currentPost?: IPostItem;
 }
 
-export default function GovernanceNewEditForm({ currentPost }: Props) {
+export default function GovernanceNewEditForm({ currentPost }: Readonly<Props>) {
   const router = useRouter();
-
   const mdUp = useResponsive('up', 'md');
-
   const { enqueueSnackbar } = useSnackbar();
-
   const preview = useBoolean();
 
   const NewBlogSchema = Yup.object().shape({
@@ -61,21 +58,19 @@ export default function GovernanceNewEditForm({ currentPost }: Props) {
     metaTitle: Yup.string(),
     metaDescription: Yup.string(),
   });
-
   const defaultValues = useMemo(
     () => ({
-      title: currentPost?.title || '',
-      description: currentPost?.description || '',
-      content: currentPost?.content || '',
-      coverUrl: currentPost?.coverUrl || null,
-      tags: currentPost?.tags || [],
-      metaKeywords: currentPost?.metaKeywords || [],
-      metaTitle: currentPost?.metaTitle || '',
-      metaDescription: currentPost?.metaDescription || '',
+      title: currentPost?.title ?? '',
+      description: currentPost?.description ?? '',
+      content: currentPost?.content ?? '',
+      coverUrl: currentPost?.coverUrl ?? null,
+      tags: currentPost?.tags ?? [],
+      metaKeywords: currentPost?.metaKeywords ?? [],
+      metaTitle: currentPost?.metaTitle ?? '',
+      metaDescription: currentPost?.metaDescription ?? '',
     }),
     [currentPost]
   );
-
   const methods = useForm({
     resolver: yupResolver(NewBlogSchema),
     defaultValues,

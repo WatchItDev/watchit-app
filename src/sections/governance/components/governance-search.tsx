@@ -24,7 +24,8 @@ interface Props {
   loading?: boolean;
 }
 
-export default function GovernanceSearch({ query, results, onSearch, hrefItem, loading }: Props) {
+export default function GovernanceSearch(props: Readonly<Props>) {
+  const { query, results, onSearch, hrefItem, loading } = props;
   const router = useRouter();
 
   const handleClick = (title: string) => {

@@ -10,7 +10,7 @@ interface Props {
   loading?: boolean;
 }
 
-export default function GovernanceListHorizontal({ posts, loading }: Props) {
+export default function GovernanceListHorizontal({ posts, loading }: Readonly<Props>) {
   const renderSkeleton = (
     <>
       {[...Array(16)].map((_, index) => (
