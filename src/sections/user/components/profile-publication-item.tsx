@@ -21,7 +21,6 @@ export const ProfilePublicationItem = ({ publication }: Props) => {
     }
   }, [publication]);
 
-  // const getMediaUri = (cid: string): string => `https://ipfs.io/ipfs/${cid.replace('ipfs://', '')}`;
   const getMediaUri = (cid: string): string => `${cid}`;
   const getPosterCid = (): string =>
     publication?.metadata?.attachments?.find((el: any) => el.altTag === 'poster')?.image?.raw?.uri;
