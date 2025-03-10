@@ -4,14 +4,7 @@ import ListItemText from '@mui/material/ListItemText';
 import ListItemButton from '@mui/material/ListItemButton';
 import Label from '@src/components/label';
 import { COLORS } from '@src/layouts/config-layout.ts';
-
-interface Props {
-  title: string;
-  subtitle: string;
-  groupLabel: string;
-  onClickItem: VoidFunction;
-  query?: string;
-}
+import {ResultProps} from "@src/layouts/_common/searchbar/types.ts"
 
 const highlightText = (text: string, query: string) => {
   if (!query) return text;
@@ -36,7 +29,7 @@ export default function ResultItem({
   groupLabel,
   onClickItem,
   query = '',
-}: Props) {
+}: ResultProps) {
   return (
     <ListItemButton
       onClick={onClickItem}
