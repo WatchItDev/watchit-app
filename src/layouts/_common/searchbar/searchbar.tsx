@@ -28,7 +28,7 @@ import { useSelector } from 'react-redux';
 import {filterHiddenProfiles} from "@src/utils/profile.ts";
 import {RootState} from "@redux/store.ts"
 import {SearchPublicationResult} from "@src/layouts/_common/searchbar/types.ts"
-import { useOperatingSystem } from '@src/hooks/use-operating-system';
+import {detectOperatingSystem} from "@src/utils/os-detection.ts"
 
 function Searchbar() {
   const theme = useTheme();
@@ -37,7 +37,7 @@ function Searchbar() {
   const mdUp = useResponsive('up', 'md');
   const [searchQuery, setSearchQuery] = useState('');
 
-  const { isMac } = useOperatingSystem();
+  const { isMac } = detectOperatingSystem();
   const shortcutLabel = isMac ? '⌘K' : 'Ctrl+K';
   const handleClose = useCallback(() => {
     search.onFalse();

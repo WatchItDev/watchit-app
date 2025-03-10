@@ -9,7 +9,7 @@ import { act } from 'react';
 import { useSearchProfiles } from "@lens-protocol/react-web";
 import { useSearchPublications } from "@src/hooks/use-search-publications";
 import { vi, Mock } from 'vitest';
-import { useOperatingSystem } from "@src/hooks/use-operating-system.ts";
+import { detectOperatingSystem } from "@src/utils/os-detection.ts";
 
 vi.mock('@src/components/scrollbar', () => ({
   default: ({ children }: { children: React.ReactNode }) => <div data-testid="mock-scrollbar">{children}</div>,
@@ -23,8 +23,8 @@ vi.mock('@src/hooks/use-search-publications', () => ({
   useSearchPublications: vi.fn()
 }));
 
-vi.mock('@src/hooks/use-operating-system', () => ({
-  useOperatingSystem: vi.fn()
+vi.mock('@src/utils/os-detection', () => ({
+  detectOperatingSystem: vi.fn()
 }));
 
 describe("[COMPONENTS]: Searchbar Component", () => {
@@ -43,7 +43,7 @@ describe("[COMPONENTS]: Searchbar Component", () => {
       error: null
     });
 
-    (useOperatingSystem as Mock).mockReturnValue({ isMac: true });
+    (detectOperatingSystem as Mock).mockReturnValue({ isMac: true });
   });
 
   it("displays correct shortcut label for mac", () => {
@@ -52,7 +52,7 @@ describe("[COMPONENTS]: Searchbar Component", () => {
   });
 
   it("displays correct shortcut Label for windows", () => {
-    (useOperatingSystem as Mock).mockReturnValue({ isMac: false });
+    (detectOperatingSystem as Mock).mockReturnValue({ isMac: false });
 
     const { getByText } = Testing.renderWithStoreAndRouter(<Searchbar />);
 
@@ -73,7 +73,7 @@ describe("[COMPONENTS]: Searchbar Component", () => {
   });
 
   it("should open search on CTRL+K", async () => {
-    (useOperatingSystem as Mock).mockReturnValue({ isMac: false });
+    (detectOperatingSystem as Mock).mockReturnValue({ isMac: false });
 
     const { baseElement } = Testing.renderWithStoreAndRouter(<Searchbar />);
 
