@@ -8,13 +8,10 @@ import Box from "@mui/material/Box";
 import { randomColors } from "@src/components/poster/variants/poster-latest-content.tsx";
 import { IconRosetteDiscountCheckFilled } from "@tabler/icons-react";
 import { FC } from "react";
-import { ProfileHeaderProps } from "@src/sections/user/components/profile-header.tsx";
 import { styled } from "@mui/material/styles";
 import { useSelector } from "react-redux";
-
-// ---------------------------------------------------------------- ------
-// TODO: move to envs
-const urlAttestationBase = 'https://polygon-amoy.easscan.org/attestation/view/';
+import {ProfileHeaderProps} from "@src/sections/user/types.ts"
+import {GLOBAL_CONSTANTS} from "@src/config-global.ts"
 
 interface ProfileRightSidebarProps extends ProfileHeaderProps {
   sidebarProps: {
@@ -102,7 +99,7 @@ const ProfileRightSidebar: FC<ProfileRightSidebarProps> = ({ profile, sidebarPro
               <Typography color="text.secondary">License</Typography>
               <OpenableText
                 label={truncateAddress(attestationAddress)}
-                url={`${urlAttestationBase}${attestationAddress}`}
+                url={`${GLOBAL_CONSTANTS.ATTESTATION_BASE_URL}${attestationAddress}`}
               />
             </Stack>
           </>
