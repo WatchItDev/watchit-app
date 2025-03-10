@@ -11,9 +11,8 @@ interface Props {
 }
 
 export const ProfilePublicationItem = ({ publication }: Props) => {
-  // @ts-ignore
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [hasLiked, setHasLiked] = useState(false);
+  const [, setHasLiked] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
