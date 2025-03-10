@@ -237,7 +237,6 @@ function applyFilter({
     }
 
     if (status === 'transferTo') {
-      console.log('filteredData', filteredData);
       filteredData = filteredData.filter(
         (t) => t.type.toLowerCase() === 'transferfrom' || t.type.toLowerCase() === 'deposit'
       );

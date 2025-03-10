@@ -1,4 +1,5 @@
 import { useState, memo, useCallback } from 'react';
+
 import { useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import List from '@mui/material/List';
@@ -8,15 +9,16 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import InputAdornment from '@mui/material/InputAdornment';
 import Dialog, { dialogClasses } from '@mui/material/Dialog';
+
+import SearchNotFound from '@src/components/search-not-found';
+import ResultItem from './result-item';
+import Scrollbar from '@src/components/scrollbar';
+import Label from '@src/components/label';
+import Iconify from '@src/components/iconify';
 import { useBoolean } from '@src/hooks/use-boolean';
 import { useResponsive } from '@src/hooks/use-responsive';
 import { useEventListener } from '@src/hooks/use-event-listener';
-import Label from '@src/components/label';
-import Iconify from '@src/components/iconify';
-import Scrollbar from '@src/components/scrollbar';
 import { useRouter } from '@src/routes/hooks';
-import SearchNotFound from '@src/components/search-not-found';
-import ResultItem from './result-item';
 import { applyFilter } from './utils';
 import { useSearchProfiles } from '@lens-protocol/react-web';
 import { useSearchPublications } from '@src/hooks/use-search-publications';
@@ -24,6 +26,9 @@ import { CircularProgress } from '@mui/material';
 import { paths } from '@src/routes/paths.ts';
 import { useSelector } from 'react-redux';
 import {filterHiddenProfiles} from "@src/utils/profile.ts";
+import {RootState} from "@redux/store.ts"
+import {SearchPublicationResult} from "@src/layouts/_common/searchbar/types.ts"
+import {detectOperatingSystem} from "@src/utils/os-detection.ts"
 
 function Searchbar() {
   const theme = useTheme();
@@ -32,13 +37,16 @@ function Searchbar() {
   const mdUp = useResponsive('up', 'md');
   const [searchQuery, setSearchQuery] = useState('');
 
+  const { isMac } = detectOperatingSystem();
+  const shortcutLabel = isMac ? '⌘K' : 'Ctrl+K';
   const handleClose = useCallback(() => {
     search.onFalse();
     setSearchQuery('');
   }, [search]);
 
-  const handleKeyDown = (event: any) => {
-    if (event.key === 'k' && event.metaKey) {
+  const handleKeyDown = (event: KeyboardEvent) => {
+    if (event.key === 'k' && ((isMac && event.metaKey) || (!isMac && event.ctrlKey))) {
+      event.preventDefault();
       search.onToggle();
       setSearchQuery('');
     }
@@ -60,7 +68,7 @@ function Searchbar() {
     handleClose();
   };
 
-  const handleSearch = useCallback((event: any) => {
+  const handleSearch = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value);
   }, []);
 
@@ -77,8 +85,7 @@ function Searchbar() {
   const notFound =
     searchQuery && !dataFiltered.length && !profiles?.length && !publications?.length;
 
-  // @ts-ignore
-  const minibarState = useSelector((state) => state.minibar.state);
+  const minibarState = useSelector((state: RootState) => state.minibar.state);
 
   const isMini = minibarState === 'mini';
   const lgUp = useResponsive('up', 'lg');
@@ -122,7 +129,7 @@ function Searchbar() {
           ))}
 
         {publications &&
-          publications.map((publication: any) => (
+          publications.map((publication: SearchPublicationResult) => (
             <List key={publication.id}>
               <ResultItem
                 query={searchQuery}
@@ -168,9 +175,9 @@ function Searchbar() {
           </Typography>
         )}
       </IconButton>
-      {mdUp && <Label sx={{ px: 0.75, mr: 1, fontSize: 12, color: 'text.secondary' }}>⌘K</Label>}
+      {mdUp && <Label sx={{ px: 0.75, mr: 1, fontSize: 12, color: 'text.secondary' }}>{shortcutLabel}</Label>}
       {!isMini && !mdUp && (
-        <Label sx={{ px: 0.75, mr: 1, fontSize: 12, color: 'text.secondary' }}>⌘K</Label>
+        <Label sx={{ px: 0.75, mr: 1, fontSize: 12, color: 'text.secondary' }}>{shortcutLabel}</Label>
       )}
     </Button>
   );
