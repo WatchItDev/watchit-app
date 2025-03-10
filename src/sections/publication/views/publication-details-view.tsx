@@ -41,7 +41,7 @@ import { PublicationJoinButton } from '@src/sections/publication/components/publ
 
 // ----------------------------------------------------------------------
 
-export default function PublicationDetailsView({ id }: PublicationDetailsViewProps) {
+export default function PublicationDetailsView({ id }: Readonly<PublicationDetailsViewProps>) {
   // STATES HOOKS
   const dispatch = useDispatch();
   const [openSubscribeModal, setOpenSubscribeModal] = useState(false);

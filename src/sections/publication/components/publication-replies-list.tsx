@@ -25,7 +25,6 @@ const RepliesList = ({ parentCommentId }: RepliesListProps) => {
 
       if (result.isFailure()) {
         console.log('Error trying to get replies');
-        return;
       }
     })();
   }, [refetchTrigger]);
