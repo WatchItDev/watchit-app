@@ -32,6 +32,7 @@ import { useRouter } from '@src/routes/hooks';
 import { ProposalsMockList, proposalVotes as initialProposalVotes } from '../components/governance-mock.ts';
 import AvatarProfile from "@src/components/avatar/avatar.tsx";
 import {dicebear} from "@src/utils/dicebear.ts";
+import {randomKey} from "@src/utils/uuidv4.ts"
 
 // ----------------------------------------------------------------------
 
@@ -311,7 +312,7 @@ export default function GovernanceDetailsView() {
               <Box sx={{ maxHeight: 200, overflowY: 'auto' }}>
                 <Stack spacing={2} sx={{ mt: 2 }}>
                   {proposalVotes.votes.map((vote, index) => (
-                    <Box key={index} display="flex" alignItems="center" justifyContent="flex-start">
+                    <Box key={randomKey(index, 'box-stack-')} display="flex" alignItems="center" justifyContent="flex-start">
                       <Box
                         display="flex"
                         alignItems="center"

@@ -2,6 +2,7 @@
 import Box from '@mui/material/Box';
 import { GovernanceItemSkeleton } from './governance-skeleton.tsx';
 import GovernanceItemHorizontal from './governance-item-horizontal.tsx';
+import {randomKey} from "@src/utils/uuidv4.ts"
 
 // ----------------------------------------------------------------------
 
@@ -14,7 +15,7 @@ export default function GovernanceListHorizontal({ posts, loading }: Readonly<Pr
   const renderSkeleton = (
     <>
       {[...Array(16)].map((_, index) => (
-        <GovernanceItemSkeleton key={index} variant="horizontal" />
+        <GovernanceItemSkeleton key={randomKey(index, 'item-')} variant="horizontal" />
       ))}
     </>
   );

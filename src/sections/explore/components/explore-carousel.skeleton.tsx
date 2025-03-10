@@ -3,6 +3,7 @@ import { Card, CardHeader, CardContent, Box } from '@mui/material';
 import { useResponsive } from '@src/hooks/use-responsive';
 import { useItemsPerSlide } from '@src/hooks/components/use-item-per-slide';
 import { ExploreCarouselSkeletonProps } from '@src/sections/explore/types.ts';
+import {randomKey} from "@src/utils/uuidv4.ts"
 
 export const ExploreCarouselSkeleton: React.FC<ExploreCarouselSkeletonProps> = (props) => {
   const { title, SkeletonItemComponent = Box } = props;
@@ -34,10 +35,10 @@ export const ExploreCarouselSkeleton: React.FC<ExploreCarouselSkeletonProps> = (
       <CardContent sx={{ px: 0.5 }}>
         <Box ref={parentRef} sx={{ overflow: 'hidden' }}>
           {[row1, row2].map((rowItems, rowIndex) => (
-            <Box key={`row-${rowIndex}`} sx={{ display: 'flex' }}>
+            <Box key={`${randomKey(rowIndex, 'row-')}`} sx={{ display: 'flex' }}>
               {rowItems.map((_, itemIndex) => (
                 <Box
-                  key={`item-${itemIndex}`}
+                  key={`${randomKey(itemIndex, 'item-')}`}
                   sx={{
                     flexBasis: `${itemWidthPercent}%`,
                     maxWidth: `${itemWidthPercent}%`,

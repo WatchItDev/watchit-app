@@ -13,6 +13,7 @@ import SearchNotFound from '@src/components/search-not-found';
 // types
 import { IPostItem } from '@src/types/blog.ts';
 import AvatarProfile from "@src/components/avatar/avatar.tsx";
+import {randomKey} from "@src/utils/uuidv4.ts"
 
 // ----------------------------------------------------------------------
 
@@ -47,7 +48,7 @@ export default function GovernanceSearch(props: Readonly<Props>) {
       autoHighlight
       popupIcon={null}
       options={results}
-      onInputChange={(event, newValue) => onSearch(newValue)}
+      onInputChange={(_event, newValue) => onSearch(newValue)}
       getOptionLabel={(option) => option.title}
       noOptionsText={<SearchNotFound query={query} sx={{ bgcolor: 'unset' }} />}
       isOptionEqualToValue={(option, value) => option.id === value.id}
@@ -110,7 +111,7 @@ export default function GovernanceSearch(props: Readonly<Props>) {
             <Link key={inputValue} underline="none" onClick={() => handleClick(post.title)}>
               {parts.map((part, index) => (
                 <Typography
-                  key={index}
+                  key={randomKey(index, 'link-text-')}
                   component="span"
                   color={part.highlight ? 'primary' : 'textPrimary'}
                   sx={{
