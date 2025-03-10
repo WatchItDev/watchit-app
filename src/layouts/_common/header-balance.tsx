@@ -37,7 +37,7 @@ export default function HeaderBalance() {
             justifyContent: 'center',
           }}
         >
-          <Tooltip title="Native currency of Watchit's ecosystem">
+          <Tooltip title="Native currency">
             <img
               src={mmcTokenIcon}
               alt="MMC Token"
@@ -45,7 +45,7 @@ export default function HeaderBalance() {
             />
           </Tooltip>
         </Box>
-        <Tooltip title="Balance of MMC tokens">
+        <Tooltip title="MMC tokens balance">
           <Typography variant="subtitle2" sx={{ textAlign: 'left' }} noWrap>
             {formatBalanceNumber(balance)}
           </Typography>

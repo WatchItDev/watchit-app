@@ -96,7 +96,7 @@ const ProfileRightSidebar: FC<ProfileRightSidebarProps> = ({ profile, sidebarPro
         profile?.id !== sessionData?.profile?.id && (
           <>
             <Divider sx={{ borderColor: 'rgba(255, 255, 255, 0.08)', width: '100%' }} />
-            <Tooltip title="This License address validates the authenticity of a license using blockchain technology between the creator and the user.">
+            <Tooltip title="This license address represents the license issued using blockchain technology, ensuring a secure agreement between the creator and the user..">
             <Stack
               direction="row"
               sx={{
