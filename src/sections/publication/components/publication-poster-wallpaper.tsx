@@ -7,6 +7,8 @@ import { PublicationPosterWallpaperProps } from '@src/sections/publication/types
 
 export const PublicationPosterWallpaper: FC<PropsWithChildren<PublicationPosterWallpaperProps>> = (props) => {
   const { publication, children } = props;
+  const poster = getAttachmentCid(publication, 'square') || getAttachmentCid(publication, 'poster')
+  const wallpaper = getAttachmentCid(publication, 'wallpaper');
 
   return (
     <HeroPosterContainer>
@@ -15,7 +17,7 @@ export const PublicationPosterWallpaper: FC<PropsWithChildren<PublicationPosterW
       <Image
         dir="ltr"
         alt={publication?.metadata?.title || 'publication-wallpaper'}
-        src={getAttachmentCid(publication, 'wallpaper')}
+        src={wallpaper}
         ratio="21/9"
         sx={{
           borderRadius: 2,
@@ -26,7 +28,7 @@ export const PublicationPosterWallpaper: FC<PropsWithChildren<PublicationPosterW
 
       <Image
         alt={publication?.metadata?.title || 'poster'}
-        src={getAttachmentCid(publication, 'poster')}
+        src={poster}
         ratio="1/1"
         sx={{
           borderRadius: 1,

@@ -14,10 +14,6 @@ export const ProfilePublicationItem = ({ publication }: Props) => {
   const router = useRouter();
   const poster = getAttachmentCid(publication, 'square') || getAttachmentCid(publication, 'poster');
 
-  const getMediaUri = (cid: string): string => `${cid}`;
-  const getPosterCid = (): string =>
-    publication?.metadata?.attachments?.find((el: any) => el.altTag === 'poster')?.image?.raw?.uri;
-
   const handleClick = () => {
     router.push(paths.dashboard.publication.details(publication.id));
   };
