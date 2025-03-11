@@ -80,7 +80,6 @@ export function useSubmitAssetToLens(): UseSubmitAssetToLensReturn {
           return acc;
         }, {});
 
-
         const validAttachments = !posterCid || !squareCid || !wallpaperCid
         if (validAttachments) {
           return {
