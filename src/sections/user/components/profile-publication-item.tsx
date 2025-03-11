@@ -11,8 +11,9 @@ interface Props {
 }
 
 export const ProfilePublicationItem = ({ publication }: Props) => {
+  // @ts-expect-error hasLiked is not used
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [, setHasLiked] = useState(false);
+  const [hasLiked, setHasLiked] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
