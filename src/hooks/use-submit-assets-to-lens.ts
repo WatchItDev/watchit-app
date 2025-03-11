@@ -72,13 +72,13 @@ export function useSubmitAssetToLens(): UseSubmitAssetToLensReturn {
           square: "squareCid",
         };
 
-        const { wallpaperCid, posterCid, squareCid } = responseData.Data.attachments.reduce(
+        const attachments = responseData.Data.attachments
+        const reducedAttachments = attachments.reduce(
           (acc, attachment) => {
             const key = cidMapping[attachment.title];
             acc[key] = attachment.cid;
             return acc;
-          },
-          { wallpaperCid: "", posterCid: "", squareCid: "" }
+          }, {}
         );
 
         if (!wallpaperCid || !posterCid || !squareCid) {
