@@ -15,17 +15,13 @@ const RepliesList = ({ parentCommentId }: RepliesListProps) => {
 
   useEffect(() => {
     (async () => {
-      const result = await execute({
+      await execute({
         where: {
           commentOn: {
             id: publicationId(parentCommentId),
           },
         },
       });
-
-      if (result.isFailure()) {
-        console.log('Error trying to get replies');
-      }
     })();
   }, [refetchTrigger]);
 
