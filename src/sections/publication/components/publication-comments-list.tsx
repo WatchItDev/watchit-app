@@ -19,17 +19,13 @@ export default function PostCommentList({ publicationId: id, showReplies }: Read
 
   useEffect(() => {
     (async () => {
-      const result = await execute({
+      await execute({
         where: {
           commentOn: {
             id: publicationId(id),
           },
         },
       });
-
-      if (result.isFailure()) {
-        console.log('Error trying to get comments');
-      }
     })();
   }, [refetchTrigger]);
 
