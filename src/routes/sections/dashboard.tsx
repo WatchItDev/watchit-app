@@ -17,8 +17,6 @@ const EventsPage = lazy(() => import('@src/pages/events.tsx'));
 const AchievementsPage = lazy(() => import('@src/pages/achievements.tsx'));
 // GOVERNANCE
 const GovernancePage = lazy(() => import('@src/pages/governance/list'));
-const GovernanceNewPage = lazy(() => import('@src/pages/governance/new'));
-const GovernanceDetailPage = lazy(() => import('@src/pages/governance/details'));
 // MANAGEMENT
 const AnalyticsPage = lazy(() => import('@src/pages/analytics.tsx'));
 const StudioPage = lazy(() => import('@src/pages/studio.tsx'));
@@ -64,8 +62,6 @@ export const dashboardRoutes = [
         path: 'governance',
         children: [
           { element: <GovernancePage />, index: true },
-          { path: 'details/:id', element: <GovernanceDetailPage /> },
-          { path: 'new', element: <GovernanceNewPage /> },
         ],
       },
       {
