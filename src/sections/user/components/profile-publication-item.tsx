@@ -1,8 +1,10 @@
-import { useRouter } from '@src/routes/hooks';
-import { paths } from '@src/routes/paths.ts';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
+
 import Image from '../../../components/image';
+import { useRouter } from '@src/routes/hooks';
+import { paths } from '@src/routes/paths.ts';
+import { getAttachmentCid } from '@src/utils/publication.ts';
 
 interface Props {
   publication: any;
@@ -10,6 +12,7 @@ interface Props {
 
 export const ProfilePublicationItem = ({ publication }: Props) => {
   const router = useRouter();
+  const poster = getAttachmentCid(publication, 'square') || getAttachmentCid(publication, 'poster');
 
   const getMediaUri = (cid: string): string => `${cid}`;
   const getPosterCid = (): string =>
@@ -18,6 +21,7 @@ export const ProfilePublicationItem = ({ publication }: Props) => {
   const handleClick = () => {
     router.push(paths.dashboard.publication.details(publication.id));
   };
+
   return (
     <Box
       sx={{
@@ -38,7 +42,7 @@ export const ProfilePublicationItem = ({ publication }: Props) => {
     >
       <Image
         alt={publication.id}
-        src={getMediaUri(getPosterCid())}
+        src={poster}
         ratio="1/1"
         sx={{
           borderRadius: 1,

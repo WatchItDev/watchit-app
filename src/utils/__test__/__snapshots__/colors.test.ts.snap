@@ -1,0 +1,11 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`[UTILS]: darken > matches the snapshot for different color variations 1`] = `
+[
+  "#e1e1e1",
+  "#000000",
+  "#e13700",
+  "#011121",
+  "#8293a4",
+]
+`;

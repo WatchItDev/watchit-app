@@ -1,0 +1,12 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`[UTILS]: timeAgo > matches the snapshot for various time ranges 1`] = `
+[
+  "10s ago",
+  "2min ago",
+  "4h ago",
+  "3d ago",
+  "2mo ago",
+  "1y ago",
+]
+`;
