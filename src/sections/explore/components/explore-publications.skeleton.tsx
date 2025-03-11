@@ -42,7 +42,7 @@ export const ExplorePublicationsSkeleton: React.FC = () => {
   return (
     <ExploreCarouselSkeleton
       title="Publications"
-      SkeletonItemComponent={() => <SkeletonItem />}
+      SkeletonItemComponent={<SkeletonItem />}
     />
   );
 };

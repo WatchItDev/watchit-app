@@ -45,7 +45,7 @@ export const ExploreCreatorsSkeleton: React.FC = () => {
   return (
     <ExploreCarouselSkeleton
       title="Latest creators"
-      SkeletonItemComponent={() => <SkeletonItem />}
+      SkeletonItemComponent={<SkeletonItem />}
     />
   );
 };
