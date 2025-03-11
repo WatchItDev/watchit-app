@@ -1,26 +1,15 @@
-import { useState, useEffect } from 'react';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import { PublicationReactionType, hasReacted } from '@lens-protocol/react-web';
-import Image from '../../../components/image';
-import { paths } from '../../../routes/paths.ts';
 import { useRouter } from '@src/routes/hooks';
+import { paths } from '@src/routes/paths.ts';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
+import Image from '../../../components/image';
 
 interface Props {
   publication: any;
 }
 
 export const ProfilePublicationItem = ({ publication }: Props) => {
-  // @ts-expect-error hasLiked is not used
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [hasLiked, setHasLiked] = useState(false);
   const router = useRouter();
-
-  useEffect(() => {
-    if (publication) {
-      setHasLiked(hasReacted({ publication, reaction: PublicationReactionType.Upvote }));
-    }
-  }, [publication]);
 
   const getMediaUri = (cid: string): string => `${cid}`;
   const getPosterCid = (): string =>
