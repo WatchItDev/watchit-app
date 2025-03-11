@@ -124,6 +124,18 @@ const PublicationCommentItem:FC<PublicationCommentItemProps> = (props) => {
     }
   }, [comment?.stats?.upvotes, comment.id, dispatch]);
 
+
+  const getCommentTimeText = () => {
+    if (isPendingComment) {
+      return 'Sending ...';
+    }
+
+    if (comment?.createdAt) {
+      return timeAgo(new Date(comment.createdAt));
+    }
+
+    return 'Just now';
+  };
   return (
     <Stack
       sx={{
@@ -229,11 +241,7 @@ const PublicationCommentItem:FC<PublicationCommentItemProps> = (props) => {
             >
               <Box sx={{ typography: 'subtitle2' }}>{comment?.by?.handle?.localName}</Box>
               <Box sx={{ typography: 'caption', color: 'text.disabled' }}>
-                {isPendingComment
-                  ? 'Sending ...'
-                  : comment?.createdAt
-                    ? timeAgo(new Date(comment.createdAt))
-                    : 'Just now'}
+                {getCommentTimeText()}
               </Box>
             </Stack>
 
