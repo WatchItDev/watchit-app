@@ -1,4 +1,3 @@
-// ProfilePublicationItem.js
 import { useState, useEffect } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -6,6 +5,7 @@ import { PublicationReactionType, hasReacted } from '@lens-protocol/react-web';
 import Image from '../../components/image';
 import { paths } from '../../routes/paths';
 import { useRouter } from '@src/routes/hooks';
+import { getAttachmentCid } from '@src/utils/publication.ts';
 
 interface Props {
   publication: any;
@@ -16,17 +16,13 @@ export const ProfilePublicationItem = ({ publication }: Props) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [hasLiked, setHasLiked] = useState(false);
   const router = useRouter();
+  const poster = getAttachmentCid(publication, 'square') || getAttachmentCid(publication, 'poster');
 
   useEffect(() => {
     if (publication) {
       setHasLiked(hasReacted({ publication, reaction: PublicationReactionType.Upvote }));
     }
   }, [publication]);
-
-  // const getMediaUri = (cid: string): string => `https://ipfs.io/ipfs/${cid.replace('ipfs://', '')}`;
-  const getMediaUri = (cid: string): string => `${cid}`;
-  const getPosterCid = (): string =>
-    publication?.metadata?.attachments?.find((el: any) => el.altTag === 'poster')?.image?.raw?.uri;
 
   const handleClick = () => {
     router.push(paths.dashboard.publication.details(publication.id));
@@ -52,7 +48,7 @@ export const ProfilePublicationItem = ({ publication }: Props) => {
     >
       <Image
         alt={publication.id}
-        src={getMediaUri(getPosterCid())}
+        src={poster}
         ratio="1/1"
         sx={{
           borderRadius: 1,

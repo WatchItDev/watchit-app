@@ -1,13 +1,12 @@
-import { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { parseAbiItem, formatUnits, Address } from 'viem';
-import { publicClient } from '@src/clients/viem/publicClient.ts';
-import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
-import LedgerVaultAbi from '@src/config/abi/LedgerVault.json';
-import { addTransaction, setTransactions } from '@redux/transactions';
-import { EventConfig } from '@src/hooks/protocol/types.ts';
-import { RootState } from '@redux/store.ts';
-
+import {useEffect, useState} from 'react'
+import {useDispatch, useSelector} from 'react-redux'
+import {Address, formatUnits, parseAbiItem} from 'viem'
+import {publicClient} from '@src/clients/viem/publicClient.ts'
+import {addTransaction, setTransactions} from '@redux/transactions'
+import {EventConfig} from '@src/hooks/protocol/types.ts'
+import {RootState} from '@redux/store.ts'
+import {GLOBAL_CONSTANTS} from '@src/config-global.ts'
+import LedgerVaultAbi from '@src/config/abi/LedgerVault.json'
 /**
  * Hook to retrieve smart wallet transactions by querying logs from the LedgerVault contract.
  * It also manages live updates when new events are detected in real time.
@@ -101,9 +100,18 @@ export default function useGetSmartWalletTransactions() {
       return;
     }
 
+    const fetchBlockNumber = async () => {
+      try {
+        return publicClient.getBlockNumber().then((block) => BigInt(block  - BigInt(GLOBAL_CONSTANTS.FROM_BLOCK)));
+      } catch (error) {
+        console.error('Failed to fetch block number:', error);
+      }
+    };
+
     try {
       setLoading(true);
       setError(null);
+      const fromBlock = await fetchBlockNumber();
 
       // a) Build an array of promises, one for each eventConfig, calling publicClient.getLogs.
       const promises = eventConfigs.map(({ eventName, args }) => {
@@ -111,7 +119,7 @@ export default function useGetSmartWalletTransactions() {
           address: GLOBAL_CONSTANTS.LEDGER_VAULT_ADDRESS as Address,
           event: parsedAbis[eventName] as any,
           args,
-          fromBlock: 0n,
+          fromBlock: fromBlock ?? 0n,
           toBlock: 'latest',
         });
       });

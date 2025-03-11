@@ -1,8 +1,5 @@
-// @mui
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
-
-// components is used to import the Image component
 import Image from '@src/components/image';
 import { useRouter } from '@src/routes/hooks';
 import { paths } from '@src/routes/paths.ts';
@@ -13,31 +10,22 @@ import TextMaxLine from '@src/components/text-max-line';
 import { CircularProgress } from '@mui/material';
 import { useBookmarkToggle } from '@lens-protocol/react-web';
 import { openLoginModal } from '@redux/auth';
-// @ts-ignore
-import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
 import { useDispatch, useSelector } from 'react-redux';
 import { addBookmark, removeBookmark } from '@redux/bookmark';
-import {dicebear} from "@src/utils/dicebear.ts";
-
-// ----------------------------------------------------------------------
+import { dicebear } from "@src/utils/dicebear.ts";
+import { getAttachmentCid } from '@src/utils/publication.ts';
 
 const PosterTopTitles = ({ post }: { post: any }) => {
   const router = useRouter();
   const { execute: toggleBookMarkFunction, loading: loadingBookMark } = useBookmarkToggle();
   const sessionData = useSelector((state: any) => state.auth.session);
   const dispatch = useDispatch();
+  const poster = getAttachmentCid(post, 'square') || getAttachmentCid(post, 'poster');
+  const wallpaper = getAttachmentCid(post, 'wallpaper');
 
   const handlePosterClick = () => {
     router.push(paths.dashboard.publication.details(post.id));
   };
-
-  // const getMediaUri = (cid: string): string => `https://ipfs.io/ipfs/${cid?.replace?.('ipfs://', '')}`
-  const getMediaUri = (cid: string): string => `${cid}`;
-
-  const getWallpaperCid = (post: any): string =>
-    post?.metadata?.attachments?.find((el: any) => el.altTag === 'wallpaper')?.image?.raw?.uri;
-  const getPosterCid = (post: any): string =>
-    post?.metadata?.attachments?.find((el: any) => el.altTag === 'poster')?.image?.raw?.uri;
 
   const toggleBookMark = async () => {
     if (!sessionData?.authenticated) return dispatch(openLoginModal());
@@ -69,7 +57,7 @@ const PosterTopTitles = ({ post }: { post: any }) => {
     >
       <Image
         alt={post?.metadata?.title}
-        src={getMediaUri(getWallpaperCid(post))}
+        src={wallpaper}
         ratio="16/9"
         sx={{
           zIndex: 0,
@@ -127,7 +115,7 @@ const PosterTopTitles = ({ post }: { post: any }) => {
                 width: '100%',
               }}
               alt={post?.metadata?.title}
-              src={getMediaUri(getPosterCid(post))}
+              src={poster}
               ratio="1/1"
             />
           </Box>
