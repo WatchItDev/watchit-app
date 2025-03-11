@@ -36,6 +36,7 @@ export function useSubmitAssetToLens(): UseSubmitAssetToLensReturn {
     if (typeof description !== "string") {
       return description;
     }
+
     let sanitized = description.replace(/"/g, "'");
     sanitized = sanitized.replace(/\\/g, "");
     // eslint-disable-next-line no-control-regex
@@ -72,16 +73,16 @@ export function useSubmitAssetToLens(): UseSubmitAssetToLensReturn {
           square: "squareCid",
         };
 
-        const attachments = responseData.Data.attachments
-        const reducedAttachments = attachments.reduce(
-          (acc, attachment) => {
-            const key = cidMapping[attachment.title];
-            acc[key] = attachment.cid;
-            return acc;
-          }, {}
-        );
+        const attachments = responseData.Data.attachments;
+        const { posterCid, squareCid, wallpaperCid } = attachments.reduce((acc, attachment) => {
+          const key = cidMapping[attachment.title];
+          acc[key] = attachment.cid;
+          return acc;
+        }, {});
 
-        if (!wallpaperCid || !posterCid || !squareCid) {
+
+        const validAttachments = !posterCid || !squareCid || !wallpaperCid
+        if (validAttachments) {
           return {
             hash: asset,
             status: "error",
