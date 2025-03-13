@@ -2,16 +2,15 @@ import Stack from '@mui/material/Stack';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import ListItemButton from '@mui/material/ListItemButton';
-// utils
-import { formatDistanceToNow } from 'date-fns';
-// components
-import Box from '@mui/material/Box';
 import TextMaxLine from '@src/components/text-max-line';
-import { useRouter } from '@src/routes/hooks';
-import { paths } from '@src/routes/paths.ts';
-import { NotificationCategories, type NotificationColumnsProps } from '@src/types/notification.ts';
+import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import Iconify from '@src/components/iconify';
+import AvatarProfile from "@src/components/avatar/avatar.tsx";
+import { formatDistanceToNow } from 'date-fns';
+import { useRouter } from '@src/routes/hooks';
+import { paths } from '@src/routes/paths.ts';
+import { NotificationCategories, NotificationItemProps} from '@src/hooks/types'
 import { useNotifications } from '@src/hooks/use-notifications.ts';
 import { openLoginModal } from '@redux/auth';
 import { PublicationReactionType, useReactionToggle } from '@lens-protocol/react-web';
@@ -21,18 +20,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNotificationPayload } from '@src/hooks/use-notification-payload.ts';
 import { usePublication } from '@lens-protocol/react';
 import { CircularProgress } from '@mui/material';
-import AvatarProfile from "@src/components/avatar/avatar.tsx";
-
-export interface NotificationItemProps {
-  id: any;
-  notification: NotificationColumnsProps;
-  onMarkAsRead: (id: string) => void;
-}
+import {RootState} from "@redux/store.ts"
 
 export default function NotificationItem({ notification, onMarkAsRead }: NotificationItemProps) {
   const commentId = notification?.payload?.data?.content?.comment_id;
 
-  const sessionData = useSelector((state: any) => state.auth.session);
+  const sessionData = useSelector((state: RootState) => state.auth.session);
   const { deleteNotification } = useNotifications();
   const dispatch = useDispatch();
   const { execute: toggle, loading: loadingLike } = useReactionToggle();
