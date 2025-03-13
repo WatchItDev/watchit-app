@@ -17,11 +17,11 @@ import { Address } from 'viem';
 
 // LOCAL IMPORTS
 import ProfileCover from './profile-cover.tsx';
-import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
+import FollowUnfollowButton from '@src/components/follow-unfollow-button.tsx';
 import { useHasAccess } from '@src/hooks/protocol/use-has-access.ts';
 import { useIsPolicyAuthorized } from '@src/hooks/protocol/use-is-policy-authorized.ts';
-import FollowUnfollowButton from '@src/components/follow-unfollow-button.tsx';
 import { useGetPolicyAttestation } from '@src/hooks/protocol/use-get-policy-attestation.ts';
+import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 
 // Profile Components
 import ProfileReport from '@src/sections/user/components/profile-report.tsx';
@@ -34,12 +34,13 @@ import { useGetSubscriptionCampaign } from '@src/hooks/protocol/use-get-subscrip
 import { useGetCampaignIsActive } from '@src/hooks/protocol/use-get-campaign-is-active.ts';
 import { SponsoredAccessTrialButton } from '@src/components/sponsored-access-button/sponsored-access-button.tsx';
 import { ProfileHeaderProps } from '@src/sections/user/types.ts';
+import {RootState} from "@redux/store.ts"
 
 // ----------------------------------------------------------------------
 
 const ProfileHeader = (props: PropsWithChildren<ProfileHeaderProps>) => {
   const { profile: profileData, children } = props;
-  const sessionData = useSelector((state: any) => state.auth.session);
+  const sessionData = useSelector((state: RootState) => state.auth.session);
   const profile =
     sessionData && sessionData?.profile?.id === profileData?.id ? sessionData.profile : profileData;
 
@@ -48,7 +49,7 @@ const ProfileHeader = (props: PropsWithChildren<ProfileHeaderProps>) => {
     loading: attestationLoading,
     refetch: refetchAttestation,
   } = useGetPolicyAttestation(
-    GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS as Address,
+    GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS,
     sessionData?.profile?.ownedBy?.address as Address,
     profile?.ownedBy?.address as Address
   );

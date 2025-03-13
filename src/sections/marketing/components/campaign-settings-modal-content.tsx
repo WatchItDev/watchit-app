@@ -35,7 +35,7 @@ const CampaignSettingsModalContent: FC<CampaignSettingsModalContentProps> = (pro
   const sessionData = useSelector((state: any) => state.auth.session);
   const { configure, loading: loadingConfigure } = useConfigureCampaign();
   const { terms, loading: loadingTerms } = useGetPolicyTerms(
-    GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS as Address,
+    GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS,
     sessionData?.address as Address
   );
 
