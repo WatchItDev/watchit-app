@@ -2,12 +2,6 @@
 // routes
 import { paths } from '@src/routes/paths';
 
-// API
-// ----------------------------------------------------------------------
-
-export const HOST_API = import.meta.env.VITE_HOST_API || 'https://default-api.example.com';
-export const ASSETS_API = import.meta.env.VITE_ASSETS_API || 'https://default-assets.example.com';
-
 export const GLOBAL_CONSTANTS = {
   MMC_ADDRESS: process.env.VITE_MMC_ADDRESS || import.meta.env.VITE_MMC_ADDRESS || '',
   SUBSCRIPTION_POLICY_ADDRESS:
@@ -61,6 +55,4 @@ export const GLOBAL_CONSTANTS = {
   FROM_BLOCK: process.env.VITE_FROM_BLOCK || import.meta.env.VITE_FROM_BLOCK || 0n,
 };
 
-export const MAPBOX_API = import.meta.env.VITE_MAPBOX_API || '';
 export const PATH_AFTER_LOGIN = paths.dashboard.root;
-export const PATH_BEFORE_LOGIN = '/login';
