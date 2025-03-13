@@ -1,14 +1,12 @@
 import React, { useState, useCallback } from 'react';
-// @mui
-import { alpha } from '@mui/material/styles';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
-
 import TableContainer from '@mui/material/TableContainer';
-// _mock
-import { TRANSACTIONS_TYPES } from '@src/sections/finance/types';
+import { alpha } from '@mui/material/styles';
+import { IOrderTableFilters, IOrderTableFilterValue } from '@src/sections/finance/types';
+
 // components
 import Label from '@src/components/label';
 import Scrollbar from '@src/components/scrollbar';
@@ -22,25 +20,12 @@ import {
   TableHeadCustom,
   TablePaginationCustom,
 } from '@src/components/table';
-// types
-import { IOrderTableFilters, IOrderTableFilterValue } from '@src/sections/finance/types';
 //
 import FinanceTransactionTableRow from '@src/sections/finance/components/finance-transactions-table-row';
 import useGetSmartWalletTransactions from '@src/hooks/protocol/use-get-smart-wallet-transactions.ts';
-import { processTransactionData } from '@src/utils/finance-graphs/groupedTransactions';
 import FinanceOverlayLoader from '@src/sections/finance/components/finance-overlay-loader.tsx';
-
-const STATUS_OPTIONS = [
-  { value: 'all', label: 'All' },
-  ...TRANSACTIONS_TYPES
-];
-
-const TABLE_HEAD = [
-  { id: 'name', label: 'Transaction Info', width: 20 },
-  { id: 'createdAt', label: 'Date', width: 40 },
-  { id: 'amount', label: 'Amount', width: 40 },
-  { id: 'tx', label: 'TX', width: 40 },
-];
+import { processTransactionData } from '@src/utils/finance-graphs/groupedTransactions';
+import { STATUS_OPTIONS, TABLE_HEAD } from './CONSTANTS';
 
 const defaultFilters: IOrderTableFilters = {
   status: 'all',
