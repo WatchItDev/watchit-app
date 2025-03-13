@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react'
 import {useDispatch, useSelector} from 'react-redux'
-import {Address, formatUnits, parseAbiItem} from 'viem'
+import { formatUnits, parseAbiItem} from 'viem'
 import {publicClient} from '@src/clients/viem/publicClient.ts'
 import {addTransaction, setTransactions} from '@redux/transactions'
 import {EventConfig} from '@src/hooks/protocol/types.ts'
@@ -116,7 +116,7 @@ export default function useGetSmartWalletTransactions() {
       // a) Build an array of promises, one for each eventConfig, calling publicClient.getLogs.
       const promises = eventConfigs.map(({ eventName, args }) => {
         return publicClient.getLogs({
-          address: GLOBAL_CONSTANTS.LEDGER_VAULT_ADDRESS as Address,
+          address: GLOBAL_CONSTANTS.LEDGER_VAULT_ADDRESS,
           event: parsedAbis[eventName] as any,
           args,
           fromBlock: fromBlock ?? 0n,

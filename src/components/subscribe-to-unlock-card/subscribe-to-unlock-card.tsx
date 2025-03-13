@@ -1,16 +1,15 @@
+import LoadingButton from '@mui/lab/LoadingButton';
 import { Box, Card, CardContent, Typography, Stack } from '@mui/material';
 import { IconLock, IconPlayerPlay } from '@tabler/icons-react';
 import { ethers } from 'ethers';
 import { useGetPolicyTerms } from '@src/hooks/protocol/use-get-policy-terms.ts';
-import { Address } from 'viem';
-import LoadingButton from '@mui/lab/LoadingButton';
-import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 import { useIsPolicyAuthorized } from '@src/hooks/protocol/use-is-policy-authorized.ts';
 import { SponsoredAccessTrialButton } from '@src/components/sponsored-access-button/sponsored-access-button.tsx';
 import { useGetCampaignIsActive } from '@src/hooks/protocol/use-get-campaign-is-active.ts';
 import { useEffect } from 'react';
 import { useGetSubscriptionCampaign } from '@src/hooks/protocol/use-get-subscription-campaign.ts';
 import { SubscribeToUnlockCardProps } from '@src/components/subscribe-to-unlock-card/types.ts';
+import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 
 export const SubscribeToUnlockCard = ({
   onSubscribe,
@@ -20,7 +19,7 @@ export const SubscribeToUnlockCard = ({
 }: SubscribeToUnlockCardProps) => {
   const ownerAddress = post?.by?.ownedBy?.address
   const { terms } = useGetPolicyTerms(
-    GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS as Address,
+    GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS,
     ownerAddress
   );
   const { isAuthorized } = useIsPolicyAuthorized(GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS, ownerAddress);
