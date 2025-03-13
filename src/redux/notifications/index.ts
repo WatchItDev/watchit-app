@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { NotificationItemProps } from '@src/layouts/_common/notifications-popover/notification-item.tsx';
 
 // @ts-ignore
 import Ding from '@src/assets/audio/notify.mp3';
+import { NotificationItemProps } from '@src/hooks/types';
 
 interface NotificationsState {
   notifications: NotificationItemProps[];

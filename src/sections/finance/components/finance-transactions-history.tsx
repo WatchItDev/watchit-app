@@ -8,7 +8,7 @@ import TableBody from '@mui/material/TableBody';
 
 import TableContainer from '@mui/material/TableContainer';
 // _mock
-import { TRANSACTIONS_TYPES } from '@src/types/transaction';
+import { TRANSACTIONS_TYPES } from '@src/sections/finance/types';
 // components
 import Label from '@src/components/label';
 import Scrollbar from '@src/components/scrollbar';
@@ -23,7 +23,7 @@ import {
   TablePaginationCustom,
 } from '@src/components/table';
 // types
-import { IOrderTableFilters, IOrderTableFilterValue } from '@src/types/transaction';
+import { IOrderTableFilters, IOrderTableFilterValue } from '@src/sections/finance/types';
 //
 import FinanceTransactionTableRow from '@src/sections/finance/components/finance-transactions-table-row';
 import useGetSmartWalletTransactions from '@src/hooks/protocol/use-get-smart-wallet-transactions.ts';

@@ -18,7 +18,7 @@ export const SubscribeToUnlockCard = ({
   loadingSubscribe,
   post,
 }: SubscribeToUnlockCardProps) => {
-  const ownerAddress = post?.by?.ownedBy?.address as Address
+  const ownerAddress = post?.by?.ownedBy?.address
   const { terms } = useGetPolicyTerms(
     GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS as Address,
     ownerAddress
