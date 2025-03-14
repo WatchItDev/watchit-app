@@ -20,6 +20,7 @@ import { CampaignSettingsModalContentProps } from '@src/sections/marketing/types
 import { ERRORS } from '@notifications/errors.ts';
 import { SUCCESS } from '@notifications/success.ts';
 import { GLOBAL_CONSTANTS } from '@src/config-global';
+import {RootState} from "@redux/store.ts"
 
 // ----------------------------------------------------------------------
 
@@ -32,10 +33,10 @@ const CampaignSettingsModalContent: FC<CampaignSettingsModalContentProps> = (pro
   const [fundsAllocationAmount, setFundsAllocationAmount] = useState<number>(NaN);
 
   // This could be get from useAuth hook? view issue #604
-  const sessionData = useSelector((state: any) => state.auth.session);
+  const sessionData = useSelector((state: RootState) => state.auth.session);
   const { configure, loading: loadingConfigure } = useConfigureCampaign();
   const { terms, loading: loadingTerms } = useGetPolicyTerms(
-    GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS as Address,
+    GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS,
     sessionData?.address as Address
   );
 

@@ -1,3 +1,14 @@
+export interface Invitation {
+  id: string;
+  status: 'pending' | 'accepted' | 'rejected';
+  sender_email: string;
+  destination: string;
+  sender_id: string;
+  receiver_id: string | null;
+  payload: any;
+  created_at: string;
+}
+
 export enum NotificationCategories {
   FOLLOW = 'FOLLOW',
   LIKE = 'LIKE',
@@ -15,4 +26,10 @@ export interface NotificationColumnsProps {
   read: boolean;
   receiver_id: string;
   sender_id: string;
+}
+
+export interface NotificationItemProps {
+  id: any;
+  notification: NotificationColumnsProps;
+  onMarkAsRead: (id: string) => void;
 }
