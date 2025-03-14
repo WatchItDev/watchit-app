@@ -3,7 +3,7 @@ import '../../../../../__mocks__/lens-protocol-react-web';
 import '../../../../../__mocks__/web3auth';
 import { describe, it, expect } from 'vitest';
 import { URI } from '@lens-protocol/react';
-import CarouselCreators from '@src/components/carousel/variants/CarouselCreators.tsx';
+import CarouselCreators from '@src/components/carousel/variants/carousel-creators.tsx';
 import { CarouselCreatorsProps } from '@src/components/carousel/types.ts';
 import {Testing} from "@src/utils/testing/Testing.tsx";
 

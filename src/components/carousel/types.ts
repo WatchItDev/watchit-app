@@ -79,6 +79,7 @@ export interface CarouselSlideProps<T> {
 }
 
 export type CarouselCreatorsProps = CarouselResizable & {
+  profiles: Profile[];
   title?: string;
 };
 

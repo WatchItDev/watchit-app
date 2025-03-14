@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, fireEvent } from '@testing-library/react';
 
-import CarouselNavigationArrows from '@src/components/carousel/components/CarouselNavigationArrows';
+import CarouselNavigationArrows from '@src/components/carousel/components/carousel-navigation-arrows.tsx';
 
 describe('[COMPONENTS]: CarouselNavigationArrows component testing', () => {
   const prevMock = vi.fn();

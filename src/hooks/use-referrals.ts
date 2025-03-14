@@ -1,9 +1,7 @@
+import emailjs from '@emailjs/browser';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
-import emailjs from '@emailjs/browser';
-
-import { GLOBAL_CONSTANTS } from '@src/config-global';
-import { Invitation } from '@src/types/invitation'; // <-- Importing from separate types file
+import { Invitation } from '@src/hooks/types';
 import {
   fetchInvitations as fetchInvitationsAction,
   checkIfMyEmailHasPendingInvite as checkIfMyEmailHasPendingInviteAction,
@@ -13,6 +11,7 @@ import {
   sendInvitation as sendInvitationAction,
   acceptOrCreateInvitationForUser as acceptOrCreateInvitationForUserAction,
 } from '@src/utils/supabase-actions';
+import { GLOBAL_CONSTANTS } from '@src/config-global';
 
 /**
  * The type for sending emails through EmailJS.

@@ -1,3 +1,3 @@
-export { default as View403 } from './403-view';
-export { default as View500 } from './500-view';
-export { default as NotFoundView } from './not-found-view';
+export { default as Error403View } from './views/error-403-view.tsx';
+export { default as Error500View } from './views/error-500-view.tsx';
+export { default as Error404View } from './views/error-404-view.tsx';

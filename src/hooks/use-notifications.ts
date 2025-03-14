@@ -3,8 +3,9 @@ import { supabase } from '@src/utils/supabase';
 // @ts-ignore
 import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
 import { ProfileSession, useSession } from '@lens-protocol/react-web';
-import { type NotificationColumnsProps } from '@src/types/notification';
+import { type NotificationColumnsProps } from '@src/hooks/types';
 import { setNotifications } from '@src/redux/notifications';
+import {RootState} from "@redux/store.ts"
 
 interface UseNotificationsReturn {
   getNotifications: (id: string) => Promise<void>;
@@ -20,7 +21,7 @@ export function useNotifications(): UseNotificationsReturn {
   const dispatch = useDispatch();
   // @ts-ignore
   const notifications: NotificationColumnsProps[] = useSelector(
-    (state) => state.notifications.notifications
+    (state: RootState) => state.notifications.notifications
   );
 
   async function getNotifications(id: string) {

@@ -24,7 +24,7 @@ import { CardProps } from '@mui/material/Card';
 // LOCAL IMPORTS
 import { useBoolean } from '@src/hooks/use-boolean';
 import Carousel, { CarouselArrows, useCarousel } from '@src/components/carousel';
-import NeonPaper from '@src/sections/publication/NeonPaperContainer.tsx';
+import NeonPaper from '@src/sections/publication/components/neon-paper-container.tsx';
 import { InputAmount } from '@src/components/input-amount.tsx';
 import FinanceQuickTransferModal from '@src/sections/finance/components/finance-quick-transfer-modal.tsx';
 import FinanceSearchProfileModal from '@src/sections/finance/components/finance-search-profile-modal.tsx';

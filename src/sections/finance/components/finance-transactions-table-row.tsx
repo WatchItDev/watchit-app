@@ -11,7 +11,7 @@ import { TableRowTransactionType } from '@src/hooks/use-transaction-data.ts';
 import { truncateAddress } from '@src/utils/wallet.ts';
 import AvatarProfile from "@src/components/avatar/avatar.tsx";
 import { OpenableText } from '@src/components/openable-text';
-import {TX_COLORS} from "@src/sections/finance/components/CONSTANTS.tsx";
+import {TX_COLORS} from "@src/sections/finance/CONSTANTS.tsx";
 
 // ----------------------------------------------------------------------
 

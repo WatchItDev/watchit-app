@@ -16,7 +16,7 @@ import { m } from 'framer-motion';
 // LOCAL IMPORTS
 import { varHover } from '@src/components/animate';
 import AvatarProfile from '@src/components/avatar/avatar';
-import NeonPaper from '@src/sections/publication/NeonPaperContainer';
+import NeonPaper from '@src/sections/publication/components/neon-paper-container.tsx';
 import { UsePopoverReturnType } from '@src/components/custom-popover/use-popover.ts';
 
 // ----------------------------------------------------------------------

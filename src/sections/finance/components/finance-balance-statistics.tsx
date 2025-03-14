@@ -14,11 +14,10 @@ import Chart, { useChart } from '@src/components/chart';
 import CustomPopover, { usePopover } from '@src/components/custom-popover';
 import useGetSmartWalletTransactions from '@src/hooks/protocol/use-get-smart-wallet-transactions.ts';
 import FinanceOverlayLoader from '@src/sections/finance/components/finance-overlay-loader.tsx';
-
-// ----------------------------------------------------------------------
-
-const INCOME_EVENTS = ['transferFrom', 'deposit'];
-const OUTCOME_EVENTS = ['transferTo', 'withdraw', 'collected', 'paid'];
+import {
+  FINANCE_STATISTICS_INCOME_EVENTS,
+  FINANCE_STATISTICS_OUTCOME_EVENTS,
+} from '@src/sections/finance/CONSTANTS.tsx';
 
 // ----------------------------------------------------------------------
 
@@ -136,9 +135,9 @@ export default function FinanceBalanceStatistics() {
       const eventType = log.event;
 
       // Sort the event using the defined lists
-      if (INCOME_EVENTS.includes(eventType)) {
+      if (FINANCE_STATISTICS_INCOME_EVENTS.includes(eventType)) {
         groupedData[key].income += amount;
-      } else if (OUTCOME_EVENTS.includes(eventType)) {
+      } else if (FINANCE_STATISTICS_OUTCOME_EVENTS.includes(eventType)) {
         groupedData[key].outcome += amount;
       } else {
         console.warn(`Unclassified event: ${eventType}`);

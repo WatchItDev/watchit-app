@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Address } from 'viem';
 import { publicClient } from '@src/clients/viem/publicClient.ts';
 import AccessAggAbi from '@src/config/abi/AccessAgg.json';
@@ -8,6 +8,7 @@ import { UseHasAccessHook } from '@src/hooks/protocol/types.ts';
 import { useAccountSession } from '@src/hooks/use-account-session.ts';
 import { notifyError } from '@notifications/internal-notifications.ts';
 import { ERRORS } from '@notifications/errors.ts';
+import { UseHasAccessDefaultResponse } from '@src/hooks/protocol/DEFAULTS.tsx';
 
 /**
  * Custom hook to check if the user has access to a publication.
@@ -20,17 +21,14 @@ export const useHasAccess = (ownerAddress?: Address): UseHasAccessHook => {
   const { isAuthenticated } = useAccountSession();
   const [hasAccess, setHasAccess] = useState<boolean | undefined>(undefined);
   const [loading, setLoading] = useState(true);
-  const [fetching, setFetching] = useState(true);
 
-  const fetchAccess = async () => {
+  const fetchAccess = useCallback(async () => {
     if (!userAddress || !ownerAddress) {
       setLoading(false);
-      setFetching(false);
-
-      throw new Error('User address or owner address is missing while verifying user access.');
+      return UseHasAccessDefaultResponse;
     }
 
-    setFetching(true);
+    setLoading(true);
     try {
       const accessData: any = await publicClient.readContract({
         address: GLOBAL_CONSTANTS.ACCESS_AGG_ADDRESS,
@@ -47,28 +45,20 @@ export const useHasAccess = (ownerAddress?: Address): UseHasAccessHook => {
       notifyError(ERRORS.VERIFY_ACCESS_ERROR);
     } finally {
       setLoading(false);
-      setFetching(false);
     }
-  };
+  }, [userAddress, ownerAddress]);
 
   useEffect(() => {
     fetchAccess();
-  }, [userAddress, ownerAddress]);
+  }, [fetchAccess]);
 
   if (!isAuthenticated()) {
-    return {
-      hasAccess: false,
-      loading: false,
-      fetching: false,
-      error: null,
-      refetch: () => {},
-    };
+    return UseHasAccessDefaultResponse;
   }
 
   return {
     hasAccess,
     loading,
-    fetching,
-    refetch: fetchAccess,
+    fetch: fetchAccess,
   };
 };
