@@ -1,25 +1,27 @@
 import { useState } from 'react';
 
+// REDUX IMPORTS
+import { useSelector } from 'react-redux';
+
 // MUI Imports
 import LoadingButton from '@mui/lab/LoadingButton';
 import { Stack, Box, Typography, TextField, Button } from '@mui/material';
 
 // Project Imports
-import { useBoolean } from "@src/hooks/use-boolean.ts";
-import ProcessSectionCard from '@src/components/process-section-card.tsx';
-import OwnershipProcessModal from "@src/components/modal.tsx";
-// @ts-ignore
-import Ownership from '@src/assets/illustrations/ownership.svg';
 import Iconify from '@src/components/iconify';
-import { useRegisterAsset } from '@src/hooks/protocol/use-register-asset.ts';
-import { notifyError, notifyInfo, notifySuccess } from '@notifications/internal-notifications.ts';
-import { SUCCESS } from '@notifications/success.ts';
-import { ERRORS } from '@notifications/errors.ts';
-import { INFO } from '@notifications/info.ts';
-import { useSubmitAssetToLens } from '@src/hooks/use-submit-assets-to-lens.ts';
+import OwnershipProcessModal from "@src/components/modal.tsx";
+import Ownership from '@src/assets/illustrations/ownership.svg';
+import ProcessSectionCard from '@src/components/process-section-card.tsx';
 import NeonPaper from '@src/sections/publication/components/neon-paper-container.tsx';
-import { useGetAssetOwner } from '@src/hooks/protocol/use-get-asset-owner.ts';
 import { replacePrefix } from '@src/utils/wallet.ts';
+import { useBoolean } from "@src/hooks/use-boolean.ts";
+import { useRegisterAsset } from '@src/hooks/protocol/use-register-asset.ts';
+import { useGetAssetOwner } from '@src/hooks/protocol/use-get-asset-owner.ts';
+import { useSubmitAssetToLens } from '@src/hooks/use-submit-assets-to-lens.ts';
+import { notifyError, notifyInfo, notifySuccess } from '@notifications/internal-notifications.ts';
+import { INFO } from '@notifications/info.ts';
+import { ERRORS } from '@notifications/errors.ts';
+import { SUCCESS } from '@notifications/success.ts';
 
 /**
  * OwnershipProcess is a React functional component that manages the process of registering ownership.
@@ -70,9 +72,11 @@ const OwnershipProcessContent = ({ onClose }: { onClose: () => void }) => {
   const { fetchOwnerAddress } = useGetAssetOwner();
   const [isProcessing, setIsProcessing] = useState(false);
   const [progress, setProgress] = useState(0);
+  const sessionData = useSelector((state: any) => state.auth.session);
   const hashesArray = hashes.split(',')
     .map(h => h.trim())
     .filter(Boolean);
+  const userAddress = sessionData?.profile?.ownedBy?.address as string | undefined;
 
   const handleRegister = async () => {
     if (!hashes) return;
@@ -91,9 +95,11 @@ const OwnershipProcessContent = ({ onClose }: { onClose: () => void }) => {
           }, '', { autoHideDuration: 3000 });
           setProgress(index + 1);
 
-          const isTaken = await fetchOwnerAddress(hash);
+          const owner = await fetchOwnerAddress(hash);
+          const isTaken = !!owner;
+          const isAssetMine = userAddress === owner
 
-          if (isTaken) {
+          if (!isAssetMine && isTaken) {
             notifyError(ERRORS.ASSET_ALREADY_REGISTERED_ERROR);
             continue;
           }
