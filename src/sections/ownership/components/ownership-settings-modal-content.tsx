@@ -128,9 +128,9 @@ const OwnershipSettingsModalContent: FC<OwnershipSettingsModalContentProps> = (p
             renderValue={(selected) => selected.join(', ')}
           >
             {LBL_REGIONS_TEXTS.map((option) => (
-              <MenuItem  key={`mi-${randomKey(option.id)}`} value={option.name}>
-                <Checkbox  key={`ck-${randomKey(option.id)}`} checked={formValues.region.indexOf(option.name) > -1} />
-                <ListItemText key={`li-${randomKey(option.id)}`} primary={option.name} />
+              <MenuItem  key={`${randomKey(option.id,'mi')}`} value={option.name}>
+                <Checkbox  key={`${randomKey(option.id,'ck')}`} checked={formValues.region.indexOf(option.name) > -1} />
+                <ListItemText key={`${randomKey(option.id,'li')}`} primary={option.name} />
               </MenuItem>
             ))}
           </Select>

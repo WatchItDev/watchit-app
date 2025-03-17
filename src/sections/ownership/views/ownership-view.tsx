@@ -3,7 +3,7 @@ import Container from '@mui/material/Container';
 import OwnershipTable from '@src/sections/ownership/components/ownership-table.tsx';
 import {OwnershipCreate} from "@src/sections/ownership/components/ownership-create.tsx"
 import { AssetPolicy, AssetStatus, OwnershipAsset } from '../types';
-
+import {CustomRandom} from "@src/utils/random.ts"
 
 const assetPolicies: AssetPolicy[] = [
   { name: 'Subscription' },
@@ -24,9 +24,9 @@ const movies = [
 const generateRandomAsset = (count: number): OwnershipAsset[] => {
   const assets: OwnershipAsset[] = [];
   for (let i = 0; i < count; i++) {
-    const randomPolicy = assetPolicies[Math.floor(Math.random() * assetPolicies.length)];
-    const randomStatus = assetStatuses[Math.floor(Math.random() * assetStatuses.length)];
-    const randomName = movies[Math.floor(Math.random() * movies.length)];
+    const randomPolicy = assetPolicies[Math.floor(CustomRandom.get() * assetPolicies.length)];
+    const randomStatus = assetStatuses[Math.floor(CustomRandom.get() * assetStatuses.length)];
+    const randomName = movies[Math.floor(CustomRandom.get() * movies.length)];
 
     const asset: OwnershipAsset = {
       id: i + 1,
@@ -34,7 +34,7 @@ const generateRandomAsset = (count: number): OwnershipAsset[] => {
       image: randomName.image,
       description: `Description for ${randomName.movie}`,
       police: randomPolicy,
-      restrictions: Math.random() < 0.5,
+      restrictions: CustomRandom.get() < 0.5,
       status: randomStatus
     };
 
