@@ -48,7 +48,7 @@ export default function FinanceView() {
       sx={{
         marginTop: { xs: '1rem', md: '2rem' },
         marginBottom: '2rem',
-        maxWidth: '100vw',
+        maxWidth: '100vw !important',
       }}
     >
       <Grid container spacing={2}>
