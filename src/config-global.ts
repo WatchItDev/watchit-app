@@ -98,7 +98,7 @@ export const GLOBAL_CONSTANTS: GlobalConstants = {
     "",
   ATTESTATION_BASE_URL:
     process.env.VITE_URL_ATTESTATION_BASE || import.meta.env.VITE_URL_ATTESTATION_BASE || "",
-  FROM_BLOCK: process.env.VITE_FROM_BLOCK || import.meta.env.VITE_FROM_BLOCK || 0n,
+  FROM_BLOCK: process.env.VITE_BLOCK_FROM || import.meta.env.VITE_BLOCK_FROM || 0n,
 };
 
 export const PATH_AFTER_LOGIN = paths.dashboard.root;
