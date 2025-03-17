@@ -20,7 +20,7 @@ import {useSubmitAssetToLens} from "@src/hooks/use-submit-assets-to-lens.ts"
 import {useGetAssetOwner} from "@src/hooks/protocol/use-get-asset-owner.ts"
 // ----------------------------------------------------------------------
 
-const OwnershipModalContent: FC<CampaignModalContentProps> = ({ onClose }) => {
+const OwnershipModalContent: FC<CampaignModalContentProps> = ({ onClose, onConfirm }) => {
   const [hashes, setHashes] = useState<string>('');
   const { registerAsset } = useRegisterAsset();
   const { submitAssetToLens } = useSubmitAssetToLens();

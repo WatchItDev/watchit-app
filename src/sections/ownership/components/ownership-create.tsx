@@ -12,19 +12,19 @@ import {OwnershipModalContent} from "@src/sections/ownership/components/ownershi
 // ----------------------------------------------------------------------
 
 const OwnershipCreate: FC<CampaignCreateProps> = ({ onSuccess }) => {
-  const confirmPublish = useBoolean();
+  const ownershipConfirmPublish = useBoolean();
 
   const handleClose = () => {
-    confirmPublish.onFalse?.();
+      ownershipConfirmPublish.onFalse?.();
   };
 
   const handleClick = () => {
-    confirmPublish.onTrue?.();
+      ownershipConfirmPublish.onTrue?.();
   };
 
   const handleConfirm = () => {
     onSuccess?.();
-    confirmPublish.onFalse();
+      ownershipConfirmPublish.onFalse();
   };
 
   return (
@@ -41,8 +41,8 @@ const OwnershipCreate: FC<CampaignCreateProps> = ({ onSuccess }) => {
         Register
       </Button>
       <OwnershipModal
-        title="Register a campaign"
-        open={confirmPublish.value}
+        title="Register an asset"
+        open={ownershipConfirmPublish.value}
         onClose={handleClose}
         renderContent={<OwnershipModalContent onConfirm={handleConfirm} onClose={handleClose} />}
       />

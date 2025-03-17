@@ -15,6 +15,7 @@ export interface CampaignTableRowProps {
 }
 
 export interface CampaignModalContentProps {
+  onConfirm?: () => void;
   onClose: () => void;
 }
 
