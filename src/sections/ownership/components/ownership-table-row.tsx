@@ -7,9 +7,6 @@ import Grid from '@mui/material/Grid';
 import Switch from '@mui/material/Switch';
 import { IconButton, MenuItem } from '@mui/material';
 
-// VIEM IMPORTS
-import { formatUnits } from 'viem';
-
 // LOCAL IMPORTS
 import Iconify from '@src/components/iconify';
 import TextMaxLine from "@src/components/text-max-line";
@@ -17,19 +14,24 @@ import { OwnershipSettingsModal} from "@src/sections/ownership/components/owners
 import CustomPopover, { usePopover } from '@src/components/custom-popover';
 import { capitalizeFirstLetter } from '@src/utils/text-transform.ts';
 import { useBoolean } from '@src/hooks/use-boolean';
-import {LBL_STATUS_COLORS, LBL_TYPE_COLORS} from '@src/sections/ownership/CONSTANTS.tsx'
+import {LBL_STATUS_COLORS} from '@src/sections/ownership/CONSTANTS.tsx'
 import {OwnershipTableRowProps} from "@src/sections/ownership/types.ts"
 import Stack from "@mui/material/Stack"
 import Image from "@src/components/image"
+import { OwnershipTimelineModal } from './ownership-timeline-modal';
 // ----------------------------------------------------------------------
 const OwnershipTableRow = ({ row, selected }: Readonly<OwnershipTableRowProps>) => {
-  const { name, image, id, description, status, type, restrictions, police  } = row;
+  const { name, image, id, description, status, restrictions, police  } = row;
   const popover = usePopover();
   const settingsModal = useBoolean();
-  const withdrawModal = useBoolean();
+  const timelineModal = useBoolean();
   const onSettingRow = () => {
     settingsModal.onTrue();
   };
+
+  const onTimelineRow = () => {
+    timelineModal.onTrue();
+  }
 
   const handlePauseToggle = async (checked: boolean) => {
     try {
@@ -38,10 +40,6 @@ const OwnershipTableRow = ({ row, selected }: Readonly<OwnershipTableRowProps>) 
     } catch (error) {
       console.error(error);
     }
-  };
-
-  const handleSuccessWithdraw = async () => {
-    return Promise.resolve() ;
   };
 
   const getColorByKey = (colorObj: Record<string, string>, key: string): string => {
@@ -91,22 +89,6 @@ const OwnershipTableRow = ({ row, selected }: Readonly<OwnershipTableRowProps>) 
         </TableCell>
 
         <TableCell>
-          <Typography
-            component={'span'}
-            variant="body2"
-            sx={{
-              color: getColorByKey(LBL_TYPE_COLORS, type.name.toLowerCase()),
-              background: `${getColorByKey(LBL_TYPE_COLORS, type.name.toLowerCase())}12`,
-              borderRadius: 1,
-              px: 1,
-              py: '2px',
-            }}
-          >
-            {capitalizeFirstLetter(type.name ?? '')}
-          </Typography>
-        </TableCell>
-
-        <TableCell>
           <Grid display="flex" alignItems="center" justifyContent="space-between">
             <Typography
               component={'span'}
@@ -148,16 +130,7 @@ const OwnershipTableRow = ({ row, selected }: Readonly<OwnershipTableRowProps>) 
         </MenuItem>
         <MenuItem
           onClick={() => {
-            withdrawModal.onTrue();
-            popover.onClose();
-          }}
-        >
-          <Iconify icon="ic:outline-account-balance-wallet" />
-          Transfer
-        </MenuItem>
-        <MenuItem
-          onClick={() => {
-            withdrawModal.onTrue();
+            onTimelineRow()
             popover.onClose();
           }}
         >
@@ -187,6 +160,15 @@ const OwnershipTableRow = ({ row, selected }: Readonly<OwnershipTableRowProps>) 
       <OwnershipSettingsModal
         open={settingsModal.value}
         onClose={settingsModal.onFalse}
+        onSuccess={() => {}}
+        assetData={{
+          id: id,
+          name: name,
+        }}
+      />
+      <OwnershipTimelineModal
+        open={timelineModal.value}
+        onClose={timelineModal.onFalse}
         onSuccess={() =>{}}
         assetData={{
           name: name,

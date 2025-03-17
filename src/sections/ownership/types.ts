@@ -31,8 +31,7 @@ export interface OwnershipAsset {
   description: string;
   police: AssetPolicy;
   restrictions: boolean;
-  status: AssetStatus;
-  type: AssetType;
+  status: AssetStatus
 }
 
 export interface OwnershipSettingsModalProps {
@@ -40,6 +39,7 @@ export interface OwnershipSettingsModalProps {
   onClose?: () => void;
   onSuccess?: () => void;
   assetData: {
+    id: number;
     name: string;
   };
 }
@@ -47,6 +47,19 @@ export interface OwnershipSettingsModalContentProps {
   onClose?: () => void;
   onConfirm?: () => void;
   assetData: {
+    id: number
     name: string;
   };
+}
+
+export interface OwnershipTimelineItemProps {
+  id: string;
+  title: string;
+  time: Date;
+  type: string;
+}
+
+export interface OwnershipTimelineItemsProps {
+  item: OwnershipTimelineItemProps;
+  lastTimeline: boolean;
 }

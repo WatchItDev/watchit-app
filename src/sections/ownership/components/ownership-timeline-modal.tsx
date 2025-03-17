@@ -1,11 +1,11 @@
 import { FC } from "react";
 import SettingsModal from '@src/components/modal';
-import {OwnershipSettingsModalContent} from "./ownership-settings-modal-content.tsx";
 import {OwnershipSettingsModalProps} from "@src/sections/ownership/types.ts"
+import {OwnershipTimelineModalContent} from "@src/sections/ownership/components/ownership-timeline-modal-content.tsx"
 
 // ----------------------------------------------------------------------
 
-const OwnershipSettingsModal: FC<OwnershipSettingsModalProps> = (props) => {
+const OwnershipTimelineModal: FC<OwnershipSettingsModalProps> = (props) => {
   const { open, onSuccess, onClose, assetData } = props;
 
   const handleClose = () => {
@@ -19,11 +19,11 @@ const OwnershipSettingsModal: FC<OwnershipSettingsModalProps> = (props) => {
 
   return (
     <SettingsModal
-      title={`Settings for ${assetData?.name}`}
+      title={`Asset history`}
       open={open}
       onClose={handleClose}
       renderContent={
-        <OwnershipSettingsModalContent
+        <OwnershipTimelineModalContent
           onConfirm={handlSuccess}
           onClose={handleClose}
           assetData={assetData}
@@ -33,4 +33,4 @@ const OwnershipSettingsModal: FC<OwnershipSettingsModalProps> = (props) => {
   );
 };
 
-export {OwnershipSettingsModal};
+export {OwnershipTimelineModal};

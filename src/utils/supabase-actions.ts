@@ -218,3 +218,30 @@ export const checkIfEmailAlreadyInvited = async (
     return { invited: false, error: err.message };
   }
 };
+
+
+export const fetchAssetSettings = async (asset_id: string) => {
+  try {
+    const { data, error } = await supabase
+      .from('ownership')
+      .select('type, region')
+      .eq('asset_id', asset_id)
+      .single();
+
+    return { data, error: error ? error.message : null };
+  } catch (err: any) {
+    return { data: null, error: err.message };
+  }
+};
+
+export const upsertAssetSettings = async (assetSettings: { asset_id: string, name: string, type: string, region: string }) => {
+  try {
+    const { data, error } = await supabase
+      .from('ownership')
+      .upsert(assetSettings, { onConflict: ['asset_id'] });
+
+    return { data, error: error ? error.message : null };
+  } catch (err: any) {
+    return { data: null, error: err.message };
+  }
+};

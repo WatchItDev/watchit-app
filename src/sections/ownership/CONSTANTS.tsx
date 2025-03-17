@@ -4,7 +4,6 @@ export const OWNERSHIP_TABLE_HEAD = [
   { id: 'name', label: 'Publication', minWidth: 300 },
   { id: 'limit', label: 'Policies', minWidth: 100},
   { id: 'budget', label: 'Restrictions', minWidth: 100},
-  { id: 'type', label: 'Type', minWidth: 100},
   { id: 'status', label: 'Status', minWidth: 100 },
 ];
 
@@ -12,15 +11,6 @@ export const LBL_STATUS_COLORS  = {
   active: COLORS.success,
   deactivated: COLORS.warning,
 };
-
-export const LBL_TYPE_COLORS  = {
-  short: COLORS.success,
-  documentary: COLORS.warning,
-  movie: COLORS.info,
-  trailer: COLORS.warning,
-  series: COLORS.warning,
-};
-
 
 export const LBL_TYPES_TEXTS = [
   {id: 1,name: "Subscription"},
