@@ -25,9 +25,10 @@ export const useSubscribe = (): UseSubscribeHook => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<keyof typeof ERRORS | null>(null);
   const sessionData = useSelector((state: RootState) => state.auth.session);
+  const isAuthenticated = useSelector((state: RootState) => state.auth.isFullyAuthenticated);
   const { bundlerClient, smartAccount } = useWeb3Session();
   const { logout } = useAccountSession();
-  const isAuthenticated = useSelector((state: RootState) => state.auth.isFullyAuthenticated);
+
 
   const approveToAccessAgreement = (approvalAmount: bigint): string => {
     return encodeFunctionData({

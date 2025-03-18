@@ -31,8 +31,8 @@ export const SponsoredAccessTrialButton: FC<ExtendedSponsoredAccessProps> = (pro
     size = 'sm',
   } = props;
   const sessionData = useSelector((state: RootState) => state.auth.session);
-  const dispatch = useDispatch();
   const isAuthenticated = useSelector((state: RootState) => state.auth.isFullyAuthenticated);
+  const dispatch = useDispatch();
   const { sponsoredAccessAgreement, loading } = useSponsoredAccessAgreement();
 
   const handleTrial = async () => {

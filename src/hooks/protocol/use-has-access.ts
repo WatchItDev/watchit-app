@@ -16,9 +16,9 @@ import {RootState} from "@redux/store.ts"
  * @returns An object containing the access data, loading state, error, and a refetch function.
  */
 export const useHasAccess = (ownerAddress?: Address): UseHasAccessHook => {
+  const isAuthenticated = useSelector((state: RootState) => state.auth.isFullyAuthenticated);
   const sessionData = useSelector((state: RootState) => state.auth.session);
   const userAddress = sessionData?.profile?.ownedBy?.address;
-  const isAuthenticated = useSelector((state: RootState) => state.auth.isFullyAuthenticated);
   const [hasAccess, setHasAccess] = useState<boolean | undefined>(undefined);
   const [loading, setLoading] = useState(true);
 

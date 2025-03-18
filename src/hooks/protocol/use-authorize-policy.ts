@@ -20,10 +20,10 @@ export const useAuthorizePolicy = (): UseAuthorizePolicyHook => {
   const [data, setData] = useState();
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<keyof typeof ERRORS | null>(null);
+  const isAuthenticated = useSelector((state: RootState) => state.auth.isFullyAuthenticated);
   const sessionData = useSelector((state: RootState) => state.auth.session);
   const { bundlerClient, smartAccount } = useWeb3Session();
   const { logout } = useAccountSession();
-  const isAuthenticated = useSelector((state: RootState) => state.auth.isFullyAuthenticated);
 
   /**
    * Creates the flash policy agreement data.

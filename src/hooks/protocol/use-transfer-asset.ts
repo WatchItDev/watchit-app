@@ -27,9 +27,9 @@ export const useTransferAsset = (): UseTransferAssetHook => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<keyof typeof ERRORS | null>(null);
   const sessionData = useSelector((state: RootState) => state.auth.session);
+  const isAuthenticated = useSelector((state: RootState) => state.auth.isFullyAuthenticated);
   const { bundlerClient, smartAccount } = useWeb3Session();
   const { logout } = useAccountSession();
-  const isAuthenticated = useSelector((state: RootState) => state.auth.isFullyAuthenticated);
 
   /**
    * Performs the operation of transferring an asset using the `AssetOwnership` contract.
