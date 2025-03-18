@@ -59,12 +59,12 @@ export const SponsoredAccessTrialButton: FC<ExtendedSponsoredAccessProps> = (pro
     size === 'sm'
       ? {
         borderRadius: '10px',
-        animationSpeed: '3s',
         width: 'auto',
         height: '38px',
         sx: {
           height: '38px',
         },
+        ...(loading && { animationSpeed: '3s' }),
         ...neonPaperProps,
       }
       : neonPaperProps;
