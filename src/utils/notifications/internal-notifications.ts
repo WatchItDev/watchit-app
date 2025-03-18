@@ -7,6 +7,12 @@ type NotificationType = 'error' | 'success' | 'warning' | 'info';
 
 let globalEnqueueSnackbar: ((message: string, options?: object) => void) | null = null;
 
+interface NotificationOptions {
+  variant?: NotificationType;
+  autoHideDuration?: number;
+  [key: string]: unknown;
+}
+
 /**
  * Allows us to set the globalEnqueueSnackbar function from our App (or any top-level component).
  * Must be called at least once (e.g., in App.tsx) so that notify methods works.
@@ -24,18 +30,18 @@ export function setGlobalNotifier(enqueueSnackbarFn: (message: string, options?:
  * data: { user: 'Jacob', amount: '100 USDC' }
  * -> "Sent money to Jacob, total: 100 USDC"
  */
-function replaceTemplateTags(message: string, data: Record<string, any>): string {
+function replaceTemplateTags(message: string, data: Record<string, string | number | boolean>): string {
   return message.replace(/{(\w+)}/g, (_substring, key) => {
-    return data[key] !== undefined ? data[key] : `{${key}}`;
+    return data[key] !== undefined ? String(data[key]) : `{${key}}`;
   });
 }
 
 const notify = (
   typeNotification: NotificationType,
   text: ERRORS | SUCCESS | WARNING | INFO,
-  data?: Record<string, any>,
+  data?: Record<string, string | number | boolean>,
   fallbackMessage?: string,
-  options?: any
+  options?: NotificationOptions
 ) => {
   if (!globalEnqueueSnackbar) {
     console.error('No globalEnqueueSnackbar is set. Cannot notify messages.');
@@ -77,7 +83,7 @@ const notify = (
  */
 export function notifyError(
   errorName: ERRORS,
-  data?: Record<string, any>,
+  data?: Record<string, string | number | boolean>,
   fallbackMessage?: string
 ) {
   notify('error', errorName, data, fallbackMessage || 'An unknown error has occurred.');
@@ -89,9 +95,9 @@ export function notifyError(
  */
 export function notifySuccess(
   successName: SUCCESS,
-  data?: Record<string, any>,
+  data?: Record<string, string | number | boolean>,
   fallbackMessage?: string,
-  options?: any
+  options?: NotificationOptions
 ) {
   notify('success', successName, data, fallbackMessage || 'Operation successful.', options);
 }
@@ -102,9 +108,9 @@ export function notifySuccess(
  */
 export function notifyWarning(
   warningName: WARNING,
-  data?: Record<string, any>,
+  data?: Record<string, string | number | boolean>,
   fallbackMessage?: string,
-  options?: any
+  options?: NotificationOptions
 ) {
   notify('warning', warningName, data, fallbackMessage || 'Warning.', options);
 }
@@ -115,9 +121,9 @@ export function notifyWarning(
  */
 export function notifyInfo(
   infoName: INFO,
-  data?: Record<string, any>,
+  data?: Record<string, string | number | boolean>,
   fallbackMessage?: string,
-  options?: any
+  options?: NotificationOptions
 ) {
   notify('info', infoName, data, fallbackMessage || 'Information.', options);
 }
