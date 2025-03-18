@@ -110,7 +110,7 @@ export default function PublicationDetailsView({ id }: Readonly<PublicationDetai
                       isActive={isActive}
                       publication={publicationData}
                       campaign={campaign}
-                      onSponsorSuccess={handleSubscribe}
+                      onSponsorSuccess={handleRefetchAccess}
                     />
                   )}
                   {isJoinButtonVisible && (
