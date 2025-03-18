@@ -5,10 +5,10 @@ import AccessAggAbi from '@src/config/abi/AccessAgg.json';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 import { useSelector } from 'react-redux';
 import { UseHasAccessHook } from '@src/hooks/protocol/types.ts';
-import { useAccountSession } from '@src/hooks/use-account-session.ts';
 import { notifyError } from '@notifications/internal-notifications.ts';
 import { ERRORS } from '@notifications/errors.ts';
 import { UseHasAccessDefaultResponse } from '@src/hooks/protocol/DEFAULTS.tsx';
+import {RootState} from "@redux/store.ts"
 
 /**
  * Custom hook to check if the user has access to a publication.
@@ -16,9 +16,9 @@ import { UseHasAccessDefaultResponse } from '@src/hooks/protocol/DEFAULTS.tsx';
  * @returns An object containing the access data, loading state, error, and a refetch function.
  */
 export const useHasAccess = (ownerAddress?: Address): UseHasAccessHook => {
-  const sessionData = useSelector((state: any) => state.auth.session);
+  const sessionData = useSelector((state: RootState) => state.auth.session);
   const userAddress = sessionData?.profile?.ownedBy?.address;
-  const { isAuthenticated } = useAccountSession();
+  const isAuthenticated = useSelector((state: RootState) => state.auth.isFullyAuthenticated);
   const [hasAccess, setHasAccess] = useState<boolean | undefined>(undefined);
   const [loading, setLoading] = useState(true);
 

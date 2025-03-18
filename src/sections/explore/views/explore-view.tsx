@@ -3,7 +3,6 @@ import Stack from '@mui/material/Stack';
 import Container from '@mui/material/Container';
 // LOCAL IMPORTS
 import ExploreLoader from "@src/sections/explore/components/explore-loader.tsx"
-import { useAccountSession } from '@src/hooks/use-account-session.ts';
 import { ExploreCreators } from '@src/sections/explore/components/explore-creators.tsx';
 import { ExploreBookmarks } from '@src/sections/explore/components/explore-bookmarks.tsx';
 import { ExplorePublications } from '@src/sections/explore/components/explore-publications.tsx';
@@ -16,7 +15,7 @@ import {useEffect} from "react"
 // ----------------------------------------------------------------------
 
 const ExploreView = () => {
-  const { isAuthenticated } = useAccountSession();
+  const isAuthenticated = useSelector((state: RootState) => state.auth.isFullyAuthenticated);
   const loading = useSelector((state: RootState) => state.loading)
   const exploreIsLoading = isLoading(loading.explore);
 

@@ -20,7 +20,6 @@ import { WARNING } from '@notifications/warnings.ts';
 
 interface UseAccountSessionHook {
   logout: (silent?: boolean) => void;
-  isAuthenticated: boolean;
   loading: boolean;
 }
 
@@ -32,7 +31,6 @@ export const useAccountSession = (): UseAccountSessionHook => {
   const { execute: lensLogout } = useLogout();
   const sessionData = useSelector((state: any) => state.auth.session);
   const isSessionLoading = useSelector((state: any) => state.auth.isSessionLoading);
-  const isFullyAuthenticated = useSelector((state: any) => state.auth.isFullyAuthenticated);
   const { data, loading } = useSession();
   const { bundlerClient, smartAccount } = useWeb3Session();
 
@@ -85,7 +83,6 @@ export const useAccountSession = (): UseAccountSessionHook => {
 
   return {
     logout: handleSessionExpired,
-    loading: isSessionLoading,
-    isAuthenticated: isFullyAuthenticated
+    loading: isSessionLoading
   };
 };

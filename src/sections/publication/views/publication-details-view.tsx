@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 
 // REDUX IMPORTS
 import { openLoginModal } from '@redux/auth';
-import { useDispatch } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux'
 
 // MUI IMPORTS
 import Box from '@mui/material/Box';
@@ -38,6 +38,7 @@ import { PublicationPosterWallpaper } from '@src/sections/publication/components
 import { PublicationSponsorsAndBackers } from '@src/sections/publication/components/publication-sponsors-and-bakers.tsx';
 import { PublicationSponsoredButton } from '@src/sections/publication/components/publication-sponsored-button.tsx';
 import { PublicationJoinButton } from '@src/sections/publication/components/publication-join-button.tsx';
+import {RootState} from "@redux/store.ts"
 
 // ----------------------------------------------------------------------
 
@@ -45,7 +46,8 @@ export default function PublicationDetailsView({ id }: Readonly<PublicationDetai
   // STATES HOOKS
   const dispatch = useDispatch();
   const [openSubscribeModal, setOpenSubscribeModal] = useState(false);
-  const { isAuthenticated, loading: sessionLoading } = useAccountSession();
+  const { loading: sessionLoading } = useAccountSession();
+  const isAuthenticated = useSelector((state: RootState) => state.auth.isFullyAuthenticated);
 
   const { data: publicationData, loading: publicationLoading }: ReadResult<AnyPublication> = usePublication({ forId: id });
   const ownerAddress = publicationData?.by?.ownedBy?.address;

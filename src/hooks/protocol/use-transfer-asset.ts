@@ -12,6 +12,7 @@ import { useWeb3Session } from '@src/hooks/use-web3-session.ts';
 import { ERRORS } from '@notifications/errors.ts';
 import { useAccountSession } from '@src/hooks/use-account-session.ts';
 import { TransferAssetData, UseTransferAssetHook } from '@src/hooks/protocol/types.ts';
+import {RootState} from "@redux/store.ts"
 
 // ----------------------------------------------------------------------
 
@@ -25,9 +26,10 @@ export const useTransferAsset = (): UseTransferAssetHook => {
   const [data, setData] = useState<TransferAssetData>();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<keyof typeof ERRORS | null>(null);
-  const sessionData = useSelector((state: any) => state.auth.session);
+  const sessionData = useSelector((state: RootState) => state.auth.session);
   const { bundlerClient, smartAccount } = useWeb3Session();
-  const { isAuthenticated, logout } = useAccountSession();
+  const { logout } = useAccountSession();
+  const isAuthenticated = useSelector((state: RootState) => state.auth.isFullyAuthenticated);
 
   /**
    * Performs the operation of transferring an asset using the `AssetOwnership` contract.

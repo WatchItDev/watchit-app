@@ -8,14 +8,16 @@ import { useWeb3Session } from '@src/hooks/use-web3-session.ts';
 import { ERRORS } from '@notifications/errors.ts';
 import { useAccountSession } from '@src/hooks/use-account-session.ts';
 import { DepositParams, UseDepositHook } from '@src/hooks/protocol/types.ts';
+import {RootState} from "@redux/store.ts"
 
 export const useDeposit = (): UseDepositHook => {
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<keyof typeof ERRORS | null>(null);
   const { bundlerClient, smartAccount } = useWeb3Session();
-  const sessionData = useSelector((state: any) => state.auth.session);
-  const { isAuthenticated, logout } = useAccountSession();
+  const sessionData = useSelector((state: RootState) => state.auth.session);
+  const { logout } = useAccountSession();
+  const isAuthenticated = useSelector((state: RootState) => state.auth.isFullyAuthenticated);
 
   const approveMMC = (amount: number): string => {
     // Convert to Wei (assuming 18 decimals)

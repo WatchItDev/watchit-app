@@ -16,9 +16,9 @@ import { Icon } from '@iconify/react';
 // LOCAL IMPORTS
 import NeonPaper from '@src/sections/publication/components/neon-paper-container.tsx';
 import { useSponsoredAccessAgreement } from '@src/hooks/protocol/use-sponsored-access-agreement.ts';
-import { useAccountSession } from '@src/hooks/use-account-session.ts';
 import { ExtendedSponsoredAccessProps } from '@src/components/sponsored-access-button/types.ts';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
+import {RootState} from "@redux/store.ts"
 
 export const SponsoredAccessTrialButton: FC<ExtendedSponsoredAccessProps> = (props) => {
   const {
@@ -30,9 +30,9 @@ export const SponsoredAccessTrialButton: FC<ExtendedSponsoredAccessProps> = (pro
     onSuccess,
     size = 'sm',
   } = props;
-  const sessionData = useSelector((state: any) => state.auth.session);
+  const sessionData = useSelector((state: RootState) => state.auth.session);
   const dispatch = useDispatch();
-  const { isAuthenticated } = useAccountSession();
+  const isAuthenticated = useSelector((state: RootState) => state.auth.isFullyAuthenticated);
   const { sponsoredAccessAgreement, loading } = useSponsoredAccessAgreement();
 
   const handleTrial = async () => {
