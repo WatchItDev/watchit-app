@@ -45,7 +45,7 @@ export const useTransferAsset = (): UseTransferAssetHook => {
       return;
     }
 
-    if (!isAuthenticated()) {
+    if (!isAuthenticated) {
       logout();
       setLoading(false);
       throw new Error('Invalid Web3Auth session');

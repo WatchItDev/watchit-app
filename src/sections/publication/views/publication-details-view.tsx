@@ -66,7 +66,7 @@ export default function PublicationDetailsView({ id }: Readonly<PublicationDetai
   const allLoaded = !publicationLoading && !sessionLoading && !pubsLoading && isAccessFullyChecked;
   const isSponsoredButtonVisible = isActive && isAuthorized && isAccessFullyChecked;
   const isJoinButtonVisible = isAuthorized && !isActive && isAccessFullyChecked && !isSponsoredButtonVisible;
-  const isPlayerVisible = hasAccess && isAuthenticated() && !accessLoading && !sessionLoading;
+  const isPlayerVisible = hasAccess && isAuthenticated && !accessLoading && !sessionLoading;
 
   useEffect(() => {
     if (!ownerAddress || publicationLoading) return;
@@ -79,7 +79,7 @@ export default function PublicationDetailsView({ id }: Readonly<PublicationDetai
   }, [campaign, ownerAddress]);
 
   const handleSubscribe = () => {
-    if (!isAuthenticated()) {
+    if (!isAuthenticated) {
       dispatch(openLoginModal());
       return;
     }

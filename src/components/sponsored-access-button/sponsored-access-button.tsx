@@ -37,7 +37,7 @@ export const SponsoredAccessTrialButton: FC<ExtendedSponsoredAccessProps> = (pro
 
   const handleTrial = async () => {
     try {
-      if (!isAuthenticated()) {
+      if (!isAuthenticated) {
         return dispatch(openLoginModal());
       }
 

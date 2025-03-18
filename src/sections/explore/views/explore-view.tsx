@@ -29,7 +29,7 @@ const ExploreView = () => {
       <Stack direction={'column'} spacing={1} sx={{ maxWidth: '100vw !important',  position: 'relative' }}>
         {exploreIsLoading ? <ExploreLoader /> : null}
         <ExploreTopPublications />
-        {isAuthenticated() && (
+        {isAuthenticated && (
           <ExploreBookmarks />
         )}
         <ExploreCreators />

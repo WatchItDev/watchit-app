@@ -28,7 +28,7 @@ export const useWithdraw = (): UseWithdrawHook => {
     setLoading(true);
     setError(null);
 
-    if (!isAuthenticated()) {
+    if (!isAuthenticated) {
       setError(ERRORS.FIRST_LOGIN_ERROR);
       logout();
       setLoading(false);

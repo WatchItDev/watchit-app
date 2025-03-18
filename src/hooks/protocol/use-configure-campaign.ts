@@ -26,7 +26,7 @@ export const useConfigureCampaign = (): UseConfigureCampaignHook => {
 
     setLoading(true);
 
-    if (!isAuthenticated()) {
+    if (!isAuthenticated) {
       notifyError(ERRORS.FIRST_LOGIN_ERROR);
       logout();
       setLoading(false);

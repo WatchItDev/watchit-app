@@ -18,7 +18,7 @@ export const useSponsoredAccessAgreement = (): UseSponsoredAccessAgreementHook =
     const { holder, campaignAddress, policyAddress, parties, payload } = props;
     setLoading(true);
 
-    if (!isAuthenticated()) {
+    if (!isAuthenticated) {
       notifyError(ERRORS.FIRST_LOGIN_ERROR);
       logout();
       setLoading(false);

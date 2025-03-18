@@ -8,6 +8,7 @@ export interface AuthReducerState {
   currentStep: number;
   isUpdatingMetadata: boolean;
   email: string;
+  isFullyAuthenticated: boolean;
 }
 
 const initialState: AuthReducerState = {
@@ -18,6 +19,7 @@ const initialState: AuthReducerState = {
   currentStep: 0,
   isUpdatingMetadata: false,
   email: '',
+  isFullyAuthenticated: false,
 };
 
 const authSlice = createSlice({
@@ -78,6 +80,9 @@ const authSlice = createSlice({
     setIsUpdatingMetadata: (state, action: PayloadAction<boolean>) => {
       state.isUpdatingMetadata = action.payload;
     },
+    setFullyAuthenticated: (state, action: PayloadAction<boolean>) => {
+      state.isFullyAuthenticated = action.payload;
+    },
   },
 });
 
@@ -91,7 +96,8 @@ export const {
   setSession,
   updateProfileData,
   setIsUpdatingMetadata,
-  setEmail
+  setEmail,
+  setFullyAuthenticated
 } = authSlice.actions;
 
 export default authSlice.reducer;
