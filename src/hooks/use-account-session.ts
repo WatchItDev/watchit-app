@@ -83,6 +83,6 @@ export const useAccountSession = (): UseAccountSessionHook => {
 
   return {
     logout: handleSessionExpired,
-    loading: isSessionLoading
+    loading: isSessionLoading || isPending() || loading
   };
 };
