@@ -1,45 +1,35 @@
 import { Dispatch } from 'redux';
 import { appendNotification } from '@src/redux/notifications';
 
-export namespace Events {
-  export const Handlers = (payload: any, profileId: string, dispatch?: Dispatch) => {
-    const evenType: keyof typeof EventsHandlersMap = payload?.new?.payload?.type;
+/**
+ * Handle notification event for internal popover.
+ * @param payload Data from the event (set as needed)
+ * @param profileId Current user profile id for LENS Protocol
+ * @param dispatch Redux dispatch function
+ */
+export const handleNotification = (payload: any, profileId: string, dispatch?: Dispatch) => {
+  const notification = payload.new;
 
-    if (EventsHandlersMap[evenType]) {
-      EventsHandlersMap[evenType](payload, profileId, dispatch);
+  if (notification?.receiver_id === profileId) {
+    if (dispatch) {
+      dispatch(appendNotification(notification));
     }
-  };
+  }
+};
 
-  /**
-   * Handle notification event for internal popover.
-   * @param payload Data from the event (set as needed)
-   * @param profileId Current user profile id for LENS Protocol
-   * @param dispatch Redux dispatch function
-   * @constructor
-   */
-  export const Notification = (payload: any, profileId: string, dispatch?: Dispatch) => {
-    const notification = payload.new;
 
-    if (notification?.receiver_id === profileId) {
-      if (dispatch) {
-        dispatch(appendNotification(notification));
-      }
-    }
-  };
-  // @ts-ignore
-  export const Transaction = (payload: any) => {};
-  // @ts-ignore
-  export const Publication = (payload: any) => {};
-  // @ts-ignore
-  export const Subscription = (payload: any) => {};
-  // @ts-ignore
-  export const Follower = (payload: any) => {};
-}
+export const eventsHandlersMap = {
+  NOTIFICATION: handleNotification,
+};
 
-export const EventsHandlersMap = {
-  NOTIFICATION: Events.Notification,
-  TRANSACTION: Events.Transaction,
-  PUBLICATION: Events.Publication,
-  SUBSCRIPTION: Events.Subscription,
-  FOLLOWER: Events.Follower,
+/**
+ * Main hand
+ler that delegates to the appropriate event handler based on the event type
+ */
+export const handleEvents = (payload: any, profileId: string, dispatch?: Dispatch) => {
+  const eventType: keyof typeof eventsHandlersMap = payload?.new?.payload?.type;
+
+  if (eventsHandlersMap[eventType]) {
+    eventsHandlersMap[eventType](payload, profileId, dispatch);
+  }
 };
