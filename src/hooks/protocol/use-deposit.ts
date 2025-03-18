@@ -55,7 +55,7 @@ export const useDeposit = (): UseDepositHook => {
       return;
     }
 
-    if (!isAuthenticated()) {
+    if (!isAuthenticated) {
       logout();
       setLoading(false);
       throw new Error('Invalid Web3Auth session');

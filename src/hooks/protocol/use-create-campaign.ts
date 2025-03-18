@@ -30,7 +30,7 @@ export const useCreateCampaign = (): UseCreateCampaignHook => {
   const create = async ({ policy, expiration, description }: CreateCampaignParams) => {
     setLoading(true);
 
-    if (!isAuthenticated()) {
+    if (!isAuthenticated) {
       notifyError(ERRORS.FIRST_LOGIN_ERROR);
       setLoading(false);
       throw new Error('Invalid Web3Auth session');

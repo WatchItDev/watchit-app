@@ -52,7 +52,7 @@ export const useHasAccess = (ownerAddress?: Address): UseHasAccessHook => {
     fetchAccess();
   }, [fetchAccess]);
 
-  if (!isAuthenticated()) {
+  if (!isAuthenticated) {
     return UseHasAccessDefaultResponse;
   }
 

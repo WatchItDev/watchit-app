@@ -28,7 +28,7 @@ export const useTransfer = (): UseTransferHook => {
     setLoading(true);
     setError(null);
 
-    if (!isAuthenticated()) {
+    if (!isAuthenticated) {
       setError(ERRORS.TRANSFER_LOGIN_FIRST_ERROR);
       logout();
       setLoading(false);
