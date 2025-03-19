@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
+import { PinataHeaders, PinataResponse, IPFSMetadata } from './types';
 
 /**
  * Pinata API keys from global constants.
@@ -7,30 +8,7 @@ import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 const pinataApiKey = GLOBAL_CONSTANTS.PINATA_API_KEY;
 const pinataSecretApiKey = GLOBAL_CONSTANTS.PINATA_SECRET_API_KEY;
 
-/**
- * Interface for IPFS metadata
- */
-type IPFSMetadata = Record<string, string | number | boolean | object | null>;
 
-/**
- * Pinata headers interface
- */
-interface PinataHeaders {
-  pinata_api_key: string;
-  pinata_secret_api_key: string;
-  'Content-Type'?: string;
-  [key: string]: string | undefined;
-}
-
-/**
- * Pinata response interface
- */
-interface PinataResponse {
-  IpfsHash: string;
-  PinSize: number;
-  Timestamp: string;
-  [key: string]: unknown;
-}
 
 /**
  * Uploads data to IPFS using Pinata.

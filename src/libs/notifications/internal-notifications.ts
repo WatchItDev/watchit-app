@@ -2,16 +2,9 @@ import { ERROR_MESSAGES, ERRORS } from '@src/libs/notifications/errors.ts';
 import { SUCCESS_MESSAGES, SUCCESS } from '@src/libs/notifications/success.ts';
 import { WARNING_MESSAGES, WARNING } from '@src/libs/notifications/warnings.ts';
 import { INFO, INFO_MESSAGES } from '@src/libs/notifications/info.ts';
-
-type NotificationType = 'error' | 'success' | 'warning' | 'info';
+import {NotificationType, NotificationOptions} from "@src/libs/types.ts"
 
 let globalEnqueueSnackbar: ((message: string, options?: object) => void) | null = null;
-
-interface NotificationOptions {
-  variant?: NotificationType;
-  autoHideDuration?: number;
-  [key: string]: unknown;
-}
 
 /**
  * Allows us to set the globalEnqueueSnackbar function from our App (or any top-level component).

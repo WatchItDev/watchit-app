@@ -1,36 +1,6 @@
 import {dicebear} from "@src/utils/dicebear.ts";
 import { TransactionLog } from '@src/hooks/protocol/types.ts';
-
-export interface ProcessedTransactionData {
-  id: string;
-  name: string;
-  avatarUrl: string;
-  type: string;
-  message: string;
-  category: string;
-  date: bigint;
-  status: string;
-  timestamp?: number;
-  amount: string | null;
-}
-
-type EventName =
-  | 'transferFrom'
-  | 'transferTo'
-  | 'deposit'
-  | 'withdraw'
-  | 'locked'
-  | 'claimed'
-  | 'approved'
-  | 'collected'
-  | 'released';
-
-type TransactionArgs = Record<string, string | bigint>;
-
-interface EventConfig {
-  getName: (args: TransactionArgs) => string;
-  getAvatarUrl: (args: TransactionArgs) => string;
-}
+import {Transaction, EventConfig, EventName, ProcessedTransactionData} from "../types"
 
 const eventConfig: Record<EventName, EventConfig> = {
   transferFrom: {
@@ -129,24 +99,6 @@ const parseTransactionType = (type: string): string => {
       return type;
   }
 };
-
-export interface Transaction {
-  address: string;
-  args: TransactionArgs;
-  blockHash: string;
-  blockNumber: bigint;
-  data: string;
-  event: EventName;
-  eventName: string;
-  formattedAmount: string;
-  logIndex: bigint;
-  readableDate: string;
-  removed: boolean;
-  timestamp: bigint;
-  topics: string[];
-  transactionHash: string;
-  transactionIndex: bigint;
-}
 
 export function groupTransactionsForWidget(transactions: Transaction[]) {
   if (!transactions?.length) {

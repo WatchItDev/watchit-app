@@ -1,4 +1,4 @@
-import {CalculateItemsPerSlideProps} from "@src/utils/components/carousel/types.ts";
+import {CalculateItemsPerSlideProps} from "@src/libs/types.ts";
 
 /**
  * Calculates the optimal number of items per slide based on the width of the parent container
