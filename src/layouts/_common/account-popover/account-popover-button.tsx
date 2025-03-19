@@ -1,6 +1,3 @@
-// REDUX IMPORTS
-import { useSelector } from 'react-redux';
-
 // MUI IMPORTS
 import {
   Box,
@@ -14,10 +11,11 @@ import { alpha } from '@mui/material/styles';
 import { m } from 'framer-motion';
 
 // LOCAL IMPORTS
-import { varHover } from '@src/components/animate';
 import AvatarProfile from '@src/components/avatar/avatar';
 import NeonPaper from '@src/sections/publication/components/neon-paper-container.tsx';
+import { varHover } from '@src/components/animate';
 import { UsePopoverReturnType } from '@src/components/custom-popover/use-popover.ts';
+import { useAuth } from '@src/hooks/use-auth.ts';
 
 // ----------------------------------------------------------------------
 
@@ -33,13 +31,10 @@ interface AccountPopoverButtonProps {
  *  - A clickable avatar (if authenticated)
  *  - Or a "Social Login" button (if not authenticated)
  */
-export function AccountPopoverButton({
-                                       popover,
-                                       onOpenLoginModal,
-                                     }: Readonly<AccountPopoverButtonProps>) {
-  const sessionData = useSelector((state: any) => state.auth.session);
+export function AccountPopoverButton(props: Readonly<AccountPopoverButtonProps>) {
+  const { popover, onOpenLoginModal } = props;
+  const { session: sessionData, isUpdatingMetadata } = useAuth();
   const isAuthenticated = Boolean(sessionData?.authenticated);
-  const isUpdatingMetadata: boolean = useSelector((state: any) => state.auth.isUpdatingMetadata);
 
   // Use NeonPaper while metadata is updating
   const EffectPaper = isUpdatingMetadata ? NeonPaper : Box;

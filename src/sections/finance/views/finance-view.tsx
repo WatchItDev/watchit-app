@@ -5,28 +5,25 @@ import { useEffect, useState } from 'react';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Unstable_Grid2';
 
-//REDUX IMPORTS
-import { useSelector } from 'react-redux';
-
 // LENS IMPORTS
 import { useProfileFollowing } from '@lens-protocol/react';
 
 // LOCAL IMPORTS
 import useGetSmartWalletTransactions from '@src/hooks/protocol/use-get-smart-wallet-transactions.ts';
 import { groupTransactionsForWidget } from '@src/utils/finance-graphs/groupedTransactions.ts';
-import {filterHiddenProfiles} from "@src/utils/profile.ts";
+import { filterHiddenProfiles } from "@src/utils/profile.ts";
 import { SummaryAndActions } from '@src/sections/finance/components/finance-summary-and-actions.tsx';
 import { FinanceLeftColumnContent } from '@src/sections/finance/components/finance-left-column-content.tsx';
 import { FinanceRightColumnContent } from '@src/sections/finance/components/finance-right-column-content.tsx';
+import { useAuth } from '@src/hooks/use-auth.ts';
 
 // ----------------------------------------------------------------------
 
 export default function FinanceView() {
-  const { balance: balanceFromRedux } = useSelector((state: any) => state.auth);
-  const sessionData = useSelector((state: any) => state.auth.session);
-  const { transactions, loading } = useGetSmartWalletTransactions();
   const [widgetSeriesData, setWidgetSeriesData] = useState<{ x: string; y: number }[]>([]);
   const [percent, setPercent] = useState(0);
+  const { session: sessionData, balance: balanceFromRedux } = useAuth();
+  const { transactions, loading } = useGetSmartWalletTransactions();
   const { data: results, loading: loadingProfiles } = useProfileFollowing({
     for: sessionData?.profile?.id,
   });

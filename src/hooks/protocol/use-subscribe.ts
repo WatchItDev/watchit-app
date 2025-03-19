@@ -10,12 +10,12 @@ import { encodeFunctionData } from 'viem';
 // LOCAL IMPORTS
 import AccessWorkflowAbi from '@src/config/abi/AccessWorkflow.json';
 import LedgerVaultabi from '@src/config/abi/LedgerVault.json';
-import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
-import { useSelector } from 'react-redux';
 import { useWeb3Session } from '@src/hooks/use-web3-session.ts';
-import { ERRORS } from '@notifications/errors.ts';
 import { useAccountSession } from '@src/hooks/use-account-session.ts';
+import { useAuth } from '@src/hooks/use-auth.ts';
 import { SubscribeData, SubscribeParams, UseSubscribeHook } from '@src/hooks/protocol/types.ts';
+import { ERRORS } from '@notifications/errors.ts';
+import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 
 // ----------------------------------------------------------------------
 
@@ -23,9 +23,10 @@ export const useSubscribe = (): UseSubscribeHook => {
   const [data, setData] = useState<SubscribeData>();
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<keyof typeof ERRORS | null>(null);
-  const sessionData = useSelector((state: any) => state.auth.session);
+  const { session: sessionData, isFullyAuthenticated: isAuthenticated } = useAuth();
   const { bundlerClient, smartAccount } = useWeb3Session();
-  const { isAuthenticated, logout } = useAccountSession();
+  const { logout } = useAccountSession();
+
 
   const approveToAccessAgreement = (approvalAmount: bigint): string => {
     return encodeFunctionData({

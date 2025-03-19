@@ -7,17 +7,17 @@ import { Box, Typography, List, Button, Avatar } from '@mui/material';
 // UTILS IMPORTS
 import { truncateAddress } from '@src/utils/wallet';
 import { Profile, useLazyProfiles, LoginError } from '@lens-protocol/react-web';
-// @ts-ignore
-import Alert from '@mui/material/Alert';
 
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { setAuthLoading, setBalance } from '@redux/auth';
-import { useResponsive } from '@src/hooks/use-responsive.ts';
-import { UserItem } from '../user-item';
-import LoadingScreen from '../loading-screen/loading-screen.tsx';
+
 import { notifyError } from '@notifications/internal-notifications.ts';
+import { LoadingScreen } from '@src/components/loading-screen';
+import { useResponsive } from '@src/hooks/use-responsive.ts';
+import { filterHiddenProfiles } from "@src/utils/profile.ts";
+import { UserItem } from '@src/components/user-item';
+import { useAuth } from '@src/hooks/use-auth.ts';
 import { ERRORS } from '@notifications/errors.ts';
-import {filterHiddenProfiles} from "@src/utils/profile.ts";
 // ----------------------------------------------------------------------
 
 interface ProfileSelectionProps {
@@ -41,10 +41,9 @@ export const ProfileSelectView: React.FC<ProfileSelectionProps> = ({
 }) => {
   const dispatch = useDispatch();
   const lgUp = useResponsive('up', 'lg');
-
   const [profiles, setProfiles] = useState([] as Profile[]);
   const { execute: getProfiles, loading } = useLazyProfiles();
-  const sessionData = useSelector((state: any) => state.auth.session);
+  const { session: sessionData } = useAuth();
 
   useEffect(() => {
     if (!error) dispatch(setAuthLoading({ isSessionLoading: false }));

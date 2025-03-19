@@ -33,6 +33,7 @@ import { incrementCounterLikes, decrementCounterLikes, setCounterLikes, hiddeCom
 import NeonPaperContainer from '@src/sections/publication/components/neon-paper-container.tsx';
 import AvatarProfile from "@src/components/avatar/avatar.tsx";
 import { PublicationCommentItemProps } from '@src/sections/publication/types.ts';
+import { useAuth } from '@src/hooks/use-auth.ts';
 
 // Components Lazy
 const LazyPopover = lazy(() => import('@mui/material/Popover'));
@@ -46,26 +47,24 @@ const LazyDialogActions = lazy(() => import('@mui/material/DialogActions'));
 
 const PublicationCommentItem:FC<PublicationCommentItemProps> = (props) => {
   const { comment, hasReply, canReply } = props;
-  const isPendingComment = !!comment?.uri;
-
-  const ContentContainer = isPendingComment ? NeonPaperContainer : Paper;
-
   const [openConfirmModal, setOpenConfirmModal] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const openMenu = Boolean(anchorEl);
-  const router = useRouter();
-  const { execute: toggle, loading: loadingLike } = useReactionToggle();
+  const [showComments, setShowComments] = useState(false);
   const [hasLiked, setHasLiked] = useState(
     hasReacted({ publication: comment, reaction: PublicationReactionType.Upvote })
   );
+  const router = useRouter();
+  const { execute: toggle, loading: loadingLike } = useReactionToggle();
   const { execute: hide } = useHidePublication();
-  const [showComments, setShowComments] = useState(false);
-  const sessionData = useSelector((state: any) => state.auth.session);
+  const { session: sessionData } = useAuth();
   const dispatch = useDispatch();
   const { sendNotification } = useNotifications();
   const { generatePayload } = useNotificationPayload(sessionData);
-
   const likes = useSelector((state: RootState) => state.comments.counterLikes[comment.id] ?? 0);
+
+  const openMenu = Boolean(anchorEl);
+  const isPendingComment = !!comment?.uri;
+  const ContentContainer = isPendingComment ? NeonPaperContainer : Paper;
 
   const toggleReaction = async () => {
     if (!sessionData?.authenticated) return dispatch(openLoginModal());

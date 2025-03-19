@@ -1,7 +1,13 @@
 // REACT IMPORTS
 import React, { useEffect, useState } from 'react';
 
+// REDUX IMPORTS
+import { useDispatch } from 'react-redux';
+
 // MUI IMPORTS
+import Box from '@mui/material/Box';
+import LoadingButton from '@mui/lab/LoadingButton';
+import LinearProgress from '@mui/material/LinearProgress';
 import {
   Button,
   Dialog,
@@ -22,25 +28,20 @@ import { ethers } from 'ethers';
 import { Address } from 'viem';
 
 // LOCAL IMPORTS
-import LoadingButton from '@mui/lab/LoadingButton';
+import NeonPaper from '@src/sections/publication/components/neon-paper-container.tsx';
 import { useSubscribe } from '@src/hooks/protocol/use-subscribe.ts';
 import { Profile } from '@lens-protocol/api-bindings';
 import { useGetPolicyTerms } from '@src/hooks/protocol/use-get-policy-terms.ts';
-import LinearProgress from '@mui/material/LinearProgress';
-
-// @ts-ignore
 import { setBalance } from '@redux/auth';
-import { useDispatch, useSelector } from 'react-redux';
 import { useGetBalance } from '@src/hooks/protocol/use-get-balance.ts';
 import { useNotifications } from '@src/hooks/use-notifications.ts';
 import { useNotificationPayload } from '@src/hooks/use-notification-payload.ts';
-import NeonPaper from '@src/sections/publication/components/neon-paper-container.tsx';
-import Box from '@mui/material/Box';
-import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 import { notifyError, notifySuccess } from '@notifications/internal-notifications.ts';
+import { dicebear } from "@src/utils/dicebear.ts";
+import { useAuth } from '@src/hooks/use-auth.ts';
+import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 import { SUCCESS } from '@notifications/success.ts';
 import { ERRORS } from '@notifications/errors.ts';
-import {dicebear} from "@src/utils/dicebear.ts";
 
 // ----------------------------------------------------------------------
 
@@ -59,26 +60,19 @@ export const SubscribeProfileModal = ({
   profile,
   onSubscribe,
 }: SubscribeProfileModalProps) => {
-  const dispatch = useDispatch();
-  const { balance: balanceFromRedux } = useSelector((state: any) => state.auth);
-
-  // State variables for handling durations and messages
   const [selectedDuration, setSelectedDuration] = useState('7');
   const [customDuration, setCustomDuration] = useState('');
 
-  // Hook to get the user's session data
-  const sessionData = useSelector((state: any) => state.auth.session);
+  const dispatch = useDispatch();
+  const { session: sessionData, balance: balanceFromRedux } = useAuth();
   const { balance: balanceFromContract, refetch } = useGetBalance();
-
-  // Hooks for subscription and terms resolution
   const { data, error, loading, subscribe } = useSubscribe();
+  const { sendNotification } = useNotifications();
+  const { generatePayload } = useNotificationPayload(sessionData);
   const { terms, loading: loadingTerms } = useGetPolicyTerms(
     GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS as Address,
     profile?.ownedBy?.address as Address
   );
-
-  const { sendNotification } = useNotifications();
-  const { generatePayload } = useNotificationPayload(sessionData);
 
   useEffect(() => {
     if (balanceFromContract) {

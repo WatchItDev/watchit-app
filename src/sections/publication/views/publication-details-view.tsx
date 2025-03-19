@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 
 // REDUX IMPORTS
 import { openLoginModal } from '@redux/auth';
-import { useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux'
 
 // MUI IMPORTS
 import Box from '@mui/material/Box';
@@ -20,16 +20,16 @@ import { appId, PublicationType, usePublications } from '@lens-protocol/react-we
 import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
 
 // LOCAL IMPORTS
-import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
+import MoviePlayView from '@src/sections/publication/components/publication-player.tsx';
+import PublicationDetailMain from '@src/components/publication-detail-main';
+import { useAuth } from '@src/hooks/use-auth.ts';
 import { LoadingScreen } from '@src/components/loading-screen';
 import { useHasAccess } from '@src/hooks/protocol/use-has-access.ts';
 import { useAccountSession } from '@src/hooks/use-account-session.ts';
-import PublicationDetailMain from '@src/components/publication-detail-main';
+import { useGetCampaignIsActive } from '@src/hooks/protocol/use-get-campaign-is-active.ts';
+import { useIsPolicyAuthorized } from '@src/hooks/protocol/use-is-policy-authorized.ts';
 import { PublicationDetailsViewProps } from '@src/sections/publication/types.ts';
 import { SubscribeProfileModal } from '@src/components/subscribe-profile-modal.tsx';
-import MoviePlayView from '@src/sections/publication/components/publication-player.tsx';
-import { useIsPolicyAuthorized } from '@src/hooks/protocol/use-is-policy-authorized.ts';
-import { useGetCampaignIsActive } from '@src/hooks/protocol/use-get-campaign-is-active.ts';
 import { PublicationHidden } from '@src/sections/publication/components/publication-hidden.tsx';
 import { useGetSubscriptionCampaign } from '@src/hooks/protocol/use-get-subscription-campaign.ts';
 import { PublicationTitleDescription } from '@src/sections/publication/components/publication-description.tsx';
@@ -38,6 +38,7 @@ import { PublicationPosterWallpaper } from '@src/sections/publication/components
 import { PublicationSponsorsAndBackers } from '@src/sections/publication/components/publication-sponsors-and-bakers.tsx';
 import { PublicationSponsoredButton } from '@src/sections/publication/components/publication-sponsored-button.tsx';
 import { PublicationJoinButton } from '@src/sections/publication/components/publication-join-button.tsx';
+import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 
 // ----------------------------------------------------------------------
 
@@ -45,7 +46,8 @@ export default function PublicationDetailsView({ id }: Readonly<PublicationDetai
   // STATES HOOKS
   const dispatch = useDispatch();
   const [openSubscribeModal, setOpenSubscribeModal] = useState(false);
-  const { isAuthenticated, loading: sessionLoading } = useAccountSession();
+  const { loading: sessionLoading } = useAccountSession();
+  const { isFullyAuthenticated: isAuthenticated } = useAuth();
 
   const { data: publicationData, loading: publicationLoading }: ReadResult<AnyPublication> = usePublication({ forId: id });
   const ownerAddress = publicationData?.by?.ownedBy?.address;

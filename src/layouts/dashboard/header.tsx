@@ -17,40 +17,30 @@ import { useSettingsContext } from '@src/components/settings';
 import { HEADER, NAV } from '../config-layout';
 import { AccountPopover, HeaderBalance, NotificationsPopover } from '../_common';
 import { PropsWithChildren } from 'react';
-// @ts-ignore
-import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleDrawer } from '@redux/drawer';
+import { useAuth } from '@src/hooks/use-auth.ts';
+import { RootState } from '@redux/store.ts';
 
 // ----------------------------------------------------------------------
 
 export default function Header({ children }: PropsWithChildren) {
-  const sessionData = useSelector((state: any) => state.auth.session);
-
   const theme = useTheme();
-
+  const { session: sessionData } = useAuth();
+  const lgUp = useResponsive('up', 'lg');
+  const dispatch = useDispatch();
+  const offset = useOffSetTop(HEADER.H_DESKTOP);
   const settings = useSettingsContext();
+  const minibarState = useSelector((state: RootState) => state.minibar.state);
 
   const isNavHorizontal = settings.themeLayout === 'horizontal';
-
-  const lgUp = useResponsive('up', 'lg');
-
-  const offset = useOffSetTop(HEADER.H_DESKTOP);
-
   const offsetTop = offset && !isNavHorizontal;
-
-  // Inside the Header component
-  const dispatch = useDispatch();
+  const isNavMini = minibarState === 'mini';
 
   const handleToggleDrawer = () => {
     dispatch(toggleDrawer());
   };
-
-  // @ts-ignore
-  const minibarState = useSelector((state) => state.minibar.state);
-
-  const isNavMini = minibarState === 'mini';
 
   const renderContent = (
     <>

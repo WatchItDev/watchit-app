@@ -1,9 +1,6 @@
 // REACT IMPORTS
 import { PropsWithChildren, useEffect } from 'react';
 
-// Redux
-import { useSelector } from 'react-redux';
-
 // MUI IMPORTS
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
@@ -33,14 +30,14 @@ import ProfileToolbar from "@src/sections/user/components/profile-toolbar.tsx";
 import { useGetSubscriptionCampaign } from '@src/hooks/protocol/use-get-subscription-campaign.ts';
 import { useGetCampaignIsActive } from '@src/hooks/protocol/use-get-campaign-is-active.ts';
 import { SponsoredAccessTrialButton } from '@src/components/sponsored-access-button/sponsored-access-button.tsx';
+import { useAuth } from '@src/hooks/use-auth.ts';
 import { ProfileHeaderProps } from '@src/sections/user/types.ts';
-import {RootState} from "@redux/store.ts"
 
 // ----------------------------------------------------------------------
 
 const ProfileHeader = (props: PropsWithChildren<ProfileHeaderProps>) => {
   const { profile: profileData, children } = props;
-  const sessionData = useSelector((state: RootState) => state.auth.session);
+  const { session: sessionData } = useAuth();
   const profile =
     sessionData && sessionData?.profile?.id === profileData?.id ? sessionData.profile : profileData;
 

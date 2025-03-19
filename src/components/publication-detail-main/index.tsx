@@ -53,12 +53,13 @@ import { ReportPublicationModal } from '@src/components/report-publication-modal
 import Popover from '@mui/material/Popover';
 import { useNotifications } from '@src/hooks/use-notifications.ts';
 import { openLoginModal } from '@redux/auth';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { addBookmark, removeBookmark } from '@redux/bookmark';
 import { useNotificationPayload } from '@src/hooks/use-notification-payload.ts';
 import {dicebear} from "@src/utils/dicebear.ts";
 import AvatarProfile from "@src/components/avatar/avatar.tsx";
 import { PublicationDetailProps } from '@src/components/publication-detail-main/types.ts';
+import { useAuth } from '@src/hooks/use-auth.ts';
 
 // ----------------------------------------------------------------------
 
@@ -70,7 +71,6 @@ export default function PublicationDetailMain({
   subscribeDisabled,
   hasAccess,
 }: Readonly<PublicationDetailProps>) {
-  // STATES HOOKS
   const [showComments, setShowComments] = useState(false);
   const [openReportModal, setOpenReportModal] = useState(false);
   const [openConfirmModal, setOpenConfirmModal] = useState(false);
@@ -78,22 +78,19 @@ export default function PublicationDetailMain({
   const [hasLiked, setHasLiked] = useState(
     hasReacted({ publication: post, reaction: PublicationReactionType.Upvote })
   );
-  const openMenu = Boolean(anchorEl);
-  // LOCAL HOOKS
+
   const router = useRouter();
   const theme = useTheme();
-  const sessionData = useSelector((state: any) => state.auth.session);
+  const { session: sessionData } = useAuth();
   const dispatch = useDispatch();
-
-  // LENS HOOKS
   const { execute: toggle, loading: loadingLike } = useReactionToggle();
   const { execute: hide } = useHidePublication();
   const { execute: toggleBookMarkFunction, loading: loadingBookMark } = useBookmarkToggle();
   const { sendNotification } = useNotifications();
   const { generatePayload } = useNotificationPayload(sessionData);
 
-  // CONSTANTS
   const variants = theme.direction === 'rtl' ? varFade().inLeft : varFade().inRight;
+  const openMenu = Boolean(anchorEl);
 
   const toggleReaction = async () => {
     if (!sessionData?.authenticated) return dispatch(openLoginModal());
