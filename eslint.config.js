@@ -17,7 +17,10 @@ export default tseslint.config(
       "src/setupTests.js",
       "src/serviceWorkerRegistration.js",
       "src/service-worker.js",
-      "src/reportWebVitals.js"
+      "src/reportWebVitals.js",
+      "coverage/*",
+      "**/__test__/**",
+      "**/__mocks__/**",
     ]
   },
   {

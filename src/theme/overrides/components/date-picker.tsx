@@ -28,7 +28,24 @@ const calendarIcon = () => <Iconify icon="solar:calendar-mark-bold-duotone" widt
 
 const clockIcon = () => <Iconify icon="solar:clock-circle-outline" width={24} />;
 
-const desktopTypes = dateList.reduce((result: Record<string, any>, currentValue) => {
+interface DatePickerSlots {
+  openPickerIcon?: () => JSX.Element;
+  leftArrowIcon?: () => JSX.Element;
+  rightArrowIcon?: () => JSX.Element;
+  switchViewIcon?: () => JSX.Element;
+}
+
+interface DatePickerComponentConfig {
+  defaultProps: {
+    slots: DatePickerSlots;
+  };
+}
+
+type DatePickerComponents = Record<`Mui${typeof dateList[number]}`, DatePickerComponentConfig>;
+
+type TimePickerComponents = Record<`Mui${typeof timeList[number]}`, DatePickerComponentConfig>;
+
+const desktopTypes = dateList.reduce<DatePickerComponents>((result, currentValue) => {
   result[`Mui${currentValue}`] = {
     defaultProps: {
       slots: {
@@ -41,9 +58,9 @@ const desktopTypes = dateList.reduce((result: Record<string, any>, currentValue)
   };
 
   return result;
-}, {});
+}, {} as DatePickerComponents);
 
-const timeTypes = timeList.reduce((result: Record<string, any>, currentValue) => {
+const timeTypes = timeList.reduce<TimePickerComponents>((result, currentValue) => {
   result[`Mui${currentValue}`] = {
     defaultProps: {
       slots: {
@@ -55,7 +72,7 @@ const timeTypes = timeList.reduce((result: Record<string, any>, currentValue) =>
   };
 
   return result;
-}, {});
+}, {} as TimePickerComponents);
 
 export function datePicker(theme: Theme) {
   return {
