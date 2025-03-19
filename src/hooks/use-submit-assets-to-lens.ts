@@ -1,7 +1,7 @@
 import { useState, useCallback } from "react";
 import { useCreatePost } from "@lens-protocol/react-web";
 import { AnyMedia, MediaVideoMimeType, video } from "@lens-protocol/metadata";
-import { uploadMetadataToIPFS, verifyIpfsData } from "@src/utils/ipfs.ts";
+import { uploadMetadataToIPFS, verifyIpfsData } from "@src/libs/ipfs.ts";
 import uuidv4 from "@src/utils/uuidv4.ts";
 import { ERRORS } from "@src/libs/notifications/errors";
 

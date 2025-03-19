@@ -16,7 +16,7 @@ import InputBase from '@mui/material/InputBase';
 import InputAdornment from '@mui/material/InputAdornment';
 import { alpha } from '@mui/material/styles';
 import Iconify from '@src/components/iconify';
-import { uploadMetadataToIPFS } from '@src/utils/ipfs.ts';
+import { uploadMetadataToIPFS } from '@src/libs/ipfs.ts';
 import uuidv4 from '@src/utils/uuidv4.ts';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNotifications } from '@src/hooks/use-notifications.ts';
