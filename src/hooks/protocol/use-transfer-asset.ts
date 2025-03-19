@@ -6,13 +6,12 @@ import { encodeFunctionData } from 'viem';
 
 // LOCAL IMPORTS
 import AssetOwnershipAbi from '@src/config/abi/AssetOwnership.json';
-import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
-import { useSelector } from 'react-redux';
 import { useWeb3Session } from '@src/hooks/use-web3-session.ts';
-import { ERRORS } from '@notifications/errors.ts';
 import { useAccountSession } from '@src/hooks/use-account-session.ts';
+import { useAuth } from '@src/hooks/use-auth.ts';
 import { TransferAssetData, UseTransferAssetHook } from '@src/hooks/protocol/types.ts';
-import {RootState} from "@redux/store.ts"
+import { ERRORS } from '@notifications/errors.ts';
+import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 
 // ----------------------------------------------------------------------
 
@@ -26,8 +25,7 @@ export const useTransferAsset = (): UseTransferAssetHook => {
   const [data, setData] = useState<TransferAssetData>();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<keyof typeof ERRORS | null>(null);
-  const sessionData = useSelector((state: RootState) => state.auth.session);
-  const isAuthenticated = useSelector((state: RootState) => state.auth.isFullyAuthenticated);
+  const { session: sessionData, isFullyAuthenticated: isAuthenticated } = useAuth();
   const { bundlerClient, smartAccount } = useWeb3Session();
   const { logout } = useAccountSession();
 

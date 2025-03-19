@@ -1,8 +1,20 @@
+// REDUX IMPORTS
+import { useDispatch } from 'react-redux';
+
+// FORM IMPORTS
 import * as Yup from 'yup';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Stack, CircularProgress } from '@mui/material';
+
+// MUI IMPORTS
 import LoadingButton from '@mui/lab/LoadingButton';
+import InputAdornment from '@mui/material/InputAdornment';
+import InputBase from '@mui/material/InputBase';
+import FormProvider from '@src/components/hook-form';
+import { alpha } from '@mui/material/styles';
+import { Stack, CircularProgress } from '@mui/material';
+
+// LENS IMPORTS
 import { useCreateComment } from '@lens-protocol/react-web';
 import {
   textOnly,
@@ -11,20 +23,18 @@ import {
   MetadataAttributeType,
   MarketplaceMetadataAttributeDisplayType, PublicationId,
 } from '@lens-protocol/metadata'
-import FormProvider from '@src/components/hook-form';
-import InputBase from '@mui/material/InputBase';
-import InputAdornment from '@mui/material/InputAdornment';
-import { alpha } from '@mui/material/styles';
-import Iconify from '@src/components/iconify';
-import { uploadMetadataToIPFS } from '@src/utils/ipfs.ts';
+import { AnyPublication } from '@lens-protocol/api-bindings';
+
+// LOCAL IMPORTS
 import uuidv4 from '@src/utils/uuidv4.ts';
-import { useDispatch, useSelector } from 'react-redux';
+import Iconify from '@src/components/iconify';
+import AvatarProfile from "@src/components/avatar/avatar.tsx";
+import { uploadMetadataToIPFS } from '@src/utils/ipfs.ts';
 import { useNotifications } from '@src/hooks/use-notifications.ts';
 import { useNotificationPayload } from '@src/hooks/use-notification-payload.ts';
-import { AnyPublication } from '@lens-protocol/api-bindings';
-import AvatarProfile from "@src/components/avatar/avatar.tsx";
-import {dicebear} from "@src/utils/dicebear.ts";
+import { dicebear } from "@src/utils/dicebear.ts";
 import { MovieCommentFormProps } from '@src/sections/publication/types.ts';
+import { useAuth } from '@src/hooks/use-auth.ts';
 
 /**
  * MovieCommentForm Component
@@ -33,33 +43,25 @@ import { MovieCommentFormProps } from '@src/sections/publication/types.ts';
  * @returns {JSX.Element} - Rendered component.
  */
 const MovieCommentForm = ({ commentOn, owner, root }: MovieCommentFormProps) => {
-  // Define the validation schema using Yup
+  const { execute: createComment } = useCreateComment();
+  const { session: sessionData } = useAuth();
+  const dispatch = useDispatch();
+  const { sendNotification } = useNotifications();
+  const { generatePayload } = useNotificationPayload(sessionData);
+
   const CommentSchema = Yup.object().shape({
     comment: Yup.string().required('Comment is required'),
   });
-
-  // Define default form values
-  const defaultValues = {
-    comment: '',
-  };
-
-  // Initialize the form methods
+  const defaultValues = { comment: '' };
   const methods = useForm({
     resolver: yupResolver(CommentSchema),
     defaultValues,
   });
-
   const {
     reset,
     handleSubmit,
     formState: { isSubmitting },
   } = methods;
-
-  const { execute: createComment } = useCreateComment();
-  const sessionData = useSelector((state: any) => state.auth.session);
-  const dispatch = useDispatch();
-  const { sendNotification } = useNotifications();
-  const { generatePayload } = useNotificationPayload(sessionData);
 
   /**
    * Form submission handler.

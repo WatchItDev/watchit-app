@@ -1,23 +1,32 @@
-import {useEffect, useState} from 'react'
-import {useDispatch, useSelector} from 'react-redux'
-import { formatUnits, parseAbiItem} from 'viem'
-import {publicClient} from '@src/clients/viem/publicClient.ts'
-import {addTransaction, setTransactions} from '@redux/transactions'
-import {EventConfig} from '@src/hooks/protocol/types.ts'
-import {RootState} from '@redux/store.ts'
-import {GLOBAL_CONSTANTS} from '@src/config-global.ts'
+// REACT IMPORTS
+import { useEffect, useState } from 'react'
+
+// REDUX IMPORTS
+import { useDispatch, useSelector } from 'react-redux'
+
+// VIEM IMPORTS
+import { formatUnits, parseAbiItem } from 'viem'
+
+// LOCAL IMPORTS
 import LedgerVaultAbi from '@src/config/abi/LedgerVault.json'
+import { publicClient } from '@src/clients/viem/publicClient.ts'
+import { addTransaction, setTransactions } from '@redux/transactions'
+import { EventConfig } from '@src/hooks/protocol/types.ts'
+import { RootState } from '@redux/store.ts'
+import { useAuth } from '@src/hooks/use-auth.ts';
+import { GLOBAL_CONSTANTS } from '@src/config-global.ts'
+
 /**
  * Hook to retrieve smart wallet transactions by querying logs from the LedgerVault contract.
  * It also manages live updates when new events are detected in real time.
  */
 export default function useGetSmartWalletTransactions() {
-  const dispatch = useDispatch();
-  const sessionData = useSelector((state: RootState) => state.auth.session);
-  const blockchainEvents = useSelector((state: RootState) => state.blockchainEvents.events);
-  const transactions = useSelector((state: RootState) => state.transactions.transactions);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const { session: sessionData } = useAuth();
+  const dispatch = useDispatch();
+  const blockchainEvents = useSelector((state: RootState) => state.blockchainEvents.events);
+  const transactions = useSelector((state: RootState) => state.transactions.transactions);
 
   /**
    * We define all event configurations that we want to capture.

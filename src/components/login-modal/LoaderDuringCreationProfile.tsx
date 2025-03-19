@@ -1,11 +1,11 @@
 import { Box, BoxProps } from '@mui/system';
 import { WatchitLoader } from '@src/components/watchit-loader';
-import { useSelector } from 'react-redux';
 import { COLORS } from '@src/layouts/config-layout.ts';
 import Stack from '@mui/material/Stack';
 import TextMaxLine from '@src/components/text-max-line';
 import { IconCheck, IconLoader, IconSquare } from '@tabler/icons-react';
 import { styled, keyframes } from '@mui/material/styles';
+import { useAuth } from '@src/hooks/use-auth.ts';
 
 interface LoaderContainerProps extends BoxProps {
   show: boolean;
@@ -64,10 +64,9 @@ const BoxItem = styled(Box)`
 `;
 
 const LoaderDuringCreationProfile = () => {
-  const { modalCreationProfile, profileCreationSteps } = useSelector((state: any) => state.auth);
+  const { modalCreationProfile, profileCreationSteps } = useAuth();
 
   return (
-    // @ts-ignore
     <LoaderContainer show={modalCreationProfile}>
       <InnerBox>
         <WatchitLoader style={{ paddingTop: 2 }} />

@@ -34,6 +34,7 @@ import FinanceNoFollowingsQuickTransfer
 import FinanceDisplayProfileInfo from "@src/sections/finance/components/finance-display-profile-info";
 import {handleAmountConstraints} from "@src/utils/format-number.ts";
 import {LoadingScreen} from "@src/components/loading-screen";
+import { useAuth } from '@src/hooks/use-auth.ts';
 
 // ----------------------------------------------------------------------
 
@@ -65,13 +66,10 @@ export default function FinanceQuickTransfer({
 }: FinanceQuickTransferProps) {
   const theme = useTheme();
   const dispatch = useDispatch();
-
-  // Session / Redux states
   const storedAddress = useSelector((state: any) => state.address);
   const showRainbow = useSelector((state: any) => state.address.showRainbow);
-  const balance = useSelector((state: any) => state.auth.balance);
+  const { balance } = useAuth();
 
-  // Local states
   const [walletAddress, setWalletAddress] = useState(storedAddress.address ?? '');
   const [currentIndex, setCurrentIndex] = useState(0);
   const [addressFiltered, setAddressFiltered] = useState<boolean>(false);

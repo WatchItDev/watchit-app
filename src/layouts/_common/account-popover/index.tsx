@@ -2,7 +2,7 @@
 import { CircularProgress } from '@mui/material';
 
 // REDUX IMPORTS
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { closeLoginModal, openLoginModal } from '@redux/auth';
 
 // LOCAL IMPORTS
@@ -11,6 +11,7 @@ import { useRouter } from '@src/routes/hooks';
 import { LoginModal } from '@src/components/login-modal';
 import { AccountPopoverButton } from '@src/layouts/_common/account-popover/account-popover-button';
 import { AccountPopoverMenu } from '@src/layouts/_common/account-popover/account-popover-menu';
+import { useAuth } from '@src/hooks/use-auth.ts';
 
 // ----------------------------------------------------------------------
 
@@ -25,9 +26,7 @@ export function AccountPopover() {
   const dispatch = useDispatch();
   const router = useRouter();
   const popover = usePopover();
-  // From Redux
-  const isLoginModalOpen: boolean = useSelector((state: any) => state.auth.isLoginModalOpen);
-  const isSessionLoading: boolean = useSelector((state: any) => state.auth.isSessionLoading);
+  const { isLoginModalOpen, isSessionLoading } = useAuth();
 
   // If the Lens session is still loading, show a spinner.
   if (isSessionLoading) {

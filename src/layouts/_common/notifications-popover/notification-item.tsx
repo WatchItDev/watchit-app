@@ -1,10 +1,24 @@
+// REACT IMPORTS
+import { useEffect, useState } from 'react';
+
+// REDUX IMPORTS
+import { useDispatch } from 'react-redux';
+
+// MUI IMPORTS
+import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
+import IconButton from '@mui/material/IconButton';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import ListItemButton from '@mui/material/ListItemButton';
 import TextMaxLine from '@src/components/text-max-line';
-import Box from '@mui/material/Box';
-import IconButton from '@mui/material/IconButton';
+import { CircularProgress } from '@mui/material';
+
+// LENS IMPORTS
+import { PublicationReactionType, useReactionToggle } from '@lens-protocol/react-web';
+import { usePublication } from '@lens-protocol/react';
+
+// LOCAL IMPORTS
 import Iconify from '@src/components/iconify';
 import AvatarProfile from "@src/components/avatar/avatar.tsx";
 import { formatDistanceToNow } from 'date-fns';
@@ -13,33 +27,27 @@ import { paths } from '@src/routes/paths.ts';
 import { NotificationCategories, NotificationItemProps} from '@src/hooks/types'
 import { useNotifications } from '@src/hooks/use-notifications.ts';
 import { openLoginModal } from '@redux/auth';
-import { PublicationReactionType, useReactionToggle } from '@lens-protocol/react-web';
 import { decrementCounterLikes, incrementCounterLikes } from '@redux/comments';
-import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { useNotificationPayload } from '@src/hooks/use-notification-payload.ts';
-import { usePublication } from '@lens-protocol/react';
-import { CircularProgress } from '@mui/material';
-import {RootState} from "@redux/store.ts"
+import { useAuth } from '@src/hooks/use-auth.ts';
 
 export default function NotificationItem({ notification, onMarkAsRead }: NotificationItemProps) {
-  const commentId = notification?.payload?.data?.content?.comment_id;
-
-  const sessionData = useSelector((state: RootState) => state.auth.session);
-  const { deleteNotification } = useNotifications();
+  const [hasLiked, setHasLiked] = useState(false);
+  const router = useRouter();
   const dispatch = useDispatch();
+  const { session: sessionData } = useAuth();
+  const { deleteNotification, sendNotification } = useNotifications();
+  const { generatePayload } = useNotificationPayload(sessionData);
   const { execute: toggle, loading: loadingLike } = useReactionToggle();
+  const commentId = notification?.payload?.data?.content?.comment_id;
+  const { data: comment, loading }: any = usePublication({ forId: commentId as any });
+
   const typeOfNotification = notification?.payload?.category;
   const receiver = notification?.payload?.data?.to?.displayName;
   const message =
     notification?.payload?.data?.content?.message ||
     notification?.payload?.data?.content?.comment ||
     '';
-  const [hasLiked, setHasLiked] = useState(false);
-  const { sendNotification } = useNotifications();
-  const { generatePayload } = useNotificationPayload(sessionData);
-  const router = useRouter();
-  const { data: comment, loading }: any = usePublication({ forId: commentId as any });
 
   useEffect(() => {
     setHasLiked(comment?.operations?.hasUpvoted);

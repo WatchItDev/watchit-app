@@ -10,10 +10,10 @@ import { Theme } from '@mui/material/styles';
 import { SxProps } from '@mui/system/styleFunctionSx';
 import { Address } from 'viem';
 import { useRouter } from '@src/routes/hooks';
-import { useSelector } from 'react-redux';
 import { paths } from '../../routes/paths';
 import { Profile } from '@lens-protocol/api-bindings';
 import {capitalizeFirstLetter} from "@src/utils/text-transform.ts"
+import { useAuth } from '@src/hooks/use-auth.ts';
 
 // ----------------------------------------------------------------------
 
@@ -32,7 +32,7 @@ export const UserItem = memo(
     sx,
     onClick,
   }: FollowerItemProps) => {
-    const sessionData = useSelector((state: any) => state.auth.session);
+    const { session: sessionData } = useAuth();
     const router = useRouter();
     const profile =
       sessionData && sessionData?.profile?.id === profileData?.id ? sessionData.profile : profileData;

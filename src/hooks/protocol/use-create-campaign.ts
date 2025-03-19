@@ -6,14 +6,13 @@ import { useWeb3Session } from '@src/hooks/use-web3-session.ts';
 import { ERRORS } from '@notifications/errors.ts';
 import { CreateCampaignParams, UseCreateCampaignHook } from '@src/hooks/protocol/types.ts';
 import { notifyError } from '@notifications/internal-notifications.ts';
-import {useSelector} from "react-redux"
-import {RootState} from "@redux/store.ts"
+import { useAuth } from '@src/hooks/use-auth.ts';
 
 export const useCreateCampaign = (): UseCreateCampaignHook => {
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const { bundlerClient, smartAccount } = useWeb3Session();
-  const isAuthenticated = useSelector((state: RootState) => state.auth.isFullyAuthenticated);
+  const { isFullyAuthenticated: isAuthenticated } = useAuth();
 
   const initializeCampaign = ({ policy, expiration, description }: CreateCampaignParams) => {
     return encodeFunctionData({

@@ -1,8 +1,8 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Address } from 'viem';
-import { useSelector } from 'react-redux';
 import { useGetPoliciesTerms } from './use-get-policies-terms.ts';
 import { HasAccessError, UseIsPolicyAuthorizedHook } from '@src/hooks/protocol/types.ts';
+import { useAuth } from '@src/hooks/use-auth.ts';
 
 /**
  * Custom hook to check if a specific policy is authorized for the user (holder).
@@ -13,15 +13,12 @@ export const useIsPolicyAuthorized = (
   policy: Address,
   holder?: Address
 ): UseIsPolicyAuthorizedHook => {
-  const sessionData = useSelector((state: any) => state.auth.session);
-  const userAddress = sessionData?.profile?.ownedBy?.address;
-
+  const { session: sessionData } = useAuth();
   const [isAuthorized, setIsAuthorized] = useState<boolean | undefined>(undefined);
-  // `fetching` indicates if we are currently checking for authorization
   const [fetching, setFetching] = useState<boolean>(true);
   const [error, setError] = useState<HasAccessError | null>(null);
 
-  // Use the hook that fetches all authorized policies for the holder
+  const userAddress = sessionData?.profile?.ownedBy?.address;
   const {
     authorizedHolderPolicies,
     loading: loadingPolicies,

@@ -5,8 +5,7 @@ import { useWeb3Session } from '@src/hooks/use-web3-session.ts';
 import { ERRORS } from '@notifications/errors.ts';
 import { useAccountSession } from '@src/hooks/use-account-session.ts';
 import { CampaignRemoveFundsParams, UseCampaignRemoveFundsHook } from '@src/hooks/protocol/types.ts';
-import {useSelector} from "react-redux"
-import {RootState} from "@redux/store.ts"
+import { useAuth } from '@src/hooks/use-auth.ts';
 
 export const useCampaignRemoveFunds = (): UseCampaignRemoveFundsHook => {
   const [data, setData] = useState<any>(null);
@@ -14,7 +13,7 @@ export const useCampaignRemoveFunds = (): UseCampaignRemoveFundsHook => {
   const [error, setError] = useState<keyof typeof ERRORS | null>(null);
   const { bundlerClient, smartAccount } = useWeb3Session();
   const { logout } = useAccountSession();
-  const isAuthenticated = useSelector((state: RootState) => state.auth.isFullyAuthenticated);
+  const { isFullyAuthenticated: isAuthenticated } = useAuth();
 
   const removeFunds = async ({
                                campaignAddress,

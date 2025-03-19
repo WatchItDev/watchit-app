@@ -1,8 +1,5 @@
 import { useState } from 'react';
 
-// REDUX IMPORTS
-import { useSelector } from 'react-redux';
-
 // MUI Imports
 import LoadingButton from '@mui/lab/LoadingButton';
 import { Stack, Box, Typography, TextField, Button } from '@mui/material';
@@ -19,6 +16,7 @@ import { useRegisterAsset } from '@src/hooks/protocol/use-register-asset.ts';
 import { useGetAssetOwner } from '@src/hooks/protocol/use-get-asset-owner.ts';
 import { useSubmitAssetToLens } from '@src/hooks/use-submit-assets-to-lens.ts';
 import { notifyError, notifyInfo, notifySuccess } from '@notifications/internal-notifications.ts';
+import { useAuth } from '@src/hooks/use-auth.ts';
 import { INFO } from '@notifications/info.ts';
 import { ERRORS } from '@notifications/errors.ts';
 import { SUCCESS } from '@notifications/success.ts';
@@ -67,12 +65,14 @@ const OwnershipProcess = () => {
 
 const OwnershipProcessContent = ({ onClose }: { onClose: () => void }) => {
   const [hashes, setHashes] = useState<string>('');
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [progress, setProgress] = useState(0);
+
   const { registerAsset } = useRegisterAsset();
   const { submitAssetToLens } = useSubmitAssetToLens();
   const { fetchOwnerAddress } = useGetAssetOwner();
-  const [isProcessing, setIsProcessing] = useState(false);
-  const [progress, setProgress] = useState(0);
-  const sessionData = useSelector((state: any) => state.auth.session);
+  const { session: sessionData } = useAuth();
+
   const hashesArray = hashes.split(',')
     .map(h => h.trim())
     .filter(Boolean);
