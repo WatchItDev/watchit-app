@@ -5,8 +5,9 @@ import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 import { OgMetaTags } from '@src/components/og-meta-tags.tsx';
 import Header from '@src/layouts/dashboard/header.tsx';
 import HeaderContent from '@src/layouts/dashboard/header-content.tsx';
-import { OwnershipView } from '@src/sections/ownership/index';
+import { OwnershipView } from '@src/sections/ownership';
 import { useSelector } from 'react-redux';
+import {WithAuth} from "@src/components/should-login/withAuth.tsx"
 
 // ----------------------------------------------------------------------
 
@@ -31,9 +32,9 @@ export default function FileManagerPage() {
       {canViewSection(sessionData) ? (
         <>
           <Header>
-            <HeaderContent title="Ownership" />
+            <HeaderContent title="Finance" />
           </Header>
-          <OwnershipView />
+          <WithAuth component={OwnershipView} description={'Login to view your assets.'} icon={'iconoir:stats-report'} header={'Ownership Dashboard'} />
         </>
       ) : (
         <BlankView>

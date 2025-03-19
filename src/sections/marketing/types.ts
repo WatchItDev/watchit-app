@@ -7,7 +7,7 @@ export interface CampaignType {
   expiration: number;
 }
 
-export interface CampaignTableRowType extends CampaignType {}
+export type CampaignTableRowType = CampaignType
 
 export interface CampaignTableRowProps {
   row: CampaignTableRowType;
@@ -15,8 +15,8 @@ export interface CampaignTableRowProps {
 }
 
 export interface CampaignModalContentProps {
+  onConfirm?: () => void;
   onClose: () => void;
-  onConfirm: () => void;
 }
 
 export interface CampaignConfiguredIndicatorStateProps {
