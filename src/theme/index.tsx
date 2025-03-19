@@ -17,7 +17,8 @@ import { componentsOverrides } from './overrides';
 import { presets } from './options/presets';
 import { darkMode } from './options/dark-mode';
 import { contrast } from './options/contrast';
-import RTL, { direction } from './options/right-to-left';
+import RTL from './options/right-to-left';
+import {direction} from "@src/theme/options/rtl-utils.ts"
 
 // ----------------------------------------------------------------------
 

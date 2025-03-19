@@ -1,8 +1,4 @@
-import { Theme } from '@mui/material/styles';
-
-// ----------------------------------------------------------------------
-
-export function appBar(theme: Theme) {
+export function appBar() {
   return {
     MuiAppBar: {
       styleOverrides: {
