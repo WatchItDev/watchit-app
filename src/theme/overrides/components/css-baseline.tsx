@@ -1,8 +1,4 @@
-import { Theme } from '@mui/material/styles';
-
-// ----------------------------------------------------------------------
-
-export function cssBaseline(theme: Theme) {
+export function cssBaseline() {
   return {
     MuiCssBaseline: {
       styleOverrides: {
