@@ -1,4 +1,3 @@
-import { describe, it, expect } from 'vitest';
 import { paramCase, snakeCase } from '../change-case';
 
 describe('[UTILS]: paramCase', () => {
