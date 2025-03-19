@@ -24,8 +24,8 @@ import { useWithdraw } from '@src/hooks/protocol/use-withdraw.ts';
 import { FinanceWithdrawModal } from '@src/sections/finance/components/finance-withdraw-modal.tsx';
 
 // Notifications
-import { notifyError } from '@notifications/internal-notifications';
-import { ERRORS } from '@notifications/errors';
+import { notifyError } from '@src/libs/notifications/internal-notifications';
+import { ERRORS } from '@src/libs/notifications/errors';
 
 // ----------------------------------------------------------------------
 

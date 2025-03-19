@@ -14,11 +14,11 @@ import NeonPaper from "@src/sections/publication/components/neon-paper-container
 
 import { useConfigureCampaign } from '@src/hooks/protocol/use-configure-campaign.ts';
 import { useGetPolicyTerms } from '@src/hooks/protocol/use-get-policy-terms.ts';
-import { notifyError, notifySuccess } from '@notifications/internal-notifications.ts';
+import { notifyError, notifySuccess } from '@src/libs/notifications/internal-notifications.ts';
 import { CampaignSettingsModalContentProps } from '@src/sections/marketing/types.ts';
 
-import { ERRORS } from '@notifications/errors.ts';
-import { SUCCESS } from '@notifications/success.ts';
+import { ERRORS } from '@src/libs/notifications/errors';
+import { SUCCESS } from '@src/libs/notifications/success.ts';
 import { GLOBAL_CONSTANTS } from '@src/config-global';
 import {RootState} from "@redux/store.ts"
 

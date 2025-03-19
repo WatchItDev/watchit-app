@@ -37,9 +37,9 @@ import { useNotificationPayload } from '@src/hooks/use-notification-payload.ts';
 import NeonPaper from '@src/sections/publication/components/neon-paper-container.tsx';
 import Box from '@mui/material/Box';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
-import { notifyError, notifySuccess } from '@notifications/internal-notifications.ts';
-import { SUCCESS } from '@notifications/success.ts';
-import { ERRORS } from '@notifications/errors.ts';
+import { notifyError, notifySuccess } from '@src/libs/notifications/internal-notifications.ts';
+import { SUCCESS } from '@src/libs/notifications/success.ts';
+import { ERRORS } from '@src/libs/notifications/errors';
 import {dicebear} from "@src/utils/dicebear.ts";
 
 // ----------------------------------------------------------------------

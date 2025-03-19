@@ -45,7 +45,7 @@ import { MetaMaskProvider } from '@metamask/sdk-react';
 import { useNotifications } from "@src/hooks/use-notifications.ts";
 import { useSnackbar } from "notistack";
 import { useEffect } from "react";
-import { setGlobalNotifier } from "@notifications/internal-notifications.ts";
+import { setGlobalNotifier } from "@src/libs/notifications/internal-notifications.ts";
 import { publicClientWebSocket } from "@src/clients/viem/publicClient.ts";
 import { GLOBAL_CONSTANTS } from "@src/config-global.ts";
 import LedgerVaultAbi from "@src/config/abi/LedgerVault.json";

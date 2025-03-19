@@ -25,9 +25,9 @@ import { InputAmount, InputAmountProps } from '@src/components/input-amount.tsx'
 import { useTransfer } from '@src/hooks/protocol/use-transfer.ts';
 
 // Notifications
-import { notifyError, notifySuccess } from '@notifications/internal-notifications.ts';
-import { SUCCESS } from '@notifications/success.ts';
-import { ERRORS } from '@notifications/errors.ts';
+import { notifyError, notifySuccess } from '@src/libs/notifications/internal-notifications.ts';
+import { SUCCESS } from '@src/libs/notifications/success.ts';
+import { ERRORS } from '@src/libs/notifications/errors';
 import { dicebear } from '@src/utils/dicebear.ts';
 import AvatarProfile from '@src/components/avatar/avatar.tsx';
 import { MAX_POOL } from '@src/sections/finance/components/finance-quick-transfer.tsx';

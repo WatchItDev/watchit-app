@@ -6,8 +6,8 @@ import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 import { useSelector } from 'react-redux';
 import { UseHasAccessHook } from '@src/hooks/protocol/types.ts';
 import { useAccountSession } from '@src/hooks/use-account-session.ts';
-import { notifyError } from '@notifications/internal-notifications.ts';
-import { ERRORS } from '@notifications/errors.ts';
+import { notifyError } from '@src/libs/notifications/internal-notifications.ts';
+import { ERRORS } from '@src/libs/notifications/errors';
 import { UseHasAccessDefaultResponse } from '@src/hooks/protocol/DEFAULTS.tsx';
 
 /**

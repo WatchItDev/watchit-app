@@ -4,9 +4,9 @@ import LedgerVaultAbi from '@src/config/abi/LedgerVault.json';
 import MMCAbi from '@src/config/abi/MMC.json';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 import { publicClient } from '@src/clients/viem/publicClient.ts';
-import { ERRORS } from '@notifications/errors.ts';
-import { notifyInfo } from '@notifications/internal-notifications.ts';
-import { INFO } from '@notifications/info.ts';
+import { ERRORS } from '@src/libs/notifications/errors';
+import { notifyInfo } from '@src/libs/notifications/internal-notifications.ts';
+import { INFO } from '@src/libs/notifications/info.ts';
 import { useMetaMask } from '@src/hooks/use-metamask.ts';
 import { DepositParams, UseDepositHook } from '@src/hooks/protocol/types.ts';
 

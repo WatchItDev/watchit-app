@@ -15,8 +15,8 @@ import { setAuthLoading, setBalance } from '@redux/auth';
 import { useResponsive } from '@src/hooks/use-responsive.ts';
 import { UserItem } from '../user-item';
 import LoadingScreen from '../loading-screen/loading-screen.tsx';
-import { notifyError } from '@notifications/internal-notifications.ts';
-import { ERRORS } from '@notifications/errors.ts';
+import { notifyError } from '@src/libs/notifications/internal-notifications.ts';
+import { ERRORS } from '@src/libs/notifications/errors';
 import {filterHiddenProfiles} from "@src/utils/profile.ts";
 // ----------------------------------------------------------------------
 

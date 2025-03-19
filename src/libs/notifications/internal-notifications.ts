@@ -1,7 +1,7 @@
-import { ERROR_MESSAGES, ERRORS } from '@src/utils/notifications/errors.ts';
-import { SUCCESS_MESSAGES, SUCCESS } from '@src/utils/notifications/success.ts';
-import { WARNING_MESSAGES, WARNING } from '@src/utils/notifications/warnings.ts';
-import { INFO, INFO_MESSAGES } from '@notifications/info.ts';
+import { ERROR_MESSAGES, ERRORS } from '@src/libs/notifications/errors.ts';
+import { SUCCESS_MESSAGES, SUCCESS } from '@src/libs/notifications/success.ts';
+import { WARNING_MESSAGES, WARNING } from '@src/libs/notifications/warnings.ts';
+import { INFO, INFO_MESSAGES } from '@src/libs/notifications/info.ts';
 
 type NotificationType = 'error' | 'success' | 'warning' | 'info';
 

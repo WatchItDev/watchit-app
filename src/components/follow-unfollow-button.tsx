@@ -22,9 +22,9 @@ import NeonPaper from '@src/sections/publication/components/neon-paper-container
 import Box from '@mui/material/Box';
 
 // Notifications
-import { notifyError, notifySuccess } from '@notifications/internal-notifications';
-import { ERRORS } from '@notifications/errors';
-import { SUCCESS } from '@notifications/success';
+import { notifyError, notifySuccess } from '@src/libs/notifications/internal-notifications';
+import { ERRORS } from '@src/libs/notifications/errors';
+import { SUCCESS } from '@src/libs/notifications/success';
 import { pascalToUpperSnake } from '@src/utils/text-transform';
 
 // ----------------------------------------------------------------------

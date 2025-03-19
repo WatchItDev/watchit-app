@@ -18,10 +18,10 @@ import { useBoolean } from "@src/hooks/use-boolean.ts";
 import { useRegisterAsset } from '@src/hooks/protocol/use-register-asset.ts';
 import { useGetAssetOwner } from '@src/hooks/protocol/use-get-asset-owner.ts';
 import { useSubmitAssetToLens } from '@src/hooks/use-submit-assets-to-lens.ts';
-import { notifyError, notifyInfo, notifySuccess } from '@notifications/internal-notifications.ts';
-import { INFO } from '@notifications/info.ts';
-import { ERRORS } from '@notifications/errors.ts';
-import { SUCCESS } from '@notifications/success.ts';
+import { notifyError, notifyInfo, notifySuccess } from '@src/libs/notifications/internal-notifications.ts';
+import { INFO } from '@src/libs/notifications/info.ts';
+import { ERRORS } from '@src/libs/notifications/errors';
+import { SUCCESS } from '@src/libs/notifications/success.ts';
 
 /**
  * OwnershipProcess is a React functional component that manages the process of registering ownership.

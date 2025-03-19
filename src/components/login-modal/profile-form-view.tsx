@@ -36,9 +36,9 @@ import {
 } from '@lens-protocol/react-web';
 
 // NOTIFICATIONS IMPORTS
-import { notifyError, notifySuccess } from '@notifications/internal-notifications';
-import { SUCCESS } from '@notifications/success';
-import { ERRORS } from '@notifications/errors.ts';
+import { notifyError, notifySuccess } from '@src/libs/notifications/internal-notifications';
+import { SUCCESS } from '@src/libs/notifications/success';
+import { ERRORS } from '@src/libs/notifications/errors';
 import AvatarProfile from "@src/components/avatar/avatar.tsx";
 
 // ----------------------------------------------------------------------

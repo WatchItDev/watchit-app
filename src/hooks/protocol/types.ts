@@ -1,4 +1,4 @@
-import { ERRORS } from '@notifications/errors.ts';
+import { ERRORS } from '@src/libs/notifications/errors';
 import { Address } from 'viem';
 
 // ----------------------------------------------------------------------
