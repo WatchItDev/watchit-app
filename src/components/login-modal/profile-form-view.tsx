@@ -21,7 +21,7 @@ import { Box, Button, Grid, Input, TextField, Typography } from '@mui/material';
 import Image from '../image';
 import { ProfileData } from '@src/auth/context/web3Auth/types.ts';
 import { uploadImageToIPFS, uploadMetadataToIPFS} from '@src/libs/ipfs.ts'
-import { buildProfileMetadata } from '@src/utils/profile.ts';
+import { buildProfileMetadata } from '@src/libs/profile.ts';
 import TextMaxLine from '@src/components/text-max-line';
 import NeonPaper from '@src/sections/publication/components/neon-paper-container.tsx';
 import uuidv4 from '@src/utils/uuidv4';

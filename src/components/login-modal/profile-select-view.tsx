@@ -17,7 +17,7 @@ import { UserItem } from '../user-item';
 import LoadingScreen from '../loading-screen/loading-screen.tsx';
 import { notifyError } from '@src/libs/notifications/internal-notifications.ts';
 import { ERRORS } from '@src/libs/notifications/errors';
-import {filterHiddenProfiles} from "@src/utils/profile.ts";
+import {filterHiddenProfiles} from "@src/libs/profile.ts";
 // ----------------------------------------------------------------------
 
 interface ProfileSelectionProps {

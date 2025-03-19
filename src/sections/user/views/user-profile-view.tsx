@@ -26,7 +26,7 @@ import Alert from '@mui/material/Alert';
 import { useIsPolicyAuthorized } from '@src/hooks/protocol/use-is-policy-authorized.ts';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 import { Address } from 'viem';
-import {filterHiddenProfiles} from "@src/utils/profile.ts";
+import {filterHiddenProfiles} from "@src/libs/profile.ts";
 
 // ----------------------------------------------------------------------
 

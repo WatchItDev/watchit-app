@@ -19,7 +19,7 @@ import { ERRORS } from '@src/libs/notifications/errors';
 
 import useReferrals from "@src/hooks/use-referrals";
 import LoadingButton from '@mui/lab/LoadingButton';
-import {checkIfEmailAlreadyInvited} from "@src/utils/supabase-actions.ts";
+import {checkIfEmailAlreadyInvited} from "@src/libs/supabase-actions.ts";
 
 interface Props extends BoxProps {
   img?: string;

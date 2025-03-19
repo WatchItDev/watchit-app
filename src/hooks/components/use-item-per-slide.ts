@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { calculateItemsPerSlide } from '@src/utils/components/carousel';
+import { calculateItemsPerSlide } from '@src/libs/components/carousel';
 import { UseItemsPerSlideProps, UseItemsPerSlideReturn } from './types';
 
 /**

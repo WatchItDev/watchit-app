@@ -50,7 +50,7 @@ import { publicClientWebSocket } from "@src/clients/viem/publicClient.ts";
 import { GLOBAL_CONSTANTS } from "@src/config-global.ts";
 import LedgerVaultAbi from "@src/config/abi/LedgerVault.json";
 import { setBlockchainEvents } from "@redux/blockchain-events";
-import { subscribeToNotifications } from "@src/utils/subscribe-notifications-supabase.ts";
+import { subscribeToNotifications } from "@src/libs/subscribe-notifications-supabase.ts";
 
 window.Buffer = Buffer;
 
