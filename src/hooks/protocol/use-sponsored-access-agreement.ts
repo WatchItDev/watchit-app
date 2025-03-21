@@ -7,18 +7,20 @@ import { ERRORS } from '@notifications/errors.ts';
 import { useAccountSession } from '@src/hooks/use-account-session.ts';
 import { SponsoredAccessParams, UseSponsoredAccessAgreementHook } from '@src/hooks/protocol/types.ts';
 import { notifyError } from '@notifications/internal-notifications.ts';
+import { useAuth } from '@src/hooks/use-auth.ts';
 
 export const useSponsoredAccessAgreement = (): UseSponsoredAccessAgreementHook => {
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const { bundlerClient, smartAccount } = useWeb3Session();
-  const { isAuthenticated, logout } = useAccountSession();
+  const { logout } = useAccountSession();
+  const { isFullyAuthenticated: isAuthenticated } = useAuth();
 
   const sponsoredAccessAgreement = async (props: SponsoredAccessParams) => {
     const { holder, campaignAddress, policyAddress, parties, payload } = props;
     setLoading(true);
 
-    if (!isAuthenticated()) {
+    if (!isAuthenticated) {
       notifyError(ERRORS.FIRST_LOGIN_ERROR);
       logout();
       setLoading(false);

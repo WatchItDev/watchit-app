@@ -69,7 +69,7 @@ exports[`[COMPONENTS]: CarouselTopTitles > to match snapshot 1`] = `
                           <img
                             alt="Test Title 1"
                             class="MuiBox-root css-19t2nho"
-                            src="undefined"
+                            src=""
                           />
                         </span>
                       </span>
@@ -260,7 +260,7 @@ exports[`[COMPONENTS]: CarouselTopTitles > to match snapshot 1`] = `
                           <img
                             alt="Test Title 1"
                             class="MuiBox-root css-19t2nho"
-                            src="undefined"
+                            src=""
                           />
                         </span>
                       </span>

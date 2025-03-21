@@ -4,8 +4,7 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
 // REDUX IMPORTS
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '@reduxjs/toolkit/query';
+import { useDispatch } from 'react-redux';
 import {
   closeLoginModal,
   resetCurrentStep,
@@ -36,10 +35,11 @@ import {
 } from '@lens-protocol/react-web';
 
 // NOTIFICATIONS IMPORTS
+import AvatarProfile from "@src/components/avatar/avatar.tsx";
 import { notifyError, notifySuccess } from '@notifications/internal-notifications';
+import { useAuth } from '@src/hooks/use-auth.ts';
 import { SUCCESS } from '@notifications/success';
 import { ERRORS } from '@notifications/errors.ts';
-import AvatarProfile from "@src/components/avatar/avatar.tsx";
 
 // ----------------------------------------------------------------------
 
@@ -82,21 +82,13 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
   mode,
 }) => {
   const dispatch = useDispatch();
-
   const [registrationLoading, setRegistrationLoading] = useState(false);
-  // @ts-ignore
-  const { currentStep } = useSelector((state: RootState) => state.auth);
+  const { session: sessionData, currentStep } = useAuth();
 
-  const PaperElement = currentStep !== 0 ? NeonPaper : Box;
-
-  // Pending metadata update (used when profile creation requires authentication)
   const [pendingMetadataUpdate, setPendingMetadataUpdate] = useState<{
     data: ProfileData;
     profile: Profile;
   } | null>(null);
-
-  const sessionData = useSelector((state: any) => state.auth.session);
-  // Create profile and set profile metadata functions from Lens Protocol
   const {
     execute: createProfileExecute,
     error: errorCreateProfile,
@@ -107,7 +99,9 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
     error: errorSetProfileMetadata,
     loading: setProfileMetadataLoading,
   } = useSetProfileMetadata();
+
   const loading = createProfileLoading || setProfileMetadataLoading || registrationLoading;
+  const PaperElement = currentStep !== 0 ? NeonPaper : Box;
 
   const validationSchema = Yup.object({
     username: Yup.string()

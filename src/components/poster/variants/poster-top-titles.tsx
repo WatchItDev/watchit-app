@@ -10,15 +10,16 @@ import TextMaxLine from '@src/components/text-max-line';
 import { CircularProgress } from '@mui/material';
 import { useBookmarkToggle } from '@lens-protocol/react-web';
 import { openLoginModal } from '@redux/auth';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { addBookmark, removeBookmark } from '@redux/bookmark';
 import { dicebear } from "@src/utils/dicebear.ts";
 import { getAttachmentCid } from '@src/utils/publication.ts';
+import { useAuth } from '@src/hooks/use-auth.ts';
 
 const PosterTopTitles = ({ post }: { post: any }) => {
   const router = useRouter();
   const { execute: toggleBookMarkFunction, loading: loadingBookMark } = useBookmarkToggle();
-  const sessionData = useSelector((state: any) => state.auth.session);
+  const { session: sessionData } = useAuth();
   const dispatch = useDispatch();
   const poster = getAttachmentCid(post, 'square') || getAttachmentCid(post, 'poster');
   const wallpaper = getAttachmentCid(post, 'wallpaper');

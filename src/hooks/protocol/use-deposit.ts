@@ -1,21 +1,27 @@
+// REACT IMPORTS
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
+
+// VIEM IMPORTS
 import { encodeFunctionData, parseUnits } from 'viem';
+
+// LOCAL IMPORTS
 import LedgerVaultAbi from '@src/config/abi/LedgerVault.json';
 import MMCAbi from '@src/config/abi/MMC.json';
-import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 import { useWeb3Session } from '@src/hooks/use-web3-session.ts';
-import { ERRORS } from '@notifications/errors.ts';
 import { useAccountSession } from '@src/hooks/use-account-session.ts';
+import { useAuth } from '@src/hooks/use-auth.ts';
 import { DepositParams, UseDepositHook } from '@src/hooks/protocol/types.ts';
+import { ERRORS } from '@notifications/errors.ts';
+import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 
 export const useDeposit = (): UseDepositHook => {
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<keyof typeof ERRORS | null>(null);
   const { bundlerClient, smartAccount } = useWeb3Session();
-  const sessionData = useSelector((state: any) => state.auth.session);
-  const { isAuthenticated, logout } = useAccountSession();
+  const { session: sessionData, isFullyAuthenticated: isAuthenticated } = useAuth();
+  const { logout } = useAccountSession();
+
 
   const approveMMC = (amount: number): string => {
     // Convert to Wei (assuming 18 decimals)
@@ -55,7 +61,7 @@ export const useDeposit = (): UseDepositHook => {
       return;
     }
 
-    if (!isAuthenticated()) {
+    if (!isAuthenticated) {
       logout();
       setLoading(false);
       throw new Error('Invalid Web3Auth session');

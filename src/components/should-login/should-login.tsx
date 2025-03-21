@@ -3,14 +3,15 @@ import { Typography } from '@mui/material';
 import Button from '@mui/material/Button';
 import { COLORS } from '@src/layouts/config-layout.ts';
 import { openLoginModal } from '@redux/auth';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import Iconify from '@src/components/iconify';
 import { FC } from 'react';
 import { NotLoggedInProps } from '@src/components/should-login/types.ts';
+import { useAuth } from '@src/hooks/use-auth.ts';
 
 const NotLoggedIn: FC<NotLoggedInProps> = ({ icon, title, description }) => {
   const dispatch = useDispatch();
-  const sessionData = useSelector((state: any) => state.auth.session);
+  const { session: sessionData } = useAuth();
 
   const handleClicked = () => {
     if (!sessionData?.authenticated) return dispatch(openLoginModal());

@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
 
 // MUI components
 import Stack from '@mui/material/Stack';
@@ -33,6 +32,7 @@ import AvatarProfile from '@src/components/avatar/avatar.tsx';
 import { MAX_POOL } from '@src/sections/finance/components/finance-quick-transfer.tsx';
 import { handleAmountConstraints } from '@src/utils/format-number.ts';
 import { useTheme } from '@mui/material/styles';
+import { useAuth } from '@src/hooks/use-auth.ts';
 
 type TConfirmTransferDialogProps = InputAmountProps & DialogProps;
 
@@ -53,14 +53,11 @@ function FinanceQuickTransferModal({
   address,
 }: ConfirmTransferDialogProps) {
   const theme = useTheme();
-  const sessionData = useSelector((state: any) => state.auth.session);
+  const { session: sessionData, balance: MAX_AMOUNT } = useAuth();
   const { generatePayload } = useNotificationPayload(sessionData);
   const { transfer, loading: transferLoading, error } = useTransfer();
   const { sendNotification } = useNotifications();
   const [message, setMessage] = useState('');
-
-  // For the transfer button when using user input
-  const MAX_AMOUNT = useSelector((state: any) => state.auth.balance);
   const [value, setValue] = useState(0);
   const [canContinue, setCanContinue] = useState(true);
 

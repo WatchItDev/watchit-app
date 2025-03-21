@@ -1,0 +1,41 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`[UI: mini sidebar items array > to match the snapshot 1`] = `
+[
+  {
+    "badge": "Ideas for Builders",
+    "bgColor": "#4A34B8",
+    "icon": <IconHeadphones />,
+    "id": "1",
+    "title": "ListenIt",
+  },
+  {
+    "badge": "Ideas for Builders",
+    "bgColor": "#4A34B8",
+    "icon": <IconPolaroidFilled />,
+    "id": "12",
+    "title": "CaptureIt",
+  },
+  {
+    "badge": "Ideas for Builders",
+    "bgColor": "#4A34B8",
+    "icon": <IconBook />,
+    "id": "123",
+    "title": "ReadIt",
+  },
+  {
+    "badge": "Ideas for Builders",
+    "bgColor": "#4A34B8",
+    "icon": <IconFolderBolt />,
+    "id": "1234",
+    "title": "StoreIt",
+  },
+  {
+    "badge": "Ideas for Builders",
+    "bgColor": "#4A34B8",
+    "icon": <IconDeviceGamepad2 />,
+    "id": "12345",
+    "title": "PlayIt",
+  },
+]
+`;

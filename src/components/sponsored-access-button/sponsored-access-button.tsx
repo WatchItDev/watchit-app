@@ -2,7 +2,7 @@
 import { FC } from 'react';
 
 // REDUX IMPORTS
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { openLoginModal } from '@redux/auth';
 
 // MUI IMPORTS
@@ -16,7 +16,7 @@ import { Icon } from '@iconify/react';
 // LOCAL IMPORTS
 import NeonPaper from '@src/sections/publication/components/neon-paper-container.tsx';
 import { useSponsoredAccessAgreement } from '@src/hooks/protocol/use-sponsored-access-agreement.ts';
-import { useAccountSession } from '@src/hooks/use-account-session.ts';
+import { useAuth } from '@src/hooks/use-auth.ts';
 import { ExtendedSponsoredAccessProps } from '@src/components/sponsored-access-button/types.ts';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 
@@ -30,14 +30,13 @@ export const SponsoredAccessTrialButton: FC<ExtendedSponsoredAccessProps> = (pro
     onSuccess,
     size = 'sm',
   } = props;
-  const sessionData = useSelector((state: any) => state.auth.session);
   const dispatch = useDispatch();
-  const { isAuthenticated } = useAccountSession();
+  const { session: sessionData, isFullyAuthenticated: isAuthenticated } = useAuth();
   const { sponsoredAccessAgreement, loading } = useSponsoredAccessAgreement();
 
   const handleTrial = async () => {
     try {
-      if (!isAuthenticated()) {
+      if (!isAuthenticated) {
         return dispatch(openLoginModal());
       }
 
@@ -59,12 +58,12 @@ export const SponsoredAccessTrialButton: FC<ExtendedSponsoredAccessProps> = (pro
     size === 'sm'
       ? {
         borderRadius: '10px',
-        animationSpeed: '3s',
         width: 'auto',
         height: '38px',
         sx: {
           height: '38px',
         },
+        ...(loading && { animationSpeed: '3s' }),
         ...neonPaperProps,
       }
       : neonPaperProps;

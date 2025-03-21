@@ -1,12 +1,13 @@
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
 import { parseAbiItem, formatUnits, Address } from 'viem';
+
+import CampaignRegistryAbi from '@src/config/abi/CampaignRegistry.json';
 import { publicClient } from '@src/clients/viem/publicClient.ts';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
-import CampaignRegistryAbi from '@src/config/abi/CampaignRegistry.json';
+import { useAuth } from '@src/hooks/use-auth.ts';
 
 export default function useGetCampaings() {
-  const sessionData = useSelector((state: any) => state.auth.session);
+  const { session: sessionData } = useAuth();
   const [campaigns, setCampaigns] = useState([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);

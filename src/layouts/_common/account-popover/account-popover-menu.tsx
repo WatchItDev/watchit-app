@@ -1,9 +1,6 @@
 // REACT IMPORTS
 import { useEffect } from 'react';
 
-// REDUX IMPORTS
-import { useSelector } from 'react-redux';
-
 // MUI IMPORTS
 import {
   Box,
@@ -18,6 +15,7 @@ import CustomPopover from '@src/components/custom-popover';
 import { useAccountSession } from '@src/hooks/use-account-session';
 import { paths } from '@src/routes/paths';
 import { UsePopoverReturnType } from '@src/components/custom-popover/use-popover.ts';
+import { useAuth } from '@src/hooks/use-auth.ts';
 
 // ----------------------------------------------------------------------
 
@@ -46,12 +44,10 @@ const OPTIONS = [
  *  - Logout
  */
 export function AccountPopoverMenu({ popover, router }: Readonly<AccountPopoverMenuProps>) {
-  const sessionData = useSelector((state: any) => state.auth.session);
-  const isAuthenticated = Boolean(sessionData?.authenticated);
-  // Redux states: login modal open and session loading status
-  const { isLoginModalOpen, isSessionLoading } = useSelector((state: any) => state.auth);
-  // We call the custom hook for the logout function only
+  const { session: sessionData, isLoginModalOpen, isSessionLoading } = useAuth();
   const { logout } = useAccountSession();
+
+  const isAuthenticated = Boolean(sessionData?.authenticated);
 
   // Close popover when session status or login modal changes
   useEffect(() => {

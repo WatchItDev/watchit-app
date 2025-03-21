@@ -6,13 +6,15 @@ import { useWeb3Session } from '@src/hooks/use-web3-session.ts';
 import { ERRORS } from '@notifications/errors.ts';
 import { useAccountSession } from '@src/hooks/use-account-session.ts';
 import { TransferParams, UseTransferHook } from '@src/hooks/protocol/types.ts';
+import { useAuth } from '@src/hooks/use-auth.ts';
 
 export const useTransfer = (): UseTransferHook => {
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<keyof typeof ERRORS | null>(null);
   const { bundlerClient, smartAccount } = useWeb3Session();
-  const { isAuthenticated, logout } = useAccountSession();
+  const { logout } = useAccountSession();
+  const { isFullyAuthenticated: isAuthenticated } = useAuth();
 
   const initializeTransfer = ({ recipient, amount }: TransferParams) => {
     const weiAmount = parseUnits(amount.toString(), 18);
@@ -28,7 +30,7 @@ export const useTransfer = (): UseTransferHook => {
     setLoading(true);
     setError(null);
 
-    if (!isAuthenticated()) {
+    if (!isAuthenticated) {
       setError(ERRORS.TRANSFER_LOGIN_FIRST_ERROR);
       logout();
       setLoading(false);

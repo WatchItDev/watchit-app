@@ -1,12 +1,11 @@
-// sections
-import BlankView from '../sections/blank/views/blank-view.tsx';
-import { ComingSoonView } from '../sections/coming-soon';
-import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
-import { OgMetaTags } from '@src/components/og-meta-tags.tsx';
+import BlankView from '@src/sections/blank/views/blank-view.tsx';
 import Header from '@src/layouts/dashboard/header.tsx';
 import HeaderContent from '@src/layouts/dashboard/header-content.tsx';
+import { ComingSoonView } from '@src/sections/coming-soon';
+import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
+import { OgMetaTags } from '@src/components/og-meta-tags.tsx';
 import { OwnershipView } from '@src/sections/ownership/index';
-import { useSelector } from 'react-redux';
+import { useAuth } from '@src/hooks/use-auth.ts';
 
 // ----------------------------------------------------------------------
 
@@ -20,7 +19,7 @@ export const canViewSection = (sessionData: any): boolean => {
 // ----------------------------------------------------------------------
 
 export default function FileManagerPage() {
-  const sessionData = useSelector((state: any) => state.auth.session);
+  const { session: sessionData } = useAuth();
 
   return (
     <OgMetaTags
