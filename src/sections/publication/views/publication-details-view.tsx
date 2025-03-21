@@ -25,7 +25,6 @@ import PublicationDetailMain from '@src/components/publication-detail-main';
 import { useAuth } from '@src/hooks/use-auth.ts';
 import { LoadingScreen } from '@src/components/loading-screen';
 import { useHasAccess } from '@src/hooks/protocol/use-has-access.ts';
-import { useAccountSession } from '@src/hooks/use-account-session.ts';
 import { useGetCampaignIsActive } from '@src/hooks/protocol/use-get-campaign-is-active.ts';
 import { useIsPolicyAuthorized } from '@src/hooks/protocol/use-is-policy-authorized.ts';
 import { PublicationDetailsViewProps } from '@src/sections/publication/types.ts';
@@ -46,12 +45,9 @@ export default function PublicationDetailsView({ id }: Readonly<PublicationDetai
   // STATES HOOKS
   const dispatch = useDispatch();
   const [openSubscribeModal, setOpenSubscribeModal] = useState(false);
-  const { loading: sessionLoading } = useAccountSession();
-  const { isFullyAuthenticated: isAuthenticated } = useAuth();
-
+  const { isFullyAuthenticated: isAuthenticated, isSessionLoading: sessionLoading } = useAuth();
   const { data: publicationData, loading: publicationLoading }: ReadResult<AnyPublication> = usePublication({ forId: id });
   const ownerAddress = publicationData?.by?.ownedBy?.address;
-
   const { hasAccess, loading: accessLoading, fetch: refetchAccess } = useHasAccess(ownerAddress);
   const { isAuthorized, loading: isAuthorizedLoading } = useIsPolicyAuthorized(GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS, ownerAddress);
   const { campaign, loading: campaignLoading, fetchSubscriptionCampaign } = useGetSubscriptionCampaign();
