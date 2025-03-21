@@ -35,9 +35,9 @@ export const useAccountSession = (): UseAccountSessionHook => {
   const { bundlerClient, smartAccount } = useWeb3Session();
 
   // Decide if Web3Auth is in a connecting state
-  const isPending = () => {
+  const isPending = useCallback(() => {
     return web3Auth.status === 'connecting' || web3Auth.status === 'not_ready';
-  }
+  }, [web3Auth.status])
 
   // Decide if Web3Auth is in a valid state
   const isValidWeb3AuthSession = useCallback((): boolean => {
@@ -64,7 +64,12 @@ export const useAccountSession = (): UseAccountSessionHook => {
     if (!silent) notifyWarning(WARNING.BUNDLER_UNAVAILABLE);
   }, [web3Auth.status]);
 
-  // Automatic checks on mount + interval
+  useEffect(() => {
+    dispatch(setAuthLoading({
+      isSessionLoading: isPending() || loading
+    }));
+  }, [ isPending, loading ]);
+
   useEffect(() => {
     // If Web3Auth isn't valid (and not just connecting), expire
     if (!isValidWeb3AuthSession() && !isPending()) {
