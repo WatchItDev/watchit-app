@@ -9,7 +9,7 @@ import {
   checkIfEmailAlreadyAccepted as checkIfEmailAlreadyAcceptedAction,
   sendInvitation as sendInvitationAction,
   acceptOrCreateInvitationForUser as acceptOrCreateInvitationForUserAction,
-} from '@src/utils/supabase-actions';
+} from '@src/libs/supabase-actions';
 import { GLOBAL_CONSTANTS } from '@src/config-global';
 import { useAuth } from '@src/hooks/use-auth.ts';
 

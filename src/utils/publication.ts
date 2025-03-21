@@ -1,6 +1,6 @@
 import { AnyPublication } from '@lens-protocol/api-bindings';
 import { MediaVideo } from '@lens-protocol/metadata';
-// @ts-ignore
+// @ts-expect-error No error in the library
 import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 

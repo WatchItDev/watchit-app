@@ -1,5 +1,6 @@
+import { Invitation } from '@src/hooks/types';
+import { RootState } from '@src/redux/store';
 import { supabase } from '@src/utils/supabase';
-import { Invitation } from '@src/types/invitation';
 
 /**
  * Fetches all invitations from Supabase filtered by senderId.
@@ -14,8 +15,9 @@ export const fetchInvitations = async (
       .eq('sender_id', senderId);
 
     return { data, error: error ? error.message : null };
-  } catch (err: any) {
-    return { data: null, error: err.message };
+  } catch (err: Error | unknown) {
+    const errorMessage = err instanceof Error ? err.message : 'An unknown error occurred';
+    return { data: null, error: errorMessage };
   }
 };
 
@@ -36,8 +38,9 @@ export const checkIfMyEmailHasPendingInvite = async (
       hasPending: !!data && data.length > 0,
       error: error ? error.message : null,
     };
-  } catch (err: any) {
-    return { hasPending: false, error: err.message };
+  } catch (err: Error | unknown) {
+    const errorMessage = err instanceof Error ? err.message : 'An unknown error occurred';
+    return { hasPending: false, error: errorMessage };
   }
 };
 
@@ -60,8 +63,9 @@ export const acceptInvitation = async (
       .single();
 
     return { data, error: error ? error.message : null };
-  } catch (err: any) {
-    return { data: null, error: err.message };
+  } catch (err: Error | unknown) {
+    const errorMessage = err instanceof Error ? err.message : 'An unknown error occurred';
+    return { data: null, error: errorMessage };
   }
 };
 
@@ -84,8 +88,9 @@ export const checkIfInvitationSent = async (
       exists: !!data && data.length > 0,
       error: error ? error.message : null,
     };
-  } catch (err: any) {
-    return { exists: false, error: err.message };
+  } catch (err: Error | unknown) {
+    const errorMessage = err instanceof Error ? err.message : 'An unknown error occurred';
+    return { exists: false, error: errorMessage };
   }
 };
 
@@ -106,8 +111,9 @@ export const checkIfEmailAlreadyAccepted = async (
       accepted: !!data && data.length > 0,
       error: error ? error.message : null,
     };
-  } catch (err: any) {
-    return { accepted: false, error: err.message };
+  } catch (err: Error | unknown) {
+    const errorMessage = err instanceof Error ? err.message : 'An unknown error occurred';
+    return { accepted: false, error: errorMessage };
   }
 };
 
@@ -116,9 +122,9 @@ export const checkIfEmailAlreadyAccepted = async (
  */
 export const sendInvitation = async (
   destination: string,
-  payload: any,
+  payload: Record<string, unknown>,
   userEmail: string,
-  sessionData: any
+  sessionData: RootState
 ): Promise<{ error: string | null }> => {
   const { error } = await supabase
     .from('invitations')
@@ -141,7 +147,7 @@ export const sendInvitation = async (
  */
 export const acceptOrCreateInvitationForUser = async (
   userEmail: string,
-  sessionData: any
+  sessionData: RootState
 ): Promise<{ error: string | null }> => {
   try {
     const { data: invites, error: pendingError } = await supabase
@@ -190,8 +196,9 @@ export const acceptOrCreateInvitationForUser = async (
     }
 
     return { error: null };
-  } catch (err: any) {
-    return { error: err.message };
+  } catch (err: Error | unknown) {
+    const errorMessage = err instanceof Error ? err.message : 'An unknown error occurred';
+    return { error: errorMessage };
   }
 };
 
@@ -214,7 +221,8 @@ export const checkIfEmailAlreadyInvited = async (
       invited: !!data && data.length > 0,
       error: error ? error.message : null,
     };
-  } catch (err: any) {
-    return { invited: false, error: err.message };
+  } catch (err: Error | unknown) {
+    const errorMessage = err instanceof Error ? err.message : 'An unknown error occurred';
+    return { invited: false, error: errorMessage };
   }
 };

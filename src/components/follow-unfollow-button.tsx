@@ -20,11 +20,11 @@ import { useNotifications } from '@src/hooks/use-notifications.ts';
 import { useNotificationPayload } from '@src/hooks/use-notification-payload.ts';
 
 // Notifications
-import { notifyError, notifySuccess } from '@notifications/internal-notifications';
+import { notifyError, notifySuccess } from '@src/libs/notifications/internal-notifications';
 import { pascalToUpperSnake } from '@src/utils/text-transform';
 import { useAuth } from '@src/hooks/use-auth.ts';
-import { ERRORS } from '@notifications/errors';
-import { SUCCESS } from '@notifications/success';
+import { ERRORS } from '@src/libs/notifications/errors';
+import { SUCCESS } from '@src/libs/notifications/success';
 
 // ----------------------------------------------------------------------
 

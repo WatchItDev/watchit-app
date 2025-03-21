@@ -10,8 +10,8 @@ import { useProfileFollowing } from '@lens-protocol/react';
 
 // LOCAL IMPORTS
 import useGetSmartWalletTransactions from '@src/hooks/protocol/use-get-smart-wallet-transactions.ts';
-import { groupTransactionsForWidget } from '@src/utils/finance-graphs/groupedTransactions.ts';
-import { filterHiddenProfiles } from "@src/utils/profile.ts";
+import { groupTransactionsForWidget } from '@src/libs/finance-graphs/groupedTransactions.ts';
+import { filterHiddenProfiles } from "@src/libs/profile.ts";
 import { SummaryAndActions } from '@src/sections/finance/components/finance-summary-and-actions.tsx';
 import { FinanceLeftColumnContent } from '@src/sections/finance/components/finance-left-column-content.tsx';
 import { FinanceRightColumnContent } from '@src/sections/finance/components/finance-right-column-content.tsx';

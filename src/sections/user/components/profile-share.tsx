@@ -4,9 +4,9 @@ import Typography from '@mui/material/Typography';
 import Popover from '@mui/material/Popover';
 import { FC, useCallback, useEffect, useRef, useState } from 'react';
 import Stack from '@mui/material/Stack';
-import { notifyError, notifySuccess } from '@notifications/internal-notifications.ts';
-import { SUCCESS } from '@notifications/success.ts';
-import { ERRORS } from '@notifications/errors.ts';
+import { notifyError, notifySuccess } from '@src/libs/notifications/internal-notifications.ts';
+import { SUCCESS } from '@src/libs/notifications/success.ts';
+import { ERRORS } from '@src/libs/notifications/errors';
 import { Profile } from '@lens-protocol/api-bindings';
 
 export const urlToShare = 'https://app.watchit.movie/profileId';

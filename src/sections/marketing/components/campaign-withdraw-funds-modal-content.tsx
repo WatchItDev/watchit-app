@@ -12,9 +12,9 @@ import { parseUnits } from 'viem';
 // LOCAL IMPORTS
 import { useCampaignRemoveFunds } from '@src/hooks/protocol/use-campaign-remove-funds.ts';
 import NeonPaper from "@src/sections/publication/components/neon-paper-container.tsx";
-import { notifyError, notifySuccess } from '@notifications/internal-notifications.ts';
-import { ERRORS } from '@notifications/errors.ts';
-import { SUCCESS } from '@notifications/success.ts';
+import { notifyError, notifySuccess } from '@src/libs/notifications/internal-notifications.ts';
+import { ERRORS } from '@src/libs/notifications/errors';
+import { SUCCESS } from '@src/libs/notifications/success.ts';
 import { CampaignWithdrawFundsModalContentProps } from '@src/sections/marketing/types.ts';
 
 const CampaignWithdrawFundsModalContent: FC<CampaignWithdrawFundsModalContentProps> = (props) => {

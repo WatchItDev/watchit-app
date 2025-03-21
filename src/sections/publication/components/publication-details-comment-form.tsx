@@ -29,7 +29,7 @@ import { AnyPublication } from '@lens-protocol/api-bindings';
 import uuidv4 from '@src/utils/uuidv4.ts';
 import Iconify from '@src/components/iconify';
 import AvatarProfile from "@src/components/avatar/avatar.tsx";
-import { uploadMetadataToIPFS } from '@src/utils/ipfs.ts';
+import { uploadMetadataToIPFS } from '@src/libs/ipfs.ts';
 import { useNotifications } from '@src/hooks/use-notifications.ts';
 import { useNotificationPayload } from '@src/hooks/use-notification-payload.ts';
 import { dicebear } from "@src/utils/dicebear.ts";

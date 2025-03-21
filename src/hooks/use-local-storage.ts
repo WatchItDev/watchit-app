@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 // utils
-import { localStorageAvailable } from '@src/utils/storage-available';
+import { localStorageAvailable } from '@src/libs/storage-available';
 
 // ----------------------------------------------------------------------
 

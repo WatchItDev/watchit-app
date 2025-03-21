@@ -3,7 +3,7 @@ import "../../../../../__mocks__/lens-protocol-react.ts";
 import "../../../../../__mocks__/web3auth.ts";
 
 import Searchbar from "../searchbar";
-import { Testing } from "@src/utils/testing/Testing.tsx";
+import { renderWithStoreAndRouter } from "@src/utils/testing/Testing.tsx";
 import { fireEvent } from "@testing-library/react"
 import { act } from 'react';
 import { useSearchProfiles } from "@lens-protocol/react-web";
@@ -47,20 +47,20 @@ describe("[COMPONENTS]: Searchbar Component", () => {
   });
 
   it("displays correct shortcut label for mac", () => {
-    const { getByText } = Testing.renderWithStoreAndRouter(<Searchbar />);
+    const { getByText } = renderWithStoreAndRouter(<Searchbar />);
     expect(getByText("⌘K")).toBeInTheDocument();
   });
 
   it("displays correct shortcut Label for windows", () => {
     (detectOperatingSystem as Mock).mockReturnValue({ isMac: false });
 
-    const { getByText } = Testing.renderWithStoreAndRouter(<Searchbar />);
+    const { getByText } = renderWithStoreAndRouter(<Searchbar />);
 
     expect(getByText("Ctrl+K")).toBeInTheDocument();
   });
 
   it("should open search on CMD+K", async () => {
-    const { baseElement } = Testing.renderWithStoreAndRouter(<Searchbar />);
+    const { baseElement } = renderWithStoreAndRouter(<Searchbar />);
 
     act(() => {
       fireEvent.keyDown(document, { key: "k", metaKey: true });
@@ -75,7 +75,7 @@ describe("[COMPONENTS]: Searchbar Component", () => {
   it("should open search on CTRL+K", async () => {
     (detectOperatingSystem as Mock).mockReturnValue({ isMac: false });
 
-    const { baseElement } = Testing.renderWithStoreAndRouter(<Searchbar />);
+    const { baseElement } = renderWithStoreAndRouter(<Searchbar />);
 
     act(() => {
       fireEvent.keyDown(document, { key: "k", ctrlKey: true });
@@ -88,7 +88,7 @@ describe("[COMPONENTS]: Searchbar Component", () => {
   });
 
   it("should close search on escape key", async () => {
-    const { baseElement } = Testing.renderWithStoreAndRouter(<Searchbar />);
+    const { baseElement } = renderWithStoreAndRouter(<Searchbar />);
 
     act(() => {
       fireEvent.keyDown(document, { key: "k", metaKey: true });
@@ -152,7 +152,7 @@ describe("[COMPONENTS]: Searchbar Component", () => {
       error: null
     });
 
-    const { baseElement, queryAllByText } = Testing.renderWithStoreAndRouter(<Searchbar />);
+    const { baseElement, queryAllByText } = renderWithStoreAndRouter(<Searchbar />);
 
     act(() => {
       fireEvent.keyDown(document, { key: "k", metaKey: true });
@@ -188,7 +188,7 @@ describe("[COMPONENTS]: Searchbar Component", () => {
       error: null
     });
 
-    const { baseElement, getByText } = Testing.renderWithStoreAndRouter(<Searchbar />);
+    const { baseElement, getByText } = renderWithStoreAndRouter(<Searchbar />);
 
     act(() => {
       fireEvent.keyDown(document, { key: "k", metaKey: true });

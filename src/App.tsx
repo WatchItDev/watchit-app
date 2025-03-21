@@ -39,11 +39,11 @@ import { AuthProvider } from '@src/auth/context/web3Auth';
 import { ResponsiveOverlay } from '@src/components/responsive-overlay';
 import { MetaMaskProvider } from '@metamask/sdk-react';
 import { useNotifications } from "@src/hooks/use-notifications.ts";
-import { setGlobalNotifier } from "@notifications/internal-notifications.ts";
+import { setGlobalNotifier } from "@src/libs/notifications/internal-notifications.ts";
 import { useAuth } from '@src/hooks/use-auth.ts';
 import { publicClientWebSocket } from "@src/clients/viem/publicClient.ts";
 import { setBlockchainEvents } from "@redux/blockchain-events";
-import { subscribeToNotifications } from "@src/utils/subscribe-notifications-supabase.ts";
+import { subscribeToNotifications } from "@src/libs/subscribe-notifications-supabase.ts";
 import { GLOBAL_CONSTANTS } from "@src/config-global.ts";
 
 window.Buffer = Buffer;
