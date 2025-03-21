@@ -1,6 +1,5 @@
 import emailjs from '@emailjs/browser';
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
 import { Invitation } from '@src/hooks/types';
 import {
   fetchInvitations as fetchInvitationsAction,
@@ -12,6 +11,7 @@ import {
   acceptOrCreateInvitationForUser as acceptOrCreateInvitationForUserAction,
 } from '@src/libs/supabase-actions';
 import { GLOBAL_CONSTANTS } from '@src/config-global';
+import { useAuth } from '@src/hooks/use-auth.ts';
 
 /**
  * The type for sending emails through EmailJS.
@@ -22,19 +22,10 @@ export interface EmailParams {
 }
 
 const useReferrals = () => {
-  /**
-   * State variables to manage invitations, loading state, and error messages.
-   */
   const [invitations, setInvitations] = useState<Invitation[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
-
-  /**
-   * Retrieve the current user's email and session data from Redux (or your global state).
-   * Adjust according to how you store user data in your application.
-   */
-  const userEmail = useSelector((state: any) => state.auth.email);
-  const sessionData = useSelector((state: any) => state.auth.session);
+  const { session: sessionData, email: userEmail } = useAuth();
 
   /**
    * Fetches all invitations from the Supabase 'invitations' table filtered by senderId.

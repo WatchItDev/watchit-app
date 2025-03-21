@@ -1,13 +1,12 @@
 import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useGetVaultBalance } from '@src/hooks/protocol/use-get-vault-balance.ts';
 import { setBalance } from '@redux/auth';
+import { useAuth } from '@src/hooks/use-auth.ts';
 
 export function useGetBalance() {
-  const balance = useSelector((state: any) => state.auth.balance);
-  const sessionData = useSelector((state: any) => state.auth.session);
+  const { session: sessionData, balance } = useAuth();
   const dispatch = useDispatch();
-
   const { balance: vaultBalance, refetch } = useGetVaultBalance(sessionData?.address);
 
   useEffect(() => {

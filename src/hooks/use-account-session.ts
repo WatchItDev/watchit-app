@@ -2,7 +2,7 @@
 import { useEffect, useCallback } from 'react';
 
 // REDUX IMPORTS
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { setAuthLoading, setSession, setBalance, setFullyAuthenticated } from '@redux/auth';
 
 // LENS IMPORTS
@@ -12,6 +12,7 @@ import { useSession, useLogout } from '@lens-protocol/react-web';
 import { notifyWarning } from '@src/libs/notifications/internal-notifications';
 
 // WEB3AUTH IMPORTS
+import { useAuth } from '@src/hooks/use-auth.ts';
 import { useWeb3Auth } from '@src/hooks/use-web3-auth';
 import { useWeb3Session } from '@src/hooks/use-web3-session';
 import { WARNING } from '@src/libs/notifications/warnings.ts';
@@ -20,7 +21,6 @@ import { WARNING } from '@src/libs/notifications/warnings.ts';
 
 interface UseAccountSessionHook {
   logout: (silent?: boolean) => void;
-  isAuthenticated: boolean;
   loading: boolean;
 }
 
@@ -30,16 +30,14 @@ export const useAccountSession = (): UseAccountSessionHook => {
   const dispatch = useDispatch();
   const { web3Auth } = useWeb3Auth();
   const { execute: lensLogout } = useLogout();
-  const sessionData = useSelector((state: any) => state.auth.session);
-  const isSessionLoading = useSelector((state: any) => state.auth.isSessionLoading);
-  const isFullyAuthenticated = useSelector((state: any) => state.auth.isFullyAuthenticated);
+  const { session: sessionData, isSessionLoading } = useAuth();
   const { data, loading } = useSession();
   const { bundlerClient, smartAccount } = useWeb3Session();
 
   // Decide if Web3Auth is in a connecting state
-  const isPending = () => {
+  const isPending = useCallback(() => {
     return web3Auth.status === 'connecting' || web3Auth.status === 'not_ready';
-  }
+  }, [web3Auth.status])
 
   // Decide if Web3Auth is in a valid state
   const isValidWeb3AuthSession = useCallback((): boolean => {
@@ -66,7 +64,12 @@ export const useAccountSession = (): UseAccountSessionHook => {
     if (!silent) notifyWarning(WARNING.BUNDLER_UNAVAILABLE);
   }, [web3Auth.status]);
 
-  // Automatic checks on mount + interval
+  useEffect(() => {
+    dispatch(setAuthLoading({
+      isSessionLoading: isPending() || loading
+    }));
+  }, [ isPending, loading ]);
+
   useEffect(() => {
     // If Web3Auth isn't valid (and not just connecting), expire
     if (!isValidWeb3AuthSession() && !isPending()) {
@@ -85,7 +88,6 @@ export const useAccountSession = (): UseAccountSessionHook => {
 
   return {
     logout: handleSessionExpired,
-    loading: isSessionLoading,
-    isAuthenticated: isFullyAuthenticated
+    loading: isSessionLoading || isPending() || loading
   };
 };

@@ -12,13 +12,14 @@ import { useWeb3Auth } from '@src/hooks/use-web3-auth';
 import { ProfileSelectView } from '@src/components/login-modal/profile-select-view.tsx';
 import { ProfileFormView } from '@src/components/login-modal/profile-form-view.tsx';
 import { WatchitLoader } from '../watchit-loader';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import {closeLoginModal, setEmail} from '@redux/auth';
 import { notifySuccess } from '@src/libs/notifications/internal-notifications.ts';
 import { SUCCESS } from '@src/libs/notifications/success.ts';
 // @ts-ignore
 import {type AuthUserInfo} from "@web3auth/auth/dist/types/utils/interfaces";
 import useReferrals from '@src/hooks/use-referrals.ts';
+import { useAuth } from '@src/hooks/use-auth.ts';
 
 // ----------------------------------------------------------------------
 
@@ -35,7 +36,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
   const [address, setAddress] = useState('');
 
   const { web3Auth: w3 } = useWeb3Auth();
-  const sessionData = useSelector((state: any) => state.auth.session);
+  const { session: sessionData } = useAuth();
   const { execute: logoutExecute } = useLogout();
   const { execute: loginExecute, error } = useLogin();
   const { acceptOrCreateInvitationForUser } = useReferrals();

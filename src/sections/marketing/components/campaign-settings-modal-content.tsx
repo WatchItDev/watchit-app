@@ -1,26 +1,28 @@
+// REACT IMPORTS
+import { FC, useState, useMemo } from 'react';
+
+// MUI IMPORTS
 import Box from "@mui/material/Box";
 import Grid from '@mui/material/Grid';
 import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
-
-import { Address } from 'viem';
-import { ethers } from 'ethers';
-import { FC, useState, useMemo } from 'react';
-import { useSelector } from 'react-redux';
+import LoadingButton from "@mui/lab/LoadingButton";
 import { Button, TextField, FormControl, DialogActions, LinearProgress } from '@mui/material';
 
-import LoadingButton from "@mui/lab/LoadingButton";
-import NeonPaper from "@src/sections/publication/components/neon-paper-container.tsx";
+// VIEM AND ETHERS
+import { Address } from 'viem';
+import { ethers } from 'ethers';
 
+// LOCAL IMPORTS
+import NeonPaper from "@src/sections/publication/components/neon-paper-container.tsx";
 import { useConfigureCampaign } from '@src/hooks/protocol/use-configure-campaign.ts';
 import { useGetPolicyTerms } from '@src/hooks/protocol/use-get-policy-terms.ts';
+import { useAuth } from '@src/hooks/use-auth.ts';
 import { notifyError, notifySuccess } from '@src/libs/notifications/internal-notifications.ts';
 import { CampaignSettingsModalContentProps } from '@src/sections/marketing/types.ts';
-
-import { ERRORS } from '@src/libs/notifications/errors';
+import { ERRORS } from '@src/libs/notifications/errors.ts';
 import { SUCCESS } from '@src/libs/notifications/success.ts';
 import { GLOBAL_CONSTANTS } from '@src/config-global';
-import {RootState} from "@redux/store.ts"
 
 // ----------------------------------------------------------------------
 
@@ -32,8 +34,7 @@ const CampaignSettingsModalContent: FC<CampaignSettingsModalContentProps> = (pro
   const [fundsAmount, setFundsAmount] = useState<number>(NaN);
   const [fundsAllocationAmount, setFundsAllocationAmount] = useState<number>(NaN);
 
-  // This could be get from useAuth hook? view issue #604
-  const sessionData = useSelector((state: RootState) => state.auth.session);
+  const { session: sessionData } = useAuth();
   const { configure, loading: loadingConfigure } = useConfigureCampaign();
   const { terms, loading: loadingTerms } = useGetPolicyTerms(
     GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS,

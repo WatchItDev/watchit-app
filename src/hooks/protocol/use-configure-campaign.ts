@@ -8,12 +8,14 @@ import { ERRORS } from '@src/libs/notifications/errors';
 import { useAccountSession } from '@src/hooks/use-account-session.ts';
 import { ConfigureCampaignParams, UseConfigureCampaignHook } from '@src/hooks/protocol/types.ts';
 import { notifyError } from '@src/libs/notifications/internal-notifications.ts';
+import { useAuth } from '@src/hooks/use-auth.ts';
 
 export const useConfigureCampaign = (): UseConfigureCampaignHook => {
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const { bundlerClient, smartAccount } = useWeb3Session();
-  const { isAuthenticated, logout } = useAccountSession();
+  const { logout } = useAccountSession();
+  const { isFullyAuthenticated: isAuthenticated } = useAuth();
 
   /**
    * Main function to configure the campaign.

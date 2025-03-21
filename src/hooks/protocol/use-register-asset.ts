@@ -6,12 +6,12 @@ import { encodeFunctionData } from 'viem';
 
 // LOCAL IMPORTS
 import AssetOwnershipAbi from '@src/config/abi/AssetOwnership.json';
-import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
-import { useSelector } from 'react-redux';
 import { useWeb3Session } from '@src/hooks/use-web3-session.ts';
-import { ERRORS } from '@src/libs/notifications/errors';
 import { useAccountSession } from '@src/hooks/use-account-session.ts';
+import { useAuth } from '@src/hooks/use-auth.ts';
 import { RegisterAssetData, UseRegisterAssetHook } from '@src/hooks/protocol/types.ts';
+import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
+import { ERRORS } from '@src/libs/notifications/errors.ts';
 
 // ----------------------------------------------------------------------
 
@@ -25,9 +25,10 @@ export const useRegisterAsset = (): UseRegisterAssetHook => {
   const [data, setData] = useState<RegisterAssetData>();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<keyof typeof ERRORS | null>(null);
-  const sessionData = useSelector((state: any) => state.auth.session);
+  const { session: sessionData, isFullyAuthenticated: isAuthenticated } = useAuth();
   const { bundlerClient, smartAccount } = useWeb3Session();
-  const { isAuthenticated, logout } = useAccountSession();
+  const { logout } = useAccountSession();
+
 
   /**
    * Performs the operation of registering an asset using the `AssetOwnership` contract.

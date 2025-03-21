@@ -1,23 +1,21 @@
 // REACT IMPORTS
 import { FC } from 'react';
 
-// REDUX IMPORTS
-import { useSelector } from 'react-redux';
-
 // LOCAL IMPORTS
-import { useMetaMask } from '@src/hooks/use-metamask';
-import { useDepositMetamask } from '@src/hooks/protocol/use-deposit-metamask.ts';
 import FinanceDeposit from '@src/sections/finance/components/finance-deposit';
 import FinanceMetamaskLoader from '@src/sections/finance/components/finance-metamask-loader.tsx';
 import FinanceMetamaskButton from '@src/sections/finance/components/finance-metamask-button.tsx';
 import FinanceMetamaskHelper from "@src/sections/finance/components/finance-metamask-helper.tsx";
+import { useAuth } from '@src/hooks/use-auth.ts';
+import { useMetaMask } from '@src/hooks/use-metamask';
+import { useDepositMetamask } from '@src/hooks/protocol/use-deposit-metamask.ts';
 
 interface FinanceDepositFromMetamaskProps {
   onClose: () => void;
 }
 
 const FinanceDepositFromMetamask: FC<FinanceDepositFromMetamaskProps> = ({ onClose }) => {
-  const sessionData = useSelector((state: any) => state.auth.session);
+  const { session: sessionData } = useAuth();
   const depositHook = useDepositMetamask();
   const { account: address, loading, connect } = useMetaMask();
 

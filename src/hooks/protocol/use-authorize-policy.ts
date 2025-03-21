@@ -6,12 +6,12 @@ import { encodeFunctionData } from 'viem';
 
 // LOCAL IMPORTS
 import RightsPolicyAuthorizerAbi from '@src/config/abi/RightsPolicyAuthorizer.json';
-import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
-import { useSelector } from 'react-redux';
 import { useWeb3Session } from '@src/hooks/use-web3-session.ts';
-import { ERRORS } from '@src/libs/notifications/errors';
 import { useAccountSession } from '@src/hooks/use-account-session.ts';
+import { useAuth } from '@src/hooks/use-auth.ts';
 import { AuthorizePolicyParams, UseAuthorizePolicyHook } from '@src/hooks/protocol/types.ts';
+import { ERRORS } from '@src/libs/notifications/errors.ts';
+import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 
 // ----------------------------------------------------------------------
 
@@ -19,9 +19,9 @@ export const useAuthorizePolicy = (): UseAuthorizePolicyHook => {
   const [data, setData] = useState();
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<keyof typeof ERRORS | null>(null);
-  const sessionData = useSelector((state: any) => state.auth.session);
+  const { session: sessionData, isFullyAuthenticated: isAuthenticated } = useAuth();
   const { bundlerClient, smartAccount } = useWeb3Session();
-  const { isAuthenticated, logout } = useAccountSession();
+  const { logout } = useAccountSession();
 
   /**
    * Creates the flash policy agreement data.

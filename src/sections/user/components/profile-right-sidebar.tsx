@@ -1,19 +1,25 @@
+// REACT IMPORTS
+import { FC } from "react";
+
+// MUI IMPORTS
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { CopyableText } from "@src/components/copyable-text";
 import Divider from "@mui/material/Divider";
+import Box from "@mui/material/Box";
+import { styled } from "@mui/material/styles";
+import Tooltip from "@mui/material/Tooltip"
+
+// ICONS IMPORTS
+import { IconRosetteDiscountCheckFilled } from "@tabler/icons-react";
+
+// LOCAL IMPORTS
 import { truncateAddress } from "@src/utils/wallet.ts";
 import { OpenableText } from "@src/components/openable-text";
-import Box from "@mui/material/Box";
 import { randomColors } from "@src/components/poster/variants/poster-latest-content.tsx";
-import { IconRosetteDiscountCheckFilled } from "@tabler/icons-react";
-import { FC } from "react";
-import { styled } from "@mui/material/styles";
-import { useSelector } from "react-redux";
-import Tooltip from "@mui/material/Tooltip"
-import {RootState} from "@redux/store.ts"
-import {ProfileHeaderProps} from "@src/sections/user/types.ts"
-import {GLOBAL_CONSTANTS} from "@src/config-global.ts"
+import { useAuth } from '@src/hooks/use-auth.ts';
+import { ProfileHeaderProps } from "@src/sections/user/types.ts"
+import { GLOBAL_CONSTANTS } from "@src/config-global.ts"
 
 interface ProfileRightSidebarProps extends ProfileHeaderProps {
   sidebarProps: {
@@ -27,8 +33,8 @@ interface ProfileRightSidebarProps extends ProfileHeaderProps {
 }
 
 const ProfileRightSidebar: FC<ProfileRightSidebarProps> = ({ profile, sidebarProps }) => {
-  const sessionData = useSelector((state: RootState) => state.auth.session);
   const { isAuthorized, authorizedLoading, accessLoading, hasAccess, attestation, attestationLoading } = sidebarProps;
+  const { session: sessionData } = useAuth();
   const hex = BigInt(attestation ?? '').toString(16)
   // add padding to attestation smaller than 256 bits
   const cleanedHex = hex.length < 64 ? `${'0'.repeat(64 - hex.length)}${hex}` : hex;

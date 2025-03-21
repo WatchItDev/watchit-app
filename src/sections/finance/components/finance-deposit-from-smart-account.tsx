@@ -1,17 +1,17 @@
 // React and libraries imports
 import { FC } from 'react';
-import { useSelector } from 'react-redux';
 
 // Project components
-import { useDeposit } from '@src/hooks/protocol/use-deposit.ts';
 import FinanceDeposit from './finance-deposit';
+import { useAuth } from '@src/hooks/use-auth.ts';
+import { useDeposit } from '@src/hooks/protocol/use-deposit.ts';
 
 interface FinanceDepositFromSmartAccountProps {
   onClose: () => void;
 }
 
 const FinanceDepositFromSmartAccount: FC<FinanceDepositFromSmartAccountProps> = ({ onClose }) => {
-  const sessionData = useSelector((state: any) => state.auth.session);
+  const { session: sessionData } = useAuth();
   const depositHook = useDeposit();
   const userAddress = sessionData?.address;
 

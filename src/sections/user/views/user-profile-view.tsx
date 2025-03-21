@@ -26,7 +26,8 @@ import Alert from '@mui/material/Alert';
 import { useIsPolicyAuthorized } from '@src/hooks/protocol/use-is-policy-authorized.ts';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 import { Address } from 'viem';
-import {filterHiddenProfiles} from "@src/libs/profile.ts";
+import { filterHiddenProfiles } from "@src/libs/profile.ts";
+import { useAuth } from '@src/hooks/use-auth.ts';
 
 // ----------------------------------------------------------------------
 
@@ -43,7 +44,7 @@ const UserProfileView = ({ id }: any) => {
   const dispatch = useDispatch();
   const settings = useSettingsContext();
   const [currentTab, setCurrentTab] = useState('publications');
-  const sessionData = useSelector((state: any) => state.auth.session);
+  const { session: sessionData } = useAuth();
   const { called, data: profile, loading: loadingProfile, execute } = useLazyProfile();
   const { data: publications, loading: loadingPublications } = usePublications({
     where: {

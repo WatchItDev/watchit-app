@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '@src/utils/supabase';
-import { useSelector } from 'react-redux';
+import { useAuth } from '@src/hooks/use-auth.ts';
 
 export interface TransactionType {
   id: number;
@@ -58,7 +58,7 @@ export interface TransactionsDataResponseHook {
 export const useTransactionData = (): TransactionsDataResponseHook => {
   const [data, setData] = useState<TransactionData[]>([]);
   const [rawData, setRawData] = useState<TransactionType[]>([]);
-  const sessionData = useSelector((state: any) => state.auth.session);
+  const { session: sessionData } = useAuth();
 
   useEffect(() => {
     const fetchData = async () => {

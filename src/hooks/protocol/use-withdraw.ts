@@ -6,13 +6,15 @@ import { useWeb3Session } from '@src/hooks/use-web3-session.ts';
 import { ERRORS } from '@src/libs/notifications/errors';
 import { useAccountSession } from '@src/hooks/use-account-session.ts';
 import { UseWithdrawHook, WithdrawParams } from '@src/hooks/protocol/types.ts';
+import { useAuth } from '@src/hooks/use-auth.ts';
 
 export const useWithdraw = (): UseWithdrawHook => {
   const [data, setData] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<keyof typeof ERRORS | null>(null);
   const { bundlerClient, smartAccount } = useWeb3Session();
-  const { isAuthenticated, logout } = useAccountSession();
+  const { logout } = useAccountSession();
+  const { isFullyAuthenticated: isAuthenticated } = useAuth();
 
   const initializeWithdraw = ({ recipient, amount }: WithdrawParams) => {
     const weiAmount = parseUnits(amount.toString(), 18);

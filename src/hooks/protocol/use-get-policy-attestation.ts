@@ -1,8 +1,8 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Address } from 'viem';
-import { useSelector } from 'react-redux';
 import { useGetActiveLicenses } from '@src/hooks/protocol/use-get-active-licenses.ts';
 import { HasAccessError, UseGetPolicyAttestationHook } from '@src/hooks/protocol/types.ts';
+import { useAuth } from '@src/hooks/use-auth.ts';
 
 /**
  * Custom hook to get the attestation for a specific policy.
@@ -12,13 +12,13 @@ import { HasAccessError, UseGetPolicyAttestationHook } from '@src/hooks/protocol
  * @returns An object containing the attestation data, loading state, error, and a refetch function.
  */
 export function useGetPolicyAttestation(policy: Address, recipient: Address, holder?: Address): UseGetPolicyAttestationHook {
-  const sessionData = useSelector((state: any) => state.auth.session);
-  const userAddress = sessionData?.profile?.ownedBy?.address;
+  const { session: sessionData } = useAuth();
   const [attestation, setAttestation] = useState<string | undefined>(undefined);
   const [loading, setLoading] = useState(true);
   const [fetching, setFetching] = useState(true);
   const [error, setError] = useState<HasAccessError | null>(null);
   const { activeLicenses, loading: licensesLoading, refetch: refetchLicenses } = useGetActiveLicenses(recipient, holder);
+  const userAddress = sessionData?.profile?.ownedBy?.address;
 
   const fetchAttestation = useCallback(() => {
     setFetching(true);

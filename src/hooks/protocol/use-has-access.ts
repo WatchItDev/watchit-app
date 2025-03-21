@@ -1,14 +1,18 @@
+// REACT IMPORTS
 import { useState, useEffect, useCallback } from 'react';
+
+// VIEM IMPORTS
 import { Address } from 'viem';
-import { publicClient } from '@src/clients/viem/publicClient.ts';
+
+// LOCAL IMPORTS
 import AccessAggAbi from '@src/config/abi/AccessAgg.json';
-import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
-import { useSelector } from 'react-redux';
+import { publicClient } from '@src/clients/viem/publicClient.ts';
 import { UseHasAccessHook } from '@src/hooks/protocol/types.ts';
-import { useAccountSession } from '@src/hooks/use-account-session.ts';
 import { notifyError } from '@src/libs/notifications/internal-notifications.ts';
-import { ERRORS } from '@src/libs/notifications/errors';
+import { useAuth } from '@src/hooks/use-auth.ts';
 import { UseHasAccessDefaultResponse } from '@src/hooks/protocol/DEFAULTS.tsx';
+import { ERRORS } from '@src/libs/notifications/errors.ts';
+import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 
 /**
  * Custom hook to check if the user has access to a publication.
@@ -16,11 +20,11 @@ import { UseHasAccessDefaultResponse } from '@src/hooks/protocol/DEFAULTS.tsx';
  * @returns An object containing the access data, loading state, error, and a refetch function.
  */
 export const useHasAccess = (ownerAddress?: Address): UseHasAccessHook => {
-  const sessionData = useSelector((state: any) => state.auth.session);
-  const userAddress = sessionData?.profile?.ownedBy?.address;
-  const { isAuthenticated } = useAccountSession();
+  const { session: sessionData, isFullyAuthenticated: isAuthenticated } = useAuth();
   const [hasAccess, setHasAccess] = useState<boolean | undefined>(undefined);
   const [loading, setLoading] = useState(true);
+
+  const userAddress = sessionData?.profile?.ownedBy?.address;
 
   const fetchAccess = useCallback(async () => {
     if (!userAddress || !ownerAddress) {

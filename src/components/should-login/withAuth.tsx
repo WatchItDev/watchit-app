@@ -1,13 +1,12 @@
 import React, {FC} from 'react';
-import { useSelector } from 'react-redux';
 import ShouldLogin from '@src/components/should-login/should-login';
 import { LoadingScreen } from '@src/components/loading-screen';
 import { WithAuthProps } from '@src/components/should-login/types.ts';
+import { useAuth } from '@src/hooks/use-auth.ts';
 
 const withAuth  = (WrappedComponent: React.ComponentType, header: string,  icon: string, description: string) => {
   return (props: any) => {
-    const sessionData = useSelector((state: any) => state.auth.session);
-    const loading = useSelector((state: any) => state.auth.isSessionLoading);
+    const { session: sessionData, isSessionLoading: loading } = useAuth();
 
     if (loading) {
       return <LoadingScreen />;
