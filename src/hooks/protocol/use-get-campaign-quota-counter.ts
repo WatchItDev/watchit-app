@@ -5,39 +5,37 @@ import CampaignSubscriptionTplAbi from '@src/config/abi/CampaignSubscriptionTpl.
 import { HasAccessError, UseGetCampaignQuotaCounterHook } from '@src/hooks/protocol/types.ts';
 
 export const useGetCampaignQuotaCounter = (): UseGetCampaignQuotaCounterHook => {
-  const [quotaCounter, setQuotaCounter] = useState<string>('0');
+  const [quotaCounter, setQuotaCounter] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<HasAccessError | null>(null);
 
   const fetchQuotaCounter = useCallback(
-    async (
-      campaignAddress: Address,
-      account: Address
-    ): Promise<string | undefined> => {
+    async (campaignAddress: Address, account: Address): Promise<number> => {
       if (!campaignAddress) {
         setError({ message: 'Campaign address is missing.' });
-        return;
+        return 0;
       }
       if (!account) {
         setError({ message: 'Account address is missing.' });
-        return;
+        return 0;
       }
       setLoading(true);
       try {
-        const limit: bigint = await publicClient.readContract({
+        const limit = (await publicClient.readContract({
           address: campaignAddress,
           abi: CampaignSubscriptionTplAbi.abi,
           functionName: 'getQuotaCounter',
           args: [account],
-        }) as bigint;
-        const limitStr = limit.toString();
-        setQuotaCounter(limitStr);
+        })) as bigint;
+        const limitNumber = Number(limit);
+        setQuotaCounter(limitNumber);
         setError(null);
-        return limitStr;
+        return limitNumber;
       } catch (err: any) {
         console.error('Error fetching quota counter:', err);
-        setQuotaCounter('0');
+        setQuotaCounter(0);
         setError({ message: err?.message || 'Error fetching quota counter' });
+        return 0;
       } finally {
         setLoading(false);
       }

@@ -10,29 +10,28 @@ export const useGetCampaignQuotaLimit = (): UseGetCampaignQuotaLimitHook => {
   const [error, setError] = useState<HasAccessError | null>(null);
 
   const fetchQuotaLimit = useCallback(
-    async (
-      campaignAddress: Address
-    ): Promise<number> => {
+    async (campaignAddress: Address): Promise<number> => {
       if (!campaignAddress) {
         setError({ message: 'Campaign address is missing.' });
         return 0;
       }
       setLoading(true);
       try {
-        const limit: number = await publicClient.readContract({
+        const limit = (await publicClient.readContract({
           address: campaignAddress,
           abi: CampaignSubscriptionTplAbi.abi,
           functionName: 'getQuotaLimit',
           args: [],
-        }) as number;
-        setQuotaLimit(limit);
+        })) as bigint;
+        const limitNumber = Number(limit);
+        setQuotaLimit(limitNumber);
         setError(null);
-        return limit;
+        return limitNumber;
       } catch (err: any) {
         console.error('Error fetching quota Limit:', err);
         setQuotaLimit(0);
         setError({ message: err?.message || 'Error fetching quota Limit' });
-        return 0
+        return 0;
       } finally {
         setLoading(false);
       }

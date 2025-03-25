@@ -38,6 +38,8 @@ import { PublicationSponsorsAndBackers } from '@src/sections/publication/compone
 import { PublicationSponsoredButton } from '@src/sections/publication/components/publication-sponsored-button.tsx';
 import { PublicationJoinButton } from '@src/sections/publication/components/publication-join-button.tsx';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
+import { useGetCampaignQuotaCounter } from '@src/hooks/protocol/use-get-campaign-quota-counter.ts';
+import { useGetCampaignQuotaLimit } from '@src/hooks/protocol/use-get-campaign-quota-limit.ts';
 
 // ----------------------------------------------------------------------
 
@@ -51,7 +53,9 @@ export default function PublicationDetailsView({ id }: Readonly<PublicationDetai
   const { hasAccess, loading: accessLoading, fetch: refetchAccess } = useHasAccess(ownerAddress);
   const { isAuthorized, loading: isAuthorizedLoading } = useIsPolicyAuthorized(GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS, ownerAddress);
   const { campaign, loading: campaignLoading, fetchSubscriptionCampaign } = useGetSubscriptionCampaign();
-  const { isActive, loading: isActiveLoading, fetchIsActive } = useGetCampaignIsActive();
+  const { isActive: isCampaignActive, loading: isActiveLoading, fetchIsActive } = useGetCampaignIsActive();
+  const { quotaCounter, fetchQuotaCounter } = useGetCampaignQuotaCounter();
+  const { quotaLimit, fetchQuotaLimit } = useGetCampaignQuotaLimit();
   const { data: publications, loading: pubsLoading } = usePublications({
     where: {
       from: [publicationData?.by?.id],
@@ -62,8 +66,9 @@ export default function PublicationDetailsView({ id }: Readonly<PublicationDetai
 
   const isAccessFullyChecked = !accessLoading && !isAuthorizedLoading && !isActiveLoading && !campaignLoading;
   const allLoaded = !publicationLoading && !sessionLoading && !pubsLoading && isAccessFullyChecked;
-  const isSponsoredButtonVisible = isActive && isAuthorized && isAccessFullyChecked;
-  const isJoinButtonVisible = isAuthorized && !isActive && isAccessFullyChecked && !isSponsoredButtonVisible;
+  const isMaxRateExceed = quotaCounter >= quotaLimit;
+  const isSponsoredButtonVisible = isCampaignActive && isAuthorized && isAccessFullyChecked && !isMaxRateExceed;
+  const isJoinButtonVisible = isAuthorized && (!isCampaignActive || isMaxRateExceed) && isAccessFullyChecked && !isSponsoredButtonVisible;
   const isPlayerVisible = hasAccess && isAuthenticated && !accessLoading && !sessionLoading;
 
   useEffect(() => {
@@ -74,6 +79,8 @@ export default function PublicationDetailsView({ id }: Readonly<PublicationDetai
   useEffect(() => {
     if (!campaign || !ownerAddress) return;
     fetchIsActive(campaign, ownerAddress);
+    fetchQuotaCounter(campaign, ownerAddress);
+    fetchQuotaLimit(campaign);
   }, [campaign, ownerAddress]);
 
   const handleSubscribe = () => {
@@ -105,7 +112,7 @@ export default function PublicationDetailsView({ id }: Readonly<PublicationDetai
                 <PublicationPosterWallpaper publication={publicationData}>
                   {isSponsoredButtonVisible && (
                     <PublicationSponsoredButton
-                      isActive={isActive}
+                      isActive={isCampaignActive}
                       publication={publicationData}
                       campaign={campaign}
                       onSponsorSuccess={handleRefetchAccess}
