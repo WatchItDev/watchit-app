@@ -11,7 +11,7 @@ import { useAccountSession } from '@src/hooks/use-account-session.ts';
 import { useAuth } from '@src/hooks/use-auth.ts';
 import { RegisterAssetData, UseRegisterAssetHook } from '@src/hooks/protocol/types.ts';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
-import { ERRORS } from '@notifications/errors.ts';
+import { ERRORS } from '@src/libs/notifications/errors.ts';
 
 // ----------------------------------------------------------------------
 

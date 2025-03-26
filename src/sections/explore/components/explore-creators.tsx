@@ -1,6 +1,6 @@
 import { ExploreProfilesOrderByType, LimitType, useExploreProfiles } from '@lens-protocol/react-web';
 import CarouselCreators from '@src/components/carousel/variants/carousel-creators.tsx';
-import { filterHiddenProfiles } from '@src/utils/profile.ts';
+import { filterHiddenProfiles } from '@src/libs/profile.ts';
 import {useEffect} from "react"
 import {setExploreLoading} from "@redux/loading"
 import { useDispatch } from 'react-redux';

@@ -24,7 +24,7 @@ import {
 import FinanceTransactionTableRow from '@src/sections/finance/components/finance-transactions-table-row';
 import useGetSmartWalletTransactions from '@src/hooks/protocol/use-get-smart-wallet-transactions.ts';
 import FinanceOverlayLoader from '@src/sections/finance/components/finance-overlay-loader.tsx';
-import { processTransactionData } from '@src/utils/finance-graphs/groupedTransactions';
+import { processTransactionData } from '@src/libs/finance-graphs/groupedTransactions';
 import { STATUS_OPTIONS, TABLE_HEAD } from './CONSTANTS';
 
 const defaultFilters: IOrderTableFilters = {

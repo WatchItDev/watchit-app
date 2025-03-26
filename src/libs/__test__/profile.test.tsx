@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 
-import { buildProfileMetadata, filterHiddenProfiles } from '@src/utils/profile';
+import { buildProfileMetadata, filterHiddenProfiles } from '@src/libs/profile';
 import { ProfileData } from '@src/auth/context/web3Auth/types';
 import { Profile } from '@lens-protocol/api-bindings';
 import {ProfileId} from "@lens-protocol/react-web";

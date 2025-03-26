@@ -14,8 +14,8 @@ import { ProfileFormView } from '@src/components/login-modal/profile-form-view.t
 import { WatchitLoader } from '../watchit-loader';
 import { useDispatch } from 'react-redux';
 import {closeLoginModal, setEmail} from '@redux/auth';
-import { notifySuccess } from '@notifications/internal-notifications.ts';
-import { SUCCESS } from '@notifications/success.ts';
+import { notifySuccess } from '@src/libs/notifications/internal-notifications.ts';
+import { SUCCESS } from '@src/libs/notifications/success.ts';
 // @ts-ignore
 import {type AuthUserInfo} from "@web3auth/auth/dist/types/utils/interfaces";
 import useReferrals from '@src/hooks/use-referrals.ts';

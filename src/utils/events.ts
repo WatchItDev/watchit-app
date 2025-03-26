@@ -1,45 +1,56 @@
 import { Dispatch } from 'redux';
 import { appendNotification } from '@src/redux/notifications';
+import { NotificationColumnsProps, NotificationItemProps } from '@src/hooks/types';
 
-export namespace Events {
-  export const Handlers = (payload: any, profileId: string, dispatch?: Dispatch) => {
-    const evenType: keyof typeof EventsHandlersMap = payload?.new?.payload?.type;
 
-    if (EventsHandlersMap[evenType]) {
-      EventsHandlersMap[evenType](payload, profileId, dispatch);
-    }
-  };
+interface NotificationPayload {
+  new: NotificationColumnsProps;
 
-  /**
-   * Handle notification event for internal popover.
-   * @param payload Data from the event (set as needed)
-   * @param profileId Current user profile id for LENS Protocol
-   * @param dispatch Redux dispatch function
-   * @constructor
-   */
-  export const Notification = (payload: any, profileId: string, dispatch?: Dispatch) => {
-    const notification = payload.new;
-
-    if (notification?.receiver_id === profileId) {
-      if (dispatch) {
-        dispatch(appendNotification(notification));
-      }
-    }
-  };
-  // @ts-ignore
-  export const Transaction = (payload: any) => {};
-  // @ts-ignore
-  export const Publication = (payload: any) => {};
-  // @ts-ignore
-  export const Subscription = (payload: any) => {};
-  // @ts-ignore
-  export const Follower = (payload: any) => {};
+  [key: string]: unknown;
 }
 
-export const EventsHandlersMap = {
-  NOTIFICATION: Events.Notification,
-  TRANSACTION: Events.Transaction,
-  PUBLICATION: Events.Publication,
-  SUBSCRIPTION: Events.Subscription,
-  FOLLOWER: Events.Follower,
+// Define the event handler type
+type EventHandler = (payload: NotificationPayload, profileId: string, dispatch?: Dispatch) => void;
+
+/**
+ * Handle notification event for internal popover.
+ * @param payload Data from the event (set as needed)
+ * @param profileId Current user profile id for LENS Protocol
+ * @param dispatch Redux dispatch function
+ */
+export const handleNotification: EventHandler = (payload, profileId, dispatch) => {
+  const notification = payload.new;
+
+  if (notification?.receiver_id === profileId) {
+    if (dispatch) {
+      // Create a notification item that matches NotificationItemProps
+      const notificationItem: NotificationItemProps = {
+        id: notification.id,
+        notification: notification,
+        // This is a placeholder function since the actual implementation
+        // will be provided by the component that uses this notification
+        onMarkAsRead: (id: string) => {
+          // The actual implementation is handled by the UI component
+          console.log(`Mark as read will be handled by UI for notification: ${id}`);
+        }
+      };
+      
+      dispatch(appendNotification(notificationItem));
+    }
+  }
+};
+
+export const eventsHandlersMap = {
+  NOTIFICATION: handleNotification,
+};
+
+/**
+ * Main handler that delegates to the appropriate event handler based on the event type
+ */
+export const handleEvents = (payload: NotificationPayload, profileId: string, dispatch?: Dispatch) => {
+  const eventType: keyof typeof eventsHandlersMap = payload?.new?.payload?.type;
+
+  if (eventsHandlersMap[eventType]) {
+    eventsHandlersMap[eventType](payload, profileId, dispatch);
+  }
 };

@@ -11,13 +11,14 @@ import { Profile, useLazyProfiles, LoginError } from '@lens-protocol/react-web';
 import { useDispatch } from 'react-redux';
 import { setAuthLoading, setBalance } from '@redux/auth';
 
-import { notifyError } from '@notifications/internal-notifications.ts';
+import { notifyError } from '@src/libs/notifications/internal-notifications.ts';
 import { LoadingScreen } from '@src/components/loading-screen';
 import { useResponsive } from '@src/hooks/use-responsive.ts';
-import { filterHiddenProfiles } from "@src/utils/profile.ts";
+import { filterHiddenProfiles } from "@src/libs/profile.ts";
 import { UserItem } from '@src/components/user-item';
 import { useAuth } from '@src/hooks/use-auth.ts';
-import { ERRORS } from '@notifications/errors.ts';
+import { ERRORS } from '@src/libs/notifications/errors.ts';
+
 // ----------------------------------------------------------------------
 
 interface ProfileSelectionProps {

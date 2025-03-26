@@ -1,0 +1,71 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`[]: snakeCase > matches snapshot for various inputs 1`] = `
+[
+  "hello_world",
+  "this_is_a_test",
+  "specialcharactershere",
+  "multiple_spaces_here",
+  "mixed_with_underscores_already",
+]
+`;
+
+exports[`[]:snakeCase > matches snapshot for various inputs 1`] = `
+[
+  "hello_world",
+  "this_is_a_test",
+  "specialcharactershere",
+  "multiple_spaces_here",
+  "mixed_with_underscores_already",
+]
+`;
+
+exports[`[UTILS]: paramCase > matches snapshot for various inputs 1`] = `
+[
+  "hello-world",
+  "this-is-a-test",
+  "specialcharactershere",
+  "multiple-spaces-here",
+  "mixed-with-hyphens-already",
+]
+`;
+
+exports[`[UTILS]: snakeCase > matches snapshot for various inputs 1`] = `
+[
+  "hello_world",
+  "this_is_a_test",
+  "specialcharactershere",
+  "multiple_spaces_here",
+  "mixed_with_underscores_already",
+]
+`;
+
+exports[`[UTILS]paramCase > matches snapshot for various inputs 1`] = `
+[
+  "hello-world",
+  "this-is-a-test",
+  "specialcharactershere",
+  "multiple-spaces-here",
+  "mixed-with-hyphens-already",
+]
+`;
+
+exports[`paramCase > matches snapshot for various inputs 1`] = `
+[
+  "hello-world",
+  "this-is-a-test",
+  "specialcharactershere",
+  "multiple-spaces-here",
+  "mixed-with-hyphens-already",
+]
+`;
+
+exports[`snakeCase > matches snapshot for various inputs 1`] = `
+[
+  "hello_world",
+  "this_is_a_test",
+  "specialcharactershere",
+  "multiple_spaces_here",
+  "mixed_with_underscores_already",
+]
+`;
