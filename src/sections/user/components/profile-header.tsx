@@ -32,12 +32,15 @@ import { useGetCampaignIsActive } from '@src/hooks/protocol/use-get-campaign-is-
 import { SponsoredAccessTrialButton } from '@src/components/sponsored-access-button/sponsored-access-button.tsx';
 import { useAuth } from '@src/hooks/use-auth.ts';
 import { ProfileHeaderProps } from '@src/sections/user/types.ts';
+import { useGetCampaignQuotaCounter } from '@src/hooks/protocol/use-get-campaign-quota-counter.ts';
+import { useGetCampaignQuotaLimit } from '@src/hooks/protocol/use-get-campaign-quota-limit.ts';
+import LoadingButton from '@mui/lab/LoadingButton';
 
 // ----------------------------------------------------------------------
 
 const ProfileHeader = (props: PropsWithChildren<ProfileHeaderProps>) => {
   const { profile: profileData, children } = props;
-  const { session: sessionData } = useAuth();
+  const { session: sessionData, isSessionLoading } = useAuth();
   const profile =
     sessionData && sessionData?.profile?.id === profileData?.id ? sessionData.profile : profileData;
 
@@ -61,8 +64,11 @@ const ProfileHeader = (props: PropsWithChildren<ProfileHeaderProps>) => {
   );
   const { campaign, fetchSubscriptionCampaign } = useGetSubscriptionCampaign();
   const { isActive, loading: isActiveLoading, fetchIsActive } = useGetCampaignIsActive();
-  const showJoinButton = isAuthorized && (!isActive || hasAccess) && !isActiveLoading && !authorizedLoading && profile?.id !== sessionData?.profile?.id;
-  const showSponsoredAccessButton = isActive && isAuthorized && !isActiveLoading && !authorizedLoading && !hasAccess;
+  const { quotaCounter, fetchQuotaCounter } = useGetCampaignQuotaCounter();
+  const { quotaLimit, fetchQuotaLimit } = useGetCampaignQuotaLimit();
+  const isMaxRateExceed = quotaCounter >= quotaLimit;
+  const showJoinButton = isAuthorized && (!isActive || hasAccess || isMaxRateExceed) && !isActiveLoading && !authorizedLoading && profile?.id !== sessionData?.profile?.id;
+  const showSponsoredAccessButton = isActive && isAuthorized && !isActiveLoading && !authorizedLoading && !hasAccess && !isMaxRateExceed;
 
   usePublications({
     where: {
@@ -82,6 +88,8 @@ const ProfileHeader = (props: PropsWithChildren<ProfileHeaderProps>) => {
     if (!campaign || !profile?.ownedBy?.address) return;
 
     fetchIsActive(campaign, profile?.ownedBy?.address);
+    fetchQuotaCounter(campaign, profile?.ownedBy?.address);
+    fetchQuotaLimit(campaign);
   }, [campaign, profile?.ownedBy?.address]);
 
   // Function to handle following a profile
@@ -112,18 +120,19 @@ const ProfileHeader = (props: PropsWithChildren<ProfileHeaderProps>) => {
           <ProfileUserInfo profile={profile} />
 
           <Stack direction="row" sx={{ width: '100%', mb: 2, gap: 2, flexWrap: 'wrap' }}>
-            {authorizedLoading && (
-              <Box
+            {authorizedLoading || isSessionLoading || (!showJoinButton && !showSponsoredAccessButton && isAuthorized) && (
+              <LoadingButton
+                variant={'contained'}
                 sx={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  maxWidth: '100%',
-                  flexWrap: 'wrap',
+                  minWidth: { xs: 90, md: 120 },
+                  height: 38,
+                  minHeight: 38,
+                  maxHeight: 38,
+                  backgroundColor: '#24262A',
                 }}
-              >
-                <CircularProgress size={24} sx={{ color: '#fff' }} />
-              </Box>
+                disabled={true}
+                loading={true}
+              />
             )}
 
             { showJoinButton && (
