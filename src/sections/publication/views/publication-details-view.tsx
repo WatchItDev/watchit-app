@@ -45,13 +45,13 @@ export default function PublicationDetailsView({ id }: Readonly<PublicationDetai
   // STATES HOOKS
   const dispatch = useDispatch();
   const [openSubscribeModal, setOpenSubscribeModal] = useState(false);
-  const { isFullyAuthenticated: isAuthenticated, isSessionLoading: sessionLoading } = useAuth();
+  const { isFullyAuthenticated: isAuthenticated, isSessionLoading: sessionLoading, session: sessionData } = useAuth();
   const { data: publicationData, loading: publicationLoading }: ReadResult<AnyPublication> = usePublication({ forId: id });
   const ownerAddress = publicationData?.by?.ownedBy?.address;
   const { hasAccess, loading: accessLoading, fetch: refetchAccess } = useHasAccess(ownerAddress);
   const { isAuthorized, loading: isAuthorizedLoading } = useIsPolicyAuthorized(GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS, ownerAddress);
   const { campaign, loading: campaignLoading, fetchSubscriptionCampaign } = useGetSubscriptionCampaign();
-  const { isActive, loading: isActiveLoading, fetchIsActive } = useGetCampaignIsActive();
+  const { isActive: isCampaignActive, loading: isActiveLoading, fetchIsActive } = useGetCampaignIsActive();
   const { data: publications, loading: pubsLoading } = usePublications({
     where: {
       from: [publicationData?.by?.id],
@@ -62,8 +62,8 @@ export default function PublicationDetailsView({ id }: Readonly<PublicationDetai
 
   const isAccessFullyChecked = !accessLoading && !isAuthorizedLoading && !isActiveLoading && !campaignLoading;
   const allLoaded = !publicationLoading && !sessionLoading && !pubsLoading && isAccessFullyChecked;
-  const isSponsoredButtonVisible = isActive && isAuthorized && isAccessFullyChecked;
-  const isJoinButtonVisible = isAuthorized && !isActive && isAccessFullyChecked && !isSponsoredButtonVisible;
+  const isSponsoredButtonVisible = isCampaignActive && isAuthorized && isAccessFullyChecked;
+  const isJoinButtonVisible = isAuthorized && !isCampaignActive && isAccessFullyChecked && !isSponsoredButtonVisible;
   const isPlayerVisible = hasAccess && isAuthenticated && !accessLoading && !sessionLoading;
 
   useEffect(() => {
@@ -72,9 +72,9 @@ export default function PublicationDetailsView({ id }: Readonly<PublicationDetai
   }, [ownerAddress, publicationLoading]);
 
   useEffect(() => {
-    if (!campaign || !ownerAddress) return;
-    fetchIsActive(campaign, ownerAddress);
-  }, [campaign, ownerAddress]);
+    if (!campaign || !sessionData?.address) return;
+    fetchIsActive(campaign, sessionData?.address);
+  }, [campaign, sessionData?.address]);
 
   const handleSubscribe = () => {
     if (!isAuthenticated) {
@@ -105,7 +105,7 @@ export default function PublicationDetailsView({ id }: Readonly<PublicationDetai
                 <PublicationPosterWallpaper publication={publicationData}>
                   {isSponsoredButtonVisible && (
                     <PublicationSponsoredButton
-                      isActive={isActive}
+                      isActive={isCampaignActive}
                       publication={publicationData}
                       campaign={campaign}
                       onSponsorSuccess={handleRefetchAccess}

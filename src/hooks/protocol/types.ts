@@ -217,13 +217,13 @@ export interface UseGetCampaignIsReadyHook {
 // ----------------------------------------------------------------------
 
 export interface UseGetCampaignQuotaCounterHook {
-  quotaCounter: string;
+  quotaCounter: number;
   loading: boolean;
   error: HasAccessError | null;
   fetchQuotaCounter: (
     campaignAddress: Address,
     account: Address
-  ) => Promise<string | undefined>;
+  ) => Promise<number>;
 }
 
 // ----------------------------------------------------------------------
