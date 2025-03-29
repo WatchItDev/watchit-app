@@ -4,7 +4,6 @@ import { PropsWithChildren, useEffect } from 'react';
 // MUI IMPORTS
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
-import CircularProgress from '@mui/material/CircularProgress';
 
 // LENS IMPORTS
 import { appId, PublicationType, usePublications } from '@lens-protocol/react-web';
@@ -32,8 +31,6 @@ import { useGetCampaignIsActive } from '@src/hooks/protocol/use-get-campaign-is-
 import { SponsoredAccessTrialButton } from '@src/components/sponsored-access-button/sponsored-access-button.tsx';
 import { useAuth } from '@src/hooks/use-auth.ts';
 import { ProfileHeaderProps } from '@src/sections/user/types.ts';
-import { useGetCampaignQuotaCounter } from '@src/hooks/protocol/use-get-campaign-quota-counter.ts';
-import { useGetCampaignQuotaLimit } from '@src/hooks/protocol/use-get-campaign-quota-limit.ts';
 import LoadingButton from '@mui/lab/LoadingButton';
 
 // ----------------------------------------------------------------------
@@ -64,11 +61,8 @@ const ProfileHeader = (props: PropsWithChildren<ProfileHeaderProps>) => {
   );
   const { campaign, fetchSubscriptionCampaign } = useGetSubscriptionCampaign();
   const { isActive, loading: isActiveLoading, fetchIsActive } = useGetCampaignIsActive();
-  const { quotaCounter, fetchQuotaCounter } = useGetCampaignQuotaCounter();
-  const { quotaLimit, fetchQuotaLimit } = useGetCampaignQuotaLimit();
-  const isMaxRateExceed = quotaCounter >= quotaLimit;
-  const showJoinButton = isAuthorized && (!isActive || hasAccess || isMaxRateExceed) && !isActiveLoading && !authorizedLoading && profile?.id !== sessionData?.profile?.id;
-  const showSponsoredAccessButton = isActive && isAuthorized && !isActiveLoading && !authorizedLoading && !hasAccess && !isMaxRateExceed;
+  const showJoinButton = isAuthorized && (!isActive || hasAccess) && !isActiveLoading && !authorizedLoading && profile?.id !== sessionData?.profile?.id;
+  const showSponsoredAccessButton = isActive && isAuthorized && !isActiveLoading && !authorizedLoading && !hasAccess;
 
   usePublications({
     where: {
@@ -85,12 +79,9 @@ const ProfileHeader = (props: PropsWithChildren<ProfileHeaderProps>) => {
   }, []);
 
   useEffect(() => {
-    if (!campaign || !profile?.ownedBy?.address) return;
-
-    fetchIsActive(campaign, profile?.ownedBy?.address);
-    fetchQuotaCounter(campaign, profile?.ownedBy?.address);
-    fetchQuotaLimit(campaign);
-  }, [campaign, profile?.ownedBy?.address]);
+    if (!campaign || !sessionData?.address) return;
+    fetchIsActive(campaign, sessionData?.address);
+  }, [campaign, sessionData?.address]);
 
   // Function to handle following a profile
   const onSubscribe = async () => {

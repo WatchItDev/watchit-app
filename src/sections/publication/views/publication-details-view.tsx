@@ -38,8 +38,6 @@ import { PublicationSponsorsAndBackers } from '@src/sections/publication/compone
 import { PublicationSponsoredButton } from '@src/sections/publication/components/publication-sponsored-button.tsx';
 import { PublicationJoinButton } from '@src/sections/publication/components/publication-join-button.tsx';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
-import { useGetCampaignQuotaCounter } from '@src/hooks/protocol/use-get-campaign-quota-counter.ts';
-import { useGetCampaignQuotaLimit } from '@src/hooks/protocol/use-get-campaign-quota-limit.ts';
 
 // ----------------------------------------------------------------------
 
@@ -47,15 +45,13 @@ export default function PublicationDetailsView({ id }: Readonly<PublicationDetai
   // STATES HOOKS
   const dispatch = useDispatch();
   const [openSubscribeModal, setOpenSubscribeModal] = useState(false);
-  const { isFullyAuthenticated: isAuthenticated, isSessionLoading: sessionLoading } = useAuth();
+  const { isFullyAuthenticated: isAuthenticated, isSessionLoading: sessionLoading, session: sessionData } = useAuth();
   const { data: publicationData, loading: publicationLoading }: ReadResult<AnyPublication> = usePublication({ forId: id });
   const ownerAddress = publicationData?.by?.ownedBy?.address;
   const { hasAccess, loading: accessLoading, fetch: refetchAccess } = useHasAccess(ownerAddress);
   const { isAuthorized, loading: isAuthorizedLoading } = useIsPolicyAuthorized(GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS, ownerAddress);
   const { campaign, loading: campaignLoading, fetchSubscriptionCampaign } = useGetSubscriptionCampaign();
   const { isActive: isCampaignActive, loading: isActiveLoading, fetchIsActive } = useGetCampaignIsActive();
-  const { quotaCounter, fetchQuotaCounter } = useGetCampaignQuotaCounter();
-  const { quotaLimit, fetchQuotaLimit } = useGetCampaignQuotaLimit();
   const { data: publications, loading: pubsLoading } = usePublications({
     where: {
       from: [publicationData?.by?.id],
@@ -66,9 +62,8 @@ export default function PublicationDetailsView({ id }: Readonly<PublicationDetai
 
   const isAccessFullyChecked = !accessLoading && !isAuthorizedLoading && !isActiveLoading && !campaignLoading;
   const allLoaded = !publicationLoading && !sessionLoading && !pubsLoading && isAccessFullyChecked;
-  const isMaxRateExceed = quotaCounter >= quotaLimit;
-  const isSponsoredButtonVisible = isCampaignActive && isAuthorized && isAccessFullyChecked && !isMaxRateExceed;
-  const isJoinButtonVisible = isAuthorized && (!isCampaignActive || isMaxRateExceed) && isAccessFullyChecked && !isSponsoredButtonVisible;
+  const isSponsoredButtonVisible = isCampaignActive && isAuthorized && isAccessFullyChecked;
+  const isJoinButtonVisible = isAuthorized && !isCampaignActive && isAccessFullyChecked && !isSponsoredButtonVisible;
   const isPlayerVisible = hasAccess && isAuthenticated && !accessLoading && !sessionLoading;
 
   useEffect(() => {
@@ -77,11 +72,9 @@ export default function PublicationDetailsView({ id }: Readonly<PublicationDetai
   }, [ownerAddress, publicationLoading]);
 
   useEffect(() => {
-    if (!campaign || !ownerAddress) return;
-    fetchIsActive(campaign, ownerAddress);
-    fetchQuotaCounter(campaign, ownerAddress);
-    fetchQuotaLimit(campaign);
-  }, [campaign, ownerAddress]);
+    if (!campaign || !sessionData?.address) return;
+    fetchIsActive(campaign, sessionData?.address);
+  }, [campaign, sessionData?.address]);
 
   const handleSubscribe = () => {
     if (!isAuthenticated) {
