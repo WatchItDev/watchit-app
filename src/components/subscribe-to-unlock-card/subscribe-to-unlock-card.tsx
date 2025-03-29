@@ -10,8 +10,7 @@ import { useEffect } from 'react';
 import { useGetSubscriptionCampaign } from '@src/hooks/protocol/use-get-subscription-campaign.ts';
 import { SubscribeToUnlockCardProps } from '@src/components/subscribe-to-unlock-card/types.ts';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
-import { useGetCampaignQuotaCounter } from '@src/hooks/protocol/use-get-campaign-quota-counter.ts';
-import { useGetCampaignQuotaLimit } from '@src/hooks/protocol/use-get-campaign-quota-limit.ts';
+import { useAuth } from '@src/hooks/use-auth.ts';
 
 export const SubscribeToUnlockCard = ({
   onSubscribe,
@@ -27,27 +26,23 @@ export const SubscribeToUnlockCard = ({
   const { isAuthorized } = useIsPolicyAuthorized(GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS, ownerAddress);
   const { campaign, fetchSubscriptionCampaign } = useGetSubscriptionCampaign();
   const { isActive: isCampaignActive, loading: isActiveLoading, fetchIsActive } = useGetCampaignIsActive();
-  const { quotaCounter, fetchQuotaCounter } = useGetCampaignQuotaCounter();
-  const { quotaLimit, fetchQuotaLimit } = useGetCampaignQuotaLimit();
+  const { session: sessionData } = useAuth();
+
   const durationDays = 30; // a month
   const totalCostWei = terms?.amount ? terms?.amount * BigInt(durationDays) : 0; // Calculate total cost in Wei: DAILY_COST_WEI * durationDays
   const totalCostMMC = ethers.formatUnits(totalCostWei, 18); // Converts Wei to MMC
   const isAccessFullyChecked = !isActiveLoading;
-  const isMaxRateExceed = quotaCounter >= quotaLimit;
-  const isSponsoredButtonVisible = isCampaignActive && isAuthorized && isAccessFullyChecked && !isMaxRateExceed;
-  const isJoinButtonVisible = isAuthorized && (!isCampaignActive || isMaxRateExceed) && isAccessFullyChecked && !isSponsoredButtonVisible;
+  const isSponsoredButtonVisible = isCampaignActive && isAuthorized && isAccessFullyChecked;
+  const isJoinButtonVisible = isAuthorized && !isCampaignActive && isAccessFullyChecked && !isSponsoredButtonVisible;
 
   useEffect(() => {
     fetchSubscriptionCampaign(ownerAddress);
   }, []);
 
   useEffect(() => {
-    if (!campaign || !ownerAddress) return;
-
-    fetchIsActive(campaign, ownerAddress);
-    fetchQuotaCounter(campaign, ownerAddress);
-    fetchQuotaLimit(campaign);
-  }, [campaign, ownerAddress]);
+    if (!campaign || !sessionData?.address) return;
+    fetchIsActive(campaign, sessionData?.address);
+  }, [campaign, sessionData?.address]);
 
   return (
     <Card
