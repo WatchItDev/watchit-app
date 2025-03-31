@@ -14,6 +14,8 @@ export function setGlobalNotifier(enqueueSnackbarFn: (message: string, options?:
   globalEnqueueSnackbar = enqueueSnackbarFn;
 }
 
+type TemplateValue = string | number | boolean;
+
 /**
  * Replaces placeholders of type {variable} in a string, with
  * the values indicated in `data`.
@@ -23,7 +25,7 @@ export function setGlobalNotifier(enqueueSnackbarFn: (message: string, options?:
  * data: { user: 'Jacob', amount: '100 USDC' }
  * -> "Sent money to Jacob, total: 100 USDC"
  */
-function replaceTemplateTags(message: string, data: Record<string, string | number | boolean>): string {
+function replaceTemplateTags(message: string, data: Record<string, TemplateValue>): string {
   return message.replace(/{(\w+)}/g, (_substring, key) => {
     return data[key] !== undefined ? String(data[key]) : `{${key}}`;
   });
@@ -32,7 +34,7 @@ function replaceTemplateTags(message: string, data: Record<string, string | numb
 const notify = (
   typeNotification: NotificationType,
   text: ERRORS | SUCCESS | WARNING | INFO,
-  data?: Record<string, string | number | boolean>,
+  data?: Record<string, TemplateValue>,
   fallbackMessage?: string,
   options?: NotificationOptions
 ) => {
@@ -45,17 +47,17 @@ const notify = (
   switch (typeNotification) {
     case 'error':
       message =
-        ERROR_MESSAGES[text as ERRORS] || fallbackMessage || ERROR_MESSAGES[ERRORS.UNKNOWN_ERROR];
+        ERROR_MESSAGES[text as ERRORS] ?? fallbackMessage ?? ERROR_MESSAGES[ERRORS.UNKNOWN_ERROR];
       break;
     case 'success':
-      message = SUCCESS_MESSAGES[text as SUCCESS] || fallbackMessage || 'Operation successful.';
+      message = SUCCESS_MESSAGES[text as SUCCESS] ?? fallbackMessage ?? 'Operation successful.';
       break;
     case 'warning':
-      message = WARNING_MESSAGES[text as WARNING] || fallbackMessage || 'Warning.';
+      message = WARNING_MESSAGES[text as WARNING] ?? fallbackMessage ?? 'Warning.';
       break;
 
     case 'info':
-      message = INFO_MESSAGES[text as INFO] || fallbackMessage || 'Information.';
+      message = INFO_MESSAGES[text as INFO] ?? fallbackMessage ?? 'Information.';
       break;
 
     default:
@@ -76,10 +78,10 @@ const notify = (
  */
 export function notifyError(
   errorName: ERRORS,
-  data?: Record<string, string | number | boolean>,
+  data?: Record<string, TemplateValue>,
   fallbackMessage?: string
 ) {
-  notify('error', errorName, data, fallbackMessage || 'An unknown error has occurred.');
+  notify('error', errorName, data, fallbackMessage ?? 'An unknown error has occurred.');
 }
 
 /**
@@ -88,11 +90,11 @@ export function notifyError(
  */
 export function notifySuccess(
   successName: SUCCESS,
-  data?: Record<string, string | number | boolean>,
+  data?: Record<string, TemplateValue>,
   fallbackMessage?: string,
   options?: NotificationOptions
 ) {
-  notify('success', successName, data, fallbackMessage || 'Operation successful.', options);
+  notify('success', successName, data, fallbackMessage ?? 'Operation successful.', options);
 }
 
 /**
@@ -101,11 +103,11 @@ export function notifySuccess(
  */
 export function notifyWarning(
   warningName: WARNING,
-  data?: Record<string, string | number | boolean>,
+  data?: Record<string, TemplateValue>,
   fallbackMessage?: string,
   options?: NotificationOptions
 ) {
-  notify('warning', warningName, data, fallbackMessage || 'Warning.', options);
+  notify('warning', warningName, data, fallbackMessage ?? 'Warning.', options);
 }
 
 /**
@@ -114,9 +116,9 @@ export function notifyWarning(
  */
 export function notifyInfo(
   infoName: INFO,
-  data?: Record<string, string | number | boolean>,
+  data?: Record<string, TemplateValue>,
   fallbackMessage?: string,
   options?: NotificationOptions
 ) {
-  notify('info', infoName, data, fallbackMessage || 'Information.', options);
+  notify('info', infoName, data, fallbackMessage ?? 'Information.', options);
 }
