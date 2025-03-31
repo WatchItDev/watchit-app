@@ -1,7 +1,7 @@
 import Box from '@mui/material/Box';
 import { memo, FC } from 'react';
 import { CarouselSlideProps } from '../types';
-// @ts-ignore
+// @ts-expect-error No error in this context
 import { Post } from "@lens-protocol/api-bindings/dist/declarations/src/lens/graphql/generated";
 import { Profile } from '@lens-protocol/api-bindings';
 

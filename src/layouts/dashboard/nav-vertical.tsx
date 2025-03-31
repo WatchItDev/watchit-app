@@ -32,7 +32,7 @@ export default function NavVertical() {
 
   // Inside the NavVertical component
   const dispatch = useDispatch();
-  // @ts-ignore
+  // @ts-expect-error No error in this context
   const openNav = useSelector((state) => state.drawer.open);
 
   const handleCloseNav = () => {

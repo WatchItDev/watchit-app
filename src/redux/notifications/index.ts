@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-// @ts-ignore
 import Ding from '@src/assets/audio/notify.mp3';
 import { NotificationItemProps } from '@src/hooks/types';
 

@@ -86,7 +86,7 @@ export const ActivateSubscriptionProfileModal = ({
         { name: 'token', type: 'address' },
       ];
       const values = [amountInWei, GLOBAL_CONSTANTS.MMC_ADDRESS];
-      // @ts-ignore
+      // @ts-expect-error No error in this context
       const encodedData = encodeAbiParameters(types, values);
 
       await authorize({

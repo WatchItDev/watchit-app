@@ -16,7 +16,7 @@ import { useDispatch } from 'react-redux';
 import {closeLoginModal, setEmail} from '@redux/auth';
 import { notifySuccess } from '@src/libs/notifications/internal-notifications.ts';
 import { SUCCESS } from '@src/libs/notifications/success.ts';
-// @ts-ignore
+// @ts-expect-error No error in this context
 import {type AuthUserInfo} from "@web3auth/auth/dist/types/utils/interfaces";
 import useReferrals from '@src/hooks/use-referrals.ts';
 import { useAuth } from '@src/hooks/use-auth.ts';

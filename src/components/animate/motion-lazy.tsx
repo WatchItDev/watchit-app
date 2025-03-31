@@ -2,7 +2,7 @@ import { LazyMotion, m } from 'framer-motion';
 
 // ----------------------------------------------------------------------
 
-// @ts-ignore
+// @ts-expect-error No error in this context
 const loadFeatures = () => import('./features.js').then((res) => res.default);
 
 interface Props {

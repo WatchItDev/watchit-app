@@ -292,9 +292,9 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
         }
       } catch (error) {
         console.error('Error registering profile', error);
-        // @ts-ignore
+        // @ts-expect-error No error in this context
         console.error(error.message);
-        // @ts-ignore
+        // @ts-expect-error No error in this context
         setErrorMessage(error.message || 'Ocurrió un error durante el registro.');
       }
     },

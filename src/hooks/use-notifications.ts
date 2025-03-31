@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { supabase } from '@src/utils/supabase';
-// @ts-ignore
+// @ts-expect-error No error in this context
 import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
 import { ProfileSession, useSession } from '@lens-protocol/react-web';
 import { type NotificationColumnsProps } from '@src/hooks/types';
@@ -19,7 +19,6 @@ interface UseNotificationsReturn {
 export function useNotifications(): UseNotificationsReturn {
   const { data: sessionData }: ReadResult<ProfileSession> = useSession();
   const dispatch = useDispatch();
-  // @ts-ignore
   const notifications: NotificationColumnsProps[] = useSelector(
     (state: RootState) => state.notifications.notifications
   );

@@ -53,7 +53,7 @@ export const ProfileSelectView: React.FC<ProfileSelectionProps> = ({
 
   useEffect(() => {
     (async () => {
-      // @ts-ignore
+      // @ts-expect-error No error in this context
       const results = await getProfiles({ where: { ownedBy: address as string } });
       if (!results.isFailure()) setProfiles(filterHiddenProfiles(results?.value) as Profile[]);
     })();

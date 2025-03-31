@@ -21,9 +21,9 @@ interface Props {
 
 export default function DashboardLayout({ children }: Props) {
   const dispatch = useDispatch();
-  // @ts-ignore
+  // @ts-expect-error No error in this context
   const minibarState = useSelector((state) => state.minibar.state);
-  // @ts-ignore
+  // @ts-expect-error No error in this context
   const wasCollapse = useSelector((state) => state.minibar.wasCollapsed);
 
   const lgUp = useResponsive('up', 'lg');

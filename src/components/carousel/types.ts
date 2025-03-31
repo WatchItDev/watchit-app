@@ -1,7 +1,7 @@
 import React from "react";
 
 import {Profile, VideoMetadataV3} from "@lens-protocol/api-bindings";
-// @ts-ignore
+// @ts-expect-error No error in this context
 import { Post,PublicationMetadataMediaVideoFieldPolicy } from "@lens-protocol/api-bindings/dist/declarations/src/lens/graphql/generated";
 
 import {StackProps} from "@mui/material/Stack";

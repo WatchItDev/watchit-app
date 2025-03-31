@@ -1,5 +1,5 @@
 import { FC, useRef, useEffect, memo } from 'react';
-// @ts-ignore
+// @ts-expect-error No error in this context
 import { Hls, FetchLoader, XhrLoader } from 'hls.js/dist/hls.mjs';
 import { Typography, IconButton, Button } from '@mui/material';
 import { IconChevronLeft } from '@tabler/icons-react';
@@ -13,11 +13,8 @@ import {
 } from '@vidstack/react';
 
 import { DefaultVideoLayout, defaultLayoutIcons } from '@vidstack/react/player/layouts/default';
-// @ts-ignore
 import '@vidstack/react/player/styles/default/theme.css';
-// @ts-ignore
 import '@vidstack/react/player/styles/default/layouts/audio.css';
-// @ts-ignore
 import '@vidstack/react/player/styles/default/layouts/video.css';
 
 import useGetSubtitles from '@src/hooks/protocol/use-get-subtitles.ts';
@@ -83,7 +80,7 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({ src, cid, titleMovie, onBack
         // (hls_time = 6 + maxBufferLength = 30) = 5 fragments in buffer
         // "maxBufferLength": 60, // Max video buffer length in seconds
         // "maxMaxBufferLength": 600, // Absolute max buffer length
-        // maxStarvationDelay defines the maximum acceptable time (in seconds) a fragment can take to download 
+        // maxStarvationDelay defines the maximum acceptable time (in seconds) a fragment can take to download
         // while playback is already in progress.
         // - If a fragment is estimated to take longer than this value and the buffer is running low,
         //   the player switches the best quality that matches this time constraint.

@@ -43,7 +43,7 @@ describe('[COMPONENTS]: Modal component testing', () => {
   it('onClose is called when the modal is closed', async () => {
     renderComponent(modalProps);
     const backdrop = document.querySelector('.MuiModal-backdrop');
-    // @ts-ignore
+    // @ts-expect-error No error in this context
     fireEvent.click(backdrop);
     expect(modalProps.onClose).toHaveBeenCalledTimes(1);
   });

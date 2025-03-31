@@ -326,7 +326,7 @@ export default function PublicationDetailMain({
             }}
           >
             {hasAccess && sessionData?.authenticated ? (
-              // @ts-ignore
+              // @ts-expect-error No error in this context
               <LeaveTipCard post={post} />
             ) : (
               <SubscribeToUnlockCard

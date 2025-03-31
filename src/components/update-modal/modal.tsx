@@ -6,14 +6,10 @@ import { Modal, Box, Fade, Backdrop } from '@mui/material';
 
 // LOCAL IMPORTS
 import { ProfileFormView } from '@src/components/login-modal/profile-form-view.tsx';
-// @ts-ignore
-import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
-import { useSelector } from 'react-redux';
 
 // Notifications
 import { notifySuccess } from '@src/libs/notifications/internal-notifications.ts';
 import { SUCCESS } from '@src/libs/notifications/success.ts';
-import {RootState} from "@redux/store.ts"
 import { useAuth } from '@src/hooks/use-auth.ts';
 
 // ----------------------------------------------------------------------

@@ -7,7 +7,6 @@ import Tooltip from '@mui/material/Tooltip';
 
 // LOCAL IMPORTS
 import { useGetBalance } from '@src/hooks/protocol/use-get-balance.ts';
-// @ts-ignore
 import mmcTokenIcon from '@src/assets/mmc_token.ico';
 import { paths } from '@src/routes/paths.ts';
 import { useRouter } from '@src/routes/hooks';
