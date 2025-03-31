@@ -8,7 +8,12 @@ import { PinataHeaders, PinataResponse, IPFSMetadata } from './types';
 const pinataApiKey = GLOBAL_CONSTANTS.PINATA_API_KEY;
 const pinataSecretApiKey = GLOBAL_CONSTANTS.PINATA_SECRET_API_KEY;
 
-
+class IPFSError extends Error {
+  constructor(message: string, public originalError?: Error) {
+    super(message);
+    this.name = 'IPFSError';
+  }
+}
 
 /**
  * Uploads data to IPFS using Pinata.
@@ -52,8 +57,9 @@ export const uploadToIPFS = async (data: File | object): Promise<string> => {
 
     return `ipfs://${response.data.IpfsHash}`;
   } catch (error) {
-    console.error('Error uploading to IPFS:', error);
-    throw error;
+    const ipfsError = new IPFSError('Error uploading to IPFS', error instanceof Error ? error : undefined);
+    console.error(ipfsError.message);
+    throw ipfsError;
   }
 };
 
@@ -67,8 +73,9 @@ export const uploadImageToIPFS = async (image: File | null): Promise<string | nu
   try {
     return image ? await uploadToIPFS(image) : null;
   } catch (error) {
-    console.error('Error uploading image to IPFS:', error);
-    throw error;
+    const ipfsError = new IPFSError('Error uploading image to IPFS', error instanceof Error ? error : undefined);
+    console.error(ipfsError.message);
+    throw ipfsError;
   }
 };
 
@@ -88,8 +95,9 @@ export const uploadImagesToIPFS = async (
     const backgroundImageURI = backgroundImage ? await uploadToIPFS(backgroundImage) : null;
     return { profileImageURI, backgroundImageURI };
   } catch (error) {
-    console.error('Error uploading images to IPFS:', error);
-    throw error;
+    const ipfsError = new IPFSError('Error uploading images to IPFS', error instanceof Error ? error : undefined);
+    console.error(ipfsError.message);
+    throw ipfsError;
   }
 };
 
@@ -103,8 +111,9 @@ export const uploadMetadataToIPFS = async (metadata: IPFSMetadata): Promise<stri
   try {
     return await uploadToIPFS(metadata);
   } catch (error) {
-    console.error('Error uploading metadata to IPFS:', error);
-    throw error;
+    const ipfsError = new IPFSError('Error uploading metadata to IPFS', error instanceof Error ? error : undefined);
+    console.error(ipfsError.message);
+    throw ipfsError;
   }
 };
 
@@ -132,8 +141,9 @@ export const verifyIpfsData = async (
       if (response.status === 200) {
         return true;
       }
-    } catch (error: Error | unknown) {
-      console.error('Error verifying IPFS data:', error);
+    } catch (error) {
+      const ipfsError = new IPFSError('Error verifying IPFS data', error instanceof Error ? error : undefined);
+      console.error(ipfsError.message);
     }
     if (attempt < retries) {
       console.log(`Retrying in ${delayMs}ms... (${attempt}/${retries})`);
@@ -141,5 +151,5 @@ export const verifyIpfsData = async (
     }
   }
 
-  throw new Error('Could not verify the availability of metadata on IPFS.');
+  throw new IPFSError('Could not verify the availability of metadata on IPFS.');
 };
