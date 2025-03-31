@@ -87,8 +87,16 @@ export const SponsoredAccessTrialButton: FC<ExtendedSponsoredAccessProps> = (pro
   return (
     <RainbowEffect {...computedNeonPaperProps} padding={loading ? '2px' : '0'}>
       <StyledBoxGradient onClick={handleTrial} loading={loading} {...computedButtonProps}>
-        <Icon icon="ic:outline-try" width="18" height="18" />
-        <Typography variant="body2" sx={{ lineHeight: 1, fontWeight: '700', ml: 1 }}>
+        <Icon icon="cil:media-play" width="18" height="18" />
+        <Typography
+          variant="body2"
+          sx={{
+            lineHeight: 1,
+            fontWeight: '700',
+            ml: 1,
+            display: { xs: size === 'sm' ? 'none' : 'flex', md: 'flex' }
+          }}
+        >
           Free trial
         </Typography>
       </StyledBoxGradient>

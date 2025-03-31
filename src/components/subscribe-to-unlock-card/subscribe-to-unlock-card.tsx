@@ -10,6 +10,7 @@ import { useEffect } from 'react';
 import { useGetSubscriptionCampaign } from '@src/hooks/protocol/use-get-subscription-campaign.ts';
 import { SubscribeToUnlockCardProps } from '@src/components/subscribe-to-unlock-card/types.ts';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
+import { useAuth } from '@src/hooks/use-auth.ts';
 
 export const SubscribeToUnlockCard = ({
   onSubscribe,
@@ -24,20 +25,24 @@ export const SubscribeToUnlockCard = ({
   );
   const { isAuthorized } = useIsPolicyAuthorized(GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS, ownerAddress);
   const { campaign, fetchSubscriptionCampaign } = useGetSubscriptionCampaign();
-  const { isActive, loading: isActiveLoading, fetchIsActive } = useGetCampaignIsActive();
+  const { isActive: isCampaignActive, loading: isActiveLoading, fetchIsActive } = useGetCampaignIsActive();
+  const { session: sessionData } = useAuth();
+
   const durationDays = 30; // a month
   const totalCostWei = terms?.amount ? terms?.amount * BigInt(durationDays) : 0; // Calculate total cost in Wei: DAILY_COST_WEI * durationDays
   const totalCostMMC = ethers.formatUnits(totalCostWei, 18); // Converts Wei to MMC
+  const isAccessFullyChecked = !isActiveLoading;
+  const isSponsoredButtonVisible = isCampaignActive && isAuthorized && isAccessFullyChecked;
+  const isJoinButtonVisible = isAuthorized && !isCampaignActive && isAccessFullyChecked && !isSponsoredButtonVisible;
 
   useEffect(() => {
     fetchSubscriptionCampaign(ownerAddress);
   }, []);
 
   useEffect(() => {
-    if (!campaign || !ownerAddress) return;
-
-    fetchIsActive(campaign, ownerAddress);
-  }, [campaign, ownerAddress]);
+    if (!campaign || !sessionData?.address) return;
+    fetchIsActive(campaign, sessionData?.address);
+  }, [campaign, sessionData?.address]);
 
   return (
     <Card
@@ -63,37 +68,35 @@ export const SubscribeToUnlockCard = ({
           This content is exclusively for members. Become part of our growing community to access
           behind-the-scenes content, exclusive posts, and much more!
         </Typography>
+        {isJoinButtonVisible && (
+          <LoadingButton
+            variant="contained"
+            color="primary"
+            sx={{ width: '100%', py: 1.5 }}
+            onClick={onSubscribe}
+            loading={loadingSubscribe}
+          >
+            <IconPlayerPlay size={20} style={{ marginRight: 5 }} />
+            Join
+          </LoadingButton>
+        )}
+        {isSponsoredButtonVisible && (
+          <SponsoredAccessTrialButton
+            isActive={isCampaignActive}
+            holderAddress={ownerAddress}
+            campaignAddress={campaign}
+            onSuccess={handleRefetchAccess}
+            size="lg"
+          />
+        )}
         {isAuthorized && (
-          <>
-            {!isActive && !isActiveLoading && (
-              <LoadingButton
-                variant="contained"
-                color="primary"
-                sx={{ width: '100%', py: 1.5 }}
-                onClick={onSubscribe}
-                loading={loadingSubscribe}
-              >
-                <IconPlayerPlay size={20} style={{ marginRight: 5 }} />
-                Join
-              </LoadingButton>
-            )}
-            {isActive && !isActiveLoading && (
-              <SponsoredAccessTrialButton
-                isActive={isActive}
-                holderAddress={ownerAddress}
-                campaignAddress={campaign}
-                onSuccess={handleRefetchAccess}
-                size="lg"
-              />
-            )}
-            <Box sx={{ mt: 3, borderRadius: 1 }}>
-              <Typography variant="body2" color="textSecondary">
-                Join now for just <strong>{totalCostMMC} MMC/month</strong> and access to{' '}
-                <strong>{post?.by?.stats?.posts}</strong> exclusive posts from{' '}
-                <strong>{post?.by?.metadata?.displayName ?? post?.handle?.localName}!</strong>
-              </Typography>
-            </Box>
-          </>
+          <Box sx={{ mt: 3, borderRadius: 1 }}>
+            <Typography variant="body2" color="textSecondary">
+              Join now for just <strong>{totalCostMMC} MMC/month</strong> and access to{' '}
+              <strong>{post?.by?.stats?.posts}</strong> exclusive posts from{' '}
+              <strong>{post?.by?.metadata?.displayName ?? post?.handle?.localName}!</strong>
+            </Typography>
+          </Box>
         )}
       </CardContent>
     </Card>

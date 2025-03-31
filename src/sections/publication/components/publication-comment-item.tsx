@@ -232,7 +232,7 @@ const PublicationCommentItem:FC<PublicationCommentItemProps> = (props) => {
             }}
           >
             <Stack
-              sx={{ mb: 0.5, p: 1 }}
+              sx={{ mb: 0.5, px: 1, py: 0.5 }}
               alignItems={{ sm: 'center' }}
               justifyContent="flex-start"
               direction={'row'}
@@ -244,7 +244,7 @@ const PublicationCommentItem:FC<PublicationCommentItemProps> = (props) => {
               </Box>
             </Stack>
 
-            <Box sx={{ typography: 'body2', color: 'text.secondary', p: 1 }}>
+            <Box sx={{ typography: 'body2', color: 'text.secondary', p: 1, mt: -1.5 }}>
               {comment?.metadata?.content}
             </Box>
           </ContentContainer>
