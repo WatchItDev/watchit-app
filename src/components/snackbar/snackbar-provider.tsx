@@ -20,7 +20,7 @@ export default function SnackbarProvider({ children }: Props) {
 
   const isRTL = settings.themeDirection === 'rtl';
 
-  const notistackRef = useRef<any>(null);
+  const notistackRef = useRef<NotistackProvider | null>(null);
 
   return (
     <NotistackProvider
