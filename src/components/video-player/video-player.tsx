@@ -20,6 +20,7 @@ import '@vidstack/react/player/styles/default/layouts/video.css';
 import useGetSubtitles from '@src/hooks/protocol/use-get-subtitles.ts';
 import { useResponsive } from '@src/hooks/use-responsive';
 import Label from '../label';
+import {ErrorData} from "hls.js"
 
 export interface VideoPlayerProps {
   src: string;
@@ -51,7 +52,8 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({ src, cid, titleMovie, onBack
   // on provider (HLS) initialization
   const onProviderSetup = (provider: MediaProviderAdapter) => {
     if (isHLSProvider(provider)) {
-      provider.instance?.on(Hls.Events.ERROR, (_, data: any) => {
+      // @ts-expect-error No error in this context
+      provider.instance?.on(Hls.Events.ERROR, (_, data: ErrorData) => {
         if (data.details === Hls.ErrorDetails.BUFFER_STALLED_ERROR) {
           console.log("Seek Stalling Detected, Adjusting Buffer...");
           provider.instance?.startLoad();
