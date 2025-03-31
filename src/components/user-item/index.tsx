@@ -14,6 +14,8 @@ import { paths } from '../../routes/paths';
 import { Profile } from '@lens-protocol/api-bindings';
 import {capitalizeFirstLetter} from "@src/utils/text-transform.ts"
 import { useAuth } from '@src/hooks/use-auth.ts';
+// @ts-expect-error No error in this context
+import {ProfilePictureSet} from "@lens-protocol/api-bindings/dist/declarations/src/lens/graphql/generated"
 
 // ----------------------------------------------------------------------
 
@@ -34,7 +36,7 @@ export const UserItem = memo(
   }: FollowerItemProps) => {
     const { session: sessionData } = useAuth();
     const router = useRouter();
-    const profile =
+    const profile: Profile =
       sessionData && sessionData?.profile?.id === profileData?.id ? sessionData.profile : profileData;
 
     const goToProfile = () => {
@@ -88,7 +90,7 @@ export const UserItem = memo(
             }}
           >
             <AvatarProfile
-              src={(profile?.metadata?.picture as any)?.optimized?.uri ?? profile?.id}
+              src={(profile?.metadata?.picture as ProfilePictureSet)?.optimized?.uri ?? profile?.id}
               alt={profile?.handle?.localName ?? ''}
               sx={{ width: 48, height: 48, mr: 2 }}
               variant="rounded"
@@ -104,7 +106,7 @@ export const UserItem = memo(
               }}
             >
               <ListItemText
-                primary={<UserNameAndBadge address={profile?.ownedBy?.address} name={capitalizeFirstLetter(profile?.metadata?.displayName) ?? profile?.handle?.localName} />}
+                primary={<UserNameAndBadge address={profile?.ownedBy?.address as Address} name={capitalizeFirstLetter(profile?.metadata?.displayName as string) ?? profile?.handle?.localName} />}
                 secondary={
                   <>{profile?.id !== sessionData?.profile?.id ? profile?.metadata?.bio ?? profile?.id : 'This is you!'}</>
                 }
