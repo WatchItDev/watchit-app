@@ -1,5 +1,3 @@
-// ----------------------------------------------------------------------
-
 export function emptyRows(page: number, rowsPerPage: number, arrayLength: number) {
   return page ? Math.max(0, (1 + page) * rowsPerPage - arrayLength) : 0;
 }
@@ -20,10 +18,10 @@ function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   return 0;
 }
 
-export function getComparator<Key extends keyof any>(
+export function getComparator<T>(
   order: 'asc' | 'desc',
-  orderBy: Key
-): (a: Record<Key, number | string>, b: Record<Key, number | string>) => number {
+  orderBy: keyof T
+): (a: T, b: T) => number {
   return order === 'desc'
     ? (a, b) => descendingComparator(a, b, orderBy)
     : (a, b) => -descendingComparator(a, b, orderBy);
