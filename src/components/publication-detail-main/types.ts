@@ -1,5 +1,4 @@
-// @ts-expect-error No error in this context
-import {Post} from "@lens-protocol/api-bindings/dist/declarations/src/lens/graphql/generated"
+import {Post} from "@lens-protocol/api-bindings"
 
 export interface PublicationDetailProps {
   post: Post;

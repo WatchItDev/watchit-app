@@ -11,8 +11,7 @@ import { ProfileFormView } from '@src/components/login-modal/profile-form-view.t
 import { notifySuccess } from '@src/libs/notifications/internal-notifications.ts';
 import { SUCCESS } from '@src/libs/notifications/success.ts';
 import { useAuth } from '@src/hooks/use-auth.ts';
-// @ts-expect-error No error in this context
-import {ProfilePictureSet} from "@lens-protocol/api-bindings/dist/declarations/src/lens/graphql/generated"
+import {ProfilePictureSet} from "@lens-protocol/api-bindings"
 
 // ----------------------------------------------------------------------
 

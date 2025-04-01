@@ -59,7 +59,7 @@ export const ProfileSelectView: React.FC<ProfileSelectionProps> = ({
     })();
   }, [address]);
 
-  const handleProfileClick = async (profile: any) => {
+  const handleProfileClick = async (profile: Profile) => {
     if (sessionData?.authenticated) {
       onClose?.();
     } else {
@@ -144,7 +144,6 @@ export const ProfileSelectView: React.FC<ProfileSelectionProps> = ({
                     key={`profiles-list-item-${profile.id}`}
                     onClick={() => handleProfileClick(profile)}
                     profile={profile}
-                    canFollow={false}
                     sx={{ width: !lgUp ? '100%' : isLastOddItem ? '100%' : '48%' }}
                   />
                 );

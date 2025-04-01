@@ -1,8 +1,7 @@
 // LENS IMPORTS
 import { useReportPublication, PublicationReportReason } from '@lens-protocol/react-web';
 import { ReportModalBase } from '@src/components/report-modal-base.tsx';
-// @ts-expect-error No error in this context
-import {Post} from "@lens-protocol/api-bindings/dist/declarations/src/lens/graphql/generated"
+import {Post} from "@lens-protocol/api-bindings"
 // @ts-expect-error No error in this context
 import {UseDeferredTask} from "@lens-protocol/react/dist/declarations/src/helpers/tasks"
 

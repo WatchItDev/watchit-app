@@ -14,8 +14,7 @@ import { paths } from '../../routes/paths';
 import { Profile } from '@lens-protocol/api-bindings';
 import {capitalizeFirstLetter} from "@src/utils/text-transform.ts"
 import { useAuth } from '@src/hooks/use-auth.ts';
-// @ts-expect-error No error in this context
-import {ProfilePictureSet} from "@lens-protocol/api-bindings/dist/declarations/src/lens/graphql/generated"
+import {ProfilePictureSet} from "@lens-protocol/api-bindings"
 
 // ----------------------------------------------------------------------
 

@@ -1,8 +1,7 @@
 import Box from '@mui/material/Box';
 import { memo, FC } from 'react';
 import { CarouselSlideProps } from '../types';
-// @ts-expect-error No error in this context
-import { Post } from "@lens-protocol/api-bindings/dist/declarations/src/lens/graphql/generated";
+import { Post } from "@lens-protocol/api-bindings";
 import { Profile } from '@lens-protocol/api-bindings';
 
 const CarouselSlide: FC<Readonly<CarouselSlideProps<Profile | Post>>> = (props) => {
@@ -15,7 +14,7 @@ const CarouselSlide: FC<Readonly<CarouselSlideProps<Profile | Post>>> = (props) 
     <Box>
       {[row1, row2].map((rowItems, _rowIndex) => (
         <Box key={`loop-one-${rowItems[_rowIndex]?.id}`} sx={{ display: 'flex' }}>
-          {rowItems.map((item, _item) => (
+          {rowItems.map((item) => (
             <Box
               key={`loop-two-${item?.id}`}
               sx={{

@@ -3,8 +3,7 @@ import { useDispatch } from 'react-redux';
 import { addBookmark, removeBookmark } from '@redux/bookmark';
 import { useAuth } from '@src/hooks/use-auth';
 import { openLoginModal } from '@redux/auth';
-// @ts-expect-error No error in this context
-import {Post} from "@lens-protocol/api-bindings/dist/declarations/src/lens/graphql/generated"
+import { Post } from "@lens-protocol/react-web"
 
 
 export const useToggleBookmark = () => {

@@ -42,8 +42,7 @@ import { useAuth } from '@src/hooks/use-auth.ts';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 import { SUCCESS } from '@src/libs/notifications/success.ts';
 import { ERRORS } from '@src/libs/notifications/errors.ts';
-// @ts-expect-error No error in this context
-import {ProfilePictureSet} from "@lens-protocol/api-bindings/dist/declarations/src/lens/graphql/generated"
+import { ProfilePictureSet } from '@lens-protocol/api-bindings'
 
 // ----------------------------------------------------------------------
 
