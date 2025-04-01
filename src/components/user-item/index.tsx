@@ -11,10 +11,9 @@ import { SxProps } from '@mui/system/styleFunctionSx';
 import { Address } from 'viem';
 import { useRouter } from '@src/routes/hooks';
 import { paths } from '../../routes/paths';
-import { Profile } from '@lens-protocol/api-bindings';
+import { Profile, ProfilePictureSet } from '@lens-protocol/api-bindings';
 import {capitalizeFirstLetter} from "@src/utils/text-transform.ts"
 import { useAuth } from '@src/hooks/use-auth.ts';
-import {ProfilePictureSet} from "@lens-protocol/api-bindings"
 
 // ----------------------------------------------------------------------
 
