@@ -47,7 +47,6 @@ export default function NavMini() {
           }}
           depth={1}
           config={{}}
-          onClick={() => {}}
         />
         <Box sx={{ width: '100%', py: 0.5 }} />
         <NavSectionMini

@@ -16,16 +16,15 @@ import Iconify from '@src/components/iconify';
 import Scrollbar from '@src/components/scrollbar';
 import { varHover } from '@src/components/animate';
 import NotificationItem from './notification-item';
-import { type NotificationColumnsProps } from '@src/types/notification';
 import { useNotifications } from '@src/hooks/use-notifications.ts';
 import { Box } from '@mui/system';
 import Image from '@src/components/image';
-// @ts-expect-error No error in this context
 import emptyImage from '@src/assets/illustrations/empty-notifications.png';
-import { useCallback, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Label from '@src/components/label';
+import {NotificationColumnsProps} from "@src/hooks/types.ts"
 
 export default function NotificationsPopover() {
   const { notifications, markAsRead, markAllAsRead } = useNotifications();
@@ -111,7 +110,7 @@ export default function NotificationsPopover() {
     </Tabs>
   );
 
-  const renderNotifications = (notifications: any) => (
+  const renderNotifications = (notifications: NotificationColumnsProps[]) => (
     <Scrollbar>
       <List disablePadding>
         {notifications.length > 0 ? (

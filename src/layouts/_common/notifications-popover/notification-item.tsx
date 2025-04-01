@@ -30,6 +30,7 @@ import { openLoginModal } from '@redux/auth';
 import { decrementCounterLikes, incrementCounterLikes } from '@redux/comments';
 import { useNotificationPayload } from '@src/hooks/use-notification-payload.ts';
 import { useAuth } from '@src/hooks/use-auth.ts';
+import {PublicationHookType} from "@src/types/types.ts"
 
 export default function NotificationItem({ notification, onMarkAsRead }: NotificationItemProps) {
   const [hasLiked, setHasLiked] = useState(false);
@@ -40,8 +41,7 @@ export default function NotificationItem({ notification, onMarkAsRead }: Notific
   const { generatePayload } = useNotificationPayload(sessionData);
   const { execute: toggle, loading: loadingLike } = useReactionToggle();
   const commentId = notification?.payload?.data?.content?.comment_id;
-  const { data: comment, loading }: any = usePublication({ forId: commentId as any });
-
+  const { data: comment, loading }: PublicationHookType = usePublication({ forId: commentId});
   const typeOfNotification = notification?.payload?.category;
   const receiver = notification?.payload?.data?.to?.displayName;
   const message =
