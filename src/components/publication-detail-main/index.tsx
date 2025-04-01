@@ -211,7 +211,7 @@ export default function PublicationDetailMain({
                 sx={{
                   width: 26,
                   height: 26,
-                  border: (theme: any) => `solid 2px ${theme.palette.background.default}`,
+                  border: (theme) => `solid 2px ${theme.palette.background.default}`,
                 }}
               />
               <Typography variant="subtitle2" noWrap sx={{ ml: 1 }}>
@@ -331,7 +331,7 @@ export default function PublicationDetailMain({
             ) : (
               <SubscribeToUnlockCard
                 loadingSubscribe={loadingSubscribe}
-                subscribeDisabled={subscribeDisabled}
+                subscribeDisabled={subscribeDisabled ?? false}
                 handleRefetchAccess={handleRefetchAccess}
                 onSubscribe={handleSubscribe}
                 post={post}
