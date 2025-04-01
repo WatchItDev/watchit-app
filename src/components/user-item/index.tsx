@@ -6,23 +6,13 @@ import BadgeVerified from "@src/components/user-item/BadgeVerified.tsx";
 import Image from '../image';
 import AvatarProfile from "@src/components/avatar/avatar.tsx";
 import { memo, FC } from 'react';
-import { Theme } from '@mui/material/styles';
-import { SxProps } from '@mui/system/styleFunctionSx';
 import { Address } from 'viem';
 import { useRouter } from '@src/routes/hooks';
 import { paths } from '../../routes/paths';
 import { Profile, ProfilePictureSet } from '@lens-protocol/api-bindings';
 import {capitalizeFirstLetter} from "@src/utils/text-transform.ts"
 import { useAuth } from '@src/hooks/use-auth.ts';
-
-// ----------------------------------------------------------------------
-
-interface FollowerItemProps {
-  profile: Profile;
-  onClick?: () => void;
-  onActionFinished?: () => void;
-  sx?: SxProps<Theme>;
-}
+import {FollowerItemProps} from "@src/components/user-item/types.ts"
 
 // ----------------------------------------------------------------------
 
