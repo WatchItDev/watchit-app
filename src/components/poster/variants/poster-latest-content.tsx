@@ -21,28 +21,7 @@ const randomImages = [
   'https://cdn12.picryl.com/photo/2016/12/31/banner-header-christmas-13e7dc-1024.jpg',
 ];
 
-export const randomColors = [
-  '#f44336',
-  '#e91e63',
-  '#9c27b0',
-  '#673ab7',
-  '#3f51b5',
-  '#2196f3',
-  '#03a9f4',
-  '#00bcd4',
-  '#009688',
-  '#4caf50',
-  '#8bc34a',
-  '#cddc39',
-  '#ffeb3b',
-  '#ffc107',
-  '#ff9800',
-  '#ff5722',
-  '#795548',
-  '#9e9e9e',
-  '#607d8b',
-  '#000000',
-];
+
 const randomColorsForBackground = [COLORS.GRAY_LIGHT, COLORS.GRAY_DARK];
 
 const PosterLatestContent = ({ id }: TrendingTopicsType) => {
@@ -83,7 +62,6 @@ const PosterLatestContent = ({ id }: TrendingTopicsType) => {
           padding: 1,
           transition: 'transform 0.2s ease-in-out',
         }}
-        onClick={() => {}}
       >
         <Image
           src={randomImages[Math.floor(Math.random() * randomImages.length)]}
