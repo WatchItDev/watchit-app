@@ -27,6 +27,7 @@ import { ERRORS } from '@src/libs/notifications/errors';
 import { SUCCESS } from '@src/libs/notifications/success';
 import {ProfilePictureSet} from "@lens-protocol/react-web"
 import {UseDeferredTask} from "@lens-protocol/react/dist/declarations/src/helpers/tasks"
+import { HandleActionErrorProps } from './types';
 
 // ----------------------------------------------------------------------
 
@@ -135,7 +136,7 @@ const FollowUnfollowButton = ({
   };
 
   // Function to handle action errors
-  const handleActionError = (error: Error) => {
+  const handleActionError = (error: HandleActionErrorProps) => {
     const errorName =
       ERRORS[pascalToUpperSnake(error.name) as keyof typeof ERRORS] || ERRORS.UNKNOWN_ERROR;
     notifyError(errorName, {
