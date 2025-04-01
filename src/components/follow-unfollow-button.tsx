@@ -5,7 +5,7 @@ import { useState, useEffect, PropsWithChildren } from 'react';
 import LoadingButton from '@mui/lab/LoadingButton';
 
 // LENS IMPORTS
-import { ProfileId, useFollow, useUnfollow } from '@lens-protocol/react-web';
+import { ProfileId, useFollow, useUnfollow, UseDeferredTask, ProfilePictureSet } from '@lens-protocol/react-web';
 import { useLazyProfile } from '@lens-protocol/react';
 
 // REDUX IMPORTS
@@ -25,8 +25,6 @@ import { pascalToUpperSnake } from '@src/utils/text-transform';
 import { useAuth } from '@src/hooks/use-auth.ts';
 import { ERRORS } from '@src/libs/notifications/errors';
 import { SUCCESS } from '@src/libs/notifications/success';
-import {ProfilePictureSet} from "@lens-protocol/react-web"
-import {UseDeferredTask} from "@lens-protocol/react/dist/declarations/src/helpers/tasks"
 import { HandleActionErrorProps } from './types';
 
 // ----------------------------------------------------------------------
