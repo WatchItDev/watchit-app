@@ -1,8 +1,7 @@
 import Box from '@mui/material/Box';
 import { memo, FC } from 'react';
 import { CarouselSlideProps } from '../types';
-import { Post } from "@lens-protocol/api-bindings";
-import { Profile } from '@lens-protocol/api-bindings';
+import { Post, Profile } from "@lens-protocol/api-bindings";
 
 const CarouselSlide: FC<Readonly<CarouselSlideProps<Profile | Post>>> = (props) => {
   const { items, itemsPerRow, renderItem, } = props;

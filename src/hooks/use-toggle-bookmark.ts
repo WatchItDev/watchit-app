@@ -1,9 +1,8 @@
-import { useBookmarkToggle } from '@lens-protocol/react-web';
+import { useBookmarkToggle, Post } from '@lens-protocol/react-web';
 import { useDispatch } from 'react-redux';
 import { addBookmark, removeBookmark } from '@redux/bookmark';
 import { useAuth } from '@src/hooks/use-auth';
 import { openLoginModal } from '@redux/auth';
-import { Post } from "@lens-protocol/react-web"
 
 
 export const useToggleBookmark = () => {
