@@ -11,7 +11,7 @@ import RadioGroup, { RadioGroupProps } from '@mui/material/RadioGroup';
 
 type Props = RadioGroupProps & {
   name: string;
-  options: { label: string; value: any }[];
+  options: { label: string; value: string | number }[];
   label?: string;
   spacing?: number;
   helperText?: React.ReactNode;

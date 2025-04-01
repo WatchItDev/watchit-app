@@ -6,7 +6,7 @@ import { Box, Typography, List, Button, Avatar } from '@mui/material';
 
 // UTILS IMPORTS
 import { truncateAddress } from '@src/utils/wallet';
-import { Profile, useLazyProfiles, LoginError } from '@lens-protocol/react-web';
+import { Profile, useLazyProfiles } from '@lens-protocol/react-web';
 
 import { useDispatch } from 'react-redux';
 import { setAuthLoading, setBalance } from '@redux/auth';
@@ -18,17 +18,7 @@ import { filterHiddenProfiles } from "@src/libs/profile.ts";
 import { UserItem } from '@src/components/user-item';
 import { useAuth } from '@src/hooks/use-auth.ts';
 import { ERRORS } from '@src/libs/notifications/errors.ts';
-
-// ----------------------------------------------------------------------
-
-interface ProfileSelectionProps {
-  address: string;
-  error?: LoginError;
-  onRegisterNewProfile: () => void;
-  onDisconnect: () => void;
-  onClose: () => void;
-  login: (profile?: Profile) => Promise<void>;
-}
+import {ProfileSelectionProps} from "@src/components/login-modal/types.ts"
 
 // ----------------------------------------------------------------------
 

@@ -41,7 +41,7 @@ export function RHFCheckbox({ name, helperText, ...other }: RHFCheckboxProps) {
 
 interface RHFMultiCheckboxProps extends Omit<FormControlLabelProps, 'control' | 'label'> {
   name: string;
-  options: { label: string; value: any }[];
+  options: { label: string; value: string | number }[];
   row?: boolean;
   label?: string;
   spacing?: number;

@@ -16,7 +16,7 @@ import { IconRosetteDiscountCheckFilled } from "@tabler/icons-react";
 // LOCAL IMPORTS
 import { truncateAddress } from "@src/utils/wallet.ts";
 import { OpenableText } from "@src/components/openable-text";
-import { randomColors } from "@src/components/poster/variants/poster-latest-content.tsx";
+import { randomColors } from "@src/components/poster/CONSTANTS.tsx";
 import { useAuth } from '@src/hooks/use-auth.ts';
 import { ProfileHeaderProps } from "@src/sections/user/types.ts"
 import { GLOBAL_CONSTANTS } from "@src/config-global.ts"

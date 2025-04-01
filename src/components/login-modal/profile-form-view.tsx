@@ -1,5 +1,5 @@
 // REACT IMPORTS
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, {ChangeEvent, useCallback, useEffect, useRef, useState} from 'react'
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
@@ -28,7 +28,6 @@ import uuidv4 from '@src/utils/uuidv4';
 // LENS IMPORTS
 import { Profile } from '@lens-protocol/api-bindings';
 import {
-  LoginError,
   SessionType,
   useCreateProfile,
   useSetProfileMetadata,
@@ -40,18 +39,7 @@ import { notifyError, notifySuccess } from '@src/libs/notifications/internal-not
 import { useAuth } from '@src/hooks/use-auth.ts';
 import { SUCCESS } from '@src/libs/notifications/success';
 import { ERRORS } from '@src/libs/notifications/errors.ts';
-
-// ----------------------------------------------------------------------
-
-export interface ProfileFormProps {
-  address: string;
-  initialValues?: any;
-  mode: 'register' | 'update';
-  error?: LoginError;
-  onSuccess: () => void;
-  onCancel: () => void;
-  login?: (profile?: Profile) => Promise<void>;
-}
+import {ProfileFormProps, ProfileFormValues} from "@src/components/login-modal/types.ts"
 
 // ----------------------------------------------------------------------
 
@@ -204,7 +192,7 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
                 notifySuccess(SUCCESS.PROFILE_METADATA_UPDATED);
                 dispatch(setIsUpdatingMetadata(false));
               },
-              onError: (error: any) => {
+              onError: (error: Error) => {
                 console.log('Error updating profile metadata:', error);
                 notifyError(ERRORS.UPDATING_PROFILE_ERROR);
                 dispatch(setIsUpdatingMetadata(false));
@@ -268,7 +256,7 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
     [address, createProfileExecute]
   );
 
-  const formik: any = useFormik({
+  const formik = useFormik<ProfileFormValues>({
     initialValues: initialValues ?? {
       username: '',
       name: '',
@@ -356,7 +344,7 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
         inputProps={{
           accept: 'image/*',
         }}
-        onChange={(event: any) => handleFileChange(event, 'backgroundImage')}
+        onChange={(event: ChangeEvent<HTMLInputElement>) => handleFileChange(event, 'backgroundImage')}
         inputRef={backgroundImageInputRef}
         sx={{ display: 'none' }}
       />
@@ -365,7 +353,7 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
           accept: 'image/*',
         }}
         type="file"
-        onChange={(event: any) => handleFileChange(event, 'profileImage')}
+        onChange={(event: ChangeEvent<HTMLInputElement>) => handleFileChange(event, 'profileImage')}
         inputRef={profileImageInputRef}
         sx={{ display: 'none' }}
       />
@@ -502,7 +490,7 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
               }}
               onBlur={formik.handleBlur}
               error={formik.touched.username && Boolean(formik.errors.username)}
-              helperText={formik.touched.username && formik.errors.userName ? formik.errors.username : 'e.g., johndoe123'}
+              helperText={formik.touched.username && formik.errors.username ? formik.errors.username : 'e.g., johndoe123'}
             />
           </Grid>
         </Grid>

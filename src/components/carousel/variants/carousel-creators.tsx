@@ -31,7 +31,7 @@ import { CarouselCreatorsProps } from '../types';
   };
 
   const renderItem = (profile: Profile) => (
-    <UserItem profile={profile} onActionFinished={() => {}} />
+    <UserItem profile={profile} />
   );
 
   const carouselParams = {

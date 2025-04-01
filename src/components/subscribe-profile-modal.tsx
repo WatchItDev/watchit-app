@@ -30,7 +30,7 @@ import { Address } from 'viem';
 // LOCAL IMPORTS
 import NeonPaper from '@src/sections/publication/components/neon-paper-container.tsx';
 import { useSubscribe } from '@src/hooks/protocol/use-subscribe.ts';
-import { Profile } from '@lens-protocol/api-bindings';
+import { Profile, ProfilePictureSet } from '@lens-protocol/api-bindings';
 import { useGetPolicyTerms } from '@src/hooks/protocol/use-get-policy-terms.ts';
 import { setBalance } from '@redux/auth';
 import { useGetBalance } from '@src/hooks/protocol/use-get-balance.ts';
@@ -42,7 +42,6 @@ import { useAuth } from '@src/hooks/use-auth.ts';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 import { SUCCESS } from '@src/libs/notifications/success.ts';
 import { ERRORS } from '@src/libs/notifications/errors.ts';
-import { ProfilePictureSet } from '@lens-protocol/api-bindings'
 
 // ----------------------------------------------------------------------
 

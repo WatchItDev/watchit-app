@@ -1,4 +1,4 @@
-import {Post} from "@lens-protocol/api-bindings"
+import {Post} from "@lens-protocol/react-web"
 
 export interface PublicationDetailProps {
   post: Post;

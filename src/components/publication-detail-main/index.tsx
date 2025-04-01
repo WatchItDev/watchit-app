@@ -9,20 +9,19 @@ import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import Divider from '@mui/material/Divider';
 import MenuItem from '@mui/material/MenuItem';
-import { useTheme, styled } from '@mui/material/styles';
+import { useTheme, styled, Theme } from '@mui/material/styles';
 import { CircularProgress } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import CardContent from '@mui/material/CardContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
-import { Theme } from '@mui/material/styles';
 // LENS IMPORTS
 import {
   PublicationReactionType,
   hasReacted,
-  useReactionToggle
-} from '@lens-protocol/react-web';
+  useReactionToggle, ProfilePictureSet
+} from '@lens-protocol/react-web'
 import { useHidePublication } from '@lens-protocol/react';
 
 // ICONS IMPORTS
@@ -98,9 +97,9 @@ export default function PublicationDetailMain({
       'LIKE',
       {
         id: post.by.id,
-        displayName: post?.by?.metadata?.displayName,
+        displayName: post?.by?.metadata?.displayName ?? 'Watchit',
         avatar:
-          post?.by?.metadata?.picture?.optimized?.uri ?? dicebear(post?.by?.id),
+          (post?.by?.metadata?.picture as ProfilePictureSet)?.optimized?.uri ?? dicebear(post?.by?.id),
       },
       {
         rawDescription: `${sessionData?.profile?.metadata?.displayName} liked ${post?.metadata?.title}`,
@@ -188,7 +187,7 @@ export default function PublicationDetailMain({
             >
               <AvatarProfile
                 src={
-                  (post?.by?.metadata?.picture)?.optimized?.uri ?? post?.by?.id
+                  (post?.by?.metadata?.picture as ProfilePictureSet)?.optimized?.uri ?? post?.by?.id
                 }
                 sx={{
                   width: 26,
@@ -431,9 +430,9 @@ export default function PublicationDetailMain({
                     commentOn={post?.id}
                     owner={{
                       id: post?.by?.id,
-                      displayName: post?.by?.metadata?.displayName,
+                      displayName: post?.by?.metadata?.displayName ?? 'Watchit',
                       avatar:
-                        post?.by?.metadata?.picture?.optimized?.uri ?? dicebear(post?.by?.id),
+                        (post?.by?.metadata?.picture as ProfilePictureSet)?.optimized?.uri ?? dicebear(post?.by?.id),
                     }}
                   />
                 ) : (
