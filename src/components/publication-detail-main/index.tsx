@@ -16,13 +16,12 @@ import CardContent from '@mui/material/CardContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
-
+import { Theme } from '@mui/material/styles';
 // LENS IMPORTS
 import {
   PublicationReactionType,
   hasReacted,
-  useReactionToggle,
-  useBookmarkToggle,
+  useReactionToggle
 } from '@lens-protocol/react-web';
 import { useHidePublication } from '@lens-protocol/react';
 
@@ -54,12 +53,12 @@ import Popover from '@mui/material/Popover';
 import { useNotifications } from '@src/hooks/use-notifications.ts';
 import { openLoginModal } from '@redux/auth';
 import { useDispatch } from 'react-redux';
-import { addBookmark, removeBookmark } from '@redux/bookmark';
 import { useNotificationPayload } from '@src/hooks/use-notification-payload.ts';
 import {dicebear} from "@src/utils/dicebear.ts";
 import AvatarProfile from "@src/components/avatar/avatar.tsx";
 import { PublicationDetailProps } from '@src/components/publication-detail-main/types.ts';
 import { useAuth } from '@src/hooks/use-auth.ts';
+import { useToggleBookmark } from '@src/hooks/use-toggle-bookmark';
 
 // ----------------------------------------------------------------------
 
@@ -85,7 +84,6 @@ export default function PublicationDetailMain({
   const dispatch = useDispatch();
   const { execute: toggle, loading: loadingLike } = useReactionToggle();
   const { execute: hide } = useHidePublication();
-  const { execute: toggleBookMarkFunction, loading: loadingBookMark } = useBookmarkToggle();
   const { sendNotification } = useNotifications();
   const { generatePayload } = useNotificationPayload(sessionData);
 
@@ -127,23 +125,7 @@ export default function PublicationDetailMain({
     }
   };
 
-  const toggleBookMark = async () => {
-    if (!sessionData?.authenticated) return dispatch(openLoginModal());
-
-    try {
-      if (!post?.operations?.hasBookmarked) {
-        dispatch(addBookmark(post));
-      } else {
-        dispatch(removeBookmark(post?.id));
-      }
-
-      await toggleBookMarkFunction({
-        publication: post,
-      });
-    } catch (err) {
-      console.error('Error toggling bookmark:', err);
-    }
-  };
+  const { toggleBookMark, loadingBookMark } = useToggleBookmark();
 
   const handleHide = async () => {
     await hide({ publication: post });
@@ -211,7 +193,7 @@ export default function PublicationDetailMain({
                 sx={{
                   width: 26,
                   height: 26,
-                  border: (theme) => `solid 2px ${theme.palette.background.default}`,
+                  border: (theme: Theme) => `solid 2px ${theme.palette.background.default}`,
                 }}
               />
               <Typography variant="subtitle2" noWrap sx={{ ml: 1 }}>
@@ -405,7 +387,7 @@ export default function PublicationDetailMain({
                     height: '40px',
                     minWidth: '40px',
                   }}
-                  onClick={toggleBookMark}
+                  onClick={() => toggleBookMark(post)}
                 >
                   {loadingBookMark ? (
                     <CircularProgress size="25px" sx={{ color: '#fff' }} />
