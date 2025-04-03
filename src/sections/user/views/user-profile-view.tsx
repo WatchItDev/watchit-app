@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import {SyntheticEvent, useEffect, useState} from 'react'
 // @mui
 import Tab from '@mui/material/Tab';
 import Container from '@mui/material/Container';
@@ -27,19 +27,13 @@ import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 import { Address } from 'viem';
 import { filterHiddenProfiles } from "@src/libs/profile.ts";
 import { useAuth } from '@src/hooks/use-auth.ts';
+import { TABS } from '../CONSTANTS.tsx';
+import { UserProfileViewProps, CountsData, TabItemWithCount, TabLabelProps } from '../types.ts';
+import {Profile} from "@lens-protocol/api-bindings"
 
 // ----------------------------------------------------------------------
 
-const TABS = [
-  { value: 'publications', label: 'Publications' },
-  { value: 'followers', label: 'Followers' },
-  { value: 'following', label: 'Following' },
-  { value: 'referrals', label: 'Referrals' },
-];
-
-// ----------------------------------------------------------------------
-
-const UserProfileView = ({ id }: any) => {
+const UserProfileView = ({ id }: UserProfileViewProps) => {
   const dispatch = useDispatch();
   const settings = useSettingsContext();
   const [currentTab, setCurrentTab] = useState('publications');
@@ -97,14 +91,14 @@ const UserProfileView = ({ id }: any) => {
   const followersStore = useSelector((state: RootState) => state.followers.followers);
   const followingsStore = useSelector((state: RootState) => state.followers.followings);
 
-  const counts: any = {
+  const counts: CountsData = {
     publications: publications?.length ?? 0,
     followers: followersStore.length ?? 0,
     following: followingsStore.length ?? 0,
     referrals: referrals?.length ?? 0,
   };
 
-  const handleChangeTab = (_event: any, newValue: any) => {
+  const handleChangeTab = (_event: SyntheticEvent, newValue: string) => {
     setCurrentTab(newValue);
   };
 
@@ -114,7 +108,7 @@ const UserProfileView = ({ id }: any) => {
 
   const tabsWithCounts = TABS.filter((tab) => {
     return !(tab.value === 'referrals' && sessionData?.profile?.id !== id);
-  }).map((tab: any) => ({
+  }).map((tab: Partial<TabItemWithCount>) => ({
     ...tab,
     key: tab.value,
     count: counts[tab.value],
@@ -138,7 +132,7 @@ const UserProfileView = ({ id }: any) => {
           Set your subscription prices so users can access your content. Click 'Set Joining Prices' next to your profile picture.
         </Alert>
       )}
-      <ProfileHeader profile={profile as any}>
+      <ProfileHeader profile={profile as Profile}>
         <Tabs
           key={`tabs-${profile?.id}`}
           value={currentTab}
@@ -168,7 +162,6 @@ const UserProfileView = ({ id }: any) => {
       {currentTab === 'publications' && profile && (
         <ProfileHome
           publications={publications}
-          noPaddings={true}
           scrollable={false}
           initialRows={3}
           rowsIncrement={2}
@@ -181,7 +174,7 @@ const UserProfileView = ({ id }: any) => {
   );
 };
 
-export const TabLabel = ({ label, count }: any) => (
+export const TabLabel = ({ label, count }: TabLabelProps) => (
   <>
     {label}
     {count > 0 && (
