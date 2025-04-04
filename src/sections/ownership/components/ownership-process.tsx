@@ -114,11 +114,13 @@ const OwnershipProcessContent = ({ onClose }: { onClose: () => void }) => {
           notifySuccess(SUCCESS.OWNERSHIP_REGISTERED_SUCCESSFULLY, { count: index + 1 });
         } catch (error) {
           notifyError(ERRORS.ASSET_OWNERSHIP_REGISTER_ERROR, { hash: `${index + 1}/${hashesArray.length}` });
+          console.error('Error during ownership registration:', error);
           continue; // Continue with the next hash
         }
       }
     } catch (error) {
       notifyError(ERRORS.ASSET_OWNERSHIP_REGISTER_ERROR);
+      console.error('Error during ownership registration:', error);
     } finally {
       setIsProcessing(false);
       onClose();

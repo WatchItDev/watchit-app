@@ -484,5 +484,28 @@ export interface UseWithdrawHook {
   error?: keyof typeof ERRORS | null;
 }
 
-// ----------------------------------------------------------------------
+export interface CampaignLog  {
+  address: string;
+  args: {
+    campaign: string;
+    description: string;
+    expireAt: bigint;
+    owner: string;
+    policy: string;
+    scopeId: string;
+  };
+  blockHash: string;
+  blockNumber: bigint;
+  data: string;
+  event: string;
+  eventName: string;
+  formattedAmount: string;
+  logIndex: number;
+  readableDate: string;
+  removed: boolean;
+  timestamp: bigint;
+  topics: string[];
+  transactionHash: string;
+  transactionIndex: number;
+};
 

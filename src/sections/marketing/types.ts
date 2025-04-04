@@ -71,3 +71,10 @@ export interface CampaignWithdrawFundsModalContentProps {
     currentFundsBalance: string;
   };
 }
+
+export interface FormattedCampaign {
+  campaign: string;
+  name: string;
+  policy: string;
+  expiration: bigint;
+}
