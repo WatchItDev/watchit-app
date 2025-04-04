@@ -1,5 +1,6 @@
 import { Profile } from '@lens-protocol/api-bindings';
 import { ProfileId } from '@lens-protocol/react-web';
+import {Invitation} from "@src/hooks/types.ts"
 
 export interface ProfileHeaderProps {
   profile: Profile;
@@ -47,4 +48,9 @@ export interface ProfileShareProps {
 export interface ProfileAttribute {
   key: string;
   value: string;
+}
+
+export interface ProfileReferralsTableRowProps {
+  row: Invitation;
+  selected: boolean;
 }

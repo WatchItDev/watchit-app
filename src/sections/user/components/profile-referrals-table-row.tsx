@@ -11,20 +11,12 @@ import Button from "@mui/material/Button";
 // LOCAL IMPORTS
 import AvatarProfile from "@src/components/avatar/avatar.tsx";
 import {useRouter} from "@src/routes/hooks";
-import {paths} from "@src/routes/paths.ts";
-import { capitalizeFirstLetter } from '@src/utils/text-transform.ts';
-import {Invitation} from "@src/hooks/types.ts";
+import {paths} from "@src/routes/paths";
+import { capitalizeFirstLetter } from '@src/utils/text-transform';
+import { ProfileReferralsTableRowProps } from '../types';
 // ----------------------------------------------------------------------
 
-export interface ProfileReferralsTableRow {
-  row: Invitation;
-  selected: boolean;
-}
-
-
-// ----------------------------------------------------------------------
-
-export default function ProfileReferralsTableRow({ row, selected }: Readonly<ProfileReferralsTableRow>) {
+export default function ProfileReferralsTableRow({ row, selected }: Readonly<ProfileReferralsTableRowProps>) {
   const { destination, status, created_at: date, id, receiver_id } = row;
   const router = useRouter();
 
