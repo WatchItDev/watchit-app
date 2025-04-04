@@ -5,11 +5,12 @@ import PublicationCommentItem from './publication-comment-item.tsx';
 import LinearProgress from '@mui/material/LinearProgress';
 import { useSelector } from 'react-redux';
 import { RepliesListProps } from '@src/sections/publication/types.ts';
+import {RootState} from "@redux/store.ts"
 
 const RepliesList = ({ parentCommentId }: RepliesListProps) => {
   const { data: replies, error, loading, execute } = useLazyPublications();
   const { hiddenComments, refetchTriggerByPublication, pendingComments } = useSelector(
-    (state: any) => state.comments
+    (state: RootState) => state.comments
   );
   const refetchTrigger = refetchTriggerByPublication[parentCommentId] || 0;
 
@@ -61,10 +62,8 @@ const RepliesList = ({ parentCommentId }: RepliesListProps) => {
           <Box key={replyId} sx={{ mb: 1 }}>
             <PublicationCommentItem
               comment={reply}
-              hasReply // Indicate that replies can also have replies
+              hasReply
             />
-            {/* Render more levels of replies if necessary */}
-            {/*<RepliesList parentCommentId={replyId} canReply={canReply} />*/}
           </Box>
         );
       })}

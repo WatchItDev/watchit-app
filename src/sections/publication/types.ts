@@ -1,7 +1,9 @@
 import { ReactNode } from 'react';
 import { SxProps, Theme } from '@mui/material/styles';
 import { StepperProps } from '@mui/material/Stepper';
+// @ts-expect-error NO error in this context
 import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
+
 import { AnyPublication } from '@lens-protocol/api-bindings';
 import { Address } from 'viem';
 import { PublicationId } from '@lens-protocol/metadata';
@@ -11,7 +13,7 @@ export interface PublicationDetailsViewProps {
 }
 
 export interface PublicationPlayerProps {
-  publication: any;
+  publication: AnyPublication;
   loading: boolean;
 }
 
@@ -37,7 +39,7 @@ export interface PostCommentListProps {
 }
 
 export interface MovieCommentFormProps {
-  root?: any; // ID of the root publication (post or comment)
+  root?: string; // ID of the root publication (post or comment)
   commentOn: string; // ID of the publication (post or comment) to comment on
   owner: {
     id: string;
