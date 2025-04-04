@@ -15,7 +15,7 @@ import { alpha } from '@mui/material/styles';
 import { Stack, CircularProgress } from '@mui/material';
 
 // LENS IMPORTS
-import { useCreateComment } from '@lens-protocol/react-web';
+import {ProfilePictureSet, useCreateComment} from '@lens-protocol/react-web'
 import {
   textOnly,
   PublicationMetadataSchema,
@@ -68,7 +68,7 @@ const MovieCommentForm = ({ commentOn, owner, root }: MovieCommentFormProps) => 
    *
    * @param {any} data - Form data.
    */
-  const onSubmit = handleSubmit(async (data) => {
+  const onSubmit = handleSubmit(async (data: {comment:string}) => {
     try {
       const uuid = uuidv4();
 
@@ -145,8 +145,9 @@ const MovieCommentForm = ({ commentOn, owner, root }: MovieCommentFormProps) => 
       });
 
       reset();
-    } catch (e: any) {
-      console.error('Error creating the comment:', e.message);
+    } catch (error) {
+      // @ts-expect-error No error type
+      console.error('Error creating the comment:', error.message);
     }
   });
 
@@ -154,7 +155,7 @@ const MovieCommentForm = ({ commentOn, owner, root }: MovieCommentFormProps) => 
     <Stack sx={{ pr: 1 }} spacing={2} direction="row" alignItems="center">
       <AvatarProfile
         src={
-          (sessionData?.profile?.metadata?.picture as any)?.optimized?.uri ?? dicebear(sessionData?.profile?.id)
+          (sessionData?.profile?.metadata?.picture as ProfilePictureSet)?.optimized?.uri ?? dicebear(sessionData?.profile?.id)
         }
         alt={sessionData?.profile?.handle?.localName ?? ''}
       />

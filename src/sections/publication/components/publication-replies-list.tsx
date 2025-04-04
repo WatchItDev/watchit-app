@@ -6,6 +6,7 @@ import LinearProgress from '@mui/material/LinearProgress';
 import { useSelector } from 'react-redux';
 import { RepliesListProps } from '@src/sections/publication/types.ts';
 import {RootState} from "@redux/store.ts"
+import {AnyPublication} from "@lens-protocol/api-bindings"
 
 const RepliesList = ({ parentCommentId }: RepliesListProps) => {
   const { data: replies, error, loading, execute } = useLazyPublications();
@@ -35,7 +36,7 @@ const RepliesList = ({ parentCommentId }: RepliesListProps) => {
 
   const repliesFiltered = (repliesWithPending ?? [])
     .filter(
-      (comment) => !hiddenComments.some((hiddenComment: any) => hiddenComment.id === comment.id)
+      (comment) => !hiddenComments.some((hiddenComment: AnyPublication) => hiddenComment.id === comment.id)
     )
     .filter((comment) => !comment.isHidden);
 
@@ -55,7 +56,7 @@ const RepliesList = ({ parentCommentId }: RepliesListProps) => {
           }}
         />
       )}
-      {repliesFiltered?.map((reply: any) => {
+      {repliesFiltered?.map((reply: AnyPublication) => {
         const { id: replyId } = reply;
 
         return (

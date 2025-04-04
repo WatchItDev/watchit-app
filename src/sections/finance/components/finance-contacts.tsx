@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 // @mui
 import Stack from '@mui/material/Stack';
 import CardHeader from '@mui/material/CardHeader';
-import Card, { CardProps } from '@mui/material/Card';
+import Card from '@mui/material/Card';
 import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
 import ListItemText from '@mui/material/ListItemText';
@@ -24,23 +24,16 @@ import { useRouter } from '@src/routes/hooks';
 // lens
 import { Profile } from '@lens-protocol/api-bindings';
 import { storeAddress, toggleRainbow } from '@redux/address';
+import {FinanceContactsCarouselProps} from "@src/sections/finance/types.ts"
+import {ProfilePictureSet} from "@lens-protocol/react-web"
 
 // ----------------------------------------------------------------------
 
-interface Props extends CardProps {
-  title?: string;
-  subheader?: string;
-  list: Profile[];
-  chunkSize?: number; // how many contacts to display per slide
-}
 
-export default function FinanceContactsCarousel({
-  title,
-  subheader,
-  list,
-  chunkSize = 5,
-  ...other
-}: Props) {
+
+export default function FinanceContactsCarousel(props: FinanceContactsCarouselProps) {
+  const { title, subheader, list, chunkSize = 5,...other } = props
+
   const router = useRouter();
   const dispatch = useDispatch();
 
@@ -59,9 +52,11 @@ export default function FinanceContactsCarousel({
       const gtPos = currentPos - ((currentPos - pos) * progress) / time
       window.scrollTo(0, currentPos < pos ? lgPos : gtPos);
 
-      progress < time
-        ? window.requestAnimationFrame(step)
-        : window.scrollTo(0, pos);
+      if (progress < time) {
+        window.requestAnimationFrame(step);
+      } else {
+        window.scrollTo(0, pos);
+      }
 
     });
   }
@@ -151,7 +146,7 @@ function SlideContacts({ chunk, goToProfile, onClickArrow }: SlideContactsProps)
           >
             <AvatarProfile
               alt={profile.metadata?.displayName || 'No Name'}
-              src={(profile?.metadata?.picture as any)?.optimized?.uri ?? profile?.id}
+              src={(profile?.metadata?.picture as ProfilePictureSet)?.optimized?.uri ?? profile?.id}
               sx={{ width: 48, height: 48, mr: 2 }}
             />
             <ListItemText

@@ -26,6 +26,7 @@ import useGetSmartWalletTransactions from '@src/hooks/protocol/use-get-smart-wal
 import FinanceOverlayLoader from '@src/sections/finance/components/finance-overlay-loader.tsx';
 import { processTransactionData } from '@src/libs/finance-graphs/groupedTransactions';
 import { STATUS_OPTIONS, TABLE_HEAD } from './CONSTANTS';
+import {ProcessedTransactionData} from "@src/libs/types.ts"
 
 const defaultFilters: IOrderTableFilters = {
   status: 'all',
@@ -76,7 +77,7 @@ export default function FinanceTransactionsHistory() {
     [handleFilters]
   );
 
-  const removeDuplicatesById = (array: any[]) => {
+  const removeDuplicatesById = (array: ProcessedTransactionData[]) => {
     return Array.from(new Map(array.map((item) => [item.id, item])).values());
   }
 
@@ -194,8 +195,8 @@ function applyFilter({
   comparator,
   filters,
 }: {
-  inputData: any[];
-  comparator: (a: any, b: any) => number;
+  inputData: ProcessedTransactionData[];
+  comparator: (a: ProcessedTransactionData, b: ProcessedTransactionData) => number;
   filters: IOrderTableFilters;
 }) {
   if (!Array.isArray(inputData)) {
@@ -203,6 +204,8 @@ function applyFilter({
   }
 
   const { status } = filters;
+
+  console.log('inputData', inputData);
 
   const stabilizedThis = inputData.map((el, index) => [el, index] as const);
 

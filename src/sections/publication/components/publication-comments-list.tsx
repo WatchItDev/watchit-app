@@ -6,14 +6,16 @@ import LinearProgress from '@mui/material/LinearProgress';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { PostCommentListProps } from '@src/sections/publication/types.ts';
+import {RootState} from "@redux/store.ts"
+import {AnyPublication} from "@lens-protocol/api-bindings"
 
 // ----------------------------------------------------------------------
 
 export default function PostCommentList({ publicationId: id, showReplies }: Readonly<PostCommentListProps>) {
-  const pendingComments = useSelector((state: any) => state.comments.pendingComments);
+  const pendingComments = useSelector((state: RootState) => state.comments.pendingComments);
   const { data: comments, error, loading, execute } = useLazyPublications();
   const { hiddenComments, refetchTriggerByPublication } = useSelector(
-    (state: any) => state.comments
+    (state: RootState) => state.comments
   );
   const refetchTrigger = refetchTriggerByPublication[id] || 0;
 
@@ -38,7 +40,7 @@ export default function PostCommentList({ publicationId: id, showReplies }: Read
 
   const commentsFiltered = (commentsWithPending ?? [])
     .filter(
-      (comment) => !hiddenComments.some((hiddenComment: any) => hiddenComment.id === comment.id)
+      (comment) => !hiddenComments.some((hiddenComment: AnyPublication) => hiddenComment.id === comment.id)
     )
     .filter((comment) => !comment.isHidden);
 
@@ -50,7 +52,7 @@ export default function PostCommentList({ publicationId: id, showReplies }: Read
           sx={{ width: 1, maxWidth: 360, marginBottom: '16px', alignSelf: 'center' }}
         />
       )}
-      {commentsFiltered?.map((comment: any) => {
+      {commentsFiltered?.map((comment: AnyPublication) => {
         // Destructure necessary data from the comment
         const { id: commentId } = comment;
 

@@ -4,12 +4,14 @@ import { useBookmarks } from '@lens-protocol/react-web';
 import { useSelector } from 'react-redux';
 
 import { useResponsive } from '@src/hooks/use-responsive.ts';
+import {RootState} from "@redux/store.ts"
+import {AnyPublication} from "@lens-protocol/api-bindings"
 
 // ----------------------------------------------------------------------
 
 export const ExploreBookmarks = () => {
   const lgUp = useResponsive('up', 'lg');
-  const { bookmarkPublications, hiddenBookmarks } = useSelector((state: any) => state.bookmark);
+  const { bookmarkPublications, hiddenBookmarks } = useSelector((state: RootState) => state.bookmark);
   const { data: bookmark } = useBookmarks();
 
   let minItemWidth = 250;
@@ -26,7 +28,7 @@ export const ExploreBookmarks = () => {
   const mergedBookmarks = [...reversedBookmarkPublications, ...(bookmark ?? [])];
   // Filter out hidden bookmarks
   const visibleBookmarks = mergedBookmarks.filter(
-    (post) => !hiddenBookmarks.some((hidden: any) => hidden.id === post.id)
+    (post) => !hiddenBookmarks.some((hidden: AnyPublication) => hidden.id === post.id)
   );
   // Remove posts explicitly marked as hidden
   const nonHiddenBookmarks = visibleBookmarks.filter((post) => !post.isHidden);

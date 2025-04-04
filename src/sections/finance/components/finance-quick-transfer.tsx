@@ -35,6 +35,7 @@ import FinanceDisplayProfileInfo from "@src/sections/finance/components/finance-
 import {handleAmountConstraints} from "@src/utils/format-number.ts";
 import {LoadingScreen} from "@src/components/loading-screen";
 import { useAuth } from '@src/hooks/use-auth.ts';
+import {RootState} from "@redux/store.ts"
 
 // ----------------------------------------------------------------------
 
@@ -66,8 +67,10 @@ export default function FinanceQuickTransfer({
 }: FinanceQuickTransferProps) {
   const theme = useTheme();
   const dispatch = useDispatch();
-  const storedAddress = useSelector((state: any) => state.address);
-  const showRainbow = useSelector((state: any) => state.address.showRainbow);
+
+  const storedAddress = useSelector((state: RootState) => state.address);
+  const showRainbow = useSelector((state: RootState) => state.address.showRainbow);
+
   const { balance } = useAuth();
 
   const [walletAddress, setWalletAddress] = useState(storedAddress.address ?? '');

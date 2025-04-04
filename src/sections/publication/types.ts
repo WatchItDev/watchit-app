@@ -28,7 +28,7 @@ export interface NeonPaperProps {
 }
 
 export interface PublicationCommentItemProps {
-  comment: any;
+  comment: Comment;
   hasReply?: boolean;
   canReply?: boolean;
 }
