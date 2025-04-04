@@ -1,5 +1,5 @@
 // REACT IMPORTS
-import { FC, useCallback, useEffect, useState } from 'react';
+import React, { FC, useCallback, useEffect, useState } from 'react';
 
 // VIEM IMPORTS
 import { Address } from 'viem';
@@ -63,8 +63,9 @@ const FinanceWithdraw: FC<FinanceWithdrawProps> = ({ address, withdrawHook, onCl
       await withdraw({ amount: Number(amount), recipient: address });
       notifySuccess(SUCCESS.WITHDRAW_SUCCESSFULLY);
       onClose();
-    } catch (err: any) {
+    } catch (err: Error) {
       notifyError(ERRORS.WITHDRAW_FAILED_ERROR);
+      console.log('Error while withdraw: ',err);
     } finally {
       setLocalLoading(false);
     }

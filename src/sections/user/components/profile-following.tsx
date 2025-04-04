@@ -9,11 +9,12 @@ import { Profile } from '@lens-protocol/api-bindings';
 import { UserItem } from '@src/components/user-item';
 import { useSelector } from 'react-redux';
 import {randomKey} from "@src/utils/uuidv4.ts"
+import {RootState} from "@redux/store.ts"
 
 // ----------------------------------------------------------------------
 
 const ProfileFollowing = () => {
-  const following: Profile[] = useSelector((state: any) => state.followers.followings);
+  const following: Profile[] = useSelector((state: RootState) => state.followers.followings);
 
   return (
     <Box

@@ -78,3 +78,8 @@ export interface ProfileJoinProps extends ProfileHeaderProps {
 export interface ProfilePublicationItemProps {
   publication: AnyPublication;
 }
+
+export interface ProfileFollowersProps {
+  onActionFinished?: () => void;
+}
+

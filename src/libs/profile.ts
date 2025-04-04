@@ -51,5 +51,5 @@ export const filterHiddenProfiles = (profiles?: Profile[]): Profile[] | null | u
   const patterns = ['###HIDDEN###'];
 
   // Filter profiles that do not contain the hidden indicator in the "displayName" or "bio" properties using the patterns array
-  return profiles?.filter((profile: Profile) => !patterns.some((pattern) => profile?.metadata?.displayName?.includes(pattern) || profile?.metadata?.bio?.includes(pattern) || profile?.id.includes(pattern)));
+  return profiles?.filter((profile: Profile) => !patterns.some((pattern) => profile?.metadata?.displayName?.includes(pattern) ?? profile?.metadata?.bio?.includes(pattern) ?? profile?.id.includes(pattern)));
 };

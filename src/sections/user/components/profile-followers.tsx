@@ -9,17 +9,12 @@ import { Profile } from '@lens-protocol/api-bindings';
 import { UserItem } from '@src/components/user-item';
 import { useSelector } from 'react-redux';
 import {randomKey} from "@src/utils/uuidv4.ts"
+import {RootState} from "@redux/store.ts"
+import {ProfileFollowersProps} from "@src/sections/user/types.ts"
 
 // ----------------------------------------------------------------------
-
-interface Props {
-  onActionFinished?: () => void;
-}
-
-// ----------------------------------------------------------------------
-
-const ProfileFollowers = ({ onActionFinished }: Props) => {
-  const followers: Profile[] = useSelector((state: any) => state.followers.followers);
+const ProfileFollowers = ({ onActionFinished }: ProfileFollowersProps) => {
+  const followers: Profile[] = useSelector((state: RootState) => state.followers.followers);
 
   return (
     <Box
@@ -39,7 +34,7 @@ const ProfileFollowers = ({ onActionFinished }: Props) => {
       }}
     >
       {followers?.length ? (
-        followers.map((follower: any, index: any) => (
+        followers.map((follower: Profile, index: number) => (
           <UserItem
             key={`${randomKey(index, 'follower-')}`}
             profile={follower}
