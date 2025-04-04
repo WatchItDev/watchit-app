@@ -6,7 +6,7 @@ import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 
 // LENS IMPORTS
-import { appId, PublicationType, usePublications } from '@lens-protocol/react-web';
+import { appId, ProfilePictureSet, PublicationType, usePublications } from '@lens-protocol/react-web';
 
 // VIEM IMPORTS
 import { Address } from 'viem';
@@ -89,7 +89,7 @@ const ProfileHeader = (props: PropsWithChildren<ProfileHeaderProps>) => {
     refetchAttestation();
   };
 
-  const profileImage = (profile?.metadata?.picture as any)?.optimized?.uri;
+  const profileImage = (profile?.metadata?.picture as ProfilePictureSet )?.optimized?.uri;
 
   return (
     <Box sx={{ my: 3, position: 'relative' }}>

@@ -1,4 +1,4 @@
-import { Profile } from '@lens-protocol/api-bindings';
+import {AnyPublication, Profile} from '@lens-protocol/api-bindings'
 import { ProfileId } from '@lens-protocol/react-web';
 import {Invitation} from "@src/hooks/types.ts"
 
@@ -53,4 +53,28 @@ export interface ProfileAttribute {
 export interface ProfileReferralsTableRowProps {
   row: Invitation;
   selected: boolean;
+}
+
+export interface ProfileHomeProps {
+  publications?: AnyPublication[]; // Array of publications
+  minItemWidth?: number; // Min width per item
+  maxItemWidth?: number; // Max width per item
+  initialRows?: number; // Rows to show initially
+  rowsIncrement?: number; // Rows to add each time "Show more" is clicked
+  maxHeight?: string | number; // Max height for the parent container (e.g. '29rem', 400, etc.)
+  scrollable?: boolean; // Whether the container is allowed to scroll or not
+  scrollOnShowMore?: boolean; // Scroll down when user clicks "Show more"
+}
+
+export interface ProfileJoinProps extends ProfileHeaderProps {
+  profileJoinProps: {
+    hasAccess?: boolean;
+    accessLoading: boolean;
+    accessFetchingLoading?: boolean;
+    onSubscribe: () => void;
+  }
+}
+
+export interface ProfilePublicationItemProps {
+  publication: AnyPublication;
 }
