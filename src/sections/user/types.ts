@@ -33,3 +33,18 @@ export interface TabLabelProps {
   label: string;
   count: number;
 }
+
+export interface SocialMediaUrls {
+  twitter?: string;
+  facebook?: string;
+  instagram?: string;
+}
+
+export interface ProfileShareProps {
+  profile: Profile;
+}
+
+export interface ProfileAttribute {
+  key: string;
+  value: string;
+}
