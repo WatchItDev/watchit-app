@@ -34,7 +34,7 @@ import {ProfilePictureSet} from "@lens-protocol/react-web"
 import {ConfirmTransferDialogProps} from "@src/sections/finance/types.ts"
 
 
-function FinanceQuickTransferModal(props: ConfirmTransferDialogProps) {
+function FinanceQuickTransferModal(props: Readonly<ConfirmTransferDialogProps>) {
   const { open, amount, contactInfo, onClose, onFinish, address } = props;
   const theme = useTheme();
   const { session: sessionData, balance: MAX_AMOUNT } = useAuth();
@@ -61,7 +61,7 @@ function FinanceQuickTransferModal(props: ConfirmTransferDialogProps) {
   // For the avatar, if no valid profile or if the address doesn't match, use a dicebear fallback
   const avatarSrc =
     hasProfile && isSame
-      ? (contactInfo?.metadata?.picture as ProfilePictureSet)?.optimized?.uri || dicebear(contactInfo?.id) : dicebear(address as string);
+      ? (contactInfo?.metadata?.picture as ProfilePictureSet)?.optimized?.uri ?? dicebear(contactInfo?.id) : dicebear(address as string);
 
   // For the secondary text under the name, if we have a valid profile that matches, use its address
   // otherwise show the typed address

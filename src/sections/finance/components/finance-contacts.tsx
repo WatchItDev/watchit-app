@@ -31,7 +31,7 @@ import {ProfilePictureSet} from "@lens-protocol/react-web"
 
 
 
-export default function FinanceContactsCarousel(props: FinanceContactsCarouselProps) {
+export default function FinanceContactsCarousel(props: Readonly<FinanceContactsCarouselProps>) {
   const { title, subheader, list, chunkSize = 5,...other } = props
 
   const router = useRouter();

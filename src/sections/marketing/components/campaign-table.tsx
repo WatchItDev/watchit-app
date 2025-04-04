@@ -19,11 +19,10 @@ import {
   useTable,
 } from '@src/components/table';
 import { LoadingScreen } from "@src/components/loading-screen";
-import { CampaignTableProps } from '@src/sections/marketing/types.ts';
+import { CampaignTableProps, FormattedCampaign } from '@src/sections/marketing/types.ts';
 import { COLORS } from '@src/layouts/config-layout';
 import { CAMPAIGN_TABLE_HEAD } from '@src/sections/marketing/CONSTANTS.tsx';
 import {CampaignLog} from "@src/hooks/protocol/types.ts"
-import { FormattedCampaign } from '@src/sections/marketing/types.ts';
 
 const CampaignTable: FC<CampaignTableProps> = (args) => {
   const { campaigns, loading } = args;
