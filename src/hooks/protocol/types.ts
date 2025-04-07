@@ -507,5 +507,46 @@ export interface CampaignLog  {
   topics: string[];
   transactionHash: string;
   transactionIndex: number;
-};
+}
 
+// use-campaign-pause.ts
+interface ReceiptLog {
+  address: string;
+  blockHash: string;
+  blockNumber: bigint;
+  data: string;
+  logIndex: number;
+  transactionIndex: number;
+  transactionHash: string;
+  topics: string[];
+}
+
+interface Receipt {
+  blockHash: string;
+  blockNumber: bigint;
+  contractAddress: string | null;
+  cumulativeGasUsed: bigint;
+  effectiveGasPrice: bigint;
+  from: string;
+  gasUsed: bigint;
+  logs: ReceiptLog[];
+  logsBloom: string;
+  status: string;
+  to: string;
+  transactionHash: string;
+  transactionIndex: number;
+  type: string | null;
+}
+
+export interface UseCampaignPauseResult {
+  actualGasCost: bigint;
+  actualGasUsed: bigint;
+  entryPoint: string;
+  logs: ReceiptLog[];
+  nonce: string;
+  paymaster: string;
+  receipt: Receipt;
+  sender: string;
+  success: boolean;
+  userOpHash: string;
+}

@@ -34,16 +34,16 @@ export const useHasAccess = (ownerAddress?: Address): UseHasAccessHook => {
 
     setLoading(true);
     try {
-      const accessData: any = await publicClient.readContract({
+      const accessData = await publicClient.readContract({
         address: GLOBAL_CONSTANTS.ACCESS_AGG_ADDRESS,
         abi: AccessAggAbi.abi,
         functionName: 'isAccessAllowed',
         args: [userAddress, ownerAddress],
-      });
+      }) as readonly [boolean, number];
 
       const access = Boolean(accessData?.[0]);
       setHasAccess(access);
-    } catch (err: any) {
+    } catch (err) {
       console.error('Error checking access:', err);
       setHasAccess(false);
       notifyError(ERRORS.VERIFY_ACCESS_ERROR);

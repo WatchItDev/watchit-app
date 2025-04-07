@@ -28,6 +28,7 @@ export const useGetCampaignIsActive = (): UseGetCampaignIsActiveHook => {
         setIsActive(active);
         return active;
       } catch (err) {
+        console.error('Error fetching campaign isActive:', err);
         setIsActive(false);
       } finally {
         setLoading(false);

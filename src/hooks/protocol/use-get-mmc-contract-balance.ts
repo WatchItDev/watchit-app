@@ -4,10 +4,11 @@ import MMCAbi from '@src/config/abi/MMC.json';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 import { publicClient } from '@src/clients/viem/publicClient.ts';
 import { useSelector } from 'react-redux';
+import {RootState} from "@redux/store.ts"
 
 export function useGetMmcContractBalance(address?: Address) {
   const [balance, setBalance] = useState<number | null>(null);
-  const blockchainEvents = useSelector((state: any) => state.blockchainEvents.events);
+  const blockchainEvents = useSelector((state: RootState) => state.blockchainEvents.events);
 
   const fetchBalance = useCallback(async () => {
     if (!address) return;

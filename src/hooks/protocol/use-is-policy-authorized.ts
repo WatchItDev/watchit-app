@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Address } from 'viem';
 import { useGetPoliciesTerms } from './use-get-policies-terms.ts';
-import { HasAccessError, UseIsPolicyAuthorizedHook } from '@src/hooks/protocol/types.ts';
+import {HasAccessError, Policy, UseIsPolicyAuthorizedHook} from '@src/hooks/protocol/types.ts'
 import { useAuth } from '@src/hooks/use-auth.ts';
 
 /**
@@ -59,13 +59,14 @@ export const useIsPolicyAuthorized = (
     try {
       // Check if the given policy is in the list
       // Assume that each element looks like { policy: string, terms: {...} }
+      console.log('Checking policy authorization:', authorizedHolderPolicies);
       const isPolicyInList = authorizedHolderPolicies.some(
-        (p: any) => p.policy.toLowerCase() === policy.toLowerCase()
+        (p: Policy) => p.policy.toLowerCase() === policy.toLowerCase()
       );
 
       setIsAuthorized(isPolicyInList);
       setError(null);
-    } catch (err: any) {
+    } catch (err) {
       console.error('Error checking policy authorization:', err);
       setIsAuthorized(undefined);
       setError({

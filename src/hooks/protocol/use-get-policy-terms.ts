@@ -70,10 +70,10 @@ export const useGetPolicyTerms = (
         setTerms(undefined);
         setError(null); // or setError({ message: 'Policy not found among authorized ones.' })
       }
-    } catch (err: any) {
+    } catch (err) {
       console.error('Error filtering policy terms:', err);
       setTerms(undefined);
-      setError({ message: err?.message || 'An error occurred while filtering policy terms.' });
+      setError({ message: err instanceof Error ? err.message : 'An error occurred while filtering policy terms.' });
     } finally {
       setFetching(false);
     }

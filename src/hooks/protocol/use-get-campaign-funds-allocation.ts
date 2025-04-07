@@ -30,7 +30,7 @@ export const useGetCampaignFundsAllocation = (): UseGetCampaignFundsAllocationHo
         setFundsAllocation(allocationStr);
         setError(null);
         return allocationStr;
-      } catch (err: any) {
+      } catch (err) {
         console.error('Error fetching funds allocation:', err);
         setFundsAllocation('0');
         setError({ message: err?.message || 'Error fetching funds allocation.' });

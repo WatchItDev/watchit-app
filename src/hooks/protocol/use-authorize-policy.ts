@@ -87,7 +87,7 @@ export const useAuthorizePolicy = (): UseAuthorizePolicyHook => {
       // Update the state with the result
       setData(receipt);
       setLoading(false);
-    } catch (err: any) {
+    } catch (err) {
       console.error('USE AUTHORIZE POLICY ERR:', err);
       setError(ERRORS.UNKNOWN_ERROR);
       setLoading(false);

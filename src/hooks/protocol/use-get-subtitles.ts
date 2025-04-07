@@ -69,6 +69,7 @@ const useGetSubtitles = (): UseGetSubtitlesReturn => {
       setTracks(processedTracks);
       return processedTracks;
     } catch (error) {
+      console.error('Error fetching subtitles:', error);
       setTracks([]);
       return [];
     } finally {
