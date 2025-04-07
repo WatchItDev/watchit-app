@@ -1,8 +1,7 @@
 import React from "react";
 
 import {Profile, VideoMetadataV3} from "@lens-protocol/api-bindings";
-// @ts-ignore
-import { Post,PublicationMetadataMediaVideoFieldPolicy } from "@lens-protocol/api-bindings/dist/declarations/src/lens/graphql/generated";
+import { Post } from "@lens-protocol/react-web";
 
 import {StackProps} from "@mui/material/Stack";
 import {IconButtonProps} from "@mui/material/IconButton";
@@ -67,8 +66,8 @@ export interface CarouselWrapperProps<T> extends CarouselResizable{
   data: T[];
   title?: string;
   renderSlide: (slideItems: T[], itemsPerRow: number, index: number) => React.ReactNode;
-  carouselSettings: any;
-  boxStyle?: any;
+  carouselSettings: Record<string, string>;
+  boxStyle?: SxProps;
   boxClassName?: string;
 }
 
@@ -100,5 +99,5 @@ export interface CarouselPosterSlideProps {
 
 export interface PublicationType extends Post {
   altTag: string;
-  metadata: VideoMetadataV3 | PublicationMetadataMediaVideoFieldPolicy;
+  metadata: VideoMetadataV3;
 }

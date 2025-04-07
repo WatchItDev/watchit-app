@@ -17,7 +17,6 @@ import { LoadingScreen } from '@src/components/loading-screen';
 
 // redux
 import { useSelector, useDispatch } from 'react-redux';
-// @ts-ignore
 import { RootState } from '@src/redux/store';
 import { setFollowers, setFollowings } from '@redux/followers';
 import ProfileReferrals from "@src/sections/user/components/profile-referrals.tsx";
@@ -61,12 +60,12 @@ const UserProfileView = ({ id }: any) => {
   const { invitations: referrals, fetchInvitations, loading: loadingReferrals } = useReferrals();
 
   const { data: followers } = useProfileFollowers({
-    // @ts-ignore
+    // @ts-expect-error No error in this context
     of: profile?.id,
   });
 
   const { data: following } = useProfileFollowing({
-    // @ts-ignore
+    // @ts-expect-error No error in this context
     for: profile?.id,
   });
 

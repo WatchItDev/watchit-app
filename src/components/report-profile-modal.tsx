@@ -1,11 +1,14 @@
 // LENS IMPORTS
 import { useReportProfile, ProfileReportReason } from '@lens-protocol/react-web';
 import { ReportModalBase } from '@src/components/report-modal-base.tsx';
+import {Profile} from "@lens-protocol/api-bindings"
+// @ts-expect-error No error in this context
+import {UseDeferredTask} from "@lens-protocol/react/dist/declarations/src/helpers/tasks"
 
 // ----------------------------------------------------------------------
 
 interface ProfileReportModalProps {
-  profile: any;
+  profile: Profile;
   isOpen: boolean;
   onClose: () => void;
 }
@@ -20,7 +23,7 @@ export const ReportProfileModal = ({ profile, isOpen, onClose }: ProfileReportMo
       profileId: profile.id,
       reason: reason,
       additionalComments: comments,
-    } as any);
+    } as UseDeferredTask);
   };
 
   return (

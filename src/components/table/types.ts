@@ -1,5 +1,7 @@
 // ----------------------------------------------------------------------
 
+import {SxProps, Theme} from "@mui/material/styles"
+
 export interface TableProps {
   dense: boolean;
   page: number;
@@ -33,4 +35,22 @@ export interface TableProps {
   setOrderBy: React.Dispatch<React.SetStateAction<string>>;
   setSelected: React.Dispatch<React.SetStateAction<string[]>>;
   setRowsPerPage: React.Dispatch<React.SetStateAction<number>>;
+}
+
+export interface HeadLabel {
+  id: string;
+  label: string;
+  align?: 'left' | 'right' | 'center';
+  width?: string | number;
+  minWidth?: string | number;
+}
+export interface TableHeadCustomProps {
+  order?: 'asc' | 'desc';
+  orderBy?: string;
+  headLabel: HeadLabel[];
+  rowCount?: number;
+  numSelected?: number;
+  onSort?: (id: string) => void;
+  onSelectAllRows?: (checked: boolean) => void;
+  sx?: SxProps<Theme>;
 }

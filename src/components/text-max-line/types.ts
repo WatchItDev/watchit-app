@@ -14,3 +14,10 @@ export interface TextMaxLineProps extends IProps {
   children: React.ReactNode;
   variant?: Variant;
 }
+
+export interface FontProperties {
+  fontSize: string;
+  lineHeight: string | number;
+  fontWeight: number | string;
+  letterSpacing: string;
+}

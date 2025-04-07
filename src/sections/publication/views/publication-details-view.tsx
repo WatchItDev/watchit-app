@@ -16,7 +16,7 @@ import CardContent from '@mui/material/CardContent';
 import { usePublication } from '@lens-protocol/react';
 import { AnyPublication } from '@lens-protocol/api-bindings';
 import { appId, PublicationType, usePublications } from '@lens-protocol/react-web';
-// @ts-ignore
+// @ts-expect-error No error in this context
 import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
 
 // LOCAL IMPORTS

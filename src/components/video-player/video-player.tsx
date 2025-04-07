@@ -1,5 +1,5 @@
 import { FC, useRef, useEffect, memo } from 'react';
-// @ts-ignore
+// @ts-expect-error No error in this context
 import { Hls, FetchLoader, XhrLoader } from 'hls.js/dist/hls.mjs';
 import { Typography, IconButton, Button } from '@mui/material';
 import { IconChevronLeft } from '@tabler/icons-react';
@@ -13,16 +13,14 @@ import {
 } from '@vidstack/react';
 
 import { DefaultVideoLayout, defaultLayoutIcons } from '@vidstack/react/player/layouts/default';
-// @ts-ignore
 import '@vidstack/react/player/styles/default/theme.css';
-// @ts-ignore
 import '@vidstack/react/player/styles/default/layouts/audio.css';
-// @ts-ignore
 import '@vidstack/react/player/styles/default/layouts/video.css';
 
 import useGetSubtitles from '@src/hooks/protocol/use-get-subtitles.ts';
 import { useResponsive } from '@src/hooks/use-responsive';
 import Label from '../label';
+import {ErrorData} from "hls.js"
 
 export interface VideoPlayerProps {
   src: string;
@@ -54,7 +52,8 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({ src, cid, titleMovie, onBack
   // on provider (HLS) initialization
   const onProviderSetup = (provider: MediaProviderAdapter) => {
     if (isHLSProvider(provider)) {
-      provider.instance?.on(Hls.Events.ERROR, (_, data: any) => {
+      // @ts-expect-error No error in this context
+      provider.instance?.on(Hls.Events.ERROR, (_, data: ErrorData) => {
         if (data.details === Hls.ErrorDetails.BUFFER_STALLED_ERROR) {
           console.log("Seek Stalling Detected, Adjusting Buffer...");
           provider.instance?.startLoad();
@@ -83,7 +82,7 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({ src, cid, titleMovie, onBack
         // (hls_time = 6 + maxBufferLength = 30) = 5 fragments in buffer
         // "maxBufferLength": 60, // Max video buffer length in seconds
         // "maxMaxBufferLength": 600, // Absolute max buffer length
-        // maxStarvationDelay defines the maximum acceptable time (in seconds) a fragment can take to download 
+        // maxStarvationDelay defines the maximum acceptable time (in seconds) a fragment can take to download
         // while playback is already in progress.
         // - If a fragment is estimated to take longer than this value and the buffer is running low,
         //   the player switches the best quality that matches this time constraint.

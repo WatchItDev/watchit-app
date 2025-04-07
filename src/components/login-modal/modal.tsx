@@ -16,24 +16,19 @@ import { useDispatch } from 'react-redux';
 import {closeLoginModal, setEmail} from '@redux/auth';
 import { notifySuccess } from '@src/libs/notifications/internal-notifications.ts';
 import { SUCCESS } from '@src/libs/notifications/success.ts';
-// @ts-ignore
+// @ts-expect-error No error in this context
 import {type AuthUserInfo} from "@web3auth/auth/dist/types/utils/interfaces";
 import useReferrals from '@src/hooks/use-referrals.ts';
 import { useAuth } from '@src/hooks/use-auth.ts';
-
-// ----------------------------------------------------------------------
-
-interface LoginModalProps {
-  open: boolean;
-  onClose: () => void;
-}
+import {LoginModalProps} from "@src/components/login-modal/types.ts"
+import {Maybe} from "@web3auth/auth"
 
 // ----------------------------------------------------------------------
 
 export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
   const [loading, setLoading] = useState(true);
   const [view, setView] = useState<'wallet' | 'profile' | 'create'>('wallet');
-  const [address, setAddress] = useState('');
+  const [address, setAddress] = useState<string | undefined>('');
 
   const { web3Auth: w3 } = useWeb3Auth();
   const { session: sessionData } = useAuth();
@@ -46,7 +41,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
     (async () => {
       if (w3?.provider && w3.connected) {
         // get accounts from provider
-        const accounts: any = await w3.provider.request({
+        const accounts: Maybe<string[]> = await w3.provider.request({
           method: 'eth_accounts',
         });
 
@@ -85,6 +80,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
           w3?.loginModal.closeModal();
           setLoading(false);
           setView('wallet');
+          console.log('Error connecting to wallet:', err);
         }
       })();
     }
@@ -101,7 +97,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
     const result = await loginExecute({
       address: address,
       profileId: profile.id,
-    } as any);
+    });
 
     if (result.isFailure()) {
       console.error('Error during login:', result.error.message);

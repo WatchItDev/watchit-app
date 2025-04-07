@@ -1,6 +1,7 @@
+import {Post} from "@lens-protocol/react-web"
 
 export interface PublicationDetailProps {
-  post: any;
+  post: Post;
   handleSubscribe: () => void;
   handleRefetchAccess: () => void;
   loadingSubscribe: boolean;

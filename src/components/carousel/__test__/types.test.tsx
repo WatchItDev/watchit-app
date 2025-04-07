@@ -113,7 +113,7 @@ describe('[TYPES]: CarouselArrowIndexProps', () => {
     expect(props.icon).toBe('<path d="90"/>');
     expect(typeof props.onNext).toBe('function');
     expect(typeof props.onPrev).toBe('function');
-    // @ts-ignore
+    // @ts-expect-error No error in this context
     expect(props.sx?.margin).toBe(1);
   });
 });

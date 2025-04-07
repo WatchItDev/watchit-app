@@ -1,23 +1,5 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`[UTILS]: format-time > []: fDate > matches snapshot for various inputs 1`] = `
-[
-  "15 May 2023",
-  "2023-05-15",
-  "May 15",
-  "",
-]
-`;
-
-exports[`[UTILS]: format-time > [UTILS]: fDate > matches snapshot for various inputs 1`] = `
-[
-  "15 May 2023",
-  "2023-05-15",
-  "May 15",
-  "",
-]
-`;
-
 exports[`[UTILS]: format-time > fDate > matches snapshot for various inputs 1`] = `
 [
   "15 May 2023",
@@ -45,4 +27,4 @@ exports[`[UTILS]: format-time > fTimestamp > matches snapshot for various inputs
 ]
 `;
 
-exports[`[UTILS]: format-time > fToNow > matches snapshot for test date 1`] = `"about 25 years ago"`;
+exports[`[UTILS]: format-time > fToNow > matches snapshot for test date 1`] = `"over 25 years ago"`;

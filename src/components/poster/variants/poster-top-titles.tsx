@@ -8,42 +8,20 @@ import { IconBookmark, IconBookmarkFilled, IconPlayerPlay } from '@tabler/icons-
 import Box from '@mui/material/Box';
 import TextMaxLine from '@src/components/text-max-line';
 import { CircularProgress } from '@mui/material';
-import { useBookmarkToggle } from '@lens-protocol/react-web';
-import { openLoginModal } from '@redux/auth';
-import { useDispatch } from 'react-redux';
-import { addBookmark, removeBookmark } from '@redux/bookmark';
 import { dicebear } from "@src/utils/dicebear.ts";
 import { getAttachmentCid } from '@src/utils/publication.ts';
-import { useAuth } from '@src/hooks/use-auth.ts';
+import { useToggleBookmark } from '@src/hooks/use-toggle-bookmark';
+// @ts-expect-error No error in this context
+import {Post} from "@lens-protocol/api-bindings/dist/declarations/src/lens/graphql/generated"
 
-const PosterTopTitles = ({ post }: { post: any }) => {
+const PosterTopTitles = ({ post }: { post: Post }) => {
   const router = useRouter();
-  const { execute: toggleBookMarkFunction, loading: loadingBookMark } = useBookmarkToggle();
-  const { session: sessionData } = useAuth();
-  const dispatch = useDispatch();
   const poster = getAttachmentCid(post, 'square') || getAttachmentCid(post, 'poster');
   const wallpaper = getAttachmentCid(post, 'wallpaper');
+  const { toggleBookMark, loadingBookMark } = useToggleBookmark();
 
   const handlePosterClick = () => {
     router.push(paths.dashboard.publication.details(post.id));
-  };
-
-  const toggleBookMark = async () => {
-    if (!sessionData?.authenticated) return dispatch(openLoginModal());
-
-    try {
-      if (!post?.operations?.hasBookmarked) {
-        dispatch(addBookmark(post));
-      } else {
-        dispatch(removeBookmark(post?.id));
-      }
-
-      await toggleBookMarkFunction({
-        publication: post,
-      });
-    } catch (err) {
-      console.error('Error toggling bookmark:', err);
-    }
   };
 
   const goToProfile = () => {
@@ -227,7 +205,7 @@ const PosterTopTitles = ({ post }: { post: any }) => {
                   height: '40px',
                   minWidth: '40px',
                 }}
-                onClick={toggleBookMark}
+                onClick={() => toggleBookMark(post)}
               >
                 {loadingBookMark ? (
                   <CircularProgress size="25px" sx={{ color: '#fff' }} />

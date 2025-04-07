@@ -16,6 +16,7 @@ import StyledMarkdown from './styles';
 import { MarkdownProps } from './types';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
+import {PropsWithChildren} from "react"
 
 // ----------------------------------------------------------------------
 
@@ -33,7 +34,7 @@ export default function Markdown({ sx, ...other }: MarkdownProps) {
 
 // ----------------------------------------------------------------------
 
-const CustomHeader = (props: any) => (
+const CustomHeader = (props: PropsWithChildren) => (
   <Typography variant="h6" style={{ fontWeight: 'bold', marginTop: 16, marginBottom: 8 }}>
     {props.children}
   </Typography>
@@ -52,14 +53,14 @@ const components = {
       </Link>
     );
   },
-  h1: ({ node, ...props }) => <CustomHeader {...props} />,
-  h2: ({ node, ...props }) => <CustomHeader {...props} />,
-  h3: ({ node, ...props }) => <CustomHeader {...props} />,
-  h4: ({ node, ...props }) => <CustomHeader {...props} />,
-  h5: ({ node, ...props }) => <CustomHeader {...props} />,
-  h6: ({ node, ...props }) => <CustomHeader {...props} />,
-  p: ({ node, ...props }) => (
-    <Typography variant="body1" style={{ lineHeight: 1.6, mt: 2 }} {...props} />
+  h1: ({ ...props }) => <CustomHeader {...props} />,
+  h2: ({ ...props }) => <CustomHeader {...props} />,
+  h3: ({ ...props }) => <CustomHeader {...props} />,
+  h4: ({ ...props }) => <CustomHeader {...props} />,
+  h5: ({ ...props }) => <CustomHeader {...props} />,
+  h6: ({ ...props }) => <CustomHeader {...props} />,
+  p: ({ ...props }) => (
+    <Typography variant="body1" style={{ lineHeight: 1.6, marginTop: 2 }} {...props} />
   ),
   hr: ({ ...props }) => (
     <Box

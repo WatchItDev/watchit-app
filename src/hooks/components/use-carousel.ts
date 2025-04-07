@@ -21,7 +21,7 @@ export default function useCarousel(props?: Settings): CarouselReturnType {
     arrows: false,
     dots: !!props?.customPaging,
     rtl,
-    // @ts-ignore
+    // @ts-expect-error No error in this context
     beforeChange: (current: number, next: number) => setCurrentIndex(next),
     ...props,
     fade: !!(props?.fade && !rtl),

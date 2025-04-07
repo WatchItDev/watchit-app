@@ -20,7 +20,7 @@ import { type NotificationColumnsProps } from '@src/types/notification';
 import { useNotifications } from '@src/hooks/use-notifications.ts';
 import { Box } from '@mui/system';
 import Image from '@src/components/image';
-// @ts-ignore
+// @ts-expect-error No error in this context
 import emptyImage from '@src/assets/illustrations/empty-notifications.png';
 import { useCallback, useState } from 'react';
 import Tabs from '@mui/material/Tabs';

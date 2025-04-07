@@ -1,14 +1,18 @@
 // @mui
 import Avatar from '@mui/material/Avatar';
-import {FC} from "react";
+import {CSSProperties, FC} from "react";
 import {dicebear} from "@src/utils/dicebear.ts";
 import {COLORS} from "@src/layouts/config-layout.ts";
+import {SxProps} from "@mui/material/styles"
 
 interface AvatarProfileProps {
   src: string;
   alt?: string;
-  sx?: any;
-  [x: string]: any;
+  sx?: SxProps | CSSProperties;
+  onClick?: React.MouseEventHandler<HTMLDivElement>;
+  variant?: 'circular' | 'rounded' | 'square';
+  sizes?: string;
+  imgProps?: React.ImgHTMLAttributes<HTMLImageElement>;
 }
 
 const AvatarProfile: FC<AvatarProfileProps> = ({ src, alt, sx, ...other }) => {

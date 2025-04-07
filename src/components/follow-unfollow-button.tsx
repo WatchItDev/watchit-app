@@ -5,7 +5,7 @@ import { useState, useEffect, PropsWithChildren } from 'react';
 import LoadingButton from '@mui/lab/LoadingButton';
 
 // LENS IMPORTS
-import { ProfileId, useFollow, useUnfollow } from '@lens-protocol/react-web';
+import { ProfileId, useFollow, useUnfollow, UseDeferredTask, ProfilePictureSet } from '@lens-protocol/react-web';
 import { useLazyProfile } from '@lens-protocol/react';
 
 // REDUX IMPORTS
@@ -25,6 +25,7 @@ import { pascalToUpperSnake } from '@src/utils/text-transform';
 import { useAuth } from '@src/hooks/use-auth.ts';
 import { ERRORS } from '@src/libs/notifications/errors';
 import { SUCCESS } from '@src/libs/notifications/success';
+import { HandleActionErrorProps } from './types';
 
 // ----------------------------------------------------------------------
 
@@ -76,7 +77,7 @@ const FollowUnfollowButton = ({
 
   // General function to handle follow/unfollow actions
   const handleAction = async (
-    action: any,
+    action: (params: {profile: ProfileId}) => Promise<UseDeferredTask>,
     actionLbl: string,
     profileName: string,
     followState: boolean
@@ -86,7 +87,7 @@ const FollowUnfollowButton = ({
 
     setIsProcessing(true);
     try {
-      const result = await action({ profile });
+      const result = await action({ profile});
       if (result.isSuccess()) {
         notifySuccess(SUCCESS.FOLLOW_UNFOLLOW_SUCCESSFULLY, {
           actionLbl,
@@ -112,7 +113,7 @@ const FollowUnfollowButton = ({
           {
             id: profile.id,
             displayName: profile?.metadata?.displayName ?? 'no name',
-            avatar: (profile?.metadata?.picture as any)?.optimized?.uri,
+            avatar: (profile?.metadata?.picture as ProfilePictureSet)?.optimized?.uri,
           },
           {
             rawDescription: `${sessionData?.profile?.metadata?.displayName} now is following you`,
@@ -125,13 +126,15 @@ const FollowUnfollowButton = ({
       }
     } catch (err) {
       notifyError(ERRORS.FOLLOW_UNFOLLOW_OCCURRED_ERROR);
+      console.log('Error while follow/unfollow: ', err)
+
     } finally {
       setIsProcessing(false);
     }
   };
 
   // Function to handle action errors
-  const handleActionError = (error: any) => {
+  const handleActionError = (error: HandleActionErrorProps) => {
     const errorName =
       ERRORS[pascalToUpperSnake(error.name) as keyof typeof ERRORS] || ERRORS.UNKNOWN_ERROR;
     notifyError(errorName, {
@@ -163,9 +166,11 @@ const FollowUnfollowButton = ({
           onClick={(event) => {
             event.stopPropagation();
 
-            isFollowed
-              ? handleAction(unfollow, profile?.handle?.localName ?? '', 'unfollowed', false)
-              : handleAction(follow, profile?.handle?.localName ?? '', 'followed', true);
+            if (isFollowed) {
+              handleAction(unfollow, profile?.handle?.localName ?? '', 'unfollowed', false);
+            } else {
+              handleAction(follow, profile?.handle?.localName ?? '', 'followed', true);
+            }
           }}
           disabled={isProcessing || profile?.id === sessionData?.profile?.id || loading}
           loading={followLoading || unfollowLoading}

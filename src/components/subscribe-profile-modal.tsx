@@ -30,7 +30,7 @@ import { Address } from 'viem';
 // LOCAL IMPORTS
 import NeonPaper from '@src/sections/publication/components/neon-paper-container.tsx';
 import { useSubscribe } from '@src/hooks/protocol/use-subscribe.ts';
-import { Profile } from '@lens-protocol/api-bindings';
+import { Profile, ProfilePictureSet } from '@lens-protocol/api-bindings';
 import { useGetPolicyTerms } from '@src/hooks/protocol/use-get-policy-terms.ts';
 import { setBalance } from '@redux/auth';
 import { useGetBalance } from '@src/hooks/protocol/use-get-balance.ts';
@@ -171,7 +171,7 @@ export const SubscribeProfileModal = ({
             id: profile.id,
             displayName: profile?.metadata?.displayName ?? 'no name',
             avatar:
-              (profile?.metadata?.picture as any)?.optimized?.uri ??dicebear(profile?.id)
+              (profile?.metadata?.picture as ProfilePictureSet)?.optimized?.uri ??dicebear(profile?.id)
           },
           {
             durationDays,

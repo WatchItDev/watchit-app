@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { AnyPublication } from '@lens-protocol/api-bindings';
 
-type PendingComment = AnyPublication & { uri: string };
+export type PendingComment = AnyPublication & { uri: string };
 
 export interface CommentsReducerState {
   refetchTriggerByPublication: Record<string, number>;

@@ -18,7 +18,7 @@ export default function NavToggleButton({ sx, ...other }: IconButtonProps) {
   const theme = useTheme();
   const dispatch = useDispatch();
   const lgUp = useResponsive('up', 'lg');
-  // @ts-ignore
+  // @ts-expect-error No error in this context
   const minibarState = useSelector((state) => state.minibar.state);
 
   if (!lgUp) {

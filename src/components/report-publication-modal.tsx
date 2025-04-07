@@ -1,11 +1,14 @@
 // LENS IMPORTS
 import { useReportPublication, PublicationReportReason } from '@lens-protocol/react-web';
 import { ReportModalBase } from '@src/components/report-modal-base.tsx';
+import {Post} from "@lens-protocol/api-bindings"
+// @ts-expect-error No error in this context
+import {UseDeferredTask} from "@lens-protocol/react/dist/declarations/src/helpers/tasks"
 
 // ----------------------------------------------------------------------
 
 interface PublicationReportModalProps {
-  post: any;
+  post: Post;
   isOpen: boolean;
   onClose: () => void;
 }
@@ -20,7 +23,7 @@ export const ReportPublicationModal = ({ post, isOpen, onClose }: PublicationRep
       publicationId: post.id,
       reason: reason,
       additionalComments: comments,
-    } as any);
+    } as UseDeferredTask);
   };
 
   return (

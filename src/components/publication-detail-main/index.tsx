@@ -9,21 +9,19 @@ import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import Divider from '@mui/material/Divider';
 import MenuItem from '@mui/material/MenuItem';
-import { useTheme, styled } from '@mui/material/styles';
+import { useTheme, styled, Theme } from '@mui/material/styles';
 import { CircularProgress } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import CardContent from '@mui/material/CardContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
-
 // LENS IMPORTS
 import {
   PublicationReactionType,
   hasReacted,
-  useReactionToggle,
-  useBookmarkToggle,
-} from '@lens-protocol/react-web';
+  useReactionToggle, ProfilePictureSet
+} from '@lens-protocol/react-web'
 import { useHidePublication } from '@lens-protocol/react';
 
 // ICONS IMPORTS
@@ -54,12 +52,12 @@ import Popover from '@mui/material/Popover';
 import { useNotifications } from '@src/hooks/use-notifications.ts';
 import { openLoginModal } from '@redux/auth';
 import { useDispatch } from 'react-redux';
-import { addBookmark, removeBookmark } from '@redux/bookmark';
 import { useNotificationPayload } from '@src/hooks/use-notification-payload.ts';
 import {dicebear} from "@src/utils/dicebear.ts";
 import AvatarProfile from "@src/components/avatar/avatar.tsx";
 import { PublicationDetailProps } from '@src/components/publication-detail-main/types.ts';
 import { useAuth } from '@src/hooks/use-auth.ts';
+import { useToggleBookmark } from '@src/hooks/use-toggle-bookmark';
 
 // ----------------------------------------------------------------------
 
@@ -85,7 +83,6 @@ export default function PublicationDetailMain({
   const dispatch = useDispatch();
   const { execute: toggle, loading: loadingLike } = useReactionToggle();
   const { execute: hide } = useHidePublication();
-  const { execute: toggleBookMarkFunction, loading: loadingBookMark } = useBookmarkToggle();
   const { sendNotification } = useNotifications();
   const { generatePayload } = useNotificationPayload(sessionData);
 
@@ -100,9 +97,9 @@ export default function PublicationDetailMain({
       'LIKE',
       {
         id: post.by.id,
-        displayName: post?.by?.metadata?.displayName,
+        displayName: post?.by?.metadata?.displayName ?? 'Watchit',
         avatar:
-          post?.by?.metadata?.picture?.optimized?.uri ?? dicebear(post?.by?.id),
+          (post?.by?.metadata?.picture as ProfilePictureSet)?.optimized?.uri ?? dicebear(post?.by?.id),
       },
       {
         rawDescription: `${sessionData?.profile?.metadata?.displayName} liked ${post?.metadata?.title}`,
@@ -127,23 +124,7 @@ export default function PublicationDetailMain({
     }
   };
 
-  const toggleBookMark = async () => {
-    if (!sessionData?.authenticated) return dispatch(openLoginModal());
-
-    try {
-      if (!post?.operations?.hasBookmarked) {
-        dispatch(addBookmark(post));
-      } else {
-        dispatch(removeBookmark(post?.id));
-      }
-
-      await toggleBookMarkFunction({
-        publication: post,
-      });
-    } catch (err) {
-      console.error('Error toggling bookmark:', err);
-    }
-  };
+  const { toggleBookMark, loadingBookMark } = useToggleBookmark();
 
   const handleHide = async () => {
     await hide({ publication: post });
@@ -206,12 +187,12 @@ export default function PublicationDetailMain({
             >
               <AvatarProfile
                 src={
-                  (post?.by?.metadata?.picture)?.optimized?.uri ?? post?.by?.id
+                  (post?.by?.metadata?.picture as ProfilePictureSet)?.optimized?.uri ?? post?.by?.id
                 }
                 sx={{
                   width: 26,
                   height: 26,
-                  border: (theme: any) => `solid 2px ${theme.palette.background.default}`,
+                  border: (theme: Theme) => `solid 2px ${theme.palette.background.default}`,
                 }}
               />
               <Typography variant="subtitle2" noWrap sx={{ ml: 1 }}>
@@ -326,12 +307,12 @@ export default function PublicationDetailMain({
             }}
           >
             {hasAccess && sessionData?.authenticated ? (
-              // @ts-ignore
+              // @ts-expect-error No error in this context
               <LeaveTipCard post={post} />
             ) : (
               <SubscribeToUnlockCard
                 loadingSubscribe={loadingSubscribe}
-                subscribeDisabled={subscribeDisabled}
+                subscribeDisabled={subscribeDisabled ?? false}
                 handleRefetchAccess={handleRefetchAccess}
                 onSubscribe={handleSubscribe}
                 post={post}
@@ -405,7 +386,7 @@ export default function PublicationDetailMain({
                     height: '40px',
                     minWidth: '40px',
                   }}
-                  onClick={toggleBookMark}
+                  onClick={() => toggleBookMark(post)}
                 >
                   {loadingBookMark ? (
                     <CircularProgress size="25px" sx={{ color: '#fff' }} />
@@ -449,9 +430,9 @@ export default function PublicationDetailMain({
                     commentOn={post?.id}
                     owner={{
                       id: post?.by?.id,
-                      displayName: post?.by?.metadata?.displayName,
+                      displayName: post?.by?.metadata?.displayName ?? 'Watchit',
                       avatar:
-                        post?.by?.metadata?.picture?.optimized?.uri ?? dicebear(post?.by?.id),
+                        (post?.by?.metadata?.picture as ProfilePictureSet)?.optimized?.uri ?? dicebear(post?.by?.id),
                     }}
                   />
                 ) : (

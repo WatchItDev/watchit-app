@@ -86,7 +86,6 @@ export const ActivateSubscriptionProfileModal = ({
         { name: 'token', type: 'address' },
       ];
       const values = [amountInWei, GLOBAL_CONSTANTS.MMC_ADDRESS];
-      // @ts-ignore
       const encodedData = encodeAbiParameters(types, values);
 
       await authorize({
@@ -97,7 +96,8 @@ export const ActivateSubscriptionProfileModal = ({
       notifySuccess(SUCCESS.JOINING_PRICE_SUCCESSFULLY);
 
       onClose?.();
-    } catch (err) {
+    } catch (error) {
+      console.error('Error authorizing subscription:', error);
       notifyError(ERRORS.ACTIVATE_SUBSCRIPTION_FAILED_ERROR);
     }
   };
