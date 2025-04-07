@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@src/utils/supabase';
+import {SupabasePublication} from "@src/hooks/types.ts"
 
 export const useSearchPublications = (query: string) => {
-  const [publications, setPublications] = useState<any[]>([]);
+  const [publications, setPublications] = useState<SupabasePublication[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -26,7 +27,7 @@ export const useSearchPublications = (query: string) => {
     };
 
     if (query) {
-      fetchPublications().then(() => {});
+      fetchPublications();
     } else {
       setPublications([]);
     }

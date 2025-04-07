@@ -1,29 +1,14 @@
-import { ProfileSession } from '@lens-protocol/react-web';
+import {ProfilePictureSet, ProfileSession} from '@lens-protocol/react-web'
 import {dicebear} from "@src/utils/dicebear.ts";
+import {NotificationPayload} from "@src/hooks/types.ts"
 
-interface NotificationPayload {
-  type: string;
-  category: string;
-  data: {
-    from: {
-      id: string;
-      displayName?: string;
-      avatar?: string;
-    };
-    to: {
-      id: string;
-      displayName?: string;
-      avatar?: string;
-    };
-    content: Record<string, any>;
-  };
-}
+
 
 export const useNotificationPayload = (sessionData: ProfileSession | undefined) => {
   const generatePayload = (
     category: string,
-    toProfile: { id: string; displayName: string; avatar: any },
-    content: Record<string, any>
+    toProfile: { id: string; displayName: string; avatar: string },
+    content: Record<string, string>
   ): NotificationPayload => {
     return {
       type: 'NOTIFICATION',
@@ -33,7 +18,7 @@ export const useNotificationPayload = (sessionData: ProfileSession | undefined) 
           id: sessionData?.profile?.id ?? '',
           displayName: sessionData?.profile?.metadata?.displayName ?? '',
           avatar:
-            (sessionData?.profile?.metadata?.picture as any)?.optimized?.uri ??
+            (sessionData?.profile?.metadata?.picture as ProfilePictureSet)?.optimized?.uri ??
             dicebear(sessionData?.profile?.id as string),
         },
         to: {

@@ -6,16 +6,7 @@ import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 import { OgMetaTags } from '@src/components/og-meta-tags.tsx';
 import { OwnershipView } from '@src/sections/ownership/index';
 import { useAuth } from '@src/hooks/use-auth.ts';
-
-// ----------------------------------------------------------------------
-
-export const canViewSection = (sessionData: any): boolean => {
-  // Allowed profileId to views (temporary) this section
-  const allowedProfilesId = ['0x0563', '0x050d','0x055c','0x0514', '0x0510','0x05cd']; // Mihail, Carlos, Jacob, Geolffrey, Watchit Open, Alejandro
-  // Verify if the current profile is allowed to views this section
-  return allowedProfilesId.includes(sessionData?.profile?.id ?? '');
-}
-
+import {canViewSection} from "@src/layouts/can-view-section.tsx"
 // ----------------------------------------------------------------------
 
 export default function FileManagerPage() {
