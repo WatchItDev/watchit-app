@@ -1,5 +1,25 @@
+import { Invitation } from '@src/hooks/types';
+import { RootState } from '@src/redux/store';
 import { supabase } from '@src/utils/supabase';
-import { Invitation } from '@src/types/invitation';
+
+class SupabaseError extends Error {
+  constructor(message: string, public originalError?: Error) {
+    super(message);
+    this.name = 'SupabaseError';
+  }
+}
+
+/**
+ * Creates a SupabaseError from any caught error
+ */
+const createSupabaseError = (message: string, error: unknown): SupabaseError => {
+  if (error instanceof SupabaseError) {
+    return error;
+  }
+  
+  const originalError = error instanceof Error ? error : undefined;
+  return new SupabaseError(message, originalError);
+};
 
 /**
  * Fetches all invitations from Supabase filtered by senderId.
@@ -13,9 +33,12 @@ export const fetchInvitations = async (
       .select('*')
       .eq('sender_id', senderId);
 
-    return { data, error: error ? error.message : null };
-  } catch (err: any) {
-    return { data: null, error: err.message };
+    if (error) throw new SupabaseError(error.message, error);
+    return { data, error: null };
+  } catch (error) {
+    const supaError = createSupabaseError('Error fetching invitations', error);
+    console.error(supaError.message);
+    return { data: null, error: supaError.message };
   }
 };
 
@@ -32,12 +55,12 @@ export const checkIfMyEmailHasPendingInvite = async (
       .eq('destination', userEmail)
       .eq('status', 'pending');
 
-    return {
-      hasPending: !!data && data.length > 0,
-      error: error ? error.message : null,
-    };
-  } catch (err: any) {
-    return { hasPending: false, error: err.message };
+    if (error) throw new SupabaseError(error.message, error);
+    return { hasPending: !!data && data.length > 0, error: null };
+  } catch (error) {
+    const supaError = createSupabaseError('Error checking pending invitations', error);
+    console.error(supaError.message);
+    return { hasPending: false, error: supaError.message };
   }
 };
 
@@ -59,9 +82,12 @@ export const acceptInvitation = async (
       .eq('id', invitationId)
       .single();
 
-    return { data, error: error ? error.message : null };
-  } catch (err: any) {
-    return { data: null, error: err.message };
+    if (error) throw new SupabaseError(error.message, error);
+    return { data, error: null };
+  } catch (error) {
+    const supaError = createSupabaseError('Error accepting invitation', error);
+    console.error(supaError.message);
+    return { data: null, error: supaError.message };
   }
 };
 
@@ -80,12 +106,12 @@ export const checkIfInvitationSent = async (
       .eq('sender_email', userEmail)
       .eq('destination', destinationEmail);
 
-    return {
-      exists: !!data && data.length > 0,
-      error: error ? error.message : null,
-    };
-  } catch (err: any) {
-    return { exists: false, error: err.message };
+    if (error) throw new SupabaseError(error.message, error);
+    return { exists: !!data && data.length > 0, error: null };
+  } catch (error) {
+    const supaError = createSupabaseError('Error checking invitation status', error);
+    console.error(supaError.message);
+    return { exists: false, error: supaError.message };
   }
 };
 
@@ -102,12 +128,12 @@ export const checkIfEmailAlreadyAccepted = async (
       .eq('destination', destinationEmail)
       .eq('status', 'accepted');
 
-    return {
-      accepted: !!data && data.length > 0,
-      error: error ? error.message : null,
-    };
-  } catch (err: any) {
-    return { accepted: false, error: err.message };
+    if (error) throw new SupabaseError(error.message, error);
+    return { accepted: !!data && data.length > 0, error: null };
+  } catch (error) {
+    const supaError = createSupabaseError('Error checking accepted invitations', error);
+    console.error(supaError.message);
+    return { accepted: false, error: supaError.message };
   }
 };
 
@@ -116,23 +142,30 @@ export const checkIfEmailAlreadyAccepted = async (
  */
 export const sendInvitation = async (
   destination: string,
-  payload: any,
+  payload: Record<string, unknown>,
   userEmail: string,
-  sessionData: any
+  sessionData: RootState
 ): Promise<{ error: string | null }> => {
-  const { error } = await supabase
-    .from('invitations')
-    .insert([
-      {
-        destination,
-        sender_id: payload?.data?.from?.id,
-        payload,
-        sender_email: userEmail,
-        sender_address: sessionData?.address,
-      },
-    ]);
+  try {
+    const { error } = await supabase
+      .from('invitations')
+      .insert([
+        {
+          destination,
+          sender_id: payload?.data?.from?.id,
+          payload,
+          sender_email: userEmail,
+          sender_address: sessionData?.address,
+        },
+      ]);
 
-  return { error: error ? error.message : null };
+    if (error) throw new SupabaseError(error.message, error);
+    return { error: null };
+  } catch (error) {
+    const supaError = createSupabaseError('Error sending invitation', error);
+    console.error(supaError.message);
+    return { error: supaError.message };
+  }
 };
 
 /**
@@ -141,7 +174,7 @@ export const sendInvitation = async (
  */
 export const acceptOrCreateInvitationForUser = async (
   userEmail: string,
-  sessionData: any
+  sessionData: RootState
 ): Promise<{ error: string | null }> => {
   try {
     const { data: invites, error: pendingError } = await supabase
@@ -150,9 +183,7 @@ export const acceptOrCreateInvitationForUser = async (
       .eq('destination', userEmail)
       .limit(1);
 
-    if (pendingError) {
-      throw new Error(`Error fetching pending invites: ${pendingError.message}`);
-    }
+    if (pendingError) throw new SupabaseError(pendingError.message, pendingError);
 
     console.log('acceptOrCreateInvitationForUser invites')
     console.log(invites)
@@ -161,9 +192,7 @@ export const acceptOrCreateInvitationForUser = async (
     if (invites && invites.length > 0) {
       const invitationId = invites[0].id;
       const { error } = await acceptInvitation(invitationId, sessionData?.profile?.id);
-      if (error) {
-        throw new Error(error);
-      }
+      if (error) throw new SupabaseError(error, undefined);
     } else {
       // Otherwise, create a new invitation with status='accepted'
       const { error: createError } = await supabase
@@ -182,25 +211,21 @@ export const acceptOrCreateInvitationForUser = async (
           },
         ]);
 
-      if (createError) {
-        throw new Error(
-          `Error creating 'accepted' invitation: ${createError.message}`
-        );
-      }
+      if (createError) throw new SupabaseError(createError.message, createError);
     }
 
     return { error: null };
-  } catch (err: any) {
-    return { error: err.message };
+  } catch (error) {
+    const supaError = createSupabaseError('Error accepting or creating invitation', error);
+    console.error(supaError.message);
+    return { error: supaError.message };
   }
 };
 
-
-/*
-* Verify if the email has already been invited.
-* Find in supabase if the email has already been invited, taking the destination email as a parameter.
-* */
-
+/**
+ * Verify if the email has already been invited.
+ * Find in supabase if the email has already been invited, taking the destination email as a parameter.
+ * */
 export const checkIfEmailAlreadyInvited = async (
   destinationEmail: string
 ): Promise<{ invited: boolean; error: string | null }> => {
@@ -210,11 +235,11 @@ export const checkIfEmailAlreadyInvited = async (
       .select('id')
       .eq('destination', destinationEmail);
 
-    return {
-      invited: !!data && data.length > 0,
-      error: error ? error.message : null,
-    };
-  } catch (err: any) {
-    return { invited: false, error: err.message };
+    if (error) throw new SupabaseError(error.message, error);
+    return { invited: !!data && data.length > 0, error: null };
+  } catch (error) {
+    const supaError = createSupabaseError('Error checking invited status', error);
+    console.error(supaError.message);
+    return { invited: false, error: supaError.message };
   }
 };

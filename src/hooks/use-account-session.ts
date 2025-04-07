@@ -9,13 +9,13 @@ import { setAuthLoading, setSession, setBalance, setFullyAuthenticated } from '@
 import { useSession, useLogout } from '@lens-protocol/react-web';
 
 // NOTIFICATIONS IMPORTS
-import { notifyWarning } from '@notifications/internal-notifications';
+import { notifyWarning } from '@src/libs/notifications/internal-notifications';
 
 // WEB3AUTH IMPORTS
 import { useAuth } from '@src/hooks/use-auth.ts';
 import { useWeb3Auth } from '@src/hooks/use-web3-auth';
 import { useWeb3Session } from '@src/hooks/use-web3-session';
-import { WARNING } from '@notifications/warnings.ts';
+import { WARNING } from '@src/libs/notifications/warnings.ts';
 
 // ----------------------------------------------------------------------
 

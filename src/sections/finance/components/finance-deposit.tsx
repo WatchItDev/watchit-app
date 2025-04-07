@@ -19,10 +19,10 @@ import { UseDepositHook } from '@src/hooks/protocol/use-deposit.ts';
 import { truncateAddress } from '@src/utils/wallet';
 
 // NOTIFICATIONS IMPORTS
-import { notifyError, notifySuccess, notifyWarning } from '@notifications/internal-notifications';
-import { WARNING } from '@notifications/warnings';
-import { SUCCESS } from '@notifications/success';
-import { ERRORS } from '@notifications/errors.ts';
+import { notifyError, notifySuccess, notifyWarning } from '@src/libs/notifications/internal-notifications';
+import { WARNING } from '@src/libs/notifications/warnings';
+import { SUCCESS } from '@src/libs/notifications/success';
+import { ERRORS } from '@src/libs/notifications/errors';
 import TextField from '@mui/material/TextField';
 
 interface FinanceDepositProps {

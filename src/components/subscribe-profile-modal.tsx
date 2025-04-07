@@ -36,12 +36,12 @@ import { setBalance } from '@redux/auth';
 import { useGetBalance } from '@src/hooks/protocol/use-get-balance.ts';
 import { useNotifications } from '@src/hooks/use-notifications.ts';
 import { useNotificationPayload } from '@src/hooks/use-notification-payload.ts';
-import { notifyError, notifySuccess } from '@notifications/internal-notifications.ts';
+import { notifyError, notifySuccess } from '@src/libs/notifications/internal-notifications.ts';
 import { dicebear } from "@src/utils/dicebear.ts";
 import { useAuth } from '@src/hooks/use-auth.ts';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
-import { SUCCESS } from '@notifications/success.ts';
-import { ERRORS } from '@notifications/errors.ts';
+import { SUCCESS } from '@src/libs/notifications/success.ts';
+import { ERRORS } from '@src/libs/notifications/errors.ts';
 
 // ----------------------------------------------------------------------
 

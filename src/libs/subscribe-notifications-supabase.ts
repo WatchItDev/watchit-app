@@ -1,6 +1,6 @@
 import { supabase } from '@src/utils/supabase';
 import { Dispatch } from 'redux';
-import { Events } from '@src/utils/events.ts';
+import { handleEvents } from '@src/utils/events.ts';
 
 export function subscribeToNotifications(
   profileId: string,
@@ -15,14 +15,14 @@ export function subscribeToNotifications(
         'postgres_changes',
         { event: 'INSERT', schema: 'public', table, filter: `receiver_id=eq.${profileId}` },
         (payload) => {
-          Events.Handlers(payload, profileId, dispatch);
+          handleEvents(payload, profileId, dispatch);
         }
       )
       .on(
         'postgres_changes',
         { event: 'UPDATE', schema: 'public', table, filter: `receiver_id=eq.${profileId}` },
         (payload) => {
-          Events.Handlers(payload, profileId, dispatch);
+          handleEvents(payload, profileId, dispatch);
         }
       );
   });

@@ -25,7 +25,7 @@ import { useSearchPublications } from '@src/hooks/use-search-publications';
 import { CircularProgress } from '@mui/material';
 import { paths } from '@src/routes/paths.ts';
 import { useSelector } from 'react-redux';
-import {filterHiddenProfiles} from "@src/utils/profile.ts";
+import {filterHiddenProfiles} from "@src/libs/profile.ts";
 import {RootState} from "@redux/store.ts"
 import {SearchPublicationResult} from "@src/layouts/_common/searchbar/types.ts"
 import {detectOperatingSystem} from "@src/utils/os-detection.ts"

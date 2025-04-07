@@ -1,71 +1,43 @@
 import {dicebear} from "@src/utils/dicebear.ts";
 import { TransactionLog } from '@src/hooks/protocol/types.ts';
-
-export interface ProcessedTransactionData {
-  id: string;
-  name: string;
-  avatarUrl: string;
-  type: string;
-  message: string;
-  category: string;
-  date: bigint;
-  status: string;
-  timestamp?: number;
-  amount: string | null;
-}
-
-type EventName =
-  | 'transferFrom'
-  | 'transferTo'
-  | 'deposit'
-  | 'withdraw'
-  | 'locked'
-  | 'claimed'
-  | 'approved'
-  | 'collected'
-  | 'released';
-
-interface EventConfig {
-  getName: (args: any) => string;
-  getAvatarUrl: (args: any) => string;
-}
+import {Transaction, EventConfig, EventName, ProcessedTransactionData} from "../types"
 
 const eventConfig: Record<EventName, EventConfig> = {
   transferFrom: {
-    getName: (args) => args.origin,
-    getAvatarUrl: (args) => dicebear(args.origin),
+    getName: (args) => String(args.origin),
+    getAvatarUrl: (args) => dicebear(String(args.origin)),
   },
   transferTo: {
-    getName: (args) => args.recipient,
-    getAvatarUrl: (args) => dicebear(args.recipient),
+    getName: (args) => String(args.recipient),
+    getAvatarUrl: (args) => dicebear(String(args.recipient)),
   },
   deposit: {
-    getName: (args) => args.recipient,
-    getAvatarUrl: (args) => dicebear(args.recipient),
+    getName: (args) => String(args.recipient),
+    getAvatarUrl: (args) => dicebear(String(args.recipient)),
   },
   withdraw: {
-    getName: (args) => args.origin,
-    getAvatarUrl: (args) => dicebear(args.origin),
+    getName: (args) => String(args.origin),
+    getAvatarUrl: (args) => dicebear(String(args.origin)),
   },
   locked: {
-    getName: (args) => args.account,
-    getAvatarUrl: (args) => dicebear(args.account),
+    getName: (args) => String(args.account),
+    getAvatarUrl: (args) => dicebear(String(args.account)),
   },
   claimed: {
-    getName: (args) => args.claimer,
-    getAvatarUrl: (args) => dicebear(args.claimer),
+    getName: (args) => String(args.claimer),
+    getAvatarUrl: (args) => dicebear(String(args.claimer)),
   },
   approved: {
-    getName: (args) => args.from,
-    getAvatarUrl: (args) => dicebear(args.from),
+    getName: (args) => String(args.from),
+    getAvatarUrl: (args) => dicebear(String(args.from)),
   },
   collected: {
-    getName: (args) => args.from,
-    getAvatarUrl: (args) => dicebear(args.from),
+    getName: (args) => String(args.from),
+    getAvatarUrl: (args) => dicebear(String(args.from)),
   },
   released: {
-    getName: (args) => args.to,
-    getAvatarUrl: (args) => dicebear(args.to),
+    getName: (args) => String(args.to),
+    getAvatarUrl: (args) => dicebear(String(args.to)),
   },
 };
 
@@ -128,7 +100,7 @@ const parseTransactionType = (type: string): string => {
   }
 };
 
-export function groupTransactionsForWidget(transactions: any[]) {
+export function groupTransactionsForWidget(transactions: Transaction[]) {
   if (!transactions?.length) {
     return { daySeriesData: [], calculatedPercent: 0 };
   }

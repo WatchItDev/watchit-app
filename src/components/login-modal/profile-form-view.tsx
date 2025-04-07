@@ -19,8 +19,8 @@ import { Box, Button, Grid, Input, TextField, Typography } from '@mui/material';
 // PROJECTS IMPORTS
 import Image from '../image';
 import { ProfileData } from '@src/auth/context/web3Auth/types.ts';
-import { uploadImageToIPFS, uploadMetadataToIPFS} from '@src/utils/ipfs.ts'
-import { buildProfileMetadata } from '@src/utils/profile.ts';
+import { uploadImageToIPFS, uploadMetadataToIPFS} from '@src/libs/ipfs.ts'
+import { buildProfileMetadata } from '@src/libs/profile.ts';
 import TextMaxLine from '@src/components/text-max-line';
 import NeonPaper from '@src/sections/publication/components/neon-paper-container.tsx';
 import uuidv4 from '@src/utils/uuidv4';
@@ -36,10 +36,10 @@ import {
 
 // NOTIFICATIONS IMPORTS
 import AvatarProfile from "@src/components/avatar/avatar.tsx";
-import { notifyError, notifySuccess } from '@notifications/internal-notifications';
+import { notifyError, notifySuccess } from '@src/libs/notifications/internal-notifications';
 import { useAuth } from '@src/hooks/use-auth.ts';
-import { SUCCESS } from '@notifications/success';
-import { ERRORS } from '@notifications/errors.ts';
+import { SUCCESS } from '@src/libs/notifications/success';
+import { ERRORS } from '@src/libs/notifications/errors.ts';
 
 // ----------------------------------------------------------------------
 

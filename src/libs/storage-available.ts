@@ -17,7 +17,7 @@ export function localStorageGetItem(key: string, defaultValue = '') {
   let value;
 
   if (storageAvailable) {
-    value = localStorage.getItem(key) || defaultValue;
+    value = localStorage.getItem(key) ?? defaultValue;
   }
 
   return value;

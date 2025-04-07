@@ -3,9 +3,9 @@ import { encodeFunctionData } from 'viem';
 import CampaignRegistryAbi from '@src/config/abi/CampaignRegistry.json';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 import { useWeb3Session } from '@src/hooks/use-web3-session.ts';
-import { ERRORS } from '@notifications/errors.ts';
+import { ERRORS } from '@src/libs/notifications/errors.ts';
 import { CreateCampaignParams, UseCreateCampaignHook } from '@src/hooks/protocol/types.ts';
-import { notifyError } from '@notifications/internal-notifications.ts';
+import { notifyError } from '@src/libs/notifications/internal-notifications.ts';
 import { useAuth } from '@src/hooks/use-auth.ts';
 
 export const useCreateCampaign = (): UseCreateCampaignHook => {

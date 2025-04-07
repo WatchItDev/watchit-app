@@ -11,7 +11,7 @@ import { useWeb3Session } from '@src/hooks/use-web3-session.ts';
 import { useAccountSession } from '@src/hooks/use-account-session.ts';
 import { useAuth } from '@src/hooks/use-auth.ts';
 import { DepositParams, UseDepositHook } from '@src/hooks/protocol/types.ts';
-import { ERRORS } from '@notifications/errors.ts';
+import { ERRORS } from '@src/libs/notifications/errors.ts';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 
 export const useDeposit = (): UseDepositHook => {

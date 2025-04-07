@@ -12,13 +12,13 @@ import Typography from '@mui/material/Typography';
 import { bgGradient } from '@src/theme/css';
 import { COLORS } from '@src/layouts/config-layout.ts';
 
-import { notifyError, notifySuccess } from '@notifications/internal-notifications.ts';
-import { SUCCESS } from '@notifications/success.ts';
-import { ERRORS } from '@notifications/errors.ts';
+import { notifyError, notifySuccess } from '@src/libs/notifications/internal-notifications.ts';
+import { SUCCESS } from '@src/libs/notifications/success.ts';
+import { ERRORS } from '@src/libs/notifications/errors';
 
 import useReferrals from "@src/hooks/use-referrals";
 import LoadingButton from '@mui/lab/LoadingButton';
-import { checkIfEmailAlreadyInvited } from "@src/utils/supabase-actions.ts";
+import { checkIfEmailAlreadyInvited } from "@src/libs/supabase-actions.ts";
 import { useAuth } from '@src/hooks/use-auth.ts';
 
 interface Props extends BoxProps {

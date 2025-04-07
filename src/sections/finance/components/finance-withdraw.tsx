@@ -15,15 +15,15 @@ import FinanceDialogsActions from '@src/sections/finance/components/finance-dial
 import TextMaxLine from '@src/components/text-max-line';
 import { formatBalanceNumber } from '@src/utils/format-number';
 import FinanceBoxRow from '@src/sections/finance/components/finance-box-row.tsx';
-import { UseWithdrawHook } from '@src/hooks/protocol/use-withdraw.ts';
 import { truncateAddress } from '@src/utils/wallet.ts';
 
 // NOTIFICATIONS IMPORTS
-import { notifyError, notifySuccess, notifyWarning } from '@notifications/internal-notifications';
-import { ERRORS } from '@notifications/errors';
-import { WARNING } from '@notifications/warnings';
-import { SUCCESS } from '@notifications/success';
+import { notifyError, notifySuccess, notifyWarning } from '@src/libs/notifications/internal-notifications';
+import { ERRORS } from '@src/libs/notifications/errors';
+import { WARNING } from '@src/libs/notifications/warnings';
+import { SUCCESS } from '@src/libs/notifications/success';
 import { useGetBalance } from '@src/hooks/protocol/use-get-balance.ts';
+import {UseWithdrawHook} from "@src/hooks/protocol/types.ts"
 
 // ----------------------------------------------------------------------
 

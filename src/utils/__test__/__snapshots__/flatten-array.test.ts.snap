@@ -1,0 +1,40 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`[UTILS]: flattenArray > matches snapshot for various inputs 1`] = `
+[
+  {
+    "children": [
+      {
+        "children": [
+          {
+            "id": 3,
+            "name": "Leaf",
+          },
+        ],
+        "id": 2,
+        "name": "Branch",
+      },
+    ],
+    "id": 1,
+    "name": "Root",
+  },
+  {
+    "id": 4,
+    "name": "Standalone",
+  },
+  {
+    "children": [
+      {
+        "id": 3,
+        "name": "Leaf",
+      },
+    ],
+    "id": 2,
+    "name": "Branch",
+  },
+  {
+    "id": 3,
+    "name": "Leaf",
+  },
+]
+`;
