@@ -59,7 +59,6 @@ export const useIsPolicyAuthorized = (
     try {
       // Check if the given policy is in the list
       // Assume that each element looks like { policy: string, terms: {...} }
-      console.log('Checking policy authorization:', authorizedHolderPolicies);
       const isPolicyInList = authorizedHolderPolicies.some(
         (p: Policy) => p.policy.toLowerCase() === policy.toLowerCase()
       );

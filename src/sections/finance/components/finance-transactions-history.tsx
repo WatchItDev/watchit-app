@@ -205,8 +205,6 @@ function applyFilter({
 
   const { status } = filters;
 
-  console.log('inputData', inputData);
-
   const stabilizedThis = inputData.map((el, index) => [el, index] as const);
 
   stabilizedThis.sort((a, b) => {

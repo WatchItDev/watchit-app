@@ -58,8 +58,11 @@ export const useSponsoredAccessAgreement = (): UseSponsoredAccessAgreementHook =
       });
 
       setData(receipt);
+
+      console.log('SPONSORED ACCESS AGREEMENT RECEIPT:', receipt);
+
       setLoading(false);
-    } catch (err: any) {
+    } catch (err) {
       console.error('USE SPONSORED ACCESS AGREEMENT ERR:', err);
       notifyError(ERRORS.SPONSORED_ACCESS_ERROR);
       setLoading(false);

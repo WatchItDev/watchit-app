@@ -89,7 +89,7 @@ export const useGetPolicyTerms = (
       loading: false,
       fetching: false,
       error: { message: 'Policy address or holder address is missing.' },
-      refetch: () => { },
+      refetch: () => Object,
     };
   }
 
