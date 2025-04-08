@@ -5,12 +5,9 @@ import Image from '../../../components/image';
 import { useRouter } from '@src/routes/hooks';
 import { paths } from '@src/routes/paths.ts';
 import { getAttachmentCid } from '@src/utils/publication.ts';
+import {ProfilePublicationItemProps} from "@src/sections/user/types.ts"
 
-interface Props {
-  publication: any;
-}
-
-export const ProfilePublicationItem = ({ publication }: Props) => {
+export const ProfilePublicationItem = ({ publication }: ProfilePublicationItemProps) => {
   const router = useRouter();
   const poster = getAttachmentCid(publication, 'square') || getAttachmentCid(publication, 'poster');
 

@@ -1,14 +1,8 @@
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import {FC} from "react";
-import {Profile} from "@lens-protocol/api-bindings";
 import {truncateAddress} from "@src/utils/wallet.ts";
-
-interface FinanceDisplayNameProps {
-  mode: 'profile' | 'wallet';
-  initialList?: Profile[];
-  carousel: any;
-}
+import {FinanceDisplayNameProps} from "@src/sections/finance/types.ts"
 
 /**
  * FinanceDisplayName is a functional component responsible for rendering the display name

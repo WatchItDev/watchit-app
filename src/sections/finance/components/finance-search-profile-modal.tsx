@@ -10,7 +10,7 @@ import {
 } from '@mui/material';
 import Iconify from '@src/components/iconify';
 import { Profile } from '@lens-protocol/api-bindings';
-import { useSearchProfiles } from '@lens-protocol/react-web';
+import {ProfilePictureSet, useSearchProfiles} from '@lens-protocol/react-web'
 import Typography from '@mui/material/Typography';
 import Label from '@src/components/label';
 import { dialogClasses } from '@mui/material/Dialog';
@@ -76,7 +76,7 @@ export default function FinanceSearchProfileModal({
         {profiles &&
           profiles.map((profile: Profile) => {
             const avatarSrc =
-              (profile?.metadata?.picture as any)?.optimized?.uri ?? dicebear(profile.id);
+              (profile?.metadata?.picture as ProfilePictureSet)?.optimized?.uri ?? dicebear(profile.id);
 
             return (
               <ListItemButton key={profile.id} onClick={() => handleSelectProfile(profile)}>

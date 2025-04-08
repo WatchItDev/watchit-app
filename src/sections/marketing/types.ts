@@ -1,4 +1,5 @@
 import { Address } from 'viem';
+import {CampaignLog} from "@src/hooks/protocol/types.ts"
 
 export interface CampaignType {
   campaign: Address;
@@ -7,10 +8,8 @@ export interface CampaignType {
   expiration: number;
 }
 
-export interface CampaignTableRowType extends CampaignType {}
-
 export interface CampaignTableRowProps {
-  row: CampaignTableRowType;
+  row: CampaignType;
   selected: boolean;
 }
 
@@ -47,8 +46,8 @@ export interface CampaignSettingsModalContentProps {
 }
 
 export interface CampaignTableProps {
-  campaigns: any[]; //NOSONAR
-  loading: boolean; //NOSONAR
+  campaigns: CampaignLog[];
+  loading: boolean;
 }
 
 export interface CampaignWithdrawFundsModalProps {
@@ -70,4 +69,11 @@ export interface CampaignWithdrawFundsModalContentProps {
     description: string;
     currentFundsBalance: string;
   };
+}
+
+export interface FormattedCampaign {
+  campaign: string;
+  name: string;
+  policy: string;
+  expiration: bigint;
 }

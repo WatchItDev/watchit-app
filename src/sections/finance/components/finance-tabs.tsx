@@ -16,7 +16,7 @@ import FinanceTransactionsHistory from '@src/sections/finance/components/finance
 export const FinanceTabs = () => {
   const [currentTab, setCurrentTab] = useState('graph');
 
-  const handleChangeTab = (_event: any, newValue: any) => {
+  const handleChangeTab = (_event: React.SyntheticEvent, newValue: string) => {
     setCurrentTab(newValue);
   };
 

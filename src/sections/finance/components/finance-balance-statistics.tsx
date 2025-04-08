@@ -18,6 +18,7 @@ import {
   FINANCE_STATISTICS_INCOME_EVENTS,
   FINANCE_STATISTICS_OUTCOME_EVENTS,
 } from '@src/sections/finance/CONSTANTS.tsx';
+import {TransactionLog} from "@redux/transactions"
 
 // ----------------------------------------------------------------------
 
@@ -77,7 +78,7 @@ export default function FinanceBalanceStatistics() {
     // Grouped data structure
     const groupedData: Record<string, { label: string; income: number; outcome: number }> = {};
 
-    transactions.forEach((log: any) => {
+    transactions.forEach((log: TransactionLog) => {
       const timestamp = Number(log.timestamp) * 1000;
 
       // Filter transactions based on the selected timeframe

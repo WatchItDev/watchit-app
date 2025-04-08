@@ -20,6 +20,7 @@ import useReferrals from "@src/hooks/use-referrals";
 import LoadingButton from '@mui/lab/LoadingButton';
 import { checkIfEmailAlreadyInvited } from "@src/libs/supabase-actions.ts";
 import { useAuth } from '@src/hooks/use-auth.ts';
+import {ProfilePictureSet} from "@lens-protocol/react-web"
 
 interface Props extends BoxProps {
   img?: string;
@@ -107,7 +108,7 @@ export default function FinanceInviteFriends({
         from: {
           id: sessionData?.profile?.id,
           displayName: sessionData?.profile?.metadata?.displayName,
-          avatar: (sessionData?.profile?.metadata?.picture as any)?.optimized?.uri,
+          avatar: (sessionData?.profile?.metadata?.picture as ProfilePictureSet)?.optimized?.uri,
         },
       },
     };

@@ -8,11 +8,8 @@ import Box from '@mui/material/Box';
 import DialogTitle from '@mui/material/DialogTitle';
 import ListItemText from '@mui/material/ListItemText';
 import DialogActions from '@mui/material/DialogActions';
-import Dialog, { DialogProps } from '@mui/material/Dialog';
+import Dialog from '@mui/material/Dialog';
 import { truncateAddress } from '@src/utils/wallet.ts';
-
-// LENS
-import { Profile } from '@lens-protocol/api-bindings';
 
 // Project components
 import NeonPaper from '@src/sections/publication/components/neon-paper-container.tsx';
@@ -20,7 +17,7 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import { supabase } from '@src/utils/supabase';
 import { useNotificationPayload } from '@src/hooks/use-notification-payload.ts';
 import { useNotifications } from '@src/hooks/use-notifications.ts';
-import { InputAmount, InputAmountProps } from '@src/components/input-amount.tsx';
+import { InputAmount } from '@src/components/input-amount.tsx';
 import { useTransfer } from '@src/hooks/protocol/use-transfer.ts';
 
 // Notifications
@@ -33,25 +30,12 @@ import { MAX_POOL } from '@src/sections/finance/components/finance-quick-transfe
 import { handleAmountConstraints } from '@src/utils/format-number.ts';
 import { useTheme } from '@mui/material/styles';
 import { useAuth } from '@src/hooks/use-auth.ts';
+import {ProfilePictureSet} from "@lens-protocol/react-web"
+import {ConfirmTransferDialogProps} from "@src/sections/finance/types.ts"
 
-type TConfirmTransferDialogProps = InputAmountProps & DialogProps;
 
-interface ConfirmTransferDialogProps extends TConfirmTransferDialogProps {
-  contactInfo?: Profile;
-  address?: string;
-  onClose: VoidFunction;
-  onFinish: VoidFunction;
-  amount: number;
-}
-
-function FinanceQuickTransferModal({
-  open,
-  amount,
-  contactInfo,
-  onClose,
-  onFinish,
-  address,
-}: ConfirmTransferDialogProps) {
+function FinanceQuickTransferModal(props: Readonly<ConfirmTransferDialogProps>) {
+  const { open, amount, contactInfo, onClose, onFinish, address } = props;
   const theme = useTheme();
   const { session: sessionData, balance: MAX_AMOUNT } = useAuth();
   const { generatePayload } = useNotificationPayload(sessionData);
@@ -77,7 +61,7 @@ function FinanceQuickTransferModal({
   // For the avatar, if no valid profile or if the address doesn't match, use a dicebear fallback
   const avatarSrc =
     hasProfile && isSame
-      ? (contactInfo?.metadata?.picture as any)?.optimized?.uri || dicebear(contactInfo?.id) : dicebear(address as string);
+      ? (contactInfo?.metadata?.picture as ProfilePictureSet)?.optimized?.uri ?? dicebear(contactInfo?.id) : dicebear(address as string);
 
   // For the secondary text under the name, if we have a valid profile that matches, use its address
   // otherwise show the typed address
@@ -92,7 +76,7 @@ function FinanceQuickTransferModal({
   async function storeTransactionInSupabase(
     receiver_id?: string,
     sender_id?: string,
-    payload?: any
+    payload?: Record<string, string>
   ) {
     const { error: supaError } = await supabase
       .from('transactions')
@@ -126,7 +110,7 @@ function FinanceQuickTransferModal({
           displayName: isSame
             ? (contactInfo?.metadata?.displayName ?? 'No name')
             : 'External wallet',
-          avatar: (contactInfo?.metadata?.picture as any)?.optimized?.uri ?? '',
+          avatar: (contactInfo?.metadata?.picture as ProfilePictureSet)?.optimized?.uri ?? '',
         },
         {
           rawDescription: `${sessionData?.profile?.metadata?.displayName ?? address} sent you ${transferAmount} MMC`,
@@ -154,8 +138,9 @@ function FinanceQuickTransferModal({
           ? contactInfo?.metadata?.displayName ?? contactInfo?.handle?.localName
           : truncateAddress(address ?? ''),
       });
-    } catch (err: any) {
+    } catch (err) {
       notifyError(ERRORS.TRANSFER_FAILED_ERROR);
+      console.error('Transfer error:', err);
     }
   };
 

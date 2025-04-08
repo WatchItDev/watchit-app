@@ -1,8 +1,5 @@
 // REACT IMPORTS
-import { FC, useCallback, useEffect, useState } from 'react';
-
-// VIEM IMPORTS
-import { Address } from 'viem';
+import React, { FC, useCallback, useEffect, useState } from 'react';
 
 // MUI IMPORTS
 import Box from '@mui/material/Box';
@@ -23,16 +20,7 @@ import { ERRORS } from '@src/libs/notifications/errors';
 import { WARNING } from '@src/libs/notifications/warnings';
 import { SUCCESS } from '@src/libs/notifications/success';
 import { useGetBalance } from '@src/hooks/protocol/use-get-balance.ts';
-import {UseWithdrawHook} from "@src/hooks/protocol/types.ts"
-
-// ----------------------------------------------------------------------
-
-interface FinanceWithdrawProps {
-  address: Address; // The connected wallet address
-  withdrawHook: UseWithdrawHook; // Generic withdraw hook
-  onClose: () => void; // Callback to close the modal/dialog
-  onChangeWallet?: (address: Address) => void; // Callback to change the new address.
-}
+import {FinanceWithdrawProps} from "@src/sections/finance/types.ts"
 
 // ----------------------------------------------------------------------
 
@@ -63,8 +51,9 @@ const FinanceWithdraw: FC<FinanceWithdrawProps> = ({ address, withdrawHook, onCl
       await withdraw({ amount: Number(amount), recipient: address });
       notifySuccess(SUCCESS.WITHDRAW_SUCCESSFULLY);
       onClose();
-    } catch (err: any) {
+    } catch (err) {
       notifyError(ERRORS.WITHDRAW_FAILED_ERROR);
+      console.log('Error while withdraw: ',err);
     } finally {
       setLocalLoading(false);
     }
@@ -132,7 +121,7 @@ const FinanceWithdraw: FC<FinanceWithdrawProps> = ({ address, withdrawHook, onCl
         rainbowComponent={RainbowEffect}
         loading={localLoading}
         actionLoading={withdrawLoading}
-        amount={Number(amount) ?? 0}
+        amount={Number(amount) || 0}
         balance={balance ?? 0}
         label={'Confirm'}
         onConfirmAction={handleConfirmWithdraw}

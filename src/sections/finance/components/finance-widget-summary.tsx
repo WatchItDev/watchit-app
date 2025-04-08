@@ -49,7 +49,6 @@ interface Props extends CardProps {
 export default function FinanceWidgetSummary({
   title,
   total,
-  icon,
   percent,
   color = 'primary',
   chart,

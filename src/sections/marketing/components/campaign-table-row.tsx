@@ -78,7 +78,11 @@ export default function CampaignTableRow({ row, selected }: Readonly<CampaignTab
 
   const handlePauseToggle = async (checked: boolean) => {
     try {
-      checked ? await pause(campaign) : await unPause(campaign);
+      if (checked) {
+        await pause(campaign);
+      } else {
+        await unPause(campaign);
+      }
 
       fetchCampaignPaused(campaign);
       popover.onClose();

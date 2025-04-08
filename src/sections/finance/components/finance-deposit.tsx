@@ -101,6 +101,7 @@ const FinanceDeposit: FC<FinanceDepositProps> = ({ address, recipient, depositHo
       onClose();
     } catch (err) {
       notifyError(ERRORS.DEPOSIT_ERROR);
+      console.log('Error during deposit:', err);
     } finally {
       setLocalLoading(false);
     }
@@ -170,7 +171,7 @@ const FinanceDeposit: FC<FinanceDepositProps> = ({ address, recipient, depositHo
         rainbowComponent={RainbowEffect}
         loading={isBusy}
         actionLoading={depositLoading}
-        amount={Number(amount) ?? 0}
+        amount={Number(amount) || 0}
         balance={balance ?? 0}
         label={'Confirm'}
         onConfirmAction={handleConfirmDeposit}
