@@ -5,7 +5,7 @@ import {
   IconButton,
   Typography,
 } from '@mui/material';
-import { alpha } from '@mui/material/styles';
+import {alpha, Theme} from '@mui/material/styles'
 
 // ANIMATIONS IMPORTS
 import { m } from 'framer-motion';
@@ -16,6 +16,7 @@ import NeonPaper from '@src/sections/publication/components/neon-paper-container
 import { varHover } from '@src/components/animate';
 import { UsePopoverReturnType } from '@src/components/custom-popover/use-popover.ts';
 import { useAuth } from '@src/hooks/use-auth.ts';
+import {ProfilePictureSet} from "@lens-protocol/react-web"
 
 // ----------------------------------------------------------------------
 
@@ -66,7 +67,7 @@ export function AccountPopoverButton(props: Readonly<AccountPopoverButtonProps>)
           >
             <AvatarProfile
               src={
-                (sessionData?.profile?.metadata?.picture as any)?.optimized?.uri ??
+                (sessionData?.profile?.metadata?.picture as ProfilePictureSet)?.optimized?.uri ??
                 sessionData?.profile?.id
               }
               alt="avatar"
@@ -74,7 +75,7 @@ export function AccountPopoverButton(props: Readonly<AccountPopoverButtonProps>)
                 fontSize: '1.25rem',
                 width: 36,
                 height: 36,
-                border: (theme: any) => `solid 2px ${theme.palette.background.default}`,
+                border: (theme: Theme) => `solid 2px ${theme.palette.background.default}`,
               }}
             />
           </IconButton>
