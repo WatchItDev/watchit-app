@@ -7,7 +7,7 @@ import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 import { useAuth } from '@src/hooks/use-auth.ts';
 import {CampaignLog} from "@src/hooks/protocol/types.ts"
 
-export default function useGetCampaings() {
+export default function useGetCampaigns() {
   const { session: sessionData } = useAuth();
   const [campaigns, setCampaigns] = useState<CampaignLog[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
