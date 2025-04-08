@@ -73,8 +73,8 @@ export default function App() {
           url: window.location.href,
         },
         openDeeplink: (url) => {
-          const isMM = (window as any).ethereum?.isMetaMask;
-          if (typeof (window as any).ethereum === 'undefined' || !isMM) {
+          const isMM = window.ethereum?.isMetaMask;
+          if (typeof window.ethereum === 'undefined' || !isMM) {
             // Mobile version / no extension
             window.location.href = 'https://metamask.app.link';
           } else {

@@ -3,10 +3,10 @@ import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
 import CampaignCreate from '@src/sections/marketing/components/campaign-create.tsx';
 import CampaignTable from '@src/sections/marketing/components/campaign-table.tsx';
-import useGetCampaings from '@src/hooks/protocol/use-get-campaings.ts';
+import useGetCampaigns from '@src/hooks/protocol/use-get-campaigns.ts';
 
 const MarketingView = () => {
-  const { campaigns, loading, fetchLogs } = useGetCampaings();
+  const { campaigns, loading, fetchLogs } = useGetCampaigns();
 
   useEffect(() => {
     fetchLogs();
