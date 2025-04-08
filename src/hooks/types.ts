@@ -1,3 +1,8 @@
+import {IBaseProvider, IProvider} from "@web3auth/base"
+import {BundlerConfig} from "@web3auth/account-abstraction-provider/dist/types/providers/types"
+import {ISmartAccount} from "@web3auth/account-abstraction-provider/dist/types/providers/smartAccounts"
+import {SafeEventEmitterProvider} from "@web3auth/base/dist/types/provider/IProvider"
+
 export interface Invitation {
   id: string;
   status: 'pending' | 'accepted' | 'rejected';
@@ -162,3 +167,8 @@ interface TransferDataReceipt{
   type: string | null;
 }
 
+export interface AccountAbstractionProvider extends IBaseProvider<IProvider> {
+  bundlerClient?: BundlerConfig;
+  smartAccount?: ISmartAccount;
+  provider: SafeEventEmitterProvider;
+}
