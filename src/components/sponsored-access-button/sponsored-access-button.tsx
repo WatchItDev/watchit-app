@@ -34,7 +34,6 @@ export const SponsoredAccessTrialButton: FC<ExtendedSponsoredAccessProps> = (pro
   const { session: sessionData, isFullyAuthenticated: isAuthenticated } = useAuth();
   const { sponsoredAccessAgreement, loading } = useSponsoredAccessAgreement();
 
-  console.log('SponsoredAccessTrialButton', loading);
 
   const handleTrial = async () => {
     try {
