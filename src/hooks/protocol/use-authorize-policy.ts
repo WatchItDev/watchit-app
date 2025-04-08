@@ -9,14 +9,14 @@ import RightsPolicyAuthorizerAbi from '@src/config/abi/RightsPolicyAuthorizer.js
 import { useWeb3Session } from '@src/hooks/use-web3-session.ts';
 import { useAccountSession } from '@src/hooks/use-account-session.ts';
 import { useAuth } from '@src/hooks/use-auth.ts';
-import { AuthorizePolicyParams, UseAuthorizePolicyHook } from '@src/hooks/protocol/types.ts';
+import {AuthorizePolicyParams, UseAuthorizePolicyHook, UseAuthorizePolicyResult} from '@src/hooks/protocol/types.ts'
 import { ERRORS } from '@src/libs/notifications/errors.ts';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 
 // ----------------------------------------------------------------------
 
 export const useAuthorizePolicy = (): UseAuthorizePolicyHook => {
-  const [data, setData] = useState();
+  const [data, setData] = useState<UseAuthorizePolicyResult | undefined>(undefined);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<keyof typeof ERRORS | null>(null);
   const { session: sessionData, isFullyAuthenticated: isAuthenticated } = useAuth();

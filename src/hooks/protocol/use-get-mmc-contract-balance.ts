@@ -14,14 +14,14 @@ export function useGetMmcContractBalance(address?: Address) {
     if (!address) return;
 
     try {
-      const rawBalance: any = await publicClient.readContract({
+      const rawBalance = await publicClient.readContract({
         address: GLOBAL_CONSTANTS.MMC_ADDRESS,
         abi: MMCAbi.abi,
         functionName: 'balanceOf',
         args: [address],
-      });
+      }) as bigint;
 
-      const formattedBalance = parseFloat(formatUnits(rawBalance, 18));
+      const formattedBalance = parseFloat(formatUnits(rawBalance as bigint, 18));
       setBalance(isNaN(formattedBalance) ? 0 : formattedBalance);
     } catch (error) {
       console.error('Error fetching balance:', error);

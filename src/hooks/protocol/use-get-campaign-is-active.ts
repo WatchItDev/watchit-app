@@ -19,14 +19,14 @@ export const useGetCampaignIsActive = (): UseGetCampaignIsActiveHook => {
       }
       setLoading(true);
       try {
-        const active: any = await publicClient.readContract({
+        const active = await publicClient.readContract({
           address: campaignAddress,
           abi: CampaignSubscriptionTplAbi.abi,
           functionName: 'isActive',
           args: [GLOBAL_CONSTANTS.ACCESS_WORKFLOW_ADDRESS, account],
-        }) as bigint;
+        }) as boolean;
         setIsActive(active);
-        return active;
+        return active ? 'true' : 'false';
       } catch (err) {
         console.error('Error fetching campaign isActive:', err);
         setIsActive(false);

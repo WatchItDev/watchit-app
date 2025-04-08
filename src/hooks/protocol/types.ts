@@ -1,12 +1,16 @@
 import { ERRORS } from '@src/libs/notifications/errors';
 import { Address } from 'viem';
 
+import {EncodeAbiParametersReturnType} from "viem"
+import {TransferData, WithdrawData} from "@src/hooks/types.ts"
+
 // ----------------------------------------------------------------------
+type AnyOptionError = string | number | boolean | object | undefined;
 
 export interface HasAccessError {
   message: string;
   code?: number;
-  [key: string]: any;
+  [key: string]: AnyOptionError;
 }
 
 export interface PolicyTerms {
@@ -22,7 +26,7 @@ export interface Policy {
 }
 
 export interface Terms {
-  amount: any; // amount in wei
+  amount: bigint; // amount in wei
   currency: string;
   rateBasis: number;
   uri: string;
@@ -33,21 +37,61 @@ export interface Terms {
 // Parameters to be passed to the subscribe function
 export interface AuthorizePolicyParams {
   policyAddress: string; // The address to which the subscription applies
-  data: any; // The encoded data. EJ. For subscription policy is encoded (Price per day, address mmc)
+  data: EncodeAbiParametersReturnType; // The encoded data. EJ. For subscription policy is encoded (Price per day, address mmc)
 }
 
 // Define the return type of the useAuthorizePolicy hook
 export interface UseAuthorizePolicyHook {
-  data?: any;
+  data?: UseAuthorizePolicyResult;
   authorize: (params: AuthorizePolicyParams) => Promise<void>;
   loading: boolean;
   error?: keyof typeof ERRORS | null;
+}
+interface UseAuthorizePolicyLogEntry {
+  address: string;
+  blockHash: string;
+  blockNumber: bigint;
+  data: string;
+  logIndex: number;
+  topics: string[];
+  transactionHash: string;
+  transactionIndex: number;
+}
+
+interface UseAuthorizePolicyReceipt {
+  blockHash: string;
+  blockNumber: bigint;
+  contractAddress: string | null;
+  cumulativeGasUsed: bigint;
+  effectiveGasPrice: bigint;
+  from: string;
+  gasUsed: bigint;
+  logs: UseAuthorizePolicyLogEntry[];
+  logsBloom: string;
+  status: string;
+  to: string;
+  transactionHash: string;
+  transactionIndex: number;
+  type: string | null;
+}
+
+export interface UseAuthorizePolicyResult {
+  actualGasCost: bigint;
+  actualGasUsed: bigint;
+  entryPoint: string;
+  logs: UseAuthorizePolicyLogEntry[];
+  nonce: string;
+  paymaster: string;
+  receipt: UseAuthorizePolicyReceipt;
+  sender: string;
+  success: boolean;
+  userOpHash: string;
 }
 
 // ----------------------------------------------------------------------
 
 export interface UseCampaignPauseHook {
-  data?: any;
+  data?: UseCampaignPauseResult;
   pause: (campaignAddress: Address) => Promise<void>;
   loading: boolean;
   error: keyof typeof ERRORS | null;
@@ -70,16 +114,56 @@ export interface CampaignRemoveFundsParams {
 }
 
 export interface UseCampaignRemoveFundsHook {
-  data?: any;
+  data?: UseCampaignRemoveFundsResult;
   removeFunds: (params: CampaignRemoveFundsParams) => Promise<void>;
   loading: boolean;
   error: keyof typeof ERRORS | null;
+}
+interface UseCampaignRemoveFundsResult {
+  actualGasCost: bigint;
+  actualGasUsed: bigint;
+  entryPoint: string;
+  logs: UseCampaignRemoveFundsLogEntry[];
+  nonce: string;
+  paymaster: string;
+  receipt: UseCampaignRemoveFundsReceipt;
+  sender: string;
+  success: boolean;
+  userOpHash: string;
+}
+
+interface UseCampaignRemoveFundsLogEntry {
+  address: string;
+  blockHash: string;
+  blockNumber: bigint;
+  data: string;
+  logIndex: number;
+  topics: string[];
+  transactionHash: string;
+  transactionIndex: number;
+}
+
+interface UseCampaignRemoveFundsReceipt {
+  blockHash: string;
+  blockNumber: bigint;
+  contractAddress: string | null;
+  cumulativeGasUsed: bigint;
+  effectiveGasPrice: bigint;
+  from: string;
+  gasUsed: bigint;
+  logs: UseCampaignRemoveFundsLogEntry[];
+  logsBloom: string;
+  status: string;
+  to: string;
+  transactionHash: string;
+  transactionIndex: number;
+  type: string | null;
 }
 
 // ----------------------------------------------------------------------
 
 export interface UseCampaignUnPauseHook {
-  data?: any;
+  data?: CampaignUnpauseResult;
   unPause: (campaignAddress: string) => Promise<void>;
   loading: boolean;
   error: keyof typeof ERRORS | null;
@@ -95,7 +179,7 @@ export interface ConfigureCampaignParams {
 }
 
 export interface UseConfigureCampaignHook {
-  data?: any;
+  data?: ConfigureCampaignResult;
   configure: (params: ConfigureCampaignParams) => Promise<void>;
   loading: boolean;
 }
@@ -109,7 +193,7 @@ export interface CreateCampaignParams {
 }
 
 export interface UseCreateCampaignHook {
-  data?: any;
+  data?: CreateCampaignResult;
   create: (params: CreateCampaignParams) => Promise<void>;
   loading: boolean;
   error?: keyof typeof ERRORS | null;
@@ -123,22 +207,127 @@ export interface DepositParams {
 }
 
 export interface UseDepositHook {
-  data?: any;
+  data?: UseDepositResult;
   deposit: (params: DepositParams) => Promise<void>;
   loading: boolean;
   error?: keyof typeof ERRORS | null;
 }
 
+interface UseDepositLog {
+  address: string;
+  blockHash: string;
+  blockNumber: bigint;
+  data: string;
+  logIndex: number;
+  topics: string[];
+  transactionHash: string;
+  transactionIndex: number;
+}
+
+interface UseDepositReceipt {
+  blockHash: string;
+  blockNumber: bigint;
+  contractAddress: string | null;
+  cumulativeGasUsed: bigint;
+  effectiveGasPrice: bigint;
+  from: string;
+  gasUsed: bigint;
+  logs: UseDepositLog[];
+  logsBloom: string;
+  status: string;
+  to: string;
+  transactionHash: string;
+  transactionIndex: number;
+  type: number | null;
+}
+
+export interface UseDepositResult {
+  actualGasCost: bigint;
+  actualGasUsed: bigint;
+  entryPoint: string;
+  logs: UseDepositLog[];
+  nonce: string;
+  paymaster: string;
+  receipt: UseDepositReceipt;
+  sender: string;
+  success: boolean;
+  userOpHash: string;
+}
+
+export interface UseDepositMetamaskData {
+  approveTxHash: Address;
+  depositTxHash: Address;
+  approveReceipt: UseDepositMetamaskApproveReceipt;
+  depositReceipt: UseDepositMetamaskDepositReceipt;
+}
+
+interface UseDepositMetamaskLogEntry {
+  address: string;
+  blockHash: string;
+  blockNumber: bigint;
+  data: string;
+  logIndex: number;
+  removed: boolean;
+  topics: string[];
+  transactionHash: string;
+  transactionIndex: number;
+}
+
+interface UseDepositMetamaskApproveReceipt {
+  blockHash: string;
+  blockNumber: bigint;
+  contractAddress: string | null;
+  cumulativeGasUsed: bigint;
+  effectiveGasPrice: bigint;
+  from: string;
+  gasUsed: bigint;
+  logs: UseDepositMetamaskLogEntry[];
+  logsBloom: string;
+  status: string;
+  to: string;
+  transactionHash: string;
+  transactionIndex: number;
+  type: string;
+}
+
+interface UseDepositMetamaskDepositLogEntry {
+  address: string;
+  blockHash: string;
+  blockNumber: bigint;
+  data: string;
+  logIndex: number;
+  removed: boolean;
+  topics: string[];
+  transactionHash: string;
+  transactionIndex: number;
+}
+
+export interface UseDepositMetamaskDepositReceipt {
+  blockHash: string;
+  blockNumber: bigint;
+  contractAddress: string | null;
+  cumulativeGasUsed: bigint;
+  effectiveGasPrice: bigint;
+  from: string;
+  gasUsed: bigint;
+  logs: UseDepositMetamaskDepositLogEntry[];
+  logsBloom: string;
+  status: string;
+  to: string;
+  transactionHash: string;
+  transactionIndex: number;
+  type: string;
+}
 // ----------------------------------------------------------------------
 
 export interface ActiveLicensesError {
   message: string;
   code?: number;
-  [key: string]: any;
+  [key: string]: AnyOptionError;
 }
 
 export interface UseGetActiveLicensesHook {
-  activeLicenses: any[];
+  activeLicenses: Policy[];
   loading: boolean;
   error?: ActiveLicensesError | null;
   refetch: () => void;
@@ -149,7 +338,7 @@ export interface UseGetActiveLicensesHook {
 export interface GetAssetOwnerError {
   message: string;
   code?: number;
-  [key: string]: any;
+  [key: string]: AnyOptionError;
 }
 
 export interface UseGetAssetOwnerHook {
@@ -167,7 +356,7 @@ export interface UseGetCampaignHook {
   fetchCampaign: (
     account: Address,
     policy: Address
-  ) => Promise<any>;
+  ) => Promise<string>;
 }
 
 // ----------------------------------------------------------------------
@@ -213,7 +402,6 @@ export interface UseGetCampaignIsReadyHook {
     campaignAddress: Address
   ) => Promise<string | undefined>;
 }
-
 // ----------------------------------------------------------------------
 
 export interface UseGetCampaignQuotaCounterHook {
@@ -305,15 +493,15 @@ export interface TransactionLog {
 export interface EventConfig {
   eventName: string;
   args: Record<string, string | bigint>;
-  getEventType: (log: any, userAddress: string) => string;
+  getEventType: (log: Record<string, string>, userAddress: string) => string;
 }
 
 // ----------------------------------------------------------------------
 
 export interface UseGetSubscriptionCampaignHook {
-  campaign: any;
+  campaign: Address;
   loading: boolean;
-  fetchSubscriptionCampaign: (account: Address) => Promise<any>;
+  fetchSubscriptionCampaign: (account: Address) => Promise<string>;
 }
 
 // ----------------------------------------------------------------------
@@ -381,7 +569,7 @@ export interface MetadataData {
   title: string;
   description: string;
   attachments: Attachment[];
-  custom_fields: any;
+  custom_fields: Record<string, string>;
 }
 
 export interface Metadata {
@@ -396,7 +584,7 @@ export interface UseMetadataReturn {
 }
 
 // ----------------------------------------------------------------------
-
+//@TODO: Review this interface for the receipt
 export interface RegisterAssetData {
   receipt?: any;
 }
@@ -419,10 +607,43 @@ export interface SponsoredAccessParams {
 }
 
 export interface UseSponsoredAccessAgreementHook {
-  data?: any;
+  data?: SponsoredAccessAgreementDetailsReturn;
   sponsoredAccessAgreement: (params: SponsoredAccessParams) => Promise<void>;
   loading: boolean;
   error?: keyof typeof ERRORS | null;
+}
+interface SponsoredAccessAgreementLog {
+  address: string;
+  blockHash: string;
+  blockNumber: bigint;
+  data: string;
+  logIndex: number;
+  transactionIndex: number;
+  transactionHash: string;
+  topics: string[];
+}
+
+interface SponsoredAccessAgreementReceipt {
+  blockHash: string;
+  blockNumber: bigint;
+  contractAddress: string | null;
+  cumulativeGasUsed: bigint;
+  effectiveGasPrice: bigint;
+  from: string;
+  gasUsed: bigint;
+  logs: SponsoredAccessAgreementLog[];
+  transactionHash: string;
+  transactionIndex: number;
+}
+
+export interface SponsoredAccessAgreementDetailsReturn {
+  actualGasCost: bigint;
+  actualGasUsed: bigint;
+  entryPoint: string;
+  logs: SponsoredAccessAgreementLog[];
+  nonce: string;
+  paymaster: string;
+  receipt: SponsoredAccessAgreementReceipt;
 }
 
 // ----------------------------------------------------------------------
@@ -451,21 +672,8 @@ export interface TransferParams {
 }
 
 export interface UseTransferHook {
-  data?: any;
+  data?: TransferData;
   transfer: (params: TransferParams) => Promise<void>;
-  loading: boolean;
-  error?: keyof typeof ERRORS | null;
-}
-
-// ----------------------------------------------------------------------
-
-export interface TransferAssetData {
-  receipt?: any;
-}
-
-export interface UseTransferAssetHook {
-  data?: TransferAssetData;
-  transferAsset: (destinationAddress: string, assetId: string) => Promise<void>;
   loading: boolean;
   error?: keyof typeof ERRORS | null;
 }
@@ -478,7 +686,7 @@ export interface WithdrawParams {
 }
 
 export interface UseWithdrawHook {
-  data?: any;
+  data?: WithdrawData;
   withdraw: (params: WithdrawParams) => Promise<void>;
   loading: boolean;
   error?: keyof typeof ERRORS | null;
@@ -550,3 +758,129 @@ export interface UseCampaignPauseResult {
   success: boolean;
   userOpHash: string;
 }
+//use-create-campaign.ts
+export interface TransactionCampaingLog {
+  address: string;
+  blockHash: string;
+  blockNumber: bigint;
+  data: string;
+  logIndex: number;
+  topics: string[];
+  transactionHash: string;
+  transactionIndex: number;
+}
+
+export interface TransactionReceipt {
+  blockHash: string;
+  blockNumber: bigint;
+  contractAddress: string | null;
+  cumulativeGasUsed: bigint;
+  effectiveGasPrice: bigint;
+  from: string;
+  gasUsed: bigint;
+  logs: TransactionCampaingLog[];
+  logsBloom: string;
+  status: string;
+  to: string;
+  transactionHash: string;
+  transactionIndex: number;
+  type: string | null;
+}
+
+export interface CreateCampaignResult {
+  actualGasCost: bigint;
+  actualGasUsed: bigint;
+  entryPoint: string;
+  logs: TransactionCampaingLog[];
+  nonce: string;
+  paymaster: string;
+  receipt: TransactionReceipt;
+  sender: string;
+  success: boolean;
+  userOpHash: string;
+}
+//use-campaign-unpause.ts
+export interface CampaignUnpauseLog {
+  address: string;
+  blockHash: string;
+  blockNumber: bigint;
+  data: string;
+  logIndex: number;
+  topics: string[];
+  transactionHash: string;
+  transactionIndex: number;
+}
+
+export interface CampaignUnpauseReceipt {
+  blockHash: string;
+  blockNumber: bigint;
+  contractAddress: string | null;
+  cumulativeGasUsed: bigint;
+  effectiveGasPrice: bigint;
+  from: string;
+  gasUsed: bigint;
+  logs: CampaignUnpauseLog[];
+  logsBloom: string;
+  status: string;
+  to: string;
+  transactionHash: string;
+  transactionIndex: number;
+  type: string | null;
+}
+
+export interface CampaignUnpauseResult {
+  actualGasCost: bigint;
+  actualGasUsed: bigint;
+  entryPoint: string;
+  logs: CampaignUnpauseLog[];
+  nonce: string;
+  paymaster: string;
+  receipt: CampaignUnpauseReceipt;
+  sender: string;
+  success: boolean;
+  userOpHash: string;
+}
+
+//use-configure-campaign.ts
+interface ConfigureCampaignLog {
+  address: string;
+  blockHash: string;
+  blockNumber: bigint;
+  data: string;
+  logIndex: number;
+  topics: string[];
+  transactionHash: string;
+  transactionIndex: number;
+}
+
+interface ConfigureCampaignReceipt {
+  blockHash: string;
+  blockNumber: bigint;
+  contractAddress: string | null;
+  cumulativeGasUsed: bigint;
+  effectiveGasPrice: bigint;
+  from: string;
+  gasUsed: bigint;
+  logs: ConfigureCampaignLog[];
+  logsBloom: string;
+  status: string;
+  to: string;
+  transactionHash: string;
+  transactionIndex: number;
+  type: string | null;
+}
+
+export interface ConfigureCampaignResult {
+  actualGasCost: bigint;
+  actualGasUsed: bigint;
+  entryPoint: string;
+  logs: ConfigureCampaignLog[];
+  nonce: string;
+  paymaster: string;
+  receipt: ConfigureCampaignReceipt;
+  sender: string;
+  success: boolean;
+  userOpHash: string;
+}
+
+

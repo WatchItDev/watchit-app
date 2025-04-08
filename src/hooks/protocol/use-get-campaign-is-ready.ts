@@ -16,23 +16,24 @@ export const useGetCampaignIsReady = (): UseGetCampaignIsReadyHook => {
     ): Promise<string | undefined> => {
       if (!campaignAddress) {
         setError({ message: 'Campaign address is missing.' });
-        return;
+        return undefined;
       }
       setLoading(true);
       try {
-        const ready: any = await publicClient.readContract({
+        const ready = await publicClient.readContract({
           address: campaignAddress,
           abi: CampaignSubscriptionTplAbi.abi,
           functionName: 'isReady',
           args: [GLOBAL_CONSTANTS.ACCESS_WORKFLOW_ADDRESS],
-        });
+        }) as boolean;
         setIsReady(ready);
         setError(null);
-        return ready;
+        return ready ? 'true' : 'false';
       } catch (err) {
         console.error('Error fetching is Ready:', err);
         setIsReady(false);
         setError({ message: err?.message || 'Error fetching is Ready' });
+        return undefined;
       } finally {
         setLoading(false);
       }

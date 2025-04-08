@@ -4,12 +4,12 @@ import CampaignRegistryAbi from '@src/config/abi/CampaignRegistry.json';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 import { useWeb3Session } from '@src/hooks/use-web3-session.ts';
 import { ERRORS } from '@src/libs/notifications/errors.ts';
-import { CreateCampaignParams, UseCreateCampaignHook } from '@src/hooks/protocol/types.ts';
+import {CreateCampaignParams, CreateCampaignResult, UseCreateCampaignHook} from '@src/hooks/protocol/types.ts'
 import { notifyError } from '@src/libs/notifications/internal-notifications.ts';
 import { useAuth } from '@src/hooks/use-auth.ts';
 
 export const useCreateCampaign = (): UseCreateCampaignHook => {
-  const [data, setData] = useState<any>(null);
+  const [data, setData] = useState<CreateCampaignResult |null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const { bundlerClient, smartAccount } = useWeb3Session();
   const { isFullyAuthenticated: isAuthenticated } = useAuth();
@@ -58,7 +58,7 @@ export const useCreateCampaign = (): UseCreateCampaignHook => {
 
       setData(receipt);
       setLoading(false);
-    } catch (err: any) {
+    } catch (err) {
       console.error('USE CREATE CAMPAIGN ERR:', err);
       notifyError(ERRORS.CAMPAIGN_CREATION_ERROR)
       setLoading(false);

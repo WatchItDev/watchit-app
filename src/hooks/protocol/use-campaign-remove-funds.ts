@@ -8,7 +8,7 @@ import { CampaignRemoveFundsParams, UseCampaignRemoveFundsHook } from '@src/hook
 import { useAuth } from '@src/hooks/use-auth.ts';
 
 export const useCampaignRemoveFunds = (): UseCampaignRemoveFundsHook => {
-  const [data, setData] = useState<any>(null);
+  const [data, setData] = useState<UseCampaignRemoveFundsResult | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<keyof typeof ERRORS | null>(null);
   const { bundlerClient, smartAccount } = useWeb3Session();
@@ -52,7 +52,9 @@ export const useCampaignRemoveFunds = (): UseCampaignRemoveFundsHook => {
         hash: userOpHash,
       });
       setData(receipt);
-    } catch (err: any) {
+
+      console.log('Transaction receipt:', receipt);
+    } catch (err) {
       console.error('Error in removeFunds:', err);
       setError(ERRORS.UNKNOWN_ERROR);
     } finally {

@@ -49,7 +49,6 @@ export const useCampaignPause = (): UseCampaignPauseHook => {
         hash: userOpHash,
       });
       setData(receipt);
-      console.log('Campaign paused successfully:', receipt);
     } catch (err) {
       console.error('Error in pause:', err);
       setError(ERRORS.UNKNOWN_ERROR);

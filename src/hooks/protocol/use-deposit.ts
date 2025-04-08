@@ -10,12 +10,12 @@ import MMCAbi from '@src/config/abi/MMC.json';
 import { useWeb3Session } from '@src/hooks/use-web3-session.ts';
 import { useAccountSession } from '@src/hooks/use-account-session.ts';
 import { useAuth } from '@src/hooks/use-auth.ts';
-import { DepositParams, UseDepositHook } from '@src/hooks/protocol/types.ts';
+import {DepositParams, UseDepositHook, UseDepositResult} from '@src/hooks/protocol/types.ts'
 import { ERRORS } from '@src/libs/notifications/errors.ts';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 
 export const useDeposit = (): UseDepositHook => {
-  const [data, setData] = useState<any>(null);
+  const [data, setData] = useState<UseDepositResult | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<keyof typeof ERRORS | null>(null);
   const { bundlerClient, smartAccount } = useWeb3Session();
@@ -97,8 +97,10 @@ export const useDeposit = (): UseDepositHook => {
       });
 
       setData(receipt);
+
+      console.log('Deposit Receipt:', receipt);
       setLoading(false);
-    } catch (err: any) {
+    } catch (err) {
       console.error('USE DEPOSIT ERR:', err);
       setError(ERRORS.UNKNOWN_ERROR);
       setLoading(false);

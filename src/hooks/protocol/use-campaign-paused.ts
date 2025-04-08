@@ -26,7 +26,7 @@ export const useCampaignPaused = (): UseCampaignPausedHook => {
         setPaused(isPaused);
         setError(null);
         return isPaused;
-      } catch (err: any) {
+      } catch (err) {
         console.error('Error fetching paused state:', err);
         setPaused(false);
         setError({ message: err?.message || 'Error fetching paused state.' });

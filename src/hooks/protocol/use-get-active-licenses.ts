@@ -25,7 +25,7 @@ export const useGetActiveLicenses = (
 
     try {
       // Call the contract method
-      const licenses: any = (await publicClient.readContract({
+      const licenses = (await publicClient.readContract({
         address: GLOBAL_CONSTANTS.ACCESS_AGG_ADDRESS,
         abi: AccessAggAbi.abi,
         functionName: 'getActiveLicenses',
@@ -35,7 +35,7 @@ export const useGetActiveLicenses = (
       // Store the response in state
       setActiveLicenses(licenses);
       setError(null);
-    } catch (err: any) {
+    } catch (err) {
       console.error('Error fetching active licenses:', err);
       setActiveLicenses([]);
       setError({ message: err?.message || 'Error occurred while fetching active licenses.' });

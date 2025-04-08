@@ -162,7 +162,7 @@ const AppContent = () => {
   useEffect(() => {
     if (sessionData?.profile?.id) {
       subscribeToNotifications(sessionData?.profile?.id, dispatch, ['notifications']);
-      getNotifications(sessionData?.profile?.id).then(() => { });
+      getNotifications(sessionData?.profile?.id);
     }
   }, [sessionData?.profile?.id]);
 
