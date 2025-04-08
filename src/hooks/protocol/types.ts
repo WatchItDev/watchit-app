@@ -1,7 +1,5 @@
 import { ERRORS } from '@src/libs/notifications/errors';
-import { Address } from 'viem';
-
-import {EncodeAbiParametersReturnType} from "viem"
+import {EncodeAbiParametersReturnType, Address} from "viem"
 import {TransferData, WithdrawData} from "@src/hooks/types.ts"
 
 // ----------------------------------------------------------------------

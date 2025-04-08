@@ -21,7 +21,7 @@ export function useGetMmcContractBalance(address?: Address) {
         args: [address],
       }) as bigint;
 
-      const formattedBalance = parseFloat(formatUnits(rawBalance as bigint, 18));
+      const formattedBalance = parseFloat(formatUnits(rawBalance, 18));
       setBalance(isNaN(formattedBalance) ? 0 : formattedBalance);
     } catch (error) {
       console.error('Error fetching balance:', error);
