@@ -1,12 +1,13 @@
 import {LoginError} from "@lens-protocol/react-web"
 import {Profile} from "@lens-protocol/api-bindings"
+import {URI} from "@lens-protocol/react"
 
 export interface ProfileFormInitialValuesProps {
   username: string,
   name: string,
   bio: string,
-  profileImage: null,
-  backgroundImage: null,
+  profileImage: URI | null | undefined,
+  backgroundImage: URI | null | undefined,
   socialLinks: {
     twitter: string,
     instagram: string,
