@@ -1,4 +1,3 @@
-import { describe, it, expect, vi } from 'vitest';
 import {fireEvent, render, screen} from '@testing-library/react'
 import AvatarProfile from '@src/components/avatar/avatar.tsx';
 
