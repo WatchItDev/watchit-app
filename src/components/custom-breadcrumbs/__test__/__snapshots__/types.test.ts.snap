@@ -1,0 +1,33 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`[TYPES]: Breadcrumbs types testing > to match snapshot 1`] = `
+{
+  "sampleBreadcrumbs": {
+    "action": <button>
+      Action
+    </button>,
+    "activeLast": true,
+    "heading": "Page Title",
+    "links": [
+      {
+        "href": "/",
+        "name": "Home",
+      },
+      {
+        "href": "/dashboard",
+        "name": "Dashboard",
+      },
+    ],
+    "moreLink": [
+      "https://example.com",
+    ],
+  },
+  "sampleLink": {
+    "href": "/dashboard",
+    "icon": <span>
+      🏠
+    </span>,
+    "name": "Dashboard",
+  },
+}
+`;
