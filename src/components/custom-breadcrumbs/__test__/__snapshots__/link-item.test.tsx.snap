@@ -1,0 +1,15 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`[COMPONENTS]: BreadcrumbsLink component testing > to match snapshot 1`] = `
+<body>
+  <div>
+    <a
+      class="MuiTypography-root MuiTypography-inherit MuiLink-root MuiLink-underlineAlways css-133mjyt-MuiTypography-root-MuiLink-root"
+      data-testid="router-link"
+      href="/dashboard"
+    >
+      Dashboard
+    </a>
+  </div>
+</body>
+`;
