@@ -1,17 +1,27 @@
-import Button from '@mui/material/Button';
+import { useEffect, FC } from 'react';
 import { IconChevronLeft } from '@tabler/icons-react';
+
+import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Label from '@src/components/label';
-import { FC } from 'react';
 import { useResponsive } from '@src/hooks/use-responsive.ts';
-
-interface HeaderContentProps {
-  handleBack?: () => void;
-  title?: string;
-}
+import { HeaderContentProps } from './types';
 
 const HeaderContent: FC<HeaderContentProps> = ({ handleBack, title }) => {
   const mdUp = useResponsive('up', 'md');
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && handleBack) {
+        handleBack();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [handleBack]);
 
   if (!mdUp) return <></>;
 
