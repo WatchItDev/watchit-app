@@ -11,8 +11,12 @@ const HeaderContent: FC<HeaderContentProps> = ({ handleBack, title }) => {
   const mdUp = useResponsive('up', 'md');
 
   useEffect(() => {
+    if (!handleBack) {
+      return;
+    }
+
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape' && handleBack) {
+      if (event.key === 'Escape') {
         handleBack();
       }
     };
