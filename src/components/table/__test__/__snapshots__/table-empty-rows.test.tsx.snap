@@ -1,0 +1,14 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`[COMPONENTS]: TableEmptyRows component testing > to match snapshot 1`] = `
+<div>
+  <tr
+    class="MuiTableRow-root css-1ra9nw1-MuiTableRow-root"
+  >
+    <td
+      class="MuiTableCell-root MuiTableCell-sizeMedium css-bsph2u-MuiTableCell-root"
+      colspan="9"
+    />
+  </tr>
+</div>
+`;
