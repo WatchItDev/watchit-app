@@ -8,7 +8,7 @@ vi.mock("@src/workers/backgroundTaskWorker?worker", () => {
     },
   };
 });
-import { render } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { ExploreBookmarks } from "../explore-bookmarks";
 import { Provider } from "react-redux";
 import { store } from "@redux/store.ts";
@@ -53,11 +53,18 @@ const renderWithProviders = () =>
     </Provider>,
   );
 
-describe("Testing in the <explore-bookmarks/> component", () => {
-  it("should match snapshot", () => {
-    const { container } = renderWithProviders();
+describe(" Testing in the <explore-bookmarks/> component ", () => {
 
+  it(" should match snapshot ", () => {
+    const { container } = renderWithProviders();
     expect(container).toMatchSnapshot();
+  });
+
+  it("should reverse the order of bookmarkPublications", () => {
+    const { getByText } = renderWithProviders();
+    expect(getByText("Bookmark 2 description")).toBeInTheDocument();
+    expect(getByText("Bookmark 1 description")).toBeInTheDocument();
+    expect(screen.queryByText("Bookmark 3 description")).not.toBeInTheDocument();
   });
 
   it("should render the ExploreBookmarks component", () => {
@@ -71,4 +78,5 @@ describe("Testing in the <explore-bookmarks/> component", () => {
     const { queryByText } = renderWithProviders();
     expect(queryByText("Bookmark 3 description")).not.toBeInTheDocument();
   });
+
 });
