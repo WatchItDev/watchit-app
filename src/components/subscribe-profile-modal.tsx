@@ -98,11 +98,11 @@ export const SubscribeProfileModal = ({
 
   if (!isCustomDurationInvalid && durationDays >= minDays && terms?.amount) {
     totalCostWei = terms.amount * BigInt(durationDays);
-    totalCostMMC = ethers.formatUnits(totalCostWei, 18); // Convert Wei to MMC
+    totalCostMMC = ethers.utils.formatUnits(totalCostWei, 18); // Convert Wei to MMC
   }
 
   const balanceWei = balanceFromRedux
-    ? ethers.parseUnits(balanceFromRedux.toString(), 18)
+    ? ethers.utils.parseUnits(balanceFromRedux.toString(), 18)
     : BigInt(0);
   const isBalanceSufficient = balanceWei && totalCostWei && balanceWei >= totalCostWei;
 

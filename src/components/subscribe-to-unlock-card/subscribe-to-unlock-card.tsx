@@ -30,7 +30,7 @@ export const SubscribeToUnlockCard = ({
 
   const durationDays = 30; // a month
   const totalCostWei = terms?.amount ? terms?.amount * BigInt(durationDays) : 0; // Calculate total cost in Wei: DAILY_COST_WEI * durationDays
-  const totalCostMMC = ethers.formatUnits(totalCostWei, 18); // Converts Wei to MMC
+  const totalCostMMC = ethers.utils.formatUnits(totalCostWei, 18); // Converts Wei to MMC
   const isAccessFullyChecked = !isActiveLoading;
   const isSponsoredButtonVisible = isCampaignActive && isAuthorized && isAccessFullyChecked;
   const isJoinButtonVisible = isAuthorized && !isCampaignActive && isAccessFullyChecked && !isSponsoredButtonVisible;

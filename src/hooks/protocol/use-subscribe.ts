@@ -80,7 +80,7 @@ export const useSubscribe = (): UseSubscribeHook => {
     }
 
     try {
-      const approvalAmountInWei = ethers.parseUnits(amount, 18); // Convert amount to BigInt (in Wei)
+      const approvalAmountInWei = ethers.utils.parseUnits(amount, 18); // Convert amount to BigInt (in Wei)
       const parties = [sessionData?.profile?.ownedBy.address]; // The parties involved in the agreement (e.g., the user's address)
       const payload = '0x'; // Additional payload data if needed
 

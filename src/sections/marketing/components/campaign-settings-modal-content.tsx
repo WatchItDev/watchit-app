@@ -45,7 +45,7 @@ const CampaignSettingsModalContent: FC<CampaignSettingsModalContentProps> = (pro
   // Convert the daily price from Wei to MMC (float)
   const dailyPriceInMMC = useMemo((): number => {
     if (!terms?.amount) return 0; // use a Terms type to avoid to much use of safe navigation view issue #604
-    return parseFloat(ethers.formatUnits(terms.amount, 18));
+    return parseFloat(ethers.utils.formatUnits(terms.amount, 18));
   }, [terms]);
 
   // Calculate how many days of access the fundsAllocationAmount provides

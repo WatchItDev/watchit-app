@@ -77,7 +77,7 @@ export const ActivateSubscriptionProfileModal = ({
 
     try {
       // Convert the amount to Wei (BigInt)
-      const amountInWeiBigNumber = ethers.parseUnits(amount, 18);
+      const amountInWeiBigNumber = ethers.utils.parseUnits(amount, 18);
       const amountInWei = BigInt(amountInWeiBigNumber);
 
       // Encode parameters: amount in Wei and MMC address

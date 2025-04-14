@@ -116,12 +116,15 @@ const MovieCommentForm = ({ commentOn, owner, root }: MovieCommentFormProps) => 
         createdAt: new Date().toISOString(),
       };
 
+      console.log('[DEBUG] Metadata generada:', metadata);
+
       // Validate metadata against the schema
       const validation = PublicationMetadataSchema.safeParse(metadata);
       if (!validation.success) {
         console.error('Metadata validation error:', formatZodError(validation.error));
         return;
       }
+      console.log('[DEBUG] Metadata validada correctamente.');
 
       // Upload metadata to IPFS
       const uri = await uploadMetadataToIPFS(metadata);

@@ -81,12 +81,19 @@ const FollowUnfollowButton = ({
     profileName: string,
     followState: boolean
   ) => {
+    console.log('hello handle action');
+
     if (!profile) return;
     if (!sessionData?.authenticated) return dispatch(openLoginModal());
+
+    console.log('hello processing');
 
     setIsProcessing(true);
     try {
       const result = await action({ profile });
+      console.log('hello res');
+      console.log(result);
+      console.log(result.error);
       if (result.isSuccess()) {
         notifySuccess(SUCCESS.FOLLOW_UNFOLLOW_SUCCESSFULLY, {
           actionLbl,
@@ -124,6 +131,9 @@ const FollowUnfollowButton = ({
         handleActionError(result.error);
       }
     } catch (err) {
+      console.log('error following: ')
+      console.log(err.message)
+      console.log(err)
       notifyError(ERRORS.FOLLOW_UNFOLLOW_OCCURRED_ERROR);
     } finally {
       setIsProcessing(false);

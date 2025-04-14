@@ -92,6 +92,9 @@ export default function PublicationDetailMain({
   const variants = theme.direction === 'rtl' ? varFade().inLeft : varFade().inRight;
   const openMenu = Boolean(anchorEl);
 
+  console.log('publicationData', post);
+  console.log('reference', post?.referencePolicy);
+
   const toggleReaction = async () => {
     if (!sessionData?.authenticated) return dispatch(openLoginModal());
 

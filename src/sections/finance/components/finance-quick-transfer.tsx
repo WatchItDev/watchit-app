@@ -51,7 +51,7 @@ export interface FinanceQuickTransferProps extends CardProps {
 }
 
 export const isValidAddress = (address: string): boolean => {
-  return ethers.isAddress(address);
+  return ethers.utils.isAddress(address);
 };
 
 // ----------------------------------------------------------------------

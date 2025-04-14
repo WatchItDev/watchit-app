@@ -37,6 +37,8 @@ export interface GlobalConstants {
   WATCHIT_GET_MEDIA_CONTENT_URL: string;
   ATTESTATION_BASE_URL: string;
   FROM_BLOCK: bigint | string | number;
+  POLYGON_AMOY_RPC: string;
+  POLYGON_AMOY_WS: string;
 }
 
 export const GLOBAL_CONSTANTS: GlobalConstants = {
@@ -99,6 +101,8 @@ export const GLOBAL_CONSTANTS: GlobalConstants = {
   ATTESTATION_BASE_URL:
     process.env.VITE_URL_ATTESTATION_BASE || import.meta.env.VITE_URL_ATTESTATION_BASE || "",
   FROM_BLOCK: process.env.VITE_BLOCK_FROM || import.meta.env.VITE_BLOCK_FROM || 0n,
+  POLYGON_AMOY_RPC: process.env.VITE_POLYGON_AMOY_RPC || import.meta.env.VITE_POLYGON_AMOY_RPC || 0n,
+  POLYGON_AMOY_WS: process.env.VITE_POLYGON_AMOY_WS || import.meta.env.VITE_POLYGON_AMOY_WS || 0n,
 };
 
 export const PATH_AFTER_LOGIN = paths.dashboard.root;

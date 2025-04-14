@@ -28,6 +28,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     environment: development,
     bindings: bindings,
     debug: true,
+    // sponsored: false,
   };
 
   useEffect(() => {
