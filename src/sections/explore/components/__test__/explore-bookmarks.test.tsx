@@ -66,4 +66,9 @@ describe("Testing in the <explore-bookmarks/> component", () => {
     expect(getByText("Bookmark 1 description")).toBeInTheDocument();
     expect(getByText("Bookmark 2 description")).toBeInTheDocument();
   });
+
+  it("should not render hidden bookmarks", () => {
+    const { queryByText } = renderWithProviders();
+    expect(queryByText("Bookmark 3 description")).not.toBeInTheDocument();
+  });
 });
