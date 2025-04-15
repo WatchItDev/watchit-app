@@ -7,4 +7,10 @@ describe("<ExploreTopPublicationsSkeleton />", () => {
     const { container } = render(<ExploreTopPublicationsSkeleton />);
     expect(container).toMatchSnapshot();
   });
+
+  it("should render the correct number of Skeleton components", () => {
+    const { container } = render(<ExploreTopPublicationsSkeleton />);
+    const skeletons = container.querySelectorAll(".MuiSkeleton-root");
+    expect(skeletons.length).toBe(9);
+  });
 });
