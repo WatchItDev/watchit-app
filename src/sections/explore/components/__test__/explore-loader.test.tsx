@@ -52,4 +52,10 @@ describe("Testing in the <explore-loader/> component ", () => {
       alignItems: "flex-start",
     });
   });
+
+  it("renders the LoadingScreen component with correct child text", () => {
+    render(<ExploreLoader />);
+    const loadingScreen = screen.getByTestId("loading-screen");
+    expect(loadingScreen).toHaveTextContent("Loading...");
+  });
 });
