@@ -34,4 +34,10 @@ describe("Testing in the <ExplorePublicationsSkeleton/> component", () => {
     const skeletons = screen.getAllByRole("progressbar");
     expect(skeletons.length).toBe(1);
   });
+
+  it("renders the correct title in the skeleton", () => {
+    render(<ExplorePublicationsSkeleton />);
+    const titleElement = screen.getByText(/Publications/i);
+    expect(titleElement).toBeInTheDocument();
+  });
 });

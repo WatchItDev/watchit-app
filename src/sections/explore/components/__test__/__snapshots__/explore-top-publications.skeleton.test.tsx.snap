@@ -66,6 +66,39 @@ exports[`Testing in the <ExplorePublicationsSkeleton/> component > should match 
 </div>
 `;
 
+exports[`Testing in the <ExploreTopPublicationsSkeleton/> component > should match snapshot 1`] = `
+<div>
+  <div
+    data-testid="mock-carousel"
+  >
+    <h2>
+      Publications
+    </h2>
+    <div
+      data-testid="skeleton-item"
+    >
+      <div
+        class="MuiBox-root css-168a3lq"
+      >
+        <span
+          class="MuiSkeleton-root MuiSkeleton-rectangular MuiSkeleton-pulse css-6uim4l-MuiSkeleton-root"
+          role="progressbar"
+        />
+      </div>
+      <span
+        class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-1ly8sje-MuiSkeleton-root"
+      />
+      <span
+        class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-1yige66-MuiSkeleton-root"
+      />
+      <span
+        class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-1yige66-MuiSkeleton-root"
+      />
+    </div>
+  </div>
+</div>
+`;
+
 exports[`Testing in the <explore-top-publications.skeleton/> component > should match snapshot 1`] = `
 <div>
   <div
