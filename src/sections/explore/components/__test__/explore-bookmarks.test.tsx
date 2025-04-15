@@ -79,6 +79,19 @@ describe("Testing in the <ExploreBookmarks/> component", () => {
     await renderWithProviders();
     expect(screen.queryByText("Bookmark 3 description")).not.toBeInTheDocument();
   });
+  it("should render bookmarks with unique ids", async () => {
+    await renderWithProviders();
+    const bookmarks = screen.getAllByText(/Bookmark \d description/);
+    const uniqueIds = new Set(bookmarks.map((bookmark) => bookmark.textContent));
+    expect(uniqueIds.size).toBe(bookmarks.length);
+  });
+
+  it("should render bookmarks with correct upvotes and downvotes", async () => {
+    await renderWithProviders();
+    expect(screen.getByText("100")).toBeInTheDocument();
+    expect(screen.getByText("200")).toBeInTheDocument();
+    expect(screen.queryByText("150")).not.toBeInTheDocument();
+  });
 
   it("should render nothing when bookmarks are empty", async () => {
     vi.doMock("@lens-protocol/react-web", () => ({
