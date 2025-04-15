@@ -19,6 +19,7 @@ const SkeletonItem = () => {
       >
         <Skeleton
           variant="rectangular"
+          role="progressbar"
           sx={{
             position: 'absolute',
             height: '100%',

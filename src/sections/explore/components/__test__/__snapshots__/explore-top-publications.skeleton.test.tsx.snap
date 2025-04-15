@@ -1,64 +1,99 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
+exports[`<ExplorePublicationsSkeleton /> > should match snapshot 1`] = `
+<div>
+  <div
+    data-testid="mock-carousel"
+  >
+    <h2>
+      Publications
+    </h2>
+    <div
+      data-testid="skeleton-item"
+    >
+      <div
+        class="MuiBox-root css-168a3lq"
+      >
+        <span
+          class="MuiSkeleton-root MuiSkeleton-rectangular MuiSkeleton-pulse css-6uim4l-MuiSkeleton-root"
+          role="progressbar"
+        />
+      </div>
+      <span
+        class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-1ly8sje-MuiSkeleton-root"
+      />
+      <span
+        class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-1yige66-MuiSkeleton-root"
+      />
+      <span
+        class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-1yige66-MuiSkeleton-root"
+      />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Testing in the <ExplorePublicationsSkeleton/> component > should match snapshot 1`] = `
+<div>
+  <div
+    data-testid="mock-carousel"
+  >
+    <h2>
+      Publications
+    </h2>
+    <div
+      data-testid="skeleton-item"
+    >
+      <div
+        class="MuiBox-root css-168a3lq"
+      >
+        <span
+          class="MuiSkeleton-root MuiSkeleton-rectangular MuiSkeleton-pulse css-6uim4l-MuiSkeleton-root"
+          role="progressbar"
+        />
+      </div>
+      <span
+        class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-1ly8sje-MuiSkeleton-root"
+      />
+      <span
+        class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-1yige66-MuiSkeleton-root"
+      />
+      <span
+        class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-1yige66-MuiSkeleton-root"
+      />
+    </div>
+  </div>
+</div>
+`;
+
 exports[`Testing in the <explore-top-publications.skeleton/> component > should match snapshot 1`] = `
 <div>
   <div
-    class="MuiBox-root css-1lqjy3x"
+    data-testid="mock-carousel"
   >
-    <span
-      class="MuiSkeleton-root MuiSkeleton-rectangular MuiSkeleton-pulse css-18q1832-MuiSkeleton-root"
-      style="width: 100%; height: 100%;"
-    />
+    <h2>
+      Publications
+    </h2>
     <div
-      class="MuiBox-root css-qd97tw"
+      data-testid="skeleton-item"
     >
       <div
-        class="MuiBox-root css-fbjsum"
+        class="MuiBox-root css-168a3lq"
       >
         <span
-          class="MuiSkeleton-root MuiSkeleton-rectangular MuiSkeleton-pulse css-w33rqg-MuiSkeleton-root"
+          class="MuiSkeleton-root MuiSkeleton-rectangular MuiSkeleton-pulse css-6uim4l-MuiSkeleton-root"
+          role="progressbar"
         />
-        <div
-          class="MuiBox-root css-i54c5d"
-        >
-          <span
-            class="MuiSkeleton-root MuiSkeleton-rectangular MuiSkeleton-pulse css-13s1xpp-MuiSkeleton-root"
-            style="width: 14rem; height: 2.5rem;"
-          />
-          <span
-            class="MuiSkeleton-root MuiSkeleton-rectangular MuiSkeleton-pulse css-13s1xpp-MuiSkeleton-root"
-            style="width: 8rem; height: 2rem;"
-          />
-          <div
-            class="MuiBox-root css-8dboi"
-          >
-            <span
-              class="MuiSkeleton-root MuiSkeleton-rectangular MuiSkeleton-pulse css-omo2pj-MuiSkeleton-root"
-              style="height: 1.2rem;"
-            />
-            <span
-              class="MuiSkeleton-root MuiSkeleton-rectangular MuiSkeleton-pulse css-omo2pj-MuiSkeleton-root"
-              style="height: 1.2rem;"
-            />
-            <span
-              class="MuiSkeleton-root MuiSkeleton-rectangular MuiSkeleton-pulse css-omo2pj-MuiSkeleton-root"
-              style="height: 1.2rem;"
-            />
-          </div>
-          <div
-            class="MuiBox-root css-tsefwf"
-          >
-            <span
-              class="MuiSkeleton-root MuiSkeleton-rectangular MuiSkeleton-pulse css-13s1xpp-MuiSkeleton-root"
-              style="width: 8rem; height: 2.5rem;"
-            />
-            <span
-              class="MuiSkeleton-root MuiSkeleton-rectangular MuiSkeleton-pulse css-13s1xpp-MuiSkeleton-root"
-              style="width: 2.5rem; height: 2.5rem;"
-            />
-          </div>
-        </div>
       </div>
+      <span
+        class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-1ly8sje-MuiSkeleton-root"
+      />
+      <span
+        class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-1yige66-MuiSkeleton-root"
+      />
+      <span
+        class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-1yige66-MuiSkeleton-root"
+      />
     </div>
   </div>
 </div>
