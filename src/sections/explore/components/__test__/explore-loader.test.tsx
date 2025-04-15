@@ -58,4 +58,9 @@ describe("Testing in the <explore-loader/> component ", () => {
     const loadingScreen = screen.getByTestId("loading-screen");
     expect(loadingScreen).toHaveTextContent("Loading...");
   });
+
+  it("should confirm the absence of a non-existent element", () => {
+    render(<ExploreLoader />);
+    expect(screen.queryByTestId("non-existent-element")).not.toBeInTheDocument();
+  });
 });
