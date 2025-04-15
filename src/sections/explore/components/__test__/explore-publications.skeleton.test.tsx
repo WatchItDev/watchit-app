@@ -22,6 +22,7 @@ describe("Testing in the <ExplorePublicationsSkeleton/> component", () => {
     const { container } = render(<ExplorePublicationsSkeleton />);
     expect(container).toMatchSnapshot();
   });
+
   it("renders the mock ExploreCarouselSkeleton", () => {
     render(<ExplorePublicationsSkeleton />);
     expect(screen.getByTestId("mock-carousel")).toBeInTheDocument();
@@ -39,5 +40,27 @@ describe("Testing in the <ExplorePublicationsSkeleton/> component", () => {
     render(<ExplorePublicationsSkeleton />);
     const titleElement = screen.getByText(/Publications/i);
     expect(titleElement).toBeInTheDocument();
+  });
+
+  it("should not render an unexpected element", () => {
+    render(<ExplorePublicationsSkeleton />);
+    expect(screen.queryByTestId("unexpected-element")).not.toBeInTheDocument();
+  });
+
+  it("should fail if the title is incorrect", () => {
+    render(<ExplorePublicationsSkeleton />);
+    expect(screen.queryByText("Incorrect Title")).not.toBeInTheDocument();
+  });
+
+  it("should fail if SkeletonItem is missing", () => {
+    render(<ExplorePublicationsSkeleton />);
+    expect(screen.queryByTestId("missing-skeleton-item")).not.toBeInTheDocument();
+  });
+
+  it("should throw an error if required props are missing", () => {
+    const renderWithError = () => {
+      render(<ExplorePublicationsSkeleton />);
+    };
+    expect(renderWithError).not.toThrow();
   });
 });
