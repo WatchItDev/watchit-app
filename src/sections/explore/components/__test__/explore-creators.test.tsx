@@ -1,5 +1,5 @@
-import { describe, expect, it } from "vitest";
-import { render } from "@testing-library/react";
+import { describe, expect, it, vi } from "vitest";
+import { render, screen } from "@testing-library/react";
 import { ExploreCreators } from "../explore-creators";
 import { Provider } from "react-redux";
 import { store } from "@src/redux/store";
@@ -16,45 +16,38 @@ vi.mock("@src/workers/backgroundTaskWorker?worker", () => {
   };
 });
 
-vi.mock("@src/hooks/use-responsive.ts", () => ({
-  useResponsive: () => true,
-  useWidth: () => 1024,
-}));
+vi.mock("@src/hooks/components/use-item-per-slide", () => {
+  return {
+    useItemsPerSlide: () => ({
+      itemsPerSlide: 2,
+      parentRef: {
+        current: {
+          offsetWidth: 600,
+        },
+      },
+    }),
+  };
+});
 
 vi.mock("@lens-protocol/react-web", () => ({
   useBookmarks: () => ({
-    data: [
-      {
-        id: "1",
-        isHidden: false,
-        globalStats: { upvotes: 100, downvotes: 5 },
-        metadata: { content: "Bookmark 1 description" },
-      },
-      {
-        id: "2",
-        isHidden: false,
-        globalStats: { upvotes: 200, downvotes: 10 },
-        metadata: { content: "Bookmark 2 description" },
-      },
-      {
-        id: "3",
-        isHidden: true,
-        globalStats: { upvotes: 150, downvotes: 3 },
-        metadata: { content: "Bookmark 3 description" },
-      },
-    ],
+    data: [],
   }),
   useExploreProfiles: () => ({
     data: [
       {
         id: "profile1",
-        name: "Creator 1",
-        stats: { followers: 1000 },
+        metadata: {
+          displayName: "Creator 1",
+          bio: "A cool creator",
+        },
       },
       {
         id: "profile2",
-        name: "Creator 2",
-        stats: { followers: 2000 },
+        metadata: {
+          displayName: "Creator 2",
+          bio: "Another cool creator",
+        },
       },
     ],
     loading: false,
@@ -73,12 +66,16 @@ const renderWithProviders = () => {
       <MemoryRouter>
         <ExploreCreators />
       </MemoryRouter>
-    </Provider>,
+    </Provider>
   );
 };
-describe("Testing in the ExploreCreators component ", () => {
-  it("should match snapshot", () => {
+
+describe("Testing in the ExploreCreators component", () => {
+  it("should render creators and match snapshot", async () => {
     const { container } = renderWithProviders();
+
+    await screen.findByText("Creator 1");
+    await screen.findByText("Creator 2");
     expect(container).toMatchSnapshot();
   });
 });
