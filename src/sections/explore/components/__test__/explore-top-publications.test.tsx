@@ -57,4 +57,10 @@ describe("Testing in the <ExploreTopPublications/> component", () => {
   afterAll(() => {
     vi.restoreAllMocks();
   });
+
+  it("should render the correct number of posts", () => {
+    renderWithProviders();
+    const posts = screen.getAllByText("Prueba de titulo");
+    expect(posts.length).toBeGreaterThan(0);
+  });
 });
