@@ -31,8 +31,6 @@ describe("Testing in the <ExploreTopPublications/> component", () => {
   it("should match snapshot", () => {
     const { container } = renderWithProviders();
     expect(container).toMatchSnapshot();
-
-    screen.debug(container);
   });
 
   it("should render the component with content", () => {
@@ -40,5 +38,23 @@ describe("Testing in the <ExploreTopPublications/> component", () => {
     expect(screen.getByText("Prueba de titulo")).toBeInTheDocument();
     expect(screen.getByText("Contenido de prueba para explorar publicaciones")).toBeInTheDocument();
     expect(screen.getByText("Alex Talavera")).toBeInTheDocument();
+  });
+
+  it("should dispatch loading state to Redux store", async () => {
+    const dispatchSpy = vi.spyOn(store, "dispatch");
+    renderWithProviders();
+    await waitFor(() => {
+      expect(dispatchSpy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          type: "loading/setExploreLoading",
+          payload: { key: "top", isLoading: expect.any(Boolean) },
+        }),
+      );
+    });
+    expect(dispatchSpy).toHaveBeenCalledTimes(1);
+  });
+
+  afterAll(() => {
+    vi.restoreAllMocks();
   });
 });
