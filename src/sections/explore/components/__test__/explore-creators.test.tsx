@@ -66,7 +66,7 @@ const renderWithProviders = () => {
       <MemoryRouter>
         <ExploreCreators />
       </MemoryRouter>
-    </Provider>
+    </Provider>,
   );
 };
 
@@ -77,5 +77,18 @@ describe("Testing in the ExploreCreators component", () => {
     await screen.findByText("Creator 1");
     await screen.findByText("Creator 2");
     expect(container).toMatchSnapshot();
+  });
+  it("should render the correct number of creators", async () => {
+    renderWithProviders();
+    await screen.findByText("Creator 1");
+    await screen.findByText("Creator 2");
+    const creators = screen.getAllByText(/Creator/);
+    expect(creators.length).toBe(2);
+  });
+  it("should not render hidden creators", async () => {
+    renderWithProviders();
+    await screen.findByText("Creator 1");
+    await screen.findByText("Creator 2");
+    expect(screen.queryByText("Hidden Creator")).not.toBeInTheDocument();
   });
 });
