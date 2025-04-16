@@ -1,7 +1,5 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Testing in the ExploreCreators component  > should match snapshot 1`] = `<div />`;
-
 exports[`Testing in the ExploreCreators component > should render creators and match snapshot 1`] = `
 <div>
   <div

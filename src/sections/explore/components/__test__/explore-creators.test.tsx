@@ -49,6 +49,13 @@ vi.mock("@lens-protocol/react-web", () => ({
           bio: "Another cool creator",
         },
       },
+      {
+        id: "hiddenProfile",
+        metadata: {
+          displayName: "###HIDDEN### Hidden Creator",
+          bio: "This creator is hidden",
+        },
+      },
     ],
     loading: false,
   }),
@@ -90,5 +97,27 @@ describe("Testing in the ExploreCreators component", () => {
     await screen.findByText("Creator 1");
     await screen.findByText("Creator 2");
     expect(screen.queryByText("Hidden Creator")).not.toBeInTheDocument();
+  });
+
+  it("should dispatch loading state to Redux store", async () => {
+    const dispatchSpy = vi.spyOn(store, "dispatch");
+    renderWithProviders();
+    await screen.findByText("Creator 1");
+    await screen.findByText("Creator 2");
+    expect(dispatchSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        type: "loading/setExploreLoading",
+        payload: { key: "creators", isLoading: false },
+      }),
+    );
+    expect(dispatchSpy).toHaveBeenCalledTimes(1);
+  });
+  it("should not render duplicate creators", async () => {
+    renderWithProviders();
+    await screen.findByText("Creator 1");
+    await screen.findByText("Creator 2");
+    const creators = screen.getAllByText(/Creator/);
+    expect(creators.length).toBe(2);
+    expect(creators[0]).not.toEqual(creators[1]);
   });
 });
