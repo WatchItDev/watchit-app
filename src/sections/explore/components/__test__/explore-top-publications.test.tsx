@@ -63,4 +63,13 @@ describe("Testing in the <ExploreTopPublications/> component", () => {
     const posts = screen.getAllByText("Prueba de titulo");
     expect(posts.length).toBeGreaterThan(0);
   });
+
+  it("should not render duplicate posts", () => {
+    renderWithProviders();
+    const posts = screen.getAllByText("Prueba de titulo");
+
+    const uniquePosts = new Set(posts.map((post) => post.id?.trim()));
+
+    expect(uniquePosts.size).toBe(1);
+  });
 });
