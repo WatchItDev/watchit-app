@@ -112,12 +112,36 @@ describe("Testing in the ExploreCreators component", () => {
     );
     expect(dispatchSpy).toHaveBeenCalledTimes(1);
   });
+
+  afterEach(() => {
+    vi.resetModules();
+  });
+  
   it("should not render duplicate creators", async () => {
+    vi.doMock("@lens-protocol/react-web", () => ({
+      useExploreProfiles: () => ({
+        data: [
+          {
+            id: "profile1",
+            metadata: {
+              displayName: "Creator 1",
+              bio: "A cool creator",
+            },
+          },
+          {
+            id: "profile1",
+            metadata: {
+              displayName: "Creator 1",
+              bio: "A cool creator again",
+            },
+          },
+        ],
+        loading: false,
+      }),
+    }));
     renderWithProviders();
     await screen.findByText("Creator 1");
-    await screen.findByText("Creator 2");
-    const creators = screen.getAllByText(/Creator/);
-    expect(creators.length).toBe(2);
-    expect(creators[0]).not.toEqual(creators[1]);
+    const creatorElements = screen.getAllByText("Creator 1");
+    expect(creatorElements.length).toBe(1);
   });
 });
