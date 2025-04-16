@@ -44,5 +44,5 @@ export const ExploreTopPublications = () => {
     .filter((item, index, self) => self.findIndex((t) => t.id === item.id) === index)
     .slice(0, 10);
 
-  return <CarouselTopTitles data-testid="carousel-top-titles" posts={combinedPosts} />;
+  return <CarouselTopTitles posts={combinedPosts} />;
 };

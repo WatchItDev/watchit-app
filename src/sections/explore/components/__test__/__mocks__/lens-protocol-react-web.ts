@@ -3,7 +3,7 @@ export const useExplorePublications = vi.fn(() => ({
     {
       id: "pub-1",
       metadata: {
-        title: "Título de prueba",
+        title: "Prueba de titulo",
         content: "Contenido de prueba para explorar publicaciones",
       },
       by: {
@@ -17,7 +17,7 @@ export const useExplorePublications = vi.fn(() => ({
           displayName: "Alex Talavera",
         },
         handle: {
-          localName: "juanp",
+          localName: "Alex200207",
         },
       },
       operations: {

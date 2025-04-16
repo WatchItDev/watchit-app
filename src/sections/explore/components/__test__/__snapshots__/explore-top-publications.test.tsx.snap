@@ -58,7 +58,7 @@ exports[`Testing in the <ExploreTopPublications/> component > should match snaps
                         style="background-image: url(/assets/placeholder.svg); background-size: 100% 100%; color: transparent; display: inline-block;"
                       >
                         <img
-                          alt="Título de prueba"
+                          alt="Prueba de titulo"
                           class="MuiBox-root css-19t2nho"
                           src=""
                         />
@@ -82,7 +82,7 @@ exports[`Testing in the <ExploreTopPublications/> component > should match snaps
                               style="background-image: url(/assets/placeholder.svg); background-size: 100% 100%; color: transparent; display: inline-block;"
                             >
                               <img
-                                alt="Título de prueba"
+                                alt="Prueba de titulo"
                                 class="MuiBox-root css-19t2nho"
                                 src=""
                               />
@@ -102,7 +102,7 @@ exports[`Testing in the <ExploreTopPublications/> component > should match snaps
                             <h3
                               class="MuiTypography-root MuiTypography-h3 css-8f07vu-MuiTypography-root"
                             >
-                              Título de prueba
+                              Prueba de titulo
                             </h3>
                             <div
                               class="MuiBox-root css-1yp4ln"

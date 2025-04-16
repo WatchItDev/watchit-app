@@ -35,9 +35,10 @@ describe("Testing in the <ExploreTopPublications/> component", () => {
     screen.debug(container);
   });
 
-  // it("should render the component with content", () => {
-  //   renderWithProviders();
-  //   expect(screen.getByText("Título de prueba")).toBeInTheDocument();
-  //   expect(screen.getByText("Contenido de prueba para explorar publicaciones")).toBeInTheDocument();
-  // });
+  it("should render the component with content", () => {
+    renderWithProviders();
+    expect(screen.getByText("Prueba de titulo")).toBeInTheDocument();
+    expect(screen.getByText("Contenido de prueba para explorar publicaciones")).toBeInTheDocument();
+    expect(screen.getByText("Alex Talavera")).toBeInTheDocument();
+  });
 });
