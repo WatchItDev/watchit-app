@@ -1,4 +1,4 @@
-import { render } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import { MemoryRouter } from "react-router";
 import { Provider } from "react-redux";
 import { vi } from "vitest";
@@ -31,5 +31,13 @@ describe("Testing in the <ExploreTopPublications/> component", () => {
   it("should match snapshot", () => {
     const { container } = renderWithProviders();
     expect(container).toMatchSnapshot();
+
+    screen.debug(container);
   });
+
+  // it("should render the component with content", () => {
+  //   renderWithProviders();
+  //   expect(screen.getByText("Título de prueba")).toBeInTheDocument();
+  //   expect(screen.getByText("Contenido de prueba para explorar publicaciones")).toBeInTheDocument();
+  // });
 });

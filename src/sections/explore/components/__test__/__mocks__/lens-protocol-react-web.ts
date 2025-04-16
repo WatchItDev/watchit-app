@@ -1,21 +1,37 @@
-// src/__mocks__/lens-protocol-react-web.ts
-
 export const useExplorePublications = vi.fn(() => ({
   data: [
     {
-      id: "pub-2",
-      globalStats: { upvotes: 456 },
-      metadata: { content: "Publicación explorada" },
+      id: "pub-1",
+      metadata: {
+        title: "Título de prueba",
+        content: "Contenido de prueba para explorar publicaciones",
+      },
+      by: {
+        id: "user-1",
+        metadata: {
+          picture: {
+            optimized: {
+              uri: "https://placehold.co/40x40",
+            },
+          },
+          displayName: "Alex Talavera",
+        },
+        handle: {
+          localName: "juanp",
+        },
+      },
+      operations: {
+        hasBookmarked: false,
+      },
     },
   ],
-  loading: false,
 }));
 
 export const usePublications = vi.fn(() => ({
   data: [
     {
       id: "pub-1",
-      globalStats: { upvotes: 123 },
+      globalStats: { upvotes: 500},
       metadata: { content: "Publicación de prueba" },
     },
   ],
