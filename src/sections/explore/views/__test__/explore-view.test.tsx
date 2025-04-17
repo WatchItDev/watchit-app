@@ -48,12 +48,12 @@ describe("Testing in the <ExploreView/> component", () => {
   it("should not render bookmarks when user is not authenticated", () => {
     vi.spyOn(authHook, "useAuth").mockReturnValue({ isFullyAuthenticated: false });
     renderWithProviders();
-    expect(screen.queryByText(/Explore Bookmarks/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/Bookmarks/i)).not.toBeInTheDocument();
   });
 
   it("should render bookmarks when user is authenticated", () => {
     vi.spyOn(authHook, "useAuth").mockReturnValue({ isFullyAuthenticated: true });
     renderWithProviders();
-    expect(screen.getByText(/Explore Bookmarks/i)).toBeInTheDocument();
+    expect(screen.getByText(/Bookmarks/i)).toBeInTheDocument();
   });
 });
