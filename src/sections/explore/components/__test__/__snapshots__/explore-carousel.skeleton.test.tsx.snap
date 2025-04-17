@@ -29,6 +29,7 @@ exports[`Testing in the <ExploreCarouselSkeleton/> component > should match snap
         >
           <div
             class="MuiBox-root css-rmtq2p"
+            data-testid="skeleton-item"
           >
             <div
               class="MuiBox-root css-0"
@@ -40,6 +41,7 @@ exports[`Testing in the <ExploreCarouselSkeleton/> component > should match snap
         >
           <div
             class="MuiBox-root css-rmtq2p"
+            data-testid="skeleton-item"
           >
             <div
               class="MuiBox-root css-0"
