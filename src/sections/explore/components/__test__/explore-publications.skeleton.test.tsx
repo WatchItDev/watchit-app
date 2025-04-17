@@ -8,14 +8,17 @@ vi.mock("@src/sections/explore/components/explore-carousel.skeleton.tsx", () => 
     SkeletonItemComponent,
   }: {
     title: string;
-    SkeletonItemComponent: React.ReactNode;
+    SkeletonItemComponent: React.FC;
   }) => (
     <div data-testid="mock-carousel">
       <h2>{title}</h2>
-      <div data-testid="skeleton-item">{SkeletonItemComponent}</div>
+      <div data-testid="skeleton-item">
+        <SkeletonItemComponent />
+      </div>
     </div>
   ),
 }));
+
 
 describe("Testing in the <ExplorePublicationsSkeleton/> component", () => {
   it("should match snapshot", () => {
