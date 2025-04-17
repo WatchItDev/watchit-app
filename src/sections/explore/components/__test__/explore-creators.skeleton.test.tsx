@@ -30,6 +30,12 @@ describe("Testing in the <ExploreCreatorsSkeleton/>", () => {
     );
   });
 
+  it("should render the correct number of skeleton items", () => {
+    render(<ExploreCreatorsSkeleton />);
+    const skeletonItems = screen.getAllByTestId("explore-carousel-skeleton");
+    expect(skeletonItems.length).toBe(1);
+  });
+
   it("should fail if ExploreCarouselSkeleton is not rendered", () => {
     vi.doMock("@src/sections/explore/components/explore-carousel.skeleton", () => ({
       ExploreCarouselSkeleton: vi.fn(() => null),
