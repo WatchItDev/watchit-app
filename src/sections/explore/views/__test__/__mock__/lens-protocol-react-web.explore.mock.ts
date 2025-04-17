@@ -2,21 +2,51 @@ import { vi } from "vitest";
 export const useExplorePublications = vi.fn(() => ({
   data: [
     {
-      id: "publication1",
+      id: "pub-1",
       metadata: {
-        content: "This is a test publication",
+        title: "Prueba de titulo",
+        content: "Contenido de prueba para explorar publicaciones",
       },
-      globalStats: {
-        upvotes: 10,
+      by: {
+        id: "user-1",
+        metadata: {
+          picture: {
+            optimized: {
+              uri: "https://placehold.co/40x40",
+            },
+          },
+          displayName: "Alex Talavera",
+        },
+        handle: {
+          localName: "Alex200207",
+        },
+      },
+      operations: {
+        hasBookmarked: false,
       },
     },
     {
-      id: "publication2",
+      id: "pub-1",
       metadata: {
-        content: "Another test publication",
+        title: "Prueba de titulo",
+        content: "Contenido de prueba para explorar publicaciones",
       },
-      globalStats: {
-        upvotes: 5,
+      by: {
+        id: "user-1",
+        metadata: {
+          picture: {
+            optimized: {
+              uri: "https://placehold.co/40x40",
+            },
+          },
+          displayName: "Alex Talavera",
+        },
+        handle: {
+          localName: "Alex200207",
+        },
+      },
+      operations: {
+        hasBookmarked: false,
       },
     },
   ],
@@ -26,22 +56,14 @@ export const useExplorePublications = vi.fn(() => ({
 export const usePublications = vi.fn(() => ({
   data: [
     {
-      id: "publication1",
-      metadata: {
-        content: "This is a test publication",
-      },
-      globalStats: {
-        upvotes: 8,
-      },
+      id: "pub-1",
+      globalStats: { upvotes: 500 },
+      metadata: { content: "Publicación de prueba" },
     },
     {
-      id: "publication2",
-      metadata: {
-        content: "Another test publication",
-      },
-      globalStats: {
-        upvotes: 3,
-      },
+      id: "pub-1",
+      globalStats: { upvotes: 500 },
+      metadata: { content: "Otra publicación de prueba" },
     },
   ],
   loading: false,
