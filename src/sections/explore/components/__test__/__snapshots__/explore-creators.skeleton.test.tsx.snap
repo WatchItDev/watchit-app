@@ -77,3 +77,11 @@ exports[`Testing in the <ExploreCreatorsSkeleton/>  > should render the skeleton
   </div>
 </div>
 `;
+
+exports[`Testing in the <ExploreCreatorsSkeleton/> > should render the skeleton and match snapshot 1`] = `
+<div>
+  <div
+    data-testid="explore-carousel-skeleton"
+  />
+</div>
+`;
