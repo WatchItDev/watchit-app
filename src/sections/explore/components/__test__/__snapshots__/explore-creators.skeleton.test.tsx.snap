@@ -78,6 +78,8 @@ exports[`Testing in the <ExploreCreatorsSkeleton/>  > should render the skeleton
 </div>
 `;
 
+exports[`Testing in the <ExploreCreatorsSkeleton/> > should render the SkeletonItem component within ExploreCarouselSkeleton 1`] = `<skeletonitem />`;
+
 exports[`Testing in the <ExploreCreatorsSkeleton/> > should render the skeleton and match snapshot 1`] = `
 <div>
   <div
