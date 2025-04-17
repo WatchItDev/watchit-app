@@ -25,7 +25,7 @@ export const ExploreCreators = () => {
 
   useEffect(() => {
     dispatch(setExploreLoading({ key: 'creators', isLoading: loading }));
-  }, [loading])
+  }, [dispatch, loading])
 
   return (
     <>
