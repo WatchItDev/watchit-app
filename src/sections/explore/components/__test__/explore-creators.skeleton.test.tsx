@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { ExploreCreatorsSkeleton } from "../explore-creators.skeleton";
 import { ExploreCarouselSkeleton } from "@src/sections/explore/components/explore-carousel.skeleton";
-// Removed unused import
+
 
 vi.mock("@src/sections/explore/components/explore-carousel.skeleton", () => ({
   ExploreCarouselSkeleton: vi.fn(() => <div data-testid="explore-carousel-skeleton" />),
