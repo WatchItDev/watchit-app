@@ -28,7 +28,23 @@ exports[`Testing in the <ExploreCarouselSkeleton/> component > should match snap
           class="MuiBox-root css-k008qs"
         >
           <div
-            class="MuiBox-root css-rmtq2p"
+            class="MuiBox-root css-b3j2rt"
+            data-testid="skeleton-item"
+          >
+            <div
+              class="MuiBox-root css-0"
+            />
+          </div>
+          <div
+            class="MuiBox-root css-b3j2rt"
+            data-testid="skeleton-item"
+          >
+            <div
+              class="MuiBox-root css-0"
+            />
+          </div>
+          <div
+            class="MuiBox-root css-b3j2rt"
             data-testid="skeleton-item"
           >
             <div
@@ -40,7 +56,23 @@ exports[`Testing in the <ExploreCarouselSkeleton/> component > should match snap
           class="MuiBox-root css-k008qs"
         >
           <div
-            class="MuiBox-root css-rmtq2p"
+            class="MuiBox-root css-b3j2rt"
+            data-testid="skeleton-item"
+          >
+            <div
+              class="MuiBox-root css-0"
+            />
+          </div>
+          <div
+            class="MuiBox-root css-b3j2rt"
+            data-testid="skeleton-item"
+          >
+            <div
+              class="MuiBox-root css-0"
+            />
+          </div>
+          <div
+            class="MuiBox-root css-b3j2rt"
             data-testid="skeleton-item"
           >
             <div
