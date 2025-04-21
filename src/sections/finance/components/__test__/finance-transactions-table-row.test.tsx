@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
-import { render } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import FinanceTransactionTableRow from "../finance-transactions-table-row";
+import { truncateAddress } from "@src/utils/wallet";
 
 const mockRow = {
   date: BigInt("1234567890"),
@@ -24,8 +25,8 @@ describe("[COMPONENTS] <FinanceTransactionTableRow/>", () => {
   });
 
   it("should render with correct props", () => {
-    const { getByText } = renderComponent();
-    expect(getByText("Test message")).toBeInTheDocument();
-    expect(getByText("100 MMC")).toBeInTheDocument();
+    render(<FinanceTransactionTableRow row={mockRow} selected={false} />);
+    expect(screen.getByText(mockRow.message)).toBeInTheDocument();
+    expect(screen.getByText(truncateAddress(mockRow.name))).toBeInTheDocument();
   });
 });
