@@ -3,6 +3,7 @@ import { render, screen } from "@testing-library/react";
 import FinanceTransactionTableRow from "../finance-transactions-table-row";
 import { truncateAddress } from "@src/utils/wallet";
 import { format } from "date-fns";
+import { TX_COLORS } from "../../CONSTANTS";
 
 const mockRow = {
   date: BigInt("1234567890"),
@@ -38,4 +39,11 @@ describe("[COMPONENTS] <FinanceTransactionTableRow/>", () => {
     expect(screen.getByText(date)).toBeInTheDocument();
     expect(screen.getByText(time)).toBeInTheDocument();
   });
+
+  it('Apply the correct color based on the type of transaction', () => {
+    render(<FinanceTransactionTableRow row={mockRow} selected={false} />);
+    const amountElement = screen.getByText(/MMC/);
+    const expectedColor = TX_COLORS[mockRow.type as keyof typeof TX_COLORS];
+    expect(amountElement).toHaveStyle(`color: ${expectedColor}`);
+  })
 });
