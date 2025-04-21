@@ -1,0 +1,242 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Testing in the <ExploreTopPublications/> component > should match snapshot 1`] = `
+<div>
+  <div
+    class="MuiBox-root css-14btkih"
+  >
+    <div
+      class="MuiStack-root css-nen11g-MuiStack-root"
+      data-testid="carouselArrowsContainer"
+    >
+      <button
+        class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeMedium css-oxvw91-MuiButtonBase-root-MuiIconButton-root"
+        tabindex="0"
+        type="button"
+      >
+        <span
+          data-icon="eva:arrow-ios-forward-fill"
+          data-sx="{"transform":" scaleX(-1)"}"
+          data-testid="leftButton"
+        />
+        <span
+          class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
+        />
+      </button>
+      <div
+        class="slick-slider slick-initialized"
+      >
+        <div
+          class="slick-list"
+          style="height: 0px;"
+        >
+          <div
+            class="slick-track"
+            style="opacity: 1; transform: translate3d(0px, 0px, 0px);"
+          >
+            <div
+              aria-hidden="false"
+              class="slick-slide slick-active slick-current"
+              data-index="0"
+              style="outline: none; width: 0px;"
+              tabindex="-1"
+            >
+              <div>
+                <div
+                  class="MuiBox-root css-1fpx25h"
+                  style="width: 100%; display: inline-block;"
+                  tabindex="-1"
+                >
+                  <div
+                    class="MuiStack-root css-1dw07r3-MuiStack-root"
+                  >
+                    <span
+                      class="component-image MuiBox-root css-1k4qe2b"
+                    >
+                      <span
+                        class="component-image-wrapper lazy-load-image-background blur"
+                        style="background-image: url(/assets/placeholder.svg); background-size: 100% 100%; color: transparent; display: inline-block;"
+                      >
+                        <img
+                          alt="Prueba de titulo"
+                          class="MuiBox-root css-19t2nho"
+                          src=""
+                        />
+                      </span>
+                    </span>
+                    <div
+                      class="MuiBox-root css-1wf6v1o"
+                    >
+                      <div
+                        class="MuiBox-root css-bwbmtv"
+                      >
+                        <div
+                          class="MuiBox-root css-b8hdil"
+                        >
+                          <span
+                            class="component-image MuiBox-root css-1jl2tef"
+                            style="border-radius: 10px; width: 100%;"
+                          >
+                            <span
+                              class="component-image-wrapper lazy-load-image-background blur"
+                              style="background-image: url(/assets/placeholder.svg); background-size: 100% 100%; color: transparent; display: inline-block;"
+                            >
+                              <img
+                                alt="Prueba de titulo"
+                                class="MuiBox-root css-19t2nho"
+                                src=""
+                              />
+                            </span>
+                          </span>
+                        </div>
+                      </div>
+                      <div
+                        class="MuiBox-root css-1x26m9t"
+                      >
+                        <div
+                          class="MuiStack-root css-1u3oz1v-MuiStack-root"
+                        >
+                          <div
+                            class="MuiStack-root css-1fkouc0-MuiStack-root"
+                          >
+                            <h3
+                              class="MuiTypography-root MuiTypography-h3 css-8f07vu-MuiTypography-root"
+                            >
+                              Prueba de titulo
+                            </h3>
+                            <div
+                              class="MuiBox-root css-1yp4ln"
+                            >
+                              <button
+                                class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-colorPrimary css-1x59mi6-MuiButtonBase-root-MuiButton-root"
+                                tabindex="0"
+                                type="button"
+                              >
+                                <span
+                                  class="MuiTypography-root MuiTypography-caption css-1sn4lm3-MuiTypography-root"
+                                  style="margin-right: 5px;"
+                                >
+                                  by
+                                </span>
+                                <span
+                                  class="MuiTypography-root MuiTypography-caption css-1sn4lm3-MuiTypography-root"
+                                  style="gap: 4px; display: flex; align-items: center; background-color: rgba(0, 0, 0, 0.7); padding: 4px 10px; border-radius: 8px;"
+                                >
+                                  <span
+                                    class="component-image MuiBox-root css-1jl2tef"
+                                    style="width: 20px; height: 20px; border-radius: 50%;"
+                                  >
+                                    <span
+                                      class="component-image-wrapper lazy-load-image-background blur"
+                                      style="background-image: url(/assets/placeholder.svg); background-size: 100% 100%; color: transparent; display: inline-block;"
+                                    >
+                                      <img
+                                        class="MuiBox-root css-19t2nho"
+                                        src="https://placehold.co/40x40"
+                                      />
+                                    </span>
+                                  </span>
+                                  Alex Talavera
+                                </span>
+                                <span
+                                  class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
+                                />
+                              </button>
+                            </div>
+                          </div>
+                          <h6
+                            class="MuiTypography-root MuiTypography-h6 css-1r23mgh-MuiTypography-root"
+                          >
+                            Contenido de prueba para explorar publicaciones
+                          </h6>
+                          <div
+                            class="MuiStack-root css-kdc3n8-MuiStack-root"
+                          >
+                            <button
+                              class="MuiButtonBase-root MuiButton-root MuiButton-contained MuiButton-containedPrimary MuiButton-sizeMedium MuiButton-containedSizeMedium MuiButton-colorPrimary MuiButton-root MuiButton-contained MuiButton-containedPrimary MuiButton-sizeMedium MuiButton-containedSizeMedium MuiButton-colorPrimary css-3fybcr-MuiButtonBase-root-MuiButton-root"
+                              tabindex="0"
+                              type="button"
+                            >
+                              <div
+                                class="MuiBox-root css-16t8mkw"
+                              >
+                                <svg
+                                  class="tabler-icon tabler-icon-player-play "
+                                  fill="none"
+                                  height="22"
+                                  stroke="#000"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                  stroke-width="2"
+                                  viewBox="0 0 24 24"
+                                  width="22"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                >
+                                  <path
+                                    d="M7 4v16l13 -8z"
+                                  />
+                                </svg>
+                              </div>
+                              <span
+                                class="MuiTypography-root MuiTypography-button css-o6jcpp-MuiTypography-root"
+                              >
+                                Watch now
+                              </span>
+                              <span
+                                class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
+                              />
+                            </button>
+                            <button
+                              class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-colorPrimary MuiButton-root MuiButton-text MuiButton-textPrimary MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-colorPrimary css-1t5pcmw-MuiButtonBase-root-MuiButton-root"
+                              tabindex="0"
+                              type="button"
+                            >
+                              <svg
+                                class="tabler-icon tabler-icon-bookmark "
+                                fill="none"
+                                height="22"
+                                stroke="#FFFFFF"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                viewBox="0 0 24 24"
+                                width="22"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  d="M18 7v14l-6 -4l-6 4v-14a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4z"
+                                />
+                              </svg>
+                              <span
+                                class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
+                              />
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button
+        class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeMedium css-17oewfz-MuiButtonBase-root-MuiIconButton-root"
+        tabindex="0"
+        type="button"
+      >
+        <span
+          data-icon="eva:arrow-ios-forward-fill"
+          data-sx="{}"
+          data-testid="rightButton"
+        />
+        <span
+          class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
+        />
+      </button>
+    </div>
+  </div>
+</div>
+`;
