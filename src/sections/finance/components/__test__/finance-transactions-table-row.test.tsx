@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { render, screen } from "@testing-library/react";
 import FinanceTransactionTableRow from "../finance-transactions-table-row";
 import { truncateAddress } from "@src/utils/wallet";
+import { format } from "date-fns";
 
 const mockRow = {
   date: BigInt("1234567890"),
@@ -28,5 +29,13 @@ describe("[COMPONENTS] <FinanceTransactionTableRow/>", () => {
     render(<FinanceTransactionTableRow row={mockRow} selected={false} />);
     expect(screen.getByText(mockRow.message)).toBeInTheDocument();
     expect(screen.getByText(truncateAddress(mockRow.name))).toBeInTheDocument();
+  });
+
+  it("show the date and time formatted correctly", () => {
+    render(<FinanceTransactionTableRow row={mockRow} selected={false} />);
+    const date = format(new Date(Number(mockRow.date) * 1000), "dd/MM/yyyy");
+    const time = format(new Date(Number(mockRow.date) * 1000), "p");
+    expect(screen.getByText(date)).toBeInTheDocument();
+    expect(screen.getByText(time)).toBeInTheDocument();
   });
 });
