@@ -40,10 +40,16 @@ describe("[COMPONENTS] <FinanceTransactionTableRow/>", () => {
     expect(screen.getByText(time)).toBeInTheDocument();
   });
 
-  it('Apply the correct color based on the type of transaction', () => {
+  it("Apply the correct color based on the type of transaction", () => {
     render(<FinanceTransactionTableRow row={mockRow} selected={false} />);
     const amountElement = screen.getByText(/MMC/);
     const expectedColor = TX_COLORS[mockRow.type as keyof typeof TX_COLORS];
     expect(amountElement).toHaveStyle(`color: ${expectedColor}`);
-  })
+  });
+
+  it("Displays the avatar with the correct image and alt", () => {
+    render(<FinanceTransactionTableRow row={mockRow} selected={false} />);
+    const avatar = screen.getByAltText((alt) => alt.toLowerCase() === mockRow.name.toLowerCase());
+    expect(avatar).toHaveAttribute("src", mockRow.avatarUrl);
+  });
 });
