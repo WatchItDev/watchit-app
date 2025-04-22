@@ -29,4 +29,29 @@ describe("[COMPONENTS] <FinanceWalletTransferWidgetHorizontal/>", () => {
     renderComponent();
     expect(screen.getByTestId("icon")).toHaveAttribute("data-icon", mockProps.icon);
   });
+
+  it("should render with correct color", () => {
+    renderComponent();
+    const icon = screen.getByTestId("icon");
+    expect(icon.getAttribute("data-icon")).toBe(mockProps.icon);
+  });
+
+  it("should fail if title is missing", () => {
+    const { title, ...propsWithoutTitle } = mockProps;
+    renderComponent(propsWithoutTitle as typeof mockProps);
+    expect(screen.queryByText(title)).not.toBeInTheDocument();
+  });
+
+  it("should fail if value is missing", () => {
+    const { value, ...propsWithoutValue } = mockProps;
+    renderComponent(propsWithoutValue as typeof mockProps);
+    expect(screen.queryByText(`${value} MMC`)).not.toBeInTheDocument();
+  });
+
+  it("should fail if color is invalid", () => {
+    const invalidColorProps = { ...mockProps, color: "invalid-color" };
+    renderComponent(invalidColorProps);
+    const icon = screen.getByTestId("icon");
+    expect(icon).toHaveStyle("color: invalid-color");
+  });
 });
