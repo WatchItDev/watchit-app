@@ -52,4 +52,38 @@ describe("[COMPONENTS] <FinanceTransactionTableRow/>", () => {
     const avatar = screen.getByAltText((alt) => alt.toLowerCase() === mockRow.name.toLowerCase());
     expect(avatar).toHaveAttribute("src", mockRow.avatarUrl);
   });
+
+  it("should not render incorrect message", () => {
+    render(<FinanceTransactionTableRow row={mockRow} selected={false} />);
+    expect(screen.queryByText("Incorrect message")).not.toBeInTheDocument();
+  });
+
+  it("should not render incorrect truncated name", () => {
+    render(<FinanceTransactionTableRow row={mockRow} selected={false} />);
+    expect(screen.queryByText(truncateAddress("Wrong User"))).not.toBeInTheDocument();
+  });
+
+  it("should not apply incorrect color for transaction type", () => {
+    render(<FinanceTransactionTableRow row={mockRow} selected={false} />);
+    const amountElement = screen.getByText(/MMC/);
+    const incorrectColor = "rgb(255, 0, 0)";
+    expect(amountElement).not.toHaveStyle(`color: ${incorrectColor}`);
+  });
+
+  it("should not render incorrect date and time", () => {
+    render(<FinanceTransactionTableRow row={mockRow} selected={false} />);
+    const incorrectDate = "01/01/2000";
+    const incorrectTime = "12:00 AM";
+    expect(screen.queryByText(incorrectDate)).not.toBeInTheDocument();
+    expect(screen.queryByText(incorrectTime)).not.toBeInTheDocument();
+  });
+  it("should not render incorrect avatar", () => {
+    render(<FinanceTransactionTableRow row={mockRow} selected={false} />);
+    const incorrectAvatar = screen.queryByAltText("Incorrect Avatar");
+    expect(incorrectAvatar).not.toBeInTheDocument();
+  });
+  it("should not render incorrect amount", () => {
+    render(<FinanceTransactionTableRow row={mockRow} selected={false} />);
+    expect(screen.queryByText(/200 MMC/)).not.toBeInTheDocument();
+  });
 });
