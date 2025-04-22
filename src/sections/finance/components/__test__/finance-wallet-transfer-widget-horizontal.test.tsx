@@ -23,4 +23,9 @@ describe("[COMPONENTS] <FinanceWalletTransferWidgetHorizontal/>", () => {
     expect(screen.getByText(mockProps.title)).toBeInTheDocument();
     expect(screen.getByText(`${mockProps.value} MMC`)).toBeInTheDocument();
   });
+
+  it("should render with correct icon", () => {
+    renderComponent();
+    expect(screen.getByTestId("icon")).toHaveAttribute("data-icon", mockProps.icon);
+  });
 });

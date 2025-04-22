@@ -11,7 +11,7 @@ exports[`[COMPONENTS] <FinanceWalletTransferWidgetHorizontal/> > to match snapsh
       <span
         data-icon="icon-name"
         data-sx="{"color":"red","position":"absolute"}"
-        data-testid="iconify"
+        data-testid="icon"
         width="32"
       />
       <span
