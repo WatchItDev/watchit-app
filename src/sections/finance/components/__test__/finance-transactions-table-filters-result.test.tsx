@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, within } from "@testing-library/react";
 import FinanceTransactionsTableFiltersResult from "../finance-transactions-table-filters-result";
 
 const mockFilters = {
@@ -58,5 +58,32 @@ describe("[COMPONENTS] <FinanceTransactionsTableFiltersResult/>", () => {
     expect(screen.queryByText("All")).not.toBeInTheDocument();
   });
 
+  it("should call onResetFilters when reset button is clicked", () => {
+    renderComponent();
+    const resetButton = screen.getByText("Clear");
+    fireEvent.click(resetButton);
+    expect(mockOnResetFilters).toHaveBeenCalled();
+  });
+
+  test('should call onFilters with "status" and "all" when chip delete is clicked', () => {
+    const onFilters = vi.fn();
+    const onResetFilters = vi.fn();
+
+    render(
+      <FinanceTransactionsTableFiltersResult
+        filters={{ status: "transferTo" }}
+        onFilters={onFilters}
+        onResetFilters={onResetFilters}
+        results={10}
+      />
+    );
+
+    const chip = screen.getByText("Incomes").closest("div");
+    const deleteIcon = within(chip!).getByTestId("CancelIcon");
+
+    fireEvent.click(deleteIcon);
+
+    expect(onFilters).toHaveBeenCalledWith("status", "all");
+  });
 
 });
