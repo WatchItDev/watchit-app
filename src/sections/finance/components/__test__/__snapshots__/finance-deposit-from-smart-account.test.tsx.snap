@@ -1,11 +1,29 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`FinanceDepositFromSmartAccount > should render correctly and match snapshot 1`] = `
+exports[`FinanceDepositFromSmartAccount > should match snapshot 1`] = `
 <div>
   <div
     data-testid="FinanceDeposit"
   >
-    Mocked FinanceDeposit
+    0x123456789abcdef
+    -
+    0x123456789abcdef
+    -
+    mockedDepositHook
+  </div>
+</div>
+`;
+
+exports[`FinanceDepositFromSmartAccount > to match snapshot 1`] = `
+<div>
+  <div
+    data-testid="FinanceDeposit"
+  >
+    0x123456789abcdef
+    -
+    0x123456789abcdef
+    -
+    [object Object]
   </div>
 </div>
 `;
