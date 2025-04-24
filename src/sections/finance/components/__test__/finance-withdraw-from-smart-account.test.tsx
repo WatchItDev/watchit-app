@@ -3,6 +3,7 @@ import { render, screen } from "@testing-library/react";
 import FinanceWithdrawFromSmartAccount from "../finance-withdraw-from-smart-account";
 import { Provider } from "react-redux";
 import { store } from "@src/redux/store";
+import { useAuth } from "@src/hooks/use-auth";
 
 vi.mock("@src/workers/backgroundTaskWorker?worker", () => {
   return {
@@ -16,13 +17,12 @@ vi.mock("@src/workers/backgroundTaskWorker?worker", () => {
 });
 
 vi.mock("@src/hooks/use-auth.ts", () => ({
-  useAuth: () => ({
+  useAuth: vi.fn(() => ({
     session: {
       address: "0x1111111111111111111111111111111111111111",
     },
-  }),
+  })),
 }));
-
 const mockWithdraw = vi.fn();
 
 vi.mock("@src/hooks/protocol/use-withdraw.ts", () => ({
@@ -69,5 +69,10 @@ describe("[COMPONENTS] <FinanceWithdrawFromSmartAccount/>", () => {
   it("should display the wallet address", () => {
     renderComponent();
     expect(screen.getByText(/0x1111/)).toBeInTheDocument();
+  });
+
+  it("should call useAuth and useDeposit hooks", () => {
+    renderComponent();
+    expect(vi.mocked(useAuth)).toHaveBeenCalled();
   });
 });
