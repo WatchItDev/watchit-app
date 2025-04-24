@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`[COMPONENTS] <FinanceWithdrawFromSmartAccount/> > debería hacer match con el snapshot 1`] = `
+exports[`[COMPONENTS] <FinanceWithdrawFromSmartAccount/> > should match snapshot 1`] = `
 <div>
   <div
     class="MuiStack-root css-l058t3-MuiStack-root"

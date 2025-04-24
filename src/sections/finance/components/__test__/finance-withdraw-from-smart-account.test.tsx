@@ -1,4 +1,4 @@
-import { describe, it, vi } from "vitest";
+import { describe, it, vi, beforeEach } from "vitest";
 import { render, screen } from "@testing-library/react";
 import FinanceWithdrawFromSmartAccount from "../finance-withdraw-from-smart-account";
 import { Provider } from "react-redux";
@@ -23,9 +23,11 @@ vi.mock("@src/hooks/use-auth.ts", () => ({
   }),
 }));
 
+const mockWithdraw = vi.fn();
+
 vi.mock("@src/hooks/protocol/use-withdraw.ts", () => ({
   useWithdraw: () => ({
-    withdraw: vi.fn(),
+    withdraw: mockWithdraw,
     isLoading: false,
     error: null,
   }),
@@ -39,26 +41,33 @@ vi.mock("@src/hooks/protocol/use-get-vault-balance.ts", () => ({
   }),
 }));
 
-const renderComponent = () => {
+const renderComponent = ({ onClose = () => {} } = {}) => {
   const { container } = render(
     <Provider store={store}>
-      <FinanceWithdrawFromSmartAccount onClose={() => {}} />
+      <FinanceWithdrawFromSmartAccount onClose={onClose} />
     </Provider>,
   );
   return container;
 };
 
 describe("[COMPONENTS] <FinanceWithdrawFromSmartAccount/>", () => {
-  it("to match snapshot", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it("should match snapshot", () => {
     const container = renderComponent();
     expect(container).toMatchSnapshot();
-
-    screen.debug(container);
   });
 
   it("should render the component", () => {
     renderComponent();
     expect(screen.getByLabelText("Amount to withdraw")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /confirm/i })).toBeInTheDocument();
+  });
+
+  it("should display the wallet address", () => {
+    renderComponent();
+    expect(screen.getByText(/0x1111/)).toBeInTheDocument();
   });
 });
