@@ -13,17 +13,3 @@ exports[`FinanceDepositFromSmartAccount > should match snapshot 1`] = `
   </div>
 </div>
 `;
-
-exports[`FinanceDepositFromSmartAccount > to match snapshot 1`] = `
-<div>
-  <div
-    data-testid="FinanceDeposit"
-  >
-    0x123456789abcdef
-    -
-    0x123456789abcdef
-    -
-    [object Object]
-  </div>
-</div>
-`;
