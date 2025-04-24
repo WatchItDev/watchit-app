@@ -1,5 +1,5 @@
 import { describe, it, vi } from "vitest";
-import { render } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import FinanceWithdrawFromSmartAccount from "../finance-withdraw-from-smart-account";
 import { Provider } from "react-redux";
 import { store } from "@src/redux/store";
@@ -49,8 +49,16 @@ const renderComponent = () => {
 };
 
 describe("[COMPONENTS] <FinanceWithdrawFromSmartAccount/>", () => {
-  it("debería hacer match con el snapshot", () => {
+  it("to match snapshot", () => {
     const container = renderComponent();
     expect(container).toMatchSnapshot();
+
+    screen.debug(container);
+  });
+
+  it("should render the component", () => {
+    renderComponent();
+    expect(screen.getByLabelText("Amount to withdraw")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /confirm/i })).toBeInTheDocument();
   });
 });

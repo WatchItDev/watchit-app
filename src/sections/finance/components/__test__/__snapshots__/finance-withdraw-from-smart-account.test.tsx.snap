@@ -90,3 +90,94 @@ exports[`[COMPONENTS] <FinanceWithdrawFromSmartAccount/> > debería hacer match 
   </div>
 </div>
 `;
+
+exports[`[COMPONENTS] <FinanceWithdrawFromSmartAccount/> > to match snapshot 1`] = `
+<div>
+  <div
+    class="MuiStack-root css-l058t3-MuiStack-root"
+  >
+    <div
+      class="MuiBox-root css-1us6dsi"
+    >
+      <p
+        class="MuiTypography-root MuiTypography-body1 css-bqndyn-MuiTypography-root"
+      >
+        Wallet
+      </p>
+      <p
+        class="MuiTypography-root MuiTypography-body1 css-1cstuho-MuiTypography-root"
+      >
+        0x1111...111111
+      </p>
+    </div>
+    <div
+      class="MuiBox-root css-1us6dsi"
+    >
+      <p
+        class="MuiTypography-root MuiTypography-body1 css-bqndyn-MuiTypography-root"
+      >
+        Available
+      </p>
+      <p
+        class="MuiTypography-root MuiTypography-body1 css-1cstuho-MuiTypography-root"
+      >
+        0.0
+         MMC
+      </p>
+    </div>
+    <div
+      class="MuiFormControl-root MuiFormControl-fullWidth MuiTextField-root css-vrxo58-MuiFormControl-root-MuiTextField-root"
+    >
+      <label
+        class="MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-sizeMedium MuiInputLabel-outlined MuiFormLabel-colorPrimary MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-sizeMedium MuiInputLabel-outlined css-14s5rfu-MuiFormLabel-root-MuiInputLabel-root"
+        data-shrink="false"
+        for=":r0:"
+        id=":r0:-label"
+      >
+        Amount to withdraw
+      </label>
+      <div
+        class="MuiInputBase-root MuiOutlinedInput-root MuiInputBase-colorPrimary MuiInputBase-fullWidth MuiInputBase-formControl css-md26zr-MuiInputBase-root-MuiOutlinedInput-root"
+      >
+        <input
+          aria-invalid="false"
+          class="MuiInputBase-input MuiOutlinedInput-input css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input"
+          id=":r0:"
+          placeholder="Enter an amount"
+          type="number"
+          value=""
+        />
+        <fieldset
+          aria-hidden="true"
+          class="MuiOutlinedInput-notchedOutline css-1d3z3hw-MuiOutlinedInput-notchedOutline"
+        >
+          <legend
+            class="css-yjsfm1"
+          >
+            <span>
+              Amount to withdraw
+            </span>
+          </legend>
+        </fieldset>
+      </div>
+    </div>
+  </div>
+  <div
+    class="MuiDialogActions-root MuiDialogActions-spacing css-4friwf-MuiDialogActions-root"
+  >
+    <div
+      class="MuiBox-root css-0"
+    >
+      <button
+        class="MuiButtonBase-root MuiButton-root MuiLoadingButton-root MuiButton-contained MuiButton-containedPrimary MuiButton-sizeMedium MuiButton-containedSizeMedium MuiButton-colorPrimary Mui-disabled MuiButton-root MuiLoadingButton-root MuiButton-contained MuiButton-containedPrimary MuiButton-sizeMedium MuiButton-containedSizeMedium MuiButton-colorPrimary css-twc2j6-MuiButtonBase-root-MuiButton-root-MuiLoadingButton-root"
+        disabled=""
+        id=":r1:"
+        tabindex="-1"
+        type="button"
+      >
+        Confirm
+      </button>
+    </div>
+  </div>
+</div>
+`;
