@@ -78,5 +78,6 @@ describe("[COMPONENTS] <FinanceWithdrawModal/> ", () => {
     fireEvent.click(screen.getByText("Smart Account"));
     expect(screen.getByText("Smart Account")).toBeInTheDocument();
     expect(screen.getByTestId("FinanceWithdraw")).toBeInTheDocument();
+    screen.debug();
   });
 });
