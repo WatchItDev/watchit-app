@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { FinanceTabs } from "../finance-tabs";
 import { Provider } from "react-redux";
 import { store } from "@src/redux/store";
@@ -42,5 +42,21 @@ describe("[COMPONENTS] <FinanceTabs/>", () => {
   it("should render initial tab content (Statistics)", () => {
     renderComponent();
     expect(screen.getByText("Statistics")).toBeInTheDocument();
+  });
+
+  it("should switch to Transactions tab when clicked", () => {
+    renderComponent();
+    fireEvent.click(screen.getByRole("tab", { name: /Transactions/i }));
+    expect(screen.getByText("Transactions")).toBeInTheDocument();
+    expect(screen.getByText("Mocked FinanceTransactionsHistory")).toBeInTheDocument();
+    expect(screen.queryByText("Mocked FinanceBalanceStatistics")).not.toBeInTheDocument();
+  });
+  it("should switch back to Statistics tab when clicked", () => {
+    renderComponent();
+    fireEvent.click(screen.getByRole("tab", { name: /Transactions/i }));
+    fireEvent.click(screen.getByRole("tab", { name: /Statistics/i }));
+    expect(screen.getByText("Statistics")).toBeInTheDocument();
+    expect(screen.getByText("Mocked FinanceBalanceStatistics")).toBeInTheDocument();
+    expect(screen.queryByText("Mocked FinanceTransactionsHistory")).not.toBeInTheDocument();
   });
 });
