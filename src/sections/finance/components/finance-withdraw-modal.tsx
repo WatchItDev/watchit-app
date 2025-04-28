@@ -32,6 +32,7 @@ export const FinanceWithdrawModal: FC<FinanceWithdrawModalProps> = ({ open, onCl
 
   return (
     <FinanceModal
+      data-testid="finance-withdraw-modal"
       open={open}
       onClose={onClose}
       title="Withdraw to"
