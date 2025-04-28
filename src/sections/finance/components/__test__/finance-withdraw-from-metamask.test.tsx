@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import FinanceWithdrawFromMetamask from "../finance-withdraw-from-metamask";
 import { Provider } from "react-redux";
 import { store } from "@src/redux/store";
@@ -79,5 +79,13 @@ describe("[COMPONENTS] <FinanceWithdrawFromMetamask/>", () => {
 
     const { getByTestId } = render(<FinanceWithdrawFromMetamask onClose={onCloseMock} />);
     expect(getByTestId("finance-metamask-loader")).toBeInTheDocument();
+  });
+
+  it("should render connect button if no account is connected", () => {
+    loading = false;
+    account = undefined;
+
+    const { getByTestId } = render(<FinanceWithdrawFromMetamask onClose={onCloseMock} />);
+    expect(getByTestId("finance-metamask-button")).toBeInTheDocument();
   });
 });
