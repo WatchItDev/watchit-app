@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { render} from "@testing-library/react";
 import FinanceWithdrawFromMetamask from "../finance-withdraw-from-metamask";
 import { Provider } from "react-redux";
 import { store } from "@src/redux/store";
