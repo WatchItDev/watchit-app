@@ -4,6 +4,7 @@ import FinanceWithdrawModal from "../finance-withdraw-modal";
 import { Provider } from "react-redux";
 import { store } from "@src/redux/store";
 
+
 vi.mock("@src/hooks/use-auth.ts", () => ({
   useAuth: vi.fn(() => ({
     session: {
@@ -41,24 +42,35 @@ vi.mock("@src/hooks/protocol/use-get-vault-balance.ts", () => ({
   }),
 }));
 const mockOnClose = vi.fn();
-const mockOpen = true;
-const renderComponent = render(
-  <Provider store={store}>
-    <FinanceWithdrawModal onClose={mockOnClose} open={mockOpen} />
-  </Provider>,
-);
+const renderComponent = (open = true) =>
+  render(
+    <Provider store={store}>
+      <FinanceWithdrawModal open={open} onClose={mockOnClose} />
+    </Provider>,
+  );
 
 describe("[COMPONENTS] <FinanceWithdrawModal/> ", () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
   it("to match snapshot", () => {
-    const { container } = renderComponent;
+    const { container } = renderComponent();
     expect(container).toMatchSnapshot();
   });
 
   it("should not render modal if open is false", () => {
-    render(<FinanceWithdrawModal open={false} onClose={vi.fn()} />);
+    renderComponent(false);
     expect(screen.queryByTestId("finance-withdraw-modal")).not.toBeInTheDocument();
+  });
+
+  it("should render modal if open is true", () => {
+    renderComponent();
+    expect(screen.getByTestId("finance-withdraw-modal")).toBeInTheDocument();
+  });
+
+  it("should render tabs correctly", () => {
+    renderComponent();
+    expect(screen.getByText("Metamask")).toBeInTheDocument();
+    expect(screen.getByText("Smart Account")).toBeInTheDocument();
   });
 });
