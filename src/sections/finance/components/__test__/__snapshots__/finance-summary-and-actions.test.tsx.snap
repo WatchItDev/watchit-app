@@ -1,0 +1,16 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`[COMPONENTS] <FinanceSummaryAndActions/> > should match snapshot 1`] = `
+<div>
+  <div
+    class="MuiStack-root css-1noynt0-MuiStack-root"
+  >
+    <div>
+      Mocked FinanceWidgetSummary
+    </div>
+    <div>
+      Mocked FinanceEarnTokens
+    </div>
+  </div>
+</div>
+`;
