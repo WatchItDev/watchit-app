@@ -1,9 +1,8 @@
 import { describe, expect, it } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import FinanceWithdrawModal from "../finance-withdraw-modal";
 import { Provider } from "react-redux";
 import { store } from "@src/redux/store";
-
 
 vi.mock("@src/hooks/use-auth.ts", () => ({
   useAuth: vi.fn(() => ({
@@ -72,5 +71,12 @@ describe("[COMPONENTS] <FinanceWithdrawModal/> ", () => {
     renderComponent();
     expect(screen.getByText("Metamask")).toBeInTheDocument();
     expect(screen.getByText("Smart Account")).toBeInTheDocument();
+  });
+
+  it("should change content when switching tabs", () => {
+    renderComponent();
+    fireEvent.click(screen.getByText("Smart Account"));
+    expect(screen.getByText("Smart Account")).toBeInTheDocument();
+    expect(screen.getByTestId("FinanceWithdraw")).toBeInTheDocument();
   });
 });
