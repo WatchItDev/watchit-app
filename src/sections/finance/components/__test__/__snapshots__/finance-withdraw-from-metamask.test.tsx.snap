@@ -4,6 +4,7 @@ exports[`[COMPONENTS] <FinanceWithdrawFromMetamask/> > should match snapshot 1`]
 <div>
   <div
     class="MuiStack-root css-l058t3-MuiStack-root"
+    data-testid="FinanceWithdraw"
   >
     <div
       class="MuiBox-root css-1us6dsi"

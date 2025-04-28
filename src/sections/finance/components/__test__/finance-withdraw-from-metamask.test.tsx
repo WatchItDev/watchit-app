@@ -84,8 +84,13 @@ describe("[COMPONENTS] <FinanceWithdrawFromMetamask/>", () => {
   it("should render connect button if no account is connected", () => {
     loading = false;
     account = undefined;
-
     const { getByTestId } = render(<FinanceWithdrawFromMetamask onClose={onCloseMock} />);
     expect(getByTestId("finance-metamask-button")).toBeInTheDocument();
+  });
+  it("should render FinanceWithdraw if account is connected", () => {
+    loading = false;
+    account = "0x123456789abcdef";
+    const { getByTestId } = renderComponent({ onClose: onCloseMock });
+    expect(getByTestId("FinanceWithdraw")).toBeInTheDocument();
   });
 });
