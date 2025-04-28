@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { render } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { FinanceTabs } from "../finance-tabs";
 import { Provider } from "react-redux";
 import { store } from "@src/redux/store";
@@ -37,5 +37,10 @@ describe("[COMPONENTS] <FinanceTabs/>", () => {
   it("to match snapshot", () => {
     const { container } = renderComponent();
     expect(container).toMatchSnapshot();
+  });
+
+  it("should render initial tab content (Statistics)", () => {
+    renderComponent();
+    expect(screen.getByText("Statistics")).toBeInTheDocument();
   });
 });
