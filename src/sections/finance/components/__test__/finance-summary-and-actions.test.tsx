@@ -76,5 +76,8 @@ describe("[COMPONENTS] <FinanceSummaryAndActions/>", () => {
     expect(queryByText("Mocked FinanceEarnTokens")).toBeNull();
   });
 
-
+  it("should not render FinanceWidgetSummary when percent is 0", () => {
+    const { queryByText } = renderComponent({ ...mockProps, percent: 0 });
+    expect(queryByText("Mocked FinanceWidgetSummary")).toBeNull();
+  });
 });
