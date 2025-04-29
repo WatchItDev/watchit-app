@@ -70,5 +70,11 @@ describe("[COMPONENTS] <FinanceSummaryAndActions/>", () => {
     expect(getByText("Mocked FinanceEarnTokens")).toBeInTheDocument();
   });
 
+  it("should not render FinanceEarnTokens when lgUp is false", () => {
+    useResponsiveMock.mockImplementation((_, bp) => (bp === "lg" ? false : true));
+    const { queryByText } = renderComponent();
+    expect(queryByText("Mocked FinanceEarnTokens")).toBeNull();
+  });
+
 
 });
