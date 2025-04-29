@@ -59,4 +59,10 @@ describe("[COMPONENTS] <FinanceSummaryAndActions/>", () => {
     expect(getByText("Mocked FinanceQuickTransfer")).toBeInTheDocument();
   });
 
+  it("should not render FinanceQuickTransfer when mdUp is true", () => {
+    useResponsiveMock.mockImplementation((_, bp) => (bp === "md" ? true : false));
+    const { queryByText } = renderComponent();
+    expect(queryByText("Mocked FinanceQuickTransfer")).toBeNull();
+  });
+ 
 });
