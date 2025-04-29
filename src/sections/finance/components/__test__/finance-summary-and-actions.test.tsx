@@ -64,5 +64,11 @@ describe("[COMPONENTS] <FinanceSummaryAndActions/>", () => {
     const { queryByText } = renderComponent();
     expect(queryByText("Mocked FinanceQuickTransfer")).toBeNull();
   });
- 
+  it("should render FinanceEarnTokens only when lgUp is true", () => {
+    useResponsiveMock.mockImplementation((_, bp) => (bp === "lg" ? true : false));
+    const { getByText } = renderComponent();
+    expect(getByText("Mocked FinanceEarnTokens")).toBeInTheDocument();
+  });
+
+
 });
