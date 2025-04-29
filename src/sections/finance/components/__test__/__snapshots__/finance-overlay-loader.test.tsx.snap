@@ -4,6 +4,7 @@ exports[`[COMPONENTS] <FinanceOverlayLoader/> > to match snapshot 1`] = `
 <div>
   <div
     class="MuiBox-root css-4c6let"
+    data-testid="loading-screen"
   >
     <div
       class="MuiBox-root css-tk1iyj"
