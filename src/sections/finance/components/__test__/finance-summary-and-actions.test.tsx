@@ -11,8 +11,10 @@ vi.mock("ethereum-cryptography/utils.js", () => ({
 }));
 
 vi.mock("@src/sections/finance/components/finance-widget-summary", () => ({
-  default: () => <div>Mocked FinanceWidgetSummary</div>,
+  default: ({ percent }: { percent: number }) =>
+    percent > 0 ? <div>Mocked FinanceWidgetSummary</div> : null,
 }));
+
 vi.mock("@src/sections/finance/components/finance-quick-transfer", () => ({
   default: () => <div>Mocked FinanceQuickTransfer</div>,
 }));
@@ -22,6 +24,10 @@ vi.mock("@src/sections/finance/components/finance-earn-tokens", () => ({
 
 vi.mock("@src/hooks/use-responsive.ts", () => ({
   useResponsive: vi.fn(() => true),
+}));
+const useResponsiveMock = vi.fn();
+vi.mock("@src/hooks/use-responsive.ts", () => ({
+  useResponsive: (...args: any[]) => useResponsiveMock(...args),
 }));
 
 import { SummaryAndActions } from "../finance-summary-and-actions";
@@ -37,8 +43,20 @@ const mockProps = {
 const renderComponent = (props = mockProps) => render(<SummaryAndActions {...props} />);
 
 describe("[COMPONENTS] <FinanceSummaryAndActions/>", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    useResponsiveMock.mockImplementation((_, bp) => (bp === "lg" ? true : false));
+  });
   it("should match snapshot", () => {
     const { container } = renderComponent();
     expect(container).toMatchSnapshot();
   });
+
+  it("should render FinanceWidgetSummary and FinanceQuickTransfer components", () => {
+    useResponsiveMock.mockImplementation((_, bp) => (bp === "md" ? false : true));
+    const { getByText } = renderComponent({ ...mockProps, percent: 50 });
+    expect(getByText("Mocked FinanceWidgetSummary")).toBeInTheDocument();
+    expect(getByText("Mocked FinanceQuickTransfer")).toBeInTheDocument();
+  });
+
 });
