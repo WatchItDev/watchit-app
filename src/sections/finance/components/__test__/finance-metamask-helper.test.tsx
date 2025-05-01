@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { render } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import FinanceMetamaskHelper from "../finance-metamask-helper";
 
 describe("<COMPONENTS> FinanceMetamaskHelper", () => {
@@ -7,4 +7,19 @@ describe("<COMPONENTS> FinanceMetamaskHelper", () => {
     const { container } = render(<FinanceMetamaskHelper />);
     expect(container).toMatchSnapshot();
   });
+
+  it("renders Stack, Typography, and Link components", () => {
+    render(<FinanceMetamaskHelper />);
+    expect(screen.getByText(/MetaMask required/i)).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /Click here/i })).toBeInTheDocument();
+  });
+
+  it("Link has correct attributes", () => {
+    render(<FinanceMetamaskHelper />);
+    const link = screen.getByRole("link", { name: /Click here/i });
+    expect(link).toHaveAttribute("href", "https://metamask.app.link");
+    expect(link).toHaveAttribute("target", "_blank");
+    expect(link).toHaveAttribute("rel", "noopener");
+  });
+
 });
