@@ -21,5 +21,9 @@ describe("<COMPONENTS> FinanceMetamaskHelper", () => {
     expect(link).toHaveAttribute("target", "_blank");
     expect(link).toHaveAttribute("rel", "noopener");
   });
-
+  it("Link has correct styles", () => {
+    render(<FinanceMetamaskHelper />);
+    const link = screen.getByRole("link", { name: /Click here/i });
+    expect(link).toHaveStyle("color: rgba(0, 0, 0, 0.87);");
+  });
 });
