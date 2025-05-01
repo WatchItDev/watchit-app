@@ -26,4 +26,11 @@ describe("<COMPONENTS> FinanceMetamaskHelper", () => {
     const link = screen.getByRole("link", { name: /Click here/i });
     expect(link).toHaveStyle("color: rgba(0, 0, 0, 0.87);");
   });
+
+  it("calls handleDownloadMetaMask on click", () => {
+    render(<FinanceMetamaskHelper />);
+    const link = screen.getByRole("link", { name: /Click here/i });
+    link.click();
+    expect(window.location.href).toBe("http://localhost:3000/");
+  });
 });
