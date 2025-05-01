@@ -1,5 +1,5 @@
 import { profile as profileBuilder, MetadataAttributeType } from '@lens-protocol/metadata';
-import { ProfileData } from '@src/auth/context/web3Auth/types';
+import { ProfileData } from '@src/contexts/auth/types.ts';
 import {Profile} from "@lens-protocol/api-bindings";
 
 const removeEmptyValues = (obj: Record<string, unknown>): Record<string, unknown> =>

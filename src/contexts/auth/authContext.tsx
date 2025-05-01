@@ -1,5 +1,5 @@
 import React, { createContext } from 'react';
-import { AuthContextProps } from './types';
+import { AuthContextProps } from './types.ts';
 import {Web3Auth} from "@web3auth/modal/dist/types/modalManager"
 
 export const AuthContext = createContext<AuthContextProps>({} as AuthContextProps);

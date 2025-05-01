@@ -1,0 +1,3 @@
+mutation ToggleBookmark($input: BookmarkPostInput!) {
+  toggleBookmark(input: $input)
+}

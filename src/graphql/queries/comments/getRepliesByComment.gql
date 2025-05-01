@@ -1,0 +1,7 @@
+query GetRepliesByComment($commentId: String!, $limit: Int) {
+  getRepliesByComment(commentId: $commentId, limit: $limit) {
+    content
+    id
+    likeCount
+  }
+}

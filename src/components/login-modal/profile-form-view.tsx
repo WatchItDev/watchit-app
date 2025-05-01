@@ -18,7 +18,7 @@ import { Box, Button, Grid, Input, TextField, Typography } from '@mui/material';
 
 // PROJECTS IMPORTS
 import Image from '../image';
-import { ProfileData } from '@src/auth/context/web3Auth/types.ts';
+import { ProfileData } from '@src/contexts/auth/types.ts';
 import { uploadImageToIPFS, uploadMetadataToIPFS} from '@src/libs/ipfs.ts'
 import { buildProfileMetadata } from '@src/libs/profile.ts';
 import TextMaxLine from '@src/components/text-max-line';

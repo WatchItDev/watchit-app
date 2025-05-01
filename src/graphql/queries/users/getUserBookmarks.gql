@@ -1,0 +1,12 @@
+query GetUserBookmarks($address: String!, $limit: Int) {
+  getUserBookmarks(address: $address, limit: $limit) {
+    id
+    title
+    description
+    media {
+      url
+      type
+    }
+    createdAt
+  }
+}

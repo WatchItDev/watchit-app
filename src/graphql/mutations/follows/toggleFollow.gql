@@ -1,0 +1,3 @@
+mutation ToggleFollow($input: FollowInput!) {
+  toggleFollow(input: $input)
+}

@@ -1,0 +1,8 @@
+mutation UpdateComment($input: UpdateCommentInput!) {
+  updateComment(input: $input) {
+    id
+    content
+    updatedAt
+    createdAt
+  }
+}
