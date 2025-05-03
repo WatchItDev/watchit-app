@@ -1,0 +1,15 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`FinanceDepositFromSmartAccount > should match snapshot 1`] = `
+<div>
+  <div
+    data-testid="FinanceDeposit"
+  >
+    0x123456789abcdef
+    -
+    0x123456789abcdef
+    -
+    mockedDepositHook
+  </div>
+</div>
+`;

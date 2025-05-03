@@ -1,0 +1,61 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`[COMPONENTS] <FinanceWalletTransferWidgetHorizontal/> > to match snapshot 1`] = `
+<div>
+  <div
+    class="MuiStack-root css-1yxi6tj-MuiStack-root"
+  >
+    <div
+      class="MuiStack-root css-19wq847-MuiStack-root"
+    >
+      <span
+        data-icon="icon-name"
+        data-sx="{"color":"red","position":"absolute"}"
+        data-testid="icon"
+        width="32"
+      />
+      <span
+        aria-valuenow="100"
+        class="MuiCircularProgress-root MuiCircularProgress-determinate MuiCircularProgress-colorPrimary css-179juh6-MuiCircularProgress-root"
+        role="progressbar"
+        style="width: 56px; height: 56px; transform: rotate(-90deg);"
+      >
+        <svg
+          class="MuiCircularProgress-svg css-1idz92c-MuiCircularProgress-svg"
+          viewBox="22 22 44 44"
+        >
+          <circle
+            class="MuiCircularProgress-circle MuiCircularProgress-circleDeterminate css-oxts8u-MuiCircularProgress-circle"
+            cx="44"
+            cy="44"
+            fill="none"
+            r="20.5"
+            stroke-width="3"
+            style="stroke-dasharray: 128.805; stroke-dashoffset: 0.000px;"
+          />
+        </svg>
+      </span>
+    </div>
+    <div
+      class="MuiStack-root css-j3ygch-MuiStack-root"
+    >
+      <h6
+        class="MuiTypography-root MuiTypography-subtitle1 css-10wpov9-MuiTypography-root"
+      >
+        Test Title
+      </h6>
+      <span
+        class="MuiBox-root css-10d62iu"
+      >
+        Balance
+      </span>
+      <h6
+        class="MuiTypography-root MuiTypography-subtitle2 css-ati914-MuiTypography-root"
+      >
+        100
+         MMC
+      </h6>
+    </div>
+  </div>
+</div>
+`;
