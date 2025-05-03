@@ -1,0 +1,26 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`<COMPONENTS> FinanceMetamaskHelper > to match snapshot 1`] = `
+<div>
+  <div
+    class="MuiStack-root css-1i3xkqc-MuiStack-root"
+  >
+    <p
+      class="MuiTypography-root MuiTypography-body2 css-1da0jfs-MuiTypography-root"
+    >
+      MetaMask required.
+       
+      <a
+        class="MuiTypography-root MuiTypography-inherit MuiLink-root MuiLink-underlineHover css-1pdnr0o-MuiTypography-root-MuiLink-root"
+        href="https://metamask.app.link"
+        rel="noopener"
+        target="_blank"
+      >
+        Click here
+      </a>
+       
+      if you don't have it installed.
+    </p>
+  </div>
+</div>
+`;

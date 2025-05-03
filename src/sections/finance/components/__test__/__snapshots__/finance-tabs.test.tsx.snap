@@ -1,0 +1,69 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`[COMPONENTS] <FinanceTabs/> > to match snapshot 1`] = `
+<div>
+  <div
+    class="MuiTabs-root css-1kfchxd-MuiTabs-root"
+  >
+    <div
+      class="MuiTabs-scroller MuiTabs-fixed css-jpln7h-MuiTabs-scroller"
+      style="overflow: hidden; margin-bottom: 0px;"
+    >
+      <div
+        class="MuiTabs-flexContainer css-heg063-MuiTabs-flexContainer"
+        role="tablist"
+      >
+        <button
+          aria-selected="true"
+          class="MuiButtonBase-root MuiTab-root MuiTab-labelIcon MuiTab-textColorPrimary Mui-selected css-aym9vq-MuiButtonBase-root-MuiTab-root"
+          role="tab"
+          tabindex="0"
+          type="button"
+        >
+          <span
+            class="MuiTab-iconWrapper"
+            data-icon="codicon:graph"
+            data-testid="iconify"
+          />
+          Statistics
+          <span
+            class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
+          />
+        </button>
+        <button
+          aria-selected="false"
+          class="MuiButtonBase-root MuiTab-root MuiTab-labelIcon MuiTab-textColorPrimary css-aym9vq-MuiButtonBase-root-MuiTab-root"
+          role="tab"
+          tabindex="-1"
+          type="button"
+        >
+          <span
+            class="MuiTab-iconWrapper"
+            data-icon="majesticons:table"
+            data-testid="iconify"
+          />
+          Transactions
+          <span
+            class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
+          />
+        </button>
+      </div>
+      <span
+        class="MuiTabs-indicator css-1aquho2-MuiTabs-indicator"
+        style="left: 0px; width: 0px;"
+      />
+    </div>
+  </div>
+  <div
+    class="MuiGrid2-root MuiGrid2-direction-xs-row MuiGrid2-grid-xs-12 MuiGrid2-grid-md-8 css-uwypwe-MuiGrid2-root"
+  >
+    <div
+      class="MuiStack-root css-v2woy3-MuiStack-root"
+    >
+      <div>
+        Mocked FinanceBalanceStatistics
+      </div>
+    </div>
+  </div>
+</div>
+`;

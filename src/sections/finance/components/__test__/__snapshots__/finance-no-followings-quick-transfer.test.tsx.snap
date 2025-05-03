@@ -1,0 +1,40 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`<COMPONENTS> FinanceNoFollowingsQuickTransfer  > to match snapshot 1`] = `
+<div>
+  <div
+    class="MuiBox-root css-1eh3ji9"
+  >
+    <div
+      class="MuiStack-root css-aha7cr-MuiStack-root"
+    >
+      <p
+        class="MuiTypography-root MuiTypography-body2 css-1yr8029-MuiTypography-root"
+      >
+        Here appear your followings. Follow one to transfer.
+      </p>
+      <div
+        class="MuiBox-root css-1j6of9y"
+      >
+        <div
+          class="MuiBox-root css-brmi7b"
+        />
+        <div
+          class="MuiBox-root css-lzi2pg"
+        >
+          <p
+            class="MuiTypography-root MuiTypography-body1 css-cssm10-MuiTypography-root"
+          >
+            OR
+          </p>
+        </div>
+      </div>
+      <p
+        class="MuiTypography-root MuiTypography-body2 css-1yr8029-MuiTypography-root"
+      >
+        Perform a search to start a transfer.
+      </p>
+    </div>
+  </div>
+</div>
+`;
