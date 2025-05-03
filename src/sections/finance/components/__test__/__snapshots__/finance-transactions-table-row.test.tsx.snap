@@ -1,0 +1,91 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`[COMPONENTS] <FinanceTransactionTableRow/> > to match snapshot 1`] = `
+<div>
+  <tr
+    class="MuiTableRow-root MuiTableRow-hover css-1q1u3t4-MuiTableRow-root"
+  >
+    <td
+      class="MuiTableCell-root MuiTableCell-sizeMedium css-8ud3sa-MuiTableCell-root"
+    >
+      <div
+        class="MuiAvatar-root MuiAvatar-circular css-wke4e9-MuiAvatar-root"
+      >
+        <img
+          alt="TEST USER"
+          class="MuiAvatar-img css-1pqm26d-MuiAvatar-img"
+          src="https://example.com/avatar.jpg"
+        />
+      </div>
+      <div
+        class="MuiListItemText-root MuiListItemText-multiline css-konndc-MuiListItemText-root"
+      >
+        <span
+          class="MuiTypography-root MuiTypography-body1 MuiListItemText-primary css-6sj2ec-MuiTypography-root"
+        >
+          Test message
+        </span>
+        <span
+          class="MuiTypography-root MuiTypography-body2 MuiListItemText-secondary css-10h1cz6-MuiTypography-root"
+        >
+          Test User
+        </span>
+      </div>
+    </td>
+    <td
+      class="MuiTableCell-root MuiTableCell-sizeMedium css-bsph2u-MuiTableCell-root"
+    >
+      <div
+        class="MuiListItemText-root MuiListItemText-multiline css-konndc-MuiListItemText-root"
+      >
+        <span
+          class="MuiTypography-root MuiTypography-body1 MuiListItemText-primary css-6sj2ec-MuiTypography-root"
+        >
+          13/02/2009
+        </span>
+        <span
+          class="MuiTypography-root MuiTypography-body2 MuiListItemText-secondary css-rxsw71-MuiTypography-root"
+        >
+          5:31 PM
+        </span>
+      </div>
+    </td>
+    <td
+      class="MuiTableCell-root MuiTableCell-sizeMedium css-bsph2u-MuiTableCell-root"
+    >
+      <p
+        class="MuiTypography-root MuiTypography-body2 css-yb11s7-MuiTypography-root"
+      >
+         
+        100
+         MMC
+      </p>
+    </td>
+    <td
+      class="MuiTableCell-root MuiTableCell-sizeMedium css-bsph2u-MuiTableCell-root"
+    >
+      <div
+        class="MuiStack-root css-1ug68w3-MuiStack-root"
+      >
+        <p
+          class="MuiTypography-root MuiTypography-body1 css-eu9vn6-MuiTypography-root"
+        >
+          12345
+        </p>
+        <button
+          aria-label="Open in new window"
+          class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeMedium css-n2gp7e-MuiButtonBase-root-MuiIconButton-root"
+          data-mui-internal-clone-element="true"
+          tabindex="0"
+          type="button"
+        >
+          <span />
+          <span
+            class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
+          />
+        </button>
+      </div>
+    </td>
+  </tr>
+</div>
+`;

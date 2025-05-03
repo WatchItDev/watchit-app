@@ -19,6 +19,7 @@ import { UserItem } from '@src/components/user-item';
 import { useAuth } from '@src/hooks/use-auth.ts';
 import { ERRORS } from '@src/libs/notifications/errors.ts';
 import {ProfileSelectionProps} from "@src/components/login-modal/types.ts"
+import { clearBookmarks } from '@src/redux/bookmark';
 
 // ----------------------------------------------------------------------
 
@@ -61,6 +62,8 @@ export const ProfileSelectView: React.FC<ProfileSelectionProps> = ({
       await login(profile);
       dispatch(setAuthLoading({ isSessionLoading: false }));
     }
+    // Clear all bookmarks
+    dispatch(clearBookmarks());
   };
 
   return (
@@ -109,11 +112,8 @@ export const ProfileSelectView: React.FC<ProfileSelectionProps> = ({
                 fontWeight: 'bold',
               }}
             >
-              Please select one profile
+              Select your profile
             </Typography>
-            <Button variant="outlined" onClick={onRegisterNewProfile} sx={{ p: 1, width: '40%' }}>
-              New profile
-            </Button>
           </Box>
           <Box sx={{ maxHeight: '600px', overflowY: 'auto', overflow: 'auto' }}>
             <List

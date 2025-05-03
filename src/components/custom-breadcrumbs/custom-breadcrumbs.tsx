@@ -19,7 +19,7 @@ export default function CustomBreadcrumbs({
   sx,
   ...other
 }: CustomBreadcrumbsProps) {
-  const lastLink = links[links.length - 1].name;
+  const lastLink = links[links.length - 1]?.name;
 
   return (
     <Box sx={{ ...sx }}>
