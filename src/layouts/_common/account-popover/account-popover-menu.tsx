@@ -44,15 +44,15 @@ const OPTIONS = [
  *  - Logout
  */
 export function AccountPopoverMenu({ popover, router }: Readonly<AccountPopoverMenuProps>) {
-  const { session: sessionData, isLoginModalOpen, isSessionLoading } = useAuth();
+  const { session, isLoginModalOpen, isAuthLoading } = useAuth();
   const { logout } = useAccountSession();
 
-  const isAuthenticated = Boolean(sessionData?.authenticated);
+  const isAuthenticated = Boolean(session?.authenticated);
 
   // Close popover when session status or login modal changes
   useEffect(() => {
     popover.onClose();
-  }, [sessionData?.authenticated, isLoginModalOpen, isSessionLoading]);
+  }, [session?.authenticated, isLoginModalOpen, isAuthLoading]);
 
   const handleClickItem = (path: string) => {
     popover.onClose();
@@ -73,10 +73,10 @@ export function AccountPopoverMenu({ popover, router }: Readonly<AccountPopoverM
     >
       <Box sx={{ p: 2, pb: 1.5 }}>
         <Typography variant="subtitle2" noWrap>
-          {sessionData?.profile?.metadata?.displayName ?? ''}
+          {session?.user?.displayName ?? ''}
         </Typography>
         <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
-          {sessionData?.profile?.handle?.localName}
+          {session?.user?.username ?? ''}
         </Typography>
       </Box>
 
@@ -86,7 +86,7 @@ export function AccountPopoverMenu({ popover, router }: Readonly<AccountPopoverM
         {OPTIONS.map((option) => (
           <MenuItem
             key={option.label}
-            onClick={() => handleClickItem(option.linkTo(`${sessionData?.profile?.id}`))}
+            onClick={() => handleClickItem(option.linkTo(`${session?.user?.address}`))}
           >
             {option.label}
           </MenuItem>

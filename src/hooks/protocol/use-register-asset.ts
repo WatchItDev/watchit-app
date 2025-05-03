@@ -6,12 +6,12 @@ import { encodeFunctionData } from 'viem';
 
 // LOCAL IMPORTS
 import AssetOwnershipAbi from '@src/config/abi/AssetOwnership.json';
-import { useWeb3Session } from '@src/hooks/use-web3-session.ts';
 import { useAccountSession } from '@src/hooks/use-account-session.ts';
 import { useAuth } from '@src/hooks/use-auth.ts';
 import { RegisterAssetData, UseRegisterAssetHook } from '@src/hooks/protocol/types.ts';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 import { ERRORS } from '@src/libs/notifications/errors.ts';
+import { useWeb3Auth } from '@src/hooks/use-web3-auth.ts';
 
 // ----------------------------------------------------------------------
 
@@ -26,7 +26,7 @@ export const useRegisterAsset = (): UseRegisterAssetHook => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<keyof typeof ERRORS | null>(null);
   const { session: sessionData, isFullyAuthenticated: isAuthenticated } = useAuth();
-  const { bundlerClient, smartAccount } = useWeb3Session();
+  const { bundlerClient, smartAccount } = useWeb3Auth();
   const { logout } = useAccountSession();
 
 

@@ -5,8 +5,9 @@ import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import { styled } from '@mui/system';
 
+// TODO delete lens provider
 // LENS IMPORTS
-import { development, LensConfig, LensProvider } from '@lens-protocol/react-web';
+import { development, LensProvider } from '@lens-protocol/react-web';
 
 // TANSTACK IMPORTS
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -15,7 +16,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthProviderProps } from './types.ts';
 import { AuthContextProvider } from './authContext.tsx';
 import { initWeb3Auth, web3Auth } from './config/web3AuthInstance.ts';
-import { bindings } from './config/bindings.ts';
+import { AccountAbstractionProvider } from '@src/hooks/types.ts';
 
 /**
  * AuthProvider is a higher-order component that wraps the application with necessary providers
@@ -24,40 +25,37 @@ import { bindings } from './config/bindings.ts';
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [initialized, setInitialized] = useState(false);
   const queryClient = new QueryClient();
-  const lensConfig: LensConfig = {
+  const lensConfig = {
     environment: development,
-    bindings: bindings,
     debug: true,
   };
 
   useEffect(() => {
-    const initialize = async () => {
+    (async () => {
       try {
         await initWeb3Auth();
         setInitialized(true);
       } catch (err: unknown) {
-        if (err instanceof Error) {
-          // If the error indicates that the wallet is already connected, we consider the initialization successful.
-          if (err.message.includes("Already connected")) {
-            setInitialized(true);
-          } else {
-            console.error('Error initializing web3Auth:', err);
-          }
+        if (err instanceof Error && err.message.includes('Already connected')) {
+          setInitialized(true);
         } else {
-          console.error('Unexpected error:', err);
+          console.error('Error initializing web3Auth:', err);
         }
       }
-    };
-
-    initialize();
+    })();
   }, []);
 
   if (!initialized) return <StyledLoaderWrapper />;
 
+  const accountAbstractionProvider = web3Auth?.options?.accountAbstractionProvider as AccountAbstractionProvider;
+  const bundlerClient = accountAbstractionProvider?.bundlerClient;
+  const smartAccount = accountAbstractionProvider?.smartAccount;
+  const provider = accountAbstractionProvider?.provider;
+
   return (
     <QueryClientProvider client={queryClient}>
-      <LensProvider config={lensConfig}>
-        <AuthContextProvider web3Auth={web3Auth}>
+      <LensProvider config={lensConfig as any}>
+        <AuthContextProvider {...{web3Auth, bundlerClient, smartAccount, provider}}>
           {children}
         </AuthContextProvider>
       </LensProvider>

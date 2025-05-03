@@ -1,8 +1,8 @@
-import { profile as profileBuilder, MetadataAttributeType } from '@lens-protocol/metadata';
 import { ProfileData } from '@src/contexts/auth/types.ts';
 import {Profile} from "@lens-protocol/api-bindings";
+import { SocialLinkInput, UserInput } from '@src/graphql/generated/graphql.ts';
 
-const removeEmptyValues = (obj: Record<string, unknown>): Record<string, unknown> =>
+const removeEmptyValues = (obj: Partial<UserInput>): Partial<UserInput> =>
   Object.fromEntries(Object.entries(obj).filter(([, v]) => v !== '' && v !== null));
 
 /**
@@ -16,27 +16,26 @@ export const buildProfileMetadata = (
   data: ProfileData,
   profileImageURI?: string | null,
   backgroundImageURI?: string | null
-): Record<string, unknown> => {
+): Partial<UserInput> => {
   const cleanSocialLinks = Object.entries(data.socialLinks ?? {})
     .filter(([, value]) => value !== '' && value !== null)
     .map(
       ([key, value]) =>
         ({
-          key,
-          value,
-          type: MetadataAttributeType.STRING,
-        }) as Record<string, unknown>
+          platform: key,
+          url: value,
+        }) as SocialLinkInput
     );
-  const metadata = {
-    name: data.name ?? '',
+  const metadata: Partial<UserInput> = {
+    displayName: data.displayName ?? '',
+    username: data.username ?? '',
     bio: data.bio ?? '',
-    picture: profileImageURI ?? '',
+    profilePicture: profileImageURI ?? '',
     coverPicture: backgroundImageURI ?? '',
-    ...(cleanSocialLinks.length > 0 && { attributes: cleanSocialLinks }),
+    ...(cleanSocialLinks.length > 0 && { socialLinks: cleanSocialLinks }),
   };
-  const cleanedMetadata = removeEmptyValues(metadata);
 
-  return profileBuilder(cleanedMetadata);
+  return removeEmptyValues(metadata);
 };
 
 /**

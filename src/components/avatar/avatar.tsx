@@ -1,9 +1,9 @@
 // @mui
 import Avatar from '@mui/material/Avatar';
-import {CSSProperties, FC} from "react";
-import {dicebear} from "@src/utils/dicebear.ts";
-import {COLORS} from "@src/layouts/config-layout.ts";
-import {SxProps} from "@mui/material/styles"
+import { CSSProperties, FC } from 'react';
+import { dicebear } from '@src/utils/dicebear.ts';
+import { COLORS } from '@src/layouts/config-layout.ts';
+import { SxProps } from '@mui/material/styles';
 
 interface AvatarProfileProps {
   src: string;
@@ -15,21 +15,34 @@ interface AvatarProfileProps {
   imgProps?: React.ImgHTMLAttributes<HTMLImageElement>;
 }
 
-const AvatarProfile: FC<AvatarProfileProps> = ({ src, alt, sx, ...other }) => {
-  //Check if src is a valid URL starting with http or https; if not, use the dicebear API to generate a random avatar
-  const imageSrc = src.startsWith('http') || src.startsWith('blob') || src.startsWith('https') ? src : dicebear(src);
+const resolvers: [RegExp, (src: string) => string][] = [
+  [/^ipfs:\/\//, (src) => src.replace(/^ipfs:\/\//, 'https://ipfs.io/ipfs/')],
+  [/^(https?:)/, (src) => src],
+  [/^blob:/, (src) => src],
+];
 
-  // Default styles for the Avatar component
-  sx = {
+const resolveSrc = (src: string): string => {
+  const entry = resolvers.find(([pattern]) => pattern.test(src));
+  return entry ? entry[1](src) : dicebear(src);
+};
+
+const AvatarProfile: FC<AvatarProfileProps> = ({ src, alt, sx, ...other }) => {
+  const imageSrc = resolveSrc(src);
+
+  const avatarStyles = {
     backgroundColor: COLORS.GRAY_DARK,
     fontWeight: 'bold',
     ...sx,
   };
 
-
   return (
-    <Avatar alt={alt?.toUpperCase() ?? 'Avatar profile'} src={imageSrc} sx={sx} {...other}  />
-  )
-}
+    <Avatar
+      alt={alt?.toUpperCase() ?? 'Avatar profile'}
+      src={imageSrc}
+      sx={avatarStyles}
+      {...other}
+    />
+  );
+};
 
 export default AvatarProfile;
