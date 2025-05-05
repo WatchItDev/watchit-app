@@ -43,9 +43,14 @@ const bookmarkSlice = createSlice({
         );
       }
     },
+
+    // Remove all bookmarks
+    clearBookmarks: (state) => {
+      state.bookmarkPublications = [];
+    },
   },
 });
 
-export const { addBookmark, removeBookmark } = bookmarkSlice.actions;
+export const { addBookmark, removeBookmark, clearBookmarks } = bookmarkSlice.actions;
 
 export default bookmarkSlice.reducer;

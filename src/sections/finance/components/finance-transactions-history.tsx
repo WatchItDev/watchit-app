@@ -1,15 +1,15 @@
-import React, { useState, useCallback } from 'react';
-import Tab from '@mui/material/Tab';
-import Tabs from '@mui/material/Tabs';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableContainer from '@mui/material/TableContainer';
-import { alpha } from '@mui/material/styles';
-import { IOrderTableFilters, IOrderTableFilterValue } from '@src/sections/finance/types';
+import React, { useState, useCallback } from "react";
+import Tab from "@mui/material/Tab";
+import Tabs from "@mui/material/Tabs";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableContainer from "@mui/material/TableContainer";
+import { alpha } from "@mui/material/styles";
+import { IOrderTableFilters, IOrderTableFilterValue } from "@src/sections/finance/types";
 
 // components
-import Label from '@src/components/label';
-import Scrollbar from '@src/components/scrollbar';
+import Label from "@src/components/label";
+import Scrollbar from "@src/components/scrollbar";
 
 import {
   useTable,
@@ -19,17 +19,17 @@ import {
   TableEmptyRows,
   TableHeadCustom,
   TablePaginationCustom,
-} from '@src/components/table';
+} from "@src/components/table";
 //
-import FinanceTransactionTableRow from '@src/sections/finance/components/finance-transactions-table-row';
-import useGetSmartWalletTransactions from '@src/hooks/protocol/use-get-smart-wallet-transactions.ts';
-import FinanceOverlayLoader from '@src/sections/finance/components/finance-overlay-loader.tsx';
-import { processTransactionData } from '@src/libs/finance-graphs/groupedTransactions';
-import { STATUS_OPTIONS, TABLE_HEAD } from './CONSTANTS';
-import {ProcessedTransactionData} from "@src/libs/types.ts"
+import FinanceTransactionTableRow from "@src/sections/finance/components/finance-transactions-table-row";
+import useGetSmartWalletTransactions from "@src/hooks/protocol/use-get-smart-wallet-transactions.ts";
+import FinanceOverlayLoader from "@src/sections/finance/components/finance-overlay-loader.tsx";
+import { processTransactionData } from "@src/libs/finance-graphs/groupedTransactions";
+import { STATUS_OPTIONS, TABLE_HEAD } from "./CONSTANTS";
+import { ProcessedTransactionData } from "@src/libs/types.ts";
 
 const defaultFilters: IOrderTableFilters = {
-  status: 'all',
+  status: "all",
 };
 
 // ----------------------------------------------------------------------
@@ -38,8 +38,8 @@ export default function FinanceTransactionsHistory() {
   const { transactions, loading } = useGetSmartWalletTransactions();
   let transactionData = processTransactionData(transactions);
   const table = useTable({
-    defaultOrder: 'desc',
-    defaultOrderBy: 'createdAt',
+    defaultOrder: "desc",
+    defaultOrderBy: "createdAt",
   });
 
   transactionData = transactionData.map((item) => ({
@@ -56,7 +56,7 @@ export default function FinanceTransactionsHistory() {
   });
 
   const denseHeight = table.dense ? 52 : 72;
-  const canReset = filters.status !== 'all';
+  const canReset = filters.status !== "all";
   const notFound = (!dataFiltered.length && canReset) || !dataFiltered.length;
 
   const handleFilters = useCallback(
@@ -67,19 +67,19 @@ export default function FinanceTransactionsHistory() {
         [name]: value,
       }));
     },
-    [table]
+    [table],
   );
 
   const handleFilterStatus = useCallback(
     (_event: React.SyntheticEvent, newValue: string) => {
-      handleFilters('status', newValue);
+      handleFilters("status", newValue);
     },
-    [handleFilters]
+    [handleFilters],
   );
 
   const removeDuplicatesById = (array: ProcessedTransactionData[]) => {
     return Array.from(new Map(array.map((item) => [item.id, item])).values());
-  }
+  };
 
   return (
     <>
@@ -89,8 +89,7 @@ export default function FinanceTransactionsHistory() {
         sx={{
           px: 2.5,
           boxShadow: (theme) => `inset 0 -2px 0 0 ${alpha(theme.palette.grey[500], 0.08)}`,
-        }}
-      >
+        }}>
         {Array.isArray(transactionData) &&
           STATUS_OPTIONS.map((tab) => (
             <Tab
@@ -101,46 +100,42 @@ export default function FinanceTransactionsHistory() {
               icon={
                 <Label
                   variant={
-                    ((tab.value === 'all' || tab.value === filters.status) && 'filled') || 'soft'
+                    ((tab.value === "all" || tab.value === filters.status) && "filled") || "soft"
                   }
                   color={
-                    (tab.value === 'transferFrom' && 'success') ||
-                    (tab.value === 'transferTo' && 'warning') ||
-                    (tab.value === 'other' && 'info') ||
-                    'default'
-                  }
-                >
-                  {tab.value === 'all' &&
-                    removeDuplicatesById(transactionData).length
-                  }
-                  {tab.value === 'transferFrom' &&
+                    (tab.value === "transferFrom" && "success") ||
+                    (tab.value === "transferTo" && "warning") ||
+                    (tab.value === "other" && "info") ||
+                    "default"
+                  }>
+                  {tab.value === "all" && removeDuplicatesById(transactionData).length}
+                  {tab.value === "transferFrom" &&
                     removeDuplicatesById(
                       transactionData.filter(
                         (t) =>
-                          t.type.toLowerCase() === 'transferto' ||
-                          t.type.toLowerCase() === 'withdraw' || t.type.toLowerCase() === 'collected'
-                      )
-                    ).length
-                  }
-                  {tab.value === 'transferTo' &&
+                          t.type.toLowerCase() === "transferto" ||
+                          t.type.toLowerCase() === "withdraw" ||
+                          t.type.toLowerCase() === "collected",
+                      ),
+                    ).length}
+                  {tab.value === "transferTo" &&
                     removeDuplicatesById(
                       transactionData.filter(
                         (t) =>
-                          t.type.toLowerCase() === 'transferfrom' ||
-                          t.type.toLowerCase() === 'deposit'
-                      )
-                    ).length
-                  }
+                          t.type.toLowerCase() === "transferfrom" ||
+                          t.type.toLowerCase() === "deposit",
+                      ),
+                    ).length}
                 </Label>
               }
             />
           ))}
       </Tabs>
 
-      <TableContainer sx={{ position: 'relative', overflow: 'unset' }}>
+      <TableContainer sx={{ position: "relative", overflow: "unset" }}>
         {loading && <FinanceOverlayLoader />}
         <Scrollbar>
-          <Table size={table.dense ? 'small' : 'medium'}>
+          <Table size={table.dense ? "small" : "medium"}>
             <TableHeadCustom
               order={table.order}
               orderBy={table.orderBy}
@@ -154,7 +149,7 @@ export default function FinanceTransactionsHistory() {
               {dataFiltered
                 .slice(
                   table.page * table.rowsPerPage,
-                  table.page * table.rowsPerPage + table.rowsPerPage
+                  table.page * table.rowsPerPage + table.rowsPerPage,
                 )
                 .map((row) => (
                   <FinanceTransactionTableRow
@@ -204,9 +199,7 @@ function applyFilter({
   }
 
   const { status } = filters;
-
   const stabilizedThis = inputData.map((el, index) => [el, index] as const);
-
   stabilizedThis.sort((a, b) => {
     const order = comparator(a[0], b[0]);
     if (order !== 0) return order;
@@ -215,24 +208,25 @@ function applyFilter({
 
   let filteredData = stabilizedThis.map((el) => el[0]);
 
-  if (status !== 'all') {
-    if (status === 'transferFrom') {
+  if (status !== "all") {
+    if (status === "transferFrom") {
       filteredData = filteredData.filter(
-        (t) => t.type.toLowerCase() === 'transferto' || t.type.toLowerCase() === 'withdraw' || t.type.toLowerCase() === 'collected'
+        (t) =>
+          t.type.toLowerCase() === "transferto" ||
+          t.type.toLowerCase() === "withdraw" ||
+          t.type.toLowerCase() === "collected",
       );
     }
 
-    if (status === 'transferTo') {
+    if (status === "transferTo") {
       filteredData = filteredData.filter(
-        (t) => t.type.toLowerCase() === 'transferfrom' || t.type.toLowerCase() === 'deposit'
+        (t) => t.type.toLowerCase() === "transferfrom" || t.type.toLowerCase() === "deposit",
       );
     }
   }
 
   // delete duplicated items
-  filteredData = Array.from(
-    new Map(filteredData.map((item) => [item.id, item])).values()
-  );
+  filteredData = Array.from(new Map(filteredData.map((item) => [item.id, item])).values());
 
   return filteredData;
 }

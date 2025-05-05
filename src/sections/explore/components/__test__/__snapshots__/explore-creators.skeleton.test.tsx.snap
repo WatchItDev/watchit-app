@@ -1,0 +1,89 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Testing in the <ExploreCreatorsSkeleton/>  > should render the skeleton and match snapshot 1`] = `
+<div>
+  <div
+    class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 MuiCard-root css-19i2hl5-MuiPaper-root-MuiCard-root"
+  >
+    <div
+      class="MuiCardHeader-root css-hl0h5w-MuiCardHeader-root"
+    >
+      <div
+        class="MuiCardHeader-content css-1qbkelo-MuiCardHeader-content"
+      >
+        <span
+          class="MuiTypography-root MuiTypography-h5 MuiCardHeader-title css-1qvr50w-MuiTypography-root"
+        >
+          Latest creators
+        </span>
+      </div>
+    </div>
+    <div
+      class="MuiCardContent-root css-ceyv38-MuiCardContent-root"
+    >
+      <div
+        class="MuiBox-root css-i6bazn"
+      >
+        <div
+          class="MuiBox-root css-k008qs"
+        >
+          <div
+            class="MuiBox-root css-rmtq2p"
+          >
+            <div
+              class="MuiBox-root css-1ml1j7v"
+            >
+              <span
+                class="MuiSkeleton-root MuiSkeleton-rectangular MuiSkeleton-pulse css-18udj95-MuiSkeleton-root"
+              />
+              <span
+                class="MuiSkeleton-root MuiSkeleton-rectangular MuiSkeleton-pulse css-1d1bhsb-MuiSkeleton-root"
+              />
+              <span
+                class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-1c88oq8-MuiSkeleton-root"
+              />
+              <span
+                class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-1yige66-MuiSkeleton-root"
+              />
+            </div>
+          </div>
+        </div>
+        <div
+          class="MuiBox-root css-k008qs"
+        >
+          <div
+            class="MuiBox-root css-rmtq2p"
+          >
+            <div
+              class="MuiBox-root css-1ml1j7v"
+            >
+              <span
+                class="MuiSkeleton-root MuiSkeleton-rectangular MuiSkeleton-pulse css-18udj95-MuiSkeleton-root"
+              />
+              <span
+                class="MuiSkeleton-root MuiSkeleton-rectangular MuiSkeleton-pulse css-1d1bhsb-MuiSkeleton-root"
+              />
+              <span
+                class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-1c88oq8-MuiSkeleton-root"
+              />
+              <span
+                class="MuiSkeleton-root MuiSkeleton-text MuiSkeleton-pulse css-1yige66-MuiSkeleton-root"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Testing in the <ExploreCreatorsSkeleton/> > should render the SkeletonItem component within ExploreCarouselSkeleton 1`] = `<skeletonitem />`;
+
+exports[`Testing in the <ExploreCreatorsSkeleton/> > should render the skeleton and match snapshot 1`] = `
+<div>
+  <div
+    data-testid="explore-carousel-skeleton"
+  />
+</div>
+`;

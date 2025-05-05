@@ -44,6 +44,7 @@ export const ExploreCarouselSkeleton: React.FC<ExploreCarouselSkeletonProps> = (
                     maxWidth: `${itemWidthPercent}%`,
                     p: 1,
                   }}
+                  data-testid="skeleton-item"
                 >
                   <SkeletonItemComponent />
                 </Box>

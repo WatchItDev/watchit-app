@@ -1,0 +1,20 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Testing in the <explore-loader/> component  > should match snapshot 1`] = `
+<div>
+  <div
+    class="MuiBox-root css-1r5plea"
+  >
+    <div
+      class="MuiBox-root css-13nz920"
+    >
+      <div
+        data-testid="loading-screen"
+        style="z-index: 999; background: rgb(30, 31, 34); position: absolute; top: 0px; left: 0px; bottom: 0px; pointer-events: none; right: 0px; display: flex; justify-content: flex-start; align-items: flex-start;"
+      >
+        Loading...
+      </div>
+    </div>
+  </div>
+</div>
+`;

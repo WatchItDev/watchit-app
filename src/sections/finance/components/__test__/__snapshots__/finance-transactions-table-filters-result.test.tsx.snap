@@ -1,0 +1,44 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`[COMPONENTS] <FinanceTransactionsTableFiltersResult/> > to match snapshot 1`] = `
+<div>
+  <div
+    class="MuiStack-root css-10kbc59-MuiStack-root"
+  >
+    <div
+      class="MuiBox-root css-1gycexk"
+    >
+      <strong>
+        0
+      </strong>
+      <span
+        class="MuiBox-root css-1d8yftt"
+      >
+        results found
+      </span>
+    </div>
+    <div
+      class="MuiStack-root css-k0zic5-MuiStack-root"
+    >
+      <button
+        class="MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-textError MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-colorError MuiButton-root MuiButton-text MuiButton-textError MuiButton-sizeMedium MuiButton-textSizeMedium MuiButton-colorError css-10fi992-MuiButtonBase-root-MuiButton-root"
+        tabindex="0"
+        type="button"
+      >
+        <span
+          class="MuiButton-icon MuiButton-startIcon MuiButton-iconSizeMedium css-1d6wzja-MuiButton-startIcon"
+        >
+          <span
+            data-icon="solar:trash-bin-trash-bold"
+            data-testid="iconify"
+          />
+        </span>
+        Clear
+        <span
+          class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
+        />
+      </button>
+    </div>
+  </div>
+</div>
+`;

@@ -1,0 +1,129 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`<ExploreTopPublicationsSkeleton /> > should match snapshot 1`] = `
+<div>
+  <div
+    class="MuiBox-root css-1lqjy3x"
+  >
+    <span
+      class="MuiSkeleton-root MuiSkeleton-rectangular MuiSkeleton-pulse css-18q1832-MuiSkeleton-root"
+      style="width: 100%; height: 100%;"
+    />
+    <div
+      class="MuiBox-root css-qd97tw"
+    >
+      <div
+        class="MuiBox-root css-fbjsum"
+      >
+        <span
+          class="MuiSkeleton-root MuiSkeleton-rectangular MuiSkeleton-pulse css-w33rqg-MuiSkeleton-root"
+        />
+        <div
+          class="MuiBox-root css-i54c5d"
+        >
+          <span
+            class="MuiSkeleton-root MuiSkeleton-rectangular MuiSkeleton-pulse css-13s1xpp-MuiSkeleton-root"
+            style="width: 14rem; height: 2.5rem;"
+          />
+          <span
+            class="MuiSkeleton-root MuiSkeleton-rectangular MuiSkeleton-pulse css-13s1xpp-MuiSkeleton-root"
+            style="width: 8rem; height: 2rem;"
+          />
+          <div
+            class="MuiBox-root css-8dboi"
+          >
+            <span
+              class="MuiSkeleton-root MuiSkeleton-rectangular MuiSkeleton-pulse css-omo2pj-MuiSkeleton-root"
+              style="height: 1.2rem;"
+            />
+            <span
+              class="MuiSkeleton-root MuiSkeleton-rectangular MuiSkeleton-pulse css-omo2pj-MuiSkeleton-root"
+              style="height: 1.2rem;"
+            />
+            <span
+              class="MuiSkeleton-root MuiSkeleton-rectangular MuiSkeleton-pulse css-omo2pj-MuiSkeleton-root"
+              style="height: 1.2rem;"
+            />
+          </div>
+          <div
+            class="MuiBox-root css-tsefwf"
+          >
+            <span
+              class="MuiSkeleton-root MuiSkeleton-rectangular MuiSkeleton-pulse css-13s1xpp-MuiSkeleton-root"
+              style="width: 8rem; height: 2.5rem;"
+            />
+            <span
+              class="MuiSkeleton-root MuiSkeleton-rectangular MuiSkeleton-pulse css-13s1xpp-MuiSkeleton-root"
+              style="width: 2.5rem; height: 2.5rem;"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Testing in the <ExploreTopPublicationsSkeleton/> component > should match snapshot 1`] = `
+<div>
+  <div
+    class="MuiBox-root css-1lqjy3x"
+  >
+    <span
+      class="MuiSkeleton-root MuiSkeleton-rectangular MuiSkeleton-pulse css-18q1832-MuiSkeleton-root"
+      style="width: 100%; height: 100%;"
+    />
+    <div
+      class="MuiBox-root css-qd97tw"
+    >
+      <div
+        class="MuiBox-root css-fbjsum"
+      >
+        <span
+          class="MuiSkeleton-root MuiSkeleton-rectangular MuiSkeleton-pulse css-w33rqg-MuiSkeleton-root"
+        />
+        <div
+          class="MuiBox-root css-i54c5d"
+        >
+          <span
+            class="MuiSkeleton-root MuiSkeleton-rectangular MuiSkeleton-pulse css-13s1xpp-MuiSkeleton-root"
+            style="width: 14rem; height: 2.5rem;"
+          />
+          <span
+            class="MuiSkeleton-root MuiSkeleton-rectangular MuiSkeleton-pulse css-13s1xpp-MuiSkeleton-root"
+            style="width: 8rem; height: 2rem;"
+          />
+          <div
+            class="MuiBox-root css-8dboi"
+          >
+            <span
+              class="MuiSkeleton-root MuiSkeleton-rectangular MuiSkeleton-pulse css-omo2pj-MuiSkeleton-root"
+              style="height: 1.2rem;"
+            />
+            <span
+              class="MuiSkeleton-root MuiSkeleton-rectangular MuiSkeleton-pulse css-omo2pj-MuiSkeleton-root"
+              style="height: 1.2rem;"
+            />
+            <span
+              class="MuiSkeleton-root MuiSkeleton-rectangular MuiSkeleton-pulse css-omo2pj-MuiSkeleton-root"
+              style="height: 1.2rem;"
+            />
+          </div>
+          <div
+            class="MuiBox-root css-tsefwf"
+          >
+            <span
+              class="MuiSkeleton-root MuiSkeleton-rectangular MuiSkeleton-pulse css-13s1xpp-MuiSkeleton-root"
+              style="width: 8rem; height: 2.5rem;"
+            />
+            <span
+              class="MuiSkeleton-root MuiSkeleton-rectangular MuiSkeleton-pulse css-13s1xpp-MuiSkeleton-root"
+              style="width: 2.5rem; height: 2.5rem;"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

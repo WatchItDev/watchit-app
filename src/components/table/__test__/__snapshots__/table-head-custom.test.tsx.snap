@@ -1,0 +1,32 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`[COMPONENTS]: TableHeadCustom component testing > matches snapshot 1`] = `
+<div>
+  <thead
+    class="MuiTableHead-root css-15wwp11-MuiTableHead-root"
+  >
+    <tr
+      class="MuiTableRow-root MuiTableRow-head css-1q1u3t4-MuiTableRow-root"
+    >
+      <th
+        class="MuiTableCell-root MuiTableCell-head MuiTableCell-alignLeft MuiTableCell-sizeMedium css-1ygcj2i-MuiTableCell-root"
+        scope="col"
+      >
+        Name
+      </th>
+      <th
+        class="MuiTableCell-root MuiTableCell-head MuiTableCell-alignCenter MuiTableCell-sizeMedium css-elqmqc-MuiTableCell-root"
+        scope="col"
+      >
+        Email
+      </th>
+      <th
+        class="MuiTableCell-root MuiTableCell-head MuiTableCell-alignRight MuiTableCell-sizeMedium css-10wjn0w-MuiTableCell-root"
+        scope="col"
+      >
+        Role
+      </th>
+    </tr>
+  </thead>
+</div>
+`;
