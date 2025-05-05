@@ -1,9 +1,9 @@
 // @mui
 import Avatar from '@mui/material/Avatar';
 import { CSSProperties, FC } from 'react';
-import { dicebear } from '@src/utils/dicebear.ts';
 import { COLORS } from '@src/layouts/config-layout.ts';
 import { SxProps } from '@mui/material/styles';
+import { resolveSrc } from '@src/utils/image.ts';
 
 interface AvatarProfileProps {
   src: string;
@@ -14,17 +14,6 @@ interface AvatarProfileProps {
   sizes?: string;
   imgProps?: React.ImgHTMLAttributes<HTMLImageElement>;
 }
-
-const resolvers: [RegExp, (src: string) => string][] = [
-  [/^ipfs:\/\//, (src) => src.replace(/^ipfs:\/\//, 'https://ipfs.io/ipfs/')],
-  [/^(https?:)/, (src) => src],
-  [/^blob:/, (src) => src],
-];
-
-const resolveSrc = (src: string): string => {
-  const entry = resolvers.find(([pattern]) => pattern.test(src));
-  return entry ? entry[1](src) : dicebear(src);
-};
 
 const AvatarProfile: FC<AvatarProfileProps> = ({ src, alt, sx, ...other }) => {
   const imageSrc = resolveSrc(src);

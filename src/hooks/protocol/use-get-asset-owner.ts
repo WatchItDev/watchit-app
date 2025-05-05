@@ -68,9 +68,9 @@ export const useGetAssetOwner = (): UseGetAssetOwnerHook => {
     } catch (err) {
       console.error('USE GET ASSET OWNER ERROR:', err);
       setOwnerAddress(undefined);
-      setError({
-        message: err?.message || 'An error occurred while retrieving the asset owner.',
-      });
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-expect-error
+      setError({ message: err?.message || 'An error occurred while retrieving the asset owner.' });
       return undefined;
     } finally {
       setLoading(false);

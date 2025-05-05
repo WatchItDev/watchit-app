@@ -5,9 +5,6 @@ import { FC } from "react";
 import Stack from "@mui/material/Stack";
 import { useTheme } from "@mui/material/styles";
 
-// LENS IMPORTS
-import { Profile } from "@lens-protocol/api-bindings";
-
 // LOCAL IMPORTS
 import AvatarProfile from "@src/components/avatar/avatar.tsx";
 import ProfileUpdateButton from "@src/sections/user/components/profile-update-button.tsx";
@@ -15,15 +12,16 @@ import ProfileShare from "@src/sections/user/components/profile-share.tsx";
 import ProfileSetJoiningPrice from "@src/sections/user/components/profile-set-joining-price.tsx";
 import ProfileTransfer from "@src/sections/user/components/profile-transfer.tsx";
 import { useAuth } from '@src/hooks/use-auth.ts';
+import { User } from '@src/graphql/generated/graphql.ts';
 
 interface ProfileToolbarProps {
-  profile: Profile;
+  profile: User;
   profileImage?: string;
 }
 
 const ProfileToolbar: FC<ProfileToolbarProps> = ({profile, profileImage}) => {
   const theme = useTheme();
-  const { session: sessionData } = useAuth();
+  const { session } = useAuth();
 
   return (
     <Stack
@@ -37,8 +35,8 @@ const ProfileToolbar: FC<ProfileToolbarProps> = ({profile, profileImage}) => {
       }}
     >
       <AvatarProfile
-        src={profileImage ?? profile?.id}
-        alt={profile?.handle?.localName ?? ''}
+        src={profileImage ?? profile?.address}
+        alt={profile?.username ?? ''}
         variant="rounded"
         sx={{
           fontSize: '3em',
@@ -61,22 +59,18 @@ const ProfileToolbar: FC<ProfileToolbarProps> = ({profile, profileImage}) => {
         }}
       >
         <ProfileShare profile={profile} />
-        {sessionData?.authenticated && sessionData?.profile?.id === profile?.id ? (
+        {session?.authenticated && session?.address === profile?.address ? (
           <ProfileSetJoiningPrice />
         ) : (
           <></>
         )}
-        {sessionData?.profile && profile?.id === sessionData?.profile?.id && (
+        {session?.address && profile?.address === session?.address && (
           <ProfileUpdateButton />
         )}
 
-        {
-          sessionData?.authenticated && profile?.id !== sessionData?.profile?.id && (
-            <ProfileTransfer profile={profile} />
-          )
-        }
-
-
+        {session?.authenticated && profile?.address !== session?.address && (
+          <ProfileTransfer profile={profile} />
+        )}
       </Stack>
     </Stack>
   )

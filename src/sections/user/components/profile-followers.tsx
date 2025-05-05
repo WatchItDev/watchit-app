@@ -2,19 +2,17 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 
-// LENS IMPORTS
-import { Profile } from '@lens-protocol/api-bindings';
-
 // LOCAL IMPORTS
 import { UserItem } from '@src/components/user-item';
 import { useSelector } from 'react-redux';
-import {randomKey} from "@src/utils/uuidv4.ts"
-import {RootState} from "@redux/store.ts"
-import {ProfileFollowersProps} from "@src/sections/user/types.ts"
+import { randomKey } from "@src/utils/uuidv4.ts"
+import { RootState } from "@redux/store.ts"
+import { ProfileFollowersProps } from "@src/sections/user/types.ts"
+import { User } from '@src/graphql/generated/graphql.ts';
 
 // ----------------------------------------------------------------------
 const ProfileFollowers = ({ onActionFinished }: ProfileFollowersProps) => {
-  const followers: Profile[] = useSelector((state: RootState) => state.followers.followers);
+  const followers: User[] = useSelector((state: RootState) => state.followers.followers);
 
   return (
     <Box
@@ -34,7 +32,7 @@ const ProfileFollowers = ({ onActionFinished }: ProfileFollowersProps) => {
       }}
     >
       {followers?.length ? (
-        followers.map((follower: Profile, index: number) => (
+        followers.map((follower: User, index: number) => (
           <UserItem
             key={`${randomKey(index, 'follower-')}`}
             profile={follower}

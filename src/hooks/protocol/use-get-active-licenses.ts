@@ -38,6 +38,8 @@ export const useGetActiveLicenses = (
     } catch (err) {
       console.error('Error fetching active licenses:', err);
       setActiveLicenses([]);
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-expect-error
       setError({ message: err?.message || 'Error occurred while fetching active licenses.' });
     } finally {
       setLoading(false);

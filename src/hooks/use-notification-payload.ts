@@ -1,10 +1,8 @@
-import {ProfilePictureSet, ProfileSession} from '@lens-protocol/react-web'
 import {dicebear} from "@src/utils/dicebear.ts";
 import {NotificationPayload} from "@src/hooks/types.ts"
+import { ReduxSession } from '@redux/types.ts';
 
-
-
-export const useNotificationPayload = (sessionData: ProfileSession | undefined) => {
+export const useNotificationPayload = (sessionData: ReduxSession | undefined) => {
   const generatePayload = (
     category: string,
     toProfile: { id: string; displayName: string; avatar: string },
@@ -15,11 +13,9 @@ export const useNotificationPayload = (sessionData: ProfileSession | undefined) 
       category: category,
       data: {
         from: {
-          id: sessionData?.profile?.id ?? '',
-          displayName: sessionData?.profile?.metadata?.displayName ?? '',
-          avatar:
-            (sessionData?.profile?.metadata?.picture as ProfilePictureSet)?.optimized?.uri ??
-            dicebear(sessionData?.profile?.id as string),
+          id: sessionData?.address ?? '',
+          displayName: sessionData?.user?.displayName ?? '',
+          avatar: sessionData?.user?.profilePicture ?? dicebear(sessionData?.user?.address as string),
         },
         to: {
           id: toProfile.id,

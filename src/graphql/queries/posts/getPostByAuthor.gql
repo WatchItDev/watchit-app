@@ -6,6 +6,8 @@ query GetPostsByAuthor($author: String!, $limit: Int) {
     media {
       id
       type
+      title
+      cid
       url
     }
     likeCount

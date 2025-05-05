@@ -33,6 +33,8 @@ export const useGetCampaignTotalUsage = (): UseGetCampaignTotalUsageHook => {
       } catch (err) {
         console.error('Error fetching quota Limit:', err);
         setTotalUsage('0');
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-expect-error
         setError({ message: err?.message || 'Error fetching quota Limit' });
       } finally {
         setLoading(false);

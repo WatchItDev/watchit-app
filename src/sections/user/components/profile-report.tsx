@@ -5,11 +5,11 @@ import MenuItem from "@mui/material/MenuItem";
 import Popover from "@mui/material/Popover";
 import { FC, useState } from "react";
 import { ReportProfileModal } from "@src/components/report-profile-modal.tsx";
-import { Profile } from "@lens-protocol/api-bindings";
 import styled from "@emotion/styled";
+import { User } from '@src/graphql/generated/graphql.ts';
 
 interface ProfileReportProps {
-  profile: Profile;
+  profile: User;
 }
 
 const StyledButton = styled(Button)`

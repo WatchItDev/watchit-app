@@ -7,22 +7,16 @@ import Iconify from '@src/components/iconify';
 import { notifyError, notifySuccess } from '@src/libs/notifications/internal-notifications.ts';
 import { SUCCESS } from '@src/libs/notifications/success.ts';
 import { ERRORS } from '@src/libs/notifications/errors';
-import { ProfileShareProps, SocialMediaUrls, ProfileAttribute } from '../types';
+import { ProfileShareProps, SocialMediaUrls } from '../types';
 import { shareLinks, socialMedia, urlToShare } from '../CONSTANTS'
+import { getSocialLinks } from '@src/utils/profile.ts';
 
 const ProfileShare: FC<ProfileShareProps> = ({ profile }) => {
   const [openTooltipShare, setOpenTooltipShare] = useState(false);
   const navRefSocial = useRef(null);
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const open = Boolean(anchorEl);
-
-  const socialMediaUrls: SocialMediaUrls =
-    profile?.metadata?.attributes?.reduce((acc: SocialMediaUrls, attr: ProfileAttribute) => {
-      if (['twitter', 'facebook', 'instagram'].includes(attr.key)) {
-        acc[attr.key as keyof SocialMediaUrls] = attr.value;
-      }
-      return acc;
-    }, {} as SocialMediaUrls) || {};
+  const socialMediaUrls = getSocialLinks(profile);
 
   const prependProfileIdToUrl = (url: string, profileId: string) => {
     return url.replace('profileId', 'profile/' + profileId);
@@ -47,7 +41,7 @@ const ProfileShare: FC<ProfileShareProps> = ({ profile }) => {
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(
-        urlToShare.replace('profileId', 'profile/' + profile?.id)
+        urlToShare.replace('profileId', 'profile/' + profile?.address)
       );
       notifySuccess(SUCCESS.LINK_COPIED_TO_CLIPBOARD);
     } catch (err) {
@@ -168,7 +162,7 @@ const ProfileShare: FC<ProfileShareProps> = ({ profile }) => {
               >
                 <Button
                   component="a"
-                  href={prependProfileIdToUrl(item.url, profile?.id)}
+                  href={prependProfileIdToUrl(item.url, profile?.address)}
                   target="_blank"
                   rel="noopener noreferrer"
                   sx={{

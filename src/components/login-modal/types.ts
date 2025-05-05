@@ -5,8 +5,8 @@ export interface ProfileFormInitialValuesProps {
   username: string,
   displayName: string,
   bio: string,
-  profilePicture: null,
-  coverPicture: null,
+  profilePicture: string | null,
+  coverPicture: string | null,
   socialLinks: {
     twitter: string,
     instagram: string,

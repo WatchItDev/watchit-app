@@ -21,11 +21,12 @@ import NeonPaper from '@src/sections/publication/components/neon-paper-container
 // NOTIFICATIONS IMPORTS
 import AvatarProfile from "@src/components/avatar/avatar.tsx";
 import { notifyError, notifySuccess } from '@src/libs/notifications/internal-notifications';
-import { useAuth } from '@src/hooks/use-auth.ts';
 import { SUCCESS } from '@src/libs/notifications/success';
 import { ERRORS } from '@src/libs/notifications/errors.ts';
 import {ProfileFormProps, ProfileFormValues} from "@src/components/login-modal/types.ts"
 import { useCreateUserMutation, useUpdateUserMutation } from '@src/graphql/generated/hooks.tsx';
+import { resolveSrc, resolveWatchitImage } from '@src/utils/image.ts';
+import { getIpfsUri, getMediaUri } from '@src/utils/publication.ts';
 
 // ----------------------------------------------------------------------
 
@@ -47,7 +48,6 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
 }) => {
   const dispatch = useDispatch();
   const [registrationLoading, setRegistrationLoading] = useState(false);
-  const { session: sessionData } = useAuth();
   const [createUser, { loading: createUserLoading, error: errorCreatingProfile }] = useCreateUserMutation();
   const [updateUser, { loading: updateUserLoading, error: errorUpdatingProfile }] = useUpdateUserMutation();
 
@@ -87,7 +87,8 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
    */
   const getBlobFileAndUploadToIPFS = async (blobString: string): Promise<string | null> => {
     try {
-      const response = await fetch(blobString);
+      const image = blobString.startsWith('ipfs') ? getIpfsUri(blobString) : blobString;
+      const response = await fetch(image);
       const blob = await response.blob();
       const file = new File([blob], 'image-file', { type: blob.type });
       return await uploadImageToIPFS(file);
@@ -132,7 +133,6 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
         });
 
         setRegistrationLoading(false);
-        notifySuccess(SUCCESS.PROFILE_METADATA_UPDATED);
         onSuccess();
       } catch (error) {
         console.error('Error updating profile metadata:', error);
@@ -278,12 +278,13 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
         <Box sx={{ width: '100%', position: 'relative', pt: 1 }}>
           {/* Background Image */}
           <Image
-            src={
-              coverPicturePreview ??
-              (initialValues?.coverPicture
-                ? initialValues?.coverPicture
-                : `https://picsum.photos/seed/${mode === 'update' && sessionData?.authenticated ? sessionData?.user?.address : 'new'}/1920/820`)
-            }
+            // src={
+            //   coverPicturePreview ??
+            //   (initialValues?.coverPicture
+            //     ? initialValues?.coverPicture
+            //     : `https://picsum.photos/seed/${mode === 'update' && sessionData?.authenticated ? sessionData?.user?.address : 'new'}/1920/820`)
+            // }
+            src={coverPicturePreview ?? resolveSrc(initialValues?.coverPicture ?? '', 'cover') ?? ''}
             onClick={() => coverPictureInputRef.current?.click()}
             sx={{
               height: 120,
@@ -307,15 +308,16 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
           />
           {/* Avatar */}
           <AvatarProfile
-            src={
-              profilePicturePreview ??
-              (initialValues?.profilePicture
-                ? initialValues?.profilePicture
-                : mode === 'update' && sessionData?.authenticated
-                  ? sessionData?.user?.address
-                  : 'new'
-              ) ?? ''
-            }
+            // src={
+            //   profilePicturePreview ??
+            //   (initialValues?.profilePicture
+            //     ? initialValues?.profilePicture
+            //     : mode === 'update' && sessionData?.authenticated
+            //       ? sessionData?.user?.address
+            //       : 'new'
+            //   ) ?? ''
+            // }
+            src={profilePicturePreview ?? resolveSrc(initialValues?.profilePicture ?? '', 'cover') ?? ''}
             alt=""
             onClick={() => profilePictureInputRef.current?.click()}
             sx={{

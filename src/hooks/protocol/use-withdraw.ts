@@ -8,6 +8,7 @@ import { UseWithdrawHook, WithdrawParams } from '@src/hooks/protocol/types.ts';
 import { useAuth } from '@src/hooks/use-auth.ts';
 import { WithdrawData } from "@src/hooks/types.ts"
 import { useWeb3Auth } from '@src/hooks/use-web3-auth.ts';
+import { Calls, WaitForUserOperationReceiptReturnType } from '@src/hooks/types.ts'
 
 export const useWithdraw = (): UseWithdrawHook => {
   const [data, setData] = useState<WithdrawData | null>(null);
@@ -15,7 +16,7 @@ export const useWithdraw = (): UseWithdrawHook => {
   const [error, setError] = useState<keyof typeof ERRORS | null>(null);
   const { bundlerClient, smartAccount } = useWeb3Auth();
   const { logout } = useAccountSession();
-  const { isFullyAuthenticated: isAuthenticated } = useAuth();
+  const { session } = useAuth();
 
   const initializeWithdraw = ({ recipient, amount }: WithdrawParams) => {
     const weiAmount = parseUnits(amount.toString(), 18);
@@ -31,7 +32,7 @@ export const useWithdraw = (): UseWithdrawHook => {
     setLoading(true);
     setError(null);
 
-    if (!isAuthenticated) {
+    if (!session.authenticated) {
       setError(ERRORS.FIRST_LOGIN_ERROR);
       logout();
       setLoading(false);
@@ -41,7 +42,7 @@ export const useWithdraw = (): UseWithdrawHook => {
     try {
       const withdrawData = initializeWithdraw({ recipient, amount });
 
-      const calls = [
+      const calls: Calls = [
         {
           to: GLOBAL_CONSTANTS.LEDGER_VAULT_ADDRESS,
           value: 0,
@@ -54,7 +55,7 @@ export const useWithdraw = (): UseWithdrawHook => {
         calls,
       });
 
-      const receipt = await bundlerClient.waitForUserOperationReceipt({
+      const receipt: WaitForUserOperationReceiptReturnType = await bundlerClient.waitForUserOperationReceipt({
         hash: userOpHash,
       });
 

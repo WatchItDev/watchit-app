@@ -20,11 +20,11 @@ import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
  * @returns An object containing the access data, loading state, error, and a refetch function.
  */
 export const useHasAccess = (ownerAddress?: Address): UseHasAccessHook => {
-  const { session: sessionData, isFullyAuthenticated: isAuthenticated } = useAuth();
+  const { session } = useAuth();
   const [hasAccess, setHasAccess] = useState<boolean | undefined>(undefined);
   const [loading, setLoading] = useState(true);
 
-  const userAddress = sessionData?.profile?.ownedBy?.address;
+  const userAddress = session?.address;
 
   const fetchAccess = useCallback(async () => {
     if (!userAddress || !ownerAddress) {
@@ -56,7 +56,7 @@ export const useHasAccess = (ownerAddress?: Address): UseHasAccessHook => {
     fetchAccess();
   }, [fetchAccess]);
 
-  if (!isAuthenticated) {
+  if (!session.authenticated) {
     return UseHasAccessDefaultResponse;
   }
 

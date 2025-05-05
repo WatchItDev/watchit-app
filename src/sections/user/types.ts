@@ -1,9 +1,10 @@
-import {AnyPublication, Profile} from '@lens-protocol/api-bindings'
 import { ProfileId } from '@lens-protocol/react-web';
-import {Invitation} from "@src/hooks/types.ts"
+import { Invitation } from "@src/hooks/types.ts"
+import { Post, User } from '@src/graphql/generated/graphql.ts';
+import { socialMedia } from '@src/sections/user/CONSTANTS.tsx';
 
 export interface ProfileHeaderProps {
-  profile: Profile;
+  profile: User;
 }
 
 export interface UserProfileViewProps {
@@ -42,7 +43,7 @@ export interface SocialMediaUrls {
 }
 
 export interface ProfileShareProps {
-  profile: Profile;
+  profile: User;
 }
 
 export interface ProfileAttribute {
@@ -56,7 +57,7 @@ export interface ProfileReferralsTableRowProps {
 }
 
 export interface ProfileHomeProps {
-  publications?: AnyPublication[]; // Array of publications
+  publications?: Post[]; // Array of publications
   minItemWidth?: number; // Min width per item
   maxItemWidth?: number; // Max width per item
   initialRows?: number; // Rows to show initially
@@ -76,10 +77,11 @@ export interface ProfileJoinProps extends ProfileHeaderProps {
 }
 
 export interface ProfilePublicationItemProps {
-  publication: AnyPublication;
+  publication: Post;
 }
 
 export interface ProfileFollowersProps {
   onActionFinished?: () => void;
 }
 
+export type SocialPlatform = typeof socialMedia[number]['key'];
