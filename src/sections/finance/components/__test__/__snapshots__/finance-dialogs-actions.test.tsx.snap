@@ -1,0 +1,13 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`<COMPONENTS> FinanceDialogsActions > to match snapshot 1`] = `
+<div>
+  <div
+    class="MuiDialogActions-root MuiDialogActions-spacing css-4friwf-MuiDialogActions-root"
+  >
+    <div>
+      Mocked Rainbow Component
+    </div>
+  </div>
+</div>
+`;
