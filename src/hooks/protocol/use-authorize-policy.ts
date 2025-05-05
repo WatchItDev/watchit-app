@@ -6,12 +6,12 @@ import { encodeFunctionData } from 'viem';
 
 // LOCAL IMPORTS
 import RightsPolicyAuthorizerAbi from '@src/config/abi/RightsPolicyAuthorizer.json';
-import { useWeb3Session } from '@src/hooks/use-web3-session.ts';
 import { useAccountSession } from '@src/hooks/use-account-session.ts';
 import { useAuth } from '@src/hooks/use-auth.ts';
 import {AuthorizePolicyParams, UseAuthorizePolicyHook, UseAuthorizePolicyResult} from '@src/hooks/protocol/types.ts'
 import { ERRORS } from '@src/libs/notifications/errors.ts';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
+import { useWeb3Auth } from '@src/hooks/use-web3-auth.ts';
 
 // ----------------------------------------------------------------------
 
@@ -20,7 +20,7 @@ export const useAuthorizePolicy = (): UseAuthorizePolicyHook => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<keyof typeof ERRORS | null>(null);
   const { session: sessionData, isFullyAuthenticated: isAuthenticated } = useAuth();
-  const { bundlerClient, smartAccount } = useWeb3Session();
+  const { bundlerClient, smartAccount } = useWeb3Auth();
   const { logout } = useAccountSession();
 
   /**

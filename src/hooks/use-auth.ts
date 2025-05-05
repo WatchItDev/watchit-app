@@ -1,7 +1,7 @@
-import { useSelector, shallowEqual } from 'react-redux';
+import { shallowEqual, useSelector } from 'react-redux';
 import { RootState } from '@redux/store.ts';
+import { AuthReducerState } from '@redux/types.ts';
 
-export const useAuth = () => {
-  const auth = useSelector((state: RootState) => state.auth, shallowEqual);
-  return auth;
+export const useAuth = (): AuthReducerState => {
+  return useSelector((state: RootState) => state.auth, shallowEqual);
 };

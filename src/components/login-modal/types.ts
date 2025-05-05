@@ -1,13 +1,12 @@
 import {LoginError} from "@lens-protocol/react-web"
 import {Profile} from "@lens-protocol/api-bindings"
-import {URI} from "@lens-protocol/react"
 
 export interface ProfileFormInitialValuesProps {
   username: string,
-  name: string,
+  displayName: string,
   bio: string,
-  profileImage: URI | null | undefined,
-  backgroundImage: URI | null | undefined,
+  profilePicture: null,
+  coverPicture: null,
   socialLinks: {
     twitter: string,
     instagram: string,
@@ -26,27 +25,12 @@ export interface ProfileFormProps {
   login?: (profile?: Profile) => Promise<void>;
 }
 
-export interface ProfileSelectionProps {
-  address: string;
-  error?: LoginError;
-  onRegisterNewProfile: () => void;
-  onDisconnect: () => void;
-  onClose: () => void;
-  login: (profile?: Profile) => Promise<void>;
-}
-
-export interface LoginModalProps {
-  open: boolean;
-  onClose: () => void;
-}
-
-
 export interface ProfileFormValues {
   username: string;
-  name: string;
+  displayName: string;
   bio: string;
-  profileImage: File | null | string;
-  backgroundImage: File | null | string;
+  profilePicture: File | null | string;
+  coverPicture: File | null | string;
   socialLinks: {
     twitter: string;
     instagram: string;

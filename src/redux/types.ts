@@ -1,20 +1,17 @@
-import {Address} from "viem"
-import {Profile} from "@lens-protocol/api-bindings"
+import { Address } from "viem"
+import { User } from '@src/graphql/generated/graphql.ts';
+import { UserInfo } from '@web3auth/base';
 
 export interface ReduxSession {
-  address: Address;
+  address?: Address;
   authenticated: boolean;
-  profile: Profile;
-  type: string
+  user?: User;
+  info?: Partial<UserInfo>;
 }
 
 export interface AuthReducerState {
-  session: ReduxSession | null;
-  isSessionLoading: boolean;
+  session: ReduxSession;
+  isAuthLoading: boolean;
   isLoginModalOpen: boolean;
   balance: number;
-  currentStep: number;
-  isUpdatingMetadata: boolean;
-  email: string;
-  isFullyAuthenticated: boolean;
 }

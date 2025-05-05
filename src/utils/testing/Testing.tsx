@@ -5,13 +5,11 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import { createStore } from 'redux';
 import rootReducer from '@redux/reducer';
 import {LensProvider, staging} from '@lens-protocol/react-web';
-import {bindings} from "@src/contexts/auth/config/bindings.ts";
 
 const store = createStore(rootReducer);
 
 const lensConfig = {
   environment: staging,
-  bindings: bindings,
   sharedDependencies: {
     pollingInterval: 5000,
   },

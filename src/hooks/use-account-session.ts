@@ -1,93 +1,184 @@
 // REACT IMPORTS
-import { useEffect, useCallback } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 // REDUX IMPORTS
+import { ReduxSession } from '@redux/types.ts';
 import { useDispatch } from 'react-redux';
-import { setAuthLoading, setSession, setBalance, setFullyAuthenticated } from '@redux/auth';
+import {
+  setAuthLoading,
+  setSession,
+  setBalance,
+  setUser,
+  defaultSession, setInfo, closeLoginModal,
+} from '@redux/auth';
 
-// LENS IMPORTS
-import { useSession, useLogout } from '@lens-protocol/react-web';
-
-// NOTIFICATIONS IMPORTS
-import { notifyWarning } from '@src/libs/notifications/internal-notifications';
+// VIEM IMPORTS
+import { Address } from 'viem';
 
 // WEB3AUTH IMPORTS
-import { useAuth } from '@src/hooks/use-auth.ts';
-import { useWeb3Auth } from '@src/hooks/use-web3-auth';
-import { useWeb3Session } from '@src/hooks/use-web3-session';
-import { WARNING } from '@src/libs/notifications/warnings.ts';
+import { ADAPTER_EVENTS } from '@web3auth/base';
 
-// ----------------------------------------------------------------------
+// LOCAL IMPORTS
+import { useAuth } from '@src/hooks/use-auth';
+import { ensureAAReady } from '@src/utils/wallet.ts';
+import { useWeb3Auth } from '@src/hooks/use-web3-auth';
+import { useGetUserLazyQuery } from '@src/graphql/generated/hooks';
 
 interface UseAccountSessionHook {
-  logout: (silent?: boolean) => void;
+  login: () => Promise<void>;
+  logout: (silent?: boolean) => Promise<void>;
+  syncAddress: () => Promise<void>;
   loading: boolean;
 }
 
-// ----------------------------------------------------------------------
+let listenerAttached = false;
+let restoreDone      = false;
+let loginPerformed   = false;
 
 export const useAccountSession = (): UseAccountSessionHook => {
+  const [bootstrapping,   setBootstrapping]   = useState(true);
+  const [loginInProgress, setLoginInProgress] = useState(false);
+
   const dispatch = useDispatch();
-  const { web3Auth } = useWeb3Auth();
-  const { execute: lensLogout } = useLogout();
-  const { session: sessionData, isSessionLoading } = useAuth();
-  const { data, loading } = useSession();
-  const { bundlerClient, smartAccount } = useWeb3Session();
+  const { web3Auth, bundlerClient, smartAccount } = useWeb3Auth();
+  const { isAuthLoading: reduxLoading, session } = useAuth();
+  const [loadUser, { data: userData, loading: apiLoading }] = useGetUserLazyQuery({ fetchPolicy: 'cache-and-network' });
 
-  // Decide if Web3Auth is in a connecting state
-  const isPending = useCallback(() => {
-    return web3Auth.status === 'connecting' || web3Auth.status === 'not_ready';
-  }, [web3Auth.status])
+  const lastFetchedAddressRef = useRef<Address | undefined>(undefined);
+  const userAddressRef        = useRef<Address | undefined>(undefined);
+  const sessionRef = useRef(session);
 
-  // Decide if Web3Auth is in a valid state
-  const isValidWeb3AuthSession = useCallback((): boolean => {
-    return (
-      web3Auth.connected &&
-      web3Auth.status === 'connected' &&
-      !!bundlerClient &&
-      !!smartAccount
-    );
-  }, [web3Auth.connected, web3Auth.status, bundlerClient, smartAccount]);
 
-  useEffect(() => {
-    dispatch(setFullyAuthenticated(
-      Boolean(sessionData?.authenticated) && isValidWeb3AuthSession()
-    ));
-  }, [sessionData?.authenticated, isValidWeb3AuthSession]);
+  const getPrimaryAddress = useCallback(async (): Promise<Address | undefined> => {
+    const accs = (await web3Auth.provider?.request({ method: 'eth_accounts' })) as string[] | undefined;
+    return accs?.[0] as Address | undefined;
+  }, [web3Auth.provider]);
 
-  // If session is invalid or expired, do logout + show error
-  const handleSessionExpired = useCallback(async (silent = true) => {
-    await lensLogout();
+  const clearRedux = () => {
     dispatch(setBalance({ balance: 0 }));
-    dispatch(setSession({ session: { ...data, authenticated: false } }));
-    dispatch(setAuthLoading({ isSessionLoading: false }));
-    if (!silent) notifyWarning(WARNING.BUNDLER_UNAVAILABLE);
-  }, [web3Auth.status]);
+    dispatch(setSession({ session: defaultSession }));
+    userAddressRef.current = undefined;
+    lastFetchedAddressRef.current = undefined;
+    loginPerformed = false;
+  };
 
-  useEffect(() => {
-    dispatch(setAuthLoading({
-      isSessionLoading: isPending() || loading
-    }));
-  }, [ isPending, loading ]);
+  const mergeSession = (patch: Partial<ReduxSession>) => {
+    const prev = sessionRef.current;
+    const next = { ...prev, ...patch };
+    next.authenticated = Boolean(next.address && next.user);
 
-  useEffect(() => {
-    // If Web3Auth isn't valid (and not just connecting), expire
-    if (!isValidWeb3AuthSession() && !isPending()) {
-      handleSessionExpired(false);
-      return;
+    const changed =
+      next.address        !== prev.address ||
+      next.user           !== prev.user    ||
+      next.authenticated  !== prev.authenticated ||
+      patch.info !== undefined;
+
+    if (changed) {
+      dispatch(setSession({ session: next }));
+    }
+  };
+
+  const fetchUserInfo = useCallback(async () => {
+    const info = await web3Auth.getUserInfo?.();
+    return info ?? null;
+  }, [web3Auth]);
+
+  const syncAddress = async () => {
+    const address = await getPrimaryAddress();
+    if (!address) throw new Error('No address found');
+
+    if (!sessionRef.current.info) {
+      const info = await fetchUserInfo();
+      if (info) dispatch(setInfo({ info }));
     }
 
-    // wait for web3auth ready state and allow bypass if
-    if ((isPending() || loading) && !data?.authenticated) return;
-    // is authenticated avoid re-run code below
-    if (sessionData?.authenticated || data?.type === 'ANONYMOUS') return;
-    // dispatch the session data and turn off the loading
-    dispatch(setSession({ session: data }))
-    dispatch(setAuthLoading({ isSessionLoading: false }));
-  }, [isSessionLoading, data?.authenticated, data?.type]);
+    mergeSession({ address });
+    loadUser({ variables: { address } });
+  };
+
+  const logout = useCallback(async () => {
+    if (web3Auth.connected) await web3Auth.logout();
+    clearRedux();
+  }, [web3Auth]);
+
+  const login = useCallback(async () => {
+    if (loginInProgress) return;
+    if (loginInProgress || loginPerformed) return;
+
+    setLoginInProgress(true);
+    dispatch(setAuthLoading({ isAuthLoading: true }));
+
+    try {
+      await web3Auth.connect();
+      await ensureAAReady(web3Auth);
+      await syncAddress();
+      loginPerformed = true;
+    } catch (err) {
+      dispatch(closeLoginModal());
+      throw err;
+    } finally {
+      setLoginInProgress(false);
+      dispatch(setAuthLoading({ isAuthLoading: false }));
+    }
+  }, [web3Auth, bundlerClient, smartAccount, dispatch, loginInProgress]);
+
+  useEffect(() => {
+    sessionRef.current = session;
+  }, [session]);
+
+  useEffect(() => {
+    userAddressRef.current = session.user ? session.address : undefined;
+  }, [session.user, session.address]);
+
+  useEffect(() => {
+    if (!web3Auth || restoreDone) return;
+    restoreDone = true;
+
+    (async () => {
+      try {
+        if (web3Auth.connected) {
+          await syncAddress();
+        }
+      } catch {
+        await logout();
+      } finally {
+        setBootstrapping(false);
+      }
+    })();
+  }, [web3Auth]);
+
+  useEffect(() => {
+    if (!web3Auth || listenerAttached) return;
+    listenerAttached = true;
+
+    web3Auth.on(ADAPTER_EVENTS.DISCONNECTED, logout);
+    web3Auth.on(ADAPTER_EVENTS.CONNECTED,    syncAddress);
+
+    return () => {
+      web3Auth.off(ADAPTER_EVENTS.DISCONNECTED, logout);
+      web3Auth.off(ADAPTER_EVENTS.CONNECTED,    syncAddress);
+      listenerAttached = false;
+    };
+  }, [web3Auth, logout]);
+
+  useEffect(() => {
+    if (userData?.getUser) {
+      const address = sessionRef.current.address as Address;
+
+      if (!address) { return; }
+
+      if (userAddressRef.current !== address) {
+        userAddressRef.current = address;
+        dispatch(setUser({ user: userData.getUser }));
+        mergeSession({ user: userData.getUser });
+      }
+    }
+  }, [userData]);
 
   return {
-    logout: handleSessionExpired,
-    loading: isSessionLoading || isPending() || loading
+    login,
+    logout,
+    syncAddress,
+    loading: bootstrapping || reduxLoading || apiLoading || loginInProgress,
   };
 };

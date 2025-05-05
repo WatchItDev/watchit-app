@@ -2,18 +2,18 @@ import { useState } from 'react';
 import { encodeFunctionData, parseUnits } from 'viem';
 import LedgerVaultAbi from '@src/config/abi/LedgerVault.json';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
-import { useWeb3Session } from '@src/hooks/use-web3-session.ts';
 import { ERRORS } from '@src/libs/notifications/errors';
 import { useAccountSession } from '@src/hooks/use-account-session.ts';
 import { TransferParams, UseTransferHook } from '@src/hooks/protocol/types.ts';
 import { useAuth } from '@src/hooks/use-auth.ts';
-import {TransferData} from "@src/hooks/types.ts"
+import { TransferData } from "@src/hooks/types.ts"
+import { useWeb3Auth } from '@src/hooks/use-web3-auth.ts';
 
 export const useTransfer = (): UseTransferHook => {
   const [data, setData] = useState<TransferData | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<keyof typeof ERRORS | null>(null);
-  const { bundlerClient, smartAccount } = useWeb3Session();
+  const { bundlerClient, smartAccount } = useWeb3Auth();
   const { logout } = useAccountSession();
   const { isFullyAuthenticated: isAuthenticated } = useAuth();
 

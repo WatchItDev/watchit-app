@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { encodeFunctionData } from 'viem';
 import AccessWorkflowAbi from '@src/config/abi/AccessWorkflow.json';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
-import { useWeb3Session } from '@src/hooks/use-web3-session.ts';
 import { ERRORS } from '@src/libs/notifications/errors';
 import { useAccountSession } from '@src/hooks/use-account-session.ts';
 import {
@@ -12,11 +11,12 @@ import {
 } from '@src/hooks/protocol/types.ts'
 import { notifyError } from '@src/libs/notifications/internal-notifications.ts';
 import { useAuth } from '@src/hooks/use-auth.ts';
+import { useWeb3Auth } from '@src/hooks/use-web3-auth.ts';
 
 export const useSponsoredAccessAgreement = (): UseSponsoredAccessAgreementHook => {
   const [data, setData] = useState<SponsoredAccessAgreementDetailsReturn | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
-  const { bundlerClient, smartAccount } = useWeb3Session();
+  const { bundlerClient, smartAccount } = useWeb3Auth();
   const { logout } = useAccountSession();
   const { isFullyAuthenticated: isAuthenticated } = useAuth();
 

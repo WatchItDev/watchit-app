@@ -11,7 +11,7 @@ const httpLink = new HttpLink({
 });
 
 const authLink = setContext(async (_, { headers }) => {
-  // 1️⃣  obtén tu JWT – depende de tu login flow (Web3Auth, wallet, etc.)
+  // obtén tu JWT – depende de tu login flow (Web3Auth, wallet, etc.)
   const token = await localStorage.getItem('idToken'); // placeholder
 
   return {

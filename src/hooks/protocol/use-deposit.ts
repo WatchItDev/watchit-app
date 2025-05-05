@@ -7,18 +7,18 @@ import { encodeFunctionData, parseUnits } from 'viem';
 // LOCAL IMPORTS
 import LedgerVaultAbi from '@src/config/abi/LedgerVault.json';
 import MMCAbi from '@src/config/abi/MMC.json';
-import { useWeb3Session } from '@src/hooks/use-web3-session.ts';
 import { useAccountSession } from '@src/hooks/use-account-session.ts';
 import { useAuth } from '@src/hooks/use-auth.ts';
 import {DepositParams, UseDepositHook, UseDepositResult} from '@src/hooks/protocol/types.ts'
 import { ERRORS } from '@src/libs/notifications/errors.ts';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
+import { useWeb3Auth } from '@src/hooks/use-web3-auth.ts';
 
 export const useDeposit = (): UseDepositHook => {
   const [data, setData] = useState<UseDepositResult | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<keyof typeof ERRORS | null>(null);
-  const { bundlerClient, smartAccount } = useWeb3Session();
+  const { bundlerClient, smartAccount } = useWeb3Auth();
   const { session: sessionData, isFullyAuthenticated: isAuthenticated } = useAuth();
   const { logout } = useAccountSession();
 
