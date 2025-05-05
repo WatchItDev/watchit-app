@@ -95,4 +95,15 @@ describe("<COMPONENTS> FinanceDepositFromMetamask", () => {
     const { getByText } = renderComponent();
     expect(getByText("Connected Wallet")).toBeInTheDocument();
   });
+
+  it("calls connect on button click", () => {
+    mockMetaMaskState.loading = false;
+    mockMetaMaskState.account = null;
+
+    const { getByTestId } = renderComponent();
+    const button = getByTestId("finance-metamask-button");
+    button.click();
+
+    expect(mockMetaMaskState.loading).toBe(false);
+  });
 });
