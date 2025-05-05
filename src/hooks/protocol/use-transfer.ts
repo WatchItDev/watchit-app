@@ -7,9 +7,10 @@ import { ERRORS } from '@src/libs/notifications/errors';
 import { useAccountSession } from '@src/hooks/use-account-session.ts';
 import { TransferParams, UseTransferHook } from '@src/hooks/protocol/types.ts';
 import { useAuth } from '@src/hooks/use-auth.ts';
+import {TransferData} from "@src/hooks/types.ts"
 
 export const useTransfer = (): UseTransferHook => {
-  const [data, setData] = useState<any>(null);
+  const [data, setData] = useState<TransferData | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<keyof typeof ERRORS | null>(null);
   const { bundlerClient, smartAccount } = useWeb3Session();
@@ -59,7 +60,7 @@ export const useTransfer = (): UseTransferHook => {
 
       setData(receipt);
       setLoading(false);
-    } catch (err: any) {
+    } catch (err) {
       console.error('USE TRANSFER ERR:', err);
       setError(ERRORS.UNKNOWN_ERROR);
       setLoading(false);

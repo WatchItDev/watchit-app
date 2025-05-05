@@ -30,13 +30,7 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import { notifyError, notifySuccess } from '@src/libs/notifications/internal-notifications.ts';
 import { SUCCESS } from '@src/libs/notifications/success.ts';
 import { ERRORS } from '@src/libs/notifications/errors';
-
-// ----------------------------------------------------------------------
-
-interface ActivateSubscriptionProfileModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-}
+import {ActivateSubscriptionProfileModalProps} from "@src/components/types.ts"
 
 // ----------------------------------------------------------------------
 

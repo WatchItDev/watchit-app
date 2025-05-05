@@ -4,3 +4,8 @@ export interface HandleActionErrorProps extends Error{
     toSignificantDigits: (digits: number) => string;
   };
 }
+
+export interface ActivateSubscriptionProfileModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+}

@@ -41,9 +41,9 @@ export function useGetPolicyAttestation(policy: Address, recipient: Address, hol
         setAttestation(undefined);
         setError({ message: 'No matching license found for the specified policy.' });
       }
-    } catch (err: any) {
+    } catch (err) {
       console.error('Error fetching license:', err);
-      setError({ message: err.message || 'An error occurred' });
+      setError({ message: err?.message || 'An error occurred' });
       setAttestation(undefined);
     } finally {
       setLoading(false);

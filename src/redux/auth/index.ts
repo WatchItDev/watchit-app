@@ -1,15 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-
-export interface AuthReducerState {
-  session: any;
-  isSessionLoading: boolean;
-  isLoginModalOpen: boolean;
-  balance: number;
-  currentStep: number;
-  isUpdatingMetadata: boolean;
-  email: string;
-  isFullyAuthenticated: boolean;
-}
+import {AuthReducerState, ReduxSession} from '../types'
 
 const initialState: AuthReducerState = {
   session: null,
@@ -44,7 +34,7 @@ const authSlice = createSlice({
     resetCurrentStep: (state) => {
       state.currentStep = 0;
     },
-    setSession: (state, action: PayloadAction<{ session: any }>) => {
+    setSession: (state, action: PayloadAction<{ session: ReduxSession }>) => {
       state.session = action.payload.session;
     },
     setEmail: (state, action: PayloadAction<string>) => {

@@ -31,7 +31,7 @@ export const useGetCampaignQuotaCounter = (): UseGetCampaignQuotaCounterHook => 
         setQuotaCounter(limitNumber);
         setError(null);
         return limitNumber;
-      } catch (err: any) {
+      } catch (err) {
         console.error('Error fetching quota counter:', err);
         setQuotaCounter(0);
         setError({ message: err?.message || 'Error fetching quota counter' });

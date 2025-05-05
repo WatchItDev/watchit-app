@@ -82,7 +82,7 @@ export const useRegisterAsset = (): UseRegisterAssetHook => {
 
       setData({ receipt });
       setLoading(false);
-    } catch (err: any) {
+    } catch (err) {
       console.error('USE REGISTER ASSET ERR:', err);
       setLoading(false);
       throw new Error('There is an error while registering the asset');

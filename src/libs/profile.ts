@@ -50,6 +50,12 @@ export const filterHiddenProfiles = (profiles?: Profile[]): Profile[] | null | u
   // displayName, bio and lens id properties are checked for the hidden indicator
   const patterns = ['###HIDDEN###'];
 
-  // Filter profiles that do not contain the hidden indicator in the "displayName" or "bio" properties using the patterns array
-  return profiles?.filter((profile: Profile) => !patterns.some((pattern) => profile?.metadata?.displayName?.includes(pattern) ?? profile?.metadata?.bio?.includes(pattern) ?? profile?.id.includes(pattern)));
+  // Filter profiles that do not contain the hidden indicator in any of the checked properties
+  return profiles?.filter((profile: Profile) => {
+    return !patterns.some(pattern =>
+      (profile?.metadata?.displayName?.includes(pattern) ||
+        profile?.metadata?.bio?.includes(pattern) ||
+        profile?.id?.includes(pattern))
+    );
+  });
 };

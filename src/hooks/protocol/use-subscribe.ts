@@ -123,7 +123,7 @@ export const useSubscribe = (): UseSubscribeHook => {
       // Update the state with the result
       setData(receipt);
       setLoading(false);
-    } catch (err: any) {
+    } catch (err) {
       console.error('USE SUBSCRIBE ERR:', err);
       setError(ERRORS.UNKNOWN_ERROR);
       setLoading(false);

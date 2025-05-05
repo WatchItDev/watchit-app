@@ -4,24 +4,7 @@ import { AnyMedia, MediaVideoMimeType, video } from "@lens-protocol/metadata";
 import { uploadMetadataToIPFS, verifyIpfsData } from "@src/libs/ipfs.ts";
 import uuidv4 from "@src/utils/uuidv4.ts";
 import { ERRORS } from "@src/libs/notifications/errors";
-
-interface SuccessResult {
-  hash: string;
-  status: "success";
-}
-
-interface ErrorResult {
-  hash: string;
-  status: "error";
-  message: string;
-}
-
-interface UseSubmitAssetToLensReturn {
-  data: SuccessResult[];
-  errors: ErrorResult[];
-  loading: boolean;
-  submitAssetToLens: (hashesString: string) => Promise<void>;
-}
+import {SuccessResult, ErrorResult, UseSubmitAssetToLensReturn } from "./types";
 
 export function useSubmitAssetToLens(): UseSubmitAssetToLensReturn {
   const [data, setData] = useState<SuccessResult[]>([]);
@@ -32,7 +15,7 @@ export function useSubmitAssetToLens(): UseSubmitAssetToLensReturn {
   /**
    * Sanitize the description to avoid strange characters
    */
-  const sanitizeDescription = useCallback((description: any): string => {
+  const sanitizeDescription = useCallback((description?: string)=> {
     if (typeof description !== "string") {
       return description;
     }
@@ -74,6 +57,7 @@ export function useSubmitAssetToLens(): UseSubmitAssetToLensReturn {
         };
 
         const attachments = responseData.Data.attachments;
+        // @ts-expect-error No error in this context
         const { posterCid, squareCid, wallpaperCid } = attachments.reduce((acc, attachment) => {
           const key = cidMapping[attachment.title];
           acc[key] = attachment.cid;
@@ -99,9 +83,9 @@ export function useSubmitAssetToLens(): UseSubmitAssetToLensReturn {
         ];
 
         const mediaItems: AnyMedia[] = mediaConfig.map(({ cid, type, altTag }) => ({
-          item: getMediaUri(cid) as any,
-          type: type as any,
-          altTag: altTag as any,
+          item: getMediaUri(cid),
+          type: type,
+          altTag: altTag,
         }));
 
         // 4. Create the metadata for Lens with @lens-protocol/metadata
@@ -152,7 +136,8 @@ export function useSubmitAssetToLens(): UseSubmitAssetToLensReturn {
             };
           }
         }
-      } catch (err: any) {
+      } catch (err) {
+        console.error("Error processing hash:", asset, err);
         return {
           hash: asset,
           status: "error",

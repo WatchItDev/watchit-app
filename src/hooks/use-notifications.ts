@@ -11,7 +11,7 @@ interface UseNotificationsReturn {
   getNotifications: (id: string) => Promise<void>;
   notifications: NotificationColumnsProps[];
   markAsRead: (id: string) => Promise<void>;
-  sendNotification: (receiver_id: string, sender_id: string, payload: any) => Promise<void>;
+  sendNotification: (receiver_id: string, sender_id: string, payload: Record<string, string>) => Promise<void>;
   markAllAsRead: () => Promise<void>;
   deleteNotification: (id: string) => Promise<void>;
 }
@@ -50,7 +50,7 @@ export function useNotifications(): UseNotificationsReturn {
     }
   }
 
-  async function sendNotification(receiver_id: string, sender_id: string, payload: any) {
+  async function sendNotification(receiver_id: string, sender_id: string, payload: Record<string, string>) {
     const { error } = await supabase
       .from('notifications')
       .insert([{ receiver_id, sender_id, payload }]);

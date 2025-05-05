@@ -4,11 +4,11 @@ import CampaignSubscriptionTplAbi from '@src/config/abi/CampaignSubscriptionTpl.
 import { useWeb3Session } from '@src/hooks/use-web3-session.ts';
 import { ERRORS } from '@src/libs/notifications/errors';
 import { useAccountSession } from '@src/hooks/use-account-session.ts';
-import { UseCampaignPauseHook } from '@src/hooks/protocol/types.ts';
+import {UseCampaignPauseHook, UseCampaignPauseResult} from '@src/hooks/protocol/types.ts'
 import { useAuth } from '@src/hooks/use-auth.ts';
 
 export const useCampaignPause = (): UseCampaignPauseHook => {
-  const [data, setData] = useState<any>(null);
+  const [data, setData] = useState<UseCampaignPauseResult | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<keyof typeof ERRORS | null>(null);
   const { bundlerClient, smartAccount } = useWeb3Session();
@@ -49,7 +49,7 @@ export const useCampaignPause = (): UseCampaignPauseHook => {
         hash: userOpHash,
       });
       setData(receipt);
-    } catch (err: any) {
+    } catch (err) {
       console.error('Error in pause:', err);
       setError(ERRORS.UNKNOWN_ERROR);
     } finally {
