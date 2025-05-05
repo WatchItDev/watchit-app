@@ -278,12 +278,6 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
         <Box sx={{ width: '100%', position: 'relative', pt: 1 }}>
           {/* Background Image */}
           <Image
-            // src={
-            //   coverPicturePreview ??
-            //   (initialValues?.coverPicture
-            //     ? initialValues?.coverPicture
-            //     : `https://picsum.photos/seed/${mode === 'update' && sessionData?.authenticated ? sessionData?.user?.address : 'new'}/1920/820`)
-            // }
             src={coverPicturePreview ?? resolveSrc(initialValues?.coverPicture ?? '', 'cover') ?? ''}
             onClick={() => coverPictureInputRef.current?.click()}
             sx={{
@@ -308,15 +302,6 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
           />
           {/* Avatar */}
           <AvatarProfile
-            // src={
-            //   profilePicturePreview ??
-            //   (initialValues?.profilePicture
-            //     ? initialValues?.profilePicture
-            //     : mode === 'update' && sessionData?.authenticated
-            //       ? sessionData?.user?.address
-            //       : 'new'
-            //   ) ?? ''
-            // }
             src={profilePicturePreview ?? resolveSrc(initialValues?.profilePicture ?? '', 'cover') ?? ''}
             alt=""
             onClick={() => profilePictureInputRef.current?.click()}
