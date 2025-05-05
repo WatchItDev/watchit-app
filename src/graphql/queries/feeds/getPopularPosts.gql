@@ -1,0 +1,33 @@
+query GetPopularPosts($limit: Int) {
+  getPopularPosts(limit: $limit) {
+    author {
+      address
+      displayName
+      followersCount
+      followingCount
+      coverPicture
+      profilePicture
+      bio
+      publicationsCount
+      username
+    }
+    bookmarkCount
+    cid
+    commentCount
+    createdAt
+    description
+    id
+    likeCount
+    media {
+      url
+      type
+      title
+      id
+      cid
+    }
+    title
+    updatedAt
+    visibility
+    viewCount
+  }
+}

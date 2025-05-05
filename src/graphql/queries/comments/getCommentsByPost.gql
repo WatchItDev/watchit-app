@@ -1,0 +1,21 @@
+query GetCommentsByPost($postId: String!, $limit: Int) {
+  getCommentsByPost(postId: $postId, limit: $limit) {
+    author {
+      address
+      displayName
+    }
+    content
+    id
+    createdAt
+    likeCount
+    parentComment {
+      content
+      id
+    }
+    post {
+      id
+      title
+    }
+    updatedAt
+  }
+}

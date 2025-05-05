@@ -1,0 +1,22 @@
+query GetRecentUsers($limit: Int) {
+  getRecentUsers(limit: $limit) {
+    address
+    bio
+    bookmarksCount
+    coverPicture
+    createdAt
+    displayName
+    followersCount
+    followingCount
+    profilePicture
+    publicationsCount
+    socialLinks {
+      platform
+      url
+    }
+    updatedAt
+    username
+    verified
+    xpBalance
+  }
+}

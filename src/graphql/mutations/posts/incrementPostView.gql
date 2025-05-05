@@ -1,0 +1,5 @@
+mutation IncrementPostView($postId: String!) {
+  incrementPostView(postId: $postId) {
+    id
+  }
+}

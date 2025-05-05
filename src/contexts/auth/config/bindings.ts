@@ -1,7 +1,7 @@
 // bindings.ts
 import { IBindings } from '@lens-protocol/react-web';
 import { Web3Provider } from '@ethersproject/providers';
-import { web3Auth } from './web3AuthInstance';
+import { web3Auth } from './web3AuthInstance.ts';
 
 export const bindings: IBindings = {
   getProvider: async () => {

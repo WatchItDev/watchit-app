@@ -35,7 +35,8 @@ import LedgerVaultAbi from "@src/config/abi/LedgerVault.json";
 import { store } from '@redux/store'
 import { useScrollToTop } from '@src/hooks/use-scroll-to-top';
 import { SettingsProvider, SettingsDrawer } from '@src/components/settings';
-import { AuthProvider } from '@src/auth/context/web3Auth';
+import { AuthProvider } from '@src/contexts/auth';
+import { ApiProvider } from '@src/contexts/api';
 import { ResponsiveOverlay } from '@src/components/responsive-overlay';
 import { MetaMaskProvider } from '@metamask/sdk-react';
 import { useNotifications } from "@src/hooks/use-notifications.ts";
@@ -98,13 +99,15 @@ export default function App() {
         >
           <Provider store={store}>
             <AuthProvider>
-              <ThemeProvider>
-                <MotionLazy>
-                  <SnackbarProvider>
-                    <AppContent />
-                  </SnackbarProvider>
-                </MotionLazy>
-              </ThemeProvider>
+              <ApiProvider>
+                <ThemeProvider>
+                  <MotionLazy>
+                    <SnackbarProvider>
+                      <AppContent />
+                    </SnackbarProvider>
+                  </MotionLazy>
+                </ThemeProvider>
+              </ApiProvider>
             </AuthProvider>
           </Provider>
         </SettingsProvider>

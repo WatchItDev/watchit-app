@@ -5,7 +5,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import { createStore } from 'redux';
 import rootReducer from '@redux/reducer';
 import {LensProvider, staging} from '@lens-protocol/react-web';
-import {bindings} from "@src/auth/context/web3Auth/config/bindings.ts";
+import {bindings} from "@src/contexts/auth/config/bindings.ts";
 
 const store = createStore(rootReducer);
 

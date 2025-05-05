@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { AuthContext } from '../auth/context/web3Auth';
+import { AuthContext } from '../contexts/auth';
 
 // ----------------------------------------------------------------------
 

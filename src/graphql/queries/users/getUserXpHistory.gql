@@ -1,0 +1,11 @@
+query GetUserXPHistory($address: String!, $limit: Int = 50, $offset: Int = 0) {
+  getUserXPHistory(address: $address, limit: $limit, offset: $offset) {
+    id
+    action
+    description
+    amount
+    balanceBefore
+    balanceAfter
+    createdAt
+  }
+}

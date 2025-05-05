@@ -1,0 +1,22 @@
+query GetUser($address: String!) {
+  getUser(address: $address) {
+    address
+    username
+    displayName
+    bio
+    profilePicture
+    coverPicture
+    xpBalance
+    followersCount
+    followingCount
+    publicationsCount
+    bookmarksCount
+    socialLinks {
+      platform
+      url
+    }
+    verified
+    createdAt
+    updatedAt
+  }
+}

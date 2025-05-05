@@ -12,10 +12,10 @@ import { development, LensConfig, LensProvider } from '@lens-protocol/react-web'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 // LOCAL IMPORTS
-import { AuthProviderProps } from './types';
-import { AuthContextProvider } from './authContext';
-import { initWeb3Auth, web3Auth } from './config/web3AuthInstance';
-import { bindings } from './config/bindings';
+import { AuthProviderProps } from './types.ts';
+import { AuthContextProvider } from './authContext.tsx';
+import { initWeb3Auth, web3Auth } from './config/web3AuthInstance.ts';
+import { bindings } from './config/bindings.ts';
 
 /**
  * AuthProvider is a higher-order component that wraps the application with necessary providers

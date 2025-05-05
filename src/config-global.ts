@@ -37,6 +37,7 @@ export interface GlobalConstants {
   WATCHIT_GET_MEDIA_CONTENT_URL: string;
   ATTESTATION_BASE_URL: string;
   FROM_BLOCK: bigint | string | number;
+  GQL_ENDPOINT: string;
 }
 
 export const GLOBAL_CONSTANTS: GlobalConstants = {
@@ -99,6 +100,7 @@ export const GLOBAL_CONSTANTS: GlobalConstants = {
   ATTESTATION_BASE_URL:
     process.env.VITE_URL_ATTESTATION_BASE || import.meta.env.VITE_URL_ATTESTATION_BASE || "",
   FROM_BLOCK: process.env.VITE_BLOCK_FROM || import.meta.env.VITE_BLOCK_FROM || 0n,
+  GQL_ENDPOINT: process.env.VITE_GQL_ENDPOINT || import.meta.env.VITE_GQL_ENDPOINT || 'http://localhost:4000/graphql',
 };
 
 export const PATH_AFTER_LOGIN = paths.dashboard.root;

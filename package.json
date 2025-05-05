@@ -25,7 +25,9 @@
     "release": "semantic-release",
     "build": "tsc && cross-env NODE_OPTIONS=\"--max-old-space-size=8192\" vite build",
     "test": "vitest",
-    "test:coverage": "vitest run --coverage"
+    "test:coverage": "vitest run --coverage",
+    "codegen": "graphql-codegen --config codegen.ts",
+    "codegen:watch": "graphql-codegen --config codegen.ts --watch"
   },
   "eslintConfig": {
     "extends": [
@@ -137,6 +139,11 @@
     "@babel/plugin-transform-react-jsx": "^7.22.5",
     "@codecov/vite-plugin": "^1.8.0",
     "@eslint/js": "^9.14.0",
+    "@graphql-codegen/cli": "^5.0.5",
+    "@graphql-codegen/typescript": "^4.1.6",
+    "@graphql-codegen/typescript-operations": "^4.6.0",
+    "@graphql-codegen/typescript-react-apollo": "^4.3.2",
+    "@graphql-inspector/cli": "^5.0.8",
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/git": "^10.0.1",
     "@testing-library/jest-dom": "^6.6.3",
