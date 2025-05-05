@@ -1,0 +1,45 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`<COMPONENTS> FinanceDepositFromMetamask > to match snapshot 1`] = `
+<div>
+  <button
+    class="MuiButtonBase-root MuiButton-root MuiButton-outlined MuiButton-outlinedPrimary MuiButton-sizeMedium MuiButton-outlinedSizeMedium MuiButton-colorPrimary MuiButton-root MuiButton-outlined MuiButton-outlinedPrimary MuiButton-sizeMedium MuiButton-outlinedSizeMedium MuiButton-colorPrimary css-k5ndd5-MuiButtonBase-root-MuiButton-root"
+    data-testid="finance-metamask-button"
+    tabindex="0"
+    type="button"
+  >
+    <span
+      class="MuiButton-icon MuiButton-startIcon MuiButton-iconSizeMedium css-1d6wzja-MuiButton-startIcon"
+    >
+      <span
+        data-icon="logos:metamask-icon"
+        data-testid="iconify"
+      />
+    </span>
+    Connect MetaMask
+    <span
+      class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
+    />
+  </button>
+  <div
+    class="MuiStack-root css-1i3xkqc-MuiStack-root"
+  >
+    <p
+      class="MuiTypography-root MuiTypography-body2 css-1da0jfs-MuiTypography-root"
+    >
+      MetaMask required.
+       
+      <a
+        class="MuiTypography-root MuiTypography-inherit MuiLink-root MuiLink-underlineHover css-1pdnr0o-MuiTypography-root-MuiLink-root"
+        href="https://metamask.app.link"
+        rel="noopener"
+        target="_blank"
+      >
+        Click here
+      </a>
+       
+      if you don't have it installed.
+    </p>
+  </div>
+</div>
+`;
