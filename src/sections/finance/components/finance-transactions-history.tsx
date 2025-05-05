@@ -199,11 +199,13 @@ function applyFilter({
   }
 
   const { status } = filters;
+<<<<<<< HEAD
 
   console.log("inputData", inputData);
 
+=======
+>>>>>>> next
   const stabilizedThis = inputData.map((el, index) => [el, index] as const);
-
   stabilizedThis.sort((a, b) => {
     const order = comparator(a[0], b[0]);
     if (order !== 0) return order;
