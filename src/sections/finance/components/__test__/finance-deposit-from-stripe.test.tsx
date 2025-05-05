@@ -10,8 +10,6 @@ describe("[COMPONENTS] <FinanceDepositFromStripe /> ", () => {
   it("to match snapshot", () => {
     const { container } = renderComponent();
     expect(container).toMatchSnapshot();
-
-    screen.debug();
   });
 
   it("should render the component correctly", () => {
@@ -30,5 +28,12 @@ describe("[COMPONENTS] <FinanceDepositFromStripe /> ", () => {
     expect(boxElement).toHaveStyle("align-items: center");
     expect(boxElement).toHaveStyle("gap: 8px");
     expect(boxElement).toHaveStyle("text-align: center");
+    expect(boxElement).toHaveStyle("color: text.secondary");
+  });
+
+  it("should render the ComingSoonIllustration component", () => {
+    renderComponent();
+    const illustrationElement = screen.getByTestId("coming-soon-illustration");
+    expect(illustrationElement).toBeInTheDocument();
   });
 });
