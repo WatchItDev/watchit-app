@@ -10,6 +10,7 @@ exports[`[COMPONENTS] <FinanceDepositFromStripe />  > to match snapshot 1`] = `
     >
       <svg
         class="MuiBox-root css-13dfz64"
+        data-testid="coming-soon-illustration"
         viewBox="0 0 480 360"
         xmlns="http://www.w3.org/2000/svg"
       >
