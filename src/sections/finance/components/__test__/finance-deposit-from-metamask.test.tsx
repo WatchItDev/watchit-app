@@ -15,14 +15,29 @@ vi.mock("@src/workers/backgroundTaskWorker?worker", () => {
   };
 });
 
-const mockMetaMaskState = {
+vi.mock("@src/hooks/protocol/use-get-mmc-contract-balance", () => ({
+  useGetMmcContractBalance: () => ({
+    balance: BigInt(1000),
+    isLoading: false,
+    error: null,
+  }),
+}));
+
+const mockMetaMaskState: { loading: boolean; account: string | null } = {
   loading: true,
   account: null,
-  connect: vi.fn(),
 };
 
 vi.mock("@src/hooks/use-metamask", () => ({
   useMetaMask: () => mockMetaMaskState,
+}));
+
+const mockAuthState: { session: null | { address: string | null } } = {
+  session: null,
+};
+
+vi.mock("@src/hooks/use-auth", () => ({
+  useAuth: () => mockAuthState,
 }));
 
 const renderComponent = () => {
@@ -39,6 +54,7 @@ describe("<COMPONENTS> FinanceDepositFromMetamask", () => {
     vi.clearAllMocks();
     mockMetaMaskState.loading = true;
     mockMetaMaskState.account = null;
+    mockAuthState.session = null;
   });
 
   it("to match snapshot", () => {
@@ -57,5 +73,26 @@ describe("<COMPONENTS> FinanceDepositFromMetamask", () => {
 
     const { getByTestId } = renderComponent();
     expect(getByTestId("finance-metamask-button")).toBeInTheDocument();
+  });
+
+  it("handles missing session.address gracefully", () => {
+    mockMetaMaskState.loading = false;
+    mockMetaMaskState.account = "0x5B38Da6a701c568545dCfcB03FcB875f56beddC4";
+    mockAuthState.session = { address: null };
+
+    const { container } = renderComponent();
+
+    expect(container.querySelector('[data-testid="finance-metamask-loader"]')).toBeFalsy();
+    expect(container.querySelector('[data-testid="finance-metamask-button"]')).toBeFalsy();
+    expect(container.querySelector(".MuiBox-root")).toBeInTheDocument();
+  });
+
+  it("shows FinanceDeposit when account is connected", () => {
+    mockMetaMaskState.loading = false;
+    mockMetaMaskState.account = "0x5B38Da6a701c568545dCfcB03FcB875f56beddC4";
+    mockAuthState.session = { address: "0x5B38Da6a701c568545dCfcB03FcB875f56beddC4" };
+
+    const { getByText } = renderComponent();
+    expect(getByText("Connected Wallet")).toBeInTheDocument();
   });
 });
