@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, beforeEach } from "vitest";
 import { render } from "@testing-library/react";
 import FinanceDepositFromMetamask from "../finance-deposit-from-metamask";
 import { Provider } from "react-redux";
@@ -14,12 +14,15 @@ vi.mock("@src/workers/backgroundTaskWorker?worker", () => {
     },
   };
 });
+
+const mockMetaMaskState = {
+  loading: true,
+  account: null,
+  connect: vi.fn(),
+};
+
 vi.mock("@src/hooks/use-metamask", () => ({
-  useMetaMask: () => ({
-    loading: true,
-    account: null,
-    connect: vi.fn(),
-  }),
+  useMetaMask: () => mockMetaMaskState,
 }));
 
 const renderComponent = () => {
@@ -32,6 +35,12 @@ const renderComponent = () => {
 };
 
 describe("<COMPONENTS> FinanceDepositFromMetamask", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    mockMetaMaskState.loading = true;
+    mockMetaMaskState.account = null;
+  });
+
   it("to match snapshot", () => {
     const { container } = renderComponent();
     expect(container).toMatchSnapshot();
@@ -40,5 +49,13 @@ describe("<COMPONENTS> FinanceDepositFromMetamask", () => {
   it("shows loader when loading is true", () => {
     const { getByTestId } = renderComponent();
     expect(getByTestId("finance-metamask-loader")).toBeInTheDocument();
+  });
+
+  it("shows connect button when loading is false and account is null", () => {
+    mockMetaMaskState.loading = false;
+    mockMetaMaskState.account = null;
+
+    const { getByTestId } = renderComponent();
+    expect(getByTestId("finance-metamask-button")).toBeInTheDocument();
   });
 });
