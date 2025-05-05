@@ -2,44 +2,25 @@
 
 exports[`<COMPONENTS> FinanceDepositFromMetamask > to match snapshot 1`] = `
 <div>
-  <button
-    class="MuiButtonBase-root MuiButton-root MuiButton-outlined MuiButton-outlinedPrimary MuiButton-sizeMedium MuiButton-outlinedSizeMedium MuiButton-colorPrimary MuiButton-root MuiButton-outlined MuiButton-outlinedPrimary MuiButton-sizeMedium MuiButton-outlinedSizeMedium MuiButton-colorPrimary css-k5ndd5-MuiButtonBase-root-MuiButton-root"
-    data-testid="finance-metamask-button"
-    tabindex="0"
-    type="button"
+  <div
+    class="MuiBox-root css-1dm8t1i"
   >
-    <span
-      class="MuiButton-icon MuiButton-startIcon MuiButton-iconSizeMedium css-1d6wzja-MuiButton-startIcon"
+    <div
+      class="MuiBox-root css-tk1iyj"
+      data-testid="finance-metamask-loader"
     >
       <span
-        data-icon="logos:metamask-icon"
-        data-testid="iconify"
-      />
-    </span>
-    Connect MetaMask
-    <span
-      class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
-    />
-  </button>
-  <div
-    class="MuiStack-root css-1i3xkqc-MuiStack-root"
-  >
-    <p
-      class="MuiTypography-root MuiTypography-body2 css-1da0jfs-MuiTypography-root"
-    >
-      MetaMask required.
-       
-      <a
-        class="MuiTypography-root MuiTypography-inherit MuiLink-root MuiLink-underlineHover css-1pdnr0o-MuiTypography-root-MuiLink-root"
-        href="https://metamask.app.link"
-        rel="noopener"
-        target="_blank"
+        class="MuiLinearProgress-root MuiLinearProgress-colorInherit MuiLinearProgress-indeterminate css-yptbrg-MuiLinearProgress-root"
+        role="progressbar"
       >
-        Click here
-      </a>
-       
-      if you don't have it installed.
-    </p>
+        <span
+          class="MuiLinearProgress-bar MuiLinearProgress-barColorInherit MuiLinearProgress-bar1Indeterminate css-jlm0hp-MuiLinearProgress-bar1"
+        />
+        <span
+          class="MuiLinearProgress-bar MuiLinearProgress-barColorInherit MuiLinearProgress-bar2Indeterminate css-1wsh2fw-MuiLinearProgress-bar2"
+        />
+      </span>
+    </div>
   </div>
 </div>
 `;
