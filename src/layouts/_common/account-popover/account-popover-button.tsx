@@ -31,9 +31,6 @@ export function AccountPopoverButton(props: Readonly<AccountPopoverButtonProps>)
   const { session } = useAuth();
   const isAuthenticated = Boolean(session?.authenticated);
 
-  console.log('hello session')
-  console.log(session)
-
   return (
     <Box sx={{ display: 'flex', alignItems: 'center' }} onClick={popover.onOpen}>
       {/* If user is authenticated, show their avatar */}
