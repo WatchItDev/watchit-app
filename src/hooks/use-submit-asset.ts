@@ -1,7 +1,3 @@
-/* src/hooks/useSubmitAsset.ts ----------------------------------------------
-   Create ONE post in your GraphQL API from a given CID (“asset hash”).
----------------------------------------------------------------------------- */
-
 import { useState, useCallback } from 'react';
 import { useCreatePostMutation } from '@src/graphql/generated/hooks';
 import { ERRORS } from '@src/libs/notifications/errors';
@@ -72,9 +68,6 @@ export function useSubmitAsset(): UseSubmitAssetReturn {
           media,
           visibility  : VisibilitySetting.Public,
         };
-
-        console.log('hello create post input')
-        console.log(input)
 
         const { data: gData } = await createPost({ variables: { input } });
 
