@@ -28,6 +28,7 @@ interface UseAccountSessionHook {
   login: () => Promise<void>;
   logout: (silent?: boolean) => Promise<void>;
   syncAddress: () => Promise<void>;
+  refreshUser: () => Promise<void>;
   loading: boolean;
 }
 
@@ -94,6 +95,14 @@ export const useAccountSession = (): UseAccountSessionHook => {
 
     mergeSession({ address });
     loadUser({ variables: { address } });
+  };
+
+  const refreshUser = async () => {
+    const address = await getPrimaryAddress();
+    if (!address) throw new Error('No address found');
+
+    const result = await loadUser({ variables: { address } });
+    dispatch(setUser({ user: result.data.getUser }));
   };
 
   const logout = useCallback(async () => {
@@ -179,6 +188,7 @@ export const useAccountSession = (): UseAccountSessionHook => {
     login,
     logout,
     syncAddress,
+    refreshUser,
     loading: bootstrapping || reduxLoading || apiLoading || loginInProgress,
   };
 };

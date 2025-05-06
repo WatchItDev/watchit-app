@@ -163,11 +163,11 @@ const AppContent = () => {
 
 
   useEffect(() => {
-    if (sessionData?.profile?.id) {
-      subscribeToNotifications(sessionData?.profile?.id, dispatch, ['notifications']);
-      getNotifications(sessionData?.profile?.id);
+    if (sessionData?.address) {
+      subscribeToNotifications(sessionData?.address, dispatch, ['notifications']);
+      getNotifications(sessionData?.address);
     }
-  }, [sessionData?.profile?.id]);
+  }, [sessionData?.address]);
 
   return (
     <>

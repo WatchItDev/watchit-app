@@ -2,13 +2,14 @@
 import { useState } from 'react';
 
 // VIEM IMPORTS
-import { encodeFunctionData } from 'viem';
+import { Address, encodeFunctionData } from 'viem';
 
 // LOCAL IMPORTS
 import RightsPolicyAuthorizerAbi from '@src/config/abi/RightsPolicyAuthorizer.json';
 import { useAccountSession } from '@src/hooks/use-account-session.ts';
 import { useAuth } from '@src/hooks/use-auth.ts';
 import {AuthorizePolicyParams, UseAuthorizePolicyHook, UseAuthorizePolicyResult} from '@src/hooks/protocol/types.ts'
+import { Calls, WaitForUserOperationReceiptReturnType } from '@src/hooks/types.ts'
 import { ERRORS } from '@src/libs/notifications/errors.ts';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 import { useWeb3Auth } from '@src/hooks/use-web3-auth.ts';
@@ -19,7 +20,7 @@ export const useAuthorizePolicy = (): UseAuthorizePolicyHook => {
   const [data, setData] = useState<UseAuthorizePolicyResult | undefined>(undefined);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<keyof typeof ERRORS | null>(null);
-  const { session: sessionData, isFullyAuthenticated: isAuthenticated } = useAuth();
+  const { session } = useAuth();
   const { bundlerClient, smartAccount } = useWeb3Auth();
   const { logout } = useAccountSession();
 
@@ -45,15 +46,10 @@ export const useAuthorizePolicy = (): UseAuthorizePolicyHook => {
     setLoading(true);
     setError(null);
 
-    if (!sessionData?.authenticated) {
+    if (!session?.authenticated) {
       setError(ERRORS.AUTHORIZATION_POLICY_ERROR);
       setLoading(false);
-      return;
-    }
-
-    if (!isAuthenticated) {
       logout();
-      setLoading(false);
       throw new Error('Invalid Web3Auth session');
     }
 
@@ -65,7 +61,7 @@ export const useAuthorizePolicy = (): UseAuthorizePolicyHook => {
       });
 
       // Create the array of calls to be included in the user operation
-      const calls = [
+      const calls: Calls = [
         {
           to: GLOBAL_CONSTANTS.RIGHT_POLICY_AUTHORIZER,
           value: 0,
@@ -74,14 +70,14 @@ export const useAuthorizePolicy = (): UseAuthorizePolicyHook => {
       ];
 
       // Send the user operation
-      const userOpHash = await bundlerClient.sendUserOperation({
+      const userOpHash = await bundlerClient?.sendUserOperation({
         account: smartAccount,
         calls: calls,
       });
 
       // Wait for the user operation receipt
-      const receipt = await bundlerClient.waitForUserOperationReceipt({
-        hash: userOpHash,
+      const receipt: WaitForUserOperationReceiptReturnType = await bundlerClient?.waitForUserOperationReceipt({
+        hash: userOpHash as Address,
       });
 
       // Update the state with the result

@@ -27,6 +27,7 @@ export const shareLinks = [
 
 export const socialMedia = [
   { key: 'twitter', icon: 'mingcute:social-x-line' },
-  { key: 'facebook', icon: 'mdi:facebook' },
   { key: 'instagram', icon: 'mdi:instagram' },
+  { key: 'orb', icon: 'mdi:instagram' },
+  { key: 'farcaster', icon: 'mdi:instagram' },
 ];

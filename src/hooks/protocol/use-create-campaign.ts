@@ -7,12 +7,13 @@ import {CreateCampaignParams, CreateCampaignResult, UseCreateCampaignHook} from 
 import { notifyError } from '@src/libs/notifications/internal-notifications.ts';
 import { useAuth } from '@src/hooks/use-auth.ts';
 import { useWeb3Auth } from '@src/hooks/use-web3-auth.ts';
+import { Calls, WaitForUserOperationReceiptReturnType } from '@src/hooks/types.ts'
 
 export const useCreateCampaign = (): UseCreateCampaignHook => {
   const [data, setData] = useState<CreateCampaignResult |null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const { bundlerClient, smartAccount } = useWeb3Auth();
-  const { isFullyAuthenticated: isAuthenticated } = useAuth();
+  const { session } = useAuth();
 
   const initializeCampaign = ({ policy, expiration, description }: CreateCampaignParams) => {
     return encodeFunctionData({
@@ -30,7 +31,7 @@ export const useCreateCampaign = (): UseCreateCampaignHook => {
   const create = async ({ policy, expiration, description }: CreateCampaignParams) => {
     setLoading(true);
 
-    if (!isAuthenticated) {
+    if (!session.authenticated) {
       notifyError(ERRORS.FIRST_LOGIN_ERROR);
       setLoading(false);
       throw new Error('Invalid Web3Auth session');
@@ -39,7 +40,7 @@ export const useCreateCampaign = (): UseCreateCampaignHook => {
     try {
       const campaignData = initializeCampaign({ policy, expiration, description });
 
-      const calls = [
+      const calls: Calls = [
         {
           to: GLOBAL_CONSTANTS.CAMPAIGN_REGISTRY_ADDRESS,
           value: 0,
@@ -52,7 +53,7 @@ export const useCreateCampaign = (): UseCreateCampaignHook => {
         calls,
       });
 
-      const receipt = await bundlerClient.waitForUserOperationReceipt({
+      const receipt: WaitForUserOperationReceiptReturnType = await bundlerClient.waitForUserOperationReceipt({
         hash: userOpHash,
       });
 

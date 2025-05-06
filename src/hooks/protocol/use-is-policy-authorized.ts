@@ -17,8 +17,7 @@ export const useIsPolicyAuthorized = (
   const [isAuthorized, setIsAuthorized] = useState<boolean | undefined>(undefined);
   const [fetching, setFetching] = useState<boolean>(true);
   const [error, setError] = useState<HasAccessError | null>(null);
-
-  const userAddress = sessionData?.profile?.ownedBy?.address;
+  const userAddress = sessionData?.address;
   const {
     authorizedHolderPolicies,
     loading: loadingPolicies,
@@ -68,9 +67,9 @@ export const useIsPolicyAuthorized = (
     } catch (err) {
       console.error('Error checking policy authorization:', err);
       setIsAuthorized(undefined);
-      setError({
-        message: err?.message || 'An error occurred while checking policy authorization.',
-      });
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-expect-error
+      setError({ message: err?.message || 'An error occurred while checking policy authorization.' });
     } finally {
       setFetching(false);
     }

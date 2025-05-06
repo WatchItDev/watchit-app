@@ -58,23 +58,6 @@ const ProfileRightSidebar: FC<ProfileRightSidebarProps> = ({ profile, sidebarPro
         marginBottom: 3,
       }}
     >
-      <Tooltip title="Identifier for each profile as Watchit member">
-      <Stack
-        direction="row"
-        sx={{
-          zIndex: 10,
-          width: '100%',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-        }}
-      >
-
-        <Typography color="text.secondary">Lens ID</Typography>
-
-        <CopyableText label={`${profile?.id}`} text={`${profile?.id}`} />
-      </Stack>
-      </Tooltip>
-      <Divider sx={{ borderColor: 'rgba(255, 255, 255, 0.08)', width: '100%' }} />
       <Stack
         direction="row"
         sx={{
@@ -86,8 +69,8 @@ const ProfileRightSidebar: FC<ProfileRightSidebarProps> = ({ profile, sidebarPro
       >
         <Typography color="text.secondary">Address</Typography>
         <CopyableText
-          label={truncateAddress(`${profile?.ownedBy?.address}`)}
-          text={`${profile?.ownedBy?.address}`}
+          label={truncateAddress(`${profile?.address}`)}
+          text={`${profile?.address}`}
         />
       </Stack>
       {isAuthorized &&
@@ -96,7 +79,7 @@ const ProfileRightSidebar: FC<ProfileRightSidebarProps> = ({ profile, sidebarPro
         !attestationLoading &&
         hasAccess &&
         !accessLoading &&
-        profile?.id !== sessionData?.profile?.id && (
+        profile?.address !== sessionData?.address && (
           <>
             <Divider sx={{ borderColor: 'rgba(255, 255, 255, 0.08)', width: '100%' }} />
             <Tooltip title="This license address represents the license issued using blockchain technology, ensuring a secure agreement between the creator and the user..">

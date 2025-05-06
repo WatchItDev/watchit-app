@@ -1029,6 +1029,8 @@ export const GetPostsByAuthorDocument = gql`
     media {
       id
       type
+      title
+      cid
       url
     }
     likeCount
@@ -1191,7 +1193,21 @@ export const GetUserFollowersDocument = gql`
     address
     username
     displayName
+    bio
     profilePicture
+    coverPicture
+    xpBalance
+    followersCount
+    followingCount
+    publicationsCount
+    bookmarksCount
+    socialLinks {
+      platform
+      url
+    }
+    verified
+    createdAt
+    updatedAt
   }
 }
     `;
@@ -1235,7 +1251,21 @@ export const GetUserFollowingDocument = gql`
     address
     username
     displayName
+    bio
     profilePicture
+    coverPicture
+    xpBalance
+    followersCount
+    followingCount
+    publicationsCount
+    bookmarksCount
+    socialLinks {
+      platform
+      url
+    }
+    verified
+    createdAt
+    updatedAt
   }
 }
     `;

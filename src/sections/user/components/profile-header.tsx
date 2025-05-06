@@ -5,9 +5,6 @@ import { PropsWithChildren, useEffect } from 'react';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 
-// LENS IMPORTS
-import { appId, ProfilePictureSet, PublicationType, usePublications } from '@lens-protocol/react-web';
-
 // VIEM IMPORTS
 import { Address } from 'viem';
 
@@ -20,7 +17,6 @@ import { useGetPolicyAttestation } from '@src/hooks/protocol/use-get-policy-atte
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 
 // Profile Components
-import ProfileReport from '@src/sections/user/components/profile-report.tsx';
 import ProfileRightSidebar from "@src/sections/user/components/profile-right-sidebar.tsx";
 import ProfileJoin from "@src/sections/user/components/profile-join.tsx";
 import ProfileUserInfo from "@src/sections/user/components/profile-user-info.tsx";
@@ -36,10 +32,8 @@ import LoadingButton from '@mui/lab/LoadingButton';
 // ----------------------------------------------------------------------
 
 const ProfileHeader = (props: PropsWithChildren<ProfileHeaderProps>) => {
-  const { profile: profileData, children } = props;
-  const { session: sessionData, isSessionLoading } = useAuth();
-  const profile =
-    sessionData && sessionData?.profile?.id === profileData?.id ? sessionData.profile : profileData;
+  const { profile, children } = props;
+  const { session, isAuthLoading } = useAuth();
 
   const {
     attestation,
@@ -47,41 +41,31 @@ const ProfileHeader = (props: PropsWithChildren<ProfileHeaderProps>) => {
     refetch: refetchAttestation,
   } = useGetPolicyAttestation(
     GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS,
-    sessionData?.profile?.ownedBy?.address as Address,
-    profile?.ownedBy?.address as Address
+    session.address as Address,
+    profile?.address as Address
   );
   const {
     hasAccess,
     loading: accessLoading,
     fetch: refetchAccess,
-  } = useHasAccess(profile?.ownedBy?.address as Address);
+  } = useHasAccess(profile?.address as Address);
   const { isAuthorized, loading: authorizedLoading } = useIsPolicyAuthorized(
     GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS,
-    profile?.ownedBy?.address as Address
+    profile?.address as Address
   );
   const { campaign, fetchSubscriptionCampaign } = useGetSubscriptionCampaign();
   const { isActive, loading: isActiveLoading, fetchIsActive } = useGetCampaignIsActive();
-  const showJoinButton = isAuthorized && (!isActive || hasAccess) && !isActiveLoading && !authorizedLoading && profile?.id !== sessionData?.profile?.id;
+  const showJoinButton = isAuthorized && (!isActive || hasAccess) && !isActiveLoading && !authorizedLoading && profile?.address !== session?.address;
   const showSponsoredAccessButton = isActive && isAuthorized && !isActiveLoading && !authorizedLoading && !hasAccess;
 
-  usePublications({
-    where: {
-      from: [...(profile?.id ? [profile.id] : [])],
-      publicationTypes: [PublicationType.Post],
-      metadata: {
-        publishedOn: [appId('watchit')],
-      },
-    },
-  });
-
   useEffect(() => {
-    fetchSubscriptionCampaign(profile?.ownedBy?.address);
+    fetchSubscriptionCampaign(profile?.address as Address);
   }, []);
 
   useEffect(() => {
-    if (!campaign || !sessionData?.address) return;
-    fetchIsActive(campaign, sessionData?.address);
-  }, [campaign, sessionData?.address]);
+    if (!campaign || !session?.address) return;
+    fetchIsActive(campaign, session?.address);
+  }, [campaign, session?.address]);
 
   // Function to handle following a profile
   const onSubscribe = async () => {
@@ -89,19 +73,17 @@ const ProfileHeader = (props: PropsWithChildren<ProfileHeaderProps>) => {
     refetchAttestation();
   };
 
-  const profileImage = (profile?.metadata?.picture as ProfilePictureSet )?.optimized?.uri;
-
   return (
     <Box sx={{ my: 3, position: 'relative' }}>
       <ProfileCover profile={profile} sx={{ height: { xs: 200, md: 300 } }} />
 
-      {sessionData?.authenticated ? <ProfileReport profile={profile} /> : <></>}
+      {/*{session?.authenticated ? <ProfileReport profile={profile} /> : <></>}*/}
 
       <ProfileWrapper sidebar={<ProfileRightSidebar profile={profile} sidebarProps={{
         attestationLoading, attestation, hasAccess, accessLoading, isAuthorized, authorizedLoading
       }} />}>
 
-        <ProfileToolbar profile={profile} profileImage={profileImage} />
+        <ProfileToolbar profile={profile} profileImage={profile?.profilePicture ?? ''} />
 
         <Stack
           direction="column"
@@ -111,42 +93,43 @@ const ProfileHeader = (props: PropsWithChildren<ProfileHeaderProps>) => {
           <ProfileUserInfo profile={profile} />
 
           <Stack direction="row" sx={{ width: '100%', mb: 2, gap: 2, flexWrap: 'wrap' }}>
-            {authorizedLoading || isSessionLoading || (!showJoinButton && !showSponsoredAccessButton && isAuthorized) && (
-              <LoadingButton
-                variant={'contained'}
-                sx={{
-                  minWidth: { xs: 90, md: 120 },
-                  height: 38,
-                  minHeight: 38,
-                  maxHeight: 38,
-                  backgroundColor: '#24262A',
-                }}
-                disabled={true}
-                loading={true}
-              />
-            )}
-
-            { showJoinButton && (
-              <ProfileJoin profile={profile} profileJoinProps={{
-                hasAccess, accessLoading, onSubscribe
-              }} />
-            )}
-
-            {
-              showSponsoredAccessButton && (
-                <SponsoredAccessTrialButton
-                  isActive={isActive}
-                  holderAddress={profile?.ownedBy?.address as Address}
-                  campaignAddress={campaign}
-                  onSuccess={onSubscribe}
+            <>
+              {authorizedLoading || isAuthLoading || (!showJoinButton && !showSponsoredAccessButton && isAuthorized) && (
+                <LoadingButton
+                  variant={'contained'}
+                  sx={{
+                    minWidth: { xs: 90, md: 120 },
+                    height: 38,
+                    minHeight: 38,
+                    maxHeight: 38,
+                    backgroundColor: '#24262A',
+                  }}
+                  disabled={true}
+                  loading={true}
                 />
-              )
-            }
+              )}
 
-            {profile?.id !== sessionData?.profile?.id && (
-              <FollowUnfollowButton profileId={profile?.id} />
-            )}
+              { showJoinButton && (
+                <ProfileJoin profile={profile} profileJoinProps={{
+                  hasAccess, accessLoading, onSubscribe
+                }} />
+              )}
 
+              {
+                showSponsoredAccessButton && (
+                  <SponsoredAccessTrialButton
+                    isActive={isActive}
+                    holderAddress={profile?.address as Address}
+                    campaignAddress={campaign}
+                    onSuccess={onSubscribe}
+                  />
+                )
+              }
+
+              {profile?.address !== session?.address && (
+                <FollowUnfollowButton profileId={profile?.address} />
+              )}
+            </>
           </Stack>
         </Stack>
       </ProfileWrapper>

@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { supabase } from '@src/utils/supabase';
 // @ts-expect-error No error in this context
-import { type NotificationColumnsProps } from '@src/hooks/types';
+import { type NotificationColumnsProps, NotificationPayload } from '@src/hooks/types';
 import { setNotifications } from '@src/redux/notifications';
 import {RootState} from "@redux/store.ts"
 
@@ -9,7 +9,7 @@ interface UseNotificationsReturn {
   getNotifications: (id: string) => Promise<void>;
   notifications: NotificationColumnsProps[];
   markAsRead: (id: string) => Promise<void>;
-  sendNotification: (receiver_id: string, sender_id: string, payload: Record<string, string>) => Promise<void>;
+  sendNotification: (receiver_id: string, sender_id: string, payload: NotificationPayload) => Promise<void>;
   markAllAsRead: () => Promise<void>;
   deleteNotification: (id: string) => Promise<void>;
 }

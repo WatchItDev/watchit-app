@@ -30,6 +30,8 @@ export const useGetCampaignFundsBalance = (): UseGetCampaignFundsBalanceHook => 
       } catch (err) {
         console.error('Error fetching funds balance:', err);
         setFundsBalance(0n);
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-expect-error
         setError({ message: err?.message || 'Error fetching funds balance.' });
         return 0n;
       } finally {

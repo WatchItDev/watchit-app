@@ -16,6 +16,7 @@ import { SubscribeData, SubscribeParams, UseSubscribeHook } from '@src/hooks/pro
 import { ERRORS } from '@src/libs/notifications/errors.ts';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 import { useWeb3Auth } from '@src/hooks/use-web3-auth.ts';
+import { Calls } from '@src/hooks/types.ts'
 
 // ----------------------------------------------------------------------
 
@@ -23,7 +24,7 @@ export const useSubscribe = (): UseSubscribeHook => {
   const [data, setData] = useState<SubscribeData>();
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<keyof typeof ERRORS | null>(null);
-  const { session: sessionData, isFullyAuthenticated: isAuthenticated } = useAuth();
+  const { session } = useAuth();
   const { bundlerClient, smartAccount } = useWeb3Auth();
   const { logout } = useAccountSession();
 
@@ -67,21 +68,16 @@ export const useSubscribe = (): UseSubscribeHook => {
     setLoading(true);
     setError(null);
 
-    if (!sessionData?.authenticated) {
+    if (!session?.authenticated) {
       setError(ERRORS.SUBSCRIBE_LOGIN_ERROR);
       setLoading(false);
-      return;
-    }
-
-    if (!isAuthenticated) {
-      logout();
-      setLoading(false);
+      logout()
       throw new Error('Invalid Web3Auth session');
     }
 
     try {
       const approvalAmountInWei = ethers.parseUnits(amount, 18); // Convert amount to BigInt (in Wei)
-      const parties = [sessionData?.profile?.ownedBy.address]; // The parties involved in the agreement (e.g., the user's address)
+      const parties = [session?.address ?? '']; // The parties involved in the agreement (e.g., the user's address)
       const payload = '0x'; // Additional payload data if needed
 
       // Prepare the approve to access agreement
@@ -96,7 +92,7 @@ export const useSubscribe = (): UseSubscribeHook => {
       );
 
       // Create the array of calls to be included in the user operation
-      const calls = [
+      const calls: Calls = [
         {
           to: GLOBAL_CONSTANTS.LEDGER_VAULT_ADDRESS,
           value: 0,

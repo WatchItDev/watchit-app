@@ -3,6 +3,20 @@ query GetUserFollowers($address: String!, $limit: Int) {
     address
     username
     displayName
+    bio
     profilePicture
+    coverPicture
+    xpBalance
+    followersCount
+    followingCount
+    publicationsCount
+    bookmarksCount
+    socialLinks {
+      platform
+      url
+    }
+    verified
+    createdAt
+    updatedAt
   }
 }

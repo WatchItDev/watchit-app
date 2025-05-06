@@ -16,7 +16,6 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthProviderProps } from './types.ts';
 import { AuthContextProvider } from './authContext.tsx';
 import { initWeb3Auth, web3Auth } from './config/web3AuthInstance.ts';
-import { AccountAbstractionProvider } from '@src/hooks/types.ts';
 
 /**
  * AuthProvider is a higher-order component that wraps the application with necessary providers
@@ -47,15 +46,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   if (!initialized) return <StyledLoaderWrapper />;
 
-  const accountAbstractionProvider = web3Auth?.options?.accountAbstractionProvider as AccountAbstractionProvider;
-  const bundlerClient = accountAbstractionProvider?.bundlerClient;
-  const smartAccount = accountAbstractionProvider?.smartAccount;
-  const provider = accountAbstractionProvider?.provider;
-
   return (
     <QueryClientProvider client={queryClient}>
       <LensProvider config={lensConfig as any}>
-        <AuthContextProvider {...{web3Auth, bundlerClient, smartAccount, provider}}>
+        <AuthContextProvider web3Auth={web3Auth}>
           {children}
         </AuthContextProvider>
       </LensProvider>
