@@ -23,9 +23,6 @@ export const useToggleBookmark = () => {
 
       try {
         setLoading(true);
-        console.log('hello post id')
-        console.log(post)
-        console.log(post.id)
         const { data } = await mutate({
           variables: { input: { postId: post.id } },
         });
