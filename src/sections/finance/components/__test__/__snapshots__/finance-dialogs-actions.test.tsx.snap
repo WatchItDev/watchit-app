@@ -1,12 +1,22 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`<COMPONENTS> FinanceDialogsActions > to match snapshot 1`] = `
+exports[`[COMPONENTS]: <FinanceDialogsActions /> > should match snapshot 1`] = `
 <div>
   <div
     class="MuiDialogActions-root MuiDialogActions-spacing css-4friwf-MuiDialogActions-root"
   >
-    <div>
-      Mocked Rainbow Component
+    <div
+      data-testid="mock-rainbow"
+    >
+      <button
+        class="MuiButtonBase-root MuiButton-root MuiLoadingButton-root MuiButton-contained MuiButton-containedPrimary MuiButton-sizeMedium MuiButton-containedSizeMedium MuiButton-colorPrimary Mui-disabled MuiButton-root MuiLoadingButton-root MuiButton-contained MuiButton-containedPrimary MuiButton-sizeMedium MuiButton-containedSizeMedium MuiButton-colorPrimary css-twc2j6-MuiButtonBase-root-MuiButton-root-MuiLoadingButton-root"
+        disabled=""
+        id=":r0:"
+        tabindex="-1"
+        type="button"
+      >
+        Confirmar
+      </button>
     </div>
   </div>
 </div>
