@@ -183,3 +183,10 @@ export interface AccountAbstractionProvider extends IBaseProvider<IProvider> {
   smartAccount?: SmartAccount;
   provider: SafeEventEmitterProvider;
 }
+
+export interface MetadataAttachment {
+  cid: string,
+  type: string,
+  title: string,
+  description: string
+}

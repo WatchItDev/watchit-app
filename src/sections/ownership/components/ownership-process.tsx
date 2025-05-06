@@ -14,12 +14,12 @@ import { replacePrefix } from '@src/utils/wallet.ts';
 import { useBoolean } from "@src/hooks/use-boolean.ts";
 import { useRegisterAsset } from '@src/hooks/protocol/use-register-asset.ts';
 import { useGetAssetOwner } from '@src/hooks/protocol/use-get-asset-owner.ts';
-import { useSubmitAssetToLens } from '@src/hooks/use-submit-assets-to-lens.ts';
 import { notifyError, notifyInfo, notifySuccess } from '@src/libs/notifications/internal-notifications.ts';
 import { useAuth } from '@src/hooks/use-auth.ts';
 import { INFO } from '@src/libs/notifications/info.ts';
 import { ERRORS } from '@src/libs/notifications/errors.ts';
 import { SUCCESS } from '@src/libs/notifications/success.ts';
+import { useSubmitAsset } from '@src/hooks/use-submit-asset.ts';
 
 /**
  * OwnershipProcess is a React functional component that manages the process of registering ownership.
@@ -69,14 +69,14 @@ const OwnershipProcessContent = ({ onClose }: { onClose: () => void }) => {
   const [progress, setProgress] = useState(0);
 
   const { registerAsset } = useRegisterAsset();
-  const { submitAssetToLens } = useSubmitAssetToLens();
+  const { submitAsset } = useSubmitAsset();
   const { fetchOwnerAddress } = useGetAssetOwner();
-  const { session: sessionData } = useAuth();
+  const { session } = useAuth();
 
   const hashesArray = hashes.split(',')
     .map(h => h.trim())
     .filter(Boolean);
-  const userAddress = sessionData?.profile?.ownedBy?.address as string | undefined;
+  const userAddress = session?.address as string | undefined;
 
   const handleRegister = async () => {
     if (!hashes) return;
@@ -109,8 +109,8 @@ const OwnershipProcessContent = ({ onClose }: { onClose: () => void }) => {
             await registerAsset(hash);
           }
 
-          // 3. Upload to Lens only if registration was successful
-          await submitAssetToLens(replacePrefix(hash));
+          // 3. Upload to API only if registration was successful
+          await submitAsset(replacePrefix(hash), userAddress ?? '');
           notifySuccess(SUCCESS.OWNERSHIP_REGISTERED_SUCCESSFULLY, { count: index + 1 });
         } catch (error) {
           notifyError(ERRORS.ASSET_OWNERSHIP_REGISTER_ERROR, { hash: `${index + 1}/${hashesArray.length}` });

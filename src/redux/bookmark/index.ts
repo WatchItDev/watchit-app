@@ -1,9 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { AnyPublication } from '@lens-protocol/api-bindings';
+import { Post } from '@src/graphql/generated/graphql.ts';
 
 export interface BookmarkReducerState {
-  bookmarkPublications: AnyPublication[];
-  hiddenBookmarks: AnyPublication[];
+  bookmarkPublications: Post[];
+  hiddenBookmarks: Post[];
 }
 
 const initialState: BookmarkReducerState = {
@@ -16,7 +16,7 @@ const bookmarkSlice = createSlice({
   initialState,
   reducers: {
     // Add a post to bookmarks and remove it from hidden if it is
-    addBookmark: (state, action: PayloadAction<AnyPublication>) => {
+    addBookmark: (state, action: PayloadAction<Post>) => {
       const isAlreadyBookmarked = state.bookmarkPublications.some(
         (publication) => publication.id === action.payload.id
       );

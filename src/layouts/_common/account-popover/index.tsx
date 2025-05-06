@@ -12,7 +12,6 @@ import { LoginModal } from '@src/components/login-modal';
 import { AccountPopoverButton } from '@src/layouts/_common/account-popover/account-popover-button';
 import { AccountPopoverMenu } from '@src/layouts/_common/account-popover/account-popover-menu';
 import { useAuth } from '@src/hooks/use-auth.ts';
-import { useAccountSession } from '@src/hooks/use-account-session.ts';
 
 // ----------------------------------------------------------------------
 
@@ -27,11 +26,9 @@ export function AccountPopover() {
   const dispatch = useDispatch();
   const router = useRouter();
   const popover = usePopover();
-  const { isLoginModalOpen } = useAuth();
-  const { loading: isSessionLoading } = useAccountSession();
+  const { isLoginModalOpen, isAuthLoading } = useAuth();
 
-  // If the Lens session is still loading, show a spinner.
-  if (isSessionLoading) {
+  if (isAuthLoading) {
     return <CircularProgress size={24} sx={{ color: '#fff' }} />;
   }
 

@@ -25,8 +25,8 @@ import { SUCCESS } from '@src/libs/notifications/success';
 import { ERRORS } from '@src/libs/notifications/errors.ts';
 import {ProfileFormProps, ProfileFormValues} from "@src/components/login-modal/types.ts"
 import { useCreateUserMutation, useUpdateUserMutation } from '@src/graphql/generated/hooks.tsx';
-import { resolveSrc, resolveWatchitImage } from '@src/utils/image.ts';
-import { getIpfsUri, getMediaUri } from '@src/utils/publication.ts';
+import { resolveSrc } from '@src/utils/image.ts';
+import { getIpfsUri } from '@src/utils/publication.ts';
 
 // ----------------------------------------------------------------------
 

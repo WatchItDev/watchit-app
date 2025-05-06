@@ -1,15 +1,12 @@
 import React from "react";
 
-import {Profile, VideoMetadataV3} from "@lens-protocol/api-bindings";
-import { Post } from "@lens-protocol/react-web";
+import { StackProps } from "@mui/material/Stack";
+import { IconButtonProps } from "@mui/material/IconButton";
 
-import {StackProps} from "@mui/material/Stack";
-import {IconButtonProps} from "@mui/material/IconButton";
-
-import {BoxProps} from "@mui/material/Box";
-import {SxProps, Theme} from "@mui/material/styles";
-import {IconifyProps} from "@src/components/iconify";
-
+import { BoxProps } from "@mui/material/Box";
+import { SxProps, Theme } from "@mui/material/styles";
+import { IconifyProps } from "@src/components/iconify";
+import { Post, User } from '@src/graphql/generated/graphql.ts';
 
 export interface CarouselDotsProps extends BoxProps {
   rounded?: boolean;
@@ -78,7 +75,7 @@ export interface CarouselSlideProps<T> {
 }
 
 export type CarouselCreatorsProps = CarouselResizable & {
-  profiles: Profile[];
+  profiles: User[];
   title?: string;
 };
 
@@ -99,5 +96,4 @@ export interface CarouselPosterSlideProps {
 
 export interface PublicationType extends Post {
   altTag: string;
-  metadata: VideoMetadataV3;
 }
