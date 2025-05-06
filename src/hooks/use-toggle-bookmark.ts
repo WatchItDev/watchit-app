@@ -1,38 +1,50 @@
-import { useBookmarkToggle, Post } from '@lens-protocol/react-web';
-import { useDispatch } from 'react-redux';
-import { addBookmark, removeBookmark } from '@redux/bookmark';
+import { useCallback, useState } from 'react';
+import { useToggleBookmarkMutation } from '@src/graphql/generated/hooks';
 import { useAuth } from '@src/hooks/use-auth';
+import { useBookmarks } from '@src/hooks/use-bookmark';
+import { useDispatch } from 'react-redux';
 import { openLoginModal } from '@redux/auth';
-
+import { addBookmark, removeBookmark } from '@redux/bookmark';
+import { Post } from '@src/graphql/generated/graphql';
 
 export const useToggleBookmark = () => {
-  const { execute: toggleBookMarkFunction, loading: loadingBookMark } = useBookmarkToggle();
-  const { session: sessionData } = useAuth();
+  const { session } = useAuth();
+  const { refetch } = useBookmarks();
+  const [mutate] = useToggleBookmarkMutation();
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
 
-  const toggleBookMark = async (post: Post) => {
-    if (!sessionData?.authenticated) {
-      dispatch(openLoginModal());
-      return;
-    }
-
-    try {
-      if (!post?.operations?.hasBookmarked) {
-        dispatch(addBookmark(post));
-      } else {
-        dispatch(removeBookmark(post?.id));
+  const toggle = useCallback(
+    async (post: Post) => {
+      if (!session?.authenticated) {
+        dispatch(openLoginModal());
+        return;
       }
 
-      await toggleBookMarkFunction({
-        publication: post,
-      });
-    } catch (err) {
-      console.error('Error toggling bookmark:', err);
-    }
-  };
+      try {
+        setLoading(true);
+        console.log('hello post id')
+        console.log(post)
+        console.log(post.id)
+        const { data } = await mutate({
+          variables: { input: { postId: post.id } },
+        });
 
-  return {
-    toggleBookMark,
-    loadingBookMark,
-  };
+        if (data?.toggleBookmark) {
+          dispatch(addBookmark(post));
+        } else {
+          dispatch(removeBookmark(post.id));
+        }
+
+        await refetch();
+      } catch (err) {
+        console.error('Error toggling bookmark:', err);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [session?.authenticated],
+  );
+
+  return { toggle, loading };
 };

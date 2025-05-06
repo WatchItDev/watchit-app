@@ -1147,6 +1147,8 @@ export const GetUserBookmarksDocument = gql`
     description
     media {
       url
+      cid
+      title
       type
     }
     createdAt

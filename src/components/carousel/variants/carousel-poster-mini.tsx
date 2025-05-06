@@ -2,7 +2,7 @@ import CarouselSlide from '@src/components/carousel/components/carousel-slide.ts
 import PosterHorizontal from '@src/components/poster/variants/poster-horizontal';
 import { CarouselPosterMiniProps, PublicationType } from '../types';
 import CarouselWrapper from './carousel-wrapper.tsx';
-import { getAttachmentCid } from '@src/utils/publication.ts';
+import { getAttachmentCid, getMediaUri } from '@src/utils/publication.ts';
 
 export default function CarouselPosterMini(params: CarouselPosterMiniProps) {
   const { data, title, minItemWidth, maxItemWidth } = params;
@@ -45,13 +45,13 @@ export default function CarouselPosterMini(params: CarouselPosterMiniProps) {
     return (
       <PosterHorizontal
         id={post.id}
-        title={post?.metadata?.title}
+        title={post?.title}
         images={{
-          vertical: poster,
-          wallpaper: wallpaper,
+          vertical: getMediaUri(poster),
+          wallpaper: getMediaUri(wallpaper),
         }}
-        likes={post.globalStats.upvotes}
-        synopsis={post.metadata.content}
+        likes={post.likeCount}
+        synopsis={post.description}
       />
     );
   };

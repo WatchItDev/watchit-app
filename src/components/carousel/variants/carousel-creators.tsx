@@ -1,10 +1,9 @@
 import { memo, FC } from 'react';
-import { PublicationType} from "@lens-protocol/react-web"
-import { Profile } from '@lens-protocol/api-bindings';
 import CarouselSlide from '@src/components/carousel/components/carousel-slide.tsx';
 import { UserItem } from '@src/components/user-item';
 import CarouselWrapper from './carousel-wrapper.tsx';
 import { CarouselCreatorsProps } from '../types';
+import { User } from '@src/graphql/generated/graphql.ts';
 
  const CarouselCreators: FC<CarouselCreatorsProps> = (params) => {
   const { profiles, title, minItemWidth, maxItemWidth } = params;
@@ -30,7 +29,7 @@ import { CarouselCreatorsProps } from '../types';
     },
   };
 
-  const renderItem = (profile: Profile) => (
+  const renderItem = (profile: User) => (
     <UserItem profile={profile} />
   );
 
@@ -39,7 +38,7 @@ import { CarouselCreatorsProps } from '../types';
     title,
     minItemWidth,
     maxItemWidth,
-    renderSlide: (slideItems: PublicationType, itemsPerRow: number, index: number) => (
+    renderSlide: (slideItems: User, itemsPerRow: number, index: number) => (
       <CarouselSlide
         key={`slide-${index}`}
         items={slideItems}

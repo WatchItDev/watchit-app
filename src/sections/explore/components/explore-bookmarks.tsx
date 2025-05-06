@@ -1,11 +1,11 @@
 import CarouselPosterMini from '@src/components/carousel/variants/carousel-poster-mini.tsx';
 
-import { useBookmarks } from '@lens-protocol/react-web';
 import { useSelector } from 'react-redux';
 
 import { useResponsive } from '@src/hooks/use-responsive.ts';
 import {RootState} from "@redux/store.ts"
 import {AnyPublication} from "@lens-protocol/api-bindings"
+import { useBookmarks } from '@src/hooks/use-bookmark.ts';
 
 // ----------------------------------------------------------------------
 
@@ -36,6 +36,8 @@ export const ExploreBookmarks = () => {
   const uniqueBookmarks = nonHiddenBookmarks.filter(
     (post, index, self) => index === self.findIndex((p) => p.id === post.id)
   );
+
+  console.log('uniqueBookmarks', uniqueBookmarks);
 
   return (
     <>

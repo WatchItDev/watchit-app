@@ -5,6 +5,8 @@ query GetUserBookmarks($address: String!, $limit: Int) {
     description
     media {
       url
+      cid
+      title
       type
     }
     createdAt
