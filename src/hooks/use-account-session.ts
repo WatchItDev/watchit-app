@@ -102,9 +102,6 @@ export const useAccountSession = (): UseAccountSessionHook => {
     if (!address) throw new Error('No address found');
 
     const result = await loadUser({ variables: { address } });
-    console.log('syncAddress', address);
-    console.log(result);
-    console.log(result.data.getUser);
     dispatch(setUser({ user: result.data.getUser }));
   };
 
