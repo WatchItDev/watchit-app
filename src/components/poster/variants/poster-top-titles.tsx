@@ -142,7 +142,7 @@ const PosterTopTitles = ({ post }: { post: Post }) => {
                     <Image
                       ratio={'1/1'}
                       style={{ width: '20px', height: '20px', borderRadius: '50%' }}
-                      src={resolveSrc(post?.author?.profilePicture ?? post?.author?.address, 'profile')}
+                      src={resolveSrc(post?.author?.profilePicture || post?.author?.address, 'profile')}
                     />
                     {post?.author?.displayName ?? post?.author?.username}
                   </Typography>

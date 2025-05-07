@@ -1,48 +1,39 @@
 import Box from '@mui/material/Box';
-import { publicationId, useLazyPublications } from '@lens-protocol/react-web';
-
 import PublicationCommentItem from './publication-comment-item.tsx';
 import LinearProgress from '@mui/material/LinearProgress';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { PostCommentListProps } from '@src/sections/publication/types.ts';
 import {RootState} from "@redux/store.ts"
-import {AnyPublication} from "@lens-protocol/api-bindings"
+import { useGetCommentsByPostLazyQuery } from '@src/graphql/generated/hooks.tsx';
+import { Comment } from '@src/graphql/generated/graphql.ts';
 
 // ----------------------------------------------------------------------
 
 export default function PostCommentList({ publicationId: id, showReplies }: Readonly<PostCommentListProps>) {
-  const pendingComments = useSelector((state: RootState) => state.comments.pendingComments);
-  const { data: comments, error, loading, execute } = useLazyPublications();
+  const [ comments, setComments ] = useState<Comment[]>([])
+  const [ getComments, {data, error, loading} ] = useGetCommentsByPostLazyQuery({ fetchPolicy: 'network-only' });
   const { hiddenComments, refetchTriggerByPublication } = useSelector(
     (state: RootState) => state.comments
   );
   const refetchTrigger = refetchTriggerByPublication[id] || 0;
 
   useEffect(() => {
+    setComments(data?.getCommentsByPost ?? [])
+  }, [data?.getCommentsByPost]);
+
+  useEffect(() => {
     (async () => {
-      await execute({
-        where: {
-          commentOn: {
-            id: publicationId(id),
-          },
-        },
-      });
-    })();
-  }, [refetchTrigger]);
+      const res = await getComments({ variables: { postId: id, limit: 50 } })
+      setComments(res?.data?.getCommentsByPost ?? [])
+    })()
+  }, [refetchTrigger, id]);
 
   if (error) return <p>Error loading comments: {error.message}</p>;
 
-  // Join the comments with the pending comments but append the pending comments at the beginning of the list
-  const commentsWithPending = pendingComments[id]
-    ? [...pendingComments[id], ...(comments ?? [])]
-    : comments;
-
-  const commentsFiltered = (commentsWithPending ?? [])
-    .filter(
-      (comment) => !hiddenComments.some((hiddenComment: AnyPublication) => hiddenComment.id === comment.id)
-    )
-    .filter((comment) => !comment.isHidden);
+  const commentsFiltered = comments.filter(
+      (comment) => !hiddenComments.some((hiddenComment: Comment) => hiddenComment.id === comment.id)
+    );
 
   return (
     <>
@@ -52,7 +43,7 @@ export default function PostCommentList({ publicationId: id, showReplies }: Read
           sx={{ width: 1, maxWidth: 360, marginBottom: '16px', alignSelf: 'center' }}
         />
       )}
-      {commentsFiltered?.map((comment: AnyPublication) => {
+      {commentsFiltered?.map((comment: Comment) => {
         // Destructure necessary data from the comment
         const { id: commentId } = comment;
 

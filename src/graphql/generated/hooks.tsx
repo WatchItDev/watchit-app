@@ -450,6 +450,44 @@ export function useUpdateUserMutation(baseOptions?: Apollo.MutationHookOptions<U
 export type UpdateUserMutationHookResult = ReturnType<typeof useUpdateUserMutation>;
 export type UpdateUserMutationResult = Apollo.MutationResult<UpdateUserMutation>;
 export type UpdateUserMutationOptions = Apollo.BaseMutationOptions<UpdateUserMutation, UpdateUserMutationVariables>;
+export const GetIsBookmarkedDocument = gql`
+    query GetIsBookmarked($postId: String!) {
+  getIsBookmarked(postId: $postId)
+}
+    `;
+
+/**
+ * __useGetIsBookmarkedQuery__
+ *
+ * To run a query within a React component, call `useGetIsBookmarkedQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetIsBookmarkedQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetIsBookmarkedQuery({
+ *   variables: {
+ *      postId: // value for 'postId'
+ *   },
+ * });
+ */
+export function useGetIsBookmarkedQuery(baseOptions: Apollo.QueryHookOptions<GetIsBookmarkedQuery, GetIsBookmarkedQueryVariables> & ({ variables: GetIsBookmarkedQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetIsBookmarkedQuery, GetIsBookmarkedQueryVariables>(GetIsBookmarkedDocument, options);
+      }
+export function useGetIsBookmarkedLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetIsBookmarkedQuery, GetIsBookmarkedQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetIsBookmarkedQuery, GetIsBookmarkedQueryVariables>(GetIsBookmarkedDocument, options);
+        }
+export function useGetIsBookmarkedSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetIsBookmarkedQuery, GetIsBookmarkedQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetIsBookmarkedQuery, GetIsBookmarkedQueryVariables>(GetIsBookmarkedDocument, options);
+        }
+export type GetIsBookmarkedQueryHookResult = ReturnType<typeof useGetIsBookmarkedQuery>;
+export type GetIsBookmarkedLazyQueryHookResult = ReturnType<typeof useGetIsBookmarkedLazyQuery>;
+export type GetIsBookmarkedSuspenseQueryHookResult = ReturnType<typeof useGetIsBookmarkedSuspenseQuery>;
+export type GetIsBookmarkedQueryResult = Apollo.QueryResult<GetIsBookmarkedQuery, GetIsBookmarkedQueryVariables>;
 export const GetCommentsByPostDocument = gql`
     query GetCommentsByPost($postId: String!, $limit: Int) {
   getCommentsByPost(postId: $postId, limit: $limit) {
@@ -510,9 +548,23 @@ export type GetCommentsByPostQueryResult = Apollo.QueryResult<GetCommentsByPostQ
 export const GetRepliesByCommentDocument = gql`
     query GetRepliesByComment($commentId: String!, $limit: Int) {
   getRepliesByComment(commentId: $commentId, limit: $limit) {
+    author {
+      address
+      displayName
+    }
     content
     id
+    createdAt
     likeCount
+    parentComment {
+      content
+      id
+    }
+    post {
+      id
+      title
+    }
+    updatedAt
   }
 }
     `;
@@ -959,6 +1011,82 @@ export type GetIsFollowingQueryHookResult = ReturnType<typeof useGetIsFollowingQ
 export type GetIsFollowingLazyQueryHookResult = ReturnType<typeof useGetIsFollowingLazyQuery>;
 export type GetIsFollowingSuspenseQueryHookResult = ReturnType<typeof useGetIsFollowingSuspenseQuery>;
 export type GetIsFollowingQueryResult = Apollo.QueryResult<GetIsFollowingQuery, GetIsFollowingQueryVariables>;
+export const GetIsCommentLikedDocument = gql`
+    query GetIsCommentLiked($commentId: String!) {
+  getIsCommentLiked(commentId: $commentId)
+}
+    `;
+
+/**
+ * __useGetIsCommentLikedQuery__
+ *
+ * To run a query within a React component, call `useGetIsCommentLikedQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetIsCommentLikedQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetIsCommentLikedQuery({
+ *   variables: {
+ *      commentId: // value for 'commentId'
+ *   },
+ * });
+ */
+export function useGetIsCommentLikedQuery(baseOptions: Apollo.QueryHookOptions<GetIsCommentLikedQuery, GetIsCommentLikedQueryVariables> & ({ variables: GetIsCommentLikedQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetIsCommentLikedQuery, GetIsCommentLikedQueryVariables>(GetIsCommentLikedDocument, options);
+      }
+export function useGetIsCommentLikedLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetIsCommentLikedQuery, GetIsCommentLikedQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetIsCommentLikedQuery, GetIsCommentLikedQueryVariables>(GetIsCommentLikedDocument, options);
+        }
+export function useGetIsCommentLikedSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetIsCommentLikedQuery, GetIsCommentLikedQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetIsCommentLikedQuery, GetIsCommentLikedQueryVariables>(GetIsCommentLikedDocument, options);
+        }
+export type GetIsCommentLikedQueryHookResult = ReturnType<typeof useGetIsCommentLikedQuery>;
+export type GetIsCommentLikedLazyQueryHookResult = ReturnType<typeof useGetIsCommentLikedLazyQuery>;
+export type GetIsCommentLikedSuspenseQueryHookResult = ReturnType<typeof useGetIsCommentLikedSuspenseQuery>;
+export type GetIsCommentLikedQueryResult = Apollo.QueryResult<GetIsCommentLikedQuery, GetIsCommentLikedQueryVariables>;
+export const GetIsPostLikedDocument = gql`
+    query GetIsPostLiked($postId: String!) {
+  getIsPostLiked(postId: $postId)
+}
+    `;
+
+/**
+ * __useGetIsPostLikedQuery__
+ *
+ * To run a query within a React component, call `useGetIsPostLikedQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetIsPostLikedQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetIsPostLikedQuery({
+ *   variables: {
+ *      postId: // value for 'postId'
+ *   },
+ * });
+ */
+export function useGetIsPostLikedQuery(baseOptions: Apollo.QueryHookOptions<GetIsPostLikedQuery, GetIsPostLikedQueryVariables> & ({ variables: GetIsPostLikedQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetIsPostLikedQuery, GetIsPostLikedQueryVariables>(GetIsPostLikedDocument, options);
+      }
+export function useGetIsPostLikedLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetIsPostLikedQuery, GetIsPostLikedQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetIsPostLikedQuery, GetIsPostLikedQueryVariables>(GetIsPostLikedDocument, options);
+        }
+export function useGetIsPostLikedSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetIsPostLikedQuery, GetIsPostLikedQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetIsPostLikedQuery, GetIsPostLikedQueryVariables>(GetIsPostLikedDocument, options);
+        }
+export type GetIsPostLikedQueryHookResult = ReturnType<typeof useGetIsPostLikedQuery>;
+export type GetIsPostLikedLazyQueryHookResult = ReturnType<typeof useGetIsPostLikedLazyQuery>;
+export type GetIsPostLikedSuspenseQueryHookResult = ReturnType<typeof useGetIsPostLikedSuspenseQuery>;
+export type GetIsPostLikedQueryResult = Apollo.QueryResult<GetIsPostLikedQuery, GetIsPostLikedQueryVariables>;
 export const GetPostDocument = gql`
     query GetPost($getPostId: String!) {
   getPost(id: $getPostId) {

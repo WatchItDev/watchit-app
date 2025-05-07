@@ -38,7 +38,7 @@ const UserProfileView = ({ id }: UserProfileViewProps) => {
   const dispatch = useDispatch();
   const settings = useSettingsContext();
   const [currentTab, setCurrentTab] = useState('publications');
-  const { session } = useAuth();
+  const { session, isAuthLoading } = useAuth();
   const { isAuthorized, loading: authorizedLoading } = useIsPolicyAuthorized(
     GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS,
     session?.address as Address
@@ -102,17 +102,13 @@ const UserProfileView = ({ id }: UserProfileViewProps) => {
     <LoadingScreen />
   );
 
-  console.log('profileData', profileData);
-
   const showSubscriptionAlert =
     session?.authenticated &&
     session?.address === id &&
     (profilePublications?.getPostsByAuthor?.length ?? 0) >= 1 &&
+    !isAuthLoading &&
     !isAuthorized &&
     !authorizedLoading;
-
-  console.log('is authorized')
-  console.log(isAuthorized)
 
   return (
     <Container maxWidth={settings.themeStretch ? false : 'lg'} sx={{ overflowX: 'hidden' }}>

@@ -1,7 +1,21 @@
 query GetRepliesByComment($commentId: String!, $limit: Int) {
   getRepliesByComment(commentId: $commentId, limit: $limit) {
+    author {
+      address
+      displayName
+    }
     content
     id
+    createdAt
     likeCount
+    parentComment {
+      content
+      id
+    }
+    post {
+      id
+      title
+    }
+    updatedAt
   }
 }
