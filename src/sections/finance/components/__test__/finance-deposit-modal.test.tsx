@@ -84,5 +84,11 @@ describe("[COMPONENTS]: <FinanceDepositModal />", () => {
     expect(screen.getByText("Smart Account")).toBeInTheDocument();
   });
 
-  
+  it("renders Metamask content when clicked", () => {
+    renderComponent();
+    fireEvent.click(screen.getByText("Metamask"));
+    expect(screen.getByText("Metamask Deposit")).toBeInTheDocument();
+  });
+
+ 
 });
