@@ -1,5 +1,5 @@
-query GetUsers($prefix: String!, $limit: Int) {
-  getUsers(prefix: $prefix, limit: $limit) {
+query GetUsers($query: String!, $limit: Int) {
+  getUsers(query: $query, limit: $limit) {
     address
     username
     displayName

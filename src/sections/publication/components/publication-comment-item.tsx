@@ -28,7 +28,7 @@ import { PublicationCommentItemProps } from '@src/sections/publication/types.ts'
 import { useAuth } from '@src/hooks/use-auth.ts';
 import { resolveSrc } from '@src/utils/image.ts';
 import {
-  useDeleteCommentMutation, useGetIsCommentLikedQuery,
+  useHideCommentMutation, useGetIsCommentLikedQuery,
   useToggleCommentLikeMutation,
 } from '@src/graphql/generated/hooks.tsx';
 
@@ -51,7 +51,7 @@ const PublicationCommentItem:FC<PublicationCommentItemProps> = (props) => {
   const router = useRouter();
   const { data: commentLikedData, loading: commentLikedLoading } = useGetIsCommentLikedQuery({ variables: { commentId: comment?.id } })
   const [ toggleCommentLike, { loading: toggleCommentLikeLoading }  ] = useToggleCommentLikeMutation()
-  const [ deleteComment ] = useDeleteCommentMutation();
+  const [ hideComment ] = useHideCommentMutation();
   const { session: sessionData } = useAuth();
   const dispatch = useDispatch();
   const { sendNotification } = useNotifications();
@@ -112,8 +112,8 @@ const PublicationCommentItem:FC<PublicationCommentItemProps> = (props) => {
     router.push(paths.dashboard.user.root(`${comment?.author?.address}`));
   };
 
-  const handleDelete = async () => {
-    await deleteComment({ variables: { commentId: comment?.id } });
+  const handleHide = async () => {
+    await hideComment({ variables: { commentId: comment?.id } });
     dispatch(hiddeComment(comment));
   };
 
@@ -212,7 +212,7 @@ const PublicationCommentItem:FC<PublicationCommentItemProps> = (props) => {
                         setAnchorEl(null);
                       }}
                     >
-                      Delete
+                      Hide
                     </LazyMenuItem>
                   )}
                 </Stack>
@@ -371,7 +371,7 @@ const PublicationCommentItem:FC<PublicationCommentItemProps> = (props) => {
                 variant="contained"
                 sx={{ backgroundColor: '#fff' }}
                 onClick={() => {
-                  handleDelete();
+                  handleHide();
                   setOpenConfirmModal(false);
                 }}
               >

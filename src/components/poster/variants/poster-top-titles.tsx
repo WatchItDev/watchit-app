@@ -24,11 +24,11 @@ const PosterTopTitles = ({ post }: { post: Post }) => {
   const isBookmarked = has(post.id);
 
   const handlePosterClick = () => {
-    router.push(paths.dashboard.publication.details(post?.id));
+    router.push(paths.dashboard.publication.details(post.id));
   };
 
   const goToProfile = () => {
-    router.push(paths.dashboard.user.root(`${post?.id}`));
+    router.push(paths.dashboard.user.root(`${post.id}`));
   };
 
   return (
@@ -38,7 +38,7 @@ const PosterTopTitles = ({ post }: { post: Post }) => {
       spacing={{ xs: 1, sm: 2, md: 4 }}
     >
       <Image
-        alt={post?.title}
+        alt={post.title}
         src={getMediaUri(wallpaper)}
         ratio="16/9"
         sx={{
@@ -96,7 +96,7 @@ const PosterTopTitles = ({ post }: { post: Post }) => {
                 borderRadius: '10px',
                 width: '100%',
               }}
-              alt={post?.title}
+              alt={post.title}
               src={getMediaUri(poster)}
               ratio="1/1"
             />
@@ -116,7 +116,7 @@ const PosterTopTitles = ({ post }: { post: Post }) => {
           <Stack spacing={1} gap={'16px'}>
             <Stack spacing={1} gap={0}>
               <TextMaxLine line={2} variant="h3" sx={{ mb: 1 }}>
-                {post?.title}
+                {post.title}
               </TextMaxLine>
 
               <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
@@ -142,9 +142,9 @@ const PosterTopTitles = ({ post }: { post: Post }) => {
                     <Image
                       ratio={'1/1'}
                       style={{ width: '20px', height: '20px', borderRadius: '50%' }}
-                      src={resolveSrc(post?.author?.profilePicture || post?.author?.address, 'profile')}
+                      src={resolveSrc(post.author.profilePicture || post.author.address, 'profile')}
                     />
-                    {post?.author?.displayName ?? post?.author?.username}
+                    {post.author.displayName ?? post.author.username}
                   </Typography>
                 </Button>
               </Box>
@@ -159,7 +159,7 @@ const PosterTopTitles = ({ post }: { post: Post }) => {
               }}
               variant="h6"
             >
-              {post?.description ?? ''}
+              {post.description ?? ''}
             </Typography>
 
             <Stack direction="row" spacing={1} alignItems="center">

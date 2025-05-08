@@ -50,7 +50,7 @@ import { PublicationDetailProps } from '@src/components/publication-detail-main/
 import { useAuth } from '@src/hooks/use-auth.ts';
 import { useToggleBookmark } from '@src/hooks/use-toggle-bookmark';
 import {
-  useDeletePostMutation,
+  useHidePostMutation,
   useGetIsPostLikedQuery,
   useTogglePostLikeMutation,
 } from '@src/graphql/generated/hooks.tsx';
@@ -71,16 +71,16 @@ export default function PublicationDetailMain({
   const [openConfirmModal, setOpenConfirmModal] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [hasLiked, setHasLiked] = useState(false);
-  const [likesCount, setLikesCount] = useState(post?.likeCount);
+  const [likesCount, setLikesCount] = useState(post.likeCount);
 
   const router = useRouter();
   const theme = useTheme();
   const { session: sessionData } = useAuth();
   const dispatch = useDispatch();
-  const [ deletePost ] = useDeletePostMutation();
+  const [ hidePost ] = useHidePostMutation();
   const { sendNotification } = useNotifications();
   const { generatePayload } = useNotificationPayload(sessionData);
-  const { data: postLikedData, loading: postLikedLoading } = useGetIsPostLikedQuery({ variables: { postId: post?.id } })
+  const { data: postLikedData, loading: postLikedLoading } = useGetIsPostLikedQuery({ variables: { postId: post.id } })
   const [ togglePostLike, { loading: togglePostLikeLoading }  ] = useTogglePostLikeMutation()
   const { has, loading: loadingList } = useBookmarks();
   const { toggle, loading: loadingToggle } = useToggleBookmark();
@@ -97,14 +97,14 @@ export default function PublicationDetailMain({
     const payloadForNotification = generatePayload(
       'LIKE',
       {
-        id: post?.author?.address,
-        displayName: post?.author?.displayName ?? 'Watchit',
-        avatar: resolveSrc(post?.author?.profilePicture || post?.author?.address, 'profile'),
+        id: post.author.address,
+        displayName: post.author.displayName ?? 'Watchit',
+        avatar: resolveSrc(post.author.profilePicture || post.author.address, 'profile'),
       },
       {
-        rawDescription: `${sessionData?.user?.displayName} liked ${post?.title}`,
-        root_id: post?.id,
-        post_title: post?.title,
+        rawDescription: `${sessionData?.user?.displayName} liked ${post.title}`,
+        root_id: post.id,
+        post_title: post.title,
       }
     );
 
@@ -112,7 +112,7 @@ export default function PublicationDetailMain({
       const res = await togglePostLike({
         variables: {
           input: {
-            postId: post?.id
+            postId: post.id
           }
         }
       });
@@ -121,7 +121,7 @@ export default function PublicationDetailMain({
       setLikesCount(res?.data?.togglePostLike ? likesCount + 1 : likesCount - 1); // Update the likes count
       // Send notification to the author when not already liked
       if (res?.data?.togglePostLike) {
-        sendNotification(post?.author?.address, sessionData?.user?.address ?? '', payloadForNotification);
+        sendNotification(post.author.address, sessionData?.user?.address ?? '', payloadForNotification);
       }
     } catch (err) {
       console.error('Error toggling reaction:', err);
@@ -132,14 +132,15 @@ export default function PublicationDetailMain({
     setHasLiked(postLikedData?.getIsPostLiked ?? false);
   }, [postLikedData]);
 
-  const handleDelete = async () => {
-    await deletePost({ variables: { postId: post?.id } });
+  const handleHide = async () => {
+    await hidePost({ variables: { postId: post.id } });
+    router.reload();
   };
 
   const goToProfile = () => {
-    if (!post?.author?.address) return;
+    if (!post.author.address) return;
 
-    router.push(paths.dashboard.user.root(`${post?.author?.address}`));
+    router.push(paths.dashboard.user.root(`${post.author.address}`));
   };
 
   if (!post) return <p>The publication does not exist</p>;
@@ -192,7 +193,7 @@ export default function PublicationDetailMain({
               onClick={goToProfile}
             >
               <AvatarProfile
-                src={resolveSrc(post?.author?.profilePicture || post?.author?.address, 'profile')}
+                src={resolveSrc(post.author.profilePicture || post.author.address, 'profile')}
                 sx={{
                   width: 26,
                   height: 26,
@@ -200,10 +201,10 @@ export default function PublicationDetailMain({
                 }}
               />
               <Typography variant="subtitle2" noWrap sx={{ ml: 1 }}>
-                {post?.author?.displayName}
+                {post.author.displayName}
               </Typography>
             </Box>
-            {sessionData?.authenticated ? (
+            {sessionData?.authenticated && post.author.address === sessionData?.user?.address ? (
               <Button
                 variant="text"
                 sx={{
@@ -240,14 +241,14 @@ export default function PublicationDetailMain({
               }}
             >
               <Stack direction="column" spacing={0} justifyContent="center">
-                {post?.author?.address === sessionData?.user?.address && (
+                {post.author.address === sessionData?.user?.address && (
                   <MenuItem
                     onClick={() => {
                       setOpenConfirmModal(true);
                       setAnchorEl(null);
                     }}
                   >
-                    Delete
+                    Hide
                   </MenuItem>
                 )}
               </Stack>
@@ -270,7 +271,7 @@ export default function PublicationDetailMain({
                 sx={{ fontWeight: 'bold', lineHeight: 1.1, mb: 1.5 }}
                 gutterBottom
               >
-                {post?.title}
+                {post.title}
               </Typography>
             </m.div>
             <m.div variants={variants}>
@@ -370,7 +371,7 @@ export default function PublicationDetailMain({
                       <IconMessageCircle size={22} color="#FFFFFF" />
                     )}
                     <Typography variant="body2" sx={{ lineHeight: 1, ml: 1, fontWeight: '700' }}>
-                      {post?.commentCount}
+                      {post.commentCount}
                     </Typography>
                   </>
                 </Button>
@@ -422,12 +423,12 @@ export default function PublicationDetailMain({
                 <Divider sx={{ my: 3, mr: 1 }} />
                 {sessionData?.authenticated ? (
                   <PublicationCommentForm
-                    root={post?.id}
+                    root={post.id}
                     commentOn={null}
                     owner={{
-                      id: post?.author?.address,
-                      displayName: post?.author?.displayName ?? 'Watchit',
-                      avatar: resolveSrc(post?.author?.profilePicture || post?.author?.address, 'profile'),
+                      id: post.author.address,
+                      displayName: post.author.displayName ?? 'Watchit',
+                      avatar: resolveSrc(post.author.profilePicture || post.author.address, 'profile'),
                     }}
                   />
                 ) : (
@@ -447,15 +448,15 @@ export default function PublicationDetailMain({
                 )}
               </Box>
               <Box sx={{ display: 'flex', flexDirection: 'column', mt: 2, pr: 1 }}>
-                <PostCommentList publicationId={post?.id} showReplies />
+                <PostCommentList publicationId={post.id} showReplies />
               </Box>
             </Box>
           )}
 
           <Dialog open={openConfirmModal} onClose={() => setOpenConfirmModal(false)}>
-            <DialogTitle>Confirm deletion</DialogTitle>
+            <DialogTitle>Confirm hide</DialogTitle>
             <DialogContent>
-              <Typography>Are you sure you want to delete this publication?</Typography>
+              <Typography>Are you sure you want to hide this publication?</Typography>
             </DialogContent>
             <DialogActions>
               <Button
@@ -469,7 +470,7 @@ export default function PublicationDetailMain({
                 variant="contained"
                 sx={{ backgroundColor: '#fff' }}
                 onClick={() => {
-                  handleDelete();
+                  handleHide();
                   setOpenConfirmModal(false);
                 }}
               >
