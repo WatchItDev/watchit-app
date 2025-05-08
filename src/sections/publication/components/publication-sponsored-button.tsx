@@ -14,7 +14,7 @@ export const PublicationSponsoredButton: FC<PublicationSponsoredButtonProps> = (
   return (
     <SponsoredAccessTrialButton
       isActive={isActive}
-      holderAddress={publication?.author?.address as Address}
+      holderAddress={publication.author.address as Address}
       campaignAddress={campaign}
       onSuccess={onSponsorSuccess}
       neonPaperProps={{

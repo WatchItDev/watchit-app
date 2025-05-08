@@ -33,6 +33,7 @@ import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 import { useGetPostLazyQuery, useGetPostsByAuthorLazyQuery } from '@src/graphql/generated/hooks.tsx';
 import { Post } from '@src/graphql/generated/graphql.ts';
 import { Address } from 'viem';
+import { PublicationHidden } from '@src/sections/publication/components/publication-hidden.tsx';
 
 // ----------------------------------------------------------------------
 
@@ -86,6 +87,7 @@ export default function PublicationDetailsView({ id }: Readonly<PublicationDetai
   const filteredPublications = profilePublications?.getPostsByAuthor?.filter((publication: Post) => publication.id !== id) ?? [];
 
   if (!allLoaded) return <LoadingScreen />;
+  if (publication?.hidden || (!publication && !publicationLoading)) return <PublicationHidden />;
 
   return (
     <>

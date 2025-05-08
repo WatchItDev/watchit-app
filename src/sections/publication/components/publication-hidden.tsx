@@ -16,7 +16,7 @@ export function PublicationHidden() {
           borderRadius: '1rem',
         }}
       >
-        The publication does not exist
+        The publication does not exist or is hidden
       </Typography>
     </Box>
   );
