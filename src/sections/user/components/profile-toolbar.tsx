@@ -35,7 +35,7 @@ const ProfileToolbar: FC<ProfileToolbarProps> = ({profile, profileImage}) => {
       }}
     >
       <AvatarProfile
-        src={profileImage ?? profile?.address}
+        src={profileImage || profile?.address}
         alt={profile?.username ?? ''}
         variant="rounded"
         sx={{

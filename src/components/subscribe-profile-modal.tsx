@@ -30,18 +30,18 @@ import { Address } from 'viem';
 // LOCAL IMPORTS
 import NeonPaper from '@src/sections/publication/components/neon-paper-container.tsx';
 import { useSubscribe } from '@src/hooks/protocol/use-subscribe.ts';
-import { Profile, ProfilePictureSet } from '@lens-protocol/api-bindings';
 import { useGetPolicyTerms } from '@src/hooks/protocol/use-get-policy-terms.ts';
 import { setBalance } from '@redux/auth';
 import { useGetBalance } from '@src/hooks/protocol/use-get-balance.ts';
 import { useNotifications } from '@src/hooks/use-notifications.ts';
 import { useNotificationPayload } from '@src/hooks/use-notification-payload.ts';
 import { notifyError, notifySuccess } from '@src/libs/notifications/internal-notifications.ts';
-import { dicebear } from "@src/utils/dicebear.ts";
 import { useAuth } from '@src/hooks/use-auth.ts';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 import { SUCCESS } from '@src/libs/notifications/success.ts';
 import { ERRORS } from '@src/libs/notifications/errors.ts';
+import { User } from '@src/graphql/generated/graphql.ts';
+import { resolveSrc } from '@src/utils/image.ts';
 
 // ----------------------------------------------------------------------
 
@@ -49,7 +49,7 @@ interface SubscribeProfileModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSubscribe: () => void;
-  profile: Profile;
+  profile: User;
 }
 
 // ----------------------------------------------------------------------
@@ -71,7 +71,7 @@ export const SubscribeProfileModal = ({
   const { generatePayload } = useNotificationPayload(sessionData);
   const { terms, loading: loadingTerms } = useGetPolicyTerms(
     GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS as Address,
-    profile?.ownedBy?.address as Address
+    profile?.address as Address
   );
 
   useEffect(() => {
@@ -161,25 +161,24 @@ export const SubscribeProfileModal = ({
     try {
       // Proceed with the subscription using the calculated amount
       await subscribe({
-        holderAddress: profile?.ownedBy?.address as Address,
+        holderAddress: profile?.address as Address,
         amount: totalCostMMC,
       }).then(async () => {
         // Send notification to the profile owner
         const notificationPayload = generatePayload(
           'JOIN',
           {
-            id: profile.id,
-            displayName: profile?.metadata?.displayName ?? 'no name',
-            avatar:
-              (profile?.metadata?.picture as ProfilePictureSet)?.optimized?.uri ??dicebear(profile?.id)
+            id: profile.address,
+            displayName: profile?.displayName ?? 'no name',
+            avatar: resolveSrc(profile?.profilePicture || profile?.address, 'profile')
           },
           {
-            durationDays,
+            durationDays: `${durationDays}`,
             totalCostMMC,
-            rawDescription: `${sessionData?.profile?.metadata?.displayName} has joined to your content`,
+            rawDescription: `${sessionData?.user?.displayName} has joined to your content`,
           }
         );
-        await sendNotification(profile.id, sessionData?.profile?.id, notificationPayload);
+        await sendNotification(profile.address, sessionData?.user?.address ?? '', notificationPayload);
       });
     } catch (err) {
       console.error(err);
@@ -192,7 +191,7 @@ export const SubscribeProfileModal = ({
   return (
     <>
       <Dialog open={isOpen} onClose={onClose} fullWidth maxWidth="xs">
-        <DialogTitle sx={{ pb: 2 }}>Join to {profile?.metadata?.displayName} content</DialogTitle>
+        <DialogTitle sx={{ pb: 2 }}>Join to {profile?.displayName} content</DialogTitle>
         <Divider sx={{ mb: 2, borderStyle: 'dashed' }} />
         <DialogContent>
           {loadingTerms ? (

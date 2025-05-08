@@ -1,6 +1,7 @@
 import { FC } from 'react';
 import { SponsoredAccessTrialButton } from '@src/components/sponsored-access-button';
 import { PublicationSponsoredButtonProps } from '@src/sections/publication/types.ts';
+import { Address } from 'viem';
 
 export const PublicationSponsoredButton: FC<PublicationSponsoredButtonProps> = (props) => {
   const {
@@ -13,7 +14,7 @@ export const PublicationSponsoredButton: FC<PublicationSponsoredButtonProps> = (
   return (
     <SponsoredAccessTrialButton
       isActive={isActive}
-      holderAddress={publication?.by?.ownedBy?.address}
+      holderAddress={publication.author.address as Address}
       campaignAddress={campaign}
       onSuccess={onSponsorSuccess}
       neonPaperProps={{

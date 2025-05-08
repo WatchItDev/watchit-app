@@ -45,7 +45,7 @@ export default function CarouselPosterMini(params: CarouselPosterMiniProps) {
     return (
       <PosterHorizontal
         id={post.id}
-        title={post?.title}
+        title={post.title}
         images={{
           vertical: getMediaUri(poster),
           wallpaper: getMediaUri(wallpaper),

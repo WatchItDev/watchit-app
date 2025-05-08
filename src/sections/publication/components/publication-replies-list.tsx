@@ -1,44 +1,30 @@
 import { useEffect } from 'react';
 import Box from '@mui/material/Box';
-import { publicationId, useLazyPublications } from '@lens-protocol/react-web';
 import PublicationCommentItem from './publication-comment-item.tsx';
 import LinearProgress from '@mui/material/LinearProgress';
 import { useSelector } from 'react-redux';
 import { RepliesListProps } from '@src/sections/publication/types.ts';
 import {RootState} from "@redux/store.ts"
-import {AnyPublication} from "@lens-protocol/api-bindings"
+import { Comment } from '@src/graphql/generated/graphql.ts';
+import { useGetRepliesByCommentQuery } from '@src/graphql/generated/hooks.tsx';
 
 const RepliesList = ({ parentCommentId }: RepliesListProps) => {
-  const { data: replies, error, loading, execute } = useLazyPublications();
-  const { hiddenComments, refetchTriggerByPublication, pendingComments } = useSelector(
+  const { data, error, loading, refetch } = useGetRepliesByCommentQuery({ variables: { commentId: parentCommentId } });
+  const { hiddenComments, refetchTriggerByPublication } = useSelector(
     (state: RootState) => state.comments
   );
   const refetchTrigger = refetchTriggerByPublication[parentCommentId] || 0;
+  const replies: Comment[] = data?.getRepliesByComment ?? [];
 
   useEffect(() => {
-    (async () => {
-      await execute({
-        where: {
-          commentOn: {
-            id: publicationId(parentCommentId),
-          },
-        },
-      });
-    })();
+    refetch({ variables: { commentId: parentCommentId } });
   }, [refetchTrigger]);
 
   if (error) return <p>Error loading replies: {error.message}</p>;
 
-  // Join the replies with the pending comments but append the pending comments at the beginning of the list
-  const repliesWithPending = pendingComments[parentCommentId]
-    ? [...pendingComments[parentCommentId], ...(replies ?? [])]
-    : replies;
-
-  const repliesFiltered = (repliesWithPending ?? [])
-    .filter(
-      (comment) => !hiddenComments.some((hiddenComment: AnyPublication) => hiddenComment.id === comment.id)
-    )
-    .filter((comment) => !comment.isHidden);
+  const repliesFiltered = replies.filter((comment) =>
+    !hiddenComments.some((hiddenComment: Comment) => hiddenComment.id === comment.id)
+  );
 
   return (
     <Box sx={{ ml: 0, mb: 1 }}>
@@ -56,7 +42,7 @@ const RepliesList = ({ parentCommentId }: RepliesListProps) => {
           }}
         />
       )}
-      {repliesFiltered?.map((reply: AnyPublication) => {
+      {repliesFiltered?.map((reply: Comment) => {
         const { id: replyId } = reply;
 
         return (

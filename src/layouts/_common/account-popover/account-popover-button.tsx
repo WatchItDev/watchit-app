@@ -52,7 +52,7 @@ export function AccountPopoverButton(props: Readonly<AccountPopoverButtonProps>)
             }}
           >
             <AvatarProfile
-              src={session?.user?.profilePicture ?? session?.user?.address ?? ''}
+              src={(session?.user?.profilePicture || session?.user?.address) ?? ''}
               alt="avatar"
               sx={{
                 fontSize: '1.25rem',

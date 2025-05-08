@@ -73,7 +73,7 @@ export const UserItem = memo(
             }}
           >
             <AvatarProfile
-              src={profile?.profilePicture ?? profile?.address}
+              src={profile?.profilePicture || profile?.address}
               alt={profile?.username ?? ''}
               sx={{ width: 48, height: 48, mr: 2 }}
               variant="rounded"

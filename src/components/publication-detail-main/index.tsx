@@ -1,5 +1,5 @@
 // REACT IMPORTS
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 // MUI IMPORTS
 import Box from '@mui/material/Box';
@@ -9,20 +9,13 @@ import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import Divider from '@mui/material/Divider';
 import MenuItem from '@mui/material/MenuItem';
-import { useTheme, styled, Theme } from '@mui/material/styles';
+import { useTheme, styled } from '@mui/material/styles';
 import { CircularProgress } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import CardContent from '@mui/material/CardContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
-// LENS IMPORTS
-import {
-  PublicationReactionType,
-  hasReacted,
-  useReactionToggle, ProfilePictureSet
-} from '@lens-protocol/react-web'
-import { useHidePublication } from '@lens-protocol/react';
 
 // ICONS IMPORTS
 import {
@@ -47,17 +40,22 @@ import { LeaveTipCard } from '@src/components/leave-tip-card.tsx';
 import PostCommentList from '@src/sections/publication/components/publication-comments-list.tsx';
 import PublicationCommentForm from '@src/sections/publication/components/publication-details-comment-form.tsx';
 import { SubscribeToUnlockCard } from '@src/components/subscribe-to-unlock-card/subscribe-to-unlock-card.tsx';
-import { ReportPublicationModal } from '@src/components/report-publication-modal.tsx';
 import Popover from '@mui/material/Popover';
 import { useNotifications } from '@src/hooks/use-notifications.ts';
 import { openLoginModal } from '@redux/auth';
 import { useDispatch } from 'react-redux';
 import { useNotificationPayload } from '@src/hooks/use-notification-payload.ts';
-import {dicebear} from "@src/utils/dicebear.ts";
 import AvatarProfile from "@src/components/avatar/avatar.tsx";
 import { PublicationDetailProps } from '@src/components/publication-detail-main/types.ts';
 import { useAuth } from '@src/hooks/use-auth.ts';
 import { useToggleBookmark } from '@src/hooks/use-toggle-bookmark';
+import {
+  useHidePostMutation,
+  useGetIsPostLikedQuery,
+  useTogglePostLikeMutation,
+} from '@src/graphql/generated/hooks.tsx';
+import { resolveSrc } from '@src/utils/image.ts';
+import { useBookmarks } from '@src/hooks/use-bookmark.ts';
 
 // ----------------------------------------------------------------------
 
@@ -70,22 +68,25 @@ export default function PublicationDetailMain({
   hasAccess,
 }: Readonly<PublicationDetailProps>) {
   const [showComments, setShowComments] = useState(false);
-  const [openReportModal, setOpenReportModal] = useState(false);
   const [openConfirmModal, setOpenConfirmModal] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [hasLiked, setHasLiked] = useState(
-    hasReacted({ publication: post, reaction: PublicationReactionType.Upvote })
-  );
+  const [hasLiked, setHasLiked] = useState(false);
+  const [likesCount, setLikesCount] = useState(post.likeCount);
 
   const router = useRouter();
   const theme = useTheme();
   const { session: sessionData } = useAuth();
   const dispatch = useDispatch();
-  const { execute: toggle, loading: loadingLike } = useReactionToggle();
-  const { execute: hide } = useHidePublication();
+  const [ hidePost ] = useHidePostMutation();
   const { sendNotification } = useNotifications();
   const { generatePayload } = useNotificationPayload(sessionData);
+  const { data: postLikedData, loading: postLikedLoading } = useGetIsPostLikedQuery({ variables: { postId: post.id } })
+  const [ togglePostLike, { loading: togglePostLikeLoading }  ] = useTogglePostLikeMutation()
+  const { has, loading: loadingList } = useBookmarks();
+  const { toggle, loading: loadingToggle } = useToggleBookmark();
 
+  const isBookmarked = has(post.id);
+  const isLoading = togglePostLikeLoading || postLikedLoading
   const variants = theme.direction === 'rtl' ? varFade().inLeft : varFade().inRight;
   const openMenu = Boolean(anchorEl);
 
@@ -96,47 +97,53 @@ export default function PublicationDetailMain({
     const payloadForNotification = generatePayload(
       'LIKE',
       {
-        id: post.by.id,
-        displayName: post?.by?.metadata?.displayName ?? 'Watchit',
-        avatar:
-          (post?.by?.metadata?.picture as ProfilePictureSet)?.optimized?.uri ?? dicebear(post?.by?.id),
+        id: post.author.address,
+        displayName: post.author.displayName ?? 'Watchit',
+        avatar: resolveSrc(post.author.profilePicture || post.author.address, 'profile'),
       },
       {
-        rawDescription: `${sessionData?.profile?.metadata?.displayName} liked ${post?.metadata?.title}`,
-        root_id: post?.id,
-        post_title: post?.metadata?.title,
+        rawDescription: `${sessionData?.user?.displayName} liked ${post.title}`,
+        root_id: post.id,
+        post_title: post.title,
       }
     );
 
     try {
-      await toggle({
-        reaction: PublicationReactionType.Upvote,
-        publication: post,
-      }).then(() => {
-        // Send notification to the author when not already liked
-        if (!hasLiked) {
-          sendNotification(post.by.id, sessionData?.profile?.id, payloadForNotification);
+      const res = await togglePostLike({
+        variables: {
+          input: {
+            postId: post.id
+          }
         }
       });
-      setHasLiked(!hasLiked); // Toggle the UI based on the reaction state
+
+      setHasLiked(res?.data?.togglePostLike ?? false); // Toggle the UI based on the reaction state
+      setLikesCount(res?.data?.togglePostLike ? likesCount + 1 : likesCount - 1); // Update the likes count
+      // Send notification to the author when not already liked
+      if (res?.data?.togglePostLike) {
+        sendNotification(post.author.address, sessionData?.user?.address ?? '', payloadForNotification);
+      }
     } catch (err) {
       console.error('Error toggling reaction:', err);
     }
   };
 
-  const { toggleBookMark, loadingBookMark } = useToggleBookmark();
+  useEffect(() => {
+    setHasLiked(postLikedData?.getIsPostLiked ?? false);
+  }, [postLikedData]);
 
   const handleHide = async () => {
-    await hide({ publication: post });
+    await hidePost({ variables: { postId: post.id } });
+    router.reload();
   };
 
   const goToProfile = () => {
-    if (!post?.by?.id) return;
+    if (!post.author.address) return;
 
-    router.push(paths.dashboard.user.root(`${post?.by?.id}`));
+    router.push(paths.dashboard.user.root(`${post.author.address}`));
   };
 
-  if (post.isHidden) return <p>Publication is hidden</p>;
+  if (!post) return <p>The publication does not exist</p>;
 
   return (
     <Box
@@ -186,20 +193,18 @@ export default function PublicationDetailMain({
               onClick={goToProfile}
             >
               <AvatarProfile
-                src={
-                  (post?.by?.metadata?.picture as ProfilePictureSet)?.optimized?.uri ?? post?.by?.id
-                }
+                src={resolveSrc(post.author.profilePicture || post.author.address, 'profile')}
                 sx={{
                   width: 26,
                   height: 26,
-                  border: (theme: Theme) => `solid 2px ${theme.palette.background.default}`,
+                  border: 'solid 2px #161C24',
                 }}
               />
               <Typography variant="subtitle2" noWrap sx={{ ml: 1 }}>
-                {post?.by?.metadata?.displayName}
+                {post.author.displayName}
               </Typography>
             </Box>
-            {sessionData?.authenticated ? (
+            {sessionData?.authenticated && post.author.address === sessionData?.user?.address ? (
               <Button
                 variant="text"
                 sx={{
@@ -236,7 +241,7 @@ export default function PublicationDetailMain({
               }}
             >
               <Stack direction="column" spacing={0} justifyContent="center">
-                {post?.by?.ownedBy?.address === sessionData?.profile?.ownedBy?.address && (
+                {post.author.address === sessionData?.user?.address && (
                   <MenuItem
                     onClick={() => {
                       setOpenConfirmModal(true);
@@ -246,14 +251,6 @@ export default function PublicationDetailMain({
                     Hide
                   </MenuItem>
                 )}
-                <MenuItem
-                  onClick={() => {
-                    setOpenReportModal(true);
-                    setAnchorEl(null);
-                  }}
-                >
-                  Report
-                </MenuItem>
               </Stack>
             </Popover>
           </Box>
@@ -274,7 +271,7 @@ export default function PublicationDetailMain({
                 sx={{ fontWeight: 'bold', lineHeight: 1.1, mb: 1.5 }}
                 gutterBottom
               >
-                {post?.metadata?.title}
+                {post.title}
               </Typography>
             </m.div>
             <m.div variants={variants}>
@@ -340,9 +337,9 @@ export default function PublicationDetailMain({
                     minWidth: '40px',
                   }}
                   onClick={toggleReaction}
-                  disabled={loadingLike}
+                  disabled={isLoading}
                 >
-                  {loadingLike ? (
+                  {isLoading ? (
                     <CircularProgress size="25px" sx={{ color: '#fff' }} />
                   ) : (
                     <>
@@ -352,7 +349,7 @@ export default function PublicationDetailMain({
                         <IconHeart size={22} color="#FFFFFF" />
                       )}
                       <Typography variant="body2" sx={{ lineHeight: 1, ml: 1, fontWeight: '700' }}>
-                        {post?.stats?.upvotes}
+                        {likesCount}
                       </Typography>
                     </>
                   )}
@@ -374,7 +371,7 @@ export default function PublicationDetailMain({
                       <IconMessageCircle size={22} color="#FFFFFF" />
                     )}
                     <Typography variant="body2" sx={{ lineHeight: 1, ml: 1, fontWeight: '700' }}>
-                      {post?.stats?.comments}
+                      {post.commentCount}
                     </Typography>
                   </>
                 </Button>
@@ -386,13 +383,13 @@ export default function PublicationDetailMain({
                     height: '40px',
                     minWidth: '40px',
                   }}
-                  onClick={() => toggleBookMark(post)}
+                  onClick={() => toggle(post)}
                 >
-                  {loadingBookMark ? (
+                  {loadingToggle || loadingList ? (
                     <CircularProgress size="25px" sx={{ color: '#fff' }} />
                   ) : (
                     <>
-                      {post?.operations?.hasBookmarked ? (
+                      {isBookmarked ? (
                         <IconBookmarkFilled size={22} color="#FFFFFF" />
                       ) : (
                         <IconBookmark size={22} color="#FFFFFF" />
@@ -426,13 +423,12 @@ export default function PublicationDetailMain({
                 <Divider sx={{ my: 3, mr: 1 }} />
                 {sessionData?.authenticated ? (
                   <PublicationCommentForm
-                    root={post?.id}
-                    commentOn={post?.id}
+                    root={post.id}
+                    commentOn={null}
                     owner={{
-                      id: post?.by?.id,
-                      displayName: post?.by?.metadata?.displayName ?? 'Watchit',
-                      avatar:
-                        (post?.by?.metadata?.picture as ProfilePictureSet)?.optimized?.uri ?? dicebear(post?.by?.id),
+                      id: post.author.address,
+                      displayName: post.author.displayName ?? 'Watchit',
+                      avatar: resolveSrc(post.author.profilePicture || post.author.address, 'profile'),
                     }}
                   />
                 ) : (
@@ -452,13 +448,13 @@ export default function PublicationDetailMain({
                 )}
               </Box>
               <Box sx={{ display: 'flex', flexDirection: 'column', mt: 2, pr: 1 }}>
-                <PostCommentList publicationId={post?.id} showReplies />
+                <PostCommentList publicationId={post.id} showReplies />
               </Box>
             </Box>
           )}
 
           <Dialog open={openConfirmModal} onClose={() => setOpenConfirmModal(false)}>
-            <DialogTitle>Confirm Hide</DialogTitle>
+            <DialogTitle>Confirm hide</DialogTitle>
             <DialogContent>
               <Typography>Are you sure you want to hide this publication?</Typography>
             </DialogContent>
@@ -482,13 +478,6 @@ export default function PublicationDetailMain({
               </Button>
             </DialogActions>
           </Dialog>
-
-          {/* Report Publication Modal */}
-          <ReportPublicationModal
-            post={post}
-            isOpen={openReportModal}
-            onClose={() => setOpenReportModal(false)}
-          />
         </CardContent>
       </Card>
     </Box>
