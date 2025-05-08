@@ -110,14 +110,11 @@ exports[`[COMPONENTS]: <FinanceDepositModal /> > to match snapshot 1`] = `
             />
           </div>
         </div>
-        <div
-          data-testid="FinanceDeposit"
-        >
-          0x123456789abcdef
-          -
-          0x123456789abcdef
-          -
-          mockedDepositHook
+        <div>
+          Smart Account Deposit
+          <button>
+            Close Smart
+          </button>
         </div>
       </div>
     </div>

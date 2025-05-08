@@ -1,5 +1,5 @@
-import { describe, expect, it } from "vitest";
-import { render } from "@testing-library/react";
+import { describe, expect, it, vi } from "vitest";
+import { render, screen, fireEvent } from "@testing-library/react";
 import FinanceDepositModal from "../finance-deposit-modal";
 
 vi.mock("@src/hooks/use-auth.ts", () => ({
@@ -9,6 +9,7 @@ vi.mock("@src/hooks/use-auth.ts", () => ({
     },
   })),
 }));
+
 vi.mock("@src/hooks/protocol/use-deposit.ts", () => ({
   useDeposit: vi.fn(() => ({
     mutate: vi.fn(),
@@ -36,6 +37,28 @@ vi.mock("../finance-deposit", () => ({
   ),
 }));
 
+vi.mock("@src/sections/finance/components/finance-deposit-from-stripe", () => ({
+  default: () => <div>Stripe Deposit</div>,
+}));
+
+vi.mock("@src/sections/finance/components/finance-deposit-from-metamask", () => ({
+  default: ({ onClose }: { onClose: () => void }) => (
+    <div>
+      Metamask Deposit
+      <button onClick={onClose}>Close Metamask</button>
+    </div>
+  ),
+}));
+
+vi.mock("@src/sections/finance/components/finance-deposit-from-smart-account", () => ({
+  default: ({ onClose }: { onClose: () => void }) => (
+    <div>
+      Smart Account Deposit
+      <button onClick={onClose}>Close Smart</button>
+    </div>
+  ),
+}));
+
 const mockOnClose = vi.fn();
 const mockOpen = true;
 
@@ -48,4 +71,5 @@ describe("[COMPONENTS]: <FinanceDepositModal />", () => {
     renderComponent();
     expect(document.body).toMatchSnapshot();
   });
+
 });
