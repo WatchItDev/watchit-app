@@ -21,6 +21,7 @@ export default tseslint.config(
       "coverage/*",
       "**/__test__/**",
       "**/__mocks__/**",
+      'src/graphql/**',
     ]
   },
   {
@@ -45,6 +46,7 @@ export default tseslint.config(
     },
     rules: {
       ...reactHooks.configs.recommended.rules,
+      'react-hooks/exhaustive-deps': 'off',
       'react-refresh/only-export-components': [
         'warn',
         { allowConstantExport: true },

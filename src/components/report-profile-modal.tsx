@@ -1,7 +1,4 @@
-// LENS IMPORTS
 import { ReportModalBase } from '@src/components/report-modal-base.tsx';
-// @ts-expect-error No error in this context
-import {UseDeferredTask} from "@lens-protocol/react/dist/declarations/src/helpers/tasks"
 import { User } from '@src/graphql/generated/graphql.ts';
 
 // ----------------------------------------------------------------------

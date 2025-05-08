@@ -32,13 +32,13 @@ const FinanceDisplayProfileInfo: FC<FinanceDisplayNameProps> = ({initialList, ca
       {
         mode === 'profile' ?
           (<Box component="span" sx={{ flexGrow: 1, typography: 'subtitle1' }}>
-            {selectedProfile?.metadata?.displayName ?? selectedProfile?.handle?.localName ?? 'No profile selected'}
+            {selectedProfile.displayName ?? selectedProfile.username ?? 'No profile selected'}
           </Box>) : null
       }
       {
         mode === 'wallet' ?
           <Typography variant="body2" color="text.secondary">
-            {truncateAddress(selectedProfile?.ownedBy?.address)}
+            {truncateAddress(selectedProfile.address)}
           </Typography> : null
       }
     </Box>

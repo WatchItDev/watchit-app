@@ -1,4 +1,3 @@
-import { ProfileId } from '@lens-protocol/react-web';
 import { Invitation } from "@src/hooks/types.ts"
 import { Post, User } from '@src/graphql/generated/graphql.ts';
 import { socialMedia } from '@src/sections/user/CONSTANTS.tsx';
@@ -8,7 +7,7 @@ export interface ProfileHeaderProps {
 }
 
 export interface UserProfileViewProps {
-  id: ProfileId;
+  id: string;
 }
 
 // For the counts object

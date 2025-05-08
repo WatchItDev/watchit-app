@@ -4,8 +4,8 @@ import { useSelector } from 'react-redux';
 
 import { useResponsive } from '@src/hooks/use-responsive.ts';
 import {RootState} from "@redux/store.ts"
-import {AnyPublication} from "@lens-protocol/api-bindings"
 import { useBookmarks } from '@src/hooks/use-bookmark.ts';
+import { Post } from '@src/graphql/generated/graphql.ts';
 
 // ----------------------------------------------------------------------
 
@@ -28,7 +28,7 @@ export const ExploreBookmarks = () => {
   const mergedBookmarks = [...reversedBookmarkPublications, ...(bookmark ?? [])];
   // Filter out hidden bookmarks
   const visibleBookmarks = mergedBookmarks.filter(
-    (post) => !hiddenBookmarks.some((hidden: AnyPublication) => hidden.id === post.id)
+    (post) => !hiddenBookmarks.some((hidden: Post) => hidden.id === post.id)
   );
   // Remove posts explicitly marked as hidden
   const nonHiddenBookmarks = visibleBookmarks.filter((post) => !post.isHidden);

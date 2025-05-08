@@ -1,6 +1,5 @@
 import { ProfileData } from '@src/contexts/auth/types.ts';
-import {Profile} from "@lens-protocol/api-bindings";
-import { SocialLinkInput, UserInput } from '@src/graphql/generated/graphql.ts';
+import { SocialLinkInput, User, UserInput } from '@src/graphql/generated/graphql.ts';
 
 const removeEmptyValues = (obj: Partial<UserInput>): Partial<UserInput> =>
   Object.fromEntries(Object.entries(obj).filter(([, v]) => v !== '' && v !== null));
@@ -45,16 +44,16 @@ export const buildProfileMetadata = (
  * @returns {Profile[] | null | undefined} An array of profiles excluding those with hidden indicators,
  *                                         or `null`/`undefined` if the input is `null`/`undefined`.
  */
-export const filterHiddenProfiles = (profiles?: Profile[]): Profile[] | null | undefined => {
-  // displayName, bio and lens id properties are checked for the hidden indicator
+export const filterHiddenProfiles = (profiles?: User[]): User[] | null | undefined => {
+  // displayName, bio and address properties are checked for the hidden indicator
   const patterns = ['###HIDDEN###'];
 
   // Filter profiles that do not contain the hidden indicator in any of the checked properties
-  return profiles?.filter((profile: Profile) => {
+  return profiles?.filter((profile: User) => {
     return !patterns.some(pattern =>
-      (profile?.metadata?.displayName?.includes(pattern) ||
-        profile?.metadata?.bio?.includes(pattern) ||
-        profile?.id?.includes(pattern))
+      (profile.displayName?.includes(pattern) ||
+        profile.bio?.includes(pattern) ||
+        profile.address?.includes(pattern))
     );
   });
 };

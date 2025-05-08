@@ -1,5 +1,3 @@
-// src/sections/finance/components/FinanceWithdrawModal.tsx
-
 import { FC } from "react";
 
 // LOCAL IMPORTS

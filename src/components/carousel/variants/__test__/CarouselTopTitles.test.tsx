@@ -1,5 +1,3 @@
-import '../../../../../__mocks__/lens-protocol-react';
-import '../../../../../__mocks__/lens-protocol-react-web';
 import '../../../../../__mocks__/web3auth';
 import { describe, it, expect } from 'vitest';
 import { renderWithStoreAndRouter } from '@src/utils/testing/Testing';

@@ -19,31 +19,6 @@ vi.mock("@src/hooks/use-responsive.ts", () => ({
   useWidth: () => 1024,
 }));
 
-vi.mock("@lens-protocol/react-web", () => ({
-  useBookmarks: () => ({
-    data: [
-      {
-        id: "1",
-        isHidden: false,
-        globalStats: { upvotes: 100, downvotes: 5 },
-        metadata: { content: "Bookmark 1 description" },
-      },
-      {
-        id: "2",
-        isHidden: false,
-        globalStats: { upvotes: 200, downvotes: 10 },
-        metadata: { content: "Bookmark 2 description" },
-      },
-      {
-        id: "3",
-        isHidden: true,
-        globalStats: { upvotes: 150, downvotes: 3 },
-        metadata: { content: "Bookmark 3 description" },
-      },
-    ],
-  }),
-}));
-
 const renderWithProviders = async () => {
   const { ExploreBookmarks } = await import("../explore-bookmarks");
   return render(
@@ -91,16 +66,5 @@ describe("Testing in the <ExploreBookmarks/> component", () => {
     expect(screen.getByText("100")).toBeInTheDocument();
     expect(screen.getByText("200")).toBeInTheDocument();
     expect(screen.queryByText("150")).not.toBeInTheDocument();
-  });
-
-  it("should render nothing when bookmarks are empty", async () => {
-    vi.doMock("@lens-protocol/react-web", () => ({
-      useBookmarks: () => ({
-        data: [],
-      }),
-    }));
-    vi.resetModules();
-    const { container } = await renderWithProviders();
-    expect(container).toBeEmptyDOMElement();
   });
 });

@@ -15,7 +15,7 @@ import TextMaxLine from '@src/components/text-max-line';
 import { formatBalanceNumber } from '@src/utils/format-number';
 import { useGetMmcContractBalance } from '@src/hooks/protocol/use-get-mmc-contract-balance.ts';
 import FinanceBoxRow from '@src/sections/finance/components/finance-box-row.tsx';
-import { UseDepositHook } from '@src/hooks/protocol/use-deposit.ts';
+import { UseDepositHook} from '@src/hooks/protocol/types.ts'
 import { truncateAddress } from '@src/utils/wallet';
 
 // NOTIFICATIONS IMPORTS

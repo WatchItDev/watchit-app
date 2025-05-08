@@ -1,9 +1,7 @@
-// @ts-expect-error No error in next line
-import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
-import { AnyPublication } from '@lens-protocol/api-bindings';
+import { Post } from '@src/graphql/generated/graphql.ts';
 
 export interface SubscribeToUnlockCardProps {
-  post: ReadResult<AnyPublication>;
+  post: Post;
   onSubscribe: () => void;
   handleRefetchAccess: () => void;
   loadingSubscribe: boolean;

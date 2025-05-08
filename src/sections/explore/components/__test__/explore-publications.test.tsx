@@ -13,21 +13,6 @@ vi.mock("@src/hooks/use-responsive.ts", () => ({
   useResponsive: () => mockUseResponsive(),
 }));
 
-vi.mock("@lens-protocol/react-web", async () => {
-  const actual = await import("@lens-protocol/react-web");
-  return {
-    ...actual,
-    appId: (id: string) => id,
-    usePublications: () => ({
-      data: [],
-      loading: false,
-    }),
-    PublicationType: {
-      Post: "Post",
-    },
-  };
-});
-
 describe("Testing in the <ExplorePublications/> component", () => {
   beforeEach(() => {
     vi.clearAllMocks();
