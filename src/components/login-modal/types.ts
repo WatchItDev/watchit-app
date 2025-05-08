@@ -1,5 +1,4 @@
-import {LoginError} from "@lens-protocol/react-web"
-import {Profile} from "@lens-protocol/api-bindings"
+import { User } from '@src/graphql/generated/graphql.ts';
 
 export interface ProfileFormInitialValuesProps {
   username: string,
@@ -19,10 +18,10 @@ export interface ProfileFormProps {
   address: string;
   initialValues?: ProfileFormInitialValuesProps;
   mode: 'register' | 'update';
-  error?: LoginError;
+  error?: Error;
   onSuccess: () => void;
   onCancel: () => void;
-  login?: (profile?: Profile) => Promise<void>;
+  login?: (profile?: User) => Promise<void>;
 }
 
 export interface ProfileFormValues {

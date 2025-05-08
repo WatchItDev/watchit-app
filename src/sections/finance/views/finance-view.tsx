@@ -5,17 +5,14 @@ import { useEffect, useState } from 'react';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Unstable_Grid2';
 
-// LENS IMPORTS
-import { useProfileFollowing } from '@lens-protocol/react';
-
 // LOCAL IMPORTS
 import useGetSmartWalletTransactions from '@src/hooks/protocol/use-get-smart-wallet-transactions.ts';
 import { groupTransactionsForWidget } from '@src/libs/finance-graphs/groupedTransactions.ts';
-import { filterHiddenProfiles } from "@src/libs/profile.ts";
 import { SummaryAndActions } from '@src/sections/finance/components/finance-summary-and-actions.tsx';
 import { FinanceLeftColumnContent } from '@src/sections/finance/components/finance-left-column-content.tsx';
 import { FinanceRightColumnContent } from '@src/sections/finance/components/finance-right-column-content.tsx';
 import { useAuth } from '@src/hooks/use-auth.ts';
+import { useGetUserFollowingLazyQuery } from '@src/graphql/generated/hooks.tsx';
 
 // ----------------------------------------------------------------------
 
@@ -24,12 +21,13 @@ export default function FinanceView() {
   const [percent, setPercent] = useState(0);
   const { session: sessionData, balance: balanceFromRedux } = useAuth();
   const { transactions, loading } = useGetSmartWalletTransactions();
-  const { data: results, loading: loadingProfiles } = useProfileFollowing({
-    for: sessionData?.profile?.id,
-  });
+  const [loadFollowing, { data: profileFollowing, loading: profileFollowingLoading }] = useGetUserFollowingLazyQuery({ fetchPolicy: 'network-only' });
+  const following = profileFollowing?.getUserFollowing;
 
-  // Filter hidden profiles
-  const following = filterHiddenProfiles(results);
+  useEffect(() => {
+    if (!sessionData?.user?.address) return;
+    loadFollowing({variables: { address: sessionData?.user?.address, limit: 50 }});
+  }, [sessionData?.user?.address]);
 
   useEffect(() => {
     if (!transactions || loading) return;
@@ -55,14 +53,14 @@ export default function FinanceView() {
             widgetSeriesData={widgetSeriesData}
             balanceFromRedux={balanceFromRedux}
             following={following}
-            loadingProfiles={loadingProfiles}
+            loadingProfiles={profileFollowingLoading}
           />
 
           <FinanceLeftColumnContent following={following}/>
         </Grid>
 
         <Grid xs={12} md={4}>
-          <FinanceRightColumnContent following={following} loadingProfiles={loadingProfiles} />
+          <FinanceRightColumnContent following={following} loadingProfiles={profileFollowingLoading} />
         </Grid>
       </Grid>
     </Container>

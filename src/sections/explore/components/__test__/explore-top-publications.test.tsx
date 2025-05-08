@@ -15,7 +15,6 @@ vi.mock("@src/workers/backgroundTaskWorker?worker", () => {
     },
   };
 });
-vi.mock("@lens-protocol/react-web", () => import("../__test__/__mocks__/lens-protocol-react-web"));
 
 const renderWithProviders = () => {
   return render(

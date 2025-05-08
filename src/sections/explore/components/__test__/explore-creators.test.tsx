@@ -29,44 +29,6 @@ vi.mock("@src/hooks/components/use-item-per-slide", () => {
   };
 });
 
-vi.mock("@lens-protocol/react-web", () => ({
-  useBookmarks: () => ({
-    data: [],
-  }),
-  useExploreProfiles: () => ({
-    data: [
-      {
-        id: "profile1",
-        metadata: {
-          displayName: "Creator 1",
-          bio: "A cool creator",
-        },
-      },
-      {
-        id: "profile2",
-        metadata: {
-          displayName: "Creator 2",
-          bio: "Another cool creator",
-        },
-      },
-      {
-        id: "hiddenProfile",
-        metadata: {
-          displayName: "###HIDDEN### Hidden Creator",
-          bio: "This creator is hidden",
-        },
-      },
-    ],
-    loading: false,
-  }),
-  ExploreProfilesOrderByType: {
-    LatestCreated: "LatestCreated",
-  },
-  LimitType: {
-    Fifty: "Fifty",
-  },
-}));
-
 const renderWithProviders = () => {
   return render(
     <Provider store={store}>
@@ -115,33 +77,5 @@ describe("Testing in the ExploreCreators component", () => {
 
   afterEach(() => {
     vi.resetModules();
-  });
-  
-  it("should not render duplicate creators", async () => {
-    vi.doMock("@lens-protocol/react-web", () => ({
-      useExploreProfiles: () => ({
-        data: [
-          {
-            id: "profile1",
-            metadata: {
-              displayName: "Creator 1",
-              bio: "A cool creator",
-            },
-          },
-          {
-            id: "profile1",
-            metadata: {
-              displayName: "Creator 1",
-              bio: "A cool creator again",
-            },
-          },
-        ],
-        loading: false,
-      }),
-    }));
-    renderWithProviders();
-    await screen.findByText("Creator 1");
-    const creatorElements = screen.getAllByText("Creator 1");
-    expect(creatorElements.length).toBe(1);
   });
 });

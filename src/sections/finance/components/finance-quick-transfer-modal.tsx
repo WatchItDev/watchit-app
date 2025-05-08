@@ -32,6 +32,7 @@ import { useTheme } from '@mui/material/styles';
 import { useAuth } from '@src/hooks/use-auth.ts';
 import {ConfirmTransferDialogProps} from "@src/sections/finance/types.ts"
 import { Address } from 'viem';
+import { resolveSrc } from '@src/utils/image.ts';
 
 
 function FinanceQuickTransferModal(props: Readonly<ConfirmTransferDialogProps>) {
@@ -59,9 +60,7 @@ function FinanceQuickTransferModal(props: Readonly<ConfirmTransferDialogProps>) 
     : 'Destination wallet';
 
   // For the avatar, if no valid profile or if the address doesn't match, use a dicebear fallback
-  const avatarSrc =
-    hasProfile && isSame
-      ? contactInfo?.profilePicture ?? dicebear(contactInfo?.address) : dicebear(address as string);
+  const avatarSrc = resolveSrc((contactInfo?.profilePicture || contactInfo?.address) ?? '', 'profile');
 
   // For the secondary text under the name, if we have a valid profile that matches, use its address
   // otherwise show the typed address
@@ -126,7 +125,7 @@ function FinanceQuickTransferModal(props: Readonly<ConfirmTransferDialogProps>) 
         ...notificationPayload,
       });
 
-      // Send notification to the Lens profile or address
+      // Send notification to the user
       await sendNotification(
         contactInfo?.address ?? address ?? '',
         sessionData?.address as Address,

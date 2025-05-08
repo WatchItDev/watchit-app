@@ -27,6 +27,7 @@ import {ProfileFormProps, ProfileFormValues} from "@src/components/login-modal/t
 import { useCreateUserMutation, useUpdateUserMutation } from '@src/graphql/generated/hooks.tsx';
 import { resolveSrc } from '@src/utils/image.ts';
 import { getIpfsUri } from '@src/utils/publication.ts';
+import { useAuth } from '@src/hooks/use-auth.ts';
 
 // ----------------------------------------------------------------------
 
@@ -50,6 +51,7 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
   const [registrationLoading, setRegistrationLoading] = useState(false);
   const [createUser, { loading: createUserLoading, error: errorCreatingProfile }] = useCreateUserMutation();
   const [updateUser, { loading: updateUserLoading, error: errorUpdatingProfile }] = useUpdateUserMutation();
+  const { session } = useAuth();
 
   const loading = createUserLoading || updateUserLoading || registrationLoading;
   const PaperElement = loading ? NeonPaper : Box;
@@ -98,11 +100,6 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
     }
   };
 
-  /**
-   * Update profile metadata on the Lens Protocol.
-   * @param data - Profile data to update.
-   * @param profile - Profile to update.
-   */
   const updateProfileMetadata = useCallback(
     async (data: ProfileData) => {
       setRegistrationLoading(true);
@@ -119,9 +116,6 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
 
         // Build profile metadata
         const metadata = buildProfileMetadata(data, profilePictureURI, coverPictureURI);
-
-        console.log('update profile metadata');
-        console.log(metadata);
 
         await updateUser({
           variables: {
@@ -302,7 +296,7 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
           />
           {/* Avatar */}
           <AvatarProfile
-            src={profilePicturePreview ?? resolveSrc(initialValues?.profilePicture ?? '', 'cover') ?? ''}
+            src={profilePicturePreview || resolveSrc(initialValues?.profilePicture || session.address || '', 'profile') || ''}
             alt=""
             onClick={() => profilePictureInputRef.current?.click()}
             sx={{

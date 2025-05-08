@@ -5,7 +5,7 @@ import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
 import Stack, { StackProps } from "@mui/material/Stack";
 // types
-import { IOrderTableFilters, IOrderTableFilterValue } from "@src/types/transaction";
+import { IOrderTableFilters, IOrderTableFilterValue } from '@src/sections/finance/types.ts';
 // components
 import Iconify from "@src/components/iconify";
 

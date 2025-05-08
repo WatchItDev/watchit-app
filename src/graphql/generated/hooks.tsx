@@ -1210,6 +1210,72 @@ export type GetPostsByAuthorQueryHookResult = ReturnType<typeof useGetPostsByAut
 export type GetPostsByAuthorLazyQueryHookResult = ReturnType<typeof useGetPostsByAuthorLazyQuery>;
 export type GetPostsByAuthorSuspenseQueryHookResult = ReturnType<typeof useGetPostsByAuthorSuspenseQuery>;
 export type GetPostsByAuthorQueryResult = Apollo.QueryResult<GetPostsByAuthorQuery, GetPostsByAuthorQueryVariables>;
+export const GetPostsDocument = gql`
+    query GetPosts($query: String!, $limit: Int) {
+  getPosts(query: $query, limit: $limit) {
+    author {
+      address
+      bio
+      displayName
+      username
+      profilePicture
+      coverPicture
+    }
+    bookmarkCount
+    cid
+    commentCount
+    createdAt
+    description
+    id
+    likeCount
+    media {
+      url
+      type
+      title
+      id
+      cid
+    }
+    title
+    updatedAt
+    viewCount
+    visibility
+  }
+}
+    `;
+
+/**
+ * __useGetPostsQuery__
+ *
+ * To run a query within a React component, call `useGetPostsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetPostsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetPostsQuery({
+ *   variables: {
+ *      query: // value for 'query'
+ *      limit: // value for 'limit'
+ *   },
+ * });
+ */
+export function useGetPostsQuery(baseOptions: Apollo.QueryHookOptions<GetPostsQuery, GetPostsQueryVariables> & ({ variables: GetPostsQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetPostsQuery, GetPostsQueryVariables>(GetPostsDocument, options);
+      }
+export function useGetPostsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetPostsQuery, GetPostsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetPostsQuery, GetPostsQueryVariables>(GetPostsDocument, options);
+        }
+export function useGetPostsSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetPostsQuery, GetPostsQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetPostsQuery, GetPostsQueryVariables>(GetPostsDocument, options);
+        }
+export type GetPostsQueryHookResult = ReturnType<typeof useGetPostsQuery>;
+export type GetPostsLazyQueryHookResult = ReturnType<typeof useGetPostsLazyQuery>;
+export type GetPostsSuspenseQueryHookResult = ReturnType<typeof useGetPostsSuspenseQuery>;
+export type GetPostsQueryResult = Apollo.QueryResult<GetPostsQuery, GetPostsQueryVariables>;
 export const GetUserDocument = gql`
     query GetUser($address: String!) {
   getUser(address: $address) {
@@ -1482,11 +1548,13 @@ export type GetUserXpHistoryLazyQueryHookResult = ReturnType<typeof useGetUserXp
 export type GetUserXpHistorySuspenseQueryHookResult = ReturnType<typeof useGetUserXpHistorySuspenseQuery>;
 export type GetUserXpHistoryQueryResult = Apollo.QueryResult<GetUserXpHistoryQuery, GetUserXpHistoryQueryVariables>;
 export const GetUsersDocument = gql`
-    query GetUsers($prefix: String!, $limit: Int) {
-  getUsers(prefix: $prefix, limit: $limit) {
+    query GetUsers($limit: Int, $query: String!) {
+  getUsers(limit: $limit, query: $query) {
     address
-    username
     displayName
+    bio
+    coverPicture
+    username
     profilePicture
   }
 }
@@ -1504,8 +1572,8 @@ export const GetUsersDocument = gql`
  * @example
  * const { data, loading, error } = useGetUsersQuery({
  *   variables: {
- *      prefix: // value for 'prefix'
  *      limit: // value for 'limit'
+ *      query: // value for 'query'
  *   },
  * });
  */

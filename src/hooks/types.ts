@@ -50,7 +50,6 @@ export interface NotificationItemProps {
   onMarkAsRead: (id: string) => void;
 }
 
-//use-submit-assets-to-lens.ts
 export interface SuccessResult {
   hash: string;
   status: "success";
@@ -60,13 +59,6 @@ export interface ErrorResult {
   hash: string;
   status: "error";
   message: string;
-}
-
-export interface UseSubmitAssetToLensReturn {
-  data: SuccessResult[];
-  errors: ErrorResult[];
-  loading: boolean;
-  submitAssetToLens: (hashesString: string) => Promise<void>;
 }
 
 // use-search-publications.ts
@@ -159,23 +151,6 @@ interface TransferDataLog {
   transactionIndex: number;
   transactionHash: string;
   topics: string[];
-}
-
-interface TransferDataReceipt {
-  blockHash: string;
-  blockNumber: bigint;
-  contractAddress: string | null;
-  cumulativeGasUsed: bigint;
-  effectiveGasPrice: bigint;
-  from: string;
-  gasUsed: bigint;
-  logs: TransferDataLog[];
-  logsBloom: string;
-  status: string;
-  to: string;
-  transactionHash: string;
-  transactionIndex: number;
-  type: string | null;
 }
 
 export interface AccountAbstractionProvider extends IBaseProvider<IProvider> {
