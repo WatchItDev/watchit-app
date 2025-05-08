@@ -624,7 +624,7 @@ export type GetPostsQueryVariables = Exact<{
 }>;
 
 
-export type GetPostsQuery = { __typename?: 'Query', getPosts: Array<{ __typename?: 'Post', bookmarkCount: number, cid: string, commentCount: number, createdAt: number, description: string, id: string, likeCount: number, title: string, updatedAt: number, viewCount: number, visibility: VisibilitySetting, author: { __typename?: 'User', address: string, bio: string, displayName: string, username: string, profilePicture?: string | null, coverPicture?: string | null }, media: Array<{ __typename?: 'MediaAttachment', url?: string | null, type: string, title?: string | null, id: string, cid: string }> }> };
+export type GetPostsQuery = { __typename?: 'Query', getPosts: Array<{ __typename?: 'Post', bookmarkCount: number, cid: string, commentCount: number, createdAt: number, description: string, id: string, likeCount: number, title: string, updatedAt: number, viewCount: number, visibility: VisibilitySetting, author: { __typename?: 'User', address: string, bio: string, displayName: string, username: string, profilePicture: string, coverPicture: string }, media: Array<{ __typename?: 'MediaAttachment', url?: string | null, type: string, title?: string | null, id: string, cid: string }> }> };
 
 export type GetUserQueryVariables = Exact<{
   address: Scalars['String']['input'];
@@ -672,7 +672,7 @@ export type GetUsersQueryVariables = Exact<{
 }>;
 
 
-export type GetUsersQuery = { __typename?: 'Query', getUsers: Array<{ __typename?: 'User', address: string, displayName: string, bio: string, coverPicture?: string | null, username: string, profilePicture?: string | null }> };
+export type GetUsersQuery = { __typename?: 'Query', getUsers: Array<{ __typename?: 'User', address: string, displayName: string, bio: string, coverPicture: string, username: string, profilePicture: string }> };
 
 
 export const ToggleBookmarkDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"ToggleBookmark"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"BookmarkPostInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"toggleBookmark"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}]}]}}]} as unknown as DocumentNode<ToggleBookmarkMutation, ToggleBookmarkMutationVariables>;
