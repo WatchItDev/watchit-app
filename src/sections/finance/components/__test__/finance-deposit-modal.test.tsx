@@ -77,5 +77,12 @@ describe("[COMPONENTS]: <FinanceDepositModal />", () => {
     expect(screen.getByText("Deposit from")).toBeInTheDocument();
   });
 
- 
+  it("displays all deposit method tabs", () => {
+    renderComponent();
+    expect(screen.getByText("Stripe")).toBeInTheDocument();
+    expect(screen.getByText("Metamask")).toBeInTheDocument();
+    expect(screen.getByText("Smart Account")).toBeInTheDocument();
+  });
+
+  
 });
