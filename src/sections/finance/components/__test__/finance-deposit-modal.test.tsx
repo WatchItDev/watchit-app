@@ -72,4 +72,10 @@ describe("[COMPONENTS]: <FinanceDepositModal />", () => {
     expect(document.body).toMatchSnapshot();
   });
 
+  it("renders modal title", () => {
+    renderComponent();
+    expect(screen.getByText("Deposit from")).toBeInTheDocument();
+  });
+
+ 
 });
