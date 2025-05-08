@@ -103,5 +103,10 @@ describe("[COMPONENTS]: <FinanceDepositModal />", () => {
     expect(mockOnClose).toHaveBeenCalled();
   });
 
-  
+  it("calls onClose when close button in Smart Account tab is clicked", () => {
+    renderComponent();
+    fireEvent.click(screen.getByText("Smart Account"));
+    fireEvent.click(screen.getByText("Close Smart"));
+    expect(mockOnClose).toHaveBeenCalled();
+  });
 });
