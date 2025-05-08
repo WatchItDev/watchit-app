@@ -96,5 +96,12 @@ describe("[COMPONENTS]: <FinanceDepositModal />", () => {
     expect(screen.getByText("Smart Account Deposit")).toBeInTheDocument();
   });
 
+  it("calls onClose when close button in Metamask tab is clicked", () => {
+    renderComponent();
+    fireEvent.click(screen.getByText("Metamask"));
+    fireEvent.click(screen.getByText("Close Metamask"));
+    expect(mockOnClose).toHaveBeenCalled();
+  });
+
   
 });
