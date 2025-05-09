@@ -31,13 +31,6 @@ const PosterTopTitles = ({ post }: { post: Post }) => {
     router.push(paths.dashboard.user.root(`${post.id}`));
   };
 
-  console.log('--------');
-  console.log(post.author);
-  console.log(post.author.profilePicture);
-  console.log(post.author.profilePicture ?? post.author.address);
-  console.log(post.author.profilePicture || post.author.address);
-  console.log(resolveSrc(post.author.profilePicture || post.author.address, 'profile'));
-
   return (
     <Stack
       sx={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
