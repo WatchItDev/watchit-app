@@ -49,7 +49,7 @@ export const UserItem = memo(
         >
           <Image
             alt={profile?.username ?? 'Profile Cover'}
-            src={resolveSrc(profile?.coverPicture ?? profile?.address ?? '', 'cover')}
+            src={resolveSrc((profile?.coverPicture || profile?.address) ?? '', 'cover')}
             sx={{
               height: 120,
               opacity: 0.7,

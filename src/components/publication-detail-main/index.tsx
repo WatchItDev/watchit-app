@@ -145,6 +145,9 @@ export default function PublicationDetailMain({
 
   if (!post) return <p>The publication does not exist</p>;
 
+  console.log('post', post);
+  console.log(post.author);
+
   return (
     <Box
       sx={{
