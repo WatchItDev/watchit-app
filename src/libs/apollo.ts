@@ -5,9 +5,10 @@ import {
   concat,
 } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
+import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 
 const httpLink = new HttpLink({
-  uri: process.env.REACT_APP_GQL_ENDPOINT ?? 'http://localhost:4000/graphql',
+  uri: GLOBAL_CONSTANTS.GQL_ENDPOINT,
 });
 
 const authLink = setContext(async (_, { headers }) => {
