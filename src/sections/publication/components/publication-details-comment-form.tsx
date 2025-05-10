@@ -64,7 +64,6 @@ const MovieCommentForm = ({ commentOn, owner, root }: MovieCommentFormProps) => 
           input: {
             content: data.comment,
             postId: root,
-            authorAddress: sessionData?.user?.address,
             parentComment: commentOn
           }
         }

@@ -110,7 +110,7 @@ const OwnershipProcessContent = ({ onClose }: { onClose: () => void }) => {
           }
 
           // 3. Upload to API only if registration was successful
-          await submitAsset(replacePrefix(hash), userAddress ?? '');
+          await submitAsset(replacePrefix(hash));
           notifySuccess(SUCCESS.OWNERSHIP_REGISTERED_SUCCESSFULLY, { count: index + 1 });
         } catch (error) {
           notifyError(ERRORS.ASSET_OWNERSHIP_REGISTER_ERROR, { hash: `${index + 1}/${hashesArray.length}` });

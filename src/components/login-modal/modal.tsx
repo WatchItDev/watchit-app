@@ -98,7 +98,6 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
 
           {!accountLoading && showForm && session.address && (
             <ProfileFormView
-              address={session.address}
               onSuccess={handleSuccess}
               onCancel={handleCancel}
               mode="register"

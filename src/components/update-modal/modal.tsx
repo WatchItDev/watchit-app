@@ -71,7 +71,6 @@ export const UpdateModal: React.FC<UpdateModalProps> = ({ open, onClose }) => {
               onSuccess={handleProfileUpdateSuccess}
               onCancel={onClose}
               mode="update"
-              address={session?.address ?? ''}
               initialValues={{
                 displayName: session?.user?.displayName ?? '',
                 username: session?.user?.username ?? '',

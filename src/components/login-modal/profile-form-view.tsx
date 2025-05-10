@@ -43,7 +43,6 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
   onSuccess,
   onCancel,
   initialValues,
-  address,
   error,
   mode,
 }) => {
@@ -120,7 +119,7 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
         await updateUser({
           variables: {
             input: {
-              address,
+              address: session?.address,
               ...metadata
             },
           },
@@ -134,13 +133,17 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
         dispatch(closeLoginModal());
       }
     },
-    [address]
+    [session?.address]
   );
 
   const registerProfile = useCallback(
     async (data: ProfileData) => {
-      if (!address) {
+      if (!session?.address) {
         console.error('Wallet address not available.');
+        return;
+      }
+      if (!session?.info?.email) {
+        console.error('Email is not available.');
         return;
       }
 
@@ -162,7 +165,8 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
         await createUser({
           variables: {
             input: {
-              address,
+              address: session?.address,
+              email: session?.info?.email,
               ...metadata
             },
           },
@@ -177,7 +181,7 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
         throw error;
       }
     },
-    [address]
+    [session?.address]
   );
 
   const formik = useFormik<ProfileFormValues>({
@@ -272,7 +276,7 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
         <Box sx={{ width: '100%', position: 'relative', pt: 1 }}>
           {/* Background Image */}
           <Image
-            src={coverPicturePreview ?? resolveSrc(initialValues?.coverPicture ?? '', 'cover') ?? ''}
+            src={coverPicturePreview ?? resolveSrc((initialValues?.coverPicture || session?.address) ?? '', 'cover') ?? ''}
             onClick={() => coverPictureInputRef.current?.click()}
             sx={{
               height: 120,

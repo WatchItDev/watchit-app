@@ -15,7 +15,6 @@ export interface ProfileFormInitialValuesProps {
 }
 
 export interface ProfileFormProps {
-  address: string;
   initialValues?: ProfileFormInitialValuesProps;
   mode: 'register' | 'update';
   error?: Error;

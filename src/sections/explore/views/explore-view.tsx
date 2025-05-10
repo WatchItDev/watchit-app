@@ -20,6 +20,8 @@ const ExploreView = () => {
   const loading = useSelector((state: RootState) => state.loading)
   const exploreIsLoading = isLoading(loading.explore);
 
+  console.log('session: ', session);
+
   useEffect(() => {
     console.log('explore loading: ', exploreIsLoading);
   }, [exploreIsLoading])

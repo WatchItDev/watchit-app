@@ -992,8 +992,8 @@ export type GetRecentUsersLazyQueryHookResult = ReturnType<typeof useGetRecentUs
 export type GetRecentUsersSuspenseQueryHookResult = ReturnType<typeof useGetRecentUsersSuspenseQuery>;
 export type GetRecentUsersQueryResult = Apollo.QueryResult<GetRecentUsersQuery, GetRecentUsersQueryVariables>;
 export const GetIsFollowingDocument = gql`
-    query GetIsFollowing($followerAddress: String!, $targetAddress: String!) {
-  getIsFollowing(followerAddress: $followerAddress, targetAddress: $targetAddress)
+    query GetIsFollowing($targetAddress: String!) {
+  getIsFollowing(targetAddress: $targetAddress)
 }
     `;
 
@@ -1009,7 +1009,6 @@ export const GetIsFollowingDocument = gql`
  * @example
  * const { data, loading, error } = useGetIsFollowingQuery({
  *   variables: {
- *      followerAddress: // value for 'followerAddress'
  *      targetAddress: // value for 'targetAddress'
  *   },
  * });
