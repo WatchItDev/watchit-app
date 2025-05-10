@@ -119,7 +119,6 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
         await updateUser({
           variables: {
             input: {
-              address: session?.address,
               ...metadata
             },
           },
