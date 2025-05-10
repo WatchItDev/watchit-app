@@ -494,6 +494,13 @@ export const GetCommentsByPostDocument = gql`
     author {
       address
       displayName
+      followersCount
+      followingCount
+      coverPicture
+      profilePicture
+      bio
+      publicationsCount
+      username
     }
     content
     id
@@ -551,6 +558,13 @@ export const GetRepliesByCommentDocument = gql`
     author {
       address
       displayName
+      followersCount
+      followingCount
+      coverPicture
+      profilePicture
+      bio
+      publicationsCount
+      username
     }
     content
     id
@@ -665,9 +679,14 @@ export const GetAllPostsDocument = gql`
     id
     author {
       address
-      username
       displayName
+      followersCount
+      followingCount
+      coverPicture
+      profilePicture
       bio
+      publicationsCount
+      username
     }
     media {
       id
@@ -973,8 +992,8 @@ export type GetRecentUsersLazyQueryHookResult = ReturnType<typeof useGetRecentUs
 export type GetRecentUsersSuspenseQueryHookResult = ReturnType<typeof useGetRecentUsersSuspenseQuery>;
 export type GetRecentUsersQueryResult = Apollo.QueryResult<GetRecentUsersQuery, GetRecentUsersQueryVariables>;
 export const GetIsFollowingDocument = gql`
-    query GetIsFollowing($followerAddress: String!, $targetAddress: String!) {
-  getIsFollowing(followerAddress: $followerAddress, targetAddress: $targetAddress)
+    query GetIsFollowing($targetAddress: String!) {
+  getIsFollowing(targetAddress: $targetAddress)
 }
     `;
 
@@ -990,7 +1009,6 @@ export const GetIsFollowingDocument = gql`
  * @example
  * const { data, loading, error } = useGetIsFollowingQuery({
  *   variables: {
- *      followerAddress: // value for 'followerAddress'
  *      targetAddress: // value for 'targetAddress'
  *   },
  * });
@@ -1093,6 +1111,13 @@ export const GetPostDocument = gql`
     author {
       address
       displayName
+      followersCount
+      followingCount
+      coverPicture
+      profilePicture
+      bio
+      publicationsCount
+      username
     }
     bookmarkCount
     cid
@@ -1169,6 +1194,13 @@ export const GetPostsByAuthorDocument = gql`
     author {
       address
       displayName
+      followersCount
+      followingCount
+      coverPicture
+      profilePicture
+      bio
+      publicationsCount
+      username
     }
     cid
     description
@@ -1215,11 +1247,14 @@ export const GetPostsDocument = gql`
   getPosts(query: $query, limit: $limit) {
     author {
       address
-      bio
       displayName
-      username
-      profilePicture
+      followersCount
+      followingCount
       coverPicture
+      profilePicture
+      bio
+      publicationsCount
+      username
     }
     bookmarkCount
     cid

@@ -3,6 +3,13 @@ query GetRepliesByComment($commentId: String!, $limit: Int) {
     author {
       address
       displayName
+      followersCount
+      followingCount
+      coverPicture
+      profilePicture
+      bio
+      publicationsCount
+      username
     }
     content
     id

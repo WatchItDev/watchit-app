@@ -8,7 +8,7 @@ export interface UseSubmitAssetReturn {
   data:   SuccessResult | null;
   error:  ErrorResult   | null;
   loading: boolean;
-  submitAsset: (cid: string, authorAddress: string) => Promise<void>;
+  submitAsset: (cid: string) => Promise<void>;
 }
 
 const sanitize = (txt?: string) =>
@@ -27,7 +27,7 @@ export function useSubmitAsset(): UseSubmitAssetReturn {
   const [createPost] = useCreatePostMutation();
 
   const submitAsset = useCallback(
-    async (cid: string, authorAddress: string) => {
+    async (cid: string) => {
       setLoading(true);
       setData(null);
       setError(null);
@@ -61,7 +61,6 @@ export function useSubmitAsset(): UseSubmitAssetReturn {
         }));
 
         const input: CreatePostInput = {
-          authorAddress,
           title       : title ?? 'Untitled',
           description : sanitize(description) ?? '',
           cid,

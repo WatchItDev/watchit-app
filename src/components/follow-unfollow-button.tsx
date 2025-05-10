@@ -58,7 +58,7 @@ const FollowUnfollowButton = ({
   useEffect(() => {
     if (profileId && profileId !== session?.address) loadProfile({variables: { address: profileId }});
 
-    getIsFollowing({variables: { followerAddress: session?.address, targetAddress: profileId }});
+    getIsFollowing({variables: { targetAddress: profileId }});
   }, []);
 
   useEffect(() => {

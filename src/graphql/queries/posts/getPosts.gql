@@ -2,11 +2,14 @@ query GetPosts($query: String!, $limit: Int) {
   getPosts(query: $query, limit: $limit) {
     author {
       address
-      bio
       displayName
-      username
-      profilePicture
+      followersCount
+      followingCount
       coverPicture
+      profilePicture
+      bio
+      publicationsCount
+      username
     }
     bookmarkCount
     cid

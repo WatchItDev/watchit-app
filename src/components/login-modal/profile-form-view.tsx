@@ -43,7 +43,6 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
   onSuccess,
   onCancel,
   initialValues,
-  address,
   error,
   mode,
 }) => {
@@ -100,47 +99,47 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
     }
   };
 
-  const updateProfileMetadata = useCallback(
-    async (data: ProfileData) => {
-      setRegistrationLoading(true);
+  const updateProfileMetadata = async (data: ProfileData) => {
+    setRegistrationLoading(true);
 
-      try {
-        // Upload images to IPFS
-        const profilePictureURI = await (typeof data?.profilePicture === 'string'
-          ? getBlobFileAndUploadToIPFS(data.profilePicture)
-          : uploadImageToIPFS(data.profilePicture));
+    try {
+      // Upload images to IPFS
+      const profilePictureURI = await (typeof data?.profilePicture === 'string'
+        ? getBlobFileAndUploadToIPFS(data.profilePicture)
+        : uploadImageToIPFS(data.profilePicture));
 
-        const coverPictureURI = await (typeof data?.coverPicture === 'string'
-          ? getBlobFileAndUploadToIPFS(data.coverPicture)
-          : uploadImageToIPFS(data.coverPicture));
+      const coverPictureURI = await (typeof data?.coverPicture === 'string'
+        ? getBlobFileAndUploadToIPFS(data.coverPicture)
+        : uploadImageToIPFS(data.coverPicture));
 
-        // Build profile metadata
-        const metadata = buildProfileMetadata(data, profilePictureURI, coverPictureURI);
+      // Build profile metadata
+      const metadata = buildProfileMetadata(data, profilePictureURI, coverPictureURI);
 
-        await updateUser({
-          variables: {
-            input: {
-              address,
-              ...metadata
-            },
+      await updateUser({
+        variables: {
+          input: {
+            ...metadata
           },
-        });
+        },
+      });
 
-        setRegistrationLoading(false);
-        onSuccess();
-      } catch (error) {
-        console.error('Error updating profile metadata:', error);
-        setRegistrationLoading(false);
-        dispatch(closeLoginModal());
-      }
-    },
-    [address]
-  );
+      setRegistrationLoading(false);
+      onSuccess();
+    } catch (error) {
+      console.error('Error updating profile metadata:', error);
+      setRegistrationLoading(false);
+      dispatch(closeLoginModal());
+    }
+  };
 
   const registerProfile = useCallback(
     async (data: ProfileData) => {
-      if (!address) {
+      if (!session?.address) {
         console.error('Wallet address not available.');
+        return;
+      }
+      if (!session?.info?.email) {
+        console.error('Email is not available.');
         return;
       }
 
@@ -162,7 +161,8 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
         await createUser({
           variables: {
             input: {
-              address,
+              address: session?.address,
+              email: session?.info?.email,
               ...metadata
             },
           },
@@ -177,7 +177,7 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
         throw error;
       }
     },
-    [address]
+    [session?.address]
   );
 
   const formik = useFormik<ProfileFormValues>({
@@ -272,7 +272,7 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
         <Box sx={{ width: '100%', position: 'relative', pt: 1 }}>
           {/* Background Image */}
           <Image
-            src={coverPicturePreview ?? resolveSrc(initialValues?.coverPicture ?? '', 'cover') ?? ''}
+            src={coverPicturePreview ?? resolveSrc((initialValues?.coverPicture || session?.address) ?? '', 'cover') ?? ''}
             onClick={() => coverPictureInputRef.current?.click()}
             sx={{
               height: 120,

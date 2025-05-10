@@ -22,7 +22,7 @@ export default function ProfileCover({ profile, sx }: Readonly<ProfileCoverProps
   const [image, setImage] = useState<string>('');
 
   useEffect(() => {
-    const imageSrc = profile?.coverPicture ?? profile?.address  ?? '';
+    const imageSrc = (profile?.coverPicture || profile?.address)  ?? '';
     setImage(resolveSrc(imageSrc, 'cover') ?? '');
   }, [profile?.coverPicture]);
 

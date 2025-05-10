@@ -3,9 +3,14 @@ query GetAllPosts($limit: Int) {
     id
     author {
       address
-      username
       displayName
+      followersCount
+      followingCount
+      coverPicture
+      profilePicture
       bio
+      publicationsCount
+      username
     }
     media {
       id
