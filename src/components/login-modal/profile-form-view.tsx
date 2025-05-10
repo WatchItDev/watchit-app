@@ -99,41 +99,38 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
     }
   };
 
-  const updateProfileMetadata = useCallback(
-    async (data: ProfileData) => {
-      setRegistrationLoading(true);
+  const updateProfileMetadata = async (data: ProfileData) => {
+    setRegistrationLoading(true);
 
-      try {
-        // Upload images to IPFS
-        const profilePictureURI = await (typeof data?.profilePicture === 'string'
-          ? getBlobFileAndUploadToIPFS(data.profilePicture)
-          : uploadImageToIPFS(data.profilePicture));
+    try {
+      // Upload images to IPFS
+      const profilePictureURI = await (typeof data?.profilePicture === 'string'
+        ? getBlobFileAndUploadToIPFS(data.profilePicture)
+        : uploadImageToIPFS(data.profilePicture));
 
-        const coverPictureURI = await (typeof data?.coverPicture === 'string'
-          ? getBlobFileAndUploadToIPFS(data.coverPicture)
-          : uploadImageToIPFS(data.coverPicture));
+      const coverPictureURI = await (typeof data?.coverPicture === 'string'
+        ? getBlobFileAndUploadToIPFS(data.coverPicture)
+        : uploadImageToIPFS(data.coverPicture));
 
-        // Build profile metadata
-        const metadata = buildProfileMetadata(data, profilePictureURI, coverPictureURI);
+      // Build profile metadata
+      const metadata = buildProfileMetadata(data, profilePictureURI, coverPictureURI);
 
-        await updateUser({
-          variables: {
-            input: {
-              ...metadata
-            },
+      await updateUser({
+        variables: {
+          input: {
+            ...metadata
           },
-        });
+        },
+      });
 
-        setRegistrationLoading(false);
-        onSuccess();
-      } catch (error) {
-        console.error('Error updating profile metadata:', error);
-        setRegistrationLoading(false);
-        dispatch(closeLoginModal());
-      }
-    },
-    []
-  );
+      setRegistrationLoading(false);
+      onSuccess();
+    } catch (error) {
+      console.error('Error updating profile metadata:', error);
+      setRegistrationLoading(false);
+      dispatch(closeLoginModal());
+    }
+  };
 
   const registerProfile = useCallback(
     async (data: ProfileData) => {
