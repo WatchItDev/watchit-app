@@ -132,7 +132,7 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
         dispatch(closeLoginModal());
       }
     },
-    [session?.address]
+    []
   );
 
   const registerProfile = useCallback(
