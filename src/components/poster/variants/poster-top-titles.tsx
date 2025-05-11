@@ -28,7 +28,7 @@ const PosterTopTitles = ({ post }: { post: Post }) => {
   };
 
   const goToProfile = () => {
-    router.push(paths.dashboard.user.root(`${post.id}`));
+    router.push(paths.dashboard.user.root(`${post.author.address}`));
   };
 
   return (

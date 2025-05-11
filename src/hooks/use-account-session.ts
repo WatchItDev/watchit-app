@@ -9,7 +9,8 @@ import {
   setSession,
   setBalance,
   setUser,
-  defaultSession, setInfo, closeLoginModal,
+  defaultSession,
+  closeLoginModal,
 } from '@redux/auth';
 
 // VIEM IMPORTS
@@ -63,21 +64,20 @@ export const useAccountSession = (): UseAccountSessionHook => {
     loginPerformed = false;
   };
 
-  const mergeSession = (patch: Partial<ReduxSession>) => {
-    const prev = sessionRef.current;
-    const next = { ...prev, ...patch };
-    next.authenticated = Boolean(next.address && next.user);
+  const mergeSession = useCallback(
+    (patch: Partial<ReduxSession>) => {
+      const prev = sessionRef.current;
+      const next = { ...prev, ...patch };
 
-    const changed =
-      next.address        !== prev.address ||
-      next.user           !== prev.user    ||
-      next.authenticated  !== prev.authenticated ||
-      patch.info !== undefined;
+      next.authenticated = Boolean(next.address && next.user);
 
-    if (changed) {
-      dispatch(setSession({ session: next }));
-    }
-  };
+      if (JSON.stringify(next) !== JSON.stringify(prev)) {
+        dispatch(setSession({ session: next }));
+      }
+    },
+    [dispatch]
+  );
+
 
   const fetchUserInfo = useCallback(async () => {
     const info = await web3Auth.getUserInfo?.();
@@ -88,12 +88,11 @@ export const useAccountSession = (): UseAccountSessionHook => {
     const address = await getPrimaryAddress();
     if (!address) throw new Error('No address found');
 
-    if (!sessionRef.current.info) {
-      const info = await fetchUserInfo();
-      if (info) dispatch(setInfo({ info }));
-    }
+    let { info } = sessionRef.current;
+    if (!info) info = await fetchUserInfo();
 
-    mergeSession({ address });
+    mergeSession({ address, info });
+
     loadUser({ variables: { address } });
   };
 

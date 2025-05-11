@@ -121,7 +121,7 @@ const CampaignSettingsModalContent: FC<CampaignSettingsModalContentProps> = (pro
             label="Total budget"
             type="number"
             name="addFundsAmount"
-            value={fundsAmount}
+            value={fundsAmount ?? ''}
             onChange={(e) => setFundsAmount(Number(e.target.value))}
             placeholder="e.g. 1000"
             error={isNotValidNumberInput(fundsAmount)}
@@ -139,7 +139,7 @@ const CampaignSettingsModalContent: FC<CampaignSettingsModalContentProps> = (pro
             type="number"
             name="fundsAllocationAmount"
             InputProps={{ inputProps: { min: 1 } }}
-            value={fundsAllocationAmount}
+            value={fundsAllocationAmount ?? ''}
             onChange={(e) => setFundsAllocationAmount(Number(e.target.value))}
             placeholder="e.g. 7"
             error={isNotValidNumberInput(fundsAllocationAmount)}
@@ -153,7 +153,7 @@ const CampaignSettingsModalContent: FC<CampaignSettingsModalContentProps> = (pro
             label="Access limit per User"
             type="number"
             name="quotaLimit"
-            value={quotaLimit}
+            value={quotaLimit ?? ''}
             InputProps={{ inputProps: { min: 1 } }}
             onChange={(e) => setQuotaLimit(Number(e.target.value))}
             placeholder="e.g. 1"

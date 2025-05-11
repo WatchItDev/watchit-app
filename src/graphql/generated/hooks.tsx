@@ -506,6 +506,7 @@ export const GetCommentsByPostDocument = gql`
     id
     createdAt
     likeCount
+    repliesCount
     parentComment {
       content
       id
@@ -570,6 +571,7 @@ export const GetRepliesByCommentDocument = gql`
     id
     createdAt
     likeCount
+    repliesCount
     parentComment {
       content
       id

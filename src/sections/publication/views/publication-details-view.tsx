@@ -34,6 +34,7 @@ import { useGetPostLazyQuery, useGetPostsByAuthorLazyQuery } from '@src/graphql/
 import { Post } from '@src/graphql/generated/graphql.ts';
 import { Address } from 'viem';
 import { PublicationHidden } from '@src/sections/publication/components/publication-hidden.tsx';
+import { setPostCommentCount } from '@redux/comments';
 
 // ----------------------------------------------------------------------
 
@@ -71,6 +72,12 @@ export default function PublicationDetailsView({ id }: Readonly<PublicationDetai
   useEffect(() => {
     loadPublication({variables: { getPostId: id }});
   }, [id]);
+
+  useEffect(() => {
+    if (publication) {
+      dispatch(setPostCommentCount({ postId: publication.id, count: publication.commentCount }));
+    }
+  }, [publication]);
 
   const handleSubscribe = () => {
     if (!session.authenticated) {
