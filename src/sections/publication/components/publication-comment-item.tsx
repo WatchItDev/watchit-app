@@ -22,7 +22,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNotificationPayload } from '@src/hooks/use-notification-payload.ts';
 import { useNotifications } from '@src/hooks/use-notifications.ts';
 import { RootState } from '@redux/store.ts';
-import { incrementCounterLikes, decrementCounterLikes, setCounterLikes, hiddeComment } from '@redux/comments';
+import {
+  incrementCounterLikes,
+  decrementCounterLikes,
+  setCounterLikes,
+  hiddeComment,
+  decrementRepliesCount, decrementPostCommentCount,
+} from '@redux/comments';
 import AvatarProfile from "@src/components/avatar/avatar.tsx";
 import { PublicationCommentItemProps } from '@src/sections/publication/types.ts';
 import { useAuth } from '@src/hooks/use-auth.ts';
@@ -57,6 +63,7 @@ const PublicationCommentItem:FC<PublicationCommentItemProps> = (props) => {
   const { sendNotification } = useNotifications();
   const { generatePayload } = useNotificationPayload(sessionData);
   const likes = useSelector((state: RootState) => state.comments.counterLikes[comment.id] ?? 0);
+  const replies = useSelector((s: RootState) => s.comments.commentRepliesCount[comment.id] ?? comment.repliesCount);
 
   const openMenu = Boolean(anchorEl);
   const isLoading = toggleCommentLikeLoading || commentLikedLoading
@@ -113,7 +120,10 @@ const PublicationCommentItem:FC<PublicationCommentItemProps> = (props) => {
   };
 
   const handleHide = async () => {
+    const parentId = comment?.parentComment?.id
     await hideComment({ variables: { commentId: comment?.id } });
+
+    dispatch(parentId ? decrementRepliesCount(parentId) : decrementPostCommentCount(comment.post.id));
     dispatch(hiddeComment(comment));
   };
 
@@ -310,8 +320,7 @@ const PublicationCommentItem:FC<PublicationCommentItemProps> = (props) => {
                     fontWeight: '700',
                   }}
                 >
-                  {/*{comment?.stats?.comments}*/}
-                  0
+                  {replies}
                 </Typography>
               </>
             </Button>

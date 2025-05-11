@@ -15,6 +15,7 @@ query GetRepliesByComment($commentId: String!, $limit: Int) {
     id
     createdAt
     likeCount
+    repliesCount
     parentComment {
       content
       id

@@ -2,15 +2,17 @@ import Box from '@mui/material/Box';
 import PublicationCommentItem from './publication-comment-item.tsx';
 import LinearProgress from '@mui/material/LinearProgress';
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { PostCommentListProps } from '@src/sections/publication/types.ts';
 import {RootState} from "@redux/store.ts"
 import { useGetCommentsByPostLazyQuery } from '@src/graphql/generated/hooks.tsx';
 import { Comment } from '@src/graphql/generated/graphql.ts';
+import { setRepliesCount } from '@redux/comments';
 
 // ----------------------------------------------------------------------
 
 export default function PostCommentList({ publicationId: id, showReplies }: Readonly<PostCommentListProps>) {
+  const dispatch = useDispatch();
   const [ comments, setComments ] = useState<Comment[]>([])
   const [ getComments, {data, error, loading} ] = useGetCommentsByPostLazyQuery({ fetchPolicy: 'network-only' });
   const { hiddenComments, refetchTriggerByPublication } = useSelector(
@@ -21,6 +23,12 @@ export default function PostCommentList({ publicationId: id, showReplies }: Read
   useEffect(() => {
     setComments(data?.getCommentsByPost ?? [])
   }, [data?.getCommentsByPost]);
+
+  useEffect(() => {
+    data?.getCommentsByPost?.forEach((c: Comment) =>
+      dispatch(setRepliesCount({ commentId: c.id, count: c.repliesCount })),
+    );
+  }, [data]);
 
   useEffect(() => {
     (async () => {

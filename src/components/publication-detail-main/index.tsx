@@ -43,7 +43,7 @@ import { SubscribeToUnlockCard } from '@src/components/subscribe-to-unlock-card/
 import Popover from '@mui/material/Popover';
 import { useNotifications } from '@src/hooks/use-notifications.ts';
 import { openLoginModal } from '@redux/auth';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNotificationPayload } from '@src/hooks/use-notification-payload.ts';
 import AvatarProfile from "@src/components/avatar/avatar.tsx";
 import { PublicationDetailProps } from '@src/components/publication-detail-main/types.ts';
@@ -56,6 +56,7 @@ import {
 } from '@src/graphql/generated/hooks.tsx';
 import { resolveSrc } from '@src/utils/image.ts';
 import { useBookmarks } from '@src/hooks/use-bookmark.ts';
+import { RootState } from '@redux/store.ts';
 
 // ----------------------------------------------------------------------
 
@@ -84,6 +85,7 @@ export default function PublicationDetailMain({
   const [ togglePostLike, { loading: togglePostLikeLoading }  ] = useTogglePostLikeMutation()
   const { has, loading: loadingList } = useBookmarks();
   const { toggle, loading: loadingToggle } = useToggleBookmark();
+  const commentCount = useSelector((s: RootState) => s.comments.postCommentCount[post.id] ?? post.commentCount);
 
   const isBookmarked = has(post.id);
   const isLoading = togglePostLikeLoading || postLikedLoading
@@ -371,7 +373,7 @@ export default function PublicationDetailMain({
                       <IconMessageCircle size={22} color="#FFFFFF" />
                     )}
                     <Typography variant="body2" sx={{ lineHeight: 1, ml: 1, fontWeight: '700' }}>
-                      {post.commentCount}
+                      {commentCount}
                     </Typography>
                   </>
                 </Button>

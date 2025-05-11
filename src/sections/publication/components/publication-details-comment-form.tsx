@@ -23,7 +23,7 @@ import { MovieCommentFormProps } from '@src/sections/publication/types.ts';
 import { useAuth } from '@src/hooks/use-auth.ts';
 import { resolveSrc } from '@src/utils/image.ts';
 import { useCreateCommentMutation } from '@src/graphql/generated/hooks.tsx';
-import { refetchCommentsByPublication } from '@redux/comments';
+import { incrementPostCommentCount, incrementRepliesCount, refetchCommentsByPublication } from '@redux/comments';
 
 /**
  * MovieCommentForm Component
@@ -68,6 +68,8 @@ const MovieCommentForm = ({ commentOn, owner, root }: MovieCommentFormProps) => 
           }
         }
       });
+
+      dispatch(commentOn ? incrementRepliesCount(commentOn) : incrementPostCommentCount(root ?? ''));
 
       const notificationPayload = generatePayload(
         'COMMENT',

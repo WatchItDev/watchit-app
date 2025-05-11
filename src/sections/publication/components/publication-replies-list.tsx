@@ -2,13 +2,15 @@ import { useEffect } from 'react';
 import Box from '@mui/material/Box';
 import PublicationCommentItem from './publication-comment-item.tsx';
 import LinearProgress from '@mui/material/LinearProgress';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RepliesListProps } from '@src/sections/publication/types.ts';
 import {RootState} from "@redux/store.ts"
 import { Comment } from '@src/graphql/generated/graphql.ts';
 import { useGetRepliesByCommentQuery } from '@src/graphql/generated/hooks.tsx';
+import { setRepliesCount } from '@redux/comments';
 
 const RepliesList = ({ parentCommentId }: RepliesListProps) => {
+  const dispatch = useDispatch();
   const { data, error, loading, refetch } = useGetRepliesByCommentQuery({ variables: { commentId: parentCommentId } });
   const { hiddenComments, refetchTriggerByPublication } = useSelector(
     (state: RootState) => state.comments
@@ -19,6 +21,13 @@ const RepliesList = ({ parentCommentId }: RepliesListProps) => {
   useEffect(() => {
     refetch({ variables: { commentId: parentCommentId } });
   }, [refetchTrigger]);
+
+  useEffect(() => {
+    data?.getRepliesByComment?.forEach((r: Comment) =>
+      dispatch(setRepliesCount({ commentId: r.id, count: r.repliesCount })),
+    );
+  }, [data]);
+
 
   if (error) return <p>Error loading replies: {error.message}</p>;
 
