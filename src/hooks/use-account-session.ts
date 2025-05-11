@@ -40,16 +40,13 @@ let loginPerformed   = false;
 export const useAccountSession = (): UseAccountSessionHook => {
   const [bootstrapping,   setBootstrapping]   = useState(true);
   const [loginInProgress, setLoginInProgress] = useState(false);
-
   const dispatch = useDispatch();
   const { web3Auth, bundlerClient, smartAccount } = useWeb3Auth();
   const { isAuthLoading: reduxLoading, session } = useAuth();
   const [loadUser, { data: userData, loading: apiLoading }] = useGetUserLazyQuery({ fetchPolicy: 'cache-and-network' });
-
   const lastFetchedAddressRef = useRef<Address | undefined>(undefined);
   const userAddressRef        = useRef<Address | undefined>(undefined);
   const sessionRef = useRef(session);
-
 
   const getPrimaryAddress = useCallback(async (): Promise<Address | undefined> => {
     const accs = (await web3Auth.provider?.request({ method: 'eth_accounts' })) as string[] | undefined;
@@ -67,7 +64,6 @@ export const useAccountSession = (): UseAccountSessionHook => {
   const mergeSession = (patch: Partial<ReduxSession>) => {
     const prev = sessionRef.current;
     const next = { ...prev, ...patch };
-
     next.authenticated = Boolean(next.address && next.user);
 
     if (JSON.stringify(next) !== JSON.stringify(prev)) {
@@ -75,28 +71,21 @@ export const useAccountSession = (): UseAccountSessionHook => {
     }
   };
 
-  const fetchUserInfo = useCallback(async () => {
-    const info = await web3Auth.getUserInfo?.();
-    return info ?? null;
-  }, [web3Auth]);
-
   const syncAddress = async () => {
     const address = await getPrimaryAddress();
-    if (!address) throw new Error('No address found');
-
     let { info } = sessionRef.current;
-    if (!info) info = await fetchUserInfo();
+    if (!address) throw new Error('No address found');
+    if (!info) info = await web3Auth.getUserInfo?.();
 
     mergeSession({ address, info });
-
     loadUser({ variables: { address } });
   };
 
   const refreshUser = async () => {
     const address = await getPrimaryAddress();
     if (!address) throw new Error('No address found');
-
     const result = await loadUser({ variables: { address } });
+
     dispatch(setUser({ user: result.data.getUser }));
   };
 
@@ -124,7 +113,7 @@ export const useAccountSession = (): UseAccountSessionHook => {
       setLoginInProgress(false);
       dispatch(setAuthLoading({ isAuthLoading: false }));
     }
-  }, [web3Auth, bundlerClient, smartAccount, dispatch, loginInProgress]);
+  }, [web3Auth, bundlerClient, smartAccount, loginInProgress]);
 
   useEffect(() => {
     sessionRef.current = session;
@@ -149,7 +138,7 @@ export const useAccountSession = (): UseAccountSessionHook => {
         setBootstrapping(false);
       }
     })();
-  }, [web3Auth]);
+  }, [logout]);
 
   useEffect(() => {
     if (!web3Auth || listenerAttached) return;
