@@ -64,20 +64,16 @@ export const useAccountSession = (): UseAccountSessionHook => {
     loginPerformed = false;
   };
 
-  const mergeSession = useCallback(
-    (patch: Partial<ReduxSession>) => {
-      const prev = sessionRef.current;
-      const next = { ...prev, ...patch };
+  const mergeSession = (patch: Partial<ReduxSession>) => {
+    const prev = sessionRef.current;
+    const next = { ...prev, ...patch };
 
-      next.authenticated = Boolean(next.address && next.user);
+    next.authenticated = Boolean(next.address && next.user);
 
-      if (JSON.stringify(next) !== JSON.stringify(prev)) {
-        dispatch(setSession({ session: next }));
-      }
-    },
-    [dispatch]
-  );
-
+    if (JSON.stringify(next) !== JSON.stringify(prev)) {
+      dispatch(setSession({ session: next }));
+    }
+  };
 
   const fetchUserInfo = useCallback(async () => {
     const info = await web3Auth.getUserInfo?.();
@@ -167,7 +163,7 @@ export const useAccountSession = (): UseAccountSessionHook => {
       web3Auth.off(ADAPTER_EVENTS.CONNECTED,    syncAddress);
       listenerAttached = false;
     };
-  }, [web3Auth, logout]);
+  }, [logout]);
 
   useEffect(() => {
     if (userData?.getUser) {
