@@ -1,10 +1,11 @@
 import { describe, expect, it } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { render } from "@testing-library/react";
 import ExploreView from "../explore-view";
 import { Provider } from "react-redux";
 import { store } from "@src/redux/store";
 import { MemoryRouter } from "react-router";
-// import * as authHook from "@src/hooks/use-auth.ts";
+import { MockedProvider } from "@apollo/client/testing";
+import { exploreViewMock } from "./__mock__/exploreView.mock";
 
 vi.mock("@src/workers/backgroundTaskWorker?worker", () => {
   return {
@@ -20,9 +21,11 @@ vi.mock("@src/workers/backgroundTaskWorker?worker", () => {
 const renderWithProviders = () => {
   return render(
     <Provider store={store}>
-      <MemoryRouter>
-        <ExploreView />
-      </MemoryRouter>
+      <MockedProvider mocks={exploreViewMock} addTypename={false}>
+        <MemoryRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+          <ExploreView />
+        </MemoryRouter>
+      </MockedProvider>
     </Provider>,
   );
 };
