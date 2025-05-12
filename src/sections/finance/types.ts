@@ -1,11 +1,11 @@
-import { Profile } from '@lens-protocol/react';
-import {Address} from "viem"
-import {UseWithdrawHook} from "@src/hooks/protocol/types.ts"
-import {CardProps} from "@mui/material/Card"
-import {CarouselReturnType} from "@src/hooks/components/types.ts"
-import {InputAmountProps} from "@src/components/input-amount.tsx"
-import {DialogProps} from "@mui/material/Dialog"
-import {ReactNode} from "react"
+import { Address } from "viem"
+import { UseWithdrawHook } from "@src/hooks/protocol/types.ts"
+import { CardProps } from "@mui/material/Card"
+import { CarouselReturnType } from "@src/hooks/components/types.ts"
+import { InputAmountProps } from "@src/components/input-amount.tsx"
+import { DialogProps } from "@mui/material/Dialog"
+import { ReactNode } from "react"
+import { User } from '@src/graphql/generated/graphql.ts';
 
 export interface WidgetDataPoint {
   x: string;
@@ -16,16 +16,16 @@ export interface SummaryAndActionsProps {
   percent: number;
   widgetSeriesData: WidgetDataPoint[];
   balanceFromRedux: number;
-  following: Profile[] | null | undefined;
+  following: User[] | null | undefined;
   loadingProfiles: boolean;
 }
 
 export interface LeftColumnContentProps {
-  following: Profile[] | null | undefined;
+  following: User[] | null | undefined;
 }
 
 export interface RightSidebarProps {
-  following: Profile[] | null | undefined;
+  following: User[] | null | undefined;
   loadingProfiles: boolean;
 }
 
@@ -50,7 +50,7 @@ export interface FinanceWithdrawProps {
 export interface FinanceContactsCarouselProps extends CardProps {
   title?: string;
   subheader?: string;
-  list: Profile[];
+  list: User[];
   chunkSize?: number; // how many contacts to display per slide
 }
 
@@ -67,14 +67,14 @@ export interface FinanceDialogsActionsProps {
 
 export interface FinanceDisplayNameProps {
   mode: 'profile' | 'wallet';
-  initialList?: Profile[];
+  initialList?: User[];
   carousel: CarouselReturnType;
 }
 
 export type TConfirmTransferDialogProps = InputAmountProps & DialogProps;
 
 export interface ConfirmTransferDialogProps extends TConfirmTransferDialogProps {
-  contactInfo?: Profile;
+  contactInfo?: User;
   address?: string;
   onClose: VoidFunction;
   onFinish: VoidFunction;

@@ -11,10 +11,7 @@ import { useAuth } from '@src/hooks/use-auth.ts';
 import { ApiContext } from '@src/contexts/api/apiContext.tsx';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 
-export const ApiProvider: React.FC<{ children: React.ReactNode }> = ({
-                                                                       children,
-                                                                     }) => {
-  // const { user } = useAuth();
+export const ApiProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { session } = useAuth();
 
   const apollo = useMemo(() => {
@@ -25,8 +22,7 @@ export const ApiProvider: React.FC<{ children: React.ReactNode }> = ({
     const authLink = setContext((_, { headers }) => ({
       headers: {
         ...headers,
-        // Authorization: user?.idToken ? `Bearer ${user.idToken}` : '',
-        Authorization: session?.address ?? '',
+        Authorization: session?.info?.idToken ? `Bearer ${session?.info?.idToken}` : '',
       },
     }));
 

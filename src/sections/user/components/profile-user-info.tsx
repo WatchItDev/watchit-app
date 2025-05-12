@@ -2,8 +2,8 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import BadgeVerified from "@src/components/user-item/BadgeVerified.tsx";
 import {FC} from "react";
-import {ProfileHeaderProps} from "@src/sections/user/components/profile-header.tsx";
 import { Address } from "viem";
+import { ProfileHeaderProps } from '@src/sections/user/types.ts';
 
 const ProfileUserInfo: FC<ProfileHeaderProps> = ({profile}) => {
   return (
@@ -26,8 +26,8 @@ const ProfileUserInfo: FC<ProfileHeaderProps> = ({profile}) => {
           variant="h4"
           color="text.primary"
         >
-          {profile?.metadata?.displayName ?? ''}{' '}
-          <BadgeVerified address={profile?.ownedBy?.address as Address } />
+          {profile?.displayName ?? ''}{' '}
+          <BadgeVerified address={profile?.address as Address } />
         </Typography>
         <Typography
           variant="body2"
@@ -37,7 +37,7 @@ const ProfileUserInfo: FC<ProfileHeaderProps> = ({profile}) => {
             mb: 0.4,
           }}
         >
-          {profile?.handle?.localName ?? ''}
+          {profile?.username ?? ''}
         </Typography>
       </Box>
 
@@ -51,7 +51,7 @@ const ProfileUserInfo: FC<ProfileHeaderProps> = ({profile}) => {
           minWidth: { xs: 'auto', md: '400px' },
         }}
       >
-        {profile?.metadata?.bio ?? ''}
+        {profile?.bio ?? ''}
       </Typography>
     </Box>
   )

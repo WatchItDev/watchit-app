@@ -3,11 +3,19 @@ query GetCommentsByPost($postId: String!, $limit: Int) {
     author {
       address
       displayName
+      followersCount
+      followingCount
+      coverPicture
+      profilePicture
+      bio
+      publicationsCount
+      username
     }
     content
     id
     createdAt
     likeCount
+    repliesCount
     parentComment {
       content
       id

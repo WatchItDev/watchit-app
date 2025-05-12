@@ -16,7 +16,7 @@ import { useAuth } from '@src/hooks/use-auth.ts';
 // ----------------------------------------------------------------------
 
 const ExploreView = () => {
-  const { isFullyAuthenticated: isAuthenticated } = useAuth();
+  const { session } = useAuth();
   const loading = useSelector((state: RootState) => state.loading)
   const exploreIsLoading = isLoading(loading.explore);
 
@@ -29,7 +29,7 @@ const ExploreView = () => {
       <Stack direction={'column'} spacing={1} sx={{ maxWidth: '100vw !important',  position: 'relative' }}>
         {exploreIsLoading ? <ExploreLoader /> : null}
         <ExploreTopPublications />
-        {isAuthenticated && (
+        {session.authenticated && (
           <ExploreBookmarks />
         )}
         <ExploreCreators />

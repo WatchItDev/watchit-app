@@ -4,16 +4,8 @@ import { Provider as ReduxProvider } from 'react-redux';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { createStore } from 'redux';
 import rootReducer from '@redux/reducer';
-import {LensProvider, staging} from '@lens-protocol/react-web';
 
 const store = createStore(rootReducer);
-
-const lensConfig = {
-  environment: staging,
-  sharedDependencies: {
-    pollingInterval: 5000,
-  },
-};
 
 /**
  * Renders a React component with Redux store and React Router context for testing.
@@ -41,28 +33,5 @@ export const renderWithStoreAndRouter = (ui: React.ReactElement) => {
         {ui}
       </Router>
     </ReduxProvider>
-  );
-};
-
-/**
- * A utility function to render a React component wrapped with the necessary providers.
- * This includes the `LensProvider` for lens configurations, a Redux `Provider` for store management,
- * and a `Router` configured with specific future flags.
- *
- * @param {React.ReactElement} ui - The React component to be rendered.
- * @returns {RenderResult} The result of rendering the component with the specified providers.
- */
-export const renderWithLensProvider = (ui: React.ReactElement) => {
-  return render(
-    <LensProvider config={lensConfig}>
-      <ReduxProvider store={store}>
-        <Router future={{
-          v7_relativeSplatPath: true,
-          v7_startTransition: true,
-        }}>
-          {ui}
-        </Router>
-      </ReduxProvider>
-    </LensProvider>
   );
 };

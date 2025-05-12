@@ -1,8 +1,5 @@
-import '../../../../../__mocks__/lens-protocol-react';
-import '../../../../../__mocks__/lens-protocol-react-web';
 import '../../../../../__mocks__/web3auth';
 import { describe, it, expect } from 'vitest';
-import { URI } from '@lens-protocol/react';
 import CarouselCreators from '@src/components/carousel/variants/carousel-creators.tsx';
 import { CarouselCreatorsProps } from '@src/components/carousel/types.ts';
 import {renderWithStoreAndRouter} from "@src/utils/testing/Testing.tsx";
@@ -15,7 +12,7 @@ describe('[COMPONENTS]: CarouselCreators', () => {
         picture: null,
         __typename: 'ProfileMetadata',
         bio: null,
-        rawURI: 'https://watchit.movie' as URI,
+        rawURI: 'https://watchit.movie',
         appId: null,
         coverPicture: null,
         displayName: 'Test User 1',

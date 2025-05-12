@@ -29,6 +29,8 @@ export const useCampaignPaused = (): UseCampaignPausedHook => {
       } catch (err) {
         console.error('Error fetching paused state:', err);
         setPaused(false);
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-expect-error
         setError({ message: err?.message || 'Error fetching paused state.' });
         return false;
       } finally {

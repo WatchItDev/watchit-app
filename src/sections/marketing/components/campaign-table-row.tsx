@@ -219,7 +219,7 @@ export default function CampaignTableRow({ row, selected }: Readonly<CampaignTab
           }}
         >
           <Iconify icon="mdi:settings-outline" />
-          Configure
+          Customize
         </MenuItem>
         <MenuItem
           onClick={() => {

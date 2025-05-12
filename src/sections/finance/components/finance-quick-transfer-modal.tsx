@@ -30,8 +30,9 @@ import { MAX_POOL } from '@src/sections/finance/components/finance-quick-transfe
 import { handleAmountConstraints } from '@src/utils/format-number.ts';
 import { useTheme } from '@mui/material/styles';
 import { useAuth } from '@src/hooks/use-auth.ts';
-import {ProfilePictureSet} from "@lens-protocol/react-web"
 import {ConfirmTransferDialogProps} from "@src/sections/finance/types.ts"
+import { Address } from 'viem';
+import { resolveSrc } from '@src/utils/image.ts';
 
 
 function FinanceQuickTransferModal(props: Readonly<ConfirmTransferDialogProps>) {
@@ -51,21 +52,19 @@ function FinanceQuickTransferModal(props: Readonly<ConfirmTransferDialogProps>) 
   // Check if the passed address matches the profile's address
   const isSame =
     hasProfile &&
-    contactInfo?.ownedBy?.address?.toLowerCase() === address?.toLowerCase();
+    contactInfo?.address === address;
 
   // If no valid profile, show "Destination wallet", else use profile’s displayName
   const displayName = hasProfile
-    ? contactInfo?.metadata?.displayName || contactInfo?.handle?.localName
+    ? contactInfo?.displayName || contactInfo?.username
     : 'Destination wallet';
 
   // For the avatar, if no valid profile or if the address doesn't match, use a dicebear fallback
-  const avatarSrc =
-    hasProfile && isSame
-      ? (contactInfo?.metadata?.picture as ProfilePictureSet)?.optimized?.uri ?? dicebear(contactInfo?.id) : dicebear(address as string);
+  const avatarSrc = resolveSrc((contactInfo?.profilePicture || contactInfo?.address) ?? '', 'profile');
 
   // For the secondary text under the name, if we have a valid profile that matches, use its address
   // otherwise show the typed address
-  const secondaryText = hasProfile && isSame ? contactInfo?.ownedBy?.address : address;
+  const secondaryText = hasProfile && isSame ? contactInfo?.address : address;
 
   useEffect(() => {
     if (error) {
@@ -100,42 +99,42 @@ function FinanceQuickTransferModal(props: Readonly<ConfirmTransferDialogProps>) 
 
       onFinish();
 
-      const senderId = sessionData?.profile?.id ?? address;
+      const senderId = sessionData?.address ?? address;
 
       // Build the notification payload
       const notificationPayload = generatePayload(
         'TRANSFER',
         {
-          id: isSame ? (contactInfo?.id ?? '') : (address ?? ''),
+          id: isSame ? (contactInfo?.address ?? '') : (address ?? ''),
           displayName: isSame
-            ? (contactInfo?.metadata?.displayName ?? 'No name')
+            ? (contactInfo?.displayName ?? 'No name')
             : 'External wallet',
-          avatar: (contactInfo?.metadata?.picture as ProfilePictureSet)?.optimized?.uri ?? '',
+          avatar: contactInfo?.profilePicture ?? '',
         },
         {
-          rawDescription: `${sessionData?.profile?.metadata?.displayName ?? address} sent you ${transferAmount} MMC`,
+          rawDescription: `${sessionData?.user?.displayName ?? address} sent you ${transferAmount} MMC`,
           message,
         }
       );
 
       // Store transaction in Supabase
-      await storeTransactionInSupabase(contactInfo?.id ?? address, senderId, {
-        address: contactInfo?.ownedBy?.address ?? address,
+      await storeTransactionInSupabase(contactInfo?.address ?? address, senderId, {
+        address: contactInfo?.address ?? address ?? '',
         amount: transferAmount,
         message,
         ...notificationPayload,
       });
 
-      // Send notification to the Lens profile or address
+      // Send notification to the user
       await sendNotification(
-        contactInfo?.id ?? address ?? '',
-        sessionData?.profile?.id,
+        contactInfo?.address ?? address ?? '',
+        sessionData?.address as Address,
         notificationPayload
       );
 
       notifySuccess(SUCCESS.TRANSFER_CREATED_SUCCESSFULLY, {
         destination: isSame
-          ? contactInfo?.metadata?.displayName ?? contactInfo?.handle?.localName
+          ? contactInfo?.displayName ?? contactInfo?.username
           : truncateAddress(address ?? ''),
       });
     } catch (err) {

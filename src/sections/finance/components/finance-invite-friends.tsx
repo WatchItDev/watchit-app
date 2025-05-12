@@ -20,7 +20,7 @@ import useReferrals from "@src/hooks/use-referrals";
 import LoadingButton from '@mui/lab/LoadingButton';
 import { checkIfEmailAlreadyInvited } from "@src/libs/supabase-actions.ts";
 import { useAuth } from '@src/hooks/use-auth.ts';
-import {ProfilePictureSet} from "@lens-protocol/react-web"
+import { resolveSrc } from '@src/utils/image.ts';
 
 interface Props extends BoxProps {
   img?: string;
@@ -43,7 +43,7 @@ export default function FinanceInviteFriends({
     checkIfEmailAlreadyAccepted,
   } = useReferrals();
   const theme = useTheme();
-  const { session: sessionData, email: userLoggedEmail } = useAuth();
+  const { session: sessionData } = useAuth();
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -81,7 +81,7 @@ export default function FinanceInviteFriends({
     }
 
     // Check if the email entered is the same as the logged user's email
-    if (email === userLoggedEmail) {
+    if (email === sessionData?.info?.email) {
       notifyError(ERRORS.INVITATION_USER_CANT_INVITE_SELF);
       setLoading(false);
       return;
@@ -106,9 +106,9 @@ export default function FinanceInviteFriends({
     const payload = {
       data: {
         from: {
-          id: sessionData?.profile?.id,
-          displayName: sessionData?.profile?.metadata?.displayName,
-          avatar: (sessionData?.profile?.metadata?.picture as ProfilePictureSet)?.optimized?.uri,
+          id: sessionData?.address,
+          displayName: sessionData.user?.displayName,
+          avatar: resolveSrc((sessionData?.user?.profilePicture || sessionData?.address) ?? '', 'profile'),
         },
       },
     };

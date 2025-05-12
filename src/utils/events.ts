@@ -2,10 +2,8 @@ import { Dispatch } from 'redux';
 import { appendNotification } from '@src/redux/notifications';
 import { NotificationColumnsProps, NotificationItemProps } from '@src/hooks/types';
 
-
 interface NotificationPayload {
   new: NotificationColumnsProps;
-
   [key: string]: unknown;
 }
 
@@ -15,7 +13,7 @@ type EventHandler = (payload: NotificationPayload, profileId: string, dispatch?:
 /**
  * Handle notification event for internal popover.
  * @param payload Data from the event (set as needed)
- * @param profileId Current user profile id for LENS Protocol
+ * @param profileId Current user address
  * @param dispatch Redux dispatch function
  */
 export const handleNotification: EventHandler = (payload, profileId, dispatch) => {
@@ -34,7 +32,7 @@ export const handleNotification: EventHandler = (payload, profileId, dispatch) =
           console.log(`Mark as read will be handled by UI for notification: ${id}`);
         }
       };
-      
+
       dispatch(appendNotification(notificationItem));
     }
   }

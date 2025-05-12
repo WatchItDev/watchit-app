@@ -14,27 +14,16 @@ import FormProvider from '@src/components/hook-form';
 import { alpha } from '@mui/material/styles';
 import { Stack, CircularProgress } from '@mui/material';
 
-// LENS IMPORTS
-import {ProfilePictureSet, useCreateComment} from '@lens-protocol/react-web'
-import {
-  textOnly,
-  PublicationMetadataSchema,
-  formatZodError,
-  MetadataAttributeType,
-  MarketplaceMetadataAttributeDisplayType, PublicationId,
-} from '@lens-protocol/metadata'
-import { AnyPublication } from '@lens-protocol/api-bindings';
-
 // LOCAL IMPORTS
-import uuidv4 from '@src/utils/uuidv4.ts';
 import Iconify from '@src/components/iconify';
 import AvatarProfile from "@src/components/avatar/avatar.tsx";
-import { uploadMetadataToIPFS } from '@src/libs/ipfs.ts';
 import { useNotifications } from '@src/hooks/use-notifications.ts';
 import { useNotificationPayload } from '@src/hooks/use-notification-payload.ts';
-import { dicebear } from "@src/utils/dicebear.ts";
 import { MovieCommentFormProps } from '@src/sections/publication/types.ts';
 import { useAuth } from '@src/hooks/use-auth.ts';
+import { resolveSrc } from '@src/utils/image.ts';
+import { useCreateCommentMutation } from '@src/graphql/generated/hooks.tsx';
+import { incrementPostCommentCount, incrementRepliesCount, refetchCommentsByPublication } from '@redux/comments';
 
 /**
  * MovieCommentForm Component
@@ -43,7 +32,7 @@ import { useAuth } from '@src/hooks/use-auth.ts';
  * @returns {JSX.Element} - Rendered component.
  */
 const MovieCommentForm = ({ commentOn, owner, root }: MovieCommentFormProps) => {
-  const { execute: createComment } = useCreateComment();
+  const [createComment] = useCreateCommentMutation();
   const { session: sessionData } = useAuth();
   const dispatch = useDispatch();
   const { sendNotification } = useNotifications();
@@ -70,79 +59,40 @@ const MovieCommentForm = ({ commentOn, owner, root }: MovieCommentFormProps) => 
    */
   const onSubmit = handleSubmit(async (data: {comment:string}) => {
     try {
-      const uuid = uuidv4();
-
-      const metadata = textOnly({
-        appId: 'watchit',
-        id: uuid,
-        attributes: [
-          { type: MetadataAttributeType.STRING, key: 'publication', value: commentOn },
-          {
-            type: MetadataAttributeType.STRING,
-            key: 'creator',
-            value: sessionData?.profile?.handle?.localName,
-          },
-          { type: MetadataAttributeType.STRING, key: 'app', value: 'watchit' },
-        ],
-        content: data.comment,
-        locale: 'en',
-        marketplace: {
-          name: `Comment by ${sessionData?.profile?.handle?.localName}`,
-          attributes: [
-            { display_type: MarketplaceMetadataAttributeDisplayType.STRING, value: commentOn },
-            {
-              display_type: MarketplaceMetadataAttributeDisplayType.STRING,
-              value: sessionData?.profile?.handle?.localName,
-            },
-            { display_type: MarketplaceMetadataAttributeDisplayType.STRING, value: 'watchit' },
-          ],
-          description: data.comment,
-          external_url: `https://watchit.movie/comment/${uuid}`,
-        },
+      await createComment({
+        variables: {
+          input: {
+            content: data.comment,
+            postId: root,
+            parentComment: commentOn
+          }
+        }
       });
 
-      // Create a pending comment object
-      const pendingComment: AnyPublication = {
-        id: uuid as PublicationId,
-        // @ts-expect-error Only set the content
-        metadata: {
-          content: data.comment,
-        },
-        // @ts-expect-error Only set the hasUpvoted
-        operations: {
-          hasUpvoted: false,
-        },
-        by: sessionData?.profile,
-        createdAt: new Date().toISOString(),
-      };
+      dispatch(commentOn ? incrementRepliesCount(commentOn) : incrementPostCommentCount(root ?? ''));
 
-      // Validate metadata against the schema
-      const validation = PublicationMetadataSchema.safeParse(metadata);
-      if (!validation.success) {
-        console.error('Metadata validation error:', formatZodError(validation.error));
-        return;
+      const notificationPayload = generatePayload(
+        'COMMENT',
+        {
+          id: owner?.id,
+          displayName: owner?.displayName,
+          avatar: owner.avatar ?? '',
+        },
+        {
+          comment: data.comment,
+          root_id: root ?? '',
+          comment_id: commentOn ?? '',
+          rawDescription: `${sessionData?.user?.displayName} left a comment`,
+        }
+      );
+
+      // Send the notification if the comment is not from the owner
+      if (owner?.id !== sessionData?.user?.address) {
+        sendNotification(owner.id, sessionData?.user?.address ?? '', notificationPayload);
       }
 
-      // Upload metadata to IPFS
-      const uri = await uploadMetadataToIPFS(metadata);
-
-      dispatch({
-        type: 'ADD_TASK_TO_BACKGROUND',
-        payload: {
-          id: uuidv4(),
-          type: 'POST_COMMENT',
-          data: {
-            commentOn,
-            uri,
-            pendingComment,
-            createComment,
-            owner,
-            generatePayload,
-            sendNotification,
-            root,
-          },
-        },
-      });
+      // Refetch the comments
+      dispatch(refetchCommentsByPublication(commentOn ?? root ?? ''));
 
       reset();
     } catch (error) {
@@ -154,10 +104,8 @@ const MovieCommentForm = ({ commentOn, owner, root }: MovieCommentFormProps) => 
   const renderInput = (
     <Stack sx={{ pr: 1 }} spacing={2} direction="row" alignItems="center">
       <AvatarProfile
-        src={
-          (sessionData?.profile?.metadata?.picture as ProfilePictureSet)?.optimized?.uri ?? dicebear(sessionData?.profile?.id)
-        }
-        alt={sessionData?.profile?.handle?.localName ?? ''}
+        src={resolveSrc((sessionData?.user?.profilePicture || sessionData?.user?.address) ?? '', 'profile')}
+        alt={sessionData?.user?.displayName ?? ''}
       />
 
       <Controller

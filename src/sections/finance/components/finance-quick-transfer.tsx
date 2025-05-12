@@ -5,9 +5,6 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { storeAddress } from '@redux/address';
 
-// LENS IMPORTS
-import { Profile } from '@lens-protocol/api-bindings';
-
 // ETHERS IMPORTS
 import { ethers } from 'ethers';
 
@@ -36,6 +33,8 @@ import {handleAmountConstraints} from "@src/utils/format-number.ts";
 import {LoadingScreen} from "@src/components/loading-screen";
 import { useAuth } from '@src/hooks/use-auth.ts';
 import {RootState} from "@redux/store.ts"
+import { User } from '@src/graphql/generated/graphql.ts';
+import { resolveSrc } from '@src/utils/image.ts';
 
 // ----------------------------------------------------------------------
 
@@ -47,13 +46,9 @@ export const MAX_POOL = 1000000000;
 export interface FinanceQuickTransferProps extends CardProps {
   title?: string;
   subheader?: string;
-  list: Profile[] | null | undefined;
+  list: User[] | null | undefined;
   loading: boolean;
 }
-
-export const isValidAddress = (address: string): boolean => {
-  return ethers.isAddress(address);
-};
 
 // ----------------------------------------------------------------------
 
@@ -77,32 +72,25 @@ export default function FinanceQuickTransfer({
   const [currentIndex, setCurrentIndex] = useState(0);
   const [addressFiltered, setAddressFiltered] = useState<boolean>(false);
   const [initialized, setInitialized] = useState(false);
-  const [list, setList] = useState<Profile[]>(initialList ?? []);
+  const [list, setList] = useState<User[]>(initialList ?? []);
   const [amount, setAmount] = useState(0);
   const [canContinue, setCanContinue] = useState(true);
 
   const confirm = useBoolean();
   const MAX_AMOUNT = balance;
 
-
-  interface ProfilePicture {
-    optimized: {
-      uri: string;
-    };
-  }
-
   // This gets the current profile in the carousel
-  const getContactInfo: Profile | undefined = list?.find((_, index) => index === currentIndex);
+  const getContactInfo: User | undefined = list?.find((_, index) => index === currentIndex);
 
   // Callback to handle a profile selection from the search modal
-  const handleSelectProfile = (profile: Profile) => {
+  const handleSelectProfile = (profile: User) => {
     setList((prev) => {
       // 1) Add the profile if it's not already there
-      const exists = prev.find((p) => p.id === profile.id);
+      const exists = prev.find((p) => p.address === profile.address);
       const newList = exists ? prev : [...prev, profile];
 
       // 2) Find the index of that profile in the new list
-      const updatedIndex = newList.findIndex((p) => p.id === profile.id);
+      const updatedIndex = newList.findIndex((p) => p.address === profile.address);
       const finalIndex = updatedIndex !== -1 ? updatedIndex : newList.length - 1;
 
       // 3) Move the carousel right now
@@ -110,8 +98,8 @@ export default function FinanceQuickTransfer({
       setCurrentIndex(finalIndex);
 
       // 4) Update the wallet address & Redux
-      setWalletAddress(profile.ownedBy?.address ?? '');
-      dispatch(storeAddress({ address: profile.ownedBy?.address, profileId: profile.id }));
+      setWalletAddress(profile.address ?? '');
+      dispatch(storeAddress({ address: profile.address, profileId: profile.address }));
 
       // Return the updated array
       return newList;
@@ -164,10 +152,10 @@ export default function FinanceQuickTransfer({
 
   // Whenever the carousel index changes, update the wallet address in state
   useEffect(() => {
-    const currentProfile = list?.[carousel.currentIndex];
-    if (currentProfile?.ownedBy?.address) {
-      const profileId = currentProfile.id
-      const address = currentProfile.ownedBy.address;
+    const currentProfile: User = list?.[carousel.currentIndex];
+    if (currentProfile?.address) {
+      const profileId = currentProfile.address
+      const address = currentProfile.address;
 
       setWalletAddress(address);
       dispatch(storeAddress({ address, profileId }));
@@ -183,7 +171,7 @@ export default function FinanceQuickTransfer({
 
         // Filter duplicates (by id)
         return combined.filter(
-          (profile, index, arr) => arr.findIndex((p) => p.id === profile.id) === index
+          (profile, index, arr) => arr.findIndex((p) => p.address === profile.address) === index
         );
       });
     }
@@ -227,8 +215,8 @@ export default function FinanceQuickTransfer({
     // Attempt to match the stored address + profileId
     const index = list?.findIndex(
       (profile) =>
-        profile.ownedBy?.address?.toLowerCase() === storedAddress?.address?.toLowerCase() &&
-        profile.id === storedAddress.profileId
+        profile.address === storedAddress.address &&
+        profile.address === storedAddress.profileId
     );
 
     if (index !== -1 && index !== undefined) {
@@ -239,7 +227,7 @@ export default function FinanceQuickTransfer({
     if (addressFiltered) {
       const profileIndex = list?.findIndex(
         (profile) =>
-          profile.ownedBy?.address?.toLowerCase() === storedAddress?.address?.toLowerCase()
+          profile.address === storedAddress.address
       );
 
       if (profileIndex !== -1 && profileIndex !== undefined) {
@@ -294,20 +282,16 @@ export default function FinanceQuickTransfer({
           }}
         >
           {list?.map((profile, index) => (
-            <Box key={profile.id} sx={{ py: 2 }} onClick={ () => handleCarouselClick(index)}>
+            <Box key={profile.address} sx={{ py: 2 }} onClick={ () => handleCarouselClick(index)}>
               <Tooltip
-                key={profile.id}
-                title={profile?.metadata?.displayName}
+                key={profile.address}
+                title={profile.displayName}
                 arrow
                 placement="top"
               >
                 <AvatarProfile
-                  src={
-                    profile?.metadata?.picture && 'optimized' in profile.metadata.picture
-                      ? (profile.metadata.picture as ProfilePicture).optimized.uri
-                      : profile?.id
-                  }
-                  alt={profile?.handle?.localName ?? ''}
+                  src={resolveSrc(profile.profilePicture || profile.address, 'profile')}
+                  alt={profile.username ?? ''}
                   sx={{
                     mx: 'auto',
                     opacity: 0.8,
@@ -366,7 +350,7 @@ export default function FinanceQuickTransfer({
         size="large"
         color="inherit"
         variant="contained"
-        disabled={amount === 0 || !isValidAddress(walletAddress) || !canContinue}
+        disabled={amount === 0 || !ethers.isAddress(walletAddress) || !canContinue}
         onClick={confirm.onTrue}
       >
         Send

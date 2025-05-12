@@ -1,28 +1,50 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { AnyPublication } from '@lens-protocol/api-bindings';
-
-export type PendingComment = AnyPublication & { uri: string };
+import { Comment } from '@src/graphql/generated/graphql.ts';
 
 export interface CommentsReducerState {
   refetchTriggerByPublication: Record<string, number>;
-  hiddenComments: AnyPublication[];
+  hiddenComments: Comment[];
   counterLikes: Record<string, number>;
-  comments: Record<string, AnyPublication[]>;
-  pendingComments: Record<string, PendingComment[]>;
+  comments: Record<string, Comment[]>;
+  postCommentCount: Record<string, number>;
+  commentRepliesCount: Record<string, number>;
 }
 
 const initialState: CommentsReducerState = {
   refetchTriggerByPublication: {},
   hiddenComments: [],
   counterLikes: {},
+  postCommentCount: {},
+  commentRepliesCount: {},
   comments: {},
-  pendingComments: {},
 };
 
 const commentsSlice = createSlice({
   name: 'comments',
   initialState,
   reducers: {
+    setPostCommentCount: (state, action: PayloadAction<{ postId: string; count: number }>) => {
+      state.postCommentCount[action.payload.postId] = action.payload.count;
+    },
+    setRepliesCount: (state, action: PayloadAction<{ commentId: string; count: number }>) => {
+      state.commentRepliesCount[action.payload.commentId] = action.payload.count;
+    },
+    incrementPostCommentCount: (state, action: PayloadAction<string>) => {
+      const id = action.payload;
+      state.postCommentCount[id] = (state.postCommentCount[id] ?? 0) + 1;
+    },
+    decrementPostCommentCount: (state, action: PayloadAction<string>) => {
+      const id = action.payload;
+      state.postCommentCount[id] = Math.max(0, (state.postCommentCount[id] ?? 1) - 1);
+    },
+    incrementRepliesCount: (state, action: PayloadAction<string>) => {
+      const id = action.payload;
+      state.commentRepliesCount[id] = (state.commentRepliesCount[id] ?? 0) + 1;
+    },
+    decrementRepliesCount: (state, action: PayloadAction<string>) => {
+      const id = action.payload;
+      state.commentRepliesCount[id] = Math.max(0, (state.commentRepliesCount[id] ?? 1) - 1,);
+    },
     refetchCommentsByPublication: (state, action: PayloadAction<string>) => {
       const publicationId = action.payload;
       if (!state.refetchTriggerByPublication[publicationId]) {
@@ -31,7 +53,7 @@ const commentsSlice = createSlice({
         state.refetchTriggerByPublication[publicationId] += 1;
       }
     },
-    hiddeComment: (state, action: PayloadAction<AnyPublication>) => {
+    hiddeComment: (state, action: PayloadAction<Comment>) => {
       state.hiddenComments.push(action.payload);
     },
     setCounterLikes: (state, action: PayloadAction<{ publicationId: string; likes: number }>) => {
@@ -49,39 +71,21 @@ const commentsSlice = createSlice({
         state.counterLikes[publicationId] -= 1;
       }
     },
-    addPendingComment: (
-      state,
-      action: PayloadAction<{ publicationId: string; comment: PendingComment }>
-    ) => {
-      const { publicationId, comment } = action.payload;
-      if (!state.pendingComments[publicationId]) {
-        state.pendingComments[publicationId] = [];
-      }
-      // Prepend new comment to the beginning of the list
-      state.pendingComments[publicationId] = [comment, ...state.pendingComments[publicationId]];
-    },
-    removePendingComment: (
-      state,
-      action: PayloadAction<{ publicationId: string; commentId: string }>
-    ) => {
-      const { publicationId, commentId } = action.payload;
-
-      // Delete the comment from the pending list
-      state.pendingComments[publicationId] = state.pendingComments[publicationId].filter(
-        (comment) => comment.id !== commentId
-      );
-    },
   },
 });
 
 export const {
+  setPostCommentCount,
+  setRepliesCount,
+  incrementPostCommentCount,
+  decrementPostCommentCount,
+  incrementRepliesCount,
+  decrementRepliesCount,
   hiddeComment,
   refetchCommentsByPublication,
   setCounterLikes,
   incrementCounterLikes,
   decrementCounterLikes,
-  addPendingComment,
-  removePendingComment,
 } = commentsSlice.actions;
 
 export default commentsSlice.reducer;

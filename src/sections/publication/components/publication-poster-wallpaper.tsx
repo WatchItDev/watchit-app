@@ -2,7 +2,7 @@ import { FC, PropsWithChildren } from 'react';
 import { Box } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import Image from '@src/components/image';
-import { getAttachmentCid } from '@src/utils/publication';
+import { getAttachmentCid, getMediaUri } from '@src/utils/publication';
 import { PublicationPosterWallpaperProps } from '@src/sections/publication/types';
 
 export const PublicationPosterWallpaper: FC<PropsWithChildren<PublicationPosterWallpaperProps>> = (props) => {
@@ -16,8 +16,8 @@ export const PublicationPosterWallpaper: FC<PropsWithChildren<PublicationPosterW
 
       <Image
         dir="ltr"
-        alt={publication?.metadata?.title || 'publication-wallpaper'}
-        src={wallpaper}
+        alt={publication?.title || 'publication-wallpaper'}
+        src={getMediaUri(wallpaper)}
         ratio="21/9"
         sx={{
           borderRadius: 2,
@@ -27,8 +27,8 @@ export const PublicationPosterWallpaper: FC<PropsWithChildren<PublicationPosterW
       />
 
       <Image
-        alt={publication?.metadata?.title || 'poster'}
-        src={poster}
+        alt={publication?.title || 'poster'}
+        src={getMediaUri(poster)}
         ratio="1/1"
         sx={{
           borderRadius: 1,

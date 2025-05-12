@@ -32,6 +32,8 @@ export const useGetCampaignIsReady = (): UseGetCampaignIsReadyHook => {
       } catch (err) {
         console.error('Error fetching is Ready:', err);
         setIsReady(false);
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-expect-error
         setError({ message: err?.message || 'Error fetching is Ready' });
         return undefined;
       } finally {

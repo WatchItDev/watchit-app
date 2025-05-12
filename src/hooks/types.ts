@@ -1,7 +1,18 @@
-import {IBaseProvider, IProvider} from "@web3auth/base"
-import {BundlerConfig} from "@web3auth/account-abstraction-provider/dist/types/providers/types"
-import {ISmartAccount} from "@web3auth/account-abstraction-provider/dist/types/providers/smartAccounts"
-import {SafeEventEmitterProvider} from "@web3auth/base/dist/types/provider/IProvider"
+import { IBaseProvider, IProvider } from "@web3auth/base"
+import { SafeEventEmitterProvider } from "@web3auth/base/dist/types/provider/IProvider"
+import { BundlerClient, SmartAccount } from 'viem/account-abstraction';
+
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-expect-error
+export type { Calls } from 'viem/types/calls.ts';
+
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-expect-error
+export type { WaitForUserOperationReceiptReturnType } from 'viem/account-abstraction/actions/bundler/waitForUserOperationReceipt.ts';
+
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-expect-error
+import type { WaitForUserOperationReceiptReturnType } from 'viem/account-abstraction/actions/bundler/waitForUserOperationReceipt.ts';
 
 export interface Invitation {
   id: string;
@@ -39,7 +50,6 @@ export interface NotificationItemProps {
   onMarkAsRead: (id: string) => void;
 }
 
-//use-submit-assets-to-lens.ts
 export interface SuccessResult {
   hash: string;
   status: "success";
@@ -49,13 +59,6 @@ export interface ErrorResult {
   hash: string;
   status: "error";
   message: string;
-}
-
-export interface UseSubmitAssetToLensReturn {
-  data: SuccessResult[];
-  errors: ErrorResult[];
-  loading: boolean;
-  submitAssetToLens: (hashesString: string) => Promise<void>;
 }
 
 // use-search-publications.ts
@@ -133,7 +136,7 @@ export interface TransferData {
   logs: TransferDataLog[];
   nonce: string;
   paymaster: string;
-  receipt: TransferDataReceipt;
+  receipt: WaitForUserOperationReceiptReturnType;
   sender: string;
   success: boolean;
   userOpHash: string;
@@ -150,25 +153,15 @@ interface TransferDataLog {
   topics: string[];
 }
 
-interface TransferDataReceipt{
-  blockHash: string;
-  blockNumber: bigint;
-  contractAddress: string | null;
-  cumulativeGasUsed: bigint;
-  effectiveGasPrice: bigint;
-  from: string;
-  gasUsed: bigint;
-  logs: TransferDataLog[];
-  logsBloom: string;
-  status: string;
-  to: string;
-  transactionHash: string;
-  transactionIndex: number;
-  type: string | null;
+export interface AccountAbstractionProvider extends IBaseProvider<IProvider> {
+  bundlerClient?: BundlerClient;
+  smartAccount?: SmartAccount;
+  provider: SafeEventEmitterProvider;
 }
 
-export interface AccountAbstractionProvider extends IBaseProvider<IProvider> {
-  bundlerClient?: BundlerConfig;
-  smartAccount?: ISmartAccount;
-  provider: SafeEventEmitterProvider;
+export interface MetadataAttachment {
+  cid: string,
+  type: string,
+  title: string,
+  description: string
 }

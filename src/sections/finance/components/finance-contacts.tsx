@@ -21,11 +21,11 @@ import AvatarProfile from "@src/components/avatar/avatar.tsx";
 import { paths } from '@src/routes/paths';
 import { useRouter } from '@src/routes/hooks';
 
-// lens
-import { Profile } from '@lens-protocol/api-bindings';
 import { storeAddress, toggleRainbow } from '@redux/address';
 import {FinanceContactsCarouselProps} from "@src/sections/finance/types.ts"
-import {ProfilePictureSet} from "@lens-protocol/react-web"
+import { User } from '@src/graphql/generated/graphql.ts';
+import { resolveSrc } from '@src/utils/image.ts';
+import { truncateAddress } from '@src/utils/wallet.ts';
 
 // ----------------------------------------------------------------------
 
@@ -86,7 +86,7 @@ export default function FinanceContactsCarousel(props: Readonly<FinanceContactsC
   });
 
   // Split the array of contacts into chunks (each chunk is a "slide")
-  const slidesData: Profile[][] = [];
+  const slidesData: User[][] = [];
   for (let i = 0; i < list.length; i += chunkSize) {
     slidesData.push(list.slice(i, i + chunkSize));
   }
@@ -120,7 +120,7 @@ export default function FinanceContactsCarousel(props: Readonly<FinanceContactsC
 // ----------------------------------------------------------------------
 
 interface SlideContactsProps {
-  chunk: Profile[];
+  chunk: User[];
   goToProfile: (id: string) => void;
   onClickArrow: (address: string, profileId: string) => void;
 }
@@ -137,27 +137,27 @@ function SlideContacts({ chunk, goToProfile, onClickArrow }: SlideContactsProps)
   return (
     <Stack spacing={3}>
       {chunk.map((profile) => (
-        <Stack direction="row" alignItems="center" key={profile.id}>
+        <Stack direction="row" alignItems="center" key={profile.address}>
           <Stack
             direction="row"
             alignItems="flex-start"
             sx={{ cursor: 'pointer', flexGrow: 1 }}
-            onClick={() => goToProfile(profile.id)}
+            onClick={() => goToProfile(profile.address)}
           >
             <AvatarProfile
-              alt={profile.metadata?.displayName || 'No Name'}
-              src={(profile?.metadata?.picture as ProfilePictureSet)?.optimized?.uri ?? profile?.id}
+              alt={profile.displayName || 'No Name'}
+              src={resolveSrc(profile.profilePicture || profile.address, 'profile')}
               sx={{ width: 48, height: 48, mr: 2 }}
             />
             <ListItemText
-              primary={profile.metadata?.displayName || 'No Name'}
-              secondary={profile.id}
+              primary={profile.displayName || 'No Name'}
+              secondary={truncateAddress(profile.address)}
             />
           </Stack>
 
           <Tooltip title="Quick Transfer">
             <IconButton
-              onClick={(event) => handleArrowClick(event, profile.ownedBy.address, profile.id)}
+              onClick={(event) => handleArrowClick(event, profile.address, profile.address)}
             >
               <Iconify icon="eva:diagonal-arrow-right-up-fill" />
             </IconButton>

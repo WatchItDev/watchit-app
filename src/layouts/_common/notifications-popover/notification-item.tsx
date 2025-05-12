@@ -1,9 +1,3 @@
-// REACT IMPORTS
-import { useEffect, useState } from 'react';
-
-// REDUX IMPORTS
-import { useDispatch } from 'react-redux';
-
 // MUI IMPORTS
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
@@ -12,11 +6,6 @@ import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import ListItemButton from '@mui/material/ListItemButton';
 import TextMaxLine from '@src/components/text-max-line';
-import { CircularProgress } from '@mui/material';
-
-// LENS IMPORTS
-import { PublicationReactionType, useReactionToggle } from '@lens-protocol/react-web';
-import { usePublication } from '@lens-protocol/react';
 
 // LOCAL IMPORTS
 import Iconify from '@src/components/iconify';
@@ -26,32 +15,16 @@ import { useRouter } from '@src/routes/hooks';
 import { paths } from '@src/routes/paths.ts';
 import { NotificationCategories, NotificationItemProps} from '@src/hooks/types'
 import { useNotifications } from '@src/hooks/use-notifications.ts';
-import { openLoginModal } from '@redux/auth';
-import { decrementCounterLikes, incrementCounterLikes } from '@redux/comments';
-import { useNotificationPayload } from '@src/hooks/use-notification-payload.ts';
-import { useAuth } from '@src/hooks/use-auth.ts';
-import {PublicationHookType} from "@src/types/types.ts"
 
 export default function NotificationItem({ notification, onMarkAsRead }: NotificationItemProps) {
-  const [hasLiked, setHasLiked] = useState(false);
   const router = useRouter();
-  const dispatch = useDispatch();
-  const { session: sessionData } = useAuth();
-  const { deleteNotification, sendNotification } = useNotifications();
-  const { generatePayload } = useNotificationPayload(sessionData);
-  const { execute: toggle, loading: loadingLike } = useReactionToggle();
-  const commentId = notification?.payload?.data?.content?.comment_id;
-  const { data: comment, loading }: PublicationHookType = usePublication({ forId: commentId});
+  const { deleteNotification } = useNotifications();
   const typeOfNotification = notification?.payload?.category;
   const receiver = notification?.payload?.data?.to?.displayName;
   const message =
     notification?.payload?.data?.content?.message ||
     notification?.payload?.data?.content?.comment ||
     '';
-
-  useEffect(() => {
-    setHasLiked(comment?.operations?.hasUpvoted);
-  }, [comment]);
 
   const handleItemClick = () => {
     onMarkAsRead(notification.id);
@@ -70,46 +43,6 @@ export default function NotificationItem({ notification, onMarkAsRead }: Notific
       typeOfNotification === NotificationCategories.JOIN
     ) {
       router.push(paths.dashboard.user.root(`${notification.payload.data.from.id}`));
-    }
-  };
-
-  const toggleReaction = async () => {
-    if (!sessionData?.authenticated) return dispatch(openLoginModal());
-
-    try {
-      await toggle({
-        reaction: PublicationReactionType.Upvote,
-        publication: comment,
-      }).then(() => {
-        // Send notification to the author of the comment
-        const notificationPayload = generatePayload(
-          'LIKE',
-          {
-            id: comment?.by?.id,
-            displayName: comment?.by?.metadata?.displayName ?? 'no name',
-            avatar: comment?.by?.metadata?.avatar,
-          },
-          {
-            root_id: comment?.commentOn?.root?.id ?? comment?.commentOn?.id,
-            parent_id: comment?.commentOn?.id,
-            comment_id: comment?.id,
-            rawDescription: `${sessionData?.profile?.metadata?.displayName} liked your comment`,
-          }
-        );
-
-        if (!hasLiked) {
-          dispatch(incrementCounterLikes(comment.id));
-        } else {
-          dispatch(decrementCounterLikes(comment.id));
-        }
-
-        if (!hasLiked && comment?.by?.id !== sessionData?.profile?.id) {
-          sendNotification(comment?.by?.id, sessionData?.profile?.id, notificationPayload);
-        }
-      });
-      setHasLiked(!hasLiked); // Toggle the UI based on the reaction state
-    } catch (err) {
-      console.error('Error toggling reaction:', err);
     }
   };
 
@@ -183,26 +116,6 @@ export default function NotificationItem({ notification, onMarkAsRead }: Notific
       >
         {reader(`<p>${message}.</p>`)}
       </Box>
-
-      {/*Stack for show IconHeart and Reply icon*/}
-      <Stack direction="row" spacing={1}>
-        <IconButton
-          onClick={toggleReaction}
-          size="small"
-          sx={{ p: 1, bgcolor: 'background.neutral' }}
-        >
-          {loading || loadingLike ? (
-            <CircularProgress size="25px" sx={{ color: '#fff' }} />
-          ) : hasLiked ? (
-            <Iconify icon="eva:heart-fill" width={16} />
-          ) : (
-            <Iconify icon="mdi:heart-outline" width={16} />
-          )}
-        </IconButton>
-        <IconButton size="small" sx={{ p: 1, bgcolor: 'background.neutral' }}>
-          <Iconify icon="material-symbols:reply" width={16} />
-        </IconButton>
-      </Stack>
     </Stack>
   );
 

@@ -4,6 +4,7 @@ import CampaignSubscriptionTplAbi from '@src/config/abi/CampaignSubscriptionTpl.
 import { ERRORS } from '@src/libs/notifications/errors';
 import { useAccountSession } from '@src/hooks/use-account-session.ts';
 import {UseCampaignPauseHook, UseCampaignPauseResult} from '@src/hooks/protocol/types.ts'
+import { Calls, WaitForUserOperationReceiptReturnType } from '@src/hooks/types.ts'
 import { useAuth } from '@src/hooks/use-auth.ts';
 import { useWeb3Auth } from '@src/hooks/use-web3-auth.ts';
 
@@ -13,13 +14,13 @@ export const useCampaignPause = (): UseCampaignPauseHook => {
   const [error, setError] = useState<keyof typeof ERRORS | null>(null);
   const { bundlerClient, smartAccount } = useWeb3Auth();
   const { logout } = useAccountSession();
-  const { isFullyAuthenticated: isAuthenticated } = useAuth();
+  const { session } = useAuth();
 
   const pause = async (campaignAddress: string): Promise<void> => {
     setLoading(true);
     setError(null);
 
-    if (!isAuthenticated) {
+    if (!session.authenticated) {
       setError(ERRORS.FIRST_LOGIN_ERROR);
       logout();
       setLoading(false);
@@ -33,7 +34,7 @@ export const useCampaignPause = (): UseCampaignPauseHook => {
         args: [],
       });
 
-      const calls = [
+      const calls: Calls = [
         {
           to: campaignAddress,
           value: 0,
@@ -41,11 +42,11 @@ export const useCampaignPause = (): UseCampaignPauseHook => {
         },
       ];
 
-      const userOpHash = await bundlerClient.sendUserOperation({
+      const userOpHash = await bundlerClient?.sendUserOperation({
         account: smartAccount,
         calls,
       });
-      const receipt = await bundlerClient.waitForUserOperationReceipt({
+      const receipt: WaitForUserOperationReceiptReturnType = await bundlerClient?.waitForUserOperationReceipt({
         hash: userOpHash,
       });
       setData(receipt);

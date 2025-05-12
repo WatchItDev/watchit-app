@@ -1,46 +1,22 @@
 import CarouselTopTitles from "@src/components/carousel/variants/carousel-top-titles.tsx";
-import {
-  appId,
-  ExplorePublicationsOrderByType,
-  ExplorePublicationType,
-  LimitType,
-  PublicationType,
-  useExplorePublications,
-  usePublications,
-} from "@lens-protocol/react-web";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { setExploreLoading } from "@redux/loading/index.ts";
+import { useGetAllPostsQuery, useGetPopularPostsQuery } from '@src/graphql/generated/hooks.tsx';
 
 // ----------------------------------------------------------------------
 
 export const ExploreTopPublications = () => {
   const dispatch = useDispatch();
-  const { data, loading } = usePublications({
-    where: {
-      publicationTypes: [PublicationType.Post],
-      metadata: {
-        publishedOn: [appId("watchit")],
-      },
-    },
-  });
-  const { data: explorePublications } = useExplorePublications({
-    where: {
-      publicationTypes: [ExplorePublicationType.Post],
-      metadata: {
-        publishedOn: [appId("watchit")],
-      },
-    },
-    limit: LimitType.Ten,
-    orderBy: ExplorePublicationsOrderByType.TopCommented,
-  });
+  const { data, loading } = useGetAllPostsQuery({ variables: { limit: 10 } })
+  const { data: explorePublications, loading: popularLoading } = useGetPopularPostsQuery({ variables: { limit: 10 } })
 
   // Update loading state in Redux store
   useEffect(() => {
-    dispatch(setExploreLoading({ key: "top", isLoading: loading }));
-  }, [loading]);
+    dispatch(setExploreLoading({ key: "top", isLoading: loading || popularLoading }));
+  }, [loading, popularLoading]);
 
-  const combinedPosts = [...(explorePublications ?? []), ...(data ?? [])]
+  const combinedPosts = [...(explorePublications?.getPopularPosts ?? []), ...(data?.getAllPosts ?? [])]
     .filter((item, index, self) => self.findIndex((t) => t.id === item.id) === index)
     .slice(0, 10);
 

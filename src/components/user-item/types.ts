@@ -1,9 +1,9 @@
 import { Theme } from '@mui/material/styles';
 import { SxProps } from '@mui/system/styleFunctionSx';
-import {Profile} from "@lens-protocol/api-bindings"
+import { User } from '@src/graphql/generated/graphql.ts';
 
 export interface FollowerItemProps {
-  profile: Profile;
+  profile: User;
   onClick?: () => void;
   onActionFinished?: () => void;
   sx?: SxProps<Theme>;

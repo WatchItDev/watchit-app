@@ -9,8 +9,6 @@ import {
   IconButton,
 } from '@mui/material';
 import Iconify from '@src/components/iconify';
-import { Profile } from '@lens-protocol/api-bindings';
-import {ProfilePictureSet, useSearchProfiles} from '@lens-protocol/react-web'
 import Typography from '@mui/material/Typography';
 import Label from '@src/components/label';
 import { dialogClasses } from '@mui/material/Dialog';
@@ -20,10 +18,13 @@ import Scrollbar from '@src/components/scrollbar/scrollbar.tsx';
 import SearchNotFound from '@src/components/search-not-found';
 import { useTheme } from '@mui/material/styles';
 import { useBoolean } from '@src/hooks/use-boolean.ts';
-import {dicebear} from "@src/utils/dicebear.ts";
+import { User } from '@src/graphql/generated/graphql.ts';
+import { resolveSrc } from '@src/utils/image.ts';
+import { truncateAddress } from '@src/utils/wallet.ts';
+import { useGetUsersLazyQuery } from '@src/graphql/generated/hooks.tsx';
 
 interface FinanceSearchProfileModalProps {
-  onSelectProfile: (profile: Profile) => void;
+  onSelectProfile: (profile: User) => void;
 }
 
 export default function FinanceSearchProfileModal({
@@ -32,20 +33,22 @@ export default function FinanceSearchProfileModal({
   const open = useBoolean();
   const [searchQuery, setSearchQuery] = useState('');
   const theme = useTheme();
-  const { data: profiles, loading } = useSearchProfiles({
-    query: searchQuery,
-  });
+  const [searchUsers, { data, loading }] = useGetUsersLazyQuery();
+  const profiles = data?.getUsers;
 
   const handleSearchChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(event.target.value);
+    const value = event.target.value;
+    setSearchQuery(value);
+    searchUsers({ variables: { query: value, limit: 50 } })
   }, []);
 
   const handleClose = () => {
     open.onFalse();
     setSearchQuery('');
+    searchUsers({ variables: { query: '' } })
   };
 
-  const handleSelectProfile = (profile: Profile) => {
+  const handleSelectProfile = (profile: User) => {
     onSelectProfile(profile);
     handleClose();
   };
@@ -74,20 +77,19 @@ export default function FinanceSearchProfileModal({
     return (
       <>
         {profiles &&
-          profiles.map((profile: Profile) => {
-            const avatarSrc =
-              (profile?.metadata?.picture as ProfilePictureSet)?.optimized?.uri ?? dicebear(profile.id);
+          profiles.map((profile: User) => {
+            const avatarSrc = resolveSrc(profile.profilePicture || profile.address, 'profile');
 
             return (
-              <ListItemButton key={profile.id} onClick={() => handleSelectProfile(profile)}>
+              <ListItemButton key={profile.address} onClick={() => handleSelectProfile(profile)}>
                 <Avatar
                   src={avatarSrc}
-                  alt={profile.metadata?.displayName ?? ''}
+                  alt={profile.displayName ?? ''}
                   sx={{ width: 48, height: 48, mr: 2 }}
                 />
                 <ListItemText
-                  primary={profile.metadata?.displayName || profile.handle?.localName || 'No Name'}
-                  secondary={profile.id}
+                  primary={profile.displayName || profile.username || 'No Name'}
+                  secondary={truncateAddress(profile.address)}
                 />
               </ListItemButton>
             );
