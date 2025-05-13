@@ -55,12 +55,13 @@ const ProfileHeader = (props: PropsWithChildren<ProfileHeaderProps>) => {
   );
   const { campaign, fetchSubscriptionCampaign } = useGetSubscriptionCampaign();
   const { isActive, loading: isActiveLoading, fetchIsActive } = useGetCampaignIsActive();
-  const showJoinButton = isAuthorized && (!isActive || hasAccess) && !isActiveLoading && !authorizedLoading && profile?.address !== session?.address;
+  const showJoinButton = isAuthorized && (!isActive || hasAccess) && !isActiveLoading && !authorizedLoading;
   const showSponsoredAccessButton = isActive && isAuthorized && !isActiveLoading && !authorizedLoading && !hasAccess;
 
   useEffect(() => {
+    if (!profile?.address) return;
     fetchSubscriptionCampaign(profile?.address as Address);
-  }, []);
+  }, [profile?.address]);
 
   useEffect(() => {
     if (!campaign || !session?.address) return;
