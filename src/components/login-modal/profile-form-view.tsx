@@ -162,7 +162,6 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
           variables: {
             input: {
               address: session?.address,
-              email: session?.info?.email,
               ...metadata
             },
           },

@@ -1,5 +1,5 @@
-query GetUser($address: String!) {
-  getUser(address: $address) {
+query GetUser($input: UserByInput!) {
+  getUser(input: $input) {
     address
     username
     displayName

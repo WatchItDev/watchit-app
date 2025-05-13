@@ -78,13 +78,13 @@ export const useAccountSession = (): UseAccountSessionHook => {
     if (!info) info = await web3Auth.getUserInfo?.();
 
     mergeSession({ address, info });
-    loadUser({ variables: { address } });
+    loadUser({ variables: { input: { address, idSession: info?.idToken } } });
   };
 
   const refreshUser = async () => {
     const address = await getPrimaryAddress();
     if (!address) throw new Error('No address found');
-    const result = await loadUser({ variables: { address } });
+    const result = await loadUser({ variables: { input: { address } } });
 
     dispatch(setUser({ user: result.data.getUser }));
   };

@@ -56,7 +56,7 @@ const FollowUnfollowButton = ({
   const RainbowEffect = isLoading ? NeonPaper : Box;
 
   useEffect(() => {
-    if (profileId && profileId !== session?.address) loadProfile({variables: { address: profileId }});
+    if (profileId && profileId !== session?.address) loadProfile({variables: { input: { address: profileId } }});
 
     getIsFollowing({variables: { targetAddress: profileId }});
   }, []);
@@ -67,7 +67,7 @@ const FollowUnfollowButton = ({
   }, [isFollowingData]);
 
   const handleUpdateProfile = () => {
-    loadProfile({variables: { address: profileId }});
+    loadProfile({variables: { input: { address: profileId } }});
   };
 
   // General function to handle follow/unfollow actions
