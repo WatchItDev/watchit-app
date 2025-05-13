@@ -54,6 +54,11 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   if (!initialized) return <StyledLoaderWrapper />;
 
+  if (web3Auth.connected) {
+    console.log('web3Auth 4')
+    web3Auth.getUserInfo().then((info) => console.log('info', info))
+  }
+
   return (
     <QueryClientProvider client={queryClient}>
       <LensProvider config={lensConfig}>

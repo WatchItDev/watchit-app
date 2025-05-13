@@ -21,6 +21,8 @@ export const ExplorePublications = () => {
     },
   });
 
+  console.log('ExplorePublications data: ', data);
+
   let minItemWidth = 250;
   let maxItemWidth = 350;
 

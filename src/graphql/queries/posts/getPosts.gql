@@ -1,6 +1,5 @@
-query GetAllPosts($limit: Int) {
-  getAllPosts(limit: $limit) {
-    id
+query GetPosts($query: String!, $limit: Int) {
+  getPosts(query: $query, limit: $limit) {
     author {
       address
       displayName
@@ -12,22 +11,23 @@ query GetAllPosts($limit: Int) {
       publicationsCount
       username
     }
+    bookmarkCount
+    cid
+    commentCount
+    createdAt
+    description
+    id
+    likeCount
     media {
-      id
-      type
       url
+      type
       title
+      id
       cid
     }
-    visibility
-    commentCount
-    likeCount
-    bookmarkCount
-    viewCount
-    updatedAt
-    createdAt
-    cid
-    description
     title
+    updatedAt
+    viewCount
+    visibility
   }
 }

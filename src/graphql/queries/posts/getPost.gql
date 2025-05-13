@@ -3,6 +3,13 @@ query GetPost($getPostId: String!) {
     author {
       address
       displayName
+      followersCount
+      followingCount
+      coverPicture
+      profilePicture
+      bio
+      publicationsCount
+      username
     }
     bookmarkCount
     cid

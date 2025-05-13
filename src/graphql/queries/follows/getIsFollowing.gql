@@ -1,0 +1,3 @@
+query GetIsFollowing($targetAddress: String!) {
+  getIsFollowing(targetAddress: $targetAddress)
+}

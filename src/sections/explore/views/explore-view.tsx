@@ -12,10 +12,32 @@ import { RootState} from "@redux/store.ts"
 import { isLoading } from "@src/utils/is-loading.ts"
 import { useEffect } from "react"
 import { useAuth } from '@src/hooks/use-auth.ts';
+import { useGetUsersQuery } from '@src/graphql/generated/hooks.tsx';
+// import { useMigrateLensUsers } from '@src/hooks/use-migrate-lens-users.ts';
 
 // ----------------------------------------------------------------------
 
 const ExploreView = () => {
+  const { data } = useGetUsersQuery({ fetchPolicy: 'network-only', variables: { limit: 300 } })
+
+  console.log('ExploreView data: ', data);
+
+  // const { done, max, errors, loadingBatch, finished } = useMigrateLensUsers();
+  // return (
+  //   <main style={{ padding: 32 }}>
+  //     <h1>Migración Lens → Watchit</h1>
+  //     <p>
+  //       Procesados: {done}/{max} {finished && '✅ Completado'}
+  //     </p>
+  //     {loadingBatch && !finished && <p>⏳ Migrando lote…</p>}
+  //     {!!errors.length && (
+  //       <details style={{ marginTop: 16 }}>
+  //         <summary>Errores ({errors.length})</summary>
+  //         <pre style={{ whiteSpace: 'pre-wrap' }}>{errors.join('\n')}</pre>
+  //       </details>
+  //     )}
+  //   </main>
+  // );
   const { isFullyAuthenticated: isAuthenticated } = useAuth();
   const loading = useSelector((state: RootState) => state.loading)
   const exploreIsLoading = isLoading(loading.explore);

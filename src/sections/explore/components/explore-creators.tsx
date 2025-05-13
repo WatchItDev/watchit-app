@@ -15,6 +15,8 @@ export const ExploreCreators = () => {
     limit: LimitType.Fifty,
   });
 
+  // console.log('latestCreatedProfiles', latestCreatedProfiles);
+
   // FilteredCompletedProfiles is an array of objects, each object has a metadata property and inside exists a displayName en bio property; filter the profiles that not have a displayName and bio property
   const filtered = latestCreatedProfiles?.filter(
     (profile) => profile.metadata?.displayName && profile.metadata?.bio
