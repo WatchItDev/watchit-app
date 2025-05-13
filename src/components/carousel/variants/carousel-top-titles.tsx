@@ -27,6 +27,9 @@ export default function CarouselTopTitles({ posts, category }: Readonly<Carousel
         '.slick-slide': {
           height: 'auto',
         },
+        '.slick-list': {
+          height: 'auto',
+        },
         '.slick-slide > div': {
           height: '100%',
           minHeight: '100%',

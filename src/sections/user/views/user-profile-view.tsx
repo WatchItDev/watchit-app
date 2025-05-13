@@ -59,7 +59,7 @@ const UserProfileView = ({ id }: UserProfileViewProps) => {
   };
 
   useEffect(() => {
-    loadProfile({variables: { address: id }});
+    loadProfile({variables: { input: { address: id } }});
     loadPublications({variables: { author: id, limit: 50 }});
     loadFollowers({variables: { address: id, limit: 50 }});
     loadFollowing({variables: { address: id, limit: 50 }});
@@ -83,7 +83,7 @@ const UserProfileView = ({ id }: UserProfileViewProps) => {
   };
 
   const handleUpdateProfile = () => {
-    loadProfile({variables: { address: id }});
+    loadProfile({variables: { input: { address: id } }});
   };
 
   const tabsWithCounts = TABS.filter((tab) => {

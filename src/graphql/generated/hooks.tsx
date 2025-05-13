@@ -1314,8 +1314,8 @@ export type GetPostsLazyQueryHookResult = ReturnType<typeof useGetPostsLazyQuery
 export type GetPostsSuspenseQueryHookResult = ReturnType<typeof useGetPostsSuspenseQuery>;
 export type GetPostsQueryResult = Apollo.QueryResult<GetPostsQuery, GetPostsQueryVariables>;
 export const GetUserDocument = gql`
-    query GetUser($address: String!) {
-  getUser(address: $address) {
+    query GetUser($input: UserByInput!) {
+  getUser(input: $input) {
     address
     username
     displayName
@@ -1350,7 +1350,7 @@ export const GetUserDocument = gql`
  * @example
  * const { data, loading, error } = useGetUserQuery({
  *   variables: {
- *      address: // value for 'address'
+ *      input: // value for 'input'
  *   },
  * });
  */
