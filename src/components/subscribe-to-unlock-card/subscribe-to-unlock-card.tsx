@@ -37,8 +37,9 @@ export const SubscribeToUnlockCard = ({
   const isJoinButtonVisible = isAuthorized && !isCampaignActive && isAccessFullyChecked && !isSponsoredButtonVisible;
 
   useEffect(() => {
+    if (!ownerAddress) return;
     fetchSubscriptionCampaign(ownerAddress);
-  }, []);
+  }, [ownerAddress]);
 
   useEffect(() => {
     if (!campaign || !sessionData?.address) return;
