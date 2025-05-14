@@ -61,12 +61,16 @@ export function useSubmitAsset(): UseSubmitAssetReturn {
         }));
 
         const input: CreatePostInput = {
+          authorAddress: '', // replace with the address of the author to submit for
           title       : title ?? 'Untitled',
           description : sanitize(description) ?? '',
           cid,
           media,
           visibility  : VisibilitySetting.Public,
         };
+
+        console.log('input')
+        console.log(input)
 
         const { data: gData } = await createPost({ variables: { input } });
 

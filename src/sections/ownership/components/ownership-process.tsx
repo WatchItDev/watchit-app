@@ -95,19 +95,19 @@ const OwnershipProcessContent = ({ onClose }: { onClose: () => void }) => {
           }, '', { autoHideDuration: 3000 });
           setProgress(index + 1);
 
-          const owner = await fetchOwnerAddress(hash);
-          const isTaken = !!owner;
-          const isAssetMine = userAddress === owner
-
-          if (!isAssetMine && isTaken) {
-            notifyError(ERRORS.ASSET_ALREADY_REGISTERED_ERROR);
-            continue;
-          }
-
-          if (!isTaken) {
-            // 2. Register ownership (if it fails, it does not continue)
-            await registerAsset(hash);
-          }
+          // const owner = await fetchOwnerAddress(hash);
+          // const isTaken = !!owner;
+          // const isAssetMine = userAddress === owner
+          //
+          // if (!isAssetMine && isTaken) {
+          //   notifyError(ERRORS.ASSET_ALREADY_REGISTERED_ERROR);
+          //   continue;
+          // }
+          //
+          // if (!isTaken) {
+          //   // 2. Register ownership (if it fails, it does not continue)
+          //   await registerAsset(hash);
+          // }
 
           // 3. Upload to API only if registration was successful
           await submitAsset(replacePrefix(hash));

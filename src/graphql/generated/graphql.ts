@@ -58,6 +58,7 @@ export type CreateCommentInput = {
 };
 
 export type CreatePostInput = {
+  authorAddress: Scalars['String']['input'];
   cid: Scalars['String']['input'];
   description: Scalars['String']['input'];
   media: Array<MediaAttachmentInput>;
