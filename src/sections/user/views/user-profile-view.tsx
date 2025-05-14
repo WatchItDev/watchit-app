@@ -51,6 +51,16 @@ const UserProfileView = ({ id }: UserProfileViewProps) => {
     profile?.ownedBy?.address as Address
   );
 
+  console.log('UserProfileView publications: ', publications);
+  publications?.map(pub => {
+    console.log('cid: ', pub?.metadata?.asset?.video?.raw?.uri);
+    return pub?.metadata?.asset?.video?.raw?.uri
+  })
+
+  console.log(`${publications?.map(pub => {
+    return `${pub?.metadata?.asset?.video?.raw?.uri},`
+  })}`.replace('f0','0x').replace(',,',','));
+
   const { invitations: referrals, fetchInvitations, loading: loadingReferrals } = useReferrals();
 
   const { data: followers } = useProfileFollowers({
