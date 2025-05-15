@@ -2,25 +2,33 @@
 import { alpha } from '@mui/material/styles';
 // theme
 import { bgGradient } from '@src/theme/css.ts';
-import { Profile } from '@lens-protocol/api-bindings';
 import Image from '../../../components/image';
 import { SxProps } from '@mui/system';
 import { Theme } from '@mui/material';
+import { User } from '@src/graphql/generated/graphql.ts';
+import { resolveSrc } from '@src/utils/image.ts';
+import { useEffect, useState } from 'react';
 
 // ----------------------------------------------------------------------
 
 interface ProfileCoverProps {
-  profile?: Profile;
+  profile?: User;
   sx?: SxProps<Theme>;
 }
 
 // ----------------------------------------------------------------------
 
 export default function ProfileCover({ profile, sx }: Readonly<ProfileCoverProps>) {
-  const coverImage = profile?.metadata?.coverPicture?.optimized?.uri;
+  const [image, setImage] = useState<string>('');
+
+  useEffect(() => {
+    const imageSrc = (profile?.coverPicture || profile?.address)  ?? '';
+    setImage(resolveSrc(imageSrc, 'cover') ?? '');
+  }, [profile?.coverPicture]);
+
   return (
     <Image
-      src={coverImage ?? `https://picsum.photos/seed/${profile?.id}/1920/820`}
+      src={image}
       sx={{
         ...bgGradient({
           color: alpha('#000', 0.6),

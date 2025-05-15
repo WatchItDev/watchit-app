@@ -1,0 +1,33 @@
+query GetAllPosts($limit: Int) {
+  getAllPosts(limit: $limit) {
+    id
+    author {
+      address
+      displayName
+      followersCount
+      followingCount
+      coverPicture
+      profilePicture
+      bio
+      publicationsCount
+      username
+    }
+    media {
+      id
+      type
+      url
+      title
+      cid
+    }
+    visibility
+    commentCount
+    likeCount
+    bookmarkCount
+    viewCount
+    updatedAt
+    createdAt
+    cid
+    description
+    title
+  }
+}

@@ -12,14 +12,15 @@ import Typography from '@mui/material/Typography';
 import { bgGradient } from '@src/theme/css';
 import { COLORS } from '@src/layouts/config-layout.ts';
 
-import { notifyError, notifySuccess } from '@notifications/internal-notifications.ts';
-import { SUCCESS } from '@notifications/success.ts';
-import { ERRORS } from '@notifications/errors.ts';
+import { notifyError, notifySuccess } from '@src/libs/notifications/internal-notifications.ts';
+import { SUCCESS } from '@src/libs/notifications/success.ts';
+import { ERRORS } from '@src/libs/notifications/errors';
 
 import useReferrals from "@src/hooks/use-referrals";
 import LoadingButton from '@mui/lab/LoadingButton';
-import { checkIfEmailAlreadyInvited } from "@src/utils/supabase-actions.ts";
+import { checkIfEmailAlreadyInvited } from "@src/libs/supabase-actions.ts";
 import { useAuth } from '@src/hooks/use-auth.ts';
+import { resolveSrc } from '@src/utils/image.ts';
 
 interface Props extends BoxProps {
   img?: string;
@@ -42,7 +43,7 @@ export default function FinanceInviteFriends({
     checkIfEmailAlreadyAccepted,
   } = useReferrals();
   const theme = useTheme();
-  const { session: sessionData, email: userLoggedEmail } = useAuth();
+  const { session: sessionData } = useAuth();
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -80,7 +81,7 @@ export default function FinanceInviteFriends({
     }
 
     // Check if the email entered is the same as the logged user's email
-    if (email === userLoggedEmail) {
+    if (email === sessionData?.info?.email) {
       notifyError(ERRORS.INVITATION_USER_CANT_INVITE_SELF);
       setLoading(false);
       return;
@@ -105,9 +106,9 @@ export default function FinanceInviteFriends({
     const payload = {
       data: {
         from: {
-          id: sessionData?.profile?.id,
-          displayName: sessionData?.profile?.metadata?.displayName,
-          avatar: (sessionData?.profile?.metadata?.picture as any)?.optimized?.uri,
+          id: sessionData?.address,
+          displayName: sessionData.user?.displayName,
+          avatar: resolveSrc((sessionData?.user?.profilePicture || sessionData?.address) ?? '', 'profile'),
         },
       },
     };

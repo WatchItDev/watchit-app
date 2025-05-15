@@ -4,15 +4,13 @@ import Box from '@mui/material/Box';
 import Image from '../../../components/image';
 import { useRouter } from '@src/routes/hooks';
 import { paths } from '@src/routes/paths.ts';
-import { getAttachmentCid } from '@src/utils/publication.ts';
+import { getAttachmentCid, getMediaUri } from '@src/utils/publication.ts';
+import {ProfilePublicationItemProps} from "@src/sections/user/types.ts"
 
-interface Props {
-  publication: any;
-}
-
-export const ProfilePublicationItem = ({ publication }: Props) => {
+export const ProfilePublicationItem = ({ publication }: ProfilePublicationItemProps) => {
   const router = useRouter();
-  const poster = getAttachmentCid(publication, 'square') || getAttachmentCid(publication, 'poster');
+  const posterCid = getAttachmentCid(publication, 'square') || getAttachmentCid(publication, 'poster');
+  const posterImage = getMediaUri(posterCid);
 
   const handleClick = () => {
     router.push(paths.dashboard.publication.details(publication.id));
@@ -38,7 +36,7 @@ export const ProfilePublicationItem = ({ publication }: Props) => {
     >
       <Image
         alt={publication.id}
-        src={poster}
+        src={posterImage}
         ratio="1/1"
         sx={{
           borderRadius: 1,
@@ -57,7 +55,7 @@ export const ProfilePublicationItem = ({ publication }: Props) => {
             textOverflow: 'ellipsis',
           }}
         >
-          {publication?.metadata?.title}
+          {publication?.title}
         </Typography>
       </Box>
     </Box>

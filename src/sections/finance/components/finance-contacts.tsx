@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 // @mui
 import Stack from '@mui/material/Stack';
 import CardHeader from '@mui/material/CardHeader';
-import Card, { CardProps } from '@mui/material/Card';
+import Card from '@mui/material/Card';
 import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
 import ListItemText from '@mui/material/ListItemText';
@@ -21,26 +21,19 @@ import AvatarProfile from "@src/components/avatar/avatar.tsx";
 import { paths } from '@src/routes/paths';
 import { useRouter } from '@src/routes/hooks';
 
-// lens
-import { Profile } from '@lens-protocol/api-bindings';
 import { storeAddress, toggleRainbow } from '@redux/address';
+import {FinanceContactsCarouselProps} from "@src/sections/finance/types.ts"
+import { User } from '@src/graphql/generated/graphql.ts';
+import { resolveSrc } from '@src/utils/image.ts';
+import { truncateAddress } from '@src/utils/wallet.ts';
 
 // ----------------------------------------------------------------------
 
-interface Props extends CardProps {
-  title?: string;
-  subheader?: string;
-  list: Profile[];
-  chunkSize?: number; // how many contacts to display per slide
-}
 
-export default function FinanceContactsCarousel({
-  title,
-  subheader,
-  list,
-  chunkSize = 5,
-  ...other
-}: Props) {
+
+export default function FinanceContactsCarousel(props: Readonly<FinanceContactsCarouselProps>) {
+  const { title, subheader, list, chunkSize = 5,...other } = props
+
   const router = useRouter();
   const dispatch = useDispatch();
 
@@ -59,9 +52,11 @@ export default function FinanceContactsCarousel({
       const gtPos = currentPos - ((currentPos - pos) * progress) / time
       window.scrollTo(0, currentPos < pos ? lgPos : gtPos);
 
-      progress < time
-        ? window.requestAnimationFrame(step)
-        : window.scrollTo(0, pos);
+      if (progress < time) {
+        window.requestAnimationFrame(step);
+      } else {
+        window.scrollTo(0, pos);
+      }
 
     });
   }
@@ -91,7 +86,7 @@ export default function FinanceContactsCarousel({
   });
 
   // Split the array of contacts into chunks (each chunk is a "slide")
-  const slidesData: Profile[][] = [];
+  const slidesData: User[][] = [];
   for (let i = 0; i < list.length; i += chunkSize) {
     slidesData.push(list.slice(i, i + chunkSize));
   }
@@ -125,7 +120,7 @@ export default function FinanceContactsCarousel({
 // ----------------------------------------------------------------------
 
 interface SlideContactsProps {
-  chunk: Profile[];
+  chunk: User[];
   goToProfile: (id: string) => void;
   onClickArrow: (address: string, profileId: string) => void;
 }
@@ -142,27 +137,27 @@ function SlideContacts({ chunk, goToProfile, onClickArrow }: SlideContactsProps)
   return (
     <Stack spacing={3}>
       {chunk.map((profile) => (
-        <Stack direction="row" alignItems="center" key={profile.id}>
+        <Stack direction="row" alignItems="center" key={profile.address}>
           <Stack
             direction="row"
             alignItems="flex-start"
             sx={{ cursor: 'pointer', flexGrow: 1 }}
-            onClick={() => goToProfile(profile.id)}
+            onClick={() => goToProfile(profile.address)}
           >
             <AvatarProfile
-              alt={profile.metadata?.displayName || 'No Name'}
-              src={(profile?.metadata?.picture as any)?.optimized?.uri ?? profile?.id}
+              alt={profile.displayName || 'No Name'}
+              src={resolveSrc(profile.profilePicture || profile.address, 'profile')}
               sx={{ width: 48, height: 48, mr: 2 }}
             />
             <ListItemText
-              primary={profile.metadata?.displayName || 'No Name'}
-              secondary={profile.id}
+              primary={profile.displayName || 'No Name'}
+              secondary={truncateAddress(profile.address)}
             />
           </Stack>
 
           <Tooltip title="Quick Transfer">
             <IconButton
-              onClick={(event) => handleArrowClick(event, profile.ownedBy.address, profile.id)}
+              onClick={(event) => handleArrowClick(event, profile.address, profile.address)}
             >
               <Iconify icon="eva:diagonal-arrow-right-up-fill" />
             </IconButton>

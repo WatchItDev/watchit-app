@@ -1,0 +1,33 @@
+query GetPostsByAuthor($author: String!, $limit: Int) {
+  getPostsByAuthor(author: $author, limit: $limit) {
+    visibility
+    viewCount
+    updatedAt
+    media {
+      id
+      type
+      title
+      cid
+      url
+    }
+    likeCount
+    id
+    createdAt
+    commentCount
+    bookmarkCount
+    author {
+      address
+      displayName
+      followersCount
+      followingCount
+      coverPicture
+      profilePicture
+      bio
+      publicationsCount
+      username
+    }
+    cid
+    description
+    title
+  }
+}

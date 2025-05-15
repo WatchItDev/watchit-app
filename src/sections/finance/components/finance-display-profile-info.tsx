@@ -1,14 +1,8 @@
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import {FC} from "react";
-import {Profile} from "@lens-protocol/api-bindings";
 import {truncateAddress} from "@src/utils/wallet.ts";
-
-interface FinanceDisplayNameProps {
-  mode: 'profile' | 'wallet';
-  initialList?: Profile[];
-  carousel: any;
-}
+import {FinanceDisplayNameProps} from "@src/sections/finance/types.ts"
 
 /**
  * FinanceDisplayName is a functional component responsible for rendering the display name
@@ -38,13 +32,13 @@ const FinanceDisplayProfileInfo: FC<FinanceDisplayNameProps> = ({initialList, ca
       {
         mode === 'profile' ?
           (<Box component="span" sx={{ flexGrow: 1, typography: 'subtitle1' }}>
-            {selectedProfile?.metadata?.displayName ?? selectedProfile?.handle?.localName ?? 'No profile selected'}
+            {selectedProfile.displayName ?? selectedProfile.username ?? 'No profile selected'}
           </Box>) : null
       }
       {
         mode === 'wallet' ?
           <Typography variant="body2" color="text.secondary">
-            {truncateAddress(selectedProfile?.ownedBy?.address)}
+            {truncateAddress(selectedProfile.address)}
           </Typography> : null
       }
     </Box>

@@ -88,7 +88,6 @@ export const LeaveTipCard: FC = () => {
         <Stack direction="row" justifyContent="center" sx={{ mt: 4 }}>
           <LoadingButton
             variant="contained"
-            onClick={() => {}}
             disabled={true}
             sx={{ width: '100%', py: 1.5 }}
             loading={false}

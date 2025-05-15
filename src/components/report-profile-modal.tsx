@@ -1,11 +1,10 @@
-// LENS IMPORTS
-import { useReportProfile, ProfileReportReason } from '@lens-protocol/react-web';
 import { ReportModalBase } from '@src/components/report-modal-base.tsx';
+import { User } from '@src/graphql/generated/graphql.ts';
 
 // ----------------------------------------------------------------------
 
 interface ProfileReportModalProps {
-  profile: any;
+  profile: User;
   isOpen: boolean;
   onClose: () => void;
 }
@@ -13,14 +12,10 @@ interface ProfileReportModalProps {
 // ----------------------------------------------------------------------
 
 export const ReportProfileModal = ({ profile, isOpen, onClose }: ProfileReportModalProps) => {
-  const { execute: report } = useReportProfile();
+  // TODO implement the report profile mutation
 
   const handleSubmit = async (reason: string, comments: string) => {
-    return report({
-      profileId: profile.id,
-      reason: reason,
-      additionalComments: comments,
-    } as any);
+
   };
 
   return (

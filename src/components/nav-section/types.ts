@@ -33,7 +33,7 @@ export interface NavListProps {
   roles?: string[];
   badge?: string | number | React.ReactElement;
   bgColor?: string;
-  children?: any;
+  children?: React.ReactNode;
 }
 
 export type NavSectionProps = StackProps & {

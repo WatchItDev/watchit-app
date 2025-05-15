@@ -62,7 +62,6 @@ export default function HeaderSimple() {
             }}
             depth={1}
             config={{}}
-            onClick={() => {}}
           />
         </Stack>
 

@@ -1,4 +1,3 @@
-import { Profile } from '@lens-protocol/api-bindings';
 import { FC, useCallback, useRef, useState } from 'react';
 import FinanceQuickTransferModal from '@src/sections/finance/components/finance-quick-transfer-modal.tsx';
 import LoadingButton from '@mui/lab/LoadingButton';
@@ -6,9 +5,10 @@ import { useBoolean } from '@src/hooks/use-boolean.ts';
 import Iconify from '@src/components/iconify';
 import Typography from '@mui/material/Typography';
 import Popover from '@mui/material/Popover';
+import { User } from '@src/graphql/generated/graphql.ts';
 
 interface ProfileTransferProps {
-  profile: Profile;
+  profile: User;
 }
 
 const ProfileTransfer: FC<ProfileTransferProps> = ({ profile }) => {
@@ -52,7 +52,7 @@ const ProfileTransfer: FC<ProfileTransferProps> = ({ profile }) => {
         max={500}
         amount={-1}
         open={confirm.value}
-        address={profile?.ownedBy?.address}
+        address={profile?.address}
         onClose={confirm.onFalse}
         onFinish={handleTransferFinish}
         contactInfo={profile}

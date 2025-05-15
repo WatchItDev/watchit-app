@@ -35,15 +35,16 @@ import LedgerVaultAbi from "@src/config/abi/LedgerVault.json";
 import { store } from '@redux/store'
 import { useScrollToTop } from '@src/hooks/use-scroll-to-top';
 import { SettingsProvider, SettingsDrawer } from '@src/components/settings';
-import { AuthProvider } from '@src/auth/context/web3Auth';
+import { AuthProvider } from '@src/contexts/auth';
+import { ApiProvider } from '@src/contexts/api';
 import { ResponsiveOverlay } from '@src/components/responsive-overlay';
 import { MetaMaskProvider } from '@metamask/sdk-react';
 import { useNotifications } from "@src/hooks/use-notifications.ts";
-import { setGlobalNotifier } from "@notifications/internal-notifications.ts";
+import { setGlobalNotifier } from "@src/libs/notifications/internal-notifications.ts";
 import { useAuth } from '@src/hooks/use-auth.ts';
 import { publicClientWebSocket } from "@src/clients/viem/publicClient.ts";
 import { setBlockchainEvents } from "@redux/blockchain-events";
-import { subscribeToNotifications } from "@src/utils/subscribe-notifications-supabase.ts";
+import { subscribeToNotifications } from "@src/libs/subscribe-notifications-supabase.ts";
 import { GLOBAL_CONSTANTS } from "@src/config-global.ts";
 
 window.Buffer = Buffer;
@@ -73,8 +74,8 @@ export default function App() {
           url: window.location.href,
         },
         openDeeplink: (url) => {
-          const isMM = (window as any).ethereum?.isMetaMask;
-          if (typeof (window as any).ethereum === 'undefined' || !isMM) {
+          const isMM = window.ethereum?.isMetaMask;
+          if (typeof window.ethereum === 'undefined' || !isMM) {
             // Mobile version / no extension
             window.location.href = 'https://metamask.app.link';
           } else {
@@ -98,13 +99,15 @@ export default function App() {
         >
           <Provider store={store}>
             <AuthProvider>
-              <ThemeProvider>
-                <MotionLazy>
-                  <SnackbarProvider>
-                    <AppContent />
-                  </SnackbarProvider>
-                </MotionLazy>
-              </ThemeProvider>
+              <ApiProvider>
+                <ThemeProvider>
+                  <MotionLazy>
+                    <SnackbarProvider>
+                      <AppContent />
+                    </SnackbarProvider>
+                  </MotionLazy>
+                </ThemeProvider>
+              </ApiProvider>
             </AuthProvider>
           </Provider>
         </SettingsProvider>
@@ -160,11 +163,11 @@ const AppContent = () => {
 
 
   useEffect(() => {
-    if (sessionData?.profile?.id) {
-      subscribeToNotifications(sessionData?.profile?.id, dispatch, ['notifications']);
-      getNotifications(sessionData?.profile?.id).then(() => { });
+    if (sessionData?.address) {
+      subscribeToNotifications(sessionData?.address, dispatch, ['notifications']);
+      getNotifications(sessionData?.address);
     }
-  }, [sessionData?.profile?.id]);
+  }, [sessionData?.address]);
 
   return (
     <>

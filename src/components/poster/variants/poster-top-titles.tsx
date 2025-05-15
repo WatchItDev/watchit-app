@@ -8,46 +8,27 @@ import { IconBookmark, IconBookmarkFilled, IconPlayerPlay } from '@tabler/icons-
 import Box from '@mui/material/Box';
 import TextMaxLine from '@src/components/text-max-line';
 import { CircularProgress } from '@mui/material';
-import { useBookmarkToggle } from '@lens-protocol/react-web';
-import { openLoginModal } from '@redux/auth';
-import { useDispatch } from 'react-redux';
-import { addBookmark, removeBookmark } from '@redux/bookmark';
-import { dicebear } from "@src/utils/dicebear.ts";
-import { getAttachmentCid } from '@src/utils/publication.ts';
-import { useAuth } from '@src/hooks/use-auth.ts';
+import { getAttachmentCid, getMediaUri } from '@src/utils/publication.ts';
+import { useToggleBookmark } from '@src/hooks/use-toggle-bookmark';
+import { Post } from '@src/graphql/generated/graphql.ts';
+import { resolveSrc } from '@src/utils/image.ts';
+import { useBookmarks } from '@src/hooks/use-bookmark.ts';
 
-const PosterTopTitles = ({ post }: { post: any }) => {
+const PosterTopTitles = ({ post }: { post: Post }) => {
   const router = useRouter();
-  const { execute: toggleBookMarkFunction, loading: loadingBookMark } = useBookmarkToggle();
-  const { session: sessionData } = useAuth();
-  const dispatch = useDispatch();
   const poster = getAttachmentCid(post, 'square') || getAttachmentCid(post, 'poster');
   const wallpaper = getAttachmentCid(post, 'wallpaper');
+  const { has, loading: loadingList } = useBookmarks();
+  const { toggle, loading: loadingToggle } = useToggleBookmark();
+
+  const isBookmarked = has(post.id);
 
   const handlePosterClick = () => {
     router.push(paths.dashboard.publication.details(post.id));
   };
 
-  const toggleBookMark = async () => {
-    if (!sessionData?.authenticated) return dispatch(openLoginModal());
-
-    try {
-      if (!post?.operations?.hasBookmarked) {
-        dispatch(addBookmark(post));
-      } else {
-        dispatch(removeBookmark(post?.id));
-      }
-
-      await toggleBookMarkFunction({
-        publication: post,
-      });
-    } catch (err) {
-      console.error('Error toggling bookmark:', err);
-    }
-  };
-
   const goToProfile = () => {
-    router.push(paths.dashboard.user.root(`${post?.by?.id}`));
+    router.push(paths.dashboard.user.root(`${post.author.address}`));
   };
 
   return (
@@ -57,8 +38,8 @@ const PosterTopTitles = ({ post }: { post: any }) => {
       spacing={{ xs: 1, sm: 2, md: 4 }}
     >
       <Image
-        alt={post?.metadata?.title}
-        src={wallpaper}
+        alt={post.title}
+        src={getMediaUri(wallpaper)}
         ratio="16/9"
         sx={{
           zIndex: 0,
@@ -115,8 +96,8 @@ const PosterTopTitles = ({ post }: { post: any }) => {
                 borderRadius: '10px',
                 width: '100%',
               }}
-              alt={post?.metadata?.title}
-              src={poster}
+              alt={post.title}
+              src={getMediaUri(poster)}
               ratio="1/1"
             />
           </Box>
@@ -135,7 +116,7 @@ const PosterTopTitles = ({ post }: { post: any }) => {
           <Stack spacing={1} gap={'16px'}>
             <Stack spacing={1} gap={0}>
               <TextMaxLine line={2} variant="h3" sx={{ mb: 1 }}>
-                {post?.metadata?.title}
+                {post.title}
               </TextMaxLine>
 
               <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
@@ -161,11 +142,9 @@ const PosterTopTitles = ({ post }: { post: any }) => {
                     <Image
                       ratio={'1/1'}
                       style={{ width: '20px', height: '20px', borderRadius: '50%' }}
-                      src={
-                        post?.by?.metadata?.picture?.optimized?.uri ?? dicebear(post?.by?.id)
-                      }
+                      src={resolveSrc(post.author.profilePicture || post.author.address, 'profile')}
                     />
-                    {post?.by?.metadata?.displayName ?? post?.by?.handle?.localName}
+                    {post.author.displayName ?? post.author.username}
                   </Typography>
                 </Button>
               </Box>
@@ -180,7 +159,7 @@ const PosterTopTitles = ({ post }: { post: any }) => {
               }}
               variant="h6"
             >
-              {post?.metadata?.content ?? ''}
+              {post.description ?? ''}
             </Typography>
 
             <Stack direction="row" spacing={1} alignItems="center">
@@ -227,18 +206,14 @@ const PosterTopTitles = ({ post }: { post: any }) => {
                   height: '40px',
                   minWidth: '40px',
                 }}
-                onClick={toggleBookMark}
+                onClick={() => toggle(post)}
               >
-                {loadingBookMark ? (
-                  <CircularProgress size="25px" sx={{ color: '#fff' }} />
+                {loadingToggle || loadingList ? (
+                  <CircularProgress size={25} sx={{ color: '#fff' }} />
+                ) : isBookmarked ? (
+                  <IconBookmarkFilled size={22} />
                 ) : (
-                  <>
-                    {post?.operations?.hasBookmarked ? (
-                      <IconBookmarkFilled size={22} color="#FFFFFF" />
-                    ) : (
-                      <IconBookmark size={22} color="#FFFFFF" />
-                    )}
-                  </>
+                  <IconBookmark size={22} />
                 )}
               </Button>
             </Stack>

@@ -8,10 +8,10 @@ import { Address } from 'viem';
 import AccessAggAbi from '@src/config/abi/AccessAgg.json';
 import { publicClient } from '@src/clients/viem/publicClient.ts';
 import { UseHasAccessHook } from '@src/hooks/protocol/types.ts';
-import { notifyError } from '@notifications/internal-notifications.ts';
+import { notifyError } from '@src/libs/notifications/internal-notifications.ts';
 import { useAuth } from '@src/hooks/use-auth.ts';
 import { UseHasAccessDefaultResponse } from '@src/hooks/protocol/DEFAULTS.tsx';
-import { ERRORS } from '@notifications/errors.ts';
+import { ERRORS } from '@src/libs/notifications/errors.ts';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 
 /**
@@ -20,11 +20,11 @@ import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
  * @returns An object containing the access data, loading state, error, and a refetch function.
  */
 export const useHasAccess = (ownerAddress?: Address): UseHasAccessHook => {
-  const { session: sessionData, isFullyAuthenticated: isAuthenticated } = useAuth();
+  const { session } = useAuth();
   const [hasAccess, setHasAccess] = useState<boolean | undefined>(undefined);
   const [loading, setLoading] = useState(true);
 
-  const userAddress = sessionData?.profile?.ownedBy?.address;
+  const userAddress = session?.address;
 
   const fetchAccess = useCallback(async () => {
     if (!userAddress || !ownerAddress) {
@@ -34,16 +34,16 @@ export const useHasAccess = (ownerAddress?: Address): UseHasAccessHook => {
 
     setLoading(true);
     try {
-      const accessData: any = await publicClient.readContract({
+      const accessData = await publicClient.readContract({
         address: GLOBAL_CONSTANTS.ACCESS_AGG_ADDRESS,
         abi: AccessAggAbi.abi,
         functionName: 'isAccessAllowed',
         args: [userAddress, ownerAddress],
-      });
+      }) as readonly [boolean, number];
 
       const access = Boolean(accessData?.[0]);
       setHasAccess(access);
-    } catch (err: any) {
+    } catch (err) {
       console.error('Error checking access:', err);
       setHasAccess(false);
       notifyError(ERRORS.VERIFY_ACCESS_ERROR);
@@ -56,7 +56,7 @@ export const useHasAccess = (ownerAddress?: Address): UseHasAccessHook => {
     fetchAccess();
   }, [fetchAccess]);
 
-  if (!isAuthenticated) {
+  if (!session.authenticated) {
     return UseHasAccessDefaultResponse;
   }
 

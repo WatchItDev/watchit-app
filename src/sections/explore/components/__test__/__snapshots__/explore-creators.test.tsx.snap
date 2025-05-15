@@ -1,0 +1,249 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Testing in the ExploreCreators component > should render creators and match snapshot 1`] = `
+<div>
+  <div
+    class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 MuiCard-root css-bhp9pd-MuiPaper-root-MuiCard-root"
+  >
+    <div
+      class="MuiCardHeader-root css-1pkklwm-MuiCardHeader-root"
+    >
+      <div
+        class="MuiCardHeader-content css-1qbkelo-MuiCardHeader-content"
+      >
+        <span
+          class="MuiTypography-root MuiTypography-h5 MuiCardHeader-title css-1qvr50w-MuiTypography-root"
+        >
+          Latest creators
+        </span>
+      </div>
+      <div
+        class="MuiCardHeader-action css-sgoict-MuiCardHeader-action"
+      >
+        <button
+          class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeMedium css-78trlr-MuiButtonBase-root-MuiIconButton-root"
+          data-testid="leftButton"
+          tabindex="0"
+          type="button"
+        >
+          <svg
+            class="tabler-icon tabler-icon-chevron-left "
+            fill="none"
+            height="24"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            viewBox="0 0 24 24"
+            width="24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M15 6l-6 6l6 6"
+            />
+          </svg>
+          <span
+            class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
+          />
+        </button>
+        <button
+          class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeMedium css-78trlr-MuiButtonBase-root-MuiIconButton-root"
+          data-testid="rightButton"
+          tabindex="0"
+          type="button"
+        >
+          <svg
+            class="tabler-icon tabler-icon-chevron-right "
+            fill="none"
+            height="24"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            viewBox="0 0 24 24"
+            width="24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M9 6l6 6l-6 6"
+            />
+          </svg>
+          <span
+            class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
+          />
+        </button>
+      </div>
+    </div>
+    <div
+      class="MuiCardContent-root css-fd8ij7-MuiCardContent-root"
+    >
+      <div
+        class="MuiBox-root css-8lmyt0"
+      >
+        <div
+          class="slick-slider slick-initialized"
+        >
+          <div
+            class="slick-list"
+          >
+            <div
+              class="slick-track"
+              style="opacity: 1; transform: translate3d(0px, 0px, 0px);"
+            >
+              <div
+                aria-hidden="false"
+                class="slick-slide slick-active slick-current"
+                data-index="0"
+                style="outline: none; width: 0px;"
+                tabindex="-1"
+              >
+                <div>
+                  <div
+                    class="MuiBox-root css-0"
+                  >
+                    <div
+                      class="MuiBox-root css-k008qs"
+                    >
+                      <div
+                        class="MuiBox-root css-2mh0az"
+                      >
+                        <div
+                          class="MuiBox-root css-urjiuj"
+                        >
+                          <span
+                            class="component-image MuiBox-root css-1w0a4u"
+                          >
+                            <span
+                              class="component-image-wrapper lazy-load-image-background blur"
+                              style="background-image: url(/assets/placeholder.svg); background-size: 100% 100%; color: transparent; display: inline-block;"
+                            >
+                              <img
+                                alt="Profile Cover"
+                                class="MuiBox-root css-3j6ntj"
+                                src="https://picsum.photos/seed/profile1/1920/820"
+                              />
+                            </span>
+                          </span>
+                          <div
+                            class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 MuiCard-root css-vihmqx-MuiPaper-root-MuiCard-root"
+                          >
+                            <div
+                              class="MuiAvatar-root MuiAvatar-rounded css-13ubyhz-MuiAvatar-root"
+                            >
+                              <img
+                                alt=""
+                                class="MuiAvatar-img css-1pqm26d-MuiAvatar-img"
+                                src="https://api.dicebear.com/9.x/bottts-neutral/svg?seed=profile1"
+                              />
+                            </div>
+                            <div
+                              class="MuiBox-root css-7gc5b8"
+                            >
+                              <div
+                                class="MuiListItemText-root MuiListItemText-multiline css-konndc-MuiListItemText-root"
+                              >
+                                <span
+                                  class="MuiTypography-root MuiTypography-body1 MuiTypography-noWrap MuiListItemText-primary css-f69c18-MuiTypography-root"
+                                >
+                                  <div
+                                    class="MuiBox-root css-geek62"
+                                  >
+                                    <p
+                                      class="MuiTypography-root MuiTypography-body1 css-nl8q6o-MuiTypography-root"
+                                    >
+                                      Creator 1
+                                    </p>
+                                    <div
+                                      class="MuiBox-root css-1wqjpco"
+                                    />
+                                  </div>
+                                </span>
+                                <span
+                                  class="MuiTypography-root MuiTypography-body2 MuiTypography-noWrap MuiListItemText-secondary css-uhfo76-MuiTypography-root"
+                                >
+                                  A cool creator
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        class="MuiBox-root css-2mh0az"
+                      >
+                        <div
+                          class="MuiBox-root css-urjiuj"
+                        >
+                          <span
+                            class="component-image MuiBox-root css-1w0a4u"
+                          >
+                            <span
+                              class="component-image-wrapper lazy-load-image-background blur"
+                              style="background-image: url(/assets/placeholder.svg); background-size: 100% 100%; color: transparent; display: inline-block;"
+                            >
+                              <img
+                                alt="Profile Cover"
+                                class="MuiBox-root css-3j6ntj"
+                                src="https://picsum.photos/seed/profile2/1920/820"
+                              />
+                            </span>
+                          </span>
+                          <div
+                            class="MuiPaper-root MuiPaper-elevation MuiPaper-rounded MuiPaper-elevation1 MuiCard-root css-vihmqx-MuiPaper-root-MuiCard-root"
+                          >
+                            <div
+                              class="MuiAvatar-root MuiAvatar-rounded css-13ubyhz-MuiAvatar-root"
+                            >
+                              <img
+                                alt=""
+                                class="MuiAvatar-img css-1pqm26d-MuiAvatar-img"
+                                src="https://api.dicebear.com/9.x/bottts-neutral/svg?seed=profile2"
+                              />
+                            </div>
+                            <div
+                              class="MuiBox-root css-7gc5b8"
+                            >
+                              <div
+                                class="MuiListItemText-root MuiListItemText-multiline css-konndc-MuiListItemText-root"
+                              >
+                                <span
+                                  class="MuiTypography-root MuiTypography-body1 MuiTypography-noWrap MuiListItemText-primary css-f69c18-MuiTypography-root"
+                                >
+                                  <div
+                                    class="MuiBox-root css-geek62"
+                                  >
+                                    <p
+                                      class="MuiTypography-root MuiTypography-body1 css-nl8q6o-MuiTypography-root"
+                                    >
+                                      Creator 2
+                                    </p>
+                                    <div
+                                      class="MuiBox-root css-1wqjpco"
+                                    />
+                                  </div>
+                                </span>
+                                <span
+                                  class="MuiTypography-root MuiTypography-body2 MuiTypography-noWrap MuiListItemText-secondary css-uhfo76-MuiTypography-root"
+                                >
+                                  Another cool creator
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      class="MuiBox-root css-k008qs"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

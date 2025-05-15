@@ -10,17 +10,10 @@ import LoadingButton from "@mui/lab/LoadingButton";
 // LOCAL IMPORTS
 import { openLoginModal } from "@redux/auth";
 import { SubscribeProfileModal } from "@src/components/subscribe-profile-modal.tsx";
-import { ProfileHeaderProps } from '@src/sections/user/types.ts';
+import { ProfileJoinProps} from '@src/sections/user/types.ts'
 import { useAuth } from '@src/hooks/use-auth.ts';
 
-interface ProfileJoinProps extends ProfileHeaderProps {
-  profileJoinProps: {
-    hasAccess?: boolean;
-    accessLoading: boolean;
-    accessFetchingLoading: boolean;
-    onSubscribe: () => void;
-  }
-}
+
 
 const ProfileJoin: FC<ProfileJoinProps> = ({profile, profileJoinProps}) => {
   const [openSubscribeModal, setOpenSubscribeModal] = useState(false);

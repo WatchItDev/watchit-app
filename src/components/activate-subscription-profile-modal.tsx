@@ -27,16 +27,10 @@ import { useAuthorizePolicy } from '@src/hooks/protocol/use-authorize-policy.ts'
 import NeonPaper from '@src/sections/publication/components/neon-paper-container.tsx';
 import Box from '@mui/material/Box';
 import LoadingButton from '@mui/lab/LoadingButton';
-import { notifyError, notifySuccess } from '@notifications/internal-notifications.ts';
-import { SUCCESS } from '@notifications/success.ts';
-import { ERRORS } from '@notifications/errors.ts';
-
-// ----------------------------------------------------------------------
-
-interface ActivateSubscriptionProfileModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-}
+import { notifyError, notifySuccess } from '@src/libs/notifications/internal-notifications.ts';
+import { SUCCESS } from '@src/libs/notifications/success.ts';
+import { ERRORS } from '@src/libs/notifications/errors';
+import {ActivateSubscriptionProfileModalProps} from "@src/components/types.ts"
 
 // ----------------------------------------------------------------------
 
@@ -86,7 +80,6 @@ export const ActivateSubscriptionProfileModal = ({
         { name: 'token', type: 'address' },
       ];
       const values = [amountInWei, GLOBAL_CONSTANTS.MMC_ADDRESS];
-      // @ts-ignore
       const encodedData = encodeAbiParameters(types, values);
 
       await authorize({
@@ -97,7 +90,8 @@ export const ActivateSubscriptionProfileModal = ({
       notifySuccess(SUCCESS.JOINING_PRICE_SUCCESSFULLY);
 
       onClose?.();
-    } catch (err) {
+    } catch (error) {
+      console.error('Error authorizing subscription:', error);
       notifyError(ERRORS.ACTIVATE_SUBSCRIPTION_FAILED_ERROR);
     }
   };

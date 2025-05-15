@@ -75,7 +75,7 @@ vi.mock('@src/config-global.ts', () => ({
   }
 }));
 
-// @ts-ignore
+// @ts-expect-error No error in this context
 window.matchMedia = window.matchMedia || function() {
   return {
     matches : false,

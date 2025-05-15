@@ -6,40 +6,28 @@ import BadgeVerified from "@src/components/user-item/BadgeVerified.tsx";
 import Image from '../image';
 import AvatarProfile from "@src/components/avatar/avatar.tsx";
 import { memo, FC } from 'react';
-import { Theme } from '@mui/material/styles';
-import { SxProps } from '@mui/system/styleFunctionSx';
 import { Address } from 'viem';
 import { useRouter } from '@src/routes/hooks';
 import { paths } from '../../routes/paths';
-import { Profile } from '@lens-protocol/api-bindings';
 import {capitalizeFirstLetter} from "@src/utils/text-transform.ts"
 import { useAuth } from '@src/hooks/use-auth.ts';
-
-// ----------------------------------------------------------------------
-
-interface FollowerItemProps {
-  profile: Profile;
-  onClick?: () => void;
-  onActionFinished?: () => void;
-  sx?: SxProps<Theme>;
-}
+import {FollowerItemProps} from "@src/components/user-item/types.ts"
+import { resolveSrc } from '@src/utils/image.ts';
 
 // ----------------------------------------------------------------------
 
 export const UserItem = memo(
   ({
-    profile: profileData,
+    profile,
     sx,
     onClick,
   }: FollowerItemProps) => {
-    const { session: sessionData } = useAuth();
+    const { session } = useAuth();
     const router = useRouter();
-    const profile =
-      sessionData && sessionData?.profile?.id === profileData?.id ? sessionData.profile : profileData;
 
     const goToProfile = () => {
       // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-      onClick ? onClick() : router.push(paths.dashboard.user.root(`${profile.id}`));
+      onClick ? onClick() : router.push(paths.dashboard.user.root(`${profile.address}`));
     };
 
     return (
@@ -60,11 +48,8 @@ export const UserItem = memo(
           onClick={goToProfile}
         >
           <Image
-            alt={profile?.handle?.localName ?? 'Profile Cover'}
-            src={
-              profile?.metadata?.coverPicture?.optimized?.uri ??
-              `https://picsum.photos/seed/${profile?.id}/1920/820`
-            }
+            alt={profile?.username ?? 'Profile Cover'}
+            src={resolveSrc((profile?.coverPicture || profile?.address) ?? '', 'cover')}
             sx={{
               height: 120,
               opacity: 0.7,
@@ -88,8 +73,8 @@ export const UserItem = memo(
             }}
           >
             <AvatarProfile
-              src={(profile?.metadata?.picture as any)?.optimized?.uri ?? profile?.id}
-              alt={profile?.handle?.localName ?? ''}
+              src={profile?.profilePicture || profile?.address}
+              alt={profile?.username ?? ''}
               sx={{ width: 48, height: 48, mr: 2 }}
               variant="rounded"
             />
@@ -104,9 +89,9 @@ export const UserItem = memo(
               }}
             >
               <ListItemText
-                primary={<UserNameAndBadge address={profile?.ownedBy?.address} name={capitalizeFirstLetter(profile?.metadata?.displayName) ?? profile?.handle?.localName} />}
+                primary={<UserNameAndBadge address={profile?.address as Address} name={capitalizeFirstLetter(profile?.displayName as string) ?? profile?.username} />}
                 secondary={
-                  <>{profile?.id !== sessionData?.profile?.id ? profile?.metadata?.bio ?? profile?.id : 'This is you!'}</>
+                  <>{profile?.address !== session?.address ? profile?.bio ?? profile?.address : 'This is you!'}</>
                 }
                 primaryTypographyProps={{
                   noWrap: true,
@@ -128,7 +113,7 @@ export const UserItem = memo(
       </>
     );
   }
-, (prevProps, nextProps) => prevProps.profile.id === nextProps.profile.id);
+, (prevProps, nextProps) => prevProps.profile.address === nextProps.profile.address);
 
 interface UserNameAndBadgeProps {
   name: string;

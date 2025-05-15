@@ -4,14 +4,10 @@ import { useState, useEffect, PropsWithChildren } from 'react';
 // MUI IMPORTS
 import LoadingButton from '@mui/lab/LoadingButton';
 
-// LENS IMPORTS
-import { ProfileId, useFollow, useUnfollow } from '@lens-protocol/react-web';
-import { useLazyProfile } from '@lens-protocol/react';
-
 // REDUX IMPORTS
 import { openLoginModal } from '@redux/auth';
 import { useDispatch } from 'react-redux';
-import { removeFollowing, addFollowing } from '@redux/followers';
+import { addFollower, removeFollower } from '@redux/followers';
 
 // LOCAL IMPORTS
 import Box from '@mui/material/Box';
@@ -20,11 +16,16 @@ import { useNotifications } from '@src/hooks/use-notifications.ts';
 import { useNotificationPayload } from '@src/hooks/use-notification-payload.ts';
 
 // Notifications
-import { notifyError, notifySuccess } from '@notifications/internal-notifications';
-import { pascalToUpperSnake } from '@src/utils/text-transform';
+import { notifyError, notifySuccess } from '@src/libs/notifications/internal-notifications';
 import { useAuth } from '@src/hooks/use-auth.ts';
-import { ERRORS } from '@notifications/errors';
-import { SUCCESS } from '@notifications/success';
+import { ERRORS } from '@src/libs/notifications/errors';
+import { SUCCESS } from '@src/libs/notifications/success';
+import {
+  useGetIsFollowingLazyQuery,
+  useGetUserLazyQuery,
+  useToggleFollowMutation,
+} from '@src/graphql/generated/hooks.tsx';
+import { User } from '@src/graphql/generated/graphql.ts';
 
 // ----------------------------------------------------------------------
 
@@ -42,110 +43,83 @@ const FollowUnfollowButton = ({
   followButtonMinWidth = 120,
 }: PropsWithChildren<FollowUnfollowButtonProps>) => {
   const dispatch = useDispatch();
-  const { data: profile, execute: getProfile, loading } = useLazyProfile();
-  const [isFollowed, setIsFollowed] = useState(profile?.operations?.isFollowedByMe?.value);
-  const [isProcessing, setIsProcessing] = useState(false);
-  const { session: sessionData } = useAuth();
-  const { execute: follow, error: followError, loading: followLoading } = useFollow();
-  const { execute: unfollow, error: unfollowError, loading: unfollowLoading } = useUnfollow();
+  const [loadProfile, { data: profileData, loading: profileLoading }] = useGetUserLazyQuery({ fetchPolicy: 'cache-and-network' });
+  const [toggleFollow, { loading: profileFollowLoading }] = useToggleFollowMutation();
+  const [getIsFollowing, { data: isFollowingData, loading: isFollowingLoading }] = useGetIsFollowingLazyQuery({ fetchPolicy: 'network-only' });
+  const [isFollowed, setIsFollowed] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(true);
+  const { session } = useAuth();
   const { sendNotification } = useNotifications();
-  const { generatePayload } = useNotificationPayload(sessionData);
+  const { generatePayload } = useNotificationPayload(session);
+  const profile: User | null = profileData?.getUser;
+  const isLoading = isProcessing || profileLoading || profileFollowLoading || isFollowingLoading;
+  const RainbowEffect = isLoading ? NeonPaper : Box;
 
   useEffect(() => {
-    if (profileId && profileId !== sessionData?.profile?.id)
-      getProfile({ forProfileId: profileId as ProfileId });
+    if (profileId && profileId !== session?.address) loadProfile({variables: { input: { address: profileId } }});
+
+    getIsFollowing({variables: { targetAddress: profileId }});
   }, []);
 
-  // Handle errors from follow and unfollow actions
   useEffect(() => {
-    if (followError) handleActionError(followError);
-    if (unfollowError) handleActionError(unfollowError);
-  }, [followError, unfollowError]);
-
-  useEffect(() => {
-    getProfile({ forProfileId: profileId as ProfileId });
-  }, [sessionData?.authenticated]);
-
-  useEffect(() => {
-    setIsFollowed(profile?.operations?.isFollowedByMe?.value);
-  }, [profile?.operations?.isFollowedByMe?.value]);
+    setIsProcessing(false);
+    setIsFollowed(isFollowingData?.getIsFollowing ?? false);
+  }, [isFollowingData]);
 
   const handleUpdateProfile = () => {
-    getProfile({ forProfileId: profileId as ProfileId });
+    loadProfile({variables: { input: { address: profileId } }});
   };
 
   // General function to handle follow/unfollow actions
-  const handleAction = async (
-    action: any,
-    actionLbl: string,
-    profileName: string,
-    followState: boolean
-  ) => {
+  const handleAction = async () => {
     if (!profile) return;
-    if (!sessionData?.authenticated) return dispatch(openLoginModal());
+    if (!session?.authenticated) return dispatch(openLoginModal());
 
     setIsProcessing(true);
     try {
-      const result = await action({ profile });
-      if (result.isSuccess()) {
-        notifySuccess(SUCCESS.FOLLOW_UNFOLLOW_SUCCESSFULLY, {
-          actionLbl,
-          profileName,
-        });
+      const result = await toggleFollow({ variables: { input: { targetAddress: profileId } } });
 
-        setIsFollowed(followState);
+      notifySuccess(SUCCESS.FOLLOW_UNFOLLOW_SUCCESSFULLY, {
+        actionLbl: result?.data?.toggleFollow ? 'followed' : 'unfollowed',
+        profileName: profile?.displayName ?? 'no name',
+      });
 
-        // Wait for transaction confirmation
-        await result.value.waitForCompletion();
-        handleUpdateProfile();
+      setIsFollowed(result?.data?.toggleFollow);
+      handleUpdateProfile();
 
-        // Update the following list
-        if (action === unfollow) {
-          dispatch(removeFollowing(profileId));
-        } else {
-          dispatch(addFollowing(profile));
-        }
-
-        // Send notification to the profile being followed
-        const notificationPayload = generatePayload(
-          'FOLLOW',
-          {
-            id: profile.id,
-            displayName: profile?.metadata?.displayName ?? 'no name',
-            avatar: (profile?.metadata?.picture as any)?.optimized?.uri,
-          },
-          {
-            rawDescription: `${sessionData?.profile?.metadata?.displayName} now is following you`,
-          }
-        );
-
-        await sendNotification(profile.id, sessionData?.profile?.id, notificationPayload);
+      if (result?.data?.toggleFollow) {
+        dispatch(addFollower(profile));
       } else {
-        handleActionError(result.error);
+        dispatch(removeFollower(profileId));
       }
+
+      // Send notification to the profile being followed
+      const notificationPayload = generatePayload(
+        'FOLLOW',
+        {
+          id: profile.address,
+          displayName: profile?.displayName ?? 'no name',
+          avatar: profile?.profilePicture ?? '',
+        },
+        {
+          rawDescription: `${session?.user?.displayName} now is following you`,
+        }
+      );
+
+      await sendNotification(profile.address, session?.address ?? '', notificationPayload);
     } catch (err) {
       notifyError(ERRORS.FOLLOW_UNFOLLOW_OCCURRED_ERROR);
+      console.log('Error while follow/unfollow: ', err)
+
     } finally {
       setIsProcessing(false);
     }
   };
 
-  // Function to handle action errors
-  const handleActionError = (error: any) => {
-    const errorName =
-      ERRORS[pascalToUpperSnake(error.name) as keyof typeof ERRORS] || ERRORS.UNKNOWN_ERROR;
-    notifyError(errorName, {
-      symbol: error.requestedAmount?.asset?.symbol ?? '',
-      amount: error.requestedAmount?.toSignificantDigits(6) ?? '',
-    });
-  };
-
-  const RainbowEffect = isProcessing || loading ? NeonPaper : Box;
-
   return (
     <>
       <RainbowEffect
-        {...((isProcessing || loading) && {
+        {...((isLoading) && {
           borderRadius: '10px',
           animationSpeed: '3s',
           padding: '0',
@@ -162,13 +136,10 @@ const FollowUnfollowButton = ({
           }}
           onClick={(event) => {
             event.stopPropagation();
-
-            isFollowed
-              ? handleAction(unfollow, profile?.handle?.localName ?? '', 'unfollowed', false)
-              : handleAction(follow, profile?.handle?.localName ?? '', 'followed', true);
+            handleAction();
           }}
-          disabled={isProcessing || profile?.id === sessionData?.profile?.id || loading}
-          loading={followLoading || unfollowLoading}
+          disabled={isLoading || profile?.address === session?.address}
+          loading={isLoading}
         >
           {isFollowed ? 'Unfollow' : 'Follow'}
         </LoadingButton>

@@ -1,0 +1,22 @@
+query GetActiveUsers($limit: Int) {
+  getActiveUsers(limit: $limit) {
+    address
+    bio
+    bookmarksCount
+    coverPicture
+    createdAt
+    displayName
+    followersCount
+    followingCount
+    profilePicture
+    publicationsCount
+    socialLinks {
+      url
+      platform
+    }
+    updatedAt
+    username
+    verified
+    xpBalance
+  }
+}

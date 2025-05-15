@@ -1,0 +1,33 @@
+query GetPost($getPostId: String!) {
+  getPost(id: $getPostId) {
+    author {
+      address
+      displayName
+      followersCount
+      followingCount
+      coverPicture
+      profilePicture
+      bio
+      publicationsCount
+      username
+    }
+    bookmarkCount
+    cid
+    commentCount
+    createdAt
+    description
+    id
+    likeCount
+    media {
+      cid
+      id
+      title
+      type
+      url
+    }
+    title
+    updatedAt
+    viewCount
+    visibility
+  }
+}

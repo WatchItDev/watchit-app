@@ -1,27 +1,11 @@
 // @mui components
 import DialogActions from '@mui/material/DialogActions';
 import LoadingButton from '@mui/lab/LoadingButton';
+import {FinanceDialogsActionsProps} from "@src/sections/finance/types.ts"
 
-interface FinanceDialogsActionsProps {
-  rainbowComponent: any;
-  loading: boolean;
-  actionLoading: boolean;
-  amount: number;
-  balance: number;
-  label: string;
-  onConfirmAction: () => void;
-  onCloseAction?: () => void
-}
+const FinanceDialogsActions = (props: FinanceDialogsActionsProps) => {
+  const {rainbowComponent: RainbowEffect, onConfirmAction, loading, actionLoading, amount, balance, label} = props;
 
-const FinanceDialogsActions = ({
-  rainbowComponent: RainbowEffect,
-  onConfirmAction,
-  loading,
-  actionLoading,
-  amount,
-  balance,
-  label
-}: FinanceDialogsActionsProps) => {
   return (
     <DialogActions sx={{ width: '100%', pt: 1 }}>
       <RainbowEffect

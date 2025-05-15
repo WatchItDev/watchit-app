@@ -1,24 +1,11 @@
-import { FC, useState, ReactNode } from 'react';
+import { FC, useState } from 'react';
 
 // MUI IMPORTS
 import Tab from '@mui/material/Tab';
 import DialogTitle from '@mui/material/DialogTitle';
 import Tabs, { tabsClasses } from '@mui/material/Tabs';
-import Dialog, { dialogClasses, DialogProps } from '@mui/material/Dialog';
-
-interface TabConfig {
-  value: string;
-  label: string;
-  disabled?: boolean;
-  icon: any;
-}
-
-interface FinanceModalProps extends DialogProps {
-  onClose: VoidFunction;
-  title: string;
-  tabs: TabConfig[];
-  renderContent: (currentTab: string) => ReactNode;
-}
+import Dialog, { dialogClasses } from '@mui/material/Dialog';
+import {FinanceModalProps} from "@src/sections/finance/types.ts"
 
 const FinanceModal: FC<FinanceModalProps> = ({ open, onClose, title, tabs, renderContent, ...dialogProps }) => {
   const [currentTab, setCurrentTab] = useState('smartAccount');

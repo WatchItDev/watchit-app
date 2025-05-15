@@ -6,15 +6,14 @@ import { Modal, Box, Fade, Backdrop } from '@mui/material';
 
 // LOCAL IMPORTS
 import { ProfileFormView } from '@src/components/login-modal/profile-form-view.tsx';
-// @ts-ignore
-import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
-import { useSelector } from 'react-redux';
 
 // Notifications
-import { notifySuccess } from '@notifications/internal-notifications.ts';
-import { SUCCESS } from '@notifications/success.ts';
-import {RootState} from "@redux/store.ts"
+import { notifySuccess } from '@src/libs/notifications/internal-notifications.ts';
+import { SUCCESS } from '@src/libs/notifications/success.ts';
 import { useAuth } from '@src/hooks/use-auth.ts';
+import { useAccountSession } from '@src/hooks/use-account-session.ts';
+import { getSocialLinks } from '@src/utils/profile.ts';
+import { User } from '@src/graphql/generated/graphql.ts';
 
 // ----------------------------------------------------------------------
 
@@ -26,10 +25,12 @@ interface UpdateModalProps {
 // ----------------------------------------------------------------------
 
 export const UpdateModal: React.FC<UpdateModalProps> = ({ open, onClose }) => {
-  const { session: sessionData, isSessionLoading: loading } = useAuth();
+  const { session, isAuthLoading } = useAuth();
+  const { refreshUser } = useAccountSession();
 
-  const handleProfileUpdateSuccess = () => {
+  const handleProfileUpdateSuccess = async () => {
     notifySuccess(SUCCESS.PROFILE_UPDATED_SUCCESSFULLY);
+    await refreshUser();
     onClose?.();
   };
 
@@ -44,7 +45,7 @@ export const UpdateModal: React.FC<UpdateModalProps> = ({ open, onClose }) => {
         BackdropComponent={Backdrop}
         BackdropProps={{
           timeout: 500,
-          sx: { pointerEvents: loading ? 'none' : 'all' },
+          sx: { pointerEvents: isAuthLoading ? 'none' : 'all' },
         }}
       >
         <Fade in={open}>
@@ -70,19 +71,13 @@ export const UpdateModal: React.FC<UpdateModalProps> = ({ open, onClose }) => {
               onSuccess={handleProfileUpdateSuccess}
               onCancel={onClose}
               mode="update"
-              address={sessionData?.profile?.ownedBy?.address}
               initialValues={{
-                name: sessionData?.profile?.metadata?.displayName,
-                username: sessionData?.profile?.handle?.localName,
-                bio: sessionData?.profile?.metadata?.bio,
-                profileImage: (sessionData?.profile?.metadata?.picture as any)?.optimized?.uri,
-                backgroundImage: (sessionData?.profile?.metadata?.coverPicture as any)?.optimized?.uri,
-                socialLinks: {
-                  twitter: '',
-                  instagram: '',
-                  orb: '',
-                  farcaster: '',
-                },
+                displayName: session?.user?.displayName ?? '',
+                username: session?.user?.username ?? '',
+                bio: session?.user?.bio ?? '',
+                profilePicture: session?.user?.profilePicture ?? null,
+                coverPicture: session?.user?.coverPicture ?? null,
+                socialLinks: getSocialLinks(session.user as User),
               }}
             />
           </Box>

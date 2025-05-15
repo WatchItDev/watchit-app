@@ -20,15 +20,13 @@ import { useResponsive } from '@src/hooks/use-responsive';
 import { useEventListener } from '@src/hooks/use-event-listener';
 import { useRouter } from '@src/routes/hooks';
 import { applyFilter } from './utils';
-import { useSearchProfiles } from '@lens-protocol/react-web';
-import { useSearchPublications } from '@src/hooks/use-search-publications';
 import { CircularProgress } from '@mui/material';
 import { paths } from '@src/routes/paths.ts';
 import { useSelector } from 'react-redux';
-import {filterHiddenProfiles} from "@src/utils/profile.ts";
 import {RootState} from "@redux/store.ts"
-import {SearchPublicationResult} from "@src/layouts/_common/searchbar/types.ts"
 import {detectOperatingSystem} from "@src/utils/os-detection.ts"
+import { useGetPostsLazyQuery, useGetUsersLazyQuery } from '@src/graphql/generated/hooks.tsx';
+import { Post, User } from '@src/graphql/generated/graphql.ts';
 
 function Searchbar() {
   const theme = useTheme();
@@ -36,7 +34,10 @@ function Searchbar() {
   const search = useBoolean();
   const mdUp = useResponsive('up', 'md');
   const [searchQuery, setSearchQuery] = useState('');
-
+  const [searchUsers, { data: usersData, loading: loadingProfiles }] = useGetUsersLazyQuery();
+  const [searchPosts, { data: postsData, loading: loadingPosts }] = useGetPostsLazyQuery();
+  const profiles = usersData?.getUsers;
+  const posts = postsData?.getPosts;
   const { isMac } = detectOperatingSystem();
   const shortcutLabel = isMac ? '⌘K' : 'Ctrl+K';
   const handleClose = useCallback(() => {
@@ -49,6 +50,8 @@ function Searchbar() {
       event.preventDefault();
       search.onToggle();
       setSearchQuery('');
+      searchUsers({ variables: { query: '' } });
+      searchPosts({ variables: { query: '' } });
     }
   };
 
@@ -69,13 +72,11 @@ function Searchbar() {
   };
 
   const handleSearch = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(event.target.value);
+    const value = event.target.value;
+    setSearchQuery(value);
+    searchUsers({ variables: { query: value, limit: 50 } });
+    searchPosts({ variables: { query: value, limit: 50 } });
   }, []);
-
-  const { data: results, loading: loadingProfiles } = useSearchProfiles({ query: searchQuery });
-  const { publications, loading: loadingPublications } = useSearchPublications(searchQuery);
-
-  const profiles = filterHiddenProfiles(results)
 
   const dataFiltered = applyFilter({
     inputData: [],
@@ -83,7 +84,7 @@ function Searchbar() {
   });
 
   const notFound =
-    searchQuery && !dataFiltered.length && !profiles?.length && !publications?.length;
+    searchQuery && !dataFiltered.length && !profiles?.length && !posts?.length;
 
   const minibarState = useSelector((state: RootState) => state.minibar.state);
 
@@ -94,7 +95,7 @@ function Searchbar() {
   const hideSearchText = isMini && lgUp;
 
   const renderItems = () => {
-    if (!searchQuery && !profiles?.length && !publications?.length) {
+    if (!searchQuery && !profiles?.length && !posts?.length) {
       return (
         <Typography
           variant="h6"
@@ -117,26 +118,26 @@ function Searchbar() {
     return (
       <>
         {profiles &&
-          profiles.map((profile) => (
-            <List key={profile.id}>
+          profiles.map((profile: User) => (
+            <List key={profile.address}>
               <ResultItem
-                title={`${profile?.metadata?.displayName ?? profile?.handle?.localName}`}
-                subtitle={`${profile?.metadata?.bio ?? profile?.id}`}
+                title={`${profile.displayName ?? profile.username}`}
+                subtitle={`${profile.bio ?? profile.address}`}
                 groupLabel={'Profile'}
-                onClickItem={() => handleClickProfile(`${profile.id}`)}
+                onClickItem={() => handleClickProfile(`${profile.address}`)}
               />
             </List>
           ))}
 
-        {publications &&
-          publications.map((publication: SearchPublicationResult) => (
+        {posts &&
+          posts.map((publication: Post) => (
             <List key={publication.id}>
               <ResultItem
                 query={searchQuery}
                 title={`${publication?.title}`}
                 subtitle={`${publication?.description}`}
                 groupLabel={'Publication'}
-                onClickItem={() => handleClickPublication(`${publication.post_id}`)}
+                onClickItem={() => handleClickPublication(`${publication.id}`)}
               />
             </List>
           ))}
@@ -182,7 +183,7 @@ function Searchbar() {
     </Button>
   );
 
-  const loading = loadingProfiles || loadingPublications;
+  const loading = loadingProfiles || loadingPosts;
 
   return (
     <>

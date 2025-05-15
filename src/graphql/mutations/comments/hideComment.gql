@@ -1,0 +1,3 @@
+mutation HideComment($commentId: String!) {
+  hideComment(commentId: $commentId)
+}

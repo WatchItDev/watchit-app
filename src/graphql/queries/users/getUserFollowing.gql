@@ -1,0 +1,22 @@
+query GetUserFollowing($address: String!, $limit: Int) {
+  getUserFollowing(address: $address, limit: $limit) {
+    address
+    username
+    displayName
+    bio
+    profilePicture
+    coverPicture
+    xpBalance
+    followersCount
+    followingCount
+    publicationsCount
+    bookmarksCount
+    socialLinks {
+      platform
+      url
+    }
+    verified
+    createdAt
+    updatedAt
+  }
+}

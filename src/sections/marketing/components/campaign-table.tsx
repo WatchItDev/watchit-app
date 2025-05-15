@@ -19,11 +19,10 @@ import {
   useTable,
 } from '@src/components/table';
 import { LoadingScreen } from "@src/components/loading-screen";
-import { CampaignTableProps } from '@src/sections/marketing/types.ts';
+import { CampaignTableProps, FormattedCampaign } from '@src/sections/marketing/types.ts';
 import { COLORS } from '@src/layouts/config-layout';
 import { CAMPAIGN_TABLE_HEAD } from '@src/sections/marketing/CONSTANTS.tsx';
-
-// ----------------------------------------------------------------------
+import {CampaignLog} from "@src/hooks/protocol/types.ts"
 
 const CampaignTable: FC<CampaignTableProps> = (args) => {
   const { campaigns, loading } = args;
@@ -34,10 +33,10 @@ const CampaignTable: FC<CampaignTableProps> = (args) => {
   });
 
   // Map each contract log to the structure required by CampaignTableRow.
-  const formattedCampaigns = campaigns
+  const formattedCampaigns: FormattedCampaign[] = campaigns
     .slice()
     .reverse()
-    .map((item: any) => ({
+    .map((item: CampaignLog) => ({
       campaign: item.args?.campaign || item.transactionHash,
       name: item?.args?.description || 'Campaign Name',
       policy: item?.args?.policy,
@@ -75,7 +74,7 @@ const CampaignTable: FC<CampaignTableProps> = (args) => {
                         table.page * table.rowsPerPage,
                         table.page * table.rowsPerPage + table.rowsPerPage
                       )
-                      .map((row: any) => (
+                      .map((row: FormattedCampaign) => (
                         <CampaignTableRow
                           key={row.campaign}
                           row={row}

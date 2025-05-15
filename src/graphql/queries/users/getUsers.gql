@@ -1,0 +1,10 @@
+query GetUsers($limit: Int, $query: String!) {
+  getUsers(limit: $limit, query: $query) {
+    address
+    displayName
+    bio
+    coverPicture
+    username
+    profilePicture
+  }
+}

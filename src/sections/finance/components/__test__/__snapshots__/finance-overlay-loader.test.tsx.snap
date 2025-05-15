@@ -1,0 +1,26 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`[COMPONENTS] <FinanceOverlayLoader/> > to match snapshot 1`] = `
+<div>
+  <div
+    class="MuiBox-root css-4c6let"
+    data-testid="loading-screen"
+  >
+    <div
+      class="MuiBox-root css-tk1iyj"
+    >
+      <span
+        class="MuiLinearProgress-root MuiLinearProgress-colorInherit MuiLinearProgress-indeterminate css-yptbrg-MuiLinearProgress-root"
+        role="progressbar"
+      >
+        <span
+          class="MuiLinearProgress-bar MuiLinearProgress-barColorInherit MuiLinearProgress-bar1Indeterminate css-jlm0hp-MuiLinearProgress-bar1"
+        />
+        <span
+          class="MuiLinearProgress-bar MuiLinearProgress-barColorInherit MuiLinearProgress-bar2Indeterminate css-1wsh2fw-MuiLinearProgress-bar2"
+        />
+      </span>
+    </div>
+  </div>
+</div>
+`;

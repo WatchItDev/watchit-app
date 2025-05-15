@@ -1,0 +1,17 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`[COMPONENTS]: AvatarProfile component testing > to match snapshot 1`] = `
+<body>
+  <div>
+    <div
+      class="MuiAvatar-root MuiAvatar-circular css-nxmzm1-MuiAvatar-root"
+    >
+      <img
+        alt="Avatar profile"
+        class="MuiAvatar-img css-1pqm26d-MuiAvatar-img"
+        src="https://api.dicebear.com/9.x/bottts-neutral/svg?seed=test-src"
+      />
+    </div>
+  </div>
+</body>
+`;

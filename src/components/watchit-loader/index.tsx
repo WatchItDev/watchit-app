@@ -1,11 +1,11 @@
-import { FC, useEffect, useRef } from 'react';
+import {CSSProperties, FC, useEffect, useRef} from 'react'
 import Box from '@mui/material/Box';
 import Lottie, { LottieRefCurrentProps } from 'lottie-react';
 import watchitLogo from '@src/assets/animations/watchit-spinner.json';
 
 interface WatchitLoaderProps {
   speed?: number;
-  style?: any;
+  style?: CSSProperties;
 }
 
 export const WatchitLoader: FC<WatchitLoaderProps> = ({ speed = 1.5, style }) => {
@@ -18,7 +18,7 @@ export const WatchitLoader: FC<WatchitLoaderProps> = ({ speed = 1.5, style }) =>
   }, [speed]);
 
   return (
-    <Box sx={[styles.loader, style]}>
+    <Box sx={[styles.loader, style ?? {}]}>
       <Lottie
         lottieRef={lottieRef}
         animationData={watchitLogo}

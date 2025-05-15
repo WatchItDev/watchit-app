@@ -11,6 +11,7 @@ import { useGetSubscriptionCampaign } from '@src/hooks/protocol/use-get-subscrip
 import { SubscribeToUnlockCardProps } from '@src/components/subscribe-to-unlock-card/types.ts';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 import { useAuth } from '@src/hooks/use-auth.ts';
+import { Address } from 'viem';
 
 export const SubscribeToUnlockCard = ({
   onSubscribe,
@@ -18,7 +19,7 @@ export const SubscribeToUnlockCard = ({
   loadingSubscribe,
   post,
 }: SubscribeToUnlockCardProps) => {
-  const ownerAddress = post?.by?.ownedBy?.address
+  const ownerAddress = post.author.address as Address
   const { terms } = useGetPolicyTerms(
     GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS,
     ownerAddress
@@ -36,8 +37,9 @@ export const SubscribeToUnlockCard = ({
   const isJoinButtonVisible = isAuthorized && !isCampaignActive && isAccessFullyChecked && !isSponsoredButtonVisible;
 
   useEffect(() => {
+    if (!ownerAddress) return;
     fetchSubscriptionCampaign(ownerAddress);
-  }, []);
+  }, [ownerAddress]);
 
   useEffect(() => {
     if (!campaign || !sessionData?.address) return;
@@ -93,8 +95,8 @@ export const SubscribeToUnlockCard = ({
           <Box sx={{ mt: 3, borderRadius: 1 }}>
             <Typography variant="body2" color="textSecondary">
               Join now for just <strong>{totalCostMMC} MMC/month</strong> and access to{' '}
-              <strong>{post?.by?.stats?.posts}</strong> exclusive posts from{' '}
-              <strong>{post?.by?.metadata?.displayName ?? post?.handle?.localName}!</strong>
+              <strong>{post.author.publicationsCount}</strong> exclusive posts from{' '}
+              <strong>{post.author.displayName ?? post.author.username}!</strong>
             </Typography>
           </Box>
         )}

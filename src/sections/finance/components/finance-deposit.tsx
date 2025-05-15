@@ -15,14 +15,14 @@ import TextMaxLine from '@src/components/text-max-line';
 import { formatBalanceNumber } from '@src/utils/format-number';
 import { useGetMmcContractBalance } from '@src/hooks/protocol/use-get-mmc-contract-balance.ts';
 import FinanceBoxRow from '@src/sections/finance/components/finance-box-row.tsx';
-import { UseDepositHook } from '@src/hooks/protocol/use-deposit.ts';
+import { UseDepositHook} from '@src/hooks/protocol/types.ts'
 import { truncateAddress } from '@src/utils/wallet';
 
 // NOTIFICATIONS IMPORTS
-import { notifyError, notifySuccess, notifyWarning } from '@notifications/internal-notifications';
-import { WARNING } from '@notifications/warnings';
-import { SUCCESS } from '@notifications/success';
-import { ERRORS } from '@notifications/errors.ts';
+import { notifyError, notifySuccess, notifyWarning } from '@src/libs/notifications/internal-notifications';
+import { WARNING } from '@src/libs/notifications/warnings';
+import { SUCCESS } from '@src/libs/notifications/success';
+import { ERRORS } from '@src/libs/notifications/errors';
 import TextField from '@mui/material/TextField';
 
 interface FinanceDepositProps {
@@ -101,6 +101,7 @@ const FinanceDeposit: FC<FinanceDepositProps> = ({ address, recipient, depositHo
       onClose();
     } catch (err) {
       notifyError(ERRORS.DEPOSIT_ERROR);
+      console.log('Error during deposit:', err);
     } finally {
       setLocalLoading(false);
     }
@@ -170,7 +171,7 @@ const FinanceDeposit: FC<FinanceDepositProps> = ({ address, recipient, depositHo
         rainbowComponent={RainbowEffect}
         loading={isBusy}
         actionLoading={depositLoading}
-        amount={Number(amount) ?? 0}
+        amount={Number(amount) || 0}
         balance={balance ?? 0}
         label={'Confirm'}
         onConfirmAction={handleConfirmDeposit}

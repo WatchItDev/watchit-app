@@ -1,0 +1,8 @@
+mutation CreateUser($input: UserInput!) {
+  createUser(input: $input) {
+    address
+    username
+    displayName
+    xpBalance
+  }
+}

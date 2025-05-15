@@ -1,23 +1,20 @@
-import { ExploreProfilesOrderByType, LimitType, useExploreProfiles } from '@lens-protocol/react-web';
 import CarouselCreators from '@src/components/carousel/variants/carousel-creators.tsx';
-import { filterHiddenProfiles } from '@src/utils/profile.ts';
+import { filterHiddenProfiles } from '@src/libs/profile.ts';
 import {useEffect} from "react"
 import {setExploreLoading} from "@redux/loading"
 import { useDispatch } from 'react-redux';
-
+import { useGetRecentUsersQuery } from '@src/graphql/generated/hooks.tsx';
+import { User } from '@src/graphql/generated/graphql.ts';
 
 // ----------------------------------------------------------------------
 
 export const ExploreCreators = () => {
   const dispatch = useDispatch();
-  const { data: latestCreatedProfiles, loading } = useExploreProfiles({
-    orderBy: ExploreProfilesOrderByType.LatestCreated,
-    limit: LimitType.Fifty,
-  });
+  const { data, loading } = useGetRecentUsersQuery({ variables: { limit: 50 } })
 
   // FilteredCompletedProfiles is an array of objects, each object has a metadata property and inside exists a displayName en bio property; filter the profiles that not have a displayName and bio property
-  const filtered = latestCreatedProfiles?.filter(
-    (profile) => profile.metadata?.displayName && profile.metadata?.bio
+  const filtered = data?.getRecentUsers?.filter(
+    (profile: User) => profile?.displayName && profile?.bio
   );
 
   // Clear ###HIDDEN### profiles
@@ -25,7 +22,7 @@ export const ExploreCreators = () => {
 
   useEffect(() => {
     dispatch(setExploreLoading({ key: 'creators', isLoading: loading }));
-  }, [loading])
+  }, [dispatch, loading])
 
   return (
     <>

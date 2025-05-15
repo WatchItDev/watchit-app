@@ -1,0 +1,24 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`[COMPONENTS]: TableNoData component testing > matches snapshot 1`] = `
+<div>
+  <tr
+    class="MuiTableRow-root css-1q1u3t4-MuiTableRow-root"
+  >
+    <td
+      class="MuiTableCell-root MuiTableCell-sizeMedium css-fp2qxz-MuiTableCell-root"
+      colspan="12"
+    >
+      <div
+        class="MuiStack-root css-fwjcfw-MuiStack-root"
+      >
+        <span
+          class="MuiTypography-root MuiTypography-h6 css-nfq7sy-MuiTypography-root"
+        >
+          No data found
+        </span>
+      </div>
+    </td>
+  </tr>
+</div>
+`;

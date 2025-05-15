@@ -5,18 +5,8 @@ import Button from '@mui/material/Button';
 import { IconCaretDown, IconCaretUp } from '@tabler/icons-react';
 import { ProfilePublicationItem } from './profile-publication-item.tsx';
 import { useSelector } from 'react-redux';
-import { AnyPublication } from '@lens-protocol/api-bindings';
-
-interface ProfileHomeProps {
-  publications?: AnyPublication[]; // Array of publications
-  minItemWidth?: number; // Min width per item
-  maxItemWidth?: number; // Max width per item
-  initialRows?: number; // Rows to show initially
-  rowsIncrement?: number; // Rows to add each time "Show more" is clicked
-  maxHeight?: string | number; // Max height for the parent container (e.g. '29rem', 400, etc.)
-  scrollable?: boolean; // Whether the container is allowed to scroll or not
-  scrollOnShowMore?: boolean; // Scroll down when user clicks "Show more"
-}
+import {ProfileHomeProps} from "@src/sections/user/types.ts"
+import {RootState} from "@redux/store.ts"
 
 export default function ProfileHome({
   publications = [],
@@ -29,7 +19,7 @@ export default function ProfileHome({
   scrollOnShowMore = true,
 }: Readonly<ProfileHomeProps>) {
   const parentRef = useRef<HTMLDivElement>(null);
-  const minibarState = useSelector((state: any) => state.minibar.state);
+  const minibarState = useSelector((state: RootState) => state.minibar.state);
 
   // Number of items to display per row
   const [itemsPerRow, setItemsPerRow] = useState<number>(1);

@@ -1,11 +1,11 @@
 // @mui
-import { Theme, SxProps } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import TableRow from '@mui/material/TableRow';
 import Checkbox from '@mui/material/Checkbox';
 import TableHead from '@mui/material/TableHead';
 import TableCell from '@mui/material/TableCell';
 import TableSortLabel from '@mui/material/TableSortLabel';
+import { TableHeadCustomProps } from './types';
 
 // ----------------------------------------------------------------------
 
@@ -23,17 +23,6 @@ const visuallyHidden = {
 
 // ----------------------------------------------------------------------
 
-interface Props {
-  order?: 'asc' | 'desc';
-  orderBy?: string;
-  headLabel: any[];
-  rowCount?: number;
-  numSelected?: number;
-  onSort?: (id: string) => void;
-  onSelectAllRows?: (checked: boolean) => void;
-  sx?: SxProps<Theme>;
-}
-
 export default function TableHeadCustom({
   order,
   orderBy,
@@ -43,7 +32,7 @@ export default function TableHeadCustom({
   onSort,
   onSelectAllRows,
   sx,
-}: Props) {
+}: TableHeadCustomProps) {
   return (
     <TableHead sx={sx}>
       <TableRow>

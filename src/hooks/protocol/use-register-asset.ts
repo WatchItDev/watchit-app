@@ -6,12 +6,13 @@ import { encodeFunctionData } from 'viem';
 
 // LOCAL IMPORTS
 import AssetOwnershipAbi from '@src/config/abi/AssetOwnership.json';
-import { useWeb3Session } from '@src/hooks/use-web3-session.ts';
 import { useAccountSession } from '@src/hooks/use-account-session.ts';
 import { useAuth } from '@src/hooks/use-auth.ts';
 import { RegisterAssetData, UseRegisterAssetHook } from '@src/hooks/protocol/types.ts';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
-import { ERRORS } from '@notifications/errors.ts';
+import { ERRORS } from '@src/libs/notifications/errors.ts';
+import { useWeb3Auth } from '@src/hooks/use-web3-auth.ts';
+import { Calls } from '@src/hooks/types.ts'
 
 // ----------------------------------------------------------------------
 
@@ -25,10 +26,9 @@ export const useRegisterAsset = (): UseRegisterAssetHook => {
   const [data, setData] = useState<RegisterAssetData>();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<keyof typeof ERRORS | null>(null);
-  const { session: sessionData, isFullyAuthenticated: isAuthenticated } = useAuth();
-  const { bundlerClient, smartAccount } = useWeb3Session();
+  const { session } = useAuth();
+  const { bundlerClient, smartAccount } = useWeb3Auth();
   const { logout } = useAccountSession();
-
 
   /**
    * Performs the operation of registering an asset using the `AssetOwnership` contract.
@@ -39,20 +39,15 @@ export const useRegisterAsset = (): UseRegisterAssetHook => {
     setLoading(true);
     setError(null);
 
-    if (!sessionData?.authenticated) {
+    if (!session?.authenticated) {
       setError(ERRORS.SUBSCRIBE_LOGIN_ERROR);
       setLoading(false);
-      return;
-    }
-
-    if (!isAuthenticated) {
       logout();
-      setLoading(false);
       throw new Error('Invalid Web3Auth session');
     }
 
     try {
-      const toAddress = sessionData?.profile?.ownedBy.address;
+      const toAddress = session?.address;
       if (!toAddress) {
         throw new Error('The active account address was not found in the session.');
       }
@@ -63,7 +58,7 @@ export const useRegisterAsset = (): UseRegisterAssetHook => {
         args: [toAddress, assetId],
       });
 
-      const calls = [
+      const calls: Calls = [
         {
           to: GLOBAL_CONSTANTS.ASSET_OWNERSHIP_ADDRESS,
           value: 0,
@@ -82,7 +77,7 @@ export const useRegisterAsset = (): UseRegisterAssetHook => {
 
       setData({ receipt });
       setLoading(false);
-    } catch (err: any) {
+    } catch (err) {
       console.error('USE REGISTER ASSET ERR:', err);
       setLoading(false);
       throw new Error('There is an error while registering the asset');

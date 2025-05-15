@@ -31,7 +31,7 @@ export const PublicationTitleDescription: FC<PublicationTitleDescriptionProps> =
     } else {
       setShowButton(false);
     }
-  }, [publication?.metadata?.content]);
+  }, [publication?.description]);
 
   return (
     <Box
@@ -43,7 +43,7 @@ export const PublicationTitleDescription: FC<PublicationTitleDescriptionProps> =
           sx={{ fontWeight: 'bold', lineHeight: 1.1, mb: 0.5, width: '100%' }}
           gutterBottom
         >
-          {publication?.metadata?.title}
+          {publication?.title}
         </Typography>
       </m.div>
       <Box sx={{ mt: 2, position: 'relative' }}>
@@ -58,7 +58,7 @@ export const PublicationTitleDescription: FC<PublicationTitleDescriptionProps> =
               opacity: 0.8,
             }}
           >
-            <Markdown children={trimPublicationContentExtraText(publication?.metadata?.content)} />
+            <Markdown children={trimPublicationContentExtraText(publication?.description)} />
           </Box>
           {showButton && (
             <Button variant="outlined" onClick={toggleDescription} sx={{ mt: 2 }}>

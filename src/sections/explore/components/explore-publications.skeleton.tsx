@@ -19,6 +19,7 @@ const SkeletonItem = () => {
       >
         <Skeleton
           variant="rectangular"
+          role="progressbar"
           sx={{
             position: 'absolute',
             height: '100%',
@@ -42,7 +43,7 @@ export const ExplorePublicationsSkeleton: React.FC = () => {
   return (
     <ExploreCarouselSkeleton
       title="Publications"
-      SkeletonItemComponent={<SkeletonItem />}
+      SkeletonItemComponent={SkeletonItem}
     />
   );
 };

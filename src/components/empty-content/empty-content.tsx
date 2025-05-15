@@ -15,7 +15,6 @@ type EmptyContentProps = StackProps & {
 
 export default function EmptyContent({
   title,
-  imgUrl,
   action,
   filled,
   description,

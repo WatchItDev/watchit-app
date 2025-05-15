@@ -1,6 +1,8 @@
+import { Post } from '@src/graphql/generated/graphql.ts';
+
 
 export interface PublicationDetailProps {
-  post: any;
+  post: Post;
   handleSubscribe: () => void;
   handleRefetchAccess: () => void;
   loadingSubscribe: boolean;

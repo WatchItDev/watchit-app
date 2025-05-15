@@ -1,15 +1,17 @@
 import CarouselPosterMini from '@src/components/carousel/variants/carousel-poster-mini.tsx';
 
-import { useBookmarks } from '@lens-protocol/react-web';
 import { useSelector } from 'react-redux';
 
 import { useResponsive } from '@src/hooks/use-responsive.ts';
+import {RootState} from "@redux/store.ts"
+import { useBookmarks } from '@src/hooks/use-bookmark.ts';
+import { Post } from '@src/graphql/generated/graphql.ts';
 
 // ----------------------------------------------------------------------
 
 export const ExploreBookmarks = () => {
   const lgUp = useResponsive('up', 'lg');
-  const { bookmarkPublications, hiddenBookmarks } = useSelector((state: any) => state.bookmark);
+  const { bookmarkPublications, hiddenBookmarks } = useSelector((state: RootState) => state.bookmark);
   const { data: bookmark } = useBookmarks();
 
   let minItemWidth = 250;
@@ -26,7 +28,7 @@ export const ExploreBookmarks = () => {
   const mergedBookmarks = [...reversedBookmarkPublications, ...(bookmark ?? [])];
   // Filter out hidden bookmarks
   const visibleBookmarks = mergedBookmarks.filter(
-    (post) => !hiddenBookmarks.some((hidden: any) => hidden.id === post.id)
+    (post) => !hiddenBookmarks.some((hidden: Post) => hidden.id === post.id)
   );
   // Remove posts explicitly marked as hidden
   const nonHiddenBookmarks = visibleBookmarks.filter((post) => !post.isHidden);
@@ -34,6 +36,8 @@ export const ExploreBookmarks = () => {
   const uniqueBookmarks = nonHiddenBookmarks.filter(
     (post, index, self) => index === self.findIndex((p) => p.id === post.id)
   );
+
+  console.log('uniqueBookmarks', uniqueBookmarks);
 
   return (
     <>

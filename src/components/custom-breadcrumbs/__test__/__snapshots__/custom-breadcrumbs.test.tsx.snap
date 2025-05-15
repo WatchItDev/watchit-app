@@ -1,0 +1,58 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`[COMPONENTS]: CustomBreadcrumbs component testing > to match snapshot 1`] = `
+<body>
+  <div>
+    <div
+      class="MuiBox-root css-0"
+    >
+      <div
+        class="MuiStack-root css-1d9cypr-MuiStack-root"
+      >
+        <div
+          class="MuiBox-root css-i9gxme"
+        >
+          <nav
+            class="MuiTypography-root MuiTypography-body1 MuiBreadcrumbs-root css-63vwl1-MuiTypography-root-MuiBreadcrumbs-root"
+          >
+            <ol
+              class="MuiBreadcrumbs-ol css-4pdmu4-MuiBreadcrumbs-ol"
+            >
+              <li
+                class="MuiBreadcrumbs-li"
+              >
+                <div
+                  data-disabled="false"
+                  data-link="Home"
+                  data-testid="link-item"
+                >
+                  Home
+                </div>
+              </li>
+              <li
+                aria-hidden="true"
+                class="MuiBreadcrumbs-separator css-1wuw8dw-MuiBreadcrumbs-separator"
+              >
+                <span
+                  class="MuiBox-root css-1bi6evy"
+                />
+              </li>
+              <li
+                class="MuiBreadcrumbs-li"
+              >
+                <div
+                  data-disabled="true"
+                  data-link="Dashboard"
+                  data-testid="link-item"
+                >
+                  Dashboard
+                </div>
+              </li>
+            </ol>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+`;

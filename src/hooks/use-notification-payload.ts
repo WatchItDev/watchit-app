@@ -1,40 +1,21 @@
-import { ProfileSession } from '@lens-protocol/react-web';
 import {dicebear} from "@src/utils/dicebear.ts";
+import {NotificationPayload} from "@src/hooks/types.ts"
+import { ReduxSession } from '@redux/types.ts';
 
-interface NotificationPayload {
-  type: string;
-  category: string;
-  data: {
-    from: {
-      id: string;
-      displayName?: string;
-      avatar?: string;
-    };
-    to: {
-      id: string;
-      displayName?: string;
-      avatar?: string;
-    };
-    content: Record<string, any>;
-  };
-}
-
-export const useNotificationPayload = (sessionData: ProfileSession | undefined) => {
+export const useNotificationPayload = (sessionData: ReduxSession | undefined) => {
   const generatePayload = (
     category: string,
-    toProfile: { id: string; displayName: string; avatar: any },
-    content: Record<string, any>
+    toProfile: { id: string; displayName: string; avatar: string },
+    content: Record<string, string>
   ): NotificationPayload => {
     return {
       type: 'NOTIFICATION',
       category: category,
       data: {
         from: {
-          id: sessionData?.profile?.id ?? '',
-          displayName: sessionData?.profile?.metadata?.displayName ?? '',
-          avatar:
-            (sessionData?.profile?.metadata?.picture as any)?.optimized?.uri ??
-            dicebear(sessionData?.profile?.id as string),
+          id: sessionData?.address ?? '',
+          displayName: sessionData?.user?.displayName ?? '',
+          avatar: sessionData?.user?.profilePicture ?? dicebear(sessionData?.user?.address as string),
         },
         to: {
           id: toProfile.id,

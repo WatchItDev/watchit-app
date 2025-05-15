@@ -7,11 +7,12 @@ import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 import { publicClient } from '@src/clients/viem/publicClient.ts';
 
 // Notifications
-import { ERRORS } from '@notifications/errors.ts';
-import { notifyInfo } from '@notifications/internal-notifications.ts';
-import { INFO } from '@notifications/info.ts';
+import { ERRORS } from '@src/libs/notifications/errors';
+import { notifyInfo } from '@src/libs/notifications/internal-notifications.ts';
+import { INFO } from '@src/libs/notifications/info.ts';
 import { useMetaMask } from '@src/hooks/use-metamask.ts';
 import { UseWithdrawHook, WithdrawParams } from '@src/hooks/protocol/types.ts';
+import {WithdrawData} from "@src/hooks/types.ts"
 
 /**
  * Hook that allows the withdrawal flow to be made
@@ -19,7 +20,7 @@ import { UseWithdrawHook, WithdrawParams } from '@src/hooks/protocol/types.ts';
  * of the smart wallet.
  */
 export const useWithdrawMetamask = (): UseWithdrawHook => {
-  const [data, setData] = useState<any>(null);
+  const [data, setData] = useState<WithdrawData | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<keyof typeof ERRORS | null>(null);
   const { walletClient, account: address } = useMetaMask();
@@ -64,8 +65,9 @@ export const useWithdrawMetamask = (): UseWithdrawHook => {
         withdrawTxHash,
         withdrawReceipt,
       });
-    } catch (err: any) {
+    } catch (err) {
       // If something fails, set an error
+      console.error('Error while withdrawing:', err);
       setError(ERRORS.UNKNOWN_ERROR);
     } finally {
       // Reset loading state

@@ -1,63 +1,22 @@
-import Iconify from '@src/components/iconify';
+import { FC, useCallback, useEffect, useRef, useState } from 'react';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Popover from '@mui/material/Popover';
-import { FC, useCallback, useEffect, useRef, useState } from 'react';
 import Stack from '@mui/material/Stack';
-import { notifyError, notifySuccess } from '@notifications/internal-notifications.ts';
-import { SUCCESS } from '@notifications/success.ts';
-import { ERRORS } from '@notifications/errors.ts';
-import { Profile } from '@lens-protocol/api-bindings';
-
-export const urlToShare = 'https://app.watchit.movie/profileId';
-
-const shareLinks = [
-  {
-    icon: 'mingcute:social-x-line',
-    label: 'X',
-    url: `https://x.com/share/?url=${encodeURIComponent(urlToShare)}&text=Visit%20my%20profile%20on%20Watchit&hashtags=Watchit,Blockchain,Crypto`,
-  },
-  {
-    icon: 'mdi:facebook',
-    label: 'Facebook',
-    url: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(urlToShare)}`,
-  },
-  {
-    icon: 'mdi:telegram',
-    label: 'Telegram',
-    url: `https://telegram.me/share/?url=${encodeURIComponent(urlToShare)}&title=Watchit`,
-  },
-];
-
-const socialMedia = [
-  { key: 'twitter', icon: 'mingcute:social-x-line' },
-  { key: 'facebook', icon: 'mdi:facebook' },
-  { key: 'instagram', icon: 'mdi:instagram' },
-];
-
-interface SocialMediaUrls {
-  twitter?: string;
-  facebook?: string;
-  instagram?: string;
-}
-
-interface ProfileShareProps {
-  profile: Profile;
-}
+import Iconify from '@src/components/iconify';
+import { notifyError, notifySuccess } from '@src/libs/notifications/internal-notifications.ts';
+import { SUCCESS } from '@src/libs/notifications/success.ts';
+import { ERRORS } from '@src/libs/notifications/errors';
+import { ProfileShareProps, SocialMediaUrls } from '../types';
+import { shareLinks, socialMedia, urlToShare } from '../CONSTANTS'
+import { getSocialLinks } from '@src/utils/profile.ts';
 
 const ProfileShare: FC<ProfileShareProps> = ({ profile }) => {
   const [openTooltipShare, setOpenTooltipShare] = useState(false);
   const navRefSocial = useRef(null);
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const open = Boolean(anchorEl);
-
-  const socialMediaUrls: SocialMediaUrls =
-    profile?.metadata?.attributes?.reduce((acc: SocialMediaUrls, attr: any) => {
-      if (['twitter', 'facebook', 'instagram'].includes(attr.key)) {
-        acc[attr.key as keyof SocialMediaUrls] = attr.value;
-      }
-      return acc;
-    }, {} as SocialMediaUrls) || {};
+  const socialMediaUrls = getSocialLinks(profile);
 
   const prependProfileIdToUrl = (url: string, profileId: string) => {
     return url.replace('profileId', 'profile/' + profileId);
@@ -82,10 +41,11 @@ const ProfileShare: FC<ProfileShareProps> = ({ profile }) => {
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(
-        urlToShare.replace('profileId', 'profile/' + profile?.id)
+        urlToShare.replace('profileId', 'profile/' + profile?.address)
       );
       notifySuccess(SUCCESS.LINK_COPIED_TO_CLIPBOARD);
     } catch (err) {
+      console.log('Error', err);
       notifyError(ERRORS.LINK_COPIED_ERROR);
     }
   };
@@ -102,7 +62,6 @@ const ProfileShare: FC<ProfileShareProps> = ({ profile }) => {
 
   return (
     <>
-
         {socialMedia.map(
           ({ key, icon }) =>
             socialMediaUrls[key as keyof SocialMediaUrls] && (
@@ -203,7 +162,7 @@ const ProfileShare: FC<ProfileShareProps> = ({ profile }) => {
               >
                 <Button
                   component="a"
-                  href={prependProfileIdToUrl(item.url, profile?.id)}
+                  href={prependProfileIdToUrl(item.url, profile?.address)}
                   target="_blank"
                   rel="noopener noreferrer"
                   sx={{

@@ -2,18 +2,17 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 
-// LENS IMPORTS
-import { Profile } from '@lens-protocol/api-bindings';
-
 // LOCAL IMPORTS
 import { UserItem } from '@src/components/user-item';
 import { useSelector } from 'react-redux';
 import {randomKey} from "@src/utils/uuidv4.ts"
+import {RootState} from "@redux/store.ts"
+import { User } from '@src/graphql/generated/graphql.ts';
 
 // ----------------------------------------------------------------------
 
 const ProfileFollowing = () => {
-  const following: Profile[] = useSelector((state: any) => state.followers.followings);
+  const following: User[] = useSelector((state: RootState) => state.followers.followings);
 
   return (
     <Box

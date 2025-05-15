@@ -1,25 +1,23 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { supabase } from '@src/utils/supabase';
-// @ts-ignore
-import { ReadResult } from '@lens-protocol/react/dist/declarations/src/helpers/reads';
-import { ProfileSession, useSession } from '@lens-protocol/react-web';
-import { type NotificationColumnsProps } from '@src/hooks/types';
+// @ts-expect-error No error in this context
+import { type NotificationColumnsProps, NotificationPayload } from '@src/hooks/types';
 import { setNotifications } from '@src/redux/notifications';
 import {RootState} from "@redux/store.ts"
+import { useAuth } from '@src/hooks/use-auth.ts';
 
 interface UseNotificationsReturn {
   getNotifications: (id: string) => Promise<void>;
   notifications: NotificationColumnsProps[];
   markAsRead: (id: string) => Promise<void>;
-  sendNotification: (receiver_id: string, sender_id: string, payload: any) => Promise<void>;
+  sendNotification: (receiver_id: string, sender_id: string, payload: NotificationPayload) => Promise<void>;
   markAllAsRead: () => Promise<void>;
   deleteNotification: (id: string) => Promise<void>;
 }
 
 export function useNotifications(): UseNotificationsReturn {
-  const { data: sessionData }: ReadResult<ProfileSession> = useSession();
+  const { session } = useAuth();
   const dispatch = useDispatch();
-  // @ts-ignore
   const notifications: NotificationColumnsProps[] = useSelector(
     (state: RootState) => state.notifications.notifications
   );
@@ -44,14 +42,11 @@ export function useNotifications(): UseNotificationsReturn {
     if (error) {
       console.error('Error marking notification as read:', error);
     } else {
-      const updatedNotifications = notifications.map((notification) =>
-        notification.id === id ? { ...notification, read: true } : notification
-      );
-      dispatch(setNotifications(updatedNotifications));
+      await getNotifications(session.address);
     }
   }
 
-  async function sendNotification(receiver_id: string, sender_id: string, payload: any) {
+  async function sendNotification(receiver_id: string, sender_id: string, payload: Record<string, string>) {
     const { error } = await supabase
       .from('notifications')
       .insert([{ receiver_id, sender_id, payload }]);
@@ -65,7 +60,7 @@ export function useNotifications(): UseNotificationsReturn {
     const { error } = await supabase
       .from('notifications')
       .update({ read: true })
-      .eq('receiver_id', sessionData?.profile?.id);
+      .eq('receiver_id', session?.address);
 
     if (error) {
       console.error('Error marking all notifications as read:', error);

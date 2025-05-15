@@ -18,7 +18,7 @@ export function useGetPolicyAttestation(policy: Address, recipient: Address, hol
   const [fetching, setFetching] = useState(true);
   const [error, setError] = useState<HasAccessError | null>(null);
   const { activeLicenses, loading: licensesLoading, refetch: refetchLicenses } = useGetActiveLicenses(recipient, holder);
-  const userAddress = sessionData?.profile?.ownedBy?.address;
+  const userAddress = sessionData?.address;
 
   const fetchAttestation = useCallback(() => {
     setFetching(true);
@@ -41,9 +41,11 @@ export function useGetPolicyAttestation(policy: Address, recipient: Address, hol
         setAttestation(undefined);
         setError({ message: 'No matching license found for the specified policy.' });
       }
-    } catch (err: any) {
+    } catch (err) {
       console.error('Error fetching license:', err);
-      setError({ message: err.message || 'An error occurred' });
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-expect-error
+      setError({ message: err?.message || 'An error occurred' });
       setAttestation(undefined);
     } finally {
       setLoading(false);

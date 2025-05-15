@@ -20,20 +20,20 @@ export const useHasRole = (): UseHasRoleHook => {
   const fetchHasRole = useCallback(async (roleId: number, account: Address) => {
     setLoading(true);
     try {
-      const roleData: any = await publicClient.readContract({
+      const roleData = await publicClient.readContract({
         address: GLOBAL_CONSTANTS.ACCESS_MANAGER_ADDRESS,
         abi: AccessManagerAbi.abi,
         functionName: 'hasRole',
         args: [roleId, account],
-      });
+      }) as readonly [boolean, number];
 
-      const role = Boolean(roleData?.[0]);
+      const role = Boolean(roleData[0]);
       setHasRole(role);
       setError(null);
-    } catch (err: any) {
+    } catch (err) {
       console.error('Error checking access:', err);
       setHasRole(undefined);
-      setError({ message: err?.message || 'An error occurred' });
+      setError({ message: err instanceof Error ? err.message : 'An error occurred' });
     } finally {
       setLoading(false);
     }

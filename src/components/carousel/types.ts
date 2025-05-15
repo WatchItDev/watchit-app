@@ -1,16 +1,12 @@
 import React from "react";
 
-import {Profile, VideoMetadataV3} from "@lens-protocol/api-bindings";
-// @ts-ignore
-import { Post,PublicationMetadataMediaVideoFieldPolicy } from "@lens-protocol/api-bindings/dist/declarations/src/lens/graphql/generated";
+import { StackProps } from "@mui/material/Stack";
+import { IconButtonProps } from "@mui/material/IconButton";
 
-import {StackProps} from "@mui/material/Stack";
-import {IconButtonProps} from "@mui/material/IconButton";
-
-import {BoxProps} from "@mui/material/Box";
-import {SxProps, Theme} from "@mui/material/styles";
-import {IconifyProps} from "@src/components/iconify";
-
+import { BoxProps } from "@mui/material/Box";
+import { SxProps, Theme } from "@mui/material/styles";
+import { IconifyProps } from "@src/components/iconify";
+import { Post, User } from '@src/graphql/generated/graphql.ts';
 
 export interface CarouselDotsProps extends BoxProps {
   rounded?: boolean;
@@ -67,8 +63,8 @@ export interface CarouselWrapperProps<T> extends CarouselResizable{
   data: T[];
   title?: string;
   renderSlide: (slideItems: T[], itemsPerRow: number, index: number) => React.ReactNode;
-  carouselSettings: any;
-  boxStyle?: any;
+  carouselSettings: Record<string, string>;
+  boxStyle?: SxProps;
   boxClassName?: string;
 }
 
@@ -79,7 +75,7 @@ export interface CarouselSlideProps<T> {
 }
 
 export type CarouselCreatorsProps = CarouselResizable & {
-  profiles: Profile[];
+  profiles: User[];
   title?: string;
 };
 
@@ -100,5 +96,4 @@ export interface CarouselPosterSlideProps {
 
 export interface PublicationType extends Post {
   altTag: string;
-  metadata: VideoMetadataV3 | PublicationMetadataMediaVideoFieldPolicy;
 }

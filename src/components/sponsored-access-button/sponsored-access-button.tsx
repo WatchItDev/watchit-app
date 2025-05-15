@@ -31,12 +31,13 @@ export const SponsoredAccessTrialButton: FC<ExtendedSponsoredAccessProps> = (pro
     size = 'sm',
   } = props;
   const dispatch = useDispatch();
-  const { session: sessionData, isFullyAuthenticated: isAuthenticated } = useAuth();
+  const { session } = useAuth();
   const { sponsoredAccessAgreement, loading } = useSponsoredAccessAgreement();
+
 
   const handleTrial = async () => {
     try {
-      if (!isAuthenticated) {
+      if (!session.authenticated) {
         return dispatch(openLoginModal());
       }
 
@@ -44,7 +45,7 @@ export const SponsoredAccessTrialButton: FC<ExtendedSponsoredAccessProps> = (pro
         holder: holderAddress,
         campaignAddress,
         policyAddress: GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS,
-        parties: sessionData?.address ? [sessionData?.address] : [],
+        parties: session?.address ? [session?.address] : [],
         payload: '',
       });
       onSuccess?.();

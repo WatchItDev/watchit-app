@@ -55,22 +55,22 @@ export const useGetAssetOwner = (): UseGetAssetOwnerHook => {
       const assetIdDecimal = convertHexToDecimal(assetIdHex);
 
       // Call the 'ownerOf' function on the AssetOwnership contract
-      const owner: any = await publicClient.readContract({
+      const owner = await publicClient.readContract({
         address: GLOBAL_CONSTANTS.ASSET_OWNERSHIP_ADDRESS,
         abi: AssetOwnershipAbi.abi,
         functionName: 'ownerOf',
         args: [assetIdDecimal],
-      });
+      }) as Address;
 
       setOwnerAddress(owner);
       setError(null);
       return owner;
-    } catch (err: any) {
+    } catch (err) {
       console.error('USE GET ASSET OWNER ERROR:', err);
       setOwnerAddress(undefined);
-      setError({
-        message: err?.message || 'An error occurred while retrieving the asset owner.',
-      });
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-expect-error
+      setError({ message: err?.message || 'An error occurred while retrieving the asset owner.' });
       return undefined;
     } finally {
       setLoading(false);

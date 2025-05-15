@@ -11,5 +11,5 @@ export interface ExplorePublicationsSkeletonProps {
 
 export interface ExploreCarouselSkeletonProps {
   title?: string
-  SkeletonItemComponent?: React.ReactNode;
+  SkeletonItemComponent?: React.ComponentType;
 }

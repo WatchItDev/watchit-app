@@ -5,17 +5,17 @@ import {
   IconButton,
   Typography,
 } from '@mui/material';
-import { alpha } from '@mui/material/styles';
+import { alpha } from '@mui/material/styles'
 
 // ANIMATIONS IMPORTS
 import { m } from 'framer-motion';
 
 // LOCAL IMPORTS
 import AvatarProfile from '@src/components/avatar/avatar';
-import NeonPaper from '@src/sections/publication/components/neon-paper-container.tsx';
 import { varHover } from '@src/components/animate';
 import { UsePopoverReturnType } from '@src/components/custom-popover/use-popover.ts';
 import { useAuth } from '@src/hooks/use-auth.ts';
+import { truncateAddress } from '@src/utils/wallet.ts';
 
 // ----------------------------------------------------------------------
 
@@ -26,29 +26,16 @@ interface AccountPopoverButtonProps {
 
 // ----------------------------------------------------------------------
 
-/**
- * This component renders either:
- *  - A clickable avatar (if authenticated)
- *  - Or a "Social Login" button (if not authenticated)
- */
 export function AccountPopoverButton(props: Readonly<AccountPopoverButtonProps>) {
   const { popover, onOpenLoginModal } = props;
-  const { session: sessionData, isUpdatingMetadata } = useAuth();
-  const isAuthenticated = Boolean(sessionData?.authenticated);
-
-  // Use NeonPaper while metadata is updating
-  const EffectPaper = isUpdatingMetadata ? NeonPaper : Box;
+  const { session } = useAuth();
+  const isAuthenticated = Boolean(session?.authenticated);
 
   return (
     <Box sx={{ display: 'flex', alignItems: 'center' }} onClick={popover.onOpen}>
       {/* If user is authenticated, show their avatar */}
       {isAuthenticated && (
-        <EffectPaper
-          {...(isUpdatingMetadata && {
-            padding: '0',
-            borderRadius: '999999px',
-          })}
-        >
+        <Box>
           <IconButton
             component={m.button}
             whileTap="tap"
@@ -65,20 +52,17 @@ export function AccountPopoverButton(props: Readonly<AccountPopoverButtonProps>)
             }}
           >
             <AvatarProfile
-              src={
-                (sessionData?.profile?.metadata?.picture as any)?.optimized?.uri ??
-                sessionData?.profile?.id
-              }
+              src={(session?.user?.profilePicture || session?.user?.address) ?? ''}
               alt="avatar"
               sx={{
                 fontSize: '1.25rem',
                 width: 36,
                 height: 36,
-                border: (theme: any) => `solid 2px ${theme.palette.background.default}`,
+                border: 'solid 2px #161C24',
               }}
             />
           </IconButton>
-        </EffectPaper>
+        </Box>
       )}
 
       {/* If user is not authenticated, show the "Social Login" button */}
@@ -103,10 +87,10 @@ export function AccountPopoverButton(props: Readonly<AccountPopoverButtonProps>)
             }}
           >
             <Typography variant="subtitle2" noWrap>
-              {sessionData?.profile?.handle?.localName}
+              {session?.user?.username}
             </Typography>
             <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
-              {sessionData?.profile?.id}
+              {truncateAddress(session?.user?.address ?? '', 4, 4)}
             </Typography>
           </Box>
         )}

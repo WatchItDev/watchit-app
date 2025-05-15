@@ -11,7 +11,6 @@ import Typography from '@mui/material/Typography';
 import { bgGradient } from '@src/theme/css';
 import Iconify from '@src/components/iconify';
 import { alpha, useTheme } from '@mui/material/styles';
-// @ts-ignore
 import Earn from '@src/assets/illustrations/earn.svg';
 import Image from '@src/components/image';
 

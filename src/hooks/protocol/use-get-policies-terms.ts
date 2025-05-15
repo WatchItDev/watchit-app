@@ -29,7 +29,7 @@ export const useGetPoliciesTerms = (
 
     try {
       // Call the contract method
-      const policies: any = (await publicClient.readContract({
+      const policies = (await publicClient.readContract({
         address: GLOBAL_CONSTANTS.POLICIES_AGG_ADDRESS,
         abi: PoliciesAggAbi.abi,
         functionName: 'getPoliciesTerms',
@@ -39,15 +39,15 @@ export const useGetPoliciesTerms = (
       // Store the response in state
       setAuthorizedHolderPolicies(policies);
       setError(null);
-    } catch (err: any) {
+    } catch (err) {
       console.error('Error fetching policies terms:', err);
       setAuthorizedHolderPolicies([]);
-      setError({ message: err?.message || 'Error occurred while fetching authorized policies.' });
+      setError({ message: err instanceof Error ? err.message : 'Error occurred while fetching authorized policies.' });
     } finally {
       setLoading(false);
     }
   }, [holder]);
- 
+
   useEffect(() => {
     fetchHolderPolicies();
   }, [fetchHolderPolicies]);

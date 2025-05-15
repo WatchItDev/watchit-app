@@ -9,7 +9,7 @@ import {
   checkIfEmailAlreadyAccepted as checkIfEmailAlreadyAcceptedAction,
   sendInvitation as sendInvitationAction,
   acceptOrCreateInvitationForUser as acceptOrCreateInvitationForUserAction,
-} from '@src/utils/supabase-actions';
+} from '@src/libs/supabase-actions';
 import { GLOBAL_CONSTANTS } from '@src/config-global';
 import { useAuth } from '@src/hooks/use-auth.ts';
 
@@ -155,7 +155,7 @@ const useReferrals = () => {
    * @param {any} payload - Additional data you want to attach to the invitation (e.g., sender's profile info).
    * @returns {Promise<void>} - Throws an error if something goes wrong.
    */
-  const sendInvitation = async (destination: string, payload: any): Promise<void> => {
+  const sendInvitation = async (destination: string, payload: Record<string, string>): Promise<void> => {
     // Insert a new invitation into Supabase
     const { error } = await sendInvitationAction(destination, payload, userEmail, sessionData);
 

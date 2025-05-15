@@ -18,10 +18,10 @@ import NeonPaper from "@src/sections/publication/components/neon-paper-container
 import { useConfigureCampaign } from '@src/hooks/protocol/use-configure-campaign.ts';
 import { useGetPolicyTerms } from '@src/hooks/protocol/use-get-policy-terms.ts';
 import { useAuth } from '@src/hooks/use-auth.ts';
-import { notifyError, notifySuccess } from '@notifications/internal-notifications.ts';
+import { notifyError, notifySuccess } from '@src/libs/notifications/internal-notifications.ts';
 import { CampaignSettingsModalContentProps } from '@src/sections/marketing/types.ts';
-import { ERRORS } from '@notifications/errors.ts';
-import { SUCCESS } from '@notifications/success.ts';
+import { ERRORS } from '@src/libs/notifications/errors.ts';
+import { SUCCESS } from '@src/libs/notifications/success.ts';
 import { GLOBAL_CONSTANTS } from '@src/config-global';
 
 // ----------------------------------------------------------------------
@@ -121,7 +121,7 @@ const CampaignSettingsModalContent: FC<CampaignSettingsModalContentProps> = (pro
             label="Total budget"
             type="number"
             name="addFundsAmount"
-            value={fundsAmount}
+            value={fundsAmount ?? ''}
             onChange={(e) => setFundsAmount(Number(e.target.value))}
             placeholder="e.g. 1000"
             error={isNotValidNumberInput(fundsAmount)}
@@ -139,7 +139,7 @@ const CampaignSettingsModalContent: FC<CampaignSettingsModalContentProps> = (pro
             type="number"
             name="fundsAllocationAmount"
             InputProps={{ inputProps: { min: 1 } }}
-            value={fundsAllocationAmount}
+            value={fundsAllocationAmount ?? ''}
             onChange={(e) => setFundsAllocationAmount(Number(e.target.value))}
             placeholder="e.g. 7"
             error={isNotValidNumberInput(fundsAllocationAmount)}
@@ -153,7 +153,7 @@ const CampaignSettingsModalContent: FC<CampaignSettingsModalContentProps> = (pro
             label="Access limit per User"
             type="number"
             name="quotaLimit"
-            value={quotaLimit}
+            value={quotaLimit ?? ''}
             InputProps={{ inputProps: { min: 1 } }}
             onChange={(e) => setQuotaLimit(Number(e.target.value))}
             placeholder="e.g. 1"
