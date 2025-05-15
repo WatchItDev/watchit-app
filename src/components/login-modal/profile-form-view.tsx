@@ -59,15 +59,22 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
 
   const validationSchema = Yup.object({
     username: Yup.string()
-      .min(5, 'Username must be at least 5 characters')
+      .min(3, 'Username must be at least 3 characters')
+      .max(15, 'Username must be at most 15 characters')
       .required('Username is required'),
-    displayName: Yup.string().min(3, 'Name must be at least 3 characters').required('Name is required'),
-    bio: Yup.string().min(10, 'Bio must be at least 10 characters').required('Bio is required'),
-    socialLinks: Yup.object({
-      twitter: Yup.string().url('Enter a valid URL'),
-      instagram: Yup.string().url('Enter a valid URL'),
-      orb: Yup.string().url('Enter a valid URL'),
-      farcaster: Yup.string().url('Enter a valid URL'),
+    displayName: Yup.string()
+      .min(3, 'Display name must be at least 3 character')
+      .max(30, 'Display name must be at most 30 characters')
+      .required('Display name is required'),
+    bio: Yup.string()
+      .min(10, 'Bio must be at least 10 characters')
+      .max(200, 'Bio must be at most 200 characters')
+      .required('Bio is required'),
+    socialLinks: Yup.object().shape({
+      twitter:   Yup.string().url('Enter a valid URL').notRequired(),
+      instagram: Yup.string().url('Enter a valid URL').notRequired(),
+      orb:       Yup.string().url('Enter a valid URL').notRequired(),
+      farcaster: Yup.string().url('Enter a valid URL').notRequired(),
     }),
   });
 
