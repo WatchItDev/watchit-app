@@ -51,6 +51,7 @@ export default function PublicationDetailsView({ id }: Readonly<PublicationDetai
   const { campaign, loading: campaignLoading, fetchSubscriptionCampaign } = useGetSubscriptionCampaign();
   const { isActive: isCampaignActive, loading: isActiveLoading, fetchIsActive } = useGetCampaignIsActive();
   const [loadPublications, { data: profilePublications, loading: profilePublicationsLoading }] = useGetPostsByAuthorLazyQuery();
+  const [initialized, setInitialized] = useState(false);
 
   const isAccessFullyChecked = !accessLoading && !isAuthorizedLoading && !isActiveLoading && !campaignLoading;
   const allLoaded = !publicationLoading && !isAuthLoading && !profilePublicationsLoading && isAccessFullyChecked;
@@ -59,10 +60,10 @@ export default function PublicationDetailsView({ id }: Readonly<PublicationDetai
   const isPlayerVisible = hasAccess && session.authenticated && !accessLoading && !isAuthLoading;
 
   useEffect(() => {
-    if (!ownerAddress || publicationLoading) return;
+    if (!ownerAddress || publicationLoading || profilePublications?.getPostsByAuthor) return;
     fetchSubscriptionCampaign(ownerAddress);
     loadPublications({variables: { author: ownerAddress, limit: 50 }});
-  }, [ownerAddress, publicationLoading]);
+  }, [ownerAddress, publicationLoading, profilePublications?.getPostsByAuthor]);
 
   useEffect(() => {
     if (!campaign || !session?.address) return;
@@ -70,14 +71,21 @@ export default function PublicationDetailsView({ id }: Readonly<PublicationDetai
   }, [campaign, session?.address]);
 
   useEffect(() => {
+    if (publication || !id) return;
     loadPublication({variables: { getPostId: id }});
-  }, [id]);
+  }, [id, publication]);
 
   useEffect(() => {
     if (publication) {
       dispatch(setPostCommentCount({ postId: publication.id, count: publication.commentCount }));
     }
   }, [publication]);
+
+  useEffect(() => {
+    if (allLoaded && !initialized) {
+      setInitialized(true);
+    }
+  }, [allLoaded, initialized]);
 
   const handleSubscribe = () => {
     if (!session.authenticated) {
@@ -93,7 +101,7 @@ export default function PublicationDetailsView({ id }: Readonly<PublicationDetai
 
   const filteredPublications = profilePublications?.getPostsByAuthor?.filter((publication: Post) => publication.id !== id) ?? [];
 
-  if (!allLoaded) return <LoadingScreen />;
+  if (!initialized || (initialized && !publication)) return <LoadingScreen />;
   if (publication?.hidden || (!publication && !publicationLoading)) return <PublicationHidden />;
 
   return (

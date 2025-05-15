@@ -28,6 +28,7 @@ import { SponsoredAccessTrialButton } from '@src/components/sponsored-access-but
 import { useAuth } from '@src/hooks/use-auth.ts';
 import { ProfileHeaderProps } from '@src/sections/user/types.ts';
 import LoadingButton from '@mui/lab/LoadingButton';
+import { emptyAddress } from '@src/sections/user/CONSTANTS.tsx';
 
 // ----------------------------------------------------------------------
 
@@ -64,7 +65,7 @@ const ProfileHeader = (props: PropsWithChildren<ProfileHeaderProps>) => {
   }, [profile?.address]);
 
   useEffect(() => {
-    if (!campaign || !session?.address) return;
+    if (!campaign || campaign === emptyAddress || !session?.address) return;
     fetchIsActive(campaign, session?.address);
   }, [campaign, session?.address]);
 
