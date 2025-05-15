@@ -28,6 +28,7 @@ import { useCreateUserMutation, useUpdateUserMutation } from '@src/graphql/gener
 import { resolveSrc } from '@src/utils/image.ts';
 import { getIpfsUri } from '@src/utils/publication.ts';
 import { useAuth } from '@src/hooks/use-auth.ts';
+import { useAccountSession } from '@src/hooks/use-account-session.ts';
 
 // ----------------------------------------------------------------------
 
@@ -51,6 +52,7 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
   const [createUser, { loading: createUserLoading, error: errorCreatingProfile }] = useCreateUserMutation();
   const [updateUser, { loading: updateUserLoading, error: errorUpdatingProfile }] = useUpdateUserMutation();
   const { session } = useAuth();
+  const { refreshUser } = useAccountSession();
 
   const loading = createUserLoading || updateUserLoading || registrationLoading;
   const PaperElement = loading ? NeonPaper : Box;
@@ -169,6 +171,7 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
 
         setRegistrationLoading(false);
         notifySuccess(SUCCESS.PROFILE_CREATED_SUCCESSFULLY);
+        setTimeout(refreshUser, 100)
         onSuccess();
       } catch (error) {
         console.error('Error during profile registration:', error);

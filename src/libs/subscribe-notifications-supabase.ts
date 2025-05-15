@@ -17,14 +17,14 @@ export function subscribeToNotifications(
         (payload) => {
           handleEvents(payload, profileId, dispatch);
         }
-      )
-      .on(
-        'postgres_changes',
-        { event: 'UPDATE', schema: 'public', table, filter: `receiver_id=eq.${profileId}` },
-        (payload) => {
-          handleEvents(payload, profileId, dispatch);
-        }
       );
+      // .on(
+      //   'postgres_changes',
+      //   { event: 'UPDATE', schema: 'public', table, filter: `receiver_id=eq.${profileId}` },
+      //   (payload) => {
+      //     handleEvents(payload, profileId, dispatch);
+      //   }
+      // );
   });
 
   channel.subscribe();
