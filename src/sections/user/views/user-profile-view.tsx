@@ -98,7 +98,7 @@ const UserProfileView = ({ id }: UserProfileViewProps) => {
     })
   });
 
-  if (profileDataLoading || profilePublicationsLoading || profileFollowersLoading || profileFollowingLoading) return (
+  if (profileDataLoading || profilePublicationsLoading || profileFollowersLoading || profileFollowingLoading || !profileData?.getUser) return (
     <LoadingScreen />
   );
 

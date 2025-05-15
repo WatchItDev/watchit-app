@@ -4,6 +4,7 @@ import { supabase } from '@src/utils/supabase';
 import { type NotificationColumnsProps, NotificationPayload } from '@src/hooks/types';
 import { setNotifications } from '@src/redux/notifications';
 import {RootState} from "@redux/store.ts"
+import { useAuth } from '@src/hooks/use-auth.ts';
 
 interface UseNotificationsReturn {
   getNotifications: (id: string) => Promise<void>;
@@ -15,7 +16,7 @@ interface UseNotificationsReturn {
 }
 
 export function useNotifications(): UseNotificationsReturn {
-  // TODO implement the notification using the user address instead of the id
+  const { session } = useAuth();
   const dispatch = useDispatch();
   const notifications: NotificationColumnsProps[] = useSelector(
     (state: RootState) => state.notifications.notifications
@@ -41,10 +42,7 @@ export function useNotifications(): UseNotificationsReturn {
     if (error) {
       console.error('Error marking notification as read:', error);
     } else {
-      const updatedNotifications = notifications.map((notification) =>
-        notification.id === id ? { ...notification, read: true } : notification
-      );
-      dispatch(setNotifications(updatedNotifications));
+      await getNotifications(session.address);
     }
   }
 
@@ -62,7 +60,7 @@ export function useNotifications(): UseNotificationsReturn {
     const { error } = await supabase
       .from('notifications')
       .update({ read: true })
-      .eq('receiver_id', sessionData?.profile?.id);
+      .eq('receiver_id', session?.address);
 
     if (error) {
       console.error('Error marking all notifications as read:', error);

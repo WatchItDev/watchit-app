@@ -16,7 +16,8 @@ import { paths } from '@src/routes/paths.ts';
 import { NotificationCategories, NotificationItemProps} from '@src/hooks/types'
 import { useNotifications } from '@src/hooks/use-notifications.ts';
 
-export default function NotificationItem({ notification, onMarkAsRead }: NotificationItemProps) {
+export default function NotificationItem({ notification: n, onMarkAsRead }: NotificationItemProps) {
+  const notification = n.notification ? n.notification : n;
   const router = useRouter();
   const { deleteNotification } = useNotifications();
   const typeOfNotification = notification?.payload?.category;
@@ -27,7 +28,7 @@ export default function NotificationItem({ notification, onMarkAsRead }: Notific
     '';
 
   const handleItemClick = () => {
-    onMarkAsRead(notification.id);
+    onMarkAsRead(notification?.id);
 
     // Verify if is LIKE / COMMENT
     if (
@@ -42,16 +43,18 @@ export default function NotificationItem({ notification, onMarkAsRead }: Notific
       typeOfNotification === NotificationCategories.FOLLOW ||
       typeOfNotification === NotificationCategories.JOIN
     ) {
-      router.push(paths.dashboard.user.root(`${notification.payload.data.from.id}`));
+      router.push(paths.dashboard.user.root(`${notification?.payload?.data?.from?.id}`));
     }
   };
 
+  if (!notification.payload) return <></>;
+
   const renderAvatar = (
     <ListItemAvatar>
-      <AvatarProfile src={notification.payload.data.from.avatar} sx={{ bgcolor: 'background.neutral' }} />
+      <AvatarProfile src={notification?.payload?.data?.from?.avatar} sx={{ bgcolor: 'background.neutral' }} />
     </ListItemAvatar>
   );
-  const description: string | null = notification.payload.data.content.rawDescription;
+  const description: string | null = notification?.payload?.data?.content?.rawDescription;
   const renderText = (
     <ListItemText
       disableTypography
@@ -67,7 +70,7 @@ export default function NotificationItem({ notification, onMarkAsRead }: Notific
           sx={{ typography: 'caption', color: 'text.disabled' }}
           spacing={1}
         >
-          <span>{formatDistanceToNow(new Date(notification.created_at), { addSuffix: true })}</span>
+          <span>{notification?.created_at ? formatDistanceToNow(new Date(notification.created_at), { addSuffix: true }) : ''}</span>
         </Stack>
       }
     />

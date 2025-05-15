@@ -66,7 +66,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
 
   return (
     <Modal
-      sx={{ overflow: 'scroll', display: open ? 'flex' : 'none', zIndex: session.address && !session.user && open ? 3147483647 : 10000 }}
+      sx={{ overflow: 'scroll', display: open ? 'flex' : 'none' }}
       open={open}
       onClose={onClose}
       closeAfterTransition
