@@ -15,7 +15,7 @@ import SvgColor from '@src/components/svg-color';
 import { useSettingsContext } from '@src/components/settings';
 //
 import { HEADER, NAV } from '../config-layout';
-import { AccountPopover, HeaderBalance, NotificationsPopover } from '../_common';
+import { AccountPopover, HeaderXpBalance, HeaderMmcBalance, NotificationsPopover } from '../_common';
 import { PropsWithChildren } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
@@ -64,7 +64,8 @@ export default function Header({ children }: PropsWithChildren) {
       >
         {sessionData?.authenticated && (
           <>
-            <HeaderBalance />
+            <HeaderXpBalance />
+            <HeaderMmcBalance />
             <NotificationsPopover />
           </>
         )}
