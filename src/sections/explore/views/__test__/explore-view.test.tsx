@@ -7,9 +7,6 @@ import { MemoryRouter } from "react-router";
 import { MockedProvider } from "@apollo/client/testing";
 import { exploreViewMock } from "./__mock__/exploreView.mock";
 import * as authHook from "@src/hooks/use-auth";
-import { MockedProvider } from "@apollo/client/testing";
-import { exploreViewMock } from "./__mock__/exploreView.mock";
-import * as authHook from "@src/hooks/use-auth";
 
 vi.mock("@src/workers/backgroundTaskWorker?worker", () => {
   return {
