@@ -7,6 +7,9 @@ import { MemoryRouter } from "react-router";
 import { MockedProvider } from "@apollo/client/testing";
 import { exploreViewMock } from "./__mock__/exploreView.mock";
 import * as authHook from "@src/hooks/use-auth";
+import { MockedProvider } from "@apollo/client/testing";
+import { exploreViewMock } from "./__mock__/exploreView.mock";
+import * as authHook from "@src/hooks/use-auth";
 
 vi.mock("@src/workers/backgroundTaskWorker?worker", () => {
   return {
@@ -50,6 +53,11 @@ const renderWithProviders = () => {
           <ExploreView />
         </MemoryRouter>
       </MockedProvider>
+      <MockedProvider mocks={exploreViewMock} addTypename={false}>
+        <MemoryRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+          <ExploreView />
+        </MemoryRouter>
+      </MockedProvider>
     </Provider>,
   );
 };
@@ -70,6 +78,7 @@ describe("Testing in the <ExploreView/> component", () => {
 
     const { container } = renderWithProviders();
     expect(container).toMatchSnapshot();
+    screen.debug();
   });
 
   it("should render all public sections of ExploreView", () => {
