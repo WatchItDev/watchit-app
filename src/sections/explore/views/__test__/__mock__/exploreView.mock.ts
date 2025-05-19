@@ -2,15 +2,13 @@ import {
   GetAllPostsDocument,
   GetPopularPostsDocument,
   GetRecentUsersDocument,
+  GetRecentPostsDocument,
 } from "@src/graphql/generated/graphql";
 
 export const exploreViewMock = [
   {
     request: {
       query: GetAllPostsDocument,
-      variables: {
-        limit: 10,
-      },
     },
     result: {
       data: {
@@ -114,6 +112,84 @@ export const exploreViewMock = [
             verified: false,
             xpBalance: 100,
             __typename: "User",
+          },
+        ],
+      },
+    },
+  },
+  {
+    request: {
+      query: GetRecentPostsDocument,
+      variables: { limit: 100 },
+    },
+    result: {
+      data: {
+        getRecentPosts: [
+          {
+            id: "3",
+            title: "Post con límite 100",
+            description: "Descripción",
+            visibility: "PUBLIC",
+            commentCount: 0,
+            likeCount: 0,
+            bookmarkCount: 0,
+            viewCount: 0,
+            updatedAt: new Date().toISOString(),
+            createdAt: new Date().toISOString(),
+            cid: "cid100",
+            author: {
+              address: "0xabc",
+              displayName: "Autor 100",
+              followersCount: 15,
+              followingCount: 3,
+              coverPicture: "cover.jpg",
+              profilePicture: "profile.jpg",
+              bio: "Bio",
+              publicationsCount: 2,
+              username: "autor100",
+              __typename: "User",
+            },
+            media: [],
+            __typename: "Post",
+          },
+        ],
+      },
+    },
+  },
+  {
+    request: {
+      query: GetRecentPostsDocument,
+      variables: { limit: 20 },
+    },
+    result: {
+      data: {
+        getRecentPosts: [
+          {
+            id: "4",
+            title: "Post con límite 20",
+            description: "Otra descripción",
+            visibility: "PUBLIC",
+            commentCount: 1,
+            likeCount: 1,
+            bookmarkCount: 1,
+            viewCount: 1,
+            updatedAt: new Date().toISOString(),
+            createdAt: new Date().toISOString(),
+            cid: "cid20",
+            author: {
+              address: "0xdef",
+              displayName: "Autor 20",
+              followersCount: 10,
+              followingCount: 4,
+              coverPicture: "cover2.jpg",
+              profilePicture: "profile2.jpg",
+              bio: "Bio del autor",
+              publicationsCount: 1,
+              username: "autor20",
+              __typename: "User",
+            },
+            media: [],
+            __typename: "Post",
           },
         ],
       },
