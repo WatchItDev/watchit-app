@@ -50,11 +50,6 @@ const renderWithProviders = () => {
           <ExploreView />
         </MemoryRouter>
       </MockedProvider>
-      <MockedProvider mocks={exploreViewMock} addTypename={false}>
-        <MemoryRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
-          <ExploreView />
-        </MemoryRouter>
-      </MockedProvider>
     </Provider>,
   );
 };
@@ -75,7 +70,6 @@ describe("Testing in the <ExploreView/> component", () => {
 
     const { container } = renderWithProviders();
     expect(container).toMatchSnapshot();
-    screen.debug();
   });
 
   it("should render all public sections of ExploreView", () => {
