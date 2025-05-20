@@ -21,16 +21,17 @@ import { ADAPTER_EVENTS } from '@web3auth/base';
 
 // LOCAL IMPORTS
 import { useAuth } from '@src/hooks/use-auth';
-import { ensureAAReady } from '@src/utils/wallet.ts';
+import { ensureAAReady } from '@src/utils/wallet';
 import { useWeb3Auth } from '@src/hooks/use-web3-auth';
 import { useGetUserLazyQuery } from '@src/graphql/generated/hooks';
 
 interface UseAccountSessionHook {
-  login: () => Promise<void>;
-  logout: (silent?: boolean) => Promise<void>;
-  syncAddress: () => Promise<void>;
-  refreshUser: () => Promise<void>;
-  loading: boolean;
+  login:        () => Promise<void>;
+  logout:       () => Promise<void>;
+  syncAddress:  () => Promise<void>;
+  refreshUser:  () => Promise<void>;
+  loading:      boolean;
+  userChecked:  boolean;
 }
 
 let listenerAttached = false;
@@ -38,15 +39,37 @@ let restoreDone      = false;
 let loginPerformed   = false;
 
 export const useAccountSession = (): UseAccountSessionHook => {
-  const [bootstrapping,   setBootstrapping]   = useState(true);
-  const [loginInProgress, setLoginInProgress] = useState(false);
+  const { session, isAuthLoading: reduxLoading } = useAuth();
+  const { web3Auth } = useWeb3Auth();
   const dispatch = useDispatch();
-  const { web3Auth, bundlerClient, smartAccount } = useWeb3Auth();
-  const { isAuthLoading: reduxLoading, session } = useAuth();
-  const [loadUser, { data: userData, loading: apiLoading }] = useGetUserLazyQuery({ fetchPolicy: 'cache-and-network' });
-  const lastFetchedAddressRef = useRef<Address | undefined>(undefined);
-  const userAddressRef        = useRef<Address | undefined>(undefined);
-  const sessionRef = useRef(session);
+  const [loadUser] = useGetUserLazyQuery({ fetchPolicy: 'cache-and-network' });
+
+  const [loginInProgress, setLoginInProgress] = useState(false);
+  const [verifyingUser,   setVerifyingUser]   = useState(false);
+  const [userChecked,     setUserChecked]     = useState(false);
+
+  const sessionRef       = useRef(session);
+  const lastVerifiedRef  = useRef<Address | null>(null);
+  const loading = loginInProgress || reduxLoading || verifyingUser;
+
+  const mergeSession = (patch: Partial<ReduxSession>) => {
+    const prev = sessionRef.current;
+    const derivedAddress = patch.user?.address as Address | undefined;
+
+    const next: ReduxSession = {
+      ...prev,
+      ...patch,
+      address: patch.address ?? prev.address ?? derivedAddress,
+      authenticated: Boolean(
+        (patch.address ?? prev.address ?? derivedAddress) &&
+        (patch.user    ?? prev.user)
+      ),
+    };
+
+    if (JSON.stringify(prev) !== JSON.stringify(next)) {
+      dispatch(setSession({ session: next }));
+    }
+  };
 
   const getPrimaryAddress = useCallback(async (): Promise<Address | undefined> => {
     const accs = (await web3Auth.provider?.request({ method: 'eth_accounts' })) as string[] | undefined;
@@ -56,46 +79,55 @@ export const useAccountSession = (): UseAccountSessionHook => {
   const clearRedux = () => {
     dispatch(setBalance({ balance: 0 }));
     dispatch(setSession({ session: defaultSession }));
-    userAddressRef.current = undefined;
-    lastFetchedAddressRef.current = undefined;
+    setUserChecked(false);
     loginPerformed = false;
-  };
-
-  const mergeSession = (patch: Partial<ReduxSession>) => {
-    const prev = sessionRef.current;
-    const next = { ...prev, ...patch };
-    next.authenticated = Boolean(next.address && next.user);
-
-    if (JSON.stringify(next) !== JSON.stringify(prev)) {
-      dispatch(setSession({ session: next }));
-    }
   };
 
   const syncAddress = async () => {
     const address = await getPrimaryAddress();
-    let { info } = sessionRef.current;
     if (!address) throw new Error('No address found');
+    if (address === lastVerifiedRef.current && userChecked && !verifyingUser) return;
+
+    lastVerifiedRef.current = address;
+
+    let { info } = sessionRef.current;
     if (!info) info = await web3Auth.getUserInfo?.();
 
     mergeSession({ address, info });
-    loadUser({ variables: { input: { address, idSession: info?.idToken } } });
+    setVerifyingUser(true);
+    setUserChecked(false);
+
+    const { data } = await loadUser({
+      variables: { input: { address, idSession: info?.idToken } },
+    });
+    if (data?.getUser) {
+      dispatch(setUser({ user: data.getUser }));
+      mergeSession({
+        user: data.getUser,
+        address: data.getUser.address as Address,
+      });
+    }
+    setVerifyingUser(false);
+    setUserChecked(true);
   };
 
   const refreshUser = async () => {
     const address = await getPrimaryAddress();
     if (!address) throw new Error('No address found');
-    const result = await loadUser({ variables: { input: { address } } });
-
-    dispatch(setUser({ user: result.data.getUser }));
+    const { data } = await loadUser({ variables: { input: { address } } });
+    if (data?.getUser) {
+      dispatch(setUser({ user: data.getUser }));
+      mergeSession({ user: data.getUser });
+    }
   };
 
   const logout = useCallback(async () => {
-    if (web3Auth.connected) await web3Auth.logout();
+    await web3Auth.logout?.();
     clearRedux();
+    restoreDone = false;
   }, [web3Auth]);
 
   const login = useCallback(async () => {
-    if (loginInProgress) return;
     if (loginInProgress || loginPerformed) return;
 
     setLoginInProgress(true);
@@ -113,15 +145,9 @@ export const useAccountSession = (): UseAccountSessionHook => {
       setLoginInProgress(false);
       dispatch(setAuthLoading({ isAuthLoading: false }));
     }
-  }, [web3Auth, bundlerClient, smartAccount, loginInProgress]);
+  }, [web3Auth, loginInProgress]);
 
-  useEffect(() => {
-    sessionRef.current = session;
-  }, [session]);
-
-  useEffect(() => {
-    userAddressRef.current = session.user ? session.address : undefined;
-  }, [session.user, session.address]);
+  useEffect(() => { sessionRef.current = session }, [session]);
 
   useEffect(() => {
     if (!web3Auth || restoreDone) return;
@@ -134,8 +160,6 @@ export const useAccountSession = (): UseAccountSessionHook => {
         }
       } catch {
         await logout();
-      } finally {
-        setBootstrapping(false);
       }
     })();
   }, [logout]);
@@ -152,27 +176,7 @@ export const useAccountSession = (): UseAccountSessionHook => {
       web3Auth.off(ADAPTER_EVENTS.CONNECTED,    syncAddress);
       listenerAttached = false;
     };
-  }, [logout]);
+  }, [web3Auth, logout]);
 
-  useEffect(() => {
-    if (userData?.getUser) {
-      const address = sessionRef.current.address as Address;
-
-      if (!address) { return; }
-
-      if (userAddressRef.current !== address) {
-        userAddressRef.current = address;
-        dispatch(setUser({ user: userData.getUser }));
-        mergeSession({ user: userData.getUser });
-      }
-    }
-  }, [userData]);
-
-  return {
-    login,
-    logout,
-    syncAddress,
-    refreshUser,
-    loading: bootstrapping || reduxLoading || apiLoading || loginInProgress,
-  };
+  return { login, logout, syncAddress, refreshUser, loading, userChecked };
 };

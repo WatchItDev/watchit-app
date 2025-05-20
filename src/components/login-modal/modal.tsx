@@ -16,8 +16,8 @@ export interface LoginModalProps {
 }
 
 export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
-  const { session, isAuthLoading: accountLoading } = useAuth();
-  const { login, logout, syncAddress } = useAccountSession();
+  const { session } = useAuth();
+  const { login, logout, syncAddress, loading: sessionLoading } = useAccountSession();
   const [showForm, setShowForm] = useState(false);
   const loginTriggered = useRef(false);
 
@@ -47,22 +47,17 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
   }, [open, session]);
 
   useEffect(() => {
+    if (sessionLoading) return;
+
     if (session.user) {
-      setShowForm(false);
       onClose();
-    } else if (session.address && !session.user) {
+    } else if (session.address) {
       setShowForm(true);
     }
-  }, [session]);
+  }, [sessionLoading, session]);
 
-  const handleSuccess = () => {
-    syncAddress();
-  }
-
-  const handleCancel = () => {
-    logout();
-    onClose();
-  }
+  const handleSuccess = () => syncAddress();
+  const handleCancel  = () => { logout(); onClose(); };
 
   return (
     <Modal
@@ -70,7 +65,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
       open={open}
       onClose={onClose}
       closeAfterTransition
-      disableScrollLock={true}
+      disableScrollLock
       BackdropComponent={Backdrop}
       BackdropProps={{ timeout: 500, onClick: handleCancel }}
     >
@@ -90,13 +85,13 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
             overflow: 'auto',
           }}
         >
-          {accountLoading && (
+          {sessionLoading && (
             <Box display="flex" justifyContent="center" alignItems="center" height={200}>
               <WatchitLoader />
             </Box>
           )}
 
-          {!accountLoading && showForm && session.address && (
+          {!sessionLoading && showForm && session.address && (
             <ProfileFormView
               onSuccess={handleSuccess}
               onCancel={handleCancel}
