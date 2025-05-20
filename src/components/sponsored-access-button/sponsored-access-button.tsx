@@ -98,7 +98,7 @@ export const SponsoredAccessTrialButton: FC<ExtendedSponsoredAccessProps> = (pro
             display: { xs: size === 'sm' ? 'none' : 'flex', md: 'flex' }
           }}
         >
-          Free trial
+          Free
         </Typography>
       </StyledBoxGradient>
     </RainbowEffect>
