@@ -30,7 +30,7 @@ const renderWithProviders = () => {
   );
 };
 
-describe("Testing in the <ExploreTopPublications/> component", () => {
+describe("[COMPONENTS] <ExploreTopPublications />", () => {
   it("should match snapshot", async () => {
     const { container } = renderWithProviders();
     await screen.findByText("Post con límite 20");
