@@ -51,12 +51,13 @@ import { useAuth } from '@src/hooks/use-auth.ts';
 import { useToggleBookmark } from '@src/hooks/use-toggle-bookmark';
 import {
   useHidePostMutation,
-  useGetIsPostLikedQuery,
+  useGetIsPostLikedLazyQuery,
   useTogglePostLikeMutation,
 } from '@src/graphql/generated/hooks.tsx';
 import { resolveSrc } from '@src/utils/image.ts';
 import { useBookmarks } from '@src/hooks/use-bookmark.ts';
 import { RootState } from '@redux/store.ts';
+import { decrementCounterLikes, incrementCounterLikes, setCounterLikes } from '@redux/comments';
 
 // ----------------------------------------------------------------------
 
@@ -72,7 +73,8 @@ export default function PublicationDetailMain({
   const [openConfirmModal, setOpenConfirmModal] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [hasLiked, setHasLiked] = useState(false);
-  const [likesCount, setLikesCount] = useState(post.likeCount);
+  const likesCount = useSelector((s: RootState) => s.comments.counterLikes[post.id] ?? post.likeCount);
+  const counters = useSelector((s: RootState) => s.comments.counterLikes);
 
   const router = useRouter();
   const theme = useTheme();
@@ -81,7 +83,7 @@ export default function PublicationDetailMain({
   const [ hidePost ] = useHidePostMutation();
   const { sendNotification } = useNotifications();
   const { generatePayload } = useNotificationPayload(sessionData);
-  const { data: postLikedData, loading: postLikedLoading } = useGetIsPostLikedQuery({ variables: { postId: post.id } })
+  const [getIsPostLiked, { data: postLikedData, loading: postLikedLoading }] = useGetIsPostLikedLazyQuery()
   const [ togglePostLike, { loading: togglePostLikeLoading }  ] = useTogglePostLikeMutation()
   const { has, loading: loadingList } = useBookmarks();
   const { toggle, loading: loadingToggle } = useToggleBookmark();
@@ -119,8 +121,11 @@ export default function PublicationDetailMain({
         }
       });
 
-      setHasLiked(res?.data?.togglePostLike ?? false); // Toggle the UI based on the reaction state
-      setLikesCount(res?.data?.togglePostLike ? likesCount + 1 : likesCount - 1); // Update the likes count
+      const isLiked = res?.data?.togglePostLike ?? false;
+
+      setHasLiked(isLiked);
+      dispatch(isLiked ? incrementCounterLikes(post.id) : decrementCounterLikes(post.id));
+
       // Send notification to the author when not already liked
       if (res?.data?.togglePostLike) {
         sendNotification(post.author.address, sessionData?.user?.address ?? '', payloadForNotification);
@@ -133,6 +138,13 @@ export default function PublicationDetailMain({
   useEffect(() => {
     setHasLiked(postLikedData?.getIsPostLiked ?? false);
   }, [postLikedData]);
+
+  useEffect(() => {
+    getIsPostLiked({ variables: { postId: post.id }, fetchPolicy: 'network-only' });
+    if (post.likeCount !== undefined) {
+      dispatch(setCounterLikes({ publicationId: post.id, likes: post.likeCount }));
+    }
+  }, [post.likeCount, post.id]);
 
   const handleHide = async () => {
     await hidePost({ variables: { postId: post.id } });
