@@ -6,6 +6,7 @@ import { store } from "@src/redux/store";
 import { ExploreTopPublications } from "../explore-top-publications";
 import { MockedProvider } from "@apollo/client/testing";
 import { exploreViewMock } from "../../views/__test__/__mock__/exploreView.mock";
+
 vi.mock("@src/workers/backgroundTaskWorker?worker", () => {
   return {
     default: class {
@@ -32,46 +33,43 @@ const renderWithProviders = () => {
 describe("Testing in the <ExploreTopPublications/> component", () => {
   it("should match snapshot", () => {
     const { container } = renderWithProviders();
+
     expect(container).toMatchSnapshot();
+    screen.debug();
   });
 
-  // it("should render the component with content", () => {
+  it("should render the component with content", async () => {
+    renderWithProviders();
+    const title = await screen.findByText("Post con límite 20");
+
+    expect(title).toBeInTheDocument();
+  });
+
+  it("should dispatch loading state to Redux store", async () => {
+    renderWithProviders();
+    await waitFor(() => {
+      expect(store.getState().loading.explore.top).toBe(true);
+    });
+  });
+
+  afterAll(() => {
+    vi.restoreAllMocks();
+  });
+
+  it("should render the correct number of posts", async () => {
+    renderWithProviders();
+    const posts = await screen.findAllByText("Popular Post");
+    const postCount = posts.length;
+    const expectedCount = 2;
+    expect(postCount).toBe(expectedCount);
+  });
+
+  // it("should not render duplicate posts", async () => {
   //   renderWithProviders();
-  //   expect(screen.getByText("Prueba de titulo")).toBeInTheDocument();
-  //   expect(screen.getByText("Contenido de prueba para explorar publicaciones")).toBeInTheDocument();
-  //   expect(screen.getByText("Alex Talavera")).toBeInTheDocument();
-  // });
+  //   const renderedPosts = screen.getAllByTestId("post-item");
+  //   const postIds = renderedPosts.map((el) => el.getAttribute("data-id"));
+  //   const uniqueIds = new Set(postIds);
 
-  // it("should dispatch loading state to Redux store", async () => {
-  //   const dispatchSpy = vi.spyOn(store, "dispatch");
-  //   renderWithProviders();
-  //   await waitFor(() => {
-  //     expect(dispatchSpy).toHaveBeenCalledWith(
-  //       expect.objectContaining({
-  //         type: "loading/setExploreLoading",
-  //         payload: { key: "top", isLoading: expect.any(Boolean) },
-  //       }),
-  //     );
-  //   });
-  //   expect(dispatchSpy).toHaveBeenCalledTimes(1);
-  // });
-
-  // afterAll(() => {
-  //   vi.restoreAllMocks();
-  // });
-
-  // it("should render the correct number of posts", () => {
-  //   renderWithProviders();
-  //   const posts = screen.getAllByText("Prueba de titulo");
-  //   expect(posts.length).toBeGreaterThan(0);
-  // });
-
-  // it("should not render duplicate posts", () => {
-  //   renderWithProviders();
-  //   const posts = screen.getAllByText("Prueba de titulo");
-
-  //   const uniquePosts = new Set(posts.map((post) => post.id?.trim()));
-
-  //   expect(uniquePosts.size).toBe(1);
+  //   expect(uniqueIds.size).toBe(postIds.length);
   // });
 });
