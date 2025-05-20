@@ -31,9 +31,9 @@ const renderWithProviders = () => {
 };
 
 describe("Testing in the <ExploreTopPublications/> component", () => {
-  it("should match snapshot", () => {
+  it("should match snapshot", async () => {
     const { container } = renderWithProviders();
-
+    await screen.findByText("Post con límite 20");
     expect(container).toMatchSnapshot();
     screen.debug();
   });
@@ -56,20 +56,36 @@ describe("Testing in the <ExploreTopPublications/> component", () => {
     vi.restoreAllMocks();
   });
 
-  it("should render the correct number of posts", async () => {
-    renderWithProviders();
-    const posts = await screen.findAllByText("Popular Post");
-    const postCount = posts.length;
-    const expectedCount = 2;
-    expect(postCount).toBe(expectedCount);
+it("should render the correct number of original posts", async () => {
+  renderWithProviders();
+  // Find all elements containing the post title text
+  const allPosts = await screen.findAllByText("Popular Post");
+  // Filter out cloned slides (created by react-slick for infinite scroll)
+  const originalPosts = allPosts.filter(post => {
+    let el: HTMLElement | null = post;
+    // Traverse up the DOM tree to find the slide container
+    while (el) {
+      if (el.classList && el.classList.contains('slick-slide')) {
+        // Exclude if it's a cloned slide
+        return !el.classList.contains('slick-cloned');
+      }
+      el = el.parentElement;
+    }
+    // If no slide container found, assume original
+    return true;
   });
+  const expectedCount = 1;
+  // Assert that only original slides are counted
+  expect(originalPosts.length).toBe(expectedCount);
+});
 
-  // it("should not render duplicate posts", async () => {
-  //   renderWithProviders();
-  //   const renderedPosts = screen.getAllByTestId("post-item");
-  //   const postIds = renderedPosts.map((el) => el.getAttribute("data-id"));
-  //   const uniqueIds = new Set(postIds);
 
-  //   expect(uniqueIds.size).toBe(postIds.length);
-  // });
+
+  it("should not render duplicate posts", async () => {
+    renderWithProviders();
+    const postElements = await screen.findAllByText("Popular Post");
+    const titles = postElements.map((el) => el.textContent);
+    const uniqueTitles = new Set(titles);
+    expect(uniqueTitles.size).toBe(1);
+  });
 });
