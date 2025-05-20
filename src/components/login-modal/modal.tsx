@@ -44,7 +44,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
         }
       })();
     }
-  }, [open, session, login, onClose]);
+  }, [open, session, login]);
 
   useEffect(() => {
     if (sessionLoading) return;
