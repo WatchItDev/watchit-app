@@ -42,7 +42,7 @@ export const useAccountSession = (): UseAccountSessionHook => {
   const { session, isAuthLoading: reduxLoading } = useAuth();
   const { web3Auth } = useWeb3Auth();
   const dispatch = useDispatch();
-  const [loadUser] = useGetUserLazyQuery({ fetchPolicy: 'cache-and-network' });
+  const [loadUser] = useGetUserLazyQuery();
 
   const [loginInProgress, setLoginInProgress] = useState(false);
   const [verifyingUser,   setVerifyingUser]   = useState(false);

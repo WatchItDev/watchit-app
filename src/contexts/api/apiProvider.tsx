@@ -29,6 +29,11 @@ export const ApiProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     return new ApolloClient({
       link: concat(authLink, httpLink),
       cache: new InMemoryCache(),
+      defaultOptions: {
+        watchQuery: { fetchPolicy: 'network-only', errorPolicy: 'all' },
+        query:      { fetchPolicy: 'network-only', errorPolicy: 'all' },
+        mutate:     { errorPolicy: 'all' },
+      },
     });
   }, [session]);
 

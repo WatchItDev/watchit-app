@@ -14,7 +14,7 @@ import { setRepliesCount } from '@redux/comments';
 export default function PostCommentList({ publicationId: id, showReplies }: Readonly<PostCommentListProps>) {
   const dispatch = useDispatch();
   const [ comments, setComments ] = useState<Comment[]>([])
-  const [ getComments, {data, error, loading} ] = useGetCommentsByPostLazyQuery({ fetchPolicy: 'network-only' });
+  const [ getComments, {data, error, loading} ] = useGetCommentsByPostLazyQuery();
   const { hiddenComments, refetchTriggerByPublication } = useSelector(
     (state: RootState) => state.comments
   );
