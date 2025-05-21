@@ -140,7 +140,7 @@ export default function PublicationDetailMain({
   }, [postLikedData]);
 
   useEffect(() => {
-    getIsPostLiked({ variables: { postId: post.id }, fetchPolicy: 'network-only' });
+    getIsPostLiked({ variables: { postId: post.id } });
     if (post.likeCount !== undefined) {
       dispatch(setCounterLikes({ publicationId: post.id, likes: post.likeCount }));
     }

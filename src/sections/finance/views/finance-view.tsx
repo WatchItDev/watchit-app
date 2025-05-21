@@ -21,7 +21,7 @@ export default function FinanceView() {
   const [percent, setPercent] = useState(0);
   const { session: sessionData, balance: balanceFromRedux } = useAuth();
   const { transactions, loading } = useGetSmartWalletTransactions();
-  const [loadFollowing, { data: profileFollowing, loading: profileFollowingLoading }] = useGetUserFollowingLazyQuery({ fetchPolicy: 'network-only' });
+  const [loadFollowing, { data: profileFollowing, loading: profileFollowingLoading }] = useGetUserFollowingLazyQuery();
   const following = profileFollowing?.getUserFollowing;
 
   useEffect(() => {

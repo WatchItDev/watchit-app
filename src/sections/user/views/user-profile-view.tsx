@@ -43,10 +43,10 @@ const UserProfileView = ({ id }: UserProfileViewProps) => {
     GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS,
     session?.address as Address
   );
-  const [loadProfile, { data: profileData, loading: profileDataLoading }] = useGetUserLazyQuery({ fetchPolicy: 'cache-and-network' });
-  const [loadPublications, { data: profilePublications, loading: profilePublicationsLoading }] = useGetPostsByAuthorLazyQuery({ fetchPolicy: 'cache-and-network' });
-  const [loadFollowers, { data: profileFollowers, loading: profileFollowersLoading }] = useGetUserFollowersLazyQuery({ fetchPolicy: 'cache-and-network' });
-  const [loadFollowing, { data: profileFollowing, loading: profileFollowingLoading }] = useGetUserFollowingLazyQuery({ fetchPolicy: 'cache-and-network' });
+  const [loadProfile, { data: profileData, loading: profileDataLoading }] = useGetUserLazyQuery();
+  const [loadPublications, { data: profilePublications, loading: profilePublicationsLoading }] = useGetPostsByAuthorLazyQuery();
+  const [loadFollowers, { data: profileFollowers, loading: profileFollowersLoading }] = useGetUserFollowersLazyQuery();
+  const [loadFollowing, { data: profileFollowing, loading: profileFollowingLoading }] = useGetUserFollowingLazyQuery();
   const { invitations: referrals, fetchInvitations, loading: loadingReferrals } = useReferrals();
   const followersStore = useSelector((state: RootState) => state.followers.followers);
   const followingsStore = useSelector((state: RootState) => state.followers.followings);
