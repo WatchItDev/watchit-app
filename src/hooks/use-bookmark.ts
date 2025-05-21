@@ -9,8 +9,7 @@ export function useBookmarks() {
 
   const { data, loading, refetch } = useGetUserBookmarksQuery({
     variables:  { address, limit: 100 },
-    skip:       !address,
-    fetchPolicy:'cache-and-network',
+    skip:       !address
   });
 
   const idSet = useMemo(() => {
