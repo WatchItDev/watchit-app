@@ -123,7 +123,7 @@ export const exploreViewMock = [
       data: {
         getRecentUsers: [
           {
-            address: "0x789",
+            address: "0x000000000000000000000000000000000000dead",
             bio: "Recent User Bio",
             bookmarksCount: 1,
             coverPicture: "cover3.jpg",
