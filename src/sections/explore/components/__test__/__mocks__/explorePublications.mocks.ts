@@ -1,4 +1,4 @@
-import { GetAllPostsDocument } from "@src/graphql/generated/graphql";
+import { GetAllPostsDocument, GetRecentPostsDocument } from "@src/graphql/generated/graphql";
 
 export const explorePublicationsMocks = [
   {
@@ -11,6 +11,47 @@ export const explorePublicationsMocks = [
     result: {
       data: {
         getAllPosts: [
+          {
+            id: "1",
+            title: "Título de prueba",
+            description: "Descripción",
+            visibility: "PUBLIC",
+            commentCount: 0,
+            likeCount: 0,
+            bookmarkCount: 0,
+            viewCount: 0,
+            updatedAt: new Date().toISOString(),
+            createdAt: new Date().toISOString(),
+            cid: "somecid",
+            author: {
+              address: "0x123",
+              displayName: "Autor Prueba",
+              followersCount: 10,
+              followingCount: 5,
+              coverPicture: "cover.jpg",
+              profilePicture: "profile.jpg",
+              bio: "Bio",
+              publicationsCount: 2,
+              username: "autorprueba",
+              __typename: "User",
+            },
+            media: [],
+            __typename: "Post",
+          },
+        ],
+      },
+    },
+  },
+  {
+    request: {
+      query: GetRecentPostsDocument,
+      variables: {
+        limit: 100,
+      },
+    },
+    result: {
+      data: {
+        getRecentPosts: [
           {
             id: "1",
             title: "Título de prueba",
