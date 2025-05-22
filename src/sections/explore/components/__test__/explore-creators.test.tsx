@@ -55,18 +55,14 @@ const renderWithProviders = () => {
 describe("Testing in the ExploreCreators component", () => {
   it("should render creators and match snapshot", async () => {
     const { container } = renderWithProviders();
-
     await screen.findByText("Recent User");
-
     expect(container).toMatchSnapshot();
   });
-  // it("should render the correct number of creators", async () => {
-  //   renderWithProviders();
-  //   await screen.findByText("Creator 1");
-  //   await screen.findByText("Creator 2");
-  //   const creators = screen.getAllByText(/Creator/);
-  //   expect(creators.length).toBe(2);
-  // });
+  it("should render the correct number of creators", async () => {
+    renderWithProviders();
+    const creators = await screen.findAllByText("Recent User");
+    expect(creators.length).toBe(1);
+  });
   // it("should not render hidden creators", async () => {
   //   renderWithProviders();
   //   await screen.findByText("Creator 1");
