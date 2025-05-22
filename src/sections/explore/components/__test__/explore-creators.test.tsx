@@ -63,28 +63,21 @@ describe("Testing in the ExploreCreators component", () => {
     const creators = await screen.findAllByText("Recent User");
     expect(creators.length).toBe(1);
   });
-  // it("should not render hidden creators", async () => {
-  //   renderWithProviders();
-  //   await screen.findByText("Creator 1");
-  //   await screen.findByText("Creator 2");
-  //   expect(screen.queryByText("Hidden Creator")).not.toBeInTheDocument();
-  // });
+  it("should not render hidden creators", () => {
+    renderWithProviders();
+    const hiddenCreator = screen.queryByText("Hidden User");
+    expect(hiddenCreator).not.toBeInTheDocument();
+  });
 
-  // it("should dispatch loading state to Redux store", async () => {
-  //   const dispatchSpy = vi.spyOn(store, "dispatch");
-  //   renderWithProviders();
-  //   await screen.findByText("Creator 1");
-  //   await screen.findByText("Creator 2");
-  //   expect(dispatchSpy).toHaveBeenCalledWith(
-  //     expect.objectContaining({
-  //       type: "loading/setExploreLoading",
-  //       payload: { key: "creators", isLoading: false },
-  //     }),
-  //   );
-  //   expect(dispatchSpy).toHaveBeenCalledTimes(1);
-  // });
-
-  // afterEach(() => {
-  //   vi.resetModules();
-  // });
+  it("should dispatch loading state to Redux store", async () => {
+    const dispatchSpy = vi.spyOn(store, "dispatch");
+    renderWithProviders();
+    await screen.findByText("Recent User");
+    expect(dispatchSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        type: "loading/setExploreLoading",
+        payload: { key: "creators", isLoading: false },
+      }),
+    );
+  });
 });
