@@ -43,7 +43,7 @@ import { SubscribeToUnlockCard } from '@src/components/subscribe-to-unlock-card/
 import Popover from '@mui/material/Popover';
 import { useNotifications } from '@src/hooks/use-notifications.ts';
 import { openLoginModal } from '@redux/auth';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useNotificationPayload } from '@src/hooks/use-notification-payload.ts';
 import AvatarProfile from "@src/components/avatar/avatar.tsx";
 import { PublicationDetailProps } from '@src/components/publication-detail-main/types.ts';
@@ -56,8 +56,6 @@ import {
 } from '@src/graphql/generated/hooks.tsx';
 import { resolveSrc } from '@src/utils/image.ts';
 import { useBookmarks } from '@src/hooks/use-bookmark.ts';
-import { RootState } from '@redux/store.ts';
-import { decrementCounterLikes, incrementCounterLikes, setCounterLikes } from '@redux/comments';
 
 // ----------------------------------------------------------------------
 
@@ -73,8 +71,8 @@ export default function PublicationDetailMain({
   const [openConfirmModal, setOpenConfirmModal] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [hasLiked, setHasLiked] = useState(false);
-  const likesCount = useSelector((s: RootState) => s.comments.counterLikes[post.id] ?? post.likeCount);
-  const counters = useSelector((s: RootState) => s.comments.counterLikes);
+  const [likesCount, setLikesCount] = useState(post.likeCount);
+  const [commentCount, setCommentCount] = useState(post.commentCount);
 
   const router = useRouter();
   const theme = useTheme();
@@ -83,68 +81,61 @@ export default function PublicationDetailMain({
   const [ hidePost ] = useHidePostMutation();
   const { sendNotification } = useNotifications();
   const { generatePayload } = useNotificationPayload(sessionData);
-  const [getIsPostLiked, { data: postLikedData, loading: postLikedLoading }] = useGetIsPostLikedLazyQuery()
+  const [getIsPostLiked, { loading: postLikedLoading }] = useGetIsPostLikedLazyQuery()
   const [ togglePostLike, { loading: togglePostLikeLoading }  ] = useTogglePostLikeMutation()
   const { has, loading: loadingList } = useBookmarks();
   const { toggle, loading: loadingToggle } = useToggleBookmark();
-  const commentCount = useSelector((s: RootState) => s.comments.postCommentCount[post.id] ?? post.commentCount);
 
   const isBookmarked = has(post.id);
   const isLoading = togglePostLikeLoading || postLikedLoading
   const variants = theme.direction === 'rtl' ? varFade().inLeft : varFade().inRight;
   const openMenu = Boolean(anchorEl);
 
-  const toggleReaction = async () => {
+  const handleToggleLike = async () => {
     if (!sessionData?.authenticated) return dispatch(openLoginModal());
 
-    // Send a notification to the profile owner using the sendNotification function from useNotifications hook
-    const payloadForNotification = generatePayload(
-      'LIKE',
-      {
-        id: post.author.address,
-        displayName: post.author.displayName ?? 'Watchit',
-        avatar: resolveSrc(post.author.profilePicture || post.author.address, 'profile'),
-      },
-      {
-        rawDescription: `${sessionData?.user?.displayName} liked ${post.title}`,
-        root_id: post.id,
-        post_title: post.title,
-      }
-    );
-
     try {
-      const res = await togglePostLike({
-        variables: {
-          input: {
-            postId: post.id
+      const res = await togglePostLike({ variables: { input: { postId: post.id } } });
+      const isNowLiked = res.data?.togglePostLike ?? false;
+
+      setHasLiked(isNowLiked);
+      setLikesCount((prev) => prev + (isNowLiked ? 1 : -1));
+
+      if (isNowLiked) {
+        // Send a notification to the profile owner using the sendNotification function from useNotifications hook
+        const payloadForNotification = generatePayload(
+          'LIKE',
+          {
+            id: post.author.address,
+            displayName: post.author.displayName ?? 'Watchit',
+            avatar: resolveSrc(post.author.profilePicture || post.author.address, 'profile'),
+          },
+          {
+            rawDescription: `${sessionData?.user?.displayName} liked ${post.title}`,
+            root_id: post.id,
+            post_title: post.title,
           }
-        }
-      });
+        );
 
-      const isLiked = res?.data?.togglePostLike ?? false;
-
-      setHasLiked(isLiked);
-      dispatch(isLiked ? incrementCounterLikes(post.id) : decrementCounterLikes(post.id));
-
-      // Send notification to the author when not already liked
-      if (res?.data?.togglePostLike) {
         sendNotification(post.author.address, sessionData?.user?.address ?? '', payloadForNotification);
       }
     } catch (err) {
-      console.error('Error toggling reaction:', err);
+      console.error(err);
+    }
+  };
+
+  const handleCommentSuccess = (wasReply = false) => {
+    if (!wasReply) {
+      // Es un comentario raíz → solo incrementamos el counter del post
+      setCommentCount((c) => (c ?? 0) + 1);
     }
   };
 
   useEffect(() => {
-    setHasLiked(postLikedData?.getIsPostLiked ?? false);
-  }, [postLikedData]);
-
-  useEffect(() => {
-    getIsPostLiked({ variables: { postId: post.id } });
-    if (post.likeCount !== undefined) {
-      dispatch(setCounterLikes({ publicationId: post.id, likes: post.likeCount }));
-    }
-  }, [post.likeCount, post.id]);
+    getIsPostLiked({ variables: { postId: post.id } }).then((res) =>
+      setHasLiked(res.data?.getIsPostLiked ?? false),
+    );
+  }, [post.id]);
 
   const handleHide = async () => {
     await hidePost({ variables: { postId: post.id } });
@@ -350,7 +341,7 @@ export default function PublicationDetailMain({
                     height: '40px',
                     minWidth: '40px',
                   }}
-                  onClick={toggleReaction}
+                  onClick={handleToggleLike}
                   disabled={isLoading}
                 >
                   {isLoading ? (
@@ -444,6 +435,7 @@ export default function PublicationDetailMain({
                       displayName: post.author.displayName ?? 'Watchit',
                       avatar: resolveSrc(post.author.profilePicture || post.author.address, 'profile'),
                     }}
+                    onSuccess={() => handleCommentSuccess(false)}
                   />
                 ) : (
                   <Typography
@@ -462,7 +454,7 @@ export default function PublicationDetailMain({
                 )}
               </Box>
               <Box sx={{ display: 'flex', flexDirection: 'column', mt: 2, pr: 1 }}>
-                <PostCommentList publicationId={post.id} showReplies />
+                <PostCommentList publicationId={post.id} showReplies onReplyCreated={() => handleCommentSuccess(true)} />
               </Box>
             </Box>
           )}
