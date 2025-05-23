@@ -66,7 +66,15 @@ describe("FinanceDepositFromSmartAccount", () => {
   });
 
   it("should handle missing session data gracefully", () => {
-    vi.mocked(useAuth).mockReturnValueOnce({ session: null });
+    vi.mocked(useAuth).mockReturnValueOnce({
+      session: {
+        address: undefined,
+        authenticated: false,
+      },
+      isAuthLoading: false,
+      isLoginModalOpen: false,
+      balance: 0,
+    });
     const { getByTestId } = renderComponent();
     const content = getByTestId("FinanceDeposit").textContent;
     expect(content).toContain("null");
