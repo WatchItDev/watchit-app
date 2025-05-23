@@ -3,6 +3,7 @@ query GetUserBookmarks($address: String!, $limit: Int) {
     id
     title
     description
+    likeCount
     media {
       url
       cid

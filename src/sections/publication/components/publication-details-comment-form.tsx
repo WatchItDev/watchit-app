@@ -1,6 +1,3 @@
-// REDUX IMPORTS
-import { useDispatch } from 'react-redux';
-
 // FORM IMPORTS
 import * as Yup from 'yup';
 import { useForm, Controller } from 'react-hook-form';
@@ -23,7 +20,7 @@ import { MovieCommentFormProps } from '@src/sections/publication/types.ts';
 import { useAuth } from '@src/hooks/use-auth.ts';
 import { resolveSrc } from '@src/utils/image.ts';
 import { useCreateCommentMutation } from '@src/graphql/generated/hooks.tsx';
-import { incrementPostCommentCount, incrementRepliesCount, refetchCommentsByPublication } from '@redux/comments';
+import { GetCommentsByPostDocument, GetRepliesByCommentDocument } from '@src/graphql/generated/graphql.ts';
 
 /**
  * MovieCommentForm Component
@@ -31,10 +28,9 @@ import { incrementPostCommentCount, incrementRepliesCount, refetchCommentsByPubl
  * @param {MovieCommentFormProps} props - Component props.
  * @returns {JSX.Element} - Rendered component.
  */
-const MovieCommentForm = ({ commentOn, owner, root }: MovieCommentFormProps) => {
+const MovieCommentForm = ({ commentOn, owner, root, onSuccess }: MovieCommentFormProps) => {
   const [createComment] = useCreateCommentMutation();
   const { session: sessionData } = useAuth();
-  const dispatch = useDispatch();
   const { sendNotification } = useNotifications();
   const { generatePayload } = useNotificationPayload(sessionData);
 
@@ -64,12 +60,22 @@ const MovieCommentForm = ({ commentOn, owner, root }: MovieCommentFormProps) => 
           input: {
             content: data.comment,
             postId: root,
-            parentComment: commentOn
-          }
-        }
+            parentComment: commentOn,
+          },
+        },
+        refetchQueries: [
+          {
+            query: GetCommentsByPostDocument,
+            variables: { postId: root, limit: 50 },
+          },
+          ...(commentOn
+            ? [{
+              query: GetRepliesByCommentDocument,
+              variables: { commentId: commentOn },
+            }]
+            : []),
+        ],
       });
-
-      dispatch(commentOn ? incrementRepliesCount(commentOn) : incrementPostCommentCount(root ?? ''));
 
       const notificationPayload = generatePayload(
         'COMMENT',
@@ -91,10 +97,8 @@ const MovieCommentForm = ({ commentOn, owner, root }: MovieCommentFormProps) => 
         sendNotification(owner.id, sessionData?.user?.address ?? '', notificationPayload);
       }
 
-      // Refetch the comments
-      dispatch(refetchCommentsByPublication(commentOn ?? root ?? ''));
-
       reset();
+      onSuccess?.();
     } catch (error) {
       // @ts-expect-error No error type
       console.error('Error creating the comment:', error.message);

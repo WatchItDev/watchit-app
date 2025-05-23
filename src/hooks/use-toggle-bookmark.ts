@@ -4,7 +4,6 @@ import { useAuth } from '@src/hooks/use-auth';
 import { useBookmarks } from '@src/hooks/use-bookmark';
 import { useDispatch } from 'react-redux';
 import { openLoginModal } from '@redux/auth';
-import { addBookmark, removeBookmark } from '@redux/bookmark';
 import { Post } from '@src/graphql/generated/graphql';
 
 export const useToggleBookmark = () => {
@@ -23,16 +22,7 @@ export const useToggleBookmark = () => {
 
       try {
         setLoading(true);
-        const { data } = await mutate({
-          variables: { input: { postId: post.id } },
-        });
-
-        if (data?.toggleBookmark) {
-          dispatch(addBookmark(post));
-        } else {
-          dispatch(removeBookmark(post.id));
-        }
-
+        await mutate({ variables: { input: { postId: post.id } } });
         await refetch();
       } catch (err) {
         console.error('Error toggling bookmark:', err);
@@ -40,7 +30,7 @@ export const useToggleBookmark = () => {
         setLoading(false);
       }
     },
-    [session?.authenticated],
+    [session?.authenticated, mutate, refetch, dispatch],
   );
 
   return { toggle, loading };

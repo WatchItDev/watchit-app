@@ -1,39 +1,24 @@
-import { useEffect } from 'react';
+import { useState } from 'react';
 import Box from '@mui/material/Box';
 import PublicationCommentItem from './publication-comment-item.tsx';
 import LinearProgress from '@mui/material/LinearProgress';
-import { useDispatch, useSelector } from 'react-redux';
 import { RepliesListProps } from '@src/sections/publication/types.ts';
-import {RootState} from "@redux/store.ts"
 import { Comment } from '@src/graphql/generated/graphql.ts';
 import { useGetRepliesByCommentQuery } from '@src/graphql/generated/hooks.tsx';
-import { setRepliesCount } from '@redux/comments';
 
-const RepliesList = ({ parentCommentId }: RepliesListProps) => {
-  const dispatch = useDispatch();
-  const { data, error, loading, refetch } = useGetRepliesByCommentQuery({ variables: { commentId: parentCommentId } });
-  const { hiddenComments, refetchTriggerByPublication } = useSelector(
-    (state: RootState) => state.comments
-  );
-  const refetchTrigger = refetchTriggerByPublication[parentCommentId] || 0;
-  const replies: Comment[] = data?.getRepliesByComment ?? [];
+const RepliesList = ({ parentCommentId, onReplyCreated }: RepliesListProps) => {
+  const { data, loading, error, refetch } = useGetRepliesByCommentQuery({
+    variables: { commentId: parentCommentId },
+    fetchPolicy: 'network-only',
+  });
 
-  useEffect(() => {
-    refetch({ variables: { commentId: parentCommentId } });
-  }, [refetchTrigger]);
+  const [hidden, setHidden] = useState<string[]>([]);
 
-  useEffect(() => {
-    data?.getRepliesByComment?.forEach((r: Comment) =>
-      dispatch(setRepliesCount({ commentId: r.id, count: r.repliesCount })),
-    );
-  }, [data]);
+  if (error) return <p>Error: {error.message}</p>;
 
+  const replies = (data?.getRepliesByComment ?? []).filter((r: Comment) => !hidden.includes(r.id));
 
-  if (error) return <p>Error loading replies: {error.message}</p>;
-
-  const repliesFiltered = replies.filter((comment) =>
-    !hiddenComments.some((hiddenComment: Comment) => hiddenComment.id === comment.id)
-  );
+  const handleHide = (id: string) => setHidden((h) => [...h, id]);
 
   return (
     <Box sx={{ ml: 0, mb: 1 }}>
@@ -51,18 +36,18 @@ const RepliesList = ({ parentCommentId }: RepliesListProps) => {
           }}
         />
       )}
-      {repliesFiltered?.map((reply: Comment) => {
-        const { id: replyId } = reply;
-
-        return (
-          <Box key={replyId} sx={{ mb: 1 }}>
-            <PublicationCommentItem
-              comment={reply}
-              hasReply
-            />
-          </Box>
-        );
-      })}
+      {replies.map((reply: Comment) => (
+        <PublicationCommentItem
+          key={reply.id}
+          comment={reply}
+          hasReply
+          onHide={() => handleHide(reply.id)}
+          onReplyCreated={() => {
+            refetch();
+            onReplyCreated();
+          }}
+        />
+      ))}
     </Box>
   );
 };
