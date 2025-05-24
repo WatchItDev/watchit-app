@@ -48,7 +48,7 @@ const UserProfileView = ({ id }: UserProfileViewProps) => {
     followers    : followersData?.getUserFollowers?.length    ?? profileData?.getUser?.followersCount ?? 0,
     following    : followingData?.getUserFollowing?.length    ?? profileData?.getUser?.followingCount ?? 0,
     referrals    : referrals?.length                          ?? 0,
-  }), [postsData, followersData, followingData, referrals]);
+  }), [postsData, followersData, followingData, profileData, referrals]);
 
   useEffect(() => {
     loadProfile({variables: { input: { address: id } }});
