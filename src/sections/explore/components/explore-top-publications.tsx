@@ -1,21 +1,16 @@
 import CarouselTopTitles from "@src/components/carousel/variants/carousel-top-titles.tsx";
-import { useEffect, useMemo } from 'react';
-import { useDispatch } from "react-redux";
-import { setExploreLoading } from "@redux/loading/index.ts";
+import { useMemo } from 'react';
 import { useGetPopularPostsQuery, useGetRecentPostsQuery } from '@src/graphql/generated/hooks.tsx';
 import { Post } from '@src/graphql/generated/graphql.ts';
+import { ExploreTopPublicationsSkeleton } from '@src/sections/explore/components/explore-top-publications.skeleton.tsx';
+import { LoadingFade } from '@src/components/LoadingFade.tsx';
 
 // ----------------------------------------------------------------------
 
 export const ExploreTopPublications = () => {
-  const dispatch = useDispatch();
   const { data: allData, loading: allLoading } = useGetRecentPostsQuery({ variables: { limit: 20 } });
   const { data: popularData, loading: popularLoading } = useGetPopularPostsQuery({ variables: { limit: 10 } });
-
-  // Update loading state in Redux store
-  useEffect(() => {
-    dispatch(setExploreLoading({ key: "top", isLoading: allLoading || popularLoading }));
-  }, [allLoading, popularLoading]);
+  const loading = allLoading || popularLoading
 
   const posts = useMemo(() => {
     const popular = popularData?.getPopularPosts ?? [];
@@ -32,5 +27,9 @@ export const ExploreTopPublications = () => {
     return [...popular, ...fillers];
   }, [popularData, allData]);
 
-  return <CarouselTopTitles posts={posts} />;
+  return (
+    <LoadingFade loading={loading} skeleton={<ExploreTopPublicationsSkeleton />}>
+      <CarouselTopTitles posts={posts} />
+    </LoadingFade>
+  );
 };

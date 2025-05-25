@@ -11,7 +11,6 @@ import ProfileFollowers from '../components/profile-followers.tsx';
 import ProfileFollowing from '../components/profile-following.tsx';
 import ProfileHeader from '../components/profile-header.tsx';
 import Label from '../../../components/label';
-import { LoadingScreen } from '@src/components/loading-screen';
 import ProfileReferrals from "@src/sections/user/components/profile-referrals.tsx";
 import useReferrals from "@src/hooks/use-referrals.ts";
 import Alert from '@mui/material/Alert';
@@ -26,6 +25,8 @@ import {
   useGetUserFollowersLazyQuery, useGetUserFollowingLazyQuery,
   useGetUserLazyQuery,
 } from '@src/graphql/generated/hooks.tsx';
+import { UserProfileViewSkeleton } from '@src/sections/user/views/user-profile-view.skeleton.tsx';
+import { LoadingFade } from '@src/components/LoadingFade.tsx';
 
 // ----------------------------------------------------------------------
 
@@ -42,7 +43,7 @@ const UserProfileView = ({ id }: UserProfileViewProps) => {
   const [loadFollowers,{ data: followersData,         loading: loadingFollowers        }] = useGetUserFollowersLazyQuery();
   const [loadFollowing,{ data: followingData,         loading: loadingFollowing        }] = useGetUserFollowingLazyQuery();
   const { invitations: referrals, fetchInvitations, loading: loadingReferrals } = useReferrals();
-
+  const loading = loadingProfile || loadingPosts || !profileData?.getUser;
   const counts: CountsData = useMemo(() => ({
     publications : postsData?.getPostsByAuthor?.length        ?? 0,
     followers    : followersData?.getUserFollowers?.length    ?? profileData?.getUser?.followersCount ?? 0,
@@ -60,8 +61,6 @@ const UserProfileView = ({ id }: UserProfileViewProps) => {
     if (currentTab === 'followers')  loadFollowers({ variables: { address: id, limit: 50 } });
     if (currentTab === 'following')  loadFollowing({ variables: { address: id, limit: 50 } });
   }, [currentTab, id]);
-
-  if (loadingProfile || loadingPosts || !profileData?.getUser) return <LoadingScreen />;
 
   const showSubscriptionAlert =
     session?.authenticated &&
@@ -81,63 +80,65 @@ const UserProfileView = ({ id }: UserProfileViewProps) => {
   }
 
   return (
-    <Container maxWidth={settings.themeStretch ? false : 'lg'} sx={{ overflowX: 'hidden' }}>
-      {showSubscriptionAlert && (
-        <Alert severity="warning" sx={{ mt: 2, mb: -1 }}>
-          Set your subscription prices so users can access your content. Click 'Set Joining Prices' next to your profile picture.
-        </Alert>
-      )}
-      <ProfileHeader profile={profileData?.getUser} onActionFinish={handleActionFinish}>
-        <Tabs
-          key={`tabs-${id}`}
-          value={currentTab}
-          onChange={(_e: SyntheticEvent, v: string) => setCurrentTab(v)}
-          sx={{
-            width: 1,
-            zIndex: 9,
-            borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
-            [`& .${tabsClasses.flexContainer}`]: { justifyContent: 'flex-start', px: 0 },
-            [`& .${tabsClasses.scroller}`]: { display: 'flex', justifyContent: {xs: 'flex-start', sm: 'center'} },
-            [`& .${tabsClasses.scrollButtons}`]: {
-              '&.MuiTabs-scrollButtons.Mui-disabled': { display: 'none' },
-              '&:first-of-type': { display: currentTab === 'publications' ? 'none' : 'flex' },
-            },
-          }}
-        >
-          {tabsWithCounts.map(tab => (
-            <Tab key={tab.key} value={tab.value} label={<TabLabel label={tab.label!} count={tab.count} />} />
-          ))}
-        </Tabs>
-      </ProfileHeader>
+    <LoadingFade loading={loading} skeleton={<UserProfileViewSkeleton />} delayMs={250}>
+      <Container maxWidth={settings.themeStretch ? false : 'lg'} sx={{ overflowX: 'hidden' }}>
+        {showSubscriptionAlert && (
+          <Alert severity="warning" sx={{ mt: 2, mb: -1 }}>
+            Set your subscription prices so users can access your content. Click 'Set Joining Prices' next to your profile picture.
+          </Alert>
+        )}
+        <ProfileHeader profile={profileData?.getUser} onActionFinish={handleActionFinish}>
+          <Tabs
+            key={`tabs-${id}`}
+            value={currentTab}
+            onChange={(_e: SyntheticEvent, v: string) => setCurrentTab(v)}
+            sx={{
+              width: 1,
+              zIndex: 9,
+              borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
+              [`& .${tabsClasses.flexContainer}`]: { justifyContent: 'flex-start', px: 0 },
+              [`& .${tabsClasses.scroller}`]: { display: 'flex', justifyContent: {xs: 'flex-start', sm: 'center'} },
+              [`& .${tabsClasses.scrollButtons}`]: {
+                '&.MuiTabs-scrollButtons.Mui-disabled': { display: 'none' },
+                '&:first-of-type': { display: currentTab === 'publications' ? 'none' : 'flex' },
+              },
+            }}
+          >
+            {tabsWithCounts.map(tab => (
+              <Tab key={tab.key} value={tab.value} label={<TabLabel label={tab.label!} count={tab.count} />} />
+            ))}
+          </Tabs>
+        </ProfileHeader>
 
-      {currentTab === 'publications' && (
-        <ProfileHome
-          publications={postsData?.getPostsByAuthor}
-          scrollable={false}
-          initialRows={3}
-          rowsIncrement={2}
-        />
-      )}
+        {currentTab === 'publications' && (
+          <ProfileHome
+            publications={postsData?.getPostsByAuthor}
+            scrollable={false}
+            initialRows={3}
+            rowsIncrement={2}
+          />
+        )}
 
-      {currentTab === 'followers' && (
-        <ProfileFollowers
-          followers={followersData?.getUserFollowers ?? []}
-          loading={loadingFollowers}
-          onActionFinished={() => loadProfile({ variables: { input: { address: id } } })}
-        />
-      )}
+        {currentTab === 'followers' && (
+          <ProfileFollowers
+            followers={followersData?.getUserFollowers ?? []}
+            loading={loadingFollowers}
+            onActionFinished={() => loadProfile({ variables: { input: { address: id } } })}
+          />
+        )}
 
-      {currentTab === 'following' && (
-        <ProfileFollowing
-          following={followingData?.getUserFollowing ?? []}
-          loading={loadingFollowing}
-        />
-      )}
+        {currentTab === 'following' && (
+          <ProfileFollowing
+            following={followingData?.getUserFollowing ?? []}
+            loading={loadingFollowing}
+          />
+        )}
 
-      {currentTab === 'referrals' && session.address === id && (
-        <ProfileReferrals referrals={referrals} loading={loadingReferrals} />
-      )}
-    </Container>
+        {currentTab === 'referrals' && session.address === id && (
+          <ProfileReferrals referrals={referrals} loading={loadingReferrals} />
+        )}
+      </Container>
+    </LoadingFade>
   );
 };
 

@@ -135,6 +135,6 @@ const styles = {
     justifyContent: 'center',
     width: '100%',
     position: 'relative',
-    height: '31rem',
+    height: { xs: '600px', sm: '500px' },
   },
 };

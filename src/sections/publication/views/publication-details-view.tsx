@@ -16,7 +16,6 @@ import CardContent from '@mui/material/CardContent';
 import MoviePlayView from '@src/sections/publication/components/publication-player.tsx';
 import PublicationDetailMain from '@src/components/publication-detail-main';
 import { useAuth } from '@src/hooks/use-auth.ts';
-import { LoadingScreen } from '@src/components/loading-screen';
 import { useHasAccess } from '@src/hooks/protocol/use-has-access.ts';
 import { useGetCampaignIsActive } from '@src/hooks/protocol/use-get-campaign-is-active.ts';
 import { useIsPolicyAuthorized } from '@src/hooks/protocol/use-is-policy-authorized.ts';
@@ -34,6 +33,9 @@ import { useGetPostLazyQuery, useGetPostsByAuthorLazyQuery } from '@src/graphql/
 import { Post } from '@src/graphql/generated/graphql.ts';
 import { Address } from 'viem';
 import { PublicationHidden } from '@src/sections/publication/components/publication-hidden.tsx';
+import { PublicationDetailViewSkeleton } from '@src/sections/publication/views/publication-details-view.skeleton.tsx';
+import { UserProfileViewSkeleton } from '@src/sections/user/views/user-profile-view.skeleton.tsx';
+import { LoadingFade } from '@src/components/LoadingFade.tsx';
 
 // ----------------------------------------------------------------------
 
@@ -57,6 +59,7 @@ export default function PublicationDetailsView({ id }: Readonly<PublicationDetai
   const isSponsoredButtonVisible = isCampaignActive && isAuthorized && isAccessFullyChecked;
   const isJoinButtonVisible = isAuthorized && !isCampaignActive && isAccessFullyChecked && !isSponsoredButtonVisible;
   const isPlayerVisible = hasAccess && session.authenticated && !accessLoading && !isAuthLoading;
+  const loading = !initialized || (initialized && !publication);
 
   useEffect(() => {
     if (!ownerAddress || publicationLoading || profilePublications?.getPostsByAuthor) return;
@@ -94,11 +97,11 @@ export default function PublicationDetailsView({ id }: Readonly<PublicationDetai
 
   const filteredPublications = profilePublications?.getPostsByAuthor?.filter((publication: Post) => publication.id !== id) ?? [];
 
-  if (!initialized || (initialized && !publication)) return <LoadingScreen />;
+  if (loading) return <PublicationDetailViewSkeleton />;
   if (publication?.hidden || (!publication && !publicationLoading)) return <PublicationHidden />;
 
   return (
-    <>
+    <LoadingFade loading={loading} skeleton={<UserProfileViewSkeleton />} delayMs={500}>
       <StyledContainer>
         <StyledStack>
           <StyledCard>
@@ -147,7 +150,7 @@ export default function PublicationDetailsView({ id }: Readonly<PublicationDetai
         onSubscribe={handleRefetchAccess}
         profile={publication?.author}
       />
-    </>
+    </LoadingFade>
   );
 }
 
