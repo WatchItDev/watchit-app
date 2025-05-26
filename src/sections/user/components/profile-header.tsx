@@ -33,7 +33,7 @@ import { emptyAddress } from '@src/sections/user/CONSTANTS.tsx';
 // ----------------------------------------------------------------------
 
 const ProfileHeader = (props: PropsWithChildren<ProfileHeaderProps>) => {
-  const { profile, children } = props;
+  const { profile, children, onActionFinish } = props;
   const { session, isAuthLoading } = useAuth();
 
   const {
@@ -129,7 +129,7 @@ const ProfileHeader = (props: PropsWithChildren<ProfileHeaderProps>) => {
               }
 
               {profile?.address !== session?.address && (
-                <FollowUnfollowButton profileId={profile?.address} />
+                <FollowUnfollowButton profileId={profile?.address} onActionFinish={onActionFinish} />
               )}
             </>
           </Stack>

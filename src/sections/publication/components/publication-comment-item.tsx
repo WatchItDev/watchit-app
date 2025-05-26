@@ -18,17 +18,9 @@ import Typography from '@mui/material/Typography';
 import RepliesList from '@src/sections/publication/components/publication-replies-list.tsx';
 import { timeAgo } from '@src/utils/comment.ts';
 import { openLoginModal } from '@redux/auth';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useNotificationPayload } from '@src/hooks/use-notification-payload.ts';
 import { useNotifications } from '@src/hooks/use-notifications.ts';
-import { RootState } from '@redux/store.ts';
-import {
-  incrementCounterLikes,
-  decrementCounterLikes,
-  setCounterLikes,
-  hiddeComment,
-  decrementRepliesCount, decrementPostCommentCount,
-} from '@redux/comments';
 import AvatarProfile from "@src/components/avatar/avatar.tsx";
 import { PublicationCommentItemProps } from '@src/sections/publication/types.ts';
 import { useAuth } from '@src/hooks/use-auth.ts';
@@ -49,11 +41,13 @@ const LazyDialogActions = lazy(() => import('@mui/material/DialogActions'));
 // ----------------------------------------------------------------------
 
 const PublicationCommentItem:FC<PublicationCommentItemProps> = (props) => {
-  const { comment, hasReply, canReply } = props;
+  const { comment, hasReply, canReply, onHide, onReplyCreated } = props;
   const [openConfirmModal, setOpenConfirmModal] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [showComments, setShowComments] = useState(false);
   const [hasLiked, setHasLiked] = useState(false);
+  const [showReplies, setShowReplies] = useState(false);
+  const [localRepliesCount, setLocalRepliesCount] = useState(comment.repliesCount);
+  const [localLikes, setLocalLikes] = useState(comment.likeCount);
   const router = useRouter();
   const { data: commentLikedData, loading: commentLikedLoading } = useGetIsCommentLikedQuery({ variables: { commentId: comment?.id } })
   const [ toggleCommentLike, { loading: toggleCommentLikeLoading }  ] = useToggleCommentLikeMutation()
@@ -62,54 +56,36 @@ const PublicationCommentItem:FC<PublicationCommentItemProps> = (props) => {
   const dispatch = useDispatch();
   const { sendNotification } = useNotifications();
   const { generatePayload } = useNotificationPayload(sessionData);
-  const likes = useSelector((state: RootState) => state.comments.counterLikes[comment.id] ?? 0);
-  const replies = useSelector((s: RootState) => s.comments.commentRepliesCount[comment.id] ?? comment.repliesCount);
 
   const openMenu = Boolean(anchorEl);
   const isLoading = toggleCommentLikeLoading || commentLikedLoading
 
-  const toggleReaction = async () => {
+const handleToggleLike = async () => {
     if (!sessionData?.authenticated) return dispatch(openLoginModal());
 
-    // Send notification to the author of the comment
-    const notificationPayload = generatePayload(
-      'LIKE',
-      {
-        id: comment?.author?.address,
-        displayName: comment?.author?.displayName ?? 'no name',
-        avatar: resolveSrc(comment?.author?.profilePicture || comment?.author?.address, 'profile'),
-      },
-      {
-        root_id: comment?.post?.id ?? comment?.parentComment?.id,
-        parent_id: comment?.parentComment?.id ?? '',
-        comment_id: comment?.id,
-        rawDescription: `${sessionData?.user?.displayName} liked your comment`,
-      }
-    );
+    const res = await toggleCommentLike({ variables: { input: { commentId: comment.id } } });
+    const nowLiked = res.data?.toggleCommentLike ?? false;
 
-    try {
-      const res = await toggleCommentLike({
-        variables: {
-          input: {
-            commentId: comment?.id
+    setHasLiked(nowLiked);
+    setLocalLikes((l) => l + (nowLiked ? 1 : -1));
+
+    if (nowLiked && comment.author.address !== sessionData.user?.address) {
+        const notificationPayload = generatePayload(
+          'LIKE',
+          {
+            id: comment?.author?.address,
+            displayName: comment?.author?.displayName ?? 'no name',
+            avatar: resolveSrc(comment?.author?.profilePicture || comment?.author?.address, 'profile'),
+          },
+          {
+            root_id: comment?.post?.id ?? comment?.parentComment?.id,
+            parent_id: comment?.parentComment?.id ?? '',
+            comment_id: comment?.id,
+            rawDescription: `${sessionData?.user?.displayName} liked your comment`,
           }
-        }
-      });
-      const isLiked = res?.data?.toggleCommentLike ?? false
+        );
 
-      if (isLiked) {
-        dispatch(incrementCounterLikes(comment.id));
-      } else {
-        dispatch(decrementCounterLikes(comment.id));
-      }
-
-      if (isLiked && comment?.author?.address !== sessionData?.user?.address) {
-        sendNotification(comment?.author?.address, sessionData?.user?.address ?? '', notificationPayload);
-      }
-
-      setHasLiked(isLiked); // Toggle the UI based on the reaction state
-    } catch (err) {
-      console.error('Error toggling reaction:', err);
+      sendNotification(comment?.author?.address, sessionData?.user?.address ?? '', notificationPayload);
     }
   };
 
@@ -120,22 +96,13 @@ const PublicationCommentItem:FC<PublicationCommentItemProps> = (props) => {
   };
 
   const handleHide = async () => {
-    const parentId = comment?.parentComment?.id
-    await hideComment({ variables: { commentId: comment?.id } });
-
-    dispatch(parentId ? decrementRepliesCount(parentId) : decrementPostCommentCount(comment.post.id));
-    dispatch(hiddeComment(comment));
+    await hideComment({ variables: { commentId: comment.id } });
+    onHide();
   };
 
   useEffect(() => {
     setHasLiked(commentLikedData?.getIsCommentLiked ?? false);
   }, [commentLikedData]);
-
-  useEffect(() => {
-    if (comment?.likeCount !== undefined) {
-      dispatch(setCounterLikes({ publicationId: comment.id, likes: comment.likeCount }));
-    }
-  }, [comment?.likeCount, comment.id, dispatch]);
 
   const getCommentTimeText = () => {
     if (comment?.createdAt) {
@@ -264,7 +231,7 @@ const PublicationCommentItem:FC<PublicationCommentItemProps> = (props) => {
               height: '30px',
               minWidth: '40px',
             }}
-            onClick={toggleReaction}
+            onClick={handleToggleLike}
             disabled={isLoading}
           >
             {isLoading ? (
@@ -287,7 +254,7 @@ const PublicationCommentItem:FC<PublicationCommentItemProps> = (props) => {
                     fontWeight: '700',
                   }}
                 >
-                  {likes}
+                  {localLikes}
                 </Typography>
               </>
             )}
@@ -301,10 +268,10 @@ const PublicationCommentItem:FC<PublicationCommentItemProps> = (props) => {
                 height: '30px',
                 minWidth: '40px',
               }}
-              onClick={() => setShowComments(!showComments)}
+              onClick={() => setShowReplies((s) => !s)}
             >
               <>
-                {showComments ? (
+                {showReplies ? (
                   <IconMessageCircleFilled size={22} color="#FFFFFF" />
                 ) : (
                   <IconMessageCircle
@@ -320,14 +287,14 @@ const PublicationCommentItem:FC<PublicationCommentItemProps> = (props) => {
                     fontWeight: '700',
                   }}
                 >
-                  {replies}
+                  {localRepliesCount}
                 </Typography>
               </>
             </Button>
           )}
         </Box>
       </Stack>
-      {showComments && (
+      {showReplies && (
         <>
           <Box sx={{ mt: 1, mb: 2, ml: 8 }}>
             {sessionData?.authenticated ? (
@@ -338,6 +305,10 @@ const PublicationCommentItem:FC<PublicationCommentItemProps> = (props) => {
                   id: comment?.author?.address,
                   displayName: comment?.author?.displayName,
                   avatar: resolveSrc(comment?.author?.profilePicture || comment?.author?.address, 'profile'),
+                }}
+                onSuccess={() => {
+                  setLocalRepliesCount((c) => c + 1);
+                  onReplyCreated();
                 }}
               />
             ) : (
@@ -356,7 +327,14 @@ const PublicationCommentItem:FC<PublicationCommentItemProps> = (props) => {
               </Typography>
             )}
           </Box>
-          <RepliesList parentCommentId={comment.id} canReply={canReply} />
+          <RepliesList
+          parentCommentId={comment.id}
+          canReply={canReply}
+          onReplyCreated={() => {
+              setLocalRepliesCount((c) => c + 1);
+              onReplyCreated();
+            }}
+          />
         </>
       )}
 
