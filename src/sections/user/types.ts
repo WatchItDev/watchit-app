@@ -4,6 +4,7 @@ import { socialMedia } from '@src/sections/user/CONSTANTS.tsx';
 
 export interface ProfileHeaderProps {
   profile: User;
+  onActionFinish?: () => void
 }
 
 export interface UserProfileViewProps {
@@ -81,6 +82,13 @@ export interface ProfilePublicationItemProps {
 
 export interface ProfileFollowersProps {
   onActionFinished?: () => void;
+  loading: boolean;
+  followers: User[];
+}
+
+export interface ProfileFollowingProps {
+  loading: boolean;
+  following: User[];
 }
 
 export type SocialPlatform = typeof socialMedia[number]['key'];

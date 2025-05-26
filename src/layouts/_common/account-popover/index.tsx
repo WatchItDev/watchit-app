@@ -1,5 +1,5 @@
 // MUI IMPORTS
-import { CircularProgress } from '@mui/material';
+import { CircularProgress, Skeleton } from '@mui/material';
 
 // REDUX IMPORTS
 import { useDispatch } from 'react-redux';
@@ -12,6 +12,7 @@ import { LoginModal } from '@src/components/login-modal';
 import { AccountPopoverButton } from '@src/layouts/_common/account-popover/account-popover-button';
 import { AccountPopoverMenu } from '@src/layouts/_common/account-popover/account-popover-menu';
 import { useAuth } from '@src/hooks/use-auth.ts';
+import { useAccountSession } from '@src/hooks/use-account-session.ts';
 
 // ----------------------------------------------------------------------
 
@@ -27,9 +28,22 @@ export function AccountPopover() {
   const router = useRouter();
   const popover = usePopover();
   const { isLoginModalOpen, isAuthLoading } = useAuth();
+  const { initializing } = useAccountSession();
 
   if (isAuthLoading) {
     return <CircularProgress size={24} sx={{ color: '#fff' }} />;
+  }
+
+  if (initializing) {
+    return (
+      <Skeleton
+        variant="rounded"
+        animation="wave"
+        width={120}
+        height={36}
+        sx={{ borderRadius: 1 }}
+      />
+    );
   }
 
   // Handlers for opening/closing the login modal

@@ -22,7 +22,7 @@ export default function UserProfilePage() {
         <HeaderContent title="Profile" />
       </Header>
 
-      <UserProfileView id={id} />
+      <UserProfileView id={id as string} />
     </OgMetaTags>
   );
 }

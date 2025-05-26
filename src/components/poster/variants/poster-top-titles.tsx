@@ -33,7 +33,7 @@ const PosterTopTitles = ({ post }: { post: Post }) => {
 
   return (
     <Stack
-      sx={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+      sx={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', overflow: 'hidden' }}
       alignItems={'stretch'}
       spacing={{ xs: 1, sm: 2, md: 4 }}
     >
@@ -47,7 +47,7 @@ const PosterTopTitles = ({ post }: { post: Post }) => {
           top: 0,
           left: 0,
           width: '100%',
-          height: '100%',
+          height: '99%',
           opacity: 0.2,
           filter: "blur(5px) !important",
           backgroundSize: 'cover',

@@ -1376,6 +1376,7 @@ export const GetUserBookmarksDocument = gql`
     id
     title
     description
+    likeCount
     media {
       url
       cid

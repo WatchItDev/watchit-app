@@ -1,15 +1,13 @@
 import CarouselCreators from '@src/components/carousel/variants/carousel-creators.tsx';
 import { filterHiddenProfiles } from '@src/libs/profile.ts';
-import {useEffect} from "react"
-import {setExploreLoading} from "@redux/loading"
-import { useDispatch } from 'react-redux';
 import { useGetRecentUsersQuery } from '@src/graphql/generated/hooks.tsx';
 import { User } from '@src/graphql/generated/graphql.ts';
+import { ExploreCreatorsSkeleton } from '@src/sections/explore/components/explore-creators.skeleton.tsx';
+import { LoadingFade } from '@src/components/LoadingFade.tsx';
 
 // ----------------------------------------------------------------------
 
 export const ExploreCreators = () => {
-  const dispatch = useDispatch();
   const { data, loading } = useGetRecentUsersQuery({ variables: { limit: 50 } })
 
   // FilteredCompletedProfiles is an array of objects, each object has a metadata property and inside exists a displayName en bio property; filter the profiles that not have a displayName and bio property
@@ -20,12 +18,8 @@ export const ExploreCreators = () => {
   // Clear ###HIDDEN### profiles
   const filteredProfiles = filterHiddenProfiles(filtered);
 
-  useEffect(() => {
-    dispatch(setExploreLoading({ key: 'creators', isLoading: loading }));
-  }, [dispatch, loading])
-
   return (
-    <>
+    <LoadingFade loading={loading} skeleton={<ExploreCreatorsSkeleton />} delayMs={500}>
       {!!filteredProfiles?.length && (
         <CarouselCreators
           profiles={filteredProfiles}
@@ -34,6 +28,6 @@ export const ExploreCreators = () => {
           maxItemWidth={400}
         />
       )}
-    </>
+    </LoadingFade>
   );
 }

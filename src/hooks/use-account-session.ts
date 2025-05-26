@@ -31,6 +31,7 @@ interface UseAccountSessionHook {
   syncAddress:  () => Promise<void>;
   refreshUser:  () => Promise<void>;
   loading:      boolean;
+  initializing: boolean;
   userChecked:  boolean;
 }
 
@@ -47,6 +48,7 @@ export const useAccountSession = (): UseAccountSessionHook => {
   const [loginInProgress, setLoginInProgress] = useState(false);
   const [verifyingUser,   setVerifyingUser]   = useState(false);
   const [userChecked,     setUserChecked]     = useState(false);
+  const [initializing,    setInitializing]    = useState(!restoreDone);
 
   const sessionRef       = useRef(session);
   const lastVerifiedRef  = useRef<Address | null>(null);
@@ -55,18 +57,14 @@ export const useAccountSession = (): UseAccountSessionHook => {
   const mergeSession = (patch: Partial<ReduxSession>) => {
     const prev = sessionRef.current;
     const derivedAddress = patch.user?.address as Address | undefined;
-
-    const next: ReduxSession = {
-      ...prev,
-      ...patch,
-      address: patch.address ?? prev.address ?? derivedAddress,
-      authenticated: Boolean(
-        (patch.address ?? prev.address ?? derivedAddress) &&
-        (patch.user    ?? prev.user)
-      ),
-    };
+    const address = patch.address ?? prev.address ?? derivedAddress;
+    const user = patch.user ?? prev.user;
+    const info = patch.info ?? prev.info;
+    const next: ReduxSession = { ...prev, address, user, info, ...patch };
+    next.authenticated = Boolean(next.address && next.user && next.info);
 
     if (JSON.stringify(prev) !== JSON.stringify(next)) {
+      sessionRef.current = next;
       dispatch(setSession({ session: next }));
     }
   };
@@ -160,6 +158,9 @@ export const useAccountSession = (): UseAccountSessionHook => {
         }
       } catch {
         await logout();
+      } finally {
+        setUserChecked(true);
+        setInitializing(false);
       }
     })();
   }, [logout]);
@@ -178,5 +179,5 @@ export const useAccountSession = (): UseAccountSessionHook => {
     };
   }, [web3Auth, logout]);
 
-  return { login, logout, syncAddress, refreshUser, loading, userChecked };
+  return { login, logout, syncAddress, refreshUser, loading, userChecked, initializing };
 };
