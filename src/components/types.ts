@@ -1,3 +1,5 @@
+import { ReactNode } from 'react';
+
 export interface HandleActionErrorProps extends Error{
   requestedAmount?: {
     asset?: { symbol: string };
@@ -8,4 +10,11 @@ export interface HandleActionErrorProps extends Error{
 export interface ActivateSubscriptionProfileModalProps {
   isOpen: boolean;
   onClose: () => void;
+}
+
+export interface LoadingFadeProps {
+  loading: boolean;
+  skeleton: ReactNode;
+  children: ReactNode;
+  duration?: number;
 }

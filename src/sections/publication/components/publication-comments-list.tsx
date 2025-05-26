@@ -1,47 +1,26 @@
 import Box from '@mui/material/Box';
 import PublicationCommentItem from './publication-comment-item.tsx';
 import LinearProgress from '@mui/material/LinearProgress';
-import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useState } from 'react';
 import { PostCommentListProps } from '@src/sections/publication/types.ts';
-import {RootState} from "@redux/store.ts"
-import { useGetCommentsByPostLazyQuery } from '@src/graphql/generated/hooks.tsx';
+import { useGetCommentsByPostQuery } from '@src/graphql/generated/hooks.tsx';
 import { Comment } from '@src/graphql/generated/graphql.ts';
-import { setRepliesCount } from '@redux/comments';
 
 // ----------------------------------------------------------------------
 
-export default function PostCommentList({ publicationId: id, showReplies }: Readonly<PostCommentListProps>) {
-  const dispatch = useDispatch();
-  const [ comments, setComments ] = useState<Comment[]>([])
-  const [ getComments, {data, error, loading} ] = useGetCommentsByPostLazyQuery();
-  const { hiddenComments, refetchTriggerByPublication } = useSelector(
-    (state: RootState) => state.comments
-  );
-  const refetchTrigger = refetchTriggerByPublication[id] || 0;
+export default function PostCommentList({ publicationId, onReplyCreated }: Readonly<PostCommentListProps>) {
+  const { data, loading, error, refetch } = useGetCommentsByPostQuery({
+    variables: { postId: publicationId, limit: 50 },
+    fetchPolicy: 'network-only',
+  });
 
-  useEffect(() => {
-    setComments(data?.getCommentsByPost ?? [])
-  }, [data?.getCommentsByPost]);
+  const [hidden, setHidden] = useState<string[]>([]);
 
-  useEffect(() => {
-    data?.getCommentsByPost?.forEach((c: Comment) =>
-      dispatch(setRepliesCount({ commentId: c.id, count: c.repliesCount })),
-    );
-  }, [data]);
+  if (error) return <p>Error: {error.message}</p>;
 
-  useEffect(() => {
-    (async () => {
-      const res = await getComments({ variables: { postId: id, limit: 50 } })
-      setComments(res?.data?.getCommentsByPost ?? [])
-    })()
-  }, [refetchTrigger, id]);
+  const comments = (data?.getCommentsByPost ?? []).filter((c: Comment) => !hidden.includes(c.id));
 
-  if (error) return <p>Error loading comments: {error.message}</p>;
-
-  const commentsFiltered = comments.filter(
-      (comment) => !hiddenComments.some((hiddenComment: Comment) => hiddenComment.id === comment.id)
-    );
+  const handleHide = (commentId: string) => setHidden((h) => [...h, commentId]);
 
   return (
     <>
@@ -51,16 +30,19 @@ export default function PostCommentList({ publicationId: id, showReplies }: Read
           sx={{ width: 1, maxWidth: 360, marginBottom: '16px', alignSelf: 'center' }}
         />
       )}
-      {commentsFiltered?.map((comment: Comment) => {
-        // Destructure necessary data from the comment
-        const { id: commentId } = comment;
-
-        return (
-          <Box key={commentId} width="100%">
-            <PublicationCommentItem comment={comment} canReply={showReplies} />
-          </Box>
-        );
-      })}
+      {comments.map((c: Comment) => (
+        <Box key={c.id} width="100%">
+          <PublicationCommentItem
+            comment={c}
+            canReply
+            onHide={() => handleHide(c.id)}
+            onReplyCreated={() => {
+              refetch();
+              onReplyCreated();
+            }}
+          />
+        </Box>
+      ))}
     </>
   );
 }

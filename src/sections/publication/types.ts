@@ -28,11 +28,14 @@ export interface PublicationCommentItemProps {
   comment: Comment;
   hasReply?: boolean;
   canReply?: boolean;
+  onHide: () => void;
+  onReplyCreated: () => void;
 }
 
 export interface PostCommentListProps {
   publicationId: string;
   showReplies?: boolean;
+  onReplyCreated: () => void;
 }
 
 export interface MovieCommentFormProps {
@@ -43,6 +46,7 @@ export interface MovieCommentFormProps {
     displayName: string;
     avatar?: string;
   };
+  onSuccess?: () => void;
 }
 
 export interface PublicationNewWizardStepsProps extends StepperProps {
@@ -53,6 +57,7 @@ export interface PublicationNewWizardStepsProps extends StepperProps {
 export interface RepliesListProps {
   parentCommentId: string;
   canReply?: boolean;
+  onReplyCreated: () => void;
 }
 
 export interface PublicationPosterWallpaperProps {

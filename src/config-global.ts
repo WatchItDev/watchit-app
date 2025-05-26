@@ -38,6 +38,8 @@ export interface GlobalConstants {
   ATTESTATION_BASE_URL: string;
   FROM_BLOCK: bigint | string | number;
   GQL_ENDPOINT: string;
+  OPEN_COLLECTIVE: string;
+  TERMS_AND_CONDITIONS: string;
 }
 
 export const GLOBAL_CONSTANTS: GlobalConstants = {
@@ -101,6 +103,8 @@ export const GLOBAL_CONSTANTS: GlobalConstants = {
     process.env.VITE_URL_ATTESTATION_BASE || import.meta.env.VITE_URL_ATTESTATION_BASE || "",
   FROM_BLOCK: process.env.VITE_BLOCK_FROM || import.meta.env.VITE_BLOCK_FROM || 0n,
   GQL_ENDPOINT: process.env.VITE_GQL_ENDPOINT || import.meta.env.VITE_GQL_ENDPOINT || 'http://localhost:4000/graphql',
+  OPEN_COLLECTIVE: process.env.VITE_URL_OPEN_COLLECTIVE || import.meta.env.VITE_URL_OPEN_COLLECTIVE || '',
+  TERMS_AND_CONDITIONS: process.env.VITE_URL_TERMS_AND_CONDITIONS || import.meta.env.VITE_URL_TERMS_AND_CONDITIONS || '',
 };
 
 export const PATH_AFTER_LOGIN = paths.dashboard.root;

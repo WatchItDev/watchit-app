@@ -91,7 +91,7 @@ export const SubscribeToUnlockCard = ({
             size="lg"
           />
         )}
-        {isAuthorized && (
+        {isJoinButtonVisible && (
           <Box sx={{ mt: 3, borderRadius: 1 }}>
             <Typography variant="body2" color="textSecondary">
               Join now for just <strong>{totalCostMMC} MMC/month</strong> and access to{' '}

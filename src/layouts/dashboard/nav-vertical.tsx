@@ -23,6 +23,9 @@ import { Searchbar } from '../_common';
 import { NavToggleButton } from '../_common';
 import { COLORS, NAV } from '@src/layouts/config-layout.ts';
 import NavMini from '@src/layouts/dashboard/nav-mini.tsx';
+import SupportBox from '@src/layouts/dashboard/support-box.tsx';
+import TermsAndConditions from '@src/layouts/dashboard/terms-and-conditions.tsx';
+
 // ----------------------------------------------------------------------
 
 export default function NavVertical() {
@@ -72,7 +75,18 @@ export default function NavVertical() {
         }}
       />
 
-      <Box sx={{ flexGrow: 1 }} />
+      <Box
+        sx={{
+          flexGrow: 1,
+          p: 2,
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'flex-end',
+        }}
+      >
+        <SupportBox />
+        <TermsAndConditions />
+      </Box>
     </Scrollbar>
   );
 

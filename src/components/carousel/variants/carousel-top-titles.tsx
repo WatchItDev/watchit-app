@@ -25,15 +25,13 @@ export default function CarouselTopTitles({ posts, category }: Readonly<Carousel
           alignItems: 'stretch',
         },
         '.slick-slide': {
-          height: 'auto',
+          height: 'fit-content',
         },
         '.slick-list': {
           height: 'auto',
         },
         '.slick-slide > div': {
-          height: '100%',
-          minHeight: '100%',
-          maxHeight: '100%',
+          height: 'auto',
         },
       }}
     >
@@ -47,7 +45,7 @@ export default function CarouselTopTitles({ posts, category }: Readonly<Carousel
       >
         <Carousel ref={carousel.carouselRef} {...carousel.carouselSettings}>
           {posts.map((post: Post) => (
-            <Box key={`${category}-${post.id}`} sx={{ px: 0.75 }}>
+            <Box key={`${category}-${post.id}`} sx={{ px: 0.75, height: '100%' }}>
               <PosterTopTitles post={post} />
             </Box>
           ))}

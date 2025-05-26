@@ -7,7 +7,6 @@ import LoadingButton from '@mui/lab/LoadingButton';
 // REDUX IMPORTS
 import { openLoginModal } from '@redux/auth';
 import { useDispatch } from 'react-redux';
-import { addFollower, removeFollower } from '@redux/followers';
 
 // LOCAL IMPORTS
 import Box from '@mui/material/Box';
@@ -31,6 +30,7 @@ import { User } from '@src/graphql/generated/graphql.ts';
 
 interface FollowUnfollowButtonProps {
   profileId: string;
+  onActionFinish?: () => void;
   followButtonMinWidth?: number;
   size?: 'small' | 'medium' | 'large';
 }
@@ -41,6 +41,7 @@ const FollowUnfollowButton = ({
   profileId,
   size = 'medium',
   followButtonMinWidth = 120,
+  onActionFinish = () => {},
 }: PropsWithChildren<FollowUnfollowButtonProps>) => {
   const dispatch = useDispatch();
   const [loadProfile, { data: profileData, loading: profileLoading }] = useGetUserLazyQuery();
@@ -86,12 +87,7 @@ const FollowUnfollowButton = ({
 
       setIsFollowed(result?.data?.toggleFollow);
       handleUpdateProfile();
-
-      if (result?.data?.toggleFollow) {
-        dispatch(addFollower(profile));
-      } else {
-        dispatch(removeFollower(profileId));
-      }
+      onActionFinish();
 
       // Send notification to the profile being followed
       const notificationPayload = generatePayload(
