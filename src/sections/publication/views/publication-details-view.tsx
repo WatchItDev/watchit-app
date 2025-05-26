@@ -101,7 +101,7 @@ export default function PublicationDetailsView({ id }: Readonly<PublicationDetai
   if (publication?.hidden || (!publication && !publicationLoading)) return <PublicationHidden />;
 
   return (
-    <LoadingFade loading={loading} skeleton={<UserProfileViewSkeleton />} delayMs={500}>
+    <LoadingFade loading={loading} skeleton={<UserProfileViewSkeleton />}>
       <StyledContainer>
         <StyledStack>
           <StyledCard>
