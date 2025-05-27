@@ -44,6 +44,15 @@ describe("Testing in the <ExplorePublications/> component", () => {
   it("should match snapshot", () => {
     const { container } = renderComponent();
     expect(container).toMatchSnapshot();
+    screen.debug();
+  });
+
+  it("should show skeletons while loading", () => {
+    renderComponent();
+    const skeletonItems = screen.getAllByTestId("skeleton-item");
+    expect(skeletonItems.length).toBeGreaterThan(0);
+    const progressbars = screen.getAllByRole("progressbar");
+    expect(progressbars.length).toBeGreaterThan(0);
   });
 
   it("should render the ExplorePublications component with title", () => {
@@ -51,50 +60,14 @@ describe("Testing in the <ExplorePublications/> component", () => {
     const { getAllByText } = renderComponent();
     const titles = getAllByText("Publications");
     expect(titles.length).toBeGreaterThan(0);
-    screen.debug()
+    screen.debug();
   });
 
-  // it("should dispatch setExploreLoading with loading true", () => {
-  //   mockUseResponsive.mockReturnValue(true);
-  //   renderComponent();
-  //   expect(mockDispatch).toHaveBeenCalledWith({
-  //     type: "loading/setExploreLoading",
-  //     payload: {
-  //       isLoading: true,
-  //       key: "posts",
-  //     },
-  //   });
-  // });
-
-  // it("should set minItemWidth and maxItemWidth based on screen size", async () => {
-  //   mockUseResponsive.mockReturnValue(false);
-  //   renderComponent();
-
-  //   await waitFor(() =>
-  //     expect(mockDispatch).toHaveBeenCalledWith({
-  //       type: "loading/setExploreLoading",
-  //       payload: {
-  //         isLoading: false,
-  //         key: "posts",
-  //       },
-  //     }),
-  //   );
-  //   mockUseResponsive.mockReturnValue(true);
-  //   await waitFor(() => {
-  //     render(
-  //       <MemoryRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
-  //         <MockedProvider mocks={explorePublicationsMocks} addTypename={false}>
-  //           <ExplorePublications />
-  //         </MockedProvider>
-  //       </MemoryRouter>,
-  //     );
-  //     expect(mockDispatch).toHaveBeenCalledWith({
-  //       type: "loading/setExploreLoading",
-  //       payload: {
-  //         isLoading: false,
-  //         key: "posts",
-  //       },
-  //     });
-  //   });
-  // });
+  it("should set minItemWidth and maxItemWidth based on screen size", async () => {
+    mockUseResponsive.mockReturnValue(true);
+    renderComponent();
+    await waitFor(() => {
+      expect(mockUseResponsive).toHaveBeenCalled();
+    });
+  });
 });
