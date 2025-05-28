@@ -72,21 +72,12 @@ describe("Testing in the ExploreCreators component", () => {
     expect(hiddenCreator).not.toBeInTheDocument();
   });
 
-  // it("should dispatch loading state to Redux store", async () => {
-  //   const dispatchSpy = vi.spyOn(store, "dispatch");
-  //   renderWithProviders();
-  //   await screen.findByText("Recent User");
-  //   expect(dispatchSpy).toHaveBeenCalledWith(
-  //     expect.objectContaining({
-  //       type: "loading/setExploreLoading",
-  //       payload: { key: "creators", isLoading: false },
-  //     }),
-  //   );
-  // });
-
-  // it("should show skeleton when loading", async () => {
-  //   renderWithProviders();
-  //   const skeleton = await screen.findByTestId("skeleton-item");
-  //   expect(skeleton).toBeInTheDocument();
-  // });
+  it("should show skeleton when loading", () => {
+    renderWithProviders();
+    const skeletons = screen.getAllByTestId("skeleton-item");
+    expect(skeletons.length).toBeGreaterThan(0);
+    skeletons.forEach((skeleton) => {
+      expect(skeleton).toBeInTheDocument();
+    });
+  });
 });
