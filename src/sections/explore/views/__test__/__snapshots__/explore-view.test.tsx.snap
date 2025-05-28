@@ -356,6 +356,7 @@ exports[`Testing in the <ExploreView/> component > should match snapshot 1`] = `
                     >
                       <span
                         class="MuiSkeleton-root MuiSkeleton-rectangular MuiSkeleton-pulse css-18udj95-MuiSkeleton-root"
+                        data-testid="skeleton-item"
                       />
                       <span
                         class="MuiSkeleton-root MuiSkeleton-rectangular MuiSkeleton-pulse css-1d1bhsb-MuiSkeleton-root"
@@ -381,6 +382,7 @@ exports[`Testing in the <ExploreView/> component > should match snapshot 1`] = `
                     >
                       <span
                         class="MuiSkeleton-root MuiSkeleton-rectangular MuiSkeleton-pulse css-18udj95-MuiSkeleton-root"
+                        data-testid="skeleton-item"
                       />
                       <span
                         class="MuiSkeleton-root MuiSkeleton-rectangular MuiSkeleton-pulse css-1d1bhsb-MuiSkeleton-root"
