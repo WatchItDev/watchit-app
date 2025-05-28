@@ -4,7 +4,7 @@ exports[`[COMPONENTS]: CarouselTopTitles > to match snapshot 1`] = `
 <body>
   <div>
     <div
-      class="MuiBox-root css-14btkih"
+      class="MuiBox-root css-179jipr"
     >
       <div
         class="MuiStack-root css-nen11g-MuiStack-root"
@@ -52,24 +52,23 @@ exports[`[COMPONENTS]: CarouselTopTitles > to match snapshot 1`] = `
               >
                 <div>
                   <div
-                    class="MuiBox-root css-1fpx25h"
+                    class="MuiBox-root css-1ri1nzs"
                     style="width: 100%; display: inline-block;"
                     tabindex="-1"
                   >
                     <div
-                      class="MuiStack-root css-1dw07r3-MuiStack-root"
+                      class="MuiStack-root css-1ne4j3p-MuiStack-root"
                     >
                       <span
-                        class="component-image MuiBox-root css-1k4qe2b"
+                        class="component-image MuiBox-root css-1b1aszb"
                       >
                         <span
                           class="component-image-wrapper lazy-load-image-background blur"
                           style="background-image: url(/assets/placeholder.svg); background-size: 100% 100%; color: transparent; display: inline-block;"
                         >
                           <img
-                            alt="Test Title 1"
                             class="MuiBox-root css-19t2nho"
-                            src=""
+                            src="undefined//"
                           />
                         </span>
                       </span>
@@ -91,9 +90,8 @@ exports[`[COMPONENTS]: CarouselTopTitles > to match snapshot 1`] = `
                                 style="background-image: url(/assets/placeholder.svg); background-size: 100% 100%; color: transparent; display: inline-block;"
                               >
                                 <img
-                                  alt="Test Title 1"
                                   class="MuiBox-root css-19t2nho"
-                                  src="poster-uri-1"
+                                  src="undefined//"
                                 />
                               </span>
                             </span>
@@ -110,9 +108,7 @@ exports[`[COMPONENTS]: CarouselTopTitles > to match snapshot 1`] = `
                             >
                               <h3
                                 class="MuiTypography-root MuiTypography-h3 css-8f07vu-MuiTypography-root"
-                              >
-                                Test Title 1
-                              </h3>
+                              />
                               <div
                                 class="MuiBox-root css-1yp4ln"
                               >
@@ -141,10 +137,11 @@ exports[`[COMPONENTS]: CarouselTopTitles > to match snapshot 1`] = `
                                       >
                                         <img
                                           class="MuiBox-root css-19t2nho"
-                                          src="https://api.dicebear.com/9.x/bottts-neutral/svg?seed=undefined"
+                                          src="https://api.dicebear.com/9.x/bottts-neutral/svg?seed=profile-pic-1.jpg"
                                         />
                                       </span>
                                     </span>
+                                    Author 1
                                   </span>
                                   <span
                                     class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
@@ -154,9 +151,7 @@ exports[`[COMPONENTS]: CarouselTopTitles > to match snapshot 1`] = `
                             </div>
                             <h6
                               class="MuiTypography-root MuiTypography-h6 css-1r23mgh-MuiTypography-root"
-                            >
-                              Test Content 1
-                            </h6>
+                            />
                             <div
                               class="MuiStack-root css-kdc3n8-MuiStack-root"
                             >
@@ -203,7 +198,7 @@ exports[`[COMPONENTS]: CarouselTopTitles > to match snapshot 1`] = `
                                   class="tabler-icon tabler-icon-bookmark "
                                   fill="none"
                                   height="22"
-                                  stroke="#FFFFFF"
+                                  stroke="currentColor"
                                   stroke-linecap="round"
                                   stroke-linejoin="round"
                                   stroke-width="2"
@@ -243,24 +238,23 @@ exports[`[COMPONENTS]: CarouselTopTitles > to match snapshot 1`] = `
               >
                 <div>
                   <div
-                    class="MuiBox-root css-1fpx25h"
+                    class="MuiBox-root css-1ri1nzs"
                     style="width: 100%; display: inline-block;"
                     tabindex="-1"
                   >
                     <div
-                      class="MuiStack-root css-1dw07r3-MuiStack-root"
+                      class="MuiStack-root css-1ne4j3p-MuiStack-root"
                     >
                       <span
-                        class="component-image MuiBox-root css-1k4qe2b"
+                        class="component-image MuiBox-root css-1b1aszb"
                       >
                         <span
                           class="component-image-wrapper lazy-load-image-background blur"
                           style="background-image: url(/assets/placeholder.svg); background-size: 100% 100%; color: transparent; display: inline-block;"
                         >
                           <img
-                            alt="Test Title 1"
                             class="MuiBox-root css-19t2nho"
-                            src=""
+                            src="undefined//"
                           />
                         </span>
                       </span>
@@ -282,9 +276,8 @@ exports[`[COMPONENTS]: CarouselTopTitles > to match snapshot 1`] = `
                                 style="background-image: url(/assets/placeholder.svg); background-size: 100% 100%; color: transparent; display: inline-block;"
                               >
                                 <img
-                                  alt="Test Title 1"
                                   class="MuiBox-root css-19t2nho"
-                                  src="poster-uri-1"
+                                  src="undefined//"
                                 />
                               </span>
                             </span>
@@ -301,9 +294,7 @@ exports[`[COMPONENTS]: CarouselTopTitles > to match snapshot 1`] = `
                             >
                               <h3
                                 class="MuiTypography-root MuiTypography-h3 css-8f07vu-MuiTypography-root"
-                              >
-                                Test Title 1
-                              </h3>
+                              />
                               <div
                                 class="MuiBox-root css-1yp4ln"
                               >
@@ -332,10 +323,11 @@ exports[`[COMPONENTS]: CarouselTopTitles > to match snapshot 1`] = `
                                       >
                                         <img
                                           class="MuiBox-root css-19t2nho"
-                                          src="https://api.dicebear.com/9.x/bottts-neutral/svg?seed=undefined"
+                                          src="https://api.dicebear.com/9.x/bottts-neutral/svg?seed=profile-pic-1.jpg"
                                         />
                                       </span>
                                     </span>
+                                    Author 1
                                   </span>
                                   <span
                                     class="MuiTouchRipple-root css-8je8zh-MuiTouchRipple-root"
@@ -345,9 +337,7 @@ exports[`[COMPONENTS]: CarouselTopTitles > to match snapshot 1`] = `
                             </div>
                             <h6
                               class="MuiTypography-root MuiTypography-h6 css-1r23mgh-MuiTypography-root"
-                            >
-                              Test Content 1
-                            </h6>
+                            />
                             <div
                               class="MuiStack-root css-kdc3n8-MuiStack-root"
                             >
@@ -394,7 +384,7 @@ exports[`[COMPONENTS]: CarouselTopTitles > to match snapshot 1`] = `
                                   class="tabler-icon tabler-icon-bookmark "
                                   fill="none"
                                   height="22"
-                                  stroke="#FFFFFF"
+                                  stroke="currentColor"
                                   stroke-linecap="round"
                                   stroke-linejoin="round"
                                   stroke-width="2"
