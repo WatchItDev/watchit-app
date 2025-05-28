@@ -9,7 +9,7 @@ export const ExploreTopPublicationsSkeleton: React.FC = () => {
         variant="rectangular"
         width={'100%'}
         height={'100%'}
-        sx={{ mb: 1, mx: 0.5, mt: 2, borderRadius: 1 }}
+        sx={{ mb: 1 }}
       />
       <Box
         sx={{

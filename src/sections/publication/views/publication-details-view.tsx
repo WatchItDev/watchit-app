@@ -52,14 +52,14 @@ export default function PublicationDetailsView({ id }: Readonly<PublicationDetai
   const { campaign, loading: campaignLoading, fetchSubscriptionCampaign } = useGetSubscriptionCampaign();
   const { isActive: isCampaignActive, loading: isActiveLoading, fetchIsActive } = useGetCampaignIsActive();
   const [loadPublications, { data: profilePublications, loading: profilePublicationsLoading }] = useGetPostsByAuthorLazyQuery();
-  const [initialized, setInitialized] = useState(false);
 
   const isAccessFullyChecked = !accessLoading && !isAuthorizedLoading && !isActiveLoading && !campaignLoading;
   const allLoaded = !publicationLoading && !isAuthLoading && !profilePublicationsLoading && isAccessFullyChecked;
   const isSponsoredButtonVisible = isCampaignActive && isAuthorized && isAccessFullyChecked;
   const isJoinButtonVisible = isAuthorized && !isCampaignActive && isAccessFullyChecked && !isSponsoredButtonVisible;
   const isPlayerVisible = hasAccess && session.authenticated && !accessLoading && !isAuthLoading;
-  const loading = !initialized || (initialized && !publication);
+  const accessChecked = hasAccess !== undefined;
+  const loading = (!(allLoaded && accessChecked) && !isAuthLoading) || !publication;
 
   useEffect(() => {
     if (!ownerAddress || publicationLoading || profilePublications?.getPostsByAuthor) return;
@@ -76,12 +76,6 @@ export default function PublicationDetailsView({ id }: Readonly<PublicationDetai
     if (publication || !id) return;
     loadPublication({variables: { getPostId: id }});
   }, [id, publication]);
-
-  useEffect(() => {
-    if (allLoaded && !initialized) {
-      setInitialized(true);
-    }
-  }, [allLoaded, initialized]);
 
   const handleSubscribe = () => {
     if (!session.authenticated) {
