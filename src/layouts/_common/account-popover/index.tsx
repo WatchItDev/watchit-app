@@ -28,13 +28,13 @@ export function AccountPopover() {
   const router = useRouter();
   const popover = usePopover();
   const { isLoginModalOpen, isAuthLoading } = useAuth();
-  const { initializing } = useAccountSession();
+  const { initializing, loading: sessionLoading } = useAccountSession();
 
   if (isAuthLoading) {
     return <CircularProgress size={24} sx={{ color: '#fff' }} />;
   }
 
-  if (initializing) {
+  if (initializing || sessionLoading) {
     return (
       <Skeleton
         variant="rounded"

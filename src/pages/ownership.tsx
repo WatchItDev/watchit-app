@@ -28,8 +28,6 @@ export default function FileManagerPage() {
       ) : (
         <BlankView>
           <ComingSoonView
-            deadline={'03/30/2025 21:30'}
-            showDeadline={true}
             content={
               "The Ownership is evolving! Soon, you'll gManage digital rights, track licensing, and unlock the power of decentralized ownership. Stay tuned!"
             }
