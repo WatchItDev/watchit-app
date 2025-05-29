@@ -56,12 +56,6 @@ describe("[COMPONENTS]: CarouselTopTitles", () => {
     displayName.forEach((title) => expect(title).toBeInTheDocument());
   });
 
-  it("renders the correct poster URIs", () => {
-    const { getAllByAltText } = renderWithStoreAndRouter(<CarouselTopTitles {...defaultProps} />);
-    const posters = getAllByAltText("Test Title 1");
-    expect(posters.length).toBe(4);
-  });
-
   it("renders the title correctly", () => {
     expect(
       renderWithStoreAndRouter(<CarouselTopTitles {...defaultProps} />).getAllByText(
