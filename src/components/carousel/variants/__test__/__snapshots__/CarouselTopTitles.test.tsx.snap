@@ -67,6 +67,7 @@ exports[`[COMPONENTS]: CarouselTopTitles > to match snapshot 1`] = `
                           style="background-image: url(/assets/placeholder.svg); background-size: 100% 100%; color: transparent; display: inline-block;"
                         >
                           <img
+                            alt="Test Title 1"
                             class="MuiBox-root css-19t2nho"
                             src="undefined//"
                           />
@@ -90,6 +91,7 @@ exports[`[COMPONENTS]: CarouselTopTitles > to match snapshot 1`] = `
                                 style="background-image: url(/assets/placeholder.svg); background-size: 100% 100%; color: transparent; display: inline-block;"
                               >
                                 <img
+                                  alt="Test Title 1"
                                   class="MuiBox-root css-19t2nho"
                                   src="undefined//"
                                 />
@@ -108,7 +110,9 @@ exports[`[COMPONENTS]: CarouselTopTitles > to match snapshot 1`] = `
                             >
                               <h3
                                 class="MuiTypography-root MuiTypography-h3 css-8f07vu-MuiTypography-root"
-                              />
+                              >
+                                Test Title 1
+                              </h3>
                               <div
                                 class="MuiBox-root css-1yp4ln"
                               >
@@ -151,7 +155,9 @@ exports[`[COMPONENTS]: CarouselTopTitles > to match snapshot 1`] = `
                             </div>
                             <h6
                               class="MuiTypography-root MuiTypography-h6 css-1r23mgh-MuiTypography-root"
-                            />
+                            >
+                              Test Content 1
+                            </h6>
                             <div
                               class="MuiStack-root css-kdc3n8-MuiStack-root"
                             >
@@ -253,6 +259,7 @@ exports[`[COMPONENTS]: CarouselTopTitles > to match snapshot 1`] = `
                           style="background-image: url(/assets/placeholder.svg); background-size: 100% 100%; color: transparent; display: inline-block;"
                         >
                           <img
+                            alt="Test Title 1"
                             class="MuiBox-root css-19t2nho"
                             src="undefined//"
                           />
@@ -276,6 +283,7 @@ exports[`[COMPONENTS]: CarouselTopTitles > to match snapshot 1`] = `
                                 style="background-image: url(/assets/placeholder.svg); background-size: 100% 100%; color: transparent; display: inline-block;"
                               >
                                 <img
+                                  alt="Test Title 1"
                                   class="MuiBox-root css-19t2nho"
                                   src="undefined//"
                                 />
@@ -294,7 +302,9 @@ exports[`[COMPONENTS]: CarouselTopTitles > to match snapshot 1`] = `
                             >
                               <h3
                                 class="MuiTypography-root MuiTypography-h3 css-8f07vu-MuiTypography-root"
-                              />
+                              >
+                                Test Title 1
+                              </h3>
                               <div
                                 class="MuiBox-root css-1yp4ln"
                               >
@@ -337,7 +347,9 @@ exports[`[COMPONENTS]: CarouselTopTitles > to match snapshot 1`] = `
                             </div>
                             <h6
                               class="MuiTypography-root MuiTypography-h6 css-1r23mgh-MuiTypography-root"
-                            />
+                            >
+                              Test Content 1
+                            </h6>
                             <div
                               class="MuiStack-root css-kdc3n8-MuiStack-root"
                             >

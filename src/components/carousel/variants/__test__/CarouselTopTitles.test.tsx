@@ -1,59 +1,61 @@
-import '../../../../../__mocks__/web3auth';
-import { describe, it, expect } from 'vitest';
-import { renderWithStoreAndRouter } from '@src/utils/testing/Testing';
-import CarouselTopTitles from '@src/components/carousel/variants/carousel-top-titles.tsx';
-import { CarouselTopTitlesProps } from '@src/components/carousel/types';
-import { screen } from '@testing-library/dom';
+import "../../../../../__mocks__/web3auth";
+import { describe, it, expect } from "vitest";
+import { renderWithStoreAndRouter } from "@src/utils/testing/Testing";
 
-describe('[COMPONENTS]: CarouselTopTitles', () => {
+import { CarouselTopTitlesProps } from "@src/components/carousel/types";
+import { screen } from "@testing-library/dom";
+import CarouselTopTitles from "../carousel-top-titles";
+
+describe("[COMPONENTS]: CarouselTopTitles", () => {
   const mockPosts = [
     {
-      id: '1',
-      metadata: {
-        title: 'Test Title 1',
-        content: 'Test Content 1',
-        attachments: [
-          { altTag: 'poster', image: { raw: { uri: 'poster-uri-1' } } },
-        ],
-      },
+      id: "1",
+      title: "Test Title 1",
+      description: "Test Content 1",
+      attachments: [
+        { type: "poster", cid: "poster-cid-1" },
+        { type: "wallpaper", cid: "wallpaper-cid-1" },
+      ],
       author: {
-        profilePicture: 'profile-pic-1.jpg',
-        avatar: 'avatar-1.jpg',
-        displayName: 'Author 1',
-        username: 'author1',
+        address: "0x123",
+        profilePicture: "profile-pic-1.jpg",
+        displayName: "Author 1",
+        username: "author1",
       },
     },
     {
-      id: '2',
-      metadata: {
-        title: 'Test Title 2',
-        content: 'Test Content 2',
-        attachments: [
-          { altTag: 'poster', image: { raw: { uri: 'poster-uri-2' } } },
-        ],
-      },
+      id: "2",
+      title: "Test Title 2",
+      description: "Test Content 2",
+      attachments: [
+        { type: "poster", cid: "poster-cid-2" },
+        { type: "wallpaper", cid: "wallpaper-cid-2" },
+      ],
       author: {
-        profilePicture: 'profile-pic-2.jpg',
-        avatar: 'avatar-2.jpg',
-        displayName: 'Author 2',
-        username: 'author2',
+        address: "0x456",
+        profilePicture: "profile-pic-2.jpg",
+        displayName: "Author 2",
+        username: "author2",
       },
     },
   ];
 
   const defaultProps: CarouselTopTitlesProps = {
     posts: mockPosts,
-    category: 'Test Category',
+    category: "Test Category",
   };
 
-  it('to match snapshot', () => {
-    expect(renderWithStoreAndRouter(<CarouselTopTitles {...defaultProps} />).baseElement).toMatchSnapshot();
-    screen.debug();
+  it("to match snapshot", () => {
+    expect(
+      renderWithStoreAndRouter(<CarouselTopTitles {...defaultProps} />).baseElement,
+    ).toMatchSnapshot();
   });
 
-  it('renders the correct number of slides', () => {
-    const slides = renderWithStoreAndRouter(<CarouselTopTitles {...defaultProps} />).container.querySelectorAll('.slick-slide:not(.slick-cloned)');
-    expect(slides.length).toBe(mockPosts.length);
+  it("renders correctly", async () => {
+    renderWithStoreAndRouter(<CarouselTopTitles {...defaultProps} />);
+    const displayName = await screen.findAllByText(/Author 1/i);
+    expect(displayName.length).toBeGreaterThan(0);
+    displayName.forEach((title) => expect(title).toBeInTheDocument());
   });
 
   // it('renders the correct poster URIs', () => {
@@ -61,13 +63,13 @@ describe('[COMPONENTS]: CarouselTopTitles', () => {
   //   expect(getAllByAltText('Test Title 1')[1]).toHaveAttribute('src', 'poster-uri-1');
   // });
 
-  // it('renders the title correctly', () => {
-  //   expect(renderWithStoreAndRouter(<CarouselTopTitles {...defaultProps} />).getAllByText('Test Title 1')).to.have.length(2);
-  // });
+  it('renders the title correctly', () => {
+    expect(renderWithStoreAndRouter(<CarouselTopTitles {...defaultProps} />).getAllByText('Test Title 1')).to.have.length(2);
+  });
 
-  // it('handles empty posts gracefully', () => {
-  //   const emptyProps = { ...defaultProps, posts: [] };
-  //   const slides = renderWithStoreAndRouter(<CarouselTopTitles {...emptyProps} />).container.querySelectorAll('.slick-slide');
-  //   expect(slides.length).toBe(0);
-  // });
+  it('handles empty posts gracefully', () => {
+    const emptyProps = { ...defaultProps, posts: [] };
+    const slides = renderWithStoreAndRouter(<CarouselTopTitles {...emptyProps} />).container.querySelectorAll('.slick-slide');
+    expect(slides.length).toBe(0);
+  });
 });
