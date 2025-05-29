@@ -1,7 +1,5 @@
-import "../../../../../__mocks__/web3auth";
 import { describe, it, expect } from "vitest";
 import { renderWithStoreAndRouter } from "@src/utils/testing/Testing";
-
 import { CarouselTopTitlesProps } from "@src/components/carousel/types";
 import { screen } from "@testing-library/dom";
 import CarouselTopTitles from "../carousel-top-titles";
@@ -58,18 +56,25 @@ describe("[COMPONENTS]: CarouselTopTitles", () => {
     displayName.forEach((title) => expect(title).toBeInTheDocument());
   });
 
-  // it('renders the correct poster URIs', () => {
-  //   const { getAllByAltText } = renderWithStoreAndRouter(<CarouselTopTitles {...defaultProps} />);
-  //   expect(getAllByAltText('Test Title 1')[1]).toHaveAttribute('src', 'poster-uri-1');
-  // });
-
-  it('renders the title correctly', () => {
-    expect(renderWithStoreAndRouter(<CarouselTopTitles {...defaultProps} />).getAllByText('Test Title 1')).to.have.length(2);
+  it("renders the correct poster URIs", () => {
+    const { getAllByAltText } = renderWithStoreAndRouter(<CarouselTopTitles {...defaultProps} />);
+    const posters = getAllByAltText("Test Title 1");
+    expect(posters.length).toBe(4);
   });
 
-  it('handles empty posts gracefully', () => {
+  it("renders the title correctly", () => {
+    expect(
+      renderWithStoreAndRouter(<CarouselTopTitles {...defaultProps} />).getAllByText(
+        "Test Title 1",
+      ),
+    ).to.have.length(2);
+  });
+
+  it("handles empty posts gracefully", () => {
     const emptyProps = { ...defaultProps, posts: [] };
-    const slides = renderWithStoreAndRouter(<CarouselTopTitles {...emptyProps} />).container.querySelectorAll('.slick-slide');
+    const slides = renderWithStoreAndRouter(
+      <CarouselTopTitles {...emptyProps} />,
+    ).container.querySelectorAll(".slick-slide");
     expect(slides.length).toBe(0);
   });
 });
