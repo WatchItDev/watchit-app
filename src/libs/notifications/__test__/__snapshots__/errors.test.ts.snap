@@ -39,6 +39,7 @@ exports[`[UTILS]: Errors > ERROR_MESSAGES > should match the snapshot of all err
   "METAMASK_CONNECTING_FAILED_ERROR": "Failed to connect wallet",
   "NOT_LOGGED_IN": "Please log in to continue.",
   "PENDING_SIGNING_REQUEST_ERROR": "There is a pending signing request in your wallet.",
+  "POST_CREATE_ERROR": "Error creating post.",
   "PREMATURE_ACTION_ERROR": "There is a pending unfollow request for this profile.",
   "SPONSORED_ACCESS_ERROR": "Error processing the sponsored access.",
   "STRATEGY_STORED_ERROR": "Error storing the strategy.",

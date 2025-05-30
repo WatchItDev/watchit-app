@@ -82,6 +82,7 @@ exports[`Testing in the <ExploreBookmarks/> component > should match snapshot 1`
       >
         <div
           class="slick-slider slick-initialized"
+          dir="ltr"
         >
           <div
             class="slick-list"
@@ -257,6 +258,13 @@ exports[`Testing in the <ExploreBookmarks/> component > should match snapshot 1`
                   </div>
                 </div>
               </div>
+              <div
+                aria-hidden="true"
+                class="slick-slide"
+                data-index="1"
+                style="outline: none; width: 0px;"
+                tabindex="-1"
+              />
             </div>
           </div>
         </div>

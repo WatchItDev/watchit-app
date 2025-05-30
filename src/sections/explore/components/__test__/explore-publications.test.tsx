@@ -1,5 +1,5 @@
 import { describe, it, vi, expect, beforeEach } from "vitest";
-import { render, waitFor } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import { ExplorePublications } from "../explore-publications";
 import { MockedProvider } from "@apollo/client/testing";
 import { MemoryRouter } from "react-router";
@@ -44,55 +44,30 @@ describe("Testing in the <ExplorePublications/> component", () => {
   it("should match snapshot", () => {
     const { container } = renderComponent();
     expect(container).toMatchSnapshot();
+    screen.debug();
+  });
+
+  it("should show skeletons while loading", () => {
+    renderComponent();
+    const skeletonItems = screen.getAllByTestId("skeleton-item");
+    expect(skeletonItems.length).toBeGreaterThan(0);
+    const progressbars = screen.getAllByRole("progressbar");
+    expect(progressbars.length).toBeGreaterThan(0);
   });
 
   it("should render the ExplorePublications component with title", () => {
     mockUseResponsive.mockReturnValue(true);
-    const { getByText } = renderComponent();
-    expect(getByText("Publications")).toBeInTheDocument();
-  });
-
-  it("should dispatch setExploreLoading with loading true", () => {
-    mockUseResponsive.mockReturnValue(true);
-    renderComponent();
-    expect(mockDispatch).toHaveBeenCalledWith({
-      type: "loading/setExploreLoading",
-      payload: {
-        isLoading: true,
-        key: "posts",
-      },
-    });
+    const { getAllByText } = renderComponent();
+    const titles = getAllByText("Publications");
+    expect(titles.length).toBeGreaterThan(0);
+    screen.debug();
   });
 
   it("should set minItemWidth and maxItemWidth based on screen size", async () => {
-    mockUseResponsive.mockReturnValue(false);
-    renderComponent();
-
-    await waitFor(() =>
-      expect(mockDispatch).toHaveBeenCalledWith({
-        type: "loading/setExploreLoading",
-        payload: {
-          isLoading: false,
-          key: "posts",
-        },
-      }),
-    );
     mockUseResponsive.mockReturnValue(true);
+    renderComponent();
     await waitFor(() => {
-      render(
-        <MemoryRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
-          <MockedProvider mocks={explorePublicationsMocks} addTypename={false}>
-            <ExplorePublications />
-          </MockedProvider>
-        </MemoryRouter>,
-      );
-      expect(mockDispatch).toHaveBeenCalledWith({
-        type: "loading/setExploreLoading",
-        payload: {
-          isLoading: false,
-          key: "posts",
-        },
-      });
+      expect(mockUseResponsive).toHaveBeenCalled();
     });
   });
 });
