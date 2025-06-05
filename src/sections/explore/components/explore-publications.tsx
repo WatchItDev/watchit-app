@@ -1,31 +1,39 @@
-import CarouselPosterMini from '@src/components/carousel/variants/carousel-poster-mini.tsx';
-import { useResponsive } from '@src/hooks/use-responsive.ts';
-import { useGetRecentPostsQuery } from '@src/graphql/generated/hooks.tsx';
-import { ExplorePublicationsSkeleton } from '@src/sections/explore/components/explore-publications.skeleton.tsx';
-import { LoadingFade } from '@src/components/LoadingFade.tsx';
+import CarouselPosterMini           from '@src/components/carousel/variants/carousel-poster-mini';
+import { useResponsive }            from '@src/hooks/use-responsive';
+import { useGetRecentPostsLazyQuery }from '@src/graphql/generated/hooks';
+import { ExplorePublicationsSkeleton } from './explore-publications.skeleton';
+import { LoadingFade }              from '@src/components/LoadingFade';
+import { memo, useEffect, useState } from 'react';
+import { PublicationType } from '@src/components/carousel/types.ts';
 
 // ----------------------------------------------------------------------
 
-export const ExplorePublications = () => {
+const ExplorePublications = () => {
   const lgUp = useResponsive('up', 'lg');
-  const { data, loading } = useGetRecentPostsQuery({ variables: { limit: 100 } })
+  const [fetchPosts, { loading }] = useGetRecentPostsLazyQuery();
+  const [posts, setPosts] = useState<PublicationType[]>([]);
 
-  let minItemWidth = 250;
-  let maxItemWidth = 350;
+  useEffect(() => {
+    fetchPosts({ variables: { limit: 100 } })
+      .then(({ data }) => {
+        if (!data?.getRecentPosts) return;
+        setPosts(data.getRecentPosts);
+      }).catch(console.error);
+  }, []);
 
-  if (!lgUp) {
-    minItemWidth = 170;
-    maxItemWidth = 250;
-  }
+  const minItemWidth = lgUp ? 250 : 170;
+  const maxItemWidth = lgUp ? 350 : 250;
 
   return (
-    <LoadingFade loading={loading} skeleton={<ExplorePublicationsSkeleton />}>
+    <LoadingFade loading={loading && posts.length === 0} skeleton={<ExplorePublicationsSkeleton />}>
       <CarouselPosterMini
-        data={data?.getRecentPosts ?? []}
+        data={posts}
         title="Publications"
         minItemWidth={minItemWidth}
         maxItemWidth={maxItemWidth}
       />
     </LoadingFade>
   );
-}
+};
+
+export default memo(ExplorePublications);
