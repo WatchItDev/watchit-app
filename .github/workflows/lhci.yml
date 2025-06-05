@@ -16,6 +16,6 @@ jobs:
         uses: treosh/lighthouse-ci-action@v11
         with:
           urls: |
-            https://watchit.movie/
+            https://app.watchit.movie/
           uploadArtifacts: true
           configPath: .lighthouserc.json
