@@ -1,3 +1,0 @@
-query GetIsPostLiked($postId: String!) {
-  getIsPostLiked(postId: $postId)
-}

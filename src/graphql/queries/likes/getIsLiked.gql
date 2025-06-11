@@ -1,0 +1,3 @@
+query GetIsLiked($targetId: String!) {
+  getIsLiked(targetId: $targetId)
+}
