@@ -105,7 +105,7 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({ src, cid, titleMovie, onBack
         // abrEwmaSlowVod: Controls the long-term average bandwidth estimation for adaptive bitrate switching.
         // A higher value averages the bandwidth over a longer period, reducing frequent quality switches.
         // Recommended range: 10.0 - 20.0 (Higher = More stable, but slower adaptation)
-        "abrEwmaSlowVoD": 10,
+        "abrEwmaSlowVoD": 20,
         // abrBandWidthFactor: Determines how conservatively HLS estimates available bandwidth.
         // A value < 1.0 ensures HLS.js does not use the full estimated bandwidth, preventing aggressive quality changes.
         // Recommended range: 0.7 - 0.9 (Lower = More cautious, fewer quality switches)
@@ -123,7 +123,7 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({ src, cid, titleMovie, onBack
         "enableWorker": true,
         "backBufferLength": 90,
         "progressive": true,
-        "lowLatencyMode": false, // Not needed in VOD
+        // "lowLatencyMode": false, // Not needed in VOD
         "startFragPrefetch": true,
         "fLoader": FetchLoader,
         "pLoader": XhrLoader
