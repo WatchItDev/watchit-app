@@ -113,7 +113,7 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({ src, cid, titleMovie, onBack
         // abrBandWidthUpFactor: Controls how aggressively the player upgrades to a higher bitrate.
         // A lower value prevents HLS.js from switching to a higher quality too quickly, reducing unnecessary upscaling.
         // Recommended range: 0.5 - 0.8 (Lower = More stable, avoids excessive upscaling)
-        "abrBandWidthUpFactor": 0.6,
+        "abrBandWidthUpFactor": 0.5,
         "enableSoftwareAES": false, // Disable software AES decryption
         "enableID3MetadataCues": false, // Disable ID3 metadata cues
         "enableWebVTT": true, // Enable WebVTT subtitles
