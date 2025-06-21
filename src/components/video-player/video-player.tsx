@@ -101,25 +101,25 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({ src, cid, titleMovie, onBack
         // abrEwmaFastVod: Controls how quickly the algorithm reacts to bandwidth changes in VOD (Video On Demand).
         // A higher value makes the algorithm less sensitive to short-term fluctuations, smoothing out rapid changes.
         // Recommended range: 2.0 - 5.0 (Higher = Smoother)
-        "abrEwmaFastVoD": 4,
+        // "abrEwmaFastVoD": 3,
         // abrEwmaSlowVod: Controls the long-term average bandwidth estimation for adaptive bitrate switching.
         // A higher value averages the bandwidth over a longer period, reducing frequent quality switches.
         // Recommended range: 10.0 - 20.0 (Higher = More stable, but slower adaptation)
-        "abrEwmaSlowVoD": 20,
+        // "abrEwmaSlowVoD": 8,
         // abrBandWidthFactor: Determines how conservatively HLS estimates available bandwidth.
         // A value < 1.0 ensures HLS.js does not use the full estimated bandwidth, preventing aggressive quality changes.
         // Recommended range: 0.7 - 0.9 (Lower = More cautious, fewer quality switches)
-        "abrBandWidthFactor": 0.7,
+        // "abrBandWidthFactor": 0.7,
         // abrBandWidthUpFactor: Controls how aggressively the player upgrades to a higher bitrate.
         // A lower value prevents HLS.js from switching to a higher quality too quickly, reducing unnecessary upscaling.
         // Recommended range: 0.5 - 0.8 (Lower = More stable, avoids excessive upscaling)
-        "abrBandWidthUpFactor": 0.5,
+        // "abrBandWidthUpFactor": 0.6,
         "enableSoftwareAES": false, // Disable software AES decryption
         "enableID3MetadataCues": false, // Disable ID3 metadata cues
         "enableWebVTT": true, // Enable WebVTT subtitles
         "enableIMSC1": false, // Disable IMSC1 subtitles
         "enableCEA708Captions": false, // Disable CEA-708 captions,
-        "abrMaxWithRealBitrate": true,
+        // "abrMaxWithRealBitrate": true,
         "enableWorker": true,
         "backBufferLength": 90,
         "progressive": true,
