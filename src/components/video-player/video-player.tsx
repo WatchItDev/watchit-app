@@ -122,7 +122,7 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({ src, cid, titleMovie, onBack
         // "abrMaxWithRealBitrate": true,
         "enableWorker": true,
         "backBufferLength": 90,
-        "progressive": true,
+        // "progressive": true,
         // "lowLatencyMode": false, // Not needed in VOD
         "startFragPrefetch": true,
         "fLoader": FetchLoader,
