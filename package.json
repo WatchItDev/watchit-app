@@ -99,6 +99,7 @@
     "nprogress": "^0.2.0",
     "numeral": "^2.0.6",
     "pbkdf2": "^3.1.2",
+    "permissionless": "^0.2.47",
     "react": "^18.2.0",
     "react-apexcharts": "^1.7.0",
     "react-dom": "^18.2.0",
@@ -124,7 +125,7 @@
     "stylis-plugin-rtl": "^2.0.2",
     "swr": "^2.2.0",
     "uuid": "^10.0.0",
-    "viem": "^2.21.53",
+    "viem": "^2.31.4",
     "worker-loader": "^3.0.8",
     "yet-another-react-lightbox": "^3.11.4",
     "yup": "^1.4.0"

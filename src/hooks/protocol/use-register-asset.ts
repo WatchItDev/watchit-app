@@ -13,6 +13,7 @@ import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 import { ERRORS } from '@src/libs/notifications/errors.ts';
 import { useWeb3Auth } from '@src/hooks/use-web3-auth.ts';
 import { Calls } from '@src/hooks/types.ts'
+import { getNonce } from '@src/utils/wallet.ts';
 
 // ----------------------------------------------------------------------
 
@@ -69,6 +70,7 @@ export const useRegisterAsset = (): UseRegisterAssetHook => {
       const userOpHash = await bundlerClient.sendUserOperation({
         account: smartAccount,
         calls,
+        nonce: await getNonce(smartAccount)
       });
 
       const receipt = await bundlerClient.waitForUserOperationReceipt({

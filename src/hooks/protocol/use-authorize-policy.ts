@@ -13,6 +13,7 @@ import { Calls, WaitForUserOperationReceiptReturnType } from '@src/hooks/types.t
 import { ERRORS } from '@src/libs/notifications/errors.ts';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 import { useWeb3Auth } from '@src/hooks/use-web3-auth.ts';
+import { getNonce } from '@src/utils/wallet.ts';
 
 // ----------------------------------------------------------------------
 
@@ -73,6 +74,7 @@ export const useAuthorizePolicy = (): UseAuthorizePolicyHook => {
       const userOpHash = await bundlerClient?.sendUserOperation({
         account: smartAccount,
         calls: calls,
+        nonce: await getNonce(smartAccount)
       });
 
       // Wait for the user operation receipt

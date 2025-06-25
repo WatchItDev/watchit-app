@@ -8,6 +8,7 @@ import { notifyError } from '@src/libs/notifications/internal-notifications.ts';
 import { useAuth } from '@src/hooks/use-auth.ts';
 import { useWeb3Auth } from '@src/hooks/use-web3-auth.ts';
 import { Calls, WaitForUserOperationReceiptReturnType } from '@src/hooks/types.ts'
+import { getNonce } from '@src/utils/wallet.ts';
 
 export const useCreateCampaign = (): UseCreateCampaignHook => {
   const [data, setData] = useState<CreateCampaignResult |null>(null);
@@ -51,6 +52,7 @@ export const useCreateCampaign = (): UseCreateCampaignHook => {
       const userOpHash = await bundlerClient.sendUserOperation({
         account: smartAccount,
         calls,
+        nonce: await getNonce(smartAccount)
       });
 
       const receipt: WaitForUserOperationReceiptReturnType = await bundlerClient.waitForUserOperationReceipt({
