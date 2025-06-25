@@ -11,6 +11,7 @@ import {
 import { Calls, WaitForUserOperationReceiptReturnType } from '@src/hooks/types.ts'
 import { useAuth } from '@src/hooks/use-auth.ts';
 import { useWeb3Auth } from '@src/hooks/use-web3-auth.ts';
+import { getNonce } from '@src/utils/wallet.ts';
 
 export const useCampaignRemoveFunds = (): UseCampaignRemoveFundsHook => {
   const [data, setData] = useState<UseCampaignRemoveFundsResult | null>(null);
@@ -52,6 +53,7 @@ export const useCampaignRemoveFunds = (): UseCampaignRemoveFundsHook => {
       const userOpHash = await bundlerClient.sendUserOperation({
         account: smartAccount,
         calls,
+        nonce: await getNonce(smartAccount)
       });
       const receipt: WaitForUserOperationReceiptReturnType = await bundlerClient.waitForUserOperationReceipt({
         hash: userOpHash,

@@ -9,6 +9,7 @@ import { useAuth } from '@src/hooks/use-auth.ts';
 import { TransferData } from "@src/hooks/types.ts"
 import { useWeb3Auth } from '@src/hooks/use-web3-auth.ts';
 import { Calls, WaitForUserOperationReceiptReturnType } from '@src/hooks/types.ts'
+import { getNonce } from '@src/utils/wallet.ts';
 
 export const useTransfer = (): UseTransferHook => {
   const [data, setData] = useState<TransferData | null>(null);
@@ -53,6 +54,7 @@ export const useTransfer = (): UseTransferHook => {
       const userOpHash = await bundlerClient.sendUserOperation({
         account: smartAccount,
         calls,
+        nonce: await getNonce(smartAccount)
       });
 
       const receipt: WaitForUserOperationReceiptReturnType = await bundlerClient.waitForUserOperationReceipt({

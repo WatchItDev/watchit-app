@@ -9,6 +9,7 @@ import { useAuth } from '@src/hooks/use-auth.ts';
 import { WithdrawData } from "@src/hooks/types.ts"
 import { useWeb3Auth } from '@src/hooks/use-web3-auth.ts';
 import { Calls, WaitForUserOperationReceiptReturnType } from '@src/hooks/types.ts'
+import { getNonce } from '@src/utils/wallet.ts';
 
 export const useWithdraw = (): UseWithdrawHook => {
   const [data, setData] = useState<WithdrawData | null>(null);
@@ -53,6 +54,7 @@ export const useWithdraw = (): UseWithdrawHook => {
       const userOpHash = await bundlerClient.sendUserOperation({
         account: smartAccount,
         calls,
+        nonce: await getNonce(smartAccount)
       });
 
       const receipt: WaitForUserOperationReceiptReturnType = await bundlerClient.waitForUserOperationReceipt({

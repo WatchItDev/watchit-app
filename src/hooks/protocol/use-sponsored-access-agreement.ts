@@ -13,6 +13,7 @@ import { notifyError } from '@src/libs/notifications/internal-notifications.ts';
 import { useAuth } from '@src/hooks/use-auth.ts';
 import { useWeb3Auth } from '@src/hooks/use-web3-auth.ts';
 import { Calls, WaitForUserOperationReceiptReturnType } from '@src/hooks/types.ts'
+import { getNonce } from '@src/utils/wallet.ts';
 
 export const useSponsoredAccessAgreement = (): UseSponsoredAccessAgreementHook => {
   const [data, setData] = useState<SponsoredAccessAgreementDetailsReturn | null>(null);
@@ -57,6 +58,7 @@ export const useSponsoredAccessAgreement = (): UseSponsoredAccessAgreementHook =
       const userOpHash = await bundlerClient.sendUserOperation({
         account: smartAccount,
         calls,
+        nonce: await getNonce(smartAccount)
       });
 
       const receipt: WaitForUserOperationReceiptReturnType = await bundlerClient.waitForUserOperationReceipt({
