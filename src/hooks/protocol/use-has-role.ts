@@ -5,7 +5,7 @@ import { useCallback, useState } from 'react';
 import { Address } from 'viem';
 
 // LOCAL IMPORTS
-import { publicClient } from '@src/clients/viem/publicClient.ts';
+import { alchemyClient } from '@src/clients/viem/publicClient.ts';
 import AccessManagerAbi from '@src/config/abi/AccessManager.json';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 import { HasAccessError, UseHasRoleHook } from '@src/hooks/protocol/types.ts';
@@ -20,7 +20,7 @@ export const useHasRole = (): UseHasRoleHook => {
   const fetchHasRole = useCallback(async (roleId: number, account: Address) => {
     setLoading(true);
     try {
-      const roleData = await publicClient.readContract({
+      const roleData = await alchemyClient.readContract({
         address: GLOBAL_CONSTANTS.ACCESS_MANAGER_ADDRESS,
         abi: AccessManagerAbi.abi,
         functionName: 'hasRole',
