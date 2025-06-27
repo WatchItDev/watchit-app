@@ -5,17 +5,16 @@ import LedgerVaultAbi from '@src/config/abi/LedgerVault.json';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 import { ERRORS } from '@src/libs/notifications/errors';
 import { useAccountSession } from '@src/hooks/use-account-session.ts';
-import {ConfigureCampaignParams, ConfigureCampaignResult, UseConfigureCampaignHook} from '@src/hooks/protocol/types.ts'
+import { ConfigureCampaignParams, ConfigureCampaignResult, UseConfigureCampaignHook } from '@src/hooks/protocol/types.ts'
 import { notifyError } from '@src/libs/notifications/internal-notifications.ts';
 import { useAuth } from '@src/hooks/use-auth.ts';
 import { useWeb3Auth } from '@src/hooks/use-web3-auth.ts';
-import { Calls, WaitForUserOperationReceiptReturnType } from '@src/hooks/types.ts'
-import { getNonce } from '@src/utils/wallet.ts';
+import { Calls } from '@src/hooks/types.ts'
 
 export const useConfigureCampaign = (): UseConfigureCampaignHook => {
   const [data, setData] = useState<ConfigureCampaignResult | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
-  const { bundlerClient, smartAccount } = useWeb3Auth();
+  const { sendOperation } = useWeb3Auth();
   const { logout } = useAccountSession();
   const { session } = useAuth();
 
@@ -87,18 +86,8 @@ export const useConfigureCampaign = (): UseConfigureCampaignHook => {
         },
       ];
 
-      // Send the UserOperation to our bundler
-      const userOpHash = await bundlerClient.sendUserOperation({
-        account: smartAccount,
-        calls,
-        nonce: await getNonce(smartAccount)
-      });
-
       // Wait for the transaction receipt
-      const receipt: WaitForUserOperationReceiptReturnType = await bundlerClient.waitForUserOperationReceipt({
-        hash: userOpHash,
-      });
-
+      const receipt = await sendOperation(calls);
       setData(receipt);
       setLoading(false);
     } catch (err) {

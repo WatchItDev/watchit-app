@@ -8,23 +8,19 @@ import {
   UseCampaignRemoveFundsHook,
   UseCampaignRemoveFundsResult,
 } from '@src/hooks/protocol/types.ts';
-import { Calls, WaitForUserOperationReceiptReturnType } from '@src/hooks/types.ts'
+import { Calls } from '@src/hooks/types.ts'
 import { useAuth } from '@src/hooks/use-auth.ts';
 import { useWeb3Auth } from '@src/hooks/use-web3-auth.ts';
-import { getNonce } from '@src/utils/wallet.ts';
 
 export const useCampaignRemoveFunds = (): UseCampaignRemoveFundsHook => {
   const [data, setData] = useState<UseCampaignRemoveFundsResult | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<keyof typeof ERRORS | null>(null);
-  const { bundlerClient, smartAccount } = useWeb3Auth();
+  const { sendOperation } = useWeb3Auth();
   const { logout } = useAccountSession();
   const { session } = useAuth();
 
-  const removeFunds = async ({
-                               campaignAddress,
-                               amount,
-                             }: CampaignRemoveFundsParams): Promise<void> => {
+  const removeFunds = async ({ campaignAddress, amount }: CampaignRemoveFundsParams): Promise<void> => {
     setLoading(true);
     setError(null);
 
@@ -50,17 +46,10 @@ export const useCampaignRemoveFunds = (): UseCampaignRemoveFundsHook => {
         },
       ];
 
-      const userOpHash = await bundlerClient.sendUserOperation({
-        account: smartAccount,
-        calls,
-        nonce: await getNonce(smartAccount)
-      });
-      const receipt: WaitForUserOperationReceiptReturnType = await bundlerClient.waitForUserOperationReceipt({
-        hash: userOpHash,
-      });
-      setData(receipt);
 
+      const receipt = await sendOperation(calls);
       console.log('Transaction receipt:', receipt);
+      setData(receipt);
     } catch (err) {
       console.error('Error in removeFunds:', err);
       setError(ERRORS.UNKNOWN_ERROR);

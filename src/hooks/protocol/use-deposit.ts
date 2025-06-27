@@ -9,18 +9,17 @@ import LedgerVaultAbi from '@src/config/abi/LedgerVault.json';
 import MMCAbi from '@src/config/abi/MMC.json';
 import { useAccountSession } from '@src/hooks/use-account-session.ts';
 import { useAuth } from '@src/hooks/use-auth.ts';
-import {DepositParams, UseDepositHook, UseDepositResult} from '@src/hooks/protocol/types.ts'
+import { DepositParams, UseDepositHook, UseDepositResult } from '@src/hooks/protocol/types.ts'
 import { ERRORS } from '@src/libs/notifications/errors.ts';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 import { useWeb3Auth } from '@src/hooks/use-web3-auth.ts';
-import { Calls, WaitForUserOperationReceiptReturnType } from '@src/hooks/types.ts'
-import { getNonce } from '@src/utils/wallet.ts';
+import { Calls } from '@src/hooks/types.ts'
 
 export const useDeposit = (): UseDepositHook => {
   const [data, setData] = useState<UseDepositResult | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<keyof typeof ERRORS | null>(null);
-  const { bundlerClient, smartAccount } = useWeb3Auth();
+  const { sendOperation } = useWeb3Auth();
   const { session } = useAuth();
   const { logout } = useAccountSession();
 
@@ -83,17 +82,7 @@ export const useDeposit = (): UseDepositHook => {
       ];
 
       // Send the user operation
-      const userOpHash = await bundlerClient.sendUserOperation({
-        account: smartAccount,
-        calls,
-        nonce: await getNonce(smartAccount)
-      });
-
-      // Wait for the operation receipt
-      const receipt: WaitForUserOperationReceiptReturnType = await bundlerClient.waitForUserOperationReceipt({
-        hash: userOpHash,
-      });
-
+      const receipt = await sendOperation(calls);
       setData(receipt);
 
       console.log('Deposit Receipt:', receipt);

@@ -8,11 +8,10 @@ export type { Calls } from 'viem/types/calls.ts';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-expect-error
-export type { WaitForUserOperationReceiptReturnType } from 'viem/account-abstraction/actions/bundler/waitForUserOperationReceipt.ts';
-
+export type { WaitForUserOperationReceiptReturnType, } from 'viem/account-abstraction/actions/bundler/waitForUserOperationReceipt.ts';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-expect-error
-import type { WaitForUserOperationReceiptReturnType } from 'viem/account-abstraction/actions/bundler/waitForUserOperationReceipt.ts';
+import type { WaitForUserOperationReceiptReturnType, } from 'viem/account-abstraction/actions/bundler/waitForUserOperationReceipt.ts';
 
 export interface Invitation {
   id: string;

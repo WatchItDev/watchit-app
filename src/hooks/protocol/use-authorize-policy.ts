@@ -21,9 +21,9 @@ export const useAuthorizePolicy = (): UseAuthorizePolicyHook => {
   const [data, setData] = useState<UseAuthorizePolicyResult | undefined>(undefined);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<keyof typeof ERRORS | null>(null);
-  const { session } = useAuth();
   const { bundlerClient, smartAccount } = useWeb3Auth();
   const { logout } = useAccountSession();
+  const { session } = useAuth();
 
   /**
    * Creates the flash policy agreement data.

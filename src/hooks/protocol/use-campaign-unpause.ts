@@ -13,7 +13,7 @@ export const useCampaignUnPause = (): UseCampaignUnPauseHook => {
   const [data, setData] = useState<CampaignUnpauseResult | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<keyof typeof ERRORS | null>(null);
-  const { bundlerClient, smartAccount } = useWeb3Auth();
+  const { sendOperation } = useWeb3Auth();
   const { logout } = useAccountSession();
   const { session } = useAuth();
 
@@ -43,14 +43,7 @@ export const useCampaignUnPause = (): UseCampaignUnPauseHook => {
         },
       ];
 
-      const userOpHash = await bundlerClient.sendUserOperation({
-        account: smartAccount,
-        calls,
-        nonce: await getNonce(smartAccount)
-      });
-      const receipt: WaitForUserOperationReceiptReturnType = await bundlerClient.waitForUserOperationReceipt({
-        hash: userOpHash,
-      });
+      const receipt = await sendOperation(calls);
       setData(receipt);
     } catch (err) {
       console.error('Error in unPause:', err);
