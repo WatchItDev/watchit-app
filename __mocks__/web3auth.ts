@@ -66,69 +66,6 @@ vi.mock('@web3auth/modal', () => {
   };
 });
 
-vi.mock('@web3auth/base', () => {
-  class Web3AuthCore {
-    constructor(options: any) {
-      this.options = options;
-    }
-    async init() {
-      return Promise.resolve();
-    }
-    async connectTo(providerName: string) {
-      return Promise.resolve({
-        provider: providerName,
-      });
-    }
-    async logout() {
-      return Promise.resolve(true);
-    }
-  }
-
-  const ADAPTER_EVENTS = {
-    CONNECTED: 'connected',
-    DISCONNECTED: 'disconnected',
-    ERRORED: 'errored',
-  };
-
-  const CHAIN_NAMESPACES = {
-    EIP155: 'eip155',
-    SOLANA: 'solana',
-    OTHER: 'other',
-  };
-  const WEB3AUTH_NETWORK = {
-    MAINNET: 'mainnet',
-    TESTNET: 'testnet',
-    SAPPHIRE_DEVNET: 'sapphire_devnet',
-    SAPPHIRE_MAINNET: 'sapphire_mainnet',
-  };
-
-  const WALLET_ADAPTERS = {
-    AUTH: 'AUTH',
-  };
-
-  return {
-    Web3AuthCore,
-    ADAPTER_EVENTS,
-    CHAIN_NAMESPACES,
-    WEB3AUTH_NETWORK,
-    WALLET_ADAPTERS
-  };
-});
-
-vi.mock('@web3auth/ethereum-provider', () => {
-  class EthereumPrivateKeyProvider {
-    static async fromPrivateKey(privateKey: string) {
-      return Promise.resolve({
-        request: vi.fn().mockResolvedValue(true),
-        privateKey,
-      });
-    }
-  }
-
-  return {
-    EthereumPrivateKeyProvider,
-  };
-});
 
 vi.mock('@web3auth/account-abstraction-provider', () => {
   class AccountAbstractionProvider {

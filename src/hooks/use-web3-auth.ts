@@ -1,23 +1,17 @@
-// ----- useWeb3Auth.ts -----
-import { useContext, useMemo } from 'react';
-import { AuthContext } from '../contexts/auth';
-import { AccountAbstractionProvider } from '@src/hooks/types';
-import { BundlerClient, SmartAccount } from 'viem/account-abstraction';
+import { useMemo } from 'react';
+import type { AccountAbstractionProvider } from '@web3auth/modal';
+import { useWeb3Auth as useWeb3AuthAA } from '@web3auth/modal/react';
 
 export const useWeb3Auth = () => {
-  const { web3Auth } = useContext(AuthContext);
+  const { web3Auth } = useWeb3AuthAA();
   if (!web3Auth) throw new Error('Auth not initialised');
 
-  const aaProvider = web3Auth.options
-    ?.accountAbstractionProvider as AccountAbstractionProvider | undefined;
-  const bundlerClient: BundlerClient = aaProvider?.bundlerClient as BundlerClient;
-  const smartAccount: SmartAccount = aaProvider?.smartAccount as SmartAccount;
-
+  const aaProvider = web3Auth.accountAbstractionProvider as AccountAbstractionProvider | undefined;
   return useMemo(
     () => ({
       web3Auth,
-      bundlerClient,
-      smartAccount,
+      bundlerClient: aaProvider?.bundlerClient ?? null,
+      smartAccount:  aaProvider?.smartAccount  ?? null,
       provider:      aaProvider?.provider      ?? null,
     }),
     [aaProvider]

@@ -35,7 +35,6 @@ import LedgerVaultAbi from "@src/config/abi/LedgerVault.json";
 import { store } from '@redux/store'
 import { useScrollToTop } from '@src/hooks/use-scroll-to-top';
 import { SettingsProvider, SettingsDrawer } from '@src/components/settings';
-import { AuthProvider } from '@src/contexts/auth';
 import { ApiProvider } from '@src/contexts/api';
 import { ResponsiveOverlay } from '@src/components/responsive-overlay';
 import { MetaMaskProvider } from '@metamask/sdk-react';
@@ -46,6 +45,8 @@ import { publicClientWebSocket } from "@src/clients/viem/publicClient.ts";
 import { setBlockchainEvents } from "@redux/blockchain-events";
 import { subscribeToNotifications } from "@src/libs/subscribe-notifications-supabase.ts";
 import { GLOBAL_CONSTANTS } from "@src/config-global.ts";
+import { Web3AuthProvider } from '@web3auth/modal/react';
+import { web3AuthOptions } from '@src/config/web3auth';
 
 window.Buffer = Buffer;
 
@@ -98,7 +99,7 @@ export default function App() {
           }}
         >
           <Provider store={store}>
-            <AuthProvider>
+            <Web3AuthProvider config={{ web3AuthOptions }}>
               <ApiProvider>
                 <ThemeProvider>
                   <MotionLazy>
@@ -108,11 +109,11 @@ export default function App() {
                   </MotionLazy>
                 </ThemeProvider>
               </ApiProvider>
-            </AuthProvider>
-          </Provider>
-        </SettingsProvider>
-      </LocalizationProvider>
-    </MetaMaskProvider>
+            </Web3AuthProvider>
+           </Provider>
+         </SettingsProvider>
+       </LocalizationProvider>
+     </MetaMaskProvider>
   );
 }
 

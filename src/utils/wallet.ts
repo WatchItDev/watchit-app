@@ -1,9 +1,8 @@
-import type { AccountAbstractionProvider } from '@web3auth/account-abstraction-provider';
-import { Web3Auth } from '@web3auth/modal/dist/types/modalManager';
-import { getAccountNonce } from 'permissionless/actions';
-import { publicClient } from '@src/clients/viem/publicClient.ts';
-import { Address } from 'viem';
-import { SmartAccount } from 'viem/account-abstraction';
+import { getAccountNonce } from "permissionless/actions";
+import { publicClient } from "@src/clients/viem/publicClient";
+import type { Address } from "viem";
+import type { AccountAbstractionProvider, Web3Auth } from "@web3auth/modal";
+import type { SmartAccount } from "viem/account-abstraction";
 
 // ----------------------------------------------------------------------
 
@@ -23,50 +22,30 @@ export const replacePrefix = (hash: string) => {
   return hash;
 };
 
-export const ensureAAReady = async (w3a: Web3Auth): Promise<{
+export const ensureAAReady = (w3a: Web3Auth | null | undefined): {
   aaprovider: AccountAbstractionProvider;
   smartAccount: AccountAbstractionProvider["smartAccount"];
   bundlerClient: AccountAbstractionProvider["bundlerClient"];
-}> => {
-  const aaprovider = w3a.options?.accountAbstractionProvider as
-    | AccountAbstractionProvider
-    | undefined;
+} => {
+  if (!w3a)
+    throw new Error("Web3Auth instance not initialised (is null)");
 
-  if (!aaprovider) throw new Error("AA provider missing in Web3Auth");
+  const aaprovider = w3a
+    .accountAbstractionProvider as AccountAbstractionProvider | undefined;
 
-  // Si ya está listo, devuelve enseguida
-  if (aaprovider.smartAccount?.address) {
-    return {
-      aaprovider,
-      smartAccount: aaprovider.smartAccount,
-      bundlerClient: aaprovider.bundlerClient,
-    };
-  }
-
-  // Espera a que emita el evento "READY"
-  await new Promise<void>((resolve, reject) => {
-    const timeout = setTimeout(() => reject(new Error("AA init timeout")), 10_000);
-    aaprovider.once?.('connect', () => {
-      clearTimeout(timeout);
-      resolve();
-    });
-  });
-
-  if (!aaprovider.smartAccount?.address) {
-    throw new Error("AA provider still not ready after READY event");
-  }
+  if (!aaprovider?.smartAccount?.address)
+    throw new Error("Smart-Account provider not ready");
 
   return {
     aaprovider,
     smartAccount: aaprovider.smartAccount,
     bundlerClient: aaprovider.bundlerClient,
   };
-}
+};
 
-export const getNonce = async (smartAccount: SmartAccount): Promise<bigint> => {
-  return await getAccountNonce(publicClient, {
+export const getNonce = async (smartAccount: SmartAccount): Promise<bigint> =>
+  getAccountNonce(publicClient, {
     address: smartAccount.address as Address,
     entryPointAddress: smartAccount.entryPoint.address as Address,
     key: 0n,
   });
-}

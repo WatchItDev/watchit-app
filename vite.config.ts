@@ -28,8 +28,8 @@ export default defineConfig(({ mode }) => {
       }),
       nodePolyfills({
         // To add only specific polyfills, add them here. If no option is passed, adds all polyfills
-        include: ['process', "module", "buffer"],
-        globals: { global: true, process: true, Buffer: true },
+        include: ["module", "buffer"],
+        globals: { global: true, Buffer: true },
       }),
       codecovVitePlugin({
         bundleName: "watchit-app",

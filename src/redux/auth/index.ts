@@ -1,7 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import {AuthReducerState, ReduxSession} from '../types'
 import { User } from '@src/graphql/generated/graphql.ts';
-import { UserInfo } from '@web3auth/base';
 
 export const defaultSession = {
   address: undefined,
@@ -39,7 +38,7 @@ const authSlice = createSlice({
     setUser: (state, action: PayloadAction<{ user: User }>) => {
       state.session.user = action.payload.user;
     },
-    setInfo: (state, action: PayloadAction<{ info: Partial<UserInfo> }>) => {
+    setInfo: (state, action: PayloadAction<any>) => {
       state.session.info = action.payload.info;
     },
   },

@@ -1,7 +1,3 @@
-import { IBaseProvider, IProvider } from "@web3auth/base"
-import { SafeEventEmitterProvider } from "@web3auth/base/dist/types/provider/IProvider"
-import { BundlerClient, SmartAccount } from 'viem/account-abstraction';
-
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-expect-error
 export type { Calls } from 'viem/types/calls.ts';
@@ -151,12 +147,6 @@ interface TransferDataLog {
   transactionIndex: number;
   transactionHash: string;
   topics: string[];
-}
-
-export interface AccountAbstractionProvider extends IBaseProvider<IProvider> {
-  bundlerClient?: BundlerClient;
-  smartAccount?: SmartAccount;
-  provider: SafeEventEmitterProvider;
 }
 
 export interface MetadataAttachment {
