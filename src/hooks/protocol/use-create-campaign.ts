@@ -7,12 +7,12 @@ import {CreateCampaignParams, CreateCampaignResult, UseCreateCampaignHook} from 
 import { notifyError } from '@src/libs/notifications/internal-notifications.ts';
 import { useAuth } from '@src/hooks/use-auth.ts';
 import { useWeb3Auth } from '@src/hooks/use-web3-auth.ts';
-import { Calls, WaitForUserOperationReceiptReturnType } from '@src/hooks/types.ts'
+import { Calls } from '@src/hooks/types.ts'
 
 export const useCreateCampaign = (): UseCreateCampaignHook => {
   const [data, setData] = useState<CreateCampaignResult |null>(null);
   const [loading, setLoading] = useState<boolean>(false);
-  const { bundlerClient, smartAccount } = useWeb3Auth();
+  const { sendOperation } = useWeb3Auth();
   const { session } = useAuth();
 
   const initializeCampaign = ({ policy, expiration, description }: CreateCampaignParams) => {
@@ -48,14 +48,7 @@ export const useCreateCampaign = (): UseCreateCampaignHook => {
         },
       ];
 
-      const userOpHash = await bundlerClient.sendUserOperation({
-        account: smartAccount,
-        calls,
-      });
-
-      const receipt: WaitForUserOperationReceiptReturnType = await bundlerClient.waitForUserOperationReceipt({
-        hash: userOpHash,
-      });
+      const receipt = await sendOperation(calls);
 
       setData(receipt);
       setLoading(false);
