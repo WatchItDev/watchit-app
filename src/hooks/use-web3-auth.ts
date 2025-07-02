@@ -17,7 +17,7 @@ export const useWeb3Auth = () => {
     const op = {
       account: smartAccount,
       nonce: await getNonce(smartAccount),
-      balance: parseEther("100"),
+      // balance: parseEther("100"),
       calls
     }
 
