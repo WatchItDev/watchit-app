@@ -1,9 +1,9 @@
+import { Address } from 'viem';
 import { useMemo } from 'react';
-import type { AccountAbstractionProvider } from '@web3auth/modal';
+import { getNonce } from '@src/utils/wallet.ts';
 import { useWeb3Auth as useWeb3AuthAA } from '@web3auth/modal/react';
 import { Calls, WaitForUserOperationReceiptReturnType } from '@src/hooks/types.ts'
-import { Address, parseEther } from 'viem';
-import { getNonce } from '@src/utils/wallet.ts';
+import type { AccountAbstractionProvider } from '@web3auth/modal';
 
 export const useWeb3Auth = () => {
   const { web3Auth } = useWeb3AuthAA();
