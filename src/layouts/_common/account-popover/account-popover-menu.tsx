@@ -96,7 +96,7 @@ export function AccountPopoverMenu({ popover, router }: Readonly<AccountPopoverM
       <Divider sx={{ borderStyle: 'dashed' }} />
 
       <MenuItem
-        onClick={() => logout(true)}
+        onClick={() => logout()}
         sx={{ m: 1, fontWeight: 'fontWeightBold', color: 'error.main' }}
       >
         Logout

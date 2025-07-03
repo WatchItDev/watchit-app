@@ -30,6 +30,9 @@ export function AccountPopover() {
   const { isLoginModalOpen, isAuthLoading } = useAuth();
   const { initializing, loading: sessionLoading } = useAccountSession();
 
+  console.log('initializing:', initializing);
+  console.log('loading:', sessionLoading);
+
   if (isAuthLoading) {
     return <CircularProgress size={24} sx={{ color: '#fff' }} />;
   }

@@ -45,8 +45,7 @@ import { publicClientWebSocket } from "@src/clients/viem/publicClient.ts";
 import { setBlockchainEvents } from "@redux/blockchain-events";
 import { subscribeToNotifications } from "@src/libs/subscribe-notifications-supabase.ts";
 import { GLOBAL_CONSTANTS } from "@src/config-global.ts";
-import { Web3AuthProvider } from '@web3auth/modal/react';
-import { web3AuthOptions } from '@src/config/web3auth';
+import { AuthProvider } from '@src/contexts/auth';
 
 window.Buffer = Buffer;
 
@@ -68,38 +67,38 @@ export default function App() {
   useScrollToTop();
 
   return (
-    <MetaMaskProvider
-      sdkOptions={{
-        dappMetadata: {
-          name: 'Watchit Dapp',
-          url: window.location.href,
-        },
-        openDeeplink: (url) => {
-          const isMM = window.ethereum?.isMetaMask;
-          if (typeof window.ethereum === 'undefined' || !isMM) {
-            // Mobile version / no extension
-            window.location.href = 'https://metamask.app.link';
-          } else {
-            // Desktop with MetaMask extension
-            window.location.href = url;
-          }
-        },
-        // headless: true,  // If we wanted to personalize our own modals
-      }}
-    >
-      <LocalizationProvider dateAdapter={AdapterDateFns}>
-        <SettingsProvider
-          defaultSettings={{
-            themeMode: 'dark', // 'light' | 'dark'
-            themeDirection: 'ltr', //  'rtl' | 'ltr'
-            themeContrast: 'default', // 'default' | 'bold'
-            themeLayout: 'vertical', // 'vertical' | 'horizontal' | 'mini'
-            themeColorPresets: 'default', // 'default' | 'cyan' | 'purple' | 'blue' | 'orange' | 'red'
-            themeStretch: false,
-          }}
-        >
-          <Provider store={store}>
-            <Web3AuthProvider config={{ web3AuthOptions }}>
+    <AuthProvider>
+      <MetaMaskProvider
+        sdkOptions={{
+          dappMetadata: {
+            name: 'Watchit Dapp',
+            url: window.location.href,
+          },
+          openDeeplink: (url) => {
+            const isMM = window.ethereum?.isMetaMask;
+            if (typeof window.ethereum === 'undefined' || !isMM) {
+              // Mobile version / no extension
+              window.location.href = 'https://metamask.app.link';
+            } else {
+              // Desktop with MetaMask extension
+              window.location.href = url;
+            }
+          },
+          // headless: true,  // If we wanted to personalize our own modals
+        }}
+      >
+        <LocalizationProvider dateAdapter={AdapterDateFns}>
+          <SettingsProvider
+            defaultSettings={{
+              themeMode: 'dark', // 'light' | 'dark'
+              themeDirection: 'ltr', //  'rtl' | 'ltr'
+              themeContrast: 'default', // 'default' | 'bold'
+              themeLayout: 'vertical', // 'vertical' | 'horizontal' | 'mini'
+              themeColorPresets: 'default', // 'default' | 'cyan' | 'purple' | 'blue' | 'orange' | 'red'
+              themeStretch: false,
+            }}
+          >
+            <Provider store={store}>
               <ApiProvider>
                 <ThemeProvider>
                   <MotionLazy>
@@ -109,11 +108,11 @@ export default function App() {
                   </MotionLazy>
                 </ThemeProvider>
               </ApiProvider>
-            </Web3AuthProvider>
-           </Provider>
-         </SettingsProvider>
-       </LocalizationProvider>
-     </MetaMaskProvider>
+             </Provider>
+           </SettingsProvider>
+         </LocalizationProvider>
+       </MetaMaskProvider>
+    </AuthProvider>
   );
 }
 

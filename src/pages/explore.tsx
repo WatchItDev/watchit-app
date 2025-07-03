@@ -14,9 +14,6 @@ export default function OverviewAppPage() {
       description="Discover the latest decentralized creations on Watchit. Powered by Web3 & AI."
       url={`${GLOBAL_CONSTANTS.BASE_URL}/`}
     >
-      <Header>
-        <HeaderContent title="Explore" />
-      </Header>
       <ExploreView />
     </ OgMetaTags>
   );

@@ -91,7 +91,7 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
             </Box>
           )}
 
-          {!sessionLoading && showForm && session.address && (
+          {!sessionLoading && showForm && !!session.address && (
             <ProfileFormView
               onSuccess={handleSuccess}
               onCancel={handleCancel}

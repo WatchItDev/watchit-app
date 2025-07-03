@@ -5,6 +5,8 @@ import DashboardLayout from '@src/layouts/dashboard';
 // components
 import { LoadingScreen, SplashScreen } from '@src/components/loading-screen';
 import CompactLayout from '@src/layouts/compact';
+import HeaderContent from '@src/layouts/dashboard/header-content.tsx';
+import Header from '@src/layouts/dashboard/header.tsx';
 
 
 // ----------------------------------------------------------------------
@@ -40,6 +42,9 @@ export const dashboardRoutes = [
   {
     element: (
       <DashboardLayout>
+        <Header>
+          <HeaderContent title="Explore" />
+        </Header>
         <Suspense fallback={<LoadingScreen />}>
           <Outlet />
         </Suspense>
