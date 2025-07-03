@@ -1,8 +1,8 @@
-// @mui
+import React, { forwardRef } from 'react';
 import Avatar from '@mui/material/Avatar';
-import { CSSProperties, FC } from 'react';
-import { COLORS } from '@src/layouts/config-layout.ts';
 import { SxProps } from '@mui/material/styles';
+import { CSSProperties } from 'react';
+import { COLORS } from '@src/layouts/config-layout.ts';
 import { resolveSrc } from '@src/utils/image.ts';
 
 interface AvatarProfileProps {
@@ -15,23 +15,22 @@ interface AvatarProfileProps {
   imgProps?: React.ImgHTMLAttributes<HTMLImageElement>;
 }
 
-const AvatarProfile: FC<AvatarProfileProps> = ({ src, alt, sx, ...other }) => {
-  const imageSrc = resolveSrc(src);
+const AvatarProfile = forwardRef<HTMLDivElement, AvatarProfileProps>(
+  ({ src, alt, sx, ...other }, ref) => {
+    const imageSrc = resolveSrc(src);
 
-  const avatarStyles = {
-    backgroundColor: COLORS.GRAY_DARK,
-    fontWeight: 'bold',
-    ...sx,
-  };
+    return (
+      <Avatar
+        ref={ref}
+        alt={alt?.toUpperCase() ?? 'Avatar profile'}
+        src={imageSrc}
+        sx={{ backgroundColor: COLORS.GRAY_DARK, fontWeight: 'bold', ...sx }}
+        {...other}
+      />
+    );
+  }
+);
 
-  return (
-    <Avatar
-      alt={alt?.toUpperCase() ?? 'Avatar profile'}
-      src={imageSrc}
-      sx={avatarStyles}
-      {...other}
-    />
-  );
-};
+AvatarProfile.displayName = 'AvatarProfile';
 
 export default AvatarProfile;
