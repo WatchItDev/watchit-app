@@ -17,7 +17,6 @@ import { ERRORS } from '@src/libs/notifications/errors.ts';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 import { useWeb3Auth } from '@src/hooks/use-web3-auth.ts';
 import { Calls } from '@src/hooks/types.ts'
-import { getNonce } from '@src/utils/wallet.ts';
 
 // ----------------------------------------------------------------------
 
@@ -26,7 +25,7 @@ export const useSubscribe = (): UseSubscribeHook => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<keyof typeof ERRORS | null>(null);
   const { session } = useAuth();
-  const { bundlerClient, smartAccount } = useWeb3Auth();
+  const { sendOperation } = useWeb3Auth();
   const { logout } = useAccountSession();
 
 
@@ -106,17 +105,7 @@ export const useSubscribe = (): UseSubscribeHook => {
         },
       ];
 
-      // Send the user operation
-      const userOpHash = await bundlerClient.sendUserOperation({
-        account: smartAccount,
-        calls: calls,
-        nonce: await getNonce(smartAccount)
-      });
-
-      // Wait for the user operation receipt
-      const receipt = await bundlerClient.waitForUserOperationReceipt({
-        hash: userOpHash,
-      });
+      const receipt = await sendOperation(calls);
 
       // Update the state with the result
       setData(receipt);
