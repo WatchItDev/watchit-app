@@ -22,6 +22,7 @@ const AnalyticsPage = lazy(() => import('@src/pages/analytics.tsx'));
 const StudioPage = lazy(() => import('@src/pages/studio.tsx'));
 const OwnershipPage = lazy(() => import('@src/pages/ownership.tsx'));
 const FinancePage = lazy(() => import('@src/pages/finance.tsx'));
+const CollaborationsPage = lazy(() => import('@src/pages/collaborations.tsx'));
 // MARKETING
 const MarketingPage = lazy(() => import('@src/pages/marketing.tsx'));
 const StrategyPage = lazy(() => import('@src/pages/marketing/index.tsx'));
@@ -55,6 +56,7 @@ export const dashboardRoutes = [
       { path: 'studio', element: <StudioPage /> },
       { path: 'ownership', element: <OwnershipPage /> },
       { path: 'finance', element: <FinancePage /> },
+      { path: 'collaborations', element: <CollaborationsPage /> },
       { path: 'marketing', element: <MarketingPage /> },
       { path: 'marketing/strategy/:id', element: <StrategyPage /> },
       { path: 'profile/:id', element: <UserProfilePage /> },
