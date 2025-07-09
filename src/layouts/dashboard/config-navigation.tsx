@@ -41,6 +41,7 @@ const ICONS = {
   analytics: icon('ic_analytics'),
   dashboard: icon('ic_dashboard'),
   userGroup: icon('ic_user_group'),
+  collaboration: icon('ic_collaboration'),
 };
 
 // ----------------------------------------------------------------------
@@ -126,6 +127,13 @@ export function useNavData() {
             title: t('Marketing'),
             path: paths.dashboard.marketing,
             icon: ICONS.tour,
+          },
+
+          // COLLABORATION
+          {
+            title: t('Collaboration'),
+            path: paths.dashboard.collaborations,
+            icon: ICONS.chat,
           },
         ],
       },
