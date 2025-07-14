@@ -2,7 +2,7 @@
   "name": "watchit",
   "author": "Watchit",
   "type": "module",
-  "version": "2.3.0-beta.3",
+  "version": "2.4.0-beta.1",
   "description": "Open videos everywhere",
   "email": "info@watchit.movie",
   "private": true,
