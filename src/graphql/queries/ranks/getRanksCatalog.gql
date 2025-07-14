@@ -1,0 +1,12 @@
+query GetRanksCatalog {
+  getRanksCatalog {
+    badgeUrl
+    colorTheme
+    createdAt
+    id
+    minXp
+    name
+    updatedAt
+    order
+  }
+}

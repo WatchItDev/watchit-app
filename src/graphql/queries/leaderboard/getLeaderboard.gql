@@ -1,0 +1,11 @@
+query GetLeaderboard($limit: Int) {
+  getLeaderboard(limit: $limit) {
+    address
+    email
+    xpTotal
+    xpBalance
+    username
+    displayName
+    currentRank
+  }
+}

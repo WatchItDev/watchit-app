@@ -1,0 +1,3 @@
+query GetProfileViews($address: String!) {
+  getProfileViews(address: $address)
+}

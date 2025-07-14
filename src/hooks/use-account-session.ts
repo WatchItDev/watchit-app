@@ -48,7 +48,7 @@ export const useAccountSession = (): UseAccountSessionHook => {
   const [loginInProgress, setLoginInProgress] = useState(false);
   const [verifyingUser,   setVerifyingUser]   = useState(false);
   const [userChecked,     setUserChecked]     = useState(false);
-  const [initializing,    setInitializing]    = useState(!restoreDone);
+  const [initializing,    setInitializing]    = useState(true);
 
   const sessionRef       = useRef(session);
   const lastVerifiedRef  = useRef<Address | null>(null);
@@ -158,23 +158,40 @@ export const useAccountSession = (): UseAccountSessionHook => {
         }
       } catch {
         await logout();
-      } finally {
-        setUserChecked(true);
-        setInitializing(false);
       }
     })();
   }, [logout]);
 
+  const handleConnected = async () => {
+    try {
+      await syncAddress();
+    } finally {
+      handleReady();
+    }
+  };
+
+  const handleReady = () => {
+    setUserChecked(true);
+    setInitializing(false);
+  };
+
+  const verifyStatus = () => {
+    if (web3Auth.status === 'connected' || web3Auth.status === 'ready') handleReady();
+  };
+
   useEffect(() => {
     if (!web3Auth || listenerAttached) return;
     listenerAttached = true;
+    verifyStatus();
 
     web3Auth.on(ADAPTER_EVENTS.DISCONNECTED, logout);
-    web3Auth.on(ADAPTER_EVENTS.CONNECTED,    syncAddress);
+    web3Auth.on(ADAPTER_EVENTS.CONNECTED,    handleConnected);
+    web3Auth.on(ADAPTER_EVENTS.READY,        handleReady);
 
     return () => {
       web3Auth.off(ADAPTER_EVENTS.DISCONNECTED, logout);
-      web3Auth.off(ADAPTER_EVENTS.CONNECTED,    syncAddress);
+      web3Auth.off(ADAPTER_EVENTS.CONNECTED,    handleConnected);
+      web3Auth.off(ADAPTER_EVENTS.READY,        handleReady);
       listenerAttached = false;
     };
   }, [web3Auth, logout]);

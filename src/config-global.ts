@@ -23,6 +23,7 @@ export interface GlobalConstants {
   PINATA_SECRET_API_KEY: string;
   WEB3_CLIENT_ID: string;
   PIMLICO: string;
+  RPC_URL: string;
   NEXT_PUBLIC_SUPABASE_URL: string;
   NEXT_PUBLIC_SUPABASE_ANON_KEY: string;
   ENVIRONMENT: string;
@@ -105,6 +106,7 @@ export const GLOBAL_CONSTANTS: GlobalConstants = {
   GQL_ENDPOINT: process.env.VITE_GQL_ENDPOINT || import.meta.env.VITE_GQL_ENDPOINT || 'http://localhost:4000/graphql',
   OPEN_COLLECTIVE: process.env.VITE_URL_OPEN_COLLECTIVE || import.meta.env.VITE_URL_OPEN_COLLECTIVE || '',
   TERMS_AND_CONDITIONS: process.env.VITE_URL_TERMS_AND_CONDITIONS || import.meta.env.VITE_URL_TERMS_AND_CONDITIONS || '',
+  RPC_URL: process.env.VITE_POLYGON_AMOY_RPC || import.meta.env.VITE_POLYGON_AMOY_RPC || 'https://polygon-amoy-bor-rpc.publicnode.com',
 };
 
 export const PATH_AFTER_LOGIN = paths.dashboard.root;

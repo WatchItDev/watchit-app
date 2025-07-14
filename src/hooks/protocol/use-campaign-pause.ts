@@ -7,6 +7,7 @@ import {UseCampaignPauseHook, UseCampaignPauseResult} from '@src/hooks/protocol/
 import { Calls, WaitForUserOperationReceiptReturnType } from '@src/hooks/types.ts'
 import { useAuth } from '@src/hooks/use-auth.ts';
 import { useWeb3Auth } from '@src/hooks/use-web3-auth.ts';
+import { getNonce } from '@src/utils/wallet.ts';
 
 export const useCampaignPause = (): UseCampaignPauseHook => {
   const [data, setData] = useState<UseCampaignPauseResult | null>(null);
@@ -45,6 +46,7 @@ export const useCampaignPause = (): UseCampaignPauseHook => {
       const userOpHash = await bundlerClient?.sendUserOperation({
         account: smartAccount,
         calls,
+        nonce: await getNonce(smartAccount)
       });
       const receipt: WaitForUserOperationReceiptReturnType = await bundlerClient?.waitForUserOperationReceipt({
         hash: userOpHash,

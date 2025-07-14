@@ -1,0 +1,42 @@
+query GetUnlockedPerks($address: String!) {
+  getUnlockedPerks(address: $address) {
+    availableAt
+    collectedAt
+    cooldownSec
+    createdAt
+    id
+    perk {
+      id
+      name
+      minRankId
+      uiHint
+      category
+      collectedAt
+      availableAt
+      cooldownRemaining
+      rewardPreview
+      unlockRule {
+        action
+        on
+        rankId
+        times
+        window
+      }
+      executionRule {
+        cooldownSec
+        type
+      }
+      reward {
+        action
+        amount
+        tokenId
+      }
+      enabled
+    }
+    perkId
+    progress
+    status
+    target
+    user
+  }
+}
