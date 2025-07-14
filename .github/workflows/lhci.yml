@@ -1,0 +1,21 @@
+name: Lighthouse weekly
+
+on:
+  schedule:
+    - cron: "0 6 * * 5"
+  workflow_dispatch:
+
+jobs:
+  lhci:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run Lighthouse CI
+        uses: treosh/lighthouse-ci-action@v11
+        with:
+          urls: |
+            https://app.watchit.movie/
+          uploadArtifacts: true
+          configPath: .lighthouserc.json

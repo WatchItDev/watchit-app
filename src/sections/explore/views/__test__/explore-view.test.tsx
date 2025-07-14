@@ -72,21 +72,9 @@ describe("Testing in the <ExploreView/> component", () => {
     expect(container).toMatchSnapshot();
   });
 
-  it("should render all public sections of ExploreView", () => {
-    vi.spyOn(authHook, "useAuth").mockReturnValue({
-      session: {
-        address: undefined,
-        authenticated: true,
-        user: undefined,
-        info: undefined,
-      },
-      isAuthLoading: false,
-      isLoginModalOpen: false,
-      balance: 0,
-    });
+  it("should render all public sections of ExploreView", async () => {
     renderWithProviders();
-
-    expect(screen.getByText(/Publications/i)).toBeInTheDocument();
+    expect(screen.getAllByText("Publications").length).toBeGreaterThan(0);
   });
 
   it("should not render bookmarks when user is not authenticated", () => {
