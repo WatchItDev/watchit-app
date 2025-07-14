@@ -7,5 +7,6 @@ query GetLeaderboard($limit: Int) {
     username
     displayName
     currentRank
+    profilePicture
   }
 }

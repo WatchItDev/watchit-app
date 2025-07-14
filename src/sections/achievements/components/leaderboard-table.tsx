@@ -97,7 +97,7 @@ const LeaderboardTable: FC = () => {
 
   return (
     <Card sx={{ pt: 2 }}>
-      <CardHeader title="Leaderboard" sx={{ p: 0 }} />
+      <CardHeader title="Leaderboard (top 50)" sx={{ p: 0 }} />
 
       {error && (
         <Alert severity="error" sx={{ m: 2 }}>
@@ -147,7 +147,7 @@ const LeaderboardTable: FC = () => {
                         <TableCell>
                           <Box display="flex" alignItems="center" gap={1}>
                             <AvatarProfile
-                              src={row.picture ?? row.address ?? ''}
+                              src={row.picture || row.address || ''}
                               alt={row.name}
                               sx={{
                                 bgcolor: row.color,
