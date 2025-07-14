@@ -2,7 +2,7 @@ import Container from '@mui/material/Container';
 import Grid from '@mui/material/Unstable_Grid2';
 import { useTheme } from '@mui/material/styles';
 import UserSidebar from '@src/sections/achievements/components/user-sidebar.tsx';
-import ChallengesList from '@src/sections/achievements/components/challenges-list.tsx';
+import PerksList from '@src/sections/achievements/components/perks-list.tsx';
 import LeaderboardTable from '@src/sections/achievements/components/leaderboard-table.tsx';
 import DailyRewards from '@src/sections/achievements/components/daily-rewards.tsx';
 
@@ -37,7 +37,7 @@ export default function AchievementsView() {
             },
           }}
         >
-          <ChallengesList />
+          <PerksList />
           <LeaderboardTable />
         </Grid>
 

@@ -1,0 +1,28 @@
+query GetAchievements($address: String!) {
+  getAchievements(address: $address) {
+    currentRank {
+      badgeUrl
+      colorTheme
+      createdAt
+      id
+      minXp
+      name
+      order
+      updatedAt
+    }
+    nextRank {
+      name
+      minXp
+      id
+      createdAt
+      colorTheme
+      badgeUrl
+      order
+      updatedAt
+    }
+    progressPct
+    xpBalance
+    xpRemaining
+    xpTotal
+  }
+}
