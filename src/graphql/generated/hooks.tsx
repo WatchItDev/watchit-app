@@ -1103,6 +1103,7 @@ export const GetLeaderboardDocument = gql`
     username
     displayName
     currentRank
+    profilePicture
   }
 }
     `;
