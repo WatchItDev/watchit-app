@@ -24,7 +24,7 @@ import { notifyError, notifySuccess } from '@src/libs/notifications/internal-not
 import { SUCCESS } from '@src/libs/notifications/success';
 import { ERRORS } from '@src/libs/notifications/errors.ts';
 import {ProfileFormProps, ProfileFormValues} from "@src/components/login-modal/types.ts"
-import { useCreateUserMutation, useUpdateUserMutation } from '@src/graphql/generated/hooks.tsx';
+import { useCreateUserMutation, useLogEventMutation, useUpdateUserMutation } from '@src/graphql/generated/hooks.tsx';
 import { resolveSrc } from '@src/utils/image.ts';
 import { getIpfsUri } from '@src/utils/publication.ts';
 import { useAuth } from '@src/hooks/use-auth.ts';
@@ -51,6 +51,7 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
   const [registrationLoading, setRegistrationLoading] = useState(false);
   const [createUser, { loading: createUserLoading, error: errorCreatingProfile }] = useCreateUserMutation();
   const [updateUser, { loading: updateUserLoading, error: errorUpdatingProfile }] = useUpdateUserMutation();
+  const [logEvent] = useLogEventMutation();
   const { session } = useAuth();
   const { refreshUser } = useAccountSession();
 
@@ -108,6 +109,39 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
     }
   };
 
+  const buildPerkEvents = (
+    data: ProfileData,
+    profilePictureURI: string | null,
+    prev?: ProfileData | null,
+  ) => {
+    const jobs: Promise<unknown>[] = [];
+
+    const hadPictureBefore = !!prev?.profilePicture;
+    if (!hadPictureBefore && profilePictureURI) {
+      jobs.push(
+        logEvent({
+          variables: { input: { type: 'PROFILE_PICTURE_ADDED' } },
+        }),
+      );
+    }
+
+    Object.entries(data.socialLinks).forEach(([platform, url]) => {
+      const prevUrl = prev?.socialLinks?.[platform as keyof typeof data.socialLinks];
+      if (!prevUrl && url) {
+        jobs.push(
+          logEvent({
+            variables: {
+              input: { type: 'SOCIAL_LINK_ADDED', meta: { platform } },
+            },
+          }),
+        );
+      }
+    });
+
+    return jobs;
+  };
+
+
   const updateProfileMetadata = async (data: ProfileData) => {
     setRegistrationLoading(true);
 
@@ -126,11 +160,12 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
 
       await updateUser({
         variables: {
-          input: {
-            ...metadata
-          },
+          input: { ...metadata },
         },
       });
+
+      const events = buildPerkEvents(data, profilePictureURI, initialValues ?? null);
+      await Promise.all(events);
 
       setRegistrationLoading(false);
       onSuccess();
@@ -170,11 +205,14 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
         await createUser({
           variables: {
             input: {
-              address: session?.address,
-              ...metadata
+              address: session.address,
+              ...metadata,
             },
           },
         });
+
+        const events = buildPerkEvents(data, profilePictureURI, null);
+        await Promise.all(events);
 
         setRegistrationLoading(false);
         notifySuccess(SUCCESS.PROFILE_CREATED_SUCCESSFULLY);

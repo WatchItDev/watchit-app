@@ -1,4 +1,4 @@
-import { FC, useRef, useEffect, memo } from 'react';
+import { FC, useRef, useEffect, memo, useState } from 'react';
 // @ts-expect-error No error in this context
 import { Hls, FetchLoader, XhrLoader } from 'hls.js/dist/hls.mjs';
 import { Typography, IconButton, Button } from '@mui/material';
@@ -21,6 +21,8 @@ import useGetSubtitles from '@src/hooks/protocol/use-get-subtitles.ts';
 import { useResponsive } from '@src/hooks/use-responsive';
 import Label from '../label';
 import {ErrorData} from "hls.js"
+import { useLogEventMutation } from '@src/graphql/generated/hooks.tsx';
+import { useAuth } from '@src/hooks/use-auth.ts';
 
 export interface VideoPlayerProps {
   src: string;
@@ -28,13 +30,17 @@ export interface VideoPlayerProps {
   titleMovie: string;
   onBack?: () => void;
   showBack?: boolean;
+  postId: string;
 }
 
-export const VideoPlayer: FC<VideoPlayerProps> = ({ src, cid, titleMovie, onBack, showBack }) => {
+export const VideoPlayer: FC<VideoPlayerProps> = ({ src, cid, titleMovie, postId, onBack, showBack }) => {
   const mdUp = useResponsive('up', 'md');
   const player = useRef<MediaPlayerInstance>(null);
+  const [sent, setSent] = useState({ 25: false, 50: false, 75: false });
   const controlsVisible = useMediaState('controlsVisible', player);
   const { tracks, getSubtitles } = useGetSubtitles();
+  const [logEvent] = useLogEventMutation();
+  const { session } = useAuth();
 
   useEffect(() => {
     if (cid) getSubtitles(cid);
@@ -48,6 +54,53 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({ src, cid, titleMovie, onBack
     document?.addEventListener('keydown', handleKeyDown);
     return () => document?.removeEventListener('keydown', handleKeyDown);
   }, []);
+
+  const emit = async (type: string, progress?: number) => {
+    console.log('emit event', type, progress);
+    if (!session?.authenticated) return;
+    try {
+      await logEvent({
+        variables: {
+          input: {
+            type,
+            targetId: postId,
+            targetType: 'POST',
+            progress,
+            meta: { cid },
+          },
+        },
+      });
+    } catch (e) {
+      console.error('logEvent error', e);
+    }
+  };
+
+  const handlePlay = () => emit('VIDEO_START');
+
+  const handleTimeUpdate = () => {
+    const media = player.current;
+    if (!media) return;
+
+    const { currentTime, duration } = media;
+    if (!duration) return;
+
+    const pct = (currentTime / duration) * 100;
+
+    if (!sent[25] && pct >= 25) {
+      emit('VIDEO_25', 25);
+      setSent(s => ({ ...s, 25: true }));
+    }
+    if (!sent[50] && pct >= 50) {
+      emit('VIDEO_50', 50);
+      setSent(s => ({ ...s, 50: true }));
+    }
+    if (!sent[75] && pct >= 75) {
+      emit('VIDEO_75', 75);
+      setSent(s => ({ ...s, 75: true }));
+    }
+  };
+
+  const handleEnded = () => emit('VIDEO_WATCH_FULL');
 
   // on provider (HLS) initialization
   const onProviderSetup = (provider: MediaProviderAdapter) => {
@@ -139,6 +192,9 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({ src, cid, titleMovie, onBack
       src={{ src, type: 'application/x-mpegurl' }}
       onProviderChange={onProviderChange}
       onProviderSetup={onProviderSetup}
+      onPlay={handlePlay}
+      onEnded={handleEnded}
+      onTimeUpdate={handleTimeUpdate}
       viewType="video"
       streamType="on-demand"
       logLevel="warn"
