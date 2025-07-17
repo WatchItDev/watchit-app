@@ -15,11 +15,16 @@ import CheckGreen from '@src/assets/illustrations/check_green.png';
 import { useAuth } from '@src/hooks/use-auth';
 import { useGetUnlockedPerksQuery } from '@src/graphql/generated/hooks.tsx';
 import { UnlockedPerkState } from '@src/graphql/generated/graphql.ts';
+import { useStaleWhileLoading } from '@src/hooks/use-stale-while-loading.ts';
 
 export const UserSidebarLatestPerks: FC = () => {
   const { session } = useAuth();
   const address = session?.user?.address ?? '';
-  const { data: perksData } = useGetUnlockedPerksQuery({ variables: { address }});
+  const raw = useGetUnlockedPerksQuery({
+    variables: { address },
+    fetchPolicy: 'network-only',
+  });
+  const { data: perksData } = useStaleWhileLoading(raw);
 
   const unlockedPerks: UnlockedPerkState[] = (perksData?.getUnlockedPerks.filter((p: UnlockedPerkState) => p.status === 'CLAIMED') ?? []).slice(0, 6);
 

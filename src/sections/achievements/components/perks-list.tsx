@@ -11,14 +11,13 @@ import Skeleton from '@mui/material/Skeleton';
 
 import {
   useClaimPerkMutation,
-  GetAchievementsDocument,
-  GetUnlockedPerksDocument,
   useGetUnlockedPerksQuery,
 } from '@src/graphql/generated/hooks.tsx';
 import { incrementXp } from '@redux/auth';
 import { useAuth } from '@src/hooks/use-auth';
 import PerksItem from '@src/sections/achievements/components/perk-item.tsx';
 import { UnlockedPerkState } from '@src/graphql/generated/graphql.ts';
+import { useStaleWhileLoading } from '@src/hooks/use-stale-while-loading.ts';
 
 const INITIAL_VISIBLE = 6;
 const STEP = 3;
@@ -29,14 +28,13 @@ const PerksList: FC = () => {
   const [activeId, setActiveId] = useState<string | null>(null);
   const [visible, setVisible] = useState(INITIAL_VISIBLE);
   const dispatch = useDispatch();
-  const { data, loading, refetch } = useGetUnlockedPerksQuery({ variables: { address, limit: 50 } });
-  const [claimPerk] = useClaimPerkMutation({
-    refetchQueries: [
-      GetUnlockedPerksDocument,
-      GetAchievementsDocument,
-    ],
-    awaitRefetchQueries: true,
+  const raw = useGetUnlockedPerksQuery({
+    variables: { address, limit: 50 },
+    fetchPolicy: 'network-only',
+    notifyOnNetworkStatusChange: true,
   });
+  const { data, isInitialLoad, isRefetch, refetch } = useStaleWhileLoading(raw);
+  const [claimPerk] = useClaimPerkMutation();
 
   const challenges = useMemo(() => {
     const states: UnlockedPerkState[] = data?.getUnlockedPerks ?? [];
@@ -81,7 +79,9 @@ const PerksList: FC = () => {
         setActiveId(perkId);
         await claimPerk({ variables: { perkId } });
         dispatch(incrementXp({ amount: perk.rewardAmt }));
-        refetch();
+        setTimeout(() => {
+          refetch();
+        }, 2000);
       } catch (e) {
         console.error(e);
       } finally {
@@ -100,7 +100,7 @@ const PerksList: FC = () => {
       <CardHeader title="Perks" sx={{ px: 0 }} />
 
       <CardContent sx={{ pt: 2, px: 0 }}>
-        {loading &&
+        {isInitialLoad && !data &&
           [...Array(4)].map((_, i) => (
             <Skeleton
               key={i}
@@ -110,8 +110,7 @@ const PerksList: FC = () => {
             />
           ))}
 
-        {!loading &&
-          challenges.slice(0, visible).map(
+        {challenges.slice(0, visible).map(
             ({ id, label, value, rewardPreview, canClaim }) => {
               const isThisLoading = activeId === id;
 
@@ -130,13 +129,13 @@ const PerksList: FC = () => {
             },
           )}
 
-        {!loading && challenges.length === 0 && (
+        {challenges.length === 0 && !isInitialLoad && (
           <Typography variant="body2" sx={{ pl: 2 }}>
             No challenges yet
           </Typography>
         )}
 
-        {!loading && (
+        {(!isInitialLoad || isRefetch) && (
           <Box textAlign="center" mt={1}>
             {remaining > 0 ? (
               <Button size="small" onClick={showMore}>

@@ -1,5 +1,5 @@
 // REACT IMPORTS
-import { FC } from "react";
+import { FC, useEffect, useMemo } from 'react';
 
 // MUI IMPORTS
 import Stack from "@mui/material/Stack";
@@ -20,6 +20,13 @@ import { randomColors } from "@src/components/poster/CONSTANTS.tsx";
 import { useAuth } from '@src/hooks/use-auth.ts';
 import { ProfileHeaderProps } from "@src/sections/user/types.ts"
 import { GLOBAL_CONSTANTS } from "@src/config-global.ts"
+import {
+  useGetAchievementsQuery,
+  useGetRanksCatalogQuery,
+  useHasPerkLazyQuery,
+} from '@src/graphql/generated/hooks.tsx';
+import { RANK_ICON } from '@src/utils/ranks.ts';
+import { IconButton } from '@mui/material';
 
 interface ProfileRightSidebarProps extends ProfileHeaderProps {
   sidebarProps: {
@@ -35,10 +42,26 @@ interface ProfileRightSidebarProps extends ProfileHeaderProps {
 const ProfileRightSidebar: FC<ProfileRightSidebarProps> = ({ profile, sidebarProps }) => {
   const { isAuthorized, authorizedLoading, accessLoading, hasAccess, attestation, attestationLoading } = sidebarProps;
   const { session: sessionData } = useAuth();
+  const [hasPerk, { data }] = useHasPerkLazyQuery();
+  const { data: ranksData, loading: ranksLoading } = useGetRanksCatalogQuery();
+  const { data: achData } = useGetAchievementsQuery({ variables: { address: profile?.address ?? '' } });
   const hex = BigInt(attestation ?? '').toString(16)
   // add padding to attestation smaller than 256 bits
   const cleanedHex = hex.length < 64 ? `${'0'.repeat(64 - hex.length)}${hex}` : hex;
   const attestationAddress = `0x${cleanedHex}`;
+
+  useEffect(() => {
+    if (profile?.address) {
+      hasPerk({ variables: { address: profile?.address, perkId: 'public-rank' } })
+    }
+  }, [profile?.address]);
+
+  const unlockedRanks = useMemo(() => {
+    const rows = ranksData?.getRanksCatalog ?? [];
+    const sorted = rows.slice().sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+    const currentOrder = achData?.getAchievements.currentRank.order ?? 0;
+    return sorted.filter(r => (r.order ?? 0) <= currentOrder);
+  }, [ranksData, achData]);
 
   return (
     <Stack
@@ -137,6 +160,31 @@ const ProfileRightSidebar: FC<ProfileRightSidebarProps> = ({ profile, sidebarPro
           ))}
         </Box>
       </Stack>
+      {data?.hasPerk && unlockedRanks.length > 0 && (
+        <>
+          <Divider sx={{ borderColor: 'rgba(255, 255, 255, 0.08)', width: '100%' }} />
+          <Typography color="text.secondary">Ranks</Typography>
+          <Box
+            display="flex"
+            alignItems="center"
+            justifyContent="space-between"
+            flexWrap="wrap"
+          >
+            {ranksLoading
+              ? Array.from({ length: unlockedRanks.length }).map((_, i) => (
+                <Box key={i} sx={{ width: 40, height: 40, bgcolor: 'grey.800', borderRadius: '50%' }} />
+              ))
+              : unlockedRanks.map(r => (
+                <Tooltip key={r.id} title={r.name} arrow>
+                  <IconButton sx={{ p: 0, width: 40, height: 40 }}>
+                    <RankImg src={RANK_ICON[r.id] ?? RANK_ICON['watcher']} alt={r.name} />
+                  </IconButton>
+                </Tooltip>
+              ))
+            }
+          </Box>
+        </>
+      )}
     </Stack>
   );
 }
@@ -165,6 +213,13 @@ const StyledBoxGradient = styled(Box)<{ color1?: string; color2?: string }>(({
       '100%': { backgroundPosition: '0% 50%' },
     },
   };
+});
+
+const RankImg = styled('img')({
+  width: 30,
+  height: 30,
+  flexShrink: 0,
+  objectFit: 'contain',
 });
 
 export default ProfileRightSidebar;

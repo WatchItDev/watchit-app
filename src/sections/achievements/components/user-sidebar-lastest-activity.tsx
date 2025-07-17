@@ -14,11 +14,16 @@ import CheckGreen from '@src/assets/illustrations/check_green.png';
 import { useAuth } from '@src/hooks/use-auth';
 import { useGetUserEventsQuery } from '@src/graphql/generated/hooks.tsx';
 import { EventLog } from '@src/graphql/generated/graphql.ts';
+import { useStaleWhileLoading } from '@src/hooks/use-stale-while-loading.ts';
 
 export const UserSidebarLatestActivity: FC = () => {
   const { session } = useAuth();
   const address = session?.user?.address ?? '';
-  const { data: eventsData } = useGetUserEventsQuery({ variables: { address, limit: 6 } });
+  const raw = useGetUserEventsQuery({
+    variables: { address, limit: 6 },
+    fetchPolicy: 'network-only',
+  });
+  const { data: eventsData } = useStaleWhileLoading(raw);
 
   const recentActivity: string[] = eventsData?.getUserEvents.map((e: EventLog) => e.type.replace(/_/g, ' ').toLowerCase()) ?? [];
 
