@@ -25,9 +25,13 @@ export const UserSidebarProfile: FC = () => {
     fetchPolicy: 'network-only',
   });
   const { data: achData } = useStaleWhileLoading(raw);
+  const xpBalance = session?.user?.xpBalance ?? 0;
+
   const currentRank = achData?.getAchievements.currentRank;
   const nextRank = achData?.getAchievements.nextRank;
-  const progress = achData?.getAchievements.progressPct ?? 0;
+  const progress = nextRank
+    ? Math.min(100, (xpBalance / nextRank.minXp) * 100)
+    : 100;
 
   return (
     <>
@@ -83,7 +87,7 @@ export const UserSidebarProfile: FC = () => {
                 {progress.toFixed(0)}%
               </Typography>
               <Typography variant="caption" color="text.secondary">
-                {achData?.getAchievements.xpTotal ?? 0} XP /{' '}
+                {xpBalance.toLocaleString()} XP /{' '}
                 {nextRank ? nextRank.minXp : currentRank.minXp} XP
               </Typography>
             </Box>
