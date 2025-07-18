@@ -27,7 +27,7 @@ export const UserSidebarRanks: FC = () => {
   const rawRanks = useGetRanksCatalogQuery({
     fetchPolicy: 'network-only',
   });
-  const { data: ranksData, loading: ranksLoading } = useStaleWhileLoading(rawRanks);
+  const { data: ranksData, isInitialLoad: ranksLoading } = useStaleWhileLoading(rawRanks);
 
   const currentRankId = achData?.getAchievements.currentRank.id ?? 'watcher';
 
