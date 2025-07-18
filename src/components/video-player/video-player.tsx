@@ -33,8 +33,7 @@ export interface VideoPlayerProps {
   postId: string;
 }
 
-const MAX_CONTIGUOUS_GAP = 2;
-const STEP                = 5;
+const STEP = 5;
 
 export const VideoPlayer: FC<VideoPlayerProps> = ({ src, cid, titleMovie, postId, onBack, showBack }) => {
   const mdUp = useResponsive('up', 'md');
@@ -44,10 +43,8 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({ src, cid, titleMovie, postId
   const [logEvent] = useLogEventMutation();
   const { session } = useAuth();
 
-  const sentMarks  = useRef<Set<number>>(new Set());
-  const lastPos    = useRef<number>(0);
-  const watchedSec = useRef<number>(0);
-  const started    = useRef<boolean>(false);
+  const watchedSeconds = useRef<Set<number>>(new Set())    // distinct seconds already counted
+  const nextEvent  = useRef(5)                         // next percentage to emit (5,10,15…)
 
   useEffect(() => {
     if (cid) getSubtitles(cid);
@@ -63,46 +60,38 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({ src, cid, titleMovie, postId
   }, []);
 
   const emit = async (type: string, progress?: number) => {
-    console.log('emit event', type, progress);
     if (!session?.authenticated) return;
     try {
-      await logEvent({
-        variables: {
-          input: {
-            type,
-            targetId: postId,
-            targetType: 'POST',
-            progress,
-            meta: { cid },
-          },
-        },
-      });
+      console.log('emit event', type, progress);
+      await logEvent({ variables: { input: { type, targetId: postId, targetType: 'POST', progress, meta: { cid } } } });
     } catch (e) {
       console.error('logEvent error', e);
     }
   };
 
-  const handlePlay = () => { if (!started.current) { emit('VIDEO_START'); started.current = true; } };
+  const handlePlay = () => emit('VIDEO_START');
+  const handleEnded = () => emit('VIDEO_WATCH_FULL');
 
   const handleTimeUpdate = () => {
-    const m = player.current;
-    if (!m?.duration) return;
+    const media = player.current
+    if (!media?.duration || Number.isNaN(media.duration)) return
 
-    const diff = m.currentTime - lastPos.current;
-    lastPos.current = m.currentTime;
+    // currentTime is fractional (e.g.3.334s) floor to the integer part so we count each full second only once
+    const sec = Math.floor(media.currentTime)
 
-    if (diff > 0 && diff <= MAX_CONTIGUOUS_GAP) watchedSec.current += diff;
+    // if this second was already handled, do nothing (saves work)
+    if (watchedSeconds.current.has(sec)) return
+    watchedSeconds.current.add(sec)
 
-    const pct = (watchedSec.current / m.duration) * 100;
-    const nextMark = Math.floor(pct / STEP) * STEP;
+    // calculate percentage watched based on unique seconds viewed
+    const percent = (watchedSeconds.current.size / Math.floor(media.duration)) * 100
 
-    if (nextMark > 0 && !sentMarks.current.has(nextMark)) {
-      emit(`VIDEO_${nextMark}`, nextMark);
-      sentMarks.current.add(nextMark);
+    // emit events every 5% (5,10,15…)
+    while (percent >= nextEvent.current) {
+      emit(`VIDEO_${nextEvent.current}`, nextEvent.current)
+      nextEvent.current += STEP
     }
-  };
-
-  const handleEnded = () => emit('VIDEO_WATCH_FULL');
+  }
 
   // on provider (HLS) initialization
   const onProviderSetup = (provider: MediaProviderAdapter) => {
@@ -139,8 +128,6 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({ src, cid, titleMovie, postId
         "fLoader": FetchLoader,
         "pLoader": XhrLoader
       };
-
-
     }
   }
 
