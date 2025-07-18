@@ -1365,6 +1365,45 @@ export type GetUserEventsQueryHookResult = ReturnType<typeof useGetUserEventsQue
 export type GetUserEventsLazyQueryHookResult = ReturnType<typeof useGetUserEventsLazyQuery>;
 export type GetUserEventsSuspenseQueryHookResult = ReturnType<typeof useGetUserEventsSuspenseQuery>;
 export type GetUserEventsQueryResult = Apollo.QueryResult<GetUserEventsQuery, GetUserEventsQueryVariables>;
+export const HasPerkDocument = gql`
+    query HasPerk($address: String!, $perkId: ID!) {
+  hasPerk(address: $address, perkId: $perkId)
+}
+    `;
+
+/**
+ * __useHasPerkQuery__
+ *
+ * To run a query within a React component, call `useHasPerkQuery` and pass it any options that fit your needs.
+ * When your component renders, `useHasPerkQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useHasPerkQuery({
+ *   variables: {
+ *      address: // value for 'address'
+ *      perkId: // value for 'perkId'
+ *   },
+ * });
+ */
+export function useHasPerkQuery(baseOptions: Apollo.QueryHookOptions<HasPerkQuery, HasPerkQueryVariables> & ({ variables: HasPerkQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<HasPerkQuery, HasPerkQueryVariables>(HasPerkDocument, options);
+      }
+export function useHasPerkLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<HasPerkQuery, HasPerkQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<HasPerkQuery, HasPerkQueryVariables>(HasPerkDocument, options);
+        }
+export function useHasPerkSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<HasPerkQuery, HasPerkQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<HasPerkQuery, HasPerkQueryVariables>(HasPerkDocument, options);
+        }
+export type HasPerkQueryHookResult = ReturnType<typeof useHasPerkQuery>;
+export type HasPerkLazyQueryHookResult = ReturnType<typeof useHasPerkLazyQuery>;
+export type HasPerkSuspenseQueryHookResult = ReturnType<typeof useHasPerkSuspenseQuery>;
+export type HasPerkQueryResult = Apollo.QueryResult<HasPerkQuery, HasPerkQueryVariables>;
 export const GetPerksDocument = gql`
     query GetPerks {
   getPerks {

@@ -14,12 +14,17 @@ import { useRouter } from '@src/routes/hooks';
 import { varHover } from '@src/components/animate';
 import AvatarProfile from '@src/components/avatar/avatar';
 import { useGetAchievementsQuery } from '@src/graphql/generated/hooks.tsx';
+import { useStaleWhileLoading } from '@src/hooks/use-stale-while-loading.ts';
 
 export const UserSidebarProfile: FC = () => {
   const router = useRouter();
   const { session } = useAuth();
   const address = session?.user?.address ?? '';
-  const { data: achData } = useGetAchievementsQuery({ variables: { address } });
+  const raw = useGetAchievementsQuery({
+    variables: { address },
+    fetchPolicy: 'network-only',
+  });
+  const { data: achData } = useStaleWhileLoading(raw);
   const currentRank = achData?.getAchievements.currentRank;
   const nextRank = achData?.getAchievements.nextRank;
   const progress = achData?.getAchievements.progressPct ?? 0;

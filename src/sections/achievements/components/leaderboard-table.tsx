@@ -20,27 +20,9 @@ import { useRouter } from '@src/routes/hooks';
 import { paths } from '@src/routes/paths';
 import { varHover } from '@src/components/animate';
 import { truncateAddress } from '@src/utils/wallet';
-
-import Watcher     from '@src/assets/illustrations/watcher.png';
-import Fan         from '@src/assets/illustrations/fan.png';
-import Engager     from '@src/assets/illustrations/engager.png';
-import Supporter   from '@src/assets/illustrations/supporter.png';
-import Spotlighter from '@src/assets/illustrations/splotligther.png';
-import Scout       from '@src/assets/illustrations/scout.png';
-import Storykeeper from '@src/assets/illustrations/storykeeper.png';
-import Guardian    from '@src/assets/illustrations/guardian.png';
 import { User } from '@src/graphql/generated/graphql.ts';
-
-const RANK_ICON: Record<string, string> = {
-  watcher: Watcher,
-  fan: Fan,
-  engager: Engager,
-  supporter: Supporter,
-  spotlighter: Spotlighter,
-  scout: Scout,
-  storykeeper: Storykeeper,
-  guardian: Guardian,
-};
+import { RANK_ICON } from '@src/utils/ranks.ts';
+import { useStaleWhileLoading } from '@src/hooks/use-stale-while-loading.ts';
 
 const medalFor = (rank: number) =>
   rank === 1 ? '🥇' : rank === 2 ? '🥈' : rank === 3 ? '🥉' : null;
@@ -64,7 +46,11 @@ const LeaderboardTable: FC = () => {
   const router = useRouter();
   const theme = useTheme();
   const { session } = useAuth();
-  const { data, loading, error } = useGetLeaderboardQuery({ variables: { limit: 50 } });
+  const raw = useGetLeaderboardQuery({
+    variables: { limit: 50 },
+    fetchPolicy: 'network-only',
+  });
+  const { data, loading, error } = useStaleWhileLoading(raw);
   const table = useTable({ defaultOrder: 'asc', defaultOrderBy: 'rank', defaultRowsPerPage: 5 });
   const myAddress = session?.user?.address?.toLowerCase() ?? '';
   const users: User[] = data?.getLeaderboard ?? [];
@@ -78,7 +64,7 @@ const LeaderboardTable: FC = () => {
         name: u.displayName || `User ${idx + 1}`,
         address: u.address,
         xp: u.xpTotal,
-        badge: RANK_ICON[u.currentRank] ?? Watcher,
+        badge: RANK_ICON[u.currentRank] ?? RANK_ICON['watcher'],
         color: colorFromAddress(u.address),
         picture: u.profilePicture,
       })),

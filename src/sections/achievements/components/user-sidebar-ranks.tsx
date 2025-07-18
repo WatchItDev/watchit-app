@@ -6,15 +6,6 @@ import { IconButton } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import Tooltip from '@mui/material/Tooltip';
 
-import Watcher     from '@src/assets/illustrations/watcher.png';
-import Fan         from '@src/assets/illustrations/fan.png';
-import Engager     from '@src/assets/illustrations/engager.png';
-import Supporter   from '@src/assets/illustrations/supporter.png';
-import Spotlighter from '@src/assets/illustrations/splotligther.png';
-import Scout       from '@src/assets/illustrations/scout.png';
-import Storykeeper from '@src/assets/illustrations/storykeeper.png';
-import Guardian    from '@src/assets/illustrations/guardian.png';
-
 import { useAuth } from '@src/hooks/use-auth';
 import {
   useGetAchievementsQuery,
@@ -22,23 +13,21 @@ import {
 } from '@src/graphql/generated/hooks.tsx';
 import { m } from 'framer-motion';
 import { varHover } from '@src/components/animate';
-
-const RANK_ICON: Record<string, string> = {
-  watcher:     Watcher,
-  fan:         Fan,
-  engager:     Engager,
-  supporter:   Supporter,
-  spotlighter: Spotlighter,
-  scout:       Scout,
-  storykeeper: Storykeeper,
-  guardian:    Guardian,
-};
+import { RANK_ICON } from '@src/utils/ranks.ts';
+import { useStaleWhileLoading } from '@src/hooks/use-stale-while-loading.ts';
 
 export const UserSidebarRanks: FC = () => {
   const { session } = useAuth();
   const address = session?.user?.address ?? '';
-  const { data: ranksData, loading: ranksLoading } = useGetRanksCatalogQuery();
-  const { data: achData } = useGetAchievementsQuery({ variables: { address } });
+  const raw = useGetAchievementsQuery({
+    variables: { address },
+    fetchPolicy: 'network-only',
+  });
+  const { data: achData } = useStaleWhileLoading(raw);
+  const rawRanks = useGetRanksCatalogQuery({
+    fetchPolicy: 'network-only',
+  });
+  const { data: ranksData, loading: ranksLoading } = useStaleWhileLoading(rawRanks);
 
   const currentRankId = achData?.getAchievements.currentRank.id ?? 'watcher';
 
@@ -80,7 +69,7 @@ export const UserSidebarRanks: FC = () => {
                 }}
               >
                 <RankIcon
-                  src={RANK_ICON[r.id] ?? Watcher}
+                  src={RANK_ICON[r.id] ?? RANK_ICON['watcher']}
                   alt={r.name}
                   sx={{
                     opacity: isUnlocked ? 1 : 0.35,
