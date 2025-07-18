@@ -1,4 +1,4 @@
-import { FC, useRef, useEffect, memo, useState } from 'react';
+import { FC, useRef, useEffect, memo } from 'react';
 // @ts-expect-error No error in this context
 import { Hls, FetchLoader, XhrLoader } from 'hls.js/dist/hls.mjs';
 import { Typography, IconButton, Button } from '@mui/material';
@@ -33,14 +33,21 @@ export interface VideoPlayerProps {
   postId: string;
 }
 
+const MAX_CONTIGUOUS_GAP = 2;
+const STEP                = 5;
+
 export const VideoPlayer: FC<VideoPlayerProps> = ({ src, cid, titleMovie, postId, onBack, showBack }) => {
   const mdUp = useResponsive('up', 'md');
   const player = useRef<MediaPlayerInstance>(null);
-  const [sent, setSent] = useState({ 25: false, 50: false, 75: false });
   const controlsVisible = useMediaState('controlsVisible', player);
   const { tracks, getSubtitles } = useGetSubtitles();
   const [logEvent] = useLogEventMutation();
   const { session } = useAuth();
+
+  const sentMarks  = useRef<Set<number>>(new Set());
+  const lastPos    = useRef<number>(0);
+  const watchedSec = useRef<number>(0);
+  const started    = useRef<boolean>(false);
 
   useEffect(() => {
     if (cid) getSubtitles(cid);
@@ -75,28 +82,23 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({ src, cid, titleMovie, postId
     }
   };
 
-  const handlePlay = () => emit('VIDEO_START');
+  const handlePlay = () => { if (!started.current) { emit('VIDEO_START'); started.current = true; } };
 
   const handleTimeUpdate = () => {
-    const media = player.current;
-    if (!media) return;
+    const m = player.current;
+    if (!m?.duration) return;
 
-    const { currentTime, duration } = media;
-    if (!duration) return;
+    const diff = m.currentTime - lastPos.current;
+    lastPos.current = m.currentTime;
 
-    const pct = (currentTime / duration) * 100;
+    if (diff > 0 && diff <= MAX_CONTIGUOUS_GAP) watchedSec.current += diff;
 
-    if (!sent[25] && pct >= 25) {
-      emit('VIDEO_25', 25);
-      setSent(s => ({ ...s, 25: true }));
-    }
-    if (!sent[50] && pct >= 50) {
-      emit('VIDEO_50', 50);
-      setSent(s => ({ ...s, 50: true }));
-    }
-    if (!sent[75] && pct >= 75) {
-      emit('VIDEO_75', 75);
-      setSent(s => ({ ...s, 75: true }));
+    const pct = (watchedSec.current / m.duration) * 100;
+    const nextMark = Math.floor(pct / STEP) * STEP;
+
+    if (nextMark > 0 && !sentMarks.current.has(nextMark)) {
+      emit(`VIDEO_${nextMark}`, nextMark);
+      sentMarks.current.add(nextMark);
     }
   };
 
@@ -125,59 +127,15 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({ src, cid, titleMovie, postId
     if (isHLSProvider(provider)) {
       provider.library = Hls;
       provider.config = {
-        // "capLevelToPlayerSize": true, // avoid more resolution if doest not fit in the current viewport
-        // https://github.com/video-dev/hls.js/blob/master/docs/API.md
-        // maxBufferLength defines the target amount of video (in seconds) the player tries to keep buffered.
-        // The buffer plays a crucial role in balancing playback stability and adaptive bitrate (ABR) decisions.
-        // A larger buffer reduces rebuffering risk but may delay quality switches, while a smaller buffer
-        // allows faster adaptation but increases the chance of playback interruptions.
-        // Finding the right balance ensures smooth playback without unnecessary network congestion.
-        // (hls_time = 6 + maxBufferLength = 30) = 5 fragments in buffer
         "maxBufferLength": 60, // Max video buffer length in seconds
         "maxMaxBufferLength": 600, // Absolute max buffer length
-        // maxStarvationDelay defines the maximum acceptable time (in seconds) a fragment can take to download
-        // while playback is already in progress.
-        // - If a fragment is estimated to take longer than this value and the buffer is running low,
-        //   the player switches the best quality that matches this time constraint.
-        // - This ensures a continuous playback experience by adapting the quality to network conditions in real-time.
-        // "maxStarvationDelay": 4,
-        // maxLoadingDelay defines the maximum allowed time (in seconds) to load the initial fragments when starting playback.
-        // - The ABR controller ensures:
-        //   - The time to fetch the first low-quality fragment (e.g., 420p)
-        //   - + The time to fetch the estimated optimal-quality fragment (e.g., 720p)
-        //   - is below this value.
-        // - If the total loading time exceeds maxLoadingDelay, the player starts with a lower quality
-        //   to minimize startup delay and ensure fast playback.
-        // - Unlike maxStarvationDelay, this setting only applies at the **start** of playback,
-        //   ensuring the video loads quickly even if it means initially using a lower quality.
-        // "maxLoadingDelay": 4,
-        // abrEwmaFastVod: Controls how quickly the algorithm reacts to bandwidth changes in VOD (Video On Demand).
-        // A higher value makes the algorithm less sensitive to short-term fluctuations, smoothing out rapid changes.
-        // Recommended range: 2.0 - 5.0 (Higher = Smoother)
-        // "abrEwmaFastVoD": 3,
-        // abrEwmaSlowVod: Controls the long-term average bandwidth estimation for adaptive bitrate switching.
-        // A higher value averages the bandwidth over a longer period, reducing frequent quality switches.
-        // Recommended range: 10.0 - 20.0 (Higher = More stable, but slower adaptation)
-        // "abrEwmaSlowVoD": 8,
-        // abrBandWidthFactor: Determines how conservatively HLS estimates available bandwidth.
-        // A value < 1.0 ensures HLS.js does not use the full estimated bandwidth, preventing aggressive quality changes.
-        // Recommended range: 0.7 - 0.9 (Lower = More cautious, fewer quality switches)
-        // "abrBandWidthFactor": 0.7,
-        // abrBandWidthUpFactor: Controls how aggressively the player upgrades to a higher bitrate.
-        // A lower value prevents HLS.js from switching to a higher quality too quickly, reducing unnecessary upscaling.
-        // Recommended range: 0.5 - 0.8 (Lower = More stable, avoids excessive upscaling)
-        // "abrBandWidthUpFactor": 0.6,
         "enableSoftwareAES": false, // Disable software AES decryption
         "enableID3MetadataCues": false, // Disable ID3 metadata cues
         "enableWebVTT": true, // Enable WebVTT subtitles
         "enableIMSC1": false, // Disable IMSC1 subtitles
         "enableCEA708Captions": false, // Disable CEA-708 captions,
-        // "abrMaxWithRealBitrate": true,
         "enableWorker": true,
         "backBufferLength": 90,
-        // "progressive": true,
-        // "lowLatencyMode": false, // Not needed in VOD
-        // "startFragPrefetch": true,
         "fLoader": FetchLoader,
         "pLoader": XhrLoader
       };
