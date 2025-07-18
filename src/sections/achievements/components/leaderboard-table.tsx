@@ -1,8 +1,8 @@
 import { FC, useMemo } from 'react';
 import {
-  Box, Card, CardContent, CardHeader, CircularProgress,
+  Box, Card, CardContent, CardHeader, Skeleton,
   Table, TableBody, TableCell, TableContainer, TableRow,
-  Typography, Alert, Tooltip, IconButton
+  Typography, Alert, Tooltip, IconButton,
 } from '@mui/material';
 import { styled, useTheme } from '@mui/material/styles';
 import { m } from 'framer-motion';
@@ -50,7 +50,7 @@ const LeaderboardTable: FC = () => {
     variables: { limit: 50 },
     fetchPolicy: 'network-only',
   });
-  const { data, loading, error } = useStaleWhileLoading(raw);
+  const { data, isInitialLoad, error } = useStaleWhileLoading(raw);
   const table = useTable({ defaultOrder: 'asc', defaultOrderBy: 'rank', defaultRowsPerPage: 5 });
   const myAddress = session?.user?.address?.toLowerCase() ?? '';
   const users: User[] = data?.getLeaderboard ?? [];
@@ -91,10 +91,25 @@ const LeaderboardTable: FC = () => {
         </Alert>
       )}
 
-      {loading ? (
-        <Box sx={{ display: 'flex', justifyContent: 'center', p: 3 }}>
-          <CircularProgress size={32} />
-        </Box>
+      {isInitialLoad ? (
+        <CardContent sx={{ pt: 1, pl: 0, pr: 0 }}>
+          <TableContainer>
+            <Table size="medium">
+              <TableHeadCustom headLabel={HEAD} order="asc" orderBy="rank" />
+              <TableBody>
+                {[...Array(5)].map((_, i) => (
+                  <TableRow key={i}>
+                    {HEAD.map(h => (
+                      <TableCell key={h.id} align={h.align || 'left'}>
+                        <Skeleton variant="text" width={h.width || '80%'} />
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </CardContent>
       ) : (
         <CardContent sx={{ pt: 1, pl: 0, pr: 0 }}>
           <TableContainer>
