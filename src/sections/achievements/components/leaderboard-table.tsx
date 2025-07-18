@@ -53,22 +53,26 @@ const LeaderboardTable: FC = () => {
   const { data, isInitialLoad, error } = useStaleWhileLoading(raw);
   const table = useTable({ defaultOrder: 'asc', defaultOrderBy: 'rank', defaultRowsPerPage: 5 });
   const myAddress = session?.user?.address?.toLowerCase() ?? '';
+  const xpBalance = session?.user?.xpBalance ?? 0;
   const users: User[] = data?.getLeaderboard ?? [];
   const denseH = table.dense ? 52 : 72;
 
   const rows = useMemo(
     () =>
-      users.map((u, idx) => ({
-        rank: idx + 1,
-        rankId: u.currentRank,
-        name: u.displayName || `User ${idx + 1}`,
-        address: u.address,
-        xp: u.xpTotal,
-        badge: RANK_ICON[u.currentRank] ?? RANK_ICON['watcher'],
-        color: colorFromAddress(u.address),
-        picture: u.profilePicture,
-      })),
-    [users],
+      users.map((u, idx) => {
+        const isMe = u.address.toLowerCase() === myAddress;
+        return ({
+          rank: idx + 1,
+          rankId: u.currentRank,
+          name: u.displayName || `User ${idx + 1}`,
+          address: u.address,
+          xp: isMe ? xpBalance : u.xpTotal,
+          badge: RANK_ICON[u.currentRank] ?? RANK_ICON['watcher'],
+          color: colorFromAddress(u.address),
+          picture: u.profilePicture,
+        })
+      }),
+    [users, xpBalance],
   );
 
   const sorted = useMemo(
