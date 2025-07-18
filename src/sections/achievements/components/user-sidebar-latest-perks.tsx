@@ -26,7 +26,7 @@ export const UserSidebarLatestPerks: FC = () => {
   });
   const { data: perksData } = useStaleWhileLoading(raw);
 
-  const unlockedPerks: UnlockedPerkState[] = (perksData?.getUnlockedPerks.filter((p: UnlockedPerkState) => p.status === 'CLAIMED') ?? []).slice(0, 6);
+  const unlockedPerks: UnlockedPerkState[] = (perksData?.getUnlockedPerks.filter((p: UnlockedPerkState) => p.status === 'CLAIMED') ?? []).slice(0, 12);
 
   return (
     <Card sx={{ px: 0, mb: 0 }}>

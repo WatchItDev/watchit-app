@@ -7,7 +7,6 @@ import UserSidebarGreetings from '@src/sections/achievements/components/user-sid
 import UserSidebarProfile from '@src/sections/achievements/components/user-sidebar-profile.tsx';
 import UserSidebarRanks from '@src/sections/achievements/components/user-sidebar-ranks.tsx';
 import UserSidebarLatestPerks from '@src/sections/achievements/components/user-sidebar-latest-perks.tsx';
-import UserSidebarLatestActivity from '@src/sections/achievements/components/user-sidebar-lastest-activity.tsx';
 
 export const UserSidebar: FC = () => {
   return (
@@ -23,9 +22,6 @@ export const UserSidebar: FC = () => {
 
       {/*/!* Unlocked perks *!/*/}
       <UserSidebarLatestPerks />
-
-      {/* Recent activity */}
-      <UserSidebarLatestActivity />
     </SidebarWrapper>
   );
 };
