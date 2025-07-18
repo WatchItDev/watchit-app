@@ -121,9 +121,8 @@ exports[`[COMPONENTS]: CarouselPosterMini > to match snapshot 1`] = `
                                 style="background-image: url(/assets/placeholder.svg); background-size: 100% 100%; color: transparent; display: inline-block;"
                               >
                                 <img
-                                  alt="Test Title"
                                   class="MuiBox-root css-19t2nho"
-                                  src="poster-uri"
+                                  src="undefined//"
                                 />
                               </span>
                             </span>
@@ -153,7 +152,7 @@ exports[`[COMPONENTS]: CarouselPosterMini > to match snapshot 1`] = `
                                   <p
                                     class="MuiTypography-root MuiTypography-body2 css-1571v2w-MuiTypography-root"
                                   >
-                                    10
+                                    0
                                   </p>
                                 </div>
                               </div>
@@ -163,17 +162,13 @@ exports[`[COMPONENTS]: CarouselPosterMini > to match snapshot 1`] = `
                             >
                               <h6
                                 class="MuiTypography-root MuiTypography-h6 MuiTypography-noWrap css-z9ruai-MuiTypography-root"
-                              >
-                                Test Title
-                              </h6>
+                              />
                               <div
                                 class="MuiStack-root css-kdc3n8-MuiStack-root"
                               >
                                 <p
                                   class="MuiTypography-root MuiTypography-body2 css-c2tnzq-MuiTypography-root"
-                                >
-                                  Test Content
-                                </p>
+                                />
                                 <p
                                   class="MuiTypography-root MuiTypography-body2 MuiTypography-noWrap css-176gd80-MuiTypography-root"
                                 />

@@ -1,0 +1,14 @@
+query GetUserEvents($address: String!, $type: String, $limit: Int, $offset: Int) {
+  getUserEvents(address: $address, type: $type, limit: $limit, offset: $offset) {
+    amount
+    author
+    createdAt
+    currency
+    id
+    meta
+    progress
+    targetId
+    targetType
+    type
+  }
+}

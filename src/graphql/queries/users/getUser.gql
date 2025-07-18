@@ -6,6 +6,8 @@ query GetUser($input: UserByInput!) {
     bio
     profilePicture
     coverPicture
+    currentRank
+    xpTotal
     xpBalance
     followersCount
     followingCount

@@ -1,0 +1,30 @@
+query GetPerks {
+  getPerks {
+    availableAt
+    category
+    collectedAt
+    cooldownRemaining
+    enabled
+    executionRule {
+      cooldownSec
+      type
+    }
+    id
+    minRankId
+    name
+    reward {
+      action
+      amount
+      tokenId
+    }
+    rewardPreview
+    uiHint
+    unlockRule {
+      action
+      on
+      rankId
+      times
+      window
+    }
+  }
+}
