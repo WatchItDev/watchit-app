@@ -74,10 +74,93 @@
     .w3a-parent-container #w3a-modal {
       background-color: rgba(0,0,0,0.4);
     }
+
+    :root {
+      --color-a: #4a34b8;   /* morado  */
+      --color-b: #946ec8;   /* rosa    */
+      --color-c: #ed541d;   /* ámbar   */
+      --color-d: #24879a;   /* cian    */
+    }
+
+    /* --- contenedor del splash ----------------------------------------- */
+    #splash {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: #1e1f22;
+      overflow: hidden;              /* oculta los brillos que se salen */
+    }
+
+    /* --- logo con destello pulsante ------------------------------------ */
+    #splash img {
+      z-index: 10;
+      animation: pulseShadow 8s ease-in-out infinite;
+    }
+
+    /* --- “neones” de colores ------------------------------------------- */
+    #splash::before,
+    #splash::after {
+      content: "";
+      position: absolute;
+      width: 240px;
+      height: 240px;
+      border-radius: 50%;
+      filter: blur(100px);
+      opacity: 0.7;
+      mix-blend-mode: screen;        /* hace que los colores se mezclen */
+      animation: orbit 14s linear infinite;
+    }
+
+    /* blob 1 */
+    #splash::before {
+      background: var(--color-a);
+      animation-delay: -3s;
+    }
+
+    /* blob 2 (otro color y ritmo) */
+    #splash::after {
+      background: var(--color-c);
+      animation-direction: reverse;
+    }
+
+    /* --- animaciones ---------------------------------------------------- */
+    @keyframes orbit {
+      0%   { transform: translate(-150%, -80%)   scale(0.8); }
+      25%  { transform: translate(60%,  -120%)  scale(1.1); }
+      50%  { transform: translate(120%,  60%)   scale(0.9); }
+      75%  { transform: translate(-80%, 120%)   scale(1.2); }
+      100% { transform: translate(-150%, -80%)  scale(0.8); }
+    }
+
+    @keyframes pulseShadow {
+      0%,100% { filter: drop-shadow(0 0 0px var(--color-b))
+      drop-shadow(0 0 0px var(--color-d)); }
+      50%     { filter: drop-shadow(0 0 12px var(--color-b))
+      drop-shadow(0 0 24px var(--color-d)); }
+    }
   </style>
 </head>
-<body>
-<div id="root"></div>
-<script type="module" src="./src/index.tsx"></script>
+<body style="margin: 0">
+<div id="splash">
+  <img src="/favicon/android-chrome-192x192.png" width="96" height="96"
+       alt="Watchit logo">
+</div>
+
+<div id="root" style="opacity:0"></div>
+
+<script type="module" src="/src/index.tsx"></script>
+<script>
+  new MutationObserver((m,obs)=>{
+    const root=document.getElementById('root');
+    if(root && root.childElementCount){
+      document.getElementById('splash')?.remove();
+      root.style.opacity='1';
+      obs.disconnect();
+    }
+  }).observe(document.getElementById('root'),{childList:true});
+</script>
 </body>
 </html>
