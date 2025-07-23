@@ -51,8 +51,8 @@ import { useAuth } from '@src/hooks/use-auth.ts';
 import { useToggleBookmark } from '@src/hooks/use-toggle-bookmark';
 import {
   useHidePostMutation,
-  useGetIsPostLikedLazyQuery,
-  useTogglePostLikeMutation,
+  useGetIsLikedLazyQuery,
+  useToggleLikeMutation,
 } from '@src/graphql/generated/hooks.tsx';
 import { resolveSrc } from '@src/utils/image.ts';
 import { useBookmarks } from '@src/hooks/use-bookmark.ts';
@@ -81,8 +81,8 @@ export default function PublicationDetailMain({
   const [ hidePost ] = useHidePostMutation();
   const { sendNotification } = useNotifications();
   const { generatePayload } = useNotificationPayload(sessionData);
-  const [getIsPostLiked, { loading: postLikedLoading }] = useGetIsPostLikedLazyQuery()
-  const [ togglePostLike, { loading: togglePostLikeLoading }  ] = useTogglePostLikeMutation()
+  const [getIsLiked, { loading: postLikedLoading }] = useGetIsLikedLazyQuery()
+  const [ toggleLike, { loading: togglePostLikeLoading }  ] = useToggleLikeMutation()
   const { has, loading: loadingList } = useBookmarks();
   const { toggle, loading: loadingToggle } = useToggleBookmark();
 
@@ -95,8 +95,18 @@ export default function PublicationDetailMain({
     if (!sessionData?.authenticated) return dispatch(openLoginModal());
 
     try {
-      const res = await togglePostLike({ variables: { input: { postId: post.id } } });
-      const isNowLiked = res.data?.togglePostLike ?? false;
+      const res = await toggleLike({
+        variables: {
+          input: {
+            targetId: post.id,
+            targetType: 'POST'
+          }
+        }
+      });
+      const isNowLiked = res.data?.toggleLike ?? false;
+
+      console.log('hello test', res.data?.toggleLike)
+      console.log(isNowLiked)
 
       setHasLiked(isNowLiked);
       setLikesCount((prev) => prev + (isNowLiked ? 1 : -1));
@@ -132,9 +142,10 @@ export default function PublicationDetailMain({
   };
 
   useEffect(() => {
-    getIsPostLiked({ variables: { postId: post.id } }).then((res) =>
-      setHasLiked(res.data?.getIsPostLiked ?? false),
-    );
+    getIsLiked({ variables: { targetId: post.id } }).then((res) => {
+      console.log('hello test 2', res.data?.getIsLiked)
+      setHasLiked(res.data?.getIsLiked ?? false)
+    });
   }, [post.id]);
 
   const handleHide = async () => {

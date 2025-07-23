@@ -4,7 +4,7 @@ import Container from '@mui/material/Container';
 // LOCAL IMPORTS
 import { ExploreCreators } from '@src/sections/explore/components/explore-creators.tsx';
 import { ExploreBookmarks } from '@src/sections/explore/components/explore-bookmarks.tsx';
-import { ExplorePublications } from '@src/sections/explore/components/explore-publications.tsx';
+import ExplorePublications from '@src/sections/explore/components/explore-publications.tsx';
 import { ExploreTopPublications } from '@src/sections/explore/components/explore-top-publications.tsx';
 import { useAuth } from '@src/hooks/use-auth.ts';
 

@@ -27,7 +27,7 @@ export const useRegisterAsset = (): UseRegisterAssetHook => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<keyof typeof ERRORS | null>(null);
   const { session } = useAuth();
-  const { bundlerClient, smartAccount } = useWeb3Auth();
+  const { sendOperation } = useWeb3Auth();
   const { logout } = useAccountSession();
 
   /**
@@ -66,14 +66,7 @@ export const useRegisterAsset = (): UseRegisterAssetHook => {
         },
       ];
 
-      const userOpHash = await bundlerClient.sendUserOperation({
-        account: smartAccount,
-        calls,
-      });
-
-      const receipt = await bundlerClient.waitForUserOperationReceipt({
-        hash: userOpHash,
-      });
+      const receipt = await sendOperation(calls);
 
       setData({ receipt });
       setLoading(false);

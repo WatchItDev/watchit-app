@@ -53,14 +53,14 @@ const FollowUnfollowButton = ({
   const { sendNotification } = useNotifications();
   const { generatePayload } = useNotificationPayload(session);
   const profile: User | null = profileData?.getUser;
-  const isLoading = isProcessing || profileLoading || profileFollowLoading || isFollowingLoading;
+  const isLoading = isProcessing || profileLoading || profileFollowLoading || isFollowingLoading || !profile;
   const RainbowEffect = isLoading ? NeonPaper : Box;
 
   useEffect(() => {
-    if (profileId && profileId !== session?.address) loadProfile({variables: { input: { address: profileId } }});
-
+    if (!profileId) return;
+    loadProfile({variables: { input: { address: profileId } }});
     getIsFollowing({variables: { targetAddress: profileId }});
-  }, []);
+  }, [profileId]);
 
   useEffect(() => {
     setIsProcessing(false);

@@ -1,0 +1,24 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`[COMPONENTS] <FinanceBoxRow /> > renders correctly with children and matches snapshot 1`] = `
+<div>
+  <div
+    class="MuiBox-root css-1us6dsi"
+  >
+    <div>
+      Child 1
+    </div>
+    <div>
+      Child 2
+    </div>
+  </div>
+</div>
+`;
+
+exports[`[COMPONENTS] <FinanceBoxRow /> > to match snapshot 1`] = `
+<div>
+  <div
+    class="MuiBox-root css-1us6dsi"
+  />
+</div>
+`;

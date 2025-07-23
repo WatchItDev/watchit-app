@@ -105,7 +105,7 @@ const UserProfileView = ({ id }: UserProfileViewProps) => {
             }}
           >
             {tabsWithCounts.map(tab => (
-              <Tab key={tab.key} value={tab.value} label={<TabLabel label={tab.label!} count={tab.count} />} />
+              <Tab key={tab.key} value={tab.value} label={<TabLabel label={tab.label} count={tab.count} />} />
             ))}
           </Tabs>
         </ProfileHeader>

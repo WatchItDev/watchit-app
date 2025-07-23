@@ -25,7 +25,7 @@ export const useSubscribe = (): UseSubscribeHook => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<keyof typeof ERRORS | null>(null);
   const { session } = useAuth();
-  const { bundlerClient, smartAccount } = useWeb3Auth();
+  const { sendOperation } = useWeb3Auth();
   const { logout } = useAccountSession();
 
 
@@ -105,16 +105,7 @@ export const useSubscribe = (): UseSubscribeHook => {
         },
       ];
 
-      // Send the user operation
-      const userOpHash = await bundlerClient.sendUserOperation({
-        account: smartAccount,
-        calls: calls,
-      });
-
-      // Wait for the user operation receipt
-      const receipt = await bundlerClient.waitForUserOperationReceipt({
-        hash: userOpHash,
-      });
+      const receipt = await sendOperation(calls);
 
       // Update the state with the result
       setData(receipt);

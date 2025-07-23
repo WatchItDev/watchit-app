@@ -14,8 +14,6 @@ export default function OverviewFilePage() {
     >
       <BlankView>
         <ComingSoonView
-          deadline={'03/30/2025 21:30'}
-          showDeadline={true}
           content={
             "The Studio is evolving! Soon, you'll generate new content and enhance your creations with AI-driven tools for metadata, images, subtitles, voiceovers, and security checks. Stay tuned!"
           }

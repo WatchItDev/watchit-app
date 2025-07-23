@@ -1,5 +1,9 @@
-import type { AccountAbstractionProvider } from "@web3auth/account-abstraction-provider";
+import type { AccountAbstractionProvider } from '@web3auth/account-abstraction-provider';
 import { Web3Auth } from '@web3auth/modal/dist/types/modalManager';
+import { getAccountNonce } from 'permissionless/actions';
+import { publicClient } from '@src/clients/viem/publicClient.ts';
+import { Address } from 'viem';
+import { SmartAccount } from 'viem/account-abstraction';
 
 // ----------------------------------------------------------------------
 
@@ -57,4 +61,12 @@ export const ensureAAReady = async (w3a: Web3Auth): Promise<{
     smartAccount: aaprovider.smartAccount,
     bundlerClient: aaprovider.bundlerClient,
   };
+}
+
+export const getNonce = async (smartAccount: SmartAccount): Promise<bigint> => {
+  return await getAccountNonce(publicClient, {
+    address: smartAccount.address as Address,
+    entryPointAddress: smartAccount.entryPoint.address as Address,
+    key: 0n,
+  });
 }

@@ -26,8 +26,8 @@ import { PublicationCommentItemProps } from '@src/sections/publication/types.ts'
 import { useAuth } from '@src/hooks/use-auth.ts';
 import { resolveSrc } from '@src/utils/image.ts';
 import {
-  useHideCommentMutation, useGetIsCommentLikedQuery,
-  useToggleCommentLikeMutation,
+  useHideCommentMutation, useGetIsLikedQuery,
+  useToggleLikeMutation,
 } from '@src/graphql/generated/hooks.tsx';
 
 // Components Lazy
@@ -49,8 +49,8 @@ const PublicationCommentItem:FC<PublicationCommentItemProps> = (props) => {
   const [localRepliesCount, setLocalRepliesCount] = useState(comment.repliesCount);
   const [localLikes, setLocalLikes] = useState(comment.likeCount);
   const router = useRouter();
-  const { data: commentLikedData, loading: commentLikedLoading } = useGetIsCommentLikedQuery({ variables: { commentId: comment?.id } })
-  const [ toggleCommentLike, { loading: toggleCommentLikeLoading }  ] = useToggleCommentLikeMutation()
+  const { data: commentLikedData, loading: commentLikedLoading } = useGetIsLikedQuery({ variables: { targetId: comment?.id } })
+  const [ toggleLike, { loading: toggleCommentLikeLoading }  ] = useToggleLikeMutation()
   const [ hideComment ] = useHideCommentMutation();
   const { session: sessionData } = useAuth();
   const dispatch = useDispatch();
@@ -63,8 +63,15 @@ const PublicationCommentItem:FC<PublicationCommentItemProps> = (props) => {
 const handleToggleLike = async () => {
     if (!sessionData?.authenticated) return dispatch(openLoginModal());
 
-    const res = await toggleCommentLike({ variables: { input: { commentId: comment.id } } });
-    const nowLiked = res.data?.toggleCommentLike ?? false;
+    const res = await toggleLike({
+      variables: {
+        input: {
+          targetId: comment.id,
+          targetType: 'COMMENT'
+        }
+      }
+    });
+    const nowLiked = res.data?.toggleLike ?? false;
 
     setHasLiked(nowLiked);
     setLocalLikes((l) => l + (nowLiked ? 1 : -1));
@@ -101,7 +108,7 @@ const handleToggleLike = async () => {
   };
 
   useEffect(() => {
-    setHasLiked(commentLikedData?.getIsCommentLiked ?? false);
+    setHasLiked(commentLikedData?.getIsLiked ?? false);
   }, [commentLikedData]);
 
   const getCommentTimeText = () => {

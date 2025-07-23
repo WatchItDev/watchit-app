@@ -92,7 +92,7 @@ export const UserProfileViewSkeleton: React.FC = () => {
       </Box>
 
       {/* ------------- TABS ------------- */}
-      <Box sx={{ mt: mdUp ? 4 : 4, display: 'flex', width: '100%', alignItems: 'center', justifyContent: 'center' }}>
+      <Box sx={{ mt: 4, display: 'flex', width: '100%', alignItems: 'center', justifyContent: 'center' }}>
         <Skeleton variant="rectangular" width={220} height={36} sx={{ borderRadius: 1 }} />
       </Box>
 

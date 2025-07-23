@@ -1,3 +1,0 @@
-query GetIsCommentLiked($commentId: String!) {
-  getIsCommentLiked(commentId: $commentId)
-}

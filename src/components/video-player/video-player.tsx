@@ -80,8 +80,8 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({ src, cid, titleMovie, onBack
         // allows faster adaptation but increases the chance of playback interruptions.
         // Finding the right balance ensures smooth playback without unnecessary network congestion.
         // (hls_time = 6 + maxBufferLength = 30) = 5 fragments in buffer
-        // "maxBufferLength": 60, // Max video buffer length in seconds
-        // "maxMaxBufferLength": 600, // Absolute max buffer length
+        "maxBufferLength": 60, // Max video buffer length in seconds
+        "maxMaxBufferLength": 600, // Absolute max buffer length
         // maxStarvationDelay defines the maximum acceptable time (in seconds) a fragment can take to download
         // while playback is already in progress.
         // - If a fragment is estimated to take longer than this value and the buffer is running low,
@@ -109,19 +109,21 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({ src, cid, titleMovie, onBack
         // abrBandWidthFactor: Determines how conservatively HLS estimates available bandwidth.
         // A value < 1.0 ensures HLS.js does not use the full estimated bandwidth, preventing aggressive quality changes.
         // Recommended range: 0.7 - 0.9 (Lower = More cautious, fewer quality switches)
-        // "abrBandWidthFactor": 0.9,
+        // "abrBandWidthFactor": 0.7,
         // abrBandWidthUpFactor: Controls how aggressively the player upgrades to a higher bitrate.
         // A lower value prevents HLS.js from switching to a higher quality too quickly, reducing unnecessary upscaling.
         // Recommended range: 0.5 - 0.8 (Lower = More stable, avoids excessive upscaling)
-        // "abrBandWidthUpFactor": 0.7,
+        // "abrBandWidthUpFactor": 0.6,
         "enableSoftwareAES": false, // Disable software AES decryption
         "enableID3MetadataCues": false, // Disable ID3 metadata cues
         "enableWebVTT": true, // Enable WebVTT subtitles
         "enableIMSC1": false, // Disable IMSC1 subtitles
         "enableCEA708Captions": false, // Disable CEA-708 captions,
+        // "abrMaxWithRealBitrate": true,
         "enableWorker": true,
         "backBufferLength": 90,
-        "lowLatencyMode": false, // Not needed in VOD
+        // "progressive": true,
+        // "lowLatencyMode": false, // Not needed in VOD
         // "startFragPrefetch": true,
         "fLoader": FetchLoader,
         "pLoader": XhrLoader

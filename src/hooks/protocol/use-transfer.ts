@@ -8,13 +8,13 @@ import { TransferParams, UseTransferHook } from '@src/hooks/protocol/types.ts';
 import { useAuth } from '@src/hooks/use-auth.ts';
 import { TransferData } from "@src/hooks/types.ts"
 import { useWeb3Auth } from '@src/hooks/use-web3-auth.ts';
-import { Calls, WaitForUserOperationReceiptReturnType } from '@src/hooks/types.ts'
+import { Calls } from '@src/hooks/types.ts'
 
 export const useTransfer = (): UseTransferHook => {
   const [data, setData] = useState<TransferData | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<keyof typeof ERRORS | null>(null);
-  const { bundlerClient, smartAccount } = useWeb3Auth();
+  const { sendOperation } = useWeb3Auth();
   const { logout } = useAccountSession();
   const { session } = useAuth();
 
@@ -50,14 +50,7 @@ export const useTransfer = (): UseTransferHook => {
         },
       ];
 
-      const userOpHash = await bundlerClient.sendUserOperation({
-        account: smartAccount,
-        calls,
-      });
-
-      const receipt: WaitForUserOperationReceiptReturnType = await bundlerClient.waitForUserOperationReceipt({
-        hash: userOpHash,
-      });
+      const receipt = await sendOperation(calls);
 
       setData(receipt);
       setLoading(false);
