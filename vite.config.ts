@@ -29,8 +29,6 @@ export default defineConfig(({ mode }) => {
             if (!id.includes('node_modules')) return;
 
             if (id.includes('@mui'))        return 'mui';
-            if (id.includes('highlight.js')) return 'highlight';
-            if (id.includes('ethers'))       return 'ethers';
             if (id.includes('@vidstack') || id.includes('hls.js'))
               return 'video';
 
