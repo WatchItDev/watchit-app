@@ -74,7 +74,7 @@ const parseTransactionTypeLabel = (type: string): string => {
     case 'approved':
       return 'Approved';
     case 'collected':
-      return 'Content Unlocked';
+      return 'Content Access';
 
     default:
       return type;
@@ -87,13 +87,13 @@ const parseTransactionType = (type: string): string => {
     case 'transferFrom':
       return 'income';
     case 'transferTo':
-      return 'outcome';
+      return 'outflow';
     case 'deposit':
       return 'income';
     case 'withdraw':
-      return 'outcome';
+      return 'outflow';
     case 'collected':
-      return 'outcome';
+      return 'outflow';
 
     default:
       return type;
