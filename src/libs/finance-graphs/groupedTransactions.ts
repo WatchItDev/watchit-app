@@ -74,7 +74,7 @@ const parseTransactionTypeLabel = (type: string): string => {
     case 'approved':
       return 'Approved';
     case 'collected':
-      return 'Content Unlocked';
+      return 'Content Access';
 
     default:
       return type;
