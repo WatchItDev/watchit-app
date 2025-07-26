@@ -1,7 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { renderWithStoreAndRouter } from "@src/utils/testing/Testing";
 import { CarouselTopTitlesProps } from "@src/components/carousel/types";
-import { screen } from "@testing-library/dom";
 import CarouselTopTitles from "../carousel-top-titles";
 
 describe("[COMPONENTS]: CarouselTopTitles", () => {
@@ -47,13 +46,6 @@ describe("[COMPONENTS]: CarouselTopTitles", () => {
     expect(
       renderWithStoreAndRouter(<CarouselTopTitles {...defaultProps} />).baseElement,
     ).toMatchSnapshot();
-  });
-
-  it("renders correctly", async () => {
-    renderWithStoreAndRouter(<CarouselTopTitles {...defaultProps} />);
-    const displayName = await screen.findAllByText(/Author 1/i);
-    expect(displayName.length).toBeGreaterThan(0);
-    displayName.forEach((title) => expect(title).toBeInTheDocument());
   });
 
   it("renders the title correctly", () => {

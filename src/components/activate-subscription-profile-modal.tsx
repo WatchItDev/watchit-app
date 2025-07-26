@@ -15,11 +15,8 @@ import {
   Typography,
 } from '@mui/material';
 
-// ETHERS IMPORTS
-import { ethers } from 'ethers';
-
 // VIEM IMPORTS
-import { encodeAbiParameters } from 'viem';
+import { encodeAbiParameters, parseUnits } from 'viem';
 
 // LOCAL IMPORTS
 import { GLOBAL_CONSTANTS } from '@src/config-global';
@@ -71,7 +68,7 @@ export const ActivateSubscriptionProfileModal = ({
 
     try {
       // Convert the amount to Wei (BigInt)
-      const amountInWeiBigNumber = ethers.parseUnits(amount, 18);
+      const amountInWeiBigNumber = parseUnits(amount, 18);
       const amountInWei = BigInt(amountInWeiBigNumber);
 
       // Encode parameters: amount in Wei and MMC address
