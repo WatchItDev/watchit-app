@@ -71,8 +71,6 @@ export const SubscribeProfileModal = ({
     profile?.address as Address
   );
 
-  console.log('terms:', terms);
-
   useEffect(() => {
     if (balanceFromContract) {
       dispatch(setBalance({ balance: balanceFromContract }));
