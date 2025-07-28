@@ -61,10 +61,9 @@ export default defineConfig(({ mode }) => {
         sourcemaps: { assets: './dist/**' },
       }),
 
-      !prod &&
       nodePolyfills({
-        include: ['buffer'],
-        globals: { Buffer: true },
+        include: ['buffer', 'process'],
+        globals: { Buffer: true, process: true },
       }),
 
       prod && compression({ algorithm: 'brotliCompress' }),
