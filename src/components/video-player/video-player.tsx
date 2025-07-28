@@ -1,6 +1,6 @@
 import { FC, useRef, useEffect, memo } from 'react';
 // @ts-expect-error No error in this context
-import { Hls, FetchLoader, XhrLoader } from 'hls.js/dist/hls.mjs';
+import { Hls/** , FetchLoader, XhrLoader */} from 'hls.js/dist/hls.mjs';
 import { Typography, IconButton, Button } from '@mui/material';
 import { IconChevronLeft } from '@tabler/icons-react';
 import {
@@ -116,17 +116,23 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({ src, cid, titleMovie, postId
     if (isHLSProvider(provider)) {
       provider.library = Hls;
       provider.config = {
-        "maxBufferLength": 60, // Max video buffer length in seconds
+        "startLevel": -1, // Start at the highest quality level
+        "maxBufferLength": 30, // Max video buffer length in seconds
+        "backBufferLength": 30,
+        "maxBufferHole": 0.5, // Max buffer hole in seconds
         "maxMaxBufferLength": 600, // Absolute max buffer length
         "enableSoftwareAES": false, // Disable software AES decryption
-        "enableID3MetadataCues": false, // Disable ID3 metadata cues
-        "enableWebVTT": true, // Enable WebVTT subtitles
         "enableIMSC1": false, // Disable IMSC1 subtitles
+        "enableID3MetadataCues": false, // Disable ID3 metadata cues
+        "capLevelToPlayerSize": true,
+        "abrMaxWithRealBitrate": true, // Use real bitrate for ABR
+        "abrBandWidthFactor": 0.95, // Bandwidth factor for ABR
+        "abrBandWidthUpFactor": 0.6,
+        "enableWebVTT": true, // Enable WebVTT subtitles
         "enableCEA708Captions": false, // Disable CEA-708 captions,
         "enableWorker": true,
-        "backBufferLength": 90,
-        "fLoader": FetchLoader,
-        "pLoader": XhrLoader
+        // "fLoader": FetchLoader,
+        // "pLoader": XhrLoader
       };
     }
   }

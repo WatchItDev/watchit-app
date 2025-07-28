@@ -15,8 +15,8 @@ import CustomPopover, { usePopover } from "@src/components/custom-popover";
 import useGetSmartWalletTransactions from "@src/hooks/protocol/use-get-smart-wallet-transactions.ts";
 import FinanceOverlayLoader from "@src/sections/finance/components/finance-overlay-loader.tsx";
 import {
-  FINANCE_STATISTICS_INCOME_EVENTS,
-  FINANCE_STATISTICS_OUTCOME_EVENTS,
+  FINANCE_STATISTICS_INFLOW_EVENTS,
+  FINANCE_STATISTICS_OUTFLOW_EVENTS,
 } from "@src/sections/finance/CONSTANTS.tsx";
 import { TransactionLog } from "@redux/transactions";
 
@@ -26,14 +26,14 @@ export default function FinanceBalanceStatistics() {
   const { transactions, loading } = useGetSmartWalletTransactions();
   const popover = usePopover();
   const [timeFrame, setTimeFrame] = useState<"Week" | "Month" | "Year">("Week");
-  const [incomeData, setIncomeData] = useState<number[]>([]);
-  const [outcomeData, setOutcomeData] = useState<number[]>([]);
+  const [inflowData, setInflowData] = useState<number[]>([]);
+  const [outflowData, setOutflowData] = useState<number[]>([]);
   const [categories, setCategories] = useState<string[]>([]);
   const [fullCategories, setFullCategories] = useState<string[]>([]);
 
   // Initialize chart options with short labels and detailed tooltips
   const chartOptions = useChart({
-    colors: ["#00AB55", "#FF4842"], // Green for income, red for outcome
+    colors: ["#00AB55", "#FF4842"], // Green for income, red for outflows
     stroke: {
       show: true,
       width: 2,
@@ -76,7 +76,7 @@ export default function FinanceBalanceStatistics() {
     const oneYearAgo = now - 365 * 24 * 60 * 60 * 1000;
 
     // Grouped data structure
-    const groupedData: Record<string, { label: string; income: number; outcome: number }> = {};
+    const groupedData: Record<string, { label: string; inflow: number; outflow: number }> = {};
 
     transactions.forEach((log: TransactionLog) => {
       const timestamp = Number(log.timestamp) * 1000;
@@ -133,17 +133,17 @@ export default function FinanceBalanceStatistics() {
 
       // Initialize group if it does not exist
       if (!groupedData[key]) {
-        groupedData[key] = { label, income: 0, outcome: 0 };
+        groupedData[key] = { label, inflow: 0, outflow: 0 };
       }
 
       const amount = parseFloat(log.formattedAmount);
       const eventType = log.event;
 
       // Sort the event using the defined lists
-      if (FINANCE_STATISTICS_INCOME_EVENTS.includes(eventType)) {
-        groupedData[key].income += amount;
-      } else if (FINANCE_STATISTICS_OUTCOME_EVENTS.includes(eventType)) {
-        groupedData[key].outcome += amount;
+      if (FINANCE_STATISTICS_INFLOW_EVENTS.includes(eventType)) {
+        groupedData[key].inflow += amount;
+      } else if (FINANCE_STATISTICS_OUTFLOW_EVENTS.includes(eventType)) {
+        groupedData[key].outflow += amount;
       } else {
         console.warn(`Unclassified event: ${eventType}`);
       }
@@ -196,8 +196,8 @@ export default function FinanceBalanceStatistics() {
 
     setFullCategories(sortedFullCategories);
     setCategories(shortLabels);
-    setIncomeData(sortedKeys.map((key) => groupedData[key]?.income || 0));
-    setOutcomeData(sortedKeys.map((key) => groupedData[key]?.outcome || 0));
+    setInflowData(sortedKeys.map((key) => groupedData[key]?.inflow || 0));
+    setOutflowData(sortedKeys.map((key) => groupedData[key]?.outflow || 0));
   }, [transactions, timeFrame, loading]);
 
   const handleChangeTimeFrame = (newValue: "Week" | "Month" | "Year") => {
@@ -210,7 +210,7 @@ export default function FinanceBalanceStatistics() {
       <Card>
         <CardHeader
           title="Statistics"
-          subheader="Income vs outcome"
+          subheader="Inflow vs outflow"
           sx={{ px: 0 }}
           action={
             <ButtonBase
@@ -240,8 +240,8 @@ export default function FinanceBalanceStatistics() {
             dir="ltr"
             type="bar"
             series={[
-              { name: "Income", data: incomeData },
-              { name: "Outcome", data: outcomeData },
+              { name: "Inflow", data: inflowData },
+              { name: "Outflow", data: outflowData },
             ]}
             options={chartOptions}
             height={364}
