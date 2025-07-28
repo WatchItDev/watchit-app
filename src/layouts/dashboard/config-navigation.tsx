@@ -127,6 +127,13 @@ export function useNavData() {
             path: paths.dashboard.marketing,
             icon: ICONS.tour,
           },
+
+          // COLLABORATION
+          {
+            title: t('Collaboration'),
+            path: paths.dashboard.collaborations,
+            icon: ICONS.chat,
+          },
         ],
       },
     ],

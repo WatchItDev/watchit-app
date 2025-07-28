@@ -13,7 +13,6 @@ import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 import { ERRORS } from '@src/libs/notifications/errors.ts';
 import { useWeb3Auth } from '@src/hooks/use-web3-auth.ts';
 import { Calls } from '@src/hooks/types.ts'
-import { getNonce } from '@src/utils/wallet.ts';
 
 // ----------------------------------------------------------------------
 
@@ -28,7 +27,7 @@ export const useRegisterAsset = (): UseRegisterAssetHook => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<keyof typeof ERRORS | null>(null);
   const { session } = useAuth();
-  const { bundlerClient, smartAccount } = useWeb3Auth();
+  const { sendOperation } = useWeb3Auth();
   const { logout } = useAccountSession();
 
   /**
@@ -67,15 +66,7 @@ export const useRegisterAsset = (): UseRegisterAssetHook => {
         },
       ];
 
-      const userOpHash = await bundlerClient.sendUserOperation({
-        account: smartAccount,
-        calls,
-        nonce: await getNonce(smartAccount)
-      });
-
-      const receipt = await bundlerClient.waitForUserOperationReceipt({
-        hash: userOpHash,
-      });
+      const receipt = await sendOperation(calls);
 
       setData({ receipt });
       setLoading(false);
