@@ -22,6 +22,7 @@ export const CarouselSection: FC<PropsWithChildren<CarouselSectionProps>> = ({
     <CardHeader title={title} sx={{ px: '15px' }} action={action} />
     <CardContent
       sx={{
+        pt: 1,
         px: {
           xs: '5px',
         },

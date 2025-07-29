@@ -113,9 +113,9 @@ const PosterTopTitles = ({ post }: { post: Post }) => {
             py: { xs: 0, md: 8 },
           }}
         >
-          <Stack spacing={1} gap={'16px'}>
-            <Stack spacing={1} gap={0}>
-              <TextMaxLine line={2} variant="h3" sx={{ mb: 1 }}>
+          <Stack spacing={1} gap={'16px'} sx={{ zIndex: 1 }}>
+            <Stack spacing={1} gap={0} >
+              <TextMaxLine line={2} variant="h3" sx={{ mb: 1, cursor: 'pointer' }} onClick={handlePosterClick}>
                 {post.title}
               </TextMaxLine>
 
@@ -156,8 +156,10 @@ const PosterTopTitles = ({ post }: { post: Post }) => {
                 overflow: 'hidden',
                 WebkitBoxOrient: 'vertical',
                 WebkitLineClamp: 4,
+                cursor: 'pointer'
               }}
               variant="h6"
+              onClick={handlePosterClick}
             >
               {post.description ?? ''}
             </Typography>

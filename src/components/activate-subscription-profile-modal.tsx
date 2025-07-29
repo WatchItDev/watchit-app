@@ -54,8 +54,14 @@ export const ActivateSubscriptionProfileModal = ({
   const hasCurrent = currentPriceWei > 0n;
   const trimAmount = (v: string) => v.replace(/\.?0+$/, '');
   const currentPriceMMC = hasCurrent ? trimAmount(formatUnits(currentPriceWei, 18)) : null;
-
   const initializedRef = useRef(false);
+  const proposedAmount = customAmount || selectedAmount || '';
+  const isUnchanged = hasCurrent && proposedAmount === currentPriceMMC;
+  const amountNumber = parseFloat(proposedAmount || '0');
+  const weeklyCost = (amountNumber * 7).toFixed(2);
+  const fifteenDaysCost = (amountNumber * 15).toFixed(2);
+  const monthlyCost = (amountNumber * 30).toFixed(2);
+  const RainbowEffect = loading ? NeonPaper : Box;
 
   useEffect(() => {
     if (isOpen) {
@@ -95,14 +101,11 @@ export const ActivateSubscriptionProfileModal = ({
     setCustomAmount(event.target.value);
   };
 
-  const proposedAmount = customAmount || selectedAmount || '';
-  const isUnchanged = hasCurrent && proposedAmount === currentPriceMMC;
-
   const handleAuthorizeSubscription = async () => {
     const amount = proposedAmount;
     if (!amount) return;
     if (isUnchanged) {
-      notifySuccess(SUCCESS.JOINING_PRICE_SUCCESSFULLY); // or your own “No changes” toast
+      notifySuccess(SUCCESS.JOINING_PRICE_SUCCESSFULLY);
       onClose?.();
       return;
     }
@@ -131,13 +134,6 @@ export const ActivateSubscriptionProfileModal = ({
     }
   };
 
-  // Estimated costs
-  const amountNumber = parseFloat(proposedAmount || '0');
-  const weeklyCost = (amountNumber * 7).toFixed(2);
-  const fifteenDaysCost = (amountNumber * 15).toFixed(2);
-  const monthlyCost = (amountNumber * 30).toFixed(2);
-
-  const RainbowEffect = loading ? NeonPaper : Box;
 
   return (
     <Dialog open={isOpen} onClose={onClose} fullWidth maxWidth="xs">
