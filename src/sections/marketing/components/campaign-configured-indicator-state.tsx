@@ -24,10 +24,10 @@ const ripple = keyframes`
 
 // ----------------------------------------------------------------------
 
-const CampaignConfiguredIndicatorState = ({ isReady }: CampaignConfiguredIndicatorStateProps) => {
+const CampaignConfiguredIndicatorState = ({ isReady, disabled }: CampaignConfiguredIndicatorStateProps) => {
   const theme = useTheme();
-  const color = !isReady ? theme.palette.warning.main : theme.palette.success.main;
-
+  let color = !isReady ? theme.palette.warning.main : theme.palette.success.main;
+  color = disabled ? theme.palette.grey[400] : color;
   return (
     <Tooltip title={!isReady ? "Not configured" : "Configured"}>
       <Box
@@ -42,7 +42,7 @@ const CampaignConfiguredIndicatorState = ({ isReady }: CampaignConfiguredIndicat
           marginLeft: 0.5,
           marginRight: 3,
           position: "relative",
-          animation: !isReady ? `${ripple} 1.5s infinite ease-out` : "none",
+          animation: !isReady && !disabled ? `${ripple} 1.5s infinite ease-out` : "none",
           "&::before, &::after": !isReady
             ? {
               content: '""',

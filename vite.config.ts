@@ -41,7 +41,6 @@ export default defineConfig(({ mode }) => {
     plugins: [
       react(),
 
-      prod &&
       visualizer({
         filename: 'stats.html',
         open: !!process.env.ANALYZE,
@@ -66,9 +65,7 @@ export default defineConfig(({ mode }) => {
         globals: { Buffer: true, process: true },
       }),
 
-      prod && compression({ algorithm: 'brotliCompress' }),
-
-      process.env.CI &&
+      compression({ algorithm: 'brotliCompress' }),
       codecovVitePlugin({
         bundleName: 'watchit-app',
         enableBundleAnalysis: !!process.env.VITE_CODECOV_TOKEN,
