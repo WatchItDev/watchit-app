@@ -20,6 +20,7 @@ export interface CampaignModalContentProps {
 
 export interface CampaignConfiguredIndicatorStateProps {
   isReady: boolean;
+  disabled: boolean;
 }
 
 export interface CampaignCreateProps {

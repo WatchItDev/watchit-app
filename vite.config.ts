@@ -1,42 +1,65 @@
-/// <reference types="vitest" />
-import path from 'path';
-import react from '@vitejs/plugin-react';
 import { defineConfig, loadEnv } from 'vite';
-import { sentryVitePlugin } from "@sentry/vite-plugin";
-import preserveDirectives from 'rollup-preserve-directives'
-import { codecovVitePlugin } from "@codecov/vite-plugin";
-import { nodePolyfills } from 'vite-plugin-node-polyfills'
-import dotenv from "dotenv";
+import react                  from '@vitejs/plugin-react';
+import { visualizer }         from 'rollup-plugin-visualizer';
+import { sentryVitePlugin }   from '@sentry/vite-plugin';
+import { codecovVitePlugin }  from '@codecov/vite-plugin';
+import { nodePolyfills }      from 'vite-plugin-node-polyfills';
+import compression            from 'vite-plugin-compression';
+import preserveDirectives     from 'rollup-preserve-directives';
+import path                   from 'node:path';
+import dotenv                 from 'dotenv';
 
 dotenv.config();
 
 export default defineConfig(({ mode }) => {
-  // Load environment variables based on the current mode
-  const env = loadEnv(mode, process.cwd(), 'VITE_');
-  const pure = mode === 'production' ? ['console.log', 'console.info', 'console.warn'] : []
+  const env  = loadEnv(mode, process.cwd(), 'VITE_');
+  const prod = mode === 'production';
+  const pure = prod ? ['console.log', 'console.info', 'console.warn'] : []
 
   return {
     esbuild: { pure },
+    build: {
+      target: 'es2020',
+      sourcemap: !prod,
+      cssCodeSplit: true,
+      chunkSizeWarningLimit: 700,
+    },
+
     plugins: [
       react(),
+
+      visualizer({
+        filename: 'stats.html',
+        open: !!process.env.ANALYZE,
+        template: 'treemap',
+        gzipSize: true,
+        brotliSize: true,
+      }),
+
       preserveDirectives(),
+
+      prod &&
       sentryVitePlugin({
         org: "watchit",
         project: "watchit-app",
         authToken: process.env.VITE_SENTRY_AUTH_TOKEN,
         telemetry: false,
+        sourcemaps: { assets: './dist/**' },
       }),
+
       nodePolyfills({
-        // To add only specific polyfills, add them here. If no option is passed, adds all polyfills
-        include: ['process', "module", "buffer"],
-        globals: { global: true, process: true, Buffer: true },
+        include: ['buffer', 'process'],
+        globals: { Buffer: true, process: true },
       }),
+
+      compression({ algorithm: 'brotliCompress' }),
       codecovVitePlugin({
-        bundleName: "watchit-app",
-        enableBundleAnalysis: process.env.VITE_CODECOV_TOKEN !== undefined,
+        bundleName: 'watchit-app',
+        enableBundleAnalysis: !!process.env.VITE_CODECOV_TOKEN,
         uploadToken: process.env.VITE_CODECOV_TOKEN,
       }),
-    ],
+    ].filter(Boolean),
+
     resolve: {
       alias: {
         '@src': path.resolve(__dirname, 'src'),
@@ -62,5 +85,4 @@ export default defineConfig(({ mode }) => {
       }
     },
   };
-
 });

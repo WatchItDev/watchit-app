@@ -73,8 +73,11 @@ export default function PublicationDetailsView({ id }: Readonly<PublicationDetai
   }, [campaign, session?.address]);
 
   useEffect(() => {
-    if (publication || !id) return;
-    loadPublication({variables: { getPostId: id }});
+    if (!id) return;
+    loadPublication({
+      variables: { getPostId: id },
+      fetchPolicy: 'network-only',
+    });
   }, [id, publication]);
 
   const handleSubscribe = () => {

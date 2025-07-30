@@ -5,8 +5,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { storeAddress } from '@redux/address';
 
-// ETHERS IMPORTS
-import { ethers } from 'ethers';
+import { isAddress } from 'viem';
 
 // MUI
 import { useTheme } from '@mui/material/styles';
@@ -350,7 +349,7 @@ export default function FinanceQuickTransfer({
         size="large"
         color="inherit"
         variant="contained"
-        disabled={amount === 0 || !ethers.isAddress(walletAddress) || !canContinue}
+        disabled={amount === 0 || !isAddress(walletAddress) || !canContinue}
         onClick={confirm.onTrue}
       >
         Send

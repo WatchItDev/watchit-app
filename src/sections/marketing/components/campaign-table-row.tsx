@@ -51,7 +51,7 @@ export default function CampaignTableRow({ row, selected }: Readonly<CampaignTab
   const { pause, loading: loadingPause } = useCampaignPause();
   const { unPause, loading: loadingResume } = useCampaignUnPause();
   const type = POLICY_TEXTS[`${policy?.toLowerCase?.()}`]?.toLowerCase?.();
-  const status = paused ? 'paused' : 'active';
+  const status = paused || !selected ? 'paused' : 'active';
   const totalUsageBigInt = BigInt(totalUsage || "0");
   const fundsAllocationBigInt = BigInt(fundsAllocation || "0");
   const totalUsageMMCFormatted = formatUnits(totalUsageBigInt * fundsAllocationBigInt, 18);
@@ -109,8 +109,8 @@ export default function CampaignTableRow({ row, selected }: Readonly<CampaignTab
   const renderPrimary = (
     <>
       <TableRow hover selected={selected} key={campaign}>
-        <TableCell sx={{ display: 'flex', alignItems: 'center' }}>
-          <CampaignConfiguredIndicatorState isReady={isReady} />
+        <TableCell sx={{ display: 'flex', alignItems: 'center', opacity: !selected ? 0.6 : 1 }}>
+          <CampaignConfiguredIndicatorState isReady={isReady} disabled={!selected} />
           <ListItemText
             primary={<TextMaxLine line={1}>{name}</TextMaxLine>}
             secondary={<TextMaxLine line={1}>{`${fundsAllocation ? Number(formatUnits(fundsAllocationBigInt, 18)).toFixed(2) : "0"} MMC per user`}</TextMaxLine>}
@@ -122,7 +122,7 @@ export default function CampaignTableRow({ row, selected }: Readonly<CampaignTab
           />
         </TableCell>
 
-        <TableCell>
+        <TableCell sx={{ opacity: !selected ? 0.6 : 1 }}>
           <ListItemText
             primary={`${quotaLimit}`}
             primaryTypographyProps={{ typography: 'body2' }}
@@ -134,7 +134,7 @@ export default function CampaignTableRow({ row, selected }: Readonly<CampaignTab
           />
         </TableCell>
 
-        <TableCell>
+        <TableCell sx={{ opacity: !selected ? 0.6 : 1 }}>
           <ListItemText
             primary={`${fundsBalance ? Number(formatUnits(fundsBalance, 18)).toFixed(2) : "0"} MMC`}
             primaryTypographyProps={{ typography: 'body2' }}
@@ -146,7 +146,7 @@ export default function CampaignTableRow({ row, selected }: Readonly<CampaignTab
           />
         </TableCell>
 
-        <TableCell>
+        <TableCell sx={{ opacity: !selected ? 0.6 : 1 }}>
           <ListItemText
             primary={<TextMaxLine line={1}>{`${totalUsageMMCFormatted} MMC`}</TextMaxLine>}
             secondary={<TextMaxLine line={1}>{`${totalUsage} Users`}</TextMaxLine>}
@@ -160,11 +160,11 @@ export default function CampaignTableRow({ row, selected }: Readonly<CampaignTab
           <Typography variant="body2"></Typography>
         </TableCell>
 
-        <TableCell>
+        <TableCell sx={{ opacity: !selected ? 0.6 : 1 }}>
           <Typography variant="body2">{formattedExpiration}</Typography>
         </TableCell>
 
-        <TableCell>
+        <TableCell sx={{ opacity: !selected ? 0.6 : 1 }}>
           <Typography
             component={'span'}
             variant="body2"
@@ -212,15 +212,17 @@ export default function CampaignTableRow({ row, selected }: Readonly<CampaignTab
         arrow="right-top"
         sx={{ width: 160 }}
       >
-        <MenuItem
-          onClick={() => {
-            onSettingRow();
-            popover.onClose();
-          }}
-        >
-          <Iconify icon="mdi:settings-outline" />
-          Customize
-        </MenuItem>
+        {selected && (
+          <MenuItem
+            onClick={() => {
+              onSettingRow();
+              popover.onClose();
+            }}
+          >
+            <Iconify icon="mdi:settings-outline" />
+            Customize
+          </MenuItem>
+        )}
         <MenuItem
           onClick={() => {
             withdrawModal.onTrue();
@@ -230,24 +232,26 @@ export default function CampaignTableRow({ row, selected }: Readonly<CampaignTab
           <Iconify icon="ic:outline-account-balance-wallet" />
           Withdraw
         </MenuItem>
-        <MenuItem
-          sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
-          onClick={(e) => e.stopPropagation()}
-        >
-          <Iconify icon={pauseIcon} />
-          <Typography variant="body2">
-            {paused ? 'Resume' : 'Pause'}
-          </Typography>
+        {selected && (
+          <MenuItem
+            sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <Iconify icon={pauseIcon} />
+            <Typography variant="body2">
+              {paused ? 'Resume' : 'Pause'}
+            </Typography>
 
-          <Switch
-            color="secondary"
-            checked={!paused}
-            onChange={async (event) => {
-              await handlePauseToggle(!event.target.checked);
-            }}
-            disabled={loadingPause || loadingResume}
-          />
-        </MenuItem>
+            <Switch
+              color="secondary"
+              checked={!paused}
+              onChange={async (event) => {
+                await handlePauseToggle(!event.target.checked);
+              }}
+              disabled={loadingPause || loadingResume}
+            />
+          </MenuItem>
+        )}
       </CustomPopover>
 
       <CampaignSettingsModal
