@@ -23,19 +23,6 @@ export default defineConfig(({ mode }) => {
       sourcemap: !prod,
       cssCodeSplit: true,
       chunkSizeWarningLimit: 700,
-      rollupOptions: {
-        output: {
-          manualChunks(id) {
-            if (!id.includes('node_modules')) return;
-
-            if (id.includes('@mui'))        return 'mui';
-            if (id.includes('@vidstack') || id.includes('hls.js'))
-              return 'video';
-
-            return 'vendor';
-          },
-        },
-      },
     },
 
     plugins: [
@@ -85,7 +72,7 @@ export default defineConfig(({ mode }) => {
       },
     },
     define: {
-      'process.env': env, // Make sure to define process.env for compatibility
+      'process.env': env,
     },
 
     test: {
