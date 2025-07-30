@@ -72,7 +72,7 @@ export default defineConfig(({ mode }) => {
       },
     },
     define: {
-      'process.env': env,
+      'process.env': env, // Make sure to define process.env for compatibility
     },
 
     test: {
