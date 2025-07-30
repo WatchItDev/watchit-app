@@ -5,6 +5,7 @@ import DashboardLayout from '@src/layouts/dashboard';
 // components
 import { LoadingScreen, SplashScreen } from '@src/components/loading-screen';
 import CompactLayout from '@src/layouts/compact';
+import AppReady from '@src/components/app-ready.tsx';
 
 
 // ----------------------------------------------------------------------
@@ -42,6 +43,7 @@ export const dashboardRoutes = [
     element: (
       <DashboardLayout>
         <Suspense fallback={<LoadingScreen />}>
+          <AppReady />
           <Outlet />
         </Suspense>
       </DashboardLayout>

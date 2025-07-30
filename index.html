@@ -97,7 +97,8 @@
     /* --- logo con destello pulsante ------------------------------------ */
     #splash img {
       z-index: 10;
-      animation: pulseShadow 8s ease-in-out infinite;
+      border: 1px solid rgb(255 255 255 / 30%);
+      border-radius: 50%;
     }
 
     /* --- “neones” de colores ------------------------------------------- */
@@ -153,14 +154,13 @@
 
 <script type="module" src="/src/index.tsx"></script>
 <script>
-  new MutationObserver((m,obs)=>{
-    const root=document.getElementById('root');
-    if(root && root.childElementCount){
-      document.getElementById('splash')?.remove();
-      root.style.opacity='1';
-      obs.disconnect();
-    }
-  }).observe(document.getElementById('root'),{childList:true});
+  function showApp() {
+    const root = document.getElementById('root');
+    document.getElementById('splash')?.remove();
+    root.style.opacity = '1';
+    window.removeEventListener('app:ready', showApp);
+  }
+  window.addEventListener('app:ready', showApp);
 </script>
 </body>
 </html>
