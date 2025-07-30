@@ -1,5 +1,4 @@
 # WatchIt
-[![codecov](https://codecov.io/gh/WatchItDev/watchit-app/graph/badge.svg?token=LQSOJRMXIY)](https://codecov.io/gh/WatchItDev/watchit-app)
 
 WatchIt represents a transformative innovation in how audiovisual content is consumed and disseminated. Built on decentralized principles and powered by blockchain technology, the platform ensures secure, equitable, and dynamic content delivery through a network of distributed nodes. This architecture not only enhances system resilience but also fosters meaningful collaboration between creators and audiences, creating a vibrant and sustainable ecosystem.
 

@@ -24,7 +24,6 @@ import { useTransfer } from '@src/hooks/protocol/use-transfer.ts';
 import { notifyError, notifySuccess } from '@src/libs/notifications/internal-notifications.ts';
 import { SUCCESS } from '@src/libs/notifications/success.ts';
 import { ERRORS } from '@src/libs/notifications/errors';
-import { dicebear } from '@src/utils/dicebear.ts';
 import AvatarProfile from '@src/components/avatar/avatar.tsx';
 import { MAX_POOL } from '@src/sections/finance/components/finance-quick-transfer.tsx';
 import { handleAmountConstraints } from '@src/utils/format-number.ts';
@@ -166,7 +165,7 @@ function FinanceQuickTransferModal(props: Readonly<ConfirmTransferDialogProps>) 
           marginBottom: '8px',
         }}
       >
-        Send to
+        Send to {contactInfo?.displayName || contactInfo?.username || 'External wallet'}
       </DialogTitle>
       <Stack direction="column" spacing={3} sx={{ px: 3 }}>
         <Stack

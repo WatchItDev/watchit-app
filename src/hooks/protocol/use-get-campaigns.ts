@@ -5,7 +5,9 @@ import CampaignRegistryAbi from '@src/config/abi/CampaignRegistry.json';
 import { publicClient } from '@src/clients/viem/publicClient.ts';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 import { useAuth } from '@src/hooks/use-auth.ts';
-import {CampaignLog} from "@src/hooks/protocol/types.ts"
+import { CampaignLog } from '@src/hooks/protocol/types.ts';
+
+const CAMPAIGN_BLOCK_LOOKBACK = 120_000n;
 
 export default function useGetCampaigns() {
   const { session: sessionData } = useAuth();
@@ -22,31 +24,24 @@ export default function useGetCampaigns() {
   ];
 
   const createEventSignature = (event: any): string => {
-    if (!event?.name || !event.inputs) {
-      throw new Error('Invalid event in ABI');
-    }
+    if (!event?.name || !event.inputs) throw new Error('Invalid event in ABI');
     const inputs = event.inputs
       .map((input: any) => `${input.type}${input.indexed ? ' indexed' : ''} ${input.name}`)
       .join(', ');
     return `event ${event.name}(${inputs})`;
   };
 
-  const uniqueEventNames = Array.from(
-    new Set(events.map((config) => config.eventName)) // Removes duplicates
-  );
-
+  const uniqueEventNames = Array.from(new Set(events.map((c) => c.eventName)));
   const parsedAbis = uniqueEventNames.reduce((acc, eventName) => {
-    const eventAbi = CampaignRegistryAbi.abi.find(
-      (item: any) => item.type === 'event' && item.name === eventName
+    const evt = CampaignRegistryAbi.abi.find(
+      (i: any) => i.type === 'event' && i.name === eventName
     );
-    if (!eventAbi) {
-      throw new Error(`No definition found for event ${eventName} in the ABI`);
-    }
-    acc[eventName] = parseAbiItem(createEventSignature(eventAbi));
+    if (!evt) throw new Error(`No definition for event ${eventName} in ABI`);
+    acc[eventName] = parseAbiItem(createEventSignature(evt));
     return acc;
   }, {} as Record<string, ReturnType<typeof parseAbiItem>>);
 
-  const fetchCampaings = async () => {
+  const fetchCampaigns = async (blockLookback: bigint = CAMPAIGN_BLOCK_LOOKBACK) => {
     if (!sessionData?.address) {
       setLoading(false);
       return;
@@ -56,43 +51,52 @@ export default function useGetCampaigns() {
       setLoading(true);
       setError(null);
 
-      const promises = events.map(({ eventName, args }) => {
-        return publicClient.getLogs({
+      const latestBlock = await publicClient.getBlockNumber();
+      const fromBlock = latestBlock > blockLookback ? latestBlock - blockLookback : 0n;
+
+      const promises = events.map(({ eventName, args }) =>
+        publicClient.getLogs({
           address: GLOBAL_CONSTANTS.CAMPAIGN_REGISTRY_ADDRESS as Address,
           event: parsedAbis[eventName] as any,
           args,
-          fromBlock: 0n,
+          fromBlock,
           toBlock: 'latest',
-        });
-      });
+        })
+      );
       const results = await Promise.all(promises);
       const allLogs = results.flat();
       const logsWithDetails = await Promise.all(
         allLogs.map(async (log: any) => {
           const block = await publicClient.getBlock({ blockNumber: log.blockNumber });
-          const foundConfig = events.find((c) => c.eventName === log.eventName);
-          const eventType = foundConfig
-            ? foundConfig.getEventType(log, sessionData?.address)
-            : 'unknown';
-
+          const cfg = events.find((c) => c.eventName === log.eventName);
           return {
             ...log,
             timestamp: block.timestamp,
             readableDate: new Date(Number(block.timestamp) * 1000).toLocaleString(),
             formattedAmount: log.args.amount ? formatUnits(log.args.amount, 18) : '0',
-            event: eventType,
-          };
+            event: cfg ? cfg.getEventType(log) : 'unknown',
+          } as CampaignLog;
         })
       );
 
-      setCampaigns(logsWithDetails as any)
+      logsWithDetails.sort((a, b) => {
+        const byBlock = Number(b.blockNumber) - Number(a.blockNumber);
+        return byBlock !== 0 ? byBlock : Number(b.transactionIndex) - Number(a.transactionIndex);
+      });
+
+      setCampaigns(logsWithDetails);
     } catch (err) {
-      console.error('Error fetching logs:', err);
+      console.error('Error fetching campaign logs:', err);
       setError(err instanceof Error ? err.message : 'Unknown error');
     } finally {
       setLoading(false);
     }
   };
 
-  return { campaigns, fetchLogs: fetchCampaings, loading, error };
+  return {
+    campaigns,
+    fetchLogs: fetchCampaigns,
+    loading,
+    error,
+  };
 }
