@@ -153,14 +153,13 @@
 
 <script type="module" src="/src/index.tsx"></script>
 <script>
-  new MutationObserver((m,obs)=>{
-    const root=document.getElementById('root');
-    if(root && root.childElementCount){
-      document.getElementById('splash')?.remove();
-      root.style.opacity='1';
-      obs.disconnect();
-    }
-  }).observe(document.getElementById('root'),{childList:true});
+  function showApp() {
+    const root = document.getElementById('root');
+    document.getElementById('splash')?.remove();
+    root.style.opacity = '1';
+    window.removeEventListener('app:ready', showApp);
+  }
+  window.addEventListener('app:ready', showApp);
 </script>
 </body>
 </html>
