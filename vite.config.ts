@@ -14,10 +14,10 @@ dotenv.config();
 export default defineConfig(({ mode }) => {
   const env  = loadEnv(mode, process.cwd(), 'VITE_');
   const prod = mode === 'production';
-  const pure = prod ? ['console.log', 'console.info', 'console.warn'] : []
+  // const pure = prod ? ['console.log', 'console.info', 'console.warn'] : []
 
   return {
-    esbuild: { pure },
+    // esbuild: { pure },
     build: {
       target: 'es2020',
       sourcemap: !prod,
