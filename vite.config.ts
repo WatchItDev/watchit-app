@@ -21,6 +21,7 @@ export default defineConfig(({ mode }) => {
       sourcemap: !prod,
       cssCodeSplit: true,
       chunkSizeWarningLimit: 700,
+      modulePreload: false
     },
 
     plugins: [
@@ -56,6 +57,16 @@ export default defineConfig(({ mode }) => {
         enableBundleAnalysis: !!process.env.VITE_CODECOV_TOKEN,
         uploadToken: process.env.VITE_CODECOV_TOKEN,
       }),
+
+      {
+        name: 'cf-rocket-loader-optout',
+        transformIndexHtml(html) {
+          return html.replace(
+            /<script\s+type="module"/,
+            '<script data-cfasync="false" type="module"'
+          );
+        },
+      }
     ].filter(Boolean),
 
     resolve: {
