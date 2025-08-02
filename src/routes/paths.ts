@@ -34,6 +34,7 @@ export const paths = {
     ownership: `/ownership`,
     finance: `/finance`,
     marketing: `/marketing`,
+    collaborations: `/collaborations`,
     user: {
       root: (id: string) => `/profile/${id}`,
       new: `/user/new`,

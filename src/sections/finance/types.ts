@@ -36,8 +36,8 @@ export interface IOrderTableFilters {
 }
 
 export const TRANSACTIONS_TYPES = [
-  { value: 'transferTo', label: 'Income' },
-  { value: 'transferFrom', label: 'Outcomes' },
+  { value: 'transferTo', label: 'Inflows' },
+  { value: 'transferFrom', label: 'Outflows' },
 ];
 
 export interface FinanceWithdrawProps {

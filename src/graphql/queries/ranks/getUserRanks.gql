@@ -1,0 +1,7 @@
+query GetUserRanks($address: String!) {
+  getUserRanks(address: $address) {
+    achievedAt
+    rankId
+    user
+  }
+}

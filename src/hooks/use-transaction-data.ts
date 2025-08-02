@@ -79,7 +79,7 @@ export const useTransactionData = (): TransactionsDataResponseHook => {
         ...transaction,
         payload: {
           ...transaction.payload,
-          type: transaction.sender_id === sessionData?.profile?.id ? 'Outcome' : 'Income',
+          type: transaction.sender_id === sessionData?.profile?.id ? 'Outflows' : 'Inflows',
         },
       }));
 

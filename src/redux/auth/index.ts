@@ -42,6 +42,13 @@ const authSlice = createSlice({
     setInfo: (state, action: PayloadAction<{ info: Partial<UserInfo> }>) => {
       state.session.info = action.payload.info;
     },
+    incrementXp: (state, action: PayloadAction<{ amount: number }>) => {
+      const user = state.session.user;
+      if (user) {
+        user.xpBalance += action.payload.amount;
+        user.xpTotal   += action.payload.amount;
+      }
+    },
   },
 });
 
@@ -52,6 +59,7 @@ export const {
   setBalance,
   setSession,
   setUser,
+  incrementXp,
   setInfo
 } = authSlice.actions;
 

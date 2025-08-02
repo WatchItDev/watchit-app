@@ -21,11 +21,8 @@ import {
   Typography,
 } from '@mui/material';
 
-// ETHERS IMPORTS
-import { ethers } from 'ethers';
-
 // VIEM IMPORTS
-import { Address } from 'viem';
+import { Address, formatUnits, parseUnits } from 'viem';
 
 // LOCAL IMPORTS
 import NeonPaper from '@src/sections/publication/components/neon-paper-container.tsx';
@@ -98,11 +95,11 @@ export const SubscribeProfileModal = ({
 
   if (!isCustomDurationInvalid && durationDays >= minDays && terms?.amount) {
     totalCostWei = terms.amount * BigInt(durationDays);
-    totalCostMMC = ethers.formatUnits(totalCostWei, 18); // Convert Wei to MMC
+    totalCostMMC = formatUnits(totalCostWei, 18); // Convert Wei to MMC
   }
 
   const balanceWei = balanceFromRedux
-    ? ethers.parseUnits(balanceFromRedux.toString(), 18)
+    ? parseUnits(balanceFromRedux.toString(), 18)
     : BigInt(0);
   const isBalanceSufficient = balanceWei && totalCostWei && balanceWei >= totalCostWei;
 

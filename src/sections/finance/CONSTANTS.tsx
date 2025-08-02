@@ -17,5 +17,5 @@ export const TX_COLORS = {
   'released': COLORS.success,
 }
 
-export const FINANCE_STATISTICS_INCOME_EVENTS = ['transferFrom', 'deposit'];
-export const FINANCE_STATISTICS_OUTCOME_EVENTS = ['transferTo', 'withdraw', 'collected', 'paid'];
+export const FINANCE_STATISTICS_INFLOW_EVENTS = ['transferFrom', 'deposit'];
+export const FINANCE_STATISTICS_OUTFLOW_EVENTS = ['transferTo', 'withdraw', 'collected', 'paid'];

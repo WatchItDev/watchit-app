@@ -56,6 +56,7 @@ import {
 } from '@src/graphql/generated/hooks.tsx';
 import { resolveSrc } from '@src/utils/image.ts';
 import { useBookmarks } from '@src/hooks/use-bookmark.ts';
+import PublicationShare from '@src/sections/publication/components/publication-share.tsx';
 
 // ----------------------------------------------------------------------
 
@@ -413,6 +414,7 @@ export default function PublicationDetailMain({
                     </>
                   )}
                 </Button>
+                <PublicationShare post={post} />
               </Stack>
             </m.div>
           </Box>

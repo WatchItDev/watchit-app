@@ -1,11 +1,8 @@
 // REACT IMPORTS
 import { useState } from 'react';
 
-// ETHERS IMPORTS
-import { ethers } from 'ethers';
-
 // VIEM IMPORTS
-import { encodeFunctionData } from 'viem';
+import { encodeFunctionData, parseUnits } from 'viem';
 
 // LOCAL IMPORTS
 import AccessWorkflowAbi from '@src/config/abi/AccessWorkflow.json';
@@ -76,7 +73,7 @@ export const useSubscribe = (): UseSubscribeHook => {
     }
 
     try {
-      const approvalAmountInWei = ethers.parseUnits(amount, 18); // Convert amount to BigInt (in Wei)
+      const approvalAmountInWei = parseUnits(amount, 18); // Convert amount to BigInt (in Wei)
       const parties = [session?.address ?? '']; // The parties involved in the agreement (e.g., the user's address)
       const payload = '0x'; // Additional payload data if needed
 

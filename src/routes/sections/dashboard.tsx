@@ -5,6 +5,7 @@ import DashboardLayout from '@src/layouts/dashboard';
 // components
 import { LoadingScreen, SplashScreen } from '@src/components/loading-screen';
 import CompactLayout from '@src/layouts/compact';
+import AppReady from '@src/components/app-ready.tsx';
 
 
 // ----------------------------------------------------------------------
@@ -22,6 +23,7 @@ const AnalyticsPage = lazy(() => import('@src/pages/analytics.tsx'));
 const StudioPage = lazy(() => import('@src/pages/studio.tsx'));
 const OwnershipPage = lazy(() => import('@src/pages/ownership.tsx'));
 const FinancePage = lazy(() => import('@src/pages/finance.tsx'));
+const CollaborationsPage = lazy(() => import('@src/pages/collaborations.tsx'));
 // MARKETING
 const MarketingPage = lazy(() => import('@src/pages/marketing.tsx'));
 const StrategyPage = lazy(() => import('@src/pages/marketing/index.tsx'));
@@ -41,6 +43,7 @@ export const dashboardRoutes = [
     element: (
       <DashboardLayout>
         <Suspense fallback={<LoadingScreen />}>
+          <AppReady />
           <Outlet />
         </Suspense>
       </DashboardLayout>
@@ -55,6 +58,7 @@ export const dashboardRoutes = [
       { path: 'studio', element: <StudioPage /> },
       { path: 'ownership', element: <OwnershipPage /> },
       { path: 'finance', element: <FinancePage /> },
+      { path: 'collaborations', element: <CollaborationsPage /> },
       { path: 'marketing', element: <MarketingPage /> },
       { path: 'marketing/strategy/:id', element: <StrategyPage /> },
       { path: 'profile/:id', element: <UserProfilePage /> },

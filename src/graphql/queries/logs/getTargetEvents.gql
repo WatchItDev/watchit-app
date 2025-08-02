@@ -1,0 +1,14 @@
+query GetTargetEvents($targetId: String!, $targetType: String, $type: String, $limit: Int, $offset: Int) {
+  getTargetEvents(targetId: $targetId, targetType: $targetType, type: $type, limit: $limit, offset: $offset) {
+    id
+    type
+    author
+    targetId
+    targetType
+    progress
+    amount
+    currency
+    meta
+    createdAt
+  }
+}

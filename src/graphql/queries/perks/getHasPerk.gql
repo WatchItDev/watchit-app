@@ -1,0 +1,3 @@
+query HasPerk($address: String!, $perkId: ID!) {
+  hasPerk(address: $address, perkId: $perkId)
+}

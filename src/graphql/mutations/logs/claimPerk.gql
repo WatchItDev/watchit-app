@@ -1,0 +1,3 @@
+mutation ClaimPerk($perkId: ID!) {
+  claimPerk(perkId: $perkId)
+}

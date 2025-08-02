@@ -9,9 +9,8 @@ import Typography from '@mui/material/Typography';
 import LoadingButton from "@mui/lab/LoadingButton";
 import { Button, TextField, FormControl, DialogActions, LinearProgress } from '@mui/material';
 
-// VIEM AND ETHERS
-import { Address } from 'viem';
-import { ethers } from 'ethers';
+// VIEM
+import { Address, formatUnits } from 'viem';
 
 // LOCAL IMPORTS
 import NeonPaper from "@src/sections/publication/components/neon-paper-container.tsx";
@@ -45,7 +44,7 @@ const CampaignSettingsModalContent: FC<CampaignSettingsModalContentProps> = (pro
   // Convert the daily price from Wei to MMC (float)
   const dailyPriceInMMC = useMemo((): number => {
     if (!terms?.amount) return 0; // use a Terms type to avoid to much use of safe navigation view issue #604
-    return parseFloat(ethers.formatUnits(terms.amount, 18));
+    return parseFloat(formatUnits(terms.amount, 18));
   }, [terms]);
 
   // Calculate how many days of access the fundsAllocationAmount provides

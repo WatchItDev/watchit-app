@@ -3,6 +3,7 @@ import { Typography, Box, TextField, Stack, Paper } from '@mui/material';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import LoadingButton from '@mui/lab/LoadingButton';
+import { Post } from '@src/graphql/generated/graphql.ts';
 
 const tipOptions = [
   { value: '10', title: '10', subtitle: 'A token of appreciation' },
@@ -10,7 +11,7 @@ const tipOptions = [
   { value: '100', title: '100', subtitle: 'Go the extra mile' },
 ];
 
-export const LeaveTipCard: FC = () => {
+export const LeaveTipCard: FC<{ post: Post }> = ({ post }) => {
   const [selectedTip, setSelectedTip] = useState('10');
   const [customTip, setCustomTip] = useState('');
   const [successMessage, setSuccessMessage] = useState(false);
@@ -31,7 +32,7 @@ export const LeaveTipCard: FC = () => {
     <Card sx={{ width: '100%', maxWidth: { lg: 400 }, margin: 'auto', backgroundColor: '#2B2D31' }}>
       <CardContent>
         <Typography variant="h6" gutterBottom>
-          Support the Creator
+          Support to {post.author.displayName}
         </Typography>
         <Typography variant="body2" color="textSecondary" sx={{ mb: 3 }}>
           Choose an amount to leave a tip and support the content you love.

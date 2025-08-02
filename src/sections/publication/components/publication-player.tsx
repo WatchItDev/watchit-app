@@ -26,7 +26,8 @@ const PublicationPlayer: FC<PublicationPlayerProps> = (props) =>  {
         <VideoPlayer
           src={getMediaUri(getMovieCid(publication))}
           cid={getMovieCid(publication)}
-          titleMovie={publication?.title}
+          title={publication?.title}
+          postId={publication?.id}
           // onBack={handleBack}
         />
       )}

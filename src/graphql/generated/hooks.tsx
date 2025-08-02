@@ -211,6 +211,99 @@ export function useToggleLikeMutation(baseOptions?: Apollo.MutationHookOptions<T
 export type ToggleLikeMutationHookResult = ReturnType<typeof useToggleLikeMutation>;
 export type ToggleLikeMutationResult = Apollo.MutationResult<ToggleLikeMutation>;
 export type ToggleLikeMutationOptions = Apollo.BaseMutationOptions<ToggleLikeMutation, ToggleLikeMutationVariables>;
+export const ClaimPerkDocument = gql`
+    mutation ClaimPerk($perkId: ID!) {
+  claimPerk(perkId: $perkId)
+}
+    `;
+export type ClaimPerkMutationFn = Apollo.MutationFunction<ClaimPerkMutation, ClaimPerkMutationVariables>;
+
+/**
+ * __useClaimPerkMutation__
+ *
+ * To run a mutation, you first call `useClaimPerkMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useClaimPerkMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [claimPerkMutation, { data, loading, error }] = useClaimPerkMutation({
+ *   variables: {
+ *      perkId: // value for 'perkId'
+ *   },
+ * });
+ */
+export function useClaimPerkMutation(baseOptions?: Apollo.MutationHookOptions<ClaimPerkMutation, ClaimPerkMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<ClaimPerkMutation, ClaimPerkMutationVariables>(ClaimPerkDocument, options);
+      }
+export type ClaimPerkMutationHookResult = ReturnType<typeof useClaimPerkMutation>;
+export type ClaimPerkMutationResult = Apollo.MutationResult<ClaimPerkMutation>;
+export type ClaimPerkMutationOptions = Apollo.BaseMutationOptions<ClaimPerkMutation, ClaimPerkMutationVariables>;
+export const LogAnonymousEventDocument = gql`
+    mutation LogAnonymousEvent($input: LogEventInput!) {
+  logAnonymousEvent(input: $input)
+}
+    `;
+export type LogAnonymousEventMutationFn = Apollo.MutationFunction<LogAnonymousEventMutation, LogAnonymousEventMutationVariables>;
+
+/**
+ * __useLogAnonymousEventMutation__
+ *
+ * To run a mutation, you first call `useLogAnonymousEventMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useLogAnonymousEventMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [logAnonymousEventMutation, { data, loading, error }] = useLogAnonymousEventMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useLogAnonymousEventMutation(baseOptions?: Apollo.MutationHookOptions<LogAnonymousEventMutation, LogAnonymousEventMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<LogAnonymousEventMutation, LogAnonymousEventMutationVariables>(LogAnonymousEventDocument, options);
+      }
+export type LogAnonymousEventMutationHookResult = ReturnType<typeof useLogAnonymousEventMutation>;
+export type LogAnonymousEventMutationResult = Apollo.MutationResult<LogAnonymousEventMutation>;
+export type LogAnonymousEventMutationOptions = Apollo.BaseMutationOptions<LogAnonymousEventMutation, LogAnonymousEventMutationVariables>;
+export const LogEventDocument = gql`
+    mutation LogEvent($input: LogEventInput!) {
+  logEvent(input: $input)
+}
+    `;
+export type LogEventMutationFn = Apollo.MutationFunction<LogEventMutation, LogEventMutationVariables>;
+
+/**
+ * __useLogEventMutation__
+ *
+ * To run a mutation, you first call `useLogEventMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useLogEventMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [logEventMutation, { data, loading, error }] = useLogEventMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useLogEventMutation(baseOptions?: Apollo.MutationHookOptions<LogEventMutation, LogEventMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<LogEventMutation, LogEventMutationVariables>(LogEventDocument, options);
+      }
+export type LogEventMutationHookResult = ReturnType<typeof useLogEventMutation>;
+export type LogEventMutationResult = Apollo.MutationResult<LogEventMutation>;
+export type LogEventMutationOptions = Apollo.BaseMutationOptions<LogEventMutation, LogEventMutationVariables>;
 export const CreatePostDocument = gql`
     mutation CreatePost($input: CreatePostInput!) {
   createPost(input: $input) {
@@ -1000,6 +1093,53 @@ export type GetIsFollowingQueryHookResult = ReturnType<typeof useGetIsFollowingQ
 export type GetIsFollowingLazyQueryHookResult = ReturnType<typeof useGetIsFollowingLazyQuery>;
 export type GetIsFollowingSuspenseQueryHookResult = ReturnType<typeof useGetIsFollowingSuspenseQuery>;
 export type GetIsFollowingQueryResult = Apollo.QueryResult<GetIsFollowingQuery, GetIsFollowingQueryVariables>;
+export const GetLeaderboardDocument = gql`
+    query GetLeaderboard($limit: Int) {
+  getLeaderboard(limit: $limit) {
+    address
+    email
+    xpTotal
+    xpBalance
+    username
+    displayName
+    currentRank
+    profilePicture
+  }
+}
+    `;
+
+/**
+ * __useGetLeaderboardQuery__
+ *
+ * To run a query within a React component, call `useGetLeaderboardQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetLeaderboardQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetLeaderboardQuery({
+ *   variables: {
+ *      limit: // value for 'limit'
+ *   },
+ * });
+ */
+export function useGetLeaderboardQuery(baseOptions?: Apollo.QueryHookOptions<GetLeaderboardQuery, GetLeaderboardQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetLeaderboardQuery, GetLeaderboardQueryVariables>(GetLeaderboardDocument, options);
+      }
+export function useGetLeaderboardLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetLeaderboardQuery, GetLeaderboardQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetLeaderboardQuery, GetLeaderboardQueryVariables>(GetLeaderboardDocument, options);
+        }
+export function useGetLeaderboardSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetLeaderboardQuery, GetLeaderboardQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetLeaderboardQuery, GetLeaderboardQueryVariables>(GetLeaderboardDocument, options);
+        }
+export type GetLeaderboardQueryHookResult = ReturnType<typeof useGetLeaderboardQuery>;
+export type GetLeaderboardLazyQueryHookResult = ReturnType<typeof useGetLeaderboardLazyQuery>;
+export type GetLeaderboardSuspenseQueryHookResult = ReturnType<typeof useGetLeaderboardSuspenseQuery>;
+export type GetLeaderboardQueryResult = Apollo.QueryResult<GetLeaderboardQuery, GetLeaderboardQueryVariables>;
 export const GetIsLikedDocument = gql`
     query GetIsLiked($targetId: String!) {
   getIsLiked(targetId: $targetId)
@@ -1038,6 +1178,373 @@ export type GetIsLikedQueryHookResult = ReturnType<typeof useGetIsLikedQuery>;
 export type GetIsLikedLazyQueryHookResult = ReturnType<typeof useGetIsLikedLazyQuery>;
 export type GetIsLikedSuspenseQueryHookResult = ReturnType<typeof useGetIsLikedSuspenseQuery>;
 export type GetIsLikedQueryResult = Apollo.QueryResult<GetIsLikedQuery, GetIsLikedQueryVariables>;
+export const GetPostViewsDocument = gql`
+    query GetPostViews($postId: String!) {
+  getPostViews(postId: $postId)
+}
+    `;
+
+/**
+ * __useGetPostViewsQuery__
+ *
+ * To run a query within a React component, call `useGetPostViewsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetPostViewsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetPostViewsQuery({
+ *   variables: {
+ *      postId: // value for 'postId'
+ *   },
+ * });
+ */
+export function useGetPostViewsQuery(baseOptions: Apollo.QueryHookOptions<GetPostViewsQuery, GetPostViewsQueryVariables> & ({ variables: GetPostViewsQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetPostViewsQuery, GetPostViewsQueryVariables>(GetPostViewsDocument, options);
+      }
+export function useGetPostViewsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetPostViewsQuery, GetPostViewsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetPostViewsQuery, GetPostViewsQueryVariables>(GetPostViewsDocument, options);
+        }
+export function useGetPostViewsSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetPostViewsQuery, GetPostViewsQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetPostViewsQuery, GetPostViewsQueryVariables>(GetPostViewsDocument, options);
+        }
+export type GetPostViewsQueryHookResult = ReturnType<typeof useGetPostViewsQuery>;
+export type GetPostViewsLazyQueryHookResult = ReturnType<typeof useGetPostViewsLazyQuery>;
+export type GetPostViewsSuspenseQueryHookResult = ReturnType<typeof useGetPostViewsSuspenseQuery>;
+export type GetPostViewsQueryResult = Apollo.QueryResult<GetPostViewsQuery, GetPostViewsQueryVariables>;
+export const GetProfileViewsDocument = gql`
+    query GetProfileViews($address: String!) {
+  getProfileViews(address: $address)
+}
+    `;
+
+/**
+ * __useGetProfileViewsQuery__
+ *
+ * To run a query within a React component, call `useGetProfileViewsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetProfileViewsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetProfileViewsQuery({
+ *   variables: {
+ *      address: // value for 'address'
+ *   },
+ * });
+ */
+export function useGetProfileViewsQuery(baseOptions: Apollo.QueryHookOptions<GetProfileViewsQuery, GetProfileViewsQueryVariables> & ({ variables: GetProfileViewsQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetProfileViewsQuery, GetProfileViewsQueryVariables>(GetProfileViewsDocument, options);
+      }
+export function useGetProfileViewsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetProfileViewsQuery, GetProfileViewsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetProfileViewsQuery, GetProfileViewsQueryVariables>(GetProfileViewsDocument, options);
+        }
+export function useGetProfileViewsSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetProfileViewsQuery, GetProfileViewsQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetProfileViewsQuery, GetProfileViewsQueryVariables>(GetProfileViewsDocument, options);
+        }
+export type GetProfileViewsQueryHookResult = ReturnType<typeof useGetProfileViewsQuery>;
+export type GetProfileViewsLazyQueryHookResult = ReturnType<typeof useGetProfileViewsLazyQuery>;
+export type GetProfileViewsSuspenseQueryHookResult = ReturnType<typeof useGetProfileViewsSuspenseQuery>;
+export type GetProfileViewsQueryResult = Apollo.QueryResult<GetProfileViewsQuery, GetProfileViewsQueryVariables>;
+export const GetTargetEventsDocument = gql`
+    query GetTargetEvents($targetId: String!, $targetType: String, $type: String, $limit: Int, $offset: Int) {
+  getTargetEvents(
+    targetId: $targetId
+    targetType: $targetType
+    type: $type
+    limit: $limit
+    offset: $offset
+  ) {
+    id
+    type
+    author
+    targetId
+    targetType
+    progress
+    amount
+    currency
+    meta
+    createdAt
+  }
+}
+    `;
+
+/**
+ * __useGetTargetEventsQuery__
+ *
+ * To run a query within a React component, call `useGetTargetEventsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetTargetEventsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetTargetEventsQuery({
+ *   variables: {
+ *      targetId: // value for 'targetId'
+ *      targetType: // value for 'targetType'
+ *      type: // value for 'type'
+ *      limit: // value for 'limit'
+ *      offset: // value for 'offset'
+ *   },
+ * });
+ */
+export function useGetTargetEventsQuery(baseOptions: Apollo.QueryHookOptions<GetTargetEventsQuery, GetTargetEventsQueryVariables> & ({ variables: GetTargetEventsQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetTargetEventsQuery, GetTargetEventsQueryVariables>(GetTargetEventsDocument, options);
+      }
+export function useGetTargetEventsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTargetEventsQuery, GetTargetEventsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetTargetEventsQuery, GetTargetEventsQueryVariables>(GetTargetEventsDocument, options);
+        }
+export function useGetTargetEventsSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetTargetEventsQuery, GetTargetEventsQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetTargetEventsQuery, GetTargetEventsQueryVariables>(GetTargetEventsDocument, options);
+        }
+export type GetTargetEventsQueryHookResult = ReturnType<typeof useGetTargetEventsQuery>;
+export type GetTargetEventsLazyQueryHookResult = ReturnType<typeof useGetTargetEventsLazyQuery>;
+export type GetTargetEventsSuspenseQueryHookResult = ReturnType<typeof useGetTargetEventsSuspenseQuery>;
+export type GetTargetEventsQueryResult = Apollo.QueryResult<GetTargetEventsQuery, GetTargetEventsQueryVariables>;
+export const GetUserEventsDocument = gql`
+    query GetUserEvents($address: String!, $type: String, $limit: Int, $offset: Int) {
+  getUserEvents(address: $address, type: $type, limit: $limit, offset: $offset) {
+    amount
+    author
+    createdAt
+    currency
+    id
+    meta
+    progress
+    targetId
+    targetType
+    type
+  }
+}
+    `;
+
+/**
+ * __useGetUserEventsQuery__
+ *
+ * To run a query within a React component, call `useGetUserEventsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUserEventsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUserEventsQuery({
+ *   variables: {
+ *      address: // value for 'address'
+ *      type: // value for 'type'
+ *      limit: // value for 'limit'
+ *      offset: // value for 'offset'
+ *   },
+ * });
+ */
+export function useGetUserEventsQuery(baseOptions: Apollo.QueryHookOptions<GetUserEventsQuery, GetUserEventsQueryVariables> & ({ variables: GetUserEventsQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetUserEventsQuery, GetUserEventsQueryVariables>(GetUserEventsDocument, options);
+      }
+export function useGetUserEventsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserEventsQuery, GetUserEventsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetUserEventsQuery, GetUserEventsQueryVariables>(GetUserEventsDocument, options);
+        }
+export function useGetUserEventsSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetUserEventsQuery, GetUserEventsQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetUserEventsQuery, GetUserEventsQueryVariables>(GetUserEventsDocument, options);
+        }
+export type GetUserEventsQueryHookResult = ReturnType<typeof useGetUserEventsQuery>;
+export type GetUserEventsLazyQueryHookResult = ReturnType<typeof useGetUserEventsLazyQuery>;
+export type GetUserEventsSuspenseQueryHookResult = ReturnType<typeof useGetUserEventsSuspenseQuery>;
+export type GetUserEventsQueryResult = Apollo.QueryResult<GetUserEventsQuery, GetUserEventsQueryVariables>;
+export const HasPerkDocument = gql`
+    query HasPerk($address: String!, $perkId: ID!) {
+  hasPerk(address: $address, perkId: $perkId)
+}
+    `;
+
+/**
+ * __useHasPerkQuery__
+ *
+ * To run a query within a React component, call `useHasPerkQuery` and pass it any options that fit your needs.
+ * When your component renders, `useHasPerkQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useHasPerkQuery({
+ *   variables: {
+ *      address: // value for 'address'
+ *      perkId: // value for 'perkId'
+ *   },
+ * });
+ */
+export function useHasPerkQuery(baseOptions: Apollo.QueryHookOptions<HasPerkQuery, HasPerkQueryVariables> & ({ variables: HasPerkQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<HasPerkQuery, HasPerkQueryVariables>(HasPerkDocument, options);
+      }
+export function useHasPerkLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<HasPerkQuery, HasPerkQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<HasPerkQuery, HasPerkQueryVariables>(HasPerkDocument, options);
+        }
+export function useHasPerkSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<HasPerkQuery, HasPerkQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<HasPerkQuery, HasPerkQueryVariables>(HasPerkDocument, options);
+        }
+export type HasPerkQueryHookResult = ReturnType<typeof useHasPerkQuery>;
+export type HasPerkLazyQueryHookResult = ReturnType<typeof useHasPerkLazyQuery>;
+export type HasPerkSuspenseQueryHookResult = ReturnType<typeof useHasPerkSuspenseQuery>;
+export type HasPerkQueryResult = Apollo.QueryResult<HasPerkQuery, HasPerkQueryVariables>;
+export const GetPerksDocument = gql`
+    query GetPerks {
+  getPerks {
+    availableAt
+    category
+    collectedAt
+    cooldownRemaining
+    enabled
+    executionRule {
+      cooldownSec
+      type
+    }
+    id
+    minRankId
+    name
+    reward {
+      action
+      amount
+      tokenId
+    }
+    rewardPreview
+    uiHint
+    unlockRule {
+      action
+      on
+      rankId
+      times
+      window
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetPerksQuery__
+ *
+ * To run a query within a React component, call `useGetPerksQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetPerksQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetPerksQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetPerksQuery(baseOptions?: Apollo.QueryHookOptions<GetPerksQuery, GetPerksQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetPerksQuery, GetPerksQueryVariables>(GetPerksDocument, options);
+      }
+export function useGetPerksLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetPerksQuery, GetPerksQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetPerksQuery, GetPerksQueryVariables>(GetPerksDocument, options);
+        }
+export function useGetPerksSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetPerksQuery, GetPerksQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetPerksQuery, GetPerksQueryVariables>(GetPerksDocument, options);
+        }
+export type GetPerksQueryHookResult = ReturnType<typeof useGetPerksQuery>;
+export type GetPerksLazyQueryHookResult = ReturnType<typeof useGetPerksLazyQuery>;
+export type GetPerksSuspenseQueryHookResult = ReturnType<typeof useGetPerksSuspenseQuery>;
+export type GetPerksQueryResult = Apollo.QueryResult<GetPerksQuery, GetPerksQueryVariables>;
+export const GetUnlockedPerksDocument = gql`
+    query GetUnlockedPerks($address: String!) {
+  getUnlockedPerks(address: $address) {
+    availableAt
+    collectedAt
+    cooldownSec
+    createdAt
+    id
+    perk {
+      id
+      name
+      minRankId
+      uiHint
+      category
+      collectedAt
+      availableAt
+      cooldownRemaining
+      rewardPreview
+      unlockRule {
+        action
+        on
+        rankId
+        times
+        window
+      }
+      executionRule {
+        cooldownSec
+        type
+      }
+      reward {
+        action
+        amount
+        tokenId
+      }
+      enabled
+    }
+    perkId
+    progress
+    status
+    target
+    user
+  }
+}
+    `;
+
+/**
+ * __useGetUnlockedPerksQuery__
+ *
+ * To run a query within a React component, call `useGetUnlockedPerksQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUnlockedPerksQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUnlockedPerksQuery({
+ *   variables: {
+ *      address: // value for 'address'
+ *   },
+ * });
+ */
+export function useGetUnlockedPerksQuery(baseOptions: Apollo.QueryHookOptions<GetUnlockedPerksQuery, GetUnlockedPerksQueryVariables> & ({ variables: GetUnlockedPerksQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetUnlockedPerksQuery, GetUnlockedPerksQueryVariables>(GetUnlockedPerksDocument, options);
+      }
+export function useGetUnlockedPerksLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUnlockedPerksQuery, GetUnlockedPerksQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetUnlockedPerksQuery, GetUnlockedPerksQueryVariables>(GetUnlockedPerksDocument, options);
+        }
+export function useGetUnlockedPerksSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetUnlockedPerksQuery, GetUnlockedPerksQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetUnlockedPerksQuery, GetUnlockedPerksQueryVariables>(GetUnlockedPerksDocument, options);
+        }
+export type GetUnlockedPerksQueryHookResult = ReturnType<typeof useGetUnlockedPerksQuery>;
+export type GetUnlockedPerksLazyQueryHookResult = ReturnType<typeof useGetUnlockedPerksLazyQuery>;
+export type GetUnlockedPerksSuspenseQueryHookResult = ReturnType<typeof useGetUnlockedPerksSuspenseQuery>;
+export type GetUnlockedPerksQueryResult = Apollo.QueryResult<GetUnlockedPerksQuery, GetUnlockedPerksQueryVariables>;
 export const GetPostDocument = gql`
     query GetPost($getPostId: String!) {
   getPost(id: $getPostId) {
@@ -1244,6 +1751,157 @@ export type GetPostsQueryHookResult = ReturnType<typeof useGetPostsQuery>;
 export type GetPostsLazyQueryHookResult = ReturnType<typeof useGetPostsLazyQuery>;
 export type GetPostsSuspenseQueryHookResult = ReturnType<typeof useGetPostsSuspenseQuery>;
 export type GetPostsQueryResult = Apollo.QueryResult<GetPostsQuery, GetPostsQueryVariables>;
+export const GetAchievementsDocument = gql`
+    query GetAchievements($address: String!) {
+  getAchievements(address: $address) {
+    currentRank {
+      badgeUrl
+      colorTheme
+      createdAt
+      id
+      minXp
+      name
+      order
+      updatedAt
+    }
+    nextRank {
+      name
+      minXp
+      id
+      createdAt
+      colorTheme
+      badgeUrl
+      order
+      updatedAt
+    }
+    progressPct
+    xpBalance
+    xpRemaining
+    xpTotal
+  }
+}
+    `;
+
+/**
+ * __useGetAchievementsQuery__
+ *
+ * To run a query within a React component, call `useGetAchievementsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAchievementsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAchievementsQuery({
+ *   variables: {
+ *      address: // value for 'address'
+ *   },
+ * });
+ */
+export function useGetAchievementsQuery(baseOptions: Apollo.QueryHookOptions<GetAchievementsQuery, GetAchievementsQueryVariables> & ({ variables: GetAchievementsQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAchievementsQuery, GetAchievementsQueryVariables>(GetAchievementsDocument, options);
+      }
+export function useGetAchievementsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAchievementsQuery, GetAchievementsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAchievementsQuery, GetAchievementsQueryVariables>(GetAchievementsDocument, options);
+        }
+export function useGetAchievementsSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetAchievementsQuery, GetAchievementsQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetAchievementsQuery, GetAchievementsQueryVariables>(GetAchievementsDocument, options);
+        }
+export type GetAchievementsQueryHookResult = ReturnType<typeof useGetAchievementsQuery>;
+export type GetAchievementsLazyQueryHookResult = ReturnType<typeof useGetAchievementsLazyQuery>;
+export type GetAchievementsSuspenseQueryHookResult = ReturnType<typeof useGetAchievementsSuspenseQuery>;
+export type GetAchievementsQueryResult = Apollo.QueryResult<GetAchievementsQuery, GetAchievementsQueryVariables>;
+export const GetRanksCatalogDocument = gql`
+    query GetRanksCatalog {
+  getRanksCatalog {
+    badgeUrl
+    colorTheme
+    createdAt
+    id
+    minXp
+    name
+    updatedAt
+    order
+  }
+}
+    `;
+
+/**
+ * __useGetRanksCatalogQuery__
+ *
+ * To run a query within a React component, call `useGetRanksCatalogQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetRanksCatalogQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetRanksCatalogQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetRanksCatalogQuery(baseOptions?: Apollo.QueryHookOptions<GetRanksCatalogQuery, GetRanksCatalogQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetRanksCatalogQuery, GetRanksCatalogQueryVariables>(GetRanksCatalogDocument, options);
+      }
+export function useGetRanksCatalogLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetRanksCatalogQuery, GetRanksCatalogQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetRanksCatalogQuery, GetRanksCatalogQueryVariables>(GetRanksCatalogDocument, options);
+        }
+export function useGetRanksCatalogSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetRanksCatalogQuery, GetRanksCatalogQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetRanksCatalogQuery, GetRanksCatalogQueryVariables>(GetRanksCatalogDocument, options);
+        }
+export type GetRanksCatalogQueryHookResult = ReturnType<typeof useGetRanksCatalogQuery>;
+export type GetRanksCatalogLazyQueryHookResult = ReturnType<typeof useGetRanksCatalogLazyQuery>;
+export type GetRanksCatalogSuspenseQueryHookResult = ReturnType<typeof useGetRanksCatalogSuspenseQuery>;
+export type GetRanksCatalogQueryResult = Apollo.QueryResult<GetRanksCatalogQuery, GetRanksCatalogQueryVariables>;
+export const GetUserRanksDocument = gql`
+    query GetUserRanks($address: String!) {
+  getUserRanks(address: $address) {
+    achievedAt
+    rankId
+    user
+  }
+}
+    `;
+
+/**
+ * __useGetUserRanksQuery__
+ *
+ * To run a query within a React component, call `useGetUserRanksQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUserRanksQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUserRanksQuery({
+ *   variables: {
+ *      address: // value for 'address'
+ *   },
+ * });
+ */
+export function useGetUserRanksQuery(baseOptions: Apollo.QueryHookOptions<GetUserRanksQuery, GetUserRanksQueryVariables> & ({ variables: GetUserRanksQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetUserRanksQuery, GetUserRanksQueryVariables>(GetUserRanksDocument, options);
+      }
+export function useGetUserRanksLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserRanksQuery, GetUserRanksQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetUserRanksQuery, GetUserRanksQueryVariables>(GetUserRanksDocument, options);
+        }
+export function useGetUserRanksSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetUserRanksQuery, GetUserRanksQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetUserRanksQuery, GetUserRanksQueryVariables>(GetUserRanksDocument, options);
+        }
+export type GetUserRanksQueryHookResult = ReturnType<typeof useGetUserRanksQuery>;
+export type GetUserRanksLazyQueryHookResult = ReturnType<typeof useGetUserRanksLazyQuery>;
+export type GetUserRanksSuspenseQueryHookResult = ReturnType<typeof useGetUserRanksSuspenseQuery>;
+export type GetUserRanksQueryResult = Apollo.QueryResult<GetUserRanksQuery, GetUserRanksQueryVariables>;
 export const GetUserDocument = gql`
     query GetUser($input: UserByInput!) {
   getUser(input: $input) {
@@ -1253,6 +1911,8 @@ export const GetUserDocument = gql`
     bio
     profilePicture
     coverPicture
+    currentRank
+    xpTotal
     xpBalance
     followersCount
     followingCount

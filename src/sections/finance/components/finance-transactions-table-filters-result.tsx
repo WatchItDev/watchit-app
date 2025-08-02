@@ -67,8 +67,8 @@ export default function FinanceTransactionsTableFiltersResult({
 
 const parseFilterLabel = (type: string): string => {
   if (type === "all") return "All";
-  if (type === "transferTo") return "Incomes";
-  if (type === "transferFrom") return "Outcomes";
+  if (type === "transferTo") return "Inflows";
+  if (type === "transferFrom") return "Outflows";
   return type;
 };
 
