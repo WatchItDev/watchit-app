@@ -24,6 +24,7 @@ import { useAuth } from '@src/hooks/use-auth.ts';
 // import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 // import { PublicationPosterWallpaper } from '@src/sections/publication/components/publication-poster-wallpaper.tsx';
 // import { useGetSubscriptionCampaign } from '@src/hooks/protocol/use-get-subscription-campaign.ts';
+// import { PublicationHidden } from '@src/sections/publication/components/publication-hidden.tsx';
 import { PublicationDetailsViewProps } from '@src/sections/publication/types.ts';
 import { SubscribeProfileModal } from '@src/components/subscribe-profile-modal.tsx';
 import { PublicationTitleDescription } from '@src/sections/publication/components/publication-description.tsx';
@@ -32,9 +33,7 @@ import { PublicationSponsorsAndBackers } from '@src/sections/publication/compone
 import { useGetPostLazyQuery, useGetPostsByAuthorLazyQuery } from '@src/graphql/generated/hooks.tsx';
 import { Post } from '@src/graphql/generated/graphql.ts';
 import { Address } from 'viem';
-import { PublicationHidden } from '@src/sections/publication/components/publication-hidden.tsx';
 import { PublicationDetailViewSkeleton } from '@src/sections/publication/views/publication-details-view.skeleton.tsx';
-import { UserProfileViewSkeleton } from '@src/sections/user/views/user-profile-view.skeleton.tsx';
 import { LoadingFade } from '@src/components/LoadingFade.tsx';
 
 // ----------------------------------------------------------------------
@@ -47,21 +46,19 @@ export default function PublicationDetailsView({ id }: Readonly<PublicationDetai
   const [loadPublication, { data: publicationData, loading: publicationLoading }] = useGetPostLazyQuery();
   const publication: Post = publicationData?.getPost;
   const ownerAddress: Address = publication?.author?.address as Address;
+  const [loadPublications, { data: profilePublications }] = useGetPostsByAuthorLazyQuery();
   // const { hasAccess, loading: accessLoading, fetch: refetchAccess } = useHasAccess(ownerAddress);
   // const { isAuthorized, loading: isAuthorizedLoading } = useIsPolicyAuthorized(GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS, ownerAddress);
   // const { campaign, loading: campaignLoading, fetchSubscriptionCampaign } = useGetSubscriptionCampaign();
   // const { isActive: isCampaignActive, loading: isActiveLoading, fetchIsActive } = useGetCampaignIsActive();
-  const [loadPublications, { data: profilePublications, loading: profilePublicationsLoading }] = useGetPostsByAuthorLazyQuery();
 
   // const isAccessFullyChecked = !accessLoading && !isAuthorizedLoading && !isActiveLoading && !campaignLoading;
   // const allLoaded = !publicationLoading && !isAuthLoading && !profilePublicationsLoading && isAccessFullyChecked;
-  const allLoaded = !publicationLoading && !isAuthLoading && !profilePublicationsLoading;
   // const isSponsoredButtonVisible = isCampaignActive && isAuthorized && isAccessFullyChecked;
   // const isJoinButtonVisible = isAuthorized && !isCampaignActive && isAccessFullyChecked && !isSponsoredButtonVisible;
   // const isPlayerVisible = hasAccess && session.authenticated && !accessLoading && !isAuthLoading;
   // const accessChecked = hasAccess !== undefined;
   // const loading = (!(allLoaded && accessChecked) && !isAuthLoading) || !publication;
-  const loading = (!allLoaded && !isAuthLoading) || !publication;
 
   useEffect(() => {
     if (!ownerAddress || publicationLoading || profilePublications?.getPostsByAuthor) return;
@@ -95,12 +92,12 @@ export default function PublicationDetailsView({ id }: Readonly<PublicationDetai
   }
 
   const filteredPublications = profilePublications?.getPostsByAuthor?.filter((publication: Post) => publication.id !== id) ?? [];
+  const loading = (publicationLoading || isAuthLoading) && !publication
 
-  if (loading) return <PublicationDetailViewSkeleton />;
-  if (publication?.hidden || (!publication && !publicationLoading)) return <PublicationHidden />;
+  if (loading || !publication) return <PublicationDetailViewSkeleton />;
 
   return (
-    <LoadingFade loading={loading} skeleton={<UserProfileViewSkeleton />}>
+    <LoadingFade loading={loading} skeleton={<PublicationDetailViewSkeleton />}>
       <StyledContainer>
         <StyledStack>
           <StyledCard>
@@ -127,8 +124,8 @@ export default function PublicationDetailsView({ id }: Readonly<PublicationDetai
               {/*)}*/}
               <StyledInnerBox>
                 <PublicationTitleDescription publication={publication} />
-                <PublicationSponsorsAndBackers postId={publication.id} />
-                <PublicationRecommendations author={publication?.author?.displayName.split(' ')[0]} publications={filteredPublications}  />
+                <PublicationSponsorsAndBackers postId={publication?.id} />
+                <PublicationRecommendations author={publication?.author?.displayName?.split?.(' ')?.[0] ?? ''} publications={filteredPublications}  />
               </StyledInnerBox>
             </StyledCardContent>
           </StyledCard>
