@@ -1,0 +1,12 @@
+mutation CreateTip($input: CreateTipInput!) {
+  createTip(input: $input) {
+    amount
+    baker
+    createdAt
+    creator
+    id
+    message
+    postId
+    txHash
+  }
+}

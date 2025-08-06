@@ -438,6 +438,46 @@ export function useUpdatePostMutation(baseOptions?: Apollo.MutationHookOptions<U
 export type UpdatePostMutationHookResult = ReturnType<typeof useUpdatePostMutation>;
 export type UpdatePostMutationResult = Apollo.MutationResult<UpdatePostMutation>;
 export type UpdatePostMutationOptions = Apollo.BaseMutationOptions<UpdatePostMutation, UpdatePostMutationVariables>;
+export const CreateTipDocument = gql`
+    mutation CreateTip($input: CreateTipInput!) {
+  createTip(input: $input) {
+    amount
+    baker
+    createdAt
+    creator
+    id
+    message
+    postId
+    txHash
+  }
+}
+    `;
+export type CreateTipMutationFn = Apollo.MutationFunction<CreateTipMutation, CreateTipMutationVariables>;
+
+/**
+ * __useCreateTipMutation__
+ *
+ * To run a mutation, you first call `useCreateTipMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateTipMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createTipMutation, { data, loading, error }] = useCreateTipMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateTipMutation(baseOptions?: Apollo.MutationHookOptions<CreateTipMutation, CreateTipMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateTipMutation, CreateTipMutationVariables>(CreateTipDocument, options);
+      }
+export type CreateTipMutationHookResult = ReturnType<typeof useCreateTipMutation>;
+export type CreateTipMutationResult = Apollo.MutationResult<CreateTipMutation>;
+export type CreateTipMutationOptions = Apollo.BaseMutationOptions<CreateTipMutation, CreateTipMutationVariables>;
 export const CreateUserDocument = gql`
     mutation CreateUser($input: UserInput!) {
   createUser(input: $input) {
@@ -1902,6 +1942,59 @@ export type GetUserRanksQueryHookResult = ReturnType<typeof useGetUserRanksQuery
 export type GetUserRanksLazyQueryHookResult = ReturnType<typeof useGetUserRanksLazyQuery>;
 export type GetUserRanksSuspenseQueryHookResult = ReturnType<typeof useGetUserRanksSuspenseQuery>;
 export type GetUserRanksQueryResult = Apollo.QueryResult<GetUserRanksQuery, GetUserRanksQueryVariables>;
+export const GetTipsByBakerForPostDocument = gql`
+    query GetTipsByBakerForPost($postId: String!) {
+  getTipsByBakerForPost(postId: $postId) {
+    baker {
+      address
+      bio
+      displayName
+      id
+      username
+      coverPicture
+      currentRank
+      profilePicture
+      verified
+    }
+    count
+    lastTipAt
+    totalAmount
+  }
+}
+    `;
+
+/**
+ * __useGetTipsByBakerForPostQuery__
+ *
+ * To run a query within a React component, call `useGetTipsByBakerForPostQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetTipsByBakerForPostQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetTipsByBakerForPostQuery({
+ *   variables: {
+ *      postId: // value for 'postId'
+ *   },
+ * });
+ */
+export function useGetTipsByBakerForPostQuery(baseOptions: Apollo.QueryHookOptions<GetTipsByBakerForPostQuery, GetTipsByBakerForPostQueryVariables> & ({ variables: GetTipsByBakerForPostQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetTipsByBakerForPostQuery, GetTipsByBakerForPostQueryVariables>(GetTipsByBakerForPostDocument, options);
+      }
+export function useGetTipsByBakerForPostLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTipsByBakerForPostQuery, GetTipsByBakerForPostQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetTipsByBakerForPostQuery, GetTipsByBakerForPostQueryVariables>(GetTipsByBakerForPostDocument, options);
+        }
+export function useGetTipsByBakerForPostSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetTipsByBakerForPostQuery, GetTipsByBakerForPostQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetTipsByBakerForPostQuery, GetTipsByBakerForPostQueryVariables>(GetTipsByBakerForPostDocument, options);
+        }
+export type GetTipsByBakerForPostQueryHookResult = ReturnType<typeof useGetTipsByBakerForPostQuery>;
+export type GetTipsByBakerForPostLazyQueryHookResult = ReturnType<typeof useGetTipsByBakerForPostLazyQuery>;
+export type GetTipsByBakerForPostSuspenseQueryHookResult = ReturnType<typeof useGetTipsByBakerForPostSuspenseQuery>;
+export type GetTipsByBakerForPostQueryResult = Apollo.QueryResult<GetTipsByBakerForPostQuery, GetTipsByBakerForPostQueryVariables>;
 export const GetUserDocument = gql`
     query GetUser($input: UserByInput!) {
   getUser(input: $input) {
