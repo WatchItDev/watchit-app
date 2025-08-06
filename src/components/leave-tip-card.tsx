@@ -93,10 +93,10 @@ export const LeaveTipCard: FC<{ post: Post }> = ({ post }) => {
     <Card sx={{ width: '100%', maxWidth: { lg: 400 }, margin: 'auto', backgroundColor: '#2B2D31' }}>
       <CardContent>
         <Typography variant="h6" gutterBottom>
-          Support to {post.author.displayName}
+          Support {post.author.displayName}
         </Typography>
         <Typography variant="body2" color="textSecondary" sx={{ mb: 3 }}>
-          Choose an amount to leave a tip and support the content you love.
+          Every tip goes directly to the artist, choose what feels right.
         </Typography>
 
         <Stack spacing={2}>
@@ -131,7 +131,7 @@ export const LeaveTipCard: FC<{ post: Post }> = ({ post }) => {
           <Box>
             <TextField
               type="number"
-              placeholder="Enter custom tip in MMC"
+              placeholder="Your own amount"
               fullWidth
               value={customTip}
               onChange={handleCustomTipChange}
