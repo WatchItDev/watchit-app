@@ -55,31 +55,31 @@ export const LeaveTipCard: FC<{ post: Post }> = ({ post }) => {
   };
 
   const handleSendTip = async () => {
-    if (!session?.authenticated) {
-      dispatch(openLoginModal());
-      return;
-    }
-
-    if (!recipient || amount <= 0) {return;}
+    if (!session?.authenticated) return dispatch(openLoginModal());
+    if (!recipient || amount <= 0) return;
 
     try {
-      await transfer({ amount, recipient });
+      const pTransfer = transfer({ amount, recipient });
 
-      await createTip({
-        variables: {
-          input: {
-            postId:  post.id,
-            creator: recipient,
-            amount,
-            txHash: null,
-            message: 'tip',
+      const pCreateTip = pTransfer.then(() =>
+        createTip({
+          variables: {
+            input: {
+              postId:  post.id,
+              creator: recipient,
+              amount,
+              txHash: null,
+              message: 'tip',
+            },
           },
-        },
-        refetchQueries: [
-          { query: GetTipsByBakerForPostDocument, variables: { postId: post.id } },
-        ],
-        awaitRefetchQueries: true,
-      });
+          refetchQueries: [
+            { query: GetTipsByBakerForPostDocument, variables: { postId: post.id } },
+          ],
+          awaitRefetchQueries: true,
+        })
+      );
+
+      await Promise.all([pTransfer, pCreateTip]);
 
       notifySuccess(SUCCESS.TIP_CREATED_SUCCESSFULLY);
     } catch (e) {
