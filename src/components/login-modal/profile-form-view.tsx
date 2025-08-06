@@ -389,9 +389,6 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
             <TextMaxLine line={1} variant="caption" fontWeight="bold" color="text.secondary">
               * Click the profile or cover image to select one
             </TextMaxLine>
-            <TextMaxLine line={1} variant="caption" fontWeight="bold" color="text.secondary">
-              * Images are optional (current images are placeholders)
-            </TextMaxLine>
           </Box>
         </Box>
 
