@@ -16,19 +16,19 @@ import CardContent from '@mui/material/CardContent';
 import MoviePlayView from '@src/sections/publication/components/publication-player.tsx';
 import PublicationDetailMain from '@src/components/publication-detail-main';
 import { useAuth } from '@src/hooks/use-auth.ts';
-import { useHasAccess } from '@src/hooks/protocol/use-has-access.ts';
-import { useGetCampaignIsActive } from '@src/hooks/protocol/use-get-campaign-is-active.ts';
-import { useIsPolicyAuthorized } from '@src/hooks/protocol/use-is-policy-authorized.ts';
+// import { useHasAccess } from '@src/hooks/protocol/use-has-access.ts';
+// import { useGetCampaignIsActive } from '@src/hooks/protocol/use-get-campaign-is-active.ts';
+// import { useIsPolicyAuthorized } from '@src/hooks/protocol/use-is-policy-authorized.ts';
+// import { PublicationSponsoredButton } from '@src/sections/publication/components/publication-sponsored-button.tsx';
+// import { PublicationJoinButton } from '@src/sections/publication/components/publication-join-button.tsx';
+// import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
+// import { PublicationPosterWallpaper } from '@src/sections/publication/components/publication-poster-wallpaper.tsx';
+// import { useGetSubscriptionCampaign } from '@src/hooks/protocol/use-get-subscription-campaign.ts';
 import { PublicationDetailsViewProps } from '@src/sections/publication/types.ts';
 import { SubscribeProfileModal } from '@src/components/subscribe-profile-modal.tsx';
-import { useGetSubscriptionCampaign } from '@src/hooks/protocol/use-get-subscription-campaign.ts';
 import { PublicationTitleDescription } from '@src/sections/publication/components/publication-description.tsx';
 import { PublicationRecommendations } from '@src/sections/publication/components/publication-recommendations.tsx';
-import { PublicationPosterWallpaper } from '@src/sections/publication/components/publication-poster-wallpaper.tsx';
 import { PublicationSponsorsAndBackers } from '@src/sections/publication/components/publication-sponsors-and-bakers.tsx';
-import { PublicationSponsoredButton } from '@src/sections/publication/components/publication-sponsored-button.tsx';
-import { PublicationJoinButton } from '@src/sections/publication/components/publication-join-button.tsx';
-import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 import { useGetPostLazyQuery, useGetPostsByAuthorLazyQuery } from '@src/graphql/generated/hooks.tsx';
 import { Post } from '@src/graphql/generated/graphql.ts';
 import { Address } from 'viem';
@@ -47,30 +47,32 @@ export default function PublicationDetailsView({ id }: Readonly<PublicationDetai
   const [loadPublication, { data: publicationData, loading: publicationLoading }] = useGetPostLazyQuery();
   const publication: Post = publicationData?.getPost;
   const ownerAddress: Address = publication?.author?.address as Address;
-  const { hasAccess, loading: accessLoading, fetch: refetchAccess } = useHasAccess(ownerAddress);
-  const { isAuthorized, loading: isAuthorizedLoading } = useIsPolicyAuthorized(GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS, ownerAddress);
-  const { campaign, loading: campaignLoading, fetchSubscriptionCampaign } = useGetSubscriptionCampaign();
-  const { isActive: isCampaignActive, loading: isActiveLoading, fetchIsActive } = useGetCampaignIsActive();
+  // const { hasAccess, loading: accessLoading, fetch: refetchAccess } = useHasAccess(ownerAddress);
+  // const { isAuthorized, loading: isAuthorizedLoading } = useIsPolicyAuthorized(GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS, ownerAddress);
+  // const { campaign, loading: campaignLoading, fetchSubscriptionCampaign } = useGetSubscriptionCampaign();
+  // const { isActive: isCampaignActive, loading: isActiveLoading, fetchIsActive } = useGetCampaignIsActive();
   const [loadPublications, { data: profilePublications, loading: profilePublicationsLoading }] = useGetPostsByAuthorLazyQuery();
 
-  const isAccessFullyChecked = !accessLoading && !isAuthorizedLoading && !isActiveLoading && !campaignLoading;
-  const allLoaded = !publicationLoading && !isAuthLoading && !profilePublicationsLoading && isAccessFullyChecked;
-  const isSponsoredButtonVisible = isCampaignActive && isAuthorized && isAccessFullyChecked;
-  const isJoinButtonVisible = isAuthorized && !isCampaignActive && isAccessFullyChecked && !isSponsoredButtonVisible;
-  const isPlayerVisible = hasAccess && session.authenticated && !accessLoading && !isAuthLoading;
-  const accessChecked = hasAccess !== undefined;
-  const loading = (!(allLoaded && accessChecked) && !isAuthLoading) || !publication;
+  // const isAccessFullyChecked = !accessLoading && !isAuthorizedLoading && !isActiveLoading && !campaignLoading;
+  // const allLoaded = !publicationLoading && !isAuthLoading && !profilePublicationsLoading && isAccessFullyChecked;
+  const allLoaded = !publicationLoading && !isAuthLoading && !profilePublicationsLoading;
+  // const isSponsoredButtonVisible = isCampaignActive && isAuthorized && isAccessFullyChecked;
+  // const isJoinButtonVisible = isAuthorized && !isCampaignActive && isAccessFullyChecked && !isSponsoredButtonVisible;
+  // const isPlayerVisible = hasAccess && session.authenticated && !accessLoading && !isAuthLoading;
+  // const accessChecked = hasAccess !== undefined;
+  // const loading = (!(allLoaded && accessChecked) && !isAuthLoading) || !publication;
+  const loading = (!allLoaded && !isAuthLoading) || !publication;
 
   useEffect(() => {
     if (!ownerAddress || publicationLoading || profilePublications?.getPostsByAuthor) return;
-    fetchSubscriptionCampaign(ownerAddress);
+    // fetchSubscriptionCampaign(ownerAddress);
     loadPublications({variables: { author: ownerAddress, limit: 50 }});
   }, [ownerAddress, publicationLoading, profilePublications?.getPostsByAuthor]);
 
-  useEffect(() => {
-    if (!campaign || !session?.address) return;
-    fetchIsActive(campaign, session?.address);
-  }, [campaign, session?.address]);
+  // useEffect(() => {
+  //   if (!campaign || !session?.address) return;
+  //   fetchIsActive(campaign, session?.address);
+  // }, [campaign, session?.address]);
 
   useEffect(() => {
     if (!id) return;
@@ -89,7 +91,7 @@ export default function PublicationDetailsView({ id }: Readonly<PublicationDetai
   }
 
   const handleRefetchAccess = () => {
-    refetchAccess();
+    // refetchAccess();
   }
 
   const filteredPublications = profilePublications?.getPostsByAuthor?.filter((publication: Post) => publication.id !== id) ?? [];
@@ -103,29 +105,29 @@ export default function PublicationDetailsView({ id }: Readonly<PublicationDetai
         <StyledStack>
           <StyledCard>
             <StyledCardContent>
-              {isPlayerVisible ? (
+              {/*{isPlayerVisible ? (*/}
                 <MoviePlayView publication={publication} loading={publicationLoading} />
-              ) : (
-                <PublicationPosterWallpaper publication={publication}>
-                  {isSponsoredButtonVisible && (
-                    <PublicationSponsoredButton
-                      isActive={isCampaignActive}
-                      publication={publication}
-                      campaign={campaign}
-                      onSponsorSuccess={handleRefetchAccess}
-                    />
-                  )}
-                  {isJoinButtonVisible && (
-                    <PublicationJoinButton
-                      joinButtonLoading={accessLoading}
-                      onJoin={handleSubscribe}
-                    />
-                  )}
-                </PublicationPosterWallpaper>
-              )}
+              {/*) : (*/}
+              {/*  <PublicationPosterWallpaper publication={publication}>*/}
+              {/*    {isSponsoredButtonVisible && (*/}
+              {/*      <PublicationSponsoredButton*/}
+              {/*        isActive={isCampaignActive}*/}
+              {/*        publication={publication}*/}
+              {/*        campaign={campaign}*/}
+              {/*        onSponsorSuccess={handleRefetchAccess}*/}
+              {/*      />*/}
+              {/*    )}*/}
+              {/*    {isJoinButtonVisible && (*/}
+              {/*      <PublicationJoinButton*/}
+              {/*        joinButtonLoading={accessLoading}*/}
+              {/*        onJoin={handleSubscribe}*/}
+              {/*      />*/}
+              {/*    )}*/}
+              {/*  </PublicationPosterWallpaper>*/}
+              {/*)}*/}
               <StyledInnerBox>
                 <PublicationTitleDescription publication={publication} />
-                <PublicationSponsorsAndBackers />
+                <PublicationSponsorsAndBackers postId={publication.id} />
                 <PublicationRecommendations author={publication?.author?.displayName.split(' ')[0]} publications={filteredPublications}  />
               </StyledInnerBox>
             </StyledCardContent>
@@ -136,9 +138,12 @@ export default function PublicationDetailsView({ id }: Readonly<PublicationDetai
           post={publication}
           handleSubscribe={handleSubscribe}
           handleRefetchAccess={handleRefetchAccess}
-          loadingSubscribe={accessLoading}
-          subscribeDisabled={accessLoading || hasAccess}
-          hasAccess={!!hasAccess}
+          // loadingSubscribe={accessLoading}
+          // subscribeDisabled={accessLoading || hasAccess}
+          // hasAccess={!!hasAccess}
+          loadingSubscribe={false}
+          subscribeDisabled={false}
+          hasAccess={true}
         />
       </StyledContainer>
       <SubscribeProfileModal
