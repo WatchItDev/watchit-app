@@ -59,11 +59,11 @@ const ProfileToolbar: FC<ProfileToolbarProps> = ({profile, profileImage}) => {
         }}
       >
         <ProfileShare profile={profile} />
-        {session?.authenticated && session?.address === profile?.address ? (
-          <ProfileSetJoiningPrice />
-        ) : (
-          <></>
-        )}
+        {/*{session?.authenticated && session?.address === profile?.address ? (*/}
+        {/*  <ProfileSetJoiningPrice />*/}
+        {/*) : (*/}
+        {/*  <></>*/}
+        {/*)}*/}
         {session?.address && profile?.address === session?.address && (
           <ProfileUpdateButton />
         )}

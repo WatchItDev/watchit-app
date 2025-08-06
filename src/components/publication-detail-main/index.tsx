@@ -39,7 +39,7 @@ import { varFade } from '@src/components/animate';
 import { LeaveTipCard } from '@src/components/leave-tip-card.tsx';
 import PostCommentList from '@src/sections/publication/components/publication-comments-list.tsx';
 import PublicationCommentForm from '@src/sections/publication/components/publication-details-comment-form.tsx';
-import { SubscribeToUnlockCard } from '@src/components/subscribe-to-unlock-card/subscribe-to-unlock-card.tsx';
+// import { SubscribeToUnlockCard } from '@src/components/subscribe-to-unlock-card/subscribe-to-unlock-card.tsx';
 import Popover from '@mui/material/Popover';
 import { useNotifications } from '@src/hooks/use-notifications.ts';
 import { openLoginModal } from '@redux/auth';
@@ -56,16 +56,17 @@ import {
 } from '@src/graphql/generated/hooks.tsx';
 import { resolveSrc } from '@src/utils/image.ts';
 import { useBookmarks } from '@src/hooks/use-bookmark.ts';
+import PublicationShare from '@src/sections/publication/components/publication-share.tsx';
 
 // ----------------------------------------------------------------------
 
 export default function PublicationDetailMain({
   post,
-  handleSubscribe,
-  handleRefetchAccess,
-  loadingSubscribe,
-  subscribeDisabled,
-  hasAccess,
+  // handleSubscribe,
+  // handleRefetchAccess,
+  // loadingSubscribe,
+  // subscribeDisabled,
+  // hasAccess,
 }: Readonly<PublicationDetailProps>) {
   const [showComments, setShowComments] = useState(false);
   const [openConfirmModal, setOpenConfirmModal] = useState(false);
@@ -319,18 +320,17 @@ export default function PublicationDetailMain({
               pr: 1,
             }}
           >
-            {hasAccess && sessionData?.authenticated ? (
-              // @ts-expect-error No error in this context
+            {/*{hasAccess && sessionData?.authenticated ? (*/}
               <LeaveTipCard post={post} />
-            ) : (
-              <SubscribeToUnlockCard
-                loadingSubscribe={loadingSubscribe}
-                subscribeDisabled={subscribeDisabled ?? false}
-                handleRefetchAccess={handleRefetchAccess}
-                onSubscribe={handleSubscribe}
-                post={post}
-              />
-            )}
+            {/*) : (*/}
+            {/*  <SubscribeToUnlockCard*/}
+            {/*    loadingSubscribe={loadingSubscribe}*/}
+            {/*    subscribeDisabled={subscribeDisabled ?? false}*/}
+            {/*    handleRefetchAccess={handleRefetchAccess}*/}
+            {/*    onSubscribe={handleSubscribe}*/}
+            {/*    post={post}*/}
+            {/*  />*/}
+            {/*)}*/}
           </Box>
 
           <Box
@@ -413,6 +413,7 @@ export default function PublicationDetailMain({
                     </>
                   )}
                 </Button>
+                <PublicationShare post={post} />
               </Stack>
             </m.div>
           </Box>

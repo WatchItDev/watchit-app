@@ -15,11 +15,11 @@ import { IconRosetteDiscountCheckFilled } from "@tabler/icons-react";
 
 // LOCAL IMPORTS
 import { truncateAddress } from "@src/utils/wallet.ts";
-import { OpenableText } from "@src/components/openable-text";
+// import { OpenableText } from "@src/components/openable-text";
 import { randomColors } from "@src/components/poster/CONSTANTS.tsx";
-import { useAuth } from '@src/hooks/use-auth.ts';
+// import { useAuth } from '@src/hooks/use-auth.ts';
 import { ProfileHeaderProps } from "@src/sections/user/types.ts"
-import { GLOBAL_CONSTANTS } from "@src/config-global.ts"
+// import { GLOBAL_CONSTANTS } from "@src/config-global.ts"
 import {
   useGetAchievementsQuery,
   useGetRanksCatalogQuery,
@@ -40,15 +40,15 @@ interface ProfileRightSidebarProps extends ProfileHeaderProps {
 }
 
 const ProfileRightSidebar: FC<ProfileRightSidebarProps> = ({ profile, sidebarProps }) => {
-  const { isAuthorized, authorizedLoading, accessLoading, hasAccess, attestation, attestationLoading } = sidebarProps;
-  const { session: sessionData } = useAuth();
+  // const { isAuthorized, authorizedLoading, accessLoading, hasAccess, attestation, attestationLoading } = sidebarProps;
+  // const { session: sessionData } = useAuth();
   const [hasPerk, { data }] = useHasPerkLazyQuery();
   const { data: ranksData, loading: ranksLoading } = useGetRanksCatalogQuery();
   const { data: achData } = useGetAchievementsQuery({ variables: { address: profile?.address ?? '' } });
-  const hex = BigInt(attestation ?? '').toString(16)
+  // const hex = BigInt(attestation ?? '').toString(16)
   // add padding to attestation smaller than 256 bits
-  const cleanedHex = hex.length < 64 ? `${'0'.repeat(64 - hex.length)}${hex}` : hex;
-  const attestationAddress = `0x${cleanedHex}`;
+  // const cleanedHex = hex.length < 64 ? `${'0'.repeat(64 - hex.length)}${hex}` : hex;
+  // const attestationAddress = `0x${cleanedHex}`;
 
   useEffect(() => {
     if (profile?.address) {
@@ -96,34 +96,34 @@ const ProfileRightSidebar: FC<ProfileRightSidebarProps> = ({ profile, sidebarPro
           text={`${profile?.address}`}
         />
       </Stack>
-      {isAuthorized &&
-        !authorizedLoading &&
-        attestation &&
-        !attestationLoading &&
-        hasAccess &&
-        !accessLoading &&
-        profile?.address !== sessionData?.address && (
-          <>
-            <Divider sx={{ borderColor: 'rgba(255, 255, 255, 0.08)', width: '100%' }} />
-            <Tooltip title="This license address represents the license issued using blockchain technology, ensuring a secure agreement between the creator and the user..">
-            <Stack
-              direction="row"
-              sx={{
-                zIndex: 10,
-                width: '100%',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-              }}
-            >
-              <Typography color="text.secondary">License</Typography>
-              <OpenableText
-                label={truncateAddress(attestationAddress)}
-                url={`${GLOBAL_CONSTANTS.ATTESTATION_BASE_URL}${attestationAddress}`}
-              />
-            </Stack>
-            </Tooltip>
-          </>
-        )}
+      {/*{isAuthorized &&*/}
+      {/*  !authorizedLoading &&*/}
+      {/*  attestation &&*/}
+      {/*  !attestationLoading &&*/}
+      {/*  hasAccess &&*/}
+      {/*  !accessLoading &&*/}
+      {/*  profile?.address !== sessionData?.address && (*/}
+      {/*    <>*/}
+      {/*      <Divider sx={{ borderColor: 'rgba(255, 255, 255, 0.08)', width: '100%' }} />*/}
+      {/*      <Tooltip title="This license address represents the license issued using blockchain technology, ensuring a secure agreement between the creator and the user..">*/}
+      {/*      <Stack*/}
+      {/*        direction="row"*/}
+      {/*        sx={{*/}
+      {/*          zIndex: 10,*/}
+      {/*          width: '100%',*/}
+      {/*          alignItems: 'center',*/}
+      {/*          justifyContent: 'space-between',*/}
+      {/*        }}*/}
+      {/*      >*/}
+      {/*        <Typography color="text.secondary">License</Typography>*/}
+      {/*        <OpenableText*/}
+      {/*          label={truncateAddress(attestationAddress)}*/}
+      {/*          url={`${GLOBAL_CONSTANTS.ATTESTATION_BASE_URL}${attestationAddress}`}*/}
+      {/*        />*/}
+      {/*      </Stack>*/}
+      {/*      </Tooltip>*/}
+      {/*    </>*/}
+      {/*  )}*/}
       <Divider sx={{ borderColor: 'rgba(255, 255, 255, 0.08)', width: '100%' }} />
       <Stack
         direction="column"

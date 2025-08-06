@@ -45,98 +45,129 @@ const ICONS = {
 
 // ----------------------------------------------------------------------
 
+const applyComingSoon = (items: any[]): any[] => {
+  return items.map((it) => {
+    const isComing = Boolean(it?.comingSoon) || it?.status === 'comingSoon';
+
+    return {
+      ...it,
+      disabled: isComing || it?.disabled,
+      // caption: isComing ? it?.caption ?? '✨ Coming soon' : it?.caption,
+      children: it?.children ? applyComingSoon(it.children) : undefined,
+    };
+  });
+}
+
+// ----------------------------------------------------------------------
+
 export function useNavData() {
   const { t } = useLocales();
 
   const data = useMemo(
-    () => [
-      // OVERVIEW
-      // ----------------------------------------------------------------------
-      {
-        subheader: t('overview'),
-        items: [
-          {
-            title: t('explore'),
-            path: paths.dashboard.root,
-            icon: ICONS.dashboard,
-          },
-          {
-            title: t('Community'),
-            path: paths.dashboard.community,
-            icon: ICONS.userGroup,
-          },
-          {
-            title: t('Governance'),
-            path: paths.dashboard.governance.root,
-            icon: ICONS.kanban,
-          },
-          {
-            title: t('Marketplace'),
-            path: paths.dashboard.marketplace,
-            icon: ICONS.ecommerce,
-          },
-          {
-            title: t('Events'),
-            path: paths.dashboard.events,
-            icon: ICONS.calendar,
-          },
-          {
-            title: t('Achievements'),
-            path: paths.dashboard.achievements,
-            icon: ICONS.label,
-          },
-        ],
-      },
+    () => {
 
-      // MANAGEMENT
-      // ----------------------------------------------------------------------
-      {
-        subheader: t('management'),
-        items: [
-          // FILE MANAGER
-          {
-            title: t('Analytics'),
-            path: paths.dashboard.analytics,
-            icon: ICONS.analytics,
-          },
+      const base = [
+        // OVERVIEW
+        // ----------------------------------------------------------------------
+        {
+          subheader: t('overview'),
+          items: [
+            {
+              title: t('explore'),
+              path: paths.dashboard.root,
+              icon: ICONS.dashboard,
+            },
+            {
+              title: t('Community'),
+              path: paths.dashboard.community,
+              icon: ICONS.userGroup,
+              comingSoon: true,
+            },
+            {
+              title: t('Governance'),
+              path: paths.dashboard.governance.root,
+              icon: ICONS.kanban,
+              comingSoon: true,
+            },
+            {
+              title: t('Marketplace'),
+              path: paths.dashboard.marketplace,
+              icon: ICONS.ecommerce,
+              comingSoon: true,
+            },
+            {
+              title: t('Events'),
+              path: paths.dashboard.events,
+              icon: ICONS.calendar,
+              comingSoon: true,
+            },
+            {
+              title: t('Achievements'),
+              path: paths.dashboard.achievements,
+              icon: ICONS.label,
+            },
+          ],
+        },
 
-          // MAIL
-          {
-            title: t('Studio'),
-            path: paths.dashboard.studio,
-            icon: ICONS.external,
-          },
+        // MANAGEMENT
+        // ----------------------------------------------------------------------
+        {
+          subheader: t('management'),
+          items: [
+            // FILE MANAGER
+            {
+              title: t('Analytics'),
+              path: paths.dashboard.analytics,
+              icon: ICONS.analytics,
+              comingSoon: true,
+            },
 
-          // CHAT
-          {
-            title: t('Ownership'),
-            path: paths.dashboard.ownership,
-            icon: ICONS.lock,
-          },
+            // MAIL
+            {
+              title: t('Studio'),
+              path: paths.dashboard.studio,
+              icon: ICONS.external,
+              comingSoon: true,
+            },
 
-          // CALENDAR
-          {
-            title: t('Finance'),
-            path: paths.dashboard.finance,
-            icon: ICONS.banking,
-          },
+            // CHAT
+            {
+              title: t('Ownership'),
+              path: paths.dashboard.ownership,
+              icon: ICONS.lock,
+            },
 
-          // KANBAN
-          {
-            title: t('Marketing'),
-            path: paths.dashboard.marketing,
-            icon: ICONS.tour,
-          },
+            // CALENDAR
+            {
+              title: t('Finance'),
+              path: paths.dashboard.finance,
+              icon: ICONS.banking,
+            },
 
-          // COLLABORATION
-          {
-            title: t('Collaboration'),
-            path: paths.dashboard.collaborations,
-            icon: ICONS.chat,
-          },
-        ],
-      },
-    ],
+            // KANBAN
+            {
+              title: t('Marketing'),
+              path: paths.dashboard.marketing,
+              icon: ICONS.tour,
+              comingSoon: true,
+            },
+
+            // COLLABORATION
+            {
+              title: t('Collaboration'),
+              path: paths.dashboard.collaborations,
+              icon: ICONS.chat,
+              comingSoon: true,
+            },
+          ],
+        },
+      ]
+
+      return base.map((group) => ({
+        ...group,
+        items: applyComingSoon(group.items),
+      }));
+    },
     [t]
   );
 

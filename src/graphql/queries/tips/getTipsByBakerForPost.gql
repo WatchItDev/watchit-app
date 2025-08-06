@@ -1,0 +1,18 @@
+query GetTipsByBakerForPost($postId: String!) {
+  getTipsByBakerForPost(postId: $postId) {
+    baker {
+      address
+      bio
+      displayName
+      id
+      username
+      coverPicture
+      currentRank
+      profilePicture
+      verified
+    }
+    count
+    lastTipAt
+    totalAmount
+  }
+}

@@ -14,15 +14,14 @@ dotenv.config();
 export default defineConfig(({ mode }) => {
   const env  = loadEnv(mode, process.cwd(), 'VITE_');
   const prod = mode === 'production';
-  const pure = prod ? ['console.log', 'console.info', 'console.warn'] : []
 
   return {
-    esbuild: { pure },
     build: {
       target: 'es2020',
       sourcemap: !prod,
       cssCodeSplit: true,
       chunkSizeWarningLimit: 700,
+      modulePreload: false
     },
 
     plugins: [
@@ -58,6 +57,16 @@ export default defineConfig(({ mode }) => {
         enableBundleAnalysis: !!process.env.VITE_CODECOV_TOKEN,
         uploadToken: process.env.VITE_CODECOV_TOKEN,
       }),
+
+      {
+        name: 'cf-rocket-loader-optout',
+        transformIndexHtml(html) {
+          return html.replace(
+            /<script\s+type="module"/,
+            '<script data-cfasync="false" type="module"'
+          );
+        },
+      }
     ].filter(Boolean),
 
     resolve: {
