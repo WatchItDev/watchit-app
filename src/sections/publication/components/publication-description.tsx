@@ -58,7 +58,7 @@ export const PublicationTitleDescription: FC<PublicationTitleDescriptionProps> =
               opacity: 0.8,
             }}
           >
-            <Markdown children={trimPublicationContentExtraText(publication?.description)} />
+            <Markdown children={trimPublicationContentExtraText(publication?.description ?? '')} />
           </Box>
           {showButton && (
             <Button variant="outlined" onClick={toggleDescription} sx={{ mt: 2 }}>
