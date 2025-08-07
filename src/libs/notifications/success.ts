@@ -44,7 +44,7 @@ export const SUCCESS_MESSAGES: Record<SUCCESS, string> = {
   [SUCCESS.PROFILE_CREATED_SUCCESSFULLY]: 'Profile created successfully.',
   [SUCCESS.PROFILE_UPDATED_SUCCESSFULLY]: 'Profile updated successfully.',
   [SUCCESS.TRANSFER_CREATED_SUCCESSFULLY]: 'Transfer sent to {destination}.',
-  [SUCCESS.TIP_CREATED_SUCCESSFULLY]: 'Tip sent successfully.',
+  [SUCCESS.TIP_CREATED_SUCCESSFULLY]: 'Thanks for your tip! Your support fuels more creations.',
   [SUCCESS.FOLLOW_UNFOLLOW_SUCCESSFULLY]: 'Successfully {profileName} {actionLbl}.',
   [SUCCESS.PROFILE_JOINED_SUCCESSFULLY]: 'Successfully joined the profile.',
   [SUCCESS.OWNERSHIP_REGISTERED_SUCCESSFULLY]: 'Asset {count} successfully processed',
