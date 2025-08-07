@@ -148,7 +148,7 @@ export const LeaveTipCard: FC<{ post: Post }> = ({ post }) => {
             disabled={isDisabled}
             onClick={handleSendTip}
           >
-            Leave a Tip
+            Send Tip
           </LoadingButton>
         </Stack>
       </CardContent>
