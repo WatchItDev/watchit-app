@@ -96,7 +96,7 @@ export const LeaveTipCard: FC<{ post: Post }> = ({ post }) => {
           Support {post.author.displayName}
         </Typography>
         <Typography variant="body2" color="textSecondary" sx={{ mb: 3 }}>
-          Every tip goes directly to the artist, choose what feels right.
+          Enjoyed the experience? Help {post.author.displayName} keep creating.
         </Typography>
 
         <Stack spacing={2}>
