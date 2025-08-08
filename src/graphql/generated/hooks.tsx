@@ -375,6 +375,7 @@ export const IncrementPostViewDocument = gql`
     mutation IncrementPostView($postId: String!) {
   incrementPostView(postId: $postId) {
     id
+    viewCount
   }
 }
     `;

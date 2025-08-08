@@ -64,7 +64,7 @@ export default function Header({ children }: PropsWithChildren) {
       >
         {sessionData?.authenticated && (
           <>
-            <HeaderXpBalance />
+            {/*<HeaderXpBalance />*/}
             <HeaderMmcBalance />
             <NotificationsPopover />
           </>

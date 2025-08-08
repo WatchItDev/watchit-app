@@ -188,7 +188,7 @@ export const SubscribeProfileModal = ({
   return (
     <>
       <Dialog open={isOpen} onClose={onClose} fullWidth maxWidth="xs">
-        <DialogTitle sx={{ pb: 2 }}>Join to {profile?.displayName} content</DialogTitle>
+        <DialogTitle sx={{ pb: 2 }}>Access {profile?.displayName}'s content</DialogTitle>
         <Divider sx={{ mb: 2, borderStyle: 'dashed' }} />
         <DialogContent>
           {loadingTerms ? (
