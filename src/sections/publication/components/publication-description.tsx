@@ -46,6 +46,14 @@ export const PublicationTitleDescription: FC<PublicationTitleDescriptionProps> =
           {publication?.title}
         </Typography>
       </m.div>
+      <m.div variants={variants}>
+        <Typography
+          variant="body1"
+          sx={{ mt: 1, width: '100%', opacity: 0.48 }}
+        >
+          {publication?.viewCount} views
+        </Typography>
+      </m.div>
       <Box sx={{ mt: 2, position: 'relative' }}>
         <m.div variants={variants}>
           <Box
