@@ -21,7 +21,7 @@ import useGetSubtitles from '@src/hooks/protocol/use-get-subtitles.ts';
 import { useResponsive } from '@src/hooks/use-responsive';
 import Label from '../label';
 import {ErrorData} from "hls.js"
-import { useLogEventMutation } from '@src/graphql/generated/hooks.tsx';
+import { useIncrementPostViewMutation, useLogEventMutation } from '@src/graphql/generated/hooks.tsx';
 import { useAuth } from '@src/hooks/use-auth.ts';
 
 export interface VideoPlayerProps {
@@ -41,6 +41,7 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({ src, cid, titleMovie, postId
   const controlsVisible = useMediaState('controlsVisible', player);
   const { tracks, getSubtitles } = useGetSubtitles();
   const [logEvent] = useLogEventMutation();
+  const [incrementView] = useIncrementPostViewMutation();
   const { session } = useAuth();
 
   const watchedSeconds = useRef<Set<number>>(new Set())    // distinct seconds already counted
@@ -69,7 +70,11 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({ src, cid, titleMovie, postId
     }
   };
 
-  const handlePlay = () => emit('VIDEO_START');
+  const handlePlay = () => {
+    emit('VIDEO_START');
+    incrementView({ variables: { postId } });
+  };
+
   const handleEnded = () => emit('VIDEO_WATCH_FULL');
 
   const handleTimeUpdate = () => {
