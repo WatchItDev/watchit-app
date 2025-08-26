@@ -84,7 +84,7 @@ export default function NavVertical() {
           justifyContent: 'flex-end',
         }}
       >
-        <SupportBox />
+        {/* <SupportBox /> */}
         <TermsAndConditions />
       </Box>
     </Scrollbar>
