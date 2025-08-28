@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/core';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
@@ -13,10 +14,15 @@ export type Scalars = {
   Boolean: { input: boolean; output: boolean; }
   Int: { input: number; output: number; }
   Float: { input: number; output: number; }
+  /** A date string, such as 2007-12-03, compliant with the `full-date` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar. */
   Date: { input: any; output: any; }
+  /** A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar. */
   DateTime: { input: any; output: any; }
+  /** The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf). */
   JSON: { input: any; output: any; }
-  Timestamp: { input: number; output: number; }
+  /** The javascript `Date` as integer. Type represents date and time as number of milliseconds from start of UNIX epoch. */
+  Timestamp: { input: any; output: any; }
+  /** Upload description */
   Upload: { input: any; output: any; }
 };
 
@@ -801,7 +807,7 @@ export type CreateCommentMutationVariables = Exact<{
 }>;
 
 
-export type CreateCommentMutation = { __typename?: 'Mutation', createComment: { __typename?: 'Comment', content: string, id: string, createdAt: number, likeCount: number, updatedAt: number, author: { __typename?: 'User', address: string, displayName: string }, parentComment?: { __typename?: 'Comment', id: string, content: string } | null, post: { __typename?: 'Post', id: string, title: string } } };
+export type CreateCommentMutation = { __typename?: 'Mutation', createComment: { __typename?: 'Comment', content: string, id: string, createdAt: any, likeCount: number, updatedAt: any, author: { __typename?: 'User', address: string, displayName: string }, parentComment?: { __typename?: 'Comment', id: string, content: string } | null, post: { __typename?: 'Post', id: string, title: string } } };
 
 export type HideCommentMutationVariables = Exact<{
   commentId: Scalars['String']['input'];
@@ -815,7 +821,7 @@ export type UpdateCommentMutationVariables = Exact<{
 }>;
 
 
-export type UpdateCommentMutation = { __typename?: 'Mutation', updateComment: { __typename?: 'Comment', id: string, content: string, updatedAt: number, createdAt: number } };
+export type UpdateCommentMutation = { __typename?: 'Mutation', updateComment: { __typename?: 'Comment', id: string, content: string, updatedAt: any, createdAt: any } };
 
 export type ToggleFollowMutationVariables = Exact<{
   input: FollowInput;
@@ -857,7 +863,7 @@ export type CreatePostMutationVariables = Exact<{
 }>;
 
 
-export type CreatePostMutation = { __typename?: 'Mutation', createPost: { __typename?: 'Post', id: string, title: string, description: string, createdAt: number } };
+export type CreatePostMutation = { __typename?: 'Mutation', createPost: { __typename?: 'Post', id: string, title: string, description: string, createdAt: any } };
 
 export type HidePostMutationVariables = Exact<{
   postId: Scalars['String']['input'];
@@ -885,7 +891,7 @@ export type CreateTipMutationVariables = Exact<{
 }>;
 
 
-export type CreateTipMutation = { __typename?: 'Mutation', createTip: { __typename?: 'Tip', amount: number, baker: string, createdAt: number, creator: string, id: string, message?: string | null, postId: string, txHash?: string | null } };
+export type CreateTipMutation = { __typename?: 'Mutation', createTip: { __typename?: 'Tip', amount: number, baker: string, createdAt: any, creator: string, id: string, message?: string | null, postId: string, txHash?: string | null } };
 
 export type CreateUserMutationVariables = Exact<{
   input: UserInput;
@@ -899,7 +905,7 @@ export type UpdateUserMutationVariables = Exact<{
 }>;
 
 
-export type UpdateUserMutation = { __typename?: 'Mutation', updateUser: { __typename?: 'User', address: string, username: string, displayName: string, bio: string, xpBalance: number, updatedAt: number } };
+export type UpdateUserMutation = { __typename?: 'Mutation', updateUser: { __typename?: 'User', address: string, username: string, displayName: string, bio: string, xpBalance: number, updatedAt: any } };
 
 export type GetIsBookmarkedQueryVariables = Exact<{
   postId: Scalars['String']['input'];
@@ -914,7 +920,7 @@ export type GetCommentsByPostQueryVariables = Exact<{
 }>;
 
 
-export type GetCommentsByPostQuery = { __typename?: 'Query', getCommentsByPost: Array<{ __typename?: 'Comment', content: string, id: string, createdAt: number, likeCount: number, repliesCount: number, updatedAt: number, author: { __typename?: 'User', address: string, displayName: string, followersCount: number, followingCount: number, coverPicture: string, profilePicture: string, bio: string, publicationsCount: number, username: string }, parentComment?: { __typename?: 'Comment', content: string, id: string } | null, post: { __typename?: 'Post', id: string, title: string } }> };
+export type GetCommentsByPostQuery = { __typename?: 'Query', getCommentsByPost: Array<{ __typename?: 'Comment', content: string, id: string, createdAt: any, likeCount: number, repliesCount: number, updatedAt: any, author: { __typename?: 'User', address: string, displayName: string, followersCount: number, followingCount: number, coverPicture: string, profilePicture: string, bio: string, publicationsCount: number, username: string }, parentComment?: { __typename?: 'Comment', content: string, id: string } | null, post: { __typename?: 'Post', id: string, title: string } }> };
 
 export type GetRepliesByCommentQueryVariables = Exact<{
   commentId: Scalars['String']['input'];
@@ -922,49 +928,49 @@ export type GetRepliesByCommentQueryVariables = Exact<{
 }>;
 
 
-export type GetRepliesByCommentQuery = { __typename?: 'Query', getRepliesByComment: Array<{ __typename?: 'Comment', content: string, id: string, createdAt: number, likeCount: number, repliesCount: number, updatedAt: number, author: { __typename?: 'User', address: string, displayName: string, followersCount: number, followingCount: number, coverPicture: string, profilePicture: string, bio: string, publicationsCount: number, username: string }, parentComment?: { __typename?: 'Comment', content: string, id: string } | null, post: { __typename?: 'Post', id: string, title: string } }> };
+export type GetRepliesByCommentQuery = { __typename?: 'Query', getRepliesByComment: Array<{ __typename?: 'Comment', content: string, id: string, createdAt: any, likeCount: number, repliesCount: number, updatedAt: any, author: { __typename?: 'User', address: string, displayName: string, followersCount: number, followingCount: number, coverPicture: string, profilePicture: string, bio: string, publicationsCount: number, username: string }, parentComment?: { __typename?: 'Comment', content: string, id: string } | null, post: { __typename?: 'Post', id: string, title: string } }> };
 
 export type GetActiveUsersQueryVariables = Exact<{
   limit?: InputMaybe<Scalars['Int']['input']>;
 }>;
 
 
-export type GetActiveUsersQuery = { __typename?: 'Query', getActiveUsers: Array<{ __typename?: 'User', address: string, bio: string, bookmarksCount: number, coverPicture: string, createdAt: number, displayName: string, followersCount: number, followingCount: number, profilePicture: string, publicationsCount: number, updatedAt: number, username: string, verified: boolean, xpBalance: number, socialLinks?: Array<{ __typename?: 'SocialLink', url: string, platform: string }> | null }> };
+export type GetActiveUsersQuery = { __typename?: 'Query', getActiveUsers: Array<{ __typename?: 'User', address: string, bio: string, bookmarksCount: number, coverPicture: string, createdAt: any, displayName: string, followersCount: number, followingCount: number, profilePicture: string, publicationsCount: number, updatedAt: any, username: string, verified: boolean, xpBalance: number, socialLinks?: Array<{ __typename?: 'SocialLink', url: string, platform: string }> | null }> };
 
 export type GetAllPostsQueryVariables = Exact<{
   limit?: InputMaybe<Scalars['Int']['input']>;
 }>;
 
 
-export type GetAllPostsQuery = { __typename?: 'Query', getAllPosts: Array<{ __typename?: 'Post', id: string, visibility: VisibilitySetting, commentCount: number, likeCount: number, bookmarkCount: number, viewCount: number, updatedAt: number, createdAt: number, cid: string, description: string, title: string, author: { __typename?: 'User', address: string, displayName: string, followersCount: number, followingCount: number, coverPicture: string, profilePicture: string, bio: string, publicationsCount: number, username: string }, media: Array<{ __typename?: 'MediaAttachment', id: string, type: string, url?: string | null, title?: string | null, cid: string }> }> };
+export type GetAllPostsQuery = { __typename?: 'Query', getAllPosts: Array<{ __typename?: 'Post', id: string, visibility: VisibilitySetting, commentCount: number, likeCount: number, bookmarkCount: number, viewCount: number, updatedAt: any, createdAt: any, cid: string, description: string, title: string, author: { __typename?: 'User', address: string, displayName: string, followersCount: number, followingCount: number, coverPicture: string, profilePicture: string, bio: string, publicationsCount: number, username: string }, media: Array<{ __typename?: 'MediaAttachment', id: string, type: string, url?: string | null, title?: string | null, cid: string }> }> };
 
 export type GetPopularPostsQueryVariables = Exact<{
   limit?: InputMaybe<Scalars['Int']['input']>;
 }>;
 
 
-export type GetPopularPostsQuery = { __typename?: 'Query', getPopularPosts: Array<{ __typename?: 'Post', bookmarkCount: number, cid: string, commentCount: number, createdAt: number, description: string, id: string, likeCount: number, title: string, updatedAt: number, visibility: VisibilitySetting, viewCount: number, author: { __typename?: 'User', address: string, displayName: string, followersCount: number, followingCount: number, coverPicture: string, profilePicture: string, bio: string, publicationsCount: number, username: string }, media: Array<{ __typename?: 'MediaAttachment', url?: string | null, type: string, title?: string | null, id: string, cid: string }> }> };
+export type GetPopularPostsQuery = { __typename?: 'Query', getPopularPosts: Array<{ __typename?: 'Post', bookmarkCount: number, cid: string, commentCount: number, createdAt: any, description: string, id: string, likeCount: number, title: string, updatedAt: any, visibility: VisibilitySetting, viewCount: number, author: { __typename?: 'User', address: string, displayName: string, followersCount: number, followingCount: number, coverPicture: string, profilePicture: string, bio: string, publicationsCount: number, username: string }, media: Array<{ __typename?: 'MediaAttachment', url?: string | null, type: string, title?: string | null, id: string, cid: string }> }> };
 
 export type GetPopularUsersQueryVariables = Exact<{
   limit?: InputMaybe<Scalars['Int']['input']>;
 }>;
 
 
-export type GetPopularUsersQuery = { __typename?: 'Query', getPopularUsers: Array<{ __typename?: 'User', address: string, bio: string, bookmarksCount: number, coverPicture: string, createdAt: number, displayName: string, followersCount: number, followingCount: number, profilePicture: string, publicationsCount: number, updatedAt: number, username: string, verified: boolean, xpBalance: number, socialLinks?: Array<{ __typename?: 'SocialLink', url: string, platform: string }> | null }> };
+export type GetPopularUsersQuery = { __typename?: 'Query', getPopularUsers: Array<{ __typename?: 'User', address: string, bio: string, bookmarksCount: number, coverPicture: string, createdAt: any, displayName: string, followersCount: number, followingCount: number, profilePicture: string, publicationsCount: number, updatedAt: any, username: string, verified: boolean, xpBalance: number, socialLinks?: Array<{ __typename?: 'SocialLink', url: string, platform: string }> | null }> };
 
 export type GetRecentPostsQueryVariables = Exact<{
   limit?: InputMaybe<Scalars['Int']['input']>;
 }>;
 
 
-export type GetRecentPostsQuery = { __typename?: 'Query', getRecentPosts: Array<{ __typename?: 'Post', bookmarkCount: number, cid: string, commentCount: number, createdAt: number, description: string, id: string, likeCount: number, title: string, updatedAt: number, visibility: VisibilitySetting, viewCount: number, author: { __typename?: 'User', address: string, displayName: string, followersCount: number, followingCount: number, coverPicture: string, profilePicture: string, bio: string, publicationsCount: number, username: string }, media: Array<{ __typename?: 'MediaAttachment', url?: string | null, type: string, title?: string | null, id: string, cid: string }> }> };
+export type GetRecentPostsQuery = { __typename?: 'Query', getRecentPosts: Array<{ __typename?: 'Post', bookmarkCount: number, cid: string, commentCount: number, createdAt: any, description: string, id: string, likeCount: number, title: string, updatedAt: any, visibility: VisibilitySetting, viewCount: number, author: { __typename?: 'User', address: string, displayName: string, followersCount: number, followingCount: number, coverPicture: string, profilePicture: string, bio: string, publicationsCount: number, username: string }, media: Array<{ __typename?: 'MediaAttachment', url?: string | null, type: string, title?: string | null, id: string, cid: string }> }> };
 
 export type GetRecentUsersQueryVariables = Exact<{
   limit?: InputMaybe<Scalars['Int']['input']>;
 }>;
 
 
-export type GetRecentUsersQuery = { __typename?: 'Query', getRecentUsers: Array<{ __typename?: 'User', address: string, bio: string, bookmarksCount: number, coverPicture: string, createdAt: number, displayName: string, followersCount: number, followingCount: number, profilePicture: string, publicationsCount: number, updatedAt: number, username: string, verified: boolean, xpBalance: number, socialLinks?: Array<{ __typename?: 'SocialLink', platform: string, url: string }> | null }> };
+export type GetRecentUsersQuery = { __typename?: 'Query', getRecentUsers: Array<{ __typename?: 'User', address: string, bio: string, bookmarksCount: number, coverPicture: string, createdAt: any, displayName: string, followersCount: number, followingCount: number, profilePicture: string, publicationsCount: number, updatedAt: any, username: string, verified: boolean, xpBalance: number, socialLinks?: Array<{ __typename?: 'SocialLink', platform: string, url: string }> | null }> };
 
 export type GetIsFollowingQueryVariables = Exact<{
   targetAddress: Scalars['String']['input'];
@@ -1010,7 +1016,7 @@ export type GetTargetEventsQueryVariables = Exact<{
 }>;
 
 
-export type GetTargetEventsQuery = { __typename?: 'Query', getTargetEvents: Array<{ __typename?: 'EventLog', id: string, type: string, author?: string | null, targetId?: string | null, targetType?: string | null, progress?: number | null, amount?: number | null, currency?: string | null, meta?: any | null, createdAt: number }> };
+export type GetTargetEventsQuery = { __typename?: 'Query', getTargetEvents: Array<{ __typename?: 'EventLog', id: string, type: string, author?: string | null, targetId?: string | null, targetType?: string | null, progress?: number | null, amount?: number | null, currency?: string | null, meta?: any | null, createdAt: any }> };
 
 export type GetUserEventsQueryVariables = Exact<{
   address: Scalars['String']['input'];
@@ -1020,7 +1026,7 @@ export type GetUserEventsQueryVariables = Exact<{
 }>;
 
 
-export type GetUserEventsQuery = { __typename?: 'Query', getUserEvents: Array<{ __typename?: 'EventLog', amount?: number | null, author?: string | null, createdAt: number, currency?: string | null, id: string, meta?: any | null, progress?: number | null, targetId?: string | null, targetType?: string | null, type: string }> };
+export type GetUserEventsQuery = { __typename?: 'Query', getUserEvents: Array<{ __typename?: 'EventLog', amount?: number | null, author?: string | null, createdAt: any, currency?: string | null, id: string, meta?: any | null, progress?: number | null, targetId?: string | null, targetType?: string | null, type: string }> };
 
 export type HasPerkQueryVariables = Exact<{
   address: Scalars['String']['input'];
@@ -1033,21 +1039,21 @@ export type HasPerkQuery = { __typename?: 'Query', hasPerk: boolean };
 export type GetPerksQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetPerksQuery = { __typename?: 'Query', getPerks: Array<{ __typename?: 'Perk', availableAt?: number | null, category: PerkCategory, collectedAt?: number | null, cooldownRemaining: number, enabled: boolean, id: string, minRankId: string, name: string, rewardPreview: string, uiHint?: string | null, executionRule: { __typename?: 'ExecutionRule', cooldownSec: number, type: string }, reward: { __typename?: 'Reward', action: string, amount?: number | null, tokenId?: string | null }, unlockRule: { __typename?: 'UnlockRule', action?: string | null, on: string, rankId?: string | null, times?: number | null, window?: string | null } }> };
+export type GetPerksQuery = { __typename?: 'Query', getPerks: Array<{ __typename?: 'Perk', availableAt?: any | null, category: PerkCategory, collectedAt?: any | null, cooldownRemaining: number, enabled: boolean, id: string, minRankId: string, name: string, rewardPreview: string, uiHint?: string | null, executionRule: { __typename?: 'ExecutionRule', cooldownSec: number, type: string }, reward: { __typename?: 'Reward', action: string, amount?: number | null, tokenId?: string | null }, unlockRule: { __typename?: 'UnlockRule', action?: string | null, on: string, rankId?: string | null, times?: number | null, window?: string | null } }> };
 
 export type GetUnlockedPerksQueryVariables = Exact<{
   address: Scalars['String']['input'];
 }>;
 
 
-export type GetUnlockedPerksQuery = { __typename?: 'Query', getUnlockedPerks: Array<{ __typename?: 'UnlockedPerkState', availableAt: number, collectedAt?: number | null, cooldownSec: number, createdAt: number, id: string, perkId: string, progress: number, status: string, target: number, user: string, perk: { __typename?: 'Perk', id: string, name: string, minRankId: string, uiHint?: string | null, category: PerkCategory, collectedAt?: number | null, availableAt?: number | null, cooldownRemaining: number, rewardPreview: string, enabled: boolean, unlockRule: { __typename?: 'UnlockRule', action?: string | null, on: string, rankId?: string | null, times?: number | null, window?: string | null }, executionRule: { __typename?: 'ExecutionRule', cooldownSec: number, type: string }, reward: { __typename?: 'Reward', action: string, amount?: number | null, tokenId?: string | null } } }> };
+export type GetUnlockedPerksQuery = { __typename?: 'Query', getUnlockedPerks: Array<{ __typename?: 'UnlockedPerkState', availableAt: any, collectedAt?: any | null, cooldownSec: number, createdAt: any, id: string, perkId: string, progress: number, status: string, target: number, user: string, perk: { __typename?: 'Perk', id: string, name: string, minRankId: string, uiHint?: string | null, category: PerkCategory, collectedAt?: any | null, availableAt?: any | null, cooldownRemaining: number, rewardPreview: string, enabled: boolean, unlockRule: { __typename?: 'UnlockRule', action?: string | null, on: string, rankId?: string | null, times?: number | null, window?: string | null }, executionRule: { __typename?: 'ExecutionRule', cooldownSec: number, type: string }, reward: { __typename?: 'Reward', action: string, amount?: number | null, tokenId?: string | null } } }> };
 
 export type GetPostQueryVariables = Exact<{
   getPostId: Scalars['String']['input'];
 }>;
 
 
-export type GetPostQuery = { __typename?: 'Query', getPost?: { __typename?: 'Post', bookmarkCount: number, cid: string, commentCount: number, createdAt: number, description: string, id: string, likeCount: number, title: string, updatedAt: number, viewCount: number, visibility: VisibilitySetting, author: { __typename?: 'User', address: string, displayName: string, followersCount: number, followingCount: number, coverPicture: string, profilePicture: string, bio: string, publicationsCount: number, username: string }, media: Array<{ __typename?: 'MediaAttachment', cid: string, id: string, title?: string | null, type: string, url?: string | null }> } | null };
+export type GetPostQuery = { __typename?: 'Query', getPost?: { __typename?: 'Post', bookmarkCount: number, cid: string, commentCount: number, createdAt: any, description: string, id: string, likeCount: number, title: string, updatedAt: any, viewCount: number, visibility: VisibilitySetting, author: { __typename?: 'User', address: string, displayName: string, followersCount: number, followingCount: number, coverPicture: string, profilePicture: string, bio: string, publicationsCount: number, username: string }, media: Array<{ __typename?: 'MediaAttachment', cid: string, id: string, title?: string | null, type: string, url?: string | null }> } | null };
 
 export type GetPostsByAuthorQueryVariables = Exact<{
   author: Scalars['String']['input'];
@@ -1055,7 +1061,7 @@ export type GetPostsByAuthorQueryVariables = Exact<{
 }>;
 
 
-export type GetPostsByAuthorQuery = { __typename?: 'Query', getPostsByAuthor: Array<{ __typename?: 'Post', visibility: VisibilitySetting, viewCount: number, updatedAt: number, likeCount: number, id: string, createdAt: number, commentCount: number, bookmarkCount: number, cid: string, description: string, title: string, media: Array<{ __typename?: 'MediaAttachment', id: string, type: string, title?: string | null, cid: string, url?: string | null }>, author: { __typename?: 'User', address: string, displayName: string, followersCount: number, followingCount: number, coverPicture: string, profilePicture: string, bio: string, publicationsCount: number, username: string } }> };
+export type GetPostsByAuthorQuery = { __typename?: 'Query', getPostsByAuthor: Array<{ __typename?: 'Post', visibility: VisibilitySetting, viewCount: number, updatedAt: any, likeCount: number, id: string, createdAt: any, commentCount: number, bookmarkCount: number, cid: string, description: string, title: string, media: Array<{ __typename?: 'MediaAttachment', id: string, type: string, title?: string | null, cid: string, url?: string | null }>, author: { __typename?: 'User', address: string, displayName: string, followersCount: number, followingCount: number, coverPicture: string, profilePicture: string, bio: string, publicationsCount: number, username: string } }> };
 
 export type GetPostsQueryVariables = Exact<{
   query: Scalars['String']['input'];
@@ -1063,40 +1069,40 @@ export type GetPostsQueryVariables = Exact<{
 }>;
 
 
-export type GetPostsQuery = { __typename?: 'Query', getPosts: Array<{ __typename?: 'Post', bookmarkCount: number, cid: string, commentCount: number, createdAt: number, description: string, id: string, likeCount: number, title: string, updatedAt: number, viewCount: number, visibility: VisibilitySetting, author: { __typename?: 'User', address: string, displayName: string, followersCount: number, followingCount: number, coverPicture: string, profilePicture: string, bio: string, publicationsCount: number, username: string }, media: Array<{ __typename?: 'MediaAttachment', url?: string | null, type: string, title?: string | null, id: string, cid: string }> }> };
+export type GetPostsQuery = { __typename?: 'Query', getPosts: Array<{ __typename?: 'Post', bookmarkCount: number, cid: string, commentCount: number, createdAt: any, description: string, id: string, likeCount: number, title: string, updatedAt: any, viewCount: number, visibility: VisibilitySetting, author: { __typename?: 'User', address: string, displayName: string, followersCount: number, followingCount: number, coverPicture: string, profilePicture: string, bio: string, publicationsCount: number, username: string }, media: Array<{ __typename?: 'MediaAttachment', url?: string | null, type: string, title?: string | null, id: string, cid: string }> }> };
 
 export type GetAchievementsQueryVariables = Exact<{
   address: Scalars['String']['input'];
 }>;
 
 
-export type GetAchievementsQuery = { __typename?: 'Query', getAchievements: { __typename?: 'UserAchievements', progressPct: number, xpBalance: number, xpRemaining: number, xpTotal: number, currentRank: { __typename?: 'Rank', badgeUrl: string, colorTheme: string, createdAt: number, id: string, minXp: number, name: string, order: number, updatedAt: number }, nextRank?: { __typename?: 'Rank', name: string, minXp: number, id: string, createdAt: number, colorTheme: string, badgeUrl: string, order: number, updatedAt: number } | null } };
+export type GetAchievementsQuery = { __typename?: 'Query', getAchievements: { __typename?: 'UserAchievements', progressPct: number, xpBalance: number, xpRemaining: number, xpTotal: number, currentRank: { __typename?: 'Rank', badgeUrl: string, colorTheme: string, createdAt: any, id: string, minXp: number, name: string, order: number, updatedAt: any }, nextRank?: { __typename?: 'Rank', name: string, minXp: number, id: string, createdAt: any, colorTheme: string, badgeUrl: string, order: number, updatedAt: any } | null } };
 
 export type GetRanksCatalogQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetRanksCatalogQuery = { __typename?: 'Query', getRanksCatalog: Array<{ __typename?: 'Rank', badgeUrl: string, colorTheme: string, createdAt: number, id: string, minXp: number, name: string, updatedAt: number, order: number }> };
+export type GetRanksCatalogQuery = { __typename?: 'Query', getRanksCatalog: Array<{ __typename?: 'Rank', badgeUrl: string, colorTheme: string, createdAt: any, id: string, minXp: number, name: string, updatedAt: any, order: number }> };
 
 export type GetUserRanksQueryVariables = Exact<{
   address: Scalars['String']['input'];
 }>;
 
 
-export type GetUserRanksQuery = { __typename?: 'Query', getUserRanks: Array<{ __typename?: 'UserRank', achievedAt: number, rankId: string, user: string }> };
+export type GetUserRanksQuery = { __typename?: 'Query', getUserRanks: Array<{ __typename?: 'UserRank', achievedAt: any, rankId: string, user: string }> };
 
 export type GetTipsByBakerForPostQueryVariables = Exact<{
   postId: Scalars['String']['input'];
 }>;
 
 
-export type GetTipsByBakerForPostQuery = { __typename?: 'Query', getTipsByBakerForPost: Array<{ __typename?: 'TipByBaker', count: number, lastTipAt: number, totalAmount: number, baker: { __typename?: 'User', address: string, bio: string, displayName: string, id: string, username: string, coverPicture: string, currentRank: string, profilePicture: string, verified: boolean } }> };
+export type GetTipsByBakerForPostQuery = { __typename?: 'Query', getTipsByBakerForPost: Array<{ __typename?: 'TipByBaker', count: number, lastTipAt: any, totalAmount: number, baker: { __typename?: 'User', address: string, bio: string, displayName: string, id: string, username: string, coverPicture: string, currentRank: string, profilePicture: string, verified: boolean } }> };
 
 export type GetUserQueryVariables = Exact<{
   input: UserByInput;
 }>;
 
 
-export type GetUserQuery = { __typename?: 'Query', getUser?: { __typename?: 'User', address: string, username: string, displayName: string, bio: string, profilePicture: string, coverPicture: string, currentRank: string, xpTotal: number, xpBalance: number, followersCount: number, followingCount: number, publicationsCount: number, bookmarksCount: number, verified: boolean, createdAt: number, updatedAt: number, socialLinks?: Array<{ __typename?: 'SocialLink', platform: string, url: string }> | null } | null };
+export type GetUserQuery = { __typename?: 'Query', getUser?: { __typename?: 'User', address: string, username: string, displayName: string, bio: string, profilePicture: string, coverPicture: string, currentRank: string, xpTotal: number, xpBalance: number, followersCount: number, followingCount: number, publicationsCount: number, bookmarksCount: number, verified: boolean, createdAt: any, updatedAt: any, socialLinks?: Array<{ __typename?: 'SocialLink', platform: string, url: string }> | null } | null };
 
 export type GetUserBookmarksQueryVariables = Exact<{
   address: Scalars['String']['input'];
@@ -1104,7 +1110,7 @@ export type GetUserBookmarksQueryVariables = Exact<{
 }>;
 
 
-export type GetUserBookmarksQuery = { __typename?: 'Query', getUserBookmarks: Array<{ __typename?: 'Post', id: string, title: string, description: string, likeCount: number, createdAt: number, media: Array<{ __typename?: 'MediaAttachment', url?: string | null, cid: string, title?: string | null, type: string }> }> };
+export type GetUserBookmarksQuery = { __typename?: 'Query', getUserBookmarks: Array<{ __typename?: 'Post', id: string, title: string, description: string, likeCount: number, createdAt: any, media: Array<{ __typename?: 'MediaAttachment', url?: string | null, cid: string, title?: string | null, type: string }> }> };
 
 export type GetUserFollowersQueryVariables = Exact<{
   address: Scalars['String']['input'];
@@ -1112,7 +1118,7 @@ export type GetUserFollowersQueryVariables = Exact<{
 }>;
 
 
-export type GetUserFollowersQuery = { __typename?: 'Query', getUserFollowers: Array<{ __typename?: 'User', address: string, username: string, displayName: string, bio: string, profilePicture: string, coverPicture: string, xpBalance: number, followersCount: number, followingCount: number, publicationsCount: number, bookmarksCount: number, verified: boolean, createdAt: number, updatedAt: number, socialLinks?: Array<{ __typename?: 'SocialLink', platform: string, url: string }> | null }> };
+export type GetUserFollowersQuery = { __typename?: 'Query', getUserFollowers: Array<{ __typename?: 'User', address: string, username: string, displayName: string, bio: string, profilePicture: string, coverPicture: string, xpBalance: number, followersCount: number, followingCount: number, publicationsCount: number, bookmarksCount: number, verified: boolean, createdAt: any, updatedAt: any, socialLinks?: Array<{ __typename?: 'SocialLink', platform: string, url: string }> | null }> };
 
 export type GetUserFollowingQueryVariables = Exact<{
   address: Scalars['String']['input'];
@@ -1120,7 +1126,7 @@ export type GetUserFollowingQueryVariables = Exact<{
 }>;
 
 
-export type GetUserFollowingQuery = { __typename?: 'Query', getUserFollowing: Array<{ __typename?: 'User', address: string, username: string, displayName: string, bio: string, profilePicture: string, coverPicture: string, xpBalance: number, followersCount: number, followingCount: number, publicationsCount: number, bookmarksCount: number, verified: boolean, createdAt: number, updatedAt: number, socialLinks?: Array<{ __typename?: 'SocialLink', platform: string, url: string }> | null }> };
+export type GetUserFollowingQuery = { __typename?: 'Query', getUserFollowing: Array<{ __typename?: 'User', address: string, username: string, displayName: string, bio: string, profilePicture: string, coverPicture: string, xpBalance: number, followersCount: number, followingCount: number, publicationsCount: number, bookmarksCount: number, verified: boolean, createdAt: any, updatedAt: any, socialLinks?: Array<{ __typename?: 'SocialLink', platform: string, url: string }> | null }> };
 
 export type GetUserXpHistoryQueryVariables = Exact<{
   address: Scalars['String']['input'];
@@ -1129,7 +1135,7 @@ export type GetUserXpHistoryQueryVariables = Exact<{
 }>;
 
 
-export type GetUserXpHistoryQuery = { __typename?: 'Query', getUserXPHistory: Array<{ __typename?: 'XPEntry', id: string, action: string, description: string, amount: number, balanceBefore: number, balanceAfter: number, createdAt: number }> };
+export type GetUserXpHistoryQuery = { __typename?: 'Query', getUserXPHistory: Array<{ __typename?: 'XPEntry', id: string, action: string, description: string, amount: number, balanceBefore: number, balanceAfter: number, createdAt: any }> };
 
 export type GetUsersQueryVariables = Exact<{
   limit?: InputMaybe<Scalars['Int']['input']>;

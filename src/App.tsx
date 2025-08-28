@@ -31,21 +31,21 @@ import ThemeProvider from '@src/theme';
 import ProgressBar from '@src/components/progress-bar';
 import MotionLazy from '@src/components/animate/motion-lazy';
 import SnackbarProvider from '@src/components/snackbar/snackbar-provider';
-import LedgerVaultAbi from "@src/config/abi/LedgerVault.json";
+
 import { store } from '@redux/store'
 import { useScrollToTop } from '@src/hooks/use-scroll-to-top';
 import { SettingsProvider, SettingsDrawer } from '@src/components/settings';
+
+import { MetaMaskProvider } from '@metamask/sdk-react';
 import { AuthProvider } from '@src/contexts/auth';
 import { ApiProvider } from '@src/contexts/api';
+
 import { ResponsiveOverlay } from '@src/components/responsive-overlay';
-import { MetaMaskProvider } from '@metamask/sdk-react';
 import { useNotifications } from "@src/hooks/use-notifications.ts";
 import { setGlobalNotifier } from "@src/libs/notifications/internal-notifications.ts";
+
 import { useAuth } from '@src/hooks/use-auth.ts';
-import { publicClientWebSocket } from "@src/clients/viem/publicClient.ts";
-import { setBlockchainEvents } from "@redux/blockchain-events";
 import { subscribeToNotifications } from "@src/libs/subscribe-notifications-supabase.ts";
-import { GLOBAL_CONSTANTS } from "@src/config-global.ts";
 
 window.Buffer = Buffer;
 
@@ -116,11 +116,6 @@ export default function App() {
   );
 }
 
-
-interface EventArgs {
-  recipient?: string;
-  origin?: string;
-}
 const AppContent = () => {
   const dispatch = useDispatch();
   const { session: sessionData } = useAuth();
@@ -131,35 +126,6 @@ const AppContent = () => {
     // Set the global reference so we can call notify(...) anywhere.
     setGlobalNotifier(enqueueSnackbar);
   }, [enqueueSnackbar]);
-
-  const watchEvent = (eventName: string, args: EventArgs, logText: string) => {
-    return publicClientWebSocket.watchContractEvent({
-      address: GLOBAL_CONSTANTS.LEDGER_VAULT_ADDRESS,
-      abi: LedgerVaultAbi.abi,
-      eventName,
-      args,
-      onLogs: (logs) => {
-        console.log(logText, logs);
-        dispatch(setBlockchainEvents(logs));
-      },
-    });
-  };
-
-  useEffect(() => {
-    if (!sessionData?.address) return;
-
-    const events = [
-      { name: 'FundsDeposited', args: { recipient: sessionData?.address }, logText: 'New deposit (user as recipient):' },
-      { name: 'FundsWithdrawn', args: { origin: sessionData?.address }, logText: 'New withdraw (user as origin):' },
-      { name: 'FundsTransferred', args: { origin: sessionData?.address }, logText: 'New transfer from me:' },
-      { name: 'FundsTransferred', args: { recipient: sessionData?.address }, logText: 'New transfer to me:' },
-      { name: 'FundsClaimed', args: { claimer: sessionData?.address }, logText: 'New funds claimed:' },
-      { name: 'FundsCollected', args: { from: sessionData?.address }, logText: 'New funds collected:' },
-    ];
-
-    const cleanup = events.map(event => watchEvent(event.name, event.args, event.logText));
-    return () => cleanup.forEach(unwatch => unwatch());
-  }, [sessionData?.address]);
 
 
   useEffect(() => {

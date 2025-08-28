@@ -12,14 +12,12 @@ export default function PostCommentList({ publicationId, onReplyCreated }: Reado
   const { data, loading, error, refetch } = useGetCommentsByPostQuery({
     variables: { postId: publicationId, limit: 50 },
     fetchPolicy: 'network-only',
+    pollInterval: 1000
   });
 
   const [hidden, setHidden] = useState<string[]>([]);
-
   if (error) return <p>Error: {error.message}</p>;
-
   const comments = (data?.getCommentsByPost ?? []).filter((c: Comment) => !hidden.includes(c.id));
-
   const handleHide = (commentId: string) => setHidden((h) => [...h, commentId]);
 
   return (

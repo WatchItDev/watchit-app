@@ -61,10 +61,10 @@ export const SubscribeProfileModal = ({
   const [customDuration, setCustomDuration] = useState('');
 
   const dispatch = useDispatch();
-  const { session: sessionData, balance: balanceFromRedux } = useAuth();
+  const { sendNotification } = useNotifications();
+  const { session: sessionData } = useAuth();
   const { balance: balanceFromContract, refetch } = useGetBalance();
   const { data, error, loading, subscribe } = useSubscribe();
-  const { sendNotification } = useNotifications();
   const { generatePayload } = useNotificationPayload(sessionData);
   const { terms, loading: loadingTerms } = useGetPolicyTerms(
     GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS as Address,

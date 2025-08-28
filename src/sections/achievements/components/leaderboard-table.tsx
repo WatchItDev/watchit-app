@@ -50,6 +50,7 @@ const LeaderboardTable: FC = () => {
     variables: { limit: 50 },
     fetchPolicy: 'network-only',
   });
+  
   const { data, isInitialLoad, error } = useStaleWhileLoading(raw);
   const table = useTable({ defaultOrder: 'asc', defaultOrderBy: 'rank', defaultRowsPerPage: 5 });
   const myAddress = session?.user?.address?.toLowerCase() ?? '';

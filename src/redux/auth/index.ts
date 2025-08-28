@@ -13,8 +13,7 @@ export const defaultSession = {
 const initialState: AuthReducerState = {
   session: defaultSession,
   isAuthLoading: false,
-  isLoginModalOpen: false,
-  balance: 0,
+  isLoginModalOpen: false
 };
 
 const authSlice = createSlice({
@@ -29,9 +28,6 @@ const authSlice = createSlice({
     },
     setAuthLoading: (state, action: PayloadAction<Pick<AuthReducerState, 'isAuthLoading'>>) => {
       state.isAuthLoading = action.payload.isAuthLoading;
-    },
-    setBalance: (state, action: PayloadAction<Pick<AuthReducerState, 'balance'>>) => {
-      state.balance = action.payload.balance;
     },
     setSession: (state, action: PayloadAction<{ session: ReduxSession }>) => {
       state.session = action.payload.session;
@@ -56,7 +52,6 @@ export const {
   openLoginModal,
   closeLoginModal,
   setAuthLoading,
-  setBalance,
   setSession,
   setUser,
   incrementXp,

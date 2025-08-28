@@ -13,5 +13,4 @@ export interface AuthReducerState {
   session: ReduxSession;
   isAuthLoading: boolean;
   isLoginModalOpen: boolean;
-  balance: number;
 }
