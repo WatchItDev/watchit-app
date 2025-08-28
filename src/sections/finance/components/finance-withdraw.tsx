@@ -29,11 +29,11 @@ import { FinanceWithdrawProps } from "@src/sections/finance/types.ts";
 // ----------------------------------------------------------------------
 
 const FinanceWithdraw: FC<FinanceWithdrawProps> = ({ address, withdrawHook, onClose }) => {
-  const [amount, setAmount] = useState<number | string>("");
+  const { balance } = useGetBalance();
+  const [amount, setAmount] = useState<number>(0);
   const [amountError, setAmountError] = useState(false);
   const [amountHelperText, setAmountHelperText] = useState("");
   const [localLoading, setLocalLoading] = useState(false);
-  const { balance } = useGetBalance();
   const { withdraw, loading: withdrawLoading, error } = withdrawHook;
   const RainbowEffect = localLoading || withdrawLoading ? NeonPaper : Box;
 

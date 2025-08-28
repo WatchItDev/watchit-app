@@ -7,7 +7,6 @@ import { useDispatch } from 'react-redux';
 import {
   setAuthLoading,
   setSession,
-  setBalance,
   setUser,
   defaultSession,
   closeLoginModal,
@@ -75,7 +74,6 @@ export const useAccountSession = (): UseAccountSessionHook => {
   }, [web3Auth.provider]);
 
   const clearRedux = () => {
-    dispatch(setBalance({ balance: 0 }));
     dispatch(setSession({ session: defaultSession }));
     setUserChecked(false);
     loginPerformed = false;
