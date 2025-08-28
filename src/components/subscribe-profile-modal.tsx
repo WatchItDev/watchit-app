@@ -28,7 +28,6 @@ import { Address, formatUnits, parseUnits } from 'viem';
 import NeonPaper from '@src/sections/publication/components/neon-paper-container.tsx';
 import { useSubscribe } from '@src/hooks/protocol/use-subscribe.ts';
 import { useGetPolicyTerms } from '@src/hooks/protocol/use-get-policy-terms.ts';
-import { setBalance } from '@redux/auth';
 import { useGetBalance } from '@src/hooks/protocol/use-get-balance.ts';
 import { useNotifications } from '@src/hooks/use-notifications.ts';
 import { useNotificationPayload } from '@src/hooks/use-notification-payload.ts';
@@ -60,10 +59,9 @@ export const SubscribeProfileModal = ({
   const [selectedDuration, setSelectedDuration] = useState('7');
   const [customDuration, setCustomDuration] = useState('');
 
-  const dispatch = useDispatch();
   const { sendNotification } = useNotifications();
   const { session: sessionData } = useAuth();
-  const { balance: balanceFromContract, refetch } = useGetBalance();
+  const { balance, refetch } = useGetBalance();
   const { data, error, loading, subscribe } = useSubscribe();
   const { generatePayload } = useNotificationPayload(sessionData);
   const { terms, loading: loadingTerms } = useGetPolicyTerms(
@@ -71,11 +69,6 @@ export const SubscribeProfileModal = ({
     profile?.address as Address
   );
 
-  useEffect(() => {
-    if (balanceFromContract) {
-      dispatch(setBalance({ balance: balanceFromContract }));
-    }
-  }, [balanceFromContract]);
 
   // Options for predefined durations
   const durationOptions = [
@@ -98,9 +91,7 @@ export const SubscribeProfileModal = ({
     totalCostMMC = formatUnits(totalCostWei, 18); // Convert Wei to MMC
   }
 
-  const balanceWei = balanceFromRedux
-    ? parseUnits(balanceFromRedux.toString(), 18)
-    : BigInt(0);
+  const balanceWei = balance ? parseUnits(balance.toString(), 18) : BigInt(0);
   const isBalanceSufficient = balanceWei && totalCostWei && balanceWei >= totalCostWei;
 
   // Determine if the subscribe button should be disabled
