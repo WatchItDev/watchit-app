@@ -1,9 +1,13 @@
 import React from 'react';
-import { Card, CardHeader, CardContent, Box } from '@mui/material';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import CardHeader from '@mui/material/CardHeader';
+
+import { Box } from '@mui/material';
 import { useResponsive } from '@src/hooks/use-responsive';
 import { useItemsPerSlide } from '@src/hooks/components/use-item-per-slide';
 import { ExploreCarouselSkeletonProps } from '@src/sections/explore/types.ts';
-import {randomKey} from "@src/utils/uuidv4.ts"
+import { randomKey } from "@src/utils/uuidv4.ts"
 
 export const ExploreCarouselSkeleton: React.FC<ExploreCarouselSkeletonProps> = (props) => {
   const { title, SkeletonItemComponent = Box } = props;

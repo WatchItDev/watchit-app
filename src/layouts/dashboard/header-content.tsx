@@ -1,5 +1,5 @@
 import { useEffect, FC } from 'react';
-import { IconChevronLeft } from '@tabler/icons-react';
+import { icons } from '@tabler/icons-react';
 
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
@@ -35,7 +35,7 @@ const HeaderContent: FC<HeaderContentProps> = ({ handleBack, title }) => {
         <Button
           onClick={handleBack}
           disableFocusRipple
-          startIcon={<IconChevronLeft size={20} />}
+          startIcon={<icons.IconChevronLeft size={20} />}
           sx={{
             display: 'flex',
             alignItems: 'center',

@@ -1,15 +1,16 @@
 import React, { useMemo } from 'react';
 import { createClient } from "graphql-ws";
 import { OperationTypeNode } from "graphql";
-import { ApolloProvider } from "@apollo/client/react";
 import {
   ApolloClient,
+  ApolloProvider,
   InMemoryCache,
-  HttpLink
+  HttpLink,
+  concat, split
 } from '@apollo/client';
 import { useAuth } from '@src/hooks/use-auth.ts';
 import { GraphQLWsLink } from "@apollo/client/link/subscriptions";
-import { SetContextLink } from '@apollo/client/link/context';
+import { setContext } from '@apollo/client/link/context';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 
 export const ApiProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -27,21 +28,20 @@ export const ApiProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       })
     );
 
-    const splitLink = httpLink.split(
+    const splitLink = split(
       ({ operationName }) => operationName === OperationTypeNode.SUBSCRIPTION,
       wsLink, httpLink
     );
 
-    // https://www.apollographql.com/docs/react/api/link/apollo-link-context
-    const authLink = new SetContextLink(({ prevContext }) => ({
+    const authLink = setContext((_, { headers }) => ({
       headers: {
-        ...prevContext.headers,
+        ...headers,
         Authorization: session?.info?.idToken ? `Bearer ${session?.info?.idToken}` : '',
       },
     }));
 
     return new ApolloClient({
-      link: authLink.concat(splitLink),
+      link: concat(authLink, splitLink),
       cache: new InMemoryCache(),
       defaultOptions: {
         watchQuery: { fetchPolicy: 'network-only', errorPolicy: 'all' },

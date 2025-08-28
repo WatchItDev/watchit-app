@@ -9,11 +9,11 @@ import Stack from '@mui/material/Stack';
 // components
 import { bgGradient } from '@src/theme/css';
 import Image from '@src/components/image';
-import { IconHeartFilled } from '@tabler/icons-react';
-import { Poster } from '../types';
+import { icons } from '@tabler/icons-react';
 import { useRouter } from '@src/routes/hooks';
 import { paths } from '@src/routes/paths.ts';
 import TextMaxLine from '@src/components/text-max-line';
+import { Poster } from '../types';
 
 // ----------------------------------------------------------------------
 
@@ -71,7 +71,7 @@ const PosterHorizontal = ({ title, images, likes, id, synopsis }: Poster) => {
         {/* Likes */}
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <Stack direction="row" spacing={0.5} alignItems="center" textAlign="center">
-            <IconHeartFilled style={{ marginBottom: '2px' }} size={16} color="#F2F3F5" />
+            <icons.IconHeartFilled style={{ marginBottom: '2px' }} size={16} color="#F2F3F5" />
             <TextMaxLine line={1} variant="body2">
               {formatLikes(likes ?? 0)}
             </TextMaxLine>

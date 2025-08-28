@@ -36,7 +36,6 @@ const PerksList: FC = () => {
   const [claimPerk] = useClaimPerkMutation();
   const challenges = useMemo(() => {
     const states: UnlockedPerkState[] = data?.getUnlockedPerks ?? [];
-
     const parseReward = (txt: string) =>
       parseInt(txt.replace(/[^0-9]/g, ''), 10) || 0;
 

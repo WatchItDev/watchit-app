@@ -4,7 +4,7 @@ import Image from '@src/components/image';
 import { useRouter } from '@src/routes/hooks';
 import { paths } from '@src/routes/paths.ts';
 import Button from '@mui/material/Button';
-import { IconBookmark, IconBookmarkFilled, IconPlayerPlay } from '@tabler/icons-react';
+import { icons } from '@tabler/icons-react';
 import Box from '@mui/material/Box';
 import TextMaxLine from '@src/components/text-max-line';
 import { CircularProgress } from '@mui/material';
@@ -185,7 +185,7 @@ const PosterTopTitles = ({ post }: { post: Post }) => {
                     },
                   }}
                 >
-                  <IconPlayerPlay size={22} color="#000" />
+                  <icons.IconPlayerPlay size={22} color="#000" />
                 </Box>
                 <TextMaxLine
                   sx={{
@@ -213,9 +213,9 @@ const PosterTopTitles = ({ post }: { post: Post }) => {
                 {loadingToggle || loadingList ? (
                   <CircularProgress size={25} sx={{ color: '#fff' }} />
                 ) : isBookmarked ? (
-                  <IconBookmarkFilled size={22} />
+                  <icons.IconBookmarkFilled size={22} />
                 ) : (
-                  <IconBookmark size={22} />
+                  <icons.IconBookmark size={22} />
                 )}
               </Button>
             </Stack>

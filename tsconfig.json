@@ -11,6 +11,6 @@
       "@web3auth/*": ["./packages/*"],
       "@web3auth/*-plugin": ["./packages/plugins/*-plugin"]
     },
-    "types": ["@testing-library/jest-dom/vitest", "vitest/globals"]
+    "types": ["@testing-library/jest-dom/vitest"]
   }
 }

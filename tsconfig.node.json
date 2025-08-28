@@ -26,5 +26,5 @@
       "@web3auth/*-plugin": ["./packages/plugins/*-plugin"]
     }
   },
-  "include": ["vite.config.ts"]
+  "include": ["rsbuild.config.ts"]
 }

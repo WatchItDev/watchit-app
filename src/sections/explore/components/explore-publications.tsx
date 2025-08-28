@@ -14,6 +14,7 @@ const ExplorePublications = () => {
   const [posts, setPosts] = useState<PublicationType[]>([]);
 
   useEffect(() => {
+    console.log("6esty")
     fetchPosts({ variables: { limit: 100 } })
       .then(({ data }) => {
         if (!data?.getRecentPosts) return;

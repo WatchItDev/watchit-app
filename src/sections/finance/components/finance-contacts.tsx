@@ -21,8 +21,8 @@ import AvatarProfile from "@src/components/avatar/avatar.tsx";
 import { paths } from '@src/routes/paths';
 import { useRouter } from '@src/routes/hooks';
 
+import { FinanceContactsCarouselProps } from "@src/sections/finance/types.ts"
 import { storeAddress, toggleRainbow } from '@redux/address';
-import {FinanceContactsCarouselProps} from "@src/sections/finance/types.ts"
 import { User } from '@src/graphql/generated/graphql.ts';
 import { resolveSrc } from '@src/utils/image.ts';
 import { truncateAddress } from '@src/utils/wallet.ts';
@@ -32,7 +32,7 @@ import { truncateAddress } from '@src/utils/wallet.ts';
 
 
 export default function FinanceContactsCarousel(props: Readonly<FinanceContactsCarouselProps>) {
-  const { title, subheader, list, chunkSize = 5,...other } = props
+  const { title, subheader, list, chunkSize = 5, ...other } = props
 
   const router = useRouter();
   const dispatch = useDispatch();
