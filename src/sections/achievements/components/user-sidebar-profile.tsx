@@ -41,7 +41,9 @@ export const UserSidebarProfile: FC = () => {
           whileTap="tap"
           whileHover="hover"
           variants={varHover(1.05)}
-          onClick={() => { router.push(paths.dashboard.user.root(`${session?.user?.address}`)); }}
+          onClick={() => {
+            router.push(paths.dashboard.user.root(`${session?.user?.address}`));
+          }}
           sx={{
             width: 132,
             height: 132,
@@ -50,7 +52,9 @@ export const UserSidebarProfile: FC = () => {
           }}
         >
           <AvatarProfile
-            src={(session?.user?.profilePicture || session?.user?.address) ?? ''}
+            src={
+              (session?.user?.profilePicture || session?.user?.address) ?? ''
+            }
             alt={session?.user?.displayName || address}
             sx={{
               width: 128,
@@ -64,7 +68,13 @@ export const UserSidebarProfile: FC = () => {
       {/* Achievements summary */}
       {currentRank && (
         <Card variant="outlined" sx={{ mb: 3, px: 2, py: 1.5 }}>
-          <Box display="flex" alignItems="center" justifyContent="space-between" gap={1} mb={1}>
+          <Box
+            display="flex"
+            alignItems="center"
+            justifyContent="space-between"
+            gap={1}
+            mb={1}
+          >
             <Typography variant="subtitle2" fontWeight={600}>
               {currentRank.name}
             </Typography>
@@ -82,7 +92,12 @@ export const UserSidebarProfile: FC = () => {
 
           <Box mt={2}>
             <ProgressBar value={progress} variant="determinate" />
-            <Box display="flex" alignItems="center" justifyContent="space-between" sx={{ mt: 1 }}>
+            <Box
+              display="flex"
+              alignItems="center"
+              justifyContent="space-between"
+              sx={{ mt: 1 }}
+            >
               <Typography variant="caption" color="text.secondary">
                 {progress.toFixed(0)}%
               </Typography>

@@ -4,7 +4,7 @@ import ListItemText from '@mui/material/ListItemText';
 import ListItemButton from '@mui/material/ListItemButton';
 import Label from '@src/components/label';
 import { COLORS } from '@src/layouts/config-layout.ts';
-import {ResultProps} from "@src/layouts/_common/searchbar/types.ts"
+import { ResultProps } from '@src/layouts/_common/searchbar/types.ts';
 
 const highlightText = (text: string, query: string) => {
   if (!query) return text;
@@ -13,13 +13,17 @@ const highlightText = (text: string, query: string) => {
     part.toLowerCase() === query.toLowerCase() ? (
       <span
         key={index}
-        style={{ backgroundColor: 'white', color: COLORS.GRAY_DARK, fontWeight: 'bold' }}
+        style={{
+          backgroundColor: 'white',
+          color: COLORS.GRAY_DARK,
+          fontWeight: 'bold',
+        }}
       >
         {part}
       </span>
     ) : (
       part
-    )
+    ),
   );
 };
 
@@ -42,7 +46,10 @@ export default function ResultItem({
           borderRadius: 1,
           borderColor: (theme) => theme.palette.primary.main,
           backgroundColor: (theme) =>
-            alpha(theme.palette.primary.main, theme.palette.action.hoverOpacity),
+            alpha(
+              theme.palette.primary.main,
+              theme.palette.action.hoverOpacity,
+            ),
         },
       }}
     >

@@ -1,8 +1,8 @@
-import {TRANSACTIONS_TYPES} from "@src/sections/finance/types.ts"
+import { TRANSACTIONS_TYPES } from '@src/sections/finance/types.ts';
 
 export const STATUS_OPTIONS = [
   { value: 'all', label: 'All' },
-  ...TRANSACTIONS_TYPES
+  ...TRANSACTIONS_TYPES,
 ];
 
 export const TABLE_HEAD = [

@@ -4,18 +4,27 @@ import Typography from '@mui/material/Typography';
 
 // LOCAL IMPORTS
 import { UserItem } from '@src/components/user-item';
-import { randomKey } from "@src/utils/uuidv4.ts"
+import { randomKey } from '@src/utils/uuidv4.ts';
 import { ProfileFollowingProps } from '@src/sections/user/types.ts';
 import LinearProgress from '@mui/material/LinearProgress';
 
 // ----------------------------------------------------------------------
 
 const ProfileFollowing = ({ following, loading }: ProfileFollowingProps) => {
-  if (loading) return (
-    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', padding: 10 }}>
-      <LinearProgress color="inherit" sx={{ width: 1, maxWidth: 360 }} />
-    </Box>
-  );
+  if (loading)
+    return (
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          width: '100%',
+          padding: 10,
+        }}
+      >
+        <LinearProgress color="inherit" sx={{ width: 1, maxWidth: 360 }} />
+      </Box>
+    );
 
   return (
     <Box
@@ -36,7 +45,10 @@ const ProfileFollowing = ({ following, loading }: ProfileFollowingProps) => {
     >
       {following?.length ? (
         following.map((follower, index) => (
-          <UserItem key={`${ randomKey(index, 'following-')}`} profile={follower} />
+          <UserItem
+            key={`${randomKey(index, 'following-')}`}
+            profile={follower}
+          />
         ))
       ) : (
         <Typography

@@ -3,8 +3,10 @@ import SettingsModal from '@src/components/modal';
 import CampaignWithdrawFundsModalContent from './campaign-withdraw-funds-modal-content.tsx';
 import { CampaignWithdrawFundsModalProps } from '@src/sections/marketing/types.ts';
 
-const CampaignWithdrawFundsModal: FC<CampaignWithdrawFundsModalProps> = (props) => {
-  const { open, onClose, onSuccess, campaignData, } = props;
+const CampaignWithdrawFundsModal: FC<CampaignWithdrawFundsModalProps> = (
+  props,
+) => {
+  const { open, onClose, onSuccess, campaignData } = props;
 
   const handleClose = () => {
     onClose();

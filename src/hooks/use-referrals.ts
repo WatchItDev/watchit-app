@@ -57,7 +57,8 @@ const useReferrals = () => {
     setLoading(true);
     setError(null);
 
-    const { hasPending, error } = await checkIfMyEmailHasPendingInviteAction(userEmail);
+    const { hasPending, error } =
+      await checkIfMyEmailHasPendingInviteAction(userEmail);
 
     if (error) {
       setError(error);
@@ -74,13 +75,15 @@ const useReferrals = () => {
    * @param {string} invitationId - The ID of the invitation to accept.
    * @returns {Promise<Invitation | null>} - Returns the updated invitation if successful, otherwise null.
    */
-  const acceptInvitation = async (invitationId: string): Promise<Invitation | null> => {
+  const acceptInvitation = async (
+    invitationId: string,
+  ): Promise<Invitation | null> => {
     setLoading(true);
     setError(null);
 
     const { data, error } = await acceptInvitationAction(
       invitationId,
-      sessionData?.profile?.id
+      sessionData?.profile?.id,
     );
 
     if (error) {
@@ -94,12 +97,12 @@ const useReferrals = () => {
       prev.map((inv) =>
         inv.id === invitationId
           ? {
-            ...inv,
-            status: 'accepted',
-            receiver_id: sessionData?.profile?.id,
-          }
-          : inv
-      )
+              ...inv,
+              status: 'accepted',
+              receiver_id: sessionData?.profile?.id,
+            }
+          : inv,
+      ),
     );
 
     setLoading(false);
@@ -112,11 +115,16 @@ const useReferrals = () => {
    * @param {string} destinationEmail - The email to check against the 'destination' field in the database.
    * @returns {Promise<boolean>} - Returns true if there is an existing invitation, false otherwise.
    */
-  const checkIfInvitationSent = async (destinationEmail: string): Promise<boolean> => {
+  const checkIfInvitationSent = async (
+    destinationEmail: string,
+  ): Promise<boolean> => {
     setLoading(true);
     setError(null);
 
-    const { exists, error } = await checkIfInvitationSentAction(userEmail, destinationEmail);
+    const { exists, error } = await checkIfInvitationSentAction(
+      userEmail,
+      destinationEmail,
+    );
 
     if (error) {
       setError(error);
@@ -133,11 +141,14 @@ const useReferrals = () => {
    * @param {string} destinationEmail - The email to check.
    * @returns {Promise<boolean>} - Returns true if there's an invitation with status 'accepted' for this email, otherwise false.
    */
-  const checkIfEmailAlreadyAccepted = async (destinationEmail: string): Promise<boolean> => {
+  const checkIfEmailAlreadyAccepted = async (
+    destinationEmail: string,
+  ): Promise<boolean> => {
     setLoading(true);
     setError(null);
 
-    const { accepted, error } = await checkIfEmailAlreadyAcceptedAction(destinationEmail);
+    const { accepted, error } =
+      await checkIfEmailAlreadyAcceptedAction(destinationEmail);
 
     if (error) {
       setError(error);
@@ -155,9 +166,17 @@ const useReferrals = () => {
    * @param {any} payload - Additional data you want to attach to the invitation (e.g., sender's profile info).
    * @returns {Promise<void>} - Throws an error if something goes wrong.
    */
-  const sendInvitation = async (destination: string, payload: Record<string, string>): Promise<void> => {
+  const sendInvitation = async (
+    destination: string,
+    payload: Record<string, string>,
+  ): Promise<void> => {
     // Insert a new invitation into Supabase
-    const { error } = await sendInvitationAction(destination, payload, userEmail, sessionData);
+    const { error } = await sendInvitationAction(
+      destination,
+      payload,
+      userEmail,
+      sessionData,
+    );
 
     if (error) {
       console.error('Error storing invitation in Supabase:', error);
@@ -183,7 +202,10 @@ const useReferrals = () => {
    * ------------------------------------------------------------------
    */
   const acceptOrCreateInvitationForUser = async () => {
-    const { error } = await acceptOrCreateInvitationForUserAction(userEmail, sessionData);
+    const { error } = await acceptOrCreateInvitationForUserAction(
+      userEmail,
+      sessionData,
+    );
 
     if (error) {
       console.error('Error in acceptOrCreateInvitationForUser:', error);
@@ -208,7 +230,7 @@ const useReferrals = () => {
         GLOBAL_CONSTANTS.EMAIL_SERVICE_ID,
         GLOBAL_CONSTANTS.EMAIL_TEMPLATE_ID,
         templateParams,
-        GLOBAL_CONSTANTS.EMAIL_API_KEY
+        GLOBAL_CONSTANTS.EMAIL_API_KEY,
       );
       console.log('Email sent successfully:', result.text);
     } catch (err) {

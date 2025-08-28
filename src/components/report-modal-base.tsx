@@ -21,7 +21,7 @@ interface ReportModalBaseProps {
   reasons: string[];
   onSubmit: (
     reason: string,
-    comments: string
+    comments: string,
   ) => Promise<{ isSuccess: () => boolean; error?: { message: string } }>;
   isOpen: boolean;
   onClose: () => void;
@@ -93,7 +93,11 @@ export const ReportModalBase = ({
         />
       </DialogContent>
       <DialogActions>
-        <Button variant="outlined" sx={{ borderColor: '#fff' }} onClick={onClose}>
+        <Button
+          variant="outlined"
+          sx={{ borderColor: '#fff' }}
+          onClick={onClose}
+        >
           Cancel
         </Button>
         <Button
@@ -102,7 +106,11 @@ export const ReportModalBase = ({
           onClick={handleReportSubmit}
           disabled={loading || !reportReason}
         >
-          {loading ? <CircularProgress size="25px" sx={{ color: '#fff' }} /> : 'Submit Report'}
+          {loading ? (
+            <CircularProgress size="25px" sx={{ color: '#fff' }} />
+          ) : (
+            'Submit Report'
+          )}
         </Button>
       </DialogActions>
     </Dialog>

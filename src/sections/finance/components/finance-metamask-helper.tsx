@@ -1,6 +1,6 @@
-import Stack from "@mui/material/Stack";
-import Typography from "@mui/material/Typography";
-import Link from "@mui/material/Link";
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
+import Link from '@mui/material/Link';
 
 const FinanceMetamaskHelper = () => {
   const handleDownloadMetaMask = () => {
@@ -10,7 +10,7 @@ const FinanceMetamaskHelper = () => {
   return (
     <Stack sx={{ m: 2, mt: 0 }}>
       <Typography variant="body2" color="text.secondary" textAlign="center">
-        MetaMask required.{" "}
+        MetaMask required.{' '}
         <Link
           href="https://metamask.app.link"
           onClick={handleDownloadMetaMask}
@@ -20,7 +20,7 @@ const FinanceMetamaskHelper = () => {
           sx={{ color: 'text.primary' }}
         >
           Click here
-        </Link>{" "}
+        </Link>{' '}
         if you don't have it installed.
       </Typography>
     </Stack>

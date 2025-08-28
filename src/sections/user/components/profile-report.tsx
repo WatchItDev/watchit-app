@@ -1,11 +1,11 @@
-import { IconDots } from "@tabler/icons-react";
-import Button from "@mui/material/Button";
-import Stack from "@mui/material/Stack";
-import MenuItem from "@mui/material/MenuItem";
-import Popover from "@mui/material/Popover";
-import { FC, useState } from "react";
-import { ReportProfileModal } from "@src/components/report-profile-modal.tsx";
-import styled from "@emotion/styled";
+import { IconDots } from '@tabler/icons-react';
+import Button from '@mui/material/Button';
+import Stack from '@mui/material/Stack';
+import MenuItem from '@mui/material/MenuItem';
+import Popover from '@mui/material/Popover';
+import { FC, useState } from 'react';
+import { ReportProfileModal } from '@src/components/report-profile-modal.tsx';
+import styled from '@emotion/styled';
 import { User } from '@src/graphql/generated/graphql.ts';
 
 interface ProfileReportProps {
@@ -42,7 +42,9 @@ const StyledMenuItem = styled(MenuItem)`
 
 const ProfileReport: FC<ProfileReportProps> = ({ profile }) => {
   const [openReportModal, setOpenReportModal] = useState(false);
-  const [menuAnchorEl, setMenuAnchorEl] = useState<HTMLButtonElement | null>(null);
+  const [menuAnchorEl, setMenuAnchorEl] = useState<HTMLButtonElement | null>(
+    null,
+  );
   const openMenu = Boolean(menuAnchorEl);
 
   return (

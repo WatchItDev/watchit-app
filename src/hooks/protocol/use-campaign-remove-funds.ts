@@ -8,7 +8,7 @@ import {
   UseCampaignRemoveFundsHook,
   UseCampaignRemoveFundsResult,
 } from '@src/hooks/protocol/types.ts';
-import { Calls } from '@src/hooks/types.ts'
+import { Calls } from '@src/hooks/types.ts';
 import { useAuth } from '@src/hooks/use-auth.ts';
 import { useWeb3Auth } from '@src/hooks/use-web3-auth.ts';
 
@@ -21,9 +21,9 @@ export const useCampaignRemoveFunds = (): UseCampaignRemoveFundsHook => {
   const { session } = useAuth();
 
   const removeFunds = async ({
-                               campaignAddress,
-                               amount,
-                             }: CampaignRemoveFundsParams): Promise<void> => {
+    campaignAddress,
+    amount,
+  }: CampaignRemoveFundsParams): Promise<void> => {
     setLoading(true);
     setError(null);
 

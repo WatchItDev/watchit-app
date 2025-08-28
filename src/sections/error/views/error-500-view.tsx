@@ -36,6 +36,6 @@ const Error500View = () => {
       </Button>
     </MotionContainer>
   );
-}
+};
 
 export default Error500View;

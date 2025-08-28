@@ -1,90 +1,100 @@
-import "../../../../../__mocks__/web3auth.ts";
+import '../../../../../__mocks__/web3auth.ts';
 
-import Searchbar from "../searchbar";
-import { renderWithStoreAndRouter } from "@src/utils/testing/Testing.tsx";
-import { fireEvent } from "@testing-library/react"
+import Searchbar from '../searchbar';
+import { renderWithStoreAndRouter } from '@src/utils/testing/Testing.tsx';
+import { fireEvent } from '@testing-library/react';
 import { act } from 'react';
 import { vi, Mock } from 'vitest';
-import { detectOperatingSystem } from "@src/utils/os-detection.ts";
+import { detectOperatingSystem } from '@src/utils/os-detection.ts';
 
 vi.mock('@src/components/scrollbar', () => ({
-  default: ({ children }: { children: React.ReactNode }) => <div data-testid="mock-scrollbar">{children}</div>,
+  default: ({ children }: { children: React.ReactNode }) => (
+    <div data-testid="mock-scrollbar">{children}</div>
+  ),
 }));
 
 vi.mock('@src/hooks/use-search-publications', () => ({
-  useSearchPublications: vi.fn()
+  useSearchPublications: vi.fn(),
 }));
 
 vi.mock('@src/utils/os-detection', () => ({
-  detectOperatingSystem: vi.fn()
+  detectOperatingSystem: vi.fn(),
 }));
 
-describe("[COMPONENTS]: Searchbar Component", () => {
+describe('[COMPONENTS]: Searchbar Component', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     (detectOperatingSystem as Mock).mockReturnValue({ isMac: true });
   });
 
-  it("displays correct shortcut label for mac", () => {
+  it('displays correct shortcut label for mac', () => {
     const { getByText } = renderWithStoreAndRouter(<Searchbar />);
-    expect(getByText("⌘K")).toBeInTheDocument();
+    expect(getByText('⌘K')).toBeInTheDocument();
   });
 
-  it("displays correct shortcut Label for windows", () => {
+  it('displays correct shortcut Label for windows', () => {
     (detectOperatingSystem as Mock).mockReturnValue({ isMac: false });
 
     const { getByText } = renderWithStoreAndRouter(<Searchbar />);
 
-    expect(getByText("Ctrl+K")).toBeInTheDocument();
+    expect(getByText('Ctrl+K')).toBeInTheDocument();
   });
 
-  it("should open search on CMD+K", async () => {
+  it('should open search on CMD+K', async () => {
     const { baseElement } = renderWithStoreAndRouter(<Searchbar />);
 
     act(() => {
-      fireEvent.keyDown(document, { key: "k", metaKey: true });
+      fireEvent.keyDown(document, { key: 'k', metaKey: true });
     });
 
-    const searchInput = baseElement.querySelector('input[placeholder="Search..."]');
+    const searchInput = baseElement.querySelector(
+      'input[placeholder="Search..."]',
+    );
     if (searchInput) {
       expect(searchInput).toHaveFocus();
     }
   });
 
-  it("should open search on CTRL+K", async () => {
+  it('should open search on CTRL+K', async () => {
     (detectOperatingSystem as Mock).mockReturnValue({ isMac: false });
 
     const { baseElement } = renderWithStoreAndRouter(<Searchbar />);
 
     act(() => {
-      fireEvent.keyDown(document, { key: "k", ctrlKey: true });
+      fireEvent.keyDown(document, { key: 'k', ctrlKey: true });
     });
 
-    const searchInput = baseElement.querySelector('input[placeholder="Search..."]');
+    const searchInput = baseElement.querySelector(
+      'input[placeholder="Search..."]',
+    );
     if (searchInput) {
       expect(searchInput).toHaveFocus();
     }
   });
 
-  it("should close search on escape key", async () => {
+  it('should close search on escape key', async () => {
     const { baseElement } = renderWithStoreAndRouter(<Searchbar />);
 
     act(() => {
-      fireEvent.keyDown(document, { key: "k", metaKey: true });
+      fireEvent.keyDown(document, { key: 'k', metaKey: true });
     });
 
-    const searchInput = baseElement.querySelector('input[placeholder="Search..."]');
+    const searchInput = baseElement.querySelector(
+      'input[placeholder="Search..."]',
+    );
 
     expect(searchInput).not.toBeNull();
     if (searchInput) {
       expect(searchInput).toHaveFocus();
 
       act(() => {
-        fireEvent.keyDown(searchInput, { key: "Escape" });
+        fireEvent.keyDown(searchInput, { key: 'Escape' });
       });
     }
 
-    expect(baseElement.querySelector('input[placeholder="Search..."]')).not.toBeVisible();
+    expect(
+      baseElement.querySelector('input[placeholder="Search..."]'),
+    ).not.toBeVisible();
   });
 
   // it("should display search results when profiles and publications are found", async () => {

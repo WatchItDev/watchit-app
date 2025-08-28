@@ -39,7 +39,13 @@ export default function Upload({
   sx,
   ...other
 }: UploadProps) {
-  const { getRootProps, getInputProps, isDragActive, isDragReject, fileRejections } = useDropzone({
+  const {
+    getRootProps,
+    getInputProps,
+    isDragActive,
+    isDragReject,
+    fileRejections,
+  } = useDropzone({
     multiple,
     disabled,
     ...other,
@@ -52,7 +58,12 @@ export default function Upload({
   const hasError = isDragReject || !!error;
 
   const defaultPlaceholder = (
-    <Stack spacing={3} alignItems="center" justifyContent="center" flexWrap="wrap">
+    <Stack
+      spacing={3}
+      alignItems="center"
+      justifyContent="center"
+      flexWrap="wrap"
+    >
       <UploadIllustration sx={{ width: 1, maxWidth: 200 }} />
       <Stack spacing={1} sx={{ textAlign: 'center' }}>
         <Typography variant="h6">Drop or Select file</Typography>
@@ -107,12 +118,21 @@ export default function Upload({
   const renderMultiPreview = hasFiles && (
     <>
       <Box sx={{ my: 3 }}>
-        <MultiFilePreview files={files} thumbnail={thumbnail} onRemove={onRemove} />
+        <MultiFilePreview
+          files={files}
+          thumbnail={thumbnail}
+          onRemove={onRemove}
+        />
       </Box>
 
       <Stack direction="row" justifyContent="flex-end" spacing={1.5}>
         {onRemoveAll && (
-          <Button color="inherit" variant="outlined" size="small" onClick={onRemoveAll}>
+          <Button
+            color="inherit"
+            variant="outlined"
+            size="small"
+            onClick={onRemoveAll}
+          >
             Remove All
           </Button>
         )}
@@ -143,8 +163,10 @@ export default function Upload({
           overflow: 'hidden',
           position: 'relative',
           bgcolor: (theme) => alpha(theme.palette.grey[500], 0.08),
-          border: (theme) => `1px dashed ${alpha(theme.palette.grey[500], 0.2)}`,
-          transition: (theme) => theme.transitions.create(['opacity', 'padding']),
+          border: (theme) =>
+            `1px dashed ${alpha(theme.palette.grey[500], 0.2)}`,
+          transition: (theme) =>
+            theme.transitions.create(['opacity', 'padding']),
           '&:hover': {
             opacity: 0.72,
           },

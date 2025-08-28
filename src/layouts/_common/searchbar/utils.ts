@@ -1,6 +1,5 @@
 import { ItemProps, NavItemProps } from './types';
 
-
 // ----------------------------------------------------------------------
 
 interface FilterProps {
@@ -13,7 +12,7 @@ export function applyFilter({ inputData, query }: FilterProps) {
     inputData = inputData.filter(
       (item) =>
         item.title.toLowerCase().indexOf(query.toLowerCase()) !== -1 ||
-        item.path.toLowerCase().indexOf(query.toLowerCase()) !== -1
+        item.path.toLowerCase().indexOf(query.toLowerCase()) !== -1,
     );
   }
 
@@ -21,12 +20,17 @@ export function applyFilter({ inputData, query }: FilterProps) {
 }
 
 // ----------------------------------------------------------------------
-export function handleLoop(array: NavItemProps[] | undefined, subheader?: string): NavItemProps[] {
-  return array?.map((list) => ({
-    subheader,
-    ...list,
-    ...(list.children && {
-      children: handleLoop(list.children, subheader),
-    }),
-  })) || [];
+export function handleLoop(
+  array: NavItemProps[] | undefined,
+  subheader?: string,
+): NavItemProps[] {
+  return (
+    array?.map((list) => ({
+      subheader,
+      ...list,
+      ...(list.children && {
+        children: handleLoop(list.children, subheader),
+      }),
+    })) || []
+  );
 }

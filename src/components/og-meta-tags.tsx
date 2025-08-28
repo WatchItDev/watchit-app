@@ -7,21 +7,21 @@ interface OgMetaTagsProps {
   description: string;
   image?: string;
   url: string;
-  type?: string;          // e.g. "website", "article", "profile", ...
-  twitterCard?: string;   // default usually "summary_large_image"
-  siteName?: string;      // optional: e.g. "Watchit App"
+  type?: string; // e.g. "website", "article", "profile", ...
+  twitterCard?: string; // default usually "summary_large_image"
+  siteName?: string; // optional: e.g. "Watchit App"
 }
 
 export function OgMetaTags({
-    title,
-    description,
-    image = GLOBAL_CONSTANTS.LOGO_URL,
-    url,
-    type = 'website',
-    twitterCard = 'summary_large_image',
-    siteName,
-    children
-  }: PropsWithChildren<OgMetaTagsProps>) {
+  title,
+  description,
+  image = GLOBAL_CONSTANTS.LOGO_URL,
+  url,
+  type = 'website',
+  twitterCard = 'summary_large_image',
+  siteName,
+  children,
+}: PropsWithChildren<OgMetaTagsProps>) {
   return (
     <>
       <Helmet>

@@ -9,11 +9,15 @@ import LedgerVaultAbi from '@src/config/abi/LedgerVault.json';
 import MMCAbi from '@src/config/abi/MMC.json';
 import { useAccountSession } from '@src/hooks/use-account-session.ts';
 import { useAuth } from '@src/hooks/use-auth.ts';
-import {DepositParams, UseDepositHook, UseDepositResult} from '@src/hooks/protocol/types.ts'
+import {
+  DepositParams,
+  UseDepositHook,
+  UseDepositResult,
+} from '@src/hooks/protocol/types.ts';
 import { ERRORS } from '@src/libs/notifications/errors.ts';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 import { useWeb3Auth } from '@src/hooks/use-web3-auth.ts';
-import { Calls } from '@src/hooks/types.ts'
+import { Calls } from '@src/hooks/types.ts';
 
 export const useDeposit = (): UseDepositHook => {
   const [data, setData] = useState<UseDepositResult | null>(null);
@@ -22,7 +26,6 @@ export const useDeposit = (): UseDepositHook => {
   const { sendOperation } = useWeb3Auth();
   const { session } = useAuth();
   const { logout } = useAccountSession();
-
 
   const approveMMC = (amount: number): string => {
     // Convert to Wei (assuming 18 decimals)

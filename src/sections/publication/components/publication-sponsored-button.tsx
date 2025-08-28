@@ -3,13 +3,10 @@ import { SponsoredAccessTrialButton } from '@src/components/sponsored-access-but
 import { PublicationSponsoredButtonProps } from '@src/sections/publication/types.ts';
 import { Address } from 'viem';
 
-export const PublicationSponsoredButton: FC<PublicationSponsoredButtonProps> = (props) => {
-  const {
-    isActive,
-    publication,
-    campaign,
-    onSponsorSuccess,
-  } = props;
+export const PublicationSponsoredButton: FC<PublicationSponsoredButtonProps> = (
+  props,
+) => {
+  const { isActive, publication, campaign, onSponsorSuccess } = props;
 
   return (
     <SponsoredAccessTrialButton

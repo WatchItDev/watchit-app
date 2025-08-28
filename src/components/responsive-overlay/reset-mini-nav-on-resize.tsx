@@ -14,7 +14,10 @@ const ResetMiniNavOnResize = () => {
       setIsSmallScreen(screenWidth < BREAKPOINTS_MINIBAR.MIN);
 
       // Only dispatch if the screen size has changed when the screen is small that 1600
-      if (screenWidth > BREAKPOINTS_MINIBAR.MIN && screenWidth < BREAKPOINTS_MINIBAR.MAX) {
+      if (
+        screenWidth > BREAKPOINTS_MINIBAR.MIN &&
+        screenWidth < BREAKPOINTS_MINIBAR.MAX
+      ) {
         dispatch(openMinibar());
       }
 

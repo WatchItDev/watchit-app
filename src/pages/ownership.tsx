@@ -3,12 +3,11 @@ import HeaderContent from '@src/layouts/dashboard/header-content.tsx';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 import { OgMetaTags } from '@src/components/og-meta-tags.tsx';
 import { OwnershipView } from '@src/sections/ownership/index';
-import { WithAuth } from "@src/components/should-login/withAuth.tsx";
+import { WithAuth } from '@src/components/should-login/withAuth.tsx';
 
 // ----------------------------------------------------------------------
 
 export default function FileManagerPage() {
-
   return (
     <OgMetaTags
       title="Watchit: Ownership (COMING SOON)"
@@ -18,7 +17,8 @@ export default function FileManagerPage() {
       <Header>
         <HeaderContent title="Ownership" />
       </Header>
-      <WithAuth component={OwnershipView}
+      <WithAuth
+        component={OwnershipView}
         description={'Login to collect your IP.'}
         icon={'iconoir:stats-report'}
         header={'Ownership'}

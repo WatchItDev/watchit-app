@@ -1,5 +1,5 @@
-import React from "react";
-import Carousel, {Settings} from "react-slick";
+import React from 'react';
+import Carousel, { Settings } from 'react-slick';
 
 export interface CarouselReturnType {
   currentIndex: number;
@@ -25,4 +25,3 @@ export interface UseItemsPerSlideReturn {
   itemsPerSlide: number;
   parentRef: React.RefObject<HTMLDivElement>;
 }
-

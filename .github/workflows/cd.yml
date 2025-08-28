@@ -4,7 +4,7 @@ on:
   workflow_call:
     inputs:
       environment:
-        description: "Deploy environment"
+        description: 'Deploy environment'
         default: next
         required: false
         type: string
@@ -23,5 +23,3 @@ jobs:
         with:
           service-id: ${{ secrets.RENDER_SERVICE_ID }}
           api-key: ${{ secrets.RENDER_API_KEY }}
-
-  

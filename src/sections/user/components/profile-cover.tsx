@@ -18,11 +18,14 @@ interface ProfileCoverProps {
 
 // ----------------------------------------------------------------------
 
-export default function ProfileCover({ profile, sx }: Readonly<ProfileCoverProps>) {
+export default function ProfileCover({
+  profile,
+  sx,
+}: Readonly<ProfileCoverProps>) {
   const [image, setImage] = useState<string>('');
 
   useEffect(() => {
-    const imageSrc = (profile?.coverPicture || profile?.address)  ?? '';
+    const imageSrc = (profile?.coverPicture || profile?.address) ?? '';
     setImage(resolveSrc(imageSrc, 'cover') ?? '');
   }, [profile?.coverPicture]);
 
@@ -41,7 +44,7 @@ export default function ProfileCover({ profile, sx }: Readonly<ProfileCoverProps
         justifyContent: 'center',
         borderRadius: 2,
         overflow: 'hidden',
-        ...sx
+        ...sx,
       }}
     />
   );

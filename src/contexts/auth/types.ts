@@ -26,9 +26,9 @@ export interface ProfileData {
  */
 export interface AuthContextProps {
   web3Auth: Web3Auth;
-  bundlerClient?: BundlerConfig
-  smartAccount?: ISmartAccount
-  provider?: SafeEventEmitterProvider
+  bundlerClient?: BundlerConfig;
+  smartAccount?: ISmartAccount;
+  provider?: SafeEventEmitterProvider;
 }
 
 /**

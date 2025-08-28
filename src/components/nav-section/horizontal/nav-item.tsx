@@ -20,7 +20,8 @@ type Props = NavItemProps & {
 
 const NavItem = forwardRef<HTMLDivElement, Props>(
   ({ item, depth, open, active, externalLink, config, ...other }, ref) => {
-    const { title, path, icon, info, children, disabled, caption, roles } = item;
+    const { title, path, icon, info, children, disabled, caption, roles } =
+      item;
 
     const subItem = depth !== 1;
 
@@ -74,13 +75,21 @@ const NavItem = forwardRef<HTMLDivElement, Props>(
 
         {caption && (
           <Tooltip title={caption} arrow>
-            <Iconify width={16} icon="eva:info-outline" sx={{ ml: 0.5, color: 'text.disabled' }} />
+            <Iconify
+              width={16}
+              icon="eva:info-outline"
+              sx={{ ml: 0.5, color: 'text.disabled' }}
+            />
           </Tooltip>
         )}
 
         {!!children && (
           <Iconify
-            icon={subItem ? 'eva:arrow-ios-forward-fill' : 'eva:arrow-ios-downward-fill'}
+            icon={
+              subItem
+                ? 'eva:arrow-ios-forward-fill'
+                : 'eva:arrow-ios-downward-fill'
+            }
             width={16}
             sx={{ flexShrink: 0, ml: 0.5 }}
           />
@@ -126,7 +135,7 @@ const NavItem = forwardRef<HTMLDivElement, Props>(
         {renderContent}
       </Link>
     );
-  }
+  },
 );
 
 export default NavItem;

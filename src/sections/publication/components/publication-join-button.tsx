@@ -4,7 +4,9 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import { IconPlayerPlay } from '@tabler/icons-react';
 import { PublicationJoinButtonProps } from '@src/sections/publication/types.ts';
 
-export const PublicationJoinButton: FC<PublicationJoinButtonProps> = (props) => {
+export const PublicationJoinButton: FC<PublicationJoinButtonProps> = (
+  props,
+) => {
   const { joinButtonLoading, onJoin } = props;
 
   return (
@@ -23,7 +25,10 @@ export const PublicationJoinButton: FC<PublicationJoinButtonProps> = (props) => 
       loading={joinButtonLoading}
     >
       <IconPlayerPlay fontSize="large" size={18} />
-      <Typography variant="body2" sx={{ lineHeight: 1, fontWeight: '700', ml: 1 }}>
+      <Typography
+        variant="body2"
+        sx={{ lineHeight: 1, fontWeight: '700', ml: 1 }}
+      >
         Join
       </Typography>
     </LoadingButton>

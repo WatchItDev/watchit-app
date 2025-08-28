@@ -14,21 +14,18 @@ By eliminating reliance on centralized servers, WatchIt paves the way for a tran
 - **Enhanced Creator-Fan Interaction:** Enjoy a suite of social tools including interactive comments, personalized recommendations, and sharing options that strengthen the connection between creators and their audiences.
 - **Flexible Monetization Models:** Empower creators with customizable access policies, enabling subscriptions, rentals, and direct purchases to suit their unique audience and content needs.
 
-
 ## Built with Synapse Technology
 
 WatchIt leverages the innovative Synapse protocol for its secure and decentralized content distribution. By utilizing Synapse, WatchIt ensures robust access management, transparent royalty transactions, and a scalable infrastructure. This integration exemplifies how decentralized technology can revolutionize media distribution, ensuring fairness and resilience without relying on centralized systems.
-
 
 ## Getting Started
 
 Embark on your journey with WatchIt and join the decentralized entertainment movement. Here’s how you can get involved:
 
 - Visit our official site: [watchit.movie](https://watchit.movie)
-- Join our community discussions: [Matrix](https://matrix.to/#/#watchit\:matrix.org) | [Discord](https://discord.gg/VdGMqNJgFq) | [Telegram](https://t.me/watchitofficial) | [Reddit](https://www.reddit.com/user/Watchit_V/)
+- Join our community discussions: [Matrix](https://matrix.to/#/#watchit:matrix.org) | [Discord](https://discord.gg/VdGMqNJgFq) | [Telegram](https://t.me/watchitofficial) | [Reddit](https://www.reddit.com/user/Watchit_V/)
 - Support us on Open Collective: [Open Collective](https://opencollective.com/watchit)
 - Explore our insights: [WatchIt - Open Movies](https://watchit.notion.site/A-New-Era-for-Creators-Countdown-to-the-First-Stage-of-Watchit-130c4b73826a80199722fa62137868bd?pvs=4)
-
 
 ## Contributors ✨
 
@@ -64,4 +61,3 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
-

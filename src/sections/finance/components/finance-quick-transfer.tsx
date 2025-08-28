@@ -19,19 +19,21 @@ import { CardProps } from '@mui/material/Card';
 
 // LOCAL IMPORTS
 import { useBoolean } from '@src/hooks/use-boolean';
-import Carousel, { CarouselArrows, useCarousel } from '@src/components/carousel';
+import Carousel, {
+  CarouselArrows,
+  useCarousel,
+} from '@src/components/carousel';
 import NeonPaper from '@src/sections/publication/components/neon-paper-container.tsx';
 import { InputAmount } from '@src/components/input-amount.tsx';
 import FinanceQuickTransferModal from '@src/sections/finance/components/finance-quick-transfer-modal.tsx';
 import FinanceSearchProfileModal from '@src/sections/finance/components/finance-search-profile-modal.tsx';
-import AvatarProfile from "@src/components/avatar/avatar.tsx";
-import FinanceNoFollowingsQuickTransfer
-  from "@src/sections/finance/components/finance-no-followings-quick-transfer";
-import FinanceDisplayProfileInfo from "@src/sections/finance/components/finance-display-profile-info";
-import {handleAmountConstraints} from "@src/utils/format-number.ts";
-import {LoadingScreen} from "@src/components/loading-screen";
+import AvatarProfile from '@src/components/avatar/avatar.tsx';
+import FinanceNoFollowingsQuickTransfer from '@src/sections/finance/components/finance-no-followings-quick-transfer';
+import FinanceDisplayProfileInfo from '@src/sections/finance/components/finance-display-profile-info';
+import { handleAmountConstraints } from '@src/utils/format-number.ts';
+import { LoadingScreen } from '@src/components/loading-screen';
 import { useAuth } from '@src/hooks/use-auth.ts';
-import {RootState} from "@redux/store.ts"
+import { RootState } from '@redux/store.ts';
 import { User } from '@src/graphql/generated/graphql.ts';
 import { resolveSrc } from '@src/utils/image.ts';
 
@@ -63,11 +65,15 @@ export default function FinanceQuickTransfer({
   const dispatch = useDispatch();
 
   const storedAddress = useSelector((state: RootState) => state.address);
-  const showRainbow = useSelector((state: RootState) => state.address.showRainbow);
+  const showRainbow = useSelector(
+    (state: RootState) => state.address.showRainbow,
+  );
 
   const { balance } = useAuth();
 
-  const [walletAddress, setWalletAddress] = useState(storedAddress.address ?? '');
+  const [walletAddress, setWalletAddress] = useState(
+    storedAddress.address ?? '',
+  );
   const [currentIndex, setCurrentIndex] = useState(0);
   const [addressFiltered, setAddressFiltered] = useState<boolean>(false);
   const [initialized, setInitialized] = useState(false);
@@ -79,7 +85,9 @@ export default function FinanceQuickTransfer({
   const MAX_AMOUNT = balance;
 
   // This gets the current profile in the carousel
-  const getContactInfo: User | undefined = list?.find((_, index) => index === currentIndex);
+  const getContactInfo: User | undefined = list?.find(
+    (_, index) => index === currentIndex,
+  );
 
   // Callback to handle a profile selection from the search modal
   const handleSelectProfile = (profile: User) => {
@@ -89,8 +97,11 @@ export default function FinanceQuickTransfer({
       const newList = exists ? prev : [...prev, profile];
 
       // 2) Find the index of that profile in the new list
-      const updatedIndex = newList.findIndex((p) => p.address === profile.address);
-      const finalIndex = updatedIndex !== -1 ? updatedIndex : newList.length - 1;
+      const updatedIndex = newList.findIndex(
+        (p) => p.address === profile.address,
+      );
+      const finalIndex =
+        updatedIndex !== -1 ? updatedIndex : newList.length - 1;
 
       // 3) Move the carousel right now
       carousel.setCurrentIndex(finalIndex);
@@ -98,7 +109,9 @@ export default function FinanceQuickTransfer({
 
       // 4) Update the wallet address & Redux
       setWalletAddress(profile.address ?? '');
-      dispatch(storeAddress({ address: profile.address, profileId: profile.address }));
+      dispatch(
+        storeAddress({ address: profile.address, profileId: profile.address }),
+      );
 
       // Return the updated array
       return newList;
@@ -153,7 +166,7 @@ export default function FinanceQuickTransfer({
   useEffect(() => {
     const currentProfile: User = list?.[carousel.currentIndex];
     if (currentProfile?.address) {
-      const profileId = currentProfile.address
+      const profileId = currentProfile.address;
       const address = currentProfile.address;
 
       setWalletAddress(address);
@@ -170,30 +183,47 @@ export default function FinanceQuickTransfer({
 
         // Filter duplicates (by id)
         return combined.filter(
-          (profile, index, arr) => arr.findIndex((p) => p.address === profile.address) === index
+          (profile, index, arr) =>
+            arr.findIndex((p) => p.address === profile.address) === index,
         );
       });
     }
   }, [initialList]);
 
   // Handle changes in the slider
-  const handleChangeSlider = useCallback((_event: Event, newValue: number | number[]) => {
-    setAmount(newValue as number);
-    if(newValue < MAX_AMOUNT) {
-      setCanContinue(true);
-    }
-  }, [MAX_AMOUNT]);
+  const handleChangeSlider = useCallback(
+    (_event: Event, newValue: number | number[]) => {
+      setAmount(newValue as number);
+      if (newValue < MAX_AMOUNT) {
+        setCanContinue(true);
+      }
+    },
+    [MAX_AMOUNT],
+  );
 
-  const handleChangeInput = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = Number(event.target.value);
-    handleAmountConstraints({value, MAX_AMOUNT, MAX_POOL, setAmount, setCanContinue});
-  }, [MAX_AMOUNT]);
-
+  const handleChangeInput = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      const value = Number(event.target.value);
+      handleAmountConstraints({
+        value,
+        MAX_AMOUNT,
+        MAX_POOL,
+        setAmount,
+        setCanContinue,
+      });
+    },
+    [MAX_AMOUNT],
+  );
 
   const handleBlur = useCallback(() => {
-    handleAmountConstraints({value: amount, MAX_AMOUNT, MAX_POOL, setAmount, setCanContinue});
+    handleAmountConstraints({
+      value: amount,
+      MAX_AMOUNT,
+      MAX_POOL,
+      setAmount,
+      setCanContinue,
+    });
   }, [amount, MAX_AMOUNT]);
-
 
   // Called after finishing a transfer
   const handleTransferFinish = () => {
@@ -215,7 +245,7 @@ export default function FinanceQuickTransfer({
     const index = list?.findIndex(
       (profile) =>
         profile.address === storedAddress.address &&
-        profile.address === storedAddress.profileId
+        profile.address === storedAddress.profileId,
     );
 
     if (index !== -1 && index !== undefined) {
@@ -225,8 +255,7 @@ export default function FinanceQuickTransfer({
     // If the user typed in an address, check if it's in the list by address only
     if (addressFiltered) {
       const profileIndex = list?.findIndex(
-        (profile) =>
-          profile.address === storedAddress.address
+        (profile) => profile.address === storedAddress.address,
       );
 
       if (profileIndex !== -1 && profileIndex !== undefined) {
@@ -281,7 +310,11 @@ export default function FinanceQuickTransfer({
           }}
         >
           {list?.map((profile, index) => (
-            <Box key={profile.address} sx={{ py: 2 }} onClick={ () => handleCarouselClick(index)}>
+            <Box
+              key={profile.address}
+              sx={{ py: 2 }}
+              onClick={() => handleCarouselClick(index)}
+            >
               <Tooltip
                 key={profile.address}
                 title={profile.displayName}
@@ -289,7 +322,10 @@ export default function FinanceQuickTransfer({
                 placement="top"
               >
                 <AvatarProfile
-                  src={resolveSrc(profile.profilePicture || profile.address, 'profile')}
+                  src={resolveSrc(
+                    profile.profilePicture || profile.address,
+                    'profile',
+                  )}
                   alt={profile.username ?? ''}
                   sx={{
                     mx: 'auto',
@@ -315,7 +351,10 @@ export default function FinanceQuickTransfer({
 
   // Format balance to 3 decimals
   const balanceOptions = { minimumFractionDigits: 1, maximumFractionDigits: 3 };
-  const formattedBalance = new Intl.NumberFormat('en-US', balanceOptions).format(balance);
+  const formattedBalance = new Intl.NumberFormat(
+    'en-US',
+    balanceOptions,
+  ).format(balance);
 
   // Render the input for the amount and the slider
   const renderInput = (
@@ -338,7 +377,11 @@ export default function FinanceQuickTransfer({
         onChange={handleChangeSlider}
       />
 
-      <Stack direction="row" alignItems="center" sx={{ typography: 'subtitle1' }}>
+      <Stack
+        direction="row"
+        alignItems="center"
+        sx={{ typography: 'subtitle1' }}
+      >
         <Box component="span" sx={{ flexGrow: 1 }}>
           Your Balance
         </Box>
@@ -379,16 +422,36 @@ export default function FinanceQuickTransfer({
             sx={{ p: '12px 16px 0 0' }}
             title={title}
             subheader={subheader}
-            action={<FinanceSearchProfileModal onSelectProfile={handleSelectProfile} />}
+            action={
+              <FinanceSearchProfileModal
+                onSelectProfile={handleSelectProfile}
+              />
+            }
           />
 
           {/* Content */}
-          { loading ? <LoadingScreen sx={{marginBottom: 5}} /> : (<Stack sx={{ p: 3 }}>
-            <FinanceDisplayProfileInfo mode={'profile'} initialList={list} carousel={carousel} />
-            {list?.length > 0 ? renderCarousel : <FinanceNoFollowingsQuickTransfer />}
-            <FinanceDisplayProfileInfo mode={'wallet'} initialList={list} carousel={carousel} />
-            {renderInput}
-          </Stack>) }
+          {loading ? (
+            <LoadingScreen sx={{ marginBottom: 5 }} />
+          ) : (
+            <Stack sx={{ p: 3 }}>
+              <FinanceDisplayProfileInfo
+                mode={'profile'}
+                initialList={list}
+                carousel={carousel}
+              />
+              {list?.length > 0 ? (
+                renderCarousel
+              ) : (
+                <FinanceNoFollowingsQuickTransfer />
+              )}
+              <FinanceDisplayProfileInfo
+                mode={'wallet'}
+                initialList={list}
+                carousel={carousel}
+              />
+              {renderInput}
+            </Stack>
+          )}
         </Stack>
       </Wrapper>
 
@@ -407,4 +470,3 @@ export default function FinanceQuickTransfer({
     </>
   );
 }
-

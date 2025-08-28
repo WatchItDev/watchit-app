@@ -28,7 +28,7 @@ describe('[UTILS]: format-time', () => {
         fDate(testDate),
         fDate(testDateString, 'yyyy-MM-dd'),
         fDate(testTimestamp, 'MMMM d'),
-        fDate(null)
+        fDate(null),
       ];
       expect(results).toMatchSnapshot();
     });
@@ -56,7 +56,7 @@ describe('[UTILS]: format-time', () => {
         fDateTime(testDate),
         fDateTime(testDateString, 'yyyy-MM-dd HH:mm:ss'),
         fDateTime(testTimestamp, 'MMMM d, h:mm a'),
-        fDateTime(null)
+        fDateTime(null),
       ];
       expect(results).toMatchSnapshot();
     });
@@ -78,7 +78,7 @@ describe('[UTILS]: format-time', () => {
         fTimestamp(testDate),
         fTimestamp(testDateString),
         fTimestamp(testTimestamp),
-        fTimestamp(null)
+        fTimestamp(null),
       ];
       expect(results).toMatchSnapshot();
     });
@@ -89,7 +89,7 @@ describe('[UTILS]: format-time', () => {
       // Create a recent date for testing
       const justNow = new Date();
       justNow.setSeconds(justNow.getSeconds() - 30);
-      
+
       const result = fToNow(justNow);
       expect(result).toContain('ago');
     });
@@ -103,7 +103,7 @@ describe('[UTILS]: format-time', () => {
       // One year ago
       const oneYearAgo = new Date();
       oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
-      
+
       const result = fToNow(oneYearAgo);
       expect(result).toContain('year');
       expect(result).toContain('ago');
@@ -116,4 +116,4 @@ describe('[UTILS]: format-time', () => {
       expect(fToNow(pastDate)).toMatchSnapshot();
     });
   });
-}); 
+});

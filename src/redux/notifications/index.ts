@@ -20,7 +20,7 @@ const notificationsSlice = createSlice({
     },
     appendNotification(state, action: PayloadAction<NotificationItemProps>) {
       const existingIndex = state.notifications.findIndex(
-        (notification) => notification.id === action.payload.id
+        (notification) => notification.id === action.payload.id,
       );
       if (existingIndex !== -1) {
         state.notifications[existingIndex] = action.payload;
@@ -34,5 +34,6 @@ const notificationsSlice = createSlice({
   },
 });
 
-export const { setNotifications, appendNotification } = notificationsSlice.actions;
+export const { setNotifications, appendNotification } =
+  notificationsSlice.actions;
 export default notificationsSlice.reducer;

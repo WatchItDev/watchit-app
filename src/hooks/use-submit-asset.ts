@@ -1,12 +1,19 @@
 import { useState, useCallback } from 'react';
 import { useCreatePostMutation } from '@src/graphql/generated/hooks';
 import { ERRORS } from '@src/libs/notifications/errors';
-import { ErrorResult, MetadataAttachment, SuccessResult } from '@src/hooks/types.ts';
-import { CreatePostInput, VisibilitySetting } from '@src/graphql/generated/graphql.ts';
+import {
+  ErrorResult,
+  MetadataAttachment,
+  SuccessResult,
+} from '@src/hooks/types.ts';
+import {
+  CreatePostInput,
+  VisibilitySetting,
+} from '@src/graphql/generated/graphql.ts';
 
 export interface UseSubmitAssetReturn {
-  data:   SuccessResult | null;
-  error:  ErrorResult   | null;
+  data: SuccessResult | null;
+  error: ErrorResult | null;
   loading: boolean;
   submitAsset: (cid: string) => Promise<void>;
 }
@@ -14,14 +21,14 @@ export interface UseSubmitAssetReturn {
 const sanitize = (txt?: string) =>
   typeof txt === 'string'
     ? txt
-      .replace(/"/g, `'`)
-      .replace(/\\/g, '')
-      .replace(/[\x00-\x1F\x7F]/g, '')
+        .replace(/"/g, `'`)
+        .replace(/\\/g, '')
+        .replace(/[\x00-\x1F\x7F]/g, '')
     : txt;
 
 export function useSubmitAsset(): UseSubmitAssetReturn {
-  const [data,  setData]  = useState<SuccessResult | null>(null);
-  const [error, setError] = useState<ErrorResult   | null>(null);
+  const [data, setData] = useState<SuccessResult | null>(null);
+  const [error, setError] = useState<ErrorResult | null>(null);
   const [loading, setLoading] = useState(false);
 
   const [createPost] = useCreatePostMutation();
@@ -40,12 +47,9 @@ export function useSubmitAsset(): UseSubmitAssetReturn {
         const { title, description, attachments } = meta.Data ?? {};
 
         const required = ['poster', 'square', 'wallpaper'];
-        const byTitle  = Object.fromEntries(
-          attachments.map((a: MetadataAttachment) => [a.title, a])
-        ) as Record<
-          string,
-          { cid: string; type: string; title: string }
-        >;
+        const byTitle = Object.fromEntries(
+          attachments.map((a: MetadataAttachment) => [a.title, a]),
+        ) as Record<string, { cid: string; type: string; title: string }>;
 
         if (required.some((key) => !byTitle[key])) {
           throw new Error('Missing poster / square / wallpaper attachments');
@@ -54,18 +58,18 @@ export function useSubmitAsset(): UseSubmitAssetReturn {
         const urlFor = (c: string) => `https://g.watchit.movie/content/${c}/`;
 
         const media: CreatePostInput['media'] = required.map((k) => ({
-          cid:   byTitle[k].cid,
-          url:   urlFor(byTitle[k].cid),
+          cid: byTitle[k].cid,
+          url: urlFor(byTitle[k].cid),
           title: byTitle[k].title,
-          type:  byTitle[k].type,
+          type: byTitle[k].type,
         }));
 
         const input: CreatePostInput = {
-          title       : title ?? 'Untitled',
-          description : sanitize(description) ?? '',
+          title: title ?? 'Untitled',
+          description: sanitize(description) ?? '',
           cid,
           media,
-          visibility  : VisibilitySetting.Public,
+          visibility: VisibilitySetting.Public,
         };
 
         const { data: gData } = await createPost({ variables: { input } });

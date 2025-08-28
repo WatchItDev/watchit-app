@@ -35,9 +35,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   if (!initialized) return <StyledLoaderWrapper />;
 
   return (
-    <AuthContextProvider web3Auth={web3Auth}>
-      {children}
-    </AuthContextProvider>
+    <AuthContextProvider web3Auth={web3Auth}>{children}</AuthContextProvider>
   );
 };
 

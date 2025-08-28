@@ -1,5 +1,11 @@
 // REACT IMPORTS
-import React, {ChangeEvent, useCallback, useEffect, useRef, useState} from 'react'
+import React, {
+  ChangeEvent,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
@@ -13,18 +19,28 @@ import { Box, Button, Grid, Input, TextField, Typography } from '@mui/material';
 // PROJECTS IMPORTS
 import Image from '../image';
 import { ProfileData } from '@src/contexts/auth/types.ts';
-import { uploadImageToIPFS } from '@src/libs/ipfs.ts'
+import { uploadImageToIPFS } from '@src/libs/ipfs.ts';
 import { buildProfileMetadata } from '@src/libs/profile.ts';
 import TextMaxLine from '@src/components/text-max-line';
 import NeonPaper from '@src/sections/publication/components/neon-paper-container.tsx';
 
 // NOTIFICATIONS IMPORTS
-import AvatarProfile from "@src/components/avatar/avatar.tsx";
-import { notifyError, notifySuccess } from '@src/libs/notifications/internal-notifications';
+import AvatarProfile from '@src/components/avatar/avatar.tsx';
+import {
+  notifyError,
+  notifySuccess,
+} from '@src/libs/notifications/internal-notifications';
 import { SUCCESS } from '@src/libs/notifications/success';
 import { ERRORS } from '@src/libs/notifications/errors.ts';
-import {ProfileFormProps, ProfileFormValues} from "@src/components/login-modal/types.ts"
-import { useCreateUserMutation, useLogEventMutation, useUpdateUserMutation } from '@src/graphql/generated/hooks.tsx';
+import {
+  ProfileFormProps,
+  ProfileFormValues,
+} from '@src/components/login-modal/types.ts';
+import {
+  useCreateUserMutation,
+  useLogEventMutation,
+  useUpdateUserMutation,
+} from '@src/graphql/generated/hooks.tsx';
 import { resolveSrc } from '@src/utils/image.ts';
 import { getIpfsUri } from '@src/utils/publication.ts';
 import { useAuth } from '@src/hooks/use-auth.ts';
@@ -49,8 +65,14 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
 }) => {
   const dispatch = useDispatch();
   const [registrationLoading, setRegistrationLoading] = useState(false);
-  const [createUser, { loading: createUserLoading, error: errorCreatingProfile }] = useCreateUserMutation();
-  const [updateUser, { loading: updateUserLoading, error: errorUpdatingProfile }] = useUpdateUserMutation();
+  const [
+    createUser,
+    { loading: createUserLoading, error: errorCreatingProfile },
+  ] = useCreateUserMutation();
+  const [
+    updateUser,
+    { loading: updateUserLoading, error: errorUpdatingProfile },
+  ] = useUpdateUserMutation();
   const [logEvent] = useLogEventMutation();
   const { session } = useAuth();
   const { refreshUser } = useAccountSession();
@@ -72,9 +94,9 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
       .max(200, 'Bio must be at most 200 characters')
       .required('Bio is required'),
     socialLinks: Yup.object().shape({
-      twitter:   Yup.string().url('Enter a valid URL').notRequired(),
+      twitter: Yup.string().url('Enter a valid URL').notRequired(),
       instagram: Yup.string().url('Enter a valid URL').notRequired(),
-      orb:       Yup.string().url('Enter a valid URL').notRequired(),
+      orb: Yup.string().url('Enter a valid URL').notRequired(),
       farcaster: Yup.string().url('Enter a valid URL').notRequired(),
     }),
   });
@@ -84,7 +106,6 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
     if (errorUpdatingProfile) notifyError(ERRORS.UPDATING_PROFILE_ERROR);
     if (error) notifyError(ERRORS.UNKNOWN_ERROR);
   }, [errorCreatingProfile, errorUpdatingProfile]);
-
 
   /**
    * Asynchronously converts a blob URL string to a File object and uploads it to IPFS.
@@ -96,9 +117,13 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
    * @returns {Promise<string|null>} A Promise that resolves to the IPFS URL or identifier of the uploaded file if successful,
    * or `null` if the operation fails.
    */
-  const getBlobFileAndUploadToIPFS = async (blobString: string): Promise<string | null> => {
+  const getBlobFileAndUploadToIPFS = async (
+    blobString: string,
+  ): Promise<string | null> => {
     try {
-      const image = blobString.startsWith('ipfs') ? getIpfsUri(blobString) : blobString;
+      const image = blobString.startsWith('ipfs')
+        ? getIpfsUri(blobString)
+        : blobString;
       const response = await fetch(image);
       const blob = await response.blob();
       const file = new File([blob], 'image-file', { type: blob.type });
@@ -126,7 +151,8 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
     }
 
     Object.entries(data.socialLinks).forEach(([platform, url]) => {
-      const prevUrl = prev?.socialLinks?.[platform as keyof typeof data.socialLinks];
+      const prevUrl =
+        prev?.socialLinks?.[platform as keyof typeof data.socialLinks];
       if (!prevUrl && url) {
         jobs.push(
           logEvent({
@@ -140,7 +166,6 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
 
     return jobs;
   };
-
 
   const updateProfileMetadata = async (data: ProfileData) => {
     setRegistrationLoading(true);
@@ -156,7 +181,11 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
         : uploadImageToIPFS(data.coverPicture));
 
       // Build profile metadata
-      const metadata = buildProfileMetadata(data, profilePictureURI, coverPictureURI);
+      const metadata = buildProfileMetadata(
+        data,
+        profilePictureURI,
+        coverPictureURI,
+      );
 
       await updateUser({
         variables: {
@@ -164,7 +193,11 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
         },
       });
 
-      const events = buildPerkEvents(data, profilePictureURI, initialValues ?? null);
+      const events = buildPerkEvents(
+        data,
+        profilePictureURI,
+        initialValues ?? null,
+      );
       await Promise.all(events);
 
       setRegistrationLoading(false);
@@ -191,7 +224,8 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
         setRegistrationLoading(true);
 
         // Upload images to IPFS
-        const profilePictureURI = await (typeof data?.profilePicture === 'string'
+        const profilePictureURI = await (typeof data?.profilePicture ===
+        'string'
           ? getBlobFileAndUploadToIPFS(data.profilePicture)
           : uploadImageToIPFS(data.profilePicture));
 
@@ -200,7 +234,11 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
           : uploadImageToIPFS(data.coverPicture));
 
         // Build profile metadata
-        const metadata = buildProfileMetadata(data, profilePictureURI, coverPictureURI);
+        const metadata = buildProfileMetadata(
+          data,
+          profilePictureURI,
+          coverPictureURI,
+        );
 
         await createUser({
           variables: {
@@ -216,7 +254,7 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
 
         setRegistrationLoading(false);
         notifySuccess(SUCCESS.PROFILE_CREATED_SUCCESSFULLY);
-        setTimeout(refreshUser, 100)
+        setTimeout(refreshUser, 100);
         onSuccess();
       } catch (error) {
         console.error('Error during profile registration:', error);
@@ -224,7 +262,7 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
         throw error;
       }
     },
-    [session?.address]
+    [session?.address],
   );
 
   const formik = useFormik<ProfileFormValues>({
@@ -254,17 +292,26 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
         // @ts-expect-error No error in this context
         console.error(error.message);
         // @ts-expect-error No error in this context
-        setErrorMessage(error.message || 'Ocurrió un error durante el registro.');
+        setErrorMessage(
+          error.message || 'Ocurrió un error durante el registro.',
+        );
       }
     },
   });
 
   const profilePictureInputRef = useRef<HTMLInputElement>(null);
   const coverPictureInputRef = useRef<HTMLInputElement>(null);
-  const [profilePicturePreview, setProfilePicturePreview] = useState<string | null>(null);
-  const [coverPicturePreview, setCoverPicturePreview] = useState<string | null>(null);
+  const [profilePicturePreview, setProfilePicturePreview] = useState<
+    string | null
+  >(null);
+  const [coverPicturePreview, setCoverPicturePreview] = useState<string | null>(
+    null,
+  );
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>, field: string) => {
+  const handleFileChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    field: string,
+  ) => {
     if (event.currentTarget.files && event.currentTarget.files[0]) {
       const file = event.currentTarget.files[0];
       formik.setFieldValue(field, file);
@@ -281,7 +328,15 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
   };
 
   return (
-    <Box sx={{ p: 2, overflow: 'hidden', overflowY: 'scroll', zIndex: '1000', maxHeight: '100%' }}>
+    <Box
+      sx={{
+        p: 2,
+        overflow: 'hidden',
+        overflowY: 'scroll',
+        zIndex: '1000',
+        maxHeight: '100%',
+      }}
+    >
       <Typography
         variant="h6"
         sx={{
@@ -302,7 +357,9 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
         inputProps={{
           accept: 'image/*',
         }}
-        onChange={(event: ChangeEvent<HTMLInputElement>) => handleFileChange(event, 'coverPicture')}
+        onChange={(event: ChangeEvent<HTMLInputElement>) =>
+          handleFileChange(event, 'coverPicture')
+        }
         inputRef={coverPictureInputRef}
         sx={{ display: 'none' }}
       />
@@ -311,7 +368,9 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
           accept: 'image/*',
         }}
         type="file"
-        onChange={(event: ChangeEvent<HTMLInputElement>) => handleFileChange(event, 'profilePicture')}
+        onChange={(event: ChangeEvent<HTMLInputElement>) =>
+          handleFileChange(event, 'profilePicture')
+        }
         inputRef={profilePictureInputRef}
         sx={{ display: 'none' }}
       />
@@ -319,7 +378,14 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
         <Box sx={{ width: '100%', position: 'relative', pt: 1 }}>
           {/* Background Image */}
           <Image
-            src={coverPicturePreview ?? resolveSrc((initialValues?.coverPicture || session?.address) ?? '', 'cover') ?? ''}
+            src={
+              coverPicturePreview ??
+              resolveSrc(
+                (initialValues?.coverPicture || session?.address) ?? '',
+                'cover',
+              ) ??
+              ''
+            }
             onClick={() => coverPictureInputRef.current?.click()}
             sx={{
               height: 120,
@@ -343,7 +409,14 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
           />
           {/* Avatar */}
           <AvatarProfile
-            src={profilePicturePreview || resolveSrc(initialValues?.profilePicture || session.address || '', 'profile') || ''}
+            src={
+              profilePicturePreview ||
+              resolveSrc(
+                initialValues?.profilePicture || session.address || '',
+                'profile',
+              ) ||
+              ''
+            }
             alt=""
             onClick={() => profilePictureInputRef.current?.click()}
             sx={{
@@ -386,7 +459,12 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
               opacity: 0.7,
             }}
           >
-            <TextMaxLine line={1} variant="caption" fontWeight="bold" color="text.secondary">
+            <TextMaxLine
+              line={1}
+              variant="caption"
+              fontWeight="bold"
+              color="text.secondary"
+            >
               * Click the profile or cover image to select one
             </TextMaxLine>
           </Box>
@@ -415,8 +493,14 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               disabled={loading}
-              error={formik.touched.displayName && Boolean(formik.errors.displayName)}
-              helperText={formik.touched.displayName && formik.errors.displayName ? formik.errors.displayName : 'e.g., John Doe'}
+              error={
+                formik.touched.displayName && Boolean(formik.errors.displayName)
+              }
+              helperText={
+                formik.touched.displayName && formik.errors.displayName
+                  ? formik.errors.displayName
+                  : 'e.g., John Doe'
+              }
             />
           </Grid>
           <Grid item xs={12} sm={6}>
@@ -435,7 +519,11 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
               }}
               onBlur={formik.handleBlur}
               error={formik.touched.username && Boolean(formik.errors.username)}
-              helperText={formik.touched.username && formik.errors.username ? formik.errors.username : 'e.g., johndoe123'}
+              helperText={
+                formik.touched.username && formik.errors.username
+                  ? formik.errors.username
+                  : 'e.g., johndoe123'
+              }
             />
           </Grid>
         </Grid>
@@ -455,7 +543,11 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
           rows={4}
           sx={{ mt: 2 }}
           error={formik.touched.bio && Boolean(formik.errors.bio)}
-          helperText={formik.touched.bio && formik.errors.bio ? formik.errors.bio : 'Share something about yourself'}
+          helperText={
+            formik.touched.bio && formik.errors.bio
+              ? formik.errors.bio
+              : 'Share something about yourself'
+          }
         />
 
         {/* Link Social Networks */}
@@ -477,10 +569,13 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
               onBlur={formik.handleBlur}
               disabled={loading}
               error={
-                formik.touched.socialLinks?.twitter && Boolean(formik.errors.socialLinks?.twitter)
+                formik.touched.socialLinks?.twitter &&
+                Boolean(formik.errors.socialLinks?.twitter)
               }
               helperText={
-                formik.touched.socialLinks?.twitter ? formik.errors.socialLinks?.twitter : ''
+                formik.touched.socialLinks?.twitter
+                  ? formik.errors.socialLinks?.twitter
+                  : ''
               }
             />
           </Grid>
@@ -501,7 +596,9 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
                 Boolean(formik.errors.socialLinks?.instagram)
               }
               helperText={
-                formik.touched.socialLinks?.instagram ? formik.errors.socialLinks?.instagram : ''
+                formik.touched.socialLinks?.instagram
+                  ? formik.errors.socialLinks?.instagram
+                  : ''
               }
             />
           </Grid>
@@ -517,8 +614,15 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               disabled={loading}
-              error={formik.touched.socialLinks?.orb && Boolean(formik.errors.socialLinks?.orb)}
-              helperText={formik.touched.socialLinks?.orb ? formik.errors.socialLinks?.orb : ''}
+              error={
+                formik.touched.socialLinks?.orb &&
+                Boolean(formik.errors.socialLinks?.orb)
+              }
+              helperText={
+                formik.touched.socialLinks?.orb
+                  ? formik.errors.socialLinks?.orb
+                  : ''
+              }
             />
           </Grid>
           <Grid item xs={12} sm={6}>
@@ -538,7 +642,9 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
                 Boolean(formik.errors.socialLinks?.farcaster)
               }
               helperText={
-                formik?.touched?.socialLinks?.farcaster ? formik.errors.socialLinks?.farcaster : ''
+                formik?.touched?.socialLinks?.farcaster
+                  ? formik.errors.socialLinks?.farcaster
+                  : ''
               }
             />
           </Grid>

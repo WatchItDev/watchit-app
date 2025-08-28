@@ -85,31 +85,41 @@ export const ERROR_MESSAGES: Record<ERRORS, string> = {
   [ERRORS.UNKNOWN_ERROR]: 'An unknown error has occurred.',
   [ERRORS.METAMASK_CONNECTING_ERROR]: 'Error connecting to MetaMask.',
   [ERRORS.WITHDRAW_FAILED_ERROR]: 'Error while trying the withdrawal.',
-  [ERRORS.TRANSFER_FAILED_ERROR]: 'Error while trying to complete the transfer.',
+  [ERRORS.TRANSFER_FAILED_ERROR]:
+    'Error while trying to complete the transfer.',
   [ERRORS.DEPOSIT_ERROR]: 'Error while trying to complete the deposit.',
-  [ERRORS.ACTIVATE_SUBSCRIPTION_FAILED_ERROR]: 'Error while trying to activate the subscription.',
-  [ERRORS.INVITATION_EMAIL_ERROR]: 'Error while trying to send the invitation email.',
+  [ERRORS.ACTIVATE_SUBSCRIPTION_FAILED_ERROR]:
+    'Error while trying to activate the subscription.',
+  [ERRORS.INVITATION_EMAIL_ERROR]:
+    'Error while trying to send the invitation email.',
   [ERRORS.LINK_COPIED_ERROR]: 'Error while trying to copy the link.',
-  [ERRORS.FAILED_CHANGE_WALLET_ERROR]: 'Error while trying to change the wallet.',
+  [ERRORS.FAILED_CHANGE_WALLET_ERROR]:
+    'Error while trying to change the wallet.',
   [ERRORS.CREATING_PROFILE_ERROR]: 'Error creating profile.',
   [ERRORS.POST_CREATE_ERROR]: 'Error creating post.',
   [ERRORS.UPDATING_PROFILE_ERROR]: 'Error updating profile metadata.',
   [ERRORS.ASSET_OWNERSHIP_REGISTER_ERROR]: 'Error processing hash: {hash}',
   [ERRORS.ASSET_OWNERSHIP_TRANSFER_ERROR]: 'Error transferring IP',
-  [ERRORS.ASSET_ALREADY_REGISTERED_ERROR]: 'The asset is already registered, you cannot register it again.',
+  [ERRORS.ASSET_ALREADY_REGISTERED_ERROR]:
+    'The asset is already registered, you cannot register it again.',
 
-  [ERRORS.BROADCASTING_TRANSACTION_ERROR]: 'There was an error broadcasting the transaction.',
-  [ERRORS.PENDING_SIGNING_REQUEST_ERROR]: 'There is a pending signing request in your wallet.',
+  [ERRORS.BROADCASTING_TRANSACTION_ERROR]:
+    'There was an error broadcasting the transaction.',
+  [ERRORS.PENDING_SIGNING_REQUEST_ERROR]:
+    'There is a pending signing request in your wallet.',
   [ERRORS.INSUFFICIENT_ALLOWANCE_ERROR]:
     'You must approve the contract to spend at least {symbol} {amount}',
   [ERRORS.INSUFFICIENT_FUNDS_ERROR]:
     'You do not have enough funds to pay for this follow fee {symbol} {amount}',
-  [ERRORS.WALLET_CONNECTION_ERROR]: 'There was an error connecting to your wallet.',
+  [ERRORS.WALLET_CONNECTION_ERROR]:
+    'There was an error connecting to your wallet.',
   [ERRORS.SUBMIT_ASSET_ERROR]: 'There was an error submitting your asset.',
-  [ERRORS.PREMATURE_ACTION_ERROR]: 'There is a pending unfollow request for this profile.',
+  [ERRORS.PREMATURE_ACTION_ERROR]:
+    'There is a pending unfollow request for this profile.',
 
   // Login error
-  [ERRORS.LOGIN_FAILED_ERROR]: 'The login process failed. Please try again later.',
+  [ERRORS.LOGIN_FAILED_ERROR]:
+    'The login process failed. Please try again later.',
 
   // Withdraw error
   [ERRORS.FIRST_LOGIN_ERROR]: 'You must login first to withdraw funds.',
@@ -129,21 +139,26 @@ export const ERROR_MESSAGES: Record<ERRORS, string> = {
   [ERRORS.SUBSCRIBE_LOGIN_ERROR]: 'Please login to subscribe.',
   [ERRORS.SUBSCRIBE_MINIMUN_DAYS_ERROR]:
     'Please enter a valid number of days (minimum {minDays} days).',
-  [ERRORS.INSUFICIENT_BALANCE_ERROR]: 'Insufficient balance to complete the action.',
+  [ERRORS.INSUFICIENT_BALANCE_ERROR]:
+    'Insufficient balance to complete the action.',
   [ERRORS.FAILED_JOIN_PROFILE_ERROR]: 'Failed to join the profile.',
 
   // Follow/ unfollow
-  [ERRORS.FOLLOW_UNFOLLOW_OCCURRED_ERROR]: 'An error occurred while processing the action.',
+  [ERRORS.FOLLOW_UNFOLLOW_OCCURRED_ERROR]:
+    'An error occurred while processing the action.',
 
   // METAMASK
   [ERRORS.METAMASK_CONNECTING_FAILED_ERROR]: 'Failed to connect wallet',
   [ERRORS.METAMASK_CHANGE_WALLET_ERROR]: 'Failed to change wallet',
 
   // REFERALS
-  [ERRORS.ALREADY_SENT_INVITATION]: 'You have already sent an invitation to this email address!',
+  [ERRORS.ALREADY_SENT_INVITATION]:
+    'You have already sent an invitation to this email address!',
   [ERRORS.ALREADY_ENROLLED]: 'This user is already enrolled!',
-  [ERRORS.INVITATION_SEND_ERROR]: 'An error occurred while sending the invitation.',
-  [ERRORS.INVITATION_USER_ALREADY_INVITED]: 'This user has already been invited!',
+  [ERRORS.INVITATION_SEND_ERROR]:
+    'An error occurred while sending the invitation.',
+  [ERRORS.INVITATION_USER_ALREADY_INVITED]:
+    'This user has already been invited!',
   [ERRORS.INVITATION_USER_CANT_INVITE_SELF]: 'You cannot invite yourself!',
 
   //Marketing
@@ -151,7 +166,8 @@ export const ERROR_MESSAGES: Record<ERRORS, string> = {
   [ERRORS.CAMPAIGN_STORED_ERROR]: 'Error storing the campaign.',
   [ERRORS.CAMPAIGN_CREATION_ERROR]: 'Error creating the campaign.',
   [ERRORS.CAMPAIGN_CONFIGURATION_ERROR]: 'Error configuring the campaign.',
-  [ERRORS.CAMPAIGN_WITHDRAWAL_ERROR]: 'Error withdrawing funds from the campaign.',
+  [ERRORS.CAMPAIGN_WITHDRAWAL_ERROR]:
+    'Error withdrawing funds from the campaign.',
 
   // HOOKS
   [ERRORS.GET_CAMPAIGN_IS_ACTIVE_ERROR]: 'Error getting the campaign status.',
@@ -159,5 +175,4 @@ export const ERROR_MESSAGES: Record<ERRORS, string> = {
   [ERRORS.SPONSORED_ACCESS_ERROR]: 'Error processing the sponsored access.',
   [ERRORS.CONFIGURE_CAMPAIGN_ERROR]: 'Error configuring the campaign.',
   [ERRORS.VERIFY_ACCESS_ERROR]: 'Error verifying access.',
-
 };

@@ -15,7 +15,10 @@ interface SettingsProviderProps {
   defaultSettings: SettingsValueProps;
 }
 
-export function SettingsProvider({ children, defaultSettings }: SettingsProviderProps) {
+export function SettingsProvider({
+  children,
+  defaultSettings,
+}: SettingsProviderProps) {
   const [openDrawer, setOpenDrawer] = useState(false);
 
   const [settings, setSettings] = useLocalStorage('settings', defaultSettings);
@@ -36,7 +39,7 @@ export function SettingsProvider({ children, defaultSettings }: SettingsProvider
         [name]: value,
       }));
     },
-    [setSettings]
+    [setSettings],
   );
 
   // Direction by lang
@@ -44,7 +47,7 @@ export function SettingsProvider({ children, defaultSettings }: SettingsProvider
     (lang: string) => {
       onUpdate('themeDirection', lang === 'ar' ? 'rtl' : 'ltr');
     },
-    [onUpdate]
+    [onUpdate],
   );
 
   // Reset
@@ -86,8 +89,12 @@ export function SettingsProvider({ children, defaultSettings }: SettingsProvider
       onCloseDrawer,
       onToggleDrawer,
       onChangeDirectionByLang,
-    ]
+    ],
   );
 
-  return <SettingsContext.Provider value={memoizedValue}>{children}</SettingsContext.Provider>;
+  return (
+    <SettingsContext.Provider value={memoizedValue}>
+      {children}
+    </SettingsContext.Provider>
+  );
 }

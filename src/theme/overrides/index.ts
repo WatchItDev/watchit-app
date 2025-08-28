@@ -93,7 +93,7 @@ export function componentsOverrides(theme: Theme) {
     cssBaseline(theme),
     autocomplete(theme),
     toggleButton(theme),
-    loadingButton(theme)
+    loadingButton(theme),
   );
 
   return components;

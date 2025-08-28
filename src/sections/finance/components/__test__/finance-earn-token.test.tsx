@@ -1,13 +1,18 @@
-import React from "react";
+import React from 'react';
 import { describe, it, expect, afterEach, vi } from 'vitest';
 import { cleanup, render, fireEvent } from '@testing-library/react';
-import FinanceEarnTokens, {FinanceEarnTokensProps} from '@src/sections/finance/components/finance-earn-tokens';
+import FinanceEarnTokens, {
+  FinanceEarnTokensProps,
+} from '@src/sections/finance/components/finance-earn-tokens';
 
-import {GLOBAL_CONSTANTS} from "@src/config-global.ts";
+import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 import ThemeProvider from '@src/theme';
-import {SettingsProvider} from "@src/components/settings";
+import { SettingsProvider } from '@src/components/settings';
 
-const renderComponent = (props: FinanceEarnTokensProps, Component: React.ComponentType<FinanceEarnTokensProps> = FinanceEarnTokens) =>
+const renderComponent = (
+  props: FinanceEarnTokensProps,
+  Component: React.ComponentType<FinanceEarnTokensProps> = FinanceEarnTokens,
+) =>
   render(
     <SettingsProvider
       defaultSettings={{
@@ -22,7 +27,7 @@ const renderComponent = (props: FinanceEarnTokensProps, Component: React.Compone
       <ThemeProvider>
         <Component {...props} />
       </ThemeProvider>
-    </SettingsProvider>
+    </SettingsProvider>,
   );
 
 describe('Components: FinanceEarnTokens component testing', () => {
@@ -54,15 +59,24 @@ describe('Components: FinanceEarnTokens component testing', () => {
 
   it('displays the correct description', () => {
     const { getByText } = renderComponent(financeEarnTokensProps);
-    expect(getByText(/Complete tasks, grow your balance, and unlock exciting rewards./i)).toBeInTheDocument();
+    expect(
+      getByText(
+        /Complete tasks, grow your balance, and unlock exciting rewards./i,
+      ),
+    ).toBeInTheDocument();
   });
 
   it('calls handleClick when the button is clicked', () => {
     const { getByText } = renderComponent(financeEarnTokensProps);
     const button = getByText(/Start earning now!/i);
-    const windowOpenSpy = vi.spyOn(window, 'open').mockImplementation(() => null);
+    const windowOpenSpy = vi
+      .spyOn(window, 'open')
+      .mockImplementation(() => null);
     fireEvent.click(button);
-    expect(windowOpenSpy).toHaveBeenCalledWith(GLOBAL_CONSTANTS.EARN_TOKEN_SERVICE_URL, '_BLANK');
+    expect(windowOpenSpy).toHaveBeenCalledWith(
+      GLOBAL_CONSTANTS.EARN_TOKEN_SERVICE_URL,
+      '_BLANK',
+    );
     windowOpenSpy.mockRestore();
   });
 

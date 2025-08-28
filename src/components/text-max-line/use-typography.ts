@@ -22,19 +22,20 @@ export default function useTypography(variant: Variant) {
     variant === 'h5' ||
     variant === 'h6';
 
-  const getFont: FontProperties = hasResponsive && theme.typography[variant][key]
-    ? {
-      fontSize: theme.typography[variant][key].fontSize,
-      lineHeight: theme.typography[variant][key].lineHeight,
-      fontWeight: theme.typography[variant][key].fontWeight,
-      letterSpacing: theme.typography[variant][key].letterSpacing,
-    }
-    : {
-      fontSize: theme.typography[variant].fontSize,
-      lineHeight: theme.typography[variant].lineHeight,
-      fontWeight: theme.typography[variant].fontWeight,
-      letterSpacing: theme.typography[variant].letterSpacing,
-    };
+  const getFont: FontProperties =
+    hasResponsive && theme.typography[variant][key]
+      ? {
+          fontSize: theme.typography[variant][key].fontSize,
+          lineHeight: theme.typography[variant][key].lineHeight,
+          fontWeight: theme.typography[variant][key].fontWeight,
+          letterSpacing: theme.typography[variant][key].letterSpacing,
+        }
+      : {
+          fontSize: theme.typography[variant].fontSize,
+          lineHeight: theme.typography[variant].lineHeight,
+          fontWeight: theme.typography[variant].fontWeight,
+          letterSpacing: theme.typography[variant].letterSpacing,
+        };
 
   const fontSize = remToPx(getFont.fontSize);
   const lineHeight = Number(getFont.lineHeight) * fontSize;

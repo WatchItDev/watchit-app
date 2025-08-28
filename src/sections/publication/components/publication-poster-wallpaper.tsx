@@ -5,9 +5,13 @@ import Image from '@src/components/image';
 import { getAttachmentCid, getMediaUri } from '@src/utils/publication';
 import { PublicationPosterWallpaperProps } from '@src/sections/publication/types';
 
-export const PublicationPosterWallpaper: FC<PropsWithChildren<PublicationPosterWallpaperProps>> = (props) => {
+export const PublicationPosterWallpaper: FC<
+  PropsWithChildren<PublicationPosterWallpaperProps>
+> = (props) => {
   const { publication, children } = props;
-  const poster = getAttachmentCid(publication, 'square') || getAttachmentCid(publication, 'poster')
+  const poster =
+    getAttachmentCid(publication, 'square') ||
+    getAttachmentCid(publication, 'poster');
   const wallpaper = getAttachmentCid(publication, 'wallpaper');
 
   return (

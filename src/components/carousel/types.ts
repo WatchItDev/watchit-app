@@ -1,11 +1,11 @@
-import React from "react";
+import React from 'react';
 
-import { StackProps } from "@mui/material/Stack";
-import { IconButtonProps } from "@mui/material/IconButton";
+import { StackProps } from '@mui/material/Stack';
+import { IconButtonProps } from '@mui/material/IconButton';
 
-import { BoxProps } from "@mui/material/Box";
-import { SxProps, Theme } from "@mui/material/styles";
-import { IconifyProps } from "@src/components/iconify";
+import { BoxProps } from '@mui/material/Box';
+import { SxProps, Theme } from '@mui/material/styles';
+import { IconifyProps } from '@src/components/iconify';
 import { Post, User } from '@src/graphql/generated/graphql.ts';
 
 export interface CarouselDotsProps extends BoxProps {
@@ -30,7 +30,9 @@ export type CarouselArrowIndexProps = CarouselNavigationActions & {
   sx?: SxProps<Theme>;
 };
 
-export interface CarouselArrowsProps extends StackProps, CarouselNavigationActions {
+export interface CarouselArrowsProps
+  extends StackProps,
+    CarouselNavigationActions {
   shape?: 'circular' | 'rounded';
   filled?: boolean;
   children?: React.ReactNode;
@@ -59,10 +61,14 @@ interface CarouselResizable {
   maxItemWidth: number;
 }
 
-export interface CarouselWrapperProps<T> extends CarouselResizable{
+export interface CarouselWrapperProps<T> extends CarouselResizable {
   data: T[];
   title?: string;
-  renderSlide: (slideItems: T[], itemsPerRow: number, index: number) => React.ReactNode;
+  renderSlide: (
+    slideItems: T[],
+    itemsPerRow: number,
+    index: number,
+  ) => React.ReactNode;
   carouselSettings: Record<string, string>;
   boxStyle?: SxProps;
   boxClassName?: string;

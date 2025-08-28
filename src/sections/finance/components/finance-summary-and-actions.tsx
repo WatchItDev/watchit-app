@@ -31,7 +31,9 @@ export const SummaryAndActions: React.FC<SummaryAndActionsProps> = (props) => {
         total={balanceFromRedux}
         chart={{ series: widgetSeriesData }}
       />
-      {!mdUp && <FinanceQuickTransfer list={following} loading={loadingProfiles} />}
+      {!mdUp && (
+        <FinanceQuickTransfer list={following} loading={loadingProfiles} />
+      )}
       {lgUp && <FinanceEarnTokens lgUp={lgUp} />}
     </Stack>
   );

@@ -11,11 +11,12 @@ interface PublicationReportModalProps {
 
 // ----------------------------------------------------------------------
 
-export const ReportPublicationModal = ({ post, isOpen, onClose }: PublicationReportModalProps) => {
-
-  const handleSubmit = async (reason: string, comments: string) => {
-
-  };
+export const ReportPublicationModal = ({
+  post,
+  isOpen,
+  onClose,
+}: PublicationReportModalProps) => {
+  const handleSubmit = async (reason: string, comments: string) => {};
 
   return (
     <ReportModalBase

@@ -10,7 +10,6 @@ export const pascalToUpperSnake = (str: string): string => {
     .replace(/^_/, ''); // Removes the initial underscore if it exists
 };
 
-
 /**
  * An array of strings containing various special character patterns and names.
  * The strings in this array include names or identifiers preceded by
@@ -41,7 +40,6 @@ const specialChars = [
   '{}',
 ];
 
-
 /**
  * A regular expression pattern used for matching and validating email addresses.
  *
@@ -57,8 +55,8 @@ const specialChars = [
  * - The "g" flag enables global matching, allowing multiple occurrences
  *   of email addresses to be matched in a single string.
  */
-const emailRegex = /\b[a-zA-Z0-9][a-zA-Z0-9._%+-]*@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}\b/g;
-
+const emailRegex =
+  /\b[a-zA-Z0-9][a-zA-Z0-9._%+-]*@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}\b/g;
 
 /**
  * Removes special characters from the given text string and returns the cleaned string.
@@ -136,5 +134,7 @@ export const capitalizeFirstLetter = (string: string) => {
 export const createIndexForElement = (): string => {
   const array = new Uint8Array(8);
   window.crypto.getRandomValues(array);
-  return Array.from(array, byte => byte.toString(16).padStart(2, '0')).join('');
+  return Array.from(array, (byte) => byte.toString(16).padStart(2, '0')).join(
+    '',
+  );
 };

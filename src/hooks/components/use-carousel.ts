@@ -2,7 +2,7 @@ import { useRef, useCallback, useState } from 'react';
 import Carousel, { Settings } from 'react-slick';
 // @mui
 import { useTheme } from '@mui/material/styles';
-import {CarouselReturnType} from "@src/hooks/components/types.ts";
+import { CarouselReturnType } from '@src/hooks/components/types.ts';
 
 // ----------------------------------------------------------------------
 

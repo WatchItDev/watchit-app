@@ -11,7 +11,12 @@ interface MiniGameCardProps {
   sx?: object;
 }
 
-const MiniGameCard: FC<MiniGameCardProps> = ({ title, buttonLabel, imageSrc, sx }) => {
+const MiniGameCard: FC<MiniGameCardProps> = ({
+  title,
+  buttonLabel,
+  imageSrc,
+  sx,
+}) => {
   return (
     <Box
       sx={{
@@ -41,6 +46,6 @@ const MiniGameCard: FC<MiniGameCardProps> = ({ title, buttonLabel, imageSrc, sx 
       </Button>
     </Box>
   );
-}
+};
 
 export default MiniGameCard;

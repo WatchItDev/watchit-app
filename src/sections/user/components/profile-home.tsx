@@ -5,8 +5,8 @@ import Button from '@mui/material/Button';
 import { IconCaretDown, IconCaretUp } from '@tabler/icons-react';
 import { ProfilePublicationItem } from './profile-publication-item.tsx';
 import { useSelector } from 'react-redux';
-import {ProfileHomeProps} from "@src/sections/user/types.ts"
-import {RootState} from "@redux/store.ts"
+import { ProfileHomeProps } from '@src/sections/user/types.ts';
+import { RootState } from '@redux/store.ts';
 
 export default function ProfileHome({
   publications = [],
@@ -115,7 +115,8 @@ export default function ProfileHome({
     }
   };
 
-  const shouldShowButton = publications.length > publicationsToShow.length || isShowingAll;
+  const shouldShowButton =
+    publications.length > publicationsToShow.length || isShowingAll;
 
   // Gap between items
   const gap = 10;

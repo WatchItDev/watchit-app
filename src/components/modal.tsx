@@ -1,4 +1,4 @@
-import { FC  } from 'react';
+import { FC } from 'react';
 
 // MUI IMPORTS
 import DialogTitle from '@mui/material/DialogTitle';
@@ -10,9 +10,21 @@ export interface ModalProps extends DialogProps {
   renderContent?: JSX.Element;
 }
 
-const Modal: FC<ModalProps> = ({ open, onClose, title, renderContent, ...dialogProps }) => {
+const Modal: FC<ModalProps> = ({
+  open,
+  onClose,
+  title,
+  renderContent,
+  ...dialogProps
+}) => {
   return (
-    <Dialog open={open} fullWidth maxWidth="xs" onClose={onClose} {...dialogProps}>
+    <Dialog
+      open={open}
+      fullWidth
+      maxWidth="xs"
+      onClose={onClose}
+      {...dialogProps}
+    >
       <DialogTitle sx={{ pb: 1 }}>{title}</DialogTitle>
       {renderContent}
     </Dialog>

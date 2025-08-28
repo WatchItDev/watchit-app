@@ -3,7 +3,14 @@ import { ChipProps, chipClasses } from '@mui/material/Chip';
 
 // ----------------------------------------------------------------------
 
-const COLORS = ['primary', 'secondary', 'info', 'success', 'warning', 'error'] as const;
+const COLORS = [
+  'primary',
+  'secondary',
+  'info',
+  'success',
+  'warning',
+  'error',
+] as const;
 
 // NEW VARIANT
 declare module '@mui/material/Chip' {
@@ -42,13 +49,19 @@ export function chip(theme: Theme) {
         },
         // FILLED
         ...(filledVariant && {
-          color: lightMode ? theme.palette.common.white : theme.palette.grey[800],
+          color: lightMode
+            ? theme.palette.common.white
+            : theme.palette.grey[800],
           backgroundColor: theme.palette.text.primary,
           '&:hover': {
-            backgroundColor: lightMode ? theme.palette.grey[700] : theme.palette.grey[100],
+            backgroundColor: lightMode
+              ? theme.palette.grey[700]
+              : theme.palette.grey[100],
           },
           [`& .${chipClasses.icon}`]: {
-            color: lightMode ? theme.palette.common.white : theme.palette.grey[800],
+            color: lightMode
+              ? theme.palette.common.white
+              : theme.palette.grey[800],
           },
         }),
         // OUTLINED
@@ -123,7 +136,8 @@ export function chip(theme: Theme) {
   return {
     MuiChip: {
       styleOverrides: {
-        root: ({ ownerState }: { ownerState: ChipProps }) => rootStyles(ownerState),
+        root: ({ ownerState }: { ownerState: ChipProps }) =>
+          rootStyles(ownerState),
       },
     },
   };

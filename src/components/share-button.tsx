@@ -5,7 +5,10 @@ import Popover from '@mui/material/Popover';
 import Stack from '@mui/material/Stack';
 import { SxProps, Theme } from '@mui/material/styles';
 import Iconify from '@src/components/iconify';
-import { notifyError, notifySuccess } from '@src/libs/notifications/internal-notifications.ts';
+import {
+  notifyError,
+  notifySuccess,
+} from '@src/libs/notifications/internal-notifications.ts';
 import { SUCCESS } from '@src/libs/notifications/success.ts';
 import { ERRORS } from '@src/libs/notifications/errors';
 
@@ -37,16 +40,16 @@ interface ShareButtonProps {
 // ----------------------------------------------------------------------
 
 const ShareButton: FC<ShareButtonProps> = ({
-                                             placeholder,
-                                             pathPrefix,
-                                             targetId,
-                                             shareLinks,
-                                             templateUrl,
-                                             socialMediaList,
-                                             socialMediaUrls,
-                                             buttonVariant = 'outlined',
-                                             buttonSx,
-                                           }) => {
+  placeholder,
+  pathPrefix,
+  targetId,
+  shareLinks,
+  templateUrl,
+  socialMediaList,
+  socialMediaUrls,
+  buttonVariant = 'outlined',
+  buttonSx,
+}) => {
   const [openTooltipShare, setOpenTooltipShare] = useState(false);
   const navRefSocial = useRef<HTMLButtonElement | null>(null);
 
@@ -162,7 +165,12 @@ const ShareButton: FC<ShareButtonProps> = ({
           },
         }}
       >
-        <Typography variant="body1" fontWeight="bold" align="center" gutterBottom>
+        <Typography
+          variant="body1"
+          fontWeight="bold"
+          align="center"
+          gutterBottom
+        >
           Share link to this page
         </Typography>
 
@@ -190,7 +198,11 @@ const ShareButton: FC<ShareButtonProps> = ({
               >
                 <Iconify icon={item.icon} width={20} />
               </Button>
-              <Typography variant="subtitle2" fontSize={10} color="text.secondary">
+              <Typography
+                variant="subtitle2"
+                fontSize={10}
+                color="text.secondary"
+              >
                 {item.label}
               </Typography>
             </Stack>
@@ -215,7 +227,11 @@ const ShareButton: FC<ShareButtonProps> = ({
             >
               <Iconify icon="mdi:link-variant" width={20} />
             </Button>
-            <Typography variant="subtitle2" fontSize={10} color="text.secondary">
+            <Typography
+              variant="subtitle2"
+              fontSize={10}
+              color="text.secondary"
+            >
               Copy
             </Typography>
           </Stack>

@@ -15,7 +15,10 @@ import { useNotifications } from '@src/hooks/use-notifications.ts';
 import { useNotificationPayload } from '@src/hooks/use-notification-payload.ts';
 
 // Notifications
-import { notifyError, notifySuccess } from '@src/libs/notifications/internal-notifications';
+import {
+  notifyError,
+  notifySuccess,
+} from '@src/libs/notifications/internal-notifications';
 import { useAuth } from '@src/hooks/use-auth.ts';
 import { ERRORS } from '@src/libs/notifications/errors';
 import { SUCCESS } from '@src/libs/notifications/success';
@@ -44,22 +47,32 @@ const FollowUnfollowButton = ({
   onActionFinish = () => {},
 }: PropsWithChildren<FollowUnfollowButtonProps>) => {
   const dispatch = useDispatch();
-  const [loadProfile, { data: profileData, loading: profileLoading }] = useGetUserLazyQuery();
-  const [toggleFollow, { loading: profileFollowLoading }] = useToggleFollowMutation();
-  const [getIsFollowing, { data: isFollowingData, loading: isFollowingLoading }] = useGetIsFollowingLazyQuery();
+  const [loadProfile, { data: profileData, loading: profileLoading }] =
+    useGetUserLazyQuery();
+  const [toggleFollow, { loading: profileFollowLoading }] =
+    useToggleFollowMutation();
+  const [
+    getIsFollowing,
+    { data: isFollowingData, loading: isFollowingLoading },
+  ] = useGetIsFollowingLazyQuery();
   const [isFollowed, setIsFollowed] = useState(false);
   const [isProcessing, setIsProcessing] = useState(true);
   const { session } = useAuth();
   const { sendNotification } = useNotifications();
   const { generatePayload } = useNotificationPayload(session);
   const profile: User | null = profileData?.getUser;
-  const isLoading = isProcessing || profileLoading || profileFollowLoading || isFollowingLoading || !profile;
+  const isLoading =
+    isProcessing ||
+    profileLoading ||
+    profileFollowLoading ||
+    isFollowingLoading ||
+    !profile;
   const RainbowEffect = isLoading ? NeonPaper : Box;
 
   useEffect(() => {
     if (!profileId) return;
-    loadProfile({variables: { input: { address: profileId } }});
-    getIsFollowing({variables: { targetAddress: profileId }});
+    loadProfile({ variables: { input: { address: profileId } } });
+    getIsFollowing({ variables: { targetAddress: profileId } });
   }, [profileId]);
 
   useEffect(() => {
@@ -68,7 +81,7 @@ const FollowUnfollowButton = ({
   }, [isFollowingData]);
 
   const handleUpdateProfile = () => {
-    loadProfile({variables: { input: { address: profileId } }});
+    loadProfile({ variables: { input: { address: profileId } } });
   };
 
   // General function to handle follow/unfollow actions
@@ -78,7 +91,9 @@ const FollowUnfollowButton = ({
 
     setIsProcessing(true);
     try {
-      const result = await toggleFollow({ variables: { input: { targetAddress: profileId } } });
+      const result = await toggleFollow({
+        variables: { input: { targetAddress: profileId } },
+      });
 
       notifySuccess(SUCCESS.FOLLOW_UNFOLLOW_SUCCESSFULLY, {
         actionLbl: result?.data?.toggleFollow ? 'followed' : 'unfollowed',
@@ -99,14 +114,17 @@ const FollowUnfollowButton = ({
         },
         {
           rawDescription: `${session?.user?.displayName} now is following you`,
-        }
+        },
       );
 
-      await sendNotification(profile.address, session?.address ?? '', notificationPayload);
+      await sendNotification(
+        profile.address,
+        session?.address ?? '',
+        notificationPayload,
+      );
     } catch (err) {
       notifyError(ERRORS.FOLLOW_UNFOLLOW_OCCURRED_ERROR);
-      console.log('Error while follow/unfollow: ', err)
-
+      console.log('Error while follow/unfollow: ', err);
     } finally {
       setIsProcessing(false);
     }
@@ -115,7 +133,7 @@ const FollowUnfollowButton = ({
   return (
     <>
       <RainbowEffect
-        {...((isLoading) && {
+        {...(isLoading && {
           borderRadius: '10px',
           animationSpeed: '3s',
           padding: '0',

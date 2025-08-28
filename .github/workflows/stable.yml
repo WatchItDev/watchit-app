@@ -13,4 +13,4 @@ jobs:
     uses: ./.github/workflows/cd.yml
     secrets: inherit
     with:
-      environment: "main"
+      environment: 'main'

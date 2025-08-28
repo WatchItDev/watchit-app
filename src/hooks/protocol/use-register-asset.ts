@@ -8,11 +8,14 @@ import { encodeFunctionData } from 'viem';
 import AssetOwnershipAbi from '@src/config/abi/AssetOwnership.json';
 import { useAccountSession } from '@src/hooks/use-account-session.ts';
 import { useAuth } from '@src/hooks/use-auth.ts';
-import { RegisterAssetData, UseRegisterAssetHook } from '@src/hooks/protocol/types.ts';
+import {
+  RegisterAssetData,
+  UseRegisterAssetHook,
+} from '@src/hooks/protocol/types.ts';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 import { ERRORS } from '@src/libs/notifications/errors.ts';
 import { useWeb3Auth } from '@src/hooks/use-web3-auth.ts';
-import { Calls } from '@src/hooks/types.ts'
+import { Calls } from '@src/hooks/types.ts';
 
 // ----------------------------------------------------------------------
 
@@ -49,7 +52,9 @@ export const useRegisterAsset = (): UseRegisterAssetHook => {
     try {
       const toAddress = session?.address;
       if (!toAddress) {
-        throw new Error('The active account address was not found in the session.');
+        throw new Error(
+          'The active account address was not found in the session.',
+        );
       }
 
       const registerAssetData = encodeFunctionData({

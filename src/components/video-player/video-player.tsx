@@ -1,6 +1,6 @@
 import { FC, useRef, useEffect, memo } from 'react';
 // @ts-expect-error No error in this context
-import { Hls/** , FetchLoader, XhrLoader */} from 'hls.js/dist/hls.mjs';
+import { Hls /** , FetchLoader, XhrLoader */ } from 'hls.js/dist/hls.mjs';
 import { Typography, IconButton, Button } from '@mui/material';
 import { IconChevronLeft } from '@tabler/icons-react';
 import {
@@ -9,10 +9,14 @@ import {
   MediaProvider,
   useMediaState,
   MediaProviderAdapter,
-  isHLSProvider, Track
+  isHLSProvider,
+  Track,
 } from '@vidstack/react';
 
-import { DefaultVideoLayout, defaultLayoutIcons } from '@vidstack/react/player/layouts/default';
+import {
+  DefaultVideoLayout,
+  defaultLayoutIcons,
+} from '@vidstack/react/player/layouts/default';
 import '@vidstack/react/player/styles/default/theme.css';
 import '@vidstack/react/player/styles/default/layouts/audio.css';
 import '@vidstack/react/player/styles/default/layouts/video.css';
@@ -20,8 +24,11 @@ import '@vidstack/react/player/styles/default/layouts/video.css';
 import useGetSubtitles from '@src/hooks/protocol/use-get-subtitles.ts';
 import { useResponsive } from '@src/hooks/use-responsive';
 import Label from '../label';
-import {ErrorData} from "hls.js"
-import { useIncrementPostViewMutation, useLogEventMutation } from '@src/graphql/generated/hooks.tsx';
+import { ErrorData } from 'hls.js';
+import {
+  useIncrementPostViewMutation,
+  useLogEventMutation,
+} from '@src/graphql/generated/hooks.tsx';
 import { useAuth } from '@src/hooks/use-auth.ts';
 
 export interface VideoPlayerProps {
@@ -35,7 +42,14 @@ export interface VideoPlayerProps {
 
 const STEP = 5;
 
-export const VideoPlayer: FC<VideoPlayerProps> = ({ src, cid, titleMovie, postId, onBack, showBack }) => {
+export const VideoPlayer: FC<VideoPlayerProps> = ({
+  src,
+  cid,
+  titleMovie,
+  postId,
+  onBack,
+  showBack,
+}) => {
   const mdUp = useResponsive('up', 'md');
   const player = useRef<MediaPlayerInstance>(null);
   const controlsVisible = useMediaState('controlsVisible', player);
@@ -44,8 +58,8 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({ src, cid, titleMovie, postId
   const [incrementView] = useIncrementPostViewMutation();
   const { session } = useAuth();
 
-  const watchedSeconds = useRef<Set<number>>(new Set())    // distinct seconds already counted
-  const nextEvent  = useRef(5)                         // next percentage to emit (5,10,15…)
+  const watchedSeconds = useRef<Set<number>>(new Set()); // distinct seconds already counted
+  const nextEvent = useRef(5); // next percentage to emit (5,10,15…)
 
   useEffect(() => {
     if (cid) getSubtitles(cid);
@@ -64,7 +78,17 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({ src, cid, titleMovie, postId
     if (!session?.authenticated) return;
     try {
       console.log('emit event', type, progress);
-      await logEvent({ variables: { input: { type, targetId: postId, targetType: 'POST', progress, meta: { cid } } } });
+      await logEvent({
+        variables: {
+          input: {
+            type,
+            targetId: postId,
+            targetType: 'POST',
+            progress,
+            meta: { cid },
+          },
+        },
+      });
     } catch (e) {
       console.error('logEvent error', e);
     }
@@ -78,25 +102,26 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({ src, cid, titleMovie, postId
   const handleEnded = () => emit('VIDEO_WATCH_FULL');
 
   const handleTimeUpdate = () => {
-    const media = player.current
-    if (!media?.duration || Number.isNaN(media.duration)) return
+    const media = player.current;
+    if (!media?.duration || Number.isNaN(media.duration)) return;
 
     // currentTime is fractional (e.g.3.334s) floor to the integer part so we count each full second only once
-    const sec = Math.floor(media.currentTime)
+    const sec = Math.floor(media.currentTime);
 
     // if this second was already handled, do nothing (saves work)
-    if (watchedSeconds.current.has(sec)) return
-    watchedSeconds.current.add(sec)
+    if (watchedSeconds.current.has(sec)) return;
+    watchedSeconds.current.add(sec);
 
     // calculate percentage watched based on unique seconds viewed
-    const percent = (watchedSeconds.current.size / Math.floor(media.duration)) * 100
+    const percent =
+      (watchedSeconds.current.size / Math.floor(media.duration)) * 100;
 
     // emit events every 5% (5,10,15…)
     while (percent >= nextEvent.current) {
-      emit(`VIDEO_${nextEvent.current}`, nextEvent.current)
-      nextEvent.current += STEP
+      emit(`VIDEO_${nextEvent.current}`, nextEvent.current);
+      nextEvent.current += STEP;
     }
-  }
+  };
 
   // on provider (HLS) initialization
   const onProviderSetup = (provider: MediaProviderAdapter) => {
@@ -104,43 +129,43 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({ src, cid, titleMovie, postId
       // @ts-expect-error No error in this context
       provider.instance?.on(Hls.Events.ERROR, (_, data: ErrorData) => {
         if (data.details === Hls.ErrorDetails.BUFFER_STALLED_ERROR) {
-          console.log("Seek Stalling Detected, Adjusting Buffer...");
+          console.log('Seek Stalling Detected, Adjusting Buffer...');
           provider.instance?.startLoad();
         }
 
         if (data.fatal && data.type === Hls.ErrorTypes.MEDIA_ERROR) {
-          console.warn("Recovering from Media Error...");
+          console.warn('Recovering from Media Error...');
           provider.instance?.recoverMediaError();
         }
       });
     }
-  }
+  };
 
   // when the provider has changed, setup config..
   const onProviderChange = (provider: MediaProviderAdapter | null) => {
     if (isHLSProvider(provider)) {
       provider.library = Hls;
       provider.config = {
-        "startLevel": -1, // Start at the highest quality level
-        "maxBufferLength": 30, // Max video buffer length in seconds
-        "backBufferLength": 30,
-        "maxBufferHole": 0.5, // Max buffer hole in seconds
-        "maxMaxBufferLength": 600, // Absolute max buffer length
-        "enableSoftwareAES": false, // Disable software AES decryption
-        "enableIMSC1": false, // Disable IMSC1 subtitles
-        "enableID3MetadataCues": false, // Disable ID3 metadata cues
-        "capLevelToPlayerSize": true,
-        "abrMaxWithRealBitrate": true, // Use real bitrate for ABR
-        "abrBandWidthFactor": 0.95, // Bandwidth factor for ABR
-        "abrBandWidthUpFactor": 0.6,
-        "enableWebVTT": true, // Enable WebVTT subtitles
-        "enableCEA708Captions": false, // Disable CEA-708 captions,
-        "enableWorker": true,
+        startLevel: -1, // Start at the highest quality level
+        maxBufferLength: 30, // Max video buffer length in seconds
+        backBufferLength: 30,
+        maxBufferHole: 0.5, // Max buffer hole in seconds
+        maxMaxBufferLength: 600, // Absolute max buffer length
+        enableSoftwareAES: false, // Disable software AES decryption
+        enableIMSC1: false, // Disable IMSC1 subtitles
+        enableID3MetadataCues: false, // Disable ID3 metadata cues
+        capLevelToPlayerSize: true,
+        abrMaxWithRealBitrate: true, // Use real bitrate for ABR
+        abrBandWidthFactor: 0.95, // Bandwidth factor for ABR
+        abrBandWidthUpFactor: 0.6,
+        enableWebVTT: true, // Enable WebVTT subtitles
+        enableCEA708Captions: false, // Disable CEA-708 captions,
+        enableWorker: true,
         // "fLoader": FetchLoader,
         // "pLoader": XhrLoader
       };
     }
-  }
+  };
 
   return (
     <MediaPlayer

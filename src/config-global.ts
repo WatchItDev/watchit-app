@@ -1,7 +1,7 @@
 /// <reference types="@rsbuild/core/types" />
 
-import { paths } from "@src/routes/paths";
-import { Address } from "viem";
+import { paths } from '@src/routes/paths';
+import { Address } from 'viem';
 
 export interface GlobalConstants {
   MMC_ADDRESS: Address;
@@ -41,7 +41,6 @@ export interface GlobalConstants {
   TERMS_AND_CONDITIONS: string;
 }
 
-
 export const GLOBAL_CONSTANTS: GlobalConstants = {
   MMC_ADDRESS: import.meta.env.VITE_MMC_ADDRESS,
   SUBSCRIPTION_POLICY_ADDRESS: import.meta.env.VITE_SUBSCRIPTION_POLICY_ADDRESS,
@@ -49,12 +48,14 @@ export const GLOBAL_CONSTANTS: GlobalConstants = {
   ACCESS_AGG_ADDRESS: import.meta.env.VITE_ACCESS_AGG_ADDRESS,
   POLICIES_AGG_ADDRESS: import.meta.env.VITE_POLICIES_AGG_ADDRESS,
   LEDGER_VAULT_ADDRESS: import.meta.env.VITE_LEDGER_VAULT_ADDRESS,
-  SUBSCRIPTION_CAMPAIGN_ADDRESS: import.meta.env.VITE_SUBSCRIPTION_CAMPAIGN_ADDRESS,
+  SUBSCRIPTION_CAMPAIGN_ADDRESS: import.meta.env
+    .VITE_SUBSCRIPTION_CAMPAIGN_ADDRESS,
   RIGHT_POLICY_AUTHORIZER: import.meta.env.VITE_RIGHT_POLICY_AUTHORIZER,
   ACCESS_MANAGER_ADDRESS: import.meta.env.VITE_ACCESS_MANAGER_ADDRESS,
   ASSET_OWNERSHIP_ADDRESS: import.meta.env.VITE_ASSET_OWNERSHIP_ADDRESS,
   CAMPAIGN_REGISTRY_ADDRESS: import.meta.env.VITE_CAMPAIGN_REGISTRY_ADDRESS,
-  CAMPAIGN_SUBSCRIPTION_TPL_ADDRESS: import.meta.env.VITE_CAMPAIGN_SUBSCRIPTION_TPL_ADDRESS,
+  CAMPAIGN_SUBSCRIPTION_TPL_ADDRESS: import.meta.env
+    .VITE_CAMPAIGN_SUBSCRIPTION_TPL_ADDRESS,
   SENTRY_AUTH_TOKEN: import.meta.env.VITE_SENTRY_AUTH_TOKEN,
   SENTRY_DSN: import.meta.env.VITE_SENTRY_DSN,
   PINATA_API_KEY: import.meta.env.VITE_PINATA_API_KEY,
@@ -63,7 +64,7 @@ export const GLOBAL_CONSTANTS: GlobalConstants = {
   PIMLICO: import.meta.env.VITE_PIMLICO,
   NEXT_PUBLIC_SUPABASE_URL: import.meta.env.VITE_SUPABASE_URL,
   NEXT_PUBLIC_SUPABASE_ANON_KEY: import.meta.env.VITE_SUPABASE_API_KEY,
-  ENVIRONMENT: import.meta.env.VITE_ENVIRONMENT || "development",
+  ENVIRONMENT: import.meta.env.VITE_ENVIRONMENT || 'development',
   EMAIL_API_KEY: import.meta.env.VITE_EMAILJS_PUBLIC_KEY,
   EMAIL_SERVICE_ID: import.meta.env.VITE_EMAILJS_SERVICE_ID,
   EMAIL_TEMPLATE_ID: import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
@@ -71,13 +72,17 @@ export const GLOBAL_CONSTANTS: GlobalConstants = {
   BASE_URL: import.meta.env.VITE_BASE_URL,
   LOGO_URL: import.meta.env.VITE_LOGO_URL,
   EARN_TOKEN_SERVICE_URL: import.meta.env.VITE_EARN_TOKEN_SERVICE_URL,
-  WATCHIT_GET_MEDIA_CONTENT_URL: import.meta.env.VITE_WATCHIT_GET_MEDIA_CONTENT_URL,
+  WATCHIT_GET_MEDIA_CONTENT_URL: import.meta.env
+    .VITE_WATCHIT_GET_MEDIA_CONTENT_URL,
   ATTESTATION_BASE_URL: import.meta.env.VITE_URL_ATTESTATION_BASE,
   FROM_BLOCK: import.meta.env.VITE_BLOCK_FROM || 0n,
-  GQL_ENDPOINT: import.meta.env.VITE_GQL_ENDPOINT || 'http://localhost:4000/graphql',
+  GQL_ENDPOINT:
+    import.meta.env.VITE_GQL_ENDPOINT || 'http://localhost:4000/graphql',
   OPEN_COLLECTIVE: import.meta.env.VITE_URL_OPEN_COLLECTIVE,
   TERMS_AND_CONDITIONS: import.meta.env.VITE_URL_TERMS_AND_CONDITIONS,
-  RPC_URL: import.meta.env.VITE_POLYGON_AMOY_RPC || 'https://polygon-amoy-bor-rpc.publicnode.com',
+  RPC_URL:
+    import.meta.env.VITE_POLYGON_AMOY_RPC ||
+    'https://polygon-amoy-bor-rpc.publicnode.com',
 };
 
 export const PATH_AFTER_LOGIN = paths.dashboard.root;

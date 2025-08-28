@@ -46,7 +46,12 @@ const PosterHorizontal = ({ title, images, likes, id, synopsis }: Poster) => {
       onClick={handlePosterClick}
     >
       {/* Poster image */}
-      <Image style={{ borderRadius: '10px' }} alt={title} src={images.vertical} ratio="1/1" />
+      <Image
+        style={{ borderRadius: '10px' }}
+        alt={title}
+        src={images.vertical}
+        ratio="1/1"
+      />
 
       {/* Upper side: Likes & prices */}
       <Box
@@ -69,9 +74,24 @@ const PosterHorizontal = ({ title, images, likes, id, synopsis }: Poster) => {
         }}
       >
         {/* Likes */}
-        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <Stack direction="row" spacing={0.5} alignItems="center" textAlign="center">
-            <icons.IconHeartFilled style={{ marginBottom: '2px' }} size={16} color="#F2F3F5" />
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+          }}
+        >
+          <Stack
+            direction="row"
+            spacing={0.5}
+            alignItems="center"
+            textAlign="center"
+          >
+            <icons.IconHeartFilled
+              style={{ marginBottom: '2px' }}
+              size={16}
+              color="#F2F3F5"
+            />
             <TextMaxLine line={1} variant="body2">
               {formatLikes(likes ?? 0)}
             </TextMaxLine>

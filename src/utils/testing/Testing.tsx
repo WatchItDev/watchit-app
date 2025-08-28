@@ -1,11 +1,11 @@
-import React from "react";
-import { render } from "@testing-library/react";
-import { Provider as ReduxProvider } from "react-redux";
-import { BrowserRouter as Router } from "react-router-dom";
-import { createStore } from "redux";
-import rootReducer from "@redux/reducer";
-import { MockedProvider } from "@apollo/client/testing";
-import { searchbarMocks } from "@src/layouts/_common/searchbar/__mocks__/searchbarMocks";
+import React from 'react';
+import { render } from '@testing-library/react';
+import { Provider as ReduxProvider } from 'react-redux';
+import { BrowserRouter as Router } from 'react-router-dom';
+import { createStore } from 'redux';
+import rootReducer from '@redux/reducer';
+import { MockedProvider } from '@apollo/client/testing';
+import { searchbarMocks } from '@src/layouts/_common/searchbar/__mocks__/searchbarMocks';
 const store = createStore(rootReducer);
 
 /**
@@ -33,7 +33,8 @@ export const renderWithStoreAndRouter = (ui: React.ReactElement) => {
           future={{
             v7_relativeSplatPath: true,
             v7_startTransition: true,
-          }}>
+          }}
+        >
           {ui}
         </Router>
       </ReduxProvider>

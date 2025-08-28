@@ -1,4 +1,4 @@
-import {ReduxSession} from "@redux/types.ts"
+import { ReduxSession } from '@redux/types.ts';
 
 export const canViewSection = (sessionData: ReduxSession): boolean => {
   // Allowed profileId to views (temporary) this section
@@ -9,9 +9,9 @@ export const canViewSection = (sessionData: ReduxSession): boolean => {
     '0x4AEa45E7c5a1C63424D003114b9C80F4DEa64c1B', // Geolffrey
     '0xbB97F1234282ff8f74c7d091CB2eDC4F82A311C0', // Watchit Open
     '0x71B9d744Ad4E43d3A4Ff1DEADbf8058c24c8521a', // Alejandro
-    '0xa15a3D394E029212023C3D696640721c2623b79A',  // Alexandra,
-    '0x1f2500701594E3413CC129cb8Fe6ed0291291135' // Kana
+    '0xa15a3D394E029212023C3D696640721c2623b79A', // Alexandra,
+    '0x1f2500701594E3413CC129cb8Fe6ed0291291135', // Kana
   ];
   // Verify if the current profile is allowed to views this section
   return allowedProfilesId.includes(sessionData?.address ?? '');
-}
+};

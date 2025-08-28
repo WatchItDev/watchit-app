@@ -10,23 +10,22 @@ export const useGetCampaign = (): UseGetCampaignHook => {
   const [loading, setLoading] = useState<boolean>(false);
 
   const fetchCampaign = useCallback(
-    async (
-      account: Address,
-      policy: Address
-    ): Promise<Address | null> => {
+    async (account: Address, policy: Address): Promise<Address | null> => {
       if (!account || !policy) {
-        throw new Error('Account or Policy address is missing while fetching campaign.');
+        throw new Error(
+          'Account or Policy address is missing while fetching campaign.',
+        );
       }
       setLoading(true);
       try {
-        const campaignAddress: Address = await publicClient.readContract({
+        const campaignAddress: Address = (await publicClient.readContract({
           address: GLOBAL_CONSTANTS.CAMPAIGN_REGISTRY_ADDRESS,
           abi: CampaignRegistryAbi.abi,
           functionName: 'getCampaign',
           args: [account, policy],
-        }) as Address;
+        })) as Address;
         setCampaign(campaignAddress);
-        return campaignAddress as Address
+        return campaignAddress as Address;
       } catch (err) {
         console.error('Error fetching campaign address:', err);
         setCampaign(null);
@@ -35,7 +34,7 @@ export const useGetCampaign = (): UseGetCampaignHook => {
         setLoading(false);
       }
     },
-    []
+    [],
   );
 
   return { campaign, loading, fetchCampaign };

@@ -41,7 +41,11 @@ export default function RejectionFiles({ fileRejections }: Props) {
             </Typography>
 
             {errors.map((error) => (
-              <Box key={error.code} component="span" sx={{ typography: 'caption' }}>
+              <Box
+                key={error.code}
+                component="span"
+                sx={{ typography: 'caption' }}
+              >
                 - {error.message}
               </Box>
             ))}

@@ -1,4 +1,4 @@
-import LoadingButton from "@mui/lab/LoadingButton";
+import LoadingButton from '@mui/lab/LoadingButton';
 import NeonPaper from '@src/sections/publication/components/neon-paper-container.tsx';
 import React, { FC, useState } from 'react';
 import {
@@ -27,8 +27,10 @@ import { NEW_CAMPAIGN_POLICIES_OPTIONS } from '@src/sections/marketing/CONSTANTS
 
 // ----------------------------------------------------------------------
 
-const CampaignModalContent: FC<CampaignModalContentProps> = ({ onClose, onConfirm }) => {
-
+const CampaignModalContent: FC<CampaignModalContentProps> = ({
+  onClose,
+  onConfirm,
+}) => {
   const { create, loading } = useCreateCampaign();
   const [formValues, setFormValues] = useState({ policy: '', description: '' });
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
@@ -60,7 +62,9 @@ const CampaignModalContent: FC<CampaignModalContentProps> = ({ onClose, onConfir
     // You could add further validation or show an error message here
     if (!policy || !description || !selectedDate) return;
     // Calculate expiration in seconds from now until the selected date
-    const expirationSeconds = Math.floor((selectedDate.getTime() - now.getTime()) / 1000);
+    const expirationSeconds = Math.floor(
+      (selectedDate.getTime() - now.getTime()) / 1000,
+    );
     // If expirationSeconds is not positive, do not proceed
     if (expirationSeconds <= 0) return;
 
@@ -75,7 +79,11 @@ const CampaignModalContent: FC<CampaignModalContentProps> = ({ onClose, onConfir
       <Divider sx={{ padding: '0.3rem 0', mb: 2, borderStyle: 'dashed' }} />
 
       <Grid container spacing={2} sx={{ mb: 2, px: 2, m: 0, width: '100%' }}>
-        <Typography variant="body1" color="text.secondary" sx={{ opacity: 0.7 }}>
+        <Typography
+          variant="body1"
+          color="text.secondary"
+          sx={{ opacity: 0.7 }}
+        >
           Complete the required information to create the campaign.
         </Typography>
 
@@ -96,9 +104,7 @@ const CampaignModalContent: FC<CampaignModalContentProps> = ({ onClose, onConfir
               </MenuItem>
             ))}
           </Select>
-          <FormHelperText>
-            Select a policy for your campaign.
-          </FormHelperText>
+          <FormHelperText>Select a policy for your campaign.</FormHelperText>
         </FormControl>
 
         {/* DatePicker for expiration with helper text via slotProps */}
@@ -110,7 +116,7 @@ const CampaignModalContent: FC<CampaignModalContentProps> = ({ onClose, onConfir
             minDate={new Date()}
             slotProps={{
               textField: {
-                helperText: "Please select the duration of your campaign.",
+                helperText: 'Please select the duration of your campaign.',
                 fullWidth: true,
                 sx: { mt: 2 },
               },
@@ -134,7 +140,9 @@ const CampaignModalContent: FC<CampaignModalContentProps> = ({ onClose, onConfir
 
       <Divider sx={{ padding: '0.3rem 0', mt: 2, borderStyle: 'dashed' }} />
 
-      <DialogActions sx={{ px: 2, display: 'flex', justifyContent: 'flex-end', gap: 1 }}>
+      <DialogActions
+        sx={{ px: 2, display: 'flex', justifyContent: 'flex-end', gap: 1 }}
+      >
         <Button variant="outlined" onClick={onClose} disabled={loading}>
           Cancel
         </Button>

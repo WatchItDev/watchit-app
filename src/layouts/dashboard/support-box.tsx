@@ -34,7 +34,7 @@ const SupportBox: FC = () => (
         variant="body1"
         sx={{ color: '#FFFFFF', textAlign: 'center', fontWeight: 'bold' }}
       >
-        Support Watchit <br/> on Open Collective
+        Support Watchit <br /> on Open Collective
       </Typography>
     </NeonPaper>
   </Box>

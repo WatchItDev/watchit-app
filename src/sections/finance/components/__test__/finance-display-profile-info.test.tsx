@@ -1,8 +1,7 @@
-import { describe, it } from "vitest";
-import { render } from "@testing-library/react";
-import FinanceDisplayProfileInfo from "../finance-display-profile-info";
-import { Profile } from "@lens-protocol/api-bindings";
-
+import { describe, it } from 'vitest';
+import { render } from '@testing-library/react';
+import FinanceDisplayProfileInfo from '../finance-display-profile-info';
+import { Profile } from '@lens-protocol/api-bindings';
 
 const carouselMock = {
   currentIndex: 0,
@@ -27,8 +26,8 @@ const renderComponent = () => {
     />,
   );
 };
-describe("[COPONENTS]: <FinanceDisplayProfileInfo />", () => {
-  it("to match snapshot", () => {
+describe('[COPONENTS]: <FinanceDisplayProfileInfo />', () => {
+  it('to match snapshot', () => {
     const { container } = renderComponent();
     expect(container).toMatchSnapshot();
   });

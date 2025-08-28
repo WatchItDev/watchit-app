@@ -20,7 +20,10 @@ import { UseItemsPerSlideProps, UseItemsPerSlideReturn } from './types';
  * @returns {Object} An object containing the number of items per slide and a reference to the parent container.
  */
 
-export function useItemsPerSlide({ minItemWidth, maxItemWidth }: UseItemsPerSlideProps): UseItemsPerSlideReturn {
+export function useItemsPerSlide({
+  minItemWidth,
+  maxItemWidth,
+}: UseItemsPerSlideProps): UseItemsPerSlideReturn {
   const [itemsPerSlide, setItemsPerSlide] = useState(1);
   const parentRef = useRef<HTMLDivElement>(null);
 
@@ -30,7 +33,11 @@ export function useItemsPerSlide({ minItemWidth, maxItemWidth }: UseItemsPerSlid
     const observer = new ResizeObserver((entries) => {
       for (const entry of entries) {
         const parentWidth = entry.contentRect.width;
-        const items = calculateItemsPerSlide({ parentWidth, minItemWidth, maxItemWidth });
+        const items = calculateItemsPerSlide({
+          parentWidth,
+          minItemWidth,
+          maxItemWidth,
+        });
         setItemsPerSlide(items);
       }
     });
@@ -45,7 +52,11 @@ export function useItemsPerSlide({ minItemWidth, maxItemWidth }: UseItemsPerSlid
   useEffect(() => {
     if (parentRef.current) {
       const parentWidth = parentRef.current.offsetWidth;
-      const items = calculateItemsPerSlide({ parentWidth, minItemWidth, maxItemWidth });
+      const items = calculateItemsPerSlide({
+        parentWidth,
+        minItemWidth,
+        maxItemWidth,
+      });
       setItemsPerSlide(items);
     }
   }, [minItemWidth, maxItemWidth]);

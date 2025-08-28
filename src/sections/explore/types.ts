@@ -6,10 +6,10 @@ export interface TrendingTopicsType {
 }
 
 export interface ExplorePublicationsSkeletonProps {
-  title?: string
+  title?: string;
 }
 
 export interface ExploreCarouselSkeletonProps {
-  title?: string
+  title?: string;
   SkeletonItemComponent?: React.ComponentType;
 }

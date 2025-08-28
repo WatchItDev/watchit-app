@@ -1,8 +1,14 @@
 import { ProfileData } from '@src/contexts/auth/types.ts';
-import { SocialLinkInput, User, UserInput } from '@src/graphql/generated/graphql.ts';
+import {
+  SocialLinkInput,
+  User,
+  UserInput,
+} from '@src/graphql/generated/graphql.ts';
 
 const removeEmptyValues = (obj: Partial<UserInput>): Partial<UserInput> =>
-  Object.fromEntries(Object.entries(obj).filter(([, v]) => v !== '' && v !== null));
+  Object.fromEntries(
+    Object.entries(obj).filter(([, v]) => v !== '' && v !== null),
+  );
 
 /**
  * Build profile metadata object.
@@ -14,7 +20,7 @@ const removeEmptyValues = (obj: Partial<UserInput>): Partial<UserInput> =>
 export const buildProfileMetadata = (
   data: ProfileData,
   profileImageURI?: string | null,
-  backgroundImageURI?: string | null
+  backgroundImageURI?: string | null,
 ): Partial<UserInput> => {
   const cleanSocialLinks = Object.entries(data.socialLinks ?? {})
     .filter(([, value]) => value !== '' && value !== null)
@@ -23,7 +29,7 @@ export const buildProfileMetadata = (
         ({
           platform: key,
           url: value,
-        }) as SocialLinkInput
+        }) as SocialLinkInput,
     );
   const metadata: Partial<UserInput> = {
     displayName: data.displayName ?? '',
@@ -44,16 +50,19 @@ export const buildProfileMetadata = (
  * @returns {Profile[] | null | undefined} An array of profiles excluding those with hidden indicators,
  *                                         or `null`/`undefined` if the input is `null`/`undefined`.
  */
-export const filterHiddenProfiles = (profiles?: User[]): User[] | null | undefined => {
+export const filterHiddenProfiles = (
+  profiles?: User[],
+): User[] | null | undefined => {
   // displayName, bio and address properties are checked for the hidden indicator
   const patterns = ['###HIDDEN###'];
 
   // Filter profiles that do not contain the hidden indicator in any of the checked properties
   return profiles?.filter((profile: User) => {
-    return !patterns.some(pattern =>
-      (profile.displayName?.includes(pattern) ||
+    return !patterns.some(
+      (pattern) =>
+        profile.displayName?.includes(pattern) ||
         profile.bio?.includes(pattern) ||
-        profile.address?.includes(pattern))
+        profile.address?.includes(pattern),
     );
   });
 };

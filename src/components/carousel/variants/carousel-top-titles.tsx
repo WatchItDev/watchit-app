@@ -1,10 +1,16 @@
 import Box from '@mui/material/Box';
-import Carousel, { CarouselArrows, useCarousel } from '@src/components/carousel/index';
+import Carousel, {
+  CarouselArrows,
+  useCarousel,
+} from '@src/components/carousel/index';
 import PosterTopTitles from '@src/components/poster/variants/poster-top-titles.tsx';
 import { CarouselTopTitlesProps } from '../types';
 import { Post } from '@src/graphql/generated/graphql.ts';
 
-export default function CarouselTopTitles({ posts, category }: Readonly<CarouselTopTitlesProps>) {
+export default function CarouselTopTitles({
+  posts,
+  category,
+}: Readonly<CarouselTopTitlesProps>) {
   const carousel = useCarousel({
     slidesToShow: 1,
     adaptiveHeight: true,

@@ -10,15 +10,17 @@ describe('[UTILS]: Success', () => {
     });
 
     it('should have a message for every success type', () => {
-      Object.values(SUCCESS).forEach(successKey => {
+      Object.values(SUCCESS).forEach((successKey) => {
         expect(SUCCESS_MESSAGES[successKey as SUCCESS]).toBeDefined();
         expect(typeof SUCCESS_MESSAGES[successKey as SUCCESS]).toBe('string');
-        expect(SUCCESS_MESSAGES[successKey as SUCCESS].length).toBeGreaterThan(0);
+        expect(SUCCESS_MESSAGES[successKey as SUCCESS].length).toBeGreaterThan(
+          0,
+        );
       });
     });
 
     it('should not have extra messages that do not correspond to success types', () => {
-      Object.keys(SUCCESS_MESSAGES).forEach(messageKey => {
+      Object.keys(SUCCESS_MESSAGES).forEach((messageKey) => {
         expect(Object.values(SUCCESS)).toContain(messageKey);
       });
     });
@@ -28,24 +30,39 @@ describe('[UTILS]: Success', () => {
     });
 
     it('should have the correct message for DEPOSIT_SUCCESSFULLY success', () => {
-      expect(SUCCESS_MESSAGES[SUCCESS.DEPOSIT_SUCCESSFULLY]).toBe('The deposit was successful.');
+      expect(SUCCESS_MESSAGES[SUCCESS.DEPOSIT_SUCCESSFULLY]).toBe(
+        'The deposit was successful.',
+      );
     });
 
     it('should contain placeholders in specific success messages', () => {
-      expect(containsPlaceholders(SUCCESS_MESSAGES[SUCCESS.TRANSFER_CREATED_SUCCESSFULLY])).toBe(true);
-      expect(containsPlaceholders(SUCCESS_MESSAGES[SUCCESS.FOLLOW_UNFOLLOW_SUCCESSFULLY])).toBe(true);
-      expect(containsPlaceholders(SUCCESS_MESSAGES[SUCCESS.OWNERSHIP_REGISTERED_SUCCESSFULLY])).toBe(true);
+      expect(
+        containsPlaceholders(
+          SUCCESS_MESSAGES[SUCCESS.TRANSFER_CREATED_SUCCESSFULLY],
+        ),
+      ).toBe(true);
+      expect(
+        containsPlaceholders(
+          SUCCESS_MESSAGES[SUCCESS.FOLLOW_UNFOLLOW_SUCCESSFULLY],
+        ),
+      ).toBe(true);
+      expect(
+        containsPlaceholders(
+          SUCCESS_MESSAGES[SUCCESS.OWNERSHIP_REGISTERED_SUCCESSFULLY],
+        ),
+      ).toBe(true);
     });
 
     it('should have the correct placeholder format in messages', () => {
-      const messagesWithPlaceholders = Object.values(SUCCESS_MESSAGES).filter(containsPlaceholders);
+      const messagesWithPlaceholders =
+        Object.values(SUCCESS_MESSAGES).filter(containsPlaceholders);
 
-      messagesWithPlaceholders.forEach(message => {
+      messagesWithPlaceholders.forEach((message) => {
         const placeholderRegex = /{[a-zA-Z0-9]+}/g;
         const matches = message.match(placeholderRegex) || [];
 
         expect(matches.length).toBeGreaterThan(0);
-        matches.forEach(match => {
+        matches.forEach((match) => {
           expect(match.startsWith('{')).toBe(true);
           expect(match.endsWith('}')).toBe(true);
           expect(match.length).toBeGreaterThan(2);
@@ -59,9 +76,11 @@ describe('[UTILS]: Success', () => {
         SUCCESS.WITHDRAW_SUCCESSFULLY,
       ];
 
-      transactionSuccesses.forEach(success => {
+      transactionSuccesses.forEach((success) => {
         expect(SUCCESS_MESSAGES[success]).toBeDefined();
-        expect(SUCCESS_MESSAGES[success].toLowerCase()).toMatch(/successful|was successful/);
+        expect(SUCCESS_MESSAGES[success].toLowerCase()).toMatch(
+          /successful|was successful/,
+        );
       });
     });
 
@@ -73,9 +92,11 @@ describe('[UTILS]: Success', () => {
         SUCCESS.PROFILE_JOINED_SUCCESSFULLY,
       ];
 
-      profileSuccesses.forEach(success => {
+      profileSuccesses.forEach((success) => {
         expect(SUCCESS_MESSAGES[success]).toBeDefined();
-        expect(SUCCESS_MESSAGES[success].toLowerCase()).toMatch(/profile|successfully/);
+        expect(SUCCESS_MESSAGES[success].toLowerCase()).toMatch(
+          /profile|successfully/,
+        );
       });
     });
 
@@ -88,9 +109,11 @@ describe('[UTILS]: Success', () => {
         SUCCESS.CAMPAIGN_WITHDRAWN_SUCCESSFULLY,
       ];
 
-      marketingSuccesses.forEach(success => {
+      marketingSuccesses.forEach((success) => {
         expect(SUCCESS_MESSAGES[success]).toBeDefined();
-        expect(SUCCESS_MESSAGES[success].toLowerCase()).toMatch(/campaign|strategy|successfully/);
+        expect(SUCCESS_MESSAGES[success].toLowerCase()).toMatch(
+          /campaign|strategy|successfully/,
+        );
       });
     });
   });

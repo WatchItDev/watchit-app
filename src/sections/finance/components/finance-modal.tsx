@@ -5,9 +5,16 @@ import Tab from '@mui/material/Tab';
 import DialogTitle from '@mui/material/DialogTitle';
 import Tabs, { tabsClasses } from '@mui/material/Tabs';
 import Dialog, { dialogClasses } from '@mui/material/Dialog';
-import {FinanceModalProps} from "@src/sections/finance/types.ts"
+import { FinanceModalProps } from '@src/sections/finance/types.ts';
 
-const FinanceModal: FC<FinanceModalProps> = ({ open, onClose, title, tabs, renderContent, ...dialogProps }) => {
+const FinanceModal: FC<FinanceModalProps> = ({
+  open,
+  onClose,
+  title,
+  tabs,
+  renderContent,
+  ...dialogProps
+}) => {
   const [currentTab, setCurrentTab] = useState('smartAccount');
 
   const handleChangeTab = (_event: React.SyntheticEvent, newValue: string) => {
@@ -23,7 +30,7 @@ const FinanceModal: FC<FinanceModalProps> = ({ open, onClose, title, tabs, rende
         [`& .${dialogClasses.paper}`]: {
           maxWidth: { xs: '100%', md: '444px' },
           width: { xs: 'calc(100% - 34px)', md: 'calc(100% - 64px)' },
-        }
+        },
       }}
       {...dialogProps}
     >
@@ -40,8 +47,14 @@ const FinanceModal: FC<FinanceModalProps> = ({ open, onClose, title, tabs, rende
           width: 1,
           zIndex: 9,
           borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
-          [`& .${tabsClasses.flexContainer}`]: { justifyContent: 'center', px: 1 },
-          [`& .${tabsClasses.scroller}`]: { display: 'flex', justifyContent: 'center' },
+          [`& .${tabsClasses.flexContainer}`]: {
+            justifyContent: 'center',
+            px: 1,
+          },
+          [`& .${tabsClasses.scroller}`]: {
+            display: 'flex',
+            justifyContent: 'center',
+          },
         }}
       >
         {tabs.map((tab) => (

@@ -2,15 +2,19 @@ import { ERROR_MESSAGES, ERRORS } from '@src/libs/notifications/errors.ts';
 import { SUCCESS_MESSAGES, SUCCESS } from '@src/libs/notifications/success.ts';
 import { WARNING_MESSAGES, WARNING } from '@src/libs/notifications/warnings.ts';
 import { INFO, INFO_MESSAGES } from '@src/libs/notifications/info.ts';
-import {NotificationType, NotificationOptions} from "@src/libs/types.ts"
+import { NotificationType, NotificationOptions } from '@src/libs/types.ts';
 
-let globalEnqueueSnackbar: ((message: string, options?: object) => void) | null = null;
+let globalEnqueueSnackbar:
+  | ((message: string, options?: object) => void)
+  | null = null;
 
 /**
  * Allows us to set the globalEnqueueSnackbar function from our App (or any top-level component).
  * Must be called at least once (e.g., in App.tsx) so that notify methods works.
  */
-export function setGlobalNotifier(enqueueSnackbarFn: (message: string, options?: object) => void) {
+export function setGlobalNotifier(
+  enqueueSnackbarFn: (message: string, options?: object) => void,
+) {
   globalEnqueueSnackbar = enqueueSnackbarFn;
 }
 
@@ -25,7 +29,10 @@ type TemplateValue = string | number | boolean;
  * data: { user: 'Jacob', amount: '100 USDC' }
  * -> "Sent money to Jacob, total: 100 USDC"
  */
-function replaceTemplateTags(message: string, data: Record<string, TemplateValue>): string {
+function replaceTemplateTags(
+  message: string,
+  data: Record<string, TemplateValue>,
+): string {
   return message.replace(/{(\w+)}/g, (_substring, key) => {
     return data[key] !== undefined ? String(data[key]) : `{${key}}`;
   });
@@ -36,7 +43,7 @@ const notify = (
   text: ERRORS | SUCCESS | WARNING | INFO,
   data?: Record<string, TemplateValue>,
   fallbackMessage?: string,
-  options?: NotificationOptions
+  options?: NotificationOptions,
 ) => {
   if (!globalEnqueueSnackbar) {
     console.error('No globalEnqueueSnackbar is set. Cannot notify messages.');
@@ -47,17 +54,24 @@ const notify = (
   switch (typeNotification) {
     case 'error':
       message =
-        ERROR_MESSAGES[text as ERRORS] ?? fallbackMessage ?? ERROR_MESSAGES[ERRORS.UNKNOWN_ERROR];
+        ERROR_MESSAGES[text as ERRORS] ??
+        fallbackMessage ??
+        ERROR_MESSAGES[ERRORS.UNKNOWN_ERROR];
       break;
     case 'success':
-      message = SUCCESS_MESSAGES[text as SUCCESS] ?? fallbackMessage ?? 'Operation successful.';
+      message =
+        SUCCESS_MESSAGES[text as SUCCESS] ??
+        fallbackMessage ??
+        'Operation successful.';
       break;
     case 'warning':
-      message = WARNING_MESSAGES[text as WARNING] ?? fallbackMessage ?? 'Warning.';
+      message =
+        WARNING_MESSAGES[text as WARNING] ?? fallbackMessage ?? 'Warning.';
       break;
 
     case 'info':
-      message = INFO_MESSAGES[text as INFO] ?? fallbackMessage ?? 'Information.';
+      message =
+        INFO_MESSAGES[text as INFO] ?? fallbackMessage ?? 'Information.';
       break;
 
     default:
@@ -79,9 +93,14 @@ const notify = (
 export function notifyError(
   errorName: ERRORS,
   data?: Record<string, TemplateValue>,
-  fallbackMessage?: string
+  fallbackMessage?: string,
 ) {
-  notify('error', errorName, data, fallbackMessage ?? 'An unknown error has occurred.');
+  notify(
+    'error',
+    errorName,
+    data,
+    fallbackMessage ?? 'An unknown error has occurred.',
+  );
 }
 
 /**
@@ -92,9 +111,15 @@ export function notifySuccess(
   successName: SUCCESS,
   data?: Record<string, TemplateValue>,
   fallbackMessage?: string,
-  options?: NotificationOptions
+  options?: NotificationOptions,
 ) {
-  notify('success', successName, data, fallbackMessage ?? 'Operation successful.', options);
+  notify(
+    'success',
+    successName,
+    data,
+    fallbackMessage ?? 'Operation successful.',
+    options,
+  );
 }
 
 /**
@@ -105,7 +130,7 @@ export function notifyWarning(
   warningName: WARNING,
   data?: Record<string, TemplateValue>,
   fallbackMessage?: string,
-  options?: NotificationOptions
+  options?: NotificationOptions,
 ) {
   notify('warning', warningName, data, fallbackMessage ?? 'Warning.', options);
 }
@@ -118,7 +143,7 @@ export function notifyInfo(
   infoName: INFO,
   data?: Record<string, TemplateValue>,
   fallbackMessage?: string,
-  options?: NotificationOptions
+  options?: NotificationOptions,
 ) {
   notify('info', infoName, data, fallbackMessage ?? 'Information.', options);
 }

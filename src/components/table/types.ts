@@ -1,6 +1,6 @@
 // ----------------------------------------------------------------------
 
-import {SxProps, Theme} from "@mui/material/styles"
+import { SxProps, Theme } from '@mui/material/styles';
 
 export interface TableProps {
   dense: boolean;
@@ -11,7 +11,10 @@ export interface TableProps {
   //
   selected: string[];
   onSelectRow: (id: string) => void;
-  onSelectAllRows: (checked: boolean, newSelecteds: (string | number)[]) => void;
+  onSelectAllRows: (
+    checked: boolean,
+    newSelecteds: (string | number)[],
+  ) => void;
   //
   onResetPage: VoidFunction;
   onSort: (id: string) => void;

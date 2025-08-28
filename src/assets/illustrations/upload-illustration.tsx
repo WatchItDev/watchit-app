@@ -28,7 +28,13 @@ function UploadIllustration({ ...other }: BoxProps) {
       <BackgroundShape />
 
       <defs>
-        <linearGradient id="linearGradient-2" x1="30.113%" x2="30.113%" y1="0%" y2="100%">
+        <linearGradient
+          id="linearGradient-2"
+          x1="30.113%"
+          x2="30.113%"
+          y1="0%"
+          y2="100%"
+        >
           <stop offset="0%" stopOpacity="0" />
           <stop offset="100%" />
         </linearGradient>

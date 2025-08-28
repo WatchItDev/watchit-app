@@ -1,9 +1,9 @@
-import { describe, expect, it } from "vitest";
-import { fireEvent, render, screen, within } from "@testing-library/react";
-import FinanceTransactionsTableFiltersResult from "../finance-transactions-table-filters-result";
+import { describe, expect, it } from 'vitest';
+import { fireEvent, render, screen, within } from '@testing-library/react';
+import FinanceTransactionsTableFiltersResult from '../finance-transactions-table-filters-result';
 
 const mockFilters = {
-  status: "all",
+  status: 'all',
 };
 const mockOnFilters = vi.fn();
 const mockOnResetFilters = vi.fn();
@@ -18,49 +18,49 @@ const renderComponent = () =>
     />,
   );
 
-describe("[COMPONENTS] <FinanceTransactionsTableFiltersResult/>", () => {
+describe('[COMPONENTS] <FinanceTransactionsTableFiltersResult/>', () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
-  it("to match snapshot", () => {
+  it('to match snapshot', () => {
     const { container } = renderComponent();
     expect(container).toMatchSnapshot();
   });
 
-  it("should render with correct props", () => {
+  it('should render with correct props', () => {
     renderComponent();
     expect(screen.getByText(`${mockResults}`)).toBeInTheDocument();
-    expect(screen.getByText("results found")).toBeInTheDocument();
+    expect(screen.getByText('results found')).toBeInTheDocument();
   });
   it('shows status filter chip if status is not "all"', () => {
     render(
       <FinanceTransactionsTableFiltersResult
-        filters={{ status: "transferTo" }}
+        filters={{ status: 'transferTo' }}
         onFilters={vi.fn()}
         onResetFilters={vi.fn()}
         results={10}
       />,
     );
 
-    expect(screen.getByText("Incomes")).toBeInTheDocument();
+    expect(screen.getByText('Incomes')).toBeInTheDocument();
   });
 
   it('does not show status chip if status is "all"', () => {
     render(
       <FinanceTransactionsTableFiltersResult
-        filters={{ status: "all" }}
+        filters={{ status: 'all' }}
         onFilters={vi.fn()}
         onResetFilters={vi.fn()}
         results={10}
       />,
     );
 
-    expect(screen.queryByText("All")).not.toBeInTheDocument();
+    expect(screen.queryByText('All')).not.toBeInTheDocument();
   });
 
-  it("should call onResetFilters when reset button is clicked", () => {
+  it('should call onResetFilters when reset button is clicked', () => {
     renderComponent();
-    const resetButton = screen.getByText("Clear");
+    const resetButton = screen.getByText('Clear');
     fireEvent.click(resetButton);
     expect(mockOnResetFilters).toHaveBeenCalled();
   });
@@ -71,19 +71,18 @@ describe("[COMPONENTS] <FinanceTransactionsTableFiltersResult/>", () => {
 
     render(
       <FinanceTransactionsTableFiltersResult
-        filters={{ status: "transferTo" }}
+        filters={{ status: 'transferTo' }}
         onFilters={onFilters}
         onResetFilters={onResetFilters}
         results={10}
-      />
+      />,
     );
 
-    const chip = screen.getByText("Incomes").closest("div");
-    const deleteIcon = within(chip!).getByTestId("CancelIcon");
+    const chip = screen.getByText('Incomes').closest('div');
+    const deleteIcon = within(chip!).getByTestId('CancelIcon');
 
     fireEvent.click(deleteIcon);
 
-    expect(onFilters).toHaveBeenCalledWith("status", "all");
+    expect(onFilters).toHaveBeenCalledWith('status', 'all');
   });
-
 });

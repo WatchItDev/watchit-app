@@ -26,22 +26,30 @@ export default function useGetCampaigns() {
   const createEventSignature = (event: any): string => {
     if (!event?.name || !event.inputs) throw new Error('Invalid event in ABI');
     const inputs = event.inputs
-      .map((input: any) => `${input.type}${input.indexed ? ' indexed' : ''} ${input.name}`)
+      .map(
+        (input: any) =>
+          `${input.type}${input.indexed ? ' indexed' : ''} ${input.name}`,
+      )
       .join(', ');
     return `event ${event.name}(${inputs})`;
   };
 
   const uniqueEventNames = Array.from(new Set(events.map((c) => c.eventName)));
-  const parsedAbis = uniqueEventNames.reduce((acc, eventName) => {
-    const evt = CampaignRegistryAbi.abi.find(
-      (i: any) => i.type === 'event' && i.name === eventName
-    );
-    if (!evt) throw new Error(`No definition for event ${eventName} in ABI`);
-    acc[eventName] = parseAbiItem(createEventSignature(evt));
-    return acc;
-  }, {} as Record<string, ReturnType<typeof parseAbiItem>>);
+  const parsedAbis = uniqueEventNames.reduce(
+    (acc, eventName) => {
+      const evt = CampaignRegistryAbi.abi.find(
+        (i: any) => i.type === 'event' && i.name === eventName,
+      );
+      if (!evt) throw new Error(`No definition for event ${eventName} in ABI`);
+      acc[eventName] = parseAbiItem(createEventSignature(evt));
+      return acc;
+    },
+    {} as Record<string, ReturnType<typeof parseAbiItem>>,
+  );
 
-  const fetchCampaigns = async (blockLookback: bigint = CAMPAIGN_BLOCK_LOOKBACK) => {
+  const fetchCampaigns = async (
+    blockLookback: bigint = CAMPAIGN_BLOCK_LOOKBACK,
+  ) => {
     if (!sessionData?.address) {
       setLoading(false);
       return;
@@ -52,7 +60,8 @@ export default function useGetCampaigns() {
       setError(null);
 
       const latestBlock = await publicClient.getBlockNumber();
-      const fromBlock = latestBlock > blockLookback ? latestBlock - blockLookback : 0n;
+      const fromBlock =
+        latestBlock > blockLookback ? latestBlock - blockLookback : 0n;
 
       const promises = events.map(({ eventName, args }) =>
         publicClient.getLogs({
@@ -61,27 +70,35 @@ export default function useGetCampaigns() {
           args,
           fromBlock,
           toBlock: 'latest',
-        })
+        }),
       );
       const results = await Promise.all(promises);
       const allLogs = results.flat();
       const logsWithDetails = await Promise.all(
         allLogs.map(async (log: any) => {
-          const block = await publicClient.getBlock({ blockNumber: log.blockNumber });
+          const block = await publicClient.getBlock({
+            blockNumber: log.blockNumber,
+          });
           const cfg = events.find((c) => c.eventName === log.eventName);
           return {
             ...log,
             timestamp: block.timestamp,
-            readableDate: new Date(Number(block.timestamp) * 1000).toLocaleString(),
-            formattedAmount: log.args.amount ? formatUnits(log.args.amount, 18) : '0',
+            readableDate: new Date(
+              Number(block.timestamp) * 1000,
+            ).toLocaleString(),
+            formattedAmount: log.args.amount
+              ? formatUnits(log.args.amount, 18)
+              : '0',
             event: cfg ? cfg.getEventType(log) : 'unknown',
           } as CampaignLog;
-        })
+        }),
       );
 
       logsWithDetails.sort((a, b) => {
         const byBlock = Number(b.blockNumber) - Number(a.blockNumber);
-        return byBlock !== 0 ? byBlock : Number(b.transactionIndex) - Number(a.transactionIndex);
+        return byBlock !== 0
+          ? byBlock
+          : Number(b.transactionIndex) - Number(a.transactionIndex);
       });
 
       setCampaigns(logsWithDetails);

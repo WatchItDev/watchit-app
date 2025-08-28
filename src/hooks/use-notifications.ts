@@ -1,16 +1,23 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { supabase } from '@src/utils/supabase';
 // @ts-expect-error No error in this context
-import { type NotificationColumnsProps, NotificationPayload } from '@src/hooks/types';
+import {
+  type NotificationColumnsProps,
+  NotificationPayload,
+} from '@src/hooks/types';
 import { setNotifications } from '@src/redux/notifications';
-import {RootState} from "@redux/store.ts"
+import { RootState } from '@redux/store.ts';
 import { useAuth } from '@src/hooks/use-auth.ts';
 
 interface UseNotificationsReturn {
   getNotifications: (id: string) => Promise<void>;
   notifications: NotificationColumnsProps[];
   markAsRead: (id: string) => Promise<void>;
-  sendNotification: (receiver_id: string, sender_id: string, payload: NotificationPayload) => Promise<void>;
+  sendNotification: (
+    receiver_id: string,
+    sender_id: string,
+    payload: NotificationPayload,
+  ) => Promise<void>;
   markAllAsRead: () => Promise<void>;
   deleteNotification: (id: string) => Promise<void>;
 }
@@ -19,7 +26,7 @@ export function useNotifications(): UseNotificationsReturn {
   const { session } = useAuth();
   const dispatch = useDispatch();
   const notifications: NotificationColumnsProps[] = useSelector(
-    (state: RootState) => state.notifications.notifications
+    (state: RootState) => state.notifications.notifications,
   );
 
   async function getNotifications(id: string) {
@@ -37,7 +44,10 @@ export function useNotifications(): UseNotificationsReturn {
   }
 
   async function markAsRead(id: string) {
-    const { error } = await supabase.from('notifications').update({ read: true }).eq('id', id);
+    const { error } = await supabase
+      .from('notifications')
+      .update({ read: true })
+      .eq('id', id);
 
     if (error) {
       console.error('Error marking notification as read:', error);
@@ -46,7 +56,11 @@ export function useNotifications(): UseNotificationsReturn {
     }
   }
 
-  async function sendNotification(receiver_id: string, sender_id: string, payload: Record<string, string>) {
+  async function sendNotification(
+    receiver_id: string,
+    sender_id: string,
+    payload: Record<string, string>,
+  ) {
     const { error } = await supabase
       .from('notifications')
       .insert([{ receiver_id, sender_id, payload }]);
@@ -75,12 +89,17 @@ export function useNotifications(): UseNotificationsReturn {
 
   // async deleteNotification(id: string)
   async function deleteNotification(id: string) {
-    const { error } = await supabase.from('notifications').delete().eq('id', id);
+    const { error } = await supabase
+      .from('notifications')
+      .delete()
+      .eq('id', id);
 
     if (error) {
       console.error('Error deleting notification:', error);
     } else {
-      const updatedNotifications = notifications.filter((notification) => notification.id !== id);
+      const updatedNotifications = notifications.filter(
+        (notification) => notification.id !== id,
+      );
       dispatch(setNotifications(updatedNotifications));
     }
   }

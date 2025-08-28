@@ -2,7 +2,14 @@ import { StyledEditorToolbar } from './styles';
 
 // ----------------------------------------------------------------------
 
-const HEADINGS = ['Heading 1', 'Heading 2', 'Heading 3', 'Heading 4', 'Heading 5', 'Heading 6'];
+const HEADINGS = [
+  'Heading 1',
+  'Heading 2',
+  'Heading 3',
+  'Heading 4',
+  'Heading 5',
+  'Heading 6',
+];
 
 export const formats = [
   'align',
@@ -35,7 +42,11 @@ interface EditorToolbarProps {
   isSimple?: boolean;
 }
 
-export default function Toolbar({ id, isSimple, ...other }: EditorToolbarProps) {
+export default function Toolbar({
+  id,
+  isSimple,
+  ...other
+}: EditorToolbarProps) {
   return (
     <StyledEditorToolbar {...other}>
       <div id={id}>
@@ -67,8 +78,12 @@ export default function Toolbar({ id, isSimple, ...other }: EditorToolbarProps) 
         <div className="ql-formats">
           <button type="button" className="ql-list" value="ordered" />
           <button type="button" className="ql-list" value="bullet" />
-          {!isSimple && <button type="button" className="ql-indent" value="-1" />}
-          {!isSimple && <button type="button" className="ql-indent" value="+1" />}
+          {!isSimple && (
+            <button type="button" className="ql-indent" value="-1" />
+          )}
+          {!isSimple && (
+            <button type="button" className="ql-indent" value="+1" />
+          )}
         </div>
 
         {!isSimple && (

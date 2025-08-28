@@ -52,12 +52,12 @@ interface AmountConstraintsProps {
 }
 
 export const handleAmountConstraints = ({
-                                          value,
-                                          MAX_AMOUNT,
-                                          MAX_POOL,
-                                          setAmount,
-                                          setCanContinue,
-                                        }: AmountConstraintsProps) => {
+  value,
+  MAX_AMOUNT,
+  MAX_POOL,
+  setAmount,
+  setCanContinue,
+}: AmountConstraintsProps) => {
   if (value > MAX_POOL) {
     value = MAX_POOL; // Truncate to a thousand millions
   }

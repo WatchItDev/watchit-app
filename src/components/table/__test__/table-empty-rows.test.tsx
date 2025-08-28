@@ -3,9 +3,7 @@ import TableEmptyRows from '../table-empty-rows';
 
 describe('[COMPONENTS]: TableEmptyRows component testing', () => {
   it('to match snapshot', () => {
-    const { container } = render(
-      <TableEmptyRows emptyRows={3} height={50} />
-    );
+    const { container } = render(<TableEmptyRows emptyRows={3} height={50} />);
     expect(container).toMatchSnapshot();
   });
 
@@ -32,7 +30,6 @@ describe('[COMPONENTS]: TableEmptyRows component testing', () => {
     expect(tableCell).toHaveAttribute('colspan', '9');
   });
 
-
   it('handles negative emptyRows by rendering a row', () => {
     const { container } = render(<TableEmptyRows emptyRows={-1} />);
     const tableRow = container.querySelector('tr');
@@ -42,6 +39,9 @@ describe('[COMPONENTS]: TableEmptyRows component testing', () => {
   it('does not apply calculated height style when height prop is not provided', () => {
     const { container } = render(<TableEmptyRows emptyRows={3} />);
     const tableRow = container.querySelector('tr');
-    expect(tableRow).not.toHaveAttribute('style', expect.stringContaining('height'));
+    expect(tableRow).not.toHaveAttribute(
+      'style',
+      expect.stringContaining('height'),
+    );
   });
 });

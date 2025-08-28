@@ -9,7 +9,9 @@ import { PublicationTitleDescriptionProps } from '@src/sections/publication/type
 import { PUBLICATION_DESCRIPTION_MAX_LINES } from '@src/sections/publication/CONSTANTS.ts';
 import Typography from '@mui/material/Typography';
 
-export const PublicationTitleDescription: FC<PublicationTitleDescriptionProps> = ({ publication }) => {
+export const PublicationTitleDescription: FC<
+  PublicationTitleDescriptionProps
+> = ({ publication }) => {
   const descriptionRef = useRef<HTMLDivElement>(null);
   const [showToggle, setShowToggle] = useState<boolean>(false);
   const [showButton, setShowButton] = useState<boolean>(false);
@@ -22,7 +24,9 @@ export const PublicationTitleDescription: FC<PublicationTitleDescriptionProps> =
 
   useEffect(() => {
     if (!descriptionRef.current) return;
-    const lineHeightStr = window.getComputedStyle(descriptionRef.current).lineHeight;
+    const lineHeightStr = window.getComputedStyle(
+      descriptionRef.current,
+    ).lineHeight;
     const lineHeight = parseInt(lineHeightStr || '24', 10);
     const maxHeight = lineHeight * PUBLICATION_DESCRIPTION_MAX_LINES;
 
@@ -35,7 +39,12 @@ export const PublicationTitleDescription: FC<PublicationTitleDescriptionProps> =
 
   return (
     <Box
-      sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'end', mt: 3 }}
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'end',
+        mt: 3,
+      }}
     >
       <m.div variants={variants}>
         <Typography
@@ -60,16 +69,26 @@ export const PublicationTitleDescription: FC<PublicationTitleDescriptionProps> =
             ref={descriptionRef}
             sx={{
               display: '-webkit-box',
-              WebkitLineClamp: showToggle ? 'none' : PUBLICATION_DESCRIPTION_MAX_LINES,
+              WebkitLineClamp: showToggle
+                ? 'none'
+                : PUBLICATION_DESCRIPTION_MAX_LINES,
               WebkitBoxOrient: 'vertical',
               overflow: 'hidden',
               opacity: 0.8,
             }}
           >
-            <Markdown children={trimPublicationContentExtraText(publication?.description ?? '')} />
+            <Markdown
+              children={trimPublicationContentExtraText(
+                publication?.description ?? '',
+              )}
+            />
           </Box>
           {showButton && (
-            <Button variant="outlined" onClick={toggleDescription} sx={{ mt: 2 }}>
+            <Button
+              variant="outlined"
+              onClick={toggleDescription}
+              sx={{ mt: 2 }}
+            >
               {showToggle ? 'Show less' : 'Show more'}
             </Button>
           )}
@@ -77,4 +96,4 @@ export const PublicationTitleDescription: FC<PublicationTitleDescriptionProps> =
       </Box>
     </Box>
   );
-}
+};

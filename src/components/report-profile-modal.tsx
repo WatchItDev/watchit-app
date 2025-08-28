@@ -11,12 +11,14 @@ interface ProfileReportModalProps {
 
 // ----------------------------------------------------------------------
 
-export const ReportProfileModal = ({ profile, isOpen, onClose }: ProfileReportModalProps) => {
+export const ReportProfileModal = ({
+  profile,
+  isOpen,
+  onClose,
+}: ProfileReportModalProps) => {
   // TODO implement the report profile mutation
 
-  const handleSubmit = async (reason: string, comments: string) => {
-
-  };
+  const handleSubmit = async (reason: string, comments: string) => {};
 
   return (
     <ReportModalBase

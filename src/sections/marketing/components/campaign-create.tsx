@@ -5,7 +5,7 @@ import Button from '@mui/material/Button';
 import Iconify from '@src/components/iconify';
 import StrategyModal from '@src/components/modal';
 import { useBoolean } from '@src/hooks/use-boolean';
-import CampaignModalContent from "@src/sections/marketing/components/campaign-modal-content.tsx";
+import CampaignModalContent from '@src/sections/marketing/components/campaign-modal-content.tsx';
 import { FC } from 'react';
 import { CampaignCreateProps } from '@src/sections/marketing/types.ts';
 
@@ -44,7 +44,12 @@ const CampaignCreate: FC<CampaignCreateProps> = ({ onSuccess }) => {
         title="Register a campaign"
         open={confirmPublish.value}
         onClose={handleClose}
-        renderContent={<CampaignModalContent onConfirm={handleConfirm} onClose={handleClose} />}
+        renderContent={
+          <CampaignModalContent
+            onConfirm={handleConfirm}
+            onClose={handleClose}
+          />
+        }
       />
     </>
   );

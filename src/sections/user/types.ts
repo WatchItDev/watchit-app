@@ -1,10 +1,10 @@
-import { Invitation } from "@src/hooks/types.ts"
+import { Invitation } from '@src/hooks/types.ts';
 import { Post, User } from '@src/graphql/generated/graphql.ts';
 import { socialMedia } from '@src/sections/user/CONSTANTS.tsx';
 
 export interface ProfileHeaderProps {
   profile: User;
-  onActionFinish?: () => void
+  onActionFinish?: () => void;
 }
 
 export interface UserProfileViewProps {
@@ -73,7 +73,7 @@ export interface ProfileJoinProps extends ProfileHeaderProps {
     accessLoading: boolean;
     accessFetchingLoading?: boolean;
     onSubscribe: () => void;
-  }
+  };
 }
 
 export interface ProfilePublicationItemProps {
@@ -91,4 +91,4 @@ export interface ProfileFollowingProps {
   following: User[];
 }
 
-export type SocialPlatform = typeof socialMedia[number]['key'];
+export type SocialPlatform = (typeof socialMedia)[number]['key'];

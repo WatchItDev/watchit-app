@@ -13,7 +13,7 @@ const MarketingView = () => {
   }, []);
 
   const handleRefreshTable = () => {
-    fetchLogs()
+    fetchLogs();
   };
 
   return (
@@ -24,7 +24,13 @@ const MarketingView = () => {
         maxWidth: '100% !important',
       }}
     >
-      <Grid container spacing={1} justifyContent={'flex-end'} alignItems="center" gap={1}>
+      <Grid
+        container
+        spacing={1}
+        justifyContent={'flex-end'}
+        alignItems="center"
+        gap={1}
+      >
         <CampaignCreate onSuccess={handleRefreshTable} />
       </Grid>
 
@@ -35,10 +41,7 @@ const MarketingView = () => {
           mt: 1,
         }}
       >
-        <CampaignTable
-          campaigns={campaigns}
-          loading={loading}
-        />
+        <CampaignTable campaigns={campaigns} loading={loading} />
       </Grid>
     </Container>
   );

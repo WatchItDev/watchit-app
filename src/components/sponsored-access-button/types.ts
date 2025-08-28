@@ -1,6 +1,6 @@
 import { Address } from 'viem';
 import { LoadingButtonProps } from '@mui/lab/LoadingButton';
-import {NeonPaperProps} from "@src/sections/publication/types.ts"
+import { NeonPaperProps } from '@src/sections/publication/types.ts';
 
 export interface SponsoredAccessProps {
   holderAddress: Address;

@@ -7,11 +7,14 @@ import TableCell from '@mui/material/TableCell';
 import ListItemText from '@mui/material/ListItemText';
 
 // Project components
-import { TableRowTransactionType, TransactionType } from '@src/hooks/use-transaction-data.ts';
+import {
+  TableRowTransactionType,
+  TransactionType,
+} from '@src/hooks/use-transaction-data.ts';
 import { truncateAddress } from '@src/utils/wallet.ts';
-import AvatarProfile from "@src/components/avatar/avatar.tsx";
+import AvatarProfile from '@src/components/avatar/avatar.tsx';
 import { OpenableText } from '@src/components/openable-text';
-import {TX_COLORS} from "@src/sections/finance/CONSTANTS.tsx";
+import { TX_COLORS } from '@src/sections/finance/CONSTANTS.tsx';
 
 // ----------------------------------------------------------------------
 
@@ -26,7 +29,8 @@ const urlTxBase = 'https://www.oklink.com/es-la/amoy/tx/';
 // ----------------------------------------------------------------------
 
 export default function FinanceTransactionTableRow({ row, selected }: Props) {
-  const { date, name, amount, avatarUrl, message, category, id, type } = row as TableRowTransactionType & { type: TransactionType };
+  const { date, name, amount, avatarUrl, message, category, id, type } =
+    row as TableRowTransactionType & { type: TransactionType };
 
   const dateObject = new Date(Number(date) * 1000);
   const dateLbl = format(dateObject, 'dd/MM/yyyy');
@@ -35,7 +39,7 @@ export default function FinanceTransactionTableRow({ row, selected }: Props) {
   const renderPrimary = (
     <TableRow hover selected={selected}>
       <TableCell sx={{ display: 'flex', alignItems: 'center' }}>
-        <AvatarProfile src={avatarUrl} alt={name} sx={{mr: 2}} />
+        <AvatarProfile src={avatarUrl} alt={name} sx={{ mr: 2 }} />
         <ListItemText
           primary={message}
           secondary={truncateAddress(name)}
@@ -61,7 +65,10 @@ export default function FinanceTransactionTableRow({ row, selected }: Props) {
       </TableCell>
 
       <TableCell>
-        <Typography variant="body2" sx={{ color: `${TX_COLORS?.[type as keyof typeof TX_COLORS]}` }}>
+        <Typography
+          variant="body2"
+          sx={{ color: `${TX_COLORS?.[type as keyof typeof TX_COLORS]}` }}
+        >
           {category === 'income' ? '' : '-'} {amount} MMC
         </Typography>
       </TableCell>

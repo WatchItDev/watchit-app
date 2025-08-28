@@ -2,7 +2,11 @@ import merge from 'lodash/merge';
 import { useMemo } from 'react';
 // @mui
 import CssBaseline from '@mui/material/CssBaseline';
-import { createTheme, ThemeProvider as MuiThemeProvider, ThemeOptions } from '@mui/material/styles';
+import {
+  createTheme,
+  ThemeProvider as MuiThemeProvider,
+  ThemeOptions,
+} from '@mui/material/styles';
 // locales
 import { useLocales } from '@src/locales';
 // components
@@ -18,7 +22,7 @@ import { presets } from './options/presets';
 import { darkMode } from './options/dark-mode';
 import { contrast } from './options/contrast';
 import RTL from './options/right-to-left';
-import {direction} from "@src/theme/options/rtl-utils.ts"
+import { direction } from '@src/theme/options/rtl-utils.ts';
 
 // ----------------------------------------------------------------------
 
@@ -35,7 +39,10 @@ export default function ThemeProvider({ children }: Props) {
 
   const presetsOption = presets(settings.themeColorPresets);
 
-  const contrastOption = contrast(settings.themeContrast === 'bold', settings.themeMode);
+  const contrastOption = contrast(
+    settings.themeContrast === 'bold',
+    settings.themeMode,
+  );
 
   const directionOption = direction(settings.themeDirection);
 
@@ -57,7 +64,7 @@ export default function ThemeProvider({ children }: Props) {
         },
       },
     }),
-    []
+    [],
   );
 
   const memoizedValue = useMemo(
@@ -72,18 +79,27 @@ export default function ThemeProvider({ children }: Props) {
         // Presets: remove if not in use
         presetsOption,
         // Contrast: remove if not in use
-        contrastOption.theme
+        contrastOption.theme,
       ),
-    [baseOption, directionOption, darkModeOption, presetsOption, contrastOption.theme]
+    [
+      baseOption,
+      directionOption,
+      darkModeOption,
+      presetsOption,
+      contrastOption.theme,
+    ],
   );
 
   const theme = createTheme(memoizedValue as ThemeOptions);
 
-  theme.components = merge(componentsOverrides(theme), contrastOption.components);
+  theme.components = merge(
+    componentsOverrides(theme),
+    contrastOption.components,
+  );
 
   const themeWithLocale = useMemo(
     () => createTheme(theme, currentLang.systemValue),
-    [currentLang.systemValue, theme]
+    [currentLang.systemValue, theme],
   );
 
   return (

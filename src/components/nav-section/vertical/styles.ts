@@ -82,19 +82,21 @@ interface StyledDotIconProps {
   active?: boolean;
 }
 
-export const StyledDotIcon = styled('span')<StyledDotIconProps>(({ active, theme }) => ({
-  width: 4,
-  height: 4,
-  borderRadius: '50%',
-  backgroundColor: theme.palette.text.disabled,
-  transition: theme.transitions.create(['transform'], {
-    duration: theme.transitions.duration.shorter,
+export const StyledDotIcon = styled('span')<StyledDotIconProps>(
+  ({ active, theme }) => ({
+    width: 4,
+    height: 4,
+    borderRadius: '50%',
+    backgroundColor: theme.palette.text.disabled,
+    transition: theme.transitions.create(['transform'], {
+      duration: theme.transitions.duration.shorter,
+    }),
+    ...(active && {
+      transform: 'scale(2)',
+      backgroundColor: theme.palette.primary.main,
+    }),
   }),
-  ...(active && {
-    transform: 'scale(2)',
-    backgroundColor: theme.palette.primary.main,
-  }),
-}));
+);
 
 // ----------------------------------------------------------------------
 
@@ -102,20 +104,22 @@ interface StyledSubheaderProps {
   config: NavConfigProps;
 }
 
-export const StyledSubheader = styled(ListSubheader)<StyledSubheaderProps>(({ config, theme }) => ({
-  ...theme.typography.overline,
-  fontSize: 11,
-  cursor: 'pointer',
-  display: 'inline-flex',
-  padding: config.itemPadding,
-  paddingTop: theme.spacing(2),
-  marginBottom: config.itemGap,
-  paddingBottom: theme.spacing(1),
-  color: theme.palette.text.disabled,
-  transition: theme.transitions.create(['color'], {
-    duration: theme.transitions.duration.shortest,
+export const StyledSubheader = styled(ListSubheader)<StyledSubheaderProps>(
+  ({ config, theme }) => ({
+    ...theme.typography.overline,
+    fontSize: 11,
+    cursor: 'pointer',
+    display: 'inline-flex',
+    padding: config.itemPadding,
+    paddingTop: theme.spacing(2),
+    marginBottom: config.itemGap,
+    paddingBottom: theme.spacing(1),
+    color: theme.palette.text.disabled,
+    transition: theme.transitions.create(['color'], {
+      duration: theme.transitions.duration.shortest,
+    }),
+    '&:hover': {
+      color: theme.palette.text.primary,
+    },
   }),
-  '&:hover': {
-    color: theme.palette.text.primary,
-  },
-}));
+);

@@ -1,8 +1,8 @@
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import {FC} from "react";
-import {truncateAddress} from "@src/utils/wallet.ts";
-import {FinanceDisplayNameProps} from "@src/sections/finance/types.ts"
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import { FC } from 'react';
+import { truncateAddress } from '@src/utils/wallet.ts';
+import { FinanceDisplayNameProps } from '@src/sections/finance/types.ts';
 
 /**
  * FinanceDisplayName is a functional component responsible for rendering the display name
@@ -20,7 +20,11 @@ import {FinanceDisplayNameProps} from "@src/sections/finance/types.ts"
  * - It selects a profile based on the carousel's currentIndex and renders the localName of that profile.
  * - If no profile is selected, it falls back to a default message ('No profile selected').
  */
-const FinanceDisplayProfileInfo: FC<FinanceDisplayNameProps> = ({initialList, carousel, mode}) => {
+const FinanceDisplayProfileInfo: FC<FinanceDisplayNameProps> = ({
+  initialList,
+  carousel,
+  mode,
+}) => {
   // If the initial list is empty, return
   if (!initialList?.length) {
     return null;
@@ -28,21 +32,21 @@ const FinanceDisplayProfileInfo: FC<FinanceDisplayNameProps> = ({initialList, ca
 
   const selectedProfile = initialList?.[carousel.currentIndex];
   return (
-    <Box sx={{ textAlign: 'center',mt:-2, mb: 1 }}>
-      {
-        mode === 'profile' ?
-          (<Box component="span" sx={{ flexGrow: 1, typography: 'subtitle1' }}>
-            {selectedProfile.displayName ?? selectedProfile.username ?? 'No profile selected'}
-          </Box>) : null
-      }
-      {
-        mode === 'wallet' ?
-          <Typography variant="body2" color="text.secondary">
-            {truncateAddress(selectedProfile.address)}
-          </Typography> : null
-      }
+    <Box sx={{ textAlign: 'center', mt: -2, mb: 1 }}>
+      {mode === 'profile' ? (
+        <Box component="span" sx={{ flexGrow: 1, typography: 'subtitle1' }}>
+          {selectedProfile.displayName ??
+            selectedProfile.username ??
+            'No profile selected'}
+        </Box>
+      ) : null}
+      {mode === 'wallet' ? (
+        <Typography variant="body2" color="text.secondary">
+          {truncateAddress(selectedProfile.address)}
+        </Typography>
+      ) : null}
     </Box>
   );
-}
+};
 
 export default FinanceDisplayProfileInfo;

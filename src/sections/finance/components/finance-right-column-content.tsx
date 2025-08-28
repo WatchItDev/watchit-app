@@ -7,7 +7,9 @@ import FinanceInviteFriends from '@src/sections/finance/components/finance-invit
 import { RightSidebarProps } from '@src/sections/finance/types.ts';
 import { useResponsive } from '@src/hooks/use-responsive.ts';
 
-export const FinanceRightColumnContent: React.FC<RightSidebarProps> = (props) => {
+export const FinanceRightColumnContent: React.FC<RightSidebarProps> = (
+  props,
+) => {
   const { following, loadingProfiles } = props;
   const lgUp = useResponsive('up', 'lg');
 

@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { Stack, Typography} from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { alpha, useTheme } from '@mui/material/styles';
 import { bgGradient } from '@src/theme/css';
@@ -17,16 +17,15 @@ interface ProcessSectionCardProps {
 }
 
 const ProcessSectionCard: FC<ProcessSectionCardProps> = ({
-                                                   title,
-                                                   description,
-                                                   buttonText,
-                                                   illustration,
-                                                   illustrationAlt,
-                                                   onClick
-                                                 }) => {
+  title,
+  description,
+  buttonText,
+  illustration,
+  illustrationAlt,
+  onClick,
+}) => {
   const lgUp = useResponsive('up', 'lg');
   const theme = useTheme();
-
 
   return (
     <Stack
@@ -106,13 +105,18 @@ const ProcessSectionCard: FC<ProcessSectionCardProps> = ({
             }}
             color="primary"
             variant="soft"
-            startIcon={<Iconify icon="material-symbols:campaign-outline-rounded" />}
+            startIcon={
+              <Iconify icon="material-symbols:campaign-outline-rounded" />
+            }
             onClick={onClick}
           >
             {buttonText}
           </LoadingButton>
         </Stack>
-        <ProcessIllustrationCard illustration={illustration} alt={illustrationAlt} />
+        <ProcessIllustrationCard
+          illustration={illustration}
+          alt={illustrationAlt}
+        />
       </Stack>
     </Stack>
   );

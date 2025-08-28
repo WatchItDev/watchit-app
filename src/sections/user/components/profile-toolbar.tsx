@@ -1,16 +1,16 @@
 // REACT IMPORTS
-import { FC } from "react";
+import { FC } from 'react';
 
 // MUI IMPORTS
-import Stack from "@mui/material/Stack";
-import { useTheme } from "@mui/material/styles";
+import Stack from '@mui/material/Stack';
+import { useTheme } from '@mui/material/styles';
 
 // LOCAL IMPORTS
-import AvatarProfile from "@src/components/avatar/avatar.tsx";
-import ProfileUpdateButton from "@src/sections/user/components/profile-update-button.tsx";
-import ProfileShare from "@src/sections/user/components/profile-share.tsx";
-import ProfileSetJoiningPrice from "@src/sections/user/components/profile-set-joining-price.tsx";
-import ProfileTransfer from "@src/sections/user/components/profile-transfer.tsx";
+import AvatarProfile from '@src/components/avatar/avatar.tsx';
+import ProfileUpdateButton from '@src/sections/user/components/profile-update-button.tsx';
+import ProfileShare from '@src/sections/user/components/profile-share.tsx';
+import ProfileSetJoiningPrice from '@src/sections/user/components/profile-set-joining-price.tsx';
+import ProfileTransfer from '@src/sections/user/components/profile-transfer.tsx';
 import { useAuth } from '@src/hooks/use-auth.ts';
 import { User } from '@src/graphql/generated/graphql.ts';
 
@@ -19,7 +19,7 @@ interface ProfileToolbarProps {
   profileImage?: string;
 }
 
-const ProfileToolbar: FC<ProfileToolbarProps> = ({profile, profileImage}) => {
+const ProfileToolbar: FC<ProfileToolbarProps> = ({ profile, profileImage }) => {
   const theme = useTheme();
   const { session } = useAuth();
 
@@ -73,7 +73,7 @@ const ProfileToolbar: FC<ProfileToolbarProps> = ({profile, profileImage}) => {
         )}
       </Stack>
     </Stack>
-  )
-}
+  );
+};
 
 export default ProfileToolbar;

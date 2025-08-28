@@ -2,7 +2,10 @@ import { useState, useCallback } from 'react';
 import { Address } from 'viem';
 import { publicClient } from '@src/clients/viem/publicClient.ts';
 import CampaignSubscriptionTplAbi from '@src/config/abi/CampaignSubscriptionTpl.json';
-import { HasAccessError, UseGetCampaignTotalUsageHook } from '@src/hooks/protocol/types.ts';
+import {
+  HasAccessError,
+  UseGetCampaignTotalUsageHook,
+} from '@src/hooks/protocol/types.ts';
 
 export const useGetCampaignTotalUsage = (): UseGetCampaignTotalUsageHook => {
   const [totalUsage, setTotalUsage] = useState<string>('0');
@@ -10,9 +13,7 @@ export const useGetCampaignTotalUsage = (): UseGetCampaignTotalUsageHook => {
   const [error, setError] = useState<HasAccessError | null>(null);
 
   const fetchTotalUsage = useCallback(
-    async (
-      campaignAddress: Address
-    ): Promise<string | undefined> => {
+    async (campaignAddress: Address): Promise<string | undefined> => {
       if (!campaignAddress) {
         setError({ message: 'Campaign address is missing.' });
         return;
@@ -20,12 +21,12 @@ export const useGetCampaignTotalUsage = (): UseGetCampaignTotalUsageHook => {
 
       setLoading(true);
       try {
-        const limit: bigint = await publicClient.readContract({
+        const limit: bigint = (await publicClient.readContract({
           address: campaignAddress,
           abi: CampaignSubscriptionTplAbi.abi,
           functionName: 'getTotalUsage',
           args: [],
-        }) as bigint;
+        })) as bigint;
         const limitStr = limit.toString();
         setTotalUsage(limitStr);
         setError(null);
@@ -40,7 +41,7 @@ export const useGetCampaignTotalUsage = (): UseGetCampaignTotalUsageHook => {
         setLoading(false);
       }
     },
-    []
+    [],
   );
 
   return { totalUsage, loading, error, fetchTotalUsage };

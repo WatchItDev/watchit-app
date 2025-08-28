@@ -4,7 +4,6 @@ export interface CalculateItemsPerSlideProps {
   maxItemWidth: number;
 }
 
-
 export interface ProcessedTransactionData {
   id: string;
   name: string;
@@ -17,7 +16,6 @@ export interface ProcessedTransactionData {
   timestamp?: number;
   amount: string | null;
 }
-
 
 export type EventName =
   | 'transferFrom'
@@ -55,11 +53,13 @@ export interface Transaction {
   transactionIndex: bigint;
 }
 
-
 /**
  * Interface for IPFS metadata
  */
-export type IPFSMetadata = Record<string, string | number | boolean | object | null>;
+export type IPFSMetadata = Record<
+  string,
+  string | number | boolean | object | null
+>;
 
 /**
  * Pinata headers interface
@@ -80,7 +80,6 @@ export interface PinataResponse {
   Timestamp: string;
   [key: string]: unknown;
 }
-
 
 export interface NotificationOptions {
   variant?: NotificationType;

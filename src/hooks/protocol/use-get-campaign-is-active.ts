@@ -12,19 +12,21 @@ export const useGetCampaignIsActive = (): UseGetCampaignIsActiveHook => {
   const fetchIsActive = useCallback(
     async (
       campaignAddress: Address,
-      account: Address
+      account: Address,
     ): Promise<string | undefined> => {
       if (!campaignAddress || !account) {
-        throw new Error('CampaignAddress or Account address is missing while fetching campaign.');
+        throw new Error(
+          'CampaignAddress or Account address is missing while fetching campaign.',
+        );
       }
       setLoading(true);
       try {
-        const active = await publicClient.readContract({
+        const active = (await publicClient.readContract({
           address: campaignAddress,
           abi: CampaignSubscriptionTplAbi.abi,
           functionName: 'isActive',
           args: [GLOBAL_CONSTANTS.ACCESS_WORKFLOW_ADDRESS, account],
-        }) as boolean;
+        })) as boolean;
         setIsActive(active);
         return active ? 'true' : 'false';
       } catch (err) {
@@ -34,7 +36,7 @@ export const useGetCampaignIsActive = (): UseGetCampaignIsActiveHook => {
         setLoading(false);
       }
     },
-    []
+    [],
   );
 
   return { isActive, loading, fetchIsActive };

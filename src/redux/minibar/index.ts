@@ -29,6 +29,7 @@ const minibarSlice = createSlice({
   },
 });
 
-export const { toggleMinibar, removeMinibar, openMinibar, setCollapsed } = minibarSlice.actions;
+export const { toggleMinibar, removeMinibar, openMinibar, setCollapsed } =
+  minibarSlice.actions;
 
 export default minibarSlice.reducer;

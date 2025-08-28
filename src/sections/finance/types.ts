@@ -1,10 +1,10 @@
-import { Address } from "viem"
-import { UseWithdrawHook } from "@src/hooks/protocol/types.ts"
-import { CardProps } from "@mui/material/Card"
-import { CarouselReturnType } from "@src/hooks/components/types.ts"
-import { InputAmountProps } from "@src/components/input-amount.tsx"
-import { DialogProps } from "@mui/material/Dialog"
-import { ReactNode } from "react"
+import { Address } from 'viem';
+import { UseWithdrawHook } from '@src/hooks/protocol/types.ts';
+import { CardProps } from '@mui/material/Card';
+import { CarouselReturnType } from '@src/hooks/components/types.ts';
+import { InputAmountProps } from '@src/components/input-amount.tsx';
+import { DialogProps } from '@mui/material/Dialog';
+import { ReactNode } from 'react';
 import { User } from '@src/graphql/generated/graphql.ts';
 
 export interface WidgetDataPoint {
@@ -62,7 +62,7 @@ export interface FinanceDialogsActionsProps {
   balance: number;
   label: string;
   onConfirmAction: () => void;
-  onCloseAction?: () => void
+  onCloseAction?: () => void;
 }
 
 export interface FinanceDisplayNameProps {
@@ -73,7 +73,8 @@ export interface FinanceDisplayNameProps {
 
 export type TConfirmTransferDialogProps = InputAmountProps & DialogProps;
 
-export interface ConfirmTransferDialogProps extends TConfirmTransferDialogProps {
+export interface ConfirmTransferDialogProps
+  extends TConfirmTransferDialogProps {
   contactInfo?: User;
   address?: string;
   onClose: VoidFunction;

@@ -1,5 +1,9 @@
 import React, { FC, PropsWithChildren } from 'react';
-import { ButtonProps as MuiButtonProps, Button as MuiButton, Box } from '@mui/material';
+import {
+  ButtonProps as MuiButtonProps,
+  Button as MuiButton,
+  Box,
+} from '@mui/material';
 /* import { withTheme } from '../../../hoc/withTheme' */
 
 type ButtonVariant = 'primary' | 'secondary' | 'flat';
@@ -17,9 +21,15 @@ export interface ButtonProps {
   margin?: string;
 }
 
-export const ButtonCustom: FC<PropsWithChildren<ButtonProps>> = (props): JSX.Element => {
+export const ButtonCustom: FC<PropsWithChildren<ButtonProps>> = (
+  props,
+): JSX.Element => {
   const getButtonVariant = (v: ButtonVariant) => {
-    const variants = { primary: 'contained', secondary: 'outlined', flat: 'text' };
+    const variants = {
+      primary: 'contained',
+      secondary: 'outlined',
+      flat: 'text',
+    };
     return variants[v] as MuiButtonProps['variant'];
   };
 

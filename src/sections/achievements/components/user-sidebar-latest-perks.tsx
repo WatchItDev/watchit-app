@@ -26,7 +26,11 @@ export const UserSidebarLatestPerks: FC = () => {
   });
   const { data: perksData } = useStaleWhileLoading(raw);
 
-  const unlockedPerks: UnlockedPerkState[] = (perksData?.getUnlockedPerks.filter((p: UnlockedPerkState) => p.status === 'CLAIMED') ?? []).slice(0, 12);
+  const unlockedPerks: UnlockedPerkState[] = (
+    perksData?.getUnlockedPerks.filter(
+      (p: UnlockedPerkState) => p.status === 'CLAIMED',
+    ) ?? []
+  ).slice(0, 12);
 
   return (
     <Card sx={{ px: 0, mb: 0 }}>
@@ -61,4 +65,8 @@ export const UserSidebarLatestPerks: FC = () => {
 
 export default UserSidebarLatestPerks;
 
-const SmallIcon = styled('img')({ width: 18, height: 18, objectFit: 'contain' });
+const SmallIcon = styled('img')({
+  width: 18,
+  height: 18,
+  objectFit: 'contain',
+});

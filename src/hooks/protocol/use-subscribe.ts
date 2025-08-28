@@ -9,11 +9,15 @@ import AccessWorkflowAbi from '@src/config/abi/AccessWorkflow.json';
 import LedgerVaultabi from '@src/config/abi/LedgerVault.json';
 import { useAccountSession } from '@src/hooks/use-account-session.ts';
 import { useAuth } from '@src/hooks/use-auth.ts';
-import { SubscribeData, SubscribeParams, UseSubscribeHook } from '@src/hooks/protocol/types.ts';
+import {
+  SubscribeData,
+  SubscribeParams,
+  UseSubscribeHook,
+} from '@src/hooks/protocol/types.ts';
 import { ERRORS } from '@src/libs/notifications/errors.ts';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 import { useWeb3Auth } from '@src/hooks/use-web3-auth.ts';
-import { Calls } from '@src/hooks/types.ts'
+import { Calls } from '@src/hooks/types.ts';
 
 // ----------------------------------------------------------------------
 
@@ -24,7 +28,6 @@ export const useSubscribe = (): UseSubscribeHook => {
   const { session } = useAuth();
   const { sendOperation } = useWeb3Auth();
   const { logout } = useAccountSession();
-
 
   const approveToAccessAgreement = (approvalAmount: bigint): string => {
     return encodeFunctionData({
@@ -42,7 +45,7 @@ export const useSubscribe = (): UseSubscribeHook => {
     approvalAmount: bigint,
     holderAddress: string,
     parties: string[],
-    payload: string
+    payload: string,
   ): string => {
     return encodeFunctionData({
       abi: AccessWorkflowAbi.abi,
@@ -61,14 +64,17 @@ export const useSubscribe = (): UseSubscribeHook => {
    * Initiates the subscription process.
    * @param params The parameters including 'holderAddress' and 'amount'.
    */
-  const subscribe = async ({ holderAddress, amount }: SubscribeParams): Promise<void> => {
+  const subscribe = async ({
+    holderAddress,
+    amount,
+  }: SubscribeParams): Promise<void> => {
     setLoading(true);
     setError(null);
 
     if (!session?.authenticated) {
       setError(ERRORS.SUBSCRIBE_LOGIN_ERROR);
       setLoading(false);
-      logout()
+      logout();
       throw new Error('Invalid Web3Auth session');
     }
 
@@ -78,14 +84,15 @@ export const useSubscribe = (): UseSubscribeHook => {
       const payload = '0x'; // Additional payload data if needed
 
       // Prepare the approve to access agreement
-      const approveToAccessAgreementData = approveToAccessAgreement(approvalAmountInWei);
+      const approveToAccessAgreementData =
+        approveToAccessAgreement(approvalAmountInWei);
 
       // Prepare the access agreement data
       const registerAccessAgreementData = registerAccessAgreement(
         approvalAmountInWei,
         holderAddress,
         parties,
-        payload
+        payload,
       );
 
       // Create the array of calls to be included in the user operation

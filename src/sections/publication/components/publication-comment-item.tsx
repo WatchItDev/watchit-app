@@ -21,12 +21,13 @@ import { openLoginModal } from '@redux/auth';
 import { useDispatch } from 'react-redux';
 import { useNotificationPayload } from '@src/hooks/use-notification-payload.ts';
 import { useNotifications } from '@src/hooks/use-notifications.ts';
-import AvatarProfile from "@src/components/avatar/avatar.tsx";
+import AvatarProfile from '@src/components/avatar/avatar.tsx';
 import { PublicationCommentItemProps } from '@src/sections/publication/types.ts';
 import { useAuth } from '@src/hooks/use-auth.ts';
 import { resolveSrc } from '@src/utils/image.ts';
 import {
-  useHideCommentMutation, useGetIsLikedQuery,
+  useHideCommentMutation,
+  useGetIsLikedQuery,
   useToggleLikeMutation,
 } from '@src/graphql/generated/hooks.tsx';
 
@@ -40,36 +41,40 @@ const LazyDialogActions = lazy(() => import('@mui/material/DialogActions'));
 
 // ----------------------------------------------------------------------
 
-const PublicationCommentItem:FC<PublicationCommentItemProps> = (props) => {
+const PublicationCommentItem: FC<PublicationCommentItemProps> = (props) => {
   const { comment, hasReply, canReply, onHide, onReplyCreated } = props;
   const [openConfirmModal, setOpenConfirmModal] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [hasLiked, setHasLiked] = useState(false);
   const [showReplies, setShowReplies] = useState(false);
-  const [localRepliesCount, setLocalRepliesCount] = useState(comment.repliesCount);
+  const [localRepliesCount, setLocalRepliesCount] = useState(
+    comment.repliesCount,
+  );
   const [localLikes, setLocalLikes] = useState(comment.likeCount);
   const router = useRouter();
-  const { data: commentLikedData, loading: commentLikedLoading } = useGetIsLikedQuery({ variables: { targetId: comment?.id } })
-  const [ toggleLike, { loading: toggleCommentLikeLoading }  ] = useToggleLikeMutation()
-  const [ hideComment ] = useHideCommentMutation();
+  const { data: commentLikedData, loading: commentLikedLoading } =
+    useGetIsLikedQuery({ variables: { targetId: comment?.id } });
+  const [toggleLike, { loading: toggleCommentLikeLoading }] =
+    useToggleLikeMutation();
+  const [hideComment] = useHideCommentMutation();
   const { session: sessionData } = useAuth();
   const dispatch = useDispatch();
   const { sendNotification } = useNotifications();
   const { generatePayload } = useNotificationPayload(sessionData);
 
   const openMenu = Boolean(anchorEl);
-  const isLoading = toggleCommentLikeLoading || commentLikedLoading
+  const isLoading = toggleCommentLikeLoading || commentLikedLoading;
 
-const handleToggleLike = async () => {
+  const handleToggleLike = async () => {
     if (!sessionData?.authenticated) return dispatch(openLoginModal());
 
     const res = await toggleLike({
       variables: {
         input: {
           targetId: comment.id,
-          targetType: 'COMMENT'
-        }
-      }
+          targetType: 'COMMENT',
+        },
+      },
     });
     const nowLiked = res.data?.toggleLike ?? false;
 
@@ -77,22 +82,29 @@ const handleToggleLike = async () => {
     setLocalLikes((l) => l + (nowLiked ? 1 : -1));
 
     if (nowLiked && comment.author.address !== sessionData.user?.address) {
-        const notificationPayload = generatePayload(
-          'LIKE',
-          {
-            id: comment?.author?.address,
-            displayName: comment?.author?.displayName ?? 'no name',
-            avatar: resolveSrc(comment?.author?.profilePicture || comment?.author?.address, 'profile'),
-          },
-          {
-            root_id: comment?.post?.id ?? comment?.parentComment?.id,
-            parent_id: comment?.parentComment?.id ?? '',
-            comment_id: comment?.id,
-            rawDescription: `${sessionData?.user?.displayName} liked your comment`,
-          }
-        );
+      const notificationPayload = generatePayload(
+        'LIKE',
+        {
+          id: comment?.author?.address,
+          displayName: comment?.author?.displayName ?? 'no name',
+          avatar: resolveSrc(
+            comment?.author?.profilePicture || comment?.author?.address,
+            'profile',
+          ),
+        },
+        {
+          root_id: comment?.post?.id ?? comment?.parentComment?.id,
+          parent_id: comment?.parentComment?.id ?? '',
+          comment_id: comment?.id,
+          rawDescription: `${sessionData?.user?.displayName} liked your comment`,
+        },
+      );
 
-      sendNotification(comment?.author?.address, sessionData?.user?.address ?? '', notificationPayload);
+      sendNotification(
+        comment?.author?.address,
+        sessionData?.user?.address ?? '',
+        notificationPayload,
+      );
     }
   };
 
@@ -134,7 +146,10 @@ const handleToggleLike = async () => {
       <Stack direction="column" spacing={1}>
         <Stack direction="row" spacing={2} sx={{ position: 'relative' }}>
           <AvatarProfile
-            src={resolveSrc(comment?.author?.profilePicture || comment?.author?.address, 'profile')}
+            src={resolveSrc(
+              comment?.author?.profilePicture || comment?.author?.address,
+              'profile',
+            )}
             alt={comment?.author?.address}
             onClick={goToProfile}
             sx={{
@@ -217,13 +232,22 @@ const handleToggleLike = async () => {
               direction={'row'}
               gap={1}
             >
-              <Box sx={{ typography: 'subtitle2' }}>{comment?.author?.displayName ?? comment?.author?.username}</Box>
+              <Box sx={{ typography: 'subtitle2' }}>
+                {comment?.author?.displayName ?? comment?.author?.username}
+              </Box>
               <Box sx={{ typography: 'caption', color: 'text.disabled' }}>
                 {getCommentTimeText()}
               </Box>
             </Stack>
 
-            <Box sx={{ typography: 'body2', color: 'text.secondary', p: 1, mt: -1.5 }}>
+            <Box
+              sx={{
+                typography: 'body2',
+                color: 'text.secondary',
+                p: 1,
+                mt: -1.5,
+              }}
+            >
               {comment?.content}
             </Box>
           </Paper>
@@ -248,10 +272,7 @@ const handleToggleLike = async () => {
                 {hasLiked ? (
                   <IconHeartFilled size={22} color="#FFFFFF" />
                 ) : (
-                  <IconHeart
-                    size={22}
-                    color={'#FFFFFF'}
-                  />
+                  <IconHeart size={22} color={'#FFFFFF'} />
                 )}
                 <Typography
                   variant="body2"
@@ -281,10 +302,7 @@ const handleToggleLike = async () => {
                 {showReplies ? (
                   <IconMessageCircleFilled size={22} color="#FFFFFF" />
                 ) : (
-                  <IconMessageCircle
-                    size={22}
-                    color={'#FFFFFF'}
-                  />
+                  <IconMessageCircle size={22} color={'#FFFFFF'} />
                 )}
                 <Typography
                   variant="body2"
@@ -311,7 +329,10 @@ const handleToggleLike = async () => {
                 owner={{
                   id: comment?.author?.address,
                   displayName: comment?.author?.displayName,
-                  avatar: resolveSrc(comment?.author?.profilePicture || comment?.author?.address, 'profile'),
+                  avatar: resolveSrc(
+                    comment?.author?.profilePicture || comment?.author?.address,
+                    'profile',
+                  ),
                 }}
                 onSuccess={() => {
                   setLocalRepliesCount((c) => c + 1);
@@ -335,9 +356,9 @@ const handleToggleLike = async () => {
             )}
           </Box>
           <RepliesList
-          parentCommentId={comment.id}
-          canReply={canReply}
-          onReplyCreated={() => {
+            parentCommentId={comment.id}
+            canReply={canReply}
+            onReplyCreated={() => {
               setLocalRepliesCount((c) => c + 1);
               onReplyCreated();
             }}
@@ -348,10 +369,15 @@ const handleToggleLike = async () => {
       {/* Suspense para Dialog */}
       <Suspense fallback={<></>}>
         {openConfirmModal && (
-          <LazyDialog open={openConfirmModal} onClose={() => setOpenConfirmModal(false)}>
+          <LazyDialog
+            open={openConfirmModal}
+            onClose={() => setOpenConfirmModal(false)}
+          >
             <LazyDialogTitle>Confirm Hide</LazyDialogTitle>
             <LazyDialogContent>
-              <Typography>Are you sure you want to hide this comment?</Typography>
+              <Typography>
+                Are you sure you want to hide this comment?
+              </Typography>
             </LazyDialogContent>
             <LazyDialogActions>
               <Button
@@ -377,6 +403,6 @@ const handleToggleLike = async () => {
       </Suspense>
     </Stack>
   );
-}
+};
 
 export default PublicationCommentItem;

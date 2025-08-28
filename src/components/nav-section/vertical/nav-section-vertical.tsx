@@ -58,7 +58,12 @@ function Group({ subheader, items, config }: GroupProps) {
     <List disablePadding sx={{ px: 2 }}>
       {subheader ? (
         <>
-          <StyledSubheader disableGutters disableSticky onClick={handleToggle} config={config}>
+          <StyledSubheader
+            disableGutters
+            disableSticky
+            onClick={handleToggle}
+            config={config}
+          >
             {subheader}
           </StyledSubheader>
 

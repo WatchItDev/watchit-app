@@ -1,4 +1,3 @@
-
 // ----------------------------------------------------------------------
 
 export default function uuidv4() {
@@ -15,7 +14,7 @@ export function randomKey(value: string | number, prefix = 'id'): string {
   let hash = 0;
   for (let i = 0; i < stringValue.length; i++) {
     const char = stringValue.charCodeAt(i);
-    hash = ((hash << 5) - hash) + char;
+    hash = (hash << 5) - hash + char;
     hash = hash & hash;
   }
 

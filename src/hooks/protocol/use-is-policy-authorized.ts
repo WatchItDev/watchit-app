@@ -1,7 +1,11 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Address } from 'viem';
 import { useGetPoliciesTerms } from './use-get-policies-terms.ts';
-import {HasAccessError, Policy, UseIsPolicyAuthorizedHook} from '@src/hooks/protocol/types.ts'
+import {
+  HasAccessError,
+  Policy,
+  UseIsPolicyAuthorizedHook,
+} from '@src/hooks/protocol/types.ts';
 import { useAuth } from '@src/hooks/use-auth.ts';
 
 /**
@@ -11,10 +15,12 @@ import { useAuth } from '@src/hooks/use-auth.ts';
  */
 export const useIsPolicyAuthorized = (
   policy: Address,
-  holder?: Address
+  holder?: Address,
 ): UseIsPolicyAuthorizedHook => {
   const { session: sessionData } = useAuth();
-  const [isAuthorized, setIsAuthorized] = useState<boolean | undefined>(undefined);
+  const [isAuthorized, setIsAuthorized] = useState<boolean | undefined>(
+    undefined,
+  );
   const [fetching, setFetching] = useState<boolean>(true);
   const [error, setError] = useState<HasAccessError | null>(null);
   const userAddress = sessionData?.address;
@@ -59,7 +65,7 @@ export const useIsPolicyAuthorized = (
       // Check if the given policy is in the list
       // Assume that each element looks like { policy: string, terms: {...} }
       const isPolicyInList = authorizedHolderPolicies.some(
-        (p: Policy) => p.policy.toLowerCase() === policy.toLowerCase()
+        (p: Policy) => p.policy.toLowerCase() === policy.toLowerCase(),
       );
 
       setIsAuthorized(isPolicyInList);
@@ -69,7 +75,11 @@ export const useIsPolicyAuthorized = (
       setIsAuthorized(undefined);
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-expect-error
-      setError({ message: err?.message || 'An error occurred while checking policy authorization.' });
+      setError({
+        message:
+          err?.message ||
+          'An error occurred while checking policy authorization.',
+      });
     } finally {
       setFetching(false);
     }

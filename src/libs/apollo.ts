@@ -1,9 +1,4 @@
-import {
-  ApolloClient,
-  InMemoryCache,
-  HttpLink,
-  concat,
-} from '@apollo/client';
+import { ApolloClient, InMemoryCache, HttpLink, concat } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 

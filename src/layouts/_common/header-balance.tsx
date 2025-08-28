@@ -17,12 +17,12 @@ interface HeaderBalanceProps {
 }
 
 const HeaderBalance: React.FC<HeaderBalanceProps> = ({
-                                                       iconSrc,
-                                                       iconAlt,
-                                                       iconTooltip,
-                                                       balance,
-                                                       balanceTooltip,
-                                                     }) => {
+  iconSrc,
+  iconAlt,
+  iconTooltip,
+  balance,
+  balanceTooltip,
+}) => {
   const router = useRouter();
 
   const handleGoFinance = () => {

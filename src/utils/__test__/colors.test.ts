@@ -7,7 +7,7 @@ describe('[UTILS]: darken', () => {
       darken('#000000'),
       darken('#FF5500'),
       darken('#102030', 15),
-      darken('#AABBCC', 40)
+      darken('#AABBCC', 40),
     ]).toMatchSnapshot();
   });
   it('darkens a color by the default amount', () => {

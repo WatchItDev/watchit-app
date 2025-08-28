@@ -5,11 +5,15 @@ import LedgerVaultAbi from '@src/config/abi/LedgerVault.json';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 import { ERRORS } from '@src/libs/notifications/errors';
 import { useAccountSession } from '@src/hooks/use-account-session.ts';
-import {ConfigureCampaignParams, ConfigureCampaignResult, UseConfigureCampaignHook} from '@src/hooks/protocol/types.ts'
+import {
+  ConfigureCampaignParams,
+  ConfigureCampaignResult,
+  UseConfigureCampaignHook,
+} from '@src/hooks/protocol/types.ts';
 import { notifyError } from '@src/libs/notifications/internal-notifications.ts';
 import { useAuth } from '@src/hooks/use-auth.ts';
 import { useWeb3Auth } from '@src/hooks/use-web3-auth.ts';
-import { Calls } from '@src/hooks/types.ts'
+import { Calls } from '@src/hooks/types.ts';
 
 export const useConfigureCampaign = (): UseConfigureCampaignHook => {
   const [data, setData] = useState<ConfigureCampaignResult | null>(null);
@@ -23,7 +27,12 @@ export const useConfigureCampaign = (): UseConfigureCampaignHook => {
    * Calls addFunds, setFundsAllocation, and setMaxRateLimit on the specified campaign contract.
    */
   const configure = async (props: ConfigureCampaignParams) => {
-    const { campaignAddress, addFundsAmount, fundsAllocationAmount, quotaLimit } = props;
+    const {
+      campaignAddress,
+      addFundsAmount,
+      fundsAllocationAmount,
+      quotaLimit,
+    } = props;
     const weiAmount = parseUnits(addFundsAmount.toString(), 18);
     const weiAllocation = parseUnits(fundsAllocationAmount.toString(), 18);
 

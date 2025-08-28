@@ -1,6 +1,6 @@
 import { ERRORS } from '@src/libs/notifications/errors';
-import { EncodeAbiParametersReturnType, Address } from "viem"
-import { WaitForUserOperationReceiptReturnType } from '@src/hooks/types.ts'
+import { EncodeAbiParametersReturnType, Address } from 'viem';
+import { WaitForUserOperationReceiptReturnType } from '@src/hooks/types.ts';
 
 // ----------------------------------------------------------------------
 
@@ -174,10 +174,10 @@ export interface UseCampaignUnPauseHook {
 // ----------------------------------------------------------------------
 
 export interface ConfigureCampaignParams {
-  campaignAddress: Address;           // Address of the campaign contract to configure
-  addFundsAmount: number;   // Amount to fund in addFunds
-  fundsAllocationAmount: number;  // Amount for setFundsAllocation
-  quotaLimit: number;           // Max rate limit for setMaxRateLimit
+  campaignAddress: Address; // Address of the campaign contract to configure
+  addFundsAmount: number; // Amount to fund in addFunds
+  fundsAllocationAmount: number; // Amount for setFundsAllocation
+  quotaLimit: number; // Max rate limit for setMaxRateLimit
 }
 
 export interface UseConfigureCampaignHook {
@@ -356,10 +356,7 @@ export interface UseGetAssetOwnerHook {
 export interface UseGetCampaignHook {
   campaign: Address | null;
   loading: boolean;
-  fetchCampaign: (
-    account: Address,
-    policy: Address
-  ) => Promise<Address | null>;
+  fetchCampaign: (account: Address, policy: Address) => Promise<Address | null>;
 }
 
 // ----------------------------------------------------------------------
@@ -369,7 +366,7 @@ export interface UseGetCampaignFundsAllocationHook {
   loading: boolean;
   error: HasAccessError | null;
   fetchFundsAllocation: (
-    campaignAddress: Address
+    campaignAddress: Address,
   ) => Promise<string | undefined>;
 }
 
@@ -379,9 +376,7 @@ export interface UseGetCampaignFundsBalanceHook {
   fundsBalance: bigint;
   loading: boolean;
   error: HasAccessError | null;
-  fetchCampaignFundsBalance: (
-    campaignAddress: Address
-  ) => Promise<bigint>;
+  fetchCampaignFundsBalance: (campaignAddress: Address) => Promise<bigint>;
 }
 
 // ----------------------------------------------------------------------
@@ -391,7 +386,7 @@ export interface UseGetCampaignIsActiveHook {
   loading: boolean;
   fetchIsActive: (
     campaignAddress: Address,
-    account: Address
+    account: Address,
   ) => Promise<string | undefined>;
 }
 
@@ -401,9 +396,7 @@ export interface UseGetCampaignIsReadyHook {
   isReady: boolean;
   loading: boolean;
   error: HasAccessError | null;
-  fetchIsReady: (
-    campaignAddress: Address
-  ) => Promise<string | undefined>;
+  fetchIsReady: (campaignAddress: Address) => Promise<string | undefined>;
 }
 // ----------------------------------------------------------------------
 
@@ -413,7 +406,7 @@ export interface UseGetCampaignQuotaCounterHook {
   error: HasAccessError | null;
   fetchQuotaCounter: (
     campaignAddress: Address,
-    account: Address
+    account: Address,
   ) => Promise<number>;
 }
 
@@ -423,9 +416,7 @@ export interface UseGetCampaignQuotaLimitHook {
   quotaLimit: number;
   loading: boolean;
   error: HasAccessError | null;
-  fetchQuotaLimit: (
-    campaignAddress: Address
-  ) => Promise<number>;
+  fetchQuotaLimit: (campaignAddress: Address) => Promise<number>;
 }
 
 // ----------------------------------------------------------------------
@@ -434,9 +425,7 @@ export interface UseGetCampaignTotalUsageHook {
   totalUsage: string;
   loading: boolean;
   error: HasAccessError | null;
-  fetchTotalUsage: (
-    campaignAddress: Address,
-  ) => Promise<string | undefined>;
+  fetchTotalUsage: (campaignAddress: Address) => Promise<string | undefined>;
 }
 
 // ----------------------------------------------------------------------
@@ -696,7 +685,7 @@ export interface UseWithdrawHook {
   error?: keyof typeof ERRORS | null;
 }
 
-export interface CampaignLog  {
+export interface CampaignLog {
   address: string;
   args: {
     campaign: string;
@@ -887,5 +876,3 @@ export interface ConfigureCampaignResult {
   success: boolean;
   userOpHash: string;
 }
-
-

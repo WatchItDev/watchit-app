@@ -23,9 +23,12 @@ import { applyFilter } from './utils';
 import { CircularProgress } from '@mui/material';
 import { paths } from '@src/routes/paths.ts';
 import { useSelector } from 'react-redux';
-import {RootState} from "@redux/store.ts"
-import {detectOperatingSystem} from "@src/utils/os-detection.ts"
-import { useGetPostsLazyQuery, useGetUsersLazyQuery } from '@src/graphql/generated/hooks.tsx';
+import { RootState } from '@redux/store.ts';
+import { detectOperatingSystem } from '@src/utils/os-detection.ts';
+import {
+  useGetPostsLazyQuery,
+  useGetUsersLazyQuery,
+} from '@src/graphql/generated/hooks.tsx';
 import { Post, User } from '@src/graphql/generated/graphql.ts';
 
 function Searchbar() {
@@ -34,8 +37,10 @@ function Searchbar() {
   const search = useBoolean();
   const mdUp = useResponsive('up', 'md');
   const [searchQuery, setSearchQuery] = useState('');
-  const [searchUsers, { data: usersData, loading: loadingProfiles }] = useGetUsersLazyQuery();
-  const [searchPosts, { data: postsData, loading: loadingPosts }] = useGetPostsLazyQuery();
+  const [searchUsers, { data: usersData, loading: loadingProfiles }] =
+    useGetUsersLazyQuery();
+  const [searchPosts, { data: postsData, loading: loadingPosts }] =
+    useGetPostsLazyQuery();
   const profiles = usersData?.getUsers;
   const posts = postsData?.getPosts;
   const { isMac } = detectOperatingSystem();
@@ -46,7 +51,10 @@ function Searchbar() {
   }, [search]);
 
   const handleKeyDown = (event: KeyboardEvent) => {
-    if (event.key === 'k' && ((isMac && event.metaKey) || (!isMac && event.ctrlKey))) {
+    if (
+      event.key === 'k' &&
+      ((isMac && event.metaKey) || (!isMac && event.ctrlKey))
+    ) {
       event.preventDefault();
       search.onToggle();
       setSearchQuery('');
@@ -71,12 +79,15 @@ function Searchbar() {
     handleClose();
   };
 
-  const handleSearch = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
-    setSearchQuery(value);
-    searchUsers({ variables: { query: value, limit: 50 } });
-    searchPosts({ variables: { query: value, limit: 50 } });
-  }, []);
+  const handleSearch = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      const value = event.target.value;
+      setSearchQuery(value);
+      searchUsers({ variables: { query: value, limit: 50 } });
+      searchPosts({ variables: { query: value, limit: 50 } });
+    },
+    [],
+  );
 
   const dataFiltered = applyFilter({
     inputData: [],
@@ -176,9 +187,15 @@ function Searchbar() {
           </Typography>
         )}
       </IconButton>
-      {mdUp && <Label sx={{ px: 0.75, mr: 1, fontSize: 12, color: 'text.secondary' }}>{shortcutLabel}</Label>}
+      {mdUp && (
+        <Label sx={{ px: 0.75, mr: 1, fontSize: 12, color: 'text.secondary' }}>
+          {shortcutLabel}
+        </Label>
+      )}
       {!isMini && !mdUp && (
-        <Label sx={{ px: 0.75, mr: 1, fontSize: 12, color: 'text.secondary' }}>{shortcutLabel}</Label>
+        <Label sx={{ px: 0.75, mr: 1, fontSize: 12, color: 'text.secondary' }}>
+          {shortcutLabel}
+        </Label>
       )}
     </Button>
   );
@@ -209,10 +226,18 @@ function Searchbar() {
             onChange={handleSearch}
             startAdornment={
               <InputAdornment position="start">
-                <Iconify icon="eva:search-fill" width={24} sx={{ color: 'text.disabled' }} />
+                <Iconify
+                  icon="eva:search-fill"
+                  width={24}
+                  sx={{ color: 'text.disabled' }}
+                />
               </InputAdornment>
             }
-            endAdornment={<Label sx={{ letterSpacing: 1, color: 'text.secondary' }}>esc</Label>}
+            endAdornment={
+              <Label sx={{ letterSpacing: 1, color: 'text.secondary' }}>
+                esc
+              </Label>
+            }
             inputProps={{ sx: { typography: 'h6' } }}
           />
         </Box>
@@ -230,7 +255,9 @@ function Searchbar() {
               <CircularProgress size={32} sx={{ color: '#fff' }} />
             </Box>
           )}
-          {notFound && !loading && <SearchNotFound query={searchQuery} sx={{ py: 10 }} />}
+          {notFound && !loading && (
+            <SearchNotFound query={searchQuery} sx={{ py: 10 }} />
+          )}
           {!notFound && !loading && renderItems()}
         </Scrollbar>
       </Dialog>

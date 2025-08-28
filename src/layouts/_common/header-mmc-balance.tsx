@@ -4,7 +4,7 @@ import mmcTokenIcon from '@src/assets/mmc_token.ico';
 
 export default function HeaderMmcBalance() {
   const { balance } = useGetBalance();
-  
+
   return (
     <HeaderBalance
       iconSrc={mmcTokenIcon}

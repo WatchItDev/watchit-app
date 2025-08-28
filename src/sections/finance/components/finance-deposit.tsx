@@ -15,11 +15,15 @@ import TextMaxLine from '@src/components/text-max-line';
 import { formatBalanceNumber } from '@src/utils/format-number';
 import { useGetMmcContractBalance } from '@src/hooks/protocol/use-get-mmc-contract-balance.ts';
 import FinanceBoxRow from '@src/sections/finance/components/finance-box-row.tsx';
-import { UseDepositHook} from '@src/hooks/protocol/types.ts'
+import { UseDepositHook } from '@src/hooks/protocol/types.ts';
 import { truncateAddress } from '@src/utils/wallet';
 
 // NOTIFICATIONS IMPORTS
-import { notifyError, notifySuccess, notifyWarning } from '@src/libs/notifications/internal-notifications';
+import {
+  notifyError,
+  notifySuccess,
+  notifyWarning,
+} from '@src/libs/notifications/internal-notifications';
 import { WARNING } from '@src/libs/notifications/warnings';
 import { SUCCESS } from '@src/libs/notifications/success';
 import { ERRORS } from '@src/libs/notifications/errors';
@@ -62,9 +66,14 @@ interface FinanceDepositProps {
  * - `depositHook` (generic or Metamask deposit hook)
  * - `onClose`
  */
-const FinanceDeposit: FC<FinanceDepositProps> = ({ address, recipient, depositHook, onClose }) => {
+const FinanceDeposit: FC<FinanceDepositProps> = ({
+  address,
+  recipient,
+  depositHook,
+  onClose,
+}) => {
   const [amount, setAmount] = useState<number | string>('');
-  const [helperText, setHelperText] = useState<string>("");
+  const [helperText, setHelperText] = useState<string>('');
   const { balance } = useGetMmcContractBalance(address);
   const { deposit, loading: depositLoading, error } = depositHook;
   const [localLoading, setLocalLoading] = useState(false);
@@ -96,7 +105,10 @@ const FinanceDeposit: FC<FinanceDepositProps> = ({ address, recipient, depositHo
     // TODO refactor this!!!!!
     try {
       setLocalLoading(true);
-      await deposit({ recipient: recipient ?? address, amount: Number(amount) });
+      await deposit({
+        recipient: recipient ?? address,
+        amount: Number(amount),
+      });
       notifySuccess(SUCCESS.DEPOSIT_SUCCESSFULLY);
       onClose();
     } catch (err) {
@@ -114,16 +126,14 @@ const FinanceDeposit: FC<FinanceDepositProps> = ({ address, recipient, depositHo
     // Set appropriate error message
     const errorMessage =
       value <= 0
-        ? "No amount entered"
+        ? 'No amount entered'
         : value > (balance ?? 0)
-          ? "Amount cannot be greater than balance"
-          : "";
+          ? 'Amount cannot be greater than balance'
+          : '';
 
     setAmountError(!!errorMessage); // Set error state
     setHelperText(errorMessage); // Update helper text with the error message
   };
-
-
 
   return (
     <>
@@ -135,7 +145,9 @@ const FinanceDeposit: FC<FinanceDepositProps> = ({ address, recipient, depositHo
         justifyContent="space-between"
       >
         <FinanceBoxRow>
-          <TextMaxLine line={1} fontWeight={"bold"}>Connected Wallet</TextMaxLine>
+          <TextMaxLine line={1} fontWeight={'bold'}>
+            Connected Wallet
+          </TextMaxLine>
           <TextMaxLine
             line={1}
             sx={{ fontWeight: '400', fontSize: '1em', color: 'text.secondary' }}
@@ -145,7 +157,9 @@ const FinanceDeposit: FC<FinanceDepositProps> = ({ address, recipient, depositHo
         </FinanceBoxRow>
 
         <FinanceBoxRow>
-          <TextMaxLine line={1} fontWeight={"bold"}>Available</TextMaxLine>
+          <TextMaxLine line={1} fontWeight={'bold'}>
+            Available
+          </TextMaxLine>
           <TextMaxLine
             line={1}
             sx={{ fontWeight: '400', fontSize: '1em', color: 'text.secondary' }}

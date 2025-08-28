@@ -2,13 +2,7 @@
 import { useEffect } from 'react';
 
 // MUI IMPORTS
-import {
-  Box,
-  Divider,
-  MenuItem,
-  Stack,
-  Typography
-} from '@mui/material';
+import { Box, Divider, MenuItem, Stack, Typography } from '@mui/material';
 
 // LOCAL IMPORTS
 import CustomPopover from '@src/components/custom-popover';
@@ -43,7 +37,10 @@ const OPTIONS = [
  *  - Profile link(s)
  *  - Logout
  */
-export function AccountPopoverMenu({ popover, router }: Readonly<AccountPopoverMenuProps>) {
+export function AccountPopoverMenu({
+  popover,
+  router,
+}: Readonly<AccountPopoverMenuProps>) {
   const { session, isLoginModalOpen, isAuthLoading } = useAuth();
   const { logout } = useAccountSession();
 
@@ -86,7 +83,9 @@ export function AccountPopoverMenu({ popover, router }: Readonly<AccountPopoverM
         {OPTIONS.map((option) => (
           <MenuItem
             key={option.label}
-            onClick={() => handleClickItem(option.linkTo(`${session?.user?.address}`))}
+            onClick={() =>
+              handleClickItem(option.linkTo(`${session?.user?.address}`))
+            }
           >
             {option.label}
           </MenuItem>

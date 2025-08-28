@@ -15,9 +15,9 @@ export default function BlankPage() {
     >
       <BlankView>
         <ComingSoonView
-          title={"Collaborations (Coming soon)"}
+          title={'Collaborations (Coming soon)'}
           content={
-            "Watchit collaborations are coming soon! Connect, co-create, and share projects with fellow creators. Stay tuned!"
+            'Watchit collaborations are coming soon! Connect, co-create, and share projects with fellow creators. Stay tuned!'
           }
         />
       </BlankView>

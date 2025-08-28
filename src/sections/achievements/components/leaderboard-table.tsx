@@ -1,16 +1,33 @@
 import { FC, useMemo } from 'react';
 import {
-  Box, Card, CardContent, CardHeader, Skeleton,
-  Table, TableBody, TableCell, TableContainer, TableRow,
-  Typography, Alert, Tooltip, IconButton,
+  Box,
+  Card,
+  CardContent,
+  CardHeader,
+  Skeleton,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableRow,
+  Typography,
+  Alert,
+  Tooltip,
+  IconButton,
 } from '@mui/material';
 import { styled, useTheme } from '@mui/material/styles';
 import { m } from 'framer-motion';
 
 import Scrollbar from '@src/components/scrollbar';
 import {
-  useTable, TableHeadCustom, TablePaginationCustom,
-  TableEmptyRows, TableNoData, emptyRows, getComparator, HeadLabel,
+  useTable,
+  TableHeadCustom,
+  TablePaginationCustom,
+  TableEmptyRows,
+  TableNoData,
+  emptyRows,
+  getComparator,
+  HeadLabel,
 } from '@src/components/table';
 
 import AvatarProfile from '@src/components/avatar/avatar';
@@ -49,11 +66,15 @@ const LeaderboardTable: FC = () => {
   const raw = useGetLeaderboardQuery({
     variables: { limit: 50 },
     fetchPolicy: 'network-only',
-    pollInterval: 2000
+    pollInterval: 2000,
   });
-  
+
   const { data, isInitialLoad, error } = useStaleWhileLoading(raw);
-  const table = useTable({ defaultOrder: 'asc', defaultOrderBy: 'rank', defaultRowsPerPage: 5 });
+  const table = useTable({
+    defaultOrder: 'asc',
+    defaultOrderBy: 'rank',
+    defaultRowsPerPage: 5,
+  });
   const myAddress = session?.user?.address?.toLowerCase() ?? '';
   const xpBalance = session?.user?.xpBalance ?? 0;
   const users: User[] = data?.getLeaderboard ?? [];
@@ -63,7 +84,7 @@ const LeaderboardTable: FC = () => {
     () =>
       users.map((u, idx) => {
         const isMe = u.address.toLowerCase() === myAddress;
-        return ({
+        return {
           rank: idx + 1,
           rankId: u.currentRank,
           name: u.displayName || `User ${idx + 1}`,
@@ -72,13 +93,16 @@ const LeaderboardTable: FC = () => {
           badge: RANK_ICON[u.currentRank] ?? RANK_ICON['watcher'],
           color: colorFromAddress(u.address),
           picture: u.profilePicture,
-        })
+        };
       }),
     [users, xpBalance],
   );
 
   const sorted = useMemo(
-    () => [...rows].sort(getComparator(table.order, table.orderBy as keyof (typeof rows)[0])),
+    () =>
+      [...rows].sort(
+        getComparator(table.order, table.orderBy as keyof (typeof rows)[0]),
+      ),
     [rows, table.order, table.orderBy],
   );
 
@@ -105,7 +129,7 @@ const LeaderboardTable: FC = () => {
               <TableBody>
                 {[...Array(5)].map((_, i) => (
                   <TableRow key={i}>
-                    {HEAD.map(h => (
+                    {HEAD.map((h) => (
                       <TableCell key={h.id} align={h.align || 'left'}>
                         <Skeleton variant="text" width={h.width || '80%'} />
                       </TableCell>
@@ -130,7 +154,7 @@ const LeaderboardTable: FC = () => {
                 />
 
                 <TableBody>
-                  {pageRows.map(row => {
+                  {pageRows.map((row) => {
                     const isMe = row.address.toLowerCase() === myAddress;
                     const medal = medalFor(row.rank);
 
@@ -138,11 +162,17 @@ const LeaderboardTable: FC = () => {
                       <TableRow
                         key={row.rank}
                         hover
-                        onClick={() => router.push(paths.dashboard.user.root(row.address))}
+                        onClick={() =>
+                          router.push(paths.dashboard.user.root(row.address))
+                        }
                         sx={{
                           cursor: 'pointer',
-                          backgroundColor: isMe ? theme.palette.action.selected : 'inherit',
-                          border: isMe ? `2px solid ${theme.palette.primary.main}` : undefined,
+                          backgroundColor: isMe
+                            ? theme.palette.action.selected
+                            : 'inherit',
+                          border: isMe
+                            ? `2px solid ${theme.palette.primary.main}`
+                            : undefined,
                         }}
                       >
                         {/* RANK / MEDAL */}
@@ -167,19 +197,25 @@ const LeaderboardTable: FC = () => {
                               <Typography variant="body2" fontWeight={600}>
                                 {row.name}
                               </Typography>
-                              <Typography variant="caption" color="text.secondary">
+                              <Typography
+                                variant="caption"
+                                color="text.secondary"
+                              >
                                 {truncateAddress(row.address)}
                               </Typography>
                             </Box>
                           </Box>
                         </TableCell>
 
-                        <TableCell align="right">{row.xp.toLocaleString()} XP</TableCell>
+                        <TableCell align="right">
+                          {row.xp.toLocaleString()} XP
+                        </TableCell>
 
                         <TableCell align="center">
                           <Tooltip
                             title={
-                              row.rankId.charAt(0).toUpperCase() + row.rankId.slice(1)
+                              row.rankId.charAt(0).toUpperCase() +
+                              row.rankId.slice(1)
                             }
                             arrow
                           >
@@ -190,7 +226,10 @@ const LeaderboardTable: FC = () => {
                               variants={varHover(1.05)}
                               sx={{ p: 0 }}
                             >
-                              <RankIcon src={row.badge} alt={`${row.name} badge`} />
+                              <RankIcon
+                                src={row.badge}
+                                alt={`${row.name} badge`}
+                              />
                             </IconButton>
                           </Tooltip>
                         </TableCell>
@@ -199,7 +238,11 @@ const LeaderboardTable: FC = () => {
                   })}
 
                   <TableEmptyRows
-                    emptyRows={emptyRows(table.page, table.rowsPerPage, sorted.length)}
+                    emptyRows={emptyRows(
+                      table.page,
+                      table.rowsPerPage,
+                      sorted.length,
+                    )}
                     height={denseH}
                   />
 

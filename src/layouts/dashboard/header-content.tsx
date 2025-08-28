@@ -52,7 +52,11 @@ const HeaderContent: FC<HeaderContentProps> = ({ handleBack, title }) => {
         >
           <Typography variant="subtitle2">Back</Typography>
           {mdUp && (
-            <Label sx={{ px: 0.75, mr: 1, fontSize: 12, color: 'text.secondary' }}>Esc</Label>
+            <Label
+              sx={{ px: 0.75, mr: 1, fontSize: 12, color: 'text.secondary' }}
+            >
+              Esc
+            </Label>
           )}
         </Button>
       )}

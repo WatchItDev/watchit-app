@@ -3,7 +3,9 @@ import TableNoData from '../table-no-data';
 
 describe('[COMPONENTS]: TableNoData component testing', () => {
   it('matches snapshot', () => {
-    const { container } = render(<TableNoData loading={false} notFound={true} />);
+    const { container } = render(
+      <TableNoData loading={false} notFound={true} />,
+    );
     expect(container).toMatchSnapshot();
   });
 
@@ -20,26 +22,35 @@ describe('[COMPONENTS]: TableNoData component testing', () => {
   });
 
   it('displays custom empty text when provided', () => {
-    render(<TableNoData loading={false} notFound={true} emptyText="Custom empty message" />);
+    render(
+      <TableNoData
+        loading={false}
+        notFound={true}
+        emptyText="Custom empty message"
+      />,
+    );
 
     expect(screen.getByText('Custom empty message')).toBeInTheDocument();
   });
 
   it('renders empty cell when notFound is false', () => {
-    const { container } = render(<TableNoData loading={false} notFound={false} />);
+    const { container } = render(
+      <TableNoData loading={false} notFound={false} />,
+    );
 
     const tableCell = container.querySelector('td');
-    if(tableCell) {
+    if (tableCell) {
       expect(tableCell).toBeInTheDocument();
       expect(tableCell.textContent).toBe('');
     }
   });
 
   it('sets colSpan to 12 on TableCell', () => {
-    const { container } = render(<TableNoData loading={false} notFound={true} />);
+    const { container } = render(
+      <TableNoData loading={false} notFound={true} />,
+    );
 
     const tableCell = container.querySelector('td');
     expect(tableCell).toHaveAttribute('colspan', '12');
   });
-
 });

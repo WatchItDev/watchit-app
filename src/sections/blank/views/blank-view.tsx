@@ -34,6 +34,6 @@ const BlankView: FC<PropsWithChildren> = ({ children }) => {
       </Box>
     </Container>
   );
-}
+};
 
 export default BlankView;

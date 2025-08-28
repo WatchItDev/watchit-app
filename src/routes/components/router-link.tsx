@@ -8,7 +8,9 @@ interface RouterLinkProps extends Omit<LinkProps, 'to'> {
 }
 
 const RouterLink = forwardRef<HTMLAnchorElement, RouterLinkProps>(
-  ({ href = '/default-path', ...other }, ref) => <Link ref={ref} to={href} {...other} />
+  ({ href = '/default-path', ...other }, ref) => (
+    <Link ref={ref} to={href} {...other} />
+  ),
 );
 
 export default RouterLink;

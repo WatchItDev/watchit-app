@@ -36,8 +36,8 @@ const SkeletonItem = () => {
       <Skeleton variant="text" sx={{ width: '100%' }} />
       <Skeleton variant="text" sx={{ width: '100%' }} />
     </>
-  )
-}
+  );
+};
 
 export const ExplorePublicationsSkeleton: React.FC = () => {
   return (

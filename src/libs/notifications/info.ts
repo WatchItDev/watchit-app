@@ -20,9 +20,12 @@ export const INFO_MESSAGES: Record<INFO, string> = {
   // Withdraw
   [INFO.WITHDRAW_WAITING_CONFIRMATION]:
     'Withdraw transaction broadcasted. Waiting for confirmation...',
-  [INFO.WITHDRAW_SENDING_CONFIRMATION]: 'Sending withdraw transaction to the network...',
-  [INFO.DEPOSIT_SENDING_CONFIRMATION]: 'Sending deposit transaction to the network...',
-  [INFO.APPROVE_SENDING_CONFIRMATION]: 'Sending approve transaction to the network...',
+  [INFO.WITHDRAW_SENDING_CONFIRMATION]:
+    'Sending withdraw transaction to the network...',
+  [INFO.DEPOSIT_SENDING_CONFIRMATION]:
+    'Sending deposit transaction to the network...',
+  [INFO.APPROVE_SENDING_CONFIRMATION]:
+    'Sending approve transaction to the network...',
   [INFO.APPROVE_WAITING_CONFIRMATION]:
     'Approve transaction broadcasted. Waiting for confirmation (1/2)...',
   [INFO.DEPOSIT_WAITING_CONFIRMATION]:

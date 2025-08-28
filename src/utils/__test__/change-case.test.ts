@@ -80,4 +80,4 @@ describe('[UTILS]: snakeCase', () => {
     ];
     expect(results).toMatchSnapshot();
   });
-}); 
+});

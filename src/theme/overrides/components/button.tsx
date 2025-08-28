@@ -3,7 +3,14 @@ import { ButtonProps, buttonClasses } from '@mui/material/Button';
 
 // ----------------------------------------------------------------------
 
-const COLORS = ['primary', 'secondary', 'info', 'success', 'warning', 'error'] as const;
+const COLORS = [
+  'primary',
+  'secondary',
+  'info',
+  'success',
+  'warning',
+  'error',
+] as const;
 
 // NEW VARIANT
 declare module '@mui/material/Button' {
@@ -38,10 +45,16 @@ export function button(theme: Theme) {
       ...(inheritColor && {
         // CONTAINED
         ...(containedVariant && {
-          color: lightMode ? theme.palette.common.white : theme.palette.grey[800],
-          backgroundColor: lightMode ? theme.palette.grey[800] : theme.palette.common.white,
+          color: lightMode
+            ? theme.palette.common.white
+            : theme.palette.grey[800],
+          backgroundColor: lightMode
+            ? theme.palette.grey[800]
+            : theme.palette.common.white,
           '&:hover': {
-            backgroundColor: lightMode ? theme.palette.grey[700] : theme.palette.grey[400],
+            backgroundColor: lightMode
+              ? theme.palette.grey[700]
+              : theme.palette.grey[400],
           },
         }),
         // OUTLINED
@@ -139,7 +152,8 @@ export function button(theme: Theme) {
   return {
     MuiButton: {
       styleOverrides: {
-        root: ({ ownerState }: { ownerState: ButtonProps }) => rootStyles(ownerState),
+        root: ({ ownerState }: { ownerState: ButtonProps }) =>
+          rootStyles(ownerState),
       },
     },
   };

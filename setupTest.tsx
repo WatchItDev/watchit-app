@@ -1,6 +1,6 @@
 import * as matchers from '@testing-library/jest-dom/matchers';
-import {afterEach, beforeAll, expect, vi} from 'vitest';
-import {cleanup} from "@testing-library/react";
+import { afterEach, beforeAll, expect, vi } from 'vitest';
+import { cleanup } from '@testing-library/react';
 
 expect.extend(matchers);
 
@@ -21,25 +21,30 @@ beforeAll(() => {
 
 afterEach(() => {
   cleanup();
-})
+});
 
 // Mocks
 vi.mock('react-i18next');
 // Iconify mock
 vi.mock('@src/components/iconify', () => ({
   __esModule: true,
-  default: ({ icon, sx, ...props }: { icon: string, sx?: object }) => (
-    <span data-testid="iconify" data-icon={icon} data-sx={JSON.stringify(sx)} {...props} />
-  )
+  default: ({ icon, sx, ...props }: { icon: string; sx?: object }) => (
+    <span
+      data-testid="iconify"
+      data-icon={icon}
+      data-sx={JSON.stringify(sx)}
+      {...props}
+    />
+  ),
 }));
 
-vi.mock("@react-native-async-storage/async-storage", () => ({
+vi.mock('@react-native-async-storage/async-storage', () => ({
   __esModule: true,
   default: {
     getItem: vi.fn(),
     setItem: vi.fn(),
     removeItem: vi.fn(),
-  }
+  },
 }));
 
 vi.mock('@src/config-global.ts', () => ({
@@ -72,14 +77,16 @@ vi.mock('@src/config-global.ts', () => ({
     BASE_URL: 'mock-base-url',
     LOGO_URL: 'mock-logo-url',
     EARN_TOKEN_SERVICE_URL: 'mock-earn-token-service-url',
-  }
+  },
 }));
 
 // @ts-expect-error No error in this context
-window.matchMedia = window.matchMedia || function() {
-  return {
-    matches : false,
-    addListener : function() {},
-    removeListener: function() {}
+window.matchMedia =
+  window.matchMedia ||
+  function () {
+    return {
+      matches: false,
+      addListener: function () {},
+      removeListener: function () {},
+    };
   };
-};

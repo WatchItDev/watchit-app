@@ -20,7 +20,7 @@ describe('[COMPONENTS]: BreadcrumbsLink component testing', () => {
       <BreadcrumbsLink
         link={{ name: 'Dashboard', href: '/dashboard' }}
         disabled={false}
-      />
+      />,
     );
     expect(baseElement).toMatchSnapshot();
   });
@@ -30,7 +30,7 @@ describe('[COMPONENTS]: BreadcrumbsLink component testing', () => {
       <BreadcrumbsLink
         link={{ name: 'Settings', href: '/settings' }}
         disabled={false}
-      />
+      />,
     );
 
     const link = screen.getByTestId('router-link');
@@ -43,7 +43,7 @@ describe('[COMPONENTS]: BreadcrumbsLink component testing', () => {
       <BreadcrumbsLink
         link={{ name: 'Dashboard', href: '/dashboard' }}
         disabled={false}
-      />
+      />,
     );
 
     const link = screen.getByTestId('router-link');
@@ -52,12 +52,7 @@ describe('[COMPONENTS]: BreadcrumbsLink component testing', () => {
   });
 
   it('renders as Box component when no href is provided', () => {
-    render(
-      <BreadcrumbsLink
-        link={{ name: 'Dashboard' }}
-        disabled={false}
-      />
-    );
+    render(<BreadcrumbsLink link={{ name: 'Dashboard' }} disabled={false} />);
 
     expect(screen.queryByTestId('router-link')).not.toBeInTheDocument();
     expect(screen.getByText('Dashboard')).toBeInTheDocument();
@@ -70,7 +65,7 @@ describe('[COMPONENTS]: BreadcrumbsLink component testing', () => {
       <BreadcrumbsLink
         link={{ name: 'Dashboard', icon: <TestIcon /> }}
         disabled={false}
-      />
+      />,
     );
 
     expect(screen.getByTestId('test-icon')).toBeInTheDocument();
@@ -82,7 +77,7 @@ describe('[COMPONENTS]: BreadcrumbsLink component testing', () => {
         link={{ name: 'Dashboard' }}
         disabled={true}
         activeLast={false}
-      />
+      />,
     );
 
     const element = container.firstChild;
@@ -96,7 +91,7 @@ describe('[COMPONENTS]: BreadcrumbsLink component testing', () => {
         link={{ name: 'Dashboard' }}
         disabled={true}
         activeLast={true}
-      />
+      />,
     );
 
     const element = container.firstChild;
@@ -108,7 +103,7 @@ describe('[COMPONENTS]: BreadcrumbsLink component testing', () => {
       <BreadcrumbsLink
         link={{ name: 'Very Long Dashboard Name' }}
         disabled={false}
-      />
+      />,
     );
 
     expect(screen.getByText('Very Long Dashboard Name')).toBeInTheDocument();
@@ -121,7 +116,7 @@ describe('[COMPONENTS]: BreadcrumbsLink component testing', () => {
       <BreadcrumbsLink
         link={{ name: 'Dashboard', icon: <TestIcon /> }}
         disabled={false}
-      />
+      />,
     );
 
     const iconContainer = container.querySelector('span');
@@ -129,12 +124,7 @@ describe('[COMPONENTS]: BreadcrumbsLink component testing', () => {
   });
 
   it('handles empty name gracefully', () => {
-    render(
-      <BreadcrumbsLink
-        link={{ name: '' }}
-        disabled={false}
-      />
-    );
+    render(<BreadcrumbsLink link={{ name: '' }} disabled={false} />);
 
     expect(document.body).toContainHTML('<div');
   });
@@ -144,7 +134,7 @@ describe('[COMPONENTS]: BreadcrumbsLink component testing', () => {
       <BreadcrumbsLink
         link={{ name: 'Dashboard', href: '/dashboard' }}
         disabled={false}
-      />
+      />,
     );
 
     const link = screen.getByTestId('router-link');

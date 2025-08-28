@@ -9,7 +9,7 @@ describe('[COMPONENTS]: CarouselWrapper', () => {
     { id: '2', metadata: { title: 'Test Title 2', content: 'Test Content 2' } },
   ];
 
-  const defaultProps: CarouselWrapperProps<typeof mockData[0]> = {
+  const defaultProps: CarouselWrapperProps<(typeof mockData)[0]> = {
     data: mockData,
     title: 'Test Carousel',
     minItemWidth: 100,

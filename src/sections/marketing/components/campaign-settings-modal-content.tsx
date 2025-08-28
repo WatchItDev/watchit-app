@@ -2,22 +2,31 @@
 import { FC, useState, useMemo } from 'react';
 
 // MUI IMPORTS
-import Box from "@mui/material/Box";
+import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
-import LoadingButton from "@mui/lab/LoadingButton";
-import { Button, TextField, FormControl, DialogActions, LinearProgress } from '@mui/material';
+import LoadingButton from '@mui/lab/LoadingButton';
+import {
+  Button,
+  TextField,
+  FormControl,
+  DialogActions,
+  LinearProgress,
+} from '@mui/material';
 
 // VIEM
 import { Address, formatUnits } from 'viem';
 
 // LOCAL IMPORTS
-import NeonPaper from "@src/sections/publication/components/neon-paper-container.tsx";
+import NeonPaper from '@src/sections/publication/components/neon-paper-container.tsx';
 import { useConfigureCampaign } from '@src/hooks/protocol/use-configure-campaign.ts';
 import { useGetPolicyTerms } from '@src/hooks/protocol/use-get-policy-terms.ts';
 import { useAuth } from '@src/hooks/use-auth.ts';
-import { notifyError, notifySuccess } from '@src/libs/notifications/internal-notifications.ts';
+import {
+  notifyError,
+  notifySuccess,
+} from '@src/libs/notifications/internal-notifications.ts';
 import { CampaignSettingsModalContentProps } from '@src/sections/marketing/types.ts';
 import { ERRORS } from '@src/libs/notifications/errors.ts';
 import { SUCCESS } from '@src/libs/notifications/success.ts';
@@ -25,19 +34,22 @@ import { GLOBAL_CONSTANTS } from '@src/config-global';
 
 // ----------------------------------------------------------------------
 
-const CampaignSettingsModalContent: FC<CampaignSettingsModalContentProps> = (props) => {
-  const { onClose, onConfirm, campaignData, } = props;
+const CampaignSettingsModalContent: FC<CampaignSettingsModalContentProps> = (
+  props,
+) => {
+  const { onClose, onConfirm, campaignData } = props;
   const { address, description } = campaignData;
 
   const [quotaLimit, setQuotaLimit] = useState<number>(NaN);
   const [fundsAmount, setFundsAmount] = useState<number>(NaN);
-  const [fundsAllocationAmount, setFundsAllocationAmount] = useState<number>(NaN);
+  const [fundsAllocationAmount, setFundsAllocationAmount] =
+    useState<number>(NaN);
 
   const { session: sessionData } = useAuth();
   const { configure, loading: loadingConfigure } = useConfigureCampaign();
   const { terms, loading: loadingTerms } = useGetPolicyTerms(
     GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS,
-    sessionData?.address as Address
+    sessionData?.address as Address,
   );
 
   const RainbowEffect = loadingConfigure ? NeonPaper : Box;
@@ -55,7 +67,7 @@ const CampaignSettingsModalContent: FC<CampaignSettingsModalContentProps> = (pro
 
   // Validate that each field has a value greater or equal to 1
   const isFormValid = useMemo(() => {
-    return (fundsAmount >= 1 && fundsAllocationAmount >= 1 && quotaLimit >= 1);
+    return fundsAmount >= 1 && fundsAllocationAmount >= 1 && quotaLimit >= 1;
   }, [fundsAmount, fundsAllocationAmount, quotaLimit]);
 
   const handleOnConfirm = async () => {
@@ -81,12 +93,12 @@ const CampaignSettingsModalContent: FC<CampaignSettingsModalContentProps> = (pro
 
   // check if the expected number input is valid
   const isNotValidNumberInput = (value: number): boolean => {
-    return value < 1
-  }
+    return value < 1;
+  };
 
   const fundsAllocationHelperText = useMemo(() => {
     if (isNotValidNumberInput(fundsAllocationAmount))
-      return "Funds allocation must be at least 1."
+      return 'Funds allocation must be at least 1.';
 
     if (dailyPriceInMMC > 0 && fundsAllocationAmount > 0)
       return ` Each user receive this amount of MMC. For example,
@@ -94,10 +106,8 @@ const CampaignSettingsModalContent: FC<CampaignSettingsModalContentProps> = (pro
       an allocation of ${fundsAllocationAmount || 0} MMC would provide
       ${daysEquivalent.toFixed(1)} days of access.`;
 
-
-    return "Maximum amount of MMC a user can receive per access.";
+    return 'Maximum amount of MMC a user can receive per access.';
   }, [fundsAllocationAmount, dailyPriceInMMC, daysEquivalent]);
-
 
   return (
     <>
@@ -110,7 +120,11 @@ const CampaignSettingsModalContent: FC<CampaignSettingsModalContentProps> = (pro
       <Divider sx={{ padding: '0.3rem 0', mb: 4, borderStyle: 'dashed' }} />
 
       <Grid container spacing={2} sx={{ mb: 2, px: 2, m: 0, width: '100%' }}>
-        <Typography variant="body1" color="text.primary" sx={{ mb: 4, textAlign: 'center', width: '100%' }}>
+        <Typography
+          variant="body1"
+          color="text.primary"
+          sx={{ mb: 4, textAlign: 'center', width: '100%' }}
+        >
           {description || 'No description provided for this campaign.'}
         </Typography>
 
@@ -124,9 +138,10 @@ const CampaignSettingsModalContent: FC<CampaignSettingsModalContentProps> = (pro
             onChange={(e) => setFundsAmount(Number(e.target.value))}
             placeholder="e.g. 1000"
             error={isNotValidNumberInput(fundsAmount)}
-            helperText={isNotValidNumberInput(fundsAmount)
-              ? "Total budget must be at least 1."
-              : "Total amount of MMC allocated to this campaign."
+            helperText={
+              isNotValidNumberInput(fundsAmount)
+                ? 'Total budget must be at least 1.'
+                : 'Total amount of MMC allocated to this campaign.'
             }
           />
         </FormControl>
@@ -157,9 +172,10 @@ const CampaignSettingsModalContent: FC<CampaignSettingsModalContentProps> = (pro
             onChange={(e) => setQuotaLimit(Number(e.target.value))}
             placeholder="e.g. 1"
             error={isNotValidNumberInput(quotaLimit)}
-            helperText={isNotValidNumberInput(quotaLimit)
-              ? "Access limit must be at least 1."
-              : "Maximum number of times a user can benefit from this campaign."
+            helperText={
+              isNotValidNumberInput(quotaLimit)
+                ? 'Access limit must be at least 1.'
+                : 'Maximum number of times a user can benefit from this campaign.'
             }
           />
         </FormControl>
@@ -167,7 +183,9 @@ const CampaignSettingsModalContent: FC<CampaignSettingsModalContentProps> = (pro
 
       <Divider sx={{ padding: '0.3rem 0', borderStyle: 'dashed' }} />
 
-      <DialogActions sx={{ px: 2, display: 'flex', justifyContent: 'flex-end', gap: 1 }}>
+      <DialogActions
+        sx={{ px: 2, display: 'flex', justifyContent: 'flex-end', gap: 1 }}
+      >
         <Button variant="outlined" onClick={onClose}>
           Cancel
         </Button>

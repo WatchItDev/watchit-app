@@ -18,7 +18,12 @@ export default function BlankPage() {
       <Header>
         <HeaderContent title="Achievements" />
       </Header>
-      <WithAuth component={AchievementsView} description={'Login to access your achievements.'} icon={'iconoir:stats-report'} header={'Achievements section'} />
+      <WithAuth
+        component={AchievementsView}
+        description={'Login to access your achievements.'}
+        icon={'iconoir:stats-report'}
+        header={'Achievements section'}
+      />
     </OgMetaTags>
   );
 }

@@ -29,7 +29,12 @@ function ForbiddenIllustration({ ...other }: BoxProps) {
     >
       <BackgroundShape />
 
-      <image href="/assets/illustrations/characters/character_4.png" height="300" x="220" y="30" />
+      <image
+        href="/assets/illustrations/characters/character_4.png"
+        height="300"
+        x="220"
+        y="30"
+      />
 
       <path
         fill={PRIMARY_MAIN}
@@ -43,7 +48,10 @@ function ForbiddenIllustration({ ...other }: BoxProps) {
         opacity="0.12"
       />
 
-      <path fill="#FFD666" d="M111.045 121c30.8-.5 30.8-46.3 0-46.8-30.8.5-30.8 46.3 0 46.8z" />
+      <path
+        fill="#FFD666"
+        d="M111.045 121c30.8-.5 30.8-46.3 0-46.8-30.8.5-30.8 46.3 0 46.8z"
+      />
 
       <path
         fill="#FBCDBE"

@@ -1,6 +1,6 @@
 name: New Feature
 description: Proposals for new features
-title: "feat: "
+title: 'feat: '
 type: feature
 labels:
   - feature

@@ -8,7 +8,7 @@ export const PublicationDetailViewSkeleton: React.FC = () => {
   const lines = ['100%', '100%', '85%'];
 
   return (
-    <Box sx={{ width: '100%', p: 3}}>
+    <Box sx={{ width: '100%', p: 3 }}>
       <Box
         sx={{
           display: 'flex',
@@ -16,8 +16,22 @@ export const PublicationDetailViewSkeleton: React.FC = () => {
           gap: 3,
         }}
       >
-        <Box sx={{ position: 'relative', flex: 1, borderRadius: 2, maxWidth: mdUp ? 'calc(100% - 470px)' : '100%' }}>
-          <Skeleton variant="rectangular" sx={{ width: '100%', height: { xs: 200, sm: 260, md: 320 }, borderRadius: 1 }} />
+        <Box
+          sx={{
+            position: 'relative',
+            flex: 1,
+            borderRadius: 2,
+            maxWidth: mdUp ? 'calc(100% - 470px)' : '100%',
+          }}
+        >
+          <Skeleton
+            variant="rectangular"
+            sx={{
+              width: '100%',
+              height: { xs: 200, sm: 260, md: 320 },
+              borderRadius: 1,
+            }}
+          />
 
           <Skeleton
             variant="rectangular"
@@ -61,12 +75,22 @@ export const PublicationDetailViewSkeleton: React.FC = () => {
 
           <Box sx={{ mt: 6 }}>
             <Skeleton variant="rectangular" width={150} height={26} />
-            <Skeleton variant="rectangular" width="100%" height={60} sx={{ mt: 2, borderRadius: 1 }} />
+            <Skeleton
+              variant="rectangular"
+              width="100%"
+              height={60}
+              sx={{ mt: 2, borderRadius: 1 }}
+            />
           </Box>
 
           <Box sx={{ mt: 6 }}>
             <Skeleton variant="rectangular" width={110} height={26} />
-            <Skeleton variant="rectangular" width="100%" height={60} sx={{ mt: 2, borderRadius: 1 }} />
+            <Skeleton
+              variant="rectangular"
+              width="100%"
+              height={60}
+              sx={{ mt: 2, borderRadius: 1 }}
+            />
           </Box>
         </Box>
 
@@ -79,7 +103,7 @@ export const PublicationDetailViewSkeleton: React.FC = () => {
                 lg: '450px',
               },
               height: 420,
-              borderRadius: 2
+              borderRadius: 2,
             }}
           />
         )}

@@ -1,7 +1,7 @@
-import Box from "@mui/material/Box";
-import { useTheme } from "@mui/material/styles";
-import Tooltip from "@mui/material/Tooltip";
-import { keyframes } from "@emotion/react";
+import Box from '@mui/material/Box';
+import { useTheme } from '@mui/material/styles';
+import Tooltip from '@mui/material/Tooltip';
+import { keyframes } from '@emotion/react';
 import { CampaignConfiguredIndicatorStateProps } from '@src/sections/marketing/types.ts';
 
 // ----------------------------------------------------------------------
@@ -24,37 +24,43 @@ const ripple = keyframes`
 
 // ----------------------------------------------------------------------
 
-const CampaignConfiguredIndicatorState = ({ isReady, disabled }: CampaignConfiguredIndicatorStateProps) => {
+const CampaignConfiguredIndicatorState = ({
+  isReady,
+  disabled,
+}: CampaignConfiguredIndicatorStateProps) => {
   const theme = useTheme();
-  let color = !isReady ? theme.palette.warning.main : theme.palette.success.main;
+  let color = !isReady
+    ? theme.palette.warning.main
+    : theme.palette.success.main;
   color = disabled ? theme.palette.grey[400] : color;
   return (
-    <Tooltip title={!isReady ? "Not configured" : "Configured"}>
+    <Tooltip title={!isReady ? 'Not configured' : 'Configured'}>
       <Box
         sx={{
           width: 8,
           height: 8,
-          borderRadius: "50%",
+          borderRadius: '50%',
           background: color,
-          display: "grid",
-          alignItems: "center",
-          justifyContent: "center",
+          display: 'grid',
+          alignItems: 'center',
+          justifyContent: 'center',
           marginLeft: 0.5,
           marginRight: 3,
-          position: "relative",
-          animation: !isReady && !disabled ? `${ripple} 1.5s infinite ease-out` : "none",
-          "&::before, &::after": !isReady
+          position: 'relative',
+          animation:
+            !isReady && !disabled ? `${ripple} 1.5s infinite ease-out` : 'none',
+          '&::before, &::after': !isReady
             ? {
-              content: '""',
-              position: "absolute",
-              width: "100%",
-              height: "100%",
-              borderRadius: "50%",
-              animation: "inherit",
-            }
+                content: '""',
+                position: 'absolute',
+                width: '100%',
+                height: '100%',
+                borderRadius: '50%',
+                animation: 'inherit',
+              }
             : {},
-          "&::before": !isReady ? { animationDelay: "0.5s" } : {},
-          "&::after": !isReady ? { animationDelay: "1s" } : {},
+          '&::before': !isReady ? { animationDelay: '0.5s' } : {},
+          '&::after': !isReady ? { animationDelay: '1s' } : {},
         }}
       />
     </Tooltip>

@@ -46,7 +46,7 @@ const transactionsSlice = createSlice({
     },
     appendTransaction(state, action: PayloadAction<TransactionItemProps>) {
       const existingIndex = state.transactions.findIndex(
-        (transaction) => transaction.id === action.payload.id
+        (transaction) => transaction.id === action.payload.id,
       );
       if (existingIndex !== -1) {
         state.transactions[existingIndex] = action.payload;

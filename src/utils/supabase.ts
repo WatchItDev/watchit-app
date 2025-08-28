@@ -5,7 +5,4 @@ const supabaseUrl = GLOBAL_CONSTANTS.NEXT_PUBLIC_SUPABASE_URL || '';
 const supabaseKey = GLOBAL_CONSTANTS.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
 
 // Create a single supabase client for interacting with your database
-export const supabase = createClient(
-  supabaseUrl,
-  supabaseKey
-);
+export const supabase = createClient(supabaseUrl, supabaseKey);

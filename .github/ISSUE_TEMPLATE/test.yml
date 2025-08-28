@@ -1,6 +1,6 @@
 name: Create a test
 description: Testing for ensuring the quality of the code
-title: "test: "
+title: 'test: '
 type: test
 labels:
   - test

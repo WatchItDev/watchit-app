@@ -12,7 +12,7 @@ import { notifyInfo } from '@src/libs/notifications/internal-notifications.ts';
 import { INFO } from '@src/libs/notifications/info.ts';
 import { useMetaMask } from '@src/hooks/use-metamask.ts';
 import { UseWithdrawHook, WithdrawParams } from '@src/hooks/protocol/types.ts';
-import {WithdrawData} from "@src/hooks/types.ts"
+import { WithdrawData } from '@src/hooks/types.ts';
 
 /**
  * Hook that allows the withdrawal flow to be made

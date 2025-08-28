@@ -1,11 +1,11 @@
-import {FC, PropsWithChildren} from "react";
-import Stack from "@mui/material/Stack";
+import { FC, PropsWithChildren } from 'react';
+import Stack from '@mui/material/Stack';
 
-interface ProfileWrapperProps extends  PropsWithChildren {
+interface ProfileWrapperProps extends PropsWithChildren {
   sidebar: React.ReactNode;
 }
 
-const ProfileWrapper: FC<ProfileWrapperProps> = ({children, sidebar}) => {
+const ProfileWrapper: FC<ProfileWrapperProps> = ({ children, sidebar }) => {
   return (
     <Stack
       direction={{
@@ -32,13 +32,12 @@ const ProfileWrapper: FC<ProfileWrapperProps> = ({children, sidebar}) => {
           },
         }}
       >
-      {children}
+        {children}
       </Stack>
 
       {sidebar}
-
     </Stack>
   );
-}
+};
 
 export default ProfileWrapper;

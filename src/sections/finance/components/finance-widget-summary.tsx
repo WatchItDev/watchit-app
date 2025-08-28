@@ -105,7 +105,9 @@ export default function FinanceWidgetSummary({
   });
 
   const totalOptions = { minimumFractionDigits: 1, maximumFractionDigits: 3 };
-  const formattedTotal = new Intl.NumberFormat('en-US', totalOptions).format(total);
+  const formattedTotal = new Intl.NumberFormat('en-US', totalOptions).format(
+    total,
+  );
 
   const handleFinishDeposit = () => {
     confirmDeposit.onFalse?.();
@@ -178,7 +180,11 @@ export default function FinanceWidgetSummary({
 
       <Stack spacing={1} sx={{ p: 3 }}>
         <Typography variant="subtitle2">{title}</Typography>
-        <Stack direction="row" alignItems="flex-end" justifyContent="flex-start">
+        <Stack
+          direction="row"
+          alignItems="flex-end"
+          justifyContent="flex-start"
+        >
           <Box sx={{ typography: 'h3' }}>{formattedTotal}</Box>
           <Box sx={{ typography: 'h6', opacity: 0.5, ml: 1, mb: 0.6 }}>MMC</Box>
         </Stack>
@@ -190,7 +196,11 @@ export default function FinanceWidgetSummary({
           alignItems="center"
           sx={{ typography: 'body2' }}
         >
-          <Iconify icon={percent < 0 ? 'eva:trending-down-fill' : 'eva:trending-up-fill'} />
+          <Iconify
+            icon={
+              percent < 0 ? 'eva:trending-down-fill' : 'eva:trending-up-fill'
+            }
+          />
 
           <Box sx={{ typography: 'subtitle2' }}>
             {percent > 0 && '+'}
@@ -201,11 +211,22 @@ export default function FinanceWidgetSummary({
         </Stack>
       </Stack>
 
-      <Chart type="area" series={[{ data: series }]} options={chartOptions} height={120} />
+      <Chart
+        type="area"
+        series={[{ data: series }]}
+        options={chartOptions}
+        height={120}
+      />
 
-      <FinanceDepositModal open={confirmDeposit.value} onClose={handleFinishDeposit} />
+      <FinanceDepositModal
+        open={confirmDeposit.value}
+        onClose={handleFinishDeposit}
+      />
 
-      <FinanceWithdrawModal open={confirmWithdraw.value} onClose={handleFinishWithdraw} />
+      <FinanceWithdrawModal
+        open={confirmWithdraw.value}
+        onClose={handleFinishWithdraw}
+      />
     </Stack>
   );
 }

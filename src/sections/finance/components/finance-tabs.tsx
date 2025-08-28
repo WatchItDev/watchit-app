@@ -21,8 +21,16 @@ export const FinanceTabs = () => {
   };
 
   const TABS = [
-    { value: 'graph', label: 'Statistics', icon: <Iconify icon={'codicon:graph'} /> },
-    { value: 'table', label: 'Transactions', icon: <Iconify icon={'majesticons:table'} /> },
+    {
+      value: 'graph',
+      label: 'Statistics',
+      icon: <Iconify icon={'codicon:graph'} />,
+    },
+    {
+      value: 'table',
+      label: 'Transactions',
+      icon: <Iconify icon={'majesticons:table'} />,
+    },
   ];
 
   return (
@@ -36,11 +44,18 @@ export const FinanceTabs = () => {
           width: 1,
           zIndex: 9,
           borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
-          [`& .${tabsClasses.flexContainer}`]: { justifyContent: { xs: 'left', md: 'center' } },
+          [`& .${tabsClasses.flexContainer}`]: {
+            justifyContent: { xs: 'left', md: 'center' },
+          },
         }}
       >
         {TABS.map((tab) => (
-          <Tab icon={tab.icon} key={tab.value} value={tab.value} label={tab.label} />
+          <Tab
+            icon={tab.icon}
+            key={tab.value}
+            value={tab.value}
+            label={tab.label}
+          />
         ))}
       </Tabs>
       {currentTab === 'graph' && (

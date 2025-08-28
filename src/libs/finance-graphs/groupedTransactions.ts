@@ -1,6 +1,11 @@
-import {dicebear} from "@src/utils/dicebear.ts";
+import { dicebear } from '@src/utils/dicebear.ts';
 import { TransactionLog } from '@src/hooks/protocol/types.ts';
-import {Transaction, EventConfig, EventName, ProcessedTransactionData} from "../types"
+import {
+  Transaction,
+  EventConfig,
+  EventName,
+  ProcessedTransactionData,
+} from '../types';
 
 const eventConfig: Record<EventName, EventConfig> = {
   transferFrom: {
@@ -41,11 +46,15 @@ const eventConfig: Record<EventName, EventConfig> = {
   },
 };
 
-export const processTransactionData = (data: TransactionLog[]): ProcessedTransactionData[] => {
+export const processTransactionData = (
+  data: TransactionLog[],
+): ProcessedTransactionData[] => {
   return data.map((transaction) => {
     const config = eventConfig[transaction.event as EventName];
     const name = config ? config.getName(transaction.args) : 'Unknown';
-    const avatarUrl = config ? config.getAvatarUrl(transaction.args) : dicebear('default');
+    const avatarUrl = config
+      ? config.getAvatarUrl(transaction.args)
+      : dicebear('default');
 
     return {
       id: transaction.transactionHash,

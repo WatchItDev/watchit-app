@@ -3,8 +3,6 @@ import { PATH_AFTER_LOGIN } from '@src/config-global';
 import { dashboardRoutes } from './dashboard';
 import NotFoundPage from '../../pages/404';
 export default function Router() {
-
-
   return useRoutes([
     {
       path: '/',

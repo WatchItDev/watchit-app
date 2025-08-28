@@ -9,6 +9,6 @@ export interface NotLoggedInProps {
 export interface WithAuthProps {
   component: React.ComponentType;
   header: string;
-  icon: string
+  icon: string;
   description: string;
 }

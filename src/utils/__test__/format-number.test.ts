@@ -1,4 +1,12 @@
-import { fNumber, fCurrency, fPercent, fShortenNumber, fData, formatBalanceNumber, handleAmountConstraints } from '@src/utils/format-number';
+import {
+  fNumber,
+  fCurrency,
+  fPercent,
+  fShortenNumber,
+  fData,
+  formatBalanceNumber,
+  handleAmountConstraints,
+} from '@src/utils/format-number';
 
 describe('[UTILS]: fNumber', () => {
   it('formats a regular number correctly', () => {
@@ -31,7 +39,7 @@ describe('[UTILS]: fNumber', () => {
       fNumber('2500'),
       fNumber(-350),
       fNumber(0),
-      fNumber(null)
+      fNumber(null),
     ];
     expect(results).toMatchSnapshot();
   });
@@ -51,7 +59,7 @@ describe('[UTILS]: fCurrency', () => {
   });
 
   it('handles exact decimal values that should not show zeros', () => {
-    expect(fCurrency(1000.00)).toBe('$1,000');
+    expect(fCurrency(1000.0)).toBe('$1,000');
   });
 
   it('handles negative amounts', () => {
@@ -197,7 +205,7 @@ describe('[UTILS]: handleAmountConstraints', () => {
       MAX_AMOUNT: 1000,
       MAX_POOL: 2000,
       setAmount,
-      setCanContinue
+      setCanContinue,
     });
 
     expect(setAmount).toHaveBeenCalledWith(500);
@@ -213,7 +221,7 @@ describe('[UTILS]: handleAmountConstraints', () => {
       MAX_AMOUNT: 1000,
       MAX_POOL: 2000,
       setAmount,
-      setCanContinue
+      setCanContinue,
     });
 
     expect(setAmount).toHaveBeenCalledWith(2000);
@@ -229,7 +237,7 @@ describe('[UTILS]: handleAmountConstraints', () => {
       MAX_AMOUNT: 1000,
       MAX_POOL: 2000,
       setAmount,
-      setCanContinue
+      setCanContinue,
     });
 
     expect(setAmount).toHaveBeenCalledWith(0);
@@ -245,7 +253,7 @@ describe('[UTILS]: handleAmountConstraints', () => {
       MAX_AMOUNT: 1000,
       MAX_POOL: 2000,
       setAmount,
-      setCanContinue
+      setCanContinue,
     });
 
     expect(setAmount).toHaveBeenCalledWith(1500);
@@ -261,7 +269,7 @@ describe('[UTILS]: handleAmountConstraints', () => {
       MAX_AMOUNT: 1000,
       MAX_POOL: 2000,
       setAmount,
-      setCanContinue
+      setCanContinue,
     });
 
     expect(setAmount).toHaveBeenCalledWith(0);

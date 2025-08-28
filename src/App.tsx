@@ -1,5 +1,5 @@
 // REACT IMPORTS
-import { useEffect } from "react";
+import { useEffect } from 'react';
 
 // REDUX IMPORTS
 import { Provider, useDispatch } from 'react-redux';
@@ -22,7 +22,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { Buffer } from 'buffer';
 
 // LOCAL NOTIFICATIONS
-import { useSnackbar } from "notistack";
+import { useSnackbar } from 'notistack';
 
 // LOCAL IMPORTS
 import '@src/locales/i18n';
@@ -32,7 +32,7 @@ import ProgressBar from '@src/components/progress-bar';
 import MotionLazy from '@src/components/animate/motion-lazy';
 import SnackbarProvider from '@src/components/snackbar/snackbar-provider';
 
-import { store } from '@redux/store'
+import { store } from '@redux/store';
 import { useScrollToTop } from '@src/hooks/use-scroll-to-top';
 import { SettingsProvider, SettingsDrawer } from '@src/components/settings';
 
@@ -41,11 +41,11 @@ import { AuthProvider } from '@src/contexts/auth';
 import { ApiProvider } from '@src/contexts/api';
 
 import { ResponsiveOverlay } from '@src/components/responsive-overlay';
-import { useNotifications } from "@src/hooks/use-notifications.ts";
-import { setGlobalNotifier } from "@src/libs/notifications/internal-notifications.ts";
+import { useNotifications } from '@src/hooks/use-notifications.ts';
+import { setGlobalNotifier } from '@src/libs/notifications/internal-notifications.ts';
 
 import { useAuth } from '@src/hooks/use-auth.ts';
-import { subscribeToNotifications } from "@src/libs/subscribe-notifications-supabase.ts";
+import { subscribeToNotifications } from '@src/libs/subscribe-notifications-supabase.ts';
 
 window.Buffer = Buffer;
 
@@ -127,10 +127,11 @@ const AppContent = () => {
     setGlobalNotifier(enqueueSnackbar);
   }, [enqueueSnackbar]);
 
-
   useEffect(() => {
     if (sessionData?.address) {
-      subscribeToNotifications(sessionData?.address, dispatch, ['notifications']);
+      subscribeToNotifications(sessionData?.address, dispatch, [
+        'notifications',
+      ]);
       getNotifications(sessionData?.address);
     }
   }, [sessionData?.address]);
@@ -142,5 +143,5 @@ const AppContent = () => {
       <Router />
       <ResponsiveOverlay />
     </>
-  )
-}
+  );
+};

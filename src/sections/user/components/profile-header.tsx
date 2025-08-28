@@ -17,11 +17,11 @@ import FollowUnfollowButton from '@src/components/follow-unfollow-button.tsx';
 // import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 
 // Profile Components
-import ProfileRightSidebar from "@src/sections/user/components/profile-right-sidebar.tsx";
+import ProfileRightSidebar from '@src/sections/user/components/profile-right-sidebar.tsx';
 // import ProfileJoin from "@src/sections/user/components/profile-join.tsx";
-import ProfileUserInfo from "@src/sections/user/components/profile-user-info.tsx";
+import ProfileUserInfo from '@src/sections/user/components/profile-user-info.tsx';
 import ProfileWrapper from './profile-wrapper.tsx';
-import ProfileToolbar from "@src/sections/user/components/profile-toolbar.tsx";
+import ProfileToolbar from '@src/sections/user/components/profile-toolbar.tsx';
 // import { useGetSubscriptionCampaign } from '@src/hooks/protocol/use-get-subscription-campaign.ts';
 // import { useGetCampaignIsActive } from '@src/hooks/protocol/use-get-campaign-is-active.ts';
 // import { SponsoredAccessTrialButton } from '@src/components/sponsored-access-button/sponsored-access-button.tsx';
@@ -82,18 +82,39 @@ const ProfileHeader = (props: PropsWithChildren<ProfileHeaderProps>) => {
       {/*{session?.authenticated ? <ProfileReport profile={profile} /> : <></>}*/}
 
       {/*<ProfileWrapper sidebar={<ProfileRightSidebar profile={profile} sidebarProps={{ attestationLoading, attestation, hasAccess, accessLoading, isAuthorized, authorizedLoading }} />}>*/}
-      <ProfileWrapper sidebar={<ProfileRightSidebar profile={profile} sidebarProps={{ attestationLoading: false, attestation: undefined, hasAccess: true, accessLoading: false, isAuthorized: true, authorizedLoading: false }} />}>
-
-        <ProfileToolbar profile={profile} profileImage={profile?.profilePicture ?? ''} />
+      <ProfileWrapper
+        sidebar={
+          <ProfileRightSidebar
+            profile={profile}
+            sidebarProps={{
+              attestationLoading: false,
+              attestation: undefined,
+              hasAccess: true,
+              accessLoading: false,
+              isAuthorized: true,
+              authorizedLoading: false,
+            }}
+          />
+        }
+      >
+        <ProfileToolbar
+          profile={profile}
+          profileImage={profile?.profilePicture ?? ''}
+        />
 
         <Stack
           direction="column"
-          sx={{ width: '100%', maxWidth: { xs: 'calc(100% - 2rem)', md: '100%' } }}
+          sx={{
+            width: '100%',
+            maxWidth: { xs: 'calc(100% - 2rem)', md: '100%' },
+          }}
         >
-
           <ProfileUserInfo profile={profile} />
 
-          <Stack direction="row" sx={{ width: '100%', mb: 2, gap: 2, flexWrap: 'wrap' }}>
+          <Stack
+            direction="row"
+            sx={{ width: '100%', mb: 2, gap: 2, flexWrap: 'wrap' }}
+          >
             <>
               {/*{authorizedLoading || isAuthLoading || (!showJoinButton && !showSponsoredAccessButton && isAuthorized) && (*/}
               {isAuthLoading && (
@@ -129,7 +150,10 @@ const ProfileHeader = (props: PropsWithChildren<ProfileHeaderProps>) => {
               {/*}*/}
 
               {profile?.address !== session?.address && (
-                <FollowUnfollowButton profileId={profile?.address} onActionFinish={onActionFinish} />
+                <FollowUnfollowButton
+                  profileId={profile?.address}
+                  onActionFinish={onActionFinish}
+                />
               )}
             </>
           </Stack>

@@ -52,7 +52,9 @@ export default function NavToggleButton({ sx, ...other }: IconButtonProps) {
       <Iconify
         width={16}
         icon={
-          minibarState === 'vertical' ? 'eva:arrow-ios-back-fill' : 'eva:arrow-ios-forward-fill'
+          minibarState === 'vertical'
+            ? 'eva:arrow-ios-back-fill'
+            : 'eva:arrow-ios-forward-fill'
         }
       />
     </IconButton>

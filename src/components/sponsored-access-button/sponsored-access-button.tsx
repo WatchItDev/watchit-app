@@ -20,7 +20,9 @@ import { useAuth } from '@src/hooks/use-auth.ts';
 import { ExtendedSponsoredAccessProps } from '@src/components/sponsored-access-button/types.ts';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 
-export const SponsoredAccessTrialButton: FC<ExtendedSponsoredAccessProps> = (props) => {
+export const SponsoredAccessTrialButton: FC<ExtendedSponsoredAccessProps> = (
+  props,
+) => {
   const {
     holderAddress,
     campaignAddress,
@@ -33,7 +35,6 @@ export const SponsoredAccessTrialButton: FC<ExtendedSponsoredAccessProps> = (pro
   const dispatch = useDispatch();
   const { session } = useAuth();
   const { sponsoredAccessAgreement, loading } = useSponsoredAccessAgreement();
-
 
   const handleTrial = async () => {
     try {
@@ -50,35 +51,37 @@ export const SponsoredAccessTrialButton: FC<ExtendedSponsoredAccessProps> = (pro
       });
       onSuccess?.();
     } catch (error) {
-      console.error('Error trying to execute sponsored access agreement', error);
+      console.error(
+        'Error trying to execute sponsored access agreement',
+        error,
+      );
     }
   };
-
 
   const computedNeonPaperProps =
     size === 'sm'
       ? {
-        borderRadius: '10px',
-        width: 'auto',
-        height: '38px',
-        sx: {
+          borderRadius: '10px',
+          width: 'auto',
           height: '38px',
-        },
-        ...(loading && { animationSpeed: '3s' }),
-        ...neonPaperProps,
-      }
+          sx: {
+            height: '38px',
+          },
+          ...(loading && { animationSpeed: '3s' }),
+          ...neonPaperProps,
+        }
       : neonPaperProps;
 
   const computedButtonProps =
     size === 'sm'
       ? {
-        sx: {
-          width: '100%',
-          height: '100%',
-          maxHeight: '38px',
-        },
-        ...buttonProps,
-      }
+          sx: {
+            width: '100%',
+            height: '100%',
+            maxHeight: '38px',
+          },
+          ...buttonProps,
+        }
       : buttonProps;
 
   const RainbowEffect = loading ? NeonPaper : Box;
@@ -87,7 +90,11 @@ export const SponsoredAccessTrialButton: FC<ExtendedSponsoredAccessProps> = (pro
 
   return (
     <RainbowEffect {...computedNeonPaperProps} padding={loading ? '2px' : '0'}>
-      <StyledBoxGradient onClick={handleTrial} loading={loading} {...computedButtonProps}>
+      <StyledBoxGradient
+        onClick={handleTrial}
+        loading={loading}
+        {...computedButtonProps}
+      >
         <Icon icon="cil:media-play" width="18" height="18" />
         <Typography
           variant="body2"
@@ -95,7 +102,7 @@ export const SponsoredAccessTrialButton: FC<ExtendedSponsoredAccessProps> = (pro
             lineHeight: 1,
             fontWeight: '700',
             ml: 1,
-            display: { xs: size === 'sm' ? 'none' : 'flex', md: 'flex' }
+            display: { xs: size === 'sm' ? 'none' : 'flex', md: 'flex' },
           }}
         >
           Free

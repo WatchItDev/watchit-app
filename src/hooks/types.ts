@@ -1,5 +1,5 @@
-import { IBaseProvider, IProvider } from "@web3auth/base"
-import { SafeEventEmitterProvider } from "@web3auth/base/dist/types/provider/IProvider"
+import { IBaseProvider, IProvider } from '@web3auth/base';
+import { SafeEventEmitterProvider } from '@web3auth/base/dist/types/provider/IProvider';
 import { BundlerClient, SmartAccount } from 'viem/account-abstraction';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -52,12 +52,12 @@ export interface NotificationItemProps {
 
 export interface SuccessResult {
   hash: string;
-  status: "success";
+  status: 'success';
 }
 
 export interface ErrorResult {
   hash: string;
-  status: "error";
+  status: 'error';
   message: string;
 }
 
@@ -160,8 +160,8 @@ export interface AccountAbstractionProvider extends IBaseProvider<IProvider> {
 }
 
 export interface MetadataAttachment {
-  cid: string,
-  type: string,
-  title: string,
-  description: string
+  cid: string;
+  type: string;
+  title: string;
+  description: string;
 }

@@ -14,7 +14,17 @@ const DailyRewards: FC = () => {
   return (
     <Card sx={{ p: 0, mr: -1 }}>
       <CardHeader title="Daily rewards (Coming soon)" sx={{ pb: 0 }} />
-      <CardContent sx={{ pl: 0, pr: 0, opacity: 0.5, display: 'flex', alignItems: 'center', flexDirection: 'column', justifyContent: 'flex-start' }}>
+      <CardContent
+        sx={{
+          pl: 0,
+          pr: 0,
+          opacity: 0.5,
+          display: 'flex',
+          alignItems: 'center',
+          flexDirection: 'column',
+          justifyContent: 'flex-start',
+        }}
+      >
         <Box
           component="img"
           src={WheelImg}
@@ -38,6 +48,6 @@ const DailyRewards: FC = () => {
       </CardContent>
     </Card>
   );
-}
+};
 
 export default DailyRewards;

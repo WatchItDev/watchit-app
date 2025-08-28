@@ -1,6 +1,6 @@
-import { describe, expect, it } from "vitest";
-import { render } from "@testing-library/react";
-import FinanceBoxRow from "../finance-box-row";
+import { describe, expect, it } from 'vitest';
+import { render } from '@testing-library/react';
+import FinanceBoxRow from '../finance-box-row';
 
 const renderComponent = () => {
   return render(
@@ -10,25 +10,25 @@ const renderComponent = () => {
     </FinanceBoxRow>,
   );
 };
-describe("[COMPONENTS] <FinanceBoxRow />", () => {
-  it("renders correctly with children and matches snapshot", () => {
+describe('[COMPONENTS] <FinanceBoxRow />', () => {
+  it('renders correctly with children and matches snapshot', () => {
     const { container } = renderComponent();
     expect(container).toMatchSnapshot();
   });
 
-  it("renders children correctly", () => {
+  it('renders children correctly', () => {
     const { getByText } = renderComponent();
-    expect(getByText("Child 1")).toBeInTheDocument();
-    expect(getByText("Child 2")).toBeInTheDocument();
+    expect(getByText('Child 1')).toBeInTheDocument();
+    expect(getByText('Child 2')).toBeInTheDocument();
   });
 
-  it("has correct styles", () => {
+  it('has correct styles', () => {
     const { container } = renderComponent();
-    const boxElement = container.querySelector("div");
-    expect(boxElement).toHaveStyle("display: flex");
-    expect(boxElement).toHaveStyle("align-items: center");
-    expect(boxElement).toHaveStyle("justify-content: space-between");
-    expect(boxElement).toHaveStyle("margin-top: 4px");
-    expect(boxElement).toHaveStyle("margin-bottom: 4px");
+    const boxElement = container.querySelector('div');
+    expect(boxElement).toHaveStyle('display: flex');
+    expect(boxElement).toHaveStyle('align-items: center');
+    expect(boxElement).toHaveStyle('justify-content: space-between');
+    expect(boxElement).toHaveStyle('margin-top: 4px');
+    expect(boxElement).toHaveStyle('margin-bottom: 4px');
   });
 });

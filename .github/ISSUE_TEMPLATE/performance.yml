@@ -1,6 +1,6 @@
 name: Performance Issue
 description: Issues related to performance
-title: "performance: "
+title: 'performance: '
 type: performance
 labels:
   - performance

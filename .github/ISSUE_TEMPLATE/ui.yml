@@ -1,6 +1,6 @@
 name: UI Issue
 description: Issues related to the user interface
-title: "ui: "
+title: 'ui: '
 type: ui
 labels:
   - ui

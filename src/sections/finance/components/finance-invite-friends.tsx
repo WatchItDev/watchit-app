@@ -12,13 +12,16 @@ import Typography from '@mui/material/Typography';
 import { bgGradient } from '@src/theme/css';
 import { COLORS } from '@src/layouts/config-layout.ts';
 
-import { notifyError, notifySuccess } from '@src/libs/notifications/internal-notifications.ts';
+import {
+  notifyError,
+  notifySuccess,
+} from '@src/libs/notifications/internal-notifications.ts';
 import { SUCCESS } from '@src/libs/notifications/success.ts';
 import { ERRORS } from '@src/libs/notifications/errors';
 
-import useReferrals from "@src/hooks/use-referrals";
+import useReferrals from '@src/hooks/use-referrals';
 import LoadingButton from '@mui/lab/LoadingButton';
-import { checkIfEmailAlreadyInvited } from "@src/libs/supabase-actions.ts";
+import { checkIfEmailAlreadyInvited } from '@src/libs/supabase-actions.ts';
 import { useAuth } from '@src/hooks/use-auth.ts';
 import { resolveSrc } from '@src/utils/image.ts';
 
@@ -37,11 +40,8 @@ export default function FinanceInviteFriends({
   sx,
   ...other
 }: Props) {
-  const {
-    sendInvitation,
-    checkIfInvitationSent,
-    checkIfEmailAlreadyAccepted,
-  } = useReferrals();
+  const { sendInvitation, checkIfInvitationSent, checkIfEmailAlreadyAccepted } =
+    useReferrals();
   const theme = useTheme();
   const { session: sessionData } = useAuth();
   const [email, setEmail] = useState('');
@@ -52,15 +52,14 @@ export default function FinanceInviteFriends({
   };
 
   /*
-  * Return true if the email is valid, false otherwise.
-  * */
+   * Return true if the email is valid, false otherwise.
+   * */
   const handleValidEmail = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
-  }
+  };
 
   const handleInviteClick = async () => {
-
     if (!handleValidEmail()) {
       notifyError(ERRORS.INVITATION_EMAIL_ERROR);
       return;
@@ -108,7 +107,10 @@ export default function FinanceInviteFriends({
         from: {
           id: sessionData?.address,
           displayName: sessionData.user?.displayName,
-          avatar: resolveSrc((sessionData?.user?.profilePicture || sessionData?.address) ?? '', 'profile'),
+          avatar: resolveSrc(
+            (sessionData?.user?.profilePicture || sessionData?.address) ?? '',
+            'profile',
+          ),
         },
       },
     };
@@ -157,7 +159,11 @@ export default function FinanceInviteFriends({
           }),
         }}
       >
-        <Stack direction="row" alignItems="center" justifyContent="space-between">
+        <Stack
+          direction="row"
+          alignItems="center"
+          justifyContent="space-between"
+        >
           <Typography variant={'h3'} textAlign={'center'}>
             {title}
             <Stack
@@ -175,12 +181,22 @@ export default function FinanceInviteFriends({
               >
                 {price}
               </Box>
-              <Box sx={{ typography: 'h6', opacity: 0.5, ml: 1, mb: 1 }}>MMC</Box>
+              <Box sx={{ typography: 'h6', opacity: 0.5, ml: 1, mb: 1 }}>
+                MMC
+              </Box>
             </Stack>
           </Typography>
         </Stack>
 
-        <Box sx={{ mt: 2, mb: 3, typography: 'body1', fontWeight: 300, opacity: 0.8 }}>
+        <Box
+          sx={{
+            mt: 2,
+            mb: 3,
+            typography: 'body1',
+            fontWeight: 300,
+            opacity: 0.8,
+          }}
+        >
           {description}
         </Box>
 

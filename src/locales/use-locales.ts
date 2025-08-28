@@ -16,14 +16,15 @@ export default function useLocales() {
 
   const langStorage = localStorageGetItem('i18nextLng');
 
-  const currentLang = allLangs.find((lang) => lang.value === langStorage) || defaultLang;
+  const currentLang =
+    allLangs.find((lang) => lang.value === langStorage) || defaultLang;
 
   const onChangeLang = useCallback(
     (newlang: string) => {
       i18n.changeLanguage(newlang);
       settings.onChangeDirectionByLang(newlang);
     },
-    [i18n, settings]
+    [i18n, settings],
   );
 
   return {

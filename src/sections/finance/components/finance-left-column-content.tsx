@@ -9,7 +9,9 @@ import { FinanceTabs } from '@src/sections/finance/components/finance-tabs';
 import { LeftColumnContentProps } from '@src/sections/finance/types.ts';
 import { useResponsive } from '@src/hooks/use-responsive.ts';
 
-export const FinanceLeftColumnContent: React.FC<LeftColumnContentProps> = (props) => {
+export const FinanceLeftColumnContent: React.FC<LeftColumnContentProps> = (
+  props,
+) => {
   const { following } = props;
   const lgUp = useResponsive('up', 'lg');
 

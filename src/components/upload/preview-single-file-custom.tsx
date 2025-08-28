@@ -6,7 +6,10 @@ import { SingleFilePreviewProps } from './preview-single-file';
 
 // ----------------------------------------------------------------------
 
-export default function SingleFilePreviewCustom({ imgUrl = '', ratio }: SingleFilePreviewProps) {
+export default function SingleFilePreviewCustom({
+  imgUrl = '',
+  ratio,
+}: SingleFilePreviewProps) {
   return (
     <Box
       className="custom"

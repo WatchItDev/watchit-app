@@ -46,7 +46,7 @@ const transactionsSlice = createSlice({
     addTransaction: (state, action: PayloadAction<TransactionLog>) => {
       // Avoid duplicates based on transactionHash
       const exists = state.transactions.find(
-        (tx) => tx.transactionHash === action.payload.transactionHash
+        (tx) => tx.transactionHash === action.payload.transactionHash,
       );
       if (!exists) {
         state.transactions.unshift(action.payload); // Add to the beginning to maintain order

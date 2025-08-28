@@ -28,7 +28,7 @@ const AvatarProfile = forwardRef<HTMLDivElement, AvatarProfileProps>(
         {...other}
       />
     );
-  }
+  },
 );
 
 AvatarProfile.displayName = 'AvatarProfile';

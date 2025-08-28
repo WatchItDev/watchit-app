@@ -14,7 +14,12 @@ interface Props {
   onChange: (newValue: string) => void;
 }
 
-export default function BaseOptions({ icons, options, value, onChange }: Props) {
+export default function BaseOptions({
+  icons,
+  options,
+  value,
+  onChange,
+}: Props) {
   return (
     <Stack direction="row" spacing={2}>
       {options.map((option, index) => {
@@ -28,7 +33,8 @@ export default function BaseOptions({ icons, options, value, onChange }: Props) 
               width: 1,
               height: 80,
               borderRadius: 1,
-              border: (theme) => `solid 1px ${alpha(theme.palette.grey[500], 0.08)}`,
+              border: (theme) =>
+                `solid 1px ${alpha(theme.palette.grey[500], 0.08)}`,
               ...(selected && {
                 bgcolor: 'background.paper',
                 boxShadow: (theme) =>
@@ -36,7 +42,7 @@ export default function BaseOptions({ icons, options, value, onChange }: Props) 
                     theme.palette.mode === 'light'
                       ? theme.palette.grey[500]
                       : theme.palette.common.black,
-                    0.08
+                    0.08,
                   )}`,
               }),
               '& .svg-color': {
@@ -49,7 +55,9 @@ export default function BaseOptions({ icons, options, value, onChange }: Props) 
               },
             }}
           >
-            <SvgColor src={`/assets/icons/setting/ic_${index === 0 ? icons[0] : icons[1]}.svg`} />
+            <SvgColor
+              src={`/assets/icons/setting/ic_${index === 0 ? icons[0] : icons[1]}.svg`}
+            />
           </ButtonBase>
         );
       })}

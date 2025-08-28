@@ -5,8 +5,8 @@ import { NotificationCategories } from '@src/hooks/types';
 vi.mock('@src/redux/notifications', () => ({
   appendNotification: vi.fn((data) => ({
     type: 'notifications/appendNotification',
-    payload: data
-  }))
+    payload: data,
+  })),
 }));
 
 describe('[UTILS]: handleNotification', () => {
@@ -26,18 +26,22 @@ describe('[UTILS]: handleNotification', () => {
         payload: { type: 'NOTIFICATION' },
         category: NotificationCategories.COMMENT,
         created_at: new Date().toISOString(),
-        read: false
-      }
+        read: false,
+      },
     };
 
     handleNotification(mockPayload, mockProfileId, mockDispatch);
 
     expect(mockDispatch).toHaveBeenCalledTimes(1);
-    expect(mockDispatch).toHaveBeenCalledWith(appendNotification(expect.objectContaining({
-      id: 'notification123',
-      notification: mockPayload.new,
-      onMarkAsRead: expect.any(Function)
-    })));
+    expect(mockDispatch).toHaveBeenCalledWith(
+      appendNotification(
+        expect.objectContaining({
+          id: 'notification123',
+          notification: mockPayload.new,
+          onMarkAsRead: expect.any(Function),
+        }),
+      ),
+    );
   });
 
   it('does not dispatch when profileId does not match receiver_id', () => {
@@ -49,8 +53,8 @@ describe('[UTILS]: handleNotification', () => {
         payload: { type: 'NOTIFICATION' },
         category: NotificationCategories.COMMENT,
         created_at: new Date().toISOString(),
-        read: false
-      }
+        read: false,
+      },
     };
 
     handleNotification(mockPayload, mockProfileId, mockDispatch);
@@ -67,8 +71,8 @@ describe('[UTILS]: handleNotification', () => {
         payload: { type: 'NOTIFICATION' },
         category: NotificationCategories.COMMENT,
         created_at: new Date().toISOString(),
-        read: false
-      }
+        read: false,
+      },
     };
 
     expect(() => handleNotification(mockPayload, mockProfileId)).not.toThrow();
@@ -84,8 +88,8 @@ describe('[UTILS]: handleNotification', () => {
         payload: { type: 'NOTIFICATION' },
         category: NotificationCategories.COMMENT,
         created_at: new Date().toISOString(),
-        read: false
-      }
+        read: false,
+      },
     };
 
     handleNotification(mockPayload, mockProfileId, mockDispatch);
@@ -96,7 +100,9 @@ describe('[UTILS]: handleNotification', () => {
 
     notificationItem.onMarkAsRead('notification123');
 
-    expect(consoleSpy).toHaveBeenCalledWith('Mark as read will be handled by UI for notification: notification123');
+    expect(consoleSpy).toHaveBeenCalledWith(
+      'Mark as read will be handled by UI for notification: notification123',
+    );
   });
 });
 
@@ -119,14 +125,18 @@ describe('[UTILS]: handleEvents', () => {
         payload: { type: 'NOTIFICATION' },
         category: NotificationCategories.COMMENT,
         created_at: new Date().toISOString(),
-        read: false
-      }
+        read: false,
+      },
     };
 
     handleEvents(mockPayload, mockProfileId, mockDispatch);
 
     expect(handleNotificationSpy).toHaveBeenCalledTimes(1);
-    expect(handleNotificationSpy).toHaveBeenCalledWith(mockPayload, mockProfileId, mockDispatch);
+    expect(handleNotificationSpy).toHaveBeenCalledWith(
+      mockPayload,
+      mockProfileId,
+      mockDispatch,
+    );
   });
 
   it('does nothing when handler for event type is not found', () => {
@@ -138,11 +148,13 @@ describe('[UTILS]: handleEvents', () => {
         payload: { type: 'UNKNOWN_EVENT_TYPE' },
         category: NotificationCategories.COMMENT,
         created_at: new Date().toISOString(),
-        read: false
-      }
+        read: false,
+      },
     };
 
-    expect(() => handleEvents(mockPayload, mockProfileId, mockDispatch)).not.toThrow();
+    expect(() =>
+      handleEvents(mockPayload, mockProfileId, mockDispatch),
+    ).not.toThrow();
 
     expect(mockDispatch).not.toHaveBeenCalled();
   });
@@ -156,11 +168,13 @@ describe('[UTILS]: handleEvents', () => {
         category: NotificationCategories.COMMENT,
         created_at: new Date().toISOString(),
         read: false,
-        payload: {}
-      }
+        payload: {},
+      },
     };
 
-    expect(() => handleEvents(incompletePayload, mockProfileId, mockDispatch)).not.toThrow();
+    expect(() =>
+      handleEvents(incompletePayload, mockProfileId, mockDispatch),
+    ).not.toThrow();
   });
 });
 

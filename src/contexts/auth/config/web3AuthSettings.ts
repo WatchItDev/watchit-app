@@ -4,7 +4,11 @@ import {
   AccountAbstractionProvider,
   KernelSmartAccount,
 } from '@web3auth/account-abstraction-provider';
-import { CHAIN_NAMESPACES, WALLET_ADAPTERS, WEB3AUTH_NETWORK } from '@web3auth/base';
+import {
+  CHAIN_NAMESPACES,
+  WALLET_ADAPTERS,
+  WEB3AUTH_NETWORK,
+} from '@web3auth/base';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 import { polygonAmoy } from 'viem/chains';
 
@@ -133,8 +137,10 @@ export function web3AuthFactory(): Web3Auth {
       loginMethodsOrder: ['google'],
       defaultLanguage: 'en',
       modalZIndex: '2147483647',
-      logoLight: 'https://pbs.twimg.com/profile_images/1814015504412987392/7FKUViWb_400x400.jpg',
-      logoDark: 'https://pbs.twimg.com/profile_images/1814015504412987392/7FKUViWb_400x400.jpg',
+      logoLight:
+        'https://pbs.twimg.com/profile_images/1814015504412987392/7FKUViWb_400x400.jpg',
+      logoDark:
+        'https://pbs.twimg.com/profile_images/1814015504412987392/7FKUViWb_400x400.jpg',
       uxMode: 'popup',
       mode: 'dark',
     },

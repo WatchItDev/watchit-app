@@ -8,7 +8,9 @@ import { useRouter } from '@src/routes/hooks';
 import { paths } from '@src/routes/paths';
 import { useGetTipsByBakerForPostQuery } from '@src/graphql/generated/hooks';
 
-interface Props { postId: string }
+interface Props {
+  postId: string;
+}
 const SIZE = {
   hero: 72,
   heroMd: 64,
@@ -68,7 +70,11 @@ export function PublicationSponsorsAndBackers({ postId }: Props) {
         </m.div>
 
         {loading && (
-          <Stack direction="row" spacing={1.5} sx={{ mt: 1, overflowX: 'auto', pb: 1 }}>
+          <Stack
+            direction="row"
+            spacing={1.5}
+            sx={{ mt: 1, overflowX: 'auto', pb: 1 }}
+          >
             {Array.from({ length: 8 }).map((_, i) => (
               <Skeleton key={i} variant="circular" width={56} height={56} />
             ))}
@@ -93,8 +99,12 @@ export function PublicationSponsorsAndBackers({ postId }: Props) {
             }}
           >
             {backers.map((b) => {
-              const name = b.baker.displayName || b.baker.username || b.baker.address;
-              const avatarSrc = resolveSrc(b.baker.profilePicture || b.baker.address, 'profile');
+              const name =
+                b.baker.displayName || b.baker.username || b.baker.address;
+              const avatarSrc = resolveSrc(
+                b.baker.profilePicture || b.baker.address,
+                'profile',
+              );
               return (
                 <Tooltip
                   key={b.baker.address}
@@ -102,15 +112,22 @@ export function PublicationSponsorsAndBackers({ postId }: Props) {
                     <Box>
                       <Typography variant="subtitle2">{name}</Typography>
                       <Typography variant="caption" sx={{ opacity: 0.8 }}>
-                        {Math.floor(b.totalAmount)} MMC · {b.count} {b.count === 1 ? 'tip' : 'tips'}
+                        {Math.floor(b.totalAmount)} MMC · {b.count}{' '}
+                        {b.count === 1 ? 'tip' : 'tips'}
                       </Typography>
                     </Box>
                   }
                   arrow
                   placement="top"
                 >
-                  <BackerItem onClick={() => goTo(b.baker.address)} role="button" tabIndex={0}
-                              onKeyDown={(e) => (e.key === 'Enter' ? goTo(b.baker.address) : null)}>
+                  <BackerItem
+                    onClick={() => goTo(b.baker.address)}
+                    role="button"
+                    tabIndex={0}
+                    onKeyDown={(e) =>
+                      e.key === 'Enter' ? goTo(b.baker.address) : null
+                    }
+                  >
                     <AvatarProfile
                       src={avatarSrc}
                       variant="rounded"
@@ -121,9 +138,7 @@ export function PublicationSponsorsAndBackers({ postId }: Props) {
                         boxShadow: '0 8px 20px rgba(0,0,0,0.40)',
                       }}
                     />
-                    <AmountPill>
-                      {Math.floor(b.totalAmount)}
-                    </AmountPill>
+                    <AmountPill>{Math.floor(b.totalAmount)}</AmountPill>
                   </BackerItem>
                 </Tooltip>
               );
@@ -139,7 +154,9 @@ const BackerItem = styled(Box)(({ theme }) => ({
   position: 'relative',
   cursor: 'pointer',
   transform: 'scale(0.9)',
-  transition: theme.transitions.create(['transform', 'opacity'], { duration: 160 }),
+  transition: theme.transitions.create(['transform', 'opacity'], {
+    duration: 160,
+  }),
   '&:hover': {
     transform: 'translateY(-3px)',
     opacity: 0.96,

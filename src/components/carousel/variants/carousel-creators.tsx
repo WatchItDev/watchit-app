@@ -5,10 +5,10 @@ import CarouselWrapper from './carousel-wrapper.tsx';
 import { CarouselCreatorsProps } from '../types';
 import { User } from '@src/graphql/generated/graphql.ts';
 
- const CarouselCreators: FC<CarouselCreatorsProps> = (params) => {
+const CarouselCreators: FC<CarouselCreatorsProps> = (params) => {
   const { profiles, title, minItemWidth, maxItemWidth } = params;
 
-   const carouselSettings = {
+  const carouselSettings = {
     infinite: false,
     slidesToShow: 1,
     speed: 500,
@@ -29,9 +29,7 @@ import { User } from '@src/graphql/generated/graphql.ts';
     },
   };
 
-  const renderItem = (profile: User) => (
-    <UserItem profile={profile} />
-  );
+  const renderItem = (profile: User) => <UserItem profile={profile} />;
 
   const carouselParams = {
     data: profiles || [],
@@ -48,11 +46,9 @@ import { User } from '@src/graphql/generated/graphql.ts';
     ),
     carouselSettings,
     boxStyle,
-  }
+  };
 
-  return (
-    <CarouselWrapper {... carouselParams} />
-  );
-}
+  return <CarouselWrapper {...carouselParams} />;
+};
 
 export default memo(CarouselCreators);

@@ -3,8 +3,11 @@ import { encodeFunctionData } from 'viem';
 import CampaignSubscriptionTplAbi from '@src/config/abi/CampaignSubscriptionTpl.json';
 import { ERRORS } from '@src/libs/notifications/errors';
 import { useAccountSession } from '@src/hooks/use-account-session.ts';
-import {UseCampaignPauseHook, UseCampaignPauseResult} from '@src/hooks/protocol/types.ts'
-import { Calls } from '@src/hooks/types.ts'
+import {
+  UseCampaignPauseHook,
+  UseCampaignPauseResult,
+} from '@src/hooks/protocol/types.ts';
+import { Calls } from '@src/hooks/types.ts';
 import { useAuth } from '@src/hooks/use-auth.ts';
 import { useWeb3Auth } from '@src/hooks/use-web3-auth.ts';
 

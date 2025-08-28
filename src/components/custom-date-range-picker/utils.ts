@@ -11,12 +11,18 @@ export function shortDateLabel(startDate: Date | null, endDate: Date | null) {
 
   const endDateYear = endDate ? getYear(endDate) : null;
 
-  const currentYear = getCurrentYear === startDateYear && getCurrentYear === endDateYear;
+  const currentYear =
+    getCurrentYear === startDateYear && getCurrentYear === endDateYear;
 
-  const sameDay = startDate && endDate ? isSameDay(new Date(startDate), new Date(endDate)) : false;
+  const sameDay =
+    startDate && endDate
+      ? isSameDay(new Date(startDate), new Date(endDate))
+      : false;
 
   const sameMonth =
-    startDate && endDate ? isSameMonth(new Date(startDate), new Date(endDate)) : false;
+    startDate && endDate
+      ? isSameMonth(new Date(startDate), new Date(endDate))
+      : false;
 
   if (currentYear) {
     if (sameMonth) {

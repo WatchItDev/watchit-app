@@ -7,7 +7,6 @@ import { LoadingScreen, SplashScreen } from '@src/components/loading-screen';
 import CompactLayout from '@src/layouts/compact';
 import AppReady from '@src/components/app-ready.tsx';
 
-
 // ----------------------------------------------------------------------
 
 // OVERVIEW
@@ -30,7 +29,9 @@ const StrategyPage = lazy(() => import('@src/pages/marketing/index.tsx'));
 // USER
 const UserProfilePage = lazy(() => import('@src/pages/user/profile'));
 // MOVIE
-const PublicationDetailsPage = lazy(() => import('@src/pages/publication/details'));
+const PublicationDetailsPage = lazy(
+  () => import('@src/pages/publication/details'),
+);
 
 const Page500 = lazy(() => import('@src/pages/500'));
 const Page403 = lazy(() => import('@src/pages/403'));
@@ -64,9 +65,7 @@ export const dashboardRoutes = [
       { path: 'profile/:id', element: <UserProfilePage /> },
       {
         path: 'governance',
-        children: [
-          { element: <GovernancePage />, index: true },
-        ],
+        children: [{ element: <GovernancePage />, index: true }],
       },
       {
         path: 'user',
@@ -77,9 +76,7 @@ export const dashboardRoutes = [
       },
       {
         path: 'publication',
-        children: [
-          { path: ':id', element: <PublicationDetailsPage /> },
-        ],
+        children: [{ path: ':id', element: <PublicationDetailsPage /> }],
       },
     ],
   },

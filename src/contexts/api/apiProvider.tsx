@@ -1,19 +1,22 @@
 import React, { useMemo } from 'react';
-import { createClient } from "graphql-ws";
-import { OperationTypeNode } from "graphql";
+import { createClient } from 'graphql-ws';
+import { OperationTypeNode } from 'graphql';
 import {
   ApolloClient,
   ApolloProvider,
   InMemoryCache,
   HttpLink,
-  concat, split
+  concat,
+  split,
 } from '@apollo/client';
 import { useAuth } from '@src/hooks/use-auth.ts';
-import { GraphQLWsLink } from "@apollo/client/link/subscriptions";
+import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
 import { setContext } from '@apollo/client/link/context';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 
-export const ApiProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const ApiProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const { session } = useAuth();
 
   const apollo = useMemo(() => {
@@ -24,19 +27,22 @@ export const ApiProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     // https://www.apollographql.com/docs/react/data/subscriptions
     const wsLink = new GraphQLWsLink(
       createClient({
-        url: `ws://localhost:4000/subscriptions`
-      })
+        url: `ws://localhost:4000/subscriptions`,
+      }),
     );
 
     const splitLink = split(
       ({ operationName }) => operationName === OperationTypeNode.SUBSCRIPTION,
-      wsLink, httpLink
+      wsLink,
+      httpLink,
     );
 
     const authLink = setContext((_, { headers }) => ({
       headers: {
         ...headers,
-        Authorization: session?.info?.idToken ? `Bearer ${session?.info?.idToken}` : '',
+        Authorization: session?.info?.idToken
+          ? `Bearer ${session?.info?.idToken}`
+          : '',
       },
     }));
 
@@ -51,9 +57,5 @@ export const ApiProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     });
   }, [session]);
 
-  return (
-    <ApolloProvider client={apollo}>
-      {children}
-    </ApolloProvider>
-  );
+  return <ApolloProvider client={apollo}>{children}</ApolloProvider>;
 };

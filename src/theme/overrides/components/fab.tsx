@@ -3,7 +3,14 @@ import { FabProps, fabClasses } from '@mui/material/Fab';
 
 // ----------------------------------------------------------------------
 
-const COLORS = ['primary', 'secondary', 'info', 'success', 'warning', 'error'] as const;
+const COLORS = [
+  'primary',
+  'secondary',
+  'info',
+  'success',
+  'warning',
+  'error',
+] as const;
 
 // NEW VARIANT
 declare module '@mui/material/Fab' {
@@ -48,9 +55,13 @@ export function fab(theme: Theme) {
         }),
         ...(inheritColor && {
           backgroundColor: theme.palette.text.primary,
-          color: lightMode ? theme.palette.common.white : theme.palette.grey[800],
+          color: lightMode
+            ? theme.palette.common.white
+            : theme.palette.grey[800],
           '&:hover': {
-            backgroundColor: lightMode ? theme.palette.grey[700] : theme.palette.grey[400],
+            backgroundColor: lightMode
+              ? theme.palette.grey[700]
+              : theme.palette.grey[400],
           },
         }),
       }),
@@ -130,7 +141,9 @@ export function fab(theme: Theme) {
     };
 
     const size = {
-      ...((extendedVariant || outlinedExtendedVariant || softExtendedVariant) && {
+      ...((extendedVariant ||
+        outlinedExtendedVariant ||
+        softExtendedVariant) && {
         width: 'auto',
         '& svg': {
           marginRight: theme.spacing(1),
@@ -162,7 +175,8 @@ export function fab(theme: Theme) {
   return {
     MuiFab: {
       styleOverrides: {
-        root: ({ ownerState }: { ownerState: FabProps }) => rootStyles(ownerState),
+        root: ({ ownerState }: { ownerState: FabProps }) =>
+          rootStyles(ownerState),
       },
     },
   };

@@ -12,7 +12,13 @@ function BackgroundShape() {
   return (
     <>
       <defs>
-        <linearGradient id="BG" x1="19.496%" x2="77.479%" y1="71.822%" y2="16.69%">
+        <linearGradient
+          id="BG"
+          x1="19.496%"
+          x2="77.479%"
+          y1="71.822%"
+          y2="16.69%"
+        >
           <stop offset="0%" stopColor={PRIMARY_MAIN} />
           <stop offset="100%" stopColor={PRIMARY_MAIN} stopOpacity="0" />
         </linearGradient>

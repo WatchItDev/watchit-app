@@ -9,13 +9,17 @@ import { ExploreTopPublications } from '@src/sections/explore/components/explore
 
 const ExploreView = () => {
   return (
-    <Container sx={{ p: '0 !important', maxWidth: '2000px !important'}}>
-      <Stack direction={'column'} spacing={1} sx={{ maxWidth: '100vw !important',  position: 'relative' }}>
+    <Container sx={{ p: '0 !important', maxWidth: '2000px !important' }}>
+      <Stack
+        direction={'column'}
+        spacing={1}
+        sx={{ maxWidth: '100vw !important', position: 'relative' }}
+      >
         <ExploreTopPublications />
         <ExplorePublications />
       </Stack>
     </Container>
   );
-}
+};
 
 export default ExploreView;

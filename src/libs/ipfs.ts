@@ -9,7 +9,10 @@ const pinataApiKey = GLOBAL_CONSTANTS.PINATA_API_KEY;
 const pinataSecretApiKey = GLOBAL_CONSTANTS.PINATA_SECRET_API_KEY;
 
 class IPFSError extends Error {
-  constructor(message: string, public originalError?: Error) {
+  constructor(
+    message: string,
+    public originalError?: Error,
+  ) {
     super(message);
     this.name = 'IPFSError';
   }
@@ -57,7 +60,10 @@ export const uploadToIPFS = async (data: File | object): Promise<string> => {
 
     return `ipfs://${response.data.IpfsHash}`;
   } catch (error) {
-    const ipfsError = new IPFSError('Error uploading to IPFS', error instanceof Error ? error : undefined);
+    const ipfsError = new IPFSError(
+      'Error uploading to IPFS',
+      error instanceof Error ? error : undefined,
+    );
     console.error(ipfsError.message);
     throw ipfsError;
   }
@@ -69,11 +75,16 @@ export const uploadToIPFS = async (data: File | object): Promise<string> => {
  * @param image - Image file.
  * @returns {Promise<string | null>} - IPFS URI of the uploaded image or null if no image.
  */
-export const uploadImageToIPFS = async (image: File | null): Promise<string | null> => {
+export const uploadImageToIPFS = async (
+  image: File | null,
+): Promise<string | null> => {
   try {
     return image ? await uploadToIPFS(image) : null;
   } catch (error) {
-    const ipfsError = new IPFSError('Error uploading image to IPFS', error instanceof Error ? error : undefined);
+    const ipfsError = new IPFSError(
+      'Error uploading image to IPFS',
+      error instanceof Error ? error : undefined,
+    );
     console.error(ipfsError.message);
     throw ipfsError;
   }
@@ -88,14 +99,24 @@ export const uploadImageToIPFS = async (image: File | null): Promise<string | nu
  */
 export const uploadImagesToIPFS = async (
   profileImage: File | null,
-  backgroundImage: File | null
-): Promise<{ profileImageURI: string | null; backgroundImageURI: string | null }> => {
+  backgroundImage: File | null,
+): Promise<{
+  profileImageURI: string | null;
+  backgroundImageURI: string | null;
+}> => {
   try {
-    const profileImageURI = profileImage ? await uploadToIPFS(profileImage) : null;
-    const backgroundImageURI = backgroundImage ? await uploadToIPFS(backgroundImage) : null;
+    const profileImageURI = profileImage
+      ? await uploadToIPFS(profileImage)
+      : null;
+    const backgroundImageURI = backgroundImage
+      ? await uploadToIPFS(backgroundImage)
+      : null;
     return { profileImageURI, backgroundImageURI };
   } catch (error) {
-    const ipfsError = new IPFSError('Error uploading images to IPFS', error instanceof Error ? error : undefined);
+    const ipfsError = new IPFSError(
+      'Error uploading images to IPFS',
+      error instanceof Error ? error : undefined,
+    );
     console.error(ipfsError.message);
     throw ipfsError;
   }
@@ -107,11 +128,16 @@ export const uploadImagesToIPFS = async (
  * @param metadata - Metadata object.
  * @returns {Promise<string>} - IPFS URI of the uploaded metadata.
  */
-export const uploadMetadataToIPFS = async (metadata: IPFSMetadata): Promise<string> => {
+export const uploadMetadataToIPFS = async (
+  metadata: IPFSMetadata,
+): Promise<string> => {
   try {
     return await uploadToIPFS(metadata);
   } catch (error) {
-    const ipfsError = new IPFSError('Error uploading metadata to IPFS', error instanceof Error ? error : undefined);
+    const ipfsError = new IPFSError(
+      'Error uploading metadata to IPFS',
+      error instanceof Error ? error : undefined,
+    );
     console.error(ipfsError.message);
     throw ipfsError;
   }

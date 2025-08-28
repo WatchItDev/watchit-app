@@ -9,7 +9,18 @@ import useTypography from './use-typography';
 // ----------------------------------------------------------------------
 
 const TextMaxLine = forwardRef<HTMLAnchorElement, TextMaxLineProps>(
-  ({ asLink, variant = 'body1', line = 2, persistent = false, children, sx, ...other }, ref) => {
+  (
+    {
+      asLink,
+      variant = 'body1',
+      line = 2,
+      persistent = false,
+      children,
+      sx,
+      ...other
+    },
+    ref,
+  ) => {
     const { lineHeight } = useTypography(variant);
 
     const styles = {
@@ -26,7 +37,13 @@ const TextMaxLine = forwardRef<HTMLAnchorElement, TextMaxLineProps>(
 
     if (asLink) {
       return (
-        <Link color="inherit" ref={ref} variant={variant} sx={{ ...styles }} {...other}>
+        <Link
+          color="inherit"
+          ref={ref}
+          variant={variant}
+          sx={{ ...styles }}
+          {...other}
+        >
           {children}
         </Link>
       );
@@ -37,7 +54,7 @@ const TextMaxLine = forwardRef<HTMLAnchorElement, TextMaxLineProps>(
         {children}
       </Typography>
     );
-  }
+  },
 );
 
 export default TextMaxLine;

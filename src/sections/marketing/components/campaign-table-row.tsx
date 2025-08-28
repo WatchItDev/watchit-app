@@ -15,8 +15,8 @@ import { formatUnits } from 'viem';
 
 // LOCAL IMPORTS
 import Iconify from '@src/components/iconify';
-import TextMaxLine from "@src/components/text-max-line";
-import CampaignSettingsModal from "@src/sections/marketing/components/campaign-settings-modal.tsx";
+import TextMaxLine from '@src/components/text-max-line';
+import CampaignSettingsModal from '@src/sections/marketing/components/campaign-settings-modal.tsx';
 import CampaignWithdrawFundsModal from '@src/sections/marketing/components/campaign-withdraw-funds-modal.tsx';
 import CustomPopover, { usePopover } from '@src/components/custom-popover';
 import { capitalizeFirstLetter } from '@src/utils/text-transform.ts';
@@ -28,22 +28,29 @@ import { useGetCampaignQuotaLimit } from '@src/hooks/protocol/use-get-campaign-q
 import { useGetCampaignTotalUsage } from '@src/hooks/protocol/use-get-campaign-total-usage.ts';
 import { useCampaignPause } from '@src/hooks/protocol/use-campaign-pause.ts';
 import { useCampaignUnPause } from '@src/hooks/protocol/use-campaign-unpause.ts';
-import {
-  CampaignConfiguredIndicatorState
-} from "@src/sections/marketing/components/campaign-configured-indicator-state.tsx";
+import { CampaignConfiguredIndicatorState } from '@src/sections/marketing/components/campaign-configured-indicator-state.tsx';
 import { useGetCampaignIsReady } from '@src/hooks/protocol/use-get-campaign-is-ready.ts';
 import { CampaignTableRowProps } from '@src/sections/marketing/types.ts';
-import { LBL_COLORS, LBL_STATUS_COLORS, POLICY_TEXTS } from '@src/sections/marketing/CONSTANTS.tsx';
+import {
+  LBL_COLORS,
+  LBL_STATUS_COLORS,
+  POLICY_TEXTS,
+} from '@src/sections/marketing/CONSTANTS.tsx';
 
 // ----------------------------------------------------------------------
 
-export default function CampaignTableRow({ row, selected }: Readonly<CampaignTableRowProps>) {
+export default function CampaignTableRow({
+  row,
+  selected,
+}: Readonly<CampaignTableRowProps>) {
   const { campaign, name, policy, expiration } = row;
   const popover = usePopover();
   const settingsModal = useBoolean();
   const withdrawModal = useBoolean();
-  const { fundsBalance, fetchCampaignFundsBalance } = useGetCampaignFundsBalance();
-  const { fundsAllocation, fetchFundsAllocation } = useGetCampaignFundsAllocation();
+  const { fundsBalance, fetchCampaignFundsBalance } =
+    useGetCampaignFundsBalance();
+  const { fundsAllocation, fetchFundsAllocation } =
+    useGetCampaignFundsAllocation();
   const { paused, fetchCampaignPaused } = useCampaignPaused();
   const { quotaLimit, fetchQuotaLimit } = useGetCampaignQuotaLimit();
   const { totalUsage, fetchTotalUsage } = useGetCampaignTotalUsage();
@@ -52,24 +59,27 @@ export default function CampaignTableRow({ row, selected }: Readonly<CampaignTab
   const { unPause, loading: loadingResume } = useCampaignUnPause();
   const type = POLICY_TEXTS[`${policy?.toLowerCase?.()}`]?.toLowerCase?.();
   const status = paused || !selected ? 'paused' : 'active';
-  const totalUsageBigInt = BigInt(totalUsage || "0");
-  const fundsAllocationBigInt = BigInt(fundsAllocation || "0");
-  const totalUsageMMCFormatted = formatUnits(totalUsageBigInt * fundsAllocationBigInt, 18);
+  const totalUsageBigInt = BigInt(totalUsage || '0');
+  const fundsAllocationBigInt = BigInt(fundsAllocation || '0');
+  const totalUsageMMCFormatted = formatUnits(
+    totalUsageBigInt * fundsAllocationBigInt,
+    18,
+  );
   const formattedExpiration = expiration
     ? new Date(Number(expiration) * 1000).toLocaleDateString('es-ES')
     : 'No Expiration';
 
   const handleFetchCampaignData = () => {
-    fetchCampaignFundsBalance(campaign)
-    fetchFundsAllocation(campaign)
-    fetchQuotaLimit(campaign)
-    fetchCampaignPaused(campaign)
-    fetchTotalUsage(campaign)
-    fetchIsReady(campaign)
+    fetchCampaignFundsBalance(campaign);
+    fetchFundsAllocation(campaign);
+    fetchQuotaLimit(campaign);
+    fetchCampaignPaused(campaign);
+    fetchTotalUsage(campaign);
+    fetchIsReady(campaign);
   };
 
   useEffect(() => {
-    handleFetchCampaignData()
+    handleFetchCampaignData();
   }, [campaign]);
 
   const onSettingRow = () => {
@@ -93,7 +103,7 @@ export default function CampaignTableRow({ row, selected }: Readonly<CampaignTab
 
   const handleSuccessWithdraw = async () => {
     await fetchCampaignFundsBalance(campaign);
-    await fetchIsReady(campaign)
+    await fetchIsReady(campaign);
   };
 
   const pauseIcon = useMemo(() => {
@@ -109,11 +119,24 @@ export default function CampaignTableRow({ row, selected }: Readonly<CampaignTab
   const renderPrimary = (
     <>
       <TableRow hover selected={selected} key={campaign}>
-        <TableCell sx={{ display: 'flex', alignItems: 'center', opacity: !selected ? 0.6 : 1 }}>
-          <CampaignConfiguredIndicatorState isReady={isReady} disabled={!selected} />
+        <TableCell
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            opacity: !selected ? 0.6 : 1,
+          }}
+        >
+          <CampaignConfiguredIndicatorState
+            isReady={isReady}
+            disabled={!selected}
+          />
           <ListItemText
             primary={<TextMaxLine line={1}>{name}</TextMaxLine>}
-            secondary={<TextMaxLine line={1}>{`${fundsAllocation ? Number(formatUnits(fundsAllocationBigInt, 18)).toFixed(2) : "0"} MMC per user`}</TextMaxLine>}
+            secondary={
+              <TextMaxLine
+                line={1}
+              >{`${fundsAllocation ? Number(formatUnits(fundsAllocationBigInt, 18)).toFixed(2) : '0'} MMC per user`}</TextMaxLine>
+            }
             primaryTypographyProps={{ typography: 'body2' }}
             secondaryTypographyProps={{
               component: 'span',
@@ -136,7 +159,7 @@ export default function CampaignTableRow({ row, selected }: Readonly<CampaignTab
 
         <TableCell sx={{ opacity: !selected ? 0.6 : 1 }}>
           <ListItemText
-            primary={`${fundsBalance ? Number(formatUnits(fundsBalance, 18)).toFixed(2) : "0"} MMC`}
+            primary={`${fundsBalance ? Number(formatUnits(fundsBalance, 18)).toFixed(2) : '0'} MMC`}
             primaryTypographyProps={{ typography: 'body2' }}
             secondaryTypographyProps={{
               mt: 0.5,
@@ -148,8 +171,14 @@ export default function CampaignTableRow({ row, selected }: Readonly<CampaignTab
 
         <TableCell sx={{ opacity: !selected ? 0.6 : 1 }}>
           <ListItemText
-            primary={<TextMaxLine line={1}>{`${totalUsageMMCFormatted} MMC`}</TextMaxLine>}
-            secondary={<TextMaxLine line={1}>{`${totalUsage} Users`}</TextMaxLine>}
+            primary={
+              <TextMaxLine
+                line={1}
+              >{`${totalUsageMMCFormatted} MMC`}</TextMaxLine>
+            }
+            secondary={
+              <TextMaxLine line={1}>{`${totalUsage} Users`}</TextMaxLine>
+            }
             primaryTypographyProps={{ typography: 'body2' }}
             secondaryTypographyProps={{
               mt: 0.5,
@@ -181,7 +210,11 @@ export default function CampaignTableRow({ row, selected }: Readonly<CampaignTab
         </TableCell>
 
         <TableCell>
-          <Grid display="flex" alignItems="center" justifyContent="space-between">
+          <Grid
+            display="flex"
+            alignItems="center"
+            justifyContent="space-between"
+          >
             <Typography
               component={'span'}
               variant="body2"
@@ -196,7 +229,10 @@ export default function CampaignTableRow({ row, selected }: Readonly<CampaignTab
               {capitalizeFirstLetter(status ?? '')}
             </Typography>
 
-            <IconButton color={popover.open ? 'inherit' : 'default'} onClick={popover.onOpen}>
+            <IconButton
+              color={popover.open ? 'inherit' : 'default'}
+              onClick={popover.onOpen}
+            >
               <Iconify icon="pixelarticons:more-vertical" />
             </IconButton>
           </Grid>
@@ -234,7 +270,11 @@ export default function CampaignTableRow({ row, selected }: Readonly<CampaignTab
         </MenuItem>
         {selected && (
           <MenuItem
-            sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+            }}
             onClick={(e) => e.stopPropagation()}
           >
             <Iconify icon={pauseIcon} />
@@ -271,7 +311,9 @@ export default function CampaignTableRow({ row, selected }: Readonly<CampaignTab
         campaignData={{
           address: campaign,
           description: name,
-          currentFundsBalance: fundsBalance ? formatUnits(fundsBalance, 18) : '0',
+          currentFundsBalance: fundsBalance
+            ? formatUnits(fundsBalance, 18)
+            : '0',
         }}
       />
     </>

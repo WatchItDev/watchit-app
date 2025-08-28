@@ -16,7 +16,10 @@ const addressSlice = createSlice({
   name: 'address',
   initialState,
   reducers: {
-    storeAddress(state, action: PayloadAction<{ address: string; profileId: string }>) {
+    storeAddress(
+      state,
+      action: PayloadAction<{ address: string; profileId: string }>,
+    ) {
       state.address = action.payload.address;
       state.profileId = action.payload.profileId;
     },

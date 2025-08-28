@@ -8,7 +8,11 @@ import { ERRORS } from '@src/libs/notifications/errors';
 import { notifyInfo } from '@src/libs/notifications/internal-notifications.ts';
 import { INFO } from '@src/libs/notifications/info.ts';
 import { useMetaMask } from '@src/hooks/use-metamask.ts';
-import {DepositParams, UseDepositHook, UseDepositMetamaskData} from '@src/hooks/protocol/types.ts'
+import {
+  DepositParams,
+  UseDepositHook,
+  UseDepositMetamaskData,
+} from '@src/hooks/protocol/types.ts';
 
 /**
  * Hook that allows the deposit flow to be made
@@ -16,7 +20,7 @@ import {DepositParams, UseDepositHook, UseDepositMetamaskData} from '@src/hooks/
  * of the smart wallet.
  */
 export const useDepositMetamask = (): UseDepositHook => {
-  const [data, setData] = useState<UseDepositMetamaskData |null >(null);
+  const [data, setData] = useState<UseDepositMetamaskData | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<keyof typeof ERRORS | null>(null);
   const { walletClient, account: address } = useMetaMask();
@@ -32,7 +36,9 @@ export const useDepositMetamask = (): UseDepositHook => {
       const weiAmount = parseUnits(amount.toString(), 18);
 
       // Notify the user that we are sending approve transaction to the network
-      notifyInfo(INFO.APPROVE_SENDING_CONFIRMATION, { options: { autoHideDuration: 3000 } });
+      notifyInfo(INFO.APPROVE_SENDING_CONFIRMATION, {
+        options: { autoHideDuration: 3000 },
+      });
 
       // 2) First transaction: approve
       const approveTxHash = await walletClient?.writeContract({
@@ -45,7 +51,9 @@ export const useDepositMetamask = (): UseDepositHook => {
       });
 
       // Notify the user that we are now waiting for the approve transaction to be confirmed
-      notifyInfo(INFO.APPROVE_WAITING_CONFIRMATION, { options: { autoHideDuration: 7000 } });
+      notifyInfo(INFO.APPROVE_WAITING_CONFIRMATION, {
+        options: { autoHideDuration: 7000 },
+      });
 
       // Wait for the approve transaction to be mined
       const approveReceipt = await publicClient.waitForTransactionReceipt({
@@ -53,7 +61,9 @@ export const useDepositMetamask = (): UseDepositHook => {
       });
 
       // Notify the user that we are now sending the deposit transaction
-      notifyInfo(INFO.DEPOSIT_SENDING_CONFIRMATION, { options: { autoHideDuration: 3000 } });
+      notifyInfo(INFO.DEPOSIT_SENDING_CONFIRMATION, {
+        options: { autoHideDuration: 3000 },
+      });
 
       // 3) Second transaction: deposit
       const depositTxHash = await walletClient?.writeContract({
@@ -66,7 +76,9 @@ export const useDepositMetamask = (): UseDepositHook => {
       });
 
       // Notify the user that we are now waiting for the deposit transaction to be confirmed
-      notifyInfo(INFO.DEPOSIT_WAITING_CONFIRMATION, { options: { autoHideDuration: 7000 } });
+      notifyInfo(INFO.DEPOSIT_WAITING_CONFIRMATION, {
+        options: { autoHideDuration: 7000 },
+      });
 
       // Wait for the deposit transaction to be mined
       const depositReceipt = await publicClient.waitForTransactionReceipt({

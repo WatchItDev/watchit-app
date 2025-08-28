@@ -14,7 +14,7 @@ export function useRouter() {
       push: (href: string) => navigate(href),
       replace: (href: string) => navigate(href, { replace: true }),
     }),
-    [navigate]
+    [navigate],
   );
 
   return router;

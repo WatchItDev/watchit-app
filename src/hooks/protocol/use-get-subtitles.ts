@@ -1,6 +1,9 @@
 import { useCallback, useState } from 'react';
 import useMetadata from '@src/hooks/protocol/use-metadata.ts';
-import { SubtitleTrack, UseGetSubtitlesReturn } from '@src/hooks/protocol/types.ts';
+import {
+  SubtitleTrack,
+  UseGetSubtitlesReturn,
+} from '@src/hooks/protocol/types.ts';
 
 /**
  * Maps common language names to standard language codes
@@ -36,46 +39,49 @@ const useGetSubtitles = (): UseGetSubtitlesReturn => {
    * @param cid Content identifier for the media
    * @returns Formatted subtitle tracks
    */
-  const getSubtitles = useCallback(async (cid: string): Promise<SubtitleTrack[]> => {
-    setLoading(true);
-    try {
-      const metadata = await getMetadata(cid);
-      const subtitleAttachments = metadata.Data.attachments.filter(
-        (attachment) => attachment.type === 'text/vtt'
-      );
+  const getSubtitles = useCallback(
+    async (cid: string): Promise<SubtitleTrack[]> => {
+      setLoading(true);
+      try {
+        const metadata = await getMetadata(cid);
+        const subtitleAttachments = metadata.Data.attachments.filter(
+          (attachment) => attachment.type === 'text/vtt',
+        );
 
-      let hasDefault = false;
-      const processedTracks = subtitleAttachments.map((attachment) => {
-        const isEnglish = attachment.title.toLowerCase() === 'english';
-        const language = getLanguageCode(attachment.title);
+        let hasDefault = false;
+        const processedTracks = subtitleAttachments.map((attachment) => {
+          const isEnglish = attachment.title.toLowerCase() === 'english';
+          const language = getLanguageCode(attachment.title);
 
-        const track: SubtitleTrack = {
-          src: `https://g.watchit.movie/content/${attachment.cid}/`,
-          label: attachment.title,
-          language,
-          kind: 'subtitles',
-          default: !hasDefault && isEnglish
-        };
+          const track: SubtitleTrack = {
+            src: `https://g.watchit.movie/content/${attachment.cid}/`,
+            label: attachment.title,
+            language,
+            kind: 'subtitles',
+            default: !hasDefault && isEnglish,
+          };
 
-        if (track.default) hasDefault = true;
-        return track;
-      });
+          if (track.default) hasDefault = true;
+          return track;
+        });
 
-      // Fallback to first track if no English found
-      if (!hasDefault && processedTracks.length > 0) {
-        processedTracks[0].default = true;
+        // Fallback to first track if no English found
+        if (!hasDefault && processedTracks.length > 0) {
+          processedTracks[0].default = true;
+        }
+
+        setTracks(processedTracks);
+        return processedTracks;
+      } catch (error) {
+        console.error('Error fetching subtitles:', error);
+        setTracks([]);
+        return [];
+      } finally {
+        setLoading(false);
       }
-
-      setTracks(processedTracks);
-      return processedTracks;
-    } catch (error) {
-      console.error('Error fetching subtitles:', error);
-      setTracks([]);
-      return [];
-    } finally {
-      setLoading(false);
-    }
-  }, [getMetadata]);
+    },
+    [getMetadata],
+  );
 
   return { tracks, loading, getSubtitles };
 };

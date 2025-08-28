@@ -29,7 +29,13 @@ export const InputAmount = ({
   }, [amount]);
 
   return (
-    <Stack direction="row" alignItems="center" justifyContent="center" spacing={1} sx={sx}>
+    <Stack
+      direction="row"
+      alignItems="center"
+      justifyContent="center"
+      spacing={1}
+      sx={sx}
+    >
       <Input
         // disableUnderline
         size="small"

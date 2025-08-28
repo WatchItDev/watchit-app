@@ -9,7 +9,7 @@ describe('[COMPONENTS]: TablePaginationCustom component testing', () => {
         page={0}
         rowsPerPage={10}
         onPageChange={() => {}}
-      />
+      />,
     );
     expect(container).toMatchSnapshot();
   });
@@ -21,10 +21,12 @@ describe('[COMPONENTS]: TablePaginationCustom component testing', () => {
         page={0}
         rowsPerPage={10}
         onPageChange={() => {}}
-      />
+      />,
     );
 
-    const selectElement = screen.getByRole('combobox', { name: /rows per page/i });
+    const selectElement = screen.getByRole('combobox', {
+      name: /rows per page/i,
+    });
     expect(selectElement).toBeInTheDocument();
   });
 
@@ -35,7 +37,7 @@ describe('[COMPONENTS]: TablePaginationCustom component testing', () => {
         page={0}
         rowsPerPage={10}
         onPageChange={() => {}}
-      />
+      />,
     );
 
     expect(screen.queryByText('Dense')).not.toBeInTheDocument();
@@ -50,7 +52,7 @@ describe('[COMPONENTS]: TablePaginationCustom component testing', () => {
         onPageChange={() => {}}
         dense={false}
         onChangeDense={() => {}}
-      />
+      />,
     );
 
     expect(screen.getByText('Dense')).toBeInTheDocument();
@@ -67,7 +69,7 @@ describe('[COMPONENTS]: TablePaginationCustom component testing', () => {
         onPageChange={() => {}}
         dense={false}
         onChangeDense={handleChangeDense}
-      />
+      />,
     );
 
     fireEvent.click(screen.getByRole('checkbox', { name: 'Dense' }));
@@ -82,7 +84,7 @@ describe('[COMPONENTS]: TablePaginationCustom component testing', () => {
         rowsPerPage={10}
         onPageChange={() => {}}
         sx={{ backgroundColor: 'rgb(240, 240, 240)' }}
-      />
+      />,
     );
 
     const boxContainer = container.firstChild;
@@ -97,7 +99,7 @@ describe('[COMPONENTS]: TablePaginationCustom component testing', () => {
         rowsPerPage={20}
         onPageChange={() => {}}
         rowsPerPageOptions={[20, 40, 60]}
-      />
+      />,
     );
 
     expect(screen.getByText('1–20 of 100')).toBeInTheDocument();
@@ -111,7 +113,7 @@ describe('[COMPONENTS]: TablePaginationCustom component testing', () => {
         page={0}
         rowsPerPage={10}
         onPageChange={handlePageChange}
-      />
+      />,
     );
 
     fireEvent.click(screen.getByRole('button', { name: /next page/i }));
@@ -127,7 +129,7 @@ describe('[COMPONENTS]: TablePaginationCustom component testing', () => {
         onPageChange={() => {}}
         dense={true}
         onChangeDense={() => {}}
-      />
+      />,
     );
 
     const denseSwitch = screen.getByRole('checkbox', { name: 'Dense' });

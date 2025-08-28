@@ -83,9 +83,9 @@ export function useMetaMask(): UseMetaMaskReturn {
   // Generate a viem wallet client using the MetaMask provider, if available.
   const walletClient = provider
     ? createWalletClient({
-      chain: polygonAmoy,
-      transport: custom(provider),
-    })
+        chain: polygonAmoy,
+        transport: custom(provider),
+      })
     : undefined;
 
   return {

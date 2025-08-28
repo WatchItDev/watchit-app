@@ -1,4 +1,4 @@
-import {fireEvent, render, screen} from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react';
 import AvatarProfile from '@src/components/avatar/avatar.tsx';
 
 describe('[COMPONENTS]: AvatarProfile component testing', () => {
@@ -22,7 +22,12 @@ describe('[COMPONENTS]: AvatarProfile component testing', () => {
   });
 
   it('renders avatar with direct URL when src starts with http', () => {
-    render(<AvatarProfile src="https://example.com/avatar.png" data-testid="avatar" />);
+    render(
+      <AvatarProfile
+        src="https://example.com/avatar.png"
+        data-testid="avatar"
+      />,
+    );
     const avatar = screen.getByRole('img');
     expect(avatar).toHaveAttribute('src', 'https://example.com/avatar.png');
   });
@@ -46,7 +51,7 @@ describe('[COMPONENTS]: AvatarProfile component testing', () => {
   });
 
   it('sets custom alt text when provided', () => {
-    render(<AvatarProfile alt='Custom' src="test-src" />);
+    render(<AvatarProfile alt="Custom" src="test-src" />);
     const avatar = screen.getByRole('img');
     expect(avatar).toHaveAttribute('alt', 'CUSTOM');
   });
@@ -58,14 +63,26 @@ describe('[COMPONENTS]: AvatarProfile component testing', () => {
   });
 
   it('applies additional styles when provided via sx prop', () => {
-    render(<AvatarProfile src="test-src" sx={{ width: 60, height: 60 }} data-testid="avatar" />);
+    render(
+      <AvatarProfile
+        src="test-src"
+        sx={{ width: 60, height: 60 }}
+        data-testid="avatar"
+      />,
+    );
     const avatar = screen.getByTestId('avatar');
     expect(avatar).toBeInTheDocument();
   });
 
   it('handles click events correctly', async () => {
     const handleClick = vi.fn();
-    render(<AvatarProfile src="test-src" onClick={handleClick} data-testid="avatar" />);
+    render(
+      <AvatarProfile
+        src="test-src"
+        onClick={handleClick}
+        data-testid="avatar"
+      />,
+    );
     const avatar = screen.getByTestId('avatar');
 
     fireEvent.click(avatar);
@@ -73,7 +90,9 @@ describe('[COMPONENTS]: AvatarProfile component testing', () => {
   });
 
   it('applies variant correctly', () => {
-    render(<AvatarProfile src="test-src" variant="square" data-testid="avatar" />);
+    render(
+      <AvatarProfile src="test-src" variant="square" data-testid="avatar" />,
+    );
     const avatar = screen.getByTestId('avatar');
     expect(avatar).toHaveClass('MuiAvatar-square');
   });

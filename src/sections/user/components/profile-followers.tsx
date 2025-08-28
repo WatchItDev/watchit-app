@@ -4,19 +4,32 @@ import Typography from '@mui/material/Typography';
 
 // LOCAL IMPORTS
 import { UserItem } from '@src/components/user-item';
-import { randomKey } from "@src/utils/uuidv4.ts"
-import { ProfileFollowersProps } from "@src/sections/user/types.ts"
+import { randomKey } from '@src/utils/uuidv4.ts';
+import { ProfileFollowersProps } from '@src/sections/user/types.ts';
 import { User } from '@src/graphql/generated/graphql.ts';
 import LinearProgress from '@mui/material/LinearProgress';
 
 // ----------------------------------------------------------------------
 
-const ProfileFollowers = ({ followers, loading, onActionFinished }: ProfileFollowersProps) => {
-  if (loading) return (
-    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', padding: 10 }}>
-      <LinearProgress color="inherit" sx={{ width: 1, maxWidth: 360 }} />
-    </Box>
-  );
+const ProfileFollowers = ({
+  followers,
+  loading,
+  onActionFinished,
+}: ProfileFollowersProps) => {
+  if (loading)
+    return (
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          width: '100%',
+          padding: 10,
+        }}
+      >
+        <LinearProgress color="inherit" sx={{ width: 1, maxWidth: 360 }} />
+      </Box>
+    );
 
   return (
     <Box

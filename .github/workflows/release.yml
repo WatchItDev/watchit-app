@@ -3,7 +3,7 @@ on:
   workflow_call:
     inputs:
       environment:
-        description: "Release to environment"
+        description: 'Release to environment'
         default: next
         required: false
         type: string
@@ -30,7 +30,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "lts/*"
+          node-version: 'lts/*'
 
       - name: Install dependencies
         run: npm ci
@@ -44,4 +44,3 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
           GH_TOKEN: ${{ steps.generate_token.outputs.token }}
-      

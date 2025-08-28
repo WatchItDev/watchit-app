@@ -1,7 +1,11 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Address } from 'viem';
 import { useGetPoliciesTerms } from './use-get-policies-terms.ts';
-import { HasAccessError, UseGetPolicyTermsHook, Terms } from '@src/hooks/protocol/types.ts';
+import {
+  HasAccessError,
+  UseGetPolicyTermsHook,
+  Terms,
+} from '@src/hooks/protocol/types.ts';
 
 /**
  * Custom hook to get the `terms` of a specific policy, using the data from `useGetAuthorizedHolderPolicies`.
@@ -10,7 +14,7 @@ import { HasAccessError, UseGetPolicyTermsHook, Terms } from '@src/hooks/protoco
  */
 export const useGetPolicyTerms = (
   policyAddress?: Address,
-  holderAddress?: Address
+  holderAddress?: Address,
 ): UseGetPolicyTermsHook => {
   const [terms, setTerms] = useState<Terms | undefined>(undefined);
   const [fetching, setFetching] = useState<boolean>(true);
@@ -59,7 +63,7 @@ export const useGetPolicyTerms = (
     try {
       // Find the policy object with a matching address
       const foundPolicy = authorizedHolderPolicies.find(
-        (p) => p.policy.toLowerCase() === policyAddress.toLowerCase()
+        (p) => p.policy.toLowerCase() === policyAddress.toLowerCase(),
       );
 
       if (foundPolicy) {
@@ -73,7 +77,12 @@ export const useGetPolicyTerms = (
     } catch (err) {
       console.error('Error filtering policy terms:', err);
       setTerms(undefined);
-      setError({ message: err instanceof Error ? err.message : 'An error occurred while filtering policy terms.' });
+      setError({
+        message:
+          err instanceof Error
+            ? err.message
+            : 'An error occurred while filtering policy terms.',
+      });
     } finally {
       setFetching(false);
     }

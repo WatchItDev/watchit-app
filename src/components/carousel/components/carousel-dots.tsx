@@ -3,7 +3,10 @@ import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
 // Local Imports
-import { CarouselDotsStyledRootProps, CarouselDotsProps } from '@src/components/carousel/types.ts';
+import {
+  CarouselDotsStyledRootProps,
+  CarouselDotsProps,
+} from '@src/components/carousel/types.ts';
 
 // ----------------------------------------------------------------------
 const StyledRoot = styled(Box, {
@@ -54,9 +57,9 @@ export default function CarouselDots(props?: CarouselDotsProps) {
 
   return {
     appendDots: (dots: React.ReactNode) => (
-        <StyledRoot component="ul" rounded={rounded} sx={{ ...sx }} {...props}>
-          {dots}
-        </StyledRoot>
+      <StyledRoot component="ul" rounded={rounded} sx={{ ...sx }} {...props}>
+        {dots}
+      </StyledRoot>
     ),
     customPaging: () => (
       <Stack

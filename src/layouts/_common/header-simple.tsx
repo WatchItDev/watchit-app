@@ -57,7 +57,10 @@ export default function HeaderSimple() {
               title: 'Watchit',
               path: paths.dashboard.root,
               icon: (
-                <SvgColor src="/assets/icons/navbar/ic_watchit.svg" sx={{ width: 1, height: 1 }} />
+                <SvgColor
+                  src="/assets/icons/navbar/ic_watchit.svg"
+                  sx={{ width: 1, height: 1 }}
+                />
               ),
             }}
             depth={1}

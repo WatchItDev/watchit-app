@@ -1,20 +1,20 @@
 // REACT IMPORTS
-import { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react';
 
 // REDUX IMPORTS
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux';
 
 // VIEM IMPORTS
-import { formatUnits, parseAbiItem } from 'viem'
+import { formatUnits, parseAbiItem } from 'viem';
 
 // LOCAL IMPORTS
-import LedgerVaultAbi from '@src/config/abi/LedgerVault.json'
-import { publicClient } from '@src/clients/viem/publicClient.ts'
-import { addTransaction, setTransactions } from '@redux/transactions'
-import { EventConfig } from '@src/hooks/protocol/types.ts'
-import { RootState } from '@redux/store.ts'
+import LedgerVaultAbi from '@src/config/abi/LedgerVault.json';
+import { publicClient } from '@src/clients/viem/publicClient.ts';
+import { addTransaction, setTransactions } from '@redux/transactions';
+import { EventConfig } from '@src/hooks/protocol/types.ts';
+import { RootState } from '@redux/store.ts';
 import { useAuth } from '@src/hooks/use-auth.ts';
-import { GLOBAL_CONSTANTS } from '@src/config-global.ts'
+import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 
 /**
  * Hook to retrieve smart wallet transactions by querying logs from the LedgerVault contract.
@@ -25,8 +25,12 @@ export default function useGetSmartWalletTransactions() {
   const [error, setError] = useState<string | null>(null);
   const { session: sessionData } = useAuth();
   const dispatch = useDispatch();
-  const blockchainEvents = useSelector((state: RootState) => state.blockchainEvents.events);
-  const transactions = useSelector((state: RootState) => state.transactions.transactions);
+  const blockchainEvents = useSelector(
+    (state: RootState) => state.blockchainEvents.events,
+  );
+  const transactions = useSelector(
+    (state: RootState) => state.transactions.transactions,
+  );
 
   /**
    * We define all event configurations that we want to capture.
@@ -59,9 +63,9 @@ export default function useGetSmartWalletTransactions() {
       getEventType: () => 'withdraw',
     },
     {
-    eventName: 'FundsCollected',
-    args: { from: sessionData?.address || '' },
-    getEventType: () => 'collected',
+      eventName: 'FundsCollected',
+      args: { from: sessionData?.address || '' },
+      getEventType: () => 'collected',
     },
   ];
 
@@ -74,7 +78,10 @@ export default function useGetSmartWalletTransactions() {
       throw new Error('Invalid event in ABI');
     }
     const inputs = event.inputs
-      .map((input: any) => `${input.type}${input.indexed ? ' indexed' : ''} ${input.name}`)
+      .map(
+        (input: any) =>
+          `${input.type}${input.indexed ? ' indexed' : ''} ${input.name}`,
+      )
       .join(', ');
     return `event ${event.name}(${inputs})`;
   };
@@ -85,19 +92,24 @@ export default function useGetSmartWalletTransactions() {
    *    b) Find those events in the LedgerVaultAbi and parse them with parseAbiItem().
    */
   const uniqueEventNames = Array.from(
-    new Set(eventConfigs.map((config) => config.eventName)) // Removes duplicates
+    new Set(eventConfigs.map((config) => config.eventName)), // Removes duplicates
   );
 
-  const parsedAbis = uniqueEventNames.reduce((acc, eventName) => {
-    const eventAbi = LedgerVaultAbi.abi.find(
-      (item: any) => item.type === 'event' && item.name === eventName
-    );
-    if (!eventAbi) {
-      throw new Error(`No definition found for event ${eventName} in the ABI`);
-    }
-    acc[eventName] = parseAbiItem(createEventSignature(eventAbi));
-    return acc;
-  }, {} as Record<string, ReturnType<typeof parseAbiItem>>);
+  const parsedAbis = uniqueEventNames.reduce(
+    (acc, eventName) => {
+      const eventAbi = LedgerVaultAbi.abi.find(
+        (item: any) => item.type === 'event' && item.name === eventName,
+      );
+      if (!eventAbi) {
+        throw new Error(
+          `No definition found for event ${eventName} in the ABI`,
+        );
+      }
+      acc[eventName] = parseAbiItem(createEventSignature(eventAbi));
+      return acc;
+    },
+    {} as Record<string, ReturnType<typeof parseAbiItem>>,
+  );
 
   /**
    *  Function to fetch historical logs from the LedgerVault contract, using the user's address as a filter.
@@ -111,7 +123,9 @@ export default function useGetSmartWalletTransactions() {
 
     const fetchBlockNumber = async () => {
       try {
-        return publicClient.getBlockNumber().then((block) => BigInt(block  - BigInt(GLOBAL_CONSTANTS.FROM_BLOCK)));
+        return publicClient
+          .getBlockNumber()
+          .then((block) => BigInt(block - BigInt(GLOBAL_CONSTANTS.FROM_BLOCK)));
       } catch (error) {
         console.error('Failed to fetch block number:', error);
       }
@@ -142,10 +156,14 @@ export default function useGetSmartWalletTransactions() {
       // d) Fetch block timestamps for each log and map them to a structured format.
       const logsWithDetails = await Promise.all(
         allLogs.map(async (log: any) => {
-          const block = await publicClient.getBlock({ blockNumber: log.blockNumber });
+          const block = await publicClient.getBlock({
+            blockNumber: log.blockNumber,
+          });
 
           // Find the event config to determine the custom "eventType".
-          const foundConfig = eventConfigs.find((c) => c.eventName === log.eventName);
+          const foundConfig = eventConfigs.find(
+            (c) => c.eventName === log.eventName,
+          );
           const eventType = foundConfig
             ? foundConfig.getEventType(log, sessionData?.address)
             : 'unknown';
@@ -153,11 +171,15 @@ export default function useGetSmartWalletTransactions() {
           return {
             ...log,
             timestamp: block.timestamp,
-            readableDate: new Date(Number(block.timestamp) * 1000).toLocaleString(),
-            formattedAmount: log.args.amount ? formatUnits(log.args.amount, 18) : '0',
+            readableDate: new Date(
+              Number(block.timestamp) * 1000,
+            ).toLocaleString(),
+            formattedAmount: log.args.amount
+              ? formatUnits(log.args.amount, 18)
+              : '0',
             event: eventType,
           };
-        })
+        }),
       );
 
       // e) Sort logs by blockNumber descending, then by transactionIndex descending.
@@ -208,8 +230,12 @@ export default function useGetSmartWalletTransactions() {
       }
 
       try {
-        const block = await publicClient.getBlock({ blockNumber: log.blockNumber });
-        const foundConfig = eventConfigs.find((c) => c.eventName === log.eventName);
+        const block = await publicClient.getBlock({
+          blockNumber: log.blockNumber,
+        });
+        const foundConfig = eventConfigs.find(
+          (c) => c.eventName === log.eventName,
+        );
         const eventType = foundConfig
           ? foundConfig.getEventType(log, sessionData?.address)
           : 'unknown';
@@ -217,8 +243,12 @@ export default function useGetSmartWalletTransactions() {
         const formattedLog = {
           ...log,
           timestamp: block.timestamp,
-          readableDate: new Date(Number(block.timestamp) * 1000).toLocaleString(),
-          formattedAmount: log.args.amount ? formatUnits(log.args.amount, 18) : '0',
+          readableDate: new Date(
+            Number(block.timestamp) * 1000,
+          ).toLocaleString(),
+          formattedAmount: log.args.amount
+            ? formatUnits(log.args.amount, 18)
+            : '0',
           event: eventType,
         };
 

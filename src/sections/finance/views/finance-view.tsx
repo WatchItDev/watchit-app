@@ -17,22 +17,30 @@ import { useGetUserFollowingLazyQuery } from '@src/graphql/generated/hooks.tsx';
 // ----------------------------------------------------------------------
 
 export default function FinanceView() {
-  const [widgetSeriesData, setWidgetSeriesData] = useState<{ x: string; y: number }[]>([]);
+  const [widgetSeriesData, setWidgetSeriesData] = useState<
+    { x: string; y: number }[]
+  >([]);
   const [percent, setPercent] = useState(0);
   const { session: sessionData, balance: balanceFromRedux } = useAuth();
   const { transactions, loading } = useGetSmartWalletTransactions();
-  const [loadFollowing, { data: profileFollowing, loading: profileFollowingLoading }] = useGetUserFollowingLazyQuery();
+  const [
+    loadFollowing,
+    { data: profileFollowing, loading: profileFollowingLoading },
+  ] = useGetUserFollowingLazyQuery();
   const following = profileFollowing?.getUserFollowing;
 
   useEffect(() => {
     if (!sessionData?.user?.address) return;
-    loadFollowing({variables: { address: sessionData?.user?.address, limit: 50 }});
+    loadFollowing({
+      variables: { address: sessionData?.user?.address, limit: 50 },
+    });
   }, [sessionData?.user?.address]);
 
   useEffect(() => {
     if (!transactions || loading) return;
 
-    const { daySeriesData, calculatedPercent } = groupTransactionsForWidget(transactions);
+    const { daySeriesData, calculatedPercent } =
+      groupTransactionsForWidget(transactions);
 
     setWidgetSeriesData(daySeriesData);
     setPercent(calculatedPercent);
@@ -56,11 +64,14 @@ export default function FinanceView() {
             loadingProfiles={profileFollowingLoading}
           />
 
-          <FinanceLeftColumnContent following={following}/>
+          <FinanceLeftColumnContent following={following} />
         </Grid>
 
         <Grid xs={12} md={4}>
-          <FinanceRightColumnContent following={following} loadingProfiles={profileFollowingLoading} />
+          <FinanceRightColumnContent
+            following={following}
+            loadingProfiles={profileFollowingLoading}
+          />
         </Grid>
       </Grid>
     </Container>

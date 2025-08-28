@@ -14,12 +14,30 @@ interface FinanceDepositModalProps {
 }
 
 const depositTabs = [
-  { value: 'fiat', label: 'Stripe', disabled: false, icon: <Iconify icon={'logos:stripe'} /> },
-  { value: 'metamask', label: 'Metamask', disabled: false, icon: <Iconify icon={'logos:metamask-icon'} /> },
-  { value: 'smartAccount', label: 'Smart Account', disabled: false, icon: <Iconify icon={'logos:ethereum-color'} /> },
+  {
+    value: 'fiat',
+    label: 'Stripe',
+    disabled: false,
+    icon: <Iconify icon={'logos:stripe'} />,
+  },
+  {
+    value: 'metamask',
+    label: 'Metamask',
+    disabled: false,
+    icon: <Iconify icon={'logos:metamask-icon'} />,
+  },
+  {
+    value: 'smartAccount',
+    label: 'Smart Account',
+    disabled: false,
+    icon: <Iconify icon={'logos:ethereum-color'} />,
+  },
 ];
 
-export const FinanceDepositModal: FC<FinanceDepositModalProps> = ({ open, onClose }) => {
+export const FinanceDepositModal: FC<FinanceDepositModalProps> = ({
+  open,
+  onClose,
+}) => {
   const renderContent = (currentTab: string) => {
     switch (currentTab) {
       case 'fiat':

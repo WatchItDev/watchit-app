@@ -8,8 +8,12 @@ import { encodeFunctionData } from 'viem';
 import RightsPolicyAuthorizerAbi from '@src/config/abi/RightsPolicyAuthorizer.json';
 import { useAccountSession } from '@src/hooks/use-account-session.ts';
 import { useAuth } from '@src/hooks/use-auth.ts';
-import {AuthorizePolicyParams, UseAuthorizePolicyHook, UseAuthorizePolicyResult} from '@src/hooks/protocol/types.ts'
-import { Calls } from '@src/hooks/types.ts'
+import {
+  AuthorizePolicyParams,
+  UseAuthorizePolicyHook,
+  UseAuthorizePolicyResult,
+} from '@src/hooks/protocol/types.ts';
+import { Calls } from '@src/hooks/types.ts';
 import { ERRORS } from '@src/libs/notifications/errors.ts';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 import { useWeb3Auth } from '@src/hooks/use-web3-auth.ts';
@@ -17,7 +21,9 @@ import { useWeb3Auth } from '@src/hooks/use-web3-auth.ts';
 // ----------------------------------------------------------------------
 
 export const useAuthorizePolicy = (): UseAuthorizePolicyHook => {
-  const [data, setData] = useState<UseAuthorizePolicyResult | undefined>(undefined);
+  const [data, setData] = useState<UseAuthorizePolicyResult | undefined>(
+    undefined,
+  );
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<keyof typeof ERRORS | null>(null);
   const { session } = useAuth();
@@ -30,7 +36,10 @@ export const useAuthorizePolicy = (): UseAuthorizePolicyHook => {
    * @param data The coded (Price per day, address mmc).
    * @returns The encoded function data for the flashPolicyAgreement call.
    */
-  const initializeAuthorizePolicy = ({ policyAddress, data }: AuthorizePolicyParams): string => {
+  const initializeAuthorizePolicy = ({
+    policyAddress,
+    data,
+  }: AuthorizePolicyParams): string => {
     return encodeFunctionData({
       abi: RightsPolicyAuthorizerAbi.abi,
       functionName: 'authorizePolicy',
@@ -42,7 +51,10 @@ export const useAuthorizePolicy = (): UseAuthorizePolicyHook => {
    * Initiates the authorization process.
    * @param params The parameters including 'amount'.
    */
-  const authorize = async ({ policyAddress, data }: AuthorizePolicyParams): Promise<void> => {
+  const authorize = async ({
+    policyAddress,
+    data,
+  }: AuthorizePolicyParams): Promise<void> => {
     setLoading(true);
     setError(null);
 

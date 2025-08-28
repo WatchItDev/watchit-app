@@ -3,9 +3,9 @@ import { QueryResult, OperationVariables } from '@apollo/client';
 import { useAuth } from '@src/hooks/use-auth.ts';
 
 export function useStaleWhileLoading<T>(
-  query: QueryResult<T, OperationVariables>
+  query: QueryResult<T, OperationVariables>,
 ) {
-  const { session }  = useAuth();
+  const { session } = useAuth();
   const { data, loading, refetch, ...rest } = query;
   const xpBalance = session?.user?.xpBalance ?? 0;
   const [staleData, setStaleData] = useState<T | undefined>(undefined);
@@ -25,9 +25,9 @@ export function useStaleWhileLoading<T>(
     }
   }, [xpBalance, refetch]);
 
-  const hasData       = staleData !== undefined;
+  const hasData = staleData !== undefined;
   const isInitialLoad = loading && !hasData;
-  const isRefetch     = loading &&  hasData;
+  const isRefetch = loading && hasData;
 
   return {
     data: staleData,

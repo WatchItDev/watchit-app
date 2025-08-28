@@ -8,7 +8,10 @@ import SvgColor from '@src/components/svg-color';
 // ----------------------------------------------------------------------
 
 const icon = (name: string) => (
-  <SvgColor src={`/assets/icons/navbar/${name}.svg`} sx={{ width: 1, height: 1 }} />
+  <SvgColor
+    src={`/assets/icons/navbar/${name}.svg`}
+    sx={{ width: 1, height: 1 }}
+  />
   // OR
   // <Iconify icon="fluent:mail-24-filled" />
   // https://icon-sets.iconify.design/solar/
@@ -56,120 +59,116 @@ const applyComingSoon = (items: any[]): any[] => {
       children: it?.children ? applyComingSoon(it.children) : undefined,
     };
   });
-}
+};
 
 // ----------------------------------------------------------------------
 
 export function useNavData() {
   const { t } = useLocales();
 
-  const data = useMemo(
-    () => {
+  const data = useMemo(() => {
+    const base = [
+      // OVERVIEW
+      // ----------------------------------------------------------------------
+      {
+        subheader: t('overview'),
+        items: [
+          {
+            title: t('explore'),
+            path: paths.dashboard.root,
+            icon: ICONS.dashboard,
+          },
+          {
+            title: t('Community'),
+            path: paths.dashboard.community,
+            icon: ICONS.userGroup,
+            comingSoon: true,
+          },
+          {
+            title: t('Governance'),
+            path: paths.dashboard.governance.root,
+            icon: ICONS.kanban,
+            comingSoon: true,
+          },
+          {
+            title: t('Marketplace'),
+            path: paths.dashboard.marketplace,
+            icon: ICONS.ecommerce,
+            comingSoon: true,
+          },
+          {
+            title: t('Events'),
+            path: paths.dashboard.events,
+            icon: ICONS.calendar,
+            comingSoon: true,
+          },
+          {
+            title: t('Achievements'),
+            path: paths.dashboard.achievements,
+            icon: ICONS.label,
+          },
+        ],
+      },
 
-      const base = [
-        // OVERVIEW
-        // ----------------------------------------------------------------------
-        {
-          subheader: t('overview'),
-          items: [
-            {
-              title: t('explore'),
-              path: paths.dashboard.root,
-              icon: ICONS.dashboard,
-            },
-            {
-              title: t('Community'),
-              path: paths.dashboard.community,
-              icon: ICONS.userGroup,
-              comingSoon: true,
-            },
-            {
-              title: t('Governance'),
-              path: paths.dashboard.governance.root,
-              icon: ICONS.kanban,
-              comingSoon: true,
-            },
-            {
-              title: t('Marketplace'),
-              path: paths.dashboard.marketplace,
-              icon: ICONS.ecommerce,
-              comingSoon: true,
-            },
-            {
-              title: t('Events'),
-              path: paths.dashboard.events,
-              icon: ICONS.calendar,
-              comingSoon: true,
-            },
-            {
-              title: t('Achievements'),
-              path: paths.dashboard.achievements,
-              icon: ICONS.label,
-            },
-          ],
-        },
+      // MANAGEMENT
+      // ----------------------------------------------------------------------
+      {
+        subheader: t('management'),
+        items: [
+          // FILE MANAGER
+          {
+            title: t('Analytics'),
+            path: paths.dashboard.analytics,
+            icon: ICONS.analytics,
+            comingSoon: true,
+          },
 
-        // MANAGEMENT
-        // ----------------------------------------------------------------------
-        {
-          subheader: t('management'),
-          items: [
-            // FILE MANAGER
-            {
-              title: t('Analytics'),
-              path: paths.dashboard.analytics,
-              icon: ICONS.analytics,
-              comingSoon: true,
-            },
+          // MAIL
+          {
+            title: t('Studio'),
+            path: paths.dashboard.studio,
+            icon: ICONS.external,
+            comingSoon: true,
+          },
 
-            // MAIL
-            {
-              title: t('Studio'),
-              path: paths.dashboard.studio,
-              icon: ICONS.external,
-              comingSoon: true,
-            },
+          // CHAT
+          {
+            title: t('Ownership'),
+            path: paths.dashboard.ownership,
+            icon: ICONS.lock,
+          },
 
-            // CHAT
-            {
-              title: t('Ownership'),
-              path: paths.dashboard.ownership,
-              icon: ICONS.lock,
-            },
+          // CALENDAR
+          {
+            title: t('Finance'),
+            path: paths.dashboard.finance,
+            icon: ICONS.banking,
+          },
 
-            // CALENDAR
-            {
-              title: t('Finance'),
-              path: paths.dashboard.finance,
-              icon: ICONS.banking,
-            },
+          // KANBAN
+          {
+            title: t('Marketing'),
+            path: paths.dashboard.marketing,
+            icon: ICONS.tour,
+            comingSoon: true,
+          },
 
-            // KANBAN
-            {
-              title: t('Marketing'),
-              path: paths.dashboard.marketing,
-              icon: ICONS.tour,
-              comingSoon: true,
-            },
+          // COLLABORATION
+          {
+            title: t('Collaboration'),
+            path: paths.dashboard.collaborations,
+            icon: ICONS.chat,
+            comingSoon: true,
+          },
+        ],
+      },
+    ];
 
-            // COLLABORATION
-            {
-              title: t('Collaboration'),
-              path: paths.dashboard.collaborations,
-              icon: ICONS.chat,
-              comingSoon: true,
-            },
-          ],
-        },
-      ]
-
-      return base.map((group) => ({
-        ...group,
-        items: applyComingSoon(group.items),
-      }));
-    },
-    [t]
-  );
+    return base.map((group) => ({
+      ...group,
+      items: applyComingSoon(group.items),
+    }));
+  }, [t]);
 
   return data;
 }

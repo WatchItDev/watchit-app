@@ -1,9 +1,19 @@
 import { Theme, alpha } from '@mui/material/styles';
-import { ToggleButtonProps, toggleButtonClasses } from '@mui/material/ToggleButton';
+import {
+  ToggleButtonProps,
+  toggleButtonClasses,
+} from '@mui/material/ToggleButton';
 
 // ----------------------------------------------------------------------
 
-const COLORS = ['primary', 'secondary', 'info', 'success', 'warning', 'error'] as const;
+const COLORS = [
+  'primary',
+  'secondary',
+  'info',
+  'success',
+  'warning',
+  'error',
+] as const;
 
 // ----------------------------------------------------------------------
 
@@ -20,7 +30,10 @@ export function toggleButton(theme: Theme) {
       ...(ownerState.color === color && {
         '&:hover': {
           borderColor: alpha(theme.palette[color].main, 0.48),
-          backgroundColor: alpha(theme.palette[color].main, theme.palette.action.hoverOpacity),
+          backgroundColor: alpha(
+            theme.palette[color].main,
+            theme.palette.action.hoverOpacity,
+          ),
         },
       }),
     }));
@@ -41,7 +54,8 @@ export function toggleButton(theme: Theme) {
   return {
     MuiToggleButton: {
       styleOverrides: {
-        root: ({ ownerState }: { ownerState: ToggleButtonProps }) => rootStyles(ownerState),
+        root: ({ ownerState }: { ownerState: ToggleButtonProps }) =>
+          rootStyles(ownerState),
       },
     },
     MuiToggleButtonGroup: {

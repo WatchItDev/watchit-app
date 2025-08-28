@@ -73,9 +73,10 @@ export const StyledEditorToolbar = styled('div')(({ theme }) => {
     '& .ql-fill, .ql-stroke.ql-fill': {
       fill: theme.palette.text.primary,
     },
-    '& .ql-picker, .ql-picker-options, .ql-picker-item, .ql-picker-label, button': {
-      '&:focus': { outline: 'none' },
-    },
+    '& .ql-picker, .ql-picker-options, .ql-picker-item, .ql-picker-label, button':
+      {
+        '&:focus': { outline: 'none' },
+      },
     '& .ql-toolbar.ql-snow': {
       border: 'none',
       borderBottom: `solid 1px ${alpha(theme.palette.grey[500], 0.2)}`,

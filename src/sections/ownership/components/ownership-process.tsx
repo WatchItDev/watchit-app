@@ -6,15 +6,19 @@ import { Stack, Box, Typography, TextField, Button } from '@mui/material';
 
 // Project Imports
 import Iconify from '@src/components/iconify';
-import OwnershipProcessModal from "@src/components/modal.tsx";
+import OwnershipProcessModal from '@src/components/modal.tsx';
 import Ownership from '@src/assets/illustrations/ownership.svg';
 import ProcessSectionCard from '@src/components/process-section-card.tsx';
 import NeonPaper from '@src/sections/publication/components/neon-paper-container.tsx';
 import { replacePrefix } from '@src/utils/wallet.ts';
-import { useBoolean } from "@src/hooks/use-boolean.ts";
+import { useBoolean } from '@src/hooks/use-boolean.ts';
 import { useRegisterAsset } from '@src/hooks/protocol/use-register-asset.ts';
 import { useGetAssetOwner } from '@src/hooks/protocol/use-get-asset-owner.ts';
-import { notifyError, notifyInfo, notifySuccess } from '@src/libs/notifications/internal-notifications.ts';
+import {
+  notifyError,
+  notifyInfo,
+  notifySuccess,
+} from '@src/libs/notifications/internal-notifications.ts';
 import { useAuth } from '@src/hooks/use-auth.ts';
 import { INFO } from '@src/libs/notifications/info.ts';
 import { ERRORS } from '@src/libs/notifications/errors.ts';
@@ -57,7 +61,9 @@ const OwnershipProcess = () => {
         title="Intellectual Property Registration"
         open={confirmOwnership.value}
         onClose={handleFinishOwnership}
-        renderContent={<OwnershipProcessContent onClose={handleFinishOwnership} />}
+        renderContent={
+          <OwnershipProcessContent onClose={handleFinishOwnership} />
+        }
       />
     </>
   );
@@ -73,8 +79,9 @@ const OwnershipProcessContent = ({ onClose }: { onClose: () => void }) => {
   const { fetchOwnerAddress } = useGetAssetOwner();
   const { session } = useAuth();
 
-  const hashesArray = hashes.split(',')
-    .map(h => h.trim())
+  const hashesArray = hashes
+    .split(',')
+    .map((h) => h.trim())
     .filter(Boolean);
   const userAddress = session?.address as string | undefined;
 
@@ -88,16 +95,21 @@ const OwnershipProcessContent = ({ onClose }: { onClose: () => void }) => {
       for (const [index, hash] of hashesArray.entries()) {
         try {
           // 1. Report progress
-          notifyInfo(INFO.REGISTER_OWNERSHIP_PROGRESS, {
-            index: index + 1,
-            total: hashesArray.length,
-            options: { autoHideDuration: 3000 }
-          }, '', { autoHideDuration: 3000 });
+          notifyInfo(
+            INFO.REGISTER_OWNERSHIP_PROGRESS,
+            {
+              index: index + 1,
+              total: hashesArray.length,
+              options: { autoHideDuration: 3000 },
+            },
+            '',
+            { autoHideDuration: 3000 },
+          );
           setProgress(index + 1);
 
           const owner = await fetchOwnerAddress(hash);
           const isTaken = !!owner;
-          const isAssetMine = userAddress === owner
+          const isAssetMine = userAddress === owner;
 
           if (!isAssetMine && isTaken) {
             notifyError(ERRORS.ASSET_ALREADY_REGISTERED_ERROR);
@@ -111,9 +123,13 @@ const OwnershipProcessContent = ({ onClose }: { onClose: () => void }) => {
 
           // 3. Upload to API only if registration was successful
           await submitAsset(replacePrefix(hash));
-          notifySuccess(SUCCESS.OWNERSHIP_REGISTERED_SUCCESSFULLY, { count: index + 1 });
+          notifySuccess(SUCCESS.OWNERSHIP_REGISTERED_SUCCESSFULLY, {
+            count: index + 1,
+          });
         } catch (error) {
-          notifyError(ERRORS.ASSET_OWNERSHIP_REGISTER_ERROR, { hash: `${index + 1}/${hashesArray.length}` });
+          notifyError(ERRORS.ASSET_OWNERSHIP_REGISTER_ERROR, {
+            hash: `${index + 1}/${hashesArray.length}`,
+          });
           console.error('Error during ownership registration:', error);
           continue; // Continue with the next hash
         }
@@ -130,7 +146,15 @@ const OwnershipProcessContent = ({ onClose }: { onClose: () => void }) => {
   const RainbowEffect = isProcessing ? NeonPaper : Box;
 
   return (
-    <Stack direction="column" sx={{ pb: 3, pt: 2, mt: 1, borderTop: '1px dashed rgba(145, 158, 171, 0.5)' }}>
+    <Stack
+      direction="column"
+      sx={{
+        pb: 3,
+        pt: 2,
+        mt: 1,
+        borderTop: '1px dashed rgba(145, 158, 171, 0.5)',
+      }}
+    >
       <Box sx={{ px: 3 }}>
         <Typography variant="body1">
           Enter the hash(es) of the content you want to register
@@ -152,16 +176,22 @@ const OwnershipProcessContent = ({ onClose }: { onClose: () => void }) => {
         />
       </Box>
 
-      <Stack direction="row" spacing={2} justifyContent="flex-end" sx={{ mt: 2, px: 3, pt: 3, borderTop: '1px dashed rgba(145, 158, 171, 0.5)' }}>
-        <Button
-          variant="outlined"
-          onClick={onClose}
-          disabled={isProcessing}
-        >
+      <Stack
+        direction="row"
+        spacing={2}
+        justifyContent="flex-end"
+        sx={{
+          mt: 2,
+          px: 3,
+          pt: 3,
+          borderTop: '1px dashed rgba(145, 158, 171, 0.5)',
+        }}
+      >
+        <Button variant="outlined" onClick={onClose} disabled={isProcessing}>
           Cancel
         </Button>
         <RainbowEffect
-          {...((isProcessing) && {
+          {...(isProcessing && {
             borderRadius: '10px',
             animationSpeed: '3s',
             padding: '0',
@@ -176,7 +206,9 @@ const OwnershipProcessContent = ({ onClose }: { onClose: () => void }) => {
             loadingPosition="start"
             startIcon={<Iconify icon="material-symbols:publish" />}
           >
-            {isProcessing ? `Processing... (${progress}/${hashesArray.length})` : 'Start Process'}
+            {isProcessing
+              ? `Processing... (${progress}/${hashesArray.length})`
+              : 'Start Process'}
           </LoadingButton>
         </RainbowEffect>
       </Stack>

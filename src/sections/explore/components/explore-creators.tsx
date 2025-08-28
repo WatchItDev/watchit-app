@@ -8,18 +8,24 @@ import { LoadingFade } from '@src/components/LoadingFade.tsx';
 // ----------------------------------------------------------------------
 
 export const ExploreCreators = () => {
-  const { data, loading } = useGetRecentUsersQuery({ variables: { limit: 50 } })
+  const { data, loading } = useGetRecentUsersQuery({
+    variables: { limit: 50 },
+  });
 
   // FilteredCompletedProfiles is an array of objects, each object has a metadata property and inside exists a displayName en bio property; filter the profiles that not have a displayName and bio property
   const filtered = data?.getRecentUsers?.filter(
-    (profile: User) => profile?.displayName && profile?.bio
+    (profile: User) => profile?.displayName && profile?.bio,
   );
 
   // Clear ###HIDDEN### profiles
   const filteredProfiles = filterHiddenProfiles(filtered);
 
   return (
-    <LoadingFade loading={loading} skeleton={<ExploreCreatorsSkeleton />} delayMs={500}>
+    <LoadingFade
+      loading={loading}
+      skeleton={<ExploreCreatorsSkeleton />}
+      delayMs={500}
+    >
       {!!filteredProfiles?.length && (
         <CarouselCreators
           profiles={filteredProfiles}
@@ -30,4 +36,4 @@ export const ExploreCreators = () => {
       )}
     </LoadingFade>
   );
-}
+};

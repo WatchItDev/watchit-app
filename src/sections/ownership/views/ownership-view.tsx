@@ -1,7 +1,7 @@
-import Container from "@mui/material/Container";
-import Grid from "@mui/material/Unstable_Grid2";
-import Stack from "@mui/material/Stack";
-import OwnershipProcess from "@src/sections/ownership/components/ownership-process.tsx";
+import Container from '@mui/material/Container';
+import Grid from '@mui/material/Unstable_Grid2';
+import Stack from '@mui/material/Stack';
+import OwnershipProcess from '@src/sections/ownership/components/ownership-process.tsx';
 
 const OwnershipView = () => {
   return (
@@ -21,12 +21,12 @@ const OwnershipView = () => {
               lg: 2,
             }}
           >
-            <OwnershipProcess/>
+            <OwnershipProcess />
           </Stack>
         </Grid>
       </Grid>
     </Container>
-  )
-}
+  );
+};
 
 export default OwnershipView;

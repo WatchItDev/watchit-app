@@ -1,6 +1,5 @@
 import { Post } from '@src/graphql/generated/graphql.ts';
 
-
 export interface PublicationDetailProps {
   post: Post;
   handleSubscribe: () => void;

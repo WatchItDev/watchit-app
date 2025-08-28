@@ -1,33 +1,31 @@
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import ListItemText from '@mui/material/ListItemText';
-import Typography from "@mui/material/Typography";
-import BadgeVerified from "@src/components/user-item/BadgeVerified.tsx";
+import Typography from '@mui/material/Typography';
+import BadgeVerified from '@src/components/user-item/BadgeVerified.tsx';
 import Image from '../image';
-import AvatarProfile from "@src/components/avatar/avatar.tsx";
+import AvatarProfile from '@src/components/avatar/avatar.tsx';
 import { memo, FC } from 'react';
 import { Address } from 'viem';
 import { useRouter } from '@src/routes/hooks';
 import { paths } from '../../routes/paths';
-import {capitalizeFirstLetter} from "@src/utils/text-transform.ts"
+import { capitalizeFirstLetter } from '@src/utils/text-transform.ts';
 import { useAuth } from '@src/hooks/use-auth.ts';
-import {FollowerItemProps} from "@src/components/user-item/types.ts"
+import { FollowerItemProps } from '@src/components/user-item/types.ts';
 import { resolveSrc } from '@src/utils/image.ts';
 
 // ----------------------------------------------------------------------
 
 export const UserItem = memo(
-  ({
-    profile,
-    sx,
-    onClick,
-  }: FollowerItemProps) => {
+  ({ profile, sx, onClick }: FollowerItemProps) => {
     const { session } = useAuth();
     const router = useRouter();
 
     const goToProfile = () => {
       // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-      onClick ? onClick() : router.push(paths.dashboard.user.root(`${profile.address}`));
+      onClick
+        ? onClick()
+        : router.push(paths.dashboard.user.root(`${profile.address}`));
     };
 
     return (
@@ -49,7 +47,10 @@ export const UserItem = memo(
         >
           <Image
             alt={profile?.username ?? 'Profile Cover'}
-            src={resolveSrc((profile?.coverPicture || profile?.address) ?? '', 'cover')}
+            src={resolveSrc(
+              (profile?.coverPicture || profile?.address) ?? '',
+              'cover',
+            )}
             sx={{
               height: 120,
               opacity: 0.7,
@@ -89,9 +90,21 @@ export const UserItem = memo(
               }}
             >
               <ListItemText
-                primary={<UserNameAndBadge address={profile?.address as Address} name={capitalizeFirstLetter(profile?.displayName as string) ?? profile?.username} />}
+                primary={
+                  <UserNameAndBadge
+                    address={profile?.address as Address}
+                    name={
+                      capitalizeFirstLetter(profile?.displayName as string) ??
+                      profile?.username
+                    }
+                  />
+                }
                 secondary={
-                  <>{profile?.address !== session?.address ? profile?.bio ?? profile?.address : 'This is you!'}</>
+                  <>
+                    {profile?.address !== session?.address
+                      ? (profile?.bio ?? profile?.address)
+                      : 'This is you!'}
+                  </>
                 }
                 primaryTypographyProps={{
                   noWrap: true,
@@ -112,8 +125,10 @@ export const UserItem = memo(
         </Box>
       </>
     );
-  }
-, (prevProps, nextProps) => prevProps.profile.address === nextProps.profile.address);
+  },
+  (prevProps, nextProps) =>
+    prevProps.profile.address === nextProps.profile.address,
+);
 
 interface UserNameAndBadgeProps {
   name: string;
@@ -153,5 +168,6 @@ export const UserNameAndBadge: FC<UserNameAndBadgeProps> = memo(
         </Box>
       </Box>
     );
-  }
-, (prevProps, nextProps) => prevProps.address === nextProps.address);
+  },
+  (prevProps, nextProps) => prevProps.address === nextProps.address,
+);

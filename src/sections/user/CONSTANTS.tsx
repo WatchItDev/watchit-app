@@ -1,4 +1,4 @@
-export const emptyAddress = '0x0000000000000000000000000000000000000000'
+export const emptyAddress = '0x0000000000000000000000000000000000000000';
 
 export const TABS = [
   { value: 'publications', label: 'Publications' },

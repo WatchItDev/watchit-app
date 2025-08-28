@@ -21,7 +21,11 @@ export interface FinanceEarnTokensProps extends CardProps {
   lgUp: boolean;
 }
 
-const FinanceEarnTokens: FC<FinanceEarnTokensProps> = ({ sx, lgUp, ...other }) => {
+const FinanceEarnTokens: FC<FinanceEarnTokensProps> = ({
+  sx,
+  lgUp,
+  ...other
+}) => {
   const theme = useTheme();
 
   const handleClick = () => {
@@ -75,7 +79,7 @@ const FinanceEarnTokens: FC<FinanceEarnTokensProps> = ({ sx, lgUp, ...other }) =
             <Typography
               variant="body1"
               sx={{
-                display: {  md: 'flex' },
+                display: { md: 'flex' },
                 maxWidth: 250,
                 mb: 1,
                 whiteSpace: 'pre-line',
@@ -117,7 +121,7 @@ const FinanceEarnTokens: FC<FinanceEarnTokensProps> = ({ sx, lgUp, ...other }) =
             <Button
               sx={{
                 mt: lgUp ? 3 : null,
-                mb: !lgUp ? 3 : null
+                mb: !lgUp ? 3 : null,
               }}
               color={'primary'}
               variant={'soft'}

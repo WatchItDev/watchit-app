@@ -2,7 +2,10 @@ import { useState, useCallback } from 'react';
 import { Address } from 'viem';
 import { publicClient } from '@src/clients/viem/publicClient.ts';
 import CampaignSubscriptionTplAbi from '@src/config/abi/CampaignSubscriptionTpl.json';
-import { HasAccessError, UseGetCampaignQuotaLimitHook } from '@src/hooks/protocol/types.ts';
+import {
+  HasAccessError,
+  UseGetCampaignQuotaLimitHook,
+} from '@src/hooks/protocol/types.ts';
 
 export const useGetCampaignQuotaLimit = (): UseGetCampaignQuotaLimitHook => {
   const [quotaLimit, setQuotaLimit] = useState<number>(0);
@@ -38,7 +41,7 @@ export const useGetCampaignQuotaLimit = (): UseGetCampaignQuotaLimitHook => {
         setLoading(false);
       }
     },
-    []
+    [],
   );
 
   return { quotaLimit, loading, error, fetchQuotaLimit };

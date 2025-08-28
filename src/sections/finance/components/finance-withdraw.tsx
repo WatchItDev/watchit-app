@@ -1,38 +1,42 @@
 // REACT IMPORTS
-import React, { FC, useCallback, useEffect, useState } from "react";
+import React, { FC, useCallback, useEffect, useState } from 'react';
 
 // MUI IMPORTS
-import Box from "@mui/material/Box";
-import Stack from "@mui/material/Stack";
-import TextField from "@mui/material/TextField";
+import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
+import TextField from '@mui/material/TextField';
 
 // LOCAL IMPORTS
-import NeonPaper from "@src/sections/publication/components/neon-paper-container.tsx";
-import FinanceDialogsActions from "@src/sections/finance/components/finance-dialogs-actions";
-import TextMaxLine from "@src/components/text-max-line";
-import { formatBalanceNumber } from "@src/utils/format-number";
-import FinanceBoxRow from "@src/sections/finance/components/finance-box-row.tsx";
-import { truncateAddress } from "@src/utils/wallet.ts";
+import NeonPaper from '@src/sections/publication/components/neon-paper-container.tsx';
+import FinanceDialogsActions from '@src/sections/finance/components/finance-dialogs-actions';
+import TextMaxLine from '@src/components/text-max-line';
+import { formatBalanceNumber } from '@src/utils/format-number';
+import FinanceBoxRow from '@src/sections/finance/components/finance-box-row.tsx';
+import { truncateAddress } from '@src/utils/wallet.ts';
 
 // NOTIFICATIONS IMPORTS
 import {
   notifyError,
   notifySuccess,
   notifyWarning,
-} from "@src/libs/notifications/internal-notifications";
-import { ERRORS } from "@src/libs/notifications/errors";
-import { WARNING } from "@src/libs/notifications/warnings";
-import { SUCCESS } from "@src/libs/notifications/success";
-import { useGetBalance } from "@src/hooks/protocol/use-get-balance.ts";
-import { FinanceWithdrawProps } from "@src/sections/finance/types.ts";
+} from '@src/libs/notifications/internal-notifications';
+import { ERRORS } from '@src/libs/notifications/errors';
+import { WARNING } from '@src/libs/notifications/warnings';
+import { SUCCESS } from '@src/libs/notifications/success';
+import { useGetBalance } from '@src/hooks/protocol/use-get-balance.ts';
+import { FinanceWithdrawProps } from '@src/sections/finance/types.ts';
 
 // ----------------------------------------------------------------------
 
-const FinanceWithdraw: FC<FinanceWithdrawProps> = ({ address, withdrawHook, onClose }) => {
+const FinanceWithdraw: FC<FinanceWithdrawProps> = ({
+  address,
+  withdrawHook,
+  onClose,
+}) => {
   const { balance } = useGetBalance();
   const [amount, setAmount] = useState<number>(0);
   const [amountError, setAmountError] = useState(false);
-  const [amountHelperText, setAmountHelperText] = useState("");
+  const [amountHelperText, setAmountHelperText] = useState('');
   const [localLoading, setLocalLoading] = useState(false);
   const { withdraw, loading: withdrawLoading, error } = withdrawHook;
   const RainbowEffect = localLoading || withdrawLoading ? NeonPaper : Box;
@@ -57,7 +61,7 @@ const FinanceWithdraw: FC<FinanceWithdrawProps> = ({ address, withdrawHook, onCl
       onClose();
     } catch (err) {
       notifyError(ERRORS.WITHDRAW_FAILED_ERROR);
-      console.log("Error while withdraw: ", err);
+      console.log('Error while withdraw: ', err);
     } finally {
       setLocalLoading(false);
     }
@@ -70,10 +74,10 @@ const FinanceWithdraw: FC<FinanceWithdrawProps> = ({ address, withdrawHook, onCl
     // Update error state and helper text dynamically
     const errorMessage =
       value <= 0
-        ? "Amount must be greater than zero"
+        ? 'Amount must be greater than zero'
         : value > (balance ?? 0)
-          ? "Amount cannot be greater than balance"
-          : "";
+          ? 'Amount cannot be greater than balance'
+          : '';
 
     setAmountError(!!errorMessage);
     setAmountHelperText(errorMessage);
@@ -87,25 +91,28 @@ const FinanceWithdraw: FC<FinanceWithdrawProps> = ({ address, withdrawHook, onCl
         direction="column"
         display="flex"
         alignItems="center"
-        justifyContent="space-between">
+        justifyContent="space-between"
+      >
         <FinanceBoxRow>
-          <TextMaxLine line={1} fontWeight={"bold"}>
+          <TextMaxLine line={1} fontWeight={'bold'}>
             Wallet
           </TextMaxLine>
           <TextMaxLine
             line={1}
-            sx={{ fontWeight: "400", fontSize: "1em", color: "text.secondary" }}>
-            {address ? truncateAddress(address) : "No wallet connected"}
+            sx={{ fontWeight: '400', fontSize: '1em', color: 'text.secondary' }}
+          >
+            {address ? truncateAddress(address) : 'No wallet connected'}
           </TextMaxLine>
         </FinanceBoxRow>
 
         <FinanceBoxRow>
-          <TextMaxLine line={1} fontWeight={"bold"}>
+          <TextMaxLine line={1} fontWeight={'bold'}>
             Available
           </TextMaxLine>
           <TextMaxLine
             line={1}
-            sx={{ fontWeight: "400", fontSize: "1em", color: "text.secondary" }}>
+            sx={{ fontWeight: '400', fontSize: '1em', color: 'text.secondary' }}
+          >
             {formatBalanceNumber(balance ?? 0)} MMC
           </TextMaxLine>
         </FinanceBoxRow>
@@ -129,7 +136,7 @@ const FinanceWithdraw: FC<FinanceWithdrawProps> = ({ address, withdrawHook, onCl
         actionLoading={withdrawLoading}
         amount={Number(amount) || 0}
         balance={balance ?? 0}
-        label={"Confirm"}
+        label={'Confirm'}
         onConfirmAction={handleConfirmWithdraw}
         onCloseAction={onClose}
       />

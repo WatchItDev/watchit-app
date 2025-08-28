@@ -1,5 +1,5 @@
 import { Address } from 'viem';
-import {CampaignLog} from "@src/hooks/protocol/types.ts"
+import { CampaignLog } from '@src/hooks/protocol/types.ts';
 
 export interface CampaignType {
   campaign: Address;

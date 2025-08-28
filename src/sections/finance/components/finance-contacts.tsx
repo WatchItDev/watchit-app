@@ -15,13 +15,13 @@ import Box from '@mui/material/Box';
 import Iconify from '@src/components/iconify';
 import Carousel, { useCarousel } from '@src/components/carousel/index';
 import CarouselNavigationArrows from '@src/components/carousel/components/carousel-navigation-arrows.tsx';
-import AvatarProfile from "@src/components/avatar/avatar.tsx";
+import AvatarProfile from '@src/components/avatar/avatar.tsx';
 
 // routes
 import { paths } from '@src/routes/paths';
 import { useRouter } from '@src/routes/hooks';
 
-import { FinanceContactsCarouselProps } from "@src/sections/finance/types.ts"
+import { FinanceContactsCarouselProps } from '@src/sections/finance/types.ts';
 import { storeAddress, toggleRainbow } from '@redux/address';
 import { User } from '@src/graphql/generated/graphql.ts';
 import { resolveSrc } from '@src/utils/image.ts';
@@ -29,10 +29,10 @@ import { truncateAddress } from '@src/utils/wallet.ts';
 
 // ----------------------------------------------------------------------
 
-
-
-export default function FinanceContactsCarousel(props: Readonly<FinanceContactsCarouselProps>) {
-  const { title, subheader, list, chunkSize = 5, ...other } = props
+export default function FinanceContactsCarousel(
+  props: Readonly<FinanceContactsCarouselProps>,
+) {
+  const { title, subheader, list, chunkSize = 5, ...other } = props;
 
   const router = useRouter();
   const dispatch = useDispatch();
@@ -42,14 +42,14 @@ export default function FinanceContactsCarousel(props: Readonly<FinanceContactsC
     let start: number | null = null;
     if (time == null) time = 500;
     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-    (pos = +pos), (time = +time);
+    ((pos = +pos), (time = +time));
 
     window.requestAnimationFrame(function step(currentTime) {
       start = !start ? currentTime : start;
       const progress = currentTime - start;
 
       const lgPos = ((pos - currentPos) * progress) / time + currentPos;
-      const gtPos = currentPos - ((currentPos - pos) * progress) / time
+      const gtPos = currentPos - ((currentPos - pos) * progress) / time;
       window.scrollTo(0, currentPos < pos ? lgPos : gtPos);
 
       if (progress < time) {
@@ -57,7 +57,6 @@ export default function FinanceContactsCarousel(props: Readonly<FinanceContactsC
       } else {
         window.scrollTo(0, pos);
       }
-
     });
   }
 
@@ -96,7 +95,12 @@ export default function FinanceContactsCarousel(props: Readonly<FinanceContactsC
       <CardHeader
         title={title}
         subheader={subheader}
-        action={<CarouselNavigationArrows next={carousel.onNext} prev={carousel.onPrev} />}
+        action={
+          <CarouselNavigationArrows
+            next={carousel.onNext}
+            prev={carousel.onPrev}
+          />
+        }
         sx={{ px: 0 }}
       />
 
@@ -108,7 +112,9 @@ export default function FinanceContactsCarousel(props: Readonly<FinanceContactsC
               key={`slide-${index}`}
               chunk={chunk}
               goToProfile={goToProfile}
-              onClickArrow={(address, profileId) => handleClick(address, profileId)}
+              onClickArrow={(address, profileId) =>
+                handleClick(address, profileId)
+              }
             />
           ))}
         </Carousel>
@@ -125,11 +131,15 @@ interface SlideContactsProps {
   onClickArrow: (address: string, profileId: string) => void;
 }
 
-function SlideContacts({ chunk, goToProfile, onClickArrow }: SlideContactsProps) {
+function SlideContacts({
+  chunk,
+  goToProfile,
+  onClickArrow,
+}: SlideContactsProps) {
   const handleArrowClick = (
     event: React.MouseEvent<HTMLButtonElement>,
     address: string,
-    profileId: string
+    profileId: string,
   ) => {
     event.stopPropagation();
     onClickArrow(address, profileId);
@@ -146,7 +156,10 @@ function SlideContacts({ chunk, goToProfile, onClickArrow }: SlideContactsProps)
           >
             <AvatarProfile
               alt={profile.displayName || 'No Name'}
-              src={resolveSrc(profile.profilePicture || profile.address, 'profile')}
+              src={resolveSrc(
+                profile.profilePicture || profile.address,
+                'profile',
+              )}
               sx={{ width: 48, height: 48, mr: 2 }}
             />
             <ListItemText
@@ -157,7 +170,9 @@ function SlideContacts({ chunk, goToProfile, onClickArrow }: SlideContactsProps)
 
           <Tooltip title="Quick Transfer">
             <IconButton
-              onClick={(event) => handleArrowClick(event, profile.address, profile.address)}
+              onClick={(event) =>
+                handleArrowClick(event, profile.address, profile.address)
+              }
             >
               <Iconify icon="eva:diagonal-arrow-right-up-fill" />
             </IconButton>

@@ -30,23 +30,14 @@ const PerksItem: FC<PerksItemProps> = (props) => {
   } = props;
 
   return (
-    <Box
-      key={id}
-      display="flex"
-      alignItems="center"
-      gap={1.5}
-      mb={1.5}
-    >
+    <Box key={id} display="flex" alignItems="center" gap={1.5} mb={1.5}>
       <SmallIcon
         src={value === 100 ? CheckGreen : CheckDark}
         alt=""
         sx={{ width: 24, height: 24 }}
       />
 
-      <Typography
-        variant="body2"
-        sx={{ flexShrink: 0, minWidth: 180 }}
-      >
+      <Typography variant="body2" sx={{ flexShrink: 0, minWidth: 180 }}>
         {label}
       </Typography>
 
@@ -61,7 +52,9 @@ const PerksItem: FC<PerksItemProps> = (props) => {
           disabled={isThisLoading}
           onClick={() => handleClaim(id)}
           startIcon={
-            isThisLoading ? <CircularProgress size={14} color="inherit" /> : null
+            isThisLoading ? (
+              <CircularProgress size={14} color="inherit" />
+            ) : null
           }
         >
           {isThisLoading ? 'Claiming…' : `Claim ${rewardPreview}`}

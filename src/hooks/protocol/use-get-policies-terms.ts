@@ -3,16 +3,22 @@ import { Address } from 'viem';
 import { publicClient } from '@src/clients/viem/publicClient.ts';
 import PoliciesAggAbi from '@src/config/abi/PoliciesAgg.json';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
-import { HasAccessError, Policy, UseGetAuthorizedHolderPoliciesHook } from '@src/hooks/protocol/types.ts';
+import {
+  HasAccessError,
+  Policy,
+  UseGetAuthorizedHolderPoliciesHook,
+} from '@src/hooks/protocol/types.ts';
 
 /**
  * Custom hook that fetches the authorized policies for a given holder.
  * @param holder Address of the holder.
  */
 export const useGetPoliciesTerms = (
-  holder: Address | undefined
+  holder: Address | undefined,
 ): UseGetAuthorizedHolderPoliciesHook => {
-  const [authorizedHolderPolicies, setAuthorizedHolderPolicies] = useState<Policy[]>([]);
+  const [authorizedHolderPolicies, setAuthorizedHolderPolicies] = useState<
+    Policy[]
+  >([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<HasAccessError | null>(null);
 
@@ -42,7 +48,12 @@ export const useGetPoliciesTerms = (
     } catch (err) {
       console.error('Error fetching policies terms:', err);
       setAuthorizedHolderPolicies([]);
-      setError({ message: err instanceof Error ? err.message : 'Error occurred while fetching authorized policies.' });
+      setError({
+        message:
+          err instanceof Error
+            ? err.message
+            : 'Error occurred while fetching authorized policies.',
+      });
     } finally {
       setLoading(false);
     }

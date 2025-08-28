@@ -8,8 +8,8 @@ export function useBookmarks() {
   const address = session?.address ?? '';
 
   const { data, loading, refetch } = useGetUserBookmarksQuery({
-    variables:  { address, limit: 100 },
-    skip:       !address
+    variables: { address, limit: 100 },
+    skip: !address,
   });
 
   const idSet = useMemo(() => {

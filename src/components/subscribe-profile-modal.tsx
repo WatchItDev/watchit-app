@@ -31,7 +31,10 @@ import { useGetPolicyTerms } from '@src/hooks/protocol/use-get-policy-terms.ts';
 import { useGetBalance } from '@src/hooks/protocol/use-get-balance.ts';
 import { useNotifications } from '@src/hooks/use-notifications.ts';
 import { useNotificationPayload } from '@src/hooks/use-notification-payload.ts';
-import { notifyError, notifySuccess } from '@src/libs/notifications/internal-notifications.ts';
+import {
+  notifyError,
+  notifySuccess,
+} from '@src/libs/notifications/internal-notifications.ts';
 import { useAuth } from '@src/hooks/use-auth.ts';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 import { SUCCESS } from '@src/libs/notifications/success.ts';
@@ -66,9 +69,8 @@ export const SubscribeProfileModal = ({
   const { generatePayload } = useNotificationPayload(sessionData);
   const { terms, loading: loadingTerms } = useGetPolicyTerms(
     GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS as Address,
-    profile?.address as Address
+    profile?.address as Address,
   );
-
 
   // Options for predefined durations
   const durationOptions = [
@@ -81,7 +83,8 @@ export const SubscribeProfileModal = ({
   const duration = customDuration || selectedDuration || '0';
   const durationDays = parseInt(duration);
   const minDays = 7;
-  const isCustomDurationInvalid = customDuration && (isNaN(durationDays) || durationDays < minDays);
+  const isCustomDurationInvalid =
+    customDuration && (isNaN(durationDays) || durationDays < minDays);
 
   let totalCostWei = BigInt(0);
   let totalCostMMC = '0.00';
@@ -92,7 +95,8 @@ export const SubscribeProfileModal = ({
   }
 
   const balanceWei = balance ? parseUnits(balance.toString(), 18) : BigInt(0);
-  const isBalanceSufficient = balanceWei && totalCostWei && balanceWei >= totalCostWei;
+  const isBalanceSufficient =
+    balanceWei && totalCostWei && balanceWei >= totalCostWei;
 
   // Determine if the subscribe button should be disabled
   const isButtonDisabled =
@@ -125,7 +129,9 @@ export const SubscribeProfileModal = ({
   };
 
   // Handler for changing the custom duration
-  const handleCustomDurationChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleCustomDurationChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     setSelectedDuration('');
     setCustomDuration(event.target.value);
   };
@@ -158,15 +164,22 @@ export const SubscribeProfileModal = ({
           {
             id: profile.address,
             displayName: profile?.displayName ?? 'no name',
-            avatar: resolveSrc(profile?.profilePicture || profile?.address, 'profile')
+            avatar: resolveSrc(
+              profile?.profilePicture || profile?.address,
+              'profile',
+            ),
           },
           {
             durationDays: `${durationDays}`,
             totalCostMMC,
             rawDescription: `${sessionData?.user?.displayName} has joined to your content`,
-          }
+          },
         );
-        await sendNotification(profile.address, sessionData?.user?.address ?? '', notificationPayload);
+        await sendNotification(
+          profile.address,
+          sessionData?.user?.address ?? '',
+          notificationPayload,
+        );
       });
     } catch (err) {
       console.error(err);
@@ -179,13 +192,20 @@ export const SubscribeProfileModal = ({
   return (
     <>
       <Dialog open={isOpen} onClose={onClose} fullWidth maxWidth="xs">
-        <DialogTitle sx={{ pb: 2 }}>Access {profile?.displayName}'s content</DialogTitle>
+        <DialogTitle sx={{ pb: 2 }}>
+          Access {profile?.displayName}'s content
+        </DialogTitle>
         <Divider sx={{ mb: 2, borderStyle: 'dashed' }} />
         <DialogContent>
           {loadingTerms ? (
             <LinearProgress
               color="inherit"
-              sx={{ width: 1, maxWidth: 360, marginTop: '16px', alignSelf: 'center' }}
+              sx={{
+                width: 1,
+                maxWidth: 360,
+                marginTop: '16px',
+                alignSelf: 'center',
+              }}
             />
           ) : (
             <>
@@ -211,7 +231,11 @@ export const SubscribeProfileModal = ({
                         '&:hover': { opacity: 1 },
                       }}
                     >
-                      <Typography align="center" variant="body1" fontWeight="bold">
+                      <Typography
+                        align="center"
+                        variant="body1"
+                        fontWeight="bold"
+                      >
                         {option.title}
                       </Typography>
                     </Paper>
@@ -232,7 +256,11 @@ export const SubscribeProfileModal = ({
               <Divider sx={{ my: 2, borderStyle: 'dashed' }} />
 
               <Stack spacing={1}>
-                <Typography variant="body2" color="textSecondary" sx={{ mb: 1 }}>
+                <Typography
+                  variant="body2"
+                  color="textSecondary"
+                  sx={{ mb: 1 }}
+                >
                   Total Cost:
                 </Typography>
                 {!isCustomDurationInvalid && durationDays >= minDays ? (
@@ -246,7 +274,10 @@ export const SubscribeProfileModal = ({
                       textAlign: 'center',
                     }}
                   >
-                    <Typography variant="h6" color={isBalanceSufficient ? 'text.primary' : 'error'}>
+                    <Typography
+                      variant="h6"
+                      color={isBalanceSufficient ? 'text.primary' : 'error'}
+                    >
                       {totalCostMMC} MMC
                     </Typography>
                     <Typography variant="body2" color="textSecondary">
@@ -255,7 +286,8 @@ export const SubscribeProfileModal = ({
                   </Stack>
                 ) : (
                   <Typography variant="body2" color="error" sx={{ mt: 1 }}>
-                    Please enter a valid number of days (minimum {minDays} days).
+                    Please enter a valid number of days (minimum {minDays}{' '}
+                    days).
                   </Typography>
                 )}
               </Stack>

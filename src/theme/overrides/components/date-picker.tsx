@@ -16,17 +16,28 @@ const dateList = [
   'MobileDateTimePicker',
 ];
 
-const timeList = ['TimePicker', 'MobileTimePicker', 'StaticTimePicker', 'DesktopTimePicker'];
+const timeList = [
+  'TimePicker',
+  'MobileTimePicker',
+  'StaticTimePicker',
+  'DesktopTimePicker',
+];
 
 const switchIcon = () => <Iconify icon="eva:chevron-down-fill" width={24} />;
 
 const leftIcon = () => <Iconify icon="eva:arrow-ios-back-fill" width={24} />;
 
-const rightIcon = () => <Iconify icon="eva:arrow-ios-forward-fill" width={24} />;
+const rightIcon = () => (
+  <Iconify icon="eva:arrow-ios-forward-fill" width={24} />
+);
 
-const calendarIcon = () => <Iconify icon="solar:calendar-mark-bold-duotone" width={24} />;
+const calendarIcon = () => (
+  <Iconify icon="solar:calendar-mark-bold-duotone" width={24} />
+);
 
-const clockIcon = () => <Iconify icon="solar:clock-circle-outline" width={24} />;
+const clockIcon = () => (
+  <Iconify icon="solar:clock-circle-outline" width={24} />
+);
 
 interface DatePickerSlots {
   openPickerIcon?: () => JSX.Element;
@@ -41,38 +52,50 @@ interface DatePickerComponentConfig {
   };
 }
 
-type DatePickerComponents = Record<`Mui${typeof dateList[number]}`, DatePickerComponentConfig>;
+type DatePickerComponents = Record<
+  `Mui${(typeof dateList)[number]}`,
+  DatePickerComponentConfig
+>;
 
-type TimePickerComponents = Record<`Mui${typeof timeList[number]}`, DatePickerComponentConfig>;
+type TimePickerComponents = Record<
+  `Mui${(typeof timeList)[number]}`,
+  DatePickerComponentConfig
+>;
 
-const desktopTypes = dateList.reduce<DatePickerComponents>((result, currentValue) => {
-  result[`Mui${currentValue}`] = {
-    defaultProps: {
-      slots: {
-        openPickerIcon: calendarIcon,
-        leftArrowIcon: leftIcon,
-        rightArrowIcon: rightIcon,
-        switchViewIcon: switchIcon,
+const desktopTypes = dateList.reduce<DatePickerComponents>(
+  (result, currentValue) => {
+    result[`Mui${currentValue}`] = {
+      defaultProps: {
+        slots: {
+          openPickerIcon: calendarIcon,
+          leftArrowIcon: leftIcon,
+          rightArrowIcon: rightIcon,
+          switchViewIcon: switchIcon,
+        },
       },
-    },
-  };
+    };
 
-  return result;
-}, {} as DatePickerComponents);
+    return result;
+  },
+  {} as DatePickerComponents,
+);
 
-const timeTypes = timeList.reduce<TimePickerComponents>((result, currentValue) => {
-  result[`Mui${currentValue}`] = {
-    defaultProps: {
-      slots: {
-        openPickerIcon: clockIcon,
-        rightArrowIcon: rightIcon,
-        switchViewIcon: switchIcon,
+const timeTypes = timeList.reduce<TimePickerComponents>(
+  (result, currentValue) => {
+    result[`Mui${currentValue}`] = {
+      defaultProps: {
+        slots: {
+          openPickerIcon: clockIcon,
+          rightArrowIcon: rightIcon,
+          switchViewIcon: switchIcon,
+        },
       },
-    },
-  };
+    };
 
-  return result;
-}, {} as TimePickerComponents);
+    return result;
+  },
+  {} as TimePickerComponents,
+);
 
 export function datePicker(theme: Theme) {
   return {

@@ -1,6 +1,6 @@
 name: Bug Fix
 description: Issues related to bug fixes
-title: "fix: "
+title: 'fix: '
 type: bug
 labels:
   - bug

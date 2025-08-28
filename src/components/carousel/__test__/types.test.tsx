@@ -10,10 +10,12 @@ import {
   ArrowIconProps,
   CarouselCreatorsProps,
   CarouselPosterSlideProps,
-  PublicationType, CarouselTopTitlesProps, CarouselPosterMiniProps,
+  PublicationType,
+  CarouselTopTitlesProps,
+  CarouselPosterMiniProps,
 } from '../types.ts';
-import {CarouselReturnType} from "@src/hooks/components/types";
-import {CarouselWrapperProps} from "@src/components/carousel/types";
+import { CarouselReturnType } from '@src/hooks/components/types';
+import { CarouselWrapperProps } from '@src/components/carousel/types';
 
 describe('[TYPES]: CarouselReturnType', () => {
   it('should have correct default values', () => {
@@ -79,7 +81,7 @@ describe('[TYPES]: CarouselArrowsProps', () => {
       shape: 'rounded',
       filled: true,
       children: <div>Child</div>,
-      icon:  '<path d="90"/>',
+      icon: '<path d="90"/>',
       onNext: () => {},
       onPrev: () => {},
       leftButtonProps: { color: 'primary' },
@@ -102,7 +104,7 @@ describe('[TYPES]: CarouselArrowIndexProps', () => {
     const props: CarouselArrowIndexProps = {
       index: 1,
       total: 5,
-      icon:  '<path d="90"/>',
+      icon: '<path d="90"/>',
       onNext: () => {},
       onPrev: () => {},
       sx: { margin: 1 },
@@ -121,7 +123,7 @@ describe('[TYPES]: CarouselArrowIndexProps', () => {
 describe('[TYPES]: ArrowIconProps', () => {
   it('should have optional icon and isRTL properties', () => {
     const props: ArrowIconProps = {
-      icon:  '<path d="90"/>',
+      icon: '<path d="90"/>',
       isRTL: true,
     };
 
@@ -136,7 +138,9 @@ describe('[TYPES]: CarouselWrapperProps', () => {
       data: [],
       minItemWidth: 100,
       maxItemWidth: 200,
-      renderSlide: (_slideItems, _itemsPerRow, index) => <div key={index}>{index}</div>,
+      renderSlide: (_slideItems, _itemsPerRow, index) => (
+        <div key={index}>{index}</div>
+      ),
       carouselSettings: {},
     };
 
@@ -152,7 +156,9 @@ describe('[TYPES]: CarouselWrapperProps', () => {
       data: [],
       minItemWidth: 100,
       maxItemWidth: 200,
-      renderSlide: (_slideItems, _itemsPerRow, index) => <div key={index}>{index}</div>,
+      renderSlide: (_slideItems, _itemsPerRow, index) => (
+        <div key={index}>{index}</div>
+      ),
       carouselSettings: {},
       title: 'Test Title',
       boxStyle: { backgroundColor: 'red' },

@@ -1,4 +1,4 @@
-import {CalculateItemsPerSlideProps} from "@src/libs/types.ts";
+import { CalculateItemsPerSlideProps } from '@src/libs/types.ts';
 
 /**
  * Calculates the optimal number of items per slide based on the width of the parent container
@@ -10,7 +10,11 @@ import {CalculateItemsPerSlideProps} from "@src/libs/types.ts";
  * @param {number} calculateItemsPerSlideProps.maxItemWidth - The maximum width allowed for a single item.
  * @returns {number} The optimal number of items that can fit within the parent container.
  */
-export const calculateItemsPerSlide = ({parentWidth, minItemWidth, maxItemWidth} : CalculateItemsPerSlideProps): number => {
+export const calculateItemsPerSlide = ({
+  parentWidth,
+  minItemWidth,
+  maxItemWidth,
+}: CalculateItemsPerSlideProps): number => {
   const maxItems = Math.floor(parentWidth / minItemWidth);
   const minItems = Math.floor(parentWidth / maxItemWidth);
   let items = maxItems;

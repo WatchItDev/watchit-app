@@ -32,7 +32,8 @@ export default function EmptyContent({
         ...(filled && {
           borderRadius: 2,
           bgcolor: (theme) => alpha(theme.palette.grey[500], 0.04),
-          border: (theme) => `dashed 1px ${alpha(theme.palette.grey[500], 0.08)}`,
+          border: (theme) =>
+            `dashed 1px ${alpha(theme.palette.grey[500], 0.08)}`,
         }),
         ...sx,
       }}
@@ -49,7 +50,10 @@ export default function EmptyContent({
       )}
 
       {description && (
-        <Typography variant="caption" sx={{ mt: 1, color: 'text.disabled', textAlign: 'center' }}>
+        <Typography
+          variant="caption"
+          sx={{ mt: 1, color: 'text.disabled', textAlign: 'center' }}
+        >
           {description}
         </Typography>
       )}

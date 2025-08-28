@@ -2,8 +2,8 @@ import {
   capitalizeFirstLetter,
   createIndexForElement,
   pascalToUpperSnake,
-  trimPublicationContentExtraText
-} from "../text-transform"
+  trimPublicationContentExtraText,
+} from '../text-transform';
 
 describe('pascalToUpperSnake', () => {
   it('converts PascalCase to UPPER_SNAKE_CASE', () => {
@@ -25,11 +25,17 @@ describe('trimPublicationContentExtraText', () => {
   });
 
   it('removes email addresses and trims extra spaces', () => {
-    expect(trimPublicationContentExtraText('Contact me at example@example.com for more info.')).toBe('Contact me at  for more info.');
+    expect(
+      trimPublicationContentExtraText(
+        'Contact me at example@example.com for more info.',
+      ),
+    ).toBe('Contact me at  for more info.');
   });
 
   it('handles text without special characters or email', () => {
-    expect(trimPublicationContentExtraText('This is a simple text')).toBe('This is a simple text.');
+    expect(trimPublicationContentExtraText('This is a simple text')).toBe(
+      'This is a simple text.',
+    );
   });
 
   it('handles text with only special characters', () => {

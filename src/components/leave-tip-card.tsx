@@ -8,10 +8,16 @@ import { openLoginModal } from '@redux/auth';
 import { useAuth } from '@src/hooks/use-auth.ts';
 import { useTransfer } from '@src/hooks/protocol/use-transfer.ts';
 import { Post } from '@src/graphql/generated/graphql.ts';
-import { notifyError, notifySuccess } from '@src/libs/notifications/internal-notifications.ts';
+import {
+  notifyError,
+  notifySuccess,
+} from '@src/libs/notifications/internal-notifications.ts';
 import { ERRORS } from '@src/libs/notifications/errors.ts';
 import { SUCCESS } from '@src/libs/notifications/success.ts';
-import { GetTipsByBakerForPostDocument, useCreateTipMutation } from '@src/graphql/generated/hooks.tsx';
+import {
+  GetTipsByBakerForPostDocument,
+  useCreateTipMutation,
+} from '@src/graphql/generated/hooks.tsx';
 
 const tipOptions = [
   { value: '10', title: '10', subtitle: 'A token of appreciation' },
@@ -49,7 +55,9 @@ export const LeaveTipCard: FC<{ post: Post }> = ({ post }) => {
     setCustomTip('');
   };
 
-  const handleCustomTipChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleCustomTipChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     setSelectedTip('');
     setCustomTip(event.target.value);
   };
@@ -65,7 +73,7 @@ export const LeaveTipCard: FC<{ post: Post }> = ({ post }) => {
         createTip({
           variables: {
             input: {
-              postId:  post.id,
+              postId: post.id,
               creator: recipient,
               amount,
               txHash: null,
@@ -73,10 +81,13 @@ export const LeaveTipCard: FC<{ post: Post }> = ({ post }) => {
             },
           },
           refetchQueries: [
-            { query: GetTipsByBakerForPostDocument, variables: { postId: post.id } },
+            {
+              query: GetTipsByBakerForPostDocument,
+              variables: { postId: post.id },
+            },
           ],
           awaitRefetchQueries: true,
-        })
+        }),
       );
 
       await Promise.all([pTransfer, pCreateTip]);
@@ -90,7 +101,14 @@ export const LeaveTipCard: FC<{ post: Post }> = ({ post }) => {
   const isDisabled = transferLoading || amount <= 0 || !recipient;
 
   return (
-    <Card sx={{ width: '100%', maxWidth: { lg: 400 }, margin: 'auto', backgroundColor: '#2B2D31' }}>
+    <Card
+      sx={{
+        width: '100%',
+        maxWidth: { lg: 400 },
+        margin: 'auto',
+        backgroundColor: '#2B2D31',
+      }}
+    >
       <CardContent>
         <Typography variant="h6" gutterBottom>
           Support {post.author.displayName}
@@ -121,7 +139,11 @@ export const LeaveTipCard: FC<{ post: Post }> = ({ post }) => {
                 <Typography variant="body1" fontWeight="bold" align="center">
                   {option.title}
                 </Typography>
-                <Typography variant="subtitle2" align="center" sx={{ fontSize: '0.7rem' }}>
+                <Typography
+                  variant="subtitle2"
+                  align="center"
+                  sx={{ fontSize: '0.7rem' }}
+                >
                   MMC
                 </Typography>
               </Paper>

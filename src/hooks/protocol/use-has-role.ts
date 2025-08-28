@@ -20,12 +20,12 @@ export const useHasRole = (): UseHasRoleHook => {
   const fetchHasRole = useCallback(async (roleId: number, account: Address) => {
     setLoading(true);
     try {
-      const roleData = await alchemyClient.readContract({
+      const roleData = (await alchemyClient.readContract({
         address: GLOBAL_CONSTANTS.ACCESS_MANAGER_ADDRESS,
         abi: AccessManagerAbi.abi,
         functionName: 'hasRole',
         args: [roleId, account],
-      }) as readonly [boolean, number];
+      })) as readonly [boolean, number];
 
       const role = Boolean(roleData[0]);
       setHasRole(role);
@@ -33,7 +33,9 @@ export const useHasRole = (): UseHasRoleHook => {
     } catch (err) {
       console.error('Error checking access:', err);
       setHasRole(undefined);
-      setError({ message: err instanceof Error ? err.message : 'An error occurred' });
+      setError({
+        message: err instanceof Error ? err.message : 'An error occurred',
+      });
     } finally {
       setLoading(false);
     }

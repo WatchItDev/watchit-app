@@ -24,19 +24,24 @@ import React, { useCallback, useState } from 'react';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Label from '@src/components/label';
-import {NotificationColumnsProps} from "@src/hooks/types.ts"
+import { NotificationColumnsProps } from '@src/hooks/types.ts';
 
 export default function NotificationsPopover() {
   const { notifications, markAsRead, markAllAsRead } = useNotifications();
-  const unreadNotifications = notifications.filter((notification) => !notification.read);
+  const unreadNotifications = notifications.filter(
+    (notification) => !notification.read,
+  );
 
   const drawer = useBoolean();
   const smUp = useResponsive('up', 'sm');
 
   const [currentTab, setCurrentTab] = useState('all');
-  const handleChangeTab = useCallback((event: React.SyntheticEvent, newValue: string) => {
-    setCurrentTab(newValue);
-  }, []);
+  const handleChangeTab = useCallback(
+    (event: React.SyntheticEvent, newValue: string) => {
+      setCurrentTab(newValue);
+    },
+    [],
+  );
 
   const TABS = [
     {
@@ -57,7 +62,11 @@ export default function NotificationsPopover() {
   ];
 
   const renderHead = (
-    <Stack direction="row" alignItems="center" sx={{ py: 2, pl: 2.5, pr: 1, minHeight: 68 }}>
+    <Stack
+      direction="row"
+      alignItems="center"
+      sx={{ py: 2, pl: 2.5, pr: 1, minHeight: 68 }}
+    >
       <Typography variant="h6" sx={{ flexGrow: 1 }}>
         Notifications
       </Typography>
@@ -90,7 +99,11 @@ export default function NotificationsPopover() {
           label={tab.label}
           icon={
             <Label
-              variant={((tab.value === 'all' || tab.value === currentTab) && 'filled') || 'soft'}
+              variant={
+                ((tab.value === 'all' || tab.value === currentTab) &&
+                  'filled') ||
+                'soft'
+              }
               color={
                 (tab.value === 'unread' && 'info') ||
                 (tab.value === 'archived' && 'success') ||
@@ -177,7 +190,9 @@ export default function NotificationsPopover() {
         {currentTab === 'unread' && renderNotifications(unreadNotifications)}
 
         {currentTab === 'archived' &&
-          renderNotifications(notifications.filter((notification) => notification.read))}
+          renderNotifications(
+            notifications.filter((notification) => notification.read),
+          )}
       </Drawer>
     </>
   );
@@ -205,7 +220,9 @@ export const EmptyPlaceholder = () => {
         }}
       >
         You are up to date!
-        <Typography variant={'caption'}>There are no new notifications</Typography>
+        <Typography variant={'caption'}>
+          There are no new notifications
+        </Typography>
       </Typography>
     </Box>
   );

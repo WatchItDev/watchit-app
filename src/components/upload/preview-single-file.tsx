@@ -10,7 +10,10 @@ export interface SingleFilePreviewProps {
   ratio?: ImageRatio;
 }
 
-export default function SingleFilePreview({ imgUrl = '', ratio }: SingleFilePreviewProps) {
+export default function SingleFilePreview({
+  imgUrl = '',
+  ratio,
+}: SingleFilePreviewProps) {
   return (
     <Box
       sx={{

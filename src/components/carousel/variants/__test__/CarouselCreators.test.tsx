@@ -2,7 +2,7 @@ import '../../../../../__mocks__/web3auth';
 import { describe, it, expect } from 'vitest';
 import CarouselCreators from '@src/components/carousel/variants/carousel-creators.tsx';
 import { CarouselCreatorsProps } from '@src/components/carousel/types.ts';
-import {renderWithStoreAndRouter} from "@src/utils/testing/Testing.tsx";
+import { renderWithStoreAndRouter } from '@src/utils/testing/Testing.tsx';
 
 describe('[COMPONENTS]: CarouselCreators', () => {
   const mockData = [
@@ -16,9 +16,9 @@ describe('[COMPONENTS]: CarouselCreators', () => {
         appId: null,
         coverPicture: null,
         displayName: 'Test User 1',
-        attributes: null
+        attributes: null,
       },
-      __typename: "Profile",
+      __typename: 'Profile',
       invitedBy: null,
     },
   ];
@@ -31,26 +31,39 @@ describe('[COMPONENTS]: CarouselCreators', () => {
   };
 
   it('to match snapshot', () => {
-    expect(renderWithStoreAndRouter(<CarouselCreators {...defaultProps} />).baseElement).toMatchSnapshot();
+    expect(
+      renderWithStoreAndRouter(<CarouselCreators {...defaultProps} />)
+        .baseElement,
+    ).toMatchSnapshot();
   });
 
   it('renders the correct number of slides', () => {
-    const slides = renderWithStoreAndRouter(<CarouselCreators {...defaultProps} />).container.querySelectorAll('.slick-slider');
+    const slides = renderWithStoreAndRouter(
+      <CarouselCreators {...defaultProps} />,
+    ).container.querySelectorAll('.slick-slider');
     expect(slides.length).toBe(mockData.length);
   });
 
   it('applies the correct carousel settings', () => {
-    const slickTrack = renderWithStoreAndRouter(<CarouselCreators {...defaultProps} />).container.querySelector('.slick-track');
+    const slickTrack = renderWithStoreAndRouter(
+      <CarouselCreators {...defaultProps} />,
+    ).container.querySelector('.slick-track');
     expect(slickTrack).toHaveStyle('height: 100%');
   });
 
   it('renders the title correctly', () => {
-    expect(renderWithStoreAndRouter(<CarouselCreators {...defaultProps} />).getByText('Test Carousel')).toBeInTheDocument();
+    expect(
+      renderWithStoreAndRouter(
+        <CarouselCreators {...defaultProps} />,
+      ).getByText('Test Carousel'),
+    ).toBeInTheDocument();
   });
 
   it('handles empty data gracefully', () => {
     const emptyProps = { ...defaultProps, data: [] };
-    const slides = renderWithStoreAndRouter(<CarouselCreators {...emptyProps} />).container.querySelectorAll('.slick-slide');
+    const slides = renderWithStoreAndRouter(
+      <CarouselCreators {...emptyProps} />,
+    ).container.querySelectorAll('.slick-slide');
     expect(slides.length).toBe(0);
   });
 });

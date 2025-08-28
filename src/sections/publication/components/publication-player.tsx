@@ -7,7 +7,7 @@ import { getMediaUri, getMovieCid } from '@src/utils/publication.ts';
 
 // ----------------------------------------------------------------------
 
-const PublicationPlayer: FC<PublicationPlayerProps> = (props) =>  {
+const PublicationPlayer: FC<PublicationPlayerProps> = (props) => {
   const { publication, loading } = props;
 
   if (loading) return <LoadingScreen />;
@@ -33,8 +33,8 @@ const PublicationPlayer: FC<PublicationPlayerProps> = (props) =>  {
       )}
     </Box>
   );
-}
+};
 
 export default memo(PublicationPlayer, (prevProps, nextProps) => {
   return prevProps.publication === nextProps.publication;
-})
+});

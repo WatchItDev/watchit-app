@@ -28,32 +28,42 @@ import { useAuth } from '@src/hooks/use-auth.ts';
 import NeonPaper from '@src/sections/publication/components/neon-paper-container.tsx';
 import Box from '@mui/material/Box';
 import LoadingButton from '@mui/lab/LoadingButton';
-import { notifyError, notifySuccess } from '@src/libs/notifications/internal-notifications.ts';
+import {
+  notifyError,
+  notifySuccess,
+} from '@src/libs/notifications/internal-notifications.ts';
 import { SUCCESS } from '@src/libs/notifications/success.ts';
 import { ERRORS } from '@src/libs/notifications/errors';
 import { ActivateSubscriptionProfileModalProps } from '@src/components/types.ts';
 
 export const ActivateSubscriptionProfileModal = ({
-                                                   isOpen,
-                                                   onClose,
-                                                 }: ActivateSubscriptionProfileModalProps) => {
+  isOpen,
+  onClose,
+}: ActivateSubscriptionProfileModalProps) => {
   const [selectedAmount, setSelectedAmount] = useState('10');
   const [customAmount, setCustomAmount] = useState('');
 
   const { authorize, loading, error } = useAuthorizePolicy();
 
   const { session } = useAuth();
-  const creatorAddress = (session?.user?.address ?? '0x0000000000000000000000000000000000000000') as Address;
+  const creatorAddress = (session?.user?.address ??
+    '0x0000000000000000000000000000000000000000') as Address;
 
-  const { terms, loading: loadingTerms, refetch: refetchTerms } = useGetPolicyTerms(
+  const {
+    terms,
+    loading: loadingTerms,
+    refetch: refetchTerms,
+  } = useGetPolicyTerms(
     GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS as Address,
-    creatorAddress
+    creatorAddress,
   );
 
   const currentPriceWei = terms?.amount ?? 0n;
   const hasCurrent = currentPriceWei > 0n;
   const trimAmount = (v: string) => v.replace(/\.?0+$/, '');
-  const currentPriceMMC = hasCurrent ? trimAmount(formatUnits(currentPriceWei, 18)) : null;
+  const currentPriceMMC = hasCurrent
+    ? trimAmount(formatUnits(currentPriceWei, 18))
+    : null;
   const initializedRef = useRef(false);
   const proposedAmount = customAmount || selectedAmount || '';
   const isUnchanged = hasCurrent && proposedAmount === currentPriceMMC;
@@ -96,7 +106,9 @@ export const ActivateSubscriptionProfileModal = ({
     setCustomAmount('');
   };
 
-  const handleCustomAmountChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleCustomAmountChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     setSelectedAmount('');
     setCustomAmount(event.target.value);
   };
@@ -134,7 +146,6 @@ export const ActivateSubscriptionProfileModal = ({
     }
   };
 
-
   return (
     <Dialog open={isOpen} onClose={onClose} fullWidth maxWidth="xs">
       <DialogTitle sx={{ pb: 2 }}>Set join price</DialogTitle>
@@ -142,25 +153,33 @@ export const ActivateSubscriptionProfileModal = ({
 
       <DialogContent>
         {loadingTerms ? (
-          <Skeleton variant="rounded" height={44} sx={{ mb: 2, borderRadius: 1 }} />
+          <Skeleton
+            variant="rounded"
+            height={44}
+            sx={{ mb: 2, borderRadius: 1 }}
+          />
         ) : hasCurrent ? (
           <Alert severity="info" sx={{ mb: 2 }}>
-            Your <b>current price</b> is <b>{currentPriceMMC} MMC/day</b>. You can change it below.
+            Your <b>current price</b> is <b>{currentPriceMMC} MMC/day</b>. You
+            can change it below.
           </Alert>
         ) : (
           <Alert severity="warning" sx={{ mb: 2 }}>
-            You don't have a <b>daily price</b> set yet. Define one below to enable subscriptions.
+            You don't have a <b>daily price</b> set yet. Define one below to
+            enable subscriptions.
           </Alert>
         )}
 
         <Typography variant="body2" color="textSecondary" sx={{ mb: 3 }}>
-          Users will pay a <span style={{ fontWeight: 'bolder' }}>daily</span> rate to access your content.
+          Users will pay a <span style={{ fontWeight: 'bolder' }}>daily</span>{' '}
+          rate to access your content.
         </Typography>
 
         <Stack spacing={2}>
           <Stack spacing={2} direction="row">
             {amountOptions.map((option) => {
-              const isSelected = selectedAmount === option.value && !customAmount;
+              const isSelected =
+                selectedAmount === option.value && !customAmount;
               return (
                 <Paper
                   key={option.value}
@@ -215,17 +234,62 @@ export const ActivateSubscriptionProfileModal = ({
             Users will pay:
           </Typography>
           <Stack spacing={1} direction="row">
-            <Stack sx={{ p: 1, backgroundColor: 'rgba(255,255,255,0.05)', borderRadius: 1, flexGrow: 1 }}>
-              <Typography variant="body1" textAlign="center">{weeklyCost} MMC</Typography>
-              <Typography variant="body2" textAlign="center" color="textSecondary">per week</Typography>
+            <Stack
+              sx={{
+                p: 1,
+                backgroundColor: 'rgba(255,255,255,0.05)',
+                borderRadius: 1,
+                flexGrow: 1,
+              }}
+            >
+              <Typography variant="body1" textAlign="center">
+                {weeklyCost} MMC
+              </Typography>
+              <Typography
+                variant="body2"
+                textAlign="center"
+                color="textSecondary"
+              >
+                per week
+              </Typography>
             </Stack>
-            <Stack sx={{ p: 1, backgroundColor: 'rgba(255,255,255,0.05)', borderRadius: 1, flexGrow: 1 }}>
-              <Typography variant="body1" textAlign="center">{fifteenDaysCost} MMC</Typography>
-              <Typography variant="body2" textAlign="center" color="textSecondary">every 15 days</Typography>
+            <Stack
+              sx={{
+                p: 1,
+                backgroundColor: 'rgba(255,255,255,0.05)',
+                borderRadius: 1,
+                flexGrow: 1,
+              }}
+            >
+              <Typography variant="body1" textAlign="center">
+                {fifteenDaysCost} MMC
+              </Typography>
+              <Typography
+                variant="body2"
+                textAlign="center"
+                color="textSecondary"
+              >
+                every 15 days
+              </Typography>
             </Stack>
-            <Stack sx={{ p: 1, backgroundColor: 'rgba(255,255,255,0.05)', borderRadius: 1, flexGrow: 1 }}>
-              <Typography variant="body1" textAlign="center">{monthlyCost} MMC</Typography>
-              <Typography variant="body2" textAlign="center" color="textSecondary">per month</Typography>
+            <Stack
+              sx={{
+                p: 1,
+                backgroundColor: 'rgba(255,255,255,0.05)',
+                borderRadius: 1,
+                flexGrow: 1,
+              }}
+            >
+              <Typography variant="body1" textAlign="center">
+                {monthlyCost} MMC
+              </Typography>
+              <Typography
+                variant="body2"
+                textAlign="center"
+                color="textSecondary"
+              >
+                per month
+              </Typography>
             </Stack>
           </Stack>
         </Stack>
@@ -233,9 +297,18 @@ export const ActivateSubscriptionProfileModal = ({
 
       <Divider sx={{ mt: 3, borderStyle: 'dashed' }} />
       <DialogActions>
-        <Button variant="text" onClick={onClose}>Cancel</Button>
+        <Button variant="text" onClick={onClose}>
+          Cancel
+        </Button>
 
-        <RainbowEffect {...(loading && { borderRadius: '10px', animationSpeed: '3s', padding: '0', width: 'auto' })}>
+        <RainbowEffect
+          {...(loading && {
+            borderRadius: '10px',
+            animationSpeed: '3s',
+            padding: '0',
+            width: 'auto',
+          })}
+        >
           <LoadingButton
             variant="contained"
             sx={{ backgroundColor: '#fff' }}

@@ -3,7 +3,7 @@ import { describe, it, expect, afterEach, vi } from 'vitest';
 import { cleanup, render, fireEvent } from '@testing-library/react';
 
 // Base testing component
-import Modal, { ModalProps } from "@src/components/modal.tsx";
+import Modal, { ModalProps } from '@src/components/modal.tsx';
 
 const fn = vi.fn();
 const renderComponent = (props: ModalProps) => render(<Modal {...props} />);
@@ -13,16 +13,16 @@ describe('[COMPONENTS]: Modal component testing', () => {
     onClose: fn,
     title: 'Modal title',
     open: true,
-    renderContent: <div>This is the body of the modal</div>
-  }
+    renderContent: <div>This is the body of the modal</div>,
+  };
 
   afterEach(() => {
     cleanup();
-  })
+  });
 
   it('to match snapshot', () => {
     const { baseElement } = renderComponent(modalProps);
-    expect(baseElement).toMatchSnapshot()
+    expect(baseElement).toMatchSnapshot();
   });
 
   it('title is equal to "Modal title"', () => {

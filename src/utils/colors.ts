@@ -16,4 +16,4 @@ export const darken = (color: string, tone = 30) => {
   b = Math.max(0, b - tone);
 
   return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
-}
+};

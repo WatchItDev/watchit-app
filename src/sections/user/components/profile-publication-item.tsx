@@ -5,11 +5,15 @@ import Image from '../../../components/image';
 import { useRouter } from '@src/routes/hooks';
 import { paths } from '@src/routes/paths.ts';
 import { getAttachmentCid, getMediaUri } from '@src/utils/publication.ts';
-import {ProfilePublicationItemProps} from "@src/sections/user/types.ts"
+import { ProfilePublicationItemProps } from '@src/sections/user/types.ts';
 
-export const ProfilePublicationItem = ({ publication }: ProfilePublicationItemProps) => {
+export const ProfilePublicationItem = ({
+  publication,
+}: ProfilePublicationItemProps) => {
   const router = useRouter();
-  const posterCid = getAttachmentCid(publication, 'square') || getAttachmentCid(publication, 'poster');
+  const posterCid =
+    getAttachmentCid(publication, 'square') ||
+    getAttachmentCid(publication, 'poster');
   const posterImage = getMediaUri(posterCid);
 
   const handleClick = () => {

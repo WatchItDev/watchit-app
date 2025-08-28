@@ -36,16 +36,19 @@ export default function FinanceSearchProfileModal({
   const [searchUsers, { data, loading }] = useGetUsersLazyQuery();
   const profiles = data?.getUsers;
 
-  const handleSearchChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
-    setSearchQuery(value);
-    searchUsers({ variables: { query: value, limit: 50 } })
-  }, []);
+  const handleSearchChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      const value = event.target.value;
+      setSearchQuery(value);
+      searchUsers({ variables: { query: value, limit: 50 } });
+    },
+    [],
+  );
 
   const handleClose = () => {
     open.onFalse();
     setSearchQuery('');
-    searchUsers({ variables: { query: '' } })
+    searchUsers({ variables: { query: '' } });
   };
 
   const handleSelectProfile = (profile: User) => {
@@ -78,10 +81,16 @@ export default function FinanceSearchProfileModal({
       <>
         {profiles &&
           profiles.map((profile: User) => {
-            const avatarSrc = resolveSrc(profile.profilePicture || profile.address, 'profile');
+            const avatarSrc = resolveSrc(
+              profile.profilePicture || profile.address,
+              'profile',
+            );
 
             return (
-              <ListItemButton key={profile.address} onClick={() => handleSelectProfile(profile)}>
+              <ListItemButton
+                key={profile.address}
+                onClick={() => handleSelectProfile(profile)}
+              >
                 <Avatar
                   src={avatarSrc}
                   alt={profile.displayName ?? ''}
@@ -130,10 +139,18 @@ export default function FinanceSearchProfileModal({
             onChange={handleSearchChange}
             startAdornment={
               <InputAdornment position="start">
-                <Iconify icon="eva:search-fill" width={24} sx={{ color: 'text.disabled' }} />
+                <Iconify
+                  icon="eva:search-fill"
+                  width={24}
+                  sx={{ color: 'text.disabled' }}
+                />
               </InputAdornment>
             }
-            endAdornment={<Label sx={{ letterSpacing: 1, color: 'text.secondary' }}>esc</Label>}
+            endAdornment={
+              <Label sx={{ letterSpacing: 1, color: 'text.secondary' }}>
+                esc
+              </Label>
+            }
             inputProps={{ sx: { typography: 'h6' } }}
           />
         </Box>
@@ -151,7 +168,9 @@ export default function FinanceSearchProfileModal({
               <CircularProgress size={32} sx={{ color: '#fff' }} />
             </Box>
           )}
-          {notFound && !loading && <SearchNotFound query={searchQuery} sx={{ py: 10 }} />}
+          {notFound && !loading && (
+            <SearchNotFound query={searchQuery} sx={{ py: 10 }} />
+          )}
           {!notFound && !loading && renderItems()}
         </Scrollbar>
       </Dialog>

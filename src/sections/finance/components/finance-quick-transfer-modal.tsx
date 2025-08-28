@@ -21,7 +21,10 @@ import { InputAmount } from '@src/components/input-amount.tsx';
 import { useTransfer } from '@src/hooks/protocol/use-transfer.ts';
 
 // Notifications
-import { notifyError, notifySuccess } from '@src/libs/notifications/internal-notifications.ts';
+import {
+  notifyError,
+  notifySuccess,
+} from '@src/libs/notifications/internal-notifications.ts';
 import { SUCCESS } from '@src/libs/notifications/success.ts';
 import { ERRORS } from '@src/libs/notifications/errors';
 import AvatarProfile from '@src/components/avatar/avatar.tsx';
@@ -29,12 +32,13 @@ import { MAX_POOL } from '@src/sections/finance/components/finance-quick-transfe
 import { handleAmountConstraints } from '@src/utils/format-number.ts';
 import { useTheme } from '@mui/material/styles';
 import { useAuth } from '@src/hooks/use-auth.ts';
-import {ConfirmTransferDialogProps} from "@src/sections/finance/types.ts"
+import { ConfirmTransferDialogProps } from '@src/sections/finance/types.ts';
 import { Address } from 'viem';
 import { resolveSrc } from '@src/utils/image.ts';
 
-
-function FinanceQuickTransferModal(props: Readonly<ConfirmTransferDialogProps>) {
+function FinanceQuickTransferModal(
+  props: Readonly<ConfirmTransferDialogProps>,
+) {
   const { open, amount, contactInfo, onClose, onFinish, address } = props;
   const theme = useTheme();
   const { session: sessionData, balance: MAX_AMOUNT } = useAuth();
@@ -49,9 +53,7 @@ function FinanceQuickTransferModal(props: Readonly<ConfirmTransferDialogProps>) 
   const hasProfile = !!contactInfo;
 
   // Check if the passed address matches the profile's address
-  const isSame =
-    hasProfile &&
-    contactInfo?.address === address;
+  const isSame = hasProfile && contactInfo?.address === address;
 
   // If no valid profile, show "Destination wallet", else use profile’s displayName
   const displayName = hasProfile
@@ -59,7 +61,10 @@ function FinanceQuickTransferModal(props: Readonly<ConfirmTransferDialogProps>) 
     : 'Destination wallet';
 
   // For the avatar, if no valid profile or if the address doesn't match, use a dicebear fallback
-  const avatarSrc = resolveSrc((contactInfo?.profilePicture || contactInfo?.address) ?? '', 'profile');
+  const avatarSrc = resolveSrc(
+    (contactInfo?.profilePicture || contactInfo?.address) ?? '',
+    'profile',
+  );
 
   // For the secondary text under the name, if we have a valid profile that matches, use its address
   // otherwise show the typed address
@@ -74,7 +79,7 @@ function FinanceQuickTransferModal(props: Readonly<ConfirmTransferDialogProps>) 
   async function storeTransactionInSupabase(
     receiver_id?: string,
     sender_id?: string,
-    payload?: Record<string, string>
+    payload?: Record<string, string>,
   ) {
     const { error: supaError } = await supabase
       .from('transactions')
@@ -113,27 +118,31 @@ function FinanceQuickTransferModal(props: Readonly<ConfirmTransferDialogProps>) 
         {
           rawDescription: `${sessionData?.user?.displayName ?? address} sent you ${transferAmount} MMC`,
           message,
-        }
+        },
       );
 
       // Store transaction in Supabase
-      await storeTransactionInSupabase(contactInfo?.address ?? address, senderId, {
-        address: contactInfo?.address ?? address ?? '',
-        amount: transferAmount,
-        message,
-        ...notificationPayload,
-      });
+      await storeTransactionInSupabase(
+        contactInfo?.address ?? address,
+        senderId,
+        {
+          address: contactInfo?.address ?? address ?? '',
+          amount: transferAmount,
+          message,
+          ...notificationPayload,
+        },
+      );
 
       // Send notification to the user
       await sendNotification(
         contactInfo?.address ?? address ?? '',
         sessionData?.address as Address,
-        notificationPayload
+        notificationPayload,
       );
 
       notifySuccess(SUCCESS.TRANSFER_CREATED_SUCCESSFULLY, {
         destination: isSame
-          ? contactInfo?.displayName ?? contactInfo?.username
+          ? (contactInfo?.displayName ?? contactInfo?.username)
           : truncateAddress(address ?? ''),
       });
     } catch (err) {
@@ -145,13 +154,25 @@ function FinanceQuickTransferModal(props: Readonly<ConfirmTransferDialogProps>) 
   const handleChangeInput = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       const value = Number(event.target.value);
-      handleAmountConstraints({ value, MAX_AMOUNT, MAX_POOL, setAmount: setValue, setCanContinue });
+      handleAmountConstraints({
+        value,
+        MAX_AMOUNT,
+        MAX_POOL,
+        setAmount: setValue,
+        setCanContinue,
+      });
     },
-    [MAX_AMOUNT]
+    [MAX_AMOUNT],
   );
 
   const handleBlur = useCallback(() => {
-    handleAmountConstraints({ value, MAX_AMOUNT, MAX_POOL, setAmount: setValue, setCanContinue });
+    handleAmountConstraints({
+      value,
+      MAX_AMOUNT,
+      MAX_POOL,
+      setAmount: setValue,
+      setCanContinue,
+    });
   }, [value, MAX_AMOUNT]);
 
   const RainbowEffect = transferLoading ? NeonPaper : Box;
@@ -165,15 +186,25 @@ function FinanceQuickTransferModal(props: Readonly<ConfirmTransferDialogProps>) 
           marginBottom: '8px',
         }}
       >
-        Send to {contactInfo?.displayName || contactInfo?.username || 'External wallet'}
+        Send to{' '}
+        {contactInfo?.displayName || contactInfo?.username || 'External wallet'}
       </DialogTitle>
       <Stack direction="column" spacing={3} sx={{ px: 3 }}>
         <Stack
           direction="row"
           spacing={3}
-          sx={{ flexWrap: 'wrap', alignItems: 'center', justifyContent: 'center' }}
+          sx={{
+            flexWrap: 'wrap',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
         >
-          <Stack direction="row" alignItems="center" spacing={2} sx={{ flexGrow: 1 }}>
+          <Stack
+            direction="row"
+            alignItems="center"
+            spacing={2}
+            sx={{ flexGrow: 1 }}
+          >
             <AvatarProfile src={avatarSrc} sx={{ width: 48, height: 48 }} />
 
             <ListItemText

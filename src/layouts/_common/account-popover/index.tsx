@@ -60,10 +60,7 @@ export function AccountPopover() {
       />
 
       {/* The popover menu itself */}
-      <AccountPopoverMenu
-        popover={popover}
-        router={router}
-      />
+      <AccountPopoverMenu popover={popover} router={router} />
 
       {/* The login modal */}
       <LoginModal open={isLoginModalOpen} onClose={handleCloseModal} />
@@ -71,4 +68,4 @@ export function AccountPopover() {
   );
 }
 
-export default AccountPopover
+export default AccountPopover;

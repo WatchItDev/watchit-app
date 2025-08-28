@@ -7,33 +7,39 @@ import { ScrollbarProps } from './types';
 
 // ----------------------------------------------------------------------
 
-const Scrollbar = forwardRef<HTMLDivElement, ScrollbarProps>(({ children, sx, ...other }, ref) => {
-  const userAgent = typeof navigator === 'undefined' ? 'SSR' : navigator.userAgent;
+const Scrollbar = forwardRef<HTMLDivElement, ScrollbarProps>(
+  ({ children, sx, ...other }, ref) => {
+    const userAgent =
+      typeof navigator === 'undefined' ? 'SSR' : navigator.userAgent;
 
-  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
+    const isMobile =
+      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+        userAgent,
+      );
 
-  if (isMobile) {
+    if (isMobile) {
+      return (
+        <Box ref={ref} sx={{ overflow: 'auto', ...sx }} {...other}>
+          {children}
+        </Box>
+      );
+    }
+
     return (
-      <Box ref={ref} sx={{ overflow: 'auto', ...sx }} {...other}>
-        {children}
-      </Box>
+      <StyledRootScrollbar>
+        <StyledScrollbar
+          scrollableNodeProps={{
+            ref,
+          }}
+          clickOnTrack={false}
+          sx={sx}
+          {...other}
+        >
+          {children}
+        </StyledScrollbar>
+      </StyledRootScrollbar>
     );
-  }
-
-  return (
-    <StyledRootScrollbar>
-      <StyledScrollbar
-        scrollableNodeProps={{
-          ref,
-        }}
-        clickOnTrack={false}
-        sx={sx}
-        {...other}
-      >
-        {children}
-      </StyledScrollbar>
-    </StyledRootScrollbar>
-  );
-});
+  },
+);
 
 export default memo(Scrollbar);

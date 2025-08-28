@@ -16,7 +16,9 @@ const RepliesList = ({ parentCommentId, onReplyCreated }: RepliesListProps) => {
 
   if (error) return <p>Error: {error.message}</p>;
 
-  const replies = (data?.getRepliesByComment ?? []).filter((r: Comment) => !hidden.includes(r.id));
+  const replies = (data?.getRepliesByComment ?? []).filter(
+    (r: Comment) => !hidden.includes(r.id),
+  );
 
   const handleHide = (id: string) => setHidden((h) => [...h, id]);
 

@@ -4,11 +4,13 @@ import LedgerVaultAbi from '@src/config/abi/LedgerVault.json';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 import { publicClient } from '@src/clients/viem/publicClient.ts';
 import { useSelector } from 'react-redux';
-import {RootState} from "@redux/store.ts"
+import { RootState } from '@redux/store.ts';
 
 export function useGetVaultBalance(address?: Address) {
   const [balance, setBalance] = useState<number | null>(null);
-  const blockchainEvents = useSelector((state: RootState) => state.blockchainEvents.events);
+  const blockchainEvents = useSelector(
+    (state: RootState) => state.blockchainEvents.events,
+  );
 
   const fetchBalance = useCallback(async () => {
     if (!address) return;
@@ -21,7 +23,9 @@ export function useGetVaultBalance(address?: Address) {
         args: [address, GLOBAL_CONSTANTS.MMC_ADDRESS],
       });
 
-      const formattedBalance = parseFloat(formatUnits(rawBalance as bigint, 18));
+      const formattedBalance = parseFloat(
+        formatUnits(rawBalance as bigint, 18),
+      );
       setBalance(isNaN(formattedBalance) ? 0 : formattedBalance);
     } catch (error) {
       console.error('Error fetching balance:', error);

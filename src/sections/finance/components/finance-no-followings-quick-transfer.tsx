@@ -1,6 +1,6 @@
-import Box from "@mui/material/Box";
-import Stack from "@mui/material/Stack";
-import Typography from "@mui/material/Typography";
+import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
 
 /**
  * FinanceNoFollowingsQuickTransfer is a React functional component that serves as a user interface element
@@ -18,12 +18,28 @@ import Typography from "@mui/material/Typography";
  */
 const FinanceNoFollowingsQuickTransfer = () => {
   return (
-    <Box sx={{ textAlign: 'center', mb: 3, backgroundColor: 'rgba(0,0,0,0.1)', p: 1, borderRadius: 1 }}>
+    <Box
+      sx={{
+        textAlign: 'center',
+        mb: 3,
+        backgroundColor: 'rgba(0,0,0,0.1)',
+        p: 1,
+        borderRadius: 1,
+      }}
+    >
       <Stack direction="column" alignItems="center" spacing={1}>
         <Typography variant="body2" color="text.primary">
           Here appear your followings. Follow one to transfer.
         </Typography>
-        <Box sx={{ opacity:0.7, position: 'relative', display: 'flex', alignItems: 'center', my: 2 }}>
+        <Box
+          sx={{
+            opacity: 0.7,
+            position: 'relative',
+            display: 'flex',
+            alignItems: 'center',
+            my: 2,
+          }}
+        >
           <Box
             sx={{
               position: 'absolute',
@@ -36,7 +52,8 @@ const FinanceNoFollowingsQuickTransfer = () => {
               justifyContent: 'center',
               borderTop: '1px dashed',
               borderColor: 'text.secondary',
-            }} />
+            }}
+          />
           <Box
             sx={{
               position: 'absolute',
@@ -64,6 +81,6 @@ const FinanceNoFollowingsQuickTransfer = () => {
       </Stack>
     </Box>
   );
-}
+};
 
 export default FinanceNoFollowingsQuickTransfer;

@@ -10,7 +10,9 @@ interface FinanceDepositFromSmartAccountProps {
   onClose: () => void;
 }
 
-const FinanceDepositFromSmartAccount: FC<FinanceDepositFromSmartAccountProps> = ({ onClose }) => {
+const FinanceDepositFromSmartAccount: FC<
+  FinanceDepositFromSmartAccountProps
+> = ({ onClose }) => {
   const { session: sessionData } = useAuth();
   const depositHook = useDeposit();
   const userAddress = sessionData?.address;

@@ -2,23 +2,23 @@
 import { FC, useEffect, useMemo } from 'react';
 
 // MUI IMPORTS
-import Stack from "@mui/material/Stack";
-import Typography from "@mui/material/Typography";
-import { CopyableText } from "@src/components/copyable-text";
-import Divider from "@mui/material/Divider";
-import Box from "@mui/material/Box";
-import { styled } from "@mui/material/styles";
-import Tooltip from "@mui/material/Tooltip"
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
+import { CopyableText } from '@src/components/copyable-text';
+import Divider from '@mui/material/Divider';
+import Box from '@mui/material/Box';
+import { styled } from '@mui/material/styles';
+import Tooltip from '@mui/material/Tooltip';
 
 // ICONS IMPORTS
-import { IconRosetteDiscountCheckFilled } from "@tabler/icons-react";
+import { IconRosetteDiscountCheckFilled } from '@tabler/icons-react';
 
 // LOCAL IMPORTS
-import { truncateAddress } from "@src/utils/wallet.ts";
+import { truncateAddress } from '@src/utils/wallet.ts';
 // import { OpenableText } from "@src/components/openable-text";
-import { randomColors } from "@src/components/poster/CONSTANTS.tsx";
+import { randomColors } from '@src/components/poster/CONSTANTS.tsx';
 // import { useAuth } from '@src/hooks/use-auth.ts';
-import { ProfileHeaderProps } from "@src/sections/user/types.ts"
+import { ProfileHeaderProps } from '@src/sections/user/types.ts';
 // import { GLOBAL_CONSTANTS } from "@src/config-global.ts"
 import {
   useGetAchievementsQuery,
@@ -36,15 +36,20 @@ interface ProfileRightSidebarProps extends ProfileHeaderProps {
     accessLoading: boolean;
     authorizedLoading: boolean;
     attestationLoading: boolean;
-  }
+  };
 }
 
-const ProfileRightSidebar: FC<ProfileRightSidebarProps> = ({ profile, sidebarProps }) => {
+const ProfileRightSidebar: FC<ProfileRightSidebarProps> = ({
+  profile,
+  sidebarProps,
+}) => {
   // const { isAuthorized, authorizedLoading, accessLoading, hasAccess, attestation, attestationLoading } = sidebarProps;
   // const { session: sessionData } = useAuth();
   const [hasPerk, { data }] = useHasPerkLazyQuery();
   const { data: ranksData, loading: ranksLoading } = useGetRanksCatalogQuery();
-  const { data: achData } = useGetAchievementsQuery({ variables: { address: profile?.address ?? '' } });
+  const { data: achData } = useGetAchievementsQuery({
+    variables: { address: profile?.address ?? '' },
+  });
   // const hex = BigInt(attestation ?? '').toString(16)
   // add padding to attestation smaller than 256 bits
   // const cleanedHex = hex.length < 64 ? `${'0'.repeat(64 - hex.length)}${hex}` : hex;
@@ -52,7 +57,9 @@ const ProfileRightSidebar: FC<ProfileRightSidebarProps> = ({ profile, sidebarPro
 
   useEffect(() => {
     if (profile?.address) {
-      hasPerk({ variables: { address: profile?.address, perkId: 'public-rank' } })
+      hasPerk({
+        variables: { address: profile?.address, perkId: 'public-rank' },
+      });
     }
   }, [profile?.address]);
 
@@ -60,7 +67,7 @@ const ProfileRightSidebar: FC<ProfileRightSidebarProps> = ({ profile, sidebarPro
     const rows = ranksData?.getRanksCatalog ?? [];
     const sorted = rows.slice().sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
     const currentOrder = achData?.getAchievements.currentRank.order ?? 0;
-    return sorted.filter(r => (r.order ?? 0) <= currentOrder);
+    return sorted.filter((r) => (r.order ?? 0) <= currentOrder);
   }, [ranksData, achData]);
 
   return (
@@ -124,7 +131,9 @@ const ProfileRightSidebar: FC<ProfileRightSidebarProps> = ({ profile, sidebarPro
       {/*      </Tooltip>*/}
       {/*    </>*/}
       {/*  )}*/}
-      <Divider sx={{ borderColor: 'rgba(255, 255, 255, 0.08)', width: '100%' }} />
+      <Divider
+        sx={{ borderColor: 'rgba(255, 255, 255, 0.08)', width: '100%' }}
+      />
       <Stack
         direction="column"
         sx={{
@@ -152,7 +161,10 @@ const ProfileRightSidebar: FC<ProfileRightSidebarProps> = ({ profile, sidebarPro
               color1={randomColors[randomColors.length - index]}
               color2={randomColors[index]}
             >
-              <Typography style={{ marginRight: 5, fontWeight: 'bold' }} variant="caption">
+              <Typography
+                style={{ marginRight: 5, fontWeight: 'bold' }}
+                variant="caption"
+              >
                 {partner}
               </Typography>
               <IconRosetteDiscountCheckFilled />
@@ -162,7 +174,9 @@ const ProfileRightSidebar: FC<ProfileRightSidebarProps> = ({ profile, sidebarPro
       </Stack>
       {data?.hasPerk && unlockedRanks.length > 0 && (
         <>
-          <Divider sx={{ borderColor: 'rgba(255, 255, 255, 0.08)', width: '100%' }} />
+          <Divider
+            sx={{ borderColor: 'rgba(255, 255, 255, 0.08)', width: '100%' }}
+          />
           <Typography color="text.secondary">Ranks</Typography>
           <Box
             display="flex"
@@ -172,22 +186,32 @@ const ProfileRightSidebar: FC<ProfileRightSidebarProps> = ({ profile, sidebarPro
           >
             {ranksLoading
               ? Array.from({ length: unlockedRanks.length }).map((_, i) => (
-                <Box key={i} sx={{ width: 40, height: 40, bgcolor: 'grey.800', borderRadius: '50%' }} />
-              ))
-              : unlockedRanks.map(r => (
-                <Tooltip key={r.id} title={r.name} arrow>
-                  <IconButton sx={{ p: 0, width: 40, height: 40 }}>
-                    <RankImg src={RANK_ICON[r.id] ?? RANK_ICON['watcher']} alt={r.name} />
-                  </IconButton>
-                </Tooltip>
-              ))
-            }
+                  <Box
+                    key={i}
+                    sx={{
+                      width: 40,
+                      height: 40,
+                      bgcolor: 'grey.800',
+                      borderRadius: '50%',
+                    }}
+                  />
+                ))
+              : unlockedRanks.map((r) => (
+                  <Tooltip key={r.id} title={r.name} arrow>
+                    <IconButton sx={{ p: 0, width: 40, height: 40 }}>
+                      <RankImg
+                        src={RANK_ICON[r.id] ?? RANK_ICON['watcher']}
+                        alt={r.name}
+                      />
+                    </IconButton>
+                  </Tooltip>
+                ))}
           </Box>
         </>
       )}
     </Stack>
   );
-}
+};
 
 const StyledBoxGradient = styled(Box)<{ color1?: string; color2?: string }>(({
   theme,

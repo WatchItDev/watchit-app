@@ -16,7 +16,8 @@ import { useBookmarks } from '@src/hooks/use-bookmark.ts';
 
 const PosterTopTitles = ({ post }: { post: Post }) => {
   const router = useRouter();
-  const poster = getAttachmentCid(post, 'square') || getAttachmentCid(post, 'poster');
+  const poster =
+    getAttachmentCid(post, 'square') || getAttachmentCid(post, 'poster');
   const wallpaper = getAttachmentCid(post, 'wallpaper');
   const { has, loading: loadingList } = useBookmarks();
   const { toggle, loading: loadingToggle } = useToggleBookmark();
@@ -33,7 +34,14 @@ const PosterTopTitles = ({ post }: { post: Post }) => {
 
   return (
     <Stack
-      sx={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%', overflow: 'hidden' }}
+      sx={{
+        position: 'relative',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: '100%',
+        overflow: 'hidden',
+      }}
       alignItems={'stretch'}
       spacing={{ xs: 1, sm: 2, md: 4 }}
     >
@@ -49,7 +57,7 @@ const PosterTopTitles = ({ post }: { post: Post }) => {
           width: '100%',
           height: '99%',
           opacity: 0.2,
-          filter: "blur(5px) !important",
+          filter: 'blur(5px) !important',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
@@ -114,15 +122,25 @@ const PosterTopTitles = ({ post }: { post: Post }) => {
           }}
         >
           <Stack spacing={1} gap={'16px'} sx={{ zIndex: 1 }}>
-            <Stack spacing={1} gap={0} >
-              <TextMaxLine line={2} variant="h3" sx={{ mb: 1, cursor: 'pointer' }} onClick={handlePosterClick}>
+            <Stack spacing={1} gap={0}>
+              <TextMaxLine
+                line={2}
+                variant="h3"
+                sx={{ mb: 1, cursor: 'pointer' }}
+                onClick={handlePosterClick}
+              >
                 {post.title}
               </TextMaxLine>
 
               <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
                 <Button
                   variant="text"
-                  sx={{ cursor: 'pointer', background: 'transparent', p: 0, pl: 1 }}
+                  sx={{
+                    cursor: 'pointer',
+                    background: 'transparent',
+                    p: 0,
+                    pl: 1,
+                  }}
                   onClick={goToProfile}
                 >
                   <Typography style={{ marginRight: 5 }} variant="caption">
@@ -141,8 +159,15 @@ const PosterTopTitles = ({ post }: { post: Post }) => {
                   >
                     <Image
                       ratio={'1/1'}
-                      style={{ width: '20px', height: '20px', borderRadius: '50%' }}
-                      src={resolveSrc(post.author.profilePicture || post.author.address, 'profile')}
+                      style={{
+                        width: '20px',
+                        height: '20px',
+                        borderRadius: '50%',
+                      }}
+                      src={resolveSrc(
+                        post.author.profilePicture || post.author.address,
+                        'profile',
+                      )}
                     />
                     {post.author.displayName ?? post.author.username}
                   </Typography>
@@ -156,7 +181,7 @@ const PosterTopTitles = ({ post }: { post: Post }) => {
                 overflow: 'hidden',
                 WebkitBoxOrient: 'vertical',
                 WebkitLineClamp: 4,
-                cursor: 'pointer'
+                cursor: 'pointer',
               }}
               variant="h6"
               onClick={handlePosterClick}

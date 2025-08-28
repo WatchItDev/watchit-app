@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 
 // REDUX IMPORTS
 import { openLoginModal } from '@redux/auth';
-import { useDispatch } from 'react-redux'
+import { useDispatch } from 'react-redux';
 
 // MUI IMPORTS
 import Box from '@mui/material/Box';
@@ -30,7 +30,10 @@ import { SubscribeProfileModal } from '@src/components/subscribe-profile-modal.t
 import { PublicationTitleDescription } from '@src/sections/publication/components/publication-description.tsx';
 import { PublicationRecommendations } from '@src/sections/publication/components/publication-recommendations.tsx';
 import { PublicationSponsorsAndBackers } from '@src/sections/publication/components/publication-sponsors-and-bakers.tsx';
-import { useGetPostLazyQuery, useGetPostsByAuthorLazyQuery } from '@src/graphql/generated/hooks.tsx';
+import {
+  useGetPostLazyQuery,
+  useGetPostsByAuthorLazyQuery,
+} from '@src/graphql/generated/hooks.tsx';
 import { Post } from '@src/graphql/generated/graphql.ts';
 import { Address } from 'viem';
 import { PublicationDetailViewSkeleton } from '@src/sections/publication/views/publication-details-view.skeleton.tsx';
@@ -38,15 +41,21 @@ import { LoadingFade } from '@src/components/LoadingFade.tsx';
 
 // ----------------------------------------------------------------------
 
-export default function PublicationDetailsView({ id }: Readonly<PublicationDetailsViewProps>) {
+export default function PublicationDetailsView({
+  id,
+}: Readonly<PublicationDetailsViewProps>) {
   // STATES HOOKS
   const dispatch = useDispatch();
   const [openSubscribeModal, setOpenSubscribeModal] = useState(false);
   const { session, isAuthLoading } = useAuth();
-  const [loadPublication, { data: publicationData, loading: publicationLoading }] = useGetPostLazyQuery();
+  const [
+    loadPublication,
+    { data: publicationData, loading: publicationLoading },
+  ] = useGetPostLazyQuery();
   const publication: Post = publicationData?.getPost;
   const ownerAddress: Address = publication?.author?.address as Address;
-  const [loadPublications, { data: profilePublications }] = useGetPostsByAuthorLazyQuery();
+  const [loadPublications, { data: profilePublications }] =
+    useGetPostsByAuthorLazyQuery();
   // const { hasAccess, loading: accessLoading, fetch: refetchAccess } = useHasAccess(ownerAddress);
   // const { isAuthorized, loading: isAuthorizedLoading } = useIsPolicyAuthorized(GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS, ownerAddress);
   // const { campaign, loading: campaignLoading, fetchSubscriptionCampaign } = useGetSubscriptionCampaign();
@@ -61,9 +70,14 @@ export default function PublicationDetailsView({ id }: Readonly<PublicationDetai
   // const loading = (!(allLoaded && accessChecked) && !isAuthLoading) || !publication;
 
   useEffect(() => {
-    if (!ownerAddress || publicationLoading || profilePublications?.getPostsByAuthor) return;
+    if (
+      !ownerAddress ||
+      publicationLoading ||
+      profilePublications?.getPostsByAuthor
+    )
+      return;
     // fetchSubscriptionCampaign(ownerAddress);
-    loadPublications({variables: { author: ownerAddress, limit: 50 }});
+    loadPublications({ variables: { author: ownerAddress, limit: 50 } });
   }, [ownerAddress, publicationLoading, profilePublications?.getPostsByAuthor]);
 
   // useEffect(() => {
@@ -85,14 +99,17 @@ export default function PublicationDetailsView({ id }: Readonly<PublicationDetai
       return;
     }
     setOpenSubscribeModal(true);
-  }
+  };
 
   const handleRefetchAccess = () => {
     // refetchAccess();
-  }
+  };
 
-  const filteredPublications = profilePublications?.getPostsByAuthor?.filter((publication: Post) => publication.id !== id) ?? [];
-  const loading = (publicationLoading || isAuthLoading) && !publication
+  const filteredPublications =
+    profilePublications?.getPostsByAuthor?.filter(
+      (publication: Post) => publication.id !== id,
+    ) ?? [];
+  const loading = (publicationLoading || isAuthLoading) && !publication;
 
   if (loading || !publication) return <PublicationDetailViewSkeleton />;
 
@@ -103,7 +120,10 @@ export default function PublicationDetailsView({ id }: Readonly<PublicationDetai
           <StyledCard>
             <StyledCardContent>
               {/*{isPlayerVisible ? (*/}
-                <MoviePlayView publication={publication} loading={publicationLoading} />
+              <MoviePlayView
+                publication={publication}
+                loading={publicationLoading}
+              />
               {/*) : (*/}
               {/*  <PublicationPosterWallpaper publication={publication}>*/}
               {/*    {isSponsoredButtonVisible && (*/}
@@ -125,7 +145,12 @@ export default function PublicationDetailsView({ id }: Readonly<PublicationDetai
               <StyledInnerBox>
                 <PublicationTitleDescription publication={publication} />
                 <PublicationSponsorsAndBackers postId={publication?.id} />
-                <PublicationRecommendations author={publication?.author?.displayName?.split?.(' ')?.[0] ?? ''} publications={filteredPublications}  />
+                <PublicationRecommendations
+                  author={
+                    publication?.author?.displayName?.split?.(' ')?.[0] ?? ''
+                  }
+                  publications={filteredPublications}
+                />
               </StyledInnerBox>
             </StyledCardContent>
           </StyledCard>
@@ -161,7 +186,7 @@ const StyledContainer = styled(Box)(({ theme }) => ({
   position: 'relative',
   [theme.breakpoints.up('lg')]: {
     flexDirection: 'row',
-  }
+  },
 }));
 
 const StyledStack = styled(Stack)(() => ({
@@ -188,5 +213,5 @@ const StyledInnerBox = styled(Box)(({ theme }) => ({
   padding: '0 !important',
   [theme.breakpoints.up('md')]: {
     marginBottom: 8,
-  }
+  },
 }));

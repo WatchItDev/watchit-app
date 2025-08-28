@@ -3,4 +3,4 @@ export const UseHasAccessDefaultResponse = {
   loading: false,
   error: null,
   fetch: () => Object,
-}
+};

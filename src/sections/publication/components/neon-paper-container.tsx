@@ -2,7 +2,7 @@ import { FC } from 'react';
 import { Paper, styled } from '@mui/material';
 import { PaperProps } from '@mui/material/Paper';
 import { COLORS } from '@src/layouts/config-layout.ts';
-import { NeonPaperProps } from '@src/sections/publication/types.ts';;
+import { NeonPaperProps } from '@src/sections/publication/types.ts';
 
 const defaultColors = [
   'rgba(30,135,255,0.5)',
@@ -48,15 +48,18 @@ export default NeonPaper;
 
 const NeonPaperContainer = styled(Paper, {
   shouldForwardProp: (prop) =>
-    prop !== 'colors' && prop !== 'animationSpeed' && prop !== 'borderRadius' && prop !== 'padding',
+    prop !== 'colors' &&
+    prop !== 'animationSpeed' &&
+    prop !== 'borderRadius' &&
+    prop !== 'padding',
 })<
   PaperProps & {
-  colors?: string[];
-  animationSpeed?: string;
-  padding?: string;
-  borderRadius?: string;
-  width?: string;
-}
+    colors?: string[];
+    animationSpeed?: string;
+    padding?: string;
+    borderRadius?: string;
+    width?: string;
+  }
 >(({ colors, animationSpeed, padding, borderRadius, width }) => ({
   '--gradient-pos-x': '50%',
   '--gradient-pos-y': '50%',
@@ -107,4 +110,4 @@ ${colors?.join(', ') || '#1e87ff, #5c13c4, #ff0033, #ffda00, #64bc26, #1e87ff'}
     '0%': { transform: 'rotate(0deg)' },
     '100%': { transform: 'rotate(360deg)' },
   },
-}))
+}));

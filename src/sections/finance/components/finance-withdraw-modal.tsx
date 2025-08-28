@@ -1,10 +1,10 @@
-import { FC } from "react";
+import { FC } from 'react';
 
 // LOCAL IMPORTS
-import Iconify from "@src/components/iconify";
-import FinanceModal from "@src/sections/finance/components/finance-modal";
-import FinanceWithdrawFromMetamask from "@src/sections/finance/components/finance-withdraw-from-metamask";
-import FinanceWithdrawFromSmartAccount from "@src/sections/finance/components/finance-withdraw-from-smart-account";
+import Iconify from '@src/components/iconify';
+import FinanceModal from '@src/sections/finance/components/finance-modal';
+import FinanceWithdrawFromMetamask from '@src/sections/finance/components/finance-withdraw-from-metamask';
+import FinanceWithdrawFromSmartAccount from '@src/sections/finance/components/finance-withdraw-from-smart-account';
 
 interface FinanceWithdrawModalProps {
   open: boolean;
@@ -13,25 +13,28 @@ interface FinanceWithdrawModalProps {
 
 const withdrawTabs = [
   {
-    value: "metamask",
-    label: "Metamask",
+    value: 'metamask',
+    label: 'Metamask',
     disabled: false,
-    icon: <Iconify icon={"logos:metamask-icon"} />,
+    icon: <Iconify icon={'logos:metamask-icon'} />,
   },
   {
-    value: "smartAccount",
-    label: "Smart Account",
+    value: 'smartAccount',
+    label: 'Smart Account',
     disabled: false,
-    icon: <Iconify icon={"logos:ethereum-color"} />,
+    icon: <Iconify icon={'logos:ethereum-color'} />,
   },
 ];
 
-export const FinanceWithdrawModal: FC<FinanceWithdrawModalProps> = ({ open, onClose }) => {
+export const FinanceWithdrawModal: FC<FinanceWithdrawModalProps> = ({
+  open,
+  onClose,
+}) => {
   const renderContent = (currentTab: string) => {
     switch (currentTab) {
-      case "metamask":
+      case 'metamask':
         return <FinanceWithdrawFromMetamask onClose={onClose} />;
-      case "smartAccount":
+      case 'smartAccount':
         return <FinanceWithdrawFromSmartAccount onClose={onClose} />;
       default:
         return null;

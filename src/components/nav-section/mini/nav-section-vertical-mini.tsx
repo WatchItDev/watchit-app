@@ -7,11 +7,20 @@ import NavListVerticalMini from '@src/components/nav-section/mini/nav-list-verti
 
 // ----------------------------------------------------------------------
 
-export function NavSectionVerticalMini({ data, config, sx, ...other }: NavSectionProps) {
+export function NavSectionVerticalMini({
+  data,
+  config,
+  sx,
+  ...other
+}: NavSectionProps) {
   return (
     <Stack sx={sx} {...other}>
       {data.map((group, index) => (
-        <Group key={group.subheader || index} items={group.items} config={navMiniConfig(config)} />
+        <Group
+          key={group.subheader || index}
+          items={group.items}
+          config={navMiniConfig(config)}
+        />
       ))}
     </Stack>
   );

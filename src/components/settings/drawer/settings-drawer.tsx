@@ -64,7 +64,9 @@ export default function SettingsDrawer() {
 
       <BaseOptions
         value={settings.themeMode}
-        onChange={(newValue: string) => settings.onUpdate('themeMode', newValue)}
+        onChange={(newValue: string) =>
+          settings.onUpdate('themeMode', newValue)
+        }
         options={['light', 'dark']}
         icons={['sun', 'moon']}
       />
@@ -79,7 +81,9 @@ export default function SettingsDrawer() {
 
       <PresetsOptions
         value={settings.themeColorPresets}
-        onChange={(newValue: string) => settings.onUpdate('themeColorPresets', newValue)}
+        onChange={(newValue: string) =>
+          settings.onUpdate('themeColorPresets', newValue)
+        }
       />
     </div>
   );

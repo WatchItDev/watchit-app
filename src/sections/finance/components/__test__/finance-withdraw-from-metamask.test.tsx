@@ -1,10 +1,10 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render} from "@testing-library/react";
-import FinanceWithdrawFromMetamask from "../finance-withdraw-from-metamask";
-import { Provider } from "react-redux";
-import { store } from "@src/redux/store";
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { render } from '@testing-library/react';
+import FinanceWithdrawFromMetamask from '../finance-withdraw-from-metamask';
+import { Provider } from 'react-redux';
+import { store } from '@src/redux/store';
 
-vi.mock("@src/workers/backgroundTaskWorker?worker", () => {
+vi.mock('@src/workers/backgroundTaskWorker?worker', () => {
   return {
     default: class {
       postMessage() {}
@@ -15,17 +15,17 @@ vi.mock("@src/workers/backgroundTaskWorker?worker", () => {
   };
 });
 
-vi.mock("@src/hooks/use-auth.ts", () => ({
+vi.mock('@src/hooks/use-auth.ts', () => ({
   useAuth: vi.fn(() => ({
     session: {
-      address: "0x1111111111111111111111111111111111111111",
+      address: '0x1111111111111111111111111111111111111111',
     },
   })),
 }));
 
 const mockWithdraw = vi.fn();
 
-vi.mock("@src/hooks/protocol/use-withdraw.ts", () => ({
+vi.mock('@src/hooks/protocol/use-withdraw.ts', () => ({
   useWithdraw: () => ({
     withdraw: mockWithdraw,
     isLoading: false,
@@ -33,7 +33,7 @@ vi.mock("@src/hooks/protocol/use-withdraw.ts", () => ({
   }),
 }));
 
-vi.mock("@src/hooks/protocol/use-get-vault-balance.ts", () => ({
+vi.mock('@src/hooks/protocol/use-get-vault-balance.ts', () => ({
   useGetVaultBalance: () => ({
     data: 1000n,
     isLoading: false,
@@ -43,9 +43,9 @@ vi.mock("@src/hooks/protocol/use-get-vault-balance.ts", () => ({
 
 const connectMock = vi.fn();
 let loading = false;
-let account: string | undefined = "0x1111111111111111111111111111111111111111";
+let account: string | undefined = '0x1111111111111111111111111111111111111111';
 
-vi.mock("@src/hooks/use-metamask", () => ({
+vi.mock('@src/hooks/use-metamask', () => ({
   useMetaMask: () => ({
     account,
     loading,
@@ -61,36 +61,40 @@ const renderComponent = ({ onClose = () => {} } = {}) => {
   );
 };
 
-describe("[COMPONENTS] <FinanceWithdrawFromMetamask/>", () => {
+describe('[COMPONENTS] <FinanceWithdrawFromMetamask/>', () => {
   const onCloseMock = vi.fn();
 
   beforeEach(() => {
     vi.clearAllMocks();
   });
 
-  it("should match snapshot", () => {
+  it('should match snapshot', () => {
     const { container } = renderComponent();
     expect(container).toMatchSnapshot();
   });
 
-  it("should render loader while loading", () => {
+  it('should render loader while loading', () => {
     loading = true;
     account = undefined;
 
-    const { getByTestId } = render(<FinanceWithdrawFromMetamask onClose={onCloseMock} />);
-    expect(getByTestId("finance-metamask-loader")).toBeInTheDocument();
+    const { getByTestId } = render(
+      <FinanceWithdrawFromMetamask onClose={onCloseMock} />,
+    );
+    expect(getByTestId('finance-metamask-loader')).toBeInTheDocument();
   });
 
-  it("should render connect button if no account is connected", () => {
+  it('should render connect button if no account is connected', () => {
     loading = false;
     account = undefined;
-    const { getByTestId } = render(<FinanceWithdrawFromMetamask onClose={onCloseMock} />);
-    expect(getByTestId("finance-metamask-button")).toBeInTheDocument();
+    const { getByTestId } = render(
+      <FinanceWithdrawFromMetamask onClose={onCloseMock} />,
+    );
+    expect(getByTestId('finance-metamask-button')).toBeInTheDocument();
   });
-  it("should render FinanceWithdraw if account is connected", () => {
+  it('should render FinanceWithdraw if account is connected', () => {
     loading = false;
-    account = "0x123456789abcdef";
+    account = '0x123456789abcdef';
     const { getByTestId } = renderComponent({ onClose: onCloseMock });
-    expect(getByTestId("FinanceWithdraw")).toBeInTheDocument();
+    expect(getByTestId('FinanceWithdraw')).toBeInTheDocument();
   });
 });

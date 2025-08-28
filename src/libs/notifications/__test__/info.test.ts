@@ -10,7 +10,7 @@ describe('[UTILS]: Info', () => {
     });
 
     it('should have a message for every info type', () => {
-      Object.values(INFO).forEach(infoKey => {
+      Object.values(INFO).forEach((infoKey) => {
         expect(INFO_MESSAGES[infoKey as INFO]).toBeDefined();
         expect(typeof INFO_MESSAGES[infoKey as INFO]).toBe('string');
         expect(INFO_MESSAGES[infoKey as INFO].length).toBeGreaterThan(0);
@@ -18,7 +18,7 @@ describe('[UTILS]: Info', () => {
     });
 
     it('should not have extra messages that do not correspond to info types', () => {
-      Object.keys(INFO_MESSAGES).forEach(messageKey => {
+      Object.keys(INFO_MESSAGES).forEach((messageKey) => {
         expect(Object.values(INFO)).toContain(messageKey);
       });
     });
@@ -28,18 +28,21 @@ describe('[UTILS]: Info', () => {
     });
 
     it('should contain placeholders in REGISTER_OWNERSHIP_PROGRESS message', () => {
-      expect(containsPlaceholders(INFO_MESSAGES[INFO.REGISTER_OWNERSHIP_PROGRESS])).toBe(true);
+      expect(
+        containsPlaceholders(INFO_MESSAGES[INFO.REGISTER_OWNERSHIP_PROGRESS]),
+      ).toBe(true);
     });
 
     it('should have the correct placeholder format in messages', () => {
-      const messagesWithPlaceholders = Object.values(INFO_MESSAGES).filter(containsPlaceholders);
+      const messagesWithPlaceholders =
+        Object.values(INFO_MESSAGES).filter(containsPlaceholders);
 
-      messagesWithPlaceholders.forEach(message => {
+      messagesWithPlaceholders.forEach((message) => {
         const placeholderRegex = /{[a-zA-Z0-9]+}/g;
         const matches = message.match(placeholderRegex) || [];
 
         expect(matches.length).toBeGreaterThan(0);
-        matches.forEach(match => {
+        matches.forEach((match) => {
           expect(match.startsWith('{')).toBe(true);
           expect(match.endsWith('}')).toBe(true);
           expect(match.length).toBeGreaterThan(2);
@@ -53,7 +56,7 @@ describe('[UTILS]: Info', () => {
         INFO.WITHDRAW_SENDING_CONFIRMATION,
       ];
 
-      withdrawInfos.forEach(info => {
+      withdrawInfos.forEach((info) => {
         expect(INFO_MESSAGES[info]).toBeDefined();
         expect(INFO_MESSAGES[info].toLowerCase()).toMatch(/withdraw/);
       });
@@ -65,7 +68,7 @@ describe('[UTILS]: Info', () => {
         INFO.DEPOSIT_WAITING_CONFIRMATION,
       ];
 
-      depositInfos.forEach(info => {
+      depositInfos.forEach((info) => {
         expect(INFO_MESSAGES[info]).toBeDefined();
         expect(INFO_MESSAGES[info].toLowerCase()).toMatch(/deposit/);
       });
@@ -77,7 +80,7 @@ describe('[UTILS]: Info', () => {
         INFO.APPROVE_WAITING_CONFIRMATION,
       ];
 
-      approveInfos.forEach(info => {
+      approveInfos.forEach((info) => {
         expect(INFO_MESSAGES[info]).toBeDefined();
         expect(INFO_MESSAGES[info].toLowerCase()).toMatch(/approve/);
       });
@@ -90,9 +93,11 @@ describe('[UTILS]: Info', () => {
         INFO.APPROVE_WAITING_CONFIRMATION,
       ];
 
-      waitingInfos.forEach(info => {
+      waitingInfos.forEach((info) => {
         expect(INFO_MESSAGES[info]).toBeDefined();
-        expect(INFO_MESSAGES[info].toLowerCase()).toMatch(/waiting for confirmation/);
+        expect(INFO_MESSAGES[info].toLowerCase()).toMatch(
+          /waiting for confirmation/,
+        );
       });
     });
 
@@ -103,9 +108,11 @@ describe('[UTILS]: Info', () => {
         INFO.APPROVE_SENDING_CONFIRMATION,
       ];
 
-      sendingInfos.forEach(info => {
+      sendingInfos.forEach((info) => {
         expect(INFO_MESSAGES[info]).toBeDefined();
-        expect(INFO_MESSAGES[info].toLowerCase()).toMatch(/sending.*to the network/);
+        expect(INFO_MESSAGES[info].toLowerCase()).toMatch(
+          /sending.*to the network/,
+        );
       });
     });
   });

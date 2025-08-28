@@ -21,7 +21,9 @@ export default function ConfirmDialog({
     <Dialog fullWidth maxWidth="xs" open={open} onClose={onClose} {...other}>
       <DialogTitle sx={{ pb: 2 }}>{title}</DialogTitle>
 
-      {content && <DialogContent sx={{ typography: 'body2' }}> {content} </DialogContent>}
+      {content && (
+        <DialogContent sx={{ typography: 'body2' }}> {content} </DialogContent>
+      )}
 
       <DialogActions>
         {action}

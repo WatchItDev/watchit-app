@@ -7,7 +7,6 @@ import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 // ----------------------------------------------------------------------
 
 export default function OverviewAppPage() {
-
   return (
     <OgMetaTags
       title="Watchit: Explore"
@@ -18,6 +17,6 @@ export default function OverviewAppPage() {
         <HeaderContent title="Explore" />
       </Header>
       <ExploreView />
-    </ OgMetaTags>
+    </OgMetaTags>
   );
 }

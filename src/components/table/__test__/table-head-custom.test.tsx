@@ -1,16 +1,18 @@
-import {fireEvent, render, screen} from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react';
 import TableHeadCustom from '../table-head-custom';
-import {HeadLabel} from "@src/components/table"
+import { HeadLabel } from '@src/components/table';
 
 describe('[COMPONENTS]: TableHeadCustom component testing', () => {
   const mockHeadLabels: HeadLabel[] = [
     { id: 'name', label: 'Name' },
     { id: 'email', label: 'Email', align: 'center', width: 200 },
-    { id: 'role', label: 'Role', align: 'right', minWidth: 150 }
+    { id: 'role', label: 'Role', align: 'right', minWidth: 150 },
   ];
 
   it('matches snapshot', () => {
-    const { container } = render(<TableHeadCustom headLabel={mockHeadLabels} />);
+    const { container } = render(
+      <TableHeadCustom headLabel={mockHeadLabels} />,
+    );
     expect(container).toMatchSnapshot();
   });
 
@@ -23,7 +25,9 @@ describe('[COMPONENTS]: TableHeadCustom component testing', () => {
   });
 
   it('renders without checkbox when onSelectAllRows is not provided', () => {
-    const { container } = render(<TableHeadCustom headLabel={mockHeadLabels} />);
+    const { container } = render(
+      <TableHeadCustom headLabel={mockHeadLabels} />,
+    );
 
     const checkboxes = container.querySelectorAll('input[type="checkbox"]');
     expect(checkboxes.length).toBe(0);
@@ -37,7 +41,7 @@ describe('[COMPONENTS]: TableHeadCustom component testing', () => {
         headLabel={mockHeadLabels}
         onSelectAllRows={mockSelectAllRows}
         rowCount={5}
-      />
+      />,
     );
 
     const checkbox = screen.getByRole('checkbox');
@@ -52,7 +56,7 @@ describe('[COMPONENTS]: TableHeadCustom component testing', () => {
         headLabel={mockHeadLabels}
         onSelectAllRows={mockSelectAllRows}
         rowCount={5}
-      />
+      />,
     );
 
     const checkbox = screen.getByRole('checkbox');
@@ -71,7 +75,7 @@ describe('[COMPONENTS]: TableHeadCustom component testing', () => {
         onSelectAllRows={mockSelectAllRows}
         rowCount={5}
         numSelected={5}
-      />
+      />,
     );
 
     const checkbox = screen.getByRole('checkbox');
@@ -81,12 +85,7 @@ describe('[COMPONENTS]: TableHeadCustom component testing', () => {
   it('renders sort labels when onSort is provided', () => {
     const mockOnSort = vi.fn();
 
-    render(
-      <TableHeadCustom
-        headLabel={mockHeadLabels}
-        onSort={mockOnSort}
-      />
-    );
+    render(<TableHeadCustom headLabel={mockHeadLabels} onSort={mockOnSort} />);
 
     const sortLabels = screen.getAllByRole('button');
     expect(sortLabels).toHaveLength(3);
@@ -101,7 +100,7 @@ describe('[COMPONENTS]: TableHeadCustom component testing', () => {
         onSort={mockOnSort}
         order="asc"
         orderBy="name"
-      />
+      />,
     );
 
     expect(screen.getByText('sorted ascending')).toBeInTheDocument();
@@ -115,7 +114,7 @@ describe('[COMPONENTS]: TableHeadCustom component testing', () => {
         headLabel={mockHeadLabels}
         onSelectAllRows={mockSelectAllRows}
         rowCount={0}
-      />
+      />,
     );
 
     const checkbox = screen.getByRole('checkbox');
@@ -126,10 +125,7 @@ describe('[COMPONENTS]: TableHeadCustom component testing', () => {
     const customSx = { backgroundColor: 'rgb(240, 240, 240)' };
 
     const { container } = render(
-      <TableHeadCustom
-        headLabel={mockHeadLabels}
-        sx={customSx}
-      />
+      <TableHeadCustom headLabel={mockHeadLabels} sx={customSx} />,
     );
 
     const tableHead = container.querySelector('thead');

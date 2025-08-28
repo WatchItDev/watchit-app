@@ -67,7 +67,9 @@ export const useTransactionData = (): TransactionsDataResponseHook => {
       const { data: transactions, error } = await supabase
         .from('transactions')
         .select('*')
-        .or(`receiver_id.eq.${sessionData?.profile?.id},sender_id.eq.${sessionData?.profile?.id}`)
+        .or(
+          `receiver_id.eq.${sessionData?.profile?.id},sender_id.eq.${sessionData?.profile?.id}`,
+        )
         .order('created_at', { ascending: true });
 
       if (error) {
@@ -75,19 +77,26 @@ export const useTransactionData = (): TransactionsDataResponseHook => {
         return;
       }
 
-      const processedTransactions = transactions.map((transaction: TransactionType) => ({
-        ...transaction,
-        payload: {
-          ...transaction.payload,
-          type: transaction.sender_id === sessionData?.profile?.id ? 'Outflows' : 'Inflows',
-        },
-      }));
+      const processedTransactions = transactions.map(
+        (transaction: TransactionType) => ({
+          ...transaction,
+          payload: {
+            ...transaction.payload,
+            type:
+              transaction.sender_id === sessionData?.profile?.id
+                ? 'Outflows'
+                : 'Inflows',
+          },
+        }),
+      );
 
       setRawData(processedTransactions);
 
       const groupedData = transactions.reduce(
         (acc: Record<string, TransactionData>, transaction) => {
-          const date = new Date(transaction.created_at).toISOString().split('T')[0];
+          const date = new Date(transaction.created_at)
+            .toISOString()
+            .split('T')[0];
           if (!acc[date]) {
             acc[date] = { date, income: 0, expenses: 0 };
           }
@@ -99,7 +108,7 @@ export const useTransactionData = (): TransactionsDataResponseHook => {
           }
           return acc;
         },
-        {}
+        {},
       );
 
       setData(Object.values(groupedData));

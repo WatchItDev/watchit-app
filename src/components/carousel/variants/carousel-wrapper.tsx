@@ -6,7 +6,9 @@ import { useItemsPerSlide } from '@src/hooks/components/use-item-per-slide';
 import { useChunkedData } from '@src/hooks/components/use-chunked-data';
 import { CarouselWrapperProps } from '../types';
 
-export default function CarouselWrapper<T>(props: Readonly<CarouselWrapperProps<T>>) {
+export default function CarouselWrapper<T>(
+  props: Readonly<CarouselWrapperProps<T>>,
+) {
   const {
     data,
     title,
@@ -18,7 +20,10 @@ export default function CarouselWrapper<T>(props: Readonly<CarouselWrapperProps<
     boxClassName,
   } = props;
 
-  const { itemsPerSlide, parentRef } = useItemsPerSlide({ minItemWidth, maxItemWidth });
+  const { itemsPerSlide, parentRef } = useItemsPerSlide({
+    minItemWidth,
+    maxItemWidth,
+  });
   const slideData = useChunkedData<T>(data, itemsPerSlide);
 
   const carousel = useCarousel({
@@ -28,7 +33,12 @@ export default function CarouselWrapper<T>(props: Readonly<CarouselWrapperProps<
   return (
     <CarouselSection
       title={title}
-      action={<CarouselNavigationArrows next={carousel.onNext} prev={carousel.onPrev} />}
+      action={
+        <CarouselNavigationArrows
+          next={carousel.onNext}
+          prev={carousel.onPrev}
+        />
+      }
     >
       <Box
         ref={parentRef}
@@ -40,7 +50,9 @@ export default function CarouselWrapper<T>(props: Readonly<CarouselWrapperProps<
         className={boxClassName}
       >
         <Carousel ref={carousel.carouselRef} {...carousel.carouselSettings}>
-          {slideData.map((slideItems, index) => renderSlide(slideItems, itemsPerSlide, index))}
+          {slideData.map((slideItems, index) =>
+            renderSlide(slideItems, itemsPerSlide, index),
+          )}
         </Carousel>
       </Box>
     </CarouselSection>

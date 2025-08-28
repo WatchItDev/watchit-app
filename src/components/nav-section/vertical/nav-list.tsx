@@ -17,7 +17,12 @@ interface NavListRootProps {
   config: NavConfigProps;
 }
 
-export default function NavList({ data, depth, hasChild, config }: NavListRootProps) {
+export default function NavList({
+  data,
+  depth,
+  hasChild,
+  config,
+}: NavListRootProps) {
   const pathname = usePathname();
 
   const active = useActiveLink(data?.path ?? '', hasChild);

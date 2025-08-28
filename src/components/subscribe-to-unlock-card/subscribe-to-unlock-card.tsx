@@ -18,22 +18,34 @@ export const SubscribeToUnlockCard = ({
   loadingSubscribe,
   post,
 }: SubscribeToUnlockCardProps) => {
-  const ownerAddress = post.author.address as Address
+  const ownerAddress = post.author.address as Address;
   const { terms } = useGetPolicyTerms(
     GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS,
-    ownerAddress
+    ownerAddress,
   );
-  const { isAuthorized } = useIsPolicyAuthorized(GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS, ownerAddress);
+  const { isAuthorized } = useIsPolicyAuthorized(
+    GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS,
+    ownerAddress,
+  );
   const { campaign, fetchSubscriptionCampaign } = useGetSubscriptionCampaign();
-  const { isActive: isCampaignActive, loading: isActiveLoading, fetchIsActive } = useGetCampaignIsActive();
+  const {
+    isActive: isCampaignActive,
+    loading: isActiveLoading,
+    fetchIsActive,
+  } = useGetCampaignIsActive();
   const { session: sessionData } = useAuth();
 
   const durationDays = 30; // a month
   const totalCostWei = terms?.amount ? terms?.amount * BigInt(durationDays) : 0; // Calculate total cost in Wei: DAILY_COST_WEI * durationDays
   const totalCostMMC = formatUnits(totalCostWei, 18); // Converts Wei to MMC
   const isAccessFullyChecked = !isActiveLoading;
-  const isSponsoredButtonVisible = isCampaignActive && isAuthorized && isAccessFullyChecked;
-  const isJoinButtonVisible = isAuthorized && !isCampaignActive && isAccessFullyChecked && !isSponsoredButtonVisible;
+  const isSponsoredButtonVisible =
+    isCampaignActive && isAuthorized && isAccessFullyChecked;
+  const isJoinButtonVisible =
+    isAuthorized &&
+    !isCampaignActive &&
+    isAccessFullyChecked &&
+    !isSponsoredButtonVisible;
 
   useEffect(() => {
     if (!ownerAddress) return;
@@ -66,8 +78,9 @@ export const SubscribeToUnlockCard = ({
           </Typography>
         </Stack>
         <Typography variant="body2" sx={{ mb: 3 }}>
-          This content is exclusively for members. Become part of our growing community to access
-          behind-the-scenes content, exclusive posts, and much more!
+          This content is exclusively for members. Become part of our growing
+          community to access behind-the-scenes content, exclusive posts, and
+          much more!
         </Typography>
         {isJoinButtonVisible && (
           <LoadingButton
@@ -93,9 +106,12 @@ export const SubscribeToUnlockCard = ({
         {isJoinButtonVisible && (
           <Box sx={{ mt: 3, borderRadius: 1 }}>
             <Typography variant="body2" color="textSecondary">
-              Join now for just <strong>{totalCostMMC} MMC/month</strong> and access to{' '}
-              <strong>{post.author.publicationsCount}</strong> exclusive posts from{' '}
-              <strong>{post.author.displayName ?? post.author.username}!</strong>
+              Join now for just <strong>{totalCostMMC} MMC/month</strong> and
+              access to <strong>{post.author.publicationsCount}</strong>{' '}
+              exclusive posts from{' '}
+              <strong>
+                {post.author.displayName ?? post.author.username}!
+              </strong>
             </Typography>
           </Box>
         )}
@@ -104,4 +120,4 @@ export const SubscribeToUnlockCard = ({
   );
 };
 
-export default SubscribeToUnlockCard
+export default SubscribeToUnlockCard;

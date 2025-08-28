@@ -39,7 +39,8 @@ export default function CarouselPosterMini(params: CarouselPosterMiniProps) {
   };
 
   const renderItem = (post: PublicationType) => {
-    const poster = getAttachmentCid(post, 'square') || getAttachmentCid(post, 'poster');
+    const poster =
+      getAttachmentCid(post, 'square') || getAttachmentCid(post, 'poster');
     const wallpaper = getAttachmentCid(post, 'wallpaper');
 
     return (

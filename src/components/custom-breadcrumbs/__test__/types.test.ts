@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import { BreadcrumbsLinkProps, CustomBreadcrumbsProps } from '../types';
 
 describe('[TYPES]: Breadcrumbs types testing', () => {
@@ -51,7 +51,7 @@ describe('[TYPES]: Breadcrumbs types testing', () => {
       activeLast: true,
       moreLink: ['https://docs.example.com/users'],
       action: React.createElement('button', null, 'Add user'),
-      sx: { marginBottom: 2 }
+      sx: { marginBottom: 2 },
     };
 
     expect(breadcrumbs).toHaveProperty('heading', 'Users');

@@ -18,7 +18,12 @@ export const UserSidebarGreetings: FC = () => {
         </Typography>
         <MediumIcon src={WaveImg} alt="👋" />
       </Box>
-      <Typography variant="h5" fontWeight="lighter" color="text.secondary" mb={2}>
+      <Typography
+        variant="h5"
+        fontWeight="lighter"
+        color="text.secondary"
+        mb={2}
+      >
         Let's earn something today
       </Typography>
     </Box>
@@ -27,4 +32,8 @@ export const UserSidebarGreetings: FC = () => {
 
 export default UserSidebarGreetings;
 
-const MediumIcon = styled('img')({ width: 36, height: 36, objectFit: 'contain' });
+const MediumIcon = styled('img')({
+  width: 36,
+  height: 36,
+  objectFit: 'contain',
+});

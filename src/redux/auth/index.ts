@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import {AuthReducerState, ReduxSession} from '../types'
+import { AuthReducerState, ReduxSession } from '../types';
 import { User } from '@src/graphql/generated/graphql.ts';
 import { UserInfo } from '@web3auth/base';
 
@@ -8,12 +8,12 @@ export const defaultSession = {
   authenticated: false,
   user: undefined,
   info: undefined,
-}
+};
 
 const initialState: AuthReducerState = {
   session: defaultSession,
   isAuthLoading: false,
-  isLoginModalOpen: false
+  isLoginModalOpen: false,
 };
 
 const authSlice = createSlice({
@@ -26,7 +26,10 @@ const authSlice = createSlice({
     closeLoginModal: (state) => {
       state.isLoginModalOpen = false;
     },
-    setAuthLoading: (state, action: PayloadAction<Pick<AuthReducerState, 'isAuthLoading'>>) => {
+    setAuthLoading: (
+      state,
+      action: PayloadAction<Pick<AuthReducerState, 'isAuthLoading'>>,
+    ) => {
       state.isAuthLoading = action.payload.isAuthLoading;
     },
     setSession: (state, action: PayloadAction<{ session: ReduxSession }>) => {
@@ -37,7 +40,7 @@ const authSlice = createSlice({
     },
     setInfo: (state, action: PayloadAction<{ info: Partial<UserInfo> }>) => {
       state.session.info = action.payload.info;
-    }
+    },
   },
 });
 
@@ -47,7 +50,7 @@ export const {
   setAuthLoading,
   setSession,
   setUser,
-  setInfo
+  setInfo,
 } = authSlice.actions;
 
 export default authSlice.reducer;

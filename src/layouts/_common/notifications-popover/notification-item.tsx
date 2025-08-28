@@ -9,14 +9,20 @@ import TextMaxLine from '@src/components/text-max-line';
 
 // LOCAL IMPORTS
 import Iconify from '@src/components/iconify';
-import AvatarProfile from "@src/components/avatar/avatar.tsx";
+import AvatarProfile from '@src/components/avatar/avatar.tsx';
 import { formatDistanceToNow } from 'date-fns';
 import { useRouter } from '@src/routes/hooks';
 import { paths } from '@src/routes/paths.ts';
-import { NotificationCategories, NotificationItemProps} from '@src/hooks/types'
+import {
+  NotificationCategories,
+  NotificationItemProps,
+} from '@src/hooks/types';
 import { useNotifications } from '@src/hooks/use-notifications.ts';
 
-export default function NotificationItem({ notification: n, onMarkAsRead }: NotificationItemProps) {
+export default function NotificationItem({
+  notification: n,
+  onMarkAsRead,
+}: NotificationItemProps) {
   const notification = n.notification ? n.notification : n;
   const router = useRouter();
   const { deleteNotification } = useNotifications();
@@ -35,7 +41,11 @@ export default function NotificationItem({ notification: n, onMarkAsRead }: Noti
       typeOfNotification === NotificationCategories.LIKE ||
       typeOfNotification === NotificationCategories.COMMENT
     ) {
-      router.push(paths.dashboard.publication.details(notification.payload.data.content.root_id));
+      router.push(
+        paths.dashboard.publication.details(
+          notification.payload.data.content.root_id,
+        ),
+      );
     }
 
     // Verify if is FOLLOW / JOIN
@@ -43,7 +53,9 @@ export default function NotificationItem({ notification: n, onMarkAsRead }: Noti
       typeOfNotification === NotificationCategories.FOLLOW ||
       typeOfNotification === NotificationCategories.JOIN
     ) {
-      router.push(paths.dashboard.user.root(`${notification?.payload?.data?.from?.id}`));
+      router.push(
+        paths.dashboard.user.root(`${notification?.payload?.data?.from?.id}`),
+      );
     }
   };
 
@@ -51,10 +63,14 @@ export default function NotificationItem({ notification: n, onMarkAsRead }: Noti
 
   const renderAvatar = (
     <ListItemAvatar>
-      <AvatarProfile src={notification?.payload?.data?.from?.avatar} sx={{ bgcolor: 'background.neutral' }} />
+      <AvatarProfile
+        src={notification?.payload?.data?.from?.avatar}
+        sx={{ bgcolor: 'background.neutral' }}
+      />
     </ListItemAvatar>
   );
-  const description: string | null = notification?.payload?.data?.content?.rawDescription;
+  const description: string | null =
+    notification?.payload?.data?.content?.rawDescription;
   const renderText = (
     <ListItemText
       disableTypography
@@ -70,7 +86,13 @@ export default function NotificationItem({ notification: n, onMarkAsRead }: Noti
           sx={{ typography: 'caption', color: 'text.disabled' }}
           spacing={1}
         >
-          <span>{notification?.created_at ? formatDistanceToNow(new Date(notification.created_at), { addSuffix: true }) : ''}</span>
+          <span>
+            {notification?.created_at
+              ? formatDistanceToNow(new Date(notification.created_at), {
+                  addSuffix: true,
+                })
+              : ''}
+          </span>
         </Stack>
       }
     />
@@ -181,7 +203,8 @@ export default function NotificationItem({ notification: n, onMarkAsRead }: Noti
 
       <Stack sx={{ flexGrow: 1 }}>
         {renderText}
-        {typeOfNotification === NotificationCategories.TRANSFER && transferAction}
+        {typeOfNotification === NotificationCategories.TRANSFER &&
+          transferAction}
         {typeOfNotification === NotificationCategories.COMMENT && messageAction}
       </Stack>
     </ListItemButton>

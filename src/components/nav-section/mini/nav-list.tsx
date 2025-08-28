@@ -19,7 +19,13 @@ interface NavListRootProps {
   onClick?: () => void;
 }
 
-export default function NavList({ data, active, depth, config, onClick }: NavListRootProps) {
+export default function NavList({
+  data,
+  active,
+  depth,
+  config,
+  onClick,
+}: NavListRootProps) {
   const navRef = useRef(null);
 
   const pathname = usePathname();
@@ -35,7 +41,7 @@ export default function NavList({ data, active, depth, config, onClick }: NavLis
 
   useEffect(() => {
     const appBarEl = Array.from(
-      document.querySelectorAll(`.${appBarClasses.root}`)
+      document.querySelectorAll(`.${appBarClasses.root}`),
     ) as HTMLElement[];
 
     // Reset styles when hover

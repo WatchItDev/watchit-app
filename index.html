@@ -1,160 +1,216 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+  <head>
+    <!-- Google tag (gtag.js) -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-ZQ7WLPPM1K"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag('js', new Date());
 
-<head>
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZQ7WLPPM1K"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
+      gtag('config', 'G-ZQ7WLPPM1K');
+    </script>
 
-    gtag('config', 'G-ZQ7WLPPM1K');
-  </script>
+    <script>
+      (function (c, s, q, u, a, r, e) {
+        c.hj =
+          c.hj ||
+          function () {
+            (c.hj.q = c.hj.q || []).push(arguments);
+          };
+        c._hjSettings = { hjid: a };
+        r = s.getElementsByTagName('head')[0];
+        e = s.createElement('script');
+        e.async = true;
+        e.src = q + c._hjSettings.hjid + u;
+        r.appendChild(e);
+      })(
+        window,
+        document,
+        'https://static.hj.contentsquare.net/c/csq-',
+        '.js',
+        5241192,
+      );
+    </script>
 
-  <script>
-    (function (c, s, q, u, a, r, e) {
-      c.hj=c.hj||function(){(c.hj.q=c.hj.q||[]).push(arguments)};
-      c._hjSettings = { hjid: a };
-      r = s.getElementsByTagName('head')[0];
-      e = s.createElement('script');
-      e.async = true;
-      e.src = q + c._hjSettings.hjid + u;
-      r.appendChild(e);
-    })(window, document, 'https://static.hj.contentsquare.net/c/csq-', '.js', 5241192);
-  </script>
+    <meta charset="utf-8" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="manifest" href="./manifest.json" />
 
-  <meta charset="utf-8" />
-  <meta name="theme-color" content="#000000" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="manifest" href="./manifest.json" />
+    <!-- Favicon -->
+    <link rel="icon" href="./favicon/favicon.ico" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="./favicon/favicon-16x16.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="./favicon/favicon-32x32.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="./favicon/apple-touch-icon.png"
+    />
 
-  <!-- Favicon -->
-  <link rel="icon" href="./favicon/favicon.ico">
-  <link rel="icon" type="image/png" sizes="16x16" href="./favicon/favicon-16x16.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="./favicon/favicon-32x32.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="./favicon/apple-touch-icon.png">
+    <!-- Using Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Barlow:wght@900&display=swap"
+      rel="stylesheet"
+    />
 
-  <!-- Using Google Font -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700;800&display=swap"
-        rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@900&display=swap" rel="stylesheet" />
+    <meta
+      name="description"
+      content="Explore and support a new era of video content on Watchit. Connect with creators, access exclusive experiences, and join a decentralized community powered by Web3 and AI."
+    />
+    <meta
+      name="keywords"
+      content="Watchit app, Web3, AI, streaming, innovative content, Watchit, video platform, creator support, decentralized entertainment, Web3, AI, exclusive content, video community, NFT, digital rights, smart contracts, blockchain media"
+    />
+    <meta name="author" content="Watchit" />
 
-  <meta name="description" content="Explore and support a new era of video content on Watchit. Connect with creators, access exclusive experiences, and join a decentralized community powered by Web3 and AI." />
-  <meta name="keywords" content="Watchit app, Web3, AI, streaming, innovative content, Watchit, video platform, creator support, decentralized entertainment, Web3, AI, exclusive content, video community, NFT, digital rights, smart contracts, blockchain media" />
-  <meta name="author" content="Watchit" />
+    <style>
+      ::-webkit-scrollbar {
+        width: 5px !important;
+        height: 5px !important;
+      }
 
-  <style>
-    ::-webkit-scrollbar {
-      width: 5px !important;
-      height: 5px !important;
-    }
+      ::-webkit-scrollbar-track,
+      ::-webkit-scrollbar-track:horizontal {
+        background: #1e1f22;
+        border-radius: 5px;
+      }
 
-    ::-webkit-scrollbar-track,
-    ::-webkit-scrollbar-track:horizontal {
-      background: #1E1F22;
-      border-radius: 5px;
-    }
+      /* Handle */
+      ::-webkit-scrollbar-thumb,
+      ::-webkit-scrollbar-thumb:horizontal {
+        background: #2b2d31;
+        border-radius: 5px;
+      }
 
-    /* Handle */
-    ::-webkit-scrollbar-thumb,
-    ::-webkit-scrollbar-thumb:horizontal {
-      background: #2B2D31;
-      border-radius: 5px;
-    }
+      /* Handle on hover */
+      ::-webkit-scrollbar-thumb:hover,
+      ::-webkit-scrollbar-thumb:hover:horizontal {
+        background: #555;
+      }
 
-    /* Handle on hover */
-    ::-webkit-scrollbar-thumb:hover,
-    ::-webkit-scrollbar-thumb:hover:horizontal {
-      background: #555;
-    }
+      .w3a-parent-container #w3a-modal {
+        background-color: rgba(0, 0, 0, 0.4);
+      }
 
-    .w3a-parent-container #w3a-modal {
-      background-color: rgba(0,0,0,0.4);
-    }
+      :root {
+        --color-a: #4a34b8;
+        --color-b: #946ec8;
+        --color-c: #ed541d;
+        --color-d: #24879a;
+      }
 
-    :root {
-      --color-a: #4a34b8;
-      --color-b: #946ec8;
-      --color-c: #ed541d;
-      --color-d: #24879a;
-    }
+      #splash {
+        position: fixed;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: #1e1f22;
+        overflow: hidden;
+      }
 
-    #splash {
-      position: fixed;
-      inset: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      background: #1e1f22;
-      overflow: hidden;
-    }
+      #splash img {
+        z-index: 10;
+        width: clamp(85px, calc(18vw * 0.8), 120px);
+        height: auto;
+        transform-origin: center;
+        will-change: transform, filter;
+        animation: pulseScale 1.8s ease-in-out infinite;
+      }
 
-    #splash img {
-      z-index: 10;
-      width: clamp(85px, calc(18vw * 0.8), 120px);
-      height: auto;
-      transform-origin: center;
-      will-change: transform, filter;
-      animation: pulseScale 1.8s ease-in-out infinite;
-    }
+      @keyframes pulseScale {
+        0%,
+        100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.1);
+        }
+      }
 
-    @keyframes pulseScale {
-      0%, 100% { transform: scale(1); }
-      50%      { transform: scale(1.1); }
-    }
+      #splash::before,
+      #splash::after {
+        content: '';
+        position: absolute;
+        width: 240px;
+        height: 240px;
+        border-radius: 50%;
+        filter: blur(100px);
+        opacity: 0.7;
+        mix-blend-mode: screen;
+        animation: orbit 14s linear infinite;
+      }
 
-    #splash::before,
-    #splash::after {
-      content: "";
-      position: absolute;
-      width: 240px;
-      height: 240px;
-      border-radius: 50%;
-      filter: blur(100px);
-      opacity: 0.7;
-      mix-blend-mode: screen;
-      animation: orbit 14s linear infinite;
-    }
+      #splash::before {
+        background: var(--color-a);
+        animation-delay: -3s;
+      }
 
-    #splash::before {
-      background: var(--color-a);
-      animation-delay: -3s;
-    }
+      #splash::after {
+        background: var(--color-c);
+        animation-direction: reverse;
+      }
 
-    #splash::after {
-      background: var(--color-c);
-      animation-direction: reverse;
-    }
+      @keyframes orbit {
+        0% {
+          transform: translate(-150%, -80%) scale(0.8);
+        }
+        25% {
+          transform: translate(60%, -120%) scale(1.1);
+        }
+        50% {
+          transform: translate(120%, 60%) scale(0.9);
+        }
+        75% {
+          transform: translate(-80%, 120%) scale(1.2);
+        }
+        100% {
+          transform: translate(-150%, -80%) scale(0.8);
+        }
+      }
+    </style>
+  </head>
+  <body style="margin: 0">
+    <div id="splash">
+      <img src="/assets/white_logo.png" alt="Watchit logo" />
+    </div>
 
-    @keyframes orbit {
-      0%   { transform: translate(-150%, -80%)   scale(0.8); }
-      25%  { transform: translate(60%,  -120%)  scale(1.1); }
-      50%  { transform: translate(120%,  60%)   scale(0.9); }
-      75%  { transform: translate(-80%, 120%)   scale(1.2); }
-      100% { transform: translate(-150%, -80%)  scale(0.8); }
-    }
-  </style>
-</head>
-<body style="margin: 0">
-<div id="splash">
-  <img src="/assets/white_logo.png" alt="Watchit logo">
-</div>
+    <div id="root" style="opacity: 0"></div>
 
-<div id="root" style="opacity:0"></div>
-
-<script>performance.mark('html:start');</script>
-<script>
-  function showApp() {
-    const root = document.getElementById('root');
-    document.getElementById('splash')?.remove();
-    root.style.opacity = '1';
-    window.removeEventListener('app:ready', showApp);
-  }
-  window.addEventListener('app:ready', showApp);
-</script>
-</body>
+    <script>
+      performance.mark('html:start');
+    </script>
+    <script>
+      function showApp() {
+        const root = document.getElementById('root');
+        document.getElementById('splash')?.remove();
+        root.style.opacity = '1';
+        window.removeEventListener('app:ready', showApp);
+      }
+      window.addEventListener('app:ready', showApp);
+    </script>
+  </body>
 </html>

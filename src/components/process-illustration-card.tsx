@@ -1,14 +1,16 @@
-import Image from "@src/components/image";
-import Stack from "@mui/material/Stack";
-import {FC} from "react";
+import Image from '@src/components/image';
+import Stack from '@mui/material/Stack';
+import { FC } from 'react';
 
 interface ProcessIllustrationCardProps {
   illustration: string;
   alt?: string;
 }
 
-const ProcessIllustrationCard: FC<ProcessIllustrationCardProps> = ({illustration, alt}) => {
-
+const ProcessIllustrationCard: FC<ProcessIllustrationCardProps> = ({
+  illustration,
+  alt,
+}) => {
   return (
     <Stack
       flexGrow={1}
@@ -23,13 +25,13 @@ const ProcessIllustrationCard: FC<ProcessIllustrationCardProps> = ({illustration
     >
       <Image
         sx={{
-          objectFit: 'contain'
+          objectFit: 'contain',
         }}
         src={illustration}
         alt={alt}
       />
     </Stack>
-  )
-}
+  );
+};
 
 export default ProcessIllustrationCard;

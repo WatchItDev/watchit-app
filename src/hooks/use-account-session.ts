@@ -25,18 +25,18 @@ import { useWeb3Auth } from '@src/hooks/use-web3-auth';
 import { useGetUserLazyQuery } from '@src/graphql/generated/hooks';
 
 interface UseAccountSessionHook {
-  login:        () => Promise<void>;
-  logout:       () => Promise<void>;
-  syncAddress:  () => Promise<void>;
-  refreshUser:  () => Promise<void>;
-  loading:      boolean;
+  login: () => Promise<void>;
+  logout: () => Promise<void>;
+  syncAddress: () => Promise<void>;
+  refreshUser: () => Promise<void>;
+  loading: boolean;
   initializing: boolean;
-  userChecked:  boolean;
+  userChecked: boolean;
 }
 
 let listenerAttached = false;
-let restoreDone      = false;
-let loginPerformed   = false;
+let restoreDone = false;
+let loginPerformed = false;
 
 export const useAccountSession = (): UseAccountSessionHook => {
   const { session, isAuthLoading: reduxLoading } = useAuth();
@@ -45,12 +45,12 @@ export const useAccountSession = (): UseAccountSessionHook => {
   const [loadUser] = useGetUserLazyQuery();
 
   const [loginInProgress, setLoginInProgress] = useState(false);
-  const [verifyingUser,   setVerifyingUser]   = useState(false);
-  const [userChecked,     setUserChecked]     = useState(false);
-  const [initializing,    setInitializing]    = useState(true);
+  const [verifyingUser, setVerifyingUser] = useState(false);
+  const [userChecked, setUserChecked] = useState(false);
+  const [initializing, setInitializing] = useState(true);
 
-  const sessionRef       = useRef(session);
-  const lastVerifiedRef  = useRef<Address | null>(null);
+  const sessionRef = useRef(session);
+  const lastVerifiedRef = useRef<Address | null>(null);
   const loading = loginInProgress || reduxLoading || verifyingUser;
 
   const mergeSession = (patch: Partial<ReduxSession>) => {
@@ -68,8 +68,12 @@ export const useAccountSession = (): UseAccountSessionHook => {
     }
   };
 
-  const getPrimaryAddress = useCallback(async (): Promise<Address | undefined> => {
-    const accs = (await web3Auth.provider?.request({ method: 'eth_accounts' })) as string[] | undefined;
+  const getPrimaryAddress = useCallback(async (): Promise<
+    Address | undefined
+  > => {
+    const accs = (await web3Auth.provider?.request({
+      method: 'eth_accounts',
+    })) as string[] | undefined;
     return accs?.[0] as Address | undefined;
   }, [web3Auth.provider]);
 
@@ -82,7 +86,8 @@ export const useAccountSession = (): UseAccountSessionHook => {
   const syncAddress = async () => {
     const address = await getPrimaryAddress();
     if (!address) throw new Error('No address found');
-    if (address === lastVerifiedRef.current && userChecked && !verifyingUser) return;
+    if (address === lastVerifiedRef.current && userChecked && !verifyingUser)
+      return;
 
     lastVerifiedRef.current = address;
 
@@ -143,7 +148,9 @@ export const useAccountSession = (): UseAccountSessionHook => {
     }
   }, [web3Auth, loginInProgress]);
 
-  useEffect(() => { sessionRef.current = session }, [session]);
+  useEffect(() => {
+    sessionRef.current = session;
+  }, [session]);
 
   useEffect(() => {
     if (!web3Auth || restoreDone) return;
@@ -174,7 +181,8 @@ export const useAccountSession = (): UseAccountSessionHook => {
   };
 
   const verifyStatus = () => {
-    if (web3Auth.status === 'connected' || web3Auth.status === 'ready') handleReady();
+    if (web3Auth.status === 'connected' || web3Auth.status === 'ready')
+      handleReady();
   };
 
   useEffect(() => {
@@ -183,16 +191,24 @@ export const useAccountSession = (): UseAccountSessionHook => {
     verifyStatus();
 
     web3Auth.on(ADAPTER_EVENTS.DISCONNECTED, logout);
-    web3Auth.on(ADAPTER_EVENTS.CONNECTED,    handleConnected);
-    web3Auth.on(ADAPTER_EVENTS.READY,        handleReady);
+    web3Auth.on(ADAPTER_EVENTS.CONNECTED, handleConnected);
+    web3Auth.on(ADAPTER_EVENTS.READY, handleReady);
 
     return () => {
       web3Auth.off(ADAPTER_EVENTS.DISCONNECTED, logout);
-      web3Auth.off(ADAPTER_EVENTS.CONNECTED,    handleConnected);
-      web3Auth.off(ADAPTER_EVENTS.READY,        handleReady);
+      web3Auth.off(ADAPTER_EVENTS.CONNECTED, handleConnected);
+      web3Auth.off(ADAPTER_EVENTS.READY, handleReady);
       listenerAttached = false;
     };
   }, [web3Auth, logout]);
 
-  return { login, logout, syncAddress, refreshUser, loading, userChecked, initializing };
+  return {
+    login,
+    logout,
+    syncAddress,
+    refreshUser,
+    loading,
+    userChecked,
+    initializing,
+  };
 };

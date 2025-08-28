@@ -29,7 +29,7 @@ const PerksList: FC = () => {
     variables: { address, limit: 50 },
     fetchPolicy: 'network-only',
     notifyOnNetworkStatusChange: true,
-    pollInterval: 2000
+    pollInterval: 2000,
   });
 
   const { data, isInitialLoad, isRefetch } = useStaleWhileLoading(raw);
@@ -51,12 +51,12 @@ const PerksList: FC = () => {
               : 0;
 
         return {
-          id:            perk.id,
-          label:         perk.name,
+          id: perk.id,
+          label: perk.name,
           rewardPreview: perk.rewardPreview,
-          rewardAmt:     parseReward(perk.rewardPreview),
-          value:         pct,
-          canClaim:      status === 'AVAILABLE',
+          rewardAmt: parseReward(perk.rewardPreview),
+          value: pct,
+          canClaim: status === 'AVAILABLE',
         };
       })
       .sort((a, b) => {
@@ -85,15 +85,17 @@ const PerksList: FC = () => {
   );
 
   const remaining = Math.max(0, challenges.length - visible);
-  const showMore  = () => setVisible((v) => Math.min(challenges.length, v + STEP));
-  const showLess  = () => setVisible(INITIAL_VISIBLE);
+  const showMore = () =>
+    setVisible((v) => Math.min(challenges.length, v + STEP));
+  const showLess = () => setVisible(INITIAL_VISIBLE);
 
   return (
     <Card>
       <CardHeader title="Perks" sx={{ px: 0 }} />
 
       <CardContent sx={{ pt: 2, px: 0 }}>
-        {isInitialLoad && !data &&
+        {isInitialLoad &&
+          !data &&
           [...Array(4)].map((_, i) => (
             <Skeleton
               key={i}
@@ -103,24 +105,24 @@ const PerksList: FC = () => {
             />
           ))}
 
-        {challenges.slice(0, visible).map(
-            ({ id, label, value, rewardPreview, canClaim }) => {
-              const isThisLoading = activeId === id;
+        {challenges
+          .slice(0, visible)
+          .map(({ id, label, value, rewardPreview, canClaim }) => {
+            const isThisLoading = activeId === id;
 
-              return (
-                <PerksItem
-                  key={id}
-                  id={id}
-                  value={value}
-                  handleClaim={handleClaim}
-                  canClaim={canClaim}
-                  label={label}
-                  rewardPreview={rewardPreview}
-                  isThisLoading={isThisLoading}
-                />
-              )
-            },
-          )}
+            return (
+              <PerksItem
+                key={id}
+                id={id}
+                value={value}
+                handleClaim={handleClaim}
+                canClaim={canClaim}
+                label={label}
+                rewardPreview={rewardPreview}
+                isThisLoading={isThisLoading}
+              />
+            );
+          })}
 
         {challenges.length === 0 && !isInitialLoad && (
           <Typography variant="body2" sx={{ pl: 2 }}>

@@ -1,52 +1,50 @@
 import { render, screen } from '@testing-library/react';
 import CustomBreadcrumbs from '../custom-breadcrumbs';
 import LinkItem from '../link-item';
-import {afterEach} from "vitest"
+import { afterEach } from 'vitest';
 
 // Mock LinkItem component to simplify testing
 vi.mock('../link-item', () => ({
   default: vi.fn(({ link, activeLast, disabled }) => (
-    <div data-testid="link-item" data-link={link.name} data-active-last={activeLast} data-disabled={disabled}>
+    <div
+      data-testid="link-item"
+      data-link={link.name}
+      data-active-last={activeLast}
+      data-disabled={disabled}
+    >
       {link.name}
     </div>
-  ))
+  )),
 }));
 
 describe('[COMPONENTS]: CustomBreadcrumbs component testing', () => {
   afterEach(() => {
     vi.clearAllMocks();
-  })
+  });
 
   it('to match snapshot', () => {
     const { baseElement } = render(
       <CustomBreadcrumbs
         links={[
           { name: 'Home', href: '/' },
-          { name: 'Dashboard', href: '/dashboard' }
+          { name: 'Dashboard', href: '/dashboard' },
         ]}
-      />
+      />,
     );
     expect(baseElement).toMatchSnapshot();
   });
   it('does not render breadcrumbs when links array is empty', () => {
-    render(
-      <CustomBreadcrumbs
-        links={[]}
-        heading="Page Title"
-      />
-    );
+    render(<CustomBreadcrumbs links={[]} heading="Page Title" />);
 
     expect(LinkItem).not.toHaveBeenCalled();
   });
-
-
 
   it('renders heading when provided', () => {
     render(
       <CustomBreadcrumbs
         heading="Page Title"
         links={[{ name: 'Home', href: '/' }]}
-      />
+      />,
     );
     expect(screen.getByText('Page Title')).toBeInTheDocument();
   });
@@ -56,9 +54,9 @@ describe('[COMPONENTS]: CustomBreadcrumbs component testing', () => {
       <CustomBreadcrumbs
         links={[
           { name: 'Home', href: '/' },
-          { name: 'Dashboard', href: '/dashboard' }
+          { name: 'Dashboard', href: '/dashboard' },
         ]}
-      />
+      />,
     );
 
     /*expect(LinkItem).toHaveBeenCalledTimes(2);*/
@@ -70,9 +68,9 @@ describe('[COMPONENTS]: CustomBreadcrumbs component testing', () => {
       <CustomBreadcrumbs
         links={[
           { name: 'Home', href: '/' },
-          { name: 'Dashboard', href: '/dashboard' }
+          { name: 'Dashboard', href: '/dashboard' },
         ]}
-      />
+      />,
     );
 
     const linkItems = screen.getAllByTestId('link-item');
@@ -85,7 +83,7 @@ describe('[COMPONENTS]: CustomBreadcrumbs component testing', () => {
       <CustomBreadcrumbs
         links={[{ name: 'Home', href: '/' }]}
         action={<button>Action Button</button>}
-      />
+      />,
     );
 
     expect(screen.getByText('Action Button')).toBeInTheDocument();
@@ -96,7 +94,7 @@ describe('[COMPONENTS]: CustomBreadcrumbs component testing', () => {
       <CustomBreadcrumbs
         links={[{ name: 'Home', href: '/' }]}
         moreLink={['https://example.com/docs', 'https://example.com/help']}
-      />
+      />,
     );
 
     expect(screen.getByText('https://example.com/docs')).toBeInTheDocument();
@@ -104,11 +102,7 @@ describe('[COMPONENTS]: CustomBreadcrumbs component testing', () => {
   });
 
   it('does not render heading when not provided', () => {
-    render(
-      <CustomBreadcrumbs
-        links={[{ name: 'Home', href: '/' }]}
-      />
-    );
+    render(<CustomBreadcrumbs links={[{ name: 'Home', href: '/' }]} />);
 
     const headings = screen.queryAllByRole('heading');
     expect(headings.length).toBe(0);
@@ -116,9 +110,7 @@ describe('[COMPONENTS]: CustomBreadcrumbs component testing', () => {
 
   it('does not render moreLink section when not provided', () => {
     const { container } = render(
-      <CustomBreadcrumbs
-        links={[{ name: 'Home', href: '/' }]}
-      />
+      <CustomBreadcrumbs links={[{ name: 'Home', href: '/' }]} />,
     );
 
     // Check that there are no links other than those in the breadcrumbs
@@ -131,7 +123,7 @@ describe('[COMPONENTS]: CustomBreadcrumbs component testing', () => {
       <CustomBreadcrumbs
         links={[{ name: 'Home', href: '/' }]}
         sx={{ padding: '20px' }}
-      />
+      />,
     );
 
     const box = container.firstChild;

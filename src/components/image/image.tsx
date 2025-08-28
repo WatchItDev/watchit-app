@@ -33,7 +33,7 @@ const Image = forwardRef<HTMLSpanElement, ImageProps>(
       sx,
       ...other
     },
-    ref
+    ref,
   ) => {
     const theme = useTheme();
 
@@ -68,7 +68,9 @@ const Image = forwardRef<HTMLSpanElement, ImageProps>(
         effect={disabledEffect ? undefined : effect}
         useIntersectionObserver={useIntersectionObserver}
         wrapperClassName={wrapperClassName || 'component-image-wrapper'}
-        placeholderSrc={disabledEffect ? '/assets/transparent.png' : '/assets/placeholder.svg'}
+        placeholderSrc={
+          disabledEffect ? '/assets/transparent.png' : '/assets/placeholder.svg'
+        }
         //
         sx={{
           width: 1,
@@ -114,7 +116,7 @@ const Image = forwardRef<HTMLSpanElement, ImageProps>(
         {content}
       </Box>
     );
-  }
+  },
 );
 
 export default Image;

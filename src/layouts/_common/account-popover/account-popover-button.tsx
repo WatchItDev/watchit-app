@@ -1,11 +1,6 @@
 // MUI IMPORTS
-import {
-  Box,
-  Button,
-  IconButton,
-  Typography,
-} from '@mui/material';
-import { alpha } from '@mui/material/styles'
+import { Box, Button, IconButton, Typography } from '@mui/material';
+import { alpha } from '@mui/material/styles';
 
 // ANIMATIONS IMPORTS
 import { m } from 'framer-motion';
@@ -26,13 +21,18 @@ interface AccountPopoverButtonProps {
 
 // ----------------------------------------------------------------------
 
-export function AccountPopoverButton(props: Readonly<AccountPopoverButtonProps>) {
+export function AccountPopoverButton(
+  props: Readonly<AccountPopoverButtonProps>,
+) {
   const { popover, onOpenLoginModal } = props;
   const { session } = useAuth();
   const isAuthenticated = Boolean(session?.authenticated);
 
   return (
-    <Box sx={{ display: 'flex', alignItems: 'center' }} onClick={popover.onOpen}>
+    <Box
+      sx={{ display: 'flex', alignItems: 'center' }}
+      onClick={popover.onOpen}
+    >
       {/* If user is authenticated, show their avatar */}
       {isAuthenticated && (
         <Box>
@@ -52,7 +52,9 @@ export function AccountPopoverButton(props: Readonly<AccountPopoverButtonProps>)
             }}
           >
             <AvatarProfile
-              src={(session?.user?.profilePicture || session?.user?.address) ?? ''}
+              src={
+                (session?.user?.profilePicture || session?.user?.address) ?? ''
+              }
               alt="avatar"
               sx={{
                 fontSize: '1.25rem',
@@ -67,7 +69,12 @@ export function AccountPopoverButton(props: Readonly<AccountPopoverButtonProps>)
 
       {/* If user is not authenticated, show the "Social Login" button */}
       <Box
-        sx={{ display: 'flex', flexDirection: 'column', ml: { xs: 0, md: 1 }, cursor: 'pointer' }}
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          ml: { xs: 0, md: 1 },
+          cursor: 'pointer',
+        }}
       >
         {!isAuthenticated && (
           <Button variant="contained" onClick={onOpenLoginModal}>

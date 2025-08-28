@@ -22,7 +22,8 @@ export function alert(theme: Theme) {
         // STANDARD
         ...(standardVariant && {
           color: theme.palette[color][lightMode ? 'darker' : 'lighter'],
-          backgroundColor: theme.palette[color][lightMode ? 'lighter' : 'darker'],
+          backgroundColor:
+            theme.palette[color][lightMode ? 'lighter' : 'darker'],
           [`& .${alertClasses.icon}`]: {
             color: theme.palette[color][lightMode ? 'main' : 'light'],
           },
@@ -50,7 +51,8 @@ export function alert(theme: Theme) {
   return {
     MuiAlert: {
       styleOverrides: {
-        root: ({ ownerState }: { ownerState: AlertProps }) => rootStyles(ownerState),
+        root: ({ ownerState }: { ownerState: AlertProps }) =>
+          rootStyles(ownerState),
         icon: {
           opacity: 1,
         },

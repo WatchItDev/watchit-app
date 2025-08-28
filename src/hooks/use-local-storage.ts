@@ -4,7 +4,10 @@ import { localStorageAvailable } from '@src/libs/storage-available';
 
 // ----------------------------------------------------------------------
 
-export function useLocalStorage<ValueType>(key: string, defaultValue: ValueType) {
+export function useLocalStorage<ValueType>(
+  key: string,
+  defaultValue: ValueType,
+) {
   const storageAvailable = localStorageAvailable();
 
   const [value, setValue] = useState(() => {
@@ -28,7 +31,8 @@ export function useLocalStorage<ValueType>(key: string, defaultValue: ValueType)
 
   const setValueInLocalStorage = (newValue: ValueType) => {
     setValue((currentValue: ValueType) => {
-      const result = typeof newValue === 'function' ? newValue(currentValue) : newValue;
+      const result =
+        typeof newValue === 'function' ? newValue(currentValue) : newValue;
 
       if (storageAvailable) {
         localStorage.setItem(key, JSON.stringify(result));

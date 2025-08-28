@@ -2,7 +2,10 @@ import { useState, useCallback } from 'react';
 import { Address } from 'viem';
 import { publicClient } from '@src/clients/viem/publicClient.ts';
 import CampaignSubscriptionTplAbi from '@src/config/abi/CampaignSubscriptionTpl.json';
-import { UseCampaignPausedHook, HasAccessError } from '@src/hooks/protocol/types.ts';
+import {
+  UseCampaignPausedHook,
+  HasAccessError,
+} from '@src/hooks/protocol/types.ts';
 
 export const useCampaignPaused = (): UseCampaignPausedHook => {
   const [paused, setPaused] = useState<boolean>(false);
@@ -17,12 +20,12 @@ export const useCampaignPaused = (): UseCampaignPausedHook => {
       }
       setLoading(true);
       try {
-        const isPaused: boolean = await publicClient.readContract({
+        const isPaused: boolean = (await publicClient.readContract({
           address: campaignAddress,
           abi: CampaignSubscriptionTplAbi.abi,
           functionName: 'paused',
           args: [],
-        }) as boolean;
+        })) as boolean;
         setPaused(isPaused);
         setError(null);
         return isPaused;
@@ -37,7 +40,7 @@ export const useCampaignPaused = (): UseCampaignPausedHook => {
         setLoading(false);
       }
     },
-    []
+    [],
   );
 
   return { paused, loading, error, fetchCampaignPaused };

@@ -1,28 +1,23 @@
-import {
-  ReactNode,
-  useLayoutEffect,
-  useRef,
-  useState,
-} from 'react';
+import { ReactNode, useLayoutEffect, useRef, useState } from 'react';
 import { AnimatePresence, m } from 'framer-motion';
 
 export interface LoadingFadeProps {
   loading: boolean;
   skeleton: ReactNode;
   children: ReactNode;
-  durationMs?: number;   // fade (default 300 ms)
-  delayMs?: number;      // delay before fade starts (default 0 ms)
+  durationMs?: number; // fade (default 300 ms)
+  delayMs?: number; // delay before fade starts (default 0 ms)
 }
 
 export const LoadingFade = ({
-                              loading,
-                              skeleton,
-                              children,
-                              durationMs = 300,
-                              delayMs = 0,
-                            }: LoadingFadeProps) => {
+  loading,
+  skeleton,
+  children,
+  durationMs = 300,
+  delayMs = 0,
+}: LoadingFadeProps) => {
   const durationSec = durationMs / 1000;
-  const delaySec    = delayMs    / 1000;
+  const delaySec = delayMs / 1000;
 
   const skelRef = useRef<HTMLDivElement>(null);
   const [minHeight, setMinHeight] = useState<number>();

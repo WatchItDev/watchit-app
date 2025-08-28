@@ -17,7 +17,10 @@ const appReducer = combineReducers({
 
 type RootState = ReturnType<typeof appReducer>;
 
-const rootReducer = (state: RootState | undefined, action: Action): RootState => {
+const rootReducer = (
+  state: RootState | undefined,
+  action: Action,
+): RootState => {
   return appReducer(state, action);
 };
 

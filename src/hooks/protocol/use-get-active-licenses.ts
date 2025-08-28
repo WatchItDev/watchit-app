@@ -3,10 +3,15 @@ import { Address } from 'viem';
 import { publicClient } from '@src/clients/viem/publicClient.ts';
 import AccessAggAbi from '@src/config/abi/AccessAgg.json';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
-import { ActiveLicensesError, Policy, UseGetActiveLicensesHook } from '@src/hooks/protocol/types.ts';
+import {
+  ActiveLicensesError,
+  Policy,
+  UseGetActiveLicensesHook,
+} from '@src/hooks/protocol/types.ts';
 
 export const useGetActiveLicenses = (
-  recipient: Address, holder?: Address
+  recipient: Address,
+  holder?: Address,
 ): UseGetActiveLicensesHook => {
   const [activeLicenses, setActiveLicenses] = useState<Policy[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -40,7 +45,10 @@ export const useGetActiveLicenses = (
       setActiveLicenses([]);
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-expect-error
-      setError({ message: err?.message || 'Error occurred while fetching active licenses.' });
+      setError({
+        message:
+          err?.message || 'Error occurred while fetching active licenses.',
+      });
     } finally {
       setLoading(false);
     }

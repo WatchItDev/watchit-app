@@ -38,6 +38,6 @@ const Error403View = () => {
       </Button>
     </MotionContainer>
   );
-}
+};
 
 export default Error403View;

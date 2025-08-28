@@ -1,9 +1,9 @@
-import Box from "@mui/material/Box";
-import Stack from "@mui/material/Stack";
-import Typography from "@mui/material/Typography";
-import CircularProgress from "@mui/material/CircularProgress";
+import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
+import CircularProgress from '@mui/material/CircularProgress';
 // components
-import Iconify from "@src/components/iconify";
+import Iconify from '@src/components/iconify';
 
 // ----------------------------------------------------------------------
 
@@ -26,9 +26,19 @@ export default function FinanceWalletTransferWidgetHorizontal({
       direction="row"
       alignItems="center"
       justifyContent="center"
-      sx={{ width: 1, minWidth: 150 }}>
-      <Stack alignItems="center" justifyContent="center" sx={{ position: "relative" }}>
-        <Iconify icon={icon} width={32} sx={{ color, position: "absolute" }} data-testid="icon" />
+      sx={{ width: 1, minWidth: 150 }}
+    >
+      <Stack
+        alignItems="center"
+        justifyContent="center"
+        sx={{ position: 'relative' }}
+      >
+        <Iconify
+          icon={icon}
+          width={32}
+          sx={{ color, position: 'absolute' }}
+          data-testid="icon"
+        />
 
         <CircularProgress
           variant="determinate"
@@ -42,7 +52,10 @@ export default function FinanceWalletTransferWidgetHorizontal({
       <Stack spacing={0.5}>
         <Typography variant="subtitle1">{title}</Typography>
 
-        <Box component="span" sx={{ color: "text.disabled", typography: "body2" }}>
+        <Box
+          component="span"
+          sx={{ color: 'text.disabled', typography: 'body2' }}
+        >
           Balance
         </Box>
 

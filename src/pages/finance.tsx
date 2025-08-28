@@ -3,7 +3,7 @@ import Header from '@src/layouts/dashboard/header.tsx';
 import HeaderContent from '@src/layouts/dashboard/header-content.tsx';
 import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
 import { OgMetaTags } from '@src/components/og-meta-tags.tsx';
-import {WithAuth} from "@src/components/should-login/withAuth.tsx";
+import { WithAuth } from '@src/components/should-login/withAuth.tsx';
 
 const OverviewBankingPage = () => {
   return (
@@ -15,9 +15,14 @@ const OverviewBankingPage = () => {
       <Header>
         <HeaderContent title="Finance" />
       </Header>
-      <WithAuth component={FinanceView} description={'Login to access your balance.'} icon={'iconoir:stats-report'} header={'Finance Dashboard'} />
+      <WithAuth
+        component={FinanceView}
+        description={'Login to access your balance.'}
+        icon={'iconoir:stats-report'}
+        header={'Finance Dashboard'}
+      />
     </OgMetaTags>
   );
-}
+};
 
 export default OverviewBankingPage;

@@ -46,14 +46,24 @@ export const UserProfileViewSkeleton: React.FC = () => {
           sx={{
             width: { xs: 96, sm: 140 },
             height: { xs: 96, sm: 140 },
-            borderRadius: 1
+            borderRadius: 1,
           }}
         />
 
         {/* Action buttons */}
         <Box sx={{ display: 'flex', gap: 1, mt: { xs: 1, sm: 0 } }}>
-          <Skeleton variant="rectangular" width={40} height={40} sx={{ borderRadius: 1 }} />
-          <Skeleton variant="rectangular" width={40} height={40} sx={{ borderRadius: 1 }} />
+          <Skeleton
+            variant="rectangular"
+            width={40}
+            height={40}
+            sx={{ borderRadius: 1 }}
+          />
+          <Skeleton
+            variant="rectangular"
+            width={40}
+            height={40}
+            sx={{ borderRadius: 1 }}
+          />
         </Box>
       </Box>
 
@@ -69,13 +79,33 @@ export const UserProfileViewSkeleton: React.FC = () => {
         {/* Left column */}
         <Box sx={{ flex: 1, pl: 4 }}>
           <Skeleton variant="rectangular" width="40%" height={26} />
-          <Skeleton variant="rectangular" width="30%" height={20} sx={{ mt: 1 }} />
-          <Skeleton variant="rectangular" width="60%" height={16} sx={{ mt: 1.5 }} />
+          <Skeleton
+            variant="rectangular"
+            width="30%"
+            height={20}
+            sx={{ mt: 1 }}
+          />
+          <Skeleton
+            variant="rectangular"
+            width="60%"
+            height={16}
+            sx={{ mt: 1.5 }}
+          />
 
           {/* Follow / Play buttons */}
           <Box sx={{ display: 'flex', gap: 2, mt: 2 }}>
-            <Skeleton variant="rectangular" width={100} height={40} sx={{ borderRadius: 1 }} />
-            <Skeleton variant="rectangular" width={100} height={40} sx={{ borderRadius: 1 }} />
+            <Skeleton
+              variant="rectangular"
+              width={100}
+              height={40}
+              sx={{ borderRadius: 1 }}
+            />
+            <Skeleton
+              variant="rectangular"
+              width={100}
+              height={40}
+              sx={{ borderRadius: 1 }}
+            />
           </Box>
         </Box>
 
@@ -86,14 +116,27 @@ export const UserProfileViewSkeleton: React.FC = () => {
             width: { xs: '100%', md: 260 },
             height: { xs: 160, md: 160 },
             borderRadius: 2,
-            mt: { xs: 4, sm: -8 }
+            mt: { xs: 4, sm: -8 },
           }}
         />
       </Box>
 
       {/* ------------- TABS ------------- */}
-      <Box sx={{ mt: 4, display: 'flex', width: '100%', alignItems: 'center', justifyContent: 'center' }}>
-        <Skeleton variant="rectangular" width={220} height={36} sx={{ borderRadius: 1 }} />
+      <Box
+        sx={{
+          mt: 4,
+          display: 'flex',
+          width: '100%',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <Skeleton
+          variant="rectangular"
+          width={220}
+          height={36}
+          sx={{ borderRadius: 1 }}
+        />
       </Box>
 
       {/* ------------- PANEL (publications / followers / etc.) ------------- */}

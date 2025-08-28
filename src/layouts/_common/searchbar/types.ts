@@ -23,5 +23,5 @@ export interface NavItemProps {
   title: string;
   path: string;
   children?: NavItemProps[];
-  [key: string]: unknown;  // For other potential properties
+  [key: string]: unknown; // For other potential properties
 }

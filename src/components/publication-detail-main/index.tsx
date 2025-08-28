@@ -45,7 +45,7 @@ import { useNotifications } from '@src/hooks/use-notifications.ts';
 import { openLoginModal } from '@redux/auth';
 import { useDispatch } from 'react-redux';
 import { useNotificationPayload } from '@src/hooks/use-notification-payload.ts';
-import AvatarProfile from "@src/components/avatar/avatar.tsx";
+import AvatarProfile from '@src/components/avatar/avatar.tsx';
 import { PublicationDetailProps } from '@src/components/publication-detail-main/types.ts';
 import { useAuth } from '@src/hooks/use-auth.ts';
 import { useToggleBookmark } from '@src/hooks/use-toggle-bookmark';
@@ -79,17 +79,19 @@ export default function PublicationDetailMain({
   const theme = useTheme();
   const { session: sessionData } = useAuth();
   const dispatch = useDispatch();
-  const [ hidePost ] = useHidePostMutation();
+  const [hidePost] = useHidePostMutation();
   const { sendNotification } = useNotifications();
   const { generatePayload } = useNotificationPayload(sessionData);
-  const [getIsLiked, { loading: postLikedLoading }] = useGetIsLikedLazyQuery()
-  const [ toggleLike, { loading: togglePostLikeLoading }  ] = useToggleLikeMutation()
+  const [getIsLiked, { loading: postLikedLoading }] = useGetIsLikedLazyQuery();
+  const [toggleLike, { loading: togglePostLikeLoading }] =
+    useToggleLikeMutation();
   const { has, loading: loadingList } = useBookmarks();
   const { toggle, loading: loadingToggle } = useToggleBookmark();
 
   const isBookmarked = has(post.id);
-  const isLoading = togglePostLikeLoading || postLikedLoading
-  const variants = theme.direction === 'rtl' ? varFade().inLeft : varFade().inRight;
+  const isLoading = togglePostLikeLoading || postLikedLoading;
+  const variants =
+    theme.direction === 'rtl' ? varFade().inLeft : varFade().inRight;
   const openMenu = Boolean(anchorEl);
 
   const handleToggleLike = async () => {
@@ -100,14 +102,14 @@ export default function PublicationDetailMain({
         variables: {
           input: {
             targetId: post.id,
-            targetType: 'POST'
-          }
-        }
+            targetType: 'POST',
+          },
+        },
       });
       const isNowLiked = res.data?.toggleLike ?? false;
 
-      console.log('hello test', res.data?.toggleLike)
-      console.log(isNowLiked)
+      console.log('hello test', res.data?.toggleLike);
+      console.log(isNowLiked);
 
       setHasLiked(isNowLiked);
       setLikesCount((prev) => prev + (isNowLiked ? 1 : -1));
@@ -119,16 +121,23 @@ export default function PublicationDetailMain({
           {
             id: post.author.address,
             displayName: post.author.displayName ?? 'Watchit',
-            avatar: resolveSrc(post.author.profilePicture || post.author.address, 'profile'),
+            avatar: resolveSrc(
+              post.author.profilePicture || post.author.address,
+              'profile',
+            ),
           },
           {
             rawDescription: `${sessionData?.user?.displayName} liked ${post.title}`,
             root_id: post.id,
             post_title: post.title,
-          }
+          },
         );
 
-        sendNotification(post.author.address, sessionData?.user?.address ?? '', payloadForNotification);
+        sendNotification(
+          post.author.address,
+          sessionData?.user?.address ?? '',
+          payloadForNotification,
+        );
       }
     } catch (err) {
       console.error(err);
@@ -144,8 +153,8 @@ export default function PublicationDetailMain({
 
   useEffect(() => {
     getIsLiked({ variables: { targetId: post.id } }).then((res) => {
-      console.log('hello test 2', res.data?.getIsLiked)
-      setHasLiked(res.data?.getIsLiked ?? false)
+      console.log('hello test 2', res.data?.getIsLiked);
+      setHasLiked(res.data?.getIsLiked ?? false);
     });
   }, [post.id]);
 
@@ -210,7 +219,10 @@ export default function PublicationDetailMain({
               onClick={goToProfile}
             >
               <AvatarProfile
-                src={resolveSrc(post.author.profilePicture || post.author.address, 'profile')}
+                src={resolveSrc(
+                  post.author.profilePicture || post.author.address,
+                  'profile',
+                )}
                 sx={{
                   width: 26,
                   height: 26,
@@ -221,7 +233,8 @@ export default function PublicationDetailMain({
                 {post.author.displayName}
               </Typography>
             </Box>
-            {sessionData?.authenticated && post.author.address === sessionData?.user?.address ? (
+            {sessionData?.authenticated &&
+            post.author.address === sessionData?.user?.address ? (
               <Button
                 variant="text"
                 sx={{
@@ -302,7 +315,10 @@ export default function PublicationDetailMain({
                   Distributed by
                 </Typography>
                 <StyledBoxGradient>
-                  <Typography style={{ marginRight: 5, fontWeight: 'bold' }} variant="caption">
+                  <Typography
+                    style={{ marginRight: 5, fontWeight: 'bold' }}
+                    variant="caption"
+                  >
                     Watchit
                   </Typography>
                   <IconRosetteDiscountCheckFilled />
@@ -321,7 +337,7 @@ export default function PublicationDetailMain({
             }}
           >
             {/*{hasAccess && sessionData?.authenticated ? (*/}
-              <LeaveTipCard post={post} />
+            <LeaveTipCard post={post} />
             {/*) : (*/}
             {/*  <SubscribeToUnlockCard*/}
             {/*    loadingSubscribe={loadingSubscribe}*/}
@@ -364,7 +380,10 @@ export default function PublicationDetailMain({
                       ) : (
                         <IconHeart size={22} color="#FFFFFF" />
                       )}
-                      <Typography variant="body2" sx={{ lineHeight: 1, ml: 1, fontWeight: '700' }}>
+                      <Typography
+                        variant="body2"
+                        sx={{ lineHeight: 1, ml: 1, fontWeight: '700' }}
+                      >
                         {likesCount}
                       </Typography>
                     </>
@@ -386,7 +405,10 @@ export default function PublicationDetailMain({
                     ) : (
                       <IconMessageCircle size={22} color="#FFFFFF" />
                     )}
-                    <Typography variant="body2" sx={{ lineHeight: 1, ml: 1, fontWeight: '700' }}>
+                    <Typography
+                      variant="body2"
+                      sx={{ lineHeight: 1, ml: 1, fontWeight: '700' }}
+                    >
                       {commentCount}
                     </Typography>
                   </>
@@ -445,7 +467,10 @@ export default function PublicationDetailMain({
                     owner={{
                       id: post.author.address,
                       displayName: post.author.displayName ?? 'Watchit',
-                      avatar: resolveSrc(post.author.profilePicture || post.author.address, 'profile'),
+                      avatar: resolveSrc(
+                        post.author.profilePicture || post.author.address,
+                        'profile',
+                      ),
                     }}
                     onSuccess={() => handleCommentSuccess(false)}
                   />
@@ -465,16 +490,27 @@ export default function PublicationDetailMain({
                   </Typography>
                 )}
               </Box>
-              <Box sx={{ display: 'flex', flexDirection: 'column', mt: 2, pr: 1 }}>
-                <PostCommentList publicationId={post.id} showReplies onReplyCreated={() => handleCommentSuccess(true)} />
+              <Box
+                sx={{ display: 'flex', flexDirection: 'column', mt: 2, pr: 1 }}
+              >
+                <PostCommentList
+                  publicationId={post.id}
+                  showReplies
+                  onReplyCreated={() => handleCommentSuccess(true)}
+                />
               </Box>
             </Box>
           )}
 
-          <Dialog open={openConfirmModal} onClose={() => setOpenConfirmModal(false)}>
+          <Dialog
+            open={openConfirmModal}
+            onClose={() => setOpenConfirmModal(false)}
+          >
             <DialogTitle>Confirm hide</DialogTitle>
             <DialogContent>
-              <Typography>Are you sure you want to hide this publication?</Typography>
+              <Typography>
+                Are you sure you want to hide this publication?
+              </Typography>
             </DialogContent>
             <DialogActions>
               <Button

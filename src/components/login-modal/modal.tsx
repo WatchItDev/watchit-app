@@ -1,10 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import {
-  Modal,
-  Backdrop,
-  Fade,
-  Box,
-} from '@mui/material';
+import { Modal, Backdrop, Fade, Box } from '@mui/material';
 import { WatchitLoader } from '@src/components/watchit-loader';
 import { ProfileFormView } from './profile-form-view';
 import { useAuth } from '@src/hooks/use-auth';
@@ -17,7 +12,12 @@ export interface LoginModalProps {
 
 export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
   const { session } = useAuth();
-  const { login, logout, syncAddress, loading: sessionLoading } = useAccountSession();
+  const {
+    login,
+    logout,
+    syncAddress,
+    loading: sessionLoading,
+  } = useAccountSession();
   const [showForm, setShowForm] = useState(false);
   const loginTriggered = useRef(false);
 
@@ -57,7 +57,10 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
   }, [sessionLoading, session]);
 
   const handleSuccess = () => syncAddress();
-  const handleCancel  = () => { logout(); onClose(); };
+  const handleCancel = () => {
+    logout();
+    onClose();
+  };
 
   return (
     <Modal
@@ -86,7 +89,12 @@ export const LoginModal: React.FC<LoginModalProps> = ({ open, onClose }) => {
           }}
         >
           {sessionLoading && (
-            <Box display="flex" justifyContent="center" alignItems="center" height={200}>
+            <Box
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              height={200}
+            >
               <WatchitLoader />
             </Box>
           )}

@@ -13,14 +13,17 @@ import { Stack, CircularProgress } from '@mui/material';
 
 // LOCAL IMPORTS
 import Iconify from '@src/components/iconify';
-import AvatarProfile from "@src/components/avatar/avatar.tsx";
+import AvatarProfile from '@src/components/avatar/avatar.tsx';
 import { useNotifications } from '@src/hooks/use-notifications.ts';
 import { useNotificationPayload } from '@src/hooks/use-notification-payload.ts';
 import { MovieCommentFormProps } from '@src/sections/publication/types.ts';
 import { useAuth } from '@src/hooks/use-auth.ts';
 import { resolveSrc } from '@src/utils/image.ts';
 import { useCreateCommentMutation } from '@src/graphql/generated/hooks.tsx';
-import { GetCommentsByPostDocument, GetRepliesByCommentDocument } from '@src/graphql/generated/graphql.ts';
+import {
+  GetCommentsByPostDocument,
+  GetRepliesByCommentDocument,
+} from '@src/graphql/generated/graphql.ts';
 
 /**
  * MovieCommentForm Component
@@ -28,7 +31,12 @@ import { GetCommentsByPostDocument, GetRepliesByCommentDocument } from '@src/gra
  * @param {MovieCommentFormProps} props - Component props.
  * @returns {JSX.Element} - Rendered component.
  */
-const MovieCommentForm = ({ commentOn, owner, root, onSuccess }: MovieCommentFormProps) => {
+const MovieCommentForm = ({
+  commentOn,
+  owner,
+  root,
+  onSuccess,
+}: MovieCommentFormProps) => {
   const [createComment] = useCreateCommentMutation();
   const { session: sessionData } = useAuth();
   const { sendNotification } = useNotifications();
@@ -53,7 +61,7 @@ const MovieCommentForm = ({ commentOn, owner, root, onSuccess }: MovieCommentFor
    *
    * @param {any} data - Form data.
    */
-  const onSubmit = handleSubmit(async (data: {comment:string}) => {
+  const onSubmit = handleSubmit(async (data: { comment: string }) => {
     try {
       await createComment({
         variables: {
@@ -69,10 +77,12 @@ const MovieCommentForm = ({ commentOn, owner, root, onSuccess }: MovieCommentFor
             variables: { postId: root, limit: 50 },
           },
           ...(commentOn
-            ? [{
-              query: GetRepliesByCommentDocument,
-              variables: { commentId: commentOn },
-            }]
+            ? [
+                {
+                  query: GetRepliesByCommentDocument,
+                  variables: { commentId: commentOn },
+                },
+              ]
             : []),
         ],
       });
@@ -89,12 +99,16 @@ const MovieCommentForm = ({ commentOn, owner, root, onSuccess }: MovieCommentFor
           root_id: root ?? '',
           comment_id: commentOn ?? '',
           rawDescription: `${sessionData?.user?.displayName} left a comment`,
-        }
+        },
       );
 
       // Send the notification if the comment is not from the owner
       if (owner?.id !== sessionData?.user?.address) {
-        sendNotification(owner.id, sessionData?.user?.address ?? '', notificationPayload);
+        sendNotification(
+          owner.id,
+          sessionData?.user?.address ?? '',
+          notificationPayload,
+        );
       }
 
       reset();
@@ -108,7 +122,11 @@ const MovieCommentForm = ({ commentOn, owner, root, onSuccess }: MovieCommentFor
   const renderInput = (
     <Stack sx={{ pr: 1 }} spacing={2} direction="row" alignItems="center">
       <AvatarProfile
-        src={resolveSrc((sessionData?.user?.profilePicture || sessionData?.user?.address) ?? '', 'profile')}
+        src={resolveSrc(
+          (sessionData?.user?.profilePicture || sessionData?.user?.address) ??
+            '',
+          'profile',
+        )}
         alt={sessionData?.user?.displayName ?? ''}
       />
 
@@ -125,7 +143,9 @@ const MovieCommentForm = ({ commentOn, owner, root, onSuccess }: MovieCommentFor
                 <LoadingButton
                   type="submit"
                   loading={isSubmitting}
-                  loadingIndicator={<CircularProgress color="inherit" size={20} />}
+                  loadingIndicator={
+                    <CircularProgress color="inherit" size={20} />
+                  }
                   sx={{
                     padding: 0.5,
                     minWidth: 'auto',
@@ -140,7 +160,8 @@ const MovieCommentForm = ({ commentOn, owner, root, onSuccess }: MovieCommentFor
               pl: 1.5,
               height: 40,
               borderRadius: 1,
-              border: (theme) => `solid 1px ${alpha(theme.palette.grey[500], 0.32)}`,
+              border: (theme) =>
+                `solid 1px ${alpha(theme.palette.grey[500], 0.32)}`,
             }}
           />
         )}

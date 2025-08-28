@@ -27,7 +27,8 @@ export const UserSidebarRanks: FC = () => {
   const rawRanks = useGetRanksCatalogQuery({
     fetchPolicy: 'network-only',
   });
-  const { data: ranksData, isInitialLoad: ranksLoading } = useStaleWhileLoading(rawRanks);
+  const { data: ranksData, isInitialLoad: ranksLoading } =
+    useStaleWhileLoading(rawRanks);
 
   const currentRankId = achData?.getAchievements.currentRank.id ?? 'watcher';
 
@@ -56,7 +57,13 @@ export const UserSidebarRanks: FC = () => {
             r.order < (achData?.getAchievements.currentRank.order ?? 0);
 
           return (
-            <Tooltip key={r.id} title={isUnlocked ? r.name : `${r.name} unlocks with ${r.minXp}XP`} arrow>
+            <Tooltip
+              key={r.id}
+              title={
+                isUnlocked ? r.name : `${r.name} unlocks with ${r.minXp}XP`
+              }
+              arrow
+            >
               <IconButton
                 component={m.button}
                 whileHover="hover"
@@ -91,5 +98,5 @@ const RankIcon = styled('img')({
   minWidth: '50px !important',
   height: '50px !important',
   minHeight: '50px !important',
-  flexShrink: 0
+  flexShrink: 0,
 });
