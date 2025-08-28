@@ -1,5 +1,4 @@
 import { FC, useMemo, useCallback, useState } from 'react';
-import { useDispatch } from 'react-redux';
 
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -13,7 +12,6 @@ import {
   useClaimPerkMutation,
   useGetUnlockedPerksQuery,
 } from '@src/graphql/generated/hooks.tsx';
-import { incrementXp } from '@redux/auth';
 import { useAuth } from '@src/hooks/use-auth';
 import PerksItem from '@src/sections/achievements/components/perk-item.tsx';
 import { UnlockedPerkState } from '@src/graphql/generated/graphql.ts';
@@ -27,15 +25,15 @@ const PerksList: FC = () => {
   const address = session?.user?.address ?? '';
   const [activeId, setActiveId] = useState<string | null>(null);
   const [visible, setVisible] = useState(INITIAL_VISIBLE);
-  const dispatch = useDispatch();
   const raw = useGetUnlockedPerksQuery({
     variables: { address, limit: 50 },
     fetchPolicy: 'network-only',
     notifyOnNetworkStatusChange: true,
+    pollInterval: 2000
   });
-  const { data, isInitialLoad, isRefetch, refetch } = useStaleWhileLoading(raw);
-  const [claimPerk] = useClaimPerkMutation();
 
+  const { data, isInitialLoad, isRefetch } = useStaleWhileLoading(raw);
+  const [claimPerk] = useClaimPerkMutation();
   const challenges = useMemo(() => {
     const states: UnlockedPerkState[] = data?.getUnlockedPerks ?? [];
 
@@ -78,17 +76,13 @@ const PerksList: FC = () => {
       try {
         setActiveId(perkId);
         await claimPerk({ variables: { perkId } });
-        dispatch(incrementXp({ amount: perk.rewardAmt }));
-        setTimeout(() => {
-          refetch();
-        }, 2000);
       } catch (e) {
         console.error(e);
       } finally {
         setActiveId(null);
       }
     },
-    [claimPerk, refetch, challenges],
+    [claimPerk, challenges],
   );
 
   const remaining = Math.max(0, challenges.length - visible);

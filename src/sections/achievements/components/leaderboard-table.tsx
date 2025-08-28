@@ -49,6 +49,7 @@ const LeaderboardTable: FC = () => {
   const raw = useGetLeaderboardQuery({
     variables: { limit: 50 },
     fetchPolicy: 'network-only',
+    pollInterval: 2000
   });
   
   const { data, isInitialLoad, error } = useStaleWhileLoading(raw);
