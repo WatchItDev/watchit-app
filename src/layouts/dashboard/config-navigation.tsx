@@ -96,12 +96,12 @@ export function useNavData() {
             icon: ICONS.ecommerce,
             comingSoon: true,
           },
-          {
-            title: t('Events'),
-            path: paths.dashboard.events,
-            icon: ICONS.calendar,
-            comingSoon: true,
-          },
+          // {
+          //   title: t('Events'),
+          //   path: paths.dashboard.events,
+          //   icon: ICONS.calendar,
+          //   comingSoon: true,
+          // },
           {
             title: t('Achievements'),
             path: paths.dashboard.achievements,

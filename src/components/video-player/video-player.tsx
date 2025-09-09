@@ -127,17 +127,17 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({
   const onProviderSetup = (provider: MediaProviderAdapter) => {
     if (isHLSProvider(provider)) {
       // @ts-expect-error No error in this context
-      provider.instance?.on(Hls.Events.ERROR, (_, data: ErrorData) => {
-        if (data.details === Hls.ErrorDetails.BUFFER_STALLED_ERROR) {
-          console.log('Seek Stalling Detected, Adjusting Buffer...');
-          provider.instance?.startLoad();
-        }
-
-        if (data.fatal && data.type === Hls.ErrorTypes.MEDIA_ERROR) {
-          console.warn('Recovering from Media Error...');
-          provider.instance?.recoverMediaError();
-        }
-      });
+      // provider.instance?.on(Hls.Events.ERROR, (_, data: ErrorData) => {
+      //   if (data.details === Hls.ErrorDetails.BUFFER_STALLED_ERROR) {
+      //     console.log('Seek Stalling Detected, Adjusting Buffer...');
+      //     provider.instance?.startLoad();
+      //   }
+      //
+      //   if (data.fatal && data.type === Hls.ErrorTypes.MEDIA_ERROR) {
+      //     console.warn('Recovering from Media Error...');
+      //     provider.instance?.recoverMediaError();
+      //   }
+      // });
     }
   };
 
