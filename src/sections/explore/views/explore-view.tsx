@@ -1,25 +1,15 @@
-// MUI IMPORTS
-import Stack from '@mui/material/Stack';
 import Container from '@mui/material/Container';
-// LOCAL IMPORTS
-import ExplorePublications from '@src/sections/explore/components/explore-publications.tsx';
-import { ExploreTopPublications } from '@src/sections/explore/components/explore-top-publications.tsx';
+import Stack from '@mui/material/Stack';
+import ExploreGrid from '../components/explore-grid';
+import { WatchitWidget } from '@src/components/ai-widget';
 
-// ----------------------------------------------------------------------
-
-const ExploreView = () => {
+export default function ExploreView() {
   return (
     <Container sx={{ p: '0 !important', maxWidth: '2000px !important' }}>
-      <Stack
-        direction={'column'}
-        spacing={1}
-        sx={{ maxWidth: '100vw !important', position: 'relative' }}
-      >
-        <ExploreTopPublications />
-        <ExplorePublications />
+      <Stack direction="column" sx={{ maxWidth: '100vw !important', position: 'relative' }}>
+        <ExploreGrid />
       </Stack>
+      <WatchitWidget />
     </Container>
   );
-};
-
-export default ExploreView;
+}
