@@ -26,15 +26,10 @@ export function RHFCheckbox({ name, helperText, ...other }: RHFCheckboxProps) {
       control={control}
       render={({ field, fieldState: { error } }) => (
         <div>
-          <FormControlLabel
-            control={<Checkbox {...field} checked={field.value} />}
-            {...other}
-          />
+          <FormControlLabel control={<Checkbox {...field} checked={field.value} />} {...other} />
 
           {(!!error || helperText) && (
-            <FormHelperText error={!!error}>
-              {error ? error?.message : helperText}
-            </FormHelperText>
+            <FormHelperText error={!!error}>{error ? error?.message : helperText}</FormHelperText>
           )}
         </div>
       )}
@@ -44,10 +39,9 @@ export function RHFCheckbox({ name, helperText, ...other }: RHFCheckboxProps) {
 
 // ----------------------------------------------------------------------
 
-interface RHFMultiCheckboxProps
-  extends Omit<FormControlLabelProps, 'control' | 'label'> {
+interface RHFMultiCheckboxProps extends Omit<FormControlLabelProps, 'control' | 'label'> {
   name: string;
-  options: { label: string; value: string | number }[];
+  options: { label: string; value: any }[];
   row?: boolean;
   label?: string;
   spacing?: number;
@@ -108,9 +102,7 @@ export function RHFMultiCheckbox({
                 control={
                   <Checkbox
                     checked={field.value.includes(option.value)}
-                    onChange={() =>
-                      field.onChange(getSelected(field.value, option.value))
-                    }
+                    onChange={() => field.onChange(getSelected(field.value, option.value))}
                   />
                 }
                 label={option.label}

@@ -11,7 +11,7 @@ import RadioGroup, { RadioGroupProps } from '@mui/material/RadioGroup';
 
 type Props = RadioGroupProps & {
   name: string;
-  options: { label: string; value: string | number }[];
+  options: { label: string; value: any }[];
   label?: string;
   spacing?: number;
   helperText?: React.ReactNode;
@@ -37,21 +37,12 @@ export default function RHFRadioGroup({
       render={({ field, fieldState: { error } }) => (
         <FormControl component="fieldset">
           {label && (
-            <FormLabel
-              component="legend"
-              id={labelledby}
-              sx={{ typography: 'body2' }}
-            >
+            <FormLabel component="legend" id={labelledby} sx={{ typography: 'body2' }}>
               {label}
             </FormLabel>
           )}
 
-          <RadioGroup
-            {...field}
-            aria-labelledby={labelledby}
-            row={row}
-            {...other}
-          >
+          <RadioGroup {...field} aria-labelledby={labelledby} row={row} {...other}>
             {options.map((option) => (
               <FormControlLabel
                 key={option.value}
