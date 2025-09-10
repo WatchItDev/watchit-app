@@ -6,7 +6,6 @@ import { alpha } from '@mui/material/styles';
 import { icons } from '@tabler/icons-react';
 
 import Image from '@src/components/image';
-import TextMaxLine from '@src/components/text-max-line';
 import { useRouter } from '@src/routes/hooks';
 import { paths } from '@src/routes/paths';
 import { Post } from '@src/graphql/generated/graphql';
@@ -51,7 +50,6 @@ export default function GridItemCard({ post }: { post: Post }) {
         {/* Bottom: creator + title */}
         <Box sx={{ p: 1, background: `linear-gradient(0deg, ${alpha('#000', 0.7)} 0%, ${alpha('#000', 0)} 70%)`, color: '#F2F3F5' }}>
           <Typography variant="caption" sx={{ opacity: 0.9 }}>{creator}</Typography>
-          <TextMaxLine line={2} variant="subtitle1" sx={{ fontWeight: 600 }}>{title}</TextMaxLine>
         </Box>
       </Box>
     </Paper>

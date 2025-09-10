@@ -15,7 +15,7 @@ import { NavSectionVertical } from '@src/components/nav-section';
 
 // HOOKS IMPORTS
 import { useResponsive } from '@src/hooks/use-responsive';
-import { usePathname } from '@src/routes/hooks';
+// import { usePathname } from '@src/routes/hooks';
 import { useNavData } from './config-navigation';
 
 // LAYOUT IMPORTS
@@ -23,13 +23,12 @@ import { Searchbar } from '../_common';
 import { NavToggleButton } from '../_common';
 import { COLORS, NAV } from '@src/layouts/config-layout.ts';
 import NavMini from '@src/layouts/dashboard/nav-mini.tsx';
-import SupportBox from '@src/layouts/dashboard/support-box.tsx';
 import TermsAndConditions from '@src/layouts/dashboard/terms-and-conditions.tsx';
 
 // ----------------------------------------------------------------------
 
 export default function NavVertical() {
-  const pathname = usePathname();
+  // const pathname = usePathname();
   const lgUp = useResponsive('up', 'lg');
   const navData = useNavData();
 
@@ -48,7 +47,7 @@ export default function NavVertical() {
       handleCloseNav();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pathname]);
+  }, []);
 
   const renderContent = (
     <Scrollbar

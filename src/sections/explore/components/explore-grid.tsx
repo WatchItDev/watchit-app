@@ -47,7 +47,7 @@ const SLIDERS: SliderSpec[] = [
     id: 'top-picks',
     after: 3,
     anchor: 'center',
-    allowedSpans: [{ w: 8, h: 3 }, { w: 6, h: 3 }, { w: 4, h: 2 }, { w: 3, h: 2 }, { w: 2, h: 2 }],
+    allowedSpans: [{ w: 2, h: 2 }, { w: 2, h: 2 }, { w: 2, h: 2 }, { w: 2, h: 2 }, { w: 2, h: 2 }],
     render: ({ w, h, cell }) => <TopPicksSlider span={{ w, h }} cell={cell} gapPx={gap} />,
   },
   {
@@ -55,7 +55,7 @@ const SLIDERS: SliderSpec[] = [
     id: 'continue-watching',
     after: 12,
     anchor: 'left',
-    allowedSpans: [{ w: 4, h: 2 }, { w: 3, h: 2 }, { w: 2, h: 2 }, { w: 2, h: 1 }],
+    allowedSpans: [{ w: 2, h: 2 }, { w: 2, h: 2 }, { w: 2, h: 2 }, { w: 2, h: 2 }],
     render: ({ w, h, cell }) => <ContinueWatchingSlider span={{ w, h }} cell={cell} gapPx={gap} />,
   },
   {
@@ -63,7 +63,7 @@ const SLIDERS: SliderSpec[] = [
     id: 'popular-week',
     after: 22,
     anchor: 'right',
-    allowedSpans: [{ w: 6, h: 2 }, { w: 4, h: 2 }, { w: 3, h: 2 }, { w: 2, h: 2 }],
+    allowedSpans: [{ w: 2, h: 2 }, { w: 2, h: 2 }, { w: 2, h: 2 }, { w: 2, h: 2 }],
     render: ({ w, h, cell }) => <PopularThisWeekSlider span={{ w, h }} cell={cell} gapPx={gap} />,
   },
   {
@@ -71,7 +71,7 @@ const SLIDERS: SliderSpec[] = [
     id: 'comedy',
     after: 35,
     anchor: 'center',
-    allowedSpans: [{ w: 4, h: 4 }, { w: 4, h: 3 }, { w: 3, h: 3 }, { w: 3, h: 2 }, { w: 2, h: 2 }],
+    allowedSpans: [{ w: 2, h: 2 }, { w: 2, h: 2 }, { w: 2, h: 2 }, { w: 2, h: 2 }, { w: 2, h: 2 }],
     render: ({ w, h, cell }) => <MoreFromComedySlider span={{ w, h }} cell={cell} gapPx={gap} />,
   },
   {
@@ -79,7 +79,7 @@ const SLIDERS: SliderSpec[] = [
     id: 'region',
     after: 48,
     anchor: 'right',
-    allowedSpans: [{ w: 2, h: 6 }, { w: 2, h: 4 }, { w: 2, h: 3 }, { w: 2, h: 2 }],
+    allowedSpans: [{ w: 2, h: 2 }, { w: 2, h: 2 }, { w: 2, h: 2 }, { w: 2, h: 2 }],
     render: ({ w, h, cell }) => <PopularInRegionSlider span={{ w, h }} cell={cell} gapPx={gap} />,
   },
   {
@@ -87,10 +87,11 @@ const SLIDERS: SliderSpec[] = [
     id: 'interest',
     after: 60,
     anchor: 'left',
-    allowedSpans: [{ w: 6, h: 2 }, { w: 4, h: 2 }, { w: 3, h: 2 }, { w: 2, h: 2 }, { w: 2, h: 1 }],
+    allowedSpans: [{ w: 2, h: 2 }, { w: 2, h: 2 }, { w: 2, h: 2 }, { w: 2, h: 2 }, { w: 2, h: 2 }],
     render: ({ w, h, cell }) => <ThisCanInterestYouSlider span={{ w, h }} cell={cell} gapPx={gap} />,
   },
 ];
+
 // const SLIDERS: SliderSpec[] = [
 //   {
 //     type: 'slider',

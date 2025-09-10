@@ -93,7 +93,7 @@ export default function MovieInformationForm({ onSubmit, data }: any) {
       <MovieWizardContentLayout data={{...data, ...values}} showNext>
         <Grid item xs={12}>
           <Card sx={{ backgroundColor: 'transparent' }}>
-            <CardHeader title="Basic Movie Information" />
+            <CardHeader title="Basic Information" />
             <Stack spacing={3} sx={{ p: 3 }}>
               <Grid container spacing={3}>
                 <Grid item xs={12} md={6} >

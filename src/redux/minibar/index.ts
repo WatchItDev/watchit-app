@@ -3,8 +3,8 @@ import { createSlice } from '@reduxjs/toolkit';
 export type StateType = 'mini' | 'vertical';
 
 const initialState = {
-  state: 'vertical' as StateType,
-  wasCollapsed: false,
+  state: 'mini' as StateType,
+  wasCollapsed: true,
 };
 
 const minibarSlice = createSlice({

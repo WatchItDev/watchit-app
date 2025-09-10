@@ -14,6 +14,7 @@ import { useEffect } from 'react';
 
 // Get the version from package.json
 import { version } from '../../../package.json';
+import { closeDrawer } from '@redux/drawer';
 // ----------------------------------------------------------------------
 interface Props {
   children: React.ReactNode;
@@ -27,6 +28,14 @@ export default function DashboardLayout({ children }: Props) {
   const wasCollapse = useSelector((state) => state.minibar.wasCollapsed);
 
   const lgUp = useResponsive('up', 'lg');
+
+  console.log('hello hehe');
+  console.log(minibarState);
+
+  useEffect(() => {
+    dispatch(closeDrawer());
+    console.log(minibarState);
+  }, []);
 
   useEffect(() => {
     if (lgUp && !wasCollapse) {
