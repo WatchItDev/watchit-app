@@ -1,225 +1,452 @@
-import Box from '@mui/material/Box';
-import Skeleton from '@mui/material/Skeleton';
-import { useMemo } from 'react';
-import { useTheme } from '@mui/material/styles';
-
-import { useInfiniteFeed } from '../../../hooks/use-infinite-feed.tsx';
-import { useGridSizing } from '../../../hooks/use-grid-sizing.tsx';
-import GridItemCard from './grid-item-card';
-import SliderPlaceholder from './slider-placeholder';
+import React, { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { Box, Skeleton } from '@mui/material';
+import { styled } from '@mui/material/styles';
+import {
+  setGridDimensions,
+  setExpandedSection,
+  setScrollPosition,
+  setIsScrolling,
+  setExpandedOpen,
+  updateExpandedY,
+  updateExpandedHeight,
+  addItems,
+  resetGrid,
+} from '@redux/grid';
+import { type GridItem as GridItemType } from '../types';
+import { GRID_CONFIG } from '../CONSTANTS.ts';
+import {
+  calculateGridDimensions,
+  calculateRowHeights,
+  calculateExpandedSectionPosition,
+  generateHarmoniousLayout,
+  adaptItemsToColumns,
+  getTopOfRow,
+} from '@src/utils/grid.ts';
+import { usePerformanceOptimization } from '@src/hooks/use-performance-optimization.ts';
+import { useInfiniteFeed } from '@src/hooks/use-infinite-feed';
 import type { Post } from '@src/graphql/generated/graphql';
-import TopPicksSlider from '@src/components/adaptative-slider/variants/top-picks.tsx';
-import ContinueWatchingSlider from '@src/components/adaptative-slider/variants/continue-watching.tsx';
-import PopularThisWeekSlider from '@src/components/adaptative-slider/variants/popular-this-week.tsx';
-import MoreFromComedySlider from '@src/components/adaptative-slider/variants/more-from.tsx';
-import PopularInRegionSlider from '@src/components/adaptative-slider/variants/popular-in-region.tsx';
-import ThisCanInterestYouSlider from '@src/components/adaptative-slider/variants/interest.tsx';
+import ExploreItem from './explore-item';
+import ExploreExpandedInline from './explore-expanded-inline';
+import TopPicksSlider from '@src/components/adaptative-slider/variants/top-picks';
+import ContinueWatchingSlider from '@src/components/adaptative-slider/variants/continue-watching';
+import PopularThisWeekSlider from '@src/components/adaptative-slider/variants/popular-this-week';
+import MoreFromComedySlider from '@src/components/adaptative-slider/variants/more-from';
+import PopularInRegionSlider from '@src/components/adaptative-slider/variants/popular-in-region';
+import ThisCanInterestYouSlider from '@src/components/adaptative-slider/variants/interest';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '@redux/store.ts';
 
-// === Tipos locales ===
-type SliderSpec = {
-  type: 'slider';
-  id: string;
-  label?: string;
-  allowedSpans: Array<{ w: number; h: number }>; // en celdas 1x1
-  anchor?: 'left' | 'center' | 'right' | 'auto';
-  after: number; // insertar después del item con índice "after"
-  render?: (size: { w: number; h: number; cell: number }) => React.ReactNode;
+const GridContainer = styled(Box)(({}) => ({
+  position: 'relative',
+  width: '100%',
+  minHeight: '100vh',
+  overflow: 'hidden',
+}));
+
+const GridWrapper = styled(Box)(({ theme }) => ({
+  position: 'relative',
+  width: '100%',
+  padding: theme.spacing(2),
+}));
+
+const LoadingIndicator = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  padding: theme.spacing(4),
+  color: theme.palette.text.secondary,
+}));
+
+const SkeletonGrid: React.FC<{ columns: number; itemSize: number; gap: number; rows?: number; }>
+  = ({ columns, itemSize, gap, rows = 6 }) => {
+  const count = Math.max(1, columns * rows);
+  return (
+    <Box sx={{ position: 'absolute', left: gap, right: gap, top: gap }}>
+      <Box sx={{ display: 'grid', gridTemplateColumns: `repeat(${columns}, 1fr)`, gap: `${gap}px` }}>
+        {Array.from({ length: count }).map((_, i) => (
+          <Skeleton key={i} variant="rounded" height={itemSize} sx={{ borderRadius: 2 }} />
+        ))}
+      </Box>
+    </Box>
+  );
 };
-type ItemSpec = { type: 'item'; id: string; post: Post };
-type GridEl = ItemSpec | SliderSpec;
 
-const CELL_MIN_PX = 220;
-const CELL_MAX_PX = 360;
-
-// devuelve el mayor span que quepa en las columnas actuales
-function pickVariant(cols: number, list: Array<{ w: number; h: number }>) {
-  for (const s of list) if (s.w <= cols) return s;
-  const last = list[list.length - 1];
-  return { w: Math.min(last.w, cols), h: last.h };
-}
-
-const gap = 12;
-
-/** CONFIG: sliders variados y repartidos */
-const SLIDERS: SliderSpec[] = [
-  {
-    type: 'slider',
-    id: 'top-picks',
-    after: 3,
-    anchor: 'center',
-    allowedSpans: [{ w: 2, h: 2 }, { w: 2, h: 2 }, { w: 2, h: 2 }, { w: 2, h: 2 }, { w: 2, h: 2 }],
-    render: ({ w, h, cell }) => <TopPicksSlider span={{ w, h }} cell={cell} gapPx={gap} />,
-  },
-  {
-    type: 'slider',
-    id: 'continue-watching',
-    after: 12,
-    anchor: 'left',
-    allowedSpans: [{ w: 2, h: 2 }, { w: 2, h: 2 }, { w: 2, h: 2 }, { w: 2, h: 2 }],
-    render: ({ w, h, cell }) => <ContinueWatchingSlider span={{ w, h }} cell={cell} gapPx={gap} />,
-  },
-  {
-    type: 'slider',
-    id: 'popular-week',
-    after: 22,
-    anchor: 'right',
-    allowedSpans: [{ w: 2, h: 2 }, { w: 2, h: 2 }, { w: 2, h: 2 }, { w: 2, h: 2 }],
-    render: ({ w, h, cell }) => <PopularThisWeekSlider span={{ w, h }} cell={cell} gapPx={gap} />,
-  },
-  {
-    type: 'slider',
-    id: 'comedy',
-    after: 35,
-    anchor: 'center',
-    allowedSpans: [{ w: 2, h: 2 }, { w: 2, h: 2 }, { w: 2, h: 2 }, { w: 2, h: 2 }, { w: 2, h: 2 }],
-    render: ({ w, h, cell }) => <MoreFromComedySlider span={{ w, h }} cell={cell} gapPx={gap} />,
-  },
-  {
-    type: 'slider',
-    id: 'region',
-    after: 48,
-    anchor: 'right',
-    allowedSpans: [{ w: 2, h: 2 }, { w: 2, h: 2 }, { w: 2, h: 2 }, { w: 2, h: 2 }],
-    render: ({ w, h, cell }) => <PopularInRegionSlider span={{ w, h }} cell={cell} gapPx={gap} />,
-  },
-  {
-    type: 'slider',
-    id: 'interest',
-    after: 60,
-    anchor: 'left',
-    allowedSpans: [{ w: 2, h: 2 }, { w: 2, h: 2 }, { w: 2, h: 2 }, { w: 2, h: 2 }, { w: 2, h: 2 }],
-    render: ({ w, h, cell }) => <ThisCanInterestYouSlider span={{ w, h }} cell={cell} gapPx={gap} />,
-  },
+// ---- Sliders programados ----
+const SLIDERS = [
+  { id: 'top-picks',         after: 3,  w: 2, h: 2, render: (cell: number) => <TopPicksSlider span={{ w: 2, h: 2 }} cell={cell} gapPx={12} /> },
+  { id: 'continue-watching', after: 12, w: 2, h: 2, render: (cell: number) => <ContinueWatchingSlider span={{ w: 2, h: 2 }} cell={cell} gapPx={12} /> },
+  { id: 'popular-week',      after: 22, w: 2, h: 2, render: (cell: number) => <PopularThisWeekSlider span={{ w: 2, h: 2 }} cell={cell} gapPx={12} /> },
+  { id: 'comedy',            after: 35, w: 2, h: 2, render: (cell: number) => <MoreFromComedySlider span={{ w: 2, h: 2 }} cell={cell} gapPx={12} /> },
+  { id: 'region',            after: 48, w: 2, h: 2, render: (cell: number) => <PopularInRegionSlider span={{ w: 2, h: 2 }} cell={cell} gapPx={12} /> },
+  { id: 'interest',          after: 60, w: 2, h: 2, render: (cell: number) => <ThisCanInterestYouSlider span={{ w: 2, h: 2 }} cell={cell} gapPx={12} /> },
 ];
 
-// const SLIDERS: SliderSpec[] = [
-//   {
-//     type: 'slider',
-//     id: 'hero-mid',
-//     label: 'Slider 1',
-//     after: 3,                     // aparece tras el 4º item
-//     anchor: 'center',
-//     // opciones grandes→pequeñas (4x4, 3x3, 2x2)
-//     allowedSpans: [{ w: 2, h: 2 }, { w: 2, h: 2 }, { w: 2, h: 2 }],
-//   },
-//   {
-//     type: 'slider',
-//     id: 'tall-left',
-//     label: 'Slider 2',
-//     after: 12,                    // cerca de la parte superior
-//     anchor: 'left',
-//     // alto y angosto (1x4, 1x3, 1x2)
-//     allowedSpans: [{ w: 1, h: 2 }, { w: 1, h: 2 }, { w: 2, h: 1 }],
-//   },
-//   {
-//     type: 'slider',
-//     id: 'wide-right',
-//     label: 'Slider 3',
-//     after: 22,
-//     anchor: 'right',
-//     // ancho y bajito (6x2, 4x2, 3x2)
-//     allowedSpans: [{ w: 2, h: 2 }, { w: 2, h: 2 }, { w: 2, h: 1 }],
-//   },
-//   {
-//     type: 'slider',
-//     id: 'tall-center',
-//     label: 'Slider 4',
-//     after: 35,
-//     anchor: 'center',
-//     // alto medio (2x6, 2x4, 2x3)
-//     allowedSpans: [{ w: 3, h: 1 }, { w: 2, h: 2 }, { w: 2, h: 1 }],
-//   },
-//   {
-//     type: 'slider',
-//     id: 'square-right',
-//     label: 'Slider 5',
-//     after: 48,
-//     anchor: 'right',
-//     // cuadrados medianos
-//     allowedSpans: [{ w: 3, h: 2 }, { w: 2, h: 1 }],
-//   },
-// ];
+// --- util: duplicar posts para rellenar ---
+function repeatUntil<T>(arr: T[], min: number): T[] {
+  if (arr.length === 0) return [];
+  if (arr.length >= min) return arr.slice(0, min);
+  const out: T[] = [];
+  let i = 0;
+  while (out.length < min) {
+    out.push(arr[i % arr.length]);
+    i++;
+  }
+  return out;
+}
 
-export default function ExploreGrid() {
-  const { items, loading, hasMore, sentinelRef } = useInfiniteFeed(30);
-  const theme = useTheme();
-  const gap = parseFloat(String(theme.spacing(1.5))) || 12;
+// posts -> grid items (inyecta sliders una vez)
+function postsToGridItems(posts: Post[], minRegularCount = 120): GridItemType[] {
+  const basePosts = repeatUntil(posts, Math.max(minRegularCount, posts.length));
+  const items: GridItemType[] = [];
+  let si = 0;
+  const sliders = [...SLIDERS].sort((a, b) => a.after - b.after);
 
-  // nº de celdas por fila (cols) y tamaño de celda (cell)
-  const { ref, itemsPerRow: cols, itemSize: cell } = useGridSizing({
-    itemMin: CELL_MIN_PX,
-    itemMax: CELL_MAX_PX,
-    gapPx: gap,
-  });
-
-  // mezcla: items + sliders en posiciones fijas (after)
-  const elements: GridEl[] = useMemo(() => {
-    const arr: GridEl[] = [];
-    const sorted = [...SLIDERS].sort((a, b) => a.after - b.after);
-    let si = 0;
-
-    items.forEach((post, i) => {
-      arr.push({ type: 'item', id: `post-${post.id}`, post });
-      while (si < sorted.length && sorted[si].after === i) {
-        arr.push(sorted[si]);
-        si++;
-      }
+  basePosts.forEach((post, i) => {
+    items.push({
+      id: `post-${post.id}#${i}`,
+      type: 'regular',
+      color: '#000',
+      title: post.title ?? '',
+      dimensions: { width: 1, height: 1 },
+      position: { x: 0, y: 0 },
+      data: { post },
     });
-    // si sobran sliders, añádelos al final
-    while (si < sorted.length) {
-      arr.push(sorted[si++]);
+    while (si < sliders.length && sliders[si].after === i) {
+      const s = sliders[si++];
+      items.push({
+        id: `slider-${s.id}`,
+        type: 'slider',
+        color: 'transparent',
+        title: s.id,
+        dimensions: { width: s.w, height: s.h },
+        position: { x: 0, y: 0 },
+        data: { sliderId: s.id },
+      });
     }
-    return arr;
-  }, [items]);
+  });
+  while (si < sliders.length) {
+    const s = sliders[si++];
+    items.push({
+      id: `slider-${s.id}`,
+      type: 'slider',
+      color: 'transparent',
+      title: s.id,
+      dimensions: { width: s.w, height: s.h },
+      position: { x: 0, y: 0 },
+      data: { sliderId: s.id },
+    });
+  }
+  return items;
+}
 
-  return (
-    <Box
-      ref={ref}
-      sx={{
-        '--cell': `${cell}px`,
-        display: 'grid',
-        gridTemplateColumns: `repeat(${Math.max(1, cols)}, minmax(0, 1fr))`,
-        gridAutoRows: 'var(--cell)',    // items 1x1 siempre cuadrados
-        gridAutoFlow: 'dense',          // rellena huecos
-        gap: `${gap}px`,
-        p: 2,
-      }}
-    >
-      {elements.map((el) => {
-        if (el.type === 'item') {
-          return (
-            <Box key={el.id} sx={{ gridColumn: 'auto / span 1', gridRow: 'auto / span 1' }}>
-              <GridItemCard post={el.post} />
-            </Box>
-          );
-        }
+type DynamicProps = {
+  externalLoading?: boolean;
+  /** 🔑 Sentinel del hook (lo colocamos dentro del grid, al final de los REGULARES) */
+  sentinelRef?: React.RefObject<HTMLDivElement>;
+};
 
-        const { w, h } = pickVariant(Math.max(1, cols), el.allowedSpans);
-        let start = 1;
-        if (el.anchor === 'center') start = Math.max(1, Math.floor((cols - w) / 2) + 1);
-        if (el.anchor === 'right')  start = Math.max(1, cols - w + 1);
+const DynamicGridExplore: React.FC<DynamicProps> = memo(({ externalLoading = false, sentinelRef }) => {
+  const dispatch = useDispatch();
+  const gridContainerRef = useRef<HTMLDivElement>(null);
+  const gridWrapperRef = useRef<HTMLDivElement>(null);
+  const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  const items = useSelector((s: RootState) => s.grid.items);
+  const expandedSection = useSelector((s: RootState) => s.grid.expandedSection);
+  const gridDimensions = useSelector((s: RootState) => s.grid.gridDimensions);
+  const { throttle: throttler } = usePerformanceOptimization();
+
+  const prevLayoutRef = useRef<Map<string, { x: number; y: number }>>(new Map());
+  const prevColsRef = useRef<number>(gridDimensions.columns);
+  const [, setContainerWidth] = useState(0);
+  const [transitionsEnabled, setTransitionsEnabled] = useState(false);
+  const firstReadyRef = useRef(false);
+  const pendingOpenRef = useRef<GridItemType | null>(null);
+  const centerOnceKeyRef = useRef<string | null>(null);
+
+  useEffect(() => {
+    const updateDimensions = () => {
+      let width = 0;
+      if (gridWrapperRef.current) width = gridWrapperRef.current.clientWidth;
+      else if (gridContainerRef.current) width = gridContainerRef.current.clientWidth;
+      setContainerWidth(width);
+      const dims = calculateGridDimensions(width, GRID_CONFIG);
+      dispatch(setGridDimensions(dims));
+    };
+    updateDimensions();
+    window.addEventListener('resize', updateDimensions);
+    return () => window.removeEventListener('resize', updateDimensions);
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (prevColsRef.current !== gridDimensions.columns) {
+      prevLayoutRef.current = new Map();
+      prevColsRef.current = gridDimensions.columns;
+    }
+  }, [gridDimensions.columns]);
+
+  const responsiveItems = useMemo(() => {
+    if (!gridDimensions.columns || items.length === 0) return [] as GridItemType[];
+    return adaptItemsToColumns(items, gridDimensions);
+  }, [items, gridDimensions.columns, gridDimensions]);
+
+  const { rowHeights, harmonizedItems } = useMemo(() => {
+    if (!gridDimensions.columns || responsiveItems.length === 0) {
+      return { rowHeights: [] as number[], harmonizedItems: [] as GridItemType[] };
+    }
+    const isMobile = gridDimensions.columns <= 2;
+    const result = generateHarmoniousLayout(responsiveItems, gridDimensions, {
+      prevPositions: prevLayoutRef.current,
+      minSliderRowGap: isMobile ? 2 : 3,
+      maxSliderRowGap: isMobile ? 4 : 6,
+    });
+    const heights = calculateRowHeights(result.items, gridDimensions);
+    const nextMap = new Map<string, { x: number; y: number }>();
+    result.items.forEach((it) => nextMap.set(it.id, { ...it.position }));
+    prevLayoutRef.current = nextMap;
+    return { rowHeights: heights, harmonizedItems: result.items };
+  }, [responsiveItems, gridDimensions]);
+
+  useEffect(() => {
+    if (!gridDimensions.columns) return;
+    if (harmonizedItems.length === 0) return;
+    if (firstReadyRef.current) return;
+    requestAnimationFrame(() => {
+      setTransitionsEnabled(true);
+      firstReadyRef.current = true;
+    });
+  }, [gridDimensions.columns, harmonizedItems.length]);
+
+  const baseTotalGridHeight = useMemo(() => {
+    if (rowHeights.length === 0) return 0;
+    return rowHeights.length * gridDimensions.itemSize + (rowHeights.length + 1) * gridDimensions.gap;
+  }, [rowHeights.length, gridDimensions.itemSize, gridDimensions.gap]);
+
+  const feedHeight = useMemo(() => {
+    const regulars = harmonizedItems.filter((it) => it.type === 'regular');
+    if (regulars.length === 0) return 0;
+    const bottomRow = regulars.reduce((max, it) => Math.max(max, it.position.y + it.dimensions.height), 0);
+    return bottomRow * gridDimensions.itemSize + (bottomRow + 1) * gridDimensions.gap;
+  }, [harmonizedItems, gridDimensions.itemSize, gridDimensions.gap]);
+
+  const openExpandedForItem = useCallback((item: GridItemType) => {
+    const { anchorRow, y } = calculateExpandedSectionPosition(item, harmonizedItems, gridDimensions);
+    dispatch(setExpandedSection({
+      itemId: item.id,
+      isOpen: true,
+      anchorRow,
+      y,
+      height: GRID_CONFIG.expandedEstimatedHeight ?? 360,
+      content: undefined,
+    }));
+    centerOnceKeyRef.current = null;
+  }, [dispatch, harmonizedItems, gridDimensions]);
+
+  const handleItemClick = useCallback((item: GridItemType) => {
+    if (item.type === 'slider') return;
+    if (expandedSection?.itemId === item.id) {
+      dispatch(setExpandedOpen(false));
+      pendingOpenRef.current = null;
+      return;
+    }
+    if (expandedSection) {
+      pendingOpenRef.current = item;
+      dispatch(setExpandedOpen(false));
+      return;
+    }
+    openExpandedForItem(item);
+  }, [dispatch, expandedSection, openExpandedForItem]);
+
+  useEffect(() => {
+    if (!expandedSection) return;
+    if (expandedSection.isOpen) return;
+    const id = window.setTimeout(() => {
+      const next = pendingOpenRef.current;
+      dispatch(setExpandedSection(null));
+      if (next) {
+        openExpandedForItem(next);
+        pendingOpenRef.current = null;
+      }
+    }, GRID_CONFIG.animationDuration);
+    return () => clearTimeout(id);
+  }, [expandedSection?.isOpen, dispatch, openExpandedForItem]);
+
+  useEffect(() => {
+    if (!expandedSection) return;
+    const y = getTopOfRow(expandedSection.anchorRow, gridDimensions);
+    dispatch(updateExpandedY(y));
+  }, [dispatch, gridDimensions.itemSize, gridDimensions.gap, gridDimensions.columns, expandedSection]);
+
+  const handleScroll = useCallback(() => {
+    const throttled = throttler(() => {
+      dispatch(setScrollPosition(window.scrollY));
+      dispatch(setIsScrolling(true));
+      if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current);
+      scrollTimeoutRef.current = setTimeout(() => dispatch(setIsScrolling(false)), 150);
+    }, 16);
+    throttled();
+  }, [dispatch, throttler]);
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current);
+    };
+  }, [handleScroll]);
+
+  const isItemDimmed = useCallback((_id: string) => false, []);
+
+  const expandedExtraOffset = expandedSection
+    ? Math.max(expandedSection.height, GRID_CONFIG.expandedEstimatedHeight ?? 0) + gridDimensions.gap
+    : 0;
+
+  useEffect(() => {
+    if (!expandedSection?.isOpen) return;
+    const key = `${expandedSection.itemId}:${expandedSection.height}`;
+    if (centerOnceKeyRef.current === key) return;
+    if (expandedSection.height <= 0) return;
+    centerOnceKeyRef.current = key;
+    const target = expandedSection.y + expandedSection.height / 2 - window.innerHeight / 2;
+    window.scrollTo({ top: Math.max(0, target), behavior: 'smooth' });
+  }, [expandedSection?.isOpen, expandedSection?.height, expandedSection?.y, expandedSection?.itemId]);
+
+  const renderGridItems = () =>
+    harmonizedItems.map((item) => {
+      if (item.type === 'slider') {
+        const meta = SLIDERS.find(s => `slider-${s.id}` === item.id);
+        const cell = gridDimensions.itemSize;
+        const baseX = gridDimensions.gap + item.position.x * (gridDimensions.itemSize + gridDimensions.gap);
+        const baseY = gridDimensions.gap + item.position.y * (gridDimensions.itemSize + gridDimensions.gap);
+        const needsOffset = expandedSection && item.position.y >= expandedSection.anchorRow;
+        const y = needsOffset ? baseY + expandedExtraOffset : baseY;
+
+        const wpx = item.dimensions.width * gridDimensions.itemSize + (item.dimensions.width - 1) * gridDimensions.gap;
+        const hpx = item.dimensions.height * gridDimensions.itemSize + (item.dimensions.height - 1) * gridDimensions.gap;
 
         return (
           <Box
-            key={el.id}
+            key={item.id}
             sx={{
-              gridColumn: `${start} / span ${w}`,
-              gridRow: `span ${h}`,
+              position: 'absolute',
+              left: baseX,
+              top: y,
+              width: wpx,
+              height: hpx,
+              transition: transitionsEnabled
+                ? `top ${GRID_CONFIG.animationDuration}ms cubic-bezier(0.4,0,0.2,1),
+                   left ${GRID_CONFIG.animationDuration}ms cubic-bezier(0.4,0,0.2,1)`
+                : 'none',
+              willChange: 'top,left',
             }}
           >
-            {el.render ? el.render({ w, h, cell }) : <SliderPlaceholder label={el.label} />}
+            {meta?.render ? meta.render(cell) : null}
           </Box>
         );
-      })}
+      }
 
-      {loading &&
-        Array.from({ length: 6 }).map((_, i) => (
-          <Box key={`sk-${i}`} sx={{ gridColumn: 'auto / span 1', gridRow: 'auto / span 1' }}>
-            <Skeleton variant="rounded" sx={{ width: 'var(--cell)', height: 'var(--cell)', borderRadius: 2 }} />
-          </Box>
-        ))}
+      return (
+        <ExploreItem
+          key={item.id}
+          item={item}
+          gridDimensions={gridDimensions}
+          rowHeights={rowHeights}
+          isExpanded={!!(expandedSection && expandedSection.itemId === item.id)}
+          isDimmed={isItemDimmed(item.id)}
+          onItemClick={handleItemClick}
+          animationMs={GRID_CONFIG.animationDuration}
+          anchorRowForOffset={expandedSection ? expandedSection.anchorRow : null}
+          expandedOffset={expandedExtraOffset}
+          transitionsEnabled={transitionsEnabled}
+        />
+      );
+    });
 
-      {hasMore && <Box ref={sentinelRef} sx={{ gridColumn: '1 / -1', height: theme.spacing(4) }} />}
+  const renderExpandedInlineRow = () => {
+    if (!expandedSection) return null;
+    const expandedItem = harmonizedItems.find((it) => it.id === expandedSection.itemId);
+    if (!expandedItem) return null;
+    const post = expandedItem?.data?.post as Post | undefined;
+
+    return (
+      <ExploreExpandedInline
+        top={expandedSection.y}
+        open={expandedSection.isOpen}
+        animationMs={GRID_CONFIG.animationDuration}
+        onMeasured={(h) => dispatch(updateExpandedHeight(h))}
+        post={post}
+      />
+    );
+  };
+
+  const baseHeight = baseTotalGridHeight + expandedExtraOffset;
+
+  if (!gridDimensions.columns) {
+    return (
+      <GridContainer ref={gridContainerRef}>
+        <LoadingIndicator>Cargando grid...</LoadingIndicator>
+      </GridContainer>
+    );
+  }
+
+  const skeletonHeight = 6 * gridDimensions.itemSize + 7 * gridDimensions.gap;
+  const shouldShowInitialSkeleton = harmonizedItems.length === 0 && externalLoading;
+
+  return (
+    <GridContainer ref={gridContainerRef}>
+      <GridWrapper ref={gridWrapperRef} style={{ height: shouldShowInitialSkeleton ? skeletonHeight : baseHeight }}>
+        {shouldShowInitialSkeleton ? (
+          <SkeletonGrid
+            columns={gridDimensions.columns}
+            itemSize={gridDimensions.itemSize}
+            gap={gridDimensions.gap}
+            rows={6}
+          />
+        ) : (
+          <>
+            {renderGridItems()}
+            {renderExpandedInlineRow()}
+
+            {sentinelRef && (
+              <Box
+                ref={sentinelRef as any}
+                sx={{
+                  position: 'absolute',
+                  left: gridDimensions.gap,
+                  right: gridDimensions.gap,
+                  top: Math.max(feedHeight - gridDimensions.itemSize, gridDimensions.gap),
+                  height: 1,
+                }}
+              />
+            )}
+          </>
+        )}
+      </GridWrapper>
+
+      {externalLoading && harmonizedItems.length > 0 && (
+        <LoadingIndicator>Loading more items...</LoadingIndicator>
+      )}
+    </GridContainer>
+  );
+});
+
+export default function ExploreGrid() {
+  const dispatch = useDispatch();
+  const { items: posts, loading, sentinelRef } = useInfiniteFeed(30);
+
+  useEffect(() => {
+    dispatch(resetGrid());
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (!posts?.length) return;
+    const next = postsToGridItems(posts, 120);
+    dispatch(addItems(next));
+  }, [posts, dispatch]);
+
+  return (
+    <Box sx={{ p: 2 }}>
+      <DynamicGridExplore externalLoading={loading} sentinelRef={sentinelRef} />
     </Box>
   );
 }

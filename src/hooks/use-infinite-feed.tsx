@@ -27,7 +27,7 @@ export function useInfiniteFeed(pageSize = 24) {
     setHasMore(more);
   }, [cursor, fetchPosts, hasMore, items.length, loading, pageSize]);
 
-  useEffect(() => { if (items.length === 0) void loadMore(); }, []); // carga inicial
+  useEffect(() => { if (items.length === 0) void loadMore(); }, []); // initial load
 
   const sentinelRef = useRef<HTMLDivElement | null>(null);
   useEffect(() => {

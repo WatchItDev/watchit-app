@@ -10,18 +10,66 @@ export type GridSliderEl = {
   type: 'slider';
   id: string;
   label?: string;
-  /** De mayor a menor. w/h en celdas (no en px). */
   allowedSpans: Array<{ w: number; h: number }>;
-  /** Render propio del slider (opcional). */
   render?: (size: { w: number; h: number; cell: number }) => React.ReactNode;
 };
 
 export type GridElement = GridItemEl | GridSliderEl;
 
-export type PlacedNode = {
-  el: GridElement;
-  x: number; // columna inicial (0-index)
-  y: number; // fila inicial (0-index)
-  w: number; // celdas de ancho
-  h: number; // celdas de alto
-};
+export interface GridItem {
+  id: string;
+  type: 'regular' | 'slider';
+  color: string;
+  title: string;
+  description?: string;
+  dimensions: { width: number; height: number };
+  position: { x: number; y: number };
+  data?: any;
+}
+
+export interface ExpandedSection {
+  itemId: string;
+  isOpen: boolean;
+  anchorRow: number;
+  y: number;
+  height: number;
+  content?: React.ReactNode;
+}
+
+export interface GridDimensions {
+  containerWidth: number;
+  itemSize: number;
+  gap: number;
+  columns: number;
+  rows: number;
+}
+
+export interface GridState {
+  items: GridItem[];
+  expandedSection: ExpandedSection | null;
+  isLoading: boolean;
+  hasMore: boolean;
+  currentPage: number;
+  gridDimensions: GridDimensions;
+  viewportHeight: number;
+  scrollPosition: number;
+  isScrolling: boolean;
+  hasUserScrolledAfterExpand: boolean;
+}
+
+export interface ResponsiveBreakpoints {
+  mobile: number;
+  tablet: number;
+  desktop: number;
+}
+
+export interface GridConfig {
+  minItemSize: number;
+  maxItemSize: number;
+  gap: number;
+  breakpoints: ResponsiveBreakpoints;
+  itemsPerPage: number;
+  animationDuration: number;
+  opacityWhenExpanded: number;
+  expandedEstimatedHeight?: number;
+}

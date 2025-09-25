@@ -1,3 +1,5 @@
+// PUBLICATION DETAIL MAIN — FIX para modo `inline` (scroll interno + alto 100%)
+
 // REACT IMPORTS
 import { useEffect, useState } from 'react';
 
@@ -39,14 +41,12 @@ import { varFade } from '@src/components/animate';
 import { LeaveTipCard } from '@src/components/leave-tip-card.tsx';
 import PostCommentList from '@src/sections/publication/components/publication-comments-list.tsx';
 import PublicationCommentForm from '@src/sections/publication/components/publication-details-comment-form.tsx';
-// import { SubscribeToUnlockCard } from '@src/components/subscribe-to-unlock-card/subscribe-to-unlock-card.tsx';
 import Popover from '@mui/material/Popover';
 import { useNotifications } from '@src/hooks/use-notifications.ts';
 import { openLoginModal } from '@redux/auth';
 import { useDispatch } from 'react-redux';
 import { useNotificationPayload } from '@src/hooks/use-notification-payload.ts';
 import AvatarProfile from '@src/components/avatar/avatar.tsx';
-import { PublicationDetailProps } from '@src/components/publication-detail-main/types.ts';
 import { useAuth } from '@src/hooks/use-auth.ts';
 import { useToggleBookmark } from '@src/hooks/use-toggle-bookmark';
 import {
@@ -57,17 +57,19 @@ import {
 import { resolveSrc } from '@src/utils/image.ts';
 import { useBookmarks } from '@src/hooks/use-bookmark.ts';
 import PublicationShare from '@src/sections/publication/components/publication-share.tsx';
+import { Post } from '@src/graphql/generated/graphql.ts';
 
 // ----------------------------------------------------------------------
 
+export interface PublicationDetailMainProps {
+  post: Post;
+  mode?: 'sidebar' | 'inline'
+}
+
 export default function PublicationDetailMain({
-  post,
-  // handleSubscribe,
-  // handleRefetchAccess,
-  // loadingSubscribe,
-  // subscribeDisabled,
-  // hasAccess,
-}: Readonly<PublicationDetailProps>) {
+                                                post,
+                                                mode = 'sidebar',
+                                              }: Readonly<PublicationDetailMainProps>) {
   const [showComments, setShowComments] = useState(false);
   const [openConfirmModal, setOpenConfirmModal] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -83,107 +85,56 @@ export default function PublicationDetailMain({
   const { sendNotification } = useNotifications();
   const { generatePayload } = useNotificationPayload(sessionData);
   const [getIsLiked, { loading: postLikedLoading }] = useGetIsLikedLazyQuery();
-  const [toggleLike, { loading: togglePostLikeLoading }] =
-    useToggleLikeMutation();
+  const [toggleLike, { loading: togglePostLikeLoading }] = useToggleLikeMutation();
   const { has, loading: loadingList } = useBookmarks();
   const { toggle, loading: loadingToggle } = useToggleBookmark();
 
   const isBookmarked = has(post.id);
   const isLoading = togglePostLikeLoading || postLikedLoading;
-  const variants =
-    theme.direction === 'rtl' ? varFade().inLeft : varFade().inRight;
+  const variants = theme.direction === 'rtl' ? varFade().inLeft : varFade().inRight;
   const openMenu = Boolean(anchorEl);
 
   const handleToggleLike = async () => {
     if (!sessionData?.authenticated) return dispatch(openLoginModal());
-
     try {
-      const res = await toggleLike({
-        variables: {
-          input: {
-            targetId: post.id,
-            targetType: 'POST',
-          },
-        },
-      });
+      const res = await toggleLike({ variables: { input: { targetId: post.id, targetType: 'POST' } } });
       const isNowLiked = res.data?.toggleLike ?? false;
-
-      console.log('hello test', res.data?.toggleLike);
-      console.log(isNowLiked);
-
       setHasLiked(isNowLiked);
       setLikesCount((prev) => prev + (isNowLiked ? 1 : -1));
-
       if (isNowLiked) {
-        // Send a notification to the profile owner using the sendNotification function from useNotifications hook
         const payloadForNotification = generatePayload(
           'LIKE',
-          {
-            id: post.author.address,
-            displayName: post.author.displayName ?? 'Watchit',
-            avatar: resolveSrc(
-              post.author.profilePicture || post.author.address,
-              'profile',
-            ),
-          },
-          {
-            rawDescription: `${sessionData?.user?.displayName} liked ${post.title}`,
-            root_id: post.id,
-            post_title: post.title,
-          },
+          { id: post.author.address, displayName: post.author.displayName ?? 'Watchit', avatar: resolveSrc(post.author.profilePicture || post.author.address, 'profile') },
+          { rawDescription: `${sessionData?.user?.displayName} liked ${post.title}`, root_id: post.id, post_title: post.title },
         );
-
-        sendNotification(
-          post.author.address,
-          sessionData?.user?.address ?? '',
-          payloadForNotification,
-        );
+        sendNotification(post.author.address, sessionData?.user?.address ?? '', payloadForNotification);
       }
-    } catch (err) {
-      console.error(err);
-    }
+    } catch (err) { console.error(err); }
   };
 
   const handleCommentSuccess = (wasReply = false) => {
-    if (!wasReply) {
-      // Es un comentario raíz → solo incrementamos el counter del post
-      setCommentCount((c) => (c ?? 0) + 1);
-    }
+    if (!wasReply) setCommentCount((c) => (c ?? 0) + 1);
   };
 
   useEffect(() => {
-    getIsLiked({ variables: { targetId: post.id } }).then((res) => {
-      console.log('hello test 2', res.data?.getIsLiked);
-      setHasLiked(res.data?.getIsLiked ?? false);
-    });
+    getIsLiked({ variables: { targetId: post.id } }).then((res) => setHasLiked(res.data?.getIsLiked ?? false));
   }, [post.id]);
 
-  const handleHide = async () => {
-    await hidePost({ variables: { postId: post.id } });
-    router.reload();
-  };
-
-  const goToProfile = () => {
-    if (!post.author.address) return;
-
-    router.push(paths.dashboard.user.root(`${post.author.address}`));
-  };
-
+  const handleHide = async () => { await hidePost({ variables: { postId: post.id } }); router.reload(); };
+  const goToProfile = () => { if (!post.author.address) return; router.push(paths.dashboard.user.root(`${post.author.address}`)); };
   if (!post) return <p>The publication does not exist</p>;
 
   return (
     <Box
       sx={{
-        position: 'sticky',
-        width: {
-          xs: '100%',
-          lg: '450px',
-        },
-        padding: '10px',
-        top: '80px',
-        height: 'fit-content',
-        maxHeight: { xs: 'auto', md: '100vh' },
+        position: mode === 'inline' ? 'relative' : 'sticky',
+        width: { xs: '100%', lg: mode === 'inline' ? '100%' : '450px' },
+        p: '10px',
+        top: mode === 'inline' ? 'auto' : '80px',
+        height: mode === 'inline' ? '100%' : 'fit-content',
+        maxHeight: mode === 'inline' ? '100%' : { xs: 'auto', md: '100vh' },
         flexShrink: 0,
+        minHeight: 0,
       }}
     >
       <Card
@@ -191,345 +142,123 @@ export default function PublicationDetailMain({
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5 }}
-        sx={{ border: '1px solid rgba(255, 255, 255, 0.08)' }}
+        sx={{ border: '1px solid rgba(255, 255, 255, 0.08)', height: mode === 'inline' ? '100%' : 'auto' }}
       >
         <CardContent
           sx={{
-            maxHeight: { xs: 'auto', md: 'calc(100vh - 10rem)' },
-            overflowY: 'scroll',
+            height: mode === 'inline' ? '100%' : 'auto',
+            maxHeight: mode === 'inline' ? '100%' : { xs: 'auto', md: 'calc(100vh - 10rem)' },
+            overflowY: 'auto',
             backgroundColor: '#1e1f22',
-            padding: '0 !important',
-            margin: '10px 10px 10px 20px',
+            p: 0,
+            m: mode === 'inline' ? '10px' : '10px 10px 10px 20px',
           }}
         >
-          <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              mb: 2,
-              zIndex: 10,
-              position: 'sticky',
-              top: '0px',
-              backgroundColor: '#1e1f22',
-            }}
-          >
-            <Box
-              sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
-              onClick={goToProfile}
-            >
-              <AvatarProfile
-                src={resolveSrc(
-                  post.author.profilePicture || post.author.address,
-                  'profile',
-                )}
-                sx={{
-                  width: 26,
-                  height: 26,
-                  border: 'solid 2px #161C24',
-                }}
-              />
-              <Typography variant="subtitle2" noWrap sx={{ ml: 1 }}>
-                {post.author.displayName}
-              </Typography>
+          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2, zIndex: 10, position: 'sticky', top: 0, backgroundColor: '#1e1f22' }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }} onClick={goToProfile}>
+              <AvatarProfile src={resolveSrc(post.author.profilePicture || post.author.address, 'profile')} sx={{ width: 26, height: 26, border: 'solid 2px #161C24' }} />
+              <Typography variant="subtitle2" noWrap sx={{ ml: 1 }}>{post.author.displayName}</Typography>
             </Box>
-            {sessionData?.authenticated &&
-            post.author.address === sessionData?.user?.address ? (
-              <Button
-                variant="text"
-                sx={{
-                  borderColor: '#FFFFFF',
-                  color: '#FFFFFF',
-                  height: '40px',
-                  minWidth: '40px',
-                }}
-                onClick={(event) => setAnchorEl(event.currentTarget)}
-              >
-                <IconDots size={22} color="#FFFFFF" />
+            {sessionData?.authenticated && post.author.address === sessionData?.user?.address ? (
+              <Button variant="text" sx={{ color: '#FFFFFF', height: 40, minWidth: 40 }} onClick={(event) => setAnchorEl(event.currentTarget)}>
+                <IconDots size={22} />
               </Button>
-            ) : (
-              <></>
-            )}
+            ) : null}
             <Popover
               open={openMenu}
               anchorEl={anchorEl}
               onClose={() => setAnchorEl(null)}
               anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
               transformOrigin={{ vertical: 'top', horizontal: 'center' }}
-              PaperProps={{
-                sx: {
-                  background: 'linear-gradient(90deg, #1C1C1E, #2C2C2E)',
-                  borderRadius: 1,
-                  p: 1,
-                  display: 'flex',
-                  flexDirection: 'column',
-                  mt: 1,
-                  ml: -3,
-                  alignItems: 'center',
-                  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.5)',
-                },
-              }}
+              PaperProps={{ sx: { background: 'linear-gradient(90deg, #1C1C1E, #2C2C2E)', borderRadius: 1, p: 1, display: 'flex', flexDirection: 'column', mt: 1, ml: -3, alignItems: 'center', boxShadow: '0 4px 12px rgba(0, 0, 0, 0.5)' } }}
             >
               <Stack direction="column" spacing={0} justifyContent="center">
                 {post.author.address === sessionData?.user?.address && (
-                  <MenuItem
-                    onClick={() => {
-                      setOpenConfirmModal(true);
-                      setAnchorEl(null);
-                    }}
-                  >
-                    Hide
-                  </MenuItem>
+                  <MenuItem onClick={() => { setOpenConfirmModal(true); setAnchorEl(null); }}>Hide</MenuItem>
                 )}
               </Stack>
             </Popover>
           </Box>
 
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'end',
-              zIndex: 10,
-              top: '2.5rem',
-              backgroundColor: '#1e1f22',
-            }}
-          >
+          <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'end', zIndex: 10, backgroundColor: '#1e1f22' }}>
             <m.div variants={variants}>
-              <Typography
-                variant="h6"
-                sx={{ fontWeight: 'bold', lineHeight: 1.1, mb: 1.5 }}
-                gutterBottom
-              >
+              <Typography variant="h6" sx={{ fontWeight: 'bold', lineHeight: 1.1, mb: 1.5 }} gutterBottom>
                 {post.title}
               </Typography>
             </m.div>
             <m.div variants={variants}>
-              <Stack
-                direction="row"
-                sx={{ mb: 1.5, cursor: 'pointer' }}
-                spacing={0}
-                alignItems="center"
-              >
-                <Typography style={{ marginRight: 5 }} variant="body1">
-                  Distributed by
-                </Typography>
+              <Stack direction="row" sx={{ mb: 1.5, cursor: 'pointer' }} spacing={0} alignItems="center">
+                <Typography sx={{ mr: 0.5 }} variant="body1">Distributed by</Typography>
                 <StyledBoxGradient>
-                  <Typography
-                    style={{ marginRight: 5, fontWeight: 'bold' }}
-                    variant="caption"
-                  >
-                    Watchit
-                  </Typography>
+                  <Typography sx={{ mr: 0.5, fontWeight: 'bold' }} variant="caption">Watchit</Typography>
                   <IconRosetteDiscountCheckFilled />
                 </StyledBoxGradient>
               </Stack>
             </m.div>
           </Box>
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'end',
-              mb: 3,
-              mt: 1,
-              pr: 1,
-            }}
-          >
-            {/*{hasAccess && sessionData?.authenticated ? (*/}
+
+          <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'end', mb: 3, mt: 1, pr: 1 }}>
             <LeaveTipCard post={post} />
-            {/*) : (*/}
-            {/*  <SubscribeToUnlockCard*/}
-            {/*    loadingSubscribe={loadingSubscribe}*/}
-            {/*    subscribeDisabled={subscribeDisabled ?? false}*/}
-            {/*    handleRefetchAccess={handleRefetchAccess}*/}
-            {/*    onSubscribe={handleSubscribe}*/}
-            {/*    post={post}*/}
-            {/*  />*/}
-            {/*)}*/}
           </Box>
 
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'end',
-              zIndex: 10,
-              backgroundColor: '#1e1f22',
-            }}
-          >
+          <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'end', zIndex: 10, backgroundColor: '#1e1f22' }}>
             <m.div className="flex space-x-6" variants={variants}>
               <Stack direction="row" spacing={1} alignItems="center">
-                <Button
-                  variant="text"
-                  sx={{
-                    borderColor: '#FFFFFF',
-                    color: '#FFFFFF',
-                    height: '40px',
-                    minWidth: '40px',
-                  }}
-                  onClick={handleToggleLike}
-                  disabled={isLoading}
-                >
+                <Button variant="text" sx={{ color: '#FFFFFF', height: 40, minWidth: 40 }} onClick={handleToggleLike} disabled={isLoading}>
                   {isLoading ? (
-                    <CircularProgress size="25px" sx={{ color: '#fff' }} />
+                    <CircularProgress size={25} sx={{ color: '#fff' }} />
                   ) : (
                     <>
-                      {hasLiked ? (
-                        <IconHeartFilled size={22} color="#FFFFFF" />
-                      ) : (
-                        <IconHeart size={22} color="#FFFFFF" />
-                      )}
-                      <Typography
-                        variant="body2"
-                        sx={{ lineHeight: 1, ml: 1, fontWeight: '700' }}
-                      >
-                        {likesCount}
-                      </Typography>
+                      {hasLiked ? <IconHeartFilled size={22} /> : <IconHeart size={22} />}
+                      <Typography variant="body2" sx={{ lineHeight: 1, ml: 1, fontWeight: 700 }}>{likesCount}</Typography>
                     </>
                   )}
                 </Button>
-                <Button
-                  variant="text"
-                  sx={{
-                    borderColor: '#FFFFFF',
-                    color: '#FFFFFF',
-                    height: '40px',
-                    minWidth: '40px',
-                  }}
-                  onClick={() => setShowComments(!showComments)}
-                >
+                <Button variant="text" sx={{ color: '#FFFFFF', height: 40, minWidth: 40 }} onClick={() => setShowComments(!showComments)}>
                   <>
-                    {showComments ? (
-                      <IconMessageCircleFilled size={22} color="#FFFFFF" />
-                    ) : (
-                      <IconMessageCircle size={22} color="#FFFFFF" />
-                    )}
-                    <Typography
-                      variant="body2"
-                      sx={{ lineHeight: 1, ml: 1, fontWeight: '700' }}
-                    >
-                      {commentCount}
-                    </Typography>
+                    {showComments ? <IconMessageCircleFilled size={22} /> : <IconMessageCircle size={22} />}
+                    <Typography variant="body2" sx={{ lineHeight: 1, ml: 1, fontWeight: 700 }}>{commentCount}</Typography>
                   </>
                 </Button>
-                <Button
-                  variant="text"
-                  sx={{
-                    borderColor: '#FFFFFF',
-                    color: '#FFFFFF',
-                    height: '40px',
-                    minWidth: '40px',
-                  }}
-                  onClick={() => toggle(post)}
-                >
-                  {loadingToggle || loadingList ? (
-                    <CircularProgress size="25px" sx={{ color: '#fff' }} />
-                  ) : (
-                    <>
-                      {isBookmarked ? (
-                        <IconBookmarkFilled size={22} color="#FFFFFF" />
-                      ) : (
-                        <IconBookmark size={22} color="#FFFFFF" />
-                      )}
-                    </>
-                  )}
+                <Button variant="text" sx={{ color: '#FFFFFF', height: 40, minWidth: 40 }} onClick={() => toggle(post)}>
+                  {loadingToggle || loadingList ? <CircularProgress size={25} sx={{ color: '#fff' }} /> : (<>{isBookmarked ? <IconBookmarkFilled size={22} /> : <IconBookmark size={22} />}</>)}
                 </Button>
                 <PublicationShare post={post} />
               </Stack>
             </m.div>
           </Box>
 
-          {/*Comments*/}
           {showComments && (
-            <Box
-              sx={{
-                display: 'flex',
-                flexDirection: 'column',
-              }}
-            >
-              <Box
-                sx={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  pb: 2,
-                  zIndex: 10,
-                  position: 'sticky',
-                  top: '2rem',
-                  backgroundColor: '#1e1f22',
-                }}
-              >
+            <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+              <Box sx={{ display: 'flex', flexDirection: 'column', pb: 2, zIndex: 10, position: 'sticky', top: '2rem', backgroundColor: '#1e1f22' }}>
                 <Divider sx={{ my: 3, mr: 1 }} />
                 {sessionData?.authenticated ? (
                   <PublicationCommentForm
                     root={post.id}
                     commentOn={null}
-                    owner={{
-                      id: post.author.address,
-                      displayName: post.author.displayName ?? 'Watchit',
-                      avatar: resolveSrc(
-                        post.author.profilePicture || post.author.address,
-                        'profile',
-                      ),
-                    }}
+                    owner={{ id: post.author.address, displayName: post.author.displayName ?? 'Watchit', avatar: resolveSrc(post.author.profilePicture || post.author.address, 'profile') }}
                     onSuccess={() => handleCommentSuccess(false)}
                   />
                 ) : (
-                  <Typography
-                    variant="body1"
-                    color="text.secondary"
-                    sx={{
-                      width: '100%',
-                      textAlign: 'center',
-                      backgroundColor: '#2B2D31',
-                      p: 2,
-                      borderRadius: 1,
-                    }}
-                  >
+                  <Typography variant="body1" color="text.secondary" sx={{ width: '100%', textAlign: 'center', backgroundColor: '#2B2D31', p: 2, borderRadius: 1 }}>
                     Login to leave a comment
                   </Typography>
                 )}
               </Box>
-              <Box
-                sx={{ display: 'flex', flexDirection: 'column', mt: 2, pr: 1 }}
-              >
-                <PostCommentList
-                  publicationId={post.id}
-                  showReplies
-                  onReplyCreated={() => handleCommentSuccess(true)}
-                />
+              <Box sx={{ display: 'flex', flexDirection: 'column', mt: 2, pr: 1 }}>
+                <PostCommentList publicationId={post.id} showReplies onReplyCreated={() => handleCommentSuccess(true)} />
               </Box>
             </Box>
           )}
 
-          <Dialog
-            open={openConfirmModal}
-            onClose={() => setOpenConfirmModal(false)}
-          >
+          <Dialog open={openConfirmModal} onClose={() => setOpenConfirmModal(false)}>
             <DialogTitle>Confirm hide</DialogTitle>
             <DialogContent>
-              <Typography>
-                Are you sure you want to hide this publication?
-              </Typography>
+              <Typography>Are you sure you want to hide this publication?</Typography>
             </DialogContent>
             <DialogActions>
-              <Button
-                variant="outlined"
-                sx={{ borderColor: '#fff' }}
-                onClick={() => setOpenConfirmModal(false)}
-              >
-                Cancel
-              </Button>
-              <Button
-                variant="contained"
-                sx={{ backgroundColor: '#fff' }}
-                onClick={() => {
-                  handleHide();
-                  setOpenConfirmModal(false);
-                }}
-              >
-                Confirm
-              </Button>
+              <Button variant="outlined" sx={{ borderColor: '#fff' }} onClick={() => setOpenConfirmModal(false)}>Cancel</Button>
+              <Button variant="contained" sx={{ backgroundColor: '#fff' }} onClick={() => { handleHide(); setOpenConfirmModal(false); }}>Confirm</Button>
             </DialogActions>
           </Dialog>
         </CardContent>
