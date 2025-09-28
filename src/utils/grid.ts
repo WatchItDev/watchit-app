@@ -274,3 +274,21 @@ export const calculateExpandedSectionPosition = (
   const y = getTopOfRow(anchorRow, grid);
   return { anchorRow, y };
 };
+
+/**
+ * Computes the base height for the positioned grid excluding expanded offsets.
+ */
+export const calculateBaseTotalHeight = (rowHeights: number[], gridDimensions: GridDimensions) => {
+  if (rowHeights.length === 0) return 0;
+  return rowHeights.length * gridDimensions.itemSize + (rowHeights.length + 1) * gridDimensions.gap;
+};
+
+/**
+ * Measures the height occupied by regular feed items, used to place sentinels.
+ */
+export const calculateFeedHeight = (items: GridItem[], gridDimensions: GridDimensions) => {
+  const regularItems = items.filter((item) => item.type === 'regular');
+  if (regularItems.length === 0) return 0;
+  const bottomRow = regularItems.reduce((max, item) => Math.max(max, item.position.y + item.dimensions.height), 0);
+  return bottomRow * gridDimensions.itemSize + (bottomRow + 1) * gridDimensions.gap;
+};

@@ -1,8 +1,11 @@
 import Container from '@mui/material/Container';
 import Stack from '@mui/material/Stack';
-import ExploreGrid from '../components/explore-grid';
 import { WatchitWidget } from '@src/components/ai-widget';
+import ExploreGrid from '../components/explore-grid';
 
+/**
+ * Top-level explore route aggregating the grid and floating widget.
+ */
 export default function ExploreView() {
   return (
     <Container sx={{ p: '0 !important', maxWidth: '2000px !important' }}>

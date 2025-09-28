@@ -1,20 +1,17 @@
 import React, { memo, useEffect, useRef, useState } from 'react';
-import { Box, Typography, Paper, IconButton } from '@mui/material';
+import { Box, IconButton, Paper, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { GridItem, ExpandedSection as ExpandedSectionType } from '../types';
 import { CloseIcon } from 'yet-another-react-lightbox';
 import { useDispatch } from 'react-redux';
 import { updateExpandedHeight } from '@redux/grid';
+import {
+  EXPANDED_SECTION_FADE_MS,
+} from '@src/sections/explore/CONSTANTS';
+import type { ExploreGridLegacySectionProps } from '@src/sections/explore/types';
 
-interface ExpandedSectionProps {
-  expandedSection: ExpandedSectionType;
-  item: GridItem;
-  onRequestClose: () => void;
-  onAfterClose?: () => void;
-  animationDuration: number;
-}
-
-const FADE_MS = 180;
+/**
+ * Legacy expanded section container rendered outside the inline layout.
+ */
 
 const SectionContainer = styled(Paper)(({}) => ({
   position: 'relative',
@@ -41,7 +38,7 @@ const OpacityLayer = styled('div')<{
 }>(({ $show, $delayMs }) => ({
   opacity: $show ? 1 : 0,
   transitionProperty: 'opacity',
-  transitionDuration: `${FADE_MS}ms`,
+  transitionDuration: `${EXPANDED_SECTION_FADE_MS}ms`,
   transitionTimingFunction: 'ease',
   transitionDelay: $show ? `${$delayMs}ms` : '0ms',
   pointerEvents: $show ? 'auto' : 'none',
@@ -61,7 +58,7 @@ const ItemPreview = styled(Box)<{ itemColor: string }>(({ theme, itemColor }) =>
   fontSize: '1.2rem',
 }));
 
-const ExpandedSection: React.FC<ExpandedSectionProps> = memo(
+const ExploreGridLegacySection: React.FC<ExploreGridLegacySectionProps> = memo(
   ({ expandedSection, item, onRequestClose, onAfterClose, animationDuration }) => {
     const dispatch = useDispatch();
     const containerRef = useRef<HTMLDivElement>(null);
@@ -153,5 +150,5 @@ const ExpandedSection: React.FC<ExpandedSectionProps> = memo(
   }
 );
 
-ExpandedSection.displayName = 'ExpandedSection';
-export default ExpandedSection;
+ExploreGridLegacySection.displayName = 'ExploreGridLegacySection';
+export default ExploreGridLegacySection;

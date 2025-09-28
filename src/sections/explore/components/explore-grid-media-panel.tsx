@@ -4,9 +4,13 @@ import { useTheme } from '@mui/material/styles';
 import { IconInfoCircle, IconX } from '@tabler/icons-react';
 import PublicationPlayer from '@src/sections/publication/components/publication-player';
 import PublicationDetailMain from '@src/components/publication-detail-main';
-import type { Post } from '@src/graphql/generated/graphql';
+import { EXPANDER_MIN_HEIGHT } from '@src/sections/explore/CONSTANTS';
+import type { ExploreGridMediaPanelProps } from '@src/sections/explore/types';
 
-export default function ExpanderPlayerInfo({ post }: { post: Post }) {
+/**
+ * Split layout combining the media player with the publication detail panel.
+ */
+export default function ExploreGridMediaPanel({ post }: ExploreGridMediaPanelProps) {
   const theme = useTheme();
   const mdUp = useMediaQuery(theme.breakpoints.up('md'));
   const [infoOpen, setInfoOpen] = useState(mdUp);
@@ -30,9 +34,6 @@ export default function ExpanderPlayerInfo({ post }: { post: Post }) {
     setInfoOpen(mdUp);
   }, [mdUp]);
 
-  const MIN_H_XS = 280;
-  const MIN_H_MD = 360;
-
   return (
     <Box sx={{ position: 'relative' }}>
       <Box
@@ -44,13 +45,30 @@ export default function ExpanderPlayerInfo({ post }: { post: Post }) {
         }}
       >
         {/* PLAYER */}
-        <Box ref={playerRef} sx={{ width: '100%', borderRadius: 2, overflow: 'hidden', aspectRatio: '16 / 9', minHeight: { xs: MIN_H_XS, md: MIN_H_MD }, border: '1px solid rgba(255,255,255,0.08)' }}>
+        <Box
+          ref={playerRef}
+          sx={{
+            width: '100%',
+            borderRadius: 2,
+            overflow: 'hidden',
+            aspectRatio: '16 / 9',
+            minHeight: { xs: EXPANDER_MIN_HEIGHT.xs, md: EXPANDER_MIN_HEIGHT.md },
+            border: '1px solid rgba(255,255,255,0.08)',
+          }}
+        >
           <PublicationPlayer publication={post} loading={false} />
         </Box>
 
         {/* INFO DERECHA (colapsable) */}
         {infoOpen && (
-          <Box sx={{ position: 'relative', maxHeight: playerH || { xs: MIN_H_XS, md: MIN_H_MD }, overflowY: 'auto', borderRadius: 2 }}>
+          <Box
+            sx={{
+              position: 'relative',
+              maxHeight: playerH || { xs: EXPANDER_MIN_HEIGHT.xs, md: EXPANDER_MIN_HEIGHT.md },
+              overflowY: 'auto',
+              borderRadius: 2,
+            }}
+          >
             {/* Botón para colapsar */}
             <IconButton
               onClick={() => setInfoOpen(false)}

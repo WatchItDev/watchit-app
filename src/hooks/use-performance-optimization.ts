@@ -1,5 +1,5 @@
 import { useCallback, useRef, useEffect } from 'react';
-import { GridItem } from '@src/sections/explore/types.ts';
+import { GridItem } from '@src/sections/explore/types';
 
 interface PerformanceConfig {
   debounceMs: number;

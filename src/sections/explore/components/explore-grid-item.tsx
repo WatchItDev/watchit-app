@@ -1,35 +1,25 @@
 import { memo } from 'react';
 import { Box } from '@mui/material';
-import type { GridItem as GridItemType } from '../types';
-import { calculateItemPosition } from '@src/utils/grid.ts';
-import GridItemCard from '@src/sections/explore/components/grid-item-card';
 import type { Post } from '@src/graphql/generated/graphql';
+import ExploreGridItemCard from '@src/sections/explore/components/explore-grid-item-card';
+import type { ExploreGridItemProps } from '@src/sections/explore/types';
+import { calculateItemPosition } from '@src/utils/grid';
 
-type Props = {
-  item: GridItemType;
-  gridDimensions: any;
-  rowHeights: number[];
-  isExpanded: boolean;
-  isDimmed: boolean;
-  onItemClick: (item: GridItemType) => void;
-  animationMs: number;
-  anchorRowForOffset: number | null;
-  expandedOffset: number;
-  transitionsEnabled?: boolean;
-};
-
-const ExploreItem = memo(function ExploreItem({
-                                                item,
-                                                gridDimensions,
-                                                rowHeights,
-                                                isExpanded,
-                                                isDimmed,
-                                                onItemClick,
-                                                animationMs,
-                                                anchorRowForOffset,
-                                                expandedOffset,
-                                                transitionsEnabled = true,
-                                              }: Props) {
+/**
+ * Positions and renders a single explore grid item with animation awareness.
+ */
+const ExploreGridItem = memo(function ExploreGridItem({
+  item,
+  gridDimensions,
+  rowHeights,
+  isExpanded,
+  isDimmed,
+  onItemClick,
+  animationMs,
+  anchorRowForOffset,
+  expandedOffset,
+  transitionsEnabled = true,
+}: ExploreGridItemProps) {
   const base = calculateItemPosition(item, gridDimensions, rowHeights);
   const needsOffset = anchorRowForOffset !== null && item.position.y >= anchorRowForOffset;
   const y = needsOffset ? base.y + expandedOffset : base.y;
@@ -65,7 +55,7 @@ const ExploreItem = memo(function ExploreItem({
       }}
     >
       {item.type === 'regular' ? (
-        <GridItemCard
+        <ExploreGridItemCard
           post={item.data?.post as Post}
           isActive={isExpanded}
           onActivate={() => onItemClick(item)}
@@ -77,4 +67,4 @@ const ExploreItem = memo(function ExploreItem({
   );
 });
 
-export default ExploreItem;
+export default ExploreGridItem;

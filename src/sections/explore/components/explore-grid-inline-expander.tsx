@@ -1,24 +1,18 @@
 import { useEffect, useRef } from 'react';
 import { Box } from '@mui/material';
-import type { Post } from '@src/graphql/generated/graphql';
-import ExpanderPlayerInfo from '@src/sections/explore/components/explore-expander-info';
+import ExploreGridMediaPanel from '@src/sections/explore/components/explore-grid-media-panel';
+import type { ExploreGridInlineExpanderProps } from '@src/sections/explore/types';
 
-type Props = {
-  top: number;
-  width?: number;
-  open: boolean;
-  animationMs: number;
-  onMeasured: (h: number) => void;
-  post?: Post;
-};
-
-export default function ExploreExpandedInline({
-                                                top,
-                                                open,
-                                                animationMs,
-                                                onMeasured,
-                                                post,
-                                              }: Props) {
+/**
+ * Inline expansion area that hosts the detailed card when a grid item opens.
+ */
+export default function ExploreGridInlineExpander({
+  top,
+  open,
+  animationMs,
+  onMeasured,
+  post,
+}: ExploreGridInlineExpanderProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -45,7 +39,7 @@ export default function ExploreExpandedInline({
           transition: `opacity ${animationMs}ms ease`,
         }}
       >
-        {post ? <ExpanderPlayerInfo post={post} /> : null}
+        {post ? <ExploreGridMediaPanel post={post} /> : null}
       </Box>
     </Box>
   );

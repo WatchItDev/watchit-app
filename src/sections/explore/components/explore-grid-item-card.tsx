@@ -1,22 +1,20 @@
-import Paper from '@mui/material/Paper';
+import type { SyntheticEvent } from 'react';
 import Box from '@mui/material/Box';
+import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { alpha } from '@mui/material/styles';
 import { icons } from '@tabler/icons-react';
 import Image from '@src/components/image';
-import { useRouter } from '@src/routes/hooks';
 import { paths } from '@src/routes/paths';
-import { Post } from '@src/graphql/generated/graphql';
+import { useRouter } from '@src/routes/hooks';
+import type { ExploreGridItemCardProps } from '@src/sections/explore/types';
 import { getAttachmentCid, getMediaUri } from '@src/utils/publication';
 
-type Props = {
-  post: Post;
-  onActivate?: (post: Post, originEl?: HTMLElement) => void;
-  isActive?: boolean;
-};
-
-export default function GridItemCard({ post, onActivate, isActive }: Props) {
+/**
+ * Card surfaced inside each grid cell, exposing poster art and quick stats.
+ */
+export default function ExploreGridItemCard({ post, onActivate, isActive }: ExploreGridItemCardProps) {
   const router = useRouter();
   const title = post.title ?? '';
   const likes = post.likeCount ?? 0;
@@ -31,7 +29,7 @@ export default function GridItemCard({ post, onActivate, isActive }: Props) {
     n >= 1_000_000 ? `${(n / 1_000_000).toFixed(1)}M` : n >= 1000 ? `${(n / 1000).toFixed(1)}K` : `${n}`;
 
   const goToDetails = () => router.push(paths.dashboard.publication.details(post.id));
-  const handleActivate = (ev?: React.SyntheticEvent) => {
+  const handleActivate = (ev?: SyntheticEvent) => {
     if (onActivate) onActivate(post, (ev?.currentTarget as HTMLElement) ?? undefined);
     else goToDetails();
   };
