@@ -8,5 +8,5 @@ export const GRID_CONFIG: GridConfig = {
   itemsPerPage: 20,
   animationDuration: 300,
   opacityWhenExpanded: 0.3,
-  expandedEstimatedHeight: 360,
+  expandedEstimatedHeight: 1000,
 };

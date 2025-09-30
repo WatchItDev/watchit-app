@@ -28,12 +28,12 @@ const hashInRange = (s: string, min: number, max: number): number => {
 // Dimensiones del grid
 // ---------------------------------------------
 export const calculateGridDimensions = (
-  containerWidth: number,
-  config?: GridConfig
+    containerWidth: number,
+    config?: GridConfig
 ): GridDimensions => {
   const finalConfig = config ?? {
-    minItemSize: 240,              // x2
-    maxItemSize: 420,              // x2
+    minItemSize: 120,
+    maxItemSize: 200,
     gap: 16,
     breakpoints: { mobile: 768, tablet: 1024, desktop: 1200 },
     itemsPerPage: 20,
@@ -51,19 +51,27 @@ export const calculateGridDimensions = (
   const minColsForMax = Math.max(1, Math.ceil((W - gap) / (maxItemSize + gap)));
   const maxColsForMin = Math.max(minColsForMax, Math.floor((W - gap) / (minItemSize + gap)));
 
-  // 👉 menos columnas preferidas (ítems más grandes)
-  let prefMin = 1, prefMax = 2;
-  if (W <= breakpoints.mobile) { prefMin = 1; prefMax = 2; }
-  else if (W <= breakpoints.tablet) { prefMin = 2; prefMax = 3; }
-  else { prefMin = 3; prefMax = 5; }
+  let prefMin = 2, prefMax = 2;
+  if (W <= breakpoints.mobile) { prefMin = prefMax = 2; }
+  else if (W <= breakpoints.tablet) { prefMin = 3; prefMax = 4; }
+  else { prefMin = 5; prefMax = 8; }
 
   const interMin = Math.max(minColsForMax, prefMin);
   const interMax = Math.min(maxColsForMin, prefMax);
 
-  const columns = interMin <= interMax ? interMax : Math.max(minColsForMax, prefMin);
+  let columns: number;
+  if (interMin <= interMax) columns = interMax;
+  else columns = Math.max(minColsForMax, prefMin);
+
   const itemSize = (W - gap * (columns + 1)) / columns;
 
-  return { containerWidth: W, itemSize, gap, columns, rows: 0 };
+  return {
+    containerWidth: W,
+    itemSize,
+    gap,
+    columns,
+    rows: 0,
+  };
 };
 
 // ---------------------------------------------
@@ -75,9 +83,9 @@ export const getTopOfRow = (row: number, grid: GridDimensions): number => {
 };
 
 export const calculateItemPosition = (
-  item: GridItem,
-  grid: GridDimensions,
-  _rowHeights: number[]
+    item: GridItem,
+    grid: GridDimensions,
+    _rowHeights: number[]
 ): { x: number; y: number } => {
   const { itemSize, gap } = grid;
   const x = gap + item.position.x * (itemSize + gap);
@@ -89,12 +97,12 @@ export const calculateItemPosition = (
 // Alturas de fila (uniformes = itemSize)
 // ---------------------------------------------
 export const calculateRowHeights = (
-  items: GridItem[],
-  grid: GridDimensions
+    items: GridItem[],
+    grid: GridDimensions
 ): number[] => {
   const lastRowExclusive = items.reduce(
-    (max, it) => Math.max(max, it.position.y + it.dimensions.height),
-    0
+      (max, it) => Math.max(max, it.position.y + it.dimensions.height),
+      0
   );
   if (lastRowExclusive <= 0) return [];
   return Array.from({ length: lastRowExclusive }, () => grid.itemSize);
@@ -106,12 +114,12 @@ export const calculateRowHeights = (
 type Pos = { x: number; y: number };
 
 const fitsAt = (
-  x: number,
-  y: number,
-  w: number,
-  h: number,
-  cols: number,
-  occ: boolean[][]
+    x: number,
+    y: number,
+    w: number,
+    h: number,
+    cols: number,
+    occ: boolean[][]
 ) => {
   if (x + w > cols) return false;
   for (let yy = y; yy < y + h; yy++) {
@@ -140,11 +148,11 @@ const xSequenceWithBias = (preferredX: number, cols: number, w: number): number[
 };
 
 const findSpotBiased = (
-  it: GridItem,
-  cols: number,
-  occ: boolean[][],
-  startRow: number,
-  preferredX: number
+    it: GridItem,
+    cols: number,
+    occ: boolean[][],
+    startRow: number,
+    preferredX: number
 ): Pos => {
   const w = it.dimensions.width;
   const h = it.dimensions.height;
@@ -176,13 +184,13 @@ export const adaptItemsToColumns = (items: GridItem[], grid: GridDimensions): Gr
 // Layout armónico
 // ---------------------------------------------
 export const generateHarmoniousLayout = (
-  items: GridItem[],
-  grid: GridDimensions,
-  opts?: {
-    prevPositions?: Map<string, Pos>;
-    minSliderRowGap?: number;
-    maxSliderRowGap?: number;
-  }
+    items: GridItem[],
+    grid: GridDimensions,
+    opts?: {
+      prevPositions?: Map<string, Pos>;
+      minSliderRowGap?: number;
+      maxSliderRowGap?: number;
+    }
 ): { items: GridItem[]; totalRows: number } => {
   const minGap = Math.max(1, opts?.minSliderRowGap ?? 2);
   const maxGap = Math.max(minGap, opts?.maxSliderRowGap ?? minGap);
@@ -246,31 +254,35 @@ export const generateHarmoniousLayout = (
   });
 
   const totalRows = positioned.reduce(
-    (max, it) => Math.max(max, it.position.y + it.dimensions.height),
-    0
+      (max, it) => Math.max(max, it.position.y + it.dimensions.height),
+      0
   );
 
   return { items: positioned, totalRows };
 };
 
 // ---------------------------------------------
-// Ancla “frontera de fila” para expandido
+// Ancla de sección expandida en una FRONTERA DE FILA LIMPIA
+// - Buscamos hacia ARRIBA (<= targetRow) la primera frontera r
+//   donde ningún item cruza ese límite (y < r && y+height > r).
+// - Así evitamos solapar sliders altos que vienen desde arriba.
 // ---------------------------------------------
 const findNearestClearAnchorRow = (allItems: GridItem[], targetRow: number): number => {
   for (let r = targetRow; r > 0; r--) {
     const someCross = allItems.some(it => it.position.y < r && (it.position.y + it.dimensions.height) > r);
     if (!someCross) return r;
   }
-  return 0;
+  return 0; // r=0 siempre es limpio
 };
 
 export const calculateExpandedSectionPosition = (
-  item: GridItem,
-  allItems: GridItem[],
-  grid: GridDimensions
+    item: GridItem,
+    allItems: GridItem[],
+    grid: GridDimensions
 ): { anchorRow: number; y: number } => {
   const targetRow = item.position.y;
   const anchorRow = findNearestClearAnchorRow(allItems, targetRow);
   const y = getTopOfRow(anchorRow, grid);
   return { anchorRow, y };
 };
+

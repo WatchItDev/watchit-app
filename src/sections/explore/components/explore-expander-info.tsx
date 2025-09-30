@@ -34,11 +34,12 @@ export default function ExpanderPlayerInfo({ post }: { post: Post }) {
   const MIN_H_MD = 360;
 
   return (
-    <Box sx={{ position: 'relative' }}>
+    <Box sx={{ position: 'relative', marginBottom: '12px !important' }}>
       <Box
         sx={{
           display: 'grid',
-          gridTemplateColumns: infoOpen && mdUp ? 'minmax(0,1fr) 400px' : 'minmax(0,1fr)',
+          // gridTemplateColumns: infoOpen && mdUp ? 'minmax(0,1fr) 400px' : 'minmax(0,1fr)',
+          gridTemplateColumns: 'minmax(0,1fr)',
           gap: 2,
           alignItems: 'start',
         }}
@@ -49,9 +50,8 @@ export default function ExpanderPlayerInfo({ post }: { post: Post }) {
         </Box>
 
         {/* INFO DERECHA (colapsable) */}
-        {infoOpen && (
-          <Box sx={{ position: 'relative', maxHeight: playerH || { xs: MIN_H_XS, md: MIN_H_MD }, overflowY: 'auto', borderRadius: 2 }}>
-            {/* Botón para colapsar */}
+        {/* {infoOpen && ( */}
+          {/* <Box sx={{ position: 'relative', maxHeight: playerH || { xs: MIN_H_XS, md: MIN_H_MD }, overflowY: 'auto', borderRadius: 2 }}>
             <IconButton
               onClick={() => setInfoOpen(false)}
               size="small"
@@ -61,18 +61,18 @@ export default function ExpanderPlayerInfo({ post }: { post: Post }) {
             </IconButton>
 
             <PublicationDetailMain post={post} mode="inline" />
-          </Box>
-        )}
+          </Box> */}
+        {/* )} */}
       </Box>
 
       {/* flotante para abrir cuando está colapsado */}
-      {!infoOpen && (
+      {/* {!infoOpen && (
         <Tooltip title="Mostrar información" placement="left">
           <Fab size="medium" onClick={() => setInfoOpen(true)} sx={{ position: 'absolute', top: 12, right: 12 }}>
             <IconInfoCircle />
           </Fab>
         </Tooltip>
-      )}
+      )} */}
     </Box>
   );
 }
