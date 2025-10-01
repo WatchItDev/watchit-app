@@ -44,10 +44,9 @@ const StyledGridItem = styled(Box, {
         ? `top ${animationDuration}ms cubic-bezier(0.4,0,0.2,1),
        left ${animationDuration}ms cubic-bezier(0.4,0,0.2,1),
        transform ${animationDuration}ms cubic-bezier(0.4,0,0.2,1),
-       box-shadow ${animationDuration}ms cubic-bezier(0.4,0,0.2,1),
-       opacity ${animationDuration}ms cubic-bezier(0.4,0,0.2,1)`
+       box-shadow ${animationDuration}ms cubic-bezier(0.4,0,0.2,1),`
         : 'none',
-    opacity: isDimmed ? 0.3 : 1,
+    // opacity: isDimmed ? 0.3 : 1,
     transform: isExpanded ? 'scale(1.02)' : 'scale(1)',
     boxShadow: isExpanded
         ? '0 8px 32px rgba(0, 0, 0, 0.3)'

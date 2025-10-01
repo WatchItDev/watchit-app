@@ -1,9 +1,10 @@
-import React, { memo, useEffect, useRef, useState } from 'react';
+import React, { memo, useEffect, useMemo, useRef, useState } from 'react';
 import { Box, Typography, Paper, IconButton } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { GridItem, ExpandedSection as ExpandedSectionType } from '../../types';
 import { CloseIcon } from 'yet-another-react-lightbox';
 import { GRID_CONFIG } from '../../CONSTANTS';
+import { motion } from 'framer-motion';
 
 interface ExpandedSectionProps {
   expandedSection: ExpandedSectionType;
@@ -21,12 +22,18 @@ interface ExpandedSectionProps {
 
 /** Fade rápido para el contenido. */
 const FADE_MS = 180;
+const CONTENT_VARIANTS = {
+  show: { opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' },
+  hide: { opacity: 0, y: 24, scale: 0.97, filter: 'blur(12px)' },
+} as const;
 
 const AnimatedContainer = styled(Box)(() => ({
   position: 'relative',
   width: '100%',
   overflow: 'hidden',
 }));
+
+const MotionAnimatedContainer = motion(AnimatedContainer);
 
 const SectionContainer = styled(Paper)(() => ({
   position: 'relative',
@@ -49,26 +56,21 @@ const SectionContent = styled(Box)(({ theme }) => ({
 }));
 
 /** Capa que controla el fade de TODO (header + contenido). */
-const OpacityLayer = styled('div')<{
-  $show: boolean;
-  $delayMs: number;
-}>(({ $show, $delayMs }) => ({
-  opacity: $show ? 1 : 0,
-  transitionProperty: 'opacity',
-  transitionDuration: `${FADE_MS}ms`,
-  transitionTimingFunction: 'ease',
-  transitionDelay: $show ? `${$delayMs}ms` : '0ms',
-  pointerEvents: $show ? 'auto' : 'none',
+const OpacityLayer = styled(motion.div)(() => ({
+  width: '100%',
+  height: '100%',
 }));
 
 const ExpandedSection: React.FC<ExpandedSectionProps> = memo(
   ({ expandedSection, item, onRequestClose, animationDuration, gap, onMeasuredHeight, children }) => {
+    const initialHeight = expandedSection.isOpen ? expandedSection.height : 0;
     const contentRef = useRef<HTMLDivElement>(null);
-    const [show, setShow] = useState(false);
-    const [animatedHeight, setAnimatedHeight] = useState(0);
+    const [animatedHeight, setAnimatedHeight] = useState(initialHeight);
 
     // ---- MEDICIÓN DE ALTURA (throttled con rAF para evitar warnings del ResizeObserver) ----
-    const lastH = useRef<number>(-1);
+    const lastH = useRef<number>(
+      Number.isFinite(initialHeight) && initialHeight > 0 ? initialHeight : -1
+    );
     useEffect(() => {
       const el = contentRef.current;
       if (!el) return;
@@ -90,33 +92,50 @@ const ExpandedSection: React.FC<ExpandedSectionProps> = memo(
 
     useEffect(() => {
       if (expandedSection.isOpen) {
-        if (lastH.current > 0) requestAnimationFrame(() => setAnimatedHeight(lastH.current));
+        const nextH = expandedSection.height > 0 ? expandedSection.height : lastH.current;
+        if (Number.isFinite(nextH) && nextH >= 0) {
+          requestAnimationFrame(() => setAnimatedHeight(Math.max(nextH, 0)));
+        }
       } else {
+        lastH.current = 0;
         requestAnimationFrame(() => setAnimatedHeight(0));
       }
-    }, [expandedSection.isOpen]);
+    }, [expandedSection.isOpen, expandedSection.height]);
 
-    // ---- ORQUESTACIÓN DEL FADE (sin Collapse) ----
-    useEffect(() => {
-      setShow(false);
-      if (expandedSection.isOpen) {
-        const id = window.setTimeout(() => setShow(true), animationDuration);
-        return () => window.clearTimeout(id);
-      } else {
-        setShow(false);
-      }
-    }, [expandedSection.isOpen, animationDuration]);
+    const targetHeight = Math.max(animatedHeight, 0);
+    const containerTransition = useMemo(
+      () => ({
+        height: { type: 'spring', stiffness: 180, damping: 28, mass: 0.8 },
+        marginBottom: { duration: animationDuration / 1000, ease: [0.22, 1, 0.36, 1] as const },
+      }),
+      [animationDuration]
+    );
 
     return (
-      <AnimatedContainer
-        sx={{
-          height: `${Math.max(animatedHeight, 0)}px`,
-          marginBottom: expandedSection.isOpen ? 0 : `${GRID_CONFIG.gap}px`,
-          transition: `height ${animationDuration}ms ease, margin-bottom ${animationDuration}ms ease`,
+      <MotionAnimatedContainer
+        initial={false}
+        animate={{
+          height: expandedSection.isOpen ? targetHeight : 0,
+          marginBottom: expandedSection.isOpen ? 0 : gap,
         }}
+        transition={containerTransition}
+        style={{ willChange: 'height, margin-bottom' }}
       >
         <SectionContainer elevation={0}>
-          <OpacityLayer $show={show} $delayMs={expandedSection.isOpen ? animationDuration : 0}>
+          <OpacityLayer
+            initial={false}
+            animate={expandedSection.isOpen ? 'show' : 'hide'}
+            variants={CONTENT_VARIANTS}
+            transition={{
+              duration: FADE_MS / 1000,
+              ease: [0.16, 1, 0.3, 1] as const,
+              delay: 0,
+            }}
+            style={{
+              pointerEvents: expandedSection.isOpen ? 'auto' : 'none',
+              transformOrigin: 'top center',
+            }}
+          >
             <SectionContent ref={contentRef}>
               {/* Botón de cierre del expander (opcional, no interfiere con tu contenido) */}
               <IconButton
@@ -151,7 +170,7 @@ const ExpandedSection: React.FC<ExpandedSectionProps> = memo(
             </SectionContent>
           </OpacityLayer>
         </SectionContainer>
-      </AnimatedContainer>
+      </MotionAnimatedContainer>
     );
   }
 );

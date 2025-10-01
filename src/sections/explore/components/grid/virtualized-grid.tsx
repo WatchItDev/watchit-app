@@ -106,6 +106,18 @@ const SkeletonGrid = memo(
 // ============================================================================
 const MIN_GAP_BETWEEN_SLIDERS = 3;
 
+const PLAYER_ASPECT_RATIO = 9 / 16;
+const PLAYER_MIN_HEIGHT_XS = 280;
+const PLAYER_MIN_HEIGHT_MD = 360;
+const EXPANDER_EXTRA_VERTICAL = 12; // margin-bottom from ExpanderPlayerInfo
+
+const estimateExpanderHeight = (width: number, gap: number) => {
+  const usableWidth = Math.max(0, width - gap * 2);
+  const minHeight = width >= GRID_CONFIG.breakpoints.tablet ? PLAYER_MIN_HEIGHT_MD : PLAYER_MIN_HEIGHT_XS;
+  const playerHeight = usableWidth > 0 ? Math.max(usableWidth * PLAYER_ASPECT_RATIO, minHeight) : minHeight;
+  return playerHeight + EXPANDER_EXTRA_VERTICAL;
+};
+
 const sliderSpacingFromId = (id: string, baseSpacing: number, isMobile: boolean) =>
   isMobile
     ? baseSpacing
@@ -305,8 +317,19 @@ const VirtualizedGrid: React.FC<VirtualizedGridProps> = memo(({ sentinelRef }) =
   const scrollRef = useRef<HTMLDivElement>(null);
   const expandedSectionRef = useRef<ExpandedSectionType | null>(expandedSection);
   const cleanupTimeoutRef = useRef<number | null>(null);
+  const scrollDelayRef = useRef<number | null>(null);
+  const expanderRowRef = useRef<HTMLDivElement | null>(null);
+  const expanderObserverRef = useRef<ResizeObserver | null>(null);
+  const latestExpanderHeightRef = useRef(0);
+  const lastMeasuredForMeasureRef = useRef(0);
+  const heightUpdateTimeoutRef = useRef<number | null>(null);
   const containerWidthRef = useRef<number>(0);
   const [gridWidth, setGridWidth] = useState(0);
+
+  const resetEstimatedHeight = useCallback(() => {
+    latestExpanderHeightRef.current = 0;
+    lastMeasuredForMeasureRef.current = 0;
+  }, []);
 
   // Recalcular columnas y tamaño de item según ancho real
   const { columns, itemSize, gap } = useMemo(() => {
@@ -366,7 +389,8 @@ const VirtualizedGrid: React.FC<VirtualizedGridProps> = memo(({ sentinelRef }) =
       if (!row) return GRID_CONFIG.minItemSize + gap;
       if (row.type === 'normal') return itemSize + gap;
       if (row.type === 'slider') return itemSize * 2 + gap * 2;
-      return (GRID_CONFIG.expandedEstimatedHeight ?? 280) + gap;
+      const dynamicHeight = latestExpanderHeightRef.current;
+      return Math.max(dynamicHeight, 1) + gap;
     },
     [rows, itemSize, gap]
   );
@@ -399,36 +423,91 @@ const VirtualizedGrid: React.FC<VirtualizedGridProps> = memo(({ sentinelRef }) =
   // Centrar el expander al abrir
   const lastCenterKeyRef = useRef<string | null>(null);
   useEffect(() => {
-    if (!expandedSection) return;
+    if (!expandedSection || !expandedSection.isOpen) {
+      if (scrollDelayRef.current) {
+        window.clearTimeout(scrollDelayRef.current);
+        scrollDelayRef.current = null;
+      }
+      lastCenterKeyRef.current = null;
+      return;
+    }
+
     const idx = rows.findIndex(
       (r) => r.type === 'expander' && r.key === `x-${expandedSection.itemId}`
     );
     if (idx < 0) return;
+    if (expandedSection.height <= 0) return;
+
     const key = `${expandedSection.itemId}:${expandedSection.height}`;
     if (lastCenterKeyRef.current === key) return;
-    if (expandedSection.height <= 0) return;
     lastCenterKeyRef.current = key;
-    virtualizer.scrollToIndex(idx, { align: 'center' });
+
+    if (scrollDelayRef.current) window.clearTimeout(scrollDelayRef.current);
+
+    const performScroll = () => {
+      const scrollEl = scrollRef.current;
+      if (!scrollEl) {
+        scrollDelayRef.current = null;
+        return;
+      }
+
+      const targetVirtualItem = virtualizer
+        .getVirtualItems()
+        .find((item) => item.key === `x-${expandedSection.itemId}`);
+
+      if (!targetVirtualItem) {
+        scrollDelayRef.current = window.setTimeout(performScroll, 24);
+        return;
+      }
+
+      const rowHeight = expandedSection.height;
+      if (rowHeight <= 0) {
+        scrollDelayRef.current = window.setTimeout(performScroll, 24);
+        return;
+      }
+
+      const viewportHeight = scrollEl.clientHeight;
+      const desiredOffset =
+        targetVirtualItem.start - Math.max((viewportHeight - rowHeight) / 2, 0);
+      const maxOffset = Math.max(0, scrollEl.scrollHeight - viewportHeight);
+      scrollEl.scrollTo({
+        top: Math.max(0, Math.min(desiredOffset, maxOffset)),
+        behavior: 'smooth',
+      });
+      scrollDelayRef.current = null;
+    };
+
+    scrollDelayRef.current = window.setTimeout(performScroll, 32);
   }, [expandedSection, rows, virtualizer]);
+
+  useEffect(() => {
+    return () => {
+      if (scrollDelayRef.current) window.clearTimeout(scrollDelayRef.current);
+    };
+  }, []);
 
   // Abrir / cerrar
   const openExpandedForItem = useCallback(
     (item: GridItemType) => {
       const rowIdx = itemRowIndex.get(item.id);
       if (rowIdx == null) return;
+      const baseWidth = gridWidth || containerWidthRef.current;
+      const predictedHeight = estimateExpanderHeight(baseWidth, gap);
+      latestExpanderHeightRef.current = predictedHeight;
+      lastMeasuredForMeasureRef.current = predictedHeight;
       dispatch(
         setExpandedSection({
           itemId: item.id,
           isOpen: true,
           anchorRow: rowIdx,
           y: 0,
-          height: GRID_CONFIG.expandedEstimatedHeight ?? 280,
+          height: predictedHeight,
           content: undefined,
         })
       );
       dispatch(setHasUserScrolledAfterExpand(false));
     },
-    [dispatch, itemRowIndex]
+    [dispatch, itemRowIndex, gap, gridWidth]
   );
 
   const scheduleExpandedCleanup = useCallback(
@@ -448,11 +527,13 @@ const VirtualizedGrid: React.FC<VirtualizedGridProps> = memo(({ sentinelRef }) =
   const handleItemClick = useCallback(
     (item: GridItemType) => {
       if (expandedSection?.itemId === item.id) {
+        resetEstimatedHeight();
         dispatch(setExpandedOpen(false));
         scheduleExpandedCleanup(item.id);
         return;
       }
       if (expandedSection) {
+        resetEstimatedHeight();
         const closingId = expandedSection.itemId;
         dispatch(setExpandedOpen(false));
         scheduleExpandedCleanup(closingId);
@@ -461,31 +542,61 @@ const VirtualizedGrid: React.FC<VirtualizedGridProps> = memo(({ sentinelRef }) =
       }
       openExpandedForItem(item);
     },
-    [dispatch, expandedSection, openExpandedForItem, scheduleExpandedCleanup]
+    [dispatch, expandedSection, openExpandedForItem, resetEstimatedHeight, scheduleExpandedCleanup]
   );
 
   const handleCloseExpanded = useCallback(() => {
     if (!expandedSection) return;
+    resetEstimatedHeight();
     dispatch(setExpandedOpen(false));
     scheduleExpandedCleanup(expandedSection.itemId);
-  }, [dispatch, expandedSection, scheduleExpandedCleanup]);
+  }, [dispatch, expandedSection, resetEstimatedHeight, scheduleExpandedCleanup]);
 
-  // Medición del expander
-  const measureExpander = useCallback(
+  // Medición del expander y referencia DOM para scroll
+  const setExpanderNode = useCallback(
     (el: HTMLDivElement | null) => {
+      expanderRowRef.current = el;
+      if (expanderObserverRef.current) {
+        expanderObserverRef.current.disconnect();
+        expanderObserverRef.current = null;
+      }
       if (!el) return;
       const ro = new ResizeObserver((entries) => {
         const h = Math.ceil(entries[0]?.contentRect.height ?? el.offsetHeight);
         if (h >= 0) {
-          dispatch(updateExpandedHeight(h));
-          requestAnimationFrame(() => virtualizer.measureElement(el));
+          latestExpanderHeightRef.current = h;
+          const prev = lastMeasuredForMeasureRef.current;
+          if (Math.abs(h - prev) > 12 || prev === 0) {
+            lastMeasuredForMeasureRef.current = h;
+            requestAnimationFrame(() => virtualizer.measureElement(el));
+          }
+          if (heightUpdateTimeoutRef.current) window.clearTimeout(heightUpdateTimeoutRef.current);
+          heightUpdateTimeoutRef.current = window.setTimeout(() => {
+            dispatch(updateExpandedHeight(latestExpanderHeightRef.current));
+            lastMeasuredForMeasureRef.current = latestExpanderHeightRef.current;
+            if (expanderRowRef.current) {
+              requestAnimationFrame(() => virtualizer.measureElement(expanderRowRef.current!));
+            }
+            heightUpdateTimeoutRef.current = null;
+          }, 120);
         }
       });
       ro.observe(el);
-      return () => ro.disconnect();
+      expanderObserverRef.current = ro;
     },
     [dispatch, virtualizer]
   );
+
+  useEffect(() => {
+    return () => {
+      if (expanderObserverRef.current) expanderObserverRef.current.disconnect();
+      expanderObserverRef.current = null;
+      expanderRowRef.current = null;
+      if (heightUpdateTimeoutRef.current) window.clearTimeout(heightUpdateTimeoutRef.current);
+      heightUpdateTimeoutRef.current = null;
+      resetEstimatedHeight();
+    };
+  }, [resetEstimatedHeight]);
 
   // Mostrar skeleton si aún no hay filas
   const shouldShowSkeleton = rows.length === 0;
@@ -525,13 +636,11 @@ const VirtualizedGrid: React.FC<VirtualizedGridProps> = memo(({ sentinelRef }) =
               <RowBox
                 key={row.key}
                 data-index={vRow.index}
-                ref={isExpander ? (measureExpander as any) : undefined}
+                ref={isExpander ? (setExpanderNode as any) : undefined}
                 $dimmed={!!expandedSection && !isExpander && !hasUserScrolledAfterExpand}
                 sx={{
                   transform: `translateY(${y}px)`,
-                  opacity:
-                    !!expandedSection && !isExpander && !hasUserScrolledAfterExpand ? 0.35 : 1,
-                  paddingBottom: row.type === 'expander' ? (expandedSection?.isOpen ? 0 : gap) : gap,
+                  // paddingBottom: row.type === 'expander' ? gap : gap,
                   minHeight:
                     row.type === 'expander' && expandedSection && !expandedSection.isOpen
                       ? gap
