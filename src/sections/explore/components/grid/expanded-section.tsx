@@ -1,8 +1,8 @@
-import React, { memo, useEffect, useMemo, useRef, useState } from 'react';
-import { Box, Typography, Paper, IconButton } from '@mui/material';
+import React, { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { Box, Typography, Paper, IconButton, Tooltip, Button } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import { IconChevronDown } from '@tabler/icons-react';
 import { GridItem, ExpandedSection as ExpandedSectionType } from '../../types';
-import { CloseIcon } from 'yet-another-react-lightbox';
 import { GRID_CONFIG } from '../../CONSTANTS';
 import { motion } from 'framer-motion';
 
@@ -66,6 +66,15 @@ const ExpandedSection: React.FC<ExpandedSectionProps> = memo(
     const initialHeight = expandedSection.isOpen ? expandedSection.height : 0;
     const contentRef = useRef<HTMLDivElement>(null);
     const [animatedHeight, setAnimatedHeight] = useState(initialHeight);
+    const [closeVisible, setCloseVisible] = useState(true);
+
+    const handleControlsVisibility = useCallback((visible: boolean) => {
+      setCloseVisible(visible);
+    }, []);
+
+    useEffect(() => {
+      if (!expandedSection.isOpen) setCloseVisible(true);
+    }, [expandedSection.isOpen]);
 
     // ---- MEDICIÓN DE ALTURA (throttled con rAF para evitar warnings del ResizeObserver) ----
     const lastH = useRef<number>(
@@ -111,6 +120,12 @@ const ExpandedSection: React.FC<ExpandedSectionProps> = memo(
       [animationDuration]
     );
 
+    const enhancedChildren = React.isValidElement(children)
+      ? React.cloneElement(children as React.ReactElement<any>, {
+          onPlayerControlsVisibilityChange: handleControlsVisibility,
+        })
+      : children;
+
     return (
       <MotionAnimatedContainer
         initial={false}
@@ -138,25 +153,34 @@ const ExpandedSection: React.FC<ExpandedSectionProps> = memo(
           >
             <SectionContent ref={contentRef}>
               {/* Botón de cierre del expander (opcional, no interfiere con tu contenido) */}
-              <IconButton
-                size="small"
-                onClick={onRequestClose}
-                sx={{
-                  position: 'absolute',
-                  top: 8,
-                  right: 8,
-                  zIndex: 2,
-                  color: 'white',
-                  bgcolor: 'rgba(0,0,0,0.35)',
-                  '&:hover': { bgcolor: 'rgba(0,0,0,0.55)' },
-                }}
-                aria-label="Cerrar sección"
-              >
-                <CloseIcon />
-              </IconButton>
+              {closeVisible && (
+                <Tooltip title="Close player" placement="bottom">
+                  <Button
+                    size="small"
+                    onClick={onRequestClose}
+                    sx={{
+                      position: 'absolute',
+                      top: 25,
+                      left: '50%',
+                      padding: '4px 16px',
+                      borderRadius: 24,
+                      transform: 'translate(-50%, -50%)',
+                      zIndex: 2,
+                      color: '#fff',
+                      bgcolor: 'rgba(10,12,18,0.75)',
+                      border: '1px solid rgba(255,255,255,0.24)',
+                      boxShadow: '0 12px 24px rgba(5,6,12,0.45)',
+                      '&:hover': { bgcolor: 'rgba(10,12,18,0.92)' },
+                    }}
+                    aria-label="Close player"
+                  >
+                    <IconChevronDown size={18} />
+                  </Button>
+                </Tooltip>
+              )}
 
               {/* Contenido real del expander: player + info (conservado) */}
-              {children ?? (
+              {enhancedChildren ?? (
                 <>
                   {/* Fallback mínimo por si llega vacío */}
                   <Typography variant="h6" sx={{ textAlign: 'center' }}>{item.title}</Typography>

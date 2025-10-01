@@ -14,6 +14,6 @@ export const WidgetSurface = styled(Paper)(({ theme }) => ({
   borderRadius: 16,
   overflow: 'hidden',
   backdropFilter: 'blur(10px)',
-  border: `1px solid ${alpha(theme.palette.common.white, 0.08)}`,
   background: alpha('#0e1319', 0.92),
+  border: `1px solid ${alpha(theme.palette.common.white, 0.08)}`,
 }));

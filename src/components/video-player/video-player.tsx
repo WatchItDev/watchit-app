@@ -38,6 +38,8 @@ export interface VideoPlayerProps {
   onBack?: () => void;
   showBack?: boolean;
   postId: string;
+  onPlay?: () => void;
+  onControlsVisibilityChange?: (visible: boolean) => void;
 }
 
 const STEP = 5;
@@ -49,6 +51,8 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({
   postId,
   onBack,
   showBack,
+  onPlay,
+  onControlsVisibilityChange,
 }) => {
   const mdUp = useResponsive('up', 'md');
   const player = useRef<MediaPlayerInstance>(null);
@@ -64,6 +68,10 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({
   useEffect(() => {
     if (cid) getSubtitles(cid);
   }, [cid]);
+
+  useEffect(() => {
+    onControlsVisibilityChange?.(controlsVisible ?? true);
+  }, [controlsVisible, onControlsVisibilityChange]);
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -97,6 +105,7 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({
   const handlePlay = () => {
     emit('VIDEO_START');
     incrementView({ variables: { postId } });
+    onPlay?.();
   };
 
   const handleEnded = () => emit('VIDEO_WATCH_FULL');
@@ -126,7 +135,6 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({
   // on provider (HLS) initialization
   const onProviderSetup = (provider: MediaProviderAdapter) => {
     if (isHLSProvider(provider)) {
-      // @ts-expect-error No error in this context
       // provider.instance?.on(Hls.Events.ERROR, (_, data: ErrorData) => {
       //   if (data.details === Hls.ErrorDetails.BUFFER_STALLED_ERROR) {
       //     console.log('Seek Stalling Detected, Adjusting Buffer...');

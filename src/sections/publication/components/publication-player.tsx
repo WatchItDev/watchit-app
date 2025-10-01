@@ -8,7 +8,7 @@ import { getMediaUri, getMovieCid } from '@src/utils/publication.ts';
 // ----------------------------------------------------------------------
 
 const PublicationPlayer: FC<PublicationPlayerProps> = (props) => {
-  const { publication, loading } = props;
+  const { publication, loading, onPlay, onControlsVisibilityChange } = props;
 
   if (loading) return <LoadingScreen />;
 
@@ -19,15 +19,16 @@ const PublicationPlayer: FC<PublicationPlayerProps> = (props) => {
         borderRadius: '1rem',
         overflow: 'hidden',
         display: 'flex',
-        border: '1px solid rgba(255, 255, 255, 0.08)',
       }}
     >
       {getMovieCid(publication) && (
         <VideoPlayer
           src={getMediaUri(getMovieCid(publication))}
           cid={getMovieCid(publication)}
-          title={publication?.title}
+          titleMovie={publication?.title ?? ''}
           postId={publication?.id}
+          onPlay={onPlay}
+          onControlsVisibilityChange={onControlsVisibilityChange}
           // onBack={handleBack}
         />
       )}

@@ -11,6 +11,8 @@ export interface PublicationDetailsViewProps {
 export interface PublicationPlayerProps {
   publication: Post;
   loading: boolean;
+  onPlay?: () => void;
+  onControlsVisibilityChange?: (visible: boolean) => void;
 }
 
 export interface NeonPaperProps {
