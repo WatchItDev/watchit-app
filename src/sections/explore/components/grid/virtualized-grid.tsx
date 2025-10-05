@@ -1,6 +1,6 @@
 import React, { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Box, Skeleton } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import { Box, Skeleton, Stack } from '@mui/material';
+import { styled, alpha, useTheme } from '@mui/material/styles';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import {
   setExpandedOpen,
@@ -47,7 +47,7 @@ type AnyRow = NormalRow | SliderRow | ExpanderRow;
 // ============================================================================
 const ScrollParent = styled(Box)(() => ({
   position: 'relative',
-  height: '100vh',
+  height: '100%',
   overflow: 'auto',
 }));
 
@@ -88,12 +88,56 @@ const Cell = styled(Box)(() => ({
 
 const SkeletonGrid = memo(
   ({ columns, itemSize, gap }: { columns: number; itemSize: number; gap: number }) => {
+    const theme = useTheme();
     const count = Math.max(columns * 6, 1);
+    const cardBorder = alpha(theme.palette.common.white, 0.06);
+    const chipBg = alpha(theme.palette.common.white, 0.08);
+
     return (
       <Box sx={{ position: 'absolute', left: gap, right: gap, top: gap }}>
-        <Box sx={{ display: 'grid', gridTemplateColumns: `repeat(${columns}, ${itemSize}px)`, gap }}>
+        <Box
+          sx={{
+            display: 'grid',
+            gridTemplateColumns: `repeat(${columns}, ${itemSize}px)`,
+            gridAutoRows: `${itemSize}px`,
+            gap: '12px',
+          }}
+        >
           {Array.from({ length: count }).map((_, i) => (
-            <Skeleton key={i} variant="rounded" height={itemSize} sx={{ borderRadius: 2 }} />
+            <Box
+              key={i}
+              sx={{
+                position: 'relative',
+                borderRadius: 2,
+                overflow: 'hidden',
+                border: `1px solid ${cardBorder}`,
+              }}
+            >
+              <Skeleton
+                variant="rectangular"
+                animation="wave"
+                sx={{
+                  position: 'absolute',
+                  inset: 0,
+                  height: '100%',
+                  bgcolor: alpha(theme.palette.common.white, 0.05),
+                }}
+              />
+
+              <Stack
+                direction="row"
+                spacing={1}
+                sx={{
+                  position: 'absolute',
+                  top: 12,
+                  left: 12,
+                  right: 12,
+                }}
+              >
+                <Skeleton variant="rounded" width={56} height={18} sx={{ bgcolor: chipBg }} />
+                <Skeleton variant="rounded" width={56} height={18} sx={{ bgcolor: chipBg, flexShrink: 0 }} />
+              </Stack>
+            </Box>
           ))}
         </Box>
       </Box>
@@ -640,7 +684,6 @@ const VirtualizedGrid: React.FC<VirtualizedGridProps> = memo(({ sentinelRef }) =
                 $dimmed={!!expandedSection && !isExpander && !hasUserScrolledAfterExpand}
                 sx={{
                   transform: `translateY(${y}px)`,
-                  // paddingBottom: row.type === 'expander' ? gap : gap,
                   minHeight:
                     row.type === 'expander' && expandedSection && !expandedSection.isOpen
                       ? gap

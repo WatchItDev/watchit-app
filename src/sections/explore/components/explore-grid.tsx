@@ -4,10 +4,7 @@ import { useDispatch } from 'react-redux';
 import { addItems, resetGrid } from '@redux/grid';
 import type { GridItem as GridItemType } from '../types';
 import type { Post } from '@src/graphql/generated/graphql';
-
-// ✅ Importa el grid correcto (evita el de demo)
 import VirtualizedGrid from './grid/virtualized-grid';
-
 import { useInfiniteFeed } from '@src/hooks/use-infinite-feed';
 
 // ---- Sliders programados (conservados) ----
@@ -77,7 +74,7 @@ function postsToGridItems(posts: Post[], minRegularCount = 120): GridItemType[] 
 
 export default function ExploreGrid() {
   const dispatch = useDispatch();
-  const { items: posts, loading, sentinelRef } = useInfiniteFeed(30);
+  const { items: posts, sentinelRef } = useInfiniteFeed(30);
 
   useEffect(() => {
     dispatch(resetGrid());
@@ -90,7 +87,7 @@ export default function ExploreGrid() {
   }, [posts, dispatch]);
 
   return (
-    <Box sx={{ p: 2 }}>
+    <Box sx={{ height: '100%', maxHeight: '100%' }}>
       <VirtualizedGrid sentinelRef={sentinelRef} />
       {/* opcional: indicador externo de loading con `loading` */}
     </Box>

@@ -1,4 +1,4 @@
-import { FC, useRef, useEffect, memo } from 'react';
+import { FC, useRef, useEffect, memo, useCallback } from 'react';
 // @ts-expect-error No error in this context
 import { Hls /** , FetchLoader, XhrLoader */ } from 'hls.js/dist/hls.mjs';
 import { Typography, IconButton, Button } from '@mui/material';
@@ -64,6 +64,29 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({
 
   const watchedSeconds = useRef<Set<number>>(new Set()); // distinct seconds already counted
   const nextEvent = useRef(5); // next percentage to emit (5,10,15…)
+  const defaultCanIdleRef = useRef<boolean | null>(null);
+
+  const handlePointerEnter = useCallback(() => {
+    const instance = player.current;
+    if (!instance) return;
+    const { controls } = instance;
+    if (!controls) return;
+    if (defaultCanIdleRef.current === null) {
+      defaultCanIdleRef.current = controls.canIdle;
+    }
+    controls.canIdle = false;
+    controls.show(0);
+  }, []);
+
+  const handlePointerLeave = useCallback(() => {
+    const instance = player.current;
+    if (!instance) return;
+    const { controls } = instance;
+    if (!controls) return;
+    const defaultValue = defaultCanIdleRef.current ?? true;
+    controls.canIdle = defaultValue;
+    controls.show(0);
+  }, []);
 
   useEffect(() => {
     if (cid) getSubtitles(cid);
@@ -80,6 +103,18 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({
 
     document?.addEventListener('keydown', handleKeyDown);
     return () => document?.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      const instance = player.current;
+      if (!instance) return;
+      const { controls } = instance;
+      if (!controls) return;
+      if (defaultCanIdleRef.current !== null) {
+        controls.canIdle = defaultCanIdleRef.current;
+      }
+    };
   }, []);
 
   const emit = async (type: string, progress?: number) => {
@@ -184,6 +219,8 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({
       onPlay={handlePlay}
       onEnded={handleEnded}
       onTimeUpdate={handleTimeUpdate}
+      onPointerEnter={handlePointerEnter}
+      onPointerLeave={handlePointerLeave}
       viewType="video"
       streamType="on-demand"
       logLevel="warn"

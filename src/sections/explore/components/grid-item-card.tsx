@@ -58,10 +58,13 @@ export default function GridItemCard({ post, onActivate, isActive }: Props) {
         height: '100%',
         outline: 'none',
         transition: 'box-shadow 160ms ease, transform 120ms ease',
-        boxShadow: isActive
-          ? '0 0 0 2px rgba(90,170,255,0.9), 0 10px 28px rgba(90,170,255,0.25)'
-          : 'none',
         transform: isActive ? 'translateY(-1px)' : 'none',
+        opacity: 0.8,
+        '&:hover': {
+          opacity: 1,
+          boxShadow: '0 12px 32px rgba(0,0,0,0.35)',
+          transform: 'translateY(-2px)',
+        },
         '&:focus-visible': { boxShadow: '0 0 0 2px rgba(255,255,255,0.25)' },
       }}
     >
@@ -100,7 +103,7 @@ export default function GridItemCard({ post, onActivate, isActive }: Props) {
           </Stack>
         </Box>
 
-        <Box
+        {/* <Box
           sx={{
             p: 1,
             background: `linear-gradient(0deg, ${alpha('#000', 0.7)} 0%, ${alpha('#000', 0)} 70%)`,
@@ -110,7 +113,7 @@ export default function GridItemCard({ post, onActivate, isActive }: Props) {
           <Typography variant="caption" sx={{ opacity: 0.9 }}>
             {creator}
           </Typography>
-        </Box>
+        </Box> */}
 
         {/* "PLAYING" pill when active */}
         {isActive && (
