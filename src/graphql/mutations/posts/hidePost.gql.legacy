@@ -1,0 +1,3 @@
+mutation HidePost($postId: Int!) {
+  hidePost(input: { postId: $postId })
+}

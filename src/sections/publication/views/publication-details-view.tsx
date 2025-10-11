@@ -30,11 +30,8 @@ import { SubscribeProfileModal } from '@src/components/subscribe-profile-modal.t
 import { PublicationTitleDescription } from '@src/sections/publication/components/publication-description.tsx';
 import { PublicationRecommendations } from '@src/sections/publication/components/publication-recommendations.tsx';
 import { PublicationSponsorsAndBackers } from '@src/sections/publication/components/publication-sponsors-and-bakers.tsx';
-import {
-  useGetPostLazyQuery,
-  useGetPostsByAuthorLazyQuery,
-} from '@src/graphql/generated/hooks.tsx';
-import { Post } from '@src/graphql/generated/graphql.ts';
+import { useGetPostLazy, useGetPostsByAuthorLazy } from '@src/graphql/hooks/post';
+import type { NormalizedPost } from '@src/utils/post-normalizer';
 import { Address } from 'viem';
 import { PublicationDetailViewSkeleton } from '@src/sections/publication/views/publication-details-view.skeleton.tsx';
 import { LoadingFade } from '@src/components/LoadingFade.tsx';
@@ -50,12 +47,13 @@ export default function PublicationDetailsView({
   const { session, isAuthLoading } = useAuth();
   const [
     loadPublication,
-    { data: publicationData, loading: publicationLoading },
-  ] = useGetPostLazyQuery();
-  const publication: Post = publicationData?.getPost;
+    { data: publication, loading: publicationLoading },
+  ] = useGetPostLazy();
   const ownerAddress: Address = publication?.author?.address as Address;
-  const [loadPublications, { data: profilePublications }] =
-    useGetPostsByAuthorLazyQuery();
+  const [
+    loadPublications,
+    { data: profilePublications, loading: profilePublicationsLoading },
+  ] = useGetPostsByAuthorLazy();
   // const { hasAccess, loading: accessLoading, fetch: refetchAccess } = useHasAccess(ownerAddress);
   // const { isAuthorized, loading: isAuthorizedLoading } = useIsPolicyAuthorized(GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS, ownerAddress);
   // const { campaign, loading: campaignLoading, fetchSubscriptionCampaign } = useGetSubscriptionCampaign();
@@ -70,15 +68,17 @@ export default function PublicationDetailsView({
   // const loading = (!(allLoaded && accessChecked) && !isAuthLoading) || !publication;
 
   useEffect(() => {
-    if (
-      !ownerAddress ||
-      publicationLoading ||
-      profilePublications?.getPostsByAuthor
-    )
+    if (!ownerAddress || publicationLoading || (profilePublications?.length ?? 0) > 0) {
       return;
-    // fetchSubscriptionCampaign(ownerAddress);
-    loadPublications({ variables: { author: ownerAddress, limit: 50 } });
-  }, [ownerAddress, publicationLoading, profilePublications?.getPostsByAuthor]);
+    }
+    loadPublications({ input: { userId: Number(publication?.author?.id) }, page: { limit: 50 } });
+  }, [
+    ownerAddress,
+    publicationLoading,
+    profilePublications,
+    loadPublications,
+    publication?.author?.id,
+  ]);
 
   // useEffect(() => {
   //   if (!campaign || !session?.address) return;
@@ -87,11 +87,8 @@ export default function PublicationDetailsView({
 
   useEffect(() => {
     if (!id) return;
-    loadPublication({
-      variables: { getPostId: id },
-      fetchPolicy: 'network-only',
-    });
-  }, [id, publication]);
+    loadPublication({ input: { id: Number(id) } });
+  }, [id, loadPublication]);
 
   const handleSubscribe = () => {
     if (!session.authenticated) {
@@ -106,10 +103,9 @@ export default function PublicationDetailsView({
   };
 
   const filteredPublications =
-    profilePublications?.getPostsByAuthor?.filter(
-      (publication: Post) => publication.id !== id,
-    ) ?? [];
-  const loading = (publicationLoading || isAuthLoading) && !publication;
+    profilePublications?.filter((candidate: NormalizedPost) => candidate.id !== Number(id)) ?? [];
+  const loading =
+    (publicationLoading || isAuthLoading || profilePublicationsLoading) && !publication;
 
   if (loading || !publication) return <PublicationDetailViewSkeleton />;
 

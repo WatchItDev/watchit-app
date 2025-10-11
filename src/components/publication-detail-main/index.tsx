@@ -49,11 +49,8 @@ import { useNotificationPayload } from '@src/hooks/use-notification-payload.ts';
 import AvatarProfile from '@src/components/avatar/avatar.tsx';
 import { useAuth } from '@src/hooks/use-auth.ts';
 import { useToggleBookmark } from '@src/hooks/use-toggle-bookmark';
-import {
-  useHidePostMutation,
-  useGetIsLikedLazyQuery,
-  useToggleLikeMutation,
-} from '@src/graphql/generated/hooks.tsx';
+import { useGetIsLikedLazy, useToggleLike } from '@src/graphql/hooks/reactions';
+import { useHidePost } from '@src/graphql/hooks/posts';
 import { resolveSrc } from '@src/utils/image.ts';
 import { useBookmarks } from '@src/hooks/use-bookmark.ts';
 import PublicationShare from '@src/sections/publication/components/publication-share.tsx';
@@ -81,11 +78,11 @@ export default function PublicationDetailMain({
   const theme = useTheme();
   const { session: sessionData } = useAuth();
   const dispatch = useDispatch();
-  const [hidePost] = useHidePostMutation();
+  const [hidePost] = useHidePost();
   const { sendNotification } = useNotifications();
   const { generatePayload } = useNotificationPayload(sessionData);
-  const [getIsLiked, { loading: postLikedLoading }] = useGetIsLikedLazyQuery();
-  const [toggleLike, { loading: togglePostLikeLoading }] = useToggleLikeMutation();
+  const [getIsLiked, { loading: postLikedLoading }] = useGetIsLikedLazy();
+  const [toggleLike, { loading: togglePostLikeLoading }] = useToggleLike();
   const { has, loading: loadingList } = useBookmarks();
   const { toggle, loading: loadingToggle } = useToggleBookmark();
 
@@ -97,7 +94,7 @@ export default function PublicationDetailMain({
   const handleToggleLike = async () => {
     if (!sessionData?.authenticated) return dispatch(openLoginModal());
     try {
-      const res = await toggleLike({ variables: { input: { targetId: post.id, targetType: 'POST' } } });
+      const res = await toggleLike({ variables: { input: { targetId: Number(post.id), targetType: 'POST' } } });
       const isNowLiked = res.data?.toggleLike ?? false;
       setHasLiked(isNowLiked);
       setLikesCount((prev) => prev + (isNowLiked ? 1 : -1));
@@ -117,10 +114,10 @@ export default function PublicationDetailMain({
   };
 
   useEffect(() => {
-    getIsLiked({ variables: { targetId: post.id } }).then((res) => setHasLiked(res.data?.getIsLiked ?? false));
+    getIsLiked({ variables: { targetId: Number(post.id) } }).then((res) => setHasLiked(res.data?.getIsLiked ?? false));
   }, [post.id]);
 
-  const handleHide = async () => { await hidePost({ variables: { postId: post.id } }); router.reload(); };
+  const handleHide = async () => { await hidePost({ variables: { postId: Number(post.id) } }); router.reload(); };
   const goToProfile = () => { if (!post.author.address) return; router.push(paths.dashboard.user.root(`${post.author.address}`)); };
   if (!post) return <p>The publication does not exist</p>;
 

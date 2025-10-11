@@ -25,10 +25,6 @@ import useGetSubtitles from '@src/hooks/protocol/use-get-subtitles.ts';
 import { useResponsive } from '@src/hooks/use-responsive';
 import Label from '../label';
 import { ErrorData } from 'hls.js';
-import {
-  useIncrementPostViewMutation,
-  useLogEventMutation,
-} from '@src/graphql/generated/hooks.tsx';
 import { useAuth } from '@src/hooks/use-auth.ts';
 
 export interface VideoPlayerProps {
@@ -58,8 +54,6 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({
   const player = useRef<MediaPlayerInstance>(null);
   const controlsVisible = useMediaState('controlsVisible', player);
   const { tracks, getSubtitles } = useGetSubtitles();
-  const [logEvent] = useLogEventMutation();
-  const [incrementView] = useIncrementPostViewMutation();
   const { session } = useAuth();
 
   const watchedSeconds = useRef<Set<number>>(new Set()); // distinct seconds already counted
@@ -117,29 +111,13 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({
     };
   }, []);
 
-  const emit = async (type: string, progress?: number) => {
+  const emit = async (_type: string, _progress?: number) => {
     if (!session?.authenticated) return;
-    try {
-      console.log('emit event', type, progress);
-      await logEvent({
-        variables: {
-          input: {
-            type,
-            targetId: postId,
-            targetType: 'POST',
-            progress,
-            meta: { cid },
-          },
-        },
-      });
-    } catch (e) {
-      console.error('logEvent error', e);
-    }
+    // TODO: connect to telemetry endpoint when available.
   };
 
   const handlePlay = () => {
     emit('VIDEO_START');
-    incrementView({ variables: { postId } });
     onPlay?.();
   };
 

@@ -1,29 +1,32 @@
-query GetRepliesByComment($commentId: String!, $limit: Int) {
-  getRepliesByComment(commentId: $commentId, limit: $limit) {
-    author {
-      address
-      displayName
-      followersCount
-      followingCount
-      coverPicture
-      profilePicture
-      bio
-      publicationsCount
-      username
-    }
-    content
+query GetRepliesByComment($commentId: Int!, $limit: Int, $offset: Int) {
+  getComments(input: { parentId: $commentId }, page: { limit: $limit, offset: $offset }) {
     id
-    createdAt
-    likeCount
-    repliesCount
-    parentComment {
-      content
-      id
-    }
+    body
     post {
       id
-      title
     }
-    updatedAt
+    parent {
+      id
+    }
+    base {
+      id
+      createdAt
+      user {
+        id
+        address
+        displayName
+        verified
+        profile {
+          username
+          picture
+          cover
+          bio
+        }
+        socials {
+          platform
+          url
+        }
+      }
+    }
   }
 }

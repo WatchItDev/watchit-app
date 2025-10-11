@@ -1,3 +1,0 @@
-mutation HidePost($postId: String!) {
-  hidePost(postId: $postId)
-}

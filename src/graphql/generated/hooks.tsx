@@ -1,74 +1,312 @@
 import { gql } from '@apollo/client';
 import * as Apollo from '@apollo/client';
-import type { DocumentNode } from 'graphql';
 const defaultOptions = {} as const;
 
-export const GetPostDocument = gql`
-    query GetPost($input: PostByIdentifierInput!) {
-  getPost(input: $input) {
-    base {
-      active
-      createdAt
+export const CreateCommentDocument = gql`
+    mutation CreateComment($input: CreateCommentInput!) {
+  createComment(input: $input) {
+    id
+    body
+    parent {
       id
+    }
+    post {
+      id
+    }
+    base {
+      id
+      createdAt
       user {
-        address
-        createdAt
-        displayName
-        email
         id
+        address
+        displayName
+        verified
         profile {
-          bio
-          cover
-          picture
           username
+          picture
+          cover
+          bio
         }
         socials {
           platform
           url
         }
-        verified
       }
-      visibility
     }
-    body
-    id
-    title
   }
 }
     `;
+export type CreateCommentMutationFn = Apollo.MutationFunction<CreateCommentMutation, CreateCommentMutationVariables>;
 
 /**
- * __useGetPostQuery__
+ * __useCreateCommentMutation__
  *
- * To run a query within a React component, call `useGetPostQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetPostQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
+ * To run a mutation, you first call `useCreateCommentMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateCommentMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
  *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const { data, loading, error } = useGetPostQuery({
+ * const [createCommentMutation, { data, loading, error }] = useCreateCommentMutation({
  *   variables: {
  *      input: // value for 'input'
  *   },
  * });
  */
-export function useGetPostQuery(baseOptions: Apollo.QueryHookOptions<GetPostQuery, GetPostQueryVariables> & ({ variables: GetPostQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+export function useCreateCommentMutation(baseOptions?: Apollo.MutationHookOptions<CreateCommentMutation, CreateCommentMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetPostQuery, GetPostQueryVariables>(GetPostDocument, options);
+        return Apollo.useMutation<CreateCommentMutation, CreateCommentMutationVariables>(CreateCommentDocument, options);
       }
-export function useGetPostLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetPostQuery, GetPostQueryVariables>) {
+export type CreateCommentMutationHookResult = ReturnType<typeof useCreateCommentMutation>;
+export type CreateCommentMutationResult = Apollo.MutationResult<CreateCommentMutation>;
+export type CreateCommentMutationOptions = Apollo.BaseMutationOptions<CreateCommentMutation, CreateCommentMutationVariables>;
+export const ToggleLikeDocument = gql`
+    mutation ToggleLike($input: ToggleLikeInput!) {
+  toggleLike(input: $input)
+}
+    `;
+export type ToggleLikeMutationFn = Apollo.MutationFunction<ToggleLikeMutation, ToggleLikeMutationVariables>;
+
+/**
+ * __useToggleLikeMutation__
+ *
+ * To run a mutation, you first call `useToggleLikeMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useToggleLikeMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [toggleLikeMutation, { data, loading, error }] = useToggleLikeMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useToggleLikeMutation(baseOptions?: Apollo.MutationHookOptions<ToggleLikeMutation, ToggleLikeMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<ToggleLikeMutation, ToggleLikeMutationVariables>(ToggleLikeDocument, options);
+      }
+export type ToggleLikeMutationHookResult = ReturnType<typeof useToggleLikeMutation>;
+export type ToggleLikeMutationResult = Apollo.MutationResult<ToggleLikeMutation>;
+export type ToggleLikeMutationOptions = Apollo.BaseMutationOptions<ToggleLikeMutation, ToggleLikeMutationVariables>;
+export const UpdatePostDocument = gql`
+    mutation UpdatePost($input: UpdatePostInput!) {
+  updatePost(input: $input) {
+    id
+    title
+  }
+}
+    `;
+export type UpdatePostMutationFn = Apollo.MutationFunction<UpdatePostMutation, UpdatePostMutationVariables>;
+
+/**
+ * __useUpdatePostMutation__
+ *
+ * To run a mutation, you first call `useUpdatePostMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdatePostMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updatePostMutation, { data, loading, error }] = useUpdatePostMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpdatePostMutation(baseOptions?: Apollo.MutationHookOptions<UpdatePostMutation, UpdatePostMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdatePostMutation, UpdatePostMutationVariables>(UpdatePostDocument, options);
+      }
+export type UpdatePostMutationHookResult = ReturnType<typeof useUpdatePostMutation>;
+export type UpdatePostMutationResult = Apollo.MutationResult<UpdatePostMutation>;
+export type UpdatePostMutationOptions = Apollo.BaseMutationOptions<UpdatePostMutation, UpdatePostMutationVariables>;
+export const GetCommentsByPostDocument = gql`
+    query GetCommentsByPost($postId: Int!, $limit: Int, $offset: Int) {
+  getComments(input: {postId: $postId}, page: {limit: $limit, offset: $offset}) {
+    id
+    body
+    post {
+      id
+    }
+    parent {
+      id
+    }
+    base {
+      id
+      createdAt
+      user {
+        id
+        address
+        displayName
+        verified
+        profile {
+          username
+          picture
+          cover
+          bio
+        }
+        socials {
+          platform
+          url
+        }
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetCommentsByPostQuery__
+ *
+ * To run a query within a React component, call `useGetCommentsByPostQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetCommentsByPostQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetCommentsByPostQuery({
+ *   variables: {
+ *      postId: // value for 'postId'
+ *      limit: // value for 'limit'
+ *      offset: // value for 'offset'
+ *   },
+ * });
+ */
+export function useGetCommentsByPostQuery(baseOptions: Apollo.QueryHookOptions<GetCommentsByPostQuery, GetCommentsByPostQueryVariables> & ({ variables: GetCommentsByPostQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetCommentsByPostQuery, GetCommentsByPostQueryVariables>(GetCommentsByPostDocument, options);
+      }
+export function useGetCommentsByPostLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetCommentsByPostQuery, GetCommentsByPostQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetPostQuery, GetPostQueryVariables>(GetPostDocument, options);
+          return Apollo.useLazyQuery<GetCommentsByPostQuery, GetCommentsByPostQueryVariables>(GetCommentsByPostDocument, options);
         }
-export function useGetPostSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetPostQuery, GetPostQueryVariables>) {
+export function useGetCommentsByPostSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetCommentsByPostQuery, GetCommentsByPostQueryVariables>) {
           const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<GetPostQuery, GetPostQueryVariables>(GetPostDocument, options);
+          return Apollo.useSuspenseQuery<GetCommentsByPostQuery, GetCommentsByPostQueryVariables>(GetCommentsByPostDocument, options);
         }
-export type GetPostQueryHookResult = ReturnType<typeof useGetPostQuery>;
-export type GetPostLazyQueryHookResult = ReturnType<typeof useGetPostLazyQuery>;
-export type GetPostSuspenseQueryHookResult = ReturnType<typeof useGetPostSuspenseQuery>;
-export type GetPostQueryResult = Apollo.QueryResult<GetPostQuery, GetPostQueryVariables>;
+export type GetCommentsByPostQueryHookResult = ReturnType<typeof useGetCommentsByPostQuery>;
+export type GetCommentsByPostLazyQueryHookResult = ReturnType<typeof useGetCommentsByPostLazyQuery>;
+export type GetCommentsByPostSuspenseQueryHookResult = ReturnType<typeof useGetCommentsByPostSuspenseQuery>;
+export type GetCommentsByPostQueryResult = Apollo.QueryResult<GetCommentsByPostQuery, GetCommentsByPostQueryVariables>;
+export const GetRepliesByCommentDocument = gql`
+    query GetRepliesByComment($commentId: Int!, $limit: Int, $offset: Int) {
+  getComments(
+    input: {parentId: $commentId}
+    page: {limit: $limit, offset: $offset}
+  ) {
+    id
+    body
+    post {
+      id
+    }
+    parent {
+      id
+    }
+    base {
+      id
+      createdAt
+      user {
+        id
+        address
+        displayName
+        verified
+        profile {
+          username
+          picture
+          cover
+          bio
+        }
+        socials {
+          platform
+          url
+        }
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetRepliesByCommentQuery__
+ *
+ * To run a query within a React component, call `useGetRepliesByCommentQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetRepliesByCommentQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetRepliesByCommentQuery({
+ *   variables: {
+ *      commentId: // value for 'commentId'
+ *      limit: // value for 'limit'
+ *      offset: // value for 'offset'
+ *   },
+ * });
+ */
+export function useGetRepliesByCommentQuery(baseOptions: Apollo.QueryHookOptions<GetRepliesByCommentQuery, GetRepliesByCommentQueryVariables> & ({ variables: GetRepliesByCommentQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetRepliesByCommentQuery, GetRepliesByCommentQueryVariables>(GetRepliesByCommentDocument, options);
+      }
+export function useGetRepliesByCommentLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetRepliesByCommentQuery, GetRepliesByCommentQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetRepliesByCommentQuery, GetRepliesByCommentQueryVariables>(GetRepliesByCommentDocument, options);
+        }
+export function useGetRepliesByCommentSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetRepliesByCommentQuery, GetRepliesByCommentQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetRepliesByCommentQuery, GetRepliesByCommentQueryVariables>(GetRepliesByCommentDocument, options);
+        }
+export type GetRepliesByCommentQueryHookResult = ReturnType<typeof useGetRepliesByCommentQuery>;
+export type GetRepliesByCommentLazyQueryHookResult = ReturnType<typeof useGetRepliesByCommentLazyQuery>;
+export type GetRepliesByCommentSuspenseQueryHookResult = ReturnType<typeof useGetRepliesByCommentSuspenseQuery>;
+export type GetRepliesByCommentQueryResult = Apollo.QueryResult<GetRepliesByCommentQuery, GetRepliesByCommentQueryVariables>;
+export const GetIsLikedDocument = gql`
+    query GetIsLiked($targetId: Int!, $targetType: ReactionTargetType = POST) {
+  getIsLiked(targetId: $targetId, targetType: $targetType)
+}
+    `;
+
+/**
+ * __useGetIsLikedQuery__
+ *
+ * To run a query within a React component, call `useGetIsLikedQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetIsLikedQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetIsLikedQuery({
+ *   variables: {
+ *      targetId: // value for 'targetId'
+ *      targetType: // value for 'targetType'
+ *   },
+ * });
+ */
+export function useGetIsLikedQuery(baseOptions: Apollo.QueryHookOptions<GetIsLikedQuery, GetIsLikedQueryVariables> & ({ variables: GetIsLikedQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetIsLikedQuery, GetIsLikedQueryVariables>(GetIsLikedDocument, options);
+      }
+export function useGetIsLikedLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetIsLikedQuery, GetIsLikedQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetIsLikedQuery, GetIsLikedQueryVariables>(GetIsLikedDocument, options);
+        }
+export function useGetIsLikedSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetIsLikedQuery, GetIsLikedQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetIsLikedQuery, GetIsLikedQueryVariables>(GetIsLikedDocument, options);
+        }
+export type GetIsLikedQueryHookResult = ReturnType<typeof useGetIsLikedQuery>;
+export type GetIsLikedLazyQueryHookResult = ReturnType<typeof useGetIsLikedLazyQuery>;
+export type GetIsLikedSuspenseQueryHookResult = ReturnType<typeof useGetIsLikedSuspenseQuery>;
+export type GetIsLikedQueryResult = Apollo.QueryResult<GetIsLikedQuery, GetIsLikedQueryVariables>;
 export const GetPostsDocument = gql`
     query GetPosts($input: PostFilterInput!, $getPostsPage2: PaginationInput) {
   getPosts(input: $input, page: $getPostsPage2) {
@@ -101,7 +339,6 @@ export const GetPostsDocument = gql`
           platform
           url
         }
-        verified
       }
     }
   }
@@ -141,165 +378,3 @@ export type GetPostsQueryHookResult = ReturnType<typeof useGetPostsQuery>;
 export type GetPostsLazyQueryHookResult = ReturnType<typeof useGetPostsLazyQuery>;
 export type GetPostsSuspenseQueryHookResult = ReturnType<typeof useGetPostsSuspenseQuery>;
 export type GetPostsQueryResult = Apollo.QueryResult<GetPostsQuery, GetPostsQueryVariables>;
-
-// ---------------------------------------------------------------------------
-// Temporary stubs for legacy hooks
-// TODO: Replace each stub with real implementations when the API exposes the corresponding resolvers.
-
-const stubAsyncResult = async () => ({ data: undefined } as Apollo.ApolloQueryResult<any>);
-
-const createStubQueryState = () =>
-  ({
-    data: undefined,
-    loading: false,
-    error: undefined,
-    networkStatus: Apollo.NetworkStatus.ready,
-    called: false,
-    refetch: stubAsyncResult,
-    fetchMore: stubAsyncResult,
-    startPolling: () => undefined,
-    stopPolling: () => undefined,
-    subscribeToMore: () => () => undefined,
-    updateQuery: () => undefined,
-    variables: undefined,
-    client: undefined,
-  }) as Apollo.QueryResult<any>;
-
-const createStubMutationState = () =>
-  ({
-    data: undefined,
-    loading: false,
-    error: undefined,
-    called: false,
-    client: undefined,
-    reset: () => undefined,
-  }) as Apollo.MutationResult<any>;
-
-const stubLazyExecutor = async (_options?: any) => ({ data: undefined } as Apollo.ApolloQueryResult<any>);
-
-const stubMutationExecutor = async (_options?: any) => ({ data: undefined } as Apollo.FetchResult<any>);
-
-export const GetTipsByBakerForPostDocument = {} as DocumentNode;
-export const GetRecentPostsDocument = {} as DocumentNode;
-export const GetLeaderboardDocument = {} as DocumentNode;
-export const GetUnlockedPerksDocument = {} as DocumentNode;
-
-export function useGetUserLazyQuery(): readonly [(options?: any) => Promise<Apollo.ApolloQueryResult<any>>, Apollo.QueryResult<any>] {
-  // TODO: Connect to `getUser` query when backend endpoint is ready.
-  return [stubLazyExecutor, createStubQueryState()];
-}
-
-export function useGetUsersLazyQuery(): readonly [(options?: any) => Promise<Apollo.ApolloQueryResult<any>>, Apollo.QueryResult<any>] {
-  // TODO: Connect to `getUsers` query when backend endpoint is ready.
-  return [stubLazyExecutor, createStubQueryState()];
-}
-
-export function useGetUserBookmarksQuery(_baseOptions?: any): Apollo.QueryResult<any> {
-  // TODO: Connect to bookmarks query once available.
-  return createStubQueryState();
-}
-
-export function useGetUserFollowersLazyQuery(): readonly [(options?: any) => Promise<Apollo.ApolloQueryResult<any>>, Apollo.QueryResult<any>] {
-  // TODO: Connect to followers query once available.
-  return [stubLazyExecutor, createStubQueryState()];
-}
-
-export function useGetUserFollowingLazyQuery(): readonly [(options?: any) => Promise<Apollo.ApolloQueryResult<any>>, Apollo.QueryResult<any>] {
-  // TODO: Connect to following query once available.
-  return [stubLazyExecutor, createStubQueryState()];
-}
-
-export function useGetPostsByAuthorLazyQuery(): readonly [(options?: any) => Promise<Apollo.ApolloQueryResult<any>>, Apollo.QueryResult<any>] {
-  // TODO: Connect to author posts query once the API supports it.
-  return [stubLazyExecutor, createStubQueryState()];
-}
-
-export function useGetTipsByBakerForPostQuery(_baseOptions?: any): Apollo.QueryResult<any> {
-  // TODO: Connect to tips query when tipping API is live.
-  return createStubQueryState();
-}
-
-export function useGetRecentPostsQuery(_baseOptions?: any): Apollo.QueryResult<any> {
-  // TODO: Connect to recent posts query when feed API is restored.
-  return createStubQueryState();
-}
-
-export function useGetRecentPostsLazyQuery(_baseOptions?: any): readonly [(options?: any) => Promise<Apollo.ApolloQueryResult<any>>, Apollo.QueryResult<any>] {
-  // TODO: Connect to recent posts query when feed API is restored.
-  return [stubLazyExecutor, createStubQueryState()];
-}
-
-export function useGetLeaderboardQuery(_baseOptions?: any): Apollo.QueryResult<any> {
-  // TODO: Connect to leaderboard query once the achievements API is available.
-  return createStubQueryState();
-}
-
-export function useGetUnlockedPerksQuery(_baseOptions?: any): Apollo.QueryResult<any> {
-  // TODO: Connect to unlocked perks query when perks API is restored.
-  return createStubQueryState();
-}
-
-export function useHasPerkLazyQuery(_baseOptions?: any): readonly [(options?: any) => Promise<Apollo.ApolloQueryResult<any>>, Apollo.QueryResult<any>] {
-  // TODO: Connect to hasPerk query when perks API is ready.
-  return [stubLazyExecutor, createStubQueryState()];
-}
-
-export function useGetRanksCatalogQuery(_baseOptions?: any): Apollo.QueryResult<any> {
-  // TODO: Connect to ranks catalog query when leaderboard API is ready.
-  return createStubQueryState();
-}
-
-export function useGetAchievementsQuery(_baseOptions?: any): Apollo.QueryResult<any> {
-  // TODO: Connect to achievements query when achievements API is ready.
-  return createStubQueryState();
-}
-
-export function useCreateUserMutation(_baseOptions?: any): readonly [(options?: any) => Promise<Apollo.FetchResult<any>>, Apollo.MutationResult<any>] {
-  // TODO: Wire creation mutation when user management API is enabled.
-  return [stubMutationExecutor, createStubMutationState()];
-}
-
-export function useUpdateUserMutation(_baseOptions?: any): readonly [(options?: any) => Promise<Apollo.FetchResult<any>>, Apollo.MutationResult<any>] {
-  // TODO: Wire update mutation when user management API is enabled.
-  return [stubMutationExecutor, createStubMutationState()];
-}
-
-export function useCreateTipMutation(_baseOptions?: any): readonly [(options?: any) => Promise<Apollo.FetchResult<any>>, Apollo.MutationResult<any>] {
-  // TODO: Connect to tipping mutation once implemented.
-  return [stubMutationExecutor, createStubMutationState()];
-}
-
-export function useClaimPerkMutation(_baseOptions?: any): readonly [(options?: any) => Promise<Apollo.FetchResult<any>>, Apollo.MutationResult<any>] {
-  // TODO: Connect to claim perk mutation when achievements API is ready.
-  return [stubMutationExecutor, createStubMutationState()];
-}
-
-export function useToggleBookmarkMutation(_baseOptions?: any): readonly [(options?: any) => Promise<Apollo.FetchResult<any>>, Apollo.MutationResult<any>] {
-  // TODO: Connect to bookmark toggle mutation when API is ready.
-  return [stubMutationExecutor, createStubMutationState()];
-}
-
-export function useToggleLikeMutation(_baseOptions?: any): readonly [(options?: any) => Promise<Apollo.FetchResult<any>>, Apollo.MutationResult<any>] {
-  // TODO: Connect to like toggle mutation when reactions API is ready.
-  return [stubMutationExecutor, createStubMutationState()];
-}
-
-export function useGetIsLikedLazyQuery(_baseOptions?: any): readonly [(options?: any) => Promise<Apollo.ApolloQueryResult<any>>, Apollo.QueryResult<any>] {
-  // TODO: Connect to like status query when reactions API is ready.
-  return [stubLazyExecutor, createStubQueryState()];
-}
-
-export function useHidePostMutation(_baseOptions?: any): readonly [(options?: any) => Promise<Apollo.FetchResult<any>>, Apollo.MutationResult<any>] {
-  // TODO: Connect to hide post mutation when moderation API is ready.
-  return [stubMutationExecutor, createStubMutationState()];
-}
-
-export function useLogEventMutation(_baseOptions?: any): readonly [(options?: any) => Promise<Apollo.FetchResult<any>>, Apollo.MutationResult<any>] {
-  // TODO: Connect to logging mutation when analytics API is ready.
-  return [stubMutationExecutor, createStubMutationState()];
-}
-
-export function useIncrementPostViewMutation(_baseOptions?: any): readonly [(options?: any) => Promise<Apollo.FetchResult<any>>, Apollo.MutationResult<any>] {
-  // TODO: Connect to post view increment mutation when metrics API is ready.
-  return [stubMutationExecutor, createStubMutationState()];
-}

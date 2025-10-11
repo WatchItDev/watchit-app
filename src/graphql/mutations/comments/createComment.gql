@@ -1,21 +1,32 @@
 mutation CreateComment($input: CreateCommentInput!) {
   createComment(input: $input) {
-    author {
-      address
-      displayName
-    }
-    content
     id
-    createdAt
-    likeCount
-    parentComment {
+    body
+    parent {
       id
-      content
     }
     post {
       id
-      title
     }
-    updatedAt
+    base {
+      id
+      createdAt
+      user {
+        id
+        address
+        displayName
+        verified
+        profile {
+          username
+          picture
+          cover
+          bio
+        }
+        socials {
+          platform
+          url
+        }
+      }
+    }
   }
 }

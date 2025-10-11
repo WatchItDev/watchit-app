@@ -1,27 +1,22 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { Post } from '@src/graphql/generated/graphql.ts';
-import { useGetPostsLazyQuery } from '@src/graphql/generated/hooks.tsx';
+import { useGetPostsLazy } from '@src/graphql/hooks/post';
+import type { NormalizedPost } from '@src/utils/post-normalizer';
 
 export function useInfiniteFeed(pageSize = 24) {
-  const [items, setItems] = useState<Post[]>([]);
+  const [items, setItems] = useState<NormalizedPost[]>([]);
   const [hasMore, setHasMore] = useState(true);
-  const [fetchPosts, { loading }] = useGetPostsLazyQuery();
+  const [fetchPosts, { loading }] = useGetPostsLazy();
+  const [offset, setOffset] = useState(0);
 
   const loadMore = useCallback(async () => {
     if (loading || !hasMore) return;
 
-    const offset = items.length;
-
     try {
-      const { data } = await fetchPosts({
-        variables: {
-          input: {},
-          getPostsPage2: { limit: pageSize, offset },
-        },
-        fetchPolicy: 'cache-and-network',
+      const nextOffset = offset + pageSize;
+      const next = await fetchPosts({
+        input: {},
+        page: { limit: pageSize, offset },
       });
-
-      const next = data?.getPosts ?? [];
 
       if (!next.length) {
         setHasMore(false);
@@ -29,19 +24,19 @@ export function useInfiniteFeed(pageSize = 24) {
       }
 
       setItems((prev) => [...prev, ...next]);
+      setOffset(nextOffset);
 
       if (next.length < pageSize) {
         setHasMore(false);
       }
-    } catch {
+    } catch (error) {
+      console.error('useInfiniteFeed error', error);
       setHasMore(false);
     }
-  }, [fetchPosts, hasMore, items.length, loading, pageSize]);
+  }, [fetchPosts, hasMore, loading, pageSize, offset]);
 
   useEffect(() => {
-    if (items.length === 0 && hasMore && !loading) {
-      void loadMore();
-    }
+    if (items.length === 0 && hasMore && !loading) void loadMore();
   }, [hasMore, items.length, loadMore, loading]);
 
   const sentinelRef = useRef<HTMLDivElement | null>(null);
