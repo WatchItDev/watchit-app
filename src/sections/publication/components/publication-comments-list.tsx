@@ -1,33 +1,52 @@
 import Box from '@mui/material/Box';
 import PublicationCommentItem from './publication-comment-item.tsx';
 import LinearProgress from '@mui/material/LinearProgress';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { PostCommentListProps } from '@src/sections/publication/types.ts';
-import { useGetCommentsByPostQuery } from '@src/graphql/generated/hooks.tsx';
-import { Comment } from '@src/graphql/generated/graphql.ts';
+import { useGetCommentsQuery } from '@src/graphql/hooks/comments';
+import type { Comment } from '@src/graphql/generated/graphql.ts';
 
 // ----------------------------------------------------------------------
 
 export default function PostCommentList({
   publicationId,
   onReplyCreated,
+  showReplies = true,
+  initialData,
+  loading,
+  onRequestRefresh,
 }: Readonly<PostCommentListProps>) {
-  const { data, loading, error, refetch } = useGetCommentsByPostQuery({
-    variables: { postId: publicationId, limit: 50 },
+  const [hidden, setHidden] = useState<string[]>([]);
+  const shouldFetch = initialData === undefined;
+  const postId = Number(publicationId);
+  const skipQuery = Number.isNaN(postId) || !shouldFetch;
+
+  const { data, loading: queryLoading, error, refetch } = useGetCommentsQuery({
+    variables: { input: { postId }, page: { limit: 50 } },
     fetchPolicy: 'network-only',
-    pollInterval: 1000,
+    skip: skipQuery,
   });
 
-  const [hidden, setHidden] = useState<string[]>([]);
+  const source = useMemo(() => {
+    const list = initialData ?? data?.getComments ?? [];
+    return list.filter((c) => !hidden.includes(c.id));
+  }, [data?.getComments, hidden, initialData]);
+
   if (error) return <p>Error: {error.message}</p>;
-  const comments = (data?.getCommentsByPost ?? []).filter(
-    (c: Comment) => !hidden.includes(c.id),
-  );
+
+  const isLoading = loading ?? (shouldFetch ? queryLoading : false);
+  const comments = source.filter((comment) => !comment.parent);
+
+  const handleRefresh = () => {
+    if (shouldFetch && !Number.isNaN(postId)) void refetch();
+    onRequestRefresh?.();
+  };
+
   const handleHide = (commentId: string) => setHidden((h) => [...h, commentId]);
 
   return (
     <>
-      {loading && (
+      {isLoading && (
         <LinearProgress
           color="inherit"
           sx={{
@@ -42,12 +61,12 @@ export default function PostCommentList({
         <Box key={c.id} width="100%">
           <PublicationCommentItem
             comment={c}
-            canReply
             onHide={() => handleHide(c.id)}
             onReplyCreated={() => {
-              refetch();
+              handleRefresh();
               onReplyCreated();
             }}
+            showReplies={showReplies}
           />
         </Box>
       ))}

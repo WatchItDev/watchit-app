@@ -1,33 +1,35 @@
-query GetPosts($query: String!, $limit: Int) {
-  getPosts(query: $query, limit: $limit) {
-    author {
-      address
-      displayName
-      followersCount
-      followingCount
-      coverPicture
-      profilePicture
-      bio
-      publicationsCount
-      username
-    }
-    bookmarkCount
-    cid
-    commentCount
-    createdAt
-    description
+query GetPosts($input: PostFilterInput!, $getPostsPage2: PaginationInput) {
+  getPosts(input: $input, page: $getPostsPage2) {
     id
-    likeCount
-    media {
-      url
-      type
-      title
+    title
+    body
+    attachments {
       id
       cid
+      title
+      type
+      url
     }
-    title
-    updatedAt
-    viewCount
-    visibility
+    base {
+      id
+      createdAt
+      visibility
+      user {
+        id
+        address
+        displayName
+        email
+        profile {
+          bio
+          cover
+          picture
+          username
+        }
+        socials {
+          platform
+          url
+        }
+      }
+    }
   }
 }

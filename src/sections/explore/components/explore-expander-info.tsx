@@ -31,11 +31,37 @@ import { openLoginModal } from '@redux/auth';
 import { resolveSrc } from '@src/utils/image.ts';
 import { useRouter } from '@src/routes/hooks';
 import { paths } from '@src/routes/paths';
-import {
-  useGetIsFollowingLazyQuery,
-  useToggleFollowMutation,
-} from '@src/graphql/generated/hooks.tsx';
+import { EdgeState } from '@src/graphql/generated/graphql';
+import { useGetEdgeStatusLazyQuery, useSetEdgeStatusMutation } from '@src/graphql/hooks/edge';
 import GlassPanel from './glass-panel';
+
+type ExplorePost = Post & {
+  author: {
+    id?: number | null;
+    address?: string;
+    displayName?: string;
+    username?: string;
+    profilePicture?: string;
+    coverPicture?: string;
+    bio?: string;
+    followersCount?: number;
+    followingCount?: number;
+    publicationsCount?: number;
+  };
+  description?: string;
+  likeCount?: number;
+  bookmarkCount?: number;
+  commentCount?: number;
+  viewCount?: number;
+  cid?: string;
+  media?: Array<{
+    id: string;
+    cid: string;
+    title?: string;
+    type?: string;
+    url?: string;
+  }>;
+};
 
 interface ExpanderPlayerInfoProps {
   post: Post;
@@ -44,7 +70,8 @@ interface ExpanderPlayerInfoProps {
 
 type SidePanelKey = 'comments' | 'bakers' | 'sponsors';
 
-export default function ExpanderPlayerInfo({ post, onPlayerControlsVisibilityChange }: ExpanderPlayerInfoProps) {
+export default function ExpanderPlayerInfo({ post: rawPost, onPlayerControlsVisibilityChange }: ExpanderPlayerInfoProps) {
+  const post = rawPost as ExplorePost;
   const theme = useTheme();
   const mdUp = useMediaQuery(theme.breakpoints.up('md'));
 
@@ -52,7 +79,7 @@ export default function ExpanderPlayerInfo({ post, onPlayerControlsVisibilityCha
   const [openPanel, setOpenPanel] = useState<SidePanelKey | null>(null);
   const [reaction, setReaction] = useState<ReactionValue | null>(null);
   const [reactionMenuOpen, setReactionMenuOpen] = useState(false);
-  const [commentCount, setCommentCount] = useState(post.commentCount);
+  const [commentCount, setCommentCount] = useState(post.commentCount ?? 0);
   const [playerControlsVisible, setPlayerControlsVisible] = useState(true);
   const [isFollowing, setIsFollowing] = useState(false);
   const [isFetchingFollow, setIsFetchingFollow] = useState(true);
@@ -66,8 +93,8 @@ export default function ExpanderPlayerInfo({ post, onPlayerControlsVisibilityCha
   const reactionButtonRef = useRef<HTMLButtonElement | null>(null);
   const reactionMenuRef = useRef<HTMLDivElement | null>(null);
 
-  const [getIsFollowing] = useGetIsFollowingLazyQuery();
-  const [toggleFollow, { loading: toggleFollowLoading }] = useToggleFollowMutation();
+  const [getEdgeStatus] = useGetEdgeStatusLazyQuery();
+  const [setEdgeStatus, { loading: toggleFollowLoading }] = useSetEdgeStatusMutation();
   const authorDisplayName = post.author.displayName ?? post.author.username ?? 'creator';
 
   useLayoutEffect(() => {
@@ -84,18 +111,22 @@ export default function ExpanderPlayerInfo({ post, onPlayerControlsVisibilityCha
   }, []);
 
   useEffect(() => {
-    if (!post.author.address) return;
+    const authorId = post.author?.id;
+    if (!authorId) {
+      setIsFetchingFollow(false);
+      return;
+    }
     let mounted = true;
     setIsFetchingFollow(true);
-    getIsFollowing({ variables: { targetAddress: post.author.address } })
+    getEdgeStatus({ variables: { input: { toUserId: authorId } } })
       .then((res) => {
         if (!mounted) return;
-        const status = res.data?.getIsFollowing ?? false;
+        const status = res.data?.getEdgeStatus?.isFollowing ?? false;
         setIsFollowing(status);
         setIsFetchingFollow(false);
       })
       .catch((error) => {
-        console.error('getIsFollowing error', error);
+        console.error('getEdgeStatus error', error);
         if (!mounted) return;
         setIsFollowing(false);
         setIsFetchingFollow(false);
@@ -103,10 +134,10 @@ export default function ExpanderPlayerInfo({ post, onPlayerControlsVisibilityCha
     return () => {
       mounted = false;
     };
-  }, [getIsFollowing, post.author.address]);
+  }, [getEdgeStatus, post.author?.id]);
 
   useEffect(() => {
-    setCommentCount(post.commentCount);
+    setCommentCount(post.commentCount ?? 0);
   }, [post.commentCount]);
 
   useEffect(() => {
@@ -198,19 +229,29 @@ export default function ExpanderPlayerInfo({ post, onPlayerControlsVisibilityCha
       dispatch(openLoginModal());
       return;
     }
-    if (!post.author.address) return;
+    if (!post.author.id) return;
 
     try {
-      const result = await toggleFollow({ variables: { input: { targetAddress: post.author.address } } });
-      const nextState = result.data?.toggleFollow ?? false;
+      const nextState = !isFollowing;
+      await setEdgeStatus({
+        variables: {
+          input: {
+            toUserId: post.author.id,
+            status: nextState ? EdgeState.Follow : EdgeState.None,
+          },
+        },
+      });
       setIsFollowing(nextState);
     } catch (error) {
-      console.error('toggleFollow error', error);
+      console.error('setEdgeStatus error', error);
     }
   };
 
   const followDisabled =
-    isFetchingFollow || toggleFollowLoading || post.author.address === session?.user?.address;
+    isFetchingFollow ||
+    toggleFollowLoading ||
+    !post.author.address ||
+    post.author.address === session?.user?.address;
 
   const panelTitle = openPanel
     ? {
@@ -543,18 +584,18 @@ export default function ExpanderPlayerInfo({ post, onPlayerControlsVisibilityCha
                     <Box sx={{ flex: 1, minHeight: 0, overflowY: 'auto', pr: { xs: 0.5, md: 1 } }}>
                       {openPanel === 'comments' && (
                         <Stack spacing={2} sx={{ py: 1 }}>
-                          {session?.authenticated ? (
-                            <PublicationCommentForm
-                              root={post.id}
-                              commentOn={null}
-                              owner={{
-                                id: post.author.address,
-                                displayName: post.author.displayName ?? 'Watchit',
-                                avatar: resolveSrc(post.author.profilePicture || post.author.address, 'profile'),
-                              }}
-                              onSuccess={() => handleCommentCreated(true)}
-                            />
-                          ) : (
+                      {session?.authenticated ? (
+                        <PublicationCommentForm
+                          root={String(post.id)}
+                          commentOn={null}
+                          owner={{
+                            id: post.author.address,
+                            displayName: post.author.displayName ?? 'Watchit',
+                            avatar: resolveSrc(post.author.profilePicture || post.author.address, 'profile'),
+                          }}
+                          onSuccess={() => handleCommentCreated(true)}
+                        />
+                      ) : (
                             <Box
                               sx={{
                                 borderRadius: 2,
@@ -572,7 +613,7 @@ export default function ExpanderPlayerInfo({ post, onPlayerControlsVisibilityCha
 
                           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
                             <PostCommentList
-                              publicationId={post.id}
+                              publicationId={String(post.id)}
                               showReplies
                               onReplyCreated={() => handleCommentCreated(false)}
                             />

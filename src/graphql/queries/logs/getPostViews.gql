@@ -1,3 +1,0 @@
-query GetPostViews($postId: String!) {
-  getPostViews(postId: $postId)
-}

@@ -12,6 +12,21 @@ const PublicationPlayer: FC<PublicationPlayerProps> = (props) => {
 
   if (loading) return <LoadingScreen />;
 
+  const movieCid = getMovieCid(publication);
+  const media = (publication as any)?.media ?? [];
+  const videoAttachment =
+    media.find((item: any) => item?.type?.toLowerCase() === 'video') ??
+    media.find((item: any) => item?.type?.toLowerCase() === 'application/vnd.apple.mpegurl') ??
+    media.find((item: any) => item?.title?.toLowerCase().includes('video')) ??
+    null;
+
+  const attachmentUrl = videoAttachment?.url ?? '';
+  const normalizedAttachmentUrl = attachmentUrl.endsWith('/')
+    ? `${attachmentUrl}index.m3u8`
+    : attachmentUrl;
+  const videoSrc = normalizedAttachmentUrl || (movieCid ? getMediaUri(movieCid) : '');
+  const playerCid = movieCid || videoAttachment?.cid || '';
+
   return (
     <Box
       sx={{
@@ -19,12 +34,14 @@ const PublicationPlayer: FC<PublicationPlayerProps> = (props) => {
         borderRadius: '1rem',
         overflow: 'hidden',
         display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
       }}
     >
-      {getMovieCid(publication) && (
+      {videoSrc && (
         <VideoPlayer
-          src={getMediaUri(getMovieCid(publication))}
-          cid={getMovieCid(publication)}
+          src={videoSrc}
+          cid={playerCid}
           titleMovie={publication?.title ?? ''}
           postId={publication?.id}
           onPlay={onPlay}

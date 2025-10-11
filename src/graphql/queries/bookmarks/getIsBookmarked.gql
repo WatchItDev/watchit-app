@@ -1,3 +1,0 @@
-query GetIsBookmarked($postId: String!) {
-  getIsBookmarked(postId: $postId)
-}

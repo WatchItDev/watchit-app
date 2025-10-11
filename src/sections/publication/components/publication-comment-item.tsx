@@ -1,406 +1,129 @@
-import { useEffect, useState, lazy, Suspense, FC } from 'react';
+import { useMemo, useState } from 'react';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
-import Paper from '@mui/material/Paper';
-import PublicationCommentForm from './publication-details-comment-form.tsx';
-import { paths } from '../../../routes/paths.ts';
-import { useRouter } from '@src/routes/hooks';
-import { CircularProgress } from '@mui/material';
-import {
-  IconDots,
-  IconHeart,
-  IconHeartFilled,
-  IconMessageCircle,
-  IconMessageCircleFilled,
-} from '@tabler/icons-react';
 import Typography from '@mui/material/Typography';
-import RepliesList from '@src/sections/publication/components/publication-replies-list.tsx';
-import { timeAgo } from '@src/utils/comment.ts';
+import { alpha } from '@mui/material/styles';
+import AvatarProfile from '@src/components/avatar/avatar';
+import PublicationCommentForm from './publication-details-comment-form';
+import RepliesList from '@src/sections/publication/components/publication-replies-list';
+import { timeAgo } from '@src/utils/comment';
 import { openLoginModal } from '@redux/auth';
 import { useDispatch } from 'react-redux';
-import { useNotificationPayload } from '@src/hooks/use-notification-payload.ts';
-import { useNotifications } from '@src/hooks/use-notifications.ts';
-import AvatarProfile from '@src/components/avatar/avatar.tsx';
-import { PublicationCommentItemProps } from '@src/sections/publication/types.ts';
-import { useAuth } from '@src/hooks/use-auth.ts';
-import { resolveSrc } from '@src/utils/image.ts';
-import {
-  useHideCommentMutation,
-  useGetIsLikedQuery,
-  useToggleLikeMutation,
-} from '@src/graphql/generated/hooks.tsx';
+import { useAuth } from '@src/hooks/use-auth';
+import { resolveSrc } from '@src/utils/image';
+import type { PublicationCommentItemProps } from '@src/sections/publication/types';
 
-// Components Lazy
-const LazyPopover = lazy(() => import('@mui/material/Popover'));
-const LazyMenuItem = lazy(() => import('@mui/material/MenuItem'));
-const LazyDialog = lazy(() => import('@mui/material/Dialog'));
-const LazyDialogTitle = lazy(() => import('@mui/material/DialogTitle'));
-const LazyDialogContent = lazy(() => import('@mui/material/DialogContent'));
-const LazyDialogActions = lazy(() => import('@mui/material/DialogActions'));
-
-// ----------------------------------------------------------------------
-
-const PublicationCommentItem: FC<PublicationCommentItemProps> = (props) => {
-  const { comment, hasReply, canReply, onHide, onReplyCreated } = props;
-  const [openConfirmModal, setOpenConfirmModal] = useState(false);
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [hasLiked, setHasLiked] = useState(false);
-  const [showReplies, setShowReplies] = useState(false);
-  const [localRepliesCount, setLocalRepliesCount] = useState(
-    comment.repliesCount,
-  );
-  const [localLikes, setLocalLikes] = useState(comment.likeCount);
-  const router = useRouter();
-  const { data: commentLikedData, loading: commentLikedLoading } =
-    useGetIsLikedQuery({ variables: { targetId: comment?.id } });
-  const [toggleLike, { loading: toggleCommentLikeLoading }] =
-    useToggleLikeMutation();
-  const [hideComment] = useHideCommentMutation();
-  const { session: sessionData } = useAuth();
+const PublicationCommentItem = ({
+  comment,
+  hasReply,
+  onReplyCreated,
+  showReplies = true,
+}: PublicationCommentItemProps) => {
   const dispatch = useDispatch();
-  const { sendNotification } = useNotifications();
-  const { generatePayload } = useNotificationPayload(sessionData);
+  const { session } = useAuth();
+  const [showReplyForm, setShowReplyForm] = useState(false);
+  const [repliesOpen, setRepliesOpen] = useState(false);
 
-  const openMenu = Boolean(anchorEl);
-  const isLoading = toggleCommentLikeLoading || commentLikedLoading;
+  const author = comment.base?.user ?? null;
+  const authorAddress = author?.address ?? '';
+  const createdAt = comment.base?.createdAt ? new Date(comment.base.createdAt) : null;
 
-  const handleToggleLike = async () => {
-    if (!sessionData?.authenticated) return dispatch(openLoginModal());
+  const displayName = useMemo(() => {
+    return author?.displayName ?? author?.profile?.username ?? 'Watchit user';
+  }, [author?.displayName, author?.profile?.username]);
 
-    const res = await toggleLike({
-      variables: {
-        input: {
-          targetId: comment.id,
-          targetType: 'COMMENT',
-        },
-      },
-    });
-    const nowLiked = res.data?.toggleLike ?? false;
-
-    setHasLiked(nowLiked);
-    setLocalLikes((l) => l + (nowLiked ? 1 : -1));
-
-    if (nowLiked && comment.author.address !== sessionData.user?.address) {
-      const notificationPayload = generatePayload(
-        'LIKE',
-        {
-          id: comment?.author?.address,
-          displayName: comment?.author?.displayName ?? 'no name',
-          avatar: resolveSrc(
-            comment?.author?.profilePicture || comment?.author?.address,
-            'profile',
-          ),
-        },
-        {
-          root_id: comment?.post?.id ?? comment?.parentComment?.id,
-          parent_id: comment?.parentComment?.id ?? '',
-          comment_id: comment?.id,
-          rawDescription: `${sessionData?.user?.displayName} liked your comment`,
-        },
-      );
-
-      sendNotification(
-        comment?.author?.address,
-        sessionData?.user?.address ?? '',
-        notificationPayload,
-      );
+  const handleReplyClick = () => {
+    if (!session?.authenticated) {
+      dispatch(openLoginModal());
+      return;
     }
+    setShowReplyForm((prev) => !prev);
   };
 
-  const goToProfile = () => {
-    if (!comment?.author?.address) return;
-
-    router.push(paths.dashboard.user.root(`${comment?.author?.address}`));
-  };
-
-  const handleHide = async () => {
-    await hideComment({ variables: { commentId: comment.id } });
-    onHide();
-  };
-
-  useEffect(() => {
-    setHasLiked(commentLikedData?.getIsLiked ?? false);
-  }, [commentLikedData]);
-
-  const getCommentTimeText = () => {
-    if (comment?.createdAt) {
-      return timeAgo(new Date(comment.createdAt));
-    }
-
-    return 'Just now';
-  };
   return (
     <Stack
+      spacing={1.5}
       sx={{
-        ...(hasReply && {
-          pl: 8, // Indent replies
-        }),
-        ...(!hasReply && {
-          pt: 1,
-        }),
+        borderRadius: 2,
+        px: 2,
+        py: 1.5,
+        bgcolor: alpha('#0F1115', hasReply ? 0.5 : 0.7),
       }}
-      direction="column"
-      spacing={2}
     >
-      <Stack direction="column" spacing={1}>
-        <Stack direction="row" spacing={2} sx={{ position: 'relative' }}>
-          <AvatarProfile
-            src={resolveSrc(
-              comment?.author?.profilePicture || comment?.author?.address,
-              'profile',
+      <Stack direction="row" spacing={2} alignItems="flex-start">
+        <AvatarProfile
+          src={resolveSrc(authorAddress, 'profile')}
+          alt={displayName}
+          sx={{ width: 40, height: 40 }}
+        />
+        <Stack spacing={0.5} flex={1}>
+          <Stack direction="row" spacing={1} alignItems="baseline">
+            <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
+              {displayName}
+            </Typography>
+            {authorAddress && (
+              <Typography variant="caption" sx={{ color: alpha('#FFFFFF', 0.6) }}>
+                @{authorAddress.slice(0, 8)}…
+              </Typography>
             )}
-            alt={comment?.author?.address}
-            onClick={goToProfile}
-            sx={{
-              width: 40,
-              height: 40,
-              cursor: 'pointer',
-              border: 'solid 2px #161C24',
-            }}
-          />
+            {createdAt && (
+              <Typography variant="caption" sx={{ color: alpha('#FFFFFF', 0.5) }}>
+                {timeAgo(createdAt)}
+              </Typography>
+            )}
+          </Stack>
 
-          {sessionData?.authenticated &&
-            comment?.author?.address === sessionData?.user?.address && (
+          <Typography variant="body2" sx={{ color: alpha('#FFFFFF', 0.85) }}>
+            {comment.body}
+          </Typography>
+
+          <Stack direction="row" spacing={1} alignItems="center" sx={{ pt: 1 }}>
+            {showReplies && (
               <Button
+                size="small"
                 variant="text"
-                sx={{
-                  borderColor: '#FFFFFF',
-                  color: '#FFFFFF',
-                  height: '30px',
-                  minWidth: '30px',
-                  position: 'absolute',
-                  top: 5,
-                  right: 5,
-                  zIndex: 1,
-                }}
-                onClick={(event) => setAnchorEl(event.currentTarget)}
+                onClick={() => setRepliesOpen((prev) => !prev)}
+                sx={{ color: alpha('#FFFFFF', 0.7), textTransform: 'none', px: 0 }}
               >
-                <IconDots size={22} color="#FFFFFF" />
+                {repliesOpen ? 'Ocultar respuestas' : 'Ver respuestas'}
               </Button>
             )}
-
-          {/* Suspense para Popover */}
-          <Suspense fallback={<></>}>
-            {openMenu && (
-              <LazyPopover
-                open={openMenu}
-                anchorEl={anchorEl}
-                onClose={() => setAnchorEl(null)}
-                anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-                transformOrigin={{ vertical: 'top', horizontal: 'center' }}
-                PaperProps={{
-                  sx: {
-                    background: 'linear-gradient(90deg, #1C1C1E, #2C2C2E)',
-                    borderRadius: 1,
-                    p: 1,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    mt: 0,
-                    ml: -3,
-                    alignItems: 'center',
-                    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.5)',
-                  },
-                }}
-              >
-                <Stack direction="column" spacing={0} justifyContent="center">
-                  {comment?.author?.address === sessionData?.user?.address && (
-                    <LazyMenuItem
-                      onClick={() => {
-                        setOpenConfirmModal(true);
-                        setAnchorEl(null);
-                      }}
-                    >
-                      Hide
-                    </LazyMenuItem>
-                  )}
-                </Stack>
-              </LazyPopover>
-            )}
-          </Suspense>
-
-          <Paper
-            sx={{
-              flexGrow: 1,
-              bgcolor: 'background.neutral',
-            }}
-          >
-            <Stack
-              sx={{ mb: 0.5, px: 1, py: 0.5 }}
-              alignItems={{ sm: 'center' }}
-              justifyContent="flex-start"
-              direction={'row'}
-              gap={1}
-            >
-              <Box sx={{ typography: 'subtitle2' }}>
-                {comment?.author?.displayName ?? comment?.author?.username}
-              </Box>
-              <Box sx={{ typography: 'caption', color: 'text.disabled' }}>
-                {getCommentTimeText()}
-              </Box>
-            </Stack>
-
-            <Box
-              sx={{
-                typography: 'body2',
-                color: 'text.secondary',
-                p: 1,
-                mt: -1.5,
-              }}
-            >
-              {comment?.content}
-            </Box>
-          </Paper>
-        </Stack>
-
-        <Box sx={{ display: 'flex', pl: 7 }}>
-          <Button
-            variant="text"
-            sx={{
-              borderColor: '#FFFFFF',
-              color: '#FFFFFF',
-              height: '30px',
-              minWidth: '40px',
-            }}
-            onClick={handleToggleLike}
-            disabled={isLoading}
-          >
-            {isLoading ? (
-              <CircularProgress size="25px" sx={{ color: '#fff' }} />
-            ) : (
-              <>
-                {hasLiked ? (
-                  <IconHeartFilled size={22} color="#FFFFFF" />
-                ) : (
-                  <IconHeart size={22} color={'#FFFFFF'} />
-                )}
-                <Typography
-                  variant="body2"
-                  sx={{
-                    lineHeight: 1,
-                    ml: 1,
-                    fontWeight: '700',
-                  }}
-                >
-                  {localLikes}
-                </Typography>
-              </>
-            )}
-          </Button>
-          {canReply && (
             <Button
+              size="small"
               variant="text"
-              sx={{
-                borderColor: '#FFFFFF',
-                color: '#FFFFFF',
-                height: '30px',
-                minWidth: '40px',
-              }}
-              onClick={() => setShowReplies((s) => !s)}
+              onClick={handleReplyClick}
+              sx={{ color: alpha('#FFFFFF', 0.7), textTransform: 'none', px: 0 }}
             >
-              <>
-                {showReplies ? (
-                  <IconMessageCircleFilled size={22} color="#FFFFFF" />
-                ) : (
-                  <IconMessageCircle size={22} color={'#FFFFFF'} />
-                )}
-                <Typography
-                  variant="body2"
-                  sx={{
-                    lineHeight: 1,
-                    ml: 1,
-                    fontWeight: '700',
-                  }}
-                >
-                  {localRepliesCount}
-                </Typography>
-              </>
+              Responder
             </Button>
-          )}
-        </Box>
-      </Stack>
-      {showReplies && (
-        <>
-          <Box sx={{ mt: 1, mb: 2, ml: 8 }}>
-            {sessionData?.authenticated ? (
+          </Stack>
+
+          {showReplyForm && (
+            <Box sx={{ mt: 1 }}>
               <PublicationCommentForm
-                root={comment?.post?.id}
-                commentOn={comment?.id}
+                commentOn={comment.id}
                 owner={{
-                  id: comment?.author?.address,
-                  displayName: comment?.author?.displayName,
-                  avatar: resolveSrc(
-                    comment?.author?.profilePicture || comment?.author?.address,
-                    'profile',
-                  ),
+                  id: authorAddress,
+                  displayName,
+                  avatar: resolveSrc(authorAddress, 'profile'),
                 }}
+                root={String(comment.post?.id ?? '')}
                 onSuccess={() => {
-                  setLocalRepliesCount((c) => c + 1);
+                  setShowReplyForm(false);
                   onReplyCreated();
                 }}
               />
-            ) : (
-              <Typography
-                variant="body1"
-                color="text.secondary"
-                sx={{
-                  width: '100%',
-                  textAlign: 'center',
-                  backgroundColor: '#2B2D31',
-                  p: 2,
-                  borderRadius: 1,
-                }}
-              >
-                Login to leave a comment
-              </Typography>
-            )}
-          </Box>
-          <RepliesList
-            parentCommentId={comment.id}
-            canReply={canReply}
-            onReplyCreated={() => {
-              setLocalRepliesCount((c) => c + 1);
-              onReplyCreated();
-            }}
-          />
-        </>
-      )}
+            </Box>
+          )}
 
-      {/* Suspense para Dialog */}
-      <Suspense fallback={<></>}>
-        {openConfirmModal && (
-          <LazyDialog
-            open={openConfirmModal}
-            onClose={() => setOpenConfirmModal(false)}
-          >
-            <LazyDialogTitle>Confirm Hide</LazyDialogTitle>
-            <LazyDialogContent>
-              <Typography>
-                Are you sure you want to hide this comment?
-              </Typography>
-            </LazyDialogContent>
-            <LazyDialogActions>
-              <Button
-                variant="outlined"
-                sx={{ borderColor: '#fff' }}
-                onClick={() => setOpenConfirmModal(false)}
-              >
-                Cancel
-              </Button>
-              <Button
-                variant="contained"
-                sx={{ backgroundColor: '#fff' }}
-                onClick={() => {
-                  handleHide();
-                  setOpenConfirmModal(false);
-                }}
-              >
-                Confirm
-              </Button>
-            </LazyDialogActions>
-          </LazyDialog>
-        )}
-      </Suspense>
+          {repliesOpen && showReplies && (
+            <Box sx={{ pl: 2, mt: 1 }}>
+              <RepliesList parentCommentId={comment.id} onReplyCreated={onReplyCreated} />
+            </Box>
+          )}
+        </Stack>
+      </Stack>
     </Stack>
   );
 };

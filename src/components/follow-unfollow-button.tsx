@@ -23,11 +23,11 @@ import { useAuth } from '@src/hooks/use-auth.ts';
 import { ERRORS } from '@src/libs/notifications/errors';
 import { SUCCESS } from '@src/libs/notifications/success';
 import {
-  useGetIsFollowingLazyQuery,
   useGetUserLazyQuery,
-  useToggleFollowMutation,
 } from '@src/graphql/generated/hooks.tsx';
 import { User } from '@src/graphql/generated/graphql.ts';
+import { EdgeState } from '@src/graphql/generated/graphql';
+import { useGetEdgeStatusLazyQuery, useSetEdgeStatusMutation } from '@src/graphql/hooks/edge';
 
 // ----------------------------------------------------------------------
 
@@ -47,14 +47,12 @@ const FollowUnfollowButton = ({
   onActionFinish = () => {},
 }: PropsWithChildren<FollowUnfollowButtonProps>) => {
   const dispatch = useDispatch();
-  const [loadProfile, { data: profileData, loading: profileLoading }] =
-    useGetUserLazyQuery();
-  const [toggleFollow, { loading: profileFollowLoading }] =
-    useToggleFollowMutation();
+  const [loadProfile, { data: profileData, loading: profileLoading }] = useGetUserLazyQuery();
+  const [setEdgeStatus, { loading: edgeMutationLoading }] = useSetEdgeStatusMutation();
   const [
-    getIsFollowing,
-    { data: isFollowingData, loading: isFollowingLoading },
-  ] = useGetIsFollowingLazyQuery();
+    loadEdgeStatus,
+    { data: edgeStatusData, loading: edgeStatusLoading },
+  ] = useGetEdgeStatusLazyQuery();
   const [isFollowed, setIsFollowed] = useState(false);
   const [isProcessing, setIsProcessing] = useState(true);
   const { session } = useAuth();
@@ -64,21 +62,26 @@ const FollowUnfollowButton = ({
   const isLoading =
     isProcessing ||
     profileLoading ||
-    profileFollowLoading ||
-    isFollowingLoading ||
-    !profile;
+    edgeMutationLoading ||
+    edgeStatusLoading;
   const RainbowEffect = isLoading ? NeonPaper : Box;
 
   useEffect(() => {
     if (!profileId) return;
     loadProfile({ variables: { input: { address: profileId } } });
-    getIsFollowing({ variables: { targetAddress: profileId } });
-  }, [profileId]);
+  }, [loadProfile, profileId]);
 
   useEffect(() => {
-    setIsProcessing(false);
-    setIsFollowed(isFollowingData?.getIsFollowing ?? false);
-  }, [isFollowingData]);
+    if (!profile?.id) return;
+    setIsProcessing(true);
+    loadEdgeStatus({ variables: { input: { toUserId: profile.id } } })
+      .then((result) => {
+        setIsFollowed(result.data?.getEdgeStatus?.isFollowing ?? false);
+      })
+      .finally(() => {
+        setIsProcessing(false);
+      });
+  }, [loadEdgeStatus, profile?.id]);
 
   const handleUpdateProfile = () => {
     loadProfile({ variables: { input: { address: profileId } } });
@@ -91,16 +94,22 @@ const FollowUnfollowButton = ({
 
     setIsProcessing(true);
     try {
-      const result = await toggleFollow({
-        variables: { input: { targetAddress: profileId } },
+      const nextState = !isFollowed;
+      await setEdgeStatus({
+        variables: {
+          input: {
+            toUserId: profile.id,
+            status: nextState ? EdgeState.Follow : EdgeState.None,
+          },
+        },
       });
 
       notifySuccess(SUCCESS.FOLLOW_UNFOLLOW_SUCCESSFULLY, {
-        actionLbl: result?.data?.toggleFollow ? 'followed' : 'unfollowed',
+        actionLbl: nextState ? 'followed' : 'unfollowed',
         profileName: profile?.displayName ?? 'no name',
       });
 
-      setIsFollowed(result?.data?.toggleFollow);
+      setIsFollowed(nextState);
       handleUpdateProfile();
       onActionFinish();
 
@@ -110,7 +119,7 @@ const FollowUnfollowButton = ({
         {
           id: profile.address,
           displayName: profile?.displayName ?? 'no name',
-          avatar: profile?.profilePicture ?? '',
+          avatar: profile?.profile?.picture ?? '',
         },
         {
           rawDescription: `${session?.user?.displayName} now is following you`,
@@ -152,7 +161,7 @@ const FollowUnfollowButton = ({
             event.stopPropagation();
             handleAction();
           }}
-          disabled={isLoading || profile?.address === session?.address}
+          disabled={isLoading || !profile || profile?.address === session?.address}
           loading={isLoading}
         >
           {isFollowed ? 'Unfollow' : 'Follow'}

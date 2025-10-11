@@ -1,11 +1,9 @@
-import { useGetRecentPostsQuery } from '@src/graphql/generated/hooks';
 import AdaptiveSlider from '../index.tsx';
+import { useSliderPosts } from '../use-slider-posts';
 
 export default function PopularThisWeekSlider(
   props: { span: { w:number; h:number }; cell: number; gapPx?: number }
 ) {
-  const { data, loading } = useGetRecentPostsQuery({ variables: { limit: 10 } });
-  const raw = (data as any)?.getRecentPosts ?? [];
-  const posts = Array.isArray(raw?.nodes) ? raw.nodes : raw;
+  const { posts, loading } = useSliderPosts(10, 15);
   return <AdaptiveSlider title="Popular this week" posts={posts} loading={loading} {...props} />;
 }

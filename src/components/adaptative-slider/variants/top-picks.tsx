@@ -1,11 +1,9 @@
-import { useGetRecentPostsQuery } from '@src/graphql/generated/hooks';
+import { useSliderPosts } from '../use-slider-posts';
 import AdaptiveSlider from '../index.tsx';
 
 export default function TopPicksSlider(
   props: { span: { w:number; h:number }; cell: number; gapPx?: number }
 ) {
-  const { data, loading } = useGetRecentPostsQuery({ variables: { limit: 8 } });
-  const raw = (data as any)?.getRecentPosts ?? [];
-  const posts = Array.isArray(raw?.nodes) ? raw.nodes : raw;
+  const { posts, loading } = useSliderPosts(8, 0);
   return <AdaptiveSlider title="Top picks" posts={posts} loading={loading} {...props} />;
 }

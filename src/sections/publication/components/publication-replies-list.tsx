@@ -1,24 +1,26 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import Box from '@mui/material/Box';
 import PublicationCommentItem from './publication-comment-item.tsx';
 import LinearProgress from '@mui/material/LinearProgress';
 import { RepliesListProps } from '@src/sections/publication/types.ts';
-import { Comment } from '@src/graphql/generated/graphql.ts';
-import { useGetRepliesByCommentQuery } from '@src/graphql/generated/hooks.tsx';
+import type { Comment } from '@src/graphql/generated/graphql.ts';
+import { useGetCommentsQuery } from '@src/graphql/hooks/comments';
 
 const RepliesList = ({ parentCommentId, onReplyCreated }: RepliesListProps) => {
-  const { data, loading, error, refetch } = useGetRepliesByCommentQuery({
-    variables: { commentId: parentCommentId },
+  const parentId = Number(parentCommentId);
+  const { data, loading, error, refetch } = useGetCommentsQuery({
+    variables: { input: { parentId }, page: { limit: 40 } },
     fetchPolicy: 'network-only',
+    skip: Number.isNaN(parentId),
   });
 
   const [hidden, setHidden] = useState<string[]>([]);
 
   if (error) return <p>Error: {error.message}</p>;
 
-  const replies = (data?.getRepliesByComment ?? []).filter(
-    (r: Comment) => !hidden.includes(r.id),
-  );
+  const replies = useMemo(() => {
+    return (data?.getComments ?? []).filter((reply: Comment) => !hidden.includes(reply.id));
+  }, [data?.getComments, hidden]);
 
   const handleHide = (id: string) => setHidden((h) => [...h, id]);
 
@@ -48,6 +50,7 @@ const RepliesList = ({ parentCommentId, onReplyCreated }: RepliesListProps) => {
             refetch();
             onReplyCreated();
           }}
+          showReplies={false}
         />
       ))}
     </Box>

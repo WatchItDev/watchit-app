@@ -29,19 +29,22 @@ export interface NeonPaperProps {
 export interface PublicationCommentItemProps {
   comment: Comment;
   hasReply?: boolean;
-  canReply?: boolean;
   onHide: () => void;
   onReplyCreated: () => void;
+  showReplies?: boolean;
 }
 
 export interface PostCommentListProps {
-  publicationId: string;
+  publicationId: string | number;
   showReplies?: boolean;
   onReplyCreated: () => void;
+  initialData?: Comment[];
+  loading?: boolean;
+  onRequestRefresh?: () => void;
 }
 
 export interface MovieCommentFormProps {
-  root?: string; // ID of the root publication (post or comment)
+  root?: string | number; // ID of the root publication (post or comment)
   commentOn: string | null; // ID of the publication (post or comment) to comment on
   owner: {
     id: string;

@@ -19,11 +19,7 @@ import { useNotificationPayload } from '@src/hooks/use-notification-payload.ts';
 import { MovieCommentFormProps } from '@src/sections/publication/types.ts';
 import { useAuth } from '@src/hooks/use-auth.ts';
 import { resolveSrc } from '@src/utils/image.ts';
-import { useCreateCommentMutation } from '@src/graphql/generated/hooks.tsx';
-import {
-  GetCommentsByPostDocument,
-  GetRepliesByCommentDocument,
-} from '@src/graphql/generated/graphql.ts';
+import { useCreateCommentMutation } from '@src/graphql/hooks/comments';
 
 /**
  * MovieCommentForm Component
@@ -63,28 +59,19 @@ const MovieCommentForm = ({
    */
   const onSubmit = handleSubmit(async (data: { comment: string }) => {
     try {
+      const postId = root ? Number(root) : NaN;
+      if (!root || Number.isNaN(postId)) {
+        throw new Error('Invalid publication identifier');
+      }
+
       await createComment({
         variables: {
           input: {
-            content: data.comment,
-            postId: root,
-            parentComment: commentOn,
+            body: data.comment,
+            postId,
+            parentId: commentOn ? Number(commentOn) : undefined,
           },
         },
-        refetchQueries: [
-          {
-            query: GetCommentsByPostDocument,
-            variables: { postId: root, limit: 50 },
-          },
-          ...(commentOn
-            ? [
-                {
-                  query: GetRepliesByCommentDocument,
-                  variables: { commentId: commentOn },
-                },
-              ]
-            : []),
-        ],
       });
 
       const notificationPayload = generatePayload(

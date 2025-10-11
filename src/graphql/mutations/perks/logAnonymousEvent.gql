@@ -1,3 +1,0 @@
-mutation LogAnonymousEvent($input: LogEventInput!) {
-  logAnonymousEvent(input: $input)
-}

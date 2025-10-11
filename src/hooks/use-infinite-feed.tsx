@@ -1,44 +1,65 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Post } from '@src/graphql/generated/graphql.ts';
-import { useGetRecentPostsLazyQuery } from '@src/graphql/generated/hooks.tsx';
+import { useGetPostsLazyQuery } from '@src/graphql/generated/hooks.tsx';
 
 export function useInfiniteFeed(pageSize = 24) {
   const [items, setItems] = useState<Post[]>([]);
-  const [cursor, setCursor] = useState<string | null>(null);
   const [hasMore, setHasMore] = useState(true);
-  const [fetchPosts, { loading } ] = useGetRecentPostsLazyQuery();
+  const [fetchPosts, { loading }] = useGetPostsLazyQuery();
 
   const loadMore = useCallback(async () => {
     if (loading || !hasMore) return;
 
-    const variables: Record<string, unknown> = { limit: pageSize };
-    if (cursor) variables.cursor = cursor;
-    if (!cursor) (variables as any).offset = items.length; // fallback offset
+    const offset = items.length;
 
-    const { data } = await fetchPosts({ variables });
-    const next = (data as any)?.getRecentPosts ?? [];
+    try {
+      const { data } = await fetchPosts({
+        variables: {
+          input: {},
+          getPostsPage2: { limit: pageSize, offset },
+        },
+        fetchPolicy: 'cache-and-network',
+      });
 
-    const nodes: Post[] = Array.isArray(next?.nodes) ? next.nodes : next;
-    const nextCursor: string | null = (next?.nextCursor as string) ?? null;
-    const more: boolean = typeof next?.hasMore === 'boolean' ? next.hasMore : (nodes?.length ?? 0) === pageSize;
+      const next = data?.getPosts ?? [];
 
-    if (nodes?.length) setItems(prev => [...prev, ...nodes]);
-    setCursor(nextCursor);
-    setHasMore(more);
-  }, [cursor, fetchPosts, hasMore, items.length, loading, pageSize]);
+      if (!next.length) {
+        setHasMore(false);
+        return;
+      }
 
-  useEffect(() => { if (items.length === 0) void loadMore(); }, []); // initial load
+      setItems((prev) => [...prev, ...next]);
+
+      if (next.length < pageSize) {
+        setHasMore(false);
+      }
+    } catch {
+      setHasMore(false);
+    }
+  }, [fetchPosts, hasMore, items.length, loading, pageSize]);
+
+  useEffect(() => {
+    if (items.length === 0 && hasMore && !loading) {
+      void loadMore();
+    }
+  }, [hasMore, items.length, loadMore, loading]);
 
   const sentinelRef = useRef<HTMLDivElement | null>(null);
   useEffect(() => {
+    if (!hasMore) return;
+
     const el = sentinelRef.current;
     if (!el) return;
+
     const io = new IntersectionObserver((entries) => {
-      entries.forEach((e) => { if (e.isIntersecting) void loadMore(); });
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) void loadMore();
+      });
     }, { rootMargin: '1200px 0px 1200px 0px' });
+
     io.observe(el);
     return () => io.disconnect();
-  }, [loadMore]);
+  }, [hasMore, loadMore]);
 
   return { items, loading, hasMore, sentinelRef } as const;
 }

@@ -6,6 +6,7 @@ import type { GridItem as GridItemType } from '../types';
 import type { Post } from '@src/graphql/generated/graphql';
 import VirtualizedGrid from './grid/virtualized-grid';
 import { useInfiniteFeed } from '@src/hooks/use-infinite-feed';
+import { normalizePost, type NormalizedPost } from '@src/utils/post-normalizer';
 
 // ---- Sliders programados (conservados) ----
 const SLIDERS = [
@@ -27,7 +28,8 @@ function repeatUntil<T>(arr: T[], min: number): T[] {
 }
 
 function postsToGridItems(posts: Post[], minRegularCount = 120): GridItemType[] {
-  const basePosts = repeatUntil(posts, Math.max(minRegularCount, posts.length));
+  const enriched = posts.map((post) => normalizePost(post));
+  const basePosts = repeatUntil(enriched, Math.max(minRegularCount, enriched.length));
   const items: GridItemType[] = [];
   let si = 0;
   const sliders = [...SLIDERS].sort((a, b) => a.after - b.after);

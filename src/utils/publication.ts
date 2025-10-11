@@ -4,10 +4,20 @@ import { MediaAttachment, Post } from '@src/graphql/generated/graphql.ts';
 // ----------------------------------------------------------------------
 
 export function getAttachmentCid(publication: Post, altTag: string): string {
-  const found = publication?.media?.find(
-    (el: MediaAttachment) => el?.title === altTag,
+  if (!publication) return '';
+  const media = (publication as any)?.media as MediaAttachment[] | undefined;
+  if (!media) return (publication as any)?.posterSquareCid ?? '';
+
+  const lowerAlt = altTag.toLowerCase();
+  const foundExact = media.find((el) => el?.title?.toLowerCase() === lowerAlt);
+  if (foundExact?.cid) return foundExact.cid;
+
+  const foundSimilar = media.find(
+    (el) => el?.title?.toLowerCase()?.includes(lowerAlt),
   );
-  return found?.cid ?? '';
+  if (foundSimilar?.cid) return foundSimilar.cid;
+
+  return (publication as any)?.posterSquareCid ?? '';
 }
 
 export const getMediaUri = (cid: string): string =>

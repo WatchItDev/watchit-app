@@ -1,11 +1,9 @@
-import { useGetRecentPostsQuery } from '@src/graphql/generated/hooks';
 import AdaptiveSlider from '../index.tsx';
+import { useSliderPosts } from '../use-slider-posts';
 
 export default function ThisCanInterestYouSlider(
   props: { span: { w:number; h:number }; cell: number; gapPx?: number }
 ) {
-  const { data, loading } = useGetRecentPostsQuery({ variables: { limit: 6 } });
-  const raw = (data as any)?.getRecentPosts ?? [];
-  const posts = Array.isArray(raw?.nodes) ? raw.nodes : raw;
+  const { posts, loading } = useSliderPosts(6, 50);
   return <AdaptiveSlider title="This can interest you" posts={posts} loading={loading} {...props} />;
 }
