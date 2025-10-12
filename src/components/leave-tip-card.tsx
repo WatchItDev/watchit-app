@@ -14,10 +14,6 @@ import {
 } from '@src/libs/notifications/internal-notifications.ts';
 import { ERRORS } from '@src/libs/notifications/errors.ts';
 import { SUCCESS } from '@src/libs/notifications/success.ts';
-import {
-  GetTipsByBakerForPostDocument,
-  useCreateTipMutation,
-} from '@src/graphql/generated/hooks.tsx';
 
 const tipOptions = [
   { value: '10', title: '10', subtitle: 'A token of appreciation' },
@@ -29,7 +25,6 @@ export const LeaveTipCard: FC<{ post: Post }> = ({ post }) => {
   const dispatch = useDispatch();
   const { session } = useAuth();
   const { transfer, loading: transferLoading, error } = useTransfer();
-  const [createTip] = useCreateTipMutation();
 
   const [selectedTip, setSelectedTip] = useState('10');
   const [customTip, setCustomTip] = useState('');
@@ -67,31 +62,7 @@ export const LeaveTipCard: FC<{ post: Post }> = ({ post }) => {
     if (!recipient || amount <= 0) return;
 
     try {
-      const pTransfer = transfer({ amount, recipient });
-
-      const pCreateTip = pTransfer.then(() =>
-        createTip({
-          variables: {
-            input: {
-              postId: post.id,
-              creator: recipient,
-              amount,
-              txHash: null,
-              message: 'tip',
-            },
-          },
-          refetchQueries: [
-            {
-              query: GetTipsByBakerForPostDocument,
-              variables: { postId: post.id },
-            },
-          ],
-          awaitRefetchQueries: true,
-        }),
-      );
-
-      await Promise.all([pTransfer, pCreateTip]);
-
+      await transfer({ amount, recipient });
       notifySuccess(SUCCESS.TIP_CREATED_SUCCESSFULLY);
     } catch (e) {
       console.error('Transfer error:', e);

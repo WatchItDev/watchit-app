@@ -1,4 +1,4 @@
-import { User } from '@src/graphql/generated/graphql.ts';
+import { AppUser } from '@src/types/app-user.ts';
 
 export interface ProfileFormInitialValuesProps {
   username: string;
@@ -20,7 +20,7 @@ export interface ProfileFormProps {
   error?: Error;
   onSuccess: () => void;
   onCancel: () => void;
-  login?: (profile?: User) => Promise<void>;
+  login?: (profile?: AppUser) => Promise<void>;
 }
 
 export interface ProfileFormValues {

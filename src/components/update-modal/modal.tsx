@@ -13,7 +13,7 @@ import { SUCCESS } from '@src/libs/notifications/success.ts';
 import { useAuth } from '@src/hooks/use-auth.ts';
 import { useAccountSession } from '@src/hooks/use-account-session.ts';
 import { getSocialLinks } from '@src/utils/profile.ts';
-import { User } from '@src/graphql/generated/graphql.ts';
+import { AppUser } from '@src/types/app-user.ts';
 
 // ----------------------------------------------------------------------
 
@@ -77,7 +77,7 @@ export const UpdateModal: React.FC<UpdateModalProps> = ({ open, onClose }) => {
                 bio: session?.user?.bio ?? '',
                 profilePicture: session?.user?.profilePicture ?? null,
                 coverPicture: session?.user?.coverPicture ?? null,
-                socialLinks: getSocialLinks(session.user as User),
+                socialLinks: getSocialLinks(session.user as AppUser),
               }}
             />
           </Box>

@@ -1,7 +1,7 @@
 import type { CodegenConfig } from '@graphql-codegen/cli';
 
 const config: CodegenConfig = {
-  schema: 'http://127.0.0.1:4000/graphql',
+  schema: '../watchit-api/src/graphql/schema.generated.graphqls',
   documents: 'src/graphql/**/*.gql',
   generates: {
     'src/graphql/generated/graphql.ts': {

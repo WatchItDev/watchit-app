@@ -26,11 +26,13 @@ import {
   TabLabelProps,
 } from '../types.ts';
 import {
-  useGetPostsByAuthorLazyQuery,
+  useGetPostsLazyQuery,
   useGetUserFollowersLazyQuery,
   useGetUserFollowingLazyQuery,
   useGetUserLazyQuery,
 } from '@src/graphql/generated/hooks.tsx';
+import type { AppUser } from '@src/types/app-user.ts';
+import { mapUserToAppUser } from '@src/types/app-user.ts';
 import { UserProfileViewSkeleton } from '@src/sections/user/views/user-profile-view.skeleton.tsx';
 import { LoadingFade } from '@src/components/LoadingFade.tsx';
 
@@ -46,46 +48,64 @@ const UserProfileView = ({ id }: UserProfileViewProps) => {
   );
   const [loadProfile, { data: profileData, loading: loadingProfile }] =
     useGetUserLazyQuery();
-  const [loadPosts, { data: postsData, loading: loadingPosts }] =
-    useGetPostsByAuthorLazyQuery();
-  const [loadFollowers, { data: followersData, loading: loadingFollowers }] =
+  const [loadPosts, { data: postsData, loading: postsLoading }] =
+    useGetPostsLazyQuery();
+  const [loadFollowers, { data: followersData, loading: followersLoading }] =
     useGetUserFollowersLazyQuery();
-  const [loadFollowing, { data: followingData, loading: loadingFollowing }] =
+  const [loadFollowing, { data: followingData, loading: followingLoading }] =
     useGetUserFollowingLazyQuery();
   const {
     invitations: referrals,
     fetchInvitations,
     loading: loadingReferrals,
   } = useReferrals();
-  const loading = loadingProfile || loadingPosts || !profileData?.getUser;
+  const loading = loadingProfile || !profileData?.getUser;
+  const profile = useMemo(() => mapUserToAppUser(profileData?.getUser), [profileData?.getUser]);
+
+  const publications = postsData?.getPosts ?? [];
+  const followersList = useMemo(
+    () => (followersData?.getUserFollowers ?? []).map(mapUserToAppUser).filter(Boolean) as AppUser[],
+    [followersData?.getUserFollowers],
+  );
+  const followingList = useMemo(
+    () => (followingData?.getUserFollowing ?? []).map(mapUserToAppUser).filter(Boolean) as AppUser[],
+    [followingData?.getUserFollowing],
+  );
+
+  const publicationCount = publications.length > 0 ? publications.length : profile?.publicationsCount ?? 0;
+  const followersCount = followersList.length > 0 ? followersList.length : profile?.followersCount ?? 0;
+  const followingCount = followingList.length > 0 ? followingList.length : profile?.followingCount ?? 0;
+  const referralsCount = referrals?.length ?? 0;
+
   const counts: CountsData = useMemo(
     () => ({
-      publications: postsData?.getPostsByAuthor?.length ?? 0,
-      followers:
-        followersData?.getUserFollowers?.length ??
-        profileData?.getUser?.followersCount ??
-        0,
-      following:
-        followingData?.getUserFollowing?.length ??
-        profileData?.getUser?.followingCount ??
-        0,
-      referrals: referrals?.length ?? 0,
+      publications: publicationCount,
+      followers: followersCount,
+      following: followingCount,
+      referrals: referralsCount,
     }),
-    [postsData, followersData, followingData, profileData, referrals],
+    [publicationCount, followersCount, followingCount, referralsCount],
   );
 
   useEffect(() => {
     loadProfile({ variables: { input: { address: id } } });
-    loadPosts({ variables: { author: id, limit: 50 } });
     fetchInvitations(id);
-  }, [id]);
+  }, [id, loadProfile, fetchInvitations]);
 
   useEffect(() => {
-    if (currentTab === 'followers')
-      loadFollowers({ variables: { address: id, limit: 50 } });
-    if (currentTab === 'following')
-      loadFollowing({ variables: { address: id, limit: 50 } });
-  }, [currentTab, id]);
+    if (!profile?.id) return;
+    loadPosts({ variables: { input: { userId: profile.id }, getPostsPage2: { limit: 20 } } });
+  }, [profile?.id, loadPosts]);
+
+  useEffect(() => {
+    if (currentTab !== 'followers' || !profile?.address) return;
+    loadFollowers({ variables: { address: profile.address, limit: 50 } });
+  }, [currentTab, profile?.address, loadFollowers]);
+
+  useEffect(() => {
+    if (currentTab !== 'following' || !profile?.address) return;
+    loadFollowing({ variables: { address: profile.address, limit: 50 } });
+  }, [currentTab, profile?.address, loadFollowing]);
 
   const showSubscriptionAlert =
     session?.authenticated &&
@@ -104,8 +124,9 @@ const UserProfileView = ({ id }: UserProfileViewProps) => {
   }));
 
   const handleActionFinish = () => {
-    loadFollowers({ variables: { address: id, limit: 50 } });
-    loadFollowing({ variables: { address: id, limit: 50 } });
+    if (!profile?.address) return;
+    void loadFollowers({ variables: { address: profile.address, limit: 50 }, fetchPolicy: 'network-only' });
+    void loadFollowing({ variables: { address: profile.address, limit: 50 }, fetchPolicy: 'network-only' });
   };
 
   return (
@@ -125,7 +146,7 @@ const UserProfileView = ({ id }: UserProfileViewProps) => {
           </Alert>
         )}
         <ProfileHeader
-          profile={profileData?.getUser}
+          profile={profile}
           onActionFinish={handleActionFinish}
         >
           <Tabs
@@ -164,7 +185,7 @@ const UserProfileView = ({ id }: UserProfileViewProps) => {
 
         {currentTab === 'publications' && (
           <ProfileHome
-            publications={postsData?.getPostsByAuthor}
+            publications={publications}
             scrollable={false}
             initialRows={3}
             rowsIncrement={2}
@@ -173,19 +194,14 @@ const UserProfileView = ({ id }: UserProfileViewProps) => {
 
         {currentTab === 'followers' && (
           <ProfileFollowers
-            followers={followersData?.getUserFollowers ?? []}
-            loading={loadingFollowers}
-            onActionFinished={() =>
-              loadProfile({ variables: { input: { address: id } } })
-            }
+            followers={followersList}
+            loading={followersLoading}
+            onActionFinished={() => loadProfile({ variables: { input: { address: id } } })}
           />
         )}
 
         {currentTab === 'following' && (
-          <ProfileFollowing
-            following={followingData?.getUserFollowing ?? []}
-            loading={loadingFollowing}
-          />
+          <ProfileFollowing following={followingList} loading={followingLoading} />
         )}
 
         {currentTab === 'referrals' && session.address === id && (

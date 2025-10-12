@@ -1,9 +1,10 @@
 import { Invitation } from '@src/hooks/types.ts';
-import { Post, User } from '@src/graphql/generated/graphql.ts';
+import type { Post, User } from '@src/graphql/generated/graphql.ts';
+import type { AppUser } from '@src/types/app-user.ts';
 import { socialMedia } from '@src/sections/user/CONSTANTS.tsx';
 
 export interface ProfileHeaderProps {
-  profile: User;
+  profile?: AppUser | null;
   onActionFinish?: () => void;
 }
 
@@ -43,7 +44,7 @@ export interface SocialMediaUrls {
 }
 
 export interface ProfileShareProps {
-  profile: User;
+  profile?: AppUser | null;
 }
 
 export interface ProfileAttribute {
@@ -83,12 +84,12 @@ export interface ProfilePublicationItemProps {
 export interface ProfileFollowersProps {
   onActionFinished?: () => void;
   loading: boolean;
-  followers: User[];
+  followers: AppUser[];
 }
 
 export interface ProfileFollowingProps {
   loading: boolean;
-  following: User[];
+  following: AppUser[];
 }
 
 export type SocialPlatform = (typeof socialMedia)[number]['key'];

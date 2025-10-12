@@ -1,3 +1,0 @@
-mutation ToggleLike($input: ToggleLikeInput!) {
-  toggleLike(input: $input)
-}

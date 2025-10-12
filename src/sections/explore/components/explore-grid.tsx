@@ -1,9 +1,9 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { Box } from '@mui/material';
 import { useDispatch } from 'react-redux';
-import { addItems, resetGrid } from '@redux/grid';
-import type { GridItem as GridItemType } from '../types';
+import { resetGrid, setItems } from '@redux/grid';
 import type { Post } from '@src/graphql/generated/graphql';
+import type { GridItem as GridItemType } from '../types';
 import VirtualizedGrid from './grid/virtualized-grid';
 import { useInfiniteFeed } from '@src/hooks/use-infinite-feed';
 import { normalizePost, type NormalizedPost } from '@src/utils/post-normalizer';
@@ -77,6 +77,7 @@ function postsToGridItems(posts: Post[], minRegularCount = 120): GridItemType[] 
 export default function ExploreGrid() {
   const dispatch = useDispatch();
   const { items: posts, sentinelRef } = useInfiniteFeed(30);
+  const previousPostsRef = useRef<NormalizedPost[] | null>(null);
 
   useEffect(() => {
     dispatch(resetGrid());
@@ -84,8 +85,10 @@ export default function ExploreGrid() {
 
   useEffect(() => {
     if (!posts?.length) return;
+    if (previousPostsRef.current === posts) return;
+    previousPostsRef.current = posts;
     const next = postsToGridItems(posts, 120);
-    dispatch(addItems(next));
+    dispatch(setItems(next));
   }, [posts, dispatch]);
 
   return (

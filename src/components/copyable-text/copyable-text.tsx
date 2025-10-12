@@ -1,5 +1,8 @@
 import { useState, FC } from 'react';
-import { Tooltip, IconButton, Typography, Stack } from '@mui/material';
+import Tooltip from '@mui/material/Tooltip';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import Stack from '@mui/material/Stack';
 import { Icon } from '@iconify/react';
 
 const copyIcon = 'mdi:content-copy';

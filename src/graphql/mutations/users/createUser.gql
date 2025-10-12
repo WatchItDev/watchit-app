@@ -1,0 +1,20 @@
+mutation CreateUser($input: CreateUserInput!) {
+  createUser(input: $input) {
+    id
+    address
+    email
+    displayName
+    verified
+    createdAt
+    profile {
+      username
+      bio
+      picture
+      cover
+    }
+    socials {
+      platform
+      url
+    }
+  }
+}

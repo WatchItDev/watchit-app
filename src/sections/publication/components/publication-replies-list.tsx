@@ -7,14 +7,13 @@ import type { Comment } from '@src/graphql/generated/graphql.ts';
 import { useGetCommentsQuery } from '@src/graphql/hooks/comments';
 
 const RepliesList = ({ parentCommentId, onReplyCreated }: RepliesListProps) => {
-  const parentId = Number(parentCommentId);
   const { data, loading, error, refetch } = useGetCommentsQuery({
-    variables: { input: { parentId }, page: { limit: 40 } },
+    variables: { input: { parentId: parentCommentId }, page: { limit: 40 } },
     fetchPolicy: 'network-only',
-    skip: Number.isNaN(parentId),
+    skip: Number.isNaN(parentCommentId),
   });
 
-  const [hidden, setHidden] = useState<string[]>([]);
+  const [hidden, setHidden] = useState<number[]>([]);
 
   if (error) return <p>Error: {error.message}</p>;
 
@@ -22,7 +21,7 @@ const RepliesList = ({ parentCommentId, onReplyCreated }: RepliesListProps) => {
     return (data?.getComments ?? []).filter((reply: Comment) => !hidden.includes(reply.id));
   }, [data?.getComments, hidden]);
 
-  const handleHide = (id: string) => setHidden((h) => [...h, id]);
+  const handleHide = (id: number) => setHidden((h) => [...h, id]);
 
   return (
     <Box sx={{ ml: 0, mb: 1 }}>

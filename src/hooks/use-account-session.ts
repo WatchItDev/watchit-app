@@ -23,6 +23,7 @@ import { useAuth } from '@src/hooks/use-auth';
 import { ensureAAReady } from '@src/utils/wallet';
 import { useWeb3Auth } from '@src/hooks/use-web3-auth';
 import { useGetUserLazyQuery } from '@src/graphql/generated/hooks';
+import { mapUserToAppUser } from '@src/types/app-user.ts';
 
 interface UseAccountSessionHook {
   login: () => Promise<void>;
@@ -99,13 +100,14 @@ export const useAccountSession = (): UseAccountSessionHook => {
     setUserChecked(false);
 
     const { data } = await loadUser({
-      variables: { input: { address, idSession: info?.idToken } },
+      variables: { input: { address } },
     });
-    if (data?.getUser) {
-      dispatch(setUser({ user: data.getUser }));
+    const mappedUser = mapUserToAppUser(data?.getUser);
+    if (mappedUser) {
+      dispatch(setUser({ user: mappedUser }));
       mergeSession({
-        user: data.getUser,
-        address: data.getUser.address as Address,
+        user: mappedUser,
+        address: mappedUser.address as Address,
       });
     }
     setVerifyingUser(false);
@@ -116,9 +118,10 @@ export const useAccountSession = (): UseAccountSessionHook => {
     const address = await getPrimaryAddress();
     if (!address) throw new Error('No address found');
     const { data } = await loadUser({ variables: { input: { address } } });
-    if (data?.getUser) {
-      dispatch(setUser({ user: data.getUser }));
-      mergeSession({ user: data.getUser });
+    const mappedUser = mapUserToAppUser(data?.getUser);
+    if (mappedUser) {
+      dispatch(setUser({ user: mappedUser }));
+      mergeSession({ user: mappedUser });
     }
   };
 

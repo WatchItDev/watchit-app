@@ -21,7 +21,6 @@ import { useBoolean } from '@src/hooks/use-boolean.ts';
 import { User } from '@src/graphql/generated/graphql.ts';
 import { resolveSrc } from '@src/utils/image.ts';
 import { truncateAddress } from '@src/utils/wallet.ts';
-import { useGetUsersLazyQuery } from '@src/graphql/generated/hooks.tsx';
 
 interface FinanceSearchProfileModalProps {
   onSelectProfile: (profile: User) => void;
@@ -33,14 +32,14 @@ export default function FinanceSearchProfileModal({
   const open = useBoolean();
   const [searchQuery, setSearchQuery] = useState('');
   const theme = useTheme();
-  const [searchUsers, { data, loading }] = useGetUsersLazyQuery();
-  const profiles = data?.getUsers;
+  const [profiles, setProfiles] = useState<User[]>([]);
+  const loading = false;
 
   const handleSearchChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       const value = event.target.value;
       setSearchQuery(value);
-      searchUsers({ variables: { query: value, limit: 50 } });
+      setProfiles([]);
     },
     [],
   );
@@ -48,7 +47,7 @@ export default function FinanceSearchProfileModal({
   const handleClose = () => {
     open.onFalse();
     setSearchQuery('');
-    searchUsers({ variables: { query: '' } });
+    setProfiles([]);
   };
 
   const handleSelectProfile = (profile: User) => {

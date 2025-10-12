@@ -6,10 +6,9 @@ import AvatarProfile from '@src/components/avatar/avatar';
 import { resolveSrc } from '@src/utils/image';
 import { useRouter } from '@src/routes/hooks';
 import { paths } from '@src/routes/paths';
-import { useGetTipsByBakerForPostQuery } from '@src/graphql/generated/hooks';
 
 interface Props {
-  postId: string;
+  postId: number;
 }
 const SIZE = {
   hero: 72,
@@ -22,13 +21,12 @@ export function PublicationSponsorsAndBackers({ postId }: Props) {
   const router = useRouter();
   const variants = varFade().inRight;
 
-  const { data, loading } = useGetTipsByBakerForPostQuery({
-    variables: { postId, limit: 40 },
-    fetchPolicy: 'cache-and-network',
-    notifyOnNetworkStatusChange: true,
-  });
-
-  const backers = data?.getTipsByBakerForPost ?? [];
+  const loading = false;
+  const backers: Array<{
+    baker: { address: string; displayName?: string | null; username?: string | null; profilePicture?: string | null };
+    totalAmount: number;
+    count: number;
+  }> = [];
 
   const totalBackers = backers.length;
   const totalMMC = backers.reduce((a, b) => a + (b?.totalAmount ?? 0), 0);

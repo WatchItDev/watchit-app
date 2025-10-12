@@ -69,7 +69,7 @@ const MovieCommentForm = ({
           input: {
             body: data.comment,
             postId,
-            parentId: commentOn ? Number(commentOn) : undefined,
+            parentId: commentOn ?? undefined,
           },
         },
       });
@@ -84,7 +84,7 @@ const MovieCommentForm = ({
         {
           comment: data.comment,
           root_id: root ?? '',
-          comment_id: commentOn ?? '',
+          comment_id: commentOn != null ? String(commentOn) : '',
           rawDescription: `${sessionData?.user?.displayName} left a comment`,
         },
       );

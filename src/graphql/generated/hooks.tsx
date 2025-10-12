@@ -62,37 +62,6 @@ export function useCreateCommentMutation(baseOptions?: Apollo.MutationHookOption
 export type CreateCommentMutationHookResult = ReturnType<typeof useCreateCommentMutation>;
 export type CreateCommentMutationResult = Apollo.MutationResult<CreateCommentMutation>;
 export type CreateCommentMutationOptions = Apollo.BaseMutationOptions<CreateCommentMutation, CreateCommentMutationVariables>;
-export const ToggleLikeDocument = gql`
-    mutation ToggleLike($input: ToggleLikeInput!) {
-  toggleLike(input: $input)
-}
-    `;
-export type ToggleLikeMutationFn = Apollo.MutationFunction<ToggleLikeMutation, ToggleLikeMutationVariables>;
-
-/**
- * __useToggleLikeMutation__
- *
- * To run a mutation, you first call `useToggleLikeMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useToggleLikeMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [toggleLikeMutation, { data, loading, error }] = useToggleLikeMutation({
- *   variables: {
- *      input: // value for 'input'
- *   },
- * });
- */
-export function useToggleLikeMutation(baseOptions?: Apollo.MutationHookOptions<ToggleLikeMutation, ToggleLikeMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<ToggleLikeMutation, ToggleLikeMutationVariables>(ToggleLikeDocument, options);
-      }
-export type ToggleLikeMutationHookResult = ReturnType<typeof useToggleLikeMutation>;
-export type ToggleLikeMutationResult = Apollo.MutationResult<ToggleLikeMutation>;
-export type ToggleLikeMutationOptions = Apollo.BaseMutationOptions<ToggleLikeMutation, ToggleLikeMutationVariables>;
 export const UpdatePostDocument = gql`
     mutation UpdatePost($input: UpdatePostInput!) {
   updatePost(input: $input) {
@@ -127,6 +96,102 @@ export function useUpdatePostMutation(baseOptions?: Apollo.MutationHookOptions<U
 export type UpdatePostMutationHookResult = ReturnType<typeof useUpdatePostMutation>;
 export type UpdatePostMutationResult = Apollo.MutationResult<UpdatePostMutation>;
 export type UpdatePostMutationOptions = Apollo.BaseMutationOptions<UpdatePostMutation, UpdatePostMutationVariables>;
+export const CreateUserDocument = gql`
+    mutation CreateUser($input: CreateUserInput!) {
+  createUser(input: $input) {
+    id
+    address
+    email
+    displayName
+    verified
+    createdAt
+    profile {
+      username
+      bio
+      picture
+      cover
+    }
+    socials {
+      platform
+      url
+    }
+  }
+}
+    `;
+export type CreateUserMutationFn = Apollo.MutationFunction<CreateUserMutation, CreateUserMutationVariables>;
+
+/**
+ * __useCreateUserMutation__
+ *
+ * To run a mutation, you first call `useCreateUserMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateUserMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createUserMutation, { data, loading, error }] = useCreateUserMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateUserMutation(baseOptions?: Apollo.MutationHookOptions<CreateUserMutation, CreateUserMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateUserMutation, CreateUserMutationVariables>(CreateUserDocument, options);
+      }
+export type CreateUserMutationHookResult = ReturnType<typeof useCreateUserMutation>;
+export type CreateUserMutationResult = Apollo.MutationResult<CreateUserMutation>;
+export type CreateUserMutationOptions = Apollo.BaseMutationOptions<CreateUserMutation, CreateUserMutationVariables>;
+export const UpdateUserDocument = gql`
+    mutation UpdateUser($input: UpdateUserInput!) {
+  updateUser(input: $input) {
+    id
+    address
+    email
+    displayName
+    verified
+    createdAt
+    profile {
+      username
+      bio
+      picture
+      cover
+    }
+    socials {
+      platform
+      url
+    }
+  }
+}
+    `;
+export type UpdateUserMutationFn = Apollo.MutationFunction<UpdateUserMutation, UpdateUserMutationVariables>;
+
+/**
+ * __useUpdateUserMutation__
+ *
+ * To run a mutation, you first call `useUpdateUserMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateUserMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateUserMutation, { data, loading, error }] = useUpdateUserMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpdateUserMutation(baseOptions?: Apollo.MutationHookOptions<UpdateUserMutation, UpdateUserMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateUserMutation, UpdateUserMutationVariables>(UpdateUserDocument, options);
+      }
+export type UpdateUserMutationHookResult = ReturnType<typeof useUpdateUserMutation>;
+export type UpdateUserMutationResult = Apollo.MutationResult<UpdateUserMutation>;
+export type UpdateUserMutationOptions = Apollo.BaseMutationOptions<UpdateUserMutation, UpdateUserMutationVariables>;
 export const GetCommentsByPostDocument = gql`
     query GetCommentsByPost($postId: Int!, $limit: Int, $offset: Int) {
   getComments(input: {postId: $postId}, page: {limit: $limit, offset: $offset}) {
@@ -268,51 +333,13 @@ export type GetRepliesByCommentQueryHookResult = ReturnType<typeof useGetReplies
 export type GetRepliesByCommentLazyQueryHookResult = ReturnType<typeof useGetRepliesByCommentLazyQuery>;
 export type GetRepliesByCommentSuspenseQueryHookResult = ReturnType<typeof useGetRepliesByCommentSuspenseQuery>;
 export type GetRepliesByCommentQueryResult = Apollo.QueryResult<GetRepliesByCommentQuery, GetRepliesByCommentQueryVariables>;
-export const GetIsLikedDocument = gql`
-    query GetIsLiked($targetId: Int!, $targetType: ReactionTargetType = POST) {
-  getIsLiked(targetId: $targetId, targetType: $targetType)
-}
-    `;
-
-/**
- * __useGetIsLikedQuery__
- *
- * To run a query within a React component, call `useGetIsLikedQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetIsLikedQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetIsLikedQuery({
- *   variables: {
- *      targetId: // value for 'targetId'
- *      targetType: // value for 'targetType'
- *   },
- * });
- */
-export function useGetIsLikedQuery(baseOptions: Apollo.QueryHookOptions<GetIsLikedQuery, GetIsLikedQueryVariables> & ({ variables: GetIsLikedQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetIsLikedQuery, GetIsLikedQueryVariables>(GetIsLikedDocument, options);
-      }
-export function useGetIsLikedLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetIsLikedQuery, GetIsLikedQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetIsLikedQuery, GetIsLikedQueryVariables>(GetIsLikedDocument, options);
-        }
-export function useGetIsLikedSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetIsLikedQuery, GetIsLikedQueryVariables>) {
-          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<GetIsLikedQuery, GetIsLikedQueryVariables>(GetIsLikedDocument, options);
-        }
-export type GetIsLikedQueryHookResult = ReturnType<typeof useGetIsLikedQuery>;
-export type GetIsLikedLazyQueryHookResult = ReturnType<typeof useGetIsLikedLazyQuery>;
-export type GetIsLikedSuspenseQueryHookResult = ReturnType<typeof useGetIsLikedSuspenseQuery>;
-export type GetIsLikedQueryResult = Apollo.QueryResult<GetIsLikedQuery, GetIsLikedQueryVariables>;
 export const GetPostsDocument = gql`
     query GetPosts($input: PostFilterInput!, $getPostsPage2: PaginationInput) {
   getPosts(input: $input, page: $getPostsPage2) {
     id
     title
     body
+    commentCount
     attachments {
       id
       cid
@@ -329,6 +356,7 @@ export const GetPostsDocument = gql`
         address
         displayName
         email
+        verified
         profile {
           bio
           cover
@@ -378,3 +406,166 @@ export type GetPostsQueryHookResult = ReturnType<typeof useGetPostsQuery>;
 export type GetPostsLazyQueryHookResult = ReturnType<typeof useGetPostsLazyQuery>;
 export type GetPostsSuspenseQueryHookResult = ReturnType<typeof useGetPostsSuspenseQuery>;
 export type GetPostsQueryResult = Apollo.QueryResult<GetPostsQuery, GetPostsQueryVariables>;
+export const GetUserDocument = gql`
+    query GetUser($input: UserByIdentifierInput!) {
+  getUser(input: $input) {
+    id
+    address
+    email
+    displayName
+    verified
+    createdAt
+    profile {
+      username
+      bio
+      picture
+      cover
+    }
+    socials {
+      platform
+      url
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetUserQuery__
+ *
+ * To run a query within a React component, call `useGetUserQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUserQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUserQuery({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useGetUserQuery(baseOptions: Apollo.QueryHookOptions<GetUserQuery, GetUserQueryVariables> & ({ variables: GetUserQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetUserQuery, GetUserQueryVariables>(GetUserDocument, options);
+      }
+export function useGetUserLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserQuery, GetUserQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetUserQuery, GetUserQueryVariables>(GetUserDocument, options);
+        }
+export function useGetUserSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetUserQuery, GetUserQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetUserQuery, GetUserQueryVariables>(GetUserDocument, options);
+        }
+export type GetUserQueryHookResult = ReturnType<typeof useGetUserQuery>;
+export type GetUserLazyQueryHookResult = ReturnType<typeof useGetUserLazyQuery>;
+export type GetUserSuspenseQueryHookResult = ReturnType<typeof useGetUserSuspenseQuery>;
+export type GetUserQueryResult = Apollo.QueryResult<GetUserQuery, GetUserQueryVariables>;
+export const GetUserFollowersDocument = gql`
+    query GetUserFollowers($address: String!, $limit: Int) {
+  getUserFollowers(address: $address, limit: $limit) {
+    id
+    address
+    displayName
+    verified
+    profile {
+      username
+      bio
+      picture
+      cover
+    }
+    socials {
+      platform
+      url
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetUserFollowersQuery__
+ *
+ * To run a query within a React component, call `useGetUserFollowersQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUserFollowersQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUserFollowersQuery({
+ *   variables: {
+ *      address: // value for 'address'
+ *      limit: // value for 'limit'
+ *   },
+ * });
+ */
+export function useGetUserFollowersQuery(baseOptions: Apollo.QueryHookOptions<GetUserFollowersQuery, GetUserFollowersQueryVariables> & ({ variables: GetUserFollowersQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetUserFollowersQuery, GetUserFollowersQueryVariables>(GetUserFollowersDocument, options);
+      }
+export function useGetUserFollowersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserFollowersQuery, GetUserFollowersQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetUserFollowersQuery, GetUserFollowersQueryVariables>(GetUserFollowersDocument, options);
+        }
+export function useGetUserFollowersSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetUserFollowersQuery, GetUserFollowersQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetUserFollowersQuery, GetUserFollowersQueryVariables>(GetUserFollowersDocument, options);
+        }
+export type GetUserFollowersQueryHookResult = ReturnType<typeof useGetUserFollowersQuery>;
+export type GetUserFollowersLazyQueryHookResult = ReturnType<typeof useGetUserFollowersLazyQuery>;
+export type GetUserFollowersSuspenseQueryHookResult = ReturnType<typeof useGetUserFollowersSuspenseQuery>;
+export type GetUserFollowersQueryResult = Apollo.QueryResult<GetUserFollowersQuery, GetUserFollowersQueryVariables>;
+export const GetUserFollowingDocument = gql`
+    query GetUserFollowing($address: String!, $limit: Int) {
+  getUserFollowing(address: $address, limit: $limit) {
+    id
+    address
+    displayName
+    verified
+    profile {
+      username
+      bio
+      picture
+      cover
+    }
+    socials {
+      platform
+      url
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetUserFollowingQuery__
+ *
+ * To run a query within a React component, call `useGetUserFollowingQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetUserFollowingQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetUserFollowingQuery({
+ *   variables: {
+ *      address: // value for 'address'
+ *      limit: // value for 'limit'
+ *   },
+ * });
+ */
+export function useGetUserFollowingQuery(baseOptions: Apollo.QueryHookOptions<GetUserFollowingQuery, GetUserFollowingQueryVariables> & ({ variables: GetUserFollowingQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetUserFollowingQuery, GetUserFollowingQueryVariables>(GetUserFollowingDocument, options);
+      }
+export function useGetUserFollowingLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserFollowingQuery, GetUserFollowingQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetUserFollowingQuery, GetUserFollowingQueryVariables>(GetUserFollowingDocument, options);
+        }
+export function useGetUserFollowingSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetUserFollowingQuery, GetUserFollowingQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetUserFollowingQuery, GetUserFollowingQueryVariables>(GetUserFollowingDocument, options);
+        }
+export type GetUserFollowingQueryHookResult = ReturnType<typeof useGetUserFollowingQuery>;
+export type GetUserFollowingLazyQueryHookResult = ReturnType<typeof useGetUserFollowingLazyQuery>;
+export type GetUserFollowingSuspenseQueryHookResult = ReturnType<typeof useGetUserFollowingSuspenseQuery>;
+export type GetUserFollowingQueryResult = Apollo.QueryResult<GetUserFollowingQuery, GetUserFollowingQueryVariables>;

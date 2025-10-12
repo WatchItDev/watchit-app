@@ -16,7 +16,7 @@ export default function PostCommentList({
   loading,
   onRequestRefresh,
 }: Readonly<PostCommentListProps>) {
-  const [hidden, setHidden] = useState<string[]>([]);
+  const [hidden, setHidden] = useState<number[]>([]);
   const shouldFetch = initialData === undefined;
   const postId = Number(publicationId);
   const skipQuery = Number.isNaN(postId) || !shouldFetch;
@@ -42,7 +42,7 @@ export default function PostCommentList({
     onRequestRefresh?.();
   };
 
-  const handleHide = (commentId: string) => setHidden((h) => [...h, commentId]);
+  const handleHide = (commentId: number) => setHidden((h) => [...h, commentId]);
 
   return (
     <>

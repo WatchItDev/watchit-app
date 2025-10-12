@@ -1,3 +1,0 @@
-query GetIsLiked($targetId: Int!, $targetType: ReactionTargetType = POST) {
-  getIsLiked(targetId: $targetId, targetType: $targetType)
-}

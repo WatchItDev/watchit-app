@@ -1,5 +1,5 @@
 import emailjs from '@emailjs/browser';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Invitation } from '@src/hooks/types';
 import {
   fetchInvitations as fetchInvitationsAction,
@@ -33,7 +33,7 @@ const useReferrals = () => {
    *
    * @param {string} senderId - The ID of the user who sent the invitations.
    */
-  const fetchInvitations = async (senderId: string) => {
+  const fetchInvitations = useCallback(async (senderId: string) => {
     setLoading(true);
     setError(null);
 
@@ -46,14 +46,14 @@ const useReferrals = () => {
     }
 
     setLoading(false);
-  };
+  }, []);
 
   /**
    * Checks whether the current user's email has a pending invitation in the 'invitations' table.
    *
    * @returns {Promise<boolean>} - Returns true if there is at least one pending invitation for the current user's email, otherwise false.
    */
-  const checkIfMyEmailHasPendingInvite = async (): Promise<boolean> => {
+  const checkIfMyEmailHasPendingInvite = useCallback(async (): Promise<boolean> => {
     setLoading(true);
     setError(null);
 
@@ -66,7 +66,7 @@ const useReferrals = () => {
 
     setLoading(false);
     return hasPending;
-  };
+  }, [userEmail]);
 
   /**
    * Accepts an existing invitation by updating its status from 'pending' to 'accepted'.
@@ -75,7 +75,7 @@ const useReferrals = () => {
    * @param {string} invitationId - The ID of the invitation to accept.
    * @returns {Promise<Invitation | null>} - Returns the updated invitation if successful, otherwise null.
    */
-  const acceptInvitation = async (
+  const acceptInvitation = useCallback(async (
     invitationId: string,
   ): Promise<Invitation | null> => {
     setLoading(true);
@@ -107,7 +107,7 @@ const useReferrals = () => {
 
     setLoading(false);
     return data;
-  };
+  }, [sessionData]);
 
   /**
    * Checks if there is already an invitation from the current user (userEmail) to the given destinationEmail.
@@ -115,7 +115,7 @@ const useReferrals = () => {
    * @param {string} destinationEmail - The email to check against the 'destination' field in the database.
    * @returns {Promise<boolean>} - Returns true if there is an existing invitation, false otherwise.
    */
-  const checkIfInvitationSent = async (
+  const checkIfInvitationSent = useCallback(async (
     destinationEmail: string,
   ): Promise<boolean> => {
     setLoading(true);
@@ -132,7 +132,7 @@ const useReferrals = () => {
 
     setLoading(false);
     return exists;
-  };
+  }, [userEmail]);
 
   /**
    * Checks if the specified email already has an accepted invitation.
@@ -141,7 +141,7 @@ const useReferrals = () => {
    * @param {string} destinationEmail - The email to check.
    * @returns {Promise<boolean>} - Returns true if there's an invitation with status 'accepted' for this email, otherwise false.
    */
-  const checkIfEmailAlreadyAccepted = async (
+  const checkIfEmailAlreadyAccepted = useCallback(async (
     destinationEmail: string,
   ): Promise<boolean> => {
     setLoading(true);
@@ -156,7 +156,34 @@ const useReferrals = () => {
 
     setLoading(false);
     return accepted;
-  };
+  }, []);
+
+  /**
+   * Send an email with EmailJS.
+   */
+  const sendEmail = useCallback(async (data: EmailParams) => {
+    const { from_name, to_email } = data;
+
+    // Set the template parameters for EmailJS
+    const templateParams = {
+      to_email,
+      from_name,
+      from_email: GLOBAL_CONSTANTS.SENDER_EMAIL, // <-- Enforcing the global from_email
+    };
+
+    try {
+      const result = await emailjs.send(
+        GLOBAL_CONSTANTS.EMAIL_SERVICE_ID,
+        GLOBAL_CONSTANTS.EMAIL_TEMPLATE_ID,
+        templateParams,
+        GLOBAL_CONSTANTS.EMAIL_API_KEY,
+      );
+      console.log('Email sent successfully:', result.text);
+    } catch (err) {
+      console.error('Error sending email:', err);
+      throw err;
+    }
+  }, []);
 
   /**
    * Sends a new invitation. Inserts a record into the 'invitations' table in Supabase,
@@ -166,7 +193,7 @@ const useReferrals = () => {
    * @param {any} payload - Additional data you want to attach to the invitation (e.g., sender's profile info).
    * @returns {Promise<void>} - Throws an error if something goes wrong.
    */
-  const sendInvitation = async (
+  const sendInvitation = useCallback(async (
     destination: string,
     payload: Record<string, string>,
   ): Promise<void> => {
@@ -190,7 +217,7 @@ const useReferrals = () => {
         from_name: payload?.data?.from?.displayName ?? 'Watchit Web3xAI',
       });
     }
-  };
+  }, [sendEmail, sessionData, userEmail]);
 
   /**
    * ------------------------------------------------------------------
@@ -201,7 +228,7 @@ const useReferrals = () => {
    * 2) Otherwise, create a new invitation record with status = 'accepted'.
    * ------------------------------------------------------------------
    */
-  const acceptOrCreateInvitationForUser = async () => {
+  const acceptOrCreateInvitationForUser = useCallback(async () => {
     const { error } = await acceptOrCreateInvitationForUserAction(
       userEmail,
       sessionData,
@@ -210,34 +237,7 @@ const useReferrals = () => {
     if (error) {
       console.error('Error in acceptOrCreateInvitationForUser:', error);
     }
-  };
-
-  /**
-   * Send an email with EmailJS.
-   */
-  const sendEmail = async (data: EmailParams) => {
-    const { from_name, to_email } = data;
-
-    // Set the template parameters for EmailJS
-    const templateParams = {
-      to_email,
-      from_name,
-      from_email: GLOBAL_CONSTANTS.SENDER_EMAIL, // <-- Enforcing the global from_email
-    };
-
-    try {
-      const result = await emailjs.send(
-        GLOBAL_CONSTANTS.EMAIL_SERVICE_ID,
-        GLOBAL_CONSTANTS.EMAIL_TEMPLATE_ID,
-        templateParams,
-        GLOBAL_CONSTANTS.EMAIL_API_KEY,
-      );
-      console.log('Email sent successfully:', result.text);
-    } catch (err) {
-      console.error('Error sending email:', err);
-      throw err;
-    }
-  };
+  }, [sessionData, userEmail]);
 
   /**
    * Return all state variables and methods so they can be used in any component that imports this hook.

@@ -36,11 +36,7 @@ import {
   ProfileFormProps,
   ProfileFormValues,
 } from '@src/components/login-modal/types.ts';
-import {
-  useCreateUserMutation,
-  useLogEventMutation,
-  useUpdateUserMutation,
-} from '@src/graphql/generated/hooks.tsx';
+import { useCreateUserMutation, useUpdateUserMutation } from '@src/graphql/generated/hooks.tsx';
 import { resolveSrc } from '@src/utils/image.ts';
 import { getIpfsUri } from '@src/utils/publication.ts';
 import { useAuth } from '@src/hooks/use-auth.ts';
@@ -73,7 +69,6 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
     updateUser,
     { loading: updateUserLoading, error: errorUpdatingProfile },
   ] = useUpdateUserMutation();
-  const [logEvent] = useLogEventMutation();
   const { session } = useAuth();
   const { refreshUser } = useAccountSession();
 
@@ -135,37 +130,10 @@ export const ProfileFormView: React.FC<ProfileFormProps> = ({
   };
 
   const buildPerkEvents = (
-    data: ProfileData,
-    profilePictureURI: string | null,
-    prev?: ProfileData | null,
-  ) => {
-    const jobs: Promise<unknown>[] = [];
-
-    const hadPictureBefore = !!prev?.profilePicture;
-    if (!hadPictureBefore && profilePictureURI) {
-      jobs.push(
-        logEvent({
-          variables: { input: { type: 'PROFILE_PICTURE_ADDED' } },
-        }),
-      );
-    }
-
-    Object.entries(data.socialLinks).forEach(([platform, url]) => {
-      const prevUrl =
-        prev?.socialLinks?.[platform as keyof typeof data.socialLinks];
-      if (!prevUrl && url) {
-        jobs.push(
-          logEvent({
-            variables: {
-              input: { type: 'SOCIAL_LINK_ADDED', meta: { platform } },
-            },
-          }),
-        );
-      }
-    });
-
-    return jobs;
-  };
+    _data: ProfileData,
+    _profilePictureURI: string | null,
+    _prev?: ProfileData | null,
+  ) => [] as Promise<unknown>[];
 
   const updateProfileMetadata = async (data: ProfileData) => {
     setRegistrationLoading(true);

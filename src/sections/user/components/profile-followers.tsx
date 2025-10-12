@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography';
 import { UserItem } from '@src/components/user-item';
 import { randomKey } from '@src/utils/uuidv4.ts';
 import { ProfileFollowersProps } from '@src/sections/user/types.ts';
-import { User } from '@src/graphql/generated/graphql.ts';
+import type { AppUser } from '@src/types/app-user.ts';
 import LinearProgress from '@mui/material/LinearProgress';
 
 // ----------------------------------------------------------------------
@@ -49,7 +49,7 @@ const ProfileFollowers = ({
       }}
     >
       {followers?.length ? (
-        followers.map((follower: User, index: number) => (
+        followers.map((follower: AppUser, index: number) => (
           <UserItem
             key={`${randomKey(index, 'follower-')}`}
             profile={follower}

@@ -45,7 +45,7 @@ export interface PostCommentListProps {
 
 export interface MovieCommentFormProps {
   root?: string | number; // ID of the root publication (post or comment)
-  commentOn: string | null; // ID of the publication (post or comment) to comment on
+  commentOn: number | null; // ID of the publication (post or comment) to comment on
   owner: {
     id: string;
     displayName: string;
@@ -60,7 +60,7 @@ export interface PublicationNewWizardStepsProps extends StepperProps {
 }
 
 export interface RepliesListProps {
-  parentCommentId: string;
+  parentCommentId: number;
   canReply?: boolean;
   onReplyCreated: () => void;
 }

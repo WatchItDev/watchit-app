@@ -5,14 +5,14 @@ import { bgGradient } from '@src/theme/css.ts';
 import Image from '../../../components/image';
 import { SxProps } from '@mui/system';
 import { Theme } from '@mui/material';
-import { User } from '@src/graphql/generated/graphql.ts';
+import type { AppUser } from '@src/types/app-user.ts';
 import { resolveSrc } from '@src/utils/image.ts';
 import { useEffect, useState } from 'react';
 
 // ----------------------------------------------------------------------
 
 interface ProfileCoverProps {
-  profile?: User;
+  profile?: AppUser | null;
   sx?: SxProps<Theme>;
 }
 
@@ -25,9 +25,13 @@ export default function ProfileCover({
   const [image, setImage] = useState<string>('');
 
   useEffect(() => {
-    const imageSrc = (profile?.coverPicture || profile?.address) ?? '';
+    const imageSrc =
+      profile?.coverPicture ??
+      profile?.profile?.cover ??
+      profile?.address ??
+      '';
     setImage(resolveSrc(imageSrc, 'cover') ?? '');
-  }, [profile?.coverPicture]);
+  }, [profile?.coverPicture, profile?.profile?.cover, profile?.address]);
 
   return (
     <Image

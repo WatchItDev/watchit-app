@@ -1,37 +1,33 @@
 import { useCallback, useState } from 'react';
-import { useToggleBookmarkMutation } from '@src/graphql/generated/hooks';
-import { useAuth } from '@src/hooks/use-auth';
-import { useBookmarks } from '@src/hooks/use-bookmark';
 import { useDispatch } from 'react-redux';
 import { openLoginModal } from '@redux/auth';
-import { Post } from '@src/graphql/generated/graphql';
+import { useAuth } from '@src/hooks/use-auth';
+import { useBookmarks } from '@src/hooks/use-bookmark';
+import type { Post } from '@src/graphql/generated/graphql';
 
 export const useToggleBookmark = () => {
   const { session } = useAuth();
-  const { refetch } = useBookmarks();
-  const [mutate] = useToggleBookmarkMutation();
-  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
+  const { has } = useBookmarks();
+  const [loading, setLoading] = useState(false);
 
   const toggle = useCallback(
-    async (post: Post) => {
+    async (_post: Post) => {
       if (!session?.authenticated) {
         dispatch(openLoginModal());
         return;
       }
 
+      // No backend endpoint available; act as a no-op while showing feedback.
+      setLoading(true);
       try {
-        setLoading(true);
-        await mutate({ variables: { input: { postId: post.id } } });
-        await refetch();
-      } catch (err) {
-        console.error('Error toggling bookmark:', err);
+        console.warn('Bookmark toggle is not available on this backend.');
       } finally {
         setLoading(false);
       }
     },
-    [session?.authenticated, mutate, refetch, dispatch],
+    [dispatch, session?.authenticated],
   );
 
-  return { toggle, loading };
+  return { toggle, loading, has };
 };

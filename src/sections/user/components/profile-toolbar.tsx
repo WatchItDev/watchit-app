@@ -12,10 +12,10 @@ import ProfileShare from '@src/sections/user/components/profile-share.tsx';
 import ProfileSetJoiningPrice from '@src/sections/user/components/profile-set-joining-price.tsx';
 import ProfileTransfer from '@src/sections/user/components/profile-transfer.tsx';
 import { useAuth } from '@src/hooks/use-auth.ts';
-import { User } from '@src/graphql/generated/graphql.ts';
+import type { AppUser } from '@src/types/app-user.ts';
 
 interface ProfileToolbarProps {
-  profile: User;
+  profile?: AppUser | null;
   profileImage?: string;
 }
 
@@ -35,8 +35,8 @@ const ProfileToolbar: FC<ProfileToolbarProps> = ({ profile, profileImage }) => {
       }}
     >
       <AvatarProfile
-        src={profileImage || profile?.address}
-        alt={profile?.username ?? ''}
+        src={profileImage || profile?.profilePicture || profile?.address}
+        alt={profile?.username ?? profile?.profile?.username ?? ''}
         variant="rounded"
         sx={{
           fontSize: '3em',

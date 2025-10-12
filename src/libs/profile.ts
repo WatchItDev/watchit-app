@@ -1,14 +1,19 @@
 import { ProfileData } from '@src/contexts/auth/types.ts';
-import {
-  SocialLinkInput,
+import type {
+  CreateUserInput,
+  SocialInput,
   User,
-  UserInput,
 } from '@src/graphql/generated/graphql.ts';
+import type { AppUser } from '@src/types/app-user.ts';
 
-const removeEmptyValues = (obj: Partial<UserInput>): Partial<UserInput> =>
+type ProfileMetadata = Partial<Omit<CreateUserInput, 'address'>>;
+
+const removeEmptyValues = (obj: ProfileMetadata): ProfileMetadata =>
   Object.fromEntries(
-    Object.entries(obj).filter(([, v]) => v !== '' && v !== null),
-  );
+    Object.entries(obj).filter(
+      ([, v]) => v !== '' && v !== null && v !== undefined,
+    ),
+  ) as ProfileMetadata;
 
 /**
  * Build profile metadata object.
@@ -21,23 +26,23 @@ export const buildProfileMetadata = (
   data: ProfileData,
   profileImageURI?: string | null,
   backgroundImageURI?: string | null,
-): Partial<UserInput> => {
-  const cleanSocialLinks = Object.entries(data.socialLinks ?? {})
+): ProfileMetadata => {
+  const cleanSocials = Object.entries(data.socialLinks ?? {})
     .filter(([, value]) => value !== '' && value !== null)
     .map(
       ([key, value]) =>
         ({
           platform: key,
           url: value,
-        }) as SocialLinkInput,
+        }) as SocialInput,
     );
-  const metadata: Partial<UserInput> = {
+  const metadata: ProfileMetadata = {
     displayName: data.displayName ?? '',
     username: data.username ?? '',
     bio: data.bio ?? '',
-    profilePicture: profileImageURI ?? '',
-    coverPicture: backgroundImageURI ?? '',
-    ...(cleanSocialLinks.length > 0 && { socialLinks: cleanSocialLinks }),
+    picture: profileImageURI ?? undefined,
+    cover: backgroundImageURI ?? undefined,
+    ...(cleanSocials.length > 0 && { socials: cleanSocials }),
   };
 
   return removeEmptyValues(metadata);
@@ -51,17 +56,22 @@ export const buildProfileMetadata = (
  *                                         or `null`/`undefined` if the input is `null`/`undefined`.
  */
 export const filterHiddenProfiles = (
-  profiles?: User[],
-): User[] | null | undefined => {
+  profiles?: Array<User | AppUser>,
+): Array<User | AppUser> | null | undefined => {
   // displayName, bio and address properties are checked for the hidden indicator
   const patterns = ['###HIDDEN###'];
 
   // Filter profiles that do not contain the hidden indicator in any of the checked properties
-  return profiles?.filter((profile: User) => {
+  return profiles?.filter((profile) => {
+    const bio =
+      'bio' in profile && profile.bio !== undefined
+        ? profile.bio
+        : (profile as User).profile?.bio;
+    const displayName = profile.displayName;
     return !patterns.some(
       (pattern) =>
-        profile.displayName?.includes(pattern) ||
-        profile.bio?.includes(pattern) ||
+        displayName?.includes(pattern) ||
+        bio?.includes(pattern) ||
         profile.address?.includes(pattern),
     );
   });

@@ -25,10 +25,6 @@ import { paths } from '@src/routes/paths.ts';
 import { useSelector } from 'react-redux';
 import { RootState } from '@redux/store.ts';
 import { detectOperatingSystem } from '@src/utils/os-detection.ts';
-import {
-  useGetPostsLazyQuery,
-  useGetUsersLazyQuery,
-} from '@src/graphql/generated/hooks.tsx';
 import { Post, User } from '@src/graphql/generated/graphql.ts';
 
 function Searchbar() {
@@ -37,12 +33,10 @@ function Searchbar() {
   const search = useBoolean();
   const mdUp = useResponsive('up', 'md');
   const [searchQuery, setSearchQuery] = useState('');
-  const [searchUsers, { data: usersData, loading: loadingProfiles }] =
-    useGetUsersLazyQuery();
-  const [searchPosts, { data: postsData, loading: loadingPosts }] =
-    useGetPostsLazyQuery();
-  const profiles = usersData?.getUsers;
-  const posts = postsData?.getPosts;
+  const [profiles, setProfiles] = useState<User[]>([]);
+  const [posts, setPosts] = useState<Post[]>([]);
+  const loadingProfiles = false;
+  const loadingPosts = false;
   const { isMac } = detectOperatingSystem();
   const shortcutLabel = isMac ? '⌘K' : 'Ctrl+K';
   const handleClose = useCallback(() => {
@@ -58,8 +52,8 @@ function Searchbar() {
       event.preventDefault();
       search.onToggle();
       setSearchQuery('');
-      searchUsers({ variables: { query: '' } });
-      searchPosts({ variables: { query: '' } });
+      setProfiles([]);
+      setPosts([]);
     }
   };
 
@@ -83,8 +77,8 @@ function Searchbar() {
     (event: React.ChangeEvent<HTMLInputElement>) => {
       const value = event.target.value;
       setSearchQuery(value);
-      searchUsers({ variables: { query: value, limit: 50 } });
-      searchPosts({ variables: { query: value, limit: 50 } });
+      setProfiles([]);
+      setPosts([]);
     },
     [],
   );

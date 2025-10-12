@@ -1,0 +1,18 @@
+query GetUserFollowers($address: String!, $limit: Int) {
+  getUserFollowers(address: $address, limit: $limit) {
+    id
+    address
+    displayName
+    verified
+    profile {
+      username
+      bio
+      picture
+      cover
+    }
+    socials {
+      platform
+      url
+    }
+  }
+}

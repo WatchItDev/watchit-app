@@ -1,10 +1,17 @@
 import type { ReactNode } from 'react';
 import { forwardRef, useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { Box, Divider, IconButton, Stack, Tooltip, Typography, useMediaQuery } from '@mui/material';
+import Box from '@mui/material/Box';
+import Divider from '@mui/material/Divider';
+import IconButton from '@mui/material/IconButton';
+import Stack from '@mui/material/Stack';
+import Tooltip from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import type { SxProps, Theme } from '@mui/material/styles';
-import { alpha, useTheme } from '@mui/material/styles';
+import { alpha, keyframes, useTheme } from '@mui/material/styles';
 import { AnimatePresence, m } from 'framer-motion';
-import {
+import { icons } from '@tabler/icons-react';
+const {
   IconThumbDown,
   IconHeart,
   IconFlame,
@@ -17,7 +24,9 @@ import {
   IconUsersGroup,
   IconCoin,
   IconX,
-} from '@tabler/icons-react';
+  IconChevronDown,
+  IconChevronUp,
+} = icons;
 import { useDispatch } from 'react-redux';
 import PublicationPlayer from '@src/sections/publication/components/publication-player';
 import PostCommentList from '@src/sections/publication/components/publication-comments-list.tsx';
@@ -53,6 +62,7 @@ type ExplorePost = Post & {
   bookmarkCount?: number;
   commentCount?: number;
   viewCount?: number;
+  shareCount?: number;
   cid?: string;
   media?: Array<{
     id: string;
@@ -70,10 +80,43 @@ interface ExpanderPlayerInfoProps {
 
 type SidePanelKey = 'comments' | 'bakers' | 'sponsors';
 
+// Mock sponsors used for ticker placeholder; replace with real data when available.
+const SPONSOR_MOCKS: Array<{ name: string; logo: string }> = [
+  { name: 'Neon Labs', logo: 'https://placehold.co/120x40?text=Neon+Labs' },
+  { name: 'Galaxy Media', logo: 'https://placehold.co/120x40?text=Galaxy' },
+  { name: 'Aurora Co.', logo: 'https://placehold.co/120x40?text=Aurora' },
+  { name: 'Echo Studios', logo: 'https://placehold.co/120x40?text=Echo' },
+];
+
+const sponsorTickerAnimation = keyframes`
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+`;
+
 export default function ExpanderPlayerInfo({ post: rawPost, onPlayerControlsVisibilityChange }: ExpanderPlayerInfoProps) {
   const post = rawPost as ExplorePost;
   const theme = useTheme();
   const mdUp = useMediaQuery(theme.breakpoints.up('md'));
+  const shareCount = post.shareCount ?? 0;
+
+  const {
+    IconThumbDown,
+    IconHeart,
+    IconFlame,
+    IconStars,
+    IconBookmark,
+    IconShare3,
+    IconMessageCircle,
+    IconUserPlus,
+    IconUserCheck,
+    IconUsersGroup,
+    IconCoin,
+    IconX,
+  } = icons;
 
   const [playerHeight, setPlayerHeight] = useState<number>(0);
   const [openPanel, setOpenPanel] = useState<SidePanelKey | null>(null);
@@ -84,6 +127,7 @@ export default function ExpanderPlayerInfo({ post: rawPost, onPlayerControlsVisi
   const [isFollowing, setIsFollowing] = useState(false);
   const [isFetchingFollow, setIsFetchingFollow] = useState(true);
   const [overlayHovered, setOverlayHovered] = useState(false);
+  const [isInfoExpanded, setIsInfoExpanded] = useState(false);
 
   const dispatch = useDispatch();
   const { session } = useAuth();
@@ -139,6 +183,10 @@ export default function ExpanderPlayerInfo({ post: rawPost, onPlayerControlsVisi
   useEffect(() => {
     setCommentCount(post.commentCount ?? 0);
   }, [post.commentCount]);
+
+  useEffect(() => {
+    setIsInfoExpanded(false);
+  }, [post.id]);
 
   useEffect(() => {
     if (!reactionMenuOpen) return;
@@ -219,6 +267,10 @@ export default function ExpanderPlayerInfo({ post: rawPost, onPlayerControlsVisi
 
   const closePanel = () => setOpenPanel(null);
 
+  const handleToggleInfo = () => {
+    setIsInfoExpanded((prev) => !prev);
+  };
+
   const handleGoToProfile = () => {
     if (!post.author.address) return;
     router.push(paths.dashboard.user.root(`${post.author.address}`));
@@ -252,6 +304,24 @@ export default function ExpanderPlayerInfo({ post: rawPost, onPlayerControlsVisi
     toggleFollowLoading ||
     !post.author.address ||
     post.author.address === session?.user?.address;
+
+  const descriptionBaseSx: SxProps<Theme> = {
+    opacity: 1,
+    textShadow: '2px 2px 10px rgba(0, 0, 0, 0.5)',
+  };
+
+  const collapsedDescriptionSx: SxProps<Theme> = {
+    ...descriptionBaseSx,
+    display: '-webkit-box',
+    WebkitLineClamp: 2,
+    WebkitBoxOrient: 'vertical',
+    overflow: 'hidden',
+  };
+
+  const expandedDescriptionSx: SxProps<Theme> = {
+    ...descriptionBaseSx,
+    whiteSpace: 'pre-wrap',
+  };
 
   const panelTitle = openPanel
     ? {
@@ -297,40 +367,115 @@ export default function ExpanderPlayerInfo({ post: rawPost, onPlayerControlsVisi
                 sx={{
                   position: 'absolute',
                   bottom: '90px',
-                  left: overlayInset,
-                  right: overlayInset + 120,
-                  pointerEvents: 'none',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: 1.25,
-                  color: '#fff',
-                  maxWidth: { xs: '68%', md: '52%' },
-                  p: { xs: 1.5, md: 2 },
-                  borderRadius: 2,
-                  backdropFilter: 'blur(16px)',
-                  WebkitBackdropFilter: 'blur(16px)',
-                  background: 'linear-gradient(135deg, rgba(8,10,16,0.76), rgba(8,10,16,0.35))',
-                  border: '1px solid rgba(255,255,255,0.12)',
+                  left: '1px',
+                  right: 'auto',
+                  maxWidth: { xs: '72%', md: '38%' },
+                  pointerEvents: 'auto',
+                  zIndex: 6,
                 }}
               >
-                <Typography variant="subtitle2" sx={{ opacity: 0.8, textTransform: 'uppercase', letterSpacing: 0.8 }}>
-                  {post.author.displayName}
-                </Typography>
-                <Typography variant="h5" sx={{ lineHeight: 1.1, fontWeight: 700 }}>
-                  {post.title}
-                </Typography>
-                <Typography
-                  variant="body2"
+                <Stack
+                  spacing={1.25}
                   sx={{
-                    opacity: 0.82,
-                    display: '-webkit-box',
-                    WebkitLineClamp: { xs: 3, md: 4 },
-                    WebkitBoxOrient: 'vertical',
-                    overflow: 'hidden',
+                    color: '#fff',
+                    p: { xs: 1.5, md: 2 },
+                    borderRadius: '0 16px 16px 0',
+                    backdropFilter: 'blur(16px)',
+                    WebkitBackdropFilter: 'blur(16px)',
+                    border: '1px solid rgba(255,255,255,0.12)',
+                    background: 'linear-gradient(135deg, rgba(5,8,16,0.7), rgba(5,8,16,0.42))',
+                    boxShadow: '0 18px 38px rgba(0,0,0,0.35)',
                   }}
                 >
-                  {post.description}
-                </Typography>
+                  <Typography
+                    variant="subtitle2"
+                    sx={{
+                      opacity: 1,
+                      textTransform: 'uppercase',
+                      letterSpacing: 0.8,
+                      textShadow: '2px 2px 10px rgba(0, 0, 0, 0.5)',
+                      fontSize: '0.5rem'
+                    }}
+                  >
+                    {post.author.displayName}
+                  </Typography>
+                  <Typography variant="h5" sx={{ lineHeight: 1.1, fontWeight: 700, textShadow: '2px 2px 10px rgba(0, 0, 0, 0.5)' }}>
+                    {post.title}
+                  </Typography>
+
+                  <AnimatePresence mode="wait" initial={false}>
+                    {isInfoExpanded ? (
+                      <m.div
+                        key="info-expanded"
+                        layout
+                        initial={{ opacity: 0, y: -6 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 6 }}
+                        transition={{ duration: 0.26, ease: 'easeOut' }}
+                      >
+                        <Typography variant="body2" sx={expandedDescriptionSx}>
+                          {post.description ?? ''}
+                        </Typography>
+                      </m.div>
+                    ) : (
+                      <m.div
+                        key="info-collapsed"
+                        layout
+                        initial={{ opacity: 0, y: -6 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 6 }}
+                        transition={{ duration: 0.26, ease: 'easeOut' }}
+                      >
+                        <Typography variant="body2" sx={collapsedDescriptionSx}>
+                          {post.description ?? ''}
+                        </Typography>
+                      </m.div>
+                    )}
+                  </AnimatePresence>
+
+                  <m.div
+                    layout
+                    transition={{ type: 'spring', stiffness: 260, damping: 28 }}
+                  >
+                    <SponsorTicker expanded={isInfoExpanded} />
+                  </m.div>
+
+                  <Tooltip
+                    title={isInfoExpanded ? 'Hide info' : 'Show info'}
+                    placement="top"
+                    arrow
+                  >
+                    <IconButton
+                      size="small"
+                      onClick={handleToggleInfo}
+                      aria-expanded={isInfoExpanded}
+                      aria-label={isInfoExpanded ? 'Hide info' : 'Show info'}
+                      sx={{
+                        alignSelf: 'flex-start',
+                        mt: { xs: 0.5, md: 0.75 },
+                        borderRadius: 999,
+                        border: '1px solid rgba(255,255,255,0.28)',
+                        backgroundColor: 'rgba(0,0,0,0.35)',
+                        color: '#fff',
+                        boxShadow: '0 10px 20px rgba(0,0,0,0.4)',
+                        transition: 'background-color 160ms ease, border-color 160ms ease, transform 160ms ease',
+                        '&:hover': {
+                          backgroundColor: 'rgba(0,0,0,0.55)',
+                          borderColor: 'rgba(255,255,255,0.42)',
+                          transform: 'translateY(-1px)',
+                        },
+                      }}
+                    >
+                      <m.span
+                        animate={{ rotate: isInfoExpanded ? 180 : 0 }}
+                        transition={{ duration: 0.2, ease: 'easeOut' }}
+                        style={{ display: 'flex' }}
+                      >
+                        <IconChevronDown size={16} />
+                      </m.span>
+                    </IconButton>
+                  </Tooltip>
+                </Stack>
               </Box>
 
               {shouldShowActions && (
@@ -357,8 +502,8 @@ export default function ExpanderPlayerInfo({ post: rawPost, onPlayerControlsVisi
                     <ActionButton
                       icon={
                         <AvatarProfile
-                          src={resolveSrc(post.author.profilePicture || post.author.address, 'profile')}
-                          sx={{ width: 42, height: 42, border: '2px solid rgba(255,255,255,0.4)' }}
+                          src={resolveSrc(post.author.profilePicture || post.author.address || '', 'profile')}
+                          sx={{ width: 42, height: 42, border: '2px solid rgba(6, 3, 3, 0.4)' }}
                         />
                       }
                       onClick={handleGoToProfile}
@@ -413,7 +558,7 @@ export default function ExpanderPlayerInfo({ post: rawPost, onPlayerControlsVisi
                       iconWrapperSx={{
                         backgroundColor: reaction
                           ? alpha(reactionHighlightColor, 0.22)
-                          : 'rgba(0,0,0,0.55)',
+                          : 'rgba(0,0,0,0.5)',
                         border: `1px solid ${
                           reaction ? alpha(reactionHighlightColor, 0.6) : 'rgba(255,255,255,0.2)'
                         }`,
@@ -523,7 +668,7 @@ export default function ExpanderPlayerInfo({ post: rawPost, onPlayerControlsVisi
                   <ActionButton
                     icon={<IconShare3 size={22} />}
                     tooltip="Share"
-                    label="Share"
+                    label={formatNumber(shareCount)}
                   />
 
                   {/* <ActionButton
@@ -589,9 +734,9 @@ export default function ExpanderPlayerInfo({ post: rawPost, onPlayerControlsVisi
                           root={String(post.id)}
                           commentOn={null}
                           owner={{
-                            id: post.author.address,
+                            id: post.author.address || '',
                             displayName: post.author.displayName ?? 'Watchit',
-                            avatar: resolveSrc(post.author.profilePicture || post.author.address, 'profile'),
+                            avatar: resolveSrc(post.author.profilePicture || post.author.address || '', 'profile'),
                           }}
                           onSuccess={() => handleCommentCreated(true)}
                         />
@@ -644,6 +789,96 @@ export default function ExpanderPlayerInfo({ post: rawPost, onPlayerControlsVisi
   );
 }
 
+
+function SponsorTicker({ expanded }: { expanded: boolean }) {
+  const items = [...SPONSOR_MOCKS, ...SPONSOR_MOCKS];
+
+  return (
+    <Box
+      sx={{
+        position: 'relative',
+        overflow: 'hidden',
+        borderRadius: expanded ? 2 : 999,
+        border: '1px solid rgba(255,255,255,0.18)',
+        background: 'linear-gradient(135deg, rgba(0,0,0,0.58), rgba(8,10,18,0.72))',
+        px: 1.5,
+        py: { xs: 0.75, md: 1 },
+        pointerEvents: 'none',
+        '&::before, &::after': {
+          content: '""',
+          position: 'absolute',
+          top: 0,
+          bottom: 0,
+          width: 24,
+          pointerEvents: 'none',
+          zIndex: 1,
+        },
+        '&::before': {
+          left: 0,
+          background: 'linear-gradient(90deg, rgba(0,0,0,0.7), transparent)',
+        },
+        '&::after': {
+          right: 0,
+          background: 'linear-gradient(270deg, rgba(0,0,0,0.7), transparent)',
+        },
+      }}
+    >
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: { xs: 2.5, md: 3 },
+          width: 'max-content',
+          animation: `${sponsorTickerAnimation} 18s linear infinite`,
+          '@media (prefers-reduced-motion: reduce)': {
+            animation: 'none',
+          },
+        }}
+      >
+        {items.map((sponsor, index) => (
+          <Box
+            key={`${sponsor.name}-${index}`}
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: expanded ? 1.5 : 1,
+              minWidth: expanded ? 120 : 'auto',
+              color: '#fff',
+              filter: 'drop-shadow(0 4px 10px rgba(0,0,0,0.35))',
+              textTransform: expanded ? 'none' : 'uppercase',
+            }}
+          >
+            {expanded ? (
+              <Box
+                component="img"
+                src={sponsor.logo}
+                alt={`${sponsor.name} logo`}
+                sx={{
+                  height: { xs: 22, md: 28 },
+                  width: 'auto',
+                  maxWidth: 140,
+                  display: 'block',
+                }}
+              />
+            ) : (
+              <Typography
+                variant="caption"
+                sx={{
+                  fontWeight: 700,
+                  letterSpacing: 0.6,
+                  whiteSpace: 'nowrap',
+                }}
+              >
+                {sponsor.name}
+              </Typography>
+            )}
+          </Box>
+        ))}
+      </Box>
+    </Box>
+  );
+}
+
 interface ActionButtonProps extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'children'> {
   icon: ReactNode;
   label?: ReactNode;
@@ -658,8 +893,10 @@ const ActionButton = forwardRef<HTMLButtonElement, ActionButtonProps>(
     ref,
   ) => {
     const tooltipLabel = tooltip ?? '';
+    const showBadge = label !== undefined && label !== null && label !== '';
+
     return (
-      <Stack spacing={0.5} alignItems="center" component="div">
+      <Stack spacing={0} alignItems="center" component="div">
         <Tooltip
           title={tooltipLabel}
           placement="left"
@@ -676,18 +913,23 @@ const ActionButton = forwardRef<HTMLButtonElement, ActionButtonProps>(
               disabled={disabled}
               {...buttonProps}
               sx={{
+                position: 'relative',
                 width: 48,
                 height: 48,
                 borderRadius: '50%',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                backgroundColor: active ? 'rgba(255,255,255,0.18)' : 'rgba(0,0,0,0.55)',
-                border: active ? '1px solid rgba(255,255,255,0.45)' : '1px solid rgba(255,255,255,0.2)',
+                background: 'rgba(0,0,0,0.4)',
+                border: active ? '1px solid rgba(255,255,255,0.48)' : '1px solid rgba(255,255,255,0.24)',
                 color: '#fff',
                 cursor: disabled ? 'default' : 'pointer',
-                transition: 'transform 160ms ease, background-color 160ms ease, border-color 160ms ease',
+                transition:
+                  'transform 160ms ease, background 160ms ease, border-color 160ms ease, box-shadow 160ms ease',
                 opacity: disabled ? 0.5 : 1,
+                boxShadow: active ? '0 12px 28px rgba(0,0,0,0.45)' : '0 10px 22px rgba(0,0,0,0.4)',
+                backdropFilter: 'blur(16px)',
+                WebkitBackdropFilter: 'blur(16px)',
                 '&:hover': disabled
                   ? undefined
                   : {
@@ -697,28 +939,36 @@ const ActionButton = forwardRef<HTMLButtonElement, ActionButtonProps>(
               }}
             >
               {icon}
+              {showBadge ? (
+                <Box
+                  component="span"
+                  sx={{
+                    position: 'absolute',
+                    top: -6,
+                    right: -6,
+                    minWidth: 20,
+                    height: 20,
+                    px: 0.75,
+                    borderRadius: 999,
+                    background: 'linear-gradient(135deg, #ff5d8f, #ff2d55)',
+                    border: '1px solid rgba(255,255,255,0.5)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: 11,
+                    fontWeight: 700,
+                    letterSpacing: 0.3,
+                    color: '#fff',
+                    boxShadow: '0 6px 18px rgba(0,0,0,0.35)',
+                    textTransform: 'none',
+                  }}
+                >
+                  {label}
+                </Box>
+              ) : null}
             </Box>
           </span>
         </Tooltip>
-        {label ? (
-          <Typography
-            variant="caption"
-            sx={{
-              letterSpacing: 0.2,
-              fontWeight: 700,
-              maxWidth: 80,
-              textAlign: 'center',
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-              whiteSpace: 'nowrap',
-              fontSize: '12px',
-              lineHeight: '16px',
-              color: 'rgba(255, 255, 255, 0.75)',
-            }}
-          >
-            {label}
-          </Typography>
-        ) : null}
       </Stack>
     );
   },

@@ -1,11 +1,11 @@
 import { Address } from 'viem';
-import { User } from '@src/graphql/generated/graphql.ts';
+import { AppUser } from '@src/types/app-user.ts';
 import { UserInfo } from '@web3auth/base';
 
 export interface ReduxSession {
   address?: Address;
   authenticated: boolean;
-  user?: User;
+  user?: AppUser;
   info?: Partial<UserInfo>;
 }
 

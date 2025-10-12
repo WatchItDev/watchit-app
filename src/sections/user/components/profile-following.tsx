@@ -6,6 +6,7 @@ import Typography from '@mui/material/Typography';
 import { UserItem } from '@src/components/user-item';
 import { randomKey } from '@src/utils/uuidv4.ts';
 import { ProfileFollowingProps } from '@src/sections/user/types.ts';
+import type { AppUser } from '@src/types/app-user.ts';
 import LinearProgress from '@mui/material/LinearProgress';
 
 // ----------------------------------------------------------------------
@@ -44,7 +45,7 @@ const ProfileFollowing = ({ following, loading }: ProfileFollowingProps) => {
       }}
     >
       {following?.length ? (
-        following.map((follower, index) => (
+        following.map((follower: AppUser, index) => (
           <UserItem
             key={`${randomKey(index, 'following-')}`}
             profile={follower}

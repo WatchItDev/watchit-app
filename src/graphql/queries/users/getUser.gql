@@ -1,0 +1,26 @@
+query GetUser($input: UserByIdentifierInput!) {
+  getUser(input: $input) {
+    id
+    address
+    email
+    displayName
+    followersCount
+    followingCount
+    publicationsCount
+    profilePicture
+    coverPicture
+    bio
+    verified
+    createdAt
+    profile {
+      username
+      bio
+      picture
+      cover
+    }
+    socials {
+      platform
+      url
+    }
+  }
+}

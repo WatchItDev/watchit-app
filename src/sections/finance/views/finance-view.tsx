@@ -12,7 +12,6 @@ import { SummaryAndActions } from '@src/sections/finance/components/finance-summ
 import { FinanceLeftColumnContent } from '@src/sections/finance/components/finance-left-column-content.tsx';
 import { FinanceRightColumnContent } from '@src/sections/finance/components/finance-right-column-content.tsx';
 import { useAuth } from '@src/hooks/use-auth.ts';
-import { useGetUserFollowingLazyQuery } from '@src/graphql/generated/hooks.tsx';
 
 // ----------------------------------------------------------------------
 
@@ -23,18 +22,8 @@ export default function FinanceView() {
   const [percent, setPercent] = useState(0);
   const { session: sessionData, balance: balanceFromRedux } = useAuth();
   const { transactions, loading } = useGetSmartWalletTransactions();
-  const [
-    loadFollowing,
-    { data: profileFollowing, loading: profileFollowingLoading },
-  ] = useGetUserFollowingLazyQuery();
-  const following = profileFollowing?.getUserFollowing;
-
-  useEffect(() => {
-    if (!sessionData?.user?.address) return;
-    loadFollowing({
-      variables: { address: sessionData?.user?.address, limit: 50 },
-    });
-  }, [sessionData?.user?.address]);
+  const following: unknown[] = [];
+  const profileFollowingLoading = false;
 
   useEffect(() => {
     if (!transactions || loading) return;

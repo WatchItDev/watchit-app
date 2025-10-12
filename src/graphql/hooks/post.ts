@@ -19,6 +19,7 @@ const GET_POST = gql`
       id
       title
       body
+      commentCount
       attachments {
         id
         cid
@@ -57,6 +58,7 @@ const GET_POSTS = gql`
       id
       title
       body
+      commentCount
       attachments {
         id
         cid

@@ -3,6 +3,7 @@ query GetPosts($input: PostFilterInput!, $getPostsPage2: PaginationInput) {
     id
     title
     body
+    commentCount
     attachments {
       id
       cid
@@ -19,6 +20,7 @@ query GetPosts($input: PostFilterInput!, $getPostsPage2: PaginationInput) {
         address
         displayName
         email
+        verified
         profile {
           bio
           cover
