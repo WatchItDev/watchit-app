@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { MutableRefObject, ReactNode } from 'react';
 import { SxProps, Theme } from '@mui/material/styles';
 import { StepperProps } from '@mui/material/Stepper';
 import { Address } from 'viem';
@@ -13,6 +13,7 @@ export interface PublicationPlayerProps {
   loading: boolean;
   onPlay?: () => void;
   onControlsVisibilityChange?: (visible: boolean) => void;
+  playerContainerRef?: MutableRefObject<HTMLElement | null>;
 }
 
 export interface NeonPaperProps {

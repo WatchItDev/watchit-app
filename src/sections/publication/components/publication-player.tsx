@@ -8,7 +8,7 @@ import { getMediaUri, getMovieCid } from '@src/utils/publication.ts';
 // ----------------------------------------------------------------------
 
 const PublicationPlayer: FC<PublicationPlayerProps> = (props) => {
-  const { publication, loading, onPlay, onControlsVisibilityChange } = props;
+  const { publication, loading, onPlay, onControlsVisibilityChange, playerContainerRef } = props;
 
   if (loading) return <LoadingScreen />;
 
@@ -46,6 +46,7 @@ const PublicationPlayer: FC<PublicationPlayerProps> = (props) => {
           postId={publication?.id}
           onPlay={onPlay}
           onControlsVisibilityChange={onControlsVisibilityChange}
+          containerRef={playerContainerRef}
           // onBack={handleBack}
         />
       )}

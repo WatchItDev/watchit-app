@@ -356,6 +356,7 @@ export default function ExpanderPlayerInfo({ post: rawPost, onPlayerControlsVisi
               publication={post}
               loading={false}
               onControlsVisibilityChange={handleControlsVisibilityChange}
+              playerContainerRef={playerRef}
             />
           </Box>
 
@@ -383,22 +384,60 @@ export default function ExpanderPlayerInfo({ post: rawPost, onPlayerControlsVisi
                     backdropFilter: 'blur(16px)',
                     WebkitBackdropFilter: 'blur(16px)',
                     border: '1px solid rgba(255,255,255,0.12)',
-                    background: 'linear-gradient(135deg, rgba(5,8,16,0.7), rgba(5,8,16,0.42))',
+                    // background: 'linear-gradient(135deg, rgba(5,8,16,0.7), rgba(5,8,16,0.42))',
                     boxShadow: '0 18px 38px rgba(0,0,0,0.35)',
                   }}
                 >
-                  <Typography
-                    variant="subtitle2"
-                    sx={{
-                      opacity: 1,
-                      textTransform: 'uppercase',
-                      letterSpacing: 0.8,
-                      textShadow: '2px 2px 10px rgba(0, 0, 0, 0.5)',
-                      fontSize: '0.5rem'
-                    }}
-                  >
-                    {post.author.displayName}
-                  </Typography>
+                  <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '-3px' }}>
+                    <Typography
+                      variant="subtitle2"
+                      sx={{
+                        opacity: 1,
+                        textTransform: 'uppercase',
+                        letterSpacing: 0.8,
+                        textShadow: '2px 2px 10px rgba(0, 0, 0, 0.5)',
+                        fontSize: '0.7rem'
+                      }}
+                    >
+                      {post.author.displayName}
+                    </Typography>
+
+                    <Tooltip
+                      title={isInfoExpanded ? 'Hide info' : 'Show info'}
+                      placement="top"
+                      arrow
+                    >
+                      <IconButton
+                        size="small"
+                        onClick={handleToggleInfo}
+                        aria-expanded={isInfoExpanded}
+                        aria-label={isInfoExpanded ? 'Hide info' : 'Show info'}
+                        sx={{
+                          alignSelf: 'flex-start',
+                          mt: { xs: 0.5, md: 0.75 },
+                          borderRadius: 999,
+                          border: '1px solid rgba(255,255,255,0.28)',
+                          backgroundColor: 'rgba(0,0,0,0.35)',
+                          color: '#fff',
+                          boxShadow: '0 10px 20px rgba(0,0,0,0.4)',
+                          transition: 'background-color 160ms ease, border-color 160ms ease, transform 160ms ease',
+                          '&:hover': {
+                            backgroundColor: 'rgba(0,0,0,0.55)',
+                            borderColor: 'rgba(255,255,255,0.42)',
+                            transform: 'translateY(-1px)',
+                          },
+                        }}
+                      >
+                        <m.span
+                          animate={{ rotate: !isInfoExpanded ? 180 : 0 }}
+                          transition={{ duration: 0.2, ease: 'easeOut' }}
+                          style={{ display: 'flex' }}
+                        >
+                          <IconChevronDown size={16} />
+                        </m.span>
+                      </IconButton>
+                    </Tooltip>
+                  </Box>
                   <Typography variant="h5" sx={{ lineHeight: 1.1, fontWeight: 700, textShadow: '2px 2px 10px rgba(0, 0, 0, 0.5)' }}>
                     {post.title}
                   </Typography>
@@ -439,42 +478,6 @@ export default function ExpanderPlayerInfo({ post: rawPost, onPlayerControlsVisi
                   >
                     <SponsorTicker expanded={isInfoExpanded} />
                   </m.div>
-
-                  <Tooltip
-                    title={isInfoExpanded ? 'Hide info' : 'Show info'}
-                    placement="top"
-                    arrow
-                  >
-                    <IconButton
-                      size="small"
-                      onClick={handleToggleInfo}
-                      aria-expanded={isInfoExpanded}
-                      aria-label={isInfoExpanded ? 'Hide info' : 'Show info'}
-                      sx={{
-                        alignSelf: 'flex-start',
-                        mt: { xs: 0.5, md: 0.75 },
-                        borderRadius: 999,
-                        border: '1px solid rgba(255,255,255,0.28)',
-                        backgroundColor: 'rgba(0,0,0,0.35)',
-                        color: '#fff',
-                        boxShadow: '0 10px 20px rgba(0,0,0,0.4)',
-                        transition: 'background-color 160ms ease, border-color 160ms ease, transform 160ms ease',
-                        '&:hover': {
-                          backgroundColor: 'rgba(0,0,0,0.55)',
-                          borderColor: 'rgba(255,255,255,0.42)',
-                          transform: 'translateY(-1px)',
-                        },
-                      }}
-                    >
-                      <m.span
-                        animate={{ rotate: isInfoExpanded ? 180 : 0 }}
-                        transition={{ duration: 0.2, ease: 'easeOut' }}
-                        style={{ display: 'flex' }}
-                      >
-                        <IconChevronDown size={16} />
-                      </m.span>
-                    </IconButton>
-                  </Tooltip>
                 </Stack>
               </Box>
 
@@ -950,7 +953,7 @@ const ActionButton = forwardRef<HTMLButtonElement, ActionButtonProps>(
                     height: 20,
                     px: 0.75,
                     borderRadius: 999,
-                    background: 'linear-gradient(135deg, #ff5d8f, #ff2d55)',
+                    background: 'rgba(0,0,0,0.6)',
                     border: '1px solid rgba(255,255,255,0.5)',
                     display: 'flex',
                     alignItems: 'center',

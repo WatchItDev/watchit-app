@@ -1,4 +1,4 @@
-import { FC, useRef, useEffect, memo, useCallback } from 'react';
+import { FC, MutableRefObject, useRef, useEffect, memo, useCallback } from 'react';
 // @ts-expect-error No error in this context
 import { Hls /** , FetchLoader, XhrLoader */ } from 'hls.js/dist/hls.mjs';
 import { Typography, IconButton, Button } from '@mui/material';
@@ -36,9 +36,11 @@ export interface VideoPlayerProps {
   postId: string;
   onPlay?: () => void;
   onControlsVisibilityChange?: (visible: boolean) => void;
+  containerRef?: MutableRefObject<HTMLElement | null>;
 }
 
 const STEP = 5;
+const INACTIVITY_HIDE_DELAY = 10_000;
 
 export const VideoPlayer: FC<VideoPlayerProps> = ({
   src,
@@ -49,6 +51,7 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({
   showBack,
   onPlay,
   onControlsVisibilityChange,
+  containerRef,
 }) => {
   const mdUp = useResponsive('up', 'md');
   const player = useRef<MediaPlayerInstance>(null);
@@ -59,28 +62,90 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({
   const watchedSeconds = useRef<Set<number>>(new Set()); // distinct seconds already counted
   const nextEvent = useRef(5); // next percentage to emit (5,10,15…)
   const defaultCanIdleRef = useRef<boolean | null>(null);
+  const inactivityTimerRef = useRef<number | null>(null);
+  const pointerInsideRef = useRef(false);
 
-  const handlePointerEnter = useCallback(() => {
-    const instance = player.current;
-    if (!instance) return;
-    const { controls } = instance;
-    if (!controls) return;
-    if (defaultCanIdleRef.current === null) {
-      defaultCanIdleRef.current = controls.canIdle;
+  const clearInactivityTimer = useCallback(() => {
+    if (inactivityTimerRef.current !== null) {
+      window.clearTimeout(inactivityTimerRef.current);
+      inactivityTimerRef.current = null;
     }
-    controls.canIdle = false;
+  }, []);
+
+  const hideControlsImmediately = useCallback(() => {
+    const instance = player.current;
+    const controls = instance?.controls;
+    if (!controls) return;
+    controls.hide(0);
+  }, []);
+
+  const showControls = useCallback(() => {
+    const instance = player.current;
+    const controls = instance?.controls;
+    if (!controls) return;
     controls.show(0);
   }, []);
 
-  const handlePointerLeave = useCallback(() => {
+  const scheduleAutoHide = useCallback(() => {
     const instance = player.current;
-    if (!instance) return;
-    const { controls } = instance;
+    const controls = instance?.controls;
     if (!controls) return;
-    const defaultValue = defaultCanIdleRef.current ?? true;
-    controls.canIdle = defaultValue;
-    controls.show(0);
-  }, []);
+    clearInactivityTimer();
+    inactivityTimerRef.current = window.setTimeout(() => {
+      hideControlsImmediately();
+    }, INACTIVITY_HIDE_DELAY);
+  }, [clearInactivityTimer, hideControlsImmediately]);
+
+  const handlePointerActivity = useCallback(() => {
+    showControls();
+    scheduleAutoHide();
+  }, [scheduleAutoHide, showControls]);
+
+  const evaluatePointerBounds = useCallback(
+    (event: PointerEvent) => {
+      const pointerType = event.pointerType;
+      if (
+        pointerType &&
+        pointerType !== 'mouse' &&
+        pointerType !== 'touch' &&
+        pointerType !== 'pen'
+      ) {
+        return;
+      }
+      const containerEl = containerRef?.current ?? player.current?.el ?? null;
+      if (!containerEl) return;
+      const rect = containerEl.getBoundingClientRect();
+      const isInside =
+        event.clientX >= rect.left &&
+        event.clientX <= rect.right &&
+        event.clientY >= rect.top &&
+        event.clientY <= rect.bottom;
+
+      if (isInside) {
+        pointerInsideRef.current = true;
+        handlePointerActivity();
+      } else if (pointerInsideRef.current) {
+        pointerInsideRef.current = false;
+        clearInactivityTimer();
+        hideControlsImmediately();
+      }
+    },
+    [containerRef, handlePointerActivity, clearInactivityTimer, hideControlsImmediately],
+  );
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const handlePointerMove = (event: PointerEvent) => evaluatePointerBounds(event);
+    const handlePointerDown = (event: PointerEvent) => evaluatePointerBounds(event);
+
+    window.addEventListener('pointermove', handlePointerMove);
+    window.addEventListener('pointerdown', handlePointerDown);
+
+    return () => {
+      window.removeEventListener('pointermove', handlePointerMove);
+      window.removeEventListener('pointerdown', handlePointerDown);
+    };
+  }, [evaluatePointerBounds]);
 
   useEffect(() => {
     if (cid) getSubtitles(cid);
@@ -100,16 +165,24 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({
   }, []);
 
   useEffect(() => {
+    const instance = player.current;
+    if (!instance) return;
+    const { controls } = instance;
+    if (!controls) return;
+
+    if (defaultCanIdleRef.current === null) {
+      defaultCanIdleRef.current = controls.canIdle;
+    }
+
+    controls.canIdle = false;
+
     return () => {
-      const instance = player.current;
-      if (!instance) return;
-      const { controls } = instance;
-      if (!controls) return;
+      clearInactivityTimer();
       if (defaultCanIdleRef.current !== null) {
         controls.canIdle = defaultCanIdleRef.current;
       }
     };
-  }, []);
+  }, [clearInactivityTimer]);
 
   const emit = async (_type: string, _progress?: number) => {
     if (!session?.authenticated) return;
@@ -118,6 +191,7 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({
 
   const handlePlay = () => {
     emit('VIDEO_START');
+    scheduleAutoHide();
     onPlay?.();
   };
 
@@ -197,10 +271,9 @@ export const VideoPlayer: FC<VideoPlayerProps> = ({
       onPlay={handlePlay}
       onEnded={handleEnded}
       onTimeUpdate={handleTimeUpdate}
-      onPointerEnter={handlePointerEnter}
-      onPointerLeave={handlePointerLeave}
       viewType="video"
       streamType="on-demand"
+      controlsDelay={INACTIVITY_HIDE_DELAY}
       logLevel="warn"
       crossOrigin
       playsInline
