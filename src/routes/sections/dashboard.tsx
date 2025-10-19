@@ -25,7 +25,6 @@ const FinancePage = lazy(() => import('@src/pages/finance.tsx'));
 const CollaborationsPage = lazy(() => import('@src/pages/collaborations.tsx'));
 // MARKETING
 const MarketingPage = lazy(() => import('@src/pages/marketing.tsx'));
-const StrategyPage = lazy(() => import('@src/pages/marketing/index.tsx'));
 // USER
 const UserProfilePage = lazy(() => import('@src/pages/user/profile'));
 // MOVIE
@@ -61,7 +60,6 @@ export const dashboardRoutes = [
       { path: 'finance', element: <FinancePage /> },
       { path: 'collaborations', element: <CollaborationsPage /> },
       { path: 'marketing', element: <MarketingPage /> },
-      { path: 'marketing/strategy/:id', element: <StrategyPage /> },
       { path: 'profile/:id', element: <UserProfilePage /> },
       {
         path: 'governance',
