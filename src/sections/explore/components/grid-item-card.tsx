@@ -21,7 +21,6 @@ export default function GridItemCard({ post, onActivate, isActive }: Props) {
   const title = post.title ?? '';
   const likes = post.likeCount ?? 0;
   const views = post.viewCount ?? 0;
-  const creator = post?.author?.displayName ?? 'Unknown';
   const poster =
     getAttachmentCid(post as any, 'square') ||
     getAttachmentCid(post as any, 'poster');
@@ -59,8 +58,9 @@ export default function GridItemCard({ post, onActivate, isActive }: Props) {
         outline: 'none',
         transition: 'box-shadow 160ms ease, transform 120ms ease',
         transform: isActive ? 'translateY(-1px)' : 'none',
-        opacity: 0.8,
+        filter: 'grayscale(0.5)',
         '&:hover': {
+          filter: 'grayscale(0)',
           opacity: 1,
           boxShadow: '0 12px 32px rgba(0,0,0,0.35)',
           transform: 'translateY(-2px)',

@@ -61,13 +61,6 @@ export interface ErrorResult {
   message: string;
 }
 
-// use-search-publications.ts
-export interface SupabasePublication {
-  description: string;
-  post_id: string;
-  title: string;
-}
-
 //use-notification-payload.ts
 export interface NotificationPayload {
   type: string;

@@ -13,10 +13,6 @@ import ProfileHeader from '../components/profile-header.tsx';
 import Label from '../../../components/label';
 import ProfileReferrals from '@src/sections/user/components/profile-referrals.tsx';
 import useReferrals from '@src/hooks/use-referrals.ts';
-import Alert from '@mui/material/Alert';
-import { useIsPolicyAuthorized } from '@src/hooks/protocol/use-is-policy-authorized.ts';
-import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
-import { Address } from 'viem';
 import { useAuth } from '@src/hooks/use-auth.ts';
 import { TABS } from '../CONSTANTS.tsx';
 import {
@@ -41,11 +37,7 @@ import { LoadingFade } from '@src/components/LoadingFade.tsx';
 const UserProfileView = ({ id }: UserProfileViewProps) => {
   const settings = useSettingsContext();
   const [currentTab, setCurrentTab] = useState('publications');
-  const { session, isAuthLoading } = useAuth();
-  const { isAuthorized, loading: authorizedLoading } = useIsPolicyAuthorized(
-    GLOBAL_CONSTANTS.SUBSCRIPTION_POLICY_ADDRESS,
-    session?.address as Address,
-  );
+  const { session } = useAuth();
   const [loadProfile, { data: profileData, loading: loadingProfile }] =
     useGetUserLazyQuery();
   const [loadPosts, { data: postsData, loading: postsLoading }] =
@@ -107,14 +99,6 @@ const UserProfileView = ({ id }: UserProfileViewProps) => {
     loadFollowing({ variables: { address: profile.address, limit: 50 } });
   }, [currentTab, profile?.address, loadFollowing]);
 
-  const showSubscriptionAlert =
-    session?.authenticated &&
-    session?.address === id &&
-    counts.publications >= 1 &&
-    !isAuthLoading &&
-    !isAuthorized &&
-    !authorizedLoading;
-
   const tabsWithCounts: TabItemWithCount[] = TABS.filter(
     (tab) => !(tab.value === 'referrals' && session.address !== id),
   ).map((tab) => ({
@@ -139,12 +123,6 @@ const UserProfileView = ({ id }: UserProfileViewProps) => {
         maxWidth={settings.themeStretch ? false : 'lg'}
         sx={{ overflowX: 'hidden' }}
       >
-        {showSubscriptionAlert && (
-          <Alert severity="warning" sx={{ mt: 2, mb: -1 }}>
-            Set your subscription prices so users can access your content. Click
-            'Set Joining Prices' next to your profile picture.
-          </Alert>
-        )}
         <ProfileHeader
           profile={profile}
           onActionFinish={handleActionFinish}

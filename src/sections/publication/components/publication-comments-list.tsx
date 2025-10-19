@@ -1,8 +1,8 @@
 import Box from '@mui/material/Box';
 import PublicationCommentItem from './publication-comment-item.tsx';
 import LinearProgress from '@mui/material/LinearProgress';
-import { useMemo, useState } from 'react';
-import { PostCommentListProps } from '@src/sections/publication/types.ts';
+import { useMemo } from 'react';
+import { CommentReplyContext, PostCommentListProps } from '@src/sections/publication/types.ts';
 import { useGetCommentsQuery } from '@src/graphql/hooks/comments';
 import type { Comment } from '@src/graphql/generated/graphql.ts';
 
@@ -16,7 +16,6 @@ export default function PostCommentList({
   loading,
   onRequestRefresh,
 }: Readonly<PostCommentListProps>) {
-  const [hidden, setHidden] = useState<number[]>([]);
   const shouldFetch = initialData === undefined;
   const postId = Number(publicationId);
   const skipQuery = Number.isNaN(postId) || !shouldFetch;
@@ -28,21 +27,57 @@ export default function PostCommentList({
   });
 
   const source = useMemo(() => {
-    const list = initialData ?? data?.getComments ?? [];
-    return list.filter((c) => !hidden.includes(c.id));
-  }, [data?.getComments, hidden, initialData]);
+    return initialData ?? data?.getComments ?? [];
+  }, [data?.getComments, initialData]);
 
   if (error) return <p>Error: {error.message}</p>;
 
   const isLoading = loading ?? (shouldFetch ? queryLoading : false);
   const comments = source.filter((comment) => !comment.parent);
 
+  const repliesByRoot = useMemo(() => {
+    const map = new Map<number, CommentReplyContext[]>();
+    if (!source.length) return map;
+
+    const byId = new Map<number, Comment>();
+    source.forEach((comment) => byId.set(comment.id, comment));
+
+    const getDisplayName = (comment?: Comment | null) => {
+      const user = comment?.base?.user;
+      if (!user) return null;
+      return user.displayName ?? user.profile?.username ?? null;
+    };
+
+    const findRootId = (comment: Comment): number | null => {
+      let parent = comment.parent;
+      while (parent) {
+        const parentComment = byId.get(parent.id);
+        if (!parentComment) return parent.id;
+        if (!parentComment.parent) return parent.id;
+        parent = parentComment.parent;
+      }
+      return null;
+    };
+
+    source.forEach((comment) => {
+      if (!comment.parent) return;
+      const rootId = findRootId(comment);
+      if (!rootId) return;
+      const parentId = comment.parent.id;
+      const replies = map.get(rootId) ?? [];
+      const parentComment = byId.get(parentId);
+      const replyingToName = parentId !== rootId ? getDisplayName(parentComment) : null;
+      replies.push({ comment, replyingToName });
+      map.set(rootId, replies);
+    });
+
+    return map;
+  }, [source]);
+
   const handleRefresh = () => {
     if (shouldFetch && !Number.isNaN(postId)) void refetch();
     onRequestRefresh?.();
   };
-
-  const handleHide = (commentId: number) => setHidden((h) => [...h, commentId]);
 
   return (
     <>
@@ -61,7 +96,8 @@ export default function PostCommentList({
         <Box key={c.id} width="100%">
           <PublicationCommentItem
             comment={c}
-            onHide={() => handleHide(c.id)}
+            depth={0}
+            replies={repliesByRoot.get(c.id)}
             onReplyCreated={() => {
               handleRefresh();
               onReplyCreated();

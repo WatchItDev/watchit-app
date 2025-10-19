@@ -9,7 +9,6 @@ import Typography from '@mui/material/Typography';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import type { SxProps, Theme } from '@mui/material/styles';
 import { alpha, keyframes, useTheme } from '@mui/material/styles';
-import { AnimatePresence, m } from 'framer-motion';
 import { icons } from '@tabler/icons-react';
 const {
   IconThumbDown,
@@ -74,7 +73,7 @@ type ExplorePost = Post & {
 };
 
 interface ExpanderPlayerInfoProps {
-  post: Post;
+  post?: Post | null;
   onPlayerControlsVisibilityChange?: (visible: boolean) => void;
 }
 
@@ -98,6 +97,10 @@ const sponsorTickerAnimation = keyframes`
 `;
 
 export default function ExpanderPlayerInfo({ post: rawPost, onPlayerControlsVisibilityChange }: ExpanderPlayerInfoProps) {
+  if (!rawPost) {
+    console.warn('ExpanderPlayerInfo: tried to render without a post');
+    return null;
+  }
   const post = rawPost as ExplorePost;
   const theme = useTheme();
   const mdUp = useMediaQuery(theme.breakpoints.up('md'));
@@ -428,13 +431,15 @@ export default function ExpanderPlayerInfo({ post: rawPost, onPlayerControlsVisi
                           },
                         }}
                       >
-                        <m.span
-                          animate={{ rotate: !isInfoExpanded ? 180 : 0 }}
-                          transition={{ duration: 0.2, ease: 'easeOut' }}
-                          style={{ display: 'flex' }}
+                        <Box
+                          component="span"
+                          sx={{
+                            display: 'flex',
+                            transform: !isInfoExpanded ? 'rotate(180deg)' : 'rotate(0deg)',
+                          }}
                         >
                           <IconChevronDown size={16} />
-                        </m.span>
+                        </Box>
                       </IconButton>
                     </Tooltip>
                   </Box>
@@ -442,42 +447,23 @@ export default function ExpanderPlayerInfo({ post: rawPost, onPlayerControlsVisi
                     {post.title}
                   </Typography>
 
-                  <AnimatePresence mode="wait" initial={false}>
-                    {isInfoExpanded ? (
-                      <m.div
-                        key="info-expanded"
-                        layout
-                        initial={{ opacity: 0, y: -6 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: 6 }}
-                        transition={{ duration: 0.26, ease: 'easeOut' }}
-                      >
-                        <Typography variant="body2" sx={expandedDescriptionSx}>
-                          {post.description ?? ''}
-                        </Typography>
-                      </m.div>
-                    ) : (
-                      <m.div
-                        key="info-collapsed"
-                        layout
-                        initial={{ opacity: 0, y: -6 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: 6 }}
-                        transition={{ duration: 0.26, ease: 'easeOut' }}
-                      >
-                        <Typography variant="body2" sx={collapsedDescriptionSx}>
-                          {post.description ?? ''}
-                        </Typography>
-                      </m.div>
-                    )}
-                  </AnimatePresence>
+                  {isInfoExpanded ? (
+                    <Box>
+                      <Typography variant="body2" sx={expandedDescriptionSx}>
+                        {post.description ?? ''}
+                      </Typography>
+                    </Box>
+                  ) : (
+                    <Box>
+                      <Typography variant="body2" sx={collapsedDescriptionSx}>
+                        {post.description ?? ''}
+                      </Typography>
+                    </Box>
+                  )}
 
-                  <m.div
-                    layout
-                    transition={{ type: 'spring', stiffness: 260, damping: 28 }}
-                  >
+                  <Box>
                     <SponsorTicker expanded={isInfoExpanded} />
-                  </m.div>
+                  </Box>
                 </Stack>
               </Box>
 
@@ -572,86 +558,86 @@ export default function ExpanderPlayerInfo({ post: rawPost, onPlayerControlsVisi
                       label={formatNumber(post.likeCount)}
                     />
 
-                    <AnimatePresence>
-                      {reactionMenuOpen && shouldShowActions && (
-                        <GlassPanel
-                          component={m.div}
-                          ref={reactionMenuRef}
-                          sx={{
-                            position: 'absolute',
-                            right: 'calc(100% + 16px)',
-                            top: '-7px',
-                            transform: 'translateY(-50%)',
-                            display: 'flex',
-                            gap: 1.25,
-                            p: 1.5,
-                            borderRadius: 18,
-                            alignItems: 'center',
-                            zIndex: 10,
-                            minWidth: 0,
-                          }}
-                        >
-                          {REACTIONS.map((option) => (
-                            <Tooltip
-                              key={option.value}
-                              title={`${option.label}${option.price ? ` - ${option.price} MMC` : ''}`}
-                              placement="top"
-                              arrow
+                    {reactionMenuOpen && shouldShowActions && (
+                      <GlassPanel
+                        ref={reactionMenuRef}
+                        sx={{
+                          position: 'absolute',
+                          right: 'calc(100% + 16px)',
+                          top: '-7px',
+                          transform: 'translateY(-50%)',
+                          display: 'flex',
+                          gap: 1.25,
+                          p: 1.5,
+                          borderRadius: 18,
+                          alignItems: 'center',
+                          zIndex: 10,
+                          minWidth: 0,
+                        }}
+                      >
+                        {REACTIONS.map((option) => (
+                          <Tooltip
+                            key={option.value}
+                            title={`${option.label}${option.price ? ` - ${option.price} MMC` : ''}`}
+                            placement="top"
+                            arrow
+                          >
+                            <Box
+                              component="button"
+                              type="button"
+                              onClick={() => handleReactionChange(option.value)}
+                              sx={{
+                                border: 0,
+                                background: 'transparent',
+                                cursor: 'pointer',
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItems: 'center',
+                                color: '#fff',
+                                textAlign: 'center',
+                                padding: 0,
+                                transition: 'transform 160ms ease',
+                                '&:hover': {
+                                  transform: 'translateY(-6px) scale(1.06)',
+                                },
+                                '&:active': {
+                                  transform: 'scale(0.94)',
+                                },
+                              }}
                             >
                               <Box
-                                component={m.button}
-                                type="button"
-                                onClick={() => handleReactionChange(option.value)}
-                                variants={reactionItemVariants}
-                                whileHover={{ y: -6, scale: 1.06 }}
-                                whileTap={{ scale: 0.94 }}
-                                transition={{ type: 'spring', stiffness: 320, damping: 18 }}
                                 sx={{
-                                  border: 0,
-                                  background: 'transparent',
-                                  cursor: 'pointer',
+                                  width: 40,
+                                  height: 40,
+                                  borderRadius: '50%',
                                   display: 'flex',
-                                  flexDirection: 'column',
                                   alignItems: 'center',
-                                  color: '#fff',
-                                  textAlign: 'center',
-                                  padding: 0,
+                                  justifyContent: 'center',
+                                  background:
+                                    reaction === option.value
+                                      ? alpha(option.color, 0.26)
+                                      : 'linear-gradient(135deg, rgba(18,22,32,0.68), rgba(10,12,24,0.42))',
+                                  border:
+                                    reaction === option.value
+                                      ? `2px solid ${option.color}`
+                                      : '1px solid rgba(255,255,255,0.22)',
+                                  boxShadow:
+                                    reaction === option.value
+                                      ? `0 0 0 5px ${alpha(option.color, 0.18)}`
+                                      : '0 12px 22px rgba(4,8,18,0.45)',
+                                  backdropFilter: reaction === option.value ? undefined : 'blur(18px)',
+                                  WebkitBackdropFilter: reaction === option.value ? undefined : 'blur(18px)',
+                                  transition:
+                                    'background 160ms ease, border 160ms ease, box-shadow 160ms ease, transform 160ms ease',
                                 }}
                               >
-                                <Box
-                                  sx={{
-                                    width: 40,
-                                    height: 40,
-                                    borderRadius: '50%',
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    background:
-                                      reaction === option.value
-                                        ? alpha(option.color, 0.26)
-                                        : 'linear-gradient(135deg, rgba(18,22,32,0.68), rgba(10,12,24,0.42))',
-                                    border:
-                                      reaction === option.value
-                                        ? `2px solid ${option.color}`
-                                        : '1px solid rgba(255,255,255,0.22)',
-                                    boxShadow:
-                                      reaction === option.value
-                                        ? `0 0 0 5px ${alpha(option.color, 0.18)}`
-                                        : '0 12px 22px rgba(4,8,18,0.45)',
-                                    backdropFilter: reaction === option.value ? undefined : 'blur(18px)',
-                                    WebkitBackdropFilter: reaction === option.value ? undefined : 'blur(18px)',
-                                    transition:
-                                      'background 160ms ease, border 160ms ease, box-shadow 160ms ease, transform 160ms ease',
-                                  }}
-                                >
-                                  <option.icon size={16} />
-                                </Box>
+                                <option.icon size={16} />
                               </Box>
-                            </Tooltip>
-                          ))}
-                        </GlassPanel>
-                      )}
-                    </AnimatePresence>
+                            </Box>
+                          </Tooltip>
+                        ))}
+                      </GlassPanel>
+                    )}
                   </Box>
 
                   <ActionButton
@@ -684,106 +670,103 @@ export default function ExpanderPlayerInfo({ post: rawPost, onPlayerControlsVisi
                 </Stack>
               )}
 
-              <AnimatePresence initial={false}>
-                {openPanel && (
-                  <GlassPanel
-                    component={m.div}
-                    key={`side-panel-${openPanel}`}
-                    sx={{
-                      position: 'absolute',
-                      top: 12,
-                      right: 12,
-                      width: {
-                        xs: `min(320px, calc(100% - ${overlayInset * 2}px))`,
-                        md: INFO_PANEL_WIDTH_DESKTOP,
-                      },
-                      maxWidth: `calc(100% - ${overlayInset * 2}px)`,
-                      height: 'auto',
-                      maxHeight: 'calc(100% - 100px)',
-                      zIndex: 8,
-                      pointerEvents: 'auto',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      gap: 2,
-                      p: { xs: 2, md: 2.5 },
-                    }}
-                  >
-                    <Stack direction="row" alignItems="center" justifyContent="space-between">
-                      <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
-                        {panelTitle}
-                      </Typography>
-                      <IconButton
-                        size="small"
-                        onClick={closePanel}
-                        sx={{
-                          bgcolor: 'rgba(12,13,16,0.75)',
-                          color: '#fff',
-                          border: '1px solid rgba(255,255,255,0.16)',
-                          '&:hover': { bgcolor: 'rgba(12,13,16,0.95)' },
+              {openPanel && (
+                <GlassPanel
+                  key={`side-panel-${openPanel}`}
+                  sx={{
+                    position: 'absolute',
+                    top: 12,
+                    right: 12,
+                    width: {
+                      xs: `min(320px, calc(100% - ${overlayInset * 2}px))`,
+                      md: INFO_PANEL_WIDTH_DESKTOP,
+                    },
+                    maxWidth: `calc(100% - ${overlayInset * 2}px)`,
+                    height: 'auto',
+                    maxHeight: 'calc(100% - 100px)',
+                    zIndex: 8,
+                    pointerEvents: 'auto',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: 2,
+                    p: { xs: 2, md: 2.5 },
+                  }}
+                >
+                  <Stack direction="row" alignItems="center" justifyContent="space-between">
+                    <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
+                      {panelTitle}
+                    </Typography>
+                    <IconButton
+                      size="small"
+                      onClick={closePanel}
+                      sx={{
+                        bgcolor: 'rgba(12,13,16,0.75)',
+                        color: '#fff',
+                        border: '1px solid rgba(255,255,255,0.16)',
+                        '&:hover': { bgcolor: 'rgba(12,13,16,0.95)' },
+                      }}
+                      aria-label="Close panel"
+                    >
+                      <IconX size={16} />
+                    </IconButton>
+                  </Stack>
+
+                  <Divider sx={{ borderColor: 'rgba(255,255,255,0.08)' }} />
+
+                  <Box sx={{ flex: 1, minHeight: 0, overflowY: 'auto', pr: { xs: 0.5, md: 1 } }}>
+                    {openPanel === 'comments' && (
+                      <Stack spacing={2} sx={{ py: 1 }}>
+                    {session?.authenticated ? (
+                      <PublicationCommentForm
+                        root={String(post.id)}
+                        commentOn={null}
+                        owner={{
+                          id: post.author.address || '',
+                          displayName: post.author.displayName ?? 'Watchit',
+                          avatar: resolveSrc(post.author.profilePicture || post.author.address || '', 'profile'),
                         }}
-                        aria-label="Close panel"
-                      >
-                        <IconX size={16} />
-                      </IconButton>
-                    </Stack>
-
-                    <Divider sx={{ borderColor: 'rgba(255,255,255,0.08)' }} />
-
-                    <Box sx={{ flex: 1, minHeight: 0, overflowY: 'auto', pr: { xs: 0.5, md: 1 } }}>
-                      {openPanel === 'comments' && (
-                        <Stack spacing={2} sx={{ py: 1 }}>
-                      {session?.authenticated ? (
-                        <PublicationCommentForm
-                          root={String(post.id)}
-                          commentOn={null}
-                          owner={{
-                            id: post.author.address || '',
-                            displayName: post.author.displayName ?? 'Watchit',
-                            avatar: resolveSrc(post.author.profilePicture || post.author.address || '', 'profile'),
-                          }}
-                          onSuccess={() => handleCommentCreated(true)}
-                        />
-                      ) : (
-                            <Box
-                              sx={{
-                                borderRadius: 2,
-                                border: '1px dashed rgba(255,255,255,0.2)',
-                                p: 2,
-                                textAlign: 'center',
-                                bgcolor: alpha('#121217', 0.5),
-                              }}
-                            >
-                              <Typography variant="body2" sx={{ mb: 1, opacity: 0.72 }}>
-                                Login to leave a comment
-                              </Typography>
-                            </Box>
-                          )}
-
-                          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                            <PostCommentList
-                              publicationId={String(post.id)}
-                              showReplies
-                              onReplyCreated={() => handleCommentCreated(false)}
-                            />
+                        onSuccess={() => handleCommentCreated(true)}
+                      />
+                    ) : (
+                          <Box
+                            sx={{
+                              borderRadius: 2,
+                              border: '1px dashed rgba(255,255,255,0.2)',
+                              p: 2,
+                              textAlign: 'center',
+                              bgcolor: alpha('#121217', 0.5),
+                            }}
+                          >
+                            <Typography variant="body2" sx={{ mb: 1, opacity: 0.72 }}>
+                              Login to leave a comment
+                            </Typography>
                           </Box>
-                        </Stack>
-                      )}
+                        )}
 
-                      {openPanel === 'bakers' && (
-                        <Box sx={{ py: 1 }}>
-                          <PublicationSponsorsAndBackers postId={post.id} />
+                        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                          <PostCommentList
+                            publicationId={String(post.id)}
+                            showReplies
+                            onReplyCreated={() => handleCommentCreated(false)}
+                          />
                         </Box>
-                      )}
+                      </Stack>
+                    )}
 
-                      {openPanel === 'sponsors' && (
-                        <Box sx={{ py: 1 }}>
-                          <LeaveTipCard post={post} />
-                        </Box>
-                      )}
-                    </Box>
-                  </GlassPanel>
-                )}
-              </AnimatePresence>
+                    {openPanel === 'bakers' && (
+                      <Box sx={{ py: 1 }}>
+                        <PublicationSponsorsAndBackers postId={post.id} />
+                      </Box>
+                    )}
+
+                    {openPanel === 'sponsors' && (
+                      <Box sx={{ py: 1 }}>
+                        <LeaveTipCard post={post} />
+                      </Box>
+                    )}
+                  </Box>
+                </GlassPanel>
+              )}
             </>
           )}
         </Box>
@@ -978,32 +961,6 @@ const ActionButton = forwardRef<HTMLButtonElement, ActionButtonProps>(
 );
 
 ActionButton.displayName = 'ActionButton';
-
-const sidePanelVariants = {
-  hidden: { opacity: 0, x: 48 },
-  visible: {
-    opacity: 1,
-    x: 0,
-    transition: { type: 'spring', stiffness: 260, damping: 28 },
-  },
-  exit: { opacity: 0, x: 48, transition: { duration: 0.18 } },
-};
-
-const reactionMenuVariants = {
-  hidden: { opacity: 0, y: 16, scale: 0.92 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    scale: 1,
-    transition: { type: 'spring', stiffness: 260, damping: 22, staggerChildren: 0.05 },
-  },
-  exit: { opacity: 0, y: 12, scale: 0.94, transition: { duration: 0.18 } },
-};
-
-const reactionItemVariants = {
-  hidden: { opacity: 0, y: 10, scale: 0.85 },
-  visible: { opacity: 1, y: 0, scale: 1 },
-};
 
 const INFO_PANEL_WIDTH_DESKTOP = 360;
 const INFO_PANEL_HEIGHT_DESKTOP = 400;

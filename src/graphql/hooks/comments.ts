@@ -15,6 +15,22 @@ const GET_COMMENTS = gql`
       body
       parent {
         id
+        body
+        base {
+          id
+          user {
+            id
+            address
+            displayName
+            profile {
+              username
+              picture
+            }
+          }
+        }
+      }
+      replies {
+        id
       }
       post {
         id
@@ -50,6 +66,22 @@ const CREATE_COMMENT = gql`
       id
       body
       parent {
+        id
+        body
+        base {
+          id
+          user {
+            id
+            address
+            displayName
+            profile {
+              username
+              picture
+            }
+          }
+        }
+      }
+      replies {
         id
       }
       post {

@@ -1,10 +1,9 @@
-import React, { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Box, Typography, Paper, IconButton, Tooltip, Button } from '@mui/material';
+import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
+import { Box, Typography, Paper, Tooltip, Button } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { IconChevronDown } from '@tabler/icons-react';
 import { GridItem, ExpandedSection as ExpandedSectionType } from '../../types';
 import { GRID_CONFIG } from '../../CONSTANTS';
-import { motion } from 'framer-motion';
 
 interface ExpandedSectionProps {
   expandedSection: ExpandedSectionType;
@@ -20,20 +19,11 @@ interface ExpandedSectionProps {
   children?: React.ReactNode;
 }
 
-/** Fade rápido para el contenido. */
-const FADE_MS = 180;
-const CONTENT_VARIANTS = {
-  show: { opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' },
-  hide: { opacity: 0, y: 24, scale: 0.97, filter: 'blur(12px)' },
-} as const;
-
 const AnimatedContainer = styled(Box)(() => ({
   position: 'relative',
   width: '100%',
   overflow: 'hidden',
 }));
-
-const MotionAnimatedContainer = motion(AnimatedContainer);
 
 const SectionContainer = styled(Paper)(() => ({
   position: 'relative',
@@ -56,13 +46,14 @@ const SectionContent = styled(Box)(({ theme }) => ({
 }));
 
 /** Capa que controla el fade de TODO (header + contenido). */
-const OpacityLayer = styled(motion.div)(() => ({
+const OpacityLayer = styled(Box)(() => ({
   width: '100%',
   height: '100%',
 }));
 
 const ExpandedSection: React.FC<ExpandedSectionProps> = memo(
   ({ expandedSection, item, onRequestClose, animationDuration, gap, onMeasuredHeight, children }) => {
+    void animationDuration;
     const initialHeight = expandedSection.isOpen ? expandedSection.height : 0;
     const contentRef = useRef<HTMLDivElement>(null);
     const [animatedHeight, setAnimatedHeight] = useState(initialHeight);
@@ -112,13 +103,6 @@ const ExpandedSection: React.FC<ExpandedSectionProps> = memo(
     }, [expandedSection.isOpen, expandedSection.height]);
 
     const targetHeight = Math.max(animatedHeight, 0);
-    const containerTransition = useMemo(
-      () => ({
-        height: { type: 'spring', stiffness: 180, damping: 28, mass: 0.8 },
-        marginBottom: { duration: animationDuration / 1000, ease: [0.22, 1, 0.36, 1] as const },
-      }),
-      [animationDuration]
-    );
 
     const enhancedChildren = React.isValidElement(children)
       ? React.cloneElement(children as React.ReactElement<any>, {
@@ -127,29 +111,19 @@ const ExpandedSection: React.FC<ExpandedSectionProps> = memo(
       : children;
 
     return (
-      <MotionAnimatedContainer
-        initial={false}
-        animate={{
+      <AnimatedContainer
+        sx={{
           height: expandedSection.isOpen ? targetHeight : 0,
           marginBottom: expandedSection.isOpen ? 0 : gap,
         }}
-        transition={containerTransition}
-        style={{ willChange: 'height, margin-bottom' }}
       >
         <SectionContainer elevation={0}>
           <OpacityLayer
-            initial={false}
-            animate={expandedSection.isOpen ? 'show' : 'hide'}
-            variants={CONTENT_VARIANTS}
-            transition={{
-              duration: FADE_MS / 1000,
-              ease: [0.16, 1, 0.3, 1] as const,
-              delay: 0,
-            }}
-            style={{
+            sx={{
               pointerEvents: expandedSection.isOpen ? 'auto' : 'none',
-              transformOrigin: 'top center',
+              opacity: expandedSection.isOpen ? 1 : 0,
             }}
+            aria-hidden={expandedSection.isOpen ? undefined : true}
           >
             <SectionContent ref={contentRef}>
               {/* Botón de cierre del expander (opcional, no interfiere con tu contenido) */}
@@ -194,7 +168,7 @@ const ExpandedSection: React.FC<ExpandedSectionProps> = memo(
             </SectionContent>
           </OpacityLayer>
         </SectionContainer>
-      </MotionAnimatedContainer>
+      </AnimatedContainer>
     );
   }
 );

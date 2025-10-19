@@ -1,4 +1,9 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import type {
+  PointerEvent as ReactPointerEvent,
+  KeyboardEvent as ReactKeyboardEvent,
+  MouseEvent as ReactMouseEvent,
+} from 'react';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
@@ -24,9 +29,12 @@ type Props = {
   // nuevo (opcional)
   autoPlayMs?: number;     // default 6000
   pauseOnHover?: boolean;  // default true
+  onPostSelect?: (post: Post) => void;
 };
 
 type Variant = 'mini' | 'compact' | 'standard' | 'hero';
+
+export type SliderVariantProps = Pick<Props, 'span' | 'cell' | 'gapPx' | 'onPostSelect'>;
 
 // ==================== Hooks utilitarios ====================
 
@@ -492,6 +500,7 @@ export default function AdaptiveSlider({
                                          loading,
                                          autoPlayMs = 6000,
                                          pauseOnHover = true,
+                                         onPostSelect,
                                        }: Props) {
   const { ref, rect } = useElementRect<HTMLDivElement>();
   const [index, setIndex] = useState(0);
@@ -549,20 +558,63 @@ export default function AdaptiveSlider({
     return el instanceof HTMLElement && !!el.closest('[data-interactive="true"],button,a,[role="button"]');
   };
 
-  const onPointerDown = (e: React.PointerEvent) => {
-    if (isInteractiveTarget(e.target)) return; // no iniciar drag encima de UI
+  const selectCurrentPost = useCallback(() => {
+    if (current) onPostSelect?.(current);
+  }, [current, onPostSelect]);
+  const onPointerDown = (e: ReactPointerEvent<HTMLDivElement>) => {
+    if (isInteractiveTarget(e.target)) {
+      if (drag.active) setDrag({ x: 0, active: false });
+      return; // no iniciar drag encima de UI
+    }
     (e.currentTarget as any).setPointerCapture?.(e.pointerId);
     setDrag({ x: e.clientX, active: true });
   };
-  const onPointerUp = (e: React.PointerEvent) => {
+  const onPointerUp = (e: ReactPointerEvent<HTMLDivElement>) => {
     if (!drag.active) return;
+    if ((e.currentTarget as any).releasePointerCapture) {
+      try {
+        (e.currentTarget as any).releasePointerCapture(e.pointerId);
+      } catch {
+        /* ignore */
+      }
+    }
     const dx = e.clientX - drag.x;
     const threshold = Math.max(40, vw * 0.15);
-    if (dx > threshold) onPrev();
-    else if (dx < -threshold) onNext();
+    if (dx > threshold) {
+      onPrev();
+    } else if (dx < -threshold) {
+      onNext();
+    }
     setDrag({ x: 0, active: false });
   };
-  const onPointerCancel = () => setDrag({ x: 0, active: false });
+  const onPointerCancel = (e: ReactPointerEvent<HTMLDivElement>) => {
+    if ((e.currentTarget as any).releasePointerCapture) {
+      try {
+        (e.currentTarget as any).releasePointerCapture(e.pointerId);
+      } catch {
+        /* ignore */
+      }
+    }
+    setDrag({ x: 0, active: false });
+  };
+
+  const handleKeyDown = useCallback(
+    (e: ReactKeyboardEvent<HTMLDivElement>) => {
+      if (!onPostSelect) return;
+      if (e.target !== e.currentTarget) return;
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        selectCurrentPost();
+      }
+    },
+    [onPostSelect, selectCurrentPost]
+  );
+
+  const handleClick = useCallback(() => {
+      selectCurrentPost();
+    },
+    [selectCurrentPost]
+  );
 
   // ====== Autoplay (pausa por hover/drag) ======
   const autoplayEnabled = total > 1 && (!pauseOnHover || !hovered) && !drag.active;
@@ -590,10 +642,15 @@ export default function AdaptiveSlider({
           touchAction: 'pan-y', // permite scroll vertical en táctil
           // asegúrate de que el header se vea encima
           '& [data-interactive="true"]': { zIndex: 4, pointerEvents: 'auto' },
+          cursor: onPostSelect ? 'pointer' : 'default',
         }}
+        onClick={handleClick}
         onPointerDown={onPointerDown}
         onPointerUp={onPointerUp}
         onPointerCancel={onPointerCancel}
+        onKeyDown={handleKeyDown}
+        role={onPostSelect ? 'button' : undefined}
+        tabIndex={onPostSelect ? 0 : undefined}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
       >
@@ -656,10 +713,17 @@ export default function AdaptiveSlider({
         {total > 1 && (
           <>
             <IconButton
-              onClick={onPrev}
+              onClick={(e) => {
+                e.stopPropagation();
+                onPrev();
+              }}
               size="small"
               data-interactive="true"
-              onPointerDown={(e) => e.stopPropagation()}
+              onPointerDown={(e) => {
+                e.stopPropagation();
+                if (drag.active) setDrag({ x: 0, active: false });
+              }}
+              onPointerUp={(e) => e.stopPropagation()}
               sx={{
                 position: 'absolute',
                 left: 8,
@@ -674,10 +738,17 @@ export default function AdaptiveSlider({
               <icons.IconChevronLeft />
             </IconButton>
             <IconButton
-              onClick={onNext}
+              onClick={(e) => {
+                e.stopPropagation();
+                onNext();
+              }}
               size="small"
               data-interactive="true"
-              onPointerDown={(e) => e.stopPropagation()}
+              onPointerDown={(e) => {
+                e.stopPropagation();
+                if (drag.active) setDrag({ x: 0, active: false });
+              }}
+              onPointerUp={(e) => e.stopPropagation()}
               sx={{
                 position: 'absolute',
                 right: 8,

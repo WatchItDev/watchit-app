@@ -1,5 +1,3 @@
-export const emptyAddress = '0x0000000000000000000000000000000000000000';
-
 export const TABS = [
   { value: 'publications', label: 'Publications' },
   { value: 'followers', label: 'Followers' },
@@ -32,4 +30,27 @@ export const socialMedia = [
   { key: 'instagram', icon: 'mdi:instagram' },
   { key: 'orb', icon: 'mdi:instagram' },
   { key: 'farcaster', icon: 'mdi:instagram' },
+];
+
+export const randomColors = [
+  '#f44336',
+  '#e91e63',
+  '#9c27b0',
+  '#673ab7',
+  '#3f51b5',
+  '#2196f3',
+  '#03a9f4',
+  '#00bcd4',
+  '#009688',
+  '#4caf50',
+  '#8bc34a',
+  '#cddc39',
+  '#ffeb3b',
+  '#ffc107',
+  '#ff9800',
+  '#ff5722',
+  '#795548',
+  '#9e9e9e',
+  '#607d8b',
+  '#000000',
 ];

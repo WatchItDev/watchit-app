@@ -16,17 +16,7 @@ import CardContent from '@mui/material/CardContent';
 import MoviePlayView from '@src/sections/publication/components/publication-player.tsx';
 import PublicationDetailMain from '@src/components/publication-detail-main';
 import { useAuth } from '@src/hooks/use-auth.ts';
-// import { useHasAccess } from '@src/hooks/protocol/use-has-access.ts';
-// import { useGetCampaignIsActive } from '@src/hooks/protocol/use-get-campaign-is-active.ts';
-// import { useIsPolicyAuthorized } from '@src/hooks/protocol/use-is-policy-authorized.ts';
-// import { PublicationSponsoredButton } from '@src/sections/publication/components/publication-sponsored-button.tsx';
-// import { PublicationJoinButton } from '@src/sections/publication/components/publication-join-button.tsx';
-// import { GLOBAL_CONSTANTS } from '@src/config-global.ts';
-// import { PublicationPosterWallpaper } from '@src/sections/publication/components/publication-poster-wallpaper.tsx';
-// import { useGetSubscriptionCampaign } from '@src/hooks/protocol/use-get-subscription-campaign.ts';
-// import { PublicationHidden } from '@src/sections/publication/components/publication-hidden.tsx';
 import { PublicationDetailsViewProps } from '@src/sections/publication/types.ts';
-import { SubscribeProfileModal } from '@src/components/subscribe-profile-modal.tsx';
 import { PublicationTitleDescription } from '@src/sections/publication/components/publication-description.tsx';
 import { PublicationRecommendations } from '@src/sections/publication/components/publication-recommendations.tsx';
 import { PublicationSponsorsAndBackers } from '@src/sections/publication/components/publication-sponsors-and-bakers.tsx';
@@ -164,12 +154,6 @@ export default function PublicationDetailsView({
           hasAccess={true}
         />
       </StyledContainer>
-      <SubscribeProfileModal
-        isOpen={openSubscribeModal}
-        onClose={() => setOpenSubscribeModal(false)}
-        onSubscribe={handleRefetchAccess}
-        profile={publication?.author}
-      />
     </LoadingFade>
   );
 }

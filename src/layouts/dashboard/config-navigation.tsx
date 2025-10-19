@@ -12,10 +12,6 @@ const icon = (name: string) => (
     src={`/assets/icons/navbar/${name}.svg`}
     sx={{ width: 1, height: 1 }}
   />
-  // OR
-  // <Iconify icon="fluent:mail-24-filled" />
-  // https://icon-sets.iconify.design/solar/
-  // https://www.streamlinehq.com/icons
 );
 
 const ICONS = {
@@ -106,6 +102,7 @@ export function useNavData() {
             title: t('Achievements'),
             path: paths.dashboard.achievements,
             icon: ICONS.label,
+            comingSoon: true,
           },
         ],
       },
@@ -136,6 +133,7 @@ export function useNavData() {
             title: t('Ownership'),
             path: paths.dashboard.ownership,
             icon: ICONS.lock,
+            comingSoon: true,
           },
 
           // CALENDAR

@@ -1,7 +1,6 @@
 import Container from '@mui/material/Container';
 import Stack from '@mui/material/Stack';
 import ExploreGrid from '../components/explore-grid';
-import { WatchitWidget } from '@src/components/ai-widget';
 import GlassDefs from '../components/glass-defs';
 
 export default function ExploreView() {
@@ -11,7 +10,6 @@ export default function ExploreView() {
       <Stack direction="column" sx={{ maxWidth: '100vw !important', position: 'relative', height: '100%', maxHeight: '100%' }}>
         <ExploreGrid />
       </Stack>
-      <WatchitWidget />
     </Container>
   );
 }

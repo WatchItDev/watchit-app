@@ -532,7 +532,7 @@ const VirtualizedGrid: React.FC<VirtualizedGridProps> = memo(({ sentinelRef }) =
 
   // Abrir / cerrar
   const openExpandedForItem = useCallback(
-    (item: GridItemType) => {
+    (item: GridItemType, selectedPost?: Post | null) => {
       const rowIdx = itemRowIndex.get(item.id);
       if (rowIdx == null) return;
       const baseWidth = gridWidth || containerWidthRef.current;
@@ -546,7 +546,7 @@ const VirtualizedGrid: React.FC<VirtualizedGridProps> = memo(({ sentinelRef }) =
           anchorRow: rowIdx,
           y: 0,
           height: predictedHeight,
-          content: undefined,
+          selectedPost: selectedPost ?? (item.data?.post as Post | undefined) ?? null,
         })
       );
       dispatch(setHasUserScrolledAfterExpand(false));
@@ -576,17 +576,34 @@ const VirtualizedGrid: React.FC<VirtualizedGridProps> = memo(({ sentinelRef }) =
         scheduleExpandedCleanup(item.id);
         return;
       }
+
+      if (cleanupTimeoutRef.current !== null) {
+        window.clearTimeout(cleanupTimeoutRef.current);
+        cleanupTimeoutRef.current = null;
+      }
+
+      const itemPost = item.data?.post as Post | undefined;
       if (expandedSection) {
         resetEstimatedHeight();
-        const closingId = expandedSection.itemId;
-        dispatch(setExpandedOpen(false));
-        scheduleExpandedCleanup(closingId);
-        window.setTimeout(() => openExpandedForItem(item), GRID_CONFIG.animationDuration);
+        openExpandedForItem(item, itemPost);
         return;
       }
-      openExpandedForItem(item);
+      openExpandedForItem(item, itemPost);
     },
     [dispatch, expandedSection, openExpandedForItem, resetEstimatedHeight, scheduleExpandedCleanup]
+  );
+
+  const handleSliderPostSelect = useCallback(
+    (sliderItem: GridItemType, post: Post | null | undefined) => {
+      if (!post) return;
+      if (cleanupTimeoutRef.current !== null) {
+        window.clearTimeout(cleanupTimeoutRef.current);
+        cleanupTimeoutRef.current = null;
+      }
+      resetEstimatedHeight();
+      openExpandedForItem(sliderItem, post);
+    },
+    [openExpandedForItem, resetEstimatedHeight]
   );
 
   const handleCloseExpanded = useCallback(() => {
@@ -646,20 +663,26 @@ const VirtualizedGrid: React.FC<VirtualizedGridProps> = memo(({ sentinelRef }) =
   const shouldShowSkeleton = rows.length === 0;
 
   // ---------- helpers de render ----------
-  const renderSliderById = (sliderId: string | undefined, cell: number, gapPx: number) => {
+  const renderSliderById = (
+    sliderId: string | undefined,
+    cell: number,
+    gapPx: number,
+    onPostSelect?: (post: Post) => void
+  ) => {
+    const commonProps = { span: { w: 2, h: 2 }, cell, gapPx, onPostSelect };
     switch (sliderId) {
       case 'top-picks':
-        return <TopPicksSlider span={{ w: 2, h: 2 }} cell={cell} gapPx={gapPx} />;
+        return <TopPicksSlider {...commonProps} />;
       case 'continue-watching':
-        return <ContinueWatchingSlider span={{ w: 2, h: 2 }} cell={cell} gapPx={gapPx} />;
+        return <ContinueWatchingSlider {...commonProps} />;
       case 'popular-week':
-        return <PopularThisWeekSlider span={{ w: 2, h: 2 }} cell={cell} gapPx={gapPx} />;
+        return <PopularThisWeekSlider {...commonProps} />;
       case 'comedy':
-        return <MoreFromComedySlider span={{ w: 2, h: 2 }} cell={cell} gapPx={gapPx} />;
+        return <MoreFromComedySlider {...commonProps} />;
       case 'region':
-        return <PopularInRegionSlider span={{ w: 2, h: 2 }} cell={cell} gapPx={gapPx} />;
+        return <PopularInRegionSlider {...commonProps} />;
       case 'interest':
-        return <ThisCanInterestYouSlider span={{ w: 2, h: 2 }} cell={cell} gapPx={gapPx} />;
+        return <ThisCanInterestYouSlider {...commonProps} />;
       default:
         return null;
     }
@@ -724,6 +747,9 @@ const VirtualizedGrid: React.FC<VirtualizedGridProps> = memo(({ sentinelRef }) =
                             const sliderId: string | undefined =
                               (row.slider.data && (row.slider.data as any).sliderId) ||
                               row.slider.id.replace(/^slider-/, '');
+                            const sliderElement = renderSliderById(sliderId, itemSize, gap, (post) =>
+                              handleSliderPostSelect(row.slider, post)
+                            );
                             return (
                               <Cell
                                 key={`slider-${row.slider.id}`}
@@ -731,9 +757,8 @@ const VirtualizedGrid: React.FC<VirtualizedGridProps> = memo(({ sentinelRef }) =
                                   gridColumn: `${row.sliderColStart + 1} / span 2`,
                                   gridRow: '1 / span 2',
                                 }}
-                                onClick={() => handleItemClick(row.slider)}
                               >
-                                {renderSliderById(sliderId, itemSize, gap)}
+                                {sliderElement}
                               </Cell>
                             );
                           }
@@ -758,19 +783,32 @@ const VirtualizedGrid: React.FC<VirtualizedGridProps> = memo(({ sentinelRef }) =
 
                 {row.type === 'expander' && expandedSection && (
                   <Box sx={{ width: '100%' }}>
-                    <ExpandedSection
-                      expandedSection={expandedSection}
-                      item={items.find((it: any) => it.id === expandedSection.itemId)!}
-                      onRequestClose={handleCloseExpanded}
-                      animationDuration={GRID_CONFIG.animationDuration}
-                      gap={gap}
-                    >
-                      <ExpanderPlayerInfo
-                        post={
-                          (items.find((it: any) => it.id === expandedSection.itemId)?.data?.post) as Post
-                        }
-                      />
-                    </ExpandedSection>
+                    {(() => {
+                      const expandedItem = items.find(
+                        (it: GridItemType) => it.id === expandedSection.itemId
+                      );
+                      if (!expandedItem) return null;
+                      const fallbackPost = expandedItem?.data?.post as Post | undefined;
+                      const resolvedPost =
+                        expandedSection.selectedPost ?? fallbackPost ?? null;
+                      const expanderChild = resolvedPost ? (
+                        <ExpanderPlayerInfo
+                          key={`expander-${expandedSection.itemId}-${resolvedPost.id}`}
+                          post={resolvedPost}
+                        />
+                      ) : null;
+                      return (
+                        <ExpandedSection
+                          expandedSection={expandedSection}
+                          item={expandedItem}
+                          onRequestClose={handleCloseExpanded}
+                          animationDuration={GRID_CONFIG.animationDuration}
+                          gap={gap}
+                        >
+                          {expanderChild}
+                        </ExpandedSection>
+                      );
+                    })()}
                   </Box>
                 )}
               </RowBox>

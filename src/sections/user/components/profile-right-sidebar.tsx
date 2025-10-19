@@ -8,20 +8,14 @@ import { CopyableText } from '@src/components/copyable-text';
 import Divider from '@mui/material/Divider';
 import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
-import Tooltip from '@mui/material/Tooltip';
 
 // ICONS IMPORTS
 import { IconRosetteDiscountCheckFilled } from '@tabler/icons-react';
 
 // LOCAL IMPORTS
 import { truncateAddress } from '@src/utils/wallet.ts';
-// import { OpenableText } from "@src/components/openable-text";
-import { randomColors } from '@src/components/poster/CONSTANTS.tsx';
-// import { useAuth } from '@src/hooks/use-auth.ts';
+import { randomColors } from '@src/sections/user/CONSTANTS.tsx';
 import { ProfileHeaderProps } from '@src/sections/user/types.ts';
-// import { GLOBAL_CONSTANTS } from "@src/config-global.ts"
-import { RANK_ICON } from '@src/utils/ranks.ts';
-import { IconButton } from '@mui/material';
 
 interface ProfileRightSidebarProps extends ProfileHeaderProps {
   sidebarProps: {
@@ -34,15 +28,7 @@ interface ProfileRightSidebarProps extends ProfileHeaderProps {
   };
 }
 
-const ProfileRightSidebar: FC<ProfileRightSidebarProps> = ({
-  profile,
-  sidebarProps,
-}) => {
-  // const { isAuthorized, authorizedLoading, accessLoading, hasAccess, attestation, attestationLoading } = sidebarProps;
-  // const { session: sessionData } = useAuth();
-  const hasPerkAccess = false;
-  const ranksLoading = false;
-  const unlockedRanks: Array<{ id: string; name: string }> = [];
+const ProfileRightSidebar: FC<ProfileRightSidebarProps> = ({ profile }) => {
 
   return (
     <Stack
@@ -77,34 +63,6 @@ const ProfileRightSidebar: FC<ProfileRightSidebarProps> = ({
           text={`${profile?.address}`}
         />
       </Stack>
-      {/*{isAuthorized &&*/}
-      {/*  !authorizedLoading &&*/}
-      {/*  attestation &&*/}
-      {/*  !attestationLoading &&*/}
-      {/*  hasAccess &&*/}
-      {/*  !accessLoading &&*/}
-      {/*  profile?.address !== sessionData?.address && (*/}
-      {/*    <>*/}
-      {/*      <Divider sx={{ borderColor: 'rgba(255, 255, 255, 0.08)', width: '100%' }} />*/}
-      {/*      <Tooltip title="This license address represents the license issued using blockchain technology, ensuring a secure agreement between the creator and the user..">*/}
-      {/*      <Stack*/}
-      {/*        direction="row"*/}
-      {/*        sx={{*/}
-      {/*          zIndex: 10,*/}
-      {/*          width: '100%',*/}
-      {/*          alignItems: 'center',*/}
-      {/*          justifyContent: 'space-between',*/}
-      {/*        }}*/}
-      {/*      >*/}
-      {/*        <Typography color="text.secondary">License</Typography>*/}
-      {/*        <OpenableText*/}
-      {/*          label={truncateAddress(attestationAddress)}*/}
-      {/*          url={`${GLOBAL_CONSTANTS.ATTESTATION_BASE_URL}${attestationAddress}`}*/}
-      {/*        />*/}
-      {/*      </Stack>*/}
-      {/*      </Tooltip>*/}
-      {/*    </>*/}
-      {/*  )}*/}
       <Divider
         sx={{ borderColor: 'rgba(255, 255, 255, 0.08)', width: '100%' }}
       />
@@ -146,43 +104,6 @@ const ProfileRightSidebar: FC<ProfileRightSidebarProps> = ({
           ))}
         </Box>
       </Stack>
-      {hasPerkAccess && unlockedRanks.length > 0 && (
-        <>
-          <Divider
-            sx={{ borderColor: 'rgba(255, 255, 255, 0.08)', width: '100%' }}
-          />
-          <Typography color="text.secondary">Ranks</Typography>
-          <Box
-            display="flex"
-            alignItems="center"
-            justifyContent="space-between"
-            flexWrap="wrap"
-          >
-            {ranksLoading
-              ? Array.from({ length: unlockedRanks.length }).map((_, i) => (
-                  <Box
-                    key={i}
-                    sx={{
-                      width: 40,
-                      height: 40,
-                      bgcolor: 'grey.800',
-                      borderRadius: '50%',
-                    }}
-                  />
-                ))
-              : unlockedRanks.map((r) => (
-                  <Tooltip key={r.id} title={r.name} arrow>
-                    <IconButton sx={{ p: 0, width: 40, height: 40 }}>
-                      <RankImg
-                        src={RANK_ICON[r.id] ?? RANK_ICON['watcher']}
-                        alt={r.name}
-                      />
-                    </IconButton>
-                  </Tooltip>
-                ))}
-          </Box>
-        </>
-      )}
     </Stack>
   );
 };
@@ -211,13 +132,6 @@ const StyledBoxGradient = styled(Box)<{ color1?: string; color2?: string }>(({
       '100%': { backgroundPosition: '0% 50%' },
     },
   };
-});
-
-const RankImg = styled('img')({
-  width: 30,
-  height: 30,
-  flexShrink: 0,
-  objectFit: 'contain',
 });
 
 export default ProfileRightSidebar;

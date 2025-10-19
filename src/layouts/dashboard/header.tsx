@@ -17,7 +17,6 @@ import { useSettingsContext } from '@src/components/settings';
 import { HEADER, NAV } from '../config-layout';
 import {
   AccountPopover,
-  HeaderXpBalance,
   HeaderMmcBalance,
   NotificationsPopover,
 } from '../_common';
@@ -69,7 +68,6 @@ export default function Header({ children }: PropsWithChildren) {
       >
         {sessionData?.authenticated && (
           <>
-            {/*<HeaderXpBalance />*/}
             <HeaderMmcBalance />
             <NotificationsPopover />
           </>

@@ -1,13 +1,12 @@
 // FORM IMPORTS
 import * as Yup from 'yup';
-import { useForm, Controller } from 'react-hook-form';
+import { useForm, Controller, Form } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 // MUI IMPORTS
 import LoadingButton from '@mui/lab/LoadingButton';
 import InputAdornment from '@mui/material/InputAdornment';
 import InputBase from '@mui/material/InputBase';
-import FormProvider from '@src/components/hook-form';
 import { alpha } from '@mui/material/styles';
 import { Stack, CircularProgress } from '@mui/material';
 
@@ -107,7 +106,7 @@ const MovieCommentForm = ({
   });
 
   const renderInput = (
-    <Stack sx={{ pr: 1 }} spacing={2} direction="row" alignItems="center">
+    <Stack sx={{ pr: 1, flex: 1, width: '100%' }} spacing={2} direction="row" alignItems="center">
       <AvatarProfile
         src={resolveSrc(
           (sessionData?.user?.profilePicture || sessionData?.user?.address) ??
@@ -147,8 +146,26 @@ const MovieCommentForm = ({
               pl: 1.5,
               height: 40,
               borderRadius: 1,
+              color: 'rgba(255,255,255,0.92)',
+              backgroundColor: alpha('#FFFFFF', 0.08),
               border: (theme) =>
-                `solid 1px ${alpha(theme.palette.grey[500], 0.32)}`,
+                `solid 1px ${alpha(theme.palette.common.white, 0.38)}`,
+              transition: 'border-color 0.2s ease, box-shadow 0.2s ease',
+              '&:hover': {
+                borderColor: alpha('#FFFFFF', 0.6),
+              },
+              '&.Mui-focused': {
+                borderColor: alpha('#FFFFFF', 0.85),
+                boxShadow: `0 0 0 1px ${alpha('#FFFFFF', 0.28)}`,
+              },
+              '& .MuiInputBase-input': {
+                pt: 0.5,
+                pb: 0.5,
+              },
+              '& .MuiInputBase-input::placeholder': {
+                color: 'rgba(255,255,255,0.68)',
+                opacity: 1,
+              },
             }}
           />
         )}
@@ -157,10 +174,12 @@ const MovieCommentForm = ({
   );
 
   return (
-    <FormProvider methods={methods} onSubmit={onSubmit}>
-      {renderInput}
-    </FormProvider>
+    <Form {...methods}>
+      <form onSubmit={onSubmit}>
+        {renderInput}
+      </form>
+    </Form>
   );
 };
 
-export default MovieCommentForm;
+        export default MovieCommentForm;

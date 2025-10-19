@@ -27,10 +27,16 @@ export interface NeonPaperProps {
   sx?: SxProps<Theme>;
 }
 
+export interface CommentReplyContext {
+  comment: Comment;
+  replyingToName?: string | null;
+}
+
 export interface PublicationCommentItemProps {
   comment: Comment;
-  hasReply?: boolean;
-  onHide: () => void;
+  depth: 0 | 1;
+  replyingToName?: string | null;
+  replies?: CommentReplyContext[];
   onReplyCreated: () => void;
   showReplies?: boolean;
 }
@@ -58,12 +64,6 @@ export interface MovieCommentFormProps {
 export interface PublicationNewWizardStepsProps extends StepperProps {
   activeStep: number;
   goToStep: (step: number) => void;
-}
-
-export interface RepliesListProps {
-  parentCommentId: number;
-  canReply?: boolean;
-  onReplyCreated: () => void;
 }
 
 export interface PublicationPosterWallpaperProps {

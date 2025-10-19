@@ -34,6 +34,7 @@ export interface ExpandedSection {
   y: number;
   height: number;
   content?: React.ReactNode;
+  selectedPost?: Post | null;
 }
 
 export interface GridDimensions {
@@ -103,6 +104,7 @@ export interface ExpandedSection {
   y: number;
   height: number;
   content?: React.ReactNode;
+  selectedPost?: Post | null;
 }
 
 export interface GridDimensions {

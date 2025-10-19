@@ -23,14 +23,3 @@ export const navMiniConfig = (config?: NavConfigProps) => ({
   itemRadius: config?.itemRadius || 6,
   hiddenLabel: config?.hiddenLabel || false,
 });
-
-export const navHorizontalConfig = (config?: NavConfigProps) => ({
-  itemGap: config?.itemGap || 6,
-  iconSize: config?.iconSize || 22,
-  currentRole: config?.currentRole,
-  itemRootHeight: config?.itemRootHeight || 32,
-  itemSubHeight: config?.itemSubHeight || 34,
-  itemPadding: config?.itemPadding || '0 6px 0 6px',
-  itemRadius: config?.itemRadius || 6,
-  hiddenLabel: config?.hiddenLabel || false,
-});

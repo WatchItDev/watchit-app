@@ -1,7 +1,0 @@
-<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path opacity="0.24" d="M24 98C24 91.3726 29.3726 86 36 86H164C170.627 86 176 91.3726 176 98V146C176 152.627 170.627 158 164 158H36C29.3726 158 24 152.627 24 146V98Z" fill="#919EAB"/>
-<rect opacity="0.48" x="40" y="108" width="32" height="10" rx="5" fill="#919EAB"/>
-<rect opacity="0.24" x="40" y="126" width="64" height="10" rx="5" fill="#919EAB"/>
-<path opacity="0.24" d="M52 50C52 45.5817 55.5817 42 60 42H140C144.418 42 148 45.5817 148 50V70C148 74.4183 144.418 78 140 78H60C55.5817 78 52 74.4183 52 70V50Z" fill="#919EAB"/>
-<rect x="76" y="54" width="48" height="12" rx="6" fill="#919EAB"/>
-</svg>

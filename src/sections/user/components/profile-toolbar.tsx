@@ -9,7 +9,6 @@ import { useTheme } from '@mui/material/styles';
 import AvatarProfile from '@src/components/avatar/avatar.tsx';
 import ProfileUpdateButton from '@src/sections/user/components/profile-update-button.tsx';
 import ProfileShare from '@src/sections/user/components/profile-share.tsx';
-import ProfileSetJoiningPrice from '@src/sections/user/components/profile-set-joining-price.tsx';
 import ProfileTransfer from '@src/sections/user/components/profile-transfer.tsx';
 import { useAuth } from '@src/hooks/use-auth.ts';
 import type { AppUser } from '@src/types/app-user.ts';
@@ -59,11 +58,6 @@ const ProfileToolbar: FC<ProfileToolbarProps> = ({ profile, profileImage }) => {
         }}
       >
         <ProfileShare profile={profile} />
-        {/*{session?.authenticated && session?.address === profile?.address ? (*/}
-        {/*  <ProfileSetJoiningPrice />*/}
-        {/*) : (*/}
-        {/*  <></>*/}
-        {/*)}*/}
         {session?.address && profile?.address === session?.address && (
           <ProfileUpdateButton />
         )}
