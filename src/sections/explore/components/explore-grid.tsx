@@ -27,6 +27,9 @@ function repeatUntil<T>(arr: T[], min: number): T[] {
   return out;
 }
 
+/**
+ * Normalizes posts into grid items while injecting the scheduled slider cards.
+ */
 function postsToGridItems(posts: Post[], minRegularCount = 120): GridItemType[] {
   const enriched = posts.map((post) => normalizePost(post));
   const basePosts = repeatUntil(enriched, Math.max(minRegularCount, enriched.length));
@@ -74,6 +77,7 @@ function postsToGridItems(posts: Post[], minRegularCount = 120): GridItemType[] 
   return items;
 }
 
+/** Entry point that wires the feed with the virtualized explore grid. */
 export default function ExploreGrid() {
   const dispatch = useDispatch();
   const { items: posts, sentinelRef } = useInfiniteFeed(30);

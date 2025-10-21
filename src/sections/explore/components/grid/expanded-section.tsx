@@ -1,9 +1,8 @@
 import React, { memo, useCallback, useEffect, useRef, useState } from 'react';
-import { Box, Typography, Paper, Tooltip, Button } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import { Box, Typography, Tooltip, Button } from '@mui/material';
 import { IconChevronDown } from '@tabler/icons-react';
 import { GridItem, ExpandedSection as ExpandedSectionType } from '../../types';
-import { GRID_CONFIG } from '../../CONSTANTS';
+import { AnimatedContainer, OpacityLayer, SectionContainer, SectionContent } from './expanded-section.styles';
 
 interface ExpandedSectionProps {
   expandedSection: ExpandedSectionType;
@@ -19,38 +18,9 @@ interface ExpandedSectionProps {
   children?: React.ReactNode;
 }
 
-const AnimatedContainer = styled(Box)(() => ({
-  position: 'relative',
-  width: '100%',
-  overflow: 'hidden',
-}));
-
-const SectionContainer = styled(Paper)(() => ({
-  position: 'relative',
-  width: '100%',
-  borderRadius: 16,
-  overflow: 'hidden',
-  margin: 0,
-  backgroundColor: 'transparent',
-  boxShadow: 'none',
-}));
-
-const SectionContent = styled(Box)(({ theme }) => ({
-  position: 'relative',
-  padding: `0 ${GRID_CONFIG.gap}px`,
-  minHeight: 120,
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'center',
-  alignItems: 'stretch',
-}));
-
-/** Capa que controla el fade de TODO (header + contenido). */
-const OpacityLayer = styled(Box)(() => ({
-  width: '100%',
-  height: '100%',
-}));
-
+/**
+ * Inline expander wrapper that hosts the publication player inside the grid.
+ */
 const ExpandedSection: React.FC<ExpandedSectionProps> = memo(
   ({ expandedSection, item, onRequestClose, animationDuration, gap, onMeasuredHeight, children }) => {
     void animationDuration;
