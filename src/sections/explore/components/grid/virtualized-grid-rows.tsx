@@ -93,6 +93,7 @@ export function VirtualizedRows({
       {sentinelRef && (
         <Box
           ref={sentinelRef as any}
+          data-testid="virtualized-rows-sentinel"
           sx={{
             position: 'absolute',
             left: 0,

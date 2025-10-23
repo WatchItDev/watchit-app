@@ -14,7 +14,9 @@ export const RowsInner = styled(Box)(() => ({
   width: '100%',
 }));
 
-export const RowBox = styled(Box)<{ $dimmed?: boolean }>(() => ({
+export const RowBox = styled(Box, {
+  shouldForwardProp: (prop) => prop !== '$dimmed',
+})<{ $dimmed?: boolean }>(() => ({
   position: 'absolute',
   left: 0,
   right: 0,
@@ -22,7 +24,9 @@ export const RowBox = styled(Box)<{ $dimmed?: boolean }>(() => ({
   contain: 'content',
 }));
 
-export const GridRow = styled(Box)<{
+export const GridRow = styled(Box, {
+  shouldForwardProp: (prop) => !['$gap', '$cols', '$itemSizePx', '$isTwoRows'].includes(prop as string),
+})<{
   $gap: number;
   $cols: number;
   $itemSizePx: number;

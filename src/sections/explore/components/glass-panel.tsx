@@ -59,7 +59,7 @@ const StyledGlass = styled(Box, {
   };
 });
 
-function detectBackdropUrl(): boolean {
+export function detectBackdropUrl(): boolean {
   // Safari devuelve true; Chromium/Firefox suelen devolver false.
   try {
     return (
@@ -76,7 +76,7 @@ export type GlassPanelProps = BoxProps & MotionProps;
 const GlassPanel = forwardRef<HTMLDivElement, GlassPanelProps>((props, ref) => {
   const [has, setHas] = useState(false);
   useEffect(() => setHas(detectBackdropUrl()), []);
-  return <StyledGlass ref={ref} hasBackdropUrl={has} {...props} />;
+  return <StyledGlass ref={ref} hasBackdropUrl={has} data-has-backdrop={has ? 'true' : 'false'} {...props} />;
 });
 
 GlassPanel.displayName = 'GlassPanel';
